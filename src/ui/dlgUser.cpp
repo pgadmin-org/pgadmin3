@@ -33,7 +33,9 @@
 #define btnDelGroup     CTRL("btnDelGroup", wxButton)
 
 #define lstVariables    CTRL("lstVariables", wxListCtrl)
-#define txtName         CTRL("txtName", wxTextCtrl)
+#define btnAdd          CTRL("btnAdd", wxButton)
+#define btnRemove       CTRL("btnRemove", wxButton)
+#define cbVarname       CTRL("cbVarname", wxComboBox)
 #define txtValue        CTRL("txtValue", wxTextCtrl)
 
 
@@ -42,6 +44,10 @@ BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsNotIn"),      dlgUser::OnGroupAdd)
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsIn"),         dlgUser::OnGroupRemove)
+    EVT_TEXT(XRCID("txtPasswd"),                    dlgUser::OnChange)
+    EVT_CHECKBOX(XRCID("chkCreateDB"),              dlgUser::OnChange)
+    EVT_CHECKBOX(XRCID("chkCreateUser"),            dlgUser::OnChange)
+
     EVT_BUTTON(XRCID("btnAddGroup"),                dlgUser::OnGroupAdd)
     EVT_BUTTON(XRCID("btnDelGroup"),                dlgUser::OnGroupRemove)
 
@@ -58,6 +64,7 @@ dlgUser::dlgUser(frmMain *frame, pgUser *node)
     user=node;
     SetIcon(wxIcon(user_xpm));
     CreateListColumns(lstVariables, _("Variable"), _("Value"), -1);
+    btnOK->Disable();
 }
 
 
@@ -88,6 +95,8 @@ int dlgUser::Go(bool modal)
     if (user)
     {
         // Edit Mode
+        readOnly=!user->GetServer()->GetSuperUser();
+
         txtName->SetValue(user->GetIdentifier());
         txtID->SetValue(NumToStr(user->GetUserId()));
         chkCreateDB->SetValue(user->GetCreateDatabase());
@@ -100,6 +109,32 @@ int dlgUser::Go(bool modal)
         {
             wxString token=cfgTokens.GetNextToken();
             AppendListItem(lstVariables, token.BeforeFirst('='), token.AfterFirst('='), 0);
+        }
+
+        if (readOnly)
+        {
+            chkCreateDB->Disable();
+            chkCreateUser->Disable();
+            txtPasswd->Disable();
+            btnAddGroup->Disable();
+            btnDelGroup->Disable();
+            cbVarname->Disable();
+            txtValue->Disable();
+            btnAdd->Disable();
+            btnRemove->Disable();
+        }
+        else
+        {
+            pgSet *set=connection->ExecuteSet(wxT("SHOW ALL"));
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    cbVarname->Append(set->GetVal(0));
+                    set->MoveNext();
+                }
+                delete set;
+            }
         }
     }
     else
@@ -130,25 +165,31 @@ void dlgUser::OnChange(wxNotifyEvent &ev)
 
 void dlgUser::OnGroupAdd(wxNotifyEvent &ev)
 {
-    int pos=lbGroupsNotIn->GetSelection();
-    if (pos >= 0)
+    if (!readOnly)
     {
-        lbGroupsIn->Append(lbGroupsNotIn->GetString(pos));
-        lbGroupsNotIn->Delete(pos);
+        int pos=lbGroupsNotIn->GetSelection();
+        if (pos >= 0)
+        {
+            lbGroupsIn->Append(lbGroupsNotIn->GetString(pos));
+            lbGroupsNotIn->Delete(pos);
+        }
+        OnChange(ev);
     }
-    OnChange(ev);
 }
 
 
 void dlgUser::OnGroupRemove(wxNotifyEvent &ev)
 {
-    int pos=lbGroupsIn->GetSelection();
-    if (pos >= 0)
+    if (!readOnly)
     {
-        lbGroupsNotIn->Append(lbGroupsIn->GetString(pos));
-        lbGroupsIn->Delete(pos);
+        int pos=lbGroupsIn->GetSelection();
+        if (pos >= 0)
+        {
+            lbGroupsNotIn->Append(lbGroupsIn->GetString(pos));
+            lbGroupsIn->Delete(pos);
+        }
+        OnChange(ev);
     }
-    OnChange(ev);
 }
 
 
@@ -157,7 +198,7 @@ void dlgUser::OnVarSelChange(wxListEvent &ev)
     long pos=GetListSelected(lstVariables);
     if (pos >= 0)
     {
-        txtName->SetValue(lstVariables->GetItemText(pos));
+        cbVarname->SetValue(lstVariables->GetItemText(pos));
         txtValue->SetValue(GetListText(lstVariables, pos, 1));
     }
 }
@@ -165,7 +206,7 @@ void dlgUser::OnVarSelChange(wxListEvent &ev)
 
 void dlgUser::OnVarAdd(wxNotifyEvent &ev)
 {
-    wxString name=GetName().Strip(wxString::both);
+    wxString name=cbVarname->GetValue();
     wxString value=txtValue->GetValue().Strip(wxString::both);
     if (value.IsEmpty())
         value = wxT("DEFAULT");

@@ -28,14 +28,16 @@
 #define txtPath         CTRL("txtPath", wxTextCtrl)
 
 #define lstVariables    CTRL("lstVariables", wxListCtrl)
-#define txtVarname      CTRL("txtVarname", wxTextCtrl)
+#define cbVarname       CTRL("cbVarname", wxComboBox)
 #define txtValue        CTRL("txtValue", wxTextCtrl)
+#define btnAdd          CTRL("btnAdd", wxButton)
+#define btnRemove       CTRL("btnRemove", wxButton)
 
-#define btnOK           CTRL("btnOK", wxButton)
 
 
 BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgDatabase::OnChange)
+    EVT_TEXT(XRCID("txtComment"),                   dlgDatabase::OnChange)
 
     EVT_BUTTON(XRCID("btnAdd"),                     dlgDatabase::OnVarAdd)
     EVT_BUTTON(XRCID("btnRemove"),                  dlgDatabase::OnVarRemove)
@@ -72,6 +74,15 @@ int dlgDatabase::Go(bool modal)
     if (database)
     {
         // edit mode
+
+        readOnly = !database->GetServer()->GetCreatePrivilege();
+        wxStringTokenizer cfgTokens(database->GetVariables(), wxT(","));
+        while (cfgTokens.HasMoreTokens())
+        {
+            wxString token=cfgTokens.GetNextToken();
+            AppendListItem(lstVariables, token.BeforeFirst('='), token.AfterFirst('='), 0);
+        }
+
         txtName->SetValue(database->GetName());
         txtOID->SetValue(NumToStr((long)database->GetOid()));
         txtPath->SetValue(database->GetPath());
@@ -84,6 +95,27 @@ int dlgDatabase::Go(bool modal)
         txtPath->Disable();
         cbTemplate->Disable();
         cbEncoding->Disable();
+
+        if (readOnly)
+        {
+            cbVarname->Disable();
+            txtValue->Disable();
+            btnAdd->Disable();
+            btnRemove->Disable();
+        }
+        else
+        {
+            pgSet *set=connection->ExecuteSet(wxT("SHOW ALL"));
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    cbVarname->Append(set->GetVal(0));
+                    set->MoveNext();
+                }
+                delete set;
+            }
+        }
     }
     else
     {
@@ -120,11 +152,14 @@ pgObject *dlgDatabase::CreateObject(pgCollection *collection)
 
 void dlgDatabase::OnChange(wxNotifyEvent &ev)
 {
-    if (!database)
+    if (database)
     {
-        wxString name=GetName();
+        EnableOK(!GetSql().IsEmpty());
+    }
+    else
+    {
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
         EnableOK(enable);
     }
 }
@@ -135,7 +170,7 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
     long pos=lstVariables->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     if (pos >= 0)
     {
-        txtVarname->SetValue(lstVariables->GetItemText(pos));
+        cbVarname->SetValue(lstVariables->GetItemText(pos));
         txtValue->SetValue(GetListText(lstVariables, pos, 1));
     }
 }
@@ -143,7 +178,7 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
 
 void dlgDatabase::OnVarAdd(wxNotifyEvent &ev)
 {
-    wxString name=txtVarname->GetValue().Strip(wxString::both);
+    wxString name=cbVarname->GetValue();
     wxString value=txtValue->GetValue().Strip(wxString::both);
     if (value.IsEmpty())
         value = wxT("DEFAULT");
@@ -158,12 +193,14 @@ void dlgDatabase::OnVarAdd(wxNotifyEvent &ev)
         }
         lstVariables->SetItem(pos, 1, value);
     }
+    OnChange(ev);
 }
 
 
 void dlgDatabase::OnVarRemove(wxNotifyEvent &ev)
 {
     lstVariables->DeleteItem(lstVariables->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+    OnChange(ev);
 }
 
 
@@ -175,6 +212,52 @@ wxString dlgDatabase::GetSql()
     if (database)
     {
         // edit mode
+
+        wxArrayString vars;
+
+        wxStringTokenizer cfgTokens(database->GetVariables(), wxT(","));
+        while (cfgTokens.HasMoreTokens())
+            vars.Add(cfgTokens.GetNextToken());
+
+        int cnt=lstVariables->GetItemCount();
+        int pos;
+
+        // check for changed or added vars
+        for (pos=0 ; pos < cnt ; pos++)
+        {
+            wxString newVar=lstVariables->GetItemText(pos);
+            wxString newVal=GetListText(lstVariables, pos, 1);
+
+            wxString oldVal;
+
+            int index;
+            for (index=0 ; index < (int)vars.GetCount() ; index++)
+            {
+                wxString var=vars.Item(index);
+                if (var.BeforeFirst('=').IsSameAs(newVar, false))
+                {
+                    oldVal = var.Mid(newVar.Length()+1);
+                    vars.RemoveAt(index);
+                    break;
+                }
+            }
+            if (oldVal != newVal)
+            {
+                sql += wxT("ALTER DATABASE ") + database->GetQuotedFullIdentifier()
+                    +  wxT(" SET ") + newVar
+                    +  wxT("=") + newVal
+                    +  wxT(";\n");
+            }
+        }
+        
+        // check for removed vars
+        for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
+        {
+            sql += wxT("ALTER DATABASE ") + database->GetQuotedFullIdentifier()
+                +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+                + wxT(";\n");
+        }
+
         AppendComment(sql, wxT("DATABASE"), 0, database);
     }
     else

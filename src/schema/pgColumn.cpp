@@ -236,6 +236,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             column = new pgColumn(collection->GetSchema(), columns->GetVal(wxT("attname")));
 
             column->iSetTableOid(collection->GetOid());
+            column->iSetAttTypId(columns->GetOid(wxT("atttypid")));
             column->iSetColNumber(columns->GetLong(wxT("attnum")));
             column->iSetIsArray(columns->GetBool(wxT("isarray")));
             column->iSetComment(columns->GetVal(wxT("description")));
@@ -259,6 +260,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             column->iSetTypmod(typmod);
             column->iSetLength(dt.Length());
             column->iSetPrecision(dt.Precision());
+            column->iSetRawTypename(dt.Name());
 
             wxString nsp=columns->GetVal(wxT("typnspname"));
             if (nsp == wxT("pg_catalog"))

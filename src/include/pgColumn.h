@@ -34,6 +34,8 @@ public:
 
     wxString GetDefinition();
 
+    wxString GetRawTypename() const { return rawTypename; }
+    void iSetRawTypename(const wxString& s) { rawTypename=s; }
     wxString GetVarTypename() const { return varTypename; }
     void iSetVarTypename(const wxString& s) { varTypename=s; }
     wxString GetQuotedTypename() const { return quotedTypename; }
@@ -64,6 +66,8 @@ public:
     void iSetStorage(const wxString& s) { storage=s; }
     long GetInheritedCount() const { return inheritedCount; }
     void iSetInheritedCount(const long l) { inheritedCount=l; }
+    OID  GetAttTypId() const { return attTypId; }
+    void iSetAttTypId(const OID o) { attTypId =o; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool GetSystemObject() const { return colNumber < 0; }
@@ -73,10 +77,11 @@ public:
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString varTypename, quotedTypename, defaultVal, quotedFullTable, storage;
+    wxString varTypename, quotedTypename, defaultVal, quotedFullTable, storage, rawTypename;
     long colNumber, length, precision, statistics;
     long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray;
+    OID attTypId;
 };
 
 #endif

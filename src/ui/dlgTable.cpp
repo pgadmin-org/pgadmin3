@@ -50,6 +50,7 @@
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgTable::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgTable::OnChange)
+    EVT_COMBOBOX(XRCID("cbOwner"),                  dlgTable::OnChange)
 
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgTable::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgTable::OnRemoveCol)
@@ -246,6 +247,7 @@ wxString dlgTable::GetItemConstraintType(wxListCtrl *list, long pos)
 wxString dlgTable::GetSql()
 {
     wxString sql;
+    wxString tabname=schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName());
 
     if (table)
     {
@@ -255,6 +257,17 @@ wxString dlgTable::GetSql()
         wxString definition;
         wxArrayString tmpDef=previousColumns;
 
+        if (GetName() != table->GetName())
+            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                +  wxT(" RENAME TO ") + qtIdent(GetName())
+                +  wxT(";\n");
+
+
+        if (cbOwner->GetValue() != table->GetOwner())
+            sql += wxT("ALTER TABLE ") + tabname 
+                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue());
+
+
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
             definition=lstColumns->GetItemText(pos) + wxT(" ") + GetListText(lstColumns, pos, 1);
@@ -262,7 +275,7 @@ wxString dlgTable::GetSql()
             if (index >= 0)
                 tmpDef.RemoveAt(index);
             else
-                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                sql += wxT("ALTER TABLE ") + tabname
                     +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
         }
 
@@ -273,7 +286,7 @@ wxString dlgTable::GetSql()
                 definition = definition.Mid(1).BeforeFirst('"');
             else
                 definition = definition.BeforeFirst(' ');
-            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+            sql += wxT("ALTER TABLE ") + tabname
                 +  wxT(" DROP COLUMN ") + qtIdent(definition) + wxT(";\n");
         }
 
@@ -289,7 +302,7 @@ wxString dlgTable::GetSql()
             if (index >= 0)
                 tmpDef.RemoveAt(index);
             else
-                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                sql += wxT("ALTER TABLE ") + tabname
                     +  wxT(" ADD CONSTRAINT ") + definition + wxT(";\n");
         }
 
@@ -300,23 +313,13 @@ wxString dlgTable::GetSql()
                 definition = definition.Mid(1).BeforeFirst('"');
             else
                 definition = definition.BeforeFirst(' ');
-            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+            sql += wxT("ALTER TABLE ") + tabname
                 +  wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n");
         }
-
-        
-        wxString name=GetName();
-        if (name != table->GetName())
-            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
-        wxString owner=cbOwner->GetValue();
-        if (owner != table->GetOwner())
-            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                +  wxT(" OWNER TO ") + owner + wxT(";\n");
     }
     else
     {
-        sql = wxT("CREATE TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName())
+        sql = wxT("CREATE TABLE ") + tabname
             + wxT("\n(");
 
         int pos;
@@ -344,7 +347,7 @@ wxString dlgTable::GetSql()
 
         sql += wxT("\n);\n");
     }
-    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName()));
+    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + tabname);
 
     return sql;
 }

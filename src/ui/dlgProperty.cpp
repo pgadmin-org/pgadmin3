@@ -19,6 +19,7 @@
 #include "pgDatatype.h"
 #include "misc.h"
 #include "menu.h"
+#include "pgDefs.h"
 
 // Images
 #include "images/properties.xpm"
@@ -79,6 +80,7 @@ END_EVENT_TABLE();
 
 dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHelp(frame)
 {
+    readOnly=false;
     objectType=-1;
     sqlPane=0;
     wxXmlResource::Get()->LoadDialog(this, frame, resName);
@@ -158,7 +160,15 @@ void dlgProperty::EnableOK(bool enable)
 int dlgProperty::Go(bool modal)
 {
     if (GetObject())
+    {
+        if (!readOnly && !GetObject()->CanCreate())
+        {
+            // users who can't create will usually not be allowed to change either.
+            readOnly=false;
+        }
+
         SetTitle(wxString(typesList[objectType].typName) + wxT(" ") + GetObject()->GetFullIdentifier());
+    }
     else
         SetTitle(wxGetTranslation(typesList[objectType].newString));
 
@@ -614,15 +624,8 @@ void dlgTypeProperty::FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDom
     while (tr.HasMore())
     {
         pgDatatype dt=tr.GetDatatype();
-        wxString typinfo;
-        if (tr.MaySpecifyPrecision())
-            typinfo=wxT("P");
-        else if (tr.MaySpecifyLength())
-            typinfo=wxT("L");
-        else
-            typinfo=wxT(" ");
 
-        AddType(typinfo, tr.GetOid(), tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
+        AddType(wxT(" "), tr.GetOid(), tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
         cb->Append(tr.GetSchemaPrefix() + dt.FullName());
         if (cb2)
             cb2->Append(tr.GetSchemaPrefix() + dt.FullName());
@@ -647,7 +650,28 @@ int dlgTypeProperty::Go(bool modal)
 
 void dlgTypeProperty::AddType(const wxString &typ, const OID oid, const wxString quotedName)
 {
-    types.Add(typ + NumToStr(oid) + wxT(":") + quotedName);
+    wxString vartyp;
+    if (typ == wxT("?"))
+    {
+        switch ((long)oid)
+        {
+            case PGOID_TYPE_BIT:
+            case PGOID_TYPE_CHAR:
+            case PGOID_TYPE_VARCHAR:
+                vartyp=wxT("L");
+                break;
+            case PGOID_TYPE_NUMERIC:
+                vartyp=wxT("P");
+                break;
+            default:
+                vartyp=wxT(" ");
+                break;
+        }
+    }
+    else
+        vartyp=typ;
+
+    types.Add(vartyp + NumToStr(oid) + wxT(":") + quotedName);
 }
 
     
@@ -796,6 +820,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
     privilegeChars = _privChar;
     securityChanged=false;
     allPrivileges=0;
+
     bool needAll=strlen(privilegeChars) > 1;
 
     wxStringTokenizer privileges(privilegeList, wxT(","));
@@ -809,43 +834,57 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
 
         nbNotebook->AddPage(page, _("Security"));
 
-        lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount+ (needAll ? 0 : 20)));
-        CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
-        int y=height-105-20*privilegeCount + (needAll ? 0 : 20);
-
-        btnAddPriv = new wxButton(page, CTL_ADDPRIV, _("Add/Change"), wxPoint(10, y), wxSize(75, 25));
-        btnDelPriv = new wxButton(page, CTL_DELPRIV, _("Remove"), wxPoint(95, y), wxSize(75, 25));
-        y += 35;
-
-        new wxStaticBox(page, -1, _("Privileges"), wxPoint(10, y), wxSize(width-20, 65+20*privilegeCount-(needAll?0:20)));
-        y += 15;
-
-        stGroup = new wxStaticText(page, CTL_STATICGROUP, _("Group"), wxPoint(20, y+3), wxSize(100, 20));
-        cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), wxPoint(130, y), wxSize(width-145, 100), 0, 0, wxCB_DROPDOWN|wxCB_READONLY);
-        y += 25;
-
-        if (needAll)
+        if (obj && !obj->CanCreate())
         {
-            allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), wxPoint(20, y), wxSize(100, 20));
-            allPrivilegesGrant = new wxCheckBox(page, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
-            y += 20;
-            allPrivilegesGrant->Disable();
-        }
-        cbGroups->Append(wxT("public"));
-        cbGroups->SetSelection(0);
+            // We can't create, so we won't be allowed to change privileges either
+            // later, we can check individually too.
 
-        while (privileges.HasMoreTokens())
+            lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-20), wxSUNKEN_BORDER);
+            CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
+            cbGroups=0;
+        }
+        else
         {
-            wxString priv=privileges.GetNextToken();
-            wxCheckBox *cb;
-            cb=new wxCheckBox(page, CTL_PRIVCB+i, priv, wxPoint(20, y), wxSize(100, 20));
-            privCheckboxes[i++] = cb;
-            cb=new wxCheckBox(page, CTL_PRIVCB+i, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
-            cb->Disable();
-            privCheckboxes[i++] = cb;
+            lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount+ (needAll ? 0 : 20)), wxSUNKEN_BORDER);
 
-            y += 20;
+            CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
+            int y=height-105-20*privilegeCount + (needAll ? 0 : 20);
+
+            btnAddPriv = new wxButton(page, CTL_ADDPRIV, _("Add/Change"), wxPoint(10, y), wxSize(75, 25));
+            btnDelPriv = new wxButton(page, CTL_DELPRIV, _("Remove"), wxPoint(95, y), wxSize(75, 25));
+            y += 35;
+
+            new wxStaticBox(page, -1, _("Privileges"), wxPoint(10, y), wxSize(width-20, 65+20*privilegeCount-(needAll?0:20)));
+            y += 15;
+
+            stGroup = new wxStaticText(page, CTL_STATICGROUP, _("Group"), wxPoint(20, y+3), wxSize(100, 20));
+            cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), wxPoint(130, y), wxSize(width-145, 100), 0, 0, wxCB_DROPDOWN|wxCB_READONLY);
+            y += 25;
+
+            if (needAll)
+            {
+                allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), wxPoint(20, y), wxSize(100, 20));
+                allPrivilegesGrant = new wxCheckBox(page, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
+                y += 20;
+                allPrivilegesGrant->Disable();
+            }
+            cbGroups->Append(wxT("public"));
+            cbGroups->SetSelection(0);
+
+            while (privileges.HasMoreTokens())
+            {
+                wxString priv=privileges.GetNextToken();
+                wxCheckBox *cb;
+                cb=new wxCheckBox(page, CTL_PRIVCB+i, priv, wxPoint(20, y), wxSize(100, 20));
+                privCheckboxes[i++] = cb;
+                cb=new wxCheckBox(page, CTL_PRIVCB+i, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
+                cb->Disable();
+                privCheckboxes[i++] = cb;
+
+                y += 20;
+            }
         }
+
 
         if (obj)
         {
@@ -896,13 +935,17 @@ dlgSecurityProperty::~dlgSecurityProperty()
 
 void dlgSecurityProperty::AddGroups(wxComboBox *comboBox)
 {
+    if (!cbGroups && !comboBox)
+        return;
+
     pgSet *set=connection->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
 
     if (set)
     {
         while (!set->Eof())
         {
-            cbGroups->Append(wxT("group ") + set->GetVal(0));
+            if (cbGroups)
+                cbGroups->Append(wxT("group ") + set->GetVal(0));
             if (comboBox)
                 comboBox->Append(set->GetVal(0));
             set->MoveNext();
@@ -914,6 +957,9 @@ void dlgSecurityProperty::AddGroups(wxComboBox *comboBox)
 
 void dlgSecurityProperty::AddUsers(wxComboBox *comboBox)
 {
+    if (!comboBox && !cbGroups)
+        return;
+    
     if (!settings->GetShowUsersForPrivileges() && !comboBox)
         return;
 
@@ -921,12 +967,12 @@ void dlgSecurityProperty::AddUsers(wxComboBox *comboBox)
 
     if (set)
     {
-        if (settings->GetShowUsersForPrivileges())
+        if (cbGroups && settings->GetShowUsersForPrivileges())
             stGroup->SetLabel(wxT("Group/User"));
 
         while (!set->Eof())
         {
-            if (settings->GetShowUsersForPrivileges())
+            if (cbGroups && settings->GetShowUsersForPrivileges())
                 cbGroups->Append(set->GetVal(0));
 
             if (comboBox)

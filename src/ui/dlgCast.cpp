@@ -70,10 +70,12 @@ int dlgCast::Go(bool modal)
         txtOID->SetValue(NumToStr(cast->GetOid()));
         cbSourceType->Append(cast->GetSourceType());
         cbSourceType->SetSelection(0);
+        cbSourceType->Disable();
 
-        cbTargetType->Append(cast->GetTargetType());
+        cbTargetType->Append(wxEmptyString);
         cbTargetType->Append(cast->GetTargetType());
         cbTargetType->SetSelection(1);
+        cbTargetType->Disable();
 
         AddType(wxT(" "), cast->GetSourceTypeOid());
         AddType(wxT(" "), cast->GetTargetTypeOid());

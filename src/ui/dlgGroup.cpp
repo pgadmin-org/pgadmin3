@@ -78,10 +78,17 @@ int dlgGroup::Go(bool modal)
     if (group)
     {
         // Edit Mode
+        readOnly=!group->GetServer()->GetSuperUser();
+
         txtName->SetValue(group->GetIdentifier());
         txtID->SetValue(NumToStr(group->GetGroupId()));
         txtName->Disable();
         txtID->Disable();
+        if (readOnly)
+        {
+            btnAddUser->Disable();
+            btnDelUser->Disable();
+        }
     }
     else
     {
@@ -112,28 +119,32 @@ void dlgGroup::OnChange(wxNotifyEvent &ev)
 
 void dlgGroup::OnUserAdd(wxNotifyEvent &ev)
 {
-    int pos=lbUsersNotIn->GetSelection();
-    if (pos >= 0)
+    if (!readOnly)
     {
-        lbUsersIn->Append(lbUsersNotIn->GetString(pos));
-        lbUsersNotIn->Delete(pos);
+        int pos=lbUsersNotIn->GetSelection();
+        if (pos >= 0)
+        {
+            lbUsersIn->Append(lbUsersNotIn->GetString(pos));
+            lbUsersNotIn->Delete(pos);
+        }
+        OnChange(ev);
     }
-    OnChange(ev);
 }
 
 
 void dlgGroup::OnUserRemove(wxNotifyEvent &ev)
 {
-    int pos=lbUsersIn->GetSelection();
-    if (pos >= 0)
+    if (!readOnly)
     {
-        lbUsersNotIn->Append(lbUsersIn->GetString(pos));
-        lbUsersIn->Delete(pos);
+        int pos=lbUsersIn->GetSelection();
+        if (pos >= 0)
+        {
+            lbUsersNotIn->Append(lbUsersIn->GetString(pos));
+            lbUsersIn->Delete(pos);
+        }
+        OnChange(ev);
     }
-    OnChange(ev);
 }
-
-
 
 
 pgObject *dlgGroup::CreateObject(pgCollection *collection)

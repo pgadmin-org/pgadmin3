@@ -77,7 +77,6 @@ int dlgSequence::Go(bool modal)
 
         stStart->SetLabel(wxT("Current value"));
 
-        txtName->Disable();
         txtIncrement->Disable();
         txtMin->Disable();
         txtMax->Disable();
@@ -88,11 +87,12 @@ int dlgSequence::Go(bool modal)
     {
         // create mode
         txtIncrement->SetValidator(numericValidator);
-        txtStart->SetValidator(numericValidator);
         txtMin->SetValidator(numericValidator);
         txtMax->SetValidator(numericValidator);
         txtCache->SetValidator(numericValidator);
     }
+
+    txtStart->SetValidator(numericValidator);
 
     return dlgSecurityProperty::Go(modal);
 }
@@ -133,6 +133,12 @@ wxString dlgSequence::GetSql()
     if (sequence)
     {
         // edit mode
+        if (GetName() != sequence->GetName())
+        {
+            sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
+                +  wxT(" RENAME TO ") + GetName() + wxT(";\n");
+        }
+
         if (txtStart->GetValue() != sequence->GetLastValue().ToString())
             sql += wxT("SELECT setval(") + sequence->GetQuotedFullIdentifier()
                 +  wxT(", ") + txtStart->GetValue()

@@ -1247,6 +1247,10 @@ SOURCE=..\BUGS.txt
 
 SOURCE=.\tips.txt
 # End Source File
+# Begin Source File
+
+SOURCE=..\TODO.txt
+# End Source File
 # End Group
 # End Target
 # End Project

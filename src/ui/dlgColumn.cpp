@@ -36,10 +36,10 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgColumn::OnChange)
     EVT_TEXT(XRCID("txtLength"),                    dlgColumn::OnChange)
     EVT_TEXT(XRCID("txtPrecision"),                 dlgColumn::OnChange)
-    EVT_TEXT(XRCID("Default"),                      dlgColumn::OnChange)
+    EVT_TEXT(XRCID("txtDefault"),                   dlgColumn::OnChange)
     EVT_CHECKBOX(XRCID("chkNotNull"),               dlgColumn::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgColumn::OnChange)
-    EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
+    EVT_COMBOBOX(XRCID("cbDatatype"),               dlgColumn::OnSelChangeTyp)
 END_EVENT_TABLE();
 
 
@@ -67,10 +67,7 @@ int dlgColumn::Go(bool modal)
     {
         // edit mode
         txtName->SetValue(column->GetName());
-        cbDatatype->Append(column->GetVarTypename());
-        cbDatatype->SetValue(column->GetVarTypename());
-        AddType(wxT(" "), 0, column->GetVarTypename());
-        if (column->GetLength() >= 0)
+        if (column->GetLength() > 0)
             txtLength->SetValue(NumToStr(column->GetLength()));
         if (column->GetPrecision() >= 0)
             txtPrecision->SetValue(NumToStr(column->GetPrecision()));
@@ -78,9 +75,31 @@ int dlgColumn::Go(bool modal)
         chkNotNull->SetValue(column->GetNotNull());
         txtComment->SetValue(column->GetComment());
 
-        cbDatatype->Disable();
-        txtLength->Disable();
-        txtPrecision->Disable();
+        cbDatatype->Append(column->GetRawTypename());
+        AddType(wxT("?"), column->GetAttTypId(), column->GetRawTypename());
+
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT tt.oid, tt.typname\n")
+            wxT("  FROM pg_cast\n")
+            wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
+            wxT(" WHERE castsource=") + NumToStr(column->GetAttTypId()) + wxT("\n")
+            wxT("   AND castfunc=0"));
+
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                cbDatatype->Append(set->GetVal(wxT("typname")));
+                AddType(wxT("?"), set->GetOid(wxT("oid")), set->GetVal(wxT("typname")));
+                set->MoveNext();
+            }
+        }
+        if (cbDatatype->GetCount() <= 1)
+            cbDatatype->Disable();
+
+        cbDatatype->SetSelection(0);
+        wxNotifyEvent ev;
+        OnSelChangeTyp(ev);
 
         previousDefinition=GetDefinition();
     }
@@ -101,10 +120,60 @@ wxString dlgColumn::GetSql()
 
     if (table)
     {
-        sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-            + wxT("\n   ADD ") + qtIdent(GetName())
-            + wxT(" ") + GetDefinition()
-            + wxT(";\n");
+        if (column)
+        {
+            if (GetName() != column->GetName())
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT(" RENAME ") + qtIdent(column->GetName())
+                    +  wxT("  TO ") + qtIdent(GetName())
+                    +  wxT(";\n");
+
+            wxString sqlPart;
+            if (cbDatatype->GetCount() > 1 && cbDatatype->GetValue() != column->GetRawTypename())
+                sqlPart = wxT("atttypid=") + GetTypeOid(cbDatatype->GetSelection());
+
+
+            if (!sqlPart.IsEmpty() || 
+                (isVarLen && StrToLong(txtLength->GetValue()) != column->GetLength()) ||
+                (isVarPrec && StrToLong(txtPrecision->GetValue()) != column->GetPrecision()))
+            {
+                long typmod;
+                if (isVarPrec)
+                    typmod = (StrToLong(txtLength->GetValue()) << 16) + StrToLong(txtPrecision->GetValue()) +4;
+                else if (isVarLen)
+                    typmod = StrToLong(txtLength->GetValue()) +4;
+                else
+                    typmod=-1;
+
+                if (!sqlPart.IsEmpty())
+                    sqlPart += wxT(", ");
+                sqlPart += wxT("atttypmod=") + NumToStr(typmod);
+            }
+            if (!sqlPart.IsEmpty())
+                sql += wxT("UPDATE pg_attribute\n")
+                       wxT("   SET ") + sqlPart + wxT("\n")
+                       wxT(" WHERE attrelid=") + table->GetOidStr() +
+                       wxT(" AND attnum=") + NumToStr(column->GetColNumber()) + wxT(";\n");
+        }
+        else
+        {
+            sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                + wxT("\n   ADD ") + qtIdent(GetName())
+                + wxT(" ") + GetDefinition()
+                + wxT(";\n");
+        }
+
+        if (txtDefault->GetValue() != column->GetDefault())
+        {
+            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                +  wxT(" ALTER ") + qtIdent(column->GetName());
+            if (txtDefault->GetValue().IsEmpty())
+                sql += wxT(" DROP DEFAULT");
+            else
+                sql += wxT(" SET DEFAULT ") + txtDefault->GetValue();
+
+            sql += wxT(";\n");
+        }
 
         AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier() 
                 + wxT(".") + qtIdent(GetName()), column);
@@ -141,29 +210,55 @@ pgObject *dlgColumn::CreateObject(pgCollection *collection)
 
 void dlgColumn::OnSelChangeTyp(wxNotifyEvent &ev)
 {
-    if (!column)
+    CheckLenEnable();
+    if (column && column->GetLength() <= 0)
     {
-        CheckLenEnable();
-        txtLength->Enable(isVarLen);
-        OnChange(ev);
+        isVarLen=false;
+        isVarPrec=false;
     }
+    txtLength->Enable(isVarLen);
+    OnChange(ev);
 }
 
 
 void dlgColumn::OnChange(wxNotifyEvent &ev)
 {
-    if (!column)
+    long varlen=StrToLong(txtLength->GetValue()), 
+         varprec=StrToLong(txtPrecision->GetValue());
+    txtPrecision->Enable(isVarPrec && varlen > 0);
+
+    if (column)
     {
-        long varlen=StrToLong(txtLength->GetValue()), 
-             varprec=StrToLong(txtPrecision->GetValue());
-        txtPrecision->Enable(isVarPrec && varlen > 0);
+
+        bool enable=true;
+        EnableOK(enable);   // to get rid of old messages
+
+        CheckValid(enable, !isVarLen || !txtLength->GetValue().IsEmpty() || varlen >= column->GetLength(), 
+                _("New length must not be less than old length."));
+        CheckValid(enable, !txtPrecision->IsEnabled() || varprec >= column->GetPrecision(), 
+                _("New precision must not be less than old precision."));
+        CheckValid(enable, !txtPrecision->IsEnabled() || varlen-varprec >= column->GetLength()-column->GetPrecision(), 
+                _("New total digits must not be less than old total digits."));
+
+        
+        if (enable)
+            enable = GetName() != column->GetName()
+                    || txtDefault->GetValue() != column->GetDefault()
+                    || txtComment->GetValue() != column->GetComment()
+                    || (cbDatatype->GetCount() > 1 && cbDatatype->GetValue() != column->GetRawTypename())
+                    || (isVarLen && varlen != column->GetLength())
+                    || (isVarPrec && varprec != column->GetPrecision());
+        EnableOK(enable);
+    }
+    else
+    {
 
         wxString name=GetName();
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
         CheckValid(enable, cbDatatype->GetSelection() >= 0, _("Please select a datatype."));
-        CheckValid(enable, isVarLen || txtLength->GetValue().IsEmpty() || varlen >0,
+        CheckValid(enable, !isVarLen || txtLength->GetValue().IsEmpty() || varlen >0,
             _("Please specify valid length."));
         CheckValid(enable, !txtPrecision->IsEnabled() || (varprec >= 0 && varprec <= varlen),
             _("Please specify valid numeric precision (0..") + NumToStr(varlen) + wxT(")."));

@@ -11,12 +11,18 @@ Enhancements
 
 - Add VERBOSE option to VACUUM dialogue, and display output.
 - Add ANALYSE only support.
-- Update user enumeration to detect permission denied errors using 7.4 error
-  codes or perhaps checking usesuper/table permissions first.
-- Allow modification of column types by adding new columns, moving data and
-  then recreating dependent objects as required.
+- Table property: inheritance
+- Operator class property: to implement
+- most property dlgs: check for readOnly
+
 
 Controversial :-)
 =================
 
-- Cursor based query tool.
+- Cursor based query tool. 
+  * Remark (AP): considered this to be implemented external to pgAdmin3
+- Allow modification of column types by adding new columns, moving data and
+  then recreating dependent objects as required.
+  * Remark (AP): Touches dependencies, thus considered critical. 
+                 Partial change of type/length/precision is already supported.
+

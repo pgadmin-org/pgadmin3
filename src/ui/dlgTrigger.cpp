@@ -54,6 +54,7 @@ dlgTrigger::dlgTrigger(frmMain *frame, pgTrigger *node, pgTable *parentNode)
     wxASSERT(!table || table->GetType() == PG_TABLE);
 
     txtArguments->Disable();
+    txtOID->Disable();
 }
 
 

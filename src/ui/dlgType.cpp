@@ -44,6 +44,7 @@
 BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgType::OnChange)
     EVT_RADIOBOX(XRCID("rdbType"),                  dlgType::OnTypeChange)
+    EVT_TEXT(XRCID("txtComment"),                   dlgType::OnChange)
 
     EVT_COMBOBOX(XRCID("cbInput"),                  dlgType::OnChange)
     EVT_COMBOBOX(XRCID("cbOutput"),                 dlgType::OnChange)
@@ -126,6 +127,12 @@ int dlgType::Go(bool modal)
 
         txtName->Disable();
         txtOID->Disable();
+        rdbType->Disable();
+        cbDatatype->Disable();
+        txtMembername->Disable();
+        txtLength->Disable();
+        btnAdd->Disable();
+        btnRemove->Disable();
     }
     else
     {

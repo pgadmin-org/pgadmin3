@@ -80,6 +80,7 @@ protected:
     int width, height;
     wxTreeItemId item;
     int objectType;
+    bool readOnly;
 
 private:
     bool tryUpdate(wxTreeItemId collectionItem);

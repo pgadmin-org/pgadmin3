@@ -74,6 +74,7 @@ int dlgConversion::Go(bool modal)
         cbFunction->Append(conversion->GetProcNamespace()+wxT(".")+conversion->GetProc());
         cbFunction->SetSelection(0);
 
+        txtName->Disable();
         chkDefault->SetValue(conversion->GetDefaultConversion());
         cbSourceEncoding->Disable();
         cbTargetEncoding->Disable();

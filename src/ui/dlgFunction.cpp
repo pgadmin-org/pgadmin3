@@ -149,6 +149,7 @@ int dlgFunction::Go(bool modal)
         txtName->Disable();
         cbReturntype->Disable();
         cbDatatype->Disable();
+        lstArguments->Disable();
     }
     else
     {
@@ -215,6 +216,7 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
         EnableOK(txtComment->GetValue() != function->GetComment()
               || cbVolatility->GetValue() != function->GetVolatility()
               || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
+              || chkSetof->GetValue() != function->GetReturnAsSet()
               || chkStrict->GetValue() != function->GetIsStrict()
               || cbLanguage->GetValue() != function->GetLanguage()
               || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))

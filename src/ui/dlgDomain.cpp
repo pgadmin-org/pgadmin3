@@ -82,6 +82,7 @@ int dlgDomain::Go(bool modal)
 
         txtName->Disable();
         cbDatatype->Disable();
+        txtDefault->Disable();
     }
     else
     {
@@ -109,6 +110,7 @@ void dlgDomain::OnChange(wxNotifyEvent &ev)
 {
     if (domain)
     {
+        EnableOK(txtComment->GetValue() != domain->GetComment());
     }
     else
     {

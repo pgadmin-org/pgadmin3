@@ -46,6 +46,7 @@ BEGIN_EVENT_TABLE(dlgRule, dlgProperty)
     EVT_CHECKBOX(XRCID("chkUpdate"),                dlgRule::OnChange)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgRule::OnChange)
     EVT_CHECKBOX(XRCID("chkDoInstead"),             dlgRule::OnChange)
+    EVT_RADIOBOX(XRCID("rbxEvent"),                 dlgRule::OnChange)
     EVT_STC_MODIFIED(CTL_SQLBOX,                    dlgRule::OnChange)
 END_EVENT_TABLE();
 
@@ -97,6 +98,9 @@ int dlgRule::Go(bool modal)
         }
         txtName->SetValue(rule->GetName());
         txtOID->SetValue(NumToStr(rule->GetOid()));
+        chkDoInstead->SetValue(rule->GetDoInstead());
+        rbxEvent->SetStringSelection(rule->GetEvent());
+        txtCondition->SetValue(rule->GetCondition());
         txtComment->SetValue(rule->GetComment());
         sqlBox->SetText(oldDefinition);
 
@@ -131,8 +135,13 @@ bool dlgRule::didChange()
         return true;
     if (chkDoInstead->GetValue() != rule->GetDoInstead())
         return true;
-    if (rbxEvent->GetStringSelection() != rule->GetCondition())
+    if (rbxEvent->GetStringSelection() != rule->GetEvent())
         return true;
+    if (txtCondition->GetValue() != rule->GetCondition())
+        return true;
+    if (sqlBox->GetText() != oldDefinition)
+        return true;
+
     return false;
 }
 

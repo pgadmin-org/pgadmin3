@@ -41,7 +41,7 @@ pgTrigger::~pgTrigger()
 
 bool pgTrigger::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP TRIGGER ") + GetQuotedFullIdentifier() + wxT(" ON ") + GetQuotedFullTable());
+    return GetDatabase()->ExecuteVoid(wxT("DROP TRIGGER ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable());
 }
 
 
