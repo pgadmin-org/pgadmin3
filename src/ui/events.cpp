@@ -555,16 +555,24 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
     // Warn the user
     int rc;
 
+	wxMessageDialog *dlg;
     if (settings->GetShowSystemObjects())
-        rc=wxMessageBox(
-            _("System objects will not be removed from the object tree until a refresh is performed.\nClose all connections now?"),
-            _("Hide system objects"),
-            wxYES_NO|wxCANCEL | wxICON_QUESTION);
+	{
+		dlg=new wxMessageDialog(this, 
+							  _("System objects will not be removed from the object tree until a refresh is performed.\nClose all connections now?"),
+							  _("Hide system objects"),
+							  wxYES_NO|wxCANCEL | wxICON_QUESTION);
+	}
     else
-        rc=wxMessageBox(
-            _("System objects will not show in the the object tree until a refresh is performed.\nClose all connections now?"),
-            _("Show system objects"),
-            wxYES_NO|wxCANCEL | wxICON_QUESTION);
+	{
+        dlg=new wxMessageDialog(this,
+								_("System objects will not show in the the object tree until a refresh is performed.\nClose all connections now?"),
+								_("Show system objects"),
+								wxYES_NO|wxCANCEL | wxICON_QUESTION);
+	}
+	dlg->CenterOnParent();
+	rc=dlg->ShowModal();
+	delete dlg;
 
     if (rc == wxID_CANCEL)
     {

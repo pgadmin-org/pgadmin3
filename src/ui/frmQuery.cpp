@@ -511,6 +511,7 @@ void frmQuery::OnSaveHistory(wxCommandEvent& event)
 void frmQuery::OnSetFocus(wxFocusEvent& event)
 {
 	sqlQuery->SetFocus();
+	event.Skip();
 }
 
 
@@ -538,7 +539,7 @@ void frmQuery::OnFocus(wxFocusEvent& ev)
 
 void frmQuery::OnCut(wxCommandEvent& ev)
 {
-    if (FindFocus() == sqlQuery)
+    if (currentControl() == sqlQuery)
     {
         sqlQuery->Cut();
         updateMenu();
@@ -599,7 +600,8 @@ void frmQuery::OnCopy(wxCommandEvent& ev)
 
 void frmQuery::OnPaste(wxCommandEvent& ev)
 {
-    sqlQuery->Paste();
+	if (currentControl() == sqlQuery)
+	  sqlQuery->Paste();
 }
 
 void frmQuery::OnClear(wxCommandEvent& ev)
@@ -648,7 +650,6 @@ void frmQuery::updateMenu(wxObject *obj)
 {
     bool canCut=false;
     bool canPaste=false;
-    bool canSqlStuff=false;
     bool canUndo=false;
     bool canRedo=false;
     bool canClear=false;
@@ -1000,7 +1001,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
             SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
             wxYield();
-            wxUsleep(10);
+            wxMilliSleep(10);
             str=sqlResult->GetMessagesAndClear();
             if (!str.IsEmpty())
             {
