@@ -1,3 +1,26 @@
+###################################################
+# Check if release version of PgAdmin3 is desired #
+###################################################
+AC_DEFUN([ENABLE_RELEASE],
+[AC_ARG_ENABLE(release,
+[  --enable-release     build release version of PgAdmin3],
+[pg_release_build=yes],
+[pg_release_build=no])
+])
+
+############################################################
+# Check to see if a build against wxWindows 2.5 is desired #
+############################################################
+AC_DEFUN([ENABLE_WX25],
+[AC_ARG_ENABLE(wx25,
+[  --enable-wx25        build against wxWindows 2.5],
+[wx_version=2.5],
+[wx_version=2.4])
+])
+
+########################################
+# Check for PostgreSQL library (libpq) #
+########################################
 AC_DEFUN([CHECK_LIBPQ],
 [AC_MSG_CHECKING(for pgsql)
 AC_ARG_WITH(pgsql,
@@ -49,6 +72,9 @@ then
 fi
 ])
 
+##################################
+# Check for wxWindows sub-system #
+##################################
 AC_DEFUN([CHECK_WXWINDOWS],
 [AC_MSG_CHECKING(for wxWindows)
 AC_ARG_WITH(wx,
@@ -87,28 +113,52 @@ fi], [
         LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
         WX_OLD_LDFLAGS=$LDFLAGS
         WX_OLD_CPPFLAGS=$CPPFLAGS
-        WX_NEW_LDFLAGS=`${WX_CONFIG} --libs --static`
-        if test -f "${WX_HOME}/lib/libstc.a"
+        if test "$pg_release_build" == "yes"
         then
-            LIBS="$LIBS -lwxxrc -lstc $WX_NEW_LDFLAGS"
+            WX_NEW_LDFLAGS=`${WX_CONFIG} --libs --shared`
         else
-            case "${host}" in
-            *-*-linux-*) 
-                LIBS="$LIBS -lwx_gtkd_stc-2.4 -lwx_gtkd_xrc-2.4"
-                LIBS="$LIBS $WX_NEW_LDFLAGS" ;;
-            *-apple-darwin*)
-                LIBS="$LIBS -lwx_macd_stc-2.4 -lwx_macd_xrc-2.4"
-                LIBS="$LIBS $WX_NEW_LDFLAGS"
-                LDFLAGS="$LDFLAGS -flat_namespace" ;;
-            *) ;;
-            esac
+            WX_NEW_LDFLAGS=`${WX_CONFIG} --libs --static`
+        fi
+
+        if test "$pg_release_build" == "yes"; then
+            if test -f "${WX_HOME}/lib/libstc.so"
+            then
+                LIBS="$LIBS -lwxxrc -lstc $WX_NEW_LDFLAGS"
+            else
+                case "${host}" in
+                    *-*-linux-*)
+                        LIBS="$LIBS -lwx_gtkd_stc-${wx_version} -lwx_gtkd_xrc-${wx_version}"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS" ;;
+                    *-apple-darwin*)
+                        LIBS="$LIBS -lwx_macd_stc-${wx_version} -lwx_macd_xrc-${wx_version}"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS"
+                        LDFLAGS="$LDFLAGS -flat_namespace" ;;
+                    *) ;;
+                esac
+            fi
+        else
+            if test -f "${WX_HOME}/lib/libstc.a"
+            then
+                LIBS="$LIBS -lwxxrc -lstc $WX_NEW_LDFLAGS"
+            else
+                case "${host}" in
+                    *-*-linux-*) 
+                        LIBS="$LIBS -lwx_gtkd_stc-${wx_version} -lwx_gtkd_xrc-${wx_version}"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS" ;;
+                    *-apple-darwin*)
+                        LIBS="$LIBS -lwx_macd_stc-${wx_version} -lwx_macd_xrc-${wx_version}"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS"
+                        LDFLAGS="$LDFLAGS -flat_namespace" ;;
+                    *) ;;
+                esac
+            fi
         fi
         WX_NEW_CPPFLAGS=`${WX_CONFIG} --cxxflags`
         CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS"
         case "${host}" in
-        *-apple-darwin*)
-            CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti" ;;
-        *) ;;
+            *-apple-darwin*)
+                CPPFLAGS="$CPPFLAGS -no-cpp-precomp -fno-rtti" ;;
+            *) ;;
         esac
         AC_LANG_SAVE
         AC_LANG_C

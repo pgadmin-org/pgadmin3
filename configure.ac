@@ -29,6 +29,9 @@ AC_HEADER_TIME
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([gethostbyname inet_ntoa memmove memset strchr])
 
+# Custom checks
+ENABLE_RELEASE
+ENABLE_WX25
 CHECK_LIBPQ
 CHECK_WXWINDOWS
 
