@@ -6,17 +6,6 @@
 <title>Translation guidelines</title>
 </head>
 
-<!--
-div.Section1
-	{page:Section1;}
- li.MsoNormal
-	{mso-style-parent:"";
-	margin-bottom:.0001pt;
-	font-size:12.0pt;
-	font-family:"Times New Roman";
-	margin-left:0cm; margin-right:0cm; margin-top:0cm}
--->
-
 <body>
 
 <h3>Translation guidelines</h3>
@@ -27,18 +16,18 @@ div.Section1
 
 <h3>Translation problems</h3>
 <p>
-	Simple Query Language (SQL) is based on the English language. SQL queries cannot be translated into another language. For example, "SELECT * FROM table_foo WHERE clause;" will not be translated.
+	Structured Query Language (SQL) is based on the English language. SQL queries cannot be translated into another language. For example, "SELECT * FROM table_foo WHERE clause;" will not be translated.
 </p>
 
 <p>
 	Sometimes, the border between the SQL language and the English language is not obvious, because SQL was designed to be close as possible to natural language. For example, there are three possible translations for "Create View" into French, depending on the context: "Créer vue" or "Create View" or "Créer Vue".
 </p>
 
-<p>The difficulty for the user is to keep in mind the correspondence between English and translated words. In our example "View" is translated into "Vue", which is an easy correspondence (called "translation pair" afterwards). But with dozens of translation pairs like "Trigger/Déclancheur", "Row/Ligne", "Column/Colonne", you need to keep in mind many informations and turn yourself into a translator, which was not the aim of the translation.
+<p>The difficulty for the user is to keep in mind the correspondence between English and translated words. In our example "View" is translated into "Vue", which is an easy correspondence (called "translation pair" afterwards). But with dozens of translation pairs like "Trigger/Déclancheur", "Row/Ligne", "Column/Colonne", you need to keep in mind many variations and turn yourself into a translator, which was not the aim of the translation.
 </p>
 
 <p>
-  In some languages, translations of SQL keywords and database objects do not exist yet, because the community of users is not large enough to define a language consensus. In such cases, translators try to innovate, creating translated words which enrich vocabulary but do not clarify the software interface. The problem is that other translators may not be aware of the new vocabulary, trying to impose their own translation choices.
+  In some languages, translation of SQL keywords and database objects do not exist yet, because the community of users is not large enough to define a language consensus. In such cases, translators try to innovate, creating translated words which enrich vocabulary but do not clarify the software interface. The problem is that other translators may not be aware of the new vocabulary, trying to impose their own translation choices.
 </p>
 
 <p>
@@ -46,7 +35,7 @@ div.Section1
 </p>
 
 <p>
-	Also, we should keep in mind that English has very few grammar rules compared to other European languages, which have complex cases (feminine/neutral/masculine) and derivation (nominative, accusative, dative, etc...). Non-European languages sometimes do not have verbs, adjectives and others aggregate nouns. This causes many translations problems when programmers try to build sentences like "Create new %s" to handle cases like "Create a new View", "Create a new Table", etc... Let's study this example in more details:
+	Also, we should keep in mind that English has very few grammar rules compared to other European languages, which have complex cases (feminine/neutral/masculine) and derivation (nominative, accusative, dative, etc...). Non-European languages sometimes do not have verbs, adjectives and others aggregate nouns. This causes many translations problems when programmers try to build sentences like "Create a new %s" to handle cases like "Create a new View", "Create a new Table", etc... Let's study this example in more details:
 </p>
 
 <ul>
@@ -67,18 +56,18 @@ div.Section1
 </p>
 
 <p>
-	Avoid the use of "%s" unless the replaced sting is invariable, like it is the case for a product name,a username, a password, etc... As such, "Successfully connected on host: %s" and "User %s was disconnected" are valid strings.
+	Avoid the use of "%s" unless the replaced sting is invariable, like it is the case for a product name,a username, a password, etc... As such, "Successfully connected to host: %s" and "User %s was disconnected" are valid strings.
 </p>
 
 <p>
-	Never write a string like "Create a new %s" for the reasons explainded before. You should write "Create a new VIEW", "Create a new TABLE", "Create a new INDEX", etc...
+	Never write a string like "Create a new %s" for the reasons explained previously. You should write "Create a new VIEW", "Create a new TABLE", "Create a new INDEX", etc...
 </p>
 
 <h3>Translating guidelines</h3>
 
 <p>
 Never translate SQL keywords written in upper-case letters for the
-reasons explained before. Sometimes you even might break pgAdmin3 if
+reasons explained before. In some cases you might even break pgAdmin3 if
 you do!
 </p>
 
