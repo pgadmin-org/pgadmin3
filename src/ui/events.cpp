@@ -257,7 +257,8 @@ void frmMain::OnStopService(wxCommandEvent& WXUNUSED(event))
         bool rc = server->StopService();
         if (rc)
 		{
-			OnDisconnect(wxCommandEvent());
+			wxCommandEvent nullEvent;
+			OnDisconnect(nullEvent);
             execSelChange(server->GetId(), true);
 		}
         EndMsg();
