@@ -112,7 +112,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswd.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib libpq.lib wxxrcd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.4.0/lib" /libpath:"c:/wxWindows_2.4.0/contrib/lib" /libpath:"c:/postgresql/lib"
-# ADD LINK32 wxmswud.lib regexd.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib wxxrcd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib libpq.lib expatd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
+# ADD LINK32 wxmswud.lib regexud.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib wxxrcd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib libpq.lib expatd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
 
 !ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Release"
 
@@ -140,7 +140,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswud.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib libpq.lib wxxrcd.lib regexd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
-# ADD LINK32 wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib wxxrc.lib regex.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib libpq.lib expat.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
+# ADD LINK32 wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib wxxrc.lib regexu.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib libpq.lib expat.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
@@ -169,7 +169,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswud.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib libpq.lib wxxrcd.lib regexd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
-# ADD LINK32 wxmswud.lib regexd.lib ssleay32.lib libeay32.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib wxxrcd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib libpq.lib expatd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
+# ADD LINK32 ssleay32.lib libeay32.lib wxmswud.lib regexud.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib stcd.lib wxxrcd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib libpq.lib expatd.lib /nologo /subsystem:windows /map /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
 
 !ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
 
@@ -197,7 +197,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib libpq.lib wxxrc.lib regex.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
 # SUBTRACT BASE LINK32 /pdb:none
-# ADD LINK32 wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib wxxrc.lib regex.lib ssleay32.lib libeay32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib libpq.lib expat.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
+# ADD LINK32 ssleay32.lib libeay32.lib wxmswu.lib png.lib zlib.lib jpeg.lib tiff.lib stc.lib wxxrc.lib regexu.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib libpq.lib expat.lib /nologo /subsystem:windows /map /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"c:/wxWindows_2.5/lib" /libpath:"c:/wxWindows_2.5/contrib/lib" /libpath:"c:/postgresql/lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 

@@ -36,7 +36,7 @@
 BEGIN_EVENT_TABLE(dlgView, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgView::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgView::OnChange)
-    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgView::OnChange)
+    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgView::OnChangeStc)
 END_EVENT_TABLE();
 
 
@@ -87,6 +87,12 @@ pgObject *dlgView::CreateObject(pgCollection *collection)
         wxT("\n   AND c.relname=") + qtString(txtName->GetValue()) +
         wxT("\n   AND c.relnamespace=") + schema->GetOidStr());
     return obj;
+}
+
+
+void dlgView::OnChangeStc(wxStyledTextEvent &ev)
+{
+    OnChange(*(wxCommandEvent*)&ev);
 }
 
 

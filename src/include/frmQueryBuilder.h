@@ -114,7 +114,7 @@ private:
     void OnExport(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
-    void OnChange(wxNotifyEvent& event);
+    void OnChangeStc(wxStyledTextEvent& event);
 
 	void OnSize(wxSizeEvent& event);
 	void OnSashDrag(wxSashEvent& event);

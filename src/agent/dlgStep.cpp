@@ -38,7 +38,7 @@ BEGIN_EVENT_TABLE(dlgStep, dlgOidProperty)
     EVT_COMBOBOX(XRCID("cbDatabase"),               dlgStep::OnChange)
     EVT_RADIOBOX(XRCID("rbxKind"),                  dlgStep::OnChange)
     EVT_RADIOBOX(XRCID("rbxOnError"),               dlgStep::OnChange)
-    EVT_STC_MODIFIED(CTL_SQLBOX,                    dlgStep::OnChange)
+    EVT_STC_MODIFIED(CTL_SQLBOX,                    dlgStep::OnChangeStc)
     EVT_TEXT(XRCID("txtComment"),                   dlgStep::OnChange)
 END_EVENT_TABLE();
 
@@ -121,6 +121,12 @@ pgObject *dlgStep::CreateObject(pgCollection *collection)
 
     pgObject *obj=pgaStep::ReadObjects(job, 0, wxT("   AND st.oid=") + NumToStr(oid) + wxT("\n"));
     return obj;
+}
+
+
+void dlgStep::OnChangeStc(wxStyledTextEvent &ev)
+{
+    OnChange(*(wxCommandEvent*)&ev);
 }
 
 

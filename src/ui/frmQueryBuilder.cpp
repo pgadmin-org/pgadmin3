@@ -68,7 +68,7 @@ BEGIN_EVENT_TABLE(frmQueryBuilder, wxMDIParentFrame)
     EVT_COMBOBOX(-1, frmQueryBuilder::OnCellChoice) 
 
     EVT_SASH_DRAGGED_RANGE(ID_SASH_WINDOW_BOTTOM, ID_SASH_WINDOW_BOTTOM, frmQueryBuilder::OnSashDrag)
-    EVT_STC_MODIFIED(CTL_SQLPANEL, frmQueryBuilder::OnChange)
+    EVT_STC_MODIFIED(CTL_SQLPANEL, frmQueryBuilder::OnChangeStc)
 
 END_EVENT_TABLE()
 
@@ -1644,7 +1644,7 @@ void frmQueryBuilder::OnClose(wxCloseEvent& event)
 
 
 
-void frmQueryBuilder::OnChange(wxNotifyEvent& event)
+void frmQueryBuilder::OnChangeStc(wxStyledTextEvent& event)
 {
     if (!changed)
     {

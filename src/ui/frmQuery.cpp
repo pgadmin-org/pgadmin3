@@ -79,7 +79,7 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
 #ifdef __WXGTK__
     EVT_KEY_DOWN(                   frmQuery::OnKeyDown)
 #endif
-    EVT_STC_MODIFIED(CTL_SQLQUERY,    frmQuery::OnChange)
+    EVT_STC_MODIFIED(CTL_SQLQUERY,    frmQuery::OnChangeStc)
 END_EVENT_TABLE()
 
 
@@ -619,7 +619,7 @@ void frmQuery::OnClose(wxCloseEvent& event)
 }
 
 
-void frmQuery::OnChange(wxNotifyEvent& event)
+void frmQuery::OnChangeStc(wxStyledTextEvent& event)
 {
     if (!changed)
     {

@@ -51,7 +51,7 @@ private:
     void OnSave(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
     void OnExport(wxCommandEvent& event);
-    void OnChange(wxNotifyEvent& event);
+    void OnChangeStc(wxStyledTextEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnRecent(wxCommandEvent& event);
     void OnCut(wxCommandEvent& event);

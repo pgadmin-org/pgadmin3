@@ -35,6 +35,7 @@ private:
     wxString oldDefinition;
 
     void OnChange(wxCommandEvent &ev);
+    void OnChangeStc(wxStyledTextEvent& event);
 
     bool didChange();
 

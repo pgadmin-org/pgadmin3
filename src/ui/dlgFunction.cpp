@@ -60,7 +60,7 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_CHECKBOX(XRCID("chkSecureDefiner"),         dlgFunction::OnChange)
     EVT_TEXT(XRCID("txtObjectFile"),                dlgFunction::OnChange)
     EVT_TEXT(XRCID("txtLinkSymbol"),                dlgFunction::OnChange)
-    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgFunction::OnChange)
+    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgFunction::OnChangeStc)
 
     EVT_TEXT(XRCID("cbReturntype"),                 dlgFunction::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgFunction::OnSelChangeType)
@@ -205,6 +205,12 @@ pgObject *dlgFunction::CreateObject(pgCollection *collection)
 
     pgObject *obj=pgFunction::AppendFunctions(collection, collection->GetSchema(), 0, sql);
     return obj;
+}
+
+
+void dlgFunction::OnChangeStc(wxStyledTextEvent &ev)
+{
+    OnChange(*(wxCommandEvent*)&ev);
 }
 
 

@@ -33,6 +33,7 @@ private:
     pgFunction *function;
 
     void OnChange(wxCommandEvent &ev);
+    void OnChangeStc(wxStyledTextEvent& event);
     void OnSelChangeLanguage(wxCommandEvent &ev);
     void OnSelChangeArg(wxCommandEvent &ev);
     void OnSelChangeType(wxCommandEvent &ev);

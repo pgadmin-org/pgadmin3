@@ -37,6 +37,7 @@ private:
     pgaStep *step;
     pgaJob *job;
     void OnChange(wxCommandEvent &ev);
+    void OnChangeStc(wxStyledTextEvent& event);
 
     DECLARE_EVENT_TABLE();
 };

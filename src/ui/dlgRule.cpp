@@ -47,7 +47,7 @@ BEGIN_EVENT_TABLE(dlgRule, dlgProperty)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgRule::OnChange)
     EVT_CHECKBOX(XRCID("chkDoInstead"),             dlgRule::OnChange)
     EVT_RADIOBOX(XRCID("rbxEvent"),                 dlgRule::OnChange)
-    EVT_STC_MODIFIED(XRCID("txtSQlBox"),            dlgRule::OnChange)
+    EVT_STC_MODIFIED(XRCID("txtSQlBox"),            dlgRule::OnChangeStc)
 END_EVENT_TABLE();
 
 
@@ -134,6 +134,12 @@ bool dlgRule::didChange()
         return true;
 
     return false;
+}
+
+
+void dlgRule::OnChangeStc(wxStyledTextEvent &ev)
+{
+    OnChange(*(wxCommandEvent*)&ev);
 }
 
 
