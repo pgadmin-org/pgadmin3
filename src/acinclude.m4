@@ -67,6 +67,10 @@ fi], [
         if test ! -f "${WX_HOME}/include/wx/wx.h"
         then
             WX_HOME=/usr
+            if test ! -f "${WX_HOME}/include/wx/wx.h"
+            then
+	            AC_MSG_ERROR(you must specify a valid wxWindows installation with --with-wx=DIR)
+            fi
         fi
     fi
     ])
@@ -84,15 +88,11 @@ fi], [
         else
             WX_CONFIG="${WX_HOME}/bin/wx-config"
         fi
-        WX_OLD_LDFLAGS=$LDFLAGS
-        WX_OLD_CPPFLAGS=$CPPFLAGS
-        WX_NEW_LDFLAGS=`${WX_CONFIG} --libs --static`
-        if test -f "${WX_HOME}/lib/libstc.a"
-        then
-            LIBS="$LIBS -lwxxrc -lstc $WX_NEW_LDFLAGS"
-        else
-            LIBS="$LIBS -lwx_gtkd_stc-2.4 -lwx_gtkd_xrc-2.4 $WX_NEW_LDFLAGS"
-        fi
+        LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
+
+	WX_NEW_LDFLAGS=`${WX_CONFIG} --libs --static`
+        LIBS="$LIBS -lwxxrc -lstc $WX_NEW_LDFLAGS"
+
         WX_NEW_CPPFLAGS=`${WX_CONFIG} --cxxflags`
         CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS"
         AC_LANG_SAVE
