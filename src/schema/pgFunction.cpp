@@ -186,7 +186,7 @@ pgObject *pgFunction::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_FUNCTIONS || obj->GetType() == PG_TRIGGERFUNCTIONS)
-            function = AppendFunctions((pgCollection*)obj, GetSchema(), 0, wxT("   AND pr.oid=") + GetOidStr() + wxT("\n"));
+            function = AppendFunctions((pgCollection*)obj, GetSchema(), 0, wxT(" WHERE pr.oid=") + GetOidStr() + wxT("\n"));
     }
     return function;
 }
