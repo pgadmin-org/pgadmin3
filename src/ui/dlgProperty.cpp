@@ -577,8 +577,10 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
 
     if (!sql.IsEmpty())
         if (!apply(sql))
+        {
+            EnableOK(true);
             return;
-
+        }
     Destroy();
 }
 

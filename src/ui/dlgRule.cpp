@@ -135,7 +135,7 @@ void dlgRule::CheckChange()
     wxString name=GetName();
     if (rule)
     {
-        EnableOK(didChange() || txtComment->GetValue() != rule->GetComment());
+        EnableOK(didChange() || txtSqlBox->GetText() != oldDefinition || txtComment->GetValue() != rule->GetComment());
     }
     else
     {
