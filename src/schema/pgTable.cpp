@@ -350,13 +350,21 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
     }
 
     DisplayStatistics(statistics, 
-        wxT("SELECT seq_scan AS \"Sequential Scans\", seq_tup_read AS \"Sequential Tuples Read\", ")
-                wxT("idx_scan AS \"Index Scans\", idx_tup_fetch AS \"Index Tuples Fetched\", ")
-                wxT("n_tup_ins AS \"Tuples Inserted\", n_tup_upd AS \"Tuples Updated\", n_tup_del AS \"Tuples Deleted\",")
-                wxT("heap_blks_read AS \"Heap Blocks Read\", heap_blks_hit AS \"Heap Blocks Hit\", ")
-                wxT("idx_blks_read AS \"Index Blocks Read\", idx_blks_hit AS \"Index Blocks Hit\", ")
-                wxT("toast_blks_read AS \"Toast Blocks Read\", toast_blks_hit AS \"Toast Blocks Hit\", ")
-                wxT("tidx_blks_read AS \"Toast Index Blocks Read\", tidx_blks_hit AS \"Toast Index Blocks Hit\"\n")
+        wxT("SELECT seq_scan AS ") + qtIdent(_("Sequential Scans")) +
+             wxT(", seq_tup_read AS ") + qtIdent(_("Sequential Tuples Read")) +
+             wxT(", idx_scan AS ") + qtIdent(_("Index Scans")) +
+             wxT(", idx_tup_fetch AS ") + qtIdent(_("Index Tuples Fetched"))+
+             wxT(", n_tup_ins AS ") + qtIdent(_("Tuples Inserted"))+
+             wxT(", n_tup_upd AS ") + qtIdent(_("Tuples Updated")) +
+             wxT(", n_tup_del AS ") + qtIdent(_("Tuples Deleted")) +
+             wxT(", heap_blks_read AS ") + qtIdent(_("Heap Blocks Read")) +
+             wxT(", heap_blks_hit AS ") + qtIdent(_("Heap Blocks Hit")) +
+             wxT(", idx_blks_read AS ") + qtIdent(_("Index Blocks Read")) +
+             wxT(", idx_blks_hit AS ") + qtIdent(_("Index Blocks Hit")) +
+             wxT(", toast_blks_read AS ") + qtIdent(_("Toast Blocks Read")) +
+             wxT(", toast_blks_hit AS ") + qtIdent(_("Toast Blocks Hit")) +
+             wxT(", tidx_blks_read AS ") + qtIdent(_("Toast Index Blocks Read")) +
+             wxT(", tidx_blks_hit AS ") + qtIdent(_("Toast Index Blocks Hit")) + wxT("\n")
         wxT("  FROM pg_stat_all_tables stat, pg_statio_all_tables statio\n")
         wxT(" WHERE stat.relid = statio.relid\n")
         wxT("   AND stat.relid = ") + GetOidStr());
@@ -437,10 +445,10 @@ void pgTable::ShowStatistics(pgCollection *collection, wxListCtrl *statistics)
 
     // Add the statistics view columns
     statistics->ClearAll();
-    statistics->InsertColumn(0, wxT("Table"), wxLIST_FORMAT_LEFT, 150);
-    statistics->InsertColumn(1, wxT("Tuples inserted"), wxLIST_FORMAT_LEFT, 80);
-    statistics->InsertColumn(2, wxT("Tuples updated"), wxLIST_FORMAT_LEFT, 80);
-    statistics->InsertColumn(3, wxT("Tuples deleted"), wxLIST_FORMAT_LEFT, 80);
+    statistics->InsertColumn(0, _("Table"), wxLIST_FORMAT_LEFT, 150);
+    statistics->InsertColumn(1, _("Tuples inserted"), wxLIST_FORMAT_LEFT, 80);
+    statistics->InsertColumn(2, _("Tuples updated"), wxLIST_FORMAT_LEFT, 80);
+    statistics->InsertColumn(3, _("Tuples deleted"), wxLIST_FORMAT_LEFT, 80);
 
     pgSet *stats = collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT relname, n_tup_ins, n_tup_upd, n_tup_del FROM pg_stat_all_tables ORDER BY relname"));

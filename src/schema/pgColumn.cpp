@@ -188,10 +188,17 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
     // statistic 
     DisplayStatistics(statistics,
-        wxT("SELECT null_frac AS \"Null Fraction\", avg_width AS \"Average Width\", n_distinct AS \"Distinct Values\", ")
-        wxT("most_common_vals AS \"Most Common Values\", most_common_freqs AS \"Most Common Frequencies\", ")
-        wxT(" histogram_bounds AS \"Histogram Bounds\", correlation AS \"Correlation\"\n")
-        wxT("  FROM pg_stats WHERE tablename = 'pt_partner' AND attname = 'partner_nr'"));
+        wxT("SELECT null_frac AS ") + qtIdent(_("Null Fraction")) +
+             wxT(", avg_width AS ") + qtIdent(_("Average Width")) +
+             wxT(", n_distinct AS ") + qtIdent(_("Distinct Values")) +
+             wxT(", most_common_vals AS ") + qtIdent(_("Most Common Values")) +
+             wxT(", most_common_freqs AS ") + qtIdent(_("Most Common Frequencies")) +
+             wxT(", histogram_bounds AS ") + qtIdent(_("Histogram Bounds")) +
+             wxT(", correlation AS ") + qtIdent(_("Correlation")) + wxT("\n")
+        wxT("  FROM pg_stats\n")
+        wxT(" WHERE schemaname = ") + qtString(schema->GetName()) + wxT("\n")
+        wxT("   AND tablename = ") + qtString(GetTableName()) + wxT("\n")
+        wxT("   AND attname = ") + qtString(GetName()));
 }
 
 

@@ -323,10 +323,10 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
         // Add the statistics view columns
         statistics->ClearAll();
-        statistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
-        statistics->InsertColumn(1, wxT("PID"), wxLIST_FORMAT_LEFT, 50);
-        statistics->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
-        statistics->InsertColumn(3, wxT("Current Query"), wxLIST_FORMAT_LEFT, 400);
+        statistics->InsertColumn(0, wxT("PID"), wxLIST_FORMAT_LEFT, 50);
+        statistics->InsertColumn(1, _("User"), wxLIST_FORMAT_LEFT, 100);
+        statistics->InsertColumn(2, _("Database"), wxLIST_FORMAT_LEFT, 100);
+        statistics->InsertColumn(3, _("Current Query"), wxLIST_FORMAT_LEFT, 400);
 
         pgSet *stats = ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
         if (stats)
@@ -334,9 +334,9 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
             int pos=0;
             while (!stats->Eof())
             {
-                statistics->InsertItem(pos, stats->GetVal(wxT("datname")), 0);
-                statistics->SetItem(pos, 1, stats->GetVal(wxT("procpid")));
-                statistics->SetItem(pos, 2, stats->GetVal(wxT("usename")));
+                statistics->InsertItem(pos, stats->GetVal(wxT("procpid")), 0);
+                statistics->SetItem(pos, 1, stats->GetVal(wxT("usename")));
+                statistics->SetItem(pos, 2, stats->GetVal(wxT("datname")));
                 statistics->SetItem(pos, 3, stats->GetVal(wxT("current_query")));
                 stats->MoveNext();
                 pos++;
