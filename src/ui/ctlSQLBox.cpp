@@ -307,7 +307,8 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const 
     
     // Font
 #ifdef __WIN32__
-    wxFont fntSQLBox(9, wxMODERN, wxNORMAL, wxNORMAL);
+   // multi-byte problem (Hiroshi Saito [saito@inetrt.skcapi.co.jp])
+   wxFont fntSQLBox = wxFont(*wxNORMAL_FONT);
 #else
     wxFont fntSQLBox(12, wxMODERN, wxNORMAL, wxNORMAL);
 #endif
