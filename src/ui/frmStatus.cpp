@@ -26,13 +26,17 @@
 
 #define TIMER_ID 333
 BEGIN_EVENT_TABLE(frmStatus, pgDialog)
-    EVT_BUTTON(XRCID("btnRefresh"),         frmStatus::OnRefresh)
-    EVT_BUTTON (XRCID("btnClose"),          frmStatus::OnCloseBtn)
-    EVT_CLOSE(                              frmStatus::OnClose)
-    EVT_SPINCTRL(XRCID("spnRefreshRate"),   frmStatus::OnRateChangeSpin)
-    EVT_TEXT(XRCID("spnRefreshRate"),       frmStatus::OnRateChange)
-	EVT_NOTEBOOK_PAGE_CHANGING(XRCID("nbStatus"),       frmStatus::OnNotebookPageChanged)
-    EVT_TIMER(TIMER_ID,                     frmStatus::OnRefreshTimer)
+    EVT_BUTTON(XRCID("btnRefresh"),					frmStatus::OnRefresh)
+    EVT_BUTTON(XRCID("btnClose"),					frmStatus::OnCloseBtn)
+    EVT_BUTTON(XRCID("btnCancel"),					frmStatus::OnCancelBtn)
+    EVT_BUTTON(XRCID("btnTerminate"),				frmStatus::OnTerminateBtn)
+    EVT_CLOSE(										frmStatus::OnClose)
+    EVT_SPINCTRL(XRCID("spnRefreshRate"),			frmStatus::OnRateChangeSpin)
+    EVT_TEXT(XRCID("spnRefreshRate"),				frmStatus::OnRateChange)
+	EVT_NOTEBOOK_PAGE_CHANGING(XRCID("nbStatus"),	frmStatus::OnNotebookPageChanged)
+    EVT_TIMER(TIMER_ID,								frmStatus::OnRefreshTimer)
+	EVT_LIST_ITEM_SELECTED(XRCID("lstStatus"),		frmStatus::OnSelStatusItem)
+	EVT_LIST_ITEM_DESELECTED(XRCID("lstStatus"),	frmStatus::OnSelStatusItem)
 END_EVENT_TABLE();
 
 
@@ -41,6 +45,8 @@ END_EVENT_TABLE();
 #define logList         CTRL_LISTVIEW("lstLog")
 #define spnRefreshRate  CTRL_SPIN("spnRefreshRate")
 #define nbStatus		CTRL_NOTEBOOK("nbStatus")
+#define btnCancel		CTRL_BUTTON("btnCancel")
+#define btnTerminate	CTRL_BUTTON("btnTerminate")
 
 void frmStatus::OnCloseBtn(wxCommandEvent &event)
 {
@@ -124,6 +130,9 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     settings->Read(wxT("frmStatus/Refreshrate"), &rate, 1);
     spnRefreshRate->SetValue(rate);
     timer=new wxTimer(this, TIMER_ID);
+
+	btnCancel->Enable(false);
+	btnTerminate->Enable(false);
 
 	loaded = TRUE;
 }
@@ -444,4 +453,68 @@ void frmStatus::addLog(const wxString &str)
             logList->SetItem(row, 2, rest.AfterFirst(':'));
         }
     }
+}
+
+void frmStatus::OnCancelBtn(wxCommandEvent &event)
+{
+	wxString spid = statusList->GetItemText(statusList->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+	long lpid = StrToLong(spid);
+
+	if(backend_pid == lpid)
+	{
+		wxMessageBox(_("You cannot cancel a query running on your own server process."), _("Cancel query"), wxOK | wxICON_EXCLAMATION);
+		return;
+	}
+
+	if (wxMessageBox(_("Are you sure you wish to cancel the selected query?"), 
+					 _("Cancel query?"), 
+					 wxYES_NO | wxICON_QUESTION) == wxNO)
+		return;
+
+	wxString sql = wxT("SELECT pg_cancel_backend(") + spid + wxT(");");
+
+	connection->ExecuteScalar(sql);
+
+	OnRefresh(*(wxCommandEvent*)&event);
+	wxMessageBox(_("A cancel signal was sent to the selected server process."), _("Cancel query"), wxOK | wxICON_INFORMATION);
+}
+
+void frmStatus::OnTerminateBtn(wxCommandEvent &event)
+{
+	wxString spid = statusList->GetItemText(statusList->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+	long lpid = StrToLong(spid);
+
+	if(backend_pid == lpid)
+	{
+		wxMessageBox(_("You cannot terminate your own server process."), _("Terminate query"), wxOK | wxICON_EXCLAMATION);
+		return;
+	}
+
+	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process?"), 
+					 _("Terminate query?"), wxYES_NO | wxICON_QUESTION) == wxNO)
+		return;
+
+	wxString sql = wxT("SELECT pg_terminate_backend(") + spid +	wxT(");");
+
+	connection->ExecuteScalar(sql);
+
+	OnRefresh(*(wxCommandEvent*)&event);
+	wxMessageBox(_("A terminate signal was sent to the selected server process."), _("Terminate query"), wxOK | wxICON_INFORMATION);
+}
+
+void frmStatus::OnSelStatusItem(wxCommandEvent &event)
+{
+	if (connection->BackendMinimumVersion(7, 5))
+	{
+		if(statusList->GetSelectedItemCount() >= 0) 
+		{
+			btnCancel->Enable(true);
+			btnTerminate->Enable(true);
+		} 
+		else 
+		{
+			btnCancel->Enable(false);
+			btnTerminate->Enable(false);
+		}
+	}
 }
