@@ -31,11 +31,14 @@ typedef enum
     PGTYPCLASS_OTHER
 } pgTypClass;
 
+
+class pgConn;
+
 // Class declarations
 class pgSet
 {
 public:
-    pgSet(PGresult *newRes, PGconn *newConn);
+    pgSet(PGresult *newRes, PGconn *newConn, wxMBConv &cnv, bool needColQt);
     ~pgSet();
     long NumRows() const { return nRows; }
     long NumCols() const { return PQnfields(res); }
@@ -81,6 +84,8 @@ private:
     PGresult *res;
     long pos, nRows;
     wxString ExecuteScalar(const wxString& sql) const;
+    wxMBConv &conv;
+    bool needColQuoting;
 };
 
 
@@ -88,7 +93,7 @@ private:
 class pgQueryThread : public wxThread
 {
 public:
-    pgQueryThread(PGconn *_conn, const wxString &qry, int resultToRetrieve=-1);
+    pgQueryThread(pgConn *_conn, const wxString &qry, int resultToRetrieve=-1);
     ~pgQueryThread();
 
     virtual void *Entry();
@@ -104,7 +109,7 @@ private:
     int resultToRetrieve;
 
     wxString query;
-    PGconn *conn;
+    pgConn *conn;
     PGresult *result;
     wxString messages;
     pgSet *dataSet;

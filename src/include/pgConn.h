@@ -77,12 +77,14 @@ private:
     PGconn *conn;
     int minorVersion, majorVersion;
     wxMBConv &conv;
-    bool resolvedIP;
+    bool resolvedIP, needColQuoting;
     wxString dbHost;
     OID lastSystemOID;
 
     void *noticeArg;
     PQnoticeProcessor noticeProc;
+
+    friend class pgQueryThread;
 };
 
 #endif

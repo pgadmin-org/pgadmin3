@@ -44,8 +44,8 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 {
     wxLogInfo(wxT("Creating pgConn object"));
     wxString msg, hostip;
-
-    conv = wxConvLibc;
+    
+    needColQuoting = false;
 
     // Check the hostname/ipaddress
     struct hostent *host;
@@ -142,6 +142,9 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
             wxT("  FROM pg_database WHERE datname=") + qtString(database));
         if (set)
         {
+            if (set->ColNumber(wxT("\"datlastsysoid\"")) >= 0)
+                needColQuoting = true;
+
             lastSystemOID = set->GetLong(wxT("datlastsysoid"));
 
 #if wxUSE_UNICODE
@@ -289,7 +292,7 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
 
     if (status == PGRES_TUPLES_OK || status == PGRES_COMMAND_OK)
     {
-        pgSet *set = new pgSet(qryRes, conn);
+        pgSet *set = new pgSet(qryRes, conn, conv, needColQuoting);
         if (!set)
         {
             wxLogError(__("Couldn't create a pgSet object!"));

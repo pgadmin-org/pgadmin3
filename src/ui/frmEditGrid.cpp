@@ -511,7 +511,7 @@ void frmEditGrid::Go()
         qry += wxT(" ORDER BY ") + orderBy;
     }
 
-    thread=new pgQueryThread(connection->connection(), qry);
+    thread=new pgQueryThread(connection, qry);
     if (thread->Create() != wxTHREAD_NO_ERROR)
     {
         Abort();
