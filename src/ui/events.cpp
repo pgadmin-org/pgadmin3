@@ -43,7 +43,7 @@
 #include "frmEditGrid.h"
 #include "frmHelp.h"
 #include "dlgProperty.h"
-#include "frmVacuum.h"
+#include "frmMaintenance.h"
 
 extern wxString loadPath;
 
@@ -51,7 +51,7 @@ extern wxString loadPath;
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_SQL,                       frmMain::OnSql)
-    EVT_MENU(MNU_VACUUM,                    frmMain::OnVacuum)
+    EVT_MENU(MNU_MAINTENANCE,               frmMain::OnMaintenance)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_HELP,                      frmMain::OnHelp)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
@@ -332,14 +332,12 @@ void frmMain::OnPassword(wxCommandEvent& event)
 }
 
 
-void frmMain::OnVacuum(wxCommandEvent &ev)
+void frmMain::OnMaintenance(wxCommandEvent &ev)
 {
     wxTreeItemId item=browser->GetSelection();
     pgObject *data = (pgObject *)browser->GetItemData(item);
-    if (data->GetType() != PG_TABLE && data->GetType() != PG_DATABASE)
-        return;
 
-    frmVacuum *frm=new frmVacuum(this, data);
+    frmMaintenance *frm=new frmMaintenance(this, data);
     frm->Go();
 }
 
@@ -692,8 +690,6 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     toolsMenu->Enable(MNU_DISCONNECT, canDisconnect);
     treeContextMenu->Enable(MNU_DISCONNECT, canDisconnect);
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
-//    toolsMenu->Enable(MNU_REINDEX, canReindex);
-//    treeContextMenu->Enable(MNU_REINDEX, canReindex);               
 }
 
 

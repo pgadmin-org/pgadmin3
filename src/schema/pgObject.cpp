@@ -130,7 +130,7 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
                 canSql=true;
                 break;
         }
-        form->SetButtons(TRUE, CanCreate(), CanDrop(), CanEdit(), canSql, CanView(), CanVacuum());
+        form->SetButtons(TRUE, CanCreate(), CanDrop(), CanEdit(), canSql, CanView(), CanMaintenance());
         SetContextInfo(form);
     }
 

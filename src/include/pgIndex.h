@@ -78,6 +78,7 @@ public:
     wxString GetCreate();
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    bool CanMaintenance() { return true; }
 
 protected:
     void ReadColumnDetails();

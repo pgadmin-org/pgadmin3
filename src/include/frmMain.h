@@ -41,7 +41,7 @@ public:
     void OnTipOfTheDay(wxCommandEvent& event);
     wxStatusBar *statusBar;
 
-    void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum);
+    void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool maintenance);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
 
     void Refresh(pgObject *data);
@@ -81,7 +81,7 @@ private:
     void OnSaveDefinition(wxCommandEvent& event);
     void OnShowSystemObjects(wxCommandEvent& event);
     void OnSql(wxCommandEvent& event);
-    void OnVacuum(wxCommandEvent& event);
+    void OnMaintenance(wxCommandEvent& event);
     void OnStatus(wxCommandEvent& event);
 
     

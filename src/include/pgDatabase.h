@@ -52,7 +52,7 @@ public:
     bool GetSystemObject() const;
     
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
-    bool CanVacuum() { return true; }
+    bool CanMaintenance() { return true; }
     bool RequireDropConfirm() { return true; }
     pgConn *connection() { return conn; }
     int Connect();

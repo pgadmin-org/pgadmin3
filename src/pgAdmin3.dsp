@@ -601,6 +601,10 @@ SOURCE=.\ui\frmMain.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\frmMaintenance.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\frmOptions.cpp
 # End Source File
 # Begin Source File
@@ -618,10 +622,6 @@ SOURCE=.\ui\frmSplash.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmStatus.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmVacuum.cpp
 # End Source File
 # Begin Source File
 
@@ -676,6 +676,10 @@ SOURCE=.\include\frmMain.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\frmMaintenance.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\frmOptions.h
 # End Source File
 # Begin Source File
@@ -701,10 +705,6 @@ SOURCE=.\include\frmSplash.h
 # Begin Source File
 
 SOURCE=.\include\frmStatus.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\frmVacuum.h
 # End Source File
 # End Group
 # Begin Group "schema includes"

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <resource>
-  <object class="wxDialog" name="frmVacuum">
-    <title>Reorganize an object</title>
+  <object class="wxDialog" name="frmMaintenance">
+    <title>Maintenance</title>
     <size>300, 250</size>
     <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU</style>
     <object class="wxNotebook" name="nbNotebook">
@@ -9,20 +9,21 @@
         <label>Options</label>
         <object class="wxPanel" name="pnlOptions">
           <object class="wxRadioBox" name="rbxAction">
-            <label>Reorganization</label>
+            <label>Maintenance operation</label>
             <content>
               <item>VACUUM</item>
               <item>ANALYZE</item>
+              <item>REINDEX</item>
             </content>
             <selection>0</selection>
             <pos>10,10</pos>
-            <size>160,45</size>
+            <size>260,45</size>
             <style>wxRA_SPECIFY_ROWS</style>
           </object>
           <object class="wxStaticBox" name="sbxOptions">
             <label>VACUUM options</label>
             <pos>10, 65</pos>
-            <size>160, 80</size>
+            <size>125, 80</size>
           </object>
           <object class="wxCheckBox" name="chkFull">
             <label>FULL</label>
@@ -37,6 +38,19 @@
             <checked>1</checked>
             <pos>35, 125</pos>
           </object>
+          <object class="wxStaticBox" name="sbxReindexOptions">
+            <label>REINDEX options</label>
+            <pos>145,65</pos>
+            <size>125,65</size>
+          </object>
+          <object class="wxCheckBox" name="chkForce">
+            <label>FORCE</label>
+            <pos>170,85</pos>
+          </object>
+          <object class="wxCheckBox" name="chkRecreate">
+            <label>RECREATE</label>
+            <pos>170,105</pos>
+          </object>
           <object class="wxCheckBox" name="chkVerbose">
             <label>Verbose messages</label>
             <checked>1</checked>
@@ -44,7 +58,7 @@
           </object>
           <object class="wxStaticBitmap" name="stBitmap">
             <bitmap stock_id="wxART_MISSING_IMAGE"></bitmap>
-            <pos>200,30</pos>
+            <pos>1200,30</pos>
             <size>64,64</size>
           </object>
         </object>

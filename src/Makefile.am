@@ -25,7 +25,7 @@ ui/dlgAddTableView.cpp ui/events.cpp ui/frmAbout.cpp \
 ui/frmChildTableViewFrame.cpp ui/frmConnect.cpp \
 ui/frmMain.cpp ui/frmOptions.cpp ui/frmPassword.cpp \
 ui/frmQuery.cpp ui/frmQueryBuilder.cpp ui/frmHelp.cpp \
-ui/frmQBJoin.cpp ui/frmSplash.cpp ui/frmVacuum.cpp \
+ui/frmQBJoin.cpp ui/frmSplash.cpp ui/frmMaintenance.cpp \
 ui/frmEditGrid.cpp ui/dlgProperty.cpp ui/dlgUser.cpp \
 ui/dlgGroup.cpp ui/dlgDatabase.cpp ui/dlgLanguage.cpp \
 ui/dlgSchema.cpp ui/dlgDomain.cpp ui/dlgTable.cpp \
@@ -56,7 +56,7 @@ include/frmEditGrid.h include/frmMain.h \
 include/frmOptions.h include/frmPassword.h \
 include/frmQBJoin.h include/frmQueryBuilder.h include/frmHelp.h \
 include/frmQuery.h include/frmSplash.h \
-include/frmStatus.h include/frmVacuum.h \
+include/frmStatus.h include/frmMaintenance.h \
 include/misc.h include/pgAdmin3.h include/pgAggregate.h \
 include/pgCast.h include/pgCheck.h include/pgCollection.h \
 include/pgColumn.h include/pgConn.h \

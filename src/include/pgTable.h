@@ -54,7 +54,7 @@ public:
     void UpdateRows();
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool CanView() { return true; }
-    bool CanVacuum() { return true; }
+    bool CanMaintenance() { return true; }
 
     wxMenu *GetNewMenu();
     wxString GetSql(wxTreeCtrl *browser);

@@ -140,7 +140,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_QUERYBUILDER, _("Query &builder"),      _("Start the query builder."));
 #endif
 	toolsMenu->Append(MNU_VIEWDATA, _("View &Data"),              _("View the data in the selected object."));
-    toolsMenu->Append(MNU_VACUUM, _("&Maintenance"),              _("Maintain the current database or table."));
+    toolsMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),         _("Maintain the current database or table."));
     toolsMenu->Append(MNU_RELOAD, _("Re&load module"),            _("Reload library module which implements this function."));
     toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
     menuBar->Append(toolsMenu, _("&Tools"));
@@ -175,7 +175,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     treeContextMenu->Append(MNU_NEWOBJECT, _("New &Object"), newContextMenu, _("Create a new object."));
     treeContextMenu->AppendSeparator();
 	treeContextMenu->Append(MNU_VIEWDATA, _("View &Data"),        _("View the data in the selected object."));
-    treeContextMenu->Append(MNU_VACUUM, _("&Maintenance"),        _("Maintain the current database or table."));
+    treeContextMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),    _("Maintain the current database or table."));
     treeContextMenu->Append(MNU_CONNECT, _("&Connect..."),        _("Connect to the selected server."));
     treeContextMenu->Append(MNU_DISCONNECT, _("&Disconnect"),     _("Disconnect from the selected server."));
     treeContextMenu->AppendSeparator();
@@ -220,7 +220,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_SQL, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_VIEWDATA, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_VACUUM, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_MAINTENANCE, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
 
@@ -641,7 +641,7 @@ void frmMain::RetrieveServers()
 }
 
 
-void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum)
+void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool maintenance)
 {
     toolBar->EnableTool(MNU_REFRESH, refresh);
     toolBar->EnableTool(MNU_CREATE, create);
@@ -649,7 +649,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
     toolBar->EnableTool(MNU_PROPERTIES, properties);
     toolBar->EnableTool(MNU_SQL, sql);
     toolBar->EnableTool(MNU_VIEWDATA, viewData);
-    toolBar->EnableTool(MNU_VACUUM, vacuum);
+    toolBar->EnableTool(MNU_MAINTENANCE, maintenance);
 
 	// Handle the menus associated with the buttons
 	editMenu->Enable(MNU_CREATE, create);
@@ -661,7 +661,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 #ifdef __DEBUG_QUERYBUILDER__
 	toolsMenu->Enable(MNU_QUERYBUILDER, sql);
 #endif
-	toolsMenu->Enable(MNU_VACUUM, vacuum);
+	toolsMenu->Enable(MNU_MAINTENANCE, maintenance);
 	toolsMenu->Enable(MNU_STATUS, sql);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	viewMenu->Enable(MNU_REFRESH, refresh);
@@ -673,7 +673,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	treeContextMenu->Enable(MNU_DISCONNECT, false);
 	treeContextMenu->Enable(MNU_REFRESH, refresh);
 	treeContextMenu->Enable(MNU_PROPERTIES, properties);
-	treeContextMenu->Enable(MNU_VACUUM, vacuum);
+	treeContextMenu->Enable(MNU_MAINTENANCE, maintenance);
 	treeContextMenu->Enable(MNU_VIEWDATA, viewData);
     treeContextMenu->Enable(MNU_RELOAD, false);
 }

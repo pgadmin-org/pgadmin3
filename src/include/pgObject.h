@@ -133,7 +133,7 @@ public:
     virtual bool CanView() { return false; }
     virtual bool CanEdit() { return false; }
     virtual bool CanDrop() { return false; }
-    virtual bool CanVacuum() { return false; }
+    virtual bool CanMaintenance() { return false; }
     virtual bool RequireDropConfirm() { return false; }
 
 protected:

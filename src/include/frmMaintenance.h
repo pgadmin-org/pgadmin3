@@ -4,12 +4,12 @@
 // Copyright (C) 2002 - 2003, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// frmVacuum.h - Vacuum options selection dialogue
+// frmMaintenance.h - Maintenance options selection dialogue
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef FRMVACUUM_H
-#define FRMVACUUM_H
+#ifndef FRMMAINTENANCE_H
+#define FRMMAINTENANCE_H
 
 // wxWindows headers
 #include <wx/wx.h>
@@ -20,11 +20,11 @@
 
 
 // Class declarations
-class frmVacuum : public DialogWithHelp
+class frmMaintenance : public DialogWithHelp
 {
 public:
-    frmVacuum(frmMain *form, pgObject *_object);
-    ~frmVacuum();
+    frmMaintenance(frmMain *form, pgObject *_object);
+    ~frmMaintenance();
 
     void Go();
     
