@@ -261,26 +261,6 @@ SOURCE=.\utils\utffile.cpp
 # Begin Group "ui"
 
 # PROP Default_Filter ""
-# Begin Group "Query Builder"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\ui\dlgAddTableView.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmChildTableViewFrame.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmQBJoin.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmQueryBuilder.cpp
-# End Source File
-# End Group
 # Begin Group "Properties"
 
 # PROP Default_Filter "*.cpp"
@@ -673,10 +653,6 @@ SOURCE=.\ui\xh_timespin.cpp
 # PROP Default_Filter "*.h"
 # Begin Source File
 
-SOURCE=.\include\dlgAddTableView.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\include\dlgEditGridOptions.h
 # End Source File
 # Begin Source File
@@ -686,10 +662,6 @@ SOURCE=.\include\frmAbout.h
 # Begin Source File
 
 SOURCE=.\include\frmBackup.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\frmChildTableViewFrame.h
 # End Source File
 # Begin Source File
 
@@ -733,15 +705,7 @@ SOURCE=.\include\frmPassword.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\frmQBJoin.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\include\frmQuery.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\frmQueryBuilder.h
 # End Source File
 # Begin Source File
 

@@ -40,7 +40,6 @@
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
-#include "frmQueryBuilder.h"
 #include "frmHelp.h"
 
 
@@ -74,7 +73,6 @@ WX_DEFINE_LIST(windowList);
 #include "images/property.xpm"
 #include "images/public.xpm"
 #include "images/refresh.xpm"
-#include "images/querybuilder.xpm"
 #include "images/relationship.xpm"
 #include "images/rule.xpm"
 #include "images/sequence.xpm"
@@ -181,7 +179,6 @@ frmMain::frmMain(const wxString& title)
     toolsMenu->Append(MNU_DISCONNECT, _("Disconnec&t"),           _("Disconnect from the selected server."));
     toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_SQL, _("&Query tool"),                  _("Execute arbitrary SQL queries."));
-    toolsMenu->Append(MNU_QUERYBUILDER, _("Query &builder"),      _("Start the query builder."));
 	toolsMenu->Append(MNU_VIEWDATA, _("View &Data"),              _("View the data in the selected object."));
 	toolsMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"), _("Apply a filter and view the data in the selected object."));
     toolsMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),         _("Maintain the current database or table."));
@@ -253,7 +250,6 @@ frmMain::frmMain(const wxString& title)
     toolBar->AddTool(MNU_PROPERTIES, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_SQL, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_QUERYBUILDER, _("Query builder"), wxBitmap(querybuilder_xpm), _("Visually build SQL queries."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_VIEWDATA, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_VIEWFILTEREDDATA, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_MAINTENANCE, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
@@ -1077,7 +1073,6 @@ void frmMain::SetButtons(pgObject *obj)
     toolBar->EnableTool(MNU_DROP, drop);
     toolBar->EnableTool(MNU_PROPERTIES, properties);
     toolBar->EnableTool(MNU_SQL, sql);
-    toolBar->EnableTool(MNU_QUERYBUILDER, sql);
     toolBar->EnableTool(MNU_VIEWDATA, viewData);
     toolBar->EnableTool(MNU_VIEWFILTEREDDATA, viewData);
     toolBar->EnableTool(MNU_MAINTENANCE, maintenance);
@@ -1089,7 +1084,6 @@ void frmMain::SetButtons(pgObject *obj)
 	toolsMenu->Enable(MNU_CONNECT, false);
 	toolsMenu->Enable(MNU_DISCONNECT, false);
 	toolsMenu->Enable(MNU_SQL, sql);
-	toolsMenu->Enable(MNU_QUERYBUILDER, sql);
 	toolsMenu->Enable(MNU_MAINTENANCE, maintenance);
 	toolsMenu->Enable(MNU_BACKUP, backup && !backupExecutable.IsNull());
 	toolsMenu->Enable(MNU_RESTORE, restore && !restoreExecutable.IsNull());

@@ -42,7 +42,6 @@
 #include "pgTable.h"
 #include "pgCollection.h"
 #include "pgFunction.h"
-#include "frmQueryBuilder.h"
 #include "frmEditGrid.h"
 #include "frmHelp.h"
 #include "dlgProperty.h"
@@ -87,7 +86,6 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_TIPOFTHEDAY,               frmMain::OnTipOfTheDay)
-    EVT_MENU(MNU_QUERYBUILDER,              frmMain::OnQueryBuilder)
     EVT_MENU(MNU_STARTSERVICE,              frmMain::OnStartService)
     EVT_MENU(MNU_STOPSERVICE,               frmMain::OnStopService)
     EVT_MENU(MNU_NEW+PG_DATABASE,           frmMain::OnNew)
@@ -1219,29 +1217,5 @@ void frmMain::OnProperties(wxCommandEvent &ev)
     {
         if (!dlgProperty::EditObjectDialog(this, sqlPane, data))
             checkAlive();
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-void frmMain::OnQueryBuilder(wxCommandEvent &ev)
-{
-    pgObject *data = GetSelectedObject();
-
-    pgDatabase *db=data->GetDatabase();
-    if (!db)
-        return;
-
-    pgServer *server=db->GetServer();
-    pgConn *conn= db->CreateConn();
-    if (conn)
-    {
-	    // Create the Query Builder Form
-	    frmQueryBuilder *qbform = new frmQueryBuilder(this, db); 
-
-		frames.Append(qbform);
-
-	    // Show the Query Builder
-	    qbform->Show(TRUE);
     }
 }

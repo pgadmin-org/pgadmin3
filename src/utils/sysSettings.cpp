@@ -328,39 +328,3 @@ void sysSettings::SetDoubleClickProperties(const bool newval)
     doubleClickProperties = newval;
     Write(wxT("DoubleClickProperties"), doubleClickProperties);
 }
-
-//////////////////////////////////////////////////////////////////////////
-// The size of the query builder
-//////////////////////////////////////////////////////////////////////////
-
-wxSize sysSettings::GetFrmQueryBuilderSize()
-{
-    int width = Read(wxT("frmQueryBuilder/Width"), 750);
-    int height = Read(wxT("frmQueryBuilder/Height"), 550);
-
-	return wxSize(width, height);
-}
-
-void sysSettings::SetFrmQueryBuilderSize(wxSize size)
-{
-    Write(wxT("frmQueryBuilder/Width"), size.GetWidth());
-    Write(wxT("frmQueryBuilder/Height"), size.GetHeight());
-}
-
-//////////////////////////////////////////////////////////////////////////
-// The position of the query builder
-//////////////////////////////////////////////////////////////////////////
-
-wxPoint sysSettings::GetFrmQueryBuilderPos()
-{
-    int top = Read(wxT("frmQueryBuilder/Top"), 50);
-    int left = Read(wxT("frmQueryBuilder/Left"), 50);
-
-	return wxPoint(top, left);
-}
-
-void sysSettings::SetFrmQueryBuilderPos(wxPoint pos)
-{
-    Write(wxT("frmQueryBuilder/Top"), pos.x);
-    Write(wxT("frmQueryBuilder/Left"), pos.y);
-}

@@ -26,12 +26,6 @@ public:
     sysSettings(const wxString& name);
     ~sysSettings();
 
-    // frmQueryBuilder size/position
-    wxSize GetFrmQueryBuilderSize();
-    wxPoint GetFrmQueryBuilderPos();
-	void SetFrmQueryBuilderPos(wxPoint pos);
-	void SetFrmQueryBuilderSize(wxSize size);
-
     // Tip Of The Day
     bool GetShowTipOfTheDay() const { return showTipOfTheDay; }
     void SetShowTipOfTheDay(const bool newval);

@@ -127,7 +127,6 @@ private:
     void OnStopService(wxCommandEvent &ev);
     void OnRefresh(wxCommandEvent &ev);
     void OnDisconnect(wxCommandEvent &ev);
-    void OnQueryBuilder(wxCommandEvent &ev);
 
     void OnCheckAlive(wxCommandEvent& event);
 

@@ -33,16 +33,13 @@ agent/pgaStep.cpp agent/pgaSchedule.cpp \
 agent/dlgJob.cpp agent/dlgSchedule.cpp agent/dlgStep.cpp \
 ui/xh_sqlbox.cpp ui/xh_calb.cpp ui/xh_timespin.cpp \
 ui/ctlSecurityPanel.cpp ui/dlgClasses.cpp ui/ctlComboBox.cpp \
-ui/frmGrantWizard.cpp \
 ui/calbox.cpp ui/timespin.cpp ui/ctlListView.cpp \
 ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp ui/frmExport.cpp \
-ui/dlgAddTableView.cpp ui/dlgEditGridOptions.cpp \
-ui/events.cpp ui/frmAbout.cpp ui/frmIndexcheck.cpp \
-ui/frmChildTableViewFrame.cpp ui/frmConnect.cpp \
-ui/frmMain.cpp ui/frmOptions.cpp ui/frmPassword.cpp \
-ui/frmQuery.cpp ui/frmQueryBuilder.cpp ui/frmHelp.cpp \
-ui/frmQBJoin.cpp ui/frmSplash.cpp ui/frmMaintenance.cpp \
-ui/frmBackup.cpp ui/frmRestore.cpp \
+ui/dlgEditGridOptions.cpp ui/events.cpp ui/frmAbout.cpp \
+ui/frmIndexcheck.cpp ui/frmConnect.cpp ui/frmMain.cpp \
+ui/frmOptions.cpp ui/frmPassword.cpp ui/frmQuery.cpp \
+ui/frmHelp.cpp ui/frmSplash.cpp ui/frmMaintenance.cpp \
+ui/frmBackup.cpp ui/frmRestore.cpp ui/frmGrantWizard.cpp \
 ui/frmEditGrid.cpp ui/dlgProperty.cpp ui/dlgUser.cpp \
 ui/dlgGroup.cpp ui/dlgDatabase.cpp ui/dlgLanguage.cpp \
 ui/dlgSchema.cpp ui/dlgDomain.cpp ui/dlgTable.cpp ui/dlgTablespace.cpp \
@@ -57,7 +54,7 @@ utils/utffile.cpp \
 ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = include/copyright.h include/version.h include/ctlSQLBox.h \
-include/ctlSQLResult.h include/ctlListView.h include/dlgAddTableView.h \
+include/ctlSQLResult.h include/ctlListView.h \
 include/parser/parse.h include/parser/keywords.h include/nodes/parsenodes.h \
 include/postgres.h include/pgDefs.h include/pgDatatype.h \
 include/ctlSecurityPanel.h include/dlgClasses.h include/frmGrantWizard.h \
@@ -71,10 +68,9 @@ include/dlgAggregate.h include/dlgCast.h include/dlgConversion.h \
 include/dlgSequence.h include/dlgSchema.h include/dlgTable.h include/dlgTablespace.h \
 include/dlgOperator.h include/dlgView.h include/dlgRule.h \
 include/dlgTrigger.h include/dlgUser.h include/frmAbout.h \
-include/frmChildTableViewFrame.h include/frmConnect.h \
+include/frmConnect.h include/frmHelp.h \
 include/frmEditGrid.h include/dlgEditGridOptions.h include/frmMain.h \
 include/frmOptions.h include/frmPassword.h include/frmIndexcheck.h \
-include/frmQBJoin.h include/frmQueryBuilder.h include/frmHelp.h \
 include/frmQuery.h include/frmSplash.h \
 include/frmStatus.h include/frmMaintenance.h \
 include/frmBackup.h include/frmRestore.h \
