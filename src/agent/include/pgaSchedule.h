@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2005, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// pgaStep.h - PostgreSQL Agent Job Schedule
+// pgaSchedule.h - PostgreSQL Agent Job Schedule
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -24,9 +24,6 @@
 // Class declarations
 
 
-WX_DECLARE_OBJARRAY(wxTimeSpan, wxArrayTimeSpan);
-
-
 class pgaSchedule : public pgaJobObject
 {
 public:
@@ -41,29 +38,38 @@ public:
 
     bool GetEnabled() const { return enabled; }
     void iSetEnabled(const bool b) { enabled=b; }
-    wxChar GetKindChar() const { return kindChar; }
-    void iSetKindChar(const wxChar c) { kindChar=c; }
-    wxString GetKind() const { return kind; }
-    void iSetKind(const wxString &s) { kind=s; }
     wxDateTime GetStart() const { return start; }
     void iSetStart(const wxDateTime &d) { start=d; }
     wxDateTime GetEnd() const { return end; }
     void iSetEnd(const wxDateTime &d) { end=d; }
-    wxDateTime GetSchedule() const { return schedule; }
-    void iSetSchedule(const wxDateTime &d) { schedule=d; }
-    wxString GetIntervalListString() const { return intervalListString; }
-    void iSetIntervalList(const wxString &s);
-    wxArrayTimeSpan GetIntervalList() const { return intervalList; }
     long GetJobId() const { return jobId; }
     void iSetJobId(const long l) { jobId=l; }
 
+	wxString GetMinutes() const { return minutes; }
+	wxString GetMinutesString();
+	void iSetMinutes(const wxString &s) { minutes = s; }
+
+	wxString GetHours() const { return hours; }
+	wxString GetHoursString();
+	void iSetHours(const wxString &s) { hours = s; }
+
+	wxString GetWeekdays() const { return weekdays; }
+	wxString GetWeekdaysString();
+	void iSetWeekdays(const wxString &s) { weekdays = s; }
+
+	wxString GetMonthdays() const { return monthdays; }
+	wxString GetMonthdaysString();
+	void iSetMonthdays(const wxString &s) { monthdays = s; }
+
+	wxString GetMonths() const { return months; }
+	wxString GetMonthsString();
+	void iSetMonths(const wxString &s) { months = s; }
+
 private:
     bool enabled;
-    wxString kind, intervalListString;
-    wxArrayTimeSpan intervalList;
-    wxDateTime start, end, schedule;
-    wxChar kindChar;
+    wxDateTime start, end;
 	long jobId;
+	wxString minutes, hours, weekdays, monthdays, months;
 };
 
 #endif

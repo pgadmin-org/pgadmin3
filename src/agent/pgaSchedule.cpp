@@ -25,9 +25,6 @@
 #include "pgaSchedule.h"
 
 
-WX_DEFINE_OBJARRAY(wxArrayTimeSpan);
-
-
 pgaSchedule::pgaSchedule(pgCollection *_collection, const wxString& newName)
 : pgaJobObject(_collection->GetJob(), PGA_SCHEDULE, newName)
 {
@@ -40,29 +37,9 @@ pgaSchedule::~pgaSchedule()
 }
 
 
-void pgaSchedule::iSetIntervalList(const wxString &s)
-{
-    if (s[0] == '{')
-        intervalListString = s.Mid(1, s.Length()-2);
-    else
-        intervalListString = s;
-
-    wxStringTokenizer tk(intervalListString, wxT(","));
-
-    while (tk.HasMoreTokens())
-    {
-        wxString str=tk.GetNextToken();
-
-        int h, m, s;
-        wxSscanf(str, wxT("%d:%d:%d"), &h, &m, &s);
-        intervalList.Add(wxTimeSpan(h, m, s));
-    }
-}
-
-
 bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobschedule WHERE jscid=") + NumToStr(GetJobId()));
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetJobId()));
 }
 
 
@@ -80,19 +57,14 @@ void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("ID"), GetJobId());
         properties->AppendItem(_("Enabled"), GetEnabled());
-        properties->AppendItem(_("Type"), GetKind());
-        if (kindChar == 'n' || kindChar == 's')
-            properties->AppendItem(_("Scheduled"), GetSchedule());
-        if (kindChar != 's')
-        {
-            wxTimeSpan ts=intervalList.Item(0);
-            if (ts.GetDays() > 0)
-                properties->AppendItem(_("Interval"), ts.Format(wxT("%D:%H:%M:%S")));
-            else
-                properties->AppendItem(_("Interval"), ts.Format(wxT("%H:%M:%S")));
-        }
+
         properties->AppendItem(_("Start date"), GetStart());
         properties->AppendItem(_("End date"), GetEnd());
+		properties->AppendItem(_("Minutes"), GetMinutesString());
+		properties->AppendItem(_("Hours"), GetHoursString());
+		properties->AppendItem(_("Weekdays"), GetWeekdaysString());
+		properties->AppendItem(_("Monthdays"), GetMonthdaysString());
+		properties->AppendItem(_("Months"), GetMonthsString());
 
         properties->AppendItem(_("Comment"), GetComment());
     }
@@ -118,6 +90,7 @@ pgObject *pgaSchedule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgaSchedule *schedule=0;
+	wxString tmp;
 
     pgSet *schedules= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT * FROM pgagent.pga_schedule\n")
@@ -135,22 +108,36 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
             schedule->iSetDatabase(collection->GetDatabase());
             schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
             schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));
-            schedule->iSetSchedule(schedules->GetDateTime(wxT("jscsched")));
-            schedule->iSetIntervalList(schedules->GetVal(wxT("jsclist")));
 
-            wxChar kindc = *schedules->GetVal(wxT("jsckind")).c_str();
-            wxString kinds;
-            switch (kindc)
-            {
-                case 'n':   kinds = _("repeat");            break;
-                case 's':   kinds = _("single");            break;
-                case 'd':   kinds = _("daily") ;            break;
-                case 'w':   kinds = _("weekly");            break;
-                case 'm':   kinds = _("monthly");           break;
-                case 'y':   kinds = _("yearly");            break;
-            }
-            schedule->iSetKind(kinds);
-            schedule->iSetKindChar(kindc);
+			tmp = schedules->GetVal(wxT("jscminutes"));
+			tmp.Replace(wxT("{"), wxT(""));
+			tmp.Replace(wxT("}"), wxT(""));
+			tmp.Replace(wxT(","), wxT(""));
+			schedule->iSetMinutes(tmp);
+
+			tmp = schedules->GetVal(wxT("jschours"));
+			tmp.Replace(wxT("{"), wxT(""));
+			tmp.Replace(wxT("}"), wxT(""));
+			tmp.Replace(wxT(","), wxT(""));
+			schedule->iSetHours(tmp);
+
+			tmp = schedules->GetVal(wxT("jscweekdays"));
+			tmp.Replace(wxT("{"), wxT(""));
+			tmp.Replace(wxT("}"), wxT(""));
+			tmp.Replace(wxT(","), wxT(""));
+			schedule->iSetWeekdays(tmp);
+
+			tmp = schedules->GetVal(wxT("jscmonthdays"));
+			tmp.Replace(wxT("{"), wxT(""));
+			tmp.Replace(wxT("}"), wxT(""));
+			tmp.Replace(wxT(","), wxT(""));
+			schedule->iSetMonthdays(tmp);
+
+			tmp = schedules->GetVal(wxT("jscmonths"));
+			tmp.Replace(wxT("{"), wxT(""));
+			tmp.Replace(wxT("}"), wxT(""));
+			tmp.Replace(wxT(","), wxT(""));
+			schedule->iSetMonths(tmp);
 
             schedule->iSetComment(schedules->GetVal(wxT("jscdesc")));
 
@@ -167,4 +154,253 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 		delete schedules;
     }
     return schedule;
+}
+
+wxString pgaSchedule::GetMinutesString()
+{
+	size_t x = 0;
+	bool isWildcard = true;
+	wxString res;
+
+	for (x=0; x <= minutes.Length();x++)
+	{
+		if (minutes[x] == 't')
+		{
+			res.Printf(wxT("%s%d, "), res, x);
+			isWildcard = false;
+		}
+	}
+
+	if (isWildcard)
+	{
+		res = _("Every minute");
+	}
+	else
+	{
+		if (res.Length() > 2) 
+		{
+			res.RemoveLast();
+			res.RemoveLast();
+		}
+	}
+
+	return res;
+}
+
+wxString pgaSchedule::GetHoursString()
+{
+	size_t x = 0;
+	bool isWildcard = true;
+	wxString res;
+
+	for (x=0; x <= hours.Length();x++)
+	{
+		if (hours[x] == 't')
+		{
+			res.Printf(wxT("%s%d, "), res, x);
+			isWildcard = false;
+		}
+	}
+
+	if (isWildcard)
+	{
+		res = _("Every hour");
+	}
+	else
+	{
+		if (res.Length() > 2) 
+		{
+			res.RemoveLast();
+			res.RemoveLast();
+		}
+	}
+
+	return res;
+}
+
+wxString pgaSchedule::GetWeekdaysString()
+{
+	size_t x = 0;
+	bool isWildcard = true;
+	wxString res;
+
+	for (x=0; x <= weekdays.Length();x++)
+	{
+		if (weekdays[x] == 't')
+		{
+			switch (x)
+			{
+				case 0:
+					res += _("Monday");
+					res += wxT(", ");
+					break;
+				case 1:
+					res += _("Tuesday");
+					res += wxT(", ");
+					break;
+				case 2:
+					res += _("Wednesday");
+					res += wxT(", ");
+					break;
+				case 3:
+					res += _("Thursday");
+					res += wxT(", ");
+					break;
+				case 4:
+					res += _("Friday");
+					res += wxT(", ");
+					break;
+				case 5:
+					res += _("Saturday");
+					res += wxT(", ");
+					break;
+				case 6:
+					res += _("Sunday");
+					res += wxT(", ");
+					break;
+				default:
+					res += _("The mythical 8th day!");
+					res += wxT(", ");
+					break;
+			}
+			isWildcard = false;
+		}
+	}
+
+	if (isWildcard)
+	{
+		res = _("Any day of the week");
+	}
+	else
+	{
+		if (res.Length() > 2) 
+		{
+			res.RemoveLast();
+			res.RemoveLast();
+		}
+	}
+
+	return res;
+}
+
+wxString pgaSchedule::GetMonthdaysString()
+{
+	size_t x = 0;
+	bool isWildcard = true;
+	wxString res;
+
+	for (x=0; x <= monthdays.Length();x++)
+	{
+		if (monthdays[x] == 't')
+		{
+			if (x < 32)
+				res.Printf(wxT("%s%d, "), res, x);
+			else
+			{
+				res += _("Last day");
+				res += wxT(", ");
+			}
+			isWildcard = false;
+		}
+	}
+
+	if (isWildcard)
+	{
+		res = _("Every day");
+	}
+	else
+	{
+		if (res.Length() > 2) 
+		{
+			res.RemoveLast();
+			res.RemoveLast();
+		}
+	}
+
+	return res;
+}
+
+wxString pgaSchedule::GetMonthsString()
+{
+	size_t x = 0;
+	bool isWildcard = true;
+	wxString res;
+
+	for (x=0; x <= months.Length();x++)
+	{
+		if (months[x] == 't')
+		{
+			switch (x)
+			{
+				case 0:
+					res += _("January");
+					res += wxT(", ");
+					break;
+				case 1:
+					res += _("February");
+					res += wxT(", ");
+					break;
+				case 2:
+					res += _("March");
+					res += wxT(", ");
+					break;
+				case 3:
+					res += _("April");
+					res += wxT(", ");
+					break;
+				case 4:
+					res += _("May");
+					res += wxT(", ");
+					break;
+				case 5:
+					res += _("June");
+					res += wxT(", ");
+					break;
+				case 6:
+					res += _("July");
+					res += wxT(", ");
+					break;
+				case 7:
+					res += _("August");
+					res += wxT(", ");
+					break;
+				case 8:
+					res += _("September");
+					res += wxT(", ");
+					break;
+				case 9:
+					res += _("October");
+					res += wxT(", ");
+					break;
+				case 10:
+					res += _("November");
+					res += wxT(", ");
+					break;
+				case 11:
+					res += _("December");
+					res += wxT(", ");
+					break;
+				default:
+					res += _("The mythical 13th month!");
+					res += wxT(", ");
+					break;
+			}
+			isWildcard = false;
+		}
+	}
+
+	if (isWildcard)
+	{
+		res = _("Every month");
+	}
+	else
+	{
+		if (res.Length() > 2) 
+		{
+			res.RemoveLast();
+			res.RemoveLast();
+		}
+	}
+
+	return res;
 }

@@ -89,7 +89,6 @@ int dlgSchedule::Go(bool modal)
     {
         // edit mode
         chkEnabled->SetValue(schedule->GetEnabled());
-        cbKind->SetSelection(wxString(wxT("nsdwmy")).Find(schedule->GetKindChar()));
         calStart->SetDate(schedule->GetStart());
         timStart->SetTime(schedule->GetStart());
         if (schedule->GetEnd().IsValid())
@@ -99,9 +98,6 @@ int dlgSchedule::Go(bool modal)
         }
         else
             timEnd->Disable();
-        calSchedule->SetDate(schedule->GetSchedule());
-        timSchedule->SetTime(schedule->GetSchedule());
-        timInterval->SetValue(schedule->GetIntervalList().Item(0));
 
         wxNotifyEvent ev;
         OnChangeKind(ev);
@@ -185,7 +181,6 @@ void dlgSchedule::CheckChange()
     {
         enable  =  name != schedule->GetName()
                 || chkEnabled->GetValue() != schedule->GetEnabled()
-                || cbKind->GetSelection() != wxString(wxT("nsdwmy")).Find(schedule->GetKindChar())
                 || txtComment->GetValue() != schedule->GetComment();
     }
     else
