@@ -69,6 +69,8 @@ void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
         properties->AppendItem(_("Function"), GetCastFunction() + wxT("(") + GetSourceType() + wxT(")"));
         properties->AppendItem(_("Context"), GetCastContext());
         properties->AppendItem(_("System cast?"), GetSystemObject());
+        if (GetConnection()->BackendMinimumVersion(7, 5))
+            properties->AppendItem(_("Comment"), GetComment());
     }
 }
 
@@ -97,12 +99,13 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
         systemRestriction = wxT(" WHERE ca.oid > ") + NumToStr(collection->GetConnection()->GetLastSystemOID()) + wxT("\n");
 
     pgSet *casts= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp, proname, nspname\n")
+        wxT("SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp, proname, nspname, description\n")
         wxT("  FROM pg_cast ca\n")
         wxT("  JOIN pg_type st ON st.oid=castsource\n")
         wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
         wxT("  LEFT JOIN pg_proc pr ON pr.oid=castfunc\n")
         wxT("  LEFT JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ca.oid AND des.objsubid=0\n")
         + restriction + systemRestriction +
         wxT(" ORDER BY st.typname, tt.typname"));
 
@@ -121,6 +124,7 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             cast->iSetTargetTypeOid(casts->GetOid(wxT("casttarget")));
             cast->iSetCastFunction(casts->GetVal(wxT("proname")));
             cast->iSetCastNamespace(casts->GetVal(wxT("nspname")));
+            cast->iSetComment(casts->GetVal(wxT("description")));
             wxString ct=casts->GetVal(wxT("castcontext"));
             cast->iSetCastContext(
                 ct == wxT("i") ? wxT("IMPLICIT") :

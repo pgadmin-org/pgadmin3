@@ -38,6 +38,8 @@ public:
 
     wxString GetDefinition();
 
+    bool IsReferenced();
+
     wxString GetRawTypename() const { return rawTypename; }
     void iSetRawTypename(const wxString& s) { rawTypename=s; }
     wxString GetVarTypename() const { return varTypename; }
@@ -97,6 +99,7 @@ private:
     long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray;
     OID attTypId;
+    int isReferenced;
 };
 
 #endif

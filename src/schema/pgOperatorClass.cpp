@@ -168,6 +168,8 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlList
         for (i=0 ; i < functions.Count() ; i++)
             properties->AppendItem(wxT("FUNCTION"), functions.Item(i));
         properties->AppendItem(_("System operator class?"), GetSystemObject());
+        if (GetConnection()->BackendMinimumVersion(7, 5))
+            properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

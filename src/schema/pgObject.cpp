@@ -175,6 +175,8 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
             while (!set->Eof())
             {
                 wxString refname;
+                wxString _refname = set->GetVal(wxT("refname"));
+
                 if (db)
                     refname = db->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname")));
                 else
@@ -183,6 +185,7 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                     if (!refname.IsEmpty())
                         refname += wxT(".");
                 }
+
                 wxString typestr=set->GetVal(wxT("type"));
                 int id;
 
@@ -200,6 +203,13 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                     case 'y':   id=PG_TYPE;     break;
                     case 'T':   id=PG_TRIGGER;  break;
                     case 'l':   id=PG_LANGUAGE; break;
+                    case 'R':
+                    {
+                        refname = _refname + wxT(" ON ") + refname + set->GetVal(wxT("ownertable"));
+                        _refname=wxEmptyString;
+                        id=PG_RULE;
+                        break;
+                    }
                     case 'c':
                     {
                         switch (typestr.c_str()[1])
@@ -217,7 +227,7 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                     default:    id=PG_UNKNOWN;  break;
                 }
 
-                refname += set->GetVal(wxT("refname"));
+                refname += _refname;
 
                 wxString typname = typesList[id].typName;
                 int icon = typesList[id].typeIcon;
@@ -268,17 +278,19 @@ void pgObject::ShowDependsOn(ctlListView *dependsOn, const wxString &wh)
     else
         where = wh;
     ShowDependency(GetDatabase(), dependsOn,
-        wxT("SELECT DISTINCT deptype, coc.relname AS ownertable, refclassid, cl.relkind,\n")
+        wxT("SELECT DISTINCT deptype, refclassid, cl.relkind,\n")
         wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
         wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
         wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
         wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
         wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
         wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
+        wxT("            WHEN rw.oid IS NOT NULL THEN 'R'::text\n")
         wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
         wxT("            ELSE '' END AS type,\n")
-        wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
-        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname\n")
+        wxT("       COALESCE(coc.relname, clrw.relname) AS ownertable,\n")
+        wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, rulename, ns.nspname) AS refname,\n")
+        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname, nsrw.nspname) AS nspname\n")
         wxT("  FROM pg_depend dep\n")
         wxT("  LEFT JOIN pg_class cl ON dep.refobjid=cl.oid\n")
         wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
@@ -290,6 +302,9 @@ void pgObject::ShowDependsOn(ctlListView *dependsOn, const wxString &wh)
         wxT("  LEFT JOIN pg_constraint co ON dep.refobjid=co.oid\n")
         wxT("  LEFT JOIN pg_class coc ON conrelid=coc.oid\n")
         wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
+        wxT("  LEFT JOIN pg_rewrite rw ON dep.refobjid=rw.oid\n")
+        wxT("  LEFT JOIN pg_class clrw ON clrw.oid=rw.ev_class\n")
+        wxT("  LEFT JOIN pg_namespace nsrw ON cl.relnamespace=nsrw.oid\n")
         wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
         wxT("  LEFT JOIN pg_namespace ns ON dep.refobjid=ns.oid\n")
         + where, wxT("refclassid"));
@@ -305,17 +320,19 @@ void pgObject::ShowReferencedBy(ctlListView *referencedBy, const wxString &wh)
         where = wh;
 
     ShowDependency(GetDatabase(), referencedBy,
-        wxT("SELECT DISTINCT deptype, coc.relname AS ownertable, classid, cl.relkind,\n")
+        wxT("SELECT DISTINCT deptype, classid, cl.relkind,\n")
         wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
         wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
         wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
         wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
         wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
         wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
+        wxT("            WHEN rw.oid IS NOT NULL THEN 'R'::text\n")
         wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
         wxT("            ELSE '' END AS type,\n")
-        wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
-        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname\n")
+        wxT("       COALESCE(coc.relname, clrw.relname) AS ownertable,\n")
+        wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, rulename, ns.nspname) AS refname,\n")
+        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname, nsrw.nspname) AS nspname\n")
         wxT("  FROM pg_depend dep\n")
         wxT("  LEFT JOIN pg_class cl ON dep.objid=cl.oid\n")
         wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
@@ -327,6 +344,9 @@ void pgObject::ShowReferencedBy(ctlListView *referencedBy, const wxString &wh)
         wxT("  LEFT JOIN pg_constraint co on dep.objid=co.oid\n")
         wxT("  LEFT JOIN pg_class coc ON conrelid=coc.oid\n")
         wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
+        wxT("  LEFT JOIN pg_rewrite rw ON dep.objid=rw.oid\n")
+        wxT("  LEFT JOIN pg_class clrw ON clrw.oid=rw.ev_class\n")
+        wxT("  LEFT JOIN pg_namespace nsrw ON cl.relnamespace=nsrw.oid\n")
         wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
         wxT("  LEFT JOIN pg_namespace ns ON dep.objid=ns.oid\n")
         + where, wxT("classid"));

@@ -63,12 +63,16 @@ pgObject *dlgConversion::GetObject()
 
 int dlgConversion::Go(bool modal)
 {
+    if (!connection->BackendMinimumVersion(7, 5))
+        txtComment->Disable();
+
     if (conversion)
     {
         // edit mode
         txtName->SetValue(conversion->GetName());
         txtOID->SetValue(NumToStr(conversion->GetOid()));
         txtOwner->SetValue(conversion->GetOwner());
+        txtComment->SetValue(conversion->GetComment());
         cbSourceEncoding->Append(conversion->GetForEncoding());
         cbSourceEncoding->SetSelection(0);
         cbTargetEncoding->Append(conversion->GetToEncoding());

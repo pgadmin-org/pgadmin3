@@ -67,7 +67,8 @@ void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
         properties->AppendItem(_("Function"), GetSchemaPrefix(GetProcNamespace()) + GetProc());
         properties->AppendItem(_("Default?"), GetDefaultConversion());
         properties->AppendItem(_("System conversion?"), GetSystemObject());
-
+        if (GetConnection()->BackendMinimumVersion(7, 5))
+            properties->AppendItem(_("Comment"), GetComment());
     }
 }
 
@@ -95,10 +96,11 @@ pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
 
         pgSet *conversions= collection->GetDatabase()->ExecuteSet(
             wxT("SELECT co.oid, co.*, pg_encoding_to_char(conforencoding) as forencoding, pg_get_userbyid(conowner) as owner,")
-            wxT("pg_encoding_to_char(contoencoding) as toencoding, proname, nspname\n")
+            wxT("pg_encoding_to_char(contoencoding) as toencoding, proname, nspname, description\n")
             wxT("  FROM pg_conversion co\n")
             wxT("  JOIN pg_proc pr ON pr.oid=conproc\n")
             wxT("  JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
+            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=co.oid AND des.objsubid=0\n")
             wxT(" WHERE connamespace = ") + collection->GetSchema()->GetOidStr()
             + restriction + wxT("\n")
             wxT(" ORDER BY conname"));
@@ -112,6 +114,7 @@ pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
 
             conversion->iSetOid(conversions->GetOid(wxT("oid")));
             conversion->iSetOwner(conversions->GetVal(wxT("owner")));
+            conversion->iSetComment(conversions->GetVal(wxT("description")));
             conversion->iSetForEncoding(conversions->GetVal(wxT("forencoding")));
             conversion->iSetToEncoding(conversions->GetVal(wxT("toencoding")));
             conversion->iSetProc(conversions->GetVal(wxT("proname")));

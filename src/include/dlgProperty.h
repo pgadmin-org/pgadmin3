@@ -25,6 +25,7 @@ class frmMain;
 
 #define txtName         CTRL_TEXT("txtName")
 #define txtOID          CTRL_TEXT("txtOID")
+#define stComment           CTRL_STATIC("stComment")
 #define txtComment      CTRL_TEXT("txtComment")
 #define lstColumns      CTRL_LISTVIEW("lstColumns")
 #define cbColumns       CTRL_COMBOBOX("cbColumns")

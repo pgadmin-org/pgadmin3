@@ -28,10 +28,26 @@ pgColumn::pgColumn(pgSchema *newSchema, const wxString& newName)
 {
     isFK=false;
     isPK=false;
+    isReferenced = -1;
 }
 
 pgColumn::~pgColumn()
 {
+}
+
+
+bool pgColumn::IsReferenced()
+{
+    if (isReferenced < 0)
+    {
+        isReferenced = (int)StrToLong(GetConnection()->ExecuteScalar(
+            wxT("SELECT COUNT(1) FROM pg_depend dep\n")
+            wxT("  JOIN pg_class cl ON dep.classid=cl.oid AND relname='pg_rewrite'\n")
+            wxT(" WHERE refobjid=") + GetTableOidStr()
+            + wxT(" AND refobjsubid=") + NumToStr(GetColNumber())));
+    }
+
+    return (isReferenced != 0);
 }
 
 

@@ -86,20 +86,23 @@ int dlgColumn::Go(bool modal)
         cbDatatype->Append(column->GetRawTypename());
         AddType(wxT("?"), column->GetAttTypId(), column->GetRawTypename());
 
-        pgSet *set=connection->ExecuteSet(
-            wxT("SELECT tt.oid, tt.typname\n")
-            wxT("  FROM pg_cast\n")
-            wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
-            wxT(" WHERE castsource=") + NumToStr(column->GetAttTypId()) + wxT("\n")
-            wxT("   AND castfunc=0"));
-
-        if (set)
+        if (!column->IsReferenced())
         {
-            while (!set->Eof())
+            pgSet *set=connection->ExecuteSet(
+                wxT("SELECT tt.oid, tt.typname\n")
+                wxT("  FROM pg_cast\n")
+                wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
+                wxT(" WHERE castsource=") + NumToStr(column->GetAttTypId()) + wxT("\n")
+                wxT("   AND castfunc=0"));
+
+            if (set)
             {
-                cbDatatype->Append(set->GetVal(wxT("typname")));
-                AddType(wxT("?"), set->GetOid(wxT("oid")), set->GetVal(wxT("typname")));
-                set->MoveNext();
+                while (!set->Eof())
+                {
+                    cbDatatype->Append(set->GetVal(wxT("typname")));
+                    AddType(wxT("?"), set->GetOid(wxT("oid")), set->GetVal(wxT("typname")));
+                    set->MoveNext();
+                }
             }
         }
         if (cbDatatype->GetCount() <= 1)
@@ -187,26 +190,42 @@ wxString dlgColumn::GetSql()
                     +  wxT("  TO ") + qtIdent(name)
                     +  wxT(";\n");
 
-            wxString sqlPart;
-            if (cbDatatype->GetCount() > 1 && cbDatatype->GetValue() != column->GetRawTypename())
-                sqlPart = wxT("atttypid=") + GetTypeOid(cbDatatype->GetSelection());
-
-
-            if (!sqlPart.IsEmpty() || 
-                (isVarLen && StrToLong(txtLength->GetValue()) != column->GetLength()) ||
-                (isVarPrec && StrToLong(txtPrecision->GetValue()) != column->GetPrecision()))
+            if (connection->BackendMinimumVersion(7, 5))
             {
-                long typmod = pgDatatype::GetTypmod(column->GetRawTypename(), txtLength->GetValue(), txtPrecision->GetValue());
-
-                if (!sqlPart.IsEmpty())
-                    sqlPart += wxT(", ");
-                sqlPart += wxT("atttypmod=") + NumToStr(typmod);
+                if (cbDatatype->GetValue() != column->GetRawTypename() || 
+                    (isVarLen && StrToLong(txtLength->GetValue()) != column->GetLength()) ||
+                    (isVarPrec && StrToLong(txtPrecision->GetValue()) != column->GetPrecision()))
+                {
+                    sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                        +  wxT(" ALTER ") + qtIdent(name) + wxT(" TYPE ")
+                        +  GetQuotedTypename(cbDatatype->GetSelection());
+                }
             }
-            if (!sqlPart.IsEmpty())
-                sql += wxT("UPDATE pg_attribute\n")
-                       wxT("   SET ") + sqlPart + wxT("\n")
-                       wxT(" WHERE attrelid=") + table->GetOidStr() +
-                       wxT(" AND attnum=") + NumToStr(column->GetColNumber()) + wxT(";\n");
+            else
+            {
+                wxString sqlPart;
+                if (cbDatatype->GetCount() > 1 && cbDatatype->GetValue() != column->GetRawTypename())
+                    sqlPart = wxT("atttypid=") + GetTypeOid(cbDatatype->GetSelection());
+
+
+                if (!sqlPart.IsEmpty() || 
+                    (isVarLen && StrToLong(txtLength->GetValue()) != column->GetLength()) ||
+                    (isVarPrec && StrToLong(txtPrecision->GetValue()) != column->GetPrecision()))
+                {
+                    long typmod = pgDatatype::GetTypmod(column->GetRawTypename(), txtLength->GetValue(), txtPrecision->GetValue());
+
+                    if (!sqlPart.IsEmpty())
+                        sqlPart += wxT(", ");
+                    sqlPart += wxT("atttypmod=") + NumToStr(typmod);
+                }
+                if (!sqlPart.IsEmpty())
+                {
+                    sql += wxT("UPDATE pg_attribute\n")
+                           wxT("   SET ") + sqlPart + wxT("\n")
+                           wxT(" WHERE attrelid=") + table->GetOidStr() +
+                           wxT(" AND attnum=") + NumToStr(column->GetColNumber()) + wxT(";\n");
+                }
+            }
 
             if (txtDefault->GetValue() != column->GetDefault())
             {
@@ -376,12 +395,16 @@ void dlgColumn::OnChange(wxCommandEvent &ev)
         bool enable=true;
         EnableOK(enable);   // to get rid of old messages
 
-        CheckValid(enable, !isVarLen || !txtLength->GetValue().IsEmpty() || varlen >= column->GetLength(), 
-                _("New length must not be less than old length."));
-        CheckValid(enable, !txtPrecision->IsEnabled() || varprec >= column->GetPrecision(), 
-                _("New precision must not be less than old precision."));
-        CheckValid(enable, !txtPrecision->IsEnabled() || varlen-varprec >= column->GetLength()-column->GetPrecision(), 
-                _("New total digits must not be less than old total digits."));
+        if (!connection->BackendMinimumVersion(7, 5))
+        {
+            CheckValid(enable, !isVarLen || !txtLength->GetValue().IsEmpty() || varlen >= column->GetLength(), 
+                    _("New length must not be less than old length."));
+
+            CheckValid(enable, !txtPrecision->IsEnabled() || varprec >= column->GetPrecision(), 
+                    _("New precision must not be less than old precision."));
+            CheckValid(enable, !txtPrecision->IsEnabled() || varlen-varprec >= column->GetLength()-column->GetPrecision(), 
+                    _("New total digits must not be less than old total digits."));
+        }
 
         
         if (enable)

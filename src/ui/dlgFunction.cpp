@@ -399,15 +399,8 @@ wxString dlgFunction::GetSql()
         sql += wxT(";\n");
     }
 
-    wxString comment=txtComment->GetValue();
-    if ((function && function->GetComment() != comment) 
-        || (!function && !comment.IsEmpty()))
-    {
-        sql += wxT("COMMENT ON FUNCTION ") + name 
-            + wxT(" IS ") + qtString(comment)
-            + wxT(";\n");
-    }
     sql += GetGrant(wxT("-"), wxT("FUNCTION ") + name);
+    AppendComment(sql, wxT("FUNCTION ") + name, function);
 
     if (function && GetName() != function->GetName())
         sql += wxT("ALTER FUNCTION ") + name 

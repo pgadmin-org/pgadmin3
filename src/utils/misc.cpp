@@ -286,6 +286,55 @@ wxString qtIdent(const wxString& value)
     return result;
 }
 
+
+void FillArray(wxArrayString &array, const wxString &list)
+{
+    const wxChar *cp=list.c_str();
+
+    wxString str;
+    bool quote=false;
+    
+    while (*cp)
+    {
+        switch (*cp)
+        {
+            case '\\':
+            {
+                if (cp[1]== '"')
+                {
+                    cp++;
+                    str.Append(*cp);
+                }
+                break;
+            }
+            case '"':
+            case '\'':
+            {
+                quote = !quote;
+                break;
+            }
+            case ',':
+            {
+                if (!quote)
+                {
+                    array.Add(str);
+                    str=wxEmptyString;
+                    break;
+                }
+            }
+            default:
+            {
+                str.Append(*cp);
+                break;
+            }
+        }
+        cp++;
+    }
+    if (!str.IsEmpty())
+        array.Add(str);
+}
+
+
 // Keith 2003.03.11
 // We need an identifier validation function
 bool IsValidIdentifier(wxString ident)

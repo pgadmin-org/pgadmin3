@@ -66,6 +66,8 @@ void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
         properties->AppendItem(_("Handler"), GetHandlerProc());
         properties->AppendItem(_("Validator"), GetValidatorProc());
         properties->AppendItem(_("System language?"), GetSystemObject());
+        if (GetConnection()->BackendMinimumVersion(7, 5))
+            properties->AppendItem(_("Comment"), GetComment());
     }
 }
 
@@ -90,14 +92,15 @@ pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 {
     pgLanguage *language=0;
 
-        pgSet *languages= collection->GetDatabase()->ExecuteSet(
-       wxT("SELECT lan.oid, lan.lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval\n")
-       wxT("  FROM pg_language lan\n")
-       wxT("  JOIN pg_proc hp on hp.oid=lanplcallfoid\n")
-       wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n")
-       wxT(" WHERE lanispl IS TRUE")
-       + restriction + wxT("\n")
-       wxT(" ORDER BY lanname"));
+    pgSet *languages= collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT lan.oid, lan.lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval, description\n")
+        wxT("  FROM pg_language lan\n")
+        wxT("  JOIN pg_proc hp on hp.oid=lanplcallfoid\n")
+        wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=lan.oid AND des.objsubid=0\n")
+        wxT(" WHERE lanispl IS TRUE")
+        + restriction + wxT("\n")
+        wxT(" ORDER BY lanname"));
 
     if (languages)
     {
@@ -108,6 +111,7 @@ pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             language->iSetDatabase(collection->GetDatabase());
             language->iSetOid(languages->GetOid(wxT("oid")));
             language->iSetAcl(languages->GetVal(wxT("lanacl")));
+            language->iSetComment(languages->GetVal(wxT("description")));
             language->iSetHandlerProc(languages->GetVal(wxT("lanproc")));
             language->iSetValidatorProc(languages->GetVal(wxT("lanval")));
             language->iSetTrusted(languages->GetBool(wxT("lanpltrusted")));

@@ -33,8 +33,6 @@ public:
     bool GetSystemObject() const { return userId < 100; }
     long GetUserId() const { return userId; }
     void iSetUserId(const long l) { userId=l; }
-    wxString GetConfigList() const { return configList; }
-    void iSetConfigList(const wxString& s) { configList=s; }
     wxDateTime GetAccountExpires() const { return accountExpires; }
     void iSetAccountExpires(const wxDateTime & dt) { accountExpires=dt; }
     wxString GetPassword() const { return password; }
@@ -46,6 +44,7 @@ public:
     bool GetUpdateCatalog() const { return updateCatalog; }
     void iSetUpdateCatalog(const bool b) { updateCatalog=b; }
     wxArrayString& GetGroupsIn() { return groupsIn; }
+    wxArrayString& GetConfigList() { return configList; }
 
 
     // Tree object creation
@@ -59,10 +58,11 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
 
 private:
-    wxString password, configList;
+    wxString password;
     wxDateTime accountExpires;
     bool createDatabase, superuser, updateCatalog;
     wxArrayString groupsIn;
+    wxArrayString configList;
     long userId;
 };
 

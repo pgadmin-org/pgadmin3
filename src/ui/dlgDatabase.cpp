@@ -79,11 +79,12 @@ int dlgDatabase::Go(bool modal)
         // edit mode
 
         readOnly = !database->GetServer()->GetCreatePrivilege();
-        wxStringTokenizer cfgTokens(database->GetVariables(), wxT(","));
-        while (cfgTokens.HasMoreTokens())
+
+        size_t i;
+        for (i=0 ; i < database->GetVariables().GetCount() ; i++)
         {
-            wxString token=cfgTokens.GetNextToken();
-            AppendListItem(lstVariables, token.BeforeFirst('='), token.AfterFirst('='), 0);
+            wxString item=database->GetVariables().Item(i);
+            AppendListItem(lstVariables, item.BeforeFirst('='), item.AfterFirst('='), 0);
         }
 
         txtName->SetValue(database->GetName());
@@ -287,9 +288,9 @@ wxString dlgDatabase::GetSql()
 
         wxArrayString vars;
 
-        wxStringTokenizer cfgTokens(database->GetVariables(), wxT(","));
-        while (cfgTokens.HasMoreTokens())
-            vars.Add(cfgTokens.GetNextToken());
+        size_t index;
+        for (index = 0 ; index < database->GetVariables().GetCount() ; index++)
+            vars.Add(database->GetVariables().Item(index));
 
         int cnt=lstVariables->GetItemCount();
         int pos;
@@ -302,8 +303,7 @@ wxString dlgDatabase::GetSql()
 
             wxString oldVal;
 
-            int index;
-            for (index=0 ; index < (int)vars.GetCount() ; index++)
+            for (index=0 ; index < vars.GetCount() ; index++)
             {
                 wxString var=vars.Item(index);
                 if (var.BeforeFirst('=').IsSameAs(newVar, false))

@@ -49,10 +49,6 @@ dlgCast::dlgCast(frmMain *frame, pgCast *node)
 
     txtName->Disable();
     txtOID->Disable();
-
-    // at the moment, no Comment on casts
-    stComment->Hide();
-    txtComment->Hide();
 }
 
 
@@ -64,11 +60,16 @@ pgObject *dlgCast::GetObject()
 
 int dlgCast::Go(bool modal)
 {
+
+    if (!connection->BackendMinimumVersion(7, 5))
+        txtComment->Disable();
+
     if (cast)
     {
         // edit mode
         txtName->SetValue(cast->GetName());
         txtOID->SetValue(NumToStr(cast->GetOid()));
+        txtComment->SetValue(cast->GetComment());
         cbSourceType->Append(cast->GetSourceType());
         cbSourceType->SetSelection(0);
         cbSourceType->Disable();
@@ -111,7 +112,7 @@ void dlgCast::OnChange(wxCommandEvent &ev)
 {
     if (cast)
     {
-        btnOK->Enable(txtComment->GetValue() != cast->GetComment());
+        EnableOK(txtComment->GetValue() != cast->GetComment());
     }
     else
     {
@@ -192,7 +193,8 @@ wxString dlgCast::GetSql()
         sql += wxT(";\n");
 
     }
-    AppendComment(sql, wxT("CAST"), 0, cast);
+    AppendComment(sql, wxT("CAST (") + cbSourceType->GetValue()
+                       + wxT(" AS ") + cbTargetType->GetValue() + wxT(")"), cast);
 
     return sql;
 }

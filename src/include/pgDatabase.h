@@ -30,7 +30,7 @@ public:
 
     int GetIcon() { return PGICON_DATABASE; }
     pgDatabase *GetDatabase() const { return (pgDatabase*)this; }
-    bool BackendMinimumVersion(int major, int minor) { return conn->BackendMinimumVersion(major, minor); }
+    bool BackendMinimumVersion(int major, int minor) { return connection()->BackendMinimumVersion(major, minor); }
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
@@ -48,14 +48,13 @@ public:
     void iSetPath(const wxString& newVal) { path = newVal; }
     wxString GetEncoding() const { return encoding; }
     void iSetEncoding(const wxString& newVal) { encoding = newVal; }
-    wxString GetVariables() const { return variables; }
-    void iSetVariables(const wxString& newVal) { variables = newVal; }
+    wxArrayString& GetVariables() { return variables; }
     bool GetAllowConnections() const { return allowConnections; }
     void iSetAllowConnections(bool newVal) { allowConnections = newVal; }
     wxString GetSearchPath() const { return searchPath; }
     wxString GetSchemaPrefix(const wxString &schemaname) const;
     wxString GetQuotedSchemaPrefix(const wxString &schemaname) const;
-    bool GetConnected() const { return conn != 0; }
+    bool GetConnected() { return (connection() != 0); }
     bool GetSystemObject() const;
     long GetMissingFKs() const { return missingFKs; }
     
@@ -78,10 +77,11 @@ private:
     pgConn *conn;
     bool connected;
     bool useServerConnection;
-    wxString searchPath, path, encoding, variables;
+    wxString searchPath, path, encoding;
     wxString prettyOption;
     bool allowConnections, createPrivilege;
     long missingFKs;
+    wxArrayString variables;
 
     wxString schemaChanges;
 };

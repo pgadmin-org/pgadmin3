@@ -254,10 +254,11 @@ wxString pgDatabase::GetSql(wxTreeCtrl *browser)
             + wxT("-- DROP DATABASE ") + GetQuotedIdentifier() + wxT(";")
             + wxT("\n\nCREATE DATABASE ") + GetQuotedIdentifier()
             + wxT("\n  WITH ENCODING = ") + qtString(GetEncoding()) + wxT(";\n");
-        wxStringTokenizer vars(GetVariables());
-        while (vars.HasMoreTokens())
+
+        size_t i;
+        for (i=0 ; i < variables.GetCount() ; i++)
             sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
-                +  wxT(" SET ") + vars.GetNextToken() + wxT(";\n");
+                +  wxT(" SET ") + variables.Item(i) + wxT(";\n");
         sql += GetGrant(wxT("CT"))
             +  GetCommentSql();
     }
@@ -323,11 +324,12 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
         if (!GetPath().IsEmpty())
             properties->AppendItem(_("Path"), GetPath());
         properties->AppendItem(_("Encoding"), GetEncoding());
-        wxStringTokenizer vars(GetVariables());
-        while (vars.HasMoreTokens())
+
+        size_t i;
+        for (i=0 ; i < variables.GetCount() ; i++)
         {
-            wxString str=vars.GetNextToken();
-            properties->AppendItem(str.BeforeFirst('='), str.AfterFirst('='));
+            wxString item=variables.Item(i);
+            properties->AppendItem(item.BeforeFirst('='), item.AfterFirst('='));
         }
         properties->AppendItem(_("Allow connections?"), GetAllowConnections());
         properties->AppendItem(_("Connected?"), GetConnected());
@@ -354,7 +356,10 @@ pgObject *pgDatabase::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
             {
                 sql=wxT("");
                 iSetAcl(database->GetAcl());
-                iSetVariables(database->GetVariables());
+                size_t i;
+                for (i=0 ; i < database->GetVariables().GetCount() ; i++)
+                    variables.Add(database->GetVariables().Item(i));
+
                 iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
                 delete database;
             }
@@ -390,7 +395,7 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             database->iSetCreatePrivilege(databases->GetBool(wxT("cancreate")));
             wxString str=databases->GetVal(wxT("datconfig"));
             if (!str.IsEmpty())
-                database->iSetVariables(str.Mid(1, str.Length()-2));
+                FillArray(database->GetVariables(), str.Mid(1, str.Length()-2));
             database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));
 
             // Add the treeview node if required

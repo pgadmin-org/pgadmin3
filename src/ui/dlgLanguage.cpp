@@ -33,6 +33,7 @@
 BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgLanguage::OnChange)
     EVT_TEXT(XRCID("cbHandler"),                    dlgLanguage::OnChange)
+    EVT_TEXT(XRCID("txtComment"),                   dlgLanguage::OnChange)
 END_EVENT_TABLE();
 
 
@@ -54,6 +55,9 @@ pgObject *dlgLanguage::GetObject()
 
 int dlgLanguage::Go(bool modal)
 {
+    if (!connection->BackendMinimumVersion(7, 5))
+        txtComment->Disable();
+
     AddGroups();
     AddUsers();
     if (language)
@@ -61,6 +65,7 @@ int dlgLanguage::Go(bool modal)
         // edit mode
         txtName->SetValue(language->GetName());
         txtOID->SetValue(NumToStr((long)language->GetOid()));
+        txtComment->SetValue(language->GetComment());
         chkTrusted->SetValue(language->GetTrusted());
         cbHandler->Append(language->GetHandlerProc());
         cbHandler->SetSelection(0);
@@ -119,6 +124,7 @@ void dlgLanguage::OnChange(wxCommandEvent &ev)
 {
     if (language)
     {
+        EnableOK(txtComment->GetValue() != language->GetComment());
     }
     else
     {
@@ -155,6 +161,7 @@ wxString dlgLanguage::GetSql()
     }
 
     sql += GetGrant(wxT("-"), wxT("LANGUAGE ") + name);
+    AppendComment(sql, wxT("LANGUAGE"), 0, language);
 
     return sql;
 }

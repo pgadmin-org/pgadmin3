@@ -66,16 +66,13 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
         if (GetAccountExpires().IsValid())
         AppendIfFilled(sql, wxT(" VALID UNTIL "), qtString(DateToAnsiStr(GetAccountExpires())));
         sql +=wxT(";\n");
-        if (!configList.IsEmpty())
+
+        size_t index;
+        for (index=0 ; index < configList.GetCount() ; index++)
         {
-            wxStringTokenizer cfgTokens(configList, wxT(","));
-            while (cfgTokens.HasMoreTokens())
-            {
-                sql += wxT("ALTER USER ") + GetQuotedIdentifier()
-                    + wxT(" SET ") + cfgTokens.GetNextToken() + wxT(";\n");
-            }
+            sql += wxT("ALTER USER ") + GetQuotedIdentifier()
+                + wxT(" SET ") + configList.Item(index) + wxT(";\n");
         }
-        unsigned index;
         for (index=0 ; index < groupsIn.GetCount() ; index++)
             sql += wxT("ALTER GROUP ") + qtIdent(groupsIn.Item(index))
                 +  wxT(" ADD USER ") + GetQuotedIdentifier() + wxT(";\n");
@@ -130,7 +127,7 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
         wxString groupList;
 
-        unsigned index;
+        size_t index;
         for (index=0 ; index < groupsIn.GetCount() ; index++)
         {
             if (!groupList.IsEmpty())
@@ -139,11 +136,10 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
         }
         properties->AppendItem(wxT("Member of"), groupList);
 
-        wxStringTokenizer cfgTokens(configList, wxT(","));
-        while (cfgTokens.HasMoreTokens())
+        for (index=0; index < configList.GetCount() ; index++)
         {
-            wxString token=cfgTokens.GetNextToken();
-            properties->AppendItem(token.BeforeFirst('='), token.AfterFirst('='));
+            wxString item=configList.Item(index);
+            properties->AppendItem(item.BeforeFirst('='), item.AfterFirst('='));
         }
     }
 }
@@ -192,9 +188,10 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             user->iSetUpdateCatalog(users->GetBool(wxT("usecatupd")));
             user->iSetAccountExpires(users->GetDateTime(wxT("valuntil")));
             user->iSetPassword(users->GetVal(wxT("passwd")));
-            wxString str=users->GetVal(wxT("useconfig"));
-            if (!str.IsEmpty())
-                user->iSetConfigList(str.Mid(1, str.Length()-2));
+
+            wxString cfg=users->GetVal(wxT("useconfig"));
+            if (!cfg.IsEmpty())
+                FillArray(user->GetConfigList(), cfg.Mid(1, cfg.Length()-2));
 
             if (browser)
             {

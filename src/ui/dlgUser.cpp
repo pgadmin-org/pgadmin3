@@ -115,11 +115,11 @@ int dlgUser::Go(bool modal)
         txtName->Disable();
         txtID->Disable();
 
-        wxStringTokenizer cfgTokens(user->GetConfigList(), wxT(","));
-        while (cfgTokens.HasMoreTokens())
+        size_t index;
+        for (index = 0 ; index < user->GetConfigList().GetCount() ; index++)
         {
-            wxString token=cfgTokens.GetNextToken();
-            AppendListItem(lstVariables, token.BeforeFirst('='), token.AfterFirst('='), 0);
+            wxString item=user->GetConfigList().Item(index);
+            AppendListItem(lstVariables, item.BeforeFirst('='), item.AfterFirst('='), 0);
         }
 
         timValidUntil->Enable(!readOnly && user->GetAccountExpires().IsValid());
@@ -382,11 +382,11 @@ wxString dlgUser::GetSql()
             sql = wxT("ALTER USER ") + user->GetQuotedFullIdentifier() + sql + wxT(";\n");
 
 
-        wxArrayString vars;
 
-        wxStringTokenizer cfgTokens(user->GetConfigList(), wxT(","));
-        while (cfgTokens.HasMoreTokens())
-            vars.Add(cfgTokens.GetNextToken());
+        wxArrayString vars;
+        size_t index;
+        for (index = 0 ; index < user->GetConfigList().GetCount() ; index++)
+            vars.Add(user->GetConfigList().Item(index));
 
         int cnt=lstVariables->GetItemCount();
         int pos;
@@ -399,8 +399,7 @@ wxString dlgUser::GetSql()
 
             wxString oldVal;
 
-            int index;
-            for (index=0 ; index < (int)vars.GetCount() ; index++)
+            for (index=0 ; index < vars.GetCount() ; index++)
             {
                 wxString var=vars.Item(index);
                 if (var.BeforeFirst('=').IsSameAs(newVar, false))

@@ -101,6 +101,9 @@ bool IsValidIdentifier(wxString ident);
 void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &what);
 
 
+// Fill array, splitting the string separated by commas (maybe quoted elements)
+void FillArray(wxArrayString &array, const wxString &str);
+
 // splitting of strings, obeying quotes
 class queryTokenizer : public wxStringTokenizer
 {

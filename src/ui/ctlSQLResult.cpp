@@ -52,7 +52,22 @@ bool ctlSQLResult::Export()
 int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
 {
     Abort();
+
+    colSizes.Empty();
+    colHeaders.Empty();
+    int i;
+    wxListItem item;
+    item.SetMask(wxLIST_MASK_TEXT|wxLIST_MASK_WIDTH);
+
+    for (i=0 ; i < GetColumnCount() ; i++)
+    {
+        GetColumn(i, item);
+        colHeaders.Add(item.GetText());
+        colSizes.Add(item.GetWidth());
+    }
+
     ClearAll();
+
     rowsRetrieved=0;
     colNames.Empty();
     colTypes.Empty();
@@ -94,10 +109,15 @@ int ctlSQLResult::RetrieveOne()
     if (!rowsRetrieved)
     {
         int w, h;
-        GetSize(&w, &h);
+        if (colSizes.GetCount() == 1)
+            w = colSizes.Item(0);
+        else
+            GetSize(&w, &h);
+
         colNames.Add(thread->DataSet()->ColName(0));
         colTypes.Add(wxT(""));
         colTypClasses.Add(0L);
+
 
         InsertColumn(0, thread->DataSet()->ColName(0), wxLIST_FORMAT_LEFT, w);
 
@@ -132,6 +152,8 @@ int ctlSQLResult::Retrieve(long chunk)
         InsertColumn(0, _("Row"), wxLIST_FORMAT_RIGHT, 30);
         colNames.Add(wxT("Row"));
 
+        size_t hdrIndex=0;
+
         for (col=0 ; col < nCols ; col++)
         {
             colName = thread->DataSet()->ColName(col);
@@ -140,7 +162,23 @@ int ctlSQLResult::Retrieve(long chunk)
             colTypes.Add(colType);
             colTypClasses.Add(thread->DataSet()->ColTypClass(col));
 
-            InsertColumn(col+1, colName +wxT(" (")+ colType +wxT(")"), wxLIST_FORMAT_LEFT, -1);
+            wxString colHeader=colName +wxT(" (")+ colType +wxT(")");
+
+            int w;
+            if (hdrIndex < colHeaders.GetCount() && colHeaders.Item(hdrIndex) == colHeader)
+                w = colSizes.Item(hdrIndex++);
+            else
+            {
+                if (hdrIndex+1 < colHeaders.GetCount() && colHeaders.Item(hdrIndex+1) == colHeader)
+                {
+                    hdrIndex++;
+                    w = colSizes.Item(hdrIndex++);
+                }
+                else
+                    w=-1;
+            }
+
+            InsertColumn(col+1, colHeader, wxLIST_FORMAT_LEFT, w);
         }
     }
 
