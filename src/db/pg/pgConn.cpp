@@ -14,8 +14,13 @@
 // PostgreSQL headers
 #include <libpq-fe.h>
 
-// Windows headers
-#include <winsock.h>
+// Network  headers
+#ifdef __WXMSW__
+    #include <winsock.h>
+#else
+    #include <arpa/inet.h>
+    #include <netdb.h>
+#endif
 
 // App headers
 #include "pgConn.h"
@@ -29,27 +34,34 @@ pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxStr
 
     // Check the hostname/ipaddress
     struct hostent *heHost;
-	unsigned long lIPAddr;
+    unsigned long lIPAddr;
+    
+#ifdef __WXMSW__
     struct in_addr saAddr;
-
+#else
+    unsigned long saAddr;
+#endif
+    
+    
     lIPAddr = inet_addr(szServer.c_str());
 	if (lIPAddr == INADDR_NONE) // szServer is not an IP address
 	{
 		heHost = gethostbyname(szServer.c_str());
 		if (heHost == NULL)
 		{
-            szMsg.Printf("Could not resolve hostname: %s", szServer);
+            szMsg.Printf("Could not resolve hostname: %s", szServer.c_str());
 			wxLogError(szMsg);
 			return;
 		}
 
         memcpy(&(saAddr),heHost->h_addr,heHost->h_length); 
-        szHost.Printf("%s", inet_ntoa(saAddr));
+        //szHost.Printf("%s", inet_ntoa(saAddr));
+	szHost.Printf("%s", inet_ntoa(*((struct in_addr*) heHost->h_addr_list[0])));
     } else {
         szHost = szServer;
     }
 
-    szMsg.Printf(wxT("Server name: %s resolved to: %s"), szServer, szHost);
+    szMsg.Printf(wxT("Server name: %s resolved to: %s"), szServer.c_str(), szHost.c_str());
     wxLogInfo(szMsg);
 
     // Create the connection string
@@ -72,13 +84,13 @@ pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxStr
     }
     if (iPort > 0) {
       szConn.Append(wxT(" port="));
-      szConn.Printf("%s%d", szConn, iPort);
+      szConn.Printf("%s%d", szConn.c_str(), iPort);
     }
     szConn.Trim(FALSE);
 
     // Open the connection
     szMsg.Clear();
-    szMsg.Printf(wxT("Opening connection with connection string: %s"), szConn);
+    szMsg.Printf(wxT("Opening connection with connection string: %s"), szConn.c_str());
     wxLogInfo(szMsg);
 
     objConn = PQconnectdb(szConn.c_str());
@@ -99,7 +111,7 @@ int pgConn::ExecuteVoid(const wxString& szSQL)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxString szMsg;
-    szMsg.Printf(wxT("Executing void query: %s"), szSQL);
+    szMsg.Printf(wxT("Executing void query: %s"), szSQL.c_str());
     wxLogInfo(szMsg);
     qryRes = PQexec(objConn, szSQL.c_str());
     int iRes = PQresultStatus(qryRes);
@@ -114,17 +126,17 @@ wxString pgConn::ExecuteScalar(const wxString& szSQL) const
     // Execute the query and get the status.
     PGresult *qryRes;
     wxString szMsg;
-    szMsg.Printf(wxT("Executing scalar query: %s"), szSQL);
+    szMsg.Printf(wxT("Executing scalar query: %s"), szSQL.c_str());
     wxLogInfo(szMsg);
     qryRes = PQexec(objConn, szSQL.c_str());
-    if (PQresultStatus(qryRes) != PGCONN_TUPLES_OK) {
+    if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
         return wxString("");
     }
 
     // Retrieve the query result and return it.
     wxString szResult;
     szResult.Printf("%s", PQgetvalue(qryRes, 0, 0));
-    szMsg.Printf(wxT("Query result: %s"), szResult);
+    szMsg.Printf(wxT("Query result: %s"), szResult.c_str());
     wxLogInfo(szMsg);
 
     // Cleanup & exit
@@ -137,7 +149,7 @@ pgSet *pgConn::ExecuteSet(const wxString& szSQL)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxString szMsg;
-    szMsg.Printf(wxT("Executing set query: %s"), szSQL);
+    szMsg.Printf(wxT("Executing set query: %s"), szSQL.c_str());
     wxLogInfo(szMsg);
     qryRes = PQexec(objConn, szSQL.c_str());
     pgSet *objSet = new pgSet(qryRes, objConn);
@@ -187,15 +199,17 @@ int pgConn::GetBackendPID()
 
 int pgConn::GetStatus()
 {
-  return PQstatus(objConn);
+	return PQstatus(objConn);
 }
 
 wxString pgConn::GetLastError() const
 {
-  return wxString(PQerrorMessage(objConn));
+	return wxString(PQerrorMessage(objConn));
 }
 
 wxString pgConn::GetServerVersion() const
 {
-  return ExecuteScalar(wxString("SELECT version();"));
+	wxString szSQL;
+    szSQL.Printf("SELECT version();");
+	return ExecuteScalar(szSQL);
 }

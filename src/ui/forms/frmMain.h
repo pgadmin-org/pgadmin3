@@ -41,7 +41,7 @@ private:
     wxToolBar *tlBar;
     wxTreeItemId itmServers;
     void OnAbout(wxCommandEvent& event);
-    void OnAddServer(wxCommandEvent& event);
+    void OnAddServer();
     void OnExit(wxCommandEvent& event);
     void OnUpgradeWizard(wxCommandEvent& event);
     void OnOptions(wxCommandEvent& event);

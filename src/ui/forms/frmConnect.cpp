@@ -47,12 +47,14 @@ frmConnect::~frmConnect()
 
 void frmConnect::OK()
 {
+	wxLogDebug("User clicked OK...");
     bCancelled = FALSE;
     this->Show(FALSE);
 }
 
 void frmConnect::Cancel()
 {
+	wxLogDebug("User clicked Cancel...");
     bCancelled = TRUE;
     this->Show(FALSE);
 }

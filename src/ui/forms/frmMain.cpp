@@ -297,7 +297,7 @@ void frmMain::OnOptions(wxCommandEvent& event)
     winOptions->Show(TRUE);
 }
 
-void frmMain::OnAddServer(wxCommandEvent& event)
+void frmMain::OnAddServer()
 {
     // Create a server object and connec it.
     pgServer *objServer = new pgServer(this);
@@ -311,10 +311,10 @@ void frmMain::OnAddServer(wxCommandEvent& event)
 
     } else if (iRes == PGCONN_BAD)  {
         wxString szMsg;
-        szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->cnMaster->GetLastError());
+        szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->cnMaster->GetLastError().c_str());
         wxLogError(wxT(szMsg));
         delete objServer;
-        OnAddServer(event);
+        OnAddServer();
 
     } else {
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
@@ -356,7 +356,7 @@ void frmMain::OnSelActivated(wxTreeEvent& event)
 
     switch (iType) {
         case PG_ADD_SERVER:
-            OnAddServer((wxCommandEvent) NULL);
+            OnAddServer();
             break;
 
         default:

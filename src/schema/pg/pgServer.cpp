@@ -46,6 +46,8 @@ int pgServer::Connect() {
     frmConnect *winConnect = new frmConnect(winParent);
     winConnect->Show(TRUE);
 
+	wxLogDebug("If you can see this in the log, but no button has been pressed, then the dialogue wasn't modal!");
+	
     if (winConnect->GetCancelled()) {
         delete winConnect;
         return PGCONN_ABORTED;
@@ -67,7 +69,7 @@ int pgServer::Connect() {
 wxString pgServer::GetIdentifier() const
 {
     wxString szID;
-    szID.Printf(wxT("%s:%d"), szServer, iPort);
+    szID.Printf(wxT("%s:%d"), szServer.c_str(), iPort);
     return wxString(szID);
 }
 

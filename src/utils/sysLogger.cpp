@@ -105,7 +105,7 @@ void sysLogger::WriteLog(const wxString& szMsg)
     extern sysSettings *objSettings;
     wxString szPID, szLogFile;
     szPID.Printf("%d", wxGetProcessId());
-    szLogFile.Printf("%s", objSettings->GetLogFile());
+    szLogFile.Printf("%s", objSettings->GetLogFile().c_str());
     szLogFile.Replace("%ID", szPID);
     wxFFile fpLog(szLogFile, "a");
     if (!fpLog.IsOpened()) {

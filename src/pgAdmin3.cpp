@@ -15,8 +15,10 @@
 #include <wx/app.h>
 #include <wx/xrc/xmlres.h>
 
-// Windows headers
-#include <winsock.h>
+#ifdef __WXMSW__
+  // Windows headers
+  #include <winsock.h>
+#endif
 
 // App headers
 #include "pgAdmin3.h"
@@ -106,7 +108,9 @@ int pgAdmin3::OnExit()
 {
     // Delete the settings object to ensure settings are saved.
     delete objSettings;
-    WSACleanup();
+#ifdef __WXMSW__
+	WSACleanup();
+#endif
     return 1;
 }
 

@@ -14,8 +14,13 @@
 // PostgreSQL headers
 #include <libpq-fe.h>
 
-// Windows headers
-#include <winsock.h>
+// Network headers
+#ifdef __WXMSW__
+    #include <winsock.h>
+#else
+    #include <arpa/inet.h>
+    #include <netdb.h>
+#endif
 
 // App headers
 #include "pgSet.h"
