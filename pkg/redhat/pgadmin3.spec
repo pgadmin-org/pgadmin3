@@ -47,7 +47,7 @@ mkdir -p %{buildroot}/%{_datadir}/applications
 #  --add-category X-Red-Hat-Base                                   \
 #  --add-category Application                                      \
 #  --add-category Development                                         \
-#  %{buildroot}/%{_datadir}/%{name}.desktop
+#  %{buildroot}/%{_datadir}/%{name}/%{name}.desktop
 
 %clean
 rm -rf %{buildroot}
