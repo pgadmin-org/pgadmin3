@@ -61,6 +61,7 @@ private:
 	wxImageList *browserImages, *statisticsImages, *propertiesImages;
     wxSplitterWindow *horizontal, *vertical;
 
+    void OnKeyDown(wxKeyEvent& event);
     void OnAbout(wxCommandEvent& event);
     void OnAddServer(wxCommandEvent &ev);
     void OnExit(wxCommandEvent& event);

@@ -55,6 +55,7 @@ private:
     void OnFind(wxCommandEvent& event);
     void OnUndo(wxCommandEvent& event);
     void OnRedo(wxCommandEvent& event);
+    void OnKeyDown(wxKeyEvent& event);
 
     void updateRecentFiles();
     void openLastFile();

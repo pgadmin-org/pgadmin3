@@ -35,6 +35,7 @@
 #include "images/query_cancel.xpm"
 
 
+
 BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_CLOSE(                      frmQuery::OnClose)
     EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
@@ -60,9 +61,11 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
     EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
     EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
-//    EVT_STC_CHANGE(CTL_SQLQUERY,    frmQuery::OnChange)
+    EVT_KEY_DOWN(                   frmQuery::OnKeyDown)
     EVT_STC_MODIFIED(CTL_SQLQUERY,    frmQuery::OnChange)
 END_EVENT_TABLE()
+
+
 
 
 frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxPoint& pos, const wxSize& size, const wxString& query)
@@ -104,18 +107,17 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     updateRecentFiles();
 
-#ifdef __WIN32__    
     wxAcceleratorEntry entries[6];
-    entries[0].Set(wxACCEL_ALT,     (int)'E',      MNU_EXECUTE);
-    entries[1].Set(wxACCEL_ALT,     (int)'X',      MNU_EXPLAIN);
-    entries[2].Set(wxACCEL_CTRL,    (int)'O',      MNU_OPEN);
-    entries[3].Set(wxACCEL_CTRL,    (int)'S',      MNU_SAVE);
-    entries[4].Set(wxACCEL_NORMAL,  WXK_F5,        MNU_EXECUTE);
-    entries[5].Set(wxACCEL_ALT,     WXK_PAUSE,     MNU_CANCEL);
+
+    entries[0].Set(wxACCEL_ALT,                 (int)'E',      MNU_EXECUTE);
+    entries[1].Set(wxACCEL_ALT,                 (int)'X',      MNU_EXPLAIN);
+    entries[2].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
+    entries[3].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
+    entries[4].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
+    entries[5].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
 
     wxAcceleratorTable accel(6, entries);
     SetAcceleratorTable(accel);
-#endif
 
     queryMenu->Enable(MNU_CANCEL, false);
 
@@ -200,11 +202,7 @@ void frmQuery::updateRecentFiles()
     for (i=1 ; i <= maxFiles ; i++)
     {
         lastFiles[i] = settings->Read(wxT("RecentFiles/") + wxString((char)('0'+i)), wxT(""));
-#ifdef __WIN32__
-        if (!lastPath.IsNull() && !lastPath.CmpNoCase(lastFiles[i]))
-#else
-        if (!lastPath.IsNull() && !lastPath.CompareTo(lastFiles[i]))
-#endif
+        if (!lastPath.IsNull() && lastPath.IsSameAs(lastFiles[i], wxARE_FILENAMES_CASE_SENSITIVE))
             recentIndex=i;
     }
     while (i <= maxFiles)
@@ -244,15 +242,19 @@ void frmQuery::OnRecent(wxCommandEvent& event)
     if (!lastPath.IsNull())
     {
         int dirsep;
-#ifdef __WIN32__
-        dirsep = lastPath.Find('\\', true);
-#else
-        dirsep = lastPath.Find('/', true);
-#endif
+        dirsep = lastPath.Find(wxFILE_SEP_PATH, true);
         lastDir = lastPath.Mid(0, dirsep);
         lastFilename = lastPath.Mid(dirsep+1);
         openLastFile();
     }
+}
+
+
+
+void frmQuery::OnKeyDown(wxKeyEvent& event)
+{
+    event.m_metaDown=false;
+    event.Skip();
 }
 
 
@@ -554,10 +556,13 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
 
                 if (chp > 0)
                 {
-                    chp -= queryOffset;  // do not count EXPLAIN or similar
                     int selStart=sqlQuery->GetSelectionStart(), selEnd=sqlQuery->GetSelectionEnd();
+                    if (selStart == selEnd)
+                        selStart=0;
+
                     long errPos=0;
                     errMsg.Mid(chp+atChar.Length()).ToLong(&errPos);
+                    errPos += queryOffset;  // do not count EXPLAIN or similar
                     int line=0, maxLine = sqlQuery->GetLineCount();
                     while (line < maxLine && sqlQuery->GetLineEndPosition(line) < errPos + selStart+1)
                         line++;
@@ -624,11 +629,11 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                     elapsed = wxGetLocalTimeMillis() - startTimeRetrieve;
 
                     if (!rowsReadTotal)
-		    {
+		            {
                         wxYield();
-			if (rowsRead < maxRows)
-			    sqlResult->Freeze();
-		    }
+			            if (rowsRead < maxRows)
+			            sqlResult->Freeze();
+		            }
                     rowsReadTotal += rowsRead;
 
                     if (elapsed > elapsedRetrieve +100)
@@ -638,7 +643,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                         wxYield();
                     }
                 }
-		sqlResult->Thaw();
+	        	sqlResult->Thaw();
 
                 elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
                 SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
@@ -659,7 +664,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                 SetStatusText(NumToStr(rowsTotal) + wxT(" rows"), STATUSPOS_ROWS);
             else
                 SetStatusText(NumToStr(rowsReadTotal) + wxT(" of ") + NumToStr(rowsTotal) + wxT(" rows"), STATUSPOS_ROWS);
-            }
+        }
     }
 
     setTools(false);

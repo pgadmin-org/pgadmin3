@@ -174,10 +174,11 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     SetStatusText(wxT("Ready."), 1);
     SetStatusText(wxT("0 Secs"), 2);
 
-
-    wxAcceleratorEntry entries[1];
+    wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_NORMAL, WXK_F5, MNU_REFRESH);
-    wxAcceleratorTable accel(1, entries);
+    entries[0].Set(wxACCEL_ALT,    WXK_F5, MNU_REFRESH);
+    wxAcceleratorTable accel(2, entries);
+
     SetAcceleratorTable(accel);
 
 

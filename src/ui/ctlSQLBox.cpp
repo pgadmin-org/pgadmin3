@@ -16,6 +16,14 @@
 #include "pgAdmin3.h"
 #include "ctlSQLBox.h"
 
+
+
+
+BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
+    EVT_KEY_DOWN(ctlSQLBox::OnKeyDown)
+END_EVENT_TABLE()
+
+
 ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 : wxStyledTextCtrl(parent,id , pos, size, style)
 {
@@ -66,6 +74,14 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const 
 
     
 }
+
+
+void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
+{
+    event.m_metaDown=false;
+    event.Skip();
+}
+
 
 ctlSQLBox::~ctlSQLBox()
 {

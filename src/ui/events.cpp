@@ -68,15 +68,25 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_TREE_ITEM_ACTIVATED(CTL_BROWSER,    frmMain::OnSelActivated)
     EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER,  frmMain::OnSelRightClick) 
     EVT_CLOSE(                              frmMain::OnClose)
+    EVT_KEY_DOWN(                           frmMain::OnKeyDown)
 END_EVENT_TABLE()
 
 
 
 // Event handlers
+void frmMain::OnKeyDown(wxKeyEvent& event)
+{
+    event.m_metaDown=false;
+    event.Skip();
+}
+
+
 void frmMain::OnExit(wxCommandEvent& WXUNUSED(event))
 {
     Close(FALSE);   // Allow sub windows to stop us
 }
+
+
 
 void frmMain::OnClose(wxCloseEvent& event)
 {
