@@ -52,7 +52,7 @@ wxString pgConversion::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {

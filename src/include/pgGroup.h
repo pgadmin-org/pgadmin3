@@ -41,7 +41,7 @@ public:
     wxArrayString& GetUsersIn() { return usersIn; }
 
     int GetIcon() { return PGICON_GROUP; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlListView *statistics=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);

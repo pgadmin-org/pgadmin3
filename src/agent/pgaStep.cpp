@@ -41,7 +41,7 @@ bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 }
 
 
-void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {

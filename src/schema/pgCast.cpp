@@ -53,7 +53,7 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {

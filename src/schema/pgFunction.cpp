@@ -101,7 +101,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {

@@ -112,7 +112,7 @@ wxString pgColumn::GetDefinition()
 }
 
 
-void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -191,8 +191,11 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         properties->AppendItem(_("System column?"), GetSystemObject());
         properties->AppendItem(_("Comment"), GetComment());
     }
+}
 
-    // statistic 
+
+void pgColumn::ShowStatistics(ctlListView *statistics)
+{
     DisplayStatistics(statistics,
         wxT("SELECT null_frac AS ") + qtIdent(_("Null Fraction")) +
              wxT(", avg_width AS ") + qtIdent(_("Average Width")) +
@@ -206,7 +209,6 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         wxT("   AND tablename = ") + qtString(GetTableName()) + wxT("\n")
         wxT("   AND attname = ") + qtString(GetName()));
 }
-
 
 
 pgObject *pgColumn::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)

@@ -94,7 +94,7 @@ wxString pgForeignKey::GetFullName() const
     return GetName() + wxT(" -> ") + GetReferences();
 }
 
-void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {

@@ -109,6 +109,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_NEW+PGA_STEP,              frmMain::OnNew)
     EVT_MENU(MNU_NEW+PGA_SCHEDULE,          frmMain::OnNew)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
+    EVT_NOTEBOOK_PAGE_CHANGED(CTL_NOTEBOOK, frmMain::OnPageChange)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER,       frmMain::OnTreeSelChanged)
     EVT_TREE_ITEM_EXPANDING(CTL_BROWSER,    frmMain::OnExpand)
@@ -586,9 +587,6 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
     properties->ClearAll();
     properties->AddColumn(_("Properties"), 500);
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
-    statistics->ClearAll();
-    statistics->AddColumn(_("Statistics"), 500);
-    statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
     sqlPane->Clear();
 
     // Reset the toolbar & password menu options
@@ -608,16 +606,16 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
     {
         properties->Freeze();
         statistics->Freeze();
-        setDisplay(data, properties, statistics, sqlPane);
+        setDisplay(data, properties, sqlPane);
         properties->Thaw();
         statistics->Thaw();
     }
     else
-        setDisplay(data, 0, 0, 0);
+        setDisplay(data, 0, 0);
 }
 
 
-void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlListView *stats, ctlSQLBox *sqlbox)
+void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 {
     data->RemoveDummyChild(browser);
 
@@ -645,7 +643,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlListView *stats,
                 canDisconnect=true;
                 canReindex=true;
             }
-            data->ShowTree(this, browser, props, stats, sqlbox);
+            data->ShowTree(this, browser, props, sqlbox);
             EndMsg();
             break;
 
@@ -653,7 +651,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlListView *stats,
         case PG_TRIGGERFUNCTION:
         {
             canReload=((pgFunction*)data)->CanReload();
-            data->ShowTree(this, browser, props, stats, sqlbox);
+            data->ShowTree(this, browser, props, sqlbox);
             break;
         }
         case PG_DATABASES:
@@ -705,11 +703,12 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlListView *stats,
         case PGA_JOB:
         case PGA_STEP:
         case PGA_SCHEDULE:
-            data->ShowTree(this, browser, props, stats, sqlbox);
+            data->ShowTree(this, browser, props, sqlbox);
             break;
         default:        
 			break;
     }
+
     if (sqlbox)
     {
         sqlbox->SetReadOnly(false);

@@ -105,7 +105,8 @@ public:
     virtual bool GetSystemObject() const { return false; }
     virtual bool IsCollection() const { return false; }
 
-    void ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane);
+    void ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlSQLBox *sqlPane);
+
     void AppendBrowserItem(wxTreeCtrl *browser, pgObject *object);
     void RemoveDummyChild(wxTreeCtrl *browser);
     virtual wxString GetHelpPage(bool forCreate) const;
@@ -124,8 +125,11 @@ public:
     virtual wxString GetFullIdentifier() const { return GetName(); }
     virtual wxString GetQuotedFullIdentifier() const { return qtIdent(name); }
 
-    virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlListView *statistics=0, ctlSQLBox *sqlPane=0)
+    virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0)
         =0;
+    virtual void ShowStatistics(ctlListView *statistics);
+    virtual void ShowDependsOn(ctlListView *dependsOn);
+    virtual void ShowReferencedBy(ctlListView *referencedBy);
     virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
     virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
     virtual bool EditObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }

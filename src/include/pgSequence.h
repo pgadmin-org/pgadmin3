@@ -30,7 +30,8 @@ public:
     ~pgSequence();
 
     int GetIcon() { return PGICON_SEQUENCE; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlListView *statistics=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowStatistics(ctlListView *statistics);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
     void UpdateValues();

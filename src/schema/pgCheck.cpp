@@ -62,7 +62,7 @@ wxString pgCheck::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {

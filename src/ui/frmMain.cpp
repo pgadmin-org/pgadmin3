@@ -273,15 +273,15 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     vertical->SetMinimumPaneSize(50);
 
     // Setup the horizontal splitter for the listview & sql pane
-    wxNotebook* listViews = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
+    listViews = new wxNotebook(horizontal, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
     properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     dependsOn = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     referencedBy = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-    listViews->AddPage(properties, _("Properties"));
-    listViews->AddPage(statistics, _("Statistics"));
-    listViews->AddPage(dependsOn, _("Depends on"));
-    listViews->AddPage(referencedBy, _("Referenced by"));
+    listViews->AddPage(properties, _("Properties"));        // NBP_PROPERTIES
+    listViews->AddPage(statistics, _("Statistics"));        // NBP_STATISTICS
+    listViews->AddPage(dependsOn, _("Depends on"));         // NBP_DEPENDSON
+    listViews->AddPage(referencedBy, _("Referenced by"));   // NBP_REFERENCEDBY
     sqlPane = new ctlSQLBox(horizontal, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
 
     splitpos=settings->Read(wxT("frmMain/SplitHorizontal"), 300);
@@ -424,6 +424,56 @@ void frmMain::Refresh(pgObject *data)
 }
 
 
+
+void frmMain::OnPageChange(wxNotebookEvent& event)
+{
+    wxTreeItemId item=browser->GetSelection();
+    pgObject *data = (pgObject*)browser->GetItemData(item);
+
+    if (!data)
+        return;
+
+    switch (event.GetSelection())
+    {
+        case NBP_STATISTICS:
+            data->ShowStatistics(statistics);
+            break;
+        case NBP_DEPENDSON:
+            data->ShowDependsOn(dependsOn);
+            break;
+        case NBP_REFERENCEDBY:
+            data->ShowReferencedBy(referencedBy);
+            break;
+        default:
+            break;
+    }
+}
+
+
+ctlListView *frmMain::GetStatistics()
+{
+    if (listViews->GetSelection() == NBP_STATISTICS)
+        return statistics;
+    return 0;
+}
+
+
+ctlListView *frmMain::GetDependsOn()
+{
+    if (listViews->GetSelection() == NBP_DEPENDSON)
+        return dependsOn;
+    return 0;
+}
+
+
+ctlListView *frmMain::GetReferencedBy()
+{
+    if (listViews->GetSelection() == NBP_REFERENCEDBY)
+        return referencedBy;
+    return 0;
+}
+
+
 pgObject *frmMain::GetSelectedObject()
 {
     wxTreeItemId item=browser->GetSelection();
@@ -469,7 +519,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
         return item;
 
     // found DATABASES item
-    data->ShowTree(this, browser, 0, 0, 0);
+    data->ShowTree(this, browser, 0, 0);
     lastItem=item;
 
     item = browser->GetFirstChild(lastItem, cookie);
@@ -485,7 +535,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
         return lastItem;
 
     // found last DATABASE 
-    data->ShowTree(this, browser, 0, 0, 0);
+    data->ShowTree(this, browser, 0, 0);
     lastItem = item;
 
     wxString lastSchema=server->GetLastSchema();
@@ -505,7 +555,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
         return lastItem;
 
     // found SCHEMAS item
-    data->ShowTree(this, browser, 0, 0, 0);
+    data->ShowTree(this, browser, 0, 0);
     lastItem=item;
 
     item = browser->GetFirstChild(lastItem, cookie);

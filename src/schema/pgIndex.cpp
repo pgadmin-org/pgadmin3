@@ -179,7 +179,7 @@ void pgIndex::ReadColumnDetails()
 }
 
 
-void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     ReadColumnDetails();
     if (properties)

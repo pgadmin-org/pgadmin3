@@ -76,7 +76,7 @@ wxString pgIndexConstraint::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     ReadColumnDetails();
     if (properties)

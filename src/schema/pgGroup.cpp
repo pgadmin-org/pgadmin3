@@ -52,7 +52,7 @@ wxString pgGroup::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {

@@ -253,7 +253,7 @@ void pgTable::UpdateInheritance()
 
 
 
-void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -349,7 +349,11 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("System table?"), GetSystemObject());
         properties->AppendItem(_("Comment"), GetComment());
     }
+}
 
+
+void pgTable::ShowStatistics(ctlListView *statistics)
+{
     DisplayStatistics(statistics, 
         wxT("SELECT seq_scan AS ") + qtIdent(_("Sequential Scans")) +
              wxT(", seq_tup_read AS ") + qtIdent(_("Sequential Tuples Read")) +
@@ -370,7 +374,6 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         wxT(" WHERE stat.relid = statio.relid\n")
         wxT("   AND stat.relid = ") + GetOidStr());
 }
-
 
 
 

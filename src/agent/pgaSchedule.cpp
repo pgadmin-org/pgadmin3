@@ -66,7 +66,7 @@ bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 }
 
 
-void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {

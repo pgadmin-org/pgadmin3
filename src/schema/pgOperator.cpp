@@ -106,7 +106,7 @@ wxString pgOperator::GetFullName() const
 }
 
 
-void pgOperator::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgOperator::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {

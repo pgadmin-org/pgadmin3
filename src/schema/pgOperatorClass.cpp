@@ -74,7 +74,7 @@ wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {

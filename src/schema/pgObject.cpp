@@ -136,6 +136,14 @@ wxMenu *pgObject::GetNewMenu()
 }
 
 
+void pgObject::ShowStatistics(ctlListView *statistics)
+{
+    statistics->ClearAll();
+    statistics->AddColumn(_("Statistics"), 500);
+    statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
+}
+
+
 void pgObject::ShowDependency(ctlListView *list, const wxString &query)
 {
     list->AddColumn(_("Type"), 60);
@@ -150,7 +158,7 @@ void pgObject::ShowDependency(ctlListView *list, const wxString &query)
             wxT("   SELECT oid FROM pg_class\n")
             wxT("    WHERE relname IN ('pg_class', 'pg_constraint', 'pg_conversion', 'pg_language', 'pg_proc',\n")
             wxT("                      'pg_rewrite', 'pg_trigger', 'pg_type'))\n")
-            wxT(" ORDER BY 1"));
+            wxT(" ORDER BY classid, cl.relkind"));
 
         if (set)
         {
@@ -232,7 +240,77 @@ void pgObject::ShowDependency(ctlListView *list, const wxString &query)
 }
 
 
-void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const wxString &right)
+{
+    list->ClearAll();
+    list->AddColumn(left, 90);
+    list->AddColumn(right, 450);
+}
+
+
+void pgObject::ShowDependsOn(ctlListView *dependsOn)
+{
+    ShowDependency(dependsOn,
+        wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
+        wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
+        wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
+        wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
+        wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
+        wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
+        wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
+        wxT("            ELSE '' END AS type,\n")
+        wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
+        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname,\n")
+        wxT("       deptype, coc.relname AS ownertable\n") 
+        wxT("  FROM pg_depend dep\n")
+        wxT("  LEFT JOIN pg_class cl ON dep.refobjid=cl.oid\n")
+        wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
+        wxT("  LEFT JOIN pg_proc pr on dep.refobjid=pr.oid\n")
+        wxT("  LEFT JOIN pg_namespace nsp ON pronamespace=nsp.oid\n")
+        wxT("  LEFT JOIN pg_trigger tg ON dep.refobjid=tg.oid\n")
+        wxT("  LEFT JOIN pg_type ty on dep.refobjid=ty.oid\n")
+        wxT("  LEFT JOIN pg_namespace nst ON typnamespace=nst.oid\n")
+        wxT("  LEFT JOIN pg_constraint co ON dep.refobjid=co.oid\n")
+        wxT("  LEFT JOIN pg_class coc ON conrelid=coc.oid\n")
+        wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
+        wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
+        wxT("  LEFT JOIN pg_namespace ns ON dep.refobjid=ns.oid\n")
+        wxT(" WHERE dep.objid=") + GetOidStr());
+}
+
+
+void pgObject::ShowReferencedBy(ctlListView *referencedBy)
+{
+    ShowDependency(referencedBy,
+        wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
+        wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
+        wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
+        wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
+        wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
+        wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
+        wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
+        wxT("            ELSE '' END AS type,\n")
+        wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
+        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname,\n")
+        wxT("       deptype, coc.relname AS ownertable\n") 
+        wxT("  FROM pg_depend dep\n")
+        wxT("  LEFT JOIN pg_class cl ON dep.objid=cl.oid\n")
+        wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
+        wxT("  LEFT JOIN pg_proc pr on dep.objid=pr.oid\n")
+        wxT("  LEFT JOIN pg_namespace nsp ON pronamespace=nsp.oid\n")
+        wxT("  LEFT JOIN pg_trigger tg ON dep.objid=tg.oid\n")
+        wxT("  LEFT JOIN pg_type ty on dep.objid=ty.oid\n")
+        wxT("  LEFT JOIN pg_namespace nst ON typnamespace=nst.oid\n")
+        wxT("  LEFT JOIN pg_constraint co on dep.objid=co.oid\n")
+        wxT("  LEFT JOIN pg_class coc ON conrelid=coc.oid\n")
+        wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
+        wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
+        wxT("  LEFT JOIN pg_namespace ns ON dep.objid=ns.oid\n")
+        wxT(" WHERE dep.refobjid=") + GetOidStr());
+}
+
+
+void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (form)
     {
@@ -255,81 +333,31 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *propert
         form->SetButtons(TRUE, CanCreate(), CanDrop(), CanEdit(), canSql, CanView(), CanMaintenance());
         SetContextInfo(form);
 
+        ctlListView *statistics=form->GetStatistics();
+        if (statistics)
+            ShowStatistics(statistics);
 
-        form->GetDependsOnView()->ClearAll();
-        form->GetReferencedByView()->ClearAll();
-        if (!IsCollection())
+        ctlListView *dependsOn=form->GetDependsOn();
+        if (dependsOn)
         {
-            ShowDependency(form->GetDependsOnView(),
-                wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
-                wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
-                wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
-                wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
-                wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
-                wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
-                wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
-                wxT("            ELSE '' END AS type,\n")
-                wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
-                wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname,\n")
-                wxT("       deptype, coc.relname AS ownertable\n") 
-                wxT("  FROM pg_depend dep\n")
-                wxT("  LEFT JOIN pg_class cl ON dep.refobjid=cl.oid\n")
-                wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
-                wxT("  LEFT JOIN pg_proc pr on dep.refobjid=pr.oid\n")
-                wxT("  LEFT JOIN pg_namespace nsp ON pronamespace=nsp.oid\n")
-                wxT("  LEFT JOIN pg_trigger tg ON dep.refobjid=tg.oid\n")
-                wxT("  LEFT JOIN pg_type ty on dep.refobjid=ty.oid\n")
-                wxT("  LEFT JOIN pg_namespace nst ON typnamespace=nst.oid\n")
-                wxT("  LEFT JOIN pg_constraint co ON dep.refobjid=co.oid\n")
-                wxT("  LEFT JOIN pg_class coc ON conrelid=coc.oid\n")
-                wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
-                wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
-                wxT("  LEFT JOIN pg_namespace ns ON dep.refobjid=ns.oid\n")
-                wxT(" WHERE dep.objid=") + GetOidStr());
-
-            ShowDependency(form->GetReferencedByView(),
-                wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
-                wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
-                wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
-                wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
-                wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
-                wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
-                wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
-                wxT("            ELSE '' END AS type,\n")
-                wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
-                wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname,\n")
-                wxT("       deptype, coc.relname AS ownertable\n") 
-                wxT("  FROM pg_depend dep\n")
-                wxT("  LEFT JOIN pg_class cl ON dep.objid=cl.oid\n")
-                wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
-                wxT("  LEFT JOIN pg_proc pr on dep.objid=pr.oid\n")
-                wxT("  LEFT JOIN pg_namespace nsp ON pronamespace=nsp.oid\n")
-                wxT("  LEFT JOIN pg_trigger tg ON dep.objid=tg.oid\n")
-                wxT("  LEFT JOIN pg_type ty on dep.objid=ty.oid\n")
-                wxT("  LEFT JOIN pg_namespace nst ON typnamespace=nst.oid\n")
-                wxT("  LEFT JOIN pg_constraint co on dep.objid=co.oid\n")
-                wxT("  LEFT JOIN pg_class coc ON conrelid=coc.oid\n")
-                wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
-                wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
-                wxT("  LEFT JOIN pg_namespace ns ON dep.objid=ns.oid\n")
-                wxT(" WHERE dep.refobjid=") + GetOidStr());
+            dependsOn->ClearAll();
+            if (!IsCollection())
+                ShowDependsOn(dependsOn);
+        }
+        ctlListView *referencedBy=form->GetReferencedBy();
+        if (referencedBy)
+        {
+            referencedBy->ClearAll();
+            if (!IsCollection())
+                ShowReferencedBy(referencedBy);
         }
     }
 
     wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
     StartMsg(wxString::Format(_("Retrieving %s details"), wxGetTranslation(GetTypeName())));
-    ShowTreeDetail(browser, form, properties, statistics, sqlPane);
+    ShowTreeDetail(browser, form, properties, sqlPane);
     EndMsg();
 }
-
-
-void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const wxString &right)
-{
-    list->ClearAll();
-    list->AddColumn(left, 90);
-    list->AddColumn(right, 450);
-}
-
 
 
 void pgObject::RemoveDummyChild(wxTreeCtrl *browser)

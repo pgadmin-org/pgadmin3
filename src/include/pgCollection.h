@@ -39,7 +39,8 @@ public:
     pgSchema *GetSchema() const { return schema; }
 
     int GetIcon();
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlListView *statistics=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    void ShowStatistics(ctlListView *statistics);
     void ShowList(const wxString& name, wxTreeCtrl *browser, ctlListView *properties);
     void UpdateChildCount(wxTreeCtrl *browser, int substract=0);
     pgObject *FindChild(wxTreeCtrl *browser, const int index);
@@ -56,7 +57,7 @@ class pgServers: public pgCollection
 {
 public:
     pgServers() : pgCollection(PG_SERVERS, (pgServer*)0) {}
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlListView *statistics=0, ctlSQLBox *sqlPane=0) {};
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0) {};
 };
 
 

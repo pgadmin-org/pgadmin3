@@ -239,7 +239,7 @@ wxString pgServer::GetLastError() const
 
 
 
-void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     // Add child nodes if necessary
     if (GetConnected()) {
@@ -318,8 +318,12 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
     if(!GetConnected())
         return;
-    
-    if (statistics)
+}
+
+
+void pgServer::ShowStatistics(ctlListView *statistics)
+{
+    if (conn)
     {
         wxLogInfo(wxT("Displaying statistics for server ") + GetIdentifier());
 
@@ -344,8 +348,6 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
                 pos++;
             }
 
-	        // Keith 2003.03.05
-	        // Fixed memory leak
 	        delete stats;
         }
     }

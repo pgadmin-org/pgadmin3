@@ -202,7 +202,7 @@ pgObject *pgCollection::FindChild(wxTreeCtrl *browser, int index)
 
 
 
-void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(GetId(), FALSE) == 0)
     {
@@ -276,23 +276,23 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
         }
     }
 
-
-    if (statistics)
-    {
-        switch (GetType())
-        {
-            case PG_DATABASES:
-                pgDatabase::ShowStatistics(this, statistics);
-                break;
-            case PG_TABLES:
-                pgTable::ShowStatistics(this, statistics);
-                break;
-            default:
-                break;
-        }
-    }
-
     UpdateChildCount(browser);
     if (properties)
         ShowList(typesList[GetType()+1].typName, browser, properties);
+}
+
+
+void pgCollection::ShowStatistics(ctlListView *statistics)
+{
+    switch (GetType())
+    {
+        case PG_DATABASES:
+            pgDatabase::ShowStatistics(this, statistics);
+            break;
+        case PG_TABLES:
+            pgTable::ShowStatistics(this, statistics);
+            break;
+        default:
+            break;
+    }
 }

@@ -134,7 +134,7 @@ wxString pgDatabase::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (Connect() == PGCONN_OK)
     {

@@ -45,7 +45,7 @@ wxMenu *pgaAgent::GetNewMenu()
     return menu;
 }
 
-void pgaAgent::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgaAgent::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {

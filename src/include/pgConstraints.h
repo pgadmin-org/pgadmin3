@@ -27,7 +27,7 @@ public:
     wxString GetHelpPage(bool forCreate) const { return wxT("sql-altertable"); }
     wxMenu *GetNewMenu();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane);
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
     pgTable *table;
 };
 

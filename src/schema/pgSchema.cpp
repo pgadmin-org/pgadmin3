@@ -75,7 +75,7 @@ wxString pgSchema::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (form)
         form->SetDatabase(GetDatabase());

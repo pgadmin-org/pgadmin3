@@ -53,7 +53,7 @@ wxString pgLanguage::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (properties)
     {

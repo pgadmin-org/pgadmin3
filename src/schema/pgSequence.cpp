@@ -77,7 +77,7 @@ wxString pgSequence::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
+void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     UpdateValues();
     if (properties)
@@ -97,29 +97,30 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
         properties->AppendItem(_("System sequence?"), GetSystemObject());
         properties->AppendItem(_("Comment"), GetComment());
     }
-
-    wxLogInfo(wxT("Displaying statistics for sequence on ") +GetSchema()->GetIdentifier());
-
-    if (statistics)
-    {
-        // Add the statistics view columns
-        CreateListColumns(statistics, _("Statistic"), _("Value"));
-
-        pgSet *stats = GetSchema()->GetDatabase()->ExecuteSet(wxT(
-            "SELECT blks_read, blks_hit FROM pg_statio_all_sequences WHERE relid = ") + GetOidStr());
-
-        if (stats)
-        {
-            statistics->InsertItem(0, wxT("Blocks Read"), PGICON_STATISTICS);
-            statistics->SetItem(0l, 1, stats->GetVal(wxT("blks_read")));
-            statistics->InsertItem(1, wxT("Blocks Hit"), PGICON_STATISTICS);
-            statistics->SetItem(1, 1, stats->GetVal(wxT("blks_hit")));
-
-            delete stats;
-        }
-    }
 }
 
+
+
+void pgSequence::ShowStatistics(ctlListView *statistics)
+{
+    wxLogInfo(wxT("Displaying statistics for sequence on ") +GetSchema()->GetIdentifier());
+
+    // Add the statistics view columns
+    CreateListColumns(statistics, _("Statistic"), _("Value"));
+
+    pgSet *stats = GetSchema()->GetDatabase()->ExecuteSet(wxT(
+        "SELECT blks_read, blks_hit FROM pg_statio_all_sequences WHERE relid = ") + GetOidStr());
+
+    if (stats)
+    {
+        statistics->InsertItem(0, wxT("Blocks Read"), PGICON_STATISTICS);
+        statistics->SetItem(0l, 1, stats->GetVal(wxT("blks_read")));
+        statistics->InsertItem(1, wxT("Blocks Hit"), PGICON_STATISTICS);
+        statistics->SetItem(1, 1, stats->GetVal(wxT("blks_hit")));
+
+        delete stats;
+    }
+}
 
 
 pgObject *pgSequence::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
