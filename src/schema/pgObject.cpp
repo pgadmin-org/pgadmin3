@@ -172,8 +172,6 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
 
         if (set)
         {
-            long pos=0;
-
             while (!set->Eof())
             {
                 wxString refname;
