@@ -110,10 +110,15 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
         // File Menu
     fileMenu = new wxMenu();
+    fileMenu->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."),wxT("Save the SQL definition of the selected object."));
+    fileMenu->AppendSeparator();
     fileMenu->Append(MNU_ADDSERVER, wxT("&Add Server..."),          wxT("Add a connection to a server."));
     fileMenu->Append(MNU_PASSWORD, wxT("C&hange password..."),      wxT("Change your password."));
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."),wxT("Save the SQL definition of the selected object."));
+    fileMenu->Append(MNU_OPTIONS, wxT("&Options..."),              wxT("Show options dialog."));
+#ifdef __WXMAC__
+    wxApp::s_macPreferencesMenuItemId = MNU_OPTIONS;
+#endif
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, wxT("E&xit"),                        wxT("Quit this program."));
     menuBar->Append(fileMenu, wxT("&File"));
@@ -137,11 +142,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_VACUUM, wxT("Vacuum"),                    wxT("Vacuum the current database or table."));
     toolsMenu->Append(MNU_RELOAD, wxT("Reload module"),             wxT("Reload library module which implements this function."));
     toolsMenu->Append(MNU_STATUS, wxT("Server Status"),             wxT("Displays the current database status."));
-    toolsMenu->AppendSeparator();
-    toolsMenu->Append(MNU_OPTIONS, wxT("&Options..."),              wxT("Show options dialog."));
-#ifdef __WXMAC__
-    wxApp::s_macPreferencesMenuItemId = MNU_OPTIONS;
-#endif
     menuBar->Append(toolsMenu, wxT("&Tools"));
 
     // View Menu
