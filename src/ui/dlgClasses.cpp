@@ -29,6 +29,53 @@ BEGIN_EVENT_TABLE(pgDialog, wxDialog)
     EVT_CLOSE(                          pgDialog::OnClose)
 END_EVENT_TABLE()
 
+
+
+void pgDialog::PostCreation()
+{
+    wxWindow *statusBarContainer=FindWindow(wxT("unkStatusBar_container"));
+
+    if (statusBarContainer)
+    {
+        statusBar = new wxStatusBar(this, -1, wxST_SIZEGRIP);
+        wxXmlResource::Get()->AttachUnknownControl(wxT("unkStatusBar"), statusBar);
+    }
+    if (GetWindowStyle() & wxTHICK_FRAME)   // is designed with sizers; don't change
+        return;
+
+    if (!btnCancel)
+        return;
+
+    wxSize  size = btnCancel->GetSize();
+    wxPoint pos = btnCancel->GetPosition();
+    int height = pos.y + size.GetHeight() + ConvertDialogToPixels(wxSize(0,3)).y;
+    if (statusBar)
+        height += statusBar->GetSize().GetHeight();
+
+    int right = pos.x + ConvertDialogToPixels(wxSize(50,0)).x - size.GetWidth();
+    btnCancel->Move(right, pos.y);
+    
+    if (btnOK)
+    {
+        size = btnOK->GetSize();
+        right -= size.GetWidth() + ConvertDialogToPixels(wxSize(3,0)).x;
+        btnOK->Move(right, pos.y);
+    }
+    if (btnApply)
+    {
+        size = btnApply->GetSize();
+        right -= size.GetWidth() - ConvertDialogToPixels(wxSize(3,0)).x;
+        btnApply->Move(right, pos.y);
+    }
+
+    int w, h;
+    size=GetSize();
+    GetClientSize(&w, &h);
+
+    SetSize(size.GetWidth(), size.GetHeight() + height - h);
+}
+
+
 void pgDialog::RestorePosition(int defaultX, int defaultY, int defaultW, int defaultH, int minW, int minH)
 {
     wxPoint pos(settings->Read(dlgName, wxPoint(defaultX, defaultY)));
@@ -56,6 +103,7 @@ void pgDialog::LoadResource(wxWindow *parent, const wxChar *name)
     if (name)
         dlgName = name;
     wxXmlResource::Get()->LoadDialog(this, parent, dlgName); 
+    PostCreation();
 }
 
 

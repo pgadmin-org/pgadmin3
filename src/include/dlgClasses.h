@@ -27,6 +27,7 @@ class pgQueryThread;
 class pgDialog : public wxDialog
 {
 public:
+    pgDialog() { statusBar = 0; }
     void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
     void SavePosition();
     void LoadResource(wxWindow *parent, const wxChar *name=0);
@@ -35,7 +36,9 @@ protected:
     void OnCancel(wxCommandEvent& ev);
     void OnClose(wxCloseEvent& event);
 
+    void PostCreation();
     wxString dlgName;
+    wxStatusBar *statusBar;
 
     DECLARE_EVENT_TABLE();
 };

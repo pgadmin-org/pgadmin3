@@ -102,46 +102,12 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     txtComment = CTRL_TEXT("txtComment");
     cbOwner = CTRL_COMBOBOX2("cbOwner");
 
-
-	//#ifdef  __WIN32__
-#if 1  // seems wxgtk now returns a usable page size
     wxNotebookPage *page=nbNotebook->GetPage(0);
     wxASSERT(page != NULL);
     page->GetClientSize(&width, &height);
-#else
-    nbNotebook->GetClientSize(&width, &height);
-	height -= ConvertDialogToPixels(wxPoint(0, 20)).y;   // sizes of tabs
-#endif
 
     numericValidator.SetStyle(wxFILTER_NUMERIC);
     btnOK->Disable();
-
-    wxSize size=GetSize();
-    wxWindow *statusBarContainer=FindWindow(wxT("unkStatusBar_container"));
-
-    if (statusBarContainer)
-    {
-        statusBox = 0;
-        statusBar = new wxStatusBar(this, -1, wxST_SIZEGRIP);
-        wxXmlResource::Get()->AttachUnknownControl(wxT("unkStatusBar"), statusBar);
-    }
-    else
-    {
-        statusBar = 0;
-        if (wxWindowBase::FindWindow(XRCID("txtStatus")))
-            statusBox=CTRL_TEXT("txtStatus");
-        else
-        {
-            wxSize stdTxtSize=ConvertDialogToPixels(wxSize(0, 12));
-            size.SetHeight(size.GetHeight()+stdTxtSize.GetHeight());
-            SetSize(size);
-            size=GetClientSize();
-            wxPoint pos(0, size.GetHeight()-stdTxtSize.GetHeight());
-            size.SetHeight(stdTxtSize.GetHeight());
-            statusBox = new wxTextCtrl(this, 178, wxT(""), pos, size, wxTE_READONLY);
-        }
-        statusBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
-    }
 }
 
 
@@ -176,8 +142,6 @@ void dlgProperty::CheckValid(bool &enable, const bool condition, const wxString 
     {
         if (!condition)
         {
-            if (statusBox)
-                statusBox->SetValue(msg);
             if (statusBar)
                 statusBar->SetStatusText(msg);
             enable=false;
@@ -203,8 +167,6 @@ void dlgProperty::EnableOK(bool enable)
     btnOK->Enable(enable);
     if (enable)
     {
-        if (statusBox)
-            statusBox->SetValue(wxEmptyString);
         if (statusBar)
             statusBar->SetStatusText(wxEmptyString);
     }
@@ -557,8 +519,6 @@ void dlgProperty::OnApply(wxCommandEvent &ev)
         if (!apply(sql))
             return;
 
-    if (statusBox)
-        statusBox->SetValue(_("Changes applied."));
     if (statusBar)
         statusBar->SetStatusText(_("Changes applied."));
 }

@@ -92,8 +92,6 @@ protected:
 
     wxTextValidator numericValidator;
 
-    wxTextCtrl *statusBox;
-    wxStatusBar *statusBar;
     wxNotebook *nbNotebook;
     wxTextCtrl *txtName, *txtOid, *txtComment;
     ctlComboBox *cbOwner;
