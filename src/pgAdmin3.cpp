@@ -20,6 +20,7 @@
 #include <wx/imagjpeg.h>
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
+#include <wx/stdpaths.h>
 
 // Windows headers
 #ifdef __WXMSW__
@@ -87,6 +88,8 @@ bool dialogTestMode=false;
 #define DOC_DIR     wxT("/docs")
 #define UI_DIR      wxT("/ui")
 #define COMMON_DIR  wxT("/common")
+#define SCRIPT_DIR  wxT("/scripts")
+#define HELPER_DIR  wxT("/helper")
 #define LANG_FILE   wxT("pgadmin3.lng")
 
 
@@ -171,7 +174,7 @@ bool pgAdmin3::OnInit()
 
     // evaluate all working paths
 
-#ifdef __WXMSW__
+#if defined(__WXMSW__)
 
     backupExecutable  = path.FindValidPath(wxT("pg_dump.exe"));
     restoreExecutable = path.FindValidPath(wxT("pg_restore.exe"));
@@ -186,6 +189,33 @@ bool pgAdmin3::OnInit()
     else
         docPath = loadPath + wxT("/../..") DOC_DIR;
     
+#elif defined(__WXMAC__)
+
+    //When using wxStandardPaths on OSX, wx defaults to the unix,
+    //not to the mac variants. Therefor, we request wxStandardPathsCF
+    //directly.
+    wxStandardPathsCF stdPaths ;
+    wxString dataDir = stdPaths.GetDataDir() ;
+    if (dataDir) {
+        wxFprintf(stderr, wxT("DataDir: ") + dataDir + wxT("\n")) ;
+	if (wxDir::Exists(dataDir + HELPER_DIR))
+            path.Add(dataDir + HELPER_DIR) ;
+        if (wxDir::Exists(dataDir + SCRIPT_DIR))
+            path.Add(dataDir + SCRIPT_DIR) ;
+        if (wxDir::Exists(dataDir + UI_DIR))
+          uiPath = dataDir + UI_DIR ;
+        if (wxDir::Exists(dataDir + DOC_DIR))
+          docPath = dataDir + DOC_DIR ;
+    }
+
+    if (uiPath.IsEmpty())
+        uiPath = loadPath + UI_DIR ;
+    if (docPath.IsEmpty())
+        docPath = loadPath + wxT("/..") DOC_DIR ;
+
+    backupExecutable  = path.FindValidPath(wxT("pg_dump"));
+    restoreExecutable = path.FindValidPath(wxT("pg_restore"));
+
 #else
 
     backupExecutable  = path.FindValidPath(wxT("pg_dump"));
@@ -200,6 +230,7 @@ bool pgAdmin3::OnInit()
         docPath = DATA_DIR DOC_DIR;
     else
         docPath = loadPath + wxT("/..") DOC_DIR;
+
 #endif
 
 
