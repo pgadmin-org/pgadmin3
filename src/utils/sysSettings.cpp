@@ -49,7 +49,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
 
 #ifdef __WIN32__
-    Read(wxT("SqlHelpSite"), &helpSite, loadPath + wxT("\docs\en_US\"));
+    Read(wxT("SqlHelpSite"), &helpSite, loadPath + wxT("/docs/en_US/"));
 #else
     Read(wxT("SqlHelpSite"), &helpSite, loadPath + wxT("../share/pgadmin3/docs/en_US/"));
 #endif
