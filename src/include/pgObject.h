@@ -192,6 +192,8 @@ public:
     pgSchemaObject::~pgSchemaObject()
         { wxLogInfo(wxT("Destroying a pg") + GetTypeName() + wxT(" object")); }
 
+    bool GetSystemObject() const;
+
     void SetSchema(pgSchema *newSchema) { schema = newSchema; }
     pgSchema *GetSchema() const {return schema; }
     pgSet *ExecuteSet(const wxString& sql);

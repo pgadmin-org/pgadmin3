@@ -372,6 +372,15 @@ pgDatabase *pgObject::GetDatabase()
 
 
 
+
+bool pgSchemaObject::GetSystemObject() const
+{
+    if (!schema)
+        return false;
+    return schema->GetOid() < 100;
+}
+
+
 void pgSchemaObject::SetContextInfo(frmMain *form)
 {
     form->SetDatabase(schema->GetDatabase());
