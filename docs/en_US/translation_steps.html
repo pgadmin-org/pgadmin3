@@ -16,19 +16,21 @@
 
 <ol>
   <li>
-  Declare yourself as a translator by sending an email to pgAdmin3 <a href="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers@postgresql.org</a> mailing list. You may need to subscribe by sending an email to <a href="mailto:pgadmin-hackers-request@postgresql.org">pgadmin-hackers-request@postgresql.org</a> with subject "subscribe". We will add you to the <a href="translation_team.html">translator list</a> and make sure two translators do not work at the same time for the same language.
+  Declare yourself as a translator by sending an email to pgAdmin3 <a href="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers@postgresql.org</a> mailing list.<br><br>
+  You may need to subscribe by sending an email to <a href="mailto:pgadmin-hackers-request@postgresql.org">pgadmin-hackers-request@postgresql.org</a> with subject "subscribe". We will add you to the <a href="translation_team.html">translator list</a> and make sure two translators do not work at the same time for the same language.
   <br><br>
   Usually, we prefer native speakers translating into their mother tongue. In the case of non European and non Asian languages, we have no special requirements.
   <br><br>
 
   <li>
-  Download and install poEdit, which works under MS Windows or GNU/Linux. This tool makes it really easy to maintain your translation. An MS Windows installer is available on <a href="http://poedit.sourceforge.net">poEdit web site</a>.<br><br>
-  For GNU/Linux users, we provide packages built against GTK2 with Unicode support, which enable the translation of Right-To-Left (RTL) languages like Arabic or Persian. These poEdit packages can be downloaded from pgAdmin web site:<br>
+  Download <a href="http://poedit.sourceforge.net">poEdit</a> and install it under MS Windows or GNU/Linux. <br><br>
+  <a href="http://poedit.sourceforge.net">poEdit</a> is our recommended choice, as it makes it really easy to maintain your translation. An MS Windows installer is available on <a href="http://poedit.sourceforge.net">poEdit web site</a>. For GNU/Linux users, we provide packages built against GTK2 with Unicode support. Only our packages enable the translation of Right-To-Left (RTL) languages like Arabic or Persian. Download them from:<br>
     <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/poEdit">http://www.pgadmin.org/snapshots/linux/mandrake91/poEdit</a><br>
     <a href="http://www.pgadmin.org/snapshots/linux/redhat9/poEdit">http://www.pgadmin.org/snapshots/linux/redhat9/poEdit</a>.<br>
     <a href="http://www.pgadmin.org/snapshots/linux/suse82/poEdit">http://www.pgadmin.org/snapshots/linux/suse82/poEdit</a>.<br>
   <br><br>
-
+  Alternatively, you may also run <a href="http://i18n.kde.org/tools/kbabel/">Kbabel</a> which can be found in any recent GNU/Linux distribution with <a href="http://www.kde.org">KDE3</a> support. <a href="http://i18n.kde.org/tools/kbabel/">Kbabel</a> is more stable than <a href="http://poedit.sourceforge.net">poEdit</a>, but the interface is less friendly, although opinions may differ.
+  <br><br>
   <li>
   Download the latest pgadmin3.pot language file from CVS. There are two ways of doing it:
 		<ul>
@@ -55,7 +57,7 @@
     </ul>
   <br><br>
 
-  <li>Edit pgadmin.po file using <a href="http://poedit.sourceforge.net">poEdit</a>.<br>
+  <li>Edit pgadmin.po file. The steps described are related to <a href="http://poedit.sourceforge.net">poEdit</a> only.<br><br>
   	<ul>
     	<li>As a first action, please edit the file properties (Catalog/Settings).  Select correct language and country, Charset to utf-8. Project name is pgAdmin3, Team is pgAdmin Developers, email address should be pgadmin-hackers@postgresql.org.
       <br><br>
@@ -72,20 +74,26 @@
 	<br>
 	On rare occasions, it might be necessary to reorder placeholders. In the following examples, both parameters position are exchanged: "foo %2$s bar %1$s", where original string was "foo %s bar %s".
       <br><br>
-      <li>
-  		When saving, the translation is automatically compiled in pgadmin3.mo and saved in pgadmin3.po.
-      <br><br>
       </li>
 		</ul>
   <br><br>
 
-    <li>Review your translation carefully. You should be able to add the appropriate ui/language_Country/pgadmin3.mo file under an existing binary installation of pgAdmin3. Then, just select the language under the File -> Options menu. Review is an important step, because somes strings do not have a real context. You will only be able to correct entries by using pgAdmin3 yourself...
+    <li>Compile pgadmin3.po file into pgadmin3.mo binary file.<br><br>
+      <ul>
+        <li>In <a href="http://poedit.sourceforge.net">poEdit</a>, clicking on the save button will automatically compile pgadmin3.po into an pgadmin3.mo file. <br><br>
+        <li>In Kbabel, you will need to run the following script manually:<br>
+    # msgfmt -o pgadmin3.mo pgadmin3.po.<br><br>
+    	</ul>
+    <br><br>
+
+    <li>Review your translation carefully. <br><br>
+    You should be able to add the appropriate ui/language_Country/pgadmin3.mo file under an existing binary installation of pgAdmin3. Then, just select the language under the File -> Options menu. Review is an important step, because somes strings do not have a real context. You will only be able to correct entries by using pgAdmin3 yourself...
 	<br><br>
 
   <li>When the translation is finished and reviewed, send pgadmin3.po and pgadmin3.mo files to <a href="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers@postgresql.org</a> after zipping/taring them. We will do our best to publish your files immediately.
 	<br><br>
 
-	<li>From time to time, new strings which need translation are added to the application. Download/update the new pgadmin3.pot and merge the new file with your language file using poEdit's "Catalog/Update from POT file.." function.
+	<li>From time to time, new strings which need translation are added to the application. Download/update the new pgadmin3.pot and merge the new file with your language file using <a href="http://poedit.sourceforge.net">poEdit</a>'s "Catalog/Update from POT file.." function.
   </li>
 
 </ol>
