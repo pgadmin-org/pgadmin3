@@ -246,10 +246,20 @@ void frmMain::OnStopService(wxCommandEvent& WXUNUSED(event))
     pgServer *server= (pgServer*)GetSelectedObject();
     if (server && server->GetType() == PG_SERVER)
     {
+		wxMessageDialog msg(this, _("Are you sure you wish shutdown this server?"),
+                _("Stop service"), wxYES_NO | wxICON_QUESTION);
+        if (msg.ShowModal() != wxID_YES)
+        {
+            return;
+        }
+
         StartMsg(_("Stopping service"));
         bool rc = server->StopService();
         if (rc)
+		{
+			OnDisconnect(wxCommandEvent());
             execSelChange(server->GetId(), true);
+		}
         EndMsg();
     }
 }
