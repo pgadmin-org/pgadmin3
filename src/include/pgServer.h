@@ -34,6 +34,8 @@ public:
     int Connect(frmMain *form, bool lockFields = FALSE);
     bool Disconnect();
 
+    pgServer *GetServer() const;
+
     wxString GetIdentifier() const;
     wxString GetVersionString();
     wxString GetVersionNumber();
@@ -51,6 +53,7 @@ public:
 
     frmMain *GetParentFrame() { return parentWin; }
 
+    pgConn *CreateConn(wxString dbName=wxEmptyString);
 
     wxString GetLastDatabase() const { return lastDatabase; }
     void iSetLastDatabase(const wxString& s) { lastDatabase=s; }

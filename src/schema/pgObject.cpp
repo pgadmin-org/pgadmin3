@@ -666,10 +666,8 @@ void pgServerObject::FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, c
 
         if (!conn)
         {
-		    tmpConn = new pgConn(GetServer()->GetName(), dbname, GetServer()->GetUsername(), 
-                              GetServer()->GetPassword(), GetServer()->GetPort(), GetServer()->GetSSL());
-            if (tmpConn->GetStatus() == PGCONN_OK)
-                conn=tmpConn;
+		    tmpConn = GetServer()->CreateConn(dbname);
+            conn=tmpConn;
         }
 
         if (conn)
@@ -730,6 +728,12 @@ void pgServerObject::FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, c
 
 //////////////////////////////////////////////////////////////
 
+pgServer *pgDatabaseObject::GetServer() const
+{
+    return database->GetServer();
+}
+
+    
 bool pgDatabaseObject::CanDrop()
 {
     return database->GetCreatePrivilege();

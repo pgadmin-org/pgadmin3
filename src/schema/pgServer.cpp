@@ -68,6 +68,34 @@ wxMenu *pgServer::GetNewMenu()
 }
 
 
+pgServer *pgServer::GetServer() const
+{
+    if (connected)
+        return (pgServer*)this;
+    return 0;
+}
+
+
+pgConn *pgServer::CreateConn(wxString dbName)
+{
+    if (!connected)
+        return 0;
+
+    if (dbName.IsEmpty())
+        dbName = GetDatabaseName();
+
+    pgConn *conn=new pgConn(GetName(), dbName, username, password, port, ssl);
+
+    if (conn && conn->GetStatus() != PGCONN_OK)
+    {
+        wxLogError(wxT("%s"), conn->GetLastError().c_str());
+        delete conn;
+        return 0;
+    }
+    return conn;
+}
+
+
 wxString pgServer::GetFullName() const
 {
     if (GetDescription().Length() > 0)
@@ -137,9 +165,10 @@ int pgServer::Connect(frmMain *form, bool lockFields)
             form->StartMsg(_("Connecting to database without password"));
         else
             form->StartMsg(_("Connecting to database"));
-        if (conn) delete conn;
-        conn = new pgConn(GetName(), database, username, password, port, ssl);   
+
+        conn = new pgConn(GetName(), database, username, password, port, ssl);
         form->EndMsg();
+
         if (!conn)
         {
             wxLogError(__("Couldn't create a connection object!"));
@@ -152,7 +181,7 @@ int pgServer::Connect(frmMain *form, bool lockFields)
         // Check the server version
         if (conn->BackendMinimumVersion(7, 3))
         {
-            connected = TRUE;
+            connected = true;
             pgSet *set=ExecuteSet(wxT("SELECT usecreatedb, usesuper from pg_user where usename=current_user"));
             if (set)
             {
@@ -164,7 +193,7 @@ int pgServer::Connect(frmMain *form, bool lockFields)
         else
         {
             error.Printf(_("The PostgreSQL server must be at least version %2.1f!"), SERVER_MIN_VERSION);
-            connected = FALSE;
+            connected = false;
             return PGCONN_BAD;
         }
 
@@ -243,12 +272,17 @@ wxString pgServer::GetLastError() const
 {
     wxString msg;
     if (error != wxT("")) {
-        if (conn->GetLastError() != wxT("")) {
+        if (conn->GetLastError() != wxT(""))
+        {
             msg.Printf(wxT("%s\n%s"), error.c_str(), conn->GetLastError().c_str());
-        } else {
+        }
+        else
+        {
             msg=error;
         }
-    } else {
+    }
+    else
+    {
         msg=conn->GetLastError();
     }
     return msg;

@@ -891,7 +891,8 @@ void frmMain::SetButtons(pgObject *obj)
          viewData=false,
          maintenance=false,
          backup=false,
-         restore=false;
+         restore=false,
+         status=false;
 
     if (obj)
     {
@@ -903,6 +904,7 @@ void frmMain::SetButtons(pgObject *obj)
         maintenance=obj->CanMaintenance();
         backup=obj->CanBackup();
         restore=obj->CanRestore();
+        status=obj->GetServer() != 0;
 
         switch (obj->GetType())
         {
@@ -946,7 +948,7 @@ void frmMain::SetButtons(pgObject *obj)
 	toolsMenu->Enable(MNU_RESTORE, restore && !restoreExecutable.IsNull());
     toolsMenu->Enable(MNU_INDEXCHECK, false);
     toolsMenu->Enable(MNU_GRANTWIZARD, false);
-	toolsMenu->Enable(MNU_STATUS, sql);
+	toolsMenu->Enable(MNU_STATUS, status);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	toolsMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
 	viewMenu->Enable(MNU_REFRESH, refresh);

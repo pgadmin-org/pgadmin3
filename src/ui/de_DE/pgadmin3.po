@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgAdmin3\n"
 "POT-Creation-Date: 2003-09-09 16:16+0200\n"
-"PO-Revision-Date: 2004-06-23 12:06+0100\n"
+"PO-Revision-Date: 2004-07-18 23:56+0100\n"
 "Last-Translator: Andreas Pflug <Andreas.Pflug@web.de>\n"
 "Language-Team: pgAdmin Developers <pgadmin-hackers@postgresql.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Abgebrochen\n"
 
-#: src/ui/frmQuery.cpp:1127
+#: src/ui/frmQuery.cpp:1128
 #: src/ui/frmQueryBuilder.cpp:1316
 msgid ""
 "\n"
@@ -35,7 +35,7 @@ msgstr ""
 msgid " Connection broken."
 msgstr "Verbindung unterbrochen."
 
-#: src/ui/frmMain.cpp:1001
+#: src/ui/frmMain.cpp:1003
 msgid " Done."
 msgstr " Fertig."
 
@@ -47,6 +47,10 @@ msgstr "Tablespace Verwendung bestimmen"
 msgid " Retrieving user owned objects"
 msgstr "Objekte des Benutzers ermitteln"
 
+#: src/ui/frmStatus.cpp:642
+msgid " current"
+msgstr " laufend"
+
 # standard
 # standard
 # standard
@@ -55,12 +59,12 @@ msgstr "Objekte des Benutzers ermitteln"
 msgid "\""
 msgstr "\""
 
-#: src/ui/frmMain.cpp:997
+#: src/ui/frmMain.cpp:999
 #, c-format
 msgid "%.2f secs"
 msgstr "%.2f Sek."
 
-#: src/ui/frmQuery.cpp:1042
+#: src/ui/frmQuery.cpp:1043
 #, c-format
 msgid "%d rows affected."
 msgstr "%d Zeilen betroffen."
@@ -70,7 +74,7 @@ msgstr "%d Zeilen betroffen."
 msgid "%d rows copied to clipboard."
 msgstr "%d Zeilen ins Clipboard kopiert."
 
-#: src/ui/frmQuery.cpp:1111
+#: src/ui/frmQuery.cpp:1112
 #: src/ui/frmQueryBuilder.cpp:1301
 #, c-format
 msgid "%d rows retrieved."
@@ -79,26 +83,26 @@ msgstr "%d Zeilen geholt."
 #: src/ui/dlgClasses.cpp:242
 #: src/ui/frmEditGrid.cpp:503
 #: src/ui/frmEditGrid.cpp:625
-#: src/ui/frmQuery.cpp:1087
-#: src/ui/frmQuery.cpp:1202
+#: src/ui/frmQuery.cpp:1088
+#: src/ui/frmQuery.cpp:1203
 #: src/ui/frmQueryBuilder.cpp:1391
 #, c-format
 msgid "%d rows."
 msgstr "%d Zeilen."
 
-#: src/ui/frmQuery.cpp:1195
+#: src/ui/frmQuery.cpp:1196
 #: src/ui/frmQueryBuilder.cpp:1384
 #, c-format
 msgid "%ld  rows not retrieved."
 msgstr "%ld Zeilen nicht geholt."
 
-#: src/ui/frmQuery.cpp:1204
+#: src/ui/frmQuery.cpp:1205
 #: src/ui/frmQueryBuilder.cpp:1393
 #, c-format
 msgid "%ld of %ld rows"
 msgstr "%ld von %ld Zeilen"
 
-#: src/ui/frmQuery.cpp:1191
+#: src/ui/frmQuery.cpp:1192
 #: src/ui/frmQueryBuilder.cpp:1380
 #, c-format
 msgid "%ld rows retrieved."
@@ -461,7 +465,7 @@ msgstr "(binär kompatibel)"
 msgid ","
 msgstr ","
 
-#: src/ui/frmQuery.cpp:989
+#: src/ui/frmQuery.cpp:990
 #: src/ui/frmQueryBuilder.cpp:1220
 msgid "-- Executing query:\n"
 msgstr "-- Abfrage ausführen:\n"
@@ -558,7 +562,7 @@ msgstr "> Operator"
 msgid ">>"
 msgstr ">>"
 
-#: src/ui/frmStatus.cpp:486
+#: src/ui/frmStatus.cpp:735
 msgid "A cancel signal was sent to the selected server process(es)."
 msgstr "Ein Cancel Signal wurdde an die ausgewählten Serverprozesse gesendet."
 
@@ -570,16 +574,17 @@ msgstr ""
 "Ein übler Fehler ist aufgetreten:\n"
 "\n"
 
-#: src/ui/frmStatus.cpp:510
+#: src/ui/frmStatus.cpp:771
 msgid "A terminate signal was sent to the selected server process(es)."
-msgstr "Das Signal zum Abbrechen wurde an die ausgewählten Serverprozesse gesendet."
+msgstr "Das Signal zum Abwürgen wurde an die ausgewählten Serverprozesse gesendet."
 
-#: src/schema/pgDatabase.cpp:312
+#: src/schema/pgDatabase.cpp:309
 #: src/schema/pgFunction.cpp:129
 #: src/schema/pgLanguage.cpp:64
 #: src/schema/pgSchema.cpp:157
 #: src/schema/pgSequence.cpp:93
 #: src/schema/pgTable.cpp:381
+#: src/schema/pgTablespace.cpp:138
 #: src/schema/pgView.cpp:85
 msgid "ACL"
 msgstr "ACL"
@@ -770,7 +775,7 @@ msgstr "Alias"
 msgid "Alignment"
 msgstr "Ausrichtung"
 
-#: src/schema/pgDatabase.cpp:325
+#: src/schema/pgDatabase.cpp:322
 msgid "Allow connections?"
 msgstr "Verbindungen erlauben?"
 
@@ -799,11 +804,15 @@ msgstr "Ausführen"
 msgid "Apply a filter and view the data in the selected object."
 msgstr "Filter anwenden und die Daten des ausgewählten Objektes darstellen."
 
-#: src/ui/frmStatus.cpp:468
+#: src/ui/frmStatus.cpp:699
+msgid "Are you sure the logfile should be rotated?"
+msgstr "Soll die Rotation des Logfiles angestoßen werden?"
+
+#: src/ui/frmStatus.cpp:718
 msgid "Are you sure you wish to cancel the selected query(s)?"
 msgstr "Soll die ausgewählte Query abgebrochen werden?"
 
-#: src/ui/events.cpp:1032
+#: src/ui/events.cpp:1027
 #, c-format
 msgid "Are you sure you wish to drop %s %s?"
 msgstr "Soll %s %s wirklich gelöscht werden?"
@@ -813,9 +822,9 @@ msgstr "Soll %s %s wirklich gelöscht werden?"
 msgid "Are you sure you wish to remove the join %s %s %s ?"
 msgstr "Soll der Join %s &s &s gelöscht werden?"
 
-#: src/ui/frmStatus.cpp:491
+#: src/ui/frmStatus.cpp:753
 msgid "Are you sure you wish to terminate the selected server process(es)?"
-msgstr "Sollen die ausgewählten Serverprozesse wirklich abgebrochen werden?"
+msgstr "Sollen die ausgewählten Serverprozesse wirklich abgewürgt werden?"
 
 #: src/schema/pgFunction.cpp:113
 msgid "Argument count"
@@ -873,7 +882,7 @@ msgstr "Zurück"
 msgid "Back to previous page."
 msgstr "Zurück zur vorigen Seite."
 
-#: src/schema/pgDatabase.cpp:433
+#: src/schema/pgDatabase.cpp:435
 msgid "Backends"
 msgstr "Backends"
 
@@ -909,11 +918,11 @@ msgstr "Batch"
 msgid "Blobs"
 msgstr "Blobs"
 
-#: src/schema/pgDatabase.cpp:437
+#: src/schema/pgDatabase.cpp:439
 msgid "Blocks Hit"
 msgstr "Blocks Hit"
 
-#: src/schema/pgDatabase.cpp:436
+#: src/schema/pgDatabase.cpp:438
 msgid "Blocks Read"
 msgstr "Blocks Read"
 
@@ -1011,6 +1020,7 @@ msgstr "Kann keine weitere Spalte zur Abfrage hinzufügen"
 #: input:415
 #: input:436
 #: input:445
+#: input:639
 #: input:642
 #: src/ui/frmQuery.cpp:200
 #: src/ui/frmQueryBuilder.cpp:173
@@ -1030,11 +1040,11 @@ msgstr "Alle Änderungen verwerfen und Dialog schließen."
 #: src/ui/frmQuery.cpp:200
 #: src/ui/frmQueryBuilder.cpp:130
 #: src/ui/frmQueryBuilder.cpp:173
-#: src/ui/frmStatus.cpp:486
+#: src/ui/frmStatus.cpp:735
 msgid "Cancel query"
 msgstr "Abfrage abbrechen"
 
-#: src/ui/frmStatus.cpp:468
+#: src/ui/frmStatus.cpp:718
 msgid "Cancel query?"
 msgstr "Abfrage abbrechen?"
 
@@ -1042,11 +1052,11 @@ msgstr "Abfrage abbrechen?"
 msgid "Cancelled"
 msgstr "Abgebrochen"
 
-#: src/ui/frmQuery.cpp:870
+#: src/ui/frmQuery.cpp:871
 msgid "Cancelling."
 msgstr "Bricht ab."
 
-#: src/ui/events.cpp:1023
+#: src/ui/events.cpp:1018
 #, c-format
 msgid "Cannot drop system %s %s."
 msgstr "Kann System-%s &s nicht löschen."
@@ -1182,7 +1192,7 @@ msgstr "Fenster leeren"
 # standard
 # standard
 # standard
-#: input:640
+#: input:648
 msgid "Close"
 msgstr "Schließen"
 
@@ -1286,7 +1296,7 @@ msgstr "Spalten"
 #: src/schema/pgCollection.cpp:87
 #: src/schema/pgColumn.cpp:233
 #: src/schema/pgConversion.cpp:71
-#: src/schema/pgDatabase.cpp:330
+#: src/schema/pgDatabase.cpp:327
 #: src/schema/pgDomain.cpp:103
 #: src/schema/pgForeignKey.cpp:164
 #: src/schema/pgFunction.cpp:131
@@ -1372,8 +1382,8 @@ msgstr "Zum Server verbinden"
 msgid "Connect to the selected server."
 msgstr "Verbindung zum ausgewählten Server herstellen."
 
-#: src/schema/pgDatabase.cpp:326
-#: src/schema/pgServer.cpp:339
+#: src/schema/pgDatabase.cpp:323
+#: src/schema/pgServer.cpp:373
 msgid "Connected?"
 msgstr "Verbunden?"
 
@@ -1381,11 +1391,11 @@ msgstr "Verbunden?"
 # standard
 # standard
 # standard
-#: src/schema/pgServer.cpp:139
+#: src/schema/pgServer.cpp:167
 msgid "Connecting to database"
 msgstr "Datenbanverbindung herstellen"
 
-#: src/schema/pgServer.cpp:137
+#: src/schema/pgServer.cpp:165
 msgid "Connecting to database without password"
 msgstr "Verbindung zur Datenbank wird ohne Paßwort aufgebaut."
 
@@ -1410,7 +1420,7 @@ msgstr "Verbindung zum Server %s unterbrochen."
 #: input:179
 #: src/schema/pgIndex.cpp:210
 #: src/schema/pgIndexConstraint.cpp:104
-#: src/ui/frmRestore.cpp:288
+#: src/ui/frmRestore.cpp:300
 msgid "Constraint"
 msgstr "Constraint"
 
@@ -1481,11 +1491,11 @@ msgstr "Korrelation"
 msgid "Could not resolve hostname %s"
 msgstr "Konnte Hostname %s nicht auflösen"
 
-#: src/schema/pgServer.cpp:119
+#: src/schema/pgServer.cpp:147
 msgid "Couldn't create a connection dialogue!"
 msgstr "Konnte den keinen Dialog zur Verbindungsaufnahme erzeugen!"
 
-#: src/schema/pgServer.cpp:145
+#: src/schema/pgServer.cpp:174
 msgid "Couldn't create a connection object!"
 msgstr "Couldn't create a connection object!"
 
@@ -1663,7 +1673,7 @@ msgstr "&Ausschneiden\tCtrl-X"
 msgid "Current Password"
 msgstr "Aktuelles Passwort"
 
-#: src/schema/pgServer.cpp:358
+#: src/schema/pgServer.cpp:392
 msgid "Current Query"
 msgstr "Aktuelle Query"
 
@@ -1716,11 +1726,11 @@ msgstr "Daten Anzeige"
 msgid "Data Sorting"
 msgstr "Datensortierung"
 
-#: src/ui/frmQuery.cpp:1100
+#: src/ui/frmQuery.cpp:1101
 msgid "Data export aborted."
 msgstr "Datenexport abgebrochen."
 
-#: src/ui/frmQuery.cpp:1186
+#: src/ui/frmQuery.cpp:1187
 #: src/ui/frmQueryBuilder.cpp:1375
 msgid "Data retrieval runtime: "
 msgstr "Benötigte Zeit zum Holen der Daten:"
@@ -1736,20 +1746,20 @@ msgstr "Benötigte Zeit zum Holen der Daten:"
 msgid "Data type"
 msgstr "Datentyp"
 
-#: src/ui/frmQuery.cpp:1098
+#: src/ui/frmQuery.cpp:1099
 msgid "Data written to file."
 msgstr "Daten in Datei geschrieben."
 
 #: input:321
-#: src/schema/pgDatabase.cpp:432
+#: src/schema/pgDatabase.cpp:434
 #: src/schema/pgObject.cpp:33
-#: src/schema/pgServer.cpp:357
+#: src/schema/pgServer.cpp:391
 #: src/schema/pgTablespace.cpp:43
 #: src/schema/pgTablespace.cpp:73
 #: src/schema/pgUser.cpp:93
 #: src/schema/pgUser.cpp:119
-#: src/ui/frmStatus.cpp:84
-#: src/ui/frmStatus.cpp:94
+#: src/ui/frmStatus.cpp:95
+#: src/ui/frmStatus.cpp:105
 msgid "Database"
 msgstr "Datenbank"
 
@@ -1883,7 +1893,7 @@ msgstr "Absteigend"
 # standard
 # standard
 #: input:479
-#: src/schema/pgServer.cpp:305
+#: src/schema/pgServer.cpp:339
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -1973,6 +1983,7 @@ msgstr "Domänen"
 
 #: src/ui/dlgClasses.cpp:248
 #: src/ui/dlgClasses.cpp:406
+#: src/ui/frmRestore.cpp:249
 msgid "Done"
 msgstr "Fertig"
 
@@ -1984,7 +1995,7 @@ msgstr "Doppelte rechte Joins sind nicht erlaubt.\n"
 msgid "Drop"
 msgstr "Droppen"
 
-#: src/ui/events.cpp:1034
+#: src/ui/events.cpp:1029
 #, c-format
 msgid "Drop %s?"
 msgstr "%s droppen?"
@@ -1998,7 +2009,7 @@ msgstr "Datenbank droppen"
 msgid "Drop the currently selected object."
 msgstr "Das ausgewählte Objekt löschen."
 
-#: src/schema/pgDatabase.cpp:223
+#: src/schema/pgDatabase.cpp:220
 msgid "Dropping database not allowed"
 msgstr "Droppen der Datenbank nicht erlaube"
 
@@ -2066,12 +2077,12 @@ msgstr "Aktiv?"
 # standard
 #: input:63
 #: input:509
-#: src/schema/pgDatabase.cpp:317
+#: src/schema/pgDatabase.cpp:314
 msgid "Encoding"
 msgstr "Kodierung"
 
 # standard
-#: src/schema/pgServer.cpp:311
+#: src/schema/pgServer.cpp:345
 msgid "Encryption"
 msgstr "Verschlüsselung"
 
@@ -2150,7 +2161,7 @@ msgstr "Portnummer, auf die der Server reagiert, eingeben."
 msgid "Enter the username to use when connecting to the server."
 msgstr "Benutzername zur Verbindung mit dem Server eingeben."
 
-#: src/ui/events.cpp:623
+#: src/ui/events.cpp:615
 #, c-format
 msgid "Error connecting to the server: %s"
 msgstr "Fehler beim Verbinden mit dem Server: %s"
@@ -2336,7 +2347,7 @@ msgstr "Fehlgeschlagen"
 msgid "Failed to open file %s."
 msgstr "Offnen der Datei %s fehlgeschlagen."
 
-#: src/ui/events.cpp:545
+#: src/ui/events.cpp:529
 #, c-format
 msgid "Failed to write to the output file: %s"
 msgstr "Schreiben der Ausgabedatei %s fehlgeschlagen."
@@ -2487,7 +2498,7 @@ msgstr "Allgemein"
 msgid "Grant Wizard"
 msgstr "GRANT Assistent"
 
-#: src/ui/frmStatus.cpp:99
+#: src/ui/frmStatus.cpp:110
 msgid "Granted"
 msgstr "Gewährt"
 
@@ -2600,7 +2611,7 @@ msgstr "Heap Blocks Read"
 msgid "Help"
 msgstr "Hilfe"
 
-#: src/ui/events.cpp:561
+#: src/ui/events.cpp:547
 msgid "Hide system objects"
 msgstr "Systemobjekte ausblenden"
 
@@ -2613,7 +2624,7 @@ msgstr "Histogram Bounds"
 msgid "History"
 msgstr "Historie"
 
-#: src/schema/pgServer.cpp:304
+#: src/schema/pgServer.cpp:338
 msgid "Hostname"
 msgstr "Hostname"
 
@@ -2767,7 +2778,7 @@ msgstr "Anfängl. Bedingung"
 # standard
 # standard
 #: input:486
-#: src/schema/pgServer.cpp:330
+#: src/schema/pgServer.cpp:364
 msgid "Initial database"
 msgstr "Anfängliche DB"
 
@@ -2775,7 +2786,7 @@ msgstr "Anfängliche DB"
 # standard
 # standard
 # standard
-#: src/schema/pgDatabase.cpp:222
+#: src/schema/pgDatabase.cpp:219
 msgid "Initial database can't be dropped."
 msgstr "Anfängliche DB kann nicht gelöscht werden."
 
@@ -2910,7 +2921,7 @@ msgstr "Letzter Lauf"
 # standard
 # standard
 # standard
-#: src/schema/pgServer.cpp:337
+#: src/schema/pgServer.cpp:371
 msgid "Last system OID"
 msgstr "Letzte SystemOID"
 
@@ -2961,11 +2972,11 @@ msgstr "Kleiner als Operator"
 # standard
 # standard
 # standard
-#: src/ui/frmStatus.cpp:122
+#: src/ui/frmStatus.cpp:135
 msgid "Level"
 msgstr "Level"
 
-#: src/ui/frmQuery.cpp:1127
+#: src/ui/frmQuery.cpp:1128
 #: src/ui/frmQueryBuilder.cpp:1316
 msgid "Limit exceeded"
 msgstr "Limit überschritten"
@@ -3016,14 +3027,9 @@ msgid "Location"
 msgstr "Ort"
 
 # standard
-#: input:644
+#: input:641
 msgid "Locks"
 msgstr "Locks"
-
-# standard
-#: input:645
-msgid "Log"
-msgstr "Log"
 
 # standard
 # standard
@@ -3033,7 +3039,7 @@ msgstr "Log"
 msgid "Log Level"
 msgstr "Log-Level"
 
-#: src/ui/frmStatus.cpp:124
+#: src/ui/frmStatus.cpp:137
 msgid "Log entry"
 msgstr "Logeintrag"
 
@@ -3044,12 +3050,21 @@ msgid "Log files (*.log)|*.log|All files (*.*)|*.*"
 msgstr "Log-Dateien (*.log)|*.log|Alle Dateien (*.*)|*.*"
 
 # standard
+#: input:644
+msgid "Logfile"
+msgstr "Logfile"
+
+# standard
 # standard
 # standard
 # standard
 #: input:577
 msgid "Logfile (%ID will be replaced with the Process ID)"
 msgstr "Logfile (%ID wird durch die Prozess-ID ersetzt)"
+
+#: src/ui/frmStatus.cpp:699
+msgid "Logfile rotation"
+msgstr "Logfile Rotation"
 
 # standard
 # standard
@@ -3177,7 +3192,7 @@ msgstr "Meldungen"
 msgid "Minimum"
 msgstr "Minimum"
 
-#: src/ui/frmStatus.cpp:98
+#: src/ui/frmStatus.cpp:109
 msgid "Mode"
 msgstr "Modus"
 
@@ -3234,7 +3249,7 @@ msgstr "Mehrfach-Spalten Joins"
 #: src/schema/pgCheck.cpp:76
 #: src/schema/pgColumn.cpp:219
 #: src/schema/pgConversion.cpp:62
-#: src/schema/pgDatabase.cpp:309
+#: src/schema/pgDatabase.cpp:306
 #: src/schema/pgDomain.cpp:93
 #: src/schema/pgForeignKey.cpp:151
 #: src/schema/pgFunction.cpp:110
@@ -3256,7 +3271,7 @@ msgstr "Mehrfach-Spalten Joins"
 #: src/schema/pgUser.cpp:94
 #: src/schema/pgUser.cpp:200
 #: src/schema/pgView.cpp:82
-#: src/ui/frmRestore.cpp:253
+#: src/ui/frmRestore.cpp:265
 msgid "Name"
 msgstr "Name"
 
@@ -3424,7 +3439,7 @@ msgid "Next run"
 msgstr "Nächster Lauf"
 
 #: src/ui/frmQueryBuilder.cpp:616
-#: src/ui/frmStatus.cpp:338
+#: src/ui/frmStatus.cpp:360
 #: src/utils/misc.cpp:67
 msgid "No"
 msgstr "Nein"
@@ -3437,7 +3452,7 @@ msgstr "Keine Tabelle oder Sicht."
 msgid "No connection to database."
 msgstr "keine Verbindung zur Datenbank."
 
-#: src/ui/frmQuery.cpp:1104
+#: src/ui/frmQuery.cpp:1105
 msgid "No data to export."
 msgstr "Keine Daten zu exportieren."
 
@@ -3446,7 +3461,7 @@ msgstr "Keine Daten zu exportieren."
 msgid "No owner"
 msgstr "Kein Besitzer"
 
-#: src/ui/events.cpp:675
+#: src/ui/events.cpp:668
 #: src/ui/frmMain.cpp:369
 msgid "No properties are available for the current selection"
 msgstr "Für die aktuelle Auswahl sind keine Eigenschaften verfügbar."
@@ -3517,7 +3532,7 @@ msgstr "Null Fraction"
 #: src/schema/pgCast.cpp:63
 #: src/schema/pgCheck.cpp:77
 #: src/schema/pgConversion.cpp:63
-#: src/schema/pgDatabase.cpp:310
+#: src/schema/pgDatabase.cpp:307
 #: src/schema/pgDomain.cpp:94
 #: src/schema/pgForeignKey.cpp:152
 #: src/schema/pgFunction.cpp:111
@@ -3571,9 +3586,9 @@ msgstr "OID"
 msgid "OK"
 msgstr "OK"
 
-#: src/ui/frmQuery.cpp:1030
-#: src/ui/frmQuery.cpp:1111
-#: src/ui/frmQuery.cpp:1191
+#: src/ui/frmQuery.cpp:1031
+#: src/ui/frmQuery.cpp:1112
+#: src/ui/frmQuery.cpp:1192
 #: src/ui/frmQueryBuilder.cpp:1257
 #: src/ui/frmQueryBuilder.cpp:1301
 #: src/ui/frmQueryBuilder.cpp:1380
@@ -3597,7 +3612,7 @@ msgstr "OR"
 msgid "Object file"
 msgstr "Objekt-Datei"
 
-#: src/schema/pgDatabase.cpp:329
+#: src/schema/pgDatabase.cpp:326
 msgid "Old style FKs"
 msgstr "FKs nach altem Stil"
 
@@ -3633,7 +3648,7 @@ msgstr "Bei Fehler"
 msgid "On update"
 msgstr "Bei Änderung"
 
-#: src/ui/frmQuery.cpp:1036
+#: src/ui/frmQuery.cpp:1037
 #, c-format
 msgid "One Row with OID %d inserted."
 msgstr "Eine Reihe mit OID %d eingefügt."
@@ -3664,7 +3679,7 @@ msgstr "Abfragedatei öffnen"
 msgid "Open file"
 msgstr "Datei öffnen"
 
-#: src/ui/frmQuery.cpp:792
+#: src/ui/frmQuery.cpp:793
 msgid "Open query file"
 msgstr "Abfragedatei öffnen"
 
@@ -3766,7 +3781,7 @@ msgstr "Ausgabefunktion"
 #: input:357
 #: src/schema/pgAggregate.cpp:80
 #: src/schema/pgConversion.cpp:64
-#: src/schema/pgDatabase.cpp:311
+#: src/schema/pgDatabase.cpp:308
 #: src/schema/pgDomain.cpp:95
 #: src/schema/pgFunction.cpp:112
 #: src/schema/pgOperator.cpp:117
@@ -3780,8 +3795,8 @@ msgstr "Ausgabefunktion"
 msgid "Owner"
 msgstr "Eigentümer"
 
-#: src/ui/frmStatus.cpp:83
-#: src/ui/frmStatus.cpp:93
+#: src/ui/frmStatus.cpp:94
+#: src/ui/frmStatus.cpp:104
 msgid "PID"
 msgstr "PID"
 
@@ -3854,7 +3869,7 @@ msgstr "Vom Clipboard einfügen"
 # standard
 # standard
 #: input:65
-#: src/schema/pgDatabase.cpp:314
+#: src/schema/pgDatabase.cpp:311
 msgid "Path"
 msgstr "Pfad"
 
@@ -3867,7 +3882,7 @@ msgstr "Bitte Benutzersprache auswählen."
 msgid "Please enter function definition."
 msgstr "Bitte Definition der Funktion eingeben."
 
-#: src/ui/dlgFunction.cpp:251
+#: src/ui/dlgFunction.cpp:250
 msgid "Please enter function source code."
 msgstr "Bitte Sourcecode der Funktion eingeben."
 
@@ -3884,7 +3899,7 @@ msgstr "Bitte ein Event auswählen"
 msgid "Please select base datatype."
 msgstr "Bitte Basistyp auswählen"
 
-#: src/ui/dlgFunction.cpp:243
+#: src/ui/dlgFunction.cpp:242
 msgid "Please select language."
 msgstr "Bitte Sprache auswählen."
 
@@ -3892,7 +3907,7 @@ msgstr "Bitte Sprache auswählen."
 msgid "Please select left or right datatype."
 msgstr "Bitte linken oder rechten Datentypen auswählen."
 
-#: src/ui/dlgFunction.cpp:242
+#: src/ui/dlgFunction.cpp:241
 msgid "Please select return type."
 msgstr "Bitte Rückgabetyp auswählen."
 
@@ -3948,7 +3963,7 @@ msgstr "Bitte interne Speicherlänge eingeben"
 msgid "Please specify language handler."
 msgstr "Bitte Sprachhandler auswählen."
 
-#: src/ui/dlgTablespace.cpp:99
+#: src/ui/dlgTablespace.cpp:100
 msgid "Please specify location."
 msgstr "Bitte Ort angeben."
 
@@ -3957,7 +3972,7 @@ msgstr "Bitte Ort angeben."
 #: src/ui/dlgConversion.cpp:159
 #: src/ui/dlgDatabase.cpp:213
 #: src/ui/dlgDomain.cpp:163
-#: src/ui/dlgFunction.cpp:241
+#: src/ui/dlgFunction.cpp:240
 #: src/ui/dlgGroup.cpp:116
 #: src/ui/dlgIndex.cpp:195
 #: src/ui/dlgLanguage.cpp:135
@@ -3966,7 +3981,7 @@ msgstr "Bitte Ort angeben."
 #: src/ui/dlgSchema.cpp:99
 #: src/ui/dlgSequence.cpp:155
 #: src/ui/dlgTable.cpp:541
-#: src/ui/dlgTablespace.cpp:98
+#: src/ui/dlgTablespace.cpp:99
 #: src/ui/dlgTrigger.cpp:205
 #: src/ui/dlgType.cpp:236
 #: src/ui/dlgUser.cpp:226
@@ -3974,7 +3989,7 @@ msgstr "Bitte Ort angeben."
 msgid "Please specify name."
 msgstr "Bitte Namen eingeben."
 
-#: src/ui/dlgFunction.cpp:247
+#: src/ui/dlgFunction.cpp:246
 msgid "Please specify object library."
 msgstr "Bitte Objektbibliothek eingeben."
 
@@ -4017,7 +4032,7 @@ msgstr "Bitte gültige Nachkommastellen eingeben (0.."
 # standard
 # standard
 #: input:483
-#: src/schema/pgServer.cpp:306
+#: src/schema/pgServer.cpp:340
 msgid "Port"
 msgstr "Port"
 
@@ -4139,14 +4154,14 @@ msgstr "Prozess beendet mit Exitcode %d."
 #: input:379
 #: input:416
 #: input:437
-#: src/ui/events.cpp:674
+#: src/ui/events.cpp:667
 #: src/ui/frmMain.cpp:267
 #: src/ui/frmMain.cpp:300
 #: src/ui/frmMain.cpp:368
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: src/include/pgObject.h:153
+#: src/include/pgObject.h:155
 msgid "Property"
 msgstr "Eigenschaften"
 
@@ -4155,10 +4170,10 @@ msgstr "Eigenschaften"
 # standard
 # standard
 #: input:568
-#: src/ui/frmStatus.cpp:88
-#: src/ui/frmStatus.cpp:90
-#: src/ui/frmStatus.cpp:102
-#: src/ui/frmStatus.cpp:104
+#: src/ui/frmStatus.cpp:99
+#: src/ui/frmStatus.cpp:101
+#: src/ui/frmStatus.cpp:113
+#: src/ui/frmStatus.cpp:115
 msgid "Query"
 msgstr "Abfrage"
 
@@ -4173,8 +4188,8 @@ msgstr "Abfragegenerator"
 msgid "Query files (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr "Abfragedateien (*.sql)|*.sql|Alle Dateien (*.*)|*.*"
 
-#: src/ui/frmQuery.cpp:793
-#: src/ui/frmQuery.cpp:836
+#: src/ui/frmQuery.cpp:794
+#: src/ui/frmQuery.cpp:837
 #: src/ui/frmQueryBuilder.cpp:1689
 msgid "Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"
 msgstr "Abfragedateien (*.sql)|*.sql|UTF-8 Abfragedateien (*.usql)|*.usql|Alle Dateien (*.*)|*.*"
@@ -4184,7 +4199,7 @@ msgstr "Abfragedateien (*.sql)|*.sql|UTF-8 Abfragedateien (*.usql)|*.usql|Alle D
 msgid "Query inserted one rows with OID %d.\n"
 msgstr "Die Query hat eine Zeile mit OID %d eingefügt.\n"
 
-#: src/ui/frmQuery.cpp:985
+#: src/ui/frmQuery.cpp:986
 #: src/ui/frmQueryBuilder.cpp:1216
 msgid "Query is running."
 msgstr "Abfrage läuft."
@@ -4199,18 +4214,18 @@ msgstr "Abfrageergebnis mit %d Zeilen wurde unterdrückt.\n"
 msgid "Query result with %d rows will be returned.\n"
 msgstr "Abfrage mit %d Zeilen wird zurückgeliefert.\n"
 
-#: src/ui/frmQuery.cpp:1029
+#: src/ui/frmQuery.cpp:1030
 #: src/ui/frmQueryBuilder.cpp:1256
 #, c-format
 msgid "Query returned successfully with no result in %s ms."
 msgstr "Abfrage war erfolgreich nach %s ms. Keine Zeilen geliefert."
 
-#: src/ui/frmQuery.cpp:1040
+#: src/ui/frmQuery.cpp:1041
 #, c-format
 msgid "Query returned successfully: %d rows affected, %s ms execution time."
 msgstr "Abfrage war erfolgreich durchgeführt: %d Zeilen, %s ms Ausführungszeit."
 
-#: src/ui/frmQuery.cpp:1034
+#: src/ui/frmQuery.cpp:1035
 #, c-format
 msgid "Query returned successfully: one row with OID %d inserted, %s ms execution time."
 msgstr "Query erfolgreicht durchgeführt: Eine Zeile mit OID %d eingefügt, %s ms Ausführungszeit."
@@ -4357,7 +4372,7 @@ msgstr "Referenziert"
 # standard
 # standard
 # standard
-#: input:639
+#: input:647
 #: src/ui/frmEditGrid.cpp:99
 #: src/ui/frmMain.cpp:263
 msgid "Refresh"
@@ -4367,7 +4382,7 @@ msgstr "Auffrischen"
 # standard
 # standard
 # standard
-#: input:638
+#: input:646
 msgid "Refresh rate (seconds)"
 msgstr "Auffrischrate (Sekunden)"
 
@@ -4389,7 +4404,7 @@ msgstr "%s wird aufgefrischt..."
 msgid "Refreshing data, please wait."
 msgstr "Daten werden aufgefrischt, bitte warten."
 
-#: src/ui/frmStatus.cpp:95
+#: src/ui/frmStatus.cpp:106
 msgid "Relation"
 msgstr "Relation"
 
@@ -4487,13 +4502,13 @@ msgstr "Ergebnistyp"
 msgid "Retrieving %s details"
 msgstr "%s Details holen"
 
-#: src/ui/frmQuery.cpp:1115
+#: src/ui/frmQuery.cpp:1116
 #: src/ui/frmQueryBuilder.cpp:1305
 #, c-format
 msgid "Retrieving data: %d rows."
 msgstr "Daten geholt: %d Zeilen."
 
-#: src/ui/events.cpp:725
+#: src/ui/events.cpp:718
 msgid "Retrieving server properties"
 msgstr "Servereigenschaften holen"
 
@@ -4546,6 +4561,11 @@ msgstr "Rechter Sortier-Op"
 #: src/schema/pgOperator.cpp:122
 msgid "Right type"
 msgstr "Rechter Typ"
+
+# standard
+#: input:645
+msgid "Rotate"
+msgstr "Rotieren"
 
 #: src/ui/ctlSQLResult.cpp:189
 msgid "Row"
@@ -4619,7 +4639,7 @@ msgstr "SQL"
 msgid "SQL Help"
 msgstr "SQL Hilfe"
 
-#: src/ui/events.cpp:537
+#: src/ui/events.cpp:521
 msgid "SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr "SQL Scripte (*.sql)|*.sql|Alle Dateien (*.*)|*.*"
 
@@ -4639,11 +4659,11 @@ msgstr "SQL Website"
 msgid "SSL"
 msgstr "SSL"
 
-#: src/schema/pgServer.cpp:326
+#: src/schema/pgServer.cpp:360
 msgid "SSL Mode"
 msgstr "SSL Modus"
 
-#: src/schema/pgServer.cpp:312
+#: src/schema/pgServer.cpp:346
 msgid "SSL encrypted"
 msgstr "SSL-verschlüsselt"
 
@@ -4693,7 +4713,7 @@ msgstr "Historie speichern"
 msgid "Save history of executed commands."
 msgstr "Die Historie der ausgeführten Kommandos speichern."
 
-#: src/ui/frmQuery.cpp:835
+#: src/ui/frmQuery.cpp:836
 #: src/ui/frmQueryBuilder.cpp:1688
 msgid "Save query file as"
 msgstr "Abfragedatei speichern unter"
@@ -4770,7 +4790,7 @@ msgstr "Bitte Exportdateinamen angeben"
 msgid "Select log file"
 msgstr "Logdatei auswählen"
 
-#: src/ui/events.cpp:537
+#: src/ui/events.cpp:521
 msgid "Select output file"
 msgstr "Ausgabedatei auswählen"
 
@@ -4843,7 +4863,7 @@ msgstr "Server"
 msgid "Servers"
 msgstr "Server"
 
-#: src/ui/events.cpp:639
+#: src/ui/events.cpp:631
 #: src/ui/frmMain.cpp:879
 #, c-format
 msgid "Servers (%d)"
@@ -4874,7 +4894,7 @@ msgstr "Optionen-Dialog anzeigen"
 msgid "Show or hide system objects."
 msgstr "Systemobjekte anzeigen oder ausblenden."
 
-#: src/ui/events.cpp:566
+#: src/ui/events.cpp:554
 msgid "Show system objects"
 msgstr "Systemobjekte anzeigen"
 
@@ -4921,8 +4941,8 @@ msgstr "Quelltyp"
 # standard
 #: input:282
 #: input:308
-#: src/ui/frmStatus.cpp:87
-#: src/ui/frmStatus.cpp:101
+#: src/ui/frmStatus.cpp:98
+#: src/ui/frmStatus.cpp:112
 msgid "Start"
 msgstr "Start"
 
@@ -4948,7 +4968,7 @@ msgstr "Zwischenfunktion"
 msgid "State type"
 msgstr "Zwischentyp"
 
-#: src/schema/pgObject.cpp:813
+#: src/schema/pgObject.cpp:817
 #: src/schema/pgSequence.cpp:112
 msgid "Statistic"
 msgstr "Statistik"
@@ -4965,7 +4985,7 @@ msgstr "Statistiken"
 # standard
 # standard
 # standard
-#: input:641
+#: input:638
 msgid "Status"
 msgstr "Status"
 
@@ -5061,7 +5081,7 @@ msgstr "Systemspalte?"
 msgid "System conversion?"
 msgstr "System-Konversion?"
 
-#: src/schema/pgDatabase.cpp:327
+#: src/schema/pgDatabase.cpp:324
 msgid "System database?"
 msgstr "System-Datenbank?"
 
@@ -5086,7 +5106,7 @@ msgstr "Systemindex?"
 msgid "System language?"
 msgstr "Systemsprache?"
 
-#: src/ui/events.cpp:560
+#: src/ui/events.cpp:546
 msgid ""
 "System objects will not be removed from the object tree until a refresh is performed.\n"
 "Close all connections now?"
@@ -5094,7 +5114,7 @@ msgstr ""
 "Systemobjekte werden aus der Objektübersicht nicht entfernt bis eine Auffrischung erfolgt ist.\n"
 "Alle Verbindungen jetzt schließen?"
 
-#: src/ui/events.cpp:565
+#: src/ui/events.cpp:553
 msgid ""
 "System objects will not show in the the object tree until a refresh is performed.\n"
 "Close all connections now?"
@@ -5143,7 +5163,7 @@ msgstr "Systemsicht?"
 msgid "TAR"
 msgstr "TAR"
 
-#: src/ui/frmStatus.cpp:97
+#: src/ui/frmStatus.cpp:108
 msgid "TX"
 msgstr "TX"
 
@@ -5178,7 +5198,7 @@ msgstr "Tabellen/Sichten"
 #: input:297
 #: input:306
 #: input:338
-#: src/schema/pgDatabase.cpp:316
+#: src/schema/pgDatabase.cpp:313
 #: src/schema/pgIndex.cpp:199
 #: src/schema/pgObject.cpp:43
 #: src/schema/pgSchema.cpp:156
@@ -5226,19 +5246,20 @@ msgstr "Vorlage"
 # standard
 # standard
 # standard
+#: input:640
 #: input:643
 msgid "Terminate"
-msgstr "Abbrechen"
+msgstr "Abwürgen"
 
-#: src/ui/frmStatus.cpp:510
+#: src/ui/frmStatus.cpp:771
 msgid "Terminate process"
-msgstr "Prozeß beenden"
+msgstr "Prozeß abwürgen"
 
-#: src/ui/frmStatus.cpp:491
+#: src/ui/frmStatus.cpp:753
 msgid "Terminate process?"
-msgstr "Prozeß beenden?"
+msgstr "Prozeß abwürgen?"
 
-#: src/schema/pgServer.cpp:166
+#: src/schema/pgServer.cpp:195
 #, c-format
 msgid "The PostgreSQL server must be at least version %2.1f!"
 msgstr "Der PostgreSQL-Server muß mindestens Version %2.1f sein!"
@@ -5278,7 +5299,7 @@ msgstr "Anfängliche Datenbank beim Verbinden mit dem Server."
 msgid "The last OID used by the server."
 msgstr "Letzte vom Server verwendete OID."
 
-#: src/ui/frmQuery.cpp:1126
+#: src/ui/frmQuery.cpp:1127
 #: src/ui/frmQueryBuilder.cpp:1315
 #, c-format
 msgid "The maximum of %ld rows is exceeded (total %ld)."
@@ -5299,8 +5320,8 @@ msgstr "Portnummer auf der der Server empfängt."
 msgid "The text %s has changed.\n"
 msgstr "Der Text %s hat sich geändert.\n"
 
-#: src/ui/frmQuery.cpp:701
-#: src/ui/frmQuery.cpp:771
+#: src/ui/frmQuery.cpp:702
+#: src/ui/frmQuery.cpp:772
 #: src/ui/frmQueryBuilder.cpp:1620
 #, c-format
 msgid ""
@@ -5317,7 +5338,7 @@ msgstr ""
 msgid "The username used when connecting to the server."
 msgstr "Der zur Verbindung mit dem Server verwendete Benutzername."
 
-#: src/ui/events.cpp:533
+#: src/ui/events.cpp:517
 msgid "There is nothing in the SQL pane to save!"
 msgstr "Da ist nix im SQL-Fenster zu sichern!"
 
@@ -5346,7 +5367,7 @@ msgstr "Diese Software ist unter der Artistic License freigegeben."
 msgid "Time offset"
 msgstr "Zeitdifferenz"
 
-#: src/ui/frmStatus.cpp:118
+#: src/ui/frmStatus.cpp:131
 msgid "Timestamp"
 msgstr "Zeitmarke"
 
@@ -5370,14 +5391,14 @@ msgstr "Toast Index Blocks Hit"
 msgid "Toast Index Blocks Read"
 msgstr "Toast Index Blocks Read"
 
-#: src/ui/frmQuery.cpp:1196
+#: src/ui/frmQuery.cpp:1197
 #: src/ui/frmQueryBuilder.cpp:1385
 #, c-format
 msgid "Total %ld rows.\n"
 msgstr "Insgesamg %ld Zeilen.\n"
 
 #: src/ui/dlgClasses.cpp:245
-#: src/ui/frmQuery.cpp:1185
+#: src/ui/frmQuery.cpp:1186
 #: src/ui/frmQueryBuilder.cpp:1374
 msgid "Total query runtime: "
 msgstr "Gesamtlaufzeit der Abfrage: "
@@ -5417,7 +5438,7 @@ msgid "Trusted"
 msgstr "Vertraut"
 
 #: src/schema/pgLanguage.cpp:65
-#: src/schema/pgServer.cpp:332
+#: src/schema/pgServer.cpp:366
 msgid "Trusted?"
 msgstr "Vertraut?"
 
@@ -5429,7 +5450,7 @@ msgstr ""
 "Versuchen Sie, es in die linke Seite in einer\n"
 "oder mehreren Relationen einzusetzen."
 
-#: src/ui/events.cpp:1025
+#: src/ui/events.cpp:1020
 msgid "Trying to drop system object"
 msgstr "Versuch ein Systemobjekt zu droppen"
 
@@ -5474,7 +5495,7 @@ msgstr "Tuples updated"
 #: src/schema/pgObject.cpp:168
 #: src/schema/pgTablespace.cpp:42
 #: src/schema/pgUser.cpp:92
-#: src/ui/frmRestore.cpp:253
+#: src/ui/frmRestore.cpp:265
 msgid "Type"
 msgstr "Typ"
 
@@ -5557,9 +5578,9 @@ msgid "Update catalogs?"
 msgstr "Katalog ändern?"
 
 #: src/schema/pgObject.cpp:37
-#: src/schema/pgServer.cpp:356
-#: src/ui/frmStatus.cpp:85
+#: src/schema/pgServer.cpp:390
 #: src/ui/frmStatus.cpp:96
+#: src/ui/frmStatus.cpp:107
 msgid "User"
 msgstr "Benutzer"
 
@@ -5614,7 +5635,7 @@ msgstr "Benutzer/Gruppe"
 # standard
 #: input:417
 #: input:489
-#: src/schema/pgServer.cpp:331
+#: src/schema/pgServer.cpp:365
 msgid "Username"
 msgstr "Benutzername"
 
@@ -5673,8 +5694,8 @@ msgstr "Prüft Filtertext"
 msgid "Validator"
 msgstr "Validierer"
 
-#: src/include/pgObject.h:153
-#: src/schema/pgObject.cpp:813
+#: src/include/pgObject.h:155
+#: src/schema/pgObject.cpp:817
 #: src/schema/pgSequence.cpp:112
 #: src/ui/dlgDatabase.cpp:59
 #: src/ui/dlgUser.cpp:74
@@ -5733,11 +5754,11 @@ msgstr "Ausführlich"
 msgid "Verbose messages"
 msgstr "Ausführliche Meldungen"
 
-#: src/schema/pgServer.cpp:336
+#: src/schema/pgServer.cpp:370
 msgid "Version number"
 msgstr "Versionsnummer"
 
-#: src/schema/pgServer.cpp:335
+#: src/schema/pgServer.cpp:369
 msgid "Version string"
 msgstr "Versionsstring"
 
@@ -5808,20 +5829,20 @@ msgstr ""
 msgid "With OIDs"
 msgstr "Mit OIDs"
 
-#: src/ui/frmQuery.cpp:1091
+#: src/ui/frmQuery.cpp:1092
 msgid "Writing data."
 msgstr "Schreibt Daten."
 
-#: src/schema/pgDatabase.cpp:434
+#: src/schema/pgDatabase.cpp:436
 msgid "Xact Committed"
 msgstr "Xact Committed"
 
-#: src/schema/pgDatabase.cpp:435
+#: src/schema/pgDatabase.cpp:437
 msgid "Xact Rolled Back"
 msgstr "Xact Rolled Back"
 
 #: src/ui/frmQueryBuilder.cpp:615
-#: src/ui/frmStatus.cpp:336
+#: src/ui/frmStatus.cpp:358
 #: src/utils/misc.cpp:67
 msgid "Yes"
 msgstr "Ja"
@@ -5857,7 +5878,7 @@ msgstr ""
 "einmal vorkommt.\n"
 "\n"
 
-#: src/ui/events.cpp:384
+#: src/ui/events.cpp:382
 msgid "You must select a server before changing your password!"
 msgstr "Es muß vor dem Wechseln des Passwortes der betroffene Server ausgewählt werden!"
 
@@ -5877,7 +5898,7 @@ msgstr "Bricht ab."
 msgid "all columns"
 msgstr "alle Spalten"
 
-#: src/schema/pgServer.cpp:323
+#: src/schema/pgServer.cpp:357
 #: src/ui/frmConnect.cpp:78
 msgid "allow"
 msgstr "erlaubt"
@@ -5895,7 +5916,7 @@ msgstr "char"
 msgid "daily"
 msgstr "täglich"
 
-#: src/schema/pgServer.cpp:324
+#: src/schema/pgServer.cpp:358
 #: src/ui/frmConnect.cpp:79
 msgid "disable"
 msgstr "verboten"
@@ -5907,6 +5928,10 @@ msgstr "verboten"
 #: input:400
 msgid "double"
 msgstr "double"
+
+#: src/ui/frmStatus.cpp:420
+msgid "file logging not enabled"
+msgstr "File logging ist nicht aktiviert"
 
 # standard
 # standard
@@ -5952,7 +5977,7 @@ msgstr "keine"
 msgid "not counted"
 msgstr "nicht gezählt"
 
-#: src/schema/pgServer.cpp:312
+#: src/schema/pgServer.cpp:346
 msgid "not encrypted"
 msgstr "nicht verschlüsselt"
 
@@ -5977,13 +6002,13 @@ msgstr "nur Strings"
 msgid "pgAdmin III &FAQ"
 msgstr "pgAdmin III &FAQ"
 
-#: src/ui/frmQuery.cpp:701
-#: src/ui/frmQuery.cpp:771
+#: src/ui/frmQuery.cpp:702
+#: src/ui/frmQuery.cpp:772
 #: src/ui/frmQueryBuilder.cpp:1620
 msgid "pgAdmin III Query"
 msgstr "pgAdmin III Abfrage"
 
-#: src/ui/events.cpp:631
+#: src/ui/events.cpp:623
 msgid "pgServer object didn't initialise because the user aborted."
 msgstr "pgServer object didn't initialise because the user aborted."
 
@@ -5995,7 +6020,11 @@ msgstr "pgServer object didn't initialise because the user aborted."
 msgid "pgadmin3&%ID.log"
 msgstr "pgadmin3&%ID.log"
 
-#: src/schema/pgServer.cpp:322
+#: src/ui/frmStatus.cpp:466
+msgid "pgadmin:Logfile rotated."
+msgstr "pgadmin: Logfile Rotation ausgeführt."
+
+#: src/schema/pgServer.cpp:356
 #: src/ui/frmConnect.cpp:74
 msgid "prefer"
 msgstr "bevorzugt"
@@ -6009,7 +6038,7 @@ msgstr "Fertig"
 msgid "repeat"
 msgstr "wiederholen"
 
-#: src/schema/pgServer.cpp:321
+#: src/schema/pgServer.cpp:355
 #: src/ui/frmConnect.cpp:73
 msgid "require"
 msgstr "erforderlich"

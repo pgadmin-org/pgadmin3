@@ -72,13 +72,10 @@ int pgDatabase::Connect()
         else
         {
             useServerConnection = false;
-		    conn = new pgConn(server->GetName(), GetName(), server->GetUsername(), server->GetPassword(), server->GetPort(), server->GetSSL());
+		    conn = CreateConn();
 
-            if (conn->GetStatus() != PGCONN_OK)
+            if (!conn)
             {
-                wxLogError(wxT("%s"), conn->GetLastError().c_str());
-                delete conn;
-                conn=0;
                 connected = false;
                 return PGCONN_BAD;
             }
@@ -408,7 +405,12 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 
             {
                 if (browser)
-                    browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_CLOSEDDATABASE, -1, database);   
+                {
+                    if (database->GetName() == database->GetServer()->GetDatabaseName())
+                        browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_DATABASE, -1, database);   
+                    else
+                        browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_CLOSEDDATABASE, -1, database);   
+                }
                 else
                     break;
             }

@@ -46,19 +46,32 @@ private:
     void OnCancelBtn(wxCommandEvent &event);
 	void OnSelStatusItem(wxListEvent &event);
 	void OnSelLockItem(wxListEvent &event);
+	void OnLoadLogfile(wxCommandEvent &event);
+    void OnRotateLogfile(wxCommandEvent &event);
 
-    void addLog(const wxString &str);
+    int fillLogfileCombo();
+    void emptyLogfileCombo();
+
+    void addLogFile(wxDateTime *dt, bool skipFirst);
+    void addLogFile(const wxString &filename, const wxDateTime timestamp, int pid, long len, long &read, bool skipFirst);
+    void addLogLine(const wxString &str, bool formatted=true);
+
     
     frmMain *mainForm;
     wxString logFormat;
     bool logHasTimestamp, logFormatKnown;
     int logFmtPos;
 
+    wxDateTime logfileTimestamp, latestTimestamp;
+    wxString logDirectory, logfileName;
+    long logfilePid;
+    bool showCurrent, isCurrent;
+
     pgConn *connection;
     long backend_pid;
     wxTimer *timer;
 	bool loaded;
-    long logFileLength;
+    long logfileLength;
 
     DECLARE_EVENT_TABLE();
 };

@@ -323,14 +323,12 @@ void frmMain::OnStatus(wxCommandEvent &event)
     if (!data)
         return;
 
-    pgDatabase *db=data->GetDatabase();
-    if (!db)
+    pgServer *server=data->GetServer();
+    if (!server)
         return;
 
-    pgServer *server=db->GetServer();
-
-    pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
-    if (conn->GetStatus() == PGCONN_OK)
+    pgConn *conn = server->CreateConn();
+    if (conn)
     {
         wxString txt = wxT("pgAdmin III Server Status - ") + server->GetDescription() 
             + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(")");
@@ -456,9 +454,8 @@ void frmMain::OnSql(wxCommandEvent &ev)
         return;
 
     pgServer *server=db->GetServer();
-
-    pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
-    if (conn->GetStatus() == PGCONN_OK)
+    pgConn *conn = db->CreateConn();
+    if (conn)
     {
         wxString txt = wxT("pgAdmin III Query - ") + server->GetDescription() + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(") - ") + db->GetName();
 
@@ -469,12 +466,8 @@ void frmMain::OnSql(wxCommandEvent &ev)
         frames.Append(fq);
         fq->Go();
     }
-    else
-    {
-		wxLogError(conn->GetLastError());
-        delete conn;
-    }
 }
+
 
 void frmMain::OnViewData(wxCommandEvent& event)
 {
@@ -499,12 +492,8 @@ void frmMain::ViewData(bool filter)
         return;
 
     pgServer *server=db->GetServer();
-    if (!server)
-        return;
-
-    pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
-
-    if (conn->GetStatus() == PGCONN_OK)
+    pgConn *conn= db->CreateConn();
+    if (conn)
     {
         wxString txt = wxT("pgAdmin III Edit Data - ")
             + server->GetDescription() 
@@ -516,11 +505,6 @@ void frmMain::ViewData(bool filter)
         frmEditGrid *eg= new frmEditGrid(this, txt, conn, data);
         frames.Append(eg);
         eg->ShowForm(filter);
-    }
-    else
-    {
-		wxLogError(conn->GetLastError());
-        delete conn;
     }
 }
 
@@ -672,7 +656,8 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 {
     denyCollapseItem=wxTreeItemId();
 	// Reset the listviews/SQL pane
-    execSelChange(event.GetItem(), true);
+    if (event.GetItem())
+        execSelChange(event.GetItem(), true);
 }
 
 
@@ -928,7 +913,8 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
     pgServer *server;
     wxCommandEvent nullEvent;
 
-    switch (type) {
+    switch (type)
+    {
         case PG_SERVER:
             server = (pgServer *)data;
             if (!server->GetConnected())
@@ -943,7 +929,8 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
             break;
 
         default:
-            if (settings->GetDoubleClickProperties()) {
+            if (settings->GetDoubleClickProperties())
+            {
                 if (data->CanEdit())
                 {
                     OnProperties(nullEvent);
@@ -1144,8 +1131,8 @@ void frmMain::OnQueryBuilder(wxCommandEvent &ev)
         return;
 
     pgServer *server=db->GetServer();
-    pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
-    if (conn->GetStatus() == PGCONN_OK)
+    pgConn *conn= db->CreateConn();
+    if (conn)
     {
 	    // Create the Query Builder Form
 	    frmQueryBuilder *qbform = new frmQueryBuilder(this, db); 
@@ -1154,10 +1141,5 @@ void frmMain::OnQueryBuilder(wxCommandEvent &ev)
 
 	    // Show the Query Builder
 	    qbform->Show(TRUE);
-    }
-    else
-    {
-		wxLogError(conn->GetLastError());
-        delete conn;
     }
 }

@@ -92,6 +92,7 @@ public:
 
     virtual void ShowProperties() const {};
     virtual pgDatabase *GetDatabase() const { return 0; }
+    virtual pgServer *GetServer() const { return 0; }
     int GetType() const { return type; }
     wxString GetTypeName() const { return typesList[type].typName; }
     wxString GetTranslatedTypeName() const { return wxString(wxGetTranslation(typesList[type].typName)); }
@@ -176,7 +177,7 @@ public:
     pgServerObject(int newType, const wxString& newName) : pgObject(newType, newName) {}
 
     void iSetServer(pgServer *s) { server=s; }
-    pgServer *GetServer() { return server; }
+    pgServer *GetServer() const { return server; }
 
     void FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, const wxArrayString &dblist, const wxString &query);
 
@@ -196,8 +197,9 @@ class pgDatabaseObject : public pgObject
 public:
     pgDatabaseObject(int newType, const wxString& newName) : pgObject(newType, newName) {}
 
-    pgDatabase *GetDatabase() const { return database; }
     void iSetDatabase(pgDatabase *newDatabase) { database = newDatabase; }
+    pgDatabase *GetDatabase() const { return database; }
+    pgServer *GetServer() const;
 
     // compiles a prefix from the schema name with '.', if necessary
     wxString GetSchemaPrefix(const wxString &schemaname) const;

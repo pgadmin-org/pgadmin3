@@ -40,6 +40,8 @@ public:
     wxString ExecuteScalar(const wxString& sql);
     bool ExecuteVoid(const wxString& sql);
 
+    pgConn *CreateConn() { return server->CreateConn(GetName()); }
+
     wxString GetPrettyOption() const { return prettyOption; }
 
     bool GetCreatePrivilege() const { return createPrivilege; }

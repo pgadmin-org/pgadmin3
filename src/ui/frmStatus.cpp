@@ -28,8 +28,10 @@
 BEGIN_EVENT_TABLE(frmStatus, pgDialog)
     EVT_BUTTON(XRCID("btnRefresh"),					frmStatus::OnRefresh)
     EVT_BUTTON(XRCID("btnClose"),					frmStatus::OnCloseBtn)
-    EVT_BUTTON(XRCID("btnCancel"),					frmStatus::OnCancelBtn)
-    EVT_BUTTON(XRCID("btnTerminate"),				frmStatus::OnTerminateBtn)
+    EVT_BUTTON(XRCID("btnCancelSt"),				frmStatus::OnCancelBtn)
+    EVT_BUTTON(XRCID("btnTerminateSt"),				frmStatus::OnTerminateBtn)
+    EVT_BUTTON(XRCID("btnCancelLk"),				frmStatus::OnCancelBtn)
+    EVT_BUTTON(XRCID("btnTerminateLk"),				frmStatus::OnTerminateBtn)
     EVT_CLOSE(										frmStatus::OnClose)
     EVT_SPINCTRL(XRCID("spnRefreshRate"),			frmStatus::OnRateChangeSpin)
     EVT_TEXT(XRCID("spnRefreshRate"),				frmStatus::OnRateChange)
@@ -39,6 +41,8 @@ BEGIN_EVENT_TABLE(frmStatus, pgDialog)
 	EVT_LIST_ITEM_DESELECTED(XRCID("lstStatus"),	frmStatus::OnSelStatusItem)
 	EVT_LIST_ITEM_SELECTED(XRCID("lstLocks"),		frmStatus::OnSelLockItem)
 	EVT_LIST_ITEM_DESELECTED(XRCID("lstLocks"),		frmStatus::OnSelLockItem)
+    EVT_COMBOBOX(XRCID("cbLogfiles"),               frmStatus::OnLoadLogfile)
+    EVT_BUTTON(XRCID("btnRotateLog"),               frmStatus::OnRotateLogfile)
 END_EVENT_TABLE();
 
 
@@ -47,8 +51,13 @@ END_EVENT_TABLE();
 #define logList         CTRL_LISTVIEW("lstLog")
 #define spnRefreshRate  CTRL_SPIN("spnRefreshRate")
 #define nbStatus		CTRL_NOTEBOOK("nbStatus")
-#define btnCancel		CTRL_BUTTON("btnCancel")
-#define btnTerminate	CTRL_BUTTON("btnTerminate")
+#define btnCancelSt		CTRL_BUTTON("btnCancelSt")
+#define btnTerminateSt	CTRL_BUTTON("btnTerminateSt")
+#define btnCancelLk		CTRL_BUTTON("btnCancelLk")
+#define btnTerminateLk	CTRL_BUTTON("btnTerminateLk")
+#define cbLogfiles      CTRL_COMBOBOX("cbLogfiles")
+#define btnRotateLog    CTRL_BUTTON("btnRotateLog")
+
 
 void frmStatus::OnCloseBtn(wxCommandEvent &event)
 {
@@ -79,7 +88,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     logHasTimestamp = false;
     logFormatKnown = false;
 
-    logFileLength = 0;
+    logfileLength = 0;
     backend_pid=conn->GetBackendPID();
 
     statusList->AddColumn(_("PID"), 35);
@@ -109,6 +118,8 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     if (connection->BackendMinimumVersion(7, 5))
     {
         logFormat = connection->ExecuteScalar(wxT("SHOW log_line_prefix"));
+        if (logFormat == wxT("unset"))
+            logFormat = wxEmptyString;
         logFmtPos=logFormat.Find('%', true);
 
         if (logFmtPos < 0)
@@ -133,8 +144,10 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     spnRefreshRate->SetValue(rate);
     timer=new wxTimer(this, TIMER_ID);
 
-	btnCancel->Enable(false);
-	btnTerminate->Enable(false);
+	btnCancelSt->Enable(false);
+	btnTerminateSt->Enable(false);
+	btnCancelLk->Enable(false);
+	btnTerminateLk->Enable(false);
 
 	loaded = TRUE;
 }
@@ -151,6 +164,8 @@ frmStatus::~frmStatus()
     delete timer;
     if (connection)
         delete connection;
+
+    emptyLogfileCombo();
 }
 
 
@@ -170,12 +185,14 @@ void frmStatus::Go()
 void frmStatus::OnNotebookPageChanged(wxNotebookEvent& event)
 {
 	if (!loaded) return;
-	wxCommandEvent nullEvent;
-	OnRefresh(nullEvent);
+	wxCommandEvent buttonEvent(wxEVT_COMMAND_BUTTON_CLICKED, XRCID("btnRefresh"));
+    AddPendingEvent(buttonEvent);
 	
     // Disable the buttons. They'll get re-enabled if a suitable item is selected.
-	btnCancel->Enable(false);
-	btnTerminate->Enable(false);
+	btnCancelSt->Enable(false);
+	btnTerminateSt->Enable(false);
+	btnCancelLk->Enable(false);
+	btnTerminateLk->Enable(false);
 }
 
 
@@ -208,7 +225,6 @@ void frmStatus::OnRefreshTimer(wxTimerEvent &event)
 
 void frmStatus::OnRefresh(wxCommandEvent &event)
 {
-
     long pid=0;
 	// To avoid hammering the lock manager (and the network for that matter),
 	// only query for the required tab.
@@ -385,110 +401,324 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 	}
     else
     {
-        long newlen = StrToLong(connection->ExecuteScalar(wxT("SELECT pg_logfile_length(NULL)")));
-        wxString line;
-        bool skipFirst=false;
+        long newlen;
 
-        long maxServerLogSize=settings->GetMaxServerLogSize();
-
-        if (!newlen && maxServerLogSize && logFileLength > maxServerLogSize)
+        if (logDirectory.IsEmpty())
         {
-            skipFirst = true;
-            newlen = logFileLength-maxServerLogSize;
-        }
-
-        while (newlen > logFileLength)
-        {
-            pgSet *set=connection->ExecuteSet(wxT("SELECT pg_logfile_get(NULL, ") + NumToStr(logFileLength) + wxT(", NULL)"));
-            if (!set)
+            // freshly started
+            logDirectory = connection->ExecuteScalar(wxT("SHOW log_directory"));
+            if (fillLogfileCombo())
             {
-                connection->IsAlive();
+                cbLogfiles->SetSelection(0);
+                wxCommandEvent ev;
+                OnLoadLogfile(ev);
                 return;
             }
-            char *res=set->GetCharPtr(0);
-            
-            logFileLength += strlen(res);
-
-            wxString str = line + wxTextBuffer::Translate(wxString(res, set->GetConversion()), wxTextFileType_Unix);
-            delete set;
-
-            if (str.IsEmpty())
-                return;
-
-            bool hasCr = (str.Right(1) == wxT("\n"));
-
-            wxStringTokenizer tk(str, wxT("\n"));
-
-            logList->Freeze();
-            while (tk.HasMoreTokens())
+            else 
             {
-                str = tk.GetNextToken();
-                if (skipFirst)
+                logDirectory = wxT("-");
+                logList->AppendItem(-1, _("file logging not enabled"));
+                cbLogfiles->Disable();
+                btnRotateLog->Disable();
+            }
+        }
+        
+        if (logDirectory == wxT("-"))
+            return;
+
+
+        if (isCurrent)
+        {
+            // check if the current logfile changed
+            newlen = StrToLong(connection->ExecuteScalar(wxT("SELECT pg_file_length(") + qtString(logfileName) + wxT(")")));
+
+            if (newlen > logfileLength)
+            {
+                addLogFile(logfileName, logfileTimestamp, logfilePid, newlen, logfileLength, false);
+
+                // as long as there was new data, the logfile is probably the current
+                // one so we don't need to check for rotation
+                return;
+            }
+        }        
+
+        // 
+        wxString newDirectory = connection->ExecuteScalar(wxT("SHOW log_directory"));
+
+        int newfiles=0;
+        if (newDirectory != logDirectory)
+            cbLogfiles->Clear();
+
+        newfiles = fillLogfileCombo();
+
+        if (newfiles)
+        {
+            if (!showCurrent)
+                isCurrent=false;
+        
+            if (isCurrent)
+            {
+                int pos = cbLogfiles->GetCount() - newfiles;
+                bool skipFirst = true;
+
+                while (newfiles--)
                 {
-                    // could be truncated
+                    addLogLine(_("pgadmin:Logfile rotated."), false);
+                    wxDateTime *ts=(wxDateTime*)cbLogfiles->GetClientData(pos++);
+                    wxASSERT(ts != 0);
+
+                    
+                    addLogFile(ts, skipFirst);
                     skipFirst = false;
-                    continue;
+
+                    pos++;
                 }
-                if (tk.HasMoreTokens() || hasCr)
-                    addLog(str);
-                else
-                    line = str;
             }
-            logList->Thaw();
         }
-        if (!line.IsEmpty())
-            addLog(line);
     }
 }
 
 
-void frmStatus::addLog(const wxString &str)
+
+void frmStatus::addLogFile(wxDateTime *dt, bool skipFirst)
 {
+    pgSet *set=connection->ExecuteSet(
+        wxT("SELECT ts, pid, fn, pg_file_length(fn) AS len\n")
+        wxT("  FROM pg_logfiles_ls() AS (ts timestamp, pid int4, fn text)\n")
+        wxT(" WHERE ts = '") + DateToAnsiStr(*dt) + wxT("'::timestamp"));
+    if (set)
+    {
+        logfileName = set->GetVal(wxT("fn"));
+        logfileTimestamp = set->GetDateTime(wxT("ts"));
+        logfilePid = set->GetLong(wxT("pid"));
+        long len=set->GetLong(wxT("len"));
+
+        logfileLength = 0;
+        addLogFile(logfileName, logfileTimestamp, logfilePid, len, logfileLength, skipFirst);
+
+        delete set;
+    }
+}
+
+void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp, int pid, long len, long &read, bool skipFirst)
+{
+    wxString line;
+
+    if (skipFirst)
+    {
+        long maxServerLogSize = settings->GetMaxServerLogSize();
+
+        if (!logfileLength && maxServerLogSize && logfileLength > maxServerLogSize)
+        {
+            long maxServerLogSize=settings->GetMaxServerLogSize();
+            len = read-maxServerLogSize;
+        }
+        else
+            skipFirst=false;
+    }
+
+
+    while (len > read)
+    {
+        pgSet *set=connection->ExecuteSet(wxT("SELECT pg_file_read(") + 
+            qtString(filename) + wxT(", ") + NumToStr(read) + wxT(", 50000)"));
+        if (!set)
+        {
+            connection->IsAlive();
+            return;
+        }
+        char *raw=set->GetCharPtr(0);
+
+        if (!raw || !*raw)
+        {
+            delete set;
+            break;
+        }
+        read += strlen(raw);
+
+
+        wxString str = line + wxTextBuffer::Translate(wxString(raw, set->GetConversion()), wxTextFileType_Unix);
+        delete set;
+
+        bool hasCr = (str.Right(1) == wxT("\n"));
+
+        wxStringTokenizer tk(str, wxT("\n"));
+
+        logList->Freeze();
+        while (tk.HasMoreTokens())
+        {
+            str = tk.GetNextToken();
+            if (skipFirst)
+            {
+                // could be truncated
+                skipFirst = false;
+                continue;
+            }
+            if (tk.HasMoreTokens() || hasCr)
+                addLogLine(str);
+            else
+                line = str;
+        }
+        logList->Thaw();
+    }
+    if (!line.IsEmpty())
+        addLogLine(line);
+}
+
+
+
+void frmStatus::addLogLine(const wxString &str, bool formatted)
+{
+    int row=logList->GetItemCount();
     if (!logFormatKnown)
         logList->AppendItem(-1, str);
     else
     {
-        wxString rest;
-        int row=logList->GetItemCount();
-
-        if (logHasTimestamp)
+        if (str.Find(':') < 0)
         {
-            wxString ts=str.Mid(logFmtPos);
-            int pos = ts.Mid(22).Find(logFormat.c_str()[logFmtPos+2]);
-            logList->AppendItem(ts.Left(22+pos));
-            rest = ts.Mid(22+pos + logFormat.Length() - logFmtPos-2);
-            logList->SetItem(row, 1, rest.BeforeFirst(':'));
-            logList->SetItem(row, 2, rest.AfterFirst(':'));
+            logList->InsertItem(row, wxEmptyString, -1);
+            logList->SetItem(row, (logHasTimestamp ? 2 : 1), str);
         }
         else
         {
-            rest = str.Mid(logFormat.Length());
-            logList->AppendItem(-1, rest.BeforeFirst(':'));
-            logList->SetItem(row, 2, rest.AfterFirst(':'));
+            wxString rest;
+
+            if (logHasTimestamp)
+            {
+                if (formatted)
+                {
+                    wxString ts=str.Mid(logFmtPos);
+                    int pos = ts.Mid(22).Find(logFormat.c_str()[logFmtPos+2]);
+                    logList->InsertItem(row, ts.Left(22+pos), -1);
+                    rest = ts.Mid(22+pos + logFormat.Length() - logFmtPos-2);
+                }
+                else
+                {
+                    rest = str;
+                    logList->InsertItem(row, wxEmptyString, -1);
+                }
+                logList->SetItem(row, 1, rest.BeforeFirst(':'));
+                logList->SetItem(row, 2, rest.AfterFirst(':'));
+            }
+            else
+            {
+                if (formatted)
+                    rest = str.Mid(logFormat.Length());
+                else
+                    rest = str;
+
+                int pos = rest.Find(':');
+
+                if (pos < 0)
+                    logList->InsertItem(row, rest, -1);
+                else
+                {
+                    logList->InsertItem(row, rest.BeforeFirst(':'), -1);
+                    logList->SetItem(row, 1, rest.AfterFirst(':'));
+                }
+            }
         }
     }
 }
 
+
+
+void frmStatus::emptyLogfileCombo()
+{
+    while (cbLogfiles->GetCount())
+    {
+        wxDateTime *dt=(wxDateTime*)cbLogfiles->GetClientData(0);
+        if (dt)
+            delete dt;
+        cbLogfiles->Delete(0);
+    }
+}
+
+
+int frmStatus::fillLogfileCombo()
+{
+    int count=cbLogfiles->GetCount();
+    if (!count)
+        cbLogfiles->Append(_(" current"));
+    else
+        count--;
+
+    pgSet *set=connection->ExecuteSet(
+        wxT("SELECT ts, pid, fn FROM pg_logfiles_ls() AS (ts timestamp, pid int4, fn text)\n")
+        wxT(" ORDER BY ts ASC"));
+    if (set)
+    {
+        if (set->NumRows() <= count)
+            return 0;
+
+        set->Locate(count+1);
+        count=0;
+
+        while (!set->Eof())
+        {
+            count++;
+            wxString fn= set->GetVal(wxT("fn"));
+            long pid = set->GetLong(wxT("pid"));
+            wxDateTime ts=set->GetDateTime(wxT("ts"));
+
+            cbLogfiles->Append(DateToStr(ts) + wxT(" (") + NumToStr(pid) + wxT(")"), new wxDateTime(ts));
+
+            set->MoveNext();
+        }
+
+        delete set;
+    }
+
+    return count;
+}
+
+
+void frmStatus::OnLoadLogfile(wxCommandEvent &event)
+{
+    int pos=cbLogfiles->GetSelection();
+    int lastPos = cbLogfiles->GetCount()-1;
+    if (pos >= 0)
+    {
+        showCurrent = (pos == 0);
+        isCurrent = showCurrent || (pos == lastPos);
+
+        wxDateTime *ts=(wxDateTime*)cbLogfiles->GetClientData(showCurrent ? lastPos : pos);
+        wxASSERT(ts != 0);
+
+        if (!logfileTimestamp.IsValid() || *ts != logfileTimestamp)
+        {
+            logList->DeleteAllItems();
+            addLogFile(ts, true);
+        }
+    }
+}
+
+
+void frmStatus::OnRotateLogfile(wxCommandEvent &event)
+{
+    if (wxMessageBox(_("Are you sure the logfile should be rotated?"), _("Logfile rotation"), wxYES_NO|wxNO_DEFAULT | wxICON_QUESTION) == wxYES)
+        connection->ExecuteVoid(wxT("select pg_logfile_rotate()"));
+}
+
+
 void frmStatus::OnCancelBtn(wxCommandEvent &event)
 {
-	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		return;
-
     ctlListView *lv;
 	
 	if (nbStatus->GetSelection() == 0)
 		 lv = statusList;
-
 	else if (nbStatus->GetSelection() == 1)
 		 lv = lockList;
-
 	else 
 	{
-		wxLogError(_("Couldn't determine the source listview for a cancel backend operation!"));
+		wxLogError(wxT("Couldn't determine the source listview for a cancel backend operation!"));
 		return;
 	}
 
-	long item = -1;
+	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+		return;
+
+    long item = -1;
 	wxString pid;
 
     for ( ;; )
@@ -508,24 +738,22 @@ void frmStatus::OnCancelBtn(wxCommandEvent &event)
 
 void frmStatus::OnTerminateBtn(wxCommandEvent &event)
 {
-	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		return;
-
     ctlListView *lv;
 	
 	if (nbStatus->GetSelection() == 0)
 		 lv = statusList;
-
 	else if (nbStatus->GetSelection() == 1)
 		 lv = lockList;
-
 	else 
 	{
-		wxLogError(_("Couldn't determine the source listview for a terminate backend operation!"));
+		wxLogError(wxT("Couldn't determine the source listview for a terminate backend operation!"));
 		return;
 	}
 
-	long item = -1;
+	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+		return;
+
+    long item = -1;
 	wxString pid;
 
     for ( ;; )
@@ -550,13 +778,13 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
 	{
 		if(statusList->GetSelectedItemCount() >= 0) 
 		{
-			btnCancel->Enable(true);
-			btnTerminate->Enable(true);
+			btnCancelSt->Enable(true);
+			btnTerminateSt->Enable(true);
 		} 
 		else 
 		{
-			btnCancel->Enable(false);
-			btnTerminate->Enable(false);
+			btnCancelSt->Enable(false);
+			btnTerminateSt->Enable(false);
 		}
 	}
 }
@@ -567,13 +795,13 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
 	{
 		if(lockList->GetSelectedItemCount() >= 0) 
 		{
-			btnCancel->Enable(true);
-			btnTerminate->Enable(true);
+			btnCancelLk->Enable(true);
+			btnTerminateLk->Enable(true);
 		} 
 		else 
 		{
-			btnCancel->Enable(false);
-			btnTerminate->Enable(false);
+			btnCancelLk->Enable(false);
+			btnTerminateLk->Enable(false);
 		}
 	}
 }
