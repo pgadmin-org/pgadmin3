@@ -193,24 +193,24 @@ void dlgSchedule::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgSchedule::OnSelChangeInterval(wxNotifyEvent &ev)
+void dlgSchedule::OnSelChangeInterval(wxListEvent &ev)
 {
     btnChangeInterval->Enable();
     btnRemoveInterval->Enable();
 }
 
 
-void dlgSchedule::OnAddInterval(wxNotifyEvent &ev)
+void dlgSchedule::OnAddInterval(wxCommandEvent &ev)
 {
 }
 
 
-void dlgSchedule::OnChangeInterval(wxNotifyEvent &ev)
+void dlgSchedule::OnChangeInterval(wxCommandEvent &ev)
 {
 }
 
 
-void dlgSchedule::OnRemoveInterval(wxNotifyEvent &ev)
+void dlgSchedule::OnRemoveInterval(wxCommandEvent &ev)
 {
     btnChangeInterval->Disable();
     btnRemoveInterval->Disable();

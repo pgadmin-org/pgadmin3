@@ -37,10 +37,10 @@ private:
     pgaJob *job;
     void OnChange(wxNotifyEvent &ev);
     void OnChangeKind(wxNotifyEvent &ev);
-    void OnSelChangeInterval(wxNotifyEvent &ev);
-    void OnAddInterval(wxNotifyEvent &ev);
-    void OnChangeInterval(wxNotifyEvent &ev);
-    void OnRemoveInterval(wxNotifyEvent &ev);
+    void OnSelChangeInterval(wxListEvent &ev);
+    void OnAddInterval(wxCommandEvent &ev);
+    void OnChangeInterval(wxCommandEvent &ev);
+    void OnRemoveInterval(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

@@ -169,7 +169,7 @@ pgObject *dlgJob::CreateObject(pgCollection *collection)
 }
 
 
-void dlgJob::OnChange(wxNotifyEvent &ev)
+void dlgJob::OnChange(wxCommandEvent &ev)
 {
     bool enable=true;
     wxString name=GetName();
@@ -193,7 +193,7 @@ void dlgJob::OnChange(wxNotifyEvent &ev)
 }
 
 
-void dlgJob::OnChangeStep(wxNotifyEvent &ev)
+void dlgJob::OnChangeStep(wxCommandEvent &ev)
 {
     long pos=lstSteps->GetSelection();
     pgaStep *obj=(pgaStep*) StrToLong(lstSteps->GetText(pos, 3));
@@ -217,14 +217,14 @@ void dlgJob::OnChangeStep(wxNotifyEvent &ev)
 }
 
 
-void dlgJob::OnSelChangeStep(wxNotifyEvent &ev)
+void dlgJob::OnSelChangeStep(wxListEvent &ev)
 {
     btnChangeStep->Enable();
     btnRemoveStep->Enable();
 }
 
 
-void dlgJob::OnAddStep(wxNotifyEvent &ev)
+void dlgJob::OnAddStep(wxCommandEvent &ev)
 {
     dlgStep step(mainForm, NULL, job);
     step.CenterOnParent();
@@ -238,7 +238,7 @@ void dlgJob::OnAddStep(wxNotifyEvent &ev)
 }
 
 
-void dlgJob::OnRemoveStep(wxNotifyEvent &ev)
+void dlgJob::OnRemoveStep(wxCommandEvent &ev)
 {
     lstSteps->DeleteCurrentItem();
 
@@ -249,14 +249,14 @@ void dlgJob::OnRemoveStep(wxNotifyEvent &ev)
 }
 
 
-void dlgJob::OnSelChangeSchedule(wxNotifyEvent &ev)
+void dlgJob::OnSelChangeSchedule(wxListEvent &ev)
 {
     btnChangeSchedule->Enable();
     btnRemoveSchedule->Enable();
 }
 
 
-void dlgJob::OnChangeSchedule(wxNotifyEvent &ev)
+void dlgJob::OnChangeSchedule(wxCommandEvent &ev)
 {
     long pos=lstSchedules->GetSelection();
     pgaSchedule *obj=(pgaSchedule*) StrToLong(lstSchedules->GetText(pos, 3));
@@ -280,7 +280,7 @@ void dlgJob::OnChangeSchedule(wxNotifyEvent &ev)
 }
 
 
-void dlgJob::OnAddSchedule(wxNotifyEvent &ev)
+void dlgJob::OnAddSchedule(wxCommandEvent &ev)
 {
     dlgSchedule schedule(mainForm, NULL, job);
     schedule.CenterOnParent();
@@ -294,7 +294,7 @@ void dlgJob::OnAddSchedule(wxNotifyEvent &ev)
 }
 
 
-void dlgJob::OnRemoveSchedule(wxNotifyEvent &ev)
+void dlgJob::OnRemoveSchedule(wxCommandEvent &ev)
 {
     lstSchedules->DeleteCurrentItem();
 

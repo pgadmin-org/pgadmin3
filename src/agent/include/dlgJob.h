@@ -33,17 +33,17 @@ private:
 
     wxArrayString previousSteps, previousSchedules;
 
-    void OnChange(wxNotifyEvent &ev);
+    void OnChange(wxCommandEvent &ev);
 
-    void OnSelChangeStep(wxNotifyEvent &ev);
-    void OnChangeStep(wxNotifyEvent &ev);
-    void OnAddStep(wxNotifyEvent &ev);
-    void OnRemoveStep(wxNotifyEvent &ev);
+    void OnSelChangeStep(wxListEvent &ev);
+    void OnChangeStep(wxCommandEvent &ev);
+    void OnAddStep(wxCommandEvent &ev);
+    void OnRemoveStep(wxCommandEvent &ev);
 
-    void OnSelChangeSchedule(wxNotifyEvent &ev);
-    void OnChangeSchedule(wxNotifyEvent &ev);
-    void OnAddSchedule(wxNotifyEvent &ev);
-    void OnRemoveSchedule(wxNotifyEvent &ev);
+    void OnSelChangeSchedule(wxListEvent &ev);
+    void OnChangeSchedule(wxCommandEvent &ev);
+    void OnAddSchedule(wxCommandEvent &ev);
+    void OnRemoveSchedule(wxCommandEvent &ev);
 
        
 
