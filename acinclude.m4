@@ -109,7 +109,7 @@ then
     fi
     if test "$pg_static_build" = "yes"
     then
-        LIBS="${LIBPQ_HOME}/lib/libpq.a $LIBS -lssl -lcrypto"
+        LIBS="${LIBPQ_HOME}/lib/libpq.a -lcrypt $LIBS -lssl -lcrypto"
     else
         LIBS="$LIBS -lssl -lcrypto -lpq"
     fi
