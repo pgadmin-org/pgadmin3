@@ -295,6 +295,10 @@ SOURCE=.\ui\ctlSQLBox.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\ctlSQLResult.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\events.cpp
 # End Source File
 # Begin Source File
@@ -328,10 +332,6 @@ SOURCE=.\ui\frmSplash.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmUpgradeWizard.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\pgAdmin3.rc
 # End Source File
 # End Group
 # Begin Group "include"
@@ -586,6 +586,10 @@ SOURCE=.\include\ctlSQLBox.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\ctlSQLResult.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\dlgAddTableView.h
 # End Source File
 # Begin Source File
@@ -786,6 +790,10 @@ SOURCE=.\pgAdmin3.cpp
 # Begin Source File
 
 SOURCE=..\BUGS.txt
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\pgAdmin3.rc
 # End Source File
 # Begin Source File
 

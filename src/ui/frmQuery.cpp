@@ -69,9 +69,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 : wxFrame(NULL, -1, _title, pos, size)
 {
     mainForm=form;
-    conn=_conn;
     title = _title;
-    thread=0;
+    conn=_conn;
 
     SetIcon(wxIcon(sql_xpm));
     wxLogInfo(wxT("Creating SQL Query box"));
@@ -155,7 +154,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     sqlQuery = new ctlSQLBox(horizontal, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
 
     output = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
-    sqlResult = new wxListView(output, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
+    sqlResult = new ctlSQLResult(output, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
     msgResult = new wxTextCtrl(output, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
 
     output->AddPage(sqlResult, wxT("Data Output"));
@@ -181,11 +180,6 @@ frmQuery::~frmQuery()
 {
     wxLogInfo(wxT("Destroying SQL Query box"));
     mainForm->RemoveFrame(this);
-    if (thread)
-    {
-        thread->Delete();
-        delete thread;
-    }
     settings->Write(wxT("frmQuery/Width"), GetSize().x);
     settings->Write(wxT("frmQuery/Height"), GetSize().y);
     settings->Write(wxT("frmQuery/Left"), GetPosition().x);
@@ -350,7 +344,7 @@ void frmQuery::OnClose(wxCloseEvent& event)
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
                     (event.CanVeto() ? wxCANCEL : 0));
 
-	wxCommandEvent noEvent;
+    	wxCommandEvent noEvent;
         switch (msg.ShowModal())
         {
             case wxID_YES:
@@ -461,13 +455,8 @@ void frmQuery::OnCancel(wxCommandEvent& event)
     queryMenu->Enable(MNU_CANCEL, FALSE);
     SetStatusText(wxT("Cancelling."), STATUSPOS_MSGS);
 
-    if (thread)
-    {
-        if (thread->running > 0)
-            thread->Delete();
-        else
-            thread->running = -1;
-    }
+    sqlResult->Abort();
+    aborted=true;
 }
 
 
@@ -520,13 +509,160 @@ void frmQuery::showMessage(const wxString& msg, const wxString &msgShort)
 
 void frmQuery::execQuery(const wxString &query, const bool singleResult, const int queryOffset)
 {
-    sqlResult->ClearAll();
-
     setTools(true);
+    sqlQuery->MarkerDeleteAll(0);
+    aborted=false;
+    
+    if (sqlResult->Execute(query) >= 0)
+    {
+        SetStatusText(wxT(""), STATUSPOS_SECS);
+        SetStatusText(wxT("Query is running."), STATUSPOS_MSGS);
+        SetStatusText(wxT(""), STATUSPOS_ROWS);
+        msgResult->Clear();
+        Update();
+        wxYield();
 
+        wxLongLong startTimeQuery=wxGetLocalTimeMillis();
+        while (sqlResult->RunStatus() == CTLSQL_RUNNING)
+        {
+            elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
+            SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+            wxYield();
+            wxUsleep(10);
+            wxYield();
+        }
+
+        msgResult->AppendText(sqlResult->GetMessages());
+
+        elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
+        SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+
+    
+        if (sqlResult->RunStatus() != PGRES_TUPLES_OK)
+        {
+            if (sqlResult->Retrieve() == PGRES_COMMAND_OK)
+            {
+                showMessage(wxT("Query returned successfully with no result."), wxT("OK."));
+            }
+            else
+            {
+                wxString errMsg = sqlResult->GetErrorMessage();
+                showMessage(errMsg);
+
+                wxString atChar=wxT(" at character ");
+                int chp=errMsg.Find(atChar);
+
+                if (chp > 0)
+                {
+                    chp -= queryOffset;  // do not count EXPLAIN or similar
+                    int selStart=sqlQuery->GetSelectionStart(), selEnd=sqlQuery->GetSelectionEnd();
+                    long errPos=0;
+                    errMsg.Mid(chp+atChar.Length()).ToLong(&errPos);
+                    int line=0, maxLine = sqlQuery->GetLineCount();
+                    while (line < maxLine && sqlQuery->GetLineEndPosition(line) < errPos + selStart+1)
+                        line++;
+                    if (line < maxLine)
+                    {
+                        sqlQuery->MarkerAdd(line, 0);
+                        sqlQuery->EnsureVisible(line);
+                    }
+                }
+            }
+        }
+        else
+        {
+            long rowsReadTotal=0, rowsTotal=sqlResult->NumRows();
+
+            if (singleResult)
+            {
+                rowsReadTotal=sqlResult->RetrieveOne();
+                showMessage(NumToStr(rowsReadTotal) + wxT(" rows retrieved."), wxT("OK."));
+            }
+            else
+            {
+                SetStatusText(wxT("Retrieving data: " + NumToStr(rowsTotal) + " rows."), STATUSPOS_MSGS);
+                wxYield();
+
+                long maxRows=settings->GetMaxRows();
+
+                if (!maxRows)
+                    maxRows = rowsTotal;
+                if (rowsTotal > maxRows)
+                {
+                    wxMessageDialog msg(this, wxT("The maximum of ") + NumToStr(maxRows) + wxT(
+                                " Rows is exceeded (total ") +NumToStr(rowsTotal) + wxT("). Retrieve all rows anyway?"), wxT("Limit exceeded"), 
+                                wxYES_NO|wxCANCEL|wxNO_DEFAULT|wxICON_EXCLAMATION);
+                    switch (msg.ShowModal())
+                    {
+                        case wxID_YES:
+                            maxRows = rowsTotal;
+                            break;
+                        case wxID_CANCEL:
+                            maxRows = 0;
+                            break;
+                    }
+                }
+                wxLongLong startTimeRetrieve=wxGetLocalTimeMillis();
+                wxLongLong elapsed;
+                elapsedRetrieve=0;
+                
+                while (!aborted && rowsReadTotal < maxRows)
+                {
+                    // Rows will be retrieved in chunks, the first being smaller to have an early screen update
+                    // later, screen update is disabled to speed up retrieval
+                    long chunk;
+                    if (!rowsReadTotal) chunk=20;
+                    else                chunk=100;
+
+                    if (chunk > maxRows-rowsReadTotal)
+                        chunk = maxRows-rowsReadTotal;
+
+                    long rowsRead=sqlResult->Retrieve(chunk);
+                    if (!rowsRead)
+                        break;
+
+                    elapsed = wxGetLocalTimeMillis() - startTimeRetrieve;
+
+                    if (!rowsReadTotal)
+                        wxYield();
+                    rowsReadTotal += rowsRead;
+
+                    if (elapsed > elapsedRetrieve +100)
+                    {
+                        elapsedRetrieve=elapsed;
+                        SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
+                        wxYield();
+                    }
+                    sqlResult->Freeze();
+                }
+                sqlResult->Thaw();
+
+                elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
+                SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
+
+                msgResult->AppendText(wxT(
+                    "Total query runtime: ") + elapsedQuery.ToString() + " ms.\n"
+                    "Data retrieval runtime: " + elapsedRetrieve.ToString() + wxT(" ms.\n"));
+
+                if (rowsReadTotal == sqlResult->NumRows())
+                    showMessage(NumToStr(rowsReadTotal) + wxT(" rows retrieved."), wxT("OK."));
+                else
+                    showMessage(wxT("Total ") + NumToStr(rowsTotal) + wxT(" rows.\n")+
+                        NumToStr(rowsTotal - rowsReadTotal) + wxT(" rows not retrieved."),
+                        NumToStr(rowsTotal - rowsReadTotal) + wxT(" rows not retrieved."));
+
+            }
+            if (rowsTotal == rowsReadTotal)
+                SetStatusText(NumToStr(rowsTotal) + wxT(" rows"), STATUSPOS_ROWS);
+            else
+                SetStatusText(NumToStr(rowsReadTotal) + wxT(" of ") + NumToStr(rowsTotal) + wxT(" rows"), STATUSPOS_ROWS);
+            }
+    }
+
+
+#if 0
     thread = new queryThread(conn->connection(), query);
 
-    sqlQuery->MarkerDeleteAll(0);
     nRows=0;
 
     if (thread->Create() == wxTHREAD_NO_ERROR)
@@ -718,80 +854,9 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
     }
     delete thread;
     thread=0;
+#endif
+
     setTools(false);
 }
 
 
-queryThread::queryThread(PGconn *_conn, const wxString &qry) : wxThread(wxTHREAD_JOINABLE)
-{
-    running = 1;
-
-    query = qry;
-    conn=_conn;
-    result=0;
-    PQsetnonblocking(conn, 1);
-}
-
-
-queryThread::~queryThread()
-{
-}
-
-
-int queryThread::execute()
-{
-    wxLongLong startTime=wxGetLocalTimeMillis();
-
-    if (!PQsendQuery(conn, query.c_str()))
-        return(0);
-
-    while (running > 0)
-    {
-        if (TestDestroy())
-        {
-            if (!PQrequestCancel(conn)) // could not abort; abort failed.
-            {
-                running=-1;
-                return(-1);
-            }
-        }
-        if (!PQconsumeInput(conn))
-            return(0);
-        if (PQisBusy(conn))
-        {
-            Yield();
-            wxUsleep(10);
-            continue;
-        }
-
-        // only the last result set will be returned
-        // all others are discarded
-        PGresult *res=PQgetResult(conn);
-        wxLongLong elapsed=wxGetLocalTimeMillis() - startTime;
-        startTime = wxGetLocalTimeMillis();
-        if (!res)
-            break;
-        if (result)
-        {
-            messages += wxT(
-                "Query result with ") + NumToStr((long)PQntuples(result)) + wxT(" rows discarded.\n");
-            PQclear(result);
-        }
-        result=res;
-    }
-    messages += wxT("\n");
-    running=0;
-    return(1);
-}
-
-
-void *queryThread::Entry()
-{
-    wxString msg;
-    msg.Printf(wxT("Running query %s"), query.c_str());
-    wxLogInfo(msg);
-
-    execute();
-
-    return(NULL);
-}

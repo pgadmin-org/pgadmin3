@@ -12,35 +12,12 @@
 #define __FRM_QUERY_H
 
 
-#include <libpq-fe.h>
-#include "pgSet.h"
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/thread.h>
 
+#include "ctlSQLResult.h"
 
-class frmQuery;
-
-class queryThread : public wxThread
-{
-private:
-    wxString query;
-    PGconn *conn;
-
-public:
-
-    queryThread(PGconn *_conn, const wxString &qry);
-    ~queryThread();
-    virtual void *Entry();
-
-    int running;
-    PGresult *result;
-    wxString messages;
-
-private:
-    int execute();
-};
 
 class frmQuery : public wxFrame
 {
@@ -54,13 +31,11 @@ private:
     wxSplitterWindow* horizontal;
     ctlSQLBox *sqlQuery;
     wxNotebook *output;
-    wxListView *sqlResult;
+    ctlSQLResult *sqlResult;
     wxTextCtrl *msgResult;
     wxStatusBar *statusBar;
     wxToolBar *toolBar;
     pgConn *conn;
-    queryThread *thread;
-    long nRows, nCols;
     wxLongLong elapsedQuery, elapsedRetrieve;
 
     void OnClose(wxCloseEvent& event);
@@ -93,8 +68,7 @@ private:
     wxString title;
     wxString lastFilename, lastDir, lastPath;
 
-    friend class queryThread;
-    bool changed;
+    bool changed, aborted;
 
     DECLARE_EVENT_TABLE()
 };
