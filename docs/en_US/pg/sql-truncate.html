@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-TRUNCATE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42827"
+NAME="AEN42892"
 ></A
 ><H2
 >Name</H2
 >TRUNCATE&nbsp;--&nbsp;empty a table</DIV
 ><A
-NAME="AEN42830"
+NAME="AEN42895"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42832"
+NAME="AEN42897"
 ></A
 ><H2
 >Synopsis</H2
@@ -120,7 +120,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42835"
+NAME="AEN42900"
 ></A
 ><H2
 >Description</H2
@@ -140,7 +140,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42840"
+NAME="AEN42905"
 ></A
 ><H2
 >Parameters</H2
@@ -165,7 +165,30 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42848"
+NAME="AEN42913"
+></A
+><H2
+>Notes</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>TRUNCATE</TT
+> cannot be used if there are foreign-key references
+   to the table from other tables.  Checking validity in such cases would
+   require table scans, and the whole point is not to do one.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>TRUNCATE</TT
+> will not run any user-defined ON DELETE triggers
+   that might exist for the table.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42919"
 ></A
 ><H2
 >Examples</H2
@@ -184,7 +207,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42853"
+NAME="AEN42924"
 ></A
 ><H2
 >Compatibility</H2

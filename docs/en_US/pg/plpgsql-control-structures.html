@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -141,7 +141,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33360"
+NAME="AEN33388"
 >39.7.1.1. <TT
 CLASS="COMMAND"
 >RETURN</TT
@@ -166,7 +166,7 @@ CLASS="REPLACEABLE"
       is to be used for <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> functions that does
+> functions that do
       not return a set.
      </P
 ><P
@@ -186,7 +186,10 @@ CLASS="REPLACEABLE"
 CLASS="COMMAND"
 >RETURN</TT
 > statement, a run-time
-      error will occur. Note that if you have declared the function to
+      error will occur.
+     </P
+><P
+>      If you have declared the function to
       return <TT
 CLASS="TYPE"
 >void</TT
@@ -194,12 +197,11 @@ CLASS="TYPE"
 CLASS="COMMAND"
 >RETURN</TT
 > statement
-      must still be specified; the expression following
+      must still be specified; but in this case the expression following
       <TT
 CLASS="COMMAND"
 >RETURN</TT
-> is, however, optional and will be ignored in
-      any case.
+> is optional and will be ignored if present.
      </P
 ></DIV
 ><DIV
@@ -207,7 +209,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33376"
+NAME="AEN33405"
 >39.7.1.2. <TT
 CLASS="COMMAND"
 >RETURN NEXT</TT
@@ -240,12 +242,12 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >RETURN</TT
 > command
-      with no arguments is used to indicate that the function has
+      with no argument is used to indicate that the function has
       finished executing.  <TT
 CLASS="COMMAND"
 >RETURN NEXT</TT
 > can be used
-      with both scalar and composite data types; in the later case, an
+      with both scalar and composite data types; in the latter case, an
       entire <SPAN
 CLASS="QUOTE"
 >"table"</SPAN
@@ -318,7 +320,7 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > may
-       allow users to allow users to define set-returning functions
+       allow users to define set-returning functions
        that do not have this limitation.  Currently, the point at
        which data begins being written to disk is controlled by the
        <VAR
@@ -392,7 +394,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33424"
+NAME="AEN33453"
 >39.7.2.1. <VAR
 CLASS="LITERAL"
 >IF-THEN</VAR
@@ -443,7 +445,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33437"
+NAME="AEN33466"
 >39.7.2.2. <VAR
 CLASS="LITERAL"
 >IF-THEN-ELSE</VAR
@@ -505,7 +507,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33450"
+NAME="AEN33479"
 >39.7.2.3. <VAR
 CLASS="LITERAL"
 >IF-THEN-ELSE IF</VAR
@@ -563,7 +565,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33463"
+NAME="AEN33492"
 >39.7.2.4. <VAR
 CLASS="LITERAL"
 >IF-THEN-ELSIF-ELSE</VAR
@@ -655,7 +657,7 @@ NAME="PLPGSQL-CONTROL-STRUCTURES-LOOPS"
 >39.7.3. Simple Loops</A
 ></H2
 ><A
-NAME="AEN33485"
+NAME="AEN33514"
 ></A
 ><P
 >     With the <VAR
@@ -683,7 +685,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33494"
+NAME="AEN33523"
 >39.7.3.1. <VAR
 CLASS="LITERAL"
 >LOOP</VAR
@@ -729,7 +731,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33506"
+NAME="AEN33535"
 >39.7.3.2. <VAR
 CLASS="LITERAL"
 >EXIT</VAR
@@ -788,19 +790,19 @@ CLASS="LITERAL"
 CLASS="PROGRAMLISTING"
 >LOOP
     -- some computations
-    IF count &#62; 0 THEN
+    IF count &gt; 0 THEN
         EXIT;  -- exit loop
     END IF;
 END LOOP;
 
 LOOP
     -- some computations
-    EXIT WHEN count &#62; 0;
+    EXIT WHEN count &gt; 0;  -- same result as previous example
 END LOOP;
 
 BEGIN
     -- some computations
-    IF stocks &#62; 100000 THEN
+    IF stocks &gt; 100000 THEN
         EXIT;  -- invalid; cannot use EXIT outside of LOOP
     END IF;
 END;</PRE
@@ -812,7 +814,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33524"
+NAME="AEN33553"
 >39.7.3.3. <VAR
 CLASS="LITERAL"
 >WHILE</VAR
@@ -849,7 +851,7 @@ CLASS="LITERAL"
 >        For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->WHILE amount_owed &#62; 0 AND gift_certificate_balance &#62; 0 LOOP
+>WHILE amount_owed &gt; 0 AND gift_certificate_balance &gt; 0 LOOP
     -- some computations here
 END LOOP;
 
@@ -864,7 +866,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33536"
+NAME="AEN33565"
 >39.7.3.4. <VAR
 CLASS="LITERAL"
 >FOR</VAR
@@ -926,18 +928,22 @@ CLASS="LITERAL"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >FOR i IN 1..10 LOOP
-    -- some expressions here
+    -- some computations here
     RAISE NOTICE ''i is %'', i;
 END LOOP;
 
 FOR i IN REVERSE 10..1 LOOP
-    -- some expressions here
+    -- some computations here
 END LOOP;</PRE
 ><P>
        </P
 ><P
->        If the lower bound is greater than the upper bound, the loop body is not
-        executed at all, but no error is raised.
+>        If the lower bound is greater than the upper bound (or less than,
+	in the <VAR
+CLASS="LITERAL"
+>REVERSE</VAR
+> case), the loop body is not
+        executed at all.  No error is raised.
        </P
 ></DIV
 ></DIV
@@ -1085,6 +1091,11 @@ CLASS="LITERAL"
      misspelled the variable name after the <VAR
 CLASS="LITERAL"
 >FOR</VAR
+>.  Typically
+     the complaint will be something like <VAR
+CLASS="LITERAL"
+>missing ".." at end of SQL
+     expression</VAR
 >.
     </P
 ></BLOCKQUOTE

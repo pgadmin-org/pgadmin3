@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-REINDEX"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41485"
+NAME="AEN41534"
 ></A
 ><H2
 >Name</H2
 >REINDEX&nbsp;--&nbsp;rebuild indexes</DIV
 ><A
-NAME="AEN41488"
+NAME="AEN41537"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41490"
+NAME="AEN41539"
 ></A
 ><H2
 >Synopsis</H2
@@ -120,7 +120,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41493"
+NAME="AEN41542"
 ></A
 ><H2
 >Description</H2
@@ -172,84 +172,11 @@ HREF="routine-reindex.html"
 ></UL
 ><P>
   </P
-><P
->   If you suspect corruption of an index on a user table, you can
-   simply rebuild that index, or all indexes on the table, using
-   <TT
-CLASS="COMMAND"
->REINDEX INDEX</TT
-> or <TT
-CLASS="COMMAND"
->REINDEX
-   TABLE</TT
->.  Another approach to dealing with a corrupted
-   user-table index is just to drop and recreate it.  This may in fact
-   be preferable if you would like to maintain some semblance of
-   normal operation on the table meanwhile.  <TT
-CLASS="COMMAND"
->REINDEX</TT
->
-   acquires exclusive lock on the table, while <TT
-CLASS="COMMAND"
->CREATE
-   INDEX</TT
-> only locks out writes not reads of the table.
-  </P
-><P
->   Things are more difficult if you need to recover from corruption of
-   an index on a system table.  In this case it's important for the
-   system to not have used any of the suspect indexes itself.
-   (Indeed, in this sort of scenario you may find that server
-   processes are crashing immediately at start-up, due to reliance on
-   the corrupted indexes.)  To recover safely, the server must be shut
-   down and a stand-alone <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server
-   must be started instead with the command-line options
-   <VAR
-CLASS="OPTION"
->-O</VAR
-> and <VAR
-CLASS="OPTION"
->-P</VAR
->.  (These options allow
-   system table modifications and prevent use of system indexes,
-   respectively.)  Then, <TT
-CLASS="COMMAND"
->REINDEX DATABASE</TT
->,
-   <TT
-CLASS="COMMAND"
->REINDEX TABLE</TT
->, or <TT
-CLASS="COMMAND"
->REINDEX INDEX</TT
-> can be
-   issued, depending on how much you want to reconstruct.  If in
-   doubt, use <TT
-CLASS="COMMAND"
->REINDEX DATABASE FORCE</TT
-> to force
-   reconstruction of all system indexes in the database.  Then quit
-   the standalone server session and restart the real server.
-  </P
-><P
->   See the <A
-HREF="app-postgres.html"
-><SPAN
-CLASS="APPLICATION"
->postgres</SPAN
-></A
-> reference page for more
-   information about how to interact with the stand-alone server
-   interface.
-  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41522"
+NAME="AEN41556"
 ></A
 ><H2
 >Parameters</H2
@@ -266,11 +193,8 @@ CLASS="LITERAL"
 ><DD
 ><P
 >      Recreate all system indexes of a specified database. Indexes on
-      user tables are not included. This form of <TT
-CLASS="COMMAND"
->REINDEX</TT
->
-      can only be used in stand-alone mode (see above).
+      user tables are not processed.  Also, indexes on shared system
+      catalogs are skipped except in stand-alone mode (see below).
      </P
 ></DD
 ><DT
@@ -280,7 +204,11 @@ CLASS="LITERAL"
 ></DT
 ><DD
 ><P
->      Recreate all indexes of a specified table.
+>      Recreate all indexes of a specified table.  If the table has a
+      secondary <SPAN
+CLASS="QUOTE"
+>"TOAST"</SPAN
+> table, that is reindexed as well.
      </P
 ></DD
 ><DT
@@ -311,19 +239,7 @@ CLASS="LITERAL"
 ></DT
 ><DD
 ><P
->      Force rebuild of system indexes.  Without this key word,
-      <TT
-CLASS="COMMAND"
->REINDEX</TT
-> skips system indexes that are not marked
-      invalid.  <VAR
-CLASS="LITERAL"
->FORCE</VAR
-> is irrelevant for <TT
-CLASS="COMMAND"
->REINDEX
-      INDEX</TT
-> or when reindexing user indexes.
+>      This is an obsolete option; it is ignored if specified.
      </P
 ></DD
 ></DL
@@ -332,7 +248,163 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41554"
+NAME="AEN41585"
+></A
+><H2
+>Notes</H2
+><P
+>   If you suspect corruption of an index on a user table, you can
+   simply rebuild that index, or all indexes on the table, using
+   <TT
+CLASS="COMMAND"
+>REINDEX INDEX</TT
+> or <TT
+CLASS="COMMAND"
+>REINDEX
+   TABLE</TT
+>.  Another approach to dealing with a corrupted
+   user-table index is just to drop and recreate it.  This may in fact
+   be preferable if you would like to maintain some semblance of
+   normal operation on the table meanwhile.  <TT
+CLASS="COMMAND"
+>REINDEX</TT
+>
+   acquires exclusive lock on the table, while <TT
+CLASS="COMMAND"
+>CREATE
+   INDEX</TT
+> only locks out writes not reads of the table.
+  </P
+><P
+>   Things are more difficult if you need to recover from corruption of
+   an index on a system table.  In this case it's important for the
+   system to not have used any of the suspect indexes itself.
+   (Indeed, in this sort of scenario you may find that server
+   processes are crashing immediately at start-up, due to reliance on
+   the corrupted indexes.)  To recover safely, the server must be started
+   with the <VAR
+CLASS="OPTION"
+>-P</VAR
+> option, which prevents it from using
+   indexes for system catalog lookups.
+  </P
+><P
+>   One way to do this is to shut down the postmaster and start a stand-alone
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server
+   with the <VAR
+CLASS="OPTION"
+>-P</VAR
+> option included on its command line.
+   Then, <TT
+CLASS="COMMAND"
+>REINDEX DATABASE</TT
+>,
+   <TT
+CLASS="COMMAND"
+>REINDEX TABLE</TT
+>, or <TT
+CLASS="COMMAND"
+>REINDEX INDEX</TT
+> can be
+   issued, depending on how much you want to reconstruct.  If in
+   doubt, use <TT
+CLASS="COMMAND"
+>REINDEX DATABASE</TT
+> to select
+   reconstruction of all system indexes in the database.  Then quit
+   the standalone server session and restart the regular server.
+   See the <A
+HREF="app-postgres.html"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></A
+> reference page for more
+   information about how to interact with the stand-alone server
+   interface.
+  </P
+><P
+>   Alternatively, a regular server session can be started with
+   <VAR
+CLASS="OPTION"
+>-P</VAR
+> included in its command line options.
+   The method for doing this varies across clients, but in all
+   <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>-based clients, it is possible to set
+   the <TT
+CLASS="ENVAR"
+>PGOPTIONS</TT
+> environment variable to <VAR
+CLASS="LITERAL"
+>-P</VAR
+>
+   before starting the client.  Note that while this method does not
+   require locking out other clients, it may still be wise to prevent
+   other users from connecting to the damaged database until repairs
+   have been completed.
+  </P
+><P
+>   If corruption is suspected in the indexes of any of the shared
+   system catalogs (<TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+>,
+   <TT
+CLASS="STRUCTNAME"
+>pg_group</TT
+>, or
+   <TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+>), then a standalone server
+   must be used to repair it.  <TT
+CLASS="COMMAND"
+>REINDEX</TT
+> will not process
+   shared catalogs in multiuser mode.
+  </P
+><P
+>   For all indexes except the shared system catalogs, <TT
+CLASS="COMMAND"
+>REINDEX</TT
+>
+   is crash-safe and transaction-safe.  <TT
+CLASS="COMMAND"
+>REINDEX</TT
+> is not
+   crash-safe for shared indexes, which is why this case is disallowed
+   during normal operation.  If a failure occurs while reindexing one
+   of these catalogs in standalone mode, it will not be possible to
+   restart the regular server until the problem is rectified.  (The
+   typical symptom of a partially rebuilt shared index is <SPAN
+CLASS="QUOTE"
+>"index is not
+   a btree"</SPAN
+> errors.)
+  </P
+><P
+>   Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.4, <TT
+CLASS="COMMAND"
+>REINDEX
+   TABLE</TT
+> did not automatically process TOAST tables, and so those had
+   to be reindexed by separate commands.  This is still possible, but
+   redundant.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41619"
 ></A
 ><H2
 >Examples</H2
@@ -356,19 +428,29 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   Rebuild all system indexes (this will only work in a stand-alone
-   server session):
+>   Rebuild all system indexes in a particular database, without trusting them
+   to be valid already:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->REINDEX DATABASE my_database FORCE;</PRE
+>$ <KBD
+CLASS="USERINPUT"
+>export PGOPTIONS="-P"</KBD
+>
+$ <KBD
+CLASS="USERINPUT"
+>psql broken_db</KBD
+>
+...
+broken_db=&#62; REINDEX DATABASE broken_db;
+broken_db=&#62; \q</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41563"
+NAME="AEN41630"
 ></A
 ><H2
 >Compatibility</H2
