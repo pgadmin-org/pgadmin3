@@ -30,6 +30,8 @@ public:
 
     int GetIcon() { return PGICON_DATABASE; }
     pgDatabase *GetDatabase() const { return (pgDatabase*)this; }
+    bool BackendMinimumVersion(int major, int minor) { return conn->BackendMinimumVersion(major, minor); }
+
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     static void ShowStatistics(pgCollection *collection, ctlListView *statistics);
@@ -62,6 +64,9 @@ public:
     bool RequireDropConfirm() { return true; }
     pgConn *connection() { return conn; }
     int Connect();
+    void AppendSchemaChange(const wxString &sql);
+    wxString GetSchemaChanges() { return schemaChanges; }
+    void ClearSchemaChanges() { schemaChanges=wxEmptyString; }
 
     wxMenu *GetNewMenu();
     wxString GetSql(wxTreeCtrl *browser);
@@ -73,6 +78,8 @@ private:
     wxString prettyOption;
     bool allowConnections, connected, createPrivilege;
     long missingFKs;
+
+    wxString schemaChanges;
 };
 
 #endif

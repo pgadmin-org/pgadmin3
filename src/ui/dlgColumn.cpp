@@ -31,6 +31,7 @@
 #define txtDefault          CTRL_TEXT("txtDefault")
 #define chkNotNull          CTRL_CHECKBOX("chkNotNull")
 #define txtAttstattarget    CTRL_TEXT("txtAttstattarget")
+#define cbSequence          CTRL_COMBOBOX("cbSequence")
 
 
 
@@ -56,6 +57,7 @@ dlgColumn::dlgColumn(frmMain *frame, pgColumn *node, pgTable *parentNode)
 
     objectType=PG_COLUMN;
     txtAttstattarget->SetValidator(numericValidator);
+    cbSequence->Disable();
 }
 
 
@@ -107,6 +109,9 @@ int dlgColumn::Go(bool modal)
         wxNotifyEvent ev;
         OnSelChangeTyp(ev);
 
+        cbSequence->Append(database->GetSchemaPrefix(column->GetSerialSchema()) + column->GetSerialSequence());
+        cbSequence->SetSelection(0);
+
         previousDefinition=GetDefinition();
         if (column->GetColNumber() < 0)
         {
@@ -126,6 +131,40 @@ int dlgColumn::Go(bool modal)
         cbDatatype->Append(wxT("bigserial"));
         AddType(wxT(" "), 0, wxT("serial"));
         AddType(wxT(" "), 0, wxT("bigserial"));
+
+        if (table)
+        {
+            sequences.Add(wxEmptyString);
+            cbSequence->Append(_("<new sequence>"));
+
+            wxString sysRestr;
+            if (!settings->GetShowSystemObjects())
+                sysRestr = wxT("   AND ") + connection->SystemNamespaceRestriction(wxT("nspname"));
+
+            pgSet *set=connection->ExecuteSet(
+                wxT("SELECT nspname, relname\n")
+                wxT("  FROM pg_class cl\n")
+                wxT("  JOIN pg_namespace nsp ON nsp.oid=relnamespace\n")
+                wxT(" WHERE cl.relkind='S'\n")
+                + sysRestr + wxT("\n")
+                + wxT(" ORDER BY CASE WHEN ") + connection->SystemNamespaceRestriction(wxT("nspname")) 
+                + wxT(" THEN 0 ELSE 1 END, nspname, relname"));
+
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    sequences.Add(qtIdent(set->GetVal(wxT("nspname"))) + wxT(".") + qtIdent(set->GetVal(wxT("relname"))));
+                    cbSequence->Append(set->GetVal(wxT("nspname")) + wxT(".") + set->GetVal(wxT("relname")));
+                    set->MoveNext();
+                }
+                delete set;
+            }
+        }
+        else
+            cbSequence->Append(wxT(" "));
+
+        cbSequence->SetSelection(0);
     }
     return dlgTypeProperty::Go(modal);
 }
@@ -134,15 +173,18 @@ int dlgColumn::Go(bool modal)
 wxString dlgColumn::GetSql()
 {
     wxString sql;
+    wxString name=GetName();
+
+    bool isSerial = (cbDatatype->GetValue() == wxT("serial") || cbDatatype->GetValue() == wxT("bigserial"));
 
     if (table)
     {
         if (column)
         {
-            if (GetName() != column->GetName())
+            if (name != column->GetName())
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                     +  wxT(" RENAME ") + qtIdent(column->GetName())
-                    +  wxT("  TO ") + qtIdent(GetName())
+                    +  wxT("  TO ") + qtIdent(name)
                     +  wxT(";\n");
 
             wxString sqlPart;
@@ -169,7 +211,7 @@ wxString dlgColumn::GetSql()
             if (txtDefault->GetValue() != column->GetDefault())
             {
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    +  wxT("\n   ALTER COLUMN ") + qtIdent(column->GetName());
+                    +  wxT("\n   ALTER COLUMN ") + qtIdent(name);
                 if (txtDefault->GetValue().IsEmpty())
                     sql += wxT(" DROP DEFAULT");
                 else
@@ -180,7 +222,7 @@ wxString dlgColumn::GetSql()
             if (chkNotNull->GetValue() != column->GetNotNull())
             {
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    +  wxT("\n   ALTER COLUMN ") + qtIdent(column->GetName());
+                    +  wxT("\n   ALTER COLUMN ") + qtIdent(name);
                 if (chkNotNull->GetValue())
                     sql += wxT(" SET");
                 else
@@ -191,7 +233,7 @@ wxString dlgColumn::GetSql()
             if (txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget()))
             {
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    +  wxT("\n   ALTER COLUMN ") + qtIdent(column->GetName());
+                    +  wxT("\n   ALTER COLUMN ") + qtIdent(name);
                 if (txtAttstattarget->GetValue().IsEmpty())
                     sql += wxT(" SET STATISTICS -1");
                 else
@@ -201,33 +243,77 @@ wxString dlgColumn::GetSql()
         }
         else
         {
-            sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                + wxT("\n   ADD COLUMN ") + qtIdent(GetName())
-                + wxT(" ") + GetQuotedTypename(cbDatatype->GetSelection())
-                + wxT(";\n");
-
-            if (chkNotNull->GetValue())
-                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    + wxT("\n   ALTER COLUMN ") + qtIdent(GetName())
-                    + wxT(" SET NOT NULL;\n");
-            
-            if (!txtDefault->GetValue().IsEmpty())
-                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    + wxT("\n   ALTER COLUMN ") + qtIdent(GetName())
-                    + wxT(" SET DEFAULT ") + txtDefault->GetValue() 
-                    + wxT(";\n");
-            if (!txtAttstattarget->GetValue().IsEmpty())
+            if (isSerial)
             {
+                wxString typname;
+                if (cbDatatype->GetValue() == wxT("serial"))
+                    typname = wxT("int4");
+                else
+                    typname = wxT("int8");
+
+                wxString sequence;
+                bool newSequence = (cbSequence->GetSelection() <= 0);
+
+                if (newSequence)
+                {
+                    sequence = qtIdent(table->GetSchema()->GetName()) + wxT(".") +
+                               qtIdent(table->GetName() + wxT("_") + name + wxT("_seq"));
+
+                    sql = wxT("CREATE SEQUENCE ") + sequence + wxT(";\n");
+                }
+                else
+                    sequence=sequences.Item(cbSequence->GetSelection());
+
+                sql +=wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    + wxT("\n   ADD COLUMN ") + qtIdent(name)
+                    + wxT(" ") + typname + wxT(";\n")
+                    + wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    + wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                    + wxT(" SET NOT NULL;\n")
+                    + wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    + wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                    + wxT(" SET DEFAULT nextval('") + sequence + wxT("'::text);\n");
+
+                if (newSequence)
+                {
+                    sql += wxT("INSERT INTO pg_depend(classid, objid, objsubid, refclassid, refobjid, refobjsubid, deptype)\n")
+                        wxT("SELECT cl.oid, seq.oid, 0, cl.oid, ") + table->GetOidStr() + wxT(", attnum, 'i'\n")
+                        wxT("  FROM pg_class cl, pg_attribute, pg_class seq\n")
+                        wxT("  JOIN pg_namespace sn ON sn.OID=seq.relnamespace\n")
+                        wxT(" WHERE cl.relname='pg_class'\n")
+                        wxT("  AND seq.relname=") + qtString(table->GetName() + wxT("_") + name + wxT("_seq")) + wxT("\n")
+                        wxT("  AND sn.nspname=") + qtString(table->GetSchema()->GetName()) + wxT("\n")
+                        wxT("  AND attrelid=") + table->GetOidStr() + wxT(" AND attname=") + qtString(name) + wxT(";\n");
+                }
+            }
+            else
+            {
+                sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    + wxT("\n   ADD COLUMN ") + qtIdent(name)
+                    + wxT(" ") + GetQuotedTypename(cbDatatype->GetSelection())
+                    + wxT(";\n");
+
+                if (!isSerial && chkNotNull->GetValue())
+                    sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                        + wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                        + wxT(" SET NOT NULL;\n");
+            
+                if (!isSerial && !txtDefault->GetValue().IsEmpty())
+                    sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                        + wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                        + wxT(" SET DEFAULT ") + txtDefault->GetValue() 
+                        + wxT(";\n");
+            }
+            if (!txtAttstattarget->GetValue().IsEmpty())
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    + wxT("\n   ALTER COLUMN ") + qtIdent(GetName())
+                    + wxT("\n   ALTER COLUMN ") + qtIdent(name)
                     + wxT(" SET STATISTICS ") + txtAttstattarget->GetValue()
                     + wxT(";\n");
-            }
         }
 
 
         AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier() 
-                + wxT(".") + qtIdent(GetName()), column);
+                + wxT(".") + qtIdent(name), column);
     }
     return sql;
 }
@@ -252,8 +338,8 @@ pgObject *dlgColumn::CreateObject(pgCollection *collection)
     pgObject *obj;
     obj=pgColumn::ReadObjects(collection, 0, 
         wxT("\n   AND attname=") + qtString(GetName()) +
-        wxT("\n   AND relname=") + qtString(table->GetName()) +
-        wxT("\n   AND relnamespace=") + table->GetSchema()->GetOidStr() +
+        wxT("\n   AND cl.relname=") + qtString(table->GetName()) +
+        wxT("\n   AND cl.relnamespace=") + table->GetSchema()->GetOidStr() +
         wxT("\n"));
     return obj;
 }
@@ -268,6 +354,12 @@ void dlgColumn::OnSelChangeTyp(wxNotifyEvent &ev)
         isVarPrec=false;
     }
     txtLength->Enable(isVarLen);
+
+    bool isSerial = (cbDatatype->GetValue() == wxT("serial") || cbDatatype->GetValue() == wxT("bigserial"));
+    cbSequence->Enable(isSerial && table!=0);
+    chkNotNull->Enable(!isSerial);
+    txtDefault->Enable(!isSerial);
+
     OnChange(ev);
 }
 

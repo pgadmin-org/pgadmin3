@@ -19,11 +19,17 @@
 
 // Network  headers
 #ifdef __WXMSW__
-    #include <winsock.h>
+#include <winsock.h>
 #else
-    #include <arpa/inet.h>
-    #include <netdb.h>
-    #include <netinet/in.h>
+
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/in.h>
+
+#ifndef INADDR_NONE
+#define INADDR_NONE (-1)
+#endif
+
 #endif
 
 // App headers
@@ -194,6 +200,12 @@ void pgConn::RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg)
 {
     noticeArg=arg;
     noticeProc=proc;
+}
+
+
+wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
+{
+    return wxT("(") + nsp + wxT(" NOT LIKE 'pg\\_%')");
 }
 
 

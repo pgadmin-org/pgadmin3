@@ -44,6 +44,21 @@ bool pgColumn::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 }
 
 
+void pgColumn::ShowDependsOn(ctlListView *dependsOn, const wxString &where)
+{
+    pgObject::ShowDependsOn(dependsOn, 
+        wxT("\n WHERE dep.objid=") + NumToStr(tableOid) +
+        wxT(" AND dep.objsubid=") + NumToStr(colNumber));
+}
+
+
+void pgColumn::ShowReferencedBy(ctlListView *referencedBy, const wxString &where)
+{
+    pgObject::ShowReferencedBy(referencedBy, 
+        wxT("\n WHERE dep.refobjid=") + NumToStr(tableOid) +
+        wxT(" AND dep.refobjsubid=") + NumToStr(colNumber));
+}
+
 wxString pgColumn::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull() && !GetSystemObject())
@@ -180,6 +195,7 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         properties->AppendItem(_("Position"), GetColNumber());
         properties->AppendItem(_("Data type"), GetVarTypename());
         properties->AppendItem(_("Default"), GetDefault());
+        properties->AppendItem(_("Sequence"), database->GetSchemaPrefix(GetSerialSchema()) + GetSerialSequence());
         properties->AppendItem(_("Not NULL?"), GetNotNull());
         properties->AppendItem(_("Primary key?"), GetIsPK());
         properties->AppendItem(_("Foreign key?"), GetIsFK());
@@ -236,7 +252,8 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
         systemRestriction = wxT("\n   AND attnum > 0");
         
     pgSet *columns= database->ExecuteSet(
-        wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, CASE WHEN ty.typname = 'bpchar' THEN 'char' WHEN ty.typname = '_bpchar' THEN '_char' ELSE ty.typname END AS typname, tn.nspname as typnspname, et.typname as elemtypname, relname, na.nspname, att.attstattarget, description\n")
+        wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, CASE WHEN ty.typname = 'bpchar' THEN 'char' WHEN ty.typname = '_bpchar' THEN '_char' ELSE ty.typname END AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
+        wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema\n")
         wxT("  FROM pg_attribute att\n")
         wxT("  JOIN pg_type ty ON ty.oid=atttypid\n")
         wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
@@ -245,6 +262,8 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
         wxT("  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n")
         wxT("  LEFT OUTER JOIN pg_attrdef def ON adrelid=attrelid AND adnum=attnum\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=attrelid AND des.objsubid=attnum\n")
+        wxT("  LEFT OUTER JOIN (pg_depend JOIN pg_class cs ON objid=cs.oid AND cs.relkind='S') ON refobjid=attrelid AND refobjsubid=attnum\n")
+        wxT("  LEFT OUTER JOIN pg_namespace ns ON ns.oid=cs.relnamespace\n")
         wxT(" WHERE attrelid = ") + collection->GetOidStr()
         + restriction + systemRestriction + wxT("\n")
         wxT("   AND attisdropped IS FALSE\n")
@@ -261,6 +280,9 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             column->iSetColNumber(columns->GetLong(wxT("attnum")));
             column->iSetIsArray(columns->GetBool(wxT("isarray")));
             column->iSetComment(columns->GetVal(wxT("description")));
+            column->iSetSerialSequence(columns->GetVal(wxT("sername")));
+            column->iSetSerialSchema(columns->GetVal(wxT("serschema")));
+
             if (columns->GetBool(wxT("atthasdef")))
                 column->iSetDefault(columns->GetVal(wxT("adsrc")));
             column->iSetStatistics(columns->GetLong(wxT("attstattarget")));

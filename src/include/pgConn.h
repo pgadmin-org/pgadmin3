@@ -68,6 +68,7 @@ public:
     OID GetLastSystemOID() const { return lastSystemOID; }
     bool BackendMinimumVersion(int major, int minor);
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
+    wxString SystemNamespaceRestriction(const wxString &nsp);
 #ifdef SSL
     bool IsSSLconnected();
 #endif

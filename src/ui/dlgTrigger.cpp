@@ -95,11 +95,12 @@ int dlgTrigger::Go(bool modal)
         // create mode
         wxString sysRestr;
         if (!settings->GetShowSystemObjects())
-            sysRestr = wxT(" AND (pronamespace=2200 OR pronamespace >") 
-				+ NumToStr(connection->GetLastSystemOID()) + wxT(")");
+            sysRestr = wxT("   AND ") + connection->SystemNamespaceRestriction(wxT("nspname"));
 
         pgSet *set=connection->ExecuteSet(
-            wxT("SELECT quote_ident(nspname) || '.' || quote_ident(proname) FROM pg_proc, pg_namespace WHERE pg_proc.pronamespace = pg_namespace.oid AND prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr);
+            wxT("SELECT quote_ident(nspname) || '.' || quote_ident(proname)\n")
+            wxT("  FROM pg_proc, pg_namespace\n")
+            wxT(" WHERE pg_proc.pronamespace = pg_namespace.oid AND prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr);
         if (set)
         {
             while (!set->Eof())

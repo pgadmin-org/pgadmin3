@@ -363,7 +363,7 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("ACL"), GetAcl());
         if (GetPrimaryKey().IsNull())
-            properties->AppendItem(_("Primary key"), _("<none>"));
+            properties->AppendItem(_("Primary key"), _("<no primary key>"));
         else
             properties->AppendItem(_("Primary key"), GetPrimaryKey());
 

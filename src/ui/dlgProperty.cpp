@@ -91,6 +91,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     sqlPane=0;
     processing=false;
     mainForm=frame;
+    database=0;
     wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, frame, resName);
     nbNotebook = CTRL_NOTEBOOK("nbNotebook");
@@ -171,6 +172,14 @@ void dlgProperty::CheckValid(bool &enable, const bool condition, const wxString 
 }
 
 
+void dlgProperty::SetDatabase(pgDatabase *db)
+{
+    database=db;
+    if (db)
+        connection=db->GetConnection();
+}
+
+    
 void dlgProperty::EnableOK(bool enable)
 {
     btnOK->Enable(enable);
@@ -391,6 +400,11 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
         {
             // error message is displayed inside ExecuteVoid
             return;
+        }
+        else
+        {
+            if (database)
+                database->AppendSchemaChange(sql);
         }
 
         ShowObject();

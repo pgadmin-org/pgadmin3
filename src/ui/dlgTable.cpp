@@ -237,9 +237,8 @@ int dlgTable::Go(bool modal)
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
         systemRestriction = 
-            wxT("   AND (n.oid = 2200 OR n.oid >= ") + NumToStr(connection->GetLastSystemOID()) + wxT(")\n")
-            wxT("   AND n.nspname NOT LIKE 'pg\\_temp\\_%'\n");
-
+            wxT("   AND ") + connection->SystemNamespaceRestriction(wxT("n.nspname"));
+            
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT c.oid, c.relname , nspname\n")
             wxT("  FROM pg_class c\n")
@@ -585,7 +584,7 @@ void dlgTable::OnChangeCol(wxNotifyEvent &ev)
 
     dlgColumn col(mainForm, column, table);
     col.CenterOnParent();
-    col.SetConnection(connection);
+    col.SetDatabase(database);
     if (col.Go(true) >= 0)
     {
         lstColumns->SetItem(pos, 0, col.GetName());
@@ -601,7 +600,7 @@ void dlgTable::OnAddCol(wxNotifyEvent &ev)
 {
     dlgColumn col(mainForm, NULL, table);
     col.CenterOnParent();
-    col.SetConnection(connection);
+    col.SetDatabase(database);
     if (col.Go(true) >= 0)
         AppendListItem(lstColumns, col.GetName(), col.GetDefinition(), PGICON_COLUMN);
     wxNotifyEvent event;
@@ -642,7 +641,7 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
         {
             dlgPrimaryKey pk(mainForm, lstColumns);
             pk.CenterOnParent();
-            pk.SetConnection(connection);
+            pk.SetDatabase(database);
             if (pk.Go(true) >= 0)
             {
                 AppendListItem(lstConstraints, pk.GetName(), pk.GetDefinition(), PGICON_PRIMARYKEY);
@@ -655,7 +654,7 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
         {
             dlgForeignKey fk(mainForm, lstColumns);
             fk.CenterOnParent();
-            fk.SetConnection(connection);
+            fk.SetDatabase(database);
             if (fk.Go(true) >= 0)
             {
                 wxString str=fk.GetDefinition();
@@ -668,7 +667,7 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
         {
             dlgUnique unq(mainForm, lstColumns);
             unq.CenterOnParent();
-            unq.SetConnection(connection);
+            unq.SetDatabase(database);
             if (unq.Go(true) >= 0)
                 AppendListItem(lstConstraints, unq.GetName(), unq.GetDefinition(), PGICON_UNIQUE);
             break;
@@ -677,7 +676,7 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
         {
             dlgCheck chk(mainForm);
             chk.CenterOnParent();
-            chk.SetConnection(connection);
+            chk.SetDatabase(database);
             if (chk.Go(true) >= 0)
                 AppendListItem(lstConstraints, chk.GetName(), chk.GetDefinition(), PGICON_CHECK);
             break;

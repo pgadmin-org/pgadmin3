@@ -91,6 +91,9 @@ int pgDatabase::Connect()
 
 wxString pgDatabase::GetSchemaPrefix(const wxString &name) const
 {
+    if (name.IsEmpty())
+        return name;
+
     wxString sp=settings->GetSearchPath();
     if (sp.IsEmpty())
         sp = GetSearchPath();
@@ -129,6 +132,15 @@ bool pgDatabase::GetSystemObject() const
     }
 }
 
+
+void pgDatabase::AppendSchemaChange(const wxString &sql)
+{
+    wxDateTime dt;
+    dt.Now();
+    schemaChanges.Append(wxT("-- ") + DateToStr(dt) + wxT("\n"));
+    schemaChanges.Append(sql);
+    schemaChanges.Append(wxT("\n\n"));
+}
 
 bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {

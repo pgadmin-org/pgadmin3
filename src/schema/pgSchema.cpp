@@ -221,9 +221,7 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
 {
     wxString systemRestriction;
     if (!settings->GetShowSystemObjects())
-        systemRestriction = 
-            wxT(" WHERE (nsp.oid = 2200 OR nsp.oid > ") + NumToStr(collection->GetConnection()->GetLastSystemOID()) + wxT(")\n")
-            wxT("   AND nsp.nspname NOT LIKE 'pg\\_%'\n");
+        systemRestriction = wxT("WHERE ") + collection->GetConnection()->SystemNamespaceRestriction(wxT("nsp.nspname"));
 
     // Get the schemas
     return ReadObjects(collection, browser, systemRestriction);

@@ -347,7 +347,7 @@ int dlgForeignKey::Go(bool modal)
 
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
-            systemRestriction = wxT("   AND (nsp.oid=2200 OR nsp.oid > ") + NumToStr(connection->GetLastSystemOID()) + wxT(")\n");
+            systemRestriction = wxT("   AND ") + connection->SystemNamespaceRestriction(wxT("nsp.nspname"));
 
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT nspname, relname FROM pg_namespace nsp, pg_class cl\n")

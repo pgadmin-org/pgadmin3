@@ -129,8 +129,8 @@ public:
     virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0)
         =0;
     virtual void ShowStatistics(ctlListView *statistics);
-    virtual void ShowDependsOn(ctlListView *dependsOn);
-    virtual void ShowReferencedBy(ctlListView *referencedBy);
+    virtual void ShowDependsOn(ctlListView *dependsOn, const wxString &where=wxEmptyString);
+    virtual void ShowReferencedBy(ctlListView *referencedBy, const wxString &where=wxEmptyString);
     virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
     virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
     virtual bool EditObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
@@ -156,7 +156,7 @@ protected:
     
 private:
     static wxString GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
-    void ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query);
+    void ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query, const wxString &clsOrder);
     wxString name, owner, comment, acl;
     int type;
     OID oid;

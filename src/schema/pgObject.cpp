@@ -144,8 +144,9 @@ void pgObject::ShowStatistics(ctlListView *statistics)
 }
 
 
-void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query)
+void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query, const wxString &clsorder)
 {
+    list->ClearAll();
     list->AddColumn(_("Type"), 60);
     list->AddColumn(_("Name"), 100);
     list->AddColumn(_("Restriction"), 50);
@@ -153,12 +154,21 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
     if (conn)
     {
         pgSet *set;
+        // currently missing:
+        // - pg_cast
+        // - pg_operator
+        // - pg_opclass
+        
+        // not being implemented:
+        // - pg_attrdef (won't make sense)
+        // - pg_index (done by pg_class
+
         set=conn->ExecuteSet(query + wxT("\n")
-            wxT("   AND classid IN (\n")
+            wxT("   AND ") + clsorder + wxT(" IN (\n")
             wxT("   SELECT oid FROM pg_class\n")
             wxT("    WHERE relname IN ('pg_class', 'pg_constraint', 'pg_conversion', 'pg_language', 'pg_proc',\n")
-            wxT("                      'pg_rewrite', 'pg_trigger', 'pg_type'))\n")
-            wxT(" ORDER BY classid, cl.relkind"));
+            wxT("                      'pg_rewrite', 'pg_namespace', 'pg_trigger', 'pg_type'))\n")
+            wxT(" ORDER BY ") + clsorder + wxT(", cl.relkind"));
 
         if (set)
         {
@@ -170,8 +180,11 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                 if (db)
                     refname = db->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname")));
                 else
-                    refname = qtIdent(set->GetVal(wxT("nspname"))) + wxT(".");
-
+                {
+                    refname = qtIdent(set->GetVal(wxT("nspname")));
+                    if (!refname.IsEmpty())
+                        refname += wxT(".");
+                }
                 wxString typestr=set->GetVal(wxT("type"));
                 int id;
 
@@ -249,10 +262,16 @@ void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const 
 }
 
 
-void pgObject::ShowDependsOn(ctlListView *dependsOn)
+void pgObject::ShowDependsOn(ctlListView *dependsOn, const wxString &wh)
 {
+    wxString where;
+    if (wh.IsEmpty())
+        where = wxT(" WHERE dep.objid=") + GetOidStr();
+    else
+        where = wh;
     ShowDependency(GetDatabase(), dependsOn,
-        wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
+        wxT("SELECT DISTINCT deptype, coc.relname AS ownertable, refclassid, cl.relkind,\n")
+        wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
         wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
         wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
         wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
@@ -261,8 +280,7 @@ void pgObject::ShowDependsOn(ctlListView *dependsOn)
         wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
         wxT("            ELSE '' END AS type,\n")
         wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
-        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname,\n")
-        wxT("       deptype, coc.relname AS ownertable\n") 
+        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname\n")
         wxT("  FROM pg_depend dep\n")
         wxT("  LEFT JOIN pg_class cl ON dep.refobjid=cl.oid\n")
         wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
@@ -276,14 +294,21 @@ void pgObject::ShowDependsOn(ctlListView *dependsOn)
         wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
         wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
         wxT("  LEFT JOIN pg_namespace ns ON dep.refobjid=ns.oid\n")
-        wxT(" WHERE dep.objid=") + GetOidStr());
+        + where, wxT("refclassid"));
 }
 
 
-void pgObject::ShowReferencedBy(ctlListView *referencedBy)
+void pgObject::ShowReferencedBy(ctlListView *referencedBy, const wxString &wh)
 {
+    wxString where;
+    if (wh.IsEmpty())
+        where = wxT(" WHERE dep.refobjid=") + GetOidStr();
+    else
+        where = wh;
+
     ShowDependency(GetDatabase(), referencedBy,
-        wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
+        wxT("SELECT DISTINCT deptype, coc.relname AS ownertable, classid, cl.relkind,\n")
+        wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
         wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
         wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
         wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
@@ -292,8 +317,7 @@ void pgObject::ShowReferencedBy(ctlListView *referencedBy)
         wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
         wxT("            ELSE '' END AS type,\n")
         wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
-        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname,\n")
-        wxT("       deptype, coc.relname AS ownertable\n") 
+        wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname\n")
         wxT("  FROM pg_depend dep\n")
         wxT("  LEFT JOIN pg_class cl ON dep.objid=cl.oid\n")
         wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
@@ -307,7 +331,7 @@ void pgObject::ShowReferencedBy(ctlListView *referencedBy)
         wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
         wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
         wxT("  LEFT JOIN pg_namespace ns ON dep.objid=ns.oid\n")
-        wxT(" WHERE dep.refobjid=") + GetOidStr());
+        + where, wxT("classid"));
 }
 
 

@@ -39,6 +39,7 @@ private:
     void OnSelChangeTyp(wxNotifyEvent &ev);
  
     wxString previousDefinition;
+    wxArrayString sequences;
 
     DECLARE_EVENT_TABLE();
 };

@@ -32,6 +32,8 @@ public:
     int GetIcon() { return PGICON_COLUMN; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(ctlListView *statistics);
+    void ShowDependsOn(ctlListView *dependsOn, const wxString &where=wxEmptyString);
+    void ShowReferencedBy(ctlListView *referencedBy, const wxString &where=wxEmptyString);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
     wxString GetDefinition();
@@ -74,6 +76,10 @@ public:
     void iSetAttTypId(const OID o) { attTypId =o; }
     long GetAttstattarget() const { return attstattarget; }
     void iSetAttstattarget(const long l) { attstattarget=l; }
+    wxString GetSerialSequence() const { return serialSequence; }
+    void iSetSerialSequence(const wxString &s) { serialSequence=s; }
+    wxString GetSerialSchema() const { return serialSchema; }
+    void iSetSerialSchema(const wxString &s) { serialSchema=s; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool GetSystemObject() const { return colNumber < 0; }
@@ -85,6 +91,7 @@ public:
 
 private:
     wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, storage, rawTypename;
+    wxString serialSequence, serialSchema;
     long colNumber, length, precision, statistics, attstattarget;
     long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray;

@@ -110,11 +110,11 @@ int dlgDatabase::Go(bool modal)
         else
         {
             pgSet *set;
-            if (connection->BackendMinimumVersion(7, 4))
-                set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
+            if (database->BackendMinimumVersion(7, 4))
+                set=database->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
                         wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
             else
-                set=connection->ExecuteSet(wxT("SELECT name, 'string' as vartype, '' as min_val, '' as max_val FROM pg_settings"));
+                set=database->ExecuteSet(wxT("SELECT name, 'string' as vartype, '' as min_val, '' as max_val FROM pg_settings"));
             if (set)
             {
                 while (!set->Eof())
@@ -138,7 +138,7 @@ int dlgDatabase::Go(bool modal)
         txtComment->Disable();
         cbTemplate->Append(wxT(""));
 
-        pgSet *set=connection->ExecuteSet(wxT(
+        pgSet *set=database->ExecuteSet(wxT(
             "SELECT datname FROM pg_database ORDER BY datname"));
         if (set)
         {
@@ -153,7 +153,7 @@ int dlgDatabase::Go(bool modal)
         wxString encStr;
         do
         {
-            encStr=connection->ExecuteScalar(
+            encStr=database->ExecuteScalar(
                 wxT("SELECT pg_encoding_to_char(") + NumToStr(encNo) + wxT(")"));
             if (!encStr.IsEmpty())
                 cbEncoding->Append(encStr);
