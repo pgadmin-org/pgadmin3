@@ -88,8 +88,12 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     database=0;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(frame, resName);
-    nbNotebook = CTRL_NOTEBOOK("nbNotebook");
 
+#ifdef __WXMSW__
+    SetWindowStyleFlag(GetWindowStyleFlag() & ~wxMAXIMIZE_BOX);
+#endif
+
+    nbNotebook = CTRL_NOTEBOOK("nbNotebook");
     if (!nbNotebook)
     {
         wxMessageBox(wxString::Format(_("Problem with resource %s: Notebook not found.\nPrepare to crash!"), resName.c_str()));
