@@ -98,6 +98,7 @@ EXTRA_DIST = pgAdmin3.dsp pgAdmin3.dsw \
 include/images/*.xpm \
 include/images/pgAdmin3.ico \
 ui/af_ZA/pgadmin3.po \
+ui/ar_SA/pgadmin3.po \
 ui/ca_ES/pgadmin3.po \
 ui/da_DK/pgadmin3.po \
 ui/de_DE/pgadmin3.po \
@@ -132,6 +133,7 @@ nobase_dist_pkgdata_DATA = ui/common/*.xrc \
 ui/wxstd.mo \
 ui/pgadmin3.lng \
 ui/af_ZA/pgadmin3.mo \
+ui/ar_SA/pgadmin3.mo \
 ui/ca_ES/pgadmin3.mo \
 ui/da_DK/pgadmin3.mo \
 ui/de_DE/pgadmin3.mo \
