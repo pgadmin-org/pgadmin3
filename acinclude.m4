@@ -81,6 +81,15 @@ fi], [
                 LIBPQ_HOME=/usr
             fi
         fi
+        if test -f "/usr/include/libpq-fe.h"
+        then
+            pgsql_include="/usr/include"
+        else
+            if test -f "/usr/include/pgsql/libpq-fe.h"
+            then
+                pgsql_include="/usr/include/pgsql"
+            fi
+        fi
     fi
 ])
 
