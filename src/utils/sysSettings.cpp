@@ -75,12 +75,16 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     if (langInfo)
         canonicalLanguage=langInfo->CanonicalName;
 
-    wxFont defaultFont(9, wxMODERN, wxNORMAL, wxNORMAL);
-    Read(wxT("frmQuery/FontPointSize"), &fontPointSize, defaultFont.GetPointSize());
-    Read(wxT("frmQuery/FontFamily"), &fontFamily, defaultFont.GetFamily());
-    Read(wxT("frmQuery/FontStyle"), &fontStyle, defaultFont.GetStyle());
-    Read(wxT("frmQuery/FontWeight"), &fontWeight, defaultFont.GetWeight());
-    Read(wxT("frmQuery/FontFace"), &fontFace, defaultFont.GetFaceName());
+#ifdef __WXMSW__
+    Read(wxT("frmQuery/FontPointSize"), &fontPointSize, 9);
+    Read(wxT("frmQuery/FontFace"), &fontFace, wxT("Courier New"));
+#else
+    Read(wxT("frmQuery/FontPointSize"), &fontPointSize, 12);
+    Read(wxT("frmQuery/FontFace"), &fontFace, wxT("monospace"));
+#endif
+    Read(wxT("frmQuery/FontFamily"), &fontFamily, wxTELETYPE);
+    Read(wxT("frmQuery/FontStyle"), &fontStyle, wxNORMAL);
+    Read(wxT("frmQuery/FontWeight"), &fontWeight, wxNORMAL);
 }
 
 
