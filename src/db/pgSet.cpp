@@ -283,7 +283,7 @@ pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &qry, int _resultToRe
     result=0;
     resultToRetrieve=_resultToRetrieve;
     rc=-1;
-    PQsetNoticeProcessor(conn->conn, pgNoticeProcessor, this);
+    conn->RegisterNoticeProcessor(pgNoticeProcessor, this);
     PQsetnonblocking(conn->conn, 1);
 }
 
@@ -292,6 +292,7 @@ pgQueryThread::~pgQueryThread()
 {
     if (dataSet)
         delete dataSet;
+    conn->RegisterNoticeProcessor(0, 0);
 }
 
 
