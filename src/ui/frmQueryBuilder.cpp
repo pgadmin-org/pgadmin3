@@ -135,16 +135,6 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
     toolsMenu->Append(MNU_ADDTABLEVIEW, _("&Add Table/View..."), 
 		_("Add a table or view to the datagram."));
     menuBar->Append(toolsMenu, _("&Tools"));
-
-    // View Menu
-    viewMenu = new wxMenu();
-    viewMenu->Append(MNU_QUERYBUILDER, _("&Query Builder"), 
-		_("Refresh the selected object."));
-    viewMenu->Append(MNU_QUERYANALYZER, _("&Query Analyzer"), 
-		_("Refresh the selected object."));
-    //viewMenu->Check(MNU_QUERYBUILDER, TRUE);
-
-    menuBar->Append(viewMenu, _("&View"));
     
 	// Set the Menu Bar
 	SetMenuBar(menuBar);
@@ -1851,6 +1841,7 @@ bool DnDDesign::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 	// Extract the left table name/column name
 	wxStringTokenizer tmptok(text, wxT("."));
 	wxString lefttable = tmptok.GetNextToken();
+    lefttable += wxT(".") + tmptok.GetNextToken();
 	wxString column = tmptok.GetNextToken();
 
 	frmChildTableViewFrame *tmpframe =

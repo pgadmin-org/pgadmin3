@@ -67,6 +67,7 @@ WX_DEFINE_LIST(windowList);
 #include "images/property.xpm"
 #include "images/public.xpm"
 #include "images/refresh.xpm"
+#include "images/querybuilder.xpm"
 #include "images/relationship.xpm"
 #include "images/rule.xpm"
 #include "images/sequence.xpm"
@@ -136,9 +137,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_DISCONNECT, _("Disconnec&t"),           _("Disconnect from the selected server."));
     toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_SQL, _("&Query tool"),                  _("Execute arbitrary SQL queries."));
-#ifdef __DEBUG_QUERYBUILDER__
     toolsMenu->Append(MNU_QUERYBUILDER, _("Query &builder"),      _("Start the query builder."));
-#endif
 	toolsMenu->Append(MNU_VIEWDATA, _("View &Data"),              _("View the data in the selected object."));
     toolsMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),         _("Maintain the current database or table."));
     toolsMenu->Append(MNU_RELOAD, _("Re&load module"),            _("Reload library module which implements this function."));
@@ -220,6 +219,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolBar->AddTool(MNU_PROPERTIES, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_SQL, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_QUERYBUILDER, _("Query builder"), wxBitmap(querybuilder_xpm), _("Visually build SQL queries."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_VIEWDATA, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_MAINTENANCE, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
     toolBar->AddSeparator();
@@ -677,6 +677,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
     toolBar->EnableTool(MNU_DROP, drop);
     toolBar->EnableTool(MNU_PROPERTIES, properties);
     toolBar->EnableTool(MNU_SQL, sql);
+    toolBar->EnableTool(MNU_QUERYBUILDER, sql);
     toolBar->EnableTool(MNU_VIEWDATA, viewData);
     toolBar->EnableTool(MNU_MAINTENANCE, maintenance);
 
@@ -687,9 +688,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	toolsMenu->Enable(MNU_CONNECT, false);
 	toolsMenu->Enable(MNU_DISCONNECT, false);
 	toolsMenu->Enable(MNU_SQL, sql);
-#ifdef __DEBUG_QUERYBUILDER__
 	toolsMenu->Enable(MNU_QUERYBUILDER, sql);
-#endif
 	toolsMenu->Enable(MNU_MAINTENANCE, maintenance);
 	toolsMenu->Enable(MNU_STATUS, sql);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);

@@ -124,7 +124,7 @@ frmChildTableViewFrame::frmChildTableViewFrame(wxMDIParentFrame* frame,
 	// We need to know if we're going to show system objects
 	wxString sysobjstr;
 	if (!settings->GetShowSystemObjects())
-		sysobjstr = wxT(" WHERE attnum > 0 ");
+		sysobjstr = wxT(" AND attnum > 0 ");
 
 	// Only do this if we have a database connection
 	if (m_database->Connect() == PGCONN_OK) 
@@ -132,13 +132,12 @@ frmChildTableViewFrame::frmChildTableViewFrame(wxMDIParentFrame* frame,
 		// Query the columns for the table
 		// Currently does not process system columns
 		pgSet *columns = m_database->ExecuteSet(
-			wxT("SELECT attname, c.typname\n")
-			wxT("  FROM pg_attribute a\n")
-			wxT("  JOIN (SELECT oid FROM pg_class\n")
-			wxT("         WHERE lower(relname) = lower('") + table + wxT("') ) b")
-			        wxT(" ON a.attrelid = b.oid\n")
-			wxT("  JOIN (SELECT oid, typname FROM pg_type ) c ")
-			       wxT(" ON ( a.atttypid = c.oid )\n") + 
+			wxT("SELECT quote_ident(attname) AS attname, c.typname\n")
+			wxT(" FROM pg_attribute a\n")
+			wxT(" JOIN (SELECT oid, typname FROM pg_type ) c ")
+			wxT(" ON ( a.atttypid = c.oid )\n")
+            wxT(" WHERE a.attrelid = '") + table + wxT("'::regclass\n")
+            wxT(" AND a.attisdropped = FALSE\n")+
 			sysobjstr +
 			wxT("\n ORDER BY attnum"));
 
@@ -426,6 +425,7 @@ bool DnDJoin::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 	// Extract the left table name/column name
 	wxStringTokenizer tmptok(text, wxT("."));
 	wxString lefttable = tmptok.GetNextToken();
+    lefttable += wxT(".") + tmptok.GetNextToken();
 	wxString column = tmptok.GetNextToken();
 
 	// Fail if the column is the asterisk

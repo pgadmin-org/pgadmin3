@@ -80,8 +80,7 @@ private:
 	// Controls
     wxMenuBar *menuBar;
     wxMenu *fileMenu, 
-		*toolsMenu, 
-		*viewMenu, 
+		*toolsMenu,  
 		*helpMenu, 
 		*datagramContextMenu,
 		*queryMenu;
@@ -158,9 +157,7 @@ private:
 		MNU_CANCEL,
         MNU_EXPORT,
 		MNU_EXECUTE,
-		MNU_EXPLAIN,
-		MNU_QUERYBUILDER,
-		MNU_QUERYANALYZER
+		MNU_EXPLAIN
 	};
 
 	// Button Enumeration
