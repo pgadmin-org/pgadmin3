@@ -18,6 +18,7 @@ rm -rf ./src
 /bin/sh bootstrap
 cd /usr/local/src
 /bin/tar czf /usr/local/apache/htdocs/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz --exclude CVS --exclude autom4te.cache pgadmin3
+ln -s -f /usr/local/apache/htdocs/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz /usr/local/apache/htdocs/pgadmin3-Alpha-src.tar.gz
 cd /usr/local/src/pgadmin3
 
 # Now the build
@@ -26,13 +27,15 @@ make all
 /usr/bin/strip src/pgAdmin3
 
 # Build a clean distro
-mkdir ./pgadmin3
-mkdir ./pgadmin3/ui
-mkdir ./pgadmin3/ui/common
-cp ./src/pgAdmin3 ./pgadmin3
-cp ./src/tips.txt ./pgadmin3
-cp ./src/ui/common/*.xrc ./pgadmin3/ui/common
+if [ -x src/pgAdmin3 ]; then
+  mkdir ./pgadmin3
+  mkdir ./pgadmin3/ui
+  mkdir ./pgadmin3/ui/common
+  cp ./src/pgAdmin3 ./pgadmin3
+  cp ./src/tips.txt ./pgadmin3
+  cp ./src/ui/common/*.xrc ./pgadmin3/ui/common
 
-# Build the snapshot and file it.
-/bin/tar czf /usr/local/apache/htdocs/linux/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz pgadmin3
-ln -s -f /usr/local/apache/htdocs/linux/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz /usr/local/apache/htdocs/linux/pgadmin3-Alpha-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz
+  # Build the snapshot and file it.
+  /bin/tar czf /usr/local/apache/htdocs/linux/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz pgadmin3
+  ln -s -f /usr/local/apache/htdocs/linux/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz /usr/local/apache/htdocs/pgadmin3-Alpha-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz
+fi
