@@ -78,7 +78,8 @@ int dlgTrigger::Go(bool modal)
         chkDelete->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_DELETE) != 0);
         rdbFires->SetSelection(trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1);
         txtArguments->SetValue(trigger->GetArguments());
-        txtName->Disable();
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtName->Disable();
         chkRow->Disable();
         cbFunction->Append(trigger->GetFunction());
         cbFunction->SetSelection(0);
@@ -123,14 +124,17 @@ int dlgTrigger::Go(bool modal)
 wxString dlgTrigger::GetSql()
 {
     wxString sql;
+    wxString name=GetName();
 
     if (trigger)
     {
-        // nothing
+        if (name != trigger->GetName())
+            sql = wxT("ALTER TRIGGER ") + trigger->GetQuotedIdentifier() + wxT(" ON ") + table->GetQuotedFullIdentifier()
+                + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
     }
     else
     {
-        sql = wxT("CREATE TRIGGER ") + qtIdent(GetName());
+        sql = wxT("CREATE TRIGGER ") + qtIdent(name);
         if (rdbFires->GetSelection())
             sql += wxT(" AFTER");
         else

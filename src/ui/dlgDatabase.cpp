@@ -53,7 +53,7 @@ dlgDatabase::dlgDatabase(frmMain *frame, pgDatabase *node)
 {
     SetIcon(wxIcon(database_xpm));
     database=node;
-    CreateListColumns(lstVariables, _("Variable"), _("Value"));
+    lstVariables->CreateColumns(frame, _("Variable"), _("Value"));
 
     txtOID->Disable();
     chkValue->Hide();
@@ -84,7 +84,7 @@ int dlgDatabase::Go(bool modal)
         for (i=0 ; i < database->GetVariables().GetCount() ; i++)
         {
             wxString item=database->GetVariables().Item(i);
-            AppendListItem(lstVariables, item.BeforeFirst('='), item.AfterFirst('='), 0);
+            lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
         }
 
         txtName->SetValue(database->GetName());

@@ -18,26 +18,21 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frmMain.h"
+#include "dlgClasses.h"
 
 
 // Class declarations
-class frmIndexcheck : public DialogWithHelp
+class frmIndexcheck : public ExecutionDialog
 {
 public:
     frmIndexcheck(frmMain *form, pgObject *_object);
     ~frmIndexcheck();
 
+    wxString GetSql();
     void Go();
     
 private:
     wxString GetHelpPage() const;
-    void OnAction(wxCommandEvent& ev);
-    void OnOK(wxCommandEvent& ev);
-    void OnCancel(wxCommandEvent& ev);
-    void OnClose(wxCloseEvent& event);
-    void Abort();
-    pgObject *object;
-    pgQueryThread *thread;
     DECLARE_EVENT_TABLE()
 };
 

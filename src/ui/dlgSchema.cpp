@@ -63,7 +63,8 @@ int dlgSchema::Go(bool modal)
         txtComment->SetValue(schema->GetComment());
         cbOwner->SetValue(schema->GetOwner());
 
-        txtName->Disable();
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtName->Disable();
         cbOwner->Disable();
     }
     else
@@ -86,13 +87,13 @@ pgObject *dlgSchema::CreateObject(pgCollection *collection)
 
 void dlgSchema::OnChange(wxCommandEvent &ev)
 {
+    wxString name=GetName();
     if (schema)
     {
-        EnableOK(txtComment->GetValue() != schema->GetComment());
+        EnableOK(name != schema->GetName() || txtComment->GetValue() != schema->GetComment());
     }
     else
     {
-        wxString name=GetName();
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
@@ -111,6 +112,7 @@ wxString dlgSchema::GetSql()
     if (schema)
     {
         // edit mode
+        AppendNameChange(sql);
     }
     else
     {

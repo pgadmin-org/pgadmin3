@@ -18,12 +18,17 @@
 // App headers
 #include "pgAdmin3.h"
 
+class frmMain;
+
 class ctlListView : public wxListCtrl
 {
 public:
     ctlListView(wxWindow *p, int id, wxPoint pos, wxSize siz, long attr=0);
     long GetSelection();
     wxString GetText(long row, long col=0);
+
+    void CreateColumns(frmMain *form, const wxString &left, const wxString &right, int leftSize=60);
+    void CreateColumns(wxImageList *images, const wxString &left, const wxString &right, int leftSize=60);
 
     void AddColumn(const wxChar *text, int size=-1, int format=wxLIST_FORMAT_LEFT);
 

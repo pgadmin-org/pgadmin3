@@ -173,6 +173,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 	toolsMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"), _("Apply a filter and view the data in the selected object."));
     toolsMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),         _("Maintain the current database or table."));
     toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
+    toolsMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),        _("Grants rights to multiple objects"));
     toolsMenu->Append(MNU_RELOAD, _("Re&load module"),            _("Reload library module which implements this function."));
     toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
     menuBar->Append(toolsMenu, _("&Tools"));
@@ -210,6 +211,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 	treeContextMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"),  _("Apply a filter and view the data in the selected object."));
     treeContextMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),   _("Maintain the current database or table."));
     treeContextMenu->Append(MNU_INDEXCHECK, _("&FK Index check"), _("Checks existence of foreign key indexes"));
+    treeContextMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),  _("Grants rights to multiple objects"));
     treeContextMenu->Append(MNU_CONNECT, _("&Connect..."),        _("Connect to the selected server."));
     treeContextMenu->Append(MNU_DISCONNECT, _("&Disconnect"),     _("Disconnect from the selected server."));
     treeContextMenu->AppendSeparator();
@@ -782,6 +784,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	toolsMenu->Enable(MNU_QUERYBUILDER, sql);
 	toolsMenu->Enable(MNU_MAINTENANCE, maintenance);
     toolsMenu->Enable(MNU_INDEXCHECK, false);
+    toolsMenu->Enable(MNU_GRANTWIZARD, false);
 	toolsMenu->Enable(MNU_STATUS, sql);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	toolsMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
@@ -796,6 +799,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	treeContextMenu->Enable(MNU_PROPERTIES, properties);
 	treeContextMenu->Enable(MNU_MAINTENANCE, maintenance);
 	treeContextMenu->Enable(MNU_INDEXCHECK, false);
+	treeContextMenu->Enable(MNU_GRANTWIZARD, false);
 	treeContextMenu->Enable(MNU_VIEWDATA, viewData);
 	treeContextMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
     treeContextMenu->Enable(MNU_RELOAD, false);

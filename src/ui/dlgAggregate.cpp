@@ -85,7 +85,8 @@ int dlgAggregate::Go(bool modal)
         txtInitial->SetValue(aggregate->GetInitialCondition());
         txtComment->SetValue(aggregate->GetComment());
 
-        txtName->Disable();
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtName->Disable();
         cbBaseType->Disable();
         cbStateType->Disable();
         cbStateFunc->Disable();
@@ -118,7 +119,7 @@ void dlgAggregate::OnChange(wxCommandEvent &ev)
 {
     if (aggregate)
     {
-        btnOK->Enable(txtComment->GetValue() != aggregate->GetComment());
+        btnOK->Enable(GetName() != aggregate->GetName() || txtComment->GetValue() != aggregate->GetComment());
     }
     else
     {
@@ -195,15 +196,16 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
 wxString dlgAggregate::GetSql()
 {
     wxString sql, name;
-    name=GetName();
 
     if (aggregate)
     {
         // edit mode
+        AppendNameChange(sql);
     }
     else
     {
         // create mode
+        name=GetName();
         sql = wxT("CREATE AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
             + wxT("(\n   BASETYPE=") + GetQuotedTypename(cbBaseType->GetSelection())
             + wxT(",\n   SFUNC=") + procedures.Item(cbStateFunc->GetSelection())

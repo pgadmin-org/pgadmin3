@@ -76,7 +76,8 @@ int dlgLanguage::Go(bool modal)
             cbValidator->SetSelection(0);
         }
 
-        txtName->Disable();
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtName->Disable();
         cbHandler->Disable();
         chkTrusted->Disable();
         cbValidator->Disable();
@@ -122,13 +123,13 @@ pgObject *dlgLanguage::CreateObject(pgCollection *collection)
 
 void dlgLanguage::OnChange(wxCommandEvent &ev)
 {
+    wxString name=GetName();
     if (language)
     {
-        EnableOK(txtComment->GetValue() != language->GetComment());
+        EnableOK(name != language->GetName() || txtComment->GetValue() != language->GetComment());
     }
     else
     {
-        wxString name=GetName();
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
@@ -147,6 +148,7 @@ wxString dlgLanguage::GetSql()
     if (language)
     {
         // edit mode
+        AppendNameChange(sql);
     }
     else
     {
@@ -160,7 +162,7 @@ wxString dlgLanguage::GetSql()
 
     }
 
-    sql += GetGrant(wxT("-"), wxT("LANGUAGE ") + name);
+    sql += GetGrant(wxT("X"), wxT("LANGUAGE ") + name);
     AppendComment(sql, wxT("LANGUAGE"), 0, language);
 
     return sql;

@@ -71,7 +71,7 @@ dlgUser::dlgUser(frmMain *frame, pgUser *node)
 {
     user=node;
     SetIcon(wxIcon(user_xpm));
-    CreateListColumns(lstVariables, _("Variable"), _("Value"), -1);
+    lstVariables->CreateColumns(frame, _("Variable"), _("Value"), -1);
     btnOK->Disable();
     chkValue->Hide();
 }
@@ -112,14 +112,15 @@ int dlgUser::Go(bool modal)
         chkCreateUser->SetValue(user->GetSuperuser());
         datValidUntil->SetDate(user->GetAccountExpires());
         timValidUntil->SetTime(user->GetAccountExpires());
-        txtName->Disable();
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtName->Disable();
         txtID->Disable();
 
         size_t index;
         for (index = 0 ; index < user->GetConfigList().GetCount() ; index++)
         {
             wxString item=user->GetConfigList().Item(index);
-            AppendListItem(lstVariables, item.BeforeFirst('='), item.AfterFirst('='), 0);
+            lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
         }
 
         timValidUntil->Enable(!readOnly && user->GetAccountExpires().IsValid());
@@ -341,6 +342,7 @@ pgObject *dlgUser::CreateObject(pgCollection *collection)
 wxString dlgUser::GetSql()
 {
     wxString sql;
+    wxString name=GetName();
     
     wxString passwd=txtPasswd->GetValue();
     bool createDB=chkCreateDB->GetValue(),
@@ -349,37 +351,42 @@ wxString dlgUser::GetSql()
     if (user)
     {
         // Edit Mode
+
+        AppendNameChange(sql);
+
+
+        wxString options;
         if (!passwd.IsEmpty())
-            sql += wxT(" PASSWORD ") + qtString(passwd);
+            options += wxT(" PASSWORD ") + qtString(passwd);
 
         if (createDB != user->GetCreateDatabase() || createUser != user->GetSuperuser())
-            sql += wxT("\n ");
+            options += wxT("\n ");
         
         if (createDB != user->GetCreateDatabase())
         {
             if (createDB)
-                sql += wxT(" CREATEDB");
+                options += wxT(" CREATEDB");
             else
-                sql += wxT(" NOCREATEDB");
+                options += wxT(" NOCREATEDB");
         }
         if (createUser != user->GetSuperuser())
         {
             if (createUser)
-                sql += wxT(" CREATEUSER");
+                options += wxT(" CREATEUSER");
             else
-                sql += wxT(" NOCREATEUSER");
+                options += wxT(" NOCREATEUSER");
         }
 
         if (DateToStr(datValidUntil->GetDate()) != DateToStr(user->GetAccountExpires()))
         {
             if (datValidUntil->GetDate().IsValid())
-                sql += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate() + timValidUntil->GetValue())); 
+                options += wxT("\n   VALID UNTIL ") + qtString(DateToAnsiStr(datValidUntil->GetDate() + timValidUntil->GetValue())); 
             else
-                sql += wxT("\n   VALID UNTIL 'infinity'");
+                options += wxT("\n   VALID UNTIL 'infinity'");
         }
 
-        if (!sql.IsNull())
-            sql = wxT("ALTER USER ") + user->GetQuotedFullIdentifier() + sql + wxT(";\n");
+        if (!options.IsNull())
+            sql += wxT("ALTER USER ") + qtIdent(name) + options + wxT(";\n");
 
 
 
@@ -411,7 +418,7 @@ wxString dlgUser::GetSql()
             }
             if (oldVal != newVal)
             {
-                sql += wxT("ALTER USER ") + user->GetQuotedFullIdentifier()
+                sql += wxT("ALTER USER ") + qtIdent(name)
                     +  wxT(" SET ") + newVar
                     +  wxT("=") + newVal
                     +  wxT(";\n");
@@ -421,7 +428,7 @@ wxString dlgUser::GetSql()
         // check for removed vars
         for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
         {
-            sql += wxT("ALTER USER ") + user->GetQuotedFullIdentifier()
+            sql += wxT("ALTER USER ") + qtIdent(name)
                 +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
                 + wxT(";\n");
         }
@@ -440,20 +447,19 @@ wxString dlgUser::GetSql()
                 tmpGroups.RemoveAt(index);
             else
                 sql += wxT("ALTER GROUP ") + qtIdent(groupName)
-                    +  wxT(" ADD USER ") + user->GetQuotedFullIdentifier() + wxT(";\n");
+                    +  wxT(" ADD USER ") + qtIdent(name) + wxT(";\n");
         }
         
         // check for removed groups
         for (pos=0 ; pos < (int)tmpGroups.GetCount() ; pos++)
         {
             sql += wxT("ALTER GROUP ") + qtIdent(tmpGroups.Item(pos))
-                +  wxT(" DROP USER ") + user->GetQuotedFullIdentifier() + wxT(";\n");
+                +  wxT(" DROP USER ") + qtIdent(name) + wxT(";\n");
         }
     }
     else
     {
         // Create Mode
-        wxString name=GetName();
 
         long id=StrToLong(txtID->GetValue());
 

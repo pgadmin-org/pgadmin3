@@ -25,11 +25,8 @@
 #include "images/vacuum.xpm"
 
 
-BEGIN_EVENT_TABLE(frmMaintenance, DialogWithHelp)
+BEGIN_EVENT_TABLE(frmMaintenance, ExecutionDialog)
     EVT_RADIOBOX(XRCID("rbxAction"),    frmMaintenance::OnAction)
-    EVT_BUTTON (XRCID("btnOK"),         frmMaintenance::OnOK)
-    EVT_BUTTON (XRCID("btnCancel"),     frmMaintenance::OnCancel)
-    EVT_CLOSE(                          frmMaintenance::OnClose)
 END_EVENT_TABLE()
 
 #define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
@@ -42,24 +39,20 @@ END_EVENT_TABLE()
 #define chkForce                CTRL_CHECKBOX("chkForce")
 #define chkRecreate             CTRL_CHECKBOX("chkRecreate")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
-#define txtMessages             CTRL_TEXT("txtMessages")
 
 #define stBitmap                CTRL("stBitmap", wxStaticBitmap)
 
-#define btnOK                   CTRL_BUTTON("btnOK")
-#define btnCancel               CTRL_BUTTON("btnCancel")
 
 
-
-frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : DialogWithHelp(form)
+frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(form, obj)
 {
-    object=obj;
-    thread=0;
     wxLogInfo(wxT("Creating a maintenance dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, form, wxT("frmMaintenance"));
     SetTitle(wxString::Format(_("Maintain %s %s"), object->GetTypeName().c_str(), object->GetFullIdentifier().c_str()));
+
+    txtMessages = CTRL_TEXT("txtMessages");
 
     // Icon
     SetIcon(wxIcon(vacuum_xpm));
@@ -100,17 +93,6 @@ wxString frmMaintenance::GetHelpPage() const
 }
 
 
-void frmMaintenance::Abort()
-{
-    if (thread)
-    {
-        if (thread->IsRunning())
-            thread->Delete();
-        delete thread;
-        thread=0;
-    }
-}
-
 
 void frmMaintenance::OnAction(wxCommandEvent& ev)
 {
@@ -127,134 +109,64 @@ void frmMaintenance::OnAction(wxCommandEvent& ev)
 }
 
 
-void frmMaintenance::OnOK(wxCommandEvent& ev)
+
+wxString frmMaintenance::GetSql()
 {
-    if (!thread)
+    wxString sql;
+
+    switch (rbxAction->GetSelection())
     {
-        btnOK->Disable();
-
-        wxString sql;
-
-        txtMessages->Clear();
-
-        switch (rbxAction->GetSelection())
+        case 0:
         {
-            case 0:
+            sql=wxT("VACUUM ");
+
+            if (chkFull->GetValue())
+                sql += wxT("FULL ");
+            if (chkFreeze->GetValue())
+                sql += wxT("FREEZE ");
+            if (chkVerbose->GetValue())
+                sql += wxT("VERBOSE ");
+            if (chkAnalyze->GetValue())
+                sql += wxT("ANALYZE ");
+
+            if (object->GetType() != PG_DATABASE)
+                sql += object->GetQuotedFullIdentifier();
+            
+            break;
+        }
+        case 1:
+        {
+            sql = wxT("ANALYZE ");
+            if (chkVerbose->GetValue())
+                sql += wxT("VERBOSE ");
+            
+            if (object->GetType() != PG_DATABASE)
+                sql += object->GetQuotedFullIdentifier();
+
+            break;
+        }
+        case 2:
+        {
+            if (chkRecreate->GetValue())
             {
-                sql=wxT("VACUUM ");
-
-                if (chkFull->GetValue())
-                    sql += wxT("FULL ");
-                if (chkFreeze->GetValue())
-                    sql += wxT("FREEZE ");
-                if (chkVerbose->GetValue())
-                    sql += wxT("VERBOSE ");
-                if (chkAnalyze->GetValue())
-                    sql += wxT("ANALYZE ");
-
-                if (object->GetType() != PG_DATABASE)
-                    sql += object->GetQuotedFullIdentifier();
-                
-                break;
+                sql = wxT("DROP INDEX ") + object->GetQuotedFullIdentifier() + wxT(";\n")
+                    + ((pgIndex*)object)->GetCreate()
+                    + object->GetCommentSql();
             }
-            case 1:
+            else
             {
-                sql = wxT("ANALYZE ");
-                if (chkVerbose->GetValue())
-                    sql += wxT("VERBOSE ");
-                
-                if (object->GetType() != PG_DATABASE)
-                    sql += object->GetQuotedFullIdentifier();
-
-                break;
+                sql = wxT("REINDEX ") + object->GetTypeName().Upper()
+                    + wxT(" ") + object->GetQuotedFullIdentifier();
+                if (chkForce->GetValue())
+                    sql += wxT(" FORCE");
             }
-            case 2:
-            {
-                if (chkRecreate->GetValue())
-                {
-                    sql = wxT("DROP INDEX ") + object->GetQuotedFullIdentifier() + wxT(";\n")
-                        + ((pgIndex*)object)->GetCreate()
-                        + object->GetCommentSql();
-                }
-                else
-                {
-                    sql = wxT("REINDEX ") + object->GetTypeName().Upper()
-                        + wxT(" ") + object->GetQuotedFullIdentifier();
-                    if (chkForce->GetValue())
-                        sql += wxT(" FORCE");
-                }
-                break;
-            }
+            break;
         }
-
-
-        thread=new pgQueryThread(object->GetConnection(), sql);
-        if (thread->Create() != wxTHREAD_NO_ERROR)
-        {
-            Abort();
-            return;
-        }
-
-        wxLongLong startTime=wxGetLocalTimeMillis();
-        thread->Run();
-
-        nbNotebook->SetSelection(1);
-
-        while (thread && thread->IsRunning())
-        {
-            wxUsleep(10);
-            // here could be the animation
-            txtMessages->AppendText(thread->GetMessagesAndClear());
-            wxYield();
-        }
-
-        if (thread)
-        {
-            txtMessages->AppendText(thread->GetMessagesAndClear());
-
-            if (thread->DataSet() != NULL)
-                wxLogDebug(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()));
-
-            txtMessages->AppendText(_("Total query runtime: ") 
-                + (wxGetLocalTimeMillis()-startTime).ToString() + wxT(" ms."));
-
-                btnOK->SetLabel(_("Done"));
-            btnCancel->Disable();
-        }
-        else
-            txtMessages->AppendText(_("\nCancelled.\n"));
-
-        btnOK->Enable();
     }
-    else
-    {
-        Abort();
-        Destroy();
-    }
+
+    return sql;
 }
 
-
-void frmMaintenance::OnClose(wxCloseEvent& event)
-{
-    Abort();
-    Destroy();
-}
-
-
-void frmMaintenance::OnCancel(wxCommandEvent& ev)
-{
-    if (thread)
-    {
-        btnCancel->Disable();
-        Abort();
-        btnCancel->Enable();
-        btnOK->Enable();
-    }
-    else
-    {
-        Destroy();
-    }
-}
 
 
 void frmMaintenance::Go()

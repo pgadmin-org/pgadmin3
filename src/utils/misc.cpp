@@ -20,6 +20,7 @@
 #include <wx/textbuf.h>
 #include <wx/help.h>
 #include <wx/fontenc.h>
+
 #include "utffile.h"
 #include <locale.h>
 
@@ -227,7 +228,7 @@ wxString qtString(const wxString& value)
 }
 
 
-wxString qtDocumentHere(const wxString &value)
+wxString qtStringDollar(const wxString &value)
 {
     wxString qtDefault=wxT("BODY");
     wxString qt=qtDefault;
@@ -514,33 +515,3 @@ void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
         DisplayHelp(wnd, wxT("pg/") + helpTopic, icon);
 }
 
-
-
-BEGIN_EVENT_TABLE(DialogWithHelp, wxDialog)
-    EVT_MENU(MNU_HELP,                  DialogWithHelp::OnHelp)
-    EVT_BUTTON(XRCID("btnHelp"),        DialogWithHelp::OnHelp)
-END_EVENT_TABLE();
-
-
-DialogWithHelp::DialogWithHelp(frmMain *frame) : wxDialog()
-{
-    mainForm = frame;
-
-    wxAcceleratorEntry entries[2];
-    entries[0].Set(wxACCEL_NORMAL, WXK_F1, MNU_HELP);
-// this is for GTK because Meta (usually Numlock) is interpreted like Alt
-// there are too many controls to reset m_Meta in all of them
-    entries[1].Set(wxACCEL_ALT, WXK_F1, MNU_HELP);
-    wxAcceleratorTable accel(2, entries);
-
-    SetAcceleratorTable(accel);
-}
-
-
-void DialogWithHelp::OnHelp(wxCommandEvent& ev)
-{
-    wxString page=GetHelpPage();
-
-    if (!page.IsEmpty())
-        DisplaySqlHelp(this, page);
-}

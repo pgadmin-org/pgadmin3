@@ -71,7 +71,7 @@ dlgType::dlgType(frmMain *frame, pgType *node, pgSchema *sch)
     type=node;
     schema=sch;
     SetIcon(wxIcon(type_xpm));
-    CreateListColumns(lstMembers, _("Member"), _("Data type"), -1);
+    lstMembers->CreateColumns(frame, _("Member"), _("Data type"), -1);
 
 
     wxWindow *defPage=cbInput->GetParent();
@@ -160,7 +160,7 @@ int dlgType::Go(bool modal)
         while (members.HasMoreTokens())
         {
             wxString str=members.GetNextToken().Strip(wxString::both);
-            AppendListItem(lstMembers, str.BeforeFirst(' '), str.AfterFirst(' '), 0);
+            lstMembers->AppendItem(0, str.BeforeFirst(' '), str.AfterFirst(' '));
         }
 
         cbDatatype->Disable();

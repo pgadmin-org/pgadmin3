@@ -47,6 +47,7 @@
 #include "dlgProperty.h"
 #include "frmMaintenance.h"
 #include "frmIndexcheck.h"
+#include "frmGrantWizard.h"
 
 extern wxString loadPath;
 
@@ -56,6 +57,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_SQL,                       frmMain::OnSql)
     EVT_MENU(MNU_MAINTENANCE,               frmMain::OnMaintenance)
     EVT_MENU(MNU_INDEXCHECK,                frmMain::OnIndexcheck)
+    EVT_MENU(MNU_GRANTWIZARD,               frmMain::OnGrantWizard)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
     EVT_MENU(MNU_HELP,                      frmMain::OnHelp)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
@@ -467,6 +469,18 @@ void frmMain::OnIndexcheck(wxCommandEvent &ev)
 }
 
 
+void frmMain::OnGrantWizard(wxCommandEvent &ev)
+{
+    pgObject *data = GetSelectedObject();
+
+    if (data)
+    {
+        frmGrantWizard *frm=new frmGrantWizard(this, data);
+        frm->Go();
+    }
+}
+
+
 void frmMain::OnSql(wxCommandEvent &ev)
 {
     pgObject *data = GetSelectedObject();
@@ -720,6 +734,10 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     bool canConnect=false;
     bool canDisconnect=false;
     bool canReindex=false;
+    bool canIndexCheck=false;
+    bool canGrantWizard=false;
+
+    bool showTree=true;
 
     switch (type)
     {
@@ -737,6 +755,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
                 canReindex=true;
             }
             data->ShowTree(this, browser, props, sqlbox);
+            showTree=false;
             EndMsg();
             break;
 
@@ -744,19 +763,31 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PG_TRIGGERFUNCTION:
         {
             canReload=((pgFunction*)data)->CanReload();
-            data->ShowTree(this, browser, props, sqlbox);
             break;
         }
+        case PG_DATABASE:
+        case PG_SCHEMAS:
+        case PG_SCHEMA:
+        case PG_TABLES:
+            canIndexCheck=true;
+            canGrantWizard=true;
+            break;
+        case PG_FUNCTIONS:
+        case PG_TRIGGERFUNCTIONS:
+        case PG_SEQUENCES:
+        case PG_VIEWS:
+            canGrantWizard=true;
+            break;
+        case PG_TABLE:
+            canIndexCheck=true;
+            break;
         case PG_DATABASES:
         case PG_GROUPS:
         case PG_USERS:
-        case PG_DATABASE:
         case PG_GROUP:
         case PG_USER:
         case PG_LANGUAGES:
         case PG_LANGUAGE:
-        case PG_SCHEMAS:
-        case PG_SCHEMA:
         case PG_AGGREGATES:
         case PG_AGGREGATE:
         case PG_CASTS:
@@ -765,19 +796,13 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PG_CONVERSION:
         case PG_DOMAINS:
         case PG_DOMAIN:
-        case PG_FUNCTIONS:
-        case PG_TRIGGERFUNCTIONS:
         case PG_OPERATORS:
         case PG_OPERATOR:
         case PG_OPERATORCLASSES:
         case PG_OPERATORCLASS:
-        case PG_SEQUENCES:
         case PG_SEQUENCE:
-        case PG_TABLES:
-        case PG_TABLE:
         case PG_TYPES:
         case PG_TYPE:
-        case PG_VIEWS:
         case PG_VIEW:
         case PG_CHECK:
         case PG_COLUMNS:
@@ -796,11 +821,14 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PGA_JOB:
         case PGA_STEP:
         case PGA_SCHEDULE:
-            data->ShowTree(this, browser, props, sqlbox);
             break;
         default:        
+            showTree=false;
 			break;
     }
+
+    if (showTree)
+        data->ShowTree(this, browser, props, sqlbox);
 
     if (sqlbox)
     {
@@ -855,6 +883,8 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     toolsMenu->Enable(MNU_CONNECT, canConnect);
     treeContextMenu->Enable(MNU_CONNECT, canConnect);               
     toolsMenu->Enable(MNU_DISCONNECT, canDisconnect);
+//    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
+    toolsMenu->Enable(MNU_GRANTWIZARD, canGrantWizard);
     treeContextMenu->Enable(MNU_DISCONNECT, canDisconnect);
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
 }

@@ -63,7 +63,7 @@ pgObject *dlgConversion::GetObject()
 
 int dlgConversion::Go(bool modal)
 {
-    if (!connection->BackendMinimumVersion(7, 5))
+    if (!connection->BackendMinimumVersion(7, 4))
         txtComment->Disable();
 
     if (conversion)

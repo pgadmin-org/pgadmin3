@@ -98,6 +98,7 @@ private:
     void OnSql(wxCommandEvent& event);
     void OnMaintenance(wxCommandEvent& event);
     void OnIndexcheck(wxCommandEvent& event);
+    void OnGrantWizard(wxCommandEvent& event);
     void OnStatus(wxCommandEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 

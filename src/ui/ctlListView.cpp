@@ -15,6 +15,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "ctlListView.h"
+#include <wx/imaglist.h>
+#include "frmMain.h"
 
 
 ctlListView::ctlListView(wxWindow *p, int id, wxPoint pos, wxSize siz, long attr)
@@ -57,3 +59,37 @@ long ctlListView::AppendItem(int icon, const wxChar *val, const wxChar *val2, co
     return pos;
 }
 
+
+
+void ctlListView::CreateColumns(frmMain *form, const wxString &left, const wxString &right, int leftSize)
+{
+    CreateColumns(form ? form->GetImageList() : (wxImageList*)0, left, right, leftSize);
+}
+
+
+void ctlListView::CreateColumns(wxImageList *images, const wxString &left, const wxString &right, int leftSize)
+{
+    int rightSize;
+    if (leftSize < 0)
+    {
+        leftSize = rightSize = GetClientSize().GetWidth()/2;
+    }
+    else
+    {
+        if (leftSize)
+            leftSize = ConvertDialogToPixels(wxPoint(leftSize, 0)).x;
+        rightSize = GetClientSize().GetWidth()-leftSize;
+    }
+    if (!leftSize)
+    {
+        InsertColumn(0, left, wxLIST_FORMAT_LEFT, GetClientSize().GetWidth());
+    }
+    else
+    {
+        InsertColumn(0, left, wxLIST_FORMAT_LEFT, leftSize);
+        InsertColumn(1, right, wxLIST_FORMAT_LEFT, rightSize);
+    }
+
+    if (images)
+        SetImageList(images, wxIMAGE_LIST_SMALL);
+}

@@ -82,12 +82,12 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
     txtOID->Disable();
     btnRemoveTable->Disable();
 
-    CreateListColumns(lstColumns, _("Column name"), _("Definition"), 90);
+    lstColumns->CreateColumns(frame, _("Column name"), _("Definition"), 90);
     lstColumns->AddColumn(wxT("Inherited from table"), 0);
     lstColumns->AddColumn(wxT("Column definition"), 0);
     lstColumns->AddColumn(wxT("Column"), 0);
 
-    CreateListColumns(lstConstraints, _("Constraint name"), _("Definition"), 90);
+    lstConstraints->CreateColumns(frame, _("Constraint name"), _("Definition"), 90);
 }
 
 
@@ -166,8 +166,8 @@ int dlgTable::Go(bool modal)
                     if (column->GetColNumber() > 0)
                     {
                         bool inherited = (column->GetInheritedCount() != 0);
-                        int pos=AppendListItem(lstColumns, column->GetName(), column->GetDefinition(), 
-                            (inherited ? PGICON_TABLE : column->GetIcon()));
+                        int pos=lstColumns->AppendItem((inherited ? PGICON_TABLE : column->GetIcon()), 
+                            column->GetName(), column->GetDefinition());
                         previousColumns.Add(column->GetQuotedIdentifier() 
                             + wxT(" ") + column->GetDefinition());
                         lstColumns->SetItem(pos, 4, NumToStr((long)column));
@@ -200,7 +200,7 @@ int dlgTable::Go(bool modal)
                     {
                         pgIndexConstraint *obj=(pgIndexConstraint*)data;
 
-                        AppendListItem(lstConstraints, obj->GetName(), obj->GetDefinition(), data->GetIcon());
+                        lstConstraints->AppendItem(data->GetIcon(), obj->GetName(), obj->GetDefinition());
                         previousConstraints.Add(obj->GetQuotedIdentifier() 
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
                         break;
@@ -209,7 +209,7 @@ int dlgTable::Go(bool modal)
                     {
                         pgForeignKey *obj=(pgForeignKey*)data;
 
-                        AppendListItem(lstConstraints, obj->GetName(), obj->GetDefinition(), data->GetIcon());
+                        lstConstraints->AppendItem(data->GetIcon(), obj->GetName(), obj->GetDefinition());
                         previousConstraints.Add(obj->GetQuotedIdentifier() 
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
                         break;
@@ -218,7 +218,7 @@ int dlgTable::Go(bool modal)
                     {
                         pgCheck *obj=(pgCheck*)data;
 
-                        AppendListItem(lstConstraints, obj->GetName(), obj->GetDefinition(), data->GetIcon());
+                       lstConstraints->AppendItem(data->GetIcon(), obj->GetName(), obj->GetDefinition());
                         previousConstraints.Add(obj->GetQuotedIdentifier() 
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
                         break;
@@ -535,8 +535,8 @@ void dlgTable::OnAddTable(wxCommandEvent &ev)
             int row;
             while (!set->Eof())
             {
-                row=AppendListItem(lstColumns, set->GetVal(wxT("attname")), 
-                    wxString::Format(_("Inherited from table %s"), tabname.c_str()), PGICON_TABLE);
+                row=lstColumns->AppendItem(PGICON_TABLE, set->GetVal(wxT("attname")), 
+                    wxString::Format(_("Inherited from table %s"), tabname.c_str()));
                 lstColumns->SetItem(row, 2, tabname);
                 set->MoveNext();
             }
@@ -602,7 +602,7 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
     col.CenterOnParent();
     col.SetDatabase(database);
     if (col.Go(true) >= 0)
-        AppendListItem(lstColumns, col.GetName(), col.GetDefinition(), PGICON_COLUMN);
+        lstColumns->AppendItem(PGICON_COLUMN, col.GetName(), col.GetDefinition());
     wxNotifyEvent event;
     OnChange(event);
 }
@@ -644,7 +644,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             pk.SetDatabase(database);
             if (pk.Go(true) >= 0)
             {
-                AppendListItem(lstConstraints, pk.GetName(), pk.GetDefinition(), PGICON_PRIMARYKEY);
+                lstConstraints->AppendItem(PGICON_PRIMARYKEY, pk.GetName(), pk.GetDefinition());
                 hasPK=true;
                 FillConstraint();
             }
@@ -659,7 +659,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             {
                 wxString str=fk.GetDefinition();
                 str.Replace(wxT("\n"), wxT(" "));
-                AppendListItem(lstConstraints, fk.GetName(), str, PGICON_FOREIGNKEY);
+                lstConstraints->AppendItem(PGICON_FOREIGNKEY, fk.GetName(), str);
             }
             break;
         }
@@ -669,7 +669,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             unq.CenterOnParent();
             unq.SetDatabase(database);
             if (unq.Go(true) >= 0)
-                AppendListItem(lstConstraints, unq.GetName(), unq.GetDefinition(), PGICON_UNIQUE);
+                lstConstraints->AppendItem(PGICON_UNIQUE, unq.GetName(), unq.GetDefinition());
             break;
         }
         case 3: // Check
@@ -678,7 +678,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             chk.CenterOnParent();
             chk.SetDatabase(database);
             if (chk.Go(true) >= 0)
-                AppendListItem(lstConstraints, chk.GetName(), chk.GetDefinition(), PGICON_CHECK);
+                lstConstraints->AppendItem(PGICON_CHECK, chk.GetName(), chk.GetDefinition());
             break;
         }
     }

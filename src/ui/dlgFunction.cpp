@@ -219,12 +219,13 @@ void dlgFunction::OnChangeStc(wxStyledTextEvent &ev)
 
 void dlgFunction::OnChange(wxCommandEvent &ev)
 {
+    wxString name=GetName();
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
     if (function)
     {
 
         EnableOK(txtComment->GetValue() != function->GetComment()
-              || txtName->GetValue() != function->GetName()
+              || name != function->GetName()
               || cbVolatility->GetValue() != function->GetVolatility()
               || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
               || chkSetof->GetValue() != function->GetReturnAsSet()
@@ -235,7 +236,6 @@ void dlgFunction::OnChange(wxCommandEvent &ev)
     }
     else
     {
-        wxString name=GetName();
 
         bool enable=true;
 
@@ -341,7 +341,7 @@ wxString dlgFunction::GetArgs(bool quoted)
 wxString dlgFunction::GetSql()
 {
     wxString sql;
-    wxString name;
+    wxString name=GetName();
 
 
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
@@ -352,17 +352,22 @@ wxString dlgFunction::GetSql()
     if (function)
     {
         // edit mode
-
-        name = function->GetQuotedFullIdentifier() 
+        if (name != function->GetName())
+        {
+            sql = wxT("ALTER FUNCTION ") + function->GetQuotedFullIdentifier() 
+                                         + wxT("(") + function->GetQuotedArgTypes() + wxT(")")
+                + wxT(" RENAME TO ") + name + wxT(";\n");
+        }
+ 
+        name = schema->GetQuotedPrefix() + qtIdent(name) 
                             + wxT("(") + function->GetQuotedArgTypes() + wxT(")");
-
         if (didChange)
             sql += wxT("CREATE OR REPLACE FUNCTION ") + name;
     }
     else
     {
         // create mode
-        name = schema->GetQuotedPrefix() + qtIdent(GetName()) 
+        name = schema->GetQuotedPrefix() + qtIdent(name) 
              + wxT("(") + GetArgs(true) + wxT(")");
 
         sql = wxT("CREATE FUNCTION ") + name;
@@ -385,7 +390,7 @@ wxString dlgFunction::GetSql()
         else
         {
             if (connection->BackendMinimumVersion(7, 5))
-                sql += qtDocumentHere(txtSqlBox->GetText());
+                sql += qtStringDollar(txtSqlBox->GetText());
             else
                 sql += qtString(txtSqlBox->GetText());
         }
@@ -399,12 +404,8 @@ wxString dlgFunction::GetSql()
         sql += wxT(";\n");
     }
 
-    sql += GetGrant(wxT("-"), wxT("FUNCTION ") + name);
+    sql += GetGrant(wxT("X"), wxT("FUNCTION ") + name);
     AppendComment(sql, wxT("FUNCTION ") + name, function);
-
-    if (function && GetName() != function->GetName())
-        sql += wxT("ALTER FUNCTION ") + name 
-             + wxT(" RENAME TO ") + qtIdent(GetName()) + wxT(";\n");
 
     return sql;
 }

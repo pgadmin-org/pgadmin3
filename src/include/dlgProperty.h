@@ -18,19 +18,19 @@
 #include "pgObject.h"
 #include "pgConn.h"
 #include <wx/xrc/xmlres.h>
+#include "dlgClasses.h"
 
 class pgSchema;
 class pgTable;
 class frmMain;
+class ctlSecurityPanel;
 
 #define txtName         CTRL_TEXT("txtName")
 #define txtOID          CTRL_TEXT("txtOID")
-#define stComment           CTRL_STATIC("stComment")
+#define stComment       CTRL_STATIC("stComment")
 #define txtComment      CTRL_TEXT("txtComment")
 #define lstColumns      CTRL_LISTVIEW("lstColumns")
 #define cbColumns       CTRL_COMBOBOX("cbColumns")
-#define btnOK           CTRL_BUTTON("btnOK")
-#define btnCancel       CTRL_BUTTON("btnCancel")
 
 
 class dlgProperty : public DialogWithHelp
@@ -58,11 +58,9 @@ protected:
     void EnableOK(bool enable);
     void ShowObject();
 
-    void CreateListColumns(ctlListView *list, const wxString &left, const wxString &right, int leftSize=60);
-    int AppendListItem(ctlListView *list, const wxString& str1, const wxString& str2, int icon);
-
     void CheckValid(bool &enable, const bool condition, const wxString &msg);
     static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type=-1);
+    void AppendNameChange(wxString &sql);
     void AppendComment(wxString &sql, const wxString &objType, pgSchema *schema, pgObject *obj);
     void AppendComment(wxString &sql, const wxString &objName, pgObject *obj);
     void AppendQuoted(wxString &sql, const wxString &name);
@@ -150,28 +148,17 @@ protected:
     wxString GetGrant(const wxString &allPattern, const wxString &grantObject);
     void EnableOK(bool enable);
     virtual wxString GetHelpPage() const;
+    virtual int Go(bool modal=false);
 
 private:
-    void OnPrivSelChange(wxListEvent &ev);
+
     void OnAddPriv(wxCommandEvent& ev);
     void OnDelPriv(wxCommandEvent& ev);
-    void OnPrivCheck(wxCommandEvent& ev);
-    void OnPrivCheckAll(wxCommandEvent& ev);
-    void OnPrivCheckAllGrant(wxCommandEvent& ev);
-
-    void ExecPrivCheck(int index);
-    bool GrantAllowed() const;
-
     bool securityChanged;
+
+    ctlSecurityPanel *securityPage;
     wxArrayString currentAcl;
-    ctlListView *lbPrivileges;
-    wxComboBox *cbGroups;
-    wxStaticText *stGroup;
-    wxButton *btnAddPriv, *btnDelPriv;
-    int privilegeCount;
-    char *privilegeChars;
-    wxCheckBox **privCheckboxes;
-    wxCheckBox *allPrivileges, *allPrivilegesGrant;
+
     DECLARE_EVENT_TABLE();
 };
 

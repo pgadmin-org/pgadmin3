@@ -21,7 +21,7 @@
 #include "misc.h"
 #include "menu.h"
 #include "pgDefs.h"
-#include <wx/imaglist.h>
+#include "ctlSecurityPanel.h"
 
 // Images
 #include "images/properties.xpm"
@@ -61,18 +61,6 @@
 #include "pgColumn.h"
 #include "pgTrigger.h"
 
-enum
-{
-    CTL_PROPSQL=250,
-    CTL_LBPRIV,
-    CTL_STATICGROUP,
-    CTL_CBGROUP,
-    CTL_ADDPRIV,
-    CTL_DELPRIV,
-    CTL_ALLPRIV,
-    CTL_ALLPRIVGRANT,
-    CTL_PRIVCB          // base for all privilege checkboxes, must be last
-};
 
 
 BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
@@ -230,6 +218,16 @@ void dlgProperty::CreateAdditionalPages()
 wxString dlgProperty::GetName()
 {
     return txtName->GetValue().Strip(wxString::both);
+}
+
+
+void dlgProperty::AppendNameChange(wxString &sql)
+{
+    if (GetObject()->GetName() != GetName())
+        sql += wxT("ALTER ") + GetObject()->GetTypeName()
+            +  wxT(" ") + GetObject()->GetQuotedFullIdentifier()
+            +  wxT(" RENAME TO ") + GetName()
+            + wxT(";\n");
 }
 
 
@@ -649,42 +647,6 @@ void dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
 }
 
 
-void dlgProperty::CreateListColumns(ctlListView *list, const wxString &left, const wxString &right, int leftSize)
-{
-    int rightSize;
-    if (leftSize < 0)
-    {
-        leftSize = rightSize = list->GetClientSize().GetWidth()/2;
-    }
-    else
-    {
-        if (leftSize)
-            leftSize = ConvertDialogToPixels(wxPoint(leftSize, 0)).x;
-        rightSize = list->GetClientSize().GetWidth()-leftSize;
-    }
-    if (!leftSize)
-    {
-        list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, list->GetClientSize().GetWidth());
-    }
-    else
-    {
-        list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, leftSize);
-        list->InsertColumn(1, right, wxLIST_FORMAT_LEFT, rightSize);
-    }
-    list->SetImageList(mainForm->GetImageList(), wxIMAGE_LIST_SMALL);
-}
-
-
-int dlgProperty::AppendListItem(ctlListView *list, const wxString& str1, const wxString& str2, int icon)
-{
-    int pos=list->GetItemCount();
-    list->InsertItem(pos, str1, icon);
-    if (str2 != wxT(""))
-        list->SetItem(pos, 1, str2);
-    return pos;
-}
-
-
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -938,120 +900,21 @@ int dlgCollistProperty::Go(bool modal)
 
 
 BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
-    EVT_LIST_ITEM_SELECTED(CTL_LBPRIV,  dlgSecurityProperty::OnPrivSelChange)
     EVT_BUTTON(CTL_ADDPRIV,             dlgSecurityProperty::OnAddPriv)
     EVT_BUTTON(CTL_DELPRIV,             dlgSecurityProperty::OnDelPriv)
-    EVT_CHECKBOX(CTL_ALLPRIV,           dlgSecurityProperty::OnPrivCheckAll)
-    EVT_CHECKBOX(CTL_ALLPRIVGRANT,      dlgSecurityProperty::OnPrivCheckAllGrant)
-    EVT_CHECKBOX(CTL_PRIVCB,            dlgSecurityProperty::OnPrivCheck)
-    EVT_CHECKBOX(CTL_PRIVCB+2,          dlgSecurityProperty::OnPrivCheck)
-    EVT_CHECKBOX(CTL_PRIVCB+4,          dlgSecurityProperty::OnPrivCheck)
-    EVT_CHECKBOX(CTL_PRIVCB+6,          dlgSecurityProperty::OnPrivCheck)
-    EVT_CHECKBOX(CTL_PRIVCB+8,          dlgSecurityProperty::OnPrivCheck)
-    EVT_CHECKBOX(CTL_PRIVCB+10,         dlgSecurityProperty::OnPrivCheck)
-    EVT_CHECKBOX(CTL_PRIVCB+12,         dlgSecurityProperty::OnPrivCheck)
 END_EVENT_TABLE();
 
 
 
-dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *_privChar)
+dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privList, char *privChar)
         : dlgProperty(frame, resName)
 {
-    privCheckboxes=0;
-    privilegeChars = _privChar;
     securityChanged=false;
-    allPrivileges=0;
 
-    bool needAll=strlen(privilegeChars) > 1;
 
-    wxStringTokenizer privileges(privilegeList, wxT(","));
-    privilegeCount=privileges.CountTokens();
-
-    if (privilegeCount)
+    if (!privList.IsEmpty() && (!obj || obj->CanCreate()))
     {
-        wxPanel *page = new wxPanel(nbNotebook, -1, wxDefaultPosition, wxDefaultSize);
-        privCheckboxes = new wxCheckBox*[privilegeCount*2];
-        int i=0;
-
-        nbNotebook->AddPage(page, _("Security"));
-
-        wxPoint zeroPos=ConvertDialogToPixels(wxPoint(5, 5));
-        wxSize chkSize=ConvertDialogToPixels(wxSize(65,12));
-        wxSize btnSize=ConvertDialogToPixels(wxSize(50,15));
-        wxSize spcSize=ConvertDialogToPixels(wxSize(2, 2));
-
-        if (obj && !obj->CanCreate())
-        {
-            // We can't create, so we won't be allowed to change privileges either.
-            // later, we can check individually too.
-
-            lbPrivileges = new ctlListView(page, CTL_LBPRIV, zeroPos, 
-                wxSize(width - zeroPos.x * 2, height - zeroPos.y * 2), wxSUNKEN_BORDER);
-            CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
-            cbGroups=0;
-        }
-        else
-        {
-            int y = height 
-                - spcSize.GetHeight()
-                - zeroPos.y * 2
-                - chkSize.GetHeight() * (4 + privilegeCount + (needAll ? 0 : 1));
-
-            lbPrivileges = new ctlListView(page, CTL_LBPRIV, 
-                zeroPos, 
-                wxSize(width - zeroPos.x * 2, y - zeroPos.y - spcSize.GetHeight()), wxSUNKEN_BORDER|wxLC_REPORT);
-
-            CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
-
-            btnAddPriv = new wxButton(page, CTL_ADDPRIV, _("Add/Change"), 
-                wxPoint(zeroPos.x, y), btnSize);
-            btnDelPriv = new wxButton(page, CTL_DELPRIV, _("Remove"), 
-                wxPoint(zeroPos.x * 2 + btnSize.GetWidth(), y), btnSize);
-            y += zeroPos.y + btnSize.GetHeight();
-
-            new wxStaticBox(page, -1, _("Privileges"), 
-                wxPoint(zeroPos.x, y), 
-                wxSize(width - zeroPos.x*2, btnSize.GetHeight() + chkSize.GetHeight() * (2 + privilegeCount-(needAll?0:1))));
-            y += zeroPos.y + spcSize.GetHeight();
-
-            stGroup = new wxStaticText(page, CTL_STATICGROUP, _("Group"), wxPoint(zeroPos.x * 2, y+3), chkSize);
-            cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), 
-                wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
-                wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
-            y += btnSize.GetHeight();
-
-            if (needAll)
-            {
-                allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), 
-                    wxPoint(zeroPos.x * 2, y), 
-                    chkSize);
-                allPrivilegesGrant = new wxCheckBox(page, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"), 
-                    wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
-                    wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
-                y += chkSize.GetHeight();
-                allPrivilegesGrant->Disable();
-            }
-            cbGroups->Append(wxT("public"));
-            cbGroups->SetSelection(0);
-
-            while (privileges.HasMoreTokens())
-            {
-                wxString priv=privileges.GetNextToken();
-                wxCheckBox *cb;
-                cb=new wxCheckBox(page, CTL_PRIVCB+i, priv, 
-                    wxPoint(zeroPos.x * 2, y), 
-                    chkSize);
-                privCheckboxes[i++] = cb;
-                cb=new wxCheckBox(page, CTL_PRIVCB+i, wxT("WITH GRANT OPTION"), 
-                    wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
-                    wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
-                cb->Disable();
-                privCheckboxes[i++] = cb;
-
-                y += chkSize.GetHeight();
-            }
-        }
-
+        securityPage = new ctlSecurityPanel(nbNotebook, privList, privChar, frame->GetImageList());
 
         if (obj)
         {
@@ -1089,7 +952,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                         name=wxT("public");
                     }
 
-                    AppendListItem(lbPrivileges, name, value, icon);
+                    securityPage->lbPrivileges->AppendItem(icon, name, value);
                     currentAcl.Add(name + wxT("=") + value);
                 }
             }
@@ -1100,15 +963,21 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
 
 dlgSecurityProperty::~dlgSecurityProperty()
 {
-    if (privCheckboxes)
-        delete[] privCheckboxes;
 }
 
 
 
+int dlgSecurityProperty::Go(bool modal)
+{
+    securityPage->SetConnection(connection);
+    
+    return dlgProperty::Go(modal);
+}
+
+
 void dlgSecurityProperty::AddGroups(wxComboBox *comboBox)
 {
-    if (!cbGroups && !comboBox)
+    if ((!securityPage || !securityPage->cbGroups) && !comboBox)
         return;
 
     pgSet *set=connection->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
@@ -1117,8 +986,8 @@ void dlgSecurityProperty::AddGroups(wxComboBox *comboBox)
     {
         while (!set->Eof())
         {
-            if (cbGroups)
-                cbGroups->Append(wxT("group ") + set->GetVal(0));
+            if (securityPage && securityPage->cbGroups)
+                securityPage->cbGroups->Append(wxT("group ") + set->GetVal(0));
             if (comboBox)
                 comboBox->Append(set->GetVal(0));
             set->MoveNext();
@@ -1130,7 +999,7 @@ void dlgSecurityProperty::AddGroups(wxComboBox *comboBox)
 
 void dlgSecurityProperty::AddUsers(wxComboBox *comboBox)
 {
-    if (!comboBox && !cbGroups)
+    if ((!securityPage || !securityPage->cbGroups) && !comboBox)
         return;
     
     if (!settings->GetShowUsersForPrivileges() && !comboBox)
@@ -1140,13 +1009,13 @@ void dlgSecurityProperty::AddUsers(wxComboBox *comboBox)
 
     if (set)
     {
-        if (cbGroups && settings->GetShowUsersForPrivileges())
-            stGroup->SetLabel(_("Group/User"));
+        if (securityPage && securityPage->cbGroups && settings->GetShowUsersForPrivileges())
+            securityPage->stGroup->SetLabel(_("Group/User"));
 
         while (!set->Eof())
         {
-            if (cbGroups && settings->GetShowUsersForPrivileges())
-                cbGroups->Append(set->GetVal(0));
+            if (securityPage && securityPage->cbGroups && settings->GetShowUsersForPrivileges())
+                securityPage->cbGroups->Append(set->GetVal(0));
 
             if (comboBox)
                 comboBox->Append(set->GetVal(0));
@@ -1158,130 +1027,9 @@ void dlgSecurityProperty::AddUsers(wxComboBox *comboBox)
 }
 
 
-void dlgSecurityProperty::OnPrivCheckAll(wxCommandEvent& ev)
-{
-    bool all=allPrivileges->GetValue();
-    int i;
-    for (i=0 ; i < privilegeCount ; i++)
-    {
-        if (all)
-        {
-            privCheckboxes[i*2]->SetValue(true);
-            privCheckboxes[i*2]->Disable();
-            privCheckboxes[i*2+1]->Disable();
-            allPrivilegesGrant->Enable(GrantAllowed());
-        }
-        else
-        {
-            allPrivilegesGrant->Disable();
-            allPrivilegesGrant->SetValue(false);
-            privCheckboxes[i*2]->Enable();
-            ExecPrivCheck(i);
-        }
-    }
-}
-
-
-void dlgSecurityProperty::OnPrivSelChange(wxListEvent &ev)
-{
-    if (!cbGroups)
-        return;
-    if (allPrivileges)
-    {
-        allPrivileges->SetValue(false);
-        allPrivilegesGrant->SetValue(false);
-        allPrivilegesGrant->Disable();
-    }
-    long pos=lbPrivileges->GetSelection();
-    if (pos >= 0)
-    {
-        wxString name=lbPrivileges->GetText(pos);
-        wxString value=lbPrivileges->GetText(pos, 1);
-
-        pos=cbGroups->FindString(name);
-        if (pos < 0)
-        {
-            cbGroups->Append(name);
-            pos=cbGroups->GetCount()-1;
-        }
-        cbGroups->SetSelection(pos);
-
-        int i;
-        for (i=0 ; i < privilegeCount ; i++)
-        {
-            privCheckboxes[i*2]->Enable();
-            int index=value.Find(privilegeChars[i]);
-            if (index >= 0)
-            {
-                privCheckboxes[i*2]->SetValue(true);
-                privCheckboxes[i*2+1]->SetValue(value.Mid(index+1, 1) == wxT("*"));
-            }
-            else
-                privCheckboxes[i*2]->SetValue(false);
-            ExecPrivCheck(i);
-        }
-    }
-}
-
-
-void dlgSecurityProperty::OnPrivCheckAllGrant(wxCommandEvent& ev)
-{
-    bool grant=allPrivilegesGrant->GetValue();
-    int i;
-    for (i=0 ; i < privilegeCount ; i++)
-        privCheckboxes[i*2+1]->SetValue(grant);
-}
-
-
-void dlgSecurityProperty::OnPrivCheck(wxCommandEvent& ev)
-{
-    int id=(ev.GetId()-CTL_PRIVCB) /2;
-    ExecPrivCheck(id);
-}
-
-
-void dlgSecurityProperty::ExecPrivCheck(int id)
-{
-    bool canGrant=(GrantAllowed() && privCheckboxes[id*2]->GetValue());
-    if (canGrant)
-        privCheckboxes[id*2+1]->Enable();
-    else
-    {
-        privCheckboxes[id*2+1]->SetValue(false);
-        privCheckboxes[id*2+1]->Disable();
-    }
-}
-
 
 void dlgSecurityProperty::OnAddPriv(wxCommandEvent &ev)
 {
-    wxString name=cbGroups->GetValue();
-
-    long pos=lbPrivileges->FindItem(-1, name);
-    if (pos < 0)
-    {
-        pos = lbPrivileges->GetItemCount();
-        int icon=PGICON_USER;
-
-        if (name.Left(6).IsSameAs(wxT("group "), false))
-            icon = PGICON_GROUP;
-        else if (name.IsSameAs(wxT("public"), false))
-            icon = PGICON_PUBLIC;
-
-        lbPrivileges->InsertItem(pos, name, icon);
-    }
-    wxString value;
-    int i;
-    for (i=0 ; i < privilegeCount ; i++)
-    {
-        if (privCheckboxes[i*2]->GetValue())
-        {
-            value += privilegeChars[i];
-            if (privCheckboxes[i*2+1]->GetValue())
-                value += '*';
-        }
-    }
-    lbPrivileges->SetItem(pos, 1, value);
     securityChanged=true;
     EnableOK(btnOK->IsEnabled());
 }
@@ -1289,7 +1037,6 @@ void dlgSecurityProperty::OnAddPriv(wxCommandEvent &ev)
 
 void dlgSecurityProperty::OnDelPriv(wxCommandEvent &ev)
 {
-    lbPrivileges->DeleteItem(lbPrivileges->GetSelection());
     securityChanged=true;
     EnableOK(btnOK->IsEnabled());
 }
@@ -1321,75 +1068,14 @@ void dlgSecurityProperty::EnableOK(bool enable)
 }
 
 
-bool dlgSecurityProperty::GrantAllowed() const
-{
-    if (!connection->BackendMinimumVersion(7, 4))
-        return false;
-
-    wxString user=cbGroups->GetValue();
-    if (user.Left(6).IsSameAs(wxT("group "), false) || user.IsSameAs(wxT("public"), false))
-        return false;
-
-    return true;
-}
 
 
 wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxString &grantObject)
 {
-    wxString sql;
-
-    wxArrayString tmpAcl=currentAcl;
-
-    int cnt=lbPrivileges->GetItemCount();
-    int pos;
-    unsigned int i;
-
-    for (pos=0 ; pos < cnt ; pos++)
-    {
-        wxString name=lbPrivileges->GetText(pos);
-        wxString value=lbPrivileges->GetText(pos, 1);
-
-        int nameLen=name.Length();
-
-        bool privWasAssigned=false;
-        bool privPartiallyAssigned=false;
-        for (i=0 ; i < tmpAcl.GetCount() ; i++)
-        {
-            if (tmpAcl.Item(i).Left(nameLen) == name)
-            {
-                privPartiallyAssigned=true;
-                if (tmpAcl.Item(i).Mid(nameLen+1) == value)
-                    privWasAssigned=true;
-                tmpAcl.RemoveAt(i);
-                break;
-            }
-        }
-
-        if (name.Left(6).IsSameAs(wxT("group "), false))
-            name = wxT("GROUP ") + qtIdent(name.Mid(6));
-        else
-            name=qtIdent(name);
-
-        if (!privWasAssigned)
-        {
-            if (privPartiallyAssigned)
-                sql += pgObject::GetPrivileges(allPattern, wxT(""), grantObject, name);
-            sql += pgObject::GetPrivileges(allPattern, value, grantObject, name);
-        }
-    }
-
-    for (i=0 ; i < tmpAcl.GetCount() ; i++)
-    {
-        wxString name=tmpAcl.Item(i).BeforeLast('=');
-
-        if (name.Left(6).IsSameAs(wxT("group "), false))
-            name = wxT("GROUP ") + qtIdent(name.Mid(6));
-        else
-            name=qtIdent(name);
-        sql += pgObject::GetPrivileges(allPattern, wxT(""), grantObject, name);
-    }
-    return sql;
+    return securityPage->GetGrant(allPattern, grantObject, &currentAcl);
 }
+
+
 
 
 /////////////////////////////////////////////////////////////////////////////

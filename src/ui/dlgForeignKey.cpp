@@ -228,7 +228,7 @@ void dlgForeignKey::OnAddRef(wxCommandEvent &ev)
     wxString ref=cbRefColumns->GetValue();
     if (!col.IsEmpty() && !ref.IsEmpty())
     {
-        AppendListItem(lstColumns, col, ref, PGICON_COLUMN);
+        lstColumns->AppendItem(PGICON_COLUMN, col, ref);
         cbColumns->Delete(cbColumns->GetSelection());
         cbRefColumns->Delete(cbRefColumns->GetSelection());
         cbReferences->Disable();
@@ -279,7 +279,7 @@ pgObject *dlgForeignKey::CreateObject(pgCollection *collection)
 
 int dlgForeignKey::Go(bool modal)
 {
-    CreateListColumns(lstColumns, _("Local"), _("Referenced"), -1);
+    lstColumns->CreateColumns(this->mainForm, _("Local"), _("Referenced"), -1);
 
     processing=true;    // protect from OnChange execution
 
@@ -338,7 +338,7 @@ int dlgForeignKey::Go(bool modal)
                 col.RemoveLast();       // there's a space
                 ref.RemoveLast();
             }
-            AppendListItem(lstColumns, col, ref, PGICON_COLUMN);
+            lstColumns->AppendItem(PGICON_COLUMN, col, ref);
         }
     }
     else

@@ -681,6 +681,25 @@ SOURCE=.\ui\frmExport.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\frmGrantWizard.cpp
+
+!IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Debug"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Release"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\frmHelp.cpp
 # End Source File
 # Begin Source File
@@ -720,7 +739,7 @@ SOURCE=.\ui\frmStatus.cpp
 SOURCE=.\ui\pgAdmin3.rc
 # End Source File
 # End Group
-# Begin Group "Controls"
+# Begin Group "base classes"
 
 # PROP Default_Filter "*.cpp"
 # Begin Source File
@@ -734,12 +753,20 @@ SOURCE=.\ui\ctlListView.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\ctlSecurityPanel.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\ctlSQLBox.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\ui\ctlSQLResult.cpp
 # SUBTRACT CPP /YX /Yc /Yu
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgClasses.cpp
 # End Source File
 # Begin Source File
 
@@ -771,22 +798,6 @@ SOURCE=.\ui\xh_timespin.cpp
 # PROP Default_Filter "*.h"
 # Begin Source File
 
-SOURCE=.\include\calbox.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\ctlListView.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\ctlSQLBox.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\ctlSQLResult.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\include\dlgAddTableView.h
 # End Source File
 # Begin Source File
@@ -812,6 +823,10 @@ SOURCE=.\include\frmEditGrid.h
 # Begin Source File
 
 SOURCE=.\include\frmExport.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmGrantWizard.h
 # End Source File
 # Begin Source File
 
@@ -856,22 +871,6 @@ SOURCE=.\include\frmSplash.h
 # Begin Source File
 
 SOURCE=.\include\frmStatus.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\timespin.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\xh_calb.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\xh_sqlbox.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\xh_timespin.h
 # End Source File
 # End Group
 # Begin Group "schema includes"
@@ -1520,6 +1519,50 @@ SOURCE=.\include\pgConn.h
 # Begin Source File
 
 SOURCE=.\include\pgSet.h
+# End Source File
+# End Group
+# Begin Group "ui base includes"
+
+# PROP Default_Filter "*.h"
+# Begin Source File
+
+SOURCE=.\include\calbox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\ctlListView.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\ctlSecurityPanel.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\ctlSQLBox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\ctlSQLResult.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgClasses.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\timespin.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\xh_calb.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\xh_sqlbox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\xh_timespin.h
 # End Source File
 # End Group
 # End Group

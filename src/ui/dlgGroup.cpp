@@ -84,7 +84,8 @@ int dlgGroup::Go(bool modal)
 
         txtName->SetValue(group->GetIdentifier());
         txtID->SetValue(NumToStr(group->GetGroupId()));
-        txtName->Disable();
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtName->Disable();
         txtID->Disable();
         if (readOnly)
         {
@@ -167,6 +168,8 @@ wxString dlgGroup::GetSql()
     if (group)
     {
         // Edit Mode
+
+        AppendNameChange(sql);
     
         cnt=lbUsersIn->GetCount();
         wxArrayString tmpUsers=group->GetUsersIn();

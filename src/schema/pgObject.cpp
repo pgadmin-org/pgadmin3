@@ -441,70 +441,36 @@ wxString pgObject::GetCommentSql()
 }
 
 
+void pgObject::AppendRight(wxString &rights, const wxString& acl, wxChar c, wxChar *rightName)
+{
+    if (acl.Find(c) >= 0)
+    {
+        if (!rights.IsNull())
+            rights.Append(wxT(", "));
+        rights.Append(rightName);
+    }
+}
 
-wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString& str, const wxString& grantOnObject, const wxString& user)
+
+wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantOnObject, const wxString& user)
 {
     wxString rights;
 
-    if (str == allPattern)
+    if (allPattern.Length() > 1 && acl == allPattern)
         rights = wxT("ALL");
     else
     {
-        if (str.Find('r') >= 0) 
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("SELECT"));
-        }
-        if (str.Find('w') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("UPDATE"));
-        }
-        if (str.Find('a') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("INSERT"));
-        }
-        if (str.Find('d') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("DELETE"));
-        }
-        if (str.Find('R') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("RULE"));
-        }
-        if (str.Find('x') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("REFERENCES"));
-        }
-        if (str.Find('t') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("TRIGGER"));
-        }
-        if (str.Find('X') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("EXECUTE"));
-        }
-        if (str.Find('U') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("USAGE"));
-        }
-        if (str.Find('C') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("CREATE"));
-        }
-        if (str.Find('T') >= 0)
-        {
-            if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("TEMPORARY"));
-        }
+        AppendRight(rights, acl, 'r', wxT("SELECT"));
+        AppendRight(rights, acl, 'w', wxT("UPDATE"));
+        AppendRight(rights, acl, 'a', wxT("INSERT"));
+        AppendRight(rights, acl, 'd', wxT("DELETE"));
+        AppendRight(rights, acl, 'R', wxT("RULE"));
+        AppendRight(rights, acl, 'x', wxT("REFERENCES"));
+        AppendRight(rights, acl, 't', wxT("TRIGGER"));
+        AppendRight(rights, acl, 'X', wxT("EXECUTE"));
+        AppendRight(rights, acl, 'U', wxT("USAGE"));
+        AppendRight(rights, acl, 'C', wxT("CREATE"));
+        AppendRight(rights, acl, 'T', wxT("TEMPORARY"));
     }
     wxString grant;
     if (rights.IsNull())    grant += wxT("REVOKE ALL");
@@ -528,16 +494,16 @@ wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str
     const wxChar *p=str.c_str();
     while (*p)
     {
-        if (p[1] == (wxChar)'*')
+        if (allPattern.Find(*p) >= 0)
         {
-            aclWithGrant += *p;
-            p += 2;
+            if (p[1] == (wxChar)'*')
+                aclWithGrant += *p;
+            else
+                aclWithoutGrant += *p;
         }
-        else
-        {
-            aclWithoutGrant += *p;
+        p++;
+        if (*p == (wxChar)'*')
             p++;
-        }
     }
 
     wxString grant;

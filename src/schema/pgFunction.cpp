@@ -78,7 +78,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
         else
         {
             if (GetConnection()->BackendMinimumVersion(7, 5))
-                sql += qtDocumentHere(GetSource());
+                sql += qtStringDollar(GetSource());
             else
                 sql += qtString(GetSource());
         }

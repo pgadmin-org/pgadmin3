@@ -63,6 +63,7 @@ extern sysSettings *settings;
 #define CTRL_RADIOBUTTON(id)    (XRCCTRL(*this, id, wxRadioButton))
 #define CTRL_NOTEBOOK(id)       (XRCCTRL(*this, id, wxNotebook))
 #define CTRL_SPIN(id)           (XRCCTRL(*this, id, wxSpinCtrl))
+#define CTRL_CHECKLISTBOX(id)   (XRCCTRL(*this, id, wxCheckListBox))
 
 // Conversions
 wxString BoolToStr(bool value);         // english; used for config values
@@ -86,7 +87,7 @@ wxString DateToStr(const wxDateTime &datetime);
 // Quoting
 wxString qtString(const wxString& value);
 wxString qtIdent(const wxString& value);
-wxString qtDocumentHere(const wxString &value);
+wxString qtStringDollar(const wxString &value);
 
 // check if size/pos have reasonable values
 void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0=100, const int h0=70);
@@ -123,22 +124,6 @@ bool FileWrite(const wxString &filename, const wxString &data, int format=-1);
 void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon=0);
 void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon=0);
 
-
-class frmMain;
-class DialogWithHelp : public wxDialog
-{
-public:
-    DialogWithHelp(frmMain *frame);
-
-protected:
-    frmMain *mainForm;
-    void OnHelp(wxCommandEvent& ev);
-
-private:
-    virtual wxString GetHelpPage() const = 0;
-
-    DECLARE_EVENT_TABLE();
-};
 
 
 enum        // depends on frmMain browserImages->Add order!

@@ -77,11 +77,11 @@ dlgJob::dlgJob(frmMain *frame, pgaJob *node)
     txtNextrun->Disable();
     txtLastrun->Disable();
     txtLastresult->Disable();
-    CreateListColumns(lstSteps, _("Step"), _("Definition"), 90);
+    lstSteps->CreateColumns(frame, _("Step"), _("Definition"), 90);
     lstSteps->AddColumn(wxT("cmd"), 0);
     lstSteps->AddColumn(wxT("oid"), 0);
 
-    CreateListColumns(lstSchedules, _("Schedule"), _("Definition"), 90);
+    lstSchedules->CreateColumns(frame, _("Schedule"), _("Definition"), 90);
     lstSchedules->AddColumn(wxT("cmd"), 0);
     lstSchedules->AddColumn(wxT("oid"), 0);
     btnChangeStep->Disable();
@@ -134,14 +134,14 @@ int dlgJob::Go(bool modal)
             if (data->GetType() == PGA_STEP)
             {
                 pgaStep *step=(pgaStep*)data;
-                int pos = AppendListItem(lstSteps, step->GetName(), step->GetComment(), PGAICON_STEP);
+                int pos = lstSteps->AppendItem(PGAICON_STEP, step->GetName(), step->GetComment());
                 lstSteps->SetItem(pos, 3, NumToStr((long)step));
                 previousSteps.Add(NumToStr((long)step));
             }
             else if (data->GetType() == PGA_SCHEDULE)
             {
                 pgaSchedule *schedule=(pgaSchedule*)data;
-                int pos = AppendListItem(lstSchedules, schedule->GetName(), schedule->GetComment(), PGAICON_SCHEDULE);
+                int pos = lstSchedules->AppendItem(PGAICON_SCHEDULE, schedule->GetName(), schedule->GetComment());
                 lstSchedules->SetItem(pos, 3, NumToStr((long)schedule));
                 previousSchedules.Add(NumToStr((long)schedule));
             }
@@ -231,7 +231,7 @@ void dlgJob::OnAddStep(wxCommandEvent &ev)
     step.SetConnection(connection);
     if (step.Go(true) >= 0)
     {
-        int pos = AppendListItem(lstSteps, step.GetName(), step.GetComment(), PGAICON_STEP);
+        int pos = lstSteps->AppendItem(PGAICON_STEP, step.GetName(), step.GetComment());
         lstSteps->SetItem(pos, 2, step.GetInsertSql());
         OnChange(ev);
     }
@@ -287,7 +287,7 @@ void dlgJob::OnAddSchedule(wxCommandEvent &ev)
     schedule.SetConnection(connection);
     if (schedule.Go(true) >= 0)
     {
-        int pos = AppendListItem(lstSchedules, schedule.GetName(), schedule.GetComment(), PGAICON_SCHEDULE);
+        int pos = lstSchedules->AppendItem(PGAICON_SCHEDULE, schedule.GetName(), schedule.GetComment());
         lstSchedules->SetItem(pos, 2, schedule.GetInsertSql());
         OnChange(ev);
     }
