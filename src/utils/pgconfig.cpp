@@ -152,7 +152,7 @@ wxString pgConfigLine::GetNewText()
         newLine = wxT("# ");
 
     newLine += item->name + wxT(" = ")
-            + quote + value + wxT("'");
+            + quote + value + quote;
 
     if (!comment.IsEmpty())
     {
