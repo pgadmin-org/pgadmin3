@@ -183,6 +183,7 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
     winAbout->Show(TRUE);
 }
 
+
 void frmMain::OnTipOfTheDay(wxCommandEvent& WXUNUSED(event))
 {
 extern wxString docPath;
@@ -367,7 +368,7 @@ void frmMain::OnSql(wxCommandEvent &ev)
         CheckOnScreen(pos, size, 200, 150);
 
         wxString qry;
-        if (!data->GetSystemObject())
+        if (settings->GetStickySql()) 
             qry = sqlPane->GetText();
         frmQuery *fq= new frmQuery(this, txt, conn, pos, size, qry);
         frames.Append(fq);
