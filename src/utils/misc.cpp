@@ -179,7 +179,12 @@ wxString NumToStr(double value)
 
 double StrToDouble(const wxString& value)
 {
-    return strtod(value.ToAscii(), 0);
+    wxCharBuffer buf = value.ToAscii();
+    char *p=strchr(buf, '.');
+    if (p)
+        *p = localeconv()->decimal_point[0];
+
+    return strtod(buf, 0);
 }
 
 
