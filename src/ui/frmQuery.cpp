@@ -294,6 +294,7 @@ void frmQuery::OnActivate(wxActivateEvent& event)
 {
     if (event.GetActive())
         updateMenu();
+	event.Skip();
 }
 
 
