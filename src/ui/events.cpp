@@ -688,6 +688,10 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
     if (currentNode)
     {
         properties->ClearAll();
+        statistics->ClearAll();
+        referencedBy->ClearAll();
+        dependsOn->ClearAll();
+
         properties->AddColumn(_("Properties"), 500);
         properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
         sqlPane->Clear();
@@ -709,9 +713,13 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
     {
         properties->Freeze();
         statistics->Freeze();
+        referencedBy->Freeze();
+        dependsOn->Freeze();
         setDisplay(currentObject, properties, sqlPane);
         properties->Thaw();
         statistics->Thaw();
+        referencedBy->Thaw();
+        dependsOn->Thaw();
     }
     else
         setDisplay(currentObject, 0, 0);
