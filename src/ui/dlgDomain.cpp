@@ -196,12 +196,7 @@ wxString dlgDomain::GetSql()
             sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
         sql += wxT(";\n");
 
-        if (cbOwner->GetGuessedSelection() > 0)
-        {
-            sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier()
-                +  wxT(" USER TO ") + qtIdent(cbOwner->GetValue())
-                + wxT(";\n");
-        }
+        AppendOwnerNew(sql, wxT("DOMAIN ") + qtIdent(name));
     }
     AppendComment(sql, wxT("DOMAIN"), schema, domain);
 

@@ -50,6 +50,7 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
         AppendIfFilled(sql, wxT("\n   CHECK "), GetCheck());
 
         sql += wxT(";\n")
+            + GetOwnerSql(7, 4)
             + GetCommentSql();
     }
 

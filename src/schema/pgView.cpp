@@ -53,6 +53,7 @@ wxString pgView::GetSql(wxTreeCtrl *browser)
             + wxT("\n\nCREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n")
             + GetFormattedDefinition()
             + wxT("\n\n") 
+            + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier())
             + GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier())
             + GetCommentSql();
     }

@@ -47,7 +47,8 @@ wxString pgConversion::GetSql(wxTreeCtrl *browser)
             + wxT("\n  FOR '") + GetForEncoding() + wxT("'")
             + wxT("\n  TO '") + GetToEncoding() + wxT("'")
             + wxT("\n  FROM ") + GetDatabase()->GetQuotedSchemaPrefix(GetProcNamespace()) 
-                + qtIdent(GetProc()) + wxT(";\n");
+                + qtIdent(GetProc()) + wxT(";\n")
+            + GetOwnerSql(8, 0);
     }
 
     return sql;

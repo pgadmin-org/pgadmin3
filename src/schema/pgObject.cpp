@@ -457,6 +457,22 @@ wxString pgObject::GetCommentSql()
 }
 
 
+wxString pgObject::GetOwnerSql(int major, int minor, wxString objname)
+{
+    wxString sql;
+    if (GetConnection()->BackendMinimumVersion(major, minor))
+    {
+//      if (GetConnection()->GetUser() != owner)       // optional?
+        {
+            if (objname.IsEmpty())
+                objname = GetTypeName().Upper() + wxT(" ") + GetQuotedFullIdentifier();
+            sql = wxT("ALTER ") + objname + wxT(" OWNER TO ") + qtIdent(owner) + wxT(";\n");
+        }
+    }
+    return sql;
+}
+
+
 void pgObject::AppendRight(wxString &rights, const wxString& acl, wxChar c, wxChar *rightName)
 {
     if (acl.Find(c) >= 0)
@@ -532,7 +548,7 @@ wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str
 }
 
 
-wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFor, bool noOwner)
+wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFor)
 {
     wxString grant, str, user, grantFor;
     if (_grantFor.IsNull())

@@ -122,8 +122,9 @@ public:
 
     virtual wxMenu *GetNewMenu();
     virtual wxString GetSql(wxTreeCtrl *browser) { return wxT(""); }
-    wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""), bool noOwner=false);
+    wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""));
     wxString GetCommentSql();
+    wxString GetOwnerSql(int major, int minor, wxString objname=wxEmptyString);
     pgConn *GetConnection() const;
 
     virtual void SetDirty() { sql=wxT(""); expandedKids=false; needReread=true; }

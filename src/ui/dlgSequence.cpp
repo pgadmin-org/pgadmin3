@@ -157,7 +157,11 @@ wxString dlgSequence::GetSql()
             sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
                 +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
         }
-        AppendOwnerChange(sql);
+        if (sequence->GetOwner() != cbOwner->GetValue())
+        {
+            sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
+                +  wxT(" OWNER TO ") + qtIdent(name) + wxT(";\n");
+        }
 
         if (connection->BackendMinimumVersion(7, 4))
         {

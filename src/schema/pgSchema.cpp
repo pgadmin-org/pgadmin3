@@ -73,7 +73,7 @@ wxString pgSchema::GetSql(wxTreeCtrl *browser)
         AppendIfFilled(sql, wxT(" TABLESPACE "), qtIdent(tablespace));
 
         sql += wxT(";\n")
-            + GetGrant(wxT("UC"), wxT("SCHEMA ") + GetQuotedFullIdentifier(), true)
+            + GetGrant(wxT("UC"), wxT("SCHEMA ") + GetQuotedFullIdentifier())
             + GetCommentSql();
     }
     return sql;

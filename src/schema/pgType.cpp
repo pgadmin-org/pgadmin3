@@ -62,6 +62,7 @@ wxString pgType::GetSql(wxTreeCtrl *browser)
                 + wxT(", STORAGE=") + GetStorage());
         }
         sql += wxT(");\n")
+            + GetOwnerSql(8, 0)
             + GetCommentSql();
     }
 

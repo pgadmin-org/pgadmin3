@@ -79,6 +79,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
         if (GetSecureDefiner())
             sql += wxT(" SECURITY DEFINER");
         sql += wxT(";\n")
+            +  GetOwnerSql(8, 0, qtName)
             +  GetGrant(wxT("X"), qtName);
 
         if (!GetComment().IsNull())

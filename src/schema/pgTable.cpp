@@ -204,9 +204,9 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
 
         AppendIfFilled(sql, wxT(" TABLESPACE "), qtIdent(tablespace));
 
-        sql += wxT(";\n");
-
-        sql += GetGrant(wxT("arwdRxt")) 
+        sql += wxT(";\n")
+            + GetOwnerSql(7, 3)
+            + GetGrant(wxT("arwdRxt")) 
             + GetCommentSql();
 
 		// Column comments

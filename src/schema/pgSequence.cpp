@@ -71,6 +71,7 @@ wxString pgSequence::GetSql(wxTreeCtrl *browser)
             sql += wxT("\n  CYCLE");
         AppendIfFilled(sql, wxT("\n  TABLESPACE "), qtIdent(tablespace));
         sql += wxT(";\n")
+            + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier())
             + GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier())
             + GetCommentSql();
     }
