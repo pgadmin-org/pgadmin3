@@ -79,6 +79,7 @@ int dlgIndexBase::Go(bool modal)
         btnAddCol->Disable();
         btnRemoveCol->Disable();
         cbColumns->Disable();
+	txtComment->SetValue(index->GetComment());
 
         int pos=0;
         wxStringTokenizer cols(index->GetColumns(), wxT(","));
