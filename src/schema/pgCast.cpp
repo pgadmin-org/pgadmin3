@@ -17,7 +17,6 @@
 #include "pgObject.h"
 #include "pgCast.h"
 #include "pgCollection.h"
-#include "frmMain.h"
 
 pgCast::pgCast(const wxString& newName)
 : pgDatabaseObject(PG_CAST, newName)

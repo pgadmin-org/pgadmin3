@@ -17,7 +17,6 @@
 #include "pgObject.h"
 #include "pgGroup.h"
 #include "pgCollection.h"
-#include "frmMain.h"
 
 
 pgGroup::pgGroup(const wxString& newName)

@@ -17,7 +17,6 @@
 #include "pgObject.h"
 #include "pgUser.h"
 #include "pgCollection.h"
-#include "frmMain.h"
 
 
 pgUser::pgUser(const wxString& newName)

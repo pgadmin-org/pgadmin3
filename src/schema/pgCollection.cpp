@@ -36,8 +36,6 @@
 #include "pgRule.h"
 #include "pgTrigger.h"
 
-#include "frmMain.h"
-
 extern char *typeNameList[]; 
 
 pgCollection::pgCollection(int newType)

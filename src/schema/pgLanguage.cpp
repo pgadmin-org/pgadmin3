@@ -17,7 +17,7 @@
 #include "pgObject.h"
 #include "pgLanguage.h"
 #include "pgCollection.h"
-#include "frmMain.h"
+
 
 pgLanguage::pgLanguage(const wxString& newName)
 : pgDatabaseObject(PG_LANGUAGE, newName)
