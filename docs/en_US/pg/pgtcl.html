@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pgtcl - Tcl Binding Library</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Interfaces"
-HREF="programmer-client.html"><LINK
+HREF="client-interfaces.html"><LINK
 REL="PREVIOUS"
-TITLE="Accessing Large Objects from Libpq"
-HREF="lo-libpq.html"><LINK
+TITLE="Example Program"
+HREF="lo-examplesect.html"><LINK
 REL="NEXT"
-TITLE="Loading pgtcl into your application"
+TITLE="Loading pgtcl into an Application"
 HREF="libpgtcl-loading.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="lo-libpq.html"
+HREF="lo-examplesect.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,11 +80,11 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="PGTCL"
->Chapter 3. <SPAN
+></A
+>Chapter 29. <SPAN
 CLASS="APPLICATION"
 >pgtcl</SPAN
-> - Tcl Binding Library</A
-></H1
+> - Tcl Binding Library</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -93,25 +93,25 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->3.1. <A
-HREF="pgtcl.html#PGTCL-INTRO"
->Introduction</A
+>29.1. <A
+HREF="pgtcl.html#PGTCL-OVERVIEW"
+>Overview</A
 ></DT
 ><DT
->3.2. <A
+>29.2. <A
 HREF="libpgtcl-loading.html"
 >Loading <SPAN
 CLASS="APPLICATION"
 >pgtcl</SPAN
-> into your application</A
+> into an Application</A
 ></DT
 ><DT
->3.3. <A
+>29.3. <A
 HREF="libpgtcl-ref.html"
 ><SPAN
 CLASS="APPLICATION"
 >pgtcl</SPAN
-> Command Reference Information</A
+> Command Reference</A
 ></DT
 ><DD
 ><DL
@@ -119,32 +119,32 @@ CLASS="APPLICATION"
 ><A
 HREF="pgtcl-pgconnect.html"
 >pg_connect</A
->&nbsp;--&nbsp;open a connection to the backend server</DT
+>&nbsp;--&nbsp;open a connection to the server</DT
 ><DT
 ><A
 HREF="pgtcl-pgdisconnect.html"
 >pg_disconnect</A
->&nbsp;--&nbsp;close a connection to the backend server</DT
+>&nbsp;--&nbsp;close a connection to the server</DT
 ><DT
 ><A
 HREF="pgtcl-pgconndefaults.html"
 >pg_conndefaults</A
->&nbsp;--&nbsp;obtain information about default connection parameters</DT
+>&nbsp;--&nbsp;get connection options and their defaults</DT
 ><DT
 ><A
 HREF="pgtcl-pgexec.html"
 >pg_exec</A
->&nbsp;--&nbsp;send a command string to the server</DT
+>&nbsp;--&nbsp;send a command to the server</DT
 ><DT
 ><A
 HREF="pgtcl-pgresult.html"
 >pg_result</A
->&nbsp;--&nbsp;get information about a query result</DT
+>&nbsp;--&nbsp;get information about a command result</DT
 ><DT
 ><A
 HREF="pgtcl-pgselect.html"
 >pg_select</A
->&nbsp;--&nbsp;loop over the result of a SELECT statement</DT
+>&nbsp;--&nbsp;loop over the result of a query</DT
 ><DT
 ><A
 HREF="pgtcl-pgexecute.html"
@@ -154,7 +154,7 @@ HREF="pgtcl-pgexecute.html"
 ><A
 HREF="pgtcl-pglisten.html"
 >pg_listen</A
->&nbsp;--&nbsp;set or change a callback for asynchronous NOTIFY messages</DT
+>&nbsp;--&nbsp;set or change a callback for asynchronous notification messages</DT
 ><DT
 ><A
 HREF="pgtcl-pgon-connection-loss.html"
@@ -179,17 +179,17 @@ HREF="pgtcl-pgloclose.html"
 ><A
 HREF="pgtcl-pgloread.html"
 >pg_lo_read</A
->&nbsp;--&nbsp;read a large object</DT
+>&nbsp;--&nbsp;read from a large object</DT
 ><DT
 ><A
 HREF="pgtcl-pglowrite.html"
 >pg_lo_write</A
->&nbsp;--&nbsp;write a large object</DT
+>&nbsp;--&nbsp;write to a large object</DT
 ><DT
 ><A
 HREF="pgtcl-pglolseek.html"
 >pg_lo_lseek</A
->&nbsp;--&nbsp;seek to a position in a large object</DT
+>&nbsp;--&nbsp;seek to a position of a large object</DT
 ><DT
 ><A
 HREF="pgtcl-pglotell.html"
@@ -212,22 +212,22 @@ HREF="pgtcl-pgloexport.html"
 >&nbsp;--&nbsp;export a large object to a file</DT
 ></DL
 ></DD
+><DT
+>29.4. <A
+HREF="pgtcl-examplesect.html"
+>Example Program</A
+></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN26116"
+NAME="AEN21157"
 ></A
 ><A
-NAME="AEN26118"
+NAME="AEN21159"
 ></A
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
 ><A
-NAME="PGTCL-INTRO"
->3.1. Introduction</A
-></H1
+NAME="AEN21161"
+></A
 ><P
 >   <SPAN
 CLASS="APPLICATION"
@@ -243,13 +243,18 @@ CLASS="APPLICATION"
 >libpq</SPAN
 > available to Tcl scripts.
   </P
-><P
->   This package was originally written by Jolly Chen.
-  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PGTCL-OVERVIEW"
+>29.1. Overview</A
+></H1
 ><P
 >   <A
 HREF="pgtcl.html#PGTCL-COMMANDS-TABLE"
->Table 3-1</A
+>Table 29-1</A
 > gives an overview over the
    commands available in <SPAN
 CLASS="APPLICATION"
@@ -264,292 +269,215 @@ NAME="PGTCL-COMMANDS-TABLE"
 ></A
 ><P
 ><B
->Table 3-1. <TT
-CLASS="LITERAL"
->pgtcl</TT
+>Table 29-1. <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
 > Commands</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Command</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_connect</TT
+>pg_connect</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->opens a connection to the backend server</TD
+>open a connection to the server</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_disconnect</TT
+>pg_disconnect</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->closes a connection</TD
+>close a connection to the server</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_conndefaults</TT
+>pg_conndefaults</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >get connection options and their defaults</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_exec</TT
+>pg_exec</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->send a query to the backend</TD
+>send a command to the server</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_result</TT
+>pg_result</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->manipulate the results of a query</TD
+>get information about a command result</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_select</TT
+>pg_select</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->loop over the result of a SELECT statement</TD
+>loop over the result of a query</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_execute</TT
+>pg_execute</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >send a query and optionally loop over the results</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_listen</TT
+>pg_listen</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->establish a callback for NOTIFY messages</TD
+>set or change a callback for asynchronous notification messages</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_on_connection_loss</TT
+>pg_on_connection_loss</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->establish a callback for unexpected connection loss</TD
+>set or change a callback for unexpected connection loss</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_creat</TT
+>pg_lo_creat</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >create a large object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_open</TT
+>pg_lo_open</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >open a large object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_close</TT
+>pg_lo_close</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >close a large object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_read</TT
+>pg_lo_read</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->read a large object</TD
+>read from a large object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_write</TT
+>pg_lo_write</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->write a large object</TD
+>write to a large object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_lseek</TT
+>pg_lo_lseek</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >seek to a position in a large object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_tell</TT
+>pg_lo_tell</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >return the current seek position of a large object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_unlink</TT
+>pg_lo_unlink</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >delete a large object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_import</TT
+>pg_lo_import</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->import a Unix file into a large object</TD
+>import a large object from a file</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->pg_lo_export</TT
+>pg_lo_export</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->export a large object into a Unix file</TD
+>export a large object to a file</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->   The <TT
+>   The <CODE
 CLASS="FUNCTION"
->pg_lo_*</TT
-> routines are interfaces to the
-   large object features of <SPAN
+>pg_lo_*</CODE
+> commands are interfaces to the
+   large object features of
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->.
-   The functions are designed to mimic the analogous file system
-   functions in the standard Unix file system interface.  The
-   <TT
+>.<A
+NAME="AEN21260"
+></A
+> The functions are designed to mimic the analogous file
+   system functions in the standard Unix file system interface.  The
+   <CODE
 CLASS="FUNCTION"
->pg_lo_*</TT
-> routines should be used within a
+>pg_lo_*</CODE
+> commands should be used within a
    <TT
 CLASS="COMMAND"
 >BEGIN</TT
@@ -557,18 +485,18 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >COMMIT</TT
 > transaction
-   block because the file descriptor returned by
-   <TT
+   block because the descriptor returned by
+   <CODE
 CLASS="FUNCTION"
->pg_lo_open</TT
+>pg_lo_open</CODE
 > is only valid for the current
-   transaction.  <TT
+   transaction.  <CODE
 CLASS="FUNCTION"
->pg_lo_import</TT
+>pg_lo_import</CODE
 > and
-   <TT
+   <CODE
 CLASS="FUNCTION"
->pg_lo_export</TT
+>pg_lo_export</CODE
 > <SPAN
 CLASS="emphasis"
 ><I
@@ -585,44 +513,6 @@ CLASS="COMMAND"
 > transaction
    block.
   </P
-><P
->   <A
-HREF="pgtcl.html#PGTCL-EXAMPLE"
->Example 3-1</A
-> shows a small example of how to use
-   the routines.
-  </P
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="PGTCL-EXAMPLE"
-></A
-><P
-><B
->Example 3-1. <SPAN
-CLASS="APPLICATION"
->pgtcl</SPAN
-> Example Program</B
-></P
-><PRE
-CLASS="PROGRAMLISTING"
-># getDBs :
-#   get the names of all the databases at a given host and port number
-#   with the defaults being the localhost and port 5432
-#   return them in alphabetical order
-proc getDBs { {host "localhost"} {port "5432"} } {
-    # datnames is the list to be result
-    set conn [pg_connect template1 -host $host -port $port]
-    set res [pg_exec $conn "SELECT datname FROM pg_database ORDER BY datname"]
-    set ntups [pg_result $res -numTuples]
-    for {set i 0} {$i &#60; $ntups} {incr i} {
-	lappend datnames [pg_result $res -getTuple $i]
-    }
-    pg_result $res -clear
-    pg_disconnect $conn
-    return $datnames
-}</PRE
-></DIV
 ></DIV
 ></DIV
 ><DIV
@@ -641,7 +531,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="lo-libpq.html"
+HREF="lo-examplesect.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -669,16 +559,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Accessing Large Objects from <SPAN
-CLASS="APPLICATION"
->Libpq</SPAN
-></TD
+>Example Program</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="programmer-client.html"
+HREF="client-interfaces.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -689,7 +576,7 @@ VALIGN="top"
 >Loading <SPAN
 CLASS="APPLICATION"
 >pgtcl</SPAN
-> into your application</TD
+> into an Application</TD
 ></TR
 ></TABLE
 ></DIV

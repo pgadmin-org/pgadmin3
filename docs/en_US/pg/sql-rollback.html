@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >ROLLBACK</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,92 +78,34 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-ROLLBACK"
->ROLLBACK</A
-></H1
+></A
+>ROLLBACK</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45035"
+NAME="AEN43263"
 ></A
 ><H2
 >Name</H2
->   ROLLBACK
-  &nbsp;--&nbsp;   abort the current transaction
-  </DIV
+>ROLLBACK&nbsp;--&nbsp;abort the current transaction</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45038"
+NAME="AEN43266"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->ROLLBACK [ WORK | TRANSACTION ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ROLLBACK-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    None.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ROLLBACK-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->	
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ROLLBACK
-       </TT
-></DT
-><DD
-><P
->	Message returned if successful.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->WARNING:  ROLLBACK: no transaction in progress
-       </TT
-></DT
-><DD
-><P
->	If there is not any transaction currently in progress.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>ROLLBACK [ WORK | TRANSACTION ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ROLLBACK-1"
+NAME="AEN43268"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
@@ -171,83 +113,120 @@ CLASS="COMMAND"
 > rolls back the current transaction and causes
    all the updates made by the transaction to be discarded.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-ROLLBACK-3"
+NAME="AEN43272"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    Use <A
-HREF="sql-commit.html"
-><I
->COMMIT</I
-></A
->
-    to successfully terminate a transaction.
-    <A
-HREF="sql-abort.html"
-><I
->ABORT</I
-></A
-> is a
-    synonym for <TT
-CLASS="COMMAND"
->ROLLBACK</TT
->.
-   </P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>WORK</VAR
+><BR><VAR
+CLASS="LITERAL"
+>TRANSACTION</VAR
+></DT
+><DD
+><P
+>      Optional key words. They have no effect.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ROLLBACK-2"
+NAME="AEN43282"
 ></A
 ><H2
->   Usage
-  </H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ROLLBACK</SAMP
+></DT
+><DD
+><P
+>      Message returned if successful.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>WARNING:  ROLLBACK: no transaction in progress</SAMP
+></DT
+><DD
+><P
+>      If there is not any transaction currently in progress.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43295"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+> to
+   successfully terminate a transaction.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43299"
+></A
+><H2
+>Examples</H2
 ><P
 >   To abort all changes:
-
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->ROLLBACK WORK;
-   </PRE
+>ROLLBACK;</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ROLLBACK-3"
+NAME="AEN43303"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ROLLBACK-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> only specifies the two forms <TT
+>   The SQL standard only specifies the two forms
+   <VAR
 CLASS="LITERAL"
->ROLLBACK</TT
->
-    and <TT
+>ROLLBACK</VAR
+> and <VAR
 CLASS="LITERAL"
->ROLLBACK WORK</TT
->. Otherwise full compatibility.
-   </P
-></DIV
+>ROLLBACK
+   WORK</VAR
+>. Otherwise, this command is fully conforming.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

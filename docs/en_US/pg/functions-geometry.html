@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Geometric Functions and Operators</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. Functions and Operators</TD
+>Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-GEOMETRY"
->6.9. Geometric Functions and Operators</A
+>9.9. Geometric Functions and Operators</A
 ></H1
 ><P
 >    The geometric types <TT
@@ -110,13 +110,13 @@ CLASS="TYPE"
 > have a large set of
     native support functions and operators, shown in <A
 HREF="functions-geometry.html#FUNCTIONS-GEOMETRY-OP-TABLE"
->Table 6-20</A
+>Table 9-28</A
 >, <A
 HREF="functions-geometry.html#FUNCTIONS-GEOMETRY-FUNC-TABLE"
->Table 6-21</A
+>Table 9-29</A
 >, and <A
 HREF="functions-geometry.html#FUNCTIONS-GEOMETRY-CONV-TABLE"
->Table 6-22</A
+>Table 9-30</A
 >.
    </P
 ><DIV
@@ -126,434 +126,398 @@ NAME="FUNCTIONS-GEOMETRY-OP-TABLE"
 ></A
 ><P
 ><B
->Table 6-20. Geometric Operators</B
+>Table 9-28. Geometric Operators</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Operator</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Usage</TH
+>Example</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> + </TD
+> <VAR
+CLASS="LITERAL"
+>+</VAR
+> </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Translation</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->box '((0,0),(1,1))' + point '(2.0,0)'</TT
+>box '((0,0),(1,1))' + point '(2.0,0)'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> - </TD
+> <VAR
+CLASS="LITERAL"
+>-</VAR
+> </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Translation</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->box '((0,0),(1,1))' - point '(2.0,0)'</TT
+>box '((0,0),(1,1))' - point '(2.0,0)'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> * </TD
+> <VAR
+CLASS="LITERAL"
+>*</VAR
+> </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Scaling/rotation</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->box '((0,0),(1,1))' * point '(2.0,0)'</TT
+>box '((0,0),(1,1))' * point '(2.0,0)'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> / </TD
+> <VAR
+CLASS="LITERAL"
+>/</VAR
+> </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Scaling/rotation</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->box '((0,0),(2,2))' / point '(2.0,0)'</TT
+>box '((0,0),(2,2))' / point '(2.0,0)'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> # </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Intersection</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+> <VAR
 CLASS="LITERAL"
->'((1,-1),(-1,1))' # '((1,1),(-1,-1))'</TT
+>#</VAR
+> </TD
+><TD
+>Point or box of intersection</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>'((1,-1),(-1,1))' # '((1,1),(-1,-1))'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> # </TD
+> <VAR
+CLASS="LITERAL"
+>#</VAR
+> </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Number of points in path or polygon</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
-># '((1,0),(0,1),(-1,0))'</TT
+># '((1,0),(0,1),(-1,0))'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> ## </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Point of closest proximity</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+> <VAR
 CLASS="LITERAL"
->point '(0,0)' ## lseg '((2,0),(0,2))'</TT
-></TD
-></TR
-><TR
+>@-@</VAR
+> </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &amp;&amp; </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Overlaps?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->box '((0,0),(1,1))' &amp;&amp; box '((0,0),(2,2))'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &amp;&lt; </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Overlaps to left?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->box '((0,0),(1,1))' &amp;&lt; box '((0,0),(2,2))'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &amp;&gt; </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Overlaps to right?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->box '((0,0),(3,3))' &amp;&gt; box '((0,0),(2,2))'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &lt;-&gt; </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Distance between</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->circle '((0,0),1)' &lt;-&gt; circle '((5,0),1)'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &lt;&lt; </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Left of?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->circle '((0,0),1)' &lt;&lt; circle '((5,0),1)'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &lt;^ </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Is below?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->circle '((0,0),1)' &lt;^ circle '((0,5),1)'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &gt;&gt; </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Is right of?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->circle '((5,0),1)' &gt;&gt; circle '((0,0),1)'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &gt;^ </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Is above?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->circle '((0,5),1)' &#62;^ circle '((0,0),1)'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> ?# </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Intersects or overlaps</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->lseg '((-1,0),(1,0))' ?# box '((-2,-2),(2,2))'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> ?- </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Is horizontal?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->point '(1,0)' ?- point '(0,0)'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> ?-| </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Is perpendicular?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->lseg '((0,0),(0,1))' ?-| lseg '((0,0),(1,0))'</TT
-></TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> @-@  </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Length or circumference</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->@-@ path '((0,0),(1,0))'</TT
+>@-@ path '((0,0),(1,0))'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> ?| </TD
+> <VAR
+CLASS="LITERAL"
+>@@</VAR
+> </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+>Center</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>@@ circle '((0,0),10)'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>##</VAR
+> </TD
+><TD
+>Closest point to first operand on second operand</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>point '(0,0)' ## lseg '((2,0),(0,2))'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&lt;-&gt;</VAR
+> </TD
+><TD
+>Distance between</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>circle '((0,0),1)' &lt;-&gt; circle '((5,0),1)'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&amp;&amp;</VAR
+> </TD
+><TD
+>Overlaps?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>box '((0,0),(1,1))' &amp;&amp; box '((0,0),(2,2))'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&amp;&lt;</VAR
+> </TD
+><TD
+>Overlaps or is left of?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>box '((0,0),(1,1))' &amp;&lt; box '((0,0),(2,2))'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&amp;&gt;</VAR
+> </TD
+><TD
+>Overlaps or is right of?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>box '((0,0),(3,3))' &amp;&gt; box '((0,0),(2,2))'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&lt;&lt;</VAR
+> </TD
+><TD
+>Is left of?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>circle '((0,0),1)' &lt;&lt; circle '((5,0),1)'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&gt;&gt;</VAR
+> </TD
+><TD
+>Is right of?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>circle '((5,0),1)' &gt;&gt; circle '((0,0),1)'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&lt;^</VAR
+> </TD
+><TD
+>Is below?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>circle '((0,0),1)' &lt;^ circle '((0,5),1)'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>&gt;^</VAR
+> </TD
+><TD
+>Is above?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>circle '((0,5),1)' &#62;^ circle '((0,0),1)'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>?#</VAR
+> </TD
+><TD
+>Intersects?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>lseg '((-1,0),(1,0))' ?# box '((-2,-2),(2,2))'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>?-</VAR
+> </TD
+><TD
+>Is horizontal?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>?- lseg '((-1,0),(1,0))'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>?-</VAR
+> </TD
+><TD
+>Are horizontally aligned?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>point '(1,0)' ?- point '(0,0)'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>?|</VAR
+> </TD
+><TD
 >Is vertical?</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->point '(0,1)' ?| point '(0,0)'</TT
+>?| lseg '((-1,0),(1,0))'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> ?|| </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Is parallel?</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+> <VAR
 CLASS="LITERAL"
->lseg '((-1,0),(1,0))' ?|| lseg '((-1,2),(1,2))'</TT
+>?|</VAR
+> </TD
+><TD
+>Are vertically aligned?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>point '(0,1)' ?| point '(0,0)'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> @ </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Contained or on</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+> <VAR
 CLASS="LITERAL"
->point '(1,1)' @ circle '((0,0),2)'</TT
+>?-|</VAR
+> </TD
+><TD
+>Is perpendicular?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>lseg '((0,0),(0,1))' ?-| lseg '((0,0),(1,0))'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> @@ </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Center of</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+> <VAR
 CLASS="LITERAL"
->@@ circle '((0,0),10)'</TT
+>?||</VAR
+> </TD
+><TD
+>Are parallel?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>lseg '((-1,0),(1,0))' ?|| lseg '((-1,2),(1,2))'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> ~= </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Same as</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+> <VAR
 CLASS="LITERAL"
->polygon '((0,0),(1,1))' ~= polygon '((1,1),(0,0))'</TT
+>~</VAR
+> </TD
+><TD
+>Contains?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>circle '((0,0),2)' ~ point '(1,1)'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>@</VAR
+> </TD
+><TD
+>Contained in or on?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>point '(1,1)' @ circle '((0,0),2)'</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>~=</VAR
+> </TD
+><TD
+>Same as?</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>polygon '((0,0),(1,1))' ~= polygon '((1,1),(0,0))'</VAR
 ></TD
 ></TR
 ></TBODY
@@ -566,408 +530,375 @@ NAME="FUNCTIONS-GEOMETRY-FUNC-TABLE"
 ></A
 ><P
 ><B
->Table 6-21. Geometric Functions</B
+>Table 9-29. Geometric Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Function</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Returns</TH
+>Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->area</TT
->(object)</TD
+>area</CODE
+>(<VAR
+CLASS="REPLACEABLE"
+>object</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->area of item</TD
+>area</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->area(box '((0,0),(1,1))')</TT
+>area(box '((0,0),(1,1))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
+>box_intersect</CODE
+>(<TT
+CLASS="TYPE"
 >box</TT
->(box, box)</TD
+>, <TT
+CLASS="TYPE"
+>box</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >box</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >intersection box</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->box(box '((0,0),(1,1))',box '((0.5,0.5),(2,2))')</TT
+>box_intersect(box '((0,0),(1,1))',box '((0.5,0.5),(2,2))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->center</TT
->(object)</TD
+>center</CODE
+>(<VAR
+CLASS="REPLACEABLE"
+>object</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >point</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->center of item</TD
+>center</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->center(box '((0,0),(1,2))')</TT
+>center(box '((0,0),(1,2))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->diameter</TT
->(circle)</TD
+>diameter</CODE
+>(<TT
+CLASS="TYPE"
+>circle</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >diameter of circle</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->diameter(circle '((0,0),2.0)')</TT
+>diameter(circle '((0,0),2.0)')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->height</TT
->(box)</TD
+>height</CODE
+>(<TT
+CLASS="TYPE"
+>box</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >vertical size of box</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->height(box '((0,0),(1,1))')</TT
+>height(box '((0,0),(1,1))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->isclosed</TT
->(path)</TD
+>isclosed</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >a closed path?</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->isclosed(path '((0,0),(1,1),(2,0))')</TT
+>isclosed(path '((0,0),(1,1),(2,0))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->isopen</TT
->(path)</TD
+>isopen</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >an open path?</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->isopen(path '[(0,0),(1,1),(2,0)]')</TT
+>isopen(path '[(0,0),(1,1),(2,0)]')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->length</TT
->(object)</TD
+>length</CODE
+>(<VAR
+CLASS="REPLACEABLE"
+>object</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->length of item</TD
+>length</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->length(path '((-1,0),(1,0))')</TT
+>length(path '((-1,0),(1,0))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->npoints</TT
->(path)</TD
+>npoints</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >integer</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >number of points</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->npoints(path '[(0,0),(1,1),(2,0)]')</TT
+>npoints(path '[(0,0),(1,1),(2,0)]')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->npoints</TT
->(polygon)</TD
+>npoints</CODE
+>(<TT
+CLASS="TYPE"
+>polygon</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >integer</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >number of points</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->npoints(polygon '((1,1),(0,0))')</TT
+>npoints(polygon '((1,1),(0,0))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pclose</TT
->(path)</TD
+>pclose</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >path</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >convert path to closed</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->popen(path '[(0,0),(1,1),(2,0)]')</TT
+>popen(path '[(0,0),(1,1),(2,0)]')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->popen</TT
->(path)</TD
+>popen</CODE
+>(<TT
+CLASS="TYPE"
+>path</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >path</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->convert path to open path</TD
+>convert path to open</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->popen(path '((0,0),(1,1),(2,0))')</TT
+>popen(path '((0,0),(1,1),(2,0))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->radius</TT
->(circle)</TD
+>radius</CODE
+>(<TT
+CLASS="TYPE"
+>circle</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >radius of circle</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->radius(circle '((0,0),2.0)')</TT
+>radius(circle '((0,0),2.0)')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->width</TT
->(box)</TD
+>width</CODE
+>(<TT
+CLASS="TYPE"
+>box</TT
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->horizontal size</TD
+>horizontal size of box</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->width(box '((0,0),(1,1))')</TT
+>width(box '((0,0),(1,1))')</VAR
 ></TD
 ></TR
 ></TBODY
@@ -980,508 +911,415 @@ NAME="FUNCTIONS-GEOMETRY-CONV-TABLE"
 ></A
 ><P
 ><B
->Table 6-22. Geometric Type Conversion Functions</B
+>Table 9-30. Geometric Type Conversion Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Function</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Returns</TH
+>Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->box</TT
+>box</CODE
 >(<TT
 CLASS="TYPE"
 >circle</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >box</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >circle to box</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->box(circle '((0,0),2.0)')</TT
+>box(circle '((0,0),2.0)')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->box</TT
+>box</CODE
 >(<TT
 CLASS="TYPE"
 >point</TT
 >, <TT
 CLASS="TYPE"
 >point</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >box</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >points to box</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->box(point '(0,0)', point '(1,1)')</TT
+>box(point '(0,0)', point '(1,1)')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->box</TT
+>box</CODE
 >(<TT
 CLASS="TYPE"
 >polygon</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >box</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >polygon to box</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->box(polygon '((0,0),(1,1),(2,0))')</TT
+>box(polygon '((0,0),(1,1),(2,0))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->circle</TT
+>circle</CODE
 >(<TT
 CLASS="TYPE"
 >box</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >circle</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->to circle</TD
+>box to circle</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->circle(box '((0,0),(1,1))')</TT
+>circle(box '((0,0),(1,1))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->circle</TT
+>circle</CODE
 >(<TT
 CLASS="TYPE"
 >point</TT
 >, <TT
 CLASS="TYPE"
 >double precision</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >circle</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->point to circle</TD
+>point and radius to circle</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->circle(point '(0,0)', 2.0)</TT
+>circle(point '(0,0)', 2.0)</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->lseg</TT
+>lseg</CODE
 >(<TT
 CLASS="TYPE"
 >box</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >lseg</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->box diagonal to <TT
-CLASS="TYPE"
->lseg</TT
-></TD
+>box diagonal to line segment</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->lseg(box '((-1,0),(1,0))')</TT
+>lseg(box '((-1,0),(1,0))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->lseg</TT
+>lseg</CODE
 >(<TT
 CLASS="TYPE"
 >point</TT
 >, <TT
 CLASS="TYPE"
 >point</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >lseg</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->points to <TT
-CLASS="TYPE"
->lseg</TT
-></TD
+>points to line segment</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->lseg(point '(-1,0)', point '(1,0)')</TT
+>lseg(point '(-1,0)', point '(1,0)')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->path</TT
+>path</CODE
 >(<TT
 CLASS="TYPE"
 >polygon</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >point</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >polygon to path</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->path(polygon '((0,0),(1,1),(2,0))')</TT
+>path(polygon '((0,0),(1,1),(2,0))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->point</TT
+>point</CODE
 >(<TT
 CLASS="TYPE"
 >circle</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >point</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->center</TD
+>center of circle</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->point(circle '((0,0),2.0)')</TT
+>point(circle '((0,0),2.0)')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->point</TT
+>point</CODE
 >(<TT
 CLASS="TYPE"
 >lseg</TT
 >, <TT
 CLASS="TYPE"
 >lseg</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >point</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >intersection</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->point(lseg '((-1,0),(1,0))', lseg '((-2,-2),(2,2))')</TT
+>point(lseg '((-1,0),(1,0))', lseg '((-2,-2),(2,2))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->point</TT
+>point</CODE
 >(<TT
 CLASS="TYPE"
 >polygon</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >point</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->center</TD
+>center of polygon</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->point(polygon '((0,0),(1,1),(2,0))')</TT
+>point(polygon '((0,0),(1,1),(2,0))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->polygon</TT
+>polygon</CODE
 >(<TT
 CLASS="TYPE"
 >box</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >polygon</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->4-point polygon</TD
+>box to 4-point polygon</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->polygon(box '((0,0),(1,1))')</TT
+>polygon(box '((0,0),(1,1))')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->polygon</TT
+>polygon</CODE
 >(<TT
 CLASS="TYPE"
 >circle</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >polygon</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->12-point polygon</TD
+>circle to 12-point polygon</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->polygon(circle '((0,0),2.0)')</TT
+>polygon(circle '((0,0),2.0)')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->polygon</TT
->(<TT
+>polygon</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->npts</I
-></TT
+>npts</VAR
 >, <TT
 CLASS="TYPE"
 >circle</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >polygon</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+>circle to <VAR
 CLASS="REPLACEABLE"
-><I
->npts</I
-></TT
-> polygon</TD
+>npts</VAR
+>-point polygon</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->polygon(12, circle '((0,0),2.0)')</TT
+>polygon(12, circle '((0,0),2.0)')</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->polygon</TT
+>polygon</CODE
 >(<TT
 CLASS="TYPE"
 >path</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >polygon</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >path to polygon</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->polygon(path '((0,0),(1,1),(2,0))')</TT
+>polygon(path '((0,0),(1,1),(2,0))')</VAR
 ></TD
 ></TR
 ></TBODY
@@ -1492,33 +1330,33 @@ CLASS="LITERAL"
 CLASS="TYPE"
 >point</TT
 >
-     as though it were an array with subscripts 0, 1.  For example, if
-     <TT
+     as though it were an array with indices 0 and 1.  For example, if
+     <VAR
 CLASS="LITERAL"
->t.p</TT
+>t.p</VAR
 > is a <TT
 CLASS="TYPE"
 >point</TT
 > column then
-     <TT
+     <VAR
 CLASS="LITERAL"
->SELECT p[0] FROM t</TT
-> retrieves the X coordinate;
-     <TT
+>SELECT p[0] FROM t</VAR
+> retrieves the X coordinate and
+     <VAR
 CLASS="LITERAL"
->UPDATE t SET p[1] = ...</TT
+>UPDATE t SET p[1] = ...</VAR
 > changes the Y coordinate.
-     In the same way, a <TT
+     In the same way, a value of type <TT
 CLASS="TYPE"
 >box</TT
-> or an <TT
+> or <TT
 CLASS="TYPE"
 >lseg</TT
 > may be treated
      as an array of two <TT
 CLASS="TYPE"
 >point</TT
->s.
+> values.
     </P
 ></DIV
 ><DIV

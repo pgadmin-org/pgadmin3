@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_description</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,19 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-DESCRIPTION"
->3.14. pg_description</A
+>45.14. <TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+></A
 ></H1
+><A
+NAME="AEN51885"
+></A
 ><P
->   The pg_description table can store an optional description or
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+> can store an optional description or
    comment for each database object.  Descriptions can be manipulated
    with the <TT
 CLASS="COMMAND"
@@ -93,131 +102,125 @@ CLASS="COMMAND"
    <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
->'s <TT
+>'s <VAR
 CLASS="LITERAL"
->\d</TT
+>\d</VAR
 > commands.
    Descriptions of many built-in system objects are provided in the initial
-   contents of pg_description.
+   contents of <TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+>.
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN53416"
+NAME="AEN51893"
 ></A
 ><P
 ><B
->Table 3-14. pg_description Columns</B
+>Table 45-14. <TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->objoid</TD
+><TT
+CLASS="STRUCTFIELD"
+>objoid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->any oid attribute</TD
+>any OID column</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The oid of the object this description pertains to</TD
+>The OID of the object this description pertains to</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->classoid</TD
+><TT
+CLASS="STRUCTFIELD"
+>classoid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The oid of the system catalog this object appears in</TD
+>The OID of the system catalog this object appears in</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->objsubid</TD
+><TT
+CLASS="STRUCTFIELD"
+>objsubid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->For a comment on a table attribute, this is the attribute's
-       column number (the objoid and classoid refer to the table itself).
-       For all other object types, this field is presently zero.
+>       For a comment on a table column, this is the column number (the
+       <TT
+CLASS="STRUCTFIELD"
+>objoid</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>classoid</TT
+> refer to
+       the table itself).  For all other object types, this column is
+       zero.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->description</TD
+><TT
+CLASS="STRUCTFIELD"
+>description</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Arbitrary text that serves as the description of this object.</TD
 ></TR
 ></TBODY
@@ -268,7 +271,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_depend</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -282,7 +288,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_group</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_group</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

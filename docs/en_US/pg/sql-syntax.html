@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SQL Syntax</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 User's Guide"
-HREF="user.html"><LINK
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
 REL="PREVIOUS"
-TITLE="Bug Reporting Guidelines"
-HREF="bug-reporting.html"><LINK
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
 REL="NEXT"
 TITLE="Value Expressions"
 HREF="sql-expressions.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="bug-reporting.html"
+HREF="sql.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="SQL-SYNTAX"
->Chapter 1. SQL Syntax</A
-></H1
+></A
+>Chapter 4. SQL Syntax</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,89 +90,89 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->1.1. <A
+>4.1. <A
 HREF="sql-syntax.html#SQL-SYNTAX-LEXICAL"
 >Lexical Structure</A
 ></DT
 ><DD
 ><DL
 ><DT
->1.1.1. <A
+>4.1.1. <A
 HREF="sql-syntax.html#SQL-SYNTAX-IDENTIFIERS"
 >Identifiers and Key Words</A
 ></DT
 ><DT
->1.1.2. <A
+>4.1.2. <A
 HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
 >Constants</A
 ></DT
 ><DT
->1.1.3. <A
+>4.1.3. <A
 HREF="sql-syntax.html#SQL-SYNTAX-OPERATORS"
 >Operators</A
 ></DT
 ><DT
->1.1.4. <A
-HREF="sql-syntax.html#AEN1302"
+>4.1.4. <A
+HREF="sql-syntax.html#AEN1206"
 >Special Characters</A
 ></DT
 ><DT
->1.1.5. <A
+>4.1.5. <A
 HREF="sql-syntax.html#SQL-SYNTAX-COMMENTS"
 >Comments</A
 ></DT
 ><DT
->1.1.6. <A
+>4.1.6. <A
 HREF="sql-syntax.html#SQL-PRECEDENCE"
 >Lexical Precedence</A
 ></DT
 ></DL
 ></DD
 ><DT
->1.2. <A
+>4.2. <A
 HREF="sql-expressions.html"
 >Value Expressions</A
 ></DT
 ><DD
 ><DL
 ><DT
->1.2.1. <A
-HREF="sql-expressions.html#AEN1527"
+>4.2.1. <A
+HREF="sql-expressions.html#AEN1432"
 >Column References</A
 ></DT
 ><DT
->1.2.2. <A
-HREF="sql-expressions.html#AEN1550"
+>4.2.2. <A
+HREF="sql-expressions.html#AEN1455"
 >Positional Parameters</A
 ></DT
 ><DT
->1.2.3. <A
-HREF="sql-expressions.html#AEN1559"
+>4.2.3. <A
+HREF="sql-expressions.html#AEN1464"
 >Operator Invocations</A
 ></DT
 ><DT
->1.2.4. <A
-HREF="sql-expressions.html#AEN1585"
+>4.2.4. <A
+HREF="sql-expressions.html#AEN1490"
 >Function Calls</A
 ></DT
 ><DT
->1.2.5. <A
+>4.2.5. <A
 HREF="sql-expressions.html#SYNTAX-AGGREGATES"
 >Aggregate Expressions</A
 ></DT
 ><DT
->1.2.6. <A
+>4.2.6. <A
 HREF="sql-expressions.html#SQL-SYNTAX-TYPE-CASTS"
 >Type Casts</A
 ></DT
 ><DT
->1.2.7. <A
-HREF="sql-expressions.html#AEN1653"
+>4.2.7. <A
+HREF="sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES"
 >Scalar Subqueries</A
 ></DT
 ><DT
->1.2.8. <A
-HREF="sql-expressions.html#AEN1662"
+>4.2.8. <A
+HREF="sql-expressions.html#SYNTAX-EXPRESS-EVAL"
 >Expression Evaluation</A
 ></DT
 ></DL
@@ -180,7 +180,7 @@ HREF="sql-expressions.html#AEN1662"
 ></DL
 ></DIV
 ><A
-NAME="AEN1042"
+NAME="AEN946"
 ></A
 ><P
 >  This chapter describes the syntax of SQL.  It forms the foundation
@@ -202,7 +202,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SQL-SYNTAX-LEXICAL"
->1.1. Lexical Structure</A
+>4.1. Lexical Structure</A
 ></H1
 ><P
 >   SQL input consists of a sequence of
@@ -293,11 +293,10 @@ CLASS="COMMAND"
 CLASS="TOKEN"
 >VALUES</TT
 > in order to be complete.  The
-   precise syntax rules for each command are described in the
-   <A
+   precise syntax rules for each command are described in <A
 HREF="reference.html"
-><I
->PostgreSQL 7.3.3 Reference Manual</I
+>Part VI in <I
+>PostgreSQL 7.4beta1 Documentation</I
 ></A
 >.
   </P
@@ -307,13 +306,13 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SQL-SYNTAX-IDENTIFIERS"
->1.1.1. Identifiers and Key Words</A
+>4.1.1. Identifiers and Key Words</A
 ></H2
 ><A
-NAME="AEN1074"
+NAME="AEN978"
 ></A
 ><A
-NAME="AEN1076"
+NAME="AEN980"
 ></A
 ><P
 >    Tokens such as <TT
@@ -358,28 +357,36 @@ HREF="sql-keywords-appendix.html"
    </P
 ><P
 >    SQL identifiers and key words must begin with a letter
-    (<TT
+    (<VAR
 CLASS="LITERAL"
->a</TT
->-<TT
+>a</VAR
+>-<VAR
 CLASS="LITERAL"
->z</TT
+>z</VAR
 >, but also letters with
     diacritical marks and non-Latin letters) or an underscore
-    (<TT
+    (<VAR
 CLASS="LITERAL"
->_</TT
+>_</VAR
 >).  Subsequent characters in an identifier or
-    key word can be letters, digits
-    (<TT
+    key word can be letters, underscores, digits
+    (<VAR
 CLASS="LITERAL"
->0</TT
->-<TT
+>0</VAR
+>-<VAR
 CLASS="LITERAL"
->9</TT
->), or underscores,
-    although the SQL standard will not define a key word that contains
-    digits or starts or ends with an underscore.
+>9</VAR
+>), or dollar signs
+    (<VAR
+CLASS="LITERAL"
+>$</VAR
+>).  Note that dollar signs are not allowed in identifiers
+    according to the letter of the SQL standard, so their use may render
+    applications less portable.
+    The SQL standard will not define a key word that contains
+    digits or starts or ends with an underscore, so identifiers of this
+    form are safe against possible conflict with future extensions of the
+    standard.
    </P
 ><P
 >    The system uses no more than <TT
@@ -391,20 +398,20 @@ CLASS="SYMBOL"
     <TT
 CLASS="SYMBOL"
 >NAMEDATALEN</TT
-> is 64 so the maximum identifier length
-    is 63 (but at the time PostgreSQL is built,
-    <TT
+> is 64 so the maximum identifier
+    length is 63. If this limit is problematic, it can be raised by
+    changing the <TT
 CLASS="SYMBOL"
 >NAMEDATALEN</TT
-> can be changed in
+> constant in
     <TT
 CLASS="FILENAME"
 >src/include/postgres_ext.h</TT
->).
+>.
    </P
 ><P
 >    <A
-NAME="AEN1101"
+NAME="AEN1006"
 ></A
 >
     Identifier and key word names are case insensitive.  Therefore
@@ -426,7 +433,7 @@ CLASS="PROGRAMLISTING"
    </P
 ><P
 >    <A
-NAME="AEN1108"
+NAME="AEN1013"
 ></A
 >
     There is a second kind of identifier:  the <I
@@ -439,22 +446,22 @@ CLASS="FIRSTTERM"
     identifier</I
 >.  It is formed by enclosing an arbitrary
     sequence of characters in double-quotes
-    (<TT
+    (<VAR
 CLASS="LITERAL"
->"</TT
+>"</VAR
 >).  A delimited
     identifier is always an identifier, never a key word.  So
-    <TT
+    <VAR
 CLASS="LITERAL"
->"select"</TT
+>"select"</VAR
 > could be used to refer to a column or
     table named <SPAN
 CLASS="QUOTE"
 >"select"</SPAN
 >, whereas an unquoted
-    <TT
+    <VAR
 CLASS="LITERAL"
->select</TT
+>select</VAR
 > would be taken as a key word and
     would therefore provoke a parse error when used where a table or
     column name is expected.  The example can be written with quoted
@@ -474,33 +481,36 @@ CLASS="PROGRAMLISTING"
 ><P
 >    Quoting an identifier also makes it case-sensitive, whereas
     unquoted names are always folded to lower case.  For example, the
-    identifiers <TT
+    identifiers <VAR
 CLASS="LITERAL"
->FOO</TT
->, <TT
+>FOO</VAR
+>, <VAR
 CLASS="LITERAL"
->foo</TT
-> and
-    <TT
+>foo</VAR
+>, and
+    <VAR
 CLASS="LITERAL"
->"foo"</TT
+>"foo"</VAR
 > are considered the same by
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->, but <TT
+>, but <VAR
 CLASS="LITERAL"
->"Foo"</TT
+>"Foo"</VAR
 >
-    and <TT
+    and <VAR
 CLASS="LITERAL"
->"FOO"</TT
+>"FOO"</VAR
 > are different from these three and
     each other.
     <A
-NAME="AEN1126"
-HREF="#FTN.AEN1126"
->[1]</A
+NAME="AEN1031"
+HREF="#FTN.AEN1031"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
 >
    </P
 ></DIV
@@ -510,10 +520,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SQL-SYNTAX-CONSTANTS"
->1.1.2. Constants</A
+>4.1.2. Constants</A
 ></H2
 ><A
-NAME="AEN1134"
+NAME="AEN1039"
 ></A
 ><P
 >    There are three kinds of <I
@@ -536,29 +546,29 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="SQL-SYNTAX-STRINGS"
->1.1.2.1. String Constants</A
+>4.1.2.1. String Constants</A
 ></H3
 ><A
-NAME="AEN1141"
+NAME="AEN1046"
 ></A
 ><P
 >     <A
-NAME="AEN1145"
+NAME="AEN1050"
 ></A
 >
      A string constant in SQL is an arbitrary sequence of characters
      bounded by single quotes (<SPAN
 CLASS="QUOTE"
 >"'"</SPAN
->), e.g., <TT
+>), e.g., <VAR
 CLASS="LITERAL"
 >'This
-     is a string'</TT
+     is a string'</VAR
 >.  SQL allows single quotes to be embedded
      in strings by typing two adjacent single quotes (e.g.,
-     <TT
+     <VAR
 CLASS="LITERAL"
->'Dianne''s horse'</TT
+>'Dianne''s horse'</VAR
 >).  In
      <SPAN
 CLASS="PRODUCTNAME"
@@ -568,45 +578,41 @@ CLASS="PRODUCTNAME"
 CLASS="QUOTE"
 >"\"</SPAN
 >,
-     e.g., <TT
+     e.g., <VAR
 CLASS="LITERAL"
->'Dianne\'s horse'</TT
+>'Dianne\'s horse'</VAR
 >).
     </P
 ><P
 >     C-style backslash escapes are also available:
-     <TT
+     <VAR
 CLASS="LITERAL"
->\b</TT
-> is a backspace, <TT
+>\b</VAR
+> is a backspace, <VAR
 CLASS="LITERAL"
->\f</TT
+>\f</VAR
 > is a
-     form feed, <TT
+     form feed, <VAR
 CLASS="LITERAL"
->\n</TT
+>\n</VAR
 > is a newline,
-     <TT
+     <VAR
 CLASS="LITERAL"
->\r</TT
-> is a carriage return, <TT
+>\r</VAR
+> is a carriage return, <VAR
 CLASS="LITERAL"
->\t</TT
+>\t</VAR
 >
-     is a tab, and <TT
+     is a tab, and <VAR
 CLASS="LITERAL"
->\<TT
+>\<VAR
 CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
-></TT
+>xxx</VAR
+></VAR
 >,
-     where <TT
+     where <VAR
 CLASS="REPLACEABLE"
-><I
->xxx</I
-></TT
+>xxx</VAR
 > is an octal number, is the
      character with the corresponding ASCII code.  Any other character
      following a backslash is taken literally.  Thus, to include a
@@ -642,9 +648,9 @@ CLASS="PROGRAMLISTING"
 >SELECT 'foo'      'bar';</PRE
 ><P>
      is not valid syntax.  (This slightly bizarre behavior is specified
-     by <SPAN
+     by <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >; <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -658,40 +664,40 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="SQL-SYNTAX-BIT-STRINGS"
->1.1.2.2. Bit-String Constants</A
+>4.1.2.2. Bit-String Constants</A
 ></H3
 ><A
-NAME="AEN1173"
+NAME="AEN1078"
 ></A
 ><P
 >     Bit-string constants look like string constants with a
-     <TT
+     <VAR
 CLASS="LITERAL"
->B</TT
+>B</VAR
 > (upper or lower case) immediately before the
      opening quote (no intervening whitespace), e.g.,
-     <TT
+     <VAR
 CLASS="LITERAL"
->B'1001'</TT
+>B'1001'</VAR
 >.  The only characters allowed within
-     bit-string constants are <TT
+     bit-string constants are <VAR
 CLASS="LITERAL"
->0</TT
+>0</VAR
 > and
-     <TT
+     <VAR
 CLASS="LITERAL"
->1</TT
+>1</VAR
 >.
     </P
 ><P
 >     Alternatively, bit-string constants can be specified in hexadecimal
-     notation, using a leading <TT
+     notation, using a leading <VAR
 CLASS="LITERAL"
->X</TT
+>X</VAR
 > (upper or lower case),
-     e.g., <TT
+     e.g., <VAR
 CLASS="LITERAL"
->X'1FF'</TT
+>X'1FF'</VAR
 >.  This notation is equivalent to
      a bit-string constant with four binary digits for each hexadecimal digit.
     </P
@@ -705,98 +711,78 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN1185"
->1.1.2.3. Numeric Constants</A
+NAME="AEN1090"
+>4.1.2.3. Numeric Constants</A
 ></H3
 ><A
-NAME="AEN1187"
+NAME="AEN1092"
 ></A
 ><P
 >     Numeric constants are accepted in these general forms:
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 >
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 >.[<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 ></SPAN
 >][<SPAN
 CLASS="OPTIONAL"
 >e[<SPAN
 CLASS="OPTIONAL"
 >+-</SPAN
->]<TT
+>]<VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 ></SPAN
 >]
 [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 ></SPAN
->].<TT
+>].<VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 >[<SPAN
 CLASS="OPTIONAL"
 >e[<SPAN
 CLASS="OPTIONAL"
 >+-</SPAN
->]<TT
+>]<VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 ></SPAN
 >]
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 >e[<SPAN
 CLASS="OPTIONAL"
 >+-</SPAN
->]<TT
+>]<VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 ></PRE
 ><P>
-     where <TT
+     where <VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
+>digits</VAR
 > is one or more decimal
      digits (0 through 9).  At least one digit must be before or after the
      decimal point, if one is used.  At least one digit must follow the
-     exponent marker (<TT
+     exponent marker (<VAR
 CLASS="LITERAL"
->e</TT
+>e</VAR
 >), if one is present.
      There may not be any spaces or other characters embedded in the
      constant.  Note that any leading plus or minus sign is not actually
@@ -872,10 +858,10 @@ CLASS="SECT3"
 CLASS="SECT3"
 ><A
 NAME="SQL-SYNTAX-CONSTANTS-GENERIC"
->1.1.2.4. Constants of Other Types</A
+>4.1.2.4. Constants of Other Types</A
 ></H3
 ><A
-NAME="AEN1225"
+NAME="AEN1130"
 ></A
 ><P
 >     A constant of an <SPAN
@@ -888,46 +874,32 @@ CLASS="EMPHASIS"
      entered using any one of the following notations:
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> '<TT
+>type</VAR
+> '<VAR
 CLASS="REPLACEABLE"
-><I
->string</I
-></TT
+>string</VAR
 >'
-'<TT
+'<VAR
 CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->'::<TT
+>string</VAR
+>'::<VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
+>type</VAR
 >
-CAST ( '<TT
+CAST ( '<VAR
 CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->' AS <TT
+>string</VAR
+>' AS <VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
+>type</VAR
 > )</PRE
 ><P>
      The string's text is passed to the input conversion
-     routine for the type called <TT
+     routine for the type called <VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
+>type</VAR
 >. The
      result is a constant of the indicated type.  The explicit type
      cast may be omitted if there is no ambiguity as to the type the
@@ -940,67 +912,61 @@ CLASS="REPLACEABLE"
      syntax:
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
-> ( '<TT
+>typename</VAR
+> ( '<VAR
 CLASS="REPLACEABLE"
-><I
->string</I
-></TT
+>string</VAR
 >' )</PRE
 ><P>
      but not all type names may be used in this way; see <A
 HREF="sql-expressions.html#SQL-SYNTAX-TYPE-CASTS"
->Section 1.2.6</A
+>Section 4.2.6</A
 > for details.
     </P
 ><P
->     The <TT
+>     The <VAR
 CLASS="LITERAL"
->::</TT
->, <TT
+>::</VAR
+>, <VAR
 CLASS="LITERAL"
->CAST()</TT
+>CAST()</VAR
 >, and
      function-call syntaxes can also be used to specify run-time type
      conversions of arbitrary expressions, as discussed in <A
 HREF="sql-expressions.html#SQL-SYNTAX-TYPE-CASTS"
->Section 1.2.6</A
+>Section 4.2.6</A
 >.  But the form
-     <TT
+     <VAR
+CLASS="LITERAL"
+><VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> '<TT
+>type</VAR
+> '<VAR
 CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->'
+>string</VAR
+>'</VAR
+>
      can only be used to specify the type of a literal constant.
      Another restriction on
-     <TT
-CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> '<TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->'
-     is that it does not work for array types; use <TT
+     <VAR
 CLASS="LITERAL"
->::</TT
+><VAR
+CLASS="REPLACEABLE"
+>type</VAR
+> '<VAR
+CLASS="REPLACEABLE"
+>string</VAR
+>'</VAR
 >
-     or <TT
+     is that it does not work for array types; use <VAR
 CLASS="LITERAL"
->CAST()</TT
+>::</VAR
+>
+     or <VAR
+CLASS="LITERAL"
+>CAST()</VAR
 > to specify the type of an array constant.
     </P
 ></DIV
@@ -1009,60 +975,48 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN1253"
->1.1.2.5. Array constants</A
+NAME="AEN1160"
+>4.1.2.5. Array constants</A
 ></H3
 ><A
-NAME="AEN1255"
+NAME="AEN1162"
 ></A
 ><P
 >     The general format of an array constant is the following:
 </P><PRE
 CLASS="SYNOPSIS"
->'{ <TT
+>'{ <VAR
 CLASS="REPLACEABLE"
-><I
->val1</I
-></TT
-> <TT
+>val1</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->delim</I
-></TT
-> <TT
+>delim</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->val2</I
-></TT
-> <TT
+>val2</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->delim</I
-></TT
+>delim</VAR
 > ... }'</PRE
 ><P>
-     where <TT
+     where <VAR
 CLASS="REPLACEABLE"
-><I
->delim</I
-></TT
+>delim</VAR
 > is the delimiter character
-     for the type, as recorded in its <TT
+     for the type, as recorded in its <VAR
 CLASS="LITERAL"
->pg_type</TT
+>pg_type</VAR
 >
      entry.  (For all built-in types, this is the comma character
      <SPAN
 CLASS="QUOTE"
->"<TT
+>"<VAR
 CLASS="LITERAL"
->,</TT
+>,</VAR
 >"</SPAN
->.)  Each <TT
+>.)  Each <VAR
 CLASS="REPLACEABLE"
-><I
->val</I
-></TT
+>val</VAR
 > is either a constant
      of the array element type, or a subarray.  An example of an
      array constant is
@@ -1075,9 +1029,9 @@ CLASS="PROGRAMLISTING"
     </P
 ><P
 >     Individual array elements can be placed between double-quote
-     marks (<TT
+     marks (<VAR
 CLASS="LITERAL"
->"</TT
+>"</VAR
 >)  to avoid ambiguity
      problems with respect to whitespace.  Without quote marks, the
      array-value parser will skip leading whitespace.
@@ -1097,10 +1051,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SQL-SYNTAX-OPERATORS"
->1.1.3. Operators</A
+>4.1.3. Operators</A
 ></H2
 ><A
-NAME="AEN1275"
+NAME="AEN1182"
 ></A
 ><P
 >    An operator is a sequence of up to <TT
@@ -1110,7 +1064,7 @@ CLASS="SYMBOL"
     (63 by default) characters from the following list:
 <P
 CLASS="LITERALLAYOUT"
->+&nbsp;-&nbsp;*&nbsp;/&nbsp;&lt;&nbsp;&gt;&nbsp;=&nbsp;~&nbsp;!&nbsp;@&nbsp;#&nbsp;%&nbsp;^&nbsp;&amp;&nbsp;|&nbsp;`&nbsp;?&nbsp;$</P
+>+&nbsp;-&nbsp;*&nbsp;/&nbsp;&lt;&nbsp;&gt;&nbsp;=&nbsp;~&nbsp;!&nbsp;@&nbsp;#&nbsp;%&nbsp;^&nbsp;&amp;&nbsp;|&nbsp;`&nbsp;?</P
 >
 
     There are a few restrictions on operator names, however:
@@ -1119,21 +1073,12 @@ CLASS="LITERALLAYOUT"
 ></P><UL
 ><LI
 ><P
->       <TT
+>       <VAR
 CLASS="LITERAL"
->$</TT
-> (dollar) cannot be a single-character operator, although it
-       can be part of a multiple-character operator name.
-      </P
-></LI
-><LI
-><P
->       <TT
+>--</VAR
+> and <VAR
 CLASS="LITERAL"
->--</TT
-> and <TT
-CLASS="LITERAL"
->/*</TT
+>/*</VAR
 > cannot appear
        anywhere in an operator name, since they will be taken as the
        start of a comment.
@@ -1141,25 +1086,25 @@ CLASS="LITERAL"
 ></LI
 ><LI
 ><P
->       A multiple-character operator name cannot end in <TT
+>       A multiple-character operator name cannot end in <VAR
 CLASS="LITERAL"
->+</TT
-> or <TT
+>+</VAR
+> or <VAR
 CLASS="LITERAL"
->-</TT
+>-</VAR
 >,
        unless the name also contains at least one of these characters:
 <P
 CLASS="LITERALLAYOUT"
->~&nbsp;!&nbsp;@&nbsp;#&nbsp;%&nbsp;^&nbsp;&amp;&nbsp;|&nbsp;`&nbsp;?&nbsp;$</P
+>~&nbsp;!&nbsp;@&nbsp;#&nbsp;%&nbsp;^&nbsp;&amp;&nbsp;|&nbsp;`&nbsp;?</P
 >
-       For example, <TT
+       For example, <VAR
 CLASS="LITERAL"
->@-</TT
+>@-</VAR
 > is an allowed operator name,
-       but <TT
+       but <VAR
 CLASS="LITERAL"
->*-</TT
+>*-</VAR
 > is not.  This restriction allows
        <SPAN
 CLASS="PRODUCTNAME"
@@ -1174,17 +1119,17 @@ CLASS="PRODUCTNAME"
 ><P
 >    When working with non-SQL-standard operator names, you will usually
     need to separate adjacent operators with spaces to avoid ambiguity.
-    For example, if you have defined a left unary operator named <TT
+    For example, if you have defined a left unary operator named <VAR
 CLASS="LITERAL"
->@</TT
+>@</VAR
 >,
-    you cannot write <TT
+    you cannot write <VAR
 CLASS="LITERAL"
->X*@Y</TT
+>X*@Y</VAR
 >; you must write
-    <TT
+    <VAR
 CLASS="LITERAL"
->X* @Y</TT
+>X* @Y</VAR
 > to ensure that
     <SPAN
 CLASS="PRODUCTNAME"
@@ -1198,8 +1143,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1302"
->1.1.4. Special Characters</A
+NAME="AEN1206"
+>4.1.4. Special Characters</A
 ></H2
 ><P
 >   Some characters that are not alphanumeric have a special meaning
@@ -1213,20 +1158,20 @@ NAME="AEN1302"
 ></P><UL
 ><LI
 ><P
->      A dollar sign (<TT
+>      A dollar sign (<VAR
 CLASS="LITERAL"
->$</TT
+>$</VAR
 >) followed by digits is used
-      to represent the positional parameters in the body of a function
-      definition.  In other contexts the dollar sign may be part of an
-      operator name.
+      to represent a positional parameter in the body of a function
+      definition or a prepared statement.  In other contexts the
+      dollar sign may be part of an identifier.
      </P
 ></LI
 ><LI
 ><P
->      Parentheses (<TT
+>      Parentheses (<VAR
 CLASS="LITERAL"
->()</TT
+>()</VAR
 >) have their usual meaning to
       group expressions and enforce precedence.  In some cases
       parentheses are required as part of the fixed syntax of a
@@ -1235,31 +1180,31 @@ CLASS="LITERAL"
 ></LI
 ><LI
 ><P
->      Brackets (<TT
+>      Brackets (<VAR
 CLASS="LITERAL"
->[]</TT
+>[]</VAR
 >) are used to select the elements
       of an array.  See <A
 HREF="arrays.html"
->Section 5.12</A
+>Section 8.10</A
 > for more information
       on arrays.
      </P
 ></LI
 ><LI
 ><P
->      Commas (<TT
+>      Commas (<VAR
 CLASS="LITERAL"
->,</TT
+>,</VAR
 >) are used in some syntactical
       constructs to separate the elements of a list.
      </P
 ></LI
 ><LI
 ><P
->      The semicolon (<TT
+>      The semicolon (<VAR
 CLASS="LITERAL"
->;</TT
+>;</VAR
 >) terminates an SQL command.
       It cannot appear anywhere within a command, except within a
       string constant or quoted identifier.
@@ -1267,42 +1212,42 @@ CLASS="LITERAL"
 ></LI
 ><LI
 ><P
->      The colon (<TT
+>      The colon (<VAR
 CLASS="LITERAL"
->:</TT
+>:</VAR
 >) is used to select
       <SPAN
 CLASS="QUOTE"
 >"slices"</SPAN
 > from arrays. (See <A
 HREF="arrays.html"
->Section 5.12</A
+>Section 8.10</A
 >.)  In certain SQL dialects (such as Embedded
       SQL), the colon is used to prefix variable names.
      </P
 ></LI
 ><LI
 ><P
->      The asterisk (<TT
+>      The asterisk (<VAR
 CLASS="LITERAL"
->*</TT
+>*</VAR
 >) has a special meaning when
       used in the <TT
 CLASS="COMMAND"
 >SELECT</TT
 > command or with the
-      <TT
+      <CODE
 CLASS="FUNCTION"
->COUNT</TT
+>COUNT</CODE
 > aggregate function.
      </P
 ></LI
 ><LI
 ><P
->      The period (<TT
+>      The period (<VAR
 CLASS="LITERAL"
->.</TT
->) is used in floating-point
+>.</VAR
+>) is used in numeric
       constants, and to separate schema, table, and column names.
      </P
 ></LI
@@ -1317,10 +1262,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SQL-SYNTAX-COMMENTS"
->1.1.5. Comments</A
+>4.1.5. Comments</A
 ></H2
 ><A
-NAME="AEN1337"
+NAME="AEN1241"
 ></A
 ><P
 >    A comment is an arbitrary sequence of characters beginning with
@@ -1338,13 +1283,13 @@ CLASS="PROGRAMLISTING"
  * with nesting: /* nested block comment */
  */</PRE
 ><P>
-    where the comment begins with <TT
+    where the comment begins with <VAR
 CLASS="LITERAL"
->/*</TT
+>/*</VAR
 > and extends to
-    the matching occurrence of <TT
+    the matching occurrence of <VAR
 CLASS="LITERAL"
->*/</TT
+>*/</VAR
 >. These block
     comments nest, as specified in SQL99 but unlike C, so that one can
     comment out larger blocks of code that may contain existing block
@@ -1361,37 +1306,40 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SQL-PRECEDENCE"
->1.1.6. Lexical Precedence</A
+>4.1.6. Lexical Precedence</A
 ></H2
 ><A
-NAME="AEN1349"
+NAME="AEN1253"
 ></A
 ><P
 >    <A
 HREF="sql-syntax.html#SQL-PRECEDENCE-TABLE"
->Table 1-1</A
+>Table 4-1</A
 > shows the precedence and
-    associativity of the operators in PostgreSQL.  Most operators have
-    the same precedence and are left-associative.  The precedence and
-    associativity of the operators is hard-wired into the parser.
-    This may lead to non-intuitive behavior; for example the Boolean
-    operators <TT
+    associativity of the operators in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+    Most operators have the same precedence and are left-associative.
+    The precedence and associativity of the operators is hard-wired
+    into the parser.  This may lead to non-intuitive behavior; for
+    example the Boolean operators <VAR
 CLASS="LITERAL"
->&lt;</TT
-> and <TT
-CLASS="LITERAL"
->&gt;</TT
-> have a different
-    precedence than the Boolean operators <TT
-CLASS="LITERAL"
->&lt;=</TT
+>&lt;</VAR
 > and
-    <TT
+    <VAR
 CLASS="LITERAL"
->&gt;=</TT
->.  Also, you will sometimes need to add
-    parentheses when using combinations of binary and unary operators.
-    For instance
+>&gt;</VAR
+> have a different precedence than the Boolean
+    operators <VAR
+CLASS="LITERAL"
+>&lt;=</VAR
+> and <VAR
+CLASS="LITERAL"
+>&gt;=</VAR
+>.  Also, you will
+    sometimes need to add parentheses when using combinations of
+    binary and unary operators.  For instance
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT 5 ! - 6;</PRE
@@ -1420,60 +1368,42 @@ NAME="SQL-PRECEDENCE-TABLE"
 ></A
 ><P
 ><B
->Table 1-1. Operator Precedence (decreasing)</B
+>Table 4-1. Operator Precedence (decreasing)</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Operator/Element</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Associativity</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >.</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >table/column name separator</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >::</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -1481,8 +1411,6 @@ CLASS="PRODUCTNAME"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >[</TT
@@ -1491,52 +1419,34 @@ CLASS="TOKEN"
 >]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >array element selection</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >-</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >right</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >unary minus</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >^</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >exponentiation</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >*</TT
@@ -1548,18 +1458,12 @@ CLASS="TOKEN"
 >%</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >multiplication, division, modulo</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >+</TT
@@ -1568,146 +1472,98 @@ CLASS="TOKEN"
 >-</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >addition, subtraction</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >IS</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->IS TRUE</TT
->, <TT
+>IS TRUE</VAR
+>, <VAR
 CLASS="LITERAL"
->IS FALSE</TT
->, <TT
+>IS FALSE</VAR
+>, <VAR
 CLASS="LITERAL"
->IS UNKNOWN</TT
->, <TT
+>IS UNKNOWN</VAR
+>, <VAR
 CLASS="LITERAL"
->IS NULL</TT
+>IS NULL</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >ISNULL</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >test for null</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >NOTNULL</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >test for not null</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(any other)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >all other native and user-defined operators</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >IN</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >set membership</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >BETWEEN</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >containment</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >OVERLAPS</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >time interval overlap</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >LIKE</TT
@@ -1719,18 +1575,12 @@ CLASS="TOKEN"
 >SIMILAR</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >string pattern matching</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >&lt;</TT
@@ -1739,80 +1589,52 @@ CLASS="TOKEN"
 >&gt;</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >less than, greater than</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >=</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >right</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >equality, assignment</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >NOT</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >right</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >logical negation</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >AND</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >logical conjunction</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TOKEN"
 >OR</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >logical disjunction</TD
 ></TR
 ></TBODY
@@ -1834,28 +1656,28 @@ CLASS="QUOTE"
    </P
 ><P
 >    When a schema-qualified operator name is used in the
-    <TT
+    <VAR
 CLASS="LITERAL"
->OPERATOR</TT
+>OPERATOR</VAR
 > syntax, as for example in
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT 3 OPERATOR(pg_catalog.+) 4;</PRE
 ><P>
-    the <TT
+    the <VAR
 CLASS="LITERAL"
->OPERATOR</TT
+>OPERATOR</VAR
 > construct is taken to have the default precedence
     shown in <A
 HREF="sql-syntax.html#SQL-PRECEDENCE-TABLE"
->Table 1-1</A
+>Table 4-1</A
 > for <SPAN
 CLASS="QUOTE"
 >"any other"</SPAN
 > operator.  This is true no matter
-    which specific operator name appears inside <TT
+    which specific operator name appears inside <VAR
 CLASS="LITERAL"
->OPERATOR()</TT
+>OPERATOR()</VAR
 >.
    </P
 ></DIV
@@ -1874,9 +1696,12 @@ ALIGN="LEFT"
 VALIGN="TOP"
 WIDTH="5%"
 ><A
-NAME="FTN.AEN1126"
-HREF="sql-syntax.html#AEN1126"
->[1]</A
+NAME="FTN.AEN1031"
+HREF="sql-syntax.html#AEN1031"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
 ></TD
 ><TD
 ALIGN="LEFT"
@@ -1888,17 +1713,17 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
       is incompatible with the SQL standard, which says that unquoted
-      names should be folded to upper case.  Thus, <TT
+      names should be folded to upper case.  Thus, <VAR
 CLASS="LITERAL"
->foo</TT
+>foo</VAR
 >
-      should be equivalent to <TT
+      should be equivalent to <VAR
 CLASS="LITERAL"
->"FOO"</TT
+>"FOO"</VAR
 > not
-      <TT
+      <VAR
 CLASS="LITERAL"
->"foo"</TT
+>"foo"</VAR
 > according to the standard.  If you want to
       write portable applications you are advised to always quote a particular
       name or never quote it.
@@ -1922,7 +1747,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="bug-reporting.html"
+HREF="sql.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -1950,13 +1775,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Bug Reporting Guidelines</TD
+>The SQL Language</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="user.html"
+HREF="sql.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

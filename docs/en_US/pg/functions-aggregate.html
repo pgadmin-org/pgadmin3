@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Aggregate Functions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
 HREF="functions.html"><LINK
 REL="PREVIOUS"
-TITLE="Miscellaneous Functions"
-HREF="functions-misc.html"><LINK
+TITLE="Array Functions"
+HREF="functions-array.html"><LINK
 REL="NEXT"
 TITLE="Subquery Expressions"
 HREF="functions-subquery.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="functions-misc.html"
+HREF="functions-array.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. Functions and Operators</TD
+>Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-AGGREGATE"
->6.14. Aggregate Functions</A
+>9.15. Aggregate Functions</A
 ></H1
 ><P
 >   <I
@@ -90,17 +90,17 @@ CLASS="FIRSTTERM"
 > compute a single result
    value from a set of input values.  <A
 HREF="functions-aggregate.html#FUNCTIONS-AGGREGATE-TABLE"
->Table 6-33</A
-> show the built-in aggregate
+>Table 9-43</A
+> shows the built-in aggregate
    functions.  The special syntax considerations for aggregate
    functions are explained in <A
 HREF="sql-expressions.html#SYNTAX-AGGREGATES"
->Section 1.2.5</A
+>Section 4.2.5</A
 >.
-   Consult the <A
+   Consult <A
 HREF="tutorial.html"
-><I
->PostgreSQL 7.3.3 Tutorial</I
+>Part I in <I
+>PostgreSQL 7.4beta1 Documentation</I
 ></A
 > for additional introductory
    information.
@@ -112,55 +112,39 @@ NAME="FUNCTIONS-AGGREGATE-TABLE"
 ></A
 ><P
 ><B
->Table 6-33. Aggregate Functions</B
+>Table 9-43. Aggregate Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Function</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Argument Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
-><TD
->&nbsp;</TD
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <A
-NAME="AEN10355"
+NAME="AEN11708"
 ></A
 >
-       <TT
+       <CODE
 CLASS="FUNCTION"
->avg(<TT
+>avg(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->)</TT
+>expression</VAR
+>)</CODE
 >
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="TYPE"
 >smallint</TT
@@ -184,11 +168,9 @@ CLASS="TYPE"
 >, or <TT
 CLASS="TYPE"
 >interval</TT
->.
+>
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="TYPE"
 >numeric</TT
@@ -200,166 +182,104 @@ CLASS="TYPE"
        otherwise the same as the argument data type
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >the average (arithmetic mean) of all input values</TD
-><TD
->&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->count(*)</TT
+>count(*)</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bigint</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >number of input values</TD
-><TD
->&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->count(<TT
+>count(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->)</TT
+>expression</VAR
+>)</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >any</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bigint</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       number of input values for which the value of <TT
+>       number of input values for which the value of <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > is not null
       </TD
-><TD
->&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->max(<TT
+>max(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->)</TT
+>expression</VAR
+>)</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >any numeric, string, or date/time type</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >same as argument type</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       maximum value of <TT
+>       maximum value of <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > across all input
        values
       </TD
-><TD
->&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->min(<TT
+>min(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->)</TT
+>expression</VAR
+>)</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >any numeric, string, or date/time type</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >same as argument type</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       minimum value of <TT
+>       minimum value of <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > across all input
        values
       </TD
-><TD
->&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <A
-NAME="AEN10406"
+NAME="AEN11759"
 ></A
 >
-       <TT
+       <CODE
 CLASS="FUNCTION"
->stddev(<TT
+>stddev(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->)</TT
+>expression</VAR
+>)</CODE
 >
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="TYPE"
 >smallint</TT
@@ -380,11 +300,9 @@ CLASS="TYPE"
 >, or <TT
 CLASS="TYPE"
 >numeric</TT
->.
+>
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="TYPE"
 >double precision</TT
@@ -392,31 +310,21 @@ CLASS="TYPE"
        otherwise <TT
 CLASS="TYPE"
 >numeric</TT
->.
+>
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >sample standard deviation of the input values</TD
-><TD
->&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->sum(<TT
+>sum(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->)</TT
+>expression</VAR
+>)</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="TYPE"
 >smallint</TT
@@ -444,8 +352,6 @@ CLASS="TYPE"
 >
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="TYPE"
 >bigint</TT
@@ -471,38 +377,26 @@ CLASS="TYPE"
        argument data type
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->sum of <TT
+>sum of <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > across all input values</TD
-><TD
->&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <A
-NAME="AEN10444"
+NAME="AEN11797"
 ></A
 >
-       <TT
+       <CODE
 CLASS="FUNCTION"
->variance</TT
->(<TT
+>variance</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 >)
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="TYPE"
 >smallint</TT
@@ -523,11 +417,9 @@ CLASS="TYPE"
 >, or <TT
 CLASS="TYPE"
 >numeric</TT
->.
+>
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="TYPE"
 >double precision</TT
@@ -535,34 +427,136 @@ CLASS="TYPE"
        otherwise <TT
 CLASS="TYPE"
 >numeric</TT
->.
+>
       </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >sample variance of the input values (square of the sample standard deviation)</TD
-><TD
->&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->   It should be noted that except for <TT
+>   It should be noted that except for <CODE
 CLASS="FUNCTION"
->count</TT
+>count</CODE
 >,
    these functions return a null value when no rows are selected.  In
-   particular, <TT
+   particular, <CODE
 CLASS="FUNCTION"
->sum</TT
+>sum</CODE
 > of no rows returns null, not
-   zero as one might expect.  The function <TT
+   zero as one might expect.  The function <CODE
 CLASS="FUNCTION"
->coalesce</TT
+>coalesce</CODE
 > may be
    used to substitute zero for null when necessary.
   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    Users accustomed to working with other RDBMS products may be
+    surprised by the performance characteristics of certain aggregate
+    functions in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> when the
+    aggregate is applied to the entire table (in other words, no
+    <VAR
+CLASS="LITERAL"
+>WHERE</VAR
+> clause is specified). In particular,
+    a query like
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT min(col) FROM sometable;</PRE
+><P>
+   will be executed by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> using a
+   sequential scan of the entire table. Other database systems may
+   optimize queries of this form to use an index on the column, if one
+   is available. Similarly, the aggregate functions
+   <CODE
+CLASS="FUNCTION"
+>max()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>count()</CODE
+> always
+   require a sequential scan if applied to the entire table in
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+   </P
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> cannot easily implement this
+    optimization because it also allows for user-defined aggregate
+    queries. Since <CODE
+CLASS="FUNCTION"
+>min()</CODE
+>,
+    <CODE
+CLASS="FUNCTION"
+>max()</CODE
+>, and <CODE
+CLASS="FUNCTION"
+>count()</CODE
+> are
+    defined using a generic API for aggregate functions, there is no
+    provision for <SPAN
+CLASS="QUOTE"
+>"special-casing"</SPAN
+> the execution of these
+    functions under certain circumstances.
+   </P
+><P
+>    Fortunately, there is a simple workaround for
+    <CODE
+CLASS="FUNCTION"
+>min()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>max()</CODE
+>. The
+    query shown below is equivalent to the query above, except that it
+    can take advantage of a B+-Tree index if there is one present on
+    the column in question.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT col FROM sometable ORDER BY col ASC LIMIT 1;</PRE
+><P>
+    A similar query (obtained by substituting <VAR
+CLASS="LITERAL"
+>DESC</VAR
+>
+    for <VAR
+CLASS="LITERAL"
+>ASC</VAR
+> in the query above) can be used in the
+    place of <CODE
+CLASS="FUNCTION"
+>max()</CODE
+>).
+   </P
+><P
+>    Unfortunately, there is no similarly trivial query that can be
+    used to improve the performance of <CODE
+CLASS="FUNCTION"
+>count()</CODE
+>
+    when applied to the entire table.
+   </P
+></BLOCKQUOTE
+></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -580,7 +574,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="functions-misc.html"
+HREF="functions-array.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -608,7 +602,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Miscellaneous Functions</TD
+>Array Functions</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

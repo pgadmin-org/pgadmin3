@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >VACUUM</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,224 +78,44 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-VACUUM"
->VACUUM</A
-></H1
+></A
+>VACUUM</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN46368"
+NAME="AEN44598"
 ></A
 ><H2
 >Name</H2
->   VACUUM
-  &nbsp;--&nbsp;   garbage-collect and optionally analyze a database
-  </DIV
+>VACUUM&nbsp;--&nbsp;garbage-collect and optionally analyze a database</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN46371"
+NAME="AEN44601"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] [ <TT
+>VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] [ <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
+>table</VAR
 > ]
-VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <TT
+VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> [ (<TT
+>table</VAR
+> [ (<VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [, ...] ) ] ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-VACUUM-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->FULL</DT
-><DD
-><P
->        Selects <SPAN
-CLASS="QUOTE"
->"full"</SPAN
-> vacuum, which may reclaim more space,
-	but takes much longer and exclusively locks the table.
-       </P
-></DD
-><DT
->FREEZE</DT
-><DD
-><P
->        Selects aggressive <SPAN
-CLASS="QUOTE"
->"freezing"</SPAN
-> of tuples.
-       </P
-></DD
-><DT
->VERBOSE</DT
-><DD
-><P
->	Prints a detailed vacuum activity report for each table.
-       </P
-></DD
-><DT
->ANALYZE</DT
-><DD
-><P
->	Updates statistics used by the optimizer to
-	determine the most efficient way to execute a query.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of a specific table to
-	vacuum. Defaults to all tables in the current database.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-></DT
-><DD
-><P
->	The name of a specific column to analyze. Defaults to all columns.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-VACUUM-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
-><SPAN
-CLASS="RETURNVALUE"
->VACUUM</SPAN
->
-       </TT
-></DT
-><DD
-><P
->	The command is complete.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->INFO:  --Relation <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
->--
-       </TT
-></DT
-><DD
-><P
->	The report header for <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
->.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->INFO:  Pages 98: Changed 25, Reapped 74, Empty 0, New 0;
-         Tup 1000: Vac 3000, Crash 0, UnUsed 0, MinLen 188, MaxLen 188;
-         Re-using: Free/Avail. Space 586952/586952; EndEmpty/Avail. Pages 0/74.
-         Elapsed 0/0 sec.
-       </TT
-></DT
-><DD
-><P
->	The analysis for <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> itself.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->INFO:  Index <TT
-CLASS="REPLACEABLE"
-><I
->index</I
-></TT
->: Pages 28;
-         Tuples 1000: Deleted 3000. Elapsed 0/0 sec.
-       </TT
-></DT
-><DD
-><P
->	The analysis for an index on the target table.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>column</VAR
+> [, ...] ) ] ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-VACUUM-1"
+NAME="AEN44606"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
@@ -305,7 +125,7 @@ CLASS="COMMAND"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > operation, tuples that
-   are deleted or obsoleted by UPDATE are not physically removed from
+   are deleted or obsoleted by an update are not physically removed from
    their table; they remain present until a <TT
 CLASS="COMMAND"
 >VACUUM</TT
@@ -352,9 +172,9 @@ HREF="sql-analyze.html"
 >   Plain <TT
 CLASS="COMMAND"
 >VACUUM</TT
-> (without <TT
+> (without <VAR
 CLASS="LITERAL"
->FULL</TT
+>FULL</VAR
 >) simply reclaims
    space and makes it
    available for re-use.  This form of the command can operate in parallel
@@ -384,7 +204,7 @@ CLASS="QUOTE"
 >"frozen"</SPAN
 > and will not be
    subject to transaction ID wraparound problems, no matter how long the
-   database is left un-vacuumed.
+   database is left unvacuumed.
    <TT
 CLASS="COMMAND"
 >FREEZE</TT
@@ -395,27 +215,179 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >VACUUM</TT
 > operations.
-   See the <I
-CLASS="CITETITLE"
->Administrator's Guide</I
+   See <A
+HREF="maintenance.html"
+>Chapter 21</A
 > for details.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-VACUUM-3"
+NAME="AEN44632"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>FULL</VAR
+></DT
+><DD
+><P
+>      Selects <SPAN
+CLASS="QUOTE"
+>"full"</SPAN
+> vacuum, which may reclaim more
+      space, but takes much longer and exclusively locks the table.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>FREEZE</VAR
+></DT
+><DD
+><P
+>      Selects aggressive <SPAN
+CLASS="QUOTE"
+>"freezing"</SPAN
+> of tuples.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>VERBOSE</VAR
+></DT
+><DD
+><P
+>      Prints a detailed vacuum activity report for each table.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>ANALYZE</VAR
+></DT
+><DD
+><P
+>      Updates statistics used by the planner to determine the most
+      efficient way to execute a query.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of a specific table to
+      vacuum. Defaults to all tables in the current database.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>column</VAR
+></DT
+><DD
+><P
+>      The name of a specific column to analyze. Defaults to all columns.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44667"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>VACUUM</SAMP
+></DT
+><DD
+><P
+>      The command is complete.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>INFO:  --Relation <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+>--</SAMP
+></DT
+><DD
+><P
+>      The report header for <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+>.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>INFO:  Pages 98: Changed 25, Reapped 74, Empty 0, New 0;
+         Tup 1000: Vac 3000, Crash 0, UnUsed 0, MinLen 188, MaxLen 188;
+         Re-using: Free/Avail. Space 586952/586952; EndEmpty/Avail. Pages 0/74.
+         Elapsed 0/0 sec.</SAMP
+></DT
+><DD
+><P
+>      The analysis for <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+> itself.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>INFO:  Index <VAR
+CLASS="REPLACEABLE"
+>index</VAR
+>: Pages 28;
+         Tuples 1000: Deleted 3000. Elapsed 0/0 sec.</SAMP
+></DT
+><DD
+><P
+>      The analysis for an index on the target table.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44694"
+></A
+><H2
+>Notes</H2
 ><P
 >    We recommend that active production databases be
-    <TT
-CLASS="COMMAND"
->VACUUM</TT
->-ed frequently (at least nightly), in order to
+    vacuumed frequently (at least nightly), in order to
     remove expired rows. After adding or deleting a large number
-    of records, it may be a good idea to issue a <TT
+    of rows, it may be a good idea to issue a <TT
 CLASS="COMMAND"
 >VACUUM
     ANALYZE</TT
@@ -425,13 +397,13 @@ CLASS="COMMAND"
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> query optimizer to make better
-    choices in planning user queries.
+> query planner to make better
+    choices in planning queries.
    </P
 ><P
->    The <TT
+>    The <VAR
 CLASS="OPTION"
->FULL</TT
+>FULL</VAR
 > option is not recommended for routine use,
     but may be useful in special cases.  An example is when you have deleted
     most of the rows in a table and would like the table to physically shrink
@@ -445,15 +417,13 @@ CLASS="COMMAND"
 > would.
    </P
 ></DIV
-></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-VACUUM-2"
+NAME="AEN44703"
 ></A
 ><H2
->   Usage
-  </H2
+>Examples</H2
 ><P
 >   The following is an example from running <TT
 CLASS="COMMAND"
@@ -461,9 +431,9 @@ CLASS="COMMAND"
 > on a table
    in the regression database:
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->regression=&#62; VACUUM VERBOSE ANALYZE onek;
+>=&#62; VACUUM VERBOSE ANALYZE onek;
 INFO:  --Relation onek--
 INFO:  Index onek_unique1: Pages 14; Tuples 1000: Deleted 3000.
         CPU 0.00s/0.11u sec elapsed 0.12 sec.
@@ -478,37 +448,38 @@ INFO:  Removed 3000 tuples in 70 pages.
 INFO:  Pages 94: Changed 0, Empty 0; Tup 1000: Vac 3000, Keep 0, UnUsed 0.
         Total CPU 0.05s/0.45u sec elapsed 0.59 sec.
 INFO:  Analyzing onek
-VACUUM
-   </PRE
+VACUUM</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-VACUUM-3"
+NAME="AEN44708"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-VACUUM-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >VACUUM</TT
-> statement in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
+> statement in the SQL standard.
+  </P
 ></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44712"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-vacuumdb.html"
+><I
+><I
+>vacuumdb</I
+></I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >ecpg</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-ECPG"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >ecpg</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47742"
+NAME="AEN45931"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47746"
+NAME="AEN45935"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,16 +105,12 @@ NAME="AEN47746"
 ><TT
 CLASS="COMMAND"
 >ecpg</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->option</I
-></TT
->...]  <TT
+>option</VAR
+>...]  <VAR
 CLASS="REPLACEABLE"
-><I
->file</I
-></TT
+>file</VAR
 >... </P
 ></DIV
 ><DIV
@@ -153,30 +149,28 @@ CLASS="FILENAME"
 CLASS="FILENAME"
 >.pgc</TT
 >, then the output file name is
-   computed by appending <TT
+   computed by appending <VAR
 CLASS="LITERAL"
->.c</TT
+>.c</VAR
 > to the full file name.
    The output file name can also be overridden using the
-   <TT
+   <VAR
 CLASS="OPTION"
->-o</TT
+>-o</VAR
 > option.
   </P
 ><P
 >   This reference page does not describe the embedded SQL language.
-   See the <A
-HREF="programmer.html"
-><I
->PostgreSQL 7.3.3 Programmer's Guide</I
-></A
-> for that.
+   See <A
+HREF="ecpg.html"
+>Chapter 30</A
+> for more information on that topic.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47766"
+NAME="AEN45955"
 ></A
 ><H2
 >Options</H2
@@ -193,28 +187,26 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-c</TT
+>-c</VAR
 ></DT
 ><DD
 ><P
->       Automatically generate C code from SQL code.  Currently, this
-       works for <TT
+>       Automatically generate certain C code from SQL code.  Currently, this
+       works for <VAR
 CLASS="LITERAL"
->EXEC SQL TYPE</TT
+>EXEC SQL TYPE</VAR
 >.
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-D <TT
+>-D <VAR
 CLASS="REPLACEABLE"
-><I
->symbol</I
-></TT
-></TT
+>symbol</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -222,21 +214,19 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-I <TT
+>-I <VAR
 CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
-></TT
+>directory</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >       Specify an additional include path, used to find files included
-       via <TT
+       via <VAR
 CLASS="LITERAL"
->EXEC SQL INCLUDE</TT
+>EXEC SQL INCLUDE</VAR
 >.  Defaults are
        <TT
 CLASS="FILENAME"
@@ -262,39 +252,35 @@ CLASS="FILENAME"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-o <TT
+>-o <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
-></TT
+>filename</VAR
+></VAR
 ></DT
 ><DD
 ><P
->       Specifies that <SPAN
-CLASS="APPLICATION"
->ecpg</SPAN
+>       Specifies that <TT
+CLASS="COMMAND"
+>ecpg</TT
 > should write all
-       its output to the given <TT
+       its output to the given <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>filename</VAR
 >.
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-t</TT
+>-t</VAR
 ></DT
 ><DD
 ><P
->       Turn on autocommit of transactions. In this mode, each query is
+>       Turn on autocommit of transactions. In this mode, each SQL command is
        automatically committed unless it is inside an explicit
-       transaction block. In the default mode, queries are committed
+       transaction block. In the default mode, commands are committed
        only when <TT
 CLASS="COMMAND"
 >EXEC SQL COMMIT</TT
@@ -302,9 +288,9 @@ CLASS="COMMAND"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-v</TT
+>-v</VAR
 ></DT
 ><DD
 ><P
@@ -313,9 +299,9 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->---help</TT
+>--help</VAR
 ></DT
 ><DD
 ><P
@@ -323,9 +309,9 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--version</TT
+>--version</VAR
 ></DT
 ><DD
 ><P
@@ -340,7 +326,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47824"
+NAME="AEN46013"
 ></A
 ><H2
 >Notes</H2
@@ -350,14 +336,17 @@ NAME="AEN47824"
 CLASS="APPLICATION"
 >ECPG</SPAN
 > header files in the
-   PostgreSQL include directory.  Therefore, one might have to use the
-   <TT
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> include directory.  Therefore, one might
+   have to use the <VAR
 CLASS="OPTION"
->-I</TT
-> option when invoking the compiler (e.g.,
-   <TT
+>-I</VAR
+> option when invoking the compiler
+   (e.g., <VAR
 CLASS="LITERAL"
->-I/usr/local/pgsql/include</TT
+>-I/usr/local/pgsql/include</VAR
 >).
   </P
 ><P
@@ -366,9 +355,9 @@ CLASS="LITERAL"
 CLASS="FILENAME"
 >libecpg</TT
 > library, for example using the
-   flags <TT
+   linker options <VAR
 CLASS="LITERAL"
->-L/usr/local/pgsql/lib -lecpg</TT
+>-L/usr/local/pgsql/lib -lecpg</VAR
 >.
   </P
 ><P
@@ -382,7 +371,7 @@ HREF="app-pgconfig.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47835"
+NAME="AEN46025"
 ></A
 ><H2
 >Examples</H2
@@ -399,21 +388,6 @@ CLASS="PROGRAMLISTING"
 cc -I/usr/local/pgsql/include -c prog1.c
 cc -o prog1 prog1.o -L/usr/local/pgsql/lib -lecpg</PRE
 ><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN47840"
-></A
-><H2
->See Also</H2
-><P
->   <I
-CLASS="CITETITLE"
->PostgreSQL Programmer's Guide</I
-> for a more
-   detailed description of the embedded SQL interface
   </P
 ></DIV
 ><DIV

@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Monitoring Disk Usage</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+TITLE="Server Administration"
 HREF="admin.html"><LINK
 REL="PREVIOUS"
 TITLE="Viewing Locks"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="DISKUSAGE"
->Chapter 11. Monitoring Disk Usage</A
-></H1
+></A
+>Chapter 24. Monitoring Disk Usage</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,23 +90,27 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->11.1. <A
+>24.1. <A
 HREF="diskusage.html#DISK-USAGE"
 >Determining Disk Usage</A
 ></DT
 ><DT
->11.2. <A
+>24.2. <A
 HREF="disk-full.html"
 >Disk Full Failure</A
 ></DT
 ></DL
 ></DIV
 ><P
->  This chapter discusses how to monitor the disk usage of a PostgreSQL
-  database system.  In the current release, the database administrator
-  does not have much control over the on-disk storage layout, so this
-  chapter is mostly informative and can give you some ideas how to
-  manage the disk usage with operating system tools.
+>  This chapter discusses how to monitor the disk usage of a
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database system.  In the current
+  release, the database administrator does not have much control over
+  the on-disk storage layout, so this chapter is mostly informative
+  and can give you some ideas how to manage the disk usage with
+  operating system tools.
  </P
 ><DIV
 CLASS="SECT1"
@@ -114,25 +118,25 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DISK-USAGE"
->11.1. Determining Disk Usage</A
+>24.1. Determining Disk Usage</A
 ></H1
 ><A
-NAME="AEN23206"
+NAME="AEN18857"
 ></A
 ><P
 >   Each table has a primary heap disk file where most of the data is
    stored. To store long column values, there is also a
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->TOAST</SPAN
+>TOAST</ACRONYM
 > file associated with the table, named based on the
-   table's OID (actually <TT
+   table's OID (actually <VAR
 CLASS="LITERAL"
->pg_class.relfilenode</TT
+>pg_class.relfilenode</VAR
 >), and an index on the
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->TOAST</SPAN
+>TOAST</ACRONYM
 > table. There also may be indexes associated with
    the base table.
   </P
@@ -148,35 +152,31 @@ CLASS="COMMAND"
    <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
-> using <TT
+> using the tools in <TT
 CLASS="FILENAME"
 >contrib/dbsize</TT
 >, and from
-   the command line using <SPAN
-CLASS="APPLICATION"
->contrib/oid2name</SPAN
+   the command line using the tools in <TT
+CLASS="FILENAME"
+>contrib/oid2name</TT
 >. Using
    <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
-> on a recently vacuumed (or analyzed) database,
+> on a recently vacuumed or analyzed database,
    you can issue queries to see the disk usage of any table:
 </P><PRE
 CLASS="PROGRAMLISTING"
->play=# SELECT relfilenode, relpages
-play-# FROM pg_class
-play-# WHERE relname = 'customer';
+>SELECT relfilenode, relpages FROM pg_class WHERE relname = 'customer';
+
  relfilenode | relpages 
 -------------+----------
        16806 |       60
 (1 row)</PRE
 ><P>
-  </P
-><P
->   
-   Each page is typically 8 kilobytes. (Remember, <TT
+   Each page is typically 8 kilobytes. (Remember, <VAR
 CLASS="LITERAL"
->relpages</TT
+>relpages</VAR
 >
    is only updated by <TT
 CLASS="COMMAND"
@@ -184,19 +184,25 @@ CLASS="COMMAND"
 > and <TT
 CLASS="COMMAND"
 >ANALYZE</TT
->.) To
-   show the space used by <SPAN
+>.)
+  </P
+><P
+>   To show the space used by <ACRONYM
 CLASS="ACRONYM"
->TOAST</SPAN
-> tables, use a query based on
-   the heap relfilenode shown above:
+>TOAST</ACRONYM
+> tables, use a query
+   like the following, substituting the <VAR
+CLASS="LITERAL"
+>relfilenode</VAR
+>
+   number of the heap (determined by the query above):
 </P><PRE
 CLASS="PROGRAMLISTING"
->play=# SELECT relname, relpages
-play-# FROM pg_class
-play-# WHERE relname = 'pg_toast_16806' OR
-play-#       relname = 'pg_toast_16806_index'
-play-# ORDER BY relname;
+>SELECT relname, relpages
+    FROM pg_class
+    WHERE relname = 'pg_toast_16806' OR relname = 'pg_toast_16806_index'
+    ORDER BY relname;
+
        relname        | relpages 
 ----------------------+----------
  pg_toast_16806       |        0
@@ -204,30 +210,28 @@ play-# ORDER BY relname;
 ><P>
   </P
 ><P
->   You can easily display index usage too:
+>   You can easily display index sizes, too:
 </P><PRE
 CLASS="PROGRAMLISTING"
->play=# SELECT c2.relname, c2.relpages
-play-# FROM pg_class c, pg_class c2, pg_index i
-play-# WHERE c.relname = 'customer' AND
-play-#       c.oid = i.indrelid AND
-play-#       c2.oid = i.indexrelid
-play-# ORDER BY c2.relname;
+>SELECT c2.relname, c2.relpages
+    FROM pg_class c, pg_class c2, pg_index i
+    WHERE c.relname = 'customer'
+        AND c.oid = i.indrelid
+        AND c2.oid = i.indexrelid
+        ORDER BY c2.relname;
+
        relname        | relpages 
 ----------------------+----------
  customer_id_indexdex |       26</PRE
 ><P>
   </P
 ><P
->   It is easy to find your largest files using <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->:
+>   It is easy to find your largest tables and indexes using this
+   information:
 </P><PRE
 CLASS="PROGRAMLISTING"
->play=# SELECT relname, relpages
-play-# FROM pg_class
-play-# ORDER BY relpages DESC;
+>SELECT relname, relpages FROM pg_class ORDER BY relpages DESC;
+
        relname        | relpages 
 ----------------------+----------
  bigtable             |     3290
@@ -245,8 +249,11 @@ CLASS="APPLICATION"
 >psql</SPAN
 > without the need for <TT
 CLASS="COMMAND"
->VACUUM/ANALYZE.</TT
->
+>VACUUM</TT
+> or <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>.
   </P
 ><P
 >   You can also use <TT
@@ -256,7 +263,7 @@ CLASS="FILENAME"
    <TT
 CLASS="FILENAME"
 >README.oid2name</TT
-> for examples. It includes a script that
+> in that directory for examples. It includes a script that
    shows disk usage for each database.
   </P
 ></DIV

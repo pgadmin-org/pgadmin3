@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE OPERATOR CLASS</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,346 +78,93 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATEOPCLASS"
->CREATE OPERATOR CLASS</A
-></H1
+></A
+>CREATE OPERATOR CLASS</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN40232"
+NAME="AEN38918"
 ></A
 ><H2
 >Name</H2
->   CREATE OPERATOR CLASS
-  &nbsp;--&nbsp;   define a new operator class for indexes
-  </DIV
+>CREATE OPERATOR CLASS&nbsp;--&nbsp;define a new operator class for indexes</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN40235"
+NAME="AEN38921"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE OPERATOR CLASS <TT
+>CREATE OPERATOR CLASS <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> [ DEFAULT ] FOR TYPE <TT
+>name</VAR
+> [ DEFAULT ] FOR TYPE <VAR
 CLASS="REPLACEABLE"
-><I
->data_type</I
-></TT
-> USING <TT
+>data_type</VAR
+> USING <VAR
 CLASS="REPLACEABLE"
-><I
->access_method</I
-></TT
+>index_method</VAR
 > AS
-  {  OPERATOR <TT
+  {  OPERATOR <VAR
 CLASS="REPLACEABLE"
-><I
->strategy_number</I
-></TT
-> <TT
+>strategy_number</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->operator_id</I
-></TT
-> [ ( <TT
+>operator_name</VAR
+> [ ( <VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
->, <TT
+>op_type</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
+>op_type</VAR
 > ) ] [ RECHECK ]
-   | FUNCTION <TT
+   | FUNCTION <VAR
 CLASS="REPLACEABLE"
-><I
->support_number</I
-></TT
-> <TT
+>support_number</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->func_name</I
-></TT
-> ( <TT
+>func_name</VAR
+> ( <VAR
 CLASS="REPLACEABLE"
-><I
->parameter_types</I
-></TT
+>argument_types</VAR
 > )
-   | STORAGE <TT
+   | STORAGE <VAR
 CLASS="REPLACEABLE"
-><I
->storage_type</I
-></TT
+>storage_type</VAR
 >
-  } [, ... ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEOPCLASS-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	The name of the operator class to be created.
-	The name may be schema-qualified.
-       </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->DEFAULT</TT
-></DT
-><DD
-><P
->        If present, the operator class will become the default index
-	operator class for its data type.  At most one operator class
-	can be the default for a specific data type and access method.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->data_type</I
-></TT
-></DT
-><DD
-><P
->        The column data type that this operator class is for.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->access_method</I
-></TT
-></DT
-><DD
-><P
->	The name of the index access method this operator class is for.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->strategy_number</I
-></TT
-></DT
-><DD
-><P
->        The index access method's strategy number for an operator associated
-	with the operator class.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->operator_id</I
-></TT
-></DT
-><DD
-><P
->	The identifier (optionally schema-qualified) of an operator associated
-	with the operator class.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-></DT
-><DD
-><P
->        The input data type(s) of an operator, or <TT
-CLASS="LITERAL"
->NONE</TT
-> to
-	signify a left-unary or right-unary operator.  The input data types
-	may be omitted in the normal case where they are the same as the
-	operator class's data type.
-       </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->RECHECK</TT
-></DT
-><DD
-><P
->        If present, the index is <SPAN
-CLASS="QUOTE"
->"lossy"</SPAN
-> for this operator,
-	and so the tuples retrieved using the index must be rechecked
-	to verify that they actually satisfy the qualification clause
-	involving this operator.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->support_number</I
-></TT
-></DT
-><DD
-><P
->        The index access method's support procedure number for a function
-	associated with the operator class.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->func_name</I
-></TT
-></DT
-><DD
-><P
->        The name (optionally schema-qualified) of a function that is
-	an index access method support procedure for the operator class.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->parameter_types</I
-></TT
-></DT
-><DD
-><P
->        The parameter data type(s) of the function.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->storage_type</I
-></TT
-></DT
-><DD
-><P
->        The data type actually stored in the index.  Normally this is the
-	same as the column data type, but some index access methods (only
-	GIST at this writing) allow it to be different.  The
-	<TT
-CLASS="LITERAL"
->STORAGE</TT
-> clause must be omitted unless the index access
-	method allows a different type to be used.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEOPCLASS-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->CREATE OPERATOR CLASS
-       </TT
-></DT
-><DD
-><P
->	Message returned if the operator class is successfully created.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+  } [, ... ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEOPCLASS-1"
+NAME="AEN38934"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >CREATE OPERATOR CLASS</TT
-> defines a new operator class,
-   <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->.
-  </P
-><P
->   An operator class defines how a particular data type can be used with
+> creates a new operator class.
+   An operator class defines how a particular data type can be used with
    an index.  The operator class specifies that certain operators will fill
    particular roles or <SPAN
 CLASS="QUOTE"
 >"strategies"</SPAN
 > for this data type and this
-   access method.  The operator class also specifies the support procedures to
+   index method.  The operator class also specifies the support procedures to
    be used by 
-   the index access method when the operator class is selected for an
+   the index method when the operator class is selected for an
    index column.  All the operators and functions used by an operator
    class must be defined before the operator class is created.
   </P
 ><P
 >   If a schema name is given then the operator class is created in the
-   specified schema.  Otherwise it is created in the current schema (the one
-   at the front of the search path; see <TT
-CLASS="LITERAL"
->CURRENT_SCHEMA()</TT
->).
+   specified schema.  Otherwise it is created in the current schema.
    Two operator classes in the same schema can have the same name only if they
-   are for different index access methods.
+   are for different index methods.
   </P
 ><P
 >   The user who defines an operator class becomes its owner.  Presently,
@@ -430,52 +177,232 @@ CLASS="LITERAL"
 CLASS="COMMAND"
 >CREATE OPERATOR CLASS</TT
 > does not presently check
-   whether the class definition includes all the operators and functions
-   required by the index access method.  It is the user's
+   whether the operator class definition includes all the operators and functions
+   required by the index method.  It is the user's
    responsibility to define a valid operator class.
   </P
 ><P
->    Refer to the chapter on interfacing extensions to indexes in the
-    <I
-CLASS="CITETITLE"
->PostgreSQL Programmer's Guide</I
->
-    for further information.
+>   Refer to <A
+HREF="xindex.html"
+>Section 34.14</A
+> for further information.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-CREATEOPCLASS-3"
+NAME="AEN38945"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    Refer to
-    <A
-HREF="sql-dropopclass.html"
-><I
->DROP OPERATOR CLASS</I
-></A
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name of the operator class to be created.  The name may be
+      schema-qualified.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>DEFAULT</VAR
+></DT
+><DD
+><P
+>      If present, the operator class will become the default
+      operator class for its data type.  At most one operator class
+      can be the default for a specific data type and index method.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>data_type</VAR
+></DT
+><DD
+><P
+>      The column data type that this operator class is for.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>index_method</VAR
+></DT
+><DD
+><P
+>      The name of the index method this operator class is for.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>strategy_number</VAR
+></DT
+><DD
+><P
+>      The index method's strategy number for an operator
+      associated with the operator class.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>operator_name</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an operator associated
+      with the operator class.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>op_type</VAR
+></DT
+><DD
+><P
+>      The operand data type(s) of an operator, or <VAR
+CLASS="LITERAL"
+>NONE</VAR
+> to
+      signify a left-unary or right-unary operator.  The operand data
+      types may be omitted in the normal case where they are the same
+      as the operator class's data type.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>RECHECK</VAR
+></DT
+><DD
+><P
+>      If present, the index is <SPAN
+CLASS="QUOTE"
+>"lossy"</SPAN
+> for this operator, and
+      so the rows retrieved using the index must be rechecked to
+      verify that they actually satisfy the qualification clause
+      involving this operator.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>support_number</VAR
+></DT
+><DD
+><P
+>      The index method's support procedure number for a
+      function associated with the operator class.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>func_name</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of a function that is an
+      index method support procedure for the operator class.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>argument_types</VAR
+></DT
+><DD
+><P
+>      The parameter data type(s) of the function.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>storage_type</VAR
+></DT
+><DD
+><P
+>      The data type actually stored in the index.  Normally this is
+      the same as the column data type, but some index methods
+      (only GiST at this writing) allow it to be different.  The
+      <VAR
+CLASS="LITERAL"
+>STORAGE</VAR
+> clause must be omitted unless the index
+      method allows a different type to be used.
+     </P
+></DD
+></DL
+></DIV
+><P
+>   The <VAR
+CLASS="LITERAL"
+>OPERATOR</VAR
+>, <VAR
+CLASS="LITERAL"
+>FUNCTION</VAR
+>, and <VAR
+CLASS="LITERAL"
+>STORAGE</VAR
 >
-    to delete user-defined operator classes from a database.
-   </P
+   clauses may appear in any order.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39015"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE OPERATOR CLASS</SAMP
+></DT
+><DD
+><P
+>      Message returned if the operator class was successfully created.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEOPCLASS-2"
+NAME="AEN39023"
 ></A
 ><H2
->   Usage
-  </H2
+>Examples</H2
 ><P
 >   The following example command defines a GiST index operator class
-   for data type <TT
+   for the data type <VAR
 CLASS="LITERAL"
->_int4</TT
-> (array of int4).  See
+>_int4</VAR
+> (array of <TT
+CLASS="TYPE"
+>int4</TT
+>).  See
    <TT
 CLASS="FILENAME"
 >contrib/intarray/</TT
@@ -496,57 +423,48 @@ CLASS="PROGRAMLISTING"
         FUNCTION        4       g_int_decompress (internal),
         FUNCTION        5       g_int_penalty (internal, internal, internal),
         FUNCTION        6       g_int_picksplit (internal, internal),
-        FUNCTION        7       g_int_same (_int4, _int4, internal);
-  </PRE
+        FUNCTION        7       g_int_same (_int4, _int4, internal);</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39030"
+></A
+><H2
+>Compatibility</H2
 ><P
->   The <TT
-CLASS="LITERAL"
->OPERATOR</TT
->, <TT
-CLASS="LITERAL"
->FUNCTION</TT
->, and <TT
-CLASS="LITERAL"
->STORAGE</TT
->
-   clauses may appear in any order.
+>   <TT
+CLASS="COMMAND"
+>CREATE OPERATOR CLASS</TT
+> is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.  There is no
+   <TT
+CLASS="COMMAND"
+>CREATE OPERATOR CLASS</TT
+> statement in the SQL
+   standard.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEOPCLASS-3"
+NAME="AEN39036"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
+>See Also</H2
 ><A
-NAME="R2-SQL-CREATEOPCLASS-4"
+HREF="sql-alteropclass.html"
+><I
+>ALTER OPERATOR CLASS</I
 ></A
-><H3
->    SQL92
-   </H3
-><P
->    <TT
-CLASS="COMMAND"
->CREATE OPERATOR CLASS</TT
->
-    is a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.
-    There is no <TT
-CLASS="COMMAND"
->CREATE OPERATOR CLASS</TT
->
-    statement in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
-></DIV
+>, <A
+HREF="sql-dropopclass.html"
+><I
+>DROP OPERATOR CLASS</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_on_connection_loss</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_listen"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,142 +78,123 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGON-CONNECTION-LOSS"
->pg_on_connection_loss</A
-></H1
+></A
+>pg_on_connection_loss</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN26891"
+NAME="AEN21824"
 ></A
 ><H2
 >Name</H2
 >pg_on_connection_loss&nbsp;--&nbsp;set or change a callback for unexpected connection loss<A
-NAME="IX-PGTCL-PGON-CONNECTION-LOSS-1"
-></A
-><A
 NAME="IX-PGTCL-PGON-CONNECTION-LOSS-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN26899"
+NAME="AEN21829"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_on_connection_loss <TT
-CLASS="REPLACEABLE"
-><I
->dbHandle</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->callbackCommand</I
-></TT
-></PRE
+>pg_on_connection_loss <VAR
+CLASS="PARAMETER"
+>conn</VAR
+> [<SPAN
+CLASS="OPTIONAL"
+><VAR
+CLASS="PARAMETER"
+>callbackCommand</VAR
+></SPAN
+>]</PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-PGTCL-PGON-CONNECTION-LOSS-1"
+NAME="AEN21834"
 ></A
-><H3
->Inputs</H3
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>pg_on_connection_loss</CODE
+> creates, changes, or
+   cancels a request to execute a callback command if an unexpected
+   loss of connection to the database occurs.  With a
+   <VAR
+CLASS="PARAMETER"
+>callbackCommand</VAR
+> parameter, the request is
+   established, or the command string of an already existing request
+   is replaced.  With no <VAR
+CLASS="PARAMETER"
+>callbackCommand</VAR
+> parameter, a
+   prior request is canceled.
+  </P
+><P
+>   The callback command string is executed from the Tcl idle loop.
+   That is the normal idle state of an application written with Tk.
+   In non-Tk Tcl shells, you can execute <CODE
+CLASS="FUNCTION"
+>update</CODE
+>
+   or <CODE
+CLASS="FUNCTION"
+>vwait</CODE
+> to cause the idle loop to be entered.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21843"
+></A
+><H2
+>Arguments</H2
 ><P
 ></P
 ><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->dbHandle</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>conn</VAR
 ></DT
 ><DD
 ><P
->Specifies a valid database handle.</P
+>      The handle to watch for connection losses.
+     </P
 ></DD
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->callbackCommand</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>callbackCommand</VAR
 ></DT
 ><DD
 ><P
->If present, provides the command string to execute
-when connection loss is detected.</P
+>      If present, provides the command string to execute when
+      connection loss is detected.
+     </P
 ></DD
 ></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGON-CONNECTION-LOSS-2"
-></A
-><H3
->Outputs</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->None</DT
-><DD
-><P
-></P
-></DD
-></DL
-></DIV
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGON-CONNECTION-LOSS-1"
+NAME="AEN21856"
 ></A
 ><H2
->Description</H2
+>Return Value</H2
 ><P
-><TT
-CLASS="FUNCTION"
->pg_on_connection_loss</TT
-> creates, changes, or cancels
-a request to execute a callback command if an unexpected loss of connection
-to the database occurs.
-With a <TT
-CLASS="PARAMETER"
-><I
->callbackCommand</I
-></TT
->
-parameter, the request is established, or the command string of an already
-existing request is replaced.  With no <TT
-CLASS="PARAMETER"
-><I
->callbackCommand</I
-></TT
->
-parameter, a prior request is canceled.</P
-><P
->The callback command string is executed from the Tcl idle loop.  That is the
-normal idle state of an application written with Tk.  In non-Tk Tcl shells,
-you can
-execute <TT
-CLASS="FUNCTION"
->update</TT
-> or <TT
-CLASS="FUNCTION"
->vwait</TT
-> to cause
-the idle loop to be entered.</P
+>   None
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

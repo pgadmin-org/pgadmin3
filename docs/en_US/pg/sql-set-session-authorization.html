@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SET SESSION AUTHORIZATION</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-SET-SESSION-AUTHORIZATION"
->SET SESSION AUTHORIZATION</A
-></H1
+></A
+>SET SESSION AUTHORIZATION</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45908"
+NAME="AEN44168"
 ></A
 ><H2
 >Name</H2
@@ -91,17 +91,15 @@ NAME="AEN45908"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45911"
+NAME="AEN44171"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SET [ SESSION | LOCAL ] SESSION AUTHORIZATION <TT
-CLASS="PARAMETER"
-><I
->username</I
-></TT
+>SET [ SESSION | LOCAL ] SESSION AUTHORIZATION <VAR
+CLASS="REPLACEABLE"
+>username</VAR
 >
 SET [ SESSION | LOCAL ] SESSION AUTHORIZATION DEFAULT
 RESET SESSION AUTHORIZATION</PRE
@@ -109,22 +107,18 @@ RESET SESSION AUTHORIZATION</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45914"
+NAME="AEN44174"
 ></A
 ><H2
 >Description</H2
 ><P
 >   This command sets the session user identifier and the current user
-   identifier of the current SQL-session context to be
-   <TT
-CLASS="PARAMETER"
-><I
->username</I
-></TT
->.  The user name may be written as
-   either an identifier or a string literal.
-   The session user identifier is valid for the duration of a
-   connection; for example, it is possible to temporarily become an
+   identifier of the current SQL-session context to be <VAR
+CLASS="REPLACEABLE"
+>username</VAR
+>.  The user name may be
+   written as either an identifier or a string literal.  Using this
+   command, it is possible, for example, to temporarily become an
    unprivileged user and later switch back to become a superuser.
   </P
 ><P
@@ -148,12 +142,12 @@ CLASS="FIRSTTERM"
    specifies the authenticated user name.
   </P
 ><P
->   The <TT
-CLASS="OPTION"
->SESSION</TT
-> and <TT
-CLASS="OPTION"
->LOCAL</TT
+>   The <VAR
+CLASS="LITERAL"
+>SESSION</VAR
+> and <VAR
+CLASS="LITERAL"
+>LOCAL</VAR
 > modifiers act the same
    as for the regular <A
 HREF="sql-set.html"
@@ -164,86 +158,69 @@ HREF="sql-set.html"
    command.
   </P
 ><P
->   The <TT
+>   The <VAR
 CLASS="LITERAL"
->DEFAULT</TT
-> and <TT
+>DEFAULT</VAR
+> and <VAR
 CLASS="LITERAL"
->RESET</TT
+>RESET</VAR
 > forms reset the session
    and current user identifiers to be the originally authenticated user
-   name.  These forms are always accepted.
+   name.  These forms may be executed by any user.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45929"
+NAME="AEN44189"
 ></A
 ><H2
 >Examples</H2
 ><PRE
-CLASS="SCREEN"
-><TT
-CLASS="USERINPUT"
-><B
->SELECT SESSION_USER, CURRENT_USER;</B
-></TT
->
- current_user | session_user
+CLASS="PROGRAMLISTING"
+>SELECT SESSION_USER, CURRENT_USER;
+
+ session_user | current_user 
 --------------+--------------
  peter        | peter
 
-<TT
-CLASS="USERINPUT"
-><B
->SET SESSION AUTHORIZATION 'paul';</B
-></TT
->
+SET SESSION AUTHORIZATION 'paul';
 
-<TT
-CLASS="USERINPUT"
-><B
->SELECT SESSION_USER, CURRENT_USER;</B
-></TT
->
- current_user | session_user
+SELECT SESSION_USER, CURRENT_USER;
+
+ session_user | current_user 
 --------------+--------------
  paul         | paul</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45935"
+NAME="AEN44192"
 ></A
 ><H2
 >Compatibility</H2
 ><P
->SQL99</P
-><P
->   SQL99 allows some other expressions to appear in place of the
-   literal <TT
-CLASS="PARAMETER"
-><I
->username</I
-></TT
-> which are not important in
-   practice.  <SPAN
+>   The SQL standard allows some other expressions to appear in place
+   of the literal <VAR
+CLASS="REPLACEABLE"
+>username</VAR
+> which are not
+   important in practice.  <SPAN
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
-> allows identifier
-   syntax (<TT
+>
+   allows identifier syntax (<VAR
 CLASS="LITERAL"
->"username"</TT
->), which SQL does not.  SQL
-   does not allow this command during a transaction;
+>"username"</VAR
+>), which SQL
+   does not.  SQL does not allow this command during a transaction;
    <SPAN
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
-> does not make
-   this restriction because there is no reason to.  The
-   privileges necessary to execute this command are left
-   implementation-defined by the standard.
+> does not make this
+   restriction because there is no reason to.  The privileges
+   necessary to execute this command are left implementation-defined
+   by the standard.
   </P
 ></DIV
 ><DIV

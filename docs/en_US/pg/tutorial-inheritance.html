@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Inheritance</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Advanced Features"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -84,20 +84,20 @@ NAME="TUTORIAL-INHERITANCE"
 >3.5. Inheritance</A
 ></H1
 ><A
-NAME="AEN607"
+NAME="AEN884"
 ></A
 ><P
 >    Inheritance is a concept from object-oriented databases.  It opens
     up interesting new possibilities of database design.
    </P
 ><P
->    Let's create two tables:  A table <TT
+>    Let's create two tables:  A table <CODE
 CLASS="CLASSNAME"
->cities</TT
+>cities</CODE
 >
-    and a table <TT
+    and a table <CODE
 CLASS="CLASSNAME"
->capitals</TT
+>capitals</CODE
 >.  Naturally, capitals
     are also cities, so you want some way to show the capitals
     implicitly when you list all cities.  If you're really clever you
@@ -144,9 +144,9 @@ CREATE TABLE capitals (
 ><P>
    </P
 ><P
->    In this case, a row of <TT
+>    In this case, a row of <CODE
 CLASS="CLASSNAME"
->capitals</TT
+>capitals</CODE
 >
     <I
 CLASS="FIRSTTERM"
@@ -165,9 +165,9 @@ CLASS="STRUCTFIELD"
     <I
 CLASS="FIRSTTERM"
 >parent</I
->, <TT
+>, <CODE
 CLASS="CLASSNAME"
->cities</TT
+>cities</CODE
 >.  The
     type of the column <TT
 CLASS="STRUCTFIELD"
@@ -202,15 +202,14 @@ CLASS="PROGRAMLISTING"
 
     which returns:
 
-    </P><PRE
+</P><PRE
 CLASS="SCREEN"
 >   name    | altitude
 -----------+----------
  Las Vegas |     2174
  Mariposa  |     1953
  Madison   |      845
-(3 rows)
-    </PRE
+(3 rows)</PRE
 ><P>
    </P
 ><P
@@ -235,21 +234,21 @@ CLASS="SCREEN"
 ><P>
    </P
 ><P
->    Here the <TT
+>    Here the <VAR
 CLASS="LITERAL"
->ONLY</TT
-> before <TT
+>ONLY</VAR
+> before <VAR
 CLASS="LITERAL"
->cities</TT
+>cities</VAR
 >
     indicates that the query should be run over only the
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->cities</TT
+>cities</CODE
 > table, and not tables below
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->cities</TT
+>cities</CODE
 > in the inheritance hierarchy.  Many
     of the commands that we have already discussed --
     <TT
@@ -262,9 +261,9 @@ CLASS="COMMAND"
     <TT
 CLASS="COMMAND"
 >DELETE</TT
-> -- support this <TT
+> -- support this <VAR
 CLASS="LITERAL"
->ONLY</TT
+>ONLY</VAR
 >
     notation.
    </P

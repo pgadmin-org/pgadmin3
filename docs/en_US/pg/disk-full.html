@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Disk Full Failure</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Monitoring Disk Usage"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 11. Monitoring Disk Usage</TD
+>Chapter 24. Monitoring Disk Usage</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,13 +81,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DISK-FULL"
->11.2. Disk Full Failure</A
+>24.2. Disk Full Failure</A
 ></H1
 ><P
 >   The most important disk monitoring task of a database administrator
    is to make sure the disk doesn't grow full.  A filled data disk may
    result in subsequent corruption of database indexes, but not of the
-   fundamental data tables. If the WAL files are on the same disk (as
+   tables themselves. If the WAL files are on the same disk (as
    is the case for a default configuration) then a filled disk during
    database initialization may result in corrupted or incomplete WAL
    files. This failure condition is detected and the database server
@@ -104,13 +104,13 @@ CLASS="APPLICATION"
    information of such a setup; a restore would put everything back in
    one place.  To avoid running out of disk space, you can place the
    WAL files or individual databases in other locations while creating
-   them.  See the <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
+   them.  See the <TT
+CLASS="COMMAND"
+>initdb</TT
 > documentation and <A
 HREF="manage-ag-alternate-locs.html"
->Section 5.5</A
-> for more information.
+>Section 18.5</A
+> for more information about that.
   </P
 ><DIV
 CLASS="TIP"
@@ -183,9 +183,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Write-Ahead Logging (<SPAN
+>Write-Ahead Logging (<ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 >)</TD
 ></TR
 ></TABLE

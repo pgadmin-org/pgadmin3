@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Index Cost Estimation Functions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
-HREF="programmer-server.html"><LINK
+HREF="server-programming.html"><LINK
 REL="PREVIOUS"
-TITLE="Special Features of Operator Classes"
-HREF="xindex-opclass-features.html"><LINK
+TITLE="Interfacing Extensions To Indexes"
+HREF="xindex.html"><LINK
 REL="NEXT"
-TITLE="Triggers"
-HREF="triggers.html"><LINK
+TITLE="The Rule System"
+HREF="rules.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="xindex-opclass-features.html"
+HREF="xindex.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="triggers.html"
+HREF="rules.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="INDEXCOST"
->Chapter 15. Index Cost Estimation Functions</A
-></H1
+></A
+>Chapter 35. Index Cost Estimation Functions</H1
 ><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
@@ -89,12 +89,12 @@ CLASS="NOTE"
 ><P
 ><B
 >Author: </B
->    Written by Tom Lane (<TT
+>    Written by Tom Lane (<CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:tgl@sss.pgh.pa.us"
 >tgl@sss.pgh.pa.us</A
->&#62;</TT
+>&#62;</CODE
 >) on 2000-01-24
    </P
 ></BLOCKQUOTE
@@ -114,13 +114,13 @@ CLASS="NOTE"
 ><P
 >   Every index access method must provide a cost estimation function for
    use by the planner/optimizer.  The procedure OID of this function is
-   given in the <TT
+   given in the <VAR
 CLASS="LITERAL"
->amcostestimate</TT
+>amcostestimate</VAR
 > field of the access
-   method's <TT
+   method's <VAR
 CLASS="LITERAL"
->pg_am</TT
+>pg_am</VAR
 > entry.
 
    </P><DIV
@@ -309,15 +309,15 @@ TYPE="1"
 ><P
 >     Estimate and return the fraction of main-table tuples that will be visited
      based on the given qual conditions.  In the absence of any index-type-specific
-     knowledge, use the standard optimizer function <TT
+     knowledge, use the standard optimizer function <CODE
 CLASS="FUNCTION"
->clauselist_selectivity()</TT
+>clauselist_selectivity()</CODE
 >:
 
      </P><PRE
 CLASS="PROGRAMLISTING"
 >*indexSelectivity = clauselist_selectivity(root, indexQuals,
-                                           lfirsti(rel-&#62;relids));
+                                           rel-&#62;relid, JOIN_INNER);
      </PRE
 ><P>
     </P
@@ -348,9 +348,10 @@ CLASS="PROGRAMLISTING"
      * Also, we charge for evaluation of the indexquals at each index tuple.
      * All the costs are assumed to be paid incrementally during the scan.
      */
-    *indexStartupCost = 0;
+    cost_qual_eval(&amp;index_qual_cost, indexQuals);
+    *indexStartupCost = index_qual_cost.startup;
     *indexTotalCost = numIndexPages +
-        (cpu_index_tuple_cost + cost_qual_eval(indexQuals)) * numIndexTuples;
+        (cpu_index_tuple_cost + index_qual_cost.per_tuple) * numIndexTuples;
      </PRE
 ><P>
     </P
@@ -372,13 +373,13 @@ CLASS="FILENAME"
 >.
   </P
 ><P
->   By convention, the <TT
+>   By convention, the <VAR
 CLASS="LITERAL"
->pg_proc</TT
+>pg_proc</VAR
 > entry for an
-   <TT
+   <VAR
 CLASS="LITERAL"
->amcostestimate</TT
+>amcostestimate</VAR
 > function should show
    eight arguments all declared as <TT
 CLASS="TYPE"
@@ -406,7 +407,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xindex-opclass-features.html"
+HREF="xindex.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -424,7 +425,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="triggers.html"
+HREF="rules.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -434,13 +435,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Special Features of Operator Classes</TD
+>Interfacing Extensions To Indexes</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="programmer-server.html"
+HREF="server-programming.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -448,7 +449,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Triggers</TD
+>The Rule System</TD
 ></TR
 ></TABLE
 ></DIV

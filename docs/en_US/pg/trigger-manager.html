@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Interaction with the Trigger Manager</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Triggers"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 16. Triggers</TD
+>Chapter 37. Triggers</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,69 +81,49 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TRIGGER-MANAGER"
->16.2. Interaction with the Trigger Manager</A
+>37.2. Interaction with the Trigger Manager</A
 ></H1
 ><P
 >    This section describes the low-level details of the interface to a
     trigger function.  This information is only needed when writing a
-    trigger function in C.  If you are using a higher-level function
+    trigger function in C.  If you are using a higher-level
     language then these details are handled for you.
    </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Note: </B
->      The interface described here applies for
-      <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.1 and later.
-      Earlier versions passed the <TT
-CLASS="STRUCTNAME"
->TriggerData</TT
-> pointer in a global
-      variable <TT
-CLASS="VARNAME"
->CurrentTriggerData</TT
->.
-     </P
-></BLOCKQUOTE
-></DIV
-><P
->    When a function is called by the trigger manager, it is not passed any
-    normal parameters, but it is passed a <SPAN
+>    When a function is called by the trigger manager, it is not passed
+    any normal arguments, but it is passed a <SPAN
 CLASS="QUOTE"
 >"context"</SPAN
-> pointer pointing to a
-    <TT
+>
+    pointer pointing to a <TT
 CLASS="STRUCTNAME"
 >TriggerData</TT
-> structure.  C functions can check whether they were called
-    from the trigger manager or not by executing the macro
-    <TT
-CLASS="LITERAL"
->CALLED_AS_TRIGGER(fcinfo)</TT
->, which expands to
+> structure.  C
+    functions can check whether they were called from the trigger
+    manager or not by executing the macro
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CALLED_AS_TRIGGER(fcinfo)</PRE
+><P>
+    which expands to
 </P><PRE
 CLASS="PROGRAMLISTING"
 >((fcinfo)-&#62;context != NULL &#38;&#38; IsA((fcinfo)-&#62;context, TriggerData))</PRE
 ><P>
-    If this returns true, then it is safe to cast <TT
+    If this returns true, then it is safe to cast
+    <VAR
 CLASS="LITERAL"
->fcinfo-&#62;context</TT
-> to type
-    <TT
+>fcinfo-&#62;context</VAR
+> to type <VAR
 CLASS="LITERAL"
->TriggerData *</TT
+>TriggerData
+    *</VAR
 > and make use of the pointed-to
     <TT
 CLASS="STRUCTNAME"
 >TriggerData</TT
-> structure.
-    The function must <SPAN
+> structure.  The function must
+    <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
@@ -192,10 +172,10 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><P
->        Always <TT
+>        Always <VAR
 CLASS="LITERAL"
->T_TriggerData</TT
-> if this is a trigger event.
+>T_TriggerData</VAR
+>.
        </P
 ></DD
 ><DT
@@ -205,10 +185,10 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><P
->	describes the event for which the function is called. You may use the
-	following macros to examine <TT
+>	Describes the event for which the function is called. You may use the
+	following macros to examine <VAR
 CLASS="LITERAL"
->tg_event</TT
+>tg_event</VAR
 >:
 
 	<P
@@ -217,54 +197,82 @@ CLASS="LITERAL"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->TRIGGER_FIRED_BEFORE(tg_event)</DT
+><VAR
+CLASS="LITERAL"
+>TRIGGER_FIRED_BEFORE(tg_event)</VAR
+></DT
 ><DD
 ><P
->	    returns TRUE if trigger fired BEFORE.
+>	    Returns true if the trigger fired before the operation.
 	   </P
 ></DD
 ><DT
->TRIGGER_FIRED_AFTER(tg_event)</DT
+><VAR
+CLASS="LITERAL"
+>TRIGGER_FIRED_AFTER(tg_event)</VAR
+></DT
 ><DD
 ><P
->	    Returns TRUE if trigger fired AFTER.
+>	    Returns true if the trigger fired after the operation.
 	   </P
 ></DD
 ><DT
->TRIGGER_FIRED_FOR_ROW(event)</DT
+><VAR
+CLASS="LITERAL"
+>TRIGGER_FIRED_FOR_ROW(tg_event)</VAR
+></DT
 ><DD
 ><P
->	    Returns TRUE if trigger fired for
-	    a ROW-level event.
+>	    Returns true if the trigger fired for a row-level event.
 	   </P
 ></DD
 ><DT
->TRIGGER_FIRED_FOR_STATEMENT(event)</DT
+><VAR
+CLASS="LITERAL"
+>TRIGGER_FIRED_FOR_STATEMENT(tg_event)</VAR
+></DT
 ><DD
 ><P
->	    Returns TRUE if trigger fired for
-	    STATEMENT-level event.
+>	    Returns true if the trigger fired for a statement-level event.
 	   </P
 ></DD
 ><DT
->TRIGGER_FIRED_BY_INSERT(event)</DT
+><VAR
+CLASS="LITERAL"
+>TRIGGER_FIRED_BY_INSERT(tg_event)</VAR
+></DT
 ><DD
 ><P
->	    Returns TRUE if trigger fired by INSERT.
+>	    Returns true if the trigger was fired by an <TT
+CLASS="COMMAND"
+>INSERT</TT
+> command.
 	   </P
 ></DD
 ><DT
->TRIGGER_FIRED_BY_DELETE(event)</DT
+><VAR
+CLASS="LITERAL"
+>TRIGGER_FIRED_BY_UPDATE(tg_event)</VAR
+></DT
 ><DD
 ><P
->	    Returns TRUE if trigger fired by DELETE.
+>	    Returns true if the trigger was fired by an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> command.
 	   </P
 ></DD
 ><DT
->TRIGGER_FIRED_BY_UPDATE(event)</DT
+><VAR
+CLASS="LITERAL"
+>TRIGGER_FIRED_BY_DELETE(tg_event)</VAR
+></DT
 ><DD
 ><P
->	    Returns TRUE if trigger fired by UPDATE.
+>	    Returns true if the trigger was fired by a <TT
+CLASS="COMMAND"
+>DELETE</TT
+> command.
 	   </P
 ></DD
 ></DL
@@ -279,32 +287,32 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><P
->	is a pointer to structure describing the triggered
-	relation. Look at <TT
+>	A pointer to a structure describing the relation that the trigger fired for.
+	Look at <TT
 CLASS="FILENAME"
 >utils/rel.h</TT
 > for details about
 	this structure.  The most interesting things are
-	<TT
+	<VAR
 CLASS="LITERAL"
->tg_relation-&#62;rd_att</TT
+>tg_relation-&#62;rd_att</VAR
 > (descriptor of the relation
-	tuples) and <TT
+	tuples) and <VAR
 CLASS="LITERAL"
->tg_relation-&#62;rd_rel-&#62;relname</TT
+>tg_relation-&#62;rd_rel-&#62;relname</VAR
 >
-	(relation's name. This is not <TT
+	(relation name; the type is not <TT
 CLASS="TYPE"
 >char*</TT
->, but
+> but
 	<TT
 CLASS="TYPE"
 >NameData</TT
->.  Use
-	<TT
+>; use
+	<VAR
 CLASS="LITERAL"
->SPI_getrelname(tg_relation)</TT
-> to get <TT
+>SPI_getrelname(tg_relation)</VAR
+> to get a <TT
 CLASS="TYPE"
 >char*</TT
 > if you
@@ -318,11 +326,22 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><P
->	is a pointer to the tuple for which the trigger is fired. This is the tuple
-	being inserted (if INSERT), deleted (if DELETE) or updated (if UPDATE).
-	If INSERT/DELETE then this is what you are to return to Executor if 
-	you don't want to replace tuple with another one (INSERT) or skip the
-	operation.
+>	A pointer to the row for which the trigger was fired. This is
+	the row being inserted, updated, or deleted.  If this trigger
+	was fired for an <TT
+CLASS="COMMAND"
+>INSERT</TT
+> or
+	<TT
+CLASS="COMMAND"
+>DELETE</TT
+> then this is what you should return
+	to from the function if you don't want to replace the row with
+	a different one (in the case of <TT
+CLASS="COMMAND"
+>INSERT</TT
+>) or
+	skip the operation.
        </P
 ></DD
 ><DT
@@ -332,13 +351,28 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><P
->	is a pointer to the new version of tuple if UPDATE and <TT
+>	A pointer to the new version of the row, if the trigger was
+	fired for an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and <TT
 CLASS="SYMBOL"
 >NULL</TT
-> if this is
-	for an INSERT or a DELETE. This is what you are to return to Executor if
-	UPDATE and you don't want to replace this tuple with another one or skip
-	the operation.
+> if
+	it is for an <TT
+CLASS="COMMAND"
+>INSERT</TT
+> or a
+	<TT
+CLASS="COMMAND"
+>DELETE</TT
+>. This is what you have to return
+	from the function if the event is an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>
+	and you don't want to replace this row by a different one or
+	skip the operation.
        </P
 ></DD
 ><DT
@@ -348,10 +382,11 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><P
->	is pointer to structure <TT
+>	A pointer to a structure of type <TT
 CLASS="STRUCTNAME"
 >Trigger</TT
-> defined in <TT
+>,
+	defined in <TT
 CLASS="FILENAME"
 >utils/rel.h</TT
 >:
@@ -386,12 +421,16 @@ CLASS="STRUCTFIELD"
        <TT
 CLASS="STRUCTFIELD"
 >tgargs</TT
->, <TT
+>, and <TT
 CLASS="STRUCTFIELD"
 >tgargs</TT
 > is an array of
-       pointers to the arguments specified in the CREATE TRIGGER
-       statement. Other members are for internal use only.
+       pointers to the arguments specified in the <TT
+CLASS="COMMAND"
+>CREATE
+       TRIGGER</TT
+> statement. The other members are for internal use
+       only.
        </P
 ></DD
 ></DL

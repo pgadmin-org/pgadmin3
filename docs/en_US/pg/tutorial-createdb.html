@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Creating a Database</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Getting Started"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -84,10 +84,10 @@ NAME="TUTORIAL-CREATEDB"
 >1.3. Creating a Database</A
 ></H1
 ><A
-NAME="AEN91"
+NAME="AEN363"
 ></A
 ><A
-NAME="AEN94"
+NAME="AEN366"
 ></A
 ><P
 >    The first test to see whether you can access the database server
@@ -107,20 +107,18 @@ CLASS="PRODUCTNAME"
    </P
 ><P
 >    To create a new database, in this example named
-    <TT
+    <VAR
 CLASS="LITERAL"
->mydb</TT
+>mydb</VAR
 >, you use the following command:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->createdb mydb</B
-></TT
+>createdb mydb</KBD
 ></PRE
 ><P>
     This should produce as response:
@@ -145,14 +143,12 @@ CLASS="PRODUCTNAME"
     calling the command with an absolute path instead:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->/usr/local/pgsql/bin/createdb mydb</B
-></TT
+>/usr/local/pgsql/bin/createdb mydb</KBD
 ></PRE
 ><P>
     The path at your site might be different.  Contact your site
@@ -198,9 +194,12 @@ CLASS="PRODUCTNAME"
     under the user account that you started the server as.
 
     <A
-NAME="AEN118"
-HREF="#FTN.AEN118"
->[1]</A
+NAME="AEN390"
+HREF="#FTN.AEN390"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
 >
    </P
 ><P
@@ -217,35 +216,31 @@ CLASS="PRODUCTNAME"
     that database, simply type
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->createdb</B
-></TT
+>createdb</KBD
 ></PRE
 ><P>
    </P
 ><P
->    If you don't want to use your database anymore you can remove it.
+>    If you do not want to use your database anymore you can remove it.
     For example, if you are the owner (creator) of the database
-    <TT
+    <VAR
 CLASS="LITERAL"
->mydb</TT
+>mydb</VAR
 >, you can destroy it using the following
     command:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->dropdb mydb</B
-></TT
+>dropdb mydb</KBD
 ></PRE
 ><P>
     (For this command, the database name does not default to the user
@@ -253,6 +248,29 @@ CLASS="USERINPUT"
     physically removes all files associated with the database and
     cannot be undone, so this should only be done with a great deal of
     forethought.
+   </P
+><P
+>    More about <TT
+CLASS="COMMAND"
+>createdb</TT
+> and <TT
+CLASS="COMMAND"
+>dropdb</TT
+> may
+    be found in <A
+HREF="app-createdb.html"
+><SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+></A
+> and <A
+HREF="app-dropdb.html"
+><SPAN
+CLASS="APPLICATION"
+>dropdb</SPAN
+></A
+>
+    respectively.
    </P
 ></DIV
 ><H3
@@ -268,9 +286,12 @@ ALIGN="LEFT"
 VALIGN="TOP"
 WIDTH="5%"
 ><A
-NAME="FTN.AEN118"
-HREF="tutorial-createdb.html#AEN118"
->[1]</A
+NAME="FTN.AEN390"
+HREF="tutorial-createdb.html#AEN390"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
 ></TD
 ><TD
 ALIGN="LEFT"
@@ -297,9 +318,9 @@ CLASS="PRODUCTNAME"
       same name as the operating system user that started the server,
       and it also happens that that user always has permission to
       create databases.  Instead of logging in as that user you can
-      also specify the <TT
+      also specify the <VAR
 CLASS="OPTION"
->-U</TT
+>-U</VAR
 > option everywhere to select
       a <SPAN
 CLASS="PRODUCTNAME"

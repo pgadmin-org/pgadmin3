@@ -1,32 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->Extending SQL: Types</TITLE
+>User-Defined Types</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="Server Programming"
-HREF="programmer-server.html"><LINK
+TITLE="Extending SQL"
+HREF="extend.html"><LINK
 REL="PREVIOUS"
 TITLE="Procedural Language Handlers"
 HREF="xfunc-plhandler.html"><LINK
 REL="NEXT"
-TITLE="Extending SQL: Operators"
+TITLE="User-defined Operators"
 HREF="xoper.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
-CLASS="CHAPTER"
+CLASS="SECT1"
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
 LINK="#0000FF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,6 +60,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
+>Chapter 34. Extending <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
 ></TD
 ><TD
 WIDTH="10%"
@@ -76,26 +79,23 @@ ACCESSKEY="N"
 ALIGN="LEFT"
 WIDTH="100%"></DIV
 ><DIV
-CLASS="CHAPTER"
+CLASS="SECT1"
 ><H1
+CLASS="SECT1"
 ><A
 NAME="XTYPES"
->Chapter 10. Extending <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
->: Types</A
+>34.10. User-Defined Types</A
 ></H1
 ><A
-NAME="AEN32360"
+NAME="AEN30557"
 ></A
 ><P
->   As previously mentioned, there are two kinds of types in
+>   As described above, there are two kinds of data types in
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->: base types (defined in a
-   programming language) and composite types. This chapter describes
-   how to define new base types.
+>: base types and composite
+   types. This section describes how to define new base types.
   </P
 ><P
 >   The examples in this section can be found in
@@ -106,36 +106,32 @@ CLASS="FILENAME"
 CLASS="FILENAME"
 >complex.c</TT
 >
-   in the tutorial directory.  Composite examples are in
-   <TT
-CLASS="FILENAME"
->funcs.sql</TT
->.
+   in the tutorial directory.
   </P
 ><P
 >  <A
-NAME="AEN32371"
+NAME="AEN30567"
 ></A
 >
   <A
-NAME="AEN32373"
+NAME="AEN30569"
 ></A
 >
   A user-defined type must always have input and output functions.
   These functions determine how the type appears in strings (for input
   by the user and output to the user) and how the type is organized in
   memory.  The input function takes a null-terminated character string
-  as its input and returns the internal (in memory) representation of
+  as its argument and returns the internal (in memory) representation of
   the type.  The output function takes the internal representation of
-  the type and returns a null-terminated character string.
+  the type as argument and returns a null-terminated character string.
  </P
 ><P
->  Suppose we want to define a complex type which represents complex
-  numbers. Naturally, we would choose to represent a complex in memory
-  as the following <SPAN
-CLASS="ACRONYM"
->C</SPAN
-> structure:
+>  Suppose we want to define a type <TT
+CLASS="TYPE"
+>complex</TT
+> that represents
+  complex numbers. A natural way to to represent a complex number in
+  memory would be the following C structure:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -145,48 +141,41 @@ CLASS="PROGRAMLISTING"
 } Complex;</PRE
 ><P>
 
-  and  a  string of the form <TT
+  As the external string representation of the type, we choose a
+  string of the form <VAR
 CLASS="LITERAL"
->(x,y)</TT
-> as the external string
-  representation.
+>(x,y)</VAR
+>.
  </P
 ><P
->  The functions are usually not hard to write, especially the output
-  function.  However, there are a number of points to remember:
-
-  <P
-></P
-></P><UL
-><LI
-><P
->     When defining your external (string) representation, remember
-     that you must eventually write a complete and robust parser for
-     that representation as your input function!
-    </P
-><P
->     For instance:
+>  The input and output functions are usually not hard to write,
+  especially the output function.  But when defining the external
+  string representation of the type, remember that you must eventually
+  write a complete and robust parser for that representation as your
+  input function.  For instance:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >Complex *
 complex_in(char *str)
 {
-    double x, y;
-    Complex *result;
-    if (sscanf(str, " ( %lf , %lf )", &amp;x, &amp;y) != 2) {
-        elog(ERROR, "complex_in: error in parsing %s", str);
-        return NULL;
-    }
-    result = (Complex *)palloc(sizeof(Complex));
+    double      x,
+                y;
+    Complex    *result;
+
+    if (sscanf(str, " ( %lf , %lf )", &amp;x, &amp;y) != 2)
+        ereport(ERROR,
+                (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
+                 errmsg("invalid input syntax for complex: \"%s\"", str)));
+
+    result = (Complex *) palloc(sizeof(Complex));
     result-&gt;x = x;
     result-&gt;y = y;
-    return (result);
+    return result;
 }</PRE
 ><P>
-    </P
-><P
->     The output function can simply be:
+
+  The output function can simply be:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -194,65 +183,58 @@ CLASS="PROGRAMLISTING"
 complex_out(Complex *complex)
 {
     char *result;
+
     if (complex == NULL)
         return(NULL);
     result = (char *) palloc(60);
     sprintf(result, "(%g,%g)", complex-&gt;x, complex-&gt;y);
-    return(result);
+    return result;
 }</PRE
 ><P>
-
-    </P
-></LI
-><LI
+ </P
 ><P
->     You should try to make the input and output functions inverses of
-     each other.  If you do not, you will have severe problems when
-     you need to dump your data into a file and then read it back in
-     (say, into someone else's database on another computer).  This is
-     a particularly common problem when floating-point numbers are
-     involved.
-    </P
-></LI
-></UL
-><P>
+>  You should try to make the input and output functions inverses of
+  each other.  If you do not, you will have severe problems when you
+  need to dump your data into a file and then read it back in.  This
+  is a particularly common problem when floating-point numbers are
+  involved.
  </P
 ><P
 >  To define the <TT
 CLASS="TYPE"
 >complex</TT
 > type, we need to create the two
-  user-defined functions <TT
+  user-defined functions <CODE
 CLASS="FUNCTION"
->complex_in</TT
+>complex_in</CODE
 > and
-  <TT
+  <CODE
 CLASS="FUNCTION"
->complex_out</TT
+>complex_out</CODE
 > before creating the type:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE FUNCTION complex_in(cstring)
     RETURNS complex
-    AS '<TT
+    AS '<VAR
 CLASS="REPLACEABLE"
-><I
->PGROOT</I
-></TT
->/tutorial/complex'
+>filename</VAR
+>'
     LANGUAGE C;
 
 CREATE FUNCTION complex_out(complex)
     RETURNS cstring
-    AS '<TT
+    AS '<VAR
 CLASS="REPLACEABLE"
-><I
->PGROOT</I
-></TT
->/tutorial/complex'
+>filename</VAR
+>'
     LANGUAGE C;</PRE
 ><P>
+
+  Notice that the declarations of the input and output functions must
+  reference the not-yet-defined type.  This is allowed, but will draw
+  warning messages that may be ignored.
  </P
 ><P
 >  Finally, we can declare the data type:
@@ -264,66 +246,58 @@ CLASS="PROGRAMLISTING"
     output = complex_out
 );</PRE
 ><P>
-
-  Notice that the declarations of the input and output functions must
-  reference the not-yet-defined type.  This is allowed, but will draw
-  warning messages that may be ignored.
  </P
 ><P
->  <A
-NAME="AEN32399"
-></A
->
-  As discussed earlier, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> fully
-  supports arrays of base types.  Additionally,
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> supports arrays of
-  user-defined types as well.  When you define a type,
+>  When you define a new base type,
   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > automatically provides support
-  for arrays of that type.  For historical reasons, the array type has
-  the same name as the user-defined type with the underscore character
-  <TT
-CLASS="LITERAL"
->_</TT
-> prepended.
- </P
-><P
->  Composite types do not need any function defined on them, since the
-  system already understands what they look like inside.
- </P
-><P
->  <A
-NAME="AEN32407"
+  for arrays of that
+  type.<A
+NAME="AEN30590"
 ></A
->
-  If the values of your data type might exceed a few hundred bytes in
-  size (in internal form), you should be careful to mark them
-  TOAST-able.  To do this, the internal representation must follow the
-  standard layout for variable-length data: the first four bytes must
-  be an <TT
+> For historical reasons, the array type
+  has the same name as the base type with the underscore character
+  (<VAR
+CLASS="LITERAL"
+>_</VAR
+>) prepended.
+ </P
+><P
+>  If the values of your data type might exceed a few hundred bytes in
+  size (in internal form), you should mark them
+  TOAST-able.<A
+NAME="AEN30595"
+></A
+> To do this, the internal
+  representation must follow the standard layout for variable-length
+  data: the first four bytes must be an <TT
 CLASS="TYPE"
 >int32</TT
-> containing the total length in bytes of the
-  datum (including itself).  Then, all your functions that accept
-  values of the type must be careful to call
-  <TT
-CLASS="FUNCTION"
->pg_detoast_datum()</TT
-> on the supplied values ---
-  after checking that the value is not NULL, if your function is not
-  strict.  Finally, select the appropriate storage option when giving
-  the <TT
+> containing
+  the total length in bytes of the datum (including itself).  Also,
+  when running the <TT
 CLASS="COMMAND"
 >CREATE TYPE</TT
-> command.
+> command, specify the
+  internal length as <VAR
+CLASS="LITERAL"
+>variable</VAR
+> and select the appropriate
+  storage option.
+ </P
+><P
+>  For further details see the description of the <TT
+CLASS="COMMAND"
+>CREATE
+  TYPE</TT
+> command in <A
+HREF="reference.html"
+>Part VI in <I
+>PostgreSQL 7.4beta1 Documentation</I
+></A
+>.
  </P
 ></DIV
 ><DIV
@@ -376,7 +350,7 @@ WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="programmer-server.html"
+HREF="extend.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -384,10 +358,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Extending <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
->: Operators</TD
+>User-defined Operators</TD
 ></TR
 ></TABLE
 ></DIV

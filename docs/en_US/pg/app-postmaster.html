@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >postmaster</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="postgres"
 HREF="app-postgres.html"><LINK
 REL="NEXT"
-TITLE="PostgreSQL 7.3.3 Developer's Guide"
-HREF="developer.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="developer.html"
+HREF="internals.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-POSTMASTER"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >postmaster</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN51563"
+NAME="AEN49810"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN51567"
+NAME="AEN49814"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,79 +105,55 @@ NAME="AEN51567"
 ><TT
 CLASS="COMMAND"
 >postmaster</TT
-> [-A   0 | 1 ] [-B <TT
+> [-A   0 | 1 ] [-B <VAR
 CLASS="REPLACEABLE"
-><I
->nbuffers</I
-></TT
->] [-c <TT
+>nbuffers</VAR
+>] [-c <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->=<TT
+>name</VAR
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
->] [-d <TT
+>value</VAR
+>] [-d <VAR
 CLASS="REPLACEABLE"
-><I
->debug-level</I
-></TT
->] [-D <TT
+>debug-level</VAR
+>] [-D <VAR
 CLASS="REPLACEABLE"
-><I
->datadir</I
-></TT
->] [-F] [-h <TT
+>datadir</VAR
+>] [-F] [-h <VAR
 CLASS="REPLACEABLE"
-><I
->hostname</I
-></TT
->] [-i] [-k <TT
+>hostname</VAR
+>] [-i] [-k <VAR
 CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
->] [-l] [-N <TT
+>directory</VAR
+>] [-l] [-N <VAR
 CLASS="REPLACEABLE"
-><I
->max-connections</I
-></TT
->] [-o <TT
+>max-connections</VAR
+>] [-o <VAR
 CLASS="REPLACEABLE"
-><I
->extra-options</I
-></TT
->] [-p <TT
+>extra-options</VAR
+>] [-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
->] [-S] [--<TT
+>port</VAR
+>] [-S] [--<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->=<TT
+>name</VAR
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
 >] [-n | -s]</P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51603"
+NAME="AEN49850"
 ></A
 ><H2
 >Description</H2
 ><P
->   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>   <TT
+CLASS="COMMAND"
+>postmaster</TT
 > is the
    <SPAN
 CLASS="PRODUCTNAME"
@@ -185,13 +161,13 @@ CLASS="PRODUCTNAME"
 > multiuser database server.
    In order for a client application to access a database it connects
    (over a network or locally) to a running
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
 >.  The
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
 > then starts a separate server
    process (<SPAN
 CLASS="QUOTE"
@@ -203,45 +179,51 @@ CLASS="APPLICATION"
 ></A
 >"</SPAN
 >) to handle
-   the connection.  The <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   the connection.  The <TT
+CLASS="COMMAND"
+>postmaster</TT
 > also
    manages the communication among server processes.
   </P
 ><P
->   By default the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>   By default the <TT
+CLASS="COMMAND"
+>postmaster</TT
 > starts in the
-   foreground and prints log messages to the standard output.  In
-   practical applications the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   foreground and prints log messages to the standard error stream.  In
+   practical applications the <TT
+CLASS="COMMAND"
+>postmaster</TT
 >
    should be started as a background process, perhaps at boot time.
   </P
 ><P
->   One <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>   One <TT
+CLASS="COMMAND"
+>postmaster</TT
 > always manages the data
    from exactly one database cluster.  A database cluster is a
    collection of databases that is stored at a common file system
-   location.  When the postmaster starts it needs to know the location
+   location.  When the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> starts it needs to know the location
    of the database cluster files (<SPAN
 CLASS="QUOTE"
 >"data area"</SPAN
 >).  This is
-   done with the <TT
+   done with the <VAR
 CLASS="OPTION"
->-D</TT
+>-D</VAR
 > invocation option or the
    <TT
 CLASS="ENVAR"
 >PGDATA</TT
 > environment variable; there is no default.
-   More than one postmaster process can run on a system at one time,
+   More than one <TT
+CLASS="COMMAND"
+>postmaster</TT
+> process can run on a system at one time,
    as long as they use different data areas and different
    communication ports (see below).  A data area is created with <A
 HREF="app-initdb.html"
@@ -257,17 +239,16 @@ NAME="APP-POSTMASTER-OPTIONS"
 ><H2
 >Options</H2
 ><P
->    <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>    <TT
+CLASS="COMMAND"
+>postmaster</TT
 > accepts the following
     command line arguments.  For a detailed discussion of the options
-    consult the <I
-CLASS="CITETITLE"
->Administrator's Guide</I
->.  You can
-    also save typing most of these options by setting up a
-    configuration file.
+    consult <A
+HREF="runtime-config.html"
+>Section 16.4</A
+>.  You can also save typing most of these
+    options by setting up a configuration file.
     
     <P
 ></P
@@ -275,20 +256,24 @@ CLASS="CITETITLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->-A 0|1</DT
+><VAR
+CLASS="OPTION"
+>-A 0|1</VAR
+></DT
 ><DD
 ><P
->        Enables run-time assert checks, which is a debugging aid to
+>        Enables run-time assertion checks, which is a debugging aid to
         detect programming mistakes.  This is only available if it was
         enabled during compilation.  If so, the default is on.
        </P
 ></DD
 ><DT
->-B <TT
+><VAR
+CLASS="OPTION"
+>-B <VAR
 CLASS="REPLACEABLE"
-><I
->nbuffers</I
-></TT
+>nbuffers</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -298,38 +283,38 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
->-c <TT
+><VAR
+CLASS="OPTION"
+>-c <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->=<TT
+>name</VAR
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
+></VAR
 ></DT
 ><DD
 ><P
->        Sets a named run-time parameter. Consult the
-        <I
-CLASS="CITETITLE"
->Administrator's Guide</I
-> for a list and
-        descriptions.  Most of the other command line options are in
-        fact short forms of such a parameter assignment.  <TT
+>        Sets a named run-time parameter. Consult <A
+HREF="runtime-config.html"
+>Section 16.4</A
+> for
+        a list and descriptions.  Most of the other command line
+        options are in fact short forms of such a parameter
+        assignment.  <VAR
 CLASS="OPTION"
->-c</TT
->
-	can appear multiple times to set multiple parameters.
+>-c</VAR
+> can appear multiple times to set
+        multiple parameters.
        </P
 ></DD
 ><DT
->-d <TT
+><VAR
+CLASS="OPTION"
+>-d <VAR
 CLASS="REPLACEABLE"
-><I
->debug-level</I
-></TT
+>debug-level</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -339,11 +324,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
->-D <TT
+><VAR
+CLASS="OPTION"
+>-D <VAR
 CLASS="REPLACEABLE"
-><I
->datadir</I
-></TT
+>datadir</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -352,18 +338,21 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
->-F</DT
+><VAR
+CLASS="OPTION"
+>-F</VAR
+></DT
 ><DD
 ><P
->        Disables <TT
+>        Disables <CODE
 CLASS="FUNCTION"
->fsync</TT
+>fsync</CODE
 > calls for performance
         improvement, at the risk of data corruption in event of a
-        system crash.  This parameter corresponds to setting
-        <TT
+        system crash.  This option corresponds to setting
+        <VAR
 CLASS="LITERAL"
->fsync=false</TT
+>fsync=false</VAR
 > in <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
@@ -371,26 +360,27 @@ CLASS="FILENAME"
         documentation before using this!
        </P
 ><P
->        <TT
+>        <VAR
 CLASS="OPTION"
->--fsync=true</TT
+>--fsync=true</VAR
 > has the opposite effect
         of this option.
        </P
 ></DD
 ><DT
->-h <TT
+><VAR
+CLASS="OPTION"
+>-h <VAR
 CLASS="REPLACEABLE"
-><I
->hostname</I
-></TT
+>hostname</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specifies the TCP/IP host name or address on which the
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>	Specifies the IP host name or address on which the
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
 > is to listen for
 	connections from client applications.  Defaults to
 	listening on all configured addresses (including
@@ -401,41 +391,45 @@ CLASS="SYSTEMITEM"
        </P
 ></DD
 ><DT
->-i</DT
+><VAR
+CLASS="OPTION"
+>-i</VAR
+></DT
 ><DD
 ><P
 >        Allows clients to connect via TCP/IP (Internet domain)
 	connections.  Without this option, only local Unix domain
         socket connections are accepted. This option corresponds
-        to setting <TT
+        to setting <VAR
 CLASS="LITERAL"
->tcpip_socket=true</TT
+>tcpip_socket=true</VAR
 > in <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
 >.
        </P
 ><P
->        <TT
+>        <VAR
 CLASS="OPTION"
->--tcpip_socket=false</TT
+>--tcpip-socket=false</VAR
 > has the opposite
         effect of this option.
        </P
 ></DD
 ><DT
->-k <TT
+><VAR
+CLASS="OPTION"
+>-k <VAR
 CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
+>directory</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Specifies the directory of the Unix-domain socket on which the
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
 > is to listen for
 	connections from client applications.  The default is normally
 	<TT
@@ -445,67 +439,70 @@ CLASS="FILENAME"
        </P
 ></DD
 ><DT
->-l</DT
+><VAR
+CLASS="OPTION"
+>-l</VAR
+></DT
 ><DD
 ><P
->	Enables secure connections using SSL.  The <TT
+>	Enables secure connections using SSL.  The <VAR
 CLASS="OPTION"
->-i</TT
+>-i</VAR
 >
 	option is also required.  You must have compiled with SSL
 	enabled to use this option.
        </P
 ></DD
 ><DT
->-N <TT
+><VAR
+CLASS="OPTION"
+>-N <VAR
 CLASS="REPLACEABLE"
-><I
->max-connections</I
-></TT
+>max-connections</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Sets the maximum number of client connections that this
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
 > will accept.  By
 	default, this value is 32, but it can be set as high as your
 	system will support.  (Note that
-	<TT
+	<VAR
 CLASS="OPTION"
->-B</TT
+>-B</VAR
 > is required to be at least twice
-	<TT
+	<VAR
 CLASS="OPTION"
->-N</TT
->.  See the <I
-CLASS="CITETITLE"
->Administrator's
-	Guide</I
-> for a discussion of system resource requirements
-	for large numbers of client connections.)
+>-N</VAR
+>.  See <A
+HREF="kernel-resources.html"
+>Section 16.5</A
+> for a discussion of
+	system resource requirements for large numbers of client
+	connections.)
        </P
 ></DD
 ><DT
->-o <TT
+><VAR
+CLASS="OPTION"
+>-o <VAR
 CLASS="REPLACEABLE"
-><I
->extra-options</I
-></TT
+>extra-options</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	The command line-style options specified in <TT
+>	The command line-style options specified in <VAR
 CLASS="REPLACEABLE"
-><I
->extra-options</I
-></TT
+>extra-options</VAR
 > are passed to
-	all backend server processes started by this
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	all server processes started by this
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
 >.  See <A
 HREF="app-postgres.html"
 ><SPAN
@@ -517,18 +514,19 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
->-p <TT
+><VAR
+CLASS="OPTION"
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
+>port</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Specifies the TCP/IP port or local Unix domain socket file
-	extension on which the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	extension on which the <TT
+CLASS="COMMAND"
+>postmaster</TT
 >
 	is to listen for connections from client applications.
 	Defaults to the value of the <TT
@@ -549,12 +547,15 @@ CLASS="ENVAR"
        </P
 ></DD
 ><DT
->-S</DT
+><VAR
+CLASS="OPTION"
+>-S</VAR
+></DT
 ><DD
 ><P
->	Specifies that the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>	Specifies that the <TT
+CLASS="COMMAND"
+>postmaster</TT
 >
 	process should start up in silent mode.  That is, it will
 	disassociate from the user's (controlling) terminal, start its
@@ -568,37 +569,36 @@ CLASS="FILENAME"
 >        Using this switch discards all logging output, which is
 	probably not what you want, since it makes it very difficult
 	to troubleshoot problems.  See below for a better way to start
-	the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	the <TT
+CLASS="COMMAND"
+>postmaster</TT
 > in the background.
        </P
 ><P
->        <TT
+>        <VAR
 CLASS="OPTION"
->--silent_mode=false</TT
+>--silent-mode=false</VAR
 > has the opposite effect
         of this option.
        </P
 ></DD
 ><DT
->--<TT
+><VAR
+CLASS="OPTION"
+>--<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->=<TT
+>name</VAR
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >        Sets a named run-time parameter; a shorter form of
-        <TT
+        <VAR
 CLASS="OPTION"
->-c</TT
+>-c</VAR
 >.
        </P
 ></DD
@@ -608,26 +608,27 @@ CLASS="OPTION"
    </P
 ><P
 >    Two additional command line options are available for debugging
-    problems that cause a backend to die abnormally.  These options
-    control the behavior of the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
->
-    in this situation, and <SPAN
+    problems that cause a server process to die abnormally.  The
+    ordinary strategy in this situation is to notify all other server
+    processes that they must terminate and then reinitialize the
+    shared memory and semaphores.  This is because an errant server
+    process could have corrupted some shared state before terminating.
+    These options select alternative behaviors of the
+    <TT
+CLASS="COMMAND"
+>postmaster</TT
+> in this situation.
+    <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
->neither option is intended for
-    use in ordinary operation</I
+>Neither option is intended for use in ordinary
+    operation.</I
 ></SPAN
->.
+>
    </P
 ><P
->    The ordinary strategy for this situation is to notify all other
-    backends that they must terminate and then reinitialize the shared
-    memory and semaphores.  This is because an errant backend could
-    have corrupted some shared state before terminating.
-   </P
+>   </P
 ><P
 >    These special-case options are:
 
@@ -637,12 +638,15 @@ CLASS="EMPHASIS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->-n</DT
+><VAR
+CLASS="OPTION"
+>-n</VAR
+></DT
 ><DD
 ><P
->	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>	<TT
+CLASS="COMMAND"
+>postmaster</TT
 >
 	will not reinitialize shared data structures.  A knowledgeable system
 	programmer can then use a debugger
@@ -650,20 +654,23 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
->-s</DT
+><VAR
+CLASS="OPTION"
+>-s</VAR
+></DT
 ><DD
 ><P
->	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>	<TT
+CLASS="COMMAND"
+>postmaster</TT
 >
-	will stop all other backend processes by sending the signal
-	<TT
+	will stop all other server processes by sending the signal
+	<VAR
 CLASS="LITERAL"
->SIGSTOP</TT
+>SIGSTOP</VAR
 >,
 	but will not cause them to terminate.  This permits system programmers
-	to collect core dumps from all backend processes by hand.
+	to collect core dumps from all server processes by hand.
        </P
 ></DD
 ></DL
@@ -674,7 +681,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51751"
+NAME="AEN50017"
 ></A
 ><H2
 >Environment</H2
@@ -708,13 +715,13 @@ CLASS="ENVAR"
 ><DT
 ><TT
 CLASS="ENVAR"
->PGDATASTYLE</TT
+>PGDATESTYLE</TT
 ></DT
 ><DD
 ><P
->      Default value of the <TT
+>      Default value of the <VAR
 CLASS="LITERAL"
->datestyle</TT
+>datestyle</VAR
 > run-time
       parameter.  (The use of this environment variable is deprecated.)
      </P
@@ -744,11 +751,11 @@ CLASS="ENVAR"
 ><DD
 ><P
 >      Other environment variables may be used to designate alternative
-      data storage locations.  See the <I
-CLASS="CITETITLE"
->Administrator's
-      Guide</I
-> for more information.
+      data storage locations.  See <A
+HREF="manage-ag-alternate-locs.html"
+>Section 18.5</A
+> for more
+      information.
      </P
 ></DD
 ></DL
@@ -757,7 +764,7 @@ CLASS="CITETITLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51785"
+NAME="AEN50051"
 ></A
 ><H2
 >Diagnostics</H2
@@ -768,35 +775,27 @@ NAME="AEN51785"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->semget: No space left on device
-       </TT
+>semget: No space left on device</SAMP
 ></DT
 ><DD
 ><P
->	If you see this message, you should run the
-	<SPAN
-CLASS="APPLICATION"
->ipcclean</SPAN
->
-	command.  After doing so, try starting
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
->
-	again.  If this still doesn't work, you probably need to configure
-	your kernel for shared memory and semaphores as described in the
-	installation notes.  If you run multiple instances of
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>	If you see this message, you probably need to configure
+	your kernel for shared memory and semaphores as described in <A
+HREF="kernel-resources.html"
+>Section 16.5</A
+>.
+	If you run multiple instances of
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
 >
 	on a single host, or have a kernel with particularly small shared memory
 	and/or semaphore limits, you may have to reconfigure your kernel to increase
 	its shared memory or semaphore parameters.
-
-	<DIV
+       </P
+><DIV
 CLASS="TIP"
 ><BLOCKQUOTE
 CLASS="TIP"
@@ -804,63 +803,56 @@ CLASS="TIP"
 ><B
 >Tip: </B
 >	  You may be able to postpone
-	  reconfiguring your kernel by decreasing <TT
+	  reconfiguring your kernel by decreasing <VAR
 CLASS="OPTION"
->-B</TT
+>-B</VAR
 > to reduce
 	  the shared memory consumption of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >,
-	  and/or by reducing <TT
+	  and/or by reducing <VAR
 CLASS="OPTION"
->-N</TT
+>-N</VAR
 > to reduce the semaphore
 	  consumption.
 	 </P
 ></BLOCKQUOTE
 ></DIV
->
-       </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->StreamServerPort: cannot bind to port
-       </TT
+>StreamServerPort: cannot bind to port</SAMP
 ></DT
 ><DD
 ><P
 >	If you see this message, you should make certain that there is no
-	other <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	other <TT
+CLASS="COMMAND"
+>postmaster</TT
 >
 	process already running on the same port number.  The easiest way to
 	determine this is by using the command
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->ps ax | grep postmaster</B
-></TT
+>ps ax | grep postmaster</KBD
 ></PRE
 ><P>
         or
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->ps -e | grep postmaster</B
-></TT
+>ps -e | grep postmaster</KBD
 ></PRE
 ><P>
 	depending on your system.
@@ -868,29 +860,29 @@ CLASS="USERINPUT"
 ><P
 >	If you 
 	are sure that no other
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
 >
 	processes are running and you still get this error, try specifying a
 	different port using the
-	<TT
+	<VAR
 CLASS="LITERAL"
->-p</TT
+>-p</VAR
 >
 	option.  You may also get this error if you terminate the
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
 >
 	and immediately restart it using the same port; in this case, you must
 	simply wait a few seconds until the operating system closes the port
 	before trying again.  Finally, you may get this error if you specify
 	a port number that your operating system considers to be reserved.
 	For example, many versions of Unix consider port numbers under 1024 to
-	be <I
-CLASS="FIRSTTERM"
->trusted</I
+	be <SPAN
+CLASS="QUOTE"
+>"trusted"</SPAN
 >
 	and only permit the Unix superuser to access them.
        </P
@@ -903,7 +895,7 @@ CLASS="FIRSTTERM"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51819"
+NAME="AEN50084"
 ></A
 ><H2
 >Notes</H2
@@ -915,36 +907,36 @@ CLASS="EMPHASIS"
 >do not</I
 ></SPAN
 > use
-   <TT
+   <VAR
 CLASS="LITERAL"
->SIGKILL</TT
+>SIGKILL</VAR
 > to kill the
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
 >.  This will prevent
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
 > from freeing the system
    resources (e.g., shared memory and semaphores) that it holds before
    terminating.
   </P
 ><P
->   To terminate the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>   To terminate the <TT
+CLASS="COMMAND"
+>postmaster</TT
 > normally,
-   the signals <TT
+   the signals <VAR
 CLASS="LITERAL"
->SIGTERM</TT
->, <TT
+>SIGTERM</VAR
+>, <VAR
 CLASS="LITERAL"
->SIGINT</TT
+>SIGINT</VAR
 >,
-   or <TT
+   or <VAR
 CLASS="LITERAL"
->SIGQUIT</TT
+>SIGQUIT</VAR
 > can be used.  The first will wait for
    all clients to terminate before quitting, the second will
    forcefully disconnect all clients, and the third will quit
@@ -959,16 +951,16 @@ CLASS="APPLICATION"
 >pg_ctl</SPAN
 ></A
 > can be used to
-   start and shut down the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   start and shut down the <TT
+CLASS="COMMAND"
+>postmaster</TT
 >
    safely and comfortably.
   </P
 ><P
->   The <TT
+>   The <VAR
 CLASS="OPTION"
->--</TT
+>--</VAR
 > options will not work on <SPAN
 CLASS="SYSTEMITEM"
 >FreeBSD</SPAN
@@ -976,9 +968,9 @@ CLASS="SYSTEMITEM"
 CLASS="SYSTEMITEM"
 >OpenBSD</SPAN
 >.
-   Use <TT
+   Use <VAR
 CLASS="OPTION"
->-c</TT
+>-c</VAR
 > instead. This is a bug in the affected operating
    systems; a future release of <SPAN
 CLASS="PRODUCTNAME"
@@ -995,51 +987,47 @@ NAME="APP-POSTMASTER-EXAMPLES"
 ><H2
 >Examples</H2
 ><P
->   To start <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>   To start <TT
+CLASS="COMMAND"
+>postmaster</TT
 > in the background
    using default values, type:
 
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->nohup postmaster &gt;logfile 2&gt;&amp;1 &lt;/dev/null &amp;</B
-></TT
+>nohup postmaster &gt;logfile 2&gt;&amp;1 &lt;/dev/null &amp;</KBD
 ></PRE
 ><P>
   </P
 ><P
->   To start <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>   To start <TT
+CLASS="COMMAND"
+>postmaster</TT
 > with a specific
    port:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->postmaster -p 1234</B
-></TT
+>postmaster -p 1234</KBD
 ></PRE
 ><P>
-   This command will start up <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   This command will start up <TT
+CLASS="COMMAND"
+>postmaster</TT
 >
    communicating through the port 1234. In order to connect to this
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
 > using <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
@@ -1047,14 +1035,12 @@ CLASS="APPLICATION"
    run it as
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->psql -p 1234</B
-></TT
+>psql -p 1234</KBD
 ></PRE
 ><P>
    or set the environment variable <TT
@@ -1063,23 +1049,19 @@ CLASS="ENVAR"
 >:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->export PGPORT=1234</B
-></TT
+>export PGPORT=1234</KBD
 >
-<TT
+<SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->psql</B
-></TT
+>psql</KBD
 ></PRE
 ><P>
   </P
@@ -1087,28 +1069,24 @@ CLASS="USERINPUT"
 >   Named run-time parameters can be set in either of these styles:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->postmaster -c sort_mem=1234</B
-></TT
+>postmaster -c sort_mem=1234</KBD
 >
-<TT
+<SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->postmaster --sort-mem=1234</B
-></TT
+>postmaster --sort-mem=1234</KBD
 ></PRE
 ><P>
-   Either form overrides whatever setting might exist for <TT
+   Either form overrides whatever setting might exist for <VAR
 CLASS="LITERAL"
->sort_mem</TT
+>sort_mem</VAR
 >
    in <TT
 CLASS="FILENAME"
@@ -1137,7 +1115,7 @@ CLASS="FILENAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51875"
+NAME="AEN50140"
 ></A
 ><H2
 >See Also</H2
@@ -1189,7 +1167,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="developer.html"
+HREF="internals.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -1216,7 +1194,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->PostgreSQL 7.3.3 Developer's Guide</TD
+>Internals</TD
 ></TR
 ></TABLE
 ></DIV

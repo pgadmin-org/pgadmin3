@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP TYPE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,148 +78,129 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPTYPE"
->DROP TYPE</A
-></H1
+></A
+>DROP TYPE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43372"
+NAME="AEN41818"
 ></A
 ><H2
 >Name</H2
->   DROP TYPE
-  &nbsp;--&nbsp;   remove a user-defined data type
-  </DIV
+>DROP TYPE&nbsp;--&nbsp;remove a user-defined data type</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43375"
+NAME="AEN41821"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP TYPE <TT
+>DROP TYPE <VAR
 CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
-> [, ...] [ CASCADE | RESTRICT ]
-
-  </PRE
+>typename</VAR
+> [, ...] [ CASCADE | RESTRICT ]</PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPTYPE-1"
+NAME="AEN41824"
 ></A
-><H3
->    Inputs
-   </H3
+><H2
+>Description</H2
 ><P
->    <P
+>   <TT
+CLASS="COMMAND"
+>DROP TYPE</TT
+> will remove a user-defined data type.
+   Only the owner of a type can remove it.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41828"
+></A
+><H2
+>Parameters</H2
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
+>typename</VAR
 ></DT
 ><DD
 ><P
->	The name (optionally schema-qualified) of an existing type.
-       </P
+>      The name (optionally schema-qualified) of the data type to remove.
+     </P
 ></DD
 ><DT
->CASCADE</DT
+><VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+></DT
 ><DD
 ><P
->        Automatically drop objects that depend on the type
-	(such as table columns, functions, operators, etc).
-       </P
+>      Automatically drop objects that depend on the type (such as
+      table columns, functions, operators).
+     </P
 ></DD
 ><DT
->RESTRICT</DT
+><VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+></DT
 ><DD
 ><P
->        Refuse to drop the type if there are any dependent objects.
-	This is the default.
-       </P
+>      Refuse to drop the type if any objects depend on it.  This is
+      the default.
+     </P
 ></DD
 ></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPTYPE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP TYPE
-       </TT
-></DT
-><DD
-><P
->	The message returned if the command is successful.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR:  RemoveType: type '<TT
-CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
->' does not exist
-       </TT
-></DT
-><DD
-><P
->	This message occurs if the specified type is not found.
-       </P
-></DD
-></DL
-></DIV
-><P>
-
-   </P
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPTYPE-1"
+NAME="AEN41846"
 ></A
 ><H2
->   Description
-  </H2
+>Diagnostics</H2
 ><P
->   <TT
-CLASS="COMMAND"
->DROP TYPE</TT
-> will remove a user type from the
-   system catalogs.
-  </P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP TYPE</SAMP
+></DT
+><DD
 ><P
->   Only the owner of a type can remove it.
-  </P
+>      Message returned if the command was successful.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  RemoveType: type '<VAR
+CLASS="REPLACEABLE"
+>typename</VAR
+>' does not exist</SAMP
+></DT
+><DD
+><P
+>      Message returned if the specified type does not exist.
+     </P
+></DD
+></DL
+></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -229,11 +210,10 @@ NAME="SQL-DROPTYPE-EXAMPLES"
 ><H2
 >Examples</H2
 ><P
->   To remove the <TT
+>   To remove the data type <TT
 CLASS="TYPE"
 >box</TT
-> type:
-
+>:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >DROP TYPE box;</PRE
@@ -248,15 +228,16 @@ NAME="SQL-DROPTYPE-COMPATIBILITY"
 ><H2
 >Compatibility</H2
 ><P
->   Note that the <TT
+>   This command is similar to the corresponding command in the SQL
+   standard, but note that the <TT
 CLASS="COMMAND"
 >CREATE TYPE</TT
-> command and the data
-   type extension mechanisms in <SPAN
+> command
+   and the data type extension mechanisms in
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->
-   differ from SQL99.
+> differ from the SQL standard.
   </P
 ></DIV
 ><DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >User Attributes</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Database Users and Privileges"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. Database Users and Privileges</TD
+>Chapter 17. Database Users and Privileges</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="USER-ATTRIBUTES"
->4.2. User Attributes</A
+>17.2. User Attributes</A
 ></H1
 ><P
 >    A database user may have a number of attributes that define its
@@ -98,15 +98,13 @@ CLASS="VARIABLELIST"
 ><P
 >        A database superuser bypasses all permission checks. Also,
         only a superuser can create new users. To create a database
-        superuser, use <TT
+        superuser, use <VAR
 CLASS="LITERAL"
->CREATE USER <TT
+>CREATE USER <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 >
-        CREATEUSER</TT
+        CREATEUSER</VAR
 >.
        </P
 ></DD
@@ -116,15 +114,13 @@ CLASS="REPLACEABLE"
 ><P
 >        A user must be explicitly given permission to create databases
         (except for superusers, since those bypass all permission
-        checks). To create such a user, use <TT
+        checks). To create such a user, use <VAR
 CLASS="LITERAL"
 >CREATE USER
-        <TT
+        <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> CREATEDB</TT
+>name</VAR
+> CREATEDB</VAR
 >.
        </P
 ></DD
@@ -134,28 +130,29 @@ CLASS="REPLACEABLE"
 ><P
 >        A password is only significant if the client authentication
         method requires the user to supply a password when connecting
-        to the database. The <TT
+        to the database. The <VAR
 CLASS="OPTION"
->password</TT
+>password</VAR
 >,
-        <TT
+        <VAR
 CLASS="OPTION"
->md5</TT
->, and <TT
+>md5</VAR
+>, and <VAR
 CLASS="OPTION"
->crypt</TT
+>crypt</VAR
 > authentication methods
         make use of passwords. Database passwords are separate from
         operating system passwords. Specify a password upon user
-        creation with <TT
+        creation with <VAR
 CLASS="LITERAL"
 >CREATE USER
-        <TT
+        <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> PASSWORD 'string'</TT
+>name</VAR
+> PASSWORD '<VAR
+CLASS="REPLACEABLE"
+>string</VAR
+>'</VAR
 >. 
        </P
 ></DD
@@ -181,7 +178,7 @@ CLASS="COMMAND"
 >   A user can also set personal defaults for many of the run-time
    configuration settings described in <A
 HREF="runtime-config.html"
->Section 3.4</A
+>Section 16.4</A
 >.  For example, if for some reason you
    want to disable index scans (hint: not a good idea) anytime you
    connect, you can use
@@ -190,26 +187,22 @@ CLASS="PROGRAMLISTING"
 >ALTER USER myname SET enable_indexscan TO off;</PRE
 ><P>
    This will save the setting (but not set it immediately) and in
-   subsequent connections it will appear as though <TT
+   subsequent connections it will appear as though <VAR
 CLASS="LITERAL"
 >SET enable_indexscan
-   TO off;</TT
+   TO off;</VAR
 > had been called right before the session started.
    You can still alter this setting during the session; it will only
-   be the default. To undo any such setting, use <TT
+   be the default. To undo any such setting, use <VAR
 CLASS="LITERAL"
 >ALTER USER
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> RESET <TT
+>username</VAR
+> RESET <VAR
 CLASS="REPLACEABLE"
-><I
->varname</I
-></TT
->;</TT
+>varname</VAR
+>;</VAR
 >.
   </P
 ></DIV

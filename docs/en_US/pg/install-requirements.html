@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Requirements</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="  Installation Instructions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 1. Installation Instructions</TD
+>Chapter 14. Installation Instructions</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INSTALL-REQUIREMENTS"
->1.2. Requirements</A
+>14.2. Requirements</A
 ></H1
 ><P
 >   In general, a modern Unix-compatible platform should be able to run
@@ -92,15 +92,15 @@ CLASS="PRODUCTNAME"
     The platforms that had received specific testing at the
    time of release are listed in <A
 HREF="supported-platforms.html"
->Section 1.7</A
+>Section 14.7</A
 >
    below. In the <TT
 CLASS="FILENAME"
 >doc</TT
 > subdirectory of the distribution
-   there are several platform-specific <SPAN
+   there are several platform-specific <ACRONYM
 CLASS="ACRONYM"
->FAQ</SPAN
+>FAQ</ACRONYM
 > documents you
    might wish to consult if you are having trouble.
   </P
@@ -117,13 +117,13 @@ CLASS="PRODUCTNAME"
 ><LI
 ><P
 >      <A
-NAME="AEN18021"
+NAME="AEN13411"
 ></A
 >
 
-      <SPAN
+      <ACRONYM
 CLASS="ACRONYM"
->GNU</SPAN
+>GNU</ACRONYM
 > <SPAN
 CLASS="APPLICATION"
 >make</SPAN
@@ -138,9 +138,9 @@ CLASS="EMPHASIS"
 >not</I
 ></SPAN
 > work.
-      <SPAN
+      <ACRONYM
 CLASS="ACRONYM"
->GNU</SPAN
+>GNU</ACRONYM
 > <SPAN
 CLASS="APPLICATION"
 >make</SPAN
@@ -150,16 +150,19 @@ CLASS="FILENAME"
 >gmake</TT
 >; this document will always
       refer to it by that name. (On some systems
-      <SPAN
+      <ACRONYM
 CLASS="ACRONYM"
->GNU</SPAN
-> make is the default tool with the name
+>GNU</ACRONYM
+> <SPAN
+CLASS="APPLICATION"
+>make</SPAN
+> is the default tool with the name
       <TT
 CLASS="FILENAME"
 >make</TT
->.) To test for <SPAN
+>.) To test for <ACRONYM
 CLASS="ACRONYM"
->GNU</SPAN
+>GNU</ACRONYM
 >
       <SPAN
 CLASS="APPLICATION"
@@ -167,11 +170,9 @@ CLASS="APPLICATION"
 > enter
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->gmake --version</B
-></TT
+>gmake --version</KBD
 ></PRE
 ><P>
       It is recommended to use version 3.76.1 or later.
@@ -179,12 +180,12 @@ CLASS="USERINPUT"
 ></LI
 ><LI
 ><P
->      You need an <SPAN
+>      You need an <ACRONYM
 CLASS="ACRONYM"
->ISO</SPAN
->/<SPAN
+>ISO</ACRONYM
+>/<ACRONYM
 CLASS="ACRONYM"
->ANSI</SPAN
+>ANSI</ACRONYM
 > C compiler. Recent
       versions of <SPAN
 CLASS="PRODUCTNAME"
@@ -203,29 +204,28 @@ CLASS="PRODUCTNAME"
 CLASS="APPLICATION"
 >gzip</SPAN
 > is needed to unpack the distribution in the
-      first place.  If you are reading this, you probably already got
-      past that hurdle.
+      first place.
      </P
 ></LI
 ><LI
 ><P
 >      <A
-NAME="AEN18047"
+NAME="AEN13438"
 ></A
 >
 
-      The <SPAN
+      The <ACRONYM
 CLASS="ACRONYM"
->GNU</SPAN
+>GNU</ACRONYM
 > <SPAN
 CLASS="PRODUCTNAME"
 >Readline</SPAN
 > library (for
       comfortable line editing and command history retrieval) will be
       used by default.  If you don't want to use it then you must
-      specify the <TT
+      specify the <VAR
 CLASS="OPTION"
->--without-readline</TT
+>--without-readline</VAR
 > option for
       <TT
 CLASS="FILENAME"
@@ -240,7 +240,7 @@ CLASS="FILENAME"
 > library is
       <SPAN
 CLASS="PRODUCTNAME"
->readline</SPAN
+>Readline</SPAN
 >-compatible and is used if
       <TT
 CLASS="FILENAME"
@@ -251,7 +251,7 @@ CLASS="FILENAME"
 ><LI
 ><P
 >      <A
-NAME="AEN18059"
+NAME="AEN13450"
 ></A
 >
 
@@ -300,7 +300,7 @@ CLASS="FILENAME"
 > library and the header files.
       Since PL/Perl will be a shared library, the
       <A
-NAME="AEN18073"
+NAME="AEN13464"
 ></A
 >
       <TT
@@ -346,7 +346,7 @@ CLASS="PRODUCTNAME"
       the header files.
       Since PL/Python will be a shared library, the
       <A
-NAME="AEN18083"
+NAME="AEN13474"
 ></A
 >
       <TT
@@ -410,9 +410,9 @@ CLASS="FILENAME"
 CLASS="APPLICATION"
 >Ant</SPAN
 > 1.5 or higher and a
-      <SPAN
+      <ACRONYM
 CLASS="ACRONYM"
->JDK</SPAN
+>JDK</ACRONYM
 >.  <SPAN
 CLASS="APPLICATION"
 >Ant</SPAN
@@ -440,9 +440,9 @@ CLASS="FILENAME"
 >.antrc</TT
 > in the current
       user's home directory for configuration.  For example, to use a
-      different <SPAN
+      different <ACRONYM
 CLASS="ACRONYM"
->JDK</SPAN
+>JDK</ACRONYM
 > than the default, this may
       work:
 </P><PRE
@@ -477,18 +477,18 @@ CLASS="COMMAND"
 ></LI
 ><LI
 ><P
->      To enable Native Language Support (<SPAN
+>      To enable Native Language Support (<ACRONYM
 CLASS="ACRONYM"
->NLS</SPAN
+>NLS</ACRONYM
 >), that
       is, the ability to display a program's messages in a language
       other than English, you need an implementation of the
       <SPAN
 CLASS="APPLICATION"
 >Gettext</SPAN
-> <SPAN
+> <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 >.  Some operating
       systems have this built-in (e.g., <SPAN
 CLASS="SYSTEMITEM"
@@ -508,11 +508,11 @@ TARGET="_top"
 >.
       If you are using the <SPAN
 CLASS="APPLICATION"
->gettext</SPAN
+>Gettext</SPAN
 > implementation in
-      the <SPAN
+      the <ACRONYM
 CLASS="ACRONYM"
->GNU</SPAN
+>GNU</ACRONYM
 > C library then you will additionally
       need the <SPAN
 CLASS="PRODUCTNAME"
@@ -534,17 +534,16 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >PAM</SPAN
 >,
-      if you want to support
-      authentication using these services.
+      if you want to support authentication using these services.
      </P
 ></LI
 ></UL
 ><P>
   </P
 ><P
->   If you are build from a <SPAN
+>   If you are building from a <ACRONYM
 CLASS="ACRONYM"
->CVS</SPAN
+>CVS</ACRONYM
 > tree instead of
    using a released source package, or if you want to do development,
    you also need the following packages:
@@ -555,15 +554,15 @@ CLASS="ACRONYM"
 ><LI
 ><P
 >      <A
-NAME="AEN18135"
+NAME="AEN13526"
 ></A
 >
       <A
-NAME="AEN18137"
+NAME="AEN13528"
 ></A
 >
       <A
-NAME="AEN18139"
+NAME="AEN13530"
 ></A
 >
 
@@ -583,7 +582,7 @@ CLASS="APPLICATION"
       <SPAN
 CLASS="APPLICATION"
 >Bison</SPAN
-> 1.50 or later. Other <SPAN
+> 1.875 or later. Other <SPAN
 CLASS="APPLICATION"
 >yacc</SPAN
 >
@@ -599,13 +598,13 @@ CLASS="APPLICATION"
 ><P>
   </P
 ><P
->   If you need to get a <SPAN
+>   If you need to get a <ACRONYM
 CLASS="ACRONYM"
->GNU</SPAN
+>GNU</ACRONYM
 > package, you can find
-   it at your local <SPAN
+   it at your local <ACRONYM
 CLASS="ACRONYM"
->GNU</SPAN
+>GNU</ACRONYM
 > mirror site (see <A
 HREF="http://www.gnu.org/order/ftp.html"
 TARGET="_top"

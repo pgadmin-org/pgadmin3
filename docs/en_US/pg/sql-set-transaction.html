@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SET TRANSACTION</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-SET-TRANSACTION"
->SET TRANSACTION</A
-></H1
+></A
+>SET TRANSACTION</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45949"
+NAME="AEN44203"
 ></A
 ><H2
 >Name</H2
@@ -91,63 +91,46 @@ NAME="AEN45949"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45952"
+NAME="AEN44206"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SET TRANSACTION ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE }
-SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL
-    { READ COMMITTED | SERIALIZABLE }
-  </PRE
+>SET TRANSACTION
+    [ ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE } ] [ READ WRITE | READ ONLY ]
+SET SESSION CHARACTERISTICS AS TRANSACTION
+    [ ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE } ] [ READ WRITE | READ ONLY ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45954"
+NAME="AEN44208"
 ></A
 ><H2
 >Description</H2
 ><P
->   This command sets the transaction isolation level.  The
-   <TT
+>   The <TT
 CLASS="COMMAND"
 >SET TRANSACTION</TT
-> command sets the characteristics
-   for the current SQL-transaction. It has no effect on any subsequent
-   transactions.  This command cannot be used after the first query or data-modification
-   statement (<TT
+> command sets the transaction
+   characteristics of the current transaction. It has no effect on any
+   subsequent transactions.  <TT
 CLASS="COMMAND"
->SELECT</TT
->, <TT
+>SET SESSION
+   CHARACTERISTICS</TT
+> sets the default transaction
+   characteristics for each transaction of a session.  <TT
 CLASS="COMMAND"
->INSERT</TT
->,
-   <TT
-CLASS="COMMAND"
->DELETE</TT
->, <TT
-CLASS="COMMAND"
->UPDATE</TT
->,
-   <TT
-CLASS="COMMAND"
->FETCH</TT
->, <TT
-CLASS="COMMAND"
->COPY</TT
->) of a transaction
-   has been executed.  <TT
-CLASS="COMMAND"
->SET SESSION CHARACTERISTICS</TT
->
-   sets the default transaction isolation level for each transaction
-   for a session.  <TT
-CLASS="COMMAND"
->SET TRANSACTION</TT
-> can override it
-   for an individual transaction.
+>SET
+   TRANSACTION</TT
+> can override it for an individual
+   transaction.
+  </P
+><P
+>   The available transaction characteristics are the transaction
+   isolation level and the transaction access mode (read/write or
+   read-only).
   </P
 ><P
 >   The isolation level of a transaction determines what data the
@@ -159,7 +142,10 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->READ COMMITTED</DT
+><VAR
+CLASS="LITERAL"
+>READ COMMITTED</VAR
+></DT
 ><DD
 ><P
 >       A statement can only see rows committed before it began. This
@@ -167,7 +153,10 @@ CLASS="VARIABLELIST"
       </P
 ></DD
 ><DT
->SERIALIZABLE</DT
+><VAR
+CLASS="LITERAL"
+>SERIALIZABLE</VAR
+></DT
 ><DD
 ><P
 >       The current transaction can only see rows committed before
@@ -191,12 +180,95 @@ CLASS="TIP"
 ></DL
 ></DIV
 ><P>
+
+   The transaction isolation level cannot be set after the first query
+   or data-modification statement (<TT
+CLASS="COMMAND"
+>SELECT</TT
+>,
+   <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>DELETE</TT
+>,
+   <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, <TT
+CLASS="COMMAND"
+>FETCH</TT
+>,
+   <TT
+CLASS="COMMAND"
+>COPY</TT
+>) of a transaction has been executed.  See
+   <A
+HREF="mvcc.html"
+>Chapter 12</A
+> for more information about transaction
+   isolation and concurrency control.
+  </P
+><P
+>   The transaction access mode determines whether the transaction is
+   read/write or read-only.  Read/write is the default.  When a
+   transaction is read-only, the following SQL commands are
+   disallowed: <VAR
+CLASS="LITERAL"
+>INSERT</VAR
+>, <VAR
+CLASS="LITERAL"
+>UPDATE</VAR
+>,
+   <VAR
+CLASS="LITERAL"
+>DELETE</VAR
+>, and <VAR
+CLASS="LITERAL"
+>COPY TO</VAR
+> if the
+   table they would write to is not a temporary table; all
+   <VAR
+CLASS="LITERAL"
+>CREATE</VAR
+>, <VAR
+CLASS="LITERAL"
+>ALTER</VAR
+>, and
+   <VAR
+CLASS="LITERAL"
+>DROP</VAR
+> commands; <VAR
+CLASS="LITERAL"
+>COMMENT</VAR
+>,
+   <VAR
+CLASS="LITERAL"
+>GRANT</VAR
+>, <VAR
+CLASS="LITERAL"
+>REVOKE</VAR
+>,
+   <VAR
+CLASS="LITERAL"
+>TRUNCATE</VAR
+>; and <VAR
+CLASS="LITERAL"
+>EXPLAIN ANALYZE</VAR
+>
+   and <VAR
+CLASS="LITERAL"
+>EXECUTE</VAR
+> if the command they would execute is
+   among those listed.  This is a high-level notion of read-only that
+   does not prevent writes to disk.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45978"
+NAME="AEN44250"
 ></A
 ><H2
 >Notes</H2
@@ -205,19 +277,16 @@ NAME="AEN45978"
    with the command
 </P><PRE
 CLASS="PROGRAMLISTING"
->SET default_transaction_isolation = '<TT
+>SET default_transaction_isolation = '<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
 >'</PRE
 ><P>
-   and in the
-   configuration file.  Consult the <I
-CLASS="CITETITLE"
->Administrator's
-   Guide</I
-> for more information.
+   and in the configuration file.  Consult <A
+HREF="runtime-config.html"
+>Section 16.4</A
+> for more
+   information.
   </P
 ></DIV
 ><DIV
@@ -227,57 +296,46 @@ NAME="R1-SQL-SET-TRANSACTION-3"
 ></A
 ><H2
 >Compatibility</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-SET-TRANSACTION-4"
-></A
-><H3
->SQL92, SQL99</H3
 ><P
->    <TT
-CLASS="OPTION"
->SERIALIZABLE</TT
-> is the default level in
-    <SPAN
+>   Both commands are defined in the SQL standard.
+   <VAR
+CLASS="LITERAL"
+>SERIALIZABLE</VAR
+> is the default transaction
+   isolation level in <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
->.  <SPAN
+>SQL</ACRONYM
+>; in PostgreSQL it is
+   <VAR
+CLASS="LITERAL"
+>READ COMMITED</VAR
+>, but you can change it as
+   described above.  <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> does
-    not provide the isolation levels <TT
-CLASS="OPTION"
->READ UNCOMMITTED</TT
-> 
-    and <TT
-CLASS="OPTION"
->REPEATABLE READ</TT
+> does not
+   provide the isolation levels <VAR
+CLASS="LITERAL"
+>READ UNCOMMITTED</VAR
+>
+   and <VAR
+CLASS="LITERAL"
+>REPEATABLE READ</VAR
 >. Because of multiversion
-    concurrency control, the <TT
-CLASS="OPTION"
->SERIALIZABLE</TT
-> level is not
-    truly serializable. See the <I
-CLASS="CITETITLE"
->User's Guide</I
-> for
-    details.
-   </P
+   concurrency control, the <VAR
+CLASS="LITERAL"
+>SERIALIZABLE</VAR
+> level is
+   not truly serializable. See <A
+HREF="mvcc.html"
+>Chapter 12</A
+> for details.
+  </P
 ><P
->    In <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
-> there are two other transaction
-    characteristics that can be set with these commands: whether the
-    transaction is read-only and the size of the diagnostics area.
-    Neither of these concepts are supported in
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->. 
-   </P
-></DIV
+>   In the SQL standard, there is one other transaction characteristic
+   that can be set with these commands: the size of the diagnostics
+   area.  This concept is only for use in embedded SQL.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE CAST</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATECAST"
->CREATE CAST</A
-></H1
+></A
+>CREATE CAST</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38863"
+NAME="AEN37737"
 ></A
 ><H2
 >Name</H2
@@ -91,46 +91,34 @@ NAME="AEN38863"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38866"
+NAME="AEN37740"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE CAST (<TT
+>CREATE CAST (<VAR
 CLASS="REPLACEABLE"
-><I
->sourcetype</I
-></TT
-> AS <TT
+>sourcetype</VAR
+> AS <VAR
 CLASS="REPLACEABLE"
-><I
->targettype</I
-></TT
+>targettype</VAR
 >)
-    WITH FUNCTION <TT
+    WITH FUNCTION <VAR
 CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
-> (<TT
+>funcname</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->argtype</I
-></TT
+>argtype</VAR
 >)
     [ AS ASSIGNMENT | AS IMPLICIT ]
 
-CREATE CAST (<TT
+CREATE CAST (<VAR
 CLASS="REPLACEABLE"
-><I
->sourcetype</I
-></TT
-> AS <TT
+>sourcetype</VAR
+> AS <VAR
 CLASS="REPLACEABLE"
-><I
->targettype</I
-></TT
+>targettype</VAR
 >)
     WITHOUT FUNCTION
     [ AS ASSIGNMENT | AS IMPLICIT ]</PRE
@@ -158,9 +146,9 @@ CLASS="TYPE"
 >text</TT
 > by
    invoking a previously specified function, in this case
-   <TT
+   <VAR
 CLASS="LITERAL"
->text(int4)</TT
+>text(int4)</VAR
 >. (If no suitable cast has been defined, the
    conversion fails.)
   </P
@@ -186,56 +174,44 @@ CLASS="TYPE"
   </P
 ><P
 >   By default, a cast can be invoked only by an explicit cast request,
-   that is an explicit <TT
+   that is an explicit <VAR
 CLASS="LITERAL"
->CAST(<TT
+>CAST(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
+>x</VAR
 > AS
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
->)</TT
+>typename</VAR
+>)</VAR
 >,
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
-><TT
+>x</VAR
+><VAR
 CLASS="LITERAL"
->::</TT
-><TT
+>::</VAR
+><VAR
 CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
+>typename</VAR
 >, or
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
->(<TT
+>typename</VAR
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
+>x</VAR
 >) construct.
   </P
 ><P
->   If the cast is marked <TT
+>   If the cast is marked <VAR
 CLASS="LITERAL"
->AS ASSIGNMENT</TT
+>AS ASSIGNMENT</VAR
 > then it can be invoked
-   implicitly when assigning to a column of the target data type.
-   For example, supposing that <TT
+   implicitly when assigning a value to a column of the target data type.
+   For example, supposing that <VAR
 CLASS="LITERAL"
->foo.f1</TT
+>foo.f1</VAR
 > is a column of
    type <TT
 CLASS="TYPE"
@@ -243,7 +219,7 @@ CLASS="TYPE"
 >, then
 </P><PRE
 CLASS="PROGRAMLISTING"
->INSERT INTO foo(f1) VALUES(42);</PRE
+>INSERT INTO foo (f1) VALUES (42);</PRE
 ><P>
    will be allowed if the cast from type <TT
 CLASS="TYPE"
@@ -252,9 +228,9 @@ CLASS="TYPE"
    <TT
 CLASS="TYPE"
 >text</TT
-> is marked <TT
+> is marked <VAR
 CLASS="LITERAL"
->AS ASSIGNMENT</TT
+>AS ASSIGNMENT</VAR
 >, otherwise
    not.
    (We generally use the term <I
@@ -264,19 +240,19 @@ CLASS="FIRSTTERM"
 > to describe this kind of cast.)
   </P
 ><P
->   If the cast is marked <TT
+>   If the cast is marked <VAR
 CLASS="LITERAL"
->AS IMPLICIT</TT
+>AS IMPLICIT</VAR
 > then it can be invoked
    implicitly in any context, whether assignment or internally in an
-   expression.  For example, since <TT
+   expression.  For example, since <VAR
 CLASS="LITERAL"
->||</TT
+>||</VAR
 > takes <TT
 CLASS="TYPE"
 >text</TT
 >
-   arguments,
+   operands,
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT 'The time is ' || now();</PRE
@@ -288,9 +264,9 @@ CLASS="TYPE"
    <TT
 CLASS="TYPE"
 >text</TT
-> is marked <TT
+> is marked <VAR
 CLASS="LITERAL"
->AS IMPLICIT</TT
+>AS IMPLICIT</VAR
 >.  Otherwise it
    will be necessary to write the cast explicitly, for example
 </P><PRE
@@ -340,25 +316,27 @@ CLASS="TYPE"
   </P
 ><P
 >   To be able to create a cast, you must own the source or the target
-   data type.  To create a binary-compatible cast, you must be superuser
-   (this restriction is made because an erroneous binary-compatible cast
-   conversion can easily crash the server).
+   data type.  To create a binary-compatible cast, you must be superuser.
+   (This restriction is made because an erroneous binary-compatible cast
+   conversion can easily crash the server.)
   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37797"
+></A
+><H2
+>Parameters</H2
 ><P
 ></P
 ><DIV
 CLASS="VARIABLELIST"
-><P
-><B
->Parameters</B
-></P
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->sourcetype</I
-></TT
+>sourcetype</VAR
 ></DT
 ><DD
 ><P
@@ -366,11 +344,9 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->targettype</I
-></TT
+>targettype</VAR
 ></DT
 ><DD
 ><P
@@ -378,16 +354,12 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
->(<TT
+>funcname</VAR
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->argtype</I
-></TT
+>argtype</VAR
 >)</DT
 ><DD
 ><P
@@ -399,9 +371,9 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->WITHOUT FUNCTION</TT
+>WITHOUT FUNCTION</VAR
 ></DT
 ><DD
 ><P
@@ -410,9 +382,9 @@ CLASS="LITERAL"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->AS ASSIGNMENT</TT
+>AS ASSIGNMENT</VAR
 ></DT
 ><DD
 ><P
@@ -421,14 +393,39 @@ CLASS="LITERAL"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->AS IMPLICIT</TT
+>AS IMPLICIT</VAR
 ></DT
 ><DD
 ><P
 >       Indicates that the cast may be invoked implicitly in any context.
       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37831"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE CAST</SAMP
+></DT
+><DD
+><P
+>      Message returned if the cast was successfully created.
+     </P
 ></DD
 ></DL
 ></DIV
@@ -451,17 +448,20 @@ CLASS="COMMAND"
    need to declare casts both ways explicitly.
   </P
 ><P
->   Prior to PostgreSQL 7.3, every function that had the same name as a
-   data type, returned that data type, and took one argument of a
-   different type was automatically a cast function.  This convention has
-   been abandoned in face of the introduction of schemas and to be
-   able to represent binary compatible casts in the catalogs.  (The built-in
-   cast functions
-   still follow this naming scheme, but they have to be shown as
-   casts in <TT
+>   Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3, every function that had
+   the same name as a data type, returned that data type, and took one
+   argument of a different type was automatically a cast function.
+   This convention has been abandoned in face of the introduction of
+   schemas and to be able to represent binary compatible casts in the
+   system catalogs.  (The built-in cast functions still follow this naming
+   scheme, but they have to be shown as casts in the system catalog <VAR
 CLASS="LITERAL"
->pg_cast</TT
-> now.)
+>pg_cast</VAR
+>
+   now.)
   </P
 ></DIV
 ><DIV
@@ -479,9 +479,9 @@ CLASS="TYPE"
    <TT
 CLASS="TYPE"
 >int4</TT
-> using the function <TT
+> using the function <VAR
 CLASS="LITERAL"
->int4(text)</TT
+>int4(text)</VAR
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -502,10 +502,10 @@ NAME="SQL-CREATECAST-COMPAT"
 CLASS="COMMAND"
 >CREATE CAST</TT
 > command conforms to SQL99,
-   except that SQL99 does not make provisions for binary compatible
-   types.  <TT
+   except that SQL99 does not make provisions for binary-compatible
+   types.  <VAR
 CLASS="LITERAL"
->AS IMPLICIT</TT
+>AS IMPLICIT</VAR
 > is a <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -538,10 +538,6 @@ HREF="sql-dropcast.html"
 ><I
 >DROP CAST</I
 ></A
->,
-   <I
-CLASS="CITETITLE"
->PostgreSQL Programmer's Guide</I
 >
   </P
 ></DIV

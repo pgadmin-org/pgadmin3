@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >RESET</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,84 +78,37 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-RESET"
->RESET</A
-></H1
+></A
+>RESET</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44914"
+NAME="AEN43132"
 ></A
 ><H2
 >Name</H2
->RESET&nbsp;--&nbsp;restore the value of a run-time parameter to a default value</DIV
+>RESET&nbsp;--&nbsp;restore the value of a run-time parameter to the default value</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44917"
+NAME="AEN43135"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->RESET <TT
+>RESET <VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
->
-  </PRE
+>parameter</VAR
+></PRE
 ><PRE
 CLASS="SYNOPSIS"
->RESET ALL
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-RESET-1"
-></A
-><H3
->Inputs</H3
-><P
->		
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-></DT
-><DD
-><P
->	The name of a run-time parameter. See <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
-> for a list.
-       </P
-></DD
-><DT
->ALL</DT
-><DD
-><P
->        Resets all settable run-time parameters to default values.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>RESET ALL</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44935"
+NAME="AEN43139"
 ></A
 ><H2
 >Description</H2
@@ -164,48 +117,45 @@ NAME="AEN44935"
 CLASS="COMMAND"
 >RESET</TT
 > restores run-time parameters to their
-   default values. Refer to
-   <A
+   default values.  <TT
+CLASS="COMMAND"
+>RESET</TT
+> is an alternative
+   spelling for
+</P><PRE
+CLASS="SYNOPSIS"
+>SET <VAR
+CLASS="REPLACEABLE"
+>parameter</VAR
+> TO DEFAULT</PRE
+><P>
+   Refer to <A
 HREF="sql-set.html"
 ><I
 >SET</I
 ></A
->
-   for details. <TT
-CLASS="COMMAND"
->RESET</TT
-> is an alternate spelling for
-
-   </P><PRE
-CLASS="SYNOPSIS"
->SET <TT
-CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-> TO DEFAULT
-   </PRE
-><P>
-
-   The default value is defined as the value that the variable would
+> for
+   details.
+  </P
+><P
+>   The default value is defined as the value that the parameter would
    have had, had no <TT
 CLASS="COMMAND"
 >SET</TT
 > ever been issued for it in the
    current session.  The actual source of this value might be a
-   compiled-in default, the postmaster's configuration file or command-line
-   switches, or per-database or per-user default settings.  See the
-   <I
-CLASS="CITETITLE"
->Administrator's Guide</I
+   compiled-in default, the configuration file, command-line options,
+   or per-database or per-user default settings.  See <A
+HREF="runtime-config.html"
+>Section 16.4</A
 > for details.
   </P
 ><P
 >   See the <TT
 CLASS="COMMAND"
 >SET</TT
-> manual page for details on the transaction
-   behavior of <TT
+> reference page for details on the
+   transaction behavior of <TT
 CLASS="COMMAND"
 >RESET</TT
 >.
@@ -214,7 +164,47 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44948"
+NAME="AEN43153"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>parameter</VAR
+></DT
+><DD
+><P
+>      The name of a run-time parameter. See <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> for a list.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>ALL</VAR
+></DT
+><DD
+><P
+>      Resets all settable run-time parameters to default values.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43167"
 ></A
 ><H2
 >Diagnostics</H2
@@ -224,44 +214,41 @@ HREF="sql-set.html"
 ><I
 >SET</I
 ></A
-> command.
+>.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44952"
+NAME="AEN43171"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Set <TT
+>   Set <VAR
 CLASS="VARNAME"
->DateStyle</TT
+>datestyle</VAR
 > to its default value:
-
 </P><PRE
 CLASS="SCREEN"
->RESET DateStyle;</PRE
+>RESET datestyle;</PRE
 ><P>
   </P
 ><P
->   Set <TT
+>   Set <VAR
 CLASS="VARNAME"
->geqo</TT
+>geqo</VAR
 > to its default value:
-
 </P><PRE
 CLASS="SCREEN"
->   
-RESET GEQO;</PRE
+>RESET geqo;</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44960"
+NAME="AEN43179"
 ></A
 ><H2
 >Compatibility</H2

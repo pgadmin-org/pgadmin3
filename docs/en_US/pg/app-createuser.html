@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >createuser</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-CREATEUSER"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >createuser</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47062"
+NAME="AEN45265"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47066"
+NAME="AEN45269"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,22 +105,18 @@ NAME="AEN47066"
 ><TT
 CLASS="COMMAND"
 >createuser</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->options</I
-></TT
->...] [<TT
+>option</VAR
+>...] [<VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 >]</P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47073"
+NAME="AEN45276"
 ></A
 ><H2
 >Description</H2
@@ -133,13 +129,13 @@ CLASS="APPLICATION"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user.  
-   Only superusers (users with <TT
+   Only superusers (users with <VAR
 CLASS="LITERAL"
->usesuper</TT
+>usesuper</VAR
 > set in
-   the <TT
+   the <VAR
 CLASS="LITERAL"
->pg_shadow</TT
+>pg_shadow</VAR
 > table) can create 
    new <SPAN
 CLASS="PRODUCTNAME"
@@ -163,49 +159,41 @@ CLASS="PRODUCTNAME"
 >   <SPAN
 CLASS="APPLICATION"
 >createuser</SPAN
-> is a shell script wrapper around the
-   <SPAN
+> is a wrapper around the
+   <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> command
-   <A
+>SQL</ACRONYM
+> command <A
 HREF="sql-createuser.html"
 ><I
 >CREATE USER</I
 ></A
-> via
-   the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> interactive terminal
-   <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
->. Thus, there is nothing
-   special about creating users via this or other methods. This means
-   that the <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> application must be found by the
-   script and that 
-   a database server must be running at the targeted host. Also, any default
-   settings and environment variables used by <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->
-   and the <SPAN
+>.  The database server must be 
+   running on the targeted host. There is nothing special
+   about creating users via this or other methods. Also, any
+   default settings and environment variables used by the
+   <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 > front-end library will apply.
+  </P
+><P
+>   Passwords can only be added later or changed using the
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> command <A
+HREF="sql-alteruser.html"
+><I
+>ALTER USER</I
+></A
+>.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47093"
+NAME="AEN45295"
 ></A
 ><H2
 >Options</H2
@@ -221,11 +209,9 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 ></DT
 ><DD
 ><P
@@ -240,30 +226,33 @@ CLASS="PRODUCTNAME"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-a</TT
-><BR><TT
+>-a</VAR
+><BR><VAR
 CLASS="OPTION"
->--adduser</TT
+>--adduser</VAR
 ></DT
 ><DD
 ><P
 >	The new user is allowed to create other users.
-	(Note: Actually, this makes the new user a <I
-CLASS="FIRSTTERM"
+	(Note: Actually, this makes the new user a <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
 >superuser</I
+></SPAN
 >.
 	The option is poorly named.)
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-A</TT
-><BR><TT
+>-A</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-adduser</TT
+>--no-adduser</VAR
 ></DT
 ><DD
 ><P
@@ -272,12 +261,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-d</TT
-><BR><TT
+>-d</VAR
+><BR><VAR
 CLASS="OPTION"
->--createdb</TT
+>--createdb</VAR
 ></DT
 ><DD
 ><P
@@ -285,12 +274,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-D</TT
-><BR><TT
+>-D</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-createdb</TT
+>--no-createdb</VAR
 ></DT
 ><DD
 ><P
@@ -298,16 +287,16 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-e</TT
-><BR><TT
+>-e</VAR
+><BR><VAR
 CLASS="OPTION"
->--echo</TT
+>--echo</VAR
 ></DT
 ><DD
 ><P
->        Echo the queries that <SPAN
+>        Echo the commands that <SPAN
 CLASS="APPLICATION"
 >createuser</SPAN
 > generates
@@ -315,12 +304,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-E</TT
-><BR><TT
+>-E</VAR
+><BR><VAR
 CLASS="OPTION"
->--encrypted</TT
+>--encrypted</VAR
 ></DT
 ><DD
 ><P
@@ -329,22 +318,18 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-i <TT
+>-i <VAR
 CLASS="REPLACEABLE"
-><I
->uid</I
-></TT
-></TT
-><BR><TT
+>number</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--sysid <TT
+>--sysid <VAR
 CLASS="REPLACEABLE"
-><I
->uid</I
-></TT
-></TT
+>number</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -353,12 +338,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-N</TT
-><BR><TT
+>-N</VAR
+><BR><VAR
 CLASS="OPTION"
->--unencrypted</TT
+>--unencrypted</VAR
 ></DT
 ><DD
 ><P
@@ -367,12 +352,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-P</TT
-><BR><TT
+>-P</VAR
+><BR><VAR
 CLASS="OPTION"
->--pwprompt</TT
+>--pwprompt</VAR
 ></DT
 ><DD
 ><P
@@ -385,12 +370,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-q</TT
-><BR><TT
+>-q</VAR
+><BR><VAR
 CLASS="OPTION"
->--quiet</TT
+>--quiet</VAR
 ></DT
 ><DD
 ><P
@@ -418,86 +403,74 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-h <TT
+>-h <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-><BR><TT
+>host</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--host <TT
+>--host <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
+>host</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Specifies the host name of the machine on which the 
 	server
-	is running.  If host begins with a slash, it is used 
+	is running.  If the value begins with a slash, it is used 
 	as the directory for the Unix domain socket.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-p <TT
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
-><BR><TT
+>port</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--port <TT
+>--port <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
+>port</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specifies the Internet TCP/IP port or local Unix domain socket file 
+>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-U <TT
+>-U <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
+>username</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--username <TT
+>--username <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
->        User name to connect as (not the user name to create)
+>        User name to connect as (not the user name to create).
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-W</TT
-><BR><TT
+>-W</VAR
+><BR><VAR
 CLASS="OPTION"
->--password</TT
+>--password</VAR
 ></DT
 ><DD
 ><P
@@ -513,7 +486,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47218"
+NAME="AEN45420"
 ></A
 ><H2
 >Environment</H2
@@ -544,7 +517,7 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47230"
+NAME="AEN45432"
 ></A
 ><H2
 >Diagnostics</H2
@@ -554,9 +527,9 @@ NAME="AEN47230"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE USER</TT
+>CREATE USER</SAMP
 ></DT
 ><DD
 ><P
@@ -564,14 +537,12 @@ CLASS="COMPUTEROUTPUT"
        </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->createuser: creation of user "<TT
+>createuser: creation of user "<VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
->" failed</TT
+>username</VAR
+>" failed</SAMP
 ></DT
 ><DD
 ><P
@@ -588,91 +559,77 @@ HREF="sql-createuser.html"
 >CREATE USER</I
 ></A
 >
-    and <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-> for possibilities.
+    for possibilities.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47247"
+NAME="AEN45448"
 ></A
 ><H2
 >Examples</H2
 ><P
->    To create a user <TT
+>    To create a user <VAR
 CLASS="LITERAL"
->joe</TT
+>joe</VAR
 > on the default database
     server:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->createuser joe</B
-></TT
+>createuser joe</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->Is the new user allowed to create databases? (y/n) </TT
-><TT
+>Is the new user allowed to create databases? (y/n) </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->n</B
-></TT
+>n</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->Shall the new user be allowed to create more new users? (y/n) </TT
-><TT
+>Shall the new user be allowed to create more new users? (y/n) </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->n</B
-></TT
+>n</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE USER</TT
+>CREATE USER</SAMP
 ></PRE
 ><P>
    </P
 ><P
->    To create the same user <TT
+>    To create the same user <VAR
 CLASS="LITERAL"
->joe</TT
+>joe</VAR
 > using the
-    server on host <TT
+    server on host <VAR
 CLASS="LITERAL"
->eden</TT
+>eden</VAR
 >, port 5000, avoiding the prompts and
-    taking a look at the underlying query:
+    taking a look at the underlying command:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->createuser -p 5000 -h eden -D -A -e joe</B
-></TT
+>createuser -p 5000 -h eden -D -A -e joe</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE USER "joe" NOCREATEDB NOCREATEUSER</TT
+>CREATE USER "joe" NOCREATEDB NOCREATEUSER</SAMP
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE USER</TT
+>CREATE USER</SAMP
 ></PRE
 ><P>
    </P
@@ -680,7 +637,7 @@ CLASS="COMPUTEROUTPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47267"
+NAME="AEN45468"
 ></A
 ><H2
 >See Also</H2

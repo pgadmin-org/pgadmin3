@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->For the Developer</TITLE
+>Internals</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
 HREF="ecpg.html"><LINK
 REL="PREVIOUS"
-TITLE="Porting From Other RDBMS Packages"
-HREF="ecpg-porting.html"><LINK
+TITLE="Library Functions"
+HREF="ecpg-library.html"><LINK
 REL="NEXT"
 TITLE="JDBC Interface"
 HREF="jdbc.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="ecpg-porting.html"
+HREF="ecpg-library.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. <SPAN
+>Chapter 30. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
-> - Embedded <SPAN
+> - Embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > in C</TD
 ><TD
 WIDTH="10%"
@@ -87,27 +87,19 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-DEVELOP"
->4.11. For the Developer</A
+>30.13. Internals</A
 ></H1
 ><P
 >   This section explain how <SPAN
 CLASS="APPLICATION"
->ecpg</SPAN
+>ECPG</SPAN
 > works
    internally. This information can occasionally be useful to help
    users understand how to use <SPAN
 CLASS="APPLICATION"
->ecpg</SPAN
+>ECPG</SPAN
 >.
   </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN27942"
->4.11.1. The Preprocessor</A
-></H2
 ><P
 >    The first four lines written by <TT
 CLASS="COMMAND"
@@ -125,42 +117,130 @@ CLASS="COMMAND"
 > statement, it
     intervenes and changes it. The command starts with <TT
 CLASS="COMMAND"
->exec
-    sql</TT
+>EXEC
+    SQL</TT
 > and ends with <TT
 CLASS="COMMAND"
 >;</TT
 >. Everything in
-    between is treated as an <SPAN
+    between is treated as an <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > statement and
     parsed for variable substitution.
    </P
 ><P
 >    Variable substitution occurs when a symbol starts with a colon
-    (<TT
+    (<VAR
 CLASS="LITERAL"
->:</TT
+>:</VAR
 >). The variable with that name is looked up
     among the variables that were previously declared within a
-    <TT
+    <VAR
 CLASS="LITERAL"
->EXEC SQL DECLARE</TT
-> section. Depending on whether the
-    variable is being use for input or output, a pointer to the
-    variable is output to allow access by the function.
+>EXEC SQL DECLARE</VAR
+> section.
    </P
 ><P
->    For every variable that is part of the <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
->
-    query, the function gets other arguments:
+>    The most important function in the library is
+    <CODE
+CLASS="FUNCTION"
+>ECPGdo</CODE
+>, which takes care of executing most
+    commands. It takes a variable number of arguments. This can easily
+    add up to 50 or so arguments, and we hope this will not be a
+    problem on any platform.
+   </P
+><P
+>    The arguments are:
 
     <P
 ></P
-></P><UL
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>A line number</DT
+><DD
+><P
+>        This is the line number of the original line; used in error
+        messages only.
+       </P
+></DD
+><DT
+>A string</DT
+><DD
+><P
+>        This is the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> command that is to be issued.
+        It is modified by the input variables, i.e., the variables that
+        where not known at compile time but are to be entered in the
+        command. Where the variables should go the string contains
+        <VAR
+CLASS="LITERAL"
+>?</VAR
+>.
+       </P
+></DD
+><DT
+>Input variables</DT
+><DD
+><P
+>        Every input variable causes ten arguments to be created.  (See below.)
+       </P
+></DD
+><DT
+><VAR
+CLASS="PARAMETER"
+>ECPGt_EOIT</VAR
+></DT
+><DD
+><P
+>        An <TT
+CLASS="TYPE"
+>enum</TT
+> telling that there are no more input
+        variables.
+       </P
+></DD
+><DT
+>Output variables</DT
+><DD
+><P
+>        Every output variable causes ten arguments to be created.
+        (See below.)  These variables are filled by the function.
+       </P
+></DD
+><DT
+><VAR
+CLASS="PARAMETER"
+>ECPGt_EORT</VAR
+></DT
+><DD
+><P
+>        An <TT
+CLASS="TYPE"
+>enum</TT
+> telling that there are no more variables.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    For every variable that is part of the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>
+    command, the function gets ten arguments:
+
+    <P
+></P
+></P><OL
+TYPE="1"
 ><LI
 ><P
 >       The type as a special symbol.
@@ -200,8 +280,7 @@ CLASS="TYPE"
 ></LI
 ><LI
 ><P
->       A pointer to the value of the indicator variable or a pointer
-       to the pointer of the indicator variable.
+>       A pointer to the indicator variable.
       </P
 ></LI
 ><LI
@@ -211,7 +290,7 @@ CLASS="TYPE"
 ></LI
 ><LI
 ><P
->       Number of elements in the indicator array (for array fetches).
+>       The number of elements in the indicator array (for array fetches).
       </P
 ></LI
 ><LI
@@ -220,7 +299,7 @@ CLASS="TYPE"
        array fetches).
       </P
 ></LI
-></UL
+></OL
 ><P>
    </P
 ><P
@@ -228,11 +307,9 @@ CLASS="TYPE"
     instance, an open cursor statement like
 </P><PRE
 CLASS="PROGRAMLISTING"
->EXEC SQL OPEN <TT
+>EXEC SQL OPEN <VAR
 CLASS="REPLACEABLE"
-><I
->cursor</I
-></TT
+>cursor</VAR
 >;</PRE
 ><P>
     is not copied to the output. Instead, the cursor's
@@ -281,118 +358,9 @@ ECPGdo(__LINE__, NULL, "SELECT res FROM mytable WHERE index = ?     ",
         ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);
 #line 147 "foo.pgc"</PRE
 ><P>
-    (The indentation in this manual is added for readability and not
+    (The indentation here is added for readability and not
     something the preprocessor does.)
    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN27987"
->4.11.2. The Library</A
-></H2
-><P
->    The most important function in the library is
-    <TT
-CLASS="FUNCTION"
->ECPGdo</TT
->. It takes a variable number of
-    arguments. Hopefully there are no computers that limit the number
-    of variables that can be accepted by a
-    <TT
-CLASS="FUNCTION"
->varargs()</TT
-> function. This can easily add up to
-    50 or so arguments.
-   </P
-><P
->    The arguments are:
-
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->A line number</DT
-><DD
-><P
->        This is a line number of the original line; used in error
-        messages only.
-       </P
-></DD
-><DT
->A string</DT
-><DD
-><P
->        This is the <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
-> query that is to be issued.
-        It is modified by the input variables, i.e. the variables that
-        where not known at compile time but are to be entered in the
-        query. Where the variables should go the string contains
-        <TT
-CLASS="LITERAL"
->?</TT
->.
-       </P
-></DD
-><DT
->Input variables</DT
-><DD
-><P
->        As described in the section about the preprocessor, every
-        input variable gets ten arguments.
-       </P
-></DD
-><DT
-><TT
-CLASS="PARAMETER"
-><I
->ECPGt_EOIT</I
-></TT
-></DT
-><DD
-><P
->        An <TT
-CLASS="TYPE"
->enum</TT
-> telling that there are no more input
-        variables.
-       </P
-></DD
-><DT
->Output variables</DT
-><DD
-><P
->        As described in the section about the preprocessor, every
-        input variable gets ten arguments. These variables are filled
-        by the function.
-       </P
-></DD
-><DT
-><TT
-CLASS="PARAMETER"
-><I
->ECPGt_EORT</I
-></TT
-></DT
-><DD
-><P
->        An <TT
-CLASS="TYPE"
->enum</TT
-> telling that there are no more variables.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -410,7 +378,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="ecpg-porting.html"
+HREF="ecpg-library.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -438,10 +406,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Porting From Other <SPAN
-CLASS="ACRONYM"
->RDBMS</SPAN
-> Packages</TD
+>Library Functions</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -455,9 +420,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > Interface</TD
 ></TR
 ></TABLE

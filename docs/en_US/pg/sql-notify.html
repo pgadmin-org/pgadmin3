@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >NOTIFY</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,146 +78,64 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-NOTIFY"
->NOTIFY</A
-></H1
+></A
+>NOTIFY</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44616"
+NAME="AEN42900"
 ></A
 ><H2
 >Name</H2
->   NOTIFY
-  &nbsp;--&nbsp;   generate a notification
-  </DIV
+>NOTIFY&nbsp;--&nbsp;generate a notification</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44619"
+NAME="AEN42903"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->NOTIFY <TT
+>NOTIFY <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->        
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-NOTIFY-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->notifyname</I
-></TT
-></DT
-><DD
-><P
->	Notify condition to be signaled.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-NOTIFY-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->NOTIFY
-       </TT
-></DT
-><DD
-><P
->	Acknowledgement that notify command has executed.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->Notify events</I
-></TT
-></DT
-><DD
-><P
->	Events are delivered to listening frontends; whether and how each frontend
-	application reacts depends on its programming.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>name</VAR
+>        </PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-NOTIFY-1"
+NAME="AEN42906"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   The <TT
 CLASS="COMMAND"
 >NOTIFY</TT
-> command sends a notify event to each
-   frontend application that has previously executed
+> command sends a notification event to each
+   client application that has previously executed
    <TT
 CLASS="COMMAND"
->LISTEN <TT
+>LISTEN <VAR
 CLASS="REPLACEABLE"
-><I
->notifyname</I
-></TT
+>name</VAR
 ></TT
 >
-   for the specified notify condition in the current database.
+   for the specified notification name in the current database.
   </P
 ><P
->   The information passed to the frontend for a notify event includes the notify
-   condition name and the notifying backend process's <SPAN
+>   The information passed to the client for a notifiation event includes the notification
+   name and the notifying session's server process <ACRONYM
 CLASS="ACRONYM"
->PID</SPAN
+>PID</ACRONYM
 >.  It is up to the
-   database designer to define the condition names that will be used in a given
+   database designer to define the notification names that will be used in a given
    database and what each one means.
   </P
 ><P
->   Commonly, the notify condition name is the same as the name of some table in
-   the database, and the notify event essentially means <SPAN
+>   Commonly, the notification name is the same as the name of some table in
+   the database, and the notify event essentially means, <SPAN
 CLASS="QUOTE"
 >"I changed this table,
    take a look at it to see what's new"</SPAN
@@ -229,7 +147,7 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >LISTEN</TT
 > commands.  For
-   example, a database designer could use several different condition names
+   example, a database designer could use several different notification names
    to signal different sorts of changes to a single table.
   </P
 ><P
@@ -237,16 +155,13 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >NOTIFY</TT
 > provides a simple form of signal or
-   <SPAN
-CLASS="ACRONYM"
->IPC</SPAN
-> (interprocess communication) mechanism for a collection of processes
+   interprocess communication mechanism for a collection of processes
    accessing the same <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database.
    Higher-level mechanisms can be built by using tables in the database to
-   pass additional data (beyond a mere condition name) from notifier to
+   pass additional data (beyond a mere notification name) from notifier to
    listener(s).
   </P
 ><P
@@ -273,22 +188,22 @@ CLASS="COMMAND"
 > is executed inside a
    transaction, the notify events are not delivered until and unless the
    transaction is committed.  This is appropriate, since if the transaction
-   is aborted we would like all the commands within it to have had no
+   is aborted, all the commands within it have had no
    effect, including <TT
 CLASS="COMMAND"
 >NOTIFY</TT
 >.  But it can be disconcerting if one
-   is expecting the notify events to be delivered immediately.  Secondly, if
-   a listening backend receives a notify signal while it is within a transaction,
-   the notify event will not be delivered to its connected frontend until just
+   is expecting the notification events to be delivered immediately.  Secondly, if
+   a listening session receives a notification signal while it is within a transaction,
+   the notification event will not be delivered to its connected client until just
    after the transaction is completed (either committed or aborted).  Again, the
-   reasoning is that if a notify were delivered within a transaction that was
+   reasoning is that if a notification were delivered within a transaction that was
    later aborted, one would want the notification to be undone somehow---but
-   the backend cannot <SPAN
+   the server cannot <SPAN
 CLASS="QUOTE"
 >"take back"</SPAN
-> a notify once it has sent it to the frontend.
-   So notify events are only delivered between transactions.  The upshot of this
+> a notification once it has sent it to the client.
+   So notification events are only delivered between transactions.  The upshot of this
    is that applications using <TT
 CLASS="COMMAND"
 >NOTIFY</TT
@@ -300,13 +215,13 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >NOTIFY</TT
 > behaves like Unix signals in one important
-   respect: if the same condition name is signaled multiple times in quick
-   succession, recipients may get only one notify event for several executions
+   respect: if the same notification name is signaled multiple times in quick
+   succession, recipients may get only one notification event for several executions
    of <TT
 CLASS="COMMAND"
 >NOTIFY</TT
 >.  So it is a bad idea to depend on the number
-   of notifies received.  Instead, use <TT
+   of notifications received.  Instead, use <TT
 CLASS="COMMAND"
 >NOTIFY</TT
 > to wake up
@@ -315,105 +230,97 @@ CLASS="COMMAND"
    it happened.
   </P
 ><P
->   It is common for a frontend that sends <TT
+>   It is common for a client that executes <TT
 CLASS="COMMAND"
 >NOTIFY</TT
-> to be
-   listening on the same notify name itself.  In that case it will get back a
-   notify event, just like all the other listening frontends.  Depending on the
-   application logic, this could result in useless work---for example,
-   re-reading a database table to find the same updates that that frontend just
-   wrote out.  In <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 6.4 and later, it is
-   possible to avoid such extra work by noticing whether the notifying backend
-   process's <SPAN
+>
+   to be listening on the same notification name itself.  In that case
+   it will get back a notification event, just like all the other
+   listening sessions.  Depending on the application logic, this could
+   result in useless work, for example, reading a database table to
+   find the same updates that that session just wrote out.  It is
+   possible to avoid such extra work by noticing whether the notifying
+   session's server process <ACRONYM
 CLASS="ACRONYM"
->PID</SPAN
-> (supplied in the notify event message) is the same as one's own
-   backend's <SPAN
+>PID</ACRONYM
+> (supplied in the
+   notification event message) is the same as one's own session's
+   <ACRONYM
 CLASS="ACRONYM"
->PID</SPAN
+>PID</ACRONYM
 > (available from <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
->).  When they are the same, the notify
-   event is one's own work bouncing back, and can be ignored.  (Despite what was
-   said in the preceding paragraph, this is a safe technique.
+>).  When they
+   are the same, the notification event is one's own work bouncing
+   back, and can be ignored.  (Despite what was said in the preceding
+   paragraph, this is a safe technique.
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> keeps self-notifies separate from notifies
-   arriving from other backends, so you cannot miss an outside notify by ignoring
-   your own notifies.)
+> keeps self-notifiications
+   separate from notifications arriving from other sessions, so you
+   cannot miss an outside notification by ignoring your own
+   notifications.)
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-NOTIFY-3"
+NAME="AEN42940"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-    can be any string valid as a name;
-    it need not correspond to the name of any actual table.  If
-    <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-    is enclosed in double-quotes, it need not even be a syntactically
-    valid name, but can be any string up to 63 characters long.
-   </P
+>name</VAR
+></DT
+><DD
 ><P
->    In some previous releases of
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->,
-    <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-    had to be enclosed in double-quotes when it did not correspond to any existing
-    table name, even if syntactically valid as a name.  That is no longer required.
-   </P
-><P
->    In <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> releases prior to 6.4, the backend
-    <SPAN
-CLASS="ACRONYM"
->PID</SPAN
-> delivered in a notify message was always the <SPAN
-CLASS="ACRONYM"
->PID</SPAN
-> of the frontend's own
-    backend.  So it was not possible to distinguish one's own notifies from other
-    clients' notifies in those earlier releases.
-   </P
+>      Name of the notification to be signaled (any identifier).
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-NOTIFY-2"
+NAME="AEN42948"
 ></A
 ><H2
->   Usage
-  </H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>NOTIFY</SAMP
+></DT
+><DD
+><P
+>      Message returned when the commmand has executed.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42956"
+></A
+><H2
+>Examples</H2
 ><P
 >   Configure and execute a listen/notify sequence from
    <SPAN
@@ -432,30 +339,17 @@ Asynchronous NOTIFY 'virtual' from backend with pid '8448' received. </PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-NOTIFY-3"
+NAME="AEN42961"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-NOTIFY-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >NOTIFY</TT
-> statement in
-    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
-></DIV
+> statement in the SQL
+   standard.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,16 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->   CREATE DOMAIN
-  </TITLE
+>CREATE DOMAIN</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -25,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -45,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -79,86 +78,102 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATEDOMAIN"
->CREATE DOMAIN</A
-></H1
+></A
+>CREATE DOMAIN</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN39294"
+NAME="AEN38163"
 ></A
 ><H2
 >Name</H2
->   CREATE DOMAIN
-  &nbsp;--&nbsp;   define a new domain
-  </DIV
+>CREATE DOMAIN&nbsp;--&nbsp;define a new domain</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN39297"
+NAME="AEN38166"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE DOMAIN <TT
+>CREATE DOMAIN <VAR
 CLASS="REPLACEABLE"
-><I
->domainname</I
-></TT
-> [AS] <TT
+>domainname</VAR
+> [AS] <VAR
 CLASS="REPLACEABLE"
-><I
->data_type</I
-></TT
+>data_type</VAR
 >
-    [ DEFAULT <TT
+    [ DEFAULT <VAR
 CLASS="REPLACEABLE"
-><I
->default_expr</I
-></TT
+>default_expr</VAR
 > ]
-    [ <TT
+    [ <VAR
 CLASS="REPLACEABLE"
-><I
->constraint</I
-></TT
+>constraint</VAR
 > [ ... ] ]
 
-where <TT
+where <VAR
 CLASS="REPLACEABLE"
-><I
->constraint</I
-></TT
+>constraint</VAR
 > is:
 
-[ CONSTRAINT <TT
+[ CONSTRAINT <VAR
 CLASS="REPLACEABLE"
-><I
->constraint_name</I
-></TT
+>constraint_name</VAR
 > ]
-{ NOT NULL | NULL }
-  </PRE
+{ NOT NULL | NULL | CHECK (<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>) }</PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-CREATEDOMAIN-1"
+NAME="AEN38175"
 ></A
-><H3
->    Parameters
-   </H3
+><H2
+>Description</H2
 ><P
->&#13;    <P
+>   <TT
+CLASS="COMMAND"
+>CREATE DOMAIN</TT
+> creates a new data domain.  The
+   user who defines a domain becomes its owner.
+  </P
+><P
+>   If a schema name is given (for example, <VAR
+CLASS="LITERAL"
+>CREATE DOMAIN
+   myschema.mydomain ...</VAR
+>) then the domain is created in the
+   specified schema.  Otherwise it is created in the current schema.
+   The domain name must be unique among the types and domains existing
+   in its schema.
+  </P
+><P
+>   Domains are useful for abstracting common fields between tables into
+   a single location for maintenance.  For example, an email address column may be used
+   in several tables, all with the same properties.  Define a domain and
+   use that rather than setting up each table's constraints individually.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38182"
+></A
+><H2
+>Parameters</H2
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->domainname</I
-></TT
+>domainname</VAR
 ></DT
 ><DD
 ><P
@@ -166,75 +181,52 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->data_type</I
-></TT
+>data_type</VAR
 ></DT
 ><DD
 ><P
 >        The underlying data type of the domain. This may include array
 	specifiers.
-        Refer to the <I
-CLASS="CITETITLE"
->User's Guide</I
-> for further
-        information about data types and arrays.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->DEFAULT
-      <TT
+>DEFAULT <VAR
 CLASS="REPLACEABLE"
-><I
->default_expr</I
-></TT
-></TT
+>default_expr</VAR
+></VAR
 ></DT
 ><DD
 ><P
->        The <TT
+>        The <VAR
 CLASS="LITERAL"
->DEFAULT</TT
+>DEFAULT</VAR
 > clause specifies a default value for
-	columns of the domain data type.  The value
-        is any variable-free expression (but subselects are not allowed).
-	The
-        data type of the default expression must match the data type of the
-        domain.
+        columns of the domain data type.  The value is any
+        variable-free expression (but subqueries are not allowed).
+        The data type of the default expression must match the data
+        type of the domain.  If no default value is specified, then
+        the default value is the null value.
        </P
 ><P
->        The default expression will be used in any insert operation that
-        does not specify a value for the column.  If there is no default
-        for a domain, then the default is NULL.
+>        The default expression will be used in any insert operation
+        that does not specify a value for the column.  If a default
+        value is defined for a particular column, it overrides any
+        default associated with the domain.  In turn, the domain
+        default overrides any default value associated with the
+        underlying data type.
        </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->         If a default value is specified for a particular column, it
-	 overrides any default associated with the domain.  In turn,
-	 the domain default overrides any default value associated with
-	 the underlying data type.
-        </P
-></BLOCKQUOTE
-></DIV
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->CONSTRAINT <TT
+>CONSTRAINT <VAR
 CLASS="REPLACEABLE"
-><I
->constraint_name</I
-></TT
-></TT
+>constraint_name</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -243,110 +235,95 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->NOT NULL</TT
+>NOT NULL</VAR
 ></DT
 ><DD
 ><P
->        Values of this domain are not allowed to be NULL.  
+>        Values of this domain are not allowed to be null.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->NULL</TT
+>NULL</VAR
 ></DT
 ><DD
 ><P
->        Values of this domain are allowed to be NULL.  This is the default.
+>        Values of this domain are allowed to be null.  This is the default.
        </P
 ><P
->        This clause is only available for compatibility with
-        non-standard SQL databases.  Its use is discouraged in new
+>        This clause is only intended for compatibility with
+        nonstandard SQL databases.  Its use is discouraged in new
         applications.
        </P
 ></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEDOMAIN-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->CREATE DOMAIN
-       </TT
+><VAR
+CLASS="LITERAL"
+>CHECK (<VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>)</VAR
 ></DT
 ><DD
 ><P
->	Message returned if the domain is successfully created.
-       </P
+>      <VAR
+CLASS="LITERAL"
+>CHECK</VAR
+> clauses specify integrity constraints or tests
+      which values of the domain must satisfy.
+      Each constraint must be an expression
+      producing a Boolean result.  It should use the name <VAR
+CLASS="LITERAL"
+>VALUE</VAR
+>
+      to refer to the value being tested.
+     </P
+><P
+>      Currently, <VAR
+CLASS="LITERAL"
+>CHECK</VAR
+> expressions cannot contain
+      subqueries nor refer to variables other than <VAR
+CLASS="LITERAL"
+>VALUE</VAR
+>.
+     </P
 ></DD
 ></DL
 ></DIV
-><P>
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEDOMAIN-1"
+NAME="AEN38231"
 ></A
 ><H2
->   Description
-  </H2
+>Diagnostics</H2
 ><P
->   <TT
-CLASS="COMMAND"
->CREATE DOMAIN</TT
->  allows  the user to register a new
-   data domain with <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> for use in the
-   current data base.   The user  who  defines  a domain becomes its owner.
-  </P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE DOMAIN</SAMP
+></DT
+><DD
 ><P
->   If a schema name is given (for example, <TT
-CLASS="LITERAL"
->CREATE DOMAIN
-   myschema.mydomain ...</TT
->) then the domain is created in the
-   specified schema.  Otherwise it is created in the current schema (the one
-   at the front of the search path; see <TT
-CLASS="LITERAL"
->CURRENT_SCHEMA()</TT
->).
-   The domain name must be unique among the types and domains existing
-   in its schema.
-  </P
-><P
->   Domains are useful for abstracting common fields between tables into
-   a single location for maintenance.  An email address column may be used
-   in several tables, all with the same properties.  Define a domain and
-   use that rather than setting up each table's constraints individually.
-  </P
+>      Message returned if the domain was successfully created.
+     </P
+></DD
+></DL
+></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39373"
+NAME="AEN38239"
 ></A
 ><H2
 >Examples</H2
@@ -359,7 +336,7 @@ CLASS="TYPE"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE DOMAIN country_code char(2) NOT NULL;
-CREATE TABLE countrylist (id INT4, country country_code);</PRE
+CREATE TABLE countrylist (id integer, country country_code);</PRE
 ><P>
   </P
 ></DIV
@@ -371,12 +348,11 @@ NAME="SQL-CREATEDOMAIN-COMPATIBILITY"
 ><H2
 >Compatibility</H2
 ><P
->   SQL99 defines CREATE DOMAIN, but says that the only allowed constraint
-   type is CHECK constraints.  CHECK constraints for domains are not yet
-   supported by <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
+>   The command <TT
+CLASS="COMMAND"
+>CREATE DOMAIN</TT
+> conforms to the SQL
+   standard.
   </P
 ></DIV
 ><DIV
@@ -391,9 +367,6 @@ HREF="sql-dropdomain.html"
 ><I
 >DROP DOMAIN</I
 ></A
->, <I
-CLASS="CITETITLE"
->PostgreSQL Programmer's Guide</I
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

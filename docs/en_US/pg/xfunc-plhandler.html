@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Procedural Language Handlers</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="Extending SQL: Functions"
-HREF="xfunc.html"><LINK
+TITLE="Extending SQL"
+HREF="extend.html"><LINK
 REL="PREVIOUS"
-TITLE="Table Functions"
-HREF="xfunc-tablefunctions.html"><LINK
+TITLE="Function Overloading"
+HREF="xfunc-overload.html"><LINK
 REL="NEXT"
-TITLE="Extending SQL: Types"
+TITLE="User-Defined Types"
 HREF="xtypes.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="xfunc-tablefunctions.html"
+HREF="xfunc-overload.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,10 +60,10 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 9. Extending <SPAN
+>Chapter 34. Extending <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
->: Functions</TD
+>SQL</ACRONYM
+></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -84,7 +84,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XFUNC-PLHANDLER"
->9.8. Procedural Language Handlers</A
+>34.9. Procedural Language Handlers</A
 ></H1
 ><P
 >    All calls to functions that are written in a language other than
@@ -119,38 +119,19 @@ CLASS="PRODUCTNAME"
     <SPAN
 CLASS="QUOTE"
 >"normal"</SPAN
-> function, which must be written in a
-    compiled language such as C and registered with
-    <SPAN
+> function that must be written in a compiled
+    language such as C, using the version-1 interface, and registered
+    with <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> as taking no arguments and
-    returning the <TT
+> as taking no arguments
+    and returning the type <TT
 CLASS="TYPE"
 >language_handler</TT
-> type.
-    This special pseudo-type identifies the handler as a call handler
-    and prevents it from being called directly in queries.
+>.  This
+    special pseudotype identifies the function as a call handler and
+    prevents it from being called directly in SQL commands.
    </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     In <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.1 and later, call
-     handlers must adhere to the <SPAN
-CLASS="QUOTE"
->"version 1"</SPAN
-> function
-     manager interface, not the old-style interface.
-    </P
-></BLOCKQUOTE
-></DIV
 ><P
 >    The call handler is called in the same way as any other function:
     It receives a pointer to a
@@ -174,7 +155,7 @@ CLASS="STRUCTFIELD"
 CLASS="STRUCTNAME"
 >FunctionCallInfoData</TT
 > structure, if it wishes
-    to return an SQL NULL result).  The difference between a call
+    to return an SQL null result).  The difference between a call
     handler and an ordinary callee function is that the
     <TT
 CLASS="STRUCTFIELD"
@@ -191,24 +172,27 @@ CLASS="STRUCTNAME"
     not of the call handler.
    </P
 ><P
->    It's up to the call handler to fetch the
-    <TT
+>    It's up to the call handler to fetch the entry of the function from the system table
+    <CODE
 CLASS="CLASSNAME"
->pg_proc</TT
-> entry and to analyze the argument
-    and return types of the called procedure. The AS clause from the
+>pg_proc</CODE
+> and to analyze the argument
+    and return types of the called function. The <VAR
+CLASS="LITERAL"
+>AS</VAR
+> clause from the
     <TT
 CLASS="COMMAND"
 >CREATE FUNCTION</TT
-> of the procedure will be found
-    in the <TT
+> of the function will be found
+    in the <VAR
 CLASS="LITERAL"
->prosrc</TT
-> attribute of the
-    <TT
+>prosrc</VAR
+> column of the
+    <CODE
 CLASS="CLASSNAME"
->pg_proc</TT
-> table entry. This may be the source
+>pg_proc</CODE
+> row. This may be the source
     text in the procedural language itself (like for PL/Tcl), a
     path name to a file, or anything else that tells the call handler
     what to do in detail.
@@ -221,14 +205,20 @@ CLASS="CLASSNAME"
 CLASS="STRUCTFIELD"
 >flinfo-&gt;fn_extra</TT
 > field.  This will
-    initially be NULL, but can be set by the call handler to point at
-    information about the PL function.  On subsequent calls, if
+    initially be <TT
+CLASS="SYMBOL"
+>NULL</TT
+>, but can be set by the call handler to point at
+    information about the called function.  On subsequent calls, if
     <TT
 CLASS="STRUCTFIELD"
 >flinfo-&gt;fn_extra</TT
-> is already non-NULL
+> is already non-<TT
+CLASS="SYMBOL"
+>NULL</TT
+>
     then it can be used and the information lookup step skipped.  The
-    call handler must be careful that
+    call handler must make sure that
     <TT
 CLASS="STRUCTFIELD"
 >flinfo-&gt;fn_extra</TT
@@ -249,12 +239,12 @@ CLASS="STRUCTFIELD"
 CLASS="STRUCTNAME"
 >FmgrInfo</TT
 > itself.  But the handler could
-    also choose to use a longer-lived context so that it can cache
+    also choose to use a longer-lived memory context so that it can cache
     function definition information across queries.
    </P
 ><P
->    When a PL function is invoked as a trigger, no explicit arguments
-    are passed, but the
+>    When a procedural-language function is invoked as a trigger, no arguments
+    are passed in the usual way, but the
     <TT
 CLASS="STRUCTNAME"
 >FunctionCallInfoData</TT
@@ -266,19 +256,21 @@ CLASS="STRUCTFIELD"
     <TT
 CLASS="STRUCTNAME"
 >TriggerData</TT
-> node, rather than being NULL
+> structure, rather than being <TT
+CLASS="SYMBOL"
+>NULL</TT
+>
     as it is in a plain function call.  A language handler should
-    provide mechanisms for PL functions to get at the trigger
+    provide mechanisms for procedural-language functions to get at the trigger
     information.
    </P
 ><P
->    This is a template for a PL handler written in C:
+>    This is a template for a procedural-language handler written in C:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >#include "postgres.h"
 #include "executor/spi.h"
 #include "commands/trigger.h"
-#include "utils/elog.h"
 #include "fmgr.h"
 #include "access/heapam.h"
 #include "utils/syscache.h"
@@ -301,7 +293,8 @@ plsample_call_handler(PG_FUNCTION_ARGS)
 
         retval = ...
     }
-    else {
+    else
+    {
         /*
          * Called as a function
          */
@@ -312,22 +305,23 @@ plsample_call_handler(PG_FUNCTION_ARGS)
     return retval;
 }</PRE
 ><P>
+    Only a few thousand lines of code have to be added instead of the
+    dots to complete the call handler.
    </P
 ><P
->    Only a few thousand lines of code have to be added instead of the
-    dots to complete the call handler.  See <A
-HREF="xfunc-c.html"
->Section 9.5</A
->
-    for information on how to compile it into a loadable module.
-   </P
-><P
->    The following commands then register the sample procedural
-    language:
+>    After having compiled the handler function into a loadable module
+    (see <A
+HREF="xfunc-c.html#DFUNC"
+>Section 34.7.6</A
+>), the following commands then
+    register the sample procedural language:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION plsample_call_handler () RETURNS language_handler
-    AS '/usr/local/pgsql/lib/plsample'
+>CREATE FUNCTION plsample_call_handler() RETURNS language_handler
+    AS '<VAR
+CLASS="REPLACEABLE"
+>filename</VAR
+>'
     LANGUAGE C;
 CREATE LANGUAGE plsample
     HANDLER plsample_call_handler;</PRE
@@ -350,7 +344,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xfunc-tablefunctions.html"
+HREF="xfunc-overload.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -378,13 +372,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Table Functions</TD
+>Function Overloading</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="xfunc.html"
+HREF="extend.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -392,10 +386,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Extending <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
->: Types</TD
+>User-Defined Types</TD
 ></TR
 ></TABLE
 ></DIV

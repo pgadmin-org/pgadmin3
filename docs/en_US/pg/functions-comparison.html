@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Comparison Operators</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. Functions and Operators</TD
+>Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,15 +81,15 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-COMPARISON"
->6.2. Comparison Operators</A
+>9.2. Comparison Operators</A
 ></H1
 ><A
-NAME="AEN5158"
+NAME="AEN5196"
 ></A
 ><P
 >    The usual comparison operators are available, shown in <A
 HREF="functions-comparison.html#FUNCTIONS-COMPARISON-TABLE"
->Table 6-1</A
+>Table 9-1</A
 >.
    </P
 ><DIV
@@ -99,103 +99,75 @@ NAME="FUNCTIONS-COMPARISON-TABLE"
 ></A
 ><P
 ><B
->Table 6-1. Comparison Operators</B
+>Table 9-1. Comparison Operators</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Operator</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->&lt;</TT
+>&lt;</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >less than</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->&gt;</TT
+>&gt;</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >greater than</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->&lt;=</TT
+>&lt;=</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >less than or equal to</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->&gt;=</TT
+>&gt;=</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >greater than or equal to</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->=</TT
+>=</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >equal</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->&lt;&gt;</TT
-> or <TT
+>&lt;&gt;</VAR
+> or <VAR
 CLASS="LITERAL"
->!=</TT
+>!=</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >not equal</TD
 ></TR
 ></TBODY
@@ -208,21 +180,21 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     The <TT
+>     The <VAR
 CLASS="LITERAL"
->!=</TT
+>!=</VAR
 > operator is converted to
-     <TT
+     <VAR
 CLASS="LITERAL"
->&lt;&gt;</TT
+>&lt;&gt;</VAR
 > in the parser stage.  It is not
-     possible to implement <TT
+     possible to implement <VAR
 CLASS="LITERAL"
->!=</TT
+>!=</VAR
 > and
-     <TT
+     <VAR
 CLASS="LITERAL"
->&lt;&gt;</TT
+>&lt;&gt;</VAR
 > operators that do different things.
     </P
 ></BLOCKQUOTE
@@ -234,22 +206,22 @@ CLASS="LITERAL"
 CLASS="TYPE"
 >boolean</TT
 >; expressions like
-    <TT
+    <VAR
 CLASS="LITERAL"
->1 &lt; 2 &lt; 3</TT
+>1 &lt; 2 &lt; 3</VAR
 > are not valid (because there is
-    no <TT
+    no <VAR
 CLASS="LITERAL"
->&lt;</TT
+>&lt;</VAR
 > operator to compare a Boolean value with
-    <TT
+    <VAR
 CLASS="LITERAL"
->3</TT
+>3</VAR
 >).
    </P
 ><P
 >    <A
-NAME="AEN5208"
+NAME="AEN5246"
 ></A
 >
     In addition to the comparison operators, the special
@@ -259,97 +231,69 @@ CLASS="TOKEN"
 > construct is available.
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
-> BETWEEN <TT
+>a</VAR
+> BETWEEN <VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
-> AND <TT
+>x</VAR
+> AND <VAR
 CLASS="REPLACEABLE"
-><I
->y</I
-></TT
+>y</VAR
 ></PRE
 ><P>
     is equivalent to
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
-> &gt;= <TT
+>a</VAR
+> &gt;= <VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
-> AND <TT
+>x</VAR
+> AND <VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
-> &lt;= <TT
+>a</VAR
+> &lt;= <VAR
 CLASS="REPLACEABLE"
-><I
->y</I
-></TT
+>y</VAR
 ></PRE
 ><P>
     Similarly,
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
-> NOT BETWEEN <TT
+>a</VAR
+> NOT BETWEEN <VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
-> AND <TT
+>x</VAR
+> AND <VAR
 CLASS="REPLACEABLE"
-><I
->y</I
-></TT
+>y</VAR
 ></PRE
 ><P>
     is equivalent to
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
-> &lt; <TT
+>a</VAR
+> &lt; <VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
-> OR <TT
+>x</VAR
+> OR <VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
-> &gt; <TT
+>a</VAR
+> &gt; <VAR
 CLASS="REPLACEABLE"
-><I
->y</I
-></TT
+>y</VAR
 ></PRE
 ><P>
     There is no difference between the two respective forms apart from
-    the <SPAN
+    the <ACRONYM
 CLASS="ACRONYM"
->CPU</SPAN
+>CPU</ACRONYM
 > cycles required to rewrite the first one
     into the second one internally.
    </P
@@ -357,33 +301,25 @@ CLASS="ACRONYM"
 >    To check whether a value is or is not null, use the constructs
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > IS NULL
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > IS NOT NULL</PRE
 ><P>
     or the equivalent, but nonstandard, constructs
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > ISNULL
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > NOTNULL</PRE
 ><P>
    </P
@@ -395,65 +331,59 @@ CLASS="EMPHASIS"
 >not</I
 ></SPAN
 > write
-    <TT
+    <VAR
 CLASS="LITERAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> = NULL</TT
+>expression</VAR
+> = NULL</VAR
 >
-    because <TT
+    because <VAR
 CLASS="LITERAL"
->NULL</TT
+>NULL</VAR
 > is not <SPAN
 CLASS="QUOTE"
 >"equal to"</SPAN
 >
-    <TT
+    <VAR
 CLASS="LITERAL"
->NULL</TT
+>NULL</VAR
 >.  (The null value represents an unknown value,
     and it is not known whether two unknown values are equal.)
    </P
 ><P
 >    Some applications may (incorrectly) require that
-    <TT
+    <VAR
 CLASS="LITERAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> = NULL</TT
+>expression</VAR
+> = NULL</VAR
 >
-    returns true if <TT
+    returns true if <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > evaluates to
     the null value.  To support these applications, the run-time option
-    <TT
+    <VAR
 CLASS="VARNAME"
->transform_null_equals</TT
+>transform_null_equals</VAR
 > can be turned on (e.g.,
-    <TT
+    <VAR
 CLASS="LITERAL"
->SET transform_null_equals TO ON;</TT
+>SET transform_null_equals TO ON;</VAR
 >).
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > will then convert
-    <TT
+    <VAR
 CLASS="LITERAL"
->x = NULL</TT
+>x = NULL</VAR
 > clauses to
-    <TT
+    <VAR
 CLASS="LITERAL"
->x IS NULL</TT
+>x IS NULL</VAR
 >.  This was 
     the default behavior in releases 6.5 through 7.1.
    </P
@@ -461,46 +391,34 @@ CLASS="LITERAL"
 >    Boolean values can also be tested using the constructs
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > IS TRUE
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > IS NOT TRUE
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > IS FALSE
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > IS NOT FALSE
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > IS UNKNOWN
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > IS NOT UNKNOWN</PRE
 ><P>
-    These are similar to <TT
+    These are similar to <VAR
 CLASS="LITERAL"
->IS NULL</TT
+>IS NULL</VAR
 > in that they will
     always return true or false, never a null value, even when the operand is null.
     A null input is treated as the logical value <SPAN

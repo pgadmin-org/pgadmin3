@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >postgres</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-POSTGRES"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >postgres</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN51256"
+NAME="AEN49506"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN51260"
+NAME="AEN49510"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,136 +105,90 @@ NAME="AEN51260"
 ><TT
 CLASS="COMMAND"
 >postgres</TT
-> [-A   0 | 1 ] [-B <TT
+> [-A   0 | 1 ] [-B <VAR
 CLASS="REPLACEABLE"
-><I
->nbuffers</I
-></TT
->] [-c <TT
+>nbuffers</VAR
+>] [-c <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->=<TT
+>name</VAR
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
->] [-d <TT
+>value</VAR
+>] [-d <VAR
 CLASS="REPLACEABLE"
-><I
->debug-level</I
-></TT
->] [-D <TT
+>debug-level</VAR
+>] [-D <VAR
 CLASS="REPLACEABLE"
-><I
->datadir</I
-></TT
->] [-e] [-E] [-f  s | i | t | n | m | h ] [-F] [-i] [-N] [-o <TT
+>datadir</VAR
+>] [-e] [-E] [-f  s | i | t | n | m | h ] [-F] [-N] [-o <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->] [-O] [-P] [-s | -t  pa | pl | ex ] [-S <TT
+>filename</VAR
+>] [-O] [-P] [-s | -t  pa | pl | ex ] [-S <VAR
 CLASS="REPLACEABLE"
-><I
->sort-mem</I
-></TT
->] [-W <TT
+>sort-mem</VAR
+>] [-W <VAR
 CLASS="REPLACEABLE"
-><I
->seconds</I
-></TT
->] [--<TT
+>seconds</VAR
+>] [--<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->=<TT
+>name</VAR
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
->]  <TT
+>value</VAR
+>]  <VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
+>database</VAR
 > <BR><TT
 CLASS="COMMAND"
 >postgres</TT
-> [-A   0 | 1 ] [-B <TT
+> [-A   0 | 1 ] [-B <VAR
 CLASS="REPLACEABLE"
-><I
->nbuffers</I
-></TT
->] [-c <TT
+>nbuffers</VAR
+>] [-c <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->=<TT
+>name</VAR
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
->] [-d <TT
+>value</VAR
+>] [-d <VAR
 CLASS="REPLACEABLE"
-><I
->debug-level</I
-></TT
->] [-D <TT
+>debug-level</VAR
+>] [-D <VAR
 CLASS="REPLACEABLE"
-><I
->datadir</I
-></TT
->] [-e] [-f  s | i | t | n | m | h ] [-F] [-i] [-o <TT
+>datadir</VAR
+>] [-e] [-f  s | i | t | n | m | h ] [-F] [-o <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->] [-O] [-p <TT
+>filename</VAR
+>] [-O] [-p <VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
->] [-P] [-s | -t  pa | pl | ex ] [-S <TT
+>database</VAR
+>] [-P] [-s | -t  pa | pl | ex ] [-S <VAR
 CLASS="REPLACEABLE"
-><I
->sort-mem</I
-></TT
->] [-v <TT
+>sort-mem</VAR
+>] [-v <VAR
 CLASS="REPLACEABLE"
-><I
->protocol-version</I
-></TT
->] [-W <TT
+>protocol</VAR
+>] [-W <VAR
 CLASS="REPLACEABLE"
-><I
->seconds</I
-></TT
->] [--<TT
+>seconds</VAR
+>] [--<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->=<TT
+>name</VAR
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
 >]</P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51357"
+NAME="AEN49605"
 ></A
 ><H2
 >Description</H2
 ><P
 >   The <TT
-CLASS="FILENAME"
+CLASS="COMMAND"
 >postgres</TT
 > executable is the actual
    <SPAN
@@ -251,9 +205,9 @@ CLASS="APPLICATION"
   </P
 ><P
 >   The second form above is how
-   <SPAN
-CLASS="APPLICATION"
->postgres</SPAN
+   <TT
+CLASS="COMMAND"
+>postgres</TT
 > is invoked by the <A
 HREF="app-postmaster.html"
 ><SPAN
@@ -281,14 +235,14 @@ HREF="app-initdb.html"
 >   When invoked in interactive mode from the shell, the user can enter
    queries and the results will be printed to the screen, but in a
    form that is more useful for developers than end users.  But note
-   that running a single-user backend is not truly suitable for
+   that running a single-user server is not truly suitable for
    debugging the server since no realistic interprocess communication
    and locking will happen.
   </P
 ><P
->   When running a stand-alone backend, the session user will be set to
+>   When running a stand-alone server, the session user will be set to
    the user with ID 1.  This user does not actually have to exist, so
-   a stand-alone backend can be used to manually recover from certain
+   a stand-alone server can be used to manually recover from certain
    kinds of accidental damage to the system catalogs.  Implicit
    superuser powers are granted to the user with ID 1 in stand-alone
    mode.
@@ -297,14 +251,14 @@ HREF="app-initdb.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51371"
+NAME="AEN49619"
 ></A
 ><H2
 >Options</H2
 ><P
->    When <SPAN
-CLASS="APPLICATION"
->postgres</SPAN
+>    When <TT
+CLASS="COMMAND"
+>postgres</TT
 > is started by a <A
 HREF="app-postmaster.html"
 ><SPAN
@@ -313,72 +267,75 @@ CLASS="APPLICATION"
 ></A
 > then it
     inherits all options set by the latter.  Additionally,
-    <SPAN
-CLASS="APPLICATION"
->postgres</SPAN
->-specific options can be passed
-    from the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
-> with the
     <TT
+CLASS="COMMAND"
+>postgres</TT
+>-specific options can be passed
+    from the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> with the
+    <VAR
 CLASS="OPTION"
->-o</TT
+>-o</VAR
 > switch.
    </P
 ><P
 >    You can avoid having to type these options by setting up a
-    configuration file.  See the <I
-CLASS="CITETITLE"
->Administrator's
-    Guide</I
-> for details.  Some (safe) options can also be
-    set from the connecting client in an application-dependent way.
-    For example, if the environment variable <TT
+    configuration file.  See <A
+HREF="runtime-config.html"
+>Section 16.4</A
+> for details.  Some
+    (safe) options can also be set from the connecting client in an
+    application-dependent way.  For example, if the environment
+    variable <TT
 CLASS="ENVAR"
 >PGOPTIONS</TT
->
-    is set, then <SPAN
+> is set, then
+    <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 >-based clients will pass that string to the
     server, which will interpret it as
-    <SPAN
-CLASS="APPLICATION"
->postgres</SPAN
+    <TT
+CLASS="COMMAND"
+>postgres</TT
 > command-line options.
    </P
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN51384"
+NAME="AEN49632"
 ></A
 ><H3
 >General Purpose</H3
 ><P
->     The options <TT
+>     The options <VAR
 CLASS="OPTION"
->-A</TT
->, <TT
+>-A</VAR
+>, <VAR
 CLASS="OPTION"
->-B</TT
+>-B</VAR
 >,
-     <TT
+     <VAR
 CLASS="OPTION"
->-c</TT
->, <TT
+>-c</VAR
+>, <VAR
 CLASS="OPTION"
->-d</TT
->, <TT
+>-d</VAR
+>, <VAR
 CLASS="OPTION"
->-D</TT
+>-D</VAR
 >,
-     <TT
+     <VAR
 CLASS="OPTION"
->-F</TT
->, and <TT
+>-F</VAR
+>, and <VAR
 CLASS="OPTION"
->--name</TT
+>--<VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></VAR
 > have the same meanings
      as the <A
 HREF="app-postmaster.html"
@@ -387,14 +344,17 @@ CLASS="APPLICATION"
 >postmaster</SPAN
 ></A
 > except that
-     <TT
-CLASS="OPTION"
->-d</TT
-> <TT
+     <VAR
 CLASS="LITERAL"
->0</TT
-> prevents the debugging level of
-     the postmaster from being propagated to the backend.
+>-d 0</VAR
+> prevents the server log level of
+     the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> from being propagated to <TT
+CLASS="COMMAND"
+>postgres</TT
+>.
     </P
 ><P
 ></P
@@ -402,71 +362,68 @@ CLASS="LITERAL"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-e</TT
+>-e</VAR
 ></DT
 ><DD
 ><P
 >        Sets the default date style to <SPAN
 CLASS="QUOTE"
 >"European"</SPAN
->, which
-	means that the <SPAN
-CLASS="QUOTE"
->"day before month"</SPAN
-> (rather than
-	month before day) rule is used to interpret ambiguous date
-	input, and that the day is printed before the month in certain
-	date output formats.  See the <I
-CLASS="CITETITLE"
->PostgreSQL User's
-	Guide</I
+>, that is
+	<VAR
+CLASS="LITERAL"
+>DMY</VAR
+> ordering of input date fields.  This also causes
+	the day to be printed before the month in certain date output formats.
+	See <A
+HREF="datatype-datetime.html"
+>Section 8.5</A
 > for more information.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-o</TT
-> <TT
+>-o</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>filename</VAR
 ></DT
 ><DD
 ><P
->	Sends all debugging and error output to 
-	<TT
+>	Send all server log output to 
+	<VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>filename</VAR
 >.
-	If the backend is running under the
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	If <TT
+CLASS="COMMAND"
+>postgres</TT
+> is running under the
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
 >, this option is ignored,
 	and the <SPAN
 CLASS="SYSTEMITEM"
 >stderr</SPAN
 > inherited from the
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
 > is used.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-P</TT
+>-P</VAR
 ></DT
 ><DD
 ><P
->	Ignore system indexes while scanning/updating system tuples. The
+>	Ignore system indexes while scanning/updating system tables. The
 	<TT
 CLASS="COMMAND"
 >REINDEX</TT
@@ -475,39 +432,35 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-s</TT
+>-s</VAR
 ></DT
 ><DD
 ><P
->	Print time information and other statistics at the end of each query.
+>	Print time information and other statistics at the end of each command.
 	This is useful for benchmarking or for use in tuning the number of
 	buffers.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-S</TT
-> <TT
+>-S</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->sort-mem</I
-></TT
+>sort-mem</VAR
 ></DT
 ><DD
 ><P
 >	Specifies the amount of memory to be used by internal sorts and hashes
 	before resorting to temporary disk files.  The value is specified in
-	kilobytes, and defaults to 512 kilobytes.  Note that for a complex query,
+	kilobytes, and defaults to 1024.  Note that for a complex query,
 	several sorts and/or hashes might be running in parallel, and each one
 	will be allowed to use as much as
-	<TT
+	<VAR
 CLASS="REPLACEABLE"
-><I
->sort-mem</I
-></TT
+>sort-mem</VAR
 > kilobytes
 	before it starts to put data into temporary files.
        </P
@@ -518,7 +471,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN51434"
+NAME="AEN49685"
 ></A
 ><H3
 >Options for stand-alone mode</H3
@@ -528,11 +481,9 @@ NAME="AEN51434"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
+>database</VAR
 ></DT
 ><DD
 ><P
@@ -541,23 +492,23 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-E</TT
+>-E</VAR
 ></DT
 ><DD
 ><P
->	Echo all queries.
+>	Echo all commands.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-N</TT
+>-N</VAR
 ></DT
 ><DD
 ><P
->	Disables use of newline as a query delimiter.
+>	Disables use of newline as a statement delimiter.
        </P
 ></DD
 ></DL
@@ -566,7 +517,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN51452"
+NAME="AEN49703"
 ></A
 ><H3
 >Semi-internal Options</H3
@@ -593,37 +544,37 @@ CLASS="EMPHASIS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-f</TT
-> <TT
+>-f</VAR
+> <VAR
 CLASS="LITERAL"
->{ s | i | m | n | h }</TT
+>{ s | i | m | n | h }</VAR
 ></DT
 ><DD
 ><P
 >	Forbids the use of particular scan and join methods:
-	<TT
+	<VAR
 CLASS="LITERAL"
->s</TT
-> and <TT
+>s</VAR
+> and <VAR
 CLASS="LITERAL"
->i</TT
+>i</VAR
 >
 	disable sequential and index scans respectively, while
-	<TT
+	<VAR
 CLASS="LITERAL"
->n</TT
->, <TT
+>n</VAR
+>, <VAR
 CLASS="LITERAL"
->m</TT
->, and <TT
+>m</VAR
+>, and <VAR
 CLASS="LITERAL"
->h</TT
+>h</VAR
 >
 	disable nested-loop, merge and hash joins respectively.
-	
-	</P><DIV
+       </P
+><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
 CLASS="NOTE"
@@ -631,93 +582,76 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >	  Neither sequential scans nor nested-loop joins can be disabled completely;
-	  the <TT
+	  the <VAR
 CLASS="LITERAL"
->-fs</TT
-> and <TT
+>-fs</VAR
+> and <VAR
 CLASS="LITERAL"
->-fn</TT
+>-fn</VAR
 >
 	  options simply discourage the optimizer from using those
 	  plan types if it has any other alternative.
 	 </P
 ></BLOCKQUOTE
 ></DIV
-><P>
-       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-i</TT
-></DT
-><DD
-><P
->	Prevents query execution, but shows the plan tree.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-O</TT
+>-O</VAR
 ></DT
 ><DD
 ><P
 >	Allows the structure of system tables to be modified.  This is
-	used by <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
+	used by <TT
+CLASS="COMMAND"
+>initdb</TT
 >.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-p</TT
-> <TT
+>-p</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
+>database</VAR
 ></DT
 ><DD
 ><P
->	Indicates that this server has been started by a
-	<SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
-> and makes different
-	assumptions about buffer pool management, file descriptors,
+>	Indicates that this process has been started by a
+	<TT
+CLASS="COMMAND"
+>postmaster</TT
+> and specifies the database to use.
 	etc.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-t</TT
-> <TT
+>-t</VAR
+> <VAR
 CLASS="LITERAL"
->pa[rser] | pl[anner] | e[xecutor]</TT
+>pa[rser] | pl[anner] | e[xecutor]</VAR
 ></DT
 ><DD
 ><P
 >	Print timing statistics for each query relating to each of the
 	major system modules.  This option cannot be used together
-	with the <TT
+	with the <VAR
 CLASS="OPTION"
->-s</TT
+>-s</VAR
 > option.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-v</TT
-> <TT
+>-v</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->protocol</I
-></TT
+>protocol</VAR
 ></DT
 ><DD
 ><P
@@ -726,20 +660,18 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-W</TT
-> <TT
+>-W</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->seconds</I
-></TT
+>seconds</VAR
 ></DT
 ><DD
 ><P
 >	As soon as this option is encountered, the process sleeps for
 	the specified amount of seconds.  This gives developers time
-	to attach a debugger to the backend process.
+	to attach a debugger to the server process.
        </P
 ></DD
 ></DL
@@ -749,7 +681,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51510"
+NAME="AEN49756"
 ></A
 ><H2
 >Environment</H2
@@ -784,34 +716,37 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51520"
+NAME="AEN49766"
 ></A
 ><H2
 >Notes</H2
 ><P
->   To stop a running query use the <TT
+>   To stop a running query use the <VAR
 CLASS="LITERAL"
->SIGINT</TT
+>SIGINT</VAR
 > signal. To
-   tell <SPAN
-CLASS="APPLICATION"
->postgres</SPAN
-> to reread the config file,
-   use a <TT
+   tell <TT
+CLASS="COMMAND"
+>postgres</TT
+> to reread the configuration file,
+   use a <VAR
 CLASS="LITERAL"
->SIGHUP</TT
+>SIGHUP</VAR
 > signal. The
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
-> uses <TT
-CLASS="LITERAL"
->SIGTERM</TT
->
-   to tell a postgres process to quit normally and
    <TT
+CLASS="COMMAND"
+>postmaster</TT
+> uses <VAR
 CLASS="LITERAL"
->SIGQUIT</TT
+>SIGTERM</VAR
+>
+   to tell a <TT
+CLASS="COMMAND"
+>postgres</TT
+> process to quit normally and
+   <VAR
+CLASS="LITERAL"
+>SIGQUIT</VAR
 > to terminate without the normal cleanup.
    These <SPAN
 CLASS="emphasis"
@@ -825,29 +760,25 @@ CLASS="EMPHASIS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51530"
+NAME="AEN49777"
 ></A
 ><H2
 >Usage</H2
 ><P
->    Start a stand-alone backend with a command like
+>    Start a stand-alone server with a command like
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->postgres -D $PGDATA <TT
+>postgres -D /usr/local/pgsql/data <VAR
 CLASS="REPLACEABLE"
-><I
->other-options</I
-></TT
-> my_database</B
-></TT
+>other-options</VAR
+> my_database</KBD
 ></PRE
 ><P>
-    Provide the correct path to the database area with <TT
+    Provide the correct path to the database directory with <VAR
 CLASS="OPTION"
->-D</TT
+>-D</VAR
 >, or
     make sure that the environment variable <TT
 CLASS="ENVAR"
@@ -856,7 +787,7 @@ CLASS="ENVAR"
     Also specify the name of the particular database you want to work in.
    </P
 ><P
->    Normally, the stand-alone backend treats newline as the command
+>    Normally, the stand-alone server treats newline as the command
     entry terminator; there is no intelligence about semicolons,
     as there is in <SPAN
 CLASS="APPLICATION"
@@ -866,22 +797,22 @@ CLASS="APPLICATION"
     newline except the last one.
    </P
 ><P
->    But if you use the <TT
+>    But if you use the <VAR
 CLASS="OPTION"
->-N</TT
+>-N</VAR
 > command line switch, then newline does
-    not terminate command entry.  The backend will read the standard input
-    until the end-of-file (<SPAN
+    not terminate command entry.  In this case, the server will read the standard input
+    until the end-of-file (<ACRONYM
 CLASS="ACRONYM"
->EOF</SPAN
+>EOF</ACRONYM
 >) marker, then
-    process the input as a single query string.  Backslash-newline is not
+    process the input as a single command string.  Backslash-newline is not
     treated specially in this case.
    </P
 ><P
->    To quit the session, type <SPAN
+>    To quit the session, type <ACRONYM
 CLASS="ACRONYM"
->EOF</SPAN
+>EOF</ACRONYM
 >
     (<B
 CLASS="KEYCAP"
@@ -891,23 +822,23 @@ CLASS="KEYCAP"
 >D</B
 >, usually).
     If you've
-    used <TT
+    used <VAR
 CLASS="OPTION"
->-N</TT
->, two consecutive <SPAN
+>-N</VAR
+>, two consecutive <ACRONYM
 CLASS="ACRONYM"
->EOF</SPAN
+>EOF</ACRONYM
 >s are needed to exit.
    </P
 ><P
->    Note that the stand-alone backend does not provide sophisticated
+>    Note that the stand-alone server does not provide sophisticated
     line-editing features (no command history, for example).
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51551"
+NAME="AEN49798"
 ></A
 ><H2
 >See Also</H2

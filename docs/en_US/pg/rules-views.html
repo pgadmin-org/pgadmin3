@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Views and the Rule System</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Rule System"
 HREF="rules.html"><LINK
 REL="PREVIOUS"
-TITLE="What is a Query Tree?"
-HREF="querytree.html"><LINK
+TITLE="The Rule System"
+HREF="rules.html"><LINK
 REL="NEXT"
-TITLE="Rules on INSERT, UPDATE and DELETE"
-HREF="rules-insert.html"><LINK
+TITLE="Rules on INSERT, UPDATE, and DELETE"
+HREF="rules-update.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="querytree.html"
+HREF="rules.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 13. The Rule System</TD
+>Chapter 36. The Rule System</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="rules-insert.html"
+HREF="rules-update.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,28 +81,17 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RULES-VIEWS"
->13.3. Views and the Rule System</A
+>36.2. Views and the Rule System</A
 ></H1
 ><A
-NAME="AEN32752"
+NAME="AEN31345"
 ></A
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN32755"
->13.3.1. Implementation of Views in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></A
-></H2
 ><P
 >    Views in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > are implemented
-    using the rule system. In fact there is essentially no difference
+    using the rule system. In fact, there is essentially no difference
     between
 
 </P><PRE
@@ -114,80 +103,109 @@ CLASS="PROGRAMLISTING"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE TABLE myview (<TT
+>CREATE TABLE myview (<VAR
 CLASS="REPLACEABLE"
-><I
->same attribute list as for mytab</I
-></TT
+>same column list as mytab</VAR
 >);
 CREATE RULE "_RETURN" AS ON SELECT TO myview DO INSTEAD
     SELECT * FROM mytab;</PRE
 ><P>
     
-    because this is exactly what the CREATE VIEW command does internally.
-    This has some side effects. One of them is that
-    the information about a view in the <SPAN
+    because this is exactly what the <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+>
+    command does internally.  This has some side effects. One of them
+    is that the information about a view in the
+    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->
-    system catalogs is exactly the same as it is for a table. So for the
-    query parser, there is absolutely no difference between
-    a table and a view. They are the same thing - relations. That is the
-    important one for now.</P
-></DIV
+> system catalogs is exactly
+    the same as it is for a table. So for the parser, there is
+    absolutely no difference between a table and a view. They are the
+    same thing: relations.</P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN32764"
->13.3.2. How SELECT Rules Work</A
+NAME="AEN31355"
+>36.2.1. How <TT
+CLASS="COMMAND"
+>SELECT</TT
+> Rules Work</A
 ></H2
 ><P
->    Rules ON SELECT are applied to all queries as the
-    last step, even if the command
-    given is an INSERT, UPDATE or DELETE. And they have different
-    semantics from the others in that they modify the parse tree in
-    place instead of creating a new one.
-    So SELECT rules are described first.</P
-><P
->    Currently, there can be only one action in an ON SELECT rule, and it must
-    be an unconditional SELECT action that is INSTEAD. This restriction was
-    required to make rules safe enough to open them for ordinary users and
-    it restricts rules ON SELECT to real view rules.</P
-><P
->    The examples for this document are two join views that do some calculations
-    and some more views using them in turn.
-    One of the two first views is customized later by adding rules for
-    INSERT, UPDATE and DELETE operations so that the final result will
-    be a view that behaves like a real table with some magic functionality.
-    It is not such a simple example to start from and this makes things
-    harder to get into. But it's better to have one example that covers
-    all the points discussed step by step rather than having many
-    different ones that might mix up in mind.</P
-><P
->    The database needed to play with the examples is named <TT
+>    Rules <VAR
 CLASS="LITERAL"
->al_bundy</TT
->.
-    You'll see soon why this is the database name. And it needs the
-    procedural language <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> installed, because
-    we need a little min() function returning the lower of 2
-    integer values. We create that as
+>ON SELECT</VAR
+> are applied to all queries as the last step, even
+    if the command given is an <TT
+CLASS="COMMAND"
+>INSERT</TT
+>,
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> or <TT
+CLASS="COMMAND"
+>DELETE</TT
+>. And they
+    have different semantics from rules on the other command types in that they modify the
+    query tree in place instead of creating a new one.  So
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> rules are described first.</P
+><P
+>    Currently, there can be only one action in an <VAR
+CLASS="LITERAL"
+>ON SELECT</VAR
+> rule, and it must
+    be an unconditional <TT
+CLASS="COMMAND"
+>SELECT</TT
+> action that is <VAR
+CLASS="LITERAL"
+>INSTEAD</VAR
+>. This restriction was
+    required to make rules safe enough to open them for ordinary users, and
+    it restricts <VAR
+CLASS="LITERAL"
+>ON SELECT</VAR
+> rules to real view rules.</P
+><P
+>    The examples for this chapter are two join views that do some
+    calculations and some more views using them in turn.  One of the
+    two first views is customized later by adding rules for
+    <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and
+    <TT
+CLASS="COMMAND"
+>DELETE</TT
+> operations so that the final result will
+    be a view that behaves like a real table with some magic
+    functionality.  This is not such a simple example to start from and
+    this makes things harder to get into. But it's better to have one
+    example that covers all the points discussed step by step rather
+    than having many different ones that might mix up in mind.</P
+><P
+>For the example, we need a little <VAR
+CLASS="LITERAL"
+>min</VAR
+> function that
+returns the lower of 2 integer values. We create that as
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE FUNCTION min(integer, integer) RETURNS integer AS '
-    BEGIN
-        IF $1 &#60; $2 THEN
-            RETURN $1;
-        END IF;
-        RETURN $2;
-    END;
-' LANGUAGE plpgsql;</PRE
+    SELECT CASE WHEN $1 &#60; $2 THEN $1 ELSE $2 END
+' LANGUAGE SQL STRICT;</PRE
 ><P></P
 ><P
 >    The real tables we need in the first two rule system descriptions
@@ -196,32 +214,29 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE shoe_data (
-    shoename   char(10),      -- primary key
-    sh_avail   integer,       -- available # of pairs
-    slcolor    char(10),      -- preferred shoelace color
-    slminlen   float,         -- miminum shoelace length
-    slmaxlen   float,         -- maximum shoelace length
-    slunit     char(8)        -- length unit
+    shoename   text,          -- primary key
+    sh_avail   integer,       -- available number of pairs
+    slcolor    text,          -- preferred shoelace color
+    slminlen   real,          -- minimum shoelace length
+    slmaxlen   real,          -- maximum shoelace length
+    slunit     text           -- length unit
 );
 
 CREATE TABLE shoelace_data (
-    sl_name    char(10),      -- primary key
-    sl_avail   integer,       -- available # of pairs
-    sl_color   char(10),      -- shoelace color
-    sl_len     float,         -- shoelace length
-    sl_unit    char(8)        -- length unit
+    sl_name    text,          -- primary key
+    sl_avail   integer,       -- available number of pairs
+    sl_color   text,          -- shoelace color
+    sl_len     real,          -- shoelace length
+    sl_unit    text           -- length unit
 );
 
 CREATE TABLE unit (
-    un_name    char(8),       -- the primary key
-    un_fact    float          -- factor to transform to cm
+    un_name    text,          -- primary key
+    un_fact    real           -- factor to transform to cm
 );</PRE
 ><P>
 
-    I think most of us wear shoes and can realize that this is
-    really useful data. Well there are shoes out in the world
-    that don't require shoelaces, but this doesn't make Al's
-    life easier and so we ignore it.</P
+    As you can see, they represent shoe-store data.</P
 ><P
 >    The views are created as
 
@@ -261,27 +276,46 @@ CREATE VIEW shoe_ready AS
        AND rsl.sl_len_cm &#60;= rsh.slmaxlen_cm;</PRE
 ><P>
 
-    The CREATE VIEW command for the <TT
-CLASS="FILENAME"
->shoelace</TT
-> 
-    view (which is the simplest one we have)
-    will create a relation shoelace and an entry 
-    in <TT
-CLASS="FILENAME"
+    The <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+> command for the
+    <VAR
+CLASS="LITERAL"
+>shoelace</VAR
+> view (which is the simplest one we
+    have) will create a relation <VAR
+CLASS="LITERAL"
+>shoelace</VAR
+> and an entry in
+    <TT
+CLASS="STRUCTNAME"
 >pg_rewrite</TT
+> that tells that there is a
+    rewrite rule that must be applied whenever the relation <VAR
+CLASS="LITERAL"
+>shoelace</VAR
 >
-    that tells that there is a rewrite rule that must be applied
-    whenever the relation shoelace is referenced in a query's range table.
-    The rule has no rule qualification (discussed later, with the
-    non SELECT rules, since SELECT rules currently cannot have them) and
-    it is INSTEAD. Note that rule qualifications are not the same as
-    query qualifications! The rule's action has a query qualification.</P
-><P
->    The rule's action is one query tree that is a copy of the
-    SELECT statement in the view creation command.
-    
-    </P><DIV
+    is referenced in a query's range table.  The rule has no rule
+    qualification (discussed later, with the non-<TT
+CLASS="COMMAND"
+>SELECT</TT
+> rules, since
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> rules currently cannot have them) and it is <VAR
+CLASS="LITERAL"
+>INSTEAD</VAR
+>. Note
+    that rule qualifications are not the same as query qualifications.
+    The action of our rule has a query qualification.
+    The action of the rule is one query tree that is a copy of the
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement in the view creation command.</P
+><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
 CLASS="NOTE"
@@ -289,84 +323,90 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >    The two extra range
-    table entries for NEW and OLD (named *NEW* and *CURRENT* for
+    table entries for <VAR
+CLASS="LITERAL"
+>NEW</VAR
+> and <VAR
+CLASS="LITERAL"
+>OLD</VAR
+> (named <VAR
+CLASS="LITERAL"
+>*NEW*</VAR
+> and <VAR
+CLASS="LITERAL"
+>*OLD*</VAR
+> for
     historical reasons in the printed query tree) you can see in
     the <TT
-CLASS="FILENAME"
+CLASS="STRUCTNAME"
 >pg_rewrite</TT
 > entry aren't of interest
-    for SELECT rules.
+    for <TT
+CLASS="COMMAND"
+>SELECT</TT
+> rules.
     </P
 ></BLOCKQUOTE
 ></DIV
-><P>
-
-    Now we populate <TT
-CLASS="FILENAME"
->unit</TT
->, <TT
-CLASS="FILENAME"
->shoe_data</TT
+><P
+>    Now we populate <VAR
+CLASS="LITERAL"
+>unit</VAR
+>, <VAR
+CLASS="LITERAL"
+>shoe_data</VAR
 >
-    and <TT
-CLASS="FILENAME"
->shoelace_data</TT
-> and Al types the first 
-    SELECT in his life:
+    and <VAR
+CLASS="LITERAL"
+>shoelace_data</VAR
+> and run a simple query on a view:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->al_bundy=&#62; INSERT INTO unit VALUES ('cm', 1.0);
-al_bundy=&#62; INSERT INTO unit VALUES ('m', 100.0);
-al_bundy=&#62; INSERT INTO unit VALUES ('inch', 2.54);
-al_bundy=&#62; 
-al_bundy=&#62; INSERT INTO shoe_data VALUES 
-al_bundy-&#62;     ('sh1', 2, 'black', 70.0, 90.0, 'cm');
-al_bundy=&#62; INSERT INTO shoe_data VALUES 
-al_bundy-&#62;     ('sh2', 0, 'black', 30.0, 40.0, 'inch');
-al_bundy=&#62; INSERT INTO shoe_data VALUES 
-al_bundy-&#62;     ('sh3', 4, 'brown', 50.0, 65.0, 'cm');
-al_bundy=&#62; INSERT INTO shoe_data VALUES 
-al_bundy-&#62;     ('sh4', 3, 'brown', 40.0, 50.0, 'inch');
-al_bundy=&#62; 
-al_bundy=&#62; INSERT INTO shoelace_data VALUES 
-al_bundy-&#62;     ('sl1', 5, 'black', 80.0, 'cm');
-al_bundy=&#62; INSERT INTO shoelace_data VALUES 
-al_bundy-&#62;     ('sl2', 6, 'black', 100.0, 'cm');
-al_bundy=&#62; INSERT INTO shoelace_data VALUES 
-al_bundy-&#62;     ('sl3', 0, 'black', 35.0 , 'inch');
-al_bundy=&#62; INSERT INTO shoelace_data VALUES 
-al_bundy-&#62;     ('sl4', 8, 'black', 40.0 , 'inch');
-al_bundy=&#62; INSERT INTO shoelace_data VALUES 
-al_bundy-&#62;     ('sl5', 4, 'brown', 1.0 , 'm');
-al_bundy=&#62; INSERT INTO shoelace_data VALUES 
-al_bundy-&#62;     ('sl6', 0, 'brown', 0.9 , 'm');
-al_bundy=&#62; INSERT INTO shoelace_data VALUES 
-al_bundy-&#62;     ('sl7', 7, 'brown', 60 , 'cm');
-al_bundy=&#62; INSERT INTO shoelace_data VALUES 
-al_bundy-&#62;     ('sl8', 1, 'brown', 40 , 'inch');
-al_bundy=&#62; 
-al_bundy=&#62; SELECT * FROM shoelace;
-sl_name   |sl_avail|sl_color  |sl_len|sl_unit |sl_len_cm
-----------+--------+----------+------+--------+---------
-sl1       |       5|black     |    80|cm      |       80
-sl2       |       6|black     |   100|cm      |      100
-sl7       |       7|brown     |    60|cm      |       60
-sl3       |       0|black     |    35|inch    |     88.9
-sl4       |       8|black     |    40|inch    |    101.6
-sl8       |       1|brown     |    40|inch    |    101.6
-sl5       |       4|brown     |     1|m       |      100
-sl6       |       0|brown     |   0.9|m       |       90
+>INSERT INTO unit VALUES ('cm', 1.0);
+INSERT INTO unit VALUES ('m', 100.0);
+INSERT INTO unit VALUES ('inch', 2.54);
+
+INSERT INTO shoe_data VALUES ('sh1', 2, 'black', 70.0, 90.0, 'cm');
+INSERT INTO shoe_data VALUES ('sh2', 0, 'black', 30.0, 40.0, 'inch');
+INSERT INTO shoe_data VALUES ('sh3', 4, 'brown', 50.0, 65.0, 'cm');
+INSERT INTO shoe_data VALUES ('sh4', 3, 'brown', 40.0, 50.0, 'inch');
+
+INSERT INTO shoelace_data VALUES ('sl1', 5, 'black', 80.0, 'cm');
+INSERT INTO shoelace_data VALUES ('sl2', 6, 'black', 100.0, 'cm');
+INSERT INTO shoelace_data VALUES ('sl3', 0, 'black', 35.0 , 'inch');
+INSERT INTO shoelace_data VALUES ('sl4', 8, 'black', 40.0 , 'inch');
+INSERT INTO shoelace_data VALUES ('sl5', 4, 'brown', 1.0 , 'm');
+INSERT INTO shoelace_data VALUES ('sl6', 0, 'brown', 0.9 , 'm');
+INSERT INTO shoelace_data VALUES ('sl7', 7, 'brown', 60 , 'cm');
+INSERT INTO shoelace_data VALUES ('sl8', 1, 'brown', 40 , 'inch');
+
+SELECT * FROM shoelace;
+
+ sl_name   | sl_avail | sl_color | sl_len | sl_unit | sl_len_cm
+-----------+----------+----------+--------+---------+-----------
+ sl1       |        5 | black    |     80 | cm      |        80
+ sl2       |        6 | black    |    100 | cm      |       100
+ sl7       |        7 | brown    |     60 | cm      |        60
+ sl3       |        0 | black    |     35 | inch    |      88.9
+ sl4       |        8 | black    |     40 | inch    |     101.6
+ sl8       |        1 | brown    |     40 | inch    |     101.6
+ sl5       |        4 | brown    |      1 | m       |       100
+ sl6       |        0 | brown    |    0.9 | m       |        90
 (8 rows)</PRE
 ><P>
-
-    It's the simplest SELECT Al can do on our views, so we take this
-    to explain the basics of view rules.
-    The <TT
+   </P
+><P
+>    This is the simplest <TT
+CLASS="COMMAND"
+>SELECT</TT
+> you can do on our
+    views, so we take this opportunity to explain the basics of view
+    rules.  The <VAR
 CLASS="LITERAL"
->SELECT * FROM shoelace</TT
-> was interpreted by the parser and
-    produced the parse tree
+>SELECT * FROM shoelace</VAR
+> was
+    interpreted by the parser and produced the query tree
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -377,41 +417,31 @@ CLASS="PROGRAMLISTING"
 ><P>
 
     and this is given to the rule system. The rule system walks through the
-    range table and checks if there are rules in <TT
-CLASS="FILENAME"
->pg_rewrite</TT
->
+    range table and checks if there are rules
     for any relation. When processing the range table entry for
-    <TT
-CLASS="FILENAME"
->shoelace</TT
-> (the only one up to now) it finds the
-    <TT
+    <VAR
 CLASS="LITERAL"
->_RETURN</TT
-> rule with the parse tree
+>shoelace</VAR
+> (the only one up to now) it finds the
+    <VAR
+CLASS="LITERAL"
+>_RETURN</VAR
+> rule with the query tree
 
 </P><PRE
 CLASS="PROGRAMLISTING"
-><B
-CLASS="EMPHASIS"
 >SELECT s.sl_name, s.sl_avail,
        s.sl_color, s.sl_len, s.sl_unit,
-       float8mul(s.sl_len, u.un_fact) AS sl_len_cm
+       s.sl_len * u.un_fact AS sl_len_cm
   FROM shoelace *OLD*, shoelace *NEW*,
        shoelace_data s, unit u
- WHERE bpchareq(s.sl_unit, u.un_name);</B
-></PRE
-><P>
-
-    Note that the parser changed the calculation and qualification into
-    calls to the appropriate functions. But
-    in fact this changes nothing.</P
+ WHERE s.sl_unit = u.un_name;</PRE
+><P></P
 ><P
->    To expand the view, the rewriter simply creates a subselect range-table
-    entry containing the rule's action parse tree, and substitutes this
+>    To expand the view, the rewriter simply creates a subquery range-table
+    entry containing the rule's action query tree, and substitutes this
     range table entry for the original one that referenced the view.  The 
-    resulting rewritten parse tree is almost the same as if Al had typed
+    resulting rewritten query tree is almost the same as if you had typed
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -428,51 +458,59 @@ CLASS="PROGRAMLISTING"
          WHERE s.sl_unit = u.un_name) shoelace;</PRE
 ><P>
 
-     There is one difference however: the sub-query's range table has two
-     extra entries shoelace *OLD*, shoelace *NEW*.  These entries don't
+     There is one difference however: the subquery's range table has two
+     extra entries <VAR
+CLASS="LITERAL"
+>shoelace *OLD*</VAR
+> and <VAR
+CLASS="LITERAL"
+>shoelace *NEW*</VAR
+>.  These entries don't
      participate directly in the query, since they aren't referenced by
-     the sub-query's join tree or target list.  The rewriter uses them
-     to store the access permission check info that was originally present
+     the subquery's join tree or target list.  The rewriter uses them
+     to store the access privilege check information that was originally present
      in the range-table entry that referenced the view.  In this way, the
-     executor will still check that the user has proper permissions to access
+     executor will still check that the user has proper privileges to access
      the view, even though there's no direct use of the view in the rewritten
      query.</P
 ><P
 >    That was the first rule applied.  The rule system will continue checking
     the remaining range-table entries in the top query (in this example there
     are no more), and it will recursively check the range-table entries in
-    the added sub-query to see if any of them reference views.  (But it
-    won't expand *OLD* or *NEW* --- otherwise we'd have infinite recursion!)
-    In this example, there are no rewrite rules for shoelace_data or unit,
+    the added subquery to see if any of them reference views.  (But it
+    won't expand <VAR
+CLASS="LITERAL"
+>*OLD*</VAR
+> or <VAR
+CLASS="LITERAL"
+>*NEW*</VAR
+> --- otherwise we'd have infinite recursion!)
+    In this example, there are no rewrite rules for <VAR
+CLASS="LITERAL"
+>shoelace_data</VAR
+> or <VAR
+CLASS="LITERAL"
+>unit</VAR
+>,
     so rewriting is complete and the above is the final result given to
     the planner.</P
 ><P
->    Now we face Al with the problem that the Blues Brothers appear
-    in his shop and
-    want to buy some new shoes, and as the Blues Brothers are,
-    they want to wear the same shoes. And they want to wear them
-    immediately, so they need shoelaces too.</P
-><P
->    Al needs to know for which shoes currently in the store
-    he has the matching shoelaces (color and size) and where the
+>    No we want to write a query that finds out for which shoes currently in the store
+    we have the matching shoelaces (color and length) and where the
     total number of exactly matching pairs is greater or equal to two.
-    We teach him what to do and he asks his database:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->al_bundy=&#62; SELECT * FROM shoe_ready WHERE total_avail &#62;= 2;
-shoename  |sh_avail|sl_name   |sl_avail|total_avail
-----------+--------+----------+--------+-----------
-sh1       |       2|sl1       |       5|          2
-sh3       |       4|sl7       |       7|          4
-(2 rows)</PRE
-><P>
+>SELECT * FROM shoe_ready WHERE total_avail &#62;= 2;
 
-    Al is a shoe guru and so he knows that only shoes of type sh1
-    would fit (shoelace sl7 is brown and shoes that need brown shoelaces
-    aren't shoes the Blues Brothers would ever wear).</P
+ shoename | sh_avail | sl_name | sl_avail | total_avail
+----------+----------+---------+----------+-------------
+ sh1      |        2 | sl1     |        5 |           2
+ sh3      |        4 | sl7     |        7 |           4
+(2 rows)</PRE
+><P></P
 ><P
->    The output of the parser this time is the parse tree
+>    The output of the parser this time is the query tree
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -480,15 +518,15 @@ CLASS="PROGRAMLISTING"
        shoe_ready.sl_name, shoe_ready.sl_avail,
        shoe_ready.total_avail
   FROM shoe_ready shoe_ready
- WHERE int4ge(shoe_ready.total_avail, 2);</PRE
+ WHERE shoe_ready.total_avail &#62;= 2;</PRE
 ><P>
 
     The first rule applied will be the one for the 
-    <TT
-CLASS="FILENAME"
->shoe_ready</TT
+    <VAR
+CLASS="LITERAL"
+>shoe_ready</VAR
 > view and it results in the
-    parse tree
+    query tree
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -504,18 +542,18 @@ CLASS="PROGRAMLISTING"
          WHERE rsl.sl_color = rsh.slcolor
            AND rsl.sl_len_cm &#62;= rsh.slminlen_cm
            AND rsl.sl_len_cm &#60;= rsh.slmaxlen_cm) shoe_ready
- WHERE int4ge(shoe_ready.total_avail, 2);</PRE
+ WHERE shoe_ready.total_avail &#62;= 2;</PRE
 ><P>
 
-    Similarly, the rules for <TT
-CLASS="FILENAME"
->shoe</TT
+    Similarly, the rules for <VAR
+CLASS="LITERAL"
+>shoe</VAR
 > and
-    <TT
-CLASS="FILENAME"
->shoelace</TT
+    <VAR
+CLASS="LITERAL"
+>shoelace</VAR
 > are substituted into the range table of
-    the sub-query, leading to a three-level final query tree:
+    the subquery, leading to a three-level final query tree:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -548,63 +586,108 @@ CLASS="PROGRAMLISTING"
          WHERE rsl.sl_color = rsh.slcolor
            AND rsl.sl_len_cm &#62;= rsh.slminlen_cm
            AND rsl.sl_len_cm &#60;= rsh.slmaxlen_cm) shoe_ready
- WHERE int4ge(shoe_ready.total_avail, 2);</PRE
+ WHERE shoe_ready.total_avail &#62; 2;</PRE
 ><P>
-
-    It turns out that the planner will collapse this tree into a two-level
-    query tree: the bottommost selects will be <SPAN
+   </P
+><P
+>    It turns out that the planner will collapse this tree into a
+    two-level query tree: the bottommost <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+    commands will be <SPAN
 CLASS="QUOTE"
 >"pulled up"</SPAN
 > into the middle
-    select since there's no need to process them separately.  But the
-    middle select will remain separate from the top, because it contains
-    aggregate functions.  If we pulled those up it would change the behavior
-    of the topmost select, which we don't want.  However, collapsing the
-    query tree is an optimization that the rewrite system doesn't
-    have to concern itself with.
-
-    </P><DIV
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> since there's no need to process them
+    separately.  But the middle <TT
+CLASS="COMMAND"
+>SELECT</TT
+> will remain
+    separate from the top, because it contains aggregate functions.
+    If we pulled those up it would change the behavior of the topmost
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+>, which we don't want.  However,
+    collapsing the query tree is an optimization that the rewrite
+    system doesn't have to concern itself with.
+   </P
+><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
 CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->    There is currently no recursion stopping mechanism for view
-    rules in the rule system (only for the other kinds of rules).
-    This doesn't hurt much, because the only way to push this
-    into an endless loop (blowing up the
-    backend until it reaches the memory limit)
-    is to create tables and then setup the
-    view rules by hand with CREATE RULE in such a way, that
-    one selects from the other that selects from the one.
-    This could never happen if CREATE VIEW is used because
-    for the first CREATE VIEW, the second relation does not exist
-    and thus the first view cannot select from the second.
+>    There is currently no recursion stopping mechanism for view rules
+    in the rule system (only for the other kinds of rules).  This
+    doesn't hurt much, because the only way to push this into an
+    endless loop (bloating up the server process until it reaches the memory
+    limit) is to create tables and then setup the view rules by hand
+    with <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+> in such a way, that one
+    selects from the other that selects from the one.  This could
+    never happen if <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+> is used because for
+    the first <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+>, the second relation does
+    not exist and thus the first view cannot select from the second.
     </P
 ></BLOCKQUOTE
 ></DIV
-><P></P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN32812"
->13.3.3. View Rules in Non-SELECT Statements</A
+NAME="AEN31438"
+>36.2.2. View Rules in Non-<TT
+CLASS="COMMAND"
+>SELECT</TT
+> Statements</A
 ></H2
 ><P
->    Two details of the parse tree aren't touched in the description of
+>    Two details of the query tree aren't touched in the description of
     view rules above. These are the command type and the result relation.
     In fact, view rules don't need this information.</P
 ><P
->    There are only a few differences between a parse tree for a SELECT
-    and one for any other command. Obviously they have another command type
-    and this time the result relation points to the range table entry where
-    the result should go. Everything else is absolutely the same. 
-    So having two tables t1 and t2 with attributes
-    a and b, the parse trees for the two statements
+>    There are only a few differences between a query tree for a
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> and one for any other
+    command. Obviously, they have a different command type and for a
+    command other than a <TT
+CLASS="COMMAND"
+>SELECT</TT
+>, the result
+    relation points to the range-table entry where the result should
+    go.  Everything else is absolutely the same.  So having two tables
+    <VAR
+CLASS="LITERAL"
+>t1</VAR
+> and <VAR
+CLASS="LITERAL"
+>t2</VAR
+> with columns <VAR
+CLASS="LITERAL"
+>a</VAR
+> and
+    <VAR
+CLASS="LITERAL"
+>b</VAR
+>, the query trees for the two statements
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -613,40 +696,69 @@ CLASS="PROGRAMLISTING"
 UPDATE t1 SET b = t2.b WHERE t1.a = t2.a;</PRE
 ><P>
 
-    are nearly identical.
+    are nearly identical.  In particular:
 
     <P
 ></P
 ></P><UL
 ><LI
 ><P
->	    The range tables contain entries for the tables t1 and t2.
+>	    The range tables contain entries for the tables <VAR
+CLASS="LITERAL"
+>t1</VAR
+> and <VAR
+CLASS="LITERAL"
+>t2</VAR
+>.
 	</P
 ></LI
 ><LI
 ><P
->	    The target lists contain one variable that points to attribute
-	    b of the range table entry for table t2.
+>	    The target lists contain one variable that points to column
+	    <VAR
+CLASS="LITERAL"
+>b</VAR
+> of the range table entry for table <VAR
+CLASS="LITERAL"
+>t2</VAR
+>.
 	</P
 ></LI
 ><LI
 ><P
->	    The qualification expressions compare the attributes a of both
-	    ranges for equality.
+>	    The qualification expressions compare the columns <VAR
+CLASS="LITERAL"
+>a</VAR
+> of both
+	    range-table entries for equality.
 	</P
 ></LI
 ><LI
 ><P
->	    The join trees show a simple join between t1 and t2.
+>	    The join trees show a simple join between <VAR
+CLASS="LITERAL"
+>t1</VAR
+> and <VAR
+CLASS="LITERAL"
+>t2</VAR
+>.
 	</P
 ></LI
 ></UL
 ><P>
-
-    The consequence is, that both parse trees result in similar execution
-    plans. They are both joins over the two tables. For the UPDATE
-    the missing columns from t1 are added to the target list by the planner 
-    and the final parse tree will read as
+   </P
+><P
+>    The consequence is, that both query trees result in similar
+    execution plans: They are both joins over the two tables. For the
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> the missing columns from <VAR
+CLASS="LITERAL"
+>t1</VAR
+> are added to
+    the target list by the planner and the final query tree will read
+    as
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -661,30 +773,58 @@ CLASS="PROGRAMLISTING"
 >SELECT t1.a, t2.b FROM t1, t2 WHERE t1.a = t2.a;</PRE
 ><P>
     
-    will do. But there is a little problem in UPDATE. The executor does
-    not care what the results from the join it is doing are meant
-    for. It just produces a result set of rows. The difference that one
-    is a SELECT command and the other is an UPDATE is handled in the
-    caller of the executor. The caller still knows (looking at the
-    parse tree) that this is an UPDATE, and he knows that this result
-    should go into table t1. But which of the rows that are there
-    has to be replaced by the new row?</P
+    will do. But there is a little problem in
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>: The executor does not care what the
+    results from the join it is doing are meant for. It just produces
+    a result set of rows. The difference that one is a
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command and the other is an
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> is handled in the caller of the
+    executor. The caller still knows (looking at the query tree) that
+    this is an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and it knows that this
+    result should go into table <VAR
+CLASS="LITERAL"
+>t1</VAR
+>. But which of the rows that are
+    there has to be replaced by the new row?</P
 ><P
 >    To resolve this problem, another entry is added to the target list
-    in UPDATE (and also in DELETE) statements: the current tuple ID (<SPAN
+    in <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> (and also in
+    <TT
+CLASS="COMMAND"
+>DELETE</TT
+>) statements: the current tuple ID
+    (<ACRONYM
 CLASS="ACRONYM"
->CTID</SPAN
->).
-    This is a system attribute containing the file
-    block number and position in the block for the row. Knowing the table,
-    the <SPAN
+>CTID</ACRONYM
+>).  This is a system column containing the
+    file block number and position in the block for the row. Knowing
+    the table, the <ACRONYM
 CLASS="ACRONYM"
->CTID</SPAN
-> can be used to retrieve the original t1 row to be updated.
-    After adding the <SPAN
+>CTID</ACRONYM
+> can be used to retrieve the
+    original row of <VAR
+CLASS="LITERAL"
+>t1</VAR
+> to be updated.  After adding the <ACRONYM
 CLASS="ACRONYM"
->CTID</SPAN
-> to the target list, the query actually looks like
+>CTID</ACRONYM
+>
+    to the target list, the query actually looks like
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -695,26 +835,33 @@ CLASS="PROGRAMLISTING"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > enters
-    the stage. At this moment, table rows aren't overwritten and this
-    is why ABORT TRANSACTION is fast. In an UPDATE, the new result row
-    is inserted into the table (after stripping <SPAN
+    the stage. Old table rows aren't overwritten, and this
+    is why <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+> is fast. In an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>,
+    the new result row is inserted into the table (after stripping the
+    <ACRONYM
 CLASS="ACRONYM"
->CTID</SPAN
->) and
-    in the tuple header of the row that <SPAN
+>CTID</ACRONYM
+>) and in the tuple header of the old row, which the
+    <ACRONYM
 CLASS="ACRONYM"
->CTID</SPAN
-> pointed to
-    the <TT
+>CTID</ACRONYM
+> pointed to, the <VAR
 CLASS="LITERAL"
->cmax</TT
-> and <TT
+>cmax</VAR
+> and
+    <VAR
 CLASS="LITERAL"
->xmax</TT
-> entries are set to the
-    current command counter and current transaction ID. Thus the old
-    row is hidden and after the transaction committed the vacuum
-    cleaner can really move it out.</P
+>xmax</VAR
+> entries are set to the current command counter
+    and current transaction ID. Thus the old row is hidden, and after
+    the transaction committed the vacuum cleaner can really move it
+    out.</P
 ><P
 >    Knowing all that, we can simply apply view rules in absolutely
     the same way to any command. There is no difference.</P
@@ -724,25 +871,24 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN32839"
->13.3.4. The Power of Views in <SPAN
+NAME="AEN31492"
+>36.2.3. The Power of Views in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 ></A
 ></H2
 ><P
->    The above demonstrates how the rule system incorporates
-    view definitions into the original parse tree. In the second example
-    a simple SELECT from one view created a final parse tree that is
-    a join of 4 tables (unit is used twice with different names).</P
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN32843"
->13.3.4.1. Benefits</A
-></H3
+>    The above demonstrates how the rule system incorporates view
+    definitions into the original query tree. In the second example, a
+    simple <TT
+CLASS="COMMAND"
+>SELECT</TT
+> from one view created a final
+    query tree that is a join of 4 tables (<VAR
+CLASS="LITERAL"
+>unit</VAR
+> was used twice with
+    different names).</P
 ><P
 >    The benefit of implementing views with the rule system is,
     that the planner has all
@@ -750,18 +896,17 @@ NAME="AEN32843"
     relationships between these tables plus the restrictive
     qualifications from the views plus the qualifications from
     the original query
-    in one single parse tree. And this is still the situation
+    in one single query tree. And this is still the situation
     when the original query is already a join over views.
-    Now the planner has to decide which is
-    the best path to execute the query. The more information
+    The planner has to decide which is
+    the best path to execute the query, and the more information
     the planner has, the better this decision can be. And
     the rule system as implemented in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
     ensures, that this is all information available about the query
-    up to now.</P
-></DIV
+    up to that point.</P
 ></DIV
 ><DIV
 CLASS="SECT2"
@@ -769,20 +914,28 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="RULES-VIEWS-UPDATE"
->13.3.5. What about updating a view?</A
+>36.2.4. Updating a View</A
 ></H2
-><A
-NAME="AEN32849"
-></A
 ><P
->    What happens if a view is named as the target relation for an INSERT,
-    UPDATE, or DELETE?  After doing the substitutions described above,
-    we will have a query tree in which the result relation points at a
-    subquery range table entry.  This will not work, so the rewriter throws
-    an error if it sees it has produced such a thing.</P
+>    What happens if a view is named as the target relation for an
+    <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or
+    <TT
+CLASS="COMMAND"
+>DELETE</TT
+>?  After doing the substitutions
+    described above, we will have a query tree in which the result
+    relation points at a subquery range-table entry.  This will not
+    work, so the rewriter throws an error if it sees it has produced
+    such a thing.</P
 ><P
->    To change this we can define rules that modify the behavior
-    of non-SELECT queries. This is the topic of the next section.</P
+>    To change this, we can define rules that modify the behavior of
+    these kinds of commands. This is the topic of the next section.</P
 ></DIV
 ></DIV
 ><DIV
@@ -801,7 +954,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="querytree.html"
+HREF="rules.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -819,7 +972,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="rules-insert.html"
+HREF="rules-update.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -829,7 +982,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->What is a Query Tree?</TD
+>The Rule System</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -843,7 +996,16 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Rules on INSERT, UPDATE and DELETE</TD
+>Rules on <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and <TT
+CLASS="COMMAND"
+>DELETE</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

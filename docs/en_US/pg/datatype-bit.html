@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Bit String Types</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
 HREF="datatype.html"><LINK
 REL="PREVIOUS"
-TITLE="Network Address Data Types"
+TITLE="Network Address Types"
 HREF="datatype-net-types.html"><LINK
 REL="NEXT"
-TITLE="Object Identifier Types"
-HREF="datatype-oid.html"><LINK
+TITLE="Arrays"
+HREF="arrays.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Data Types</TD
+>Chapter 8. Data Types</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="datatype-oid.html"
+HREF="arrays.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,71 +81,61 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DATATYPE-BIT"
->5.9. Bit String Types</A
+>8.9. Bit String Types</A
 ></H1
 ><A
-NAME="AEN4698"
+NAME="AEN4660"
 ></A
 ><P
 >    Bit strings are strings of 1's and 0's.  They can be used to store
     or visualize bit masks.  There are two SQL bit types:
     <TT
 CLASS="TYPE"
->BIT(<TT
+>bit(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 > and <TT
 CLASS="TYPE"
->BIT
-    VARYING(<TT
+>bit
+    varying(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 >, where
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 > is a positive integer.
    </P
 ><P
 >    <TT
 CLASS="TYPE"
->BIT</TT
+>bit</TT
 > type data must match the length
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 > exactly; it is an error to attempt to
     store shorter or longer bit strings.  <TT
 CLASS="TYPE"
->BIT VARYING</TT
+>bit varying</TT
 > data is
     of variable length up to the maximum length
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >; longer strings will be rejected.
     Writing <TT
 CLASS="TYPE"
->BIT</TT
+>bit</TT
 > without a length is equivalent to
-    <TT
+    <VAR
 CLASS="LITERAL"
->BIT(1)</TT
+>bit(1)</VAR
 >, while <TT
 CLASS="TYPE"
->BIT VARYING</TT
+>bit varying</TT
 > without a length
     specification means unlimited length.
    </P
@@ -159,35 +149,27 @@ CLASS="NOTE"
 >     If one explicitly casts a bit-string value to
      <TT
 CLASS="TYPE"
->BIT(<TT
+>bit(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 >, it will be truncated or
-     zero-padded on the right to be exactly <TT
+     zero-padded on the right to be exactly <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 > bits,
      without raising an error.  Similarly,
      if one explicitly casts a bit-string value to
      <TT
 CLASS="TYPE"
->BIT VARYING(<TT
+>bit varying(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 >, it will be truncated
-     on the right if it is more than <TT
+     on the right if it is more than <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 > bits.
     </P
 ></BLOCKQUOTE
@@ -204,13 +186,13 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 7.2, <TT
 CLASS="TYPE"
->BIT</TT
+>bit</TT
 > data
      was always silently truncated or zero-padded on the right, with
      or without an explicit cast. This was changed to comply with the
-     <SPAN
+     <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > standard.
     </P
 ></BLOCKQUOTE
@@ -218,40 +200,40 @@ CLASS="ACRONYM"
 ><P
 >    Refer to <A
 HREF="sql-syntax.html#SQL-SYNTAX-BIT-STRINGS"
->Section 1.1.2.2</A
+>Section 4.1.2.2</A
 > for information about the syntax
     of bit string constants.  Bit-logical operators and string
     manipulation functions are available; see <A
 HREF="functions.html"
->Chapter 6</A
+>Chapter 9</A
 >.
    </P
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN4731"
+NAME="AEN4693"
 ></A
 ><P
 ><B
->Example 5-3. Using the bit string types</B
+>Example 8-3. Using the bit string types</B
 ></P
 ><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE test (a BIT(3), b BIT VARYING(5));
 INSERT INTO test VALUES (B'101', B'00');
 INSERT INTO test VALUES (B'10', B'101');
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->ERROR:  Bit string length 2 does not match type BIT(3)</TT
+>ERROR:  Bit string length 2 does not match type BIT(3)</SAMP
 >
 INSERT INTO test VALUES (B'10'::bit(3), B'101');
 SELECT * FROM test;
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
 >  a  |  b
 -----+-----
  101 | 00
- 100 | 101</TT
+ 100 | 101</SAMP
 ></PRE
 ></DIV
 ></DIV
@@ -289,7 +271,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="datatype-oid.html"
+HREF="arrays.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -299,7 +281,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Network Address Data Types</TD
+>Network Address Types</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -313,7 +295,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Object Identifier Types</TD
+>Arrays</TD
 ></TR
 ></TABLE
 ></DIV

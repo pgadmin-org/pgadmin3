@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Closing a Connection</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. <SPAN
+>Chapter 30. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
-> - Embedded <SPAN
+> - Embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > in C</TD
 ><TD
 WIDTH="10%"
@@ -87,24 +87,23 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-DISCONNECT"
->4.3. Closing a Connection</A
+>30.3. Closing a Connection</A
 ></H1
 ><P
 >   To close a connection, use the following statement:
 </P><PRE
 CLASS="PROGRAMLISTING"
->EXEC SQL DISCONNECT [<TT
+>EXEC SQL DISCONNECT [<SPAN
+CLASS="OPTIONAL"
+><VAR
 CLASS="REPLACEABLE"
-><I
->connection</I
-></TT
+>connection</VAR
+></SPAN
 >];</PRE
 ><P>
-   The <TT
+   The <VAR
 CLASS="REPLACEABLE"
-><I
->connection</I
-></TT
+>connection</VAR
 > can be specified
    in the following ways:
 
@@ -113,43 +112,48 @@ CLASS="REPLACEABLE"
 ></P><UL
 ><LI
 ><P
->      <TT
+>      <VAR
 CLASS="LITERAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->connection-name</I
-></TT
-></TT
+>connection-name</VAR
+></VAR
 >
      </P
 ></LI
 ><LI
 ><P
->      <TT
+>      <VAR
 CLASS="LITERAL"
->DEFAULT</TT
+>DEFAULT</VAR
 >
      </P
 ></LI
 ><LI
 ><P
->      <TT
+>      <VAR
 CLASS="LITERAL"
->CURRENT</TT
+>CURRENT</VAR
 >
      </P
 ></LI
 ><LI
 ><P
->      <TT
+>      <VAR
 CLASS="LITERAL"
->ALL</TT
+>ALL</VAR
 >
      </P
 ></LI
 ></UL
 ><P>
+
+   If no connection name is specified, the current connection is
+   closed.
+  </P
+><P
+>   It is good style that an application always explicitly disconnect
+   from every connection it opened.
   </P
 ></DIV
 ><DIV

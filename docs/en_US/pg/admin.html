@@ -1,36 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->PostgreSQL 7.3.3 Administrator's Guide</TITLE
+>Server Administration</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="PREVIOUS"
-TITLE="Bibliography"
-HREF="biblio.html"><LINK
+TITLE="Populating a Database"
+HREF="populate.html"><LINK
 REL="NEXT"
-TITLE="Preface"
-HREF="admin-preface.html"><LINK
+TITLE="  Installation Instructions"
+HREF="installation.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
-CLASS="BOOK"
+CLASS="PART"
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
 LINK="#0000FF"
 VLINK="#840084"
 ALINK="#0000FF"
 ><DIV
-CLASS="BOOK"
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="populate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="installation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="PART"
 ><A
 NAME="ADMIN"
 ></A
@@ -38,20 +81,57 @@ NAME="ADMIN"
 CLASS="TITLEPAGE"
 ><H1
 CLASS="TITLE"
+>III. Server Administration</H1
+><DIV
+CLASS="PARTINTRO"
 ><A
-NAME="ADMIN"
->PostgreSQL 7.3.3 Administrator's Guide</A
-></H1
-><H3
-CLASS="CORPAUTHOR"
->The PostgreSQL Global Development Group</H3
+NAME="AEN13379"
+></A
 ><P
-CLASS="COPYRIGHT"
-><A
-HREF="ln17977.html"
->Copyright</A
-> &copy; 1996-2002 by The PostgreSQL Global Development Group</P
-><HR></DIV
+>    This part covers topics that are of interest to a
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database administrator.  This includes
+    installation of the software, set up and configuration of the
+    server, management of users and databases, and maintenance tasks.
+    Anyone who runs a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server, either for
+    personal use, but especially in production, should be familiar
+    with the topics covered in this part.
+   </P
+><P
+>    The information in this part is arranged approximately in the
+    order in which a new user should read it.  But the chapters are
+    self-contained and can be read individually as desired.  The
+    information in this part is presented in a narrative fashion in
+    topical units.  Readers looking for a complete description of a
+    particular command should look into <A
+HREF="reference.html"
+>Part VI</A
+>.
+   </P
+><P
+>    The first few chapters are written so that they can be understood
+    without prerequisite knowledge, so that new users who need to set
+    up their own server can begin their exploration with this part.
+    The rest of this part which is about tuning and management
+    presupposes that the reader is familiar with the general use of
+    the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database system.  Readers are
+    encouraged to look at <A
+HREF="tutorial.html"
+>Part I</A
+> and <A
+HREF="sql.html"
+>Part II</A
+> for additional information.
+   </P
+></DIV
 ><DIV
 CLASS="TOC"
 ><DL
@@ -60,79 +140,51 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
-><A
-HREF="admin-preface.html"
->Preface</A
-></DT
-><DD
-><DL
-><DT
->1. <A
-HREF="admin-preface.html#ADMIN-PREFACE-THISBOOK"
->What's In This Book</A
-></DT
-></DL
-></DD
-><DT
->1. <A
+>14. <A
 HREF="installation.html"
 >Installation Instructions</A
 ></DT
 ><DD
 ><DL
 ><DT
->1.1. <A
+>14.1. <A
 HREF="installation.html#INSTALL-SHORT"
 >Short Version</A
 ></DT
 ><DT
->1.2. <A
+>14.2. <A
 HREF="install-requirements.html"
 >Requirements</A
 ></DT
 ><DT
->1.3. <A
+>14.3. <A
 HREF="install-getsource.html"
 >Getting The Source</A
 ></DT
 ><DT
->1.4. <A
+>14.4. <A
 HREF="install-upgrading.html"
 >If You Are Upgrading</A
 ></DT
 ><DT
->1.5. <A
+>14.5. <A
 HREF="install-procedure.html"
 >Installation Procedure</A
 ></DT
 ><DT
->1.6. <A
+>14.6. <A
 HREF="install-post.html"
 >Post-Installation Setup</A
 ></DT
-><DD
-><DL
 ><DT
->1.6.1. <A
-HREF="install-post.html#AEN18587"
->Shared Libraries</A
-></DT
-><DT
->1.6.2. <A
-HREF="install-post.html#AEN18644"
->Environment Variables</A
-></DT
-></DL
-></DD
-><DT
->1.7. <A
+>14.7. <A
 HREF="supported-platforms.html"
 >Supported Platforms</A
 ></DT
 ></DL
 ></DD
 ><DT
->2. <A
+>15. <A
 HREF="install-win32.html"
 >Installation on <SPAN
 CLASS="PRODUCTNAME"
@@ -140,14 +192,14 @@ CLASS="PRODUCTNAME"
 ></A
 ></DT
 ><DT
->3. <A
+>16. <A
 HREF="runtime.html"
 >Server Run-time Environment</A
 ></DT
 ><DD
 ><DL
 ><DT
->3.1. <A
+>16.1. <A
 HREF="runtime.html#POSTGRES-USER"
 >The <SPAN
 CLASS="PRODUCTNAME"
@@ -155,99 +207,37 @@ CLASS="PRODUCTNAME"
 > User Account</A
 ></DT
 ><DT
->3.2. <A
+>16.2. <A
 HREF="creating-cluster.html"
 >Creating a Database Cluster</A
 ></DT
 ><DT
->3.3. <A
+>16.3. <A
 HREF="postmaster-start.html"
 >Starting the Database Server</A
 ></DT
-><DD
-><DL
 ><DT
->3.3.1. <A
-HREF="postmaster-start.html#POSTMASTER-START-FAILURES"
->Server Start-up Failures</A
-></DT
-><DT
->3.3.2. <A
-HREF="postmaster-start.html#CLIENT-CONNECTION-PROBLEMS"
->Client Connection Problems</A
-></DT
-></DL
-></DD
-><DT
->3.4. <A
+>16.4. <A
 HREF="runtime-config.html"
 >Run-time Configuration</A
 ></DT
-><DD
-><DL
 ><DT
->3.4.1. <A
-HREF="runtime-config.html#CATALOG-PG-SETTINGS"
->pg_settings</A
-></DT
-><DT
->3.4.2. <A
-HREF="runtime-config.html#RUNTIME-CONFIG-OPTIMIZER"
->Planner and Optimizer Tuning</A
-></DT
-><DT
->3.4.3. <A
-HREF="runtime-config.html#LOGGING"
->Logging and Debugging</A
-></DT
-><DT
->3.4.4. <A
-HREF="runtime-config.html#RUNTIME-CONFIG-GENERAL"
->General Operation</A
-></DT
-><DT
->3.4.5. <A
-HREF="runtime-config.html#RUNTIME-CONFIG-WAL"
->WAL</A
-></DT
-><DT
->3.4.6. <A
-HREF="runtime-config.html#RUNTIME-CONFIG-SHORT"
->Short Options</A
-></DT
-></DL
-></DD
-><DT
->3.5. <A
+>16.5. <A
 HREF="kernel-resources.html"
 >Managing Kernel Resources</A
 ></DT
-><DD
-><DL
 ><DT
->3.5.1. <A
-HREF="kernel-resources.html#SYSVIPC"
->Shared Memory and Semaphores</A
-></DT
-><DT
->3.5.2. <A
-HREF="kernel-resources.html#AEN20792"
->Resource Limits</A
-></DT
-></DL
-></DD
-><DT
->3.6. <A
+>16.6. <A
 HREF="postmaster-shutdown.html"
 >Shutting Down the Server</A
 ></DT
 ><DT
->3.7. <A
+>16.7. <A
 HREF="ssl-tcp.html"
 >Secure TCP/IP Connections with SSL</A
 ></DT
 ><DT
->3.8. <A
+>16.8. <A
 HREF="ssh-tunnels.html"
 >Secure TCP/IP Connections with <SPAN
 CLASS="APPLICATION"
@@ -257,87 +247,87 @@ CLASS="APPLICATION"
 ></DL
 ></DD
 ><DT
->4. <A
+>17. <A
 HREF="user-manag.html"
 >Database Users and Privileges</A
 ></DT
 ><DD
 ><DL
 ><DT
->4.1. <A
+>17.1. <A
 HREF="user-manag.html#DATABASE-USERS"
 >Database Users</A
 ></DT
 ><DT
->4.2. <A
+>17.2. <A
 HREF="user-attributes.html"
 >User Attributes</A
 ></DT
 ><DT
->4.3. <A
+>17.3. <A
 HREF="groups.html"
 >Groups</A
 ></DT
 ><DT
->4.4. <A
+>17.4. <A
 HREF="privileges.html"
 >Privileges</A
 ></DT
 ><DT
->4.5. <A
+>17.5. <A
 HREF="perm-functions.html"
 >Functions and Triggers</A
 ></DT
 ></DL
 ></DD
 ><DT
->5. <A
+>18. <A
 HREF="managing-databases.html"
 >Managing Databases</A
 ></DT
 ><DD
 ><DL
 ><DT
->5.1. <A
-HREF="managing-databases.html#AEN21044"
+>18.1. <A
+HREF="managing-databases.html#MANAGE-AG-OVERVIEW"
 >Overview</A
 ></DT
 ><DT
->5.2. <A
+>18.2. <A
 HREF="manage-ag-createdb.html"
 >Creating a Database</A
 ></DT
 ><DT
->5.3. <A
+>18.3. <A
 HREF="manage-ag-templatedbs.html"
 >Template Databases</A
 ></DT
 ><DT
->5.4. <A
+>18.4. <A
 HREF="manage-ag-config.html"
 >Database Configuration</A
 ></DT
 ><DT
->5.5. <A
+>18.5. <A
 HREF="manage-ag-alternate-locs.html"
 >Alternative Locations</A
 ></DT
 ><DT
->5.6. <A
+>18.6. <A
 HREF="manage-ag-dropdb.html"
 >Destroying a Database</A
 ></DT
 ></DL
 ></DD
 ><DT
->6. <A
+>19. <A
 HREF="client-authentication.html"
 >Client Authentication</A
 ></DT
 ><DD
 ><DL
 ><DT
->6.1. <A
+>19.1. <A
 HREF="client-authentication.html#AUTH-PG-HBA-CONF"
 >The <TT
 CLASS="FILENAME"
@@ -345,1237 +335,194 @@ CLASS="FILENAME"
 > file</A
 ></DT
 ><DT
->6.2. <A
+>19.2. <A
 HREF="auth-methods.html"
 >Authentication methods</A
 ></DT
-><DD
-><DL
 ><DT
->6.2.1. <A
-HREF="auth-methods.html#AUTH-TRUST"
->Trust authentication</A
-></DT
-><DT
->6.2.2. <A
-HREF="auth-methods.html#AUTH-PASSWORD"
->Password authentication</A
-></DT
-><DT
->6.2.3. <A
-HREF="auth-methods.html#KERBEROS-AUTH"
->Kerberos authentication</A
-></DT
-><DT
->6.2.4. <A
-HREF="auth-methods.html#AUTH-IDENT"
->Ident-based authentication</A
-></DT
-><DT
->6.2.5. <A
-HREF="auth-methods.html#AUTH-PAM"
->PAM Authentication</A
-></DT
-></DL
-></DD
-><DT
->6.3. <A
+>19.3. <A
 HREF="client-authentication-problems.html"
 >Authentication problems</A
 ></DT
 ></DL
 ></DD
 ><DT
->7. <A
+>20. <A
 HREF="charset.html"
 >Localization</A
 ></DT
 ><DD
 ><DL
 ><DT
->7.1. <A
+>20.1. <A
 HREF="charset.html#LOCALE"
 >Locale Support</A
 ></DT
-><DD
-><DL
 ><DT
->7.1.1. <A
-HREF="charset.html#AEN21673"
->Overview</A
-></DT
-><DT
->7.1.2. <A
-HREF="charset.html#AEN21749"
->Benefits</A
-></DT
-><DT
->7.1.3. <A
-HREF="charset.html#AEN21769"
->Problems</A
-></DT
-></DL
-></DD
-><DT
->7.2. <A
+>20.2. <A
 HREF="multibyte.html"
->Multibyte Support</A
-></DT
-><DD
-><DL
-><DT
->7.2.1. <A
-HREF="multibyte.html#AEN21828"
->Supported character set encodings</A
-></DT
-><DT
->7.2.2. <A
-HREF="multibyte.html#AEN21986"
->Setting the Encoding</A
-></DT
-><DT
->7.2.3. <A
-HREF="multibyte.html#AEN22011"
->Automatic encoding conversion between server and
-     client</A
-></DT
-><DT
->7.2.4. <A
-HREF="multibyte.html#AEN22302"
->What happens if the translation is not possible?</A
-></DT
-><DT
->7.2.5. <A
-HREF="multibyte.html#AEN22310"
->References</A
-></DT
-><DT
->7.2.6. <A
-HREF="multibyte.html#AEN22333"
->History</A
-></DT
-><DT
->7.2.7. <A
-HREF="multibyte.html#AEN22338"
->WIN1250 on Windows/ODBC</A
+>Character Set Support</A
 ></DT
 ></DL
 ></DD
 ><DT
->7.3. <A
-HREF="recode.html"
->Single-byte character set recoding</A
-></DT
-></DL
-></DD
-><DT
->8. <A
+>21. <A
 HREF="maintenance.html"
 >Routine Database Maintenance Tasks</A
 ></DT
 ><DD
 ><DL
 ><DT
->8.1. <A
-HREF="maintenance.html#MAINTENANCE-GENERAL"
->General Discussion</A
-></DT
-><DT
->8.2. <A
-HREF="routine-vacuuming.html"
+>21.1. <A
+HREF="maintenance.html#ROUTINE-VACUUMING"
 >Routine Vacuuming</A
 ></DT
-><DD
-><DL
 ><DT
->8.2.1. <A
-HREF="routine-vacuuming.html#VACUUM-FOR-SPACE-RECOVERY"
->Recovering disk space</A
-></DT
-><DT
->8.2.2. <A
-HREF="routine-vacuuming.html#VACUUM-FOR-STATISTICS"
->Updating planner statistics</A
-></DT
-><DT
->8.2.3. <A
-HREF="routine-vacuuming.html#VACUUM-FOR-WRAPAROUND"
->Preventing transaction ID wraparound failures</A
-></DT
-></DL
-></DD
-><DT
->8.3. <A
+>21.2. <A
 HREF="routine-reindex.html"
 >Routine Reindexing</A
 ></DT
 ><DT
->8.4. <A
+>21.3. <A
 HREF="logfile-maintenance.html"
 >Log File Maintenance</A
 ></DT
 ></DL
 ></DD
 ><DT
->9. <A
+>22. <A
 HREF="backup.html"
 >Backup and Restore</A
 ></DT
 ><DD
 ><DL
 ><DT
->9.1. <A
+>22.1. <A
 HREF="backup.html#BACKUP-DUMP"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Dump</A
 ></DT
-><DD
-><DL
 ><DT
->9.1.1. <A
-HREF="backup.html#BACKUP-DUMP-RESTORE"
->Restoring the dump</A
-></DT
-><DT
->9.1.2. <A
-HREF="backup.html#BACKUP-DUMP-ALL"
->Using <TT
-CLASS="COMMAND"
->pg_dumpall</TT
-></A
-></DT
-><DT
->9.1.3. <A
-HREF="backup.html#BACKUP-DUMP-LARGE"
->Large Databases</A
-></DT
-><DT
->9.1.4. <A
-HREF="backup.html#BACKUP-DUMP-CAVEATS"
->Caveats</A
-></DT
-></DL
-></DD
-><DT
->9.2. <A
+>22.2. <A
 HREF="backup-file.html"
 >File system level backup</A
 ></DT
 ><DT
->9.3. <A
+>22.3. <A
 HREF="migration.html"
 >Migration between releases</A
 ></DT
 ></DL
 ></DD
 ><DT
->10. <A
+>23. <A
 HREF="monitoring.html"
 >Monitoring Database Activity</A
 ></DT
 ><DD
 ><DL
 ><DT
->10.1. <A
+>23.1. <A
 HREF="monitoring.html#MONITORING-PS"
 >Standard Unix Tools</A
 ></DT
 ><DT
->10.2. <A
+>23.2. <A
 HREF="monitoring-stats.html"
->Statistics Collector</A
-></DT
-><DD
-><DL
-><DT
->10.2.1. <A
-HREF="monitoring-stats.html#MONITORING-STATS-SETUP"
->Statistics Collection Configuration</A
+>The Statistics Collector</A
 ></DT
 ><DT
->10.2.2. <A
-HREF="monitoring-stats.html#MONITORING-STATS-VIEWS"
->Viewing Collected Statistics</A
-></DT
-></DL
-></DD
-><DT
->10.3. <A
+>23.3. <A
 HREF="monitoring-locks.html"
 >Viewing Locks</A
 ></DT
 ></DL
 ></DD
 ><DT
->11. <A
+>24. <A
 HREF="diskusage.html"
 >Monitoring Disk Usage</A
 ></DT
 ><DD
 ><DL
 ><DT
->11.1. <A
+>24.1. <A
 HREF="diskusage.html#DISK-USAGE"
 >Determining Disk Usage</A
 ></DT
 ><DT
->11.2. <A
+>24.2. <A
 HREF="disk-full.html"
 >Disk Full Failure</A
 ></DT
 ></DL
 ></DD
 ><DT
->12. <A
+>25. <A
 HREF="wal.html"
->Write-Ahead Logging (<SPAN
+>Write-Ahead Logging (<ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 >)</A
 ></DT
 ><DD
 ><DL
 ><DT
->12.1. <A
-HREF="wal.html#WAL-GENERAL"
->General Description</A
-></DT
-><DD
-><DL
-><DT
->12.1.1. <A
+>25.1. <A
 HREF="wal.html#WAL-BENEFITS-NOW"
->Immediate Benefits of <SPAN
+>Benefits of <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 ></A
 ></DT
 ><DT
->12.1.2. <A
-HREF="wal.html#WAL-BENEFITS-LATER"
+>25.2. <A
+HREF="wal-benefits-later.html"
 >Future Benefits</A
 ></DT
-></DL
-></DD
 ><DT
->12.2. <A
-HREF="wal-implementation.html"
->Implementation</A
-></DT
-><DD
-><DL
-><DT
->12.2.1. <A
-HREF="wal-implementation.html#WAL-RECOVERY"
->Database Recovery with <SPAN
-CLASS="ACRONYM"
->WAL</SPAN
-></A
-></DT
-></DL
-></DD
-><DT
->12.3. <A
+>25.3. <A
 HREF="wal-configuration.html"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 > Configuration</A
 ></DT
+><DT
+>25.4. <A
+HREF="wal-internals.html"
+>Internals</A
+></DT
 ></DL
 ></DD
 ><DT
->13. <A
+>26. <A
 HREF="regress.html"
 >Regression Tests</A
 ></DT
 ><DD
 ><DL
 ><DT
->13.1. <A
-HREF="regress.html#REGRESS-INTRO"
->Introduction</A
-></DT
-><DT
->13.2. <A
-HREF="regress-run.html"
+>26.1. <A
+HREF="regress.html#REGRESS-RUN"
 >Running the Tests</A
 ></DT
 ><DT
->13.3. <A
+>26.2. <A
 HREF="regress-evaluation.html"
 >Test Evaluation</A
 ></DT
-><DD
-><DL
 ><DT
->13.3.1. <A
-HREF="regress-evaluation.html#AEN23453"
->Error message differences</A
-></DT
-><DT
->13.3.2. <A
-HREF="regress-evaluation.html#AEN23458"
->Locale differences</A
-></DT
-><DT
->13.3.3. <A
-HREF="regress-evaluation.html#AEN23471"
->Date and time differences</A
-></DT
-><DT
->13.3.4. <A
-HREF="regress-evaluation.html#AEN23492"
->Floating-point differences</A
-></DT
-><DT
->13.3.5. <A
-HREF="regress-evaluation.html#AEN23501"
->Polygon differences</A
-></DT
-><DT
->13.3.6. <A
-HREF="regress-evaluation.html#AEN23508"
->Row ordering differences</A
-></DT
-><DT
->13.3.7. <A
-HREF="regress-evaluation.html#AEN23514"
->The <SPAN
-CLASS="QUOTE"
->"random"</SPAN
-> test</A
-></DT
-></DL
-></DD
-><DT
->13.4. <A
+>26.3. <A
 HREF="regress-platform.html"
 >Platform-specific comparison files</A
 ></DT
 ></DL
 ></DD
-><DT
->A. <A
-HREF="release.html"
->Release Notes</A
-></DT
-><DD
-><DL
-><DT
->A.1. <A
-HREF="release.html#RELEASE-7-3-3"
->Release 7.3.3</A
-></DT
-><DD
-><DL
-><DT
->A.1.1. <A
-HREF="release.html#AEN23557"
->Migration to version 7.3.3</A
-></DT
-><DT
->A.1.2. <A
-HREF="release.html#AEN23561"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.2. <A
-HREF="release-7-3-2.html"
->Release 7.3.2</A
-></DT
-><DD
-><DL
-><DT
->A.2.1. <A
-HREF="release-7-3-2.html#AEN23571"
->Migration to version 7.3.2</A
-></DT
-><DT
->A.2.2. <A
-HREF="release-7-3-2.html#AEN23575"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.3. <A
-HREF="release-7-3-1.html"
->Release 7.3.1</A
-></DT
-><DD
-><DL
-><DT
->A.3.1. <A
-HREF="release-7-3-1.html#AEN23585"
->Migration to version 7.3.1</A
-></DT
-><DT
->A.3.2. <A
-HREF="release-7-3-1.html#AEN23591"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.4. <A
-HREF="release-7-3.html"
->Release 7.3</A
-></DT
-><DD
-><DL
-><DT
->A.4.1. <A
-HREF="release-7-3.html#AEN23600"
->Overview</A
-></DT
-><DT
->A.4.2. <A
-HREF="release-7-3.html#AEN23656"
->Migration to version 7.3</A
-></DT
-><DT
->A.4.3. <A
-HREF="release-7-3.html#AEN23703"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.5. <A
-HREF="release-7-2-4.html"
->Release 7.2.4</A
-></DT
-><DD
-><DL
-><DT
->A.5.1. <A
-HREF="release-7-2-4.html#AEN23759"
->Migration to version 7.2.4</A
-></DT
-><DT
->A.5.2. <A
-HREF="release-7-2-4.html#AEN23763"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.6. <A
-HREF="release-7-2-3.html"
->Release 7.2.3</A
-></DT
-><DD
-><DL
-><DT
->A.6.1. <A
-HREF="release-7-2-3.html#AEN23773"
->Migration to version 7.2.3</A
-></DT
-><DT
->A.6.2. <A
-HREF="release-7-2-3.html#AEN23777"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.7. <A
-HREF="release-7-2-2.html"
->Release 7.2.2</A
-></DT
-><DD
-><DL
-><DT
->A.7.1. <A
-HREF="release-7-2-2.html#AEN23787"
->Migration to version 7.2.2</A
-></DT
-><DT
->A.7.2. <A
-HREF="release-7-2-2.html#AEN23791"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.8. <A
-HREF="release-7-2-1.html"
->Release 7.2.1</A
-></DT
-><DD
-><DL
-><DT
->A.8.1. <A
-HREF="release-7-2-1.html#AEN23801"
->Migration to version 7.2.1</A
-></DT
-><DT
->A.8.2. <A
-HREF="release-7-2-1.html#AEN23805"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.9. <A
-HREF="release-7-2.html"
->Release 7.2</A
-></DT
-><DD
-><DL
-><DT
->A.9.1. <A
-HREF="release-7-2.html#AEN23814"
->Overview</A
-></DT
-><DT
->A.9.2. <A
-HREF="release-7-2.html#AEN23850"
->Migration to version 7.2</A
-></DT
-><DT
->A.9.3. <A
-HREF="release-7-2.html#AEN23886"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.10. <A
-HREF="release-7-1-3.html"
->Release 7.1.3</A
-></DT
-><DD
-><DL
-><DT
->A.10.1. <A
-HREF="release-7-1-3.html#AEN23966"
->Migration to version 7.1.3</A
-></DT
-><DT
->A.10.2. <A
-HREF="release-7-1-3.html#AEN23970"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.11. <A
-HREF="release-7-1-2.html"
->Release 7.1.2</A
-></DT
-><DD
-><DL
-><DT
->A.11.1. <A
-HREF="release-7-1-2.html#AEN23980"
->Migration to version 7.1.2</A
-></DT
-><DT
->A.11.2. <A
-HREF="release-7-1-2.html#AEN23984"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.12. <A
-HREF="release-7-1-1.html"
->Release 7.1.1</A
-></DT
-><DD
-><DL
-><DT
->A.12.1. <A
-HREF="release-7-1-1.html#AEN23994"
->Migration to version 7.1.1</A
-></DT
-><DT
->A.12.2. <A
-HREF="release-7-1-1.html#AEN23998"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.13. <A
-HREF="release-7-1.html"
->Release 7.1</A
-></DT
-><DD
-><DL
-><DT
->A.13.1. <A
-HREF="release-7-1.html#AEN24031"
->Migration to version 7.1</A
-></DT
-><DT
->A.13.2. <A
-HREF="release-7-1.html#AEN24034"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.14. <A
-HREF="release-7-0-3.html"
->Release 7.0.3</A
-></DT
-><DD
-><DL
-><DT
->A.14.1. <A
-HREF="release-7-0-3.html#AEN24044"
->Migration to version 7.0.3</A
-></DT
-><DT
->A.14.2. <A
-HREF="release-7-0-3.html#AEN24048"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.15. <A
-HREF="release-7-0-2.html"
->Release 7.0.2</A
-></DT
-><DD
-><DL
-><DT
->A.15.1. <A
-HREF="release-7-0-2.html#AEN24058"
->Migration to version 7.0.2</A
-></DT
-><DT
->A.15.2. <A
-HREF="release-7-0-2.html#AEN24062"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.16. <A
-HREF="release-7-0-1.html"
->Release 7.0.1</A
-></DT
-><DD
-><DL
-><DT
->A.16.1. <A
-HREF="release-7-0-1.html#AEN24072"
->Migration to version 7.0.1</A
-></DT
-><DT
->A.16.2. <A
-HREF="release-7-0-1.html#AEN24076"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.17. <A
-HREF="release-7-0.html"
->Release 7.0</A
-></DT
-><DD
-><DL
-><DT
->A.17.1. <A
-HREF="release-7-0.html#AEN24115"
->Migration to version 7.0</A
-></DT
-><DT
->A.17.2. <A
-HREF="release-7-0.html#AEN24141"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.18. <A
-HREF="release-6-5-3.html"
->Release 6.5.3</A
-></DT
-><DD
-><DL
-><DT
->A.18.1. <A
-HREF="release-6-5-3.html#AEN24156"
->Migration to version 6.5.3</A
-></DT
-><DT
->A.18.2. <A
-HREF="release-6-5-3.html#AEN24160"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.19. <A
-HREF="release-6-5-2.html"
->Release 6.5.2</A
-></DT
-><DD
-><DL
-><DT
->A.19.1. <A
-HREF="release-6-5-2.html#AEN24170"
->Migration to version 6.5.2</A
-></DT
-><DT
->A.19.2. <A
-HREF="release-6-5-2.html#AEN24174"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.20. <A
-HREF="release-6-5-1.html"
->Release 6.5.1</A
-></DT
-><DD
-><DL
-><DT
->A.20.1. <A
-HREF="release-6-5-1.html#AEN24184"
->Migration to version 6.5.1</A
-></DT
-><DT
->A.20.2. <A
-HREF="release-6-5-1.html#AEN24188"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.21. <A
-HREF="release-6-5.html"
->Release 6.5</A
-></DT
-><DD
-><DL
-><DT
->A.21.1. <A
-HREF="release-6-5.html#AEN24253"
->Migration to version 6.5</A
-></DT
-><DT
->A.21.2. <A
-HREF="release-6-5.html#AEN24280"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.22. <A
-HREF="release-6-4-2.html"
->Release 6.4.2</A
-></DT
-><DD
-><DL
-><DT
->A.22.1. <A
-HREF="release-6-4-2.html#AEN24290"
->Migration to version 6.4.2</A
-></DT
-><DT
->A.22.2. <A
-HREF="release-6-4-2.html#AEN24294"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.23. <A
-HREF="release-6-4-1.html"
->Release 6.4.1</A
-></DT
-><DD
-><DL
-><DT
->A.23.1. <A
-HREF="release-6-4-1.html#AEN24304"
->Migration to version 6.4.1</A
-></DT
-><DT
->A.23.2. <A
-HREF="release-6-4-1.html#AEN24308"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.24. <A
-HREF="release-6-4.html"
->Release 6.4</A
-></DT
-><DD
-><DL
-><DT
->A.24.1. <A
-HREF="release-6-4.html#AEN24348"
->Migration to version 6.4</A
-></DT
-><DT
->A.24.2. <A
-HREF="release-6-4.html#AEN24354"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.25. <A
-HREF="release-6-3-2.html"
->Release 6.3.2</A
-></DT
-><DD
-><DL
-><DT
->A.25.1. <A
-HREF="release-6-3-2.html#AEN24376"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.26. <A
-HREF="release-6-3-1.html"
->Release 6.3.1</A
-></DT
-><DD
-><DL
-><DT
->A.26.1. <A
-HREF="release-6-3-1.html#AEN24401"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.27. <A
-HREF="release-6-3.html"
->Release 6.3</A
-></DT
-><DD
-><DL
-><DT
->A.27.1. <A
-HREF="release-6-3.html#AEN24455"
->Migration to version 6.3</A
-></DT
-><DT
->A.27.2. <A
-HREF="release-6-3.html#AEN24461"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.28. <A
-HREF="release-6-2-1.html"
->Release 6.2.1</A
-></DT
-><DD
-><DL
-><DT
->A.28.1. <A
-HREF="release-6-2-1.html#AEN24481"
->Migration from version 6.2 to version 6.2.1</A
-></DT
-><DT
->A.28.2. <A
-HREF="release-6-2-1.html#AEN24489"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.29. <A
-HREF="release-6-2.html"
->Release 6.2</A
-></DT
-><DD
-><DL
-><DT
->A.29.1. <A
-HREF="release-6-2.html#AEN24500"
->Migration from version 6.1 to version 6.2</A
-></DT
-><DT
->A.29.2. <A
-HREF="release-6-2.html#AEN24506"
->Migration from version 1.<TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
-> to version 6.2</A
-></DT
-><DT
->A.29.3. <A
-HREF="release-6-2.html#AEN24510"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.30. <A
-HREF="release-6-1-1.html"
->Release 6.1.1</A
-></DT
-><DD
-><DL
-><DT
->A.30.1. <A
-HREF="release-6-1-1.html#AEN24519"
->Migration from version 6.1 to version 6.1.1</A
-></DT
-><DT
->A.30.2. <A
-HREF="release-6-1-1.html#AEN24522"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.31. <A
-HREF="release-6-1.html"
->Release 6.1</A
-></DT
-><DD
-><DL
-><DT
->A.31.1. <A
-HREF="release-6-1.html#AEN24554"
->Migration to version 6.1</A
-></DT
-><DT
->A.31.2. <A
-HREF="release-6-1.html#AEN24558"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.32. <A
-HREF="release-6-0.html"
->Release 6.0</A
-></DT
-><DD
-><DL
-><DT
->A.32.1. <A
-HREF="release-6-0.html#AEN24569"
->Migration from version 1.09 to version 6.0</A
-></DT
-><DT
->A.32.2. <A
-HREF="release-6-0.html#AEN24572"
->Migration from pre-1.09 to version 6.0</A
-></DT
-><DT
->A.32.3. <A
-HREF="release-6-0.html#AEN24575"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.33. <A
-HREF="release-1-09.html"
->Release 1.09</A
-></DT
-><DT
->A.34. <A
-HREF="release-1-02.html"
->Release 1.02</A
-></DT
-><DD
-><DL
-><DT
->A.34.1. <A
-HREF="release-1-02.html#AEN24590"
->Migration from version 1.02 to version 1.02.1</A
-></DT
-><DT
->A.34.2. <A
-HREF="release-1-02.html#AEN24611"
->Dump/Reload Procedure</A
-></DT
-><DT
->A.34.3. <A
-HREF="release-1-02.html#AEN24620"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.35. <A
-HREF="release-1-01.html"
->Release 1.01</A
-></DT
-><DD
-><DL
-><DT
->A.35.1. <A
-HREF="release-1-01.html#AEN24629"
->Migration from version 1.0 to version 1.01</A
-></DT
-><DT
->A.35.2. <A
-HREF="release-1-01.html#AEN24679"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.36. <A
-HREF="release-1-0.html"
->Release 1.0</A
-></DT
-><DD
-><DL
-><DT
->A.36.1. <A
-HREF="release-1-0.html#AEN24688"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.37. <A
-HREF="release-0-03.html"
-><SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> Release 0.03</A
-></DT
-><DD
-><DL
-><DT
->A.37.1. <A
-HREF="release-0-03.html#AEN24699"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.38. <A
-HREF="release-0-02.html"
-><SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> Release 0.02</A
-></DT
-><DD
-><DL
-><DT
->A.38.1. <A
-HREF="release-0-02.html#AEN24709"
->Changes</A
-></DT
-></DL
-></DD
-><DT
->A.39. <A
-HREF="release-0-01.html"
-><SPAN
-CLASS="PRODUCTNAME"
->Postgres95</SPAN
-> Release 0.01</A
-></DT
-></DL
-></DD
 ></DL
 ></DIV
-><DIV
-CLASS="LOT"
-><DL
-CLASS="LOT"
-><DT
-><B
->List of Tables</B
-></DT
-><DT
->3-1. <A
-HREF="runtime-config.html#AEN19438"
->pg_settings Columns</A
-></DT
-><DT
->3-2. <A
-HREF="runtime-config.html#RUNTIME-CONFIG-SHORT-TABLE"
->Short option key</A
-></DT
-><DT
->3-3. <A
-HREF="kernel-resources.html#SYSVIPC-PARAMETERS"
-><SPAN
-CLASS="SYSTEMITEM"
->System V</SPAN
-> <SPAN
-CLASS="ACRONYM"
->IPC</SPAN
-> parameters</A
-></DT
-><DT
->7-1. <A
-HREF="multibyte.html#AEN21831"
->Character Set Encodings</A
-></DT
-><DT
->7-2. <A
-HREF="multibyte.html#MULTIBYTE-TRANSLATION-TABLE"
->Client/Server Character Set Encodings</A
-></DT
-><DT
->10-1. <A
-HREF="monitoring-stats.html#MONITORING-STATS-VIEWS-TABLE"
->Standard Statistics Views</A
-></DT
-><DT
->10-2. <A
-HREF="monitoring-stats.html#MONITORING-STATS-FUNCS-TABLE"
->Statistics Access Functions</A
-></DT
-><DT
->10-3. <A
-HREF="monitoring-locks.html#MONITORING-LOCKS-TABLE"
->Lock Status System View</A
-></DT
-></DL
-></DIV
-><DIV
-CLASS="LOT"
-><DL
-CLASS="LOT"
-><DT
-><B
->List of Examples</B
-></DT
-><DT
->6-1. <A
-HREF="client-authentication.html#EXAMPLE-PG-HBA.CONF"
->An example <TT
-CLASS="FILENAME"
->pg_hba.conf</TT
-> file</A
-></DT
-><DT
->6-2. <A
-HREF="auth-methods.html#EXAMPLE-PG-IDENT.CONF"
->An example <TT
-CLASS="FILENAME"
->pg_ident.conf</TT
-> file</A
-></DT
-></DL
 ></DIV
 ></DIV
 ><DIV
@@ -1594,7 +541,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="biblio.html"
+HREF="populate.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -1612,7 +559,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="admin-preface.html"
+HREF="installation.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -1622,7 +569,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Bibliography</TD
+>Populating a Database</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -1632,7 +579,7 @@ VALIGN="top"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Preface</TD
+>Installation Instructions</TD
 ></TR
 ></TABLE
 ></DIV

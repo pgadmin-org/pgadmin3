@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_opclass</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,205 +81,221 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-OPCLASS"
->3.22. pg_opclass</A
+>45.22. <TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
+></A
 ></H1
+><A
+NAME="AEN52350"
+></A
 ><P
->   <TT
+>   The catalog <TT
 CLASS="STRUCTNAME"
 >pg_opclass</TT
 > defines
    index access method operator classes.  Each operator class defines
-   semantics for index columns of a particular datatype and a particular
+   semantics for index columns of a particular data type and a particular
    index access method.  Note that there can be multiple operator classes
-   for a given datatype/access method combination, thus supporting multiple
+   for a given data type/access method combination, thus supporting multiple
    behaviors.
   </P
 ><P
->   Operator classes are described at length in the
-   <I
-CLASS="CITETITLE"
->Programmer's Guide</I
+>   Operator classes are described at length in <A
+HREF="xindex.html"
+>Section 34.14</A
 >.
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN53763"
+NAME="AEN52356"
 ></A
 ><P
 ><B
->Table 3-22. pg_opclass Columns</B
+>Table 45-22. <TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->opcamid</TD
+><TT
+CLASS="STRUCTFIELD"
+>opcamid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_am.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-am.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_am</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->index access method opclass is for</TD
+>Index access method opclass is for</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->opcname</TD
+><TT
+CLASS="STRUCTFIELD"
+>opcname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->name of this opclass</TD
+>Name of this operator class</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->opcnamespace</TD
+><TT
+CLASS="STRUCTFIELD"
+>opcnamespace</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_namespace.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->namespace of this opclass</TD
+>Namespace of this operator class</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->opcowner</TD
+><TT
+CLASS="STRUCTFIELD"
+>opcowner</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_shadow.usesysid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->opclass owner</TD
+>Operator class owner</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->opcintype</TD
+><TT
+CLASS="STRUCTFIELD"
+>opcintype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_type.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->type of input data for opclass</TD
+>Input data type of the operator class</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->opcdefault</TD
+><TT
+CLASS="STRUCTFIELD"
+>opcdefault</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->true if opclass is default for opcintype</TD
+>True if this operator class is the default for <TT
+CLASS="STRUCTFIELD"
+>opcintype</TT
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->opckeytype</TD
+><TT
+CLASS="STRUCTFIELD"
+>opckeytype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_type.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->type of index data, or zero if same as opcintype</TD
+>Type of index data, or zero if same as <TT
+CLASS="STRUCTFIELD"
+>opcintype</TT
+></TD
 ></TR
 ></TBODY
 ></TABLE
@@ -303,7 +319,7 @@ CLASS="STRUCTNAME"
 CLASS="STRUCTNAME"
 >pg_class</TT
 >
-   row, plus associated rows in <TT
+   row plus associated rows in <TT
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 > and
@@ -354,7 +370,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_namespace</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -368,7 +387,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_operator</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

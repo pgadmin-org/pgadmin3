@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Combining Queries</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Queries"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. Queries</TD
+>Chapter 7. Queries</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,192 +81,152 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="QUERIES-UNION"
->4.4. Combining Queries</A
+>7.4. Combining Queries</A
 ></H1
 ><A
-NAME="AEN2732"
+NAME="AEN2681"
 ></A
 ><A
-NAME="AEN2734"
+NAME="AEN2683"
 ></A
 ><A
-NAME="AEN2736"
+NAME="AEN2685"
 ></A
 ><P
 >   The results of two queries can be combined using the set operations
    union, intersection, and difference.  The syntax is
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
+>query1</VAR
 > UNION [<SPAN
 CLASS="OPTIONAL"
 >ALL</SPAN
->] <TT
+>] <VAR
 CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
+>query2</VAR
 >
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
+>query1</VAR
 > INTERSECT [<SPAN
 CLASS="OPTIONAL"
 >ALL</SPAN
->] <TT
+>] <VAR
 CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
+>query2</VAR
 >
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
+>query1</VAR
 > EXCEPT [<SPAN
 CLASS="OPTIONAL"
 >ALL</SPAN
->] <TT
+>] <VAR
 CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
+>query2</VAR
 ></PRE
 ><P>
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
+>query1</VAR
 > and
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
+>query2</VAR
 > are queries that can use any of
    the features discussed up to this point.  Set operations can also
    be nested and chained, for example
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> UNION <TT
+>query1</VAR
+> UNION <VAR
 CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
-> UNION <TT
+>query2</VAR
+> UNION <VAR
 CLASS="REPLACEABLE"
-><I
->query3</I
-></TT
+>query3</VAR
 ></PRE
 ><P>
    which really says
 </P><PRE
 CLASS="SYNOPSIS"
->(<TT
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
-> UNION <TT
+>query1</VAR
+> UNION <VAR
 CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
->) UNION <TT
+>query2</VAR
+>) UNION <VAR
 CLASS="REPLACEABLE"
-><I
->query3</I
-></TT
+>query3</VAR
 ></PRE
 ><P>
   </P
 ><P
->   <TT
+>   <VAR
 CLASS="LITERAL"
->UNION</TT
+>UNION</VAR
 > effectively appends the result of
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
+>query2</VAR
 > to the result of
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
+>query1</VAR
 > (although there is no guarantee
    that this is the order in which the rows are actually returned).
    Furthermore, it eliminates all duplicate rows, in the sense of
-   <TT
+   <VAR
 CLASS="LITERAL"
->DISTINCT</TT
->, unless <TT
+>DISTINCT</VAR
+>, unless <VAR
 CLASS="LITERAL"
->UNION ALL</TT
+>UNION ALL</VAR
 > is used.
   </P
 ><P
->   <TT
+>   <VAR
 CLASS="LITERAL"
->INTERSECT</TT
+>INTERSECT</VAR
 > returns all rows that are both in the result
-   of <TT
+   of <VAR
 CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
+>query1</VAR
 > and in the result of
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
+>query2</VAR
 >.  Duplicate rows are eliminated
-   unless <TT
+   unless <VAR
 CLASS="LITERAL"
->INTERSECT ALL</TT
+>INTERSECT ALL</VAR
 > is used.
   </P
 ><P
->   <TT
+>   <VAR
 CLASS="LITERAL"
->EXCEPT</TT
+>EXCEPT</VAR
 > returns all rows that are in the result of
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->query1</I
-></TT
+>query1</VAR
 > but not in the result of
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->query2</I
-></TT
+>query2</VAR
 >.  (This is sometimes called the
    <I
 CLASS="FIRSTTERM"
 >difference</I
 > between two queries.)  Again, duplicates
-   are eliminated unless <TT
+   are eliminated unless <VAR
 CLASS="LITERAL"
->EXCEPT ALL</TT
+>EXCEPT ALL</VAR
 > is used.
   </P
 ><P
@@ -279,7 +239,7 @@ CLASS="QUOTE"
    that the corresponding columns have compatible data types, as
    described in <A
 HREF="typeconv-union-case.html"
->Section 7.5</A
+>Section 10.5</A
 >.
   </P
 ></DIV

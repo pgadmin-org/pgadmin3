@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Privileges</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. Data Definition</TD
+>Chapter 5. Data Definition</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DDL-PRIV"
->2.7. Privileges</A
+>5.7. Privileges</A
 ></H1
 ><P
 >   When you create a database object, you become its owner.  By
@@ -110,46 +110,46 @@ CLASS="COMMAND"
 ></BLOCKQUOTE
 ></DIV
 ><P
->   There are several different privileges: <TT
+>   There are several different privileges: <VAR
 CLASS="LITERAL"
->SELECT</TT
+>SELECT</VAR
 >,
-   <TT
+   <VAR
 CLASS="LITERAL"
->INSERT</TT
->, <TT
+>INSERT</VAR
+>, <VAR
 CLASS="LITERAL"
->UPDATE</TT
->, <TT
+>UPDATE</VAR
+>, <VAR
 CLASS="LITERAL"
->DELETE</TT
+>DELETE</VAR
 >,
-   <TT
+   <VAR
 CLASS="LITERAL"
->RULE</TT
->, <TT
+>RULE</VAR
+>, <VAR
 CLASS="LITERAL"
->REFERENCES</TT
->, <TT
+>REFERENCES</VAR
+>, <VAR
 CLASS="LITERAL"
->TRIGGER</TT
+>TRIGGER</VAR
 >,
-   <TT
+   <VAR
 CLASS="LITERAL"
->CREATE</TT
->, <TT
+>CREATE</VAR
+>, <VAR
 CLASS="LITERAL"
->TEMPORARY</TT
->, <TT
+>TEMPORARY</VAR
+>, <VAR
 CLASS="LITERAL"
->EXECUTE</TT
+>EXECUTE</VAR
 >,
-   <TT
+   <VAR
 CLASS="LITERAL"
->USAGE</TT
->, and <TT
+>USAGE</VAR
+>, and <VAR
 CLASS="LITERAL"
->ALL PRIVILEGES</TT
+>ALL PRIVILEGES</VAR
 >. For complete
    information on the different types of privileges supported by
    <SPAN
@@ -171,13 +171,13 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >GRANT</TT
 > command is
-   used. So, if <TT
+   used. So, if <VAR
 CLASS="LITERAL"
->joe</TT
+>joe</VAR
 > is an existing user, and
-   <TT
+   <VAR
 CLASS="LITERAL"
->accounts</TT
+>accounts</VAR
 > is an existing table, the privilege to
    update the table can be granted with
 </P><PRE
@@ -193,14 +193,14 @@ CLASS="PROGRAMLISTING"
    The special <SPAN
 CLASS="QUOTE"
 >"user"</SPAN
-> name <TT
+> name <VAR
 CLASS="LITERAL"
->PUBLIC</TT
+>PUBLIC</VAR
 > can
    be used to grant a privilege to every user on the system. Writing
-   <TT
+   <VAR
 CLASS="LITERAL"
->ALL</TT
+>ALL</VAR
 > in place of a specific privilege specifies that all
    privileges will be granted.
   </P
@@ -224,7 +224,7 @@ CLASS="COMMAND"
 >, <TT
 CLASS="COMMAND"
 >REVOKE</TT
->, etc)
+>, etc.)
    are always implicit in being the owner,
    and cannot be granted or revoked.  But the table owner can choose
    to revoke his own ordinary privileges, for example to make a

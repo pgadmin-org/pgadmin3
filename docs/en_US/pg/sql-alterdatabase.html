@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >ALTER DATABASE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
 HREF="sql-commands.html"><LINK
 REL="PREVIOUS"
-TITLE="ABORT"
-HREF="sql-abort.html"><LINK
+TITLE="ALTER CONVERSION"
+HREF="sql-alterconversion.html"><LINK
 REL="NEXT"
-TITLE="ALTER GROUP"
-HREF="sql-altergroup.html"><LINK
+TITLE="ALTER DOMAIN"
+HREF="sql-alterdomain.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="sql-abort.html"
+HREF="sql-alterconversion.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="sql-altergroup.html"
+HREF="sql-alterdomain.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-ALTERDATABASE"
->ALTER DATABASE</A
-></H1
+></A
+>ALTER DATABASE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37261"
+NAME="AEN35808"
 ></A
 ><H2
 >Name</H2
@@ -91,44 +91,42 @@ NAME="AEN37261"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37264"
+NAME="AEN35811"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->ALTER DATABASE <TT
+>ALTER DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> SET <TT
+>name</VAR
+> SET <VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-> { TO | = } { <TT
+>variable</VAR
+> { TO | = } { <VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
 > | DEFAULT }
-ALTER DATABASE <TT
+ALTER DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> RESET <TT
+>name</VAR
+> RESET <VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
+>variable</VAR
+>
+
+ALTER DATABASE <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> RENAME TO <VAR
+CLASS="REPLACEABLE"
+>newname</VAR
 ></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37271"
+NAME="AEN35820"
 ></A
 ><H2
 >Description</H2
@@ -136,44 +134,56 @@ NAME="AEN37271"
 >   <TT
 CLASS="COMMAND"
 >ALTER DATABASE</TT
-> is used to change the session
-   default of a run-time configuration variable for a
-   <SPAN
+> is used to change the attributes
+   of a database.
+  </P
+><P
+>   The first two forms change the session default of a run-time
+   configuration variable for a <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> database. Whenever a new
-   session is subsequently started in that database, the specified
-   value becomes the session default value.
-   The database-specific default
-   overrides whatever setting is present in <TT
+>
+   database. Whenever a new session is subsequently started in that
+   database, the specified value becomes the session default value.
+   The database-specific default overrides whatever setting is present
+   in <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
->
-   or has been received from the postmaster.
-  </P
-><P
->   Only a superuser or the database owner can change the session defaults for a
+> or has been received from the
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
+> command line.  Only the database
+   owner or a superuser can change the session defaults for a
    database.
   </P
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN37278"
-></A
-><H3
->Parameters</H3
 ><P
->    <P
+>   The third form changes the name of the database.  Only the database
+   owner can rename a database, and only if he has the
+   <VAR
+CLASS="LITERAL"
+>CREATEDB</VAR
+> privilege.  The current database cannot
+   be renamed.  (Connect to a different database if you need to do
+   that.)
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35830"
+></A
+><H2
+>Parameters</H2
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 ></DT
 ><DD
 ><P
@@ -181,40 +191,34 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-><BR><TT
+>variable</VAR
+><BR><VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
 ></DT
 ><DD
 ><P
 >        Set the session default for this database of the specified
         configuration variable to the given value.  If
-        <TT
+        <VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
-> is <TT
+>value</VAR
+> is <VAR
 CLASS="LITERAL"
->DEFAULT</TT
+>DEFAULT</VAR
 >
-        or, equivalently, <TT
+        or, equivalently, <VAR
 CLASS="LITERAL"
->RESET</TT
+>RESET</VAR
 > is used, the
         database-specific variable setting is removed and the system-wide
 	default
-        setting will be inherited in new sessions.  Use <TT
+        setting will be inherited in new sessions.  Use <VAR
 CLASS="LITERAL"
 >RESET
-        ALL</TT
+        ALL</VAR
 > to clear all settings.
        </P
 ><P
@@ -223,37 +227,43 @@ HREF="sql-set.html"
 ><I
 >SET</I
 ></A
-> and the
-        <I
-CLASS="CITETITLE"
->Administrator's Guide</I
-> for more
-        information about allowed variable names and values.
+> and <A
+HREF="runtime-config.html"
+>Section 16.4</A
+>
+        for more information about allowed variable names
+        and values.
        </P
 ></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>newname</VAR
+></DT
+><DD
+><P
+>      The new name of the database.
+     </P
+></DD
 ></DL
-></DIV
-><P>
-   </P
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37301"
+NAME="AEN35857"
 ></A
 ><H2
 >Diagnostics</H2
 ><P
->   <P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->ALTER DATABASE</TT
+>ALTER DATABASE</SAMP
 ></DT
 ><DD
 ><P
@@ -261,9 +271,9 @@ CLASS="COMPUTEROUTPUT"
       </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->ERROR:  database "dbname" does not exist</TT
+>ERROR:  database "dbname" does not exist</SAMP
 ></DT
 ><DD
 ><P
@@ -273,13 +283,11 @@ CLASS="COMPUTEROUTPUT"
 ></DD
 ></DL
 ></DIV
-><P>
-  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37315"
+NAME="AEN35870"
 ></A
 ><H2
 >Notes</H2
@@ -298,15 +306,15 @@ HREF="sql-alteruser.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37319"
+NAME="AEN35874"
 ></A
 ><H2
 >Examples</H2
 ><P
 >   To disable index scans by default in the database
-   <TT
+   <VAR
 CLASS="LITERAL"
->test</TT
+>test</VAR
 >:
 
 </P><PRE
@@ -318,7 +326,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37324"
+NAME="AEN35879"
 ></A
 ><H2
 >Compatibility</H2
@@ -336,7 +344,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37329"
+NAME="AEN35884"
 ></A
 ><H2
 >See Also</H2
@@ -377,7 +385,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-abort.html"
+HREF="sql-alterconversion.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -395,7 +403,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-altergroup.html"
+HREF="sql-alterdomain.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -405,7 +413,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->ABORT</TD
+>ALTER CONVERSION</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -419,7 +427,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->ALTER GROUP</TD
+>ALTER DOMAIN</TD
 ></TR
 ></TABLE
 ></DIV

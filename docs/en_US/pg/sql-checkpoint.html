@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CHECKPOINT</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CHECKPOINT"
->CHECKPOINT</A
-></H1
+></A
+>CHECKPOINT</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38043"
+NAME="AEN37029"
 ></A
 ><H2
 >Name</H2
@@ -91,7 +91,7 @@ NAME="AEN38043"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38046"
+NAME="AEN37032"
 ></A
 ><H2
 >Synopsis</H2
@@ -102,7 +102,7 @@ CLASS="SYNOPSIS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38048"
+NAME="AEN37034"
 ></A
 ><H2
 >Description</H2
@@ -110,17 +110,13 @@ NAME="AEN38048"
 >   Write-Ahead Logging (WAL) puts a checkpoint in the transaction log
    every so often. (To adjust the automatic checkpoint interval, see
    the run-time
-   configuration options <TT
-CLASS="PARAMETER"
-><I
->CHECKPOINT_SEGMENTS</I
-></TT
+   configuration options <VAR
+CLASS="VARNAME"
+>checkpoint_segments</VAR
 >
-   and <TT
-CLASS="PARAMETER"
-><I
->CHECKPOINT_TIMEOUT</I
-></TT
+   and <VAR
+CLASS="VARNAME"
+>checkpoint_timeout</VAR
 >.)
    The <TT
 CLASS="COMMAND"
@@ -132,11 +128,10 @@ CLASS="COMMAND"
 >   A checkpoint is a point in the transaction log sequence at which
    all data files have been updated to reflect the information in the
    log.  All data files will be flushed to disk.  Refer to the
-   <I
-CLASS="CITETITLE"
->PostgreSQL Administrator's Guide</I
-> for more
-   information about the WAL system.
+   <A
+HREF="wal.html"
+>Chapter 25</A
+> for more information about the WAL system.
   </P
 ><P
 >   Only superusers may call <TT
@@ -149,21 +144,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN38058"
-></A
-><H2
->See Also</H2
-><P
->   <I
-CLASS="CITETITLE"
->PostgreSQL Administrator's Guide</I
->
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38062"
+NAME="AEN37044"
 ></A
 ><H2
 >Compatibility</H2

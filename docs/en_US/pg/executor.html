@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Executor</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Overview of PostgreSQL Internals"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. Overview of PostgreSQL Internals</TD
+>Chapter 44. Overview of PostgreSQL Internals</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,120 +81,139 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="EXECUTOR"
->2.6. Executor</A
+>44.6. Executor</A
 ></H1
 ><P
 >    The <I
 CLASS="FIRSTTERM"
 >executor</I
 > takes the plan handed back by the
-    planner/optimizer and starts processing the top node. In the case of
-    our example (the query given in example \ref{simple_select}) the top
-    node is a <TT
-CLASS="LITERAL"
->MergeJoin</TT
-> node. 
+    planner/optimizer and recursively processes it to extract the required set
+    of rows.  This is essentially a demand-pull pipeline mechanism.
+    Each time a plan node is called, it must deliver one more tuple, or
+    report that it is done delivering tuples.
    </P
 ><P
->    Before any merge can be done two tuples have to be fetched (one from
+>    To provide a concrete example, assume that the top
+    node is a <VAR
+CLASS="LITERAL"
+>MergeJoin</VAR
+> node. 
+    Before any merge can be done two tuples have to be fetched (one from
     each subplan). So the executor recursively calls itself to
     process the subplans (it starts with the subplan attached to
-    <TT
+    <VAR
 CLASS="LITERAL"
->lefttree</TT
->). The new top node (the top node of the left subplan) is a
-    <TT
+>lefttree</VAR
+>). The new top node (the top node of the left
+    subplan) is, let's say, a
+    <VAR
 CLASS="LITERAL"
->SeqScan</TT
-> node and again a tuple has to be fetched before the node
-    itself can be processed. The executor calls itself recursively
-    another time for the subplan attached to <TT
+>Sort</VAR
+> node and again recursion is needed to obtain
+    an input tuple.  The child node of the <VAR
 CLASS="LITERAL"
->lefttree</TT
-> of the
-    <TT
+>Sort</VAR
+> might
+    be a <VAR
 CLASS="LITERAL"
->SeqScan</TT
-> node.
-   </P
-><P
->    Now the new top node is a <TT
+>SeqScan</VAR
+> node, representing actual reading of a table.
+    Execution of this node causes the executor to fetch a row from the
+    table and return it up to the calling node.  The <VAR
 CLASS="LITERAL"
->Sort</TT
-> node. As a sort has to be done on
-    the whole relation, the executor starts fetching tuples
-    from the <TT
-CLASS="LITERAL"
->Sort</TT
-> node's subplan and sorts them into a temporary
-    relation (in memory or a file) when the <TT
-CLASS="LITERAL"
->Sort</TT
-> node is visited for
-    the first time. (Further examinations of the <TT
-CLASS="LITERAL"
->Sort</TT
-> node will
-    always return just one tuple from the sorted temporary
-    relation.)
-   </P
-><P
->    Every time the processing of the <TT
-CLASS="LITERAL"
->Sort</TT
-> node needs a new tuple the
-    executor is recursively called for the <TT
-CLASS="LITERAL"
->SeqScan</TT
-> node
-    attached as subplan. The relation (internally referenced by the
-    value given in the <TT
-CLASS="LITERAL"
->scanrelid</TT
-> field) is scanned for the next
-    tuple. If the tuple satisfies the qualification given by the tree
-    attached to <TT
-CLASS="LITERAL"
->qpqual</TT
-> it is handed back, otherwise the next tuple
-    is fetched until the qualification is satisfied. If the last tuple of
-    the relation has been processed a <TT
-CLASS="LITERAL"
->NULL</TT
-> pointer is
-    returned.
-   </P
-><P
->    After a tuple has been handed back by the <TT
-CLASS="LITERAL"
->lefttree</TT
-> of the
-    <TT
-CLASS="LITERAL"
->MergeJoin</TT
-> the <TT
-CLASS="LITERAL"
->righttree</TT
-> is processed in the same way. If both
-    tuples are present the executor processes the <TT
-CLASS="LITERAL"
->MergeJoin</TT
+>Sort</VAR
 >
-    node. Whenever a new tuple from one of the subplans is needed a
-    recursive call to the executor is performed to obtain it. If a
-    joined tuple could be created it is handed back and one complete
-    processing of the plan tree has finished. 
+    node will repeatedly call its child to obtain all the rows to be sorted.
+    When the input is exhausted (as indicated by the child node returning
+    a NULL instead of a tuple), the <VAR
+CLASS="LITERAL"
+>Sort</VAR
+> code performs
+    the sort, and finally is able to return its first output row, namely
+    the first one in sorted order.  It keeps the remaining rows stored so
+    that it can deliver them in sorted order in response to later demands.
    </P
 ><P
->    Now the described steps are performed once for every tuple, until a
-    <TT
+>    The <VAR
 CLASS="LITERAL"
->NULL</TT
-> pointer is returned for the processing of the
-    <TT
+>MergeJoin</VAR
+> node similarly demands the first row
+    from its right subplan.  Then it compares the two rows to see if they
+    can be joined; if so, it returns a join row to its caller.  On the next
+    call, or immediately if it cannot join the current pair of inputs,
+    it advances to the next row of one table
+    or the other (depending on how the comparison came out), and again
+    checks for a match.  Eventually, one subplan or the other is exhausted,
+    and the <VAR
 CLASS="LITERAL"
->MergeJoin</TT
-> node, indicating that we are finished.
+>MergeJoin</VAR
+> node returns NULL to indicate that
+    no more join rows can be formed.
+   </P
+><P
+>    Complex queries may involve many levels of plan nodes, but the general
+    approach is the same: each node computes and returns its next output
+    row each time it is called.  Each node is also responsible for applying
+    any selection or projection expressions that were assigned to it by
+    the planner.
+   </P
+><P
+>    The executor mechanism is used to evaluate all four basic SQL query types:
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+>, <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and
+    <TT
+CLASS="COMMAND"
+>DELETE</TT
+>.  For <TT
+CLASS="COMMAND"
+>SELECT</TT
+>, the top-level executor
+    code only needs to send each row returned by the query plan tree off
+    to the client.  For <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, each returned row is inserted
+    into the target table specified for the <TT
+CLASS="COMMAND"
+>INSERT</TT
+>.  (A simple
+    <TT
+CLASS="COMMAND"
+>INSERT ... VALUES</TT
+> command creates a trivial plan tree
+    consisting of a single <VAR
+CLASS="LITERAL"
+>Result</VAR
+> node, which computes just one
+    result row.  But <TT
+CLASS="COMMAND"
+>INSERT ... SELECT</TT
+> may demand the full power
+    of the executor mechanism.)  For <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, the planner arranges
+    that each computed row includes all the updated column values, plus
+    the <I
+CLASS="FIRSTTERM"
+>TID</I
+> (tuple ID, or location) of the original target row;
+    the executor top level uses this information to create a new updated row
+    and mark the old row deleted.  For <TT
+CLASS="COMMAND"
+>DELETE</TT
+>, the only column
+    that is actually returned by the plan is the TID, and the executor top
+    level simply uses the TID to visit the target rows and mark them deleted.
    </P
 ></DIV
 ><DIV

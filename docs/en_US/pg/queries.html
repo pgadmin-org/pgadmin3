@@ -1,19 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Queries</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 User's Guide"
-HREF="user.html"><LINK
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
 REL="PREVIOUS"
 TITLE="Deleting Data"
 HREF="dml-delete.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="QUERIES"
->Chapter 4. Queries</A
-></H1
+></A
+>Chapter 7. Queries</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,70 +90,70 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->4.1. <A
+>7.1. <A
 HREF="queries.html#QUERIES-OVERVIEW"
 >Overview</A
 ></DT
 ><DT
->4.2. <A
+>7.2. <A
 HREF="queries-table-expressions.html"
 >Table Expressions</A
 ></DT
 ><DD
 ><DL
 ><DT
->4.2.1. <A
+>7.2.1. <A
 HREF="queries-table-expressions.html#QUERIES-FROM"
 >The FROM Clause</A
 ></DT
 ><DT
->4.2.2. <A
+>7.2.2. <A
 HREF="queries-table-expressions.html#QUERIES-WHERE"
 >The WHERE Clause</A
 ></DT
 ><DT
->4.2.3. <A
+>7.2.3. <A
 HREF="queries-table-expressions.html#QUERIES-GROUP"
 >The GROUP BY and HAVING Clauses</A
 ></DT
 ></DL
 ></DD
 ><DT
->4.3. <A
+>7.3. <A
 HREF="queries-select-lists.html"
 >Select Lists</A
 ></DT
 ><DD
 ><DL
 ><DT
->4.3.1. <A
+>7.3.1. <A
 HREF="queries-select-lists.html#QUERIES-SELECT-LIST-ITEMS"
 >Select-List Items</A
 ></DT
 ><DT
->4.3.2. <A
+>7.3.2. <A
 HREF="queries-select-lists.html#QUERIES-COLUMN-LABELS"
 >Column Labels</A
 ></DT
 ><DT
->4.3.3. <A
+>7.3.3. <A
 HREF="queries-select-lists.html#QUERIES-DISTINCT"
 >DISTINCT</A
 ></DT
 ></DL
 ></DD
 ><DT
->4.4. <A
+>7.4. <A
 HREF="queries-union.html"
 >Combining Queries</A
 ></DT
 ><DT
->4.5. <A
+>7.5. <A
 HREF="queries-order.html"
 >Sorting Rows</A
 ></DT
 ><DT
->4.6. <A
+>7.6. <A
 HREF="queries-limit.html"
 >LIMIT and OFFSET</A
 ></DT
@@ -170,7 +170,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="QUERIES-OVERVIEW"
->4.1. Overview</A
+>7.1. Overview</A
 ></H1
 ><P
 >   The process of retrieving or the command to retrieve data from a
@@ -188,23 +188,17 @@ CLASS="COMMAND"
 > command is
 </P><PRE
 CLASS="SYNOPSIS"
->SELECT <TT
+>SELECT <VAR
 CLASS="REPLACEABLE"
-><I
->select_list</I
-></TT
-> FROM <TT
+>select_list</VAR
+> FROM <VAR
 CLASS="REPLACEABLE"
-><I
->table_expression</I
-></TT
+>table_expression</VAR
 > [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->sort_specification</I
-></TT
+>sort_specification</VAR
 ></SPAN
 >]</PRE
 ><P>
@@ -217,14 +211,14 @@ CLASS="REPLACEABLE"
 CLASS="PROGRAMLISTING"
 >SELECT * FROM table1;</PRE
 ><P>
-  Assuming that there is a table called <TT
+  Assuming that there is a table called <VAR
 CLASS="LITERAL"
->table1</TT
+>table1</VAR
 >,
   this command would retrieve all rows and all columns from
-  <TT
+  <VAR
 CLASS="LITERAL"
->table1</TT
+>table1</VAR
 >.  (The method of retrieval depends on the
   client application.  For example, the
   <SPAN
@@ -233,49 +227,49 @@ CLASS="APPLICATION"
 > program will display an ASCII-art
   table on the screen, while client libraries will offer functions to
   retrieve individual rows and columns.)  The select list
-  specification <TT
+  specification <VAR
 CLASS="LITERAL"
->*</TT
+>*</VAR
 > means all columns that the table
   expression happens to provide.  A select list can also select a
   subset of the available columns or make calculations using the
   columns.  For example, if
-  <TT
+  <VAR
 CLASS="LITERAL"
->table1</TT
-> has columns named <TT
+>table1</VAR
+> has columns named <VAR
 CLASS="LITERAL"
->a</TT
+>a</VAR
 >,
-  <TT
+  <VAR
 CLASS="LITERAL"
->b</TT
->, and <TT
+>b</VAR
+>, and <VAR
 CLASS="LITERAL"
->c</TT
+>c</VAR
 > (and perhaps others) you can make
   the following query:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT a, b + c FROM table1;</PRE
 ><P>
-  (assuming that <TT
+  (assuming that <VAR
 CLASS="LITERAL"
->b</TT
-> and <TT
+>b</VAR
+> and <VAR
 CLASS="LITERAL"
->c</TT
+>c</VAR
 > are of a numerical
   data type).
   See <A
 HREF="queries-select-lists.html"
->Section 4.3</A
+>Section 7.3</A
 > for more details.
  </P
 ><P
->  <TT
+>  <VAR
 CLASS="LITERAL"
->FROM table1</TT
+>FROM table1</VAR
 > is a particularly simple kind of
   table expression: it reads just one table.  In general, table
   expressions can be complex constructs of base tables, joins, and
@@ -347,7 +341,7 @@ WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="user.html"
+HREF="sql.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

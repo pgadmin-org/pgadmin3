@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >How Connections are Established</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Overview of PostgreSQL Internals"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. Overview of PostgreSQL Internals</TD
+>Chapter 44. Overview of PostgreSQL Internals</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,85 +81,77 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CONNECT-ESTAB"
->2.2. How Connections are Established</A
+>44.2. How Connections are Established</A
 ></H1
 ><P
 >    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> is implemented using a simple "process per-user"
-    client/server model.  In this model there is one <I
+> is implemented using a
+    simple <SPAN
+CLASS="QUOTE"
+>"process per user"</SPAN
+> client/server model.  In this model
+    there is one <I
 CLASS="FIRSTTERM"
 >client process</I
->
-    connected to exactly one <I
+> connected to
+    exactly one <I
 CLASS="FIRSTTERM"
 >server process</I
->.
-    As we don't know <I
-CLASS="FOREIGNPHRASE"
->per se</I
-> 
-    how many connections will be made, we have to use a <I
+>.  As we do not
+    know ahead of time how many connections will be made, we have to
+    use a <I
 CLASS="FIRSTTERM"
 >master process</I
+> that spawns a new
+    server process every time a connection is requested. This master
+    process is called <VAR
+CLASS="LITERAL"
+>postmaster</VAR
+> and listens at a
+    specified TCP/IP port for incoming connections. Whenever a request
+    for a connection is detected the <VAR
+CLASS="LITERAL"
+>postmaster</VAR
 >
-    that spawns a new server process every time a connection is
-    requested. This master process is called <TT
+    process spawns a new server process called
+    <VAR
 CLASS="LITERAL"
->postmaster</TT
-> and 
-    listens at a specified TCP/IP port for incoming connections. Whenever
-    a request for a connection is detected the <TT
+>postgres</VAR
+>. The server tasks
+    (<VAR
 CLASS="LITERAL"
->postmaster</TT
-> process
-    spawns a new server process called <TT
-CLASS="LITERAL"
->postgres</TT
->. The server
-    tasks (<TT
-CLASS="LITERAL"
->postgres</TT
-> processes) communicate with each other using
-    <I
+>postgres</VAR
+> processes) communicate with each
+    other using <I
 CLASS="FIRSTTERM"
 >semaphores</I
-> and <I
+> and
+    <I
 CLASS="FIRSTTERM"
 >shared memory</I
->
-    to ensure data integrity
-    throughout concurrent data access. Figure
-    \ref{connection} illustrates the interaction of the master process 
-    <TT
-CLASS="LITERAL"
->postmaster</TT
-> the server process <TT
-CLASS="LITERAL"
->postgres</TT
-> and a client
-    application. 
+> to ensure data integrity
+    throughout concurrent data access.
    </P
 ><P
->    The client process can either be the <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> frontend (for
-    interactive SQL queries) or any user application implemented using
-    the <TT
-CLASS="FILENAME"
->libpg</TT
-> library. Note that applications implemented using
+>    The client process can be any program that understands the
     <SPAN
-CLASS="APPLICATION"
->ecpg</SPAN
->
-    (the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> embedded SQL preprocessor for C)
-    also use this library.
+> protocol described in
+    <A
+HREF="protocol.html"
+>Chapter 46</A
+>.  Many clients are based on the
+    C-language library <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>, but several independent
+    implementations exist, such as the Java <SPAN
+CLASS="APPLICATION"
+>JDBC</SPAN
+> driver.
    </P
 ><P
 >    Once a connection is established the client process can send a query

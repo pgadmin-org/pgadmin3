@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->Query Targets</TITLE
+>Value Storage</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Type Conversion"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 7. Type Conversion</TD
+>Chapter 10. Type Conversion</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TYPECONV-QUERY"
->7.4. Query Targets</A
+>10.4. Value Storage</A
 ></H1
 ><P
->   Values to be inserted into a table are coerced to the destination
+>   Values to be inserted into a table are converted to the destination
    column's data type according to the
    following steps.
   </P
@@ -92,7 +92,7 @@ NAME="TYPECONV-QUERY"
 CLASS="PROCEDURE"
 ><P
 ><B
->Query Target Type Resolution</B
+>Value Storage Type Conversion</B
 ></P
 ><OL
 TYPE="1"
@@ -102,15 +102,15 @@ TYPE="1"
 ></LI
 ><LI
 ><P
->Otherwise, try to coerce the expression to the target type.  This will succeed
-if the two types are known binary-compatible, or if there is a conversion
-function.  If the expression is an unknown-type literal, the contents of
+>Otherwise, try to convert the expression to the target type.  This will succeed
+if there is a registered cast between the two types.
+If the expression is an unknown-type literal, the contents of
 the literal string will be fed to the input conversion routine for the target
 type.</P
 ></LI
 ><LI
 ><P
->If the target is a fixed-length type (e.g. <TT
+>If the target is a fixed-length type (e.g., <TT
 CLASS="TYPE"
 >char</TT
 > or <TT
@@ -119,8 +119,11 @@ CLASS="TYPE"
 >
 declared with a length) then try to find a sizing function for the target
 type.  A sizing function is a function of the same name as the type,
-taking two arguments of which the first is that type and the second is an
-integer, and returning the same type.  If one is found, it is applied,
+taking two arguments of which the first is that type and the second is of type
+<TT
+CLASS="TYPE"
+>integer</TT
+>, and returning the same type.  If one is found, it is applied,
 passing the column's declared length as the second parameter.</P
 ></LI
 ></OL
@@ -128,11 +131,11 @@ passing the column's declared length as the second parameter.</P
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN10955"
+NAME="AEN12383"
 ></A
 ><P
 ><B
->Example 7-6. <TT
+>Example 10-6. <TT
 CLASS="TYPE"
 >character</TT
 > Storage Type Conversion</B
@@ -141,29 +144,28 @@ CLASS="TYPE"
 >For a target column declared as <TT
 CLASS="TYPE"
 >character(20)</TT
-> the following query
-ensures that the target is sized correctly:
+> the following statement
+ensures that the stored value is sized correctly:
 
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; CREATE TABLE vv (v character(20));
-CREATE
-tgl=&#62; INSERT INTO vv SELECT 'abc' || 'def';
-INSERT 392905 1
-tgl=&#62; SELECT v, length(v) FROM vv;
+>CREATE TABLE vv (v character(20));
+INSERT INTO vv SELECT 'abc' || 'def';
+SELECT v, length(v) FROM vv;
+
           v           | length
 ----------------------+--------
  abcdef               |     20
 (1 row)</PRE
-><P>
-
-What has really happened here is that the two unknown literals are resolved
+><P></P
+><P
+>What has really happened here is that the two unknown literals are resolved
 to <TT
 CLASS="TYPE"
 >text</TT
-> by default, allowing the <TT
+> by default, allowing the <VAR
 CLASS="LITERAL"
->||</TT
+>||</VAR
 > operator
 to be resolved as <TT
 CLASS="TYPE"
@@ -172,27 +174,30 @@ CLASS="TYPE"
 CLASS="TYPE"
 >text</TT
 >
-result of the operator is coerced to <TT
+result of the operator is converted to <TT
 CLASS="TYPE"
 >bpchar</TT
 > (<SPAN
 CLASS="QUOTE"
 >"blank-padded
 char"</SPAN
->, the internal name of the character data type) to match the target
-column type.  (Since the parser knows that <TT
+>, the internal name of the <TT
+CLASS="TYPE"
+>character</TT
+> data type) to match the target
+column type.  (Since the types <TT
 CLASS="TYPE"
 >text</TT
 > and
 <TT
 CLASS="TYPE"
 >bpchar</TT
-> are binary-compatible, this coercion is implicit and does
+> are binary-compatible, this conversion does
 not insert any real function call.)  Finally, the sizing function
-<TT
+<VAR
 CLASS="LITERAL"
->bpchar(bpchar, integer)</TT
-> is found in the system catalogs
+>bpchar(bpchar, integer)</VAR
+> is found in the system catalog
 and applied to the operator's result and the stored column length.  This
 type-specific function performs the required length check and addition of
 padding spaces.</P
@@ -256,12 +261,12 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><TT
+><VAR
 CLASS="LITERAL"
->UNION</TT
-> and <TT
+>UNION</VAR
+> and <VAR
 CLASS="LITERAL"
->CASE</TT
+>CASE</VAR
 > Constructs</TD
 ></TR
 ></TABLE

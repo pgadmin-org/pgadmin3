@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Performing Updates</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="JDBC Interface"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,9 +60,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. <SPAN
+>Chapter 31. <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > Interface</TD
 ><TD
 WIDTH="10%"
@@ -84,28 +84,51 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="JDBC-UPDATE"
->5.4. Performing Updates</A
+>31.4. Performing Updates</A
 ></H1
 ><P
->    To change data (perform an insert, update, or delete) 
-    you use the <TT
-CLASS="FUNCTION"
->executeUpdate()</TT
-> method.
-    <TT
-CLASS="FUNCTION"
->executeUpdate()</TT
-> is similar to the
-    <TT
-CLASS="FUNCTION"
->executeQuery()</TT
-> used to issue a select,
-    however it doesn't return a <TT
-CLASS="CLASSNAME"
->ResultSet</TT
+>    To change data (perform an <TT
+CLASS="COMMAND"
+>INSERT</TT
 >,
-    instead it returns the number of records affected by the insert,
-    update, or delete statement.
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or <TT
+CLASS="COMMAND"
+>DELETE</TT
+>) you use
+    the <CODE
+CLASS="FUNCTION"
+>executeUpdate()</CODE
+> method.  This method is
+    similar to the method <CODE
+CLASS="FUNCTION"
+>executeQuery()</CODE
+> used to
+    issue a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement, but it doesn't return
+    a <CODE
+CLASS="CLASSNAME"
+>ResultSet</CODE
+>; instead it returns the number
+    of rows affected by the <TT
+CLASS="COMMAND"
+>INSERT</TT
+>,
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or <TT
+CLASS="COMMAND"
+>DELETE</TT
+> statement.
+    <A
+HREF="jdbc-update.html#JDBC-DELETE-EXAMPLE"
+>Example 31-2</A
+> illustrates the usage.
    </P
 ><DIV
 CLASS="EXAMPLE"
@@ -114,15 +137,21 @@ NAME="JDBC-DELETE-EXAMPLE"
 ></A
 ><P
 ><B
->Example 5-2. Simple Delete Example</B
+>Example 31-2. Deleting Rows in <ACRONYM
+CLASS="ACRONYM"
+>JDBC</ACRONYM
+></B
 ></P
 ><P
->     This example will issue a simple delete and print out the number
-     of rows deleted.
+>     This example will issue a simple <TT
+CLASS="COMMAND"
+>DELETE</TT
+>
+     statement and print out the number of rows deleted.
 </P><PRE
 CLASS="PROGRAMLISTING"
 >int foovalue = 500;
-PreparedStatement st = db.prepareStatement("DELETE FROM mytable where columnfoo = ?");
+PreparedStatement st = db.prepareStatement("DELETE FROM mytable WHERE columnfoo = ?");
 st.setInt(1, foovalue);
 int rowsDeleted = st.executeUpdate();
 System.out.println(rowsDeleted + " rows deleted");

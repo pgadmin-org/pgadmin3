@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Visibility of Data Changes</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Triggers"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Interaction with the Trigger Manager"
 HREF="trigger-manager.html"><LINK
 REL="NEXT"
-TITLE="Examples"
-HREF="trigger-examples.html"><LINK
+TITLE="A Complete Example"
+HREF="trigger-example.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 16. Triggers</TD
+>Chapter 37. Triggers</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="trigger-examples.html"
+HREF="trigger-example.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,49 +81,66 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TRIGGER-DATACHANGES"
->16.3. Visibility of Data Changes</A
+>37.3. Visibility of Data Changes</A
 ></H1
 ><P
->    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> data changes visibility rule: during a query execution, data
-    changes made by the query itself (via SQL-function, SPI-function, triggers)
-    are invisible to the query scan.  For example, in query
+>    If you are using the SPI interface to execute SQL commands in your
+    trigger functions written in C (or you are using a different
+    language and execute SQL commands in some way, which internally
+    goes through SPI as well), be sure to read <A
+HREF="spi-visibility.html"
+>Section 38.4</A
+> so that you know which data is visible
+    at which point during the execution of a trigger.  For triggers,
+    the most important consequences of the data visibility rules are:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->INSERT INTO a SELECT * FROM a;</PRE
-><P>
-
-    tuples inserted are invisible for SELECT scan.  In effect, this
-    duplicates the database table within itself (subject to unique index
-    rules, of course) without recursing.
-   </P
+    <P
+></P
+></P><UL
+><LI
 ><P
->    But keep in mind this notice about visibility in the SPI documentation:
-
-    <A
-NAME="AEN33598"
-></A
-><BLOCKQUOTE
-CLASS="BLOCKQUOTE"
-><P
->Changes made by query Q are visible by queries that are started after
-query Q, no matter whether they are started inside Q (during the
-execution of Q) or after Q is done.
-     </P
-></BLOCKQUOTE
->
-   </P
-><P
->    This is true for triggers as well so, though a tuple being inserted
-    (<TT
+>       The row being inserted (<TT
 CLASS="STRUCTFIELD"
 >tg_trigtuple</TT
->) is not visible to queries in a BEFORE trigger, this tuple
-    (just inserted) is visible to queries in an AFTER trigger, and to queries
-    in BEFORE/AFTER triggers fired after this!
+>) is
+       <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> visible to SQL commands executed in a
+       before trigger.
+      </P
+></LI
+><LI
+><P
+>       The row being inserted (<TT
+CLASS="STRUCTFIELD"
+>tg_trigtuple</TT
+>)
+       <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>is</I
+></SPAN
+> visible to SQL commands executed in an
+       after trigger (because it was just inserted).
+      </P
+></LI
+><LI
+><P
+>       A just-inserted row is visible to all SQL commands executed
+       within any trigger that is fired later in the execution of the
+       outer command (e.g., for the next row).
+      </P
+></LI
+></UL
+><P>
+   </P
+><P
+>    The next section contains a demonstration of these rules applied.
    </P
 ></DIV
 ><DIV
@@ -160,7 +177,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="trigger-examples.html"
+HREF="trigger-example.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -184,7 +201,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Examples</TD
+>A Complete Example</TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >PREPARE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,281 +78,270 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-PREPARE"
->PREPARE</A
-></H1
+></A
+>PREPARE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44721"
+NAME="AEN42969"
 ></A
 ><H2
 >Name</H2
->   PREPARE
-  &nbsp;--&nbsp;   create a prepared query
-  </DIV
+>PREPARE&nbsp;--&nbsp;prepare a statement for execution</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44724"
+NAME="AEN42972"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->   PREPARE <TT
+>PREPARE <VAR
 CLASS="REPLACEABLE"
-><I
->plan_name</I
-></TT
-> [ (<TT
+>plan_name</VAR
+> [ (<VAR
 CLASS="REPLACEABLE"
-><I
->datatype</I
-></TT
-> [, ...] ) ] AS <TT
+>datatype</VAR
+> [, ...] ) ] AS <VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
->
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-PREPARE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->plan_name</I
-></TT
-></DT
-><DD
-><P
->		An arbitrary name given to this particular prepared query. It
-		must be unique within a single session, and is used to execute
-		or remove a previously prepared query.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->datatype</I
-></TT
-></DT
-><DD
-><P
->		The data-type of a parameter to the prepared query.
-		To refer to the parameters in the prepared query itself,
-		use <TT
-CLASS="LITERAL"
->$1</TT
->, <TT
-CLASS="LITERAL"
->$2</TT
->, etc.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-PREPARE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->		<SPAN
-CLASS="RETURNVALUE"
->PREPARE</SPAN
->
-       </TT
-></DT
-><DD
-><P
->		The query has been prepared successfully.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>statement</VAR
+></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-PREPARE-1"
+NAME="AEN42977"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >PREPARE</TT
-> creates a prepared query. A prepared
-   query is a server-side object that can be used to optimize
+> creates a prepared statement. A prepared
+   statement is a server-side object that can be used to optimize
    performance. When the <TT
 CLASS="COMMAND"
 >PREPARE</TT
 > statement is
-   executed, the specified query is parsed, rewritten, and
-   planned. When a subsequent <TT
+   executed, the specified statement is parsed, rewritten, and
+   planned. When an <TT
 CLASS="COMMAND"
 >EXECUTE</TT
-> statement is
-   issued, the prepared query need only be executed. Thus, the
+> command is subsequently
+   issued, the prepared statement need only be executed. Thus, the
    parsing, rewriting, and planning stages are only performed once,
-   instead of every time the query is executed.
+   instead of every time the statement is executed.
   </P
 ><P
->   Prepared queries can take parameters: values that are
-   substituted into the query when it is executed. To specify the
-   parameters to a prepared query, include a list of data-types with
+>   Prepared statements can take parameters: values that are
+   substituted into the statement when it is executed. To include
+   parameters in a prepared statement, supply a list of data types in
    the <TT
 CLASS="COMMAND"
 >PREPARE</TT
-> statement. In the query itself, you
-   can refer to the parameters by position using
-   <TT
+> statement, and, in the statement to
+   be prepared itself, refer to the parameters by position using
+   <VAR
 CLASS="LITERAL"
->$1</TT
->, <TT
+>$1</VAR
+>, <VAR
 CLASS="LITERAL"
->$2</TT
+>$2</VAR
 >, etc. When executing
-   the query, specify the actual values for these parameters in the
-   <TT
+   the statement, specify the actual values for these parameters in
+   the <TT
 CLASS="COMMAND"
 >EXECUTE</TT
-> statement -- refer to <A
+> statement.  Refer to <A
 HREF="sql-execute.html"
 ><I
 >EXECUTE</I
 ></A
->
-   for more information.
+> for more
+   information about that.
   </P
 ><P
->   Prepared queries are stored locally (in the current backend), and
-   only exist for the duration of the current database session. When
-   the client exits, the prepared query is forgotten, and so it must be
-   re-created before being used again. This also means that a single
-   prepared query cannot be used by multiple simultaneous database
-   clients; however, each client can create their own prepared query
+>   Prepared statements are only stored in and for the duration of
+   the current database session. When
+   the session ends, the prepared statement is forgotten, and so it must be
+   recreated before being used again. This also means that a single
+   prepared statement cannot be used by multiple simultaneous database
+   clients; however, each client can create their own prepared statement
    to use.
   </P
 ><P
->   Prepared queries have the largest performance advantage when a
-   single backend is being used to execute a large number of similar
-   queries. The performance difference will be particularly
-   significant if the queries are complex to plan or rewrite. For
+>   Prepared statements have the largest performance advantage when a
+   single session is being used to execute a large number of similar
+   statements. The performance difference will be particularly
+   significant if the statements are complex to plan or rewrite, for
    example, if the query involves a join of many tables or requires
-   the application of several rules. If the query is relatively simple
+   the application of several rules. If the statement is relatively simple
    to plan and rewrite but relatively expensive to execute, the
-   performance advantage of prepared queries will be less noticeable.
+   performance advantage of prepared statements will be less noticeable.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-PREPARE-3"
+NAME="AEN42991"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->	In some situations, the query plan produced by
-	<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> for a prepared query may be
-	inferior to the plan produced if the query were submitted and
-	executed normally. This is because when the query is planned (and
-	the optimizer attempts to determine the optimal query plan), the
-	actual values of any parameters specified in the query are
-	unavailable. <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> collects
-	statistics on the distribution of data in the table, and can use
-	constant values in a query to make guesses about the likely
-	result of executing the query. Since this data is unavailable when
-	planning prepared queries with parameters, the chosen plan may be
-	sub-optimal.
-   </P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>plan_name</VAR
+></DT
+><DD
 ><P
->	For more information on query planning and the statistics
-	collected by <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> for query
-	optimization purposes, see the <A
-HREF="sql-analyze.html"
-><I
->ANALYZE</I
-></A
-> documentation.
-   </P
+>      An arbitrary name given to this particular prepared
+      statement. It must be unique within a single session and is
+      subsequently used to execute or deallocate a previously prepared
+      statement.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>datatype</VAR
+></DT
+><DD
+><P
+>      The data type of a parameter to the prepared statement.  To
+      refer to the parameters in the prepared statement itself, use
+      <VAR
+CLASS="LITERAL"
+>$1</VAR
+>, <VAR
+CLASS="LITERAL"
+>$2</VAR
+>, etc.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>statement</VAR
+></DT
+><DD
+><P
+>      Any <TT
+CLASS="COMMAND"
+>SELECT</TT
+>, <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>,
+      or <TT
+CLASS="COMMAND"
+>DELETE</TT
+> statement.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-PREPARE-3"
+NAME="AEN43015"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-PREPARE-4"
-></A
-><H3
->    SQL92
-   </H3
+>Diagnostics</H2
 ><P
->	SQL92 includes a <TT
-CLASS="COMMAND"
->PREPARE</TT
-> statement, but it is
-    only for use in embedded SQL clients. The
-    <TT
-CLASS="COMMAND"
->PREPARE</TT
-> statement implemented by
-    <SPAN
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>PREPARE</SAMP
+></DT
+><DD
+><P
+>      Message returned if the statement has been prepared successfully.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43023"
+></A
+><H2
+>Notes</H2
+><P
+>   In some situations, the query plan produced by for a prepared
+   statement may be inferior to the plan produced if the statement
+   were submitted and executed normally. This is because when the
+   statement is planned and the planer attempts to determine the
+   optimal query plan, the actual values of any parameters specified
+   in the statement are
+   unavailable. <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> also uses a somewhat
-    different syntax.
-   </P
+> collects
+   statistics on the distribution of data in the table, and can use
+   constant values in a statement to make guesses about the likely
+   result of executing the statement. Since this data is unavailable
+   when planning prepared statements with parameters, the chosen plan
+   may be suboptimal. To examine the query plan
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has chosen for a prepared
+   statement, use <TT
+CLASS="COMMAND"
+>EXPLAIN EXECUTE</TT
+>.
+  </P
+><P
+>   For more information on query planning and the statistics collected
+   by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> for that purpose, see
+   the <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+>
+   documentation.
+  </P
 ></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43032"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The SQL standard includes a <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statement,
+   but it is only for use in embedded SQL. This version of the
+   <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statement also uses a somewhat different
+   syntax.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

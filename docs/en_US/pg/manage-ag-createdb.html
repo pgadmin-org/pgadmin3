@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Creating a Database</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Managing Databases"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Managing Databases</TD
+>Chapter 18. Managing Databases</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="MANAGE-AG-CREATEDB"
->5.2. Creating a Database</A
+>18.2. Creating a Database</A
 ></H1
 ><P
 >   In order to create a databases, the <SPAN
@@ -90,39 +90,38 @@ CLASS="PRODUCTNAME"
 >
    server must be up and running (see <A
 HREF="postmaster-start.html"
->Section 3.3</A
+>Section 16.3</A
 >).
   </P
 ><P
->   Databases are created with the query language command
+>   Databases are created with the SQL command
    <TT
 CLASS="COMMAND"
 >CREATE DATABASE</TT
 >:
 </P><PRE
 CLASS="SYNOPSIS"
->CREATE DATABASE <TT
+>CREATE DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></PRE
+>name</VAR
+>;</PRE
 ><P>
-   where <TT
+   where <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> follows the usual rules for SQL identifiers.
-   The current user automatically becomes
-   the owner of the new database. It is the privilege of the owner of
-   a database to remove it later on (which also removes all the
-   objects in it, even if they have a different owner).
+>name</VAR
+> follows the usual rules for
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> identifiers.  The current user automatically
+   becomes the owner of the new database. It is the privilege of the
+   owner of a database to remove it later on (which also removes all
+   the objects in it, even if they have a different owner).
   </P
 ><P
 >   The creation of databases is a restricted operation. See <A
 HREF="user-attributes.html"
->Section 4.2</A
+>Section 17.2</A
 > for how to grant permission.
   </P
 ><P
@@ -145,37 +144,37 @@ CLASS="COMMAND"
 > command when the data storage area is
    initialized. (See <A
 HREF="creating-cluster.html"
->Section 3.2</A
->.) By convention
-   this database is called <TT
+>Section 16.2</A
+>.)
+   This database is called <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 >. So to create the
    first <SPAN
 CLASS="QUOTE"
 >"real"</SPAN
 > database you can connect to
-   <TT
+   <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 >.
   </P
 ><P
->   The name <SPAN
-CLASS="QUOTE"
->"template1"</SPAN
+>   The name <VAR
+CLASS="LITERAL"
+>template1</VAR
 > is no accident: When a new
    database is created, the template database is essentially cloned.
-   This means that any changes you make in <TT
+   This means that any changes you make in <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 > are
    propagated to all subsequently created databases. This implies that
    you should not use the template database for real work, but when
    used judiciously this feature can be convenient.  More details
    appear in <A
 HREF="manage-ag-templatedbs.html"
->Section 5.3</A
+>Section 18.3</A
 >.
   </P
 ><P
@@ -188,27 +187,25 @@ CLASS="COMMAND"
 
 </P><PRE
 CLASS="SYNOPSIS"
->createdb <TT
+>createdb <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></PRE
 ><P>
 
    <TT
 CLASS="COMMAND"
 >createdb</TT
-> does no magic. It connects to the template1
+> does no magic. It connects to the <VAR
+CLASS="LITERAL"
+>template1</VAR
+>
    database and issues the <TT
 CLASS="COMMAND"
 >CREATE DATABASE</TT
 > command,
-   exactly as described above. It uses the <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> program
-   internally. The reference page on <TT
+   exactly as described above.
+   The reference page on <TT
 CLASS="COMMAND"
 >createdb</TT
 > contains the invocation
@@ -228,7 +225,7 @@ CLASS="NOTE"
 >Note: </B
 >    <A
 HREF="client-authentication.html"
->Chapter 6</A
+>Chapter 19</A
 > contains information about
     how to restrict who can connect to a given database.
    </P
@@ -241,31 +238,23 @@ HREF="client-authentication.html"
    following commands:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE DATABASE <TT
+>CREATE DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-> OWNER <TT
+>dbname</VAR
+> OWNER <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 >;</PRE
 ><P>
    from the SQL environment, or
 </P><PRE
 CLASS="PROGRAMLISTING"
->createdb -O <TT
+>createdb -O <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> <TT
+>username</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></PRE
 ><P>
    You must be a superuser to be allowed to create a database for

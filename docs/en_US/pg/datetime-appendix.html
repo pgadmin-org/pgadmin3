@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Date/Time Support</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 User's Guide"
-HREF="user.html"><LINK
+TITLE="Appendixes"
+HREF="appendixes.html"><LINK
 REL="PREVIOUS"
-TITLE="Populating a Database"
-HREF="populate.html"><LINK
+TITLE="Appendixes"
+HREF="appendixes.html"><LINK
 REL="NEXT"
 TITLE="Date/Time Key Words"
-HREF="x11950.html"><LINK
+HREF="datetime-keywords.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="APPENDIX"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="populate.html"
+HREF="appendixes.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="x11950.html"
+HREF="datetime-keywords.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="APPENDIX"
 ><H1
 ><A
 NAME="DATETIME-APPENDIX"
->Appendix A. Date/Time Support</A
-></H1
+></A
+>Appendix A. Date/Time Support</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -91,17 +91,17 @@ CLASS="TOC"
 ></DT
 ><DT
 >A.1. <A
-HREF="datetime-appendix.html#AEN11877"
+HREF="datetime-appendix.html#AEN55810"
 >Date/Time Input Interpretation</A
 ></DT
 ><DT
 >A.2. <A
-HREF="x11950.html"
+HREF="datetime-keywords.html"
 >Date/Time Key Words</A
 ></DT
 ><DT
 >A.3. <A
-HREF="units-history.html"
+HREF="datetime-units-history.html"
 >History of Units</A
 ></DT
 ></DL
@@ -130,18 +130,14 @@ CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
-NAME="AEN11877"
+NAME="AEN55810"
 >A.1. Date/Time Input Interpretation</A
 ></H1
 ><P
->    The date/time types are all decoded using a common set of routines.
+>    The date/time type inputs are all decoded using the following procedure.
    </P
 ><DIV
 CLASS="PROCEDURE"
-><P
-><B
->Date/Time Input Interpretation</B
-></P
 ><OL
 TYPE="1"
 ><LI
@@ -154,25 +150,25 @@ CLASS="SUBSTEPS"
 TYPE="a"
 ><LI
 ><P
->	If the numeric token contains a colon (<TT
+>	If the numeric token contains a colon (<VAR
 CLASS="LITERAL"
->:</TT
+>:</VAR
 >), this is
 	a time string. Include all subsequent digits and colons.
        </P
 ></LI
 ><LI
 ><P
->	If the numeric token contains a dash (<TT
+>	If the numeric token contains a dash (<VAR
 CLASS="LITERAL"
->-</TT
+>-</VAR
 >), slash
-	(<TT
+	(<VAR
 CLASS="LITERAL"
->/</TT
->), or two or more dots (<TT
+>/</VAR
+>), or two or more dots (<VAR
 CLASS="LITERAL"
->.</TT
+>.</VAR
 >), this is
 	a date string which may have a text month.
        </P
@@ -181,25 +177,25 @@ CLASS="LITERAL"
 ><P
 >	If the token is numeric only, then it is either a single field
 	or an ISO 8601 concatenated date (e.g.,
-	<TT
+	<VAR
 CLASS="LITERAL"
->19990113</TT
+>19990113</VAR
 > for January 13, 1999) or time
-	(e.g. <TT
+	(e.g., <VAR
 CLASS="LITERAL"
->141516</TT
+>141516</VAR
 > for 14:15:16).
        </P
 ></LI
 ><LI
 ><P
->	If the token starts with a plus (<TT
+>	If the token starts with a plus (<VAR
 CLASS="LITERAL"
->+</TT
+>+</VAR
 >) or minus
-	(<TT
+	(<VAR
 CLASS="LITERAL"
->-</TT
+>-</VAR
 >), then it is either a time zone or a special
 	field.
        </P
@@ -216,35 +212,35 @@ TYPE="a"
 ><LI
 ><P
 >	Do a binary-search table lookup for the token
-	as either a special string (e.g., <TT
+	as either a special string (e.g., <VAR
 CLASS="LITERAL"
->today</TT
+>today</VAR
 >),
-	day (e.g., <TT
+	day (e.g., <VAR
 CLASS="LITERAL"
->Thursday</TT
+>Thursday</VAR
 >),
-	month (e.g., <TT
+	month (e.g., <VAR
 CLASS="LITERAL"
->January</TT
+>January</VAR
 >),
-	or noise word (e.g., <TT
+	or noise word (e.g., <VAR
 CLASS="LITERAL"
->at</TT
->, <TT
+>at</VAR
+>, <VAR
 CLASS="LITERAL"
->on</TT
+>on</VAR
 >).
        </P
 ><P
 >	Set field values and bit mask for fields.
-	For example, set year, month, day for <TT
+	For example, set year, month, day for <VAR
 CLASS="LITERAL"
->today</TT
+>today</VAR
 >,
-	and additionally hour, minute, second for <TT
+	and additionally hour, minute, second for <VAR
 CLASS="LITERAL"
->now</TT
+>now</VAR
 >.
        </P
 ></LI
@@ -256,76 +252,75 @@ CLASS="LITERAL"
 ></LI
 ><LI
 ><P
->	If not found, throw an error.
+>	If still not found, throw an error.
        </P
 ></LI
 ></OL
 ></LI
 ><LI
 ><P
->      The token is a number or number field.
+>      When the token is a number or number field:
      </P
 ><OL
 CLASS="SUBSTEPS"
 TYPE="a"
 ><LI
 ><P
->	If there are more than 4 digits, 
+>	If there are eight or six digits,
 	and if no other date fields have been previously read, then interpret 
 	as a <SPAN
 CLASS="QUOTE"
 >"concatenated date"</SPAN
-> (e.g., <TT
+> (e.g.,
+	<VAR
 CLASS="LITERAL"
->19990118</TT
->). 8
-	and 6 digits are interpreted as year, month, and day, while 7
-	and 5 digits are interpreted as year, day of year, respectively.
+>19990118</VAR
+> or <VAR
+CLASS="LITERAL"
+>990118</VAR
+>).
+	The interpretation is <VAR
+CLASS="LITERAL"
+>YYYYMMDD</VAR
+> or <VAR
+CLASS="LITERAL"
+>YYMMDD</VAR
+>.
        </P
 ></LI
 ><LI
 ><P
 >	If the token is three digits
-	and a year has already been decoded, then interpret as day of year.
+	and a year has already been read, then interpret as day of year.
        </P
 ></LI
 ><LI
 ><P
 >	If four or six digits and a year has already been read, then
-	interpret as a time.
+	interpret as a time (<VAR
+CLASS="LITERAL"
+>HHMM</VAR
+> or <VAR
+CLASS="LITERAL"
+>HHMMSS</VAR
+>).
        </P
 ></LI
 ><LI
 ><P
->	If four or more digits, then interpret as a year.
+>	If three or more digits and no date fields have yet been found,
+	interpret as a year (this forces yy-mm-dd ordering of the remaining
+	date fields).
        </P
 ></LI
 ><LI
 ><P
->	If in European date mode, and if the day field has not yet been read,
-	and if the value is less than or equal to 31, then interpret as a day.
-       </P
-></LI
-><LI
-><P
->	If the month field has not yet been read,
-	and if the value is less than or equal to 12, then interpret as a month.
-       </P
-></LI
-><LI
-><P
->	If the day field has not yet been read,
-	and if the value is less than or equal to 31, then interpret as a day.
-       </P
-></LI
-><LI
-><P
->	If two digits or four or more digits, then interpret as a year.
-       </P
-></LI
-><LI
-><P
->	Otherwise, throw an error.
+>        Otherwise the date field ordering is assumed to follow the
+	<VAR
+CLASS="VARNAME"
+>DateStyle</VAR
+> setting: mm-dd-yy, dd-mm-yy, or yy-mm-dd.
+	Throw an error if a month or day field is found to be out of range.
        </P
 ></LI
 ></OL
@@ -334,18 +329,15 @@ CLASS="LITERAL"
 ><P
 >      If BC has been specified, negate the year and add one for
       internal storage.  (There is no year zero in the Gregorian
-      calendar, so numerically <TT
-CLASS="LITERAL"
->1BC</TT
-> becomes year
+      calendar, so numerically 1 BC becomes year
       zero.)
      </P
 ></LI
 ><LI
 ><P
 >      If BC was not specified, and if the year field was two digits in length, then
-      adjust the year to 4 digits. If the field was less than 70, then add 2000;
-      otherwise, add 1900.
+      adjust the year to four digits. If the field is less than 70, then add 2000,
+      otherwise add 1900.
 
       <DIV
 CLASS="TIP"
@@ -355,9 +347,9 @@ CLASS="TIP"
 ><B
 >Tip: </B
 >	Gregorian years AD 1-99 may be entered by using 4 digits with leading
-	zeros (e.g., <TT
+	zeros (e.g., <VAR
 CLASS="LITERAL"
->0099</TT
+>0099</VAR
 > is AD 99). Previous versions of
 	<SPAN
 CLASS="PRODUCTNAME"
@@ -391,7 +383,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="populate.html"
+HREF="appendixes.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -409,7 +401,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="x11950.html"
+HREF="datetime-keywords.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -419,13 +411,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Populating a Database</TD
+>Appendixes</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="user.html"
+HREF="appendixes.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

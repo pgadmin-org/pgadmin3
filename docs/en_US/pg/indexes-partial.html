@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Partial Indexes</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 8. Indexes</TD
+>Chapter 11. Indexes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INDEXES-PARTIAL"
->8.7. Partial Indexes</A
+>11.7. Partial Indexes</A
 ></H1
 ><A
-NAME="AEN11207"
+NAME="AEN12669"
 ></A
 ><P
 >   A <I
@@ -109,7 +109,7 @@ CLASS="FIRSTTERM"
    update operations because the index does not need to be
    updated in all cases.  <A
 HREF="indexes-partial.html#INDEXES-PARTIAL-EX1"
->Example 8-1</A
+>Example 11-1</A
 > shows a
    possible application of this idea.
   </P
@@ -120,11 +120,11 @@ NAME="INDEXES-PARTIAL-EX1"
 ></A
 ><P
 ><B
->Example 8-1. Setting up a Partial Index to Exclude Common Values</B
+>Example 11-1. Setting up a Partial Index to Exclude Common Values</B
 ></P
 ><P
 >    Suppose you are storing web server access logs in a database.
-    Most accesses originate from the IP range of your organization but
+    Most accesses originate from the IP address range of your organization but
     some are from elsewhere (say, employees on dial-up connections).
     If your searches by IP are primarily for outside accesses,
     you probably do not need to index the IP range that corresponds to your
@@ -175,7 +175,7 @@ CLASS="PROGRAMLISTING"
 >   Another possibility is to exclude values from the index that the
    typical query workload is not interested in; this is shown in <A
 HREF="indexes-partial.html#INDEXES-PARTIAL-EX2"
->Example 8-2</A
+>Example 11-2</A
 >.  This results in the same
    advantages as listed above, but it prevents the
    <SPAN
@@ -193,7 +193,7 @@ NAME="INDEXES-PARTIAL-EX2"
 ></A
 ><P
 ><B
->Example 8-2. Setting up a Partial Index to Exclude Uninteresting Values</B
+>Example 11-2. Setting up a Partial Index to Exclude Uninteresting Values</B
 ></P
 ><P
 >    If you have a table that contains both billed and unbilled orders,
@@ -244,7 +244,7 @@ CLASS="PROGRAMLISTING"
 ><P
 >   <A
 HREF="indexes-partial.html#INDEXES-PARTIAL-EX2"
->Example 8-2</A
+>Example 11-2</A
 > also illustrates that the
    indexed column and the column used in the predicate do not need to
    match.  <SPAN
@@ -256,17 +256,17 @@ CLASS="PRODUCTNAME"
    predicate must match the conditions used in the queries that
    are supposed to benefit from the index.  To be precise, a partial
    index can be used in a query only if the system can recognize that
-   the query's WHERE condition mathematically <I
-CLASS="FIRSTTERM"
->implies</I
->
-   the index's predicate.
+   the <VAR
+CLASS="LITERAL"
+>WHERE</VAR
+> condition of the query mathematically implies
+   the predicate of the index.
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > does not have a sophisticated
    theorem prover that can recognize mathematically equivalent
-   predicates that are written in different forms.  (Not
+   expressions that are written in different forms.  (Not
    only is such a general theorem prover extremely difficult to
    create, it would probably be too slow to be of any real use.)
    The system can recognize simple inequality implications, for example
@@ -277,7 +277,10 @@ CLASS="QUOTE"
 CLASS="QUOTE"
 >"x &lt; 2"</SPAN
 >; otherwise
-   the predicate condition must exactly match the query's WHERE condition
+   the predicate condition must exactly match the query's <VAR
+CLASS="LITERAL"
+>WHERE</VAR
+> condition
    or the index will not be recognized to be usable.
   </P
 ><P
@@ -285,7 +288,7 @@ CLASS="QUOTE"
    index to be used in queries at all.  The idea here is to create
    a unique index over a subset of a table, as in <A
 HREF="indexes-partial.html#INDEXES-PARTIAL-EX3"
->Example 8-3</A
+>Example 11-3</A
 >.  This enforces uniqueness
    among the rows that satisfy the index predicate, without constraining
    those that do not.
@@ -297,7 +300,7 @@ NAME="INDEXES-PARTIAL-EX3"
 ></A
 ><P
 ><B
->Example 8-3. Setting up a Partial Unique Index</B
+>Example 11-3. Setting up a Partial Unique Index</B
 ></P
 ><P
 >    Suppose that we have a table describing test outcomes.  We wish
@@ -312,15 +315,18 @@ CLASS="QUOTE"
 > entries.  Here is one way to do it:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE TABLE tests (subject text,
-                    target text,
-                    success bool,
-                    ...);
+>CREATE TABLE tests (
+    subject text,
+    target text,
+    success boolean,
+    ...
+);
+
 CREATE UNIQUE INDEX tests_success_constraint ON tests (subject, target)
     WHERE success;</PRE
 ><P>
     This is a particularly efficient way of doing it when there are few
-    successful trials and many unsuccessful ones.
+    successful tests and many unsuccessful ones.
    </P
 ></DIV
 ><P

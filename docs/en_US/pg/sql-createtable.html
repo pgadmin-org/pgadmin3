@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE TABLE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATETABLE"
->CREATE TABLE</A
-></H1
+></A
+>CREATE TABLE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN40801"
+NAME="AEN39451"
 ></A
 ><H2
 >Name</H2
@@ -91,155 +91,112 @@ NAME="AEN40801"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN40804"
+NAME="AEN39454"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE [ [ LOCAL ] { TEMPORARY | TEMP } ] TABLE <TT
+>CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <VAR
 CLASS="REPLACEABLE"
-><I
->table_name</I
-></TT
+>table_name</VAR
 > (
-    { <TT
+    { <VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
-> <TT
+>column_name</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->data_type</I
-></TT
-> [ DEFAULT <TT
+>data_type</VAR
+> [ DEFAULT <VAR
 CLASS="REPLACEABLE"
-><I
->default_expr</I
-></TT
-> ] [ <TT
+>default_expr</VAR
+> ] [ <VAR
 CLASS="REPLACEABLE"
-><I
->column_constraint</I
-></TT
+>column_constraint</VAR
 > [, ... ] ]
-    | <TT
+    | <VAR
 CLASS="REPLACEABLE"
-><I
->table_constraint</I
-></TT
-> }  [, ... ]
+>table_constraint</VAR
+>
+    | LIKE <VAR
+CLASS="REPLACEABLE"
+>parent_table</VAR
+> [ { INCLUDING | EXCLUDING } DEFAULTS ] }  [, ... ]
 )
-[ INHERITS ( <TT
+[ INHERITS ( <VAR
 CLASS="REPLACEABLE"
-><I
->parent_table</I
-></TT
+>parent_table</VAR
 > [, ... ] ) ]
 [ WITH OIDS | WITHOUT OIDS ]
+[ ON COMMIT { PRESERVE ROWS | DELETE ROWS | DROP } ]
 
-where <TT
+where <VAR
 CLASS="REPLACEABLE"
-><I
->column_constraint</I
-></TT
+>column_constraint</VAR
 > is:
 
-[ CONSTRAINT <TT
+[ CONSTRAINT <VAR
 CLASS="REPLACEABLE"
-><I
->constraint_name</I
-></TT
+>constraint_name</VAR
 > ]
 { NOT NULL | NULL | UNIQUE | PRIMARY KEY |
-  CHECK (<TT
+  CHECK (<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 >) |
-  REFERENCES <TT
+  REFERENCES <VAR
 CLASS="REPLACEABLE"
-><I
->reftable</I
-></TT
-> [ ( <TT
+>reftable</VAR
+> [ ( <VAR
 CLASS="REPLACEABLE"
-><I
->refcolumn</I
-></TT
-> ) ] [ MATCH FULL | MATCH PARTIAL ]
-    [ ON DELETE <TT
+>refcolumn</VAR
+> ) ] [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ]
+    [ ON DELETE <VAR
 CLASS="REPLACEABLE"
-><I
->action</I
-></TT
-> ] [ ON UPDATE <TT
+>action</VAR
+> ] [ ON UPDATE <VAR
 CLASS="REPLACEABLE"
-><I
->action</I
-></TT
+>action</VAR
 > ] }
 [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
 
-and <TT
+and <VAR
 CLASS="REPLACEABLE"
-><I
->table_constraint</I
-></TT
+>table_constraint</VAR
 > is:
 
-[ CONSTRAINT <TT
+[ CONSTRAINT <VAR
 CLASS="REPLACEABLE"
-><I
->constraint_name</I
-></TT
+>constraint_name</VAR
 > ]
-{ UNIQUE ( <TT
+{ UNIQUE ( <VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
+>column_name</VAR
 > [, ... ] ) |
-  PRIMARY KEY ( <TT
+  PRIMARY KEY ( <VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
+>column_name</VAR
 > [, ... ] ) |
-  CHECK ( <TT
+  CHECK ( <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > ) |
-  FOREIGN KEY ( <TT
+  FOREIGN KEY ( <VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
-> [, ... ] ) REFERENCES <TT
+>column_name</VAR
+> [, ... ] ) REFERENCES <VAR
 CLASS="REPLACEABLE"
-><I
->reftable</I
-></TT
-> [ ( <TT
+>reftable</VAR
+> [ ( <VAR
 CLASS="REPLACEABLE"
-><I
->refcolumn</I
-></TT
+>refcolumn</VAR
 > [, ... ] ) ]
-    [ MATCH FULL | MATCH PARTIAL ] [ ON DELETE <TT
+    [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ] [ ON DELETE <VAR
 CLASS="REPLACEABLE"
-><I
->action</I
-></TT
-> ] [ ON UPDATE <TT
+>action</VAR
+> ] [ ON UPDATE <VAR
 CLASS="REPLACEABLE"
-><I
->action</I
-></TT
+>action</VAR
 > ] }
 [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]</PRE
 ></DIV
@@ -259,18 +216,14 @@ CLASS="COMMAND"
    command.
   </P
 ><P
->   If a schema name is given (for example, <TT
+>   If a schema name is given (for example, <VAR
 CLASS="LITERAL"
 >CREATE TABLE
-   myschema.mytable ...</TT
+   myschema.mytable ...</VAR
 >) then the table is created in the
-   specified schema.  Otherwise it is created in the current schema (the one
-   at the front of the search path; see <TT
-CLASS="LITERAL"
->CURRENT_SCHEMA()</TT
->).
-   TEMP tables exist in a special schema, so a schema name may not be
-   given when creating a TEMP table.
+   specified schema.  Otherwise it is created in the current schema.
+   Temporary tables exist in a special schema, so a schema name may not be
+   given when creating a temporary table.
    The table name must be distinct from the name of any other table,
    sequence, index, or view in the same schema.
   </P
@@ -279,7 +232,7 @@ CLASS="LITERAL"
 CLASS="COMMAND"
 >CREATE TABLE</TT
 > also automatically creates a data
-   type that represents the tuple type (structure type) corresponding
+   type that represents the composite type corresponding
    to one row of the table.  Therefore, tables cannot have the same
    name as any existing data type in the same schema.
   </P
@@ -290,9 +243,8 @@ CLASS="COMMAND"
 ><P
 >   The optional constraint clauses specify constraints (or tests) that
    new or updated rows must satisfy for an insert or update operation
-   to succeed.  A constraint is a named rule: an SQL object which
-   helps define valid sets of values by putting limits on the results
-   of insert, update, or delete operations performed on a table.
+   to succeed.  A constraint is an SQL object that helps define the
+   set of valid values in the table in various ways.
   </P
 ><P
 >   There are two ways to define constraints: table constraints and
@@ -307,7 +259,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN40842"
+NAME="AEN39492"
 ></A
 ><H2
 >Parameters</H2
@@ -317,28 +269,43 @@ NAME="AEN40842"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->[LOCAL] TEMPORARY</TT
-> or <TT
+>TEMPORARY</VAR
+> or <VAR
 CLASS="LITERAL"
->[LOCAL] TEMP</TT
+>TEMP</VAR
 ></DT
 ><DD
 ><P
 >      If specified, the table is created as a temporary table.
       Temporary tables are automatically dropped at the end of a
-      session.  Existing permanent tables with the same name are not
-      visible to the current session while the temporary table exists,
-      unless they are referenced with schema-qualified names.
-      Any indexes created on a temporary table are automatically
+      session, or optionally at the end of the current transaction 
+      (see ON COMMIT below).  Existing permanent tables with the same 
+      name are not visible to the current session while the temporary 
+      table exists, unless they are referenced with schema-qualified 
+      names. Any indexes created on a temporary table are automatically
       temporary as well.
      </P
 ><P
->      The <TT
+>      Optionally, <VAR
 CLASS="LITERAL"
->LOCAL</TT
-> word is optional.  But see under
+>GLOBAL</VAR
+> or <VAR
+CLASS="LITERAL"
+>LOCAL</VAR
+>
+      can be written before <VAR
+CLASS="LITERAL"
+>TEMPORARY</VAR
+> or <VAR
+CLASS="LITERAL"
+>TEMP</VAR
+>.
+      This makes no difference in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, but see
       <A
 HREF="sql-createtable.html#SQL-CREATETABLE-COMPATIBILITY"
 ><I
@@ -348,11 +315,9 @@ HREF="sql-createtable.html#SQL-CREATETABLE-COMPATIBILITY"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->table_name</I
-></TT
+>table_name</VAR
 ></DT
 ><DD
 ><P
@@ -360,11 +325,9 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
+>column_name</VAR
 ></DT
 ><DD
 ><P
@@ -372,41 +335,32 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->data_type</I
-></TT
+>data_type</VAR
 ></DT
 ><DD
 ><P
 >      The data type of the column. This may include array specifiers.
-      Refer to the <I
-CLASS="CITETITLE"
->User's Guide</I
-> for further
-      information about data types and arrays.
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
 >DEFAULT
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->default_expr</I
-></TT
-></TT
+>default_expr</VAR
+></VAR
 ></DT
 ><DD
 ><P
->      The <TT
+>      The <VAR
 CLASS="LITERAL"
->DEFAULT</TT
+>DEFAULT</VAR
 > clause assigns a default data value for
       the column whose column definition it appears within.  The value
-      is any variable-free expression (subselects and cross-references
+      is any variable-free expression (subqueries and cross-references
       to other columns in the current table are not allowed).  The
       data type of the default expression must match the data type of the
       column.
@@ -414,24 +368,59 @@ CLASS="LITERAL"
 ><P
 >      The default expression will be used in any insert operation that
       does not specify a value for the column.  If there is no default
-      for a column, then the default is NULL.
+      for a column, then the default is null.
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->INHERITS ( <TT
+>LIKE <VAR
 CLASS="REPLACEABLE"
-><I
->parent_table</I
-></TT
-> [, ... ] )</TT
+>parent_table</VAR
+> [ { INCLUDING | EXCLUDING } DEFAULTS ]</VAR
 ></DT
 ><DD
 ><P
->      The optional <TT
+>      The <VAR
 CLASS="LITERAL"
->INHERITS</TT
+>LIKE</VAR
+> clause specifies a table from which
+      the new table automatically inherits all column names, their datatypes, and
+      <VAR
+CLASS="LITERAL"
+>NOT NULL</VAR
+> constraints.
+     </P
+><P
+>      Unlike <VAR
+CLASS="LITERAL"
+>INHERITS</VAR
+>, the new table and inherited table
+      are complete decoupled after creation has been completed.  Data inserted
+      into the new table will not be reflected into the parent table.
+     </P
+><P
+>      Default expressions for the inherited column definitions will only be included if
+      <VAR
+CLASS="LITERAL"
+>INCLUDING DEFAULTS</VAR
+> is specified.  The default is to exclude
+      default expressions.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>INHERITS ( <VAR
+CLASS="REPLACEABLE"
+>parent_table</VAR
+> [, ... ] )</VAR
+></DT
+><DD
+><P
+>      The optional <VAR
+CLASS="LITERAL"
+>INHERITS</VAR
 > clause specifies a list of
       tables from which the new table automatically inherits all
       columns.  If the same column name exists in more than one parent
@@ -453,48 +442,52 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->WITH OIDS</TT
-> or <TT
+>WITH OIDS</VAR
+><BR><VAR
 CLASS="LITERAL"
->WITHOUT OIDS</TT
+>WITHOUT OIDS</VAR
 ></DT
 ><DD
 ><P
 >      This optional clause specifies whether rows of the new table
       should have OIDs (object identifiers) assigned to them.  The
       default is to have OIDs.  (If the new table inherits from any
-      tables that have OIDs, then <TT
+      tables that have OIDs, then <VAR
 CLASS="LITERAL"
->WITH OIDS</TT
+>WITH OIDS</VAR
 > is forced even
-      if the command says <TT
+      if the command says <VAR
 CLASS="LITERAL"
->WITHOUT OIDS</TT
+>WITHOUT OIDS</VAR
 >.)
      </P
 ><P
->      Specifying <TT
+>      Specifying <VAR
 CLASS="LITERAL"
->WITHOUT OIDS</TT
+>WITHOUT OIDS</VAR
 > allows the user to suppress
       generation of OIDs for rows of a table.  This may be worthwhile
       for large tables, since it will reduce OID consumption and
       thereby postpone wraparound of the 32-bit OID counter.  Once the
       counter wraps around, uniqueness of OIDs can no longer be
-      assumed, which considerably reduces their usefulness.
+      assumed, which considerably reduces their usefulness. Specifying
+      <VAR
+CLASS="LITERAL"
+>WITHOUT OIDS</VAR
+> also reduces the space required
+      to store the table on disk by 4 bytes per row of the table,
+      thereby improving performance.
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->CONSTRAINT <TT
+>CONSTRAINT <VAR
 CLASS="REPLACEABLE"
-><I
->constraint_name</I
-></TT
-></TT
+>constraint_name</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -503,23 +496,23 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->NOT NULL</TT
+>NOT NULL</VAR
 ></DT
 ><DD
 ><P
->      The column is not allowed to contain NULL values.
+>      The column is not allowed to contain null values.
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->NULL</TT
+>NULL</VAR
 ></DT
 ><DD
 ><P
->      The column is allowed to contain NULL values. This is the default.
+>      The column is allowed to contain null values. This is the default.
      </P
 ><P
 >      This clause is only available for compatibility with
@@ -528,31 +521,29 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->UNIQUE</TT
-> (column constraint)<BR><TT
+>UNIQUE</VAR
+> (column constraint)<BR><VAR
 CLASS="LITERAL"
->UNIQUE ( <TT
+>UNIQUE ( <VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
-> [, ... ] )</TT
+>column_name</VAR
+> [, ... ] )</VAR
 > (table constraint)</DT
 ><DD
 ><P
->      The <TT
+>      The <VAR
 CLASS="LITERAL"
->UNIQUE</TT
-> constraint specifies a rule that a
+>UNIQUE</VAR
+> constraint specifies that a
       group of one or more distinct columns of a table may contain
       only unique values. The behavior of the unique table constraint
       is the same as that for column constraints, with the additional
       capability to span multiple columns.
      </P
 ><P
->      For the purpose of a unique constraint, NULL values are not
+>      For the purpose of a unique constraint, null values are not
       considered equal.
      </P
 ><P
@@ -563,35 +554,33 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->PRIMARY KEY</TT
-> (column constraint)<BR><TT
+>PRIMARY KEY</VAR
+> (column constraint)<BR><VAR
 CLASS="LITERAL"
->PRIMARY KEY ( <TT
+>PRIMARY KEY ( <VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
-> [, ... ] )</TT
+>column_name</VAR
+> [, ... ] )</VAR
 > (table constraint)</DT
 ><DD
 ><P
 >      The primary key constraint specifies that a column or columns of a table
-      may contain only unique (non-duplicate), non-NULL values.
-      Technically, <TT
+      may contain only unique (non-duplicate), nonnull values.
+      Technically, <VAR
 CLASS="LITERAL"
->PRIMARY KEY</TT
+>PRIMARY KEY</VAR
 > is merely a
-      combination of <TT
+      combination of <VAR
 CLASS="LITERAL"
->UNIQUE</TT
-> and <TT
+>UNIQUE</VAR
+> and <VAR
 CLASS="LITERAL"
->NOT NULL</TT
+>NOT NULL</VAR
 >, but
       identifying a set of columns as primary key also provides
-      meta-data about the design of the schema, as a primary key
+      metadata about the design of the schema, as a primary key
       implies that other tables
       may rely on this set of columns as a unique identifier for rows.
      </P
@@ -606,174 +595,144 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->CHECK (<TT
+>CHECK (<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->)</TT
+>expression</VAR
+>)</VAR
 ></DT
 ><DD
 ><P
->      <TT
+>      The <VAR
 CLASS="LITERAL"
->CHECK</TT
-> clauses specify integrity constraints or tests
-      which new or updated rows must satisfy for an insert or update
-      operation to succeed. Each constraint must be an expression
-      producing a Boolean result.  A condition appearing within a
-      column definition should reference that column's value only,
-      while a condition appearing as a table constraint may reference
-      multiple columns.
+>CHECK</VAR
+> clause specifies an expression producing a
+      Boolean result which new or updated rows must satisfy for an
+      insert or update operation to succeed.  A check constraint
+      specified as a column constraint should reference that column's
+      value only, while an expression appearing in a table constraint
+      may reference multiple columns.
      </P
 ><P
->      Currently, <TT
+>      Currently, <VAR
 CLASS="LITERAL"
->CHECK</TT
+>CHECK</VAR
 > expressions cannot contain
-      subselects nor refer to variables other than columns of the
+      subqueries nor refer to variables other than columns of the
       current row.
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->REFERENCES <TT
+>REFERENCES <VAR
 CLASS="REPLACEABLE"
-><I
->reftable</I
-></TT
-> [ ( <TT
+>reftable</VAR
+> [ ( <VAR
 CLASS="REPLACEABLE"
-><I
->refcolumn</I
-></TT
-> ) ] [ MATCH <TT
+>refcolumn</VAR
+> ) ] [ MATCH <VAR
 CLASS="REPLACEABLE"
-><I
->matchtype</I
-></TT
-> ] [ ON DELETE <TT
+>matchtype</VAR
+> ] [ ON DELETE <VAR
 CLASS="REPLACEABLE"
-><I
->action</I
-></TT
-> ] [ ON UPDATE <TT
+>action</VAR
+> ] [ ON UPDATE <VAR
 CLASS="REPLACEABLE"
-><I
->action</I
-></TT
-> ]</TT
-> (column constraint)<BR><TT
+>action</VAR
+> ]</VAR
+> (column constraint)<BR><VAR
 CLASS="LITERAL"
->FOREIGN KEY ( <TT
+>FOREIGN KEY ( <VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
+>column</VAR
 > [, ... ] )
-    REFERENCES <TT
+    REFERENCES <VAR
 CLASS="REPLACEABLE"
-><I
->reftable</I
-></TT
-> [ ( <TT
+>reftable</VAR
+> [ ( <VAR
 CLASS="REPLACEABLE"
-><I
->refcolumn</I
-></TT
+>refcolumn</VAR
 > [, ... ] ) ] 
-    [ MATCH <TT
+    [ MATCH <VAR
 CLASS="REPLACEABLE"
-><I
->matchtype</I
-></TT
+>matchtype</VAR
 > ]
-    [ ON DELETE <TT
+    [ ON DELETE <VAR
 CLASS="REPLACEABLE"
-><I
->action</I
-></TT
+>action</VAR
 > ] 
-    [ ON UPDATE <TT
+    [ ON UPDATE <VAR
 CLASS="REPLACEABLE"
-><I
->action</I
-></TT
-> ]</TT
+>action</VAR
+> ]</VAR
 >
     (table constraint)</DT
 ><DD
 ><P
->      The <TT
-CLASS="LITERAL"
->REFERENCES</TT
-> column constraint specifies
+>      Theses clauses specify a foreign key constraint, which specifies
       that a group of one or more columns of the new table must only
       contain values which match against values in the referenced
-      column(s) <TT
+      column(s) <VAR
 CLASS="REPLACEABLE"
-><I
->refcolumn</I
-></TT
+>refcolumn</VAR
 >
-      of the referenced table <TT
+      of the referenced table <VAR
 CLASS="REPLACEABLE"
-><I
->reftable</I
-></TT
->.  If <TT
+>reftable</VAR
+>.  If <VAR
 CLASS="REPLACEABLE"
-><I
->refcolumn</I
-></TT
+>refcolumn</VAR
 > is omitted, the
-      primary key of the <TT
+      primary key of the <VAR
 CLASS="REPLACEABLE"
-><I
->reftable</I
-></TT
+>reftable</VAR
 > is used.  The
       referenced columns must be the columns of a unique or primary
       key constraint in the referenced table.
      </P
 ><P
->      A value added to these columns is matched against the values of
-      the referenced table and referenced columns using the given
-      match type.  There are three match types: <TT
+>      A value inserted into these columns is matched against the
+      values of the referenced table and referenced columns using the
+      given match type.  There are three match types: <VAR
 CLASS="LITERAL"
 >MATCH
-      FULL</TT
->, <TT
+      FULL</VAR
+>, <VAR
 CLASS="LITERAL"
->MATCH PARTIAL</TT
->, and a default match type if
-      none is specified. <TT
+>MATCH PARTIAL</VAR
+>, and <VAR
 CLASS="LITERAL"
->MATCH FULL</TT
-> will not allow one
-      column of a multicolumn foreign key to be NULL unless all
-      foreign key columns are NULL. The default match type allows some
-      foreign key columns to be NULL while other parts of the foreign
-      key are not NULL. <TT
+>MATCH
+      SIMPLE</VAR
+>, which is also the default.  <VAR
 CLASS="LITERAL"
->MATCH PARTIAL</TT
-> is not yet
-      implemented.
+>MATCH
+      FULL</VAR
+> will not allow one column of a multicolumn foreign key
+      to be null unless all foreign key columns are null.
+      <VAR
+CLASS="LITERAL"
+>MATCH SIMPLE</VAR
+> allows some foreign key columns
+      to be null while other parts of the foreign key are not
+      null. <VAR
+CLASS="LITERAL"
+>MATCH PARTIAL</VAR
+> is not yet implemented.
      </P
 ><P
 >      In addition, when the data in the referenced columns is changed,
       certain actions are performed on the data in this table's
-      columns.  The <TT
+      columns.  The <VAR
 CLASS="LITERAL"
->ON DELETE</TT
+>ON DELETE</VAR
 > clause specifies the
-      action to do when a referenced row in the referenced table is
-      being deleted.  Likewise, the <TT
+      action to perform when a referenced row in the referenced table is
+      being deleted.  Likewise, the <VAR
 CLASS="LITERAL"
->ON UPDATE</TT
+>ON UPDATE</VAR
 >
       clause specifies the action to perform when a referenced column
       in the referenced table is being updated to a new value. If the
@@ -787,9 +746,9 @@ CLASS="LITERAL"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->NO ACTION</TT
+>NO ACTION</VAR
 ></DT
 ><DD
 ><P
@@ -799,22 +758,22 @@ CLASS="LITERAL"
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->RESTRICT</TT
+>RESTRICT</VAR
 ></DT
 ><DD
 ><P
->          Same as <TT
+>          Same as <VAR
 CLASS="LITERAL"
->NO ACTION</TT
+>NO ACTION</VAR
 >.
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->CASCADE</TT
+>CASCADE</VAR
 ></DT
 ><DD
 ><P
@@ -824,19 +783,19 @@ CLASS="LITERAL"
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->SET NULL</TT
+>SET NULL</VAR
 ></DT
 ><DD
 ><P
->          Set the referencing column values to NULL.
+>          Set the referencing column values to null.
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->SET DEFAULT</TT
+>SET DEFAULT</VAR
 ></DT
 ><DD
 ><P
@@ -849,31 +808,25 @@ CLASS="LITERAL"
      </P
 ><P
 >      If primary key column is updated frequently, it may be wise to
-      add an index to the <TT
+      add an index to the foreign key column so that <VAR
 CLASS="LITERAL"
->REFERENCES</TT
-> column so that
-      <TT
+>NO
+      ACTION</VAR
+> and <VAR
 CLASS="LITERAL"
->NO ACTION</TT
-> and <TT
-CLASS="LITERAL"
->CASCADE</TT
->
-      actions associated with the <TT
-CLASS="LITERAL"
->REFERENCES</TT
->
-      column can be more efficiently performed.
+>CASCADE</VAR
+> actions
+      associated with the foreign key column can be more efficiently
+      performed.
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->DEFERRABLE</TT
-> or <TT
+>DEFERRABLE</VAR
+><BR><VAR
 CLASS="LITERAL"
->NOT DEFERRABLE</TT
+>NOT DEFERRABLE</VAR
 ></DT
 ><DD
 ><P
@@ -887,34 +840,34 @@ HREF="sql-set-constraints.html"
 >SET CONSTRAINTS</I
 ></A
 > command).
-      <TT
+      <VAR
 CLASS="LITERAL"
->NOT DEFERRABLE</TT
+>NOT DEFERRABLE</VAR
 > is the default.  Only foreign
       key constraints currently accept this clause.  All other
       constraint types are not deferrable.
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->INITIALLY IMMEDIATE</TT
-> or <TT
+>INITIALLY IMMEDIATE</VAR
+><BR><VAR
 CLASS="LITERAL"
->INITIALLY DEFERRED</TT
+>INITIALLY DEFERRED</VAR
 ></DT
 ><DD
 ><P
 >      If a constraint is deferrable, this clause specifies the default
       time to check the constraint.  If the constraint is
-      <TT
+      <VAR
 CLASS="LITERAL"
->INITIALLY IMMEDIATE</TT
+>INITIALLY IMMEDIATE</VAR
 >, it is checked after each
       statement. This is the default.  If the constraint is
-      <TT
+      <VAR
 CLASS="LITERAL"
->INITIALLY DEFERRED</TT
+>INITIALLY DEFERRED</VAR
 >, it is checked only at the
       end of the transaction.  The constraint check time can be
       altered with the <A
@@ -923,6 +876,67 @@ HREF="sql-set-constraints.html"
 >SET CONSTRAINTS</I
 ></A
 > command.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>ON COMMIT</VAR
+></DT
+><DD
+><P
+>      The behavior of temporary tables at the end of a transaction
+      block can be controlled using <VAR
+CLASS="LITERAL"
+>ON COMMIT</VAR
+>. 
+      The three options are:
+
+      <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>PRESERVE ROWS</VAR
+></DT
+><DD
+><P
+>	  No special action is taken at the ends of transactions.
+	  This is the default behavior.
+         </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>DELETE ROWS</VAR
+></DT
+><DD
+><P
+>          All rows in the temporary table will be deleted at the
+          end of each transaction block.  Essentially, an automatic
+	  <A
+HREF="sql-truncate.html"
+>TRUNCATE</A
+> is done at each commit.
+         </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>DROP</VAR
+></DT
+><DD
+><P
+>          The temporary table will be dropped at the end of the current
+	  transaction block.
+         </P
+></DD
+></DL
+></DIV
+><P>
      </P
 ></DD
 ></DL
@@ -935,59 +949,22 @@ NAME="SQL-CREATETABLE-DIAGNOSTICS"
 ></A
 ><H2
 >Diagnostics</H2
-><DIV
-CLASS="MSGENTRY"
-><A
-NAME="AEN41028"
-></A
-><DIV
-CLASS="MSG"
-><A
-NAME="AEN41029"
-></A
 ><P
-><TT
-CLASS="COMPUTEROUTPUT"
->CREATE TABLE</TT
 ></P
-></DIV
-><BLOCKQUOTE
-CLASS="MSGEXPLAN"
->      Message returned if table is successfully created.
-     </BLOCKQUOTE
-></DIV
 ><DIV
-CLASS="MSGENTRY"
-><A
-NAME="AEN41036"
-></A
-><DIV
-CLASS="MSG"
-><A
-NAME="AEN41037"
-></A
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE TABLE</SAMP
+></DT
+><DD
 ><P
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR</TT
-></P
-></DIV
-><BLOCKQUOTE
-CLASS="MSGEXPLAN"
->      Message returned if table creation failed.  This is usually
-      accompanied by some descriptive text, such as:
-      <TT
-CLASS="COMPUTEROUTPUT"
->ERROR: Relation '<TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
->' already
-      exists</TT
->, which occurs at run time if the table
-      specified already exists in the database.
-     </BLOCKQUOTE
+>      Message returned if the table was successfully created.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
@@ -1040,9 +1017,9 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->      The use of <TT
+>      The use of <VAR
 CLASS="LITERAL"
->WITHOUT OIDS</TT
+>WITHOUT OIDS</VAR
 > is not recommended
       for tables with no primary key, since without either an OID or a
       unique data key, it is difficult to identify specific rows.
@@ -1064,25 +1041,6 @@ HREF="sql-createindex.html"
 >CREATE INDEX</I
 ></A
 > for more information.)
-    </P
-></LI
-><LI
-><P
->     The SQL92 standard says that <TT
-CLASS="LITERAL"
->CHECK</TT
-> column constraints
-     may only refer to the column they apply to; only
-     <TT
-CLASS="LITERAL"
->CHECK</TT
-> table constraints may refer to multiple
-     columns.  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not enforce
-     this restriction; it treats column and table check constraints
-     alike.
     </P
 ></LI
 ><LI
@@ -1114,20 +1072,20 @@ CLASS="STRUCTNAME"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE films (
-    code        CHARACTER(5) CONSTRAINT firstkey PRIMARY KEY,
-    title       CHARACTER VARYING(40) NOT NULL,
-    did         DECIMAL(3) NOT NULL,
-    date_prod   DATE,
-    kind        CHAR(10),
-    len         INTERVAL HOUR TO MINUTE
+    code        char(5) CONSTRAINT firstkey PRIMARY KEY,
+    title       varchar(40) NOT NULL,
+    did         integer NOT NULL,
+    date_prod   date,
+    kind        varchar(10),
+    len         interval hour to minute
 );</PRE
 ><P>
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE distributors (
-     did    DECIMAL(3) PRIMARY KEY DEFAULT NEXTVAL('serial'),
-     name   VARCHAR(40) NOT NULL CHECK (name &lt;&gt; '')
+     did    integer PRIMARY KEY DEFAULT nextval('serial'),
+     name   varchar(40) NOT NULL CHECK (name &lt;&gt; '')
 );</PRE
 ><P>
   </P
@@ -1137,23 +1095,27 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE array (
-    vector  INT[][]
+    vector  int[][]
 );</PRE
 ><P>
   </P
 ><P
->   Define a unique table constraint for the table films.  Unique table
-   constraints can be defined on one or more columns of the table:
+>   Define a unique table constraint for the table
+   <VAR
+CLASS="LITERAL"
+>films</VAR
+>.  Unique table constraints can be defined
+   on one or more columns of the table.
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE films (
-    code        CHAR(5),
-    title       VARCHAR(40),
-    did         DECIMAL(3),
-    date_prod   DATE,
-    kind        VARCHAR(10),
-    len         INTERVAL HOUR TO MINUTE,
+    code        char(5),
+    title       varchar(40),
+    did         integer,
+    date_prod   date,
+    kind        varchar(10),
+    len         interval hour to minute,
     CONSTRAINT production UNIQUE(date_prod)
 );</PRE
 ><P>
@@ -1164,8 +1126,8 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE distributors (
-    did     DECIMAL(3) CHECK (did &#62; 100),
-    name    VARCHAR(40)
+    did     integer CHECK (did &#62; 100),
+    name    varchar(40)
 );</PRE
 ><P>
   </P
@@ -1175,8 +1137,8 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE distributors (
-    did     DECIMAL(3),
-    name    VARCHAR(40)
+    did     integer,
+    name    varchar(40)
     CONSTRAINT con1 CHECK (did &#62; 100 AND name &lt;&gt; '')
 );</PRE
 ><P>
@@ -1192,12 +1154,12 @@ CLASS="STRUCTNAME"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE films (
-    code        CHAR(5),
-    title       VARCHAR(40),
-    did         DECIMAL(3),
-    date_prod   DATE,
-    kind        VARCHAR(10),
-    len         INTERVAL HOUR TO MINUTE,
+    code        char(5),
+    title       varchar(40),
+    did         integer,
+    date_prod   date,
+    kind        varchar(10),
+    len         interval hour to minute,
     CONSTRAINT code_title PRIMARY KEY(code,title)
 );</PRE
 ><P>
@@ -1214,8 +1176,8 @@ CLASS="STRUCTNAME"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE distributors (
-    did     DECIMAL(3),
-    name    CHAR VARYING(40),
+    did     integer,
+    name    varchar(40),
     PRIMARY KEY(did)
 ); </PRE
 ><P>
@@ -1223,67 +1185,67 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE distributors (
-    did     DECIMAL(3) PRIMARY KEY,
-    name    VARCHAR(40)
+    did     integer PRIMARY KEY,
+    name    varchar(40)
 );</PRE
 ><P>
   </P
 ><P
 >   This assigns a literal constant default value for the column
-   <TT
+   <VAR
 CLASS="LITERAL"
->name</TT
->, and arranges for the default value of
-   column <TT
+>name</VAR
+>, arranges for the default value of column
+   <VAR
 CLASS="LITERAL"
->did</TT
-> to be generated by selecting the next
-   value of a sequence object.  The default value of
-   <TT
+>did</VAR
+> to be generated by selecting the next value
+   of a sequence object, and makes the default value of
+   <VAR
 CLASS="LITERAL"
->modtime</TT
-> will be the time at which the row is
+>modtime</VAR
+> be the time at which the row is
    inserted.
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE distributors (
-    name      VARCHAR(40) DEFAULT 'luso films',
-    did       INTEGER DEFAULT NEXTVAL('distributors_serial'),
-    modtime   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    name      varchar(40) DEFAULT 'Luso Films',
+    did       integer DEFAULT nextval('distributors_serial'),
+    modtime   timestamp DEFAULT current_timestamp
 );</PRE
 ><P>
   </P
 ><P
->   Define two <TT
+>   Define two <VAR
 CLASS="LITERAL"
->NOT NULL</TT
+>NOT NULL</VAR
 > column constraints on the table
-   <TT
+   <CODE
 CLASS="CLASSNAME"
->distributors</TT
+>distributors</CODE
 >, one of which is explicitly
    given a name:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE distributors (
-    did     DECIMAL(3) CONSTRAINT no_null NOT NULL,
-    name    VARCHAR(40) NOT NULL
+    did     integer CONSTRAINT no_null NOT NULL,
+    name    varchar(40) NOT NULL
 );</PRE
 ><P>
     </P
 ><P
->     Define a unique constraint for the <TT
+>     Define a unique constraint for the <VAR
 CLASS="LITERAL"
->name</TT
+>name</VAR
 > column:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE distributors (
-    did     DECIMAL(3),
-    name    VARCHAR(40) UNIQUE
+    did     integer,
+    name    varchar(40) UNIQUE
 );</PRE
 ><P>
 
@@ -1292,8 +1254,8 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE distributors (
-    did     DECIMAL(3),
-    name    VARCHAR(40),
+    did     integer,
+    name    varchar(40),
     UNIQUE(name)
 );</PRE
 ><P>
@@ -1310,89 +1272,139 @@ NAME="SQL-CREATETABLE-COMPATIBILITY"
 >   The <TT
 CLASS="COMMAND"
 >CREATE TABLE</TT
-> conforms to SQL92 Intermediate
-   and to a subset of SQL99, with exceptions listed below and in the
-   descriptions above.
+> command conforms to SQL92
+   and to a subset of SQL99, with exceptions listed below.
   </P
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN41109"
+NAME="AEN39783"
 ></A
 ><H3
 >Temporary Tables</H3
 ><P
->    In addition to the local temporary table, SQL92 also defines a
-    <TT
+>    Although the syntax of <VAR
 CLASS="LITERAL"
->CREATE GLOBAL TEMPORARY TABLE</TT
-> statement.
-    Global temporary tables are also visible to other sessions.
-   </P
-><P
->    For temporary tables, there is an optional <TT
-CLASS="LITERAL"
->ON COMMIT</TT
-> clause:
-</P><PRE
-CLASS="SYNOPSIS"
->CREATE { GLOBAL | LOCAL } TEMPORARY TABLE <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> ( <TT
-CLASS="REPLACEABLE"
-><I
->...</I
-></TT
-> ) [ ON COMMIT { DELETE | PRESERVE } ROWS ] </PRE
-><P>
-
-    The <TT
-CLASS="LITERAL"
->ON COMMIT</TT
-> clause specifies whether or not
-    the temporary table should be emptied of rows whenever
-    <TT
-CLASS="COMMAND"
->COMMIT</TT
-> is executed. If the <TT
-CLASS="LITERAL"
->ON
-    COMMIT</TT
-> clause is omitted, SQL92 specifies that the default is
-    <TT
-CLASS="LITERAL"
->ON COMMIT DELETE ROWS</TT
->.  However, the behavior of
+>CREATE TEMPORARY TABLE</VAR
+>
+    resembles that of the SQL standard, the effect is not the same.  In the
+    standard, 
+    temporary tables are defined just once and automatically exist (starting
+    with empty contents) in every session that needs them.
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> is always like <TT
+> instead
+    requires each session to issue its own <VAR
 CLASS="LITERAL"
->ON
-    COMMIT PRESERVE ROWS</TT
->.
+>CREATE TEMPORARY
+    TABLE</VAR
+> command for each temporary table to be used.  This allows
+    different sessions to use the same temporary table name for different
+    purposes, whereas the standard's approach constrains all instances of a
+    given temporary table name to have the same table structure.
+   </P
+><P
+>    The standard's definition of the behavior of temporary tables is
+    widely ignored.  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s behavior
+    on this point is similar to that of several other SQL databases.
+   </P
+><P
+>    The standard's distinction between global and local temporary tables
+    is not in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, since that distinction
+    depends on the concept of modules, which
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> does not have.
+    For compatibility's sake, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will
+    accept the <VAR
+CLASS="LITERAL"
+>GLOBAL</VAR
+> and <VAR
+CLASS="LITERAL"
+>LOCAL</VAR
+> keywords
+    in a temporary table declaration, but they have no effect.
+   </P
+><P
+>    The <VAR
+CLASS="LITERAL"
+>ON COMMIT</VAR
+> clause for temporary tables
+    also resembles the SQL standard, but has some differences.
+    If the <VAR
+CLASS="LITERAL"
+>ON COMMIT</VAR
+> clause is omitted, SQL specifies that the
+    default behavior is <VAR
+CLASS="LITERAL"
+>ON COMMIT DELETE ROWS</VAR
+>.  However, the
+    default behavior in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is
+    <VAR
+CLASS="LITERAL"
+>ON COMMIT PRESERVE ROWS</VAR
+>.  The <VAR
+CLASS="LITERAL"
+>ON COMMIT
+    DROP</VAR
+> option does not exist in SQL.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN41124"
+NAME="AEN39804"
 ></A
 ><H3
-><TT
+>Column Check Constraints</H3
+><P
+>    The SQL standard says that <VAR
 CLASS="LITERAL"
->NULL</TT
+>CHECK</VAR
+> column constraints
+    may only refer to the column they apply to; only <VAR
+CLASS="LITERAL"
+>CHECK</VAR
+>
+    table constraints may refer to multiple columns.
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> does not enforce this
+    restriction; it treats column and table check constraints alike.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN39810"
+></A
+><H3
+><VAR
+CLASS="LITERAL"
+>NULL</VAR
 > <SPAN
 CLASS="QUOTE"
 >"Constraint"</SPAN
 ></H3
 ><P
->    The <TT
+>    The <VAR
 CLASS="LITERAL"
->NULL</TT
+>NULL</VAR
 > <SPAN
 CLASS="QUOTE"
 >"constraint"</SPAN
@@ -1401,11 +1413,11 @@ CLASS="QUOTE"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-    extension to SQL92 that is included for compatibility with some
-    other RDBMS (and for symmetry with the <TT
+    extension to the SQL standard that is included for compatibility with some
+    other database systems (and for symmetry with the <VAR
 CLASS="LITERAL"
 >NOT
-    NULL</TT
+    NULL</VAR
 > constraint).  Since it is the default for any
     column, its presence is simply noise.
    </P
@@ -1413,53 +1425,14 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN41133"
-></A
-><H3
->Assertions</H3
-><P
->    An assertion is a special type of integrity constraint and shares
-    the same namespace as other constraints. However, an assertion is
-    not necessarily dependent on one particular table as constraints
-    are, so SQL92 provides the <TT
-CLASS="COMMAND"
->CREATE ASSERTION</TT
->
-    statement as an alternate method for defining a constraint:
-
-</P><PRE
-CLASS="SYNOPSIS"
->CREATE ASSERTION <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> CHECK ( <TT
-CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
-> )</PRE
-><P>
-   </P
-><P
->    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not implement assertions at present.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN41142"
+NAME="AEN39819"
 ></A
 ><H3
 >Inheritance</H3
 ><P
->    Multiple inheritance via the <TT
+>    Multiple inheritance via the <VAR
 CLASS="LITERAL"
->INHERITS</TT
+>INHERITS</VAR
 > clause is
     a <SPAN
 CLASS="PRODUCTNAME"
@@ -1476,7 +1449,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN41148"
+NAME="AEN39825"
 ></A
 ><H3
 >Object IDs</H3
@@ -1488,11 +1461,36 @@ CLASS="PRODUCTNAME"
     standard.
    </P
 ></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN39829"
+></A
+><H3
+>Zero-column tables</H3
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows a table of no columns
+    to be created (for example, <VAR
+CLASS="LITERAL"
+>CREATE TABLE foo();</VAR
+>).  This
+    is an extension from the SQL standard, which does not allow zero-column
+    tables.  Zero-column tables are not in themselves very useful, but
+    disallowing them creates odd special cases for <TT
+CLASS="COMMAND"
+>ALTER TABLE
+    DROP COLUMN</TT
+>, so it seems cleaner to ignore this spec restriction.
+   </P
+></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41152"
+NAME="AEN39835"
 ></A
 ><H2
 >See Also</H2

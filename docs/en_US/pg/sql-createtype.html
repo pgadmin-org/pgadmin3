@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE TYPE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,646 +78,121 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATETYPE"
->CREATE TYPE</A
-></H1
+></A
+>CREATE TYPE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41396"
+NAME="AEN40077"
 ></A
 ><H2
 >Name</H2
->   CREATE TYPE
-  &nbsp;--&nbsp;   define a new data type
-  </DIV
+>CREATE TYPE&nbsp;--&nbsp;define a new data type</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41399"
+NAME="AEN40080"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE TYPE <TT
+>CREATE TYPE <VAR
 CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
-> ( INPUT = <TT
-CLASS="REPLACEABLE"
-><I
->input_function</I
-></TT
->, OUTPUT = <TT
-CLASS="REPLACEABLE"
-><I
->output_function</I
-></TT
->
-      , INTERNALLENGTH = { <TT
-CLASS="REPLACEABLE"
-><I
->internallength</I
-></TT
-> | VARIABLE }
-    [ , DEFAULT = <TT
-CLASS="REPLACEABLE"
-><I
->default</I
-></TT
-> ]
-    [ , ELEMENT = <TT
-CLASS="REPLACEABLE"
-><I
->element</I
-></TT
-> ] [ , DELIMITER = <TT
-CLASS="REPLACEABLE"
-><I
->delimiter</I
-></TT
-> ]
-    [ , PASSEDBYVALUE ]
-    [ , ALIGNMENT = <TT
-CLASS="REPLACEABLE"
-><I
->alignment</I
-></TT
-> ]
-    [ , STORAGE = <TT
-CLASS="REPLACEABLE"
-><I
->storage</I
-></TT
-> ]
-)
-
-CREATE TYPE <TT
-CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
+>typename</VAR
 > AS
-    ( <TT
+    ( <VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
-> <TT
+>attribute_name</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->data_type</I
-></TT
+>data_type</VAR
 > [, ... ] )
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATETYPE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
+
+CREATE TYPE <VAR
 CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of a type to be created.
-       </P
-></DD
-><DT
-><TT
+>typename</VAR
+> (
+    INPUT = <VAR
 CLASS="REPLACEABLE"
-><I
->internallength</I
-></TT
-></DT
-><DD
-><P
->	A literal value, which specifies the internal length of
-	the new type.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->input_function</I
-></TT
-></DT
-><DD
-><P
->	The name of a function, created by
-	<TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->, which
-	converts data from its external form to the type's
-	internal form.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->output_function</I
-></TT
-></DT
-><DD
-><P
->	The name of a function, created by
-	<TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
->, which
-	converts data from its internal form to a form suitable
-	for display.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->element</I
-></TT
-></DT
-><DD
-><P
->	The type being created is an array; this specifies
-	the type of the array elements.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->delimiter</I
-></TT
-></DT
-><DD
-><P
->	The delimiter character to be used between values in arrays made
-	of this type.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->default</I
-></TT
-></DT
-><DD
-><P
->	The default value for the data type.  Usually this is omitted,
-	so that the default is NULL.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->alignment</I
-></TT
-></DT
-><DD
-><P
->        Storage alignment requirement of the data type.  If specified, must
-	be <TT
-CLASS="LITERAL"
->char</TT
->, <TT
-CLASS="LITERAL"
->int2</TT
+>input_function</VAR
 >,
-	<TT
-CLASS="LITERAL"
->int4</TT
->, or <TT
-CLASS="LITERAL"
->double</TT
->;
-	the default is <TT
-CLASS="LITERAL"
->int4</TT
->.
-       </P
-></DD
-><DT
-><TT
+    OUTPUT = <VAR
 CLASS="REPLACEABLE"
-><I
->storage</I
-></TT
-></DT
-><DD
-><P
->        Storage technique for the data type.  If specified, must
-	be <TT
-CLASS="LITERAL"
->plain</TT
->, <TT
-CLASS="LITERAL"
->external</TT
->,
-	<TT
-CLASS="LITERAL"
->extended</TT
->, or <TT
-CLASS="LITERAL"
->main</TT
->;
-	the default is <TT
-CLASS="LITERAL"
->plain</TT
->.
-       </P
-></DD
-><DT
-><TT
+>output_function</VAR
+>
+    [ , RECEIVE = <VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
-></DT
-><DD
-><P
->        The name of a column of the composite type.
-       </P
-></DD
-><DT
-><TT
+>receive_function</VAR
+> ]
+    [ , SEND = <VAR
 CLASS="REPLACEABLE"
-><I
->data_type</I
-></TT
-></DT
-><DD
-><P
->        The name of an existing data type.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATETYPE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->CREATE TYPE
-       </TT
-></DT
-><DD
-><P
->	Message returned if the type is successfully created.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>send_function</VAR
+> ]
+    [ , INTERNALLENGTH = { <VAR
+CLASS="REPLACEABLE"
+>internallength</VAR
+> | VARIABLE } ]
+    [ , PASSEDBYVALUE ]
+    [ , ALIGNMENT = <VAR
+CLASS="REPLACEABLE"
+>alignment</VAR
+> ]
+    [ , STORAGE = <VAR
+CLASS="REPLACEABLE"
+>storage</VAR
+> ]
+    [ , DEFAULT = <VAR
+CLASS="REPLACEABLE"
+>default</VAR
+> ]
+    [ , ELEMENT = <VAR
+CLASS="REPLACEABLE"
+>element</VAR
+> ]
+    [ , DELIMITER = <VAR
+CLASS="REPLACEABLE"
+>delimiter</VAR
+> ]
+)</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATETYPE-1"
+NAME="AEN40096"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >CREATE TYPE</TT
->  allows  the user to register a new data
-   type with <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> for use in the current data base.
-   The user  who  defines  a type becomes its owner.
+> registers a new data type for use in
+   the current data base.  The user who defines a type becomes its
+   owner.
   </P
 ><P
->   If a schema name is given then the type is created in the
-   specified schema.  Otherwise it is created in the current schema (the one
-   at the front of the search path; see <TT
-CLASS="LITERAL"
->CURRENT_SCHEMA()</TT
->).
-   The type name must be distinct from the name of any existing type or
-   domain in the same schema.  (Because tables have associated data types,
-   type names also must not conflict with table names in the same schema.)
+>   If a schema name is given then the type is created in the specified
+   schema.  Otherwise it is created in the current schema.  The type
+   name must be distinct from the name of any existing type or domain
+   in the same schema.  (Because tables have associated data types,
+   the type name must also be distinct from the name of any existing
+   table in the same schema.)
   </P
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN41508"
-></A
-><H3
->Base Types</H3
-><P
->   The first form of <TT
-CLASS="COMMAND"
->CREATE TYPE</TT
-> creates a new base type
-   (scalar type).  It  requires  the
-   registration of two functions (using CREATE FUNCTION) before defining the
-   type. The representation of a new base type is determined by
-   <TT
-CLASS="REPLACEABLE"
-><I
->input_function</I
-></TT
->, which
-   converts the type's external  representation  to  an  internal
-   representation  usable by the
-   operators and functions defined for the type.   Naturally,
-   <TT
-CLASS="REPLACEABLE"
-><I
->output_function</I
-></TT
->
-   performs the reverse transformation.  The input function may be
-   declared as taking one argument of type <TT
-CLASS="TYPE"
->cstring</TT
->,
-   or as taking three arguments of types
-   <TT
-CLASS="TYPE"
->cstring</TT
->, <TT
-CLASS="TYPE"
->OID</TT
->, <TT
-CLASS="TYPE"
->int4</TT
->.
-   (The first argument is the input text as a C string, the second
-   argument is the element type in case this is an array type,
-   and the third is the <TT
-CLASS="LITERAL"
->typmod</TT
-> of the destination column, if known.)
-   It should return a value of the data type itself.
-   The output function may be
-   declared as taking one argument of the new data type,  or as taking
-   two arguments of which the second is type <TT
-CLASS="TYPE"
->OID</TT
->.
-   (The second argument is again the array element type for array types.)
-   The output function should return type <TT
-CLASS="TYPE"
->cstring</TT
->.
-  </P
-><P
->   You should at this point be wondering how the input and output functions
-   can be declared to have results or inputs of the new type, when they have
-   to be created before the new type can be created.  The answer is that the
-   input function must be created first, then the output function, then the
-   data type.
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> will first see the name of the new
-   data type as the return type of the input function.  It will create a
-   <SPAN
-CLASS="QUOTE"
->"shell"</SPAN
-> type, which is simply a placeholder entry in
-   <TT
-CLASS="LITERAL"
->pg_type</TT
->, and link the input function definition to the shell
-   type.  Similarly the output function will be linked to the (now already
-   existing) shell type.  Finally, <TT
-CLASS="COMMAND"
->CREATE TYPE</TT
-> replaces the
-   shell entry with a complete type definition, and the new type can be used.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->   In <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> versions before 7.3, it was
-   customary to avoid creating a shell type by replacing the functions'
-   forward references to the type name with the placeholder pseudo-type
-   <TT
-CLASS="TYPE"
->OPAQUE</TT
->.  The <TT
-CLASS="TYPE"
->cstring</TT
-> inputs and
-   results also had to be declared as <TT
-CLASS="TYPE"
->OPAQUE</TT
-> before 7.3.
-   To support loading 
-   of old dump files, <TT
-CLASS="COMMAND"
->CREATE TYPE</TT
-> will accept functions
-   declared using <TT
-CLASS="TYPE"
->opaque</TT
->, but it will issue a NOTICE and
-   change the function's declaration to use the correct types.
-  </P
-></BLOCKQUOTE
-></DIV
-><P
->   New  base  data  types  can be fixed length, in which case
-   <TT
-CLASS="REPLACEABLE"
-><I
->internallength</I
-></TT
-> is a
-   positive integer, or variable  length, indicated by setting
-   <TT
-CLASS="REPLACEABLE"
-><I
->internallength</I
-></TT
->
-   to <TT
-CLASS="OPTION"
->VARIABLE</TT
->.  (Internally, this is represented
-   by setting <TT
-CLASS="LITERAL"
->typlen</TT
-> to -1.)  The internal representation of all
-   variable-length types must start with an integer giving the total
-   length of this value of the type.
-  </P
-><P
->   To indicate that a type is an array,
-   specify the type  of  the  array
-   elements using the <TT
-CLASS="OPTION"
->ELEMENT</TT
-> keyword.  For example, to define
-   an array of 4-byte integers ("int4"), specify
-   </P><PRE
-CLASS="PROGRAMLISTING"
->ELEMENT = int4</PRE
-><P>
-   More details about array types appear below.
-  </P
-><P
->   To indicate the delimiter to be used between values in the external
-   representation of arrays of this type, <TT
-CLASS="REPLACEABLE"
-><I
->delimiter</I
-></TT
-> can be
-   set to a specific character.  The default delimiter is the comma
-   ('<TT
-CLASS="LITERAL"
->,</TT
->').  Note that the delimiter is associated
-   with the array element type, not the array type itself.
-  </P
-><P
->   A default value may be specified, in case a user wants columns of the
-   data type to default to something other than NULL.
-   Specify the default with the <TT
-CLASS="OPTION"
->DEFAULT</TT
-> keyword.
-   (Such a default may be overridden by an explicit <TT
-CLASS="OPTION"
->DEFAULT</TT
->
-   clause attached to a particular column.)
-  </P
-><P
->   The  optional flag,  <TT
-CLASS="OPTION"
->PASSEDBYVALUE</TT
->, indicates that
-   values of this data type are passed
-   by  value  rather  than by reference.  Note that you
-   may not pass by value types whose internal representation is 
-   longer than the width of the <TT
-CLASS="TYPE"
->Datum</TT
-> type (four bytes on
-   most machines, eight bytes on a few).
-  </P
-><P
->   The <TT
-CLASS="REPLACEABLE"
-><I
->alignment</I
-></TT
-> keyword
-   specifies the storage alignment required for the data type.  The
-   allowed values equate to alignment on 1, 2, 4, or 8 byte boundaries.
-   Note that variable-length types must have an alignment of at least
-   4, since they necessarily contain an <TT
-CLASS="TYPE"
->int4</TT
-> as their first component.
-  </P
-><P
->   The <TT
-CLASS="REPLACEABLE"
-><I
->storage</I
-></TT
-> keyword
-   allows selection of storage strategies for variable-length data types
-   (only <TT
-CLASS="LITERAL"
->plain</TT
-> is allowed for fixed-length types).
-   <TT
-CLASS="LITERAL"
->plain</TT
-> disables TOAST for the data type: it will always
-   be stored in-line and not compressed.
-   <TT
-CLASS="LITERAL"
->extended</TT
-> gives full TOAST capability: the system will
-   first try to compress a long data value, and will move the value out of
-   the main table row if it's still too long.
-   <TT
-CLASS="LITERAL"
->external</TT
-> allows the value to be moved out of the main
-   table, but the system will not try to compress it.
-   <TT
-CLASS="LITERAL"
->main</TT
-> allows compression, but discourages moving the
-   value out of the main table.  (Data items with this storage method may
-   still be moved out of the main table if there is no other way to make
-   a row fit, but they will be kept in the main table preferentially over
-   <TT
-CLASS="LITERAL"
->extended</TT
-> and <TT
-CLASS="LITERAL"
->external</TT
-> items.)
-  </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN41563"
+NAME="AEN40101"
 ></A
 ><H3
 >Composite Types</H3
 ><P
->   The second form of <TT
+>   The first form of <TT
 CLASS="COMMAND"
 >CREATE TYPE</TT
 >
    creates a composite type.
-   The composite type is specified by a list of column names and data types.
+   The composite type is specified by a list of attribute names and data types.
    This is essentially the same as the row type
    of a table, but using <TT
 CLASS="COMMAND"
@@ -730,7 +205,308 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN41568"
+NAME="AEN40106"
+></A
+><H3
+>Base Types</H3
+><P
+>   The second form of <TT
+CLASS="COMMAND"
+>CREATE TYPE</TT
+> creates a new base type
+   (scalar type).  The parameters may appear in any order, not only that
+   illustrated above, and most are optional.  You must register
+   two or more functions (using <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+>) before
+   defining the type.  The support functions 
+   <VAR
+CLASS="REPLACEABLE"
+>input_function</VAR
+> and
+   <VAR
+CLASS="REPLACEABLE"
+>output_function</VAR
+>
+   are required, while the functions
+   <VAR
+CLASS="REPLACEABLE"
+>receive_function</VAR
+> and
+   <VAR
+CLASS="REPLACEABLE"
+>send_function</VAR
+>
+   are optional.  Generally these functions have to be coded in C
+   or another low-level language.
+  </P
+><P
+>   The <VAR
+CLASS="REPLACEABLE"
+>input_function</VAR
+>
+   converts the type's external textual representation to the internal
+   representation  used by the
+   operators and functions defined for the type.
+   <VAR
+CLASS="REPLACEABLE"
+>output_function</VAR
+>
+   performs the reverse transformation.  The input function may be
+   declared as taking one argument of type <TT
+CLASS="TYPE"
+>cstring</TT
+>,
+   or as taking three arguments of types
+   <TT
+CLASS="TYPE"
+>cstring</TT
+>, <TT
+CLASS="TYPE"
+>oid</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>.
+   The first argument is the input text as a C string, the second
+   argument is the element type in case this is an array type,
+   and the third is the <VAR
+CLASS="LITERAL"
+>typmod</VAR
+> of the destination column, if known.
+   The input function should return a value of the data type itself.
+   The output function may be
+   declared as taking one argument of the new data type,  or as taking
+   two arguments of which the second is type <TT
+CLASS="TYPE"
+>oid</TT
+>.
+   The second argument is again the array element type for array types.
+   The output function should return type <TT
+CLASS="TYPE"
+>cstring</TT
+>.
+  </P
+><P
+>   The optional <VAR
+CLASS="REPLACEABLE"
+>receive_function</VAR
+>
+   converts the type's external binary representation to the internal
+   representation.  If this function is not supplied, the type cannot
+   participate in binary input.  The binary representation should be
+   chosen to be cheap to convert to internal form, while being reasonably
+   portable.  (For example, the standard integer datatypes use network
+   byte order as the external binary representation, while the internal
+   representation is in the machine's native byte order.)  The receive
+   function should perform adequate checking to ensure that the value is
+   valid.
+   The receive function may be declared as taking one argument of type
+   <TT
+CLASS="TYPE"
+>internal</TT
+>, or two arguments of types <TT
+CLASS="TYPE"
+>internal</TT
+>
+   and <TT
+CLASS="TYPE"
+>oid</TT
+>.  It must return a value of the data type itself.
+   (The first argument is a pointer to a StringInfo buffer
+   holding the received byte string; the optional second argument is the
+   element type in case this is an array type.)  Similarly, the optional
+   <VAR
+CLASS="REPLACEABLE"
+>send_function</VAR
+> converts
+   from the internal representation to the external binary representation.
+   If this function is not supplied, the type cannot participate in binary
+   output.  The send function may be
+   declared as taking one argument of the new data type,  or as taking
+   two arguments of which the second is type <TT
+CLASS="TYPE"
+>oid</TT
+>.
+   The second argument is again the array element type for array types.
+   The send function must return type <TT
+CLASS="TYPE"
+>bytea</TT
+>.
+  </P
+><P
+>   You should at this point be wondering how the input and output functions
+   can be declared to have results or arguments of the new type, when they have
+   to be created before the new type can be created.  The answer is that the
+   input function must be created first, then the output function (and
+   the binary I/O functions if wanted), and finally the data type.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will first see the name of the new
+   data type as the return type of the input function.  It will create a
+   <SPAN
+CLASS="QUOTE"
+>"shell"</SPAN
+> type, which is simply a placeholder entry in
+   the system catalog, and link the input function definition to the shell
+   type.  Similarly the other functions will be linked to the (now already
+   existing) shell type.  Finally, <TT
+CLASS="COMMAND"
+>CREATE TYPE</TT
+> replaces the
+   shell entry with a complete type definition, and the new type can be used.
+  </P
+><P
+>   While the details of the new type's internal representation are only
+   known to the I/O functions and other functions you create to work with
+   the type, there are several properties of the internal representation
+   that must be declared to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+   Foremost of these is
+   <VAR
+CLASS="REPLACEABLE"
+>internallength</VAR
+>.
+   Base data types can be fixed-length, in which case
+   <VAR
+CLASS="REPLACEABLE"
+>internallength</VAR
+> is a
+   positive integer, or variable  length, indicated by setting
+   <VAR
+CLASS="REPLACEABLE"
+>internallength</VAR
+>
+   to <VAR
+CLASS="LITERAL"
+>VARIABLE</VAR
+>.  (Internally, this is represented
+   by setting <VAR
+CLASS="LITERAL"
+>typlen</VAR
+> to -1.)  The internal representation of all
+   variable-length types must start with a 4-byte integer giving the total
+   length of this value of the type.
+  </P
+><P
+>   The optional flag <VAR
+CLASS="LITERAL"
+>PASSEDBYVALUE</VAR
+> indicates that
+   values of this data type are passed by value, rather than by
+   reference.  You may not pass by value types whose internal
+   representation is larger than the size of the <TT
+CLASS="TYPE"
+>Datum</TT
+> type
+   (4 bytes on most machines, 8 bytes on a few).
+  </P
+><P
+>   The <VAR
+CLASS="REPLACEABLE"
+>alignment</VAR
+> parameter
+   specifies the storage alignment required for the data type.  The
+   allowed values equate to alignment on 1, 2, 4, or 8 byte boundaries.
+   Note that variable-length types must have an alignment of at least
+   4, since they necessarily contain an <TT
+CLASS="TYPE"
+>int4</TT
+> as their first component.
+  </P
+><P
+>   The <VAR
+CLASS="REPLACEABLE"
+>storage</VAR
+> parameter
+   allows selection of storage strategies for variable-length data
+   types.  (Only <VAR
+CLASS="LITERAL"
+>plain</VAR
+> is allowed for fixed-length
+   types.)  <VAR
+CLASS="LITERAL"
+>plain</VAR
+> specifies that data of the type
+   will always be stored in-line and not compressed.
+   <VAR
+CLASS="LITERAL"
+>extended</VAR
+> specifies that the system will first
+   try to compress a long data value, and will move the value out of
+   the main table row if it's still too long.
+   <VAR
+CLASS="LITERAL"
+>external</VAR
+> allows the value to be moved out of the
+   main table, but the system will not try to compress it.
+   <VAR
+CLASS="LITERAL"
+>main</VAR
+> allows compression, but discourages moving
+   the value out of the main table.  (Data items with this storage
+   strategy may still be moved out of the main table if there is no
+   other way to make a row fit, but they will be kept in the main
+   table preferentially over <VAR
+CLASS="LITERAL"
+>extended</VAR
+> and
+   <VAR
+CLASS="LITERAL"
+>external</VAR
+> items.)
+  </P
+><P
+>   A default value may be specified, in case a user wants columns of the
+   data type to default to something other than the null value.
+   Specify the default with the <VAR
+CLASS="LITERAL"
+>DEFAULT</VAR
+> key word.
+   (Such a default may be overridden by an explicit <VAR
+CLASS="LITERAL"
+>DEFAULT</VAR
+>
+   clause attached to a particular column.)
+  </P
+><P
+>   To indicate that a type is an array, specify the type of the array
+   elements using the <VAR
+CLASS="LITERAL"
+>ELEMENT</VAR
+> key word.  For example, to
+   define an array of 4-byte integers (<TT
+CLASS="TYPE"
+>int4</TT
+>), specify
+   <VAR
+CLASS="LITERAL"
+>ELEMENT = int4</VAR
+>. More details about array types
+   appear below.
+  </P
+><P
+>   To indicate the delimiter to be used between values in the external
+   representation of arrays of this type, <VAR
+CLASS="REPLACEABLE"
+>delimiter</VAR
+> can be
+   set to a specific character.  The default delimiter is the comma
+   (<VAR
+CLASS="LITERAL"
+>,</VAR
+>).  Note that the delimiter is associated
+   with the array element type, not the array type itself.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN40169"
 ></A
 ><H3
 >Array Types</H3
@@ -743,38 +519,35 @@ CLASS="PRODUCTNAME"
     associated array type, whose name consists of the base type's
     name prepended with an underscore.  The parser understands this
     naming convention, and translates requests for columns of type
-    <TT
+    <VAR
 CLASS="LITERAL"
->foo[]</TT
-> into requests for type <TT
+>foo[]</VAR
+> into requests for type <VAR
 CLASS="LITERAL"
->_foo</TT
+>_foo</VAR
 >.
     The implicitly-created array type is variable length and uses the
-    built-in input and output functions <TT
+    built-in input and output functions <VAR
 CLASS="LITERAL"
->array_in</TT
+>array_in</VAR
 > and
-    <TT
+    <VAR
 CLASS="LITERAL"
->array_out</TT
+>array_out</VAR
 >.
    </P
 ><P
->    You might reasonably ask <SPAN
-CLASS="QUOTE"
->"why is there an <TT
+>    You might reasonably ask why there is an <VAR
 CLASS="OPTION"
->ELEMENT</TT
+>ELEMENT</VAR
 >
-    option, if the system makes the correct array type automatically?"</SPAN
->
-    The only case where it's useful to use <TT
+    option, if the system makes the correct array type automatically.
+    The only case where it's useful to use <VAR
 CLASS="OPTION"
->ELEMENT</TT
+>ELEMENT</VAR
 > is when you are
-    making a fixed-length type that happens to be internally an array of N
-    identical things, and you want to allow the N things to be accessed
+    making a fixed-length type that happens to be internally an array of a number of
+    identical things, and you want to allow these things to be accessed
     directly by subscripting, in addition to whatever operations you plan
     to provide for the type as a whole.  For example, type <TT
 CLASS="TYPE"
@@ -783,28 +556,28 @@ CLASS="TYPE"
     allows its constituent <TT
 CLASS="TYPE"
 >char</TT
->s to be accessed this way.
+> elements to be accessed this way.
     A 2-D <TT
 CLASS="TYPE"
 >point</TT
-> type could allow its two component floats to be
-    accessed like <TT
+> type could allow its two component numbers to be
+    accessed like <VAR
 CLASS="LITERAL"
->point[0]</TT
-> and <TT
+>point[0]</VAR
+> and <VAR
 CLASS="LITERAL"
->point[1]</TT
+>point[1]</VAR
 >.
     Note that
     this facility only works for fixed-length types whose internal form
-    is exactly a sequence of N identical fixed-length fields.  A subscriptable
+    is exactly a sequence of identical fixed-length fields.  A subscriptable
     variable-length type must have the generalized internal representation
-    used by <TT
+    used by <VAR
 CLASS="LITERAL"
->array_in</TT
-> and <TT
+>array_in</VAR
+> and <VAR
 CLASS="LITERAL"
->array_out</TT
+>array_out</VAR
 >.
     For historical reasons (i.e., this is clearly wrong but it's far too
     late to change it), subscripting of fixed-length array types starts from
@@ -815,67 +588,329 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
+NAME="AEN40187"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>typename</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of a type to be created.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>attribute_name</VAR
+></DT
+><DD
+><P
+>      The name of an attribute (column) for the composite type.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>data_type</VAR
+></DT
+><DD
+><P
+>      The name of an existing data type to become a column of the
+      composite type.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>input_function</VAR
+></DT
+><DD
+><P
+>      The name of a function that converts data from the type's
+      external textual form to its internal form.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>output_function</VAR
+></DT
+><DD
+><P
+>      The name of a function that converts data from the type's
+      internal form to its external textual form.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>receive_function</VAR
+></DT
+><DD
+><P
+>      The name of a function that converts data from the type's
+      external binary form to its internal form.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>send_function</VAR
+></DT
+><DD
+><P
+>      The name of a function that converts data from the type's
+      internal form to its external binary form.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>internallength</VAR
+></DT
+><DD
+><P
+>      A numeric constant that specifies the length in bytes of the new
+      type's internal representation.  The default assumption is that
+      it is variable-length.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>alignment</VAR
+></DT
+><DD
+><P
+>      The storage alignment requirement of the data type.  If specified,
+      it must be <VAR
+CLASS="LITERAL"
+>char</VAR
+>, <VAR
+CLASS="LITERAL"
+>int2</VAR
+>,
+      <VAR
+CLASS="LITERAL"
+>int4</VAR
+>, or <VAR
+CLASS="LITERAL"
+>double</VAR
+>; the
+      default is <VAR
+CLASS="LITERAL"
+>int4</VAR
+>.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>storage</VAR
+></DT
+><DD
+><P
+>      The storage strategy for the data type.  If specified, must be
+      <VAR
+CLASS="LITERAL"
+>plain</VAR
+>, <VAR
+CLASS="LITERAL"
+>external</VAR
+>,
+      <VAR
+CLASS="LITERAL"
+>extended</VAR
+>, or <VAR
+CLASS="LITERAL"
+>main</VAR
+>; the
+      default is <VAR
+CLASS="LITERAL"
+>plain</VAR
+>.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>default</VAR
+></DT
+><DD
+><P
+>      The default value for the data type.  If this is omitted, the
+      default is null.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>element</VAR
+></DT
+><DD
+><P
+>      The type being created is an array; this specifies the type of
+      the array elements.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>delimiter</VAR
+></DT
+><DD
+><P
+>      The delimiter character to be used between values in arrays made
+      of this type.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40265"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE TYPE</SAMP
+></DT
+><DD
+><P
+>      Message returned if the type was successfully created.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
 NAME="SQL-CREATETYPE-NOTES"
 ></A
 ><H2
 >Notes</H2
 ><P
->    User-defined type names cannot begin with the underscore character
-    (<SPAN
-CLASS="QUOTE"
->"<TT
+>   User-defined type names cannot begin with the underscore character
+   (<VAR
 CLASS="LITERAL"
->_</TT
->"</SPAN
->) and can only be 62
-    characters long (or in general <TT
-CLASS="LITERAL"
->NAMEDATALEN-2</TT
->, rather than
-    the <TT
-CLASS="LITERAL"
->NAMEDATALEN-1</TT
-> characters allowed for other names).
-    Type names beginning with underscore are
-    reserved for internally-created array type names.
-   </P
+>_</VAR
+>) and can only be 62 characters
+   long (or in general <TT
+CLASS="SYMBOL"
+>NAMEDATALEN</TT
+> - 2, rather than
+   the <TT
+CLASS="SYMBOL"
+>NAMEDATALEN</TT
+> - 1 characters allowed for other
+   names).  Type names beginning with underscore are reserved for
+   internally-created array type names.
+  </P
+><P
+>   In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> versions before 7.3, it
+   was customary to avoid creating a shell type by replacing the
+   functions' forward references to the type name with the placeholder
+   pseudotype <TT
+CLASS="TYPE"
+>opaque</TT
+>.  The <TT
+CLASS="TYPE"
+>cstring</TT
+> arguments and
+   results also had to be declared as <TT
+CLASS="TYPE"
+>opaque</TT
+> before 7.3.  To
+   support loading of old dump files, <TT
+CLASS="COMMAND"
+>CREATE TYPE</TT
+> will
+   accept functions declared using <TT
+CLASS="TYPE"
+>opaque</TT
+>, but it will issue
+   a notice and change the function's declaration to use the correct
+   types.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41594"
+NAME="AEN40286"
 ></A
 ><H2
 >Examples</H2
 ><P
->   This example creates the <TT
-CLASS="TYPE"
->box</TT
-> data type and then uses the
-   type in a table definition:
+>   This example creates a composite type and uses it in
+   a function definition:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE TYPE box (INTERNALLENGTH = 16,
-    INPUT = my_procedure_1, OUTPUT = my_procedure_2);
-CREATE TABLE myboxes (id INT4, description box);</PRE
+>CREATE TYPE compfoo AS (f1 int, f2 text);
+CREATE FUNCTION getfoo() RETURNS SETOF compfoo AS
+  'SELECT fooid, fooname FROM foo' LANGUAGE SQL;</PRE
 ><P>
   </P
 ><P
->   If <TT
+>   This example creates the base data type <TT
 CLASS="TYPE"
 >box</TT
->'s internal structure were an array of four
+> and then uses the
+   type in a table definition:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TYPE box (
+    INTERNALLENGTH = 16,
+    INPUT = my_box_in_function,
+    OUTPUT = my_box_out_function
+);
+
+CREATE TABLE myboxes (
+    id integer,
+    description box
+);</PRE
+><P>
+  </P
+><P
+>   If the internal structure of <TT
+CLASS="TYPE"
+>box</TT
+> were an array of four
    <TT
 CLASS="TYPE"
 >float4</TT
->s, we might instead say
+> elements, we might instead use
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE TYPE box (INTERNALLENGTH = 16,
-    INPUT = my_procedure_1, OUTPUT = my_procedure_2,
-    ELEMENT = float4);</PRE
+>CREATE TYPE box (
+    INTERNALLENGTH = 16,
+    INPUT = my_box_in_function,
+    OUTPUT = my_box_out_function,
+    ELEMENT = float4
+);</PRE
 ><P>
-   which would allow a box value's component floats to be accessed
+   which would allow a box value's component numbers to be accessed
    by subscripting.  Otherwise the type behaves the same as before.
   </P
 ><P
@@ -883,19 +918,22 @@ CLASS="PROGRAMLISTING"
    a table definition:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE TYPE bigobj (INPUT = lo_filein, OUTPUT = lo_fileout,
-    INTERNALLENGTH = VARIABLE);
-CREATE TABLE big_objs (id int4, obj bigobj);</PRE
+>CREATE TYPE bigobj (
+    INPUT = lo_filein, OUTPUT = lo_fileout,
+    INTERNALLENGTH = VARIABLE
+);
+CREATE TABLE big_objs (
+    id integer,
+    obj bigobj
+);</PRE
 ><P>
   </P
 ><P
->   This example creates a composite type and uses it in
-   a table function definition:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE TYPE compfoo AS (f1 int, f2 text);
-CREATE FUNCTION getfoo() RETURNS SETOF compfoo AS 'SELECT fooid, fooname FROM foo' LANGUAGE SQL;</PRE
-><P>
+>   More examples, including suitable input and output functions, are
+   in <A
+HREF="extend.html"
+>Chapter 34</A
+>.
   </P
 ></DIV
 ><DIV
@@ -938,9 +976,6 @@ HREF="sql-droptype.html"
 ><I
 >DROP TYPE</I
 ></A
->, <I
-CLASS="CITETITLE"
->PostgreSQL Programmer's Guide</I
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >ECPG - Embedded SQL in C</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Interfaces"
-HREF="programmer-client.html"><LINK
+HREF="client-interfaces.html"><LINK
 REL="PREVIOUS"
-TITLE="pg_lo_export"
-HREF="pgtcl-pgloexport.html"><LINK
+TITLE="Example Program"
+HREF="pgtcl-examplesect.html"><LINK
 REL="NEXT"
 TITLE="Connecting to the Database Server"
 HREF="ecpg-connect.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="pgtcl-pgloexport.html"
+HREF="pgtcl-examplesect.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,14 +80,14 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="ECPG"
->Chapter 4. <SPAN
+></A
+>Chapter 30. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
-> - Embedded <SPAN
+> - Embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> in C</A
-></H1
+>SQL</ACRONYM
+> in C</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -96,111 +96,159 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->4.1. <A
+>30.1. <A
 HREF="ecpg.html#ECPG-CONCEPT"
 >The Concept</A
 ></DT
 ><DT
->4.2. <A
+>30.2. <A
 HREF="ecpg-connect.html"
 >Connecting to the Database Server</A
 ></DT
 ><DT
->4.3. <A
+>30.3. <A
 HREF="ecpg-disconnect.html"
 >Closing a Connection</A
 ></DT
 ><DT
->4.4. <A
+>30.4. <A
 HREF="ecpg-commands.html"
 >Running SQL Commands</A
 ></DT
 ><DT
->4.5. <A
+>30.5. <A
+HREF="ecpg-set-connection.html"
+>Choosing a Connection</A
+></DT
+><DT
+>30.6. <A
 HREF="ecpg-variables.html"
->Passing Data</A
-></DT
-><DT
->4.6. <A
-HREF="ecpg-errors.html"
->Error Handling</A
-></DT
-><DT
->4.7. <A
-HREF="ecpg-include.html"
->Including Files</A
-></DT
-><DT
->4.8. <A
-HREF="ecpg-process.html"
->Processing Embedded SQL Programs</A
-></DT
-><DT
->4.9. <A
-HREF="ecpg-library.html"
->Library Functions</A
-></DT
-><DT
->4.10. <A
-HREF="ecpg-porting.html"
->Porting From Other <SPAN
-CLASS="ACRONYM"
->RDBMS</SPAN
-> Packages</A
-></DT
-><DT
->4.11. <A
-HREF="ecpg-develop.html"
->For the Developer</A
+>Using Host Variables</A
 ></DT
 ><DD
 ><DL
 ><DT
->4.11.1. <A
-HREF="ecpg-develop.html#AEN27942"
->The Preprocessor</A
+>30.6.1. <A
+HREF="ecpg-variables.html#AEN22443"
+>Overview</A
 ></DT
 ><DT
->4.11.2. <A
-HREF="ecpg-develop.html#AEN27987"
->The Library</A
+>30.6.2. <A
+HREF="ecpg-variables.html#AEN22451"
+>Declare Sections</A
+></DT
+><DT
+>30.6.3. <A
+HREF="ecpg-variables.html#AEN22468"
+><TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> and <TT
+CLASS="COMMAND"
+>FETCH INTO</TT
+></A
+></DT
+><DT
+>30.6.4. <A
+HREF="ecpg-variables.html#AEN22486"
+>Indicators</A
 ></DT
 ></DL
 ></DD
+><DT
+>30.7. <A
+HREF="ecpg-dynamic.html"
+>Dynamic SQL</A
+></DT
+><DT
+>30.8. <A
+HREF="ecpg-descriptors.html"
+>Using SQL Descriptor Areas</A
+></DT
+><DT
+>30.9. <A
+HREF="ecpg-errors.html"
+>Error Handling</A
+></DT
+><DD
+><DL
+><DT
+>30.9.1. <A
+HREF="ecpg-errors.html#AEN22633"
+>Setting Callbacks</A
+></DT
+><DT
+>30.9.2. <A
+HREF="ecpg-errors.html#AEN22714"
+>sqlca</A
+></DT
+><DT
+>30.9.3. <A
+HREF="ecpg-errors.html#AEN22759"
+><VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+> vs <VAR
+CLASS="LITERAL"
+>SQLCODE</VAR
+></A
+></DT
+></DL
+></DD
+><DT
+>30.10. <A
+HREF="ecpg-include.html"
+>Including Files</A
+></DT
+><DT
+>30.11. <A
+HREF="ecpg-process.html"
+>Processing Embedded SQL Programs</A
+></DT
+><DT
+>30.12. <A
+HREF="ecpg-library.html"
+>Library Functions</A
+></DT
+><DT
+>30.13. <A
+HREF="ecpg-develop.html"
+>Internals</A
+></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN27508"
+NAME="AEN22275"
 ></A
 ><P
->  This chapter describes the embedded <SPAN
+>  This chapter describes the embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > package
   for <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >. It works with
-  <SPAN
+  <ACRONYM
 CLASS="ACRONYM"
->C</SPAN
-> and <SPAN
+>C</ACRONYM
+> and <ACRONYM
 CLASS="ACRONYM"
->C++</SPAN
+>C++</ACRONYM
 >. It was written by
-  Linus Tolke (<TT
+  Linus Tolke (<CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:linus@epact.se"
 >linus@epact.se</A
->&#62;</TT
+>&#62;</CODE
 >) and Michael Meskes
-  (<TT
+  (<CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:meskes@postgresql.org"
 >meskes@postgresql.org</A
->&#62;</TT
+>&#62;</CODE
 >).
  </P
 ><P
@@ -214,7 +262,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-CONCEPT"
->4.1. The Concept</A
+>30.1. The Concept</A
 ></H1
 ><P
 >   An embedded SQL program consists of code written in an ordinary
@@ -225,48 +273,70 @@ NAME="ECPG-CONCEPT"
    compilation tool chain.
   </P
 ><P
->   Embedded <SPAN
+>   Embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > has advantages over other methods
-   for handling <SPAN
+   for handling <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > commands from C code. First, it
    takes care of the tedious passing of information to and from
-   variables in your <SPAN
+   variables in your <ACRONYM
 CLASS="ACRONYM"
->C</SPAN
-> program.  Secondly, embedded
-   SQL in C is defined in the SQL standard and supported by many other
-   SQL databases.  The PostgreSQL implementation is designed to match
-   this standard as much as possible, and it is usually possible to
-   port embedded <SPAN
+>C</ACRONYM
+> program.  Second, the SQL
+   code in the program is checked at build time for syntactical
+   correctness.  Third, embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> programs written for other
+>SQL</ACRONYM
+> in C is
+   specified in the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> standard and supported by
+   many other <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> database systems.  The
    <SPAN
-CLASS="ACRONYM"
->RDBMS</SPAN
-> to <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->
-   with relative ease.
+> implementation is designed to match this
+   standard as much as possible, and it is usually possible to port
+   embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> programs written for other SQL
+   databases to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> with relative
+   ease.
   </P
 ><P
->   As indicated, programs written for the embedded SQL interface are
-   normal C programs with special code inserted to perform
-   database-related actions.  This special code always has the form
+>   As indicated, programs written for the embedded
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> interface are normal C programs with special
+   code inserted to perform database-related actions.  This special
+   code always has the form
 </P><PRE
 CLASS="PROGRAMLISTING"
 >EXEC SQL ...;</PRE
 ><P>
    These statements syntactically take the place of a C statement.
    Depending on the particular statement, they may appear in the
-   global context or within a function.  Embedded SQL statements
-   follow the case-sensitivity rules of normal SQL code, and not those
-   of C.
+   global context or within a function.  Embedded
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> statements follow the case-sensitivity rules
+   of normal <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> code, and not those of C.
   </P
 ><P
 >   The following sections explain all the embedded SQL statements.
@@ -289,7 +359,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="pgtcl-pgloexport.html"
+HREF="pgtcl-examplesect.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -317,13 +387,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_lo_export</TD
+>Example Program</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="programmer-client.html"
+HREF="client-interfaces.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

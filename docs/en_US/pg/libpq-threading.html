@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Threading Behavior</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
 HREF="libpq.html"><LINK
 REL="PREVIOUS"
-TITLE="Files"
-HREF="libpq-files.html"><LINK
+TITLE="The Password File"
+HREF="libpq-pgpass.html"><LINK
 REL="NEXT"
-TITLE="Building Libpq Programs"
+TITLE="Building libpq Programs"
 HREF="libpq-build.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="libpq-files.html"
+HREF="libpq-pgpass.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 1. <SPAN
+>Chapter 27. <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 > - C Library</TD
@@ -84,71 +84,79 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="LIBPQ-THREADING"
->1.12. Threading Behavior</A
+>27.12. Threading Behavior</A
 ></H1
 ><A
-NAME="AEN25854"
+NAME="AEN20906"
 ></A
 ><P
-><TT
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> is thread-safe if the library is
+compiled using <TT
 CLASS="FILENAME"
->libpq</TT
-> is thread-safe as of
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.0, so long as no two threads
-attempt to manipulate the same <TT
+>configure</TT
+>'s 
+<VAR
+CLASS="LITERAL"
+>--enable-thread-safety</VAR
+> command-line option.  
+(In addition, you might need to use other threading command-line 
+options to compile your client code.)</P
+><P
+>One restriction is that no two threads attempt to manipulate the same
+<TT
 CLASS="STRUCTNAME"
 >PGconn</TT
-> object at the same
-time. In particular, you cannot issue concurrent queries from different
-threads through the same connection object. (If you need to run
-concurrent queries, start up multiple connections.)</P
+> object at the same time. In particular, you cannot
+issue concurrent commands from different threads through the same
+connection object. (If you need to run concurrent commands, start up
+multiple connections.)</P
 ><P
 ><TT
 CLASS="STRUCTNAME"
 >PGresult</TT
-> objects are read-only after creation, and so can be passed around
-freely between threads.</P
+> objects are read-only after creation, and so can be 
+passed around freely between threads.</P
 ><P
->The deprecated functions <TT
+>The deprecated functions <CODE
 CLASS="FUNCTION"
->PQoidStatus</TT
+>PQoidStatus</CODE
 > and
-<TT
+<CODE
 CLASS="FUNCTION"
->fe_setauthsvc</TT
+>fe_setauthsvc</CODE
 > are not thread-safe and should not be
-used in multithread programs.  <TT
+used in multithread programs.  <CODE
 CLASS="FUNCTION"
->PQoidStatus</TT
+>PQoidStatus</CODE
 > can be
-replaced by <TT
+replaced by <CODE
 CLASS="FUNCTION"
->PQoidValue</TT
+>PQoidValue</CODE
 >.  There is no good reason to
-call <TT
+call <CODE
 CLASS="FUNCTION"
->fe_setauthsvc</TT
+>fe_setauthsvc</CODE
 > at all.</P
 ><P
-><TT
-CLASS="FILENAME"
->Libpq</TT
-> clients using the <TT
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> applications that use the <VAR
 CLASS="LITERAL"
->crypt</TT
+>crypt</VAR
 >
-encryption method rely on the <TT
+authentication method rely on the <VAR
 CLASS="LITERAL"
->crypt()</TT
+>crypt()</VAR
 > operating
-system function, which is often not thread-safe. It is better to use
-<TT
+system function, which is often not thread-safe. It is better to use the
+<VAR
 CLASS="LITERAL"
->MD5</TT
-> encryption, which is thread-safe on all
+>md5</VAR
+> method, which is thread-safe on all
 platforms.</P
 ></DIV
 ><DIV
@@ -167,7 +175,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="libpq-files.html"
+HREF="libpq-pgpass.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -195,7 +203,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Files</TD
+>The Password File</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -211,7 +219,7 @@ ALIGN="right"
 VALIGN="top"
 >Building <SPAN
 CLASS="APPLICATION"
->Libpq</SPAN
+>libpq</SPAN
 > Programs</TD
 ></TR
 ></TABLE

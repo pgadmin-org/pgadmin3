@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_constraint</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,388 +81,367 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-CONSTRAINT"
->3.10. pg_constraint</A
+>45.10. <TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+></A
 ></H1
+><A
+NAME="AEN51435"
+></A
 ><P
->   This system catalog stores CHECK, PRIMARY KEY, UNIQUE, and FOREIGN KEY
-   constraints on tables.  (Column
-   constraints are not treated specially.  Every column constraint is
-   equivalent to some table constraint.)  See under <TT
-CLASS="COMMAND"
->CREATE
-   TABLE</TT
-> for more information.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->    NOT NULL constraints are represented in the <TT
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+> stores check, primary key, unique, and foreign
+   key constraints on tables.  (Column constraints are not treated
+   specially.  Every column constraint is equivalent to some table
+   constraint.)  Not-null constraints are represented in the
+   <TT
 CLASS="STRUCTNAME"
 >pg_attribute</TT
->
-    catalog.
-   </P
-></BLOCKQUOTE
-></DIV
+> catalog.
+  </P
 ><P
->   CHECK constraints on domains are stored here, too.  Global ASSERTIONS
-   (a currently-unsupported SQL feature) may someday appear here as well.
+>   Check constraints on domains are stored here, too.
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN53090"
+NAME="AEN51441"
 ></A
 ><P
 ><B
->Table 3-10. pg_constraint Columns</B
+>Table 45-10. <TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->conname</TD
+><TT
+CLASS="STRUCTFIELD"
+>conname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Constraint name (not necessarily unique!)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->connamespace</TD
+><TT
+CLASS="STRUCTFIELD"
+>connamespace</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_namespace.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       The OID of the namespace that contains this constraint
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->contype</TD
+><TT
+CLASS="STRUCTFIELD"
+>contype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->        'c' = check constraint,
-        'f' = foreign key constraint,
-        'p' = primary key constraint,
-        'u' = unique constraint
+>        <VAR
+CLASS="LITERAL"
+>c</VAR
+> = check constraint,
+        <VAR
+CLASS="LITERAL"
+>f</VAR
+> = foreign key constraint,
+        <VAR
+CLASS="LITERAL"
+>p</VAR
+> = primary key constraint,
+        <VAR
+CLASS="LITERAL"
+>u</VAR
+> = unique constraint
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->condeferrable</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
-CLASS="TYPE"
->boolean</TT
+CLASS="STRUCTFIELD"
+>condeferrable</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Is the constraint deferrable?</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->condeferred</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
-CLASS="TYPE"
->boolean</TT
+CLASS="STRUCTFIELD"
+>condeferred</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Is the constraint deferred by default?</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->conrelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>conrelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The table this constraint is on; 0 if not a table constraint</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->contypid</TD
+><TT
+CLASS="STRUCTFIELD"
+>contypid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_type.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The domain this constraint is on; 0 if not a domain constraint</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->confrelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>confrelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >If a foreign key, the referenced table; else 0</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->confupdtype</TD
+><TT
+CLASS="STRUCTFIELD"
+>confupdtype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Foreign key update action code</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->confdeltype</TD
+><TT
+CLASS="STRUCTFIELD"
+>confdeltype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Foreign key deletion action code</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->confmatchtype</TD
+><TT
+CLASS="STRUCTFIELD"
+>confmatchtype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Foreign key match type</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->conkey</TD
+><TT
+CLASS="STRUCTFIELD"
+>conkey</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_attribute.attnum</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-attribute.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+>.attnum</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >If a table constraint, list of columns which the constraint constrains</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->confkey</TD
+><TT
+CLASS="STRUCTFIELD"
+>confkey</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_attribute.attnum</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-attribute.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+>.attnum</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >If a foreign key, list of the referenced columns</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->conbin</TD
+><TT
+CLASS="STRUCTFIELD"
+>conbin</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >If a check constraint, an internal representation of the expression</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->consrc</TD
+><TT
+CLASS="STRUCTFIELD"
+>consrc</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >If a check constraint, a human-readable representation of the expression</TD
 ></TR
 ></TBODY
@@ -475,15 +454,12 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->    <TT
-CLASS="STRUCTNAME"
->pg_class</TT
->.<TT
-CLASS="STRUCTFIELD"
->relchecks</TT
->
-    needs to agree with the number of check-constraint entries found in this
-    table for the given relation.
+>    <VAR
+CLASS="LITERAL"
+>pg_class.relchecks</VAR
+> needs to agree with the
+    number of check-constraint entries found in this table for the
+    given relation.
    </P
 ></BLOCKQUOTE
 ></DIV
@@ -532,7 +508,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_class</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -546,7 +525,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_conversion</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_conversion</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Dependency Tracking</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. Data Definition</TD
+>Chapter 5. Data Definition</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DDL-DEPEND"
->2.10. Dependency Tracking</A
+>5.10. Dependency Tracking</A
 ></H1
 ><P
 >   When you create complex database structures involving many tables
@@ -99,22 +99,18 @@ CLASS="PRODUCTNAME"
    drop objects that other objects still depend on.  For example,
    attempting to drop the products table we had considered in <A
 HREF="ddl-constraints.html#DDL-CONSTRAINTS-FK"
->Section 2.4.5</A
+>Section 5.4.5</A
 >, with the orders table depending on
    it, would result in an error message such as this:
 </P><PRE
 CLASS="SCREEN"
-><TT
-CLASS="USERINPUT"
-><B
->DROP TABLE products;</B
-></TT
->
+>DROP TABLE products;
+
 NOTICE:  constraint $1 on table orders depends on table products
 ERROR:  Cannot drop table products because other objects depend on it
         Use DROP ... CASCADE to drop the dependent objects too</PRE
 ><P>
-   The error message contains a useful hint: If you don't want to
+   The error message contains a useful hint: if you do not want to
    bother deleting all the dependent objects individually, you can run
 </P><PRE
 CLASS="SCREEN"
@@ -122,19 +118,19 @@ CLASS="SCREEN"
 ><P>
    and all the dependent objects will be removed.  In this case, it
    doesn't remove the orders table, it only removes the foreign key
-   constraint.  (If you want to check what <TT
+   constraint.  (If you want to check what <VAR
 CLASS="LITERAL"
->DROP ... CASCADE</TT
+>DROP ... CASCADE</VAR
 > will do,
    run <TT
 CLASS="COMMAND"
 >DROP</TT
-> without <TT
+> without <VAR
 CLASS="LITERAL"
->CASCADE</TT
-> and read the <TT
+>CASCADE</VAR
+> and read the <VAR
 CLASS="LITERAL"
->NOTICE</TT
+>NOTICE</VAR
 > messages.)
   </P
 ><P
@@ -142,18 +138,18 @@ CLASS="LITERAL"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > support
-   specifying <TT
+   specifying <VAR
 CLASS="LITERAL"
->CASCADE</TT
+>CASCADE</VAR
 >.  Of course, the nature of
    the possible dependencies varies with the type of the object.  You
-   can also write <TT
+   can also write <VAR
 CLASS="LITERAL"
->RESTRICT</TT
+>RESTRICT</VAR
 > instead of
-   <TT
+   <VAR
 CLASS="LITERAL"
->CASCADE</TT
+>CASCADE</VAR
 > to get the default behavior which is to
    restrict drops of objects that other objects depend on.
   </P
@@ -165,21 +161,21 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >    According to the SQL standard, specifying either
-    <TT
+    <VAR
 CLASS="LITERAL"
->RESTRICT</TT
-> or <TT
+>RESTRICT</VAR
+> or <VAR
 CLASS="LITERAL"
->CASCADE</TT
+>CASCADE</VAR
 > is
     required.  No database system actually implements it that way, but
-    whether the default behavior is <TT
+    whether the default behavior is <VAR
 CLASS="LITERAL"
->RESTRICT</TT
+>RESTRICT</VAR
 > or
-    <TT
+    <VAR
 CLASS="LITERAL"
->CASCADE</TT
+>CASCADE</VAR
 > varies across systems.
    </P
 ></BLOCKQUOTE

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Accessing a Database</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Getting Started"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -84,7 +84,7 @@ NAME="TUTORIAL-ACCESSDB"
 >1.4. Accessing a Database</A
 ></H1
 ><A
-NAME="AEN137"
+NAME="AEN414"
 ></A
 ><P
 >    Once you have created a database, you can access it by:
@@ -108,9 +108,9 @@ CLASS="FIRSTTERM"
 ></SPAN
 >, which allows you
        to interactively enter, edit, and execute
-       <SPAN
+       <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > commands.
       </P
 ></LI
@@ -122,9 +122,9 @@ STYLE="list-style-type: disc"
 CLASS="APPLICATION"
 >PgAccess</SPAN
 > or an office suite with
-       <SPAN
+       <ACRONYM
 CLASS="ACRONYM"
->ODBC</SPAN
+>ODBC</ACRONYM
 > support to create and manipulate a
        database.  These possibilities are not covered in this
        tutorial.
@@ -135,10 +135,10 @@ STYLE="list-style-type: disc"
 ><P
 >       Writing a custom application, using one of the several
        available language bindings.  These possibilities are discussed
-       further in the <A
-HREF="programmer.html"
-><I
->PostgreSQL 7.3.3 Programmer's Guide</I
+       further in <A
+HREF="client-interfaces.html"
+>Part IV in <I
+>PostgreSQL 7.4beta1 Documentation</I
 ></A
 >.
       </P
@@ -151,20 +151,18 @@ CLASS="COMMAND"
 >psql</TT
 >, to try out
     the examples in this tutorial.  It can be activated for the
-    <TT
+    <VAR
 CLASS="LITERAL"
->mydb</TT
+>mydb</VAR
 > database by typing the command:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->psql mydb</B
-></TT
+>psql mydb</KBD
 ></PRE
 ><P>
     If you leave off the database name then it will default to your
@@ -179,7 +177,7 @@ CLASS="COMMAND"
     message:
 </P><PRE
 CLASS="SCREEN"
->Welcome to psql 7.3.3, the PostgreSQL interactive terminal.
+>Welcome to psql 7.4beta1, the PostgreSQL interactive terminal.
  
 Type:  \copyright for distribution terms
        \h for help with SQL commands
@@ -190,7 +188,7 @@ Type:  \copyright for distribution terms
 mydb=&gt;</PRE
 ><P>
     <A
-NAME="AEN162"
+NAME="AEN439"
 ></A
 >
     The last line could also be
@@ -231,9 +229,9 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >psql</TT
 > is listening
-    to you and that you can type <SPAN
+    to you and that you can type <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > queries into a
     work space maintained by <TT
 CLASS="COMMAND"
@@ -241,47 +239,41 @@ CLASS="COMMAND"
 >.  Try out these
     commands:
     <A
-NAME="AEN175"
+NAME="AEN452"
 ></A
 >
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->mydb=&gt;</TT
-> <TT
+>mydb=&gt;</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->SELECT version();</B
-></TT
+>SELECT version();</KBD
 >
                             version
 ----------------------------------------------------------------
  PostgreSQL 7.3devel on i586-pc-linux-gnu, compiled by GCC 2.96
 (1 row)
 
-<TT
+<SAMP
 CLASS="PROMPT"
->mydb=&gt;</TT
-> <TT
+>mydb=&gt;</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->SELECT current_date;</B
-></TT
+>SELECT current_date;</KBD
 >
     date
 ------------
  2002-08-31
 (1 row)
 
-<TT
+<SAMP
 CLASS="PROMPT"
->mydb=&gt;</TT
-> <TT
+>mydb=&gt;</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->SELECT 2 + 2;</B
-></TT
+>SELECT 2 + 2;</KBD
 >
  ?column?
 ----------
@@ -297,9 +289,9 @@ CLASS="COMMAND"
     commands that are not SQL commands.  They begin with the backslash
     character, <SPAN
 CLASS="QUOTE"
->"<TT
+>"<VAR
 CLASS="LITERAL"
->\</TT
+>\</VAR
 >"</SPAN
 >.  Some of these
     commands were listed in the welcome message.  For example,
@@ -307,21 +299,19 @@ CLASS="LITERAL"
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> <SPAN
+> <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >
     commands by typing:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->mydb=&gt;</TT
-> <TT
+>mydb=&gt;</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->\h</B
-></TT
+>\h</KBD
 ></PRE
 ><P>
    </P
@@ -332,14 +322,12 @@ CLASS="COMMAND"
 >, type
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->mydb=&gt;</TT
-> <TT
+>mydb=&gt;</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->\q</B
-></TT
+>\q</KBD
 ></PRE
 ><P>
     and <TT
@@ -347,9 +335,9 @@ CLASS="COMMAND"
 >psql</TT
 > will quit and return you to your
     command shell. (For more internal commands, type
-    <TT
+    <VAR
 CLASS="LITERAL"
->\?</TT
+>\?</VAR
 > at the <TT
 CLASS="COMMAND"
 >psql</TT
@@ -358,18 +346,18 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >psql</TT
 > are documented in
-    the <A
+    <A
 HREF="reference.html"
-><I
->PostgreSQL 7.3.3 Reference Manual</I
+>Part VI in <I
+>PostgreSQL 7.4beta1 Documentation</I
 ></A
 >.  If <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is
-    installed correctly you can also type <TT
+    installed correctly you can also type <VAR
 CLASS="LITERAL"
->man psql</TT
+>man psql</VAR
 >
     at the operating system shell prompt to see the documentation.  In
     this tutorial we will not use these features explicitly, but you
@@ -434,9 +422,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->The <SPAN
+>The <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Language</TD
 ></TR
 ></TABLE

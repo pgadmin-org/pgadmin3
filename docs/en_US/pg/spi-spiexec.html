@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SPI_exec</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Interface Functions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SPI-SPIEXEC"
->SPI_exec</A
-></H1
+></A
+>SPI_exec</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN33771"
+NAME="AEN32167"
 ></A
 ><H2
 >Name</H2
@@ -97,22 +97,18 @@ NAME="IX-SPI-SPIEXEC-2"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN33779"
+NAME="AEN32175"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SPI_exec(<TT
+>SPI_exec(<VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
->, <TT
+>query</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 >)</PRE
 ><DIV
 CLASS="REFSECT2"
@@ -127,22 +123,18 @@ NAME="R2-SPI-SPIEXEC-1"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->char *<TT
+>const char * <VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
+>query</VAR
 ></DT
 ><DD
 ><P
 >String containing query plan</P
 ></DD
 ><DT
->int <TT
+>int <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 ></DT
 ><DD
 ><P
@@ -184,11 +176,9 @@ CLASS="RETURNVALUE"
 >   <SPAN
 CLASS="RETURNVALUE"
 >SPI_ERROR_ARGUMENT</SPAN
-> if query is NULL or <TT
+> if query is NULL or <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 > &#60; 0.</TD
 ></TR
 ><TR
@@ -299,15 +289,13 @@ NAME="R1-SPI-SPIEXEC-1"
 ><H2
 >Description</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 > creates an execution plan (parser+planner+optimizer)
- and executes the query for <TT
+ and executes the query for <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 > tuples.&#13;</P
 ></DIV
 ><DIV
@@ -319,17 +307,13 @@ NAME="R1-SPI-SPIEXEC-2"
 >Usage</H2
 ><P
 >  This should only be called from a connected procedure.
-   If <TT
+   If <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 > is zero then it executes the query for all tuples returned by the
-   query scan. Using <TT
+   query scan. Using <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 > &#62; 0 you may restrict the number of tuples for
    which the query will be executed (much like a LIMIT clause). For example,
 
@@ -350,9 +334,9 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >You may pass multiple queries in one string or query string may be
-   re-written by RULEs. <TT
+   re-written by RULEs. <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 > returns the result for the last query
    executed.</P
 ></BLOCKQUOTE
@@ -371,9 +355,9 @@ CLASS="RETURNVALUE"
 > is returned then you may use global
    pointer SPITupleTable *SPI_tuptable to access the result tuples.</P
 ><P
->   <TT
+>   <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 > may return one of the following (negative) values:
 <P
 ></P
@@ -385,11 +369,9 @@ BORDER="0"
 >   <SPAN
 CLASS="RETURNVALUE"
 >SPI_ERROR_ARGUMENT</SPAN
-> if query is NULL or <TT
+> if query is NULL or <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 > &#60; 0.</TD
 ></TR
 ><TR
@@ -487,38 +469,38 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->   Functions <TT
+>   Functions <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
->, <TT
+>SPI_exec</CODE
+>, <CODE
 CLASS="FUNCTION"
->SPI_execp</TT
+>SPI_execp</CODE
 > and
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 > change both SPI_processed and SPI_tuptable
    (just the pointer, not the contents of the structure).
    Save these two global variables into local procedure variables if you need
-   to access the result of one <TT
+   to access the result of one <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 > or
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_execp</TT
+>SPI_execp</CODE
 > across later calls.</P
 ></BLOCKQUOTE
 ></DIV
 ><P
->   <TT
+>   <CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > frees all SPITupleTables allocated during
    the current procedure.  You can free a particular result table earlier,
-   if you are done with it, by calling <TT
+   if you are done with it, by calling <CODE
 CLASS="FUNCTION"
->SPI_freetuptable</TT
+>SPI_freetuptable</CODE
 >.</P
 ></DIV
 ><DIV

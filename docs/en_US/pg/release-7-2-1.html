@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Release 7.2.1</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix A. Release Notes</TD
+>Appendix D. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-2-1"
->A.8. Release 7.2.1</A
+>D.10. Release 7.2.1</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -94,57 +94,103 @@ CLASS="NOTE"
 ></BLOCKQUOTE
 ></DIV
 ><P
->    This has a variety of fixes from 7.2.
-   </P
+>   This release contains a variety of fixes for version 7.2.
+  </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23801"
->A.8.1. Migration to version 7.2.1</A
+NAME="AEN62693"
+>D.10.1. Migration to version 7.2.1</A
 ></H2
 ><P
->     A dump/restore is <SPAN
+>    A dump/restore is <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
 >not</I
 ></SPAN
-> required for those running
-     7.2.
-    </P
+> required for those
+    running version 7.2.
+   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23805"
->A.8.2. Changes</A
+NAME="AEN62697"
+>D.10.2. Changes</A
 ></H2
 ><P
+></P
+><UL
+><LI
 ><P
-CLASS="LITERALLAYOUT"
->Ensure&nbsp;that&nbsp;sequence&nbsp;counters&nbsp;do&nbsp;not&nbsp;go&nbsp;backwards&nbsp;after&nbsp;a&nbsp;crash&nbsp;(Tom)<br>
-Fix&nbsp;pgaccess&nbsp;kanji-coversion&nbsp;key&nbsp;binding&nbsp;(Tatsuo)<br>
-Optimizer&nbsp;improvements&nbsp;(Tom)<br>
-Cash&nbsp;I/O&nbsp;improvements&nbsp;(Tom)<br>
-New&nbsp;Russian&nbsp;FAQ<br>
-Compile&nbsp;fix&nbsp;for&nbsp;missing&nbsp;AuthBlockSig&nbsp;(Heiko)<br>
-Additional&nbsp;time&nbsp;zones&nbsp;and&nbsp;time&nbsp;zone&nbsp;fixes&nbsp;(Thomas)<br>
-Allow&nbsp;psql&nbsp;\connect&nbsp;to&nbsp;handle&nbsp;mixed&nbsp;case&nbsp;database&nbsp;and&nbsp;user&nbsp;names&nbsp;(Tom)<br>
-Return&nbsp;proper&nbsp;OID&nbsp;on&nbsp;command&nbsp;completion&nbsp;even&nbsp;with&nbsp;ON&nbsp;INSERT&nbsp;rules&nbsp;(Tom)<br>
-Allow&nbsp;COPY&nbsp;FROM&nbsp;to&nbsp;use&nbsp;8-bit&nbsp;DELIMITERS&nbsp;(Tatsuo)<br>
-Fix&nbsp;bug&nbsp;in&nbsp;extract/date_part&nbsp;for&nbsp;milliseconds/microseconds&nbsp;(Tatsuo)<br>
-Improve&nbsp;handling&nbsp;of&nbsp;multiple&nbsp;UNIONs&nbsp;with&nbsp;different&nbsp;lengths&nbsp;(Tom)<br>
-contrib/btree_gist&nbsp;improvements&nbsp;(Teodor&nbsp;Sigaev)<br>
-contrib/tsearch&nbsp;dictionary&nbsp;improvements,&nbsp;see&nbsp;README.tsearch&nbsp;for<br>
-&nbsp;&nbsp;an&nbsp;additional&nbsp;installation&nbsp;step&nbsp;(Thomas&nbsp;T.&nbsp;Thai,&nbsp;Teodor&nbsp;Sigaev)<br>
-Fix&nbsp;for&nbsp;array&nbsp;subscripts&nbsp;handling&nbsp;(Tom)<br>
-Allow&nbsp;EXECUTE&nbsp;of&nbsp;"CREATE&nbsp;TABLE&nbsp;AS&nbsp;...&nbsp;SELECT"&nbsp;in&nbsp;PL/pgSQL&nbsp;(Tom)</P
->
-    </P
+>Ensure that sequence counters do not go backwards after a crash (Tom)</P
+></LI
+><LI
+><P
+>Fix pgaccess kanji-coversion key binding (Tatsuo)</P
+></LI
+><LI
+><P
+>Optimizer improvements (Tom)</P
+></LI
+><LI
+><P
+>Cash I/O improvements (Tom)</P
+></LI
+><LI
+><P
+>New Russian FAQ</P
+></LI
+><LI
+><P
+>Compile fix for missing AuthBlockSig (Heiko)</P
+></LI
+><LI
+><P
+>Additional time zones and time zone fixes (Thomas)</P
+></LI
+><LI
+><P
+>Allow psql \connect to handle mixed case database and user names (Tom)</P
+></LI
+><LI
+><P
+>Return proper OID on command completion even with ON INSERT rules (Tom)</P
+></LI
+><LI
+><P
+>Allow COPY FROM to use 8-bit DELIMITERS (Tatsuo)</P
+></LI
+><LI
+><P
+>Fix bug in extract/date_part for milliseconds/microseconds (Tatsuo)</P
+></LI
+><LI
+><P
+>Improve handling of multiple UNIONs with different lengths (Tom)</P
+></LI
+><LI
+><P
+>contrib/btree_gist improvements (Teodor Sigaev)</P
+></LI
+><LI
+><P
+>contrib/tsearch dictionary improvements, see README.tsearch for an additional installation step (Thomas T. Thai, Teodor Sigaev)</P
+></LI
+><LI
+><P
+>Fix for array subscripts handling (Tom)</P
+></LI
+><LI
+><P
+>Allow EXECUTE of "CREATE TABLE AS ... SELECT" in PL/pgSQL (Tom)</P
+></LI
+></UL
 ></DIV
 ></DIV
 ><DIV

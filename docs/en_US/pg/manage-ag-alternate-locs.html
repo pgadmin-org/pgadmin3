@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Alternative Locations</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Managing Databases"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Managing Databases</TD
+>Chapter 18. Managing Databases</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,11 +81,11 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="MANAGE-AG-ALTERNATE-LOCS"
->5.5. Alternative Locations</A
+>18.5. Alternative Locations</A
 ></H1
 ><P
 >    It is possible to create a database in a location other than the
-    default location for the installation. Remember that all database access
+    default location for the installation. But remember that all database access
     occurs through the 
     database server, so any location specified must be
     accessible by the server.
@@ -99,22 +99,22 @@ NAME="MANAGE-AG-ALTERNATE-LOCS"
     under the site administrator's control; ordinary users can't
     change it.)  Any valid environment variable name may
     be used to reference an alternative location, although using
-    variable names with a prefix of <TT
+    variable names with a prefix of <VAR
 CLASS="LITERAL"
->PGDATA</TT
+>PGDATA</VAR
 > is recommended
     to avoid confusion and conflict with other variables.
    </P
 ><P
 >    To create the variable in the environment of the server process
     you must first shut down the server, define the variable,
-    initialize the data area, and finally restart the server. (See
+    initialize the data area, and finally restart the server. (See also
     <A
 HREF="postmaster-shutdown.html"
->Section 3.6</A
+>Section 16.6</A
 > and <A
 HREF="postmaster-start.html"
->Section 3.3</A
+>Section 16.3</A
 >.) To set an environment variable, type
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -126,12 +126,12 @@ export PGDATA2</PRE
 CLASS="PROGRAMLISTING"
 >setenv PGDATA2 /home/postgres/data</PRE
 ><P>
-    in <SPAN
-CLASS="APPLICATION"
->csh</SPAN
-> or <SPAN
-CLASS="APPLICATION"
->tcsh</SPAN
+    in <TT
+CLASS="COMMAND"
+>csh</TT
+> or <TT
+CLASS="COMMAND"
+>tcsh</TT
 >. You have to make sure that this environment
     variable is always defined in the server environment, otherwise
     you won't be able to access that database. Therefore you probably
@@ -140,7 +140,7 @@ CLASS="APPLICATION"
    </P
 ><P
 >    <A
-NAME="AEN21188"
+NAME="AEN16851"
 ></A
 >
     To create a data storage area in <TT
@@ -154,7 +154,7 @@ CLASS="FILENAME"
     already exists and is writable
     by the user account that runs the server (see <A
 HREF="runtime.html#POSTGRES-USER"
->Section 3.1</A
+>Section 16.1</A
 >). Then from the command line, type
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -166,33 +166,27 @@ CLASS="emphasis"
 CLASS="EMPHASIS"
 >not</I
 ></SPAN
-> <TT
+> <VAR
 CLASS="LITERAL"
 >initlocation
-    $PGDATA2</TT
+    $PGDATA2</VAR
 >).  Then you can restart the server.
    </P
 ><P
 >    To create a database within the new location, use the command
 </P><PRE
 CLASS="SYNOPSIS"
->CREATE DATABASE <TT
+>CREATE DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> WITH LOCATION = '<TT
+>name</VAR
+> WITH LOCATION '<VAR
 CLASS="REPLACEABLE"
-><I
->location</I
-></TT
->'</PRE
+>location</VAR
+>';</PRE
 ><P>
-    where <TT
+    where <VAR
 CLASS="REPLACEABLE"
-><I
->location</I
-></TT
+>location</VAR
 > is the environment variable you
     used, <TT
 CLASS="ENVAR"
@@ -201,9 +195,9 @@ CLASS="ENVAR"
 CLASS="COMMAND"
 >createdb</TT
 >
-    command has the option <TT
+    command has the option <VAR
 CLASS="OPTION"
->-D</TT
+>-D</VAR
 > for this purpose.
    </P
 ><P
@@ -227,9 +221,9 @@ CLASS="COMMAND"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > with
-     the C preprocessor macro <TT
+     the C preprocessor macro <VAR
 CLASS="LITERAL"
->ALLOW_ABSOLUTE_DBPATHS</TT
+>ALLOW_ABSOLUTE_DBPATHS</VAR
 >
      defined. One way to do this is to run the compilation step like
      this:

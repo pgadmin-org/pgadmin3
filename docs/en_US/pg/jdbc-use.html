@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->Using the Driver</TITLE
+>Initializing the Driver</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="JDBC Interface"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,9 +60,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. <SPAN
+>Chapter 31. <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > Interface</TD
 ><TD
 WIDTH="10%"
@@ -84,44 +84,51 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="JDBC-USE"
->5.2. Using the Driver</A
+>31.2. Initializing the Driver</A
 ></H1
+><P
+>   This section describes how to load and initialize the <ACRONYM
+CLASS="ACRONYM"
+>JDBC</ACRONYM
+>
+   driver in your programs.
+  </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
 NAME="JDBC-IMPORT"
->5.2.1. Importing <SPAN
+>31.2.1. Importing <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 ></A
 ></H2
 ><P
->    Any source that uses <SPAN
+>    Any source that uses <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > needs to import the
-    <TT
+    <VAR
 CLASS="LITERAL"
->java.sql</TT
+>java.sql</VAR
 > package, using:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >import java.sql.*;</PRE
 ><P>
-
-    <DIV
-CLASS="IMPORTANT"
+   </P
+><DIV
+CLASS="NOTE"
 ><BLOCKQUOTE
-CLASS="IMPORTANT"
+CLASS="NOTE"
 ><P
 ><B
->Important: </B
->      Do not import the <TT
+>Note: </B
+>      Do not import the <VAR
 CLASS="LITERAL"
->org.postgresql</TT
+>org.postgresql</VAR
 > package. If
       you do, your source will not compile, as
       <TT
@@ -131,8 +138,6 @@ CLASS="COMMAND"
      </P
 ></BLOCKQUOTE
 ></DIV
->
-   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
@@ -140,7 +145,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="JDBC-LOAD"
->5.2.2. Loading the Driver</A
+>31.2.2. Loading the Driver</A
 ></H2
 ><P
 >    Before you can connect to a database, you need to load the
@@ -149,9 +154,9 @@ NAME="JDBC-LOAD"
    </P
 ><P
 >    In the first method, your code implicitly loads the driver using the
-    <TT
+    <CODE
 CLASS="FUNCTION"
->Class.forName()</TT
+>Class.forName()</CODE
 > method.
     For <SPAN
 CLASS="PRODUCTNAME"
@@ -164,32 +169,30 @@ CLASS="PROGRAMLISTING"
 ><P>
 
     This will load the driver, and while loading, the driver will automatically
-    register itself with <SPAN
+    register itself with <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 >.
-
-    </P><DIV
+   </P
+><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
 CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->      The <TT
+>      The <CODE
 CLASS="FUNCTION"
->forName()</TT
+>forName()</CODE
 > method can throw a
-      <TT
+      <CODE
 CLASS="CLASSNAME"
->ClassNotFoundException</TT
+>ClassNotFoundException</CODE
 > if the driver is
       not available.
      </P
 ></BLOCKQUOTE
 ></DIV
-><P>
-   </P
 ><P
 >    This is the most common method to use, but restricts your code to
     use just <SPAN
@@ -205,49 +208,49 @@ CLASS="PRODUCTNAME"
    </P
 ><P
 >    The second method passes the driver as a parameter to the
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->JVM</SPAN
-> as it starts, using the <TT
+>JVM</ACRONYM
+> as it starts, using the <VAR
 CLASS="OPTION"
->-D</TT
+>-D</VAR
 >
     argument. Example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >java -Djdbc.drivers=org.postgresql.Driver example.ImageViewer</PRE
 ><P>
-    In this example, the <SPAN
+    In this example, the <ACRONYM
 CLASS="ACRONYM"
->JVM</SPAN
+>JVM</ACRONYM
 > will attempt to load
     the driver as part of its initialization. Once done, the
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->ImageViewer</TT
+>ImageViewer</CODE
 > is started.
    </P
 ><P
 >    Now, this method is the better one to use because it allows your
     code to be used with other database packages without recompiling
     the code. The only thing that would also change is the connection
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->URL</SPAN
+>URL</ACRONYM
 >, which is covered next.
    </P
 ><P
 >    One last thing: When your code then tries to open a
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->Connection</TT
+>Connection</CODE
 >, and you get a <SPAN
 CLASS="ERRORNAME"
 >No
     driver available</SPAN
-> <TT
+> <CODE
 CLASS="CLASSNAME"
->SQLException</TT
+>SQLException</CODE
 >
     being thrown, this is probably caused by the driver not being in
     the class path, or the value in the parameter not being correct.
@@ -259,16 +262,16 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="JDBC-CONNECT"
->5.2.3. Connecting to the Database</A
+>31.2.3. Connecting to the Database</A
 ></H2
 ><P
->    With <SPAN
+>    With <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 >, a database is represented by a
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->URL</SPAN
+>URL</ACRONYM
 > (Uniform Resource Locator).  With
     <SPAN
 CLASS="APPLICATION"
@@ -282,52 +285,40 @@ CLASS="APPLICATION"
 ><LI
 ><PRE
 CLASS="SYNOPSIS"
->jdbc:postgresql:<TT
+>jdbc:postgresql:<VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
+>database</VAR
 ></PRE
 ></LI
 ><LI
 ><PRE
 CLASS="SYNOPSIS"
->jdbc:postgresql://<TT
+>jdbc:postgresql://<VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
->/<TT
+>host</VAR
+>/<VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
+>database</VAR
 ></PRE
 ></LI
 ><LI
 ><PRE
 CLASS="SYNOPSIS"
->jdbc:postgresql://<TT
+>jdbc:postgresql://<VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
->:<TT
+>host</VAR
+>:<VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
->/<TT
+>port</VAR
+>/<VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
+>database</VAR
 ></PRE
 ></LI
 ></UL
 ><P>
 
-    where:
+    The parametes have the following meanings:
 
     <P
 ></P
@@ -335,26 +326,29 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
+>host</VAR
 ></DT
 ><DD
 ><P
->        The host name of the server. Defaults to <TT
+>        The host name of the server. Defaults to <VAR
 CLASS="LITERAL"
->localhost</TT
->.
+>localhost</VAR
+>.  To specify an IPv6 address your must enclose the <VAR
+CLASS="REPLACEABLE"
+>host</VAR
+> parameter with square brackets, for example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>jdbc:postgresql://[::1]:5740/accounting</PRE
+><P>
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
+>port</VAR
 ></DT
 ><DD
 ><P
@@ -366,11 +360,9 @@ CLASS="PRODUCTNAME"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
+>database</VAR
 ></DT
 ><DD
 ><P
@@ -382,17 +374,17 @@ CLASS="REPLACEABLE"
 ><P>
    </P
 ><P
->    To connect, you need to get a <TT
+>    To connect, you need to get a <CODE
 CLASS="CLASSNAME"
->Connection</TT
+>Connection</CODE
 > instance from 
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 >. To do this,
-    you would use the <TT
+    you use the <CODE
 CLASS="FUNCTION"
->DriverManager.getConnection()</TT
+>DriverManager.getConnection()</CODE
 > method:
 
 </P><PRE
@@ -407,16 +399,16 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="JDBC-DISCONNECT"
->5.2.4. Closing the Connection</A
+>31.2.4. Closing the Connection</A
 ></H2
 ><P
 >    To close the database connection, simply call the
-    <TT
+    <CODE
 CLASS="FUNCTION"
->close()</TT
-> method to the <TT
+>close()</CODE
+> method to the <CODE
 CLASS="CLASSNAME"
->Connection</TT
+>Connection</CODE
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -469,9 +461,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > Interface</TD
 ><TD
 WIDTH="34%"

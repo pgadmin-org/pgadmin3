@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Transaction Isolation</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 9. Concurrency Control</TD
+>Chapter 12. Concurrency Control</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,17 +81,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TRANSACTION-ISO"
->9.2. Transaction Isolation</A
+>12.2. Transaction Isolation</A
 ></H1
 ><P
->    The <SPAN
+>    The <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
->
-    standard defines four levels of transaction
-    isolation in terms of three phenomena that must be prevented 
-    between concurrent transactions.
-    These undesirable phenomena are:
+>SQL</ACRONYM
+> standard defines four levels of
+    transaction isolation in terms of three phenomena that must be
+    prevented between concurrent transactions.  These undesirable
+    phenomena are:
 
     <P
 ></P
@@ -101,7 +100,7 @@ CLASS="VARIABLELIST"
 ><DT
 >dirty read
        <A
-NAME="AEN11315"
+NAME="AEN12783"
 ></A
 ></DT
 ><DD
@@ -112,7 +111,7 @@ NAME="AEN11315"
 ><DT
 >nonrepeatable read
        <A
-NAME="AEN11321"
+NAME="AEN12789"
 ></A
 ></DT
 ><DD
@@ -125,7 +124,7 @@ NAME="AEN11321"
 ><DT
 >phantom read
        <A
-NAME="AEN11327"
+NAME="AEN12795"
 ></A
 ></DT
 ><DD
@@ -141,13 +140,13 @@ NAME="AEN11327"
    </P
 ><P
 >    <A
-NAME="AEN11332"
+NAME="AEN12800"
 ></A
 >
     The four transaction isolation levels and the corresponding
     behaviors are described in <A
 HREF="transaction-iso.html#MVCC-ISOLEVEL-TABLE"
->Table 9-1</A
+>Table 12-1</A
 >.
    </P
 ><DIV
@@ -157,34 +156,26 @@ NAME="MVCC-ISOLEVEL-TABLE"
 ></A
 ><P
 ><B
->Table 9-1. <SPAN
+>Table 12-1. <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Transaction Isolation Levels</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >         Isolation Level
 	</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Dirty Read
 	</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Nonrepeatable Read
 	</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Phantom Read
 	</TH
 ></TR
@@ -192,89 +183,57 @@ VALIGN="TOP"
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Read uncommitted
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Possible
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Possible
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Possible
 	</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Read committed
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Not possible
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Possible
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Possible
 	</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Repeatable read
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Not possible
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Not possible
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Possible
 	</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Serializable
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Not possible
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Not possible
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >	 Not possible
 	</TD
 ></TR
@@ -286,7 +245,7 @@ VALIGN="TOP"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-    offers the read committed and serializable isolation levels.
+    offers the Read Committed and Serializable isolation levels.
    </P
 ><DIV
 CLASS="SECT2"
@@ -294,10 +253,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XACT-READ-COMMITTED"
->9.2.1. Read Committed Isolation Level</A
+>12.2.1. Read Committed Isolation Level</A
 ></H2
 ><A
-NAME="AEN11371"
+NAME="AEN12838"
 ></A
 ><P
 >    <I
@@ -328,7 +287,7 @@ CLASS="COMMAND"
     begins to run.  Notice that two successive <TT
 CLASS="COMMAND"
 >SELECT</TT
->s can
+> commands can
     see different data, even though they are within a single transaction, if
     other transactions 
     commit changes during execution of the first <TT
@@ -352,7 +311,7 @@ CLASS="COMMAND"
 >SELECT</TT
 >
     in terms of searching for target rows: they will only find target rows
-    that were committed as of the query start time.  However, such a target
+    that were committed as of the command start time.  However, such a target
     row may have already been updated (or deleted or marked for update) by
     another concurrent transaction by the time it is found.  In this case, the
     would-be updater will wait for the first updating transaction to commit or
@@ -361,20 +320,20 @@ CLASS="COMMAND"
     updating the originally found row.  If the first updater commits, the
     second updater will ignore the row if the first updater deleted it,
     otherwise it will attempt to apply its operation to the updated version of
-    the row.  The query search condition (<TT
+    the row.  The search condition of the command (the <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > clause) is
     re-evaluated to see if the updated version of the row still matches the
     search condition.  If so, the second updater proceeds with its operation,
     starting from the updated version of the row.
    </P
 ><P
->    Because of the above rule, it is possible for updating queries to see
-    inconsistent snapshots --- they can see the effects of concurrent updating
-    queries that affected the same rows they are trying to update, but they
-    do not see effects of those queries on other rows in the database.
-    This behavior makes Read Committed mode unsuitable for queries that
+>    Because of the above rule, it is possible for an updating command to see an
+    inconsistent snapshot: it can see the effects of concurrent updating
+    commands that affected the same rows it is trying to update, but it
+    does not see effects of those commands on other rows in the database.
+    This behavior makes Read Committed mode unsuitable for commands that
     involve complex search conditions.  However, it is just right for simpler
     cases.  For example, consider updating bank balances with transactions
     like
@@ -389,14 +348,14 @@ COMMIT;</PRE
 
     If two such transactions concurrently try to change the balance of account
     12345, we clearly want the second transaction to start from the updated
-    version of the account's row.  Because each query is affecting only a
+    version of the account's row.  Because each command is affecting only a
     predetermined row, letting it see the updated version of the row does
     not create any troublesome inconsistency.
    </P
 ><P
->    Since in Read Committed mode each new query starts with a new snapshot
+>    Since in Read Committed mode each new command starts with a new snapshot
     that includes all transactions committed up to that instant, subsequent
-    queries in the same transaction will see the effects of the committed
+    commands in the same transaction will see the effects of the committed
     concurrent transaction in any case.  The point at issue here is whether
     or not within a <SPAN
 CLASS="emphasis"
@@ -404,7 +363,7 @@ CLASS="emphasis"
 CLASS="EMPHASIS"
 >single</I
 ></SPAN
-> query we see an absolutely consistent
+> command we see an absolutely consistent
     view of the database.
    </P
 ><P
@@ -421,13 +380,13 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XACT-SERIALIZABLE"
->9.2.2. Serializable Isolation Level</A
+>12.2.2. Serializable Isolation Level</A
 ></H2
 ><A
-NAME="AEN11395"
+NAME="AEN12862"
 ></A
 ><P
->    <I
+>    The level <I
 CLASS="FIRSTTERM"
 >Serializable</I
 > provides the strictest transaction
@@ -460,7 +419,7 @@ CLASS="COMMAND"
     <TT
 CLASS="COMMAND"
 >SELECT</TT
->s within a single transaction always see the same
+> commands within a single transaction always see the same
     data.
    </P
 ><P
@@ -507,7 +466,7 @@ CLASS="SCREEN"
     as the starting point for the new transaction's update.
    </P
 ><P
->    Note that only updating transactions may need to be retried --- read-only
+>    Note that only updating transactions may need to be retried; read-only
     transactions will never have serialization conflicts.
    </P
 ><P
@@ -519,7 +478,7 @@ CLASS="SCREEN"
     this mode is recommended only when updating transactions contain logic
     sufficiently complex that they may give wrong answers in Read
     Committed mode.  Most commonly, Serializable mode is necessary when
-    a transaction performs several successive queries that must see
+    a transaction executes several successive commands that must see
     identical views of the database.
    </P
 ></DIV

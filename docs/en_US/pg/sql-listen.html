@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >LISTEN</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,167 +78,74 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-LISTEN"
->LISTEN</A
-></H1
+></A
+>LISTEN</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44238"
+NAME="AEN42671"
 ></A
 ><H2
 >Name</H2
->   LISTEN
-  &nbsp;--&nbsp;   listen for a notification
-  </DIV
+>LISTEN&nbsp;--&nbsp;listen for a notification</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44241"
+NAME="AEN42674"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->LISTEN <TT
+>LISTEN <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-LISTEN-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	Name of notify condition.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-LISTEN-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->LISTEN
-       </TT
-></DT
-><DD
-><P
->	Message returned upon successful completion of registration.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->WARNING:  Async_Listen: We are already listening on <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-       </TT
-></DT
-><DD
-><P
->	If this backend is already registered for that notify condition.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>name</VAR
+></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-LISTEN-1"
+NAME="AEN42677"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >LISTEN</TT
-> registers the current 
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> backend as a
-   listener on the notify condition
-   <TT
+> registers the current session as a
+   listener on the notification condition <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 >.
   </P
 ><P
->   Whenever the command 
-   <TT
+>   Whenever the command <TT
 CLASS="COMMAND"
->NOTIFY <TT
+>NOTIFY <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
+>name</VAR
 ></TT
-></TT
->
-   is invoked, either by this backend or another one connected to
-   the same database, all the backends currently listening on that notify
-   condition are notified, and each will in turn notify its connected
-   frontend application.  See the discussion of <TT
+> is invoked, either
+   by this session or another one connected to the same database, all
+   the sessions currently listening on that notification condition are
+   notified, and each will in turn notify its connected client
+   application.  See the discussion of <TT
 CLASS="COMMAND"
 >NOTIFY</TT
->
-   for more information.
+> for
+   more information.
   </P
 ><P
->   A backend can be unregistered for a given notify condition with the
+>   A session can be unregistered for a given notify condition with the
    <TT
 CLASS="COMMAND"
 >UNLISTEN</TT
-> command.  Also, a backend's listen registrations
-   are automatically cleared when the backend process exits.
+> command.  A session's listen
+   registrations are automatically cleared when the session ends.
   </P
 ><P
->   The method a frontend application must use to detect notify events depends on
+>   The method a client application must use to detect notification events depends on
    which <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -251,11 +158,11 @@ CLASS="APPLICATION"
 CLASS="COMMAND"
 >LISTEN</TT
 > as an ordinary SQL command, and then must
-   periodically call the routine <TT
+   periodically call the function <CODE
 CLASS="FUNCTION"
->PQnotifies</TT
+>PQnotifies</CODE
 > to find out
-   whether any notify events have been received.  Other interfaces such as
+   whether any notification events have been received.  Other interfaces such as
    <SPAN
 CLASS="APPLICATION"
 >libpgtcl</SPAN
@@ -271,7 +178,7 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >UNLISTEN</TT
 > directly.  See the
-   documentation for the library you are using for more details.
+   documentation for the interface you are using for more details.
   </P
 ><P
 >   <A
@@ -290,57 +197,77 @@ CLASS="COMMAND"
 >NOTIFY</TT
 >.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-LISTEN-3"
+NAME="AEN42701"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-    can be any string valid as a name;
-    it need not correspond to the name of any actual table.  If
-    <TT
-CLASS="REPLACEABLE"
-><I
->notifyname</I
-></TT
->
-    is enclosed in double-quotes, it need not even be a syntactically
-    valid name, but can be any string up to 63 characters long.
-   </P
+>name</VAR
+></DT
+><DD
 ><P
->    In some previous releases of
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->,
-    <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-    had to be enclosed in double-quotes when it did not correspond to any existing
-    table name, even if syntactically valid as a name.  That is no longer required.
-   </P
+>      Name of a notify condition (any identifier).
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-LISTEN-2"
+NAME="AEN42709"
 ></A
 ><H2
->   Usage
-  </H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>LISTEN</SAMP
+></DT
+><DD
+><P
+>      Message returned upon successful completion of registration.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>WARNING:  Async_Listen: We are already listening on <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></SAMP
+></DT
+><DD
+><P
+>      Message returned if this session is already registered for that notification condition.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42723"
+></A
+><H2
+>Examples</H2
 ><P
 >   Configure and execute a listen/notify sequence from <SPAN
 CLASS="APPLICATION"
@@ -350,7 +277,6 @@ CLASS="APPLICATION"
 CLASS="PROGRAMLISTING"
 >LISTEN virtual;
 NOTIFY virtual;
-
 Asynchronous NOTIFY 'virtual' from backend with pid '8448' received.</PRE
 ><P>
   </P
@@ -358,29 +284,17 @@ Asynchronous NOTIFY 'virtual' from backend with pid '8448' received.</PRE
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-LISTEN-3"
+NAME="AEN42728"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-LISTEN-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >LISTEN</TT
-> in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
-></DIV
+> statement in the SQL
+   standard.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

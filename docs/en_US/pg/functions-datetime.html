@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Date/Time Functions and Operators</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. Functions and Operators</TD
+>Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,39 +81,57 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-DATETIME"
->6.8. Date/Time Functions and Operators</A
+>9.8. Date/Time Functions and Operators</A
 ></H1
 ><P
 >   <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-TABLE"
->Table 6-18</A
+>Table 9-26</A
 > shows the available
    functions for date/time value processing, with details appearing in
    the following subsections.  <A
 HREF="functions-datetime.html#OPERATORS-DATETIME-TABLE"
->Table 6-17</A
+>Table 9-25</A
 > illustrates the behaviors of
-   the basic arithmetic operators (<TT
+   the basic arithmetic operators (<VAR
 CLASS="LITERAL"
->+</TT
+>+</VAR
 >,
-   <TT
+   <VAR
 CLASS="LITERAL"
->*</TT
+>*</VAR
 >, etc.).  For formatting functions, refer to
    <A
 HREF="functions-formatting.html"
->Section 6.7</A
+>Section 9.7</A
 >.  You should be familiar with
-   the background information on date/time data types (see <A
+   the background information on date/time data types from <A
 HREF="datatype-datetime.html"
->Section 5.5</A
->).
+>Section 8.5</A
+>.
   </P
 ><P
->   All the functions and operators described below that take time or timestamp
-   inputs actually come in two variants: one that takes time or timestamp
-   with time zone, and one that takes time or timestamp without time zone.
+>   All the functions and operators described below that take <TT
+CLASS="TYPE"
+>time</TT
+> or <TT
+CLASS="TYPE"
+>timestamp</TT
+>
+   inputs actually come in two variants: one that takes <TT
+CLASS="TYPE"
+>time with time zone</TT
+> or <TT
+CLASS="TYPE"
+>timestamp
+   with time zone</TT
+>, and one that takes <TT
+CLASS="TYPE"
+>time without time zone</TT
+> or <TT
+CLASS="TYPE"
+>timestamp without time zone</TT
+>.
    For brevity, these variants are not shown separately.
   </P
 ><DIV
@@ -123,233 +141,173 @@ NAME="OPERATORS-DATETIME-TABLE"
 ></A
 ><P
 ><B
->Table 6-17. Date/Time Operators</B
+>Table 9-25. Date/Time Operators</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Name</TH
+>Operator</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Result</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->+</TT
+>+</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->timestamp '2001-09-28 01:00' + interval '23 hours'</TT
+>timestamp '2001-09-28 01:00' + interval '23 hours'</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->timestamp '2001-09-29 00:00'</TT
+>timestamp '2001-09-29 00:00'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->+</TT
+>+</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->date '2001-09-28' + interval '1 hour'</TT
+>date '2001-09-28' + interval '1 hour'</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->timestamp '2001-09-28 01:00'</TT
+>timestamp '2001-09-28 01:00'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->+</TT
+>+</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->time '01:00' + interval '3 hours'</TT
+>time '01:00' + interval '3 hours'</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->time '04:00'</TT
+>time '04:00'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->-</TT
+>-</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->timestamp '2001-09-28 23:00' - interval '23 hours'</TT
+>timestamp '2001-09-28 23:00' - interval '23 hours'</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->timestamp '2001-09-28'</TT
+>timestamp '2001-09-28'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->-</TT
+>-</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->date '2001-09-28' - interval '1 hour'</TT
+>date '2001-09-28' - interval '1 hour'</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->timestamp '2001-09-27 23:00'</TT
+>timestamp '2001-09-27 23:00'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->-</TT
+>-</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->time '05:00' - interval '2 hours'</TT
+>time '05:00' - interval '2 hours'</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->time '03:00'</TT
+>time '03:00'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->-</TT
+>-</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->interval '2 hours' - time '05:00'</TT
+>interval '2 hours' - time '05:00'</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->time '03:00:00'</TT
+>time '03:00:00'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->*</TT
+>*</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->interval '1 hour' * int '3'</TT
+>interval '1 hour' * int '3'</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->interval '03:00'</TT
+>interval '03:00'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->/</TT
+>/</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->interval '1 hour' / int '3'</TT
+>interval '1 hour' / int '3'</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->interval '00:20'</TT
+>interval '00:20'</VAR
 ></TD
 ></TR
 ></TBODY
@@ -362,653 +320,527 @@ NAME="FUNCTIONS-DATETIME-TABLE"
 ></A
 ><P
 ><B
->Table 6-18. Date/Time Functions</B
+>Table 9-26. Date/Time Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Name</TH
+>Function</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Result</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->age</TT
+>age</CODE
 >(<TT
 CLASS="TYPE"
 >timestamp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >interval</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Subtract from today</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->age(timestamp '1957-06-13')</TT
+>age(timestamp '1957-06-13')</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->43 years 8 mons 3 days</TT
+>43 years 8 mons 3 days</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->age</TT
+>age</CODE
 >(<TT
 CLASS="TYPE"
 >timestamp</TT
 >, <TT
 CLASS="TYPE"
 >timestamp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >interval</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Subtract arguments</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->age('2001-04-10', timestamp '1957-06-13')</TT
+>age('2001-04-10', timestamp '1957-06-13')</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->43 years 9 mons 27 days</TT
+>43 years 9 mons 27 days</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->current_date</TT
+>current_date</CODE
+></VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >date</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Today's date; see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
->Section 6.8.4</A
+>Section 9.8.4</A
 >
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->current_time</TT
+>current_time</CODE
+></VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >time with time zone</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Time of day; see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
->Section 6.8.4</A
+>Section 9.8.4</A
 >
         </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->current_timestamp</TT
+>current_timestamp</CODE
+></VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >timestamp with time zone</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Date and time; see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
->Section 6.8.4</A
+>Section 9.8.4</A
 >
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->date_part</TT
+>date_part</CODE
 >(<TT
 CLASS="TYPE"
 >text</TT
 >, <TT
 CLASS="TYPE"
 >timestamp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Get subfield (equivalent to
-	 <TT
+	 <CODE
 CLASS="FUNCTION"
->extract</TT
->); see also <A
-HREF="functions-datetime.html#FUNCTIONS-DATETIME-DATEPART"
->below</A
+>extract</CODE
+>); see <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"
+>Section 9.8.1</A
 >
         </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->date_part('hour', timestamp '2001-02-16 20:38:40')</TT
+>date_part('hour', timestamp '2001-02-16 20:38:40')</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->20</TT
+>20</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->date_part</TT
+>date_part</CODE
 >(<TT
 CLASS="TYPE"
 >text</TT
 >, <TT
 CLASS="TYPE"
 >interval</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Get subfield (equivalent to
-	 <TT
+	 <CODE
 CLASS="FUNCTION"
->extract</TT
->); see also <A
-HREF="functions-datetime.html#FUNCTIONS-DATETIME-DATEPART"
->below</A
+>extract</CODE
+>); see <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"
+>Section 9.8.1</A
 >
         </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->date_part('month', interval '2 years 3 months')</TT
+>date_part('month', interval '2 years 3 months')</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->3</TT
+>3</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->date_trunc</TT
+>date_trunc</CODE
 >(<TT
 CLASS="TYPE"
 >text</TT
 >, <TT
 CLASS="TYPE"
 >timestamp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >timestamp</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Truncate to specified precision; see also <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-TRUNC"
->Section 6.8.2</A
+>Section 9.8.2</A
 >
         </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->date_trunc('hour', timestamp '2001-02-16 20:38:40')</TT
+>date_trunc('hour', timestamp '2001-02-16 20:38:40')</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->2001-02-16 20:00:00+00</TT
+>2001-02-16 20:00:00+00</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->extract</TT
->(<TT
+>extract</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->field</I
-></TT
+>field</VAR
 > from
          <TT
 CLASS="TYPE"
 >timestamp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get subfield; see also <A
+>Get subfield; see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"
->Section 6.8.1</A
+>Section 9.8.1</A
 >
         </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->extract(hour from timestamp '2001-02-16 20:38:40')</TT
+>extract(hour from timestamp '2001-02-16 20:38:40')</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->20</TT
+>20</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->extract</TT
->(<TT
+>extract</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->field</I
-></TT
+>field</VAR
 > from
          <TT
 CLASS="TYPE"
 >interval</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >double precision</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get subfield; see also <A
+>Get subfield; see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"
->Section 6.8.1</A
+>Section 9.8.1</A
 >
         </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->extract(month from interval '2 years 3 months')</TT
+>extract(month from interval '2 years 3 months')</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->3</TT
+>3</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->isfinite</TT
+>isfinite</CODE
 >(<TT
 CLASS="TYPE"
 >timestamp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Test for finite time stamp (neither invalid nor infinity)</TD
+>Test for finite time stamp (not equal to infinity)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->isfinite(timestamp '2001-02-16 21:28:30')</TT
+>isfinite(timestamp '2001-02-16 21:28:30')</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->true</TT
+>true</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->isfinite</TT
+>isfinite</CODE
 >(<TT
 CLASS="TYPE"
 >interval</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Test for finite interval</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->isfinite(interval '4 hours')</TT
+>isfinite(interval '4 hours')</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->true</TT
+>true</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->localtime</TT
+>localtime</CODE
+></VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >time</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Time of day; see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
->Section 6.8.4</A
+>Section 9.8.4</A
 >
         </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->localtimestamp</TT
+>localtimestamp</CODE
+></VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >timestamp</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Date and time; see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
->Section 6.8.4</A
+>Section 9.8.4</A
 >
         </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->now</TT
->()</TD
+>now</CODE
+>()</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >timestamp with time zone</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Current date and time (equivalent to
-	 <TT
+	 <CODE
 CLASS="FUNCTION"
->current_timestamp</TT
+>current_timestamp</CODE
 >); see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
->Section 6.8.4</A
+>Section 9.8.4</A
 >
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->timeofday()</TT
+>timeofday()</CODE
+></VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Current date and time; see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
->Section 6.8.4</A
+>Section 9.8.4</A
 >
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->timeofday()</TT
+>timeofday()</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->Wed Feb 21 17:01:13.000126 2001 EST</TT
+>Wed Feb 21 17:01:13.000126 2001 EST</VAR
 ></TD
 ></TR
 ></TBODY
@@ -1020,38 +852,32 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="FUNCTIONS-DATETIME-EXTRACT"
->6.8.1. <TT
+>9.8.1. <CODE
 CLASS="FUNCTION"
->EXTRACT</TT
->, <TT
+>EXTRACT</CODE
+>, <CODE
 CLASS="FUNCTION"
->date_part</TT
+>date_part</CODE
 ></A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
->EXTRACT (<TT
+>EXTRACT (<VAR
 CLASS="REPLACEABLE"
-><I
->field</I
-></TT
-> FROM <TT
+>field</VAR
+> FROM <VAR
 CLASS="REPLACEABLE"
-><I
->source</I
-></TT
+>source</VAR
 >)</PRE
 ><P
->    The <TT
+>    The <CODE
 CLASS="FUNCTION"
->extract</TT
+>extract</CODE
 > function retrieves subfields
     from date/time values, such as year or hour.
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->source</I
-></TT
+>source</VAR
 > is a value expression that
     evaluates to type <TT
 CLASS="TYPE"
@@ -1071,22 +897,20 @@ CLASS="TYPE"
 CLASS="TYPE"
 >timestamp</TT
 > and can therefore be used as
-    well.)  <TT
+    well.)  <VAR
 CLASS="REPLACEABLE"
-><I
->field</I
-></TT
+>field</VAR
 > is an identifier or
     string that selects what field to extract from the source value.
-    The <TT
+    The <CODE
 CLASS="FUNCTION"
->extract</TT
+>extract</CODE
 > function returns values of type
     <TT
 CLASS="TYPE"
 >double precision</TT
 >.
-    The following are valid values:
+    The following are valid field names:
 
     
     <P
@@ -1095,9 +919,9 @@ CLASS="TYPE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->century</TT
+>century</VAR
 ></DT
 ><DD
 ><P
@@ -1109,9 +933,9 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->20</TT
+>20</SAMP
 ></PRE
 ><P
 >        Note that the result for the century field is simply the year field
@@ -1120,9 +944,9 @@ CLASS="COMPUTEROUTPUT"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->day</TT
+>day</VAR
 ></DT
 ><DD
 ><P
@@ -1134,15 +958,15 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->16</TT
+>16</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->decade</TT
+>decade</VAR
 ></DT
 ><DD
 ><P
@@ -1154,15 +978,15 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->200</TT
+>200</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->dow</TT
+>dow</VAR
 ></DT
 ><DD
 ><P
@@ -1178,15 +1002,15 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->5</TT
+>5</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->doy</TT
+>doy</VAR
 ></DT
 ><DD
 ><P
@@ -1201,15 +1025,15 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->47</TT
+>47</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->epoch</TT
+>epoch</VAR
 ></DT
 ><DD
 ><P
@@ -1233,24 +1057,24 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->982352320</TT
+>982352320</SAMP
 >
 
 SELECT EXTRACT(EPOCH FROM INTERVAL '5 days 3 hours');
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->442800</TT
+>442800</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->hour</TT
+>hour</VAR
 ></DT
 ><DD
 ><P
@@ -1262,15 +1086,15 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->20</TT
+>20</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->microseconds</TT
+>microseconds</VAR
 ></DT
 ><DD
 ><P
@@ -1283,15 +1107,15 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->28500000</TT
+>28500000</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->millennium</TT
+>millennium</VAR
 ></DT
 ><DD
 ><P
@@ -1303,9 +1127,9 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2</TT
+>2</SAMP
 ></PRE
 ><P
 >        Note that the result for the millennium field is simply the year field
@@ -1314,9 +1138,9 @@ CLASS="COMPUTEROUTPUT"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->milliseconds</TT
+>milliseconds</VAR
 ></DT
 ><DD
 ><P
@@ -1329,15 +1153,15 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->28500</TT
+>28500</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->minute</TT
+>minute</VAR
 ></DT
 ><DD
 ><P
@@ -1349,15 +1173,15 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->38</TT
+>38</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->month</TT
+>month</VAR
 ></DT
 ><DD
 ><P
@@ -1377,33 +1201,33 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2</TT
+>2</SAMP
 >
 
 SELECT EXTRACT(MONTH FROM INTERVAL '2 years 3 months');
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->3</TT
+>3</SAMP
 >
 
 SELECT EXTRACT(MONTH FROM INTERVAL '2 years 13 months');
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->1</TT
+>1</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->quarter</TT
+>quarter</VAR
 ></DT
 ><DD
 ><P
@@ -1419,23 +1243,26 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->1</TT
+>1</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->second</TT
+>second</VAR
 ></DT
 ><DD
 ><P
 >        The seconds field, including fractional parts (0 -
         59<A
-NAME="AEN8794"
-HREF="#FTN.AEN8794"
->[1]</A
+NAME="AEN9697"
+HREF="#FTN.AEN9697"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
 >)
        </P
 ><PRE
@@ -1444,62 +1271,74 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->40</TT
+>40</SAMP
 >
 
 SELECT EXTRACT(SECOND FROM TIME '17:12:28.5');
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->28.5</TT
+>28.5</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->timezone_hour</TT
+>timezone</VAR
 ></DT
 ><DD
 ><P
->        The hour component of the time zone offset.
+>        The time zone offset from UTC, measured in seconds.  Positive values
+	correspond to time zones east of UTC, negative values to
+	zones west of UTC.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->timezone_minute</TT
+>timezone_hour</VAR
 ></DT
 ><DD
 ><P
->        The minute component of the time zone offset.
+>        The hour component of the time zone offset
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->week</TT
+>timezone_minute</VAR
 ></DT
 ><DD
 ><P
->        From a <TT
+>        The minute component of the time zone offset
+       </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>week</VAR
+></DT
+><DD
+><P
+>        The number of
+        the week of the year that the day is in.  By definition
+        (<ACRONYM
+CLASS="ACRONYM"
+>ISO</ACRONYM
+> 8601), the first week of a year
+        contains January 4 of that year.  (The <ACRONYM
+CLASS="ACRONYM"
+>ISO</ACRONYM
+>-8601
+        week starts on Monday.)  In other words, the first Thursday of
+        a year is in week 1 of that year. (for <TT
 CLASS="TYPE"
 >timestamp</TT
-> value, calculate the number of
-        the week of the year that the day is in.  By definition
-        (<SPAN
-CLASS="ACRONYM"
->ISO</SPAN
-> 8601), the first week of a year
-        contains January 4 of that year.  (The <SPAN
-CLASS="ACRONYM"
->ISO</SPAN
->
-        week starts on Monday.)  In other words, the first Thursday of
-        a year is in week 1 of that year.
+> values only)
        </P
 ><PRE
 CLASS="SCREEN"
@@ -1507,15 +1346,15 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->7</TT
+>7</SAMP
 ></PRE
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->year</TT
+>year</VAR
 ></DT
 ><DD
 ><P
@@ -1527,9 +1366,9 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2001</TT
+>2001</SAMP
 ></PRE
 ></DD
 ></DL
@@ -1538,63 +1377,54 @@ CLASS="COMPUTEROUTPUT"
 
    </P
 ><P
->    The <TT
+>    The <CODE
 CLASS="FUNCTION"
->extract</TT
+>extract</CODE
 > function is primarily intended
     for computational processing.  For formatting date/time values for
     display, see <A
 HREF="functions-formatting.html"
->Section 6.7</A
+>Section 9.7</A
 >.
    </P
-><A
-NAME="FUNCTIONS-DATETIME-DATEPART"
-></A
 ><P
->    The <TT
+>    The <CODE
 CLASS="FUNCTION"
->date_part</TT
+>date_part</CODE
 > function is modeled on the traditional
     <SPAN
 CLASS="PRODUCTNAME"
 >Ingres</SPAN
 > equivalent to the
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
->-standard function <TT
+>SQL</ACRONYM
+>-standard function <CODE
 CLASS="FUNCTION"
->extract</TT
+>extract</CODE
 >:
 </P><PRE
 CLASS="SYNOPSIS"
->date_part('<TT
+>date_part('<VAR
 CLASS="REPLACEABLE"
-><I
->field</I
-></TT
->', <TT
+>field</VAR
+>', <VAR
 CLASS="REPLACEABLE"
-><I
->source</I
-></TT
+>source</VAR
 >)</PRE
 ><P>
-    Note that here the <TT
+    Note that here the <VAR
 CLASS="REPLACEABLE"
-><I
->field</I
-></TT
+>field</VAR
 > parameter needs to
-    be a string value, not a name.  The valid field values for
-    <TT
+    be a string value, not a name.  The valid field names for
+    <CODE
 CLASS="FUNCTION"
->date_part</TT
+>date_part</CODE
 > are the same as for
-    <TT
+    <CODE
 CLASS="FUNCTION"
->extract</TT
+>extract</CODE
 >.
    </P
 ><PRE
@@ -1603,18 +1433,18 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->16</TT
+>16</SAMP
 >
 
 SELECT date_part('hour', INTERVAL '4 hours 3 minutes');
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->4</TT
+>4</SAMP
 ></PRE
 ></DIV
 ><DIV
@@ -1623,58 +1453,50 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="FUNCTIONS-DATETIME-TRUNC"
->6.8.2. <TT
+>9.8.2. <CODE
 CLASS="FUNCTION"
->date_trunc</TT
+>date_trunc</CODE
 ></A
 ></H2
 ><P
->    The function <TT
+>    The function <CODE
 CLASS="FUNCTION"
->date_trunc</TT
+>date_trunc</CODE
 > is conceptually
-    similar to the <TT
+    similar to the <CODE
 CLASS="FUNCTION"
->trunc</TT
+>trunc</CODE
 > function for numbers.
    </P
 ><P
 ></P><PRE
 CLASS="SYNOPSIS"
->date_trunc('<TT
+>date_trunc('<VAR
 CLASS="REPLACEABLE"
-><I
->field</I
-></TT
->', <TT
+>field</VAR
+>', <VAR
 CLASS="REPLACEABLE"
-><I
->source</I
-></TT
+>source</VAR
 >)</PRE
 ><P>
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->source</I
-></TT
+>source</VAR
 > is a value expression of type
     <TT
 CLASS="TYPE"
 >timestamp</TT
-> (values of type <TT
+>.  (Values of type <TT
 CLASS="TYPE"
 >date</TT
 > and
     <TT
 CLASS="TYPE"
 >time</TT
-> are cast automatically).
-    <TT
+> are cast automatically.)
+    <VAR
 CLASS="REPLACEABLE"
-><I
->field</I
-></TT
+>field</VAR
 > selects to which precision to
     truncate the time stamp value.  The return value is of type
     <TT
@@ -1684,11 +1506,9 @@ CLASS="TYPE"
     selected one set to zero (or one, for day and month).
    </P
 ><P
->    Valid values for <TT
+>    Valid values for <VAR
 CLASS="REPLACEABLE"
-><I
->field</I
-></TT
+>field</VAR
 > are:
     <P
 ></P
@@ -1697,47 +1517,80 @@ BORDER="0"
 ><TBODY
 ><TR
 ><TD
->microseconds</TD
+><VAR
+CLASS="LITERAL"
+>microseconds</VAR
+></TD
 ></TR
 ><TR
 ><TD
->milliseconds</TD
+><VAR
+CLASS="LITERAL"
+>milliseconds</VAR
+></TD
 ></TR
 ><TR
 ><TD
->second</TD
+><VAR
+CLASS="LITERAL"
+>second</VAR
+></TD
 ></TR
 ><TR
 ><TD
->minute</TD
+><VAR
+CLASS="LITERAL"
+>minute</VAR
+></TD
 ></TR
 ><TR
 ><TD
->hour</TD
+><VAR
+CLASS="LITERAL"
+>hour</VAR
+></TD
 ></TR
 ><TR
 ><TD
->day</TD
+><VAR
+CLASS="LITERAL"
+>day</VAR
+></TD
 ></TR
 ><TR
 ><TD
->month</TD
+><VAR
+CLASS="LITERAL"
+>month</VAR
+></TD
 ></TR
 ><TR
 ><TD
->year</TD
+><VAR
+CLASS="LITERAL"
+>year</VAR
+></TD
 ></TR
 ><TR
 ><TD
->decade</TD
+><VAR
+CLASS="LITERAL"
+>decade</VAR
+></TD
 ></TR
 ><TR
 ><TD
->century</TD
+><VAR
+CLASS="LITERAL"
+>century</VAR
+></TD
 ></TR
 ><TR
 ><TD
->millennium</TD
+><VAR
+CLASS="LITERAL"
+>millennium</VAR
+></TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1753,18 +1606,18 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-02-16 20:00:00+00</TT
+>2001-02-16 20:00:00+00</SAMP
 >
 
 SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-01-01 00:00:00+00</TT
+>2001-01-01 00:00:00+00</SAMP
 ></PRE
 ><P>
    </P
@@ -1775,20 +1628,24 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="FUNCTIONS-DATETIME-ZONECONVERT"
->6.8.3. <TT
-CLASS="FUNCTION"
->AT TIME ZONE</TT
+>9.8.3. <VAR
+CLASS="LITERAL"
+>AT TIME ZONE</VAR
 ></A
 ></H2
 ><A
-NAME="AEN8889"
+NAME="AEN9807"
 ></A
 ><P
->    The <TT
-CLASS="FUNCTION"
->AT TIME ZONE</TT
+>    The <VAR
+CLASS="LITERAL"
+>AT TIME ZONE</VAR
 > construct allows conversions
-    of timestamps to different timezones.
+    of time stamps to different time zones.  <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-ZONECONVERT-TABLE"
+>Table 9-27</A
+> shows its
+    variants.
    </P
 ><DIV
 CLASS="TABLE"
@@ -1797,147 +1654,109 @@ NAME="FUNCTIONS-DATETIME-ZONECONVERT-TABLE"
 ></A
 ><P
 ><B
->Table 6-19. AT TIME ZONE Variants</B
+>Table 9-27. <VAR
+CLASS="LITERAL"
+>AT TIME ZONE</VAR
+> Variants</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Expression</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Returns</TH
+>Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->	 <TT
+>	 <VAR
+CLASS="LITERAL"
+><TT
 CLASS="TYPE"
 >timestamp without time zone</TT
->
-	 <TT
-CLASS="LITERAL"
->AT TIME ZONE</TT
->
-	 <TT
+> AT TIME ZONE <VAR
 CLASS="REPLACEABLE"
-><I
->zone</I
-></TT
+>zone</VAR
+></VAR
 >
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >timestamp with time zone</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Convert local time in given timezone to UTC</TD
+>Convert local time in given time zone to UTC</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->	 <TT
+>	 <VAR
+CLASS="LITERAL"
+><TT
 CLASS="TYPE"
 >timestamp with time zone</TT
->
-	 <TT
-CLASS="LITERAL"
->AT TIME ZONE</TT
->
-	 <TT
+> AT TIME ZONE <VAR
 CLASS="REPLACEABLE"
-><I
->zone</I
-></TT
+>zone</VAR
+></VAR
 >
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >timestamp without time zone</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Convert UTC to local time in given timezone</TD
+>Convert UTC to local time in given time zone</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->	 <TT
+>	 <VAR
+CLASS="LITERAL"
+><TT
 CLASS="TYPE"
 >time with time zone</TT
->
-	 <TT
-CLASS="LITERAL"
->AT TIME ZONE</TT
->
-	 <TT
+> AT TIME ZONE <VAR
 CLASS="REPLACEABLE"
-><I
->zone</I
-></TT
+>zone</VAR
+></VAR
 >
 	</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >time with time zone</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Convert local time across timezones</TD
+>Convert local time across time zones</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->    In these expressions, the desired time <TT
+>    In these expressions, the desired time zone <VAR
 CLASS="REPLACEABLE"
-><I
->zone</I
-></TT
+>zone</VAR
 > can be
-    specified either as a text string (e.g., <TT
+    specified either as a text string (e.g., <VAR
 CLASS="LITERAL"
->'PST'</TT
+>'PST'</VAR
 >)
-    or as an interval (e.g., <TT
+    or as an interval (e.g., <VAR
 CLASS="LITERAL"
->INTERVAL '-08:00'</TT
+>INTERVAL '-08:00'</VAR
 >).
    </P
 ><P
->    Examples (supposing that <TT
-CLASS="VARNAME"
->TimeZone</TT
-> is <TT
+>    Examples (supposing that the local time zone is <VAR
 CLASS="LITERAL"
->PST8PDT</TT
+>PST8PDT</VAR
 >):
 </P><PRE
 CLASS="SCREEN"
@@ -1945,55 +1764,50 @@ CLASS="SCREEN"
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-02-16 19:38:40-08</TT
+>2001-02-16 19:38:40-08</SAMP
 >
 
 SELECT TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-05' AT TIME ZONE 'MST';
 <I
 CLASS="LINEANNOTATION"
 >Result: </I
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-02-16 18:38:40</TT
+>2001-02-16 18:38:40</SAMP
 ></PRE
 ><P>
-    The first example takes a zone-less timestamp and interprets it as MST time
-    (GMT-7) to produce a UTC timestamp, which is then rotated to PST (GMT-8)
-    for display.  The second example takes a timestamp specified in EST
-    (GMT-5) and converts it to local time in MST (GMT-7).
+    The first example takes a zone-less time stamp and interprets it as MST time
+    (UTC-7) to produce a UTC time stamp, which is then rotated to PST (UTC-8)
+    for display.  The second example takes a time stamp specified in EST
+    (UTC-5) and converts it to local time in MST (UTC-7).
    </P
 ><P
->    The function <TT
-CLASS="FUNCTION"
->timezone</TT
->(<TT
-CLASS="REPLACEABLE"
-><I
->zone</I
-></TT
->,
-    <TT
-CLASS="REPLACEABLE"
-><I
->timestamp</I
-></TT
->) is equivalent to the SQL-compliant construct
-    <TT
-CLASS="REPLACEABLE"
-><I
->timestamp</I
-></TT
-> <TT
+>    The function <VAR
 CLASS="LITERAL"
->AT TIME ZONE</TT
->
-    <TT
+><CODE
+CLASS="FUNCTION"
+>timezone</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->zone</I
-></TT
+>zone</VAR
+>,
+    <VAR
+CLASS="REPLACEABLE"
+>timestamp</VAR
+>)</VAR
+> is equivalent to the SQL-conforming construct
+    <VAR
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>timestamp</VAR
+> AT TIME ZONE
+    <VAR
+CLASS="REPLACEABLE"
+>zone</VAR
+></VAR
 >. 
    </P
 ></DIV
@@ -2003,13 +1817,13 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="FUNCTIONS-DATETIME-CURRENT"
->6.8.4. Current Date/Time</A
+>9.8.4. Current Date/Time</A
 ></H2
 ><A
-NAME="AEN8948"
+NAME="AEN9868"
 ></A
 ><A
-NAME="AEN8951"
+NAME="AEN9871"
 ></A
 ><P
 >    The following functions are available to obtain the current date and/or
@@ -2019,72 +1833,64 @@ CLASS="SYNOPSIS"
 >CURRENT_DATE
 CURRENT_TIME
 CURRENT_TIMESTAMP
-CURRENT_TIME ( <TT
+CURRENT_TIME ( <VAR
 CLASS="REPLACEABLE"
-><I
->precision</I
-></TT
+>precision</VAR
 > )
-CURRENT_TIMESTAMP ( <TT
+CURRENT_TIMESTAMP ( <VAR
 CLASS="REPLACEABLE"
-><I
->precision</I
-></TT
+>precision</VAR
 > )
 LOCALTIME
 LOCALTIMESTAMP
-LOCALTIME ( <TT
+LOCALTIME ( <VAR
 CLASS="REPLACEABLE"
-><I
->precision</I
-></TT
+>precision</VAR
 > )
-LOCALTIMESTAMP ( <TT
+LOCALTIMESTAMP ( <VAR
 CLASS="REPLACEABLE"
-><I
->precision</I
-></TT
+>precision</VAR
 > )</PRE
 ><P>
     </P
 ><P
->     <TT
+>     <CODE
 CLASS="FUNCTION"
->CURRENT_TIME</TT
+>CURRENT_TIME</CODE
 > and
-     <TT
+     <CODE
 CLASS="FUNCTION"
->CURRENT_TIMESTAMP</TT
+>CURRENT_TIMESTAMP</CODE
 > deliver values with time zone;
-     <TT
+     <CODE
 CLASS="FUNCTION"
->LOCALTIME</TT
+>LOCALTIME</CODE
 > and
-     <TT
+     <CODE
 CLASS="FUNCTION"
->LOCALTIMESTAMP</TT
+>LOCALTIMESTAMP</CODE
 > deliver values without time zone.
     </P
 ><P
->     <TT
+>     <CODE
 CLASS="FUNCTION"
->CURRENT_TIME</TT
+>CURRENT_TIME</CODE
 >,
-     <TT
+     <CODE
 CLASS="FUNCTION"
->CURRENT_TIMESTAMP</TT
+>CURRENT_TIMESTAMP</CODE
 >,
-     <TT
+     <CODE
 CLASS="FUNCTION"
->LOCALTIME</TT
+>LOCALTIME</CODE
 >, and
-     <TT
+     <CODE
 CLASS="FUNCTION"
->LOCALTIMESTAMP</TT
+>LOCALTIMESTAMP</CODE
 >
      can optionally be given
      a precision parameter, which causes the result to be rounded
-     to that many fractional digits.  Without a precision parameter,
+     to that many fractional digits in the seconds field.  Without a precision parameter,
      the result is given to the full available precision.
     </P
 ><DIV
@@ -2108,77 +1914,108 @@ CLASS="PRODUCTNAME"
 </P><PRE
 CLASS="SCREEN"
 >SELECT CURRENT_TIME;
-<TT
+<I
+CLASS="LINEANNOTATION"
+>Result: </I
+><SAMP
 CLASS="COMPUTEROUTPUT"
->14:39:53.662522-05</TT
+>14:39:53.662522-05</SAMP
 >
 
 SELECT CURRENT_DATE;
-<TT
+<I
+CLASS="LINEANNOTATION"
+>Result: </I
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-12-23</TT
+>2001-12-23</SAMP
 >
 
 SELECT CURRENT_TIMESTAMP;
-<TT
+<I
+CLASS="LINEANNOTATION"
+>Result: </I
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-12-23 14:39:53.662522-05</TT
+>2001-12-23 14:39:53.662522-05</SAMP
 >
 
 SELECT CURRENT_TIMESTAMP(2);
-<TT
+<I
+CLASS="LINEANNOTATION"
+>Result: </I
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-12-23 14:39:53.66-05</TT
+>2001-12-23 14:39:53.66-05</SAMP
 >
 
 SELECT LOCALTIMESTAMP;
-<TT
+<I
+CLASS="LINEANNOTATION"
+>Result: </I
+><SAMP
 CLASS="COMPUTEROUTPUT"
->2001-12-23 14:39:53.662522</TT
+>2001-12-23 14:39:53.662522</SAMP
 ></PRE
 ><P>
    </P
 ><P
->    The function <TT
+>    The function <CODE
 CLASS="FUNCTION"
->now()</TT
+>now()</CODE
 > is the traditional
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > equivalent to
-    <TT
+    <CODE
 CLASS="FUNCTION"
->CURRENT_TIMESTAMP</TT
+>CURRENT_TIMESTAMP</CODE
 >.
    </P
 ><P
->    There is also <TT
+>    There is also the function <CODE
 CLASS="FUNCTION"
->timeofday()</TT
+>timeofday()</CODE
 >, which for historical
-    reasons returns a text string rather than a <TT
+    reasons returns a <TT
+CLASS="TYPE"
+>text</TT
+> string rather than a <TT
 CLASS="TYPE"
 >timestamp</TT
 > value:
 </P><PRE
 CLASS="SCREEN"
 >SELECT timeofday();
- Sat Feb 17 19:07:32.000126 2001 EST</PRE
+<I
+CLASS="LINEANNOTATION"
+>Result: </I
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>Sat Feb 17 19:07:32.000126 2001 EST</SAMP
+></PRE
 ><P>
    </P
 ><P
->    It is important to realize that
-    <TT
+>    It is important to know that
+    <CODE
 CLASS="FUNCTION"
->CURRENT_TIMESTAMP</TT
+>CURRENT_TIMESTAMP</CODE
 > and related functions return
     the start time of the current transaction; their values do not
-    change during the transaction. <TT
+    change during the transaction. This is considered a feature:
+    the intent is to allow a single transaction to have a consistent
+    notion of the <SPAN
+CLASS="QUOTE"
+>"current"</SPAN
+> time, so that multiple
+    modifications within the same transaction bear the same
+    timestamp. <CODE
 CLASS="FUNCTION"
->timeofday()</TT
+>timeofday()</CODE
 >
-    returns the wall clock time and does advance during transactions.
+    returns the wall-clock time and does advance during transactions.
    </P
 ><DIV
 CLASS="NOTE"
@@ -2187,17 +2024,16 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->  
-     Many other database systems advance these values more
+>     Other database systems may advance these values more
      frequently.
     </P
 ></BLOCKQUOTE
 ></DIV
 ><P
 >    All the date/time data types also accept the special literal value
-    <TT
+    <VAR
 CLASS="LITERAL"
->now</TT
+>now</VAR
 > to specify the current date and time.  Thus,
     the following three all return the same result:
 </P><PRE
@@ -2214,13 +2050,13 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->      You do not want to use the third form when specifying a <TT
+>      You do not want to use the third form when specifying a <VAR
 CLASS="LITERAL"
->DEFAULT</TT
+>DEFAULT</VAR
 >
-      clause while creating a table.  The system will convert <TT
+      clause while creating a table.  The system will convert <VAR
 CLASS="LITERAL"
->now</TT
+>now</VAR
 >
       to a <TT
 CLASS="TYPE"
@@ -2249,9 +2085,12 @@ ALIGN="LEFT"
 VALIGN="TOP"
 WIDTH="5%"
 ><A
-NAME="FTN.AEN8794"
-HREF="functions-datetime.html#AEN8794"
->[1]</A
+NAME="FTN.AEN9697"
+HREF="functions-datetime.html#AEN9697"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
 ></TD
 ><TD
 ALIGN="LEFT"

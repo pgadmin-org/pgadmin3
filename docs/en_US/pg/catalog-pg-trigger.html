@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_trigger</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,19 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-TRIGGER"
->3.28. pg_trigger</A
+>45.28. <TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+></A
 ></H1
+><A
+NAME="AEN53071"
+></A
 ><P
->   This system catalog stores triggers on tables.  See under
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+> stores triggers on tables.  See under
    <TT
 CLASS="COMMAND"
 >CREATE TRIGGER</TT
@@ -93,309 +102,266 @@ CLASS="COMMAND"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN54284"
+NAME="AEN53076"
 ></A
 ><P
 ><B
->Table 3-28. pg_trigger Columns</B
+>Table 45-28. <TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgrelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgrelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The table this trigger is on</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgname</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Trigger name (must be unique among triggers of same table)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgfoid</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgfoid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The function to be called</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgtype</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgtype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Bitmask identifying trigger conditions</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgenabled</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgenabled</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >True if trigger is enabled (not presently checked everywhere
       it should be, so disabling a trigger by setting this false does not
       work reliably)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgisconstraint</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgisconstraint</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->True if trigger implements an RI constraint</TD
+>True if trigger implements a referential integrity constraint</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgconstrname</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgconstrname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->RI constraint name</TD
+>Referential integrity constraint name</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgconstrrelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgconstrrelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The table referenced by an RI constraint</TD
+>The table referenced by an referential integrity constraint</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgdeferrable</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgdeferrable</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >True if deferrable</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tginitdeferred</TD
+><TT
+CLASS="STRUCTFIELD"
+>tginitdeferred</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >True if initially deferred</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgnargs</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgnargs</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Number of argument strings passed to trigger function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgattr</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgattr</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2vector</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Currently unused</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->tgargs</TD
+><TT
+CLASS="STRUCTFIELD"
+>tgargs</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bytea</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Argument strings to pass to trigger, each null-terminated</TD
 ></TR
 ></TBODY
@@ -408,14 +374,11 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->    <TT
-CLASS="STRUCTNAME"
->pg_class</TT
->.<TT
-CLASS="STRUCTFIELD"
->reltriggers</TT
->
-    needs to match up with the entries in this table.
+>    <VAR
+CLASS="LITERAL"
+>pg_class.reltriggers</VAR
+> needs to match up with the
+    entries in this table.
    </P
 ></BLOCKQUOTE
 ></DIV
@@ -464,7 +427,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_statistic</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -478,7 +444,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_type</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

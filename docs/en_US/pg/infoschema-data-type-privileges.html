@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>data_type_privileges</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="PREVIOUS"
+TITLE="constraint_table_usage"
+HREF="infoschema-constraint-table-usage.html"><LINK
+REL="NEXT"
+TITLE="domain_constraints"
+HREF="infoschema-domain-constraints.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="infoschema-constraint-table-usage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 33. The Information Schema</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="infoschema-domain-constraints.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INFOSCHEMA-DATA-TYPE-PRIVILEGES"
+>33.12. <VAR
+CLASS="LITERAL"
+>data_type_privileges</VAR
+></A
+></H1
+><P
+>   The view <VAR
+CLASS="LITERAL"
+>data_type_privileges</VAR
+> identifies all
+   data type descriptors that the current user has access to, by way
+   of being the owner of the described object or having some privilege
+   for it.  A data type descriptor is generated whenever a data type
+   is used in the definition of a table column, a domain, or a
+   function (as parameter or return type) and stores some information
+   about how the data type is used in that instance (for example, the
+   declared maximum length, if applicable).  Each data type
+   descriptors is assigned an arbitrary identifier that is unique
+   among the data type descriptor identifiers assigned for one object
+   (table, domain, function).  This view is probably not useful for
+   applications, but it is used to define some other views in the
+   information schema.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN26913"
+></A
+><P
+><B
+>Table 33-10. <VAR
+CLASS="LITERAL"
+>domain_constraints</VAR
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Data Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>object_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database that contains the described object (always the current database)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>object_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema that contains the described object</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>object_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the described object</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>object_type</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       The type of the described object: one of
+       <VAR
+CLASS="LITERAL"
+>TABLE</VAR
+> (the data type descriptor pertains to
+       a column of that table), <VAR
+CLASS="LITERAL"
+>DOMAIN</VAR
+> (the data
+       type descriptors pertains to that domain),
+       <VAR
+CLASS="LITERAL"
+>ROUTINE</VAR
+> (the data type descriptor pertains
+       to a parameter or the return data type of that function).
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>dtd_identifier</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       The identifier of the data type descriptor, which is unique
+       among the data type descriptors for that same object.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-constraint-table-usage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-domain-constraints.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>constraint_table_usage</VAR
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>domain_constraints</VAR
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

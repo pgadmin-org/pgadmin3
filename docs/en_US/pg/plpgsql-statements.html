@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Basic Statements</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 19. <SPAN
+>Chapter 40. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> - <SPAN
+> - <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Procedural Language</TD
 ><TD
 WIDTH="10%"
@@ -87,7 +87,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-STATEMENTS"
->19.5. Basic Statements</A
+>40.6. Basic Statements</A
 ></H1
 ><P
 >    In this section and the following ones, we describe all the statement
@@ -97,13 +97,13 @@ CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 >.
     Anything not recognized as one of these statement types is presumed
-    to be an SQL query, and is sent to the main database engine to execute
-    (after substitution for any <SPAN
+    to be an SQL command and is sent to the main database engine to execute
+    (after substitution of any <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > variables
     used in the statement).  Thus,
-    for example, SQL <TT
+    for example, the SQL commands <TT
 CLASS="COMMAND"
 >INSERT</TT
 >, <TT
@@ -113,11 +113,11 @@ CLASS="COMMAND"
     <TT
 CLASS="COMMAND"
 >DELETE</TT
-> commands may be considered to be statements of
+> may be considered to be statements of
     <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
->.  But they are not specifically
+>, but they are not specifically
     listed here.
    </P
 ><DIV
@@ -126,23 +126,19 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-ASSIGNMENT"
->19.5.1. Assignment</A
+>40.6.1. Assignment</A
 ></H2
 ><P
 >     An assignment of a value to a variable or row/record field is
      written as:
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->identifier</I
-></TT
-> := <TT
+>identifier</VAR
+> := <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 >;</PRE
 ><P>
      As explained above, the expression in such a statement is evaluated
@@ -183,109 +179,148 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-SELECT-INTO"
->19.5.2. SELECT INTO</A
+>40.6.2. <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+></A
 ></H2
 ><P
->     The result of a SELECT command yielding multiple columns (but
+>     The result of a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command yielding multiple columns (but
      only one row) can be assigned to a record variable, row-type
      variable, or list of scalar variables.  This is done by:
 
 </P><PRE
 CLASS="SYNOPSIS"
->SELECT INTO <TT
+>SELECT INTO <VAR
 CLASS="REPLACEABLE"
-><I
->target</I
-></TT
-> <TT
+>target</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->expressions</I
-></TT
+>expressions</VAR
 > FROM ...;</PRE
 ><P>
 
-     where <TT
+     where <VAR
 CLASS="REPLACEABLE"
-><I
->target</I
-></TT
+>target</VAR
 > can be a record variable, a row
      variable, or a comma-separated list of simple variables and
-     record/row fields. Note that this is quite different from
+     record/row fields.
+    </P
+><P
+>     Note that this is quite different from
      <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->'s normal interpretation of SELECT INTO, which is that the
-     INTO target is a newly created table.  (If you want to create a
-     table from a SELECT result inside a <SPAN
+>'s normal interpretation of
+     <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+>, where the <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> target
+     is a newly created table.  If you want to create a table from a
+     <TT
+CLASS="COMMAND"
+>SELECT</TT
+> result inside a
+     <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> function, use the
-     syntax <TT
+> function, use the syntax
+     <TT
 CLASS="COMMAND"
 >CREATE TABLE ... AS SELECT</TT
->.)
+>.
     </P
 ><P
 >     If a row or a variable list is used as target, the selected values
-     must exactly match the structure of the target(s), or a run-time error
+     must exactly match the structure of the target, or a run-time error
      occurs.  When a record variable is the target, it automatically
      configures itself to the row type of the query result columns.
     </P
 ><P
->     Except for the INTO clause, the SELECT statement is the same as a normal
-     SQL SELECT query and can use the full power of SELECT.
+>     Except for the <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> clause, the <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+     statement is the same as a normal SQL <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command
+     and can use its full power.
     </P
 ><P
->     If the SELECT query returns zero rows, null values are assigned to the
-     target(s).  If the SELECT query returns multiple rows, the first
+>     If the query returns zero rows, null values are assigned to the
+     target(s).  If the query returns multiple rows, the first
      row is assigned to the target(s) and the rest are discarded.
      (Note that <SPAN
 CLASS="QUOTE"
 >"the first row"</SPAN
 > is not well-defined unless you've
-     used ORDER BY.)
+     used <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+>.)
     </P
 ><P
->     At present, the INTO clause can appear almost anywhere in the SELECT
-     query, but it is recommended to place it immediately after the SELECT
-     keyword as depicted above.  Future versions of
+>     At present, the <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> clause can appear almost anywhere in the <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+     statement, but it is recommended to place it immediately after the <VAR
+CLASS="LITERAL"
+>SELECT</VAR
+>
+     key word as depicted above.  Future versions of
      <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > may be less forgiving about
-     placement of the INTO clause.
+     placement of the <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> clause.
     </P
 ><P
->     You can use <TT
+>     You can use <VAR
 CLASS="LITERAL"
->FOUND</TT
-> immediately after a SELECT
-     INTO statement to determine whether the assignment was successful
-     (that is, at least one row was was returned by the SELECT
-     statement). For example:
+>FOUND</VAR
+> immediately after a <TT
+CLASS="COMMAND"
+>SELECT
+     INTO</TT
+> statement to determine whether the assignment was successful
+     (that is, at least one row was was returned by the query). For example:
   
 </P><PRE
 CLASS="PROGRAMLISTING"
->SELECT INTO myrec * FROM EMP WHERE empname = myname;
+>SELECT INTO myrec * FROM emp WHERE empname = myname;
 IF NOT FOUND THEN
     RAISE EXCEPTION ''employee % not found'', myname;
 END IF;</PRE
 ><P>
-
-     Alternatively, you can use the <TT
-CLASS="LITERAL"
->IS NULL</TT
-> (or <TT
-CLASS="LITERAL"
->ISNULL</TT
->) conditional to
-     test for whether a RECORD/ROW result is null.  Note that there is no
-     way to tell whether any additional rows might have been discarded.
     </P
 ><P
-></P><PRE
+>     To test for whether a record/row result is null, you can use the
+     <VAR
+CLASS="LITERAL"
+>IS NULL</VAR
+> conditional.  There is, however, no
+     way to tell whether any additional rows might have been
+     discarded.  Here is an example that handles the case where no
+     rows have been returned:
+</P><PRE
 CLASS="PROGRAMLISTING"
 >DECLARE
     users_rec RECORD;
@@ -295,7 +330,6 @@ BEGIN
 
     IF users_rec.homepage IS NULL THEN
         -- user entered no homepage, return "http://"
-
         RETURN ''http://'';
     END IF;
 END;</PRE
@@ -308,47 +342,47 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-PERFORM"
->19.5.3. Executing an expression or query with no result</A
+>40.6.3. Executing an Expression or Query With No Result</A
 ></H2
 ><P
->     Sometimes one wishes to evaluate an expression or query but discard
-     the result (typically because one is calling a function that has
-     useful side-effects but no useful result value).  To do this in
-     <SPAN
+>     Sometimes one wishes to evaluate an expression or query but
+     discard the result (typically because one is calling a function
+     that has useful side-effects but no useful result value).  To do
+     this in <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
->, use the PERFORM statement:
+>, use the
+     <TT
+CLASS="COMMAND"
+>PERFORM</TT
+> statement:
 
 </P><PRE
 CLASS="SYNOPSIS"
->PERFORM <TT
+>PERFORM <VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
+>query</VAR
 >;</PRE
 ><P>
 
-     This executes a <TT
+     This executes <VAR
+CLASS="REPLACEABLE"
+>query</VAR
+>, which must be a
+     <TT
 CLASS="COMMAND"
 >SELECT</TT
->
-     <TT
-CLASS="REPLACEABLE"
-><I
->query</I
-></TT
-> and discards the
+> statement, and discards the
      result. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > variables are
      substituted in the query as usual.  Also, the special variable
-     <TT
+     <VAR
 CLASS="LITERAL"
->FOUND</TT
+>FOUND</VAR
 > is set to true if the query produced at
-     least one row, or false if it produced no rows.
+     least one row or false if it produced no rows.
     </P
 ><DIV
 CLASS="NOTE"
@@ -357,9 +391,20 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     One might expect that SELECT with no INTO clause would accomplish
-     this result, but at present the only accepted way to do it is PERFORM.
-    </P
+>      One might expect that <TT
+CLASS="COMMAND"
+>SELECT</TT
+> with no
+      <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> clause would accomplish this result, but at
+      present the only accepted way to do it is
+      <TT
+CLASS="COMMAND"
+>PERFORM</TT
+>.
+     </P
 ></BLOCKQUOTE
 ></DIV
 ><P
@@ -375,50 +420,44 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="PLPGSQL-STATEMENTS-EXECUTING-DYN-QUERIES"
->19.5.4. Executing dynamic queries</A
+NAME="PLPGSQL-STATEMENTS-EXECUTING-DYN"
+>40.6.4. Executing Dynamic Commands</A
 ></H2
 ><P
->     Oftentimes you will want to generate dynamic queries inside
-     your <SPAN
+>     Oftentimes you will want to generate dynamic commands inside your
+     <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> functions, that is,
-     queries that will involve different tables or different data types
-     each time they are executed.  <SPAN
+> functions, that is, commands
+     that will involve different tables or different data types each
+     time they are executed.  <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 >'s
-     normal attempts to cache plans for queries will not work in such
-     scenarios.  To handle this sort of problem, the EXECUTE statement
-     is provided:
+     normal attempts to cache plans for commands will not work in such
+     scenarios.  To handle this sort of problem, the
+     <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement is provided:
 
 </P><PRE
 CLASS="SYNOPSIS"
->EXECUTE <TT
+>EXECUTE <VAR
 CLASS="REPLACEABLE"
-><I
->query-string</I
-></TT
+>command-string</VAR
 >;</PRE
 ><P>
 
-     where <TT
+     where <VAR
 CLASS="REPLACEABLE"
-><I
->query-string</I
-></TT
+>command-string</VAR
 > is an expression
      yielding a string (of type
      <TT
 CLASS="TYPE"
 >text</TT
->) containing the <TT
-CLASS="REPLACEABLE"
-><I
->query</I
-></TT
->
+>) containing the command
      to be executed.  This string is fed literally to the SQL engine.
     </P
 ><P
@@ -426,128 +465,126 @@ CLASS="REPLACEABLE"
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 >
-     variables is done on the query string.  The values of variables must
-     be inserted in the query string as it is constructed.
+     variables is done on the command string.  The values of variables must
+     be inserted in the command string as it is constructed.
     </P
 ><P
->    When working with dynamic queries you will have to face
+>    When working with dynamic commands you will have to face
     escaping of single quotes in <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 >. Please refer to the
-    table in <A
-HREF="plpgsql-porting.html"
->Section 19.11</A
->
-    for a detailed explanation that will save you some effort.
+    overview in <A
+HREF="plpgsql-quote.html"
+>Section 40.2</A
+>,
+    which can save you some effort.
     </P
 ><P
->     Unlike all other queries in <SPAN
+>     Unlike all other commands in <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
->, a
-     <TT
-CLASS="REPLACEABLE"
-><I
->query</I
-></TT
-> run by an EXECUTE statement is
-     not prepared and saved just once during the life of the server.
-     Instead, the <TT
-CLASS="REPLACEABLE"
-><I
->query</I
-></TT
-> is prepared each
-     time the statement is run. The
-     <TT
-CLASS="REPLACEABLE"
-><I
->query-string</I
-></TT
-> can be dynamically
-     created within the procedure to perform actions on variable
-     tables and fields.
+>, a command
+     run by an <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement is not prepared
+     and saved just once during the life of the session.  Instead, the
+     command is prepared each time the statement is run. The command
+     string can be dynamically created within the function to perform
+     actions on variable tables and columns.
     </P
 ><P
->     The results from SELECT queries are discarded by EXECUTE, and
-     SELECT INTO is not currently supported within EXECUTE.  So, the
-     only way to extract a result from a dynamically-created SELECT is
-     to use the FOR-IN-EXECUTE form described later.
+>     The results from <TT
+CLASS="COMMAND"
+>SELECT</TT
+> commands are discarded
+     by <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+>, and <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+>
+     is not currently supported within <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+>.
+     So, the only way to extract a result from a dynamically-created
+     <TT
+CLASS="COMMAND"
+>SELECT</TT
+> is to use the <TT
+CLASS="COMMAND"
+>FOR-IN-EXECUTE</TT
+> form
+     described later.
     </P
 ><P
 >     An example:
-<DIV
-CLASS="INFORMALEXAMPLE"
-><A
-NAME="AEN35873"
-></A
-><P
-></P
-><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
 >EXECUTE ''UPDATE tbl SET ''
-        || quote_ident(fieldname)
+        || quote_ident(colname)
         || '' = ''
         || quote_literal(newvalue)
         || '' WHERE ...'';</PRE
-><P
-></P
-></DIV
->
+><P>
     </P
 ><P
 >     This example shows use of the functions
-     <TT
+     <CODE
 CLASS="FUNCTION"
->quote_ident</TT
->(<TT
+>quote_ident(<TT
 CLASS="TYPE"
->TEXT</TT
->) and
-     <TT
+>text</TT
+>)</CODE
+> and
+     <CODE
 CLASS="FUNCTION"
->quote_literal</TT
->(<TT
+>quote_literal(<TT
 CLASS="TYPE"
->TEXT</TT
->).
-     Variables containing field and table identifiers should be
-     passed to function <TT
-CLASS="FUNCTION"
->quote_ident()</TT
+>text</TT
+>)</CODE
 >.
-     Variables containing literal elements of the dynamic query
-     string should be passed to
-     <TT
+     Variables containing column and table identifiers should be
+     passed to function <CODE
 CLASS="FUNCTION"
->quote_literal()</TT
+>quote_ident</CODE
+>.
+     Variables containing values that act as value literals in the constructed command
+     string should be passed to
+     <CODE
+CLASS="FUNCTION"
+>quote_literal</CODE
 >.  Both take the
      appropriate steps to return the input text enclosed in single
      or double quotes and with any embedded special characters
      properly escaped.
     </P
 ><P
->     Here is a much larger example of a dynamic query and EXECUTE:
+>     Here is a much larger example of a dynamic command and
+     <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+>:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION cs_update_referrer_type_proc() RETURNS INTEGER AS '
+>CREATE FUNCTION cs_update_referrer_type_proc() RETURNS integer AS '
 DECLARE
-    referrer_keys RECORD;  -- Declare a generic record to be used in a FOR
+    referrer_keys RECORD;  -- declare a generic record to be used in a FOR
     a_output varchar(4000);
 BEGIN 
-    a_output := ''CREATE FUNCTION cs_find_referrer_type(varchar,varchar,varchar) 
-                  RETURNS VARCHAR AS '''' 
+    a_output := ''CREATE FUNCTION cs_find_referrer_type(varchar, varchar, varchar) 
+                  RETURNS varchar AS '''' 
                      DECLARE 
                          v_host ALIAS FOR $1; 
                          v_domain ALIAS FOR $2; 
                          v_url ALIAS FOR $3;
                      BEGIN ''; 
 
-    -- 
     -- Notice how we scan through the results of a query in a FOR loop
     -- using the FOR &lt;record&gt; construct.
-    --
 
     FOR referrer_keys IN SELECT * FROM cs_referrer_keys ORDER BY try_order LOOP
         a_output := a_output || '' IF v_'' || referrer_keys.kind || '' LIKE '''''''''' 
@@ -555,14 +592,11 @@ BEGIN
                  || referrer_keys.referrer_type || ''''''; END IF;''; 
     END LOOP; 
   
-    a_output := a_output || '' RETURN NULL; END; '''' LANGUAGE ''''plpgsql'''';''; 
+    a_output := a_output || '' RETURN NULL; END; '''' LANGUAGE plpgsql;''; 
  
-    -- This works because we are not substituting any variables
-    -- Otherwise it would fail. Look at PERFORM for another way to run functions
-    
     EXECUTE a_output; 
 END; 
-' LANGUAGE 'plpgsql';</PRE
+' LANGUAGE plpgsql;</PRE
 ><P>
     </P
 ></DIV
@@ -572,28 +606,24 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-DIAGNOSTICS"
->19.5.5. Obtaining result status</A
+>40.6.5. Obtaining the Result Status</A
 ></H2
 ><P
 >	 There are several ways to determine the effect of a command. The
 	 first method is to use the <TT
-CLASS="LITERAL"
+CLASS="COMMAND"
 >GET DIAGNOSTICS</TT
 >,
 	 which has the form:
 
 </P><PRE
 CLASS="SYNOPSIS"
->GET DIAGNOSTICS <TT
+>GET DIAGNOSTICS <VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-> = <TT
+>variable</VAR
+> = <VAR
 CLASS="REPLACEABLE"
-><I
->item</I
-></TT
+>item</VAR
 > [<SPAN
 CLASS="OPTIONAL"
 > , ... </SPAN
@@ -601,66 +631,59 @@ CLASS="OPTIONAL"
 ><P>
 
      This command allows retrieval of system status indicators.  Each
-     <TT
+     <VAR
 CLASS="REPLACEABLE"
-><I
->item</I
-></TT
-> is a keyword identifying a state
+>item</VAR
+> is a key word identifying a state
      value to be assigned to the specified variable (which should be
      of the right data type to receive it).  The currently available
-     status items are <TT
+     status items are <VAR
 CLASS="VARNAME"
->ROW_COUNT</TT
+>ROW_COUNT</VAR
 >, the number of rows
-     processed by the last <SPAN
+     processed by the last <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> query sent down to
-     the <SPAN
+>SQL</ACRONYM
+> command sent down to
+     the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> engine; and <TT
+>SQL</ACRONYM
+> engine, and <VAR
 CLASS="VARNAME"
->RESULT_OID</TT
+>RESULT_OID</VAR
 >,
      the OID of the last row inserted by the most recent
-     <SPAN
+     <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> query.  Note that <TT
+>SQL</ACRONYM
+> command.  Note that <VAR
 CLASS="VARNAME"
->RESULT_OID</TT
+>RESULT_OID</VAR
 >
-     is only useful after an INSERT query.
+     is only useful after an <TT
+CLASS="COMMAND"
+>INSERT</TT
+> command.
     </P
 ><P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><A
-NAME="AEN35900"
-></A
-><P
-></P
-><PRE
+>     An example:
+</P><PRE
 CLASS="PROGRAMLISTING"
->      GET DIAGNOSTICS var_integer = ROW_COUNT;</PRE
-><P
-></P
-></DIV
->
+>GET DIAGNOSTICS var_integer = ROW_COUNT;</PRE
+><P>
     </P
 ><P
->     There is a special variable named <TT
+>     The second method to determine the effects of a command is the
+     special variable named <VAR
 CLASS="LITERAL"
->FOUND</TT
+>FOUND</VAR
 > of
      type <TT
 CLASS="TYPE"
 >boolean</TT
->.  <TT
+>.  <VAR
 CLASS="LITERAL"
->FOUND</TT
+>FOUND</VAR
 > starts out
      false within each <SPAN
 CLASS="APPLICATION"
@@ -672,18 +695,25 @@ CLASS="APPLICATION"
 ></P><UL
 ><LI
 ><P
->		A SELECT INTO statement sets <TT
+>		A <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> statement sets
+		<VAR
 CLASS="LITERAL"
->FOUND</TT
->
-		true if it returns a row, false if no row is returned.
+>FOUND</VAR
+> true if it returns a row, false if no
+		row is returned.
 	   </P
 ></LI
 ><LI
 ><P
->		A PERFORM statement sets <TT
+>		A <TT
+CLASS="COMMAND"
+>PERFORM</TT
+> statement sets <VAR
 CLASS="LITERAL"
->FOUND</TT
+>FOUND</VAR
 >
 		true if it produces (discards) a row, false if no row is
 		produced.
@@ -691,50 +721,84 @@ CLASS="LITERAL"
 ></LI
 ><LI
 ><P
->		UPDATE, INSERT, and DELETE statements set
-		<TT
+>		<TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, and <TT
+CLASS="COMMAND"
+>DELETE</TT
+>
+		statements set <VAR
 CLASS="LITERAL"
->FOUND</TT
-> true if at least one row is
-		affected, false if no row is affected.
+>FOUND</VAR
+> true if at least one
+		row is affected, false if no row is affected.
 	   </P
 ></LI
 ><LI
 ><P
->		A FETCH statement sets <TT
+>		A <TT
+CLASS="COMMAND"
+>FETCH</TT
+> statement sets <VAR
 CLASS="LITERAL"
->FOUND</TT
+>FOUND</VAR
 >
 		true if it returns a row, false if no row is returned.
 	   </P
 ></LI
 ><LI
 ><P
->		A FOR statement sets <TT
+>		A <TT
+CLASS="COMMAND"
+>FOR</TT
+> statement sets <VAR
 CLASS="LITERAL"
->FOUND</TT
->
-		true if it iterates one or more times, else false.
-		This applies to all three variants of the FOR statement
-		(integer FOR loops, record-set FOR loops, and dynamic
-		record-set FOR loops). <TT
-CLASS="LITERAL"
->FOUND</TT
-> is only set
-		when the FOR loop exits: inside the execution of the loop,
+>FOUND</VAR
+> true
+		if it iterates one or more times, else false.  This applies to
+		all three variants of the <TT
+CLASS="COMMAND"
+>FOR</TT
+> statement (integer
 		<TT
+CLASS="COMMAND"
+>FOR</TT
+> loops, record-set <TT
+CLASS="COMMAND"
+>FOR</TT
+> loops, and
+		dynamic record-set <TT
+CLASS="COMMAND"
+>FOR</TT
+>
+		loops). <VAR
 CLASS="LITERAL"
->FOUND</TT
-> is not modified by the FOR statement,
-		although it may be changed by the execution of other
-		statements within the loop body.
+>FOUND</VAR
+> is only set when the
+		<TT
+CLASS="COMMAND"
+>FOR</TT
+> loop exits: inside the execution of the loop,
+		<VAR
+CLASS="LITERAL"
+>FOUND</VAR
+> is not modified by the
+		<TT
+CLASS="COMMAND"
+>FOR</TT
+> statement, although it may be changed by the
+		execution of other statements within the loop body.
 	   </P
 ></LI
 ></UL
 ><P>
-     <TT
+     <VAR
 CLASS="LITERAL"
->FOUND</TT
+>FOUND</VAR
 > is a local variable; any changes
      to it affect only the current <SPAN
 CLASS="APPLICATION"

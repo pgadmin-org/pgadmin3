@@ -1,19 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Data Definition</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 User's Guide"
-HREF="user.html"><LINK
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
 REL="PREVIOUS"
 TITLE="Value Expressions"
 HREF="sql-expressions.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="DDL"
->Chapter 2. Data Definition</A
-></H1
+></A
+>Chapter 5. Data Definition</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,159 +90,159 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->2.1. <A
+>5.1. <A
 HREF="ddl.html#DDL-BASICS"
 >Table Basics</A
 ></DT
 ><DT
->2.2. <A
+>5.2. <A
 HREF="ddl-system-columns.html"
 >System Columns</A
 ></DT
 ><DT
->2.3. <A
-HREF="x1779.html"
+>5.3. <A
+HREF="ddl-default.html"
 >Default Values</A
 ></DT
 ><DT
->2.4. <A
+>5.4. <A
 HREF="ddl-constraints.html"
 >Constraints</A
 ></DT
 ><DD
 ><DL
 ><DT
->2.4.1. <A
-HREF="ddl-constraints.html#AEN1793"
+>5.4.1. <A
+HREF="ddl-constraints.html#AEN1717"
 >Check Constraints</A
 ></DT
 ><DT
->2.4.2. <A
-HREF="ddl-constraints.html#AEN1811"
+>5.4.2. <A
+HREF="ddl-constraints.html#AEN1735"
 >Not-Null Constraints</A
 ></DT
 ><DT
->2.4.3. <A
-HREF="ddl-constraints.html#AEN1832"
+>5.4.3. <A
+HREF="ddl-constraints.html#AEN1756"
 >Unique Constraints</A
 ></DT
 ><DT
->2.4.4. <A
-HREF="ddl-constraints.html#AEN1846"
+>5.4.4. <A
+HREF="ddl-constraints.html#AEN1770"
 >Primary Keys</A
 ></DT
 ><DT
->2.4.5. <A
+>5.4.5. <A
 HREF="ddl-constraints.html#DDL-CONSTRAINTS-FK"
 >Foreign Keys</A
 ></DT
 ></DL
 ></DD
 ><DT
->2.5. <A
+>5.5. <A
 HREF="ddl-inherit.html"
 >Inheritance</A
 ></DT
 ><DT
->2.6. <A
+>5.6. <A
 HREF="ddl-alter.html"
 >Modifying Tables</A
 ></DT
 ><DD
 ><DL
 ><DT
->2.6.1. <A
-HREF="ddl-alter.html#AEN1968"
+>5.6.1. <A
+HREF="ddl-alter.html#AEN1893"
 >Adding a Column</A
 ></DT
 ><DT
->2.6.2. <A
-HREF="ddl-alter.html#AEN1974"
+>5.6.2. <A
+HREF="ddl-alter.html#AEN1899"
 >Removing a Column</A
 ></DT
 ><DT
->2.6.3. <A
-HREF="ddl-alter.html#AEN1978"
+>5.6.3. <A
+HREF="ddl-alter.html#AEN1903"
 >Adding a Constraint</A
 ></DT
 ><DT
->2.6.4. <A
-HREF="ddl-alter.html#AEN1984"
+>5.6.4. <A
+HREF="ddl-alter.html#AEN1909"
 >Removing a Constraint</A
 ></DT
 ><DT
->2.6.5. <A
-HREF="ddl-alter.html#AEN1992"
+>5.6.5. <A
+HREF="ddl-alter.html#AEN1917"
 >Changing the Default</A
 ></DT
 ><DT
->2.6.6. <A
-HREF="ddl-alter.html#AEN1997"
+>5.6.6. <A
+HREF="ddl-alter.html#AEN1923"
 >Renaming a Column</A
 ></DT
 ><DT
->2.6.7. <A
-HREF="ddl-alter.html#AEN2001"
+>5.6.7. <A
+HREF="ddl-alter.html#AEN1927"
 >Renaming a Table</A
 ></DT
 ></DL
 ></DD
 ><DT
->2.7. <A
+>5.7. <A
 HREF="ddl-priv.html"
 >Privileges</A
 ></DT
 ><DT
->2.8. <A
+>5.8. <A
 HREF="ddl-schemas.html"
 >Schemas</A
 ></DT
 ><DD
 ><DL
 ><DT
->2.8.1. <A
+>5.8.1. <A
 HREF="ddl-schemas.html#DDL-SCHEMAS-CREATE"
 >Creating a Schema</A
 ></DT
 ><DT
->2.8.2. <A
+>5.8.2. <A
 HREF="ddl-schemas.html#DDL-SCHEMAS-PUBLIC"
 >The Public Schema</A
 ></DT
 ><DT
->2.8.3. <A
+>5.8.3. <A
 HREF="ddl-schemas.html#DDL-SCHEMAS-PATH"
 >The Schema Search Path</A
 ></DT
 ><DT
->2.8.4. <A
+>5.8.4. <A
 HREF="ddl-schemas.html#DDL-SCHEMAS-PRIV"
 >Schemas and Privileges</A
 ></DT
 ><DT
->2.8.5. <A
-HREF="ddl-schemas.html#AEN2157"
+>5.8.5. <A
+HREF="ddl-schemas.html#AEN2083"
 >The System Catalog Schema</A
 ></DT
 ><DT
->2.8.6. <A
+>5.8.6. <A
 HREF="ddl-schemas.html#DDL-SCHEMAS-PATTERNS"
 >Usage Patterns</A
 ></DT
 ><DT
->2.8.7. <A
+>5.8.7. <A
 HREF="ddl-schemas.html#DDL-SCHEMAS-PORTABILITY"
 >Portability</A
 ></DT
 ></DL
 ></DD
 ><DT
->2.9. <A
+>5.9. <A
 HREF="ddl-others.html"
 >Other Database Objects</A
 ></DT
 ><DT
->2.10. <A
+>5.10. <A
 HREF="ddl-depend.html"
 >Dependency Tracking</A
 ></DT
@@ -258,10 +258,10 @@ HREF="ddl-depend.html"
   schemas, and how privileges can be assigned to tables.  Finally,
   we will briefly look at other features that affect the data storage,
   such as views, functions, and triggers.  Detailed information on
-  these topics is found in the <A
-HREF="programmer.html"
-><I
->PostgreSQL 7.3.3 Programmer's Guide</I
+  these topics is found in <A
+HREF="server-programming.html"
+>Part V in <I
+>PostgreSQL 7.4beta1 Documentation</I
 ></A
 >.
  </P
@@ -271,7 +271,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DDL-BASICS"
->2.1. Table Basics</A
+>5.1. Table Basics</A
 ></H1
 ><P
 >   A table in a relational database is much like a table on paper: It
@@ -282,7 +282,7 @@ NAME="DDL-BASICS"
    table.  When a table is read, the rows will appear in random order,
    unless sorting is explicitly requested.  This is covered in <A
 HREF="queries.html"
->Chapter 4</A
+>Chapter 7</A
 >.  Furthermore, SQL does not assign unique
    identifiers to rows, so it is possible to have several completely
    identical rows in a table.  This is a consequence of the
@@ -310,7 +310,7 @@ CLASS="PRODUCTNAME"
    define their own data types.  Most built-in data types have obvious
    names and semantics, so we defer a detailed explanation to <A
 HREF="datatype.html"
->Chapter 5</A
+>Chapter 8</A
 >.  Some of the frequently used data types are
    <TT
 CLASS="TYPE"
@@ -337,10 +337,10 @@ CLASS="TYPE"
    containing both date and time.
   </P
 ><P
->   To create a table, you use the aptly named <TT
+>   To create a table, you use the aptly named <VAR
 CLASS="LITERAL"
 >CREATE
-   TABLE</TT
+   TABLE</VAR
 > command.  In this command you specify at least a
    name for the new table, the names of the columns and the data type
    of each column.  For example:
@@ -351,22 +351,22 @@ CLASS="PROGRAMLISTING"
     second_column integer
 );</PRE
 ><P>
-   This creates a table named <TT
+   This creates a table named <VAR
 CLASS="LITERAL"
->my_first_table</TT
+>my_first_table</VAR
 > with
    two columns.  The first column is named
-   <TT
+   <VAR
 CLASS="LITERAL"
->first_column</TT
+>first_column</VAR
 > and has a data type of
    <TT
 CLASS="TYPE"
 >text</TT
 >; the second column has the name
-   <TT
+   <VAR
 CLASS="LITERAL"
->second_column</TT
+>second_column</VAR
 > and the type <TT
 CLASS="TYPE"
 >integer</TT
@@ -374,7 +374,7 @@ CLASS="TYPE"
    The table and column names follow the identifier syntax explained
    in <A
 HREF="sql-syntax.html#SQL-SYNTAX-IDENTIFIERS"
->Section 1.1.1</A
+>Section 4.1.1</A
 >.  The type names are
    usually also identifiers, but there are some exceptions.  Note that the
    column list is comma-separated and surrounded by parentheses.
@@ -419,9 +419,9 @@ CLASS="TIP"
    highly unusual and often a questionable design.
   </P
 ><P
->   If you don't need a table anymore, you can remove it using the
+>   If you no longer need a table, you can remove it using the
    <TT
-CLASS="LITERAL"
+CLASS="COMMAND"
 >DROP TABLE</TT
 > command.  For example:
 </P><PRE
@@ -437,7 +437,7 @@ DROP TABLE products;</PRE
 ><P
 >   If you need to modify a table that already exists look into <A
 HREF="ddl-alter.html"
->Section 2.6</A
+>Section 5.6</A
 > later in this chapter.
   </P
 ><P
@@ -447,7 +447,7 @@ HREF="ddl-alter.html"
    security, or convenience.  If you are eager to fill your tables with
    data now you can skip ahead to <A
 HREF="dml.html"
->Chapter 3</A
+>Chapter 6</A
 > and read the
    rest of this chapter later.
   </P
@@ -503,7 +503,7 @@ WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="user.html"
+HREF="sql.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

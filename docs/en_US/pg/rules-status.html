@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Rules and Command Status</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The Rule System"
 HREF="rules.html"><LINK
 REL="PREVIOUS"
-TITLE="Rules and Permissions"
-HREF="rules-permissions.html"><LINK
+TITLE="Rules and Privileges"
+HREF="rules-privileges.html"><LINK
 REL="NEXT"
 TITLE="Rules versus Triggers"
 HREF="rules-triggers.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="rules-permissions.html"
+HREF="rules-privileges.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 13. The Rule System</TD
+>Chapter 36. The Rule System</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,36 +81,37 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RULES-STATUS"
->13.6. Rules and Command Status</A
+>36.5. Rules and Command Status</A
 ></H1
 ><P
 >    The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server returns a command
-    status string, such as <TT
+    status string, such as <VAR
 CLASS="LITERAL"
->INSERT 149592 1</TT
+>INSERT 149592 1</VAR
 >, for each
-    query it receives.  This is simple enough when there are no rules
+    command it receives.  This is simple enough when there are no rules
     involved, but what happens when the query is rewritten by rules?</P
 ><P
->    As of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.3, rules affect the
-    command status as follows:
+>    Rules affect the command status as follows:
 
     <P
 ></P
-></P><OL
-TYPE="1"
+></P><UL
 ><LI
 ><P
->       If there is no unconditional INSTEAD rule for the query, then
+>       If there is no unconditional <VAR
+CLASS="LITERAL"
+>INSTEAD</VAR
+> rule for the query, then
        the originally given query will be executed, and its command
        status will be returned as usual.  (But note that if there were
-       any conditional INSTEAD rules, the negation of their qualifications
+       any conditional <VAR
+CLASS="LITERAL"
+>INSTEAD</VAR
+> rules, the negation of their qualifications
        will have been added to the original query.  This may reduce the
        number of rows it processes, and if so the reported status will
        be affected.)
@@ -118,23 +119,47 @@ TYPE="1"
 ></LI
 ><LI
 ><P
->       If there is any unconditional INSTEAD rule for the query, then
+>       If there is any unconditional <VAR
+CLASS="LITERAL"
+>INSTEAD</VAR
+> rule for the query, then
        the original query will not be executed at all.  In this case,
-       the server will return the command status for the last query that
-       was inserted by an INSTEAD rule (conditional or unconditional)
-       and is of the same type (INSERT, UPDATE, or DELETE) as the original
-       query.  If no query meeting those requirements is added by any
-       rule, then the returned command status shows the original query
-       type and zeroes for the tuple-count and OID fields.
+       the server will return the command status for the last query
+       that was inserted by an <VAR
+CLASS="LITERAL"
+>INSTEAD</VAR
+> rule (conditional or
+       unconditional) and is of the same command type
+       (<TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or
+       <TT
+CLASS="COMMAND"
+>DELETE</TT
+>) as the original query.  If no query
+       meeting those requirements is added by any rule, then the
+       returned command status shows the original query type and
+       zeroes for the row-count and OID fields.
       </P
 ></LI
-></OL
-><P></P
+></UL
+><P>
+
+    (This system was established in PostgreSQL 7.3.  In versions
+    before that, the command status might show different results when
+    rules exist.)</P
 ><P
->    The programmer can ensure that any desired INSTEAD rule is the one
+>    The programmer can ensure that any desired <VAR
+CLASS="LITERAL"
+>INSTEAD</VAR
+> rule is the one
     that sets the command status in the second case, by giving it the
     alphabetically last rule name among the active rules, so that it
-    fires last.</P
+    gets applied last.</P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -152,7 +177,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="rules-permissions.html"
+HREF="rules-privileges.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -180,7 +205,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Rules and Permissions</TD
+>Rules and Privileges</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

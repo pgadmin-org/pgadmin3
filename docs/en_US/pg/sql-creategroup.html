@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE GROUP</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,172 +78,61 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATEGROUP"
->CREATE GROUP</A
-></H1
+></A
+>CREATE GROUP</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN39586"
+NAME="AEN38453"
 ></A
 ><H2
 >Name</H2
->   CREATE GROUP
-  &nbsp;--&nbsp;   define a new user group
-  </DIV
+>CREATE GROUP&nbsp;--&nbsp;define a new user group</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN39589"
+NAME="AEN38456"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE GROUP <TT
+>CREATE GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> [ [ WITH ] <TT
+>name</VAR
+> [ [ WITH ] <VAR
 CLASS="REPLACEABLE"
-><I
->option</I
-></TT
+>option</VAR
 > [ ... ] ]
 
-where <TT
+where <VAR
 CLASS="REPLACEABLE"
-><I
->option</I
-></TT
+>option</VAR
 > can be:
 
-     SYSID <TT
+     SYSID <VAR
 CLASS="REPLACEABLE"
-><I
->gid</I
-></TT
+>gid</VAR
 >
-   | USER  <TT
+   | USER  <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> [, ...]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEGROUP-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	The name of the group.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->gid</I
-></TT
-></DT
-><DD
-><P
->        The <TT
-CLASS="LITERAL"
->SYSID</TT
-> clause can be used to choose
-        the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> group id of the new
-        group. It is not necessary to do so, however.
-       </P
-><P
->        If this is not specified, the highest assigned group id plus one,
-        starting at 1, will be used as default.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></DT
-><DD
-><P
->        A list of users to include in the group. The users must already exist.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEGROUP-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->CREATE GROUP</TT
-></DT
-><DD
-><P
->	Message returned if the command completes successfully.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>username</VAR
+> [, ...]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEGROUP-1"
+NAME="AEN38463"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
->   CREATE GROUP will create a new group in the database installation.
-   Refer to the <I
-CLASS="CITETITLE"
->Administrator's Guide</I
-> for information about using groups
-   for authentication.
-   You must be a database superuser to use this command.
+>   <TT
+CLASS="COMMAND"
+>CREATE GROUP</TT
+> will create a new group in the
+   database cluster.  You must be a database
+   superuser to use this command.
   </P
 ><P
 >   Use <A
@@ -263,11 +152,92 @@ HREF="sql-dropgroup.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEGROUP-2"
+NAME="AEN38470"
 ></A
 ><H2
->   Usage
-  </H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>	The name of the group.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>gid</VAR
+></DT
+><DD
+><P
+>        The <VAR
+CLASS="LITERAL"
+>SYSID</VAR
+> clause can be used to choose
+        the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> group ID of the new
+        group. It is not necessary to do so, however.
+       </P
+><P
+>        If this is not specified, the highest assigned group ID plus one,
+        starting at 1, will be used as default.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></DT
+><DD
+><P
+>        A list of users to include in the group. The users must already exist.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38491"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE GROUP</SAMP
+></DT
+><DD
+><P
+>	Message returned if the group was successfully created.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38499"
+></A
+><H2
+>Examples</H2
 ><P
 >   Create an empty group:
 </P><PRE
@@ -286,27 +256,17 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEGROUP-3"
+NAME="AEN38505"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEGROUP-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >CREATE GROUP</TT
-> statement in SQL92.
-    Roles are similar in concept to groups.
-   </P
-></DIV
+> statement in the SQL
+   standard.  Roles are similar in concept to groups.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

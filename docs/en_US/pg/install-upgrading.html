@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >If You Are Upgrading</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="  Installation Instructions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 1. Installation Instructions</TD
+>Chapter 14. Installation Instructions</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INSTALL-UPGRADING"
->1.4. If You Are Upgrading</A
+>14.4. If You Are Upgrading</A
 ></H1
 ><A
-NAME="AEN18166"
+NAME="AEN13557"
 ></A
 ><P
 >   The internal data storage format changes with new releases of
@@ -95,7 +95,7 @@ CLASS="PRODUCTNAME"
    existing installation that does not have a version number
    <SPAN
 CLASS="QUOTE"
->"7.3.x"</SPAN
+>"7.4.x"</SPAN
 >, you must back up and restore your
    data as shown here. These instructions assume that your existing
    installation is under the <TT
@@ -128,29 +128,25 @@ CLASS="FILENAME"
 ><LI
 ><P
 >     <A
-NAME="AEN18179"
+NAME="AEN13570"
 ></A
 >
 
      To back up your database installation, type:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->pg_dumpall &gt; <TT
+>pg_dumpall &gt; <VAR
 CLASS="REPLACEABLE"
-><I
->outputfile</I
-></TT
-></B
-></TT
+>outputfile</VAR
+></KBD
 ></PRE
 ><P>
      If you need to preserve OIDs (such as when using them as
-     foreign keys), then use the <TT
+     foreign keys), then use the <VAR
 CLASS="OPTION"
->-o</TT
+>-o</VAR
 > option when running
      <TT
 CLASS="COMMAND"
@@ -166,7 +162,7 @@ CLASS="COMMAND"
      
      <A
 HREF="backup.html#BACKUP-DUMP-CAVEATS"
->Section 9.1.4</A
+>Section 22.1.4</A
 >
      if you need to do this.
     </P
@@ -180,7 +176,7 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >pg_dumpall</TT
 >
-     command from PostgreSQL 7.3.3, since this version contains
+     command from PostgreSQL 7.4beta1, since this version contains
      bug fixes and improvements over older versions.  While this
      advice might seem idiosyncratic since you haven't installed the
      new version yet, it is advisable to follow it if you plan to
@@ -196,11 +192,9 @@ CLASS="COMMAND"
      install the new files:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->kill -INT `cat /usr/local/pgsql/data/postmaster.pid`</B
-></TT
+>kill -INT `cat /usr/local/pgsql/data/postmaster.pid`</KBD
 ></PRE
 ><P>
      Versions prior to 7.0 do not have this
@@ -208,12 +202,10 @@ CLASS="USERINPUT"
 CLASS="FILENAME"
 >postmaster.pid</TT
 > file. If you are using such a version
-     you must find out the process id of the server yourself, for
-     example by typing <TT
+     you must find out the process ID of the server yourself, for
+     example by typing <KBD
 CLASS="USERINPUT"
-><B
->ps ax | grep postmaster</B
-></TT
+>ps ax | grep postmaster</KBD
 >, and
      supply it to the <TT
 CLASS="COMMAND"
@@ -232,18 +224,14 @@ CLASS="SYSTEMITEM"
 > system one might find that
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->/etc/rc.d/init.d/postgresql stop</B
-></TT
+>/etc/rc.d/init.d/postgresql stop</KBD
 ></PRE
 ><P>
-     works.  Another possibility is <TT
+     works.  Another possibility is <KBD
 CLASS="USERINPUT"
-><B
->pg_ctl stop</B
-></TT
+>pg_ctl stop</KBD
 >.
     </P
 ></LI
@@ -255,11 +243,9 @@ CLASS="USERINPUT"
      Use a command like this:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->mv /usr/local/pgsql /usr/local/pgsql.old</B
-></TT
+>mv /usr/local/pgsql /usr/local/pgsql.old</KBD
 ></PRE
 ><P>
     </P
@@ -270,38 +256,30 @@ CLASS="USERINPUT"
 >   After you have installed <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> 7.3.3, create a new database
+> 7.4beta1, create a new database
    directory and start the new server. Remember that you must execute
    these commands while logged in to the special database user account
    (which you already have if you are upgrading).
 </P><PRE
 CLASS="PROGRAMLISTING"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</B
-></TT
+>/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data</KBD
 >
-<TT
+<KBD
 CLASS="USERINPUT"
-><B
->/usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data</B
-></TT
+>/usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data</KBD
 ></PRE
 ><P>
    Finally, restore your data with
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->/usr/local/pgsql/bin/psql -d template1 -f <TT
+>/usr/local/pgsql/bin/psql -d template1 -f <VAR
 CLASS="REPLACEABLE"
-><I
->outputfile</I
-></TT
-></B
-></TT
+>outputfile</VAR
+></KBD
 ></PRE
 ><P>
    using the <SPAN
@@ -318,7 +296,7 @@ CLASS="APPLICATION"
 ><P
 >   These topics are discussed at length in  <A
 HREF="migration.html"
->Section 9.3</A
+>Section 22.3</A
 >, which you are encouraged to read in any
    case.
   </P

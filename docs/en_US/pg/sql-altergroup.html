@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >ALTER GROUP</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
 HREF="sql-commands.html"><LINK
 REL="PREVIOUS"
-TITLE="ALTER DATABASE"
-HREF="sql-alterdatabase.html"><LINK
+TITLE="ALTER FUNCTION"
+HREF="sql-alterfunction.html"><LINK
 REL="NEXT"
-TITLE="ALTER TABLE"
-HREF="sql-altertable.html"><LINK
+TITLE="ALTER LANGUAGE"
+HREF="sql-alterlanguage.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="sql-alterdatabase.html"
+HREF="sql-alterfunction.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="sql-altertable.html"
+HREF="sql-alterlanguage.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -78,164 +78,148 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-ALTERGROUP"
->ALTER GROUP</A
-></H1
+></A
+>ALTER GROUP</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37344"
+NAME="AEN36072"
 ></A
 ><H2
 >Name</H2
->   ALTER GROUP
-  &nbsp;--&nbsp;   add users to a group or remove users from a group
-  </DIV
+>ALTER GROUP&nbsp;--&nbsp;change a user group</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37347"
+NAME="AEN36075"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->ALTER GROUP <TT
+>ALTER GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ADD USER <TT
+>groupname</VAR
+> ADD USER <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 > [, ... ]
-ALTER GROUP <TT
+ALTER GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> DROP USER <TT
+>groupname</VAR
+> DROP USER <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 > [, ... ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ALTERGROUP-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
+
+ALTER GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	The name of the group to modify.
-       </P
-></DD
-><DT
-><TT
+>groupname</VAR
+> RENAME TO <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></DT
-><DD
-><P
->        Users which are to be added or removed from the group. The user
-        names must exist.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ALTERGROUP-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ALTER GROUP</TT
-></DT
-><DD
-><P
->	Message returned if the alteration was successful.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>newname</VAR
+></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ALTERGROUP-1"
+NAME="AEN36083"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >ALTER GROUP</TT
-> is used to add or remove users from a
-   group. Only database superusers can use this command.
-   Adding a user to a group does not create the user. Similarly, removing
-   a user from a group does not drop the user itself.
+> is used to change a user group.  The
+   first two variants add or remove users from a group. Only database
+   superusers can use this command.  Adding a user to a group does not
+   create the user. Similarly, removing a user from a group does not
+   drop the user itself.
   </P
 ><P
->   Use <A
-HREF="sql-creategroup.html"
-><I
->CREATE GROUP</I
-></A
->
-   to create a new group and <A
-HREF="sql-dropgroup.html"
-><I
->DROP GROUP</I
-></A
-> to remove a group.
+>   The third variant changes the name of the group.  Only a database
+   superuser can rename groups.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ALTERGROUP-2"
+NAME="AEN36088"
 ></A
 ><H2
->   Usage
-  </H2
+>Parameter</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>groupname</VAR
+></DT
+><DD
+><P
+>      The name of the group to modify.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>username</VAR
+></DT
+><DD
+><P
+>      Users which are to be added or removed from the group. The users
+      must exist.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>newname</VAR
+></DT
+><DD
+><P
+>      The new name of the group.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36106"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ALTER GROUP</SAMP
+></DT
+><DD
+><P
+>      Message returned if the alteration was successful.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36114"
+></A
+><H2
+>Examples</H2
 ><P
 >   Add users to a group:
 
@@ -256,31 +240,35 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ALTERGROUP-3"
+NAME="AEN36119"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ALTERGROUP-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >ALTER GROUP</TT
-> statement in
-    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->. The concept of roles is
-    similar.
-   </P
+> statement in the SQL
+   standard. The concept of roles is similar.
+  </P
 ></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36123"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-creategroup.html"
+><I
+>CREATE GROUP</I
+></A
+>, <A
+HREF="sql-dropgroup.html"
+><I
+>DROP GROUP</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -298,7 +286,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql-alterdatabase.html"
+HREF="sql-alterfunction.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -316,7 +304,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-altertable.html"
+HREF="sql-alterlanguage.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -326,7 +314,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->ALTER DATABASE</TD
+>ALTER FUNCTION</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -340,7 +328,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->ALTER TABLE</TD
+>ALTER LANGUAGE</TD
 ></TR
 ></TABLE
 ></DIV

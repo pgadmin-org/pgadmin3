@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >BKI Backend Interface</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Developer's Guide"
-HREF="developer.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="gcc Default Optimizations"
-HREF="compiler.html"><LINK
+TITLE="GiST Indexes"
+HREF="gist.html"><LINK
 REL="NEXT"
 TITLE="BKI Commands"
 HREF="bki-commands.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="compiler.html"
+HREF="gist.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,11 +80,11 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="BKI"
->Chapter 6. <SPAN
+></A
+>Chapter 50. <ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
-> Backend Interface</A
-></H1
+>BKI</ACRONYM
+> Backend Interface</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -93,32 +93,32 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->6.1. <A
+>50.1. <A
 HREF="bki.html#BKI-FORMAT"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > File Format</A
 ></DT
 ><DT
->6.2. <A
+>50.2. <A
 HREF="bki-commands.html"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > Commands</A
 ></DT
 ><DT
->6.3. <A
+>50.3. <A
 HREF="bki-example.html"
 >Example</A
 ></DT
 ></DL
 ></DIV
 ><P
->  Backend Interface (<SPAN
+>  Backend Interface (<ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 >) files are scripts in a
   special language that are input to the
   <SPAN
@@ -130,9 +130,9 @@ CLASS="QUOTE"
 >"bootstrap"</SPAN
 > mode that allows it to perform database
   functions without a database system already existing.
-  <SPAN
+  <ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > files can therefore be used to create the
   database system in the first place.  (And they are probably not
   useful for anything else.)
@@ -141,9 +141,9 @@ CLASS="ACRONYM"
 >  <SPAN
 CLASS="APPLICATION"
 >initdb</SPAN
-> uses a <SPAN
+> uses a <ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > file
   to do part of its job when creating a new database cluster.  The
   input file used by <SPAN
@@ -159,9 +159,9 @@ CLASS="FILENAME"
 >genbki.sh</TT
 > from some
   specially formatted C header files in the source tree.  The created
-  <SPAN
+  <ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > file is called <TT
 CLASS="FILENAME"
 >postgres.bki</TT
@@ -185,9 +185,9 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="BKI-FORMAT"
->6.1. <SPAN
+>50.1. <ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > File Format</A
 ></H1
 ><P
@@ -195,9 +195,9 @@ CLASS="ACRONYM"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-   backend interprets <SPAN
+   backend interprets <ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > files.  This description
    will be easier to understand if the <TT
 CLASS="FILENAME"
@@ -211,9 +211,9 @@ CLASS="APPLICATION"
    backend is invoked.
   </P
 ><P
->   <SPAN
+>   <ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > input consists of a sequence of commands.  Commands are made up
    of a number of tokens, depending on the syntax of the command.
    Tokens are usually separated by whitespace, but need not be if
@@ -225,9 +225,9 @@ CLASS="ACRONYM"
    strings.  Everything is case sensitive.
   </P
 ><P
->   Lines starting with a <TT
+>   Lines starting with a <VAR
 CLASS="LITERAL"
->#</TT
+>#</VAR
 > are ignored.
   </P
 ></DIV
@@ -248,7 +248,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="compiler.html"
+HREF="gist.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -276,16 +276,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->gcc</SPAN
-> Default Optimizations</TD
+>GiST Indexes</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="developer.html"
+HREF="internals.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -293,9 +290,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > Commands</TD
 ></TR
 ></TABLE

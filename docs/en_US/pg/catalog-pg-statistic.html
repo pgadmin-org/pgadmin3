@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_statistic</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-STATISTIC"
->3.27. pg_statistic</A
+>45.27. <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+></A
 ></H1
+><A
+NAME="AEN52953"
+></A
 ><P
->   <TT
+>   The catalog <TT
 CLASS="STRUCTNAME"
 >pg_statistic</TT
 > stores statistical data about
@@ -104,7 +110,7 @@ CLASS="STRUCTNAME"
 >pg_statistic</TT
 > is designed not
    to assume very much about what sort of statistics it stores.  Only
-   extremely general statistics (such as NULL-ness) are given dedicated
+   extremely general statistics (such as nullness) are given dedicated
    columns in <TT
 CLASS="STRUCTNAME"
 >pg_statistic</TT
@@ -151,171 +157,164 @@ CLASS="STRUCTNAME"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN54210"
+NAME="AEN52969"
 ></A
 ><P
 ><B
->Table 3-27. pg_statistic Columns</B
+>Table 45-27. <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->starelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>starelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The table that the described column belongs to</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->staattnum</TD
+><TT
+CLASS="STRUCTFIELD"
+>staattnum</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_attribute.attnum</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-attribute.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+>.attnum</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The number of the described column</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->stanullfrac</TD
+><TT
+CLASS="STRUCTFIELD"
+>stanullfrac</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >float4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The fraction of the column's entries that are NULL</TD
+>The fraction of the column's entries that are null</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->stawidth</TD
+><TT
+CLASS="STRUCTFIELD"
+>stawidth</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The average stored width, in bytes, of non-NULL entries</TD
+>The average stored width, in bytes, of nonnull entries</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->stadistinct</TD
+><TT
+CLASS="STRUCTFIELD"
+>stadistinct</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >float4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The number of distinct non-NULL data values in the column.
+>The number of distinct nonnull data values in the column.
       A value greater than zero is the actual number of distinct values.
       A value less than zero is the negative of a fraction of the number
       of rows in the table (for example, a column in which values appear about
-      twice on the average could be represented by stadistinct = -0.5).
+      twice on the average could be represented by <TT
+CLASS="STRUCTFIELD"
+>stadistinct</TT
+> = -0.5).
       A zero value means the number of distinct values is unknown.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->stakindN</TD
+><TT
+CLASS="STRUCTFIELD"
+>stakind<VAR
+CLASS="REPLACEABLE"
+>N</VAR
+></TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->A code number indicating the kind of statistics stored in the Nth
-      <SPAN
+>       A code number indicating the kind of statistics stored in the
+       <VAR
+CLASS="REPLACEABLE"
+>N</VAR
+>th <SPAN
 CLASS="QUOTE"
 >"slot"</SPAN
-> of the <TT
+> of the
+       <TT
 CLASS="STRUCTNAME"
 >pg_statistic</TT
 > row.
@@ -323,86 +322,105 @@ CLASS="STRUCTNAME"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->staopN</TD
+><TT
+CLASS="STRUCTFIELD"
+>staop<VAR
+CLASS="REPLACEABLE"
+>N</VAR
+></TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_operator.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-operator.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->An operator used to derive the statistics stored in the
-      Nth <SPAN
+>       An operator used to derive the statistics stored in the
+       <VAR
+CLASS="REPLACEABLE"
+>N</VAR
+>th <SPAN
 CLASS="QUOTE"
 >"slot"</SPAN
->.  For example, a histogram slot would show the <TT
+>.  For example, a
+       histogram slot would show the <VAR
 CLASS="LITERAL"
->&lt;</TT
->
-      operator that defines the sort order of the data.
+>&lt;</VAR
+> operator
+       that defines the sort order of the data.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->stanumbersN</TD
+><TT
+CLASS="STRUCTFIELD"
+>stanumbers<VAR
+CLASS="REPLACEABLE"
+>N</VAR
+></TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >float4[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Numerical statistics of the appropriate kind for the Nth
-      <SPAN
+>       Numerical statistics of the appropriate kind for the
+       <VAR
+CLASS="REPLACEABLE"
+>N</VAR
+>th <SPAN
 CLASS="QUOTE"
 >"slot"</SPAN
->, or NULL if the slot kind does not involve numerical values.
+>, or null if the slot
+       kind does not involve numerical values.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->stavaluesN</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
-CLASS="TYPE"
->text[]</TT
+CLASS="STRUCTFIELD"
+>stavalues<VAR
+CLASS="REPLACEABLE"
+>N</VAR
+></TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Column data values of the appropriate kind for the Nth
-      <SPAN
+>       Column data values of the appropriate kind for the
+       <VAR
+CLASS="REPLACEABLE"
+>N</VAR
+>th <SPAN
 CLASS="QUOTE"
 >"slot"</SPAN
->, or NULL if the slot kind does not store any data values.
-      For data-type independence, all column data values are converted
-      to external textual form and stored as TEXT datums.
+>, or null if the slot
+       kind does not store any data values.  Each array's element
+       values are actually of the specific column's data type, so there
+       is no way to define these columns' type more specifically than
+       <TT
+CLASS="TYPE"
+>anyarray</TT
+>.
       </TD
 ></TR
 ></TBODY
@@ -453,7 +471,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_shadow</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -467,7 +488,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_trigger</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

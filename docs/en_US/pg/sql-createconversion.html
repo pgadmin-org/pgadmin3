@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE CONVERSION</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATECONVERSION"
->CREATE CONVERSION</A
-></H1
+></A
+>CREATE CONVERSION</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN39056"
+NAME="AEN37935"
 ></A
 ><H2
 >Name</H2
@@ -91,33 +91,25 @@ NAME="AEN39056"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN39059"
+NAME="AEN37938"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE [DEFAULT] CONVERSION <TT
+>CREATE [DEFAULT] CONVERSION <VAR
 CLASS="REPLACEABLE"
-><I
->conversion_name</I
-></TT
+>name</VAR
 >
-    FOR <TT
+    FOR <VAR
 CLASS="REPLACEABLE"
-><I
->source_encoding</I
-></TT
-> TO <TT
+>source_encoding</VAR
+> TO <VAR
 CLASS="REPLACEABLE"
-><I
->dest_encoding</I
-></TT
-> FROM <TT
+>dest_encoding</VAR
+> FROM <VAR
 CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
+>funcname</VAR
 ></PRE
 ></DIV
 ><DIV
@@ -132,35 +124,57 @@ NAME="SQL-CREATECONVERSION-DESCRIPTION"
 CLASS="COMMAND"
 >CREATE CONVERSION</TT
 > defines a new encoding
-   conversion.  Conversion names may be used in the CONVERT() function
+   conversion.  Conversion names may be used in the <CODE
+CLASS="FUNCTION"
+>convert</CODE
+> function
    to specify a particular encoding conversion.  Also, conversions that
-   are marked DEFAULT can be used for automatic encoding conversion between
-   frontend and backend. For this purpose, two conversions, from encoding A to
-   B AND from encoding B to A, must be defined.
+   are marked <VAR
+CLASS="LITERAL"
+>DEFAULT</VAR
+> can be used for automatic encoding conversion between
+   client and server. For this purpose, two conversions, from encoding A to
+   B <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>and</I
+></SPAN
+> from encoding B to A, must be defined.
  </P
 ><P
->   To be able to create a conversion, you must have the execute right
-   on the function and the create right on the destination schema.
+>   To be able to create a conversion, you must have <VAR
+CLASS="LITERAL"
+>EXECUTE</VAR
+> privilege
+   on the function and <VAR
+CLASS="LITERAL"
+>CREATE</VAR
+> privilege on the destination schema.
   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37954"
+></A
+><H2
+>Parameters</H2
 ><P
 ></P
 ><DIV
 CLASS="VARIABLELIST"
-><P
-><B
->Parameters</B
-></P
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->DEFAULT</TT
+>DEFAULT</VAR
 ></DT
 ><DD
 ><P
->       The <TT
+>       The <VAR
 CLASS="LITERAL"
->DEFAULT</TT
+>DEFAULT</VAR
 > clause indicates that this conversion
        is the default for this particular source to destination
        encoding. There should be only one default encoding in a schema
@@ -168,11 +182,9 @@ CLASS="LITERAL"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->conversion_name</I
-></TT
+>name</VAR
 ></DT
 ><DD
 ><P
@@ -183,11 +195,9 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->source_encoding</I
-></TT
+>source_encoding</VAR
 ></DT
 ><DD
 ><P
@@ -195,11 +205,9 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->source_encoding</I
-></TT
+>dest_encoding</VAR
 ></DT
 ><DD
 ><P
@@ -207,33 +215,55 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
+>funcname</VAR
 ></DT
 ><DD
 ><P
 >       The function used to perform the conversion.  The function name may
        be schema-qualified.  If it is not, the function will be looked
        up in the path.
-       </P
+      </P
 ><P
 >       The function must have the following signature:
 
-       </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->	conv_proc(
-	INTEGER,	-- source encoding id
-	INTEGER,	-- destination encoding id
-	CSTRING,	-- source string (null terminated C string)
-	CSTRING,	-- destination string (null terminated C string)
-	INTEGER		-- source string length
-	) returns VOID;
-       </PRE
+>conv_proc(
+    integer,  -- source encoding ID
+    integer,  -- destination encoding ID
+    cstring,  -- source string (null terminated C string)
+    cstring,  -- destination string (null terminated C string)
+    integer   -- source string length
+) RETURNS void;</PRE
 ><P>
       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37985"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE CONVERSION</SAMP
+></DT
+><DD
+><P
+>      Message returned if the conversion was successfully created.
+     </P
 ></DD
 ></DL
 ></DIV
@@ -264,9 +294,16 @@ NAME="SQL-CREATECONVERSION-EXAMPLES"
 ><H2
 >Examples</H2
 ><P
->   To create a conversion from encoding UNICODE to LATIN1 using <TT
+>   To create a conversion from encoding <VAR
+CLASS="LITERAL"
+>UNICODE</VAR
+> to
+   <VAR
+CLASS="LITERAL"
+>LATIN1</VAR
+> using <CODE
 CLASS="FUNCTION"
->myfunc</TT
+>myfunc</CODE
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -294,10 +331,7 @@ CLASS="PRODUCTNAME"
 CLASS="COMMAND"
 >CREATE CONVERSION</TT
 >
-    statement in <SPAN
-CLASS="ACRONYM"
->SQL99</SPAN
->.
+    statement in the SQL standard.
   </P
 ></DIV
 ><DIV
@@ -307,24 +341,21 @@ NAME="SQL-CREATECONVERSION-SEEALSO"
 ></A
 ><H2
 >See Also</H2
-><P
->   <A
+><A
+HREF="sql-alterconversion.html"
+><I
+>ALTER CONVERSION</I
+></A
+>, <A
 HREF="sql-createfunction.html"
 ><I
 >CREATE FUNCTION</I
 ></A
->,
-   <A
+>, <A
 HREF="sql-dropconversion.html"
 ><I
 >DROP CONVERSION</I
 ></A
->,
-   <I
-CLASS="CITETITLE"
->PostgreSQL Programmer's Guide</I
->
-  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

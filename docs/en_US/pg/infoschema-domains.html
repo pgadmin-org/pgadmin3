@@ -1,0 +1,639 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>domains</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="PREVIOUS"
+TITLE="domain_udt_usage"
+HREF="infoschema-domain-udt-usage.html"><LINK
+REL="NEXT"
+TITLE="element_types"
+HREF="infoschema-element-types.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="infoschema-domain-udt-usage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 33. The Information Schema</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="infoschema-element-types.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INFOSCHEMA-DOMAINS"
+>33.15. <VAR
+CLASS="LITERAL"
+>domains</VAR
+></A
+></H1
+><P
+>   The view <VAR
+CLASS="LITERAL"
+>domains</VAR
+> contains all domains defined in
+   the current database.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN27079"
+></A
+><P
+><B
+>Table 33-13. <VAR
+CLASS="LITERAL"
+>domains</VAR
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Data Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>domain_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database that contains the domain (always the current database)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>domain_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema that contains the domain</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>domain_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the domain</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>data_type</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Data type of the domain, if it is a built-in type, or
+       <VAR
+CLASS="LITERAL"
+>ARRAY</VAR
+> if it is some array (in that case, see
+       the view <VAR
+CLASS="LITERAL"
+>element_types</VAR
+>), else
+       <VAR
+CLASS="LITERAL"
+>USER-DEFINED</VAR
+> (in that case, the type is
+       identified in <VAR
+CLASS="LITERAL"
+>udt_name</VAR
+> and associated
+       columns).
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_maximum_length</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>       If the domain has a character or bit string type, the declared
+       maximum length; null for all other data types or if no maximum
+       length was declared.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_octet_length</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>       If the domain has a character type, the maximum possible length
+       in octets (bytes) of a datum (this should not be of concern to
+       PostgreSQL users); null for all other data types.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_set_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_set_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_set_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>collation_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>collation_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>collation_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>numeric_precision</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>       If the domain has a numeric type, this column contains the
+       (declared or implicit) precision of the type for this column.
+       The precision indicates the number of significant digits.  It
+       may be expressed in decimal (base 10) or binary (base 2) terms,
+       as specified in the column
+       <VAR
+CLASS="LITERAL"
+>numeric_precision_radix</VAR
+>.  For all other data
+       types, this column is null.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>numeric_precision_radix</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>       If the domain has a numeric type, this column indicates in
+       which base the values in the columns
+       <VAR
+CLASS="LITERAL"
+>numeric_precision</VAR
+> and
+       <VAR
+CLASS="LITERAL"
+>numeric_scale</VAR
+> are expressed.  The value is
+       either 2 or 10.  For all other data types, this column is null.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>numeric_scale</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>       If the domain has an exact numeric type, this column contains
+       the (declared or implicit) scale of the type for this column.
+       The scale indicates the number of significant digits to the
+       right of the decimal point.  It may be expressed in decimal
+       (base 10) or binary (base 2) terms, as specified in the column
+       <VAR
+CLASS="LITERAL"
+>numeric_precision_radix</VAR
+>.  For all other data
+       types, this column is null.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>datetime_precision</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>       If the domain has a date, time, or interval type, the declared
+       precision; null for all other data types or if no precision was
+       declared.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>interval_type</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Not yet implemented</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>interval_precision</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Not yet implemented</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>domain_default</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Default expression of the domain</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>udt_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database that the domain data type is defined in (always the current database)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>udt_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema that the domain data type is defined in</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>udt_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the domain data type</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>scope_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>scope_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>scope_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>maximum_cardinality</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, because arrays always have unlimited maximum cardinality in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>dtd_identifier</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       An identifier of the data type descriptor of the domain, unique
+       among the data type descriptors pertaining to the domain (which
+       is trivial, because a domain only contains one data type
+       descriptor).  This is mainly useful for joining with other
+       instances of such identifiers.  (The specific format of the
+       identifier is not defined and not guaranteed to remain the same
+       in future versions.)
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-domain-udt-usage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-element-types.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>domain_udt_usage</VAR
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>element_types</VAR
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

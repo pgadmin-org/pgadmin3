@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Cursors</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 19. <SPAN
+>Chapter 40. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> - <SPAN
+> - <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Procedural Language</TD
 ><TD
 WIDTH="10%"
@@ -87,7 +87,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-CURSORS"
->19.7. Cursors</A
+>40.8. Cursors</A
 ></H1
 ><P
 >    Rather than executing a whole query at once, it is possible to set
@@ -100,8 +100,11 @@ CLASS="FIRSTTERM"
     rows. (However, <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> users don't normally need
-    to worry about that, since FOR loops automatically use a cursor
+> users do not normally need
+    to worry about that, since <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> loops automatically use a cursor
     internally to avoid memory problems.) A more interesting usage is to
     return a reference to a cursor that it has created, allowing the
     caller to read the rows. This provides an efficient way to return
@@ -113,7 +116,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-CURSOR-DECLARATIONS"
->19.7.1. Declaring Cursor Variables</A
+>40.8.1. Declaring Cursor Variables</A
 ></H2
 ><P
 >     All access to cursors in <SPAN
@@ -133,52 +136,47 @@ CLASS="TYPE"
      which in general is:
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 > CURSOR [<SPAN
 CLASS="OPTIONAL"
-> ( <TT
+> ( <VAR
 CLASS="REPLACEABLE"
-><I
->arguments</I
-></TT
+>arguments</VAR
 > ) </SPAN
->] FOR <TT
+>] FOR <VAR
 CLASS="REPLACEABLE"
-><I
->select_query</I
-></TT
+>query</VAR
 > ;</PRE
 ><P>
-     (<TT
+     (<VAR
 CLASS="LITERAL"
->FOR</TT
-> may be replaced by <TT
+>FOR</VAR
+> may be replaced by <VAR
 CLASS="LITERAL"
->IS</TT
-> for Oracle
-     compatibility.)  <TT
+>IS</VAR
+> for
+     <SPAN
+CLASS="PRODUCTNAME"
+>Oracle</SPAN
+> compatibility.)
+     <VAR
 CLASS="REPLACEABLE"
-><I
->arguments</I
-></TT
->, if any,
-     are a comma-separated list of <TT
+>arguments</VAR
+>, if specified, is a
+     comma-separated list of pairs <VAR
+CLASS="LITERAL"
+><VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 >
-     <TT
+     <VAR
 CLASS="REPLACEABLE"
-><I
->datatype</I
-></TT
-> pairs that define names to
-     be replaced by parameter values in the given query.  The actual
+>datatype</VAR
+></VAR
+> that define names to be
+     replaced by parameter values in the given query.  The actual
      values to substitute for these names will be specified later,
      when the cursor is opened.
     </P
@@ -188,8 +186,8 @@ CLASS="REPLACEABLE"
 CLASS="PROGRAMLISTING"
 >DECLARE
     curs1 refcursor;
-    curs2 CURSOR FOR SELECT * from tenk1;
-    curs3 CURSOR (key int) IS SELECT * from tenk1 where unique1 = key;</PRE
+    curs2 CURSOR FOR SELECT * FROM tenk1;
+    curs3 CURSOR (key integer) IS SELECT * FROM tenk1 WHERE unique1 = key;</PRE
 ><P>
      All three of these variables have the data type <TT
 CLASS="TYPE"
@@ -200,14 +198,14 @@ CLASS="TYPE"
 CLASS="FIRSTTERM"
 >bound</I
 > to it, and the last
-     has a parameterized query bound to it.  (<TT
+     has a parameterized query bound to it.  (<VAR
 CLASS="LITERAL"
->key</TT
+>key</VAR
 > will be
      replaced by an integer parameter value when the cursor is opened.)
-     The variable <TT
+     The variable <VAR
 CLASS="LITERAL"
->curs1</TT
+>curs1</VAR
 >
      is said to be <I
 CLASS="FIRSTTERM"
@@ -222,7 +220,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-CURSOR-OPENING"
->19.7.2. Opening Cursors</A
+>40.8.2. Opening Cursors</A
 ></H2
 ><P
 >     Before a cursor can be used to retrieve rows, it must be
@@ -237,45 +235,56 @@ CLASS="COMMAND"
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > has
-     four forms of the OPEN statement, two of which use unbound cursor
-     variables and the other two use bound cursor variables.
+     three forms of the <TT
+CLASS="COMMAND"
+>OPEN</TT
+> statement, two of which use unbound cursor
+     variables and the other uses a bound cursor variable.
     </P
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36119"
->19.7.2.1. OPEN FOR SELECT</A
+NAME="AEN34646"
+>40.8.2.1. <TT
+CLASS="COMMAND"
+>OPEN FOR SELECT</TT
+></A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
->OPEN <TT
+>OPEN <VAR
 CLASS="REPLACEABLE"
-><I
->unbound-cursor</I
-></TT
+>unbound-cursor</VAR
 > FOR SELECT ...;</PRE
-><P>
-
-        The cursor variable is opened and given the specified query
-	to execute.  The cursor cannot be open already, and it must
-	have been declared as an unbound cursor (that is, as a simple
+><P
+>    The cursor variable is opened and given the specified query to
+	execute.  The cursor cannot be open already, and it must have been
+	declared as an unbound cursor (that is, as a simple
 	<TT
 CLASS="TYPE"
 >refcursor</TT
-> variable).  The SELECT query is treated
-	in the same way as other SELECT statements in <SPAN
+> variable).  The <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query
+	is treated in the same way as other <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+	statements in <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
->:
-	<SPAN
+>: <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> variable names are substituted,
-	and the query plan is cached for possible re-use.
-
+>
+	variable names are substituted, and the query plan is cached for
+	possible reuse.
+       </P
+><P
+>        An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >OPEN curs1 FOR SELECT * FROM foo WHERE key = mykey;</PRE
@@ -287,36 +296,38 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36128"
->19.7.2.2. OPEN FOR EXECUTE</A
+NAME="AEN34659"
+>40.8.2.2. <TT
+CLASS="COMMAND"
+>OPEN FOR EXECUTE</TT
+></A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
->OPEN <TT
+>OPEN <VAR
 CLASS="REPLACEABLE"
-><I
->unbound-cursor</I
-></TT
-> FOR EXECUTE <TT
+>unbound-cursor</VAR
+> FOR EXECUTE <VAR
 CLASS="REPLACEABLE"
-><I
->query-string</I
-></TT
+>query-string</VAR
 >;</PRE
-><P>
-
-        The cursor variable is opened and given the specified query
-	to execute.  The cursor cannot be open already, and it must
-	have been declared as an unbound cursor (that is, as a simple
-	<TT
+><P
+>	  The cursor variable is opened and given the specified query to
+	  execute.  The cursor cannot be open already, and it must have been
+	  declared as an unbound cursor (that is, as a simple
+	  <TT
 CLASS="TYPE"
 >refcursor</TT
-> variable).  The query is specified as a
-	string expression in the same way as in the EXECUTE command.
-	As usual, this gives flexibility so the query can vary
-	from one run to the next.
-
+> variable).  The query is specified as a string
+	  expression in the same way as in the <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+>
+	  command.  As usual, this gives flexibility so the query can vary
+	  from one run to the next.
+       </P
+><P
+>        An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >OPEN curs1 FOR EXECUTE ''SELECT * FROM '' || quote_ident($1);</PRE
@@ -328,37 +339,38 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36136"
->19.7.2.3. Opening a bound cursor</A
+NAME="AEN34670"
+>40.8.2.3. Opening a Bound Cursor</A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
->OPEN <TT
+>OPEN <VAR
 CLASS="REPLACEABLE"
-><I
->bound-cursor</I
-></TT
+>bound-cursor</VAR
 > [<SPAN
 CLASS="OPTIONAL"
-> ( <TT
+> ( <VAR
 CLASS="REPLACEABLE"
-><I
->argument_values</I
-></TT
+>argument_values</VAR
 > ) </SPAN
 >];</PRE
-><P>
-
-        This form of OPEN is used to open a cursor variable whose query
-	was bound to it when it was declared.
-	The cursor cannot be open already.  A list of actual argument
-	value expressions must appear if and only if the cursor was
-	declared to take arguments.  These values will be substituted
-	in the query.
-	The query plan for a bound cursor is always considered
-	cacheable --- there is no equivalent of EXECUTE in this case.
-
+><P
+>	  This form of <TT
+CLASS="COMMAND"
+>OPEN</TT
+> is used to open a cursor
+	  variable whose query was bound to it when it was declared.  The
+	  cursor cannot be open already.  A list of actual argument value
+	  expressions must appear if and only if the cursor was declared to
+	  take arguments.  These values will be substituted in the query.
+	  The query plan for a bound cursor is always considered cacheable;
+	  there is no equivalent of <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> in this case.
+         </P
+><P
+>     Examples:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >OPEN curs2;
@@ -373,7 +385,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-CURSOR-USING"
->19.7.3. Using Cursors</A
+>40.8.3. Using Cursors</A
 ></H2
 ><P
 >     Once a cursor has been opened, it can be manipulated with the
@@ -390,19 +402,19 @@ CLASS="TYPE"
 CLASS="TYPE"
 >refcursor</TT
 > value is simply the string name
-     of a Portal containing the active query for the cursor.  This name
+     of a so-called portal containing the active query for the cursor.  This name
      can be passed around, assigned to other <TT
 CLASS="TYPE"
 >refcursor</TT
 > variables,
-     and so on, without disturbing the Portal.)
+     and so on, without disturbing the portal.)
     </P
 ><P
->     All Portals are implicitly closed at transaction end.  Therefore
+>     All portals are implicitly closed at transaction end.  Therefore
      a <TT
 CLASS="TYPE"
 >refcursor</TT
-> value is useful to reference an open cursor
+> value is usable to reference an open cursor
      only until the end of the transaction.
     </P
 ><DIV
@@ -410,38 +422,47 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36153"
->19.7.3.1. FETCH</A
-></H3
-><P
-></P><PRE
-CLASS="SYNOPSIS"
->FETCH <TT
-CLASS="REPLACEABLE"
-><I
->cursor</I
-></TT
-> INTO <TT
-CLASS="REPLACEABLE"
-><I
->target</I
-></TT
->;</PRE
-><P>
-
-        FETCH retrieves the next row from the cursor into a target,
-	which may be a row variable, a record variable, or a comma-separated
-	list of simple variables, just like SELECT INTO.  As with
-	SELECT INTO, the special variable <TT
+NAME="AEN34690"
+>40.8.3.1. <VAR
 CLASS="LITERAL"
->FOUND</TT
-> may be
-	checked to see whether a row was obtained or not.
-
+>FETCH</VAR
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>FETCH <VAR
+CLASS="REPLACEABLE"
+>cursor</VAR
+> INTO <VAR
+CLASS="REPLACEABLE"
+>target</VAR
+>;</PRE
+><P
+>	  <TT
+CLASS="COMMAND"
+>FETCH</TT
+> retrieves the next row from the
+	  cursor into a target, which may be a row variable, a record
+	  variable, or a comma-separated list of simple variables, just like
+	  <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+>.  As with <TT
+CLASS="COMMAND"
+>SELECT
+	   INTO</TT
+>, the special variable <VAR
+CLASS="LITERAL"
+>FOUND</VAR
+> may
+	  be checked to see whether a row was obtained or not.
+         </P
+><P
+>     An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >FETCH curs1 INTO rowvar;
-FETCH curs2 INTO foo,bar,baz;</PRE
+FETCH curs2 INTO foo, bar, baz;</PRE
 ><P>
        </P
 ></DIV
@@ -450,24 +471,28 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36161"
->19.7.3.2. CLOSE</A
+NAME="AEN34703"
+>40.8.3.2. <VAR
+CLASS="LITERAL"
+>CLOSE</VAR
+></A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
->CLOSE <TT
+>CLOSE <VAR
 CLASS="REPLACEABLE"
-><I
->cursor</I
-></TT
+>cursor</VAR
 >;</PRE
-><P>
-
-        CLOSE closes the Portal underlying an open cursor.
-	This can be used to release resources earlier than end of
+><P
+>    <TT
+CLASS="COMMAND"
+>CLOSE</TT
+> closes the Portal underlying an open
+	cursor.  This can be used to release resources earlier than end of
 	transaction, or to free up the cursor variable to be opened again.
-
+       </P
+><P
+>        An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CLOSE curs1;</PRE
@@ -479,20 +504,20 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36167"
->19.7.3.3. Returning Cursors</A
+NAME="AEN34712"
+>40.8.3.3. Returning Cursors</A
 ></H3
 ><P
->&#13;        <SPAN
+>        <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > functions can return cursors to the
-        caller. This is used to return multiple rows or columns from the
-        function. The function opens the cursor and returns the cursor
-        name to the caller. The caller can then FETCH rows from the
-        cursor. The cursor can be closed by the caller, or it will be
-        closed automatically when the transaction closes.
-
+        caller. This is used to return multiple rows or columns from
+        the function. To do this, the function opens the cursor and returns the
+        cursor name to the caller. The caller can then
+        fetch rows from the cursor. The cursor can
+        be closed by the caller, or it will be closed automatically
+        when the transaction closes.
        </P
 ><P
 >        The cursor name returned by the function can be specified by the
@@ -506,10 +531,10 @@ INSERT INTO test VALUES ('123');
 
 CREATE FUNCTION reffunc(refcursor) RETURNS refcursor AS '
 BEGIN
-        OPEN $1 FOR SELECT col FROM test;
-        RETURN $1;
+    OPEN $1 FOR SELECT col FROM test;
+    RETURN $1;
 END;
-' LANGUAGE 'plpgsql';
+' LANGUAGE plpgsql;
 
 BEGIN;
 SELECT reffunc('funccursor');
@@ -524,20 +549,20 @@ COMMIT;</PRE
 CLASS="PROGRAMLISTING"
 >CREATE FUNCTION reffunc2() RETURNS refcursor AS '
 DECLARE
-        ref refcursor;
+    ref refcursor;
 BEGIN
-        OPEN ref FOR SELECT col FROM test;
-        RETURN ref;
+    OPEN ref FOR SELECT col FROM test;
+    RETURN ref;
 END;
-' LANGUAGE 'plpgsql';
+' LANGUAGE plpgsql;
 
 BEGIN;
 SELECT reffunc2();
   
-        reffunc2      
-  --------------------
-   &lt;unnamed cursor 1&gt;
-  (1 row)
+      reffunc2      
+--------------------
+ &lt;unnamed cursor 1&gt;
+(1 row)
 
 FETCH ALL IN "&lt;unnamed cursor 1&gt;";
 COMMIT;</PRE

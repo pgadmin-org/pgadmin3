@@ -1,22 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >ALTER USER</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
 HREF="sql-commands.html"><LINK
 REL="PREVIOUS"
-TITLE="   ALTER TRIGGER
-  "
+TITLE="ALTER TRIGGER"
 HREF="sql-altertrigger.html"><LINK
 REL="NEXT"
 TITLE="ANALYZE"
@@ -25,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -45,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -79,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-ALTERUSER"
->ALTER USER</A
-></H1
+></A
+>ALTER USER</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37722"
+NAME="AEN36745"
 ></A
 ><H2
 >Name</H2
@@ -92,78 +91,66 @@ NAME="AEN37722"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37725"
+NAME="AEN36748"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->ALTER USER <TT
+>ALTER USER <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> [ [ WITH ] <TT
+>username</VAR
+> [ [ WITH ] <VAR
 CLASS="REPLACEABLE"
-><I
->option</I
-></TT
+>option</VAR
 > [ ... ] ]
 
-where <TT
+where <VAR
 CLASS="REPLACEABLE"
-><I
->option</I
-></TT
+>option</VAR
 > can be:
 
-      [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<TT
+    [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<VAR
 CLASS="REPLACEABLE"
-><I
->password</I
-></TT
+>password</VAR
 >' 
     | CREATEDB | NOCREATEDB
     | CREATEUSER | NOCREATEUSER 
-    | VALID UNTIL '<TT
+    | VALID UNTIL '<VAR
 CLASS="REPLACEABLE"
-><I
->abstime</I
-></TT
+>abstime</VAR
 >'
 
-ALTER USER <TT
+ALTER USER <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> SET <TT
+>username</VAR
+> RENAME TO <VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-> { TO | = } { <TT
+>newname</VAR
+>
+
+ALTER USER <VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>username</VAR
+> SET <VAR
+CLASS="REPLACEABLE"
+>variable</VAR
+> { TO | = } { <VAR
+CLASS="REPLACEABLE"
+>value</VAR
 > | DEFAULT }
-ALTER USER <TT
+ALTER USER <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> RESET <TT
+>username</VAR
+> RESET <VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
+>variable</VAR
 ></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37737"
+NAME="AEN36762"
 ></A
 ><H2
 >Description</H2
@@ -181,41 +168,47 @@ CLASS="PRODUCTNAME"
 ><P
 >   The first variant of this command in the synopsis changes certain
    global user privileges and authentication settings.  (See below for
-   details.)  Only a database superuser can change privileges and
-   password expiration with this command.  Ordinary users can only
+   details.)  Only a database superuser can change these privileges and
+   the password expiration with this command.  Ordinary users can only
    change their own password.
   </P
 ><P
->   The second and the third variant change a user's session default for
+>   The second variant changes the name of the user.  Only a database
+   superuser can rename user accounts.  The session user cannot be
+   renamed.  (Connect as a different user if you need to do that.)
+  </P
+><P
+>   The third and the fourth variant change a user's session default for
    a specified configuration variable.  Whenever the user subsequently
    starts a new session, the specified value becomes the session default,
    overriding whatever setting is present in <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
 >
-   or has been received from the postmaster.
+   or has been received from the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> command line.
    Ordinary users can change their own session defaults.
    Superusers can change anyone's session defaults.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="AEN37745"
+NAME="AEN36772"
 ></A
-><H3
->Parameters</H3
+><H2
+>Parameters</H2
 ><P
->    <P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 ></DT
 ><DD
 ><P
@@ -223,11 +216,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->password</I
-></TT
+>password</VAR
 ></DT
 ><DD
 ><P
@@ -235,19 +226,19 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->ENCRYPTED</TT
-><BR><TT
+>ENCRYPTED</VAR
+><BR><VAR
 CLASS="LITERAL"
->UNENCRYPTED</TT
+>UNENCRYPTED</VAR
 ></DT
 ><DD
 ><P
 >	These key words control whether the password is stored
-	encrypted in <TT
+	encrypted in <VAR
 CLASS="LITERAL"
->pg_shadow</TT
+>pg_shadow</VAR
 >.  (See
 	<A
 HREF="sql-createuser.html"
@@ -259,35 +250,35 @@ HREF="sql-createuser.html"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->CREATEDB</TT
-><BR><TT
+>CREATEDB</VAR
+><BR><VAR
 CLASS="LITERAL"
->NOCREATEDB</TT
+>NOCREATEDB</VAR
 ></DT
 ><DD
 ><P
 >	These clauses define a user's ability to create databases.  If
-	<TT
+	<VAR
 CLASS="LITERAL"
->CREATEDB</TT
-> is specified, the user being
-	defined will be allowed to create his own databases. Using
-	<TT
+>CREATEDB</VAR
+> is specified, the user
+	will be allowed to create his own databases. Using
+	<VAR
 CLASS="LITERAL"
->NOCREATEDB</TT
+>NOCREATEDB</VAR
 > will deny a user the ability to
 	create databases.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->CREATEUSER</TT
-><BR><TT
+>CREATEUSER</VAR
+><BR><VAR
 CLASS="LITERAL"
->NOCREATEUSER</TT
+>NOCREATEUSER</VAR
 ></DT
 ><DD
 ><P
@@ -297,52 +288,58 @@ CLASS="LITERAL"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->abstime</I
-></TT
+>abstime</VAR
 ></DT
 ><DD
 ><P
 >	The date (and, optionally, the time)
-	at which this user's password is to expire.
+	at which this user's password is to expire.  To set the password
+	never to expire, use <VAR
+CLASS="LITERAL"
+>'infinity'</VAR
+>.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-><BR><TT
+>newname</VAR
+></DT
+><DD
+><P
+>	The new name of the user.
+       </P
+></DD
+><DT
+><VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>variable</VAR
+><BR><VAR
+CLASS="REPLACEABLE"
+>value</VAR
 ></DT
 ><DD
 ><P
 >        Set this user's session default for the specified configuration
         variable to the given value.  If
-        <TT
+        <VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
-> is <TT
+>value</VAR
+> is <VAR
 CLASS="LITERAL"
->DEFAULT</TT
+>DEFAULT</VAR
 >
-        or, equivalently, <TT
+        or, equivalently, <VAR
 CLASS="LITERAL"
->RESET</TT
+>RESET</VAR
 > is used, the
         user-specific variable setting is removed and the user will
         inherit the system-wide default setting in new sessions.  Use
-        <TT
+        <VAR
 CLASS="LITERAL"
->RESET ALL</TT
+>RESET ALL</VAR
 > to clear all settings.
        </P
 ><P
@@ -351,37 +348,33 @@ HREF="sql-set.html"
 ><I
 >SET</I
 ></A
-> and the
-        <I
-CLASS="CITETITLE"
->Administrator's Guide</I
-> for more
-        information about allowed variable names and values.
+> and <A
+HREF="runtime-config.html"
+>Section 16.4</A
+>
+        for more information about allowed variable names
+        and values.
        </P
 ></DD
 ></DL
-></DIV
-><P>
-   </P
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37803"
+NAME="AEN36835"
 ></A
 ><H2
 >Diagnostics</H2
 ><P
->   <P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->ALTER USER</TT
+>ALTER USER</SAMP
 ></DT
 ><DD
 ><P
@@ -389,25 +382,23 @@ CLASS="COMPUTEROUTPUT"
       </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->ERROR:  ALTER USER: user "username" does not exist</TT
+>ERROR:  ALTER USER: user "username" does not exist</SAMP
 ></DT
 ><DD
 ><P
 >       Error message returned if the specified user is not known to
-       the database.
+       the database system.
       </P
 ></DD
 ></DL
 ></DIV
-><P>
-  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37817"
+NAME="AEN36848"
 ></A
 ><H2
 >Notes</H2
@@ -451,7 +442,7 @@ HREF="sql-alterdatabase.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37827"
+NAME="AEN36858"
 ></A
 ><H2
 >Examples</H2
@@ -473,14 +464,21 @@ CLASS="PROGRAMLISTING"
   </P
 ><P
 >   Change a user's valid until date, specifying that his
-   authorization should expire at midday on 4th May 1998 using
-   the time zone which is one hour ahead of <SPAN
+   authorization should expire at midday on 4th May 2005 using
+   the time zone which is one hour ahead of <ACRONYM
 CLASS="ACRONYM"
->UTC</SPAN
+>UTC</ACRONYM
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
->ALTER USER chris VALID UNTIL 'May 4 12:00:00 1998 +1';</PRE
+>ALTER USER chris VALID UNTIL 'May 4 12:00:00 2005 +1';</PRE
+><P>
+  </P
+><P
+>   Make a user valid forever:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER USER fred VALID UNTIL 'infinity';</PRE
 ><P>
   </P
 ><P
@@ -495,7 +493,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37838"
+NAME="AEN36871"
 ></A
 ><H2
 >Compatibility</H2
@@ -514,7 +512,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37843"
+NAME="AEN36876"
 ></A
 ><H2
 >See Also</H2

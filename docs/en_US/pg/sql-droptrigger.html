@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP TRIGGER</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,165 +78,146 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPTRIGGER"
->DROP TRIGGER</A
-></H1
+></A
+>DROP TRIGGER</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43283"
+NAME="AEN41747"
 ></A
 ><H2
 >Name</H2
->   DROP TRIGGER
-  &nbsp;--&nbsp;   remove a trigger
-  </DIV
+>DROP TRIGGER&nbsp;--&nbsp;remove a trigger</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43286"
+NAME="AEN41750"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP TRIGGER <TT
+>DROP TRIGGER <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ON <TT
+>name</VAR
+> ON <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> [ CASCADE | RESTRICT ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPTRIGGER-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	The name of an existing trigger.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of a table.
-       </P
-></DD
-><DT
->CASCADE</DT
-><DD
-><P
->        Automatically drop objects that depend on the trigger.
-       </P
-></DD
-><DT
->RESTRICT</DT
-><DD
-><P
->        Refuse to drop the trigger if there are any dependent objects.
-	This is the default.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPTRIGGER-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP TRIGGER
-       </TT
-></DT
-><DD
-><P
->	The message returned if the trigger is successfully dropped.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR: DropTrigger: there is no trigger <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> on relation "<TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
->"
-       </TT
-></DT
-><DD
-><P
->	This message occurs if the trigger specified does not exist.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>table</VAR
+> [ CASCADE | RESTRICT ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPTRIGGER-1"
+NAME="AEN41754"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >DROP TRIGGER</TT
 > will remove an existing
-   trigger definition. To execute this command the current
+   trigger definition. To execute this command, the current
    user must be the owner of the table for which the trigger is defined.
   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41758"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name of the trigger to remove.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of a table for which the
+      trigger is defined.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the trigger.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+></DT
+><DD
+><P
+>      Refuse to drop the trigger if any objects depend on it.  This is
+      the default.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41781"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP TRIGGER</SAMP
+></DT
+><DD
+><P
+>      Message returned if the trigger was successfully dropped.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR: DropTrigger: there is no trigger <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> on relation "<VAR
+CLASS="REPLACEABLE"
+>table</VAR
+>"</SAMP
+></DT
+><DD
+><P
+>      Message returned if the specified trigger does not exist.
+     </P
+></DD
+></DL
+></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -246,13 +227,13 @@ NAME="SQL-DROPTRIGGER-EXAMPLES"
 ><H2
 >Examples</H2
 ><P
->   Destroy the <TT
+>   Destroy the trigger <VAR
 CLASS="LITERAL"
->if_dist_exists</TT
-> trigger
-   on table <TT
+>if_dist_exists</VAR
+> on the table
+   <VAR
 CLASS="LITERAL"
->films</TT
+>films</VAR
 >:
 
 </P><PRE
@@ -269,56 +250,29 @@ NAME="SQL-DROPTRIGGER-COMPATIBILITY"
 ><H2
 >Compatibility</H2
 ><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->SQL92</DT
-><DD
-><P
->      There is no <TT
+>   The <TT
 CLASS="COMMAND"
 >DROP TRIGGER</TT
 > statement in
-      <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-     </P
-></DD
-><DT
->SQL99</DT
-><DD
-><P
->      The <TT
-CLASS="COMMAND"
->DROP TRIGGER</TT
-> statement in
-      <SPAN
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> is incompatible with
-      SQL99.  In SQL99, trigger names are not local to tables, so the
-      command is simply <TT
+> is incompatible with the SQL
+   standard.  In the SQL standard, trigger names are not local to
+   tables, so the command is simply <VAR
 CLASS="LITERAL"
 >DROP TRIGGER
-      <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></TT
+>name</VAR
+></VAR
 >.
-     </P
-></DD
-></DL
-></DIV
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN43363"
+NAME="AEN41809"
 ></A
 ><H2
 >See Also</H2

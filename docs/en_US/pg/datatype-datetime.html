@@ -1,21 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Date/Time Types</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
 HREF="datatype.html"><LINK
 REL="PREVIOUS"
-TITLE="Binary Strings"
+TITLE="Binary Data Types"
 HREF="datatype-binary.html"><LINK
 REL="NEXT"
 TITLE="Boolean Type"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Data Types</TD
+>Chapter 8. Data Types</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,19 +81,19 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DATATYPE-DATETIME"
->5.5. Date/Time Types</A
+>8.5. Date/Time Types</A
 ></H1
 ><P
 >    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > supports the full set of
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > date and time types, shown in <A
 HREF="datatype-datetime.html#DATATYPE-DATETIME-TABLE"
->Table 5-9</A
+>Table 8-9</A
 >.
    </P
 ><DIV
@@ -103,237 +103,143 @@ NAME="DATATYPE-DATETIME-TABLE"
 ></A
 ><P
 ><B
->Table 5-9. Date/Time Types</B
+>Table 8-9. Date/Time Types</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Type</TH
+>Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
+>Storage Size</TH
+><TH
 >Description</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Storage</TH
+>Low Value</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Earliest</TH
+>High Value</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Latest</TH
-><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Resolution</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
->timestamp [ (<TT
+>timestamp [ (<VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 >) ] [ without time zone ]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->both date and time</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >8 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+>both date and time</TD
+><TD
 >4713 BC</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->AD 1465001</TD
+>AD 5874897</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1 microsecond / 14 digits</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
->timestamp [ (<TT
+>timestamp [ (<VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 >) ] with time zone</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->both date and time</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >8 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+>both date and time, with time zone</TD
+><TD
 >4713 BC</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->AD 1465001</TD
+>AD 5874897</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1 microsecond / 14 digits</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
->interval [ (<TT
+>interval [ (<VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 >) ]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->time intervals</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >12 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+>time intervals</TD
+><TD
 >-178000000 years</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >178000000 years</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1 microsecond</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >date</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->dates only</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >4 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+>dates only</TD
+><TD
 >4713 BC</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >32767 AD</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1 day</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
->time [ (<TT
+>time [ (<VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 >) ] [ without time zone ]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->times of day only</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >8 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+>times of day only</TD
+><TD
 >00:00:00.00</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >23:59:59.99</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1 microsecond</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
->time [ (<TT
+>time [ (<VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 >) ] with time zone</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->times of day only</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >12 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+>times of day only, with time zone</TD
+><TD
 >00:00:00.00+12</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >23:59:59.99-12</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1 microsecond</TD
 ></TR
 ></TBODY
@@ -351,19 +257,15 @@ CLASS="TYPE"
 CLASS="TYPE"
 >interval</TT
 > accept an optional precision value
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 > which specifies the number of
     fractional digits retained in the seconds field. By default, there
     is no explicit bound on precision.  The allowed range of
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 > is from 0 to 6 for the
     <TT
 CLASS="TYPE"
@@ -385,13 +287,36 @@ CLASS="TYPE"
 >timestamp</TT
 > values are stored as double precision floating-point
     numbers (currently the default), the effective limit of precision
-    may be less than 6, since timestamp values are stored as seconds
-    since 2000-01-01.  Microsecond precision is achieved for dates within
+    may be less than 6. Timestamp values are stored as seconds
+    since 2000-01-01, and microsecond precision is achieved for dates within
     a few years of 2000-01-01, but the precision degrades for dates further
     away.  When timestamps are stored as eight-byte integers (a compile-time
     option), microsecond precision is available over the full range of
-    values.
+    values. However eight-byte integer timestamps have a reduced range of
+    dates from 4713 BC up to 294276 AD.
    </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3, writing just
+     <TT
+CLASS="TYPE"
+>timestamp</TT
+> was equivalent to <TT
+CLASS="TYPE"
+>timestamp with
+     time zone</TT
+>.  This was changed for SQL compliance.
+    </P
 ></BLOCKQUOTE
 ></DIV
 ><P
@@ -399,40 +324,11 @@ CLASS="TYPE"
 CLASS="TYPE"
 >time</TT
 > types, the allowed range of
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 > is from 0 to 6 when eight-byte integer
     storage is used, or from 0 to 10 when floating-point storage is used.
-   </P
-><P
->    Time zones, and time-zone conventions, are influenced by
-    political decisions, not just earth geometry. Time zones around the
-    world became somewhat standardized during the 1900's,
-    but continue to be prone to arbitrary changes.
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> uses your operating
-    system's underlying features to provide output time-zone
-    support, and these systems usually contain information for only
-    the time period 1902 through 2038 (corresponding to the full
-    range of conventional Unix system time).
-    <TT
-CLASS="TYPE"
->timestamp with time zone</TT
-> and <TT
-CLASS="TYPE"
->time with time
-     zone</TT
-> will use time zone
-    information only within that year range, and assume that times
-    outside that range are in <SPAN
-CLASS="ACRONYM"
->UTC</SPAN
->.
    </P
 ><P
 >    The type <TT
@@ -451,7 +347,7 @@ CLASS="TYPE"
 CLASS="TYPE"
 >timestamp without time
     zone</TT
-> and <TT
+>, and <TT
 CLASS="TYPE"
 >timestamp with time zone</TT
 > should
@@ -478,55 +374,46 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="DATATYPE-DATETIME-INPUT"
->5.5.1. Date/Time Input</A
+>8.5.1. Date/Time Input</A
 ></H2
 ><P
 >     Date and time input is accepted in almost any reasonable format, including
-     <SPAN
+     ISO 8601, <ACRONYM
 CLASS="ACRONYM"
->ISO 8601</SPAN
->, <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >-compatible, 
      traditional <SPAN
 CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
+>POSTGRES</SPAN
 >, and others.
-     For some formats, ordering of month and day in date input can be
+     For some formats, ordering of month, day, and year in date input is
      ambiguous and there is support for specifying the expected
-     ordering of these fields.
-     The command
-     <TT
+     ordering of these fields.  Set the <VAR
+CLASS="VARNAME"
+>datestyle</VAR
+> parameter
+     to <VAR
 CLASS="LITERAL"
->SET DateStyle TO 'US'</TT
-> 
-     or <TT
+>MDY</VAR
+> to select month-day-year interpretation,
+     <VAR
 CLASS="LITERAL"
->SET DateStyle TO 'NonEuropean'</TT
->
-     specifies the variant <SPAN
-CLASS="QUOTE"
->"month before day"</SPAN
->, the command
-     <TT
+>DMY</VAR
+> to select day-month-year interpretation, or
+     <VAR
 CLASS="LITERAL"
->SET DateStyle TO 'European'</TT
-> sets the variant
-     <SPAN
-CLASS="QUOTE"
->"day before month"</SPAN
->.
+>YMD</VAR
+> to select year-month-day interpretation.
     </P
 ><P
 >     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is more flexible in
-     handling date/time than the
-     <SPAN
+     handling date/time input than the
+     <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > standard requires.
      See <A
 HREF="datetime-appendix.html"
@@ -541,42 +428,33 @@ HREF="datetime-appendix.html"
      in single quotes, like text strings.  Refer to 
      <A
 HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS-GENERIC"
->Section 1.1.2.4</A
+>Section 4.1.2.4</A
 > for more
      information.
-     <SPAN
+     <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > requires the following syntax
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> [ (<TT
+>type</VAR
+> [ (<VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
->) ] '<TT
+>p</VAR
+>) ] '<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
 >'</PRE
 ><P>
-     where <TT
+     where <VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 > in the optional precision
-     specification is an integer corresponding to the
-     number of fractional digits in the seconds field. Precision can
-     be specified 
-     for <TT
+     specification is an integer corresponding to the number of
+     fractional digits in the seconds field. Precision can be
+     specified for <TT
 CLASS="TYPE"
 >time</TT
 >, <TT
@@ -586,23 +464,25 @@ CLASS="TYPE"
      <TT
 CLASS="TYPE"
 >interval</TT
-> types.
+> types.  The allowed values are mentioned
+     above.  If no precision is specified in a constant specification,
+     it defaults to the precision of the literal value.
     </P
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN3772"
->5.5.1.1. Dates</A
+NAME="AEN3720"
+>8.5.1.1. Dates</A
 ></H3
 ><A
-NAME="AEN3774"
+NAME="AEN3722"
 ></A
 ><P
 >     <A
 HREF="datatype-datetime.html#DATATYPE-DATETIME-DATE-TABLE"
->Table 5-10</A
+>Table 8-10</A
 > shows some possible
      inputs for the <TT
 CLASS="TYPE"
@@ -616,132 +496,102 @@ NAME="DATATYPE-DATETIME-DATE-TABLE"
 ></A
 ><P
 ><B
->Table 5-10. Date Input</B
+>Table 8-10. Date Input</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >January 8, 1999</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->unambiguous</TD
+>unambiguous in any datestyle input mode</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1999-01-08</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO-8601 format, preferred</TD
+>ISO-8601, January 8 in any mode
+	 (recommended format)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1/8/1999</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->U.S.; read as August 1 in European mode</TD
+>January 8 in <VAR
+CLASS="LITERAL"
+>MDY</VAR
+> mode;
+	  August 1 in <VAR
+CLASS="LITERAL"
+>DMY</VAR
+> mode</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->8/1/1999</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->European; read as August 1 in U.S. mode</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1/18/1999</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->U.S.; read as January 18 in any mode</TD
+>January 18 in <VAR
+CLASS="LITERAL"
+>MDY</VAR
+> mode;
+	  rejected in other modes</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+>01/02/03</TD
+><TD
+>January 2, 2003 in <VAR
+CLASS="LITERAL"
+>MDY</VAR
+> mode;
+	  February 1, 2003 in <VAR
+CLASS="LITERAL"
+>DMY</VAR
+> mode;
+	  February 3, 2001 in <VAR
+CLASS="LITERAL"
+>YMD</VAR
+> mode
+	 </TD
+></TR
+><TR
+><TD
 >19990108</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO-8601 year, month, day</TD
+>ISO-8601; January 8, 1999 in any mode</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >990108</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO-8601 year, month, day</TD
+>ISO-8601; January 8, 1999 in any mode</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1999.008</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >year and day of year</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->99008</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->year and day of year</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >J2451187</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Julian day</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >January 8, 99 BC</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >year 99 before the Common Era</TD
 ></TR
 ></TBODY
@@ -753,46 +603,58 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN3821"
->5.5.1.2. Times</A
+NAME="AEN3772"
+>8.5.1.2. Times</A
 ></H3
 ><A
-NAME="AEN3823"
+NAME="AEN3774"
 ></A
 ><A
-NAME="AEN3826"
+NAME="AEN3777"
 ></A
 ><A
-NAME="AEN3829"
+NAME="AEN3780"
 ></A
 ><P
->      The <TT
+>      The time-of-day types are <TT
+CLASS="TYPE"
+>time [
+      (<VAR
+CLASS="REPLACEABLE"
+>p</VAR
+>) ] without time zone</TT
+> and
+      <TT
+CLASS="TYPE"
+>time [ (<VAR
+CLASS="REPLACEABLE"
+>p</VAR
+>) ] with time
+      zone</TT
+>.  Writing just <TT
 CLASS="TYPE"
 >time</TT
-> type can be specified as <TT
-CLASS="TYPE"
->time</TT
-> or
-      as <TT
+> is equivalent to
+      <TT
 CLASS="TYPE"
 >time without time zone</TT
->. The optional precision
-      <TT
-CLASS="REPLACEABLE"
-><I
->p</I
-></TT
-> should be between 0 and 6, and
-      defaults to the precision of the input time literal.
+>.
      </P
 ><P
->      <A
+>      Valid input for these types consists of a time of day followed
+      by an optional time zone. (See <A
 HREF="datatype-datetime.html#DATATYPE-DATETIME-TIME-TABLE"
->Table 5-11</A
-> shows the valid <TT
+>Table 8-11</A
+> 
+      and <A
+HREF="datatype-datetime.html#DATATYPE-TIMEZONE-TABLE"
+>Table 8-12</A
+>.)  If a time zone is
+      specified in the input for <TT
 CLASS="TYPE"
->time</TT
-> inputs.
+>time without time zone</TT
+>,
+      it is silently ignored.
      </P
 ><DIV
 CLASS="TABLE"
@@ -801,290 +663,193 @@ NAME="DATATYPE-DATETIME-TIME-TABLE"
 ></A
 ><P
 ><B
->Table 5-11. Time Input</B
+>Table 8-11. Time Input</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->04:05:06.789</TT
+>04:05:06.789</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >ISO 8601</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->04:05:06</TT
+>04:05:06</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >ISO 8601</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->04:05</TT
+>04:05</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >ISO 8601</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->040506</TT
+>040506</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >ISO 8601</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->04:05 AM</TT
+>04:05 AM</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >same as 04:05; AM does not affect value</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->04:05 PM</TT
+>04:05 PM</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >same as 16:05; input hour must be &#60;= 12</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->allballs</TT
+>allballs</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >same as 00:00:00</TD
+></TR
+><TR
+><TD
+>04:05:06.789-8</TD
+><TD
+>ISO 8601</TD
+></TR
+><TR
+><TD
+>04:05:06-08:00</TD
+><TD
+>ISO 8601</TD
+></TR
+><TR
+><TD
+>04:05-08:00</TD
+><TD
+>ISO 8601</TD
+></TR
+><TR
+><TD
+>040506-08</TD
+><TD
+>ISO 8601</TD
+></TR
+><TR
+><TD
+>04:05:06 PST</TD
+><TD
+>timezone specified by name</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
-><P
->      The type <TT
-CLASS="TYPE"
->time with time zone</TT
-> accepts all input also
-      legal for the <TT
-CLASS="TYPE"
->time</TT
-> type, appended with a legal time
-      zone, as shown in <A
-HREF="datatype-datetime.html#DATATYPE-DATETIME-TIMETZ-TABLE"
->Table 5-12</A
->.
-     </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="DATATYPE-DATETIME-TIMETZ-TABLE"
+NAME="DATATYPE-TIMEZONE-TABLE"
 ></A
 ><P
 ><B
->Table 5-12. Time With Time Zone Input</B
+>Table 8-12. Time Zone Input</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->04:05:06.789-8</TD
+>PST</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO 8601</TD
+>Pacific Standard Time</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->04:05:06-08:00</TD
+>-8:00</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO 8601</TD
+>ISO-8601 offset for PST</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->04:05-08:00</TD
+>-800</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO 8601</TD
+>ISO-8601 offset for PST</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->040506-08</TD
+>-8</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO 8601</TD
+>ISO-8601 offset for PST</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
-><P
->      Refer to <A
-HREF="datatype-datetime.html#DATATYPE-TIMEZONE-TABLE"
->Table 5-13</A
-> for
-      more examples of time zones.
-     </P
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN3902"
->5.5.1.3. Time stamps</A
+NAME="AEN3865"
+>8.5.1.3. Time Stamps</A
 ></H3
 ><A
-NAME="AEN3904"
+NAME="AEN3867"
 ></A
 ><A
-NAME="AEN3907"
+NAME="AEN3870"
 ></A
 ><A
-NAME="AEN3910"
+NAME="AEN3873"
 ></A
-><P
->      The time stamp types are <TT
-CLASS="TYPE"
->timestamp [
-      (<TT
-CLASS="REPLACEABLE"
-><I
->p</I
-></TT
->) ] without time zone</TT
-> and
-      <TT
-CLASS="TYPE"
->timestamp [ (<TT
-CLASS="REPLACEABLE"
-><I
->p</I
-></TT
->) ] with time
-      zone</TT
->.  Writing just <TT
-CLASS="TYPE"
->timestamp</TT
-> is equivalent to
-      <TT
-CLASS="TYPE"
->timestamp without time zone</TT
->.
-     </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->      Prior to <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.3, writing just
-      <TT
-CLASS="TYPE"
->timestamp</TT
-> was equivalent to <TT
-CLASS="TYPE"
->timestamp with time
-      zone</TT
->.  This was changed for SQL spec compliance.
-     </P
-></BLOCKQUOTE
-></DIV
 ><P
 >      Valid input for the time stamp types consists of a concatenation
       of a date and a time, followed by an optional
-      <TT
+      <VAR
 CLASS="LITERAL"
->AD</TT
-> or <TT
+>AD</VAR
+> or <VAR
 CLASS="LITERAL"
->BC</TT
+>BC</VAR
 >, followed by an
-      optional time zone. (See <A
-HREF="datatype-datetime.html#DATATYPE-TIMEZONE-TABLE"
->Table 5-13</A
->.)  Thus
+      optional time zone. Thus
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -1096,9 +861,9 @@ CLASS="PROGRAMLISTING"
 >1999-01-08 04:05:06 -8:00</PRE
 ><P>
 
-      are valid values, which follow the <SPAN
+      are valid values, which follow the <ACRONYM
 CLASS="ACRONYM"
->ISO</SPAN
+>ISO</ACRONYM
 > 8601
       standard.  In addition, the wide-spread format
 
@@ -1109,22 +874,9 @@ CLASS="PROGRAMLISTING"
       is supported.
      </P
 ><P
->      The optional precision
-      <TT
-CLASS="REPLACEABLE"
-><I
->p</I
-></TT
-> should be between 0 and 6, and
-      defaults to the precision of the input <TT
-CLASS="TYPE"
->timestamp</TT
-> literal.
-     </P
-><P
 >      For <TT
 CLASS="TYPE"
->timestamp without time zone</TT
+>timestamp [without time zone]</TT
 >, any explicit time
       zone specified in the input is silently ignored. That is, the
       resulting date/time value is derived from the explicit date/time
@@ -1135,17 +887,22 @@ CLASS="TYPE"
 CLASS="TYPE"
 >timestamp with time zone</TT
 >, the internally stored
-      value is always in UTC (GMT).  An input value that has an explicit
+      value is always in UTC (Universal
+      Coordinated Time, traditionally known as Greenwich Mean Time,
+      <ACRONYM
+CLASS="ACRONYM"
+>GMT</ACRONYM
+>).  An input value that has an explicit
       time zone specified is converted to UTC using the appropriate offset
       for that time zone.  If no time zone is stated in the input string,
       then it is assumed to be in the time zone indicated by the system's
-      <TT
+      <VAR
 CLASS="VARNAME"
->TimeZone</TT
+>timezone</VAR
 > parameter, and is converted to UTC using the
-      offset for the <TT
+      offset for the <VAR
 CLASS="VARNAME"
->TimeZone</TT
+>timezone</VAR
 > zone.
      </P
 ><P
@@ -1154,21 +911,21 @@ CLASS="TYPE"
 >timestamp with time
       zone</TT
 > value is output, it is always converted from UTC to the
-      current <TT
+      current <VAR
 CLASS="VARNAME"
->TimeZone</TT
+>timezone</VAR
 > zone, and displayed as local time in that
       zone.  To see the time in another time zone, either change
-      <TT
+      <VAR
 CLASS="VARNAME"
->TimeZone</TT
-> or use the <TT
+>timezone</VAR
+> or use the <VAR
 CLASS="LITERAL"
->AT TIME ZONE</TT
+>AT TIME ZONE</VAR
 > construct
       (see <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-ZONECONVERT"
->Section 6.8.3</A
+>Section 9.8.3</A
 >).
      </P
 ><P
@@ -1184,94 +941,26 @@ CLASS="TYPE"
 CLASS="TYPE"
 >timestamp without time zone</TT
 > value should be taken or given
-      as <TT
+      as <VAR
 CLASS="VARNAME"
->TimeZone</TT
+>timezone</VAR
 > local time.  A different zone reference can
-      be specified for the conversion using <TT
+      be specified for the conversion using <VAR
 CLASS="LITERAL"
->AT TIME ZONE</TT
+>AT TIME ZONE</VAR
 >.
      </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="DATATYPE-TIMEZONE-TABLE"
-></A
-><P
-><B
->Table 5-13. Time Zone Input</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><THEAD
-><TR
-><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Time Zone</TH
-><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->PST</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Pacific Standard Time</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->-8:00</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO-8601 offset for PST</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->-800</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO-8601 offset for PST</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->-8</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ISO-8601 offset for PST</TD
-></TR
-></TBODY
-></TABLE
-></DIV
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN3974"
->5.5.1.4. Intervals</A
+NAME="AEN3902"
+>8.5.1.4. Intervals</A
 ></H3
 ><A
-NAME="AEN3976"
+NAME="AEN3904"
 ></A
 ><P
 >       <TT
@@ -1281,84 +970,105 @@ CLASS="TYPE"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->  Quantity Unit [Quantity Unit...] [Direction]
-@ Quantity Unit [Quantity Unit...] [Direction]</PRE
+>[<SPAN
+CLASS="OPTIONAL"
+>@</SPAN
+>] <VAR
+CLASS="REPLACEABLE"
+>quantity</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>unit</VAR
+> [<SPAN
+CLASS="OPTIONAL"
+><VAR
+CLASS="REPLACEABLE"
+>quantity</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>unit</VAR
+>...</SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+><VAR
+CLASS="REPLACEABLE"
+>direction</VAR
+></SPAN
+>]</PRE
 ><P>
 
-      where: <TT
+      Where: <VAR
+CLASS="REPLACEABLE"
+>quantity</VAR
+> is a number (possibly signed);
+      <VAR
+CLASS="REPLACEABLE"
+>unit</VAR
+> is <VAR
 CLASS="LITERAL"
->Quantity</TT
-> is a number (possibly signed),
-      <TT
-CLASS="LITERAL"
->Unit</TT
-> is <TT
-CLASS="LITERAL"
->second</TT
+>second</VAR
 >,
-      <TT
+      <VAR
 CLASS="LITERAL"
->minute</TT
->, <TT
+>minute</VAR
+>, <VAR
 CLASS="LITERAL"
->hour</TT
->, <TT
+>hour</VAR
+>, <VAR
 CLASS="LITERAL"
->day</TT
+>day</VAR
 >,
-      <TT
+      <VAR
 CLASS="LITERAL"
->week</TT
->, <TT
+>week</VAR
+>, <VAR
 CLASS="LITERAL"
->month</TT
->, <TT
+>month</VAR
+>, <VAR
 CLASS="LITERAL"
->year</TT
+>year</VAR
 >,
-      <TT
+      <VAR
 CLASS="LITERAL"
->decade</TT
->, <TT
+>decade</VAR
+>, <VAR
 CLASS="LITERAL"
->century</TT
->, <TT
+>century</VAR
+>, <VAR
 CLASS="LITERAL"
->millennium</TT
+>millennium</VAR
 >,
       or abbreviations or plurals of these units;
-      <TT
+      <VAR
+CLASS="REPLACEABLE"
+>direction</VAR
+> can be <VAR
 CLASS="LITERAL"
->Direction</TT
-> can be <TT
-CLASS="LITERAL"
->ago</TT
+>ago</VAR
 > or
-      empty.  The at sign (<TT
+      empty.  The at sign (<VAR
 CLASS="LITERAL"
->@</TT
+>@</VAR
 >) is optional noise.  The amounts
       of different units are implicitly added up with appropriate
       sign accounting.
      </P
 ><P
 >      Quantities of days, hours, minutes, and seconds can be specified without
-      explicit unit markings.  For example, <TT
+      explicit unit markings.  For example, <VAR
 CLASS="LITERAL"
->'1 12:59:10'</TT
+>'1 12:59:10'</VAR
 > is read
-      the same as <TT
+      the same as <VAR
 CLASS="LITERAL"
->'1 day 12 hours 59 min 10 sec'</TT
+>'1 day 12 hours 59 min 10 sec'</VAR
 >.
      </P
 ><P
 >      The optional precision
-      <TT
+      <VAR
 CLASS="REPLACEABLE"
-><I
->p</I
-></TT
+>p</VAR
 > should be between 0 and 6, and
       defaults to the precision of the input literal.
      </P
@@ -1368,36 +1078,36 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN4001"
->5.5.1.5. Special values</A
+NAME="AEN3937"
+>8.5.1.5. Special Values</A
 ></H3
 ><A
-NAME="AEN4003"
+NAME="AEN3939"
 ></A
 ><A
-NAME="AEN4006"
+NAME="AEN3942"
 ></A
 ><P
->      The following <SPAN
+>      The following <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >-compatible functions can be
       used as date or time
-      values for the corresponding data type: <TT
+      values for the corresponding data type: <VAR
 CLASS="LITERAL"
->CURRENT_DATE</TT
+>CURRENT_DATE</VAR
 >,
-      <TT
+      <VAR
 CLASS="LITERAL"
->CURRENT_TIME</TT
+>CURRENT_TIME</VAR
 >,
-      <TT
+      <VAR
 CLASS="LITERAL"
->CURRENT_TIMESTAMP</TT
+>CURRENT_TIMESTAMP</VAR
 >. The latter two accept an
       optional precision specification.  (See also <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
->Section 6.8.4</A
+>Section 9.8.4</A
 >.)
      </P
 ><P
@@ -1407,18 +1117,20 @@ CLASS="PRODUCTNAME"
 > also supports several
       special date/time input values for convenience, as shown in <A
 HREF="datatype-datetime.html#DATATYPE-DATETIME-SPECIAL-TABLE"
->Table 5-14</A
+>Table 8-13</A
 >.  The values
-      <TT
+      <VAR
 CLASS="LITERAL"
->infinity</TT
-> and <TT
+>infinity</VAR
+> and <VAR
 CLASS="LITERAL"
->-infinity</TT
+>-infinity</VAR
 >
       are specially represented inside the system and will be displayed
       the same way; but the others are simply notational shorthands
       that will be converted to ordinary date/time values when read.
+      All of these values are treated as normal constants and need to be
+      written in single quotes.
      </P
 ><DIV
 CLASS="TABLE"
@@ -1427,141 +1139,157 @@ NAME="DATATYPE-DATETIME-SPECIAL-TABLE"
 ></A
 ><P
 ><B
->Table 5-14. Special Date/Time Inputs</B
+>Table 8-13. Special Date/Time Inputs</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Input string</TH
+>Input String</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
+>Valid Types</TH
+><TH
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->epoch</TT
+>epoch</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>date</TT
+>, <TT
+CLASS="TYPE"
+>timestamp</TT
+></TD
+><TD
 >1970-01-01 00:00:00+00 (Unix system time zero)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->infinity</TT
+>infinity</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->later than all other timestamps (not available for
-	  type <TT
+><TT
+CLASS="TYPE"
+>timestamp</TT
+></TD
+><TD
+>later than all other time stamps</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>-infinity</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>timestamp</TT
+></TD
+><TD
+>earlier than all other time stamps</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>now</VAR
+></TD
+><TD
+><TT
 CLASS="TYPE"
 >date</TT
->)</TD
+>, <TT
+CLASS="TYPE"
+>time</TT
+>, <TT
+CLASS="TYPE"
+>timestamp</TT
+></TD
+><TD
+>current transaction's start time</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->-infinity</TT
+>today</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->earlier than all other timestamps (not available for
-	  type <TT
+><TT
 CLASS="TYPE"
 >date</TT
->)</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->now</TT
+>, <TT
+CLASS="TYPE"
+>timestamp</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->current transaction time</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->today</TT
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >midnight today</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->tomorrow</TT
+>tomorrow</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>date</TT
+>, <TT
+CLASS="TYPE"
+>timestamp</TT
+></TD
+><TD
 >midnight tomorrow</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->yesterday</TT
+>yesterday</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>date</TT
+>, <TT
+CLASS="TYPE"
+>timestamp</TT
+></TD
+><TD
 >midnight yesterday</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->zulu</TT
->, <TT
+>zulu</VAR
+>, <VAR
 CLASS="LITERAL"
->allballs</TT
->, <TT
+>allballs</VAR
+>, <VAR
 CLASS="LITERAL"
->z</TT
+>z</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->00:00:00.00 GMT</TD
+><TT
+CLASS="TYPE"
+>time</TT
+></TD
+><TD
+>00:00:00.00 UTC</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1574,31 +1302,32 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="DATATYPE-DATETIME-OUTPUT"
->5.5.2. Date/Time Output</A
+>8.5.2. Date/Time Output</A
 ></H2
 ><A
-NAME="AEN4066"
+NAME="AEN4023"
 ></A
 ><A
-NAME="AEN4070"
+NAME="AEN4027"
 ></A
 ><P
->     Output formats can be set to one of the four styles ISO 8601,
-     <SPAN
+>     The output format of the date/time types can be set to one of the four
+     styles ISO 8601,
+     <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> (Ingres), traditional PostgreSQL, and
-     German, using the <TT
-CLASS="COMMAND"
->SET DateStyle</TT
+>SQL</ACRONYM
+> (Ingres), traditional POSTGRES, and
+     German, using the command <VAR
+CLASS="LITERAL"
+>SET datestyle</VAR
 >.  The default
-     is the <SPAN
+     is the <ACRONYM
 CLASS="ACRONYM"
->ISO</SPAN
+>ISO</ACRONYM
 > format.  (The
-     <SPAN
+     <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > standard requires the use of the ISO 8601
      format.  The name of the <SPAN
 CLASS="QUOTE"
@@ -1606,7 +1335,7 @@ CLASS="QUOTE"
 > output format is a
      historical accident.)  <A
 HREF="datatype-datetime.html#DATATYPE-DATETIME-OUTPUT-TABLE"
->Table 5-15</A
+>Table 8-14</A
 > shows examples of each
      output style.  The output of the <TT
 CLASS="TYPE"
@@ -1625,101 +1354,72 @@ NAME="DATATYPE-DATETIME-OUTPUT-TABLE"
 ></A
 ><P
 ><B
->Table 5-15. Date/Time Output Styles</B
+>Table 8-14. Date/Time Output Styles</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Style Specification</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >ISO</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >ISO 8601/SQL standard</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1997-12-17 07:37:16-08</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >SQL</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >traditional style</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >12/17/1997 07:37:16.00 PST</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->PostgreSQL</TD
+>POSTGRES</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >original style</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Wed Dec 17 07:37:16 1997 PST</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >German</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >regional style</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >17.12.1997 07:37:16.00 PST</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->     The <SPAN
+>     In the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> style has European and non-European
-     (U.S.) variants, which determines whether month follows day or
-     vice versa. (See <A
+>SQL</ACRONYM
+> and POSTGRES styles, day appears before
+     month if DMY field ordering has been specified, otherwise month appears
+     before day.
+     (See <A
 HREF="datatype-datetime.html#DATATYPE-DATETIME-INPUT"
->Section 5.5.1</A
+>Section 8.5.1</A
 >
      for how this setting also affects interpretation of input values.)
      <A
 HREF="datatype-datetime.html#DATATYPE-DATETIME-OUTPUT2-TABLE"
->Table 5-16</A
+>Table 8-15</A
 > shows an
      example.
     </P
@@ -1730,133 +1430,164 @@ NAME="DATATYPE-DATETIME-OUTPUT2-TABLE"
 ></A
 ><P
 ><B
->Table 5-16. Date Order Conventions</B
+>Table 8-15. Date Order Conventions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Style Specification</TH
+>DateStyle setting</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Description</TH
+>Input Ordering</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Example</TH
+>Example Output</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->European</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="REPLACEABLE"
-><I
->day</I
-></TT
->/<TT
-CLASS="REPLACEABLE"
-><I
->month</I
-></TT
->/<TT
-CLASS="REPLACEABLE"
-><I
->year</I
-></TT
+><VAR
+CLASS="LITERAL"
+>SQL, DMY</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->17/12/1997 15:37:16.00 MET</TD
+><VAR
+CLASS="REPLACEABLE"
+>day</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>month</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>year</VAR
+></TD
+><TD
+>17/12/1997 15:37:16.00 CET</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->US</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="REPLACEABLE"
-><I
->month</I
-></TT
->/<TT
-CLASS="REPLACEABLE"
-><I
->day</I
-></TT
->/<TT
-CLASS="REPLACEABLE"
-><I
->year</I
-></TT
+><VAR
+CLASS="LITERAL"
+>SQL, MDY</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><VAR
+CLASS="REPLACEABLE"
+>month</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>day</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>year</VAR
+></TD
+><TD
 >12/17/1997 07:37:16.00 PST</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>Postgres, DMY</VAR
+></TD
+><TD
+><VAR
+CLASS="REPLACEABLE"
+>day</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>month</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>year</VAR
+></TD
+><TD
+>Wed 17 Dec 07:37:16 1997 PST</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->    <TT
+>     <TT
 CLASS="TYPE"
 >interval</TT
-> output looks like the input format, except that units like
-    <TT
+> output looks like the input format, except
+     that units like <VAR
 CLASS="LITERAL"
->week</TT
-> or <TT
+>century</VAR
+> or
+     <VAR
 CLASS="LITERAL"
->century</TT
-> are converted to years and days.
-    In ISO mode the output looks like
+>wek</VAR
+> are converted to years and days and that
+     <VAR
+CLASS="LITERAL"
+>ago</VAR
+> is converted to an appropriate sign.  In
+     ISO mode the output looks like
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->[ Quantity Units [ ... ] ] [ Days ] Hours:Minutes [ ago ]</PRE
+>[<SPAN
+CLASS="OPTIONAL"
+> <VAR
+CLASS="REPLACEABLE"
+>quantity</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>unit</VAR
+> [<SPAN
+CLASS="OPTIONAL"
+> ... </SPAN
+>] </SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+> <VAR
+CLASS="REPLACEABLE"
+>days</VAR
+> </SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+> <VAR
+CLASS="REPLACEABLE"
+>hours</VAR
+>:<VAR
+CLASS="REPLACEABLE"
+>minutes</VAR
+>:<VAR
+CLASS="REPLACEABLE"
+>sekunden</VAR
+> </SPAN
+>]</PRE
 ><P>
     </P
 ><P
 >     The date/time styles can be selected by the user using the
      <TT
 CLASS="COMMAND"
->SET DATESTYLE</TT
+>SET datestyle</TT
 > command, the
-     <TT
+     <VAR
 CLASS="VARNAME"
->datestyle</TT
+>datestyle</VAR
 > parameter in the
      <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
-> configuration file, and the
+> configuration file, or the
      <TT
 CLASS="ENVAR"
 >PGDATESTYLE</TT
 > environment variable on the server or
-     client.  The formatting function <TT
+     client.  The formatting function <CODE
 CLASS="FUNCTION"
->to_char</TT
+>to_char</CODE
 >
      (see <A
 HREF="functions-formatting.html"
->Section 6.7</A
+>Section 9.7</A
 >) is also available as
      a more flexible way to format the date/time output.
     </P
@@ -1867,23 +1598,53 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="DATATYPE-TIMEZONES"
->5.5.3. Time Zones</A
+>8.5.3. Time Zones</A
 ></H2
 ><A
-NAME="AEN4149"
+NAME="AEN4127"
 ></A
+><P
+>    Time zones, and time-zone conventions, are influenced by
+    political decisions, not just earth geometry. Time zones around the
+    world became somewhat standardized during the 1900's,
+    but continue to be prone to arbitrary changes.
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses your operating
+    system's underlying features to provide output time-zone
+    support, and these systems usually contain information for only
+    the time period 1902 through 2038 (corresponding to the full
+    range of conventional Unix system time).
+    <TT
+CLASS="TYPE"
+>timestamp with time zone</TT
+> and <TT
+CLASS="TYPE"
+>time with time
+     zone</TT
+> will use time zone
+    information only within that year range, and assume that times
+    outside that range are in <ACRONYM
+CLASS="ACRONYM"
+>UTC</ACRONYM
+>.
+    But since time zone support is derived from the underlying operating
+    system time-zone capabilities, it can handle daylight-saving time
+    and other special behavior.
+   </P
 ><P
 >     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > endeavors to be compatible with
-     the <SPAN
+     the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > standard definitions for typical usage.
-     However, the <SPAN
+     However, the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > standard has an odd mix of date and
      time types and capabilities. Two obvious problems are:
 
@@ -1909,18 +1670,15 @@ CLASS="TYPE"
 ></LI
 ><LI
 ><P
->	The default time zone is specified as a constant integer offset 
-	from <SPAN
+>	The default time zone is specified as a constant numeric offset 
+	from <ACRONYM
 CLASS="ACRONYM"
->GMT</SPAN
->/<SPAN
-CLASS="ACRONYM"
->UTC</SPAN
+>UTC</ACRONYM
 >. It is not possible to adapt to daylight-saving
 	time when doing date/time arithmetic across
-	<SPAN
+	<ACRONYM
 CLASS="ACRONYM"
->DST</SPAN
+>DST</ACRONYM
 > boundaries.
        </P
 ></LI
@@ -1945,44 +1703,23 @@ CLASS="TYPE"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > for legacy applications and
-     for compatibility with other <SPAN
+     for compatibility with other <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >
      implementations).  <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > assumes
-     your local time zone for any type containing only date or
-     time. Further, time zone support is derived from the underlying
-     operating system time-zone capabilities, and hence can handle
-     daylight-saving time and other expected behavior.
-    </P
-><P
->     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> obtains time-zone support
-     from the underlying operating system for dates between 1902 and
-     2038 (near the typical date limits for Unix-style
-     systems). Outside of this range, all dates are assumed to be
-     specified and used in Universal Coordinated Time
-     (<SPAN
-CLASS="ACRONYM"
->UTC</SPAN
->).
+     your local time zone for any type containing only date or time.
     </P
 ><P
 >     All dates and times are stored internally in
-     <SPAN
+     <ACRONYM
 CLASS="ACRONYM"
->UTC</SPAN
->, traditionally known as Greenwich Mean
-     Time (<SPAN
-CLASS="ACRONYM"
->GMT</SPAN
->).  Times are converted to local time
-     on the database server before being sent to the client frontend,
+>UTC</ACRONYM
+>.  Times are converted to local time
+     on the database server before being sent to the client,
      hence by default are in the server time zone.
     </P
 ><P
@@ -2003,11 +1740,11 @@ CLASS="ENVAR"
 ></LI
 ><LI
 ><P
->	The <TT
+>	The <VAR
 CLASS="VARNAME"
->timezone</TT
+>timezone</VAR
 > configuration parameter can be
-	set in <TT
+	set in the file <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
 >.
@@ -2032,9 +1769,9 @@ CLASS="COMMAND"
 ></LI
 ><LI
 ><P
->	The <SPAN
+>	The <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > command <TT
 CLASS="COMMAND"
 >SET TIME ZONE</TT
@@ -2053,9 +1790,9 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >       If an invalid time zone is specified, the time zone becomes
-       <SPAN
+       <ACRONYM
 CLASS="ACRONYM"
->UTC</SPAN
+>UTC</ACRONYM
 > (on most systems anyway).
       </P
 ></BLOCKQUOTE
@@ -2074,7 +1811,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="DATATYPE-DATETIME-INTERNALS"
->5.5.4. Internals</A
+>8.5.4. Internals</A
 ></H2
 ><P
 >     <SPAN
@@ -2136,7 +1873,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Binary Strings</TD
+>Binary Data Types</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

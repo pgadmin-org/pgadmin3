@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_index</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-INDEX"
->3.16. pg_index</A
+>45.16. <TT
+CLASS="STRUCTNAME"
+>pg_index</TT
+></A
 ></H1
+><A
+NAME="AEN51987"
+></A
 ><P
->   <TT
+>   The catalog <TT
 CLASS="STRUCTNAME"
 >pg_index</TT
 > contains part of the information
@@ -97,158 +103,147 @@ CLASS="STRUCTNAME"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN53491"
+NAME="AEN51992"
 ></A
 ><P
 ><B
->Table 3-16. pg_index Columns</B
+>Table 45-16. <TT
+CLASS="STRUCTNAME"
+>pg_index</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indexrelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>indexrelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The OID of the pg_class entry for this index</TD
+>The OID of the <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+> entry for this index</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indrelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>indrelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The OID of the pg_class entry for the table this index is for</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indproc</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
 ><TT
-CLASS="TYPE"
->regproc</TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The function's OID if this is a functional index,
-      else zero</TD
+>The OID of the <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+> entry for the table this index is for</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indkey</TD
+><TT
+CLASS="STRUCTFIELD"
+>indkey</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2vector</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_attribute.attnum</TD
+><A
+HREF="catalog-pg-attribute.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+>.attnum</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       This is a vector (array) of up to
+>       This is an array of <TT
+CLASS="STRUCTFIELD"
+>indnatts</TT
+> (up to
        <TT
 CLASS="SYMBOL"
 >INDEX_MAX_KEYS</TT
-> values that indicate which
-       table columns this index pertains to.  For example a value of
-       <TT
+>) values that indicate which
+       table columns this index indexes.  For example a value of
+       <VAR
 CLASS="LITERAL"
->1 3</TT
-> would mean that the first and the third
-       column make up the index key.  For a functional index, these
-       columns are the inputs to the function, and the function's return
-       value is the index key.
+>1 3</VAR
+> would mean that the first and the third table
+       columns make up the index key.  A zero in this array indicates that the
+       corresponding index attribute is an expression over the table columns,
+       rather than a simple column reference.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indclass</TD
+><TT
+CLASS="STRUCTFIELD"
+>indclass</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oidvector</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_opclass.oid</TD
+><A
+HREF="catalog-pg-opclass.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
+></A
+>.oid</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       For each column in the index key this contains a reference to
-       the <SPAN
-CLASS="QUOTE"
->"operator class"</SPAN
-> to use.  See
+>       For each column in the index key this contains the OID of
+       the operator class to use.  See
        <TT
 CLASS="STRUCTNAME"
 >pg_opclass</TT
@@ -257,111 +252,120 @@ CLASS="STRUCTNAME"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indisclustered</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
-CLASS="TYPE"
->bool</TT
+CLASS="STRUCTFIELD"
+>indnatts</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>int2</TT
+></TD
+><TD
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->If true, the table was last clustered on this index.</TD
+>The number of columns in the index (duplicates
+      <VAR
+CLASS="LITERAL"
+>pg_class.relnatts</VAR
+>)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indisunique</TD
+><TT
+CLASS="STRUCTFIELD"
+>indisunique</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >If true, this is a unique index.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indisprimary</TD
+><TT
+CLASS="STRUCTFIELD"
+>indisprimary</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >If true, this index represents the primary key of the table.
-      (indisunique should always be true when this is true.)</TD
+      (<TT
+CLASS="STRUCTFIELD"
+>indisunique</TT
+> should always be true when this is true.)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indreference</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
-CLASS="TYPE"
->oid</TT
+CLASS="STRUCTFIELD"
+>indisclustered</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->unused</TD
+>If true, the table was last clustered on this index.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->indpred</TD
+><TT
+CLASS="STRUCTFIELD"
+>indexprs</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Expression tree (in the form of a nodeToString representation)
-      for partial index predicate.  Empty string if not a partial
-      index.</TD
+>Expression trees (in <CODE
+CLASS="FUNCTION"
+>nodeToString()</CODE
+> representation)
+      for index attributes that are not simple column references.  This is a
+      list with one element for each zero entry in <TT
+CLASS="STRUCTFIELD"
+>indkey</TT
+>.
+      Null if all index attributes are simple references.</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>indpred</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>Expression tree (in <CODE
+CLASS="FUNCTION"
+>nodeToString()</CODE
+> representation)
+      for partial index predicate.  Null if not a partial index.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -411,7 +415,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_group</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_group</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -425,7 +432,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_inherits</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_inherits</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

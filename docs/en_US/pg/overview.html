@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Overview of PostgreSQL Internals</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Developer's Guide"
-HREF="developer.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="PostgreSQL Source Code"
-HREF="source.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="NEXT"
 TITLE="How Connections are Established"
 HREF="connect-estab.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="source.html"
+HREF="internals.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="OVERVIEW"
->Chapter 2. Overview of PostgreSQL Internals</A
-></H1
+></A
+>Chapter 44. Overview of PostgreSQL Internals</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,36 +90,36 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->2.1. <A
+>44.1. <A
 HREF="overview.html#QUERY-PATH"
 >The Path of a Query</A
 ></DT
 ><DT
->2.2. <A
+>44.2. <A
 HREF="connect-estab.html"
 >How Connections are Established</A
 ></DT
 ><DT
->2.3. <A
+>44.3. <A
 HREF="parser-stage.html"
 >The Parser Stage</A
 ></DT
 ><DD
 ><DL
 ><DT
->2.3.1. <A
-HREF="parser-stage.html#AEN52005"
+>44.3.1. <A
+HREF="parser-stage.html#AEN50235"
 >Parser</A
 ></DT
 ><DT
->2.3.2. <A
-HREF="parser-stage.html#AEN52090"
+>44.3.2. <A
+HREF="parser-stage.html#AEN50271"
 >Transformation Process</A
 ></DT
 ></DL
 ></DD
 ><DT
->2.4. <A
+>44.4. <A
 HREF="rule-system.html"
 >The <SPAN
 CLASS="PRODUCTNAME"
@@ -127,26 +127,12 @@ CLASS="PRODUCTNAME"
 > Rule System</A
 ></DT
 ><DT
->2.5. <A
+>44.5. <A
 HREF="planner-optimizer.html"
 >Planner/Optimizer</A
 ></DT
-><DD
-><DL
 ><DT
->2.5.1. <A
-HREF="planner-optimizer.html#AEN52179"
->Generating Possible Plans</A
-></DT
-><DT
->2.5.2. <A
-HREF="planner-optimizer.html#AEN52197"
->Data Structure of the Plan</A
-></DT
-></DL
-></DD
-><DT
->2.6. <A
+>44.6. <A
 HREF="executor.html"
 >Executor</A
 ></DT
@@ -159,7 +145,7 @@ CLASS="NOTE"
 ><P
 ><B
 >Author: </B
->    This chapter originally appeared as a part of
+>    This chapter originated as part of
     <A
 HREF="biblio.html#SIM98"
 ><I
@@ -176,18 +162,18 @@ HREF="biblio.html#SIM98"
    backend of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->.
-   After having read the following sections you
-   should have an idea of how a query is processed. Don't expect a
-   detailed description here (I think such a description dealing with
-   all data structures and functions used within <SPAN
+>.  After having
+   read the following sections you should have an idea of how a query
+   is processed. This chapter does not aim to provide a detailed
+   description of the internal operation of
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->
-   would exceed 1000
-   pages!). This chapter is intended to help understanding the general
-   control and data flow within the backend from receiving a query to
-   sending the results.
+>, as such a document would be
+   very extensive. Rather, this chapter is intended to help the reader
+   understand the general sequence of operations that occur within the
+   backend from the point at which a query is received, to the point
+   when the results are returned to the client.
   </P
 ><DIV
 CLASS="SECT1"
@@ -195,7 +181,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="QUERY-PATH"
->2.1. The Path of a Query</A
+>44.1. The Path of a Query</A
 ></H1
 ><P
 >    Here we give a short overview of the stages a query has to pass in
@@ -212,7 +198,8 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
       server has to be established. The application program transmits a
-      query to the server and receives the results sent back by the server.
+      query to the server and waits to receive the results sent back by the
+      server.
      </P
 ></LI
 ><LI
@@ -222,7 +209,7 @@ CLASS="FIRSTTERM"
 >parser stage</I
 > checks the query
       transmitted by the application
-      program (client) for correct syntax and creates
+      program for correct syntax and creates
       a <I
 CLASS="FIRSTTERM"
 >query tree</I
@@ -244,15 +231,12 @@ CLASS="FIRSTTERM"
 CLASS="FIRSTTERM"
 >system catalogs</I
 >) to apply to 
-      the <I
-CLASS="FIRSTTERM"
->querytree</I
-> and performs the
+      the query tree.  It performs the
       transformations given in the <I
 CLASS="FIRSTTERM"
 >rule bodies</I
 >.
-      One application of the rewrite system is given in the realization of
+      One application of the rewrite system is in the realization of
       <I
 CLASS="FIRSTTERM"
 >views</I
@@ -284,7 +268,7 @@ CLASS="FIRSTTERM"
       the (rewritten) querytree and creates a 
       <I
 CLASS="FIRSTTERM"
->queryplan</I
+>query plan</I
 > that will be the input to the
       <I
 CLASS="FIRSTTERM"
@@ -333,8 +317,8 @@ CLASS="FIRSTTERM"
 ></OL
 ></DIV
 ><P
->    In the following sections we will cover every of the above listed items
-    in more detail to give a better understanding on <SPAN
+>    In the following sections we will cover each of the above listed items
+    in more detail to give a better understanding of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >'s internal
@@ -358,7 +342,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="source.html"
+HREF="internals.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -386,13 +370,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->PostgreSQL Source Code</TD
+>Internals</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="developer.html"
+HREF="internals.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

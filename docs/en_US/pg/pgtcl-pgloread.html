@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_lo_read</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_lo_close"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,161 +78,135 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGLOREAD"
->pg_lo_read</A
-></H1
+></A
+>pg_lo_read</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN27109"
+NAME="AEN21973"
 ></A
 ><H2
 >Name</H2
->pg_lo_read&nbsp;--&nbsp;read a large object<A
-NAME="IX-PGTCL-PGLOREAD-1"
-></A
-><A
+>pg_lo_read&nbsp;--&nbsp;read from a large object<A
 NAME="IX-PGTCL-PGLOREAD-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN27117"
+NAME="AEN21978"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_lo_read <TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->fd</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->bufVar</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->len</I
-></TT
+>pg_lo_read <VAR
+CLASS="PARAMETER"
+>conn</VAR
+> <VAR
+CLASS="PARAMETER"
+>descriptor</VAR
+> <VAR
+CLASS="PARAMETER"
+>bufVar</VAR
+> <VAR
+CLASS="PARAMETER"
+>len</VAR
 ></PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-PGTCL-PGLOREAD-1"
+NAME="AEN21984"
 ></A
-><H3
->Inputs</H3
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>pg_lo_read</CODE
+> reads at most
+   <VAR
+CLASS="PARAMETER"
+>len</VAR
+> bytes from a large object into a
+   variable named <VAR
+CLASS="PARAMETER"
+>bufVar</VAR
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21990"
+></A
+><H2
+>Arguments</H2
 ><P
 ></P
 ><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>conn</VAR
 ></DT
 ><DD
 ><P
->Specifies a valid database connection.</P
+>      The handle of a database connection in which the large object
+      exists.
+     </P
 ></DD
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->fd</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>descriptor</VAR
 ></DT
 ><DD
 ><P
->File descriptor for the large object from pg_lo_open.</P
+>      A descriptor for the large object from
+      <CODE
+CLASS="FUNCTION"
+>pg_lo_open</CODE
+>.
+     </P
 ></DD
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->bufVar</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>bufVar</VAR
 ></DT
 ><DD
 ><P
->Specifies a valid buffer variable to contain the large object segment.</P
+>      The name of a buffer variable to contain the large object
+      segment.
+     </P
 ></DD
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->len</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>len</VAR
 ></DT
 ><DD
 ><P
->Specifies the maximum allowable size of the large object segment.</P
+>      The maximum number of bytes to read.
+     </P
 ></DD
 ></DL
 ></DIV
 ></DIV
 ><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGLOREAD-2"
-></A
-><H3
->Outputs</H3
-><P
->None</P
-></DIV
-></DIV
-><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGLOREAD-1"
+NAME="AEN22014"
 ></A
 ><H2
->Description</H2
+>Return Value</H2
 ><P
-><TT
-CLASS="FUNCTION"
->pg_lo_read</TT
-> reads 
-at most <TT
-CLASS="REPLACEABLE"
-><I
->len</I
-></TT
-> bytes from a large object into a variable
- named <TT
-CLASS="REPLACEABLE"
-><I
->bufVar</I
-></TT
->.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-PGTCL-PGLOREAD-2"
-></A
-><H2
->Usage</H2
-><P
-><TT
-CLASS="REPLACEABLE"
-><I
->bufVar</I
-></TT
-> must be a valid variable name.</P
+>   None
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >ipcclean</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="initlocation"
 HREF="app-initlocation.html"><LINK
 REL="NEXT"
-TITLE="pg_ctl"
-HREF="app-pg-ctl.html"><LINK
+TITLE="pg_controldata"
+HREF="app-pgcontroldata.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="app-pg-ctl.html"
+HREF="app-pgcontroldata.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-IPCCLEAN"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >ipcclean</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN50903"
+NAME="AEN49113"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN50907"
+NAME="AEN49117"
 ></A
 ><H2
 >Synopsis</H2
@@ -137,36 +137,25 @@ CLASS="APPLICATION"
 ><P
 >   Only the database administrator should execute this program as it
    can cause bizarre behavior (i.e., crashes) if run during multiuser
-   execution.  If this command is executed while a
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
-> is running, the shared memory
-   and semaphores allocated by the
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
-> will be deleted.  This will
-   result in a general failure of the backend servers started by that
-   <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
->.
+   execution.  If this command is executed while a server is running,
+   the shared memory and semaphores allocated by that server will be
+   deleted, which would have rather severe consequences for that
+   server.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50920"
+NAME="AEN49127"
 ></A
 ><H2
 >Notes</H2
 ><P
 >   This script is a hack, but in the many years since it was written,
    no one has come up with an equally effective and portable solution.
-   Since the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+   Since the <TT
+CLASS="COMMAND"
+>postmaster</TT
 > can now clean up by
    itself, it is unlikely that <TT
 CLASS="COMMAND"
@@ -176,9 +165,9 @@ CLASS="COMMAND"
   </P
 ><P
 >   The script makes assumption about the format of output of the
-   <SPAN
-CLASS="APPLICATION"
->ipcs</SPAN
+   <TT
+CLASS="COMMAND"
+>ipcs</TT
 >
    utility which may not be true across different operating systems.
    Therefore, it may not work on your particular OS.
@@ -218,7 +207,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="app-pg-ctl.html"
+HREF="app-pgcontroldata.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -247,7 +236,7 @@ ALIGN="right"
 VALIGN="top"
 ><SPAN
 CLASS="APPLICATION"
->pg_ctl</SPAN
+>pg_controldata</SPAN
 ></TD
 ></TR
 ></TABLE

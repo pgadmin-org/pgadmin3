@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->Monetary Type</TITLE
+>Monetary Types</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Data Types</TD
+>Chapter 8. Data Types</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DATATYPE-MONEY"
->5.2. Monetary Type</A
+>8.2. Monetary Types</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -101,15 +101,10 @@ CLASS="TYPE"
 CLASS="TYPE"
 >decimal</TT
 > instead, in
-     combination with the <TT
+     combination with the <CODE
 CLASS="FUNCTION"
->to_char</TT
-> function.  The
-     money type may become a locale-aware layer over the
-     <TT
-CLASS="TYPE"
->numeric</TT
-> type in a future release.
+>to_char</CODE
+> function.
     </P
 ></BLOCKQUOTE
 ></DIV
@@ -117,24 +112,21 @@ CLASS="TYPE"
 >    The <TT
 CLASS="TYPE"
 >money</TT
-> type stores a currency amount with fixed
-    decimal point representation; see <A
+> type stores a currency amount with a fixed
+    fractional precision; see <A
 HREF="datatype-money.html#DATATYPE-MONEY-TABLE"
->Table 5-3</A
->.  The output format is
-    locale-specific.
-   </P
-><P
->    Input is accepted in a variety of formats, including integer and
+>Table 8-3</A
+>.
+    Input is accepted in a variety of formats, including integer and
     floating-point literals, as well as <SPAN
 CLASS="QUOTE"
 >"typical"</SPAN
 >
-    currency formatting, such as <TT
+    currency formatting, such as <VAR
 CLASS="LITERAL"
->'$1,000.00'</TT
+>'$1,000.00'</VAR
 >.
-    Output is in the latter form.
+    Output is generally in the latter form but depends on the locale.
    </P
 ><DIV
 CLASS="TABLE"
@@ -143,48 +135,32 @@ NAME="DATATYPE-MONEY-TABLE"
 ></A
 ><P
 ><B
->Table 5-3. Monetary Types</B
+>Table 8-3. Monetary Types</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Type Name</TH
+>Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Storage</TH
+>Storage Size</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Range</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >money</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >4 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >currency amount</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >-21474836.48 to +21474836.47</TD
 ></TR
 ></TBODY

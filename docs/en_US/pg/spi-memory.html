@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Memory Management</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming Interface"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 17. Server Programming Interface</TD
+>Chapter 38. Server Programming Interface</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SPI-MEMORY"
->17.3. Memory Management</A
+>38.3. Memory Management</A
 ></H1
 ><DIV
 CLASS="TOC"
@@ -134,9 +134,9 @@ HREF="spi-spifreetuple.html"
 ><A
 HREF="spi-spifreetuptable.html"
 >SPI_freetuptable</A
->&nbsp;--&nbsp;Frees a tuple set created by <TT
+>&nbsp;--&nbsp;Frees a tuple set created by <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 > or similar function</DT
 ><DT
 ><A
@@ -158,130 +158,130 @@ managing allocations made in many different places that need to live
 for differing amounts of time.  Destroying a context releases all the
 memory that was allocated in it.  Thus, it is not necessary to keep track
 of individual objects to avoid memory leaks --- only a relatively small number
-of contexts have to be managed.  <TT
+of contexts have to be managed.  <CODE
 CLASS="FUNCTION"
->palloc</TT
+>palloc</CODE
 > and related
 functions allocate memory from the <SPAN
 CLASS="QUOTE"
 >"current"</SPAN
 > context.</P
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 > creates a new memory context and makes
-it current.  <TT
+it current.  <CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > restores the previous
 current memory context and destroys the context created by
-<TT
+<CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 >.  These actions ensure that transient
 memory allocations made inside your procedure are reclaimed at procedure
 exit, avoiding memory leakage.</P
 ><P
 >However, if your procedure needs to return an allocated memory object
 (such as a value of a pass-by-reference data type), you can't allocate
-the return object using <TT
+the return object using <CODE
 CLASS="FUNCTION"
->palloc</TT
+>palloc</CODE
 >, at least not while
 you are connected to SPI.  If you try, the object will be deallocated
-during <TT
+during <CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 >, and your procedure will not
 work reliably!</P
 ><P
->To solve this problem, use <TT
+>To solve this problem, use <CODE
 CLASS="FUNCTION"
->SPI_palloc</TT
+>SPI_palloc</CODE
 > to allocate
-your return object.  <TT
+your return object.  <CODE
 CLASS="FUNCTION"
->SPI_palloc</TT
+>SPI_palloc</CODE
 > allocates space
 from <SPAN
 CLASS="QUOTE"
 >"upper Executor"</SPAN
 > memory --- that is, the memory context
-that was current when <TT
+that was current when <CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 > was called,
 which is precisely the right context for return values of your procedure.</P
 ><P
->If called while not connected to SPI, <TT
+>If called while not connected to SPI, <CODE
 CLASS="FUNCTION"
->SPI_palloc</TT
+>SPI_palloc</CODE
 >
-acts the same as plain <TT
+acts the same as plain <CODE
 CLASS="FUNCTION"
->palloc</TT
+>palloc</CODE
 >.</P
 ><P
 >   Before a procedure connects to the SPI manager, the current memory context
 is the upper Executor context, so all allocations made by the procedure via
-<TT
+<CODE
 CLASS="FUNCTION"
->palloc</TT
+>palloc</CODE
 > or by SPI utility functions are
 made in this context.</P
 ><P
->   After <TT
+>   After <CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 > is called, the current context is
-   the procedure's private context made by <TT
+   the procedure's private context made by <CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 >.
    All allocations made via
-<TT
+<CODE
 CLASS="FUNCTION"
->palloc</TT
->/<TT
+>palloc</CODE
+>/<CODE
 CLASS="FUNCTION"
->repalloc</TT
+>repalloc</CODE
 > or by SPI utility
-functions (except for <TT
+functions (except for <CODE
 CLASS="FUNCTION"
->SPI_copytuple</TT
+>SPI_copytuple</CODE
 >,
-<TT
+<CODE
 CLASS="FUNCTION"
->SPI_copytupledesc</TT
+>SPI_copytupledesc</CODE
 >,
-<TT
+<CODE
 CLASS="FUNCTION"
->SPI_copytupleintoslot</TT
+>SPI_copytupleintoslot</CODE
 >,
-<TT
+<CODE
 CLASS="FUNCTION"
->SPI_modifytuple</TT
+>SPI_modifytuple</CODE
 >,
-and <TT
+and <CODE
 CLASS="FUNCTION"
->SPI_palloc</TT
+>SPI_palloc</CODE
 >) are
 made in this context.</P
 ><P
 >When a procedure disconnects from the SPI manager (via
-<TT
+<CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 >) the
 current context is restored to the upper Executor context, and all allocations
 made in the procedure memory context are freed and can't be used any more!</P
 ><P
 >All functions described in this section may be used by both connected and
 unconnected procedures.  In an unconnected procedure, they act the same
-as the underlying ordinary backend functions (<TT
+as the underlying ordinary backend functions (<CODE
 CLASS="FUNCTION"
->palloc</TT
+>palloc</CODE
 > etc).</P
 ></DIV
 ><DIV

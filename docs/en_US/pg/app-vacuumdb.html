@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >vacuumdb</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
 HREF="reference-client.html"><LINK
 REL="PREVIOUS"
-TITLE="pgtksh"
-HREF="app-pgtksh.html"><LINK
+TITLE="psql"
+HREF="app-psql.html"><LINK
 REL="NEXT"
 TITLE="PostgreSQL Server Applications"
 HREF="reference-server.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="app-pgtksh.html"
+HREF="app-psql.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-VACUUMDB"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >vacuumdb</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN50455"
+NAME="AEN48672"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN50459"
+NAME="AEN48676"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,42 +105,32 @@ NAME="AEN50459"
 ><TT
 CLASS="COMMAND"
 >vacuumdb</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->connection-options</I
-></TT
->...] [--full | -f] [--verbose | -v] [--analyze | -z] [--table | -t '<TT
+>connection-option</VAR
+>...] [--full | -f] [--verbose | -v] [--analyze | -z] [--table | -t <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
+>table</VAR
 >
-     [( <TT
+     [( <VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [,...] )]'
-   ] [<TT
+>column</VAR
+> [,...] )]
+   ] [<VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 >]<BR><TT
 CLASS="COMMAND"
 >vacuumdb</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->connection-options</I
-></TT
+>connection-options</VAR
 >...] [--all | -a] [--full | -f] [--verbose | -v] [--analyze | -z]</P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50495"
+NAME="AEN48712"
 ></A
 ><H2
 >Description</H2
@@ -166,39 +156,21 @@ CLASS="PRODUCTNAME"
 >   <SPAN
 CLASS="APPLICATION"
 >vacuumdb</SPAN
-> is a shell script wrapper around the
-   backend command
-   <A
+> is a wrapper around the SQL
+   command <A
 HREF="sql-vacuum.html"
 ><I
 >VACUUM</I
 ></A
-> via
-   the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> interactive terminal
-   <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
->. There is no effective
-   difference between vacuuming databases via this or other methods.
-   <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> must be found by the script and
-   a database server must be running at the targeted host. Also, any default
-   settings and environment variables available to <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->
-   and the <SPAN
+>.
+   There is no effective difference between vacuuming databases via
+   this or other methods.  The database server must be running at the
+   targeted host.  Also, any default settings and environment
+   variables used by the <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> front-end library do apply.
+> front-end
+   library will apply.
   </P
 ><P
 >  <SPAN
@@ -219,7 +191,7 @@ CLASS="FILENAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50514"
+NAME="AEN48727"
 ></A
 ><H2
 >Options</H2
@@ -235,39 +207,48 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
+CLASS="OPTION"
+>-a</VAR
+><BR><VAR
+CLASS="OPTION"
+>--all</VAR
+></DT
+><DD
+><P
+>	Vacuum all databases.
+       </P
+></DD
+><DT
+><VAR
 CLASS="OPTION"
 >[<SPAN
 CLASS="OPTIONAL"
 >-d</SPAN
->] <TT
+>] <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
-><BR><TT
+>dbname</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
 >[<SPAN
 CLASS="OPTIONAL"
 >--dbname</SPAN
->] <TT
+>] <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
+>dbname</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Specifies the name of the database to be cleaned or analyzed.
-	If this is not specified and <TT
+	If this is not specified and <VAR
 CLASS="OPTION"
->-a</TT
+>-a</VAR
 > (or
-	<TT
+	<VAR
 CLASS="OPTION"
->--all</TT
+>--all</VAR
 >) is not used, the database name is read
 	from the environment variable <TT
 CLASS="ENVAR"
@@ -278,25 +259,12 @@ CLASS="ENVAR"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-a</TT
-><BR><TT
+>-e</VAR
+><BR><VAR
 CLASS="OPTION"
->--all</TT
-></DT
-><DD
-><P
->	Vacuum all databases.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-e</TT
-><BR><TT
-CLASS="OPTION"
->--echo</TT
+>--echo</VAR
 ></DT
 ><DD
 ><P
@@ -308,12 +276,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-f</TT
-><BR><TT
+>-f</VAR
+><BR><VAR
 CLASS="OPTION"
->--full</TT
+>--full</VAR
 ></DT
 ><DD
 ><P
@@ -324,12 +292,12 @@ CLASS="QUOTE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-q</TT
-><BR><TT
+>-q</VAR
+><BR><VAR
 CLASS="OPTION"
->--quiet</TT
+>--quiet</VAR
 ></DT
 ><DD
 ><P
@@ -337,45 +305,35 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-t <TT
+>-t <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> [ (<TT
+>table</VAR
+> [ (<VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [,...]) ]</TT
-><BR><TT
+>column</VAR
+> [,...]) ]</VAR
+><BR><VAR
 CLASS="OPTION"
->--table <TT
+>--table <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> [ (<TT
+>table</VAR
+> [ (<VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [,...]) ]</TT
+>column</VAR
+> [,...]) ]</VAR
 ></DT
 ><DD
 ><P
->	Clean or analyze <TT
+>	Clean or analyze <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
+>table</VAR
 > only.
 	Column names may be specified only in conjunction with
-	the <TT
+	the <VAR
 CLASS="OPTION"
->--analyze</TT
+>--analyze</VAR
 > option.
        </P
 ><DIV
@@ -385,19 +343,19 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->         If you specify columns to vacuum, you probably have to escape the parentheses
-         from the shell.
+>         If you specify columns, you probably have to escape the parentheses
+         from the shell.  (See examples below.)
         </P
 ></BLOCKQUOTE
 ></DIV
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-v</TT
-><BR><TT
+>-v</VAR
+><BR><VAR
 CLASS="OPTION"
->--verbose</TT
+>--verbose</VAR
 ></DT
 ><DD
 ><P
@@ -405,12 +363,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-z</TT
-><BR><TT
+>-z</VAR
+><BR><VAR
 CLASS="OPTION"
->--analyze</TT
+>--analyze</VAR
 ></DT
 ><DD
 ><P
@@ -434,73 +392,61 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-h <TT
+>-h <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-><BR><TT
+>host</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--host <TT
+>--host <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
+>host</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Specifies the host name of the machine on which the 
 	server
-	is running.  If host begins with a slash, it is used 
+	is running.  If the value begins with a slash, it is used 
 	as the directory for the Unix domain socket.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-p <TT
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
-><BR><TT
+>port</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--port <TT
+>--port <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
+>port</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specifies the Internet TCP/IP port or local Unix domain socket file 
+>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-U <TT
+>-U <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
+>username</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--username <TT
+>--username <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -508,12 +454,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-W</TT
-><BR><TT
+>-W</VAR
+><BR><VAR
 CLASS="OPTION"
->--password</TT
+>--password</VAR
 ></DT
 ><DD
 ><P
@@ -528,7 +474,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50629"
+NAME="AEN48842"
 ></A
 ><H2
 >Diagnostics</H2
@@ -539,9 +485,9 @@ NAME="AEN50629"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->VACUUM</TT
+>VACUUM</SAMP
 ></DT
 ><DD
 ><P
@@ -549,9 +495,9 @@ CLASS="COMPUTEROUTPUT"
        </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->vacuumdb: Vacuum failed.</TT
+>vacuumdb: Vacuum failed.</SAMP
 ></DT
 ><DD
 ><P
@@ -583,7 +529,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50646"
+NAME="AEN48859"
 ></A
 ><H2
 >Environment</H2
@@ -608,7 +554,7 @@ CLASS="ENVAR"
 ></DT
 ><DD
 ><P
->      Default connection parameters.
+>      Default connection parameters
      </P
 ></DD
 ></DL
@@ -617,71 +563,65 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50660"
+NAME="AEN48873"
 ></A
 ><H2
 >Examples</H2
 ><P
->    To clean the database <TT
+>    To clean the database <VAR
 CLASS="LITERAL"
->test</TT
+>test</VAR
 >:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->vacuumdb test</B
-></TT
+>vacuumdb test</KBD
 ></PRE
 ><P>
    </P
 ><P
 >    To clean and analyze for the optimizer a database named
-    <TT
+    <VAR
 CLASS="LITERAL"
->bigdb</TT
+>bigdb</VAR
 >:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->vacuumdb --analyze bigdb</B
-></TT
+>vacuumdb --analyze bigdb</KBD
 ></PRE
 ><P>
    </P
 ><P
 >    To clean a single table
-    <TT
+    <VAR
 CLASS="LITERAL"
->foo</TT
+>foo</VAR
 > in a database named
-    <TT
+    <VAR
 CLASS="LITERAL"
->xyzzy</TT
+>xyzzy</VAR
 >, and analyze a single column
-    <TT
+    <VAR
 CLASS="LITERAL"
->bar</TT
+>bar</VAR
 > of the table for the optimizer:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->vacuumdb --analyze --verbose --table 'foo(bar)' xyzzy</B
-></TT
+>vacuumdb --analyze --verbose --table 'foo(bar)' xyzzy</KBD
 ></PRE
 ><P>
    </P
@@ -689,7 +629,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50679"
+NAME="AEN48892"
 ></A
 ><H2
 >See Also</H2
@@ -715,7 +655,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="app-pgtksh.html"
+HREF="app-psql.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -743,7 +683,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pgtksh</TD
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

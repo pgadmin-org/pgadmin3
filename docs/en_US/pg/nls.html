@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Native Language Support</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Developer's Guide"
-HREF="developer.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="GiST Indexes"
-HREF="gist.html"><LINK
+TITLE="gcc Default Optimizations"
+HREF="compiler.html"><LINK
 REL="NEXT"
 TITLE="For the Programmer"
 HREF="nls-programmer.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="gist.html"
+HREF="compiler.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="NLS"
->Chapter 10. Native Language Support</A
-></H1
+></A
+>Chapter 53. Native Language Support</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,39 +90,53 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->10.1. <A
+>53.1. <A
 HREF="nls.html#NLS-TRANSLATOR"
 >For the Translator</A
 ></DT
 ><DD
 ><DL
 ><DT
->10.1.1. <A
-HREF="nls.html#AEN55867"
+>53.1.1. <A
+HREF="nls.html#AEN55650"
 >Requirements</A
 ></DT
 ><DT
->10.1.2. <A
-HREF="nls.html#AEN55877"
+>53.1.2. <A
+HREF="nls.html#AEN55660"
 >Concepts</A
 ></DT
 ><DT
->10.1.3. <A
-HREF="nls.html#AEN55895"
+>53.1.3. <A
+HREF="nls.html#AEN55678"
 >Creating and maintaining message catalogs</A
 ></DT
 ><DT
->10.1.4. <A
-HREF="nls.html#AEN55929"
+>53.1.4. <A
+HREF="nls.html#AEN55712"
 >Editing the PO files</A
 ></DT
 ></DL
 ></DD
 ><DT
->10.2. <A
+>53.2. <A
 HREF="nls-programmer.html"
 >For the Programmer</A
 ></DT
+><DD
+><DL
+><DT
+>53.2.1. <A
+HREF="nls-programmer.html#NLS-MECHANICS"
+>Mechanics</A
+></DT
+><DT
+>53.2.2. <A
+HREF="nls-programmer.html#NLS-GUIDELINES"
+>Message-writing guidelines</A
+></DT
+></DL
+></DD
 ></DL
 ></DIV
 ><DIV
@@ -131,7 +145,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="NLS-TRANSLATOR"
->10.1. For the Translator</A
+>53.1. For the Translator</A
 ></H1
 ><P
 >   <SPAN
@@ -154,17 +168,17 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN55867"
->10.1.1. Requirements</A
+NAME="AEN55650"
+>53.1.1. Requirements</A
 ></H2
 ><P
 >    We won't judge your language skills -- this section is about
     software tools.  Theoretically, you only need a text editor.  But
     this is only in the unlikely event that you do not want to try out
     your translated messages.  When you configure your source tree, be
-    sure to use the <TT
+    sure to use the <VAR
 CLASS="OPTION"
->--enable-nls</TT
+>--enable-nls</VAR
 > option.  This will
     also check for the libintl library and the
     <TT
@@ -204,8 +218,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN55877"
->10.1.2. Concepts</A
+NAME="AEN55660"
+>53.1.2. Concepts</A
 ></H2
 ><P
 >    The pairs of original (English) messages and their (possibly)
@@ -292,20 +306,20 @@ CLASS="PROGRAMLISTING"
     source, but he can if there is doubt about the correct
     translation.  The #, comments contain flags that describe the
     message in some way.  There are currently two flags:
-    <TT
+    <VAR
 CLASS="LITERAL"
->fuzzy</TT
+>fuzzy</VAR
 > is set if the message has possibly been
     outdated because of changes in the program source.  The translator
     can then verify this and possibly remove the fuzzy flag.  Note
     that fuzzy messages are not made available to the end user.  The
-    other flag is <TT
+    other flag is <VAR
 CLASS="LITERAL"
->c-format</TT
+>c-format</VAR
 >, which indicates that
-    the message is a <TT
+    the message is a <CODE
 CLASS="FUNCTION"
->printf</TT
+>printf</CODE
 >-style format
     template.  This means that the translation should also be a format
     string with the same number and type of placeholders.  There are
@@ -317,8 +331,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN55895"
->10.1.3. Creating and maintaining message catalogs</A
+NAME="AEN55678"
+>53.1.3. Creating and maintaining message catalogs</A
 ></H2
 ><P
 >    OK, so how does one create a <SPAN
@@ -341,18 +355,14 @@ CLASS="FILENAME"
     someone has already done some translation work.  The files are
     named <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->language</I
-></TT
+>language</VAR
 >.po</TT
 >,
-    where <TT
+    where <VAR
 CLASS="REPLACEABLE"
-><I
->language</I
-></TT
+>language</VAR
 > is the <A
 HREF="http://lcweb.loc.gov/standards/iso639-2/englangn.html"
 TARGET="_top"
@@ -367,23 +377,17 @@ CLASS="FILENAME"
     may also be named
     <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->language</I
-></TT
->_<TT
+>language</VAR
+>_<VAR
 CLASS="REPLACEABLE"
-><I
->region</I
-></TT
+>region</VAR
 >.po</TT
 >
-    where <TT
+    where <VAR
 CLASS="REPLACEABLE"
-><I
->region</I
-></TT
+>region</VAR
 > is the <A
 HREF="http://www.din.de/gremien/nas/nabd/iso3166ma/codlstp1/en_listp1.html"
 TARGET="_top"
@@ -407,11 +411,9 @@ CLASS="PROGRAMLISTING"
     This will create a file
     <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->progname</I
-></TT
+>progname</VAR
 >.pot</TT
 >.
     (<TT
@@ -421,9 +423,9 @@ CLASS="FILENAME"
     are <SPAN
 CLASS="QUOTE"
 >"in production"</SPAN
->. The <TT
+>. The <VAR
 CLASS="LITERAL"
->T</TT
+>T</VAR
 > stands for
     <SPAN
 CLASS="QUOTE"
@@ -432,11 +434,9 @@ CLASS="QUOTE"
     Copy this file to
     <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->language</I
-></TT
+>language</VAR
 >.po</TT
 > and
     edit it.  To make it known that the new language is available,
@@ -478,8 +478,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN55929"
->10.1.4. Editing the PO files</A
+NAME="AEN55712"
+>53.1.4. Editing the PO files</A
 ></H2
 ><P
 >    The PO files can be edited with a regular text editor.  The
@@ -513,32 +513,33 @@ NAME="AEN55929"
 ></LI
 ><LI
 ><P
->       If the original is a printf format string, the translation also
-       needs to be.  The translation also needs to have the same
+>       If the original is a <CODE
+CLASS="FUNCTION"
+>printf</CODE
+> format string, the translation
+       also needs to be.  The translation also needs to have the same
        format specifiers in the same order.  Sometimes the natural
        rules of the language make this impossible or at least awkward.
-       In this case you can use this format:
+       In that case you can modify the format specifiers like this:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >msgstr "Die Datei %2$s hat %1$u Zeichen."</PRE
 ><P>
        Then the first placeholder will actually use the second
        argument from the list.  The
-       <TT
+       <VAR
 CLASS="LITERAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->digits</I
-></TT
->$</TT
+>digits</VAR
+>$</VAR
 > needs to
-       follow the % and come before any other format manipulators.
-       (This feature really exists in the <TT
+       follow the % immediately, before any other format manipulators.
+       (This feature really exists in the <CODE
 CLASS="FUNCTION"
->printf</TT
+>printf</CODE
 >
-       family of functions.  You may not have heard of it because
+       family of functions.  You may not have heard of it before because
        there is little use for it outside of message
        internationalization.)
       </P
@@ -557,13 +558,17 @@ CLASS="FUNCTION"
 ><LI
 ><P
 >       Maintain the style and tone of the original string.
-       Specifically, messages that are not sentences (<TT
+       Specifically, messages that are not sentences (<VAR
 CLASS="LITERAL"
 >cannot
-       open file %s</TT
+       open file %s</VAR
 >) should probably not start with a
        capital letter (if your language distinguishes letter case) or
        end with a period (if your language uses punctuation marks).
+       It may help to read <A
+HREF="error-style-guide.html"
+>Section 51.3</A
+>.
       </P
 ></LI
 ><LI
@@ -596,7 +601,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="gist.html"
+HREF="compiler.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -624,13 +629,16 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->GiST Indexes</TD
+><SPAN
+CLASS="APPLICATION"
+>gcc</SPAN
+> Default Optimizations</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="developer.html"
+HREF="internals.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

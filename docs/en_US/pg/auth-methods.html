@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Authentication methods</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Authentication"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. Client Authentication</TD
+>Chapter 19. Client Authentication</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="AUTH-METHODS"
->6.2. Authentication methods</A
+>19.2. Authentication methods</A
 ></H1
 ><P
 >   The following describes the authentication methods in more detail.
@@ -92,12 +92,12 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="AUTH-TRUST"
->6.2.1. Trust authentication</A
+>19.2.1. Trust authentication</A
 ></H2
 ><P
->    When <TT
+>    When <VAR
 CLASS="LITERAL"
->trust</TT
+>trust</VAR
 > authentication is specified,
     <SPAN
 CLASS="PRODUCTNAME"
@@ -105,83 +105,81 @@ CLASS="PRODUCTNAME"
 > assumes that anyone who can
     connect to the server is authorized to access the database as
     whatever database user he specifies (including the database superuser).
-    This method should only be used when there is adequate system-level
-    protection on connections to the postmaster port.
+    This method should only be used when there is adequate operating system-level
+    protection on connections to the server.
    </P
 ><P
->    <TT
+>    <VAR
 CLASS="LITERAL"
->trust</TT
-> authentication is appropriate and very convenient
-    for local connections on a single-user workstation.  It is usually
-    <SPAN
+>trust</VAR
+> authentication is appropriate and very
+    convenient for local connections on a single-user workstation.  It
+    is usually <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
 >not</I
 ></SPAN
-> appropriate by itself on a multiuser machine.
-    However, you may be able to use <TT
+> appropriate by itself on a multiuser
+    machine.  However, you may be able to use <VAR
 CLASS="LITERAL"
->trust</TT
-> even on a multiuser
-    machine, if you restrict access to the postmaster's socket file using
-    file-system permissions.  To do this, set the parameter
-    <TT
+>trust</VAR
+> even
+    on a multiuser machine, if you restrict access to the server's
+    Unix-domain socket file using file-system permissions.  To do this, set the
+    <VAR
 CLASS="VARNAME"
->unix_socket_permissions</TT
+>unix_socket_permissions</VAR
 > (and possibly
-    <TT
+    <VAR
 CLASS="VARNAME"
->unix_socket_group</TT
->) in <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->,
-    as described in <A
-HREF="runtime-config.html#RUNTIME-CONFIG-GENERAL"
->Section 3.4.4</A
->.  Or you could
-    set <TT
+>unix_socket_group</VAR
+>) configuration parameters as
+    described in <A
+HREF="runtime-config.html#RUNTIME-CONFIG-CONNECTION"
+>Section 16.4.1</A
+>.  Or you
+    could set the <VAR
 CLASS="VARNAME"
->unix_socket_directory</TT
-> to place the socket file
-    in a suitably restricted directory.
+>unix_socket_directory</VAR
+>
+    configuration parameter to place the socket file in a suitably
+    restricted directory.
    </P
 ><P
 >    Setting file-system permissions only helps for Unix-socket connections.
-    Local TCP connections are not restricted by it; therefore, if you want
-    to use permissions for local security, remove the <TT
+    Local TCP/IP connections are not restricted by it; therefore, if you want
+    to use file-system permissions for local security, remove the <VAR
 CLASS="LITERAL"
 >host ...
-    127.0.0.1 ...</TT
+    127.0.0.1 ...</VAR
 > line from <TT
 CLASS="FILENAME"
 >pg_hba.conf</TT
 >, or change it to a
-    non-<TT
+    non-<VAR
 CLASS="LITERAL"
->trust</TT
+>trust</VAR
 > authentication method.
    </P
 ><P
->    <TT
+>    <VAR
 CLASS="LITERAL"
->trust</TT
-> authentication is only suitable for TCP connections
+>trust</VAR
+> authentication is only suitable for TCP/IP connections
     if you trust every user on every machine that is allowed to connect
     to the server by the <TT
 CLASS="FILENAME"
 >pg_hba.conf</TT
 > lines that specify
-    <TT
+    <VAR
 CLASS="LITERAL"
->trust</TT
->.  It is seldom reasonable to use <TT
+>trust</VAR
+>.  It is seldom reasonable to use <VAR
 CLASS="LITERAL"
->trust</TT
+>trust</VAR
 >
-    for any TCP connections other than those from <SPAN
+    for any TCP/IP connections other than those from <SPAN
 CLASS="SYSTEMITEM"
 >localhost</SPAN
 > (127.0.0.1).
@@ -193,45 +191,45 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="AUTH-PASSWORD"
->6.2.2. Password authentication</A
+>19.2.2. Password authentication</A
 ></H2
 ><A
-NAME="AEN21472"
+NAME="AEN17190"
 ></A
 ><A
-NAME="AEN21474"
+NAME="AEN17192"
 ></A
 ><A
-NAME="AEN21476"
+NAME="AEN17194"
 ></A
 ><P
->    Password-based authentication methods include <TT
+>    The password-based authentication methods are <VAR
 CLASS="LITERAL"
->md5</TT
+>md5</VAR
 >,
-    <TT
+    <VAR
 CLASS="LITERAL"
->crypt</TT
->, and <TT
+>crypt</VAR
+>, and <VAR
 CLASS="LITERAL"
->password</TT
+>password</VAR
 >. These methods operate
     similarly except for the way that the password is sent across the
     connection. If you are at all concerned about password
     <SPAN
 CLASS="QUOTE"
 >"sniffing"</SPAN
-> attacks then <TT
+> attacks then <VAR
 CLASS="LITERAL"
->md5</TT
+>md5</VAR
 > is preferred, with
-    <TT
+    <VAR
 CLASS="LITERAL"
->crypt</TT
+>crypt</VAR
 > a second choice if you must support pre-7.2
-    clients. Plain <TT
+    clients. Plain <VAR
 CLASS="LITERAL"
->password</TT
+>password</VAR
 > should especially be avoided for
     connections over the open Internet (unless you use SSL, SSH, or
     other communications security wrappers around the connection).
@@ -242,11 +240,11 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > database passwords are
     separate from operating system user passwords. The password for
-    each database user is stored in the <TT
+    each database user is stored in the <VAR
 CLASS="LITERAL"
->pg_shadow</TT
+>pg_shadow</VAR
 > system
-    catalog table. Passwords can be managed with the query language
+    catalog table. Passwords can be managed with the SQL
     commands <TT
 CLASS="COMMAND"
 >CREATE USER</TT
@@ -254,35 +252,25 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >ALTER
     USER</TT
->, e.g., <TT
+>, e.g., <KBD
 CLASS="USERINPUT"
-><B
 >CREATE USER foo WITH PASSWORD
-    'secret';</B
-></TT
+    'secret';</KBD
 >. By default, that is, if no password has
     been set up, the stored password is null and
     password authentication will always fail for that user.
    </P
 ><P
->    To restrict the set of users that are allowed to connect to certain
-    databases, list the users separated by commas, or in a separate
-    file. The file should contain user names separated by commas or one
-    user name per line, and be in the same directory as
-    <TT
+>    To restrict the set of users that are allowed to connect to
+    certain databases, list the users in the <VAR
+CLASS="REPLACEABLE"
+>user</VAR
+>
+    column of <TT
 CLASS="FILENAME"
 >pg_hba.conf</TT
->. Mention the (base) name of the file
-    preceded with <TT
-CLASS="LITERAL"
->@</TT
-> in the user column. The
-    database column can similarly accept a list of values or
-    a file name. You can also specify group names by preceding the group
-    name with <TT
-CLASS="LITERAL"
->+</TT
->.
+>, as explained in the
+    previous section.
    </P
 ></DIV
 ><DIV
@@ -291,10 +279,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="KERBEROS-AUTH"
->6.2.3. Kerberos authentication</A
+>19.2.3. Kerberos authentication</A
 ></H2
 ><A
-NAME="AEN21498"
+NAME="AEN17215"
 ></A
 ><P
 >    <SPAN
@@ -312,9 +300,9 @@ CLASS="PRODUCTNAME"
 HREF="http://www.nrl.navy.mil/CCS/people/kenh/kerberos-faq.html"
 TARGET="_top"
 >Kerberos
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->FAQ</SPAN
+>FAQ</ACRONYM
 ></A
 > or <A
 HREF="ftp://athena-dist.mit.edu"
@@ -334,7 +322,7 @@ CLASS="PRODUCTNAME"
 >, support for it must be
     enabled at build time.  See <A
 HREF="installation.html"
->Chapter 1</A
+>Chapter 14</A
 > for more
     information.  Both Kerberos 4 and 5 are supported, but only one
     version can be supported in any one build.
@@ -345,32 +333,35 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > operates like a normal Kerberos service.
     The name of the service principal is
-    <TT
-CLASS="REPLACEABLE"
-><I
->servicename/hostname@realm</I
-></TT
->, where
-    <TT
-CLASS="REPLACEABLE"
-><I
->servicename</I
-></TT
-> is <TT
+    <VAR
 CLASS="LITERAL"
->postgres</TT
+><VAR
+CLASS="REPLACEABLE"
+>servicename</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>hostname</VAR
+>@<VAR
+CLASS="REPLACEABLE"
+>realm</VAR
+></VAR
+>, where
+    <VAR
+CLASS="REPLACEABLE"
+>servicename</VAR
+> is <VAR
+CLASS="LITERAL"
+>postgres</VAR
 > (unless a
     different service name was selected at configure time with
-    <TT
+    <VAR
 CLASS="LITERAL"
->./configure --with-krb-srvnam=whatever</TT
+>./configure --with-krb-srvnam=whatever</VAR
 >).
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->hostname</I
-></TT
-> is the fully qualified domain name of the
+>hostname</VAR
+> is the fully qualified host name of the
     server machine. The service principal's realm is the preferred realm
     of the server machine.
    </P
@@ -380,11 +371,9 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user
     name as their first component, for example
-    <TT
-CLASS="REPLACEABLE"
-><I
->pgusername/otherstuff@realm</I
-></TT
+    <VAR
+CLASS="LITERAL"
+>pgusername/otherstuff@realm</VAR
 >. At present the realm of
     the client is not checked by <SPAN
 CLASS="PRODUCTNAME"
@@ -399,17 +388,17 @@ CLASS="PRODUCTNAME"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server
-    account (see <A
+    account.  (See also <A
 HREF="runtime.html#POSTGRES-USER"
->Section 3.1</A
+>Section 16.1</A
 >). The location of the
-    key file is specified with the <TT
+    key file is specified with the <VAR
 CLASS="VARNAME"
->krb_server_keyfile</TT
-> run
-    time configuration parameter. (See also <A
+>krb_server_keyfile</VAR
+> run-time
+    configuration parameter. (See also <A
 HREF="runtime-config.html"
->Section 3.4</A
+>Section 16.4</A
 >.) The default is <TT
 CLASS="FILENAME"
 >/etc/srvtab</TT
@@ -419,9 +408,9 @@ CLASS="FILENAME"
 CLASS="FILENAME"
 >FILE:/usr/local/pgsql/etc/krb5.keytab</TT
 > (or whichever
-    directory was specified as <TT
+    directory was specified as <VAR
 CLASS="VARNAME"
->sysconfdir</TT
+>sysconfdir</VAR
 > at build time)
     with Kerberos 5.
    </P
@@ -429,23 +418,19 @@ CLASS="VARNAME"
 >    To generate the keytab file, use for example (with version 5)
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->kadmin% </TT
-><TT
+>kadmin% </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->ank -randkey postgres/server.my.domain.org</B
-></TT
+>ank -randkey postgres/server.my.domain.org</KBD
 >
-<TT
+<SAMP
 CLASS="PROMPT"
->kadmin% </TT
-><TT
+>kadmin% </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->ktadd -k krb5.keytab postgres/server.my.domain.org</B
-></TT
+>ktadd -k krb5.keytab postgres/server.my.domain.org</KBD
 ></PRE
 ><P>
     Read the <SPAN
@@ -456,26 +441,31 @@ CLASS="PRODUCTNAME"
 ><P
 >    When connecting to the database make sure you have a ticket for a
     principal matching the requested database user name. An example: For
-    database user name <TT
+    database user name <VAR
 CLASS="LITERAL"
->fred</TT
+>fred</VAR
 >, both principal
-    <TT
+    <VAR
 CLASS="LITERAL"
->fred@EXAMPLE.COM</TT
+>fred@EXAMPLE.COM</VAR
 > and
-    <TT
+    <VAR
 CLASS="LITERAL"
->fred/users.example.com@EXAMPLE.COM</TT
+>fred/users.example.com@EXAMPLE.COM</VAR
 > can be used to
     authenticate to the database server.
    </P
 ><P
 >    If you use <SPAN
 CLASS="APPLICATION"
->mod_auth_krb</SPAN
-> and
-    <SPAN
+>mod_auth_kerb</SPAN
+> from
+    <A
+HREF="http://modauthkerb.sf.net"
+TARGET="_top"
+>http://modauthkerb.sf.net</A
+>
+    and <SPAN
 CLASS="APPLICATION"
 >mod_perl</SPAN
 > on your
@@ -483,9 +473,9 @@ CLASS="APPLICATION"
 CLASS="PRODUCTNAME"
 >Apache</SPAN
 > web server, you can use
-    <TT
+    <VAR
 CLASS="LITERAL"
->AuthType KerberosV5SaveCredentials</TT
+>AuthType KerberosV5SaveCredentials</VAR
 > with a
     <SPAN
 CLASS="APPLICATION"
@@ -500,10 +490,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="AUTH-IDENT"
->6.2.4. Ident-based authentication</A
+>19.2.4. Ident-based authentication</A
 ></H2
 ><A
-NAME="AEN21548"
+NAME="AEN17269"
 ></A
 ><P
 >    The ident authentication method works by inspecting the client's
@@ -518,8 +508,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN21551"
->6.2.4.1. Ident Authentication over TCP/IP</A
+NAME="AEN17272"
+>19.2.4.1. Ident Authentication over TCP/IP</A
 ></H3
 ><P
 >    The <SPAN
@@ -535,33 +525,25 @@ CLASS="CITETITLE"
     is to answer questions like <SPAN
 CLASS="QUOTE"
 >"What user initiated the
-    connection that goes out of your port <TT
+    connection that goes out of your port <VAR
 CLASS="REPLACEABLE"
-><I
->X</I
-></TT
+>X</VAR
 >
-    and connects to my port <TT
+    and connects to my port <VAR
 CLASS="REPLACEABLE"
-><I
->Y</I
-></TT
+>Y</VAR
 >?"</SPAN
 >.
     Since <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> knows both <TT
+> knows both <VAR
 CLASS="REPLACEABLE"
-><I
->X</I
-></TT
+>X</VAR
 > and
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->Y</I
-></TT
+>Y</VAR
 > when a physical connection is established, it
     can interrogate the ident server on the host of the connecting
     client and could theoretically determine the operating system user
@@ -578,7 +560,7 @@ CLASS="REPLACEABLE"
     trust the machine running the ident server.
     Heed the warning:
     <A
-NAME="AEN21563"
+NAME="AEN17284"
 ></A
 ><TABLE
 BORDER="0"
@@ -592,7 +574,6 @@ WIDTH="10%"
 VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-WIDTH="80%"
 VALIGN="TOP"
 ><P
 >      The Identification Protocol is not intended as an authorization
@@ -626,8 +607,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN21566"
->6.2.4.2. Ident Authentication over Local Sockets</A
+NAME="AEN17287"
+>19.2.4.2. Ident Authentication over Local Sockets</A
 ></H3
 ><P
 >    On systems supporting <TT
@@ -644,11 +625,15 @@ CLASS="SYSTEMITEM"
     <SPAN
 CLASS="SYSTEMITEM"
 >NetBSD</SPAN
->, and <SPAN
+>, <SPAN
+CLASS="SYSTEMITEM"
+>OpenBSD</SPAN
+>, 
+    and <SPAN
 CLASS="SYSTEMITEM"
 >BSD/OS</SPAN
->), ident authentication can also be applied
-    to local connections. In this case, no security risk is added by
+>), ident authentication can also 
+    be applied to local connections. In this case, no security risk is added by
     using ident authentication; indeed it is a preferable choice for
     local connections on such systems.
    </P
@@ -673,8 +658,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN21578"
->6.2.4.3. Ident Maps</A
+NAME="AEN17300"
+>19.2.4.3. Ident Maps</A
 ></H3
 ><P
 >    When using ident-based authentication, after having determined the
@@ -685,103 +670,93 @@ CLASS="PRODUCTNAME"
 > checks whether that user is
     allowed to connect as the database user he is requesting to connect
     as. This is controlled by the ident map argument that follows the
-    <TT
+    <VAR
 CLASS="LITERAL"
->ident</TT
-> keyword in the <TT
+>ident</VAR
+> key word in the <TT
 CLASS="FILENAME"
 >pg_hba.conf</TT
 >
-    file. There is a predefined ident map <TT
+    file. There is a predefined ident map <VAR
 CLASS="LITERAL"
->sameuser</TT
+>sameuser</VAR
 >,
     which allows any operating system user to connect as the database
     user of the same name (if the latter exists). Other maps must be
     created manually.
    </P
 ><P
->    <A
-NAME="AEN21586"
-></A
-> Ident maps
-    other than <TT
+>    Ident maps
+    other than <VAR
 CLASS="LITERAL"
->sameuser</TT
+>sameuser</VAR
 > are defined in the file
     <TT
 CLASS="FILENAME"
 >pg_ident.conf</TT
-> in the data directory, which
-    contains lines of the general form:
+><A
+NAME="AEN17310"
+></A
+>
+    in the data directory, which contains lines of the general form:
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->map-name</I
-></TT
-> <TT
+>map-name</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->ident-username</I
-></TT
-> <TT
+>ident-username</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->database-username</I
-></TT
+>database-username</VAR
 ></PRE
 ><P>
     Comments and whitespace are handled in the usual way. The
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->map-name</I
-></TT
+>map-name</VAR
 > is an arbitrary name that will be used to
     refer to this mapping in <TT
 CLASS="FILENAME"
 >pg_hba.conf</TT
 >. The other
     two fields specify which operating system user is allowed to connect
-    as which database user. The same <TT
+    as which database user. The same <VAR
 CLASS="REPLACEABLE"
-><I
->map-name</I
-></TT
+>map-name</VAR
 > can be
     used repeatedly to specify more user-mappings within a single map.
     There is no restriction regarding how many database users a given
     operating system user may correspond to and vice versa.
    </P
 ><P
->    <A
-NAME="AEN21598"
-></A
->
-   The <TT
+>   The <TT
 CLASS="FILENAME"
 >pg_ident.conf</TT
 > file is read on start-up and
-   when the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
-> receives a
+   when the main server process (<TT
+CLASS="COMMAND"
+>postmaster</TT
+>) receives a
    <SPAN
 CLASS="SYSTEMITEM"
 >SIGHUP</SPAN
-> signal. If you edit the file on an
-   active system, you will need to signal the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+><A
+NAME="AEN17323"
+></A
 >
-   (using <TT
+   signal. If you edit the file on an
+   active system, you will need to signal the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
+   (using <VAR
 CLASS="LITERAL"
->pg_ctl reload</TT
-> or <TT
+>pg_ctl reload</VAR
+> or <VAR
 CLASS="LITERAL"
->kill -HUP</TT
+>kill -HUP</VAR
 >) to make it
    re-read the file.
   </P
@@ -795,55 +770,55 @@ CLASS="FILENAME"
 >pg_hba.conf</TT
 > file in <A
 HREF="client-authentication.html#EXAMPLE-PG-HBA.CONF"
->Example 6-1</A
+>Example 19-1</A
 > is shown in <A
 HREF="auth-methods.html#EXAMPLE-PG-IDENT.CONF"
->Example 6-2</A
+>Example 19-2</A
 >. In this example setup, anyone
     logged in to a machine on the 192.168 network that does not have the
-    Unix user name <SPAN
-CLASS="SYSTEMITEM"
->bryanh</SPAN
->, <SPAN
-CLASS="SYSTEMITEM"
->ann</SPAN
+    Unix user name <VAR
+CLASS="LITERAL"
+>bryanh</VAR
+>, <VAR
+CLASS="LITERAL"
+>ann</VAR
 >, or
-    <SPAN
-CLASS="SYSTEMITEM"
->robert</SPAN
+    <VAR
+CLASS="LITERAL"
+>robert</VAR
 > would not be granted access. Unix user
-    <SPAN
-CLASS="SYSTEMITEM"
->robert</SPAN
+    <VAR
+CLASS="LITERAL"
+>robert</VAR
 > would only be allowed access when he tries to
     connect as <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> user <SPAN
-CLASS="SYSTEMITEM"
->bob</SPAN
+> user <VAR
+CLASS="LITERAL"
+>bob</VAR
 >, not
-    as <SPAN
-CLASS="SYSTEMITEM"
->robert</SPAN
-> or anyone else. <SPAN
-CLASS="SYSTEMITEM"
->ann</SPAN
+    as <VAR
+CLASS="LITERAL"
+>robert</VAR
+> or anyone else. <VAR
+CLASS="LITERAL"
+>ann</VAR
 > would
-    only be allowed to connect as <SPAN
-CLASS="SYSTEMITEM"
->ann</SPAN
+    only be allowed to connect as <VAR
+CLASS="LITERAL"
+>ann</VAR
 >. User
-    <SPAN
-CLASS="SYSTEMITEM"
->bryanh</SPAN
+    <VAR
+CLASS="LITERAL"
+>bryanh</VAR
 > would be allowed to connect as either
-    <SPAN
-CLASS="SYSTEMITEM"
->bryanh</SPAN
-> himself or as <SPAN
-CLASS="SYSTEMITEM"
->guest1</SPAN
+    <VAR
+CLASS="LITERAL"
+>bryanh</VAR
+> himself or as <VAR
+CLASS="LITERAL"
+>guest1</VAR
 >.
    </P
 ><DIV
@@ -853,7 +828,7 @@ NAME="EXAMPLE-PG-IDENT.CONF"
 ></A
 ><P
 ><B
->Example 6-2. An example <TT
+>Example 19-2. An example <TT
 CLASS="FILENAME"
 >pg_ident.conf</TT
 > file</B
@@ -877,24 +852,27 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="AUTH-PAM"
->6.2.5. PAM Authentication</A
+>19.2.5. PAM Authentication</A
 ></H2
 ><P
->    This authentication type operates similarly to
-    <I
-CLASS="FIRSTTERM"
->password</I
+>    This authentication method operates similarly to
+    <VAR
+CLASS="LITERAL"
+>password</VAR
 > except that it uses PAM (Pluggable
     Authentication Modules) as the authentication mechanism. The
-    default PAM service name is <TT
+    default PAM service name is <VAR
 CLASS="LITERAL"
->postgresql</TT
+>postgresql</VAR
 >. You can
-    optionally supply you own service name after the <TT
+    optionally supply you own service name after the <VAR
 CLASS="LITERAL"
->pam</TT
+>pam</VAR
 >
-    keyword in the file. For more information about PAM, please read
+    key word in the file <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+>. For more information about PAM, please read
     the <A
 HREF="http://www.kernel.org/pub/linux/libs/pam/"
 TARGET="_top"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >createlang</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-CREATELANG"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >createlang</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN46902"
+NAME="AEN45109"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN46906"
+NAME="AEN45113"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,40 +105,30 @@ NAME="AEN46906"
 ><TT
 CLASS="COMMAND"
 >createlang</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->connection-options</I
-></TT
->...]  <TT
+>connection-option</VAR
+>...]  <VAR
 CLASS="REPLACEABLE"
-><I
->langname</I
-></TT
->  [<TT
+>langname</VAR
+>  [<VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 >]<BR><TT
 CLASS="COMMAND"
 >createlang</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->connection-options</I
-></TT
->...]  --list | -l   <TT
+>connection-option</VAR
+>...]  --list | -l   <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 > </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46924"
+NAME="AEN45131"
 ></A
 ><H2
 >Description</H2
@@ -163,9 +153,9 @@ CLASS="PRODUCTNAME"
   </P
 ><P
 >   Although backend programming languages can be added directly using
-   several <SPAN
+   several <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > commands, it is recommended to use
    <SPAN
 CLASS="APPLICATION"
@@ -184,7 +174,7 @@ HREF="sql-createlanguage.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46935"
+NAME="AEN45142"
 ></A
 ><H2
 >Options</H2
@@ -200,11 +190,9 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->langname</I
-></TT
+>langname</VAR
 ></DT
 ><DD
 ><P
@@ -213,28 +201,24 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
 >[<SPAN
 CLASS="OPTIONAL"
 >-d</SPAN
->] <TT
+>] <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
-><BR><TT
+>dbname</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
 >[<SPAN
 CLASS="OPTIONAL"
 >--dbname</SPAN
->] <TT
+>] <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
+>dbname</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -244,41 +228,38 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-e</TT
-><BR><TT
+>-e</VAR
+><BR><VAR
 CLASS="OPTION"
->--echo</TT
+>--echo</VAR
 ></DT
 ><DD
 ><P
->        Displays SQL commands as they are executed.
+>        Display SQL commands as they are executed.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-l</TT
-><BR><TT
+>-l</VAR
+><BR><VAR
 CLASS="OPTION"
->--list</TT
+>--list</VAR
 ></DT
 ><DD
 ><P
->        Shows a list of already installed languages in the target database
-        (which must be specified).
+>        Show a list of already installed languages in the target database.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-L <TT
+>-L <VAR
 CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
-></TT
+>directory</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -304,86 +285,74 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-h <TT
+>-h <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-><BR><TT
+>host</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--host <TT
+>--host <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
+>host</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Specifies the host name of the machine on which the 
 	server
-	is running.  If host begins with a slash, it is used 
+	is running.  If the value begins with a slash, it is used 
 	as the directory for the Unix domain socket.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-p <TT
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
-><BR><TT
+>port</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--port <TT
+>--port <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
+>port</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specifies the Internet TCP/IP port or local Unix domain socket file 
+>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-U <TT
+>-U <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
+>username</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--username <TT
+>--username <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
->        User name to connect as
+>        User name to connect as.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-W</TT
-><BR><TT
+>-W</VAR
+><BR><VAR
 CLASS="OPTION"
->--password</TT
+>--password</VAR
 ></DT
 ><DD
 ><P
@@ -398,7 +367,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47013"
+NAME="AEN45220"
 ></A
 ><H2
 >Environment</H2
@@ -423,7 +392,7 @@ CLASS="ENVAR"
 ></DT
 ><DD
 ><P
->      Default connection parameters.
+>      Default connection parameters
      </P
 ></DD
 ></DL
@@ -432,7 +401,7 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47027"
+NAME="AEN45234"
 ></A
 ><H2
 >Diagnostics</H2
@@ -441,28 +410,21 @@ NAME="AEN47027"
     <SPAN
 CLASS="APPLICATION"
 >createlang</SPAN
-> with the <TT
+> with the <VAR
 CLASS="OPTION"
->--echo</TT
+>--echo</VAR
 >
-    option and see under the respective <SPAN
+    option and see under the respective <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > command
-    for details. Check also under <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
->
-    for more possibilities.
+    for details.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47034"
+NAME="AEN45240"
 ></A
 ><H2
 >Notes</H2
@@ -475,45 +437,31 @@ CLASS="APPLICATION"
 ></A
 > to remove a language.
   </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->createlang</SPAN
-> is a shell script that invokes
-   <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> several times.  If you have things
-   arranged so that a password prompt is required to connect, you will be
-   prompted for a password several times.
-  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47041"
+NAME="AEN45244"
 ></A
 ><H2
 >Examples</H2
 ><P
->    To install <TT
+>    To install the language <VAR
 CLASS="LITERAL"
->pltcl</TT
+>pltcl</VAR
 > into the database
-    <TT
+    <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 >:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->createlang pltcl template1</B
-></TT
+>createlang pltcl template1</KBD
 ></PRE
 ><P>
    </P
@@ -521,7 +469,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47049"
+NAME="AEN45252"
 ></A
 ><H2
 >See Also</H2

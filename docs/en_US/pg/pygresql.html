@@ -1,19 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >PyGreSQL - Python Interface</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Interfaces"
-HREF="programmer-client.html"><LINK
+HREF="client-interfaces.html"><LINK
 REL="PREVIOUS"
 TITLE="Further Reading"
 HREF="jdbc-reading.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,14 +80,14 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="PYGRESQL"
->Chapter 6. <SPAN
+></A
+>Chapter 32. <SPAN
 CLASS="APPLICATION"
 >PyGreSQL</SPAN
 > - <SPAN
 CLASS="APPLICATION"
 >Python</SPAN
-> Interface</A
-></H1
+> Interface</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -96,19 +96,19 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->6.1. <A
+>32.1. <A
 HREF="pygresql.html#PYGRESQL-PG"
->The <TT
+>The <VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 > Module</A
 ></DT
 ><DT
->6.2. <A
+>32.2. <A
 HREF="pygresql-pg-functions.html"
-><TT
+><VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 > Module Functions</A
 ></DT
 ><DD
@@ -171,11 +171,11 @@ HREF="pygresql-set-defbase.html"
 ></DL
 ></DD
 ><DT
->6.3. <A
+>32.3. <A
 HREF="pygresql-pg-pgobject.html"
->Connection Object: <TT
+>Connection Object: <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
 ></A
 ></DT
 ><DD
@@ -246,11 +246,11 @@ CLASS="PRODUCTNAME"
 ></DL
 ></DD
 ><DT
->6.4. <A
+>32.4. <A
 HREF="pygresql-pg-db.html"
->Database Wrapper Class: <TT
+>Database Wrapper Class: <CODE
 CLASS="CLASSNAME"
->DB</TT
+>DB</CODE
 ></A
 ></DT
 ><DD
@@ -303,11 +303,11 @@ HREF="pygresql-db-delete.html"
 ></DL
 ></DD
 ><DT
->6.5. <A
+>32.5. <A
 HREF="pygresql-pg-pgqueryobject.html"
->Query Result Object: <TT
+>Query Result Object: <CODE
 CLASS="CLASSNAME"
->pgqueryobject</TT
+>pgqueryobject</CODE
 ></A
 ></DT
 ><DD
@@ -345,11 +345,11 @@ HREF="pygresql-pgqueryobject-ntuples.html"
 ></DL
 ></DD
 ><DT
->6.6. <A
+>32.6. <A
 HREF="pygresql-pg-pglarge.html"
->Large Object: <TT
+>Large Object: <CODE
 CLASS="CLASSNAME"
->pglarge</TT
+>pglarge</CODE
 ></A
 ></DT
 ><DD
@@ -410,20 +410,20 @@ CLASS="NOTE"
 ><P
 ><B
 >Author: </B
->   Written by D'Arcy J.M. Cain (<TT
+>   Written by D'Arcy J.M. Cain (<CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:darcy@druid.net"
 >darcy@druid.net</A
->&#62;</TT
+>&#62;</CODE
 >).
    Based heavily on code written by Pascal Andre
-   <TT
+   <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:andre@chimay.via.ecp.fr"
 >andre@chimay.via.ecp.fr</A
->&#62;</TT
+>&#62;</CODE
 >.  Copyright &copy; 1995,
    Pascal Andre.  Further modifications Copyright &copy; 1997-2000 by
    D'Arcy J.M. Cain.
@@ -432,65 +432,63 @@ HREF="mailto:andre@chimay.via.ecp.fr"
 ></DIV
 ><P
 >  You may either choose to use the old mature interface provided by
-  the <TT
+  the <VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 > module or otherwise the newer
-  <TT
+  <VAR
 CLASS="LITERAL"
->pgdb</TT
+>pgdb</VAR
 > interface compliant with the <A
 HREF="http://www.python.org/topics/database/DatabaseAPI-2.0.html"
 TARGET="_top"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->DB-API 2.0</SPAN
+>DB-API 2.0</ACRONYM
 ></A
 > specification developed by
   the <SPAN
 CLASS="APPLICATION"
 >Python</SPAN
-> <SPAN
+> <ACRONYM
 CLASS="ACRONYM"
->DB-SIG</SPAN
+>DB-SIG</ACRONYM
 >.
  </P
 ><P
->  Here we describe only the older <TT
+>  Here we describe only the older <VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 >
-  <SPAN
+  <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 >. As long as
   <SPAN
 CLASS="APPLICATION"
 >PyGreSQL</SPAN
 > does not contain a description
-  of the <SPAN
+  of the <ACRONYM
 CLASS="ACRONYM"
->DB-API</SPAN
+>DB-API</ACRONYM
 > you should read about the
-  <SPAN
+  <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > at <A
 HREF="http://www.python.org/topics/database/DatabaseAPI-2.0.html"
 TARGET="_top"
 >http://www.python.org/topics/database/DatabaseAPI-2.0.html</A
 >.
- </P
-><P
->  A tutorial-like introduction to the <SPAN
+  A tutorial-like introduction to the <ACRONYM
 CLASS="ACRONYM"
->DB-API</SPAN
+>DB-API</ACRONYM
 > can be
   found at <A
 HREF="http://www2.linuxjournal.com/lj-issues/issue49/2605.html"
 TARGET="_top"
 >http://www2.linuxjournal.com/lj-issues/issue49/2605.html</A
->
+>.
  </P
 ><DIV
 CLASS="SECT1"
@@ -498,33 +496,33 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PYGRESQL-PG"
->6.1. The <TT
+>32.1. The <VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 > Module</A
 ></H1
 ><P
->   The <TT
+>   The <VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 > module defines three objects:
    <P
 ></P
 ></P><UL
 ><LI
 ><P
->      <TT
+>      <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
 >, which handles the connection and all the
       requests to the database,
      </P
 ></LI
 ><LI
 ><P
->      <TT
+>      <CODE
 CLASS="CLASSNAME"
->pglargeobject</TT
+>pglargeobject</CODE
 >, which handles all the accesses
       to <SPAN
 CLASS="PRODUCTNAME"
@@ -534,18 +532,18 @@ CLASS="PRODUCTNAME"
 ></LI
 ><LI
 ><P
->      <TT
+>      <CODE
 CLASS="CLASSNAME"
->pgqueryobject</TT
-> that handles query results.
+>pgqueryobject</CODE
+>, which handles query results.
      </P
 ></LI
 ></UL
 ><P>
   </P
 ><P
->   If you want to see a simple example of the use of some of these
-   functions, see <A
+>   If you want to see a simple example of the use this module,
+   see <A
 HREF="http://www.druid.net/rides"
 TARGET="_top"
 >http://www.druid.net/rides</A
@@ -561,13 +559,13 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29130"
->6.1.1. Constants</A
+NAME="AEN24208"
+>32.1.1. Constants</A
 ></H2
 ><P
->    Some constants are defined in the <TT
+>    Some constants are defined in the <VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 > module
     dictionary.  They are intended to be used as a parameters for
     methods calls.  You should refer to the <SPAN
@@ -576,7 +574,7 @@ CLASS="APPLICATION"
 >
     description (<A
 HREF="libpq.html"
->Chapter 1</A
+>Chapter 27</A
 >) for more information about
     them. These constants are:
 
@@ -586,56 +584,56 @@ HREF="libpq.html"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="VARNAME"
->INV_READ</TT
-><BR><TT
+>INV_READ</VAR
+><BR><VAR
 CLASS="VARNAME"
->INV_WRITE</TT
+>INV_WRITE</VAR
 ></DT
 ><DD
 ><P
->        large objects access modes, used by
-        <TT
+>        Large objects access modes, used by
+        <CODE
 CLASS="FUNCTION"
->(pgobject.)locreate</TT
+>(pgobject.)locreate</CODE
 > and
-        <TT
+        <CODE
 CLASS="FUNCTION"
->(pglarge.)open</TT
->.
+>(pglarge.)open</CODE
+>
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="VARNAME"
->SEEK_SET</TT
-><BR><TT
+>SEEK_SET</VAR
+><BR><VAR
 CLASS="VARNAME"
->SEEK_CUR</TT
-><BR><TT
+>SEEK_CUR</VAR
+><BR><VAR
 CLASS="VARNAME"
->SEEK_END</TT
+>SEEK_END</VAR
 ></DT
 ><DD
 ><P
->        positional flags, used by <TT
+>        Positional flags, used by <CODE
 CLASS="FUNCTION"
->(pglarge.)seek</TT
->.
+>(pglarge.)seek</CODE
+>
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="VARNAME"
->version</TT
-><BR><TT
+>version</VAR
+><BR><VAR
 CLASS="VARNAME"
->__version__</TT
+>__version__</VAR
 ></DT
 ><DD
 ><P
->        constants that give the current version
+>        Constants that give the current version
        </P
 ></DD
 ></DL
@@ -695,7 +693,7 @@ WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="programmer-client.html"
+HREF="client-interfaces.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -703,9 +701,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><TT
+><VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 > Module Functions</TD
 ></TR
 ></TABLE

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SPI_modifytuple</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Memory Management"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SPI-SPIMODIFYTUPLE"
->SPI_modifytuple</A
-></H1
+></A
+>SPI_modifytuple</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35039"
+NAME="AEN33435"
 ></A
 ><H2
 >Name</H2
@@ -97,42 +97,30 @@ NAME="IX-SPI-SPIMODIFYTUPLE-2"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35047"
+NAME="AEN33443"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SPI_modifytuple(<TT
+>SPI_modifytuple(<VAR
 CLASS="REPLACEABLE"
-><I
->rel</I
-></TT
->, <TT
+>rel</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->tuple</I
-></TT
->, <TT
+>tuple</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->nattrs</I
-></TT
->, <TT
+>nattrs</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->attnum</I
-></TT
->, <TT
+>attnum</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->Values</I
-></TT
->, <TT
+>Values</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->Nulls</I
-></TT
+>Nulls</VAR
 >)</PRE
 ><DIV
 CLASS="REFSECT2"
@@ -147,11 +135,9 @@ NAME="R2-SPI-SPIMODIFYTUPLE-1"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->Relation <TT
+>Relation <VAR
 CLASS="REPLACEABLE"
-><I
->rel</I
-></TT
+>rel</VAR
 ></DT
 ><DD
 ><P
@@ -159,55 +145,45 @@ CLASS="REPLACEABLE"
 rather than a tuple descriptor is a misfeature.)</P
 ></DD
 ><DT
->HeapTuple <TT
+>HeapTuple <VAR
 CLASS="REPLACEABLE"
-><I
->tuple</I
-></TT
+>tuple</VAR
 ></DT
 ><DD
 ><P
 >Input tuple to be modified</P
 ></DD
 ><DT
->int <TT
+>int <VAR
 CLASS="REPLACEABLE"
-><I
->nattrs</I
-></TT
+>nattrs</VAR
 ></DT
 ><DD
 ><P
 >Number of attribute numbers in attnum array</P
 ></DD
 ><DT
->int * <TT
+>int * <VAR
 CLASS="REPLACEABLE"
-><I
->attnum</I
-></TT
+>attnum</VAR
 ></DT
 ><DD
 ><P
 >Array of numbers of the attributes that are to be changed</P
 ></DD
 ><DT
->Datum * <TT
+>Datum * <VAR
 CLASS="REPLACEABLE"
-><I
->Values</I
-></TT
+>Values</VAR
 ></DT
 ><DD
 ><P
 >New values for the attributes specified</P
 ></DD
 ><DT
->char * <TT
+>const char * <VAR
 CLASS="REPLACEABLE"
-><I
->Nulls</I
-></TT
+>Nulls</VAR
 ></DT
 ><DD
 ><P
@@ -244,11 +220,9 @@ BORDER="0"
 CLASS="RETURNVALUE"
 >non-NULL</SPAN
 >
- if <TT
+ if <VAR
 CLASS="REPLACEABLE"
-><I
->tuple</I
-></TT
+>tuple</VAR
 >
  is not NULL and the modify was successful</TD
 ></TR
@@ -258,11 +232,9 @@ CLASS="REPLACEABLE"
 CLASS="RETURNVALUE"
 >NULL</SPAN
 >
- only if <TT
+ only if <VAR
 CLASS="REPLACEABLE"
-><I
->tuple</I
-></TT
+>tuple</VAR
 >
  is NULL</TD
 ></TR
@@ -316,9 +288,9 @@ NAME="R1-SPI-SPIMODIFYTUPLE-1"
 ><H2
 >Description</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_modifytuple</TT
+>SPI_modifytuple</CODE
 > 
 creates a new tuple by substituting new values for selected attributes,
 copying the original tuple's attributes at other positions.  The input

@@ -1,3 +1,4 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
@@ -5,12 +6,11 @@
     JDBC API</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="JDBC Interface"
@@ -19,13 +19,13 @@ REL="PREVIOUS"
 TITLE="Storing Binary Data"
 HREF="jdbc-binary-data.html"><LINK
 REL="NEXT"
-TITLE="Using the driver in a multithreaded or a servlet environment"
+TITLE="Using the Driver in a Multithreaded or a Servlet Environment"
 HREF="jdbc-thread.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -45,7 +45,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -61,9 +61,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. <SPAN
+>Chapter 31. <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > Interface</TD
 ><TD
 WIDTH="10%"
@@ -85,16 +85,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="JDBC-EXT"
->5.7. <SPAN
+>31.7. <SPAN
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
 > Extensions to the
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
-> <SPAN
+>JDBC</ACRONYM
+> <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 ></A
 ></H1
 ><P
@@ -109,9 +109,9 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >,
    we support them from Java, with a set of extension
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 >'s. Some features within the core of the
    standard driver actually use these extensions to implement Large
    Objects, etc.
@@ -121,19 +121,19 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28363"
->5.7.1. Accessing the Extensions</A
+NAME="AEN23421"
+>31.7.1. Accessing the Extensions</A
 ></H2
 ><P
 >    To access some of the extensions, you need to use some extra
-    methods in the <TT
+    methods in the <CODE
 CLASS="CLASSNAME"
->org.postgresql.PGConnection</TT
+>org.postgresql.PGConnection</CODE
 >
     class. In this case, you would need to case the return value of
-    <TT
+    <CODE
 CLASS="FUNCTION"
->Driver.getConnection()</TT
+>Driver.getConnection()</CODE
 >.  For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -148,10 +148,10 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN28369"
->5.7.1.1. Class <TT
+NAME="AEN23427"
+>31.7.1.1. Class <CODE
 CLASS="CLASSNAME"
->org.postgresql.PGConnection</TT
+>org.postgresql.PGConnection</CODE
 ></A
 ></H3
 ><PRE
@@ -169,8 +169,8 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN28375"
->5.7.1.1.1. Methods</A
+NAME="AEN23433"
+>31.7.1.1.1. Methods</A
 ></H4
 ><P
 ></P
@@ -180,14 +180,14 @@ NAME="AEN28375"
 CLASS="SYNOPSIS"
 >public Fastpath getFastpathAPI() throws SQLException</PRE
 ><P
->        This returns the Fastpath <SPAN
+>        This returns the Fastpath <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > for the
         current connection.  It is primarily used by the Large Object
-        <SPAN
+        <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 >.
        </P
 ><P
@@ -198,12 +198,12 @@ CLASS="PROGRAMLISTING"
 ...
 Fastpath fp = ((org.postgresql.PGConnection)myconn).getFastpathAPI();</PRE
 ><P>
-        where <TT
+        where <VAR
 CLASS="VARNAME"
->myconn</TT
-> is an open <TT
+>myconn</VAR
+> is an open <CODE
 CLASS="CLASSNAME"
->Connection</TT
+>Connection</CODE
 > to <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -226,9 +226,9 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Throws: </B
->         <TT
+>         <CODE
 CLASS="CLASSNAME"
->SQLException</TT
+>SQLException</CODE
 > by Fastpath when initializing for first time
         </P
 ></DIV
@@ -239,9 +239,9 @@ CLASS="CLASSNAME"
 CLASS="SYNOPSIS"
 >public LargeObjectManager getLargeObjectAPI() throws SQLException</PRE
 ><P>
-        This returns the Large Object <SPAN
+        This returns the Large Object <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > for the
         current connection.
        </P
@@ -253,12 +253,12 @@ CLASS="PROGRAMLISTING"
 ...
 LargeObjectManager lo = ((org.postgresql.PGConnection)myconn).getLargeObjectAPI();</PRE
 ><P>
-        where <TT
+        where <VAR
 CLASS="VARNAME"
->myconn</TT
-> is an open <TT
+>myconn</VAR
+> is an open <CODE
 CLASS="CLASSNAME"
->Connection</TT
+>Connection</CODE
 > to
         <SPAN
 CLASS="PRODUCTNAME"
@@ -270,12 +270,12 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Returns: </B
->         <TT
+>         <CODE
 CLASS="CLASSNAME"
->LargeObject</TT
-> object that implements the <SPAN
+>LargeObject</CODE
+> object that implements the <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 >
         </P
 ></DIV
@@ -284,12 +284,12 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Throws: </B
->         <TT
+>         <CODE
 CLASS="CLASSNAME"
->SQLException</TT
-> by <TT
+>SQLException</CODE
+> by <CODE
 CLASS="CLASSNAME"
->LargeObject</TT
+>LargeObject</CODE
 > when initializing for first time
         </P
 ></DIV
@@ -305,17 +305,17 @@ CLASS="SYNOPSIS"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >'s more unique data types. Normally, a data type not
-        known by the driver is returned by <TT
+        known by the driver is returned by <VAR
 CLASS="LITERAL"
->ResultSet.getObject()</TT
+>ResultSet.getObject()</VAR
 > as a
-        <TT
+        <CODE
 CLASS="CLASSNAME"
->PGobject</TT
+>PGobject</CODE
 > instance.  This method allows you to write a class
-        that extends <TT
+        that extends <CODE
 CLASS="CLASSNAME"
->PGobject</TT
+>PGobject</CODE
 >, and tell the driver the type name, and
         class name to use. The down side to this, is that you must
         call this method each time a connection is made.
@@ -328,20 +328,20 @@ CLASS="PROGRAMLISTING"
 ((org.postgresql.PGConnection)myconn).addDataType("mytype","my.class.name");
  ...</PRE
 ><P>
-        where <TT
+        where <VAR
 CLASS="VARNAME"
->myconn</TT
-> is an open <TT
+>myconn</VAR
+> is an open <CODE
 CLASS="CLASSNAME"
->Connection</TT
+>Connection</CODE
 > to
         <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >.  The handling class must
-        extend <TT
+        extend <CODE
 CLASS="CLASSNAME"
->org.postgresql.util.PGobject</TT
+>org.postgresql.util.PGobject</CODE
 >.
        </P
 ></LI
@@ -353,10 +353,10 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN28428"
->5.7.1.2. Class <TT
+NAME="AEN23486"
+>31.7.1.2. Class <CODE
 CLASS="CLASSNAME"
->org.postgresql.Fastpath</TT
+>org.postgresql.Fastpath</CODE
 ></A
 ></H3
 ><PRE
@@ -367,12 +367,12 @@ java.lang.Object
    |
    +----org.postgresql.fastpath.Fastpath</PRE
 ><P
->     <TT
+>     <CODE
 CLASS="CLASSNAME"
->Fastpath</TT
-> is an <SPAN
+>Fastpath</CODE
+> is an <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > that
      exists within the <SPAN
 CLASS="APPLICATION"
@@ -380,16 +380,16 @@ CLASS="APPLICATION"
 > C interface, and allows a client machine
      to execute a function on the database backend.  Most client code
      will not need to use this method, but it is provided because the
-     Large Object <SPAN
+     Large Object <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > uses it.
     </P
 ><P
 >     To use, you need to import the
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->org.postgresql.fastpath</TT
+>org.postgresql.fastpath</CODE
 > package, using the
      line:
 </P><PRE
@@ -397,9 +397,9 @@ CLASS="PROGRAMLISTING"
 >import org.postgresql.fastpath.*;</PRE
 ><P>
      Then, in your code, you need to get a
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->FastPath</TT
+>FastPath</CODE
 > object:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -407,29 +407,29 @@ CLASS="PROGRAMLISTING"
 ><P>
      This will return an instance associated with the database
      connection that you can use to issue commands. The casing of
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->Connection</TT
+>Connection</CODE
 > to
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->org.postgresql.PGConnection</TT
+>org.postgresql.PGConnection</CODE
 > is required, as
-     the <TT
+     the <CODE
 CLASS="FUNCTION"
->getFastpathAPI()</TT
+>getFastpathAPI()</CODE
 > is an extension method,
-     not part of <SPAN
+     not part of <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 >.  Once you have a
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->Fastpath</TT
+>Fastpath</CODE
 > instance, you can use the
-     <TT
+     <CODE
 CLASS="FUNCTION"
->fastpath()</TT
+>fastpath()</CODE
 > methods to execute a backend
      function.
     </P
@@ -438,12 +438,12 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >See Also: </B
->      <TT
+>      <CODE
 CLASS="CLASSNAME"
->FastpathFastpathArg</TT
->, <TT
+>FastpathFastpathArg</CODE
+>, <CODE
 CLASS="CLASSNAME"
->LargeObject</TT
+>LargeObject</CODE
 >
      </P
 ></DIV
@@ -452,8 +452,8 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN28453"
->5.7.1.2.1. Methods</A
+NAME="AEN23511"
+>31.7.1.2.1. Methods</A
 ></H4
 ><P
 ></P
@@ -475,28 +475,22 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Parameters: </B
->                <TT
+>                <VAR
 CLASS="PARAMETER"
-><I
->fnid</I
-></TT
+>fnid</VAR
 > - Function id
-                <TT
+                <VAR
 CLASS="PARAMETER"
-><I
->resulttype</I
-></TT
+>resulttype</VAR
 > - True if the result is an integer, false 
 for
                 other results
-                <TT
+                <VAR
 CLASS="PARAMETER"
-><I
->args</I
-></TT
-> - <TT
+>args</VAR
+> - <CODE
 CLASS="CLASSNAME"
->FastpathArguments</TT
+>FastpathArguments</CODE
 > to pass to fastpath
         </P
 ></DIV
@@ -530,9 +524,9 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >         The mapping for the procedure name to function id needs to
-         exist, usually to an earlier call to <TT
+         exist, usually to an earlier call to <CODE
 CLASS="FUNCTION"
->addfunction()</TT
+>addfunction()</CODE
 >. This is
          the preferred method to call, as function id's can/may change
          between versions of the backend. For an example of how this
@@ -545,28 +539,22 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Parameters: </B
->                <TT
+>                <VAR
 CLASS="PARAMETER"
-><I
->name</I
-></TT
+>name</VAR
 > - Function name
-                <TT
+                <VAR
 CLASS="PARAMETER"
-><I
->resulttype</I
-></TT
+>resulttype</VAR
 > - True if the result is an integer, false 
 for
                 other results
-                <TT
+                <VAR
 CLASS="PARAMETER"
-><I
->args</I
-></TT
-> - <TT
+>args</VAR
+> - <CODE
 CLASS="CLASSNAME"
->FastpathArguments</TT
+>FastpathArguments</CODE
 > to pass to fastpath
         </P
 ></DIV
@@ -584,9 +572,9 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >See Also: </B
-><TT
+><CODE
 CLASS="CLASSNAME"
->LargeObject</TT
+>LargeObject</CODE
 ></P
 ></DIV
 ></LI
@@ -604,17 +592,13 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Parameters: </B
->                <TT
+>                <VAR
 CLASS="PARAMETER"
-><I
->name</I
-></TT
+>name</VAR
 > - Function name
-                <TT
+                <VAR
 CLASS="PARAMETER"
-><I
->args</I
-></TT
+>args</VAR
 > - Function arguments
         </P
 ></DIV
@@ -630,9 +614,9 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Throws: </B
->         <TT
+>         <CODE
 CLASS="CLASSNAME"
->SQLException</TT
+>SQLException</CODE
 > if a database-access error occurs or no result
         </P
 ></DIV
@@ -651,17 +635,13 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Parameters: </B
->                <TT
+>                <VAR
 CLASS="PARAMETER"
-><I
->name</I
-></TT
+>name</VAR
 > - Function name
-                <TT
+                <VAR
 CLASS="PARAMETER"
-><I
->args</I
-></TT
+>args</VAR
 > - Function arguments
         </P
 ></DIV
@@ -677,9 +657,9 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Throws: </B
->         <TT
+>         <CODE
 CLASS="CLASSNAME"
->SQLException</TT
+>SQLException</CODE
 > if a database-access error occurs or no result
         </P
 ></DIV
@@ -691,9 +671,9 @@ CLASS="SYNOPSIS"
                         int fnid)</PRE
 ><P
 >        This adds a function to our look-up table.  User code should
-        use the <TT
+        use the <CODE
 CLASS="FUNCTION"
->addFunctions</TT
+>addFunctions</CODE
 > method, which is based upon a query,
         rather than hard coding the OID. The OID for a function is not
         guaranteed to remain static, even on different servers of the
@@ -705,14 +685,14 @@ CLASS="FUNCTION"
 CLASS="SYNOPSIS"
 >public void addFunctions(ResultSet rs) throws SQLException</PRE
 ><P
->        This takes a <TT
+>        This takes a <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 > containing two columns. Column 1
         contains the function name, Column 2 the OID.  It reads the
-        entire <TT
+        entire <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 >, loading the values into the function table.
        </P
 ><DIV
@@ -722,13 +702,13 @@ CLASS="IMPORTANT"
 ><P
 ><B
 >Important: </B
->         Remember to <TT
+>         Remember to <CODE
 CLASS="FUNCTION"
->close()</TT
+>close()</CODE
 > the
-         <TT
+         <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 > after calling this!
         </P
 ></BLOCKQUOTE
@@ -744,35 +724,35 @@ CLASS="NOTE"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > stores the function id's and their corresponding
-         names in the <TT
+         names in the <CODE
 CLASS="CLASSNAME"
->pg_proc</TT
+>pg_proc</CODE
 > table. To speed things up locally,
          instead of querying each function from that table when
-         required, a <TT
+         required, a <CODE
 CLASS="CLASSNAME"
->Hashtable</TT
+>Hashtable</CODE
 > is used. Also, only the function's
          required are entered into this table, keeping connection
          times as fast as possible.
         </P
 ><P
->         The <TT
+>         The <CODE
 CLASS="CLASSNAME"
->org.postgresql.LargeObject</TT
+>org.postgresql.LargeObject</CODE
 > class
          performs a query upon its start-up, and passes the returned
-         <TT
+         <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 > to the
-         <TT
+         <CODE
 CLASS="FUNCTION"
->addFunctions()</TT
+>addFunctions()</CODE
 > method here.  Once this
-         has been done, the Large Object <SPAN
+         has been done, the Large Object <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > refers
          to the functions by name.
         </P
@@ -790,9 +770,9 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >See Also: </B
->         <TT
+>         <CODE
 CLASS="CLASSNAME"
->LargeObjectManager</TT
+>LargeObjectManager</CODE
 >
         </P
 ></DIV
@@ -803,16 +783,16 @@ CLASS="SYNOPSIS"
 >public int getID(String name) throws SQLException</PRE
 ><P
 >        This returns the function id associated by its name If
-        <TT
+        <CODE
 CLASS="FUNCTION"
->addFunction()</TT
-> or <TT
+>addFunction()</CODE
+> or <CODE
 CLASS="FUNCTION"
->addFunctions()</TT
+>addFunctions()</CODE
 > have not been called for this
-        name, then an <TT
+        name, then an <CODE
 CLASS="CLASSNAME"
->SQLException</TT
+>SQLException</CODE
 > is thrown.
        </P
 ></LI
@@ -824,10 +804,10 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN28556"
->5.7.1.3. Class <TT
+NAME="AEN23614"
+>31.7.1.3. Class <CODE
 CLASS="CLASSNAME"
->org.postgresql.fastpath.FastpathArg</TT
+>org.postgresql.fastpath.FastpathArg</CODE
 ></A
 ></H3
 ><PRE
@@ -844,9 +824,9 @@ java.lang.Object
     </P
 ><P
 >     For an example on how to use this, refer to the
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->org.postgresql.LargeObject</TT
+>org.postgresql.LargeObject</CODE
 > package.
     </P
 ><DIV
@@ -854,15 +834,15 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >See Also: </B
->      <TT
+>      <CODE
 CLASS="CLASSNAME"
->Fastpath</TT
->, <TT
+>Fastpath</CODE
+>, <CODE
 CLASS="CLASSNAME"
->LargeObjectManager</TT
->, <TT
+>LargeObjectManager</CODE
+>, <CODE
 CLASS="CLASSNAME"
->LargeObject</TT
+>LargeObject</CODE
 >
      </P
 ></DIV
@@ -871,8 +851,8 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN28569"
->5.7.1.3.1. Constructors</A
+NAME="AEN23627"
+>31.7.1.3.1. Constructors</A
 ></H4
 ><P
 ></P
@@ -929,33 +909,27 @@ CLASS="FORMALPARA"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->buf</I
-></TT
+>buf</VAR
 ></DT
 ><DD
 ><P
 >source array</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->off</I
-></TT
+>off</VAR
 ></DT
 ><DD
 ><P
 >offset within array</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->len</I
-></TT
+>len</VAR
 ></DT
 ><DD
 ><P
@@ -984,8 +958,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28609"
->5.7.2. Geometric Data Types</A
+NAME="AEN23667"
+>31.7.2. Geometric Data Types</A
 ></H2
 ><P
 >    <SPAN
@@ -1774,18 +1748,18 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28638"
->5.7.3. Large Objects</A
+NAME="AEN23696"
+>31.7.3. Large Objects</A
 ></H2
 ><P
 >    Large objects are supported in the standard
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > specification.  However, that interface is
-    limited, and the <SPAN
+    limited, and the <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > provided by <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -1797,17 +1771,17 @@ CLASS="PRODUCTNAME"
 CLASS="APPLICATION"
 >libpq</SPAN
 >
-    C interface's large object <SPAN
+    C interface's large object <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 >. It consists of
-    two classes, <TT
+    two classes, <CODE
 CLASS="CLASSNAME"
->LargeObjectManager</TT
+>LargeObjectManager</CODE
 >, which deals with creating,
-    opening and deleting large objects, and <TT
+    opening and deleting large objects, and <CODE
 CLASS="CLASSNAME"
->LargeObject</TT
+>LargeObject</CODE
 > which deals
     with an individual object.
    </P
@@ -1816,10 +1790,10 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN28649"
->5.7.3.1. Class <TT
+NAME="AEN23707"
+>31.7.3.1. Class <CODE
 CLASS="CLASSNAME"
->org.postgresql.largeobject.LargeObject</TT
+>org.postgresql.largeobject.LargeObject</CODE
 ></A
 ></H3
 ><PRE
@@ -1838,27 +1812,27 @@ CLASS="PRODUCTNAME"
     </P
 ><P
 >     It provides the basic methods required to run the interface, plus
-     a pair of methods that provide <TT
+     a pair of methods that provide <CODE
 CLASS="CLASSNAME"
->InputStream</TT
-> and <TT
+>InputStream</CODE
+> and <CODE
 CLASS="CLASSNAME"
->OutputStream</TT
+>OutputStream</CODE
 >
      classes for this object.
     </P
 ><P
 >     Normally, client code would use the methods in 
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->BLOB</TT
+>BLOB</CODE
 > to access large objects.
     </P
 ><P
 >     However, sometimes lower level access to Large Objects is
-     required, that is not supported by the <SPAN
+     required, that is not supported by the <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 >
      specification.
     </P
@@ -1871,9 +1845,9 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >See Also: </B
-><TT
+><CODE
 CLASS="CLASSNAME"
->LargeObjectManager</TT
+>LargeObjectManager</CODE
 ></P
 ></DIV
 ><DIV
@@ -1881,8 +1855,8 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN28667"
->5.7.3.1.1. Variables</A
+NAME="AEN23725"
+>31.7.3.1.1. Variables</A
 ></H4
 ><P
 ></P
@@ -1915,8 +1889,8 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN28682"
->5.7.3.1.2. Methods</A
+NAME="AEN23740"
+>31.7.3.1.2. Methods</A
 ></H4
 ><P
 ></P
@@ -1926,9 +1900,9 @@ NAME="AEN28682"
 CLASS="SYNOPSIS"
 >public int getOID()</PRE
 ><P
->        Returns the OID of this <TT
+>        Returns the OID of this <CODE
 CLASS="CLASSNAME"
->LargeObject</TT
+>LargeObject</CODE
 >
        </P
 ></LI
@@ -1969,33 +1943,27 @@ CLASS="FORMALPARA"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->buf</I
-></TT
+>buf</VAR
 ></DT
 ><DD
 ><P
 >destination array</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->off</I
-></TT
+>off</VAR
 ></DT
 ><DD
 ><P
 >offset within array</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->len</I
-></TT
+>len</VAR
 ></DT
 ><DD
 ><P
@@ -2035,33 +2003,27 @@ CLASS="FORMALPARA"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->buf</I
-></TT
+>buf</VAR
 ></DT
 ><DD
 ><P
 >destination array</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->off</I
-></TT
+>off</VAR
 ></DT
 ><DD
 ><P
 >offset within array</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->len</I
-></TT
+>len</VAR
 ></DT
 ><DD
 ><P
@@ -2081,10 +2043,10 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN28742"
->5.7.3.2. Class <TT
+NAME="AEN23800"
+>31.7.3.2. Class <CODE
 CLASS="CLASSNAME"
->org.postgresql.largeobject.LargeObjectManager</TT
+>org.postgresql.largeobject.LargeObjectManager</CODE
 ></A
 ></H3
 ><PRE
@@ -2103,9 +2065,9 @@ CLASS="PRODUCTNAME"
 >.  It provides methods that
      allow client code to create, open and delete large objects from
      the database. When opening an object, an instance of
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->org.postgresql.largeobject.LargeObject</TT
+>org.postgresql.largeobject.LargeObject</CODE
 > is
      returned, and its methods then allow access to the object.
     </P
@@ -2122,15 +2084,15 @@ lobj = ((org.postgresql.PGConnection)myconn).getLargeObjectAPI();</PRE
 ><P>
     </P
 ><P
->     Normally, client code would use the <TT
+>     Normally, client code would use the <CODE
 CLASS="CLASSNAME"
->BLOB</TT
+>BLOB</CODE
 >
      methods to access large objects.  However, sometimes
      lower level access to Large Objects is required, that is not
-     supported by the <SPAN
+     supported by the <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > specification.
     </P
 ><P
@@ -2142,8 +2104,8 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN28755"
->5.7.3.2.1. Variables</A
+NAME="AEN23813"
+>31.7.3.2.1. Variables</A
 ></H4
 ><P
 ></P
@@ -2151,27 +2113,27 @@ NAME="AEN28755"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->public static final int WRITE</TT
+>public static final int WRITE</VAR
 ></DT
 ><DD
 ><P
 >This mode indicates we want to write to an object.</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->public static final int READ</TT
+>public static final int READ</VAR
 ></DT
 ><DD
 ><P
 >This mode indicates we want to read an object.</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->public static final int READWRITE</TT
+>public static final int READWRITE</VAR
 ></DT
 ><DD
 ><P
@@ -2185,8 +2147,8 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN28773"
->5.7.3.2.2. Methods</A
+NAME="AEN23831"
+>31.7.3.2.2. Methods</A
 ></H4
 ><P
 ></P
@@ -2253,9 +2215,9 @@ CLASS="SYNOPSIS"
 >public void unlink(int oid) throws SQLException</PRE
 ><P
 >        This deletes a large object.  It is identical to the delete
-        method, and is supplied as the C <SPAN
+        method, and is supplied as the C <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > uses
         <SPAN
 CLASS="QUOTE"
@@ -2326,7 +2288,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Using the driver in a multithreaded or a servlet environment</TD
+>Using the Driver in a Multithreaded or a Servlet Environment</TD
 ></TR
 ></TABLE
 ></DIV

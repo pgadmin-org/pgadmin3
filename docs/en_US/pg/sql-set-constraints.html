@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SET CONSTRAINTS</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-SET-CONSTRAINTS"
->SET CONSTRAINTS</A
-></H1
+></A
+>SET CONSTRAINTS</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45861"
+NAME="AEN44131"
 ></A
 ><H2
 >Name</H2
@@ -91,24 +91,21 @@ NAME="AEN45861"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45864"
+NAME="AEN44134"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SET CONSTRAINTS { ALL | <TT
+>SET CONSTRAINTS { ALL | <VAR
 CLASS="REPLACEABLE"
-><I
->constraint</I
-></TT
-> [, ...] } { DEFERRED | IMMEDIATE }
-  </PRE
+>constraint</VAR
+> [, ...] } { DEFERRED | IMMEDIATE }</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45869"
+NAME="AEN44137"
 ></A
 ><H2
 >Description</H2
@@ -117,58 +114,28 @@ NAME="AEN45869"
 CLASS="COMMAND"
 >SET CONSTRAINTS</TT
 > sets the behavior of constraint
-   evaluation in the current transaction. In <TT
-CLASS="OPTION"
->IMMEDIATE
-   </TT
-> mode, constraints are checked at the end of each
-   statement. In <TT
-CLASS="OPTION"
->DEFERRED</TT
-> mode, constraints are not
-   checked until transaction commit.
+   evaluation in the current transaction. In
+   <VAR
+CLASS="LITERAL"
+>IMMEDIATE</VAR
+> mode, constraints are checked at the
+   end of each statement. In <VAR
+CLASS="LITERAL"
+>DEFERRED</VAR
+> mode,
+   constraints are not checked until transaction commit.
   </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Note: </B
->	This command only alters the behavior of constraints within the
-	current transaction. Thus, if you execute this command outside
-	of an explicit transaction block (such as one started with
-	<TT
-CLASS="COMMAND"
->BEGIN</TT
->), it will not appear to have any effect.
-	If you wish to change the behavior of a constraint without needing
-	to issue a <TT
-CLASS="COMMAND"
->SET CONSTRAINTS</TT
-> command in every
-	transaction, specify <TT
-CLASS="OPTION"
->INITIALLY DEFERRED</TT
-> or
-	<TT
-CLASS="OPTION"
->INITIALLY IMMEDIATE</TT
-> when you create the constraint.
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->   When you change the mode of a constraint to be <TT
-CLASS="OPTION"
->IMMEDIATE
-   </TT
->, the new constraint mode takes effect retroactively:
-   any outstanding data modifications that would have been checked
-   at the end of the transaction (when using
-   <TT
-CLASS="OPTION"
->DEFERRED</TT
+>   When you change the mode of a constraint to be
+   <VAR
+CLASS="LITERAL"
+>IMMEDIATE</VAR
+>, the new constraint mode takes effect
+   retroactively: any outstanding data modifications that would have
+   been checked at the end of the transaction (when using
+   <VAR
+CLASS="LITERAL"
+>DEFERRED</VAR
 >) are instead checked during the
    execution of the <TT
 CLASS="COMMAND"
@@ -177,17 +144,17 @@ CLASS="COMMAND"
   </P
 ><P
 >   Upon creation, a constraint is always give one of three
-   characteristics: <TT
-CLASS="OPTION"
->INITIALLY DEFERRED</TT
+   characteristics: <VAR
+CLASS="LITERAL"
+>INITIALLY DEFERRED</VAR
 >,
-   <TT
-CLASS="OPTION"
->INITIALLY IMMEDIATE DEFERRABLE</TT
+   <VAR
+CLASS="LITERAL"
+>INITIALLY IMMEDIATE DEFERRABLE</VAR
 >, or
-   <TT
-CLASS="OPTION"
->INITIALLY IMMEDIATE NOT DEFERRABLE</TT
+   <VAR
+CLASS="LITERAL"
+>INITIALLY IMMEDIATE NOT DEFERRABLE</VAR
 >. The third
    class is not affected by the <TT
 CLASS="COMMAND"
@@ -204,44 +171,49 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-SET-CONSTRAINT-3"
+NAME="AEN44153"
+></A
+><H2
+>Notes</H2
+><P
+>   This command only alters the behavior of constraints within the
+   current transaction. Thus, if you execute this command outside of a
+   transaction block
+   (<TT
+CLASS="COMMAND"
+>BEGIN</TT
+>/<TT
+CLASS="COMMAND"
+>COMMIT</TT
+> pair), it will
+   not appear to have any effect.  If you wish to change the behavior
+   of a constraint without needing to issue a <TT
+CLASS="COMMAND"
+>SET
+   CONSTRAINTS</TT
+> command in every transaction, specify
+   <VAR
+CLASS="LITERAL"
+>INITIALLY DEFERRED</VAR
+> or <VAR
+CLASS="LITERAL"
+>INITIALLY
+   IMMEDIATE</VAR
+> when you create the constraint.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44161"
 ></A
 ><H2
 >Compatibility</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-SET-CONSTRAINT-4"
-></A
-><H3
->SQL92, SQL99</H3
 ><P
->    <TT
-CLASS="COMMAND"
->SET CONSTRAINTS</TT
-> is defined in
-    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> and <SPAN
-CLASS="ACRONYM"
->SQL99</SPAN
->. The
-    implementation in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> complies
-    with the behavior defined in the standard, except for the
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> limitation that <TT
-CLASS="COMMAND"
->SET
-    CONSTRAINTS</TT
-> cannot be applied to check or unique constraints.
-   </P
-></DIV
+>   This command complies with the behavior defined in the SQL
+   standard, except for the limitation that, in PostgreSQL, it only
+   applies to foreign-key constraints.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_type</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,23 +81,29 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-TYPE"
->3.29. pg_type</A
+>45.29. <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
 ></H1
+><A
+NAME="AEN53193"
+></A
 ><P
->   This catalog stores information about data types.  Scalar types
-   (<SPAN
-CLASS="QUOTE"
->"base types"</SPAN
->) are created with <TT
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+> stores information about data types.  Base types
+   (scalar types) are created with <TT
 CLASS="COMMAND"
 >CREATE TYPE</TT
 >.
-   A complex type is automatically created for each table in the database, to
+   A composite type is automatically created for each table in the database, to
    represent the row structure of the table.  It is also possible to create
-   complex types with <TT
+   composite types with <TT
 CLASS="COMMAND"
 >CREATE TYPE AS</TT
->, and
+> and
    derived types with <TT
 CLASS="COMMAND"
 >CREATE DOMAIN</TT
@@ -106,119 +112,112 @@ CLASS="COMMAND"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN54383"
+NAME="AEN53200"
 ></A
 ><P
 ><B
->Table 3-29. pg_type Columns</B
+>Table 45-29. <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typname</TD
+><TT
+CLASS="STRUCTFIELD"
+>typname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Data type name</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typnamespace</TD
+><TT
+CLASS="STRUCTFIELD"
+>typnamespace</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_namespace.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       The OID of the namespace that contains this type
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typowner</TD
+><TT
+CLASS="STRUCTFIELD"
+>typowner</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_shadow.usesysid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Owner (creator) of the type</TD
+>Owner of the type</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typlen</TD
+><TT
+CLASS="STRUCTFIELD"
+>typlen</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       For a fixed-size type, <TT
 CLASS="STRUCTFIELD"
 >typlen</TT
@@ -237,49 +236,32 @@ CLASS="QUOTE"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typbyval</TD
+><TT
+CLASS="STRUCTFIELD"
+>typbyval</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="STRUCTFIELD"
 >typbyval</TT
 > determines whether internal
        routines pass a value of this type by value or by reference.
-       Only <TT
-CLASS="TYPE"
->char</TT
->, <TT
-CLASS="TYPE"
->short</TT
->, and
-       <TT
-CLASS="TYPE"
->int</TT
-> equivalent items can be passed by value, so if
-       the type is not 1, 2, or 4 bytes long,
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> does not have
-       the option of passing by value and so
        <TT
 CLASS="STRUCTFIELD"
 >typbyval</TT
-> had better be false.
+> had better be false if
+       <TT
+CLASS="STRUCTFIELD"
+>typlen</TT
+> is not 1, 2, or 4 (or 8 on machines
+       where Datum is 8 bytes).
        Variable-length types are always passed by reference. Note that
        <TT
 CLASS="STRUCTFIELD"
@@ -294,41 +276,36 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typtype</TD
+><TT
+CLASS="STRUCTFIELD"
+>typtype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="STRUCTFIELD"
 >typtype</TT
-> is <TT
+> is <VAR
 CLASS="LITERAL"
->b</TT
+>b</VAR
 > for
-       a base type, <TT
+       a base type, <VAR
 CLASS="LITERAL"
->c</TT
-> for a complex type (i.e.,
-       a table's row type), <TT
+>c</VAR
+> for a composite type (i.e.,
+       a table's row type), <VAR
 CLASS="LITERAL"
->d</TT
+>d</VAR
 > for a derived type (i.e.,
-       a domain), or <TT
+       a domain), or <VAR
 CLASS="LITERAL"
->p</TT
+>p</VAR
 > for a pseudo-type.  See also
        <TT
 CLASS="STRUCTFIELD"
@@ -342,75 +319,73 @@ CLASS="STRUCTFIELD"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typisdefined</TD
+><TT
+CLASS="STRUCTFIELD"
+>typisdefined</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->True if the type is defined, false if this is a placeholder
-      entry for a not-yet-defined type.  When typisdefined is false,
-      nothing except the type name, namespace, and OID can be relied on.
+>       True if the type is defined, false if this is a placeholder
+       entry for a not-yet-defined type.  When
+       <TT
+CLASS="STRUCTFIELD"
+>typisdefined</TT
+> is false, nothing
+       except the type name, namespace, and OID can be relied on.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typdelim</TD
+><TT
+CLASS="STRUCTFIELD"
+>typdelim</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Character that separates two values of this type when parsing
       array input.  Note that the delimiter is associated with the array
       element data type, not the array data type.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typrelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>typrelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       If this is a complex type (see
+>       If this is a composite type (see
        <TT
 CLASS="STRUCTFIELD"
 >typtype</TT
->), then this field points to
+>), then this column points to
        the <TT
 CLASS="STRUCTNAME"
 >pg_class</TT
@@ -425,28 +400,32 @@ CLASS="STRUCTNAME"
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 > entries to link to.)
-       Zero for non-complex types.
+       Zero for base types.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typelem</TD
+><TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_type.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       If <TT
 CLASS="STRUCTFIELD"
 >typelem</TT
@@ -487,7 +466,7 @@ CLASS="TYPE"
 CLASS="STRUCTFIELD"
 >typelem</TT
 > then
-       its internal representation must be N values of the
+       its internal representation must be some number of values of the
        <TT
 CLASS="STRUCTFIELD"
 >typelem</TT
@@ -498,65 +477,118 @@ CLASS="STRUCTFIELD"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typinput</TD
+><TT
+CLASS="STRUCTFIELD"
+>typinput</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Input conversion function</TD
+>Input conversion function (text format)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typoutput</TD
+><TT
+CLASS="STRUCTFIELD"
+>typoutput</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Output conversion function</TD
+>Output conversion function (text format)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typalign</TD
+><TT
+CLASS="STRUCTFIELD"
+>typreceive</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
+><TD
+>Input conversion function (binary format), or 0 if none</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typsend</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
+><TD
+>Output conversion function (binary format), or 0 if none</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>typalign</TT
+></TD
+><TD
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><P
 >&#13;       <TT
 CLASS="STRUCTFIELD"
@@ -581,19 +613,43 @@ CLASS="PRODUCTNAME"
 ></P><UL
 ><LI
 ><P
->'c' = CHAR alignment, i.e., no alignment needed.</P
+><VAR
+CLASS="LITERAL"
+>c</VAR
+> = <TT
+CLASS="TYPE"
+>char</TT
+> alignment, i.e., no alignment needed.</P
 ></LI
 ><LI
 ><P
->'s' = SHORT alignment (2 bytes on most machines).</P
+><VAR
+CLASS="LITERAL"
+>s</VAR
+> = <TT
+CLASS="TYPE"
+>short</TT
+> alignment (2 bytes on most machines).</P
 ></LI
 ><LI
 ><P
->'i' = INT alignment (4 bytes on most machines).</P
+><VAR
+CLASS="LITERAL"
+>i</VAR
+> = <TT
+CLASS="TYPE"
+>int</TT
+> alignment (4 bytes on most machines).</P
 ></LI
 ><LI
 ><P
->'d' = DOUBLE alignment (8 bytes on many machines, but by no means all).</P
+><VAR
+CLASS="LITERAL"
+>d</VAR
+> = <TT
+CLASS="TYPE"
+>double</TT
+> alignment (8 bytes on many machines, but by no means all).</P
 ></LI
 ></UL
 ><P>
@@ -610,7 +666,7 @@ CLASS="NOTE"
 CLASS="STRUCTNAME"
 >pg_type</TT
 >
-        agree with the way that the compiler will lay out the field in
+        agree with the way that the compiler will lay out the column in
         a struct representing a table row.
        </P
 ></BLOCKQUOTE
@@ -619,23 +675,18 @@ CLASS="STRUCTNAME"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typstorage</TD
+><TT
+CLASS="STRUCTFIELD"
+>typstorage</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><P
 >       <TT
 CLASS="STRUCTFIELD"
@@ -653,90 +704,101 @@ CLASS="STRUCTFIELD"
 ></P><UL
 ><LI
 ><P
->'p': Value must always be stored plain.</P
+><VAR
+CLASS="LITERAL"
+>p</VAR
+>: Value must always be stored plain.</P
 ></LI
 ><LI
 ><P
->          'e': Value can be stored in a <SPAN
+>          <VAR
+CLASS="LITERAL"
+>e</VAR
+>: Value can be stored in a <SPAN
 CLASS="QUOTE"
 >"secondary"</SPAN
 >
           relation (if relation has one, see
-          <TT
-CLASS="STRUCTNAME"
->pg_class</TT
->.<TT
-CLASS="STRUCTFIELD"
->reltoastrelid</TT
+          <VAR
+CLASS="LITERAL"
+>pg_class.reltoastrelid</VAR
 >).
          </P
 ></LI
 ><LI
 ><P
->'m': Value can be stored compressed inline.</P
+><VAR
+CLASS="LITERAL"
+>m</VAR
+>: Value can be stored compressed inline.</P
 ></LI
 ><LI
 ><P
->'x': Value can be stored compressed inline or in <SPAN
+><VAR
+CLASS="LITERAL"
+>x</VAR
+>: Value can be stored compressed inline or stored in <SPAN
 CLASS="QUOTE"
 >"secondary"</SPAN
->.</P
+> storage.</P
 ></LI
 ></UL
 ><P>
-       Note that 'm' fields can also be moved out to secondary
-       storage, but only as a last resort ('e' and 'x' fields are
+       Note that <VAR
+CLASS="LITERAL"
+>m</VAR
+> columns can also be moved out to secondary
+       storage, but only as a last resort (<VAR
+CLASS="LITERAL"
+>e</VAR
+> and <VAR
+CLASS="LITERAL"
+>x</VAR
+> columns are
        moved first).
       </P
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typnotnull</TD
+><TT
+CLASS="STRUCTFIELD"
+>typnotnull</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><P
 >       <TT
 CLASS="STRUCTFIELD"
 >typnotnull</TT
-> represents a NOT NULL
-       constraint on a type.  Presently used for domains only.
+> represents a not-null
+       constraint on a type.  Used for domains only.
       </P
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typbasetype</TD
+><TT
+CLASS="STRUCTFIELD"
+>typbasetype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_type.oid</TD
+><VAR
+CLASS="LITERAL"
+>pg_type.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><P
 >       If this is a derived type (see <TT
 CLASS="STRUCTFIELD"
@@ -752,52 +814,48 @@ CLASS="STRUCTFIELD"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typtypmod</TD
+><TT
+CLASS="STRUCTFIELD"
+>typtypmod</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><P
 >       Domains use <TT
 CLASS="STRUCTFIELD"
 >typtypmod</TT
-> to record the typmod
+> to record the <VAR
+CLASS="LITERAL"
+>typmod</VAR
+>
        to be applied to their base type (-1 if base type does not use a
-       typmod).  -1 if this type is not a domain.
+       <VAR
+CLASS="LITERAL"
+>typmod</VAR
+>).  -1 if this type is not a domain.
       </P
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typndims</TD
+><TT
+CLASS="STRUCTFIELD"
+>typndims</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><P
 >       <TT
 CLASS="STRUCTFIELD"
@@ -805,67 +863,60 @@ CLASS="STRUCTFIELD"
 > is the number of array dimensions
        for a domain that is an array (that is, typbasetype is an array type;
        the domain's typelem will match the base type's typelem).
-       Zero for non-domains and non-array domains.
+       Zero for types other than array domains.
        </P
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typdefaultbin</TD
+><TT
+CLASS="STRUCTFIELD"
+>typdefaultbin</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><P
 >       If <TT
 CLASS="STRUCTFIELD"
 >typdefaultbin</TT
-> is not NULL, it is the nodeToString
-       representation of a default expression for the type.  Currently this is
+> is not null, it is the <CODE
+CLASS="FUNCTION"
+>nodeToString()</CODE
+>
+       representation of a default expression for the type.  This is
        only used for domains.
       </P
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->typdefault</TD
+><TT
+CLASS="STRUCTFIELD"
+>typdefault</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><P
 >       <TT
 CLASS="STRUCTFIELD"
 >typdefault</TT
-> is NULL if the type has no associated
+> is null if the type has no associated
        default value. If <TT
 CLASS="STRUCTFIELD"
 >typdefaultbin</TT
-> is not NULL,
+> is not null,
        <TT
 CLASS="STRUCTFIELD"
 >typdefault</TT
@@ -877,7 +928,7 @@ CLASS="STRUCTFIELD"
        <TT
 CLASS="STRUCTFIELD"
 >typdefaultbin</TT
-> is NULL and <TT
+> is null and <TT
 CLASS="STRUCTFIELD"
 >typdefault</TT
 > is
@@ -938,7 +989,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_trigger</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

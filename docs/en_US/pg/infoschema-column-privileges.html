@@ -1,0 +1,376 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>column_privileges</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="PREVIOUS"
+TITLE="column_domain_usage"
+HREF="infoschema-column-domain-usage.html"><LINK
+REL="NEXT"
+TITLE="column_udt_usage"
+HREF="infoschema-column-udt-usage.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="infoschema-column-domain-usage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 33. The Information Schema</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="infoschema-column-udt-usage.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INFOSCHEMA-COLUMN-PRIVILEGES"
+>33.7. <VAR
+CLASS="LITERAL"
+>column_privileges</VAR
+></A
+></H1
+><P
+>   The view <VAR
+CLASS="LITERAL"
+>column_privileges</VAR
+> identifies all
+   privileges granted on columns to the current user or by the current
+   user.  There is one row for each combination of column, grantor,
+   and grantee.  Privileges granted to groups are identified in the
+   view <VAR
+CLASS="LITERAL"
+>role_column_grants</VAR
+>.
+  </P
+><P
+>   In PostgreSQL, you can only grant privileges on entire tables, not
+   individual columns.  Therefore, this view contains the same
+   information as <VAR
+CLASS="LITERAL"
+>table_privileges</VAR
+>, just
+   represented through one row for each column in each appropriate
+   table, but it only convers privilege types where column granularity
+   is possible: <VAR
+CLASS="LITERAL"
+>SELECT</VAR
+>, <VAR
+CLASS="LITERAL"
+>INSERT</VAR
+>,
+   <VAR
+CLASS="LITERAL"
+>UPDATE</VAR
+>, <VAR
+CLASS="LITERAL"
+>REFERENCES</VAR
+>.  If you
+   want to make your applications fit for possible future
+   developements, it is generally the right choice to use this view
+   instead of <VAR
+CLASS="LITERAL"
+>table_privileges</VAR
+> if one of those
+   privilege types is concerned.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN26428"
+></A
+><P
+><B
+>Table 33-5. <VAR
+CLASS="LITERAL"
+>column_privileges</VAR
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Data Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>grantor</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the user that granted the privilege</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>grantee</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the user or group that the privilege was granted to</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>table_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database that contains the table that contains the column (always the current database)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>table_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema that contains the table that contains the column</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>table_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the table that contains the column</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>column_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the column</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>privilege_type</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Type of the privilege: <VAR
+CLASS="LITERAL"
+>SELECT</VAR
+>,
+       <VAR
+CLASS="LITERAL"
+>INSERT</VAR
+>, <VAR
+CLASS="LITERAL"
+>UPDATE</VAR
+>, or
+       <VAR
+CLASS="LITERAL"
+>REFERENCES</VAR
+>
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>is_grantable</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>YES</VAR
+> if the privilege is grantable, <VAR
+CLASS="LITERAL"
+>NO</VAR
+> if not</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   Note that the column <VAR
+CLASS="LITERAL"
+>grantee</VAR
+> makes no
+   distinction between users and groups.  If you have users and groups
+   with the same name, there is unfortunately no way to distinguish
+   them.  A future version of PostgreSQL will possibly prohibit having
+   users and groups with the same name.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-column-domain-usage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-column-udt-usage.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>column_domain_usage</VAR
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>column_udt_usage</VAR
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

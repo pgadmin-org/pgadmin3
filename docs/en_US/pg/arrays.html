@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Arrays</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
 HREF="datatype.html"><LINK
 REL="PREVIOUS"
-TITLE="Pseudo-Types"
-HREF="datatype-pseudo.html"><LINK
+TITLE="Bit String Types"
+HREF="datatype-bit.html"><LINK
 REL="NEXT"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
+TITLE="Object Identifier Types"
+HREF="datatype-oid.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="datatype-pseudo.html"
+HREF="datatype-bit.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Data Types</TD
+>Chapter 8. Data Types</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="functions.html"
+HREF="datatype-oid.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,10 +81,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ARRAYS"
->5.12. Arrays</A
+>8.10. Arrays</A
 ></H1
 ><A
-NAME="AEN4963"
+NAME="AEN4700"
 ></A
 ><P
 >  <SPAN
@@ -92,8 +92,18 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > allows columns of a table to be
   defined as variable-length multidimensional arrays. Arrays of any
-  built-in type or user-defined type can be created.  To illustrate
-  their use, we create this table:
+  built-in type or user-defined type can be created.
+ </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN4704"
+>8.10.1. Declaration of Array Types</A
+></H2
+><P
+>  To illustrate the use of array types, we create this table:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TABLE sal_emp (
@@ -103,50 +113,58 @@ CLASS="PROGRAMLISTING"
 );</PRE
 ><P>
   As shown, an array data type is named by appending square brackets
-  (<TT
+  (<VAR
 CLASS="LITERAL"
->[]</TT
->) to the data type name of the array elements.
-  The above command will create a table named
+>[]</VAR
+>) to the data type name of the array elements.  The
+  above command will create a table named
   <TT
 CLASS="STRUCTNAME"
 >sal_emp</TT
-> with columns including
-  a <TT
-CLASS="TYPE"
->text</TT
-> string (<TT
-CLASS="STRUCTFIELD"
->name</TT
->),
-  a one-dimensional array of type
+> with a column of type
   <TT
 CLASS="TYPE"
->integer</TT
+>text</TT
 > (<TT
 CLASS="STRUCTFIELD"
->pay_by_quarter</TT
->),
-  which represents the employee's salary by quarter, and a
-  two-dimensional array of <TT
+>name</TT
+>), a
+  one-dimensional array of type <TT
 CLASS="TYPE"
->text</TT
+>integer</TT
 >
   (<TT
 CLASS="STRUCTFIELD"
->schedule</TT
+>pay_by_quarter</TT
 >), which represents the
-  employee's weekly schedule.
+  employee's salary by quarter, and a two-dimensional array of
+  <TT
+CLASS="TYPE"
+>text</TT
+> (<TT
+CLASS="STRUCTFIELD"
+>schedule</TT
+>), which
+  represents the employee's weekly schedule.
  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN4716"
+>8.10.2. Array Value Input</A
+></H2
 ><P
->  Now we do some <TT
+>  Now we can show some <TT
 CLASS="COMMAND"
 >INSERT</TT
->s.  Observe that to write an array
+> statements.  To write an array
   value, we enclose the element values within curly braces and separate them
   by commas.  If you know C, this is not unlike the syntax for
   initializing structures.  (More details appear below.)
-     
+
 </P><PRE
 CLASS="PROGRAMLISTING"
 >INSERT INTO sal_emp
@@ -161,10 +179,116 @@ INSERT INTO sal_emp
 ><P>
  </P
 ><P
->  Now, we can run some queries on <TT
-CLASS="STRUCTNAME"
->sal_emp</TT
->.
+>  A limitation of the present array implementation is that individual
+  elements of an array cannot be SQL null values.  The entire array can be set
+  to null, but you can't have an array with some elements null and some
+  not.
+ </P
+><P
+>  This can lead to surprising results. For example, the result of the
+  previous two inserts looks like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM sal_emp;
+ name  |      pay_by_quarter       |      schedule
+-------+---------------------------+--------------------
+ Bill  | {10000,10000,10000,10000} | {{meeting},{""}}
+ Carol | {20000,25000,25000,25000} | {{talk},{meeting}}
+(2 rows)</PRE
+><P>
+  Because the <VAR
+CLASS="LITERAL"
+>[2][2]</VAR
+> element of
+  <TT
+CLASS="STRUCTFIELD"
+>schedule</TT
+> is missing in each of the
+  <TT
+CLASS="COMMAND"
+>INSERT</TT
+> statements, the <VAR
+CLASS="LITERAL"
+>[1][2]</VAR
+>
+  element is discarded.
+ </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>   Fixing this is on the to-do list.
+  </P
+></BLOCKQUOTE
+></DIV
+><P
+>  The <TT
+CLASS="COMMAND"
+>ARRAY</TT
+> expression syntax may also be used:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO sal_emp
+    VALUES ('Bill',
+    ARRAY[10000, 10000, 10000, 10000],
+    ARRAY[['meeting', 'lunch'], ['','']]);
+
+INSERT INTO sal_emp
+    VALUES ('Carol',
+    ARRAY[20000, 25000, 25000, 25000],
+    ARRAY[['talk', 'consult'], ['meeting', '']]);
+SELECT * FROM sal_emp;
+ name  |      pay_by_quarter       |           schedule
+-------+---------------------------+-------------------------------
+ Bill  | {10000,10000,10000,10000} | {{meeting,lunch},{"",""}}
+ Carol | {20000,25000,25000,25000} | {{talk,consult},{meeting,""}}
+(2 rows)</PRE
+><P>
+  Note that with this syntax, multidimensional arrays must have matching
+  extents for each dimension. This eliminates the missing-array-elements
+  problem above. For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO sal_emp
+    VALUES ('Carol',
+    ARRAY[20000, 25000, 25000, 25000],
+    ARRAY[['talk', 'consult'], ['meeting']]);
+ERROR:  Multidimensional arrays must have array expressions with matching dimensions</PRE
+><P>
+  Also notice that string literals are single quoted instead of double quoted.
+ </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>   The examples in the rest of this section are based on the
+   <TT
+CLASS="COMMAND"
+>ARRAY</TT
+> expression syntax <TT
+CLASS="COMMAND"
+>INSERT</TT
+>s.
+  </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN4738"
+>8.10.3. Array Value References</A
+></H2
+><P
+>  Now, we can run some queries on the table.
   First, we show how to access a single element of an array at a time.
   This query retrieves the names of the employees whose pay changed in
   the second quarter:
@@ -185,23 +309,19 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > uses the
   one-based numbering convention for arrays, that is,
-  an array of <TT
+  an array of <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
-> elements starts with <TT
+>n</VAR
+> elements starts with <VAR
 CLASS="LITERAL"
->array[1]</TT
+>array[1]</VAR
 > and
-  ends with <TT
+  ends with <VAR
 CLASS="LITERAL"
->array[<TT
+>array[<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
->]</TT
+>n</VAR
+>]</VAR
 >.
  </P
 ><P
@@ -221,21 +341,17 @@ CLASS="PROGRAMLISTING"
 ><P
 >  We can also access arbitrary rectangular slices of an array, or
   subarrays.  An array slice is denoted by writing
-  <TT
+  <VAR
 CLASS="LITERAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->lower-bound</I
-></TT
->:<TT
+>lower-bound</VAR
+>:<VAR
 CLASS="REPLACEABLE"
-><I
->upper-bound</I
-></TT
-></TT
+>upper-bound</VAR
+></VAR
 >
-  for one or more array dimensions.  This query retrieves the first
+  for one or more array dimensions.  For example, this query retrieves the first
   item on Bill's schedule for the first two days of the week:
      
 </P><PRE
@@ -255,25 +371,44 @@ CLASS="PROGRAMLISTING"
 >SELECT schedule[1:2][1] FROM sal_emp WHERE name = 'Bill';</PRE
 ><P>
 
-  with the same result.  An array subscripting operation is taken to
-  represent an array slice if any of the subscripts are written in the
-  form
-  <TT
+  with the same result.  An array subscripting operation is always taken to
+  represent an array slice if any of the subscripts are written in the form
+  <VAR
 CLASS="LITERAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->lower</I
-></TT
->:<TT
+>lower</VAR
+>:<VAR
 CLASS="REPLACEABLE"
-><I
->upper</I
-></TT
-></TT
+>upper</VAR
+></VAR
 >.
   A lower bound of 1 is assumed for any subscript where only one value
-  is specified.
+  is specified.  Another example follows:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT schedule[1:2][2] FROM sal_emp WHERE name = 'Bill';
+         schedule
+---------------------------
+ {{meeting,lunch},{"",""}}
+(1 row)</PRE
+><P>
+ </P
+><P
+>  Additionally, we can also access a single arbitrary array element of 
+  a one-dimensional array with the <CODE
+CLASS="FUNCTION"
+>array_subscript</CODE
+>
+  function:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT array_subscript(pay_by_quarter, 2) FROM sal_emp WHERE name = 'Bill';
+ array_subscript
+-----------------
+           10000
+(1 row)</PRE
+><P>
  </P
 ><P
 >  An array value can be replaced completely:
@@ -284,7 +419,40 @@ CLASS="PROGRAMLISTING"
     WHERE name = 'Carol';</PRE
 ><P>
 
-  or updated at a single element:
+  or using the <TT
+CLASS="COMMAND"
+>ARRAY</TT
+> expression syntax:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE sal_emp SET pay_by_quarter = ARRAY[25000,25000,27000,27000]
+    WHERE name = 'Carol';</PRE
+><P>
+
+  </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    Anywhere you can use the <SPAN
+CLASS="QUOTE"
+>"curly braces"</SPAN
+> array syntax,
+    you can also use the <TT
+CLASS="COMMAND"
+>ARRAY</TT
+> expression syntax. The
+    remainder of this section will illustrate only one or the other, but
+    not both.
+   </P
+></BLOCKQUOTE
+></DIV
+><P>
+
+  An array may also be updated at a single element:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -299,26 +467,157 @@ CLASS="PROGRAMLISTING"
 >UPDATE sal_emp SET pay_by_quarter[1:2] = '{27000,27000}'
     WHERE name = 'Carol';</PRE
 ><P>
+
+  A one-dimensional array may also be updated with the
+  <CODE
+CLASS="FUNCTION"
+>array_assign</CODE
+> function:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE sal_emp SET pay_by_quarter = array_assign(pay_by_quarter, 4, 15000)
+    WHERE name = 'Bill';</PRE
+><P>
  </P
 ><P
 >  An array can be enlarged by assigning to an element adjacent to
   those already present, or by assigning to a slice that is adjacent
   to or overlaps the data already present.  For example, if an array
   value currently has 4 elements, it will have five elements after an
-  update that assigns to <TT
+  update that assigns to <VAR
 CLASS="LITERAL"
->array[5]</TT
+>array[5]</VAR
 >.  Currently, enlargement in
   this fashion is only allowed for one-dimensional arrays, not
   multidimensional arrays.
  </P
 ><P
 >  Array slice assignment allows creation of arrays that do not use one-based
-  subscripts.  For example one might assign to <TT
+  subscripts.  For example one might assign to <VAR
 CLASS="LITERAL"
->array[-2:7]</TT
+>array[-2:7]</VAR
 > to
   create an array with subscript values running from -2 to 7.
+ </P
+><P
+>  An array can also be enlarged by using the concatenation operator,
+  <TT
+CLASS="COMMAND"
+>||</TT
+>.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY[1,2] || ARRAY[3,4];
+   ?column?
+---------------
+ {{1,2},{3,4}}
+(1 row)
+
+SELECT ARRAY[5,6] || ARRAY[[1,2],[3,4]];
+      ?column?
+---------------------
+ {{5,6},{1,2},{3,4}}
+(1 row)</PRE
+><P>
+
+  The concatenation operator allows a single element to be pushed on to the
+  beginning or end of a one-dimensional array. It also allows two
+  <VAR
+CLASS="REPLACEABLE"
+>N</VAR
+>-dimensional arrays, or an <VAR
+CLASS="REPLACEABLE"
+>N</VAR
+>-dimensional
+  and an <VAR
+CLASS="REPLACEABLE"
+>N+1</VAR
+>-dimensional array. In the former case, the two
+  <VAR
+CLASS="REPLACEABLE"
+>N</VAR
+>-dimension arrays become outer elements of an
+  <VAR
+CLASS="REPLACEABLE"
+>N+1</VAR
+>-dimensional array. In the latter, the
+  <VAR
+CLASS="REPLACEABLE"
+>N</VAR
+>-dimensional array is added as either the first or last
+  outer element of the <VAR
+CLASS="REPLACEABLE"
+>N+1</VAR
+>-dimensional array.
+
+  The array is extended in the direction of the push. Hence, by pushing
+  onto the beginning of an array with a one-based subscript, a zero-based
+  subscript array is created:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT array_dims(t.f) FROM (SELECT 1 || ARRAY[2,3] AS f) AS t;
+ array_dims
+------------
+ [0:2]
+(1 row)</PRE
+><P>
+ </P
+><P
+>  An array can also be enlarged by using the functions
+  <CODE
+CLASS="FUNCTION"
+>array_prepend</CODE
+>, <CODE
+CLASS="FUNCTION"
+>array_append</CODE
+>,
+  or <CODE
+CLASS="FUNCTION"
+>array_cat</CODE
+>. The first two only support one-dimensional
+  arrays, but <CODE
+CLASS="FUNCTION"
+>array_cat</CODE
+> supports multidimensional arrays.
+
+  Note that the concatenation operator discussed above is preferred over
+  direct use of these functions. In fact, the functions are primarily for use
+  in implementing the concatenation operator. However, they may be directly
+  useful in the creation of user-defined aggregates. Some examples:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT array_prepend(1, ARRAY[2,3]);
+ array_prepend
+---------------
+ {1,2,3}
+(1 row)
+
+SELECT array_append(ARRAY[1,2], 3);
+ array_append
+--------------
+ {1,2,3}
+(1 row)
+
+SELECT array_cat(ARRAY[1,2], ARRAY[3,4]);
+   array_cat
+---------------
+ {{1,2},{3,4}}
+(1 row)
+
+SELECT array_cat(ARRAY[[1,2],[3,4]], ARRAY[5,6]);
+      array_cat
+---------------------
+ {{1,2},{3,4},{5,6}}
+(1 row)
+
+SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
+      array_cat
+---------------------
+ {{5,6},{1,2},{3,4}}</PRE
+><P>
  </P
 ><P
 >  The syntax for <TT
@@ -339,6 +638,25 @@ CLASS="PROGRAMLISTING"
   length.
  </P
 ><P
+>  An alternative syntax for one-dimensional arrays may be used.
+  <TT
+CLASS="STRUCTFIELD"
+>pay_by_quarter</TT
+> could have been defined as:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>    pay_by_quarter  integer ARRAY[4],</PRE
+><P>
+  This syntax may <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>only</I
+></SPAN
+> be used with the integer
+  constant to denote the array size.
+ </P
+><P
 >  Actually, the current implementation does not enforce the declared
   number of dimensions either.  Arrays of a particular element type are
   all considered to be of the same type, regardless of size or number
@@ -351,9 +669,9 @@ CLASS="COMMAND"
  </P
 ><P
 >  The current dimensions of any array value can be retrieved with the
-  <TT
+  <CODE
 CLASS="FUNCTION"
->array_dims</TT
+>array_dims</CODE
 > function:
 
 </P><PRE
@@ -366,19 +684,36 @@ CLASS="PROGRAMLISTING"
 (1 row)</PRE
 ><P>
 
-  <TT
+  <CODE
 CLASS="FUNCTION"
->array_dims</TT
+>array_dims</CODE
 > produces a <TT
 CLASS="TYPE"
 >text</TT
 > result,
   which is convenient for people to read but perhaps not so convenient
-  for programs.
+  for programs.  <CODE
+CLASS="FUNCTION"
+>array_upper</CODE
+> and <CODE
+CLASS="FUNCTION"
+>  array_lower</CODE
+> return the upper/lower bound of the
+  given array dimension, respectively.
  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN4811"
+>8.10.4. Searching in Arrays</A
+></H2
 ><P
 >  To search for a value in an array, you must check each value of the
-  array. This can be done by hand (if you know the size of the array):
+  array. This can be done by hand (if you know the size of the array).
+  For example:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -389,11 +724,11 @@ CLASS="PROGRAMLISTING"
 ><P>
 
   However, this quickly becomes tedious for large arrays, and is not
-  helpful if the size of the array is unknown. Although it is not part
-  of the primary <SPAN
+  helpful if the size of the array is unknown. Although it is not built
+  into <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> distribution,
+>,
   there is an extension available that defines new functions and
   operators for iterating over array values. Using this, the above
   query could be:
@@ -403,7 +738,7 @@ CLASS="PROGRAMLISTING"
 >SELECT * FROM sal_emp WHERE pay_by_quarter[1:4] *= 10000;</PRE
 ><P>
 
-  To search the entire array (not just specified columns), you could
+  To search the entire array (not just specified slices), you could
   use:
 
 </P><PRE
@@ -443,55 +778,46 @@ CLASS="TIP"
   </P
 ></BLOCKQUOTE
 ></DIV
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->   A limitation of the present array implementation is that individual
-   elements of an array cannot be SQL null values.  The entire array can be set
-   to null, but you can't have an array with some elements null and some
-   not.  Fixing this is on the to-do list.
-  </P
-></BLOCKQUOTE
 ></DIV
 ><DIV
-CLASS="FORMALPARA"
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN4823"
+>8.10.5. Array Input and Output Syntax</A
+></H2
 ><P
-><B
->Array input and output syntax. </B
 >   The external representation of an array value consists of items that
    are interpreted according to the I/O conversion rules for the array's
    element type, plus decoration that indicates the array structure.
-   The decoration consists of curly braces (<TT
+   The decoration consists of curly braces (<VAR
 CLASS="LITERAL"
->{</TT
-> and <TT
+>{</VAR
+> and <VAR
 CLASS="LITERAL"
->}</TT
+>}</VAR
 >)
    around the array value plus delimiter characters between adjacent items.
-   The delimiter character is usually a comma (<TT
+   The delimiter character is usually a comma (<VAR
 CLASS="LITERAL"
->,</TT
+>,</VAR
 >) but can be
-   something else: it is determined by the <TT
+   something else: it is determined by the <VAR
 CLASS="LITERAL"
->typdelim</TT
+>typdelim</VAR
 > setting
    for the array's element type.  (Among the standard data types provided
    in the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > distribution, type
-   <TT
+   <VAR
 CLASS="LITERAL"
->box</TT
-> uses a semicolon (<TT
+>box</VAR
+> uses a semicolon (<VAR
 CLASS="LITERAL"
->;</TT
+>;</VAR
 >) but all the others
    use comma.)  In a multidimensional array, each dimension (row, plane,
    cube, etc.) gets its own level of curly braces, and delimiters
@@ -501,12 +827,112 @@ CLASS="LITERAL"
    is not ignored, however: after skipping leading whitespace, everything
    up to the next right brace or delimiter is taken as the item value.
   </P
+><P
+>   As illustrated earlier in this chapter, arrays may also be represented
+   using the <TT
+CLASS="COMMAND"
+>ARRAY</TT
+> expression syntax. This representation
+   of an array value consists of items that are interpreted according to the
+   I/O conversion rules for the array's element type, plus decoration that
+   indicates the array structure. The decoration consists of the keyword
+   <TT
+CLASS="COMMAND"
+>ARRAY</TT
+> and square brackets (<VAR
+CLASS="LITERAL"
+>[</VAR
+> and
+   <VAR
+CLASS="LITERAL"
+>]</VAR
+>) around the array values, plus delimiter characters between
+   adjacent items. The delimiter character is always a comma (<VAR
+CLASS="LITERAL"
+>,</VAR
+>).
+   When representing multidimensional arrays, the keyword
+   <TT
+CLASS="COMMAND"
+>ARRAY</TT
+> is only necessary for the outer level. For example,
+   <VAR
+CLASS="LITERAL"
+>'{{"hello world", "happy birthday"}}'</VAR
+> could be written as:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY[['hello world', 'happy birthday']];
+               array
+------------------------------------
+ {{"hello world","happy birthday"}}
+(1 row)</PRE
+><P>
+  or it also could be written as:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY[ARRAY['hello world', 'happy birthday']];
+               array
+------------------------------------
+ {{"hello world","happy birthday"}}
+(1 row)</PRE
+><P>
+  </P
+><P
+>   A final method to represent an array, is through an
+   <TT
+CLASS="COMMAND"
+>ARRAY</TT
+> sub-select expression. For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY(SELECT oid FROM pg_proc WHERE proname LIKE 'bytea%');
+                          ?column?
+-------------------------------------------------------------
+ {2011,1954,1948,1952,1951,1244,1950,2005,1949,1953,2006,31}
+(1 row)</PRE
+><P>
+  The sub-select may <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>only</I
+></SPAN
+> return a single column. The
+  resulting one-dimensional array will have an element for each row in the
+  sub-select result, with an element type matching that of the sub-select's
+  target column.
+  </P
+><P
+>   Arrays may be cast from one type to another in similar fashion to other
+   data types:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ARRAY[1,2,3]::oid[];
+  array
+---------
+ {1,2,3}
+(1 row)
+
+SELECT CAST(ARRAY[1,2,3] AS float8[]);
+  array
+---------
+ {1,2,3}
+(1 row)</PRE
+><P>
+
+  </P
 ></DIV
 ><DIV
-CLASS="FORMALPARA"
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN4849"
+>8.10.6. Quoting Array Elements</A
+></H2
 ><P
-><B
->Quoting array elements. </B
 >   As shown above, when writing an array value you may write double
    quotes around any individual array
    element.  You <SPAN
@@ -523,6 +949,21 @@ CLASS="EMPHASIS"
    Alternatively, you can use backslash-escaping to protect all data characters
    that would otherwise be taken as array syntax or ignorable white space.
   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>   The discussion in the preceding paragraph with respect to double quoting does
+   not pertain to the <TT
+CLASS="COMMAND"
+>ARRAY</TT
+> expression syntax. In that case,
+   each element is quoted exactly as any other literal value of the element type.
+  </P
+></BLOCKQUOTE
 ></DIV
 ><P
 >   The array output routine will put double quotes around element values
@@ -538,12 +979,12 @@ CLASS="PRODUCTNAME"
 > releases.)
   </P
 ><DIV
-CLASS="TIP"
+CLASS="NOTE"
 ><BLOCKQUOTE
-CLASS="TIP"
+CLASS="NOTE"
 ><P
 ><B
->Tip: </B
+>Note: </B
 >   Remember that what you write in an SQL command will first be interpreted
    as a string literal, and then as an array.  This doubles the number of
    backslashes you need.  For example, to insert a <TT
@@ -556,20 +997,20 @@ CLASS="PROGRAMLISTING"
 >INSERT ... VALUES ('{"\\\\","\\""}');</PRE
 ><P>
    The string-literal processor removes one level of backslashes, so that
-   what arrives at the array-value parser looks like <TT
+   what arrives at the array-value parser looks like <VAR
 CLASS="LITERAL"
->{"\\","\""}</TT
+>{"\\","\""}</VAR
 >.
    In turn, the strings fed to the <TT
 CLASS="TYPE"
 >text</TT
 > data type's input routine
-   become <TT
+   become <VAR
 CLASS="LITERAL"
->\</TT
-> and <TT
+>\</VAR
+> and <VAR
 CLASS="LITERAL"
->"</TT
+>"</VAR
 > respectively.  (If we were working
    with a data type whose input routine also treated backslashes specially,
    <TT
@@ -579,6 +1020,7 @@ CLASS="TYPE"
    in the command to get one backslash into the stored array element.)
   </P
 ></BLOCKQUOTE
+></DIV
 ></DIV
 ></DIV
 ><DIV
@@ -597,7 +1039,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="datatype-pseudo.html"
+HREF="datatype-bit.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -615,7 +1057,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="functions.html"
+HREF="datatype-oid.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -625,7 +1067,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Pseudo-Types</TD
+>Bit String Types</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -639,7 +1081,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Functions and Operators</TD
+>Object Identifier Types</TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >dropdb</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-DROPDB"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >dropdb</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47280"
+NAME="AEN45481"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47284"
+NAME="AEN45485"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,22 +105,18 @@ NAME="AEN47284"
 ><TT
 CLASS="COMMAND"
 >dropdb</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->options</I
-></TT
->...]  <TT
+>option</VAR
+>...]  <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 > </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47291"
+NAME="AEN45492"
 ></A
 ><H2
 >Description</H2
@@ -140,48 +136,29 @@ CLASS="PRODUCTNAME"
 >   <SPAN
 CLASS="APPLICATION"
 >dropdb</SPAN
-> is a shell script wrapper around the
-   <SPAN
+> is a wrapper around the
+   <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> command
-   <A
+>SQL</ACRONYM
+> command <A
 HREF="sql-dropdatabase.html"
 ><I
 >DROP DATABASE</I
 ></A
-> via
-   the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> interactive terminal
-   <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
->. Thus, there is nothing
-   special about dropping databases via this or other methods. This means
-   that the <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> must be found by the script and that
-   a database server is running at the targeted host. Also, any default
-   settings and environment variables available to <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->
-   and the <SPAN
+>.  The database server must be 
+   running on the targeted host. There is nothing special
+   about dropping databases via this or other methods. Also, any
+   default settings and environment variables used by the
+   <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> front-end library do apply.
+> front-end library will apply.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47305"
+NAME="AEN45502"
 ></A
 ><H2
 >Options</H2
@@ -197,33 +174,26 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></DT
 ><DD
 ><P
->	Specifies the name of the database to be removed.  The database
-	must be one of the existing <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> databases
-	in this installation.
+>	Specifies the name of the database to be removed.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-e</TT
-><BR><TT
+>-e</VAR
+><BR><VAR
 CLASS="OPTION"
->--echo</TT
+>--echo</VAR
 ></DT
 ><DD
 ><P
->        Echo the queries that <SPAN
+>        Echo the commands that <SPAN
 CLASS="APPLICATION"
 >dropdb</SPAN
 > generates
@@ -231,12 +201,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-i</TT
-><BR><TT
+>-i</VAR
+><BR><VAR
 CLASS="OPTION"
->--interactive</TT
+>--interactive</VAR
 ></DT
 ><DD
 ><P
@@ -244,12 +214,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-q</TT
-><BR><TT
+>-q</VAR
+><BR><VAR
 CLASS="OPTION"
->--quiet</TT
+>--quiet</VAR
 ></DT
 ><DD
 ><P
@@ -273,73 +243,61 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-h <TT
+>-h <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-><BR><TT
+>host</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--host <TT
+>--host <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
+>host</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Specifies the host name of the machine on which the 
 	server
-	is running.  If host begins with a slash, it is used 
+	is running.  If the value begins with a slash, it is used 
 	as the directory for the Unix domain socket.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-p <TT
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
-><BR><TT
+>port</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--port <TT
+>--port <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
+>port</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specifies the Internet TCP/IP port or local Unix domain socket file 
+>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-U <TT
+>-U <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
+>username</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--username <TT
+>--username <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -347,12 +305,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-W</TT
-><BR><TT
+>-W</VAR
+><BR><VAR
 CLASS="OPTION"
->--password</TT
+>--password</VAR
 ></DT
 ><DD
 ><P
@@ -367,7 +325,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47375"
+NAME="AEN45571"
 ></A
 ><H2
 >Diagnostics</H2
@@ -377,18 +335,18 @@ NAME="AEN47375"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->DROP DATABASE</TT
+>DROP DATABASE</SAMP
 ></DT
 ><DD
 ><P
 >The database was successfully removed.</P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->dropdb: Database removal failed.</TT
+>dropdb: Database removal failed.</SAMP
 ></DT
 ><DD
 ><P
@@ -404,19 +362,13 @@ HREF="sql-dropdatabase.html"
 >DROP DATABASE</I
 ></A
 >
-    and <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-> for possibilities.
+    for possibilities.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47391"
+NAME="AEN45586"
 ></A
 ><H2
 >Environment</H2
@@ -452,63 +404,57 @@ NAME="R1-APP-DROPDB-2"
 ><H2
 >Examples</H2
 ><P
->    To destroy the database <TT
+>    To destroy the database <VAR
 CLASS="LITERAL"
->demo</TT
+>demo</VAR
 > on the default
     database server:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->dropdb demo</B
-></TT
+>dropdb demo</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->DROP DATABASE</TT
+>DROP DATABASE</SAMP
 ></PRE
 ><P>
    </P
 ><P
->    To destroy the database <TT
+>    To destroy the database <VAR
 CLASS="LITERAL"
->demo</TT
+>demo</VAR
 > using the
-    server on host <TT
+    server on host <VAR
 CLASS="LITERAL"
->eden</TT
+>eden</VAR
 >, port 5000, with verification and a peek
-    at the underlying query:
+    at the underlying command:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->dropdb -p 5000 -h eden -i -e demo</B
-></TT
+>dropdb -p 5000 -h eden -i -e demo</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
 >Database "demo" will be permanently deleted.
-Are you sure? (y/n) </TT
-><TT
+Are you sure? (y/n) </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->y</B
-></TT
+>y</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
 >DROP DATABASE "demo"
-DROP DATABASE</TT
+DROP DATABASE</SAMP
 ></PRE
 ><P>
    </P
@@ -516,7 +462,7 @@ DROP DATABASE</TT
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47420"
+NAME="AEN45615"
 ></A
 ><H2
 >See Also</H2

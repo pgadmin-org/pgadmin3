@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DELETE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,163 +78,56 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DELETE"
->DELETE</A
-></H1
+></A
+>DELETE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42072"
+NAME="AEN40743"
 ></A
 ><H2
 >Name</H2
->   DELETE
-  &nbsp;--&nbsp;   delete rows of a table
-  </DIV
+>DELETE&nbsp;--&nbsp;delete rows of a table</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42075"
+NAME="AEN40746"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DELETE FROM [ ONLY ] <TT
+>DELETE FROM [ ONLY ] <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> [ WHERE <TT
+>table</VAR
+> [ WHERE <VAR
 CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
-> ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DELETE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of an existing table.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
-></DT
-><DD
-><P
->	This is an SQL selection query which returns the rows which
-	are to be deleted.
-       </P
-><P
->	Refer to the SELECT statement for further description
-	of the WHERE clause.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DELETE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DELETE <TT
-CLASS="REPLACEABLE"
-><I
->count</I
-></TT
->
-       </TT
-></DT
-><DD
-><P
->	Message returned if items are successfully deleted. The
-	<TT
-CLASS="REPLACEABLE"
-><I
->count</I
-></TT
-> is the number
-	of rows deleted.
-       </P
-><P
->	If <TT
-CLASS="REPLACEABLE"
-><I
->count</I
-></TT
-> is 0,
-	no rows were deleted.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>condition</VAR
+> ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DELETE-1"
+NAME="AEN40750"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >DELETE</TT
-> removes rows which satisfy the WHERE
-   clause from the specified table.
+> deletes rows that satisfy the
+   <VAR
+CLASS="LITERAL"
+>WHERE</VAR
+> clause from the specified table.  If the
+   <VAR
+CLASS="LITERAL"
+>WHERE</VAR
+> clause is absent, the effect is to delete
+   all rows in the table.  The result is a valid, but empty table.
   </P
-><P
->   If the <I
-CLASS="FIRSTTERM"
->condition</I
-> (WHERE clause) is absent,
-   the effect is to delete all rows in the table.
-   The result is a valid, but empty table.
-
-   <DIV
+><DIV
 CLASS="TIP"
 ><BLOCKQUOTE
 CLASS="TIP"
@@ -255,121 +148,145 @@ CLASS="PRODUCTNAME"
     </P
 ></BLOCKQUOTE
 ></DIV
+><P
+>   By default, <TT
+CLASS="COMMAND"
+>DELETE</TT
+> will delete rows in the
+   specified table and all its subtables. If you wish to only delete
+   from the specific table mentioned, you must use the
+   <VAR
+CLASS="LITERAL"
+>ONLY</VAR
+> clause.
+  </P
+><P
+>   You must have the <VAR
+CLASS="LITERAL"
+>DELETE</VAR
+> privilege on the table
+   to delete from it, as well as the <VAR
+CLASS="LITERAL"
+>SELECT</VAR
 >
-  </P
-><P
->  By default DELETE will delete tuples in the table specified 
-  and all its sub-tables. If you wish to only update the
-  specific table mentioned, you should use the ONLY clause.
-  </P
-><P
->   You must have write access to the table in order to modify
-   it, as well as read access to any table whose values are
-   read in the <TT
+   privilege to any table whose values are read in the <VAR
 CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
+>condition</VAR
 >.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DELETE-2"
+NAME="AEN40767"
 ></A
 ><H2
->   Usage
-  </H2
+>Parameters</H2
 ><P
->   Remove all films but musicals:
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing table.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>condition</VAR
+></DT
+><DD
+><P
+>      A value expression that returns a value of type
+      <TT
+CLASS="TYPE"
+>boolean</TT
+> that determines the rows which are to be
+      deleted.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40781"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DELETE <VAR
+CLASS="REPLACEABLE"
+>count</VAR
+></SAMP
+></DT
+><DD
+><P
+>      Message returned if rows are successfully deleted. The
+      <VAR
+CLASS="REPLACEABLE"
+>count</VAR
+> is the number
+      of rows deleted.  If <VAR
+CLASS="REPLACEABLE"
+>count</VAR
+> is 0, no rows were
+      deleted.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40792"
+></A
+><H2
+>Examples</H2
+><P
+>   Delete all films but musicals:
 </P><PRE
 CLASS="PROGRAMLISTING"
->DELETE FROM films WHERE kind &lt;&gt; 'Musical';
-SELECT * FROM films;
-
-<TT
-CLASS="COMPUTEROUTPUT"
-> code  |           title           | did | date_prod  |  kind   | len
--------+---------------------------+-----+------------+---------+-------
- UA501 | West Side Story           | 105 | 1961-01-03 | Musical | 02:32
- TC901 | The King and I            | 109 | 1956-08-11 | Musical | 02:13
- WD101 | Bed Knobs and Broomsticks | 111 |            | Musical | 01:57
-(3 rows)</TT
-></PRE
+>DELETE FROM films WHERE kind &lt;&gt; 'Musical';</PRE
 ><P>
   </P
 ><P
->   Clear the table <TT
+>   Clear the table <VAR
 CLASS="LITERAL"
->films</TT
+>films</VAR
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
->DELETE FROM films;
-SELECT * FROM films;
-
-<TT
-CLASS="COMPUTEROUTPUT"
-> code | title | did | date_prod | kind | len
-------+-------+-----+-----------+------+-----
-(0 rows)</TT
-></PRE
+>DELETE FROM films;</PRE
 ><P>      
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DELETE-3"
+NAME="AEN40799"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DELETE-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> allows a positioned DELETE statement:
-   
-    </P><PRE
-CLASS="SYNOPSIS"
->DELETE FROM <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> WHERE
-    CURRENT OF <TT
-CLASS="REPLACEABLE"
-><I
->cursor</I
-></TT
->
-    </PRE
-><P>
-
-    where <TT
-CLASS="REPLACEABLE"
-><I
->cursor</I
-></TT
->
-    identifies an open cursor.
-    Interactive cursors in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> are read-only.
-   </P
-></DIV
+>   This command conforms to the SQL standard.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

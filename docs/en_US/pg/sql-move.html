@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >MOVE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,69 +78,53 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-MOVE"
->MOVE</A
-></H1
+></A
+>MOVE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44562"
+NAME="AEN42869"
 ></A
 ><H2
 >Name</H2
->   MOVE
-  &nbsp;--&nbsp;   position a cursor on a specified row of a table
-  </DIV
+>MOVE&nbsp;--&nbsp;reposition a cursor</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44565"
+NAME="AEN42872"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->MOVE [ <TT
+>MOVE [ <VAR
 CLASS="REPLACEABLE"
-><I
->direction</I
-></TT
-> ] [ <TT
+>direction</VAR
+> { FROM | IN } ] <VAR
 CLASS="REPLACEABLE"
-><I
->count</I
-></TT
-> ] 
-    { IN | FROM } <TT
-CLASS="REPLACEABLE"
-><I
->cursor</I
-></TT
->
-  </PRE
+>cursor</VAR
+></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-MOVE-1"
+NAME="AEN42876"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >MOVE</TT
-> allows a user to move cursor position a specified
-   number of rows.
+> repositions a cursor without retrieving any data.
    <TT
 CLASS="COMMAND"
 >MOVE</TT
-> works like the <TT
+> works exactly like the <TT
 CLASS="COMMAND"
 >FETCH</TT
-> command,
-   but only positions the cursor and does
-   not return rows.
+>
+   command, except it only repositions the cursor and does not return rows.
   </P
 ><P
 >   Refer to 
@@ -152,138 +136,66 @@ HREF="sql-fetch.html"
 >
    for details on syntax and usage.
   </P
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-MOVE-3"
-></A
-><H3
->    Notes
-   </H3
-><P
->    <TT
-CLASS="COMMAND"
->MOVE</TT
-> is a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    language extension.
-   </P
-><P
->    Refer to
-    <A
-HREF="sql-fetch.html"
-><I
->FETCH</I
-></A
->
-    for a description of valid arguments.
-    Refer to 
-    <A
-HREF="sql-declare.html"
-><I
->DECLARE</I
-></A
->
-    to define a cursor.
-    Refer to 
-    <A
-HREF="sql-begin.html"
-><I
->BEGIN</I
-></A
->, 
-    <A
-HREF="sql-commit.html"
-><I
->COMMIT</I
-></A
->,
-    and
-    <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
->
-    for further information about transactions.
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-MOVE-2"
+NAME="AEN42884"
 ></A
 ><H2
->   Usage
-  </H2
+>Diagnostics</H2
 ><P
->   Set up and use a cursor:
-
-</P><PRE
-CLASS="PROGRAMLISTING"
->BEGIN WORK;
-DECLARE liahona CURSOR  FOR SELECT * FROM films;
--- Skip first 5 rows:
-MOVE FORWARD 5 IN liahona;
-<TT
-CLASS="COMPUTEROUTPUT"
+>   The count returned in <TT
+CLASS="COMMAND"
 >MOVE</TT
->
--- Fetch 6th row in the cursor liahona:
-FETCH 1 IN liahona;
-<TT
-CLASS="COMPUTEROUTPUT"
->FETCH
-
- code  | title  | did | date_prod | kind   | len
--------+--------+-----+-----------+--------+-------
- P_303 | 48 Hrs | 103 | 1982-10-22| Action | 01:37
-(1 row)</TT
->
--- close the cursor liahona and commit work:
-CLOSE liahona;
-COMMIT WORK;</PRE
-><P>
+>'s status string is
+   the count of the number of rows that would have been returned by
+   the equivalent <TT
+CLASS="COMMAND"
+>FETCH</TT
+> command.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-MOVE-3"
+NAME="AEN42889"
 ></A
 ><H2
->   Compatibility
-  </H2
+>Examples</H2
+><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN WORK;
+DECLARE liahona CURSOR FOR SELECT * FROM films;
+
+-- Skip the first 5 rows:
+MOVE FORWARD 5 IN liahona;
+MOVE 5
+
+-- Fetch the 6th row from the cursor liahona:
+FETCH 1 FROM liahona;
+ code  | title  | did | date_prod  |  kind  |  len
+-------+--------+-----+------------+--------+-------
+ P_303 | 48 Hrs | 103 | 1982-10-22 | Action | 01:37
+(1 row)
+
+-- Close the cursor liahona and end the transaction:
+CLOSE liahona;
+COMMIT WORK;</PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-MOVE-4"
+NAME="AEN42892"
 ></A
-><H3
->    SQL92
-   </H3
+><H2
+>Compatibility</H2
 ><P
->    There is no <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> <TT
+>   There is no <TT
 CLASS="COMMAND"
 >MOVE</TT
-> statement. 
-    Instead, <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> allows
-    one to <TT
-CLASS="COMMAND"
->FETCH</TT
-> rows from an absolute cursor position,
-    implicitly moving the cursor to the correct position.
-   </P
-></DIV
+> statement in the SQL standard.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

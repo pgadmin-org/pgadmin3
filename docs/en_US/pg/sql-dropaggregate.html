@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP AGGREGATE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,251 +78,205 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPAGGREGATE"
->DROP AGGREGATE</A
-></H1
+></A
+>DROP AGGREGATE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42154"
+NAME="AEN40806"
 ></A
 ><H2
 >Name</H2
->   DROP AGGREGATE
-  &nbsp;--&nbsp;   remove a user-defined aggregate function
-  </DIV
+>DROP AGGREGATE&nbsp;--&nbsp;remove a user-defined aggregate function</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42157"
+NAME="AEN40809"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP AGGREGATE <TT
+>DROP AGGREGATE <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ( <TT
+>name</VAR
+> ( <VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> ) [ CASCADE | RESTRICT ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPAGGREGATE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of an existing aggregate function.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-></DT
-><DD
-><P
->	The input data type of the aggregate function,
-	or <TT
-CLASS="LITERAL"
->*</TT
-> if the function accepts any input type.
-	(Refer to the <I
-CLASS="CITETITLE"
->PostgreSQL User's Guide</I
-> for
-	further information about data types.)
-	
-       </P
-></DD
-><DT
->CASCADE</DT
-><DD
-><P
->        Automatically drop objects that depend on the aggregate.
-       </P
-></DD
-><DT
->RESTRICT</DT
-><DD
-><P
->        Refuse to drop the aggregate if there are any dependent objects.
-	This is the default.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPAGGREGATE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP AGGREGATE
-       </TT
-></DT
-><DD
-><P
->	Message returned if the command is successful.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR: RemoveAggregate: aggregate '<TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->' for type <TT
-CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> does not exist
-       </TT
-></DT
-><DD
-><P
->	This message occurs if the aggregate function specified does not
-	exist in the database.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>type</VAR
+> ) [ CASCADE | RESTRICT ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPAGGREGATE-1"
+NAME="AEN40813"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >DROP AGGREGATE</TT
 > will delete an existing
-   aggregate definition. To execute this command the current
-   user must be the owner of the aggregate.
+   aggregate function. To execute this command the current
+   user must be the owner of the aggregate function.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPAGGREGATE-3"
+NAME="AEN40817"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    Use
-    <A
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing aggregate function.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>type</VAR
+></DT
+><DD
+><P
+>      The argument data type of the aggregate function, or
+      <VAR
+CLASS="LITERAL"
+>*</VAR
+> if the function accepts any data type.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the aggregate function.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+></DT
+><DD
+><P
+>      Refuse to drop the aggregate function if any objects depend on
+      it.  This is the default.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40841"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP AGGREGATE</SAMP
+></DT
+><DD
+><P
+>      Message returned if the command was successful.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR: RemoveAggregate: aggregate '<VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>' for type <VAR
+CLASS="REPLACEABLE"
+>type</VAR
+> does not exist</SAMP
+></DT
+><DD
+><P
+>      This message is returned if the specified aggregate function
+      does not exist.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40856"
+></A
+><H2
+>Examples</H2
+><P
+>   To remove the aggregate function <VAR
+CLASS="LITERAL"
+>myavg</VAR
+> for type
+   <TT
+CLASS="TYPE"
+>integer</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP AGGREGATE myavg(integer);</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40862"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>DROP AGGREGATE</TT
+> statement in the SQL
+   standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40866"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alteraggregate.html"
+><I
+>ALTER AGGREGATE</I
+></A
+>, <A
 HREF="sql-createaggregate.html"
 ><I
 >CREATE AGGREGATE</I
 ></A
->
-    to create aggregate functions.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-SQL-DROPAGGREGATE-2"
-></A
-><H2
->   Usage
-  </H2
-><P
->   To remove the <TT
-CLASS="LITERAL"
->myavg</TT
-> aggregate for type
-   <TT
-CLASS="LITERAL"
->int4</TT
->:
-  </P
-><PRE
-CLASS="PROGRAMLISTING"
->DROP AGGREGATE myavg(int4);
-  </PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-SQL-DROPAGGREGATE-3"
-></A
-><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPAGGREGATE-4"
-></A
-><H3
->    SQL92
-   </H3
-><P
->    There is no <TT
-CLASS="COMMAND"
->DROP AGGREGATE</TT
-> statement
-    in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->; the statement is a
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    language extension.
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

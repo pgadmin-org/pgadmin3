@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Asynchronous Notification</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 1. <SPAN
+>Chapter 27. <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 > - C Library</TD
@@ -84,23 +84,23 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="LIBPQ-NOTIFY"
->1.6. Asynchronous Notification</A
+>27.6. Asynchronous Notification</A
 ></H1
 ><A
-NAME="AEN25568"
+NAME="AEN20383"
 ></A
 ><P
 ><SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> supports asynchronous notification via the
+> offers asynchronous notification via the
 <TT
 CLASS="COMMAND"
 >LISTEN</TT
 > and <TT
 CLASS="COMMAND"
 >NOTIFY</TT
-> commands.  A backend registers its interest in a particular
+> commands.  A client session registers its interest in a particular
 notification condition with the <TT
 CLASS="COMMAND"
 >LISTEN</TT
@@ -108,20 +108,20 @@ CLASS="COMMAND"
 with the <TT
 CLASS="COMMAND"
 >UNLISTEN</TT
-> command).  All backends listening on a
+> command).  All sessions listening on a
 particular condition will be notified asynchronously when a <TT
 CLASS="COMMAND"
 >NOTIFY</TT
-> of that
-condition name is executed by any backend.  No additional information is
+> command with that
+condition name is executed by any session.  No additional information is
 passed from the notifier to the listener.  Thus, typically, any actual data
-that needs to be communicated is transferred through a database relation.
-Commonly the condition name is the same as the associated relation, but it is
-not necessary for there to be any associated relation.</P
+that needs to be communicated is transferred through a database table.
+Commonly, the condition name is the same as the associated table, but it is
+not necessary for there to be any associated table.</P
 ><P
-><TT
-CLASS="FILENAME"
->libpq</TT
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
 > applications submit <TT
 CLASS="COMMAND"
 >LISTEN</TT
@@ -129,30 +129,25 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >UNLISTEN</TT
 >
-commands as ordinary SQL command.  Subsequently, arrival of <TT
+commands as ordinary SQL commands.  The arrival of <TT
 CLASS="COMMAND"
 >NOTIFY</TT
 >
-messages can be detected by calling <TT
+messages can subsequently be detected by calling <CODE
 CLASS="FUNCTION"
->PQnotifies</TT
->.
-
-<P
-></P
-></P><UL
-><LI
+>PQnotifies</CODE
+>.</P
 ><P
-><TT
+>The function <CODE
 CLASS="FUNCTION"
->PQnotifies</TT
+>PQnotifies</CODE
 >
-          Returns  the next notification from a list of unhandled
-          notification messages received from the backend.  Returns NULL if
+          returns  the next notification from a list of unhandled
+          notification messages received from the server.  It returns a null pointer if
           there are no pending notifications.  Once a notification is
-	  returned from <TT
+	  returned from <CODE
 CLASS="FUNCTION"
->PQnotifies</TT
+>PQnotifies</CODE
 >, it is considered handled and will be
 	  removed from the list of notifications.
 </P><PRE
@@ -160,21 +155,49 @@ CLASS="SYNOPSIS"
 >PGnotify* PQnotifies(PGconn *conn);
 
 typedef struct pgNotify {
-    char *relname;              /* name of relation containing data */
-    int  be_pid;                /* process id of backend */
+    char *relname;              /* notification condition name */
+    int  be_pid;                /* process ID of server process */
+    char *extra;                /* notification parameter */
 } PGnotify;</PRE
 ><P>
 After processing a <TT
 CLASS="STRUCTNAME"
 >PGnotify</TT
-> object returned by <TT
+> object returned by
+<CODE
 CLASS="FUNCTION"
->PQnotifies</TT
->,
-be sure to free it with <TT
+>PQnotifies</CODE
+>, be sure to free it with
+<CODE
 CLASS="FUNCTION"
->free()</TT
-> to avoid a memory leak.</P
+>PQfreemem</CODE
+>.  It is sufficient to free the
+<TT
+CLASS="STRUCTNAME"
+>PGnotify</TT
+> pointer; the
+<TT
+CLASS="STRUCTFIELD"
+>relname</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>extra</TT
+> fields
+do not represent separate allocations.</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+> At present the <TT
+CLASS="STRUCTFIELD"
+>extra</TT
+> field is unused and will
+ always point to an empty string.</P
+></BLOCKQUOTE
+></DIV
 ><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
@@ -187,26 +210,26 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 6.4 and later,
  the <TT
-CLASS="LITERAL"
+CLASS="STRUCTFIELD"
 >be_pid</TT
-> is that of the notifying backend,
- whereas in earlier versions it was always the <SPAN
+> is that of the notifying backend process,
+ whereas in earlier versions it was always the <ACRONYM
 CLASS="ACRONYM"
->PID</SPAN
-> of your own backend.</P
+>PID</ACRONYM
+> of your own backend process.</P
 ></BLOCKQUOTE
 ></DIV
-></LI
-></UL
-><P></P
 ><P
->The  second  sample program gives an example of the use
+><A
+HREF="libpq-example.html#LIBPQ-EXAMPLE-2"
+>Example 27-2</A
+> gives a sample program that illustrates the use
 of asynchronous notification.</P
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->PQnotifies()</TT
-> does not actually read backend data; it just
+>PQnotifies()</CODE
+> does not actually read data from the server; it just
 returns messages previously absorbed by another <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
@@ -215,67 +238,73 @@ function.  In prior releases of <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 >, the only way
-to ensure timely receipt of NOTIFY messages was to constantly submit queries,
-even empty ones, and then check <TT
+to ensure timely receipt of <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> messages was to constantly submit commands,
+even empty ones, and then check <CODE
 CLASS="FUNCTION"
->PQnotifies()</TT
+>PQnotifies()</CODE
 > after each
-<TT
+<CODE
 CLASS="FUNCTION"
->PQexec()</TT
+>PQexec()</CODE
 >.  While this still works, it is
 deprecated as a waste of processing power.</P
 ><P
->A better way to check for NOTIFY
-messages when you have no useful queries to make is to call
-<TT
+>A better way to check for <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>
+messages when you have no useful commands to execute is to call
+<CODE
 CLASS="FUNCTION"
->PQconsumeInput()</TT
+>PQconsumeInput()</CODE
 >, then check
-<TT
+<CODE
 CLASS="FUNCTION"
->PQnotifies()</TT
+>PQnotifies()</CODE
 >.
-You can use <TT
+You can use <CODE
 CLASS="FUNCTION"
->select()</TT
-> to wait for backend data to
-arrive, thereby using no <SPAN
+>select()</CODE
+> to wait for data to
+arrive from the server, thereby using no <ACRONYM
 CLASS="ACRONYM"
->CPU</SPAN
+>CPU</ACRONYM
 > power unless there is something
-to do.  (See <TT
+to do.  (See <CODE
 CLASS="FUNCTION"
->PQsocket()</TT
+>PQsocket()</CODE
 > to obtain the file descriptor
-number to use with <TT
+number to use with <CODE
 CLASS="FUNCTION"
->select()</TT
+>select()</CODE
 >.)
-Note that this will work OK whether you submit queries with
-<TT
+Note that this will work OK whether you submit commands with
+<CODE
 CLASS="FUNCTION"
->PQsendQuery</TT
->/<TT
+>PQsendQuery</CODE
+>/<CODE
 CLASS="FUNCTION"
->PQgetResult</TT
+>PQgetResult</CODE
 > or simply
-use <TT
+use <CODE
 CLASS="FUNCTION"
->PQexec</TT
+>PQexec</CODE
 >.  You should, however, remember to
-check <TT
+check <CODE
 CLASS="FUNCTION"
->PQnotifies()</TT
+>PQnotifies()</CODE
 > after each
-<TT
+<CODE
 CLASS="FUNCTION"
->PQgetResult</TT
-> or <TT
+>PQgetResult</CODE
+> or <CODE
 CLASS="FUNCTION"
->PQexec</TT
+>PQexec</CODE
 >, to see
-if any notifications came in during the processing of the query.</P
+if any notifications came in during the processing of the command.</P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -335,7 +364,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Functions Associated with the COPY Command</TD
+>Functions Associated with the <TT
+CLASS="COMMAND"
+>COPY</TT
+> Command</TD
 ></TR
 ></TABLE
 ></DIV

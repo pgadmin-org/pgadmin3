@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->Extending SQL: An Overview</TITLE
+>Extending SQL</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
-HREF="programmer-server.html"><LINK
+HREF="server-programming.html"><LINK
 REL="PREVIOUS"
-TITLE="Architecture"
-HREF="arch-pg.html"><LINK
+TITLE="Server Programming"
+HREF="server-programming.html"><LINK
 REL="NEXT"
 TITLE="The PostgreSQL Type System"
 HREF="type-system.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="arch-pg.html"
+HREF="server-programming.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,10 +80,10 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="EXTEND"
->Chapter 8. Extending <SPAN
+></A
+>Chapter 34. Extending <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
->: An Overview</A
+>SQL</ACRONYM
 ></H1
 ><DIV
 CLASS="TOC"
@@ -93,12 +93,12 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->8.1. <A
+>34.1. <A
 HREF="extend.html#EXTEND-HOW"
 >How Extensibility Works</A
 ></DT
 ><DT
->8.2. <A
+>34.2. <A
 HREF="type-system.html"
 >The <SPAN
 CLASS="PRODUCTNAME"
@@ -106,17 +106,250 @@ CLASS="PRODUCTNAME"
 > Type System</A
 ></DT
 ><DT
->8.3. <A
-HREF="pg-system-catalogs.html"
->About the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> System Catalogs</A
+>34.3. <A
+HREF="xfunc.html"
+>User-Defined Functions</A
 ></DT
+><DT
+>34.4. <A
+HREF="xfunc-sql.html"
+>Query Language (<ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>) Functions</A
+></DT
+><DD
+><DL
+><DT
+>34.4.1. <A
+HREF="xfunc-sql.html#AEN29617"
+><ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Functions on Base Types</A
+></DT
+><DT
+>34.4.2. <A
+HREF="xfunc-sql.html#AEN29648"
+><ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Functions on Composite Types</A
+></DT
+><DT
+>34.4.3. <A
+HREF="xfunc-sql.html#AEN29682"
+><ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Functions as Table Sources</A
+></DT
+><DT
+>34.4.4. <A
+HREF="xfunc-sql.html#AEN29691"
+><ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> Functions Returning Sets</A
+></DT
+></DL
+></DD
+><DT
+>34.5. <A
+HREF="xfunc-pl.html"
+>Procedural Language Functions</A
+></DT
+><DT
+>34.6. <A
+HREF="xfunc-internal.html"
+>Internal Functions</A
+></DT
+><DT
+>34.7. <A
+HREF="xfunc-c.html"
+>C-Language Functions</A
+></DT
+><DD
+><DL
+><DT
+>34.7.1. <A
+HREF="xfunc-c.html#XFUNC-C-DYNLOAD"
+>Dynamic Loading</A
+></DT
+><DT
+>34.7.2. <A
+HREF="xfunc-c.html#AEN29797"
+>Base Types in C-Language Functions</A
+></DT
+><DT
+>34.7.3. <A
+HREF="xfunc-c.html#AEN30066"
+>Calling Conventions Version 0 for C-Language Functions</A
+></DT
+><DT
+>34.7.4. <A
+HREF="xfunc-c.html#AEN30092"
+>Calling Conventions Version 1 for C-Language Functions</A
+></DT
+><DT
+>34.7.5. <A
+HREF="xfunc-c.html#AEN30150"
+>Writing Code</A
+></DT
+><DT
+>34.7.6. <A
+HREF="xfunc-c.html#DFUNC"
+>Compiling and Linking Dynamically-Loaded Functions</A
+></DT
+><DT
+>34.7.7. <A
+HREF="xfunc-c.html#AEN30369"
+>Composite-Type Arguments in C-Language Functions</A
+></DT
+><DT
+>34.7.8. <A
+HREF="xfunc-c.html#AEN30390"
+>Returning Rows (Composite Types) from C-Language Functions</A
+></DT
+><DT
+>34.7.9. <A
+HREF="xfunc-c.html#XFUNC-C-RETURN-SET"
+>Returning Sets from C-Language Functions</A
+></DT
+></DL
+></DD
+><DT
+>34.8. <A
+HREF="xfunc-overload.html"
+>Function Overloading</A
+></DT
+><DT
+>34.9. <A
+HREF="xfunc-plhandler.html"
+>Procedural Language Handlers</A
+></DT
+><DT
+>34.10. <A
+HREF="xtypes.html"
+>User-Defined Types</A
+></DT
+><DT
+>34.11. <A
+HREF="xoper.html"
+>User-defined Operators</A
+></DT
+><DT
+>34.12. <A
+HREF="xoper-optimization.html"
+>Operator Optimization Information</A
+></DT
+><DD
+><DL
+><DT
+>34.12.1. <A
+HREF="xoper-optimization.html#AEN30631"
+><VAR
+CLASS="LITERAL"
+>COMMUTATOR</VAR
+></A
+></DT
+><DT
+>34.12.2. <A
+HREF="xoper-optimization.html#AEN30656"
+><VAR
+CLASS="LITERAL"
+>NEGATOR</VAR
+></A
+></DT
+><DT
+>34.12.3. <A
+HREF="xoper-optimization.html#AEN30672"
+><VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+></A
+></DT
+><DT
+>34.12.4. <A
+HREF="xoper-optimization.html#AEN30722"
+><VAR
+CLASS="LITERAL"
+>JOIN</VAR
+></A
+></DT
+><DT
+>34.12.5. <A
+HREF="xoper-optimization.html#AEN30754"
+><VAR
+CLASS="LITERAL"
+>HASHES</VAR
+></A
+></DT
+><DT
+>34.12.6. <A
+HREF="xoper-optimization.html#AEN30774"
+><VAR
+CLASS="LITERAL"
+>MERGES</VAR
+> (<VAR
+CLASS="LITERAL"
+>SORT1</VAR
+>, <VAR
+CLASS="LITERAL"
+>SORT2</VAR
+>, <VAR
+CLASS="LITERAL"
+>LTCMP</VAR
+>, <VAR
+CLASS="LITERAL"
+>GTCMP</VAR
+>)</A
+></DT
+></DL
+></DD
+><DT
+>34.13. <A
+HREF="xaggr.html"
+>User-Defined Aggregates</A
+></DT
+><DT
+>34.14. <A
+HREF="xindex.html"
+>Interfacing Extensions To Indexes</A
+></DT
+><DD
+><DL
+><DT
+>34.14.1. <A
+HREF="xindex.html#XINDEX-IM"
+>Index Methods and Operator Classes</A
+></DT
+><DT
+>34.14.2. <A
+HREF="xindex.html#XINDEX-STRATEGIES"
+>Index Method Strategies</A
+></DT
+><DT
+>34.14.3. <A
+HREF="xindex.html#XINDEX-SUPPORT"
+>Index Method Support Routines</A
+></DT
+><DT
+>34.14.4. <A
+HREF="xindex.html#XINDEX-EXAMPLE"
+>An Example</A
+></DT
+><DT
+>34.14.5. <A
+HREF="xindex.html#XINDEX-OPCLASS-FEATURES"
+>Special Features of Operator Classes</A
+></DT
+></DL
+></DD
 ></DL
 ></DIV
 ><A
-NAME="AEN31196"
+NAME="AEN29516"
 ></A
 ><P
 >   In  the  sections  that follow, we will discuss how you
@@ -124,9 +357,9 @@ NAME="AEN31196"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > query language by adding:
 
    <P
@@ -136,25 +369,37 @@ COMPACT="COMPACT"
 ><LI
 STYLE="list-style-type: disc"
 ><P
->      functions
+>      functions (starting in <A
+HREF="xfunc.html"
+>Section 34.3</A
+>)
      </P
 ></LI
 ><LI
 STYLE="list-style-type: disc"
 ><P
->      data types
+>      data types (starting in <A
+HREF="xtypes.html"
+>Section 34.10</A
+>)
      </P
 ></LI
 ><LI
 STYLE="list-style-type: disc"
 ><P
->      operators
+>      operators (starting in <A
+HREF="xoper.html"
+>Section 34.11</A
+>)
      </P
 ></LI
 ><LI
 STYLE="list-style-type: disc"
 ><P
->      aggregates
+>      aggregates (starting in <A
+HREF="xaggr.html"
+>Section 34.13</A
+>)
      </P
 ></LI
 ></UL
@@ -166,7 +411,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="EXTEND-HOW"
->8.1. How Extensibility Works</A
+>34.1. How Extensibility Works</A
 ></H1
 ><P
 >    <SPAN
@@ -174,60 +419,53 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is extensible because its operation  is  
     catalog-driven.   If  you  are familiar with standard 
-    relational systems, you know that  they  store  information
+    relational database systems, you know that  they  store  information
     about  databases,  tables,  columns,  etc., in what are
     commonly known as system catalogs.  (Some systems  call
     this  the data dictionary).  The catalogs appear to the
-    user as tables like any other, but  the  <SPAN
+    user as tables like any other, but  the  <ACRONYM
 CLASS="ACRONYM"
->DBMS</SPAN
+>DBMS</ACRONYM
 >  stores
     its  internal  bookkeeping in them.  One key difference
     between <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> and  standard  relational  systems  is
+> and  standard  relational database systems  is
     that <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > stores much more information in its 
-    catalogs -- not only information about tables and  columns,
-    but also information about its types, functions, access
+    catalogs: not only information about tables and  columns,
+    but also information about data types, functions, access
     methods, and so on.  These tables can be  modified  by
     the  user, and since <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> bases its internal operation 
+> bases its operation 
     on these tables, this means that <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > can  be
     extended   by   users.    By  comparison,  conventional
     database systems can only be extended by changing hardcoded  
-    procedures within the <SPAN
+    procedures in the source code or by loading modules
+    specially written by the <ACRONYM
 CLASS="ACRONYM"
->DBMS</SPAN
-> or by loading modules
-    specially written by the <SPAN
-CLASS="ACRONYM"
->DBMS</SPAN
+>DBMS</ACRONYM
 > vendor.
    </P
 ><P
->    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> is also unlike most  other  data  managers  in
-    that  the server can incorporate user-written code into
+>    The PostgreSQL server can moreover incorporate user-written code into
     itself through dynamic loading.  That is, the user  can
-    specify  an  object code file (e.g., a shared library) that implements a new type or  function 
+    specify  an  object code file (e.g., a shared library) that implements a new type or  function,
     and <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > will load it as required.  Code written 
-    in <SPAN
+    in <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > is even more trivial to add to the  server.
     This ability to modify its operation <SPAN
 CLASS="QUOTE"
@@ -257,7 +495,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="arch-pg.html"
+HREF="server-programming.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -285,13 +523,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Architecture</TD
+>Server Programming</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="programmer-server.html"
+HREF="server-programming.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

@@ -1,0 +1,473 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>triggers</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="PREVIOUS"
+TITLE="tables"
+HREF="infoschema-tables.html"><LINK
+REL="NEXT"
+TITLE="usage_privileges"
+HREF="infoschema-usage-privileges.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="infoschema-tables.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 33. The Information Schema</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="infoschema-usage-privileges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INFOSCHEMA-TRIGGERS"
+>33.37. <VAR
+CLASS="LITERAL"
+>triggers</VAR
+></A
+></H1
+><P
+>   The view <VAR
+CLASS="LITERAL"
+>triggers</VAR
+> contains all triggers defined
+   in the current database that are owned by the current user.  (The
+   owner of the table is the owner of the trigger.)
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN29156"
+></A
+><P
+><B
+>Table 33-35. <VAR
+CLASS="LITERAL"
+>triggers</VAR
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Data Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>trigger_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database that contains the trigger (always the current database)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>trigger_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema that contains the trigger</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>trigger_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the trigger</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>event_manipulation</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Event that fires the trigger (<VAR
+CLASS="LITERAL"
+>INSERT</VAR
+>,
+       <VAR
+CLASS="LITERAL"
+>UPDATE</VAR
+>, or <VAR
+CLASS="LITERAL"
+>DELETE</VAR
+>)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>event_object_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the database that contains the table that the trigger
+       is defined on (always the current database)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>event_object_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema that contains the table that the trigger is defined on</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>event_object_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the table that the trigger is defined on</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>action_order</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Not yet implemented</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>action_condition</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>action_statement</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Statement that is executed by the trigger (currently always
+       <VAR
+CLASS="LITERAL"
+>EXECUTE PROCEDURE
+       <VAR
+CLASS="REPLACEABLE"
+>function</VAR
+>(...)</VAR
+>)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>action_orientation</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Identifies whether the trigger fires once for each processed
+       row or once for each statement (<VAR
+CLASS="LITERAL"
+>ROW</VAR
+> or
+       <VAR
+CLASS="LITERAL"
+>STATEMENT</VAR
+>)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>condition_timing</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Time at which the trigger fires (<VAR
+CLASS="LITERAL"
+>BEFORE</VAR
+> or
+       <VAR
+CLASS="LITERAL"
+>AFTER</VAR
+>)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>condition_reference_old_table</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>condition_reference_new_table</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   Triggers in PostgreSQL have two incompatibilities with the SQL
+   standard that affect the representation in the information schema.
+   First, trigger names are local to the table in PostgreSQL, rather
+   than independent schema objects.  Therefore there may be duplicate
+   trigger names defined in one schema, as long as they belong to
+   different tables.  (<VAR
+CLASS="LITERAL"
+>trigger_catalog</VAR
+> and
+   <VAR
+CLASS="LITERAL"
+>trigger_schema</VAR
+> are really the values pertaining
+   to the table that the trigger is defined on.)  Second, triggers can
+   be defined to fire on multiple events in PostgreSQL (e.g.,
+   <VAR
+CLASS="LITERAL"
+>ON INSERT OR UPDATE</VAR
+>), whereas the SQL standard
+   only allows one.  If a trigger is defined to fire on multiple
+   events, it is represented as multiple rows in the information
+   schema, one for each type of event.  As a consequence of these two
+   issues, the primary key of the view <VAR
+CLASS="LITERAL"
+>triggers</VAR
+> is
+   really <VAR
+CLASS="LITERAL"
+>(trigger_catalog, trigger_schema, trigger_name,
+   event_object_name, event_manipulation)</VAR
+> instead of
+   <VAR
+CLASS="LITERAL"
+>(trigger_catalog, trigger_schema, trigger_name)</VAR
+>,
+   which is what the SQL standard specifies.  Nonetheless, if you
+   define your triggers in a manner that conforms with the SQL
+   standard (trigger names unique in the schema and only one event
+   type per trigger), this will not affect you.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-tables.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-usage-privileges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>tables</VAR
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>usage_privileges</VAR
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

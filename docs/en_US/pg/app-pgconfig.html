@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_config</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-PGCONFIG"
->pg_config</A
-></H1
+></A
+>pg_config</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47849"
+NAME="AEN46035"
 ></A
 ><H2
 >Name</H2
@@ -94,7 +94,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47853"
+NAME="AEN46039"
 ></A
 ><H2
 >Synopsis</H2
@@ -102,12 +102,12 @@ NAME="AEN47853"
 ><TT
 CLASS="COMMAND"
 >pg_config</TT
-> {--bindir | --includedir | --includedir-server | --libdir | --pkglibdir | --configure | --version...}</P
+> {--bindir | --includedir | --includedir-server | --libdir | --pkglibdir | --configure | --version}...</P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47864"
+NAME="AEN46050"
 ></A
 ><H2
 >Description</H2
@@ -131,7 +131,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47870"
+NAME="AEN46056"
 ></A
 ><H2
 >Options</H2
@@ -146,16 +146,16 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--bindir</TT
+>--bindir</VAR
 ></DT
 ><DD
 ><P
 >       Print the location of user executables. Use this, for example, to find
-       the <SPAN
-CLASS="APPLICATION"
->psql</SPAN
+       the <TT
+CLASS="COMMAND"
+>psql</TT
 > program. This is normally also the location
        where the <TT
 CLASS="FILENAME"
@@ -164,9 +164,9 @@ CLASS="FILENAME"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--includedir</TT
+>--includedir</VAR
 ></DT
 ><DD
 ><P
@@ -174,9 +174,9 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--includedir-server</TT
+>--includedir-server</VAR
 ></DT
 ><DD
 ><P
@@ -185,9 +185,9 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--libdir</TT
+>--libdir</VAR
 ></DT
 ><DD
 ><P
@@ -195,9 +195,9 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--pkglibdir</TT
+>--pkglibdir</VAR
 ></DT
 ><DD
 ><P
@@ -208,9 +208,9 @@ CLASS="OPTION"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--configure</TT
+>--configure</VAR
 ></DT
 ><DD
 ><P
@@ -229,9 +229,9 @@ CLASS="PRODUCTNAME"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--version</TT
+>--version</VAR
 ></DT
 ><DD
 ><P
@@ -245,9 +245,9 @@ CLASS="PRODUCTNAME"
 ></DIV
 ><P>
 
-   If more than one option (except for <TT
+   If more than one option (except for <VAR
 CLASS="OPTION"
->--version</TT
+>--version</VAR
 >) is given, the
    information is printed in that order, one item per line.
   </P
@@ -255,26 +255,32 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47916"
+NAME="AEN46102"
 ></A
 ><H2
 >Notes</H2
 ><P
->   The option <TT
+>   The option <VAR
 CLASS="OPTION"
->--includedir-server</TT
-> is new in
-   PostgreSQL 7.2.  In prior releases, the server include files were
+>--includedir-server</VAR
+> was new in
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.2.  In prior releases, the server include files were
    installed in the same location as the client headers, which could
-   be queried with the <TT
+   be queried with the option <VAR
 CLASS="OPTION"
->--includedir</TT
+>--includedir</VAR
 >.  To make your
    package handle both cases, try the newer option first and test the
    exit status to see whether it succeeded.
   </P
 ><P
->   In releases prior to PostgreSQL 7.1, before the
+>   In releases prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.1, before the
    <TT
 CLASS="COMMAND"
 >pg_config</TT
@@ -285,7 +291,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47923"
+NAME="AEN46111"
 ></A
 ><H2
 >History</H2
@@ -293,21 +299,11 @@ NAME="AEN47923"
 >   The <TT
 CLASS="COMMAND"
 >pg_config</TT
-> utility first appeared in PostgreSQL 7.1.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN47927"
-></A
-><H2
->See Also</H2
-><P
->   <I
-CLASS="CITETITLE"
->PostgreSQL Programmer's Guide</I
->
+> utility first appeared in
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.1.
   </P
 ></DIV
 ><DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP INDEX</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,141 +78,37 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPINDEX"
->DROP INDEX</A
-></H1
+></A
+>DROP INDEX</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42619"
+NAME="AEN41201"
 ></A
 ><H2
 >Name</H2
->   DROP INDEX
-  &nbsp;--&nbsp;   remove an index
-  </DIV
+>DROP INDEX&nbsp;--&nbsp;remove an index</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42622"
+NAME="AEN41204"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP INDEX <TT
+>DROP INDEX <VAR
 CLASS="REPLACEABLE"
-><I
->index_name</I
-></TT
-> [, ...] [ CASCADE | RESTRICT ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPINDEX-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->index_name</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of an index to remove.
-       </P
-></DD
-><DT
->CASCADE</DT
-><DD
-><P
->        Automatically drop objects that depend on the index.
-       </P
-></DD
-><DT
->RESTRICT</DT
-><DD
-><P
->        Refuse to drop the index if there are any dependent objects.
-	This is the default.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPINDEX-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP INDEX
-       </TT
-></DT
-><DD
-><P
->	The message returned if the command completes successfully.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR: index "<TT
-CLASS="REPLACEABLE"
-><I
->index_name</I
-></TT
->" does not exist
-       </TT
-></DT
-><DD
-><P
->	This message occurs if <TT
-CLASS="REPLACEABLE"
-><I
->index_name</I
-></TT
->
-	is not an index in the database.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>name</VAR
+> [, ...] [ CASCADE | RESTRICT ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPINDEX-1"
+NAME="AEN41207"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
@@ -221,87 +117,145 @@ CLASS="COMMAND"
    system. To execute this command you must be the owner of
    the index.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPINDEX-3"
+NAME="AEN41211"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    <TT
-CLASS="COMMAND"
->DROP INDEX</TT
-> is a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    language extension.
-   </P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
 ><P
->    Refer to 
-    <A
-HREF="sql-createindex.html"
-><I
->CREATE INDEX</I
-></A
->
-    for information on how to create indexes.
-   </P
+>      The name (optionally schema-qualified) of an index to remove.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the index.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+></DT
+><DD
+><P
+>      Refuse to drop the index if any objects depend on it.  This is
+      the default.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPINDEX-2"
+NAME="AEN41229"
 ></A
 ><H2
->   Usage
-  </H2
+>Diagnostics</H2
 ><P
->   This command will remove the <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP INDEX</SAMP
+></DT
+><DD
+><P
+>      Message returned if the command completes successfully.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR: index "<VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>" does not exist</SAMP
+></DT
+><DD
+><P
+>      This message is returned if <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> is not an existing
+      index.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41244"
+></A
+><H2
+>Examples</H2
+><P
+>   This command will remove the index <VAR
 CLASS="LITERAL"
->title_idx</TT
-> index:
+>title_idx</VAR
+>:
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->    DROP INDEX title_idx;
-   </PRE
+>DROP INDEX title_idx;</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPINDEX-3"
+NAME="AEN41249"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPINDEX-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> defines commands by which to access
-    a generic relational database.
-    Indexes are an implementation-dependent feature and hence
-    there are no index-specific commands or definitions in the
-    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> language.
-   </P
+>   <TT
+CLASS="COMMAND"
+>DROP INDEX</TT
+> is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> language extension.  There
+   are no provisions for indexes in the SQL standard.
+  </P
 ></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41254"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createindex.html"
+><I
+>CREATE INDEX</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

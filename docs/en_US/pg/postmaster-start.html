@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Starting the Database Server</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. Server Run-time Environment</TD
+>Chapter 16. Server Run-time Environment</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,32 +81,33 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="POSTMASTER-START"
->3.3. Starting the Database Server</A
+>16.3. Starting the Database Server</A
 ></H1
 ><P
->   <A
-NAME="AEN19262"
+>   Before anyone can access the database, you must start the database
+   server. The database server program is called
+   <TT
+CLASS="COMMAND"
+>postmaster</TT
+>.<A
+NAME="AEN14658"
 ></A
 >
-   Before anyone can access the database, you must start the database
-   server. The database server is called
-   <I
-CLASS="FIRSTTERM"
->postmaster</I
->. The postmaster must know where to
+   The <TT
+CLASS="COMMAND"
+>postmaster</TT
+> must know where to
    find the data it is supposed to use. This is done with the
-   <TT
+   <VAR
 CLASS="OPTION"
->-D</TT
+>-D</VAR
 > option. Thus, the simplest way to start the
    server is:
 </P><PRE
 CLASS="SCREEN"
->$ <TT
+>$ <KBD
 CLASS="USERINPUT"
-><B
->postmaster -D /usr/local/pgsql/data</B
-></TT
+>postmaster -D /usr/local/pgsql/data</KBD
 ></PRE
 ><P>
    which will leave the server running in the foreground. This must be
@@ -114,9 +115,9 @@ CLASS="USERINPUT"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user
-   account. Without <TT
+   account. Without <VAR
 CLASS="OPTION"
->-D</TT
+>-D</VAR
 >, the server will try to use
    the data directory in the environment variable <TT
 CLASS="ENVAR"
@@ -125,18 +126,16 @@ CLASS="ENVAR"
    If neither of these succeed, it will fail.
   </P
 ><P
->   To start the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>   To start the <TT
+CLASS="COMMAND"
+>postmaster</TT
 > in the
    background, use the usual shell syntax:
 </P><PRE
 CLASS="SCREEN"
->$ <TT
+>$ <KBD
 CLASS="USERINPUT"
-><B
->postmaster -D /usr/local/pgsql/data &gt; logfile 2&gt;&amp;1 &amp;</B
-></TT
+>postmaster -D /usr/local/pgsql/data &gt; logfile 2&gt;&amp;1 &amp;</KBD
 ></PRE
 ><P>
    It is an important to store the server's <SPAN
@@ -149,49 +148,57 @@ CLASS="SYSTEMITEM"
 > output somewhere, as shown above. It will help
    for auditing purposes and to diagnose problems. (See <A
 HREF="logfile-maintenance.html"
->Section 8.4</A
+>Section 21.3</A
 > for a more thorough discussion of log
    file handling.)
   </P
 ><P
->   <A
-NAME="AEN19279"
-></A
->
-   The postmaster also takes a number of other command line options. For
-   more information, see the reference page and <A
+>   The <TT
+CLASS="COMMAND"
+>postmaster</TT
+> also takes a number of other
+   command line options. For more information, see the reference page
+   and <A
 HREF="runtime-config.html"
->Section 3.4</A
-> below. In particular, in order for the
-   server to accept TCP/IP connections (rather than just Unix domain
-   socket ones), you must specify the <TT
+>Section 16.4</A
+> below. In particular, in order
+   for the server to accept
+   TCP/IP<A
+NAME="AEN14677"
+></A
+> connections
+   (rather than just Unix-domain socket ones), you must specify the
+   <VAR
 CLASS="OPTION"
->-i</TT
+>-i</VAR
 > option.
   </P
 ><P
->   <A
-NAME="AEN19284"
+>   This shell syntax can get tedious quickly.  Therefore the shell
+   script wrapper
+   <TT
+CLASS="COMMAND"
+>pg_ctl</TT
+><A
+NAME="AEN14682"
 ></A
 >
-   This shell syntax can get tedious quickly.  Therefore the shell
-   script wrapper <SPAN
-CLASS="APPLICATION"
->pg_ctl</SPAN
-> is provided to
-   simplify some tasks.  For example:
+   is provided to simplify some tasks.  For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >pg_ctl start -l logfile</PRE
 ><P>
    will start the server in the background and put the output into the
-   named log file. The <TT
+   named log file. The <VAR
 CLASS="OPTION"
->-D</TT
+>-D</VAR
 > option has the same meaning
-   here as in the postmaster. <SPAN
-CLASS="APPLICATION"
->pg_ctl</SPAN
+   here as in the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>. <TT
+CLASS="COMMAND"
+>pg_ctl</TT
 > is also
    capable of stopping the server.
   </P
@@ -205,7 +212,7 @@ CLASS="PRODUCTNAME"
 > in the
    <TT
 CLASS="FILENAME"
->/contrib/start-scripts</TT
+>contrib/start-scripts</TT
 > directory. This may require root
    privileges.
   </P
@@ -235,10 +242,10 @@ CLASS="EMPHASIS"
 >and not by root</I
 ></SPAN
 > or any other user. Therefore you
-   probably should form your commands using <TT
+   probably should form your commands using <VAR
 CLASS="LITERAL"
 >su -c '...'
-   postgres</TT
+   postgres</VAR
 >.  For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -268,7 +275,7 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > source distribution.
       <A
-NAME="AEN19308"
+NAME="AEN14706"
 ></A
 >
      </P
@@ -284,7 +291,7 @@ CLASS="FILENAME"
 >/etc/rc.local</TT
 >:
       <A
-NAME="AEN19314"
+NAME="AEN14712"
 ></A
 >
 </P><PRE
@@ -303,7 +310,7 @@ CLASS="PRODUCTNAME"
 >Linux</SPAN
 > systems either add
       <A
-NAME="AEN19320"
+NAME="AEN14718"
 ></A
 >
 </P><PRE
@@ -339,7 +346,7 @@ CLASS="PRODUCTNAME"
 >Linux</SPAN
 > start scripts, depending on
       preference. <A
-NAME="AEN19331"
+NAME="AEN14729"
 ></A
 >
      </P
@@ -353,10 +360,10 @@ CLASS="PRODUCTNAME"
       <TT
 CLASS="FILENAME"
 >/etc/init.d/postgresql</TT
-> which should contain
+> that contains
       the following line:
       <A
-NAME="AEN19337"
+NAME="AEN14735"
 ></A
 >
 </P><PRE
@@ -368,7 +375,7 @@ CLASS="FILENAME"
 >/etc/rc3.d</TT
 > as
       <TT
-CLASS="LITERAL"
+CLASS="FILENAME"
 >S99postgresql</TT
 >.
      </P
@@ -378,20 +385,27 @@ CLASS="LITERAL"
 
   </P
 ><P
->    While the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+>    While the <TT
+CLASS="COMMAND"
+>postmaster</TT
 > is running, its
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->PID</SPAN
-> is in the file
+>PID</ACRONYM
+> is stored in the file
     <TT
 CLASS="FILENAME"
 >postmaster.pid</TT
 > in the data directory. This is
-    used to prevent multiple postmasters running in the same data
-    directory, and can also be used for shutting down the postmaster.
+    used to prevent multiple <TT
+CLASS="COMMAND"
+>postmaster</TT
+> processes
+    running in the same data directory and can also be used for
+    shutting down the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> process.
    </P
 ><DIV
 CLASS="SECT2"
@@ -399,44 +413,50 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="POSTMASTER-START-FAILURES"
->3.3.1. Server Start-up Failures</A
+>16.3.1. Server Start-up Failures</A
 ></H2
 ><P
->     There are several common reasons the postmaster might fail to
-     start. Check the postmaster's log file, or start it by hand
-     (without redirecting standard output or standard error) and see
-     what error messages appear. Some of the error messages are
-     self-explanatory, but some are not, as shown below:
+>     There are several common reasons the server might fail to
+     start. Check the server's log file, or start it by hand (without
+     redirecting standard output or standard error) and see what error
+     messages appear. Below we explain some of the most common error
+     messages in more detail.
     </P
 ><P
 ></P><PRE
 CLASS="SCREEN"
 >FATAL: StreamServerPort: bind() failed: Address already in use
-        Is another postmaster already running on that port?</PRE
+        Is another postmaster already running on port 5432?
+        If not, wait a few seconds an retry.</PRE
 ><P>
      This usually means just what it suggests: you tried to start
-     another postmaster on the same port where one is already running.
-     However, if the kernel error message is not <TT
+     another <TT
+CLASS="COMMAND"
+>postmaster</TT
+> on the same port where one is already running.
+     However, if the kernel error message is not <SAMP
 CLASS="COMPUTEROUTPUT"
 >Address
-     already in use</TT
+     already in use</SAMP
 > or some variant of that, there may
-     be a different problem. For example, trying to start a postmaster
+     be a different problem. For example, trying to start a <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
      on a reserved port number may draw something like:
 </P><PRE
 CLASS="SCREEN"
->$ <TT
+>$ <KBD
 CLASS="USERINPUT"
-><B
->postmaster -i -p 666</B
-></TT
+>postmaster -i -p 666</KBD
 >
 FATAL: StreamServerPort: bind() failed: Permission denied
-        Is another postmaster already running on that port?</PRE
+        Is another postmaster already running on port 666?
+        If not, wait a few seconds an retry.</PRE
 ><P>
     </P
 ><P
->     A message like:
+>     A message like
 </P><PRE
 CLASS="SCREEN"
 >IpcMemoryCreate: shmget(key=5440001, size=83918612, 01600) failed: Invalid argument
@@ -448,20 +468,20 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
      is trying to create (83918612 bytes in this example). Or it could
-     mean that you don't have System-V-style shared memory support
+     mean that you do not have System-V-style shared memory support
      configured into your kernel at all. As a temporary workaround, you
-     can try starting the postmaster with a smaller-than-normal number
-     of buffers (<TT
+     can try starting the server with a smaller-than-normal number
+     of buffers (<VAR
 CLASS="OPTION"
->-B</TT
+>-B</VAR
 > switch). You will eventually want
      to reconfigure your kernel to increase the allowed shared memory
-     size. You may see this message when trying to start multiple
-     postmasters on the same machine if their total space requested
+     size. You may also see this message when trying to start multiple
+     servers on the same machine if their total space requested
      exceeds the kernel limit.
     </P
 ><P
->     An error like:
+>     An error like
 </P><PRE
 CLASS="SCREEN"
 >IpcSemaphoreCreate: semget(key=5440026, num=16, 01600) failed: No space left on device</PRE
@@ -482,10 +502,10 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > wants to create. As above,
      you may be able to work around the problem by starting the
-     postmaster with a reduced number of allowed connections
-     (<TT
+     server with a reduced number of allowed connections
+     (<VAR
 CLASS="OPTION"
->-N</TT
+>-N</VAR
 > switch), but you'll eventually want to
      increase the kernel limit.
     </P
@@ -503,12 +523,12 @@ CLASS="QUOTE"
 CLASS="SYSTEMITEM"
 >System V</SPAN
 >
-     <SPAN
+     <ACRONYM
 CLASS="ACRONYM"
->IPC</SPAN
+>IPC</ACRONYM
 > facilities are given in <A
 HREF="kernel-resources.html#SYSVIPC"
->Section 3.5.1</A
+>Section 16.5.1</A
 >.
     </P
 ></DIV
@@ -518,7 +538,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="CLIENT-CONNECTION-PROBLEMS"
->3.3.2. Client Connection Problems</A
+>16.3.2. Client Connection Problems</A
 ></H2
 ><P
 >     Although the error conditions possible on the client side are quite
@@ -539,16 +559,12 @@ CLASS="QUOTE"
 >"I couldn't find a server to talk
      to"</SPAN
 > failure. It looks like the above when TCP/IP
-     communication is attempted. A common mistake is to forget the
-     <TT
-CLASS="OPTION"
->-i</TT
-> option to allow the postmaster to accept TCP/IP
-     connections.
+     communication is attempted. A common mistake is to forget to
+     configure the server to allow TCP/IP connections.
     </P
 ><P
->     Alternatively, you'll get this when attempting Unix-socket
-     communication to a local postmaster:
+>     Alternatively, you'll get this when attempting Unix-domain socket
+     communication to a local server:
 </P><PRE
 CLASS="SCREEN"
 >psql: could not connect to server: Connection refused
@@ -558,20 +574,20 @@ CLASS="SCREEN"
     </P
 ><P
 >     The last line is useful in verifying that the client is trying to
-     connect to the right place. If there is in fact no postmaster
+     connect to the right place. If there is in fact no server
      running there, the kernel error message will typically be either
-     <TT
+     <SAMP
 CLASS="COMPUTEROUTPUT"
->Connection refused</TT
+>Connection refused</SAMP
 > or
-     <TT
+     <SAMP
 CLASS="COMPUTEROUTPUT"
->No such file or directory</TT
+>No such file or directory</SAMP
 >, as
      illustrated. (It is important to realize that
-     <TT
+     <SAMP
 CLASS="COMPUTEROUTPUT"
->Connection refused</TT
+>Connection refused</SAMP
 > in this context
      does <SPAN
 CLASS="emphasis"
@@ -579,15 +595,15 @@ CLASS="emphasis"
 CLASS="EMPHASIS"
 >not</I
 ></SPAN
-> mean that the postmaster got your
-     connection request and rejected it -- that case will produce a
+> mean that the server got your
+     connection request and rejected it. That case will produce a
      different message, as shown in <A
 HREF="client-authentication-problems.html"
->Section 6.3</A
+>Section 19.3</A
 >.) Other error messages
-     such as <TT
+     such as <SAMP
 CLASS="COMPUTEROUTPUT"
->Connection timed out</TT
+>Connection timed out</SAMP
 > may
      indicate more fundamental problems, like lack of network
      connectivity.

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_am</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-AM"
->3.3. pg_am</A
+>45.3. <TT
+CLASS="STRUCTNAME"
+>pg_am</TT
+></A
 ></H1
+><A
+NAME="AEN50608"
+></A
 ><P
->   <TT
+>   The catalog <TT
 CLASS="STRUCTNAME"
 >pg_am</TT
 > stores information about index access
@@ -94,465 +100,492 @@ CLASS="STRUCTNAME"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN52468"
+NAME="AEN50612"
 ></A
 ><P
 ><B
->Table 3-3. pg_am Columns</B
+>Table 45-3. <TT
+CLASS="STRUCTNAME"
+>pg_am</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amname</TD
+><TT
+CLASS="STRUCTFIELD"
+>amname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->name of the access method</TD
+>Name of the access method</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amowner</TD
+><TT
+CLASS="STRUCTFIELD"
+>amowner</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_shadow.usesysid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->user ID of the owner (currently not used)</TD
+>User ID of the owner (currently not used)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amstrategies</TD
+><TT
+CLASS="STRUCTFIELD"
+>amstrategies</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->number of operator strategies for this access method</TD
+>Number of operator strategies for this access method</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amsupport</TD
+><TT
+CLASS="STRUCTFIELD"
+>amsupport</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->number of support routines for this access method</TD
+>Number of support routines for this access method</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amorderstrategy</TD
+><TT
+CLASS="STRUCTFIELD"
+>amorderstrategy</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->zero if the index offers no sort order, otherwise the strategy
+>Zero if the index offers no sort order, otherwise the strategy
       number of the strategy operator that describes the sort order</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amcanunique</TD
+><TT
+CLASS="STRUCTFIELD"
+>amcanunique</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does AM support unique indexes?</TD
+>Does the access method support unique indexes?</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amcanmulticol</TD
+><TT
+CLASS="STRUCTFIELD"
+>amcanmulticol</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does AM support multicolumn indexes?</TD
+>Does the access method support multicolumn indexes?</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amindexnulls</TD
+><TT
+CLASS="STRUCTFIELD"
+>amindexnulls</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does AM support NULL index entries?</TD
+>Does the access method support null index entries?</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amconcurrent</TD
+><TT
+CLASS="STRUCTFIELD"
+>amconcurrent</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does AM support concurrent updates?</TD
+>Does the access method support concurrent updates?</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amgettuple</TD
+><TT
+CLASS="STRUCTFIELD"
+>amgettuple</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="QUOTE"
->"next valid tuple"</SPAN
+>"Next valid tuple"</SPAN
 > function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->aminsert</TD
+><TT
+CLASS="STRUCTFIELD"
+>aminsert</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="QUOTE"
->"insert this tuple"</SPAN
+>"Insert this tuple"</SPAN
 > function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ambeginscan</TD
+><TT
+CLASS="STRUCTFIELD"
+>ambeginscan</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="QUOTE"
->"start new scan"</SPAN
+>"Start new scan"</SPAN
 > function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amrescan</TD
+><TT
+CLASS="STRUCTFIELD"
+>amrescan</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="QUOTE"
->"restart this scan"</SPAN
+>"Restart this scan"</SPAN
 > function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amendscan</TD
+><TT
+CLASS="STRUCTFIELD"
+>amendscan</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="QUOTE"
->"end this scan"</SPAN
+>"End this scan"</SPAN
 > function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ammarkpos</TD
+><TT
+CLASS="STRUCTFIELD"
+>ammarkpos</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="QUOTE"
->"mark current scan position"</SPAN
+>"Mark current scan position"</SPAN
 > function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amrestrpos</TD
+><TT
+CLASS="STRUCTFIELD"
+>amrestrpos</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="QUOTE"
->"restore marked scan position"</SPAN
+>"Restore marked scan position"</SPAN
 > function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ambuild</TD
+><TT
+CLASS="STRUCTFIELD"
+>ambuild</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="QUOTE"
->"build new index"</SPAN
+>"Build new index"</SPAN
 > function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ambulkdelete</TD
+><TT
+CLASS="STRUCTFIELD"
+>ambulkdelete</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->bulk-delete function</TD
+>Bulk-delete function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->amcostestimate</TD
+><TT
+CLASS="STRUCTFIELD"
+>amvacuumcleanup</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >regproc</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_proc.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->estimate cost of an indexscan</TD
+>Post-<TT
+CLASS="COMMAND"
+>VACUUM</TT
+> cleanup function</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="STRUCTFIELD"
+>amcostestimate</TT
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+>.oid</VAR
+></TD
+><TD
+>Function to estimate cost of an index scan</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->    An index AM that supports multiple columns (has
+>    An index access method that supports multiple columns (has
     <TT
 CLASS="STRUCTFIELD"
 >amcanmulticol</TT
@@ -563,18 +596,27 @@ CLASS="EMPHASIS"
 >must</I
 ></SPAN
 >
-    support indexing nulls in columns after the first, because the planner
+    support indexing null values in columns after the first, because the planner
     will assume the index can be used for queries on just the first
-    column(s).  For example, consider an index on (a,b) and a query
-    WHERE a = 4.  The system will assume the index can be used to scan for
-    rows with a = 4, which is wrong if the index omits rows where b is null.
-    However it is okay to omit rows where the first indexed column is null.
+    column(s).  For example, consider an index on (a,b) and a query with
+    <VAR
+CLASS="LITERAL"
+>WHERE a = 4</VAR
+>.  The system will assume the index can be used to scan for
+    rows with <VAR
+CLASS="LITERAL"
+>a = 4</VAR
+>, which is wrong if the index omits rows where <VAR
+CLASS="LITERAL"
+>b</VAR
+> is null.
+    It is, however, OK to omit rows where the first indexed column is null.
     (GiST currently does so.)
     <TT
 CLASS="STRUCTFIELD"
 >amindexnulls</TT
 > should be set true only if the
-    index AM indexes all rows, including arbitrary combinations of nulls.
+    index access method indexes all rows, including arbitrary combinations of null values.
    </P
 ></DIV
 ><DIV
@@ -621,7 +663,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_aggregate</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_aggregate</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -635,7 +680,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_amop</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_amop</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Trigger Functions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Python - Python Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 22. PL/Python - Python Procedural Language</TD
+>Chapter 43. PL/Python - Python Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,107 +81,107 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPYTHON-TRIGGER"
->22.2. Trigger Functions</A
+>43.2. Trigger Functions</A
 ></H1
 ><P
 >   When a function is used in a trigger, the dictionary
-   <TT
+   <VAR
 CLASS="LITERAL"
->TD</TT
+>TD</VAR
 > contains trigger-related values.  The trigger
-   rows are in <TT
+   rows are in <VAR
 CLASS="LITERAL"
->TD["new"]</TT
-> and/or <TT
+>TD["new"]</VAR
+> and/or <VAR
 CLASS="LITERAL"
->TD["old"]</TT
+>TD["old"]</VAR
 >
-   depending on the trigger event.  <TT
+   depending on the trigger event.  <VAR
 CLASS="LITERAL"
->TD["event"]</TT
+>TD["event"]</VAR
 > contains
-   the event as a string (<TT
+   the event as a string (<VAR
 CLASS="LITERAL"
->INSERT</TT
->, <TT
+>INSERT</VAR
+>, <VAR
 CLASS="LITERAL"
->UPDATE</TT
+>UPDATE</VAR
 >,
-   <TT
+   <VAR
 CLASS="LITERAL"
->DELETE</TT
->, or <TT
+>DELETE</VAR
+>, or <VAR
 CLASS="LITERAL"
->UNKNOWN</TT
+>UNKNOWN</VAR
 >).
-   <TT
+   <VAR
 CLASS="LITERAL"
->TD["when"]</TT
-> contains one of <TT
+>TD["when"]</VAR
+> contains one of <VAR
 CLASS="LITERAL"
->BEFORE</TT
+>BEFORE</VAR
 >,
-   <TT
+   <VAR
 CLASS="LITERAL"
->AFTER</TT
->, and <TT
+>AFTER</VAR
+>, and <VAR
 CLASS="LITERAL"
->UNKNOWN</TT
+>UNKNOWN</VAR
 >.
-   <TT
+   <VAR
 CLASS="LITERAL"
->TD["level"]</TT
-> contains one of <TT
+>TD["level"]</VAR
+> contains one of <VAR
 CLASS="LITERAL"
->ROW</TT
+>ROW</VAR
 >,
-   <TT
+   <VAR
 CLASS="LITERAL"
->STATEMENT</TT
->, and <TT
+>STATEMENT</VAR
+>, and <VAR
 CLASS="LITERAL"
->UNKNOWN</TT
+>UNKNOWN</VAR
 >.
-   <TT
+   <VAR
 CLASS="LITERAL"
->TD["name"]</TT
+>TD["name"]</VAR
 > contains the trigger name, and
-   <TT
+   <VAR
 CLASS="LITERAL"
->TD["relid"]</TT
-> contains the relation ID of the table on
+>TD["relid"]</VAR
+> contains the OID of the table on
    which the trigger occurred.  If the trigger was called with
-   arguments they are available in <TT
+   arguments they are available in <VAR
 CLASS="LITERAL"
->TD["args"][0]</TT
+>TD["args"][0]</VAR
 > to
-   <TT
+   <VAR
 CLASS="LITERAL"
->TD["args"][(n-1)]</TT
+>TD["args"][(n-1)]</VAR
 >.
   </P
 ><P
->   If the <TT
+>   If <VAR
 CLASS="LITERAL"
->TD["when"]</TT
-> is <TT
+>TD["when"]</VAR
+> is <VAR
 CLASS="LITERAL"
->BEFORE</TT
+>BEFORE</VAR
 >, you may
-   return <TT
+   return <VAR
 CLASS="LITERAL"
->None</TT
-> or <TT
+>None</VAR
+> or <VAR
 CLASS="LITERAL"
->"OK"</TT
+>"OK"</VAR
 > from the
    Python function to indicate the row is unmodified,
-   <TT
+   <VAR
 CLASS="LITERAL"
->"SKIP"</TT
-> to abort the event, or <TT
+>"SKIP"</VAR
+> to abort the event, or <VAR
 CLASS="LITERAL"
->"MODIFY"</TT
+>"MODIFY"</VAR
 > to
    indicate you've modified the row.
   </P

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >ANALYZE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,144 +78,49 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-ANALYZE"
->ANALYZE</A
-></H1
+></A
+>ANALYZE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37856"
+NAME="AEN36889"
 ></A
 ><H2
 >Name</H2
->   ANALYZE
-  &nbsp;--&nbsp;   collect statistics about a database
-  </DIV
+>ANALYZE&nbsp;--&nbsp;collect statistics about a database</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37859"
+NAME="AEN36892"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->ANALYZE [ VERBOSE ] [ <TT
+>ANALYZE [ VERBOSE ] [ <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> [ (<TT
+>table</VAR
+> [ (<VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [, ...] ) ] ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ANALYZE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->VERBOSE</DT
-><DD
-><P
->	Enables display of progress messages.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></DT
-><DD
-><P
->	The name (possibly schema-qualified) of a specific table to
-	analyze. Defaults to all tables in the current database.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-></DT
-><DD
-><P
->	The name of a specific column to analyze. Defaults to all columns.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ANALYZE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
-><SPAN
-CLASS="RETURNVALUE"
->ANALYZE</SPAN
->
-       </TT
-></DT
-><DD
-><P
->	The command is complete.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>column</VAR
+> [, ...] ) ] ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ANALYZE-1"
+NAME="AEN36896"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >ANALYZE</TT
 > collects statistics about the contents of
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> tables, and stores the results in
-   the system table <TT
+   tables in the database, and stores the results in
+   the system table <VAR
 CLASS="LITERAL"
->pg_statistic</TT
+>pg_statistic</VAR
 >.  Subsequently,
    the query planner uses the statistics to help determine the most efficient
    execution plans for queries.
@@ -230,16 +135,87 @@ CLASS="COMMAND"
 >ANALYZE</TT
 > examines
    only that table.  It is further possible to give a list of column names,
-   in which case only the statistics for those columns are updated.
+   in which case only the statistics for those columns are collected.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-ANALYZE-3"
+NAME="AEN36904"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>VERBOSE</VAR
+></DT
+><DD
+><P
+>      Enables display of progress messages.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></DT
+><DD
+><P
+>      The name (possibly schema-qualified) of a specific table to
+      analyze. Defaults to all tables in the current database.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>column</VAR
+></DT
+><DD
+><P
+>      The name of a specific column to analyze. Defaults to all columns.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36922"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ANALYZE</SAMP
+></DT
+><DD
+><P
+>      The command is complete.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36930"
+></A
+><H2
+>Notes</H2
 ><P
 >   It is a good idea to run <TT
 CLASS="COMMAND"
@@ -277,7 +253,7 @@ CLASS="COMMAND"
 >ANALYZE</TT
 > takes a random sample of the
    table contents, rather than examining every row.  This allows even very
-   large tables to be analyzed in a small amount of time.  Note however
+   large tables to be analyzed in a small amount of time.  Note, however,
    that the statistics are only approximate, and will change slightly each
    time <TT
 CLASS="COMMAND"
@@ -299,22 +275,21 @@ CLASS="COMMAND"
 > deems them uninteresting (for example, in
    a unique-key column, there are no common values) or if the column
    data type does not support the appropriate operators.  There is more
-   information about the statistics in the <I
-CLASS="CITETITLE"
->User's
-   Guide</I
+   information about the statistics in <A
+HREF="maintenance.html"
+>Chapter 21</A
 >.
   </P
 ><P
 >   The extent of analysis can be controlled by adjusting the
-   <TT
+   <VAR
 CLASS="LITERAL"
->default_statistics_target</TT
+>default_statistics_target</VAR
 > parameter variable, or on a
    column-by-column basis by setting the per-column
    statistics target with <TT
 CLASS="COMMAND"
->ALTER TABLE ALTER COLUMN SET
+>ALTER TABLE ... ALTER COLUMN ... SET
    STATISTICS</TT
 > (see
    <A
@@ -331,13 +306,22 @@ HREF="sql-altertable.html"
 CLASS="COMMAND"
 >ANALYZE</TT
 > and the amount of space occupied
-   in <TT
+   in <VAR
 CLASS="LITERAL"
->pg_statistic</TT
+>pg_statistic</VAR
 >.
    In particular, setting the statistics target to zero disables collection of
    statistics for that column.  It may be useful to do that for columns that
-   are never used as part of the WHERE, GROUP BY, or ORDER BY clauses of
+   are never used as part of the <VAR
+CLASS="LITERAL"
+>WHERE</VAR
+>, <VAR
+CLASS="LITERAL"
+>GROUP BY</VAR
+>, or <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> clauses of
    queries, since the planner will have no use for statistics on such columns.
   </P
 ><P
@@ -350,33 +334,19 @@ CLASS="COMMAND"
 >.
   </P
 ></DIV
-></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-ANALYZE-3"
+NAME="AEN36957"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-ANALYZE-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >ANALYZE</TT
-> statement in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
-></DIV
+> statement in the SQL standard.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

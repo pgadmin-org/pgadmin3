@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DEALLOCATE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,128 +78,47 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DEALLOCATE"
->DEALLOCATE</A
-></H1
+></A
+>DEALLOCATE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41875"
+NAME="AEN40544"
 ></A
 ><H2
 >Name</H2
->   DEALLOCATE
-  &nbsp;--&nbsp;   remove a prepared query
-  </DIV
+>DEALLOCATE&nbsp;--&nbsp;deallocate a prepared statement</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41878"
+NAME="AEN40547"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->   DEALLOCATE [ PREPARE ] <TT
+>DEALLOCATE [ PREPARE ] <VAR
 CLASS="REPLACEABLE"
-><I
->plan_name</I
-></TT
->
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DEALLOCATE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->PREPARE</DT
-><DD
-><P
->		This keyword is ignored.
-	   </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->plan_name</I
-></TT
-></DT
-><DD
-><P
->		The name of the prepared query to remove.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DEALLOCATE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->		<SPAN
-CLASS="RETURNVALUE"
->DEALLOCATE</SPAN
->
-       </TT
-></DT
-><DD
-><P
->		The prepared query was removed successfully.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>plan_name</VAR
+></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DEALLOCATE-1"
+NAME="AEN40550"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >DEALLOCATE</TT
-> is used to remove a previously
-   prepared query. If you do not explicitly
-   <TT
-CLASS="COMMAND"
->DEALLOCATE</TT
-> a prepared query, it is removed when
-   the session ends.
+> is used to deallocate a previously
+   prepared SQL statement. If you do not explicitly deallocate a
+   prepared statement, it is deallocated when the session ends.
   </P
 ><P
->   For more information on prepared queries, see <A
+>   For more information on prepared statements, see <A
 HREF="sql-prepare.html"
 ><I
 >PREPARE</I
@@ -210,27 +129,77 @@ HREF="sql-prepare.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DEALLOCATE-2"
+NAME="AEN40556"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DEALLOCATE-3"
-></A
-><H3
->    SQL92
-   </H3
+>Parameters</H2
 ><P
->	SQL92 includes a <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>PREPARE</VAR
+></DT
+><DD
+><P
+>      This key word is ignored.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>plan_name</VAR
+></DT
+><DD
+><P
+>      The name of the prepared statement to deallocate.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40569"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DEALLOCATE</SAMP
+></DT
+><DD
+><P
+>      Message returned if the prepared statement was deallocated successfully.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40577"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The SQL standard includes a <TT
 CLASS="COMMAND"
 >DEALLOCATE</TT
-> statement, but it is
-    only for use in embedded SQL clients.
-   </P
-></DIV
+>
+   statement, but it is only for use in embedded SQL.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Using SQL Descriptor Areas</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="PREVIOUS"
+TITLE="Dynamic SQL"
+HREF="ecpg-dynamic.html"><LINK
+REL="NEXT"
+TITLE="Error Handling"
+HREF="ecpg-errors.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecpg-dynamic.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 30. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> in C</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecpg-errors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-DESCRIPTORS"
+>30.8. Using SQL Descriptor Areas</A
+></H1
+><P
+>   An SQL descriptor area is a more sophisticated method for
+   processing the result of a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> or
+   <TT
+CLASS="COMMAND"
+>FETCH</TT
+> statement.  An SQL descriptor area groups
+   the data of one row of data together with metadata items into one
+   data structure.  The metadata is particularly useful when executing
+   dynamic SQL statements, where the nature of the result columns may
+   not be known ahead of time.
+  </P
+><P
+>   An SQL descriptor area consists of a header, which contains
+   information concerning the entire descriptor, and one or more item
+   descriptor areas, which basically each describe one column in the
+   result row.
+  </P
+><P
+>   Before you can use an SQL descriptor area, you need to allocate one:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL ALLOCATE DESCRIPTOR <VAR
+CLASS="REPLACEABLE"
+>identifier</VAR
+>;</PRE
+><P>
+   The identifier serves as the <SPAN
+CLASS="QUOTE"
+>"variable name"</SPAN
+> of the
+   descriptor area.  The scope of the allocated descriptor is WHAT?.
+   When you don't need the descriptor anymore, you should deallocate
+   it:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL DEALLOCATE DESCRIPTOR <VAR
+CLASS="REPLACEABLE"
+>identifier</VAR
+>;</PRE
+><P>
+  </P
+><P
+>   To use a descriptor area, specify it as the storage target in an
+   <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> clause, instead of listing host variables:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL FETCH NEXT FROM mycursor INTO DESCRIPTOR mydesc;</PRE
+><P>
+  </P
+><P
+>   Now how do you get the data out of the descriptor area?  You can
+   think of the descriptor area as a structure with named fields.  To
+   retrieve the value of a field from the header and store it into a
+   host variable, use the following command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL GET DESCRIPTOR <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> :<VAR
+CLASS="REPLACEABLE"
+>hostvar</VAR
+> = <VAR
+CLASS="REPLACEABLE"
+>field</VAR
+>;</PRE
+><P>
+   Currently, there is only one header field defined:
+   <VAR
+CLASS="REPLACEABLE"
+>COUNT</VAR
+>, which tells how many item
+   descriptor areas exist (that is, how many columns are contained in
+   the result).  The host variable needs to be of an integer type.  To
+   get a field from the item descriptor area, use the following
+   command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL GET DESCRIPTOR <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> VALUE <VAR
+CLASS="REPLACEABLE"
+>num</VAR
+> :<VAR
+CLASS="REPLACEABLE"
+>hostvar</VAR
+> = <VAR
+CLASS="REPLACEABLE"
+>field</VAR
+>;</PRE
+><P>
+   <VAR
+CLASS="REPLACEABLE"
+>num</VAR
+> can be a literal integer or a host
+   variable containing an integer. Possible fields are:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>CARDINALITY</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       number of rows in the result set
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>DATA</VAR
+><BR></DT
+><DD
+><P
+>       actual data item (therefore, the data type of this field
+       depends on the query)
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>DATETIME_INTERVAL_CODE</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       ?
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>DATETIME_INTERVAL_PRECISION</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       not implemented
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>INDICATOR</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       the indicator (indicating a null value or a value truncation)
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>KEY_MEMBER</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       not implemented
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>LENGTH</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       length of the datum in characters
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>NAME</VAR
+> (string)<BR></DT
+><DD
+><P
+>       name of the column
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>NULLABLE</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       not implemented
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>OCTET_LENGTH</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       length of the character representation of the datum in bytes
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>PRECISION</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       precision (for type <TT
+CLASS="TYPE"
+>numeric</TT
+>)
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>RETURNED_LENGTH</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       length of the datum in characters
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>RETURNED_OCTET_LENGTH</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       length of the character representation of the datum in bytes
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>SCALE</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       scale (for type <TT
+CLASS="TYPE"
+>numeric</TT
+>)
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>TYPE</VAR
+> (integer)<BR></DT
+><DD
+><P
+>       numeric code of the data type of the column
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-dynamic.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-errors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Dynamic SQL</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Error Handling</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >The PostgreSQL Type System</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="Extending SQL: An Overview"
+TITLE="Extending SQL"
 HREF="extend.html"><LINK
 REL="PREVIOUS"
-TITLE="Extending SQL: An Overview"
+TITLE="Extending SQL"
 HREF="extend.html"><LINK
 REL="NEXT"
-TITLE="About the PostgreSQL System Catalogs"
-HREF="pg-system-catalogs.html"><LINK
+TITLE="User-Defined Functions"
+HREF="xfunc.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,16 +60,16 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 8. Extending <SPAN
+>Chapter 34. Extending <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
->: An Overview</TD
+>SQL</ACRONYM
+></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="pg-system-catalogs.html"
+HREF="xfunc.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -84,33 +84,25 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TYPE-SYSTEM"
->8.2. The <SPAN
+>34.2. The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > Type System</A
 ></H1
 ><A
-NAME="AEN31230"
+NAME="AEN29552"
 ></A
 ><A
-NAME="AEN31233"
+NAME="AEN29555"
 ></A
 ><P
->    The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> type system
-    can be broken down in several ways.
-    Types are divided into base types and composite  types.
+>    Data types are divided into base types and composite  types.
     Base  types  are those, like <TT
 CLASS="TYPE"
 >int4</TT
 >, that are implemented
     in a language such as C.  They generally correspond  to
-    what are often known as <I
-CLASS="FIRSTTERM"
->abstract data types</I
->; <SPAN
+    what are often known as abstract data types.  <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
@@ -118,34 +110,12 @@ CLASS="PRODUCTNAME"
     by  the  user and only understands the behavior of such
     types to the extent that the user describes them.  
     Composite  types  are  created whenever the user creates a
-    table.
-   </P
-><P
->    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->  stores  these  types
-    in only one way (within the
-    file that stores all rows of a table)  but  the
+    table.  The
     user can <SPAN
 CLASS="QUOTE"
 >"look inside"</SPAN
 > at the attributes of these types
-    from the query language and optimize their retrieval by
-    (for example) defining indexes on the attributes.
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->  base  types are further
-    divided into built-in
-    types and user-defined  types.   Built-in  types  (like
-    <TT
-CLASS="TYPE"
->int4</TT
->)  are  those  that  are  compiled
-    into the system.
-    User-defined types are those created by the user in the
-    manner to be described later.
+    from the query language.
    </P
 ></DIV
 ><DIV
@@ -182,7 +152,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="pg-system-catalogs.html"
+HREF="xfunc.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -192,10 +162,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Extending <SPAN
+>Extending <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
->: An Overview</TD
+>SQL</ACRONYM
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -209,10 +179,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->About the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> System Catalogs</TD
+>User-Defined Functions</TD
 ></TR
 ></TABLE
 ></DIV

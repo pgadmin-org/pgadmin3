@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Server Run-time Environment</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+TITLE="Server Administration"
 HREF="admin.html"><LINK
 REL="PREVIOUS"
 TITLE="Installation on Windows"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="RUNTIME"
->Chapter 3. Server Run-time Environment</A
-></H1
+></A
+>Chapter 16. Server Run-time Environment</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,7 +90,7 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->3.1. <A
+>16.1. <A
 HREF="runtime.html#POSTGRES-USER"
 >The <SPAN
 CLASS="PRODUCTNAME"
@@ -98,99 +98,124 @@ CLASS="PRODUCTNAME"
 > User Account</A
 ></DT
 ><DT
->3.2. <A
+>16.2. <A
 HREF="creating-cluster.html"
 >Creating a Database Cluster</A
 ></DT
 ><DT
->3.3. <A
+>16.3. <A
 HREF="postmaster-start.html"
 >Starting the Database Server</A
 ></DT
 ><DD
 ><DL
 ><DT
->3.3.1. <A
+>16.3.1. <A
 HREF="postmaster-start.html#POSTMASTER-START-FAILURES"
 >Server Start-up Failures</A
 ></DT
 ><DT
->3.3.2. <A
+>16.3.2. <A
 HREF="postmaster-start.html#CLIENT-CONNECTION-PROBLEMS"
 >Client Connection Problems</A
 ></DT
 ></DL
 ></DD
 ><DT
->3.4. <A
+>16.4. <A
 HREF="runtime-config.html"
 >Run-time Configuration</A
 ></DT
 ><DD
 ><DL
 ><DT
->3.4.1. <A
-HREF="runtime-config.html#CATALOG-PG-SETTINGS"
->pg_settings</A
+>16.4.1. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-CONNECTION"
+>Connections and Authentication</A
 ></DT
 ><DT
->3.4.2. <A
-HREF="runtime-config.html#RUNTIME-CONFIG-OPTIMIZER"
->Planner and Optimizer Tuning</A
+>16.4.2. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-RESOURCE"
+>Resource Usage (Except WAL)</A
 ></DT
 ><DT
->3.4.3. <A
-HREF="runtime-config.html#LOGGING"
->Logging and Debugging</A
-></DT
-><DT
->3.4.4. <A
-HREF="runtime-config.html#RUNTIME-CONFIG-GENERAL"
->General Operation</A
-></DT
-><DT
->3.4.5. <A
+>16.4.3. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-WAL"
->WAL</A
+>Write Ahead Log</A
 ></DT
 ><DT
->3.4.6. <A
+>16.4.4. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-QUERY"
+>Query Tuning</A
+></DT
+><DT
+>16.4.5. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-LOGGING"
+>Error Reporting and Logging</A
+></DT
+><DT
+>16.4.6. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-STATISTICS"
+>Runtime Statistics</A
+></DT
+><DT
+>16.4.7. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-CLIENT"
+>Client Connection Defaults</A
+></DT
+><DT
+>16.4.8. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-LOCKS"
+>Lock Management</A
+></DT
+><DT
+>16.4.9. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-COMPATIBLE"
+>Version and Platform Compatibility</A
+></DT
+><DT
+>16.4.10. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-DEVELOPER"
+>Developer Options</A
+></DT
+><DT
+>16.4.11. <A
 HREF="runtime-config.html#RUNTIME-CONFIG-SHORT"
 >Short Options</A
 ></DT
 ></DL
 ></DD
 ><DT
->3.5. <A
+>16.5. <A
 HREF="kernel-resources.html"
 >Managing Kernel Resources</A
 ></DT
 ><DD
 ><DL
 ><DT
->3.5.1. <A
+>16.5.1. <A
 HREF="kernel-resources.html#SYSVIPC"
 >Shared Memory and Semaphores</A
 ></DT
 ><DT
->3.5.2. <A
-HREF="kernel-resources.html#AEN20792"
+>16.5.2. <A
+HREF="kernel-resources.html#AEN16452"
 >Resource Limits</A
 ></DT
 ></DL
 ></DD
 ><DT
->3.6. <A
+>16.6. <A
 HREF="postmaster-shutdown.html"
 >Shutting Down the Server</A
 ></DT
 ><DT
->3.7. <A
+>16.7. <A
 HREF="ssl-tcp.html"
 >Secure TCP/IP Connections with SSL</A
 ></DT
 ><DT
->3.8. <A
+>16.8. <A
 HREF="ssh-tunnels.html"
 >Secure TCP/IP Connections with <SPAN
 CLASS="APPLICATION"
@@ -209,13 +234,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="POSTGRES-USER"
->3.1. The <SPAN
+>16.1. The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > User Account</A
 ></H1
 ><A
-NAME="AEN19179"
+NAME="AEN14582"
 ></A
 ><P
 >   As with any other server daemon that is connected to outside world,
@@ -225,9 +250,9 @@ CLASS="PRODUCTNAME"
 > under a
    separate user account. This user account should only own the data
    that is managed by the server, and should not be shared with other
-   daemons. (For example, using the user <SPAN
-CLASS="QUOTE"
->"nobody"</SPAN
+   daemons. (For example, using the user <VAR
+CLASS="LITERAL"
+>nobody</VAR
 > is a bad
    idea.) It is not advisable to install executables owned by
    this user because compromised systems could then modify their own 

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE SCHEMA</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,75 +78,105 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATESCHEMA"
->CREATE SCHEMA</A
-></H1
+></A
+>CREATE SCHEMA</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN40521"
+NAME="AEN39171"
 ></A
 ><H2
 >Name</H2
->   CREATE SCHEMA
-  &nbsp;--&nbsp;   define a new schema
-  </DIV
+>CREATE SCHEMA&nbsp;--&nbsp;define a new schema</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN40524"
+NAME="AEN39174"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE SCHEMA <TT
+>CREATE SCHEMA <VAR
 CLASS="REPLACEABLE"
-><I
->schemaname</I
-></TT
-> [ AUTHORIZATION <TT
+>schemaname</VAR
+> [ AUTHORIZATION <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> ] [ <TT
+>username</VAR
+> ] [ <VAR
 CLASS="REPLACEABLE"
-><I
->schema_element</I
-></TT
+>schema_element</VAR
 > [ ... ] ]
-CREATE SCHEMA AUTHORIZATION <TT
+CREATE SCHEMA AUTHORIZATION <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> [ <TT
+>username</VAR
+> [ <VAR
 CLASS="REPLACEABLE"
-><I
->schema_element</I
-></TT
-> [ ... ] ]
-  </PRE
+>schema_element</VAR
+> [ ... ] ]</PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-CREATESCHEMA-1"
+NAME="AEN39181"
 ></A
-><H3
->    Inputs
-   </H3
+><H2
+>Description</H2
 ><P
->&#13;    <P
+>   <TT
+CLASS="COMMAND"
+>CREATE SCHEMA</TT
+> will enter a new schema
+   into the current database.
+   The schema name must be distinct from the name of any existing schema
+   in the current database.
+  </P
+><P
+>   A schema is essentially a namespace:
+   it contains named objects (tables, data types, functions, and operators)
+   whose names may duplicate those of other objects existing in other
+   schemas.  Named objects are accessed either by <SPAN
+CLASS="QUOTE"
+>"qualifying"</SPAN
+>
+   their names with the schema name as a prefix, or by setting a search
+   path that includes the desired schema(s).  Unqualified objects are
+   created in the current schema (the one at the front of the search path,
+   which can be determined with the function <CODE
+CLASS="FUNCTION"
+>current_schema</CODE
+>).
+  </P
+><P
+>   Optionally, <TT
+CLASS="COMMAND"
+>CREATE SCHEMA</TT
+> can include subcommands
+   to create objects within the new schema.  The subcommands are treated
+   essentially the same as separate commands issued after creating the
+   schema, except that if the <VAR
+CLASS="LITERAL"
+>AUTHORIZATION</VAR
+> clause is used,
+   all the created objects will be owned by that user.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39191"
+></A
+><H2
+>Parameters</H2
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->schemaname</I
-></TT
+>schemaname</VAR
 ></DT
 ><DD
 ><P
@@ -155,11 +185,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 ></DT
 ><DD
 ><P
@@ -169,11 +197,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->schema_element</I
-></TT
+>schema_element</VAR
 ></DT
 ><DD
 ><P
@@ -198,241 +224,178 @@ CLASS="COMMAND"
 ></DD
 ></DL
 ></DIV
-><P>
-   </P
 ></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-CREATESCHEMA-2"
+NAME="AEN39213"
 ></A
-><H3
->    Outputs
-   </H3
+><H2
+>Diagnostics</H2
 ><P
->&#13;    <P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE SCHEMA
-       </TT
+>CREATE SCHEMA</SAMP
 ></DT
 ><DD
 ><P
->	Message returned if the command is successful.
-       </P
+>      Message returned if the schema was successfully created.
+     </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->ERROR:  namespace "<TT
+>ERROR:  namespace "<VAR
 CLASS="REPLACEABLE"
-><I
->schemaname</I
-></TT
->" already exists
-       </TT
+>schemaname</VAR
+>" already exists</SAMP
 ></DT
 ><DD
 ><P
->	If the schema specified already exists.
-       </P
+>      Message returned if the schema specified already exists.
+     </P
 ></DD
 ></DL
 ></DIV
-><P>
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATESCHEMA-1"
+NAME="AEN39227"
 ></A
 ><H2
->   Description
-  </H2
+>Notes</H2
 ><P
->   <TT
-CLASS="COMMAND"
->CREATE SCHEMA</TT
-> will enter a new schema
-   into the current database.
-   The schema name must be distinct from the name of any existing schema
-   in the current database.
-  </P
-><P
->   A schema is essentially a namespace:
-   it contains named objects (tables, data types, functions, and operators)
-   whose names may duplicate those of other objects existing in other
-   schemas.  Named objects are accessed either by <SPAN
-CLASS="QUOTE"
->"qualifying"</SPAN
+>   To create a schema, the invoking user must have <VAR
+CLASS="LITERAL"
+>CREATE</VAR
 >
-   their names with the schema name as a prefix, or by setting a search
-   path that includes the desired schema(s).  Unqualified objects are
-   created in the current schema (the one at the front of the search path; 
-   see <TT
-CLASS="LITERAL"
->CURRENT_SCHEMA()</TT
->).
+   privilege for the current database.  (Of course, superusers bypass
+   this check.)
   </P
-><P
->   Optionally, <TT
-CLASS="COMMAND"
->CREATE SCHEMA</TT
-> can include subcommands
-   to create objects within the new schema.  The subcommands are treated
-   essentially the same as separate commands issued after creating the
-   schema, except that if the <TT
-CLASS="LITERAL"
->AUTHORIZATION</TT
-> clause is used,
-   all the created objects will be owned by that user.
-  </P
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATESCHEMA-3"
-></A
-><H3
->    Notes
-   </H3
-><P
->    To create a schema, the invoking user must have <TT
-CLASS="LITERAL"
->CREATE</TT
->
-    privilege for the current database.  (Of course, superusers bypass
-    this check.)
-   </P
-><P
->    Use <TT
-CLASS="COMMAND"
->DROP SCHEMA</TT
-> to remove a schema.
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATESCHEMA-2"
+NAME="AEN39231"
 ></A
 ><H2
->   Examples
-  </H2
+>Examples</H2
 ><P
 >   Create a schema:
-
-  </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->CREATE SCHEMA myschema;
-  </PRE
+>CREATE SCHEMA myschema;</PRE
 ><P>
   </P
 ><P
->   Create a schema for user <TT
+>   Create a schema for user <VAR
 CLASS="LITERAL"
->joe</TT
-> --- the schema will also
-   be named <TT
+>joe</VAR
+>; the schema will also be
+   named <VAR
 CLASS="LITERAL"
->joe</TT
+>joe</VAR
 >:
-
-  </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->CREATE SCHEMA AUTHORIZATION joe;
-  </PRE
+>CREATE SCHEMA AUTHORIZATION joe;</PRE
 ><P>
   </P
 ><P
 >   Create a schema and create a table and view within it:
-
-  </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE SCHEMA hollywood
     CREATE TABLE films (title text, release date, awards text[])
     CREATE VIEW winners AS
-        SELECT title, release FROM films WHERE awards IS NOT NULL;
-  </PRE
+        SELECT title, release FROM films WHERE awards IS NOT NULL;</PRE
 ><P>
    Notice that the individual subcommands do not end with semicolons.
   </P
 ><P
 >   The following is an equivalent way of accomplishing the same result:
-  </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE SCHEMA hollywood;
 CREATE TABLE hollywood.films (title text, release date, awards text[]);
 CREATE VIEW hollywood.winners AS
-    SELECT title, release FROM hollywood.films WHERE awards IS NOT NULL;
-  </PRE
+    SELECT title, release FROM hollywood.films WHERE awards IS NOT NULL;</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATESCHEMA-3"
+NAME="AEN39243"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATESCHEMA-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    SQL92 allows a <TT
+>   The SQL standard allows a <VAR
 CLASS="LITERAL"
->DEFAULT CHARACTER SET</TT
-> clause in
-    <TT
+>DEFAULT CHARACTER SET</VAR
+> clause
+   in <TT
 CLASS="COMMAND"
 >CREATE SCHEMA</TT
->, as well as more subcommand types
-    than are presently accepted by <SPAN
+>, as well as more subcommand
+   types than are presently accepted by
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >.
-   </P
+  </P
 ><P
->    SQL92 specifies that the subcommands in <TT
+>   The SQL standard specifies that the subcommands in <TT
 CLASS="COMMAND"
->CREATE SCHEMA</TT
->
-    may appear in any order.  The present
-    <SPAN
+>CREATE
+   SCHEMA</TT
+> may appear in any order.  The present
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> implementation does not handle all
-    cases of forward references in subcommands; it may sometimes be necessary
-    to reorder the subcommands to avoid forward references.
-   </P
+> implementation does not
+   handle all cases of forward references in subcommands; it may
+   sometimes be necessary to reorder the subcommands to avoid forward
+   references.
+  </P
 ><P
->    In SQL92, the owner of a schema always owns all objects within it.
-    <SPAN
+>   According to the SQL standard, the owner of a schema always owns
+   all objects within it.  <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> allows schemas to contain objects
-    owned by users other than the schema owner.  This can happen only if the
-    schema owner grants <TT
+>
+   allows schemas to contain objects owned by users other than the
+   schema owner.  This can happen only if the schema owner grants the
+   <VAR
 CLASS="LITERAL"
->CREATE</TT
-> rights on his schema to someone
-    else.
-   </P
+>CREATE</VAR
+> privilege on his schema to someone else.
+  </P
 ></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39255"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alterschema.html"
+><I
+>ALTER SCHEMA</I
+></A
+>, <A
+HREF="sql-dropschema.html"
+><I
+>DROP SCHEMA</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

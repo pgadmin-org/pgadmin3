@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Server Programming Interface</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
-HREF="programmer-server.html"><LINK
+HREF="server-programming.html"><LINK
 REL="PREVIOUS"
-TITLE="Examples"
-HREF="trigger-examples.html"><LINK
+TITLE="A Complete Example"
+HREF="trigger-example.html"><LINK
 REL="NEXT"
 TITLE="SPI_connect"
 HREF="spi-spiconnect.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="trigger-examples.html"
+HREF="trigger-example.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="SPI"
->Chapter 17. Server Programming Interface</A
-></H1
+></A
+>Chapter 38. Server Programming Interface</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,7 +90,7 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->17.1. <A
+>38.1. <A
 HREF="spi.html#SPI-INTERFACE"
 >Interface Functions</A
 ></DT
@@ -120,17 +120,17 @@ HREF="spi-spiprepare.html"
 ><A
 HREF="spi-spiexecp.html"
 >SPI_execp</A
->&nbsp;--&nbsp;Executes a plan from <TT
+>&nbsp;--&nbsp;Executes a plan from <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 ></DT
 ><DT
 ><A
 HREF="spi-spicursor-open.html"
 >SPI_cursor_open</A
->&nbsp;--&nbsp;Sets up a cursor using a plan created with <TT
+>&nbsp;--&nbsp;Sets up a cursor using a plan created with <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 ></DT
 ><DT
 ><A
@@ -160,7 +160,7 @@ HREF="spi-spisaveplan.html"
 ></DL
 ></DD
 ><DT
->17.2. <A
+>38.2. <A
 HREF="spi-interface-support.html"
 >Interface Support Functions</A
 ></DT
@@ -195,9 +195,9 @@ HREF="spi-spigettype.html"
 ><A
 HREF="spi-spigettypeid.html"
 >SPI_gettypeid</A
->&nbsp;--&nbsp;Returns the type <SPAN
+>&nbsp;--&nbsp;Returns the type <ACRONYM
 CLASS="ACRONYM"
->OID</SPAN
+>OID</ACRONYM
 > of the specified attribute</DT
 ><DT
 ><A
@@ -207,7 +207,7 @@ HREF="spi-spigetrelname.html"
 ></DL
 ></DD
 ><DT
->17.3. <A
+>38.3. <A
 HREF="spi-memory.html"
 >Memory Management</A
 ></DT
@@ -257,9 +257,9 @@ HREF="spi-spifreetuple.html"
 ><A
 HREF="spi-spifreetuptable.html"
 >SPI_freetuptable</A
->&nbsp;--&nbsp;Frees a tuple set created by <TT
+>&nbsp;--&nbsp;Frees a tuple set created by <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 > or similar function</DT
 ><DT
 ><A
@@ -269,12 +269,12 @@ HREF="spi-spifreeplan.html"
 ></DL
 ></DD
 ><DT
->17.4. <A
+>38.4. <A
 HREF="spi-visibility.html"
 >Visibility of Data Changes</A
 ></DT
 ><DT
->17.5. <A
+>38.5. <A
 HREF="spi-examples.html"
 >Examples</A
 ></DT
@@ -285,17 +285,17 @@ HREF="spi-examples.html"
 CLASS="FIRSTTERM"
 >Server Programming Interface</I
 > 
-(<SPAN
+(<ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 >) gives users the
-ability to run <SPAN
+ability to run <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > queries inside user-defined 
-<SPAN
+<ACRONYM
 CLASS="ACRONYM"
->C</SPAN
+>C</ACRONYM
 > functions.</P
 ><DIV
 CLASS="NOTE"
@@ -304,54 +304,54 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->The available Procedural Languages (<SPAN
+>The available Procedural Languages (<ACRONYM
 CLASS="ACRONYM"
->PL</SPAN
+>PL</ACRONYM
 >) give an alternate
 means to build functions that can execute queries.</P
 ></BLOCKQUOTE
 ></DIV
 ><P
->In fact, <SPAN
+>In fact, <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 > is just a set of native interface functions
 to simplify access to the Parser, Planner, Optimizer and Executor. 
-<SPAN
+<ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 > also does some memory management.</P
 ><P
 >To avoid misunderstanding we'll use <I
 CLASS="FIRSTTERM"
 >function</I
 > 
-to mean <SPAN
+to mean <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 > interface functions and 
 <I
 CLASS="FIRSTTERM"
 >procedure</I
 > for user-defined C-functions 
-using <SPAN
+using <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 >.</P
 ><P
->Procedures which use <SPAN
+>Procedures which use <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 > are called by the
-Executor.  The <SPAN
+Executor.  The <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 > calls recursively invoke the
 Executor in turn to run queries.  When the Executor is invoked
 recursively, it may itself call procedures which may make
-<SPAN
+<ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 > calls.</P
 ><P
 >Note that if during execution of a query from a procedure the transaction is
@@ -363,9 +363,9 @@ client.  This will probably be changed in future versions.</P
 (transaction control statements).  This will also be
 changed in the future.</P
 ><P
->If successful, <SPAN
+>If successful, <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 > functions return a non-negative result (either via
 a returned integer value or in SPI_result global variable, as described below).
 On error, a negative or NULL result will be returned.</P
@@ -375,7 +375,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SPI-INTERFACE"
->17.1. Interface Functions</A
+>38.1. Interface Functions</A
 ></H1
 ><DIV
 CLASS="TOC"
@@ -408,17 +408,17 @@ HREF="spi-spiprepare.html"
 ><A
 HREF="spi-spiexecp.html"
 >SPI_execp</A
->&nbsp;--&nbsp;Executes a plan from <TT
+>&nbsp;--&nbsp;Executes a plan from <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 ></DT
 ><DT
 ><A
 HREF="spi-spicursor-open.html"
 >SPI_cursor_open</A
->&nbsp;--&nbsp;Sets up a cursor using a plan created with <TT
+>&nbsp;--&nbsp;Sets up a cursor using a plan created with <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 ></DT
 ><DT
 ><A
@@ -465,7 +465,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="trigger-examples.html"
+HREF="trigger-example.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -493,13 +493,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Examples</TD
+>A Complete Example</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="programmer-server.html"
+HREF="server-programming.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

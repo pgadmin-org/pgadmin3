@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >REINDEX</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,371 +78,313 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-REINDEX"
->REINDEX</A
-></H1
+></A
+>REINDEX</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44801"
+NAME="AEN43041"
 ></A
 ><H2
 >Name</H2
->   REINDEX
-  &nbsp;--&nbsp;   rebuild corrupted indexes
-  </DIV
+>REINDEX&nbsp;--&nbsp;rebuild indexes</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44804"
+NAME="AEN43044"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->REINDEX { TABLE | DATABASE | INDEX } <TT
+>REINDEX { DATABASE | TABLE | INDEX } <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> [ FORCE ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-REINDEX-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->TABLE</DT
-><DD
-><P
->	Recreate all indexes of a specified table.
-       </P
-></DD
-><DT
->DATABASE</DT
-><DD
-><P
->	Recreate all system indexes of a specified database.
-	(User-table indexes are not included.)
-       </P
-></DD
-><DT
->INDEX</DT
-><DD
-><P
->	Recreate a specified index.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	The name of the specific table/database/index to be reindexed.
-	Table and index names may be schema-qualified.
-       </P
-></DD
-><DT
->FORCE</DT
-><DD
-><P
->	Force rebuild of system indexes.  Without this keyword
-	<TT
-CLASS="COMMAND"
->REINDEX</TT
-> skips system indexes that are not marked invalid.
-	FORCE is irrelevant for <TT
-CLASS="COMMAND"
->REINDEX INDEX</TT
->, or when reindexing
-	user indexes.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-REINDEX-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->REINDEX
-       </TT
-></DT
-><DD
-><P
->	Message returned if the table is successfully reindexed.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>name</VAR
+> [ FORCE ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-REINDEX-1"
+NAME="AEN43047"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >REINDEX</TT
-> is used to rebuild corrupted indexes.
-   Although in theory this should never be necessary, in practice
-   indexes may become corrupted due to software bugs or hardware
-   failures.  <TT
+> rebuilds an index based on the data
+   stored in the table, replacing the old copy of the index. There are
+   two main reasons to use <TT
 CLASS="COMMAND"
 >REINDEX</TT
-> provides a recovery method.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->REINDEX</TT
-> also removes certain dead index pages that
-   can't be reclaimed any other way. See the "Routine Reindexing"
-   section in the manual for more information.
-  </P
-><P
->    If you suspect corruption of an index on a user table, you can
-    simply rebuild that index, or all indexes on the table, using
-    <TT
-CLASS="COMMAND"
->REINDEX INDEX</TT
-> or <TT
-CLASS="COMMAND"
->REINDEX TABLE</TT
->.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->    Another approach to dealing with a corrupted user-table index is
-    just to drop and recreate it.  This may in fact be preferable if
-    you would like to maintain some semblance of normal operation on
-    the table meanwhile.  <TT
-CLASS="COMMAND"
->REINDEX</TT
-> acquires exclusive lock
-    on the table, while <TT
-CLASS="COMMAND"
->CREATE INDEX</TT
-> only locks out writes
-    not reads of the table.
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->   Things are more difficult if you need to recover from corruption of an
-   index on a system table.  In this case it's important for the backend
-   doing the recovery to not have used any of the suspect indexes itself.
-   (Indeed, in this sort of scenario you may find that backends are
-   crashing immediately at start-up, due to reliance on the corrupted
-   indexes.)  To recover safely, the postmaster must be shut down and a
-   stand-alone <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> backend must be
-   started instead, giving it
-   the command-line options -O and -P (these options allow system table
-   modifications and prevent use of system indexes, respectively).  Then
-   issue <TT
-CLASS="COMMAND"
->REINDEX INDEX</TT
->, <TT
-CLASS="COMMAND"
->REINDEX TABLE</TT
->, or
-   <TT
-CLASS="COMMAND"
->REINDEX DATABASE</TT
-> depending on how much you want to reconstruct.
-   If in doubt, use <TT
-CLASS="COMMAND"
->REINDEX DATABASE FORCE</TT
-> to force reconstruction
-   of all system indexes in the database.  Then quit the standalone backend
-   and restart the postmaster.
-  </P
-><P
->   Since this is likely the only situation when most people will ever use
-   a standalone backend, some usage notes might be in order:
+>:
 
    <P
 ></P
 ></P><UL
 ><LI
 ><P
->      Start the backend with a command like
-</P><PRE
-CLASS="SCREEN"
-><TT
-CLASS="USERINPUT"
-><B
->postgres -D $PGDATA -O -P my_database</B
-></TT
-></PRE
-><P>
-      Provide the correct path to the database area with <TT
-CLASS="OPTION"
->-D</TT
->, or
-      make sure that the environment variable <TT
-CLASS="ENVAR"
->PGDATA</TT
-> is set.
-      Also specify the name of the particular database you want to work in.
-     </P
-></LI
-><LI
-><P
->      You can issue any SQL command, not only <TT
+>      An index has become corrupted, and no longer contains valid
+      data. Although in theory this should never happen, in
+      practice indexes may become corrupted due to software bugs or
+      hardware failures.  <TT
 CLASS="COMMAND"
 >REINDEX</TT
->.
+> provides a
+      recovery method.
      </P
 ></LI
 ><LI
 ><P
->      Be aware that the standalone backend treats newline as the command
-      entry terminator; there is no intelligence about semicolons,
-      as there is in <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->.  To continue a command
-      across multiple lines, you must type backslash just before each
-      newline except the last one.
-      Also, you won't have any of the conveniences of command-line editing
-      (no command history, for example).
-     </P
-></LI
-><LI
-><P
->      To quit the backend, type <SPAN
-CLASS="ACRONYM"
->EOF</SPAN
-> (<B
-CLASS="KEYCAP"
->Control</B
->+<B
-CLASS="KEYCAP"
->D</B
->, usually).
+>      The index in question contains a lot of dead index pages that
+      are not being reclaimed. This can occur with B-tree indexes in PostgreSQL
+      under certain access patterns. <TT
+CLASS="COMMAND"
+>REINDEX</TT
+>
+      provides a way to reduce the space consumption of the index by
+      writing a new version of the index without the dead pages. See
+      <A
+HREF="routine-reindex.html"
+>Section 21.2</A
+> for more information.
      </P
 ></LI
 ></UL
 ><P>
-
-   See the <A
+  </P
+><P
+>   If you suspect corruption of an index on a user table, you can
+   simply rebuild that index, or all indexes on the table, using
+   <TT
+CLASS="COMMAND"
+>REINDEX INDEX</TT
+> or <TT
+CLASS="COMMAND"
+>REINDEX
+   TABLE</TT
+>.  Another approach to dealing with a corrupted
+   user-table index is just to drop and recreate it.  This may in fact
+   be preferable if you would like to maintain some semblance of
+   normal operation on the table meanwhile.  <TT
+CLASS="COMMAND"
+>REINDEX</TT
+>
+   acquires exclusive lock on the table, while <TT
+CLASS="COMMAND"
+>CREATE
+   INDEX</TT
+> only locks out writes not reads of the table.
+  </P
+><P
+>   Things are more difficult if you need to recover from corruption of
+   an index on a system table.  In this case it's important for the
+   system to not have used any of the suspect indexes itself.
+   (Indeed, in this sort of scenario you may find that server
+   processes are crashing immediately at start-up, due to reliance on
+   the corrupted indexes.)  To recover safely, the server must be shut
+   down and a stand-alone <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server
+   must be started instead with the command-line options
+   <VAR
+CLASS="OPTION"
+>-O</VAR
+> and <VAR
+CLASS="OPTION"
+>-P</VAR
+>.  (These options allow
+   system table modifications and prevent use of system indexes,
+   respectively.)  Then, <TT
+CLASS="COMMAND"
+>REINDEX DATABASE</TT
+>,
+   <TT
+CLASS="COMMAND"
+>REINDEX TABLE</TT
+>, or <TT
+CLASS="COMMAND"
+>REINDEX INDEX</TT
+> can be
+   issued, depending on how much you want to reconstruct.  If in
+   doubt, use <TT
+CLASS="COMMAND"
+>REINDEX DATABASE FORCE</TT
+> to force
+   reconstruction of all system indexes in the database.  Then quit
+   the standalone server session and restart the real server.
+  </P
+><P
+>   See the <A
 HREF="app-postgres.html"
 ><SPAN
 CLASS="APPLICATION"
 >postgres</SPAN
 ></A
-> reference page for more information.
+> reference page for more
+   information about how to interact with the stand-alone server
+   interface.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-REINDEX-2"
+NAME="AEN43075"
 ></A
 ><H2
->   Usage
-  </H2
+>Parameters</H2
 ><P
->   Recreate the indexes on the table <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
 CLASS="LITERAL"
->mytable</TT
+>DATABASE</VAR
+></DT
+><DD
+><P
+>      Recreate all system indexes of a specified database. Indexes on
+      user tables are not included. This form of <TT
+CLASS="COMMAND"
+>REINDEX</TT
+>
+      can only be used in stand-alone mode (see above).
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>TABLE</VAR
+></DT
+><DD
+><P
+>      Recreate all indexes of a specified table.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>INDEX</VAR
+></DT
+><DD
+><P
+>      Recreate a specified index.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name of the specific database, table, or index to be
+      reindexed.  Table and index names may be schema-qualified.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>FORCE</VAR
+></DT
+><DD
+><P
+>      Force rebuild of system indexes.  Without this key word,
+      <TT
+CLASS="COMMAND"
+>REINDEX</TT
+> skips system indexes that are not marked
+      invalid.  <VAR
+CLASS="LITERAL"
+>FORCE</VAR
+> is irrelevant for <TT
+CLASS="COMMAND"
+>REINDEX
+      INDEX</TT
+> or when reindexing user indexes.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43107"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>REINDEX</SAMP
+></DT
+><DD
+><P
+>      Message returned if the indexes were successfully recreated.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43115"
+></A
+><H2
+>Examples</H2
+><P
+>   Recreate the indexes on the table <VAR
+CLASS="LITERAL"
+>my_table</VAR
 >:
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->     REINDEX TABLE mytable;
-   </PRE
+>REINDEX TABLE my_table;</PRE
 ><P>
   </P
 ><P
 >   Rebuild a single index:
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->    REINDEX INDEX my_index;
-   </PRE
+>REINDEX INDEX my_index;</PRE
 ><P>
   </P
 ><P
->   Rebuild all system indexes (this will only work in a standalone backend):
+>   Rebuild all system indexes (this will only work in a stand-alone
+   server session):
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->    REINDEX DATABASE my_database FORCE;
-   </PRE
+>REINDEX DATABASE my_database FORCE;</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-REINDEX-3"
+NAME="AEN43124"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-REINDEX-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >REINDEX</TT
-> in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
-></DIV
+> command in the SQL standard.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

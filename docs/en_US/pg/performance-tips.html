@@ -1,19 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Performance Tips</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 User's Guide"
-HREF="user.html"><LINK
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
 REL="PREVIOUS"
 TITLE="Locking and Indexes"
 HREF="locking-indexes.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="PERFORMANCE-TIPS"
->Chapter 10. Performance Tips</A
-></H1
+></A
+>Chapter 13. Performance Tips</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,7 +90,7 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->10.1. <A
+>13.1. <A
 HREF="performance-tips.html#USING-EXPLAIN"
 >Using <TT
 CLASS="COMMAND"
@@ -98,44 +98,50 @@ CLASS="COMMAND"
 ></A
 ></DT
 ><DT
->10.2. <A
+>13.2. <A
 HREF="planner-stats.html"
 >Statistics Used by the Planner</A
 ></DT
 ><DT
->10.3. <A
+>13.3. <A
 HREF="explicit-joins.html"
->Controlling the Planner with Explicit <TT
+>Controlling the Planner with Explicit <VAR
 CLASS="LITERAL"
->JOIN</TT
+>JOIN</VAR
 > Clauses</A
 ></DT
 ><DT
->10.4. <A
+>13.4. <A
 HREF="populate.html"
 >Populating a Database</A
 ></DT
 ><DD
 ><DL
 ><DT
->10.4.1. <A
+>13.4.1. <A
 HREF="populate.html#DISABLE-AUTOCOMMIT"
 >Disable Autocommit</A
 ></DT
 ><DT
->10.4.2. <A
+>13.4.2. <A
 HREF="populate.html#POPULATE-COPY-FROM"
->Use COPY FROM</A
+>Use <TT
+CLASS="COMMAND"
+>COPY FROM</TT
+></A
 ></DT
 ><DT
->10.4.3. <A
+>13.4.3. <A
 HREF="populate.html#POPULATE-RM-INDEXES"
 >Remove Indexes</A
 ></DT
 ><DT
->10.4.4. <A
+>13.4.4. <A
 HREF="populate.html#POPULATE-ANALYZE"
->Run ANALYZE Afterwards</A
+>Run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> Afterwards</A
 ></DT
 ></DL
 ></DD
@@ -156,7 +162,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="USING-EXPLAIN"
->10.1. Using <TT
+>13.1. Using <TT
 CLASS="COMMAND"
 >EXPLAIN</TT
 ></A
@@ -197,10 +203,10 @@ CLASS="COMMAND"
 ></LI
 ><LI
 ><P
->       Estimated total cost (If all rows are retrieved, which they may not
-       be --- a query with a <TT
+>       Estimated total cost (If all rows were to be retrieved, which they may not
+       be: a query with a <VAR
 CLASS="LITERAL"
->LIMIT</TT
+>LIMIT</VAR
 > clause will stop short of paying the total cost,
        for example.)
       </P
@@ -208,7 +214,7 @@ CLASS="LITERAL"
 ><LI
 ><P
 >       Estimated number of rows output by this plan node (Again, only if
-       executed to completion.)
+       executed to completion)
       </P
 ></LI
 ><LI
@@ -224,12 +230,10 @@ CLASS="LITERAL"
 >    The costs are measured in units of disk page fetches.  (CPU effort
     estimates are converted into disk-page units using some
     fairly arbitrary fudge factors. If you want to experiment with these
-    factors, see the list of run-time configuration parameters in the
+    factors, see the list of run-time configuration parameters in
     <A
-HREF="admin.html"
-><I
->PostgreSQL 7.3.3 Administrator's Guide</I
-></A
+HREF="runtime-config.html#RUNTIME-CONFIG-RESOURCE"
+>Section 16.4.2</A
 >.)
    </P
 ><P
@@ -237,8 +241,8 @@ HREF="admin.html"
     the cost of all its child nodes.  It's also important to realize that
     the cost only reflects things that the planner/optimizer cares about.
     In particular, the cost does not consider the time spent transmitting
-    result rows to the frontend --- which could be a pretty dominant
-    factor in the true elapsed time, but the planner ignores it because
+    result rows to the frontend, which could be a pretty dominant
+    factor in the true elapsed time; but the planner ignores it because
     it cannot change it by altering the plan.  (Every correct plan will
     output the same row set, we trust.)
    </P
@@ -251,25 +255,26 @@ CLASS="EMPHASIS"
 ></SPAN
 > the
     number of rows
-    processed/scanned by the query --- it is usually less, reflecting the
-    estimated selectivity of any <TT
+    processed/scanned by the query, it is usually less, reflecting the
+    estimated selectivity of any <VAR
 CLASS="LITERAL"
->WHERE</TT
->-clause constraints that are being
+>WHERE</VAR
+>-clause conditions that are being
     applied at this node.  Ideally the top-level rows estimate will
     approximate the number of rows actually returned, updated, or deleted
     by the query.
    </P
 ><P
->    Here are some examples (using the regress test database after a
-    <TT
+>    Here are some examples (using the regression test database after a
+    <VAR
 CLASS="LITERAL"
->VACUUM ANALYZE</TT
+>VACUUM ANALYZE</VAR
 >, and 7.3 development sources):
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->regression=# EXPLAIN SELECT * FROM tenk1;
+>EXPLAIN SELECT * FROM tenk1;
+
                          QUERY PLAN
 -------------------------------------------------------------
  Seq Scan on tenk1  (cost=0.00..333.00 rows=10000 width=148)</PRE
@@ -283,14 +288,14 @@ CLASS="PROGRAMLISTING"
 >SELECT * FROM pg_class WHERE relname = 'tenk1';</PRE
 ><P>
 
-    you will find out that <TT
+    you will find out that <CODE
 CLASS="CLASSNAME"
->tenk1</TT
+>tenk1</CODE
 > has 233 disk
     pages and 10000 rows.  So the cost is estimated at 233 page
-    reads, defined as costing 1.0 apiece, plus 10000 * <TT
+    reads, defined as costing 1.0 apiece, plus 10000 * <VAR
 CLASS="VARNAME"
->cpu_tuple_cost</TT
+>cpu_tuple_cost</VAR
 > which is
     currently 0.01 (try <TT
 CLASS="COMMAND"
@@ -298,29 +303,30 @@ CLASS="COMMAND"
 >).
    </P
 ><P
->    Now let's modify the query to add a <TT
+>    Now let's modify the query to add a <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > condition:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->regression=# EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 1000;
+>EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 1000;
+
                          QUERY PLAN
 ------------------------------------------------------------
  Seq Scan on tenk1  (cost=0.00..358.00 rows=1033 width=148)
    Filter: (unique1 &lt; 1000)</PRE
 ><P>
 
-    The estimate of output rows has gone down because of the <TT
+    The estimate of output rows has gone down because of the <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > clause.
     However, the scan will still have to visit all 10000 rows, so the cost
     hasn't decreased; in fact it has gone up a bit to reflect the extra CPU
-    time spent checking the <TT
+    time spent checking the <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > condition.
    </P
 ><P
@@ -342,16 +348,17 @@ CLASS="COMMAND"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->regression=# EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 50;
+>EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 50;
+
                                    QUERY PLAN
 -------------------------------------------------------------------------------
  Index Scan using tenk1_unique1 on tenk1  (cost=0.00..179.33 rows=49 width=148)
    Index Cond: (unique1 &lt; 50)</PRE
 ><P>
 
-    and you will see that if we make the <TT
+    and you will see that if we make the <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > condition selective
     enough, the planner will
     eventually decide that an index scan is cheaper than a sequential scan.
@@ -360,15 +367,15 @@ CLASS="LITERAL"
     than reading a whole disk page sequentially.
    </P
 ><P
->    Add another clause to the <TT
+>    Add another condition to the <VAR
 CLASS="LITERAL"
->WHERE</TT
-> condition:
+>WHERE</VAR
+> clause:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->regression=# EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 50 AND
-regression-# stringu1 = 'xxx';
+>EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 50 AND stringu1 = 'xxx';
+
                                   QUERY PLAN
 -------------------------------------------------------------------------------
  Index Scan using tenk1_unique1 on tenk1  (cost=0.00..179.45 rows=1 width=148)
@@ -376,30 +383,30 @@ regression-# stringu1 = 'xxx';
    Filter: (stringu1 = 'xxx'::name)</PRE
 ><P>
 
-    The added clause <TT
+    The added condition <VAR
 CLASS="LITERAL"
->stringu1 = 'xxx'</TT
+>stringu1 = 'xxx'</VAR
 > reduces the
     output-rows estimate, but not the cost because we still have to visit the
-    same set of rows.  Notice that the <TT
+    same set of rows.  Notice that the <VAR
 CLASS="LITERAL"
->stringu1</TT
+>stringu1</VAR
 > clause
     cannot be applied as an index condition (since this index is only on
-    the <TT
+    the <VAR
 CLASS="LITERAL"
->unique1</TT
+>unique1</VAR
 > column).  Instead it is applied as a filter on
     the rows retrieved by the index.  Thus the cost has actually gone up
     a little bit to reflect this extra checking.
    </P
 ><P
->    Let's try joining two tables, using the fields we have been discussing:
+>    Let's try joining two tables, using the columns we have been discussing:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->regression=# EXPLAIN SELECT * FROM tenk1 t1, tenk2 t2 WHERE t1.unique1 &lt; 50
-regression-# AND t1.unique2 = t2.unique2;
+>EXPLAIN SELECT * FROM tenk1 t1, tenk2 t2 WHERE t1.unique1 &lt; 50 AND t1.unique2 = t2.unique2;
+
                                QUERY PLAN
 ----------------------------------------------------------------------------
  Nested Loop  (cost=0.00..327.02 rows=49 width=296)
@@ -414,53 +421,51 @@ regression-# AND t1.unique2 = t2.unique2;
 ><P
 >    In this nested-loop join, the outer scan is the same index scan we had
     in the example before last, and so its cost and row count are the same
-    because we are applying the <TT
+    because we are applying the <VAR
 CLASS="LITERAL"
->unique1 &lt; 50</TT
-> <TT
+>WHERE</VAR
+> clause <VAR
 CLASS="LITERAL"
->WHERE</TT
-> clause at that node.
-    The <TT
+>unique1 &lt; 50</VAR
+> at that node.
+    The <VAR
 CLASS="LITERAL"
->t1.unique2 = t2.unique2</TT
+>t1.unique2 = t2.unique2</VAR
 > clause is not relevant yet, so it doesn't
-    affect row count of the outer scan.  For the inner scan, the <TT
+    affect row count of the outer scan.  For the inner scan, the <VAR
 CLASS="LITERAL"
->unique2</TT
+>unique2</VAR
 > value of the
     current
     outer-scan row is plugged into the inner index scan
     to produce an index condition like
-    <TT
+    <VAR
 CLASS="LITERAL"
->t2.unique2 = <TT
+>t2.unique2 = <VAR
 CLASS="REPLACEABLE"
-><I
->constant</I
-></TT
-></TT
+>constant</VAR
+></VAR
 >.  So we get the
-     same inner-scan plan and costs that we'd get from, say, <TT
+     same inner-scan plan and costs that we'd get from, say, <VAR
 CLASS="LITERAL"
 >EXPLAIN SELECT
-     * FROM tenk2 WHERE unique2 = 42</TT
+     * FROM tenk2 WHERE unique2 = 42</VAR
 >.  The costs of the loop node are then set
      on the basis of the cost of the outer scan, plus one repetition of the
      inner scan for each outer row (49 * 3.01, here), plus a little CPU
      time for join processing.
    </P
 ><P
->    In this example the loop's output row count is the same as the product
+>    In this example the join's output row count is the same as the product
     of the two scans' row counts, but that's not true in general, because
-    in general you can have <TT
+    in general you can have <VAR
 CLASS="LITERAL"
->WHERE</TT
-> clauses that mention both relations and
+>WHERE</VAR
+> clauses that mention both tables and
     so can only be applied at the join point, not to either input scan.
-    For example, if we added <TT
+    For example, if we added <VAR
 CLASS="LITERAL"
->WHERE ... AND t1.hundred &lt; t2.hundred</TT
+>WHERE ... AND t1.hundred &lt; t2.hundred</VAR
 >,
     that would decrease the output row count of the join node, but not change
     either input scan.
@@ -471,15 +476,14 @@ CLASS="LITERAL"
     flags for each plan type.  (This is a crude tool, but useful.  See
     also <A
 HREF="explicit-joins.html"
->Section 10.3</A
+>Section 13.3</A
 >.)
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->regression=# SET enable_nestloop = off;
-SET
-regression=# EXPLAIN SELECT * FROM tenk1 t1, tenk2 t2 WHERE t1.unique1 &lt; 50
-regression-# AND t1.unique2 = t2.unique2;
+>SET enable_nestloop = off;
+EXPLAIN SELECT * FROM tenk1 t1, tenk2 t2 WHERE t1.unique1 &lt; 50 AND t1.unique2 = t2.unique2;
+
                                QUERY PLAN
 --------------------------------------------------------------------------
  Hash Join  (cost=179.45..563.06 rows=49 width=296)
@@ -491,30 +495,30 @@ regression-# AND t1.unique2 = t2.unique2;
                Index Cond: (unique1 &lt; 50)</PRE
 ><P>
 
-    This plan proposes to extract the 50 interesting rows of <TT
+    This plan proposes to extract the 50 interesting rows of <CODE
 CLASS="CLASSNAME"
->tenk1</TT
+>tenk1</CODE
 >
     using ye same olde index scan, stash them into an in-memory hash table,
-    and then do a sequential scan of <TT
+    and then do a sequential scan of <CODE
 CLASS="CLASSNAME"
->tenk2</TT
+>tenk2</CODE
 >, probing into the hash table
-    for possible matches of <TT
+    for possible matches of <VAR
 CLASS="LITERAL"
->t1.unique2 = t2.unique2</TT
-> at each <TT
+>t1.unique2 = t2.unique2</VAR
+> at each <CODE
 CLASS="CLASSNAME"
->tenk2</TT
+>tenk2</CODE
 > row.
-    The cost to read <TT
+    The cost to read <CODE
 CLASS="CLASSNAME"
->tenk1</TT
+>tenk1</CODE
 > and set up the hash table is entirely start-up
     cost for the hash join, since we won't get any rows out until we can
-    start reading <TT
+    start reading <CODE
 CLASS="CLASSNAME"
->tenk2</TT
+>tenk2</CODE
 >.  The total time estimate for the join also
     includes a hefty charge for the CPU time to probe the hash table
     10000 times.  Note, however, that we are <SPAN
@@ -541,9 +545,8 @@ CLASS="COMMAND"
 
 </P><PRE
 CLASS="SCREEN"
->regression=# EXPLAIN ANALYZE
-regression-# SELECT * FROM tenk1 t1, tenk2 t2
-regression-# WHERE t1.unique1 &lt; 50 AND t1.unique2 = t2.unique2;
+>EXPLAIN ANALYZE SELECT * FROM tenk1 t1, tenk2 t2 WHERE t1.unique1 &lt; 50 AND t1.unique2 = t2.unique2;
+
                                    QUERY PLAN
 -------------------------------------------------------------------------------
  Nested Loop  (cost=0.00..327.02 rows=49 width=296)
@@ -588,9 +591,9 @@ CLASS="QUOTE"
     the node.
    </P
 ><P
->    The <TT
+>    The <VAR
 CLASS="LITERAL"
->Total runtime</TT
+>Total runtime</VAR
 > shown by <TT
 CLASS="COMMAND"
 >EXPLAIN ANALYZE</TT
@@ -684,7 +687,7 @@ WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="user.html"
+HREF="sql.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

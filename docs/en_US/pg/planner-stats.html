@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Statistics Used by the Planner</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Performance Tips"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 10. Performance Tips</TD
+>Chapter 13. Performance Tips</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLANNER-STATS"
->10.2. Statistics Used by the Planner</A
+>13.2. Statistics Used by the Planner</A
 ></H1
 ><P
 >   As we saw in the previous section, the query planner needs to estimate
@@ -92,24 +92,24 @@ NAME="PLANNER-STATS"
 ><P
 >   One component of the statistics is the total number of entries in each
    table and index, as well as the number of disk blocks occupied by each
-   table and index.  This information is kept in
+   table and index.  This information is kept in the table
    <TT
 CLASS="STRUCTNAME"
 >pg_class</TT
->'s <TT
+> in the columns <TT
 CLASS="STRUCTFIELD"
 >reltuples</TT
 >
    and <TT
 CLASS="STRUCTFIELD"
 >relpages</TT
-> columns.  We can look at it
+>.  We can look at it
    with queries similar to this one:
 
 </P><PRE
 CLASS="SCREEN"
->regression=# SELECT relname, relkind, reltuples, relpages FROM pg_class
-regression-# WHERE relname LIKE 'tenk1%';
+>SELECT relname, relkind, reltuples, relpages FROM pg_class WHERE relname LIKE 'tenk1%';
+
     relname    | relkind | reltuples | relpages
 ---------------+---------+-----------+----------
  tenk1         | r       |     10000 |      233
@@ -164,22 +164,22 @@ CLASS="STRUCTFIELD"
   </P
 ><P
 >   Most queries retrieve only a fraction of the rows in a table, due
-   to having <TT
+   to having <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > clauses that restrict the rows to be examined.
    The planner thus needs to make an estimate of the
    <I
 CLASS="FIRSTTERM"
 >selectivity</I
-> of <TT
+> of <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > clauses, that is, the fraction of
-   rows that match each clause of the <TT
+   rows that match each condition in the <VAR
 CLASS="LITERAL"
->WHERE</TT
-> condition.  The information
+>WHERE</VAR
+> clause.  The information
    used for this task is stored in the <TT
 CLASS="STRUCTNAME"
 >pg_statistic</TT
@@ -194,7 +194,7 @@ CLASS="COMMAND"
 > and <TT
 CLASS="COMMAND"
 >VACUUM ANALYZE</TT
-> commands,
+> commands
    and are always approximate even when freshly updated.
   </P
 ><P
@@ -218,7 +218,7 @@ CLASS="STRUCTNAME"
    <TT
 CLASS="STRUCTNAME"
 >pg_statistic</TT
-> is only readable by the superuser.
+> is only readable by a superuser.
    (This prevents unprivileged users from learning something about
    the contents of other people's tables from the statistics.  The
    <TT
@@ -230,19 +230,19 @@ CLASS="STRUCTNAME"
 
 </P><PRE
 CLASS="SCREEN"
->regression=# SELECT attname, n_distinct, most_common_vals FROM pg_stats WHERE tablename = 'road';
+>SELECT attname, n_distinct, most_common_vals FROM pg_stats WHERE tablename = 'road';
+
  attname | n_distinct |                                                                                                                                                                                  most_common_vals                                                                                                                                                                                   
 ---------+------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  name    |  -0.467008 | {"I- 580                        Ramp","I- 880                        Ramp","Sp Railroad                       ","I- 580                            ","I- 680                        Ramp","I- 80                         Ramp","14th                          St  ","5th                           St  ","Mission                       Blvd","I- 880                            "}
  thepath |         20 | {"[(-122.089,37.71),(-122.0886,37.711)]"}
-(2 rows)
-regression=#</PRE
+(2 rows)</PRE
 ><P>
   </P
 ><P
 >   <A
 HREF="planner-stats.html#PLANNER-PG-STATS-TABLE"
->Table 10-1</A
+>Table 13-1</A
 > shows the columns that
    exist in <TT
 CLASS="STRUCTNAME"
@@ -256,7 +256,7 @@ NAME="PLANNER-PG-STATS-TABLE"
 ></A
 ><P
 ><B
->Table 10-1. <TT
+>Table 13-1. <TT
 CLASS="STRUCTNAME"
 >pg_stats</TT
 > Columns</B
@@ -264,121 +264,99 @@ CLASS="STRUCTNAME"
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Type</TH
+>Data Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->tablename</TT
+>schemaname</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Name of the table containing the column</TD
+>Name of the schema containing the table.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->attname</TT
+>tablename</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Column described by this row</TD
+>Name of the table containing the column.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->null_frac</TT
+>attname</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>Name of the column described by this row.</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>null_frac</VAR
+></TD
+><TD
 ><TT
 CLASS="TYPE"
 >real</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Fraction of column's entries that are null</TD
+>Fraction of column entries that are null.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->avg_width</TT
+>avg_width</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >integer</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Average width in bytes of the column's entries</TD
+>Average width in bytes of the column entries.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->n_distinct</TT
+>n_distinct</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >real</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >If greater than zero, the estimated number of distinct values
       in the column.  If less than zero, the negative of the number of
       distinct values divided by the number of rows.  (The negated form
@@ -394,73 +372,58 @@ CLASS="COMMAND"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->most_common_vals</TT
+>most_common_vals</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >A list of the most common values in the column. (Omitted if
       no values seem to be more common than any others.)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->most_common_freqs</TT
+>most_common_freqs</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >real[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >A list of the frequencies of the most common values,
       i.e., number of occurrences of each divided by total number of rows.
      </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->histogram_bounds</TD
+><VAR
+CLASS="LITERAL"
+>histogram_bounds</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >A list of values that divide the column's values into
-      groups of approximately equal population.  The 
+      groups of approximately equal population.  The values in
       <TT
 CLASS="STRUCTFIELD"
 >most_common_vals</TT
->, if present, are omitted from the
-      histogram calculation.  (Omitted if column data type does not have a
-      <TT
+>, if present, are omitted from this
+      histogram calculation.  (This columns is not filled if the column data type does not have a
+      <VAR
 CLASS="LITERAL"
->&lt;</TT
-> operator, or if the <TT
+>&lt;</VAR
+> operator or if the <TT
 CLASS="STRUCTFIELD"
 >most_common_vals</TT
 >
@@ -469,27 +432,24 @@ CLASS="STRUCTFIELD"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->correlation</TD
+><VAR
+CLASS="LITERAL"
+>correlation</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >real</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Statistical correlation between physical row ordering and
       logical ordering of the column values.  This ranges from -1 to +1.
       When the value is near -1 or +1, an index scan on the column will
       be estimated to be cheaper than when it is near zero, due to reduction
-      of random access to the disk.  (Omitted if column data type does
-      not have a <TT
+      of random access to the disk.  (This column is not filled if the column data type does
+      not have a <VAR
 CLASS="LITERAL"
->&lt;</TT
+>&lt;</VAR
 > operator.)
       </TD
 ></TR
@@ -578,9 +538,9 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Controlling the Planner with Explicit <TT
+>Controlling the Planner with Explicit <VAR
 CLASS="LITERAL"
->JOIN</TT
+>JOIN</VAR
 > Clauses</TD
 ></TR
 ></TABLE

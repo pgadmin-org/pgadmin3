@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Platform-specific comparison files</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Regression Tests"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Test Evaluation"
 HREF="regress-evaluation.html"><LINK
 REL="NEXT"
-TITLE="Release Notes"
-HREF="release.html"><LINK
+TITLE="Client Interfaces"
+HREF="client-interfaces.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 13. Regression Tests</TD
+>Chapter 26. Regression Tests</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="release.html"
+HREF="client-interfaces.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="REGRESS-PLATFORM"
->13.4. Platform-specific comparison files</A
+>26.3. Platform-specific comparison files</A
 ></H1
 ><P
 >    Since some of the tests inherently produce platform-specific
@@ -107,29 +107,26 @@ CLASS="SYNOPSIS"
 >testname/platformpattern=comparisonfilename</PRE
 ><P>
     The test name is just the name of the particular regression test
-    module.  The platform pattern is a pattern in the style of
-    <SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->expr</SPAN
-></SPAN
+    module.  The platform pattern is a pattern in the style of the Unix
+    tool <TT
+CLASS="COMMAND"
+>expr</TT
 > (that is, a regular expression with an implicit
-    <TT
+    <VAR
 CLASS="LITERAL"
->^</TT
+>^</VAR
 > anchor
     at the start).  It is matched against the platform name as printed
     by <TT
-CLASS="FILENAME"
+CLASS="COMMAND"
 >config.guess</TT
 > followed by
-    <TT
+    <VAR
 CLASS="LITERAL"
->:gcc</TT
-> or <TT
+>:gcc</VAR
+> or <VAR
 CLASS="LITERAL"
->:cc</TT
+>:cc</VAR
 >, depending on
     whether you use the GNU compiler or the system's native compiler
     (on systems where there is a difference).  The comparison file
@@ -138,12 +135,12 @@ CLASS="LITERAL"
 ><P
 >    For example: some systems using older time zone libraries fail to apply
     daylight-saving corrections to dates before 1970, causing
-    pre-1970 <SPAN
+    pre-1970 <ACRONYM
 CLASS="ACRONYM"
->PDT</SPAN
-> times to be displayed in <SPAN
+>PDT</ACRONYM
+> times to be displayed in <ACRONYM
 CLASS="ACRONYM"
->PST</SPAN
+>PST</ACRONYM
 > instead.  This causes a
     few differences in the <TT
 CLASS="FILENAME"
@@ -174,12 +171,9 @@ CLASS="PROGRAMLISTING"
 CLASS="COMMAND"
 >config.guess</TT
 >
-    begins with <SPAN
-CLASS="QUOTE"
->"<TT
+    begins with <VAR
 CLASS="LITERAL"
->hppa</TT
->"</SPAN
+>hppa</VAR
 >.  Other lines
     in <TT
 CLASS="FILENAME"
@@ -222,7 +216,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="release.html"
+HREF="client-interfaces.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -246,7 +240,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Release Notes</TD
+>Client Interfaces</TD
 ></TR
 ></TABLE
 ></DIV

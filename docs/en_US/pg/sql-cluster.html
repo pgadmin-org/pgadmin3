@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CLUSTER</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,120 +78,45 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CLUSTER"
->CLUSTER</A
-></H1
+></A
+>CLUSTER</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38142"
+NAME="AEN37108"
 ></A
 ><H2
 >Name</H2
->   CLUSTER
-  &nbsp;--&nbsp;   cluster a table according to an index
-  </DIV
+>CLUSTER&nbsp;--&nbsp;cluster a table according to an index</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38145"
+NAME="AEN37111"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CLUSTER <TT
+>CLUSTER <VAR
 CLASS="REPLACEABLE"
-><I
->indexname</I
-></TT
-> ON <TT
+>indexname</VAR
+> ON <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 >
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CLUSTER-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->   </P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
+CLUSTER <VAR
 CLASS="REPLACEABLE"
-><I
->indexname</I
-></TT
-></DT
-><DD
-><P
->       The name of an index.
-      </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></DT
-><DD
-><P
->       The name (possibly schema-qualified) of a table.
-      </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CLUSTER-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->CLUSTER
-       </TT
-></DT
-><DD
-><P
->	The clustering was done successfully.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>tablename</VAR
+>
+CLUSTER</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CLUSTER-1"
+NAME="AEN37116"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
@@ -201,25 +126,19 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 
    to cluster the table specified
-   by <TT
+   by <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
+>tablename</VAR
 >
    based on the index specified by
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->indexname</I
-></TT
+>indexname</VAR
 >. The index must
    already have been defined on 
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 >.
   </P
 ><P
@@ -227,36 +146,132 @@ CLASS="REPLACEABLE"
    based on the index information. Clustering is a one-time operation:
    when the table is subsequently updated, the changes are
    not clustered.  That is, no attempt is made to store new or
-   updated tuples according to their index order.  If one wishes, one can
-   periodically re-cluster by issuing the command again.
+   updated rows according to their index order.  If one wishes, one can
+   periodically recluster by issuing the command again.
   </P
+><P
+>   When a table is clustered, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   remembers on which index it was clustered.  The form
+   <TT
+CLASS="COMMAND"
+>CLUSTER <VAR
+CLASS="REPLACEABLE"
+>tablename</VAR
+></TT
+>,
+   reclusters the table on the same index that it was clustered before.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> without any parameter reclusters all the tables
+   in the
+   current database that the calling user owns, or all tables if called
+   by a superuser.  (Never-clustered tables are not included.)  This
+   form of <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> cannot be called from inside a
+   transaction or function.
+  </P
+><P
+>   When a table is being clustered, an <VAR
+CLASS="LITERAL"
+>ACCESS
+   EXCLUSIVE</VAR
+> lock is acquired on it. This prevents any other
+   database operations (both reads and writes) from preceding on the
+   table until the <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> is finished. See
+   <A
+HREF="explicit-locking.html"
+>Section 12.3</A
+> for more information on database locking.
+  </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-CLUSTER-3"
+NAME="AEN37136"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameter</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>indexname</VAR
+></DT
+><DD
+><P
+>      The name of an index.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>tablename</VAR
+></DT
+><DD
+><P
+>      The name (possibly schema-qualified) of a table.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37149"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CLUSTER</SAMP
+></DT
+><DD
+><P
+>      The clustering was done successfully.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37157"
+></A
+><H2
+>Notes</H2
 ><P
 >    In cases where you are accessing single rows randomly
-    within a table, the actual order of the data in the heap
+    within a table, the actual order of the data in the
     table is unimportant. However, if you tend to access some
     data more than others, and there is an index that groups
     them together, you will benefit from using <TT
 CLASS="COMMAND"
 >CLUSTER</TT
 >.
-   </P
-><P
-> 
-    Another place where <TT
-CLASS="COMMAND"
->CLUSTER</TT
-> is helpful is in
-    cases where you use an
-    index to pull out several rows from a table. If you are
-    requesting a range of indexed values from a table, or a
+    If you are requesting a range of indexed values from a table, or a
     single indexed value that has multiple rows that match,
     <TT
 CLASS="COMMAND"
@@ -264,7 +279,7 @@ CLASS="COMMAND"
 > will help because once the index identifies the
     heap page for the first row that matches, all other rows
     that match are probably already on the same heap page,
-    saving disk accesses and speeding up the query.
+    and so you save disk accesses and speed up the query.
    </P
 ><P
 >    During the cluster operation, a temporary copy of the table is created
@@ -274,16 +289,24 @@ CLASS="COMMAND"
     sizes.
    </P
 ><P
->    CLUSTER preserves GRANT, inheritance, index, foreign key, and other
-    ancillary information about the table.
+>    Because <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> remembers the clustering information,
+    one can cluster the tables one wants clustered manually the first time, and
+    setup a timed event similar to <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> so that the tables
+    are periodically reclustered.
    </P
 ><P
->    Because the optimizer records statistics about the ordering of tables, it
+>    Because the planner records statistics about the ordering of tables, it
     is advisable to run <TT
 CLASS="COMMAND"
 >ANALYZE</TT
 > on the newly clustered
-    table.  Otherwise, the optimizer may make poor choices of query plans.
+    table.  Otherwise, the planner may make poor choices of query plans.
    </P
 ><P
 >    There is another way to cluster data. The
@@ -302,49 +325,41 @@ CLASS="PRODUCTNAME"
     but the majority of a big table will not fit in the cache.)
     The other way to cluster a table is to use
 
-    </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->SELECT <TT
+>CREATE TABLE <VAR
 CLASS="REPLACEABLE"
-><I
->columnlist</I
-></TT
-> INTO TABLE <TT
+>newtable</VAR
+> AS
+    SELECT <VAR
 CLASS="REPLACEABLE"
-><I
->newtable</I
-></TT
->
-     FROM <TT
+>columnlist</VAR
+> FROM <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> ORDER BY <TT
+>table</VAR
+> ORDER BY <VAR
 CLASS="REPLACEABLE"
-><I
->columnlist</I
-></TT
->
-    </PRE
+>columnlist</VAR
+>;</PRE
 ><P>
 
     which uses the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > sorting code in 
-    the ORDER BY clause to create the desired order; this is usually much
+    the <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> clause to create the desired order; this is usually much
     faster than an index scan for
     unordered data. You then drop the old table, use
     <TT
 CLASS="COMMAND"
->ALTER TABLE...RENAME</TT
+>ALTER TABLE ... RENAME</TT
 >
-    to rename <TT
+    to rename <VAR
 CLASS="REPLACEABLE"
-><I
->newtable</I
-></TT
+>newtable</VAR
 > to the old name, and
     recreate the table's indexes. However, this approach does not preserve
     OIDs, constraints, foreign key relationships, granted privileges, and
@@ -352,46 +367,74 @@ CLASS="REPLACEABLE"
     manually recreated.
    </P
 ></DIV
-></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CLUSTER-2"
+NAME="AEN37180"
 ></A
 ><H2
->   Usage
-  </H2
+>Examples</H2
 ><P
->   Cluster the employees relation on the basis of its ID attribute:
-  </P
-><PRE
+>   Cluster the table <VAR
+CLASS="LITERAL"
+>employees</VAR
+> on the basis of
+   its index <VAR
+CLASS="LITERAL"
+>emp_ind</VAR
+>:
+</P><PRE
 CLASS="PROGRAMLISTING"
->CLUSTER emp_ind ON emp;
-  </PRE
+>CLUSTER emp_ind ON emp;</PRE
+><P>
+  </P
+><P
+>   Cluster the <VAR
+CLASS="LITERAL"
+>employees</VAR
+> relation using the same
+   index that was used before:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CLUSTER emp;</PRE
+><P>
+  </P
+><P
+>   Cluster all the tables on the database that have previously been clustered:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CLUSTER;</PRE
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CLUSTER-3"
+NAME="AEN37191"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CLUSTER-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >CLUSTER</TT
-> statement in SQL92.
-   </P
+> statement in the SQL standard.
+  </P
 ></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37195"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-clusterdb.html"
+><I
+><I
+>clusterdb</I
+></I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

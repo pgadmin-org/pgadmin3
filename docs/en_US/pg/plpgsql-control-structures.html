@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Control Structures</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 19. <SPAN
+>Chapter 40. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> - <SPAN
+> - <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Procedural Language</TD
 ><TD
 WIDTH="10%"
@@ -87,7 +87,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-CONTROL-STRUCTURES"
->19.6. Control Structures</A
+>40.7. Control Structures</A
 ></H1
 ><P
 >    Control structures are probably the most useful (and
@@ -111,106 +111,174 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-RETURNING"
->19.6.1. Returning from a function</A
+>40.7.1. Returning From a Function</A
 ></H2
 ><P
-></P><PRE
+>     There are two commands available that allow you to return data
+     from a function: <TT
+CLASS="COMMAND"
+>RETURN</TT
+> and <TT
+CLASS="COMMAND"
+>RETURN
+     NEXT</TT
+>.
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN34385"
+>40.7.1.1. <TT
+CLASS="COMMAND"
+>RETURN</TT
+></A
+></H3
+><PRE
 CLASS="SYNOPSIS"
->RETURN <TT
+>RETURN <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 >;</PRE
-><P>
-
-     RETURN with an expression is used to return from a
-     <SPAN
+><P
+>      <TT
+CLASS="COMMAND"
+>RETURN</TT
+> with an expression terminates the
+      function and returns the value of
+      <VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> to the caller.  This form
+      is to be used for <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> function that does not return a set.
-     The function terminates and the value of
-     <TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> is returned to the caller.
-    </P
+> functions that does
+      not return a set.
+     </P
 ><P
->     To return a composite (row) value, you must write a record or row
-     variable as the <TT
+>      When returning a scalar type, any expression can be used. The
+      expression's result will be automatically cast into the
+      function's return type as described for assignments. To return a
+      composite (row) value, you must write a record or row variable
+      as the <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->.  When
-     returning a scalar type, any expression can be used.
-     The expression's result will be automatically cast into the
-     function's return type as described for assignments.
-     (If you have declared the function to return <TT
+>expression</VAR
+>.
+     </P
+><P
+>      The return value of a function cannot be left undefined. If
+      control reaches the end of the top-level block of the function
+      without hitting a <TT
+CLASS="COMMAND"
+>RETURN</TT
+> statement, a run-time
+      error will occur. Note that if you have declared the function to
+      return <TT
 CLASS="TYPE"
 >void</TT
->,
-     then the expression can be omitted, and will be ignored in any case.)
-    </P
+>, a <TT
+CLASS="COMMAND"
+>RETURN</TT
+> statement
+      must still be specified; the expression following
+      <TT
+CLASS="COMMAND"
+>RETURN</TT
+> is, however, optional and will be ignored in
+      any case.
+     </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN34401"
+>40.7.1.2. <TT
+CLASS="COMMAND"
+>RETURN NEXT</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>RETURN NEXT <VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>;</PRE
 ><P
->     The return value of a function cannot be left undefined. If control
-     reaches the end of the top-level block of 
-     the function without hitting a RETURN statement, a run-time error
-     will occur.
-    </P
-><P
->     When a <SPAN
+>      When a <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > function is declared to return
-     <TT
+      <VAR
 CLASS="LITERAL"
->SETOF</TT
-> <TT
+>SETOF <VAR
 CLASS="REPLACEABLE"
-><I
->sometype</I
-></TT
+>sometype</VAR
+></VAR
 >, the procedure
-     to follow is slightly different.  In that case, the individual
-     items to return are specified in RETURN NEXT commands, and then a
-     final RETURN command with no arguments is used to indicate that
-     the function has finished executing.  RETURN NEXT can be used with
-     both scalar and composite data types; in the later case, an
-     entire "table" of results will be returned.  Functions that use
-     RETURN NEXT should be called in the following fashion:
+      to follow is slightly different.  In that case, the individual
+      items to return are specified in <TT
+CLASS="COMMAND"
+>RETURN NEXT</TT
+>
+      commands, and then a final <TT
+CLASS="COMMAND"
+>RETURN</TT
+> command
+      with no arguments is used to indicate that the function has
+      finished executing.  <TT
+CLASS="COMMAND"
+>RETURN NEXT</TT
+> can be used
+      with both scalar and composite data types; in the later case, an
+      entire <SPAN
+CLASS="QUOTE"
+>"table"</SPAN
+> of results will be returned.
+     </P
+><P
+>      Functions that use <TT
+CLASS="COMMAND"
+>RETURN NEXT</TT
+> should be
+      called in the following fashion:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT * FROM some_func();</PRE
 ><P>
 
-     That is, the function is used as a table source in a FROM clause.
-
-</P><PRE
-CLASS="SYNOPSIS"
->RETURN NEXT <TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->;</PRE
-><P>
-
-     RETURN NEXT does not actually return from the function; it simply
-     saves away the value of the expression (or record or row variable,
-     as appropriate for the data type being returned).
-     Execution then continues with the next statement in the
-     <SPAN
+      That is, the function is used as a table source in a <VAR
+CLASS="LITERAL"
+>FROM</VAR
+>
+      clause.
+     </P
+><P
+>      <TT
+CLASS="COMMAND"
+>RETURN NEXT</TT
+> does not actually return from the
+      function; it simply saves away the value of the expression (or
+      record or row variable, as appropriate for the data type being
+      returned).  Execution then continues with the next statement in
+      the <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> function.  As successive RETURN NEXT
-     commands are executed, the result set is built up.  A final
-     RETURN, which need have no argument, causes control to exit
-     the function.
-    </P
+> function.  As successive
+      <TT
+CLASS="COMMAND"
+>RETURN NEXT</TT
+> commands are executed, the result
+      set is built up.  A final <TT
+CLASS="COMMAND"
+>RETURN</TT
+>, which should
+      have no argument, causes control to exit the function.
+     </P
 ><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
@@ -218,33 +286,38 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     The current implementation of RETURN NEXT for
-     <SPAN
+>       The current implementation of <TT
+CLASS="COMMAND"
+>RETURN NEXT</TT
+>
+       for <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> stores the entire result set before
-     returning from the function, as discussed above.  That means that
-     if a <SPAN
+> stores the entire result set
+       before returning from the function, as discussed above.  That
+       means that if a <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> function produces a very large result set,
-     performance may be poor: data will be written to disk to avoid
-     memory exhaustion, but the function itself will not return until
-     the entire result set has been generated.  A future version of
-     <SPAN
+> function produces a
+       very large result set, performance may be poor: data will be
+       written to disk to avoid memory exhaustion, but the function
+       itself will not return until the entire result set has been
+       generated.  A future version of <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> may allow users to allow users to define set-returning
-     functions that do not have this limitation.  Currently, the point
-     at which data begins being written to disk is controlled by the
-     <TT
+> may
+       allow users to allow users to define set-returning functions
+       that do not have this limitation.  Currently, the point at
+       which data begins being written to disk is controlled by the
+       <VAR
 CLASS="VARNAME"
->SORT_MEM</TT
-> configuration variable.  Administrators who
-     have sufficient memory to store larger result sets in memory
-     should consider increasing this parameter.
-    </P
+>sort_mem</VAR
+> configuration variable.  Administrators
+       who have sufficient memory to store larger result sets in
+       memory should consider increasing this parameter.
+      </P
 ></BLOCKQUOTE
+></DIV
 ></DIV
 ></DIV
 ><DIV
@@ -253,50 +326,50 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-CONDITIONALS"
->19.6.2. Conditionals</A
+>40.7.2. Conditionals</A
 ></H2
 ><P
->     <TT
+>     <VAR
 CLASS="LITERAL"
->IF</TT
+>IF</VAR
 > statements let you execute commands based on
      certain conditions.  <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > has four forms of
-     <TT
+     <VAR
 CLASS="LITERAL"
->IF</TT
+>IF</VAR
 >:
     <P
 ></P
 ></P><UL
 ><LI
 ><P
-><TT
+><VAR
 CLASS="LITERAL"
->IF ... THEN</TT
+>IF ... THEN</VAR
 ></P
 ></LI
 ><LI
 ><P
-><TT
+><VAR
 CLASS="LITERAL"
->IF ... THEN ... ELSE</TT
+>IF ... THEN ... ELSE</VAR
 ></P
 ></LI
 ><LI
 ><P
-><TT
+><VAR
 CLASS="LITERAL"
->IF ... THEN ... ELSE IF</TT
-> and</P
+>IF ... THEN ... ELSE IF</VAR
+></P
 ></LI
 ><LI
 ><P
-><TT
+><VAR
 CLASS="LITERAL"
->IF ... THEN ... ELSIF ... THEN ... ELSE</TT
+>IF ... THEN ... ELSIF ... THEN ... ELSE</VAR
 ></P
 ></LI
 ></UL
@@ -307,34 +380,44 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN35977"
->19.6.2.1. <TT
+NAME="AEN34449"
+>40.7.2.1. <VAR
 CLASS="LITERAL"
->IF-THEN</TT
+>IF-THEN</VAR
 ></A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
->IF <TT
+>IF <VAR
 CLASS="REPLACEABLE"
-><I
->boolean-expression</I
-></TT
+>boolean-expression</VAR
 > THEN
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 END IF;</PRE
-><P>
-
-        IF-THEN statements are the simplest form of IF. The
-        statements between THEN and END IF will be executed if
-        the condition is true. Otherwise, they are skipped.
-
+><P
+>        <VAR
+CLASS="LITERAL"
+>IF-THEN</VAR
+> statements are the simplest form of
+        <VAR
+CLASS="LITERAL"
+>IF</VAR
+>. The statements between
+        <VAR
+CLASS="LITERAL"
+>THEN</VAR
+> and <VAR
+CLASS="LITERAL"
+>END IF</VAR
+> will be
+        executed if the condition is true. Otherwise, they are
+        skipped.
+       </P
+><P
+>        Example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >IF v_user_id &lt;&gt; 0 THEN
@@ -348,91 +431,119 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN35985"
->19.6.2.2. <TT
+NAME="AEN34462"
+>40.7.2.2. <VAR
 CLASS="LITERAL"
->IF-THEN-ELSE</TT
+>IF-THEN-ELSE</VAR
 ></A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
->IF <TT
+>IF <VAR
 CLASS="REPLACEABLE"
-><I
->boolean-expression</I
-></TT
+>boolean-expression</VAR
 > THEN
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 ELSE
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 END IF;</PRE
+><P
+>        <VAR
+CLASS="LITERAL"
+>IF-THEN-ELSE</VAR
+> statements add to
+        <VAR
+CLASS="LITERAL"
+>IF-THEN</VAR
+> by letting you specify an
+        alternative set of statements that should be executed if the
+        condition evaluates to false.
+       </P
+><P
+>        Examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>IF parentid IS NULL OR parentid = ''''
+THEN
+    RETURN fullname;
+ELSE
+    RETURN hp_true_filename(parentid) || ''/'' || fullname;
+END IF;</PRE
 ><P>
-
-        IF-THEN-ELSE statements add to IF-THEN by letting you
-        specify an alternative set of statements that should be executed if
-	the condition evaluates to FALSE.
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->IF parentid IS NULL or parentid = ''''
-THEN 
-    return fullname;
+>IF v_count &#62; 0 THEN 
+    INSERT INTO users_count (count) VALUES (v_count);
+    RETURN ''t'';
 ELSE
-    return hp_true_filename(parentid) || ''/'' || fullname;
-END IF;
-
-
-IF v_count &#62; 0 THEN 
-    INSERT INTO users_count(count) VALUES(v_count);
-    return ''t'';
-ELSE 
-    return ''f'';
+    RETURN ''f'';
 END IF;</PRE
 ><P>
-       </P
+     </P
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN35994"
->19.6.2.3. <TT
+NAME="AEN34475"
+>40.7.2.3. <VAR
 CLASS="LITERAL"
->IF-THEN-ELSE IF</TT
+>IF-THEN-ELSE IF</VAR
 ></A
 ></H3
 ><P
->        IF statements can be nested, as in the following example:
+>        <VAR
+CLASS="LITERAL"
+>IF</VAR
+> statements can be nested, as in the
+        following example:
+
 </P><PRE
 CLASS="PROGRAMLISTING"
 >IF demo_row.sex = ''m'' THEN
-  pretty_sex := ''man'';
+    pretty_sex := ''man'';
 ELSE
-  IF demo_row.sex = ''f'' THEN
-    pretty_sex := ''woman'';
-  END IF;
+    IF demo_row.sex = ''f'' THEN
+        pretty_sex := ''woman'';
+    END IF;
 END IF;</PRE
 ><P>
        </P
 ><P
->        When you use this form, you are actually
-        nesting an IF statement inside the ELSE part of an outer IF
-        statement. Thus you need one END IF statement for each
-        nested IF and one for the parent IF-ELSE.
-        This is workable but grows tedious when there are many
-	alternatives to be checked.
+>        When you use this form, you are actually nesting an
+        <VAR
+CLASS="LITERAL"
+>IF</VAR
+> statement inside the
+        <VAR
+CLASS="LITERAL"
+>ELSE</VAR
+> part of an outer <VAR
+CLASS="LITERAL"
+>IF</VAR
+>
+        statement. Thus you need one <VAR
+CLASS="LITERAL"
+>END IF</VAR
+>
+        statement for each nested <VAR
+CLASS="LITERAL"
+>IF</VAR
+> and one for the parent
+        <VAR
+CLASS="LITERAL"
+>IF-ELSE</VAR
+>.  This is workable but grows
+        tedious when there are many alternatives to be checked.
+        Hence the next form.
        </P
 ></DIV
 ><DIV
@@ -440,54 +551,41 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36000"
->19.6.2.4. <TT
+NAME="AEN34488"
+>40.7.2.4. <VAR
 CLASS="LITERAL"
->IF-THEN-ELSIF-ELSE</TT
+>IF-THEN-ELSIF-ELSE</VAR
 ></A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
->IF <TT
+>IF <VAR
 CLASS="REPLACEABLE"
-><I
->boolean-expression</I
-></TT
+>boolean-expression</VAR
 > THEN
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 [<SPAN
 CLASS="OPTIONAL"
-> ELSIF <TT
+> ELSIF <VAR
 CLASS="REPLACEABLE"
-><I
->boolean-expression</I
-></TT
+>boolean-expression</VAR
 > THEN
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 [<SPAN
 CLASS="OPTIONAL"
-> ELSIF <TT
+> ELSIF <VAR
 CLASS="REPLACEABLE"
-><I
->boolean-expression</I
-></TT
+>boolean-expression</VAR
 > THEN
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
     ...</SPAN
 >]</SPAN
@@ -495,29 +593,26 @@ CLASS="REPLACEABLE"
 [<SPAN
 CLASS="OPTIONAL"
 > ELSE
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 > </SPAN
 >]
 END IF;</PRE
-><P>
-
-        <TT
+><P
+>        <VAR
 CLASS="LITERAL"
->IF-THEN-ELSIF-ELSE</TT
+>IF-THEN-ELSIF-ELSE</VAR
 > provides a more convenient
         method of checking many alternatives in one statement.
         Formally it is equivalent to nested
-        <TT
+        <VAR
 CLASS="LITERAL"
->IF-THEN-ELSE-IF-THEN</TT
+>IF-THEN-ELSE-IF-THEN</VAR
 > commands, but only one
-        <TT
+        <VAR
 CLASS="LITERAL"
->END IF</TT
+>END IF</VAR
 > is needed.
        </P
 ><P
@@ -532,13 +627,10 @@ ELSIF number &gt; 0 THEN
 ELSIF number &lt; 0 THEN
     result := ''negative'';
 ELSE
-    -- hmm, the only other possibility is that number IS NULL
+    -- hmm, the only other possibility is that number is null
     result := ''NULL'';
 END IF;</PRE
 ><P>
-       </P
-><P
->        The final ELSE section is optional.
        </P
 ></DIV
 ></DIV
@@ -548,100 +640,132 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-CONTROL-STRUCTURES-LOOPS"
->19.6.3. Simple Loops</A
+>40.7.3. Simple Loops</A
 ></H2
 ><P
->     With the LOOP, EXIT, WHILE and FOR statements, you can arrange
-     for your <SPAN
+>     With the <VAR
+CLASS="LITERAL"
+>LOOP</VAR
+>, <VAR
+CLASS="LITERAL"
+>EXIT</VAR
+>, <VAR
+CLASS="LITERAL"
+>WHILE</VAR
+>,
+     and <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> statements, you can arrange for your
+     <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> function to repeat
-     a series of commands.
+> function to repeat a series
+     of commands.
     </P
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36025"
->19.6.3.1. LOOP</A
+NAME="AEN34516"
+>40.7.3.1. <VAR
+CLASS="LITERAL"
+>LOOP</VAR
+></A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
 >[<SPAN
 CLASS="OPTIONAL"
->&lt;&lt;label&gt;&gt;</SPAN
+>&lt;&lt;<VAR
+CLASS="REPLACEABLE"
+>label</VAR
+>&gt;&gt;</SPAN
 >]
 LOOP
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 END LOOP;</PRE
-><P>
-
-        LOOP defines an unconditional loop that is repeated indefinitely
-	until terminated by an EXIT or RETURN statement.
-	The optional label can be used by
-        EXIT statements in nested loops to specify which level of
-        nesting should be terminated.
-       </P
+><P
+>      <VAR
+CLASS="LITERAL"
+>LOOP</VAR
+> defines an unconditional loop that is repeated indefinitely
+      until terminated by an <VAR
+CLASS="LITERAL"
+>EXIT</VAR
+> or <TT
+CLASS="COMMAND"
+>RETURN</TT
+>
+      statement.  The optional label can be used by <VAR
+CLASS="LITERAL"
+>EXIT</VAR
+> statements in
+      nested loops to specify which level of nesting should be
+      terminated.
+     </P
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36031"
->19.6.3.2. EXIT</A
+NAME="AEN34528"
+>40.7.3.2. <VAR
+CLASS="LITERAL"
+>EXIT</VAR
+></A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
 >EXIT [<SPAN
 CLASS="OPTIONAL"
-> <TT
+> <VAR
 CLASS="REPLACEABLE"
-><I
->label</I
-></TT
+>label</VAR
 > </SPAN
 >] [<SPAN
 CLASS="OPTIONAL"
-> WHEN <TT
+> WHEN <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > </SPAN
 >];</PRE
-><P>
-
-        If no <TT
+><P
+>        If no <VAR
 CLASS="REPLACEABLE"
-><I
->label</I
-></TT
+>label</VAR
 > is given,
         the innermost loop is terminated and the
-        statement following END LOOP is executed next.
-        If <TT
+        statement following <VAR
+CLASS="LITERAL"
+>END LOOP</VAR
+> is executed next.
+        If <VAR
 CLASS="REPLACEABLE"
-><I
->label</I
-></TT
+>label</VAR
 > is given, it
         must be the label of the current or some outer level of nested loop
         or block. Then the named loop or block is terminated and control
         continues with the statement after the loop's/block's corresponding
-        END.
+        <VAR
+CLASS="LITERAL"
+>END</VAR
+>.
        </P
 ><P
->        If WHEN is present, loop exit occurs only if the specified condition
-	is true, otherwise control passes to the statement after EXIT.
+>        If <VAR
+CLASS="LITERAL"
+>WHEN</VAR
+> is present, loop exit occurs only if the specified condition
+	is true, otherwise control passes to the statement after <VAR
+CLASS="LITERAL"
+>EXIT</VAR
+>.
        </P
 ><P
 >        Examples:
@@ -662,7 +786,7 @@ END LOOP;
 BEGIN
     -- some computations
     IF stocks &#62; 100000 THEN
-        EXIT;  -- illegal. Can't use EXIT outside of a LOOP
+        EXIT;  -- invalid; cannot use EXIT outside of LOOP
     END IF;
 END;</PRE
 ><P>
@@ -673,32 +797,35 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36044"
->19.6.3.3. WHILE</A
+NAME="AEN34546"
+>40.7.3.3. <VAR
+CLASS="LITERAL"
+>WHILE</VAR
+></A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
 >[<SPAN
 CLASS="OPTIONAL"
->&lt;&lt;label&gt;&gt;</SPAN
+>&lt;&lt;<VAR
+CLASS="REPLACEABLE"
+>label</VAR
+>&gt;&gt;</SPAN
 >]
-WHILE <TT
+WHILE <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > LOOP
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 END LOOP;</PRE
-><P>
-
-        The WHILE statement repeats a
+><P
+>        The <VAR
+CLASS="LITERAL"
+>WHILE</VAR
+> statement repeats a
         sequence of statements so long as the condition expression
 	evaluates to true.  The condition is checked just before
 	each entry to the loop body.
@@ -722,65 +849,70 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN36053"
->19.6.3.4. FOR (integer for-loop)</A
+NAME="AEN34558"
+>40.7.3.4. <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> (integer variant)</A
 ></H3
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
 >[<SPAN
 CLASS="OPTIONAL"
->&lt;&lt;label&gt;&gt;</SPAN
->]
-FOR <TT
+>&lt;&lt;<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>label</VAR
+>&gt;&gt;</SPAN
+>]
+FOR <VAR
+CLASS="REPLACEABLE"
+>name</VAR
 > IN [<SPAN
 CLASS="OPTIONAL"
 > REVERSE </SPAN
->] <TT
+>] <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> .. <TT
+>expression</VAR
+> .. <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > LOOP
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 END LOOP;</PRE
-><P>
-
-        This form of FOR creates a loop that iterates over a range of integer
+><P
+>        This form of <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> creates a loop that iterates over a range of integer
 	values. The variable 
-        <TT
+        <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 > is automatically defined as type
-        integer and exists only inside the loop. The two expressions giving
+        <TT
+CLASS="TYPE"
+>integer</TT
+> and exists only inside the loop. The two expressions giving
         the lower and upper bound of the range are evaluated once when entering
-        the loop. The iteration step is normally 1, but is -1 when REVERSE is
+        the loop. The iteration step is normally 1, but is -1 when <VAR
+CLASS="LITERAL"
+>REVERSE</VAR
+> is
 	specified.
        </P
 ><P
->        Some examples of integer FOR loops:
+>        Some examples of integer <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> loops:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >FOR i IN 1..10 LOOP
-  -- some expressions here
-
-    RAISE NOTICE ''i is %'',i;
+    -- some expressions here
+    RAISE NOTICE ''i is %'', i;
 END LOOP;
 
 FOR i IN REVERSE 10..1 LOOP
@@ -796,102 +928,115 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-RECORDS-ITERATING"
->19.6.4. Looping Through Query Results</A
+>40.7.4. Looping Through Query Results</A
 ></H2
 ><P
->     Using a different type of FOR loop, you can iterate through
+>     Using a different type of <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> loop, you can iterate through
      the results of a query and manipulate that data
      accordingly. The syntax is:
 </P><PRE
 CLASS="SYNOPSIS"
 >[<SPAN
 CLASS="OPTIONAL"
->&lt;&lt;label&gt;&gt;</SPAN
+>&lt;&lt;<VAR
+CLASS="REPLACEABLE"
+>label</VAR
+>&gt;&gt;</SPAN
 >]
-FOR <TT
+FOR <VAR
 CLASS="REPLACEABLE"
-><I
->record | row</I
-></TT
-> IN <TT
+>record_or_row</VAR
+> IN <VAR
 CLASS="REPLACEABLE"
-><I
->select_query</I
-></TT
+>query</VAR
 > LOOP
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 END LOOP;</PRE
 ><P>
-     The record or row variable is successively assigned all the rows 
-     resulting from the SELECT query and the loop body is executed 
-     for each row. Here is an example:
-    </P
-><P
-></P><PRE
+     The record or row variable is successively assigned each row
+     resulting from the query (a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command) and the loop
+     body is executed for each row. Here is an example:
+</P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION cs_refresh_mviews () RETURNS INTEGER AS '
+>CREATE FUNCTION cs_refresh_mviews() RETURNS integer AS '
 DECLARE
-     mviews RECORD;
+    mviews RECORD;
 BEGIN
-     PERFORM cs_log(''Refreshing materialized views...'');
+    PERFORM cs_log(''Refreshing materialized views...'');
 
-     FOR mviews IN SELECT * FROM cs_materialized_views ORDER BY sort_key LOOP
+    FOR mviews IN SELECT * FROM cs_materialized_views ORDER BY sort_key LOOP
 
-         -- Now "mviews" has one record from cs_materialized_views
+        -- Now "mviews" has one record from cs_materialized_views
 
-         PERFORM cs_log(''Refreshing materialized view '' || quote_ident(mviews.mv_name) || ''...'');
-         EXECUTE ''TRUNCATE TABLE  '' || quote_ident(mviews.mv_name);
-         EXECUTE ''INSERT INTO '' || quote_ident(mviews.mv_name) || '' '' || mviews.mv_query;
-     END LOOP;
+        PERFORM cs_log(''Refreshing materialized view '' || quote_ident(mviews.mv_name) || ''...'');
+        EXECUTE ''TRUNCATE TABLE  '' || quote_ident(mviews.mv_name);
+        EXECUTE ''INSERT INTO '' || quote_ident(mviews.mv_name) || '' '' || mviews.mv_query;
+    END LOOP;
 
-     PERFORM cs_log(''Done refreshing materialized views.'');
-     RETURN 1;
-end;
-' LANGUAGE 'plpgsql';</PRE
+    PERFORM cs_log(''Done refreshing materialized views.'');
+    RETURN 1;
+END;
+' LANGUAGE plpgsql;</PRE
 ><P>
 
-     If the loop is terminated by an EXIT statement, the last
+     If the loop is terminated by an <VAR
+CLASS="LITERAL"
+>EXIT</VAR
+> statement, the last
      assigned row value is still accessible after the loop.
     </P
 ><P
->     The FOR-IN-EXECUTE statement is another way to iterate over
+>     The <VAR
+CLASS="LITERAL"
+>FOR-IN-EXECUTE</VAR
+> statement is another way to iterate over
      records:
 </P><PRE
 CLASS="SYNOPSIS"
 >[<SPAN
 CLASS="OPTIONAL"
->&lt;&lt;label&gt;&gt;</SPAN
+>&lt;&lt;<VAR
+CLASS="REPLACEABLE"
+>label</VAR
+>&gt;&gt;</SPAN
 >]
-FOR <TT
+FOR <VAR
 CLASS="REPLACEABLE"
-><I
->record | row</I
-></TT
-> IN EXECUTE <TT
+>record_or_row</VAR
+> IN EXECUTE <VAR
 CLASS="REPLACEABLE"
-><I
->text_expression</I
-></TT
+>text_expression</VAR
 > LOOP 
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 END LOOP;</PRE
 ><P>
-     This is like the previous form, except that the source SELECT
-     statement is specified as a string expression, which is evaluated
-     and re-planned on each entry to the FOR loop.  This allows the
-     programmer to choose the speed of a pre-planned query or the
-     flexibility of a dynamic query, just as with a plain EXECUTE
-     statement.
+     This is like the previous form, except that the source
+     <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement is specified as a string
+     expression, which is evaluated and replanned on each entry to
+     the <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> loop.  This allows the programmer to choose the speed of
+     a preplanned query or the flexibility of a dynamic query, just
+     as with a plain <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement.
     </P
 ><DIV
 CLASS="NOTE"
@@ -904,12 +1049,24 @@ CLASS="NOTE"
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > parser presently distinguishes the
-     two kinds of FOR loops (integer or record-returning) by checking
-     whether the target variable mentioned just after FOR has been
-     declared as a record/row variable.  If not, it's presumed to be
-     an integer FOR loop.  This can cause rather nonintuitive error
+     two kinds of <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> loops (integer or query result) by checking
+     whether the target variable mentioned just after <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> has been
+     declared as a record or row variable.  If not, it's presumed to be
+     an integer <VAR
+CLASS="LITERAL"
+>FOR</VAR
+> loop.  This can cause rather nonintuitive error
      messages when the true problem is, say, that one has
-     misspelled the FOR variable name.
+     misspelled the variable name after the <VAR
+CLASS="LITERAL"
+>FOR</VAR
+>.
     </P
 ></BLOCKQUOTE
 ></DIV

@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >PL/Tcl - Tcl Procedural Language</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="Procedural Languages"
-HREF="programmer-pl.html"><LINK
+TITLE="Server Programming"
+HREF="server-programming.html"><LINK
 REL="PREVIOUS"
 TITLE="Porting from Oracle PL/SQL"
 HREF="plpgsql-porting.html"><LINK
 REL="NEXT"
-TITLE="Description"
-HREF="pltcl-description.html"><LINK
+TITLE="PL/Tcl Functions and Arguments"
+HREF="pltcl-functions.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="pltcl-description.html"
+HREF="pltcl-functions.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="PLTCL"
->Chapter 20. PL/Tcl - Tcl Procedural Language</A
-></H1
+></A
+>Chapter 41. PL/Tcl - Tcl Procedural Language</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,64 +90,55 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->20.1. <A
+>41.1. <A
 HREF="pltcl.html#PLTCL-OVERVIEW"
 >Overview</A
 ></DT
 ><DT
->20.2. <A
-HREF="pltcl-description.html"
->Description</A
-></DT
-><DD
-><DL
-><DT
->20.2.1. <A
-HREF="pltcl-description.html#AEN36623"
+>41.2. <A
+HREF="pltcl-functions.html"
 >PL/Tcl Functions and Arguments</A
 ></DT
 ><DT
->20.2.2. <A
-HREF="pltcl-description.html#AEN36650"
+>41.3. <A
+HREF="pltcl-data.html"
 >Data Values in PL/Tcl</A
 ></DT
 ><DT
->20.2.3. <A
-HREF="pltcl-description.html#AEN36654"
+>41.4. <A
+HREF="pltcl-global.html"
 >Global Data in PL/Tcl</A
 ></DT
 ><DT
->20.2.4. <A
-HREF="pltcl-description.html#AEN36665"
+>41.5. <A
+HREF="pltcl-dbaccess.html"
 >Database Access from PL/Tcl</A
 ></DT
 ><DT
->20.2.5. <A
-HREF="pltcl-description.html#AEN36796"
+>41.6. <A
+HREF="pltcl-trigger.html"
 >Trigger Procedures in PL/Tcl</A
 ></DT
 ><DT
->20.2.6. <A
-HREF="pltcl-description.html#AEN36871"
->Modules and the <TT
+>41.7. <A
+HREF="pltcl-unknown.html"
+>Modules and the <CODE
 CLASS="FUNCTION"
->unknown</TT
+>unknown</CODE
 > command</A
 ></DT
 ><DT
->20.2.7. <A
-HREF="pltcl-description.html#AEN36892"
+>41.8. <A
+HREF="pltcl-procnames.html"
 >Tcl Procedure Names</A
 ></DT
 ></DL
-></DD
-></DL
 ></DIV
 ><A
-NAME="AEN36590"
+NAME="AEN35045"
 ></A
 ><A
-NAME="AEN36592"
+NAME="AEN35047"
 ></A
 ><P
 >   PL/Tcl is a loadable procedural language for the
@@ -158,16 +149,13 @@ CLASS="PRODUCTNAME"
    that enables the Tcl language to be used to write functions and
    trigger procedures.
   </P
-><P
->   This package was originally written by Jan Wieck.
-  </P
 ><DIV
 CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
 NAME="PLTCL-OVERVIEW"
->20.1. Overview</A
+>41.1. Overview</A
 ></H1
 ><P
 >    PL/Tcl offers most of the capabilities a function
@@ -177,31 +165,31 @@ NAME="PLTCL-OVERVIEW"
 >    The good restriction is that everything is executed in a safe
     Tcl interpreter. In addition to the limited command set of safe Tcl, only
     a few commands are available to access the database via SPI and to raise
-    messages via <TT
+    messages via <CODE
 CLASS="FUNCTION"
->elog()</TT
+>elog()</CODE
 >. There is no way to access internals of the
-    database backend or to gain OS-level access under the permissions of the
+    database server or to gain OS-level access under the permissions of the
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> user ID, as a C function can do.
+> server process, as a C function can do.
     Thus, any unprivileged database user may be
     permitted to use this language.
    </P
 ><P
->    The other, implementation restriction is that Tcl procedures cannot
+>    The other, implementation restriction is that Tcl functions cannot
     be used to create input/output functions for new data types.
    </P
 ><P
 >    Sometimes it is desirable to write Tcl functions that are not restricted
-    to safe Tcl --- for example, one might want a Tcl function that sends
-    mail.  To handle these cases, there is a variant of <SPAN
+    to safe Tcl.  For example, one might want a Tcl function that sends
+    email.  To handle these cases, there is a variant of <SPAN
 CLASS="APPLICATION"
 >PL/Tcl</SPAN
-> called <TT
+> called <VAR
 CLASS="LITERAL"
->PL/TclU</TT
+>PL/TclU</VAR
 >
     (for untrusted Tcl).  This is the exact same language except that a full
     Tcl interpreter is used.  <SPAN
@@ -246,26 +234,22 @@ CLASS="APPLICATION"
 >PL/TclU</SPAN
 > in a particular database, use the
     <TT
-CLASS="FILENAME"
+CLASS="COMMAND"
 >createlang</TT
-> script, for example
-    <TT
+> program, for example
+    <VAR
 CLASS="LITERAL"
->createlang pltcl <TT
+>createlang pltcl <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
+>dbname</VAR
+></VAR
 > or
-    <TT
+    <VAR
 CLASS="LITERAL"
->createlang pltclu <TT
+>createlang pltclu <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
+>dbname</VAR
+></VAR
 >.
    </P
 ></DIV
@@ -304,7 +288,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="pltcl-description.html"
+HREF="pltcl-functions.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -314,13 +298,16 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Porting from Oracle PL/SQL</TD
+>Porting from <SPAN
+CLASS="PRODUCTNAME"
+>Oracle</SPAN
+> PL/SQL</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="programmer-pl.html"
+HREF="server-programming.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -328,7 +315,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Description</TD
+>PL/Tcl Functions and Arguments</TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->PostgreSQL Source Code</TITLE
+>PostgreSQL Coding Conventions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Developer's Guide"
-HREF="developer.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="PostgreSQL 7.3.3 Developer's Guide"
-HREF="developer.html"><LINK
+TITLE="Example"
+HREF="bki-example.html"><LINK
 REL="NEXT"
-TITLE="Overview of PostgreSQL Internals"
-HREF="overview.html"><LINK
+TITLE="Reporting Errors Within the Server"
+HREF="error-message-reporting.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="developer.html"
+HREF="bki-example.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="overview.html"
+HREF="error-message-reporting.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -80,19 +80,138 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="SOURCE"
->Chapter 1. PostgreSQL Source Code</A
-></H1
+></A
+>Chapter 51. PostgreSQL Coding Conventions</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>51.1. <A
+HREF="source.html#SOURCE-FORMAT"
+>Formatting</A
+></DT
+><DT
+>51.2. <A
+HREF="error-message-reporting.html"
+>Reporting Errors Within the Server</A
+></DT
+><DT
+>51.3. <A
+HREF="error-style-guide.html"
+>Error Message Style Guide</A
+></DT
+><DD
+><DL
+><DT
+>51.3.1. <A
+HREF="error-style-guide.html#AEN55491"
+>What goes where</A
+></DT
+><DT
+>51.3.2. <A
+HREF="error-style-guide.html#AEN55500"
+>Formatting</A
+></DT
+><DT
+>51.3.3. <A
+HREF="error-style-guide.html#AEN55504"
+>Quotation marks</A
+></DT
+><DT
+>51.3.4. <A
+HREF="error-style-guide.html#AEN55508"
+>Use of quotes</A
+></DT
+><DT
+>51.3.5. <A
+HREF="error-style-guide.html#AEN55514"
+>Grammar and punctuation</A
+></DT
+><DT
+>51.3.6. <A
+HREF="error-style-guide.html#AEN55520"
+>Upper case vs. lower case</A
+></DT
+><DT
+>51.3.7. <A
+HREF="error-style-guide.html#AEN55524"
+>Avoid passive voice</A
+></DT
+><DT
+>51.3.8. <A
+HREF="error-style-guide.html#AEN55530"
+>Present vs past tense</A
+></DT
+><DT
+>51.3.9. <A
+HREF="error-style-guide.html#AEN55540"
+>Type of the object</A
+></DT
+><DT
+>51.3.10. <A
+HREF="error-style-guide.html#AEN55545"
+>Brackets</A
+></DT
+><DT
+>51.3.11. <A
+HREF="error-style-guide.html#AEN55549"
+>Assembling error messages</A
+></DT
+><DT
+>51.3.12. <A
+HREF="error-style-guide.html#AEN55554"
+>Reasons for errors</A
+></DT
+><DT
+>51.3.13. <A
+HREF="error-style-guide.html#AEN55558"
+>Function names</A
+></DT
+><DT
+>51.3.14. <A
+HREF="error-style-guide.html#AEN55565"
+>Tricky words to avoid</A
+></DT
+><DT
+>51.3.15. <A
+HREF="error-style-guide.html#AEN55597"
+>Proper spelling</A
+></DT
+><DT
+>51.3.16. <A
+HREF="error-style-guide.html#AEN55612"
+>Localization</A
+></DT
+></DL
+></DD
+></DL
+></DIV
 ><DIV
 CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
 NAME="SOURCE-FORMAT"
->1.1. Formatting</A
+>51.1. Formatting</A
 ></H1
 ><P
->    Source code formatting uses a 4 column tab spacing, currently with 
+>    Source code formatting uses 4 column tab spacing, with 
     tabs preserved (i.e. tabs are not expanded to spaces).
+    Each logical indentation level is one additional tab stop.
+    Layout rules (brace positioning, etc) follow BSD conventions.
+   </P
+><P
+>    While submitted patches do not absolutely have to follow these formatting
+    rules, it's a good idea to do so.  Your code will get run through
+    <SPAN
+CLASS="APPLICATION"
+>pgindent</SPAN
+>, so there's no point in making it look nice
+    under some other set of formatting conventions.
    </P
 ><P
 >    For Emacs, add the following (or something similar)
@@ -154,12 +273,12 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >less</SPAN
 > can be invoked as
-
 </P><PRE
 CLASS="PROGRAMLISTING"
 >more -x4
 less -x4</PRE
 ><P>
+    to make them show tabs appropriately.
    </P
 ></DIV
 ></DIV
@@ -179,7 +298,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="developer.html"
+HREF="bki-example.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -197,7 +316,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="overview.html"
+HREF="error-message-reporting.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -207,13 +326,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->PostgreSQL 7.3.3 Developer's Guide</TD
+>Example</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="developer.html"
+HREF="internals.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -221,7 +340,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Overview of PostgreSQL Internals</TD
+>Reporting Errors Within the Server</TD
 ></TR
 ></TABLE
 ></DIV

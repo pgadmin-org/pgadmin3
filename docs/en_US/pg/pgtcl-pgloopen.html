@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_lo_open</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_lo_creat"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,153 +78,119 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGLOOPEN"
->pg_lo_open</A
-></H1
+></A
+>pg_lo_open</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN27001"
+NAME="AEN21899"
 ></A
 ><H2
 >Name</H2
 >pg_lo_open&nbsp;--&nbsp;open a large object<A
-NAME="IX-PGTCL-PGLOOPEN-1"
-></A
-><A
 NAME="IX-PGTCL-PGLOOPEN-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN27009"
+NAME="AEN21904"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_lo_open <TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->objOid</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->mode</I
-></TT
+>pg_lo_open <VAR
+CLASS="PARAMETER"
+>conn</VAR
+> <VAR
+CLASS="PARAMETER"
+>loid</VAR
+> <VAR
+CLASS="PARAMETER"
+>mode</VAR
 ></PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGLOOPEN-1"
-></A
-><H3
->Inputs</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
-></DT
-><DD
-><P
->Specifies a valid database connection.</P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->objOid</I
-></TT
-></DT
-><DD
-><P
->Specifies a valid large object OID.</P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->mode</I
-></TT
-></DT
-><DD
-><P
->Specifies the access mode for the large object</P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGLOOPEN-2"
-></A
-><H3
->Outputs</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->fd</I
-></TT
-></DT
-><DD
-><P
->A file descriptor for use in later pg_lo* routines.</P
-></DD
-></DL
-></DIV
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGLOOPEN-1"
+NAME="AEN21909"
 ></A
 ><H2
 >Description</H2
 ><P
-><TT
+>   <CODE
 CLASS="FUNCTION"
->pg_lo_open</TT
-> open an Inversion Large Object.</P
+>pg_lo_open</CODE
+> opens a large object.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGLOOPEN-2"
+NAME="AEN21913"
 ></A
 ><H2
->Usage</H2
+>Arguments</H2
 ><P
->Mode can be either <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="PARAMETER"
+>conn</VAR
+></DT
+><DD
+><P
+>      The handle of a database connection in which the large object to
+      be opened exists.
+     </P
+></DD
+><DT
+><VAR
+CLASS="PARAMETER"
+>loid</VAR
+></DT
+><DD
+><P
+>      The OID of the large object.
+     </P
+></DD
+><DT
+><VAR
+CLASS="PARAMETER"
+>mode</VAR
+></DT
+><DD
+><P
+>      Specifies the access mode for the large object.  Mode can be
+      either <VAR
 CLASS="LITERAL"
->r</TT
->, <TT
+>r</VAR
+>, <VAR
 CLASS="LITERAL"
->w</TT
->, or <TT
+>w</VAR
+>, or <VAR
 CLASS="LITERAL"
->rw</TT
->.</P
+>rw</VAR
+>.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21934"
+></A
+><H2
+>Return Value</H2
+><P
+>   A descriptor for use in later large-object commands.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

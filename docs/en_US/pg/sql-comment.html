@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >COMMENT</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,288 +78,157 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-COMMENT"
->COMMENT</A
-></H1
+></A
+>COMMENT</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38229"
+NAME="AEN37204"
 ></A
 ><H2
 >Name</H2
->   COMMENT
-  &nbsp;--&nbsp;   define or change the comment of an object
-  </DIV
+>COMMENT&nbsp;--&nbsp;define or change the comment of an object</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38232"
+NAME="AEN37207"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
 >COMMENT ON
-[
-  TABLE <TT
+{
+  TABLE <VAR
 CLASS="REPLACEABLE"
-><I
->object_name</I
-></TT
+>object_name</VAR
 > |
-  COLUMN <TT
+  COLUMN <VAR
 CLASS="REPLACEABLE"
-><I
->table_name</I
-></TT
->.<TT
+>table_name</VAR
+>.<VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
+>column_name</VAR
 > |
-  AGGREGATE <TT
+  AGGREGATE <VAR
 CLASS="REPLACEABLE"
-><I
->agg_name</I
-></TT
-> (<TT
+>agg_name</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->agg_type</I
-></TT
+>agg_type</VAR
 >) |
-  CONSTRAINT <TT
+  CONSTRAINT <VAR
 CLASS="REPLACEABLE"
-><I
->constraint_name</I
-></TT
-> ON <TT
+>constraint_name</VAR
+> ON <VAR
 CLASS="REPLACEABLE"
-><I
->table_name</I
-></TT
+>table_name</VAR
 > |
-  DATABASE <TT
+  DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->object_name</I
-></TT
+>object_name</VAR
 > |
-  DOMAIN <TT
+  DOMAIN <VAR
 CLASS="REPLACEABLE"
-><I
->object_name</I
-></TT
+>object_name</VAR
 > |
-  FUNCTION <TT
+  FUNCTION <VAR
 CLASS="REPLACEABLE"
-><I
->func_name</I
-></TT
-> (<TT
+>func_name</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->arg1_type</I
-></TT
->, <TT
+>arg1_type</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->arg2_type</I
-></TT
+>arg2_type</VAR
 >, ...) |
-  INDEX <TT
+  INDEX <VAR
 CLASS="REPLACEABLE"
-><I
->object_name</I
-></TT
+>object_name</VAR
 > |
-  OPERATOR <TT
+  OPERATOR <VAR
 CLASS="REPLACEABLE"
-><I
->op</I
-></TT
-> (<TT
+>op</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->leftoperand_type</I
-></TT
->, <TT
+>leftoperand_type</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->rightoperand_type</I
-></TT
+>rightoperand_type</VAR
 >) |
-  RULE <TT
+  RULE <VAR
 CLASS="REPLACEABLE"
-><I
->rule_name</I
-></TT
-> ON <TT
+>rule_name</VAR
+> ON <VAR
 CLASS="REPLACEABLE"
-><I
->table_name</I
-></TT
+>table_name</VAR
 > |
-  SCHEMA <TT
+  SCHEMA <VAR
 CLASS="REPLACEABLE"
-><I
->object_name</I
-></TT
+>object_name</VAR
 > |
-  SEQUENCE <TT
+  SEQUENCE <VAR
 CLASS="REPLACEABLE"
-><I
->object_name</I
-></TT
+>object_name</VAR
 > |
-  TRIGGER <TT
+  TRIGGER <VAR
 CLASS="REPLACEABLE"
-><I
->trigger_name</I
-></TT
-> ON <TT
+>trigger_name</VAR
+> ON <VAR
 CLASS="REPLACEABLE"
-><I
->table_name</I
-></TT
+>table_name</VAR
 > |
-  TYPE <TT
+  TYPE <VAR
 CLASS="REPLACEABLE"
-><I
->object_name</I
-></TT
+>object_name</VAR
 > |
-  VIEW <TT
+  VIEW <VAR
 CLASS="REPLACEABLE"
-><I
->object_name</I
-></TT
+>object_name</VAR
 >
-] IS <TT
+} IS <VAR
 CLASS="REPLACEABLE"
-><I
->'text'</I
-></TT
->
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-COMMENT-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->object_name,
-      table_name.column_name, agg_name, constraint_name, func_name, op, rule_name, trigger_name</I
-></TT
-></DT
-><DD
-><P
->	The name of the object to be be commented.  Names of tables,
-	aggregates, domains, functions, indexes, operators, sequences, types,
-	and views
-	may be schema-qualified.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->text</I
-></TT
-></DT
-><DD
-><P
->	The comment to add.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-COMMENT-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->COMMENT
-       </TT
-></DT
-><DD
-><P
->	Message returned if the table is successfully commented.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>'text'</VAR
+></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-COMMENT-1"
+NAME="AEN37234"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >COMMENT</TT
 > stores a comment about a database object.
     Comments can be
-    easily retrieved with <TT
-CLASS="COMMAND"
->psql</TT
->'s
+    easily retrieved with the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> commands
     <TT
 CLASS="COMMAND"
 >\dd</TT
 >, <TT
 CLASS="COMMAND"
 >\d+</TT
->, or <TT
+>, and <TT
 CLASS="COMMAND"
 >\l+</TT
->
-    commands.  Other user interfaces to retrieve comments can be built atop
-    the same built-in functions that <TT
-CLASS="COMMAND"
->psql</TT
+>.
+    Other user interfaces to retrieve comments can be built atop
+    the same built-in functions that <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
 > uses, namely
-    <TT
+    <CODE
 CLASS="FUNCTION"
->obj_description()</TT
-> and <TT
+>obj_description</CODE
+> and <CODE
 CLASS="FUNCTION"
->col_description()</TT
+>col_description</CODE
 >.
   </P
 ><P
@@ -368,107 +237,173 @@ CLASS="COMMAND"
 >COMMENT</TT
 > command for the
     same object.  Only one comment string is stored for each object.
-    To remove a comment, write <TT
+    To remove a comment, write <VAR
 CLASS="LITERAL"
->NULL</TT
+>NULL</VAR
 > in place of the text
     string.
     Comments are automatically dropped when the object is dropped.
   </P
+></DIV
 ><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
+CLASS="REFSECT1"
+><A
+NAME="AEN37248"
+></A
+><H2
+>Parameters</H2
 ><P
-><B
->Note: </B
->    There is presently no security mechanism
-    for comments: any user connected to a database can see all the comments
-    for objects in that database (although only superusers can change
-    comments for objects that they don't own).  Therefore, don't put
-    security-critical information in comments.
-  </P
-></BLOCKQUOTE
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>object_name</VAR
+><BR><VAR
+CLASS="REPLACEABLE"
+>table_name.column_name</VAR
+><BR><VAR
+CLASS="REPLACEABLE"
+>aggname</VAR
+><BR><VAR
+CLASS="REPLACEABLE"
+>constraint_name</VAR
+><BR><VAR
+CLASS="REPLACEABLE"
+>func_name</VAR
+><BR><VAR
+CLASS="REPLACEABLE"
+>op</VAR
+><BR><VAR
+CLASS="REPLACEABLE"
+>rule_name</VAR
+><BR><VAR
+CLASS="REPLACEABLE"
+>trigger_name</VAR
+></DT
+><DD
+><P
+>      The name of the object to be be commented.  Names of tables,
+      aggregates, domains, functions, indexes, operators, sequences,
+      types, and views may be schema-qualified.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>text</VAR
+></DT
+><DD
+><P
+>      The new comment.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-COMMENT-2"
+NAME="AEN37275"
 ></A
 ><H2
->   Usage
-  </H2
+>Diagnostics</H2
 ><P
->   Attach a comment to the table <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>COMMENT</SAMP
+></DT
+><DD
+><P
+>      Message returned if the comment was successfully changed.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37283"
+></A
+><H2
+>Notes</H2
+><P
+>   There is presently no security mechanism for comments: any user
+   connected to a database can see all the comments for objects in
+   that database (although only superusers can change comments for
+   objects that they don't own).  Therefore, don't put
+   security-critical information in comments.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37286"
+></A
+><H2
+>Examples</H2
+><P
+>   Attach a comment to the table <VAR
 CLASS="LITERAL"
->mytable</TT
+>mytable</VAR
 >:
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->COMMENT ON TABLE mytable IS 'This is my table.';
-   </PRE
+>COMMENT ON TABLE mytable IS 'This is my table.';</PRE
 ><P>
 
    Remove it again:
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->COMMENT ON TABLE mytable IS NULL;
-   </PRE
+>COMMENT ON TABLE mytable IS NULL;</PRE
 ><P>
   </P
 ><P
 >   Some more examples:
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
 >COMMENT ON AGGREGATE my_aggregate (double precision) IS 'Computes sample variance';
-COMMENT ON COLUMN my_table.my_field IS 'Employee ID number';
+COMMENT ON COLUMN my_table.my_column IS 'Employee ID number';
 COMMENT ON DATABASE my_database IS 'Development Database';
 COMMENT ON DOMAIN my_domain IS 'Email Address Domain';
 COMMENT ON FUNCTION my_function (timestamp) IS 'Returns Roman Numeral';
-COMMENT ON INDEX my_index IS 'Enforces uniqueness on employee id';
+COMMENT ON INDEX my_index IS 'Enforces uniqueness on employee ID';
 COMMENT ON OPERATOR ^ (text, text) IS 'Performs intersection of two texts';
 COMMENT ON OPERATOR ^ (NONE, text) IS 'This is a prefix operator on text';
-COMMENT ON RULE my_rule ON my_table IS 'Logs UPDATES of employee records';
+COMMENT ON RULE my_rule ON my_table IS 'Logs updates of employee records';
 COMMENT ON SCHEMA my_schema IS 'Departmental data';
 COMMENT ON SEQUENCE my_sequence IS 'Used to generate primary keys';
 COMMENT ON TABLE my_schema.my_table IS 'Employee Information';
-COMMENT ON TRIGGER my_trigger ON my_table IS 'Used for R.I.';
-COMMENT ON TYPE complex IS 'Complex Number datatype';
-COMMENT ON VIEW my_view IS 'View of departmental costs';
-   </PRE
+COMMENT ON TRIGGER my_trigger ON my_table IS 'Used for RI';
+COMMENT ON TYPE complex IS 'Complex number data type';
+COMMENT ON VIEW my_view IS 'View of departmental costs';</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-COMMENT-3"
+NAME="AEN37294"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-COMMENT-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >COMMENT</TT
-> in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
-></DIV
+> command in the SQL standard.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

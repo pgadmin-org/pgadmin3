@@ -1,19 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >System Catalogs</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Developer's Guide"
-HREF="developer.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="PREVIOUS"
 TITLE="Executor"
 HREF="executor.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="CATALOGS"
->Chapter 3. System Catalogs</A
-></H1
+></A
+>Chapter 45. System Catalogs</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,160 +90,236 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->3.1. <A
+>45.1. <A
 HREF="catalogs.html#CATALOGS-OVERVIEW"
 >Overview</A
 ></DT
 ><DT
->3.2. <A
+>45.2. <A
 HREF="catalog-pg-aggregate.html"
->pg_aggregate</A
+><TT
+CLASS="STRUCTNAME"
+>pg_aggregate</TT
+></A
 ></DT
 ><DT
->3.3. <A
+>45.3. <A
 HREF="catalog-pg-am.html"
->pg_am</A
+><TT
+CLASS="STRUCTNAME"
+>pg_am</TT
+></A
 ></DT
 ><DT
->3.4. <A
+>45.4. <A
 HREF="catalog-pg-amop.html"
->pg_amop</A
+><TT
+CLASS="STRUCTNAME"
+>pg_amop</TT
+></A
 ></DT
 ><DT
->3.5. <A
+>45.5. <A
 HREF="catalog-pg-amproc.html"
->pg_amproc</A
+><TT
+CLASS="STRUCTNAME"
+>pg_amproc</TT
+></A
 ></DT
 ><DT
->3.6. <A
+>45.6. <A
 HREF="catalog-pg-attrdef.html"
->pg_attrdef</A
+><TT
+CLASS="STRUCTNAME"
+>pg_attrdef</TT
+></A
 ></DT
 ><DT
->3.7. <A
+>45.7. <A
 HREF="catalog-pg-attribute.html"
->pg_attribute</A
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
 ></DT
 ><DT
->3.8. <A
+>45.8. <A
 HREF="catalog-pg-cast.html"
->pg_cast</A
+><TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+></A
 ></DT
 ><DT
->3.9. <A
+>45.9. <A
 HREF="catalog-pg-class.html"
->pg_class</A
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
 ></DT
 ><DT
->3.10. <A
+>45.10. <A
 HREF="catalog-pg-constraint.html"
->pg_constraint</A
+><TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+></A
 ></DT
 ><DT
->3.11. <A
+>45.11. <A
 HREF="catalog-pg-conversion.html"
->pg_conversion</A
+><TT
+CLASS="STRUCTNAME"
+>pg_conversion</TT
+></A
 ></DT
 ><DT
->3.12. <A
+>45.12. <A
 HREF="catalog-pg-database.html"
->pg_database</A
+><TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+></A
 ></DT
 ><DT
->3.13. <A
+>45.13. <A
 HREF="catalog-pg-depend.html"
->pg_depend</A
+><TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+></A
 ></DT
 ><DT
->3.14. <A
+>45.14. <A
 HREF="catalog-pg-description.html"
->pg_description</A
+><TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+></A
 ></DT
 ><DT
->3.15. <A
+>45.15. <A
 HREF="catalog-pg-group.html"
->pg_group</A
+><TT
+CLASS="STRUCTNAME"
+>pg_group</TT
+></A
 ></DT
 ><DT
->3.16. <A
+>45.16. <A
 HREF="catalog-pg-index.html"
->pg_index</A
+><TT
+CLASS="STRUCTNAME"
+>pg_index</TT
+></A
 ></DT
 ><DT
->3.17. <A
+>45.17. <A
 HREF="catalog-pg-inherits.html"
->pg_inherits</A
+><TT
+CLASS="STRUCTNAME"
+>pg_inherits</TT
+></A
 ></DT
 ><DT
->3.18. <A
+>45.18. <A
 HREF="catalog-pg-language.html"
->pg_language</A
+><TT
+CLASS="STRUCTNAME"
+>pg_language</TT
+></A
 ></DT
 ><DT
->3.19. <A
+>45.19. <A
 HREF="catalog-pg-largeobject.html"
->pg_largeobject</A
+><TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+></A
 ></DT
 ><DT
->3.20. <A
+>45.20. <A
 HREF="catalog-pg-listener.html"
->pg_listener</A
+><TT
+CLASS="STRUCTNAME"
+>pg_listener</TT
+></A
 ></DT
 ><DT
->3.21. <A
+>45.21. <A
 HREF="catalog-pg-namespace.html"
->pg_namespace</A
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
 ></DT
 ><DT
->3.22. <A
+>45.22. <A
 HREF="catalog-pg-opclass.html"
->pg_opclass</A
+><TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
+></A
 ></DT
 ><DT
->3.23. <A
+>45.23. <A
 HREF="catalog-pg-operator.html"
->pg_operator</A
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></A
 ></DT
 ><DT
->3.24. <A
+>45.24. <A
 HREF="catalog-pg-proc.html"
->pg_proc</A
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
 ></DT
 ><DT
->3.25. <A
+>45.25. <A
 HREF="catalog-pg-rewrite.html"
->pg_rewrite</A
+><TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+></A
 ></DT
 ><DT
->3.26. <A
+>45.26. <A
 HREF="catalog-pg-shadow.html"
->pg_shadow</A
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
 ></DT
 ><DT
->3.27. <A
+>45.27. <A
 HREF="catalog-pg-statistic.html"
->pg_statistic</A
+><TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+></A
 ></DT
 ><DT
->3.28. <A
+>45.28. <A
 HREF="catalog-pg-trigger.html"
->pg_trigger</A
+><TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+></A
 ></DT
 ><DT
->3.29. <A
+>45.29. <A
 HREF="catalog-pg-type.html"
->pg_type</A
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
 ></DT
 ></DL
 ></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOGS-OVERVIEW"
->3.1. Overview</A
-></H1
 ><P
 >   The system catalogs are the place where a relational database
    management system stores schema metadata, such as information about
@@ -254,7 +330,7 @@ CLASS="PRODUCTNAME"
 >'s system catalogs are regular
    tables.  You can drop and recreate the tables, add columns, insert
    and update values, and severely mess up your system that way.
-   Normally one should not change the system catalogs by hand, there
+   Normally, one should not change the system catalogs by hand, there
    are always SQL commands to do that.  (For example, <TT
 CLASS="COMMAND"
 >CREATE
@@ -263,155 +339,149 @@ CLASS="COMMAND"
    <TT
 CLASS="STRUCTNAME"
 >pg_database</TT
-> catalog -- and actually
+> catalog --- and actually
    creates the database on disk.)  There are some exceptions for
-   especially esoteric operations, such as adding index access methods.
+   particularly esoteric operations, such as adding index access methods.
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOGS-OVERVIEW"
+>45.1. Overview</A
+></H1
+><P
+>   <A
+HREF="catalogs.html#CATALOG-TABLE"
+>Table 45-1</A
+> lists the system catalogs.
+   More detailed documentation of each catalog follows below.
   </P
 ><P
 >   Most system catalogs are copied from the template database during
-   database creation, and are thereafter database-specific. A few
-   catalogs are physically shared across all databases in an installation;
+   database creation and are thereafter database-specific. A few
+   catalogs are physically shared across all databases in a cluster;
    these are marked in the descriptions of the individual catalogs.
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN52265"
+NAME="CATALOG-TABLE"
 ></A
 ><P
 ><B
->Table 3-1. System Catalogs</B
+>Table 45-1. System Catalogs</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Catalog Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Purpose</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-aggregate.html"
->       <SPAN
-CLASS="DATABASE"
->pg_aggregate</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_aggregate</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >aggregate functions</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_am</TD
+><A
+HREF="catalog-pg-am.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_am</TT
+></A
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >index access methods</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_amop</TD
+><A
+HREF="catalog-pg-amop.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_amop</TT
+></A
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >access method operators</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_amproc</TD
+><A
+HREF="catalog-pg-amproc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_amproc</TT
+></A
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >access method support procedures</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-attrdef.html"
->       <SPAN
-CLASS="DATABASE"
->pg_attrdef</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_attrdef</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >column default values</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-attribute.html"
->       <SPAN
-CLASS="DATABASE"
->pg_attribute</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >table columns (<SPAN
 CLASS="QUOTE"
 >"attributes"</SPAN
->, <SPAN
-CLASS="QUOTE"
->"fields"</SPAN
 >)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-cast.html"
->       <SPAN
-CLASS="DATABASE"
->pg_cast</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >casts (data type conversions)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-class.html"
->       <SPAN
-CLASS="DATABASE"
->pg_class</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >tables, indexes, sequences (<SPAN
 CLASS="QUOTE"
 >"relations"</SPAN
@@ -419,330 +489,247 @@ CLASS="QUOTE"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-constraint.html"
->       <SPAN
-CLASS="DATABASE"
->pg_constraint</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->check constraints, unique / primary key constraints, foreign key constraints</TD
+>check constraints, unique constraints, primary key constraints, foreign key constraints</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-conversion.html"
->       <SPAN
-CLASS="DATABASE"
->pg_conversion</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_conversion</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >encoding conversion information</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-database.html"
->       <SPAN
-CLASS="DATABASE"
->pg_database</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_database</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >databases within this database cluster</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-depend.html"
->       <SPAN
-CLASS="DATABASE"
->pg_depend</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >dependencies between database objects</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-description.html"
->       <SPAN
-CLASS="DATABASE"
->pg_description</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_description</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >descriptions or comments on database objects</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-group.html"
->       <SPAN
-CLASS="DATABASE"
->pg_group</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_group</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >groups of database users</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-index.html"
->       <SPAN
-CLASS="DATABASE"
->pg_index</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_index</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >additional index information</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-inherits.html"
->       <SPAN
-CLASS="DATABASE"
->pg_inherits</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_inherits</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >table inheritance hierarchy</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-language.html"
->       <SPAN
-CLASS="DATABASE"
->pg_language</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_language</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >languages for writing functions</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-largeobject.html"
->       <SPAN
-CLASS="DATABASE"
->pg_largeobject</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >large objects</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-listener.html"
->       <SPAN
-CLASS="DATABASE"
->pg_listener</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_listener</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->asynchronous notification</TD
+>asynchronous notification support</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-namespace.html"
->       <SPAN
-CLASS="DATABASE"
->pg_namespace</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->namespaces (schemas)</TD
+>schemas</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-opclass.html"
->       <SPAN
-CLASS="DATABASE"
->pg_opclass</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >index access method operator classes</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-operator.html"
->       <SPAN
-CLASS="DATABASE"
->pg_operator</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >operators</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-proc.html"
->       <SPAN
-CLASS="DATABASE"
->pg_proc</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >functions and procedures</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-rewrite.html"
->       <SPAN
-CLASS="DATABASE"
->pg_rewrite</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->query rewriter rules</TD
+>query rewrite rules</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-shadow.html"
->       <SPAN
-CLASS="DATABASE"
->pg_shadow</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >database users</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-statistic.html"
->       <SPAN
-CLASS="DATABASE"
->pg_statistic</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->optimizer statistics</TD
+>planner statistics</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-trigger.html"
->       <SPAN
-CLASS="DATABASE"
->pg_trigger</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >triggers</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><A
 HREF="catalog-pg-type.html"
->       <SPAN
-CLASS="DATABASE"
->pg_type</SPAN
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
 ></A
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >data types</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
-><P
->   More detailed documentation of each catalog follows below.
-  </P
 ></DIV
 ></DIV
 ><DIV
@@ -795,7 +782,7 @@ WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="developer.html"
+HREF="internals.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -803,7 +790,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_aggregate</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_aggregate</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

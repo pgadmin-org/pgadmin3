@@ -1,0 +1,1069 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>routines</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Information Schema"
+HREF="information-schema.html"><LINK
+REL="PREVIOUS"
+TITLE="routine_privileges"
+HREF="infoschema-routine-privileges.html"><LINK
+REL="NEXT"
+TITLE="schemata"
+HREF="infoschema-schemata.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="infoschema-routine-privileges.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 33. The Information Schema</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="infoschema-schemata.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INFOSCHEMA-ROUTINES"
+>33.26. <VAR
+CLASS="LITERAL"
+>routines</VAR
+></A
+></H1
+><P
+>   The view <VAR
+CLASS="LITERAL"
+>routines</VAR
+> contains all functions in the
+   current database.  Only those functions are shown that the current
+   user has access to (by way of being the owner or having some
+   privilege).
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN28212"
+></A
+><P
+><B
+>Table 33-24. <VAR
+CLASS="LITERAL"
+>routines</VAR
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Data Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>specific_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database containing the function (always the current database)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>specific_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema containing the function</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>specific_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       The <SPAN
+CLASS="QUOTE"
+>"specific name"</SPAN
+> of the function.  This is a
+       name that uniquely identifies the function in the schema, even
+       if the real name of the function is overloaded.  The format of
+       the specific name is not defined, it should only be used to
+       compare it to other instances of specific routine names.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>routine_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the database containing the function (always the current database)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>routine_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the schema containing the function</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>routine_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Name of the function (may be duplicated in case of overloading)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>routine_type</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Always <VAR
+CLASS="LITERAL"
+>FUNCTION</VAR
+> (In the future there might
+       be other types of routines.)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>module_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>module_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>module_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>udt_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>udt_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>udt_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>data_type</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Return data type of the function, if it is a built-in type, or
+       <VAR
+CLASS="LITERAL"
+>ARRAY</VAR
+> if it is some array (in that case, see
+       the view <VAR
+CLASS="LITERAL"
+>element_types</VAR
+>), else
+       <VAR
+CLASS="LITERAL"
+>USER-DEFINED</VAR
+> (in that case, the type is
+       identified in <VAR
+CLASS="LITERAL"
+>type_udt_name</VAR
+> and associated
+       columns).
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_maximum_length</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to return data types in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_octet_length</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to return data types in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_set_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_set_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>character_set_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>collation_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>collation_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>collation_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>numeric_precision</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to return data types in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>numeric_precision_radix</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to return data types in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>numeric_scale</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to return data types in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>datetime_precision</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, since this information is not applied to return data types in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>interval_type</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Always null, since this information is not applied to return data types in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>interval_precision</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Always null, since this information is not applied to return data types in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>type_udt_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the database that the return data type of the function
+       is defined in (always the current database)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>type_udt_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the schema that the return data type of the function is
+       defined in
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>type_udt_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       Name of the return data type of the function
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>scope_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>scope_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>scope_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>maximum_cardinality</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Always null, because arrays always have unlimited maximum cardinality in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>dtd_identifier</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>       An identifier of the data type descriptor of the return data
+       type of this function, unique among the data type descriptors
+       pertaining to the function.  This is mainly useful for joining
+       with other instances of such identifiers.  (The specific format
+       of the identifier is not defined and not guaranteed to remain
+       the same in future versions.)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>routine_body</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       If the function is an SQL function, then
+       <VAR
+CLASS="LITERAL"
+>SQL</VAR
+>, else <VAR
+CLASS="LITERAL"
+>EXTERNAL</VAR
+>.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>routine_definition</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       The source text of the function (null if the current user is
+       not the owner of the function).  (According to the SQL
+       standard, this column is only applicable if
+       <VAR
+CLASS="LITERAL"
+>routine_body</VAR
+> is <VAR
+CLASS="LITERAL"
+>SQL</VAR
+>, but
+       in PostgreSQL it will contain whatever source text was
+       specified when the function was created.)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>external_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       If this function is a C function, then the external name (link
+       symbol) of the function; else null.  (This works out to be the
+       same value that is shown in
+       <VAR
+CLASS="LITERAL"
+>routine_definition</VAR
+>.)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>external_language</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>The language the function is written in</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>parameter_style</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Always <VAR
+CLASS="LITERAL"
+>GENERAL</VAR
+> (The SQL standard defines
+       other parameter styles, which are not available in PostgreSQL.)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>is_deterministic</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       If the function is declared immutable (called deterministic in
+       the SQL standard), then <VAR
+CLASS="LITERAL"
+>YES</VAR
+>, else
+       <VAR
+CLASS="LITERAL"
+>NO</VAR
+>.  (You cannot query the other volatility
+       levels available in PostgreSQL through the information schema.)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>sql_data_access</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Always <VAR
+CLASS="LITERAL"
+>MODIFIES</VAR
+>, meaning that the function
+       possibly modifies SQL data.  This information is not useful for
+       PostgreSQL.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>is_null_call</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       If the function automatically returns null if any of its
+       arguments are null, then <VAR
+CLASS="LITERAL"
+>YES</VAR
+>, else
+       <VAR
+CLASS="LITERAL"
+>NO</VAR
+>.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>sql_path</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>schema_level_routine</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       Always <VAR
+CLASS="LITERAL"
+>YES</VAR
+> (The opposite would be a method
+       of a user-defined type, which is a feature not available in
+       PostgreSQL.)
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>max_dynamic_result_sets</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>cardinal_number</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>is_user_defined_cast</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>is_implicitly_invocable</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>security_type</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>       If the function runs with the privileges of the current user,
+       then <VAR
+CLASS="LITERAL"
+>INVOKER</VAR
+>, if the function runs with the
+       privileges of the user who defined it, then
+       <VAR
+CLASS="LITERAL"
+>DEFINER</VAR
+>.
+      </TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>to_sql_specific_catalog</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>to_sql_specific_schema</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>to_sql_specific_name</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>sql_identifier</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>as_locator</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>character_data</TT
+></TD
+><TD
+>Applies to a feature not available in PostgreSQL</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="infoschema-routine-privileges.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="infoschema-schemata.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>routine_privileges</VAR
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="information-schema.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><VAR
+CLASS="LITERAL"
+>schemata</VAR
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

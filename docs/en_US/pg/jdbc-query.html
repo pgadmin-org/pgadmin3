@@ -1,21 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Issuing a Query and Processing the Result</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="JDBC Interface"
 HREF="jdbc.html"><LINK
 REL="PREVIOUS"
-TITLE="Using the Driver"
+TITLE="Initializing the Driver"
 HREF="jdbc-use.html"><LINK
 REL="NEXT"
 TITLE="Performing Updates"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,9 +60,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. <SPAN
+>Chapter 31. <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > Interface</TD
 ><TD
 WIDTH="10%"
@@ -84,36 +84,36 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="JDBC-QUERY"
->5.3. Issuing a Query and Processing the Result</A
+>31.3. Issuing a Query and Processing the Result</A
 ></H1
 ><P
->    Any time you want to issue <SPAN
+>    Any time you want to issue <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > statements to
-    the database, you require a <TT
+    the database, you require a <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 > or 
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->PreparedStatement</TT
+>PreparedStatement</CODE
 > instance. Once you have 
-    a <TT
+    a <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 > or 
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->PreparedStatement</TT
+>PreparedStatement</CODE
 >, you can use issue a
-    query. This will return a <TT
+    query. This will return a <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 >
     instance, which contains the entire result.  <A
 HREF="jdbc-query.html#JDBC-QUERY-EXAMPLE"
->Example 5-1</A
+>Example 31-1</A
 > illustrates this process.
    </P
 ><DIV
@@ -123,22 +123,22 @@ NAME="JDBC-QUERY-EXAMPLE"
 ></A
 ><P
 ><B
->Example 5-1. Processing a Simple Query in <SPAN
+>Example 31-1. Processing a Simple Query in <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 ></B
 ></P
 ><P
 >     This example will issue a simple query and print out the first
-     column of each row using a <TT
+     column of each row using a <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 >.
 </P><PRE
 CLASS="PROGRAMLISTING"
 >Statement st = db.createStatement();
-ResultSet rs = st.executeQuery("SELECT * FROM mytable where columnfoo = 500");
-while(rs.next()) {
+ResultSet rs = st.executeQuery("SELECT * FROM mytable WHERE columnfoo = 500");
+while (rs.next()) {
     System.out.print("Column 1 returned ");
     System.out.println(rs.getString(1));
 }
@@ -147,19 +147,19 @@ st.close();</PRE
 ><P>
     </P
 ><P
->     This example will issue the same query as before using 
-     a <TT
+>     This example issues the same query as before but uses
+     a <CODE
 CLASS="CLASSNAME"
->PreparedStatement</TT
+>PreparedStatement</CODE
 >
      and a bind value in the query.
 </P><PRE
 CLASS="PROGRAMLISTING"
 >int foovalue = 500;
-PreparedStatement st = db.prepareStatement("SELECT * FROM mytable where columnfoo = ?");
+PreparedStatement st = db.prepareStatement("SELECT * FROM mytable WHERE columnfoo = ?");
 st.setInt(1, foovalue);
 ResultSet rs = st.executeQuery();
-while(rs.next()) {
+while (rs.next()) {
     System.out.print("Column 1 returned ");
     System.out.println(rs.getString(1));
 }
@@ -173,24 +173,24 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28202"
->5.3.1. Using the <TT
+NAME="AEN23259"
+>31.3.1. Using the <CODE
 CLASS="CLASSNAME"
->Statement</TT
-> or <TT
+>Statement</CODE
+> or <CODE
 CLASS="CLASSNAME"
->    PreparedStatement</TT
+>PreparedStatement</CODE
 > Interface</A
 ></H2
 ><P
 >     The following must be considered when using the
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 > or 
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->PreparedStatement</TT
+>PreparedStatement</CODE
 > interface:
 
      <P
@@ -198,63 +198,63 @@ CLASS="CLASSNAME"
 ></P><UL
 ><LI
 ><P
->        You can use a single <TT
+>        You can use a single <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 > instance
         as many times as you want. You could create one as soon as you
         open the connection and use it for the connection's
         lifetime. But you have to remember that only one
-        <TT
+        <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 > can exist per
-        <TT
+        <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 > or 
-        <TT
+        <CODE
 CLASS="CLASSNAME"
->PreparedStatement</TT
+>PreparedStatement</CODE
 > at a given time.
        </P
 ></LI
 ><LI
 ><P
 >        If you need to perform a query while processing a
-        <TT
+        <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 >, you can simply create and
-        use another <TT
+        use another <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 >.
        </P
 ></LI
 ><LI
 ><P
 >        If you are using threads, and several are using the database,
-        you must use a separate <TT
+        you must use a separate <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 > for
         each thread. Refer to <A
 HREF="jdbc-thread.html"
->Section 5.8</A
+>Section 31.8</A
 > if you are
         thinking of using threads, as it covers some important points.
        </P
 ></LI
 ><LI
 ><P
->        When you are done using the <TT
+>        When you are done using the <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 >
-        or <TT
+        or <CODE
 CLASS="CLASSNAME"
->PreparedStatement</TT
+>PreparedStatement</CODE
 >
         you should close it.
        </P
@@ -268,17 +268,17 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN28228"
->5.3.2. Using the <TT
+NAME="AEN23285"
+>31.3.2. Using the <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 > Interface</A
 ></H2
 ><P
 >     The following must be considered when using the
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 > interface:
 
      <P
@@ -287,9 +287,9 @@ CLASS="CLASSNAME"
 ><LI
 ><P
 >        Before reading any values, you must call
-        <TT
+        <CODE
 CLASS="FUNCTION"
->next()</TT
+>next()</CODE
 >. This returns true if there is a
         result, but more importantly, it prepares the row for
         processing.
@@ -297,9 +297,9 @@ CLASS="FUNCTION"
 ></LI
 ><LI
 ><P
->        Under the <SPAN
+>        Under the <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > specification, you should
         access a field only once. It is safest to stick to this rule,
         although at the current time, the
@@ -312,54 +312,32 @@ CLASS="PRODUCTNAME"
 ></LI
 ><LI
 ><P
->        You must close a <TT
+>        You must close a <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 > by calling
-        <TT
+        <CODE
 CLASS="FUNCTION"
->close()</TT
+>close()</CODE
 > once you have finished using it.
        </P
 ></LI
 ><LI
 ><P
 >        Once you make another query with the
-        <TT
+        <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 > used to create a
-        <TT
+        <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 >, the currently open
-        <TT
+        <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 > instance is closed
         automatically.
-       </P
-></LI
-><LI
-><P
->        <TT
-CLASS="CLASSNAME"
->ResultSet</TT
-> is currently read only.
-        You can not update data through the <TT
-CLASS="CLASSNAME"
->ResultSet</TT
->.
-        If you want to update data you need to do it the old fashioned way
-        by issuing a <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
-> update statement.  This is 
-        in conformance with the <SPAN
-CLASS="ACRONYM"
->JDBC</SPAN
-> specification 
-        which does not require drivers to provide this functionality.
        </P
 ></LI
 ></UL
@@ -411,7 +389,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Using the Driver</TD
+>Initializing the Driver</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

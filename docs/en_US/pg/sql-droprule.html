@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP RULE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,242 +78,187 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPRULE"
->DROP RULE</A
-></H1
+></A
+>DROP RULE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42971"
+NAME="AEN41491"
 ></A
 ><H2
 >Name</H2
->   DROP RULE
-  &nbsp;--&nbsp;   remove a rewrite rule
-  </DIV
+>DROP RULE&nbsp;--&nbsp;remove a rewrite rule</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42974"
+NAME="AEN41494"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP RULE <TT
+>DROP RULE <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ON <TT
+>name</VAR
+> ON <VAR
 CLASS="REPLACEABLE"
-><I
->relation</I
-></TT
-> [ CASCADE | RESTRICT ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPRULE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	The name of an existing rule to drop.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->relation</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of the relation the rule
-	applies to.
-       </P
-></DD
-><DT
->CASCADE</DT
-><DD
-><P
->        Automatically drop objects that depend on the rule.
-       </P
-></DD
-><DT
->RESTRICT</DT
-><DD
-><P
->        Refuse to drop the rule if there are any dependent objects.
-	This is the default.
-       </P
-></DD
-></DL
-></DIV
-><P>
-
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPRULE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP RULE
-       </TT
-></DT
-><DD
-><P
->	Message returned if successful.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR:  Rule "<TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->" not found
-       </TT
-></DT
-><DD
-><P
->	This message occurs if the specified rule does not exist.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>relation</VAR
+> [ CASCADE | RESTRICT ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPRULE-1"
+NAME="AEN41498"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >DROP RULE</TT
-> drops a rule from the specified
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> rule
-   system. <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-   will immediately cease enforcing it and
-   will purge its definition from the system catalogs.
+> drops a rewrite rule.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPRULE-3"
+NAME="AEN41502"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    The <TT
-CLASS="COMMAND"
->DROP RULE</TT
-> statement is a
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    language extension.
-   </P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
 ><P
->    Refer to <TT
-CLASS="COMMAND"
->CREATE RULE</TT
-> for
-    information on how to create rules.
-   </P
+>      The name of the rule to drop.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>relation</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of the table or view that
+      the rule applies to.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the rule.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+></DT
+><DD
+><P
+>      Refuse to drop the rule if any objects depend on it.  This is
+      the default.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPRULE-2"
+NAME="AEN41525"
 ></A
 ><H2
->   Usage
-  </H2
+>Diagnostics</H2
 ><P
->   To drop the rewrite rule <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP RULE</SAMP
+></DT
+><DD
+><P
+>      Message returned if the command was successful.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  Rule "<VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>" not found</SAMP
+></DT
+><DD
+><P
+>      Message if the specified rule does not exist.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41539"
+></A
+><H2
+>Examples</H2
+><P
+>   To drop the rewrite rule <VAR
 CLASS="LITERAL"
->newrule</TT
+>newrule</VAR
 >:
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->DROP RULE newrule ON mytable;
-   </PRE
+>DROP RULE newrule ON mytable;</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPRULE-3"
+NAME="AEN41544"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPRULE-5"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >DROP RULE</TT
-> in SQL92.
-   </P
+> statement in the SQL standard.
+  </P
 ></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41548"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createrule.html"
+><I
+>CREATE RULE</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

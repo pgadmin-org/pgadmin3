@@ -1,21 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_connect</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="NEXT"
 TITLE="pg_disconnect"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,275 +78,225 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGCONNECT"
->pg_connect</A
-></H1
+></A
+>pg_connect</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN26265"
+NAME="AEN21302"
 ></A
 ><H2
 >Name</H2
->pg_connect&nbsp;--&nbsp;open a connection to the backend server<A
-NAME="IX-PGTCL-PGCONNECT-1"
-></A
-><A
+>pg_connect&nbsp;--&nbsp;open a connection to the server<A
 NAME="IX-PGTCL-PGCONNECT-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN26273"
+NAME="AEN21307"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_connect -conninfo <TT
-CLASS="REPLACEABLE"
-><I
->connectOptions</I
-></TT
+>pg_connect -conninfo <VAR
+CLASS="PARAMETER"
+>connectOptions</VAR
 >
-pg_connect <TT
-CLASS="REPLACEABLE"
-><I
->dbName</I
-></TT
+pg_connect <VAR
+CLASS="PARAMETER"
+>dbName</VAR
 > [<SPAN
 CLASS="OPTIONAL"
->-host <TT
-CLASS="REPLACEABLE"
-><I
->hostName</I
-></TT
-></SPAN
->]
-  [<SPAN
-CLASS="OPTIONAL"
->-port <TT
-CLASS="REPLACEABLE"
-><I
->portNumber</I
-></TT
+>-host <VAR
+CLASS="PARAMETER"
+>hostName</VAR
 ></SPAN
 >] [<SPAN
 CLASS="OPTIONAL"
->-tty <TT
-CLASS="REPLACEABLE"
-><I
->pqtty</I
-></TT
+>-port <VAR
+CLASS="PARAMETER"
+>portNumber</VAR
 ></SPAN
->]
-  [<SPAN
+>] [<SPAN
 CLASS="OPTIONAL"
->-options <TT
-CLASS="REPLACEABLE"
-><I
->optionalBackendArgs</I
-></TT
+>-tty <VAR
+CLASS="PARAMETER"
+>tty</VAR
+></SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+>-options <VAR
+CLASS="PARAMETER"
+>serverOptions</VAR
 ></SPAN
 >]</PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGCONNECT-1"
-></A
-><H3
->Inputs (new style)</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->connectOptions</I
-></TT
-></DT
-><DD
-><P
->A string of connection options, each written in the form keyword = value.
-A list of valid options can be found in <TT
-CLASS="FILENAME"
->libpq</TT
->'s
-<TT
-CLASS="FUNCTION"
->PQconnectdb()</TT
-> manual entry.</P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGCONNECT-2"
-></A
-><H3
->Inputs (old style)</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->dbName</I
-></TT
-></DT
-><DD
-><P
->Specifies a valid database name.</P
-></DD
-><DT
->[<SPAN
-CLASS="OPTIONAL"
->-host <TT
-CLASS="REPLACEABLE"
-><I
->hostName</I
-></TT
-></SPAN
->]</DT
-><DD
-><P
->Specifies the domain name of the backend server for <TT
-CLASS="REPLACEABLE"
-><I
->dbName</I
-></TT
->.</P
-></DD
-><DT
->[<SPAN
-CLASS="OPTIONAL"
->-port <TT
-CLASS="REPLACEABLE"
-><I
->portNumber</I
-></TT
-></SPAN
->]</DT
-><DD
-><P
->Specifies the IP port number of the backend server for <TT
-CLASS="REPLACEABLE"
-><I
->dbName</I
-></TT
->.</P
-></DD
-><DT
->[<SPAN
-CLASS="OPTIONAL"
->-tty <TT
-CLASS="REPLACEABLE"
-><I
->pqtty</I
-></TT
-></SPAN
->]</DT
-><DD
-><P
->Specifies file or <SPAN
-CLASS="ACRONYM"
->tty</SPAN
-> for optional debug output from backend.</P
-></DD
-><DT
->[<SPAN
-CLASS="OPTIONAL"
->-options <TT
-CLASS="REPLACEABLE"
-><I
->optionalBackendArgs</I
-></TT
-></SPAN
->]</DT
-><DD
-><P
->Specifies options for the backend server for <TT
-CLASS="REPLACEABLE"
-><I
->dbName</I
-></TT
->.</P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGCONNECT-3"
-></A
-><H3
->Outputs</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->dbHandle</I
-></TT
-></DT
-><DD
-><P
->If successful, a handle for a database connection is returned.
-Handles start with the prefix <TT
-CLASS="LITERAL"
->pgsql</TT
->.</P
-></DD
-></DL
-></DIV
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGCONNECT-1"
+NAME="AEN21319"
 ></A
 ><H2
 >Description</H2
 ><P
-><TT
+>   <CODE
 CLASS="FUNCTION"
->pg_connect</TT
+>pg_connect</CODE
 > opens a connection to the
-<SPAN
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> backend.</P
+> server.
+  </P
 ><P
->Two syntaxes are available.  In the older one, each possible option
-has a separate option switch in the pg_connect statement.  In the
-newer form, a single option string is supplied that can contain
-multiple option values.  See <TT
-CLASS="FUNCTION"
->pg_conndefaults</TT
+>   Two syntaxes are available.  In the older one, each possible option
+   has a separate option switch in the <TT
+CLASS="COMMAND"
+>pg_connect</TT
 >
-for info about the available options in the newer syntax.</P
+   command.  In the newer form, a single option string is supplied
+   that can contain multiple option values.
+   <CODE
+CLASS="FUNCTION"
+>pg_conndefaults</CODE
+> can be used to retrieve
+   information about the available options in the newer syntax.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGCONNECT-2"
+NAME="AEN21327"
 ></A
 ><H2
->Usage</H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>New style</B
+></P
+><DL
+><DT
+><VAR
+CLASS="PARAMETER"
+>connectOptions</VAR
+></DT
+><DD
+><P
+>      A string of connection options, each written in the form
+      <VAR
+CLASS="LITERAL"
+>keyword = value</VAR
+>.  A list of valid options can be
+      found in the description of the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> function
+      <CODE
+CLASS="FUNCTION"
+>PQconnectdb</CODE
+>.
+     </P
+></DD
+></DL
+></DIV
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>Old style</B
+></P
+><DL
+><DT
+><VAR
+CLASS="PARAMETER"
+>dbName</VAR
+></DT
+><DD
+><P
+>      The name of the database to connect to.
+     </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-host <VAR
+CLASS="PARAMETER"
+>hostName</VAR
+></VAR
+></DT
+><DD
+><P
+>      The host name of the database server to connect to.
+     </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-port <VAR
+CLASS="PARAMETER"
+>portNumber</VAR
+></VAR
+></DT
+><DD
+><P
+>      The TCP port number of the database server to connect to.
+     </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-tty <VAR
+CLASS="PARAMETER"
+>tty</VAR
+></VAR
+></DT
+><DD
+><P
+>      A file or <ACRONYM
+CLASS="ACRONYM"
+>TTY</ACRONYM
+> for optional debug output from
+      the server.
+     </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-options <VAR
+CLASS="PARAMETER"
+>serverOptions</VAR
+></VAR
+></DT
+><DD
+><P
+>      Additional configuration options to pass to the server.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21371"
+></A
+><H2
+>Return Value</H2
+><P
+>   If successful, a handle for a database connection is returned.
+   Handles start with the prefix <VAR
+CLASS="LITERAL"
+>pgsql</VAR
+>.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -395,7 +345,7 @@ VALIGN="top"
 ><SPAN
 CLASS="APPLICATION"
 >pgtcl</SPAN
-> Command Reference Information</TD
+> Command Reference</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

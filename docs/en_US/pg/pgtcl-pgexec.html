@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_exec</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_conndefaults"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,138 +78,121 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGEXEC"
->pg_exec</A
-></H1
+></A
+>pg_exec</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN26453"
+NAME="AEN21429"
 ></A
 ><H2
 >Name</H2
->pg_exec&nbsp;--&nbsp;send a command string to the server<A
-NAME="IX-PGTCL-PGEXEC-1"
-></A
-><A
+>pg_exec&nbsp;--&nbsp;send a command to the server<A
 NAME="IX-PGTCL-PGEXEC-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN26461"
+NAME="AEN21434"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_exec <TT
-CLASS="REPLACEABLE"
-><I
->dbHandle</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->queryString</I
-></TT
+>pg_exec <VAR
+CLASS="PARAMETER"
+>conn</VAR
+> <VAR
+CLASS="PARAMETER"
+>commandString</VAR
 ></PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGEXEC-1"
-></A
-><H3
->Inputs</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->dbHandle</I
-></TT
-></DT
-><DD
-><P
->Specifies a valid database handle.</P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->queryString</I
-></TT
-></DT
-><DD
-><P
->Specifies a valid SQL query.</P
-></DD
-></DL
-></DIV
 ></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-PGTCL-PGEXEC-2"
+NAME="AEN21438"
 ></A
-><H3
->Outputs</H3
+><H2
+>Description</H2
 ><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->resultHandle</I
-></TT
-></DT
-><DD
-><P
->A Tcl error will be returned if <SPAN
-CLASS="APPLICATION"
->pgtcl</SPAN
-> was unable to obtain a backend
-response.  Otherwise, a query result object is created and a handle for
-it is returned.  This handle can be passed to <TT
+>   <CODE
 CLASS="FUNCTION"
->pg_result</TT
->
-to obtain the results of the query.</P
+>pg_exec</CODE
+> submits a command to the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server and returns a result.
+   Command result handles start with the connection handle and add a
+   period and a result number.
+  </P
+><P
+>   Note that lack of a Tcl error is not proof that the command
+   succeeded!  An error message returned by the server will be
+   processed as a command result with failure status, not by
+   generating a Tcl error in <CODE
+CLASS="FUNCTION"
+>pg_exec</CODE
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21445"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="PARAMETER"
+>conn</VAR
+></DT
+><DD
+><P
+>      The handle of the connection on which to execute the command.
+     </P
+></DD
+><DT
+><VAR
+CLASS="PARAMETER"
+>commandString</VAR
+></DT
+><DD
+><P
+>      The SQL command to execute.
+     </P
 ></DD
 ></DL
-></DIV
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGEXEC-1"
+NAME="AEN21458"
 ></A
 ><H2
->Description</H2
+>Return Value</H2
 ><P
-><TT
+>   A result handle. A Tcl error will be returned if
+   <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> was unable to obtain a server
+   response.  Otherwise, a command result object is created and a
+   handle for it is returned.  This handle can be passed to
+   <CODE
 CLASS="FUNCTION"
->pg_exec</TT
-> submits a query to the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> backend and returns a result.
-
-Query result handles start with the connection handle and add a period
-and a result number.</P
-><P
->Note that lack of a Tcl error is not proof that the query succeeded!
-An error message returned by the backend will be processed
-as a query result with failure status, not by generating a Tcl error
-in pg_exec.</P
+>pg_result</CODE
+> to obtain the results of the
+   command.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

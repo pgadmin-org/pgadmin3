@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE VIEW</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,211 +78,50 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATEVIEW"
->CREATE VIEW</A
-></H1
+></A
+>CREATE VIEW</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41754"
+NAME="AEN40445"
 ></A
 ><H2
 >Name</H2
->   CREATE VIEW
-  &nbsp;--&nbsp;   define a new view
-  </DIV
+>CREATE VIEW&nbsp;--&nbsp;define a new view</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41757"
+NAME="AEN40448"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE [ OR REPLACE ] VIEW <TT
+>CREATE [ OR REPLACE ] VIEW <VAR
 CLASS="REPLACEABLE"
-><I
->view</I
-></TT
-> [ ( <TT
+>name</VAR
+> [ ( <VAR
 CLASS="REPLACEABLE"
-><I
->column name list</I
-></TT
-> ) ] AS SELECT <TT
+>column_name</VAR
+> [, ...] ) ] AS <VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
->
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEVIEW-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->view</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of a view to be created.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->column name list</I
-></TT
-></DT
-><DD
-><P
->        An optional list of names to be used for columns of the view.
-	If given, these names override the column names that would be
-	deduced from the SQL query.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->query</I
-></TT
-></DT
-><DD
-><P
->	An SQL query (that is, a <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement)
-	which will provide the columns and rows of the view.
-       </P
-><P
->	Refer to <A
-HREF="sql-select.html"
-><I
->SELECT</I
-></A
-> for more information
-	about valid arguments.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEVIEW-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->CREATE VIEW
-       </TT
-></DT
-><DD
-><P
->	The message returned if the view is successfully created.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR:  Relation '<TT
-CLASS="REPLACEABLE"
-><I
->view</I
-></TT
->' already exists
-       </TT
-></DT
-><DD
-><P
->	This error occurs if the view specified already exists in the database.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->WARNING:  Attribute '<TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
->' has an unknown type
-       </TT
-></DT
-><DD
-><P
->	The view will be created having a column with an unknown type
-	if you do not specify it. For example, the following command gives
-	a warning:
-	</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE VIEW vista AS SELECT 'Hello World'
-	</PRE
-><P>
-
-	whereas this command does not:
-
-	</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE VIEW vista AS SELECT text 'Hello World'
-	</PRE
-><P>
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>query</VAR
+></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEVIEW-1"
+NAME="AEN40453"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >CREATE VIEW</TT
-> defines a view of a query.
-   The view is not physically materialized. Instead, a query
-   rewrite rule (an <TT
-CLASS="LITERAL"
->ON SELECT</TT
-> rule) is automatically generated to
-   support SELECT operations on views.
+> defines a view of a query.  The view
+   is not physically materialized. Instead, the query is run everytime
+   the view is referenced in a query.
   </P
 ><P
 >   <TT
@@ -294,27 +133,131 @@ CLASS="COMMAND"
    (i.e., same column names and data types).
   </P
 ><P
->   If a schema name is given (for example, <TT
+>   If a schema name is given (for example, <VAR
 CLASS="LITERAL"
 >CREATE VIEW
-   myschema.myview ...</TT
+   myschema.myview ...</VAR
 >) then the view is created in the
-   specified schema.  Otherwise it is created in the current schema (the one
-   at the front of the search path; see <TT
-CLASS="LITERAL"
->CURRENT_SCHEMA()</TT
->).
+   specified schema.  Otherwise it is created in the current schema.
    The view name must be distinct from the name of any other view, table,
    sequence, or index in the same schema.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-CREATEVIEW-3"
+NAME="AEN40461"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of a view to be created.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>column_name</VAR
+></DT
+><DD
+><P
+>      An optional list of names to be used for columns of the view.
+      If not given, the column names are deduced from the query.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>query</VAR
+></DT
+><DD
+><P
+>      A query (that is, a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement) which will
+      provide the columns and rows of the view.
+     </P
+><P
+>      Refer to <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>
+      for more information about valid queries.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40482"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE VIEW</SAMP
+></DT
+><DD
+><P
+>      Message returned if the view was successfully created.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>WARNING:  Attribute '<VAR
+CLASS="REPLACEABLE"
+>column</VAR
+>' has an unknown type</SAMP
+></DT
+><DD
+><P
+>      The view will be created having a column with an unknown type if
+      you do not specify it. For example, the following command gives
+      this warning:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE VIEW vista AS SELECT 'Hello World'</PRE
+><P>
+      whereas this command does not:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE VIEW vista AS SELECT text 'Hello World'</PRE
+><P>
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40498"
+></A
+><H2
+>Notes</H2
 ><P
 >    Currently, views are read only: the system will not allow an insert,
     update, or delete on a view.  You can get the effect of an updatable
@@ -334,98 +277,53 @@ CLASS="COMMAND"
 > statement to drop views.
    </P
 ></DIV
-></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEVIEW-2"
+NAME="AEN40504"
 ></A
 ><H2
->   Usage
-  </H2
+>Examples</H2
 ><P
->   Create a view consisting of all Comedy films:
+>   Create a view consisting of all comedy films:
 
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->CREATE VIEW kinds AS
+>CREATE VIEW comedies AS
     SELECT *
     FROM films
-    WHERE kind = 'Comedy';
-
-SELECT * FROM kinds;
-
- code  |           title           | did | date_prod  |  kind  | len
--------+---------------------------+-----+------------+--------+-------
- UA502 | Bananas                   | 105 | 1971-07-13 | Comedy | 01:22
- C_701 | There's a Girl in my Soup | 107 | 1970-06-11 | Comedy | 01:36
-(2 rows)
-   </PRE
+    WHERE kind = 'Comedy';</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEVIEW-3"
+NAME="AEN40508"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEVIEW-5"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    SQL92 specifies some additional capabilities for the
-    <TT
+>   The SQL standard specifies some additional capabilities for the
+   <TT
 CLASS="COMMAND"
 >CREATE VIEW</TT
 > statement:
-   </P
-><PRE
+</P><PRE
 CLASS="SYNOPSIS"
->CREATE VIEW <TT
+>CREATE VIEW <VAR
 CLASS="REPLACEABLE"
-><I
->view</I
-></TT
-> [ <TT
+>name</VAR
+> [ ( <VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [, ...] ]
-    AS SELECT <TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> [ AS <TT
-CLASS="REPLACEABLE"
-><I
->colname</I
-></TT
-> ] [, ...]
-    FROM <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> [ WHERE <TT
-CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
-> ]
-    [ WITH [ CASCADE | LOCAL ] CHECK OPTION ]
-   </PRE
+>column</VAR
+> [, ...] ) ]
+    AS query
+    [ WITH [ CASCADE | LOCAL ] CHECK OPTION ]</PRE
+><P>
+  </P
 ><P
->    The optional clauses for the full SQL92 command are:
+>   The optional clauses for the full SQL command are:
 
    <P
 ></P
@@ -433,51 +331,70 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->CHECK OPTION</DT
+><VAR
+CLASS="LITERAL"
+>CHECK OPTION</VAR
+></DT
 ><DD
 ><P
->	This option is to do with updatable views.
-	All <TT
+>        This option is to do with updatable views.  All
+        <TT
 CLASS="COMMAND"
 >INSERT</TT
 > and <TT
 CLASS="COMMAND"
 >UPDATE</TT
-> commands on the view will be
-	checked to ensure data satisfy the view-defining
-	condition. If they do not, the update will be rejected.
+> commands on the view
+        will be checked to ensure data satisfy the view-defining
+        condition (that is, the new data would be visible through the
+        view). If they do not, the update will be rejected.
        </P
 ></DD
 ><DT
->LOCAL</DT
+><VAR
+CLASS="LITERAL"
+>LOCAL</VAR
+></DT
 ><DD
 ><P
->	Check for integrity on this view.
+>        Check for integrity on this view.
        </P
 ></DD
 ><DT
->CASCADE</DT
+><VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+></DT
 ><DD
 ><P
->	Check for integrity on this view and on any dependent
-	view. CASCADE is assumed if neither CASCADE nor LOCAL is specified.
+>        Check for integrity on this view and on any dependent
+        view. <VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+> is assumed if neither
+        <VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+> nor <VAR
+CLASS="LITERAL"
+>LOCAL</VAR
+> is specified.
        </P
 ></DD
 ></DL
 ></DIV
 ><P>
-   </P
+  </P
 ><P
->    <TT
+>   <TT
 CLASS="COMMAND"
 >CREATE OR REPLACE VIEW</TT
 > is a
-    <SPAN
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > language extension.
-   </P
-></DIV
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >REVOKE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-REVOKE"
->REVOKE</A
-></H1
+></A
+>REVOKE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN44969"
+NAME="AEN43188"
 ></A
 ><H2
 >Name</H2
@@ -91,112 +91,90 @@ NAME="AEN44969"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN44972"
+NAME="AEN43191"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->REVOKE { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
+>REVOKE [ GRANT OPTION FOR ]
+    { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
     [,...] | ALL [ PRIVILEGES ] }
-    ON [ TABLE ] <TT
+    ON [ TABLE ] <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 > [, ...]
-    FROM { <TT
+    FROM { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
+>groupname</VAR
 > | PUBLIC } [, ...]
+    [ CASCADE | RESTRICT ]
 
-REVOKE { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
-    ON DATABASE <TT
+REVOKE [ GRANT OPTION FOR ]
+    { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
+    ON DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 > [, ...]
-    FROM { <TT
+    FROM { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
+>groupname</VAR
 > | PUBLIC } [, ...]
+    [ CASCADE | RESTRICT ]
 
-REVOKE { EXECUTE | ALL [ PRIVILEGES ] }
-    ON FUNCTION <TT
+REVOKE [ GRANT OPTION FOR ]
+    { EXECUTE | ALL [ PRIVILEGES ] }
+    ON FUNCTION <VAR
 CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
-> ([<TT
+>funcname</VAR
+> ([<VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
+>type</VAR
 >, ...]) [, ...]
-    FROM { <TT
+    FROM { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
+>groupname</VAR
 > | PUBLIC } [, ...]
+    [ CASCADE | RESTRICT ]
 
-REVOKE { USAGE | ALL [ PRIVILEGES ] }
-    ON LANGUAGE <TT
+REVOKE [ GRANT OPTION FOR ]
+    { USAGE | ALL [ PRIVILEGES ] }
+    ON LANGUAGE <VAR
 CLASS="REPLACEABLE"
-><I
->langname</I
-></TT
+>langname</VAR
 > [, ...]
-    FROM { <TT
+    FROM { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
+>groupname</VAR
 > | PUBLIC } [, ...]
+    [ CASCADE | RESTRICT ]
 
-REVOKE { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }
-    ON SCHEMA <TT
+REVOKE [ GRANT OPTION FOR ]
+    { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }
+    ON SCHEMA <VAR
 CLASS="REPLACEABLE"
-><I
->schemaname</I
-></TT
+>schemaname</VAR
 > [, ...]
-    FROM { <TT
+    FROM { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-> | PUBLIC } [, ...]</PRE
+>groupname</VAR
+> | PUBLIC } [, ...]
+    [ CASCADE | RESTRICT ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -206,30 +184,36 @@ NAME="SQL-REVOKE-DESCRIPTION"
 ><H2
 >Description</H2
 ><P
->   <TT
+>   The <TT
 CLASS="COMMAND"
 >REVOKE</TT
-> allows the creator of an object to revoke
-   previously granted permissions from one or more users or groups of users.
-   The key word <TT
+> command revokes previously granted
+   privileges from one or more users or groups of users.  The key word
+   <VAR
 CLASS="LITERAL"
->PUBLIC</TT
-> refers to the implicitly defined
-   group of all users.
+>PUBLIC</VAR
+> refers to the implicitly defined group of
+   all users.
   </P
 ><P
 >   Note that any particular user will have the sum
    of privileges granted directly to him, privileges granted to any group he
    is presently a member of, and privileges granted to
-   <TT
+   <VAR
 CLASS="LITERAL"
->PUBLIC</TT
->.  Thus, for example, revoking SELECT privilege
-   from <TT
+>PUBLIC</VAR
+>.  Thus, for example, revoking <VAR
 CLASS="LITERAL"
->PUBLIC</TT
+>SELECT</VAR
+> privilege
+   from <VAR
+CLASS="LITERAL"
+>PUBLIC</VAR
 > does not necessarily mean that all users
-   have lost SELECT privilege on the object: those who have it granted
+   have lost <VAR
+CLASS="LITERAL"
+>SELECT</VAR
+> privilege on the object: those who have it granted
    directly or via a group will still have it.
   </P
 ><P
@@ -240,6 +224,32 @@ HREF="sql-grant.html"
 ></A
 > command for
    the meaning of the privilege types.
+  </P
+><P
+>   If <VAR
+CLASS="LITERAL"
+>GRANT OPTION FOR</VAR
+> is specified, only the grant
+   option for the privilege is revoked, not the privilege itself.
+  </P
+><P
+>   If a user holds a privilege with grant option and has granted it to
+   other users then the privileges held by those other users are
+   called dependent privileges. If the privilege or the grant option
+   held by the first user is being revoked and dependent privileges
+   exist, those dependent privileges are also revoked if
+   <VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+> is specified, else the revoke action
+   will fail.  This recursive revocation only affects privileges that
+   were granted through a chain of users that is traceable to the user
+   that is the subject of this <VAR
+CLASS="LITERAL"
+>REVOKE</VAR
+> command.
+   Thus, the affected users may effectively keep the privilege if it
+   was also granted through other users.
   </P
 ></DIV
 ><DIV
@@ -267,6 +277,18 @@ HREF="sql-grant.html"
 ></A
 > for information about the format.
   </P
+><P
+>   A user can only revoke privileges that were granted directly by
+   that user.  If, for example, user A has granted a privilege with
+   grant option to user B, and user B has in turned granted it to user
+   C, then user A cannot revoke the privilege directly from C.
+   Instead, user A could revoke the grant option from user B and use
+   the <VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+> option so that the privilege is
+   automatically revoked from user C.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -277,9 +299,9 @@ NAME="SQL-REVOKE-EXAMPLES"
 >Examples</H2
 ><P
 >   Revoke insert privilege for the public on table
-   <TT
+   <VAR
 CLASS="LITERAL"
->films</TT
+>films</VAR
 >:
 
 </P><PRE
@@ -288,12 +310,12 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   Revoke all privileges from user <TT
+>   Revoke all privileges from user <VAR
 CLASS="LITERAL"
->manuel</TT
-> on view <TT
+>manuel</VAR
+> on view <VAR
 CLASS="LITERAL"
->kinds</TT
+>kinds</VAR
 >:
 
 </P><PRE
@@ -310,13 +332,6 @@ NAME="SQL-REVOKE-COMPATIBILITY"
 ></A
 ><H2
 >Compatibility</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN45017"
-></A
-><H3
->SQL92</H3
 ><P
 >    The compatibility notes of the <A
 HREF="sql-grant.html"
@@ -331,43 +346,37 @@ CLASS="COMMAND"
 
 </P><PRE
 CLASS="SYNOPSIS"
->REVOKE [ GRANT OPTION FOR ] { SELECT | INSERT | UPDATE | DELETE | REFERENCES }
-    ON <TT
+>REVOKE [ GRANT OPTION FOR ] <VAR
 CLASS="REPLACEABLE"
-><I
->object</I
-></TT
-> [ ( <TT
+>privileges</VAR
+>
+    ON <VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
+>object</VAR
+> [ ( <VAR
+CLASS="REPLACEABLE"
+>column</VAR
 > [, ...] ) ]
-    FROM { PUBLIC | <TT
+    FROM { PUBLIC | <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 > [, ...] }
     { RESTRICT | CASCADE }</PRE
 ><P>
+    One of <VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+> or <VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+>
+    is required.
    </P
-><P
-> 
-    If user1 gives a privilege WITH GRANT OPTION to user2,
-    and user2 gives it to user3 then user1 can revoke
-    this privilege in cascade using the CASCADE keyword.
-    If user1 gives a privilege WITH GRANT OPTION to user2,
-    and user2 gives it to user3, then if user1 tries to revoke
-    this privilege it fails if he specifies the RESTRICT
-    keyword.
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45027"
+NAME="AEN43255"
 ></A
 ><H2
 >See Also</H2

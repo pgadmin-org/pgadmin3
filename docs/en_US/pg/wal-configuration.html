@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >WAL Configuration</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Write-Ahead Logging (WAL)"
 HREF="wal.html"><LINK
 REL="PREVIOUS"
-TITLE="Implementation"
-HREF="wal-implementation.html"><LINK
+TITLE="Future Benefits"
+HREF="wal-benefits-later.html"><LINK
 REL="NEXT"
-TITLE="Regression Tests"
-HREF="regress.html"><LINK
+TITLE="Internals"
+HREF="wal-internals.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="wal-implementation.html"
+HREF="wal-benefits-later.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,16 +60,16 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 12. Write-Ahead Logging (<SPAN
+>Chapter 25. Write-Ahead Logging (<ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 >)</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="regress.html"
+HREF="wal-internals.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -84,20 +84,20 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="WAL-CONFIGURATION"
->12.3. <SPAN
+>25.3. <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 > Configuration</A
 ></H1
 ><P
->   There are several <SPAN
+>   There are several <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
->-related parameters that
+>WAL</ACRONYM
+>-related configuration parameters that
    affect database performance. This section explains their use.
    Consult <A
 HREF="runtime-config.html"
->Section 3.4</A
+>Section 16.4</A
 > for details about setting
    configuration parameters.
   </P
@@ -114,27 +114,27 @@ CLASS="FIRSTTERM"
    log (known as the redo record) it should start the REDO operation,
    since any changes made to data files before that record are already
    on disk. After a checkpoint has been made, any log segments written
-   before the undo records are no longer needed and can be recycled or
-   removed. (When <SPAN
+   before the redo records are no longer needed and can be recycled or
+   removed. (When <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
->-based <SPAN
+>WAL</ACRONYM
+>-based <ACRONYM
 CLASS="ACRONYM"
->BAR</SPAN
+>BAR</ACRONYM
 > is
    implemented, the log segments would be archived before being recycled
    or removed.)
   </P
 ><P
->   The postmaster spawns a special backend process every so often
+>   The server spawns a special process every so often
    to create the next checkpoint.  A checkpoint is created every
-   <TT
+   <VAR
 CLASS="VARNAME"
->CHECKPOINT_SEGMENTS</TT
+>checkpoint_segments</VAR
 > log segments, or every
-   <TT
+   <VAR
 CLASS="VARNAME"
->CHECKPOINT_TIMEOUT</TT
+>checkpoint_timeout</VAR
 > seconds, whichever comes first.
    The default settings are 3 segments and 300 seconds respectively.
    It is also possible to force a checkpoint by using the SQL command
@@ -144,13 +144,13 @@ CLASS="COMMAND"
 >.
   </P
 ><P
->   Reducing <TT
+>   Reducing <VAR
 CLASS="VARNAME"
->CHECKPOINT_SEGMENTS</TT
+>checkpoint_segments</VAR
 > and/or
-   <TT
+   <VAR
 CLASS="VARNAME"
->CHECKPOINT_TIMEOUT</TT
+>checkpoint_timeout</VAR
 > causes checkpoints to be done
    more often. This allows faster after-crash recovery (since less work
    will need to be redone). However, one must balance this against the
@@ -162,138 +162,154 @@ CLASS="VARNAME"
    interval, and in any case causing more disk I/O.
   </P
 ><P
->   There will be at least one 16MB segment file, and will normally 
-   not be more than 2 * <TT
+>   There will be at least one 16 MB segment file, and will normally
+   not be more than 2 * <VAR
 CLASS="VARNAME"
->CHECKPOINT_SEGMENTS</TT
->
-   + 1 files.  You can use this to estimate space requirements for 
-   WAL.  Ordinarily, when old log segment files are no longer needed, 
-   they are recycled (renamed to become the next sequential future 
-   segments). If, due to a short-term peak of log output rate, there 
-   are more than 2 * <TT
+>checkpoint_segments</VAR
+> + 1
+   files.  You can use this to estimate space requirements for WAL.
+   Ordinarily, when old log segment files are no longer needed, they
+   are recycled (renamed to become the next segments in the numbered
+   sequence). If, due to a short-term peak of log output rate, there
+   are more than 2 * <VAR
 CLASS="VARNAME"
->CHECKPOINT_SEGMENTS</TT
-> + 1 segment files, 
-   the unneeded segment files will be deleted instead of recycled until the
-   system gets back under this limit.
+>checkpoint_segments</VAR
+> + 1
+   segment files, the unneeded segment files will be deleted instead
+   of recycled until the system gets back under this limit.
   </P
 ><P
->   There are two commonly used <SPAN
+>   There are two commonly used <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 > functions:
-   <TT
+   <CODE
 CLASS="FUNCTION"
->LogInsert</TT
-> and <TT
+>LogInsert</CODE
+> and <CODE
 CLASS="FUNCTION"
->LogFlush</TT
+>LogFlush</CODE
 >.
-   <TT
+   <CODE
 CLASS="FUNCTION"
->LogInsert</TT
+>LogInsert</CODE
 > is used to place a new record into
-   the <SPAN
+   the <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 > buffers in shared memory. If there is no
-   space for the new record, <TT
+   space for the new record, <CODE
 CLASS="FUNCTION"
->LogInsert</TT
+>LogInsert</CODE
 > will have
-   to write (move to kernel cache) a few filled <SPAN
+   to write (move to kernel cache) a few filled <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 >
-   buffers. This is undesirable because <TT
+   buffers. This is undesirable because <CODE
 CLASS="FUNCTION"
->LogInsert</TT
+>LogInsert</CODE
 >
    is used on every database low level modification (for example,
-   tuple insertion) at a time when an exclusive lock is held on
+   row insertion) at a time when an exclusive lock is held on
    affected data pages, so the operation needs to be as fast as
-   possible.  What is worse, writing <SPAN
+   possible.  What is worse, writing <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 > buffers may
    also force the creation of a new log segment, which takes even more
-   time. Normally, <SPAN
+   time. Normally, <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 > buffers should be written
-   and flushed by a <TT
+   and flushed by a <CODE
 CLASS="FUNCTION"
->LogFlush</TT
+>LogFlush</CODE
 > request, which is
    made, for the most part, at transaction commit time to ensure that
    transaction records are flushed to permanent storage. On systems
-   with high log output, <TT
+   with high log output, <CODE
 CLASS="FUNCTION"
->LogFlush</TT
+>LogFlush</CODE
 > requests may
-   not occur often enough to prevent <SPAN
+   not occur often enough to prevent <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 > buffers
-   being written by <TT
+   being written by <CODE
 CLASS="FUNCTION"
->LogInsert</TT
+>LogInsert</CODE
 >. On such systems
-   one should increase the number of <SPAN
+   one should increase the number of <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 > buffers by
-   modifying the <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> <TT
+   modifying the configuration parameter <VAR
 CLASS="VARNAME"
->   WAL_BUFFERS</TT
-> parameter. The default number of <SPAN
+>wal_buffers</VAR
+>.
+   The default number of <ACRONYM
 CLASS="ACRONYM"
->   WAL</SPAN
+>   WAL</ACRONYM
 > buffers is 8.  Increasing this value will 
    correspondingly increase shared memory usage.
   </P
 ><P
->   The <TT
+>   Checkpoints are fairly expensive because they force all dirty kernel
+   buffers to disk using the operating system <VAR
+CLASS="LITERAL"
+>sync()</VAR
+> call.
+   Busy servers may fill checkpoint segment files too quickly,
+   causing excessive checkpointing. If such forced checkpoints happen
+   more frequently than <VAR
 CLASS="VARNAME"
->COMMIT_DELAY</TT
+>checkpoint_warning</VAR
+> seconds, 
+   a message, will be output to the server logs recommending increasing 
+   <VAR
+CLASS="VARNAME"
+>checkpoint_segments</VAR
+>.
+  </P
+><P
+>   The <VAR
+CLASS="VARNAME"
+>commit_delay</VAR
 > parameter defines for how many
-   microseconds the backend will sleep after writing a commit
-   record to the log with <TT
+   microseconds the server process will sleep after writing a commit
+   record to the log with <CODE
 CLASS="FUNCTION"
->LogInsert</TT
+>LogInsert</CODE
 > but before
-   performing a <TT
+   performing a <CODE
 CLASS="FUNCTION"
->LogFlush</TT
+>LogFlush</CODE
 >. This delay allows other
-   backends to add their commit records to the log so as to have all
-   of them flushed with a single log sync. No sleep will occur if <TT
+   server processes to add their commit records to the log so as to have all
+   of them flushed with a single log sync. No sleep will occur if <VAR
 CLASS="VARNAME"
->fsync</TT
+>fsync</VAR
 >
-   is not enabled or if fewer than <TT
+   is not enabled or if fewer than <VAR
 CLASS="VARNAME"
->COMMIT_SIBLINGS</TT
+>commit_siblings</VAR
 >
-   other backends are not currently in active transactions; this avoids
-   sleeping when it's unlikely that any other backend will commit soon.
+   other sessons are currently in active transactions; this avoids
+   sleeping when it's unlikely that any other session will commit soon.
    Note that on most platforms, the resolution of a sleep request is
-   ten milliseconds, so that any nonzero <TT
+   ten milliseconds, so that any nonzero <VAR
 CLASS="VARNAME"
->COMMIT_DELAY</TT
+>commit_delay</VAR
 >
-   setting between 1 and 10000 microseconds will have the same effect.
+   setting between 1 and 10000 microseconds would have the same effect.
    Good values for these parameters are not yet clear; experimentation
    is encouraged.
   </P
 ><P
->   The <TT
+>   The <VAR
 CLASS="VARNAME"
->WAL_SYNC_METHOD</TT
+>wal_sync_method</VAR
 > parameter determines how
    <SPAN
 CLASS="PRODUCTNAME"
@@ -302,29 +318,29 @@ CLASS="PRODUCTNAME"
     WAL updates out to disk. 
    All the options should be the same as far as reliability goes,
    but it's quite platform-specific which one will be the fastest.
-   Note that this parameter is irrelevant if <TT
+   Note that this parameter is irrelevant if <VAR
 CLASS="VARNAME"
->FSYNC</TT
+>fsync</VAR
 >
    has been turned off.
   </P
 ><P
->   Setting the <TT
+>   Setting the <VAR
 CLASS="VARNAME"
->WAL_DEBUG</TT
+>wal_debug</VAR
 > parameter to any nonzero
-   value will result in each <TT
+   value will result in each <CODE
 CLASS="FUNCTION"
->LogInsert</TT
+>LogInsert</CODE
 > and
-   <TT
+   <CODE
 CLASS="FUNCTION"
->LogFlush</TT
-> <SPAN
+>LogFlush</CODE
+> <ACRONYM
 CLASS="ACRONYM"
->WAL</SPAN
+>WAL</ACRONYM
 > call being
-   logged to standard error.  At present, it makes no difference what
+   logged to the server log.  At present, it makes no difference what
    the nonzero value is.  This option may be replaced by a more
    general mechanism in the future.
   </P
@@ -345,7 +361,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="wal-implementation.html"
+HREF="wal-benefits-later.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -363,7 +379,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="regress.html"
+HREF="wal-internals.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -373,7 +389,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Implementation</TD
+>Future Benefits</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -387,7 +403,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Regression Tests</TD
+>Internals</TD
 ></TR
 ></TABLE
 ></DIV

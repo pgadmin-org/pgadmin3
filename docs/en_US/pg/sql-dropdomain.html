@@ -1,16 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->   DROP DOMAIN
-  </TITLE
+>DROP DOMAIN</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -25,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -45,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -79,152 +78,129 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPDOMAIN"
->DROP DOMAIN</A
-></H1
+></A
+>DROP DOMAIN</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42414"
+NAME="AEN41029"
 ></A
 ><H2
 >Name</H2
->   DROP DOMAIN
-  &nbsp;--&nbsp;   remove a user-defined domain
-  </DIV
+>DROP DOMAIN&nbsp;--&nbsp;remove a domain</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42417"
+NAME="AEN41032"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP DOMAIN <TT
+>DROP DOMAIN <VAR
 CLASS="REPLACEABLE"
-><I
->domainname</I
-></TT
-> [, ...]  [ CASCADE | RESTRICT ]
-  </PRE
+>domainname</VAR
+> [, ...]  [ CASCADE | RESTRICT ]</PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPDOMAIN-1"
+NAME="AEN41035"
 ></A
-><H3
->    Inputs
-   </H3
+><H2
+>Description</H2
 ><P
->    <P
+>   <TT
+CLASS="COMMAND"
+>DROP DOMAIN</TT
+> will remove a domain.  Only the
+   owner of a domain can remove it.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41039"
+></A
+><H2
+>Parameters</H2
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->domainname</I
-></TT
+>domainname</VAR
 ></DT
 ><DD
 ><P
->	The name (optionally schema-qualified) of an existing domain.
-       </P
+>      The name (optionally schema-qualified) of an existing domain.
+     </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->CASCADE</TT
+>CASCADE</VAR
 ></DT
 ><DD
 ><P
->        Automatically drop objects that depend on the domain
-	(such as table columns).
-       </P
+>      Automatically drop objects that depend on the domain (such as
+      table columns).
+     </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->RESTRICT</TT
+>RESTRICT</VAR
 ></DT
 ><DD
 ><P
->        Refuse to drop the domain if there are any dependent objects.
-	This is the default.
-       </P
+>      Refuse to drop the domain if any objects depend on it.  This is
+      the default.
+     </P
 ></DD
 ></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPDOMAIN-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP DOMAIN
-       </TT
-></DT
-><DD
-><P
->	The message returned if the command is successful.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR:  RemoveDomain: type '<TT
-CLASS="REPLACEABLE"
-><I
->domainname</I
-></TT
->' does not exist
-       </TT
-></DT
-><DD
-><P
->	This message occurs if the specified domain (or type) is not found.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPDOMAIN-1"
+NAME="AEN41057"
 ></A
 ><H2
->   Description
-  </H2
+>Diagnostics</H2
 ><P
->   <TT
-CLASS="COMMAND"
->DROP DOMAIN</TT
-> will remove a user domain from the
-   system catalogs.
-  </P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP DOMAIN</SAMP
+></DT
+><DD
 ><P
->   Only the owner of a domain can remove it.
-  </P
+>      Message returned if the command was successful.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  RemoveDomain: type '<VAR
+CLASS="REPLACEABLE"
+>domainname</VAR
+>' does not exist</SAMP
+></DT
+><DD
+><P
+>      This message occurs if the specified domain does not exist.
+     </P
+></DD
+></DL
+></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -234,10 +210,10 @@ NAME="SQL-DROPDOMAIN-EXAMPLES"
 ><H2
 >Examples</H2
 ><P
->   To remove the <TT
+>   To remove the domain <TT
 CLASS="TYPE"
 >box</TT
-> domain:
+>:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -252,17 +228,9 @@ NAME="SQL-DROPDOMAIN-COMPATIBILITY"
 ></A
 ><H2
 >Compatibility</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPDOMAIN-SQL92"
-></A
-><H3
->    SQL92
-   </H3
 ><P
-></P
-></DIV
+>   This command conforms to the SQL standard.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"

@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Internals</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Write-Ahead Logging (WAL)"
+HREF="wal.html"><LINK
+REL="PREVIOUS"
+TITLE="WAL Configuration"
+HREF="wal-configuration.html"><LINK
+REL="NEXT"
+TITLE="Regression Tests"
+HREF="regress.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="wal-configuration.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 25. Write-Ahead Logging (<ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="regress.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="WAL-INTERNALS"
+>25.4. Internals</A
+></H1
+><P
+>   <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> is automatically enabled; no action is
+   required from the administrator except ensuring that the additional
+   disk-space requirements of the <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> logs are met,
+   and that any necessary tuning is done (see <A
+HREF="wal-configuration.html"
+>Section 25.3</A
+>).
+  </P
+><P
+>   <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> logs are stored in the directory
+   <TT
+CLASS="FILENAME"
+>pg_xlog</TT
+> under the data directory, as a set of
+   segment files, each 16 MB in size.  Each segment is divided into 8
+   kB pages. The log record headers are described in
+   <TT
+CLASS="FILENAME"
+>access/xlog.h</TT
+>; the record content is dependent
+   on the type of event that is being logged.  Segment files are given
+   ever-increasing numbers as names, starting at
+   <TT
+CLASS="FILENAME"
+>0000000000000000</TT
+>.  The numbers do not wrap, at
+   present, but it should take a very long time to exhaust the
+   available stock of numbers.
+  </P
+><P
+>   The <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> buffers and control structure are in
+   shared memory and are handled by the server child processes; they
+   are protected by lightweight locks.  The demand on shared memory is
+   dependent on the number of buffers.  The default size of the
+   <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> buffers is 8 buffers of 8 kB each, or 64 kB
+   total.
+  </P
+><P
+>   It is of advantage if the log is located on another disk than the
+   main database files.  This may be achieved by moving the directory
+   <TT
+CLASS="FILENAME"
+>pg_xlog</TT
+> to another location (while the server
+   is shut down, of course) and creating a symbolic link from the
+   original location in the main data directory to the new location.
+  </P
+><P
+>   The aim of <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+>, to ensure that the log is
+   written before database records are altered, may be subverted by
+   disk drives that falsely report a successful write to the kernel,
+   when, in fact, they have only cached the data and not yet stored it
+   on the disk.  A power failure in such a situation may still lead to
+   irrecoverable data corruption.  Administrators should try to ensure
+   that disks holding <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s
+   <ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> log files do not make such false reports.
+  </P
+><P
+>   After a checkpoint has been made and the log flushed, the
+   checkpoint's position is saved in the file
+   <TT
+CLASS="FILENAME"
+>pg_control</TT
+>. Therefore, when recovery is to be
+   done, the server first reads <TT
+CLASS="FILENAME"
+>pg_control</TT
+> and
+   then the checkpoint record; then it performs the REDO operation by
+   scanning forward from the log position indicated in the checkpoint
+   record.  Because the entire content of data pages is saved in the
+   log on the first page modification after a checkpoint, all pages
+   changed since the checkpoint will be restored to a consistent
+   state.
+  </P
+><P
+>   Using <TT
+CLASS="FILENAME"
+>pg_control</TT
+> to get the checkpoint
+   position speeds up the recovery process, but to handle possible
+   corruption of <TT
+CLASS="FILENAME"
+>pg_control</TT
+>, we should actually
+   implement the reading of existing log segments in reverse order --
+   newest to oldest -- in order to find the last checkpoint.  This has
+   not been implemented, yet.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="wal-configuration.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="regress.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><ACRONYM
+CLASS="ACRONYM"
+>WAL</ACRONYM
+> Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="wal.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Regression Tests</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

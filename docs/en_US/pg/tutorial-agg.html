@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Aggregate Functions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,9 +60,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. The <SPAN
+>Chapter 2. The <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Language</TD
 ><TD
 WIDTH="10%"
@@ -87,27 +87,27 @@ NAME="TUTORIAL-AGG"
 >2.7. Aggregate Functions</A
 ></H1
 ><A
-NAME="AEN434"
+NAME="AEN711"
 ></A
 ><P
 >    <A
-NAME="AEN437"
+NAME="AEN714"
 ></A
 >
     <A
-NAME="AEN439"
+NAME="AEN716"
 ></A
 >
     <A
-NAME="AEN441"
+NAME="AEN718"
 ></A
 >
     <A
-NAME="AEN443"
+NAME="AEN720"
 ></A
 >
     <A
-NAME="AEN445"
+NAME="AEN722"
 ></A
 >
 
@@ -119,23 +119,23 @@ CLASS="PRODUCTNAME"
     aggregate functions.
     An aggregate function computes a single result from multiple input rows.
     For example, there are aggregates to compute the
-    <TT
+    <CODE
 CLASS="FUNCTION"
->count</TT
->, <TT
+>count</CODE
+>, <CODE
 CLASS="FUNCTION"
->sum</TT
+>sum</CODE
 >,
-    <TT
+    <CODE
 CLASS="FUNCTION"
->avg</TT
-> (average), <TT
+>avg</CODE
+> (average), <CODE
 CLASS="FUNCTION"
->max</TT
+>max</CODE
 > (maximum) and
-    <TT
+    <CODE
 CLASS="FUNCTION"
->min</TT
+>min</CODE
 > (minimum) over a set of rows.
    </P
 ><P
@@ -157,7 +157,7 @@ CLASS="SCREEN"
    </P
 ><P
 >    <A
-NAME="AEN457"
+NAME="AEN734"
 ></A
 >
 
@@ -173,17 +173,17 @@ CLASS="LINEANNOTATION"
 ><P>
 
     but this will not work since the aggregate
-    <TT
+    <CODE
 CLASS="FUNCTION"
->max</TT
+>max</CODE
 > cannot be used in the
-    <TT
+    <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > clause.  (This restriction exists because
-    the <TT
+    the <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > clause determines the rows that will
     go into the aggregation stage; so it has to be evaluated before
     aggregate functions are computed.)
@@ -214,18 +214,18 @@ CLASS="SCREEN"
    </P
 ><P
 >    <A
-NAME="AEN468"
+NAME="AEN745"
 ></A
 >
     <A
-NAME="AEN470"
+NAME="AEN747"
 ></A
 >
 
-    Aggregates are also very useful in combination with <TT
+    Aggregates are also very useful in combination with <VAR
 CLASS="LITERAL"
 >GROUP
-    BY</TT
+    BY</VAR
 > clauses.  For example, we can get the maximum low
     temperature observed in each city with
 
@@ -248,9 +248,9 @@ CLASS="SCREEN"
     which gives us one output row per city.  Each aggregate result is
     computed over the table rows matching that city.
     We can filter these grouped
-    rows using <TT
+    rows using <VAR
 CLASS="LITERAL"
->HAVING</TT
+>HAVING</VAR
 >:
 
 </P><PRE
@@ -270,16 +270,16 @@ CLASS="SCREEN"
 ><P>
 
     which gives us the same results for only the cities that have all
-    <TT
+    <VAR
 CLASS="LITERAL"
->temp_lo</TT
+>temp_lo</VAR
 > values below 40.  Finally, if we only care about
     cities whose
     names begin with <SPAN
 CLASS="QUOTE"
->"<TT
+>"<VAR
 CLASS="LITERAL"
->S</TT
+>S</VAR
 >"</SPAN
 >, we might do
 
@@ -308,15 +308,13 @@ HREF="tutorial-agg.html#CO.TUTORIAL-AGG-LIKE"
 ></A
 ></DT
 ><DD
->      The <TT
+>      The <VAR
 CLASS="LITERAL"
->LIKE</TT
+>LIKE</VAR
 > operator does pattern matching and
-      is explained in the <A
-HREF="user.html"
-><I
->PostgreSQL 7.3.3 User's Guide</I
-></A
+      is explained in <A
+HREF="functions-matching.html"
+>Section 9.6</A
 >.
      </DD
 ></DL
@@ -325,68 +323,68 @@ HREF="user.html"
    </P
 ><P
 >    It is important to understand the interaction between aggregates and
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
->'s <TT
+>SQL</ACRONYM
+>'s <VAR
 CLASS="LITERAL"
->WHERE</TT
-> and <TT
+>WHERE</VAR
+> and <VAR
 CLASS="LITERAL"
->HAVING</TT
+>HAVING</VAR
 > clauses.
-    The fundamental difference between <TT
+    The fundamental difference between <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > and
-    <TT
+    <VAR
 CLASS="LITERAL"
->HAVING</TT
-> is this: <TT
+>HAVING</VAR
+> is this: <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > selects
     input rows before groups and aggregates are computed (thus, it controls
     which rows go into the aggregate computation), whereas
-    <TT
+    <VAR
 CLASS="LITERAL"
->HAVING</TT
+>HAVING</VAR
 > selects group rows after groups and
     aggregates are computed.  Thus, the
-    <TT
+    <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > clause must not contain aggregate functions;
     it makes no sense to try to use an aggregate to determine which rows
     will be inputs to the aggregates.  On the other hand,
-    <TT
+    <VAR
 CLASS="LITERAL"
->HAVING</TT
-> clauses always contain aggregate functions.
-    (Strictly speaking, you are allowed to write a <TT
+>HAVING</VAR
+> clause always contains aggregate functions.
+    (Strictly speaking, you are allowed to write a <VAR
 CLASS="LITERAL"
->HAVING</TT
+>HAVING</VAR
 >
     clause that doesn't use aggregates, but it's wasteful: The same condition
-    could be used more efficiently at the <TT
+    could be used more efficiently at the <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > stage.)
    </P
 ><P
 >    Observe that we can apply the city name restriction in
-    <TT
+    <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 >, since it needs no aggregate.  This is
-    more efficient than adding the restriction to <TT
+    more efficient than adding the restriction to <VAR
 CLASS="LITERAL"
->HAVING</TT
+>HAVING</VAR
 >,
     because we avoid doing the grouping and aggregate calculations
-    for all rows that fail the <TT
+    for all rows that fail the <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > check.
    </P
 ></DIV

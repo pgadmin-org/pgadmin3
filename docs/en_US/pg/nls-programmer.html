@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >For the Programmer</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Native Language Support"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Native Language Support"
 HREF="nls.html"><LINK
 REL="NEXT"
-TITLE="The CVS Repository"
-HREF="cvs.html"><LINK
+TITLE="Appendixes"
+HREF="appendixes.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 10. Native Language Support</TD
+>Chapter 53. Native Language Support</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="cvs.html"
+HREF="appendixes.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,10 +81,18 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="NLS-PROGRAMMER"
->10.2. For the Programmer</A
+>53.2. For the Programmer</A
 ></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="NLS-MECHANICS"
+>53.2.1. Mechanics</A
+></H2
 ><P
->   This section describes how to support native language support in a
+>   This section describes how to implement native language support in a
    program or library that is part of the
    <SPAN
 CLASS="PRODUCTNAME"
@@ -113,25 +121,19 @@ CLASS="PROGRAMLISTING"
 
 #ifdef ENABLE_NLS
 setlocale(LC_ALL, "");
-bindtextdomain("<TT
+bindtextdomain("<VAR
 CLASS="REPLACEABLE"
-><I
->progname</I
-></TT
+>progname</VAR
 >", LOCALEDIR);
-textdomain("<TT
+textdomain("<VAR
 CLASS="REPLACEABLE"
-><I
->progname</I
-></TT
+>progname</VAR
 >");
 #endif</PRE
 ><P>
-     (The <TT
+     (The <VAR
 CLASS="REPLACEABLE"
-><I
->progname</I
-></TT
+>progname</VAR
 > can actually be chosen
      freely.)
     </P
@@ -139,9 +141,9 @@ CLASS="REPLACEABLE"
 ><LI
 ><P
 >     Wherever a message that is a candidate for translation is found,
-     a call to <TT
+     a call to <CODE
 CLASS="FUNCTION"
->gettext()</TT
+>gettext()</CODE
 > needs to be inserted.  E.g.,
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -159,22 +161,22 @@ CLASS="SYMBOL"
      configured.)
     </P
 ><P
->     This may tend to add a lot of clutter.  One common shortcut is to
+>     This may tend to add a lot of clutter.  One common shortcut is to use
 </P><PRE
 CLASS="PROGRAMLISTING"
->#define _(x) gettext((x))</PRE
+>#define _(x) gettext(x)</PRE
 ><P>
      Another solution is feasible if the program does much of its
      communication through one or a few functions, such as
-     <TT
+     <CODE
 CLASS="FUNCTION"
->elog()</TT
+>ereport()</CODE
 > in the backend.  Then you make this
-     function call <TT
+     function call <CODE
 CLASS="FUNCTION"
->gettext</TT
+>gettext</CODE
 > internally on all
-     input values.
+     input strings.
     </P
 ></LI
 ><LI
@@ -196,9 +198,9 @@ CLASS="VARIABLELIST"
 ><DD
 ><P
 >         The program name, as provided in the
-         <TT
+         <CODE
 CLASS="FUNCTION"
->textdomain()</TT
+>textdomain()</CODE
 > call.
         </P
 ></DD
@@ -214,18 +216,18 @@ CLASS="FUNCTION"
 ><DD
 ><P
 >         List of files that contain translatable strings, i.e., those
-         marked with <TT
+         marked with <CODE
 CLASS="FUNCTION"
->gettext</TT
+>gettext</CODE
 > or an alternative
          solution.  Eventually, this will include nearly all source
          files of the program.  If this list gets too long you can
          make the first <SPAN
 CLASS="QUOTE"
 >"file"</SPAN
-> be a <TT
+> be a <VAR
 CLASS="LITERAL"
->+</TT
+>+</VAR
 >
          and the second word be a file that contains one file name per
          line.
@@ -238,19 +240,19 @@ CLASS="LITERAL"
 >         The tools that generate message catalogs for the translators
          to work on need to know what function calls contain
          translatable strings.  By default, only
-         <TT
+         <CODE
 CLASS="FUNCTION"
->gettext()</TT
+>gettext()</CODE
 > calls are known.  If you used
-         <TT
+         <CODE
 CLASS="FUNCTION"
->_</TT
+>_</CODE
 > or other identifiers you need to list
          them here.  If the translatable string is not the first
          argument, the item needs to be of the form
-         <TT
+         <VAR
 CLASS="LITERAL"
->func:2</TT
+>func:2</VAR
 > (for the second argument).
         </P
 ></DD
@@ -265,21 +267,36 @@ CLASS="LITERAL"
 >   The build system will automatically take care of building and
    installing the message catalogs.
   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="NLS-GUIDELINES"
+>53.2.2. Message-writing guidelines</A
+></H2
 ><P
->   To ease the translation of messages, here are some guidelines:
+>   Here are some guidelines for writing messages that are easily
+   translatable.
 
    <P
 ></P
 ></P><UL
 ><LI
 ><P
->      Do not construct sentences at run-time out of laziness, like
+>      Do not construct sentences at run-time, like
 </P><PRE
 CLASS="PROGRAMLISTING"
->printf("Files where %s.\n", flag ? "copied" : "removed");</PRE
+>printf("Files were %s.\n", flag ? "copied" : "removed");</PRE
 ><P>
       The word order within the sentence may be different in other
-      languages.
+      languages.  Also, even if you remember to call gettext() on each
+      fragment, the fragments may not translate well separately.  It's
+      better to duplicate a little code so that each message to be
+      translated is a coherent whole.  Only numbers, file names, and
+      such-like run-time variables should be inserted at runtime into
+      a message text.
      </P
 ></LI
 ><LI
@@ -300,8 +317,8 @@ else
 ><P>
       then be disappointed.  Some languages have more than two forms,
       with some peculiar rules.  We may have a solution for this in
-      the future, but for now this is best avoided altogether.  You
-      could write:
+      the future, but for now the matter is best avoided altogether.
+      You could write:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >printf("number of copied files: %d", n);</PRE
@@ -313,9 +330,9 @@ CLASS="PROGRAMLISTING"
 >      If you want to communicate something to the translator, such as
       about how a message is intended to line up with other output,
       precede the occurrence of the string with a comment that starts
-      with <TT
+      with <VAR
 CLASS="LITERAL"
->translator</TT
+>translator</VAR
 >, e.g.,
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -328,6 +345,7 @@ CLASS="PROGRAMLISTING"
 ></UL
 ><P>
   </P
+></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -363,7 +381,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="cvs.html"
+HREF="appendixes.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -387,10 +405,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->The <SPAN
-CLASS="PRODUCTNAME"
->CVS</SPAN
-> Repository</TD
+>Appendixes</TD
 ></TR
 ></TABLE
 ></DIV

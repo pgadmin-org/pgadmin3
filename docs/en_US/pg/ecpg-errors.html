@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Error Handling</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
 HREF="ecpg.html"><LINK
 REL="PREVIOUS"
-TITLE="Passing Data"
-HREF="ecpg-variables.html"><LINK
+TITLE="Using SQL Descriptor Areas"
+HREF="ecpg-descriptors.html"><LINK
 REL="NEXT"
 TITLE="Including Files"
 HREF="ecpg-include.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="ecpg-variables.html"
+HREF="ecpg-descriptors.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. <SPAN
+>Chapter 30. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
-> - Embedded <SPAN
+> - Embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > in C</TD
 ><TD
 WIDTH="10%"
@@ -87,63 +87,297 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-ERRORS"
->4.6. Error Handling</A
+>30.9. Error Handling</A
 ></H1
 ><P
->   The embedded SQL interface provides a simplistic and a complex way
-   to handle exceptional conditions in a program.  The first method
-   causes a message to printed automatically when a certain condition
-   occurs.  For example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->EXEC SQL WHENEVER sqlerror sqlprint;</PRE
-><P>
-   or
-</P><PRE
-CLASS="PROGRAMLISTING"
->EXEC SQL WHENEVER not found sqlprint;</PRE
-><P>
-   This error handling remains enabled throughout the entire program.
+>   This section describes how you can handle exceptional conditions
+   and warnings in an embedded SQL program.  There are several
+   nonexclusive facilities for this.
   </P
 ><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN22633"
+>30.9.1. Setting Callbacks</A
+></H2
 ><P
-><B
->Note: </B
->    This is <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> an exhaustive example of usage
-    for the <TT
-CLASS="COMMAND"
->EXEC SQL WHENEVER</TT
-> statement.  Further
-    examples of usage may be found in SQL manuals (e.g.,
-    <I
-CLASS="CITETITLE"
->The LAN TIMES Guide to SQL</I
-> by Groff and Weinberg).
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->   For a more powerful error handling, the embedded SQL interface
-   provides a <TT
-CLASS="TYPE"
->struct</TT
-> and a variable with the name
-   <TT
-CLASS="VARNAME"
->sqlca</TT
-> as follows:
+>    One simple method to catch errors and warnings is to set a
+    specific action to be executed whenever a particular condition
+    occurs.  In general:
 </P><PRE
 CLASS="PROGRAMLISTING"
->struct sqlca
+>EXEC SQL WHENEVER <VAR
+CLASS="REPLACEABLE"
+>condition</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>action</VAR
+>;</PRE
+><P>
+   </P
+><P
+>    <VAR
+CLASS="REPLACEABLE"
+>condition</VAR
+> can be one of the following:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>SQLERROR</VAR
+></DT
+><DD
+><P
+>        The specified action is called whenever an error occurs during
+        the execution of an SQL statement.
+       </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>SQLWARNING</VAR
+></DT
+><DD
+><P
+>        The specified action is called whenever a warning occurs
+        during the execution of an SQL statement.
+       </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>NOT FOUND</VAR
+></DT
+><DD
+><P
+>        The specified action is called whenever an SQL statement
+        retrieves or affects zero rows.  (This condition is not an
+        error, but you might be interested in handling it specially.)
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    <VAR
+CLASS="REPLACEABLE"
+>action</VAR
+> can be one of the following:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>CONTINUE</VAR
+></DT
+><DD
+><P
+>        This effectively means that the condition is ignored.  This is
+        the default.
+       </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>GOTO <VAR
+CLASS="REPLACEABLE"
+>label</VAR
+></VAR
+><BR><VAR
+CLASS="LITERAL"
+>GO TO <VAR
+CLASS="REPLACEABLE"
+>label</VAR
+></VAR
+></DT
+><DD
+><P
+>        Jump to the specified label (using a C <VAR
+CLASS="LITERAL"
+>goto</VAR
+>
+        statement).
+       </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>SQLPRINT</VAR
+></DT
+><DD
+><P
+>        Print a message to standard error.  This is useful for simple
+        programs or during prototyping.  The details of the message
+        cannot be configured.
+       </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>STOP</VAR
+></DT
+><DD
+><P
+>        Call <VAR
+CLASS="LITERAL"
+>exit(1)</VAR
+>, which will terminate the
+        program.
+       </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>BREAK</VAR
+></DT
+><DD
+><P
+>        Execute the C statement <VAR
+CLASS="LITERAL"
+>break</VAR
+>.  This should
+        only be used in loops or <VAR
+CLASS="LITERAL"
+>switch</VAR
+> statements.
+       </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>CALL <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> (<VAR
+CLASS="REPLACEABLE"
+>args</VAR
+>)</VAR
+><BR><VAR
+CLASS="LITERAL"
+>DO <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> (<VAR
+CLASS="REPLACEABLE"
+>args</VAR
+>)</VAR
+></DT
+><DD
+><P
+>        Call the specified C functions with the specified arguments.
+       </P
+></DD
+></DL
+></DIV
+><P>
+
+    The SQL standard only provides for the actions
+    <VAR
+CLASS="LITERAL"
+>CONTINUE</VAR
+> and <VAR
+CLASS="LITERAL"
+>GOTO</VAR
+> (and
+    <VAR
+CLASS="LITERAL"
+>GO TO</VAR
+>).
+   </P
+><P
+>    Here is an example that you might want to use in a simple program.
+    It prints a simple message when a warning occurs and aborts the
+    program when an error happens.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL WHENEVER SQLWARNING SQLPRINT;
+EXEC SQL WHENEVER SQLERROR STOP;</PRE
+><P>
+   </P
+><P
+>    The statement <VAR
+CLASS="LITERAL"
+>EXEC SQL WHENEVER</VAR
+> is a directive
+    of the SQL preprocessor, not a C statement.  The error or warning
+    actions that it sets apply to all embedded SQL statements that
+    appear below the point where the handler is set, unless a
+    different action was set for the same condition between the first
+    <VAR
+CLASS="LITERAL"
+>EXEC SQL WHENEVER</VAR
+> and the SQL statement causing
+    the condition, regardless of the flow of control in the C program.
+    So neither of the two following C program exerpts will have the
+    desired effect.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>/*
+ * WRONG
+ */
+int main(int argc, char *argv[])
+{
+    ...
+    if (verbose) {
+        EXEC SQL WHENEVER SQLWARNING SQLPRINT;
+    }
+    ...
+    EXEC SQL SELECT ...;
+    ...
+}</PRE
+><P>
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>/*
+ * WRONG
+ */
+int main(int argc, char *argv[])
+{
+    ...
+    set_error_handler();
+    ...
+    EXEC SQL SELECT ...;
+    ...
+}
+
+static void set_error_handler(void)
+{
+    EXEC SQL WHENEVER SQLERROR STOP;
+}</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN22714"
+>30.9.2. sqlca</A
+></H2
+><P
+>    For a more powerful error handling, the embedded SQL interface
+    provides a global variable with the name <VAR
+CLASS="VARNAME"
+>sqlca</VAR
+>
+    that has the following structure:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>struct
 {
     char sqlcaid[8];
     long sqlabc;
@@ -154,430 +388,632 @@ CLASS="PROGRAMLISTING"
         char sqlerrmc[70];
     } sqlerrm;
     char sqlerrp[8];
-
     long sqlerrd[6];
-    /* 0: empty                                         */
-    /* 1: OID of processed tuple if applicable          */
-    /* 2: number of rows processed in an INSERT, UPDATE */
-    /*    or DELETE statement                           */
-    /* 3: empty                                         */
-    /* 4: empty                                         */
-    /* 5: empty                                         */
-
     char sqlwarn[8];
-    /* 0: set to 'W' if at least one other is 'W'       */
-    /* 1: if 'W' at least one character string          */
-    /*    value was truncated when it was               */
-    /*    stored into a host variable.                  */
-    /* 2: empty                                         */
-    /* 3: empty                                         */
-    /* 4: empty                                         */
-    /* 5: empty                                         */
-    /* 6: empty                                         */
-    /* 7: empty                                         */
-
-    char sqlext[8];
+    char sqlstate[5];
 } sqlca;</PRE
 ><P>
-   (Many of the empty fields may be used in a future release.)
-  </P
+    (In a multithreaded program, every thread automatically gets its
+    own copy of <VAR
+CLASS="VARNAME"
+>sqlca</VAR
+>.  This works similar to the
+    handling of the standard C global variable
+    <VAR
+CLASS="VARNAME"
+>errno</VAR
+>.)
+   </P
 ><P
->   If no error occurred in the last <SPAN
+>    <VAR
+CLASS="VARNAME"
+>sqlca</VAR
+> covers both warnings and errors.  If
+    multiple warnings or errors occur during the execution of a
+    statement, then <VAR
+CLASS="VARNAME"
+>sqlca</VAR
+> will only contain
+    information about the last one.
+   </P
+><P
+>    If no error occurred in the last <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > statement,
-   <TT
+    <VAR
 CLASS="LITERAL"
->sqlca.sqlcode</TT
-> will be 0
-   (<TT
-CLASS="SYMBOL"
->ECPG_NO_ERROR</TT
->). If <TT
+>sqlca.sqlcode</VAR
+> will be 0 and
+    <VAR
 CLASS="LITERAL"
->sqlca.sqlcode</TT
-> is
-   less that zero, this is a serious error, like the database
-   definition does not match the query. If it is greater than zero, it
-   is a normal error like the table did not contain the requested row.
-  </P
+>sqlca.sqlstate</VAR
+> will be
+    <VAR
+CLASS="LITERAL"
+>"00000"</VAR
+>.  If a warning or error occured, then
+    <VAR
+CLASS="LITERAL"
+>sqlca.sqlcode</VAR
+> will be negative and
+    <VAR
+CLASS="LITERAL"
+>sqlca.sqlstate</VAR
+> will be different from
+    <VAR
+CLASS="LITERAL"
+>"00000"</VAR
+>.  A positive
+    <VAR
+CLASS="LITERAL"
+>sqlca.sqlcode</VAR
+> indicates a harmless condition,
+    such as that the last query returned zero rows.
+    <VAR
+CLASS="LITERAL"
+>sqlcode</VAR
+> and <VAR
+CLASS="LITERAL"
+>sqlstate</VAR
+> are two
+    different error code schemes; details appear below.
+   </P
 ><P
->   <TT
+>    If the last SQL statement was successful, then
+    <VAR
 CLASS="LITERAL"
->sqlca.sqlerrm.sqlerrmc</TT
+>sqlca.sqlerrd[1]</VAR
+> contains the OID of the
+    processed row, if applicable, and
+    <VAR
+CLASS="LITERAL"
+>sqlca.sqlerrd[2]</VAR
+> contains the number of
+    processed or returned rows, if applicable to the command.
+   </P
+><P
+>    In case of an error or warning,
+    <VAR
+CLASS="LITERAL"
+>sqlca.sqlerrm.sqlerrmc</VAR
 > will contain a string
-   that describes the error. The string ends with the line number in
-   the source file.
-  </P
+    that describes the error.  The field
+    <VAR
+CLASS="LITERAL"
+>sqlca.sqlerrm.sqlerrml</VAR
+> contains the length of
+    the error message that is stored in
+    <VAR
+CLASS="LITERAL"
+>sqlca.sqlerrm.sqlerrmc</VAR
+> (the result of
+    <CODE
+CLASS="FUNCTION"
+>strlen()</CODE
+>, not really interesting for a C
+    programmer).
+   </P
 ><P
->   These are the errors that can occur:
+>    In case of a warning, <VAR
+CLASS="LITERAL"
+>sqlca.sqlwarn[2]</VAR
+> is set
+    to <VAR
+CLASS="LITERAL"
+>W</VAR
+>.  (In all other cases, it is set to
+    something different from <VAR
+CLASS="LITERAL"
+>W</VAR
+>.)  If
+    <VAR
+CLASS="LITERAL"
+>sqlca.sqlwarn[1]</VAR
+> is set to
+    <VAR
+CLASS="LITERAL"
+>W</VAR
+>, then a value was truncated when it was
+    stored in a host variable.  <VAR
+CLASS="LITERAL"
+>sqlca.sqlwarn[0]</VAR
+> is
+    set to <VAR
+CLASS="LITERAL"
+>W</VAR
+> if any of the other elements are set
+    to indicate a warning.
+   </P
+><P
+>    The fields <TT
+CLASS="STRUCTFIELD"
+>sqlcaid</TT
+>,
+    <TT
+CLASS="STRUCTFIELD"
+>sqlcabc</TT
+>,
+    <TT
+CLASS="STRUCTFIELD"
+>sqlerrp</TT
+>, and the remaining elements of
+    <TT
+CLASS="STRUCTFIELD"
+>sqlerrd</TT
+> and
+    <TT
+CLASS="STRUCTFIELD"
+>sqlwarn</TT
+> currently contain no useful
+    information.
+   </P
+><P
+>    The structure <VAR
+CLASS="VARNAME"
+>sqlca</VAR
+> is not defined in the SQL
+    standard, but is implemented in several other SQL database
+    systems.  The definitions are similar in the core, but if you want
+    to write portable applications, then you should investigate the
+    different implementations carefully.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN22759"
+>30.9.3. <VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+> vs <VAR
+CLASS="LITERAL"
+>SQLCODE</VAR
+></A
+></H2
+><P
+>    The fields <VAR
+CLASS="LITERAL"
+>sqlca.sqlstate</VAR
+> and
+    <VAR
+CLASS="LITERAL"
+>sqlca.sqlcode</VAR
+> are two different schemes that
+    provide error codes.  Both are specified in the SQL standard, but
+    <VAR
+CLASS="LITERAL"
+>SQLCODE</VAR
+> has been marked deprecated in the 1992
+    edition of the standard and has been dropped in the 1999 edition.
+    Therefore, new applications are strongly encouraged to use
+    <VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+>.
+   </P
+><P
+>    <VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+> is a five-character array.  The five
+    characters contain digits or upper-case letters that represent
+    codes of various error and warning conditions.
+    <VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+> has a hierarchical scheme: the first
+    two characters indicate the general class of the condition, the
+    last three characters indicate a subclass of the general
+    condition.  A successful state is indicated by the code
+    <VAR
+CLASS="LITERAL"
+>00000</VAR
+>.  Further information about the codes can
+    be found XXX.  The <VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+> codes are for the
+    most part defined in the SQL standard.  The PostgreSQL server
+    natively supports <VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+> error codes;
+    therefore a high degree of consistency can be achieved by using
+    this error code scheme throughout all applications.
+   </P
+><P
+>    <VAR
+CLASS="LITERAL"
+>SQLCODE</VAR
+>, the deprecated error code scheme, is a
+    simple integer.  A value of 0 indicates success, a positive value
+    indicates success with additional information, a negative value
+    indicates an error.  The SQL standard only defines the positive
+    value +100, which indicates that the last command returned or
+    affected zero rows, and no specific negative values.  Therefore,
+    this scheme can only achieve poor portability and does not have a
+    hierarchical code assignment.  Historically, the embedded SQL
+    processor for PostgreSQL has assigned some specific
+    <VAR
+CLASS="LITERAL"
+>SQLCODE</VAR
+> values for its use, which are listed
+    below with their numeric value and their symbolic name.  Remember
+    that these are not portable to other SQL implementations.  To
+    simplify the porting of applications to the
+    <VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+> scheme, the corresponding
+    <VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+> is also listed.  There is, however, no
+    one-to-one or one-to-many mapping between the two schemes (indeed
+    it is many-to-many), so you should consult the global
+    <VAR
+CLASS="LITERAL"
+>SQLSTATE</VAR
+> listing in XXX in each case.
+   </P
+><P
+>    These are the assigned <VAR
+CLASS="LITERAL"
+>SQLCODE</VAR
+> values:
 
-   <P
+    <P
 ></P
 ></P><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-12, Out of memory in line %d.</TT
-></DT
+>-12 (<TT
+CLASS="SYMBOL"
+>ECPG_OUT_OF_MEMORY</TT
+>)</DT
 ><DD
 ><P
->       Should not normally occur. This indicates your virtual memory
-       is exhausted.
+>        Indicates that your virtual memory is exhausted. (SQLSTATE
+        YE001)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-200 (ECPG_UNSUPPORTED): Unsupported type %s on line %d.</TT
-></DT
+>-200 (<TT
+CLASS="SYMBOL"
+>ECPG_UNSUPPORTED</TT
+>)</DT
 ><DD
 ><P
->       Should not normally occur. This indicates the preprocessor has
-       generated something that the library does not know about.
-       Perhaps you are running incompatible versions of the
-       preprocessor and the library.
+>       Indicates the preprocessor has generated something that the
+       library does not know about.  Perhaps you are running
+       incompatible versions of the preprocessor and the
+       library. (SQLSTATE YE002)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-201 (ECPG_TOO_MANY_ARGUMENTS): Too many arguments line %d.</TT
-></DT
+>-201 (<TT
+CLASS="SYMBOL"
+>ECPG_TOO_MANY_ARGUMENTS</TT
+>)</DT
 ><DD
 ><P
->       This means that the server has returned more arguments than we
-       have matching variables.  Perhaps you have forgotten a couple
-       of the host variables in the <TT
-CLASS="COMMAND"
->INTO
-       :var1,:var2</TT
-> list.
+>       This means that the command specified more host variables than
+       the command expected.  (SQLSTATE 07001 or 07002)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-202 (ECPG_TOO_FEW_ARGUMENTS): Too few arguments line %d.</TT
-></DT
+>-202 (<TT
+CLASS="SYMBOL"
+>ECPG_TOO_FEW_ARGUMENTS</TT
+>)</DT
 ><DD
 ><P
->       This means that the server has returned fewer arguments than we
-       have host variables. Perhaps you have too many host variables
-       in the <TT
-CLASS="COMMAND"
->INTO :var1,:var2</TT
-> list.  </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-203 (ECPG_TOO_MANY_MATCHES): Too many matches line %d.</TT
-></DT
-><DD
-><P
->       This means the query has returned several rows but the
-       variables specified are not arrays. The
-       <TT
-CLASS="COMMAND"
->SELECT</TT
-> command was not unique.
+>       This means that the command specified fewer host variables than
+       the command expected.  (SQLSTATE 07001 or 07002)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-204 (ECPG_INT_FORMAT): Not correctly formatted int type: %s line %d.</TT
-></DT
+>-203 (<TT
+CLASS="SYMBOL"
+>ECPG_TOO_MANY_MATCHES</TT
+>)</DT
 ><DD
 ><P
->       This means the host variable is of type <TT
+>       This means a query has returned multiple rows but the statement
+       was only prepared to store one result row (for example, because
+       the specified variables are not arrays).  (SQLSTATE 21000)
+      </P
+></DD
+><DT
+>-204 (<TT
+CLASS="SYMBOL"
+>ECPG_INT_FORMAT</TT
+>)</DT
+><DD
+><P
+>       The host variable is of type <TT
 CLASS="TYPE"
 >int</TT
-> and
-       the field in the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database
-       is of another type and contains a value that cannot be
-       interpreted as an <TT
+> and the datum in
+       the database is of a different type and contains a value that
+       cannot be interpreted as an <TT
 CLASS="TYPE"
 >int</TT
->. The library uses
-       <TT
+>.  The library uses
+       <CODE
 CLASS="FUNCTION"
->strtol()</TT
-> for this conversion.
+>strtol()</CODE
+> for this conversion.  (SQLSTATE
+       42804)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-205 (ECPG_UINT_FORMAT): Not correctly formatted unsigned type: %s line %d.</TT
-></DT
+>-205 (<TT
+CLASS="SYMBOL"
+>ECPG_UINT_FORMAT</TT
+>)</DT
 ><DD
 ><P
->       This means the host variable is of type <TT
+>       The host variable is of type <TT
+CLASS="TYPE"
+>unsigned int</TT
+> and the
+       datum in the database is of a different type and contains a
+       value that cannot be interpreted as an <TT
 CLASS="TYPE"
 >unsigned
        int</TT
-> and the field in the
-       <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database is of another
-       type and contains a value that cannot be interpreted as an
-       <TT
-CLASS="TYPE"
->unsigned int</TT
->. The library uses
-       <TT
+>.  The library uses <CODE
 CLASS="FUNCTION"
->strtoul()</TT
-> for this conversion.
+>strtoul()</CODE
+>
+       for this conversion.  (SQLSTATE 42804)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-206 (ECPG_FLOAT_FORMAT): Not correctly formatted floating-point type: %s line %d.</TT
-></DT
+>-206 (<TT
+CLASS="SYMBOL"
+>ECPG_FLOAT_FORMAT</TT
+>)</DT
 ><DD
 ><P
->       This means the host variable is of type <TT
+>       The host variable is of type <TT
 CLASS="TYPE"
 >float</TT
-> and
-       the field in the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database
-       is of another type and contains a value that cannot be
-       interpreted as a <TT
+> and the datum
+       in the database is of another type and contains a value that
+       cannot be interpreted as a <TT
 CLASS="TYPE"
 >float</TT
->. The library uses
-       <TT
+>.  The library
+       uses <CODE
 CLASS="FUNCTION"
->strtod()</TT
+>strtod()</CODE
 > for this conversion.
+       (SQLSTATE 42804)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-207 (ECPG_CONVERT_BOOL): Unable to convert %s to bool on line %d.</TT
-></DT
+>-207 (<TT
+CLASS="SYMBOL"
+>ECPG_CONVERT_BOOL</TT
+>)</DT
 ><DD
 ><P
 >       This means the host variable is of type <TT
 CLASS="TYPE"
 >bool</TT
 > and
-       the field in the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database
-       is neither <TT
+       the datum in the database is neither <VAR
 CLASS="LITERAL"
->'t'</TT
-> nor <TT
+>'t'</VAR
+> nor
+       <VAR
 CLASS="LITERAL"
->'f'</TT
->.
+>'f'</VAR
+>.  (SQLSTATE 42804)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-208 (ECPG_EMPTY): Empty query line %d.</TT
-></DT
+>-208 (<TT
+CLASS="SYMBOL"
+>ECPG_EMPTY</TT
+>)</DT
 ><DD
 ><P
->       The query was empty.  (This cannot normally happen in an
-       embedded SQL program, so it may point to an internal error.)
+>       The statement sent to the PostgreSQL server was empty.  (This
+       cannot normally happen in an embedded SQL program, so it may
+       point to an internal error.)  (SQLSTATE YE002)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-209 (ECPG_MISSING_INDICATOR): NULL value without indicator in line %d.</TT
-></DT
+>-209 (<TT
+CLASS="SYMBOL"
+>ECPG_MISSING_INDICATOR</TT
+>)</DT
 ><DD
 ><P
 >       A null value was returned and no null indicator variable was
-       supplied.
+       supplied.  (SQLSTATE 22002)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-210 (ECPG_NO_ARRAY): Variable is not an array in line %d.</TT
-></DT
+>-210 (<TT
+CLASS="SYMBOL"
+>ECPG_NO_ARRAY</TT
+>)</DT
 ><DD
 ><P
 >       An ordinary variable was used in a place that requires an
-       array.
+       array.  (SQLSTATE 42804)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-211 (ECPG_DATA_NOT_ARRAY): Data read from backend is not an array in line %d.</TT
-></DT
+>-211 (<TT
+CLASS="SYMBOL"
+>ECPG_DATA_NOT_ARRAY</TT
+>)</DT
 ><DD
 ><P
 >       The database returned an ordinary variable in a place that
-       requires array value.
+       requires array value.  (SQLSTATE 42804)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-220 (ECPG_NO_CONN): No such connection %s in line %d.</TT
-></DT
+>-220 (<TT
+CLASS="SYMBOL"
+>ECPG_NO_CONN</TT
+>)</DT
 ><DD
 ><P
 >       The program tried to access a connection that does not exist.
+       (SQLSTATE 08003)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-221 (ECPG_NOT_CONN): Not connected in line %d.</TT
-></DT
+>-221 (<TT
+CLASS="SYMBOL"
+>ECPG_NOT_CONN</TT
+>)</DT
 ><DD
 ><P
 >       The program tried to access a connection that does exist but is
-       not open.
+       not open.  (This is an internal error.)  (SQLSTATE YE002)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-230 (ECPG_INVALID_STMT): Invalid statement name %s in line %d.</TT
-></DT
+>-230 (<TT
+CLASS="SYMBOL"
+>ECPG_INVALID_STMT</TT
+>)</DT
 ><DD
 ><P
 >       The statement you are trying to use has not been prepared.
+       (SQLSTATE 26000)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-240 (ECPG_UNKNOWN_DESCRIPTOR): Descriptor %s not found in line %d.</TT
-></DT
+>-240 (<TT
+CLASS="SYMBOL"
+>ECPG_UNKNOWN_DESCRIPTOR</TT
+>)</DT
 ><DD
 ><P
->       The descriptor specified was not found. The statement you are
-       trying to use has not been prepared.
+>       The descriptor specified was not found.  The statement you are
+       trying to use has not been prepared.  (SQLSTATE 33000)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-241 (ECPG_INVALID_DESCRIPTOR_INDEX): Descriptor index out of range in line %d.</TT
-></DT
+>-241 (<TT
+CLASS="SYMBOL"
+>ECPG_INVALID_DESCRIPTOR_INDEX</TT
+>)</DT
 ><DD
 ><P
->       The descriptor index specified was out of range.
+>       The descriptor index specified was out of range.  (SQLSTATE
+       07009)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-242 (ECPG_UNKNOWN_DESCRIPTOR_ITEM): Descriptor %s not found in line %d.</TT
-></DT
+>-242 (<TT
+CLASS="SYMBOL"
+>ECPG_UNKNOWN_DESCRIPTOR_ITEM</TT
+>)</DT
 ><DD
 ><P
->       The descriptor specified was not found. The statement you are trying to use has not been prepared.
+>       An invalid descriptor item was requested.  (This is an internal
+       error.)  (SQLSTATE YE002)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-243 (ECPG_VAR_NOT_NUMERIC): Variable is not a numeric type in line %d.</TT
-></DT
+>-243 (<TT
+CLASS="SYMBOL"
+>ECPG_VAR_NOT_NUMERIC</TT
+>)</DT
 ><DD
 ><P
->       The database returned a numeric value and the variable was not
-       numeric.
+>       During the execution of a dynamic statement, the database
+       returned a numeric value and the host variable was not numeric.
+       (SQLSTATE 07006)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-244 (ECPG_VAR_NOT_CHAR): Variable is not a character type in line %d.</TT
-></DT
+>-244 (<TT
+CLASS="SYMBOL"
+>ECPG_VAR_NOT_CHAR</TT
+>)</DT
 ><DD
 ><P
->       The database returned a non-numeric value and the variable was
-       numeric.
+>       During the execution of a dynamic statement, the database
+       returned a non-numeric value and the host variable was numeric.
+       (SQLSTATE 07006)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-400 (ECPG_PGSQL): Postgres error: %s line %d.</TT
-></DT
+>-400 (<TT
+CLASS="SYMBOL"
+>ECPG_PGSQL</TT
+>)</DT
 ><DD
 ><P
->       Some <SPAN
+>       Some error caused by the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> error. The message
-       contains the error message from the
+>
+       server.  The message contains the error message from the
        <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> backend.
+> server.
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-401 (ECPG_TRANS): Error in transaction processing line %d.</TT
-></DT
+>-401 (<TT
+CLASS="SYMBOL"
+>ECPG_TRANS</TT
+>)</DT
 ><DD
 ><P
->       <SPAN
+>       The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> signaled that we cannot
-       start, commit, or rollback the transaction.
+> server signaled that
+       we cannot start, commit, or rollback the transaction.
+       (SQLSTATE 08007)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->-402 (ECPG_CONNECT): Could not connect to database %s in line %d.</TT
-></DT
+>-402 (<TT
+CLASS="SYMBOL"
+>ECPG_CONNECT</TT
+>)</DT
 ><DD
 ><P
->       The connect to the database did not work.
+>       The connection attempt to the database did not succeed.
+       (SQLSTATE 08001)
       </P
 ></DD
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->100 (ECPG_NOT_FOUND): Data not found line %d.</TT
-></DT
+>100 (<TT
+CLASS="SYMBOL"
+>ECPG_NOT_FOUND</TT
+>)</DT
 ><DD
 ><P
->       This is a <SPAN
-CLASS="QUOTE"
->"normal"</SPAN
-> error that tells you that what
-       you are querying cannot be found or you are at the end of the
-       cursor.
+>       This is a harmless condition indicating that the last command
+       retrieved or processed zero rows, or that you are at the end of
+       the cursor.  (SQLSTATE 02000)
       </P
 ></DD
 ></DL
 ></DIV
 ><P>
   </P
+></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -595,7 +1031,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="ecpg-variables.html"
+HREF="ecpg-descriptors.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -623,7 +1059,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Passing Data</TD
+>Using SQL Descriptor Areas</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

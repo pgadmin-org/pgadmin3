@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Structure of PL/pgSQL</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
 HREF="plpgsql.html"><LINK
 REL="PREVIOUS"
-TITLE="PL/pgSQL - SQL Procedural Language"
-HREF="plpgsql.html"><LINK
+TITLE="Handling of Quotations Marks"
+HREF="plpgsql-quote.html"><LINK
 REL="NEXT"
 TITLE="Declarations"
 HREF="plpgsql-declarations.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="plpgsql.html"
+HREF="plpgsql-quote.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 19. <SPAN
+>Chapter 40. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> - <SPAN
+> - <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Procedural Language</TD
 ><TD
 WIDTH="10%"
@@ -87,24 +87,18 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-STRUCTURE"
->19.2. Structure of <SPAN
+>40.3. Structure of <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 ></A
 ></H1
 ><P
->     <SPAN
+>   <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> is a <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->block
-     structured</I
-></SPAN
-> language.  The complete text of a function
-     definition must be a <I
+> is a block-structured language.
+   The complete text of a function definition must be a
+   <I
 CLASS="FIRSTTERM"
 >block</I
 >. A block is defined as:
@@ -113,37 +107,68 @@ CLASS="FIRSTTERM"
 CLASS="SYNOPSIS"
 >[<SPAN
 CLASS="OPTIONAL"
-> &lt;&lt;label&gt;&gt; </SPAN
+> &lt;&lt;<VAR
+CLASS="REPLACEABLE"
+>label</VAR
+>&gt;&gt; </SPAN
 >]
 [<SPAN
 CLASS="OPTIONAL"
 > DECLARE
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->declarations</I
-></TT
+>declarations</VAR
 > </SPAN
 >]
 BEGIN
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->statements</I
-></TT
+>statements</VAR
 >
 END;</PRE
 ><P>
     </P
 ><P
->     Any <I
-CLASS="FIRSTTERM"
->statement</I
-> in the statement section of a block
+>     Each declaration and each statement within a block is terminated
+     by a semicolon.
+    </P
+><P
+>     All key words and identifiers can be written in mixed upper and
+     lower case.  Identifiers are implicitly converted to lower-case
+     unless double-quoted.
+    </P
+><P
+>     There are two types of comments in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>. A double dash (<VAR
+CLASS="LITERAL"
+>--</VAR
+>)
+     starts a comment that extends to the end of the line. A <VAR
+CLASS="LITERAL"
+>/*</VAR
+>
+     starts a block comment that extends to the next occurrence of <VAR
+CLASS="LITERAL"
+>*/</VAR
+>.
+     Block comments cannot be nested, but double dash comments can be
+     enclosed into a block comment and a double dash can hide
+     the block comment delimiters <VAR
+CLASS="LITERAL"
+>/*</VAR
+> and <VAR
+CLASS="LITERAL"
+>*/</VAR
+>.
+    </P
+><P
+>     Any statement in the statement section of a block
      can be a <I
 CLASS="FIRSTTERM"
->sub-block</I
->.  Sub-blocks can be used for
+>subblock</I
+>.  Subblocks can be used for
      logical grouping or to localize variables to a small group
      of statements.
     </P
@@ -153,30 +178,36 @@ CLASS="FIRSTTERM"
      block is entered, not only once per function call. For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION somefunc() RETURNS INTEGER AS '
+>CREATE FUNCTION somefunc() RETURNS integer AS '
 DECLARE
-   quantity INTEGER := 30;
+    quantity integer := 30;
 BEGIN
-   RAISE NOTICE ''Quantity here is %'',quantity;  -- Quantity here is 30
-   quantity := 50;
-   --
-   -- Create a sub-block
-   --
-   DECLARE
-      quantity INTEGER := 80;
-   BEGIN
-      RAISE NOTICE ''Quantity here is %'',quantity;  -- Quantity here is 80
-   END;
+    RAISE NOTICE ''Quantity here is %'', quantity;  -- Quantity here is 30
+    quantity := 50;
+    --
+    -- Create a subblock
+    --
+    DECLARE
+        quantity integer := 80;
+    BEGIN
+        RAISE NOTICE ''Quantity here is %'', quantity;  -- Quantity here is 80
+    END;
 
-   RAISE NOTICE ''Quantity here is %'',quantity;  -- Quantity here is 50
+    RAISE NOTICE ''Quantity here is %'', quantity;  -- Quantity here is 50
 
-   RETURN quantity;
+    RETURN quantity;
 END;
-' LANGUAGE 'plpgsql';</PRE
+' LANGUAGE plpgsql;</PRE
 ><P>
     </P
 ><P
->     It is important not to confuse the use of BEGIN/END for
+>     It is important not to confuse the use of <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>/<TT
+CLASS="COMMAND"
+>END</TT
+> for
      grouping statements in <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
@@ -184,7 +215,13 @@ CLASS="APPLICATION"
      transaction control.  <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
->'s BEGIN/END are only for grouping;
+>'s <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>/<TT
+CLASS="COMMAND"
+>END</TT
+> are only for grouping;
      they do not start or end a transaction.  Functions and trigger procedures
      are always executed within a transaction established by an outer query
      --- they cannot start or commit transactions, since
@@ -193,50 +230,6 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > does not have nested transactions.
     </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN35645"
->19.2.1. Lexical Details</A
-></H2
-><P
->     Each statement and declaration within a block is terminated
-     by a semicolon.
-    </P
-><P
->     All keywords and identifiers can be written in mixed upper- and
-     lower-case.  Identifiers are implicitly converted to lower-case
-     unless double-quoted.
-    </P
-><P
->     There are two types of comments in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->. A double dash <TT
-CLASS="LITERAL"
->--</TT
->
-     starts a comment that extends to the end of the line. A <TT
-CLASS="LITERAL"
->/*</TT
->
-     starts a block comment that extends to the next occurrence of <TT
-CLASS="LITERAL"
->*/</TT
->.
-     Block comments cannot be nested, but double dash comments can be
-     enclosed into a block comment and a double dash can hide
-     the block comment delimiters <TT
-CLASS="LITERAL"
->/*</TT
-> and <TT
-CLASS="LITERAL"
->*/</TT
->.
-    </P
-></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -254,7 +247,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="plpgsql.html"
+HREF="plpgsql-quote.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -282,13 +275,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> - <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
-> Procedural Language</TD
+>Handling of Quotations Marks</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Page Files</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Developer's Guide"
-HREF="developer.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="Example"
-HREF="bki-example.html"><LINK
+TITLE="Summary of Changes since Protocol 2.0"
+HREF="protocol-changes.html"><LINK
 REL="NEXT"
 TITLE="Genetic Query Optimization"
 HREF="geqo.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="bki-example.html"
+HREF="protocol-changes.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,17 +80,17 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="PAGE"
->Chapter 7. Page Files</A
-></H1
+></A
+>Chapter 47. Page Files</H1
 ><BLOCKQUOTE
 CLASS="ABSTRACT"
 ><DIV
 CLASS="ABSTRACT"
-><A
-NAME="AEN55528"
-></A
 ><P
 ></P
+><A
+NAME="AEN54906"
+></A
 ><P
 >A description of the database file page format.</P
 ><P
@@ -123,7 +123,7 @@ an item is a tuple (row); in an index, an item is an index entry.</P
 ><P
 >&#13;<A
 HREF="page.html#PAGE-TABLE"
->Table 7-1</A
+>Table 47-1</A
 > shows the basic layout of a page.
 There are five parts to each page.&#13;</P
 ><DIV
@@ -133,73 +133,49 @@ NAME="PAGE-TABLE"
 ></A
 ><P
 ><B
->Table 7-1. Sample Page Layout</B
+>Table 47-1. Sample Page Layout</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Item</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >PageHeaderData</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >20 bytes long. Contains general information about the page, including
 free space pointers.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >ItemPointerData</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Array of (offset,length) pairs pointing to the actual items.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Free space</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The unallocated space. All new tuples are allocated from here, generally from the end.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Items</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The actual items themselves.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Special Space</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Index access method specific data. Different methods store different
 data. Empty in ordinary tables.</TD
 ></TR
@@ -210,7 +186,7 @@ data. Empty in ordinary tables.</TD
 >&#13;  The first 20 bytes of each page consists of a page header
   (PageHeaderData). Its format is detailed in <A
 HREF="page.html#PAGEHEADERDATA-TABLE"
->Table 7-2</A
+>Table 47-2</A
 >. The first two fields deal with WAL
   related stuff. This is followed by three 2-byte integer fields
   (<TT
@@ -236,138 +212,82 @@ NAME="PAGEHEADERDATA-TABLE"
 ></A
 ><P
 ><B
->Table 7-2. PageHeaderData Layout</B
+>Table 47-2. PageHeaderData Layout</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Field</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Length</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >pd_lsn</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >XLogRecPtr</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >8 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >LSN: next byte after last byte of xlog</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >pd_sui</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >StartUpID</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >4 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >SUI of last changes (currently it's used by heap AM only)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >pd_lower</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >LocationIndex</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >2 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Offset to start of free space.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >pd_upper</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >LocationIndex</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >2 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Offset to end of free space.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >pd_special</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >LocationIndex</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >2 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Offset to start of special space.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >pd_pagesize_version</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >uint16</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >2 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Page size and layout version number information.</TD
 ></TR
 ></TBODY
@@ -443,9 +363,13 @@ CLASS="TYPE"
  </P
 ><P
 > 
-  The final section is the "special section" which may contain anything the
-  access method wishes to store. Ordinary tables do not use this at all
-  (indicated by setting <TT
+  The final section is the <SPAN
+CLASS="QUOTE"
+>"special section"</SPAN
+> which may
+  contain anything the access method wishes to store. Ordinary tables
+  do not use this at all (indicated by setting
+  <TT
 CLASS="STRUCTFIELD"
 >pd_special</TT
 > to equal the pagesize).
@@ -458,7 +382,7 @@ CLASS="STRUCTFIELD"
   detailed
   in <A
 HREF="page.html#HEAPTUPLEHEADERDATA-TABLE"
->Table 7-3</A
+>Table 47-3</A
 >.  The actual user data
   (fields of the tuple) begins at the offset indicated by
   <TT
@@ -509,192 +433,112 @@ NAME="HEAPTUPLEHEADERDATA-TABLE"
 ></A
 ><P
 ><B
->Table 7-3. HeapTupleHeaderData Layout</B
+>Table 47-3. HeapTupleHeaderData Layout</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Field</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Length</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >t_xmin</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TransactionId</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >4 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >insert XID stamp</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >t_cmin</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >CommandId</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >4 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >insert CID stamp (overlays with t_xmax)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >t_xmax</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TransactionId</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >4 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >delete XID stamp</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >t_cmax</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >CommandId</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >4 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >delete CID stamp (overlays with t_xvac)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >t_xvac</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TransactionId</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >4 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >XID for VACUUM operation moving tuple</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >t_ctid</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >ItemPointerData</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >6 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >current TID of this or newer tuple</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >t_natts</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >int16</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >2 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >number of attributes</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >t_infomask</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >uint16</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >2 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >various flags</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >t_hoff</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >uint8</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1 byte</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >offset to user data</TD
 ></TR
 ></TBODY
@@ -764,7 +608,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="bki-example.html"
+HREF="protocol-changes.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -792,13 +636,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Example</TD
+>Summary of Changes since Protocol 2.0</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="developer.html"
+HREF="internals.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SPI_cursor_open</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Interface Functions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,18 +78,18 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SPI-SPICURSOR-OPEN"
->SPI_cursor_open</A
-></H1
+></A
+>SPI_cursor_open</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN34068"
+NAME="AEN32464"
 ></A
 ><H2
 >Name</H2
->SPI_cursor_open&nbsp;--&nbsp;Sets up a cursor using a plan created with <TT
+>SPI_cursor_open&nbsp;--&nbsp;Sets up a cursor using a plan created with <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 ><A
 NAME="IX-SPI-SPICURSOR-OPEN-1"
 ></A
@@ -100,35 +100,27 @@ NAME="IX-SPI-SPICURSOR-OPEN-2"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN34077"
+NAME="AEN32473"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SPI_cursor_open(<TT
+>SPI_cursor_open(<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 >,
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->plan</I
-></TT
+>plan</VAR
 >,
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->values</I
-></TT
+>values</VAR
 >,
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->nulls</I
-></TT
+>nulls</VAR
 >)</PRE
 ><DIV
 CLASS="REFSECT2"
@@ -143,44 +135,36 @@ NAME="R2-SPI-SPICURSOR-OPEN-1"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->char *<TT
+>const char *<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 ></DT
 ><DD
 ><P
 >Name for portal, or NULL to let the system select a name</P
 ></DD
 ><DT
->void *<TT
+>void *<VAR
 CLASS="REPLACEABLE"
-><I
->plan</I
-></TT
+>plan</VAR
 ></DT
 ><DD
 ><P
 >Execution plan</P
 ></DD
 ><DT
->Datum *<TT
+>Datum *<VAR
 CLASS="REPLACEABLE"
-><I
->values</I
-></TT
+>values</VAR
 ></DT
 ><DD
 ><P
 >Actual parameter values</P
 ></DD
 ><DT
->char *<TT
+>const char *<VAR
 CLASS="REPLACEABLE"
-><I
->nulls</I
-></TT
+>nulls</VAR
 ></DT
 ><DD
 ><P
@@ -192,9 +176,9 @@ BORDER="0"
 ><TBODY
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->n</TT
+>n</VAR
 > indicates NULL (values[] entry ignored)</TD
 ></TR
 ><TR
@@ -240,14 +224,14 @@ NAME="R1-SPI-SPICURSOR-OPEN-1"
 ><H2
 >Description</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_cursor_open</TT
+>SPI_cursor_open</CODE
 > 
    sets up a cursor (internally, a Portal) that will execute a plan
-   prepared by <TT
+   prepared by <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 >.</P
 ><P
 >   Using a cursor instead of executing the plan directly has two
@@ -265,16 +249,14 @@ NAME="R1-SPI-SPICURSOR-OPEN-2"
 ><H2
 >Usage</H2
 ><P
->   If <TT
+>   If <VAR
 CLASS="REPLACEABLE"
-><I
->nulls</I
-></TT
+>nulls</VAR
 >
 is NULL then 
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_cursor_open</TT
+>SPI_cursor_open</CODE
 > 
 assumes that all parameters (if any) are NOT NULL.</P
 ></DIV

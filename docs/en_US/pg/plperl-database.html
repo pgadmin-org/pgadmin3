@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Database Access from PL/Perl</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Perl - Perl Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 21. PL/Perl - Perl Procedural Language</TD
+>Chapter 42. PL/Perl - Perl Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,38 +81,38 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPERL-DATABASE"
->21.3. Database Access from PL/Perl</A
+>42.3. Database Access from PL/Perl</A
 ></H1
 ><P
 >   Access to the database itself from your Perl function can be done via
    an experimental module <A
 HREF="http://www.cpan.org/modules/by-module/DBD/APILOS/"
 TARGET="_top"
-><TT
+><VAR
 CLASS="LITERAL"
->DBD::PgSPI</TT
+>DBD::PgSPI</VAR
 ></A
 >
    (also available at <A
 HREF="http://www.cpan.org/SITES.html"
 TARGET="_top"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->CPAN</SPAN
+>CPAN</ACRONYM
 >
    mirror sites</A
 >). This module makes available a
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->DBI</SPAN
+>DBI</ACRONYM
 >-compliant database-handle named
-   <TT
+   <VAR
 CLASS="VARNAME"
->$pg_dbh</TT
+>$pg_dbh</VAR
 > that can be used to perform queries
-   with normal <SPAN
+   with normal <ACRONYM
 CLASS="ACRONYM"
->DBI</SPAN
+>DBI</ACRONYM
 > syntax.
   </P
 ><P
@@ -124,46 +124,42 @@ CLASS="ACRONYM"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><CODE
 CLASS="FUNCTION"
->elog</TT
-> <TT
+>elog</CODE
+> <VAR
 CLASS="REPLACEABLE"
-><I
->level</I
-></TT
->, <TT
+>level</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->msg</I
-></TT
+>msg</VAR
 ></DT
 ><DD
 ><P
 >       Emit a log or error message. Possible levels are
-       <TT
+       <VAR
 CLASS="LITERAL"
->DEBUG</TT
->, <TT
+>DEBUG</VAR
+>, <VAR
 CLASS="LITERAL"
->LOG</TT
->, <TT
+>LOG</VAR
+>, <VAR
 CLASS="LITERAL"
->INFO</TT
+>INFO</VAR
 >,
-       <TT
+       <VAR
 CLASS="LITERAL"
->NOTICE</TT
->, <TT
+>NOTICE</VAR
+>, <VAR
 CLASS="LITERAL"
->WARNING</TT
->, and <TT
+>WARNING</VAR
+>, and <VAR
 CLASS="LITERAL"
->ERROR</TT
+>ERROR</VAR
 >.
-       <TT
+       <VAR
 CLASS="LITERAL"
->ERROR</TT
+>ERROR</VAR
 > raises an error condition: further execution
        of the function is abandoned, and the current transaction is
        aborted.

@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>The Password File</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="Environment Variables"
+HREF="libpq-envars.html"><LINK
+REL="NEXT"
+TITLE="Threading Behavior"
+HREF="libpq-threading.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpq-envars.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 27. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq-threading.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-PGPASS"
+>27.11. The Password File</A
+></H1
+><A
+NAME="AEN20885"
+></A
+><A
+NAME="AEN20887"
+></A
+><P
+>The file <TT
+CLASS="FILENAME"
+>.pgpass</TT
+> in a user's home directory is a file
+that can contain passwords to be used if the connection requires a
+password (and no password has been specified otherwise).
+This file should have lines of the following format:
+</P><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>hostname</VAR
+>:<VAR
+CLASS="REPLACEABLE"
+>port</VAR
+>:<VAR
+CLASS="REPLACEABLE"
+>database</VAR
+>:<VAR
+CLASS="REPLACEABLE"
+>username</VAR
+>:<VAR
+CLASS="REPLACEABLE"
+>password</VAR
+></PRE
+><P>
+Each of the first four fields may be a literal value, or <VAR
+CLASS="LITERAL"
+>*</VAR
+>,
+which
+matches anything.  The password field from the first line that matches the
+current connection parameters will be used.  (Therefore, put more-specific
+entries first when you are using wildcards.)
+If an entry needs to contain <VAR
+CLASS="LITERAL"
+>:</VAR
+> or
+<VAR
+CLASS="LITERAL"
+>\</VAR
+>, escape this character with <VAR
+CLASS="LITERAL"
+>\</VAR
+>.</P
+><P
+>The permissions on <TT
+CLASS="FILENAME"
+>.pgpass</TT
+> must disallow any
+access to world or group; achieve this by the command
+<TT
+CLASS="COMMAND"
+>chmod 0600 ~/.pgpass</TT
+>.
+If the permissions are less strict than this, the file will be ignored.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-envars.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-threading.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Environment Variables</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Threading Behavior</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

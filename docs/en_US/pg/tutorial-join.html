@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Joins Between Tables</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,9 +60,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. The <SPAN
+>Chapter 2. The <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Language</TD
 ><TD
 WIDTH="10%"
@@ -87,7 +87,7 @@ NAME="TUTORIAL-JOIN"
 >2.6. Joins Between Tables</A
 ></H1
 ><A
-NAME="AEN373"
+NAME="AEN650"
 ></A
 ><P
 >    Thus far, our queries have only accessed one table at a time.
@@ -145,9 +145,9 @@ CLASS="SCREEN"
 ><P
 >       There is no result row for the city of Hayward.  This is
        because there is no matching entry in the
-       <TT
+       <CODE
 CLASS="CLASSNAME"
->cities</TT
+>cities</CODE
 > table for Hayward, so the join
        ignores the unmatched rows in the weather table.  We will see
        shortly how this can be fixed.
@@ -157,19 +157,19 @@ CLASS="CLASSNAME"
 ><P
 >       There are two columns containing the city name.  This is
        correct because the lists of columns of the
-       <TT
+       <CODE
 CLASS="CLASSNAME"
->weather</TT
+>weather</CODE
 > and the
-       <TT
+       <CODE
 CLASS="CLASSNAME"
->cities</TT
+>cities</CODE
 > table are concatenated.  In
        practice this is undesirable, though, so you will probably want
        to list the output columns explicitly rather than using
-       <TT
+       <VAR
 CLASS="LITERAL"
->*</TT
+>*</VAR
 >:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -188,9 +188,9 @@ CLASS="FORMALPARA"
 ><B
 >Exercise: </B
 >     Attempt to find out the semantics of this query when the
-     <TT
+     <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > clause is omitted.
     </P
 ></DIV
@@ -222,27 +222,27 @@ CLASS="PROGRAMLISTING"
    </P
 ><P
 >    <A
-NAME="AEN401"
+NAME="AEN678"
 ></A
 >
 
     Now we will figure out how we can get the Hayward records back in.
     What we want the query to do is to scan the
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->weather</TT
+>weather</CODE
 > table and for each row to find the
-    matching <TT
+    matching <CODE
 CLASS="CLASSNAME"
->cities</TT
+>cities</CODE
 > row.  If no matching row is
     found we want some <SPAN
 CLASS="QUOTE"
 >"empty values"</SPAN
 > to be substituted
-    for the <TT
+    for the <CODE
 CLASS="CLASSNAME"
->cities</TT
+>cities</CODE
 > table's columns.  This kind
     of query is called an <I
 CLASS="FIRSTTERM"
@@ -286,11 +286,11 @@ CLASS="FORMALPARA"
 ></DIV
 ><P
 >    <A
-NAME="AEN415"
+NAME="AEN692"
 ></A
 >
     <A
-NAME="AEN418"
+NAME="AEN695"
 ></A
 >
 
@@ -308,9 +308,9 @@ CLASS="STRUCTFIELD"
 CLASS="STRUCTFIELD"
 >temp_hi</TT
 > columns of
-    each <TT
+    each <CODE
 CLASS="CLASSNAME"
->weather</TT
+>weather</CODE
 > row to the
     <TT
 CLASS="STRUCTFIELD"
@@ -320,9 +320,9 @@ CLASS="STRUCTFIELD"
 CLASS="STRUCTFIELD"
 >temp_hi</TT
 > columns of all other
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->weather</TT
+>weather</CODE
 > rows.  We can do this with the
     following query:
 
@@ -341,13 +341,13 @@ CLASS="PROGRAMLISTING"
 (2 rows)</PRE
 ><P>     
 
-    Here we have relabeled the weather table as <TT
+    Here we have relabeled the weather table as <VAR
 CLASS="LITERAL"
->W1</TT
+>W1</VAR
 > and
-    <TT
+    <VAR
 CLASS="LITERAL"
->W2</TT
+>W2</VAR
 > to be able to distinguish the left and right side
     of the join.  You can also use these kinds of aliases in other
     queries to save some typing, e.g.:

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_proc</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,19 +81,28 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-PROC"
->3.24. pg_proc</A
+>45.24. <TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
 ></H1
+><A
+NAME="AEN52635"
+></A
 ><P
->   This catalog stores information about functions (or procedures).
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+> stores information about functions (or procedures).
    The description of <TT
 CLASS="COMMAND"
 >CREATE FUNCTION</TT
-> and the
-   <I
-CLASS="CITETITLE"
->Programmer's Guide</I
-> contain more information
-   about the meaning of some fields.
+> and
+   <A
+HREF="xfunc.html"
+>Section 34.3</A
+> contain more information about the meaning of
+   some columns.
   </P
 ><P
 >   The table contains data for aggregate functions as well as plain functions.
@@ -102,168 +111,160 @@ CLASS="STRUCTFIELD"
 >proisagg</TT
 > is true, there should be a matching
    row in <TT
-CLASS="STRUCTNAME"
+CLASS="STRUCTFIELD"
 >pg_aggregate</TT
 >.
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN53954"
+NAME="AEN52644"
 ></A
 ><P
 ><B
->Table 3-24. pg_proc Columns</B
+>Table 45-24. <TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->proname</TD
+><TT
+CLASS="STRUCTFIELD"
+>proname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name of the function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pronamespace</TD
+><TT
+CLASS="STRUCTFIELD"
+>pronamespace</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_namespace.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       The OID of the namespace that contains this function
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->proowner</TD
+><TT
+CLASS="STRUCTFIELD"
+>proowner</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_shadow.usesysid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Owner (creator) of the function</TD
+>Owner of the function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->prolang</TD
+><TT
+CLASS="STRUCTFIELD"
+>prolang</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_language.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-language.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_langauge</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Implementation language or call interface of this function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->proisagg</TD
+><TT
+CLASS="STRUCTFIELD"
+>proisagg</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Function is an aggregate function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->prosecdef</TD
+><TT
+CLASS="STRUCTFIELD"
+>prosecdef</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Function is a security definer (i.e., a <SPAN
 CLASS="QUOTE"
 >"setuid"</SPAN
@@ -272,23 +273,18 @@ CLASS="QUOTE"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->proisstrict</TD
+><TT
+CLASS="STRUCTFIELD"
+>proisstrict</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       Function returns null if any call argument is null.  In that
        case the function won't actually be called at all.  Functions
        that are not <SPAN
@@ -300,77 +296,67 @@ CLASS="QUOTE"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->proretset</TD
+><TT
+CLASS="STRUCTFIELD"
+>proretset</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Function returns a set (ie, multiple values of the specified
+>Function returns a set (i.e., multiple values of the specified
       data type)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->provolatile</TD
+><TT
+CLASS="STRUCTFIELD"
+>provolatile</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="STRUCTFIELD"
 >provolatile</TT
 > tells whether the function's
        result depends only on its input arguments, or is affected by outside
        factors.
-       It is <TT
+       It is <VAR
 CLASS="LITERAL"
->i</TT
+>i</VAR
 > for <SPAN
 CLASS="QUOTE"
 >"immutable"</SPAN
 > functions,
        which always deliver the same result for the same inputs.
-       It is <TT
+       It is <VAR
 CLASS="LITERAL"
->s</TT
+>s</VAR
 > for <SPAN
 CLASS="QUOTE"
 >"stable"</SPAN
 > functions,
        whose results (for fixed inputs) do not change within a scan.
-       It is <TT
+       It is <VAR
 CLASS="LITERAL"
->v</TT
+>v</VAR
 > for <SPAN
 CLASS="QUOTE"
 >"volatile"</SPAN
 > functions,
-       whose results may change at any time.  (Use <TT
+       whose results may change at any time.  (Use <VAR
 CLASS="LITERAL"
->v</TT
+>v</VAR
 > also
        for functions with side-effects, so that calls to them cannot get
        optimized away.)
@@ -378,86 +364,84 @@ CLASS="LITERAL"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pronargs</TD
+><TT
+CLASS="STRUCTFIELD"
+>pronargs</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Number of arguments</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->prorettype</TD
+><TT
+CLASS="STRUCTFIELD"
+>prorettype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_type.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Data type of the return value</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->proargtypes</TD
+><TT
+CLASS="STRUCTFIELD"
+>proargtypes</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oidvector</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_type.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->A vector with the data types of the function arguments</TD
+>An array with the data types of the function arguments</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->prosrc</TD
+><TT
+CLASS="STRUCTFIELD"
+>prosrc</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       This tells the function handler how to invoke the function.  It
        might be the actual source code of the function for interpreted
        languages, a link symbol, a file name, or just about anything
@@ -466,60 +450,58 @@ VALIGN="TOP"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->probin</TD
+><TT
+CLASS="STRUCTFIELD"
+>probin</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bytea</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Additional information about how to invoke the function.
       Again, the interpretation is language-specific.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->proacl</TD
+><TT
+CLASS="STRUCTFIELD"
+>proacl</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >aclitem[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Access permissions</TD
+>Access privileges</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->  Currently, prosrc contains the function's C-language name (link symbol)
-  for compiled functions, both built-in and dynamically loaded.  For all
-  other language types, prosrc contains the function's source text.
-  </P
-><P
->  Currently, probin is unused except for dynamically-loaded C functions,
-  for which it gives the name of the shared library file containing the
-  function.
+>   <TT
+CLASS="STRUCTFIELD"
+>prosrc</TT
+> contains the function's C-language
+   name (link symbol) for compiled functions, both built-in and
+   dynamically loaded.  For all other language types,
+   <TT
+CLASS="STRUCTFIELD"
+>prosrc</TT
+> contains the function's source
+   text.  <TT
+CLASS="STRUCTFIELD"
+>probin</TT
+> is unused except for
+   dynamically-loaded C functions, for which it gives the name of the
+   shared library file containing the function.
   </P
 ></DIV
 ><DIV
@@ -566,7 +548,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_operator</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -580,7 +565,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_rewrite</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_restore</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="pg_dumpall"
 HREF="app-pg-dumpall.html"><LINK
 REL="NEXT"
-TITLE="psql"
-HREF="app-psql.html"><LINK
+TITLE="pgtclsh"
+HREF="app-pgtclsh.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="app-psql.html"
+HREF="app-pgtclsh.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-PGRESTORE"
->pg_restore</A
-></H1
+></A
+>pg_restore</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN48502"
+NAME="AEN46721"
 ></A
 ><H2
 >Name</H2
@@ -95,7 +95,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN48506"
+NAME="AEN46725"
 ></A
 ><H2
 >Synopsis</H2
@@ -103,12 +103,13 @@ NAME="AEN48506"
 ><TT
 CLASS="COMMAND"
 >pg_restore</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->options</I
-></TT
->...]</P
+>option</VAR
+>...] [<VAR
+CLASS="REPLACEABLE"
+>filename</VAR
+>]</P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -130,38 +131,31 @@ CLASS="PRODUCTNAME"
 HREF="app-pgdump.html"
 >pg_dump</A
 > in one of the non-plain-text
-   formats.  It
-   will issue the commands necessary to re-generate all user-defined
-   types, functions, tables, indexes, aggregates, and operators, as
-   well as the data in the tables.
-  </P
-><P
->   The archive files contain information for
-   <SPAN
+   formats.  It will issue the commands necessary to reconstruct the
+   database to the state it was in at the time it was saved.  The
+   archive files also allow <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
-> to rebuild the database, but also
-   allow <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> to be selective about what is
-   restored, or even to reorder the items prior to being restored. The
-   archive files are designed to be portable across architectures.
+> to
+   be selective about what is restored, or even to reorder the items
+   prior to being restored. The archive files are designed to be
+   portable across architectures.
   </P
 ><P
 >   <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
-> can operate in two modes:  If a
-   database name is specified, the archive is restored directly into
-   the database.  Otherwise, a script containing the SQL commands
-   necessary to rebuild the database is created (and written to a file
-   or standard output), similar to the ones created by the
+> can operate in two modes: If
+   a database name is specified, the archive is restored directly into
+   the database.  Large objects can only be restored by using a direct
+   database connection.  Otherwise, a script containing the SQL
+   commands necessary to rebuild the database is created (and written
+   to a file or standard output), similar to the ones created by the
    <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> plain text format.  Some of the options
-   controlling the script output are therefore analogous to
+> plain text format.  Some of the
+   options controlling the script output are therefore analogous to
    <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
@@ -172,14 +166,14 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_restore</SPAN
 > cannot restore information
-   that is not present in the archive file; for instance, if the
+   that is not present in the archive file.  For instance, if the
    archive was made using the <SPAN
 CLASS="QUOTE"
 >"dump data as
    <TT
 CLASS="COMMAND"
 >INSERT</TT
->s"</SPAN
+> commands"</SPAN
 > option,
    <SPAN
 CLASS="APPLICATION"
@@ -199,11 +193,11 @@ NAME="APP-PGRESTORE-OPTIONS"
 ><H2
 >Options</H2
 ><P
->    <TT
-CLASS="COMMAND"
->pg_restore</TT
+>    <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
 > accepts the following command
-    line arguments.  (Long option forms are only available on some platforms.)
+    line arguments.
 
     <P
 ></P
@@ -211,11 +205,9 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->archive-name</I
-></TT
+>filename</VAR
 ></DT
 ><DD
 ><P
@@ -224,25 +216,25 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-a</TT
-><BR><TT
+>-a</VAR
+><BR><VAR
 CLASS="OPTION"
->--data-only</TT
+>--data-only</VAR
 ></DT
 ><DD
 ><P
->	Restore only the data, no schema (definitions).
+>	Restore only the data, not the schema (data definitions).
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-c</TT
-><BR><TT
+>-c</VAR
+><BR><VAR
 CLASS="OPTION"
->--clean</TT
+>--clean</VAR
 ></DT
 ><DD
 ><P
@@ -250,103 +242,88 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-C</TT
-><BR><TT
+>-C</VAR
+><BR><VAR
 CLASS="OPTION"
->--create</TT
+>--create</VAR
 ></DT
 ><DD
 ><P
 >        Create the database before restoring into it.  (When this
-        switch appears, the database named with <TT
+        option is used, the database named with <VAR
 CLASS="OPTION"
->-d</TT
+>-d</VAR
 > is
-        used only to issue the initial <TT
+        used only to issue the initial <VAR
 CLASS="LITERAL"
->CREATE DATABASE</TT
+>CREATE DATABASE</VAR
 >
         command.  All data is restored into the database name that
         appears in the archive.)
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-d <TT
+>-d <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
-><BR><TT
+>dbname</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--dbname=<TT
+>--dbname=<VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
+>dbname</VAR
+></VAR
 ></DT
 ><DD
 ><P
->        Connect to database <TT
+>        Connect to database <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 > and restore directly
-        into the database. Large objects can only be restored by using
-        a direct database connection.
+        into the database.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-f <TT
+>-f <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
-></TT
-><BR><TT
+>filename</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--file=<TT
+>--file=<VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
-></TT
+>filename</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >        Specify output file for generated script, or for the listing
-        when used with <TT
+        when used with <VAR
 CLASS="OPTION"
->-l</TT
+>-l</VAR
 >. Default is the standard
         output.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-F <TT
+>-F <VAR
 CLASS="REPLACEABLE"
-><I
->format</I
-></TT
-></TT
-><BR><TT
+>format</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--format=<TT
+>--format=<VAR
 CLASS="REPLACEABLE"
-><I
->format</I
-></TT
-></TT
+>format</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -357,18 +334,21 @@ CLASS="APPLICATION"
 > will
 	determine the format automatically. If specified, it can be
 	one of the following:
-       </P
-><P
+
+       <P
 ></P
-><DIV
+></P><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->t</DT
+><VAR
+CLASS="LITERAL"
+>t</VAR
+></DT
 ><DD
 ><P
->           Archive is a <TT
-CLASS="FILENAME"
+>           The archive is a <TT
+CLASS="COMMAND"
 >tar</TT
 > archive. Using this
            archive format allows reordering and/or exclusion of schema
@@ -377,10 +357,13 @@ CLASS="FILENAME"
           </P
 ></DD
 ><DT
->c</DT
+><VAR
+CLASS="LITERAL"
+>c</VAR
+></DT
 ><DD
 ><P
->           Archive is in the custom format of
+>           The archive is in the custom format of
            <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
@@ -392,14 +375,16 @@ CLASS="APPLICATION"
 ></DD
 ></DL
 ></DIV
+><P>
+       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-i</TT
-><BR><TT
+>-i</VAR
+><BR><VAR
 CLASS="OPTION"
->--ignore-version</TT
+>--ignore-version</VAR
 ></DT
 ><DD
 ><P
@@ -407,92 +392,77 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-I <TT
+>-I <VAR
 CLASS="REPLACEABLE"
-><I
->index</I
-></TT
-></TT
-><BR><TT
+>index</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--index=<TT
+>--index=<VAR
 CLASS="REPLACEABLE"
-><I
->index</I
-></TT
-></TT
+>index</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Restore definition for named <TT
-CLASS="REPLACEABLE"
-><I
->index</I
-></TT
-> only.
+>	Restore definition of named index only.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-l</TT
-><BR><TT
+>-l</VAR
+><BR><VAR
 CLASS="OPTION"
->--list</TT
+>--list</VAR
 ></DT
 ><DD
 ><P
->        List the contents of the archive. The output of this command
-        can be used with the <TT
+>        List the contents of the archive. The output of this operation
+        can be used with the <VAR
 CLASS="OPTION"
->-L</TT
+>-L</VAR
 > option to restrict
         and reorder the items that are restored.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-L <TT
+>-L <VAR
 CLASS="REPLACEABLE"
-><I
->list-file</I
-></TT
-></TT
-><BR><TT
+>list-file</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--use-list=<TT
+>--use-list=<VAR
 CLASS="REPLACEABLE"
-><I
->list-file</I
-></TT
-></TT
+>list-file</VAR
+></VAR
 ></DT
 ><DD
 ><P
->        Restore elements in <TT
+>        Restore elements in <VAR
 CLASS="REPLACEABLE"
-><I
->list-file</I
-></TT
+>list-file</VAR
 > only, and in the
         order they appear in the file. Lines can be moved and may also
-        be commented out by placing a <TT
+        be commented out by placing a <VAR
 CLASS="LITERAL"
->;</TT
+>;</VAR
 > at the
-        start of the line.
+        start of the line.  (See below for examples.)
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-N</TT
-><BR><TT
+>-N</VAR
+><BR><VAR
 CLASS="OPTION"
->--orig-order</TT
+>--orig-order</VAR
 ></DT
 ><DD
 ><P
@@ -510,12 +480,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-o</TT
-><BR><TT
+>-o</VAR
+><BR><VAR
 CLASS="OPTION"
->--oid-order</TT
+>--oid-order</VAR
 ></DT
 ><DD
 ><P
@@ -533,50 +503,55 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-O</TT
-><BR><TT
+>-O</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-owner</TT
+>--no-owner</VAR
 ></DT
 ><DD
 ><P
 >        Prevent any attempt to restore original object
         ownership. Objects will be owned by the user name used to
-        attach to the database.
+        attach to the database. See also under <VAR
+CLASS="OPTION"
+>-R</VAR
+> and
+        <VAR
+CLASS="OPTION"
+>-X use-set-session-authorization</VAR
+>.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-P <TT
+>-P <VAR
 CLASS="REPLACEABLE"
-><I
->function-name(argtype [, ...])</I
-></TT
-></TT
-><BR><TT
+>function-name(argtype [, ...])</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--function=<TT
+>--function=<VAR
 CLASS="REPLACEABLE"
-><I
->function-name(argtype [, ...])</I
-></TT
-></TT
+>function-name(argtype [, ...])</VAR
+></VAR
 ></DT
 ><DD
 ><P
->        Specify a procedure or function to be restored.
+>        Restore the named function only.  Be careful to spell the function
+	name and arguments exactly as they appear in the dump file's table
+	of contents.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-r</TT
-><BR><TT
+>-r</VAR
+><BR><VAR
 CLASS="OPTION"
->--rearrange</TT
+>--rearrange</VAR
 ></DT
 ><DD
 ><P
@@ -596,12 +571,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-R</TT
-><BR><TT
+>-R</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-reconnect</TT
+>--no-reconnect</VAR
 ></DT
 ><DD
 ><P
@@ -641,115 +616,94 @@ CLASS="EMPHASIS"
 >unless</I
 ></SPAN
 > you use the
-        <TT
+        <VAR
 CLASS="OPTION"
->-X use-set-session-authorization</TT
+>-X use-set-session-authorization</VAR
 > option.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-s</TT
-><BR><TT
+>-s</VAR
+><BR><VAR
 CLASS="OPTION"
->--schema-only</TT
+>--schema-only</VAR
 ></DT
 ><DD
 ><P
->	Restore the schema (definitions), no data. Sequence values will be reset.
+>        Restore only the schema (data definitions), not the data.
+        Sequence values will be reset.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-S <TT
+>-S <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
+>username</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--superuser=<TT
+>--superuser=<VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >        Specify the superuser user name to use when disabling triggers.
-	This is only relevant if <TT
+	This is only relevant if <VAR
 CLASS="OPTION"
->--disable-triggers</TT
+>--disable-triggers</VAR
 > is used.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-t <TT
+>-t <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></TT
-><BR><TT
+>table</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--table=<TT
+>--table=<VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></TT
+>table</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Restore schema/data for <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> only.
+>        Restore definition and/or data of named table only.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-T <TT
+>-T <VAR
 CLASS="REPLACEABLE"
-><I
->trigger</I
-></TT
-></TT
-><BR><TT
+>trigger</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--trigger=<TT
+>--trigger=<VAR
 CLASS="REPLACEABLE"
-><I
->trigger</I
-></TT
-></TT
+>trigger</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	  Restore definition of <TT
-CLASS="REPLACEABLE"
-><I
->trigger</I
-></TT
-> only.
+>        Restore named trigger only.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-v</TT
-><BR><TT
+>-v</VAR
+><BR><VAR
 CLASS="OPTION"
->--verbose</TT
+>--verbose</VAR
 ></DT
 ><DD
 ><P
@@ -757,15 +711,15 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-x</TT
-><BR><TT
+>-x</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-privileges</TT
-><BR><TT
+>--no-privileges</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-acl</TT
+>--no-acl</VAR
 ></DT
 ><DD
 ><P
@@ -773,12 +727,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-X use-set-session-authorization</TT
-><BR><TT
+>-X use-set-session-authorization</VAR
+><BR><VAR
 CLASS="OPTION"
->--use-set-session-authorization</TT
+>--use-set-session-authorization</VAR
 ></DT
 ><DD
 ><P
@@ -786,9 +740,9 @@ CLASS="OPTION"
         current database user (e.g., to set correct object
         ownerships), a new connection to the database must be opened,
         which might require manual interaction (e.g., passwords).  If
-        you use the <TT
+        you use the <VAR
 CLASS="OPTION"
->-X use-set-session-authorization</TT
+>-X use-set-session-authorization</VAR
 > option,
         then <SPAN
 CLASS="APPLICATION"
@@ -801,19 +755,19 @@ HREF="sql-set-session-authorization.html"
 > command.  This has
         the same effect, but it requires that the user restoring the
         archive is a database superuser.  This option effectively
-        overrides the <TT
+        overrides the <VAR
 CLASS="OPTION"
->-R</TT
+>-R</VAR
 > option.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-X disable-triggers</TT
-><BR><TT
+>-X disable-triggers</VAR
+><BR><VAR
 CLASS="OPTION"
->--disable-triggers</TT
+>--disable-triggers</VAR
 ></DT
 ><DD
 ><P
@@ -828,23 +782,27 @@ CLASS="APPLICATION"
 	do not want to invoke during data reload.
        </P
 ><P
->        Presently, the commands emitted for <TT
+>        Presently, the commands emitted for
+	<VAR
 CLASS="OPTION"
->--disable-triggers</TT
->
-	must be done as superuser.  So, you should also specify
-	a superuser name with <TT
+>--disable-triggers</VAR
+> must be done as superuser.  So, you
+	should also specify a superuser name with <VAR
 CLASS="OPTION"
->-S</TT
->, or preferably specify
-	<TT
+>-S</VAR
+>, or
+	preferably specify <VAR
 CLASS="OPTION"
->--use-set-session-authorization</TT
-> and run
-	<SPAN
+>--use-set-session-authorization</VAR
+> and
+	run <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
-> as a PostgreSQL superuser.
+> as a
+	<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> superuser.
        </P
 ></DD
 ></DL
@@ -852,9 +810,9 @@ CLASS="APPLICATION"
 ><P>
    </P
 ><P
->    <TT
-CLASS="COMMAND"
->pg_restore</TT
+>    <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
 > also accepts
     the following command line arguments for connection parameters:
 
@@ -864,68 +822,63 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-h <TT
+>-h <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-><BR><TT
+>host</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--host=<TT
+>--host=<VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
+>host</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Specifies the host name of the machine on which the server is
-	running.  If host begins with a slash, it is used as the
-	directory for the Unix domain socket.
+	running.  If the value begins with a slash, it is used as the
+	directory for the Unix domain socket. The default is taken
+	from the <TT
+CLASS="ENVAR"
+>PGHOST</TT
+> environment variable, if set,
+	else a Unix domain socket connection is attempted.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-p <TT
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
-><BR><TT
+>port</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--port=<TT
+>--port=<VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
+>port</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specifies the Internet TCP/IP port or local Unix domain socket
-	file extension on which the server is listening for
-	connections.  The port number defaults to 5432, or the value
-	of the <TT
+>	Specifies the TCP port or local Unix domain socket file
+	extension on which the server is listening for connections.
+	Defaults to the <TT
 CLASS="ENVAR"
 >PGPORT</TT
-> environment variable (if set).
-       </P
+> environment variable, if
+	set, or a compiled-in default.
+        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-U <TT
+>-U <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -933,9 +886,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-W</TT
+>-W</VAR
 ></DT
 ><DD
 ><P
@@ -951,7 +904,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48807"
+NAME="AEN47029"
 ></A
 ><H2
 >Environment</H2
@@ -973,7 +926,7 @@ CLASS="ENVAR"
 ></DT
 ><DD
 ><P
->      Default connection parameters.
+>      Default connection parameters
      </P
 ></DD
 ></DL
@@ -986,62 +939,29 @@ NAME="APP-PGRESTORE-DIAGNOSTICS"
 ></A
 ><H2
 >Diagnostics</H2
-><DIV
-CLASS="MSGENTRY"
-><A
-NAME="AEN48822"
-></A
-><DIV
-CLASS="MSG"
-><A
-NAME="AEN48823"
-></A
-><PRE
-CLASS="SCREEN"
->Connection to database 'template1' failed.
-connectDBStart() -- connect() failed: No such file or directory
-        Is the postmaster running locally
-        and accepting connections on Unix socket '/tmp/.s.PGSQL.5432'?</PRE
-></DIV
-><BLOCKQUOTE
-CLASS="MSGEXPLAN"
->	<SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> could not attach to the
-        PostgreSQL server
-	process on the specified host and port.  If you see this message,
-	ensure that the server
-	is running on the proper host and that you have specified the proper
-	port.  If your site uses an authentication system, ensure that you
-	have obtained the required authentication credentials.
-       </BLOCKQUOTE
-></DIV
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Note: </B
->     When a direct database connection is specified using the -d
-     option, <SPAN
+>   When a direct database connection is specified using the
+   <VAR
+CLASS="OPTION"
+>-d</VAR
+> option, <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
-> internally executes
-     SQL statements. If you have problems running
-     <SPAN
+>
+   internally executes <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> statements. If you have
+   problems running <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
->, make sure you are able to select
-     information from the database using, for example,
-     <SPAN
+>, make sure
+   you are able to select information from the database using, for
+   example, <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 >.
-    </P
-></BLOCKQUOTE
-></DIV
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -1052,9 +972,9 @@ NAME="APP-PGRESTORE-NOTES"
 >Notes</H2
 ><P
 >   If your installation has any local additions to the
-   <TT
+   <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 > database, be careful to load the output of
    <SPAN
 CLASS="APPLICATION"
@@ -1062,10 +982,16 @@ CLASS="APPLICATION"
 > into a truly empty database;
    otherwise you are likely to get errors due to duplicate definitions
    of the added objects.  To make an empty database without any local
-   additions, copy from template0 not template1, for example:
+   additions, copy from <VAR
+CLASS="LITERAL"
+>template0</VAR
+> not <VAR
+CLASS="LITERAL"
+>template1</VAR
+>, for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE DATABASE foo WITH TEMPLATE = template0;</PRE
+>CREATE DATABASE foo WITH TEMPLATE template0;</PRE
 ><P>
   </P
 ><P
@@ -1079,11 +1005,16 @@ CLASS="APPLICATION"
 ></P><UL
 ><LI
 ><P
->      When restoring data to a pre-existing table, <SPAN
+>      When restoring data to a pre-existing table and the option
+      <VAR
+CLASS="OPTION"
+>--disable-triggers</VAR
+> is used,
+      <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
-> emits queries
-      to disable triggers on user tables before inserting the data then emits queries to
+> emits commands
+      to disable triggers on user tables before inserting the data then emits commands to
       re-enable them after the data has been inserted.  If the restore is stopped in the
       middle, the system catalogs may be left in the wrong state.
      </P
@@ -1110,6 +1041,13 @@ CLASS="APPLICATION"
 >pg_dump</SPAN
 >.
   </P
+><P
+>   Once restored, it is wise to run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> on each
+   restored table so the optimizer has useful statistics.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -1119,39 +1057,9 @@ NAME="APP-PGRESTORE-EXAMPLES"
 ><H2
 >Examples</H2
 ><P
->   To dump a database:
-</P><PRE
-CLASS="SCREEN"
-><TT
-CLASS="PROMPT"
->$</TT
-> <TT
-CLASS="USERINPUT"
-><B
->pg_dump mydb &gt; db.out</B
-></TT
-></PRE
-><P>
-  </P
-><P
->   To reload this database:
-</P><PRE
-CLASS="SCREEN"
-><TT
-CLASS="PROMPT"
->$</TT
-> <TT
-CLASS="USERINPUT"
-><B
->psql -d database -f db.out</B
-></TT
-></PRE
-><P>
-  </P
-><P
->   To dump a database called <TT
+>   To dump a database called <VAR
 CLASS="LITERAL"
->mydb</TT
+>mydb</VAR
 > that contains
    large objects to a <TT
 CLASS="FILENAME"
@@ -1160,34 +1068,30 @@ CLASS="FILENAME"
 
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->pg_dump -Ft -b mydb &gt; db.tar</B
-></TT
+>pg_dump -Ft -b mydb &gt; db.tar</KBD
 ></PRE
 ><P>
   </P
 ><P
 >   To reload this database (with large objects) to an
-   existing database called <TT
+   existing database called <VAR
 CLASS="LITERAL"
->newdb</TT
+>newdb</VAR
 >:
 
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->pg_restore -d newdb db.tar</B
-></TT
+>pg_restore -d newdb db.tar</KBD
 ></PRE
 ><P>
   </P
@@ -1196,14 +1100,12 @@ CLASS="USERINPUT"
    contents of the archive:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->pg_restore -l archive.file &gt; archive.list</B
-></TT
+>pg_restore -l archive.file &gt; archive.list</KBD
 ></PRE
 ><P>
    The listing file consists of a header and one line for each item, e.g.,
@@ -1233,7 +1135,7 @@ CLASS="PROGRAMLISTING"
 12; 145443 TABLE hs_old postgres
 13; 145443 ACL hs_old</PRE
 ><P>
-   Semi-colons are comment delimiters, and the numbers at the start of lines refer to the
+   Semicolons start a comment, and the numbers at the start of lines refer to the
    internal archive ID assigned to each item.
   </P
 ><P
@@ -1246,21 +1148,19 @@ CLASS="PROGRAMLISTING"
 6; 145402 TABLE species_records postgres
 ;8; 145416 TABLE ss_old postgres</PRE
 ><P>
-   could be used as input to <TT
-CLASS="COMMAND"
->pg_restore</TT
+   could be used as input to <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
 > and would only restore
-   items 10 and 6, in that order.
+   items 10 and 6, in that order:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->pg_restore -L archive.list archive.file</B
-></TT
+>pg_restore -L archive.list archive.file</KBD
 ></PRE
 ><P>
   </P
@@ -1268,7 +1168,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48885"
+NAME="AEN47096"
 ></A
 ><H2
 >History</H2
@@ -1283,7 +1183,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48889"
+NAME="AEN47100"
 ></A
 ><H2
 >See Also</H2
@@ -1302,9 +1202,6 @@ HREF="app-psql.html"
 CLASS="APPLICATION"
 >psql</SPAN
 ></A
->, <I
-CLASS="CITETITLE"
->PostgreSQL Administrator's Guide</I
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -1340,7 +1237,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="app-psql.html"
+HREF="app-pgtclsh.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -1367,10 +1264,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></TD
+>pgtclsh</TD
 ></TR
 ></TABLE
 ></DIV

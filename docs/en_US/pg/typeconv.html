@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Type Conversion</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 User's Guide"
-HREF="user.html"><LINK
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
 REL="PREVIOUS"
-TITLE="Subquery Expressions"
-HREF="functions-subquery.html"><LINK
+TITLE="Row and Array Comparisons"
+HREF="functions-comparisons.html"><LINK
 REL="NEXT"
 TITLE="Operators"
 HREF="typeconv-oper.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="functions-subquery.html"
+HREF="functions-comparisons.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="TYPECONV"
->Chapter 7. Type Conversion</A
-></H1
+></A
+>Chapter 10. Type Conversion</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,43 +90,43 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->7.1. <A
+>10.1. <A
 HREF="typeconv.html#TYPECONV-OVERVIEW"
 >Overview</A
 ></DT
 ><DT
->7.2. <A
+>10.2. <A
 HREF="typeconv-oper.html"
 >Operators</A
 ></DT
 ><DT
->7.3. <A
+>10.3. <A
 HREF="typeconv-func.html"
 >Functions</A
 ></DT
 ><DT
->7.4. <A
+>10.4. <A
 HREF="typeconv-query.html"
->Query Targets</A
+>Value Storage</A
 ></DT
 ><DT
->7.5. <A
+>10.5. <A
 HREF="typeconv-union-case.html"
-><TT
+><VAR
 CLASS="LITERAL"
->UNION</TT
-> and <TT
+>UNION</VAR
+> and <VAR
 CLASS="LITERAL"
->CASE</TT
+>CASE</VAR
 > Constructs</A
 ></DT
 ></DL
 ></DIV
 ><P
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> queries can, intentionally or not, require
+>SQL</ACRONYM
+> statements can, intentionally or not, require
 mixing of different data types in the same expression. 
 <SPAN
 CLASS="PRODUCTNAME"
@@ -148,7 +148,7 @@ CLASS="emphasis"
 CLASS="EMPHASIS"
 >explicit</I
 ></SPAN
-> type coercion.</P
+> type conversion.</P
 ><P
 >This chapter introduces the <SPAN
 CLASS="PRODUCTNAME"
@@ -157,42 +157,34 @@ CLASS="PRODUCTNAME"
 type conversion mechanisms and conventions.
 Refer to the relevant sections in <A
 HREF="datatype.html"
->Chapter 5</A
+>Chapter 8</A
 > and <A
 HREF="functions.html"
->Chapter 6</A
+>Chapter 9</A
 >
 for more information on specific data types and allowed functions and
 operators.</P
-><P
->The <A
-HREF="programmer.html"
-><I
->PostgreSQL 7.3.3 Programmer's Guide</I
-></A
-> has more details on the exact algorithms used for
-implicit type conversion and coercion.</P
 ><DIV
 CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
 NAME="TYPECONV-OVERVIEW"
->7.1. Overview</A
+>10.1. Overview</A
 ></H1
 ><P
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > is a strongly typed language. That is, every data item
 has an associated data type which determines its behavior and allowed usage.
 <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > has an extensible type system that is
-much more general and flexible than other <SPAN
+much more general and flexible than other <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > implementations.
 Hence, most type conversion behavior in <SPAN
 CLASS="PRODUCTNAME"
@@ -209,10 +201,10 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > scanner/parser decodes lexical
 elements into only five fundamental categories: integers, floating-point numbers, strings,
-names, and key words.  Most extended types are first tokenized into
-strings. The <SPAN
+names, and key words.  Constants of most non-numeric types are first classified as
+strings. The <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > language definition allows specifying type
 names with strings, and this mechanism can be used in
 <SPAN
@@ -223,8 +215,9 @@ path. For example, the query
 
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; SELECT text 'Origin' AS "Label", point '(0,0)' AS "Value";
- Label  | Value
+>SELECT text 'Origin' AS "label", point '(0,0)' AS "value";
+
+ label  | value
 --------+-------
  Origin | (0,0)
 (1 row)</PRE
@@ -238,24 +231,25 @@ CLASS="TYPE"
 >point</TT
 >.
 If a type is not specified for a string literal, then the placeholder type
-<I
-CLASS="FIRSTTERM"
->unknown</I
+<TT
+CLASS="TYPE"
+>unknown</TT
 > is assigned initially, to be resolved in later
 stages as described below.</P
 ><P
->There are four fundamental <SPAN
+>There are four fundamental <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > constructs requiring
 distinct type conversion rules in the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-parser:</P
-><P
+parser:
+
+<P
 ></P
-><DIV
+></P><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
@@ -277,9 +271,8 @@ as well as binary (two-argument) operators.</P
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > type system is built around a
-rich set of functions. Function calls have one or more arguments which, for
-any specific query, must be matched to the functions available in the system
-catalog.  Since <SPAN
+rich set of functions. Function calls can have one or more arguments.
+Since <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > permits function
@@ -288,12 +281,12 @@ to be called; the parser must select the right function based on the data
 types of the supplied arguments.</P
 ></DD
 ><DT
->Query targets</DT
+>Value Storage</DT
 ><DD
 ><P
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > <TT
 CLASS="COMMAND"
 >INSERT</TT
@@ -301,60 +294,40 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >UPDATE</TT
 > statements place the results of
-expressions into a table. The expressions in the query must be matched up
+expressions into a table. The expressions in the statement must be matched up
 with, and perhaps converted to, the types of the target columns.</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->UNION</TT
-> and <TT
+>UNION</VAR
+> and <VAR
 CLASS="LITERAL"
->CASE</TT
+>CASE</VAR
 > constructs</DT
 ><DD
 ><P
->Since all select results from a unionized <TT
+>Since all query results from a unionized <VAR
 CLASS="LITERAL"
->SELECT</TT
+>SELECT</VAR
 > statement must appear in a single
 set of columns, the types of the results
-of each <TT
+of each <VAR
 CLASS="LITERAL"
->SELECT</TT
+>SELECT</VAR
 > clause must be matched up and converted to a uniform set.
-Similarly, the result expressions of a <TT
+Similarly, the branch expressions of a <VAR
 CLASS="LITERAL"
->CASE</TT
-> construct must be coerced to
-a common type so that the <TT
+>CASE</VAR
+> construct must be converted to
+a common type so that the <VAR
 CLASS="LITERAL"
->CASE</TT
+>CASE</VAR
 > expression as a whole has a known output type.</P
 ></DD
 ></DL
 ></DIV
-><P
->Many of the general type conversion rules use simple conventions built on
-the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> function and operator system tables.
-There are some heuristics included in the conversion rules to better support
-conventions for the <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
-> standard native types such as
-<TT
-CLASS="TYPE"
->smallint</TT
->, <TT
-CLASS="TYPE"
->integer</TT
->, and <TT
-CLASS="TYPE"
->real</TT
->.</P
+><P></P
 ><P
 >The system catalogs store information about which conversions, called
 <I
@@ -367,13 +340,13 @@ CLASS="COMMAND"
 >CREATE CAST</TT
 > command.  (This is usually
 done in conjunction with defining new data types.  The set of casts
-between the built-in types has been carefully crafted and should not
-be altered.)</P
+between the built-in types has been carefully crafted and is best not
+altered.)</P
 ><P
 >An additional heuristic is provided in the parser to allow better guesses
-at proper behavior for <SPAN
+at proper behavior for <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > standard types. There are
 several basic <I
 CLASS="FIRSTTERM"
@@ -405,14 +378,14 @@ CLASS="TYPE"
 >network</TT
 >,
 and user-defined. Each category, with the exception of user-defined, has
-a <I
+one or more <I
 CLASS="FIRSTTERM"
->preferred type</I
-> which is preferentially selected
-when there is ambiguity.
+>preferred types</I
+> which are preferentially
+selected when there is ambiguity.
 In the user-defined category, each type is its own preferred type.
 Ambiguous expressions (those with multiple candidate parsing solutions)
-can often be resolved when there are multiple possible built-in types, but
+can therefore often be resolved when there are multiple possible built-in types, but
 they will raise an error when there are multiple choices for user-defined
 types.</P
 ><P
@@ -444,8 +417,8 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
 does not have information available to it on relationships between types, other than
-hardcoded heuristics for built-in types and implicit relationships based on available functions
-in the catalog.</P
+hardcoded heuristics for built-in types and implicit relationships based on
+available functions and casts.</P
 ></LI
 ><LI
 ><P
@@ -453,10 +426,10 @@ in the catalog.</P
 if a query does not need implicit type conversion.
 That is, if a query is well formulated and the types already match up, then the query should proceed
 without spending extra time in the parser and without introducing unnecessary implicit conversion
-functions into the query.</P
+calls into the query.</P
 ><P
 >Additionally, if a query usually requires an implicit conversion for a function, and
-if then the user defines an explicit function with the correct argument types, the parser
+if then the user defines a new function with the correct argument types, the parser
 should use this new function and will no longer do the implicit conversion using the old function.</P
 ></LI
 ></UL
@@ -479,7 +452,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="functions-subquery.html"
+HREF="functions-comparisons.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -507,13 +480,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Subquery Expressions</TD
+>Row and Array Comparisons</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="user.html"
+HREF="sql.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Genetic Query Optimization (GEQO) in PostgreSQL</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Genetic Query Optimization"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 8. Genetic Query Optimization</TD
+>Chapter 48. Genetic Query Optimization</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,19 +81,19 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="GEQO-PG-INTRO"
->8.3. Genetic Query Optimization (<SPAN
+>48.3. Genetic Query Optimization (<ACRONYM
 CLASS="ACRONYM"
->GEQO</SPAN
+>GEQO</ACRONYM
 >) in PostgreSQL</A
 ></H1
 ><P
->    The <SPAN
+>    The <ACRONYM
 CLASS="ACRONYM"
->GEQO</SPAN
+>GEQO</ACRONYM
 > module is intended for the solution of the query
-    optimization problem similar to a traveling salesman problem (<SPAN
+    optimization problem similar to a traveling salesman problem (<ACRONYM
 CLASS="ACRONYM"
->TSP</SPAN
+>TSP</ACRONYM
 >).
     Possible query plans are encoded as integer strings. Each string
     represents the join order from one relation of the query to the next.
@@ -114,16 +114,16 @@ CLASS="PRODUCTNAME"
 > optimizer.
    </P
 ><P
->    Parts of the <SPAN
+>    Parts of the <ACRONYM
 CLASS="ACRONYM"
->GEQO</SPAN
+>GEQO</ACRONYM
 > module are adapted from D. Whitley's Genitor
     algorithm.
    </P
 ><P
->    Specific characteristics of the <SPAN
+>    Specific characteristics of the <ACRONYM
 CLASS="ACRONYM"
->GEQO</SPAN
+>GEQO</ACRONYM
 >
     implementation in <SPAN
 CLASS="PRODUCTNAME"
@@ -141,9 +141,9 @@ STYLE="list-style-type: disc"
 >       Usage of a <I
 CLASS="FIRSTTERM"
 >steady state</I
-> <SPAN
+> <ACRONYM
 CLASS="ACRONYM"
->GA</SPAN
+>GA</ACRONYM
 > (replacement of the least fit
        individuals in a population, not whole-generational replacement)
        allows fast convergence towards improved query plans. This is
@@ -159,12 +159,12 @@ CLASS="FIRSTTERM"
 > which is
        especially suited
        to keep edge losses low for the solution of the
-       <SPAN
+       <ACRONYM
 CLASS="ACRONYM"
->TSP</SPAN
-> by means of a <SPAN
+>TSP</ACRONYM
+> by means of a <ACRONYM
 CLASS="ACRONYM"
->GA</SPAN
+>GA</ACRONYM
 >;
       </P
 ></LI
@@ -172,9 +172,9 @@ CLASS="ACRONYM"
 STYLE="list-style-type: disc"
 ><P
 >       Mutation as genetic operator is deprecated so that no repair
-       mechanisms are needed to generate legal <SPAN
+       mechanisms are needed to generate legal <ACRONYM
 CLASS="ACRONYM"
->TSP</SPAN
+>TSP</ACRONYM
 > tours.
       </P
 ></LI
@@ -182,9 +182,9 @@ CLASS="ACRONYM"
 ><P>
    </P
 ><P
->    The <SPAN
+>    The <ACRONYM
 CLASS="ACRONYM"
->GEQO</SPAN
+>GEQO</ACRONYM
 > module allows
     the <SPAN
 CLASS="PRODUCTNAME"
@@ -199,13 +199,13 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="GEQO-FUTURE"
->8.3.1. Future Implementation Tasks for
+>48.3.1. Future Implementation Tasks for
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> <SPAN
+> <ACRONYM
 CLASS="ACRONYM"
->GEQO</SPAN
+>GEQO</ACRONYM
 ></A
 ></H2
 ><P
@@ -215,12 +215,12 @@ CLASS="ACRONYM"
 CLASS="FILENAME"
 >backend/optimizer/geqo/geqo_params.c</TT
 >, routines
-      <TT
+      <CODE
 CLASS="FUNCTION"
->gimme_pool_size</TT
-> and <TT
+>gimme_pool_size</CODE
+> and <CODE
 CLASS="FUNCTION"
->gimme_number_generations</TT
+>gimme_number_generations</CODE
 >,
       we have to find a compromise for the parameter settings
       to satisfy two competing demands:

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Sorting Rows</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Queries"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. Queries</TD
+>Chapter 7. Queries</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="QUERIES-ORDER"
->4.5. Sorting Rows</A
+>7.5. Sorting Rows</A
 ></H1
 ><A
-NAME="AEN2781"
+NAME="AEN2730"
 ></A
 ><P
 >   After a query has produced an output table (after the select list
@@ -96,55 +96,45 @@ NAME="AEN2781"
    chosen.
   </P
 ><P
->   The <TT
+>   The <VAR
 CLASS="LITERAL"
->ORDER BY</TT
+>ORDER BY</VAR
 > clause specifies the sort order:
 </P><PRE
 CLASS="SYNOPSIS"
->SELECT <TT
+>SELECT <VAR
 CLASS="REPLACEABLE"
-><I
->select_list</I
-></TT
+>select_list</VAR
 >
-    FROM <TT
+    FROM <VAR
 CLASS="REPLACEABLE"
-><I
->table_expression</I
-></TT
+>table_expression</VAR
 >
-    ORDER BY <TT
+    ORDER BY <VAR
 CLASS="REPLACEABLE"
-><I
->column1</I
-></TT
+>column1</VAR
 > [<SPAN
 CLASS="OPTIONAL"
 >ASC | DESC</SPAN
 >] [<SPAN
 CLASS="OPTIONAL"
->, <TT
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->column2</I
-></TT
+>column2</VAR
 > [<SPAN
 CLASS="OPTIONAL"
 >ASC | DESC</SPAN
 >] ...</SPAN
 >]</PRE
 ><P>
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->column1</I
-></TT
+>column1</VAR
 >, etc., refer to select list
    columns.  These can be either the output name of a column (see
    <A
 HREF="queries-select-lists.html#QUERIES-COLUMN-LABELS"
->Section 4.3.2</A
+>Section 7.3.2</A
 >) or the number of a column.  Some
    examples:
 </P><PRE
@@ -164,9 +154,9 @@ CLASS="PRODUCTNAME"
 CLASS="PROGRAMLISTING"
 >SELECT a, b FROM table1 ORDER BY a + b;</PRE
 ><P>
-   References to column names in the <TT
+   References to column names in the <VAR
 CLASS="LITERAL"
->FROM</TT
+>FROM</VAR
 > clause that are
    renamed in the select list are also allowed:
 </P><PRE
@@ -174,43 +164,43 @@ CLASS="PROGRAMLISTING"
 >SELECT a AS b FROM table1 ORDER BY a;</PRE
 ><P>
    But these extensions do not work in queries involving
-   <TT
+   <VAR
 CLASS="LITERAL"
->UNION</TT
->, <TT
+>UNION</VAR
+>, <VAR
 CLASS="LITERAL"
->INTERSECT</TT
->, or <TT
+>INTERSECT</VAR
+>, or <VAR
 CLASS="LITERAL"
->EXCEPT</TT
+>EXCEPT</VAR
 >,
    and are not portable to other SQL databases.
   </P
 ><P
 >   Each column specification may be followed by an optional
-   <TT
+   <VAR
 CLASS="LITERAL"
->ASC</TT
-> or <TT
+>ASC</VAR
+> or <VAR
 CLASS="LITERAL"
->DESC</TT
+>DESC</VAR
 > to set the sort direction to
-   ascending or descending.  <TT
+   ascending or descending.  <VAR
 CLASS="LITERAL"
->ASC</TT
+>ASC</VAR
 > order is the default.
    Ascending order puts smaller values first, where
    <SPAN
 CLASS="QUOTE"
 >"smaller"</SPAN
 > is defined in terms of the
-   <TT
+   <VAR
 CLASS="LITERAL"
->&lt;</TT
+>&lt;</VAR
 > operator.  Similarly, descending order is
-   determined with the <TT
+   determined with the <VAR
 CLASS="LITERAL"
->&gt;</TT
+>&gt;</VAR
 > operator.
   </P
 ><P

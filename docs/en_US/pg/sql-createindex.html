@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE INDEX</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,405 +78,104 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATEINDEX"
->CREATE INDEX</A
-></H1
+></A
+>CREATE INDEX</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN39660"
+NAME="AEN38513"
 ></A
 ><H2
 >Name</H2
->   CREATE INDEX
-  &nbsp;--&nbsp;   define a new index
-  </DIV
+>CREATE INDEX&nbsp;--&nbsp;define a new index</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN39663"
+NAME="AEN38516"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE [ UNIQUE ] INDEX <TT
+>CREATE [ UNIQUE ] INDEX <VAR
 CLASS="REPLACEABLE"
-><I
->index_name</I
-></TT
-> ON <TT
+>index_name</VAR
+> ON <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
->
-    [ USING <TT
+>table</VAR
+> [ USING <VAR
 CLASS="REPLACEABLE"
-><I
->acc_method</I
-></TT
-> ] ( <TT
+>method</VAR
+> ]
+    ( { <VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [ <TT
+>column</VAR
+> | ( <VAR
 CLASS="REPLACEABLE"
-><I
->ops_name</I
-></TT
+>expression</VAR
+> ) } [ <VAR
+CLASS="REPLACEABLE"
+>opclass</VAR
 > ] [, ...] )
-    [ WHERE <TT
+    [ WHERE <VAR
 CLASS="REPLACEABLE"
-><I
->predicate</I
-></TT
-> ]
-CREATE [ UNIQUE ] INDEX <TT
-CLASS="REPLACEABLE"
-><I
->index_name</I
-></TT
-> ON <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
->
-    [ USING <TT
-CLASS="REPLACEABLE"
-><I
->acc_method</I
-></TT
-> ] ( <TT
-CLASS="REPLACEABLE"
-><I
->func_name</I
-></TT
->( <TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [, ... ]) [ <TT
-CLASS="REPLACEABLE"
-><I
->ops_name</I
-></TT
-> ] )
-    [ WHERE <TT
-CLASS="REPLACEABLE"
-><I
->predicate</I
-></TT
-> ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEINDEX-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->UNIQUE</DT
-><DD
-><P
->	Causes the system to check for
-	duplicate values in the table when the index is created (if data
-	already exist) and each time data is added. Attempts to
-	insert or update data which would result in duplicate entries
-	will generate an error.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->index_name</I
-></TT
-></DT
-><DD
-><P
->	The name of the index to be created.  No schema name can be included
-	here; the index is always created in the same schema as its parent
-	table.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></DT
-><DD
-><P
->	The name (possibly schema-qualified) of the table to be indexed.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->acc_method</I
-></TT
-></DT
-><DD
-><P
->	The name of the access method to be used for the index. The
-	default access method is <TT
-CLASS="LITERAL"
->BTREE</TT
->.
-	<SPAN
-CLASS="APPLICATION"
->PostgreSQL</SPAN
-> provides four access
-	methods for indexes:
-
-	<P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->BTREE</TT
-></DT
-><DD
-><P
->	    an implementation of Lehman-Yao
-	    high-concurrency B-trees.
-	   </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->RTREE</TT
-></DT
-><DD
-><P
->implements standard R-trees using Guttman's
-	    quadratic split algorithm.
-	   </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->HASH</TT
-></DT
-><DD
-><P
->	    an implementation of Litwin's linear hashing.
-	   </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->GIST</TT
-></DT
-><DD
-><P
->	    Generalized Index Search Trees.
-	   </P
-></DD
-></DL
-></DIV
-><P>
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-></DT
-><DD
-><P
->	The name of a column of the table.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->ops_name</I
-></TT
-></DT
-><DD
-><P
->	An associated operator class. See below for details.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->func_name</I
-></TT
-></DT
-><DD
-><P
->	A function, which returns a value that can be indexed.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->predicate</I
-></TT
-></DT
-><DD
-><P
->	Defines the constraint expression for a partial index.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEINDEX-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->CREATE INDEX
-       </TT
-></DT
-><DD
-><P
->	The message returned if the index is successfully created.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR: Cannot create index: 'index_name' already exists.
-       </TT
-></DT
-><DD
-><P
->	This error occurs if it is impossible to create the index.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>predicate</VAR
+> ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEINDEX-1"
+NAME="AEN38525"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >CREATE INDEX</TT
-> constructs an index 
-   <TT
+> constructs an index <VAR
 CLASS="REPLACEABLE"
-><I
->index_name</I
-></TT
->
-   on the specified <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
->.
-
-   <DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->     Indexes are primarily used to enhance database performance.
-     But inappropriate use will result in slower performance.
-    </P
-></BLOCKQUOTE
-></DIV
->
+>index_name</VAR
+> on the specified table.
+   Indexes are primarily used to enhance database performance (though
+   inappropriate use will result in slower performance).
   </P
 ><P
->   In the first syntax shown above, the key field(s) for the
-   index are specified as column names.
-   Multiple fields can be specified if the index access method supports
+>   The key field(s) for the index are specified as column names,
+   or alternatively as expressions written in parentheses.
+   Multiple fields can be specified if the index method supports
    multicolumn indexes.
   </P
 ><P
->   In the second syntax shown above, an index is defined on the result
-   of a user-specified function <TT
-CLASS="REPLACEABLE"
-><I
->func_name</I
-></TT
-> applied to one or more
-   columns of a single table. These <I
-CLASS="FIRSTTERM"
->functional
-   indexes</I
-> can be used to obtain fast access to data based
-   on operators that would normally require some transformation to apply
-   them to the base data. For example, a functional index on
-   <TT
+>   An index field can be an expression computed from the values of
+   one or more columns of the table row.  This feature can be used
+   to obtain fast access to data based on some transformation of
+   the basic data. For example, an index computed on
+   <VAR
 CLASS="LITERAL"
->upper(col)</TT
+>upper(col)</VAR
 > would allow the clause
-   <TT
+   <VAR
 CLASS="LITERAL"
->WHERE upper(col) = 'JIM'</TT
+>WHERE upper(col) = 'JIM'</VAR
 > to use an index.
   </P
 ><P
 >   <SPAN
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
-> provides B-tree, R-tree, hash,
-   and GiST access methods for indexes. The B-tree access method is an
+> provides the index methods
+   B-tree, R-tree, hash, and GiST. The B-tree index method is an
    implementation of Lehman-Yao high-concurrency B-trees. The R-tree
-   access method implements standard R-trees using Guttman's quadratic
-   split algorithm. The hash access method is an implementation of
-   Litwin's linear hashing. We mention the algorithms used solely to
-   indicate that all of these access methods are fully dynamic and do
-   not have to be optimized periodically (as is the case with, for
-   example, static hash access methods).
+   index method implements standard R-trees using Guttman's quadratic
+   split algorithm. The hash index method is an implementation of
+   Litwin's linear hashing.  Users can also define their own index
+   methods, but that is fairly complicated.
   </P
 ><P
->    When the <TT
-CLASS="COMMAND"
->WHERE</TT
+>    When the <VAR
+CLASS="LITERAL"
+>WHERE</VAR
 > clause is present, a
     <I
 CLASS="FIRSTTERM"
@@ -488,39 +187,243 @@ CLASS="FIRSTTERM"
     billed and unbilled orders where the unbilled orders take up a small
     fraction of the total table and yet that is an often used section, you
     can improve performance by creating an index on just that portion.
-    Another possible application is to use <TT
-CLASS="COMMAND"
->WHERE</TT
+    Another possible application is to use <VAR
+CLASS="LITERAL"
+>WHERE</VAR
 > with
-    <TT
-CLASS="COMMAND"
->UNIQUE</TT
+    <VAR
+CLASS="LITERAL"
+>UNIQUE</VAR
 > to enforce uniqueness over a subset of a
     table.
   </P
 ><P
->    The expression used in the <TT
-CLASS="COMMAND"
->WHERE</TT
+>    The expression used in the <VAR
+CLASS="LITERAL"
+>WHERE</VAR
 > clause may refer
     only to columns of the underlying table (but it can use all columns,
     not only the one(s) being indexed).  Presently, subqueries and
-    aggregate expressions are also forbidden in <TT
-CLASS="COMMAND"
->WHERE</TT
+    aggregate expressions are also forbidden in <VAR
+CLASS="LITERAL"
+>WHERE</VAR
 >.
+    The same restrictions apply to index fields that are expressions.
   </P
 ><P
 >   All functions and operators used in an index definition must be
-   <I
-CLASS="FIRSTTERM"
->immutable</I
+   <SPAN
+CLASS="QUOTE"
+>"immutable"</SPAN
 >, that is, their results must depend only on
-   their input arguments and never on any outside influence (such as
+   their arguments and never on any outside influence (such as
    the contents of another table or the current time).  This restriction
    ensures that the behavior of the index is well-defined.  To use a
-   user-defined function in an index, remember to mark the function immutable
-   when you create it.
+   user-defined function in an index expression or <VAR
+CLASS="LITERAL"
+>WHERE</VAR
+>
+   clause, remember to mark the function immutable when you create it.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38547"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>UNIQUE</VAR
+></DT
+><DD
+><P
+>	Causes the system to check for
+	duplicate values in the table when the index is created (if data
+	already exist) and each time data is added. Attempts to
+	insert or update data which would result in duplicate entries
+	will generate an error.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>index_name</VAR
+></DT
+><DD
+><P
+>	The name of the index to be created.  No schema name can be included
+	here; the index is always created in the same schema as its parent
+	table.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></DT
+><DD
+><P
+>	The name (possibly schema-qualified) of the table to be indexed.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>method</VAR
+></DT
+><DD
+><P
+>        The name of the method to be used for the index.  Choices are
+        <VAR
+CLASS="LITERAL"
+>btree</VAR
+>, <VAR
+CLASS="LITERAL"
+>hash</VAR
+>,
+        <VAR
+CLASS="LITERAL"
+>rtree</VAR
+>, and <VAR
+CLASS="LITERAL"
+>gist</VAR
+>.  The
+        default method is <VAR
+CLASS="LITERAL"
+>btree</VAR
+>.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>column</VAR
+></DT
+><DD
+><P
+>	The name of a column of the table.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+></DT
+><DD
+><P
+>	An expression based on one or more columns of the table.  The
+	expression usually must be written with surrounding parentheses,
+	as shown in the syntax.  However, the parentheses may be omitted
+	if the expression has the form of a function call.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>opclass</VAR
+></DT
+><DD
+><P
+>	The name of an operator class. See below for details.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>predicate</VAR
+></DT
+><DD
+><P
+>	The constraint expression for a partial index.
+       </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38595"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE INDEX</SAMP
+></DT
+><DD
+><P
+>      Message returned if the index was successfully created.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN38603"
+></A
+><H2
+>Notes</H2
+><P
+>   See <A
+HREF="indexes.html"
+>Chapter 11</A
+> for information about when indexes can
+   be used, when they are not used, and in which particular situations
+   can be useful.
+  </P
+><P
+>   Currently, only the B-tree and GiST index methods support
+   multicolumn indexes. Up to 32 fields may be specified by default.
+   (This limit can be altered when building
+   <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+>.)  Only B-tree currently
+   supports unique indexes.
+  </P
+><P
+>   An <I
+CLASS="FIRSTTERM"
+>operator class</I
+> can be specified for each
+   column of an index. The operator class identifies the operators to be
+   used by the index for that column. For example, a B-tree index on
+   four-byte integers would use the <VAR
+CLASS="LITERAL"
+>int4_ops</VAR
+> class;
+   this operator class includes comparison functions for four-byte
+   integers. In practice the default operator class for the column's data
+   type is usually sufficient. The main point of having operator classes
+   is that for some data types, there could be more than one meaningful
+   ordering. For example, we might want to sort a complex-number data
+   type either by absolute value or by real part. We could do this by
+   defining two operator classes for the data type and then selecting
+   the proper class when making an index.  More information about
+   operator classes is in <A
+HREF="indexes-opclass.html"
+>Section 11.6</A
+> and in <A
+HREF="xindex.html"
+>Section 34.14</A
+>.
   </P
 ><P
 >   Use <A
@@ -531,183 +434,47 @@ HREF="sql-dropindex.html"
 >
    to remove an index.
   </P
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEINDEX-3"
-></A
-><H3
->    Notes
-   </H3
-><P
->    The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    query optimizer will consider using a B-tree index whenever
-    an indexed attribute is involved in a comparison using one of:
-
-    &lt;, &lt;=, =, &gt;=, &gt;
-   </P
-><P
->    The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    query optimizer will consider using an R-tree index whenever
-    an indexed attribute is involved in a comparison using one of:
-
-    &lt;&lt;, &amp;&lt;, &amp;&gt;, &gt;&gt;, @, ~=, &amp;&amp;
-   </P
-><P
->    The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    query optimizer will consider using a hash index whenever
-    an indexed attribute is involved in a comparison using
-    the <TT
-CLASS="LITERAL"
->=</TT
-> operator.
-   </P
-><P
->     Testing has shown PostgreSQL's hash indexes to be similar or slower
-     than B-tree indexes, and the index size and build time for hash
-     indexes is much worse. Hash indexes also suffer poor performance
-     under high concurrency. For these reasons, hash index use is
-     discouraged.
-   </P
-><P
->    Currently, only the B-tree and gist access methods support multicolumn
-    indexes. Up to 32 keys may be specified by default (this limit
-    can be altered when building
-    <SPAN
-CLASS="APPLICATION"
->PostgreSQL</SPAN
->).  Only B-tree currently supports
-    unique indexes.
-   </P
-><P
->   An <I
-CLASS="FIRSTTERM"
->operator class</I
-> can be specified for each
-   column of an index. The operator class identifies the operators to be
-   used by the index for that column. For example, a B-tree index on
-   four-byte integers would use the <TT
-CLASS="LITERAL"
->int4_ops</TT
-> class;
-   this operator class includes comparison functions for four-byte
-   integers. In practice the default operator class for the field's data
-   type is usually sufficient. The main point of having operator classes
-   is that for some data types, there could be more than one meaningful
-   ordering. For example, we might want to sort a complex-number data
-   type either by absolute value or by real part. We could do this by
-   defining two operator classes for the data type and then selecting
-   the proper class when making an index. There are also some operator
-   classes with special purposes:
-
-   <P
-></P
-></P><UL
-><LI
-><P
->      The operator classes <TT
-CLASS="LITERAL"
->box_ops</TT
-> and
-      <TT
-CLASS="LITERAL"
->bigbox_ops</TT
-> both support R-tree indexes on the
-      <TT
-CLASS="LITERAL"
->box</TT
-> data type.
-      The difference between them is that <TT
-CLASS="LITERAL"
->bigbox_ops</TT
->
-      scales box coordinates down, to avoid floating-point exceptions from
-      doing multiplication, addition, and subtraction on very large
-      floating-point coordinates.  (Note: this was true some time ago,
-      but currently the two operator classes both use floating point
-      and are effectively identical.)
-     </P
-></LI
-></UL
-><P>
-  </P
-><P
->    The following query shows all defined operator classes:
-
-    </P><PRE
-CLASS="PROGRAMLISTING"
->SELECT am.amname AS acc_method,
-       opc.opcname AS ops_name
-    FROM pg_am am, pg_opclass opc
-    WHERE opc.opcamid = am.oid
-    ORDER BY acc_method, ops_name;
-    </PRE
-><P>
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEINDEX-2"
+NAME="AEN38616"
 ></A
 ><H2
->   Usage
-  </H2
+>Examples</H2
 ><P
->To create a B-tree index on the field <TT
+>   To create a B-tree index on the column <VAR
 CLASS="LITERAL"
->title</TT
->
-   in the table <TT
+>title</VAR
+> in
+   the table <VAR
 CLASS="LITERAL"
->films</TT
+>films</VAR
 >:
-  </P
-><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->CREATE UNIQUE INDEX title_idx
-    ON films (title);
-  </PRE
+>CREATE UNIQUE INDEX title_idx ON films (title);</PRE
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-CREATEINDEX-3"
+NAME="AEN38622"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-CREATEINDEX-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    CREATE INDEX is a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> language extension.
-   </P
-><P
->    There is no <TT
+>   <TT
 CLASS="COMMAND"
 >CREATE INDEX</TT
-> command in SQL92.
-   </P
-></DIV
+> is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> language extension.  There
+   are no provisions for indexes in the SQL standard.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

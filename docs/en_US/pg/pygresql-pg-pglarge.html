@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Large Object: pglarge</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PyGreSQL - Python Interface"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. <SPAN
+>Chapter 32. <SPAN
 CLASS="APPLICATION"
 >PyGreSQL</SPAN
 > - <SPAN
@@ -87,9 +87,9 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PYGRESQL-PG-PGLARGE"
->6.6. Large Object: <TT
+>32.6. Large Object: <CODE
 CLASS="CLASSNAME"
->pglarge</TT
+>pglarge</CODE
 ></A
 ></H1
 ><DIV
@@ -157,27 +157,27 @@ CLASS="QUOTE"
 >"recurrent"</SPAN
 > variables (object OID and
    connection), exactly in the same way
-   <TT
+   <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
 >s do, thus only keeping significant
-   parameters in function calls. It keeps a reference to the <TT
+   parameters in function calls. It keeps a reference to the <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
 >
    used for its creation, sending requests though with its
    parameters. Any modification but dereferencing the
-   <TT
+   <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
 > will thus affect the
-   <TT
+   <CODE
 CLASS="CLASSNAME"
->pglarge</TT
+>pglarge</CODE
 > object.  Dereferencing the initial
-   <TT
+   <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
 > is not a problem since
    <SPAN
 CLASS="APPLICATION"
@@ -192,9 +192,9 @@ CLASS="STRUCTFIELD"
    get the exact error message.
   </P
 ><P
->   <TT
+>   <CODE
 CLASS="CLASSNAME"
->pglarge</TT
+>pglarge</CODE
 > objects define a read-only set of
    attributes that allow to get some information about it. These
    attributes are:
@@ -221,9 +221,9 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><P
->       the <TT
+>       the <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
 > associated with the object
       </P
 ></DD
@@ -253,24 +253,24 @@ CLASS="STRUCTFIELD"
 >error</TT
 >
      may be modified by another thread using the same
-     <TT
+     <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
 >. Remember that these object are
      shared, not duplicated; you should provide some locking if you
      want to check for the error message in this situation.  The OID
      attribute is very interesting because it allow you to reuse the
-     OID later, creating the <TT
+     OID later, creating the <CODE
 CLASS="CLASSNAME"
->pglarge</TT
+>pglarge</CODE
 > object
-     with a <TT
+     with a <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
 >
-     <TT
+     <CODE
 CLASS="FUNCTION"
->getlo()</TT
+>getlo()</CODE
 > method call.
     </P
 ></BLOCKQUOTE
@@ -280,7 +280,7 @@ CLASS="FUNCTION"
 ><P
 >   See also <A
 HREF="largeobjects.html"
->Chapter 2</A
+>Chapter 28</A
 > for more information about the
    <SPAN
 CLASS="PRODUCTNAME"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE LANGUAGE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATELANGUAGE"
->CREATE LANGUAGE</A
-></H1
+></A
+>CREATE LANGUAGE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN39854"
+NAME="AEN38631"
 ></A
 ><H2
 >Name</H2
@@ -91,28 +91,22 @@ NAME="AEN39854"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN39857"
+NAME="AEN38634"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE [ TRUSTED ] [ PROCEDURAL ] LANGUAGE <TT
+>CREATE [ TRUSTED ] [ PROCEDURAL ] LANGUAGE <VAR
 CLASS="REPLACEABLE"
-><I
->langname</I
-></TT
+>langname</VAR
 >
-    HANDLER <TT
+    HANDLER <VAR
 CLASS="REPLACEABLE"
-><I
->call_handler</I
-></TT
-> [ VALIDATOR <TT
+>call_handler</VAR
+> [ VALIDATOR <VAR
 CLASS="REPLACEABLE"
-><I
->valfunction</I
-></TT
+>valfunction</VAR
 > ]</PRE
 ></DIV
 ><DIV
@@ -149,19 +143,18 @@ CLASS="COMMAND"
 >CREATE LANGUAGE</TT
 > effectively associates the
    language name with a call handler that is responsible for executing
-   functions written in the language.  Refer to the
-   <I
-CLASS="CITETITLE"
->Programmer's Guide</I
-> for more information
-   about language call handlers.
+   functions written in the language.  Refer to <A
+HREF="xfunc.html"
+>Section 34.3</A
+>
+   for more information about language call handlers.
   </P
 ><P
 >   Note that procedural languages are local to individual databases.
    To make a language available in all databases by default, it should
-   be installed into the <TT
+   be installed into the <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 > database.
   </P
 ></DIV
@@ -178,19 +171,19 @@ NAME="SQL-CREATELANGUAGE-PARAMETERS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->TRUSTED</TT
+>TRUSTED</VAR
 ></DT
 ><DD
 ><P
->       <TT
+>       <VAR
 CLASS="LITERAL"
->TRUSTED</TT
+>TRUSTED</VAR
 > specifies that the call handler for
        the language is safe, that is, it does not offer an
        unprivileged user any functionality to bypass access
-       restrictions. If this keyword is omitted when registering the
+       restrictions. If this key word is omitted when registering the
        language, only users with the
        <SPAN
 CLASS="PRODUCTNAME"
@@ -200,9 +193,9 @@ CLASS="PRODUCTNAME"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->PROCEDURAL</TT
+>PROCEDURAL</VAR
 ></DT
 ><DD
 ><P
@@ -210,20 +203,15 @@ CLASS="LITERAL"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->langname</I
-></TT
+>langname</VAR
 ></DT
 ><DD
 ><P
 >       The name of the new procedural language.  The language name is
-       case insensitive. A procedural language cannot override one of
-       the built-in languages of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
+       case insensitive. The name must be unique among the languages
+       in the database.
       </P
 ><P
 >       For backward compatibility, the name may be enclosed by single
@@ -231,22 +219,18 @@ CLASS="PRODUCTNAME"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->HANDLER</TT
-> <TT
+>HANDLER</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->call_handler</I
-></TT
+>call_handler</VAR
 ></DT
 ><DD
 ><P
->       <TT
+>       <VAR
 CLASS="REPLACEABLE"
-><I
->call_handler</I
-></TT
+>call_handler</VAR
 > is
        the name of a previously registered function that will be
        called to execute the procedural language functions.  The call
@@ -265,22 +249,18 @@ CLASS="TYPE"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->VALIDATOR</TT
-> <TT
+>VALIDATOR</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->valfunction</I
-></TT
+>valfunction</VAR
 ></DT
 ><DD
 ><P
->       <TT
+>       <VAR
 CLASS="REPLACEABLE"
-><I
->valfunction</I
-></TT
+>valfunction</VAR
 > is the
        name of a previously registered function that will be called
        when a new function in the language is created, to validate the
@@ -303,9 +283,9 @@ CLASS="TYPE"
        for syntactical correctness, but it can also look at other
        properties of the function, for example if the language cannot
        handle certain argument types.  To signal an error, the
-       validator function should use the <TT
+       validator function should use the <CODE
 CLASS="FUNCTION"
->elog()</TT
+>elog()</CODE
 >
        function.  The return value of the function is ignored.
       </P
@@ -320,54 +300,22 @@ NAME="SQL-CREATELANGUAGE-DIAGNOSTICS"
 ></A
 ><H2
 >Diagnostics</H2
+><P
+></P
 ><DIV
-CLASS="MSGENTRY"
-><A
-NAME="AEN39919"
-></A
-><DIV
-CLASS="MSG"
-><A
-NAME="AEN39920"
-></A
-><PRE
-CLASS="SCREEN"
->CREATE LANGUAGE</PRE
-></DIV
-><BLOCKQUOTE
-CLASS="MSGEXPLAN"
->      This message is returned if the language is successfully
-      created.
-     </BLOCKQUOTE
-></DIV
-><DIV
-CLASS="MSGENTRY"
-><A
-NAME="AEN39926"
-></A
-><DIV
-CLASS="MSG"
-><A
-NAME="AEN39927"
-></A
-><PRE
-CLASS="SCREEN"
->ERROR:  PL handler function <TT
-CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
->() doesn't exist</PRE
-></DIV
-><BLOCKQUOTE
-CLASS="MSGEXPLAN"
->      This error is returned if the function <TT
-CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
->() is not found.
-     </BLOCKQUOTE
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>CREATE LANGUAGE</SAMP
+></DT
+><DD
+><P
+>      Message returned if the language was successfully created.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
@@ -389,7 +337,7 @@ HREF="app-createlang.html"
 CLASS="APPLICATION"
 >createlang</SPAN
 ></A
-> script should be used, which will also
+> program should be used, which will also
    install the correct call handler.  (<TT
 CLASS="COMMAND"
 >createlang</TT
@@ -420,7 +368,7 @@ CLASS="COMMAND"
    declared as returning <TT
 CLASS="TYPE"
 >opaque</TT
->, but it will issue a NOTICE and
+>, but it will issue a notice and
    change the function's declared return type to <TT
 CLASS="TYPE"
 >language_handler</TT
@@ -447,43 +395,31 @@ HREF="app-droplang.html"
 CLASS="APPLICATION"
 >droplang</SPAN
 ></A
-> script, to drop procedural languages.
+> program, to drop procedural languages.
   </P
 ><P
->   The system catalog <TT
+>   The system catalog <CODE
 CLASS="CLASSNAME"
->pg_language</TT
-> records
-   information about the currently installed procedural languages.
-
-</P><PRE
-CLASS="SCREEN"
->        Table "pg_language"
-   Attribute   |   Type    | Modifier
----------------+-----------+----------
- lanname       | name      |
- lanispl       | boolean   |
- lanpltrusted  | boolean   |
- lanplcallfoid | oid       |
- lanvalidator  | oid       |
- lanacl        | aclitem[] |
-
-   lanname   | lanispl | lanpltrusted | lanplcallfoid | lanvalidator | lanacl
--------------+---------+--------------+---------------+--------------+--------
- internal    | f       | f            |             0 |         2246 |
- c           | f       | f            |             0 |         2247 |
- sql         | f       | t            |             0 |         2248 | {=U}</PRE
-><P>
+>pg_language</CODE
+> (see <A
+HREF="catalog-pg-language.html"
+>Section 45.18</A
+>) records information about the
+   currently installed languages.  Also <TT
+CLASS="COMMAND"
+>createlang</TT
+>
+   has an option to list the installed languages.
   </P
 ><P
->   At present, with the exception of the permissions, the definition 
-   of a procedural language cannot be changed once it has been created.
+>   The definition of a procedural language cannot be changed once it
+   has been created, with the exception of the privileges.
   </P
 ><P
 >   To be able to use a procedural language, a user must be granted the
-   <TT
+   <VAR
 CLASS="LITERAL"
->USAGE</TT
+>USAGE</VAR
 > privilege.  The
    <TT
 CLASS="COMMAND"
@@ -504,7 +440,7 @@ NAME="SQL-CREATELANGUAGE-EXAMPLES"
    procedural language and the associated call handler.
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION plsample_call_handler () RETURNS language_handler
+>CREATE FUNCTION plsample_call_handler() RETURNS language_handler
     AS '$libdir/plsample'
     LANGUAGE C;
 CREATE LANGUAGE plsample
@@ -533,45 +469,19 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39970"
-></A
-><H2
->History</H2
-><P
->   The <TT
-CLASS="COMMAND"
->CREATE LANGUAGE</TT
-> command first appeared in
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 6.3.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN39975"
+NAME="AEN38736"
 ></A
 ><H2
 >See Also</H2
-><P
->   <A
-HREF="app-createlang.html"
-><SPAN
-CLASS="APPLICATION"
->createlang</SPAN
+><A
+HREF="sql-alterlanguage.html"
+><I
+>ALTER LANGUAGE</I
 ></A
 >, <A
 HREF="sql-createfunction.html"
 ><I
 >CREATE FUNCTION</I
-></A
->, <A
-HREF="app-droplang.html"
-><SPAN
-CLASS="APPLICATION"
->droplang</SPAN
 ></A
 >, <A
 HREF="sql-droplanguage.html"
@@ -588,11 +498,18 @@ HREF="sql-revoke.html"
 ><I
 >REVOKE</I
 ></A
->, <I
-CLASS="CITETITLE"
->PostgreSQL Programmer's Guide</I
->
-  </P
+>, <A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+>, <A
+HREF="app-droplang.html"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

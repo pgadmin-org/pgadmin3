@@ -1,0 +1,677 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Array Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Miscellaneous Functions"
+HREF="functions-misc.html"><LINK
+REL="NEXT"
+TITLE="Aggregate Functions"
+HREF="functions-aggregate.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="functions-misc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="functions-aggregate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-ARRAY"
+>9.14. Array Functions</A
+></H1
+><P
+>   <A
+HREF="functions-array.html#ARRAY-OPERATORS-TABLE"
+>Table 9-41</A
+> shows the operators
+   available for the <TT
+CLASS="TYPE"
+>array</TT
+> types.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="ARRAY-OPERATORS-TABLE"
+></A
+><P
+><B
+>Table 9-41. <TT
+CLASS="TYPE"
+>array</TT
+> Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Operator</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>=</VAR
+> </TD
+><TD
+>equals</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>ARRAY[1.1,2.1,3.1]::int[] = ARRAY[1,2,3]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>t</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>||</VAR
+> </TD
+><TD
+>array-to-array concatenation</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>ARRAY[1,2,3] || ARRAY[4,5,6]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>{{1,2,3},{4,5,6}}</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>||</VAR
+> </TD
+><TD
+>array-to-array concatenation</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>ARRAY[1,2,3] || ARRAY[[4,5,6],[7,8,9]]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>{{1,2,3},{4,5,6},{7,8,9}}</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>||</VAR
+> </TD
+><TD
+>element-to-array concatenation</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>3 || ARRAY[4,5,6]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>{3,4,5,6}</VAR
+></TD
+></TR
+><TR
+><TD
+> <VAR
+CLASS="LITERAL"
+>||</VAR
+> </TD
+><TD
+>array-to-element concatenation</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>ARRAY[4,5,6] || 7</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>{4,5,6,7}</VAR
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   <A
+HREF="functions-array.html#ARRAY-FUNCTIONS-TABLE"
+>Table 9-42</A
+> shows the functions
+   available for use with array types. See <A
+HREF="arrays.html"
+>Section 8.10</A
+>
+   for more discussion and examples for the use of these functions.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="ARRAY-FUNCTIONS-TABLE"
+></A
+><P
+><B
+>Table 9-42. <TT
+CLASS="TYPE"
+>array</TT
+> Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Function</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>     <VAR
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_append</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>anyelement</TT
+>)
+     </VAR
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
+>     append an element to the end of an array, returning
+     <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> for <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> inputs
+    </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>array_append(ARRAY[1,2], 3)</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>{1,2,3}</VAR
+></TD
+></TR
+><TR
+><TD
+>     <VAR
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_cat</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>anyarray</TT
+>)
+     </VAR
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
+>     concatenate two arrays, returning <VAR
+CLASS="LITERAL"
+>NULL</VAR
+>
+     for <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> inputs
+    </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>array_cat(ARRAY[1,2,3], ARRAY[4,5,6])</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>{{1,2,3},{4,5,6}}</VAR
+></TD
+></TR
+><TR
+><TD
+>     <VAR
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_dims</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>)
+     </VAR
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>     returns a text representation of array dimension lower and upper bounds,
+     generating an ERROR for <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> inputs
+    </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>array_dims(array[[1,2,3],[4,5,6]])</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>[1:2][1:3]</VAR
+></TD
+></TR
+><TR
+><TD
+>     <VAR
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_lower</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>)
+     </VAR
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>     returns lower bound of the requested array dimension, returning
+     <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> for <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> inputs
+    </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>array_lower(array_prepend(0, ARRAY[1,2,3]), 1)</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>0</VAR
+></TD
+></TR
+><TR
+><TD
+>     <VAR
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_prepend</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyelement</TT
+>, <TT
+CLASS="TYPE"
+>anyarray</TT
+>)
+     </VAR
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>anyarray</TT
+></TD
+><TD
+>     append an element to the beginning of an array, returning
+     <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> for <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> inputs
+    </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>array_prepend(1, ARRAY[2,3])</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>{1,2,3}</VAR
+></TD
+></TR
+><TR
+><TD
+>     <VAR
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_to_string</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>text</TT
+>)
+     </VAR
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>     concatenates array elements using provided delimiter, returning
+     <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> for <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> inputs
+    </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>array_to_string(array[1.1,2.2,3.3]::numeric(4,2)[],'~^~')</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>1.10~^~2.20~^~3.30</VAR
+></TD
+></TR
+><TR
+><TD
+>     <VAR
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>array_upper</CODE
+>
+      (<TT
+CLASS="TYPE"
+>anyarray</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>)
+     </VAR
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+>     returns upper bound of the requested array dimension, returning
+     <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> for <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> inputs
+    </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>array_upper(array_append(ARRAY[1,2,3], 4), 1)</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>4</VAR
+></TD
+></TR
+><TR
+><TD
+>     <VAR
+CLASS="LITERAL"
+>      <CODE
+CLASS="FUNCTION"
+>string_to_array</CODE
+>
+      (<TT
+CLASS="TYPE"
+>text</TT
+>, <TT
+CLASS="TYPE"
+>text</TT
+>)
+     </VAR
+>
+    </TD
+><TD
+><TT
+CLASS="TYPE"
+>text[]</TT
+></TD
+><TD
+>     splits string into array elements using provided delimiter, returning
+     <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> for <VAR
+CLASS="LITERAL"
+>NULL</VAR
+> inputs
+    </TD
+><TD
+><VAR
+CLASS="LITERAL"
+>string_to_array('1.10~^~2.20~^~3.30','~^~')::float8[]</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>{1.1,2.2,3.3}</VAR
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-misc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-aggregate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Miscellaneous Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Aggregate Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

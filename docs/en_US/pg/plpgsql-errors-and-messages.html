@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Errors and Messages</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 19. <SPAN
+>Chapter 40. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> - <SPAN
+> - <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Procedural Language</TD
 ><TD
 WIDTH="10%"
@@ -87,122 +87,112 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-ERRORS-AND-MESSAGES"
->19.8. Errors and Messages</A
+>40.9. Errors and Messages</A
 ></H1
 ><P
->    Use the RAISE statement to report messages and raise errors.
+>    Use the <TT
+CLASS="COMMAND"
+>RAISE</TT
+> statement to report messages and
+    raise errors.
 
 </P><PRE
 CLASS="SYNOPSIS"
->RAISE <TT
+>RAISE <VAR
 CLASS="REPLACEABLE"
-><I
->level</I
-></TT
-> '<TT
+>level</VAR
+> '<VAR
 CLASS="REPLACEABLE"
-><I
->format</I
-></TT
+>format</VAR
 >' [<SPAN
 CLASS="OPTIONAL"
->, <TT
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
+>variable</VAR
 > [<SPAN
 CLASS="OPTIONAL"
->...</SPAN
+>, ...</SPAN
 >]</SPAN
 >];</PRE
 ><P>
 
-    Possible levels are <TT
+    Possible levels are <VAR
 CLASS="LITERAL"
->DEBUG</TT
+>DEBUG</VAR
 > (write the message to
-    the server log), <TT
+    the server log), <VAR
 CLASS="LITERAL"
->LOG</TT
+>LOG</VAR
 > (write the message to the
-    server log with a higher priority), <TT
+    server log with a higher priority), <VAR
 CLASS="LITERAL"
->INFO</TT
+>INFO</VAR
 >,
-    <TT
+    <VAR
 CLASS="LITERAL"
->NOTICE</TT
-> and <TT
+>NOTICE</VAR
+> and <VAR
 CLASS="LITERAL"
->WARNING</TT
+>WARNING</VAR
 > (write
     the message to the server log and send it to the client, with
-    respectively higher priorities), and <TT
+    respectively higher priorities), and <VAR
 CLASS="LITERAL"
->EXCEPTION</TT
+>EXCEPTION</VAR
 >
-    (raise an error and abort the current transaction). Whether error
+    (raise an error and abort the current transaction). Whether
     messages of a particular priority are reported to the client,
     written to the server log, or both is controlled by the
-    <TT
+    <VAR
 CLASS="OPTION"
->SERVER_MIN_MESSAGES</TT
+>log_min_messages</VAR
 > and
-    <TT
+    <VAR
 CLASS="OPTION"
->CLIENT_MIN_MESSAGES</TT
+>client_min_messages</VAR
 > configuration variables. See
-    the <I
-CLASS="CITETITLE"
->PostgreSQL Administrator's Guide</I
-> for more
-    information.
+    <A
+HREF="runtime-config.html"
+>Section 16.4</A
+> for more information.
    </P
 ><P
->    Inside the format string, <TT
+>    Inside the format string, <VAR
 CLASS="LITERAL"
->%</TT
+>%</VAR
 > is replaced by the
-    next optional argument's external representation. Write
-    <TT
+    next optional argument's string representation. Write
+    <VAR
 CLASS="LITERAL"
->%%</TT
-> to emit a literal <TT
+>%%</VAR
+> to emit a literal <VAR
 CLASS="LITERAL"
->%</TT
+>%</VAR
 >. Note
     that the optional arguments must presently be simple variables,
     not expressions, and the format must be a simple string literal.
    </P
 ><P
->    Examples:
+>    In this example, the value of <VAR
+CLASS="LITERAL"
+>v_job_id</VAR
+> will replace the
+    <VAR
+CLASS="LITERAL"
+>%</VAR
+> in the string.
 </P><PRE
 CLASS="PROGRAMLISTING"
->RAISE NOTICE ''Calling cs_create_job(%)'',v_job_id;</PRE
+>RAISE NOTICE ''Calling cs_create_job(%)'', v_job_id;</PRE
 ><P>
-
-    In this example, the value of v_job_id will replace the
-    <TT
-CLASS="LITERAL"
->%</TT
-> in the string.
    </P
 ><P
-></P><PRE
+>    This example will abort the transaction with the given error message.
+</P><PRE
 CLASS="PROGRAMLISTING"
->RAISE EXCEPTION ''Inexistent ID --&#62; %'',user_id;</PRE
+>RAISE EXCEPTION ''Inexistent ID --&#62; %'', user_id;</PRE
 ><P>
-    This will abort the transaction with the given error message.
    </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="PLPGSQL-EXCEPTIONS"
->19.8.1. Exceptions</A
-></H2
 ><P
 >     <SPAN
 CLASS="PRODUCTNAME"
@@ -211,13 +201,13 @@ CLASS="PRODUCTNAME"
      exception handling model. Whenever the parser, planner/optimizer
      or executor decide that a statement cannot be processed any longer,
      the whole transaction gets aborted and the system jumps back
-     into the main loop to get the next query from the client application.
+     into the main loop to get the next command from the client application.
     </P
 ><P
 >     It is possible to hook into the error mechanism to notice that this
      happens. But currently it is impossible to tell what really
-     caused the abort (input/output conversion error, floating-point
-     error, parse error). And it is possible that the database backend
+     caused the abort (data type format error, floating-point
+     error, parse error, etc.). And it is possible that the database server
      is in an inconsistent state at this point so returning to the upper
      executor or issuing more commands might corrupt the whole database.
     </P
@@ -228,14 +218,13 @@ CLASS="APPLICATION"
 >
      currently does when it encounters an abort during execution of a
      function or trigger procedure is to write some additional
-     <TT
+     <VAR
 CLASS="LITERAL"
->NOTICE</TT
+>NOTICE</VAR
 > level log messages telling in which
      function and where (line number and type of statement) this
      happened.  The error always stops execution of the function.
     </P
-></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_class</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-CLASS"
->3.9. pg_class</A
+>45.9. <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
 ></H1
+><A
+NAME="AEN51198"
+></A
 ><P
->   <TT
+>   The catalog <TT
 CLASS="STRUCTNAME"
 >pg_class</TT
 > catalogs tables and most
@@ -103,189 +109,188 @@ CLASS="STRUCTFIELD"
 CLASS="QUOTE"
 >"relations"</SPAN
 >.  Not all
-   fields are meaningful for all relation types.
+   columns are meaningful for all relation types.
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN52909"
+NAME="AEN51205"
 ></A
 ><P
 ><B
->Table 3-9. pg_class Columns</B
+>Table 45-9. <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relname</TD
+><TT
+CLASS="STRUCTFIELD"
+>relname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name of the table, index, view, etc.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relnamespace</TD
+><TT
+CLASS="STRUCTFIELD"
+>relnamespace</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_namespace.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       The OID of the namespace that contains this relation
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->reltype</TD
+><TT
+CLASS="STRUCTFIELD"
+>reltype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_type.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       The OID of the data type that corresponds to this table, if any
-       (zero for indexes, which have no pg_type entry)
+       (zero for indexes, which have no <TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+> entry)
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relowner</TD
+><TT
+CLASS="STRUCTFIELD"
+>relowner</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_shadow.usesysid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Owner of the relation</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relam</TD
+><TT
+CLASS="STRUCTFIELD"
+>relam</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_am.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-am.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_am</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >If this is an index, the access method used (B-tree, hash, etc.)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relfilenode</TD
+><TT
+CLASS="STRUCTFIELD"
+>relfilenode</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name of the on-disk file of this relation; 0 if none</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relpages</TD
+><TT
+CLASS="STRUCTFIELD"
+>relpages</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       Size of the on-disk representation of this table in pages (size
        <TT
 CLASS="SYMBOL"
@@ -307,23 +312,18 @@ CLASS="COMMAND"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->reltuples</TD
+><TT
+CLASS="STRUCTFIELD"
+>reltuples</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >float4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       Number of tuples in the table.
        This is only an estimate used by the planner.
        It is updated by <TT
@@ -341,23 +341,27 @@ CLASS="COMMAND"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->reltoastrelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>reltoastrelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       OID of the TOAST table associated with this table, 0 if none.
        The TOAST table stores large attributes <SPAN
 CLASS="QUOTE"
@@ -368,69 +372,77 @@ CLASS="QUOTE"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->reltoastidxid</TD
+><TT
+CLASS="STRUCTFIELD"
+>reltoastidxid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       For a TOAST table, the OID of its index.  0 if not a TOAST table.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relhasindex</TD
+><TT
+CLASS="STRUCTFIELD"
+>relhasindex</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->True if this is a table and it has (or recently had) any indexes.
-       This is set by CREATE INDEX, but not cleared immediately by DROP INDEX.
-       VACUUM clears relhasindex if it finds the table has no indexes.
+>       True if this is a table and it has (or recently had) any
+       indexes. This is set by <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+>, but
+       not cleared immediately by <TT
+CLASS="COMMAND"
+>DROP INDEX</TT
+>.
+       <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> clears <TT
+CLASS="STRUCTFIELD"
+>relhasindex</TT
+> if it finds the
+       table has no indexes.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relisshared</TD
+><TT
+CLASS="STRUCTFIELD"
+>relisshared</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >True if this table is shared across all databases in the
       cluster.  Only certain system catalogs (such as
       <TT
@@ -440,80 +452,85 @@ CLASS="STRUCTNAME"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relkind</TD
+><TT
+CLASS="STRUCTFIELD"
+>relkind</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       'r' = ordinary table, 'i' = index, 'S' = sequence, 'v' = view,
-       'c' = composite type, 's' = special, 't' = TOAST table
+>       <VAR
+CLASS="LITERAL"
+>r</VAR
+> = ordinary table, <VAR
+CLASS="LITERAL"
+>i</VAR
+> = index,
+       <VAR
+CLASS="LITERAL"
+>S</VAR
+> = sequence, <VAR
+CLASS="LITERAL"
+>v</VAR
+> = view, <VAR
+CLASS="LITERAL"
+>c</VAR
+> =
+       composite type, <VAR
+CLASS="LITERAL"
+>s</VAR
+> = special, <VAR
+CLASS="LITERAL"
+>t</VAR
+> = TOAST
+       table
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relnatts</TD
+><TT
+CLASS="STRUCTFIELD"
+>relnatts</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       Number of user columns in the relation (system columns not counted).
-       There must be this many corresponding entries in
+>       Number of user columns in the relation (system columns not
+       counted).  There must be this many corresponding entries in
        <TT
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 >.  See also
-       <TT
-CLASS="STRUCTNAME"
->pg_attribute</TT
->.<TT
-CLASS="STRUCTFIELD"
->attnum</TT
+       <VAR
+CLASS="LITERAL"
+>pg_attribute.attnum</VAR
 >.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relchecks</TD
+><TT
+CLASS="STRUCTFIELD"
+>relchecks</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       Number of check constraints on the table; see
        <TT
 CLASS="STRUCTNAME"
@@ -523,23 +540,18 @@ CLASS="STRUCTNAME"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->reltriggers</TD
+><TT
+CLASS="STRUCTFIELD"
+>reltriggers</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       Number of triggers on the table; see
        <TT
 CLASS="STRUCTNAME"
@@ -549,142 +561,112 @@ CLASS="STRUCTNAME"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relukeys</TD
+><TT
+CLASS="STRUCTFIELD"
+>relukeys</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >unused  (<SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
->Not</I
+>not</I
 ></SPAN
 > the number of unique keys)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relfkeys</TD
+><TT
+CLASS="STRUCTFIELD"
+>relfkeys</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >unused  (<SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
->Not</I
+>not</I
 ></SPAN
 > the number of foreign keys on the table)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relrefs</TD
+><TT
+CLASS="STRUCTFIELD"
+>relrefs</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >unused</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relhasoids</TD
+><TT
+CLASS="STRUCTFIELD"
+>relhasoids</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       True if we generate an OID for each row of the relation.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relhaspkey</TD
+><TT
+CLASS="STRUCTFIELD"
+>relhaspkey</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       True if the table has (or once had) a primary key.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relhasrules</TD
+><TT
+CLASS="STRUCTFIELD"
+>relhasrules</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Table has rules; see
        <TT
 CLASS="STRUCTNAME"
@@ -694,45 +676,35 @@ CLASS="STRUCTNAME"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relhassubclass</TD
+><TT
+CLASS="STRUCTFIELD"
+>relhassubclass</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >At least one table inherits from this one</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->relacl</TD
+><TT
+CLASS="STRUCTFIELD"
+>relacl</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >aclitem[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       Access permissions.  See the descriptions of
+>       Access privileges; see the descriptions of
        <TT
 CLASS="COMMAND"
 >GRANT</TT
@@ -791,7 +763,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_cast</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -805,7 +780,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_constraint</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,0 +1,352 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>A Complete Example</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Triggers"
+HREF="triggers.html"><LINK
+REL="PREVIOUS"
+TITLE="Visibility of Data Changes"
+HREF="trigger-datachanges.html"><LINK
+REL="NEXT"
+TITLE="Server Programming Interface"
+HREF="spi.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="trigger-datachanges.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 37. Triggers</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="spi.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TRIGGER-EXAMPLE"
+>37.4. A Complete Example</A
+></H1
+><P
+>    Here is a very simple example of a trigger function written in C.
+    The function <CODE
+CLASS="FUNCTION"
+>trigf</CODE
+> reports the number of rows in the
+    table <VAR
+CLASS="LITERAL"
+>ttest</VAR
+> and skips the actual operation if the
+    command attempts to insert a null value into the column
+    <VAR
+CLASS="LITERAL"
+>x</VAR
+>. (So the trigger acts as a not-null constraint but
+    doesn't abort the transaction.)
+   </P
+><P
+>    First, the table definition:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE ttest (
+    x integer
+);</PRE
+><P>
+   </P
+><P
+>    This is the source code of the trigger function:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>#include "postgres.h"
+#include "executor/spi.h"       /* this is what you need to work with SPI */
+#include "commands/trigger.h"   /* ... and triggers */
+
+extern Datum trigf(PG_FUNCTION_ARGS);
+
+PG_FUNCTION_INFO_V1(trigf);
+
+Datum
+trigf(PG_FUNCTION_ARGS)
+{
+    TriggerData *trigdata = (TriggerData *) fcinfo-&#62;context;
+    TupleDesc   tupdesc;
+    HeapTuple   rettuple;
+    char       *when;
+    bool        checknull = false;
+    bool        isnull;
+    int         ret, i;
+
+    /* make sure it's called as a trigger at all */
+    if (!CALLED_AS_TRIGGER(fcinfo))
+        elog(ERROR, "trigf: not called by trigger manager");
+
+    /* tuple to return to executor */
+    if (TRIGGER_FIRED_BY_UPDATE(trigdata-&#62;tg_event))
+        rettuple = trigdata-&#62;tg_newtuple;
+    else
+        rettuple = trigdata-&#62;tg_trigtuple;
+
+    /* check for null values */
+    if (!TRIGGER_FIRED_BY_DELETE(trigdata-&#62;tg_event)
+        &#38;&#38; TRIGGER_FIRED_BEFORE(trigdata-&#62;tg_event))
+        checknull = true;
+
+    if (TRIGGER_FIRED_BEFORE(trigdata-&#62;tg_event))
+        when = "before";
+    else
+        when = "after ";
+
+    tupdesc = trigdata-&#62;tg_relation-&#62;rd_att;
+
+    /* connect to SPI manager */
+    if ((ret = SPI_connect()) &#60; 0)
+        elog(INFO, "trigf (fired %s): SPI_connect returned %d", when, ret);
+
+    /* get number of rows in table */
+    ret = SPI_exec("SELECT count(*) FROM ttest", 0);
+
+    if (ret &#60; 0)
+        elog(NOTICE, "trigf (fired %s): SPI_exec returned %d", when, ret);
+
+    /* count(*) returns int8, so be careful to convert */
+    i = DatumGetInt64(SPI_getbinval(SPI_tuptable-&#62;vals[0],
+                                    SPI_tuptable-&#62;tupdesc,
+                                    1,
+                                    &amp;isnull));
+
+    elog (INFO, "trigf (fired %s): there are %d rows in ttest", when, i);
+
+    SPI_finish();
+
+    if (checknull)
+    {
+        SPI_getbinval(rettuple, tupdesc, 1, &amp;isnull);
+        if (isnull)
+            rettuple = NULL;
+    }
+
+    return PointerGetDatum(rettuple);
+}</PRE
+><P>
+   </P
+><P
+>    After you have compiled the source code, declare the function and
+    the triggers:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION trigf() RETURNS trigger
+    AS '<VAR
+CLASS="REPLACEABLE"
+>filename</VAR
+>'
+    LANGUAGE C;
+
+CREATE TRIGGER tbefore BEFORE INSERT OR UPDATE OR DELETE ON ttest 
+    FOR EACH ROW EXECUTE PROCEDURE trigf();
+
+CREATE TRIGGER tafter AFTER INSERT OR UPDATE OR DELETE ON ttest 
+    FOR EACH ROW EXECUTE PROCEDURE trigf();</PRE
+><P>
+   </P
+><P
+>    Now you can test the operation of the trigger:
+</P><PRE
+CLASS="SCREEN"
+>=&#62; INSERT INTO ttest VALUES (NULL);
+INFO:  trigf (fired before): there are 0 rows in ttest
+INSERT 0 0
+
+-- Insertion skipped and AFTER trigger is not fired
+
+=&#62; SELECT * FROM ttest;
+ x
+---
+(0 rows)
+
+=&#62; INSERT INTO ttest VALUES (1);
+INFO:  trigf (fired before): there are 0 rows in ttest
+INFO:  trigf (fired after ): there are 1 rows in ttest
+                                       ^^^^^^^^
+                             remember what we said about visibility.
+INSERT 167793 1
+vac=&#62; SELECT * FROM ttest;
+ x
+---
+ 1
+(1 row)
+
+=&#62; INSERT INTO ttest SELECT x * 2 FROM ttest;
+INFO:  trigf (fired before): there are 1 rows in ttest
+INFO:  trigf (fired after ): there are 2 rows in ttest
+                                       ^^^^^^
+                             remember what we said about visibility.
+INSERT 167794 1
+=&#62; SELECT * FROM ttest;
+ x
+---
+ 1
+ 2
+(2 rows)
+
+=&#62; UPDATE ttest SET x = NULL WHERE x = 2;
+INFO:  trigf (fired before): there are 2 rows in ttest
+UPDATE 0
+=&#62; UPDATE ttest SET x = 4 WHERE x = 2;
+INFO:  trigf (fired before): there are 2 rows in ttest
+INFO:  trigf (fired after ): there are 2 rows in ttest
+UPDATE 1
+vac=&#62; SELECT * FROM ttest;
+ x
+---
+ 1
+ 4
+(2 rows)
+
+=&#62; DELETE FROM ttest;
+INFO:  trigf (fired before): there are 2 rows in ttest
+INFO:  trigf (fired after ): there are 1 rows in ttest
+INFO:  trigf (fired before): there are 1 rows in ttest
+INFO:  trigf (fired after ): there are 0 rows in ttest
+                                       ^^^^^^
+                             remember what we said about visibility.
+DELETE 2
+=&#62; SELECT * FROM ttest;
+ x
+---
+(0 rows)</PRE
+><P>
+
+   </P
+><P
+>    There are more complex examples in
+    <TT
+CLASS="FILENAME"
+>src/test/regress/regress.c</TT
+> and
+    in <TT
+CLASS="FILENAME"
+>contrib/spi</TT
+>.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="trigger-datachanges.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Visibility of Data Changes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="triggers.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Server Programming Interface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

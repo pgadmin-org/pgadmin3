@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Querying a Table</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,9 +60,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. The <SPAN
+>Chapter 2. The <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Language</TD
 ><TD
 WIDTH="10%"
@@ -88,11 +88,11 @@ NAME="TUTORIAL-SELECT"
 ></H1
 ><P
 >    <A
-NAME="AEN338"
+NAME="AEN615"
 ></A
 >
     <A
-NAME="AEN340"
+NAME="AEN617"
 ></A
 >
 
@@ -100,9 +100,9 @@ NAME="AEN340"
     <I
 CLASS="FIRSTTERM"
 >queried</I
->.  An <SPAN
+>.  An <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >
     <TT
 CLASS="COMMAND"
@@ -113,17 +113,17 @@ CLASS="COMMAND"
     tables from which to retrieve the data), and an optional
     qualification (the part that specifies any restrictions).  For
     example, to retrieve all the rows of table
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->weather</TT
+>weather</CODE
 >, type:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT * FROM weather;</PRE
 ><P>
-    (here <TT
+    (here <VAR
 CLASS="LITERAL"
->*</TT
+>*</VAR
 > means <SPAN
 CLASS="QUOTE"
 >"all columns"</SPAN
@@ -140,7 +140,7 @@ CLASS="SCREEN"
 ><P>
    </P
 ><P
->    You may specify any arbitrary expressions in the target list.  For 
+>    You may specify any arbitrary expressions in the select list.  For 
     example, you can do:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -156,23 +156,23 @@ CLASS="SCREEN"
  Hayward       |       45 | 1994-11-29
 (3 rows)</PRE
 ><P>
-    Notice how the <TT
+    Notice how the <VAR
 CLASS="LITERAL"
->AS</TT
+>AS</VAR
 > clause is used to relabel the
     output column.  (It is optional.)
    </P
 ><P
->    Arbitrary Boolean operators (<TT
+>    Arbitrary Boolean operators (<VAR
 CLASS="LITERAL"
->AND</TT
+>AND</VAR
 >,
-    <TT
+    <VAR
 CLASS="LITERAL"
->OR</TT
->, and <TT
+>OR</VAR
+>, and <VAR
 CLASS="LITERAL"
->NOT</TT
+>NOT</VAR
 >) are allowed in
     the qualification of a query.  For example, the following
     retrieves the weather of San Francisco on rainy days:
@@ -194,19 +194,19 @@ CLASS="SCREEN"
    </P
 ><P
 >    <A
-NAME="AEN361"
+NAME="AEN638"
 ></A
 >
     <A
-NAME="AEN363"
+NAME="AEN640"
 ></A
 >
     <A
-NAME="AEN365"
+NAME="AEN642"
 ></A
 >
 
-    As a final note, you can request that the results of a select can
+    As a final note, you can request that the results of a query can
     be returned in sorted order or with duplicate rows removed:
 
 </P><PRE
@@ -225,12 +225,12 @@ CLASS="SCREEN"
 (2 rows)</PRE
 ><P>
 
-    <TT
+    <VAR
 CLASS="LITERAL"
->DISTINCT</TT
-> and <TT
+>DISTINCT</VAR
+> and <VAR
 CLASS="LITERAL"
->ORDER BY</TT
+>ORDER BY</VAR
 > can be
     used separately, of course.
    </P

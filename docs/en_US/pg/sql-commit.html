@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >COMMIT</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,105 +78,34 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-COMMIT"
->COMMIT</A
-></H1
+></A
+>COMMIT</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN38327"
+NAME="AEN37302"
 ></A
 ><H2
 >Name</H2
->   COMMIT
-  &nbsp;--&nbsp;   commit the current transaction
-  </DIV
+>COMMIT&nbsp;--&nbsp;commit the current transaction</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN38330"
+NAME="AEN37305"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->COMMIT [ WORK | TRANSACTION ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-COMMIT-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->WORK<BR>TRANSACTION</DT
-><DD
-><P
->	Optional keywords. They have no effect.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-COMMIT-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->COMMIT
-       </TT
-></DT
-><DD
-><P
->	Message returned if the transaction is successfully committed.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->WARNING:  COMMIT: no transaction in progress
-       </TT
-></DT
-><DD
-><P
->	If there is no transaction in progress.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>COMMIT [ WORK | TRANSACTION ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-COMMIT-1"
+NAME="AEN37307"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
@@ -185,75 +114,120 @@ CLASS="COMMAND"
    changes made by the transaction become visible to others
    and are guaranteed to be durable if a crash occurs.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-COMMIT-3"
+NAME="AEN37311"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    The keywords WORK and TRANSACTION are noise and can be omitted.
-   </P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>WORK</VAR
+><BR><VAR
+CLASS="LITERAL"
+>TRANSACTION</VAR
+></DT
+><DD
 ><P
->    Use <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
->
-    to abort a transaction.
-   </P
+>      Optional key words. They have no effect.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-COMMIT-2"
+NAME="AEN37321"
 ></A
 ><H2
->   Usage
-  </H2
+>Diagnostics</H2
 ><P
->   To make all changes permanent:
-   </P><PRE
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>COMMIT</SAMP
+></DT
+><DD
+><P
+>      Message returned if the transaction was successfully committed.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>WARNING:  COMMIT: no transaction in progress</SAMP
+></DT
+><DD
+><P
+>      Message if there is no transaction in progress.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37334"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
+> to
+   abort a transaction.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37338"
+></A
+><H2
+>Examples</H2
+><P
+>   To commit the current transaction and make all changes permanent:
+</P><PRE
 CLASS="PROGRAMLISTING"
->COMMIT WORK;
-   </PRE
+>COMMIT;</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-COMMIT-3"
+NAME="AEN37342"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-COMMIT-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> only specifies the two forms <TT
+>   The SQL standard only specifies the two forms
+   <VAR
 CLASS="LITERAL"
->COMMIT</TT
->
-    and <TT
+>COMMIT</VAR
+> and <VAR
 CLASS="LITERAL"
->COMMIT WORK</TT
->. Otherwise full compatibility.
-   </P
-></DIV
+>COMMIT
+   WORK</VAR
+>. Otherwise, this command is fully conforming.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

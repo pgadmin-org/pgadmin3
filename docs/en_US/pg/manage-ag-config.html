@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Database Configuration</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Managing Databases"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Managing Databases</TD
+>Chapter 18. Managing Databases</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,28 +81,31 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="MANAGE-AG-CONFIG"
->5.4. Database Configuration</A
+>18.4. Database Configuration</A
 ></H1
 ><P
 >   Recall from <A
 HREF="runtime-config.html"
->Section 3.4</A
-> that the PostgreSQL
-   server provides a large number of run-time configuration variables.
-   You can set database-specific default values for many of these
-   settings.
+>Section 16.4</A
+> that the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server provides a large number of
+   run-time configuration variables.  You can set database-specific
+   default values for many of these settings.
   </P
 ><P
 >   For example, if for some reason you want to disable the
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->GEQO</SPAN
+>GEQO</ACRONYM
 > optimizer for a given database, you'd
    ordinarily have to either disable it for all databases or make sure
-   that every connecting client is careful to issue <TT
+   that every connecting client is careful to issue <VAR
 CLASS="LITERAL"
 >SET geqo
-   TO off;</TT
+   TO off;</VAR
 >.  To make this setting the default you can
    execute the command
 </P><PRE
@@ -110,27 +113,23 @@ CLASS="PROGRAMLISTING"
 >ALTER DATABASE mydb SET geqo TO off;</PRE
 ><P>
    This will save the setting (but not set it immediately) and in
-   subsequent connections it will appear as though <TT
+   subsequent connections it will appear as though <VAR
 CLASS="LITERAL"
 >SET geqo
-   TO off;</TT
+   TO off;</VAR
 > had been called right before the session started.
    Note that users can still alter this setting during the session; it
    will only be the default.  To undo any such setting, use
-   <TT
+   <VAR
 CLASS="LITERAL"
->ALTER DATABASE <TT
+>ALTER DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 > RESET
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->varname</I
-></TT
->;</TT
+>varname</VAR
+>;</VAR
 >.
   </P
 ></DIV

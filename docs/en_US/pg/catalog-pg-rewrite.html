@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_rewrite</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,194 +81,199 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-REWRITE"
->3.25. pg_rewrite</A
+>45.25. <TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+></A
 ></H1
+><A
+NAME="AEN52792"
+></A
 ><P
->   This system catalog stores rewrite rules for tables and views.
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+> stores rewrite rules for tables and views.
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN54069"
+NAME="AEN52796"
 ></A
 ><P
 ><B
->Table 3-25. pg_rewrite Columns</B
+>Table 45-25. <TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->rulename</TD
+><TT
+CLASS="STRUCTFIELD"
+>rulename</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Rule name</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ev_class</TD
+><TT
+CLASS="STRUCTFIELD"
+>ev_class</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The table this rule is for</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ev_attr</TD
+><TT
+CLASS="STRUCTFIELD"
+>ev_attr</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The column this rule is for (currently, always zero to
       indicate the whole table)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ev_type</TD
+><TT
+CLASS="STRUCTFIELD"
+>ev_type</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Event type that the rule is for: '1' = SELECT,
-      '2' = UPDATE, '3' = INSERT, '4' = DELETE</TD
+>       Event type that the rule is for: 1 = <TT
+CLASS="COMMAND"
+>SELECT</TT
+>, 2 =
+       <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, 3 = <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, 4 =
+       <TT
+CLASS="COMMAND"
+>DELETE</TT
+>
+      </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->is_instead</TD
+><TT
+CLASS="STRUCTFIELD"
+>is_instead</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->True if the rule is an INSTEAD rule</TD
+>True if the rule is an <VAR
+CLASS="LITERAL"
+>INSTEAD</VAR
+> rule</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ev_qual</TD
+><TT
+CLASS="STRUCTFIELD"
+>ev_qual</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Expression tree (in the form of a nodeToString representation)
-      for the rule's qualifying condition</TD
+>       Expression tree (in the form of a
+       <CODE
+CLASS="FUNCTION"
+>nodeToString()</CODE
+> representation) for the
+       rule's qualifying condition
+      </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->ev_action</TD
+><TT
+CLASS="STRUCTFIELD"
+>ev_action</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Query tree (in the form of a nodeToString representation)
-      for the rule's action</TD
+>       Query tree (in the form of a
+       <CODE
+CLASS="FUNCTION"
+>nodeToString()</CODE
+> representation) for the
+       rule's action
+      </TD
 ></TR
 ></TBODY
 ></TABLE
@@ -280,12 +285,9 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->    <TT
-CLASS="STRUCTNAME"
->pg_class</TT
->.<TT
-CLASS="STRUCTFIELD"
->relhasrules</TT
+>    <VAR
+CLASS="LITERAL"
+>pg_class.relhasrules</VAR
 >
     must be true if a table has any rules in this catalog.
    </P
@@ -336,7 +338,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_proc</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -350,7 +355,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_shadow</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SPI_saveplan</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Interface Functions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SPI-SPISAVEPLAN"
->SPI_saveplan</A
-></H1
+></A
+>SPI_saveplan</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN34344"
+NAME="AEN32740"
 ></A
 ><H2
 >Name</H2
@@ -97,17 +97,15 @@ NAME="IX-SPI-SPISAVEPLAN-2"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN34352"
+NAME="AEN32748"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SPI_saveplan(<TT
+>SPI_saveplan(<VAR
 CLASS="REPLACEABLE"
-><I
->plan</I
-></TT
+>plan</VAR
 >)</PRE
 ><DIV
 CLASS="REFSECT2"
@@ -122,11 +120,9 @@ NAME="R2-SPI-SPISAVEPLAN-1"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->void *<TT
+>void *<VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
+>query</VAR
 ></DT
 ><DD
 ><P
@@ -194,17 +190,17 @@ NAME="R1-SPI-SPISAVEPLAN-1"
 ><H2
 >Description</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_saveplan</TT
+>SPI_saveplan</CODE
 > 
-   stores a plan prepared by <TT
+   stores a plan prepared by <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 > in safe memory
-   protected from freeing by <TT
+   protected from freeing by <CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > or the transaction manager.</P
 ><P
 >   In the current version of <SPAN
@@ -217,9 +213,9 @@ CLASS="PRODUCTNAME"
 
    As an alternative, there is the ability to reuse prepared plans in the
    subsequent invocations of your procedure in the current session.
-   Use <TT
+   Use <CODE
 CLASS="FUNCTION"
->SPI_execp</TT
+>SPI_execp</CODE
 > to execute this saved plan.</P
 ></DIV
 ><DIV
@@ -230,16 +226,16 @@ NAME="R1-SPI-SPISAVEPLAN-2"
 ><H2
 >Usage</H2
 ><P
->   <TT
+>   <CODE
 CLASS="FUNCTION"
->SPI_saveplan</TT
-> saves a passed plan (prepared by <TT
+>SPI_saveplan</CODE
+> saves a passed plan (prepared by <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 >) in memory
-   protected from freeing by <TT
+   protected from freeing by <CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > and by the transaction manager and
    returns a pointer to the saved plan.  You may save the pointer returned in
    a local variable.  Always check if this pointer is NULL or not either when
@@ -254,9 +250,9 @@ CLASS="NOTE"
 >Note: </B
 >   If one of the objects (a relation, function, etc.) referenced by the prepared
    plan is dropped during your session (by your backend or another process) then the
-   results of <TT
+   results of <CODE
 CLASS="FUNCTION"
->SPI_execp</TT
+>SPI_execp</CODE
 > for this plan will be unpredictable.</P
 ></BLOCKQUOTE
 ></DIV

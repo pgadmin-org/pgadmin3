@@ -1,0 +1,1428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Date/Time Key Words</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Date/Time Support"
+HREF="datetime-appendix.html"><LINK
+REL="PREVIOUS"
+TITLE="Date/Time Support"
+HREF="datetime-appendix.html"><LINK
+REL="NEXT"
+TITLE="History of Units"
+HREF="datetime-units-history.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="datetime-appendix.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix A. Date/Time Support</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="datetime-units-history.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATETIME-KEYWORDS"
+>A.2. Date/Time Key Words</A
+></H1
+><P
+>    <A
+HREF="datetime-keywords.html#DATETIME-MONTH-TABLE"
+>Table A-1</A
+> shows the tokens that are
+    permissible as abbreviations for the names of the month.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATETIME-MONTH-TABLE"
+></A
+><P
+><B
+>Table A-1. Month Abbreviations</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><THEAD
+><TR
+><TH
+>Month</TH
+><TH
+>Abbreviations</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>April</TD
+><TD
+>Apr</TD
+></TR
+><TR
+><TD
+>August</TD
+><TD
+>Aug</TD
+></TR
+><TR
+><TD
+>December</TD
+><TD
+>Dec</TD
+></TR
+><TR
+><TD
+>February</TD
+><TD
+>Feb</TD
+></TR
+><TR
+><TD
+>January</TD
+><TD
+>Jan</TD
+></TR
+><TR
+><TD
+>July</TD
+><TD
+>Jul</TD
+></TR
+><TR
+><TD
+>June</TD
+><TD
+>Jun</TD
+></TR
+><TR
+><TD
+>March</TD
+><TD
+>Mar</TD
+></TR
+><TR
+><TD
+>November</TD
+><TD
+>Nov</TD
+></TR
+><TR
+><TD
+>October</TD
+><TD
+>Oct</TD
+></TR
+><TR
+><TD
+>September</TD
+><TD
+>Sep, Sept</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      The month May has no explicit abbreviation, for obvious reasons.
+     </P
+></BLOCKQUOTE
+></DIV
+><P
+>     <A
+HREF="datetime-keywords.html#DATETIME-DOW-TABLE"
+>Table A-2</A
+> shows the tokens that are
+     permissible as abbreviations for the names of the days of the
+     week.
+    </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATETIME-DOW-TABLE"
+></A
+><P
+><B
+>Table A-2. Day of the Week Abbreviations</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><THEAD
+><TR
+><TH
+>Day</TH
+><TH
+>Abbreviation</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>Sunday</TD
+><TD
+>Sun</TD
+></TR
+><TR
+><TD
+>Monday</TD
+><TD
+>Mon</TD
+></TR
+><TR
+><TD
+>Tuesday</TD
+><TD
+>Tue, Tues</TD
+></TR
+><TR
+><TD
+>Wednesday</TD
+><TD
+>Wed, Weds</TD
+></TR
+><TR
+><TD
+>Thursday</TD
+><TD
+>Thu, Thur, Thurs</TD
+></TR
+><TR
+><TD
+>Friday</TD
+><TD
+>Fri</TD
+></TR
+><TR
+><TD
+>Saturday</TD
+><TD
+>Sat</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    <A
+HREF="datetime-keywords.html#DATETIME-MOD-TABLE"
+>Table A-3</A
+> shows the tokens that serve
+    various modifier purposes.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATETIME-MOD-TABLE"
+></A
+><P
+><B
+>Table A-3. Date/Time Field Modifiers</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><THEAD
+><TR
+><TH
+>Identifier</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>ABSTIME</VAR
+></TD
+><TD
+>Key word ignored</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>AM</VAR
+></TD
+><TD
+>Time is before 12:00</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>AT</VAR
+></TD
+><TD
+>Key word ignored</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JULIAN</VAR
+>, <VAR
+CLASS="LITERAL"
+>JD</VAR
+>, <VAR
+CLASS="LITERAL"
+>J</VAR
+></TD
+><TD
+>Next field is Julian Day</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>ON</VAR
+></TD
+><TD
+>Key word ignored</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>PM</VAR
+></TD
+><TD
+>Time is on or after after 12:00</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>T</VAR
+></TD
+><TD
+>Next field is time</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    The key word <VAR
+CLASS="LITERAL"
+>ABSTIME</VAR
+> is ignored for historical
+    reasons: In very old releases of
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, invalid values of type <TT
+CLASS="TYPE"
+>abstime</TT
+>
+    were emitted as <VAR
+CLASS="LITERAL"
+>Invalid Abstime</VAR
+>. This is no
+    longer the case however and this key word will likely be dropped in
+    a future release.
+   </P
+><A
+NAME="AEN56002"
+></A
+><P
+>    <A
+HREF="datetime-keywords.html#DATETIME-TIMEZONE-TABLE"
+>Table A-4</A
+> shows the time zone
+    abbreviations recognized by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> contains internal tabular
+    information for time zone decoding, since there is no standard
+    operating system interface to provide access to general,
+    cross-time zone information. The underlying operating system
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>is</I
+></SPAN
+> used to provide time zone information for
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>output</I
+></SPAN
+>, however.
+   </P
+><P
+>    The table is organized by time zone offset from <ACRONYM
+CLASS="ACRONYM"
+>UTC</ACRONYM
+>,
+    rather than alphabetically.  This is intended to facilitate
+    matching local usage with recognized abbreviations for cases where
+    these might differ.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATETIME-TIMEZONE-TABLE"
+></A
+><P
+><B
+>Table A-4. Time Zone Abbreviations</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Time Zone</TH
+><TH
+>Offset from UTC</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>NZDT</TD
+><TD
+>+13:00</TD
+><TD
+>New Zealand Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>IDLE</TD
+><TD
+>+12:00</TD
+><TD
+>International Date Line, East</TD
+></TR
+><TR
+><TD
+>NZST</TD
+><TD
+>+12:00</TD
+><TD
+>New Zealand Standard Time</TD
+></TR
+><TR
+><TD
+>NZT</TD
+><TD
+>+12:00</TD
+><TD
+>New Zealand Time</TD
+></TR
+><TR
+><TD
+>AESST</TD
+><TD
+>+11:00</TD
+><TD
+>Australia Eastern Summer Standard Time</TD
+></TR
+><TR
+><TD
+>ACSST</TD
+><TD
+>+10:30</TD
+><TD
+>Central Australia Summer Standard Time</TD
+></TR
+><TR
+><TD
+>CADT</TD
+><TD
+>+10:30</TD
+><TD
+>Central Australia Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>SADT</TD
+><TD
+>+10:30</TD
+><TD
+>South Australian Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>AEST</TD
+><TD
+>+10:00</TD
+><TD
+>Australia Eastern Standard Time</TD
+></TR
+><TR
+><TD
+>EAST</TD
+><TD
+>+10:00</TD
+><TD
+>East Australian Standard Time</TD
+></TR
+><TR
+><TD
+>GST</TD
+><TD
+>+10:00</TD
+><TD
+>Guam Standard Time, Russia zone 9</TD
+></TR
+><TR
+><TD
+>LIGT</TD
+><TD
+>+10:00</TD
+><TD
+>Melbourne, Australia</TD
+></TR
+><TR
+><TD
+>SAST</TD
+><TD
+>+09:30</TD
+><TD
+>South Australia Standard Time</TD
+></TR
+><TR
+><TD
+>CAST</TD
+><TD
+>+09:30</TD
+><TD
+>Central Australia Standard Time</TD
+></TR
+><TR
+><TD
+>AWSST</TD
+><TD
+>+09:00</TD
+><TD
+>Australia Western Summer Standard Time</TD
+></TR
+><TR
+><TD
+>JST</TD
+><TD
+>+09:00</TD
+><TD
+>Japan Standard Time, Russia zone 8</TD
+></TR
+><TR
+><TD
+>KST</TD
+><TD
+>+09:00</TD
+><TD
+>Korea Standard Time</TD
+></TR
+><TR
+><TD
+>MHT</TD
+><TD
+>+09:00</TD
+><TD
+>Kwajalein Time</TD
+></TR
+><TR
+><TD
+>WDT</TD
+><TD
+>+09:00</TD
+><TD
+>West Australian Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>MT</TD
+><TD
+>+08:30</TD
+><TD
+>Moluccas Time</TD
+></TR
+><TR
+><TD
+>AWST</TD
+><TD
+>+08:00</TD
+><TD
+>Australia Western Standard Time</TD
+></TR
+><TR
+><TD
+>CCT</TD
+><TD
+>+08:00</TD
+><TD
+>China Coastal Time</TD
+></TR
+><TR
+><TD
+>WADT</TD
+><TD
+>+08:00</TD
+><TD
+>West Australian Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>WST</TD
+><TD
+>+08:00</TD
+><TD
+>West Australian Standard Time</TD
+></TR
+><TR
+><TD
+>JT</TD
+><TD
+>+07:30</TD
+><TD
+>Java Time</TD
+></TR
+><TR
+><TD
+>ALMST</TD
+><TD
+>+07:00</TD
+><TD
+>Almaty Summer Time</TD
+></TR
+><TR
+><TD
+>WAST</TD
+><TD
+>+07:00</TD
+><TD
+>West Australian Standard Time</TD
+></TR
+><TR
+><TD
+>CXT</TD
+><TD
+>+07:00</TD
+><TD
+>Christmas (Island) Time</TD
+></TR
+><TR
+><TD
+>MMT</TD
+><TD
+>+06:30</TD
+><TD
+>Myannar Time</TD
+></TR
+><TR
+><TD
+>ALMT</TD
+><TD
+>+06:00</TD
+><TD
+>Almaty Time</TD
+></TR
+><TR
+><TD
+>MAWT</TD
+><TD
+>+06:00</TD
+><TD
+>Mawson (Antarctica) Time</TD
+></TR
+><TR
+><TD
+>IOT</TD
+><TD
+>+05:00</TD
+><TD
+>Indian Chagos Time</TD
+></TR
+><TR
+><TD
+>MVT</TD
+><TD
+>+05:00</TD
+><TD
+>Maldives Island Time</TD
+></TR
+><TR
+><TD
+>TFT</TD
+><TD
+>+05:00</TD
+><TD
+>Kerguelen Time</TD
+></TR
+><TR
+><TD
+>AFT</TD
+><TD
+>+04:30</TD
+><TD
+>Afganistan Time</TD
+></TR
+><TR
+><TD
+>EAST</TD
+><TD
+>+04:00</TD
+><TD
+>Antananarivo Summer Time</TD
+></TR
+><TR
+><TD
+>MUT</TD
+><TD
+>+04:00</TD
+><TD
+>Mauritius Island Time</TD
+></TR
+><TR
+><TD
+>RET</TD
+><TD
+>+04:00</TD
+><TD
+>Reunion Island Time</TD
+></TR
+><TR
+><TD
+>SCT</TD
+><TD
+>+04:00</TD
+><TD
+>Mahe Island Time</TD
+></TR
+><TR
+><TD
+>IRT, IT</TD
+><TD
+>+03:30</TD
+><TD
+>Iran Time</TD
+></TR
+><TR
+><TD
+>EAT</TD
+><TD
+>+03:00</TD
+><TD
+>Antananarivo, Comoro Time</TD
+></TR
+><TR
+><TD
+>BT</TD
+><TD
+>+03:00</TD
+><TD
+>Baghdad Time</TD
+></TR
+><TR
+><TD
+>EETDST</TD
+><TD
+>+03:00</TD
+><TD
+>Eastern Europe Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>HMT</TD
+><TD
+>+03:00</TD
+><TD
+>Hellas Mediterranean Time (?)</TD
+></TR
+><TR
+><TD
+>BDST</TD
+><TD
+>+02:00</TD
+><TD
+>British Double Standard Time</TD
+></TR
+><TR
+><TD
+>CEST</TD
+><TD
+>+02:00</TD
+><TD
+>Central European Summer Time</TD
+></TR
+><TR
+><TD
+>CETDST</TD
+><TD
+>+02:00</TD
+><TD
+>Central European Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>EET</TD
+><TD
+>+02:00</TD
+><TD
+>Eastern European Time, Russia zone 1</TD
+></TR
+><TR
+><TD
+>FWT</TD
+><TD
+>+02:00</TD
+><TD
+>French Winter Time</TD
+></TR
+><TR
+><TD
+>IST</TD
+><TD
+>+02:00</TD
+><TD
+>Israel Standard Time</TD
+></TR
+><TR
+><TD
+>MEST</TD
+><TD
+>+02:00</TD
+><TD
+>Middle European Summer Time</TD
+></TR
+><TR
+><TD
+>METDST</TD
+><TD
+>+02:00</TD
+><TD
+>Middle Europe Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>SST</TD
+><TD
+>+02:00</TD
+><TD
+>Swedish Summer Time</TD
+></TR
+><TR
+><TD
+>BST</TD
+><TD
+>+01:00</TD
+><TD
+>British Summer Time</TD
+></TR
+><TR
+><TD
+>CET</TD
+><TD
+>+01:00</TD
+><TD
+>Central European Time</TD
+></TR
+><TR
+><TD
+>DNT</TD
+><TD
+>+01:00</TD
+><TD
+><I
+CLASS="FOREIGNPHRASE"
+>Dansk Normal Tid</I
+></TD
+></TR
+><TR
+><TD
+>FST</TD
+><TD
+>+01:00</TD
+><TD
+>French Summer Time</TD
+></TR
+><TR
+><TD
+>MET</TD
+><TD
+>+01:00</TD
+><TD
+>Middle European Time</TD
+></TR
+><TR
+><TD
+>MEWT</TD
+><TD
+>+01:00</TD
+><TD
+>Middle European Winter Time</TD
+></TR
+><TR
+><TD
+>MEZ</TD
+><TD
+>+01:00</TD
+><TD
+><I
+CLASS="FOREIGNPHRASE"
+>Mitteleuropäische Zeit</I
+></TD
+></TR
+><TR
+><TD
+>NOR</TD
+><TD
+>+01:00</TD
+><TD
+>Norway Standard Time</TD
+></TR
+><TR
+><TD
+>SET</TD
+><TD
+>+01:00</TD
+><TD
+>Seychelles Time</TD
+></TR
+><TR
+><TD
+>SWT</TD
+><TD
+>+01:00</TD
+><TD
+>Swedish Winter Time</TD
+></TR
+><TR
+><TD
+>WETDST</TD
+><TD
+>+01:00</TD
+><TD
+>Western European Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>GMT</TD
+><TD
+>00:00</TD
+><TD
+>Greenwich Mean Time</TD
+></TR
+><TR
+><TD
+>UT</TD
+><TD
+>00:00</TD
+><TD
+>Universal Time</TD
+></TR
+><TR
+><TD
+>UTC</TD
+><TD
+>00:00</TD
+><TD
+>Universal Coordinated Time</TD
+></TR
+><TR
+><TD
+>Z</TD
+><TD
+>00:00</TD
+><TD
+>Same as UTC</TD
+></TR
+><TR
+><TD
+>ZULU</TD
+><TD
+>00:00</TD
+><TD
+>Same as UTC</TD
+></TR
+><TR
+><TD
+>WET</TD
+><TD
+>00:00</TD
+><TD
+>Western European Time</TD
+></TR
+><TR
+><TD
+>WAT</TD
+><TD
+>-01:00</TD
+><TD
+>West Africa Time</TD
+></TR
+><TR
+><TD
+>NDT</TD
+><TD
+>-02:30</TD
+><TD
+>Newfoundland Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>ADT</TD
+><TD
+>-03:00</TD
+><TD
+>Atlantic Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>AWT</TD
+><TD
+>-03:00</TD
+><TD
+>(unknown)</TD
+></TR
+><TR
+><TD
+>NFT</TD
+><TD
+>-03:30</TD
+><TD
+>Newfoundland Standard Time</TD
+></TR
+><TR
+><TD
+>NST</TD
+><TD
+>-03:30</TD
+><TD
+>Newfoundland Standard Time</TD
+></TR
+><TR
+><TD
+>AST</TD
+><TD
+>-04:00</TD
+><TD
+>Atlantic Standard Time (Canada)</TD
+></TR
+><TR
+><TD
+>ACST</TD
+><TD
+>-04:00</TD
+><TD
+>Atlantic/Porto Acre Summer Time</TD
+></TR
+><TR
+><TD
+>ACT</TD
+><TD
+>-05:00</TD
+><TD
+>Atlantic/Porto Acre Standard Time</TD
+></TR
+><TR
+><TD
+>EDT</TD
+><TD
+>-04:00</TD
+><TD
+>Eastern Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>CDT</TD
+><TD
+>-05:00</TD
+><TD
+>Central Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>EST</TD
+><TD
+>-05:00</TD
+><TD
+>Eastern Standard Time</TD
+></TR
+><TR
+><TD
+>CST</TD
+><TD
+>-06:00</TD
+><TD
+>Central Standard Time</TD
+></TR
+><TR
+><TD
+>MDT</TD
+><TD
+>-06:00</TD
+><TD
+>Mountain Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>MST</TD
+><TD
+>-07:00</TD
+><TD
+>Mountain Standard Time</TD
+></TR
+><TR
+><TD
+>PDT</TD
+><TD
+>-07:00</TD
+><TD
+>Pacific Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>AKDT</TD
+><TD
+>-08:00</TD
+><TD
+>Alaska Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>PST</TD
+><TD
+>-08:00</TD
+><TD
+>Pacific Standard Time</TD
+></TR
+><TR
+><TD
+>YDT</TD
+><TD
+>-08:00</TD
+><TD
+>Yukon Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>AKST</TD
+><TD
+>-09:00</TD
+><TD
+>Alaska Standard Time</TD
+></TR
+><TR
+><TD
+>HDT</TD
+><TD
+>-09:00</TD
+><TD
+>Hawaii/Alaska Daylight-Saving Time</TD
+></TR
+><TR
+><TD
+>YST</TD
+><TD
+>-09:00</TD
+><TD
+>Yukon Standard Time</TD
+></TR
+><TR
+><TD
+>MART</TD
+><TD
+>-09:30</TD
+><TD
+>Marquesas Time</TD
+></TR
+><TR
+><TD
+>AHST</TD
+><TD
+>-10:00</TD
+><TD
+>Alaska/Hawaii Standard Time</TD
+></TR
+><TR
+><TD
+>HST</TD
+><TD
+>-10:00</TD
+><TD
+>Hawaii Standard Time</TD
+></TR
+><TR
+><TD
+>CAT</TD
+><TD
+>-10:00</TD
+><TD
+>Central Alaska Time</TD
+></TR
+><TR
+><TD
+>NT</TD
+><TD
+>-11:00</TD
+><TD
+>Nome Time</TD
+></TR
+><TR
+><TD
+>IDLW</TD
+><TD
+>-12:00</TD
+><TD
+>International Date Line, West</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Australian Time Zones. </B
+>    There are three naming conflicts between Australian time zone
+    names and time zone names commonly used in North and South America:
+    <VAR
+CLASS="LITERAL"
+>ACST</VAR
+>, <VAR
+CLASS="LITERAL"
+>CST</VAR
+>, and
+    <VAR
+CLASS="LITERAL"
+>EST</VAR
+>.  If the run-time option
+    <VAR
+CLASS="VARNAME"
+>australian_timezones</VAR
+> is set to true then
+    <VAR
+CLASS="LITERAL"
+>ACST</VAR
+>, <VAR
+CLASS="LITERAL"
+>CST</VAR
+>,
+    <VAR
+CLASS="LITERAL"
+>EST</VAR
+>, and <VAR
+CLASS="LITERAL"
+>SAT</VAR
+> are interpreted
+    as Australian time zone names, as shown in <A
+HREF="datetime-keywords.html#DATETIME-OZTZ-TABLE"
+>Table A-5</A
+>. If it is false (which is the
+    default), then <VAR
+CLASS="LITERAL"
+>ACST</VAR
+>, <VAR
+CLASS="LITERAL"
+>CST</VAR
+>,
+    and <VAR
+CLASS="LITERAL"
+>EST</VAR
+> are taken as American time zone names,
+    and <VAR
+CLASS="LITERAL"
+>SAT</VAR
+> is interpreted as a noise word
+    indicating Saturday.
+   </P
+></DIV
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATETIME-OZTZ-TABLE"
+></A
+><P
+><B
+>Table A-5. Australian Time Zone Abbreviations</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Time Zone</TH
+><TH
+>Offset from UTC</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>ACST</TD
+><TD
+>+09:30</TD
+><TD
+>Central Australia Standard Time</TD
+></TR
+><TR
+><TD
+>CST</TD
+><TD
+>+10:30</TD
+><TD
+>Australian Central Standard Time</TD
+></TR
+><TR
+><TD
+>EST</TD
+><TD
+>+10:00</TD
+><TD
+>Australian Eastern Standard Time</TD
+></TR
+><TR
+><TD
+>SAT</TD
+><TD
+>+09:30</TD
+><TD
+>South Australian Standard Time</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datetime-appendix.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datetime-units-history.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Date/Time Support</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="datetime-appendix.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>History of Units</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

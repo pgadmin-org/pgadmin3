@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Conditional Expressions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. Functions and Operators</TD
+>Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,18 +81,18 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-CONDITIONAL"
->6.12. Conditional Expressions</A
+>9.12. Conditional Expressions</A
 ></H1
 ><A
-NAME="AEN9763"
+NAME="AEN10816"
 ></A
 ><A
-NAME="AEN9765"
+NAME="AEN10818"
 ></A
 ><P
->   This section describes the <SPAN
+>   This section describes the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >-compliant conditional expressions
    available in <SPAN
 CLASS="PRODUCTNAME"
@@ -117,21 +117,31 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN9772"
->6.12.1. CASE</A
+NAME="AEN10825"
+>9.12.1. <VAR
+CLASS="LITERAL"
+>CASE</VAR
+></A
 ></H2
-><PRE
+><P
+>   The <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> <TT
+CLASS="TOKEN"
+>CASE</TT
+> expression is a
+   generic conditional expression, similar to if/else statements in
+   other languages:
+
+</P><PRE
 CLASS="SYNOPSIS"
->CASE WHEN <TT
+>CASE WHEN <VAR
 CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
-> THEN <TT
+>condition</VAR
+> THEN <VAR
 CLASS="REPLACEABLE"
-><I
->result</I
-></TT
+>result</VAR
 >
      [<SPAN
 CLASS="OPTIONAL"
@@ -139,32 +149,21 @@ CLASS="OPTIONAL"
 >]
      [<SPAN
 CLASS="OPTIONAL"
->ELSE <TT
+>ELSE <VAR
 CLASS="REPLACEABLE"
-><I
->result</I
-></TT
+>result</VAR
 ></SPAN
 >]
 END</PRE
-><P
->   The <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
-> <TT
-CLASS="TOKEN"
->CASE</TT
-> expression is a
-   generic conditional expression, similar to if/else statements in
-   other languages.  <TT
+><P>
+
+   <TT
 CLASS="TOKEN"
 >CASE</TT
 > clauses can be used wherever
-   an expression is valid.  <TT
+   an expression is valid.  <VAR
 CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
+>condition</VAR
 > is an
    expression that returns a <TT
 CLASS="TYPE"
@@ -173,13 +172,11 @@ CLASS="TYPE"
    then the value of the <TT
 CLASS="TOKEN"
 >CASE</TT
-> expression is
-   <TT
+> expression is the
+   <VAR
 CLASS="REPLACEABLE"
-><I
->result</I
-></TT
->.  If the result is false any
+>result</VAR
+> that follows the condition.  If the result is false any
    subsequent <TT
 CLASS="TOKEN"
 >WHEN</TT
@@ -188,17 +185,13 @@ CLASS="TOKEN"
 CLASS="TOKEN"
 >WHEN</TT
 >
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
+>condition</VAR
 > is true then the value of the
-   case expression is the <TT
+   case expression is the <VAR
 CLASS="REPLACEABLE"
-><I
->result</I
-></TT
+>result</VAR
 > in the
    <TT
 CLASS="TOKEN"
@@ -213,79 +206,62 @@ CLASS="TOKEN"
 >    An example:
 </P><PRE
 CLASS="SCREEN"
-><TT
-CLASS="PROMPT"
->=&gt;</TT
-> <TT
-CLASS="USERINPUT"
-><B
->SELECT * FROM test;</B
-></TT
->
-<TT
-CLASS="COMPUTEROUTPUT"
-> a
+>SELECT * FROM test;
+
+ a
 ---
  1
  2
- 3</TT
->
+ 3
 
-<TT
-CLASS="PROMPT"
->=&gt;</TT
-> <TT
-CLASS="USERINPUT"
-><B
->SELECT a,
-          CASE WHEN a=1 THEN 'one'
-               WHEN a=2 THEN 'two'
-               ELSE 'other'
-          END
-    FROM test;</B
-></TT
->
-<TT
-CLASS="COMPUTEROUTPUT"
-> a | case
+
+SELECT a,
+       CASE WHEN a=1 THEN 'one'
+            WHEN a=2 THEN 'two'
+            ELSE 'other'
+       END
+    FROM test;
+
+ a | case
 ---+-------
  1 | one
  2 | two
- 3 | other</TT
-></PRE
+ 3 | other</PRE
 ><P>
    </P
 ><P
->   The data types of all the <TT
+>   The data types of all the <VAR
 CLASS="REPLACEABLE"
-><I
->result</I
-></TT
+>result</VAR
 >
-   expressions must be coercible to a single output type.
+   expressions must be convertible to a single output type.
    See <A
 HREF="typeconv-union-case.html"
->Section 7.5</A
+>Section 10.5</A
 > for more detail.
   </P
-><PRE
+><P
+>   The following <SPAN
+CLASS="QUOTE"
+>"simple"</SPAN
+> <TT
+CLASS="TOKEN"
+>CASE</TT
+> expression is a
+   specialized variant of the general form above:
+
+</P><PRE
 CLASS="SYNOPSIS"
->CASE <TT
+>CASE <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 >
-    WHEN <TT
+    WHEN <VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
-> THEN <TT
+>value</VAR
+> THEN <VAR
 CLASS="REPLACEABLE"
-><I
->result</I
-></TT
+>result</VAR
 >
     [<SPAN
 CLASS="OPTIONAL"
@@ -293,52 +269,38 @@ CLASS="OPTIONAL"
 >]
     [<SPAN
 CLASS="OPTIONAL"
->ELSE <TT
+>ELSE <VAR
 CLASS="REPLACEABLE"
-><I
->result</I
-></TT
+>result</VAR
 ></SPAN
 >]
 END</PRE
-><P
->   This <SPAN
-CLASS="QUOTE"
->"simple"</SPAN
-> <TT
-CLASS="TOKEN"
->CASE</TT
-> expression is a
-   specialized variant of the general form above.  The
-   <TT
+><P>
+
+   The
+   <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > is computed and compared to
-   all the <TT
+   all the <VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
->s in the
+>value</VAR
+> specifications in the
    <TT
 CLASS="TOKEN"
 >WHEN</TT
 > clauses until one is found that is equal.  If
-   no match is found, the <TT
+   no match is found, the <VAR
 CLASS="REPLACEABLE"
-><I
->result</I
-></TT
+>result</VAR
 > in the
    <TT
 CLASS="TOKEN"
 >ELSE</TT
 > clause (or a null value) is returned.  This is similar
-   to the <TT
+   to the <CODE
 CLASS="FUNCTION"
->switch</TT
+>switch</CODE
 > statement in C.
   </P
 ><P
@@ -349,28 +311,18 @@ CLASS="TOKEN"
 > syntax:
 </P><PRE
 CLASS="SCREEN"
-><TT
-CLASS="PROMPT"
->=&gt;</TT
-> <TT
-CLASS="USERINPUT"
-><B
 >SELECT a,
-          CASE a WHEN 1 THEN 'one'
-                 WHEN 2 THEN 'two'
-                 ELSE 'other'
-          END
-    FROM test;</B
-></TT
->
-<TT
-CLASS="COMPUTEROUTPUT"
-> a | case
+       CASE a WHEN 1 THEN 'one'
+              WHEN 2 THEN 'two'
+              ELSE 'other'
+       END
+    FROM test;
+
+ a | case
 ---+-------
  1 | one
  2 | two
- 3 | other</TT
-></PRE
+ 3 | other</PRE
 ><P>
     </P
 ></DIV
@@ -379,27 +331,28 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN9827"
->6.12.2. COALESCE</A
+NAME="AEN10872"
+>9.12.2. <VAR
+CLASS="LITERAL"
+>COALESCE</VAR
+></A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
-><TT
+><CODE
 CLASS="FUNCTION"
->COALESCE</TT
->(<TT
+>COALESCE</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
 > [<SPAN
 CLASS="OPTIONAL"
 >, ...</SPAN
 >])</PRE
 ><P
->   The <TT
+>   The <CODE
 CLASS="FUNCTION"
->COALESCE</TT
+>COALESCE</CODE
 > function returns the first of its
    arguments that is not null.  This is often useful to substitute a
    default value for null values when data is retrieved for display,
@@ -415,54 +368,47 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN9836"
->6.12.3. NULLIF</A
+NAME="AEN10882"
+>9.12.3. <VAR
+CLASS="LITERAL"
+>NULLIF</VAR
+></A
 ></H2
 ><A
-NAME="AEN9838"
+NAME="AEN10885"
 ></A
 ><PRE
 CLASS="SYNOPSIS"
-><TT
+><CODE
 CLASS="FUNCTION"
->NULLIF</TT
->(<TT
+>NULLIF</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->value1</I
-></TT
->, <TT
+>value1</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->value2</I
-></TT
+>value2</VAR
 >)</PRE
 ><P
->   The <TT
+>   The <CODE
 CLASS="FUNCTION"
->NULLIF</TT
+>NULLIF</CODE
 > function returns a null value if and only
-   if <TT
+   if <VAR
 CLASS="REPLACEABLE"
-><I
->value1</I
-></TT
+>value1</VAR
 > and
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->value2</I
-></TT
+>value2</VAR
 > are equal.  Otherwise it returns
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->value1</I
-></TT
+>value1</VAR
 >.  This can be used to perform the
-   inverse operation of the <TT
+   inverse operation of the <CODE
 CLASS="FUNCTION"
->COALESCE</TT
+>COALESCE</CODE
 > example
    given above:
 </P><PRE
@@ -470,47 +416,6 @@ CLASS="PROGRAMLISTING"
 >SELECT NULLIF(value, '(none)') ...</PRE
 ><P>
   </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->    <TT
-CLASS="FUNCTION"
->COALESCE</TT
-> and <TT
-CLASS="FUNCTION"
->NULLIF</TT
-> are
-    just shorthand for <TT
-CLASS="TOKEN"
->CASE</TT
-> expressions.  They are actually
-    converted into <TT
-CLASS="TOKEN"
->CASE</TT
-> expressions at a very early stage
-    of processing, and subsequent processing thinks it is dealing with
-    <TT
-CLASS="TOKEN"
->CASE</TT
->.  Thus an incorrect <TT
-CLASS="FUNCTION"
->COALESCE</TT
-> or
-    <TT
-CLASS="FUNCTION"
->NULLIF</TT
-> usage may draw an error message that
-    refers to <TT
-CLASS="TOKEN"
->CASE</TT
->.
-   </P
-></BLOCKQUOTE
-></DIV
 ></DIV
 ></DIV
 ><DIV

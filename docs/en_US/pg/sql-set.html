@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SET</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-SET"
->SET</A
-></H1
+></A
+>SET</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45596"
+NAME="AEN43944"
 ></A
 ><H2
 >Name</H2
@@ -91,133 +91,31 @@ NAME="AEN45596"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45599"
+NAME="AEN43947"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SET [ SESSION | LOCAL ] <TT
+>SET [ SESSION | LOCAL ] <VAR
 CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-> { TO | = } { <TT
+>variable</VAR
+> { TO | = } { <VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
-> | '<TT
+>value</VAR
+> | '<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
 >' | DEFAULT }
-SET [ SESSION | LOCAL ] TIME ZONE { <TT
+SET [ SESSION | LOCAL ] TIME ZONE { <VAR
 CLASS="REPLACEABLE"
-><I
->timezone</I
-></TT
-> | LOCAL | DEFAULT }
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-SET-1"
-></A
-><H3
->Inputs</H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="OPTION"
->SESSION</TT
-></DT
-><DD
-><P
->        Specifies that the command takes effect for the current session.
-        (This is the default if neither <TT
-CLASS="OPTION"
->SESSION</TT
-> nor
-        <TT
-CLASS="OPTION"
->LOCAL</TT
-> appears.)
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->LOCAL</TT
-></DT
-><DD
-><P
->        Specifies that the command takes effect for only the current
-        transaction.  After <TT
-CLASS="COMMAND"
->COMMIT</TT
-> or <TT
-CLASS="COMMAND"
->ROLLBACK</TT
->,
-        the session-level setting takes effect again.  Note that
-        <TT
-CLASS="COMMAND"
->SET LOCAL</TT
-> will appear to have no effect if it's
-        executed outside a <TT
-CLASS="COMMAND"
->BEGIN</TT
-> block, since the transaction
-        will end immediately.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->variable</I
-></TT
-></DT
-><DD
-><P
->        A settable run-time parameter.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->value</I
-></TT
-></DT
-><DD
-><P
->        New value of parameter.  <TT
-CLASS="OPTION"
->DEFAULT</TT
-> can be
-        used to specify resetting the parameter to its default
-        value. Lists of strings are allowed, but more complex
-        constructs may need to be single or double quoted.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>timezone</VAR
+> | LOCAL | DEFAULT }</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-SET-1"
+NAME="AEN43953"
 ></A
 ><H2
 >Description</H2
@@ -226,21 +124,22 @@ NAME="R1-SQL-SET-1"
 CLASS="COMMAND"
 >SET</TT
 > command changes run-time configuration
-   parameters.  Many of the run-time parameters listed in the
-   <I
-CLASS="CITETITLE"
->Administrator's Guide</I
-> can be changed on-the-fly
-   with <TT
+   parameters.  Many of the run-time parameters listed in
+   <A
+HREF="runtime-config.html"
+>Section 16.4</A
+> can be changed on-the-fly with
+   <TT
 CLASS="COMMAND"
 >SET</TT
->.  (But some require superuser privileges
-   to change, and others cannot be changed after server or session start.)
-   Note that <TT
+>.
+   (But some require superuser privileges to change, and others cannot
+   be changed after server or session start.)
+   <TT
 CLASS="COMMAND"
 >SET</TT
-> only affects the value used by the
-   current session.
+> only affects the value used by the current
+   session.
   </P
 ><P
 >   If <TT
@@ -294,29 +193,106 @@ CLASS="COMMAND"
 >SET</TT
 > value will take effect.
   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43973"
+></A
+><H2
+>Parameters</H2
 ><P
->   Even with <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
 CLASS="LITERAL"
->autocommit</TT
-> set to <TT
+>SESSION</VAR
+></DT
+><DD
+><P
+>      Specifies that the command takes effect for the current session.
+      (This is the default if neither <VAR
 CLASS="LITERAL"
->off</TT
->, <TT
+>SESSION</VAR
+> nor
+      <VAR
+CLASS="LITERAL"
+>LOCAL</VAR
+> appears.)
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>LOCAL</VAR
+></DT
+><DD
+><P
+>      Specifies that the command takes effect for only the current
+      transaction.  After <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> or <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+>,
+      the session-level setting takes effect again.  Note that
+      <TT
+CLASS="COMMAND"
+>SET LOCAL</TT
+> will appear to have no effect if it is
+      executed outside a <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> block, since the
+      transaction will end immediately.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>variable</VAR
+></DT
+><DD
+><P
+>      Name of a settable run-time parameter.  Available parameters are
+      documented in <A
+HREF="runtime-config.html"
+>Section 16.4</A
+> and below.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>value</VAR
+></DT
+><DD
+><P
+>      New value of parameter.  Values can be specified as string
+      constants, identifiers, numbers, or comma-separated lists of
+      these.  <VAR
+CLASS="LITERAL"
+>DEFAULT</VAR
+> can be used to specify
+      resetting the parameter to its default value.
+     </P
+></DD
+></DL
+></DIV
+><P
+>   Besides the configuration parameters documented in <A
+HREF="runtime-config.html"
+>Section 16.4</A
+>, there are a few that can only be
+   adjusted using the <TT
 CLASS="COMMAND"
 >SET</TT
->
-   does not start a new transaction block. See the
-   <TT
-CLASS="LITERAL"
->autocommit</TT
-> section of the <I
-CLASS="CITETITLE"
->Administrator's
-   Guide</I
-> for details.
-  </P
-><P
->   Here are additional details about a few of the parameters that can be set:
+> command or that have a
+   special syntax:
 
    <P
 ></P
@@ -324,313 +300,87 @@ CLASS="CITETITLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
-CLASS="VARNAME"
->DATESTYLE</TT
+><VAR
+CLASS="LITERAL"
+>NAMES</VAR
 ></DT
 ><DD
 ><P
->       Choose the date/time representation style. Two separate
-       settings are involved: the default date/time output and the
-       interpretation of ambiguous input.
-      </P
-><P
->       The following are date/time output styles:
-
-       <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
+>       <VAR
 CLASS="LITERAL"
->ISO</TT
-></DT
-><DD
-><P
->           Use ISO 8601-style dates and times (<TT
-CLASS="LITERAL"
->YYYY-MM-DD
-            HH:MM:SS</TT
->). This is the default.
-          </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->SQL</TT
-></DT
-><DD
-><P
->           Use Oracle/Ingres-style dates and times. Note that this
-           style has nothing to do with SQL (which mandates ISO 8601
-           style), the naming of this option is a historical accident.
-          </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->PostgreSQL</TT
-></DT
-><DD
-><P
->           Use traditional <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> format.
-          </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->German</TT
-></DT
-><DD
-><P
->           Use <TT
-CLASS="LITERAL"
->dd.mm.yyyy</TT
-> for numeric date representations.
-          </P
-></DD
-></DL
-></DIV
-><P>
-      </P
-><P
->       The following two options determine both a substyle of the
-       <SPAN
-CLASS="QUOTE"
->"SQL"</SPAN
-> and <SPAN
-CLASS="QUOTE"
->"PostgreSQL"</SPAN
-> output formats
-       and the preferred interpretation of ambiguous date input.
-
-       <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->European</TT
-></DT
-><DD
-><P
->           Use <TT
-CLASS="LITERAL"
->dd/mm/yyyy</TT
-> for numeric date representations.
-          </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->NonEuropean</TT
-><BR><TT
-CLASS="LITERAL"
->US</TT
-></DT
-><DD
-><P
->           Use <TT
-CLASS="LITERAL"
->mm/dd/yyyy</TT
-> for numeric date representations.
-          </P
-></DD
-></DL
-></DIV
-><P>
-      </P
-><P
->       A value for <TT
-CLASS="COMMAND"
->SET DATESTYLE</TT
-> can be one from
-       the first list (output styles), or one from the second list
-       (substyles), or one from each separated by a comma.
-      </P
-><P
->       <TT
-CLASS="COMMAND"
->SET DATESTYLE</TT
-> affects interpretation of
-       input and provides several standard output formats. For
-       applications needing different variations or tighter control
-       over input or output, consider using
-       the <TT
-CLASS="FUNCTION"
->to_char</TT
-> family of
-       functions.
-      </P
-><P
->       There are several now-deprecated means for setting the date style
-       in addition to the normal methods of setting it via <TT
-CLASS="COMMAND"
->SET</TT
-> or
-       a configuration-file entry:
-       <P
-></P
-><TABLE
-BORDER="0"
-><TBODY
-><TR
-><TD
->         Setting the postmaster's <TT
-CLASS="ENVAR"
->PGDATESTYLE</TT
-> environment
-         variable.  (This will be overridden by any of the other methods.)
-        </TD
-></TR
-><TR
-><TD
->         Running postmaster using the option <TT
-CLASS="OPTION"
->-o -e</TT
-> to
-         set dates to the <TT
-CLASS="LITERAL"
->European</TT
-> convention.
-         (This overrides environment variables and configuration-file
-         entries.)
-        </TD
-></TR
-><TR
-><TD
->         Setting the client's <TT
-CLASS="ENVAR"
->PGDATESTYLE</TT
-> environment variable.
-         If <TT
-CLASS="ENVAR"
->PGDATESTYLE</TT
-> is set in the frontend environment of a client
-         based on <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->, <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> will automatically set <TT
-CLASS="VARNAME"
->DATESTYLE</TT
-> to the
-         value of <TT
-CLASS="ENVAR"
->PGDATESTYLE</TT
-> during connection start-up.  This is
-         equivalent to a manually issued <TT
-CLASS="COMMAND"
->SET DATESTYLE</TT
->.
-        </TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
->
-      </P
-></DD
-><DT
->NAMES</DT
-><DD
-><P
->       <TT
-CLASS="COMMAND"
->SET NAMES</TT
-> is an alias for <TT
-CLASS="COMMAND"
->SET CLIENT_ENCODING</TT
->.
-      </P
-></DD
-><DT
->SEED</DT
-><DD
-><P
->       Sets the internal seed for the random number generator.
-	
-       <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
+>SET NAMES <VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
+>value</VAR
+></VAR
+> is an alias for
+       <VAR
+CLASS="LITERAL"
+>SET client_encoding TO <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+></VAR
+>.
+      </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>SEED</VAR
 ></DT
 ><DD
 ><P
->           The value for the seed to be used by the
-           <TT
+>       Sets the internal seed for the random number generator (the
+       function <CODE
 CLASS="FUNCTION"
->random</TT
-> function. Allowed
-           values are floating-point numbers between 0 and 1, which
-           are then multiplied by 2<SUP
+>random</CODE
+>).  Allowed values are
+       floating-point numbers between 0 and 1, which are then
+       multiplied by 2<SUP
 >31</SUP
 >-1.
-          </P
-></DD
-></DL
-></DIV
-><P>
       </P
 ><P
->       The seed can also be set by invoking the
-       <TT
+>       The seed can also be set by invoking the function
+       <CODE
 CLASS="FUNCTION"
->setseed</TT
-> SQL function:
-
-       </P><PRE
+>setseed</CODE
+>:
+</P><PRE
 CLASS="PROGRAMLISTING"
->SELECT setseed(<TT
+>SELECT setseed(<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
->);
-       </PRE
+>value</VAR
+>);</PRE
 ><P>
       </P
 ></DD
 ><DT
->SERVER_ENCODING</DT
+><VAR
+CLASS="LITERAL"
+>TIME ZONE</VAR
+></DT
 ><DD
 ><P
->       Shows the server-side multibyte encoding.  (At present, this
-       parameter can be shown but not set, because the encoding is
-       determined at <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
-> time.)
-      </P
-></DD
-><DT
->TIME ZONE<BR>TIMEZONE</DT
-><DD
-><P
->       Sets the default time zone for your session. Arguments can be
-       an SQL time interval constant, an integer or double precision
-       constant, or a string representing a time zone name recognized
-       by the host operating system.
-      </P
-><P
->       Here are some typical values for time zone settings:
+>       <VAR
+CLASS="LITERAL"
+>SET TIME ZONE <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+></VAR
+> is an alias
+       for <VAR
+CLASS="LITERAL"
+>SET timezone TO <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+></VAR
+>.  The
+       syntax <VAR
+CLASS="LITERAL"
+>SET TIME ZONE</VAR
+> allows special syntax
+       for the time zone specification.  Here are examples of valid
+       values (but note some are accepted only on some platforms):
 
        <P
 ></P
@@ -638,122 +388,103 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->'PST8PDT'</DT
+><VAR
+CLASS="LITERAL"
+>'PST8PDT'</VAR
+></DT
 ><DD
 ><P
->           Set the time zone for Berkeley, California.
+>           The time zone for Berkeley, California.
           </P
 ></DD
 ><DT
->'Portugal'</DT
+><VAR
+CLASS="LITERAL"
+>'Portugal'</VAR
+></DT
 ><DD
 ><P
->           Set the time zone for Portugal.
+>           The time zone for Portugal.
           </P
 ></DD
 ><DT
->'Europe/Rome'</DT
+><VAR
+CLASS="LITERAL"
+>'Europe/Rome'</VAR
+></DT
 ><DD
 ><P
->           Set the time zone for Italy.
+>           The time zone for Italy.
           </P
 ></DD
 ><DT
->7</DT
+><VAR
+CLASS="LITERAL"
+>-7</VAR
+></DT
 ><DD
 ><P
->           Set the time zone to 7 hours offset west from GMT (equivalent
-           to PDT).
+>           The time zone 7 hours west from UTC (equivalent
+           to PDT).  Positive values are east from UTC.
           </P
 ></DD
 ><DT
->INTERVAL '08:00' HOUR TO MINUTE</DT
+><VAR
+CLASS="LITERAL"
+>INTERVAL '-08:00' HOUR TO MINUTE</VAR
+></DT
 ><DD
 ><P
->           Set the time zone to 8 hours offset west from GMT (equivalent
+>           The time zone 8 hours west from UTC (equivalent
            to PST).
           </P
 ></DD
 ><DT
->LOCAL<BR>DEFAULT</DT
+><VAR
+CLASS="LITERAL"
+>LOCAL</VAR
+><BR><VAR
+CLASS="LITERAL"
+>DEFAULT</VAR
+></DT
 ><DD
 ><P
 >           Set the time zone to your local time zone (the one that
-           your operating system defaults to).
+           the server's operating system defaults to).
           </P
 ></DD
 ></DL
 ></DIV
 ><P>
-      </P
-><P
->       The available time zone names depend on your operating
-       system. For example, on Linux
-       <TT
-CLASS="FILENAME"
->/usr/share/zoneinfo</TT
-> contains the database
-       of time zones; the names of the files in that directory can be
-       used as parameters to this command.
-      </P
-><P
->       If an invalid time zone is specified, the time zone
-       becomes GMT (on most systems anyway).
-      </P
-><P
->       If the <TT
-CLASS="ENVAR"
->PGTZ</TT
-> environment variable is set in the frontend
-       environment of a client based on <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->, <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> will automatically
-       <TT
-CLASS="COMMAND"
->SET TIMEZONE</TT
-> to the value of
-       <TT
-CLASS="ENVAR"
->PGTZ</TT
-> during connection start-up. 
+
+       See <A
+HREF="datatype-datetime.html"
+>Section 8.5</A
+> for more information
+       about time zones.
       </P
 ></DD
 ></DL
 ></DIV
 ><P>
-  </P
-><P
->   Use <A
-HREF="sql-show.html"
-><I
->SHOW</I
-></A
-> to show the
-   current setting of a parameter.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45803"
+NAME="AEN44072"
 ></A
 ><H2
 >Diagnostics</H2
 ><P
->    
-   <P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->SET</TT
+>SET</SAMP
 ></DT
 ><DD
 ><P
@@ -761,15 +492,12 @@ CLASS="COMPUTEROUTPUT"
       </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->ERROR:  '<TT
+>ERROR:  '<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> is not a
-	 valid option name</TT
+>name</VAR
+>' is not a valid option name</SAMP
 ></DT
 ><DD
 ><P
@@ -777,15 +505,12 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->ERROR:  '<TT
+>ERROR:  '<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->':
-	 permission denied</TT
+>name</VAR
+>': permission denied</SAMP
 ></DT
 ><DD
 ><P
@@ -793,15 +518,12 @@ CLASS="REPLACEABLE"
       </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->ERROR:  '<TT
+>ERROR:  '<VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->' cannot
-	 be changed after server start</TT
+>name</VAR
+>' cannot be changed after server start</SAMP
 ></DT
 ><DD
 ><P
@@ -810,129 +532,112 @@ CLASS="REPLACEABLE"
 ></DD
 ></DL
 ></DIV
-><P>
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44098"
+></A
+><H2
+>Notes</H2
+><P
+>   The function <CODE
+CLASS="FUNCTION"
+>set_config</CODE
+> provides equivalent
+   functionality. See <A
+HREF="functions-misc.html"
+>Section 9.13</A
+>.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45830"
+NAME="AEN44103"
 ></A
 ><H2
 >Examples</H2
 ><P
+>   Set the schema search path:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET search_path TO my_schema, public;</PRE
+><P>
+  </P
+><P
 >   Set the style of date to traditional
    <SPAN
 CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> with European conventions:
-   </P><PRE
+>POSTGRES</SPAN
+> with <SPAN
+CLASS="QUOTE"
+>"day before month"</SPAN
+>
+   input convention:
+</P><PRE
 CLASS="SCREEN"
->SET DATESTYLE TO PostgreSQL,European;
-   </PRE
+>SET datestyle TO postgres, dmy;</PRE
 ><P>
   </P
 ><P
 >   Set the time zone for Berkeley, California, using quotes to
-   preserve the uppercase spelling of the time zone name (note
-   that the date style is <TT
-CLASS="LITERAL"
->PostgreSQL</TT
-> for this
-   example): 
-
-   </P><PRE
+   preserve the uppercase spelling of the time zone name:
+</P><PRE
 CLASS="SCREEN"
 >SET TIME ZONE 'PST8PDT';
-SELECT CURRENT_TIMESTAMP AS today;
-               today                
-------------------------------------
- Tue Feb 26 07:32:21.42834 2002 PST
-   </PRE
-><P>
-  </P
-><P
->   Set the time zone for Italy (note the required single quotes to handle 
-   the special characters):
+SELECT current_timestamp AS today;
 
-   </P><PRE
-CLASS="SCREEN"
->SET TIME ZONE 'Europe/Rome';
-SELECT CURRENT_TIMESTAMP AS today;
-
-             today             
+             today
 -------------------------------
- 2002-10-08 05:39:35.008271+02
-   </PRE
+ 2003-04-29 15:02:01.218622-07</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-SET-3"
+NAME="AEN44113"
 ></A
 ><H2
 >Compatibility</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-SET-4"
-></A
-><H3
->    SQL92
-   </H3
 ><P
->    <TT
+>   <VAR
 CLASS="LITERAL"
->SET TIME ZONE</TT
->
-    extends syntax defined in
-    <SPAN
-CLASS="ACRONYM"
->SQL9x</SPAN
->. <SPAN
-CLASS="ACRONYM"
->SQL9x</SPAN
-> allows
-    only numeric time zone offsets while
-    <SPAN
+>SET TIME ZONE</VAR
+> extends syntax defined in the SQL
+   standard.  The standard allows only numeric time zone offsets while
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> allows full time zone
-    specifier strings as well. All other <TT
+> allows more flexible
+   time-zone specifications.  All other <VAR
 CLASS="LITERAL"
->SET</TT
+>SET</VAR
 >
-    features are
-    <SPAN
+   features are <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > extensions.
-   </P
-></DIV
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45851"
+NAME="AEN44120"
 ></A
 ><H2
 >See Also</H2
-><P
->    The function <TT
-CLASS="FUNCTION"
->set_config</TT
-> provides the equivalent
-    capability. See <I
-CLASS="CITETITLE"
->Miscellaneous Functions</I
-> in the
-    <I
-CLASS="CITETITLE"
->PostgreSQL User's Guide</I
->.
-  </P
+><A
+HREF="sql-reset.html"
+><I
+>RESET</I
+></A
+>, <A
+HREF="sql-show.html"
+><I
+>SHOW</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

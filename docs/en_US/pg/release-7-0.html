@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Release 7.0</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix A. Release Notes</TD
+>Appendix D. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-0"
->A.17. Release 7.0</A
+>D.19. Release 7.0</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -153,29 +153,29 @@ CLASS="APPLICATION"
 ><DD
 ><P
 >	SQL92 join syntax is now supported, though only as
-	<TT
+	<VAR
 CLASS="LITERAL"
->INNER JOIN</TT
-> for this release. <TT
+>INNER JOIN</VAR
+> for this release. <VAR
 CLASS="LITERAL"
->JOIN</TT
+>JOIN</VAR
 >,
-	<TT
+	<VAR
 CLASS="LITERAL"
->NATURAL JOIN</TT
->, <TT
+>NATURAL JOIN</VAR
+>, <VAR
 CLASS="LITERAL"
->JOIN</TT
->/<TT
+>JOIN</VAR
+>/<VAR
 CLASS="LITERAL"
->USING</TT
+>USING</VAR
 >,
-	and <TT
+	and <VAR
 CLASS="LITERAL"
->JOIN</TT
->/<TT
+>JOIN</VAR
+>/<VAR
 CLASS="LITERAL"
->ON</TT
+>ON</VAR
 > are available, as are
 	column correlation names.
        </P
@@ -189,8 +189,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN24115"
->A.17.1. Migration to version 7.0</A
+NAME="AEN63526"
+>D.19.1. Migration to version 7.0</A
 ></H2
 ><P
 >     A dump/restore using <SPAN
@@ -259,31 +259,31 @@ CLASS="PRODUCTNAME"
 ></LI
 ><LI
 ><P
->	The <SPAN
+>	The <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
-> and <SPAN
+>JDBC</ACRONYM
+> and <ACRONYM
 CLASS="ACRONYM"
->ODBC</SPAN
+>ODBC</ACRONYM
 >
 	interfaces have been upgraded and extended.
        </P
 ></LI
 ><LI
 ><P
->	The string function <TT
+>	The string function <CODE
 CLASS="FUNCTION"
->CHAR_LENGTH</TT
+>CHAR_LENGTH</CODE
 > is now a
 	native function. Previous versions translated this into a call
-	to <TT
+	to <CODE
 CLASS="FUNCTION"
->LENGTH</TT
+>LENGTH</CODE
 >, which could result in
 	ambiguity with other types implementing
-	<TT
+	<CODE
 CLASS="FUNCTION"
->LENGTH</TT
+>LENGTH</CODE
 > such as the geometric types.
        </P
 ></LI
@@ -296,8 +296,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN24141"
->A.17.2. Changes</A
+NAME="AEN63552"
+>D.19.2. Changes</A
 ></H2
 ><P
 >     </P><PRE
@@ -383,12 +383,12 @@ Enhancements
 ------------
 New CLI interface include file sqlcli.h, based on SQL3/SQL98
 Remove all limits on query length, row length limit still exists (Tom)
-Update jdbc protocol to 2.0 (Jens Glaser <TT
+Update jdbc protocol to 2.0 (Jens Glaser <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:jens@jens.de"
 >jens@jens.de</A
->&#62;</TT
+>&#62;</CODE
 >)
 Add TRUNCATE command to quickly truncate relation (Mike Mascari)
 Fix to give super user and createdb user proper update catalog rights (Peter E)
@@ -410,12 +410,12 @@ Allow WHERE restriction on ctid (physical heap location) (Hiroshi)
 Move pginterface from contrib to interface directory, rename to pgeasy (Bruce)
 Change pgeasy connectdb() parameter ordering (Bruce)
 Require SELECT DISTINCT target list to have all ORDER BY columns (Tom)
-Add Oracle's COMMENT ON command (Mike Mascari <TT
+Add Oracle's COMMENT ON command (Mike Mascari <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:mascarim@yahoo.com"
 >mascarim@yahoo.com</A
->&#62;</TT
+>&#62;</CODE
 >)
 libpq's PQsetNoticeProcessor function now returns previous hook(Peter E)
 Prevent PQsetNoticeProcessor from being set to NULL (Peter E)
@@ -463,7 +463,7 @@ Add option for initdb to prompts for superuser password (Peter E)
 Allow complex type casts like col::numeric(9,2) and col::int2::float8 (Tom)
 Updated user interfaces on initdb, initlocation, pg_dump, ipcclean (Peter E)
 New pg_char_to_encoding() and pg_encoding_to_char() functions (Tatsuo)
-Libpq non-blocking mode (Alfred Perlstein)
+libpq non-blocking mode (Alfred Perlstein)
 Improve conversion of types in casts that don't specify a length
 New plperl internal programming language (Mark Hollomon)
 Allow COPY IN to read file that do not end with a newline (Tom)
@@ -610,12 +610,12 @@ Add scripts for checking includes (Bruce)
 Remove un-needed #include's from *.c files (Bruce)
 Change #include's to use &lt;&gt; and "" as appropriate (Bruce)
 Enable WIN32 compilation of libpq
-Alpha spinlock fix from Uncle George <TT
+Alpha spinlock fix from Uncle George <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:gatgul@voicenet.com"
 >gatgul@voicenet.com</A
->&#62;</TT
+>&#62;</CODE
 >
 Overhaul of optimizer data structures (Tom)
 Fix to cygipc library (Yutaka Tanida)
@@ -634,12 +634,12 @@ Fix for plpgsql on BSD/OS
 Add SQL_ASCII test case to the regression test (Tatsuo)
 configure --with-mb now deprecated (Tatsuo)
 NT fixes
-NetBSD fixes (Johnny C. Lam <TT
+NetBSD fixes (Johnny C. Lam <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:lamj@stat.cmu.edu"
 >lamj@stat.cmu.edu</A
->&#62;</TT
+>&#62;</CODE
 >)
 Fixes for Alpha compiles
 New multibyte encodings

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Miscellaneous Functions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Conditional Expressions"
 HREF="functions-conditional.html"><LINK
 REL="NEXT"
-TITLE="Aggregate Functions"
-HREF="functions-aggregate.html"><LINK
+TITLE="Array Functions"
+HREF="functions-array.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. Functions and Operators</TD
+>Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="functions-aggregate.html"
+HREF="functions-array.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,12 +81,12 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-MISC"
->6.13. Miscellaneous Functions</A
+>9.13. Miscellaneous Functions</A
 ></H1
 ><P
 >   <A
 HREF="functions-misc.html#FUNCTIONS-MISC-SESSION-TABLE"
->Table 6-27</A
+>Table 9-35</A
 > shows several
    functions that extract session and system information.
   </P
@@ -97,198 +97,150 @@ NAME="FUNCTIONS-MISC-SESSION-TABLE"
 ></A
 ><P
 ><B
->Table 6-27. Session Information Functions</B
+>Table 9-35. Session Information Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->current_database()</TT
+>current_database()</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >name of current database</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->current_schema()</TT
+>current_schema()</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >name of current schema</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->current_schemas(boolean)</TT
+>current_schemas(boolean)</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >names of schemas in search path optionally including implicit schemas</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->current_user</TT
+>current_user</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >user name of current execution context</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->session_user</TT
+>session_user</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >session user name</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->user</TT
+>user</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->equivalent to <TT
+>equivalent to <CODE
 CLASS="FUNCTION"
->current_user</TT
+>current_user</CODE
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><CODE
 CLASS="FUNCTION"
->version()</TT
+>version()</CODE
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >PostgreSQL version information</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><A
-NAME="AEN9917"
+NAME="AEN10954"
 ></A
 ><A
-NAME="AEN9920"
+NAME="AEN10957"
 ></A
 ><A
-NAME="AEN9923"
+NAME="AEN10960"
 ></A
 ><P
->    The <TT
+>    The <CODE
 CLASS="FUNCTION"
->session_user</TT
+>session_user</CODE
 > is the user that initiated a
     database connection; it is fixed for the duration of that
-    connection. The <TT
+    connection. The <CODE
 CLASS="FUNCTION"
->current_user</TT
+>current_user</CODE
 > is the user identifier
     that is applicable for permission checking. Normally, it is equal
     to the session user, but it changes during the execution of
-    functions with the attribute <TT
+    functions with the attribute <VAR
 CLASS="LITERAL"
->SECURITY DEFINER</TT
+>SECURITY DEFINER</VAR
 >.
     In Unix parlance, the session user is the <SPAN
 CLASS="QUOTE"
@@ -306,65 +258,74 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     <TT
+>     <CODE
 CLASS="FUNCTION"
->current_user</TT
->, <TT
+>current_user</CODE
+>, <CODE
 CLASS="FUNCTION"
->session_user</TT
+>session_user</CODE
 >, and
-     <TT
+     <CODE
 CLASS="FUNCTION"
->user</TT
-> have special syntactic status in <SPAN
+>user</CODE
+> have special syntactic status in <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >:
      they must be called without trailing parentheses.
     </P
 ></BLOCKQUOTE
 ></DIV
 ><P
->    <TT
+>    <CODE
 CLASS="FUNCTION"
->current_schema</TT
+>current_schema</CODE
 > returns the name of the schema that is
     at the front of the search path (or a null value if the search path is
     empty).  This is the schema that will be used for any tables or
     other named objects that are created without specifying a target schema.
-    <TT
+    <CODE
 CLASS="FUNCTION"
->current_schemas(boolean)</TT
+>current_schemas(boolean)</CODE
 > returns an array of the names of all
-    schemas presently in the search path.  The boolean option determines whether or not
-    implicitly included system schemas such as pg_catalog are included in the search 
+    schemas presently in the search path.  The Boolean option determines whether or not
+    implicitly included system schemas such as <VAR
+CLASS="LITERAL"
+>pg_catalog</VAR
+> are included in the search 
     path returned.
    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
 ><P
->    <A
-NAME="AEN9942"
-></A
->
-    The search path may be altered by a run-time setting.  The
-    command to use is <TT
-CLASS="COMMAND"
->     SET SEARCH_PATH '<TT
-CLASS="VARNAME"
->schema</TT
->'[,'<TT
-CLASS="VARNAME"
->schema</TT
->']...
-    </TT
->
-   </P
+><B
+>Note: </B
+>     The search path may be altered at run time.  The command is:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET search_path TO <VAR
+CLASS="REPLACEABLE"
+>schema</VAR
+> [<SPAN
+CLASS="OPTIONAL"
+>, <VAR
+CLASS="REPLACEABLE"
+>schema</VAR
+>, ...</SPAN
+>]</PRE
+><P>
+    </P
+></BLOCKQUOTE
+></DIV
 ><A
-NAME="AEN9948"
+NAME="AEN10985"
 ></A
 ><P
->    <TT
+>    <CODE
 CLASS="FUNCTION"
->version()</TT
+>version()</CODE
 > returns a string describing the
     <SPAN
 CLASS="PRODUCTNAME"
@@ -374,7 +335,7 @@ CLASS="PRODUCTNAME"
 ><P
 >   <A
 HREF="functions-misc.html#FUNCTIONS-MISC-SET-TABLE"
->Table 6-28</A
+>Table 9-36</A
 > shows the functions
    available to query and alter run-time configuration parameters.
   </P
@@ -385,164 +346,145 @@ NAME="FUNCTIONS-MISC-SET-TABLE"
 ></A
 ><P
 ><B
->Table 6-28. Configuration Settings Information Functions</B
+>Table 9-36. Configuration Settings Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->        <TT
+>        <VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->current_setting</TT
->(<TT
+>current_setting</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->setting_name</I
-></TT
->)
-       </TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->value of current setting</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->        <TT
-CLASS="FUNCTION"
->set_config(<TT
-CLASS="PARAMETER"
-><I
->setting_name</I
-></TT
->,
-                             <TT
-CLASS="PARAMETER"
-><I
->new_value</I
-></TT
->,
-                             <TT
-CLASS="PARAMETER"
-><I
->is_local</I
-></TT
->)</TT
+>setting_name</VAR
+>)</VAR
 >
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->new value of current setting</TD
+>current value of setting</TD
+></TR
+><TR
+><TD
+>        <VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>set_config(<VAR
+CLASS="PARAMETER"
+>setting_name</VAR
+>,
+                             <VAR
+CLASS="PARAMETER"
+>new_value</VAR
+>,
+                             <VAR
+CLASS="PARAMETER"
+>is_local</VAR
+>)</CODE
+></VAR
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>set parameter and return new value</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><A
-NAME="AEN9980"
+NAME="AEN11019"
 ></A
 ><A
-NAME="AEN9983"
+NAME="AEN11021"
+></A
+><A
+NAME="AEN11023"
 ></A
 ><P
->    The <TT
+>    The function <CODE
 CLASS="FUNCTION"
->current_setting</TT
-> is used to obtain the current
-    value of the <TT
+>current_setting</CODE
+> yields the
+    current value of the setting <VAR
 CLASS="PARAMETER"
-><I
->setting_name</I
-></TT
-> setting, as a query
-    result. It is the equivalent to the SQL <TT
+>setting_name</VAR
+>.
+    It corresponds to the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> command
+    <TT
 CLASS="COMMAND"
 >SHOW</TT
-> command.
-    For example:
+>.  An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->select current_setting('DateStyle');
-            current_setting
----------------------------------------
- ISO with US (NonEuropean) conventions
+>SELECT current_setting('datestyle');
+
+ current_setting
+-----------------
+ ISO, MDY
 (1 row)</PRE
 ><P>
    </P
 ><P
->    <TT
+>    <CODE
 CLASS="FUNCTION"
->set_config</TT
-> allows the <TT
+>set_config</CODE
+> sets the parameter
+    <VAR
 CLASS="PARAMETER"
-><I
->setting_name
-    </I
-></TT
-> setting to be changed to <TT
+>setting_name</VAR
+> to
+    <VAR
 CLASS="PARAMETER"
-><I
->new_value</I
-></TT
->.
-    If <TT
+>new_value</VAR
+>.  If
+    <VAR
 CLASS="PARAMETER"
-><I
->is_local</I
-></TT
-> is set to <TT
+>is_local</VAR
+> is <VAR
 CLASS="LITERAL"
->true</TT
->,
-    the new value will only apply to the current transaction. If you want
+>true</VAR
+>, the
+    new value will only apply to the current transaction. If you want
     the new value to apply for the current session, use
-    <TT
+    <VAR
 CLASS="LITERAL"
->false</TT
-> instead. It is the equivalent to the SQL
-    <TT
+>false</VAR
+> instead. The function corresponds to the
+    SQL command <TT
 CLASS="COMMAND"
 >SET</TT
-> command. For example:
+>. An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->select set_config('show_statement_stats','off','f');
+>SELECT set_config('show_statement_stats', 'off', false);
+
  set_config
 ------------
  off
@@ -552,12 +494,12 @@ CLASS="PROGRAMLISTING"
 ><P
 >   <A
 HREF="functions-misc.html#FUNCTIONS-MISC-ACCESS-TABLE"
->Table 6-29</A
+>Table 9-37</A
 > lists functions that
    allow the user to query object access privileges programmatically.
    See <A
 HREF="ddl-priv.html"
->Section 2.7</A
+>Section 5.7</A
 > for more information about
    privileges.
   </P
@@ -568,447 +510,358 @@ NAME="FUNCTIONS-MISC-ACCESS-TABLE"
 ></A
 ><P
 ><B
->Table 6-29. Access Privilege Inquiry Functions</B
+>Table 9-37. Access Privilege Inquiry Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_table_privilege</TT
->(<TT
+>has_table_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->user</I
-></TT
+>user</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->table</I
-></TT
+>table</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does user have access to table</TD
+>does user have privilege for table</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_table_privilege</TT
->(<TT
+>has_table_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->table</I
-></TT
+>table</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does current user have access to table</TD
+>does current user have privilege for table</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_database_privilege</TT
->(<TT
+>has_database_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->user</I
-></TT
+>user</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->database</I
-></TT
+>database</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does user have access to database</TD
+>does user have privilege for database</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_database_privilege</TT
->(<TT
+>has_database_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->database</I
-></TT
+>database</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does current user have access to database</TD
+>does current user have privilege for database</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_function_privilege</TT
->(<TT
+>has_function_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->user</I
-></TT
+>user</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->function</I
-></TT
+>function</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does user have access to function</TD
+>does user have privilege for function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_function_privilege</TT
->(<TT
+>has_function_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->function</I
-></TT
+>function</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does current user have access to function</TD
+>does current user have privilege for function</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_language_privilege</TT
->(<TT
+>has_language_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->user</I
-></TT
+>user</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->language</I
-></TT
+>language</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does user have access to language</TD
+>does user have privilege for language</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_language_privilege</TT
->(<TT
+>has_language_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->language</I
-></TT
+>language</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does current user have access to language</TD
+>does current user have privilege for language</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_schema_privilege</TT
->(<TT
+>has_schema_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->user</I
-></TT
+>user</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->schema</I
-></TT
+>schema</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does user have access to schema</TD
+>does user have privilege for schema</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->has_schema_privilege</TT
->(<TT
+>has_schema_privilege</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->schema</I
-></TT
+>schema</VAR
 >,
-                                  <TT
+                                  <VAR
 CLASS="PARAMETER"
-><I
->access</I
-></TT
->)
+>privilege</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->does current user have access to schema</TD
+>does current user have privilege for schema</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><A
-NAME="AEN10097"
+NAME="AEN11148"
 ></A
 ><A
-NAME="AEN10099"
+NAME="AEN11150"
 ></A
 ><A
-NAME="AEN10101"
+NAME="AEN11152"
 ></A
 ><A
-NAME="AEN10103"
+NAME="AEN11154"
 ></A
 ><A
-NAME="AEN10105"
+NAME="AEN11156"
 ></A
 ><P
->    <TT
+>    <CODE
 CLASS="FUNCTION"
->has_table_privilege</TT
+>has_table_privilege</CODE
 > checks whether a user
     can access a table in a particular way.  The user can be
     specified by name or by ID
-    (<TT
-CLASS="CLASSNAME"
->pg_user</TT
->.<TT
-CLASS="STRUCTFIELD"
->usesysid</TT
+    (<VAR
+CLASS="LITERAL"
+>pg_user.usesysid</VAR
 >), or if the argument is
     omitted
-    <TT
+    <CODE
 CLASS="FUNCTION"
->current_user</TT
+>current_user</CODE
 > is assumed.  The table can be specified
     by name or by OID.  (Thus, there are actually six variants of
-    <TT
+    <CODE
 CLASS="FUNCTION"
->has_table_privilege</TT
+>has_table_privilege</CODE
 >, which can be distinguished by
     the number and types of their arguments.)  When specifying by name,
     the name can be schema-qualified if necessary.
-    The desired access type
+    The desired access privilege type
     is specified by a text string, which must evaluate to one of the
-    values <TT
+    values <VAR
 CLASS="LITERAL"
->SELECT</TT
->, <TT
+>SELECT</VAR
+>, <VAR
 CLASS="LITERAL"
->INSERT</TT
->, <TT
+>INSERT</VAR
+>, <VAR
 CLASS="LITERAL"
->UPDATE</TT
+>UPDATE</VAR
 >,
-    <TT
+    <VAR
 CLASS="LITERAL"
->DELETE</TT
->, <TT
+>DELETE</VAR
+>, <VAR
 CLASS="LITERAL"
->RULE</TT
->, <TT
+>RULE</VAR
+>, <VAR
 CLASS="LITERAL"
->REFERENCES</TT
+>REFERENCES</VAR
 >, or
-    <TT
+    <VAR
 CLASS="LITERAL"
->TRIGGER</TT
+>TRIGGER</VAR
 >.  (Case of the string is not significant, however.)
     An example is:
 </P><PRE
@@ -1017,94 +870,105 @@ CLASS="PROGRAMLISTING"
 ><P>
    </P
 ><P
->    <TT
+>    <CODE
 CLASS="FUNCTION"
->has_database_privilege</TT
+>has_database_privilege</CODE
 > checks whether a user
     can access a database in a particular way.  The possibilities for its
-    arguments are analogous to <TT
+    arguments are analogous to <CODE
 CLASS="FUNCTION"
->has_table_privilege</TT
+>has_table_privilege</CODE
 >.
-    The desired access type must evaluate to
-    <TT
+    The desired access privilege type must evaluate to
+    <VAR
 CLASS="LITERAL"
->CREATE</TT
+>CREATE</VAR
 >,
-    <TT
+    <VAR
 CLASS="LITERAL"
->TEMPORARY</TT
+>TEMPORARY</VAR
 >, or
-    <TT
+    <VAR
 CLASS="LITERAL"
->TEMP</TT
+>TEMP</VAR
 > (which is equivalent to
-    <TT
+    <VAR
 CLASS="LITERAL"
->TEMPORARY</TT
+>TEMPORARY</VAR
 >).
    </P
 ><P
->    <TT
+>    <CODE
 CLASS="FUNCTION"
->has_function_privilege</TT
+>has_function_privilege</CODE
 > checks whether a user
     can access a function in a particular way.  The possibilities for its
-    arguments are analogous to <TT
+    arguments are analogous to <CODE
 CLASS="FUNCTION"
->has_table_privilege</TT
+>has_table_privilege</CODE
 >.
     When specifying a function by a text string rather than by OID,
     the allowed input is the same as for the <TT
 CLASS="TYPE"
 >regprocedure</TT
 > data type.
-    The desired access type must currently evaluate to
-    <TT
+    The desired access privilege type must currently evaluate to
+    <VAR
 CLASS="LITERAL"
->EXECUTE</TT
+>EXECUTE</VAR
 >.
    </P
 ><P
->    <TT
+>    <CODE
 CLASS="FUNCTION"
->has_language_privilege</TT
+>has_language_privilege</CODE
 > checks whether a user
     can access a procedural language in a particular way.  The possibilities
-    for its arguments are analogous to <TT
+    for its arguments are analogous to <CODE
 CLASS="FUNCTION"
->has_table_privilege</TT
+>has_table_privilege</CODE
 >.
-    The desired access type must currently evaluate to
-    <TT
+    The desired access privilege type must currently evaluate to
+    <VAR
 CLASS="LITERAL"
->USAGE</TT
+>USAGE</VAR
 >.
    </P
 ><P
->    <TT
+>    <CODE
 CLASS="FUNCTION"
->has_schema_privilege</TT
+>has_schema_privilege</CODE
 > checks whether a user
     can access a schema in a particular way.  The possibilities for its
-    arguments are analogous to <TT
+    arguments are analogous to <CODE
 CLASS="FUNCTION"
->has_table_privilege</TT
+>has_table_privilege</CODE
 >.
-    The desired access type must evaluate to
-    <TT
+    The desired access privilege type must evaluate to
+    <VAR
 CLASS="LITERAL"
->CREATE</TT
+>CREATE</VAR
 > or
-    <TT
+    <VAR
 CLASS="LITERAL"
->USAGE</TT
+>USAGE</VAR
 >.
    </P
+><P
+>   To evaluate whether a user holds a grant option on the privilege,
+   append <VAR
+CLASS="LITERAL"
+> WITH GRANT OPTION</VAR
+> to the privilege key
+   word; for example <VAR
+CLASS="LITERAL"
+>'UPDATE WITH GRANT OPTION'</VAR
+>.
+  </P
 ><P
 >   <A
 HREF="functions-misc.html#FUNCTIONS-MISC-SCHEMA-TABLE"
->Table 6-30</A
+>Table 9-38</A
 > shows functions that
    determine whether a certain object is <I
 CLASS="FIRSTTERM"
@@ -1128,203 +992,200 @@ NAME="FUNCTIONS-MISC-SCHEMA-TABLE"
 ></A
 ><P
 ><B
->Table 6-30. Schema Visibility Inquiry Functions</B
+>Table 9-38. Schema Visibility Inquiry Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pg_table_is_visible</TT
->(<TT
+>pg_table_is_visible</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->tableOID</I
-></TT
->)
+>table_oid</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >is table visible in search path</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pg_type_is_visible</TT
->(<TT
+>pg_type_is_visible</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->typeOID</I
-></TT
->)
+>type_oid</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >is type visible in search path</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pg_function_is_visible</TT
->(<TT
+>pg_function_is_visible</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->functionOID</I
-></TT
->)
+>function_oid</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >is function visible in search path</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pg_operator_is_visible</TT
->(<TT
+>pg_operator_is_visible</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->operatorOID</I
-></TT
->)
+>operator_oid</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >is operator visible in search path</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pg_opclass_is_visible</TT
->(<TT
+>pg_opclass_is_visible</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->opclassOID</I
-></TT
->)
+>opclass_oid</VAR
+>)</VAR
+>
        </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >boolean</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >is operator class visible in search path</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_conversion_is_visible</CODE
+>(<VAR
+CLASS="PARAMETER"
+>conversion_oid</VAR
+>)</VAR
+>
+       </TD
+><TD
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+>is conversion visible in search path</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><A
-NAME="AEN10190"
+NAME="AEN11256"
 ></A
 ><A
-NAME="AEN10192"
+NAME="AEN11258"
 ></A
 ><A
-NAME="AEN10194"
+NAME="AEN11260"
 ></A
 ><A
-NAME="AEN10196"
+NAME="AEN11262"
 ></A
 ><A
-NAME="AEN10198"
+NAME="AEN11264"
+></A
+><A
+NAME="AEN11266"
 ></A
 ><P
->   <TT
+>   <CODE
 CLASS="FUNCTION"
->pg_table_is_visible</TT
+>pg_table_is_visible</CODE
 > performs the check for
-   tables (or views, or any other kind of <TT
+   tables (or views, or any other kind of <VAR
 CLASS="LITERAL"
->pg_class</TT
+>pg_class</VAR
 > entry).
-   <TT
+   <CODE
 CLASS="FUNCTION"
->pg_type_is_visible</TT
+>pg_type_is_visible</CODE
 >,
-   <TT
+   <CODE
 CLASS="FUNCTION"
->pg_function_is_visible</TT
+>pg_function_is_visible</CODE
 >,
-   <TT
+   <CODE
 CLASS="FUNCTION"
->pg_operator_is_visible</TT
+>pg_operator_is_visible</CODE
+>,
+   <CODE
+CLASS="FUNCTION"
+>pg_opclass_is_visible</CODE
 >, and
-   <TT
+   <CODE
 CLASS="FUNCTION"
->pg_opclass_is_visible</TT
+>pg_conversion_is_visible</CODE
 > perform the same sort of
-   visibility check for types, functions, operators, and operator
-   classes, respectively.  For functions and operators, an object in
+   visibility check for types, functions, operators, operator classes
+   and conversions, respectively.  For functions and operators, an object in
    the search path is visible if there is no object of the same name
    <SPAN
 CLASS="emphasis"
@@ -1361,58 +1222,82 @@ CLASS="PROGRAMLISTING"
     this way --- if the name can be recognized at all, it must be visible.
    </P
 ><A
-NAME="AEN10214"
+NAME="AEN11283"
 ></A
 ><A
-NAME="AEN10216"
+NAME="AEN11285"
 ></A
 ><A
-NAME="AEN10218"
+NAME="AEN11287"
 ></A
 ><A
-NAME="AEN10220"
+NAME="AEN11289"
 ></A
 ><A
-NAME="AEN10222"
+NAME="AEN11291"
+></A
+><A
+NAME="AEN11293"
+></A
+><A
+NAME="AEN11295"
 ></A
 ><P
 >   <A
 HREF="functions-misc.html#FUNCTIONS-MISC-CATALOG-TABLE"
->Table 6-31</A
+>Table 9-39</A
 > lists functions that
    extract information from the system catalogs.
-   <TT
+   <CODE
 CLASS="FUNCTION"
->pg_get_viewdef()</TT
+>pg_get_viewdef</CODE
 >,
-   <TT
+   <CODE
 CLASS="FUNCTION"
->pg_get_ruledef()</TT
+>pg_get_ruledef</CODE
 >,
-   <TT
+   <CODE
 CLASS="FUNCTION"
->pg_get_indexdef()</TT
+>pg_get_indexdef</CODE
+>,
+   <CODE
+CLASS="FUNCTION"
+>pg_get_triggerdef</CODE
 >, and
-   <TT
+   <CODE
 CLASS="FUNCTION"
->pg_get_constraintdef()</TT
+>pg_get_constraintdef</CODE
 > respectively
-   reconstruct the creating command for a view, rule, index, or
+   reconstruct the creating command for a view, rule, index, trigger, or
    constraint.  (Note that this is a decompiled reconstruction, not
-   the verbatim text of the command.)  At present
-   <TT
+   the original text of the command.)  Most of these come in two
+   variants, one of which can optionally <SPAN
+CLASS="QUOTE"
+>"pretty-print"</SPAN
+> the result.
+   The pretty-printed format is more readable, but the default format is more
+   likely to be
+   interpreted the same way by future versions of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>;
+   avoid using pretty-printed output for dump purposes.
+   Passing <VAR
+CLASS="LITERAL"
+>false</VAR
+> for the pretty-print parameter yields the
+   same result as the variant that does not have the parameter at all.
+   <CODE
 CLASS="FUNCTION"
->pg_get_constraintdef()</TT
-> only works for
-   foreign-key constraints.  <TT
+>pg_get_expr</CODE
+> decompiles the internal form of an
+   individual expression, such as the default value for a column.  It
+   may be useful when examining the contents of system catalogs.
+   <CODE
 CLASS="FUNCTION"
->pg_get_userbyid()</TT
+>pg_get_userbyid</CODE
 >
-   extracts a user's name given a <TT
-CLASS="STRUCTFIELD"
->usesysid</TT
->
-   value.
+   extracts a user's name given a user ID number.
   </P
 ><DIV
 CLASS="TABLE"
@@ -1421,52 +1306,41 @@ NAME="FUNCTIONS-MISC-CATALOG-TABLE"
 ></A
 ><P
 ><B
->Table 6-31. Catalog Information Functions</B
+>Table 9-39. System Catalog Information Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pg_get_viewdef</TT
->(<TT
+>pg_get_viewdef</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->viewname</I
-></TT
->)</TD
+>view_name</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get <TT
+>get <TT
 CLASS="COMMAND"
 >CREATE VIEW</TT
 > command for view (<SPAN
@@ -1479,242 +1353,29 @@ CLASS="EMPHASIS"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pg_get_viewdef</TT
->(<TT
+>pg_get_viewdef</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->viewOID</I
-></TT
->)</TD
+>view_name</VAR
+>, <VAR
+CLASS="PARAMETER"
+>pretty_bool</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get <TT
+>get <TT
 CLASS="COMMAND"
 >CREATE VIEW</TT
-> command for view</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="FUNCTION"
->pg_get_ruledef</TT
->(<TT
-CLASS="PARAMETER"
-><I
->ruleOID</I
-></TT
->)</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get <TT
-CLASS="COMMAND"
->CREATE RULE</TT
-> command for rule</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="FUNCTION"
->pg_get_indexdef</TT
->(<TT
-CLASS="PARAMETER"
-><I
->indexOID</I
-></TT
->)</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get <TT
-CLASS="COMMAND"
->CREATE INDEX</TT
-> command for index</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="FUNCTION"
->pg_get_constraintdef</TT
->(<TT
-CLASS="PARAMETER"
-><I
->constraintOID</I
-></TT
->)</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get definition of a constraint</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="FUNCTION"
->pg_get_userbyid</TT
->(<TT
-CLASS="PARAMETER"
-><I
->userid</I
-></TT
->)</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get user name with given ID</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><A
-NAME="AEN10289"
-></A
-><A
-NAME="AEN10291"
-></A
-><P
->    The function shown in <A
-HREF="functions-misc.html#FUNCTIONS-MISC-COMMENT-TABLE"
->Table 6-32</A
-> extract comments
-    previously stored with the <TT
-CLASS="COMMAND"
->COMMENT</TT
-> command.  A
-    null value is returned if no comment can be found matching the
-    specified parameters.
-   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-MISC-COMMENT-TABLE"
-></A
-><P
-><B
->Table 6-32. Comment Information Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><THEAD
-><TR
-><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Name</TH
-><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Return Type</TH
-><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="FUNCTION"
->obj_description</TT
->(<TT
-CLASS="PARAMETER"
-><I
->objectOID</I
-></TT
->, <TT
-CLASS="PARAMETER"
-><I
->tablename</I
-></TT
->)</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get comment for a database object</TD
-></TR
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="FUNCTION"
->obj_description</TT
->(<TT
-CLASS="PARAMETER"
-><I
->objectOID</I
-></TT
->)</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get comment for a database object (<SPAN
+> command for view (<SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
@@ -1724,66 +1385,441 @@ CLASS="EMPHASIS"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->col_description</TT
->(<TT
+>pg_get_viewdef</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->tableOID</I
-></TT
->, <TT
-CLASS="PARAMETER"
-><I
->columnnumber</I
-></TT
->)</TD
+>view_oid</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Get comment for a table column</TD
+>get <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+> command for view</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_viewdef</CODE
+>(<VAR
+CLASS="PARAMETER"
+>view_oid</VAR
+>, <VAR
+CLASS="PARAMETER"
+>pretty_bool</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE VIEW</TT
+> command for view</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_ruledef</CODE
+>(<VAR
+CLASS="PARAMETER"
+>rule_oid</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+> command for rule</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_ruledef</CODE
+>(<VAR
+CLASS="PARAMETER"
+>rule_oid</VAR
+>, <VAR
+CLASS="PARAMETER"
+>pretty_bool</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+> command for rule</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_indexdef</CODE
+>(<VAR
+CLASS="PARAMETER"
+>index_oid</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+> command for index</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_indexdef</CODE
+>(<VAR
+CLASS="PARAMETER"
+>index_oid</VAR
+>, <VAR
+CLASS="PARAMETER"
+>column_no</VAR
+>, <VAR
+CLASS="PARAMETER"
+>pretty_bool</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+> command for index,
+       or definition of just one index column when
+       <VAR
+CLASS="PARAMETER"
+>column_no</VAR
+> is not zero</TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>pg_get_triggerdef</CODE
+>(<VAR
+CLASS="PARAMETER"
+>trigger_oid</VAR
+>)</TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get <TT
+CLASS="COMMAND"
+>CREATE [ CONSTRAINT ] TRIGGER</TT
+> command for trigger</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_constraintdef</CODE
+>(<VAR
+CLASS="PARAMETER"
+>constraint_oid</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get definition of a constraint</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_constraintdef</CODE
+>(<VAR
+CLASS="PARAMETER"
+>constraint_oid</VAR
+>, <VAR
+CLASS="PARAMETER"
+>pretty_bool</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get definition of a constraint</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_expr</CODE
+>(<VAR
+CLASS="PARAMETER"
+>expr_text</VAR
+>, <VAR
+CLASS="PARAMETER"
+>relation_oid</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>decompile internal form of an expression, assuming that any Vars
+       in it refer to the relation indicated by the second parameter</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_expr</CODE
+>(<VAR
+CLASS="PARAMETER"
+>expr_text</VAR
+>, <VAR
+CLASS="PARAMETER"
+>relation_oid</VAR
+>, <VAR
+CLASS="PARAMETER"
+>pretty_bool</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>decompile internal form of an expression, assuming that any Vars
+       in it refer to the relation indicated by the second parameter</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>pg_get_userbyid</CODE
+>(<VAR
+CLASS="PARAMETER"
+>userid</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+>get user name with given ID</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><A
+NAME="AEN11450"
+></A
+><A
+NAME="AEN11452"
+></A
+><P
+>    The function shown in <A
+HREF="functions-misc.html#FUNCTIONS-MISC-COMMENT-TABLE"
+>Table 9-40</A
+> extract comments
+    previously stored with the <TT
+CLASS="COMMAND"
+>COMMENT</TT
+> command.  A
+    null value is returned if no comment could be found matching the
+    specified parameters.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-MISC-COMMENT-TABLE"
+></A
+><P
+><B
+>Table 9-40. Comment Information Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Return Type</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>obj_description</CODE
+>(<VAR
+CLASS="PARAMETER"
+>object_oid</VAR
+>, <VAR
+CLASS="PARAMETER"
+>catalog_name</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get comment for a database object</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>obj_description</CODE
+>(<VAR
+CLASS="PARAMETER"
+>object_oid</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get comment for a database object (<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>deprecated</I
+></SPAN
+>)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>col_description</CODE
+>(<VAR
+CLASS="PARAMETER"
+>table_oid</VAR
+>, <VAR
+CLASS="PARAMETER"
+>column_number</VAR
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+>get comment for a table column</TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->    The two-parameter form of <TT
+>    The two-parameter form of <CODE
 CLASS="FUNCTION"
->obj_description()</TT
+>obj_description</CODE
 > returns the
     comment for a database object specified by its OID and the name of the
     containing system catalog.  For example,
-    <TT
+    <VAR
 CLASS="LITERAL"
->obj_description(123456,'pg_class')</TT
+>obj_description(123456,'pg_class')</VAR
 >
     would retrieve the comment for a table with OID 123456.
-    The one-parameter form of <TT
+    The one-parameter form of <CODE
 CLASS="FUNCTION"
->obj_description()</TT
+>obj_description</CODE
 > requires only
     the object OID.  It is now deprecated since there is no guarantee that
     OIDs are unique across different system catalogs; therefore, the wrong
     comment could be returned.
    </P
 ><P
->    <TT
+>    <CODE
 CLASS="FUNCTION"
->col_description()</TT
+>col_description</CODE
 > returns the comment for a table column,
     which is specified by the OID of its table and its column number.
-    <TT
+    <CODE
 CLASS="FUNCTION"
->obj_description()</TT
+>obj_description</CODE
 > cannot be used for table columns since
     columns do not have OIDs of their own.
    </P
@@ -1822,7 +1858,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="functions-aggregate.html"
+HREF="functions-array.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -1846,7 +1882,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Aggregate Functions</TD
+>Array Functions</TD
 ></TR
 ></TABLE
 ></DIV

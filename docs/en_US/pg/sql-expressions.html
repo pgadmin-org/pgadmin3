@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Value Expressions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Syntax"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 1. SQL Syntax</TD
+>Chapter 4. SQL Syntax</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SQL-EXPRESSIONS"
->1.2. Value Expressions</A
+>4.2. Value Expressions</A
 ></H1
 ><P
 >   Value expressions are used in a variety of contexts, such
@@ -124,7 +124,7 @@ CLASS="FIRSTTERM"
 ><P
 >      A constant or literal value; see <A
 HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
->Section 1.1.2</A
+>Section 4.1.2</A
 >.
      </P
 ></LI
@@ -135,7 +135,7 @@ HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
 ></LI
 ><LI
 ><P
->      A positional parameter reference, in the body of a function declaration.
+>      A positional parameter reference, in the body of a function definition.
      </P
 ></LI
 ><LI
@@ -177,17 +177,17 @@ HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
    rules.  These generally have the semantics of a function or
    operator and are explained in the appropriate location in <A
 HREF="functions.html"
->Chapter 6</A
->.  An example is the <TT
+>Chapter 9</A
+>.  An example is the <VAR
 CLASS="LITERAL"
->IS NULL</TT
+>IS NULL</VAR
 >
    clause.
   </P
 ><P
 >   We have already discussed constants in <A
 HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
->Section 1.1.2</A
+>Section 4.1.2</A
 >.  The following sections discuss
    the remaining options.
   </P
@@ -196,100 +196,84 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1527"
->1.2.1. Column References</A
+NAME="AEN1432"
+>4.2.1. Column References</A
 ></H2
 ><P
 >    A column can be referenced in the form
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->correlation</I
-></TT
->.<TT
+>correlation</VAR
+>.<VAR
 CLASS="REPLACEABLE"
-><I
->columnname</I
-></TT
+>columnname</VAR
 ></PRE
 ><P>
     or
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->correlation</I
-></TT
->.<TT
+>correlation</VAR
+>.<VAR
 CLASS="REPLACEABLE"
-><I
->columnname</I
-></TT
->[<TT
+>columnname</VAR
+>[<VAR
 CLASS="REPLACEABLE"
-><I
->subscript</I
-></TT
+>subscript</VAR
 >]</PRE
 ><P>
-    (Here, the brackets <TT
+    (Here, the brackets <VAR
 CLASS="LITERAL"
->[ ]</TT
+>[ ]</VAR
 > are meant to appear literally.)
    </P
 ><P
->    <TT
+>    <VAR
 CLASS="REPLACEABLE"
-><I
->correlation</I
-></TT
+>correlation</VAR
 > is the name of a
     table (possibly qualified), or an alias for a table defined by means of a
-    <TT
+    <VAR
 CLASS="LITERAL"
->FROM</TT
+>FROM</VAR
 > clause, or 
-    the key words <TT
+    the key words <VAR
 CLASS="LITERAL"
->NEW</TT
-> or <TT
+>NEW</VAR
+> or <VAR
 CLASS="LITERAL"
->OLD</TT
+>OLD</VAR
 >.
-    (<TT
+    (<VAR
 CLASS="LITERAL"
->NEW</TT
-> and <TT
+>NEW</VAR
+> and <VAR
 CLASS="LITERAL"
->OLD</TT
+>OLD</VAR
 > can only appear in rewrite rules,
     while other correlation names can be used in any SQL statement.)
     The correlation name and separating dot may be omitted if the column name
     is unique across all the tables being used in the current query.  (See also <A
 HREF="queries.html"
->Chapter 4</A
+>Chapter 7</A
 >.)
    </P
 ><P
->    If <TT
+>    If <VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
+>column</VAR
 > is of an array type, then the
-    optional <TT
+    optional <VAR
 CLASS="REPLACEABLE"
-><I
->subscript</I
-></TT
+>subscript</VAR
 > selects a specific
     element or elements in the array.  If no subscript is provided, then the
     whole array is selected.  (See <A
 HREF="arrays.html"
->Section 5.12</A
+>Section 8.10</A
 > for more about
     arrays.)
    </P
@@ -299,29 +283,30 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1550"
->1.2.2. Positional Parameters</A
+NAME="AEN1455"
+>4.2.2. Positional Parameters</A
 ></H2
 ><P
->    A positional parameter reference is used to indicate a parameter
+>    A positional parameter reference is used to indicate a value
     that is supplied externally to an SQL statement.  Parameters are
-    used in SQL function definitions and in prepared queries.
+    used in SQL function definitions and in prepared queries.  Some
+    client libraries also support specifying data values separately
+    from the SQL command string, in which case parameters are used to
+    refer to the out-of-line data values.
     The form of a parameter reference is:
 </P><PRE
 CLASS="SYNOPSIS"
->$<TT
+>$<VAR
 CLASS="REPLACEABLE"
-><I
->number</I
-></TT
+>number</VAR
 ></PRE
 ><P>
    </P
 ><P
 >    For example, consider the definition of a function,
-    <TT
+    <CODE
 CLASS="FUNCTION"
->dept</TT
+>dept</CODE
 >, as
 
 </P><PRE
@@ -331,9 +316,9 @@ CLASS="PROGRAMLISTING"
     LANGUAGE SQL;</PRE
 ><P>
 
-    Here the <TT
+    Here the <VAR
 CLASS="LITERAL"
->$1</TT
+>$1</VAR
 > will be replaced by the first
     function argument when the function is invoked.
    </P
@@ -343,8 +328,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1559"
->1.2.3. Operator Invocations</A
+NAME="AEN1464"
+>4.2.3. Operator Invocations</A
 ></H2
 ><P
 >    There are three possible syntaxes for an operator invocation:
@@ -355,49 +340,35 @@ BORDER="0"
 ><TBODY
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> <TT
+>expression</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> <TT
+>operator</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > (binary infix operator)</TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> <TT
+>operator</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > (unary prefix operator)</TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> <TT
+>expression</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
+>operator</VAR
 > (unary postfix operator)</TD
 ></TR
 ></TBODY
@@ -405,15 +376,13 @@ CLASS="REPLACEABLE"
 ><P
 ></P
 >
-    where the <TT
+    where the <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
+>operator</VAR
 > token follows the syntax
     rules of <A
 HREF="sql-syntax.html#SQL-SYNTAX-OPERATORS"
->Section 1.1.3</A
+>Section 4.1.3</A
 >, or is one of the
     keywords <TT
 CLASS="TOKEN"
@@ -428,32 +397,28 @@ CLASS="TOKEN"
 >, or is a qualified operator name
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="LITERAL"
->OPERATOR(</TT
-><TT
+>OPERATOR(</VAR
+><VAR
 CLASS="REPLACEABLE"
-><I
->schema</I
-></TT
-><TT
+>schema</VAR
+><VAR
 CLASS="LITERAL"
->.</TT
-><TT
+>.</VAR
+><VAR
 CLASS="REPLACEABLE"
-><I
->operatorname</I
-></TT
-><TT
+>operatorname</VAR
+><VAR
 CLASS="LITERAL"
->)</TT
+>)</VAR
 ></PRE
 ><P>
     Which particular operators exist and whether
     they are unary or binary depends on what operators have been
     defined by the system or the user.  <A
 HREF="functions.html"
->Chapter 6</A
+>Chapter 9</A
 >
     describes the built-in operators.
    </P
@@ -463,8 +428,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1585"
->1.2.4. Function Calls</A
+NAME="AEN1490"
+>4.2.4. Function Calls</A
 ></H2
 ><P
 >    The syntax for a function call is the name of a function
@@ -473,25 +438,19 @@ NAME="AEN1585"
 
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->function</I
-></TT
+>function</VAR
 > ([<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > [<SPAN
 CLASS="OPTIONAL"
->, <TT
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > ... </SPAN
 >]</SPAN
 >] )</PRE
@@ -507,7 +466,7 @@ CLASS="PROGRAMLISTING"
 ><P
 >    The list of built-in functions is in <A
 HREF="functions.html"
->Chapter 6</A
+>Chapter 9</A
 >.
     Other functions may be added by the user.
    </P
@@ -518,10 +477,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SYNTAX-AGGREGATES"
->1.2.5. Aggregate Expressions</A
+>4.2.5. Aggregate Expressions</A
 ></H2
 ><A
-NAME="AEN1600"
+NAME="AEN1505"
 ></A
 ><P
 >    An <I
@@ -535,59 +494,41 @@ CLASS="FIRSTTERM"
 
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->aggregate_name</I
-></TT
-> (<TT
+>aggregate_name</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 >)
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->aggregate_name</I
-></TT
-> (ALL <TT
+>aggregate_name</VAR
+> (ALL <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 >)
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->aggregate_name</I
-></TT
-> (DISTINCT <TT
+>aggregate_name</VAR
+> (DISTINCT <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 >)
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->aggregate_name</I
-></TT
+>aggregate_name</VAR
 > ( * )</PRE
 ><P>
 
-    where <TT
+    where <VAR
 CLASS="REPLACEABLE"
-><I
->aggregate_name</I
-></TT
+>aggregate_name</VAR
 > is a previously
     defined aggregate (possibly a qualified name), and
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > is 
     any value expression that does not itself contain an aggregate
     expression.
@@ -598,47 +539,86 @@ CLASS="REPLACEABLE"
     non-null value.  (Actually, it is up to the aggregate function
     whether to ignore null values or not --- but all the standard ones do.)
     The second form is the same as the first, since
-    <TT
+    <VAR
 CLASS="LITERAL"
->ALL</TT
+>ALL</VAR
 > is the default.  The third form invokes the
     aggregate for all distinct non-null values of the expression found
     in the input rows.  The last form invokes the aggregate once for
     each input row regardless of null or non-null values; since no
     particular input value is specified, it is generally only useful
-    for the <TT
+    for the <CODE
 CLASS="FUNCTION"
->count()</TT
+>count()</CODE
 > aggregate function.
    </P
 ><P
->    For example, <TT
+>    For example, <VAR
 CLASS="LITERAL"
->count(*)</TT
+>count(*)</VAR
 > yields the total number
-    of input rows; <TT
+    of input rows; <VAR
 CLASS="LITERAL"
->count(f1)</TT
+>count(f1)</VAR
 > yields the number of
-    input rows in which <TT
+    input rows in which <VAR
 CLASS="LITERAL"
->f1</TT
+>f1</VAR
 > is non-null;
-    <TT
+    <VAR
 CLASS="LITERAL"
->count(distinct f1)</TT
+>count(distinct f1)</VAR
 > yields the number of
-    distinct non-null values of <TT
+    distinct non-null values of <VAR
 CLASS="LITERAL"
->f1</TT
+>f1</VAR
 >.
    </P
 ><P
 >    The predefined aggregate functions are described in <A
 HREF="functions-aggregate.html"
->Section 6.14</A
+>Section 9.15</A
 >.  Other aggregate functions may be added
     by the user. 
+   </P
+><P
+>    An aggregate expression may only appear in the result list or
+    <VAR
+CLASS="LITERAL"
+>HAVING</VAR
+> clause of a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command.
+    It is forbidden in other clauses, such as <VAR
+CLASS="LITERAL"
+>WHERE</VAR
+>,
+    because those clauses are logically evaluated before the results
+    of aggregates are formed.
+   </P
+><P
+>    When an aggregate expression appears in a subquery (see
+    <A
+HREF="sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES"
+>Section 4.2.7</A
+> and
+    <A
+HREF="functions-subquery.html"
+>Section 9.16</A
+>), the aggregate is normally
+    evaluated over the rows of the subquery.  But an exception occurs
+    if the aggregate's argument contains only outer-level variables:
+    the aggregate then belongs to the nearest such outer level, and is
+    evaluated over the rows of that query.  The aggregate expression
+    as a whole is then an outer reference for the subquery it appears in,
+    and acts as a constant over any one evaluation of that subquery.
+    The restriction about
+    appearing only in the result list or <VAR
+CLASS="LITERAL"
+>HAVING</VAR
+> clause
+    applies with respect to the query level that the aggregate belongs to.
    </P
 ></DIV
 ><DIV
@@ -647,10 +627,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SQL-SYNTAX-TYPE-CASTS"
->1.2.6. Type Casts</A
+>4.2.6. Type Casts</A
 ></H2
 ><A
-NAME="AEN1627"
+NAME="AEN1540"
 ></A
 ><P
 >    A type cast specifies a conversion from one data type to another.
@@ -661,36 +641,28 @@ CLASS="PRODUCTNAME"
     for type casts:
 </P><PRE
 CLASS="SYNOPSIS"
->CAST ( <TT
+>CAST ( <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> AS <TT
+>expression</VAR
+> AS <VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
+>type</VAR
 > )
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
->::<TT
+>expression</VAR
+>::<VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
+>type</VAR
 ></PRE
 ><P>
-    The <TT
+    The <VAR
 CLASS="LITERAL"
->CAST</TT
+>CAST</VAR
 > syntax conforms to SQL; the syntax with
-    <TT
+    <VAR
 CLASS="LITERAL"
->::</TT
+>::</VAR
 > is historical <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -704,7 +676,7 @@ CLASS="PRODUCTNAME"
     is subtly different from the use of casts with constants, as shown in
     <A
 HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS-GENERIC"
->Section 1.1.2.4</A
+>Section 4.1.2.4</A
 >.  A cast applied to an
     unadorned string literal represents the initial assignment of a type
     to a literal constant value, and so it will succeed for any type
@@ -729,37 +701,33 @@ CLASS="QUOTE"
     syntax:
 </P><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->typename</I
-></TT
-> ( <TT
+>typename</VAR
+> ( <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > )</PRE
 ><P>
     However, this only works for types whose names are also valid as
-    function names.  For example, <TT
+    function names.  For example, <VAR
 CLASS="LITERAL"
->double precision</TT
+>double precision</VAR
 >
-    can't be used this way, but the equivalent <TT
+    can't be used this way, but the equivalent <VAR
 CLASS="LITERAL"
->float8</TT
+>float8</VAR
 >
-    can.  Also, the names <TT
+    can.  Also, the names <VAR
 CLASS="LITERAL"
->interval</TT
->, <TT
+>interval</VAR
+>, <VAR
 CLASS="LITERAL"
->time</TT
+>time</VAR
 >, and
-    <TT
+    <VAR
 CLASS="LITERAL"
->timestamp</TT
+>timestamp</VAR
 > can only be used in this fashion if they are
     double-quoted, because of syntactic conflicts.  Therefore, the use of
     the function-like cast syntax leads to inconsistencies and should
@@ -778,8 +746,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1653"
->1.2.7. Scalar Subqueries</A
+NAME="SQL-SYNTAX-SCALAR-SUBQUERIES"
+>4.2.7. Scalar Subqueries</A
 ></H2
 ><P
 >    A scalar subquery is an ordinary
@@ -789,7 +757,7 @@ CLASS="COMMAND"
 > query in parentheses that returns exactly one
     row with one column.  (See <A
 HREF="queries.html"
->Chapter 4</A
+>Chapter 7</A
 > for information about writing queries.)
     The <TT
 CLASS="COMMAND"
@@ -804,7 +772,7 @@ CLASS="COMMAND"
     which will act as constants during any one evaluation of the subquery.
     See also <A
 HREF="functions-subquery.html"
->Section 6.15</A
+>Section 9.16</A
 >.
    </P
 ><P
@@ -822,8 +790,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1662"
->1.2.8. Expression Evaluation</A
+NAME="SYNTAX-EXPRESS-EVAL"
+>4.2.8. Expression Evaluation</A
 ></H2
 ><P
 >    The order of evaluation of subexpressions is not defined.  In
@@ -838,9 +806,9 @@ NAME="AEN1662"
 CLASS="PROGRAMLISTING"
 >SELECT true OR somefunc();</PRE
 ><P>
-    then <TT
+    then <VAR
 CLASS="LITERAL"
->somefunc()</TT
+>somefunc()</VAR
 > would (probably) not be called
     at all. The same would be the case if one wrote
 </P><PRE
@@ -857,40 +825,40 @@ CLASS="QUOTE"
 ><P
 >    As a consequence, it is unwise to use functions with side effects
     as part of complex expressions.  It is particularly dangerous to
-    rely on side effects or evaluation order in <TT
+    rely on side effects or evaluation order in <VAR
 CLASS="LITERAL"
->WHERE</TT
-> and <TT
+>WHERE</VAR
+> and <VAR
 CLASS="LITERAL"
->HAVING</TT
+>HAVING</VAR
 > clauses,
     since those clauses are extensively reprocessed as part of
     developing an execution plan.  Boolean
-    expressions (<TT
+    expressions (<VAR
 CLASS="LITERAL"
->AND</TT
->/<TT
+>AND</VAR
+>/<VAR
 CLASS="LITERAL"
->OR</TT
->/<TT
+>OR</VAR
+>/<VAR
 CLASS="LITERAL"
->NOT</TT
+>NOT</VAR
 > combinations) in those clauses may be reorganized
     in any manner allowed by the laws of Boolean algebra.
    </P
 ><P
->    When it is essential to force evaluation order, a <TT
+>    When it is essential to force evaluation order, a <VAR
 CLASS="LITERAL"
->CASE</TT
+>CASE</VAR
 >
     construct (see <A
 HREF="functions-conditional.html"
->Section 6.12</A
+>Section 9.12</A
 >) may be
     used.  For example, this is an untrustworthy way of trying to
-    avoid division by zero in a <TT
+    avoid division by zero in a <VAR
 CLASS="LITERAL"
->WHERE</TT
+>WHERE</VAR
 > clause:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -901,9 +869,9 @@ CLASS="PROGRAMLISTING"
 CLASS="PROGRAMLISTING"
 >SELECT ... WHERE CASE WHEN x &lt;&gt; 0 THEN y/x &gt; 1.5 ELSE false END;</PRE
 ><P>
-    A <TT
+    A <VAR
 CLASS="LITERAL"
->CASE</TT
+>CASE</VAR
 > construct used in this fashion will defeat optimization attempts,
     so it should only be done when necessary.
    </P

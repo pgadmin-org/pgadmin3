@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Functions and Operators</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 User's Guide"
-HREF="user.html"><LINK
+TITLE="The SQL Language"
+HREF="sql.html"><LINK
 REL="PREVIOUS"
-TITLE="Arrays"
-HREF="arrays.html"><LINK
+TITLE="Pseudo-Types"
+HREF="datatype-pseudo.html"><LINK
 REL="NEXT"
 TITLE="Comparison Operators"
 HREF="functions-comparison.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="arrays.html"
+HREF="datatype-pseudo.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="FUNCTIONS"
->Chapter 6. Functions and Operators</A
-></H1
+></A
+>Chapter 9. Functions and Operators</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,207 +90,278 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->6.1. <A
+>9.1. <A
 HREF="functions.html#FUNCTIONS-LOGICAL"
 >Logical Operators</A
 ></DT
 ><DT
->6.2. <A
+>9.2. <A
 HREF="functions-comparison.html"
 >Comparison Operators</A
 ></DT
 ><DT
->6.3. <A
+>9.3. <A
 HREF="functions-math.html"
 >Mathematical Functions and Operators</A
 ></DT
 ><DT
->6.4. <A
+>9.4. <A
 HREF="functions-string.html"
 >String Functions and Operators</A
 ></DT
 ><DT
->6.5. <A
+>9.5. <A
 HREF="functions-binarystring.html"
 >Binary String Functions and Operators</A
 ></DT
 ><DT
->6.6. <A
+>9.6. <A
 HREF="functions-matching.html"
 >Pattern Matching</A
 ></DT
 ><DD
 ><DL
 ><DT
->6.6.1. <A
+>9.6.1. <A
 HREF="functions-matching.html#FUNCTIONS-LIKE"
-><TT
+><CODE
 CLASS="FUNCTION"
->LIKE</TT
+>LIKE</CODE
 ></A
 ></DT
 ><DT
->6.6.2. <A
+>9.6.2. <A
 HREF="functions-matching.html#FUNCTIONS-SQL99-REGEXP"
-><TT
+><CODE
 CLASS="FUNCTION"
->SIMILAR TO</TT
-> and <SPAN
+>SIMILAR TO</CODE
+> and <ACRONYM
 CLASS="ACRONYM"
->SQL99</SPAN
+>SQL99</ACRONYM
 >
      Regular Expressions</A
 ></DT
 ><DT
->6.6.3. <A
+>9.6.3. <A
 HREF="functions-matching.html#FUNCTIONS-POSIX-REGEXP"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->POSIX</SPAN
+>POSIX</ACRONYM
 > Regular Expressions</A
 ></DT
 ></DL
 ></DD
 ><DT
->6.7. <A
+>9.7. <A
 HREF="functions-formatting.html"
 >Data Type Formatting Functions</A
 ></DT
 ><DT
->6.8. <A
+>9.8. <A
 HREF="functions-datetime.html"
 >Date/Time Functions and Operators</A
 ></DT
 ><DD
 ><DL
 ><DT
->6.8.1. <A
+>9.8.1. <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"
-><TT
+><CODE
 CLASS="FUNCTION"
->EXTRACT</TT
->, <TT
+>EXTRACT</CODE
+>, <CODE
 CLASS="FUNCTION"
->date_part</TT
+>date_part</CODE
 ></A
 ></DT
 ><DT
->6.8.2. <A
+>9.8.2. <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-TRUNC"
-><TT
+><CODE
 CLASS="FUNCTION"
->date_trunc</TT
+>date_trunc</CODE
 ></A
 ></DT
 ><DT
->6.8.3. <A
+>9.8.3. <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-ZONECONVERT"
-><TT
-CLASS="FUNCTION"
->AT TIME ZONE</TT
+><VAR
+CLASS="LITERAL"
+>AT TIME ZONE</VAR
 ></A
 ></DT
 ><DT
->6.8.4. <A
+>9.8.4. <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
 >Current Date/Time</A
 ></DT
 ></DL
 ></DD
 ><DT
->6.9. <A
+>9.9. <A
 HREF="functions-geometry.html"
 >Geometric Functions and Operators</A
 ></DT
 ><DT
->6.10. <A
+>9.10. <A
 HREF="functions-net.html"
 >Network Address Type Functions</A
 ></DT
 ><DT
->6.11. <A
+>9.11. <A
 HREF="functions-sequence.html"
 >Sequence-Manipulation Functions</A
 ></DT
 ><DT
->6.12. <A
+>9.12. <A
 HREF="functions-conditional.html"
 >Conditional Expressions</A
 ></DT
 ><DD
 ><DL
 ><DT
->6.12.1. <A
-HREF="functions-conditional.html#AEN9772"
->CASE</A
+>9.12.1. <A
+HREF="functions-conditional.html#AEN10825"
+><VAR
+CLASS="LITERAL"
+>CASE</VAR
+></A
 ></DT
 ><DT
->6.12.2. <A
-HREF="functions-conditional.html#AEN9827"
->COALESCE</A
+>9.12.2. <A
+HREF="functions-conditional.html#AEN10872"
+><VAR
+CLASS="LITERAL"
+>COALESCE</VAR
+></A
 ></DT
 ><DT
->6.12.3. <A
-HREF="functions-conditional.html#AEN9836"
->NULLIF</A
+>9.12.3. <A
+HREF="functions-conditional.html#AEN10882"
+><VAR
+CLASS="LITERAL"
+>NULLIF</VAR
+></A
 ></DT
 ></DL
 ></DD
 ><DT
->6.13. <A
+>9.13. <A
 HREF="functions-misc.html"
 >Miscellaneous Functions</A
 ></DT
 ><DT
->6.14. <A
+>9.14. <A
+HREF="functions-array.html"
+>Array Functions</A
+></DT
+><DT
+>9.15. <A
 HREF="functions-aggregate.html"
 >Aggregate Functions</A
 ></DT
 ><DT
->6.15. <A
+>9.16. <A
 HREF="functions-subquery.html"
 >Subquery Expressions</A
 ></DT
 ><DD
 ><DL
 ><DT
->6.15.1. <A
-HREF="functions-subquery.html#AEN10482"
->EXISTS</A
+>9.16.1. <A
+HREF="functions-subquery.html#AEN11859"
+><VAR
+CLASS="LITERAL"
+>EXISTS</VAR
+></A
 ></DT
 ><DT
->6.15.2. <A
-HREF="functions-subquery.html#AEN10505"
->IN (scalar form)</A
+>9.16.2. <A
+HREF="functions-subquery.html#AEN11883"
+><VAR
+CLASS="LITERAL"
+>IN</VAR
+></A
 ></DT
 ><DT
->6.15.3. <A
-HREF="functions-subquery.html#AEN10524"
->IN (subquery form)</A
+>9.16.3. <A
+HREF="functions-subquery.html#AEN11909"
+><VAR
+CLASS="LITERAL"
+>NOT IN </VAR
+></A
 ></DT
 ><DT
->6.15.4. <A
-HREF="functions-subquery.html#AEN10550"
->NOT IN (scalar form)</A
+>9.16.4. <A
+HREF="functions-subquery.html#AEN11935"
+><VAR
+CLASS="LITERAL"
+>ANY</VAR
+>/<VAR
+CLASS="LITERAL"
+>SOME</VAR
+></A
 ></DT
 ><DT
->6.15.5. <A
-HREF="functions-subquery.html#AEN10571"
->NOT IN (subquery form)</A
+>9.16.5. <A
+HREF="functions-subquery.html#AEN11982"
+><VAR
+CLASS="LITERAL"
+>ALL</VAR
+></A
 ></DT
 ><DT
->6.15.6. <A
-HREF="functions-subquery.html#AEN10597"
->ANY/SOME</A
+>9.16.6. <A
+HREF="functions-subquery.html#AEN12018"
+>Row-wise Comparison</A
+></DT
+></DL
+></DD
+><DT
+>9.17. <A
+HREF="functions-comparisons.html"
+>Row and Array Comparisons</A
+></DT
+><DD
+><DL
+><DT
+>9.17.1. <A
+HREF="functions-comparisons.html#AEN12046"
+><VAR
+CLASS="LITERAL"
+>IN</VAR
+></A
 ></DT
 ><DT
->6.15.7. <A
-HREF="functions-subquery.html#AEN10643"
->ALL</A
+>9.17.2. <A
+HREF="functions-comparisons.html#AEN12062"
+><VAR
+CLASS="LITERAL"
+>NOT IN</VAR
+></A
 ></DT
 ><DT
->6.15.8. <A
-HREF="functions-subquery.html#AEN10679"
+>9.17.3. <A
+HREF="functions-comparisons.html#AEN12084"
+><VAR
+CLASS="LITERAL"
+>ANY</VAR
+>/<VAR
+CLASS="LITERAL"
+>SOME</VAR
+> (array)</A
+></DT
+><DT
+>9.17.4. <A
+HREF="functions-comparisons.html#AEN12103"
+><VAR
+CLASS="LITERAL"
+>ALL</VAR
+> (array)</A
+></DT
+><DT
+>9.17.5. <A
+HREF="functions-comparisons.html#AEN12115"
 >Row-wise Comparison</A
 ></DT
 ></DL
@@ -298,10 +369,10 @@ HREF="functions-subquery.html#AEN10679"
 ></DL
 ></DIV
 ><A
-NAME="AEN5055"
+NAME="AEN5086"
 ></A
 ><A
-NAME="AEN5057"
+NAME="AEN5088"
 ></A
 ><P
 >   <SPAN
@@ -309,11 +380,11 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > provides a large number of
    functions and operators for the built-in data types.  Users can also
-   define their own functions and operators, as described in the
+   define their own functions and operators, as described in
    <A
-HREF="programmer.html"
-><I
->PostgreSQL 7.3.3 Programmer's Guide</I
+HREF="server-programming.html"
+>Part V in <I
+>PostgreSQL 7.4beta1 Documentation</I
 ></A
 >.  The
    <SPAN
@@ -334,14 +405,14 @@ CLASS="COMMAND"
    the functions and operators described in this chapter, with the
    exception of the most trivial arithmetic and comparison operators
    and some explicitly marked functions, are not specified by the
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >
-   standard. Some of this extended functionality is present in other
-   <SPAN
+   standard. Some of the extended functionality is present in other
+   <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > implementations, and in many cases this
    functionality is compatible and consistent between various products.
   </P
@@ -351,29 +422,29 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-LOGICAL"
->6.1. Logical Operators</A
+>9.1. Logical Operators</A
 ></H1
 ><A
-NAME="AEN5070"
+NAME="AEN5101"
 ></A
 ><A
-NAME="AEN5073"
+NAME="AEN5104"
 ></A
 ><P
 >    The usual logical operators are available:
 
     <A
-NAME="AEN5078"
+NAME="AEN5109"
 ></A
 >
 
     <A
-NAME="AEN5081"
+NAME="AEN5112"
 ></A
 >
 
     <A
-NAME="AEN5084"
+NAME="AEN5115"
 ></A
 >
 
@@ -384,15 +455,24 @@ BORDER="0"
 ><TBODY
 ><TR
 ><TD
->AND</TD
+><VAR
+CLASS="LITERAL"
+>AND</VAR
+></TD
 ></TR
 ><TR
 ><TD
->OR</TD
+><VAR
+CLASS="LITERAL"
+>OR</VAR
+></TD
 ></TR
 ><TR
 ><TD
->NOT</TD
+><VAR
+CLASS="LITERAL"
+>NOT</VAR
+></TD
 ></TR
 ></TBODY
 ></TABLE
@@ -400,9 +480,9 @@ BORDER="0"
 ></P
 >
 
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > uses a three-valued Boolean logic where the null value represents
     <SPAN
 CLASS="QUOTE"
@@ -411,171 +491,103 @@ CLASS="QUOTE"
 
     <DIV
 CLASS="INFORMALTABLE"
-><A
-NAME="AEN5093"
-></A
 ><P
 ></P
+><A
+NAME="AEN5127"
+></A
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
+>a</VAR
 ></TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->b</I
-></TT
+>b</VAR
 ></TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
-> AND <TT
+>a</VAR
+> AND <VAR
 CLASS="REPLACEABLE"
-><I
->b</I
-></TT
+>b</VAR
 ></TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
-> OR <TT
+>a</VAR
+> OR <VAR
 CLASS="REPLACEABLE"
-><I
->b</I
-></TT
+>b</VAR
 ></TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ></TR
 ></TBODY
@@ -587,65 +599,45 @@ VALIGN="TOP"
 
     <DIV
 CLASS="INFORMALTABLE"
-><A
-NAME="AEN5138"
-></A
 ><P
 ></P
+><A
+NAME="AEN5172"
+></A
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
+>a</VAR
 ></TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->NOT <TT
+>NOT <VAR
 CLASS="REPLACEABLE"
-><I
->a</I
-></TT
+>a</VAR
 ></TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >FALSE</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >TRUE</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >NULL</TD
 ></TR
 ></TBODY
@@ -654,6 +646,21 @@ VALIGN="TOP"
 ></P
 ></DIV
 >
+   </P
+><P
+>    The operators <VAR
+CLASS="LITERAL"
+>AND</VAR
+> and <VAR
+CLASS="LITERAL"
+>OR</VAR
+> are
+    commutative, that is, you can switch the left and right operand
+    without affecting the result.  But see <A
+HREF="sql-expressions.html#SYNTAX-EXPRESS-EVAL"
+>Section 4.2.8</A
+> for more information about the
+    order of evaluation of subexpressions.
    </P
 ></DIV
 ></DIV
@@ -673,7 +680,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="arrays.html"
+HREF="datatype-pseudo.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -701,13 +708,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Arrays</TD
+>Pseudo-Types</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="user.html"
+HREF="sql.html"
 ACCESSKEY="U"
 >Up</A
 ></TD

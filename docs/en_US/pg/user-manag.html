@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Database Users and Privileges</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+TITLE="Server Administration"
 HREF="admin.html"><LINK
 REL="PREVIOUS"
 TITLE="Secure TCP/IP Connections with SSH Tunnels"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="USER-MANAG"
->Chapter 4. Database Users and Privileges</A
-></H1
+></A
+>Chapter 17. Database Users and Privileges</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,27 +90,27 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->4.1. <A
+>17.1. <A
 HREF="user-manag.html#DATABASE-USERS"
 >Database Users</A
 ></DT
 ><DT
->4.2. <A
+>17.2. <A
 HREF="user-attributes.html"
 >User Attributes</A
 ></DT
 ><DT
->4.3. <A
+>17.3. <A
 HREF="groups.html"
 >Groups</A
 ></DT
 ><DT
->4.4. <A
+>17.4. <A
 HREF="privileges.html"
 >Privileges</A
 ></DT
 ><DT
->4.5. <A
+>17.5. <A
 HREF="perm-functions.html"
 >Functions and Triggers</A
 ></DT
@@ -126,12 +126,9 @@ HREF="perm-functions.html"
 ><P
 >  This chapter describes how to create and manage users and introduces
   the privilege system.  More information about the various types of
-  database objects and the effects of privileges can be found in the
-  <A
-HREF="user.html"
-><I
->PostgreSQL 7.3.3 User's Guide</I
-></A
+  database objects and the effects of privileges can be found in <A
+HREF="ddl.html"
+>Chapter 5</A
 >.
  </P
 ><DIV
@@ -140,7 +137,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DATABASE-USERS"
->4.1. Database Users</A
+>17.1. Database Users</A
 ></H1
 ><P
 >   Database users are conceptually completely separate from
@@ -154,18 +151,14 @@ CLASS="COMMAND"
 > SQL command:
 </P><PRE
 CLASS="SYNOPSIS"
->CREATE USER <TT
+>CREATE USER <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></PRE
+>name</VAR
+>;</PRE
 ><P>
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 > follows the rules for SQL
    identifiers: either unadorned without special characters, or
    double-quoted. To remove an existing user, use the analogous
@@ -175,38 +168,32 @@ CLASS="COMMAND"
 > command:
 </P><PRE
 CLASS="SYNOPSIS"
->DROP USER <TT
+>DROP USER <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></PRE
+>name</VAR
+>;</PRE
 ><P>
   </P
 ><P
->   For convenience, the programs <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
+>   For convenience, the programs <TT
+CLASS="COMMAND"
+>createuser</TT
 >
-   and <SPAN
-CLASS="APPLICATION"
->dropuser</SPAN
+   and <TT
+CLASS="COMMAND"
+>dropuser</TT
 > are provided as wrappers
    around these SQL commands that can be called from the shell command
    line:
 </P><PRE
 CLASS="SYNOPSIS"
->createuser <TT
+>createuser <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 >
-dropuser <TT
+dropuser <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 ></PRE
 ><P>
   </P
@@ -214,39 +201,39 @@ CLASS="REPLACEABLE"
 >   In order to bootstrap the database system, a freshly initialized
    system always contains one predefined user. This user will have the
    fixed ID 1, and by default (unless altered when running
-   <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
->) it will have the same name as
-   the operating system user that initialized the database
+   <TT
+CLASS="COMMAND"
+>initdb</TT
+>) it will have the same name as the
+   operating system user that initialized the database
    cluster. Customarily, this user will be named
-   <SPAN
-CLASS="SYSTEMITEM"
->postgres</SPAN
->. In order to create more users
-   you first have to connect as this initial user.
+   <VAR
+CLASS="LITERAL"
+>postgres</VAR
+>. In order to create more users you
+   first have to connect as this initial user.
   </P
 ><P
 >   Exactly one user identity is active for a connection to the
    database server.  The user name to use for a particular database
    connection is indicated by the client that is initiating the
    connection request in an application-specific fashion. For example,
-   the <SPAN
-CLASS="APPLICATION"
->psql</SPAN
+   the <TT
+CLASS="COMMAND"
+>psql</TT
 > program uses the
-   <TT
+   <VAR
 CLASS="OPTION"
->-U</TT
+>-U</VAR
 > command line option to indicate the user to
    connect as.  Many applications assume the name of the current
    operating system user by default (including
-   <SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-> and <SPAN
-CLASS="APPLICATION"
->psql</SPAN
+   <TT
+CLASS="COMMAND"
+>createuser</TT
+> and <TT
+CLASS="COMMAND"
+>psql</TT
 >).  Therefore it
    is convenient to maintain a naming correspondence between the two
    user sets.
@@ -256,7 +243,7 @@ CLASS="APPLICATION"
    is determined by the client authentication setup, as explained in
    <A
 HREF="client-authentication.html"
->Chapter 6</A
+>Chapter 19</A
 >. (Thus, a client is not
    necessarily limited to connect as the user with the same name as
    its operating system user, in the same way a person is not

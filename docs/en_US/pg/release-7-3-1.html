@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Release 7.3.1</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix A. Release Notes</TD
+>Appendix D. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-3-1"
->A.3. Release 7.3.1</A
+>D.5. Release 7.3.1</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -94,70 +94,106 @@ CLASS="NOTE"
 ></BLOCKQUOTE
 ></DIV
 ><P
->    This has a variety of fixes from 7.3.
-   </P
+>   This release contains a variety of fixes for version 7.3.
+  </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23585"
->A.3.1. Migration to version 7.3.1</A
+NAME="AEN61809"
+>D.5.1. Migration to version 7.3.1</A
 ></H2
 ><P
->     A dump/restore is <SPAN
+>    A dump/restore is <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
 >not</I
 ></SPAN
 > required for those
-     running 7.3. However, it should be noted that the main PostgreSQL
-     interface library, <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
->, has a new
-     major version number for this release, which will require that
-     client code using <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> be relinked.
-    </P
+    running version 7.3. However, it should be noted that the main
+    PostgreSQL interface library, libpq, has a new major version
+    number for this release, which may require recompilation of client
+    code in certain cases.
+   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23591"
->A.3.2. Changes</A
+NAME="AEN61813"
+>D.5.2. Changes</A
 ></H2
 ><P
+></P
+><UL
+><LI
 ><P
-CLASS="LITERALLAYOUT"
->Fix&nbsp;a&nbsp;core&nbsp;dump&nbsp;of&nbsp;COPY&nbsp;TO&nbsp;when&nbsp;client/server&nbsp;encodings&nbsp;don't&nbsp;match<br>
-&nbsp;&nbsp;(Tom)<br>
-Allow&nbsp;pg_dump&nbsp;to&nbsp;work&nbsp;with&nbsp;pre-7.2&nbsp;servers&nbsp;(Philip)<br>
-contrib/adddepend&nbsp;fixes&nbsp;(Tom)<br>
-Fix&nbsp;problem&nbsp;with&nbsp;deletion&nbsp;of&nbsp;per-user/per-database&nbsp;config&nbsp;settings<br>
-&nbsp;&nbsp;(Tom)<br>
-contrib/vacuumlo&nbsp;fix&nbsp;(Tom)<br>
-Allow&nbsp;'password'&nbsp;encryption&nbsp;even&nbsp;when&nbsp;pg_shadow&nbsp;contains&nbsp;MD5&nbsp;passwords<br>
-&nbsp;&nbsp;(Bruce)<br>
-contrib/dbmirror&nbsp;fix&nbsp;(Steven&nbsp;Singer)<br>
-Optimizer&nbsp;fixes&nbsp;(Tom)<br>
-contrib/tsearch&nbsp;fixes&nbsp;(Teodor&nbsp;Sigaev,&nbsp;Magnus)<br>
-Fix&nbsp;encoding&nbsp;name&nbsp;resolution&nbsp;to&nbsp;work&nbsp;in&nbsp;Turkish&nbsp;locale&nbsp;(Nicolai&nbsp;Tufar)<br>
-Increment&nbsp;libpq&nbsp;library's&nbsp;major&nbsp;version&nbsp;number&nbsp;(Bruce)<br>
-pg_hba.conf&nbsp;error&nbsp;reporting&nbsp;fixes&nbsp;(Bruce,&nbsp;Neil)<br>
-Add&nbsp;SCO&nbsp;OpenServer&nbsp;5.0.4&nbsp;as&nbsp;a&nbsp;supported&nbsp;platform&nbsp;(Bruce)<br>
-Prevent&nbsp;EXPLAIN&nbsp;from&nbsp;crashing&nbsp;server&nbsp;(Tom)<br>
-SSL&nbsp;fixes&nbsp;(Nathan&nbsp;Mueller)<br>
-Prevent&nbsp;composite&nbsp;column&nbsp;creation&nbsp;via&nbsp;ALTER&nbsp;TABLE&nbsp;(Tom)<br>
-Fix&nbsp;conversion&nbsp;between&nbsp;LATIN9&nbsp;and&nbsp;UNICODE&nbsp;(Peter)<br>
-Translation&nbsp;updates</P
->
-    </P
+>Fix a core dump of COPY TO when client/server encodings don't match (Tom)</P
+></LI
+><LI
+><P
+>Allow pg_dump to work with pre-7.2 servers (Philip)</P
+></LI
+><LI
+><P
+>contrib/adddepend fixes (Tom)</P
+></LI
+><LI
+><P
+>Fix problem with deletion of per-user/per-database config settings (Tom)</P
+></LI
+><LI
+><P
+>contrib/vacuumlo fix (Tom)</P
+></LI
+><LI
+><P
+>Allow 'password' encryption even when pg_shadow contains MD5 passwords (Bruce)</P
+></LI
+><LI
+><P
+>contrib/dbmirror fix (Steven Singer)</P
+></LI
+><LI
+><P
+>Optimizer fixes (Tom)</P
+></LI
+><LI
+><P
+>contrib/tsearch fixes (Teodor Sigaev, Magnus)</P
+></LI
+><LI
+><P
+>Allow locale names to be mixed case (Nicolai Tufar)</P
+></LI
+><LI
+><P
+>Increment libpq library's major version number (Bruce)</P
+></LI
+><LI
+><P
+>pg_hba.conf error reporting fixes (Bruce, Neil)</P
+></LI
+><LI
+><P
+>Add SCO Openserver 5.0.4 as a supported platform (Bruce)</P
+></LI
+><LI
+><P
+>Prevent EXPLAIN from crashing server (Tom)</P
+></LI
+><LI
+><P
+>SSL fixes (Nathan Mueller)</P
+></LI
+><LI
+><P
+>Prevent composite column creation via ALTER TABLE (Tom)</P
+></LI
+></UL
 ></DIV
 ></DIV
 ><DIV

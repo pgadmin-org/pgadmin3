@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Backup and Restore</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+TITLE="Server Administration"
 HREF="admin.html"><LINK
 REL="PREVIOUS"
 TITLE="Log File Maintenance"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="BACKUP"
->Chapter 9. Backup and Restore</A
-></H1
+></A
+>Chapter 22. Backup and Restore</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,22 +90,22 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->9.1. <A
+>22.1. <A
 HREF="backup.html#BACKUP-DUMP"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Dump</A
 ></DT
 ><DD
 ><DL
 ><DT
->9.1.1. <A
+>22.1.1. <A
 HREF="backup.html#BACKUP-DUMP-RESTORE"
 >Restoring the dump</A
 ></DT
 ><DT
->9.1.2. <A
+>22.1.2. <A
 HREF="backup.html#BACKUP-DUMP-ALL"
 >Using <TT
 CLASS="COMMAND"
@@ -113,31 +113,31 @@ CLASS="COMMAND"
 ></A
 ></DT
 ><DT
->9.1.3. <A
+>22.1.3. <A
 HREF="backup.html#BACKUP-DUMP-LARGE"
 >Large Databases</A
 ></DT
 ><DT
->9.1.4. <A
+>22.1.4. <A
 HREF="backup.html#BACKUP-DUMP-CAVEATS"
 >Caveats</A
 ></DT
 ></DL
 ></DD
 ><DT
->9.2. <A
+>22.2. <A
 HREF="backup-file.html"
 >File system level backup</A
 ></DT
 ><DT
->9.3. <A
+>22.3. <A
 HREF="migration.html"
 >Migration between releases</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN22602"
+NAME="AEN18208"
 ></A
 ><P
 >  As everything that contains valuable data, <SPAN
@@ -159,9 +159,9 @@ CLASS="PRODUCTNAME"
 ></P><UL
 ><LI
 ><P
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > dump</P
 ></LI
 ><LI
@@ -177,9 +177,9 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="BACKUP-DUMP"
->9.1. <SPAN
+>22.1. <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Dump</A
 ></H1
 ><P
@@ -197,16 +197,12 @@ CLASS="APPLICATION"
    command is:
 </P><PRE
 CLASS="SYNOPSIS"
->pg_dump <TT
+>pg_dump <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-> &gt; <TT
+>dbname</VAR
+> &gt; <VAR
 CLASS="REPLACEABLE"
-><I
->outfile</I
-></TT
+>outfile</VAR
 ></PRE
 ><P>
    As you see, <SPAN
@@ -238,23 +234,19 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > should
-   contact, use the command line options <TT
+   contact, use the command line options <VAR
 CLASS="OPTION"
 >-h
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-> and <TT
+>host</VAR
+></VAR
+> and <VAR
 CLASS="OPTION"
->-p <TT
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
+>port</VAR
+></VAR
 >. The
    default host is the local host or whatever your
    <TT
@@ -279,9 +271,9 @@ CLASS="APPLICATION"
 >pg_dump</SPAN
 > will by default connect with the database
    user name that is equal to the current operating system user name. To override
-   this, either specify the <TT
+   this, either specify the <VAR
 CLASS="OPTION"
->-U</TT
+>-U</VAR
 > option or set the
    environment variable <TT
 CLASS="ENVAR"
@@ -293,7 +285,7 @@ CLASS="APPLICATION"
 > connections are subject to the normal
    client authentication mechanisms (which are described in <A
 HREF="client-authentication.html"
->Chapter 6</A
+>Chapter 19</A
 >).
   </P
 ><P
@@ -328,9 +320,9 @@ CLASS="IMPORTANT"
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > to dump the OIDs
-    as well. To do this, use the <TT
+    as well. To do this, use the <VAR
 CLASS="OPTION"
->-o</TT
+>-o</VAR
 > command line
     option.  <SPAN
 CLASS="QUOTE"
@@ -350,7 +342,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="BACKUP-DUMP-RESTORE"
->9.1.1. Restoring the dump</A
+>22.1.1. Restoring the dump</A
 ></H2
 ><P
 >    The text files created by <SPAN
@@ -364,55 +356,43 @@ CLASS="APPLICATION"
     general command form to restore a dump is
 </P><PRE
 CLASS="SYNOPSIS"
->psql <TT
+>psql <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-> &lt; <TT
+>dbname</VAR
+> &lt; <VAR
 CLASS="REPLACEABLE"
-><I
->infile</I
-></TT
+>infile</VAR
 ></PRE
 ><P>
-    where <TT
+    where <VAR
 CLASS="REPLACEABLE"
-><I
->infile</I
-></TT
+>infile</VAR
 > is what
-    you used as <TT
+    you used as <VAR
 CLASS="REPLACEABLE"
-><I
->outfile</I
-></TT
+>outfile</VAR
 >
     for the <TT
 CLASS="COMMAND"
 >pg_dump</TT
-> command. The database <TT
+> command. The database <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 > will not be created by this
-    command, you must create it yourself from <TT
+    command, you must create it yourself from <VAR
 CLASS="LITERAL"
->template0</TT
+>template0</VAR
 > before executing
     <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
-> (e.g., with <TT
+> (e.g., with <VAR
 CLASS="LITERAL"
 >createdb -T template0
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
+>dbname</VAR
+></VAR
 >).
     <SPAN
 CLASS="APPLICATION"
@@ -421,7 +401,7 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > 
-    for controlling the database server location and the user names. See
+    for controlling the database server location and the user name. See
     its reference page for more information.
    </P
 ><P
@@ -438,6 +418,21 @@ CLASS="APPLICATION"
     authentication settings.
    </P
 ><P
+>    Once restored, it is wise to run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> on each
+    database so the optimizer has useful statistics. You
+    can also run <TT
+CLASS="COMMAND"
+>vacuumdb -a -z</TT
+> to <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> all
+    databases.
+   </P
+><P
 >    The ability of <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
@@ -446,29 +441,21 @@ CLASS="APPLICATION"
 >psql</SPAN
 > to
     write to or read from pipes makes it possible to dump a database
-    directly from one server to another, for example
+    directly from one server to another; for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->pg_dump -h <TT
+>pg_dump -h <VAR
 CLASS="REPLACEABLE"
-><I
->host1</I
-></TT
-> <TT
+>host1</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-> | psql -h <TT
+>dbname</VAR
+> | psql -h <VAR
 CLASS="REPLACEABLE"
-><I
->host2</I
-></TT
-> <TT
+>host2</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></PRE
 ><P>
    </P
@@ -483,25 +470,25 @@ CLASS="IMPORTANT"
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > are relative to
-     <TT
+     <VAR
 CLASS="LITERAL"
->template0</TT
+>template0</VAR
 >. This means that any languages, procedures,
-     etc. added to <TT
+     etc. added to <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 > will also be dumped by
      <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
 >. As a result, when restoring, if you are
-     using a customized <TT
+     using a customized <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 >, you must create the
-     empty database from <TT
+     empty database from <VAR
 CLASS="LITERAL"
->template0</TT
+>template0</VAR
 >, as in the example
      above.
     </P
@@ -514,7 +501,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="BACKUP-DUMP-ALL"
->9.1.2. Using <TT
+>22.1.2. Using <TT
 CLASS="COMMAND"
 >pg_dumpall</TT
 ></A
@@ -530,28 +517,41 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
 > backs up each database in a given
-    cluster and also makes sure that the state of global data such as
-    users and groups is preserved. The call sequence for
+    cluster, and also preserves cluster-wide data such as
+    users and groups. The call sequence for
     <SPAN
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
 > is simply
 </P><PRE
 CLASS="SYNOPSIS"
->pg_dumpall &gt; <TT
+>pg_dumpall &gt; <VAR
 CLASS="REPLACEABLE"
-><I
->outfile</I
-></TT
+>outfile</VAR
 ></PRE
 ><P>
-    The resulting dumps can be restored with <SPAN
+    The resulting dump can be restored with <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
-> as
-    described above. But in this case it is definitely necessary that
-    you have database superuser access, as that is required to restore
-    the user and group information.
+>:
+</P><PRE
+CLASS="SYNOPSIS"
+>psql template1 &lt; <VAR
+CLASS="REPLACEABLE"
+>infile</VAR
+></PRE
+><P>
+    (Actually, you can specify any existing database name to start from,
+    but if you are reloading in an empty cluster then <VAR
+CLASS="LITERAL"
+>template1</VAR
+>
+    is the only available choice.)  It is always necessary to have
+    database superuser access when restoring a <SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+>
+    dump, as that is required to restore the user and group information.
    </P
 ></DIV
 ><DIV
@@ -560,46 +560,28 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="BACKUP-DUMP-LARGE"
->9.1.3. Large Databases</A
+>22.1.3. Large Databases</A
 ></H2
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Acknowledgement: </B
->     Originally written by Hannu Krosing
-     (<TT
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:hannu@trust.ee"
->hannu@trust.ee</A
->&#62;</TT
->) on 1999-06-19
-    </P
-></BLOCKQUOTE
-></DIV
 ><P
 >    Since <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > allows tables larger
     than the maximum file size on your system, it can be problematic
-    to dump the table to a file, since the resulting file will likely
+    to dump such a table to a file, since the resulting file will likely
     be larger than the maximum size allowed by your system. As
     <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> writes to the standard output, you can
-    just use standard *nix tools to work around this possible problem.
+> can write to the standard output, you can
+    just use standard Unix tools to work around this possible problem.
    </P
 ><DIV
 CLASS="FORMALPARA"
 ><P
 ><B
 >Use compressed dumps. </B
->     Use your favorite compression program, for example
+>     You can use your favorite compression program, for example
      <SPAN
 CLASS="APPLICATION"
 >gzip</SPAN
@@ -607,16 +589,12 @@ CLASS="APPLICATION"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->pg_dump <TT
+>pg_dump <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-> | gzip &gt; <TT
+>dbname</VAR
+> | gzip &gt; <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>filename</VAR
 >.gz</PRE
 ><P>
 
@@ -624,22 +602,16 @@ CLASS="REPLACEABLE"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->createdb <TT
+>createdb <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 >
-gunzip -c <TT
+gunzip -c <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->.gz | psql <TT
+>filename</VAR
+>.gz | psql <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></PRE
 ><P>
 
@@ -647,16 +619,12 @@ CLASS="REPLACEABLE"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->cat <TT
+>cat <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->.gz | gunzip | psql <TT
+>filename</VAR
+>.gz | gunzip | psql <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></PRE
 ><P>
     </P
@@ -665,26 +633,26 @@ CLASS="REPLACEABLE"
 CLASS="FORMALPARA"
 ><P
 ><B
->Use <SPAN
-CLASS="APPLICATION"
->split</SPAN
+>Use <TT
+CLASS="COMMAND"
+>split</TT
 >. </B
->     This allows you to split the output into pieces that are
+>     The <TT
+CLASS="COMMAND"
+>split</TT
+> command
+     allows you to split the output into pieces that are
      acceptable in size to the underlying file system. For example, to
      make chunks of 1 megabyte:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->pg_dump <TT
+>pg_dump <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-> | split -b 1m - <TT
+>dbname</VAR
+> | split -b 1m - <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>filename</VAR
 ></PRE
 ><P>
 
@@ -692,22 +660,16 @@ CLASS="REPLACEABLE"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->createdb <TT
+>createdb <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 >
-cat <TT
+cat <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->* | psql <TT
+>filename</VAR
+>* | psql <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></PRE
 ><P>
     </P
@@ -735,16 +697,12 @@ CLASS="COMMAND"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->pg_dump -Fc <TT
+>pg_dump -Fc <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-> &#62; <TT
+>dbname</VAR
+> &#62; <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>filename</VAR
 ></PRE
 ><P>
 
@@ -764,7 +722,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="BACKUP-DUMP-CAVEATS"
->9.1.4. Caveats</A
+>22.1.4. Caveats</A
 ></H2
 ><P
 >    <SPAN
@@ -775,7 +733,7 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
 >) has a few limitations which stem from
-    the difficulty to reconstruct certain information from the system
+    the difficulty of reconstructing certain information from the system
     catalogs.
    </P
 ><P
@@ -795,9 +753,9 @@ CLASS="APPLICATION"
 >pg_dump</SPAN
 > does
     not dump large objects by default. To dump large objects you must use 
-    either the custom or the TAR output format, and use the <TT
+    either the custom or the TAR output format, and use the <VAR
 CLASS="OPTION"
->-b</TT
+>-b</VAR
 > option in 
     <SPAN
 CLASS="APPLICATION"

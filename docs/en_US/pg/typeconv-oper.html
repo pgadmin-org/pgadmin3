@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Operators</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Type Conversion"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 7. Type Conversion</TD
+>Chapter 10. Type Conversion</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,36 +81,37 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TYPECONV-OPER"
->7.2. Operators</A
+>10.2. Operators</A
 ></H1
 ><P
->   The operand types of an operator invocation are resolved following
+>   The specific operator to be used in an operator invocation is determined
+   by following
    the procedure below.  Note that this procedure is indirectly affected
    by the precedence of the involved operators.  See <A
 HREF="sql-syntax.html#SQL-PRECEDENCE"
->Section 1.1.6</A
+>Section 4.1.6</A
 > for more information.
   </P
 ><DIV
 CLASS="PROCEDURE"
 ><P
 ><B
->Operand Type Resolution</B
+>Operator Type Resolution</B
 ></P
 ><OL
 TYPE="1"
 ><LI
 ><P
 >Select the operators to be considered from the
-<TT
+<CODE
 CLASS="CLASSNAME"
->pg_operator</TT
+>pg_operator</CODE
 > system catalog.  If an unqualified
-operator name is used (the usual case), the operators
+operator name was used (the usual case), the operators
 considered are those of the right name and argument count that are
 visible in the current search path (see <A
 HREF="ddl-schemas.html#DDL-SCHEMAS-PATH"
->Section 2.8.3</A
+>Section 5.8.3</A
 >).
 If a qualified operator name was given, only operators in the specified
 schema are considered.</P
@@ -136,7 +137,7 @@ CLASS="SUBSTEPS"
 TYPE="a"
 ><LI
 ><P
->If one argument of a binary operator is <TT
+>If one argument of a binary operator invocation is of the <TT
 CLASS="TYPE"
 >unknown</TT
 > type,
@@ -158,49 +159,47 @@ TYPE="a"
 ><LI
 ><P
 >Discard candidate operators for which the input types do not match
-and cannot be coerced (using an implicit coercion function) to match.
+and cannot be converted (using an implicit conversion) to match.
 <TT
 CLASS="TYPE"
 >unknown</TT
 > literals are
-assumed to be coercible to anything for this purpose.  If only one
+assumed to be convertible to anything for this purpose.  If only one
 candidate remains, use it; else continue to the next step.</P
 ></LI
 ><LI
 ><P
 >Run through all candidates and keep those with the most exact matches
-on input types.  Keep all candidates if none have any exact matches.
+on input types.  (Domain types are considered the same as their base type
+for this purpose.)  Keep all candidates if none have any exact matches.
 If only one candidate remains, use it; else continue to the next step.</P
 ></LI
 ><LI
 ><P
->Run through all candidates and keep those with the most exact or
-binary-compatible matches on input types.  Keep all candidates if none have
-any exact or binary-compatible matches.
-If only one candidate remains, use it; else continue to the next step.</P
-></LI
-><LI
-><P
->Run through all candidates and keep those that accept preferred types at
-the most positions where type coercion will be required.
+>Run through all candidates and keep those that accept preferred types (of the
+input datatype's type category) at the most positions where type conversion
+will be required.
 Keep all candidates if none accept preferred types.
 If only one candidate remains, use it; else continue to the next step.</P
 ></LI
 ><LI
 ><P
->If any input arguments are <SPAN
-CLASS="QUOTE"
->"unknown"</SPAN
+>If any input arguments are <TT
+CLASS="TYPE"
+>unknown</TT
 >, check the type
 categories accepted at those argument positions by the remaining
-candidates.  At each position, select the "string" category if any
-candidate accepts that category (this bias towards string is appropriate
-since an unknown-type literal does look like a string). Otherwise, if
+candidates.  At each position, select the <TT
+CLASS="TYPE"
+>string</TT
+> category
+if any
+candidate accepts that category.  (This bias towards string is appropriate
+since an unknown-type literal does look like a string.) Otherwise, if
 all the remaining candidates accept the same type category, select that
 category; otherwise fail because the correct choice cannot be deduced
-without more clues.  Also note whether any of the candidates accept a
-preferred data type within the selected category. Now discard operator
-candidates that do not accept the selected type category; furthermore,
+without more clues.  Now discard
+candidates that do not accept the selected type category.  Furthermore,
 if any candidate accepts a preferred type at a given argument position,
 discard candidates that accept non-preferred types for that argument.</P
 ></LI
@@ -214,18 +213,16 @@ then fail.</P
 ></LI
 ></OL
 ></DIV
-><H3
-CLASS="BRIDGEHEAD"
-><A
-NAME="AEN10833">Examples</H3
+><P
+>Some examples follow.</P
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN10834"
+NAME="AEN12256"
 ></A
 ><P
 ><B
->Example 7-1. Exponentiation Operator Type Resolution</B
+>Example 10-1. Exponentiation Operator Type Resolution</B
 ></P
 ><P
 >There is only one exponentiation
@@ -241,8 +238,9 @@ CLASS="TYPE"
 of this query expression:
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; SELECT 2 ^ 3 AS "Exp";
- Exp
+>SELECT 2 ^ 3 AS "exp";
+
+ exp
 -----
    8
 (1 row)</PRE
@@ -253,57 +251,29 @@ is equivalent to
 
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; SELECT CAST(2 AS double precision) ^ CAST(3 AS double precision) AS "Exp";
- Exp
------
-   8
-(1 row)</PRE
-><P>
-
-or
-
-</P><PRE
-CLASS="SCREEN"
->tgl=&#62; SELECT 2.0 ^ 3.0 AS "Exp";
- Exp
------
-   8
-(1 row)</PRE
-><P>
-
-</P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->This last form has the least overhead, since no functions are called to do
-implicit type conversion. This is not an issue for small queries, but may
-have an impact on the performance of queries involving large tables.</P
-></BLOCKQUOTE
-></DIV
+>SELECT CAST(2 AS double precision) ^ CAST(3 AS double precision) AS "exp";</PRE
 ><P></P
 ></DIV
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN10844"
+NAME="AEN12263"
 ></A
 ><P
 ><B
->Example 7-2. String Concatenation Operator Type Resolution</B
+>Example 10-2. String Concatenation Operator Type Resolution</B
 ></P
 ><P
 >A string-like syntax is used for working with string types as well as for
-working with complex extended types.
+working with complex extension types.
 Strings with unspecified type are matched with likely operator candidates.</P
 ><P
 >An example with one unspecified argument:
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; SELECT text 'abc' || 'def' AS "Text and Unknown";
- Text and Unknown
+>SELECT text 'abc' || 'def' AS "text and unknown";
+
+ text and unknown
 ------------------
  abcdef
 (1 row)</PRE
@@ -319,11 +289,12 @@ CLASS="TYPE"
 >text</TT
 >.</P
 ><P
->Concatenation on unspecified types:
+>Here is a concatenation on unspecified types:
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; SELECT 'abc' || 'def' AS "Unspecified";
- Unspecified
+>SELECT 'abc' || 'def' AS "unspecified";
+
+ unspecified
 -------------
  abcdef
 (1 row)</PRE
@@ -334,10 +305,7 @@ are specified in the query. So, the parser looks for all candidate operators
 and finds that there are candidates accepting both string-category and
 bit-string-category inputs.  Since string category is preferred when available,
 that category is selected, and then the 
-<SPAN
-CLASS="QUOTE"
->"preferred type"</SPAN
-> for strings, <TT
+preferred type for strings, <TT
 CLASS="TYPE"
 >text</TT
 >, is used as the specific
@@ -346,20 +314,20 @@ type to resolve the unknown literals to.</P
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN10857"
+NAME="AEN12275"
 ></A
 ><P
 ><B
->Example 7-3. Absolute-Value and Factorial Operator Type Resolution</B
+>Example 10-3. Absolute-Value and Factorial Operator Type Resolution</B
 ></P
 ><P
 >The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > operator catalog has several
-entries for the prefix operator <TT
+entries for the prefix operator <VAR
 CLASS="LITERAL"
->@</TT
+>@</VAR
 >, all of which implement
 absolute-value operations for various numeric data types.  One of these
 entries is for type <TT
@@ -373,45 +341,60 @@ CLASS="PRODUCTNAME"
 will use that entry when faced with a non-numeric input:
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; select @ text '-4.5' as "abs";
+>SELECT @ '-4.5' AS "abs";
  abs
 -----
  4.5
 (1 row)</PRE
 ><P>
-Here the system has performed an implicit text-to-float8 conversion
-before applying the chosen operator.  We can verify that float8 and
+Here the system has performed an implicit conversion from <TT
+CLASS="TYPE"
+>text</TT
+> to <TT
+CLASS="TYPE"
+>float8</TT
+>
+before applying the chosen operator.  We can verify that <TT
+CLASS="TYPE"
+>float8</TT
+> and
 not some other type was used:
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; select @ text '-4.5e500' as "abs";
+>SELECT @ '-4.5e500' AS "abs";
+
 ERROR:  Input '-4.5e500' is out of range for float8</PRE
 ><P></P
 ><P
->On the other hand, the postfix operator <TT
+>On the other hand, the postfix operator <VAR
 CLASS="LITERAL"
->!</TT
+>!</VAR
 > (factorial)
-is defined only for integer data types, not for float8.  So, if we
-try a similar case with <TT
+is defined only for integer data types, not for <TT
+CLASS="TYPE"
+>float8</TT
+>.  So, if we
+try a similar case with <VAR
 CLASS="LITERAL"
->!</TT
+>!</VAR
 >, we get:
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; select text '20' ! as "factorial";
+>SELECT '20' ! AS "factorial";
+
 ERROR:  Unable to identify a postfix operator '!' for type 'text'
         You may need to add parentheses or an explicit cast</PRE
 ><P>
 This happens because the system can't decide which of the several
-possible <TT
+possible <VAR
 CLASS="LITERAL"
->!</TT
+>!</VAR
 > operators should be preferred.  We can help
 it out with an explicit cast:
 </P><PRE
 CLASS="SCREEN"
->tgl=&#62; select cast(text '20' as int8) ! as "factorial";
+>SELECT CAST('20' AS int8) ! AS "factorial";
+
       factorial
 ---------------------
  2432902008176640000

@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_lo_creat</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_on_connection_loss"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,145 +78,115 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGLOCREAT"
->pg_lo_creat</A
-></H1
+></A
+>pg_lo_creat</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN26944"
+NAME="AEN21862"
 ></A
 ><H2
 >Name</H2
 >pg_lo_creat&nbsp;--&nbsp;create a large object<A
-NAME="IX-PGTCL-PGLOCREAT-1"
-></A
-><A
 NAME="IX-PGTCL-PGLOCREAT-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN26952"
+NAME="AEN21867"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_lo_creat <TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->mode</I
-></TT
+>pg_lo_creat <VAR
+CLASS="PARAMETER"
+>conn</VAR
+> <VAR
+CLASS="PARAMETER"
+>mode</VAR
 ></PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGLOCREAT-1"
-></A
-><H3
->Inputs</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
-></DT
-><DD
-><P
->Specifies a valid database connection.</P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->mode</I
-></TT
-></DT
-><DD
-><P
->Specifies the access mode for the large object</P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGLOCREAT-2"
-></A
-><H3
->Outputs</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->objOid</I
-></TT
-></DT
-><DD
-><P
->The OID of the large object created.</P
-></DD
-></DL
-></DIV
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGLOCREAT-1"
+NAME="AEN21871"
 ></A
 ><H2
 >Description</H2
 ><P
-><TT
+>   <CODE
 CLASS="FUNCTION"
->pg_lo_creat</TT
-> creates an Inversion Large Object.</P
+>pg_lo_creat</CODE
+> creates a large object.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGLOCREAT-2"
+NAME="AEN21875"
 ></A
 ><H2
->Usage</H2
+>Arguments</H2
 ><P
->mode can be any or'ing together of <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="PARAMETER"
+>conn</VAR
+></DT
+><DD
+><P
+>      The handle of a database connection in which to create the large
+      object.
+     </P
+></DD
+><DT
+><VAR
+CLASS="PARAMETER"
+>mode</VAR
+></DT
+><DD
+><P
+>      The access mode for the large object.  It can be any or'ing
+      together of <VAR
 CLASS="LITERAL"
->INV_READ</TT
-> and <TT
+>INV_READ</VAR
+> and <VAR
 CLASS="LITERAL"
->INV_WRITE</TT
->.
-The <SPAN
+>INV_WRITE</VAR
+>.  The
+      <SPAN
 CLASS="QUOTE"
 >"or"</SPAN
-> operator is <TT
+> operator is <VAR
 CLASS="LITERAL"
->|</TT
->.
+>|</VAR
+>.  For
+      example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >[pg_lo_creat $conn "INV_READ|INV_WRITE"]</PRE
-><P></P
+><P>
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21893"
+></A
+><H2
+>Return Value</H2
+><P
+>   The OID of the large object created.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

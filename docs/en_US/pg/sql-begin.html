@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >BEGIN</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,133 +78,158 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-BEGIN"
->BEGIN</A
-></H1
+></A
+>BEGIN</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37947"
+NAME="AEN36965"
 ></A
 ><H2
 >Name</H2
->   BEGIN
-  &nbsp;--&nbsp;   start a transaction block
-  </DIV
+>BEGIN&nbsp;--&nbsp;start a transaction block</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37950"
+NAME="AEN36968"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->BEGIN [ WORK | TRANSACTION ]
-  </PRE
+>BEGIN [ WORK | TRANSACTION ]</PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-BEGIN-1"
+NAME="AEN36970"
 ></A
-><H3
->    Inputs
-   </H3
+><H2
+>Description</H2
 ><P
->&#13;    <P
+>   By default, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> executes
+   transactions in <SPAN
+CLASS="QUOTE"
+>"autocommit"</SPAN
+> mode, that is, each
+   statement is executed in its own transaction and a commit is
+   implicitly performed at the end of the statement (if execution was
+   successful, otherwise a rollback is done).
+   <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> initiates a transaction block, that is,
+   all statements after <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> command will be
+   executed in a single transaction until an explicit <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+> or <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
+>.  Statements
+   are executed more quickly in a transaction block, because
+   transaction start/commit requires significant CPU and disk
+   activity. Execution of multiple statements inside a transaction is
+   also useful to ensure consistency when changing several related
+   tables: other sessions will be unable to see the intermediate states
+   wherein not all the related updates have been done.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN36979"
+></A
+><H2
+>Parameters</H2
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->WORK<BR>TRANSACTION</DT
-><DD
-><P
->	Optional keywords. They have no effect.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-BEGIN-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->BEGIN
-       </TT
+><VAR
+CLASS="LITERAL"
+>WORK</VAR
+><BR><VAR
+CLASS="LITERAL"
+>TRANSACTION</VAR
 ></DT
 ><DD
 ><P
->	This signifies that a new transaction has been started.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->WARNING:  BEGIN: already a transaction in progress
-       </TT
-></DT
-><DD
-><P
->	This indicates that a transaction was already in progress.
-	The current transaction is not affected.
-       </P
+>      Optional key words. They have no effect.
+     </P
 ></DD
 ></DL
-></DIV
-><P>
-   </P
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-BEGIN-1"
+NAME="AEN36989"
 ></A
 ><H2
->   Description
-  </H2
+>Diagnostics</H2
 ><P
->   By default, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> executes transactions
-   in <I
-CLASS="FIRSTTERM"
->unchained mode</I
->
-   (also known as <SPAN
-CLASS="QUOTE"
->"autocommit"</SPAN
-> in other database
-   systems).
-   In other words, each user statement is executed in its own transaction
-   and a commit is implicitly performed at the end of the statement
-   (if execution was successful, otherwise a rollback is done).
-   <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>BEGIN</SAMP
+></DT
+><DD
+><P
+>      This signifies that a new transaction has been started.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>WARNING:  BEGIN: already a transaction in progress</SAMP
+></DT
+><DD
+><P
+>      This indicates that a transaction was already in progress.  The
+      current transaction is not affected.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37002"
+></A
+><H2
+>Notes</H2
+><P
+>   <A
+HREF="sql-start-transaction.html"
+><I
+>START TRANSACTION</I
+></A
+> has the same functionality
+   as <TT
 CLASS="COMMAND"
 >BEGIN</TT
-> initiates a user transaction in chained mode,
-   i.e., all user statements after <TT
-CLASS="COMMAND"
->BEGIN</TT
-> command will
-   be executed in a single transaction until an explicit 
-   <A
+>.
+  </P
+><P
+>   Use <A
 HREF="sql-commit.html"
 ><I
 >COMMIT</I
@@ -215,199 +240,67 @@ HREF="sql-rollback.html"
 ><I
 >ROLLBACK</I
 ></A
->.
-   Statements are executed more quickly in chained mode,
-   because transaction start/commit requires significant CPU and disk 
-   activity. Execution of multiple statements inside a transaction
-   is also useful to ensure consistency when changing several
-   related tables: other clients will be unable to see the intermediate
-   states wherein not all the related updates have been done.
+>
+   to terminate a transaction.
   </P
-><P
->   The default transaction isolation level in
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-   is READ COMMITTED, wherein each query inside the transaction sees changes
-   committed before that query begins execution. So, you have to use 
-   <TT
-CLASS="COMMAND"
->SET TRANSACTION ISOLATION LEVEL SERIALIZABLE</TT
->
-   just after <TT
-CLASS="COMMAND"
->BEGIN</TT
-> if you need more rigorous transaction
-   isolation.  (Alternatively, you can change the default transaction
-   isolation level; see the <I
-CLASS="CITETITLE"
->PostgreSQL Administrator's
-   Guide</I
-> for details.)
-   In SERIALIZABLE mode queries will see only changes committed before
-   the entire
-   transaction began (actually, before execution of the first <SPAN
-CLASS="ACRONYM"
->DML</SPAN
-> statement
-   in the transaction).
-  </P
-><P
->   Transactions have the standard <SPAN
-CLASS="ACRONYM"
->ACID</SPAN
->
-   (atomic, consistent, isolatable, and durable) properties.
-  </P
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-BEGIN-3"
-></A
-><H3
->    Notes
-   </H3
-><P
->    <A
-HREF="sql-start-transaction.html"
-><I
->START TRANSACTION</I
-></A
-> has the same functionality
-    as <TT
-CLASS="COMMAND"
->BEGIN</TT
->.
-   </P
-><P
->    Use <A
-HREF="sql-commit.html"
-><I
->COMMIT</I
-></A
->
-    or
-    <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
->
-    to terminate a transaction.
-   </P
-><P
->    Refer to <A
-HREF="sql-lock.html"
-><I
->LOCK</I
-></A
->
-    for further information
-    about locking tables inside a transaction.
-   </P
-><P
->    If you turn <TT
-CLASS="LITERAL"
->autocommit</TT
-> mode off, then <TT
-CLASS="COMMAND"
->BEGIN</TT
->
-    is not required: any SQL command automatically starts a transaction.
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-BEGIN-2"
+NAME="AEN37010"
 ></A
 ><H2
->   Usage
-  </H2
+>Examples</H2
 ><P
->   To begin a user transaction:
+>   To begin a transaction block:
 
-  </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->BEGIN WORK;
-  </PRE
+>BEGIN;</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-BEGIN-3"
+NAME="AEN37014"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-BEGIN-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    <TT
+>   <TT
 CLASS="COMMAND"
 >BEGIN</TT
->
-    is a <SPAN
+> is a <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> language extension.
-    There is no explicit <TT
+>
+   language extension.  There is no explicit <TT
 CLASS="COMMAND"
 >BEGIN</TT
 >
-    command in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->;
-    transaction initiation is always implicit and it terminates either 
-    with a <TT
+   command in the SQL standard; transaction initiation is
+   always implicit and it terminates either with a
+   <TT
 CLASS="COMMAND"
 >COMMIT</TT
 > or <TT
 CLASS="COMMAND"
 >ROLLBACK</TT
 > statement.
-
-    </P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
+  </P
 ><P
-><B
->Note: </B
->      Many relational database systems offer an autocommit feature as a
-      convenience.
-     </P
-></BLOCKQUOTE
-></DIV
-><P>
-   </P
+>   Other relational database systems may offer an autocommit feature
+   as a convenience.
+  </P
 ><P
->    Incidentally, the <TT
+>   Incidentally, the <VAR
 CLASS="LITERAL"
->BEGIN</TT
-> keyword is used for a different
-    purpose in embedded SQL. You are advised to be careful about the transaction
-    semantics when porting database applications.
-   </P
-><P
->    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> also requires SERIALIZABLE to be the default
-    transaction isolation level.
-   </P
-></DIV
+>BEGIN</VAR
+> key word is used for a
+   different purpose in embedded SQL. You are advised to be careful
+   about the transaction semantics when porting database applications.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

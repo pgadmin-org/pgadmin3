@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Log File Maintenance</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Routine Database Maintenance Tasks"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 8. Routine Database Maintenance Tasks</TD
+>Chapter 21. Routine Database Maintenance Tasks</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="LOGFILE-MAINTENANCE"
->8.4. Log File Maintenance</A
+>21.3. Log File Maintenance</A
 ></H1
 ><A
-NAME="AEN22575"
+NAME="AEN18179"
 ></A
 ><P
 >   It's a good idea to save the database server's log output somewhere,
@@ -102,12 +102,18 @@ CLASS="QUOTE"
    away every so often.
   </P
 ><P
->   If you simply direct the postmaster's <SPAN
+>   If you simply direct the <SPAN
 CLASS="SYSTEMITEM"
 >stderr</SPAN
+> of the <TT
+CLASS="COMMAND"
+>postmaster</TT
 > into a
    file, the only way to truncate the log file is to stop and restart
-   the postmaster. This may be OK for development setups but you won't
+   the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>. This may be OK for development setups but you won't
    want to run a production server that way.
   </P
 ><P
@@ -120,10 +126,10 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >syslog</SPAN
 > deal with file rotation. To do this, set
-   <TT
+   the configurations parameter <VAR
 CLASS="LITERAL"
->syslog</TT
-> to 2 (log to <SPAN
+>syslog</VAR
+> to 2 (to log to <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
 > only) in
@@ -131,9 +137,9 @@ CLASS="APPLICATION"
 CLASS="FILENAME"
 >postgresql.conf</TT
 >. Then you can send a
-   <TT
+   <VAR
 CLASS="LITERAL"
->SIGHUP</TT
+>SIGHUP</VAR
 > signal to the <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
@@ -149,19 +155,22 @@ CLASS="APPLICATION"
    with large log messages; it may truncate or drop messages just when
    you need them the most. You may find it more useful to pipe the
    <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
->'s <SPAN
 CLASS="SYSTEMITEM"
 >stderr</SPAN
+> of the <TT
+CLASS="COMMAND"
+>postmaster</TT
 > to some type of
-   log rotation script. If you start the postmaster with
-   <SPAN
-CLASS="APPLICATION"
->pg_ctl</SPAN
->, then the postmaster's <SPAN
+   log rotation program. If you start the server with
+   <TT
+CLASS="COMMAND"
+>pg_ctl</TT
+>, then the <SPAN
 CLASS="SYSTEMITEM"
 >stderr</SPAN
+> of the <TT
+CLASS="COMMAND"
+>postmaster</TT
 >
    is already redirected to <SPAN
 CLASS="SYSTEMITEM"
@@ -170,20 +179,15 @@ CLASS="SYSTEMITEM"
    pipe command:
    
 </P><PRE
-CLASS="SCREEN"
-><TT
-CLASS="USERINPUT"
-><B
->pg_ctl start | logrotate</B
-></TT
-></PRE
+CLASS="PROGRAMLISTING"
+>pg_ctl start | logrotate</PRE
 ><P>
 
    The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > distribution doesn't include a suitable
-   log rotation program, but there are many available on the net;
+   log rotation program, but there are many available on the Internet;
    one is included in the Apache distribution, for example.
   </P
 ></DIV

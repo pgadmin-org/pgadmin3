@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Subquery Expressions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Aggregate Functions"
 HREF="functions-aggregate.html"><LINK
 REL="NEXT"
-TITLE="Type Conversion"
-HREF="typeconv.html"><LINK
+TITLE="Row and Array Comparisons"
+HREF="functions-comparisons.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. Functions and Operators</TD
+>Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="typeconv.html"
+HREF="functions-comparisons.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,33 +81,33 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-SUBQUERY"
->6.15. Subquery Expressions</A
+>9.16. Subquery Expressions</A
 ></H1
 ><A
-NAME="AEN10465"
+NAME="AEN11842"
 ></A
 ><A
-NAME="AEN10467"
+NAME="AEN11844"
 ></A
 ><A
-NAME="AEN10469"
+NAME="AEN11846"
 ></A
 ><A
-NAME="AEN10471"
+NAME="AEN11848"
 ></A
 ><A
-NAME="AEN10473"
+NAME="AEN11850"
 ></A
 ><A
-NAME="AEN10475"
+NAME="AEN11852"
 ></A
 ><A
-NAME="AEN10477"
+NAME="AEN11854"
 ></A
 ><P
->   This section describes the <SPAN
+>   This section describes the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >-compliant subquery
    expressions available in <SPAN
 CLASS="PRODUCTNAME"
@@ -121,16 +121,17 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN10482"
->6.15.1. EXISTS</A
+NAME="AEN11859"
+>9.16.1. <VAR
+CLASS="LITERAL"
+>EXISTS</VAR
+></A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
->EXISTS ( <TT
+>EXISTS ( <VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 > )</PRE
 ><P
 >   The argument of <TT
@@ -176,13 +177,13 @@ CLASS="QUOTE"
 >   Since the result depends only on whether any rows are returned,
    and not on the contents of those rows, the output list of the
    subquery is normally uninteresting.  A common coding convention is
-   to write all <TT
+   to write all <VAR
 CLASS="LITERAL"
->EXISTS</TT
+>EXISTS</VAR
 > tests in the form
-   <TT
+   <VAR
 CLASS="LITERAL"
->EXISTS(SELECT 1 WHERE ...)</TT
+>EXISTS(SELECT 1 WHERE ...)</VAR
 >.  There are exceptions to
    this rule however, such as subqueries that use <TT
 CLASS="TOKEN"
@@ -190,17 +191,17 @@ CLASS="TOKEN"
 >.
   </P
 ><P
->   This simple example is like an inner join on <TT
+>   This simple example is like an inner join on <VAR
 CLASS="LITERAL"
->col2</TT
+>col2</VAR
 >, but
-   it produces at most one output row for each <TT
+   it produces at most one output row for each <VAR
 CLASS="LITERAL"
->tab1</TT
+>tab1</VAR
 > row,
-   even if there are multiple matching <TT
+   even if there are multiple matching <VAR
 CLASS="LITERAL"
->tab2</TT
+>tab2</VAR
 > rows:
 </P><PRE
 CLASS="SCREEN"
@@ -214,120 +215,23 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN10505"
->6.15.2. IN (scalar form)</A
+NAME="AEN11883"
+>9.16.2. <VAR
+CLASS="LITERAL"
+>IN</VAR
+></A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> IN (<TT
+>expression</VAR
+> IN (<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
->[<SPAN
-CLASS="OPTIONAL"
->, ...</SPAN
->])</PRE
-><P
->   The right-hand side of this form of <TT
-CLASS="TOKEN"
->IN</TT
-> is a parenthesized list
-   of scalar expressions.  The result is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if the left-hand expression's
-   result is equal to any of the right-hand expressions.  This is a shorthand
-   notation for
-
-</P><PRE
-CLASS="SYNOPSIS"
-><TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> = <TT
-CLASS="REPLACEABLE"
-><I
->value1</I
-></TT
->
-OR
-<TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> = <TT
-CLASS="REPLACEABLE"
-><I
->value2</I
-></TT
->
-OR
-...</PRE
-><P>
-
-   Note that if the left-hand expression yields null, or if there are
-   no equal right-hand values and at least one right-hand expression yields
-   null, the result of the <TT
-CLASS="TOKEN"
->IN</TT
-> construct will be null, not false.
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->   This form of <TT
-CLASS="TOKEN"
->IN</TT
-> is not truly a subquery expression, but it
-   seems best to document it in the same place as subquery <TT
-CLASS="TOKEN"
->IN</TT
->.
-  </P
-></BLOCKQUOTE
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN10524"
->6.15.3. IN (subquery form)</A
-></H2
-><PRE
-CLASS="SYNOPSIS"
-><TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> IN (<TT
-CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 >)</PRE
 ><P
->   The right-hand side of this form of <TT
-CLASS="TOKEN"
->IN</TT
-> is a parenthesized
+>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
    is evaluated and compared to each row of the subquery result.
    The result of <TT
@@ -362,24 +266,18 @@ CLASS="TOKEN"
   </P
 ><PRE
 CLASS="SYNOPSIS"
->(<TT
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > [<SPAN
 CLASS="OPTIONAL"
->, <TT
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > ...</SPAN
->]) IN (<TT
+>]) IN (<VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 >)</PRE
 ><P
 >   The right-hand side of this form of <TT
@@ -403,7 +301,7 @@ CLASS="QUOTE"
    case where the subquery returns no rows).
   </P
 ><P
->   As usual, null values in the expressions or subquery rows are combined per
+>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
@@ -420,129 +318,23 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN10550"
->6.15.4. NOT IN (scalar form)</A
+NAME="AEN11909"
+>9.16.3. <VAR
+CLASS="LITERAL"
+>NOT IN </VAR
+></A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> NOT IN (<TT
+>expression</VAR
+> NOT IN (<VAR
 CLASS="REPLACEABLE"
-><I
->value</I
-></TT
->[<SPAN
-CLASS="OPTIONAL"
->, ...</SPAN
->])</PRE
-><P
->   The right-hand side of this form of <TT
-CLASS="TOKEN"
->NOT IN</TT
-> is a parenthesized list
-   of scalar expressions.  The result is <SPAN
-CLASS="QUOTE"
->"true"</SPAN
-> if the left-hand expression's
-   result is unequal to all of the right-hand expressions.  This is a shorthand
-   notation for
-
-</P><PRE
-CLASS="SYNOPSIS"
-><TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> &lt;&gt; <TT
-CLASS="REPLACEABLE"
-><I
->value1</I
-></TT
->
-AND
-<TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> &lt;&gt; <TT
-CLASS="REPLACEABLE"
-><I
->value2</I
-></TT
->
-AND
-...</PRE
-><P>
-
-   Note that if the left-hand expression yields null, or if there are
-   no equal right-hand values and at least one right-hand expression yields
-   null, the result of the <TT
-CLASS="TOKEN"
->NOT IN</TT
-> construct will be null, not true
-   as one might naively expect.
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
-  </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->   <TT
-CLASS="LITERAL"
->x NOT IN y</TT
-> is equivalent to <TT
-CLASS="LITERAL"
->NOT (x IN y)</TT
-> in all
-   cases.  However, null values are much more likely to trip up the novice when
-   working with <TT
-CLASS="TOKEN"
->NOT IN</TT
-> than when working with <TT
-CLASS="TOKEN"
->IN</TT
->.
-   It's best to express your condition positively if possible.
-  </P
-></BLOCKQUOTE
-></DIV
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN10571"
->6.15.5. NOT IN (subquery form)</A
-></H2
-><PRE
-CLASS="SYNOPSIS"
-><TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> NOT IN (<TT
-CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 >)</PRE
 ><P
->   The right-hand side of this form of <TT
-CLASS="TOKEN"
->NOT IN</TT
-> is a parenthesized
+>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
    is evaluated and compared to each row of the subquery result.
    The result of <TT
@@ -577,24 +369,18 @@ CLASS="TOKEN"
   </P
 ><PRE
 CLASS="SYNOPSIS"
->(<TT
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > [<SPAN
 CLASS="OPTIONAL"
->, <TT
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > ...</SPAN
->]) NOT IN (<TT
+>]) NOT IN (<VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 >)</PRE
 ><P
 >   The right-hand side of this form of <TT
@@ -618,7 +404,7 @@ CLASS="QUOTE"
 > if any equal row is found.
   </P
 ><P
->   As usual, null values in the expressions or subquery rows are combined per
+>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
@@ -635,55 +421,44 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN10597"
->6.15.6. ANY/SOME</A
+NAME="AEN11935"
+>9.16.4. <VAR
+CLASS="LITERAL"
+>ANY</VAR
+>/<VAR
+CLASS="LITERAL"
+>SOME</VAR
+></A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> <TT
+>expression</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> ANY (<TT
+>operator</VAR
+> ANY (<VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 >)
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> <TT
+>expression</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> SOME (<TT
+>operator</VAR
+> SOME (<VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 >)</PRE
 ><P
->   The right-hand side of this form of <TT
-CLASS="TOKEN"
->ANY</TT
-> is a parenthesized
+>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
    is evaluated and compared to each row of the subquery result using the
-   given <TT
+   given <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
+>operator</VAR
 >, which must yield a Boolean
    result.
    The result of <TT
@@ -710,9 +485,9 @@ CLASS="TOKEN"
    <TT
 CLASS="TOKEN"
 >IN</TT
-> is equivalent to <TT
+> is equivalent to <VAR
 CLASS="LITERAL"
->= ANY</TT
+>= ANY</VAR
 >.
   </P
 ><P
@@ -734,53 +509,37 @@ CLASS="TOKEN"
   </P
 ><PRE
 CLASS="SYNOPSIS"
->(<TT
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > [<SPAN
 CLASS="OPTIONAL"
->, <TT
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > ...</SPAN
->]) <TT
+>]) <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> ANY (<TT
+>operator</VAR
+> ANY (<VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 >)
-(<TT
+(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > [<SPAN
 CLASS="OPTIONAL"
->, <TT
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > ...</SPAN
->]) <TT
+>]) <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> SOME (<TT
+>operator</VAR
+> SOME (<VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 >)</PRE
 ><P
 >   The right-hand side of this form of <TT
@@ -790,23 +549,21 @@ CLASS="TOKEN"
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand list.  The left-hand expressions are
    evaluated and compared row-wise to each row of the subquery result,
-   using the given <TT
+   using the given <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
+>operator</VAR
 >.  Presently,
-   only <TT
+   only <VAR
 CLASS="LITERAL"
->=</TT
-> and <TT
+>=</VAR
+> and <VAR
 CLASS="LITERAL"
->&lt;&gt;</TT
+>&lt;&gt;</VAR
 > operators are allowed
    in row-wise <TT
 CLASS="TOKEN"
 >ANY</TT
-> queries.
+> constructs.
    The result of <TT
 CLASS="TOKEN"
 >ANY</TT
@@ -822,7 +579,7 @@ CLASS="QUOTE"
    case where the subquery returns no rows).
   </P
 ><P
->   As usual, null values in the expressions or subquery rows are combined per
+>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
@@ -839,39 +596,31 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN10643"
->6.15.7. ALL</A
+NAME="AEN11982"
+>9.16.5. <VAR
+CLASS="LITERAL"
+>ALL</VAR
+></A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> <TT
+>expression</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> ALL (<TT
+>operator</VAR
+> ALL (<VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
+>subquery</VAR
 >)</PRE
 ><P
->   The right-hand side of this form of <TT
-CLASS="TOKEN"
->ALL</TT
-> is a parenthesized
+>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
    is evaluated and compared to each row of the subquery result using the
-   given <TT
+   given <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
+>operator</VAR
 >, which must yield a Boolean
    result.
    The result of <TT
@@ -891,9 +640,9 @@ CLASS="QUOTE"
 >   <TT
 CLASS="TOKEN"
 >NOT IN</TT
-> is equivalent to <TT
+> is equivalent to <VAR
 CLASS="LITERAL"
->&lt;&gt; ALL</TT
+>&lt;&gt; ALL</VAR
 >.
   </P
 ><P
@@ -915,31 +664,22 @@ CLASS="TOKEN"
   </P
 ><PRE
 CLASS="SYNOPSIS"
->(<TT
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > [<SPAN
 CLASS="OPTIONAL"
->, <TT
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > ...</SPAN
->]) <TT
+>]) <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> ALL (<TT
+>operator</VAR
+> ALL (<VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
->)
-   </PRE
+>subquery</VAR
+>)</PRE
 ><P
 >   The right-hand side of this form of <TT
 CLASS="TOKEN"
@@ -948,18 +688,16 @@ CLASS="TOKEN"
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand list.  The left-hand expressions are
    evaluated and compared row-wise to each row of the subquery result,
-   using the given <TT
+   using the given <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
+>operator</VAR
 >.  Presently,
-   only <TT
+   only <VAR
 CLASS="LITERAL"
->=</TT
-> and <TT
+>=</VAR
+> and <VAR
 CLASS="LITERAL"
->&lt;&gt;</TT
+>&lt;&gt;</VAR
 > operators are allowed
    in row-wise <TT
 CLASS="TOKEN"
@@ -981,7 +719,7 @@ CLASS="QUOTE"
    respectively.
   </P
 ><P
->   As usual, null values in the expressions or subquery rows are combined per
+>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
@@ -998,82 +736,40 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN10679"
->6.15.8. Row-wise Comparison</A
+NAME="AEN12018"
+>9.16.6. Row-wise Comparison</A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
->(<TT
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > [<SPAN
 CLASS="OPTIONAL"
->, <TT
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > ...</SPAN
->]) <TT
+>]) <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> (<TT
+>operator</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->subquery</I
-></TT
->)
-(<TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> [<SPAN
-CLASS="OPTIONAL"
->, <TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> ...</SPAN
->]) <TT
-CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
-> (<TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> [<SPAN
-CLASS="OPTIONAL"
->, <TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> ...</SPAN
->])
-   </PRE
+>subquery</VAR
+>)</PRE
 ><P
->   The left-hand side is a list of scalar expressions.  The right-hand side
-   can be either a list of scalar expressions of the same length, or a
-   parenthesized subquery, which must return exactly as many columns as there
+>   The left-hand side is a list of scalar expressions.  The right-hand side is
+   a parenthesized subquery, which must return exactly as many columns as there
    are expressions on the left-hand side.  Furthermore, the subquery cannot
    return more than one row.  (If it returns zero rows, the result is taken to
    be null.)  The left-hand side is evaluated and compared row-wise to the
-   single subquery result row, or to the right-hand expression list.
-   Presently, only <TT
+   single subquery result row.
+   Presently, only <VAR
 CLASS="LITERAL"
->=</TT
-> and <TT
+>=</VAR
+> and <VAR
 CLASS="LITERAL"
->&lt;&gt;</TT
+>&lt;&gt;</VAR
 > operators are allowed
    in row-wise comparisons.
    The result is <SPAN
@@ -1082,7 +778,7 @@ CLASS="QUOTE"
 > if the two rows are equal or unequal, respectively.
   </P
 ><P
->   As usual, null values in the expressions or subquery rows are combined per
+>   As usual, null values in the rows are combined per
    the normal rules of SQL Boolean expressions.  Two rows are considered
    equal if all their corresponding members are non-null and equal; the rows
    are unequal if any corresponding members are non-null and unequal;
@@ -1124,7 +820,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="typeconv.html"
+HREF="functions-comparisons.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -1148,7 +844,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Type Conversion</TD
+>Row and Array Comparisons</TD
 ></TR
 ></TABLE
 ></DIV

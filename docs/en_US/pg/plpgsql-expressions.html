@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Expressions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 19. <SPAN
+>Chapter 40. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> - <SPAN
+> - <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Procedural Language</TD
 ><TD
 WIDTH="10%"
@@ -87,51 +87,59 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-EXPRESSIONS"
->19.4. Expressions</A
+>40.5. Expressions</A
 ></H1
 ><P
 >     All expressions used in <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> statements
-     are processed using the server's regular SQL executor. Expressions that
-     appear to contain 
-     constants may in fact require run-time evaluation
-     (e.g. <TT
+>
+     statements are processed using the server's regular
+     <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> executor. Expressions that appear to
+     contain constants may in fact require run-time evaluation
+     (e.g., <VAR
 CLASS="LITERAL"
->'now'</TT
->  for the 
-     <TT
+>'now'</VAR
+> for the <TT
 CLASS="TYPE"
 >timestamp</TT
-> type) so
-     it is impossible for the <SPAN
+>
+     type) so it is impossible for the
+     <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> parser
-     to identify real constant values other than the NULL keyword. All
-     expressions are evaluated internally by executing a query
+> parser to identify real
+     constant values other than the key word <VAR
+CLASS="LITERAL"
+>NULL</VAR
+>. All expressions are
+     evaluated internally by executing a query
 </P><PRE
 CLASS="SYNOPSIS"
->SELECT <TT
+>SELECT <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 ></PRE
 ><P>
-     using the <SPAN
+     using the <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
-> manager. In the expression, occurrences
-     of <SPAN
+>SPI</ACRONYM
+> manager. For evaluation,
+     occurrences of <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> variable 
-     identifiers are replaced by parameters and the actual values from
+> variable
+     identifiers are replaced by parameters, and the actual values from
      the variables are passed to the executor in the parameter array.
-     This allows the query plan for the SELECT to be prepared just once
-     and then re-used for subsequent evaluations.
+     This allows the query plan for the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> to
+     be prepared just once and then reused for subsequent
+     evaluations.
     </P
 ><P
 >     The evaluation done by the <SPAN
@@ -144,21 +152,21 @@ CLASS="PRODUCTNAME"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION logfunc1 (TEXT) RETURNS TIMESTAMP AS '
+>CREATE FUNCTION logfunc1(text) RETURNS timestamp AS '
     DECLARE
         logtxt ALIAS FOR $1;
     BEGIN
         INSERT INTO logtable VALUES (logtxt, ''now'');
         RETURN ''now'';
     END;
-' LANGUAGE 'plpgsql';</PRE
+' LANGUAGE plpgsql;</PRE
 ><P>
 
      and
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION logfunc2 (TEXT) RETURNS TIMESTAMP AS '
+>CREATE FUNCTION logfunc2(text) RETURNS timestamp AS '
     DECLARE
         logtxt ALIAS FOR $1;
         curtime timestamp;
@@ -167,62 +175,66 @@ CLASS="PROGRAMLISTING"
         INSERT INTO logtable VALUES (logtxt, curtime);
         RETURN curtime;
     END;
-' LANGUAGE 'plpgsql';</PRE
+' LANGUAGE plpgsql;</PRE
 ><P>
-
-     In the case of <TT
+    </P
+><P
+>     In the case of <CODE
 CLASS="FUNCTION"
->logfunc1()</TT
+>logfunc1</CODE
 >, the 
      <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > main parser knows when 
-     preparing the plan for the INSERT, that the string 
-     <TT
+     preparing the plan for the <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, that the string 
+     <VAR
 CLASS="LITERAL"
->'now'</TT
+>'now'</VAR
 > should be interpreted as 
      <TT
 CLASS="TYPE"
 >timestamp</TT
-> because the target field of <TT
+> because the target column of <CODE
 CLASS="CLASSNAME"
->logtable</TT
+>logtable</CODE
 >
      is of that type. Thus, it will make a constant from it at this
      time and this constant value is then used in all invocations of 
-     <TT
+     <CODE
 CLASS="FUNCTION"
->logfunc1()</TT
+>logfunc1</CODE
 > during the lifetime of the
-     backend. Needless to say that this isn't what the
+     session. Needless to say that this isn't what the
      programmer wanted.
     </P
 ><P
->     In the case of <TT
+>     In the case of <CODE
 CLASS="FUNCTION"
->logfunc2()</TT
+>logfunc2</CODE
 >, the 
      <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > main parser does not know
-     what type <TT
+     what type <VAR
 CLASS="LITERAL"
->'now'</TT
+>'now'</VAR
 > should become and therefore 
      it returns a data value of type <TT
 CLASS="TYPE"
 >text</TT
 > containing the string 
-     <TT
+     <VAR
 CLASS="LITERAL"
->'now'</TT
+>now</VAR
 >. During the ensuing assignment
-     to the local variable <TT
+     to the local variable <VAR
 CLASS="VARNAME"
->curtime</TT
+>curtime</VAR
 >, the
      <SPAN
 CLASS="APPLICATION"
@@ -232,26 +244,29 @@ CLASS="APPLICATION"
 CLASS="TYPE"
 >timestamp</TT
 > type by calling the
-     <TT
+     <CODE
 CLASS="FUNCTION"
->text_out()</TT
-> and <TT
+>text_out</CODE
+> and <CODE
 CLASS="FUNCTION"
->timestamp_in()</TT
+>timestamp_in</CODE
 >
      functions for the conversion.  So, the computed time stamp is updated
      on each execution as the programmer expects.
     </P
 ><P
 >     The mutable nature of record variables presents a problem in this
-     connection.  When fields of a record variable are used in expressions or
-     statements, the data types of the
-     fields must not change between calls of one and the same expression,
-     since the expression will be planned using the data type that is present
-     when the expression is first reached.
-     Keep this in mind when writing trigger procedures that handle events
-     for more than one table.  (EXECUTE can be used to get around this
-     problem when necessary.)
+     connection.  When fields of a record variable are used in
+     expressions or statements, the data types of the fields must not
+     change between calls of one and the same expression, since the
+     expression will be planned using the data type that is present
+     when the expression is first reached.  Keep this in mind when
+     writing trigger procedures that handle events for more than one
+     table.  (<TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> can be used to get around
+     this problem when necessary.)
     </P
 ></DIV
 ><DIV

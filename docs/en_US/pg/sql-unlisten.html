@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >UNLISTEN</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,145 +78,63 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-UNLISTEN"
->UNLISTEN</A
-></H1
+></A
+>UNLISTEN</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN46189"
+NAME="AEN44447"
 ></A
 ><H2
 >Name</H2
->   UNLISTEN
-  &nbsp;--&nbsp;   stop listening for a notification
-  </DIV
+>UNLISTEN&nbsp;--&nbsp;stop listening for a notification</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN46192"
+NAME="AEN44450"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->UNLISTEN { <TT
+>UNLISTEN { <VAR
 CLASS="REPLACEABLE"
-><I
->notifyname</I
-></TT
-> | * }
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-UNLISTEN-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->notifyname</I
-></TT
-></DT
-><DD
-><P
->	Name of previously registered notify condition.
-       </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->*</TT
-></DT
-><DD
-><P
->	All current listen registrations for this backend are cleared.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-UNLISTEN-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
-><SPAN
-CLASS="RETURNVALUE"
->UNLISTEN</SPAN
->
-       </TT
-></DT
-><DD
-><P
->	Acknowledgment that statement has executed.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>name</VAR
+> | * }</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-UNLISTEN-1"
+NAME="AEN44453"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >UNLISTEN</TT
->
-   is used to remove an existing <TT
+> is used to remove an existing
+   registration for <TT
 CLASS="COMMAND"
 >NOTIFY</TT
-> registration.
+> events.
    <TT
 CLASS="COMMAND"
 >UNLISTEN</TT
-> cancels any existing registration of the current
-   <SPAN
+> cancels any existing registration of
+   the current <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> session as a listener on the notify
-   condition <TT
+> session as a
+   listener on the notification <VAR
 CLASS="REPLACEABLE"
-><I
->notifyname</I
-></TT
->.
-   The special condition wildcard <TT
+>name</VAR
+>.  The special wildcard
+   <VAR
 CLASS="LITERAL"
->*</TT
-> cancels all listener registrations
-   for the current session.
+>*</VAR
+> cancels all listener registrations for the
+   current session.
   </P
 ><P
 >   <A
@@ -235,52 +153,99 @@ CLASS="COMMAND"
 >NOTIFY</TT
 >.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-UNLISTEN-3"
+NAME="AEN44466"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
 CLASS="REPLACEABLE"
-><I
->notifyname</I
-></TT
->
-    need not be a valid class name but can be any string valid
-    as a name up to 64 characters long.
-   </P
+>name</VAR
+></DT
+><DD
 ><P
->    The backend does not complain if you unlisten something you were not
-    listening for.
-    Each backend will automatically execute <TT
-CLASS="COMMAND"
->UNLISTEN *</TT
-> when
-    exiting.
-   </P
+>      Name of a notification (any identifier).
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>*</VAR
+></DT
+><DD
+><P
+>      All current listen registrations for this session are cleared.
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-UNLISTEN-2"
+NAME="AEN44479"
 ></A
 ><H2
->   Usage
-  </H2
+>Diagnostics</H2
 ><P
->   To subscribe to an existing registration:
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>UNLISTEN</SAMP
+></DT
+><DD
+><P
+>      Message returned when the command has executed.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44487"
+></A
+><H2
+>Notes</H2
+><P
+>   You unlisten something you were not listening for; no warning or error will appear.
+  </P
+><P
+>   At the end of each session, <TT
+CLASS="COMMAND"
+>UNLISTEN *</TT
+> ist
+   automatically executed.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44492"
+></A
+><H2
+>Examples</H2
+><P
+>   To make a registration:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >LISTEN virtual;
-LISTEN
 NOTIFY virtual;
-NOTIFY
 Asynchronous NOTIFY 'virtual' from backend with pid '8448' received</PRE
 ><P>
   </P
@@ -297,39 +262,24 @@ CLASS="COMMAND"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >UNLISTEN virtual;
-UNLISTEN
 NOTIFY virtual;
-NOTIFY
--- notice no NOTIFY event is received</PRE
+-- no NOTIFY event is received</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-UNLISTEN-3"
+NAME="AEN44500"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-UNLISTEN-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >UNLISTEN</TT
-> in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
-></DIV
+> command in the SQL standard.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

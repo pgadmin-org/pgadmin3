@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >GRANT</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-GRANT"
->GRANT</A
-></H1
+></A
+>GRANT</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43964"
+NAME="AEN42404"
 ></A
 ><H2
 >Name</H2
@@ -91,7 +91,7 @@ NAME="AEN43964"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43967"
+NAME="AEN42407"
 ></A
 ><H2
 >Synopsis</H2
@@ -99,104 +99,72 @@ NAME="AEN43967"
 CLASS="SYNOPSIS"
 >GRANT { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
     [,...] | ALL [ PRIVILEGES ] }
-    ON [ TABLE ] <TT
+    ON [ TABLE ] <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 > [, ...]
-    TO { <TT
+    TO { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-> | PUBLIC } [, ...]
+>groupname</VAR
+> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
 GRANT { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
-    ON DATABASE <TT
+    ON DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 > [, ...]
-    TO { <TT
+    TO { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-> | PUBLIC } [, ...]
+>groupname</VAR
+> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
 GRANT { EXECUTE | ALL [ PRIVILEGES ] }
-    ON FUNCTION <TT
+    ON FUNCTION <VAR
 CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
-> ([<TT
+>funcname</VAR
+> ([<VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
+>type</VAR
 >, ...]) [, ...]
-    TO { <TT
+    TO { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-> | PUBLIC } [, ...]
+>groupname</VAR
+> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
 GRANT { USAGE | ALL [ PRIVILEGES ] }
-    ON LANGUAGE <TT
+    ON LANGUAGE <VAR
 CLASS="REPLACEABLE"
-><I
->langname</I
-></TT
+>langname</VAR
 > [, ...]
-    TO { <TT
+    TO { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-> | PUBLIC } [, ...]
+>groupname</VAR
+> | PUBLIC } [, ...] [ WITH GRANT OPTION ]
 
 GRANT { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }
-    ON SCHEMA <TT
+    ON SCHEMA <VAR
 CLASS="REPLACEABLE"
-><I
->schemaname</I
-></TT
+>schemaname</VAR
 > [, ...]
-    TO { <TT
+    TO { <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> | GROUP <TT
+>username</VAR
+> | GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
-> | PUBLIC } [, ...]</PRE
+>groupname</VAR
+> | PUBLIC } [, ...] [ WITH GRANT OPTION ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -209,61 +177,71 @@ NAME="SQL-GRANT-DESCRIPTION"
 >   The <TT
 CLASS="COMMAND"
 >GRANT</TT
-> command gives specific permissions on
+> command gives specific privileges on
    an object (table, view, sequence, database, function, procedural language,
    or schema) to
-   one or more users or groups of users.  These permissions are added
+   one or more users or groups of users.  These privileges are added
    to those already granted, if any.
   </P
 ><P
->   The key word <TT
+>   The key word <VAR
 CLASS="LITERAL"
->PUBLIC</TT
+>PUBLIC</VAR
 > indicates that the
    privileges are to be granted to all users, including those that may
-   be created later.  <TT
+   be created later.  <VAR
 CLASS="LITERAL"
->PUBLIC</TT
+>PUBLIC</VAR
 > may be thought of as an
    implicitly defined group that always includes all users.
-   Note that any particular user will have the sum
+   Any particular user will have the sum
    of privileges granted directly to him, privileges granted to any group he
    is presently a member of, and privileges granted to
-   <TT
+   <VAR
 CLASS="LITERAL"
->PUBLIC</TT
+>PUBLIC</VAR
 >.
   </P
 ><P
->   There is no need to grant privileges to the creator of an object,
-   as the creator has all privileges by default.
-   (The creator could, however, choose to revoke
-   some of his own privileges for safety.)  Note that the ability to
-   grant and revoke privileges is inherent in the creator and cannot
-   be lost.  The right to drop an object, or to alter it in any way
-   not described by a grantable right, is likewise inherent in the
-   creator, and cannot be granted or revoked.
+>   There is no need to grant privileges to the owner of an object (usually the user that created it),
+   as the owner has all privileges by default.  (The owner could,
+   however, choose to revoke some of his own privileges for safety.)
+   The right to drop an object, or to alter it in any way is
+   not described by a grantable right; it is inherent in the owner,
+   and cannot be granted or revoked.
+  </P
+><P
+>   If <VAR
+CLASS="LITERAL"
+>WITH GRANT OPTION</VAR
+> is specified, the recipient
+   of the privilege may in turn grant it to others.  By default this
+   is not possible.  Grant options can only be granted to individual
+   users, not groups or <VAR
+CLASS="LITERAL"
+>PUBLIC</VAR
+>.
   </P
 ><P
 >   Depending on the type of object, the initial default privileges may
-   include granting some privileges to <TT
+   include granting some privileges to <VAR
 CLASS="LITERAL"
->PUBLIC</TT
+>PUBLIC</VAR
 >.
    The default is no public access for tables and schemas;
-   <TT
+   <VAR
 CLASS="LITERAL"
->TEMP</TT
+>TEMP</VAR
 > table creation privilege for databases;
-   <TT
+   <VAR
 CLASS="LITERAL"
->EXECUTE</TT
+>EXECUTE</VAR
 > privilege for functions; and
-   <TT
+   <VAR
 CLASS="LITERAL"
->USAGE</TT
+>USAGE</VAR
 > privilege for languages.
-   The object creator may of course revoke these privileges.  (For maximum
+   The object owner may of course revoke these privileges.  (For maximum
    security, issue the <TT
 CLASS="COMMAND"
 >REVOKE</TT
@@ -296,9 +274,9 @@ HREF="sql-copy.html"
 >COPY</I
 ></A
 > TO.  For sequences, this
-       privilege also allows the use of the <TT
+       privilege also allows the use of the <CODE
 CLASS="FUNCTION"
->currval</TT
+>currval</CODE
 > function.
       </P
 ></DD
@@ -330,22 +308,22 @@ HREF="sql-update.html"
 >UPDATE</I
 ></A
 > of any column of the
-       specified table.  <TT
+       specified table.  <VAR
 CLASS="LITERAL"
->SELECT ... FOR UPDATE</TT
+>SELECT ... FOR UPDATE</VAR
 >
        also requires this privilege (besides the
-       <TT
+       <VAR
 CLASS="LITERAL"
->SELECT</TT
+>SELECT</VAR
 > privilege).  For sequences, this
-       privilege allows the use of the <TT
+       privilege allows the use of the <CODE
 CLASS="FUNCTION"
->nextval</TT
+>nextval</CODE
 > and
-       <TT
+       <CODE
 CLASS="FUNCTION"
->setval</TT
+>setval</CODE
 > functions.
       </P
 ></DD
@@ -454,9 +432,9 @@ CLASS="QUOTE"
 ><DD
 ><P
 >       Grant all of the privileges applicable to the object at once.
-       The <TT
+       The <VAR
 CLASS="LITERAL"
->PRIVILEGES</TT
+>PRIVILEGES</VAR
 > key word is optional in
        <SPAN
 CLASS="PRODUCTNAME"
@@ -490,18 +468,15 @@ HREF="sql-revoke.html"
     to revoke access privileges.
    </P
 ><P
->    It should be noted that database <I
-CLASS="FIRSTTERM"
->superusers</I
-> can access
+>    It should be noted that database superusers can access
     all objects regardless of object privilege settings.  This
-    is comparable to the rights of <TT
+    is comparable to the rights of <VAR
 CLASS="LITERAL"
->root</TT
+>root</VAR
 > in a Unix system.
-    As with <TT
+    As with <VAR
 CLASS="LITERAL"
->root</TT
+>root</VAR
 >, it's unwise to operate as a superuser
     except when absolutely necessary.
    </P
@@ -523,21 +498,22 @@ CLASS="APPLICATION"
 ></A
 >'s <TT
 CLASS="COMMAND"
->\dp</TT
+>\z</TT
 > command
     to obtain information about existing privileges, for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->lusitania=&#62; \dp mytable
+>=&#62; \z mytable
+
         Access privileges for database "lusitania"
  Schema |  Table  |           Access privileges
 --------+---------+---------------------------------------
- public | mytable | {=r,miriam=arwdRxt,"group todos=arw"}
+ public | mytable | {=r/postgres,miriam=arwdRxt/postgres,"group todos=arw/postgres"}
 (1 row)</PRE
 ><P>
     The entries shown by <TT
 CLASS="COMMAND"
->\dp</TT
+>\z</TT
 > are interpreted thus:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -556,22 +532,25 @@ CLASS="PROGRAMLISTING"
                   U -- USAGE
                   C -- CREATE
                   T -- TEMPORARY
-            arwdRxt -- ALL PRIVILEGES (for tables)</PRE
+            arwdRxt -- ALL PRIVILEGES (for tables)
+                  * -- grant option for preceding privilege
+
+              /yyyy -- user who granted this privilege</PRE
 ><P>
 
-    The above example display would be seen by user <TT
+    The above example display would be seen by user <VAR
 CLASS="LITERAL"
->miriam</TT
+>miriam</VAR
 > after
-    creating table <TT
+    creating table <VAR
 CLASS="LITERAL"
->mytable</TT
+>mytable</VAR
 > and doing
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >GRANT SELECT ON mytable TO PUBLIC;
-GRANT SELECT,UPDATE,INSERT ON mytable TO GROUP todos;</PRE
+GRANT SELECT, UPDATE, INSERT ON mytable TO GROUP todos;</PRE
 ><P>
    </P
 ><P
@@ -579,11 +558,11 @@ GRANT SELECT,UPDATE,INSERT ON mytable TO GROUP todos;</PRE
 CLASS="QUOTE"
 >"Access privileges"</SPAN
 > column is empty for a given object,
-it means the object has default privileges (that is, its privileges field
-is NULL).  Default privileges always include all privileges for the owner,
-and may include some privileges for <TT
+it means the object has default privileges (that is, its privileges columm
+is null).  Default privileges always include all privileges for the owner,
+and may include some privileges for <VAR
 CLASS="LITERAL"
->PUBLIC</TT
+>PUBLIC</VAR
 > depending on the
 object type, as explained above.  The first <TT
 CLASS="COMMAND"
@@ -594,9 +573,9 @@ CLASS="COMMAND"
 >REVOKE</TT
 > on an object
 will instantiate the default privileges (producing, for example,
-<TT
+<VAR
 CLASS="LITERAL"
->{=,miriam=arwdRxt}</TT
+>{=,miriam=arwdRxt}</VAR
 >) and then modify them per the specified request.
    </P
 ></DIV
@@ -608,7 +587,10 @@ NAME="SQL-GRANT-EXAMPLES"
 ><H2
 >Examples</H2
 ><P
->   Grant insert privilege to all users on table films:
+>   Grant insert privilege to all users on table <VAR
+CLASS="LITERAL"
+>films</VAR
+>:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -616,12 +598,12 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   Grant all privileges to user <TT
+>   Grant all privileges to user <VAR
 CLASS="LITERAL"
->manuel</TT
-> on view <TT
+>manuel</VAR
+> on view <VAR
 CLASS="LITERAL"
->kinds</TT
+>kinds</VAR
 >:
 
 </P><PRE
@@ -637,79 +619,62 @@ NAME="SQL-GRANT-COMPATIBILITY"
 ></A
 ><H2
 >Compatibility</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN44105"
-></A
-><H3
->SQL92</H3
 ><P
->    The <TT
+>    According to the SQL standard, the <VAR
 CLASS="LITERAL"
->PRIVILEGES</TT
-> key word in <TT
+>PRIVILEGES</VAR
+>
+    key word in <VAR
 CLASS="LITERAL"
->ALL
-    PRIVILEGES</TT
-> is required.  <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
-> does not
-    support setting the privileges on more than one table per command.
+>ALL PRIVILEGES</VAR
+> is required.  The
+    SQL standard does not support setting the privileges on more than
+    one object per command.
    </P
 ><P
->    The <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> syntax for GRANT allows setting
-    privileges for individual columns within a table, and allows
-    setting a privilege to grant the same privileges to others:
+>    The SQL standard allows setting privileges for individual columns
+    within a table:
 
 </P><PRE
 CLASS="SYNOPSIS"
->GRANT <TT
+>GRANT <VAR
 CLASS="REPLACEABLE"
-><I
->privilege</I
-></TT
-> [, ...]
-    ON <TT
+>privileges</VAR
+>
+    ON <VAR
 CLASS="REPLACEABLE"
-><I
->object</I
-></TT
-> [ ( <TT
+>table</VAR
+> [ ( <VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
+>column</VAR
 > [, ...] ) ] [, ...]
-    TO { PUBLIC | <TT
+    TO { PUBLIC | <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 > [, ...] } [ WITH GRANT OPTION ]</PRE
 ><P>
    </P
 ><P
->    <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
-> allows to grant the USAGE privilege on
-    other kinds of objects:  CHARACTER SET, COLLATION, TRANSLATION, DOMAIN.
+>    The SQL standard provides for a <VAR
+CLASS="LITERAL"
+>USAGE</VAR
+> privilege
+    on other kinds of objects: character sets, collations,
+    translations, domains.
    </P
 ><P
->    The TRIGGER privilege was introduced in SQL99.  The RULE privilege
-    is a PostgreSQL extension.
+>    The <VAR
+CLASS="LITERAL"
+>RULE</VAR
+> privilege, and privileges on
+    databases, schemas, languages, and sequences are PostgreSQL
+    extensions.
    </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN44121"
+NAME="AEN42561"
 ></A
 ><H2
 >See Also</H2

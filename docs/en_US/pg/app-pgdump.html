@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_dump</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-PGDUMP"
->pg_dump</A
-></H1
+></A
+>pg_dump</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47936"
+NAME="AEN46121"
 ></A
 ><H2
 >Name</H2
@@ -95,7 +95,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47940"
+NAME="AEN46125"
 ></A
 ><H2
 >Synopsis</H2
@@ -103,16 +103,12 @@ NAME="AEN47940"
 ><TT
 CLASS="COMMAND"
 >pg_dump</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->options</I
-></TT
->...] [<TT
+>option</VAR
+>...] [<VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 >]</P
 ></DIV
 ><DIV
@@ -127,60 +123,57 @@ NAME="PG-DUMP-DESCRIPTION"
 >   <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> is a utility for saving a
+> is a utility for backing up a
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> database into a script or an
-   archive file.  The script files are in plain-text format and
-   contain the SQL commands required to reconstruct the database to
-   the state it was in at the time it was saved.  To restore these
-   scripts, use <A
+> database. It makes consistent
+   backups even if the database is being used concurrently.
+   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> does not block other users
+   accessing the database (readers or writers).
+  </P
+><P
+>   Dumps can be output in script or archive file formats. The script
+   files are in plain-text format and contain the SQL commands required
+   to reconstruct the database to the state it was in at the time it was
+   saved. To restore these scripts, use <A
 HREF="app-psql.html"
 ><SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 ></A
->.  They can be used to
-   reconstruct the database even on other machines and other
-   architectures, with some modifications even on other SQL database
-   products.
+>. They
+   can be used to reconstruct the database even on other machines and
+   other architectures, with some modifications even on other SQL
+   database products.
   </P
 ><P
->   Furthermore, there are alternative archive file formats
-   that are meant to be used with <A
+>   The alternative archive file formats that are meant to be used with
+   <A
 HREF="app-pgrestore.html"
 >pg_restore</A
-> to
-   rebuild the database, and they also allow
-   <SPAN
+> to rebuild the database, and they also
+   allow <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
-> to be selective about what is
-   restored, or even to reorder the items prior to being restored. The
-   archive files are also designed to be portable across
+> to be selective about
+   what is restored, or even to reorder the items prior to being
+   restored. The archive files are also designed to be portable across
    architectures.
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> will save the information necessary to
-   re-generate all user-defined types, functions, tables, indexes,
-   aggregates, and operators.  In addition, all the data is copied out
-   in text format so that it can be readily copied in again, as well
-   as imported into tools for editing.
   </P
 ><P
 >   When used with one of the archive file formats and combined with
    <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
->, <SPAN
+>,
+   <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> provides a
-   flexible archival and 
+> provides a flexible archival and
    transfer mechanism. <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
@@ -188,51 +181,39 @@ CLASS="APPLICATION"
    backup an entire database, then <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
-> can
-   be used to examine the archive and/or select which parts of the
-   database are to be restored.
-   The most flexible output file format is the <SPAN
+>
+   can be used to examine the archive and/or select which parts of the
+   database are to be restored. The most flexible output file format is
+   the <SPAN
 CLASS="QUOTE"
 >"custom"</SPAN
->
-   format (<TT
+> format (<VAR
 CLASS="OPTION"
->-Fc</TT
->). It allows for selection and
-   reordering of all archived items, and is compressed by default. The
+>-Fc</VAR
+>). It allows
+   for selection and reordering of all archived items, and is compressed
+   by default. The <SPAN
+CLASS="APPLICATION"
+>tar</SPAN
+> format
+   (<VAR
+CLASS="OPTION"
+>-Ft</VAR
+>) is not compressed and it is not possible to
+   reorder data when loading, but it is otherwise quite flexible;
+   moreover, it can be manipulated with other tools such as
    <TT
-CLASS="FILENAME"
->tar</TT
-> format (<TT
-CLASS="OPTION"
->-Ft</TT
->) is not
-   compressed and it is not possible to reorder data when loading, but
-   it is otherwise quite flexible; moreover, it can be manipulated with
-   other tools such as <TT
-CLASS="FILENAME"
+CLASS="COMMAND"
 >tar</TT
 >.
   </P
 ><P
->   While running <TT
-CLASS="COMMAND"
->pg_dump</TT
+>   While running <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
 >, one should examine the
    output for any warnings (printed on standard error), especially in
    light of the limitations listed below.
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> makes consistent backups even if the
-   database is being used concurrently.  <SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
->
-   does not block other users accessing the database (readers or
-   writers).
   </P
 ></DIV
 ><DIV
@@ -251,11 +232,9 @@ NAME="PG-DUMP-OPTIONS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></DT
 ><DD
 ><P
@@ -269,12 +248,12 @@ CLASS="ENVAR"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-a</TT
-><BR><TT
+>-a</VAR
+><BR><VAR
 CLASS="OPTION"
->--data-only</TT
+>--data-only</VAR
 ></DT
 ><DD
 ><P
@@ -290,12 +269,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-b</TT
-><BR><TT
+>-b</VAR
+><BR><VAR
 CLASS="OPTION"
->--blobs</TT
+>--blobs</VAR
 ></DT
 ><DD
 ><P
@@ -303,12 +282,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-c</TT
-><BR><TT
+>-c</VAR
+><BR><VAR
 CLASS="OPTION"
->--clean</TT
+>--clean</VAR
 ></DT
 ><DD
 ><P
@@ -325,12 +304,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-C</TT
-><BR><TT
+>-C</VAR
+><BR><VAR
 CLASS="OPTION"
->--create</TT
+>--create</VAR
 ></DT
 ><DD
 ><P
@@ -349,12 +328,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-d</TT
-><BR><TT
+>-d</VAR
+><BR><VAR
 CLASS="OPTION"
->--inserts</TT
+>--inserts</VAR
 ></DT
 ><DD
 ><P
@@ -371,15 +350,15 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-D</TT
-><BR><TT
+>-D</VAR
+><BR><VAR
 CLASS="OPTION"
->--column-inserts</TT
-><BR><TT
+>--column-inserts</VAR
+><BR><VAR
 CLASS="OPTION"
->--attribute-inserts</TT
+>--attribute-inserts</VAR
 ></DT
 ><DD
 ><P
@@ -387,43 +366,35 @@ CLASS="OPTION"
 CLASS="COMMAND"
 >INSERT</TT
 > commands with explicit
-	column names (<TT
+	column names (<VAR
 CLASS="LITERAL"
 >INSERT INTO
-	<TT
+	<VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
+>table</VAR
 >
-	(<TT
+	(<VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
+>column</VAR
 >, ...) VALUES
-	...</TT
+	...</VAR
 >).  This will make restoration very slow,
-	but it is necessary if you desire to rearrange column ordering.
+	but it is necessary if you desire to rearrange the column ordering.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-f <TT
+>-f <VAR
 CLASS="REPLACEABLE"
-><I
->file</I
-></TT
-></TT
-><BR><TT
+>file</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--file=<TT
+>--file=<VAR
 CLASS="REPLACEABLE"
-><I
->file</I
-></TT
-></TT
+>file</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -432,31 +403,25 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-F <TT
+>-F <VAR
 CLASS="REPLACEABLE"
-><I
->format</I
-></TT
-></TT
-><BR><TT
+>format</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--format=<TT
+>--format=<VAR
 CLASS="REPLACEABLE"
-><I
->format</I
-></TT
-></TT
+>format</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >        Selects the format of the output.
-	<TT
+	<VAR
 CLASS="REPLACEABLE"
-><I
->format</I
-></TT
+>format</VAR
 > can be one of the following:
 
        <P
@@ -465,21 +430,27 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->p</DT
+><VAR
+CLASS="LITERAL"
+>p</VAR
+></DT
 ><DD
 ><P
->           Output a plain-text <SPAN
+>           Output a plain-text <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > script file (default)
           </P
 ></DD
 ><DT
->t</DT
+><VAR
+CLASS="LITERAL"
+>t</VAR
+></DT
 ><DD
 ><P
 >         Output a <TT
-CLASS="FILENAME"
+CLASS="COMMAND"
 >tar</TT
 > archive suitable for input into 
          <SPAN
@@ -492,7 +463,10 @@ CLASS="APPLICATION"
           </P
 ></DD
 ><DT
->c</DT
+><VAR
+CLASS="LITERAL"
+>c</VAR
+></DT
 ><DD
 ><P
 >         Output a custom archive suitable for input into 
@@ -510,12 +484,12 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-i</TT
-><BR><TT
+>-i</VAR
+><BR><VAR
 CLASS="OPTION"
->--ignore-version</TT
+>--ignore-version</VAR
 ></DT
 ><DD
 ><P
@@ -530,42 +504,90 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > can handle databases from
-        previous releases of PostgreSQL, but very old versions are not
-        supported anymore (currently prior to 7.0).  Use this option
-        if you need to override the version check (and if
-        <SPAN
+        previous releases of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, but very old
+        versions are not supported anymore (currently prior to 7.0).
+        Use this option if you need to override the version check (and
+        if <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> then fails, don't say you
-        weren't warned).
+> then fails, don't say
+        you weren't warned).
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-o</TT
-><BR><TT
+>-n <VAR
+CLASS="REPLACEABLE"
+>namespace</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--oids</TT
+>--schema=<VAR
+CLASS="REPLACEABLE"
+>schema</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Dump object identifiers (<SPAN
+>        Dump the contents of <VAR
+CLASS="REPLACEABLE"
+>schema</VAR
+>
+        only. If this option is not specified, all non-system schemas
+        in the target database will be dumped.
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>         In this mode, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> makes no
+         attempt to dump any other database objects that objects in the
+	 selected schema may depend upon. Therefore, there is no
+         guarantee that the results of a single-schema dump can be
+         successfully restored by themselves into a clean database.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-o</VAR
+><BR><VAR
+CLASS="OPTION"
+>--oids</VAR
+></DT
+><DD
+><P
+>	Dump object identifiers (<ACRONYM
 CLASS="ACRONYM"
->OID</SPAN
+>OID</ACRONYM
 >s) for every
-	table.  Use this option if your application references the OID
+	table.  Use this option if your application references the <ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+>
 	columns in some way (e.g., in a foreign key constraint).
 	Otherwise, this option should not be used.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-O</TT
-><BR><TT
+>-O</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-owner</TT
+>--no-owner</VAR
 ></DT
 ><DD
 ><P
@@ -583,17 +605,17 @@ CLASS="COMMAND"
 >\connect</TT
 >
 	statements to set ownership of schema elements.  See also
-	under <TT
+	under <VAR
 CLASS="OPTION"
->-R</TT
-> and <TT
+>-R</VAR
+> and <VAR
 CLASS="OPTION"
 >-X
-	use-set-session-authorization</TT
+	use-set-session-authorization</VAR
 >.  Note that
-	<TT
+	<VAR
 CLASS="OPTION"
->-O</TT
+>-O</VAR
 > does not prevent all reconnections to the
 	database, only the ones that are exclusively used for
 	ownership adjustments.
@@ -608,12 +630,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-R</TT
-><BR><TT
+>-R</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-reconnect</TT
+>--no-reconnect</VAR
 ></DT
 ><DD
 ><P
@@ -636,10 +658,10 @@ CLASS="emphasis"
 CLASS="EMPHASIS"
 >unless</I
 ></SPAN
-> you use the <TT
+> you use the <VAR
 CLASS="OPTION"
 >-X
-        use-set-session-authorization</TT
+        use-set-session-authorization</VAR
 > option.
        </P
 ><P
@@ -657,12 +679,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-s</TT
-><BR><TT
+>-s</VAR
+><BR><VAR
 CLASS="OPTION"
->--schema-only</TT
+>--schema-only</VAR
 ></DT
 ><DD
 ><P
@@ -670,73 +692,91 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-S <TT
+>-S <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
+>username</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--superuser=<TT
+>--superuser=<VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >        Specify the superuser user name to use when disabling triggers.
-	This is only relevant if <TT
+	This is only relevant if <VAR
 CLASS="OPTION"
->--disable-triggers</TT
+>--disable-triggers</VAR
 > is used.
 	(Usually, it's better to specify
-	<TT
+	<VAR
 CLASS="OPTION"
->--use-set-session-authorization</TT
+>--use-set-session-authorization</VAR
 >, and then start the
 	resulting script as superuser.)
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-t <TT
+>-t <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></TT
-><BR><TT
+>table</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--table=<TT
+>--table=<VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></TT
+>table</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Dump data for <TT
+>	Dump data for <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> only.
+>table</VAR
+>
+	only. It is possible for there to be
+	multiple tables with the same name in different schemas; if that
+	is the case, all matching tables will be dumped.  Specify both
+	<VAR
+CLASS="OPTION"
+>--schema</VAR
+> and <VAR
+CLASS="OPTION"
+>--table</VAR
+> to select just one table.
        </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>         In this mode, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> makes no
+         attempt to dump any other database objects that the selected table
+	 may depend upon. Therefore, there is no guarantee
+         that the results of a single-table dump can be successfully
+         restored by themselves into a clean database.
+        </P
+></BLOCKQUOTE
+></DIV
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-v</TT
-><BR><TT
+>-v</VAR
+><BR><VAR
 CLASS="OPTION"
->--verbose</TT
+>--verbose</VAR
 ></DT
 ><DD
 ><P
@@ -749,15 +789,15 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-x</TT
-><BR><TT
+>-x</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-privileges</TT
-><BR><TT
+>--no-privileges</VAR
+><BR><VAR
 CLASS="OPTION"
->--no-acl</TT
+>--no-acl</VAR
 ></DT
 ><DD
 ><P
@@ -765,12 +805,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-X use-set-session-authorization</TT
-><BR><TT
+>-X use-set-session-authorization</VAR
+><BR><VAR
 CLASS="OPTION"
->--use-set-session-authorization</TT
+>--use-set-session-authorization</VAR
 ></DT
 ><DD
 ><P
@@ -789,9 +829,9 @@ CLASS="COMMAND"
 > command.
         This command actually opens a new connection, which might
         require manual interaction (e.g., passwords).  If you use the
-        <TT
+        <VAR
 CLASS="OPTION"
->-X use-set-session-authorization</TT
+>-X use-set-session-authorization</VAR
 > option, then
         <SPAN
 CLASS="APPLICATION"
@@ -804,9 +844,9 @@ HREF="sql-set-session-authorization.html"
 > commands.  This has
         the same effect, but it requires that the user restoring the
         database from the generated script be a database superuser.
-        This option effectively overrides the <TT
+        This option effectively overrides the <VAR
 CLASS="OPTION"
->-R</TT
+>-R</VAR
 >
         option.
        </P
@@ -837,12 +877,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-X disable-triggers</TT
-><BR><TT
+>-X disable-triggers</VAR
+><BR><VAR
 CLASS="OPTION"
->--disable-triggers</TT
+>--disable-triggers</VAR
 ></DT
 ><DD
 ><P
@@ -857,18 +897,18 @@ CLASS="APPLICATION"
 	do not want to invoke during data reload.
        </P
 ><P
->        Presently, the commands emitted for <TT
+>        Presently, the commands emitted for <VAR
 CLASS="OPTION"
->--disable-triggers</TT
+>--disable-triggers</VAR
 >
 	must be done as superuser.  So, you should also specify
-	a superuser name with <TT
+	a superuser name with <VAR
 CLASS="OPTION"
->-S</TT
+>-S</VAR
 >, or preferably specify
-	<TT
+	<VAR
 CLASS="OPTION"
->--use-set-session-authorization</TT
+>--use-set-session-authorization</VAR
 > and then be careful to
 	start the resulting script as a superuser.  If you give neither
 	option, the entire script must be run as superuser.
@@ -883,27 +923,24 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-Z <TT
+>-Z <VAR
 CLASS="REPLACEABLE"
-><I
->0..9</I
-></TT
-></TT
-><BR><TT
+>0..9</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--compress=<TT
+>--compress=<VAR
 CLASS="REPLACEABLE"
-><I
->0..9</I
-></TT
-></TT
+>0..9</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specify the compression level to use in archive formats that support 
-      compression (currently only the custom archive format supports compression).
+>	Specify the compression level to use in archive formats that
+	support compression.  (Currently only the custom archive
+	format supports compression.)
        </P
 ></DD
 ></DL
@@ -919,70 +956,63 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-h <TT
+>-h <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-><BR><TT
+>host</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--host=<TT
+>--host=<VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
+>host</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specifies the host name of the machine on which the 
-	server
-	is running.  If host begins with a slash, it is used 
-	as the directory for the Unix domain socket.
+>        Specifies the host name of the machine on which the server is
+        running.  If the value begins with a slash, it is used as the
+        directory for the Unix domain socket. The default is taken
+        from the <TT
+CLASS="ENVAR"
+>PGHOST</TT
+> environment variable, if set,
+        else a Unix domain socket connection is attempted.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-p <TT
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
-><BR><TT
+>port</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--port=<TT
+>--port=<VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
+>port</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specifies the Internet TCP/IP port or local Unix domain socket file 
-	extension on which the server
-	is listening for connections.  The port number defaults to 5432,
-	or the value of the <TT
+>	Specifies the TCP port or local Unix domain socket file
+	extension on which the server is listening for connections.
+	Defaults to the <TT
 CLASS="ENVAR"
 >PGPORT</TT
->
-	environment variable (if set).
+> environment variable, if
+	set, or a compiled-in default.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-U <TT
+>-U <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -990,9 +1020,9 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-W</TT
+>-W</VAR
 ></DT
 ><DD
 ><P
@@ -1004,14 +1034,11 @@ CLASS="OPTION"
 ></DIV
 ><P>
    </P
-><P
->   Long option forms are only available on some platforms.
-  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48244"
+NAME="AEN46449"
 ></A
 ><H2
 >Environment</H2
@@ -1036,7 +1063,7 @@ CLASS="ENVAR"
 ></DT
 ><DD
 ><P
->      Default connection parameters
+>      Default connection parameters.
      </P
 ></DD
 ></DL
@@ -1049,65 +1076,27 @@ NAME="APP-PGDUMP-DIAGNOSTICS"
 ></A
 ><H2
 >Diagnostics</H2
-><DIV
-CLASS="MSGENTRY"
-><A
-NAME="AEN48261"
-></A
-><DIV
-CLASS="MSG"
-><A
-NAME="AEN48262"
-></A
-><PRE
-CLASS="SCREEN"
->Connection to database 'template1' failed.
-connectDBStart() -- connect() failed: No such file or directory
-        Is the postmaster running locally
-        and accepting connections on Unix socket '/tmp/.s.PGSQL.5432'?</PRE
-></DIV
-><BLOCKQUOTE
-CLASS="MSGEXPLAN"
->	<SPAN
-CLASS="APPLICATION"
->pg_dump</SPAN
-> could not attach to the 
-	PostgreSQL server on the specified host and port.  If you see this message,
-	ensure that the server
-	is running on the proper host and that you have specified the proper
-	port.
-       </BLOCKQUOTE
-></DIV
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Note: </B
->     <SPAN
+>   <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > internally executes
-     <TT
+   <TT
 CLASS="COMMAND"
 >SELECT</TT
 > statements. If you have problems running
-     <SPAN
+   <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
->,
-     make sure you are able to select information from the database using, for
-     example, <A
+>, make sure you are able to
+   select information from the database using, for example, <A
 HREF="app-psql.html"
 ><SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 ></A
 >.
-    </P
-></BLOCKQUOTE
-></DIV
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -1117,14 +1106,23 @@ NAME="PG-DUMP-NOTES"
 ><H2
 >Notes</H2
 ><P
->   If your installation has any local additions to the template1 database,
+>   If your database cluster has any local additions to the <VAR
+CLASS="LITERAL"
+>template1</VAR
+> database,
    be careful to restore the output of <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > into a
    truly empty database; otherwise you are likely to get errors due to
    duplicate definitions of the added objects.  To make an empty database
-   without any local additions, copy from template0 not template1,
+   without any local additions, copy from <VAR
+CLASS="LITERAL"
+>template0</VAR
+> not <VAR
+CLASS="LITERAL"
+>template1</VAR
+>,
    for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -1146,19 +1144,25 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > 
-      does not handle large objects. Large objects must be dumped in their
-      entirety using one of the binary archive formats.
+      does not handle large objects. Large objects must be dumped with the
+      entire database using one of the non-text archive formats.
      </P
 ></LI
 ><LI
 ><P
->      When doing a data only dump, <SPAN
+>      When a data-only dump is chosen and the option
+      <VAR
+CLASS="OPTION"
+>--disable-triggers</VAR
+> is used,
+      <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> emits queries
-      to disable triggers on user tables before inserting the data and queries to
-      re-enable them after the data has been inserted.  If the restore is stopped
-      in the middle, the system catalogs may be left in the wrong state.
+> emits commands to disable
+      triggers on user tables before inserting the data and commands
+      to re-enable them after the data has been inserted.  If the
+      restore is stopped in the middle, the system catalogs may be
+      left in the wrong state.
      </P
 ></LI
 ></UL
@@ -1172,6 +1176,13 @@ CLASS="APPLICATION"
    other output formats is not limited, except possibly by the
    operating system.
   </P
+><P
+>   Once restored, it is wise to run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> on each
+   restored table so the optimizer has useful statistics.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -1184,14 +1195,12 @@ NAME="PG-DUMP-EXAMPLES"
 >   To dump a database:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->pg_dump mydb &gt; db.out</B
-></TT
+>pg_dump mydb &gt; db.out</KBD
 ></PRE
 ><P>
   </P
@@ -1199,21 +1208,19 @@ CLASS="USERINPUT"
 >   To reload this database:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->psql -d database -f db.out</B
-></TT
+>psql -d database -f db.out</KBD
 ></PRE
 ><P>
   </P
 ><P
->   To dump a database called <TT
+>   To dump a database called <VAR
 CLASS="LITERAL"
->mydb</TT
+>mydb</VAR
 > that contains
    large objects to a <TT
 CLASS="FILENAME"
@@ -1222,34 +1229,30 @@ CLASS="FILENAME"
 
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->pg_dump -Ft -b mydb &gt; db.tar</B
-></TT
+>pg_dump -Ft -b mydb &gt; db.tar</KBD
 ></PRE
 ><P>
   </P
 ><P
 >   To reload this database (with large objects) to an
-   existing database called <TT
+   existing database called <VAR
 CLASS="LITERAL"
->newdb</TT
+>newdb</VAR
 >:
 
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->pg_restore -d newdb db.tar</B
-></TT
+>pg_restore -d newdb db.tar</KBD
 ></PRE
 ><P>
   </P
@@ -1257,7 +1260,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48311"
+NAME="AEN46512"
 ></A
 ><H2
 >History</H2
@@ -1269,24 +1272,18 @@ CLASS="APPLICATION"
    <SPAN
 CLASS="APPLICATION"
 >Postgres95</SPAN
-> release <TT
-CLASS="LITERAL"
->0.02</TT
->.  The
+> release 0.02.  The
    non-plain-text output formats were introduced in
    <SPAN
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
-> release <TT
-CLASS="LITERAL"
->7.1</TT
->.
+> release 7.1.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48319"
+NAME="AEN46518"
 ></A
 ><H2
 >See Also</H2
@@ -1305,9 +1302,6 @@ HREF="app-psql.html"
 CLASS="APPLICATION"
 >psql</SPAN
 ></A
->, <I
-CLASS="CITETITLE"
->PostgreSQL Administrator's Guide</I
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

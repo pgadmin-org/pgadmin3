@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP DATABASE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -18,14 +18,13 @@ REL="PREVIOUS"
 TITLE="DROP CONVERSION"
 HREF="sql-dropconversion.html"><LINK
 REL="NEXT"
-TITLE="   DROP DOMAIN
-  "
+TITLE="DROP DOMAIN"
 HREF="sql-dropdomain.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -45,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -79,108 +78,118 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPDATABASE"
->DROP DATABASE</A
-></H1
+></A
+>DROP DATABASE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42343"
+NAME="AEN40973"
 ></A
 ><H2
 >Name</H2
->   DROP DATABASE
-  &nbsp;--&nbsp;   remove a database
-  </DIV
+>DROP DATABASE&nbsp;--&nbsp;remove a database</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42346"
+NAME="AEN40976"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP DATABASE <TT
+>DROP DATABASE <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-  </PRE
+>name</VAR
+></PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPDATABASE-1"
+NAME="AEN40979"
 ></A
-><H3
->    Inputs
-   </H3
+><H2
+>Description</H2
 ><P
->    <P
+>   <TT
+CLASS="COMMAND"
+>DROP DATABASE</TT
+> drops a database. It removes the
+   catalog entries for the database and deletes the directory
+   containing the data.  It can only be executed by the database owner.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP DATABASE</TT
+> cannot be undone.  Use it with care!
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40985"
+></A
+><H2
+>Parameters</H2
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 ></DT
 ><DD
 ><P
->	The name of an existing database to remove.
-       </P
+>      The name of the database to remove.
+     </P
 ></DD
 ></DL
 ></DIV
-><P>
-   </P
 ></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPDATABASE-2"
+NAME="AEN40993"
 ></A
-><H3
->    Outputs
-   </H3
+><H2
+>Diagnostics</H2
 ><P
->&#13;    <P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->DROP DATABASE</TT
+>DROP DATABASE</SAMP
 ></DT
 ><DD
 ><P
->	This message is returned if the command is successful.
+>        This message is returned if the command was successful.
        </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->DROP DATABASE: cannot be executed on the currently open database</TT
+>DROP DATABASE: cannot be executed on the currently open database</SAMP
 ></DT
 ><DD
 ><P
 >        You cannot be connected to the database you are about to remove.
-        Instead, connect to <TT
+        Instead, connect to <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 > or any other
         database and run this command again.
        </P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->DROP DATABASE: may not be called in a transaction block</TT
+>DROP DATABASE: may not be called in a transaction block</SAMP
 ></DT
 ><DD
 ><P
@@ -189,97 +198,54 @@ CLASS="COMPUTEROUTPUT"
 ></DD
 ></DL
 ></DIV
-><P>
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPDATABASE-1"
+NAME="AEN41012"
 ></A
 ><H2
->   Description
-  </H2
+>Notes</H2
 ><P
->   <TT
-CLASS="COMMAND"
->DROP DATABASE</TT
-> removes the catalog entries for an existing
-   database and deletes the directory containing the data.
-   It can only be executed by the database owner (usually the user that created
-   it).
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->DROP DATABASE</TT
-> cannot be undone.  Use it with care!
-  </P
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPDATABASE-3"
-></A
-><H3
->    Notes
-   </H3
-><P
->    This command cannot be executed while connected to the target
-    database. Thus, it might be more convenient to use the shell
-    script <A
+>   This command cannot be executed while connected to the target
+   database. Thus, it might be more convenient to use the program
+   <A
 HREF="app-dropdb.html"
 ><I
 ><I
 >dropdb</I
 ></I
 ></A
->,
-    which is a wrapper around this command, instead.
-   </P
-><P
->    Refer to
-    <A
-HREF="sql-createdatabase.html"
-><I
->CREATE DATABASE</I
-></A
->
-    for information on how to create a database.
-   </P
-></DIV
+> instead,
+   which is a wrapper around this command.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPDATABASE-3"
+NAME="AEN41016"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPDATABASE-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    <TT
+>   The is no <TT
 CLASS="COMMAND"
 >DROP DATABASE</TT
-> statement is a
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> language extension;
-    there is no such command in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
+> statement in the SQL standard.
+  </P
 ></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41020"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

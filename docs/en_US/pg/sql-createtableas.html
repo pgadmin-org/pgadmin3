@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE TABLE AS</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATETABLEAS"
->CREATE TABLE AS</A
-></H1
+></A
+>CREATE TABLE AS</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41163"
+NAME="AEN39846"
 ></A
 ><H2
 >Name</H2
@@ -91,39 +91,31 @@ NAME="AEN41163"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41166"
+NAME="AEN39849"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE [ [ LOCAL ] { TEMPORARY | TEMP } ] TABLE <TT
+>CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <VAR
 CLASS="REPLACEABLE"
-><I
->table_name</I
-></TT
-> [ (<TT
+>table_name</VAR
+> [ (<VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
+>column_name</VAR
 > [, ...] ) ]
-    AS <TT
+    AS <VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
->
-  </PRE
+>query</VAR
+></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41171"
+NAME="AEN39854"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
@@ -132,14 +124,21 @@ CLASS="COMMAND"
    with data computed by a <TT
 CLASS="COMMAND"
 >SELECT</TT
-> command.  The
-   table columns have the names and data types associated with the
-   output columns of the <TT
+> command or an
+   <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> that runs a prepared
+   <TT
 CLASS="COMMAND"
 >SELECT</TT
-> (except that you
-   can override the column names by giving an explicit list of new
-   column names).
+> command.  The table columns have the
+   names and data types associated with the output columns of the
+   <TT
+CLASS="COMMAND"
+>SELECT</TT
+> (except that you can override the column
+   names by giving an explicit list of new column names).
   </P
 ><P
 >   <TT
@@ -160,7 +159,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41182"
+NAME="AEN39865"
 ></A
 ><H2
 >Parameters</H2
@@ -170,12 +169,12 @@ NAME="AEN41182"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->[LOCAL] TEMPORARY</TT
-> or <TT
+>TEMPORARY</VAR
+> or <VAR
 CLASS="LITERAL"
->[LOCAL] TEMP</TT
+>TEMP</VAR
 ></DT
 ><DD
 ><P
@@ -189,11 +188,9 @@ HREF="sql-createtable.html"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->table_name</I
-></TT
+>table_name</VAR
 ></DT
 ><DD
 ><P
@@ -201,41 +198,52 @@ CLASS="REPLACEABLE"
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->column_name</I
-></TT
+>column_name</VAR
 ></DT
 ><DD
 ><P
->      The name of a column in the new table. Multiple column names can
-      be specified using a comma-delimited list of column names.  If
-      column names are not provided, they are taken from the output
-      column names of the query.
+>      The name of a column in the new table.  If column names are not
+      provided, they are taken from the output column names of the
+      query.  If the table is created out of an
+      <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> command, a column name list can
+      currently not be specified.
      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
+>query</VAR
 ></DT
 ><DD
 ><P
 >      A query statement (that is, a <TT
 CLASS="COMMAND"
 >SELECT</TT
->
-      command).  Refer to
-      <A
+> command
+      or an <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> command that runs a prepared
+      <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command).  Refer to <A
 HREF="sql-select.html"
 ><I
 >SELECT</I
 ></A
->
-      for a description of the allowed syntax.
+> or <A
+HREF="sql-execute.html"
+><I
+>EXECUTE</I
+></A
+>,
+      respectively, for a description of the allowed syntax.
      </P
 ></DD
 ></DL
@@ -244,7 +252,7 @@ HREF="sql-select.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41209"
+NAME="AEN39896"
 ></A
 ><H2
 >Diagnostics</H2
@@ -254,20 +262,24 @@ HREF="sql-createtable.html"
 ><I
 >CREATE TABLE</I
 ></A
-> and
-   <A
+>, <A
 HREF="sql-select.html"
 ><I
 >SELECT</I
 ></A
->
-   for a summary of possible output messages.
+>, and <A
+HREF="sql-execute.html"
+><I
+>EXECUTE</I
+></A
+> for a summary of possible output
+   messages.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41214"
+NAME="AEN39902"
 ></A
 ><H2
 >Notes</H2
@@ -288,7 +300,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41219"
+NAME="AEN39907"
 ></A
 ><H2
 >Compatibility</H2
@@ -298,13 +310,13 @@ CLASS="PRODUCTNAME"
 >Oracle</SPAN
 >
    feature.  There is no command with equivalent functionality in
-   SQL92 or SQL99.  However, a combination of <TT
+   the SQL standard.  However, a combination of <VAR
 CLASS="LITERAL"
 >CREATE
-   TABLE</TT
-> and <TT
+   TABLE</VAR
+> and <VAR
 CLASS="LITERAL"
->INSERT ... SELECT</TT
+>INSERT ... SELECT</VAR
 > can
    accomplish the same thing with little more effort.
   </P
@@ -312,25 +324,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41225"
-></A
-><H2
->History</H2
-><P
->   The <TT
-CLASS="COMMAND"
->CREATE TABLE AS</TT
-> command has been available
-   since <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 6.3.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41230"
+NAME="AEN39913"
 ></A
 ><H2
 >See Also</H2
@@ -343,6 +337,11 @@ HREF="sql-createtable.html"
 HREF="sql-createview.html"
 ><I
 >CREATE VIEW</I
+></A
+>, <A
+HREF="sql-execute.html"
+><I
+>EXECUTE</I
 ></A
 >, <A
 HREF="sql-select.html"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Processing Embedded SQL Programs</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. <SPAN
+>Chapter 30. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
-> - Embedded <SPAN
+> - Embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > in C</TD
 ><TD
 WIDTH="10%"
@@ -87,29 +87,29 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-PROCESS"
->4.8. Processing Embedded SQL Programs</A
+>30.11. Processing Embedded SQL Programs</A
 ></H1
 ><P
 >   Now that you have an idea how to form embedded SQL C programs, you
    probably want to know how to compile them.  Before compiling you
-   run the file through the embedded <SPAN
+   run the file through the embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->C</SPAN
+>C</ACRONYM
 > preprocessor, which converts the
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > statements you used to special function
    calls.  After compiling, you must link with a special library that
    contains the needed functions. These functions fetch information
-   from the arguments, perform the <SPAN
+   from the arguments, perform the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> query using
+>SQL</ACRONYM
+> command using
    the <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
@@ -121,8 +121,11 @@ CLASS="APPLICATION"
 CLASS="FILENAME"
 >ecpg</TT
 > and is
-   included in a normal PostgreSQL installation.  Embedded SQL
-   programs are typically named with an extension
+   included in a normal <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installation.
+   Embedded SQL programs are typically named with an extension
    <TT
 CLASS="FILENAME"
 >.pgc</TT
@@ -142,25 +145,32 @@ CLASS="FILENAME"
 >.  If
    your input files do not follow the suggested naming pattern, you
    can specify the output file explicitly using the
-   <TT
+   <VAR
 CLASS="OPTION"
->-o</TT
+>-o</VAR
 > option.
   </P
 ><P
->   The preprocessed file can be compiled normally, for example
+>   The preprocessed file can be compiled normally, for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >cc -c prog1.c</PRE
 ><P>
    The generated C source files include headers files from the
-   PostgreSQL installation, so if you installed PostgreSQL in a
-   location that is not searched by default, you have to add an option
-   such as <TT
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installation, so if you installed
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> in a location that is not searched by
+   default, you have to add an option such as
+   <VAR
 CLASS="LITERAL"
->-I/usr/local/pgsql/include</TT
-> to the
-   compilation command line.
+>-I/usr/local/pgsql/include</VAR
+> to the compilation
+   command line.
   </P
 ><P
 >   To link an embedded SQL program, you need to include the
@@ -173,9 +183,9 @@ CLASS="PROGRAMLISTING"
 >cc -o myprog prog1.o prog2.o ... -lecpg</PRE
 ><P>
    Again, you might have to add an option like
-   <TT
+   <VAR
 CLASS="LITERAL"
->-L/usr/local/pgsql/lib</TT
+>-L/usr/local/pgsql/lib</VAR
 > to that command line.
   </P
 ><P
@@ -198,12 +208,28 @@ CLASS="PROGRAMLISTING"
 CLASS="COMMAND"
 >ecpg</TT
 > command is
-   detailed in the <A
-HREF="reference.html"
-><I
->PostgreSQL 7.3.3 Reference Manual</I
+   detailed in <A
+HREF="app-ecpg.html"
+><SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
 ></A
 >.
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+> is thread-safe if it is compiled using
+   the <VAR
+CLASS="OPTION"
+>--enable-thread-safety</VAR
+> <TT
+CLASS="FILENAME"
+>configure</TT
+>
+   command-line option.  (You might need to use other threading
+   command-line options to compile your client code.)
   </P
 ></DIV
 ><DIV

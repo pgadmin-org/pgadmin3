@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Database Wrapper Class: DB</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PyGreSQL - Python Interface"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. <SPAN
+>Chapter 32. <SPAN
 CLASS="APPLICATION"
 >PyGreSQL</SPAN
 > - <SPAN
@@ -87,9 +87,9 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PYGRESQL-PG-DB"
->6.4. Database Wrapper Class: <TT
+>32.4. Database Wrapper Class: <CODE
 CLASS="CLASSNAME"
->DB</TT
+>DB</CODE
 ></A
 ></H1
 ><DIV
@@ -147,24 +147,50 @@ HREF="pygresql-db-delete.html"
 ></DL
 ></DIV
 ><P
->   <TT
-CLASS="CLASSNAME"
->pg</TT
+>   The <VAR
+CLASS="LITERAL"
+>pg</VAR
 > module contains a class called
-   <TT
+   <CODE
 CLASS="CLASSNAME"
->DB</TT
->.  All <TT
+>DB</CODE
+> wrapping a <CODE
 CLASS="CLASSNAME"
->pgobject</TT
+>pgobject</CODE
+>.
+   This <CODE
+CLASS="CLASSNAME"
+>pgobject</CODE
+> can be addressed as a
+   <CODE
+CLASS="CLASSNAME"
+>DB</CODE
+> class member named <VAR
+CLASS="VARNAME"
+>db</VAR
 >
-   methods are included in this class also.  A number of additional
-   <TT
+   to get access to the read-only attributes of the corresponding connection
+   (e.g. <VAR
+CLASS="VARNAME"
+>db.error</VAR
+>).  All <CODE
 CLASS="CLASSNAME"
->DB</TT
-> class methods are described below.  The
-   preferred way to use this module is as follows (See description of
-   the initialization method below.):
+>pgobject</CODE
+>
+   methods (e.g. <CODE
+CLASS="FUNCTION"
+>query()</CODE
+>) are directly included as members
+   in the class <CODE
+CLASS="CLASSNAME"
+>DB</CODE
+> also.  A number of additional
+   higher level <CODE
+CLASS="CLASSNAME"
+>DB</CODE
+> class methods are described below.
+   The preferred way to use this module is as follows  (see description of the
+   initialization method below):
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -184,22 +210,22 @@ for r in db.query(
    The following describes the methods and variables of this class.
   </P
 ><P
->   The <TT
+>   The <CODE
 CLASS="CLASSNAME"
->DB</TT
+>DB</CODE
 > class is initialized with the same
-   arguments as the <TT
+   arguments as the <CODE
 CLASS="FUNCTION"
->pg.connect</TT
+>pg.connect</CODE
 > method.  It also
-   initializes a few internal variables.  The statement <TT
+   initializes a few internal variables.  The statement <VAR
 CLASS="LITERAL"
 >db =
-   DB()</TT
+   DB()</VAR
 > will open the local database with the name of the
-   user just like <TT
+   user just like <CODE
 CLASS="FUNCTION"
->pg.connect()</TT
+>pg.connect()</CODE
 > does.
   </P
 ></DIV

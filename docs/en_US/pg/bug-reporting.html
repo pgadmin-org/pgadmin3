@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Bug Reporting Guidelines</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Preface"
-HREF="user-preface.html"><LINK
+HREF="preface.html"><LINK
 REL="PREVIOUS"
 TITLE="Terminology and Notation"
 HREF="notation.html"><LINK
 REL="NEXT"
-TITLE="SQL Syntax"
-HREF="sql-syntax.html"><LINK
+TITLE="Tutorial"
+HREF="tutorial.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="sql-syntax.html"
+HREF="tutorial.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="BUG-REPORTING"
->6. Bug Reporting Guidelines</A
+>4. Bug Reporting Guidelines</A
 ></H1
 ><P
 >  When you find a bug in <SPAN
@@ -120,15 +120,15 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN941"
->6.1. Identifying Bugs</A
+NAME="AEN206"
+>4.1. Identifying Bugs</A
 ></H2
 ><P
 >   Before you report a bug, please read and re-read the
    documentation to verify that you can really do whatever it is you are
    trying. If it is not clear from the documentation whether you can do
    something or not, please report that too; it is a bug in the documentation.
-   If it turns out that the program does something different from what the
+   If it turns out that a program does something different from what the
    documentation says, that is a bug. That might include, but is not limited to,
    the following circumstances:
 
@@ -183,9 +183,9 @@ CLASS="QUOTE"
 ><P
 >   Being slow or resource-hogging is not necessarily a bug. Read the
    documentation or ask on one of the mailing lists for help in tuning your
-   applications. Failing to comply to the <SPAN
+   applications. Failing to comply to the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > standard is
    not necessarily a bug either, unless compliance for the
    specific feature is explicitly claimed.
@@ -201,8 +201,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN961"
->6.2. What to report</A
+NAME="AEN226"
+>4.2. What to report</A
 ></H2
 ><P
 >   The most important thing to remember about bug reporting is to state all
@@ -233,35 +233,47 @@ CLASS="QUOTE"
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
->from program start-up</I
+>from program
+      start-up</I
 ></SPAN
+> necessary to reproduce the problem. This
+      should be self-contained; it is not enough to send in a bare
+      <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement without the preceding
+      <TT
+CLASS="COMMAND"
+>CREATE TABLE</TT
+> and <TT
+CLASS="COMMAND"
+>INSERT</TT
 >
-      necessary to reproduce the problem. This should be self-contained;
-      it is not enough to send in a bare select statement without the
-      preceding create table and insert statements, if the output should
-      depend on the data in the tables. We do not have the time
-      to reverse-engineer your database schema, and if we are supposed to make
-      up our own data we would probably miss the problem.
-      The best format for a test case for
-      query-language related problems is a file that can be run through the
-      <SPAN
+      statements, if the output should depend on the data in the
+      tables. We do not have the time to reverse-engineer your
+      database schema, and if we are supposed to make up our own data
+      we would probably miss the problem.
+     </P
+><P
+>      The best format for a test case for SQL-related problems is a
+      file that can be run through the <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
-> frontend
-      that shows the problem. (Be sure to not have anything in your
-      <TT
+>
+      frontend that shows the problem. (Be sure to not have anything
+      in your <TT
 CLASS="FILENAME"
 >~/.psqlrc</TT
-> start-up file.)  An easy start at this
-      file is to use <SPAN
+> start-up file.)  An easy
+      start at this file is to use <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
-> to dump out the table
-      declarations and data needed to set the scene, then add the problem
-      query.
-      You are encouraged to
-      minimize the size of your example, but this is not absolutely necessary.
-      If the bug is reproducible, we will find it either way.
+>
+      to dump out the table declarations and data needed to set the
+      scene, then add the problem query.  You are encouraged to
+      minimize the size of your example, but this is not absolutely
+      necessary.  If the bug is reproducible, we will find it either
+      way.
      </P
 ><P
 >      If your application uses some other client interface, such as <SPAN
@@ -270,13 +282,13 @@ CLASS="APPLICATION"
 >, then
       please try to isolate the offending queries. We will probably not set up a
       web server to reproduce your problem. In any case remember to provide
-      the exact input files, do not guess that the problem happens for
+      the exact input files; do not guess that the problem happens for
       <SPAN
 CLASS="QUOTE"
 >"large files"</SPAN
 > or <SPAN
 CLASS="QUOTE"
->"mid-size databases"</SPAN
+>"midsize databases"</SPAN
 >, etc. since this
       information is too inexact to be of use.
      </P
@@ -329,9 +341,9 @@ CLASS="QUOTE"
 CLASS="QUOTE"
 >"This is not what SQL says/Oracle
       does."</SPAN
-> Digging out the correct behavior from <SPAN
+> Digging out the correct behavior from <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >
       is not a fun undertaking, nor do we all know how all the other relational
       databases out there behave. (If your problem is a program crash, you can
@@ -358,37 +370,31 @@ CLASS="ACRONYM"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > version. You can run the command
-      <TT
+      <VAR
 CLASS="LITERAL"
->SELECT version();</TT
+>SELECT version();</VAR
 > to
       find out the version of the server you are connected to.  Most executable
-      programs also support a <TT
+      programs also support a <VAR
 CLASS="OPTION"
->--version</TT
+>--version</VAR
 > option; at least
-      <TT
+      <VAR
 CLASS="LITERAL"
->postmaster --version</TT
-> and <TT
+>postmaster --version</VAR
+> and <VAR
 CLASS="LITERAL"
->psql --version</TT
+>psql --version</VAR
 >
       should work.
       If the function or the options do not exist then your version is
-      more than old enough to warrant an upgrade.  You can also look into the
-      <TT
-CLASS="FILENAME"
->README</TT
-> file 
-      in the source directory or at the
-      name of your distribution file or package name.
+      more than old enough to warrant an upgrade.
       If you run a prepackaged version, such as RPMs, say so, including any
       subversion the package may have. If you are talking about a CVS
       snapshot, mention that, including its date and time.
      </P
 ><P
->      If your version is older than 7.3.3 we will almost certainly tell
+>      If your version is older than 7.4beta1 we will almost certainly tell
       you to upgrade. There are tons
       of bug fixes in each new release, that is why we make new releases.
      </P
@@ -446,7 +452,7 @@ CLASS="QUOTE"
 CLASS="QUOTE"
 >"the postmaster
    crashed"</SPAN
-> when you mean a single backend went down, nor vice versa.
+> when you mean a single backend process went down, nor vice versa.
    Also, client programs such as the interactive frontend <SPAN
 CLASS="QUOTE"
 >"<SPAN
@@ -463,17 +469,17 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1015"
->6.3. Where to report bugs</A
+NAME="AEN283"
+>4.3. Where to report bugs</A
 ></H2
 ><P
 >   In general, send bug reports to the bug report mailing list at
-   <TT
+   <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:pgsql-bugs@postgresql.org"
 >pgsql-bugs@postgresql.org</A
->&#62;</TT
+>&#62;</CODE
 >.
    You are requested to use a descriptive subject for your email
    message, perhaps parts of the error message.
@@ -488,33 +494,33 @@ TARGET="_top"
 >http://www.postgresql.org/</A
 >.
    Entering a bug report this way causes it to be mailed to the
-   <TT
+   <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:pgsql-bugs@postgresql.org"
 >pgsql-bugs@postgresql.org</A
->&#62;</TT
+>&#62;</CODE
 > mailing list.
   </P
 ><P
 > 
    Do not send bug reports to any of the user mailing lists, such as
-   <TT
+   <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:pgsql-sql@postgresql.org"
 >pgsql-sql@postgresql.org</A
->&#62;</TT
+>&#62;</CODE
 > or
-   <TT
+   <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:pgsql-general@postgresql.org"
 >pgsql-general@postgresql.org</A
->&#62;</TT
+>&#62;</CODE
 >.
    These mailing lists are for answering
-   user questions and their subscribers normally do not wish to receive
+   user questions, and their subscribers normally do not wish to receive
    bug reports. More importantly, they are unlikely to fix them.
   </P
 ><P
@@ -525,45 +531,45 @@ CLASS="EMPHASIS"
 >not</I
 ></SPAN
 > send reports to
-   the developers' mailing list <TT
+   the developers' mailing list <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:pgsql-hackers@postgresql.org"
 >pgsql-hackers@postgresql.org</A
->&#62;</TT
+>&#62;</CODE
 >.
    This list is for discussing the
    development of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> and it would be nice
+>, and it would be nice
    if we could keep the bug reports separate. We might choose to take up a
    discussion
-   about your bug report on <TT
+   about your bug report on <VAR
 CLASS="LITERAL"
->pgsql-hackers</TT
+>pgsql-hackers</VAR
 >, if the problem needs more review.
   </P
 ><P
 >   If you have a problem with the documentation, the best place to report it
-   is the documentation mailing list <TT
+   is the documentation mailing list <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:pgsql-docs@postgresql.org"
 >pgsql-docs@postgresql.org</A
->&#62;</TT
+>&#62;</CODE
 >.
    Please be specific about what part of the documentation you are unhappy
    with.
   </P
 ><P
 >   If your bug is a portability problem on a non-supported platform,
-   send mail to <TT
+   send mail to <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:pgsql-ports@postgresql.org"
 >pgsql-ports@postgresql.org</A
->&#62;</TT
+>&#62;</CODE
 >,
    so we (and you) can work on
    porting <SPAN
@@ -581,23 +587,23 @@ CLASS="NOTE"
 >    Due to the unfortunate amount of spam going around, all of the above
     email addresses are closed mailing lists. That is, you need to be
     subscribed to a list to be allowed to post on it.  (You need not be
-    subscribed to use the bug report web-form, however.)
+    subscribed to use the bug-report web form, however.)
     If you would like to send mail but do not want to receive list traffic,
-    you can subscribe and set your subscription option to <TT
+    you can subscribe and set your subscription option to <VAR
 CLASS="LITERAL"
->nomail</TT
+>nomail</VAR
 >.
     For more information send mail to
-    <TT
+    <CODE
 CLASS="EMAIL"
 >&#60;<A
 HREF="mailto:majordomo@postgresql.org"
 >majordomo@postgresql.org</A
->&#62;</TT
+>&#62;</CODE
 >
-    with the single word <TT
+    with the single word <VAR
 CLASS="LITERAL"
->help</TT
+>help</VAR
 > in the body of the message.
    </P
 ></BLOCKQUOTE
@@ -638,7 +644,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="sql-syntax.html"
+HREF="tutorial.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -654,7 +660,7 @@ WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="user-preface.html"
+HREF="preface.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -662,7 +668,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->SQL Syntax</TD
+>Tutorial</TD
 ></TR
 ></TABLE
 ></DIV

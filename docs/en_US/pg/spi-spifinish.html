@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SPI_finish</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Interface Functions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SPI-SPIFINISH"
->SPI_finish</A
-></H1
+></A
+>SPI_finish</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN33716"
+NAME="AEN32112"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ NAME="IX-SPI-SPIFINISH-2"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN33724"
+NAME="AEN32120"
 ></A
 ><H2
 >Synopsis</H2
@@ -169,9 +169,9 @@ NAME="R1-SPI-SPIFINISH-1"
 ><H2
 >Description</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > closes an existing connection to the
 SPI manager.
    You must call this function after completing the SPI operations needed
@@ -180,9 +180,9 @@ SPI manager.
 >   You may get the error return <SPAN
 CLASS="RETURNVALUE"
 >SPI_ERROR_UNCONNECTED</SPAN
-> if <TT
+> if <CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > is
    called without having a current valid connection.
  There is no fundamental problem
@@ -196,9 +196,9 @@ NAME="R1-SPI-SPIFINISH-2"
 ><H2
 >Usage</H2
 ><P
->   <TT
+>   <CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > <SPAN
 CLASS="emphasis"
 ><I
@@ -219,18 +219,18 @@ NAME="R1-SPI-SPIFINISH-3"
 ><H2
 >Algorithm</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > performs the following:
    Disconnects your procedure from the SPI manager and frees all memory
-   allocations made by your procedure via <TT
+   allocations made by your procedure via <CODE
 CLASS="FUNCTION"
->palloc</TT
+>palloc</CODE
 > since
- the <TT
+ the <CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 >. 
    These allocations can't be used any more! See Memory management.</P
 ></DIV

@@ -1,0 +1,556 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>ALTER SEQUENCE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER SCHEMA"
+HREF="sql-alterschema.html"><LINK
+REL="NEXT"
+TITLE="ALTER TABLE"
+HREF="sql-altertable.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-alterschema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERSEQUENCE"
+></A
+>ALTER SEQUENCE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN36282"
+></A
+><H2
+>Name</H2
+>   ALTER SEQUENCE
+  &nbsp;--&nbsp;   alter the definition of a sequence generator
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN36285"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER SEQUENCE <VAR
+CLASS="REPLACEABLE"
+>seqname</VAR
+> [ INCREMENT [ BY ] <VAR
+CLASS="REPLACEABLE"
+>increment</VAR
+> ]
+    [ MINVALUE <VAR
+CLASS="REPLACEABLE"
+>minvalue</VAR
+> | NO MINVALUE ] [ MAXVALUE <VAR
+CLASS="REPLACEABLE"
+>maxvalue</VAR
+> | NO MAXVALUE ]
+    [ RESTART [ WITH ] <VAR
+CLASS="REPLACEABLE"
+>start</VAR
+> ] [ CACHE <VAR
+CLASS="REPLACEABLE"
+>cache</VAR
+> ] [ [ NO ] CYCLE ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERSEQUENCE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>seqname</VAR
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of a sequence to be altered.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>increment</VAR
+></DT
+><DD
+><P
+>	The
+	<VAR
+CLASS="OPTION"
+>INCREMENT BY <VAR
+CLASS="REPLACEABLE"
+>increment</VAR
+></VAR
+>
+	clause is optional. A positive value will make an
+	ascending sequence, a negative one a descending sequence.
+	If unspecified, the old increment value will be maintained.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>minvalue</VAR
+><BR>NO MINVALUE</DT
+><DD
+><P
+>	The optional clause <VAR
+CLASS="OPTION"
+>MINVALUE
+	 <VAR
+CLASS="REPLACEABLE"
+>minvalue</VAR
+></VAR
+>
+	determines the minimum value
+	a sequence can generate. If <VAR
+CLASS="OPTION"
+>NO MINVALUE</VAR
+> is specified,
+    the defaults of 1 and -2^63-1 for ascending and descending sequences, respectively, will be used.  If neither option is specified, the current minimum
+    value will be maintained.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>maxvalue</VAR
+><BR>NO MAXVALUE</DT
+><DD
+><P
+>	The optional clause <VAR
+CLASS="OPTION"
+>MAXVALUE
+	 <VAR
+CLASS="REPLACEABLE"
+>maxvalue</VAR
+></VAR
+>
+	determines the maximum value for the sequence. If 
+    <VAR
+CLASS="OPTION"
+>NO MAXVALUE</VAR
+> is specified, the defaults are 2^63-1 and -1 for
+	ascending and descending sequences, respectively, will be used.  If
+    neither option is specified, the current maximum value will be
+    maintained.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>start</VAR
+></DT
+><DD
+><P
+>	The optional <VAR
+CLASS="OPTION"
+>RESTART WITH
+	 <VAR
+CLASS="REPLACEABLE"
+>start</VAR
+>
+	 clause</VAR
+> enables the sequence to re-begin anywhere.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>cache</VAR
+></DT
+><DD
+><P
+>	The <VAR
+CLASS="OPTION"
+>CACHE <VAR
+CLASS="REPLACEABLE"
+>cache</VAR
+></VAR
+> option
+	enables sequence numbers to be preallocated
+	and stored in memory for faster access. The  minimum
+	value is 1 (only one value can be generated at a time, i.e., no cache).
+	If unspecified, the old cache value will be maintained.
+       </P
+></DD
+><DT
+>CYCLE</DT
+><DD
+><P
+>	The optional <VAR
+CLASS="OPTION"
+>CYCLE</VAR
+> keyword may be used to enable
+	the sequence to wrap around when the
+	<VAR
+CLASS="REPLACEABLE"
+>maxvalue</VAR
+> or
+	<VAR
+CLASS="REPLACEABLE"
+>minvalue</VAR
+> has been
+	reached by
+	an ascending or descending sequence respectively. If the limit is
+	reached, the next number generated will be the
+	<VAR
+CLASS="REPLACEABLE"
+>minvalue</VAR
+> or
+	<VAR
+CLASS="REPLACEABLE"
+>maxvalue</VAR
+>,
+	respectively.
+       </P
+></DD
+><DT
+>NO CYCLE</DT
+><DD
+><P
+>	If the optional <VAR
+CLASS="OPTION"
+>NO CYCLE</VAR
+> keyword is specified, any
+	calls to <CODE
+CLASS="FUNCTION"
+>nextval</CODE
+> after the sequence has reached
+	its maximum value will return an error.  If neither
+	<VAR
+CLASS="OPTION"
+>CYCLE</VAR
+> or <VAR
+CLASS="OPTION"
+>NO CYCLE</VAR
+> are specified,
+	the old cycle behaviour will be maintained.
+	   </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERSEQUENCE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ALTER SEQUENCE
+       </SAMP
+></DT
+><DD
+><P
+>	Message returned if the command is successful.
+       </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  AlterSequence: MINVALUE (<VAR
+CLASS="REPLACEABLE"
+>start</VAR
+>) can't be &#62;= MAXVALUE (<VAR
+CLASS="REPLACEABLE"
+>max</VAR
+>)
+       </SAMP
+></DT
+><DD
+><P
+>	If the specified starting value is out of range.
+       </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  AlterSequence: START value (<VAR
+CLASS="REPLACEABLE"
+>start</VAR
+>) can't be &#60; MINVALUE (<VAR
+CLASS="REPLACEABLE"
+>min</VAR
+>)
+       </SAMP
+></DT
+><DD
+><P
+>	If the specified starting value is out of range.
+       </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  AlterSequence: MINVALUE (<VAR
+CLASS="REPLACEABLE"
+>min</VAR
+>) can't be &#62;= MAXVALUE (<VAR
+CLASS="REPLACEABLE"
+>max</VAR
+>)
+       </SAMP
+></DT
+><DD
+><P
+>	If the minimum and maximum values are inconsistent.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERSEQUENCE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   See <A
+HREF="sql-createsequence.html"
+>CREATE SEQUENCE</A
+> for limitations, and uses
+   of sequences.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERSEQUENCE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Restart a sequence called <VAR
+CLASS="LITERAL"
+>serial</VAR
+>, at 105:
+  </P
+><PRE
+CLASS="PROGRAMLISTING"
+>ALTER SEQUENCE serial RESTART WITH 105;
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERSEQUENCE-5"
+></A
+><H2
+>   Notes
+  </H2
+><P
+>   To avoid blocking of concurrent transactions that obtain numbers from the same
+   sequence, a nextval operation is never rolled back; that is, once a value has 
+   been fetched it is considered used, even if the transaction that did the nextval
+   later aborts. This means that aborted transactions may leave unused "holes" in
+   the sequence of assigned values. setval operations are never rolled back, either.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> will not immediately affect backends, other than the
+   current one, which have cached sequence values. They must use up all cached values
+   prior to noticing the changed sequence parameters.  The current backend will be 
+   immediatly affected.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERSEQUENCE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERSEQUENCE-4"
+></A
+><H3
+>    SQL99
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    language extension.
+    There is no <TT
+CLASS="COMMAND"
+>ALTER SEQUENCE</TT
+> statement
+    in <ACRONYM
+CLASS="ACRONYM"
+>SQL99</ACRONYM
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterschema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER SCHEMA</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER TABLE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

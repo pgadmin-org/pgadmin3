@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Installation Procedure</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="  Installation Instructions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 1. Installation Instructions</TD
+>Chapter 14. Installation Instructions</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INSTALL-PROCEDURE"
->1.5. Installation Procedure</A
+>14.5. Installation Procedure</A
 ></H1
 ><DIV
 CLASS="PROCEDURE"
@@ -96,7 +96,7 @@ NAME="CONFIGURE"
 >Configuration</B
 ></P
 ><A
-NAME="AEN18226"
+NAME="AEN13617"
 ></A
 ><P
 >    The first step of the installation procedure is to configure the
@@ -108,11 +108,9 @@ CLASS="FILENAME"
     default installation simply enter
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->./configure</B
-></TT
+>./configure</KBD
 ></PRE
 ><P>
     This script will run a number of tests to guess values for various
@@ -148,22 +146,18 @@ CLASS="FILENAME"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--prefix=<TT
+>--prefix=<VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
-></TT
+>PREFIX</VAR
+></VAR
 ></DT
 ><DD
 ><P
->         Install all files under the directory <TT
+>         Install all files under the directory <VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
+>PREFIX</VAR
 >
          instead of <TT
 CLASS="FILENAME"
@@ -171,11 +165,9 @@ CLASS="FILENAME"
 >. The actual
          files will be installed into various subdirectories; no files
          will ever be installed directly into the
-         <TT
+         <VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
+>PREFIX</VAR
 > directory.
         </P
 ><P
@@ -184,67 +176,53 @@ CLASS="REPLACEABLE"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--exec-prefix=<TT
+>--exec-prefix=<VAR
 CLASS="REPLACEABLE"
-><I
->EXEC-PREFIX</I
-></TT
-></TT
+>EXEC-PREFIX</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >         You can install architecture-dependent files under a
-         different prefix, <TT
+         different prefix, <VAR
 CLASS="REPLACEABLE"
-><I
->EXEC-PREFIX</I
-></TT
+>EXEC-PREFIX</VAR
 >, than what
-         <TT
+         <VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
+>PREFIX</VAR
 > was set to. This can be useful to
          share architecture-independent files between hosts. If you
-         omit this, then <TT
+         omit this, then <VAR
 CLASS="REPLACEABLE"
-><I
->EXEC-PREFIX</I
-></TT
+>EXEC-PREFIX</VAR
 > is set equal to
-         <TT
+         <VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
+>PREFIX</VAR
 > and both architecture-dependent and
          independent files will be installed under the same tree,
          which is probably what you want.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--bindir=<TT
+>--bindir=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-></TT
+>DIRECTORY</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >         Specifies the directory for executable programs. The default
          is <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->EXEC-PREFIX</I
-></TT
+>EXEC-PREFIX</VAR
 >/bin</TT
 >, which
          normally means <TT
@@ -254,14 +232,12 @@ CLASS="FILENAME"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--datadir=<TT
+>--datadir=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-></TT
+>DIRECTORY</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -269,49 +245,41 @@ CLASS="REPLACEABLE"
          installed programs. The default is
          <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
+>PREFIX</VAR
 >/share</TT
 >. Note that this has
          nothing to do with where your database files will be placed.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--sysconfdir=<TT
+>--sysconfdir=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-></TT
+>DIRECTORY</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >         The directory for various configuration files,
          <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
+>PREFIX</VAR
 >/etc</TT
 > by default.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--libdir=<TT
+>--libdir=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-></TT
+>DIRECTORY</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -319,48 +287,40 @@ CLASS="REPLACEABLE"
          modules. The default is
          <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->EXEC-PREFIX</I
-></TT
+>EXEC-PREFIX</VAR
 >/lib</TT
 >.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--includedir=<TT
+>--includedir=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-></TT
+>DIRECTORY</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >         The directory for installing C and C++ header files. The
          default is <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
+>PREFIX</VAR
 >/include</TT
 >.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--docdir=<TT
+>--docdir=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-></TT
+>DIRECTORY</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -371,24 +331,20 @@ CLASS="QUOTE"
          installed into this directory. The default is
          <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
+>PREFIX</VAR
 >/doc</TT
 >.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--mandir=<TT
+>--mandir=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-></TT
+>DIRECTORY</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -399,20 +355,16 @@ CLASS="PRODUCTNAME"
          this directory, in their respective
          <TT
 CLASS="FILENAME"
->man<TT
+>man<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
+>x</VAR
 ></TT
 > subdirectories.
          The default is <TT
 CLASS="FILENAME"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->PREFIX</I
-></TT
+>PREFIX</VAR
 >/man</TT
 >.
         </P
@@ -441,34 +393,34 @@ CLASS="FILENAME"
        with the namespace of the rest of the system.  First, the
        string <SPAN
 CLASS="QUOTE"
->"<TT
+>"<VAR
 CLASS="LITERAL"
->/postgresql</TT
+>/postgresql</VAR
 >"</SPAN
 > is
-       automatically appended to <TT
+       automatically appended to <VAR
 CLASS="VARNAME"
->datadir</TT
+>datadir</VAR
 >,
-       <TT
+       <VAR
 CLASS="VARNAME"
->sysconfdir</TT
->, and <TT
+>sysconfdir</VAR
+>, and <VAR
 CLASS="VARNAME"
->docdir</TT
+>docdir</VAR
 >,
        unless the fully expanded directory name already contains the
        string <SPAN
 CLASS="QUOTE"
->"<TT
+>"<VAR
 CLASS="LITERAL"
->postgres</TT
+>postgres</VAR
 >"</SPAN
 > or <SPAN
 CLASS="QUOTE"
->"<TT
+>"<VAR
 CLASS="LITERAL"
->pgsql</TT
+>pgsql</VAR
 >"</SPAN
 >.  For
        example, if you choose <TT
@@ -489,25 +441,22 @@ CLASS="FILENAME"
 >/opt/postgres/doc</TT
 >.  The public C header files of the
        client interfaces are installed into
-       <TT
+       <VAR
 CLASS="VARNAME"
->includedir</TT
+>includedir</VAR
 > and are namespace-clean.  The
        internal header files and the server header files are installed
        into private directories under
-       <TT
+       <VAR
 CLASS="VARNAME"
->includedir</TT
+>includedir</VAR
 >.
-       See the <I
-CLASS="CITETITLE"
->Programmer's Guide</I
-> for
-       information about how to get at the header files for each interface.
+       See the documentation of each interface for information about how to get at
+       the its header files.
        Finally, a private subdirectory will also be created, if appropriate,
-       under <TT
+       under <VAR
 CLASS="VARNAME"
->libdir</TT
+>libdir</VAR
 > for dynamically loadable modules.       
       </P
 ></BLOCKQUOTE
@@ -521,22 +470,18 @@ CLASS="VARNAME"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-includes=<TT
+>--with-includes=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORIES</I
-></TT
-></TT
+>DIRECTORIES</VAR
+></VAR
 ></DT
 ><DD
 ><P
->         <TT
+>         <VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORIES</I
-></TT
+>DIRECTORIES</VAR
 > is a colon-separated list of
          directories that will be added to the list the compiler
          searches for header files. If you have optional packages
@@ -546,98 +491,74 @@ CLASS="APPLICATION"
 >) installed in a non-standard
 	 location,
          you have to use this option and probably also the corresponding
-         <TT
+         <VAR
 CLASS="OPTION"
->--with-libraries</TT
+>--with-libraries</VAR
 > option.
         </P
 ><P
->         Example: <TT
+>         Example: <VAR
 CLASS="LITERAL"
->--with-includes=/opt/gnu/include:/usr/sup/include</TT
+>--with-includes=/opt/gnu/include:/usr/sup/include</VAR
 >.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-libraries=<TT
+>--with-libraries=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORIES</I
-></TT
-></TT
+>DIRECTORIES</VAR
+></VAR
 ></DT
 ><DD
 ><P
->         <TT
+>         <VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORIES</I
-></TT
+>DIRECTORIES</VAR
 > is a colon-separated list of
          directories to search for libraries. You will probably have
          to use this option (and the corresponding
-         <TT
+         <VAR
 CLASS="OPTION"
->--with-includes</TT
+>--with-includes</VAR
 > option) if you have packages
          installed in non-standard locations.
         </P
 ><P
->         Example: <TT
+>         Example: <VAR
 CLASS="LITERAL"
->--with-libraries=/opt/gnu/lib:/usr/sup/lib</TT
+>--with-libraries=/opt/gnu/lib:/usr/sup/lib</VAR
 >.
         </P
 ></DD
 ><DT
-><TT
-CLASS="OPTION"
->--enable-recode</TT
-></DT
-><DD
-><P
->         Enables single-byte character set recode support. See
-          <A
-HREF="recode.html"
->Section 7.3</A
-> about this feature.  Note that a more
-         general form of character set conversion is supported in the
-         default configuration; this feature is obsolete.
-        </P
-></DD
-><DT
-><TT
+><VAR
 CLASS="OPTION"
 >--enable-nls[<SPAN
 CLASS="OPTIONAL"
->=<TT
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->LANGUAGES</I
-></TT
+>LANGUAGES</VAR
 ></SPAN
->]</TT
+>]</VAR
 ></DT
 ><DD
 ><P
->         Enables Native Language Support (<SPAN
+>         Enables Native Language Support (<ACRONYM
 CLASS="ACRONYM"
->NLS</SPAN
+>NLS</ACRONYM
 >),
          that is, the ability to display a program's messages in a
          language other than English.
-         <TT
+         <VAR
 CLASS="REPLACEABLE"
-><I
->LANGUAGES</I
-></TT
+>LANGUAGES</VAR
 > is a space separated
          list of codes of the languages that you want supported, for
-         example <TT
+         example <VAR
 CLASS="LITERAL"
->--enable-nls='de fr'</TT
+>--enable-nls='de fr'</VAR
 >.  (The intersection
          between your list and the set of actually provided
          translations will be computed automatically.)  If you do not
@@ -648,27 +569,23 @@ CLASS="LITERAL"
 >         To use this option, you will need an implementation of the
          <SPAN
 CLASS="APPLICATION"
->gettext</SPAN
+>Gettext</SPAN
 > API; see above.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-pgport=<TT
+>--with-pgport=<VAR
 CLASS="REPLACEABLE"
-><I
->NUMBER</I
-></TT
-></TT
+>NUMBER</VAR
+></VAR
 ></DT
 ><DD
 ><P
->         Set <TT
+>         Set <VAR
 CLASS="REPLACEABLE"
-><I
->NUMBER</I
-></TT
+>NUMBER</VAR
 > as the default port number for
          server and clients. The default is 5432. The port can always
          be changed later on, but if you specify it here then both
@@ -682,9 +599,9 @@ CLASS="PRODUCTNAME"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-perl</TT
+>--with-perl</VAR
 ></DT
 ><DD
 ><P
@@ -692,9 +609,9 @@ CLASS="OPTION"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-python</TT
+>--with-python</VAR
 ></DT
 ><DD
 ><P
@@ -703,24 +620,20 @@ CLASS="OPTION"
          to install the Python module at its default place
          (<TT
 CLASS="FILENAME"
->/usr/lib/python<TT
+>/usr/lib/python<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->.<TT
+>x</VAR
+>.<VAR
 CLASS="REPLACEABLE"
-><I
->y</I
-></TT
+>y</VAR
 ></TT
 >).
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-tcl</TT
+>--with-tcl</VAR
 ></DT
 ><DD
 ><P
@@ -740,22 +653,22 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >PL/Tcl</SPAN
 >.  But see below about
-         <TT
+         <VAR
 CLASS="OPTION"
->--without-tk</TT
+>--without-tk</VAR
 >.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--without-tk</TT
+>--without-tk</VAR
 ></DT
 ><DD
 ><P
->         If you specify <TT
+>         If you specify <VAR
 CLASS="OPTION"
->--with-tcl</TT
+>--with-tcl</VAR
 > and this option, then
          the program that requires <SPAN
 CLASS="PRODUCTNAME"
@@ -769,22 +682,18 @@ CLASS="APPLICATION"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-tclconfig=<TT
+>--with-tclconfig=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-></TT
-><BR><TT
+>DIRECTORY</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--with-tkconfig=<TT
+>--with-tkconfig=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
-></TT
+>DIRECTORY</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -804,52 +713,46 @@ CLASS="FILENAME"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-java</TT
+>--with-java</VAR
 ></DT
 ><DD
 ><P
->         Build the <SPAN
+>         Build the <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > driver and associated Java
          packages.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
 >--with-krb4[<SPAN
 CLASS="OPTIONAL"
->=<TT
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
+>DIRECTORY</VAR
 ></SPAN
->]</TT
-><BR><TT
+>]</VAR
+><BR><VAR
 CLASS="OPTION"
 >--with-krb5[<SPAN
 CLASS="OPTIONAL"
->=<TT
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
+>DIRECTORY</VAR
 ></SPAN
->]</TT
+>]</VAR
 ></DT
 ><DD
 ><P
 >         Build with support for Kerberos authentication. You can use
          either Kerberos version 4 or 5, but not both. The
-         <TT
+         <VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
+>DIRECTORY</VAR
 > argument specifies the root
          directory of the Kerberos installation;
          <TT
@@ -858,12 +761,12 @@ CLASS="FILENAME"
 > is assumed as default. If the
          relevant header files and libraries are not under a common
          parent directory, then you must use the
-         <TT
+         <VAR
 CLASS="OPTION"
->--with-includes</TT
-> and <TT
+>--with-includes</VAR
+> and <VAR
 CLASS="OPTION"
->--with-libraries</TT
+>--with-libraries</VAR
 >
          options in addition to this option. If, on the other hand,
          the required files are in a location that is searched by
@@ -883,53 +786,47 @@ CLASS="FILENAME"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-krb-srvnam=<TT
+>--with-krb-srvnam=<VAR
 CLASS="REPLACEABLE"
-><I
->NAME</I
-></TT
-></TT
+>NAME</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >         The name of the Kerberos service principal.
-         <TT
+         <VAR
 CLASS="LITERAL"
->postgres</TT
+>postgres</VAR
 > is the default. There's probably no
          reason to change this.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
 >--with-openssl[<SPAN
 CLASS="OPTIONAL"
->=<TT
+>=<VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
+>DIRECTORY</VAR
 ></SPAN
->]</TT
+>]</VAR
 ></DT
 ><DD
 ><P
->         Build with support for <SPAN
+>         Build with support for <ACRONYM
 CLASS="ACRONYM"
->SSL</SPAN
+>SSL</ACRONYM
 > (encrypted) connections. 
          This requires the <SPAN
 CLASS="PRODUCTNAME"
 >OpenSSL</SPAN
 > package to be installed.
-         The <TT
+         The <VAR
 CLASS="REPLACEABLE"
-><I
->DIRECTORY</I
-></TT
+>DIRECTORY</VAR
 > argument specifies the
          root directory of the <SPAN
 CLASS="PRODUCTNAME"
@@ -953,23 +850,23 @@ CLASS="PRODUCTNAME"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--with-pam</TT
+>--with-pam</VAR
 ></DT
 ><DD
 ><P
->	 Build with <SPAN
+>	 Build with <ACRONYM
 CLASS="ACRONYM"
->PAM</SPAN
+>PAM</ACRONYM
 > (Pluggable Authentication Modules)
 	 support.
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--without-readline</TT
+>--without-readline</VAR
 ></DT
 ><DD
 ><P
@@ -985,9 +882,30 @@ CLASS="APPLICATION"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--without-zlib</TT
+>--with-rendezvous</VAR
+></DT
+><DD
+><P
+>	 Build with Rendezvous support.
+        </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>--enable-thread-safety</VAR
+></DT
+><DD
+><P
+>	 Allow separate libpq and ecpg threads to safely control their
+         private connection handles.
+        </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>--without-zlib</VAR
 ></DT
 ><DD
 ><P
@@ -1004,9 +922,9 @@ CLASS="APPLICATION"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--enable-debug</TT
+>--enable-debug</VAR
 ></DT
 ><DD
 ><P
@@ -1023,9 +941,9 @@ CLASS="OPTION"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--enable-cassert</TT
+>--enable-cassert</VAR
 ></DT
 ><DD
 ><P
@@ -1048,9 +966,9 @@ CLASS="QUOTE"
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--enable-depend</TT
+>--enable-depend</VAR
 ></DT
 ><DD
 ><P
@@ -1098,11 +1016,9 @@ CLASS="FILENAME"
 > command line, for example:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->./configure CC=/opt/bin/gcc CFLAGS='-O2 -pipe'</B
-></TT
+>./configure CC=/opt/bin/gcc CFLAGS='-O2 -pipe'</KBD
 ></PRE
 ><P>
     </P
@@ -1116,16 +1032,14 @@ CLASS="USERINPUT"
 >    To start the build, type
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->gmake</B
-></TT
+>gmake</KBD
 ></PRE
 ><P>
-    (Remember to use <SPAN
+    (Remember to use <ACRONYM
 CLASS="ACRONYM"
->GNU</SPAN
+>GNU</ACRONYM
 > <SPAN
 CLASS="APPLICATION"
 >make</SPAN
@@ -1144,7 +1058,7 @@ CLASS="SCREEN"
 >Regression Tests</B
 ></P
 ><A
-NAME="AEN18537"
+NAME="AEN13931"
 ></A
 ><P
 >    If you want to test the newly built server before you install it,
@@ -1157,11 +1071,9 @@ CLASS="PRODUCTNAME"
     to. Type
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->gmake check</B
-></TT
+>gmake check</KBD
 ></PRE
 ><P>
     (This won't work as root; do it as an unprivileged user.)
@@ -1170,7 +1082,7 @@ CLASS="USERINPUT"
     
     <A
 HREF="regress.html"
->Chapter 13</A
+>Chapter 26</A
 > contains
     detailed information about interpreting the test results. You can
     repeat this test at any later time by issuing the same command.
@@ -1196,7 +1108,7 @@ CLASS="NOTE"
      your data and shut down the old server by now, as explained in
      <A
 HREF="install-upgrading.html"
->Section 1.4</A
+>Section 14.4</A
 > above.
     </P
 ></BLOCKQUOTE
@@ -1208,11 +1120,9 @@ CLASS="PRODUCTNAME"
 > enter
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->gmake install</B
-></TT
+>gmake install</KBD
 ></PRE
 ><P>
     This will install files into the directories that were specified
@@ -1226,20 +1136,20 @@ HREF="install-procedure.html#CONFIGURE"
     be granted.
    </P
 ><P
->    You can use <TT
+>    You can use <VAR
 CLASS="LITERAL"
->gmake install-strip</TT
+>gmake install-strip</VAR
 > instead of
-    <TT
+    <VAR
 CLASS="LITERAL"
->gmake install</TT
+>gmake install</VAR
 > to strip the executable files and
     libraries as they are installed.  This will save some space.  If
     you built with debugging support, stripping will effectively
     remove the debugging support, so it should only be done if
-    debugging is no longer needed.  <TT
+    debugging is no longer needed.  <VAR
 CLASS="LITERAL"
->install-strip</TT
+>install-strip</VAR
 >
     tries to do a reasonable job saving space, but it does not have
     perfect knowledge of how to strip every unneeded byte from an
@@ -1253,14 +1163,12 @@ CLASS="LITERAL"
     the root user and then do
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->gmake -C src/interfaces/python install</B
-></TT
+>gmake -C src/interfaces/python install</KBD
 ></PRE
 ><P>
-    If you do not have superuser access you are on your own: 
+    If you do not have root access you are on your own: 
     you can still take the required files and place them in 
     other directories where Python can find them, but how to 
     do that is left as an exercise.
@@ -1276,11 +1184,9 @@ CLASS="PRODUCTNAME"
     include tree into your target include directory.  To do that, enter
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->gmake install-all-headers</B
-></TT
+>gmake install-all-headers</KBD
 ></PRE
 ><P>
     This adds a megabyte or two to the installation footprint, and is only
@@ -1297,29 +1203,21 @@ CLASS="FORMALPARA"
      interface libraries, then you can use these commands:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><KBD
 CLASS="USERINPUT"
-><B
->gmake -C src/bin install</B
-></TT
+>gmake -C src/bin install</KBD
 >
-<TT
+<KBD
 CLASS="USERINPUT"
-><B
->gmake -C src/include install</B
-></TT
+>gmake -C src/include install</KBD
 >
-<TT
+<KBD
 CLASS="USERINPUT"
-><B
->gmake -C src/interfaces install</B
-></TT
+>gmake -C src/interfaces install</KBD
 >
-<TT
+<KBD
 CLASS="USERINPUT"
-><B
->gmake -C doc install</B
-></TT
+>gmake -C doc install</KBD
 ></PRE
 ><P>
     </P
@@ -1349,7 +1247,10 @@ CLASS="FORMALPARA"
 CLASS="COMMAND"
 >gmake
     clean</TT
->. This will preserve the files made by the configure
+>. This will preserve the files made by the <TT
+CLASS="COMMAND"
+>configure</TT
+>
     program, so that you can rebuild everything with <TT
 CLASS="COMMAND"
 >gmake</TT
@@ -1364,8 +1265,14 @@ CLASS="COMMAND"
    </P
 ></DIV
 ><P
->   If you perform a build and then discover that your configure
-   options were wrong, or if you change anything that configure
+>   If you perform a build and then discover that your <TT
+CLASS="COMMAND"
+>configure</TT
+>
+   options were wrong, or if you change anything that <TT
+CLASS="COMMAND"
+>configure</TT
+>
    investigates (for example, software upgrades), then it's a good
    idea to do <TT
 CLASS="COMMAND"

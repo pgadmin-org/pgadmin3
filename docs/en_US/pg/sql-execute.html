@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >EXECUTE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,106 +78,47 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-EXECUTE"
->EXECUTE</A
-></H1
+></A
+>EXECUTE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN43651"
+NAME="AEN42053"
 ></A
 ><H2
 >Name</H2
->   EXECUTE
-  &nbsp;--&nbsp;   execute a prepared query
-  </DIV
+>EXECUTE&nbsp;--&nbsp;execute a prepared statement</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN43654"
+NAME="AEN42056"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->   EXECUTE <TT
+>EXECUTE <VAR
 CLASS="REPLACEABLE"
-><I
->plan_name</I
-></TT
-> [ (<TT
+>plan_name</VAR
+> [ (<VAR
 CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-> [, ...] ) ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-EXECUTE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->plan_name</I
-></TT
-></DT
-><DD
-><P
->		The name of the prepared query to execute.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->parameter</I
-></TT
-></DT
-><DD
-><P
->		The actual value of a parameter to the prepared query.
-		This must be an expression yielding a value of a type
-		compatible with
-		the data-type specified for this parameter position in the
-		<TT
-CLASS="COMMAND"
->PREPARE</TT
-> statement that created the prepared
-		query.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>parameter</VAR
+> [, ...] ) ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-EXECUTE-1"
+NAME="AEN42060"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >EXECUTE</TT
 > is used to execute a previously prepared
-   query. Since prepared queries only exist for the duration of a
-   session, the prepared query must have been created by a
+   statement. Since prepared statements only exist for the duration of a
+   session, the prepared statement must have been created by a
    <TT
 CLASS="COMMAND"
 >PREPARE</TT
@@ -188,18 +129,18 @@ CLASS="COMMAND"
 >   If the <TT
 CLASS="COMMAND"
 >PREPARE</TT
-> statement that created the query
+> statement that created the statement
    specified some parameters, a compatible set of parameters must be
    passed to the <TT
 CLASS="COMMAND"
 >EXECUTE</TT
 > statement, or else an
-   error is raised. Note that (unlike functions) prepared queries are
-   not overloaded based on the type or number of their parameters: the
-   name of a prepared query must be unique within a database session.
+   error is raised. Note that (unlike functions) prepared statements are
+   not overloaded based on the type or number of their parameters; the
+   name of a prepared statement must be unique within a database session.
   </P
 ><P
->   For more information on the creation and usage of prepared queries,
+>   For more information on the creation and usage of prepared statements,
    see <A
 HREF="sql-prepare.html"
 ><I
@@ -211,36 +152,64 @@ HREF="sql-prepare.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-EXECUTE-2"
+NAME="AEN42070"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-EXECUTE-2"
-></A
-><H3
->    SQL92
-   </H3
+>Parameters</H2
 ><P
->	SQL92 includes an <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>plan_name</VAR
+></DT
+><DD
+><P
+>      The name of the prepared statement to execute.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>parameter</VAR
+></DT
+><DD
+><P
+>      The actual value of a parameter to the prepared statement.  This
+      must be an expression yielding a value of a type compatible with
+      the data type specified for this parameter position in the
+      <TT
 CLASS="COMMAND"
->EXECUTE</TT
-> statement, but it is
-    only for use in embedded SQL clients. The
-    <TT
-CLASS="COMMAND"
->EXECUTE</TT
-> statement implemented by
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> also uses a somewhat
-    different syntax.
-   </P
+>PREPARE</TT
+> command that created the prepared
+      statement.
+     </P
+></DD
+></DL
 ></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN42084"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The SQL standard includes an <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement,
+   but it is only for use in embedded SQL.  This version of the
+   <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement also uses a somewhat different
+   syntax.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

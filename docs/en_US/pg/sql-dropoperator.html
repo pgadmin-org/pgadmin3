@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP OPERATOR</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,356 +78,279 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPOPERATOR"
->DROP OPERATOR</A
-></H1
+></A
+>DROP OPERATOR</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42775"
+NAME="AEN41329"
 ></A
 ><H2
 >Name</H2
->   DROP OPERATOR
-  &nbsp;--&nbsp;   remove a user-defined operator
-  </DIV
+>DROP OPERATOR&nbsp;--&nbsp;remove a user-defined operator</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42778"
+NAME="AEN41332"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP OPERATOR <TT
+>DROP OPERATOR <VAR
 CLASS="REPLACEABLE"
-><I
->id</I
-></TT
-> ( <TT
+>name</VAR
+> ( <VAR
 CLASS="REPLACEABLE"
-><I
->lefttype</I
-></TT
-> | NONE , <TT
+>lefttype</VAR
+> | NONE , <VAR
 CLASS="REPLACEABLE"
-><I
->righttype</I
-></TT
-> | NONE ) [ CASCADE | RESTRICT ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPOPERATOR-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->id</I
-></TT
-></DT
-><DD
-><P
->	The identifier (optionally schema-qualified) of an existing operator.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->lefttype</I
-></TT
-></DT
-><DD
-><P
->	The type of the operator's left argument; write <TT
-CLASS="LITERAL"
->NONE</TT
-> if the
-	operator has no left argument.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->righttype</I
-></TT
-></DT
-><DD
-><P
->	The type of the operator's right argument; write <TT
-CLASS="LITERAL"
->NONE</TT
-> if the
-	operator has no right argument.
-       </P
-></DD
-><DT
->CASCADE</DT
-><DD
-><P
->        Automatically drop objects that depend on the operator.
-       </P
-></DD
-><DT
->RESTRICT</DT
-><DD
-><P
->        Refuse to drop the operator if there are any dependent objects.
-	This is the default.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPOPERATOR-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP OPERATOR
-       </TT
-></DT
-><DD
-><P
->	The message returned if the command is successful.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR:  RemoveOperator: binary operator '<TT
-CLASS="REPLACEABLE"
-><I
->oper</I
-></TT
->' taking '<TT
-CLASS="REPLACEABLE"
-><I
->lefttype</I
-></TT
->' and '<TT
-CLASS="REPLACEABLE"
-><I
->righttype</I
-></TT
->' does not exist
-       </TT
-></DT
-><DD
-><P
->	This message occurs if the specified binary operator does not exist.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR: RemoveOperator: left unary operator '<TT
-CLASS="REPLACEABLE"
-><I
->oper</I
-></TT
->' taking '<TT
-CLASS="REPLACEABLE"
-><I
->lefttype</I
-></TT
->' does not exist
-       </TT
-></DT
-><DD
-><P
->	This message occurs if the left unary operator
-	specified does not exist.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR: RemoveOperator: right unary operator '<TT
-CLASS="REPLACEABLE"
-><I
->oper</I
-></TT
->' taking '<TT
-CLASS="REPLACEABLE"
-><I
->righttype</I
-></TT
->' does not exist
-       </TT
-></DT
-><DD
-><P
->	This message occurs if the right unary operator
-	specified does not exist.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>righttype</VAR
+> | NONE ) [ CASCADE | RESTRICT ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPOPERATOR-1"
+NAME="AEN41337"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >DROP OPERATOR</TT
-> drops an existing operator from the
-   database.
-   To execute this command you must be the owner of the operator.
+> drops an existing operator from
+   the database system.  To execute this command you must be the owner
+   of the operator.
   </P
-><P
->   The left or right type of a left or right unary
-   operator, respectively, must be specified as <TT
-CLASS="LITERAL"
->NONE</TT
->.
-  </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPOPERATOR-3"
+NAME="AEN41341"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    The <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing operator.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>lefttype</VAR
+></DT
+><DD
+><P
+>      The data type of the operator's left operand; write
+      <VAR
+CLASS="LITERAL"
+>NONE</VAR
+> if the operator has no left operand.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>righttype</VAR
+></DT
+><DD
+><P
+>      The data type of the operator's right operand; write
+      <VAR
+CLASS="LITERAL"
+>NONE</VAR
+> if the operator has no right operand.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the operator.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+></DT
+><DD
+><P
+>      Refuse to drop the operator if any objects depend on it.  This
+      is the default.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41371"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP OPERATOR</SAMP
+></DT
+><DD
+><P
+>      Message returned if the command was successful.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  RemoveOperator: binary operator '<VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>' taking '<VAR
+CLASS="REPLACEABLE"
+>lefttype</VAR
+>' and '<VAR
+CLASS="REPLACEABLE"
+>righttype</VAR
+>' does not exist</SAMP
+></DT
+><DD
+><P
+>      This message is returned if the specified binary operator does not exist.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR: RemoveOperator: left unary operator '<VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>' taking '<VAR
+CLASS="REPLACEABLE"
+>lefttype</VAR
+>' does not exist</SAMP
+></DT
+><DD
+><P
+>      This message is returned if the specified left unary operator
+      does not exist.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR: RemoveOperator: right unary operator '<VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>' taking '<VAR
+CLASS="REPLACEABLE"
+>righttype</VAR
+>' does not exist</SAMP
+></DT
+><DD
+><P
+>      This message is returned if the specified right unary operator
+      does not exist.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41401"
+></A
+><H2
+>Examples</H2
+><P
+>   Remove the power operator <VAR
+CLASS="LITERAL"
+>a^b</VAR
+> for type <TT
+CLASS="TYPE"
+>integer</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP OPERATOR ^ (integer, integer);</PRE
+><P>
+  </P
+><P
+>   Remove the left unary bitwise complement operator
+   <VAR
+CLASS="LITERAL"
+>~b</VAR
+> for type <TT
+CLASS="TYPE"
+>bit</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP OPERATOR ~ (none, bit);</PRE
+><P>
+  </P
+><P
+>   Remove the right unary factorial operator <VAR
+CLASS="LITERAL"
+>x!</VAR
+>
+   for type <TT
+CLASS="TYPE"
+>integer</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP OPERATOR ! (integer, none);</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41415"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
 CLASS="COMMAND"
 >DROP OPERATOR</TT
-> statement is a 
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    language extension.
-   </P
-><P
->    Refer to
-    <A
+> statement in the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41419"
+></A
+><H2
+>See Also</H2
+><A
 HREF="sql-createoperator.html"
 ><I
 >CREATE OPERATOR</I
 ></A
->
-    for information on how to create operators.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-SQL-DROPOPERATOR-2"
-></A
-><H2
->   Usage
-  </H2
-><P
->   Remove power operator <TT
-CLASS="LITERAL"
->a^n</TT
-> for <TT
-CLASS="LITERAL"
->int4</TT
->:
-
-   </P><PRE
-CLASS="PROGRAMLISTING"
->DROP OPERATOR ^ (int4, int4);
-   </PRE
-><P>
-  </P
-><P
->   Remove left unary negation operator (<TT
-CLASS="LITERAL"
->! b</TT
->) for <TT
-CLASS="TYPE"
->boolean</TT
->:
-   </P><PRE
-CLASS="PROGRAMLISTING"
->DROP OPERATOR ! (none, bool);
-   </PRE
-><P>
-  </P
-><P
->   Remove right unary factorial operator (<TT
-CLASS="LITERAL"
->i !</TT
->) for
-   <TT
-CLASS="LITERAL"
->int4</TT
->:
-   </P><PRE
-CLASS="PROGRAMLISTING"
->DROP OPERATOR ! (int4, none);
-   </PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-SQL-DROPOPERATOR-3"
-></A
-><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPOPERATOR-4"
-></A
-><H3
->    SQL92
-   </H3
-><P
->    There is no <TT
-CLASS="COMMAND"
->DROP OPERATOR</TT
-> in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Test Evaluation</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Regression Tests"
 HREF="regress.html"><LINK
 REL="PREVIOUS"
-TITLE="Running the Tests"
-HREF="regress-run.html"><LINK
+TITLE="Regression Tests"
+HREF="regress.html"><LINK
 REL="NEXT"
 TITLE="Platform-specific comparison files"
 HREF="regress-platform.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="regress-run.html"
+HREF="regress.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 13. Regression Tests</TD
+>Chapter 26. Regression Tests</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="REGRESS-EVALUATION"
->13.3. Test Evaluation</A
+>26.2. Test Evaluation</A
 ></H1
 ><P
 >    Some properly installed and fully functional
@@ -95,9 +95,9 @@ CLASS="QUOTE"
 > some of these regression tests due to
     platform-specific artifacts such as varying floating-point representation
     and time zone support. The tests are currently evaluated using a simple
-    <SPAN
-CLASS="APPLICATION"
->diff</SPAN
+    <TT
+CLASS="COMMAND"
+>diff</TT
 > comparison against the outputs
     generated on a reference system, so the results are sensitive to
     small system differences.  When a test is reported as
@@ -116,9 +116,9 @@ CLASS="QUOTE"
 CLASS="FILENAME"
 >src/test/regress/results</TT
 > directory. The test
-    script uses <SPAN
-CLASS="APPLICATION"
->diff</SPAN
+    script uses <TT
+CLASS="COMMAND"
+>diff</TT
 > to compare each output
     file against the reference outputs stored in the
     <TT
@@ -130,9 +130,9 @@ CLASS="FILENAME"
 CLASS="FILENAME"
 >src/test/regress/regression.diffs</TT
 >.  (Or you
-    can run <SPAN
-CLASS="APPLICATION"
->diff</SPAN
+    can run <TT
+CLASS="COMMAND"
+>diff</TT
 > yourself, if you prefer.)
    </P
 ><DIV
@@ -140,8 +140,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23453"
->13.3.1. Error message differences</A
+NAME="AEN19089"
+>26.2.1. Error message differences</A
 ></H2
 ><P
 >     Some of the regression tests involve intentional invalid input
@@ -165,8 +165,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23458"
->13.3.2. Locale differences</A
+NAME="AEN19094"
+>26.2.2. Locale differences</A
 ></H2
 ><P
 >     If you run the tests against an already-installed server that was
@@ -175,19 +175,19 @@ NAME="AEN23458"
      failures.  The regression test suite is set up to handle this
      problem by providing alternative result files that together are
      known to handle a large number of locales.  For example, for the
-     <SPAN
-CLASS="QUOTE"
->"char"</SPAN
+     <VAR
+CLASS="LITERAL"
+>char</VAR
 > test, the expected file
      <TT
 CLASS="FILENAME"
 >char.out</TT
-> handles the <TT
+> handles the <VAR
 CLASS="LITERAL"
->C</TT
-> and <TT
+>C</VAR
+> and <VAR
 CLASS="LITERAL"
->POSIX</TT
+>POSIX</VAR
 > locales,
      and the file <TT
 CLASS="FILENAME"
@@ -203,26 +203,22 @@ CLASS="FILENAME"
 ><P
 >     If for some reason the existing expected files do not cover some
      locale, you can add a new file.  The naming scheme is
-     <TT
+     <VAR
 CLASS="LITERAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->testname</I
-></TT
->_<TT
+>testname</VAR
+>_<VAR
 CLASS="REPLACEABLE"
-><I
->digit</I
-></TT
->.out</TT
+>digit</VAR
+>.out</VAR
 >.
      The actual digit is not significant.  Remember that the
      regression test driver will consider all such files to be equally
      valid test results.  If the test results are platform-dependent,
      the technique described in <A
 HREF="regress-platform.html"
->Section 13.4</A
+>Section 26.3</A
 >
      should be used instead.
     </P
@@ -232,68 +228,77 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23471"
->13.3.3. Date and time differences</A
+NAME="AEN19107"
+>26.2.3. Date and time differences</A
 ></H2
 ><P
->     Some of the queries in the <TT
+>     A few of the queries in the <TT
 CLASS="FILENAME"
 >horology</TT
 > test will
      fail if you run the test on the day of a daylight-saving time
-     changeover, or the day before or after one.  These queries assume
-     that the intervals between midnight yesterday, midnight today and
-     midnight tomorrow are exactly twenty-four hours -- which is wrong
+     changeover, or the day after one.  These queries expect that
+     the intervals between midnight yesterday, midnight today and
+     midnight tomorrow are exactly twenty-four hours --- which is wrong
      if daylight-saving time went into or out of effect meanwhile.
     </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      Because USA daylight-saving rules are used, this problem always
+      occurs on the first Sunday of April, the last Sunday of October,
+      and their following Mondays, regardless of when daylight-saving
+      is in effect where you live.  Also note that the problem appears or
+      disappears at midnight Pacific time (UTC-7 or UTC-8), not midnight
+      your local time.  Thus the failure may appear late on Saturday or
+      persist through much of Tuesday, depending on where you live.
+     </P
+></BLOCKQUOTE
+></DIV
 ><P
 >     Most of the date and time results are dependent on the time zone
      environment.  The reference files are generated for time zone
-     <TT
+     <VAR
 CLASS="LITERAL"
->PST8PDT</TT
-> (Berkeley, California) and there will be apparent
+>PST8PDT</VAR
+> (Berkeley, California), and there will be apparent
      failures if the tests are not run with that time zone setting.
      The regression test driver sets environment variable
      <TT
 CLASS="ENVAR"
 >PGTZ</TT
-> to <TT
+> to <VAR
 CLASS="LITERAL"
->PST8PDT</TT
+>PST8PDT</VAR
 >, which normally
-     ensures proper results.  However, your system must provide library
-     support for the <TT
+     ensures proper results.  However, your operating system must provide
+     support for the <VAR
 CLASS="LITERAL"
->PST8PDT</TT
+>PST8PDT</VAR
 > time zone, or the time zone-dependent
      tests will fail. To verify that your machine does have this
      support, type the following:
 </P><PRE
 CLASS="SCREEN"
-><TT
-CLASS="PROMPT"
->$ </TT
-><TT
-CLASS="USERINPUT"
-><B
->env TZ=PST8PDT date</B
-></TT
-></PRE
+>env TZ=PST8PDT date</PRE
 ><P>
      The command above should have returned the current system time in
-     the <TT
+     the <VAR
 CLASS="LITERAL"
->PST8PDT</TT
-> time zone. If the <TT
+>PST8PDT</VAR
+> time zone. If the <VAR
 CLASS="LITERAL"
->PST8PDT</TT
-> database is not available,
+>PST8PDT</VAR
+> time zone is not available,
      then your system may have returned the time in GMT. If the
-     <TT
+     <VAR
 CLASS="LITERAL"
->PST8PDT</TT
-> time zone is not available, you can set the time zone
+>PST8PDT</VAR
+> time zone is missing, you can set the time zone
      rules explicitly:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -310,14 +315,14 @@ CLASS="ENVAR"
      setting on such machines.
     </P
 ><P
->     Some systems using older time zone libraries fail to apply
+>     Some systems using older time-zone libraries fail to apply
      daylight-saving corrections to dates before 1970, causing
-     pre-1970 <SPAN
+     pre-1970 <ACRONYM
 CLASS="ACRONYM"
->PDT</SPAN
-> times to be displayed in <SPAN
+>PDT</ACRONYM
+> times to be displayed in <ACRONYM
 CLASS="ACRONYM"
->PST</SPAN
+>PST</ACRONYM
 > instead.  This will
      result in localized differences in the test results.
     </P
@@ -327,34 +332,50 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23492"
->13.3.4. Floating-point differences</A
+NAME="AEN19128"
+>26.2.4. Floating-point differences</A
 ></H2
 ><P
->     Some of the tests involve computing 64-bit (<TT
+>     Some of the tests involve computing 64-bit floating-point numbers (<TT
 CLASS="TYPE"
 >double
      precision</TT
->) numbers from table columns. Differences in
+>) from table columns. Differences in
      results involving mathematical functions of <TT
 CLASS="TYPE"
 >double
      precision</TT
-> columns have been observed.  The float8 and
-     geometry tests are particularly prone to small differences across
-     platforms, or even with different compiler optimization options.
+> columns have been observed.  The <VAR
+CLASS="LITERAL"
+>float8</VAR
+> and
+     <VAR
+CLASS="LITERAL"
+>geometry</VAR
+> tests are particularly prone to small differences
+     across platforms, or even with different compiler optimization options.
      Human eyeball comparison is needed to determine the real
      significance of these differences which are usually 10 places to
      the right of the decimal point.
     </P
 ><P
->     Some systems signal errors from <TT
+>     Some systems display minus zero as <VAR
+CLASS="LITERAL"
+>-0</VAR
+>, while others
+     just show <VAR
+CLASS="LITERAL"
+>0</VAR
+>.
+    </P
+><P
+>     Some systems signal errors from <CODE
 CLASS="FUNCTION"
->pow()</TT
+>pow()</CODE
 > and
-     <TT
+     <CODE
 CLASS="FUNCTION"
->exp()</TT
+>exp()</CODE
 > differently from the mechanism
      expected by the current <SPAN
 CLASS="PRODUCTNAME"
@@ -368,70 +389,49 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23501"
->13.3.5. Polygon differences</A
-></H2
-><P
->     Several of the tests involve operations on geographic data about
-     the Oakland/Berkeley, California street map. The map data is expressed as
-     polygons whose vertices are represented as pairs of <TT
-CLASS="TYPE"
->double
-     precision</TT
-> numbers (decimal latitude and
-     longitude). Initially, some tables are created and loaded with
-     geographic data, then some views are created that join two
-     tables using the polygon intersection operator
-     (<TT
-CLASS="LITERAL"
->##</TT
->), then a select is done on the view.
-    </P
-><P
->     When comparing the results from different platforms, differences
-     occur in the 2nd or 3rd place to the right of the decimal
-     point. The SQL statements where these problems occur are the
-     following:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT * from street;
-SELECT * from iexit;</PRE
-><P>
-    </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN23508"
->13.3.6. Row ordering differences</A
+NAME="AEN19142"
+>26.2.5. Row ordering differences</A
 ></H2
 ><P
 >You might see differences in which the same rows are output in a
 different order than what appears in the expected file.  In most cases
 this is not, strictly speaking, a bug.  Most of the regression test
-scripts are not so pedantic as to use an ORDER BY for every single
-SELECT, and so their result row orderings are not well-defined
+scripts are not so pedantic as to use an <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> for every single
+<VAR
+CLASS="LITERAL"
+>SELECT</VAR
+>, and so their result row orderings are not well-defined
 according to the letter of the SQL specification.  In practice, since we are
 looking at the same queries being executed on the same data by the same
 software, we usually get the same result ordering on all platforms, and
-so the lack of ORDER BY isn't a problem.  Some queries do exhibit
+so the lack of <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> isn't a problem.  Some queries do exhibit
 cross-platform ordering differences, however.  (Ordering differences
 can also be triggered by non-C locale settings.)
     </P
 ><P
 >Therefore, if you see an ordering difference, it's not something to
-worry about, unless the query does have an ORDER BY that your result
+worry about, unless the query does have an <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> that your result
 is violating.  But please report it anyway, so that we can add an
-ORDER BY to that particular query and thereby eliminate the bogus
+<VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> to that particular query and thereby eliminate the bogus
 <SPAN
 CLASS="QUOTE"
 >"failure"</SPAN
 > in future releases.
     </P
 ><P
->You might wonder why we don't order all the regress test queries explicitly to
+>You might wonder why we don't order all the regression test queries explicitly to
 get rid of this issue once and for all.  The reason is that that would
 make the regression tests less useful, not more, since they'd tend
 to exercise query plan types that produce ordered results to the
@@ -443,16 +443,16 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23514"
->13.3.7. The <SPAN
+NAME="AEN19153"
+>26.2.6. The <SPAN
 CLASS="QUOTE"
 >"random"</SPAN
 > test</A
 ></H2
 ><P
->     There is at least one case in the <SPAN
-CLASS="QUOTE"
->"random"</SPAN
+>     There is at least one case in the <VAR
+CLASS="LITERAL"
+>random</VAR
 > test
      script that is intended to produce random results. This causes
      random to fail the regression test once in a while (perhaps once
@@ -498,7 +498,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="regress-run.html"
+HREF="regress.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -526,7 +526,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Running the Tests</TD
+>Regression Tests</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

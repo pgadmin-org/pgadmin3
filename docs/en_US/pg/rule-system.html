@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >The PostgreSQL Rule System</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Overview of PostgreSQL Internals"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. Overview of PostgreSQL Internals</TD
+>Chapter 44. Overview of PostgreSQL Internals</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RULE-SYSTEM"
->2.4. The <SPAN
+>44.4. The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > Rule System</A
@@ -125,9 +125,9 @@ CLASS="FIRSTTERM"
        implementation was removed in 1995 when the last official release
        of the <SPAN
 CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> project was transformed into 
-       <SPAN
+>Berkeley Postgres</SPAN
+> project was
+       transformed into <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
 >. 
@@ -143,7 +143,7 @@ CLASS="FIRSTTERM"
        The <I
 CLASS="FIRSTTERM"
 >rewrite system</I
->} is a module
+> is a module
        that exists between the <I
 CLASS="FIRSTTERM"
 >parser stage</I
@@ -158,167 +158,16 @@ CLASS="FIRSTTERM"
 ><P>
    </P
 ><P
->    For information on the syntax and creation of rules in the
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> system refer to
-    <I
-CLASS="CITETITLE"
->The PostgreSQL User's Guide</I
->.
+>    The query rewriter is discussed in some detail in
+    <A
+HREF="rules.html"
+>Chapter 36</A
+>, so there is no need to cover it here.
+    We will only point out that both the input and the output of the
+    rewriter are query trees, that is, there is no change in the
+    representation or level of semantic detail in the trees.  Rewriting
+    can be thought of as a form of macro expansion.
    </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN52142"
->2.4.1. The Rewrite System</A
-></H2
-><P
->     The <I
-CLASS="FIRSTTERM"
->query rewrite system</I
-> is a module between
-     the parser stage and the planner/optimizer. It processes the tree handed
-     back by the parser stage (which represents a user query) and if
-     there is a rule present that has to be applied to the query it
-     rewrites the tree to an alternate form.
-    </P
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="VIEW-IMPL"
->2.4.1.1. Techniques To Implement Views</A
-></H3
-><P
->      Now we will sketch the algorithm of the query rewrite system. For
-      better illustration we show how to implement views using rules
-      as an example.
-     </P
-><P
->      Let the following rule be given:
-
-      </P><PRE
-CLASS="PROGRAMLISTING"
->  create rule view_rule
-  as on select 
-  to test_view
-  do instead
-     select s.sname, p.pname
-     from supplier s, sells se, part p
-     where s.sno = se.sno and
-           p.pno = se.pno;   
-      </PRE
-><P>
-     </P
-><P
->      The given rule will be <I
-CLASS="FIRSTTERM"
->fired</I
-> whenever a select
-      against the relation <TT
-CLASS="LITERAL"
->test_view</TT
-> is detected. Instead of
-      selecting the tuples from <TT
-CLASS="LITERAL"
->test_view</TT
-> the select statement
-      given in the <I
-CLASS="FIRSTTERM"
->action part</I
-> of the rule is executed.
-     </P
-><P
->      Let the following user-query against <TT
-CLASS="LITERAL"
->test_view</TT
-> be given:
-
-      </P><PRE
-CLASS="PROGRAMLISTING"
->  select sname 
-  from test_view
-  where sname &lt;&gt; 'Smith';
-      </PRE
-><P>
-     </P
-><P
->      Here is a list of the steps performed by the query rewrite
-      system whenever a user-query against <TT
-CLASS="LITERAL"
->test_view</TT
-> appears. (The
-      following listing is a very informal description of the algorithm just
-      intended for basic understanding. For a detailed description refer
-      to <A
-HREF="biblio.html#STON89"
-><I
-><A
-HREF="http://s2k-ftp.CS.Berkeley.EDU:8000/postgres/papers/ERL-M89-82.pdf"
-TARGET="_top"
->A commentary on the <SPAN
-CLASS="PRODUCTNAME"
->POSTGRES</SPAN
-> rules system</A
-></I
-></A
->).
-     </P
-><DIV
-CLASS="PROCEDURE"
-><P
-><B
-><TT
-CLASS="LITERAL"
->test_view</TT
-> Rewrite</B
-></P
-><OL
-TYPE="1"
-><LI
-><P
->	Take the query given in the action part of the rule.
-       </P
-></LI
-><LI
-><P
->	Adapt the targetlist to meet the number and order of
-	attributes given in the user-query.
-       </P
-></LI
-><LI
-><P
->	Add the qualification given in the where clause of the
-	user-query to the qualification of the query given in the
-	action part of the rule.
-       </P
-></LI
-></OL
-></DIV
-><P
->      Given the rule definition above, the user-query will be
-      rewritten to the following form (Note that the rewriting is done on
-      the internal representation of the user-query handed back by the
-      parser stage but the derived new data structure will represent the following
-      query):
-
-      </P><PRE
-CLASS="PROGRAMLISTING"
->  select s.sname
-  from supplier s, sells se, part p
-  where s.sno = se.sno and
-        p.pno = se.pno and
-        s.sname &lt;&gt; 'Smith';
-      </PRE
-><P>
-     </P
-></DIV
-></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >The SQL Language</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Tutorial"
+TITLE="Tutorial"
 HREF="tutorial.html"><LINK
 REL="PREVIOUS"
 TITLE="Accessing a Database"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,11 +80,11 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="TUTORIAL-SQL"
->Chapter 2. The <SPAN
+></A
+>Chapter 2. The <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> Language</A
-></H1
+>SQL</ACRONYM
+> Language</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -149,32 +149,32 @@ NAME="TUTORIAL-SQL-INTRO"
 ></H1
 ><P
 >    This chapter provides an overview of how to use
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > to perform simple operations.  This
     tutorial is only intended to give you an introduction and is in no
-    way a complete tutorial on <SPAN
+    way a complete tutorial on <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >.  Numerous books
-    have been written on <SPAN
+    have been written on <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >, including <A
 HREF="biblio.html#MELT93"
 ><I
->Understanding the New <SPAN
+>Understanding the New <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 ></I
 ></A
 > and <A
 HREF="biblio.html#DATE97"
 ><I
->A Guide to the <SPAN
+>A Guide to the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Standard</I
 ></A
 >.
@@ -186,9 +186,9 @@ CLASS="PRODUCTNAME"
    </P
 ><P
 >    In the examples that follow, we assume that you have created a
-    database named <TT
+    database named <VAR
 CLASS="LITERAL"
->mydb</TT
+>mydb</VAR
 >, as described in the previous
     chapter, and have started <SPAN
 CLASS="APPLICATION"
@@ -213,52 +213,44 @@ CLASS="FILENAME"
 
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->cd <TT
+>cd <VAR
 CLASS="REPLACEABLE"
-><I
->....</I
-></TT
->/src/tutorial</B
-></TT
+>....</VAR
+>/src/tutorial</KBD
 >
-<TT
+<SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->psql -s mydb</B
-></TT
+>psql -s mydb</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->...</TT
+>...</SAMP
 >
 
-<TT
+<SAMP
 CLASS="PROMPT"
->mydb=&gt;</TT
-> <TT
+>mydb=&gt;</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->\i basics.sql</B
-></TT
+>\i basics.sql</KBD
 ></PRE
 ><P>
 
-    The <TT
+    The <VAR
 CLASS="LITERAL"
->\i</TT
+>\i</VAR
 > command reads in commands from the
-    specified file. The <TT
+    specified file. The <VAR
 CLASS="LITERAL"
->-s</TT
+>-s</VAR
 > option puts you in
     single step mode which pauses before sending each statement to the
     server.  The commands used in this section are in the file

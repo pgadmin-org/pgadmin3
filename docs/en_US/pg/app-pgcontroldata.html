@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_controldata</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
 HREF="reference-server.html"><LINK
 REL="PREVIOUS"
+TITLE="ipcclean"
+HREF="app-ipcclean.html"><LINK
+REL="NEXT"
 TITLE="pg_ctl"
 HREF="app-pg-ctl.html"><LINK
-REL="NEXT"
-TITLE="pg_resetxlog"
-HREF="app-pgresetxlog.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="app-pg-ctl.html"
+HREF="app-ipcclean.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="app-pgresetxlog.html"
+HREF="app-pg-ctl.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -78,23 +78,26 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-PGCONTROLDATA"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >pg_controldata</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN51154"
+NAME="AEN49140"
 ></A
 ><H2
 >Name</H2
->pg_controldata&nbsp;--&nbsp;display server-wide control information</DIV
+>pg_controldata&nbsp;--&nbsp;display control information of a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN51157"
+NAME="AEN49144"
 ></A
 ><H2
 >Synopsis</H2
@@ -102,11 +105,9 @@ NAME="AEN51157"
 ><TT
 CLASS="COMMAND"
 >pg_controldata</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->datadir</I
-></TT
+>datadir</VAR
 >]</P
 ></DIV
 ><DIV
@@ -120,21 +121,18 @@ NAME="R1-APP-PGCONTROLDATA-1"
 >   <TT
 CLASS="COMMAND"
 >pg_controldata</TT
-> returns information initialized during
-   <SPAN
-CLASS="APPLICATION"
->initdb</SPAN
+> prints information initialized during
+   <TT
+CLASS="COMMAND"
+>initdb</TT
 >, such as the catalog version and server locale.
    It also shows information about write-ahead logging and checkpoint 
-   processing.  This information is server-wide, and not specific to any one
+   processing.  This information is cluster-wide, and not specific to any one
    database.
   </P
 ><P
->   This utility may only be run by the user who installed the server because
-   it requires read access to the <TT
-CLASS="LITERAL"
->datadir</TT
->.
+>   This utility may only be run by the user who initialized the cluster because
+   it requires read access to the data directory.
    You can specify the data directory on the command line, or use 
    the environment variable <TT
 CLASS="ENVAR"
@@ -145,7 +143,7 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN51170"
+NAME="AEN49156"
 ></A
 ><H2
 >Environment</H2
@@ -183,7 +181,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="app-pg-ctl.html"
+HREF="app-ipcclean.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -201,7 +199,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="app-pgresetxlog.html"
+HREF="app-pg-ctl.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -213,7 +211,7 @@ ALIGN="left"
 VALIGN="top"
 ><SPAN
 CLASS="APPLICATION"
->pg_ctl</SPAN
+>ipcclean</SPAN
 ></TD
 ><TD
 WIDTH="34%"
@@ -230,7 +228,7 @@ ALIGN="right"
 VALIGN="top"
 ><SPAN
 CLASS="APPLICATION"
->pg_resetxlog</SPAN
+>pg_ctl</SPAN
 ></TD
 ></TR
 ></TABLE

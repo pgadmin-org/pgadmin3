@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Examining Index Usage</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 8. Indexes</TD
+>Chapter 11. Indexes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INDEXES-EXAMINE"
->8.8. Examining Index Usage</A
+>11.8. Examining Index Usage</A
 ></H1
 ><P
 >   Although indexes in <SPAN
@@ -96,7 +96,7 @@ CLASS="COMMAND"
 > command;
    its application for this purpose is illustrated in <A
 HREF="performance-tips.html#USING-EXPLAIN"
->Section 10.1</A
+>Section 13.1</A
 >.
   </P
 ><P
@@ -153,20 +153,18 @@ CLASS="COMMAND"
 ><P
 >     When indexes are not used, it can be useful for testing to force
      their use.  There are run-time parameters that can turn off
-     various plan types (described in the <A
-HREF="admin.html"
-><I
->PostgreSQL 7.3.3 Administrator's Guide</I
-></A
+     various plan types (described in <A
+HREF="runtime-config.html"
+>Section 16.4</A
 >).
      For instance, turning off sequential scans
-     (<TT
+     (<VAR
 CLASS="VARNAME"
->enable_seqscan</TT
+>enable_seqscan</VAR
 >) and nested-loop joins
-     (<TT
+     (<VAR
 CLASS="VARNAME"
->enable_nestloop</TT
+>enable_nestloop</VAR
 >), which are the most basic plans,
      will force the system to use a different plan.  If the system
      still chooses a sequential scan or nested-loop join then there is
@@ -195,11 +193,9 @@ CLASS="COMMAND"
      again, two possibilities.  The total cost is computed from the
      per-row costs of each plan node times the selectivity estimate of
      the plan node.  The costs of the plan nodes can be tuned with
-     run-time parameters (described in the <A
-HREF="admin.html"
-><I
->PostgreSQL 7.3.3 Administrator's Guide</I
-></A
+     run-time parameters (described in <A
+HREF="runtime-config.html"
+>Section 16.4</A
 >).
      An inaccurate selectivity estimate is due to
      insufficient statistics.  It may be possible to help this by

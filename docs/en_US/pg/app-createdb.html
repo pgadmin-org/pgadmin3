@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >createdb</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-CREATEDB"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >createdb</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN46688"
+NAME="AEN44900"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN46692"
+NAME="AEN44904"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,21 +105,15 @@ NAME="AEN46692"
 ><TT
 CLASS="COMMAND"
 >createdb</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->options</I
-></TT
->...] [<TT
+>option</VAR
+>...] [<VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
->] [<TT
+>dbname</VAR
+>] [<VAR
 CLASS="REPLACEABLE"
-><I
->description</I
-></TT
+>description</VAR
 >]</P
 ></DIV
 ><DIV
@@ -143,9 +137,9 @@ CLASS="PRODUCTNAME"
 ><P
 >   Normally, the database user who executes this command becomes the owner of
    the new database.
-   However a different owner can be specified via the <TT
+   However a different owner can be specified via the <VAR
 CLASS="OPTION"
->-O</TT
+>-O</VAR
 >
    option, if the executing user has appropriate privileges.
   </P
@@ -153,48 +147,29 @@ CLASS="OPTION"
 >   <SPAN
 CLASS="APPLICATION"
 >createdb</SPAN
-> is a shell script wrapper around the
-   <SPAN
+> is a wrapper around the
+   <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> command
-   <A
+>SQL</ACRONYM
+> command <A
 HREF="sql-createdatabase.html"
 ><I
 >CREATE DATABASE</I
 ></A
-> via
-   the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> interactive terminal
-   <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
->. Thus, there is nothing
-   special about creating databases via this or other methods. This means
-   that the <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> program must be found by the script and that
-   a database server must be running at the targeted port. Also, any default
-   settings and environment variables available to <SPAN
-CLASS="APPLICATION"
->psql</SPAN
->
-   and the <SPAN
+>.  The database server must be 
+   running on the targeted host. There is nothing special about creating 
+   databases via this or other methods.  Also, any default settings and 
+   environment variables used by the <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> front-end library will apply.
+> 
+   front-end library will apply.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46717"
+NAME="AEN44925"
 ></A
 ><H2
 >Options</H2
@@ -210,11 +185,9 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></DT
 ><DD
 ><P
@@ -222,17 +195,15 @@ CLASS="REPLACEABLE"
 	unique among all <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> databases in this installation.
+> databases in this cluster.
         The default is to create a database with the same name as the
         current system user.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->description</I
-></TT
+>description</VAR
 ></DT
 ><DD
 ><P
@@ -241,22 +212,18 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-D <TT
+>-D <VAR
 CLASS="REPLACEABLE"
-><I
->location</I
-></TT
-></TT
-><BR><TT
+>location</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--location <TT
+>--location <VAR
 CLASS="REPLACEABLE"
-><I
->location</I
-></TT
-></TT
+>location</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -270,16 +237,16 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-e</TT
-><BR><TT
+>-e</VAR
+><BR><VAR
 CLASS="OPTION"
->--echo</TT
+>--echo</VAR
 ></DT
 ><DD
 ><P
->        Echo the queries that <SPAN
+>        Echo the commands that <SPAN
 CLASS="APPLICATION"
 >createdb</SPAN
 > generates
@@ -287,22 +254,18 @@ CLASS="APPLICATION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-E <TT
+>-E <VAR
 CLASS="REPLACEABLE"
-><I
->encoding</I
-></TT
-></TT
-><BR><TT
+>encoding</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--encoding <TT
+>--encoding <VAR
 CLASS="REPLACEABLE"
-><I
->encoding</I
-></TT
-></TT
+>encoding</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -310,22 +273,18 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-O <TT
+>-O <VAR
 CLASS="REPLACEABLE"
-><I
->owner</I
-></TT
-></TT
-><BR><TT
+>owner</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--owner <TT
+>--owner <VAR
 CLASS="REPLACEABLE"
-><I
->owner</I
-></TT
-></TT
+>owner</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -333,12 +292,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-q</TT
-><BR><TT
+>-q</VAR
+><BR><VAR
 CLASS="OPTION"
->--quiet</TT
+>--quiet</VAR
 ></DT
 ><DD
 ><P
@@ -346,22 +305,18 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-T <TT
+>-T <VAR
 CLASS="REPLACEABLE"
-><I
->template</I
-></TT
-></TT
-><BR><TT
+>template</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--template <TT
+>--template <VAR
 CLASS="REPLACEABLE"
-><I
->template</I
-></TT
-></TT
+>template</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -373,20 +328,20 @@ CLASS="REPLACEABLE"
 ><P>
    </P
 ><P
->    The options <TT
+>    The options <VAR
 CLASS="OPTION"
->-D</TT
->, <TT
+>-D</VAR
+>, <VAR
 CLASS="OPTION"
->-E</TT
+>-E</VAR
 >,
-    <TT
+    <VAR
 CLASS="OPTION"
->-O</TT
+>-O</VAR
 >, and
-    <TT
+    <VAR
 CLASS="OPTION"
->-T</TT
+>-T</VAR
 > correspond to options of the underlying
     SQL command <A
 HREF="sql-createdatabase.html"
@@ -409,71 +364,59 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-h <TT
+>-h <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
-><BR><TT
+>host</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--host <TT
+>--host <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-></TT
+>host</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >	Specifies the host name of the machine on which the 
-	server is running.  If host begins with a slash, it is used 
+	server is running.  If the value begins with a slash, it is used 
 	as the directory for the Unix domain socket.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-p <TT
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
-><BR><TT
+>port</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--port <TT
+>--port <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
-></TT
+>port</VAR
+></VAR
 ></DT
 ><DD
 ><P
->	Specifies the Internet TCP/IP port or the local Unix domain socket file 
+>	Specifies the TCP port or the local Unix domain socket file 
 	extension on which the server is listening for connections.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-U <TT
+>-U <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
+>username</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--username <TT
+>--username <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -481,12 +424,12 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-W</TT
-><BR><TT
+>-W</VAR
+><BR><VAR
 CLASS="OPTION"
->--password</TT
+>--password</VAR
 ></DT
 ><DD
 ><P
@@ -501,7 +444,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46828"
+NAME="AEN45036"
 ></A
 ><H2
 >Diagnostics</H2
@@ -511,35 +454,35 @@ NAME="AEN46828"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE DATABASE</TT
+>CREATE DATABASE</SAMP
 ></DT
 ><DD
 ><P
 >The database was successfully created.</P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->createdb: Database creation failed.</TT
+>createdb: Database creation failed.</SAMP
 ></DT
 ><DD
 ><P
 >(Says it all.)</P
 ></DD
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->createdb: Comment creation failed. (Database was created.)</TT
+>createdb: Comment creation failed. (Database was created.)</SAMP
 ></DT
 ><DD
 ><P
 >       The comment/description for the database could not be created.
        The database itself will have been created already. You can use the
-       <SPAN
+       <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > command <TT
 CLASS="COMMAND"
 >COMMENT ON DATABASE</TT
@@ -557,19 +500,13 @@ HREF="sql-createdatabase.html"
 >CREATE DATABASE</I
 ></A
 >
-    and <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-> for possibilities.
+    for possibilities.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46851"
+NAME="AEN45058"
 ></A
 ><H2
 >Environment</H2
@@ -624,68 +561,64 @@ NAME="R1-APP-CREATEDB-2"
 ><H2
 >Examples</H2
 ><P
->    To create the database <TT
+>    To create the database <VAR
 CLASS="LITERAL"
->demo</TT
+>demo</VAR
 > using the default
     database server:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->createdb demo</B
-></TT
+>createdb demo</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE DATABASE</TT
+>CREATE DATABASE</SAMP
 ></PRE
 ><P>
     The response is the same as you would have gotten from running the
     <TT
 CLASS="COMMAND"
 >CREATE DATABASE</TT
-> <SPAN
+> <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > command.
    </P
 ><P
->    To create the database <TT
+>    To create the database <VAR
 CLASS="LITERAL"
->demo</TT
+>demo</VAR
 > using the
-    server on host <TT
+    server on host <VAR
 CLASS="LITERAL"
->eden</TT
+>eden</VAR
 >, port 5000, using the
-    <TT
+    <VAR
 CLASS="LITERAL"
->LATIN1</TT
+>LATIN1</VAR
 > encoding scheme with a look at the
-    underlying query:
+    underlying command:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->createdb -p 5000 -h eden -E LATIN1 -e demo</B
-></TT
+>createdb -p 5000 -h eden -E LATIN1 -e demo</KBD
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE DATABASE "demo" WITH ENCODING = 'LATIN1'</TT
+>CREATE DATABASE "demo" WITH ENCODING = 'LATIN1'</SAMP
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE DATABASE</TT
+>CREATE DATABASE</SAMP
 ></PRE
 ><P>
    </P
@@ -693,7 +626,7 @@ CLASS="COMPUTEROUTPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46889"
+NAME="AEN45096"
 ></A
 ><H2
 >See Also</H2

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >initlocation</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-INITLOCATION"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >initlocation</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN50856"
+NAME="AEN49069"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN50860"
+NAME="AEN49073"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,11 +105,9 @@ NAME="AEN50860"
 ><TT
 CLASS="COMMAND"
 >initlocation</TT
->  <TT
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
+>directory</VAR
 > </P
 ></DIV
 ><DIV
@@ -158,44 +156,44 @@ NAME="R1-APP-INITLOCATION-2"
     environment variable:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$ </TT
-><TT
+>$ </SAMP
+><KBD
 CLASS="USERINPUT"
-><B
->export PGDATA2=/opt/postgres/data</B
-></TT
+>export PGDATA2=/opt/postgres/data</KBD
 ></PRE
 ><P>
-    Stop and start postmaster so it sees the <TT
+    Stop and start <TT
+CLASS="COMMAND"
+>postmaster</TT
+> so it sees the <TT
 CLASS="ENVAR"
 >PGDATA2</TT
 >
     environment variable.  The system must be configured so the
-    postmaster sees <TT
+    <TT
+CLASS="COMMAND"
+>postmaster</TT
+> sees <TT
 CLASS="ENVAR"
 >PGDATA2</TT
 > every time it starts.  Finally:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->initlocation PGDATA2</B
-></TT
+>initlocation PGDATA2</KBD
 >
-<TT
+<SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->createdb -D PGDATA2 testdb</B
-></TT
+>createdb -D PGDATA2 testdb</KBD
 ></PRE
 ><P>
    </P
@@ -203,37 +201,22 @@ CLASS="USERINPUT"
 >    Alternatively, if you allow absolute paths you could write:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->initlocation /opt/postgres/data</B
-></TT
+>initlocation /opt/postgres/data</KBD
 >
-<TT
+<SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->createdb -D /opt/postgres/data/testdb testdb</B
-></TT
+>createdb -D /opt/postgres/data/testdb testdb</KBD
 ></PRE
 ><P>
    </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN50892"
-></A
-><H2
->See Also</H2
-><I
-CLASS="CITETITLE"
->PostgreSQL Administrator's Guide</I
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

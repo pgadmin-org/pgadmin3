@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Multicolumn Indexes</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 8. Indexes</TD
+>Chapter 11. Indexes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INDEXES-MULTICOLUMN"
->8.3. Multicolumn Indexes</A
+>11.3. Multicolumn Indexes</A
 ></H1
 ><A
-NAME="AEN11115"
+NAME="AEN12557"
 ></A
 ><P
 >   An index can be defined on more than one column.  For example, if
@@ -104,16 +104,12 @@ CLASS="FILENAME"
    directory in a database...) and you frequently make queries like
 </P><PRE
 CLASS="PROGRAMLISTING"
->SELECT name FROM test2 WHERE major = <TT
+>SELECT name FROM test2 WHERE major = <VAR
 CLASS="REPLACEABLE"
-><I
->constant</I
-></TT
-> AND minor = <TT
+>constant</VAR
+> AND minor = <VAR
 CLASS="REPLACEABLE"
-><I
->constant</I
-></TT
+>constant</VAR
 >;</PRE
 ><P>
    then it may be appropriate to define an index on the columns
@@ -139,80 +135,72 @@ CLASS="PRODUCTNAME"
 >; see the
    file <TT
 CLASS="FILENAME"
->pg_config.h</TT
+>pg_config_manual.h</TT
 >.)
   </P
 ><P
->   The query optimizer can use a multicolumn index for queries that
-   involve the first <TT
-CLASS="PARAMETER"
-><I
->n</I
-></TT
-> consecutive columns in
-   the index (when used with appropriate operators), up to the total
-   number of columns specified in the index definition.  For example,
-   an index on <TT
+>   The query planner can use a multicolumn index for queries that
+   involve the leftmost column in the index definition plus any number
+   of columns listed to the right of it, without a gap.  For example,
+   an index on <VAR
 CLASS="LITERAL"
->(a, b, c)</TT
+>(a, b, c)</VAR
 > can be used in queries
-   involving all of <TT
+   involving all of <VAR
 CLASS="LITERAL"
->a</TT
->, <TT
+>a</VAR
+>, <VAR
 CLASS="LITERAL"
->b</TT
+>b</VAR
 >, and
-   <TT
+   <VAR
 CLASS="LITERAL"
->c</TT
+>c</VAR
 >, or in queries involving both
-   <TT
+   <VAR
 CLASS="LITERAL"
->a</TT
-> and <TT
+>a</VAR
+> and <VAR
 CLASS="LITERAL"
->b</TT
+>b</VAR
 >, or in queries
-   involving only <TT
+   involving only <VAR
 CLASS="LITERAL"
->a</TT
+>a</VAR
 >, but not in other combinations.
-   (In a query involving <TT
+   (In a query involving <VAR
 CLASS="LITERAL"
->a</TT
-> and <TT
+>a</VAR
+> and <VAR
 CLASS="LITERAL"
->c</TT
+>c</VAR
 >
-   the optimizer might choose to use the index for
-   <TT
+   the planner might choose to use the index for
+   <VAR
 CLASS="LITERAL"
->a</TT
-> only and treat <TT
+>a</VAR
+> only and treat <VAR
 CLASS="LITERAL"
->c</TT
+>c</VAR
 > like an
-   ordinary unindexed column.)
+   ordinary unindexed column.)  Of course, each column must be used with
+   operators appropriate to the index type; clauses that involve other
+   operators will not be considered.
   </P
 ><P
 >   Multicolumn indexes can only be used if the clauses involving the
-   indexed columns are joined with <TT
+   indexed columns are joined with <VAR
 CLASS="LITERAL"
->AND</TT
+>AND</VAR
 >.  For instance,
 </P><PRE
 CLASS="PROGRAMLISTING"
->SELECT name FROM test2 WHERE major = <TT
+>SELECT name FROM test2 WHERE major = <VAR
 CLASS="REPLACEABLE"
-><I
->constant</I
-></TT
-> OR minor = <TT
+>constant</VAR
+> OR minor = <VAR
 CLASS="REPLACEABLE"
-><I
->constant</I
-></TT
+>constant</VAR
 >;</PRE
 ><P>
    cannot make use of the index <TT
@@ -228,8 +216,8 @@ CLASS="STRUCTFIELD"
 ><P
 >   Multicolumn indexes should be used sparingly.  Most of the time,
    an index on a single column is sufficient and saves space and time.
-   Indexes with more than three columns are almost certainly
-   inappropriate.
+   Indexes with more than three columns are unlikely to be helpful
+   unless the usage of the table is extremely stylized.
   </P
 ></DIV
 ><DIV

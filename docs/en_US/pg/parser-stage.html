@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >The Parser Stage</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Overview of PostgreSQL Internals"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. Overview of PostgreSQL Internals</TD
+>Chapter 44. Overview of PostgreSQL Internals</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PARSER-STAGE"
->2.3. The Parser Stage</A
+>44.3. The Parser Stage</A
 ></H1
 ><P
 >    The <I
@@ -132,8 +132,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52005"
->2.3.1. Parser</A
+NAME="AEN50235"
+>44.3.1. Parser</A
 ></H2
 ><P
 >     The parser has to check the query string (which arrives as
@@ -277,311 +277,75 @@ CLASS="FILENAME"
 > otherwise you won't
      understand what happens there.
     </P
-><P
->     For a better understanding of the data structures used in
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-     for the processing of a query we use an example to illustrate the
-     changes made to these data structures in every stage.
-     This example contains the following simple query that will be used in
-     various descriptions and figures throughout the following
-     sections. The query assumes that the tables given in
-     <I
-CLASS="CITETITLE"
->The Supplier Database</I
->
-     
-     have already been defined.
-
-     <DIV
-CLASS="EXAMPLE"
-><A
-NAME="SIMPLE-SELECT"
-></A
-><P
-><B
->Example 2-1. A Simple Select</B
-></P
-><PRE
-CLASS="PROGRAMLISTING"
->select s.sname, se.pno
-    from supplier s, sells se
-    where s.sno &#62; 2 and s.sno = se.sno;
-      </PRE
-></DIV
->
-    </P
-><P
->     Figure \ref{parsetree} shows the <I
-CLASS="FIRSTTERM"
->parse tree</I
-> built by the
-     grammar rules and actions given in <TT
-CLASS="FILENAME"
->gram.y</TT
-> for the query
-     given in  <A
-HREF="parser-stage.html#SIMPLE-SELECT"
->Example 2-1</A
->
-     (without the <I
-CLASS="FIRSTTERM"
->operator tree</I
-> for
-     the <I
-CLASS="FIRSTTERM"
->where clause</I
-> which is shown in figure \ref{where_clause}
-     because there was not enough space to show both data structures in one
-     figure).
-    </P
-><P
->     The top node of the tree is a <TT
-CLASS="LITERAL"
->SelectStmt</TT
-> node. For every entry
-     appearing in the <I
-CLASS="FIRSTTERM"
->from clause</I
-> of the SQL query a <TT
-CLASS="LITERAL"
->RangeVar</TT
->
-     node is created holding the name of the <I
-CLASS="FIRSTTERM"
->alias</I
-> and a pointer to a
-     <TT
-CLASS="LITERAL"
->RelExpr</TT
-> node holding the name of the <I
-CLASS="FIRSTTERM"
->relation</I
->. All
-     <TT
-CLASS="LITERAL"
->RangeVar</TT
-> nodes are collected in a list which is attached to the field
-     <TT
-CLASS="LITERAL"
->fromClause</TT
-> of the <TT
-CLASS="LITERAL"
->SelectStmt</TT
-> node.
-    </P
-><P
->     For every entry appearing in the <I
-CLASS="FIRSTTERM"
->select list</I
-> of the SQL query a
-     <TT
-CLASS="LITERAL"
->ResTarget</TT
-> node is created holding a pointer to an <TT
-CLASS="LITERAL"
->Attr</TT
->
-     node. The <TT
-CLASS="LITERAL"
->Attr</TT
-> node holds the <I
-CLASS="FIRSTTERM"
->relation name</I
-> of the entry and
-     a pointer to a <TT
-CLASS="LITERAL"
->Value</TT
-> node holding the name of the
-     <I
-CLASS="FIRSTTERM"
->attribute</I
->.
-     All <TT
-CLASS="LITERAL"
->ResTarget</TT
-> nodes are collected to a list which is
-     connected to the field <TT
-CLASS="LITERAL"
->targetList</TT
-> of the <TT
-CLASS="LITERAL"
->SelectStmt</TT
-> node.
-    </P
-><P
->     Figure \ref{where_clause} shows the operator tree built for the
-     where clause of the SQL query given in
-     <A
-HREF="parser-stage.html#SIMPLE-SELECT"
->Example 2-1</A
->
-     which is attached to the field
-     <TT
-CLASS="LITERAL"
->qual</TT
-> of the <TT
-CLASS="LITERAL"
->SelectStmt</TT
-> node. The top node of the
-     operator tree is an <TT
-CLASS="LITERAL"
->A_Expr</TT
-> node representing an <TT
-CLASS="LITERAL"
->AND</TT
->
-     operation. This node has two successors called <TT
-CLASS="LITERAL"
->lexpr</TT
-> and
-     <TT
-CLASS="LITERAL"
->rexpr</TT
-> pointing to two <I
-CLASS="FIRSTTERM"
->subtrees</I
->. The subtree attached to
-     <TT
-CLASS="LITERAL"
->lexpr</TT
-> represents the qualification <TT
-CLASS="LITERAL"
->s.sno &gt; 2</TT
-> and the one
-     attached to <TT
-CLASS="LITERAL"
->rexpr</TT
-> represents <TT
-CLASS="LITERAL"
->s.sno = se.sno</TT
->. For every
-     attribute an <TT
-CLASS="LITERAL"
->Attr</TT
-> node is created holding the name of the
-     relation and a pointer to a <TT
-CLASS="LITERAL"
->Value</TT
-> node holding the name of the
-     attribute. For the constant term appearing in the query a
-     <TT
-CLASS="LITERAL"
->Const</TT
-> node is created holding the value.
-    </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52090"
->2.3.2. Transformation Process</A
+NAME="AEN50271"
+>44.3.2. Transformation Process</A
 ></H2
 ><P
->     The <I
-CLASS="FIRSTTERM"
->transformation process</I
-> takes the tree handed back by
-     the parser as input and steps recursively through it.  If
-     a <TT
-CLASS="LITERAL"
->SelectStmt</TT
-> node is found, it is transformed
-     to a <TT
-CLASS="LITERAL"
->Query</TT
->
-     node that will be the top most node of the new data structure. Figure
-     \ref{transformed} shows the transformed data structure (the part
-     for the transformed <I
-CLASS="FIRSTTERM"
->where clause</I
-> is given in figure
-     \ref{transformed_where} because there was not enough space to show all
-     parts in one figure).
-    </P
-><P
->     Now a check is made, if the <I
-CLASS="FIRSTTERM"
->relation names</I
-> in the
-     <I
-CLASS="FIRSTTERM"
->FROM clause</I
-> are known to the system. For every relation name
-     that is present in the <I
-CLASS="FIRSTTERM"
->system catalogs</I
-> a <SPAN
-CLASS="ABBREV"
->RTE</SPAN
-> node is
-     created containing the relation name, the <I
-CLASS="FIRSTTERM"
->alias name</I
-> and
+>     The parser stage creates a parse tree using only fixed rules about
+     the syntactic structure of SQL.  It does not make any lookups in the
+     system catalogs, so there is no possibility to understand the detailed
+     semantics of the requested operations.  After the parser completes,
      the <I
 CLASS="FIRSTTERM"
->relation id</I
->. From now on the relation ids are used to
-     refer to the <I
+>transformation process</I
+> takes the tree handed
+     back by the parser as input and does the semantic interpretation needed
+     to understand which tables, functions, and operators are referenced by
+     the query.  The data structure that is built to represent this
+     information is called the <I
 CLASS="FIRSTTERM"
->relations</I
-> given in the query. All <SPAN
-CLASS="ABBREV"
->RTE</SPAN
-> nodes
-     are collected in the <I
-CLASS="FIRSTTERM"
->range table entry list</I
-> that is connected
-     to the field <TT
-CLASS="LITERAL"
->rtable</TT
-> of the <TT
-CLASS="LITERAL"
->Query</TT
-> node. If a name of a
-     relation that is not known to the system is detected in the query an
-     error will be returned and the query processing will be aborted.
+>query tree</I
+>.
     </P
 ><P
->     Next it is checked if the <I
-CLASS="FIRSTTERM"
->attribute names</I
-> used are 
-     contained in the relations given in the query. For every
-     attribute} that is found a <SPAN
-CLASS="ABBREV"
->TLE</SPAN
-> node is created holding a pointer
-     to a <TT
-CLASS="LITERAL"
->Resdom</TT
-> node (which holds the name of the column) and a
-     pointer to a <TT
-CLASS="LITERAL"
->VAR</TT
-> node. There are two important numbers in the
+>     The reason for separating raw parsing from semantic analysis is that
+     system catalog lookups can only be done within a transaction, and we
+     do not wish to start a transaction immediately upon receiving a query
+     string.  The raw parsing stage is sufficient to identify the transaction
+     control commands (<TT
+CLASS="COMMAND"
+>BEGIN</TT
+>, <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+>, etc), and
+     these can then be correctly executed without any further analysis.
+     Once we know that we are dealing with an actual query (such as
      <TT
-CLASS="LITERAL"
->VAR</TT
-> node. The field <TT
-CLASS="LITERAL"
->varno</TT
-> gives the position of the
-     relation containing the current attribute} in the range
-     table entry list created above. The field <TT
-CLASS="LITERAL"
->varattno</TT
-> gives the
-     position of the attribute within the relation. If the name
-     of an attribute cannot be found an error will be returned and
-     the query processing will be aborted.
+CLASS="COMMAND"
+>SELECT</TT
+> or <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>), it is okay to
+     start a transaction if we're not already in one.  Only then can the
+     transformation process be invoked.
+    </P
+><P
+>     The query tree created by the transformation process is structurally
+     similar to the raw parse tree in most places, but it has many differences
+     in detail.  For example, a <TT
+CLASS="STRUCTNAME"
+>FuncCall</TT
+> node in the
+     parse tree represents something that looks syntactically like a function
+     call.  This may be transformed to either a <TT
+CLASS="STRUCTNAME"
+>FuncExpr</TT
+>
+     or <TT
+CLASS="STRUCTNAME"
+>Aggref</TT
+> node depending on whether the referenced
+     name turns out to be an ordinary function or an aggregate function.
+     Also, information about the actual datatypes of columns and expression
+     results is added to the query tree.
     </P
 ></DIV
 ></DIV

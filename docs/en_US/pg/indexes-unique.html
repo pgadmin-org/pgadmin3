@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Unique Indexes</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Multicolumn Indexes"
 HREF="indexes-multicolumn.html"><LINK
 REL="NEXT"
-TITLE="Functional Indexes"
-HREF="indexes-functional.html"><LINK
+TITLE="Indexes on Expressions"
+HREF="indexes-expressional.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 8. Indexes</TD
+>Chapter 11. Indexes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="indexes-functional.html"
+HREF="indexes-expressional.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,31 +81,25 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INDEXES-UNIQUE"
->8.4. Unique Indexes</A
+>11.4. Unique Indexes</A
 ></H1
 ><A
-NAME="AEN11153"
+NAME="AEN12594"
 ></A
 ><P
 >   Indexes may also be used to enforce uniqueness of a column's value,
    or the uniqueness of the combined values of more than one column.
 </P><PRE
 CLASS="SYNOPSIS"
->CREATE UNIQUE INDEX <TT
+>CREATE UNIQUE INDEX <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ON <TT
+>name</VAR
+> ON <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> (<TT
+>table</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
+>column</VAR
 > [<SPAN
 CLASS="OPTIONAL"
 >, ...</SPAN
@@ -115,7 +109,7 @@ CLASS="OPTIONAL"
   </P
 ><P
 >   When an index is declared unique, multiple table rows with equal
-   indexed values will not be allowed.  NULL values are not considered
+   indexed values will not be allowed.  Null values are not considered
    equal.
   </P
 ><P
@@ -137,9 +131,9 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >    The preferred way to add a unique constraint to a table is
-    <TT
+    <VAR
 CLASS="LITERAL"
->ALTER TABLE ... ADD CONSTRAINT</TT
+>ALTER TABLE ... ADD CONSTRAINT</VAR
 >.  The use of
     indexes to enforce unique constraints could be considered an
     implementation detail that should not be accessed directly.
@@ -181,7 +175,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="indexes-functional.html"
+HREF="indexes-expressional.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -205,7 +199,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Functional Indexes</TD
+>Indexes on Expressions</TD
 ></TR
 ></TABLE
 ></DIV

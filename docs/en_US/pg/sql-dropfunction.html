@@ -1,22 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP FUNCTION</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
 HREF="sql-commands.html"><LINK
 REL="PREVIOUS"
-TITLE="   DROP DOMAIN
-  "
+TITLE="DROP DOMAIN"
 HREF="sql-dropdomain.html"><LINK
 REL="NEXT"
 TITLE="DROP GROUP"
@@ -25,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -45,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -79,163 +78,47 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPFUNCTION"
->DROP FUNCTION</A
-></H1
+></A
+>DROP FUNCTION</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42486"
+NAME="AEN41088"
 ></A
 ><H2
 >Name</H2
->   DROP FUNCTION
-  &nbsp;--&nbsp;   remove a user-defined function
-  </DIV
+>DROP FUNCTION&nbsp;--&nbsp;remove a user-defined function</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42489"
+NAME="AEN41091"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP FUNCTION <TT
+>DROP FUNCTION <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ( [ <TT
+>name</VAR
+> ( [ <VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-> [, ...] ] ) [ CASCADE | RESTRICT ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPFUNCTION-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of an existing function.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->type</I
-></TT
-></DT
-><DD
-><P
->	The type of a parameter of the function.
-       </P
-></DD
-><DT
->CASCADE</DT
-><DD
-><P
->        Automatically drop objects that depend on the function
-	(such as operators or triggers).
-       </P
-></DD
-><DT
->RESTRICT</DT
-><DD
-><P
->        Refuse to drop the function if there are any dependent objects.
-	This is the default.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPFUNCTION-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP FUNCTION
-       </TT
-></DT
-><DD
-><P
->	Message returned if the command completes successfully.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->WARNING:  RemoveFunction: Function "<TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->" ("<TT
-CLASS="REPLACEABLE"
-><I
->types</I
-></TT
->") does not exist
-       </TT
-></DT
-><DD
-><P
->	This message is given if the function specified does not
-	exist in the current database.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>type</VAR
+> [, ...] ] ) [ CASCADE | RESTRICT ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPFUNCTION-1"
+NAME="AEN41095"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
->   DROP FUNCTION will remove the definition of an existing
+>   <TT
+CLASS="COMMAND"
+>DROP FUNCTION</TT
+> removes the definition of an existing
    function. To execute this command the user must be the
-   owner of the function. The input argument types to the
+   owner of the function. The argument types to the
    function must be specified, since several different functions
    may exist with the same name and different argument lists.
   </P
@@ -243,20 +126,100 @@ NAME="R1-SQL-DROPFUNCTION-1"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="SQL-DROPFUNCTION-NOTES"
+NAME="AEN41099"
 ></A
 ><H2
->Notes</H2
+>Parameters</H2
 ><P
->    Refer to
-    <A
-HREF="sql-createfunction.html"
-><I
->CREATE FUNCTION</I
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of an existing function.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>type</VAR
+></DT
+><DD
+><P
+>      The data type of an argument of the function.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+></DT
+><DD
+><P
+>      Automatically drop objects that depend on the function (such as
+      operators or triggers).
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+></DT
+><DD
+><P
+>      Refuse to drop the function if any objects depend on it.  This
+      is the default.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41122"
 ></A
->
-    for information on creating functions.
-   </P
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP FUNCTION</SAMP
+></DT
+><DD
+><P
+>      Message returned if the command completes successfully.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>WARNING:  RemoveFunction: Function <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> (<VAR
+CLASS="REPLACEABLE"
+>types</VAR
+>) does not exist</SAMP
+></DT
+><DD
+><P
+>      This message is output if the function specified does not exist.
+     </P
+></DD
+></DL
+></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -285,14 +248,14 @@ NAME="SQL-DROPFUNCTION-COMPATIBILITY"
 >   A <TT
 CLASS="COMMAND"
 >DROP FUNCTION</TT
-> statement is defined in SQL99.  One of
-   its syntax forms is similar to PostgreSQL's.
+> statement is defined in the SQL
+   standard, but it is not compatible with this command.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42554"
+NAME="AEN41145"
 ></A
 ><H2
 >See Also</H2
@@ -300,6 +263,11 @@ NAME="AEN42554"
 HREF="sql-createfunction.html"
 ><I
 >CREATE FUNCTION</I
+></A
+>, <A
+HREF="sql-alterfunction.html"
+><I
+>ALTER FUNCTION</I
 ></A
 ></DIV
 ><DIV

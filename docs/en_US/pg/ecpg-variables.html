@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->Passing Data</TITLE
+>Using Host Variables</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
 HREF="ecpg.html"><LINK
 REL="PREVIOUS"
-TITLE="Running SQL Commands"
-HREF="ecpg-commands.html"><LINK
+TITLE="Choosing a Connection"
+HREF="ecpg-set-connection.html"><LINK
 REL="NEXT"
-TITLE="Error Handling"
-HREF="ecpg-errors.html"><LINK
+TITLE="Dynamic SQL"
+HREF="ecpg-dynamic.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="ecpg-commands.html"
+HREF="ecpg-set-connection.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,19 +60,19 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. <SPAN
+>Chapter 30. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
-> - Embedded <SPAN
+> - Embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > in C</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="ecpg-errors.html"
+HREF="ecpg-dynamic.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -87,88 +87,290 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-VARIABLES"
->4.5. Passing Data</A
+>30.6. Using Host Variables</A
 ></H1
 ><P
->   To pass data from the program to the database, for example as
-   parameters in a query, or to pass data from the database back to
-   the program, the C variables that are intended to contain this data
-   need to be declared in a specially marked section, so the embedded
-   SQL preprocessor is made aware of them.
+>   In <A
+HREF="ecpg-commands.html"
+>Section 30.4</A
+> you saw how you can execute SQL
+   statements from an embedded SQL program.  Some of those statements
+   only used fixed values and did not provide a way to insert
+   user-supplied values into statements or have the program process
+   the values returned by the query.  Those kinds of statements are
+   not really useful in real applications.  This section explains in
+   detail how you can pass data between your C program and the
+   embedded SQL statements using a simple mechanism called
+   <I
+CLASS="FIRSTTERM"
+>host variables</I
+>.
   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN22443"
+>30.6.1. Overview</A
+></H2
 ><P
->   This section starts with
+>    Passing data between the C program and the SQL statements is
+    particularly simple in embedded SQL.  Instead of having the
+    program paste the data into the statement, which entails various
+    complications, such as properly quoting the value, you can simply
+    write the name of a C variable into the SQL statement, prefixed by
+    a colon.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO sometable VALUES (:v1, 'foo', :v2);</PRE
+><P>
+    This statements refers to two C variables named
+    <VAR
+CLASS="VARNAME"
+>v1</VAR
+> and <VAR
+CLASS="VARNAME"
+>v2</VAR
+> and also uses a
+    regular SQL string literal, to illustrate that you are not
+    restricted to use one kind of data or the other.
+   </P
+><P
+>    This style of inserting C variables in SQL statements works
+    anywhere a value expression is expected in an SQL statement.  In
+    the SQL environment we call the references to C variables
+    <I
+CLASS="FIRSTTERM"
+>host variables</I
+>.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN22451"
+>30.6.2. Declare Sections</A
+></H2
+><P
+>    To pass data from the program to the database, for example as
+    parameters in a query, or to pass data from the database back to
+    the program, the C variables that are intended to contain this
+    data need to be declared in specially marked sections, so the
+    embedded SQL preprocessor is made aware of them.
+   </P
+><P
+>    This section starts with
 </P><PRE
 CLASS="PROGRAMLISTING"
 >EXEC SQL BEGIN DECLARE SECTION;</PRE
 ><P>
-   and ends with
+    and ends with
 </P><PRE
 CLASS="PROGRAMLISTING"
 >EXEC SQL END DECLARE SECTION;</PRE
 ><P>
-   Between those lines, there must be normal C variable declarations, such as
+    Between those lines, there must be normal C variable declarations,
+    such as
 </P><PRE
 CLASS="PROGRAMLISTING"
 >int   x;
 char  foo[16], bar[16];</PRE
 ><P>
-  </P
+    You can have as many declare sections in a program as you like.
+   </P
 ><P
->   The declarations are also echoed to the output file as a normal C
-   variables, so there's no need to declare them again.  Variables
-   that are not intended to be used with SQL commands can be declared
-   normally outside these special sections.
-  </P
+>    The declarations are also echoed to the output file as a normal C
+    variables, so there's no need to declare them again.  Variables
+    that are not intended to be used with SQL commands can be declared
+    normally outside these special sections.
+   </P
 ><P
->   The definition of a structure or union also must be listed inside a
-   <TT
+>    The definition of a structure or union also must be listed inside
+    a <VAR
 CLASS="LITERAL"
->DECLARE</TT
+>DECLARE</VAR
 > section. Otherwise the preprocessor cannot
-   handle these types since it does not know the definition.
-  </P
+    handle these types since it does not know the definition.
+   </P
 ><P
->   The special types <TT
+>    The special types <TT
 CLASS="TYPE"
 >VARCHAR</TT
 > and <TT
 CLASS="TYPE"
 >VARCHAR2</TT
 >
-   are converted into a named <TT
+    are converted into a named <TT
 CLASS="TYPE"
 >struct</TT
 > for every variable. A
-   declaration like:
+    declaration like
 </P><PRE
 CLASS="PROGRAMLISTING"
 >VARCHAR var[180];</PRE
 ><P>
-   is converted into:
+    is converted into
 </P><PRE
 CLASS="PROGRAMLISTING"
 >struct varchar_var { int len; char arr[180]; } var;</PRE
 ><P>
-   This structure is suitable for interfacing with SQL datums of type
-   <TT
+    This structure is suitable for interfacing with SQL datums of type
+    <TT
 CLASS="TYPE"
->VARCHAR</TT
+>varchar</TT
 >.
-  </P
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN22468"
+>30.6.3. <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> and <TT
+CLASS="COMMAND"
+>FETCH INTO</TT
+></A
+></H2
 ><P
->   To use a properly declared C variable in an SQL statement, write
-   <TT
+>    Now you should be able to pass data generated by your program into
+    an SQL command.  But how do you retrieve the results of a query?
+    For that purpose, embedded SQL provides special variants of the
+    usual commands <TT
+CLASS="COMMAND"
+>SELECT</TT
+> and
+    <TT
+CLASS="COMMAND"
+>FETCH</TT
+>.  These commands have a special
+    <VAR
 CLASS="LITERAL"
->:<TT
-CLASS="REPLACEABLE"
-><I
->varname</I
-></TT
-></TT
-> where an expression is
-   expected.  See the previous section for some examples.
-  </P
+>INTO</VAR
+> clause that specifies which host variables
+    the retrieved values are to be stored in.
+   </P
+><P
+>    Here is an example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>/*
+ * assume this table:
+ * CREATE TABLE test1 (a int, b varchar(50));
+ */
+
+EXEC SQL BEGIN DECLARE SECTION;
+int v1;
+VARCHAR v2;
+EXEC SQL END DECLARE SECTION;
+
+ ...
+
+EXEC SQL SELECT a, b INTO :v1, :v2 FROM test;</PRE
+><P>
+    So the <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> clause appears between the select
+    list and the <VAR
+CLASS="LITERAL"
+>FROM</VAR
+> clause.  The number of
+    elements in the select list and the list after
+    <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> (also called the target list) must be
+    equal.
+   </P
+><P
+>    Here is an example using the command <TT
+CLASS="COMMAND"
+>FETCH</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL BEGIN DECLARE SECTION;
+int v1;
+VARCHAR v2;
+EXEC SQL END DECLARE SECTION;
+
+ ...
+
+EXEC SQL DECLARE foo CURSOR FOR SELECT a, b FROM test;
+
+ ...
+
+do {
+    ...
+    EXEC SQL FETCH NEXT FROM foo INTO :v1, :v2;
+    ...
+} while (...);</PRE
+><P>
+    Here the <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> clause appears after all the
+    normal clauses.
+   </P
+><P
+>    Both of these methods only allow retrieving one row at a time.  If
+    you need to process result sets that potentially contain more than
+    one row, you need to use a cursor, as shown in the second example.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN22486"
+>30.6.4. Indicators</A
+></H2
+><P
+>    The examples above do not handle null values.  In fact, the
+    retrieval examples will raise an error if they fetch a null value
+    from the database.  To be able to pass null values to the database
+    or retrieve null values from the database, you need to append a
+    second host variable specification to each host variable that
+    contains data.  This second host variable is called the
+    <I
+CLASS="FIRSTTERM"
+>indicator</I
+> and contains a flag that tells
+    whether the datums is null, in which case the value of the real
+    host variable is ignored.  Here is an example that handles the
+    retrieval of null values correctly:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL BEGIN DECLARE SECTION;
+VARCHAR val;
+int val_ind;
+EXEC SQL END DECLARE SECTION:
+
+ ...
+
+EXEC SQL SELECT b INTO :val :val_ind FROM test1;</PRE
+><P>
+    The indicator variable <VAR
+CLASS="VARNAME"
+>val_ind</VAR
+> will be zero if
+    the value was not null, and it will be negative if the value was
+    null.
+   </P
+><P
+>    The indicator has another function: if the indicator value is
+    positive, it means that the value is not null, but it was
+    truncated when it was stored in the host variable.
+   </P
+></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -186,7 +388,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="ecpg-commands.html"
+HREF="ecpg-set-connection.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -204,7 +406,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="ecpg-errors.html"
+HREF="ecpg-dynamic.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -214,7 +416,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Running SQL Commands</TD
+>Choosing a Connection</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -228,7 +430,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Error Handling</TD
+>Dynamic SQL</TD
 ></TR
 ></TABLE
 ></DIV

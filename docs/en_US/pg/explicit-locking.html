@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Explicit Locking</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 9. Concurrency Control</TD
+>Chapter 12. Concurrency Control</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,30 +81,33 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="EXPLICIT-LOCKING"
->9.3. Explicit Locking</A
+>12.3. Explicit Locking</A
 ></H1
 ><A
-NAME="AEN11416"
+NAME="AEN12883"
 ></A
 ><P
 >    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > provides various lock modes
-    to control concurrent access to data in tables.  These modes can be
-    used for application-controlled locking in situations where MVCC
-    does not give the desired behavior.  Also, most
-    <SPAN
+    to control concurrent access to data in tables.  These modes can
+    be used for application-controlled locking in situations where
+    <ACRONYM
+CLASS="ACRONYM"
+>MVCC</ACRONYM
+> does not give the desired behavior.  Also,
+    most <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > commands automatically
-    acquire locks of appropriate modes to ensure that referenced tables
-    are not dropped or modified in incompatible ways while the command
-    executes.  (For example, <TT
+    acquire locks of appropriate modes to ensure that referenced
+    tables are not dropped or modified in incompatible ways while the
+    command executes.  (For example, <TT
 CLASS="COMMAND"
 >ALTER TABLE</TT
-> cannot be executed
-    concurrently with other operations on the same table.)
+> cannot be
+    executed concurrently with other operations on the same table.)
    </P
 ><DIV
 CLASS="SECT2"
@@ -112,7 +115,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="LOCKING-TABLES"
->9.3.1. Table-Level Locks</A
+>12.3.1. Table-Level Locks</A
 ></H2
 ><P
 >    The list below shows the available lock modes and the contexts in
@@ -126,48 +129,46 @@ CLASS="PRODUCTNAME"
     <SPAN
 CLASS="QUOTE"
 >"row"</SPAN
->.  The names of the lock modes are historical.
+>; the names of the lock modes are historical.
     To some extent the names reflect the typical usage of each lock
     mode --- but the semantics are all the same.  The only real difference
     between one lock mode and another is the set of lock modes with
     which each conflicts.  Two transactions cannot hold locks of conflicting
     modes on the same table at the same time.  (However, a transaction
-    never conflicts with itself --- for example, it may acquire
-    <TT
+    never conflicts with itself.  For example, it may acquire
+    <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 > lock and later acquire
-    <TT
+    <VAR
 CLASS="LITERAL"
->ACCESS SHARE</TT
+>ACCESS SHARE</VAR
 > lock on the same table.)  Non-conflicting
     lock modes may be held concurrently by many transactions.  Notice in
     particular that some lock modes are self-conflicting (for example,
-    <TT
+    an <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
-> cannot be held by more than one
+>ACCESS EXCLUSIVE</VAR
+> lock cannot be held by more than one
     transaction at a time) while others are not self-conflicting (for example,
-    <TT
+    an <VAR
 CLASS="LITERAL"
->ACCESS SHARE</TT
-> can be held by multiple transactions).
-    Once acquired, a lock mode is held till end of transaction.
+>ACCESS SHARE</VAR
+> lock can be held by multiple transactions).
+    Once acquired, a lock is held till end of transaction.
    </P
 ><P
->	 To examine a list of the currently outstanding locks in a
-	 database server, use the <TT
+>    To examine a list of the currently outstanding locks in a database
+    server, use the <VAR
 CLASS="LITERAL"
->pg_locks</TT
-> system
-	 view. For more information on monitoring the status of the lock
-	 manager subsystem, refer to the <A
-HREF="admin.html"
-><I
->PostgreSQL 7.3.3 Administrator's Guide</I
-></A
+>pg_locks</VAR
+> system view. For more
+    information on monitoring the status of the lock manager
+    subsystem, refer to <A
+HREF="monitoring.html"
+>Chapter 23</A
 >.
-	</P
+   </P
 ><P
 ></P
 ><DIV
@@ -178,42 +179,45 @@ CLASS="VARIABLELIST"
 ></P
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->ACCESS SHARE</TT
+>ACCESS SHARE</VAR
 ></DT
 ><DD
 ><P
->	 Conflicts with the <TT
+>	 Conflicts with the <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 > lock
 	 mode only.
 	</P
 ><P
->	 The <TT
+>	 The commands <TT
 CLASS="COMMAND"
 >SELECT</TT
-> command acquires a
-	 lock of this mode on referenced tables.  In general, any query
-	 that only reads a table and does not modify it will acquire
-	 this lock mode.
+> and
+	 <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> acquire a lock of this mode on
+	 referenced tables.  In general, any query that only reads a table
+	 and does not modify it will acquire this lock mode.
 	</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->ROW SHARE</TT
+>ROW SHARE</VAR
 ></DT
 ><DD
 ><P
->	 Conflicts with the <TT
+>	 Conflicts with the <VAR
 CLASS="LITERAL"
->EXCLUSIVE</TT
+>EXCLUSIVE</VAR
 > and
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 > lock modes.
 	</P
 ><P
@@ -222,37 +226,37 @@ CLASS="COMMAND"
 >SELECT FOR UPDATE</TT
 > command acquires a
 	 lock of this mode on the target table(s) (in addition to
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->ACCESS SHARE</TT
+>ACCESS SHARE</VAR
 > locks on any other tables
-	 that are referenced but not selected <TT
+	 that are referenced but not selected <VAR
 CLASS="OPTION"
->FOR UPDATE</TT
+>FOR UPDATE</VAR
 >).
 	</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->ROW EXCLUSIVE</TT
+>ROW EXCLUSIVE</VAR
 ></DT
 ><DD
 ><P
->	 Conflicts with the <TT
+>	 Conflicts with the <VAR
 CLASS="LITERAL"
->SHARE</TT
->, <TT
+>SHARE</VAR
+>, <VAR
 CLASS="LITERAL"
 >SHARE ROW
-	 EXCLUSIVE</TT
->, <TT
+	 EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
->EXCLUSIVE</TT
+>EXCLUSIVE</VAR
 >, and
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 > lock modes.
 	</P
 ><P
@@ -268,39 +272,39 @@ CLASS="COMMAND"
 >INSERT</TT
 >
 	 acquire this lock mode on the target table (in addition to
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->ACCESS SHARE</TT
+>ACCESS SHARE</VAR
 > locks on any other referenced
 	 tables).  In general, this lock mode will be acquired by any
-	 query that modifies the data in a table.
+	 command that modifies the data in a table.
 	</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->SHARE UPDATE EXCLUSIVE</TT
+>SHARE UPDATE EXCLUSIVE</VAR
 ></DT
 ><DD
 ><P
->	 Conflicts with the <TT
+>	 Conflicts with the <VAR
 CLASS="LITERAL"
->SHARE UPDATE EXCLUSIVE</TT
+>SHARE UPDATE EXCLUSIVE</VAR
 >,
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->SHARE</TT
->, <TT
+>SHARE</VAR
+>, <VAR
 CLASS="LITERAL"
 >SHARE ROW
-	 EXCLUSIVE</TT
->, <TT
+	 EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
->EXCLUSIVE</TT
+>EXCLUSIVE</VAR
 >, and
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 > lock modes.
 	 This mode protects a table against
 	 concurrent schema changes and <TT
@@ -312,37 +316,37 @@ CLASS="COMMAND"
 >	 Acquired by <TT
 CLASS="COMMAND"
 >VACUUM</TT
-> (without <TT
+> (without <VAR
 CLASS="OPTION"
->FULL</TT
+>FULL</VAR
 >).
 	</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->SHARE</TT
+>SHARE</VAR
 ></DT
 ><DD
 ><P
->	 Conflicts with the <TT
+>	 Conflicts with the <VAR
 CLASS="LITERAL"
->ROW EXCLUSIVE</TT
+>ROW EXCLUSIVE</VAR
 >,
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->SHARE UPDATE EXCLUSIVE</TT
->, <TT
+>SHARE UPDATE EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
 >SHARE ROW
-	 EXCLUSIVE</TT
->, <TT
+	 EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
->EXCLUSIVE</TT
+>EXCLUSIVE</VAR
 >, and
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 > lock modes.
 	 This mode protects a table against concurrent data changes.
 	</P
@@ -354,34 +358,34 @@ CLASS="COMMAND"
 	</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->SHARE ROW EXCLUSIVE</TT
+>SHARE ROW EXCLUSIVE</VAR
 ></DT
 ><DD
 ><P
->	 Conflicts with the <TT
+>	 Conflicts with the <VAR
 CLASS="LITERAL"
->ROW EXCLUSIVE</TT
+>ROW EXCLUSIVE</VAR
 >,
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->SHARE UPDATE EXCLUSIVE</TT
+>SHARE UPDATE EXCLUSIVE</VAR
 >,
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->SHARE</TT
->, <TT
+>SHARE</VAR
+>, <VAR
 CLASS="LITERAL"
 >SHARE ROW
-	 EXCLUSIVE</TT
->, <TT
+	 EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
->EXCLUSIVE</TT
+>EXCLUSIVE</VAR
 >, and
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 > lock modes.
 	</P
 ><P
@@ -393,42 +397,42 @@ CLASS="PRODUCTNAME"
 	</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->EXCLUSIVE</TT
+>EXCLUSIVE</VAR
 ></DT
 ><DD
 ><P
->	 Conflicts with the <TT
+>	 Conflicts with the <VAR
 CLASS="LITERAL"
->ROW SHARE</TT
->, <TT
+>ROW SHARE</VAR
+>, <VAR
 CLASS="LITERAL"
 >ROW
-	 EXCLUSIVE</TT
->, <TT
+	 EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
 >SHARE UPDATE
-	 EXCLUSIVE</TT
->, <TT
+	 EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
->SHARE</TT
->, <TT
+>SHARE</VAR
+>, <VAR
 CLASS="LITERAL"
 >SHARE
-	 ROW EXCLUSIVE</TT
->, <TT
+	 ROW EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
->EXCLUSIVE</TT
+>EXCLUSIVE</VAR
 >, and
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 > lock modes.
-	 This mode allows only concurrent <TT
+	 This mode allows only concurrent <VAR
 CLASS="LITERAL"
->ACCESS SHARE</TT
->,
+>ACCESS SHARE</VAR
+> locks,
 	 i.e., only reads from the table can proceed in parallel with a
 	 transaction holding this lock mode.
 	</P
@@ -441,41 +445,41 @@ CLASS="PRODUCTNAME"
 	</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 ></DT
 ><DD
 ><P
->	 Conflicts with locks of all modes (<TT
+>	 Conflicts with locks of all modes (<VAR
 CLASS="LITERAL"
 >ACCESS
-	 SHARE</TT
->, <TT
+	 SHARE</VAR
+>, <VAR
 CLASS="LITERAL"
->ROW SHARE</TT
->, <TT
+>ROW SHARE</VAR
+>, <VAR
 CLASS="LITERAL"
 >ROW
-	 EXCLUSIVE</TT
->, <TT
+	 EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
 >SHARE UPDATE
-	 EXCLUSIVE</TT
->, <TT
+	 EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
->SHARE</TT
->, <TT
+>SHARE</VAR
+>, <VAR
 CLASS="LITERAL"
 >SHARE
-	 ROW EXCLUSIVE</TT
->, <TT
+	 ROW EXCLUSIVE</VAR
+>, <VAR
 CLASS="LITERAL"
->EXCLUSIVE</TT
+>EXCLUSIVE</VAR
 >, and
-	 <TT
+	 <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 >).
 	 This mode guarantees that the
 	 holder is the only transaction accessing the table in any way.
@@ -488,36 +492,43 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >DROP
 	 TABLE</TT
+>, <TT
+CLASS="COMMAND"
+>REINDEX</TT
+>,
+	 <TT
+CLASS="COMMAND"
+>CLUSTER</TT
 >, and <TT
 CLASS="COMMAND"
 >VACUUM FULL</TT
-> commands.
-	 This is also the default lock mode for <TT
-CLASS="COMMAND"
->LOCK TABLE</TT
 >
-         statements that do not specify a mode explicitly.
+	 commands.  This is also the default lock mode for <TT
+CLASS="COMMAND"
+>LOCK
+	 TABLE</TT
+> statements that do not specify a mode explicitly.
 	</P
 ></DD
 ></DL
 ></DIV
 ><DIV
-CLASS="NOTE"
+CLASS="TIP"
 ><BLOCKQUOTE
-CLASS="NOTE"
+CLASS="TIP"
 ><P
 ><B
->Note: </B
->       Only an <TT
+>Tip: </B
+>       Only an <VAR
 CLASS="LITERAL"
->ACCESS EXCLUSIVE</TT
+>ACCESS EXCLUSIVE</VAR
 > lock blocks a
        <TT
 CLASS="COMMAND"
 >SELECT</TT
-> (without <TT
+> (without <VAR
 CLASS="OPTION"
->FOR UPDATE</TT
+>FOR UPDATE</VAR
 >)
        statement.
       </P
@@ -530,14 +541,14 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="LOCKING-ROWS"
->9.3.2. Row-Level Locks</A
+>12.3.2. Row-Level Locks</A
 ></H2
 ><P
 >     In addition to table-level locks, there are row-level locks.
      A row-level lock on a specific row is automatically acquired when the
      row is updated (or deleted or marked for update).  The lock is held
      until the transaction commits or rolls back.
-     Row-level locks don't affect data
+     Row-level locks do not affect data
      querying; they block <SPAN
 CLASS="emphasis"
 ><I
@@ -571,8 +582,8 @@ CLASS="COMMAND"
 ><P
 >     In addition to table and row locks, page-level share/exclusive locks are
      used to control read/write access to table pages in the shared buffer
-     pool.  These locks are released immediately after a tuple is fetched or
-     updated.  Application writers normally need not be concerned with
+     pool.  These locks are released immediately after a row is fetched or
+     updated.  Application developers normally need not be concerned with
      page-level locks, but we mention them for completeness.
     </P
 ></DIV
@@ -582,33 +593,89 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="LOCKING-DEADLOCKS"
->9.3.3. Deadlocks</A
+>12.3.3. Deadlocks</A
 ></H2
 ><P
->     Use of explicit locking can cause <I
+>     The use of explicit locking can increase the likelyhood of
+     <I
 CLASS="FIRSTTERM"
 >deadlocks</I
->, wherein
-     two (or more) transactions each hold locks that the other wants.
-     For example, if transaction 1 acquires an exclusive lock on table A
-     and then tries to acquire an exclusive lock on table B, while transaction
-     2 has already exclusive-locked table B and now wants an exclusive lock
-     on table A, then neither one can proceed.
+>, wherein two (or more) transactions each
+     hold locks that the other wants.  For example, if transaction 1
+     acquires an exclusive lock on table A and then tries to acquire
+     an exclusive lock on table B, while transaction 2 has already
+     exclusive-locked table B and now wants an exclusive lock on table
+     A, then neither one can proceed.
      <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> automatically detects deadlock
-     situations and resolves them by aborting one of the transactions
-     involved, allowing the other(s) to complete.  (Exactly which transaction
-     will be aborted is difficult to predict and should not be relied on.)
+> automatically detects
+     deadlock situations and resolves them by aborting one of the
+     transactions involved, allowing the other(s) to complete.
+     (Exactly which transaction will be aborted is difficult to
+     predict and should not be relied on.)
     </P
 ><P
->     The best defense against deadlocks is generally to avoid them by being
-     certain that all applications using a database acquire locks on multiple
-     objects in a consistent order.  One should also ensure that the first
-     lock acquired on an object in a transaction is the highest mode that
-     will be needed for that object.  If it is not feasible to verify this
-     in advance, then deadlocks may be handled on-the-fly by retrying
+>     Note that deadlocks can also occur as the result of row-level
+     locks (and thus, they can occur even if explicit locking is not
+     used). Consider the case in which there are two concurrent
+     transactions modifying a table. The first transaction executes:
+
+</P><PRE
+CLASS="SCREEN"
+>UPDATE accounts SET balance = balance + 100.00 WHERE acctnum = 11111;</PRE
+><P>
+
+     This acquires a row-level lock on the row with the specified
+     account number. Then, the second transaction executes:
+
+</P><PRE
+CLASS="SCREEN"
+>UPDATE accounts SET balance = balance + 100.00 WHERE acctnum = 22222;
+UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;</PRE
+><P>
+
+     The first <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> statement successfully
+     acquires a row-level lock on the specified row, so it succeeds in
+     updating that row. However, the second <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>
+     statement finds that the row it is attempting to update has
+     already been locked, so it waits for the transaction that
+     acquired the lock to complete. Transaction two is now waiting on
+     transaction one to complete before it continues execution. Now,
+     transaction one executes:
+
+</P><PRE
+CLASS="SCREEN"
+>UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 22222;</PRE
+><P>
+
+     Transaction one attempts to acquire a row-level lock on the
+     specified row, but it cannot: transaction two already holds such
+     a lock. So it waits for transaction two to complete. Thus,
+     transaction one is blocked on transaction two, and transaction
+     two is blocked on transaction one: a deadlock
+     condition. <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will detect this
+     situation and abort one of the transactions.
+    </P
+><P
+>     The best defense against deadlocks is generally to avoid them by
+     being certain that all applications using a database acquire
+     locks on multiple objects in a consistent order. That was the
+     reason for the previous deadlock example: if both transactions
+     had updated the rows in the same order, no deadlock would have
+     occurred. One should also ensure that the first lock acquired on
+     an object in a transaction is the highest mode that will be
+     needed for that object.  If it is not feasible to verify this in
+     advance, then deadlocks may be handled on-the-fly by retrying
      transactions that are aborted due to deadlock.
     </P
 ><P

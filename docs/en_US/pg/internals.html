@@ -1,0 +1,617 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Internals</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="postmaster"
+HREF="app-postmaster.html"><LINK
+REL="NEXT"
+TITLE="Overview of PostgreSQL Internals"
+HREF="overview.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="PART"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="app-postmaster.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="overview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="PART"
+><A
+NAME="INTERNALS"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>VII. Internals</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN50147"
+></A
+><P
+>    This part contains assorted information that can be of use to
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> developers.
+   </P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>44. <A
+HREF="overview.html"
+>Overview of PostgreSQL Internals</A
+></DT
+><DD
+><DL
+><DT
+>44.1. <A
+HREF="overview.html#QUERY-PATH"
+>The Path of a Query</A
+></DT
+><DT
+>44.2. <A
+HREF="connect-estab.html"
+>How Connections are Established</A
+></DT
+><DT
+>44.3. <A
+HREF="parser-stage.html"
+>The Parser Stage</A
+></DT
+><DT
+>44.4. <A
+HREF="rule-system.html"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Rule System</A
+></DT
+><DT
+>44.5. <A
+HREF="planner-optimizer.html"
+>Planner/Optimizer</A
+></DT
+><DT
+>44.6. <A
+HREF="executor.html"
+>Executor</A
+></DT
+></DL
+></DD
+><DT
+>45. <A
+HREF="catalogs.html"
+>System Catalogs</A
+></DT
+><DD
+><DL
+><DT
+>45.1. <A
+HREF="catalogs.html#CATALOGS-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>45.2. <A
+HREF="catalog-pg-aggregate.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_aggregate</TT
+></A
+></DT
+><DT
+>45.3. <A
+HREF="catalog-pg-am.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_am</TT
+></A
+></DT
+><DT
+>45.4. <A
+HREF="catalog-pg-amop.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_amop</TT
+></A
+></DT
+><DT
+>45.5. <A
+HREF="catalog-pg-amproc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_amproc</TT
+></A
+></DT
+><DT
+>45.6. <A
+HREF="catalog-pg-attrdef.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attrdef</TT
+></A
+></DT
+><DT
+>45.7. <A
+HREF="catalog-pg-attribute.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
+></DT
+><DT
+>45.8. <A
+HREF="catalog-pg-cast.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+></A
+></DT
+><DT
+>45.9. <A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+></DT
+><DT
+>45.10. <A
+HREF="catalog-pg-constraint.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+></A
+></DT
+><DT
+>45.11. <A
+HREF="catalog-pg-conversion.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_conversion</TT
+></A
+></DT
+><DT
+>45.12. <A
+HREF="catalog-pg-database.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+></A
+></DT
+><DT
+>45.13. <A
+HREF="catalog-pg-depend.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+></A
+></DT
+><DT
+>45.14. <A
+HREF="catalog-pg-description.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+></A
+></DT
+><DT
+>45.15. <A
+HREF="catalog-pg-group.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_group</TT
+></A
+></DT
+><DT
+>45.16. <A
+HREF="catalog-pg-index.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_index</TT
+></A
+></DT
+><DT
+>45.17. <A
+HREF="catalog-pg-inherits.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_inherits</TT
+></A
+></DT
+><DT
+>45.18. <A
+HREF="catalog-pg-language.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_language</TT
+></A
+></DT
+><DT
+>45.19. <A
+HREF="catalog-pg-largeobject.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+></A
+></DT
+><DT
+>45.20. <A
+HREF="catalog-pg-listener.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_listener</TT
+></A
+></DT
+><DT
+>45.21. <A
+HREF="catalog-pg-namespace.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_namespace</TT
+></A
+></DT
+><DT
+>45.22. <A
+HREF="catalog-pg-opclass.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
+></A
+></DT
+><DT
+>45.23. <A
+HREF="catalog-pg-operator.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></A
+></DT
+><DT
+>45.24. <A
+HREF="catalog-pg-proc.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></A
+></DT
+><DT
+>45.25. <A
+HREF="catalog-pg-rewrite.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_rewrite</TT
+></A
+></DT
+><DT
+>45.26. <A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+></DT
+><DT
+>45.27. <A
+HREF="catalog-pg-statistic.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+></A
+></DT
+><DT
+>45.28. <A
+HREF="catalog-pg-trigger.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_trigger</TT
+></A
+></DT
+><DT
+>45.29. <A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+></DT
+></DL
+></DD
+><DT
+>46. <A
+HREF="protocol.html"
+>Frontend/Backend Protocol</A
+></DT
+><DD
+><DL
+><DT
+>46.1. <A
+HREF="protocol.html#PROTOCOL-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>46.2. <A
+HREF="protocol-flow.html"
+>Message Flow</A
+></DT
+><DT
+>46.3. <A
+HREF="protocol-message-types.html"
+>Message Data Types</A
+></DT
+><DT
+>46.4. <A
+HREF="protocol-message-formats.html"
+>Message Formats</A
+></DT
+><DT
+>46.5. <A
+HREF="protocol-error-fields.html"
+>Error and Notice Message Fields</A
+></DT
+><DT
+>46.6. <A
+HREF="protocol-changes.html"
+>Summary of Changes since Protocol 2.0</A
+></DT
+></DL
+></DD
+><DT
+>47. <A
+HREF="page.html"
+>Page Files</A
+></DT
+><DT
+>48. <A
+HREF="geqo.html"
+>Genetic Query Optimization</A
+></DT
+><DD
+><DL
+><DT
+>48.1. <A
+HREF="geqo.html#GEQO-INTRO"
+>Query Handling as a Complex Optimization Problem</A
+></DT
+><DT
+>48.2. <A
+HREF="geqo-intro2.html"
+>Genetic Algorithms</A
+></DT
+><DT
+>48.3. <A
+HREF="geqo-pg-intro.html"
+>Genetic Query Optimization (<ACRONYM
+CLASS="ACRONYM"
+>GEQO</ACRONYM
+>) in PostgreSQL</A
+></DT
+><DT
+>48.4. <A
+HREF="geqo-biblio.html"
+>Further Readings</A
+></DT
+></DL
+></DD
+><DT
+>49. <A
+HREF="gist.html"
+>GiST Indexes</A
+></DT
+><DT
+>50. <A
+HREF="bki.html"
+><ACRONYM
+CLASS="ACRONYM"
+>BKI</ACRONYM
+> Backend Interface</A
+></DT
+><DD
+><DL
+><DT
+>50.1. <A
+HREF="bki.html#BKI-FORMAT"
+><ACRONYM
+CLASS="ACRONYM"
+>BKI</ACRONYM
+> File Format</A
+></DT
+><DT
+>50.2. <A
+HREF="bki-commands.html"
+><ACRONYM
+CLASS="ACRONYM"
+>BKI</ACRONYM
+> Commands</A
+></DT
+><DT
+>50.3. <A
+HREF="bki-example.html"
+>Example</A
+></DT
+></DL
+></DD
+><DT
+>51. <A
+HREF="source.html"
+>PostgreSQL Coding Conventions</A
+></DT
+><DD
+><DL
+><DT
+>51.1. <A
+HREF="source.html#SOURCE-FORMAT"
+>Formatting</A
+></DT
+><DT
+>51.2. <A
+HREF="error-message-reporting.html"
+>Reporting Errors Within the Server</A
+></DT
+><DT
+>51.3. <A
+HREF="error-style-guide.html"
+>Error Message Style Guide</A
+></DT
+></DL
+></DD
+><DT
+>52. <A
+HREF="compiler.html"
+><SPAN
+CLASS="APPLICATION"
+>gcc</SPAN
+> Default Optimizations</A
+></DT
+><DT
+>53. <A
+HREF="nls.html"
+>Native Language Support</A
+></DT
+><DD
+><DL
+><DT
+>53.1. <A
+HREF="nls.html#NLS-TRANSLATOR"
+>For the Translator</A
+></DT
+><DT
+>53.2. <A
+HREF="nls-programmer.html"
+>For the Programmer</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-postmaster.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="overview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Overview of PostgreSQL Internals</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

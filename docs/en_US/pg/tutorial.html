@@ -1,36 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->PostgreSQL 7.3.3 Tutorial</TITLE
+>Tutorial</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="PREVIOUS"
-TITLE="PostgreSQL 7.3.3 Documentation"
-HREF="index.html"><LINK
+TITLE="Bug Reporting Guidelines"
+HREF="bug-reporting.html"><LINK
 REL="NEXT"
-TITLE="Preface"
-HREF="tutorial-preface.html"><LINK
+TITLE="Getting Started"
+HREF="tutorial-start.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
-CLASS="BOOK"
+CLASS="PART"
 BGCOLOR="#FFFFFF"
 TEXT="#000000"
 LINK="#0000FF"
 VLINK="#840084"
 ALINK="#0000FF"
 ><DIV
-CLASS="BOOK"
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="bug-reporting.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tutorial-start.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="PART"
 ><A
 NAME="TUTORIAL"
 ></A
@@ -38,20 +81,54 @@ NAME="TUTORIAL"
 CLASS="TITLEPAGE"
 ><H1
 CLASS="TITLE"
+>I. Tutorial</H1
+><DIV
+CLASS="PARTINTRO"
 ><A
-NAME="TUTORIAL"
->PostgreSQL 7.3.3 Tutorial</A
-></H1
-><H3
-CLASS="CORPAUTHOR"
->The PostgreSQL Global Development Group</H3
+NAME="AEN310"
+></A
 ><P
-CLASS="COPYRIGHT"
-><A
-HREF="ln25.html"
->Copyright</A
-> &copy; 1996-2002 by The PostgreSQL Global Development Group</P
-><HR></DIV
+>    Welcome to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Tutorial.  The
+    following few chapters are intended to give a simple introduction
+    to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, relational database
+    concepts, and the SQL language to those who are new to any one of
+    these aspects.  We only assume some general knowledge about how to
+    use computers.  No particular Unix or programming experience is
+    required.  This part is mainly intended to give you a hands-on
+    experience with important aspects of the
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> system.  It makes no attempt
+    to be a complete or thorough treatment of the topics it covers.
+   </P
+><P
+>    After you have worked through this tutorial you might want to move
+    on to reading <A
+HREF="sql.html"
+>Part II</A
+> to gain a more formal knowledge
+    of the SQL language, or <A
+HREF="client-interfaces.html"
+>Part IV</A
+> for
+    information about developing applications for
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  Those who set up and
+    manage their own server should also read <A
+HREF="admin.html"
+>Part III</A
+>.
+   </P
+></DIV
 ><DIV
 CLASS="TOC"
 ><DL
@@ -59,20 +136,6 @@ CLASS="TOC"
 ><B
 >Table of Contents</B
 ></DT
-><DT
-><A
-HREF="tutorial-preface.html"
->Preface</A
-></DT
-><DD
-><DL
-><DT
->1. <A
-HREF="tutorial-preface.html#TUTORIAL-PREFACE-THISBOOK"
->What's In This Book</A
-></DT
-></DL
-></DD
 ><DT
 >1. <A
 HREF="tutorial-start.html"
@@ -105,9 +168,9 @@ HREF="tutorial-accessdb.html"
 ><DT
 >2. <A
 HREF="tutorial-sql.html"
->The <SPAN
+>The <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > Language</A
 ></DT
 ><DD
@@ -201,6 +264,7 @@ HREF="tutorial-conclusion.html"
 ></DL
 ></DIV
 ></DIV
+></DIV
 ><DIV
 CLASS="NAVFOOTER"
 ><HR
@@ -217,7 +281,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="index.html"
+HREF="bug-reporting.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -235,7 +299,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="tutorial-preface.html"
+HREF="tutorial-start.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -245,7 +309,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->PostgreSQL 7.3.3 Documentation</TD
+>Bug Reporting Guidelines</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -255,7 +319,7 @@ VALIGN="top"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Preface</TD
+>Getting Started</TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SELECT INTO</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,198 +78,87 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-SELECTINTO"
->SELECT INTO</A
-></H1
+></A
+>SELECT INTO</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45518"
+NAME="AEN43871"
 ></A
 ><H2
 >Name</H2
->   SELECT INTO
-  &nbsp;--&nbsp;   create a new table from the results of a query
-  </DIV
+>SELECT INTO&nbsp;--&nbsp;create a new table from the results of a query</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45521"
+NAME="AEN43874"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SELECT [ ALL | DISTINCT [ ON ( <TT
+>SELECT [ ALL | DISTINCT [ ON ( <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > [, ...] ) ] ]
-    * | <TT
+    * | <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> [ AS <TT
+>expression</VAR
+> [ AS <VAR
 CLASS="REPLACEABLE"
-><I
->output_name</I
-></TT
+>output_name</VAR
 > ] [, ...]
-    INTO [ TEMPORARY | TEMP ] [ TABLE ] <TT
+    INTO [ TEMPORARY | TEMP ] [ TABLE ] <VAR
 CLASS="REPLACEABLE"
-><I
->new_table</I
-></TT
+>new_table</VAR
 >
-    [ FROM <TT
+    [ FROM <VAR
 CLASS="REPLACEABLE"
-><I
->from_item</I
-></TT
+>from_item</VAR
 > [, ...] ]
-    [ WHERE <TT
+    [ WHERE <VAR
 CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
+>condition</VAR
 > ]
-    [ GROUP BY <TT
+    [ GROUP BY <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
+>expression</VAR
 > [, ...] ]
-    [ HAVING <TT
+    [ HAVING <VAR
 CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
+>condition</VAR
 > [, ...] ]
-    [ { UNION | INTERSECT | EXCEPT } [ ALL ] <TT
+    [ { UNION | INTERSECT | EXCEPT } [ ALL ] <VAR
 CLASS="REPLACEABLE"
-><I
->select</I
-></TT
+>select</VAR
 > ]
-    [ ORDER BY <TT
+    [ ORDER BY <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> [ ASC | DESC | USING <TT
+>expression</VAR
+> [ ASC | DESC | USING <VAR
 CLASS="REPLACEABLE"
-><I
->operator</I
-></TT
+>operator</VAR
 > ] [, ...] ]
-    [ LIMIT { <TT
+    [ LIMIT { <VAR
 CLASS="REPLACEABLE"
-><I
->count</I
-></TT
+>count</VAR
 > | ALL } ]
-    [ OFFSET <TT
+    [ OFFSET <VAR
 CLASS="REPLACEABLE"
-><I
->start</I
-></TT
+>start</VAR
 > ]
-    [ FOR UPDATE [ OF <TT
+    [ FOR UPDATE [ OF <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
-> [, ...] ] ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-SELECTINTO-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->TEMPORARY<BR>TEMP</DT
-><DD
-><P
->       If specified, the table is created as a temporary table.
-       Refer to <A
-HREF="sql-createtable.html"
-><I
->CREATE TABLE</I
-></A
-> for details.
-      </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->new_table</I
-></TT
-></DT
-><DD
-><P
->        The name (optionally schema-qualified) of the table to be created.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-><P
->    All other inputs are described in detail for
-    <A
-HREF="sql-select.html"
-><I
->SELECT</I
-></A
->.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-SELECTINTO-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    Refer to
-    <A
-HREF="sql-createtable.html"
-><I
->CREATE TABLE</I
-></A
->
-    and
-    <A
-HREF="sql-select.html"
-><I
->SELECT</I
-></A
->
-    for a summary of possible output messages.
-   </P
-></DIV
+>tablename</VAR
+> [, ...] ] ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-SELECTINTO-1"
+NAME="AEN43890"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
@@ -285,94 +174,171 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >SELECT</TT
 >.
-
-   </P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     <A
-HREF="sql-createtableas.html"
-><I
->CREATE TABLE AS</I
-></A
->
-     is functionally equivalent to <TT
-CLASS="COMMAND"
->SELECT INTO</TT
->.
-     <TT
-CLASS="COMMAND"
->CREATE TABLE AS</TT
-> is the recommended syntax, since
-     <TT
-CLASS="COMMAND"
->SELECT INTO</TT
-> is not standard.  In fact, this form of
-     <TT
-CLASS="COMMAND"
->SELECT INTO</TT
-> is not available in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> or <A
-HREF="app-ecpg.html"
-><SPAN
-CLASS="APPLICATION"
->ecpg</SPAN
-></A
->,
-     because they interpret the INTO clause differently.
-    </P
-></BLOCKQUOTE
-></DIV
-><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-SELECTINTO-2"
+NAME="AEN43896"
 ></A
 ><H2
->   Compatibility
-  </H2
+>Parameters</H2
 ><P
->    SQL92 uses <TT
-CLASS="COMMAND"
->SELECT ... INTO</TT
-> to represent selecting
-    values into scalar variables of a host program, rather than creating
-    a new table.  This indeed is the usage found in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> and <A
-HREF="app-ecpg.html"
-><SPAN
-CLASS="APPLICATION"
->ecpg</SPAN
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>TEMPORARY</VAR
+> or <VAR
+CLASS="LITERAL"
+>TEMP</VAR
+></DT
+><DD
+><P
+>     If specified, the table is created as a temporary table.  Refer
+     to <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+> for details.
+    </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>new_table</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of the table to be created.
+     </P
+></DD
+></DL
+></DIV
+><P
+>   All other parameters are described in detail under <A
+HREF="sql-select.html"
+><I
+>SELECT</I
 ></A
 >.
-    The <SPAN
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43913"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   Refer to
+   <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+>
+   and
+   <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>
+   for a summary of possible output messages.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43918"
+></A
+><H2
+>Notes</H2
+><P
+>   <A
+HREF="sql-createtableas.html"
+><I
+>CREATE TABLE AS</I
+></A
+>
+   is functionally equivalent to <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+>.
+   <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> is the recommended syntax, since
+   this form of <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> is not available in
+   <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> or
+   <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>, because they interpret the
+   <VAR
+CLASS="LITERAL"
+>INTO</VAR
+> clause differently.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN43928"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The SQL standard uses <TT
+CLASS="COMMAND"
+>SELECT ... INTO</TT
+> to
+   represent selecting values into scalar variables of a host program,
+   rather than creating a new table.  This indeed is the usage found
+   in <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> (see <A
+HREF="ecpg.html"
+>Chapter 30</A
+>) and
+   <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> (see <A
+HREF="plpgsql.html"
+>Chapter 40</A
+>).
+   The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > usage of <TT
 CLASS="COMMAND"
 >SELECT
-    INTO</TT
-> to represent table creation is historical.  It's best
-    to use <TT
+   INTO</TT
+> to represent table creation is historical.  It's
+   best to use <TT
 CLASS="COMMAND"
 >CREATE TABLE AS</TT
-> for this purpose in new code.
-    (<TT
+> for this purpose in
+   new code.  (<TT
 CLASS="COMMAND"
 >CREATE TABLE AS</TT
-> isn't standard either, but it's
-    less likely to cause confusion.)
-    </P
+> isn't standard
+   either, but it's less likely to cause confusion.)
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

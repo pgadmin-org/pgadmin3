@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Client Authentication</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+TITLE="Server Administration"
 HREF="admin.html"><LINK
 REL="PREVIOUS"
 TITLE="Destroying a Database"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="CLIENT-AUTHENTICATION"
->Chapter 6. Client Authentication</A
-></H1
+></A
+>Chapter 19. Client Authentication</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,7 +90,7 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->6.1. <A
+>19.1. <A
 HREF="client-authentication.html#AUTH-PG-HBA-CONF"
 >The <TT
 CLASS="FILENAME"
@@ -98,48 +98,48 @@ CLASS="FILENAME"
 > file</A
 ></DT
 ><DT
->6.2. <A
+>19.2. <A
 HREF="auth-methods.html"
 >Authentication methods</A
 ></DT
 ><DD
 ><DL
 ><DT
->6.2.1. <A
+>19.2.1. <A
 HREF="auth-methods.html#AUTH-TRUST"
 >Trust authentication</A
 ></DT
 ><DT
->6.2.2. <A
+>19.2.2. <A
 HREF="auth-methods.html#AUTH-PASSWORD"
 >Password authentication</A
 ></DT
 ><DT
->6.2.3. <A
+>19.2.3. <A
 HREF="auth-methods.html#KERBEROS-AUTH"
 >Kerberos authentication</A
 ></DT
 ><DT
->6.2.4. <A
+>19.2.4. <A
 HREF="auth-methods.html#AUTH-IDENT"
 >Ident-based authentication</A
 ></DT
 ><DT
->6.2.5. <A
+>19.2.5. <A
 HREF="auth-methods.html#AUTH-PAM"
 >PAM Authentication</A
 ></DT
 ></DL
 ></DD
 ><DT
->6.3. <A
+>19.3. <A
 HREF="client-authentication-problems.html"
 >Authentication problems</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN21226"
+NAME="AEN16890"
 ></A
 ><P
 >  When a client application connects to the database server, it
@@ -152,7 +152,7 @@ CLASS="PRODUCTNAME"
   user name determines access privileges to database objects -- see
   <A
 HREF="user-manag.html"
->Chapter 4</A
+>Chapter 17</A
 > for more information. Therefore, it is
   essential to restrict which database users can connect.
  </P
@@ -184,7 +184,7 @@ CLASS="PRODUCTNAME"
   runs. If all the users of a particular server also have accounts on
   the server's machine, it makes sense to assign database user names
   that match their operating system user names. However, a server that
-  accepts remote connections may have many users who have no local
+  accepts remote connections may have many database users who have no local operating system
   account, and in such cases there need be no connection between
   database user names and OS user names.
  </P
@@ -194,13 +194,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="AUTH-PG-HBA-CONF"
->6.1. The <TT
+>19.1. The <TT
 CLASS="FILENAME"
 >pg_hba.conf</TT
 > file</A
 ></H1
 ><A
-NAME="AEN21240"
+NAME="AEN16904"
 ></A
 ><P
 >   Client authentication is controlled by the file
@@ -212,9 +212,9 @@ CLASS="FILENAME"
 CLASS="FILENAME"
 >/usr/local/pgsql/data/pg_hba.conf</TT
 >.
-   (<SPAN
+   (<ACRONYM
 CLASS="ACRONYM"
->HBA</SPAN
+>HBA</ACRONYM
 > stands for host-based authentication.) A default
    <TT
 CLASS="FILENAME"
@@ -231,9 +231,9 @@ CLASS="FILENAME"
 >pg_hba.conf</TT
 > file is
    a set of records, one per line. Blank lines are ignored, as is any
-   text after the <SPAN
-CLASS="QUOTE"
->"#"</SPAN
+   text after the <VAR
+CLASS="LITERAL"
+>#</VAR
 > comment character. A record is made
    up of a number of fields which are separated by spaces and/or tabs.
    Fields can contain white space if the field value is quoted. Records
@@ -257,102 +257,157 @@ CLASS="QUOTE"
    access is denied.
   </P
 ><P
->   A record may have one of the three formats
-   </P><PRE
+>   A record may have one of the seven formats
+</P><PRE
 CLASS="SYNOPSIS"
->local   <TT
+>local   <VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
->  <TT
+>database</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->user</I
-></TT
->  <TT
+>user</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->authentication-method</I
-></TT
+>authentication-method</VAR
 >  [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->authentication-option</I
-></TT
+>authentication-option</VAR
 ></SPAN
 >]
-host    <TT
+host    <VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
->  <TT
+>database</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->user</I
-></TT
->  <TT
+>user</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->IP-address</I
-></TT
->  <TT
+>IP-address</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->IP-mask</I
-></TT
->  <TT
+>IP-mask</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->authentication-method</I
-></TT
+>authentication-method</VAR
 >  [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->authentication-option</I
-></TT
+>authentication-option</VAR
 ></SPAN
 >]
-hostssl  <TT
+hostssl  <VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
->  <TT
+>database</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->user</I
-></TT
->  <TT
+>user</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->IP-address</I
-></TT
->  <TT
+>IP-address</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->IP-mask</I
-></TT
->  <TT
+>IP-mask</VAR
+>  <VAR
 CLASS="REPLACEABLE"
-><I
->authentication-method</I
-></TT
+>authentication-method</VAR
 >  [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->authentication-option</I
-></TT
+>authentication-option</VAR
 ></SPAN
 >]
-    </PRE
+hostnossl  <VAR
+CLASS="REPLACEABLE"
+>database</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>user</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>IP-address</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>IP-mask</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>authentication-method</VAR
+>  [<SPAN
+CLASS="OPTIONAL"
+><VAR
+CLASS="REPLACEABLE"
+>authentication-option</VAR
+></SPAN
+>]
+host    <VAR
+CLASS="REPLACEABLE"
+>database</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>user</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>IP-address</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>CIDR-mask</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>authentication-method</VAR
+>  [<SPAN
+CLASS="OPTIONAL"
+><VAR
+CLASS="REPLACEABLE"
+>authentication-option</VAR
+></SPAN
+>]
+hostssl  <VAR
+CLASS="REPLACEABLE"
+>database</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>user</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>IP-address</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>CIDR-mask</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>authentication-method</VAR
+>  [<SPAN
+CLASS="OPTIONAL"
+><VAR
+CLASS="REPLACEABLE"
+>authentication-option</VAR
+></SPAN
+>]
+hostnossl  <VAR
+CLASS="REPLACEABLE"
+>database</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>user</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>IP-address</VAR
+>/<VAR
+CLASS="REPLACEABLE"
+>CIDR-mask</VAR
+>  <VAR
+CLASS="REPLACEABLE"
+>authentication-method</VAR
+>  [<SPAN
+CLASS="OPTIONAL"
+><VAR
+CLASS="REPLACEABLE"
+>authentication-option</VAR
+></SPAN
+>]</PRE
 ><P>
    The meaning of the fields is as follows:
 
@@ -362,96 +417,102 @@ CLASS="REPLACEABLE"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->local</TT
+>local</VAR
 ></DT
 ><DD
 ><P
->       This record matches connection attempts using Unix domain
+>       This record matches connection attempts using Unix-domain
        sockets.  Without a record of this type, Unix-domain socket
        connections are disallowed
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->host</TT
+>host</VAR
 ></DT
 ><DD
 ><P
 >       This record matches connection attempts using TCP/IP networks.
        Note that TCP/IP connections are disabled unless the server is
-       started with the <TT
+       started with the <VAR
 CLASS="OPTION"
->-i</TT
+>-i</VAR
 > option or the
-       <TT
-CLASS="LITERAL"
->tcpip_socket</TT
-> <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->
-       configuration parameter is enabled.
+       <VAR
+CLASS="VARNAME"
+>tcpip_socket</VAR
+> configuration parameter is enabled.
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->hostssl</TT
+>hostssl</VAR
 ></DT
 ><DD
 ><P
 >       This record matches connection attempts using SSL over TCP/IP.
-       <TT
+       <VAR
 CLASS="LITERAL"
->host</TT
+>host</VAR
 > records will match either SSL or
-       non-SSL connection attempts, but <TT
+       non-SSL connection attempts, but <VAR
 CLASS="LITERAL"
->hostssl</TT
+>hostssl</VAR
 >
        records require SSL connections.
       </P
 ><P
 >       To be able make use of this option the server must be built
        with SSL support enabled. Furthermore, SSL must be enabled by
-       enabling the option <TT
-CLASS="LITERAL"
->ssl</TT
-> in
-       <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> (see <A
+       enabling the <VAR
+CLASS="VARNAME"
+>ssl</VAR
+> configuration parameter
+       (see <A
 HREF="runtime-config.html"
->Section 3.4</A
->).
+>Section 16.4</A
+> for more information).
       </P
 ></DD
 ><DT
-><TT
+><VAR
+CLASS="LITERAL"
+>hostnossl</VAR
+></DT
+><DD
+><P
+>       This record is similar to <VAR
+CLASS="LITERAL"
+>hostssl</VAR
+> but with the
+	   opposite logic: it matches only regular connection attempts not
+	   using SSL.
+      </P
+></DD
+><DT
+><VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
+>database</VAR
 ></DT
 ><DD
 ><P
 >       Specifies which databases this record matches.  The value
-       <TT
+       <VAR
 CLASS="LITERAL"
->all</TT
+>all</VAR
 > specifies that it matches all databases.
-       The value <TT
+       The value <VAR
 CLASS="LITERAL"
->sameuser</TT
+>sameuser</VAR
 > specifies that the record
        matches if the requested database has the same name as the
-       requested user.  The value <TT
+       requested user.  The value <VAR
 CLASS="LITERAL"
->samegroup</TT
+>samegroup</VAR
 > specifies that
        the requested user must a member of the group with the same
        name as the requested database.  Otherwise, this is the name of
@@ -461,9 +522,9 @@ CLASS="PRODUCTNAME"
 > database.
        Multiple database names can be supplied by separating them with
        commas.  A file containing database names can be specified by
-       preceding the file name with <TT
+       preceding the file name with <VAR
 CLASS="LITERAL"
->@</TT
+>@</VAR
 >. The file must be in
        the same directory as <TT
 CLASS="FILENAME"
@@ -472,33 +533,34 @@ CLASS="FILENAME"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->user</I
-></TT
+>user</VAR
 ></DT
 ><DD
 ><P
->       Specifies which PostgreSQL users this record matches. The value
-       <TT
+>       Specifies which <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> users this record
+       matches. The value <VAR
 CLASS="LITERAL"
->all</TT
-> specifies that it matches all users.
-       Otherwise, this is the name of a specific
+>all</VAR
+> specifies that it
+       matches all users.  Otherwise, this is the name of a specific
        <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user. Multiple user names
        can be supplied by separating them with commas. Group names can
-       be specified by preceding the group name with <TT
+       be specified by preceding the group name with <VAR
 CLASS="LITERAL"
->+</TT
+>+</VAR
 >. A
        file containing user names can be specified by preceding the
-       file name with <TT
+       file name with <VAR
 CLASS="LITERAL"
->@</TT
+>@</VAR
 >. The file must be in the same
        directory as <TT
 CLASS="FILENAME"
@@ -507,83 +569,122 @@ CLASS="FILENAME"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->IP-address</I
-></TT
-><BR><TT
+>IP-address</VAR
+><BR><VAR
 CLASS="REPLACEABLE"
-><I
->IP-mask</I
-></TT
+>IP-mask</VAR
 ></DT
 ><DD
 ><P
->       These two fields contain IP address/mask values in standard
+>       These two fields contain IP address and mask values in standard
        dotted decimal notation. (IP addresses can only be specified
        numerically, not as domain or host names.)  Taken together they
        specify the client machine IP addresses that this record
        matches.  The precise logic is that
-       <A
-NAME="AEN21328"
-></A
-><BLOCKQUOTE
-CLASS="BLOCKQUOTE"
-><DIV
-CLASS="INFORMALFIGURE"
-><A
-NAME="AEN21329"
-></A
-><P
-></P
-><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->(<TT
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->actual-IP-address</I
-></TT
-> xor <TT
+>actual-IP-address</VAR
+> xor <VAR
 CLASS="REPLACEABLE"
-><I
->IP-address-field</I
-></TT
->) and <TT
+>IP-address-field</VAR
+>) and <VAR
 CLASS="REPLACEABLE"
-><I
->IP-mask-field</I
-></TT
+>IP-mask-field</VAR
 ></PRE
-><P
-></P
-></DIV
-></BLOCKQUOTE
->
+><P>
        must be zero for the record to match.  (Of course IP addresses
        can be spoofed but this consideration is beyond the scope of
        <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->.)
+>.) If you machine supports
+       IPv6, the default <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+> file will have an
+       IPv6 entry for <VAR
+CLASS="LITERAL"
+>localhost</VAR
+>. You can add your own IPv6
+       entries to the file. IPv6 entries are used only for IPv6
+       connections.
       </P
 ><P
->       These fields only apply to <TT
+>       These fields only apply to <VAR
 CLASS="LITERAL"
->host</TT
-> and
-       <TT
+>host</VAR
+>,
+       <VAR
 CLASS="LITERAL"
->hostssl</TT
+>hostssl</VAR
+>, and <VAR
+CLASS="LITERAL"
+>hostnossl</VAR
 > records.
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->authentication-method</I
-></TT
+>CIDR-mask</VAR
+></DT
+><DD
+><P
+>        This is an integer specifying the number of significant bits 
+        to set in the mask, and is an alternative to using the 
+        <VAR
+CLASS="REPLACEABLE"
+>IP-mask</VAR
+> notation. The number must
+        be between 0 and 32 (in the case of an IPv4 address) or 128
+        (in the case of an IPv6 address) inclusive. 0 will match any
+        address, while 32/128 will match only the exact host specified.
+        The same matching logic is used as for a dotted notation
+        <VAR
+CLASS="REPLACEABLE"
+>IP-Mask</VAR
+>.
+      </P
+><P
+>        There must be no white space between the <VAR
+CLASS="REPLACEABLE"
+>IP-address</VAR
+>
+        and the <VAR
+CLASS="LITERAL"
+>/</VAR
+> or the <VAR
+CLASS="LITERAL"
+>/</VAR
+> and the
+        <VAR
+CLASS="REPLACEABLE"
+>CIDR-mask</VAR
+>, or the file will not be parsed 
+        correctly.
+      </P
+><P
+>       This field only applies to <VAR
+CLASS="LITERAL"
+>host</VAR
+>,
+       <VAR
+CLASS="LITERAL"
+>hostssl</VAR
+>, and <VAR
+CLASS="LITERAL"
+>hostnossl</VAR
+> records.
+      </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>authentication-method</VAR
 ></DT
 ><DD
 ><P
@@ -591,7 +692,7 @@ CLASS="REPLACEABLE"
        this record. The possible choices are summarized here; details
        are in <A
 HREF="auth-methods.html"
->Section 6.2</A
+>Section 19.2</A
 >.
 
        <P
@@ -600,9 +701,9 @@ HREF="auth-methods.html"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->trust</TT
+>trust</VAR
 ></DT
 ><DD
 ><P
@@ -611,21 +712,21 @@ CLASS="LITERAL"
           <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> database to login as
+> database server to login as
           any <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user they like,
           without the need for a password.  See <A
 HREF="auth-methods.html#AUTH-TRUST"
->Section 6.2.1</A
+>Section 19.2.1</A
 > for details.
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->reject</TT
+>reject</VAR
 ></DT
 ><DD
 ><P
@@ -637,9 +738,9 @@ CLASS="QUOTE"
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->md5</TT
+>md5</VAR
 ></DT
 ><DD
 ><P
@@ -651,79 +752,85 @@ CLASS="STRUCTNAME"
 >.
           See <A
 HREF="auth-methods.html#AUTH-PASSWORD"
->Section 6.2.2</A
+>Section 19.2.2</A
 > for details.
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->crypt</TT
+>crypt</VAR
 ></DT
 ><DD
 ><P
->          Like <TT
+>          Like the <VAR
 CLASS="LITERAL"
->md5</TT
-> method but uses older crypt
+>md5</VAR
+> method but uses older <CODE
+CLASS="FUNCTION"
+>crypt()</CODE
+>
           encryption, which is needed for pre-7.2 clients.
-          <TT
+          <VAR
 CLASS="LITERAL"
->md5</TT
+>md5</VAR
 > is preferred for 7.2 and later clients.
           See <A
 HREF="auth-methods.html#AUTH-PASSWORD"
->Section 6.2.2</A
+>Section 19.2.2</A
 > for details.
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->password</TT
+>password</VAR
 ></DT
 ><DD
 ><P
->          Same as "md5", but the password is sent in clear text over the
+>          Same as <VAR
+CLASS="LITERAL"
+>md5</VAR
+>, but the password is sent in clear text over the
           network. This should not be used on untrusted networks.
           See <A
 HREF="auth-methods.html#AUTH-PASSWORD"
->Section 6.2.2</A
+>Section 19.2.2</A
 > for details.
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->krb4</TT
+>krb4</VAR
 ></DT
 ><DD
 ><P
 >          Kerberos V4 is used to authenticate the user. This is only
           available for TCP/IP connections.  See <A
 HREF="auth-methods.html#KERBEROS-AUTH"
->Section 6.2.3</A
+>Section 19.2.3</A
 > for details.
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->krb5</TT
+>krb5</VAR
 ></DT
 ><DD
 ><P
 >          Kerberos V5 is used to authenticate the user. This is only
           available for TCP/IP connections.  See <A
 HREF="auth-methods.html#KERBEROS-AUTH"
->Section 6.2.3</A
+>Section 19.2.3</A
 > for details.
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->ident</TT
+>ident</VAR
 ></DT
 ><DD
 ><P
@@ -732,17 +839,17 @@ CLASS="LITERAL"
           client, for local connections by getting it from the
           operating system) and check if the user is allowed to
           connect as the requested database user by consulting the map
-          specified after the <TT
+          specified after the <VAR
 CLASS="LITERAL"
->ident</TT
+>ident</VAR
 > key word.
          </P
 ><P
->          If you use the map <TT
+>          If you use the map <VAR
 CLASS="LITERAL"
->sameuser</TT
+>sameuser</VAR
 >, the user
-          names are assumed to be identical. If not, the map name is
+          names are required to be identical. If not, the map name is
           looked up in the file <TT
 CLASS="FILENAME"
 >pg_ident.conf</TT
@@ -752,7 +859,7 @@ CLASS="FILENAME"
 >pg_hba.conf</TT
 >.
           The connection is accepted if that file contains an
-          entry for this map name with the ident-supplied user name
+          entry for this map name with the operating-system user name
           and the requested <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -772,7 +879,11 @@ CLASS="SYSTEMITEM"
 CLASS="SYSTEMITEM"
 >NetBSD</SPAN
 >,
-          and <SPAN
+          <SPAN
+CLASS="SYSTEMITEM"
+>OpenBSD</SPAN
+>, and 
+          <SPAN
 CLASS="SYSTEMITEM"
 >BSD/OS</SPAN
 >).
@@ -780,21 +891,21 @@ CLASS="SYSTEMITEM"
 ><P
 >          See <A
 HREF="auth-methods.html#AUTH-IDENT"
->Section 6.2.4</A
+>Section 19.2.4</A
 > below for details.
          </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->pam</TT
+>pam</VAR
 ></DT
 ><DD
 ><P
 >          Authenticate using the Pluggable Authentication Modules
           (PAM) service provided by the operating system.  See <A
 HREF="auth-methods.html#AUTH-PAM"
->Section 6.2.5</A
+>Section 19.2.5</A
 > for details.
          </P
 ></DD
@@ -805,11 +916,9 @@ HREF="auth-methods.html#AUTH-PAM"
       </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->authentication-option</I
-></TT
+>authentication-option</VAR
 ></DT
 ><DD
 ><P
@@ -830,15 +939,15 @@ CLASS="FILENAME"
    significant. Typically, earlier records will have tight connection
    match parameters and weaker authentication methods, while later
    records will have looser match parameters and stronger authentication
-   methods. For example, one might wish to use <TT
+   methods. For example, one might wish to use <VAR
 CLASS="LITERAL"
->trust</TT
+>trust</VAR
 >
-   authentication for local TCP connections but require a password for
-   remote TCP connections. In this case a record specifying
-   <TT
+   authentication for local TCP/IP connections but require a password for
+   remote TCP/IP connections. In this case a record specifying
+   <VAR
 CLASS="LITERAL"
->trust</TT
+>trust</VAR
 > authentication for connections from 127.0.0.1 would
    appear before a record specifying password authentication for a wider
    range of allowed client IP addresses.
@@ -850,38 +959,44 @@ CLASS="IMPORTANT"
 ><P
 ><B
 >Important: </B
->    Do not prevent the superuser from accessing the template1
-    database.  Various utility commands need access to template1.
+>    Do not prevent the superuser from accessing the <VAR
+CLASS="LITERAL"
+>template1</VAR
+>
+    database.  Various utility commands need access to <VAR
+CLASS="LITERAL"
+>template1</VAR
+>.
    </P
 ></BLOCKQUOTE
 ></DIV
 ><P
->    <A
-NAME="AEN21428"
-></A
->
-   The <TT
+>   The <TT
 CLASS="FILENAME"
 >pg_hba.conf</TT
 > file is read on start-up and when
-   the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
-> receives a
+   the main server process (<TT
+CLASS="COMMAND"
+>postmaster</TT
+>) receives a
    <SPAN
 CLASS="SYSTEMITEM"
 >SIGHUP</SPAN
-> signal. If you edit the file on an
-   active system, you will need to signal the <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+><A
+NAME="AEN17150"
+></A
 >
-   (using <TT
+   signal. If you edit the file on an
+   active system, you will need to signal the <TT
+CLASS="COMMAND"
+>postmaster</TT
+>
+   (using <VAR
 CLASS="LITERAL"
->pg_ctl reload</TT
-> or <TT
+>pg_ctl reload</VAR
+> or <VAR
 CLASS="LITERAL"
->kill -HUP</TT
+>kill -HUP</VAR
 >) to make it
    re-read the file.
   </P
@@ -892,18 +1007,18 @@ CLASS="FILENAME"
 > file is shown in
    <A
 HREF="client-authentication.html#EXAMPLE-PG-HBA.CONF"
->Example 6-1</A
->. See below for details on the
+>Example 19-1</A
+>. See the next section for details on the
    different authentication methods.
-
-   <DIV
+  </P
+><DIV
 CLASS="EXAMPLE"
 ><A
 NAME="EXAMPLE-PG-HBA.CONF"
 ></A
 ><P
 ><B
->Example 6-1. An example <TT
+>Example 19-1. An example <TT
 CLASS="FILENAME"
 >pg_hba.conf</TT
 > file</B
@@ -972,8 +1087,6 @@ local   all         @admins,+support                                md5
 # The database column can also use lists and file names, but not groups:
 local   db1,db2,@demodbs  all                                       md5</PRE
 ></DIV
->
-  </P
 ></DIV
 ></DIV
 ><DIV

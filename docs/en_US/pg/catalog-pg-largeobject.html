@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_largeobject</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-LARGEOBJECT"
->3.19. pg_largeobject</A
+>45.19. <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+></A
 ></H1
+><A
+NAME="AEN52215"
+></A
 ><P
->   <TT
+>   The catalog <TT
 CLASS="STRUCTNAME"
 >pg_largeobject</TT
 > holds the data making up
@@ -101,106 +107,95 @@ CLASS="QUOTE"
 CLASS="STRUCTNAME"
 >pg_largeobject</TT
 >.
-   The amount of data per page is defined to be LOBLKSIZE (which is currently
-   BLCKSZ/4, or typically 2Kbytes).
+   The amount of data per page is defined to be <VAR
+CLASS="LITERAL"
+>LOBLKSIZE</VAR
+> (which is currently
+   <VAR
+CLASS="LITERAL"
+>BLCKSZ/4</VAR
+>, or typically 2 kB).
   </P
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN53659"
+NAME="AEN52224"
 ></A
 ><P
 ><B
->Table 3-19. pg_largeobject Columns</B
+>Table 45-19. <TT
+CLASS="STRUCTNAME"
+>pg_largeobject</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->loid</TD
+><TT
+CLASS="STRUCTFIELD"
+>loid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Identifier of the large object that includes this page</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pageno</TD
+><TT
+CLASS="STRUCTFIELD"
+>pageno</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Page number of this page within its large object
       (counting from zero)</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->data</TD
+><TT
+CLASS="STRUCTFIELD"
+>data</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bytea</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       Actual data stored in the large object.
-       This will never be more than LOBLKSIZE bytes, and may be less.
+       This will never be more than <TT
+CLASS="SYMBOL"
+>LOBLKSIZE</TT
+> bytes and may be less.
       </TD
 ></TR
 ></TBODY
@@ -212,9 +207,15 @@ CLASS="STRUCTNAME"
 >pg_largeobject</TT
 > holds data
    for one page of a large object, beginning at
-   byte offset (pageno * LOBLKSIZE) within the object.  The implementation
+   byte offset (<VAR
+CLASS="LITERAL"
+>pageno * LOBLKSIZE</VAR
+>) within the object.  The implementation
    allows sparse storage: pages may be missing, and may be shorter than
-   LOBLKSIZE bytes even if they are not the last page of the object.
+   <VAR
+CLASS="LITERAL"
+>LOBLKSIZE</VAR
+> bytes even if they are not the last page of the object.
    Missing regions within a large object read as zeroes.
   </P
 ></DIV
@@ -262,7 +263,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_language</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_language</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -276,7 +280,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_listener</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_listener</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

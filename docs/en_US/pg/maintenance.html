@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Routine Database Maintenance Tasks</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+TITLE="Server Administration"
 HREF="admin.html"><LINK
 REL="PREVIOUS"
-TITLE="Single-byte character set recoding"
-HREF="recode.html"><LINK
+TITLE="Character Set Support"
+HREF="multibyte.html"><LINK
 REL="NEXT"
-TITLE="Routine Vacuuming"
-HREF="routine-vacuuming.html"><LINK
+TITLE="Routine Reindexing"
+HREF="routine-reindex.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="recode.html"
+HREF="multibyte.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="routine-vacuuming.html"
+HREF="routine-reindex.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="MAINTENANCE"
->Chapter 8. Routine Database Maintenance Tasks</A
-></H1
+></A
+>Chapter 21. Routine Database Maintenance Tasks</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,61 +90,48 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->8.1. <A
-HREF="maintenance.html#MAINTENANCE-GENERAL"
->General Discussion</A
-></DT
-><DT
->8.2. <A
-HREF="routine-vacuuming.html"
+>21.1. <A
+HREF="maintenance.html#ROUTINE-VACUUMING"
 >Routine Vacuuming</A
 ></DT
 ><DD
 ><DL
 ><DT
->8.2.1. <A
-HREF="routine-vacuuming.html#VACUUM-FOR-SPACE-RECOVERY"
+>21.1.1. <A
+HREF="maintenance.html#VACUUM-FOR-SPACE-RECOVERY"
 >Recovering disk space</A
 ></DT
 ><DT
->8.2.2. <A
-HREF="routine-vacuuming.html#VACUUM-FOR-STATISTICS"
+>21.1.2. <A
+HREF="maintenance.html#VACUUM-FOR-STATISTICS"
 >Updating planner statistics</A
 ></DT
 ><DT
->8.2.3. <A
-HREF="routine-vacuuming.html#VACUUM-FOR-WRAPAROUND"
+>21.1.3. <A
+HREF="maintenance.html#VACUUM-FOR-WRAPAROUND"
 >Preventing transaction ID wraparound failures</A
 ></DT
 ></DL
 ></DD
 ><DT
->8.3. <A
+>21.2. <A
 HREF="routine-reindex.html"
 >Routine Reindexing</A
 ></DT
 ><DT
->8.4. <A
+>21.3. <A
 HREF="logfile-maintenance.html"
 >Log File Maintenance</A
 ></DT
 ></DL
 ></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="MAINTENANCE-GENERAL"
->8.1. General Discussion</A
-></H1
 ><P
 >   There are a few routine maintenance chores that must be performed on
    a regular basis to keep a <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-   installation running smoothly.  The tasks discussed here are repetitive
+   server running smoothly.  The tasks discussed here are repetitive
    in nature and can easily be automated using standard Unix tools such
    as <SPAN
 CLASS="APPLICATION"
@@ -157,14 +144,14 @@ CLASS="APPLICATION"
 >   One obvious maintenance task is creation of backup copies of the data on a
    regular schedule.  Without a recent backup, you have no chance of recovery
    after a catastrophe (disk failure, fire, mistakenly dropping a critical
-   table, etc).  The backup and recovery mechanisms available in
+   table, etc.).  The backup and recovery mechanisms available in
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > are discussed at length in
    <A
 HREF="backup.html"
->Chapter 9</A
+>Chapter 22</A
 >.
   </P
 ><P
@@ -174,15 +161,15 @@ CLASS="QUOTE"
 >
    of the database.  This activity is discussed in
    <A
-HREF="routine-vacuuming.html"
->Section 8.2</A
+HREF="maintenance.html#ROUTINE-VACUUMING"
+>Section 21.1</A
 >.
   </P
 ><P
 >   Something else that might need periodic attention is log file management.
    This is discussed in <A
 HREF="logfile-maintenance.html"
->Section 8.4</A
+>Section 21.3</A
 >.
   </P
 ><P
@@ -194,6 +181,613 @@ CLASS="PRODUCTNAME"
    these tasks will go far towards ensuring a pleasant and productive
    experience with the system.
   </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ROUTINE-VACUUMING"
+>21.1. Routine Vacuuming</A
+></H1
+><A
+NAME="AEN18032"
+></A
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> command
+   must be run on a regular basis for several reasons:
+
+    <P
+></P
+></P><OL
+TYPE="1"
+><LI
+><P
+>To recover disk space occupied by updated or deleted
+      rows.</P
+></LI
+><LI
+><P
+>To update data statistics used by the
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query planner.</P
+></LI
+><LI
+><P
+>To protect against loss of very old data due to
+      <I
+CLASS="FIRSTTERM"
+>transaction ID wraparound</I
+>.</P
+></LI
+></OL
+><P>
+
+   The frequency and scope of the <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> operations performed for each of
+   these reasons will vary depending on the needs of each site.
+   Therefore, database administrators must understand these issues and
+   develop an appropriate maintenance strategy.  This section concentrates
+   on explaining the high-level issues; for details about command syntax
+   and so on, see the <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> command reference page.
+  </P
+><P
+>   Beginning in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.2, the standard form
+   of <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> can run in parallel with normal database operations
+   (selects, inserts, updates, deletes, but not changes to table definitions).
+   Routine vacuuming is therefore not nearly as intrusive as it was in prior
+   releases, and it's not as critical to try to schedule it at low-usage
+   times of day.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="VACUUM-FOR-SPACE-RECOVERY"
+>21.1.1. Recovering disk space</A
+></H2
+><A
+NAME="AEN18053"
+></A
+><P
+>    In normal <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> operation, an
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> or <TT
+CLASS="COMMAND"
+>DELETE</TT
+> of a row does not
+    immediately remove the old <I
+CLASS="FIRSTTERM"
+>tuple</I
+> (version of the row).
+    This approach is necessary to gain the benefits of multiversion
+    concurrency control (see <A
+HREF="mvcc.html"
+>Chapter 12</A
+>): the tuple
+    must not be deleted while it is still potentially visible to other
+    transactions. But eventually, an outdated or deleted tuple is no
+    longer of interest to any transaction. The space it occupies must be
+    reclaimed for reuse by new tuples, to avoid infinite growth of disk
+    space requirements. This is done by running <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>.
+   </P
+><P
+>    Clearly, a table that receives frequent updates or deletes will need
+    to be vacuumed more often than tables that are seldom updated. It
+    may be useful to set up periodic <SPAN
+CLASS="APPLICATION"
+>cron</SPAN
+> tasks that
+    vacuum only selected tables, skipping tables that are known not to
+    change often. This is only likely to be helpful if you have both
+    large heavily-updated tables and large seldom-updated tables --- the
+    extra cost of vacuuming a small table isn't enough to be worth
+    worrying about.
+   </P
+><P
+>    The standard form of <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> is best used with the goal of
+    maintaining a fairly level steady-state usage of disk space.  The standard
+    form finds old tuples and makes their space available for re-use within
+    the table, but it does not try very hard to shorten the table file and
+    return disk space to the operating system.  If you need to return disk
+    space to the operating system you can use <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+> ---
+    but what's the point of releasing disk space that will only have to be
+    allocated again soon?  Moderately frequent standard <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> runs
+    are a better approach than infrequent <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+> runs for
+    maintaining heavily-updated tables.
+   </P
+><P
+>    Recommended practice for most sites is to schedule a database-wide
+    <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> once a day at a low-usage time of day, supplemented
+    by more frequent vacuuming of heavily-updated tables if necessary.
+    (If you have multiple databases in a cluster, don't forget to
+    vacuum each one; the program <TT
+CLASS="FILENAME"
+>vacuumdb</TT
+> may be helpful.)
+    Use plain <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>, not <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+>, for routine
+    vacuuming for space recovery.
+   </P
+><P
+>    <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+> is recommended for cases where you know you have
+    deleted the majority of tuples in a table, so that the steady-state size
+    of the table can be shrunk substantially with <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+>'s
+    more aggressive approach.
+   </P
+><P
+>    If you have a table whose contents are deleted completely every so often,
+    consider doing it with <TT
+CLASS="COMMAND"
+>TRUNCATE</TT
+> rather than using
+    <TT
+CLASS="COMMAND"
+>DELETE</TT
+> followed by <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="VACUUM-FOR-STATISTICS"
+>21.1.2. Updating planner statistics</A
+></H2
+><P
+>    The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query planner relies on
+    statistical information about the contents of tables in order to
+    generate good plans for queries.  These statistics are gathered by
+    the <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> command, which can be invoked by itself or
+    as an optional step in <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>.  It is important to have
+    reasonably accurate statistics, otherwise poor choices of plans may
+    degrade database performance.
+   </P
+><P
+>    As with vacuuming for space recovery, frequent updates of statistics
+    are more useful for heavily-updated tables than for seldom-updated
+    ones. But even for a heavily-updated table, there may be no need for
+    statistics updates if the statistical distribution of the data is
+    not changing much. A simple rule of thumb is to think about how much
+    the minimum and maximum values of the columns in the table change.
+    For example, a <TT
+CLASS="TYPE"
+>timestamp</TT
+> column that contains the time
+    of row update will have a constantly-increasing maximum value as
+    rows are added and updated; such a column will probably need more
+    frequent statistics updates than, say, a column containing URLs for
+    pages accessed on a website. The URL column may receive changes just
+    as often, but the statistical distribution of its values probably
+    changes relatively slowly.
+   </P
+><P
+>    It is possible to run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> on specific tables and even
+    just specific columns of a table, so the flexibility exists to update some
+    statistics more frequently than others if your application requires it.
+    In practice, however, the usefulness of this feature is doubtful.
+    Beginning in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.2,
+    <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> is a fairly fast operation even on large tables,
+    because it uses a statistical random sampling of the rows of a table
+    rather than reading every single row.  So it's probably much simpler
+    to just run it over the whole database every so often.
+   </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>     Although per-column tweaking of <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> frequency may not be
+     very productive, you may well find it worthwhile to do per-column
+     adjustment of the level of detail of the statistics collected by
+     <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>.  Columns that are heavily used in <VAR
+CLASS="LITERAL"
+>WHERE</VAR
+> clauses
+     and have highly irregular data distributions may require a finer-grain
+     data histogram than other columns.  See <TT
+CLASS="COMMAND"
+>ALTER TABLE SET
+     STATISTICS</TT
+>.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    Recommended practice for most sites is to schedule a database-wide
+    <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> once a day at a low-usage time of day; this can
+    usefully be combined with a nightly <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>.  However,
+    sites with relatively slowly changing table statistics may find that
+    this is overkill, and that less-frequent <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> runs
+    are sufficient.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="VACUUM-FOR-WRAPAROUND"
+>21.1.3. Preventing transaction ID wraparound failures</A
+></H2
+><A
+NAME="AEN18105"
+></A
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s MVCC transaction semantics
+    depend on being able to compare transaction ID (<ACRONYM
+CLASS="ACRONYM"
+>XID</ACRONYM
+>)
+    numbers: a tuple with an insertion XID greater than the current
+    transaction's XID is <SPAN
+CLASS="QUOTE"
+>"in the future"</SPAN
+> and should not be visible
+    to the current transaction.  But since transaction IDs have limited size
+    (32 bits at this writing) a cluster that runs for a long time (more
+    than 4 billion transactions) will suffer <I
+CLASS="FIRSTTERM"
+>transaction ID
+    wraparound</I
+>: the XID counter wraps around to zero, and all of a sudden
+    transactions that were in the past appear to be in the future --- which
+    means their outputs become invisible.  In short, catastrophic data loss.
+    (Actually the data is still there, but that's cold comfort if you can't
+    get at it.)
+   </P
+><P
+>    Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.2, the only defense
+    against XID wraparound was to re-<TT
+CLASS="COMMAND"
+>initdb</TT
+> at least every 4
+    billion transactions. This of course was not very satisfactory for
+    high-traffic sites, so a better solution has been devised. The new
+    approach allows a server to remain up indefinitely, without
+    <TT
+CLASS="COMMAND"
+>initdb</TT
+> or any sort of restart. The price is this
+    maintenance requirement: <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>every table in the database must
+    be vacuumed at least once every billion transactions</I
+></SPAN
+>.
+   </P
+><P
+>    In practice this isn't an onerous requirement, but since the
+    consequences of failing to meet it can be complete data loss (not
+    just wasted disk space or slow performance), some special provisions
+    have been made to help database administrators keep track of the
+    time since the last <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>. The remainder of this
+    section gives the details.
+   </P
+><P
+>    The new approach to XID comparison distinguishes two special XIDs,
+    numbers 1 and 2 (<VAR
+CLASS="LITERAL"
+>BootstrapXID</VAR
+> and
+    <VAR
+CLASS="LITERAL"
+>FrozenXID</VAR
+>). These two XIDs are always considered older
+    than every normal XID. Normal XIDs (those greater than 2) are
+    compared using modulo-2<SUP
+>31</SUP
+> arithmetic. This means
+    that for every normal XID, there are two billion XIDs that are
+    <SPAN
+CLASS="QUOTE"
+>"older"</SPAN
+> and two billion that are <SPAN
+CLASS="QUOTE"
+>"newer"</SPAN
+>; another
+    way to say it is that the normal XID space is circular with no
+    endpoint. Therefore, once a tuple has been created with a particular
+    normal XID, the tuple will appear to be <SPAN
+CLASS="QUOTE"
+>"in the past"</SPAN
+> for
+    the next two billion transactions, no matter which normal XID we are
+    talking about. If the tuple still exists after more than two billion
+    transactions, it will suddenly appear to be in the future. To
+    prevent data loss, old tuples must be reassigned the XID
+    <VAR
+CLASS="LITERAL"
+>FrozenXID</VAR
+> sometime before they reach the
+    two-billion-transactions-old mark. Once they are assigned this
+    special XID, they will appear to be <SPAN
+CLASS="QUOTE"
+>"in the past"</SPAN
+> to all
+    normal transactions regardless of wraparound issues, and so such
+    tuples will be good until deleted, no matter how long that is. This
+    reassignment of XID is handled by <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>.
+   </P
+><P
+>    <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>'s normal policy is to reassign <VAR
+CLASS="LITERAL"
+>FrozenXID</VAR
+>
+    to any tuple with a normal XID more than one billion transactions in the
+    past.  This policy preserves the original insertion XID until it is not
+    likely to be of interest anymore.  (In fact, most tuples will probably
+    live and die without ever being <SPAN
+CLASS="QUOTE"
+>"frozen"</SPAN
+>.)  With this policy,
+    the maximum safe interval between <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> runs on any table
+    is exactly one billion transactions: if you wait longer, it's possible
+    that a tuple that was not quite old enough to be reassigned last time
+    is now more than two billion transactions old and has wrapped around
+    into the future --- i.e., is lost to you.  (Of course, it'll reappear
+    after another two billion transactions, but that's no help.)
+   </P
+><P
+>    Since periodic <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> runs are needed anyway for the reasons
+    described earlier, it's unlikely that any table would not be vacuumed
+    for as long as a billion transactions.  But to help administrators ensure
+    this constraint is met, <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> stores transaction ID
+    statistics in the system table <VAR
+CLASS="LITERAL"
+>pg_database</VAR
+>.  In particular,
+    the <VAR
+CLASS="LITERAL"
+>datfrozenxid</VAR
+> column of a database's
+    <VAR
+CLASS="LITERAL"
+>pg_database</VAR
+> row is updated at the completion of any
+    database-wide vacuum operation (i.e., <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> that does not
+    name a specific table).  The value stored in this field is the freeze
+    cutoff XID that was used by that <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> command.  All normal
+    XIDs older than this cutoff XID are guaranteed to have been replaced by
+    <VAR
+CLASS="LITERAL"
+>FrozenXID</VAR
+> within that database.  A convenient way to
+    examine this information is to execute the query
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT datname, age(datfrozenxid) FROM pg_database;</PRE
+><P>
+
+    The <VAR
+CLASS="LITERAL"
+>age</VAR
+> column measures the number of transactions from the
+    cutoff XID to the current transaction's XID.
+   </P
+><P
+>    With the standard freezing policy, the <VAR
+CLASS="LITERAL"
+>age</VAR
+> column will start
+    at one billion for a freshly-vacuumed database.  When the <VAR
+CLASS="LITERAL"
+>age</VAR
+>
+    approaches two billion, the database must be vacuumed again to avoid
+    risk of wraparound failures.  Recommended practice is to vacuum each
+    database at least once every half-a-billion (500 million) transactions,
+    so as to provide plenty of safety margin.  To help meet this rule,
+    each database-wide <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> automatically delivers a warning
+    if there are any <VAR
+CLASS="LITERAL"
+>pg_database</VAR
+> entries showing an
+    <VAR
+CLASS="LITERAL"
+>age</VAR
+> of more than 1.5 billion transactions, for example:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>play=# VACUUM;
+WARNING:  Some databases have not been vacuumed in 1613770184 transactions.
+        Better vacuum them within 533713463 transactions,
+        or you may have a wraparound failure.
+VACUUM</PRE
+><P>
+   </P
+><P
+>    <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> with the <TT
+CLASS="COMMAND"
+>FREEZE</TT
+> option uses a more
+    aggressive freezing policy: tuples are frozen if they are old enough
+    to be considered good by all open transactions. In particular, if a
+    <TT
+CLASS="COMMAND"
+>VACUUM FREEZE</TT
+> is performed in an otherwise-idle
+    database, it is guaranteed that <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>all</I
+></SPAN
+> tuples in that
+    database will be frozen. Hence, as long as the database is not
+    modified in any way, it will not need subsequent vacuuming to avoid
+    transaction ID wraparound problems. This technique is used by
+    <TT
+CLASS="COMMAND"
+>initdb</TT
+> to prepare the <VAR
+CLASS="LITERAL"
+>template0</VAR
+> database.
+    It should also be used to prepare any user-created databases that
+    are to be marked <VAR
+CLASS="LITERAL"
+>datallowconn</VAR
+> = <VAR
+CLASS="LITERAL"
+>false</VAR
+> in
+    <VAR
+CLASS="LITERAL"
+>pg_database</VAR
+>, since there isn't any convenient way to
+    vacuum a database that you can't connect to. Note that
+    <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>'s automatic warning message about
+    unvacuumed databases will ignore <VAR
+CLASS="LITERAL"
+>pg_database</VAR
+> entries
+    with <VAR
+CLASS="LITERAL"
+>datallowconn</VAR
+> = <VAR
+CLASS="LITERAL"
+>false</VAR
+>, so as to avoid
+    giving false warnings about these databases; therefore it's up to
+    you to ensure that such databases are frozen correctly.
+   </P
+></DIV
 ></DIV
 ></DIV
 ><DIV
@@ -212,7 +806,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="recode.html"
+HREF="multibyte.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -230,7 +824,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="routine-vacuuming.html"
+HREF="routine-reindex.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -240,7 +834,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Single-byte character set recoding</TD
+>Character Set Support</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -254,7 +848,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Routine Vacuuming</TD
+>Routine Reindexing</TD
 ></TR
 ></TABLE
 ></DIV

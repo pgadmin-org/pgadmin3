@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SQL Commands</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Reference Manual"
+TITLE="Reference"
 HREF="reference.html"><LINK
 REL="PREVIOUS"
-TITLE="Preface"
-HREF="reference-preface.html"><LINK
+TITLE="Reference"
+HREF="reference.html"><LINK
 REL="NEXT"
 TITLE="ABORT"
 HREF="sql-abort.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFERENCE"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="reference-preface.html"
+HREF="reference.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -88,13 +88,13 @@ CLASS="TITLE"
 ><DIV
 CLASS="PARTINTRO"
 ><A
-NAME="AEN37192"
+NAME="AEN35634"
 ></A
 ><P
 >    This part contains reference information for the
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > commands supported by
     <SPAN
 CLASS="PRODUCTNAME"
@@ -119,8 +119,17 @@ CLASS="TOC"
 ><A
 HREF="sql-abort.html"
 >ABORT</A
->&nbsp;--&nbsp;   abort the current transaction
-  </DT
+>&nbsp;--&nbsp;abort the current transaction</DT
+><DT
+><A
+HREF="sql-alteraggregate.html"
+>ALTER AGGREGATE</A
+>&nbsp;--&nbsp;change the definition of an aggregate function</DT
+><DT
+><A
+HREF="sql-alterconversion.html"
+>ALTER CONVERSION</A
+>&nbsp;--&nbsp;change the definition of a conversion</DT
 ><DT
 ><A
 HREF="sql-alterdatabase.html"
@@ -128,22 +137,51 @@ HREF="sql-alterdatabase.html"
 >&nbsp;--&nbsp;change a database</DT
 ><DT
 ><A
+HREF="sql-alterdomain.html"
+>ALTER DOMAIN</A
+>&nbsp;--&nbsp;   change the definition of a domain
+  </DT
+><DT
+><A
+HREF="sql-alterfunction.html"
+>ALTER FUNCTION</A
+>&nbsp;--&nbsp;change the definition of a function</DT
+><DT
+><A
 HREF="sql-altergroup.html"
 >ALTER GROUP</A
->&nbsp;--&nbsp;   add users to a group or remove users from a group
+>&nbsp;--&nbsp;change a user group</DT
+><DT
+><A
+HREF="sql-alterlanguage.html"
+>ALTER LANGUAGE</A
+>&nbsp;--&nbsp;change the definition of a procedural language</DT
+><DT
+><A
+HREF="sql-alteropclass.html"
+>ALTER OPERATOR CLASS</A
+>&nbsp;--&nbsp;change the definition of an operator class</DT
+><DT
+><A
+HREF="sql-alterschema.html"
+>ALTER SCHEMA</A
+>&nbsp;--&nbsp;change the definition of a schema</DT
+><DT
+><A
+HREF="sql-altersequence.html"
+>ALTER SEQUENCE</A
+>&nbsp;--&nbsp;   alter the definition of a sequence generator
   </DT
 ><DT
 ><A
 HREF="sql-altertable.html"
 >ALTER TABLE</A
->&nbsp;--&nbsp;   change the definition of a table
-  </DT
+>&nbsp;--&nbsp;change the definition of a table</DT
 ><DT
 ><A
 HREF="sql-altertrigger.html"
 >ALTER TRIGGER</A
->&nbsp;--&nbsp;   change the definition of a trigger
-  </DT
+>&nbsp;--&nbsp;change the definition of a trigger</DT
 ><DT
 ><A
 HREF="sql-alteruser.html"
@@ -153,14 +191,12 @@ HREF="sql-alteruser.html"
 ><A
 HREF="sql-analyze.html"
 >ANALYZE</A
->&nbsp;--&nbsp;   collect statistics about a database
-  </DT
+>&nbsp;--&nbsp;collect statistics about a database</DT
 ><DT
 ><A
 HREF="sql-begin.html"
 >BEGIN</A
->&nbsp;--&nbsp;   start a transaction block
-  </DT
+>&nbsp;--&nbsp;start a transaction block</DT
 ><DT
 ><A
 HREF="sql-checkpoint.html"
@@ -170,38 +206,32 @@ HREF="sql-checkpoint.html"
 ><A
 HREF="sql-close.html"
 >CLOSE</A
->&nbsp;--&nbsp;   close a cursor
-  </DT
+>&nbsp;--&nbsp;close a cursor</DT
 ><DT
 ><A
 HREF="sql-cluster.html"
 >CLUSTER</A
->&nbsp;--&nbsp;   cluster a table according to an index
-  </DT
+>&nbsp;--&nbsp;cluster a table according to an index</DT
 ><DT
 ><A
 HREF="sql-comment.html"
 >COMMENT</A
->&nbsp;--&nbsp;   define or change the comment of an object
-  </DT
+>&nbsp;--&nbsp;define or change the comment of an object</DT
 ><DT
 ><A
 HREF="sql-commit.html"
 >COMMIT</A
->&nbsp;--&nbsp;   commit the current transaction
-  </DT
+>&nbsp;--&nbsp;commit the current transaction</DT
 ><DT
 ><A
 HREF="sql-copy.html"
 >COPY</A
->&nbsp;--&nbsp;   copy data between files and tables
-  </DT
+>&nbsp;--&nbsp;copy data between files and tables</DT
 ><DT
 ><A
 HREF="sql-createaggregate.html"
 >CREATE AGGREGATE</A
->&nbsp;--&nbsp;   define a new aggregate function
-  </DT
+>&nbsp;--&nbsp;define a new aggregate function</DT
 ><DT
 ><A
 HREF="sql-createcast.html"
@@ -211,8 +241,7 @@ HREF="sql-createcast.html"
 ><A
 HREF="sql-createconstraint.html"
 >CREATE CONSTRAINT TRIGGER</A
->&nbsp;--&nbsp;   define a new constraint trigger
-  </DT
+>&nbsp;--&nbsp;define a new constraint trigger</DT
 ><DT
 ><A
 HREF="sql-createconversion.html"
@@ -222,14 +251,12 @@ HREF="sql-createconversion.html"
 ><A
 HREF="sql-createdatabase.html"
 >CREATE DATABASE</A
->&nbsp;--&nbsp;   create a new database
-  </DT
+>&nbsp;--&nbsp;create a new database</DT
 ><DT
 ><A
 HREF="sql-createdomain.html"
 >CREATE DOMAIN</A
->&nbsp;--&nbsp;   define a new domain
-  </DT
+>&nbsp;--&nbsp;define a new domain</DT
 ><DT
 ><A
 HREF="sql-createfunction.html"
@@ -239,14 +266,12 @@ HREF="sql-createfunction.html"
 ><A
 HREF="sql-creategroup.html"
 >CREATE GROUP</A
->&nbsp;--&nbsp;   define a new user group
-  </DT
+>&nbsp;--&nbsp;define a new user group</DT
 ><DT
 ><A
 HREF="sql-createindex.html"
 >CREATE INDEX</A
->&nbsp;--&nbsp;   define a new index
-  </DT
+>&nbsp;--&nbsp;define a new index</DT
 ><DT
 ><A
 HREF="sql-createlanguage.html"
@@ -256,32 +281,27 @@ HREF="sql-createlanguage.html"
 ><A
 HREF="sql-createoperator.html"
 >CREATE OPERATOR</A
->&nbsp;--&nbsp;   define a new operator
-  </DT
+>&nbsp;--&nbsp;define a new operator</DT
 ><DT
 ><A
 HREF="sql-createopclass.html"
 >CREATE OPERATOR CLASS</A
->&nbsp;--&nbsp;   define a new operator class for indexes
-  </DT
+>&nbsp;--&nbsp;define a new operator class for indexes</DT
 ><DT
 ><A
 HREF="sql-createrule.html"
 >CREATE RULE</A
->&nbsp;--&nbsp;   define a new rewrite rule
-  </DT
+>&nbsp;--&nbsp;define a new rewrite rule</DT
 ><DT
 ><A
 HREF="sql-createschema.html"
 >CREATE SCHEMA</A
->&nbsp;--&nbsp;   define a new schema
-  </DT
+>&nbsp;--&nbsp;define a new schema</DT
 ><DT
 ><A
 HREF="sql-createsequence.html"
 >CREATE SEQUENCE</A
->&nbsp;--&nbsp;   define a new sequence generator
-  </DT
+>&nbsp;--&nbsp;define a new sequence generator</DT
 ><DT
 ><A
 HREF="sql-createtable.html"
@@ -296,14 +316,12 @@ HREF="sql-createtableas.html"
 ><A
 HREF="sql-createtrigger.html"
 >CREATE TRIGGER</A
->&nbsp;--&nbsp;   define a new trigger
-  </DT
+>&nbsp;--&nbsp;define a new trigger</DT
 ><DT
 ><A
 HREF="sql-createtype.html"
 >CREATE TYPE</A
->&nbsp;--&nbsp;   define a new data type
-  </DT
+>&nbsp;--&nbsp;define a new data type</DT
 ><DT
 ><A
 HREF="sql-createuser.html"
@@ -313,32 +331,27 @@ HREF="sql-createuser.html"
 ><A
 HREF="sql-createview.html"
 >CREATE VIEW</A
->&nbsp;--&nbsp;   define a new view
-  </DT
+>&nbsp;--&nbsp;define a new view</DT
 ><DT
 ><A
 HREF="sql-deallocate.html"
 >DEALLOCATE</A
->&nbsp;--&nbsp;   remove a prepared query
-  </DT
+>&nbsp;--&nbsp;deallocate a prepared statement</DT
 ><DT
 ><A
 HREF="sql-declare.html"
 >DECLARE</A
->&nbsp;--&nbsp;   define a cursor
-  </DT
+>&nbsp;--&nbsp;define a cursor</DT
 ><DT
 ><A
 HREF="sql-delete.html"
 >DELETE</A
->&nbsp;--&nbsp;   delete rows of a table
-  </DT
+>&nbsp;--&nbsp;delete rows of a table</DT
 ><DT
 ><A
 HREF="sql-dropaggregate.html"
 >DROP AGGREGATE</A
->&nbsp;--&nbsp;   remove a user-defined aggregate function
-  </DT
+>&nbsp;--&nbsp;remove a user-defined aggregate function</DT
 ><DT
 ><A
 HREF="sql-dropcast.html"
@@ -353,86 +366,72 @@ HREF="sql-dropconversion.html"
 ><A
 HREF="sql-dropdatabase.html"
 >DROP DATABASE</A
->&nbsp;--&nbsp;   remove a database
-  </DT
+>&nbsp;--&nbsp;remove a database</DT
 ><DT
 ><A
 HREF="sql-dropdomain.html"
 >DROP DOMAIN</A
->&nbsp;--&nbsp;   remove a user-defined domain
-  </DT
+>&nbsp;--&nbsp;remove a domain</DT
 ><DT
 ><A
 HREF="sql-dropfunction.html"
 >DROP FUNCTION</A
->&nbsp;--&nbsp;   remove a user-defined function
-  </DT
+>&nbsp;--&nbsp;remove a user-defined function</DT
 ><DT
 ><A
 HREF="sql-dropgroup.html"
 >DROP GROUP</A
->&nbsp;--&nbsp;   remove a user group
-  </DT
+>&nbsp;--&nbsp;remove a user group</DT
 ><DT
 ><A
 HREF="sql-dropindex.html"
 >DROP INDEX</A
->&nbsp;--&nbsp;   remove an index
-  </DT
+>&nbsp;--&nbsp;remove an index</DT
 ><DT
 ><A
 HREF="sql-droplanguage.html"
 >DROP LANGUAGE</A
->&nbsp;--&nbsp;   remove a user-defined procedural language
-  </DT
+>&nbsp;--&nbsp;remove a user-defined procedural language</DT
 ><DT
 ><A
 HREF="sql-dropoperator.html"
 >DROP OPERATOR</A
->&nbsp;--&nbsp;   remove a user-defined operator
-  </DT
+>&nbsp;--&nbsp;remove a user-defined operator</DT
 ><DT
 ><A
 HREF="sql-dropopclass.html"
 >DROP OPERATOR CLASS</A
->&nbsp;--&nbsp;   remove a user-defined operator class
-  </DT
+>&nbsp;--&nbsp;remove a user-defined operator class</DT
 ><DT
 ><A
 HREF="sql-droprule.html"
 >DROP RULE</A
->&nbsp;--&nbsp;   remove a rewrite rule
-  </DT
+>&nbsp;--&nbsp;remove a rewrite rule</DT
 ><DT
 ><A
 HREF="sql-dropschema.html"
 >DROP SCHEMA</A
->&nbsp;--&nbsp;   remove a schema
-  </DT
+>&nbsp;--&nbsp;remove a schema</DT
 ><DT
 ><A
 HREF="sql-dropsequence.html"
 >DROP SEQUENCE</A
->&nbsp;--&nbsp;   remove a sequence
-  </DT
+>&nbsp;--&nbsp;remove a sequence</DT
 ><DT
 ><A
 HREF="sql-droptable.html"
 >DROP TABLE</A
->&nbsp;--&nbsp;   remove a table
-  </DT
+>&nbsp;--&nbsp;remove a table</DT
 ><DT
 ><A
 HREF="sql-droptrigger.html"
 >DROP TRIGGER</A
->&nbsp;--&nbsp;   remove a trigger
-  </DT
+>&nbsp;--&nbsp;remove a trigger</DT
 ><DT
 ><A
 HREF="sql-droptype.html"
 >DROP TYPE</A
->&nbsp;--&nbsp;   remove a user-defined data type
-  </DT
+>&nbsp;--&nbsp;remove a user-defined data type</DT
 ><DT
 ><A
 HREF="sql-dropuser.html"
@@ -442,32 +441,27 @@ HREF="sql-dropuser.html"
 ><A
 HREF="sql-dropview.html"
 >DROP VIEW</A
->&nbsp;--&nbsp;   remove a view
-  </DT
+>&nbsp;--&nbsp;remove a view</DT
 ><DT
 ><A
 HREF="sql-end.html"
 >END</A
->&nbsp;--&nbsp;   commit the current transaction
-  </DT
+>&nbsp;--&nbsp;commit the current transaction</DT
 ><DT
 ><A
 HREF="sql-execute.html"
 >EXECUTE</A
->&nbsp;--&nbsp;   execute a prepared query
-  </DT
+>&nbsp;--&nbsp;execute a prepared statement</DT
 ><DT
 ><A
 HREF="sql-explain.html"
 >EXPLAIN</A
->&nbsp;--&nbsp;   show the execution plan of a statement
-  </DT
+>&nbsp;--&nbsp;show the execution plan of a statement</DT
 ><DT
 ><A
 HREF="sql-fetch.html"
 >FETCH</A
->&nbsp;--&nbsp;   retrieve rows from a table using a cursor
-  </DT
+>&nbsp;--&nbsp;retrieve rows from a query using a cursor</DT
 ><DT
 ><A
 HREF="sql-grant.html"
@@ -477,14 +471,12 @@ HREF="sql-grant.html"
 ><A
 HREF="sql-insert.html"
 >INSERT</A
->&nbsp;--&nbsp;   create new rows in a table
-  </DT
+>&nbsp;--&nbsp;create new rows in a table</DT
 ><DT
 ><A
 HREF="sql-listen.html"
 >LISTEN</A
->&nbsp;--&nbsp;   listen for a notification
-  </DT
+>&nbsp;--&nbsp;listen for a notification</DT
 ><DT
 ><A
 HREF="sql-load.html"
@@ -494,37 +486,32 @@ HREF="sql-load.html"
 ><A
 HREF="sql-lock.html"
 >LOCK</A
->&nbsp;--&nbsp;   explicitly lock a table
-  </DT
+>&nbsp;--&nbsp;lock a table</DT
 ><DT
 ><A
 HREF="sql-move.html"
 >MOVE</A
->&nbsp;--&nbsp;   position a cursor on a specified row of a table
-  </DT
+>&nbsp;--&nbsp;reposition a cursor</DT
 ><DT
 ><A
 HREF="sql-notify.html"
 >NOTIFY</A
->&nbsp;--&nbsp;   generate a notification
-  </DT
+>&nbsp;--&nbsp;generate a notification</DT
 ><DT
 ><A
 HREF="sql-prepare.html"
 >PREPARE</A
->&nbsp;--&nbsp;   create a prepared query
-  </DT
+>&nbsp;--&nbsp;prepare a statement for execution</DT
 ><DT
 ><A
 HREF="sql-reindex.html"
 >REINDEX</A
->&nbsp;--&nbsp;   rebuild corrupted indexes
-  </DT
+>&nbsp;--&nbsp;rebuild indexes</DT
 ><DT
 ><A
 HREF="sql-reset.html"
 >RESET</A
->&nbsp;--&nbsp;restore the value of a run-time parameter to a default value</DT
+>&nbsp;--&nbsp;restore the value of a run-time parameter to the default value</DT
 ><DT
 ><A
 HREF="sql-revoke.html"
@@ -534,20 +521,17 @@ HREF="sql-revoke.html"
 ><A
 HREF="sql-rollback.html"
 >ROLLBACK</A
->&nbsp;--&nbsp;   abort the current transaction
-  </DT
+>&nbsp;--&nbsp;abort the current transaction</DT
 ><DT
 ><A
 HREF="sql-select.html"
 >SELECT</A
->&nbsp;--&nbsp;   retrieve rows from a table or view
-  </DT
+>&nbsp;--&nbsp;retrieve rows from a table or view</DT
 ><DT
 ><A
 HREF="sql-selectinto.html"
 >SELECT INTO</A
->&nbsp;--&nbsp;   create a new table from the results of a query
-  </DT
+>&nbsp;--&nbsp;create a new table from the results of a query</DT
 ><DT
 ><A
 HREF="sql-set.html"
@@ -582,26 +566,22 @@ HREF="sql-start-transaction.html"
 ><A
 HREF="sql-truncate.html"
 >TRUNCATE</A
->&nbsp;--&nbsp;   empty a table
-  </DT
+>&nbsp;--&nbsp;empty a table</DT
 ><DT
 ><A
 HREF="sql-unlisten.html"
 >UNLISTEN</A
->&nbsp;--&nbsp;   stop listening for a notification
-  </DT
+>&nbsp;--&nbsp;stop listening for a notification</DT
 ><DT
 ><A
 HREF="sql-update.html"
 >UPDATE</A
->&nbsp;--&nbsp;   update rows of a table
-  </DT
+>&nbsp;--&nbsp;update rows of a table</DT
 ><DT
 ><A
 HREF="sql-vacuum.html"
 >VACUUM</A
->&nbsp;--&nbsp;   garbage-collect and optionally analyze a database
-  </DT
+>&nbsp;--&nbsp;garbage-collect and optionally analyze a database</DT
 ></DL
 ></DIV
 ></DIV
@@ -622,7 +602,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="reference-preface.html"
+HREF="reference.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -650,7 +630,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Preface</TD
+>Reference</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

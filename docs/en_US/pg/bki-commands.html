@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >BKI Commands</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="BKI Backend Interface"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,9 +60,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. <SPAN
+>Chapter 50. <ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > Backend Interface</TD
 ><TD
 WIDTH="10%"
@@ -84,9 +84,9 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="BKI-COMMANDS"
->6.2. <SPAN
+>50.2. <ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > Commands</A
 ></H1
 ><P
@@ -95,20 +95,16 @@ CLASS="ACRONYM"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->open <TT
+>open <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 ></DT
 ><DD
 ><P
 >      Open the table called
-      <TT
+      <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 >
       for further manipulation.
      </P
@@ -116,85 +112,63 @@ CLASS="REPLACEABLE"
 ><DT
 >close [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 ></SPAN
 >]</DT
 ><DD
 ><P
->      Close the open table called <TT
+>      Close the open table called <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 >.  It is an error if
-      <TT
+      <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 > is not
-      already opened.  If no <TT
+      already opened.  If no <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 > is given, then the
       currently open table is closed.
      </P
 ></DD
 ><DT
->create <TT
+>create <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 >
-     (<TT
+     (<VAR
 CLASS="REPLACEABLE"
-><I
->name1</I
-></TT
+>name1</VAR
 > =
-     <TT
+     <VAR
 CLASS="REPLACEABLE"
-><I
->type1</I
-></TT
+>type1</VAR
 > [<SPAN
 CLASS="OPTIONAL"
 >,
-     <TT
+     <VAR
 CLASS="REPLACEABLE"
-><I
->name2</I
-></TT
-> = <TT
+>name2</VAR
+> = <VAR
 CLASS="REPLACEABLE"
-><I
->type2</I
-></TT
+>type2</VAR
 >, ...</SPAN
 >])</DT
 ><DD
 ><P
->      Create a table named <TT
+>      Create a table named <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 > with the columns given
       in parentheses.
      </P
 ><P
->      The <TT
+>      The <VAR
 CLASS="REPLACEABLE"
-><I
->type</I
-></TT
+>type</VAR
 > is not necessarily the data
       type that the column will have in the SQL environment; that is
       determined by the <TT
@@ -268,9 +242,9 @@ CLASS="TYPE"
 >_aclitem</TT
 > (array).
       Array types can also be indicated by writing
-      <TT
+      <VAR
 CLASS="LITERAL"
->[]</TT
+>[]</VAR
 > after the name of the element type.
      </P
 ><DIV
@@ -298,56 +272,42 @@ CLASS="STRUCTNAME"
 ><DT
 >insert [<SPAN
 CLASS="OPTIONAL"
->OID = <TT
+>OID = <VAR
 CLASS="REPLACEABLE"
-><I
->oid_value</I
-></TT
+>oid_value</VAR
 ></SPAN
->] (<TT
+>] (<VAR
 CLASS="REPLACEABLE"
-><I
->value1</I
-></TT
-> <TT
+>value1</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->value2</I
-></TT
+>value2</VAR
 > ...)</DT
 ><DD
 ><P
->      Insert a new row into the open table using <TT
+>      Insert a new row into the open table using <VAR
 CLASS="REPLACEABLE"
-><I
->value1</I
-></TT
->, <TT
+>value1</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->value2</I
-></TT
+>value2</VAR
 >, etc., for its column
-      values and <TT
+      values and <VAR
 CLASS="REPLACEABLE"
-><I
->oid_value</I
-></TT
+>oid_value</VAR
 > for its OID.  If
-      <TT
+      <VAR
 CLASS="REPLACEABLE"
-><I
->oid_value</I
-></TT
+>oid_value</VAR
 > is zero
       (0) or the clause is omitted, then the next available OID is
       used.
      </P
 ><P
 >      NULL values can be specified using the special key word
-      <TT
+      <VAR
 CLASS="LITERAL"
->_null_</TT
+>_null_</VAR
 >.  Values containing spaces must be
       double quoted.
      </P
@@ -356,76 +316,52 @@ CLASS="LITERAL"
 >declare [<SPAN
 CLASS="OPTIONAL"
 >unique</SPAN
->] index <TT
+>] index <VAR
 CLASS="REPLACEABLE"
-><I
->indexname</I
-></TT
-> on <TT
+>indexname</VAR
+> on <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
-> using <TT
+>tablename</VAR
+> using <VAR
 CLASS="REPLACEABLE"
-><I
->amname</I
-></TT
-> (<TT
+>amname</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->opclass1</I
-></TT
-> <TT
+>opclass1</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->name1</I
-></TT
+>name1</VAR
 > [<SPAN
 CLASS="OPTIONAL"
 >, ...</SPAN
 >])</DT
 ><DD
 ><P
->      Create an index named <TT
+>      Create an index named <VAR
 CLASS="REPLACEABLE"
-><I
->indexname</I
-></TT
+>indexname</VAR
 > on the table named
-      <TT
+      <VAR
 CLASS="REPLACEABLE"
-><I
->tablename</I
-></TT
+>tablename</VAR
 > using the
-      <TT
+      <VAR
 CLASS="REPLACEABLE"
-><I
->amname</I
-></TT
+>amname</VAR
 > access
-      method.  The fields to index are called <TT
+      method.  The fields to index are called <VAR
 CLASS="REPLACEABLE"
-><I
->name1</I
-></TT
->, <TT
+>name1</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->name2</I
-></TT
+>name2</VAR
 > etc., and the operator
-      classes to use are <TT
+      classes to use are <VAR
 CLASS="REPLACEABLE"
-><I
->opclass1</I
-></TT
->, <TT
+>opclass1</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->opclass2</I
-></TT
+>opclass2</VAR
 > etc., respectively.
      </P
 ></DD
@@ -483,9 +419,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><SPAN
+><ACRONYM
 CLASS="ACRONYM"
->BKI</SPAN
+>BKI</ACRONYM
 > Backend Interface</TD
 ><TD
 WIDTH="34%"

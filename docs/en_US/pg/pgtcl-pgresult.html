@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_result</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_exec"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,277 +78,313 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGRESULT"
->pg_result</A
-></H1
+></A
+>pg_result</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN26506"
+NAME="AEN21466"
 ></A
 ><H2
 >Name</H2
->pg_result&nbsp;--&nbsp;get information about a query result<A
-NAME="IX-PGTCL-PGRESULT-1"
-></A
-><A
+>pg_result&nbsp;--&nbsp;get information about a command result<A
 NAME="IX-PGTCL-PGRESULT-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN26514"
+NAME="AEN21471"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_result <TT
-CLASS="REPLACEABLE"
-><I
->resultHandle</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->resultOption</I
-></TT
+>pg_result <VAR
+CLASS="PARAMETER"
+>resultHandle</VAR
+> <VAR
+CLASS="PARAMETER"
+>resultOption</VAR
 ></PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-PGTCL-PGRESULT-1"
+NAME="AEN21475"
 ></A
-><H3
->Inputs</H3
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>pg_result</CODE
+> returns information about a command
+   result created by a prior <CODE
+CLASS="FUNCTION"
+>pg_exec</CODE
+>.
+  </P
+><P
+>   You can keep a command result around for as long as you need it,
+   but when you are done with it, be sure to free it by executing
+   <CODE
+CLASS="FUNCTION"
+>pg_result -clear</CODE
+>.  Otherwise, you have a
+   memory leak, and <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> will eventually start
+   complaining that you have created too many command result objects.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21483"
+></A
+><H2
+>Arguments</H2
 ><P
 ></P
 ><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->resultHandle</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>resultHandle</VAR
 ></DT
 ><DD
 ><P
->  The handle for a query result.</P
+>      The handle of the command result.
+     </P
 ></DD
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->resultOption</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>resultOption</VAR
 ></DT
 ><DD
 ><P
->Specifies one of several possible options.</P
-></DD
-></DL
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN26535"
-></A
-><H4
->Options</H4
-><P
+>      One of the following options, specifying which piece of result
+      information to return:
+
+      <P
 ></P
-><DIV
+></P><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-status</TT
+>-status</VAR
 ></DT
 ><DD
 ><P
->the status of the result.</P
+>          The status of the result.
+         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-error</TT
+>-error</VAR
 ></DT
 ><DD
 ><P
->the error message, if the status indicates error; otherwise an empty string.</P
+>          The error message, if the status indicates an error,
+          otherwise an empty string.
+         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-conn</TT
+>-conn</VAR
 ></DT
 ><DD
 ><P
->the connection that produced the result.</P
+>          The connection that produced the result.
+         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-oid</TT
+>-oid</VAR
 ></DT
 ><DD
 ><P
->if the command was an INSERT, the OID of the 
-inserted tuple; otherwise 0.</P
+>          If the command was an <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, the OID of
+          the inserted row, otherwise 0.
+         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-numTuples</TT
+>-numTuples</VAR
 ></DT
 ><DD
 ><P
->the number of tuples returned by the query.</P
+>          The number of rows (tuples) returned by the query.
+         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-numAttrs</TT
+>-cmdTuples</VAR
 ></DT
 ><DD
 ><P
->the number of attributes in each tuple.</P
+>          The number of rows (tuples) affected by the command.
+         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-assign arrayName</TT
+>-numAttrs</VAR
 ></DT
 ><DD
 ><P
->assign the results to an array, using subscripts of the form
-<TT
-CLASS="LITERAL"
->(tupno,attributeName)</TT
->.</P
+>          The number of columns (attributes) in each row.
+         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-assignbyidx arrayName ?appendstr?</TT
-></DT
-><DD
-><P
->assign the results to an array using the first attribute's value and
-the remaining attributes' names as keys.  If <TT
+>-assign <VAR
 CLASS="PARAMETER"
-><I
->appendstr</I
-></TT
-> is given then
-it is appended to each key.  In short, all but the first field of each
-tuple are stored into the array, using subscripts of the form
-<TT
+>arrayName</VAR
+></VAR
+></DT
+><DD
+><P
+>          Assign the results to an array, using subscripts of the form
+          <VAR
 CLASS="LITERAL"
->(firstFieldValue,fieldNameAppendStr)</TT
->.</P
+>(rowNumber, columnName)</VAR
+>.
+         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-getTuple tupleNumber</TT
-></DT
-><DD
-><P
->returns the fields of the indicated tuple in a list.  Tuple numbers
-start at zero.</P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-tupleArray tupleNumber arrayName</TT
-></DT
-><DD
-><P
->stores the fields of the tuple in array <TT
+>-assignbyidx <VAR
 CLASS="PARAMETER"
-><I
->arrayName</I
-></TT
->, indexed by field names.
-Tuple numbers start at zero.</P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-attributes</TT
+>arrayName</VAR
+> [<SPAN
+CLASS="OPTIONAL"
+><VAR
+CLASS="PARAMETER"
+>appendstr</VAR
+></SPAN
+>]</VAR
 ></DT
 ><DD
 ><P
->returns a list of the names of the tuple attributes.</P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-lAttributes</TT
-></DT
-><DD
-><P
->returns a list of sublists, <TT
+>          Assign the results to an array using the values of the
+          first column and the names of the remaining column as keys.
+          If <VAR
+CLASS="PARAMETER"
+>appendstr</VAR
+> is given then it is appended to
+          each key.  In short, all but the first column of each row
+          are stored into the array, using subscripts of the form
+          <VAR
 CLASS="LITERAL"
->{name ftype fsize}</TT
-> for each tuple attribute.</P
+>(firstColumnValue, columnNameAppendStr)</VAR
+>.
+         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-clear</TT
+>-getTuple <VAR
+CLASS="PARAMETER"
+>rowNumber</VAR
+></VAR
 ></DT
 ><DD
 ><P
->clear the result query object.</P
+>          Returns the columns of the indicated row in a list.  Row
+          numbers start at zero.
+         </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-tupleArray <VAR
+CLASS="PARAMETER"
+>rowNumber</VAR
+> <VAR
+CLASS="PARAMETER"
+>arrayName</VAR
+></VAR
+></DT
+><DD
+><P
+>          Stores the columns of the row in array
+          <VAR
+CLASS="PARAMETER"
+>arrayName</VAR
+>, indexed by column names.
+          Row numbers start at zero.
+         </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-attributes</VAR
+></DT
+><DD
+><P
+>          Returns a list of the names of the columns in the result.
+         </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-lAttributes</VAR
+></DT
+><DD
+><P
+>          Returns a list of sublists, <VAR
+CLASS="LITERAL"
+>{name typeOid
+          typeSize}</VAR
+> for each column.
+         </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-clear</VAR
+></DT
+><DD
+><P
+>          Clear the command result object.
+         </P
 ></DD
 ></DL
 ></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGRESULT-2"
-></A
-><H3
->Outputs</H3
-><P
->The result depends on the selected option, as described above.</P
+><P>
+     </P
+></DD
+></DL
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGRESULT-1"
+NAME="AEN21580"
 ></A
 ><H2
->Description</H2
+>Return Value</H2
 ><P
-><TT
-CLASS="FUNCTION"
->pg_result</TT
-> returns information about a query result
-created by a prior <TT
-CLASS="FUNCTION"
->pg_exec</TT
->.</P
-><P
->You can keep a query result around for as long as you need it, but when
-you are done with it, be sure to free it by
-executing <TT
-CLASS="FUNCTION"
->pg_result -clear</TT
->.  Otherwise, you have
-a memory leak, and <SPAN
-CLASS="APPLICATION"
->Pgtcl</SPAN
-> will eventually start complaining that you've
-created too many query result objects.</P
+>   The result depends on the selected option, as described above.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

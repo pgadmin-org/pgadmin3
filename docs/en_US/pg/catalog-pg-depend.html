@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_depend</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,13 +81,19 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-DEPEND"
->3.13. pg_depend</A
-></H1
-><P
->   The <TT
+>45.13. <TT
 CLASS="STRUCTNAME"
 >pg_depend</TT
-> table records the dependency
+></A
+></H1
+><A
+NAME="AEN51770"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+> records the dependency
    relationships between database objects.  This information allows
    <TT
 CLASS="COMMAND"
@@ -96,7 +102,7 @@ CLASS="COMMAND"
    by <TT
 CLASS="COMMAND"
 >DROP CASCADE</TT
->, or prevent dropping in the <TT
+> or prevent dropping in the <TT
 CLASS="COMMAND"
 >DROP
    RESTRICT</TT
@@ -105,188 +111,174 @@ CLASS="COMMAND"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN53346"
+NAME="AEN51777"
 ></A
 ><P
 ><B
->Table 3-13. pg_depend Columns</B
+>Table 45-13. <TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->classid</TD
+><TT
+CLASS="STRUCTFIELD"
+>classid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The oid of the system catalog the dependent object is in</TD
+>The OID of the system catalog the dependent object is in</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->objid</TD
+><TT
+CLASS="STRUCTFIELD"
+>objid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->any oid attribute</TD
+>any OID column</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The oid of the specific dependent object</TD
+>The OID of the specific dependent object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->objsubid</TD
+><TT
+CLASS="STRUCTFIELD"
+>objsubid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->For a table attribute, this is the attribute's
-       column number (the objid and classid refer to the table itself).
-       For all other object types, this field is presently zero.
+>       For a table column, this is the column number (the
+       <TT
+CLASS="STRUCTFIELD"
+>objid</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>classid</TT
+> refer to the
+       table itself).  For all other object types, this column is
+       zero.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->refclassid</TD
+><TT
+CLASS="STRUCTFIELD"
+>refclassid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+>pg_class.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The oid of the system catalog the referenced object is in</TD
+>The OID of the system catalog the referenced object is in</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->refobjid</TD
+><TT
+CLASS="STRUCTFIELD"
+>refobjid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >any oid attribute</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->The oid of the specific referenced object</TD
+>The OID of the specific referenced object</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->refobjsubid</TD
+><TT
+CLASS="STRUCTFIELD"
+>refobjsubid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->For a table attribute, this is the attribute's
-       column number (the refobjid and refclassid refer to the table itself).
-       For all other object types, this field is presently zero.
+>       For a table column, this is the column number (the
+       <TT
+CLASS="STRUCTFIELD"
+>refobjid</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>refclassid</TT
+> refer
+       to the table itself).  For all other object types, this column
+       is zero.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->deptype</TD
+><TT
+CLASS="STRUCTFIELD"
+>deptype</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       A code defining the specific semantics of this dependency relationship.
+>       A code defining the specific semantics of this dependency relationship; see text.
       </TD
 ></TR
 ></TBODY
@@ -306,49 +298,114 @@ CLASS="STRUCTFIELD"
 
    <P
 ></P
-></P><UL
-><LI
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="SYMBOL"
+>DEPENDENCY_NORMAL</TT
+> (<VAR
+CLASS="LITERAL"
+>n</VAR
+>)</DT
+><DD
 ><P
->      DEPENDENCY_NORMAL ('n'): normal relationship between separately-created
-      objects.  The dependent object may be dropped without affecting the
-      referenced object.  The referenced object may only be dropped by
-      specifying CASCADE, in which case the dependent object is dropped too.
-      Example: a table column has a normal dependency on its datatype.
-     </P
-></LI
-><LI
+>       A normal relationship between separately-created objects.  The
+       dependent object may be dropped without affecting the
+       referenced object.  The referenced object may only be dropped
+       by specifying <VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+>, in which case the dependent
+       object is dropped, too.  Example: a table column has a normal
+       dependency on its data type.
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>DEPENDENCY_AUTO</TT
+> (<VAR
+CLASS="LITERAL"
+>a</VAR
+>)</DT
+><DD
 ><P
->      DEPENDENCY_AUTO ('a'): the dependent object can be dropped separately
-      from the referenced object, and should be automatically dropped
-      (regardless of RESTRICT or CASCADE mode) if the referenced object
-      is dropped.
-      Example: a named constraint on a table is made auto-dependent on
-      the table, so that it will go away if the table is dropped.
-     </P
-></LI
-><LI
+>       The dependent object can be dropped separately from the
+       referenced object, and should be automatically dropped
+       (regardless of <VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+> or <VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+>
+       mode) if the referenced object is dropped.  Example: a named
+       constraint on a table is made autodependent on the table, so
+       that it will go away if the table is dropped.
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>DEPENDENCY_INTERNAL</TT
+> (<VAR
+CLASS="LITERAL"
+>i</VAR
+>)</DT
+><DD
 ><P
->      DEPENDENCY_INTERNAL ('i'): the dependent object was created as part
-      of creation of the referenced object, and is really just a part of
-      its internal implementation.  A DROP of the dependent object will be
-      disallowed outright (we'll tell the user to issue a DROP against the
-      referenced object, instead).  A DROP of the referenced object will be
-      propagated through to drop the dependent object whether CASCADE is
-      specified or not.
-      Example: a trigger that's created to enforce a foreign-key constraint
-      is made internally dependent on the constraint's pg_constraint entry.
-     </P
-></LI
-><LI
+>       The dependent object was created as part of creation of the
+       referenced object, and is really just a part of its internal
+       implementation.  A <TT
+CLASS="COMMAND"
+>DROP</TT
+> of the dependent object
+       will be disallowed outright (we'll tell the user to issue a
+       <TT
+CLASS="COMMAND"
+>DROP</TT
+> against the referenced object, instead).  A
+       <TT
+CLASS="COMMAND"
+>DROP</TT
+> of the referenced object will be propagated
+       through to drop the dependent object whether
+       <TT
+CLASS="COMMAND"
+>CASCADE</TT
+> is specified or not.  Example: a trigger
+       that's created to enforce a foreign-key constraint is made
+       internally dependent on the constraint's
+       <TT
+CLASS="STRUCTNAME"
+>pg_constraint</TT
+> entry.
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>DEPENDENCY_PIN</TT
+> (<VAR
+CLASS="LITERAL"
+>p</VAR
+>)</DT
+><DD
 ><P
->      DEPENDENCY_PIN ('p'): there is no dependent object; this type of entry
-      is a signal that the system itself depends on the referenced object,
-      and so that object must never be deleted.  Entries of this type are
-      created only during initdb.  The fields for the dependent object
-      contain zeroes.
-     </P
-></LI
-></UL
+>       There is no dependent object; this type of entry is a signal
+       that the system itself depends on the referenced object, and so
+       that object must never be deleted.  Entries of this type are
+       created only by <TT
+CLASS="COMMAND"
+>initdb</TT
+>.  The columns for the
+       dependent object contain zeroes.
+      </P
+></DD
+></DL
+></DIV
 ><P>
 
    Other dependency flavors may be needed in future.
@@ -398,7 +455,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_database</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -412,7 +472,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_description</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Pseudo-Types</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Object Identifier Types"
 HREF="datatype-oid.html"><LINK
 REL="NEXT"
-TITLE="Arrays"
-HREF="arrays.html"><LINK
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Data Types</TD
+>Chapter 8. Data Types</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="arrays.html"
+HREF="functions.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,34 +81,34 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DATATYPE-PSEUDO"
->5.11. Pseudo-Types</A
+>8.12. Pseudo-Types</A
 ></H1
 ><A
-NAME="AEN4881"
+NAME="AEN5004"
 ></A
 ><A
-NAME="AEN4883"
+NAME="AEN5006"
 ></A
 ><A
-NAME="AEN4885"
+NAME="AEN5008"
 ></A
 ><A
-NAME="AEN4887"
+NAME="AEN5010"
 ></A
 ><A
-NAME="AEN4889"
+NAME="AEN5012"
 ></A
 ><A
-NAME="AEN4891"
+NAME="AEN5014"
 ></A
 ><A
-NAME="AEN4893"
+NAME="AEN5016"
 ></A
 ><A
-NAME="AEN4895"
+NAME="AEN5018"
 ></A
 ><A
-NAME="AEN4897"
+NAME="AEN5020"
 ></A
 ><P
 >    The <SPAN
@@ -124,12 +124,12 @@ CLASS="FIRSTTERM"
     argument or result type.  Each of the available pseudo-types is
     useful in situations where a function's behavior does not
     correspond to simply taking or returning a value of a specific
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > data type.  <A
 HREF="datatype-pseudo.html#DATATYPE-PSEUDOTYPES-TABLE"
->Table 5-21</A
+>Table 8-20</A
 > lists the existing
     pseudo-types.
    </P
@@ -140,147 +140,107 @@ NAME="DATATYPE-PSEUDOTYPES-TABLE"
 ></A
 ><P
 ><B
->Table 5-21. Pseudo-Types</B
+>Table 8-20. Pseudo-Types</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Type name</TH
+>Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >record</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Identifies a function returning an unspecified row type</TD
+>Identifies a function returning an unspecified row type.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >any</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Indicates that a function accepts any input data type whatever</TD
+>Indicates that a function accepts any input data type whatever.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >anyarray</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Indicates that a function accepts any array data type</TD
+>Indicates that a function accepts any array data type.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >void</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Indicates that a function returns no value</TD
+>Indicates that a function returns no value.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >trigger</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >A trigger function is declared to return <TT
 CLASS="TYPE"
->trigger</TT
+>trigger.</TT
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >language_handler</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >A procedural language call handler is declared to return <TT
 CLASS="TYPE"
 >language_handler</TT
-></TD
+>.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >cstring</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Indicates that a function accepts or returns a null-terminated C string</TD
+>Indicates that a function accepts or returns a null-terminated C string.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >internal</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Indicates that a function accepts or returns a server-internal
-	data type</TD
+	data type.</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >opaque</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->An obsolete type name that formerly served all the above purposes</TD
+>An obsolete type name that formerly served all the above purposes.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -310,17 +270,17 @@ CLASS="TYPE"
 >internal</TT
 > pseudo-type is used to declare functions
     that are meant only to be called internally by the database
-    system, and not by direct invocation in a <SPAN
+    system, and not by direct invocation in a <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >
     query.  If a function has at least one <TT
 CLASS="TYPE"
 >internal</TT
 >-type
-    argument then it cannot be called from <SPAN
+    argument then it cannot be called from <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >.  To
     preserve the type safety of this restriction it is important to
     follow this coding rule: do not create any function that is
@@ -368,7 +328,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="arrays.html"
+HREF="functions.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -392,7 +352,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Arrays</TD
+>Functions and Operators</TD
 ></TR
 ></TABLE
 ></DIV

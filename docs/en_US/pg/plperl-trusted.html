@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Trusted and Untrusted PL/Perl</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/Perl - Perl Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 21. PL/Perl - Perl Procedural Language</TD
+>Chapter 42. PL/Perl - Perl Procedural Language</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,33 +81,30 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPERL-TRUSTED"
->21.4. Trusted and Untrusted PL/Perl</A
+>42.4. Trusted and Untrusted PL/Perl</A
 ></H1
 ><P
 >   Normally, PL/Perl is installed as a <SPAN
 CLASS="QUOTE"
 >"trusted"</SPAN
 > programming
-   language named <TT
+   language named <VAR
 CLASS="LITERAL"
->plperl</TT
+>plperl</VAR
 >.  In this setup, certain Perl
    operations are disabled to preserve security.  In general, the
    operations that are restricted are those that interact with the
    environment. This includes file handle operations,
-   <TT
+   <VAR
 CLASS="LITERAL"
->require</TT
->, and <TT
+>require</VAR
+>, and <VAR
 CLASS="LITERAL"
->use</TT
+>use</VAR
 > (for
    external modules).  There is no way to access internals of the
-   database backend process or to gain OS-level access with the
-   permissions of the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user ID,
+   database server process or to gain OS-level access with the
+   permissions of the server process,
    as a C function can do.  Thus, any unprivileged database user may
    be permitted to use this language.
   </P
@@ -126,7 +123,7 @@ CLASS="PROGRAMLISTING"
   </P
 ><P
 >   Sometimes it is desirable to write Perl functions that are not
-   restricted --- for example, one might want a Perl function that
+   restricted.  For example, one might want a Perl function that
    sends mail.  To handle these cases, PL/Perl can also be installed
    as an <SPAN
 CLASS="QUOTE"
@@ -140,9 +137,9 @@ CLASS="APPLICATION"
 CLASS="COMMAND"
 >createlang</TT
 > program is used to
-   install the language, the language name <TT
+   install the language, the language name <VAR
 CLASS="LITERAL"
->plperlu</TT
+>plperlu</VAR
 >
    will select the untrusted PL/Perl variant.
   </P
@@ -158,9 +155,9 @@ CLASS="APPLICATION"
   </P
 ><P
 >   If the above function was created by a superuser using the language
-   <TT
+   <VAR
 CLASS="LITERAL"
->plperlu</TT
+>plperlu</VAR
 >, execution would succeed.
   </P
 ></DIV

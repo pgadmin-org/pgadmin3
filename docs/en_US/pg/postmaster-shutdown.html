@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Shutting Down the Server</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. Server Run-time Environment</TD
+>Chapter 16. Server Run-time Environment</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="POSTMASTER-SHUTDOWN"
->3.6. Shutting Down the Server</A
+>16.6. Shutting Down the Server</A
 ></H1
 ><P
 >   There are several ways to shut down the database server. You control
@@ -102,10 +102,10 @@ CLASS="SYSTEMITEM"
 >       After receiving <SPAN
 CLASS="SYSTEMITEM"
 >SIGTERM</SPAN
->, the postmaster
-       disallows new connections, but lets existing backends end their
-       work normally. It shuts down only after all of the backends
-       terminate normally. This is <I
+>, the server
+       disallows new connections, but lets existing sessions end their
+       work normally. It shuts down only after all of the sessions
+       terminate normally. This is the <I
 CLASS="FIRSTTERM"
 >Smart
        Shutdown</I
@@ -119,13 +119,13 @@ CLASS="SYSTEMITEM"
 ></DT
 ><DD
 ><P
->       The postmaster disallows new connections and sends all existing
-       backends <SPAN
+>       The server disallows new connections and sends all existing
+       server processes <SPAN
 CLASS="SYSTEMITEM"
 >SIGTERM</SPAN
 >, which will cause them
        to abort their current transactions and exit promptly. It then
-       waits for the backends to exit and finally shuts down. This is
+       waits for the server processes to exit and finally shuts down. This is the
        <I
 CLASS="FIRSTTERM"
 >Fast Shutdown</I
@@ -139,16 +139,19 @@ CLASS="SYSTEMITEM"
 ></DT
 ><DD
 ><P
-> This is <I
+>      This is the <I
 CLASS="FIRSTTERM"
 >Immediate Shutdown</I
 >, which
-      will cause the postmaster to send a
+      will cause the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> process to send a
       <SPAN
 CLASS="SYSTEMITEM"
 >SIGQUIT</SPAN
-> to all backends and exit
-      immediately (without properly shutting itself down). The backends
+> to all child processes and exit
+      immediately (without properly shutting itself down). The child processes
       likewise exit immediately upon receiving
       <SPAN
 CLASS="SYSTEMITEM"
@@ -161,8 +164,8 @@ CLASS="SYSTEMITEM"
 ></DL
 ></DIV
 ><P>
-
-   <DIV
+  </P
+><DIV
 CLASS="IMPORTANT"
 ><BLOCKQUOTE
 CLASS="IMPORTANT"
@@ -173,21 +176,23 @@ CLASS="IMPORTANT"
 CLASS="SYSTEMITEM"
 >SIGKILL</SPAN
 > to shut down
-     the postmaster. This will prevent the postmaster from releasing
+     the server. This will prevent the server from releasing
      shared memory and semaphores, which may then have to be done by
      manually.
     </P
 ></BLOCKQUOTE
 ></DIV
->
-
-   The <SPAN
+><P
+>   The <ACRONYM
 CLASS="ACRONYM"
->PID</SPAN
-> of the postmaster process can be found using the
-   <SPAN
-CLASS="APPLICATION"
->ps</SPAN
+>PID</ACRONYM
+> of the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> process can be found using the
+   <TT
+CLASS="COMMAND"
+>ps</TT
 > program, or from the file
    <TT
 CLASS="FILENAME"
@@ -196,21 +201,19 @@ CLASS="FILENAME"
    example, to do a fast shutdown:
 </P><PRE
 CLASS="SCREEN"
->$ <TT
+>$ <KBD
 CLASS="USERINPUT"
-><B
->kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</B
-></TT
+>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</KBD
 ></PRE
 ><P>
   </P
 ><P
->   The program <SPAN
-CLASS="APPLICATION"
->pg_ctl</SPAN
+>   The program <TT
+CLASS="COMMAND"
+>pg_ctl</TT
 > is a shell script
    that provides a more convenient interface for shutting down the
-   postmaster.
+   server.
   </P
 ></DIV
 ><DIV

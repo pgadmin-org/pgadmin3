@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_database</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,23 +81,29 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-DATABASE"
->3.12. pg_database</A
-></H1
-><P
->   The <TT
+>45.12. <TT
 CLASS="STRUCTNAME"
 >pg_database</TT
-> catalog stores information
+></A
+></H1
+><A
+NAME="AEN51662"
+></A
+><P
+>   The catalog <TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+> stores information
    about the available databases.  Databases are created with the
    <TT
 CLASS="COMMAND"
 >CREATE DATABASE</TT
-> command.  Consult the
-   <I
-CLASS="CITETITLE"
->Administrator's Guide</I
-> for details about the
-   meaning of some of the parameters.
+> command.  Consult
+   <A
+HREF="managing-databases.html"
+>Chapter 18</A
+> for details about the meaning of some of the
+   parameters.
   </P
 ><P
 >   Unlike most system catalogs, <TT
@@ -114,122 +120,106 @@ CLASS="STRUCTNAME"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN53259"
+NAME="AEN51671"
 ></A
 ><P
 ><B
->Table 3-12. pg_database Columns</B
+>Table 45-12. <TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datname</TD
+><TT
+CLASS="STRUCTFIELD"
+>datname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Database name</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datdba</TD
+><TT
+CLASS="STRUCTFIELD"
+>datdba</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_shadow.usesysid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-shadow.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_shadow</TT
+></A
+>.usesysid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Owner of the database, usually the user who created it</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->encoding</TD
+><TT
+CLASS="STRUCTFIELD"
+>encoding</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Character/multibyte encoding for this database</TD
+>Character encoding for this database</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datistemplate</TD
+><TT
+CLASS="STRUCTFIELD"
+>datistemplate</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       If true then this database can be used in the
-       <SPAN
-CLASS="QUOTE"
->"TEMPLATE"</SPAN
+       <VAR
+CLASS="LITERAL"
+>TEMPLATE</VAR
 > clause of <TT
 CLASS="COMMAND"
 >CREATE
@@ -240,46 +230,39 @@ CLASS="COMMAND"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datallowconn</TD
+><TT
+CLASS="STRUCTFIELD"
+>datallowconn</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       If false then no one can connect to this database.  This is
-       used to protect the template0 database from being altered.
+       used to protect the <VAR
+CLASS="LITERAL"
+>template0</VAR
+> database from being altered.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datlastsysoid</TD
+><TT
+CLASS="STRUCTFIELD"
+>datlastsysoid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       Last system OID in the database; useful
        particularly to <SPAN
 CLASS="APPLICATION"
@@ -289,23 +272,18 @@ CLASS="APPLICATION"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datvacuumxid</TD
+><TT
+CLASS="STRUCTFIELD"
+>datvacuumxid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >xid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       All tuples inserted or deleted by transaction IDs before this one
        have been marked as known committed or known aborted in this database.
        This is used to determine when commit-log space can be recycled.
@@ -313,51 +291,41 @@ VALIGN="TOP"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datfrozenxid</TD
+><TT
+CLASS="STRUCTFIELD"
+>datfrozenxid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >xid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       All tuples inserted by transaction IDs before this one have been
        relabeled with a permanent (<SPAN
 CLASS="QUOTE"
 >"frozen"</SPAN
 >) transaction ID in this
        database.  This is useful to check whether a database must be vacuumed
-       soon to avoid transaction ID wraparound problems.
+       soon to avoid transaction ID wrap-around problems.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datpath</TD
+><TT
+CLASS="STRUCTFIELD"
+>datpath</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       If the database is stored at an alternative location then this
        records the location.  It's either an environment variable name
        or an absolute path, depending how it was entered.
@@ -365,45 +333,35 @@ VALIGN="TOP"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datconfig</TD
+><TT
+CLASS="STRUCTFIELD"
+>datconfig</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >Session defaults for run-time configuration variables</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->datacl</TD
+><TT
+CLASS="STRUCTFIELD"
+>datacl</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >aclitem[]</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Access permissions</TD
+>Access privileges</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -453,7 +411,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_conversion</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_conversion</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -467,7 +428,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_depend</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_depend</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_lo_import</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_lo_unlink"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,115 +78,118 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGLOIMPORT"
->pg_lo_import</A
-></H1
+></A
+>pg_lo_import</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN27403"
+NAME="AEN22183"
 ></A
 ><H2
 >Name</H2
 >pg_lo_import&nbsp;--&nbsp;import a large object from a file<A
-NAME="IX-PGTCL-PGLOIMPORT-1"
-></A
-><A
 NAME="IX-PGTCL-PGLOIMPORT-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN27411"
+NAME="AEN22188"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_lo_import <TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>pg_lo_import <VAR
+CLASS="PARAMETER"
+>conn</VAR
+> <VAR
+CLASS="PARAMETER"
+>filename</VAR
 ></PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-PGTCL-PGLOIMPORT-1"
+NAME="AEN22192"
 ></A
-><H3
->Inputs</H3
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>pg_lo_import</CODE
+> reads the specified file and
+   places the contents into a new large object.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN22196"
+></A
+><H2
+>Arguments</H2
 ><P
 ></P
 ><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>conn</VAR
 ></DT
 ><DD
 ><P
->Specifies a valid database connection.</P
+>      The handle of a database connection in which to create the large
+      object.
+     </P
 ></DD
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>filename</VAR
 ></DT
 ><DD
 ><P
->Unix file name.</P
+>      Specified the file from which to import the data.
+     </P
 ></DD
 ></DL
 ></DIV
 ></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-PGTCL-PGLOIMPORT-2"
+NAME="AEN22209"
 ></A
-><H3
->Outputs</H3
+><H2
+>Return Value</H2
 ><P
->None&#13;</P
-></DIV
+>   The OID of the large object created.
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGLOIMPORT-1"
+NAME="AEN22212"
 ></A
 ><H2
->Description</H2
+>Notes</H2
 ><P
-><TT
+>   <CODE
 CLASS="FUNCTION"
->pg_lo_import</TT
-> reads the specified file and places the contents into a large object.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-PGTCL-PGLOIMPORT-2"
-></A
-><H2
->Usage</H2
-><P
->  <TT
-CLASS="FUNCTION"
->pg_lo_import</TT
-> must be called within a BEGIN/END transaction block.</P
+>pg_lo_import</CODE
+> must be called within a
+   <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>/<TT
+CLASS="COMMAND"
+>COMMIT</TT
+> transaction block.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,0 +1,893 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Client Interfaces</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Platform-specific comparison files"
+HREF="regress-platform.html"><LINK
+REL="NEXT"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="PART"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="regress-platform.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="PART"
+><A
+NAME="CLIENT-INTERFACES"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>IV. Client Interfaces</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN19187"
+></A
+><P
+>    This part describes the client programming interfaces distributed
+    with <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  Each of these chapters can be
+    read independently.  Note that there are many other programming
+    interfaces for client programs that are distributed separately and
+    contain their own documentation.  Readers of this part should be
+    familiar with using <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands to manipulate
+    and query the database (see <A
+HREF="sql.html"
+>Part II</A
+>) and of course
+    with the programming language that the interface uses.
+   </P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>27. <A
+HREF="libpq.html"
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</A
+></DT
+><DD
+><DL
+><DT
+>27.1. <A
+HREF="libpq.html#LIBPQ-CONNECT"
+>Database Connection Control Functions</A
+></DT
+><DT
+>27.2. <A
+HREF="libpq-status.html"
+>Connection Status Functions</A
+></DT
+><DT
+>27.3. <A
+HREF="libpq-exec.html"
+>Command Execution Functions</A
+></DT
+><DT
+>27.4. <A
+HREF="libpq-async.html"
+>Asynchronous Command Processing</A
+></DT
+><DT
+>27.5. <A
+HREF="libpq-fastpath.html"
+>The Fast-Path Interface</A
+></DT
+><DT
+>27.6. <A
+HREF="libpq-notify.html"
+>Asynchronous Notification</A
+></DT
+><DT
+>27.7. <A
+HREF="libpq-copy.html"
+>Functions Associated with the <TT
+CLASS="COMMAND"
+>COPY</TT
+> Command</A
+></DT
+><DT
+>27.8. <A
+HREF="libpq-control.html"
+>Control Functions</A
+></DT
+><DT
+>27.9. <A
+HREF="libpq-notice-processing.html"
+>Notice Processing</A
+></DT
+><DT
+>27.10. <A
+HREF="libpq-envars.html"
+>Environment Variables</A
+></DT
+><DT
+>27.11. <A
+HREF="libpq-pgpass.html"
+>The Password File</A
+></DT
+><DT
+>27.12. <A
+HREF="libpq-threading.html"
+>Threading Behavior</A
+></DT
+><DT
+>27.13. <A
+HREF="libpq-build.html"
+>Building <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> Programs</A
+></DT
+><DT
+>27.14. <A
+HREF="libpq-example.html"
+>Example Programs</A
+></DT
+></DL
+></DD
+><DT
+>28. <A
+HREF="largeobjects.html"
+>Large Objects</A
+></DT
+><DD
+><DL
+><DT
+>28.1. <A
+HREF="largeobjects.html#LO-HISTORY"
+>History</A
+></DT
+><DT
+>28.2. <A
+HREF="lo-implementation.html"
+>Implementation Features</A
+></DT
+><DT
+>28.3. <A
+HREF="lo-interfaces.html"
+>Client Interfaces</A
+></DT
+><DT
+>28.4. <A
+HREF="lo-funcs.html"
+>Server-side Functions</A
+></DT
+><DT
+>28.5. <A
+HREF="lo-examplesect.html"
+>Example Program</A
+></DT
+></DL
+></DD
+><DT
+>29. <A
+HREF="pgtcl.html"
+><SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> - Tcl Binding Library</A
+></DT
+><DD
+><DL
+><DT
+>29.1. <A
+HREF="pgtcl.html#PGTCL-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>29.2. <A
+HREF="libpgtcl-loading.html"
+>Loading <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> into an Application</A
+></DT
+><DT
+>29.3. <A
+HREF="libpgtcl-ref.html"
+><SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> Command Reference</A
+></DT
+><DT
+>29.4. <A
+HREF="pgtcl-examplesect.html"
+>Example Program</A
+></DT
+></DL
+></DD
+><DT
+>30. <A
+HREF="ecpg.html"
+><SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> in C</A
+></DT
+><DD
+><DL
+><DT
+>30.1. <A
+HREF="ecpg.html#ECPG-CONCEPT"
+>The Concept</A
+></DT
+><DT
+>30.2. <A
+HREF="ecpg-connect.html"
+>Connecting to the Database Server</A
+></DT
+><DT
+>30.3. <A
+HREF="ecpg-disconnect.html"
+>Closing a Connection</A
+></DT
+><DT
+>30.4. <A
+HREF="ecpg-commands.html"
+>Running SQL Commands</A
+></DT
+><DT
+>30.5. <A
+HREF="ecpg-set-connection.html"
+>Choosing a Connection</A
+></DT
+><DT
+>30.6. <A
+HREF="ecpg-variables.html"
+>Using Host Variables</A
+></DT
+><DT
+>30.7. <A
+HREF="ecpg-dynamic.html"
+>Dynamic SQL</A
+></DT
+><DT
+>30.8. <A
+HREF="ecpg-descriptors.html"
+>Using SQL Descriptor Areas</A
+></DT
+><DT
+>30.9. <A
+HREF="ecpg-errors.html"
+>Error Handling</A
+></DT
+><DT
+>30.10. <A
+HREF="ecpg-include.html"
+>Including Files</A
+></DT
+><DT
+>30.11. <A
+HREF="ecpg-process.html"
+>Processing Embedded SQL Programs</A
+></DT
+><DT
+>30.12. <A
+HREF="ecpg-library.html"
+>Library Functions</A
+></DT
+><DT
+>30.13. <A
+HREF="ecpg-develop.html"
+>Internals</A
+></DT
+></DL
+></DD
+><DT
+>31. <A
+HREF="jdbc.html"
+><ACRONYM
+CLASS="ACRONYM"
+>JDBC</ACRONYM
+> Interface</A
+></DT
+><DD
+><DL
+><DT
+>31.1. <A
+HREF="jdbc.html#JDBC-SETUP"
+>Setting up the <ACRONYM
+CLASS="ACRONYM"
+>JDBC</ACRONYM
+> Driver</A
+></DT
+><DT
+>31.2. <A
+HREF="jdbc-use.html"
+>Initializing the Driver</A
+></DT
+><DT
+>31.3. <A
+HREF="jdbc-query.html"
+>Issuing a Query and Processing the Result</A
+></DT
+><DT
+>31.4. <A
+HREF="jdbc-update.html"
+>Performing Updates</A
+></DT
+><DT
+>31.5. <A
+HREF="jdbc-ddl.html"
+>Creating and Modifying Database Objects</A
+></DT
+><DT
+>31.6. <A
+HREF="jdbc-binary-data.html"
+>Storing Binary Data</A
+></DT
+><DT
+>31.7. <A
+HREF="jdbc-ext.html"
+><SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> Extensions to the
+    <ACRONYM
+CLASS="ACRONYM"
+>JDBC</ACRONYM
+> <ACRONYM
+CLASS="ACRONYM"
+>API</ACRONYM
+></A
+></DT
+><DT
+>31.8. <A
+HREF="jdbc-thread.html"
+>Using the Driver in a Multithreaded or a Servlet Environment</A
+></DT
+><DT
+>31.9. <A
+HREF="jdbc-datasource.html"
+>Connection Pools and Data Sources</A
+></DT
+><DT
+>31.10. <A
+HREF="jdbc-reading.html"
+>Further Reading</A
+></DT
+></DL
+></DD
+><DT
+>32. <A
+HREF="pygresql.html"
+><SPAN
+CLASS="APPLICATION"
+>PyGreSQL</SPAN
+> - <SPAN
+CLASS="APPLICATION"
+>Python</SPAN
+> Interface</A
+></DT
+><DD
+><DL
+><DT
+>32.1. <A
+HREF="pygresql.html#PYGRESQL-PG"
+>The <VAR
+CLASS="LITERAL"
+>pg</VAR
+> Module</A
+></DT
+><DT
+>32.2. <A
+HREF="pygresql-pg-functions.html"
+><VAR
+CLASS="LITERAL"
+>pg</VAR
+> Module Functions</A
+></DT
+><DT
+>32.3. <A
+HREF="pygresql-pg-pgobject.html"
+>Connection Object: <CODE
+CLASS="CLASSNAME"
+>pgobject</CODE
+></A
+></DT
+><DT
+>32.4. <A
+HREF="pygresql-pg-db.html"
+>Database Wrapper Class: <CODE
+CLASS="CLASSNAME"
+>DB</CODE
+></A
+></DT
+><DT
+>32.5. <A
+HREF="pygresql-pg-pgqueryobject.html"
+>Query Result Object: <CODE
+CLASS="CLASSNAME"
+>pgqueryobject</CODE
+></A
+></DT
+><DT
+>32.6. <A
+HREF="pygresql-pg-pglarge.html"
+>Large Object: <CODE
+CLASS="CLASSNAME"
+>pglarge</CODE
+></A
+></DT
+></DL
+></DD
+><DT
+>33. <A
+HREF="information-schema.html"
+>The Information Schema</A
+></DT
+><DD
+><DL
+><DT
+>33.1. <A
+HREF="information-schema.html#INFOSCHEMA-SCHEMA"
+>The Schema</A
+></DT
+><DT
+>33.2. <A
+HREF="infoschema-datatypes.html"
+>Data Types</A
+></DT
+><DT
+>33.3. <A
+HREF="infoschema-information-schema-catalog-name.html"
+><VAR
+CLASS="LITERAL"
+>information_schema_catalog_name</VAR
+></A
+></DT
+><DT
+>33.4. <A
+HREF="infoschema-applicable-roles.html"
+><VAR
+CLASS="LITERAL"
+>applicable_roles</VAR
+></A
+></DT
+><DT
+>33.5. <A
+HREF="infoschema-check-constraints.html"
+><VAR
+CLASS="LITERAL"
+>check_constraints</VAR
+></A
+></DT
+><DT
+>33.6. <A
+HREF="infoschema-column-domain-usage.html"
+><VAR
+CLASS="LITERAL"
+>column_domain_usage</VAR
+></A
+></DT
+><DT
+>33.7. <A
+HREF="infoschema-column-privileges.html"
+><VAR
+CLASS="LITERAL"
+>column_privileges</VAR
+></A
+></DT
+><DT
+>33.8. <A
+HREF="infoschema-column-udt-usage.html"
+><VAR
+CLASS="LITERAL"
+>column_udt_usage</VAR
+></A
+></DT
+><DT
+>33.9. <A
+HREF="infoschema-columns.html"
+><VAR
+CLASS="LITERAL"
+>columns</VAR
+></A
+></DT
+><DT
+>33.10. <A
+HREF="infoschema-constraint-column-usage.html"
+><VAR
+CLASS="LITERAL"
+>constraint_column_usage</VAR
+></A
+></DT
+><DT
+>33.11. <A
+HREF="infoschema-constraint-table-usage.html"
+><VAR
+CLASS="LITERAL"
+>constraint_table_usage</VAR
+></A
+></DT
+><DT
+>33.12. <A
+HREF="infoschema-data-type-privileges.html"
+><VAR
+CLASS="LITERAL"
+>data_type_privileges</VAR
+></A
+></DT
+><DT
+>33.13. <A
+HREF="infoschema-domain-constraints.html"
+><VAR
+CLASS="LITERAL"
+>domain_constraints</VAR
+></A
+></DT
+><DT
+>33.14. <A
+HREF="infoschema-domain-udt-usage.html"
+><VAR
+CLASS="LITERAL"
+>domain_udt_usage</VAR
+></A
+></DT
+><DT
+>33.15. <A
+HREF="infoschema-domains.html"
+><VAR
+CLASS="LITERAL"
+>domains</VAR
+></A
+></DT
+><DT
+>33.16. <A
+HREF="infoschema-element-types.html"
+><VAR
+CLASS="LITERAL"
+>element_types</VAR
+></A
+></DT
+><DT
+>33.17. <A
+HREF="infoschema-enabled-roles.html"
+><VAR
+CLASS="LITERAL"
+>enabled_roles</VAR
+></A
+></DT
+><DT
+>33.18. <A
+HREF="infoschema-key-column-usage.html"
+><VAR
+CLASS="LITERAL"
+>key_column_usage</VAR
+></A
+></DT
+><DT
+>33.19. <A
+HREF="infoschema-parameters.html"
+><VAR
+CLASS="LITERAL"
+>parameters</VAR
+></A
+></DT
+><DT
+>33.20. <A
+HREF="infoschema-referential-constraints.html"
+><VAR
+CLASS="LITERAL"
+>referential_constraints</VAR
+></A
+></DT
+><DT
+>33.21. <A
+HREF="infoschema-role-column-grants.html"
+><VAR
+CLASS="LITERAL"
+>role_columns_grants</VAR
+></A
+></DT
+><DT
+>33.22. <A
+HREF="infoschema-role-routine-grants.html"
+><VAR
+CLASS="LITERAL"
+>role_routine_grants</VAR
+></A
+></DT
+><DT
+>33.23. <A
+HREF="infoschema-role-table-grants.html"
+><VAR
+CLASS="LITERAL"
+>role_table_grants</VAR
+></A
+></DT
+><DT
+>33.24. <A
+HREF="infoschema-role-usage-grants.html"
+><VAR
+CLASS="LITERAL"
+>role_usage_grants</VAR
+></A
+></DT
+><DT
+>33.25. <A
+HREF="infoschema-routine-privileges.html"
+><VAR
+CLASS="LITERAL"
+>routine_privileges</VAR
+></A
+></DT
+><DT
+>33.26. <A
+HREF="infoschema-routines.html"
+><VAR
+CLASS="LITERAL"
+>routines</VAR
+></A
+></DT
+><DT
+>33.27. <A
+HREF="infoschema-schemata.html"
+><VAR
+CLASS="LITERAL"
+>schemata</VAR
+></A
+></DT
+><DT
+>33.28. <A
+HREF="infoschema-sql-features.html"
+><VAR
+CLASS="LITERAL"
+>sql_features</VAR
+></A
+></DT
+><DT
+>33.29. <A
+HREF="infoschema-sql-implementation-info.html"
+><VAR
+CLASS="LITERAL"
+>sql_implementation_info</VAR
+></A
+></DT
+><DT
+>33.30. <A
+HREF="infoschema-sql-languages.html"
+><VAR
+CLASS="LITERAL"
+>sql_languages</VAR
+></A
+></DT
+><DT
+>33.31. <A
+HREF="infoschema-sql-packages.html"
+><VAR
+CLASS="LITERAL"
+>sql_packages</VAR
+></A
+></DT
+><DT
+>33.32. <A
+HREF="infoschema-sql-sizing.html"
+><VAR
+CLASS="LITERAL"
+>sql_sizing</VAR
+></A
+></DT
+><DT
+>33.33. <A
+HREF="infoschema-sql-sizing-profiles.html"
+><VAR
+CLASS="LITERAL"
+>sql_sizing_profiles</VAR
+></A
+></DT
+><DT
+>33.34. <A
+HREF="infoschema-table-constraints.html"
+><VAR
+CLASS="LITERAL"
+>table_constraints</VAR
+></A
+></DT
+><DT
+>33.35. <A
+HREF="infoschema-table-privileges.html"
+><VAR
+CLASS="LITERAL"
+>table_privileges</VAR
+></A
+></DT
+><DT
+>33.36. <A
+HREF="infoschema-tables.html"
+><VAR
+CLASS="LITERAL"
+>tables</VAR
+></A
+></DT
+><DT
+>33.37. <A
+HREF="infoschema-triggers.html"
+><VAR
+CLASS="LITERAL"
+>triggers</VAR
+></A
+></DT
+><DT
+>33.38. <A
+HREF="infoschema-usage-privileges.html"
+><VAR
+CLASS="LITERAL"
+>usage_privileges</VAR
+></A
+></DT
+><DT
+>33.39. <A
+HREF="infoschema-view-column-usage.html"
+><VAR
+CLASS="LITERAL"
+>view_column_usage</VAR
+></A
+></DT
+><DT
+>33.40. <A
+HREF="infoschema-view-table-usage.html"
+><VAR
+CLASS="LITERAL"
+>view_table_usage</VAR
+></A
+></DT
+><DT
+>33.41. <A
+HREF="infoschema-views.html"
+><VAR
+CLASS="LITERAL"
+>views</VAR
+></A
+></DT
+></DL
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="regress-platform.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Platform-specific comparison files</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

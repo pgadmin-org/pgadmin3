@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SHOW</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-SHOW"
->SHOW</A
-></H1
+></A
+>SHOW</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN46003"
+NAME="AEN44272"
 ></A
 ><H2
 >Name</H2
@@ -91,72 +91,24 @@ NAME="AEN46003"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN46006"
+NAME="AEN44275"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SHOW <TT
+>SHOW <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-  </PRE
+>name</VAR
+></PRE
 ><PRE
 CLASS="SYNOPSIS"
->SHOW ALL
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-SHOW-1"
-></A
-><H3
->Inputs</H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->        The name of a run-time parameter. See
-	<A
-HREF="sql-set.html"
-><I
->SET</I
-></A
->
-        for a list.
-       </P
-></DD
-><DT
->ALL</DT
-><DD
-><P
->        Show all current session parameters.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>SHOW ALL</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-SHOW-1"
+NAME="AEN44279"
 ></A
 ><H2
 >Description</H2
@@ -164,8 +116,8 @@ NAME="R1-SQL-SHOW-1"
 >   <TT
 CLASS="COMMAND"
 >SHOW</TT
-> will display the current setting of a
-   run-time parameter. These variables can be set using the
+> will display the current setting of
+   run-time parameters. These variables can be set using the
    <TT
 CLASS="COMMAND"
 >SET</TT
@@ -173,109 +125,228 @@ CLASS="COMMAND"
    <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
->, through the
-   <TT
+> configuration file, through
+   the <TT
 CLASS="ENVAR"
 >PGOPTIONS</TT
-> environmental variable, or through a
-   command-line flag when starting the
+> environmental variable (when using
    <SPAN
 CLASS="APPLICATION"
->postmaster</SPAN
->.
-  </P
-><P
->   Even with <TT
-CLASS="LITERAL"
->autocommit</TT
-> set to <TT
-CLASS="LITERAL"
->off</TT
->, <TT
-CLASS="COMMAND"
->SHOW</TT
->
-   does not start a new transaction block. See the
+>libpq</SPAN
+> or a <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>-based
+   application), or through command-line flags when starting the
    <TT
-CLASS="LITERAL"
->autocommit</TT
-> section of the <I
-CLASS="CITETITLE"
->Administrator's
-   Guide</I
+CLASS="COMMAND"
+>postmaster</TT
+>.  See <A
+HREF="runtime-config.html"
+>Section 16.4</A
 > for details.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46038"
+NAME="AEN44290"
 ></A
 ><H2
->Diagnostics</H2
+>Parameters</H2
 ><P
->    <P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name of a run-time parameter.  Available parameters are
+      documented in <A
+HREF="runtime-config.html"
+>Section 16.4</A
+> and on the <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> reference page.  In
+      addition, there are a few parameters that can be shown but not
+      set:
+
+      <P
 ></P
 ></P><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR: Option '<TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->'
-	  is not recognized</TT
+><VAR
+CLASS="LITERAL"
+>SERVER_VERSION</VAR
 ></DT
 ><DD
 ><P
->	Message returned if <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> does
-	not stand for an existing parameter.
-       </P
+>          Shows the server's version number.
+         </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>SERVER_ENCODING</VAR
+></DT
+><DD
+><P
+>          Shows the server-side character set encoding.  At present,
+          this parameter can be shown but not set, because the
+          encoding is determined at database creation time.
+         </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>LC_COLLATE</VAR
+></DT
+><DD
+><P
+>          Shows the database's locale setting for collation (text
+          ordering).  At present, this parameter can be shown but not
+          set, because the setting is determined at
+          <TT
+CLASS="COMMAND"
+>initdb</TT
+> time.
+         </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>LC_CTYPE</VAR
+></DT
+><DD
+><P
+>          Shows the database's locale setting for character
+          classification.  At present, this parameter can be shown but
+          not set, because the setting is determined at
+          <TT
+CLASS="COMMAND"
+>initdb</TT
+> time.
+         </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>IS_SUPERUSER</VAR
+></DT
+><DD
+><P
+>          True if the current session authorization identifier has
+	  superuser privileges.
+         </P
 ></DD
 ></DL
 ></DIV
 ><P>
-   </P
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>ALL</VAR
+></DT
+><DD
+><P
+>      Show the values of all configurations parameters.
+     </P
+></DD
+></DL
+></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-SHOW-2"
+NAME="AEN44333"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR: Option '<VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>' is not recognized</SAMP
+></DT
+><DD
+><P
+>      Message returned if <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> does not
+      stand for a known parameter.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44343"
+></A
+><H2
+>Notes</H2
+><P
+>   The function <CODE
+CLASS="FUNCTION"
+>current_setting</CODE
+> produces
+   equivalent output. See <A
+HREF="functions-misc.html"
+>Section 9.13</A
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44348"
 ></A
 ><H2
 >Examples</H2
 ><P
->   Show the current <TT
-CLASS="LITERAL"
->DateStyle</TT
-> setting:
+>   Show the current setting of the parameter <VAR
+CLASS="VARNAME"
+>DateStyle</VAR
+>:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SHOW DateStyle;
-               DateStyle
----------------------------------------
- ISO with US (NonEuropean) conventions
+ DateStyle
+-----------
+ ISO, MDY
 (1 row)</PRE
 ><P>
   </P
 ><P
->   Show the current genetic optimizer (<TT
-CLASS="LITERAL"
->geqo</TT
->) setting:
+>   Show the current setting of the parameter <VAR
+CLASS="VARNAME"
+>geqo</VAR
+>:
 </P><PRE
 CLASS="PROGRAMLISTING"
->SHOW GEQO;
+>SHOW geqo;
  geqo
 ------
  on
@@ -304,7 +375,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-SHOW-3"
+NAME="AEN44358"
 ></A
 ><H2
 >Compatibility</H2
@@ -322,24 +393,15 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN46064"
+NAME="AEN44363"
 ></A
 ><H2
 >See Also</H2
-><P
->    The function <TT
-CLASS="FUNCTION"
->current_setting</TT
-> produces equivalent
-    output. See <I
-CLASS="CITETITLE"
->Miscellaneous Functions</I
-> in the
-    <I
-CLASS="CITETITLE"
->PostgreSQL User's Guide</I
->.
-  </P
+><A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

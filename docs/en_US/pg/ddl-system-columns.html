@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >System Columns</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -19,12 +19,12 @@ TITLE="Data Definition"
 HREF="ddl.html"><LINK
 REL="NEXT"
 TITLE="Default Values"
-HREF="x1779.html"><LINK
+HREF="ddl-default.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. Data Definition</TD
+>Chapter 5. Data Definition</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="x1779.html"
+HREF="ddl-default.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DDL-SYSTEM-COLUMNS"
->2.2. System Columns</A
+>5.2. System Columns</A
 ></H1
 ><P
 >   Every table has several <I
@@ -96,7 +96,7 @@ CLASS="FIRSTTERM"
    columns, just know they exist.
   </P
 ><A
-NAME="AEN1727"
+NAME="AEN1640"
 ></A
 ><P
 ></P
@@ -111,7 +111,7 @@ CLASS="STRUCTFIELD"
 ><DD
 ><P
 >      <A
-NAME="AEN1736"
+NAME="AEN1649"
 ></A
 >
       The object identifier (object ID) of a row.  This is a serial
@@ -120,17 +120,17 @@ NAME="AEN1736"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > to all table rows (unless
-      the table was created <TT
+      the table was created using <VAR
 CLASS="LITERAL"
->WITHOUT OIDS</TT
+>WITHOUT OIDS</VAR
 >, in which
       case this column is not present).  This column is of type
       <TT
-CLASS="LITERAL"
+CLASS="TYPE"
 >oid</TT
 > (same name as the column); see <A
 HREF="datatype-oid.html"
->Section 5.10</A
+>Section 8.11</A
 > for more information about the type.
      </P
 ></DD
@@ -141,7 +141,7 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><P
->      The OID of the table containing this row.  This attribute is
+>      The OID of the table containing this row.  This column is
       particularly handy for queries that select from inheritance
       hierarchies, since without it, it's difficult to tell which
       individual table a row came from.  The
@@ -154,7 +154,7 @@ CLASS="STRUCTFIELD"
 >oid</TT
 > column of
       <TT
-CLASS="CLASSNAME"
+CLASS="STRUCTNAME"
 >pg_class</TT
 > to obtain the table name.
      </P
@@ -191,7 +191,7 @@ CLASS="STRUCTFIELD"
 ><DD
 ><P
 >      The identity (transaction ID) of the deleting transaction, or
-      zero for an undeleted tuple.  It is possible for this field to
+      zero for an undeleted tuple.  It is possible for this column to
       be nonzero in a visible tuple: That usually indicates that the
       deleting transaction hasn't committed yet, or that an attempted
       deletion was rolled back.
@@ -238,6 +238,62 @@ CLASS="STRUCTFIELD"
 ></DD
 ></DL
 ></DIV
+><P
+>    OIDs are 32-bit quantities and are assigned from a single cluster-wide
+    counter.  In a large or long-lived database, it is possible for the
+    counter to wrap around.  Hence, it is bad practice to assume that OIDs
+    are unique, unless you take steps to ensure that they are unique.
+    Recommended practice when using OIDs for row identification is to create
+    a unique constraint on the OID column of each table for which the OID will
+    be used.  Never assume that OIDs are unique across tables; use the
+    combination of <TT
+CLASS="STRUCTFIELD"
+>tableoid</TT
+> and row OID if you need a
+    database-wide identifier.  (Future releases of
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> are likely to use a separate
+    OID counter for each table, so that <TT
+CLASS="STRUCTFIELD"
+>tableoid</TT
+>
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+> be included to arrive at a globally unique identifier.)
+   </P
+><P
+>    Transaction identifiers are also 32-bit quantities.  In a long-lived
+    database it is possible for transaction IDs to wrap around.  This
+    is not a fatal problem given appropriate maintenance procedures;
+    see <A
+HREF="maintenance.html"
+>Chapter 21</A
+> for details.  However, it is
+    unwise to depend on uniqueness of transaction IDs over the long term
+    (more than one billion transactions).
+   </P
+><P
+>    Command
+    identifiers are also 32-bit quantities.  This creates a hard limit
+    of 2<SUP
+>32</SUP
+> (4 billion) <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands
+    within a single transaction.  In practice this limit is not a
+    problem --- note that the limit is on number of
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands, not number of tuples processed.
+   </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -273,7 +329,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="x1779.html"
+HREF="ddl-default.html"
 ACCESSKEY="N"
 >Next</A
 ></TD

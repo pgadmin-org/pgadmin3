@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SPI_prepare</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Interface Functions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SPI-SPIPREPARE"
->SPI_prepare</A
-></H1
+></A
+>SPI_prepare</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN33900"
+NAME="AEN32296"
 ></A
 ><H2
 >Name</H2
@@ -97,27 +97,21 @@ NAME="IX-SPI-SPIPREPARE-2"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN33908"
+NAME="AEN32304"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SPI_prepare(<TT
+>SPI_prepare(<VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
->, <TT
+>query</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->nargs</I
-></TT
->, <TT
+>nargs</VAR
+>, <VAR
 CLASS="REPLACEABLE"
-><I
->argtypes</I
-></TT
+>argtypes</VAR
 >)</PRE
 ><DIV
 CLASS="REFSECT2"
@@ -132,39 +126,33 @@ NAME="R2-SPI-SPIPREPARE-1"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+>const char * <VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
+>query</VAR
 ></DT
 ><DD
 ><P
 >Query string</P
 ></DD
 ><DT
-><TT
+>int <VAR
 CLASS="REPLACEABLE"
-><I
->nargs</I
-></TT
+>nargs</VAR
 ></DT
 ><DD
 ><P
 >Number of input parameters ($1 ... $nargs - as in SQL-functions)</P
 ></DD
 ><DT
-><TT
+>Oid * <VAR
 CLASS="REPLACEABLE"
-><I
->argtypes</I
-></TT
+>argtypes</VAR
 ></DT
 ><DD
 ><P
->Pointer to array of type <SPAN
+>Pointer to array of type <ACRONYM
 CLASS="ACRONYM"
->OID</SPAN
+>OID</ACRONYM
 >s for input parameter types</P
 ></DD
 ></DL
@@ -200,9 +188,9 @@ NAME="R1-SPI-SPIPREPARE-1"
 ><H2
 >Description</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 > 
    creates and returns an execution plan (parser+planner+optimizer) but doesn't
    execute the query. Should only be called from a connected procedure.&#13;</P
@@ -217,20 +205,20 @@ NAME="R1-SPI-SPIPREPARE-2"
 ><P
 >   When the same or similar query is to be executed repeatedly, it may
    be advantageous to perform query planning only once.
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 > converts a query string into an execution
-   plan that can be passed repeatedly to <TT
+   plan that can be passed repeatedly to <CODE
 CLASS="FUNCTION"
->SPI_execp</TT
+>SPI_execp</CODE
 >.</P
 ><P
 >   A prepared query can be generalized by writing parameters ($1, $2, etc)
    in place of what would be constants in a normal query.  The values of
-   the parameters are then specified when <TT
+   the parameters are then specified when <CODE
 CLASS="FUNCTION"
->SPI_execp</TT
+>SPI_execp</CODE
 >
    is called.  This allows the prepared query to be used over a wider
    range of situations than would be possible without parameters.</P
@@ -249,22 +237,22 @@ CLASS="NOTE"
 ></DIV
 ><P
 >   If the query uses parameters, their number and data types must be
-   specified in the call to <TT
+   specified in the call to <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 >.</P
 ><P
->The plan returned by <TT
+>The plan returned by <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 > may be used only in current
-   invocation of the procedure since <TT
+   invocation of the procedure since <CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > frees memory allocated for a plan. 
-   But see <TT
+   But see <CODE
 CLASS="FUNCTION"
->SPI_saveplan</TT
+>SPI_saveplan</CODE
 > to save a plan for longer.</P
 ><P
 >   If successful, a non-null pointer will be returned. Otherwise, you'll get

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_attribute</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. System Catalogs</TD
+>Chapter 45. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-ATTRIBUTE"
->3.7. pg_attribute</A
+>45.7. <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></A
 ></H1
+><A
+NAME="AEN50966"
+></A
 ><P
->   <TT
+>   The catalog <TT
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 > stores information about
@@ -106,118 +112,111 @@ CLASS="STRUCTNAME"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN52719"
+NAME="AEN50973"
 ></A
 ><P
 ><B
->Table 3-7. pg_attribute Columns</B
+>Table 45-7. <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+> Columns</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >References</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attrelid</TD
+><TT
+CLASS="STRUCTFIELD"
+>attrelid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_class.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-class.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The table this column belongs to</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attname</TD
+><TT
+CLASS="STRUCTFIELD"
+>attname</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->Column name</TD
+>The column name</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->atttypid</TD
+><TT
+CLASS="STRUCTFIELD"
+>atttypid</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >oid</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->pg_type.oid</TD
+><VAR
+CLASS="LITERAL"
+><A
+HREF="catalog-pg-type.html"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></A
+>.oid</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >The data type of this column</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attstattarget</TD
+><TT
+CLASS="STRUCTFIELD"
+>attstattarget</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="STRUCTFIELD"
 >attstattarget</TT
@@ -229,8 +228,8 @@ CLASS="COMMAND"
 >.
        A zero value indicates that no statistics should be collected.
        A negative value says to use the system default statistics target.
-       The exact meaning of positive values is datatype-dependent.
-       For scalar datatypes, <TT
+       The exact meaning of positive values is data type-dependent.
+       For scalar data types, <TT
 CLASS="STRUCTFIELD"
 >attstattarget</TT
 >
@@ -243,53 +242,39 @@ CLASS="QUOTE"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attlen</TD
+><TT
+CLASS="STRUCTFIELD"
+>attlen</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       This is a copy of
-       <TT
-CLASS="STRUCTNAME"
->pg_type</TT
->.<TT
-CLASS="STRUCTFIELD"
->typlen</TT
->
-       of this column's type.
+>       A copy of <VAR
+CLASS="LITERAL"
+>pg_type.typlen</VAR
+> of this column's
+       type
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attnum</TD
+><TT
+CLASS="STRUCTFIELD"
+>attnum</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int2</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       The number of the column.  Ordinary columns are numbered from 1
        up.  System columns, such as <TT
 CLASS="STRUCTFIELD"
@@ -300,23 +285,18 @@ CLASS="STRUCTFIELD"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attndims</TD
+><TT
+CLASS="STRUCTFIELD"
+>attndims</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       Number of dimensions, if the column is an array type; otherwise 0.
        (Presently, the number of dimensions of an array is not enforced,
        so any nonzero value effectively means <SPAN
@@ -327,23 +307,18 @@ CLASS="QUOTE"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attcacheoff</TD
+><TT
+CLASS="STRUCTFIELD"
+>attcacheoff</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       Always -1 in storage, but when loaded into a tuple descriptor
        in memory this may be updated to cache the offset of the attribute
        within the tuple.
@@ -351,23 +326,18 @@ VALIGN="TOP"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->atttypmod</TD
+><TT
+CLASS="STRUCTFIELD"
+>atttypmod</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       <TT
 CLASS="STRUCTFIELD"
 >atttypmod</TT
@@ -378,89 +348,68 @@ CLASS="TYPE"
 >varchar</TT
 > column).  It is passed to
        type-specific input functions and length coercion functions.
-       The value will generally be -1 for types that do not need typmod.
+       The value will generally be -1 for types that do not need <TT
+CLASS="STRUCTFIELD"
+>atttypmod</TT
+>.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attbyval</TD
+><TT
+CLASS="STRUCTFIELD"
+>attbyval</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       A copy of
-       <TT
-CLASS="STRUCTNAME"
->pg_type</TT
->.<TT
-CLASS="STRUCTFIELD"
->typbyval</TT
->
-       of this column's type
+>       A copy of <VAR
+CLASS="LITERAL"
+>pg_type.typbyval</VAR
+> of this column's type
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attstorage</TD
+><TT
+CLASS="STRUCTFIELD"
+>attstorage</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       Normally a copy of
-       <TT
-CLASS="STRUCTNAME"
->pg_type</TT
->.<TT
-CLASS="STRUCTFIELD"
->typstorage</TT
->
-       of this column's type.  For TOASTable datatypes, this can be altered
+>       Normally a copy of <VAR
+CLASS="LITERAL"
+>pg_type.typstorage</VAR
+> of this
+       column's type.  For TOAST-able data types, this can be altered
        after column creation to control storage policy.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attisset</TD
+><TT
+CLASS="STRUCTFIELD"
+>attisset</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       If true, this attribute is a set.  In that case, what is really
        stored in the attribute is the OID of a tuple in the
        <TT
@@ -471,7 +420,7 @@ CLASS="STRUCTNAME"
 CLASS="STRUCTNAME"
 >pg_proc</TT
 > tuple contains the query
-       string that defines this set - i.e., the query to run to get
+       string that defines this set, i.e., the query to run to get
        the set.  So the <TT
 CLASS="STRUCTFIELD"
 >atttypid</TT
@@ -487,76 +436,56 @@ CLASS="TYPE"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attalign</TD
+><TT
+CLASS="STRUCTFIELD"
+>attalign</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >char</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       A copy of
-       <TT
-CLASS="STRUCTNAME"
->pg_type</TT
->.<TT
+>       A copy of <VAR
+CLASS="LITERAL"
+>pg_type.typalign</VAR
+> of this column's type
+      </TD
+></TR
+><TR
+><TD
+><TT
 CLASS="STRUCTFIELD"
->typalign</TT
->
-       of this column's type
-      </TD
-></TR
-><TR
+>attnotnull</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attnotnull</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->       This represents a NOT NULL constraint.  It is possible to
-       change this field to enable or disable the constraint.
+>       This represents a not-null constraint.  It is possible to
+       change this column to enable or disable the constraint.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->atthasdef</TD
+><TT
+CLASS="STRUCTFIELD"
+>atthasdef</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       This column has a default value, in which case there will be a
        corresponding entry in the <TT
 CLASS="STRUCTNAME"
@@ -567,23 +496,18 @@ CLASS="STRUCTNAME"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attisdropped</TD
+><TT
+CLASS="STRUCTFIELD"
+>attisdropped</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       This column has been dropped and is no longer valid.  A dropped
        column is still physically present in the table, but is
        ignored by the parser and so cannot be accessed via SQL.
@@ -591,46 +515,36 @@ VALIGN="TOP"
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attislocal</TD
+><TT
+CLASS="STRUCTFIELD"
+>attislocal</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >bool</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       This column is defined locally in the relation.  Note that a column may
        be locally defined and inherited simultaneously.
       </TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->attinhcount</TD
+><TT
+CLASS="STRUCTFIELD"
+>attinhcount</TT
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >int4</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >       The number of direct ancestors this column has.  A column with a 
        nonzero number of ancestors cannot be dropped nor renamed.
       </TD
@@ -683,7 +597,10 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_attrdef</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_attrdef</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -697,7 +614,10 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->pg_cast</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_cast</TT
+></TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->Using the driver in a multithreaded or a servlet environment</TITLE
+>Using the Driver in a Multithreaded or a Servlet Environment</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="JDBC Interface"
@@ -19,13 +19,13 @@ TITLE="PostgreSQL Extensions to the
     JDBC API"
 HREF="jdbc-ext.html"><LINK
 REL="NEXT"
-TITLE="Connection Pools And DataSources"
+TITLE="Connection Pools and Data Sources"
 HREF="jdbc-datasource.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -45,7 +45,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -61,9 +61,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. <SPAN
+>Chapter 31. <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > Interface</TD
 ><TD
 WIDTH="10%"
@@ -85,88 +85,71 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="JDBC-THREAD"
->5.8. Using the driver in a multithreaded or a servlet environment</A
+>31.8. Using the Driver in a Multithreaded or a Servlet Environment</A
 ></H1
 ><P
->   A problem with many <SPAN
+>   A problem with many <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > drivers is that only
-   one thread can use a <TT
+   one thread can use a <CODE
 CLASS="CLASSNAME"
->Connection</TT
+>Connection</CODE
 > at any one
-   time -- otherwise a thread could send a query while another one is
-   receiving results, and this would be a bad thing for the database
-   engine.
+   time --- otherwise a thread could send a query while another one is
+   receiving results, and this could cause severe confusion.
   </P
 ><P
 >   The <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> <SPAN
+> <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
-> Driver
+>JDBC</ACRONYM
+> driver
    is thread safe.
    Consequently, if your application uses multiple threads then you do
-   not have to worry about complex algorithms to ensure that only one
-   uses the database at any time.
+   not have to worry about complex algorithms to ensure that only one thread
+   uses the database at a time.
   </P
 ><P
 >   If a thread attempts to use the connection while another one is
    using it, it will wait until the other thread has finished its
-   current operation.  If it is a regular <SPAN
+   current operation.  If the operation is a regular <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >
    statement, then the operation consists of sending the statement and
-   retrieving any <TT
+   retrieving any <CODE
 CLASS="CLASSNAME"
->ResultSet</TT
+>ResultSet</CODE
 > (in full).  If it
-   is a <TT
-CLASS="CLASSNAME"
->Fastpath</TT
-> call (e.g., reading a block
-   from a <TT
-CLASS="CLASSNAME"
->LargeObject</TT
->) then it is the time to
-   send and retrieve that block.
+   is a fast-path call (e.g., reading a block
+   from a large object) then it consists of
+   sending and retrieving the respective data.
   </P
 ><P
 >   This is fine for applications and applets but can cause a
-   performance problem with servlets.  With servlets you can have a
-   heavy load on the connection. If you have several threads
-   performing queries then each but one will pause, which may not be what
-   you are after.
-  </P
-><P
->   To solve this, you would be advised to create a pool of
-   connections.  When ever a thread needs to use the database, it asks
-   a manager class for a <TT
+   performance problem with servlets.  If you have several threads
+   performing queries then each but one will pause.
+   To solve this, you are advised to create a pool of connections.
+   When ever a thread needs to use the database, it asks a manager
+   class for a <CODE
 CLASS="CLASSNAME"
->Connection</TT
->. The
-   manager hands a free connection to the thread and marks it as
-   busy. If a free connection is not available, it opens one.  Once
-   the thread has finished with it, it returns it to the manager who
-   can then either close it or add it to the pool. The manager would
-   also check that the connection is still alive and remove it from
-   the pool if it is dead.
-  </P
-><P
->   So, with servlets, it is up to you to use either a single
-   connection, or a pool. The plus side for a pool is that threads
-   will not be hit by the bottle neck caused by a single network
-   connection. The down side is that it increases the load on the
-   server, as a backend process is created for each
-   <TT
+>Connection</CODE
+> object. The manager
+   hands a free connection to the thread and marks it as busy. If a
+   free connection is not available, it opens one.  Once the thread
+   has finished using the connection, it returns it to the manager
+   which can then either close it or add it to the pool. The manager
+   would also check that the connection is still alive and remove it
+   from the pool if it is dead.  The down side of a connection pool is
+   that it increases the load on the server because a new session is
+   created for each <CODE
 CLASS="CLASSNAME"
->Connection</TT
->.  It is up to you and your
-   applications requirements.
+>Connection</CODE
+> object.  It is
+   up to you and your applications' requirements.
   </P
 ></DIV
 ><DIV
@@ -217,12 +200,12 @@ VALIGN="top"
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
 > Extensions to the
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
-> <SPAN
+>JDBC</ACRONYM
+> <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 ></TD
 ><TD
 WIDTH="34%"
@@ -237,7 +220,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Connection Pools And DataSources</TD
+>Connection Pools and Data Sources</TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Monitoring Database Activity</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+TITLE="Server Administration"
 HREF="admin.html"><LINK
 REL="PREVIOUS"
 TITLE="Migration between releases"
 HREF="migration.html"><LINK
 REL="NEXT"
-TITLE="Statistics Collector"
+TITLE="The Statistics Collector"
 HREF="monitoring-stats.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="MONITORING"
->Chapter 10. Monitoring Database Activity</A
-></H1
+></A
+>Chapter 23. Monitoring Database Activity</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,31 +90,31 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->10.1. <A
+>23.1. <A
 HREF="monitoring.html#MONITORING-PS"
 >Standard Unix Tools</A
 ></DT
 ><DT
->10.2. <A
+>23.2. <A
 HREF="monitoring-stats.html"
->Statistics Collector</A
+>The Statistics Collector</A
 ></DT
 ><DD
 ><DL
 ><DT
->10.2.1. <A
+>23.2.1. <A
 HREF="monitoring-stats.html#MONITORING-STATS-SETUP"
 >Statistics Collection Configuration</A
 ></DT
 ><DT
->10.2.2. <A
+>23.2.2. <A
 HREF="monitoring-stats.html#MONITORING-STATS-VIEWS"
 >Viewing Collected Statistics</A
 ></DT
 ></DL
 ></DD
 ><DT
->10.3. <A
+>23.3. <A
 HREF="monitoring-locks.html"
 >Viewing Locks</A
 ></DT
@@ -134,10 +134,7 @@ CLASS="QUOTE"
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->'s <I
-CLASS="FIRSTTERM"
->statistics collector</I
->,
+>'s statistics collector,
    but one should not neglect regular Unix monitoring programs such as
    <TT
 CLASS="COMMAND"
@@ -154,11 +151,9 @@ CLASS="PRODUCTNAME"
 CLASS="COMMAND"
 >EXPLAIN</TT
 > command.
-   The <A
-HREF="user.html"
-><I
->PostgreSQL 7.3.3 User's Guide</I
-></A
+   <A
+HREF="performance-tips.html#USING-EXPLAIN"
+>Section 13.1</A
 > discusses <TT
 CLASS="COMMAND"
 >EXPLAIN</TT
@@ -172,10 +167,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="MONITORING-PS"
->10.1. Standard Unix Tools</A
+>23.1. Standard Unix Tools</A
 ></H1
 ><A
-NAME="AEN22819"
+NAME="AEN18429"
 ></A
 ><P
 >   On most platforms, <SPAN
@@ -205,9 +200,9 @@ CLASS="COMMAND"
 > varies across different
    platforms, as do the details of what is shown.  This example is from a
    recent Linux system.)  The first process listed here is the
-   <I
-CLASS="FIRSTTERM"
->postmaster</I
+   <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
 >, the master server process.  The command arguments
    shown for it are the same ones given when it was launched.  The next two
    processes implement the statistics collector, which will be described in
@@ -218,50 +213,42 @@ CLASS="FIRSTTERM"
 
 </P><PRE
 CLASS="SCREEN"
->postgres: <TT
+>postgres: <VAR
 CLASS="REPLACEABLE"
-><I
->user</I
-></TT
-> <TT
+>user</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->database</I
-></TT
-> <TT
+>database</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
-> <TT
+>host</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->activity</I
-></TT
+>activity</VAR
 ></PRE
 ><P>
 
   The user, database, and connection source host items remain the same for
   the life of the client connection, but the activity indicator changes.
-  The activity may be <TT
+  The activity may be <VAR
 CLASS="LITERAL"
->idle</TT
+>idle</VAR
 > (i.e., waiting for a client command),
-  <TT
+  <VAR
 CLASS="LITERAL"
->idle in transaction</TT
+>idle in transaction</VAR
 > (waiting for client inside a <TT
 CLASS="COMMAND"
 >BEGIN</TT
 > block),
-  or a command type name such as <TT
+  or a command type name such as <VAR
 CLASS="LITERAL"
->SELECT</TT
+>SELECT</VAR
 >.  Also,
-  <TT
+  <VAR
 CLASS="LITERAL"
->waiting</TT
-> is attached if the server is presently waiting
+>waiting</VAR
+> is attached if the server process is presently waiting
   on a lock held by another server process.  In the above example we can infer
   that process 1003 is waiting for process 1016 to complete its transaction and
   thereby release some lock or other.
@@ -284,26 +271,26 @@ CLASS="COMMAND"
   <TT
 CLASS="COMMAND"
 >/bin/ps</TT
->. You also must use two <TT
-CLASS="COMMAND"
->w</TT
+>. You also must use two <VAR
+CLASS="OPTION"
+>w</VAR
 >
   flags, not just one. In addition, your original invocation of the
-  <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
-> must have a shorter
+  <TT
+CLASS="COMMAND"
+>postmaster</TT
+> command must have a shorter
   <TT
 CLASS="COMMAND"
 >ps</TT
 > status display than that provided by each
-  backend.   If you fail to do all three things, the <TT
+  server process.  If you fail to do all three things, the <TT
 CLASS="COMMAND"
 >ps</TT
 >
-  output for each backend will be the original <SPAN
-CLASS="APPLICATION"
->postmaster</SPAN
+  output for each server process will be the original <TT
+CLASS="COMMAND"
+>postmaster</TT
 >
   command line.
   </P
@@ -369,7 +356,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Statistics Collector</TD
+>The Statistics Collector</TD
 ></TR
 ></TABLE
 ></DIV

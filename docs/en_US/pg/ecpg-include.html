@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Including Files</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,12 +60,12 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. <SPAN
+>Chapter 30. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
-> - Embedded <SPAN
+> - Embedded <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > in C</TD
 ><TD
 WIDTH="10%"
@@ -87,28 +87,24 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="ECPG-INCLUDE"
->4.7. Including Files</A
+>30.10. Including Files</A
 ></H1
 ><P
 >   To include an external file into your embedded SQL program, use:
 </P><PRE
 CLASS="PROGRAMLISTING"
->EXEC SQL INCLUDE <TT
+>EXEC SQL INCLUDE <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>filename</VAR
 >;</PRE
 ><P>
    The embedded SQL preprocessor will look for a file named
-   <TT
+   <VAR
 CLASS="LITERAL"
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->.h</TT
+>filename</VAR
+>.h</VAR
 >,
    preprocess it, and include it in the resulting C output.  Thus,
    embedded SQL statements in the included file are handled correctly.
@@ -123,18 +119,16 @@ CLASS="EMPHASIS"
 > the same as
 </P><PRE
 CLASS="PROGRAMLISTING"
->#include &lt;<TT
+>#include &lt;<VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>filename</VAR
 >.h&gt;</PRE
 ><P>
-   because the file would not be subject to SQL command preprocessing.
+   because this file would not be subject to SQL command preprocessing.
    Naturally, you can continue to use the C
-   <TT
+   <VAR
 CLASS="LITERAL"
->#include</TT
+>#include</VAR
 > directive to include other header
    files.
   </P
@@ -146,9 +140,9 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >    The include file name is case-sensitive, even though the rest of
-    the <TT
+    the <VAR
 CLASS="LITERAL"
->EXEC SQL INCLUDE</TT
+>EXEC SQL INCLUDE</VAR
 > command follows the normal
     SQL case-sensitivity rules.
    </P

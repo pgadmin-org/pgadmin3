@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >UPDATE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,356 +78,279 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-UPDATE"
->UPDATE</A
-></H1
+></A
+>UPDATE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN46269"
+NAME="AEN44508"
 ></A
 ><H2
 >Name</H2
->   UPDATE
-  &nbsp;--&nbsp;   update rows of a table
-  </DIV
+>UPDATE&nbsp;--&nbsp;update rows of a table</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN46272"
+NAME="AEN44511"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->UPDATE [ ONLY ] <TT
+>UPDATE [ ONLY ] <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> SET <TT
+>table</VAR
+> SET <VAR
 CLASS="REPLACEABLE"
-><I
->col</I
-></TT
-> = <TT
+>column</VAR
+> = { <VAR
 CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> [, ...]
-    [ FROM <TT
+>expression</VAR
+> | DEFAULT } [, ...]
+    [ FROM <VAR
 CLASS="REPLACEABLE"
-><I
->fromlist</I
-></TT
+>fromlist</VAR
 > ]
-    [ WHERE <TT
+    [ WHERE <VAR
 CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
-> ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-UPDATE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-></DT
-><DD
-><P
->	The name (optionally schema-qualified) of an existing table. If
-	<TT
-CLASS="LITERAL"
->ONLY</TT
-> is specified, only that table is updated.  If
-	<TT
-CLASS="LITERAL"
->ONLY</TT
-> is not specified, the table and all its
-	descendant tables (if any) are updated. <TT
-CLASS="LITERAL"
->*</TT
-> can be
-	appended to the table name to indicate that descendant tables are
-	to be scanned, but in the current version, this is the default
-	behavior.  (In releases before 7.1, <TT
-CLASS="LITERAL"
->ONLY</TT
-> was the
-	default behavior.)  The default can be altered by changing the
-	<TT
-CLASS="OPTION"
->SQL_INHERITANCE</TT
-> configuration option.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-></DT
-><DD
-><P
->	The name of a column in <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
->.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-></DT
-><DD
-><P
->	A valid expression or value to assign to column.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->fromlist</I
-></TT
-></DT
-><DD
-><P
->	A <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-	non-standard extension to allow columns
-	from other tables to appear in the WHERE condition.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->condition</I
-></TT
-></DT
-><DD
-><P
->	Refer to the SELECT statement for a further description
-	of the WHERE clause.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-UPDATE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->UPDATE <TT
-CLASS="REPLACEABLE"
-><I
->#</I
-></TT
->
-      </TT
-></DT
-><DD
-><P
->	Message returned if successful.
-	The <TT
-CLASS="REPLACEABLE"
-><I
->#</I
-></TT
->
-	means the number of rows updated.
-	If <TT
-CLASS="REPLACEABLE"
-><I
->#</I
-></TT
->
-	is 0 no rows are updated.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>condition</VAR
+> ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-UPDATE-1"
+NAME="AEN44518"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >UPDATE</TT
-> changes the values of the columns specified for
-   all rows which satisfy condition. Only the columns 
-   to be modified need appear as columns in the statement.
+> changes the values of the specified
+   columns in all rows that satisfy the condition. Only the columns to
+   be modified need be mentioned in the statement; columns not explicitly
+   <VAR
+CLASS="LITERAL"
+>SET</VAR
+> retain their previous values.
   </P
 ><P
->   Array references use the same syntax found in
-   <A
-HREF="sql-select.html"
-><I
->SELECT</I
-></A
+>   By default, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> will update rows in the
+   specified table and all its subtables. If you wish to only update
+   the specific table mentioned, you must use the <VAR
+CLASS="LITERAL"
+>ONLY</VAR
+>
+   clause.
+  </P
+><P
+>   You must have the <VAR
+CLASS="LITERAL"
+>UPDATE</VAR
+> privilege on the table
+   to update it, as well as the <VAR
+CLASS="LITERAL"
+>SELECT</VAR
+>
+   privilege to any table whose values are read in the
+   <VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>s or
+   <VAR
+CLASS="REPLACEABLE"
+>condition</VAR
 >.
-   That is, either single array elements, a range of array
-   elements or the entire array may be replaced with a single
-   query.
-  </P
-><P
->   You must have write access to the table in order to modify
-   it, as well as read access to any table whose values are
-   mentioned in the WHERE condition.
-  </P
-><P
->  By default UPDATE will update tuples in the table specified 
-  and all its sub-tables. If you wish to only update the
-  specific table mentioned, you should use the ONLY clause.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-UPDATE-2"
+NAME="AEN44531"
 ></A
 ><H2
->   Usage
-  </H2
+>Parameters</H2
 ><P
->   Change word <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>table</VAR
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of the table to update.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>column</VAR
+></DT
+><DD
+><P
+>      The name of a column in <VAR
+CLASS="REPLACEABLE"
+>table</VAR
+>.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+></DT
+><DD
+><P
+>      An expression to assign to the column.  The expression may use the
+      old values of this and other columns in the table.
+     </P
+></DD
+><DT
+><VAR
 CLASS="LITERAL"
->Drama</TT
-> with <TT
+>DEFAULT</VAR
+></DT
+><DD
+><P
+>      Set the column to its default value (which will be NULL if no
+      specific default expression has been assigned to it).
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>fromlist</VAR
+></DT
+><DD
+><P
+>      A list of table expressions, allowing columns from other tables
+      to appear in the <VAR
 CLASS="LITERAL"
->Dramatic</TT
-> on column <TT
+>WHERE</VAR
+> condition and the update expressions.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>condition</VAR
+></DT
+><DD
+><P
+>      An expression that returns a value of type <TT
+CLASS="TYPE"
+>boolean</TT
+>.
+      Only rows for which this expression returns <VAR
+CLASS="LITERAL"
+>true</VAR
+>
+      will be updated.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44568"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>UPDATE <VAR
+CLASS="REPLACEABLE"
+>count</VAR
+></SAMP
+></DT
+><DD
+><P
+>      Message returned if successful.  The value <VAR
+CLASS="REPLACEABLE"
+>count</VAR
+> is the number of rows
+      updated.  If <VAR
+CLASS="REPLACEABLE"
+>count</VAR
+>
+      is 0, no rows were updated.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44579"
+></A
+><H2
+>Examples</H2
+><P
+>   Change the word <VAR
+CLASS="LITERAL"
+>Drama</VAR
+> to <VAR
+CLASS="LITERAL"
+>Dramatic</VAR
+> in the
+   column <TT
 CLASS="STRUCTFIELD"
 >kind</TT
+> of the table <VAR
+CLASS="LITERAL"
+>films</VAR
 >:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->UPDATE films 
-SET kind = 'Dramatic' 
-WHERE kind = 'Drama';
-SELECT * 
-FROM films 
-WHERE kind = 'Dramatic' OR kind = 'Drama';
+>UPDATE films SET kind = 'Dramatic' WHERE kind = 'Drama';</PRE
+><P>
+  </P
+><P
+>   Adjust temperature entries and reset precipitation to its default
+   value in one row of the table <VAR
+CLASS="LITERAL"
+>weather</VAR
+>:
 
- code  |     title     | did | date_prod  |   kind   | len
--------+---------------+-----+------------+----------+-------
- BL101 | The Third Man | 101 | 1949-12-23 | Dramatic | 01:44
- P_302 | Becket        | 103 | 1964-02-03 | Dramatic | 02:28
- M_401 | War and Peace | 104 | 1967-02-12 | Dramatic | 05:57
- T_601 | Yojimbo       | 106 | 1961-06-16 | Dramatic | 01:50
- DA101 | Das Boot      | 110 | 1981-11-11 | Dramatic | 02:29</PRE
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
+  WHERE city = 'San Francisco' AND date = '2003-07-03';</PRE
 ><P>
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-UPDATE-3"
+NAME="AEN44590"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-UPDATE-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> defines a different syntax for
-    the positioned UPDATE statement:
-
-    </P><PRE
-CLASS="SYNOPSIS"
->UPDATE <TT
-CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> SET <TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> = <TT
-CLASS="REPLACEABLE"
-><I
->expression</I
-></TT
-> [, ...]
-    WHERE CURRENT OF <TT
-CLASS="REPLACEABLE"
-><I
->cursor</I
-></TT
->
-    </PRE
-><P>
-
-    where <TT
-CLASS="REPLACEABLE"
-><I
->cursor</I
-></TT
->
-    identifies an open cursor.
-   </P
-></DIV
+>   This command conforms to the SQL standard.  The
+   <VAR
+CLASS="LITERAL"
+>FROM</VAR
+> clause is a PostgreSQL extension.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Secure TCP/IP Connections with SSH Tunnels</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. Server Run-time Environment</TD
+>Chapter 16. Server Run-time Environment</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,33 +81,14 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SSH-TUNNELS"
->3.8. Secure TCP/IP Connections with <SPAN
+>16.8. Secure TCP/IP Connections with <SPAN
 CLASS="APPLICATION"
 >SSH</SPAN
 > Tunnels</A
 ></H1
 ><A
-NAME="AEN20899"
+NAME="AEN16561"
 ></A
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Acknowledgement: </B
->    Idea taken from an email by Gene Selkov, Jr.
-    (<TT
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:selkovjr@mcs.anl.gov"
->selkovjr@mcs.anl.gov</A
->&#62;</TT
->) written on 1999-09-08 in response
-    to a question from Eric Marsden.
-   </P
-></BLOCKQUOTE
-></DIV
 ><P
 >   One can use <SPAN
 CLASS="APPLICATION"
@@ -125,11 +106,11 @@ CLASS="PRODUCTNAME"
 CLASS="APPLICATION"
 >SSH</SPAN
 > server is
-   running properly on the same machine as
+   running properly on the same machine as the
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> and that you can log in using
+> server and that you can log in using
    <TT
 CLASS="COMMAND"
 >ssh</TT
@@ -139,12 +120,12 @@ CLASS="COMMAND"
 CLASS="PROGRAMLISTING"
 >ssh -L 3333:foo.com:5432 joe@foo.com</PRE
 ><P>
-   The first number in the <TT
+   The first number in the <VAR
 CLASS="OPTION"
->-L</TT
+>-L</VAR
 > argument, 3333, is the
    port number of your end of the tunnel; it can be chosen freely. The
-   second number, 5432, is the remote end of the tunnel -- the port
+   second number, 5432, is the remote end of the tunnel: the port
    number your server is using. The name or the address in between
    the port numbers is the host with the database server you are going
    to connect to. In order to connect to the database server using
@@ -154,18 +135,18 @@ CLASS="PROGRAMLISTING"
 >psql -h localhost -p 3333 template1</PRE
 ><P>
    To the database server it will then look as though you are really
-   user <TT
+   user <VAR
 CLASS="LITERAL"
->joe@foo.com</TT
+>joe@foo.com</VAR
 > and it will use whatever
    authentication procedure was set up for this user. In order for the
    tunnel setup to succeed you must be allowed to connect via
    <TT
 CLASS="COMMAND"
 >ssh</TT
-> as <SPAN
-CLASS="SYSTEMITEM"
->joe@foo.com</SPAN
+> as <VAR
+CLASS="LITERAL"
+>joe@foo.com</VAR
 >, just
    as if you had attempted to use <TT
 CLASS="COMMAND"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP LANGUAGE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,233 +78,197 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPLANGUAGE"
->DROP LANGUAGE</A
-></H1
+></A
+>DROP LANGUAGE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42697"
+NAME="AEN41263"
 ></A
 ><H2
 >Name</H2
->   DROP LANGUAGE
-  &nbsp;--&nbsp;   remove a user-defined procedural language
-  </DIV
+>DROP LANGUAGE&nbsp;--&nbsp;remove a user-defined procedural language</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42700"
+NAME="AEN41266"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP [ PROCEDURAL ] LANGUAGE <TT
+>DROP [ PROCEDURAL ] LANGUAGE <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> [ CASCADE | RESTRICT ]
-  </PRE
+>name</VAR
+> [ CASCADE | RESTRICT ]</PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPLANGUAGE-1"
+NAME="AEN41269"
 ></A
-><H3
->    Inputs
-   </H3
+><H2
+>Description</H2
 ><P
->&#13;    <P
+>   <TT
+CLASS="COMMAND"
+>DROP LANGUAGE</TT
+> will remove the definition
+   of the previously registered procedural language called
+   <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41274"
+></A
+><H2
+>Parameters</H2
+><P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
+>name</VAR
 ></DT
 ><DD
 ><P
->	The name of an existing procedural language.  For backward
-        compatibility, the name may be enclosed by single quotes.
-       </P
+>      The name of an existing procedural language.  For backward
+      compatibility, the name may be enclosed by single quotes.
+     </P
 ></DD
 ><DT
->CASCADE</DT
+><VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+></DT
 ><DD
 ><P
->        Automatically drop objects that depend on the language
-	(such as functions in the language).
-       </P
+>      Automatically drop objects that depend on the language (such as
+      functions in the language).
+     </P
 ></DD
 ><DT
->RESTRICT</DT
+><VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+></DT
 ><DD
 ><P
->        Refuse to drop the language if there are any dependent objects.
-	This is the default.
-       </P
+>      Refuse to drop the language if any objects depend on it.  This
+      is the default.
+     </P
 ></DD
 ></DL
-></DIV
-><P>
-
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPLANGUAGE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP LANGUAGE
-       </TT
-></DT
-><DD
-><P
->	This message is returned if the language is successfully dropped.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR: Language "<TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->" doesn't exist
-       </TT
-></DT
-><DD
-><P
->	This message occurs if a language called
-	<TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> is
-	not found in the database.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPLANGUAGE-1"
+NAME="AEN41292"
 ></A
 ><H2
->   Description
-  </H2
+>Diagnostics</H2
 ><P
->   <TT
-CLASS="COMMAND"
->DROP PROCEDURAL LANGUAGE</TT
-> will remove the definition
-   of the previously registered procedural language called
-   <TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->.
-  </P
+></P
 ><DIV
-CLASS="REFSECT2"
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP LANGUAGE</SAMP
+></DT
+><DD
+><P
+>      This message is returned if the language was successfully dropped.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR: Language "<VAR
+CLASS="REPLACEABLE"
+>name</VAR
+>" doesn't exist</SAMP
+></DT
+><DD
+><P
+>      This message is returned if a language called <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> is not found in the
+      database.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DROPLANGUAGE-3"
+NAME="AEN41307"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Examples</H2
 ><P
->    The <TT
+>   This command removes the procedural language
+   <VAR
+CLASS="LITERAL"
+>plsample</VAR
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP LANGUAGE plsample;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41312"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
 CLASS="COMMAND"
->DROP PROCEDURAL LANGUAGE</TT
-> statement is
-    a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> language extension.
-   </P
-><P
->    Refer to
-    <A
+>DROP LANGUAGE</TT
+> statement in the SQL
+   standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41316"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alterlanguage.html"
+><I
+>ALTER LANGUAGE</I
+></A
+>, <A
 HREF="sql-createlanguage.html"
 ><I
 >CREATE LANGUAGE</I
 ></A
->
-    for information on how to create procedural languages.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-SQL-DROPLANGUAGE-2"
+>, <A
+HREF="app-droplang.html"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
 ></A
-><H2
->   Usage
-  </H2
-><P
->   This command removes the PL/Sample language:
-
-   </P><PRE
-CLASS="PROGRAMLISTING"
->DROP LANGUAGE plsample;
-   </PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="R1-SQL-DROPLANGUAGE-3"
-></A
-><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPLANGUAGE-5"
-></A
-><H3
->    SQL92
-   </H3
-><P
->    There is no <TT
-CLASS="COMMAND"
->DROP PROCEDURAL LANGUAGE</TT
-> in 
-    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

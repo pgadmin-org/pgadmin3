@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SPI_execp</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Interface Functions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,18 +78,18 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SPI-SPIEXECP"
->SPI_execp</A
-></H1
+></A
+>SPI_execp</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN33972"
+NAME="AEN32368"
 ></A
 ><H2
 >Name</H2
->SPI_execp&nbsp;--&nbsp;Executes a plan from <TT
+>SPI_execp&nbsp;--&nbsp;Executes a plan from <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 ><A
 NAME="IX-SPI-SPIEXECP-1"
 ></A
@@ -100,35 +100,27 @@ NAME="IX-SPI-SPIEXECP-2"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN33981"
+NAME="AEN32377"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->SPI_execp(<TT
+>SPI_execp(<VAR
 CLASS="REPLACEABLE"
-><I
->plan</I
-></TT
+>plan</VAR
 >,
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->values</I
-></TT
+>values</VAR
 >,
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->nulls</I
-></TT
+>nulls</VAR
 >,
-<TT
+<VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 >)</PRE
 ><DIV
 CLASS="REFSECT2"
@@ -143,33 +135,27 @@ NAME="R2-SPI-SPIEXECP-1"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->void *<TT
+>void *<VAR
 CLASS="REPLACEABLE"
-><I
->plan</I
-></TT
+>plan</VAR
 ></DT
 ><DD
 ><P
 >Execution plan</P
 ></DD
 ><DT
->Datum *<TT
+>Datum *<VAR
 CLASS="REPLACEABLE"
-><I
->values</I
-></TT
+>values</VAR
 ></DT
 ><DD
 ><P
 >Actual parameter values</P
 ></DD
 ><DT
->char *<TT
+>const char *<VAR
 CLASS="REPLACEABLE"
-><I
->nulls</I
-></TT
+>nulls</VAR
 ></DT
 ><DD
 ><P
@@ -181,9 +167,9 @@ BORDER="0"
 ><TBODY
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->n</TT
+>n</VAR
 > indicates NULL (values[] entry ignored)</TD
 ></TR
 ><TR
@@ -197,11 +183,9 @@ CLASS="LITERAL"
 ></P
 ></DD
 ><DT
->int <TT
+>int <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 ></DT
 ><DD
 ><P
@@ -226,9 +210,9 @@ CLASS="VARIABLELIST"
 >int</DT
 ><DD
 ><P
->   Returns the same value as <TT
+>   Returns the same value as <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 > as well as
 <P
 ></P
@@ -241,17 +225,13 @@ BORDER="0"
 CLASS="RETURNVALUE"
 >SPI_ERROR_ARGUMENT</SPAN
 >
- if <TT
+ if <VAR
 CLASS="REPLACEABLE"
-><I
->plan</I
-></TT
+>plan</VAR
 >
- is NULL or <TT
+ is NULL or <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 > &lt; 0</TD
 ></TR
 ><TR
@@ -260,18 +240,14 @@ CLASS="REPLACEABLE"
 CLASS="RETURNVALUE"
 >SPI_ERROR_PARAM</SPAN
 >
- if <TT
+ if <VAR
 CLASS="REPLACEABLE"
-><I
->values</I
-></TT
+>values</VAR
 >
  is NULL
- and <TT
+ and <VAR
 CLASS="REPLACEABLE"
-><I
->plan</I
-></TT
+>plan</VAR
 >
  was prepared with some parameters.</TD
 ></TR
@@ -286,9 +262,9 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >initialized as in
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 > if successful</P
 ></DD
 ><DT
@@ -296,9 +272,9 @@ CLASS="FUNCTION"
 ><DD
 ><P
 >initialized as in
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 > if successful</P
 ></DD
 ></DL
@@ -313,23 +289,21 @@ NAME="R1-SPI-SPIEXECP-1"
 ><H2
 >Description</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_execp</TT
+>SPI_execp</CODE
 > 
-   executes a plan prepared by <TT
+   executes a plan prepared by <CODE
 CLASS="FUNCTION"
->SPI_prepare</TT
+>SPI_prepare</CODE
 >.
-   <TT
+   <VAR
 CLASS="REPLACEABLE"
-><I
->tcount</I
-></TT
+>tcount</VAR
 > has the same
-   interpretation as in <TT
+   interpretation as in <CODE
 CLASS="FUNCTION"
->SPI_exec</TT
+>SPI_exec</CODE
 >.</P
 ></DIV
 ><DIV
@@ -340,16 +314,14 @@ NAME="R1-SPI-SPIEXECP-2"
 ><H2
 >Usage</H2
 ><P
->   If <TT
+>   If <VAR
 CLASS="REPLACEABLE"
-><I
->nulls</I
-></TT
+>nulls</VAR
 >
 is NULL then 
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_execp</TT
+>SPI_execp</CODE
 > 
 assumes that all parameters (if any) are NOT NULL.
 
@@ -362,9 +334,9 @@ CLASS="NOTE"
 >Note: </B
 >   If one of the objects (a relation, function, etc.) referenced by the prepared
    plan is dropped during your session (by your backend or another process) then the
-   results of <TT
+   results of <CODE
 CLASS="FUNCTION"
->SPI_execp</TT
+>SPI_execp</CODE
 > for this plan will be unpredictable.</P
 ></BLOCKQUOTE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >connect</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="pg Module Functions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PYGRESQL-CONNECT"
->connect</A
-></H1
+></A
+>connect</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN29180"
+NAME="AEN24258"
 ></A
 ><H2
 >Name</H2
@@ -91,7 +91,7 @@ NAME="AEN29180"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN29183"
+NAME="AEN24261"
 ></A
 ><H2
 >Synopsis</H2
@@ -99,59 +99,45 @@ NAME="AEN29183"
 CLASS="SYNOPSIS"
 >connect([<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></SPAN
 >], [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->host</I
-></TT
+>host</VAR
 ></SPAN
 >], [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->port</I
-></TT
+>port</VAR
 ></SPAN
 >], [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->opt</I
-></TT
+>opt</VAR
 ></SPAN
 >], [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->tty</I
-></TT
+>tty</VAR
 ></SPAN
 >], [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->user</I
-></TT
+>user</VAR
 ></SPAN
 >], [<SPAN
 CLASS="OPTIONAL"
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->passwd</I
-></TT
+>passwd</VAR
 ></SPAN
 >])</PRE
 ><DIV
@@ -167,81 +153,69 @@ NAME="PYGRESQL-CONNECT-PARAMETERS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->dbname</I
-></TT
+>dbname</VAR
 ></DT
 ><DD
 ><P
 >Name of connected database (string/<TT
 CLASS="SYMBOL"
 >None</TT
->).</P
+>)</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->host</I
-></TT
+>host</VAR
 ></DT
 ><DD
 ><P
 >Name of the server host (string/<TT
 CLASS="SYMBOL"
 >None</TT
->).</P
+>)</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->port</I
-></TT
+>port</VAR
 ></DT
 ><DD
 ><P
->Port used by the database server (integer/-1).</P
+>Port used by the database server (integer/-1)</P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->opt</I
-></TT
+>opt</VAR
 ></DT
 ><DD
 ><P
 >         Options for the server (string/<TT
 CLASS="SYMBOL"
 >None</TT
->).
+>)
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->tty</I
-></TT
+>tty</VAR
 ></DT
 ><DD
 ><P
->         File or tty for optional debug output from backend
+>         File or TTY for optional debug output from server
          (string/<TT
 CLASS="SYMBOL"
 >None</TT
->).
+>)
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->user</I
-></TT
+>user</VAR
 ></DT
 ><DD
 ><P
@@ -251,22 +225,20 @@ CLASS="PRODUCTNAME"
 > user (string/<TT
 CLASS="SYMBOL"
 >None</TT
->).
+>)
         </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->passwd</I
-></TT
+>passwd</VAR
 ></DT
 ><DD
 ><P
 >Password for user (string/<TT
 CLASS="SYMBOL"
 >None</TT
->).</P
+>)</P
 ></DD
 ></DL
 ></DIV
@@ -284,11 +256,9 @@ NAME="PYGRESQL-CONNECT-RETURN"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="PARAMETER"
-><I
->pgobject</I
-></TT
+>pgobject</VAR
 ></DT
 ><DD
 ><P
@@ -311,9 +281,9 @@ NAME="PYGRESQL-CONNECT-EXCEPTIONS"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><CODE
 CLASS="CLASSNAME"
->TypeError</TT
+>TypeError</CODE
 ></DT
 ><DD
 ><P
@@ -321,9 +291,9 @@ CLASS="CLASSNAME"
         </P
 ></DD
 ><DT
-><TT
+><CODE
 CLASS="CLASSNAME"
->SyntaxError</TT
+>SyntaxError</CODE
 ></DT
 ><DD
 ><P
@@ -331,15 +301,15 @@ CLASS="CLASSNAME"
         </P
 ></DD
 ><DT
-><TT
+><CODE
 CLASS="CLASSNAME"
->pg.error</TT
+>pg.error</CODE
 ></DT
 ><DD
 ><P
->         Some error occurred during <TT
+>         Some error occurred during <VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 > connection definition.
         </P
 ></DD
@@ -362,18 +332,14 @@ NAME="PYGRESQL-CONNECT-DESCRIPTION"
      <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> server. You can use
-     key words here, as described in the
-     <SPAN
-CLASS="APPLICATION"
->Python</SPAN
-> tutorial.  The names of the
+> server. The arguments can be
+     given using key words here.  The names of the
      key words are the name of the parameters given in the syntax
      line. For a precise description of the parameters, please refer
-     to the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user manual.
+     to <A
+HREF="libpq.html"
+>Chapter 27</A
+>.
     </P
 ></DIV
 ><DIV
@@ -437,9 +403,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><TT
+><VAR
 CLASS="LITERAL"
->pg</TT
+>pg</VAR
 > Module Functions</TD
 ><TD
 WIDTH="34%"

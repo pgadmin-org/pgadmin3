@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Character Types</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
 HREF="datatype.html"><LINK
 REL="PREVIOUS"
-TITLE="Monetary Type"
+TITLE="Monetary Types"
 HREF="datatype-money.html"><LINK
 REL="NEXT"
-TITLE="Binary Strings"
+TITLE="Binary Data Types"
 HREF="datatype-binary.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Data Types</TD
+>Chapter 8. Data Types</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,16 +81,16 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DATATYPE-CHARACTER"
->5.3. Character Types</A
+>8.3. Character Types</A
 ></H1
 ><A
-NAME="AEN3369"
+NAME="AEN3337"
 ></A
 ><A
-NAME="AEN3372"
+NAME="AEN3340"
 ></A
 ><A
-NAME="AEN3375"
+NAME="AEN3343"
 ></A
 ><DIV
 CLASS="TABLE"
@@ -99,87 +99,63 @@ NAME="DATATYPE-CHARACTER-TABLE"
 ></A
 ><P
 ><B
->Table 5-4. Character Types</B
+>Table 8-4. Character Types</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Type name</TH
+>Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
->character varying(<TT
+>character varying(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 >, <TT
 CLASS="TYPE"
->varchar(<TT
+>varchar(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >variable-length with limit</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
->character(<TT
+>character(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 >, <TT
 CLASS="TYPE"
->char(<TT
+>char(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >fixed-length, blank padded</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >text</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >variable unlimited length</TD
 ></TR
 ></TBODY
@@ -188,7 +164,7 @@ VALIGN="TOP"
 ><P
 >    <A
 HREF="datatype-character.html#DATATYPE-CHARACTER-TABLE"
->Table 5-4</A
+>Table 8-4</A
 > shows the
     general-purpose character types available in
     <SPAN
@@ -197,46 +173,38 @@ CLASS="PRODUCTNAME"
 >.
    </P
 ><P
->    <SPAN
+>    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > defines two primary character types:
     <TT
 CLASS="TYPE"
->character varying(<TT
+>character varying(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 > and
     <TT
 CLASS="TYPE"
->character(<TT
+>character(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
->, where <TT
+>, where <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >
     is a positive integer.  Both of these types can store strings up to
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 > characters in length.  An attempt to store a
     longer string into a column of these types will result in an
     error, unless the excess characters are all spaces, in which case
     the string will be truncated to the maximum length. (This somewhat
-    bizarre exception is required by the <SPAN
+    bizarre exception is required by the <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >
     standard.) If the string to be stored is shorter than the declared
     length, values of type <TT
@@ -250,46 +218,32 @@ CLASS="TYPE"
     shorter
     string.
    </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Note: </B
 >     If one explicitly casts a value to <TT
 CLASS="TYPE"
 >character
-     varying(<TT
+     varying(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 > or
      <TT
 CLASS="TYPE"
->character(<TT
+>character(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 >, then an over-length
-     value will be truncated to <TT
+     value will be truncated to <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 > characters without
      raising an error. (This too is required by the
-     <SPAN
+     <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > standard.)
     </P
-></BLOCKQUOTE
-></DIV
 ><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
@@ -309,38 +263,30 @@ CLASS="PRODUCTNAME"
 ><P
 >    The notations <TT
 CLASS="TYPE"
->varchar(<TT
+>varchar(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 > and
     <TT
 CLASS="TYPE"
->char(<TT
+>char(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 > are aliases for <TT
 CLASS="TYPE"
 >character
-    varying(<TT
+    varying(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 > and
     <TT
 CLASS="TYPE"
->character(<TT
+>character(<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 >)</TT
 >, respectively.
     <TT
@@ -364,28 +310,20 @@ CLASS="PRODUCTNAME"
 >    In addition, <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> supports the
-    more general <TT
+> provides the
+    <TT
 CLASS="TYPE"
 >text</TT
 > type, which stores strings of any
-    length.  Unlike <TT
-CLASS="TYPE"
->character varying</TT
->, <TT
-CLASS="TYPE"
->text</TT
->
-    does not require an explicit declared upper limit on the size of
-    the string.  Although the type <TT
+    length.  Although the type <TT
 CLASS="TYPE"
 >text</TT
 > is not in the
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> standard, many other RDBMS packages have it
-    as well.
+>SQL</ACRONYM
+> standard, several other SQL database products
+    have it as well.
    </P
 ><P
 >    The storage requirement for data of these types is 4 bytes plus the
@@ -395,14 +333,12 @@ CLASS="TYPE"
 > plus the
     padding. Long strings are compressed by the system automatically, so
     the physical requirement on disk may be less. Long values are also
-    stored in background tables so they don't interfere with rapid
+    stored in background tables so they do not interfere with rapid
     access to the shorter column values. In any case, the longest
     possible character string that can be stored is about 1 GB. (The
-    maximum value that will be allowed for <TT
+    maximum value that will be allowed for <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
+>n</VAR
 > in the data
     type declaration is less than that. It wouldn't be very useful to
     change this because with multibyte character encodings the number of
@@ -433,22 +369,22 @@ CLASS="TIP"
 ><P
 >    Refer to <A
 HREF="sql-syntax.html#SQL-SYNTAX-STRINGS"
->Section 1.1.2.1</A
+>Section 4.1.2.1</A
 > for information about
     the syntax of string literals, and to <A
 HREF="functions.html"
->Chapter 6</A
+>Chapter 9</A
 >
     for information about available operators and functions.
    </P
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN3459"
+NAME="AEN3424"
 ></A
 ><P
 ><B
->Example 5-1. Using the character types</B
+>Example 8-1. Using the character types</B
 ></P
 ><PRE
 CLASS="PROGRAMLISTING"
@@ -460,30 +396,30 @@ NAME="CO.DATATYPE-CHAR"
 >(1)</B
 ></A
 >
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
 >  a   | char_length
 ------+-------------
- ok   |           4</TT
+ ok   |           4</SAMP
 >
 
 CREATE TABLE test2 (b varchar(5));
 INSERT INTO test2 VALUES ('ok');
 INSERT INTO test2 VALUES ('good      ');
 INSERT INTO test2 VALUES ('too long');
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
->ERROR:  value too long for type character varying(5)</TT
+>ERROR:  value too long for type character varying(5)</SAMP
 >
 INSERT INTO test2 VALUES ('too long'::varchar(5)); -- explicit truncation
 SELECT b, char_length(b) FROM test2;
-<TT
+<SAMP
 CLASS="COMPUTEROUTPUT"
 >   b   | char_length
 -------+-------------
  ok    |           2
  good  |           5
- too l |           5</TT
+ too l |           5</SAMP
 ></PRE
 ><DIV
 CLASS="CALLOUTLIST"
@@ -497,13 +433,13 @@ HREF="datatype-character.html#CO.DATATYPE-CHAR"
 ></A
 ></DT
 ><DD
->       The <TT
+>       The <CODE
 CLASS="FUNCTION"
->char_length</TT
+>char_length</CODE
 > function is discussed in
        <A
 HREF="functions-string.html"
->Section 6.4</A
+>Section 9.4</A
 >.
       </DD
 ></DL
@@ -516,7 +452,7 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >, shown in <A
 HREF="datatype-character.html#DATATYPE-CHARACTER-SPECIAL-TABLE"
->Table 5-5</A
+>Table 8-5</A
 >. The <TT
 CLASS="TYPE"
 >name</TT
@@ -527,8 +463,8 @@ CLASS="emphasis"
 CLASS="EMPHASIS"
 >only</I
 ></SPAN
-> for storage of internal
-    catalog names and is not intended for use by the general user. Its
+> for storage of identifiers
+    in the internal system catalogs and is not intended for use by the general user. Its
     length is currently defined as 64 bytes (63 usable characters plus
     terminator) but should be referenced using the constant
     <TT
@@ -554,61 +490,43 @@ NAME="DATATYPE-CHARACTER-SPECIAL-TABLE"
 ></A
 ><P
 ><B
->Table 5-5. Specialty Character Types</B
+>Table 8-5. Special Character Types</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Type Name</TH
+>Name</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Storage</TH
+>Storage Size</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >"char"</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >1 byte</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->single character internal type</TD
+>single-character internal type</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >name</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >64 bytes</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->sixty-three character internal type</TD
+>internal type for object names</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -658,7 +576,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Monetary Type</TD
+>Monetary Types</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -672,7 +590,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Binary Strings</TD
+>Binary Data Types</TD
 ></TR
 ></TABLE
 ></DIV

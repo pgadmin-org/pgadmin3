@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Data Consistency Checks at the Application Level</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 9. Concurrency Control</TD
+>Chapter 12. Concurrency Control</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,14 +81,14 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="APPLEVEL-CONSISTENCY"
->9.4. Data Consistency Checks at the Application Level</A
+>12.4. Data Consistency Checks at the Application Level</A
 ></H1
 ><P
 >    Because readers in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >
-    don't lock data, regardless of
+    do not lock data, regardless of
     transaction isolation level, data read by one transaction can be
     overwritten by another concurrent transaction. In other words,
     if a row is returned by <TT
@@ -167,13 +167,16 @@ CLASS="PRODUCTNAME"
 ><P>
    </P
 ><P
->    Global validity checks require extra thought under MVCC.  For
+>    Global validity checks require extra thought under <ACRONYM
+CLASS="ACRONYM"
+>MVCC</ACRONYM
+>.  For
     example, a banking application might wish to check that the sum of
     all credits in one table equals the sum of debits in another table,
     when both tables are being actively updated.  Comparing the results of two
-    successive <TT
+    successive <VAR
 CLASS="LITERAL"
->SELECT SUM(...)</TT
+>SELECT sum(...)</VAR
 > commands will not work reliably under
     Read Committed mode, since the second query will likely include the results
     of transactions not counted by the first.  Doing the two sums in a
@@ -186,9 +189,9 @@ CLASS="LITERAL"
     includes some but not all post-transaction-start changes.  In such cases
     a careful person might wish to lock all tables needed for the check,
     in order to get an indisputable picture of current reality.  A
-    <TT
+    <VAR
 CLASS="LITERAL"
->SHARE</TT
+>SHARE</VAR
 > mode (or higher) lock guarantees that there are no
     uncommitted changes in the locked table, other than those of the current
     transaction.
@@ -199,22 +202,23 @@ CLASS="LITERAL"
     Read Committed mode, or in Serializable mode be careful to obtain the
     lock(s) before performing queries.  An explicit lock obtained in a
     serializable transaction guarantees that no other transactions modifying
-    the table are still running --- but if the snapshot seen by the
+    the table are still running, but if the snapshot seen by the
     transaction predates obtaining the lock, it may predate some now-committed
     changes in the table.  A serializable transaction's snapshot is actually
-    frozen at the start of its first query (<TT
+    frozen at the start of its first query or data-modification command
+    (<VAR
 CLASS="LITERAL"
->SELECT</TT
->, <TT
+>SELECT</VAR
+>, <VAR
 CLASS="LITERAL"
->INSERT</TT
+>INSERT</VAR
 >,
-    <TT
+    <VAR
 CLASS="LITERAL"
->UPDATE</TT
->, or <TT
+>UPDATE</VAR
+>, or <VAR
 CLASS="LITERAL"
->DELETE</TT
+>DELETE</VAR
 >), so
     it's possible to obtain explicit locks before the snapshot is
     frozen.

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Populating a Database</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Performance Tips"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Controlling the Planner with Explicit JOIN Clauses"
 HREF="explicit-joins.html"><LINK
 REL="NEXT"
-TITLE="Date/Time Support"
-HREF="datetime-appendix.html"><LINK
+TITLE="Server Administration"
+HREF="admin.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,13 +60,13 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 10. Performance Tips</TD
+>Chapter 13. Performance Tips</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="datetime-appendix.html"
+HREF="admin.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="POPULATE"
->10.4. Populating a Database</A
+>13.4. Populating a Database</A
 ></H1
 ><P
 >   One may need to do a large number of table insertions when first
@@ -94,7 +94,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="DISABLE-AUTOCOMMIT"
->10.4.1. Disable Autocommit</A
+>13.4.1. Disable Autocommit</A
 ></H2
 ><P
 >    Turn off autocommit and just do one commit at
@@ -113,10 +113,10 @@ CLASS="COMMAND"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is doing a lot of work for each
-    record added.
+    row added.
     An additional benefit of doing all insertions in one transaction
-    is that if the insertion of one record were to fail then the
-    insertion of all records inserted up to that point would be rolled
+    is that if the insertion of one row were to fail then the
+    insertion of all rows inserted up to that point would be rolled
     back, so you won't be stuck with partially loaded data.
    </P
 ></DIV
@@ -126,13 +126,16 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="POPULATE-COPY-FROM"
->10.4.2. Use COPY FROM</A
+>13.4.2. Use <TT
+CLASS="COMMAND"
+>COPY FROM</TT
+></A
 ></H2
 ><P
 >    Use <TT
 CLASS="COMMAND"
 >COPY FROM STDIN</TT
-> to load all the records in one
+> to load all the rows in one
     command, instead of using
     a series of <TT
 CLASS="COMMAND"
@@ -149,7 +152,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="POPULATE-RM-INDEXES"
->10.4.3. Remove Indexes</A
+>13.4.3. Remove Indexes</A
 ></H2
 ><P
 >    If you are loading a freshly created table, the fastest way is to
@@ -159,14 +162,11 @@ CLASS="COMMAND"
 >, then create any
     indexes needed 
     for the table.  Creating an index on pre-existing data is quicker than
-    updating it incrementally as each record is loaded.
+    updating it incrementally as each row is loaded.
    </P
 ><P
->    If you are augmenting an existing table, you can <TT
-CLASS="COMMAND"
->DROP
-    INDEX</TT
->, load the table, then recreate the index. Of
+>    If you are augmenting an existing table, you can drop the index,
+    load the table, then recreate the index. Of
     course, the database performance for other users may be adversely 
     affected during the time that the index is missing.  One should also
     think twice before dropping unique indexes, since the error checking
@@ -179,7 +179,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="POPULATE-ANALYZE"
->10.4.4. Run ANALYZE Afterwards</A
+>13.4.4. Run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> Afterwards</A
 ></H2
 ><P
 >    It's a good idea to run <TT
@@ -231,7 +234,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="datetime-appendix.html"
+HREF="admin.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -241,9 +244,9 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Controlling the Planner with Explicit <TT
+>Controlling the Planner with Explicit <VAR
 CLASS="LITERAL"
->JOIN</TT
+>JOIN</VAR
 > Clauses</TD
 ><TD
 WIDTH="34%"
@@ -258,7 +261,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Date/Time Support</TD
+>Server Administration</TD
 ></TR
 ></TABLE
 ></DIV

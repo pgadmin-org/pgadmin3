@@ -1,0 +1,449 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>ALTER DOMAIN</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER DATABASE"
+HREF="sql-alterdatabase.html"><LINK
+REL="NEXT"
+TITLE="ALTER FUNCTION"
+HREF="sql-alterfunction.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-alterfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERDOMAIN"
+></A
+>ALTER DOMAIN</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN35899"
+></A
+><H2
+>Name</H2
+>   ALTER DOMAIN
+  &nbsp;--&nbsp;   change the definition of a domain
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN35902"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>domain</VAR
+>
+    { SET DEFAULT <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+> | DROP DEFAULT }
+ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>domain</VAR
+>
+    { SET | DROP } NOT NULL
+ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>domain</VAR
+>
+    ADD <VAR
+CLASS="REPLACEABLE"
+>domain_constraint</VAR
+>
+ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>domain</VAR
+>
+    DROP CONSTRAINT <VAR
+CLASS="REPLACEABLE"
+>constraint_name</VAR
+> [ RESTRICT | CASCADE ]
+ALTER DOMAIN <VAR
+CLASS="REPLACEABLE"
+>domain</VAR
+>
+    OWNER TO <VAR
+CLASS="REPLACEABLE"
+>new_owner</VAR
+> 
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERDOMAIN-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+> domain </VAR
+></DT
+><DD
+><P
+>	The name (possibly schema-qualified) of an existing domain to
+	alter.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+> domain_constraint </VAR
+></DT
+><DD
+><P
+>	New domain constraint for the domain.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+> constraint_name </VAR
+></DT
+><DD
+><P
+>	Name of an existing constraint to drop.
+       </P
+></DD
+><DT
+>CASCADE</DT
+><DD
+><P
+>        Automatically drop objects that depend on the constraint.
+       </P
+></DD
+><DT
+>RESTRICT</DT
+><DD
+><P
+>        Refuse to drop the constraint if there are any dependent
+	objects. This is the default behavior.
+       </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>new_owner</VAR
+></DT
+><DD
+><P
+>	The user name of the new owner of the domain.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERDOMAIN-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ALTER DOMAIN</SAMP
+></DT
+><DD
+><P
+>	Message returned from domain alteration.
+       </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR</SAMP
+></DT
+><DD
+><P
+>	Message returned if domain is not available.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERDOMAIN-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER DOMAIN</TT
+> changes the definition of an existing domain.
+   There are several sub-forms:
+  </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>SET/DROP DEFAULT</DT
+><DD
+><P
+>      These forms set or remove the default value for a domain. Note
+      that defaults only apply to subsequent <TT
+CLASS="COMMAND"
+>INSERT</TT
+>
+      commands; they do not affect rows already in a table using the domain.
+     </P
+></DD
+><DT
+>SET/DROP NOT NULL</DT
+><DD
+><P
+>      These forms change whether a domain is marked to allow NULL
+      values or to reject NULL values.  You may only <VAR
+CLASS="LITERAL"
+>SET NOT NULL</VAR
+>
+      when the columns using the domain contain no null values.
+     </P
+></DD
+><DT
+>ADD <VAR
+CLASS="REPLACEABLE"
+>domain_constraint</VAR
+></DT
+><DD
+><P
+>      This form adds a new constraint to a domain using the same syntax as
+      <A
+HREF="sql-createdomain.html"
+><I
+>CREATE DOMAIN</I
+></A
+>.
+      This will only succeed if all columns using the domain satisfy the
+      new constraint.
+     </P
+></DD
+><DT
+>DROP CONSTRAINT</DT
+><DD
+><P
+>      This form drops constraints on a domain.
+     </P
+></DD
+><DT
+>OWNER</DT
+><DD
+><P
+>      This form changes the owner of the domain to the specified user.
+     </P
+></DD
+></DL
+></DIV
+><P
+>   You must own the domain to use <TT
+CLASS="COMMAND"
+>ALTER DOMAIN</TT
+>; except for
+   <TT
+CLASS="COMMAND"
+>ALTER DOMAIN OWNER</TT
+>, which may only be executed by a superuser.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERDOMAIN-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To add a NOT NULL constraint to a domain:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DOMAIN zipcode SET NOT NULL;
+   </PRE
+><P>
+   To remove a NOT NULL constraint from a domain:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DOMAIN zipcode DROP NOT NULL;
+   </PRE
+><P>
+  </P
+><P
+> 
+   To add a check constraint to a domain:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DOMAIN zipcode ADD CONSTRAINT zipchk CHECK (char_length(VALUE) = 5);
+   </PRE
+><P>
+  </P
+><P
+> 
+   To remove a check constraint from a domain:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DOMAIN zipcode DROP CONSTRAINT zipchk;
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER DATABASE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER FUNCTION</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

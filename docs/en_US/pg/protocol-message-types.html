@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Message Data Types</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Frontend/Backend Protocol"
 HREF="protocol.html"><LINK
 REL="PREVIOUS"
-TITLE="Protocol"
-HREF="protocol-protocol.html"><LINK
+TITLE="Message Flow"
+HREF="protocol-flow.html"><LINK
 REL="NEXT"
 TITLE="Message Formats"
 HREF="protocol-message-formats.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="protocol-protocol.html"
+HREF="protocol-flow.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. Frontend/Backend Protocol</TD
+>Chapter 46. Frontend/Backend Protocol</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PROTOCOL-MESSAGE-TYPES"
->4.3. Message Data Types</A
+>46.3. Message Data Types</A
 ></H1
 ><P
 >This section describes the base data types used in messages.
@@ -92,79 +92,66 @@ NAME="PROTOCOL-MESSAGE-TYPES"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->Int<TT
+>Int<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
->(<TT
+>n</VAR
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->i</I
-></TT
+>i</VAR
 >)</DT
 ><DD
 ><P
->                An <TT
+>                An <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
-> bit integer in network byte order.
-                If <TT
+>n</VAR
+>-bit integer in network byte
+		order (most significant byte first).
+                If <VAR
 CLASS="REPLACEABLE"
-><I
->i</I
-></TT
+>i</VAR
 > is specified it
-                is the literal value.  Eg. Int16, Int32(42).</P
+                is the exact value that will appear, otherwise the value
+		is variable.  Eg. Int16, Int32(42).</P
 ></DD
 ><DT
->LimString<TT
+>Int<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
->(<TT
+>n</VAR
+>[<VAR
 CLASS="REPLACEABLE"
-><I
->s</I
-></TT
+>k</VAR
+>]</DT
+><DD
+><P
+>		An array of <VAR
+CLASS="REPLACEABLE"
+>k</VAR
+>
+                <VAR
+CLASS="REPLACEABLE"
+>n</VAR
+>-bit integers, each in network
+		byte order.  The array length <VAR
+CLASS="REPLACEABLE"
+>k</VAR
+>
+		is always determined by an earlier field in the message.
+		Eg. Int16[M].</P
+></DD
+><DT
+>String(<VAR
+CLASS="REPLACEABLE"
+>s</VAR
 >)</DT
 ><DD
 ><P
->                A character array of exactly <TT
+>                A null-terminated string (C-style string).  There is no
+		specific length limitation on strings.
+                If <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
-> bytes interpreted as a
-                null-terminated string.  The zero-byte is omitted if there is
-                insufficient room.  If <TT
-CLASS="REPLACEABLE"
-><I
->s</I
-></TT
-> is specified it is the literal value.
-                Eg. LimString32, LimString64("user").</P
-></DD
-><DT
->String(<TT
-CLASS="REPLACEABLE"
-><I
->s</I
-></TT
->)</DT
-><DD
-><P
->                A conventional C null-terminated string with no length
-                limitation.
-                If <TT
-CLASS="REPLACEABLE"
-><I
->s</I
-></TT
-> is specified it is the literal value.
+>s</VAR
+> is specified it is the exact
+		value that will appear, otherwise the value is variable.
                 Eg. String, String("user").</P
 ><DIV
 CLASS="NOTE"
@@ -188,31 +175,29 @@ characters that don't fit into your fixed-size buffer.</P
 ></DIV
 ></DD
 ><DT
->Byte<TT
+>Byte<VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
->(<TT
+>n</VAR
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->c</I
-></TT
+>c</VAR
 >)</DT
 ><DD
 ><P
->                Exactly <TT
+>                Exactly <VAR
 CLASS="REPLACEABLE"
-><I
->n</I
-></TT
-> bytes.  If <TT
+>n</VAR
+> bytes.  If the field
+		width <VAR
 CLASS="REPLACEABLE"
-><I
->c</I
-></TT
-> is specified it is the literal
-                value.  Eg. Byte, Byte1('\n').</P
+>n</VAR
+> is not a constant, it is
+		always determinable from an earlier field in the message.
+                If <VAR
+CLASS="REPLACEABLE"
+>c</VAR
+> is specified it is the exact
+                value.  Eg. Byte2, Byte1('\n').</P
 ></DD
 ></DL
 ></DIV
@@ -234,7 +219,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="protocol-protocol.html"
+HREF="protocol-flow.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -262,7 +247,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Protocol</TD
+>Message Flow</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

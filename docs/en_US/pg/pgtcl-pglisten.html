@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_listen</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_execute"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,191 +78,185 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGLISTEN"
->pg_listen</A
-></H1
+></A
+>pg_listen</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN26823"
+NAME="AEN21766"
 ></A
 ><H2
 >Name</H2
->pg_listen&nbsp;--&nbsp;set or change a callback for asynchronous NOTIFY messages<A
-NAME="IX-PGTCL-PGLISTEN-1"
-></A
-><A
+>pg_listen&nbsp;--&nbsp;set or change a callback for asynchronous notification messages<A
 NAME="IX-PGTCL-PGLISTEN-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN26831"
+NAME="AEN21771"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_listen <TT
-CLASS="REPLACEABLE"
-><I
->dbHandle</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->notifyName</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->callbackCommand</I
-></TT
-></PRE
+>pg_listen <VAR
+CLASS="PARAMETER"
+>conn</VAR
+> <VAR
+CLASS="PARAMETER"
+>notifyName</VAR
+> [<SPAN
+CLASS="OPTIONAL"
+><VAR
+CLASS="PARAMETER"
+>callbackCommand</VAR
+></SPAN
+>]</PRE
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-PGTCL-PGLISTEN-1"
+NAME="AEN21777"
 ></A
-><H3
->Inputs</H3
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>pg_listen</CODE
+> creates, changes, or cancels a
+   request to listen for asynchronous notification messages from the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server.  With a
+   <VAR
+CLASS="PARAMETER"
+>callbackCommand</VAR
+> parameter, the request is
+   established, or the command string of an already existing request
+   is replaced.  With no <VAR
+CLASS="PARAMETER"
+>callbackCommand</VAR
+> parameter, a
+   prior request is canceled.
+  </P
+><P
+>   After a <CODE
+CLASS="FUNCTION"
+>pg_listen</CODE
+> request is established, the
+   specified command string is executed whenever a notification
+   message bearing the given name arrives from the server.  This
+   occurs when any <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> client
+   application issues a
+   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+><A
+NAME="AEN21788"
+></A
+> command referencing that name.  The command string is
+   executed from the Tcl idle loop.  That is the normal idle state of
+   an application written with Tk.  In non-Tk Tcl shells, you can
+   execute <CODE
+CLASS="FUNCTION"
+>update</CODE
+> or <CODE
+CLASS="FUNCTION"
+>vwait</CODE
+>
+   to cause the idle loop to be entered.
+  </P
+><P
+>   You should not invoke the SQL statements <TT
+CLASS="COMMAND"
+>LISTEN</TT
+>
+   or <TT
+CLASS="COMMAND"
+>UNLISTEN</TT
+> directly when using
+   <CODE
+CLASS="FUNCTION"
+>pg_listen</CODE
+>.  <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+>
+   takes care of issuing those statements for you.  But if you want to
+   send a notification message yourself, invoke the SQL
+   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> statement using
+   <CODE
+CLASS="FUNCTION"
+>pg_exec</CODE
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21800"
+></A
+><H2
+>Arguments</H2
 ><P
 ></P
 ><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->dbHandle</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>conn</VAR
 ></DT
 ><DD
 ><P
->Specifies a valid database handle.</P
+>      The handle of the connection on which to listen for notifications.
+     </P
 ></DD
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->notifyName</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>notifyName</VAR
 ></DT
 ><DD
 ><P
->Specifies the notify condition name to start or stop listening to.</P
+>      The name of the notification condition to start or stop
+      listening to.
+     </P
 ></DD
 ><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->callbackCommand</I
-></TT
+><VAR
+CLASS="PARAMETER"
+>callbackCommand</VAR
 ></DT
 ><DD
 ><P
->If present, provides the command string to execute
-when a matching notification arrives.</P
+>      If present, provides the command string to execute when a
+      matching notification arrives.
+     </P
 ></DD
 ></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGLISTEN-2"
-></A
-><H3
->Outputs</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->None</DT
-><DD
-><P
-></P
-></DD
-></DL
-></DIV
 ></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGLISTEN-1"
+NAME="AEN21818"
 ></A
 ><H2
->Description</H2
+>Return Value</H2
 ><P
-><TT
-CLASS="FUNCTION"
->pg_listen</TT
-> creates, changes, or cancels a request
-to listen for asynchronous NOTIFY messages from the
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> backend.  With a <TT
-CLASS="PARAMETER"
-><I
->callbackCommand</I
-></TT
->
-parameter, the request is established, or the command string of an already
-existing request is replaced.  With no <TT
-CLASS="PARAMETER"
-><I
->callbackCommand</I
-></TT
-> parameter, a prior
-request is canceled.</P
-><P
->After a <TT
-CLASS="FUNCTION"
->pg_listen</TT
-> request is established,
-the specified command string is executed whenever a NOTIFY message bearing
-the given name arrives from the backend.  This occurs when any
-<SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> client application issues a NOTIFY command
-referencing that name.  (Note that the name can be, but does not have to be,
-that of an existing relation in the database.)
-The command string is executed from the Tcl idle loop.  That is the normal
-idle state of an application written with Tk.  In non-Tk Tcl shells, you can
-execute <TT
-CLASS="FUNCTION"
->update</TT
-> or <TT
-CLASS="FUNCTION"
->vwait</TT
-> to cause
-the idle loop to be entered.</P
-><P
->You should not invoke the SQL statements <TT
-CLASS="COMMAND"
->LISTEN</TT
-> or <TT
-CLASS="COMMAND"
->UNLISTEN</TT
-> directly when
-using <TT
-CLASS="FUNCTION"
->pg_listen</TT
->.  <SPAN
-CLASS="APPLICATION"
->Pgtcl</SPAN
-> takes care of issuing those
-statements for you.  But if you want to send a NOTIFY message yourself,
-invoke the SQL NOTIFY statement using <TT
-CLASS="FUNCTION"
->pg_exec</TT
->.</P
+>   None
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

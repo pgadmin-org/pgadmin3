@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
->Interfaces</TITLE
+>Client Interfaces</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Large Objects"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Implementation Features"
 HREF="lo-implementation.html"><LINK
 REL="NEXT"
-TITLE="Server-side Built-in Functions"
+TITLE="Server-side Functions"
 HREF="lo-funcs.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 2. Large Objects</TD
+>Chapter 28. Large Objects</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,142 +81,86 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="LO-INTERFACES"
->2.3. Interfaces</A
+>28.3. Client Interfaces</A
 ></H1
 ><P
->    The  facilities  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> provides  to
-    access large objects,  both  in  the backend as part of user-defined
-    functions or the front end as part  of  an  application
-    using  the   interface, are described below. For users
-    familiar with <SPAN
-CLASS="PRODUCTNAME"
->POSTGRES 4.2</SPAN
->,
+>    This section describes the facilities that
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> has a new set of
-    functions  providing  a  more  coherent  interface.
-
-    </P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->      All large object manipulation <SPAN
+> client interface libraries
+    provide for accessing large objects.  All large object
+    manipulation using these functions <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
 >must</I
 ></SPAN
 > take
-      place within an SQL transaction. This requirement is strictly
-      enforced as of <SPAN
+    place within an SQL transaction block.  (This requirement is
+    strictly enforced as of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL 6.5</SPAN
->, though it has been an
-      implicit requirement in previous versions, resulting in
-      misbehavior if ignored.
-     </P
-></BLOCKQUOTE
-></DIV
-><P>
-   </P
-><P
->    The  <SPAN
+>, though it
+    has been an implicit requirement in previous versions, resulting
+    in misbehavior if ignored.)
+    The  <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >  large  object interface is modeled after
-    the <SPAN
+    the <ACRONYM
 CLASS="ACRONYM"
->Unix</SPAN
+>Unix</ACRONYM
 >  file-system  interface,  with  analogues  of
-    <TT
+    <CODE
 CLASS="FUNCTION"
->open(2)</TT
->,  <TT
+>open</CODE
+>,  <CODE
 CLASS="FUNCTION"
->read(2)</TT
+>read</CODE
 >,
-    <TT
+    <CODE
 CLASS="FUNCTION"
->write(2)</TT
+>write</CODE
 >,
+    <CODE
+CLASS="FUNCTION"
+>lseek</CODE
+>, etc.
+   </P
+><P
+>    Client applications which use the large object interface in
+    <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> should include the header file
     <TT
-CLASS="FUNCTION"
->lseek(2)</TT
->, etc.  User 
-    functions call these routines to retrieve only the data  of
-    interest  from a large object.  For example, if a large
-    object type called <TT
-CLASS="TYPE"
->mugshot</TT
->  existed  that  stored  
-    photographs  of  faces, then a function called <TT
-CLASS="FUNCTION"
->beard</TT
-> could
-    be declared on <TT
-CLASS="TYPE"
->mugshot</TT
-> data.  <TT
-CLASS="FUNCTION"
->beard</TT
-> could look  at  the
-    lower third of a photograph, and determine the color of
-    the beard that appeared  there,  if  any.   The  entire
-    large-object value need not be buffered, or even 
-    examined, by the <TT
-CLASS="FUNCTION"
->beard</TT
-> function.
-    Large objects may be accessed from dynamically-loaded <SPAN
-CLASS="ACRONYM"
->C</SPAN
->
-    functions  or  database  client  programs that link the
-    library.  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> provides a set of routines that 
-    support opening, reading, writing, closing, and seeking on
-    large objects.
+CLASS="FILENAME"
+>libpq/libpq-fs.h</TT
+> and link with the
+    <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> library.
    </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN26010"
->2.3.1. Creating a Large Object</A
+NAME="AEN21056"
+>28.3.1. Creating a Large Object</A
 ></H2
 ><P
->     The routine
+>     The function
 </P><PRE
 CLASS="SYNOPSIS"
->Oid lo_creat(PGconn *<TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
->, int <TT
-CLASS="REPLACEABLE"
-><I
->mode</I
-></TT
->)</PRE
+>Oid lo_creat(PGconn *conn, int mode);</PRE
 ><P>
      creates a new large  object.  
-     <TT
+     <VAR
 CLASS="REPLACEABLE"
-><I
->mode</I
-></TT
+>mode</VAR
 >  is  a  bit mask
      describing  several  different  attributes  of  the new
      object.  The symbolic constants listed here are defined
@@ -236,7 +180,10 @@ CLASS="SYMBOL"
      historically been used at Berkeley to designate the storage  manager  number on which the large object
      should reside.  These
      bits should always be zero now.
-     The commands below create a large object:
+     The return value is the OID that was assigned to the new large object.
+    </P
+><P
+>     An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >inv_oid = lo_creat(INV_READ|INV_WRITE);</PRE
@@ -248,33 +195,22 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN26021"
->2.3.2. Importing a Large Object</A
+NAME="AEN21066"
+>28.3.2. Importing a Large Object</A
 ></H2
 ><P
 >     To import an operating system file as a large object, call
 </P><PRE
 CLASS="SYNOPSIS"
->Oid lo_import(PGconn *<TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
->, const char *<TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->)</PRE
+>Oid lo_import(PGconn *conn, const char *filename);</PRE
 ><P>
-    <TT
+    <VAR
 CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
+>filename</VAR
 > 
      specifies the operating system name of
      the file to be imported as a large object.
+     The return value is the OID that was assigned to the new large object.
     </P
 ></DIV
 ><DIV
@@ -282,42 +218,23 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN26028"
->2.3.3. Exporting a Large Object</A
+NAME="AEN21071"
+>28.3.3. Exporting a Large Object</A
 ></H2
 ><P
 >     To export a large object
      into an operating system file, call
 </P><PRE
 CLASS="SYNOPSIS"
->int lo_export(PGconn *<TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
->, Oid <TT
-CLASS="REPLACEABLE"
-><I
->lobjId</I
-></TT
->, const char *<TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->)</PRE
+>int lo_export(PGconn *conn, Oid lobjId, const char *filename);</PRE
 ><P>
-     The <TT
+     The <VAR
 CLASS="PARAMETER"
-><I
->lobjId</I
-></TT
+>lobjId</VAR
 > argument specifies  the  OID  of  the  large
-     object  to  export  and the <TT
+     object  to  export  and the <VAR
 CLASS="PARAMETER"
-><I
->filename</I
-></TT
+>filename</VAR
 > argument specifies
      the operating system name name of the file.
     </P
@@ -327,26 +244,22 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN26037"
->2.3.4. Opening an Existing Large Object</A
+NAME="AEN21077"
+>28.3.4. Opening an Existing Large Object</A
 ></H2
 ><P
 >     To open an existing large object, call
 </P><PRE
 CLASS="SYNOPSIS"
->int lo_open(PGconn *conn, Oid lobjId, int mode)</PRE
+>int lo_open(PGconn *conn, Oid lobjId, int mode);</PRE
 ><P>
-     The <TT
+     The <VAR
 CLASS="PARAMETER"
-><I
->lobjId</I
-></TT
+>lobjId</VAR
 > argument specifies  the  OID  of  the  large
-     object  to  open.   The  <TT
+     object  to  open.   The  <VAR
 CLASS="PARAMETER"
-><I
->mode</I
-></TT
+>mode</VAR
 >  bits control whether the
      object is opened  for  reading  (<TT
 CLASS="SYMBOL"
@@ -357,67 +270,60 @@ CLASS="SYMBOL"
 >),  or
      both.
      A  large  object cannot be opened before it is created.
-     <TT
+     <CODE
 CLASS="FUNCTION"
->lo_open</TT
+>lo_open</CODE
 > returns a large object descriptor
-     for later use in <TT
+     for later use in <CODE
 CLASS="FUNCTION"
->lo_read</TT
->, <TT
+>lo_read</CODE
+>, <CODE
 CLASS="FUNCTION"
->lo_write</TT
+>lo_write</CODE
 >,
-     <TT
+     <CODE
 CLASS="FUNCTION"
->lo_lseek</TT
->, <TT
+>lo_lseek</CODE
+>, <CODE
 CLASS="FUNCTION"
->lo_tell</TT
+>lo_tell</CODE
 >, and
-     <TT
+     <CODE
 CLASS="FUNCTION"
->lo_close</TT
->.</P
+>lo_close</CODE
+>.  The descriptor is only valid for
+     the duration of the current transaction.</P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN26051"
->2.3.5. Writing Data to a Large Object</A
+NAME="AEN21091"
+>28.3.5. Writing Data to a Large Object</A
 ></H2
 ><P
->     The routine
+>     The function
 </P><PRE
-CLASS="PROGRAMLISTING"
->int lo_write(PGconn *conn, int fd, const char *buf, size_t len)</PRE
+CLASS="SYNOPSIS"
+>int lo_write(PGconn *conn, int fd, const char *buf, size_t len);</PRE
 ><P>
-     writes <TT
+     writes <VAR
 CLASS="PARAMETER"
-><I
->len</I
-></TT
-> bytes from <TT
+>len</VAR
+> bytes from <VAR
 CLASS="PARAMETER"
-><I
->buf</I
-></TT
-> to large object <TT
+>buf</VAR
+> to large object <VAR
 CLASS="PARAMETER"
-><I
->fd</I
-></TT
->.   The <TT
+>fd</VAR
+>.   The <VAR
 CLASS="PARAMETER"
-><I
->fd</I
-></TT
+>fd</VAR
 >
-     argument must have been returned by a previous <TT
+     argument must have been returned by a previous <CODE
 CLASS="FUNCTION"
->lo_open</TT
+>lo_open</CODE
 >.
      The number of bytes actually written is  returned.   In
      the event of an error, the return value is negative.</P
@@ -427,39 +333,31 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN26060"
->2.3.6. Reading Data from a Large Object</A
+NAME="AEN21100"
+>28.3.6. Reading Data from a Large Object</A
 ></H2
 ><P
->     The routine
+>     The function
 </P><PRE
-CLASS="PROGRAMLISTING"
->int lo_read(PGconn *conn, int fd, char *buf, size_t len)</PRE
+CLASS="SYNOPSIS"
+>int lo_read(PGconn *conn, int fd, char *buf, size_t len);</PRE
 ><P>
-     reads <TT
+     reads <VAR
 CLASS="PARAMETER"
-><I
->len</I
-></TT
-> bytes from large object <TT
+>len</VAR
+> bytes from large object <VAR
 CLASS="PARAMETER"
-><I
->fd</I
-></TT
-> into <TT
+>fd</VAR
+> into <VAR
 CLASS="PARAMETER"
-><I
->buf</I
-></TT
->. The  <TT
+>buf</VAR
+>. The  <VAR
 CLASS="PARAMETER"
-><I
->fd</I
-></TT
+>fd</VAR
 >
-     argument must have been returned by a previous <TT
+     argument must have been returned by a previous <CODE
 CLASS="FUNCTION"
->lo_open</TT
+>lo_open</CODE
 >.
      The number of bytes actually read is returned. In
      the event of an error, the return value is negative.</P
@@ -469,98 +367,103 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN26069"
->2.3.7. Seeking on a Large Object</A
+NAME="AEN21109"
+>28.3.7. Seeking on a Large Object</A
 ></H2
 ><P
 >     To change the current read or write location on a large
      object, call
 </P><PRE
-CLASS="PROGRAMLISTING"
->int lo_lseek(PGconn *conn, int fd, int offset, int whence)</PRE
+CLASS="SYNOPSIS"
+>int lo_lseek(PGconn *conn, int fd, int offset, int whence);</PRE
 ><P>
-     This routine moves the current location pointer for the
-     large object described by <TT
+     This function moves the current location pointer for the
+     large object described by <VAR
 CLASS="PARAMETER"
-><I
->fd</I
-></TT
+>fd</VAR
 > to the new location specified 
-     by <TT
+     by <VAR
 CLASS="PARAMETER"
-><I
->offset</I
-></TT
->.  The valid values for <TT
+>offset</VAR
+>.  The valid values for <VAR
 CLASS="PARAMETER"
-><I
->whence</I
-></TT
+>whence</VAR
 > are
      <TT
 CLASS="SYMBOL"
 >SEEK_SET</TT
->, <TT
+> (seek from object start), <TT
 CLASS="SYMBOL"
 >SEEK_CUR</TT
->, and <TT
+> (seek from current position), and <TT
 CLASS="SYMBOL"
 >SEEK_END</TT
->.</P
+> (seek from object end).  The return value is the new location pointer.</P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN26079"
->2.3.8. Closing a Large Object Descriptor</A
+NAME="AEN21119"
+>28.3.8. Obtaining the Seek Position of a Large Object</A
+></H2
+><P
+>     To obtain the current read or write location of a large object,
+     call
+</P><PRE
+CLASS="SYNOPSIS"
+>int lo_tell(PGconn *conn, int fd);</PRE
+><P>
+     If there is an error, the return value is negative.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21123"
+>28.3.9. Closing a Large Object Descriptor</A
 ></H2
 ><P
 >     A large object may be closed by calling
 </P><PRE
-CLASS="PROGRAMLISTING"
->int lo_close(PGconn *conn, int fd)</PRE
+CLASS="SYNOPSIS"
+>int lo_close(PGconn *conn, int fd);</PRE
 ><P>
-     where  <TT
+     where  <VAR
 CLASS="PARAMETER"
-><I
->fd</I
-></TT
+>fd</VAR
 >  is  a  large  object  descriptor returned by
-     <TT
+     <CODE
 CLASS="FUNCTION"
->lo_open</TT
->.  On success, <TT
+>lo_open</CODE
+>.  On success, <CODE
 CLASS="FUNCTION"
->lo_close</TT
+>lo_close</CODE
 >
       returns zero.  On error, the return value is negative.</P
+><P
+>     Any large  object  descriptors that remain open at the end of a
+     transaction will be closed automatically.</P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN26086"
->2.3.9. Removing a Large Object</A
+NAME="AEN21131"
+>28.3.10. Removing a Large Object</A
 ></H2
 ><P
 >     To remove a large object from the database, call
 </P><PRE
 CLASS="SYNOPSIS"
->int lo_unlink(PGconn *<TT
-CLASS="REPLACEABLE"
-><I
->conn</I
-></TT
->, Oid lobjId)</PRE
+>int lo_unlink(PGconn *conn, Oid lobjId);</PRE
 ><P>
-     The <TT
+     The <VAR
 CLASS="PARAMETER"
-><I
->lobjId</I
-></TT
+>lobjId</VAR
 > argument specifies  the  OID  of  the  large
      object  to  remove.  In the event of an error, the return value is negative.
     </P
@@ -624,7 +527,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Server-side Built-in Functions</TD
+>Server-side Functions</TD
 ></TR
 ></TABLE
 ></DIV

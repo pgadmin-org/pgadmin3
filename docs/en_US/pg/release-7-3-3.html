@@ -1,0 +1,476 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Release 7.3.3</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 7.3.4"
+HREF="release-7-3-4.html"><LINK
+REL="NEXT"
+TITLE="Release 7.3.2"
+HREF="release-7-3-2.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-08-05T05:04:12"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.4beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="release-7-3-4.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix D. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="release-7-3-2.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-3-3"
+>D.3. Release 7.3.3</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2003-05-22</P
+></BLOCKQUOTE
+></DIV
+><P
+>   This release contains of variety of fixes for version 7.3.2.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN61583"
+>D.3.1. Migration to version 7.3.3</A
+></H2
+><P
+>    A dump/restore is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> required for those
+    running version 7.3.*.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN61587"
+>D.3.2. Changes</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+>Repair sometimes-incorrect computation of StartUpID after a crash</P
+></LI
+><LI
+><P
+>Avoid slowness with lots of deferred triggers in one transaction (Stephan)</P
+></LI
+><LI
+><P
+>Don't lock referenced row when UPDATE doesn't change foreign key's value (Jan)</P
+></LI
+><LI
+><P
+>Use -fPIC not -fpic on Sparc (Tom Callaway)</P
+></LI
+><LI
+><P
+>Repair lack of schema-awareness in contrib/reindexdb</P
+></LI
+><LI
+><P
+>Fix contrib/intarray error for zero-element result array (Teodor)</P
+></LI
+><LI
+><P
+>Ensure createuser script will exit on control-C (Oliver)</P
+></LI
+><LI
+><P
+>Fix errors when the type of a dropped column has itself been dropped</P
+></LI
+><LI
+><P
+>CHECKPOINT does not cause database panic on failure in noncritical steps</P
+></LI
+><LI
+><P
+>Accept 60 in seconds fields of timestamp, time, interval input values</P
+></LI
+><LI
+><P
+>Issue notice, not error, if TIMESTAMP, TIME, or INTERVAL precision too large</P
+></LI
+><LI
+><P
+>Fix abstime-to-time cast function (fix is not applied unless you initdb)</P
+></LI
+><LI
+><P
+>Fix pg_proc entry for timestamptz_izone (fix is not applied unless you initdb)</P
+></LI
+><LI
+><P
+>Make EXTRACT(EPOCH FROM timestamp without time zone) treat input as local time</P
+></LI
+><LI
+><P
+>'now'::timestamptz gave wrong answer if timezone changed earlier in transaction</P
+></LI
+><LI
+><P
+>HAVE_INT64_TIMESTAMP code for time with timezone overwrote its input</P
+></LI
+><LI
+><P
+>Accept GLOBAL TEMP/TEMPORARY as a synonym for TEMPORARY</P
+></LI
+><LI
+><P
+>Avoid improper schema-permissions-check failure in foreign-key triggers</P
+></LI
+><LI
+><P
+>Fix bugs in foreign-key triggers for SET DEFAULT action</P
+></LI
+><LI
+><P
+>Fix incorrect time-qual check in row fetch for UPDATE and DELETE triggers</P
+></LI
+><LI
+><P
+>Foreign-key clauses were parsed but ignored in ALTER TABLE ADD COLUMN</P
+></LI
+><LI
+><P
+>Fix createlang script breakage for case where handler function already exists</P
+></LI
+><LI
+><P
+>Fix misbehavior on zero-column tables in pg_dump, COPY, ANALYZE, other places</P
+></LI
+><LI
+><P
+>Fix misbehavior of func_error() on type names containing '%'</P
+></LI
+><LI
+><P
+>Fix misbehavior of replace() on strings containing '%'</P
+></LI
+><LI
+><P
+>Regular-expression patterns containing certain multibyte characters failed</P
+></LI
+><LI
+><P
+>Account correctly for NULLs in more cases in join size estimation</P
+></LI
+><LI
+><P
+>Avoid conflict with system definition of isblank() function or macro</P
+></LI
+><LI
+><P
+>Fix failure to convert large code point values in EUC_TW conversions (Tatsuo)</P
+></LI
+><LI
+><P
+>Fix error recovery for SSL_read/SSL_write calls</P
+></LI
+><LI
+><P
+>Don't do early constant-folding of type coercion expressions</P
+></LI
+><LI
+><P
+>Validate page header fields immediately after reading in any page</P
+></LI
+><LI
+><P
+>Repair incorrect check for ungrouped variables in unnamed joins</P
+></LI
+><LI
+><P
+>Fix buffer overrun in to_ascii (Guido Notari)</P
+></LI
+><LI
+><P
+>contrib/ltree fixes (Teodor)</P
+></LI
+><LI
+><P
+>Fix core dump in deadlock detection on machines where char is unsigned</P
+></LI
+><LI
+><P
+>Avoid running out of buffers in many-way indexscan (bug introduced in 7.3)</P
+></LI
+><LI
+><P
+>Fix planner's selectivity estimation functions to handle domains properly</P
+></LI
+><LI
+><P
+>Fix dbmirror memory-allocation bug (Steven Singer)</P
+></LI
+><LI
+><P
+>Prevent infinite loop in ln(numeric) due to roundoff error</P
+></LI
+><LI
+><P
+>GROUP BY got confused if there were multiple equal GROUP BY items</P
+></LI
+><LI
+><P
+>Fix bad plan when inherited UPDATE/DELETE references another inherited table</P
+></LI
+><LI
+><P
+>Prevent clustering on incomplete (partial or non-NULL-storing) indexes</P
+></LI
+><LI
+><P
+>Service shutdown request at proper time if it arrives while still starting up</P
+></LI
+><LI
+><P
+>Fix left-links in temporary indexes (could make backwards scans miss entries)</P
+></LI
+><LI
+><P
+>Fix incorrect handling of client_encoding setting in postgresql.conf (Tatsuo)</P
+></LI
+><LI
+><P
+>Fix failure to respond to 'pg_ctl stop -m fast' after Async_NotifyHandler runs</P
+></LI
+><LI
+><P
+>Fix SPI for case where rule contains multiple statements of the same type</P
+></LI
+><LI
+><P
+>Fix problem with checking for wrong type of access permission in rule query</P
+></LI
+><LI
+><P
+>Fix problem with EXCEPT in CREATE RULE</P
+></LI
+><LI
+><P
+>Prevent problem with dropping temp tables having serial columns</P
+></LI
+><LI
+><P
+>Fix replace_vars_with_subplan_refs failure in complex views</P
+></LI
+><LI
+><P
+>Fix regexp slowness in single-byte encodings (Tatsuo)</P
+></LI
+><LI
+><P
+>Allow qualified type names in CREATE CAST and DROP CAST</P
+></LI
+><LI
+><P
+>Accept 'SETOF type[]', which formerly had to be written 'SETOF _type'</P
+></LI
+><LI
+><P
+>Fix pg_dump core dump in some cases with procedural languages</P
+></LI
+><LI
+><P
+>Force ISO datestyle in pg_dump output, for portability (Oliver)</P
+></LI
+><LI
+><P
+>pg_dump failed to handle error return from lo_read (Oleg Drokin)</P
+></LI
+><LI
+><P
+>pg_dumpall failed with groups having no members (Nick Eskelinen)</P
+></LI
+><LI
+><P
+>pg_dumpall failed to recognize --globals-only switch</P
+></LI
+><LI
+><P
+>pg_restore failed to restore blobs if -X disable-triggers is specified</P
+></LI
+><LI
+><P
+>Repair intrafunction memory leak in plpgsql</P
+></LI
+><LI
+><P
+>pltcl's elog command dumped core if given wrong parameters (Ian Harding)</P
+></LI
+><LI
+><P
+>plpython used wrong value of atttypmod (Brad McLean)</P
+></LI
+><LI
+><P
+>Fix improper quoting of boolean values in Python interface (D'Arcy)</P
+></LI
+><LI
+><P
+>Added addDataType() method to PGConnection interface for JDBC</P
+></LI
+><LI
+><P
+>Fixed various problems with updateable ResultSets for JDBC (Shawn Green)</P
+></LI
+><LI
+><P
+>Fixed various problems with DatabaseMetaData for JDBC (Kris Jurka, Peter Royal)</P
+></LI
+><LI
+><P
+>Fixed problem with parsing table ACLs in JDBC</P
+></LI
+><LI
+><P
+>Better error message for character set conversion problems in JDBC</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-3-4.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-2.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 7.3.4</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.3.2</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

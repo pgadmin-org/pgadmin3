@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Mathematical Functions and Operators</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 6. Functions and Operators</TD
+>Chapter 9. Functions and Operators</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="FUNCTIONS-MATH"
->6.3. Mathematical Functions and Operators</A
+>9.3. Mathematical Functions and Operators</A
 ></H1
 ><P
 >    Mathematical operators are provided for many
@@ -96,7 +96,7 @@ CLASS="PRODUCTNAME"
 ><P
 >    <A
 HREF="functions-math.html#FUNCTIONS-MATH-OP-TABLE"
->Table 6-2</A
+>Table 9-2</A
 > shows the available mathematical operators.
    </P
 ><DIV
@@ -106,412 +106,373 @@ NAME="FUNCTIONS-MATH-OP-TABLE"
 ></A
 ><P
 ><B
->Table 6-2. Mathematical Operators</B
+>Table 9-2. Mathematical Operators</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
->Name</TH
+>Operator</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Result</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->+</TT
+>+</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >addition</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->2 + 3</TD
+><VAR
+CLASS="LITERAL"
+>2 + 3</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->5</TD
+><VAR
+CLASS="LITERAL"
+>5</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->-</TT
+>-</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >subtraction</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->2 - 3</TD
+><VAR
+CLASS="LITERAL"
+>2 - 3</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->-1</TD
+><VAR
+CLASS="LITERAL"
+>-1</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->*</TT
+>*</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >multiplication</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->2 * 3</TD
+><VAR
+CLASS="LITERAL"
+>2 * 3</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->6</TD
+><VAR
+CLASS="LITERAL"
+>6</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->/</TT
+>/</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >division (integer division truncates results)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->4 / 2</TD
+><VAR
+CLASS="LITERAL"
+>4 / 2</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->2</TD
+><VAR
+CLASS="LITERAL"
+>2</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->%</TT
+>%</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >modulo (remainder)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->5 % 4</TD
+><VAR
+CLASS="LITERAL"
+>5 % 4</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->1</TD
+><VAR
+CLASS="LITERAL"
+>1</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->^</TT
+>^</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >exponentiation</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->2.0 ^ 3.0</TD
+><VAR
+CLASS="LITERAL"
+>2.0 ^ 3.0</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->8</TD
+><VAR
+CLASS="LITERAL"
+>8</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->|/</TT
+>|/</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >square root</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->|/ 25.0</TD
+><VAR
+CLASS="LITERAL"
+>|/ 25.0</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->5</TD
+><VAR
+CLASS="LITERAL"
+>5</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->||/</TT
+>||/</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >cube root</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->||/ 27.0</TD
+><VAR
+CLASS="LITERAL"
+>||/ 27.0</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->3</TD
+><VAR
+CLASS="LITERAL"
+>3</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->!</TT
+>!</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >factorial</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->5 !</TD
+><VAR
+CLASS="LITERAL"
+>5 !</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->120</TD
+><VAR
+CLASS="LITERAL"
+>120</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->!!</TT
+>!!</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >factorial (prefix operator)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->!! 5</TD
+><VAR
+CLASS="LITERAL"
+>!! 5</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->120</TD
+><VAR
+CLASS="LITERAL"
+>120</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->@</TT
+>@</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >absolute value</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->@ -5.0</TD
+><VAR
+CLASS="LITERAL"
+>@ -5.0</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->5</TD
+><VAR
+CLASS="LITERAL"
+>5</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->&amp;</TT
+>&amp;</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->binary AND</TD
+>bitwise AND</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->91 &#38; 15</TD
+><VAR
+CLASS="LITERAL"
+>91 &amp; 15</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->11</TD
+><VAR
+CLASS="LITERAL"
+>11</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->|</TT
+>|</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->binary OR</TD
+>bitwise OR</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->32 | 3</TD
+><VAR
+CLASS="LITERAL"
+>32 | 3</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->35</TD
+><VAR
+CLASS="LITERAL"
+>35</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->#</TT
+>#</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->binary XOR</TD
+>bitwise XOR</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->17 # 5</TD
+><VAR
+CLASS="LITERAL"
+>17 # 5</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->20</TD
+><VAR
+CLASS="LITERAL"
+>20</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> <TT
+> <VAR
 CLASS="LITERAL"
->~</TT
+>~</VAR
 > </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->binary NOT</TD
+>bitwise NOT</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->~1</TD
+><VAR
+CLASS="LITERAL"
+>~1</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->-2</TD
+><VAR
+CLASS="LITERAL"
+>-2</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &lt;&lt; </TD
+> <VAR
+CLASS="LITERAL"
+>&lt;&lt;</VAR
+> </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->binary shift left</TD
+>biwise shift left</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->1 &lt;&lt; 4</TD
+><VAR
+CLASS="LITERAL"
+>1 &lt;&lt; 4</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->16</TD
+><VAR
+CLASS="LITERAL"
+>16</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-> &gt;&gt; </TD
+> <VAR
+CLASS="LITERAL"
+>&gt;&gt;</VAR
+> </TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->binary shift right</TD
+>bitwise shift right</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->8 &gt;&gt; 2</TD
+><VAR
+CLASS="LITERAL"
+>8 &gt;&gt; 2</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->2</TD
+><VAR
+CLASS="LITERAL"
+>2</VAR
+></TD
 ></TR
 ></TBODY
 ></TABLE
 ></DIV
 ><P
->    The <SPAN
-CLASS="QUOTE"
->"binary"</SPAN
-> operators are also available for the bit
+>    The bitwise operators are also available for the bit
     string types <TT
 CLASS="TYPE"
->BIT</TT
+>bit</TT
 > and <TT
 CLASS="TYPE"
->BIT VARYING</TT
+>bit varying</TT
 >, as
     shown in <A
 HREF="functions-math.html#FUNCTIONS-MATH-BIT-TABLE"
->Table 6-3</A
+>Table 9-3</A
 >.
-    Bit string arguments to <TT
+    Bit string operands of <VAR
 CLASS="LITERAL"
->&#38;</TT
->, <TT
+>&amp;</VAR
+>, <VAR
 CLASS="LITERAL"
->|</TT
+>|</VAR
 >,
-    and <TT
+    and <VAR
 CLASS="LITERAL"
->#</TT
+>#</VAR
 > must be of equal length.  When bit
     shifting, the original length of the string is preserved, as shown
     in the table.
@@ -523,83 +484,91 @@ NAME="FUNCTIONS-MATH-BIT-TABLE"
 ></A
 ><P
 ><B
->Table 6-3. Bit String Binary Operators</B
+>Table 9-3. Bit String Bitwise Operators</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Result</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->B'10001' &#38; B'01101'</TD
+><VAR
+CLASS="LITERAL"
+>B'10001' &amp; B'01101'</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->00001</TD
+><VAR
+CLASS="LITERAL"
+>00001</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->B'10001' | B'01101'</TD
+><VAR
+CLASS="LITERAL"
+>B'10001' | B'01101'</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->11101</TD
+><VAR
+CLASS="LITERAL"
+>11101</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->B'10001' # B'01101'</TD
+><VAR
+CLASS="LITERAL"
+>B'10001' # B'01101'</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->11110</TD
+><VAR
+CLASS="LITERAL"
+>11110</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->~ B'10001'</TD
+><VAR
+CLASS="LITERAL"
+>~ B'10001'</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->01110</TD
+><VAR
+CLASS="LITERAL"
+>01110</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->B'10001' &lt;&lt; 3</TD
+><VAR
+CLASS="LITERAL"
+>B'10001' &lt;&lt; 3</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->01000</TD
+><VAR
+CLASS="LITERAL"
+>01000</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->B'10001' &gt;&gt; 2</TD
+><VAR
+CLASS="LITERAL"
+>B'10001' &gt;&gt; 2</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->00100</TD
+><VAR
+CLASS="LITERAL"
+>00100</VAR
+></TD
 ></TR
 ></TBODY
 ></TABLE
@@ -607,11 +576,11 @@ VALIGN="TOP"
 ><P
 >   <A
 HREF="functions-math.html#FUNCTIONS-MATH-FUNC-TABLE"
->Table 6-4</A
+>Table 9-4</A
 > shows the available
-   mathematical functions.  In the table, <TT
+   mathematical functions.  In the table, <VAR
 CLASS="LITERAL"
->dp</TT
+>dp</VAR
 >
    indicates <TT
 CLASS="TYPE"
@@ -634,858 +603,758 @@ NAME="FUNCTIONS-MATH-FUNC-TABLE"
 ></A
 ><P
 ><B
->Table 6-4. Mathematical Functions</B
+>Table 9-4. Mathematical Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><COL><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Function</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Return Type</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Example</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Result</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->abs</TT
->(<TT
+>abs</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
+>x</VAR
+>)</VAR
+></TD
+><TD
+>(same as <VAR
+CLASS="REPLACEABLE"
+>x</VAR
 >)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->(same as <TT
-CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >absolute value</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->abs(-17.4)</TT
+>abs(-17.4)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->17.4</TD
+><VAR
+CLASS="LITERAL"
+>17.4</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->cbrt</TT
+>cbrt</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >dp</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >cube root</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->cbrt(27.0)</TT
+>cbrt(27.0)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->3</TD
+><VAR
+CLASS="LITERAL"
+>3</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->ceil</TT
+>ceil</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
 > or <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(same as input)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >smallest integer not less than argument</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->ceil(-42.8)</TT
+>ceil(-42.8)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->-42</TD
+><VAR
+CLASS="LITERAL"
+>-42</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->degrees</TT
+>degrees</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >dp</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >radians to degrees</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->degrees(0.5)</TT
+>degrees(0.5)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->28.6478897565412</TD
+><VAR
+CLASS="LITERAL"
+>28.6478897565412</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->exp</TT
+>exp</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
 > or <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(same as input)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >exponential</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->exp(1.0)</TT
+>exp(1.0)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->2.71828182845905</TD
+><VAR
+CLASS="LITERAL"
+>2.71828182845905</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->floor</TT
+>floor</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
 > or <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(same as input)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >largest integer not greater than argument</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->floor(-42.8)</TT
+>floor(-42.8)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->-43</TD
+><VAR
+CLASS="LITERAL"
+>-43</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->ln</TT
+>ln</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
 > or <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(same as input)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >natural logarithm</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->ln(2.0)</TT
+>ln(2.0)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->0.693147180559945</TD
+><VAR
+CLASS="LITERAL"
+>0.693147180559945</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->log</TT
+>log</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
 > or <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(same as input)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >base 10 logarithm</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->log(100.0)</TT
+>log(100.0)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->2</TD
+><VAR
+CLASS="LITERAL"
+>2</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->log</TT
->(<TT
+>log</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->b</I
-></TT
+>b</VAR
 > <TT
 CLASS="TYPE"
 >numeric</TT
 >,
-        <TT
+        <VAR
 CLASS="PARAMETER"
-><I
->x</I
-></TT
+>x</VAR
 > <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >numeric</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->logarithm to base <TT
+>logarithm to base <VAR
 CLASS="PARAMETER"
-><I
->b</I
-></TT
+>b</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->log(2.0, 64.0)</TT
+>log(2.0, 64.0)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->6.0000000000</TD
+><VAR
+CLASS="LITERAL"
+>6.0000000000</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->mod</TT
->(<TT
+>mod</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->y</I
-></TT
+>y</VAR
 >,
-        <TT
+        <VAR
 CLASS="PARAMETER"
-><I
->x</I
-></TT
->)</TD
+>x</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(same as argument types)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->remainder of <TT
+>remainder of <VAR
 CLASS="PARAMETER"
-><I
->y</I
-></TT
->/<TT
+>y</VAR
+>/<VAR
 CLASS="PARAMETER"
-><I
->x</I
-></TT
+>x</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->mod(9,4)</TT
+>mod(9,4)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->1</TD
+><VAR
+CLASS="LITERAL"
+>1</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pi</TT
->()</TD
+>pi</CODE
+>()</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >dp</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><SPAN
 CLASS="QUOTE"
->"Pi"</SPAN
+>"&pi;"</SPAN
 > constant</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->pi()</TT
+>pi()</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->3.14159265358979</TD
+><VAR
+CLASS="LITERAL"
+>3.14159265358979</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pow</TT
->(<TT
+>pow</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->x</I
-></TT
+>a</VAR
 > <TT
 CLASS="TYPE"
 >dp</TT
 >,
-        <TT
+        <VAR
 CLASS="PARAMETER"
-><I
->e</I
-></TT
+>b</VAR
 > <TT
 CLASS="TYPE"
 >dp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >dp</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->raise a number to exponent <TT
+><VAR
 CLASS="PARAMETER"
-><I
->e</I
-></TT
+>a</VAR
+> raised to the power of <VAR
+CLASS="PARAMETER"
+>b</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->pow(9.0, 3.0)</TT
+>pow(9.0, 3.0)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->729</TD
+><VAR
+CLASS="LITERAL"
+>729</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->pow</TT
->(<TT
+>pow</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->x</I
-></TT
+>a</VAR
 > <TT
 CLASS="TYPE"
 >numeric</TT
 >,
-        <TT
+        <VAR
 CLASS="PARAMETER"
-><I
->e</I
-></TT
+>b</VAR
 > <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >numeric</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->raise a number to exponent <TT
+><VAR
 CLASS="PARAMETER"
-><I
->e</I
-></TT
+>a</VAR
+> raised to the power of <VAR
+CLASS="PARAMETER"
+>b</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->pow(9.0, 3.0)</TT
+>pow(9.0, 3.0)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->729</TD
+><VAR
+CLASS="LITERAL"
+>729</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->radians</TT
+>radians</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >dp</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >degrees to radians</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->radians(45.0)</TT
+>radians(45.0)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->0.785398163397448</TD
+><VAR
+CLASS="LITERAL"
+>0.785398163397448</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->random</TT
->()</TD
+>random</CODE
+>()</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >dp</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >random value between 0.0 and 1.0</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->random()</TT
+>random()</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >&nbsp;</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->round</TT
+>round</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
 > or <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(same as input)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >round to nearest integer</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->round(42.4)</TT
+>round(42.4)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->42</TD
+><VAR
+CLASS="LITERAL"
+>42</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->round</TT
->(<TT
+>round</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->v</I
-></TT
+>v</VAR
 > <TT
 CLASS="TYPE"
 >numeric</TT
->, <TT
+>, <VAR
 CLASS="PARAMETER"
-><I
->s</I
-></TT
+>s</VAR
 > <TT
 CLASS="TYPE"
 >integer</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >numeric</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->round to <TT
+>round to <VAR
 CLASS="PARAMETER"
-><I
->s</I
-></TT
+>s</VAR
 > decimal places</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->round(42.4382, 2)</TT
+>round(42.4382, 2)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->42.44</TD
+><VAR
+CLASS="LITERAL"
+>42.44</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->sign</TT
+>setseed</CODE
+>(<TT
+CLASS="TYPE"
+>dp</TT
+>)</VAR
+></TD
+><TD
+><TT
+CLASS="TYPE"
+>int32</TT
+></TD
+><TD
+>set seed for subsequent <VAR
+CLASS="LITERAL"
+>random()</VAR
+> calls</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>setseed(0.54823)</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>1177314959</VAR
+></TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>sign</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
 > or <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(same as input)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >sign of the argument (-1, 0, +1)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->sign(-8.4)</TT
+>sign(-8.4)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->-1</TD
+><VAR
+CLASS="LITERAL"
+>-1</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->sqrt</TT
+>sqrt</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
 > or <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >(same as input)</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >square root</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->sqrt(2.0)</TT
+>sqrt(2.0)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->1.4142135623731</TD
+><VAR
+CLASS="LITERAL"
+>1.4142135623731</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->trunc</TT
+>trunc</CODE
 >(<TT
 CLASS="TYPE"
 >dp</TT
 > or <TT
 CLASS="TYPE"
 >numeric</TT
->)</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->(same as input)</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->truncate toward zero</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->trunc(42.8)</TT
+>)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->42</TD
+>(same as input)</TD
+><TD
+>truncate toward zero</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>trunc(42.8)</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>42</VAR
+></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->trunc</TT
->(<TT
+>trunc</CODE
+>(<VAR
 CLASS="PARAMETER"
-><I
->v</I
-></TT
+>v</VAR
 > <TT
 CLASS="TYPE"
 >numeric</TT
->, <TT
+>, <VAR
 CLASS="PARAMETER"
-><I
->s</I
-></TT
+>s</VAR
 > <TT
 CLASS="TYPE"
 >integer</TT
->)</TD
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 ><TT
 CLASS="TYPE"
 >numeric</TT
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->truncate to <TT
+>truncate to <VAR
 CLASS="PARAMETER"
-><I
->s</I
-></TT
+>s</VAR
 > decimal places</TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
 CLASS="LITERAL"
->trunc(42.4382, 2)</TT
+>trunc(42.4382, 2)</VAR
 ></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
->42.43</TD
+><VAR
+CLASS="LITERAL"
+>42.43</VAR
+></TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1493,7 +1362,7 @@ VALIGN="TOP"
 ><P
 >   Finally, <A
 HREF="functions-math.html#FUNCTIONS-MATH-TRIG-TABLE"
->Table 6-5</A
+>Table 9-5</A
 > shows the
    available trigonometric functions.  All trigonometric functions
    take arguments and return values of type <TT
@@ -1509,183 +1378,152 @@ NAME="FUNCTIONS-MATH-TRIG-TABLE"
 ></A
 ><P
 ><B
->Table 6-5. Trigonometric Functions</B
+>Table 9-5. Trigonometric Functions</B
 ></P
 ><TABLE
 BORDER="1"
 CLASS="CALSTABLE"
-><THEAD
+><COL><COL><THEAD
 ><TR
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Function</TH
 ><TH
-ALIGN="LEFT"
-VALIGN="TOP"
 >Description</TH
 ></TR
 ></THEAD
 ><TBODY
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->acos</TT
->(<TT
+>acos</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TD
+>x</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >inverse cosine</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->asin</TT
->(<TT
+>asin</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TD
+>x</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >inverse sine</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->atan</TT
->(<TT
+>atan</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TD
+>x</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >inverse tangent</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->atan2</TT
->(<TT
+>atan2</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
+>x</VAR
 >,
-        <TT
+        <VAR
 CLASS="REPLACEABLE"
-><I
->y</I
-></TT
->)</TD
+>y</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >inverse tangent of
-        <TT
+        <VAR
+CLASS="LITERAL"
+><VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->/<TT
+>x</VAR
+>/<VAR
 CLASS="REPLACEABLE"
-><I
->y</I
-></TT
+>y</VAR
+></VAR
 ></TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->cos</TT
->(<TT
+>cos</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TD
+>x</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >cosine</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->cot</TT
->(<TT
+>cot</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TD
+>x</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >cotangent</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->sin</TT
->(<TT
+>sin</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TD
+>x</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >sine</TD
 ></TR
 ><TR
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
+><VAR
+CLASS="LITERAL"
+><CODE
 CLASS="FUNCTION"
->tan</TT
->(<TT
+>tan</CODE
+>(<VAR
 CLASS="REPLACEABLE"
-><I
->x</I
-></TT
->)</TD
+>x</VAR
+>)</VAR
+></TD
 ><TD
-ALIGN="LEFT"
-VALIGN="TOP"
 >tangent</TD
 ></TR
 ></TBODY

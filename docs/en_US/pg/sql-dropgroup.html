@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DROP GROUP</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,133 +78,102 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DROPGROUP"
->DROP GROUP</A
-></H1
+></A
+>DROP GROUP</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN42563"
+NAME="AEN41156"
 ></A
 ><H2
 >Name</H2
->   DROP GROUP
-  &nbsp;--&nbsp;   remove a user group
-  </DIV
+>DROP GROUP&nbsp;--&nbsp;remove a user group</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN42566"
+NAME="AEN41159"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DROP GROUP <TT
+>DROP GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPGROUP-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-></DT
-><DD
-><P
->	The name of an existing group.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPGROUP-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DROP GROUP</TT
-></DT
-><DD
-><P
->	The message returned if the group is successfully deleted.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>name</VAR
+></PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPGROUP-1"
+NAME="AEN41162"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
 >DROP GROUP</TT
-> removes the specified group from the database.
-   The users in the group are not deleted.
-  </P
-><P
->   Use <A
-HREF="sql-creategroup.html"
-><I
->CREATE GROUP</I
-></A
->
-   to add new groups, and <A
-HREF="sql-altergroup.html"
-><I
->ALTER GROUP</I
-></A
-> to change a group's membership.
+> removes the specified group.  The
+   users in the group are not deleted.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPGROUP-2"
+NAME="AEN41166"
 ></A
 ><H2
->   Usage
-  </H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name of an existing group.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41174"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DROP GROUP</SAMP
+></DT
+><DD
+><P
+>      Message returned if the group was successfully removed.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41182"
+></A
+><H2
+>Examples</H2
 ><P
 >   To drop a group:
 </P><PRE
@@ -216,29 +185,34 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DROPGROUP-3"
+NAME="AEN41186"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DROPGROUP-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    There is no <TT
+>   There is no <TT
 CLASS="COMMAND"
 >DROP GROUP</TT
-> in <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
->.
-   </P
+> statement in the SQL standard.
+  </P
 ></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41190"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-altergroup.html"
+><I
+>ALTER GROUP</I
+></A
+>, <A
+HREF="sql-creategroup.html"
+><I
+>CREATE GROUP</I
+></A
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

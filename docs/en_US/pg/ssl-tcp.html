@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Secure TCP/IP Connections with SSL</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 3. Server Run-time Environment</TD
+>Chapter 16. Server Run-time Environment</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,53 +81,57 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SSL-TCP"
->3.7. Secure TCP/IP Connections with SSL</A
+>16.7. Secure TCP/IP Connections with SSL</A
 ></H1
 ><A
-NAME="AEN20865"
+NAME="AEN16525"
 ></A
 ><P
 >   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > has native support for using
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->SSL</SPAN
+>SSL</ACRONYM
 > connections to encrypt client/server communications
-   for increased security. This requires
+   for increased security. This requires that
    <SPAN
 CLASS="PRODUCTNAME"
 >OpenSSL</SPAN
-> be installed on both client and
-   server systems and support enabled at build time (see <A
+> is installed on both client and
+   server systems and that support in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is
+   enabled at build time (see <A
 HREF="installation.html"
->Chapter 1</A
+>Chapter 14</A
 >).
   </P
 ><P
->   With <SPAN
+>   With <ACRONYM
 CLASS="ACRONYM"
->SSL</SPAN
+>SSL</ACRONYM
 > support compiled in, the
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server can be started with
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->SSL</SPAN
-> support by setting the parameter
-   <TT
+>SSL</ACRONYM
+> enabled by setting the parameter
+   <VAR
 CLASS="VARNAME"
->ssl</TT
+>ssl</VAR
 > to on in <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
 >. When
-   starting in <SPAN
+   starting in <ACRONYM
 CLASS="ACRONYM"
->SSL</SPAN
+>SSL</ACRONYM
 > mode, the server will look for the
    files <TT
 CLASS="FILENAME"
@@ -136,31 +140,31 @@ CLASS="FILENAME"
 CLASS="FILENAME"
 >server.crt</TT
 > in the
-   data directory.  These files should contain the server private key
-   and certificate respectively. These files must be set up correctly
-   before an <SPAN
+   data directory, which should contain the server private key
+   and certificate, respectively. These files must be set up correctly
+   before an <ACRONYM
 CLASS="ACRONYM"
->SSL</SPAN
+>SSL</ACRONYM
 >-enabled server can start. If the private key is
    protected with a passphrase, the server will prompt for the
    passphrase and will not start until it has been entered.
   </P
 ><P
->   The server will listen for both standard and <SPAN
+>   The server will listen for both standard and <ACRONYM
 CLASS="ACRONYM"
->SSL</SPAN
+>SSL</ACRONYM
 >
-   connections on the same TCP/IP port, and will negotiate with any
-   connecting client on whether to use <SPAN
+   connections on the same TCP port, and will negotiate with any
+   connecting client on whether to use <ACRONYM
 CLASS="ACRONYM"
->SSL</SPAN
+>SSL</ACRONYM
 >. See <A
 HREF="client-authentication.html"
->Chapter 6</A
+>Chapter 19</A
 > about how to force the server to
-   require use of <SPAN
+   require use of <ACRONYM
 CLASS="ACRONYM"
->SSL</SPAN
+>SSL</ACRONYM
 > for certain connections.
   </P
 ><P
@@ -170,13 +174,13 @@ CLASS="PRODUCTNAME"
 >OpenSSL</SPAN
 > documentation. A simple
    self-signed certificate can be used to get started for testing, but a
-   certificate signed by a certificate authority (<SPAN
+   certificate signed by a certificate authority (<ACRONYM
 CLASS="ACRONYM"
->CA</SPAN
+>CA</ACRONYM
 >) (either one of the global
-   <SPAN
+   <ACRONYM
 CLASS="ACRONYM"
->CAs</SPAN
+>CAs</ACRONYM
 > or a local one) should be used in production so the
    client can verify the server's identity. To create a quick
    self-signed certificate, use the following
@@ -192,8 +196,11 @@ CLASS="PROGRAMLISTING"
 CLASS="COMMAND"
 >openssl</TT
 > asks for. Make sure
-   that you enter the local host name as Common Name; the challenge
-   password can be left blank. The script will generate a key that is
+   that you enter the local host name as <SPAN
+CLASS="QUOTE"
+>"Common Name"</SPAN
+>; the challenge
+   password can be left blank. The programm will generate a key that is
    passphrase protected; it will not accept a passphrase that is less
    than four characters long. To remove the passphrase (as you must if
    you want automatic start-up of the server), run the commands

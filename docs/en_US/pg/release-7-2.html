@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Release 7.2</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix A. Release Notes</TD
+>Appendix D. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-2"
->A.9. Release 7.2</A
+>D.11. Release 7.2</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -98,8 +98,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23814"
->A.9.1. Overview</A
+NAME="AEN62737"
+>D.11.1. Overview</A
 ></H2
 ><P
 >    This release improves <SPAN
@@ -191,8 +191,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23850"
->A.9.2. Migration to version 7.2</A
+NAME="AEN62773"
+>D.11.2. Migration to version 7.2</A
 ></H2
 ><P
 >    A dump/restore using <TT
@@ -219,15 +219,15 @@ CLASS="COMMAND"
 ></LI
 ><LI
 ><P
->       In this release, comparisons using <TT
+>       In this release, comparisons using <VAR
 CLASS="LITERAL"
->= NULL</TT
+>= NULL</VAR
 >
        will always return false (or NULL, more precisely).  Previous
-       releases automatically transformed this syntax to <TT
+       releases automatically transformed this syntax to <VAR
 CLASS="LITERAL"
 >IS
-       NULL</TT
+       NULL</VAR
 >.  The old behavior can be re-enabled using a
        <TT
 CLASS="FILENAME"
@@ -261,36 +261,36 @@ CLASS="FILENAME"
 ></LI
 ><LI
 ><P
->       The date/time value <TT
+>       The date/time value <VAR
 CLASS="LITERAL"
->'current'</TT
+>'current'</VAR
 > is no longer
        available.  You will need to rewrite your applications.
       </P
 ></LI
 ><LI
 ><P
->       The <TT
+>       The <VAR
 CLASS="LITERAL"
->timestamp()</TT
->, <TT
+>timestamp()</VAR
+>, <VAR
 CLASS="LITERAL"
->time()</TT
+>time()</VAR
 >,
-       and <TT
+       and <VAR
 CLASS="LITERAL"
->interval()</TT
+>interval()</VAR
 > functions are no longer
-       available.  Instead of <TT
+       available.  Instead of <VAR
 CLASS="LITERAL"
->timestamp()</TT
+>timestamp()</VAR
 >, use 
-       <TT
+       <VAR
 CLASS="LITERAL"
->timestamp 'string'</TT
-> or <TT
+>timestamp 'string'</VAR
+> or <VAR
 CLASS="LITERAL"
->CAST</TT
+>CAST</VAR
 >.
       </P
 ></LI
@@ -298,15 +298,15 @@ CLASS="LITERAL"
 ><P>
    </P
 ><P
->    The <TT
+>    The <VAR
 CLASS="LITERAL"
->SELECT ... LIMIT #,#</TT
+>SELECT ... LIMIT #,#</VAR
 > syntax will be removed
     in the next release. You should change your queries to use
-    separate LIMIT and OFFSET clauses, e.g. <TT
+    separate LIMIT and OFFSET clauses, e.g. <VAR
 CLASS="LITERAL"
 >LIMIT 10 OFFSET
-    20</TT
+    20</VAR
 >.
    </P
 ></DIV
@@ -315,517 +315,1295 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23886"
->A.9.3. Changes</A
+NAME="AEN62809"
+>D.11.3. Changes</A
 ></H2
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23888"
->A.9.3.1. Server Operation</A
+NAME="AEN62811"
+>D.11.3.1. Server Operation</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Create&nbsp;temporary&nbsp;files&nbsp;in&nbsp;a&nbsp;separate&nbsp;directory&nbsp;(Bruce)<br>
-Delete&nbsp;orphaned&nbsp;temporary&nbsp;files&nbsp;on&nbsp;postmaster&nbsp;startup&nbsp;(Bruce)<br>
-Added&nbsp;unique&nbsp;indexes&nbsp;to&nbsp;some&nbsp;system&nbsp;tables&nbsp;(Tom)<br>
-System&nbsp;table&nbsp;operator&nbsp;reorganization&nbsp;(Oleg&nbsp;Bartunov,&nbsp;Teodor&nbsp;Sigaev,&nbsp;Tom)<br>
-Renamed&nbsp;pg_log&nbsp;to&nbsp;pg_clog&nbsp;(Tom)<br>
-Enable&nbsp;SIGTERM,&nbsp;SIGQUIT&nbsp;to&nbsp;kill&nbsp;backends&nbsp;(Jan)<br>
-Removed&nbsp;compile-time&nbsp;limit&nbsp;on&nbsp;number&nbsp;of&nbsp;backends&nbsp;(Tom)<br>
-Better&nbsp;cleanup&nbsp;for&nbsp;semaphore&nbsp;resource&nbsp;failure&nbsp;(Tatsuo,&nbsp;Tom)<br>
-Allow&nbsp;safe&nbsp;transaction&nbsp;ID&nbsp;wraparound&nbsp;(Tom)<br>
-Removed&nbsp;OIDs&nbsp;from&nbsp;some&nbsp;system&nbsp;tables&nbsp;(Tom)<br>
-Removed&nbsp;"triggered&nbsp;data&nbsp;change&nbsp;violation"&nbsp;error&nbsp;check&nbsp;(Tom)<br>
-SPI&nbsp;portal&nbsp;creation&nbsp;of&nbsp;prepared/saved&nbsp;plans&nbsp;(Jan)<br>
-Allow&nbsp;SPI&nbsp;column&nbsp;functions&nbsp;to&nbsp;work&nbsp;for&nbsp;system&nbsp;columns&nbsp;(Tom)<br>
-Long&nbsp;value&nbsp;compression&nbsp;improvement&nbsp;(Tom)<br>
-Statistics&nbsp;collector&nbsp;for&nbsp;table,&nbsp;index&nbsp;access&nbsp;(Jan)<br>
-Truncate&nbsp;extra-long&nbsp;sequence&nbsp;names&nbsp;to&nbsp;a&nbsp;reasonable&nbsp;value&nbsp;(Tom)<br>
-Measure&nbsp;transaction&nbsp;times&nbsp;in&nbsp;milliseconds&nbsp;(Thomas)<br>
-Fix&nbsp;TID&nbsp;sequential&nbsp;scans&nbsp;(Hiroshi)<br>
-Superuser&nbsp;ID&nbsp;now&nbsp;fixed&nbsp;at&nbsp;1&nbsp;(Peter&nbsp;E)<br>
-New&nbsp;pg_ctl&nbsp;"reload"&nbsp;option&nbsp;(Tom)</P
+></P
+><UL
+><LI
+><P
+>Create temporary files in a separate directory (Bruce)</P
+></LI
+><LI
+><P
+>Delete orphaned temporary files on postmaster startup (Bruce)</P
+></LI
+><LI
+><P
+>Added unique indexes to some system tables (Tom)</P
+></LI
+><LI
+><P
+>System table operator reorganization (Oleg Bartunov, Teodor Sigaev, Tom)</P
+></LI
+><LI
+><P
+>Renamed pg_log to pg_clog (Tom)</P
+></LI
+><LI
+><P
+>Enable SIGTERM, SIGQUIT to kill backends (Jan)</P
+></LI
+><LI
+><P
+>Removed compile-time limit on number of backends (Tom)</P
+></LI
+><LI
+><P
+>Better cleanup for semaphore resource failure (Tatsuo, Tom)</P
+></LI
+><LI
+><P
+>Allow safe transaction ID wraparound (Tom)</P
+></LI
+><LI
+><P
+>Removed OIDs from some system tables (Tom)</P
+></LI
+><LI
+><P
+>Removed "triggered data change violation" error check (Tom)</P
+></LI
+><LI
+><P
+>SPI portal creation of prepared/saved plans (Jan)</P
+></LI
+><LI
+><P
+>Allow SPI column functions to work for system columns (Tom)</P
+></LI
+><LI
+><P
+>Long value compression improvement (Tom)</P
+></LI
+><LI
+><P
+>Statistics collector for table, index access (Jan)</P
+></LI
+><LI
+><P
+>Truncate extra-long sequence names to a reasonable value (Tom)</P
+></LI
+><LI
+><P
+>Measure transaction times in milliseconds (Thomas)</P
+></LI
+><LI
+><P
+>Fix TID sequential scans (Hiroshi)</P
+></LI
+><LI
+><P
+>Superuser ID now fixed at 1 (Peter E)</P
+></LI
+><LI
+><P
+>New pg_ctl "reload" option (Tom)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23891"
->A.9.3.2. Performance</A
+NAME="AEN62854"
+>D.11.3.2. Performance</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Optimizer&nbsp;improvements&nbsp;(Tom)<br>
-New&nbsp;histogram&nbsp;column&nbsp;statistics&nbsp;for&nbsp;optimizer&nbsp;(Tom)<br>
-Reuse&nbsp;write-ahead&nbsp;log&nbsp;files&nbsp;rather&nbsp;than&nbsp;discarding&nbsp;them&nbsp;(Tom)<br>
-Cache&nbsp;improvements&nbsp;(Tom)<br>
-IS&nbsp;NULL,&nbsp;IS&nbsp;NOT&nbsp;NULL&nbsp;optimizer&nbsp;improvement&nbsp;(Tom)<br>
-Improve&nbsp;lock&nbsp;manager&nbsp;to&nbsp;reduce&nbsp;lock&nbsp;contention&nbsp;(Tom)<br>
-Keep&nbsp;relcache&nbsp;entries&nbsp;for&nbsp;index&nbsp;access&nbsp;support&nbsp;functions&nbsp;(Tom)<br>
-Allow&nbsp;better&nbsp;selectivity&nbsp;with&nbsp;NaN&nbsp;and&nbsp;infinities&nbsp;in&nbsp;NUMERIC&nbsp;(Tom)<br>
-R-tree&nbsp;performance&nbsp;improvements&nbsp;(Kenneth&nbsp;Been)<br>
-B-tree&nbsp;splits&nbsp;more&nbsp;efficient&nbsp;(Tom)</P
+></P
+><UL
+><LI
+><P
+>Optimizer improvements (Tom)</P
+></LI
+><LI
+><P
+>New histogram column statistics for optimizer (Tom)</P
+></LI
+><LI
+><P
+>Reuse write-ahead log files rather than discarding them (Tom)</P
+></LI
+><LI
+><P
+>Cache improvements (Tom)</P
+></LI
+><LI
+><P
+>IS NULL, IS NOT NULL optimizer improvement (Tom)</P
+></LI
+><LI
+><P
+>Improve lock manager to reduce lock contention (Tom)</P
+></LI
+><LI
+><P
+>Keep relcache entries for index access support functions (Tom)</P
+></LI
+><LI
+><P
+>Allow better selectivity with NaN and infinities in NUMERIC (Tom)</P
+></LI
+><LI
+><P
+>R-tree performance improvements (Kenneth Been)</P
+></LI
+><LI
+><P
+>B-tree splits more efficient (Tom)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23894"
->A.9.3.3. Privileges</A
+NAME="AEN62877"
+>D.11.3.3. Privileges</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Change&nbsp;UPDATE,&nbsp;DELETE&nbsp;permissions&nbsp;to&nbsp;be&nbsp;distinct&nbsp;(Peter&nbsp;E)<br>
-New&nbsp;REFERENCES,&nbsp;TRIGGER&nbsp;privileges&nbsp;(Peter&nbsp;E)<br>
-Allow&nbsp;GRANT/REVOKE&nbsp;to/from&nbsp;more&nbsp;than&nbsp;one&nbsp;user&nbsp;at&nbsp;a&nbsp;time&nbsp;(Peter&nbsp;E)<br>
-New&nbsp;has_table_privilege()&nbsp;function&nbsp;(Joe&nbsp;Conway)<br>
-Allow&nbsp;non-superuser&nbsp;to&nbsp;vacuum&nbsp;database&nbsp;(Tom)<br>
-New&nbsp;SET&nbsp;SESSION&nbsp;AUTHORIZATION&nbsp;command&nbsp;(Peter&nbsp;E)<br>
-Fix&nbsp;bug&nbsp;in&nbsp;privilege&nbsp;modifications&nbsp;on&nbsp;newly&nbsp;created&nbsp;tables&nbsp;(Tom)<br>
-Disallow&nbsp;access&nbsp;to&nbsp;pg_statistic&nbsp;for&nbsp;non-superuser,&nbsp;add&nbsp;user-accessible&nbsp;views&nbsp;(Tom)</P
+></P
+><UL
+><LI
+><P
+>Change UPDATE, DELETE permissions to be distinct (Peter E)</P
+></LI
+><LI
+><P
+>New REFERENCES, TRIGGER privileges (Peter E)</P
+></LI
+><LI
+><P
+>Allow GRANT/REVOKE to/from more than one user at a time (Peter E)</P
+></LI
+><LI
+><P
+>New has_table_privilege() function (Joe Conway)</P
+></LI
+><LI
+><P
+>Allow non-superuser to vacuum database (Tom)</P
+></LI
+><LI
+><P
+>New SET SESSION AUTHORIZATION command (Peter E)</P
+></LI
+><LI
+><P
+>Fix bug in privilege modifications on newly created tables (Tom)</P
+></LI
+><LI
+><P
+>Disallow access to pg_statistic for non-superuser, add user-accessible views (Tom)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23897"
->A.9.3.4. Client Authentication</A
+NAME="AEN62896"
+>D.11.3.4. Client Authentication</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Fork&nbsp;postmaster&nbsp;before&nbsp;doing&nbsp;authentication&nbsp;to&nbsp;prevent&nbsp;hangs&nbsp;(Peter&nbsp;E)<br>
-Add&nbsp;ident&nbsp;authentication&nbsp;over&nbsp;Unix&nbsp;domain&nbsp;sockets&nbsp;on&nbsp;Linux,&nbsp;*BSD&nbsp;(Helge&nbsp;Bahmann,&nbsp;Oliver&nbsp;Elphick,&nbsp;Teodor&nbsp;Sigaev,&nbsp;Bruce)<br>
-Add&nbsp;a&nbsp;password&nbsp;authentication&nbsp;method&nbsp;that&nbsp;uses&nbsp;MD5&nbsp;encryption&nbsp;(Bruce)<br>
-Allow&nbsp;encryption&nbsp;of&nbsp;stored&nbsp;passwords&nbsp;using&nbsp;MD5&nbsp;(Bruce)<br>
-PAM&nbsp;authentication&nbsp;(Dominic&nbsp;J.&nbsp;Eidson)<br>
-Load&nbsp;pg_hba.conf&nbsp;and&nbsp;pg_ident.conf&nbsp;only&nbsp;on&nbsp;startup&nbsp;and&nbsp;SIGHUP&nbsp;(Bruce)</P
+></P
+><UL
+><LI
+><P
+>Fork postmaster before doing authentication to prevent hangs (Peter E)</P
+></LI
+><LI
+><P
+>Add ident authentication over Unix domain sockets on Linux, *BSD (Helge Bahmann, Oliver Elphick, Teodor Sigaev, Bruce)</P
+></LI
+><LI
+><P
+>Add a password authentication method that uses MD5 encryption (Bruce)</P
+></LI
+><LI
+><P
+>Allow encryption of stored passwords using MD5 (Bruce)</P
+></LI
+><LI
+><P
+>PAM authentication (Dominic J. Eidson)</P
+></LI
+><LI
+><P
+>Load pg_hba.conf and pg_ident.conf only on startup and SIGHUP (Bruce)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23900"
->A.9.3.5. Server Configuration</A
+NAME="AEN62911"
+>D.11.3.5. Server Configuration</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Interpretation&nbsp;of&nbsp;some&nbsp;time&nbsp;zone&nbsp;abbreviations&nbsp;as&nbsp;Australian&nbsp;rather&nbsp;than&nbsp;North&nbsp;American&nbsp;now&nbsp;settable&nbsp;at&nbsp;run&nbsp;time&nbsp;(Bruce)<br>
-New&nbsp;parameter&nbsp;to&nbsp;set&nbsp;default&nbsp;transaction&nbsp;isolation&nbsp;level&nbsp;(Peter&nbsp;E)<br>
-New&nbsp;parameter&nbsp;to&nbsp;enable&nbsp;conversion&nbsp;of&nbsp;"expr&nbsp;=&nbsp;NULL"&nbsp;into&nbsp;"expr&nbsp;IS&nbsp;NULL",&nbsp;off&nbsp;by&nbsp;default&nbsp;(Peter&nbsp;E)<br>
-New&nbsp;parameter&nbsp;to&nbsp;control&nbsp;memory&nbsp;usage&nbsp;by&nbsp;VACUUM&nbsp;(Tom)<br>
-New&nbsp;parameter&nbsp;to&nbsp;set&nbsp;client&nbsp;authentication&nbsp;timeout&nbsp;(Tom)<br>
-New&nbsp;parameter&nbsp;to&nbsp;set&nbsp;maximum&nbsp;number&nbsp;of&nbsp;open&nbsp;files&nbsp;(Tom)</P
+></P
+><UL
+><LI
+><P
+>Interpretation of some time zone abbreviations as Australian rather than North American now settable at run time (Bruce)</P
+></LI
+><LI
+><P
+>New parameter to set default transaction isolation level (Peter E)</P
+></LI
+><LI
+><P
+>New parameter to enable conversion of "expr = NULL" into "expr IS NULL", off by default (Peter E)</P
+></LI
+><LI
+><P
+>New parameter to control memory usage by VACUUM (Tom)</P
+></LI
+><LI
+><P
+>New parameter to set client authentication timeout (Tom)</P
+></LI
+><LI
+><P
+>New parameter to set maximum number of open files (Tom)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23903"
->A.9.3.6. Queries</A
+NAME="AEN62926"
+>D.11.3.6. Queries</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Statements&nbsp;added&nbsp;by&nbsp;INSERT&nbsp;rules&nbsp;now&nbsp;execute&nbsp;after&nbsp;the&nbsp;INSERT&nbsp;(Jan)<br>
-Prevent&nbsp;unadorned&nbsp;relation&nbsp;names&nbsp;in&nbsp;target&nbsp;list&nbsp;(Bruce)<br>
-NULLs&nbsp;now&nbsp;sort&nbsp;after&nbsp;all&nbsp;normal&nbsp;values&nbsp;in&nbsp;ORDER&nbsp;BY&nbsp;(Tom)<br>
-New&nbsp;IS&nbsp;UNKNOWN,&nbsp;IS&nbsp;NOT&nbsp;UNKNOWN&nbsp;Boolean&nbsp;tests&nbsp;(Tom)<br>
-New&nbsp;SHARE&nbsp;UPDATE&nbsp;EXCLUSIVE&nbsp;lock&nbsp;mode&nbsp;(Tom)<br>
-New&nbsp;EXPLAIN&nbsp;ANALYZE&nbsp;command&nbsp;that&nbsp;shows&nbsp;run&nbsp;times&nbsp;and&nbsp;row&nbsp;counts&nbsp;(Martijn&nbsp;van&nbsp;Oosterhout)<br>
-Fix&nbsp;problem&nbsp;with&nbsp;LIMIT&nbsp;and&nbsp;subqueries&nbsp;(Tom)<br>
-Fix&nbsp;for&nbsp;LIMIT,&nbsp;DISTINCT&nbsp;ON&nbsp;pushed&nbsp;into&nbsp;subqueries&nbsp;(Tom)<br>
-Fix&nbsp;nested&nbsp;EXCEPT/INTERSECT&nbsp;(Tom)</P
+></P
+><UL
+><LI
+><P
+>Statements added by INSERT rules now execute after the INSERT (Jan)</P
+></LI
+><LI
+><P
+>Prevent unadorned relation names in target list (Bruce)</P
+></LI
+><LI
+><P
+>NULLs now sort after all normal values in ORDER BY (Tom)</P
+></LI
+><LI
+><P
+>New IS UNKNOWN, IS NOT UNKNOWN Boolean tests (Tom)</P
+></LI
+><LI
+><P
+>New SHARE UPDATE EXCLUSIVE lock mode (Tom)</P
+></LI
+><LI
+><P
+>New EXPLAIN ANALYZE command that shows run times and row counts (Martijn van Oosterhout)</P
+></LI
+><LI
+><P
+>Fix problem with LIMIT and subqueries (Tom)</P
+></LI
+><LI
+><P
+>Fix for LIMIT, DISTINCT ON pushed into subqueries (Tom)</P
+></LI
+><LI
+><P
+>Fix nested EXCEPT/INTERSECT (Tom)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23906"
->A.9.3.7. Schema Manipulation</A
+NAME="AEN62947"
+>D.11.3.7. Schema Manipulation</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Fix&nbsp;SERIAL&nbsp;in&nbsp;temporary&nbsp;tables&nbsp;(Bruce)<br>
-Allow&nbsp;temporary&nbsp;sequences&nbsp;(Bruce)<br>
-Sequences&nbsp;now&nbsp;use&nbsp;int8&nbsp;internally&nbsp;(Tom)<br>
-New&nbsp;SERIAL8&nbsp;creates&nbsp;int8&nbsp;columns&nbsp;with&nbsp;sequences,&nbsp;default&nbsp;still&nbsp;SERIAL4&nbsp;(Tom)<br>
-Make&nbsp;OIDs&nbsp;optional&nbsp;using&nbsp;WITHOUT&nbsp;OIDS&nbsp;(Tom)<br>
-Add&nbsp;%TYPE&nbsp;syntax&nbsp;to&nbsp;CREATE&nbsp;TYPE&nbsp;(Ian&nbsp;Lance&nbsp;Taylor)<br>
-Add&nbsp;ALTER&nbsp;TABLE&nbsp;/&nbsp;DROP&nbsp;CONSTRAINT&nbsp;for&nbsp;CHECK&nbsp;constraints&nbsp;(Christopher&nbsp;Kings-Lynne)<br>
-New&nbsp;CREATE&nbsp;OR&nbsp;REPLACE&nbsp;FUNCTION&nbsp;to&nbsp;alter&nbsp;existing&nbsp;function&nbsp;(preserving&nbsp;the&nbsp;function&nbsp;OID)&nbsp;(Gavin&nbsp;Sherry)<br>
-Add&nbsp;ALTER&nbsp;TABLE&nbsp;/&nbsp;ADD&nbsp;[&nbsp;UNIQUE&nbsp;|&nbsp;PRIMARY&nbsp;]&nbsp;(Christopher&nbsp;Kings-Lynne)<br>
-Allow&nbsp;column&nbsp;renaming&nbsp;in&nbsp;views<br>
-Make&nbsp;ALTER&nbsp;TABLE&nbsp;/&nbsp;RENAME&nbsp;COLUMN&nbsp;update&nbsp;column&nbsp;names&nbsp;of&nbsp;indexes&nbsp;(Brent&nbsp;Verner)<br>
-Fix&nbsp;for&nbsp;ALTER&nbsp;TABLE&nbsp;/&nbsp;ADD&nbsp;CONSTRAINT&nbsp;...&nbsp;CHECK&nbsp;with&nbsp;inherited&nbsp;tables&nbsp;(Stephan&nbsp;Szabo)<br>
-ALTER&nbsp;TABLE&nbsp;RENAME&nbsp;update&nbsp;foreign-key&nbsp;trigger&nbsp;arguments&nbsp;correctly&nbsp;(Brent&nbsp;Verner)<br>
-DROP&nbsp;AGGREGATE&nbsp;and&nbsp;COMMENT&nbsp;ON&nbsp;AGGREGATE&nbsp;now&nbsp;accept&nbsp;an&nbsp;aggtype&nbsp;(Tom)<br>
-Add&nbsp;automatic&nbsp;return&nbsp;type&nbsp;data&nbsp;casting&nbsp;for&nbsp;SQL&nbsp;functions&nbsp;(Tom)<br>
-Allow&nbsp;GiST&nbsp;indexes&nbsp;to&nbsp;handle&nbsp;NULLs&nbsp;and&nbsp;multikey&nbsp;indexes&nbsp;(Oleg&nbsp;Bartunov,&nbsp;Teodor&nbsp;Sigaev,&nbsp;Tom)<br>
-Enable&nbsp;partial&nbsp;indexes&nbsp;(Martijn&nbsp;van&nbsp;Oosterhout)</P
+></P
+><UL
+><LI
+><P
+>Fix SERIAL in temporary tables (Bruce)</P
+></LI
+><LI
+><P
+>Allow temporary sequences (Bruce)</P
+></LI
+><LI
+><P
+>Sequences now use int8 internally (Tom)</P
+></LI
+><LI
+><P
+>New SERIAL8 creates int8 columns with sequences, default still SERIAL4 (Tom)</P
+></LI
+><LI
+><P
+>Make OIDs optional using WITHOUT OIDS (Tom)</P
+></LI
+><LI
+><P
+>Add %TYPE syntax to CREATE TYPE (Ian Lance Taylor)</P
+></LI
+><LI
+><P
+>Add ALTER TABLE / DROP CONSTRAINT for CHECK constraints (Christopher Kings-Lynne)</P
+></LI
+><LI
+><P
+>New CREATE OR REPLACE FUNCTION to alter existing function (preserving the function OID) (Gavin Sherry)</P
+></LI
+><LI
+><P
+>Add ALTER TABLE / ADD [ UNIQUE | PRIMARY ] (Christopher Kings-Lynne)</P
+></LI
+><LI
+><P
+>Allow column renaming in views</P
+></LI
+><LI
+><P
+>Make ALTER TABLE / RENAME COLUMN update column names of indexes (Brent Verner)</P
+></LI
+><LI
+><P
+>Fix for ALTER TABLE / ADD CONSTRAINT ... CHECK with inherited tables (Stephan Szabo)</P
+></LI
+><LI
+><P
+>ALTER TABLE RENAME update foreign-key trigger arguments correctly (Brent Verner)</P
+></LI
+><LI
+><P
+>DROP AGGREGATE and COMMENT ON AGGREGATE now accept an aggtype (Tom)</P
+></LI
+><LI
+><P
+>Add automatic return type data casting for SQL functions (Tom)</P
+></LI
+><LI
+><P
+>Allow GiST indexes to handle NULLs and multikey indexes (Oleg Bartunov, Teodor Sigaev, Tom)</P
+></LI
+><LI
+><P
+>Enable partial indexes (Martijn van Oosterhout)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23909"
->A.9.3.8. Utility Commands</A
+NAME="AEN62984"
+>D.11.3.8. Utility Commands</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Add&nbsp;RESET&nbsp;ALL,&nbsp;SHOW&nbsp;ALL&nbsp;(Marko&nbsp;Kreen)<br>
-CREATE/ALTER&nbsp;USER/GROUP&nbsp;now&nbsp;allow&nbsp;options&nbsp;in&nbsp;any&nbsp;order&nbsp;(Vince)<br>
-Add&nbsp;LOCK&nbsp;A,&nbsp;B,&nbsp;C&nbsp;functionality&nbsp;(Neil&nbsp;Padgett)<br>
-New&nbsp;ENCRYPTED/UNENCRYPTED&nbsp;option&nbsp;to&nbsp;CREATE/ALTER&nbsp;USER&nbsp;(Bruce)<br>
-New&nbsp;light-weight&nbsp;VACUUM&nbsp;does&nbsp;not&nbsp;lock&nbsp;table;&nbsp;old&nbsp;semantics&nbsp;are&nbsp;available&nbsp;as&nbsp;VACUUM&nbsp;FULL&nbsp;(Tom)<br>
-Disable&nbsp;COPY&nbsp;TO/FROM&nbsp;on&nbsp;views&nbsp;(Bruce)<br>
-COPY&nbsp;DELIMITERS&nbsp;string&nbsp;must&nbsp;be&nbsp;exactly&nbsp;one&nbsp;character&nbsp;(Tom)<br>
-VACUUM&nbsp;warning&nbsp;about&nbsp;index&nbsp;tuples&nbsp;fewer&nbsp;than&nbsp;heap&nbsp;now&nbsp;only&nbsp;appears&nbsp;when&nbsp;appropriate&nbsp;(Martijn&nbsp;van&nbsp;Oosterhout)<br>
-Fix&nbsp;permission&nbsp;checks&nbsp;for&nbsp;CREATE&nbsp;INDEX&nbsp;(Tom)<br>
-Disallow&nbsp;inappropriate&nbsp;use&nbsp;of&nbsp;CREATE/DROP&nbsp;INDEX/TRIGGER/VIEW&nbsp;(Tom)</P
+></P
+><UL
+><LI
+><P
+>Add RESET ALL, SHOW ALL (Marko Kreen)</P
+></LI
+><LI
+><P
+>CREATE/ALTER USER/GROUP now allow options in any order (Vince)</P
+></LI
+><LI
+><P
+>Add LOCK A, B, C functionality (Neil Padgett)</P
+></LI
+><LI
+><P
+>New ENCRYPTED/UNENCRYPTED option to CREATE/ALTER USER (Bruce)</P
+></LI
+><LI
+><P
+>New light-weight VACUUM does not lock table; old semantics are available as VACUUM FULL (Tom)</P
+></LI
+><LI
+><P
+>Disable COPY TO/FROM on views (Bruce)</P
+></LI
+><LI
+><P
+>COPY DELIMITERS string must be exactly one character (Tom)</P
+></LI
+><LI
+><P
+>VACUUM warning about index tuples fewer than heap now only appears when appropriate (Martijn van Oosterhout)</P
+></LI
+><LI
+><P
+>Fix permission checks for CREATE INDEX (Tom)</P
+></LI
+><LI
+><P
+>Disallow inappropriate use of CREATE/DROP INDEX/TRIGGER/VIEW (Tom)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23912"
->A.9.3.9. Data Types and Functions</A
+NAME="AEN63007"
+>D.11.3.9. Data Types and Functions</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->SUM(),&nbsp;AVG(),&nbsp;COUNT()&nbsp;now&nbsp;uses&nbsp;int8&nbsp;internally&nbsp;for&nbsp;speed&nbsp;(Tom)<br>
-Add&nbsp;convert(),&nbsp;convert2()&nbsp;(Tatsuo)<br>
-New&nbsp;function&nbsp;bit_length()&nbsp;(Peter&nbsp;E)<br>
-Make&nbsp;the&nbsp;"n"&nbsp;in&nbsp;CHAR(n)/VARCHAR(n)&nbsp;represents&nbsp;letters,&nbsp;not&nbsp;bytes&nbsp;(Tatsuo)<br>
-CHAR(),&nbsp;VARCHAR()&nbsp;now&nbsp;reject&nbsp;strings&nbsp;that&nbsp;are&nbsp;too&nbsp;long&nbsp;(Peter&nbsp;E)<br>
-BIT&nbsp;VARYING&nbsp;now&nbsp;rejects&nbsp;bit&nbsp;strings&nbsp;that&nbsp;are&nbsp;too&nbsp;long&nbsp;(Peter&nbsp;E)<br>
-BIT&nbsp;now&nbsp;rejects&nbsp;bit&nbsp;strings&nbsp;that&nbsp;do&nbsp;not&nbsp;match&nbsp;declared&nbsp;size&nbsp;(Peter&nbsp;E)<br>
-INET,&nbsp;CIDR&nbsp;text&nbsp;conversion&nbsp;functions&nbsp;(Alex&nbsp;Pilosov)<br>
-INET,&nbsp;CIDR&nbsp;operators&nbsp;&#60;&#60;&nbsp;and&nbsp;&#60;&#60;=&nbsp;indexable&nbsp;(Alex&nbsp;Pilosov)<br>
-Bytea&nbsp;\###&nbsp;now&nbsp;requires&nbsp;valid&nbsp;three&nbsp;digit&nbsp;octal&nbsp;number<br>
-Bytea&nbsp;comparison&nbsp;improvements,&nbsp;now&nbsp;supports&nbsp;=,&nbsp;&lt;&gt;,&nbsp;&#62;,&nbsp;&#62;=,&nbsp;&#60;,&nbsp;and&nbsp;&#60;=<br>
-Bytea&nbsp;now&nbsp;supports&nbsp;B-tree&nbsp;indexes<br>
-Bytea&nbsp;now&nbsp;supports&nbsp;LIKE,&nbsp;LIKE...ESCAPE,&nbsp;NOT&nbsp;LIKE,&nbsp;NOT&nbsp;LIKE...ESCAPE<br>
-Bytea&nbsp;now&nbsp;supports&nbsp;concatenation<br>
-New&nbsp;bytea&nbsp;functions:&nbsp;position,&nbsp;substring,&nbsp;trim,&nbsp;btrim,&nbsp;and&nbsp;length<br>
-New&nbsp;encode()&nbsp;function&nbsp;mode,&nbsp;"escaped",&nbsp;converts&nbsp;minimally&nbsp;escaped&nbsp;bytea&nbsp;to/from&nbsp;text<br>
-Add&nbsp;pg_database_encoding_max_length()&nbsp;(Tatsuo)<br>
-Add&nbsp;pg_client_encoding()&nbsp;function&nbsp;(Tatsuo)<br>
-now()&nbsp;returns&nbsp;time&nbsp;with&nbsp;millisecond&nbsp;precision&nbsp;(Thomas)<br>
-New&nbsp;TIMESTAMP&nbsp;WITHOUT&nbsp;TIMEZONE&nbsp;data&nbsp;type&nbsp;(Thomas)<br>
-Add&nbsp;ISO&nbsp;date/time&nbsp;specification&nbsp;with&nbsp;"T",&nbsp;yyyy-mm-ddThh:mm:ss&nbsp;(Thomas)<br>
-New&nbsp;xid/int&nbsp;comparison&nbsp;functions&nbsp;(Hiroshi)<br>
-Add&nbsp;precision&nbsp;to&nbsp;TIME,&nbsp;TIMESTAMP,&nbsp;and&nbsp;INVERVAL&nbsp;data&nbsp;types&nbsp;(Thomas)<br>
-Modify&nbsp;type&nbsp;coercion&nbsp;logic&nbsp;to&nbsp;attempt&nbsp;binary-compatible&nbsp;functions&nbsp;first&nbsp;(Tom)<br>
-New&nbsp;encode()&nbsp;function&nbsp;installed&nbsp;by&nbsp;default&nbsp;(Marko&nbsp;Kreen)<br>
-Improved&nbsp;to_*()&nbsp;conversion&nbsp;functions&nbsp;(Karel&nbsp;Zak)<br>
-Optimize&nbsp;LIKE/ILIKE&nbsp;when&nbsp;using&nbsp;single-byte&nbsp;encodings&nbsp;(Tatsuo)<br>
-New&nbsp;functions&nbsp;in&nbsp;contrib/pgcrypto:&nbsp;crypt(),&nbsp;hmac(),&nbsp;encrypt(),&nbsp;gen_salt()&nbsp;(Marko&nbsp;Kreen)<br>
-Correct&nbsp;description&nbsp;of&nbsp;translate()&nbsp;function&nbsp;(Bruce)<br>
-Add&nbsp;INTERVAL&nbsp;argument&nbsp;for&nbsp;SET&nbsp;TIME&nbsp;ZONE&nbsp;(Thomas)<br>
-Add&nbsp;INTERVAL&nbsp;YEAR&nbsp;TO&nbsp;MONTH&nbsp;(etc.)&nbsp;syntax&nbsp;(Thomas)<br>
-Optimize&nbsp;length&nbsp;functions&nbsp;when&nbsp;using&nbsp;single-byte&nbsp;encodings&nbsp;(Tatsuo)<br>
-Fix&nbsp;path_inter,&nbsp;path_distance,&nbsp;path_length,&nbsp;dist_ppath&nbsp;to&nbsp;handle&nbsp;closed&nbsp;paths&nbsp;(Curtis&nbsp;Barrett,&nbsp;Tom)<br>
-octet_length(text)&nbsp;now&nbsp;returns&nbsp;non-compressed&nbsp;length&nbsp;(Tatsuo,&nbsp;Bruce)<br>
-Handle&nbsp;"July"&nbsp;full&nbsp;name&nbsp;in&nbsp;date/time&nbsp;literals&nbsp;(Greg&nbsp;Sabino&nbsp;Mullane)<br>
-Some&nbsp;datatype()&nbsp;function&nbsp;calls&nbsp;now&nbsp;evaluated&nbsp;differently<br>
-Add&nbsp;support&nbsp;for&nbsp;Julian&nbsp;and&nbsp;ISO&nbsp;time&nbsp;specifications&nbsp;(Thomas)</P
+></P
+><UL
+><LI
+><P
+>SUM(), AVG(), COUNT() now uses int8 internally for speed (Tom)</P
+></LI
+><LI
+><P
+>Add convert(), convert2() (Tatsuo)</P
+></LI
+><LI
+><P
+>New function bit_length() (Peter E)</P
+></LI
+><LI
+><P
+>Make the "n" in CHAR(n)/VARCHAR(n) represents letters, not bytes (Tatsuo)</P
+></LI
+><LI
+><P
+>CHAR(), VARCHAR() now reject strings that are too long (Peter E)</P
+></LI
+><LI
+><P
+>BIT VARYING now rejects bit strings that are too long (Peter E)</P
+></LI
+><LI
+><P
+>BIT now rejects bit strings that do not match declared size (Peter E)</P
+></LI
+><LI
+><P
+>INET, CIDR text conversion functions (Alex Pilosov)</P
+></LI
+><LI
+><P
+>INET, CIDR operators &#60;&#60; and &#60;&#60;= indexable (Alex Pilosov)</P
+></LI
+><LI
+><P
+>Bytea \### now requires valid three digit octal number</P
+></LI
+><LI
+><P
+>Bytea comparison improvements, now supports =, &lt;&gt;, &#62;, &#62;=, &#60;, and &#60;=</P
+></LI
+><LI
+><P
+>Bytea now supports B-tree indexes</P
+></LI
+><LI
+><P
+>Bytea now supports LIKE, LIKE...ESCAPE, NOT LIKE, NOT LIKE...ESCAPE</P
+></LI
+><LI
+><P
+>Bytea now supports concatenation</P
+></LI
+><LI
+><P
+>New bytea functions: position, substring, trim, btrim, and length</P
+></LI
+><LI
+><P
+>New encode() function mode, "escaped", converts minimally escaped bytea to/from text</P
+></LI
+><LI
+><P
+>Add pg_database_encoding_max_length() (Tatsuo)</P
+></LI
+><LI
+><P
+>Add pg_client_encoding() function (Tatsuo)</P
+></LI
+><LI
+><P
+>now() returns time with millisecond precision (Thomas)</P
+></LI
+><LI
+><P
+>New TIMESTAMP WITHOUT TIMEZONE data type (Thomas)</P
+></LI
+><LI
+><P
+>Add ISO date/time specification with "T", yyyy-mm-ddThh:mm:ss (Thomas)</P
+></LI
+><LI
+><P
+>New xid/int comparison functions (Hiroshi)</P
+></LI
+><LI
+><P
+>Add precision to TIME, TIMESTAMP, and INVERVAL data types (Thomas)</P
+></LI
+><LI
+><P
+>Modify type coercion logic to attempt binary-compatible functions first (Tom)</P
+></LI
+><LI
+><P
+>New encode() function installed by default (Marko Kreen)</P
+></LI
+><LI
+><P
+>Improved to_*() conversion functions (Karel Zak)</P
+></LI
+><LI
+><P
+>Optimize LIKE/ILIKE when using single-byte encodings (Tatsuo)</P
+></LI
+><LI
+><P
+>New functions in contrib/pgcrypto: crypt(), hmac(), encrypt(), gen_salt() (Marko Kreen)</P
+></LI
+><LI
+><P
+>Correct description of translate() function (Bruce)</P
+></LI
+><LI
+><P
+>Add INTERVAL argument for SET TIME ZONE (Thomas)</P
+></LI
+><LI
+><P
+>Add INTERVAL YEAR TO MONTH (etc.) syntax (Thomas)</P
+></LI
+><LI
+><P
+>Optimize length functions when using single-byte encodings (Tatsuo)</P
+></LI
+><LI
+><P
+>Fix path_inter, path_distance, path_length, dist_ppath to handle closed paths (Curtis Barrett, Tom)</P
+></LI
+><LI
+><P
+>octet_length(text) now returns non-compressed length (Tatsuo, Bruce)</P
+></LI
+><LI
+><P
+>Handle "July" full name in date/time literals (Greg Sabino Mullane)</P
+></LI
+><LI
+><P
+>Some datatype() function calls now evaluated differently</P
+></LI
+><LI
+><P
+>Add support for Julian and ISO time specifications (Thomas)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23915"
->A.9.3.10. Internationalization</A
+NAME="AEN63084"
+>D.11.3.10. Internationalization</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->National&nbsp;language&nbsp;support&nbsp;in&nbsp;psql,&nbsp;pg_dump,&nbsp;libpq,&nbsp;and&nbsp;server&nbsp;(Peter&nbsp;E)<br>
-Message&nbsp;translations&nbsp;in&nbsp;Chinese&nbsp;(simplified,&nbsp;traditional),&nbsp;Czech,&nbsp;French,&nbsp;German,&nbsp;Hungarian,&nbsp;Russian,&nbsp;Swedish&nbsp;(Peter&nbsp;E,&nbsp;Serguei&nbsp;A.&nbsp;Mokhov,&nbsp;Karel&nbsp;Zak,&nbsp;Weiping&nbsp;He,&nbsp;Zhenbang&nbsp;Wei,&nbsp;Kovacs&nbsp;Zoltan)<br>
-Make&nbsp;trim,&nbsp;ltrim,&nbsp;rtrim,&nbsp;btrim,&nbsp;lpad,&nbsp;rpad,&nbsp;translate&nbsp;multibyte&nbsp;aware&nbsp;(Tatsuo)<br>
-Add&nbsp;LATIN5,6,7,8,9,10&nbsp;support&nbsp;(Tatsuo)<br>
-Add&nbsp;ISO&nbsp;8859-5,6,7,8&nbsp;support&nbsp;(Tatsuo)<br>
-Correct&nbsp;LATIN5&nbsp;to&nbsp;mean&nbsp;ISO-8859-9,&nbsp;not&nbsp;ISO-8859-5&nbsp;(Tatsuo)<br>
-Make&nbsp;mic2ascii()&nbsp;non-ASCII&nbsp;aware&nbsp;(Tatsuo)<br>
-Reject&nbsp;invalid&nbsp;multibyte&nbsp;character&nbsp;sequences&nbsp;(Tatsuo)</P
+></P
+><UL
+><LI
+><P
+>National language support in psql, pg_dump, libpq, and server (Peter E)</P
+></LI
+><LI
+><P
+>Message translations in Chinese (simplified, traditional), Czech, French, German, Hungarian, Russian, Swedish (Peter E, Serguei A. Mokhov, Karel Zak, Weiping He, Zhenbang Wei, Kovacs Zoltan)</P
+></LI
+><LI
+><P
+>Make trim, ltrim, rtrim, btrim, lpad, rpad, translate multibyte aware (Tatsuo)</P
+></LI
+><LI
+><P
+>Add LATIN5,6,7,8,9,10 support (Tatsuo)</P
+></LI
+><LI
+><P
+>Add ISO 8859-5,6,7,8 support (Tatsuo)</P
+></LI
+><LI
+><P
+>Correct LATIN5 to mean ISO-8859-9, not ISO-8859-5 (Tatsuo)</P
+></LI
+><LI
+><P
+>Make mic2ascii() non-ASCII aware (Tatsuo)</P
+></LI
+><LI
+><P
+>Reject invalid multibyte character sequences (Tatsuo)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23918"
->A.9.3.11. <SPAN
+NAME="AEN63103"
+>D.11.3.11. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 ></A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Now&nbsp;uses&nbsp;portals&nbsp;for&nbsp;SELECT&nbsp;loops,&nbsp;allowing&nbsp;huge&nbsp;result&nbsp;sets&nbsp;(Jan)<br>
-CURSOR&nbsp;and&nbsp;REFCURSOR&nbsp;support&nbsp;(Jan)<br>
-Can&nbsp;now&nbsp;return&nbsp;open&nbsp;cursors&nbsp;(Jan)<br>
-Add&nbsp;ELSEIF&nbsp;(Klaus&nbsp;Reger)<br>
-Improve&nbsp;PL/pgSQL&nbsp;error&nbsp;reporting,&nbsp;including&nbsp;location&nbsp;of&nbsp;error&nbsp;(Tom)<br>
-Allow&nbsp;IS&nbsp;or&nbsp;FOR&nbsp;key&nbsp;words&nbsp;in&nbsp;cursor&nbsp;declaration,&nbsp;for&nbsp;compatibility&nbsp;(Bruce)<br>
-Fix&nbsp;for&nbsp;SELECT&nbsp;...&nbsp;FOR&nbsp;UPDATE&nbsp;(Tom)<br>
-Fix&nbsp;for&nbsp;PERFORM&nbsp;returning&nbsp;multiple&nbsp;rows&nbsp;(Tom)<br>
-Make&nbsp;PL/pgSQL&nbsp;use&nbsp;the&nbsp;server's&nbsp;type&nbsp;coercion&nbsp;code&nbsp;(Tom)<br>
-Memory&nbsp;leak&nbsp;fix&nbsp;(Jan,&nbsp;Tom)<br>
-Make&nbsp;trailing&nbsp;semicolon&nbsp;optional&nbsp;(Tom)</P
+></P
+><UL
+><LI
+><P
+>Now uses portals for SELECT loops, allowing huge result sets (Jan)</P
+></LI
+><LI
+><P
+>CURSOR and REFCURSOR support (Jan)</P
+></LI
+><LI
+><P
+>Can now return open cursors (Jan)</P
+></LI
+><LI
+><P
+>Add ELSEIF (Klaus Reger)</P
+></LI
+><LI
+><P
+>Improve PL/pgSQL error reporting, including location of error (Tom)</P
+></LI
+><LI
+><P
+>Allow IS or FOR key words in cursor declaration, for compatibility (Bruce)</P
+></LI
+><LI
+><P
+>Fix for SELECT ... FOR UPDATE (Tom)</P
+></LI
+><LI
+><P
+>Fix for PERFORM returning multiple rows (Tom)</P
+></LI
+><LI
+><P
+>Make PL/pgSQL use the server's type coercion code (Tom)</P
+></LI
+><LI
+><P
+>Memory leak fix (Jan, Tom)</P
+></LI
+><LI
+><P
+>Make trailing semicolon optional (Tom)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23922"
->A.9.3.12. PL/Perl</A
+NAME="AEN63129"
+>D.11.3.12. PL/Perl</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->New&nbsp;untrusted&nbsp;PL/Perl&nbsp;(Alex&nbsp;Pilosov)<br>
-PL/Perl&nbsp;is&nbsp;now&nbsp;built&nbsp;on&nbsp;some&nbsp;platforms&nbsp;even&nbsp;if&nbsp;libperl&nbsp;is&nbsp;not&nbsp;shared&nbsp;(Peter&nbsp;E)</P
+></P
+><UL
+><LI
+><P
+>New untrusted PL/Perl (Alex Pilosov)</P
+></LI
+><LI
+><P
+>PL/Perl is now built on some platforms even if libperl is not shared (Peter E)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23925"
->A.9.3.13. PL/Tcl</A
+NAME="AEN63136"
+>D.11.3.13. PL/Tcl</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Now&nbsp;reports&nbsp;errorInfo&nbsp;(Vsevolod&nbsp;Lobko)<br>
-Add&nbsp;spi_lastoid&nbsp;function&nbsp;(bob@redivi.com)</P
+></P
+><UL
+><LI
+><P
+>Now reports errorInfo (Vsevolod Lobko)</P
+></LI
+><LI
+><P
+>Add spi_lastoid function (bob@redivi.com)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23928"
->A.9.3.14. PL/Python</A
+NAME="AEN63143"
+>D.11.3.14. PL/Python</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->...is&nbsp;new&nbsp;(Andrew&nbsp;Bosma)</P
+></P
+><UL
+><LI
+><P
+>...is new (Andrew Bosma)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23931"
->A.9.3.15. <SPAN
+NAME="AEN63148"
+>D.11.3.15. <SPAN
 CLASS="APPLICATION"
->Psql</SPAN
+>psql</SPAN
 ></A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->\d&nbsp;displays&nbsp;indexes&nbsp;in&nbsp;unique,&nbsp;primary&nbsp;groupings&nbsp;(Christopher&nbsp;Kings-Lynne)<br>
-Allow&nbsp;trailing&nbsp;semicolons&nbsp;in&nbsp;backslash&nbsp;commands&nbsp;(Greg&nbsp;Sabino&nbsp;Mullane)<br>
-Read&nbsp;password&nbsp;from&nbsp;/dev/tty&nbsp;if&nbsp;possible<br>
-Force&nbsp;new&nbsp;password&nbsp;prompt&nbsp;when&nbsp;changing&nbsp;user&nbsp;and&nbsp;database&nbsp;(Tatsuo,&nbsp;Tom)<br>
-Format&nbsp;the&nbsp;correct&nbsp;number&nbsp;of&nbsp;columns&nbsp;for&nbsp;Unicode&nbsp;(Patrice)</P
+></P
+><UL
+><LI
+><P
+>\d displays indexes in unique, primary groupings (Christopher Kings-Lynne)</P
+></LI
+><LI
+><P
+>Allow trailing semicolons in backslash commands (Greg Sabino Mullane)</P
+></LI
+><LI
+><P
+>Read password from /dev/tty if possible</P
+></LI
+><LI
+><P
+>Force new password prompt when changing user and database (Tatsuo, Tom)</P
+></LI
+><LI
+><P
+>Format the correct number of columns for Unicode (Patrice)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23935"
->A.9.3.16. <SPAN
+NAME="AEN63162"
+>D.11.3.16. <SPAN
 CLASS="APPLICATION"
->Libpq</SPAN
+>libpq</SPAN
 ></A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->New&nbsp;function&nbsp;PQescapeString()&nbsp;to&nbsp;escape&nbsp;quotes&nbsp;in&nbsp;command&nbsp;strings&nbsp;(Florian&nbsp;Weimer)<br>
-New&nbsp;function&nbsp;PQescapeBytea()&nbsp;escapes&nbsp;binary&nbsp;strings&nbsp;for&nbsp;use&nbsp;as&nbsp;SQL&nbsp;string&nbsp;literals</P
+></P
+><UL
+><LI
+><P
+>New function PQescapeString() to escape quotes in command strings (Florian Weimer)</P
+></LI
+><LI
+><P
+>New function PQescapeBytea() escapes binary strings for use as SQL string literals</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23939"
->A.9.3.17. JDBC</A
+NAME="AEN63170"
+>D.11.3.17. JDBC</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Return&nbsp;OID&nbsp;of&nbsp;INSERT&nbsp;(Ken&nbsp;K)<br>
-Handle&nbsp;more&nbsp;data&nbsp;types&nbsp;(Ken&nbsp;K)<br>
-Handle&nbsp;single&nbsp;quotes&nbsp;and&nbsp;newlines&nbsp;in&nbsp;strings&nbsp;(Ken&nbsp;K)<br>
-Handle&nbsp;NULL&nbsp;variables&nbsp;(Ken&nbsp;K)<br>
-Fix&nbsp;for&nbsp;time&nbsp;zone&nbsp;handling&nbsp;(Barry&nbsp;Lind)<br>
-Improved&nbsp;Druid&nbsp;support<br>
-Allow&nbsp;eight-bit&nbsp;characters&nbsp;with&nbsp;non-multibyte&nbsp;server&nbsp;(Barry&nbsp;Lind)<br>
-Support&nbsp;BIT,&nbsp;BINARY&nbsp;types&nbsp;(Ned&nbsp;Wolpert)<br>
-Reduce&nbsp;memory&nbsp;usage&nbsp;(Michael&nbsp;Stephens,&nbsp;Dave&nbsp;Cramer)<br>
-Update&nbsp;DatabaseMetaData&nbsp;(Peter&nbsp;E)<br>
-Add&nbsp;DatabaseMetaData.getCatalogs()&nbsp;(Peter&nbsp;E)<br>
-Encoding&nbsp;fixes&nbsp;(Anders&nbsp;Bengtsson)<br>
-Get/setCatalog&nbsp;methods&nbsp;(Jason&nbsp;Davies)<br>
-DatabaseMetaData.getColumns()&nbsp;now&nbsp;returns&nbsp;column&nbsp;defaults&nbsp;(Jason&nbsp;Davies)<br>
-DatabaseMetaData.getColumns()&nbsp;performance&nbsp;improvement&nbsp;(Jeroen&nbsp;van&nbsp;Vianen)<br>
-Some&nbsp;JDBC1&nbsp;and&nbsp;JDBC2&nbsp;merging&nbsp;(Anders&nbsp;Bengtsson)<br>
-Transaction&nbsp;performance&nbsp;improvements&nbsp;(Barry&nbsp;Lind)<br>
-Array&nbsp;fixes&nbsp;(Greg&nbsp;Zoller)<br>
-Serialize&nbsp;addition&nbsp;<br>
-Fix&nbsp;batch&nbsp;processing&nbsp;(Rene&nbsp;Pijlman)<br>
-ExecSQL&nbsp;method&nbsp;reorganization&nbsp;(Anders&nbsp;Bengtsson)<br>
-GetColumn()&nbsp;fixes&nbsp;(Jeroen&nbsp;van&nbsp;Vianen)<br>
-Fix&nbsp;isWriteable()&nbsp;function&nbsp;(Rene&nbsp;Pijlman)<br>
-Improved&nbsp;passage&nbsp;of&nbsp;JDBC2&nbsp;conformance&nbsp;tests&nbsp;(Rene&nbsp;Pijlman)<br>
-Add&nbsp;bytea&nbsp;type&nbsp;capability&nbsp;(Barry&nbsp;Lind)<br>
-Add&nbsp;isNullable()&nbsp;(Rene&nbsp;Pijlman)<br>
-JDBC&nbsp;date/time&nbsp;test&nbsp;suite&nbsp;fixes&nbsp;(Liam&nbsp;Stewart)<br>
-Fix&nbsp;for&nbsp;SELECT&nbsp;'id'&nbsp;AS&nbsp;xxx&nbsp;FROM&nbsp;table&nbsp;(Dave&nbsp;Cramer)<br>
-Fix&nbsp;DatabaseMetaData&nbsp;to&nbsp;show&nbsp;precision&nbsp;properly&nbsp;(Mark&nbsp;Lillywhite)<br>
-New&nbsp;getImported/getExported&nbsp;keys&nbsp;(Jason&nbsp;Davies)<br>
-MD5&nbsp;password&nbsp;encryption&nbsp;support&nbsp;(Jeremy&nbsp;Wohl)<br>
-Fix&nbsp;to&nbsp;actually&nbsp;use&nbsp;type&nbsp;cache&nbsp;(Ned&nbsp;Wolpert)</P
+></P
+><UL
+><LI
+><P
+>Return OID of INSERT (Ken K)</P
+></LI
+><LI
+><P
+>Handle more data types (Ken K)</P
+></LI
+><LI
+><P
+>Handle single quotes and newlines in strings (Ken K)</P
+></LI
+><LI
+><P
+>Handle NULL variables (Ken K)</P
+></LI
+><LI
+><P
+>Fix for time zone handling (Barry Lind)</P
+></LI
+><LI
+><P
+>Improved Druid support</P
+></LI
+><LI
+><P
+>Allow eight-bit characters with non-multibyte server (Barry Lind)</P
+></LI
+><LI
+><P
+>Support BIT, BINARY types (Ned Wolpert)</P
+></LI
+><LI
+><P
+>Reduce memory usage (Michael Stephens, Dave Cramer)</P
+></LI
+><LI
+><P
+>Update DatabaseMetaData (Peter E)</P
+></LI
+><LI
+><P
+>Add DatabaseMetaData.getCatalogs() (Peter E)</P
+></LI
+><LI
+><P
+>Encoding fixes (Anders Bengtsson)</P
+></LI
+><LI
+><P
+>Get/setCatalog methods (Jason Davies)</P
+></LI
+><LI
+><P
+>DatabaseMetaData.getColumns() now returns column defaults (Jason Davies)</P
+></LI
+><LI
+><P
+>DatabaseMetaData.getColumns() performance improvement (Jeroen van Vianen)</P
+></LI
+><LI
+><P
+>Some JDBC1 and JDBC2 merging (Anders Bengtsson)</P
+></LI
+><LI
+><P
+>Transaction performance improvements (Barry Lind)</P
+></LI
+><LI
+><P
+>Array fixes (Greg Zoller)</P
+></LI
+><LI
+><P
+>Serialize addition </P
+></LI
+><LI
+><P
+>Fix batch processing (Rene Pijlman)</P
+></LI
+><LI
+><P
+>ExecSQL method reorganization (Anders Bengtsson)</P
+></LI
+><LI
+><P
+>GetColumn() fixes (Jeroen van Vianen)</P
+></LI
+><LI
+><P
+>Fix isWriteable() function (Rene Pijlman)</P
+></LI
+><LI
+><P
+>Improved passage of JDBC2 conformance tests (Rene Pijlman)</P
+></LI
+><LI
+><P
+>Add bytea type capability (Barry Lind)</P
+></LI
+><LI
+><P
+>Add isNullable() (Rene Pijlman)</P
+></LI
+><LI
+><P
+>JDBC date/time test suite fixes (Liam Stewart)</P
+></LI
+><LI
+><P
+>Fix for SELECT 'id' AS xxx FROM table (Dave Cramer)</P
+></LI
+><LI
+><P
+>Fix DatabaseMetaData to show precision properly (Mark Lillywhite)</P
+></LI
+><LI
+><P
+>New getImported/getExported keys (Jason Davies)</P
+></LI
+><LI
+><P
+>MD5 password encryption support (Jeremy Wohl)</P
+></LI
+><LI
+><P
+>Fix to actually use type cache (Ned Wolpert)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23942"
->A.9.3.18. ODBC</A
+NAME="AEN63237"
+>D.11.3.18. ODBC</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Remove&nbsp;query&nbsp;size&nbsp;limit&nbsp;(Hiroshi)<br>
-Remove&nbsp;text&nbsp;field&nbsp;size&nbsp;limit&nbsp;(Hiroshi)<br>
-Fix&nbsp;for&nbsp;SQLPrimaryKeys&nbsp;in&nbsp;multibyte&nbsp;mode&nbsp;(Hiroshi)<br>
-Allow&nbsp;ODBC&nbsp;procedure&nbsp;calls&nbsp;(Hiroshi)<br>
-Improve&nbsp;boolean&nbsp;handing&nbsp;(Aidan&nbsp;Mountford)<br>
-Most&nbsp;configuration&nbsp;options&nbsp;on&nbsp;setable&nbsp;via&nbsp;DSN&nbsp;(Hiroshi)<br>
-Multibyte,&nbsp;performance&nbsp;fixes&nbsp;(Hiroshi)<br>
-Allow&nbsp;driver&nbsp;to&nbsp;be&nbsp;used&nbsp;with&nbsp;iODBC&nbsp;or&nbsp;unixODBC&nbsp;(Peter&nbsp;E)<br>
-MD5&nbsp;password&nbsp;encryption&nbsp;support&nbsp;(Bruce)<br>
-Add&nbsp;more&nbsp;compatibility&nbsp;functions&nbsp;to&nbsp;odbc.sql&nbsp;(Peter&nbsp;E)</P
+></P
+><UL
+><LI
+><P
+>Remove query size limit (Hiroshi)</P
+></LI
+><LI
+><P
+>Remove text field size limit (Hiroshi)</P
+></LI
+><LI
+><P
+>Fix for SQLPrimaryKeys in multibyte mode (Hiroshi)</P
+></LI
+><LI
+><P
+>Allow ODBC procedure calls (Hiroshi)</P
+></LI
+><LI
+><P
+>Improve boolean handing (Aidan Mountford)</P
+></LI
+><LI
+><P
+>Most configuration options on setable via DSN (Hiroshi)</P
+></LI
+><LI
+><P
+>Multibyte, performance fixes (Hiroshi)</P
+></LI
+><LI
+><P
+>Allow driver to be used with iODBC or unixODBC (Peter E)</P
+></LI
+><LI
+><P
+>MD5 password encryption support (Bruce)</P
+></LI
+><LI
+><P
+>Add more compatibility functions to odbc.sql (Peter E)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23945"
->A.9.3.19. <SPAN
+NAME="AEN63260"
+>D.11.3.19. <SPAN
 CLASS="APPLICATION"
 >ECPG</SPAN
 ></A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->EXECUTE&nbsp;...&nbsp;INTO&nbsp;implemented&nbsp;(Christof&nbsp;Petig)<br>
-Multiple&nbsp;row&nbsp;descriptor&nbsp;support&nbsp;(e.g.&nbsp;CARDINALITY)&nbsp;(Christof&nbsp;Petig)<br>
-Fix&nbsp;for&nbsp;GRANT&nbsp;parameters&nbsp;(Lee&nbsp;Kindness)<br>
-Fix&nbsp;INITIALLY&nbsp;DEFERRED&nbsp;bug<br>
-Various&nbsp;bug&nbsp;fixes&nbsp;(Michael,&nbsp;Christof&nbsp;Petig)<br>
-Auto&nbsp;allocation&nbsp;for&nbsp;indicator&nbsp;variable&nbsp;arrays&nbsp;(int&nbsp;*ind_p=NULL)<br>
-Auto&nbsp;allocation&nbsp;for&nbsp;string&nbsp;arrays&nbsp;(char&nbsp;**foo_pp=NULL)<br>
-ECPGfree_auto_mem&nbsp;fixed<br>
-All&nbsp;function&nbsp;names&nbsp;with&nbsp;external&nbsp;linkage&nbsp;are&nbsp;now&nbsp;prefixed&nbsp;by&nbsp;ECPG<br>
-Fixes&nbsp;for&nbsp;arrays&nbsp;of&nbsp;structures&nbsp;(Michael)</P
+></P
+><UL
+><LI
+><P
+>EXECUTE ... INTO implemented (Christof Petig)</P
+></LI
+><LI
+><P
+>Multiple row descriptor support (e.g. CARDINALITY) (Christof Petig)</P
+></LI
+><LI
+><P
+>Fix for GRANT parameters (Lee Kindness)</P
+></LI
+><LI
+><P
+>Fix INITIALLY DEFERRED bug</P
+></LI
+><LI
+><P
+>Various bug fixes (Michael, Christof Petig)</P
+></LI
+><LI
+><P
+>Auto allocation for indicator variable arrays (int *ind_p=NULL)</P
+></LI
+><LI
+><P
+>Auto allocation for string arrays (char **foo_pp=NULL)</P
+></LI
+><LI
+><P
+>ECPGfree_auto_mem fixed</P
+></LI
+><LI
+><P
+>All function names with external linkage are now prefixed by ECPG</P
+></LI
+><LI
+><P
+>Fixes for arrays of structures (Michael)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23949"
->A.9.3.20. Misc. Interfaces</A
+NAME="AEN63284"
+>D.11.3.20. Misc. Interfaces</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Python&nbsp;fix&nbsp;fetchone()&nbsp;(Gerhard&nbsp;Haring)<br>
-Use&nbsp;UTF,&nbsp;Unicode&nbsp;in&nbsp;Tcl&nbsp;where&nbsp;appropriate&nbsp;(Vsevolod&nbsp;Lobko,&nbsp;Reinhard&nbsp;Max)<br>
-Add&nbsp;Tcl&nbsp;COPY&nbsp;TO/FROM&nbsp;(ljb)<br>
-Prevent&nbsp;output&nbsp;of&nbsp;default&nbsp;index&nbsp;op&nbsp;class&nbsp;in&nbsp;pg_dump&nbsp;(Tom)<br>
-Fix&nbsp;libpgeasy&nbsp;memory&nbsp;leak&nbsp;(Bruce)</P
+></P
+><UL
+><LI
+><P
+>Python fix fetchone() (Gerhard Haring)</P
+></LI
+><LI
+><P
+>Use UTF, Unicode in Tcl where appropriate (Vsevolod Lobko, Reinhard Max)</P
+></LI
+><LI
+><P
+>Add Tcl COPY TO/FROM (ljb)</P
+></LI
+><LI
+><P
+>Prevent output of default index op class in pg_dump (Tom)</P
+></LI
+><LI
+><P
+>Fix libpgeasy memory leak (Bruce)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23952"
->A.9.3.21. Build and Install</A
+NAME="AEN63297"
+>D.11.3.21. Build and Install</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Configure,&nbsp;dynamic&nbsp;loader,&nbsp;and&nbsp;shared&nbsp;library&nbsp;fixes&nbsp;(Peter&nbsp;E)<br>
-Fixes&nbsp;in&nbsp;QNX&nbsp;4&nbsp;port&nbsp;(Bernd&nbsp;Tegge)<br>
-Fixes&nbsp;in&nbsp;Cygwin&nbsp;and&nbsp;Win32&nbsp;ports&nbsp;(Jason&nbsp;Tishler,&nbsp;Gerhard&nbsp;Haring,&nbsp;Dmitry&nbsp;Yurtaev,&nbsp;Darko&nbsp;Prenosil,&nbsp;Mikhail&nbsp;Terekhov)<br>
-Fix&nbsp;for&nbsp;Win32&nbsp;socket&nbsp;communication&nbsp;failures&nbsp;(Magnus,&nbsp;Mikhail&nbsp;Terekhov)<br>
-Hurd&nbsp;compile&nbsp;fix&nbsp;(Oliver&nbsp;Elphick)<br>
-BeOS&nbsp;fixes&nbsp;(Cyril&nbsp;Velter)<br>
-Remove&nbsp;configure&nbsp;--enable-unicode-conversion,&nbsp;now&nbsp;enabled&nbsp;by&nbsp;multibyte&nbsp;(Tatsuo)<br>
-AIX&nbsp;fixes&nbsp;(Tatsuo,&nbsp;Andreas)<br>
-Fix&nbsp;parallel&nbsp;make&nbsp;(Peter&nbsp;E)<br>
-Install&nbsp;SQL&nbsp;language&nbsp;manual&nbsp;pages&nbsp;into&nbsp;OS-specific&nbsp;directories&nbsp;(Peter&nbsp;E)<br>
-Rename&nbsp;config.h&nbsp;to&nbsp;pg_config.h&nbsp;(Peter&nbsp;E)<br>
-Reorganize&nbsp;installation&nbsp;layout&nbsp;of&nbsp;header&nbsp;files&nbsp;(Peter&nbsp;E)</P
+></P
+><UL
+><LI
+><P
+>Configure, dynamic loader, and shared library fixes (Peter E)</P
+></LI
+><LI
+><P
+>Fixes in QNX 4 port (Bernd Tegge)</P
+></LI
+><LI
+><P
+>Fixes in Cygwin and Win32 ports (Jason Tishler, Gerhard Haring, Dmitry Yurtaev, Darko Prenosil, Mikhail Terekhov)</P
+></LI
+><LI
+><P
+>Fix for Win32 socket communication failures (Magnus, Mikhail Terekhov)</P
+></LI
+><LI
+><P
+>Hurd compile fix (Oliver Elphick)</P
+></LI
+><LI
+><P
+>BeOS fixes (Cyril Velter)</P
+></LI
+><LI
+><P
+>Remove configure --enable-unicode-conversion, now enabled by multibyte (Tatsuo)</P
+></LI
+><LI
+><P
+>AIX fixes (Tatsuo, Andreas)</P
+></LI
+><LI
+><P
+>Fix parallel make (Peter E)</P
+></LI
+><LI
+><P
+>Install SQL language manual pages into OS-specific directories (Peter E)</P
+></LI
+><LI
+><P
+>Rename config.h to pg_config.h (Peter E)</P
+></LI
+><LI
+><P
+>Reorganize installation layout of header files (Peter E)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23955"
->A.9.3.22. Source Code</A
+NAME="AEN63324"
+>D.11.3.22. Source Code</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->Remove&nbsp;SEP_CHAR&nbsp;(Bruce)<br>
-New&nbsp;GUC&nbsp;hooks&nbsp;(Tom)<br>
-Merge&nbsp;GUC&nbsp;and&nbsp;command&nbsp;line&nbsp;handling&nbsp;(Marko&nbsp;Kreen)<br>
-Remove&nbsp;EXTEND&nbsp;INDEX&nbsp;(Martijn&nbsp;van&nbsp;Oosterhout,&nbsp;Tom)<br>
-New&nbsp;pgjindent&nbsp;utility&nbsp;to&nbsp;indent&nbsp;java&nbsp;code&nbsp;(Bruce)<br>
-Remove&nbsp;define&nbsp;of&nbsp;true/false&nbsp;when&nbsp;compiling&nbsp;under&nbsp;C++&nbsp;(Leandro&nbsp;Fanzone,&nbsp;Tom)<br>
-pgindent&nbsp;fixes&nbsp;(Bruce,&nbsp;Tom)<br>
-Replace&nbsp;strcasecmp()&nbsp;with&nbsp;strcmp()&nbsp;where&nbsp;appropriate&nbsp;(Peter&nbsp;E)<br>
-Dynahash&nbsp;portability&nbsp;improvements&nbsp;(Tom)<br>
-Add&nbsp;'volatile'&nbsp;usage&nbsp;in&nbsp;spinlock&nbsp;structures<br>
-Improve&nbsp;signal&nbsp;handling&nbsp;logic&nbsp;(Tom)</P
+></P
+><UL
+><LI
+><P
+>Remove SEP_CHAR (Bruce)</P
+></LI
+><LI
+><P
+>New GUC hooks (Tom)</P
+></LI
+><LI
+><P
+>Merge GUC and command line handling (Marko Kreen)</P
+></LI
+><LI
+><P
+>Remove EXTEND INDEX (Martijn van Oosterhout, Tom)</P
+></LI
+><LI
+><P
+>New pgjindent utility to indent java code (Bruce)</P
+></LI
+><LI
+><P
+>Remove define of true/false when compiling under C++ (Leandro Fanzone, Tom)</P
+></LI
+><LI
+><P
+>pgindent fixes (Bruce, Tom)</P
+></LI
+><LI
+><P
+>Replace strcasecmp() with strcmp() where appropriate (Peter E)</P
+></LI
+><LI
+><P
+>Dynahash portability improvements (Tom)</P
+></LI
+><LI
+><P
+>Add 'volatile' usage in spinlock structures</P
+></LI
+><LI
+><P
+>Improve signal handling logic (Tom)</P
+></LI
+></UL
 ></DIV
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN23958"
->A.9.3.23. Contrib</A
+NAME="AEN63349"
+>D.11.3.23. Contrib</A
 ></H3
 ><P
-CLASS="LITERALLAYOUT"
->New&nbsp;contrib/rtree_gist&nbsp;(Oleg&nbsp;Bartunov,&nbsp;Teodor&nbsp;Sigaev)<br>
-New&nbsp;contrib/tsearch&nbsp;full-text&nbsp;indexing&nbsp;(Oleg,&nbsp;Teodor&nbsp;Sigaev)<br>
-Add&nbsp;contrib/dblink&nbsp;for&nbsp;remote&nbsp;database&nbsp;access&nbsp;(Joe&nbsp;Conway)<br>
-contrib/ora2pg&nbsp;Oracle&nbsp;conversion&nbsp;utility&nbsp;(Gilles&nbsp;Darold)<br>
-contrib/xml&nbsp;XML&nbsp;conversion&nbsp;utility&nbsp;(John&nbsp;Gray)<br>
-contrib/fulltextindex&nbsp;fixes&nbsp;(Christopher&nbsp;Kings-Lynne)<br>
-New&nbsp;contrib/fuzzystrmatch&nbsp;with&nbsp;levenshtein&nbsp;and&nbsp;metaphone,&nbsp;soundex&nbsp;merged&nbsp;(Joe&nbsp;Conway)<br>
-Add&nbsp;contrib/intarray&nbsp;boolean&nbsp;queries,&nbsp;binary&nbsp;search,&nbsp;fixes&nbsp;(Oleg&nbsp;Bartunov)<br>
-New&nbsp;pg_upgrade&nbsp;utility&nbsp;(Bruce)<br>
-Add&nbsp;new&nbsp;pg_resetxlog&nbsp;options&nbsp;(Bruce,&nbsp;Tom)</P
+></P
+><UL
+><LI
+><P
+>New contrib/rtree_gist (Oleg Bartunov, Teodor Sigaev)</P
+></LI
+><LI
+><P
+>New contrib/tsearch full-text indexing (Oleg, Teodor Sigaev)</P
+></LI
+><LI
+><P
+>Add contrib/dblink for remote database access (Joe Conway)</P
+></LI
+><LI
+><P
+>contrib/ora2pg Oracle conversion utility (Gilles Darold)</P
+></LI
+><LI
+><P
+>contrib/xml XML conversion utility (John Gray)</P
+></LI
+><LI
+><P
+>contrib/fulltextindex fixes (Christopher Kings-Lynne)</P
+></LI
+><LI
+><P
+>New contrib/fuzzystrmatch with levenshtein and metaphone, soundex merged (Joe Conway)</P
+></LI
+><LI
+><P
+>Add contrib/intarray boolean queries, binary search, fixes (Oleg Bartunov)</P
+></LI
+><LI
+><P
+>New pg_upgrade utility (Bruce)</P
+></LI
+><LI
+><P
+>Add new pg_resetxlog options (Bruce, Tom)</P
+></LI
+></UL
 ></DIV
 ></DIV
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Storing Binary Data</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="JDBC Interface"
@@ -25,7 +25,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -45,7 +45,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -61,9 +61,9 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. <SPAN
+>Chapter 31. <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
+>JDBC</ACRONYM
 > Interface</TD
 ><TD
 WIDTH="10%"
@@ -85,7 +85,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="JDBC-BINARY-DATA"
->5.6. Storing Binary Data</A
+>31.6. Storing Binary Data</A
 ></H1
 ><P
 >    <SPAN
@@ -93,22 +93,15 @@ CLASS="APPLICATION"
 >PostgreSQL</SPAN
 > provides two distinct ways to 
     store binary data.  Binary data can be stored in a table using 
-    <SPAN
-CLASS="APPLICATION"
->PostgreSQL's</SPAN
-> binary data type 
-    <TT
+    the data type <TT
 CLASS="TYPE"
 >bytea</TT
->, or by using the <I
-CLASS="FIRSTTERM"
->Large Object</I
->
+> or by using the Large Object
     feature which stores the binary data in a separate table in a special 
-    format, and refers to that table by storing a value of type 
+    format and refers to that table by storing a value of type 
     <TT
 CLASS="TYPE"
->OID</TT
+>oid</TT
 > in your table.
   </P
 ><P
@@ -123,114 +116,106 @@ CLASS="TYPE"
 CLASS="TYPE"
 >bytea</TT
 > can hold up to 1 GB of binary data, it would 
-    require a huge amount of memory (<SPAN
-CLASS="ACRONYM"
->RAM</SPAN
->) to 
+    require a huge amount of memory to 
     process such a large value.  The Large Object method for 
     storing binary data is better suited to storing very large values, 
     but it has its own limitations.  Specifically deleting a row 
-    that contains a Large Object does not delete the Large Object.
+    that contains a Large Object reference does not delete the Large Object.
     Deleting the Large Object is a separate operation that needs to
     be performed.  Large Objects also have some security
-    issues since anyone connected to the database case view 
+    issues since anyone connected to the database cann view 
     and/or modify any Large Object, even if they don't have 
-    permissions to view/update the row containing the Large Object.
+    permissions to view/update the row containing the Large Object reference.
   </P
 ><P
->    7.2 is the first release of the <SPAN
+>    Version 7.2 was the first release of the <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
-> Driver 
+>JDBC</ACRONYM
+> driver 
     that supports the <TT
 CLASS="TYPE"
 >bytea</TT
 > data type.  The introduction of 
     this functionality in 7.2 has introduced a change in behavior 
-    as compared to previous releases.  In 7.2 the methods 
-    <TT
+    as compared to previous releases.  Since 7.2, the methods 
+    <CODE
 CLASS="FUNCTION"
->getBytes()</TT
->, <TT
+>getBytes()</CODE
+>, <CODE
 CLASS="FUNCTION"
->setBytes()</TT
+>setBytes()</CODE
 >, 
-    <TT
+    <CODE
 CLASS="FUNCTION"
->getBinaryStream()</TT
+>getBinaryStream()</CODE
 >, and 
-    <TT
+    <CODE
 CLASS="FUNCTION"
->setBinaryStream()</TT
+>setBinaryStream()</CODE
 > operate on 
     the <TT
 CLASS="TYPE"
 >bytea</TT
-> data type.  In 7.1 these methods operated 
+> data type.  In 7.1 and earlier, these methods operated 
     on the <TT
 CLASS="TYPE"
->OID</TT
+>oid</TT
 > data type associated with Large Objects.  
     It is possible to revert the driver back to the old 7.1 behavior 
-    by setting the <TT
-CLASS="PARAMETER"
-><I
->compatible</I
-></TT
-> property on 
-    the <TT
-CLASS="CLASSNAME"
->Connection</TT
-> to a value of 
-    <TT
+    by setting the property <VAR
 CLASS="LITERAL"
->7.1</TT
->
+>compatible</VAR
+> on 
+    the <CODE
+CLASS="CLASSNAME"
+>Connection</CODE
+> object to the value
+    <VAR
+CLASS="LITERAL"
+>7.1</VAR
+>.
   </P
 ><P
 >    To use the <TT
 CLASS="TYPE"
 >bytea</TT
 > data type you should simply use 
-    the <TT
+    the <CODE
 CLASS="FUNCTION"
->getBytes()</TT
->, <TT
+>getBytes()</CODE
+>, <CODE
 CLASS="FUNCTION"
->setBytes()</TT
+>setBytes()</CODE
 >,
-    <TT
+    <CODE
 CLASS="FUNCTION"
->getBinaryStream()</TT
+>getBinaryStream()</CODE
 >, or 
-    <TT
+    <CODE
 CLASS="FUNCTION"
->setBinaryStream()</TT
+>setBinaryStream()</CODE
 > methods.
   </P
 ><P
 >    To use the Large Object functionality you can use either the 
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->LargeObject</TT
-> <SPAN
-CLASS="ACRONYM"
->API</SPAN
->
+>LargeObject</CODE
+> class
     provided by the <SPAN
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
 > 
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
-> Driver, or by using the 
-    <TT
+>JDBC</ACRONYM
+> driver, or by using the 
+    <CODE
 CLASS="FUNCTION"
->getBLOB()</TT
-> and <TT
+>getBLOB()</CODE
+> and <CODE
 CLASS="FUNCTION"
->setBLOB()</TT
+>setBLOB()</CODE
 >
     methods.
   </P
@@ -241,22 +226,14 @@ CLASS="IMPORTANT"
 ><P
 ><B
 >Important: </B
->    For <SPAN
-CLASS="APPLICATION"
->PostgreSQL</SPAN
->, you must access Large
-    Objects within an <SPAN
+>    You must access Large Objects within an <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
-> transaction.  You would
-    open a transaction by using the
-    <TT
+>SQL</ACRONYM
+>
+    transaction block.  You can start a transaction block by calling
+    <CODE
 CLASS="FUNCTION"
->setAutoCommit()</TT
-> method with an input
-    parameter of <TT
-CLASS="LITERAL"
->false</TT
+>setAutoCommit(false)</CODE
 >.
    </P
 ></BLOCKQUOTE
@@ -268,34 +245,44 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->In a future release of the
-      <SPAN
+>      In a future release of the
+      <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
-> Driver, the <TT
+>JDBC</ACRONYM
+> driver, the <CODE
 CLASS="FUNCTION"
->getBLOB()</TT
+>getBLOB()</CODE
 >
-      and <TT
+      and <CODE
 CLASS="FUNCTION"
->setBLOB()</TT
+>setBLOB()</CODE
 > methods may no longer 
-      interact with Large Objects and will instead work on 
+      interact with Large Objects and will instead work on the data type
       <TT
 CLASS="TYPE"
 >bytea</TT
-> data types.  So it is recommended that you 
-      use the <TT
+>.  So it is recommended that you 
+      use the <CODE
 CLASS="CLASSNAME"
->LargeObject</TT
-> <SPAN
+>LargeObject</CODE
+> <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > 
       if you intend to use Large Objects.
-  </P
+   </P
 ></BLOCKQUOTE
 ></DIV
+><P
+>   <A
+HREF="jdbc-binary-data.html#JDBC-BINARY-DATA-EXAMPLE"
+>Example 31-4</A
+> contains some examples on
+   how to process binary data using the PostgreSQL <ACRONYM
+CLASS="ACRONYM"
+>JDBC</ACRONYM
+> driver.
+  </P
 ><DIV
 CLASS="EXAMPLE"
 ><A
@@ -303,11 +290,14 @@ NAME="JDBC-BINARY-DATA-EXAMPLE"
 ></A
 ><P
 ><B
->Example 5-4. Binary Data Examples</B
+>Example 31-4. Processing Binary Data in <ACRONYM
+CLASS="ACRONYM"
+>JDBC</ACRONYM
+></B
 ></P
 ><P
->    For example, suppose you have a table containing the file name of
-    an image and you also want to store the image in a <TT
+>    For example, suppose you have a table containing the file names of
+    images and you also want to store the image in a <TT
 CLASS="TYPE"
 >bytea</TT
 >
@@ -331,44 +321,44 @@ ps.close();
 fis.close();</PRE
 ><P>
 
-    Here, <TT
+    Here, <CODE
 CLASS="FUNCTION"
->setBinaryStream()</TT
+>setBinaryStream()</CODE
 > transfers a set number
     of bytes from a stream into the column of type <TT
 CLASS="TYPE"
 >bytea</TT
 >.
-    This also could have been done using the <TT
+    This also could have been done using the <CODE
 CLASS="FUNCTION"
->setBytes()</TT
+>setBytes()</CODE
 >
     method if the contents of the image was already in a 
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->byte[]</TT
+>byte[]</CODE
 >. 
    </P
 ><P
 >    Retrieving an image is even easier.  (We use
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->PreparedStatement</TT
+>PreparedStatement</CODE
 > here, but the
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->Statement</TT
+>Statement</CODE
 > class can equally be used.)
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->PreparedStatement ps = con.prepareStatement("SELECT img FROM images WHERE imgname=?");
+>PreparedStatement ps = con.prepareStatement("SELECT img FROM images WHERE imgname = ?");
 ps.setString(1, "myimage.gif");
 ResultSet rs = ps.executeQuery();
 if (rs != null) {
-    while(rs.next()) {
+    while (rs.next()) {
         byte[] imgBytes = rs.getBytes(1);
-        // use the stream in some way here
+        // use the data in some way here
     }
     rs.close();
 }
@@ -377,97 +367,97 @@ ps.close();</PRE
    </P
 ><P
 >    Here the binary data was retrieved as an
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->byte[]</TT
+>byte[]</CODE
 >.  You could have used a 
-    <TT
+    <CODE
 CLASS="CLASSNAME"
->InputStream</TT
+>InputStream</CODE
 > object instead.  
    </P
 ><P
 >    Alternatively you could be storing a very large file and want to use
-    the <TT
+    the <CODE
 CLASS="CLASSNAME"
->LargeObject</TT
-> <SPAN
+>LargeObject</CODE
+> <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 > to 
     store the file:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE TABLE imagesLO (imgname text, imgOID OID);</PRE
+>CREATE TABLE imageslo (imgname text, imgoid oid);</PRE
 ><P>
    </P
 ><P
 >    To insert an image, you would use:
 </P><PRE
 CLASS="PROGRAMLISTING"
->// All LargeObject API calls must be within a transaction
+>// All LargeObject API calls must be within a transaction block
 conn.setAutoCommit(false);
 
 // Get the Large Object Manager to perform operations with
 LargeObjectManager lobj = ((org.postgresql.PGConnection)conn).getLargeObjectAPI();
 
-//create a new large object
+// Create a new large object
 int oid = lobj.create(LargeObjectManager.READ | LargeObjectManager.WRITE);
 
-//open the large object for write
+// Open the large object for writing
 LargeObject obj = lobj.open(oid, LargeObjectManager.WRITE);
 
 // Now open the file
 File file = new File("myimage.gif");
 FileInputStream fis = new FileInputStream(file);
 
-// copy the data from the file to the large object
+// Copy the data from the file to the large object
 byte buf[] = new byte[2048];
 int s, tl = 0;
-while ((s = fis.read(buf, 0, 2048)) &#62; 0)
-{
-	obj.write(buf, 0, s);
-	tl += s;
+while ((s = fis.read(buf, 0, 2048)) &#62; 0) {
+    obj.write(buf, 0, s);
+    tl += s;
 }
 
 // Close the large object
 obj.close();
 
-//Now insert the row into imagesLO
-PreparedStatement ps = conn.prepareStatement("INSERT INTO imagesLO VALUES (?, ?)");
+// Now insert the row into imageslo
+PreparedStatement ps = conn.prepareStatement("INSERT INTO imageslo VALUES (?, ?)");
 ps.setString(1, file.getName());
 ps.setInt(2, oid);
 ps.executeUpdate();
 ps.close();
 fis.close();</PRE
-><P></P
+><P>
+   </P
 ><P
 >    Retrieving the image from the Large Object:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->// All LargeObject API calls must be within a transaction
+>// All LargeObject API calls must be within a transaction block
 conn.setAutoCommit(false);
 
 // Get the Large Object Manager to perform operations with
 LargeObjectManager lobj = ((org.postgresql.PGConnection)conn).getLargeObjectAPI();
 
-PreparedStatement ps = con.prepareStatement("SELECT imgOID FROM imagesLO WHERE imgname=?");
+PreparedStatement ps = con.prepareStatement("SELECT imgoid FROM imageslo WHERE imgname = ?");
 ps.setString(1, "myimage.gif");
 ResultSet rs = ps.executeQuery();
 if (rs != null) {
-    while(rs.next()) {
-	//open the large object for reading
-	int oid = rs.getInt(1);
-	LargeObject obj = lobj.open(oid, LargeObjectManager.READ);
+    while (rs.next()) {
+        // Open the large object for reading
+        int oid = rs.getInt(1);
+        LargeObject obj = lobj.open(oid, LargeObjectManager.READ);
 
-	//read the data
-	byte buf[] = new byte[obj.size()];
-	obj.read(buf, 0, obj.size());
-	//do something with the data read here
+        // Read the data
+        byte buf[] = new byte[obj.size()];
+        obj.read(buf, 0, obj.size());
+        // Do something with the data read here
 
-	// Close the object
-	obj.close();
+        // Close the object
+        obj.close();
     }
     rs.close();
 }
@@ -538,12 +528,12 @@ VALIGN="top"
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
 > Extensions to the
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->JDBC</SPAN
-> <SPAN
+>JDBC</ACRONYM
+> <ACRONYM
 CLASS="ACRONYM"
->API</SPAN
+>API</ACRONYM
 ></TD
 ></TR
 ></TABLE

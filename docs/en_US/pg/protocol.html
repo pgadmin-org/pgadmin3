@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Frontend/Backend Protocol</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="PostgreSQL 7.3.3 Developer's Guide"
-HREF="developer.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_type"
 HREF="catalog-pg-type.html"><LINK
 REL="NEXT"
-TITLE="Protocol"
-HREF="protocol-protocol.html"><LINK
+TITLE="Message Flow"
+HREF="protocol-flow.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -66,7 +66,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="protocol-protocol.html"
+HREF="protocol-flow.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="PROTOCOL"
->Chapter 4. Frontend/Backend Protocol</A
-></H1
+></A
+>Chapter 46. Frontend/Backend Protocol</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,115 +90,134 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->4.1. <A
+>46.1. <A
 HREF="protocol.html#PROTOCOL-OVERVIEW"
 >Overview</A
-></DT
-><DT
->4.2. <A
-HREF="protocol-protocol.html"
->Protocol</A
 ></DT
 ><DD
 ><DL
 ><DT
->4.2.1. <A
-HREF="protocol-protocol.html#AEN54623"
->Start-up</A
+>46.1.1. <A
+HREF="protocol.html#PROTOCOL-MESSAGE-CONCEPTS"
+>Messaging Overview</A
 ></DT
 ><DT
->4.2.2. <A
-HREF="protocol-protocol.html#AEN54680"
->Query</A
+>46.1.2. <A
+HREF="protocol.html#PROTOCOL-QUERY-CONCEPTS"
+>Extended Query Overview</A
 ></DT
 ><DT
->4.2.3. <A
-HREF="protocol-protocol.html#AEN54747"
+>46.1.3. <A
+HREF="protocol.html#PROTOCOL-FORMAT-CODES"
+>Formats and Format Codes</A
+></DT
+></DL
+></DD
+><DT
+>46.2. <A
+HREF="protocol-flow.html"
+>Message Flow</A
+></DT
+><DD
+><DL
+><DT
+>46.2.1. <A
+HREF="protocol-flow.html#AEN53551"
+>Start-Up</A
+></DT
+><DT
+>46.2.2. <A
+HREF="protocol-flow.html#AEN53620"
+>Simple Query</A
+></DT
+><DT
+>46.2.3. <A
+HREF="protocol-flow.html#AEN53682"
+>Extended Query</A
+></DT
+><DT
+>46.2.4. <A
+HREF="protocol-flow.html#AEN53718"
 >Function Call</A
 ></DT
 ><DT
->4.2.4. <A
-HREF="protocol-protocol.html#AEN54774"
->Notification Responses</A
+>46.2.5. <A
+HREF="protocol-flow.html#PROTOCOL-COPY"
+>COPY Operations</A
 ></DT
 ><DT
->4.2.5. <A
-HREF="protocol-protocol.html#AEN54788"
+>46.2.6. <A
+HREF="protocol-flow.html#PROTOCOL-ASYNC"
+>Asynchronous Operations</A
+></DT
+><DT
+>46.2.7. <A
+HREF="protocol-flow.html#AEN53779"
 >Cancelling Requests in Progress</A
 ></DT
 ><DT
->4.2.6. <A
-HREF="protocol-protocol.html#AEN54796"
+>46.2.8. <A
+HREF="protocol-flow.html#AEN53787"
 >Termination</A
 ></DT
 ><DT
->4.2.7. <A
-HREF="protocol-protocol.html#AEN54803"
+>46.2.9. <A
+HREF="protocol-flow.html#AEN53795"
 >SSL Session Encryption</A
 ></DT
 ></DL
 ></DD
 ><DT
->4.3. <A
+>46.3. <A
 HREF="protocol-message-types.html"
 >Message Data Types</A
 ></DT
 ><DT
->4.4. <A
+>46.4. <A
 HREF="protocol-message-formats.html"
 >Message Formats</A
 ></DT
+><DT
+>46.5. <A
+HREF="protocol-error-fields.html"
+>Error and Notice Message Fields</A
+></DT
+><DT
+>46.6. <A
+HREF="protocol-changes.html"
+>Summary of Changes since Protocol 2.0</A
+></DT
 ></DL
-></DIV
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->   Written by Phil Thompson (<TT
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:phil@river-bank.demon.co.uk"
->phil@river-bank.demon.co.uk</A
->&#62;</TT
->).
-   Updates for protocol 2.0 by Tom Lane (<TT
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:tgl@sss.pgh.pa.us"
->tgl@sss.pgh.pa.us</A
->&#62;</TT
->).
-  </P
-></BLOCKQUOTE
 ></DIV
 ><P
 >  <SPAN
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
 > uses a message-based protocol
-  for communication between frontends and backends.  The protocol is
-  implemented over <SPAN
+  for communication between frontends and backends (clients and servers).
+  The protocol is supported over <ACRONYM
 CLASS="ACRONYM"
->TCP/IP</SPAN
-> and also on Unix domain
-  sockets.  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 6.3 introduced
-  version numbers into the protocol.  This was done in such a way as
-  to still allow connections from earlier versions of frontends, but
-  this document does not cover the protocol used by those earlier
-  versions.
+>TCP/IP</ACRONYM
+> and also over
+  Unix-domain sockets.  Port number 5432 has been registered with IANA as
+  the customary TCP port number for servers supporting this protocol, but
+  in practice any non-privileged port number may be used.
  </P
 ><P
->  This document describes version 2.0 of the protocol, implemented in
+>  This document describes version 3.0 of the protocol, implemented in
   <SPAN
 CLASS="APPLICATION"
 >PostgreSQL</SPAN
-> 6.4 and later.
+> 7.4 and later.  For descriptions
+  of the earlier protocol versions, see previous releases of the
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> documentation.  A single server
+  can support multiple protocol versions.  The initial
+  startup-request message tells the server which protocol version the
+  client is attempting to use, and then the server follows that protocol
+  if it is able.
  </P
 ><P
 >  Higher level features built on this protocol (for example, how
@@ -206,54 +225,252 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >libpq</SPAN
 > passes certain environment
-  variables after the connection is established) are covered
-  elsewhere.
+  variables when the connection is established) are covered elsewhere.
  </P
+><P
+>   In order to serve multiple clients efficiently, the server launches
+   a new <SPAN
+CLASS="QUOTE"
+>"backend"</SPAN
+> process for each client.
+   In the current implementation, a new child
+   process is created immediately after an incoming connection is detected.
+   This is transparent to the protocol, however.  For purposes of the
+   protocol, the terms <SPAN
+CLASS="QUOTE"
+>"backend"</SPAN
+> and <SPAN
+CLASS="QUOTE"
+>"server"</SPAN
+> are
+   interchangeable; likewise <SPAN
+CLASS="QUOTE"
+>"frontend"</SPAN
+> and <SPAN
+CLASS="QUOTE"
+>"client"</SPAN
+>
+   are interchangeable.
+  </P
 ><DIV
 CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
 NAME="PROTOCOL-OVERVIEW"
->4.1. Overview</A
+>46.1. Overview</A
 ></H1
 ><P
->   A frontend opens a connection to the server and sends a start-up
-   packet.  This includes the names of the user and of the database the
-   user wants to connect to.  The server then uses this, and the
-   information in the <TT
-CLASS="FILENAME"
->pg_hba.conf</TT
-> file to
-   determine what further authentication information it requires the
-   frontend to send (if any) and responds to the frontend accordingly.
+>   The protocol has separate phases for startup and normal operation.
+   In the startup phase, the frontend opens a connection to the server
+   and authenticates itself to the satisfaction of the server.  (This might
+   involve a single message, or multiple messages depending on the
+   authentication method being used.)  If all goes well, the server then sends
+   status information to the frontend, and finally enters normal operation.
+   Except for the initial startup-request message, this part of the
+   protocol is driven by the server.
   </P
 ><P
->   The frontend then sends any required authentication information.
-   Once the server validates this it responds to the frontend that it
-   is authenticated and sends a message indicating successful start-up
-   (normal case) or failure (for example, an invalid database name).
+>   During normal operation, the frontend sends queries and
+   other commands to the backend, and the backend sends back query results
+   and other responses.  There are a few cases (such as <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>)
+   wherein the
+   backend will send unsolicited messages, but for the most part this portion
+   of a session is driven by frontend requests.
   </P
 ><P
->   In order to serve multiple clients efficiently, the server launches
-   a new <SPAN
+>   Termination of the session is normally by frontend choice, but can be
+   forced by the backend in certain cases.  In any case, when the backend
+   closes the connection, it will roll back any open (incomplete) transaction
+   before exiting.
+  </P
+><P
+>   Within normal operation, SQL commands can be executed through either of
+   two sub-protocols.  In the <SPAN
 CLASS="QUOTE"
->"backend"</SPAN
-> process for each client.  This is transparent
-   to the protocol, however.  In the current implementation, a new child
-   process is created immediately after an incoming connection is detected.
+>"simple query"</SPAN
+> protocol, the frontend
+   just sends a textual query string, which is parsed and immediately
+   executed by the backend.  In the <SPAN
+CLASS="QUOTE"
+>"extended query"</SPAN
+> protocol,
+   processing of queries is separated into multiple steps: parsing,
+   binding of parameter values, and execution.  This offers flexibility
+   and performance benefits, at the cost of extra complexity.
   </P
 ><P
->   When the frontend wishes to disconnect it sends an appropriate packet and
-   closes the connection without waiting for a response from the backend.
+>   Normal operation has additional sub-protocols for special operations
+   such as <TT
+CLASS="COMMAND"
+>COPY</TT
+>.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PROTOCOL-MESSAGE-CONCEPTS"
+>46.1.1. Messaging Overview</A
+></H2
+><P
+>   All communication is through a stream of messages.  The first byte of a
+   message identifies the message type, and the next four bytes specify the
+   length of the rest of the message (this length count includes itself, but
+   not the message-type byte).  The remaining contents of the message are
+   determined by the message type.  For historical reasons, the very first
+   message sent by the client (the startup message) has no initial
+   message-type byte.
   </P
 ><P
->   Packets are sent as a data stream.  The first byte determines what
-   should be expected in the rest of the packet.  The exceptions are
-   packets sent as part of the start-up and authentication exchange,
-   which comprise a packet length followed by the packet itself.  The
-   difference is historical.
+>   To avoid losing synchronization with the message stream, both servers and
+   clients typically read an entire message into a buffer (using the byte
+   count) before attempting to process its contents.  This allows easy
+   recovery if an error is detected while processing the contents.  In
+   extreme situations (such as not having enough memory to buffer the
+   message), the receiver may use the byte count to determine how much
+   input to skip before it resumes reading messages.
   </P
+><P
+>   Conversely, both servers and clients must take care never to send an
+   incomplete message.  This is commonly done by marshaling the entire message
+   in a buffer before beginning to send it.  If a communications failure
+   occurs partway through sending or receiving a message, the only sensible
+   response is to abandon the connection, since there is little hope of
+   recovering message-boundary synchronization.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PROTOCOL-QUERY-CONCEPTS"
+>46.1.2. Extended Query Overview</A
+></H2
+><P
+>    In the extended-query protocol, execution of SQL commands is divided
+    into multiple steps.  The state retained between steps is represented
+    by two types of objects: <I
+CLASS="FIRSTTERM"
+>prepared statements</I
+> and
+    <I
+CLASS="FIRSTTERM"
+>portals</I
+>.  A prepared statement represents the result of
+    parsing, semantic analysis, and planning of a textual query string.  A
+    prepared statement is not necessarily ready to execute, because it may
+    lack specific values for <I
+CLASS="FIRSTTERM"
+>parameters</I
+>.  A portal represents
+    a ready-to-execute or already-partially-executed statement, with any
+    missing parameter values filled in.  (For <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statements,
+    a portal is equivalent to an open cursor, but we choose to use a different
+    term since cursors don't handle non-<TT
+CLASS="COMMAND"
+>SELECT</TT
+> statements.)
+   </P
+><P
+>    The overall execution cycle consists of a <I
+CLASS="FIRSTTERM"
+>parse</I
+> step,
+    which creates a prepared statement from a textual query string; a
+    <I
+CLASS="FIRSTTERM"
+>bind</I
+> step, which creates a portal given a prepared
+    statement and values for any needed parameters; and an
+    <I
+CLASS="FIRSTTERM"
+>execute</I
+> step that runs a portal's query.  In the case of
+    a query that returns rows (<TT
+CLASS="COMMAND"
+>SELECT</TT
+>, <TT
+CLASS="COMMAND"
+>SHOW</TT
+>, etc),
+    the execute step can be told to fetch only
+    a limited number of rows, so that multiple execute steps may be needed
+    to complete the operation.
+   </P
+><P
+>    The backend can keep track of multiple prepared statements and portals
+    (but note that these exist only within a session, and are never shared
+    across sessions).  Existing prepared statements and portals are
+    referenced by names assigned when they were created.  In addition,
+    an <SPAN
+CLASS="QUOTE"
+>"unnamed"</SPAN
+> prepared statement and portal exist.  Although these
+    behave largely the same as named objects, operations on them are optimized
+    for the case of executing a query only once and then discarding it,
+    whereas operations on named objects are optimized on the expectation
+    of multiple uses.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PROTOCOL-FORMAT-CODES"
+>46.1.3. Formats and Format Codes</A
+></H2
+><P
+>    Data of a particular datatype might be transmitted in any of several
+    different <I
+CLASS="FIRSTTERM"
+>formats</I
+>.  As of <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> 7.4
+    the only supported formats are <SPAN
+CLASS="QUOTE"
+>"text"</SPAN
+> and <SPAN
+CLASS="QUOTE"
+>"binary"</SPAN
+>,
+    but the protocol makes provision for future extensions.  The desired
+    format for any value is specified by a <I
+CLASS="FIRSTTERM"
+>format code</I
+>.
+    Clients may specify a format code for each transmitted parameter value
+    and for each column of a query result.  Text has format code zero,
+    binary has format code one, and all other format codes are reserved
+    for future definition.
+   </P
+><P
+>    The text representation of values is whatever strings are produced
+    and accepted by the input/output conversion functions for the
+    particular datatype.  In the transmitted representation, there is
+    no trailing null character; the frontend must add one to received
+    values if it wants to process them as C strings.
+    (The text format does not allow embedded nulls, by the way.)
+   </P
+><P
+>    Binary representations for integers use network byte order (most
+    significant byte first).  For other datatypes consult the documentation
+    or source code to learn about the binary representation.  Keep in mind
+    that binary representations for complex datatypes may change across
+    server versions; the text format is usually the more portable choice.
+   </P
+></DIV
 ></DIV
 ></DIV
 ><DIV
@@ -290,7 +507,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="protocol-protocol.html"
+HREF="protocol-flow.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -300,13 +517,16 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->pg_type</TD
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="developer.html"
+HREF="internals.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -314,7 +534,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Protocol</TD
+>Message Flow</TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,18 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_select</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="pgtcl Command Reference Information"
+TITLE="pgtcl Command Reference"
 HREF="libpgtcl-ref.html"><LINK
 REL="PREVIOUS"
 TITLE="pg_result"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,234 +78,224 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="PGTCL-PGSELECT"
->pg_select</A
-></H1
+></A
+>pg_select</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN26627"
+NAME="AEN21586"
 ></A
 ><H2
 >Name</H2
->pg_select&nbsp;--&nbsp;loop over the result of a SELECT statement<A
-NAME="IX-PGTCL-PGSELECT-1"
-></A
-><A
+>pg_select&nbsp;--&nbsp;loop over the result of a query<A
 NAME="IX-PGTCL-PGSELECT-2"
 ></A
 ></DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN26635"
+NAME="AEN21591"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->pg_select <TT
-CLASS="REPLACEABLE"
-><I
->dbHandle</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->queryString</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->arrayVar</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->queryProcedure</I
-></TT
+>pg_select <VAR
+CLASS="PARAMETER"
+>conn</VAR
+> <VAR
+CLASS="PARAMETER"
+>commandString</VAR
+> <VAR
+CLASS="PARAMETER"
+>arrayVar</VAR
+> <VAR
+CLASS="PARAMETER"
+>procedure</VAR
 ></PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGSELECT-1"
-></A
-><H3
->Inputs</H3
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->dbHandle</I
-></TT
-></DT
-><DD
-><P
->Specifies a valid database handle.</P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->queryString</I
-></TT
-></DT
-><DD
-><P
->Specifies a valid SQL select query.</P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->arrayVar</I
-></TT
-></DT
-><DD
-><P
->Array variable for tuples returned.</P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->queryProcedure</I
-></TT
-></DT
-><DD
-><P
->Procedure run on each tuple found.</P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-PGTCL-PGSELECT-2"
-></A
-><H3
->Outputs</H3
-><P
->None.</P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGSELECT-1"
+NAME="AEN21597"
 ></A
 ><H2
 >Description</H2
 ><P
-><TT
+>   <CODE
 CLASS="FUNCTION"
->pg_select</TT
-> submits a SELECT query to the
-<SPAN
+>pg_select</CODE
+> submits a query
+   (<TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement) to the
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> backend, and executes a
-given chunk of code for each tuple in the result.
-  The <TT
-CLASS="REPLACEABLE"
-><I
->queryString</I
-></TT
->
-  must be a SELECT statement.  Anything else returns an error.
-  The <TT
-CLASS="REPLACEABLE"
-><I
->arrayVar</I
-></TT
->
-  variable is an array name used in the loop.  For each tuple,
-  <TT
-CLASS="REPLACEABLE"
-><I
->arrayVar</I
-></TT
-> is filled in
-  with the tuple field values, using the field names as the array
-  indexes.  Then the
-  <TT
-CLASS="REPLACEABLE"
-><I
->queryProcedure</I
-></TT
->
-  is executed.</P
+> server and executes a given
+   chunk of code for each row in the result.  The
+   <VAR
+CLASS="PARAMETER"
+>commandString</VAR
+> must be a
+   <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement; anything else returns an
+   error.  The <VAR
+CLASS="PARAMETER"
+>arrayVar</VAR
+> variable is an array
+   name used in the loop.  For each row,
+   <VAR
+CLASS="PARAMETER"
+>arrayVar</VAR
+> is filled in with the row values,
+   using the column names as the array indices.  Then the
+   <VAR
+CLASS="PARAMETER"
+>procedure</VAR
+> is executed.
+  </P
 ><P
-> In addition to the field values, the following special entries are
-made in the array:
+>   In addition to the column values, the following special entries are
+   made in the array:
 
-<P
+   <P
 ></P
 ></P><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->.headers</TT
+>.headers</VAR
 ></DT
 ><DD
 ><P
->A list of the column names returned by the SELECT.</P
+>       A list of the column names returned by the query.
+      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->.numcols</TT
+>.numcols</VAR
 ></DT
 ><DD
 ><P
->The number of columns returned by the SELECT.</P
+>       The number of columns returned by the query.
+      </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->.tupno</TT
+>.tupno</VAR
 ></DT
 ><DD
 ><P
->The current tuple number, starting at zero and incrementing
-for each iteration of the loop body.</P
+>       The current row number, starting at zero and incrementing for
+       each iteration of the loop body.
+      </P
 ></DD
 ></DL
 ></DIV
-><P></P
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-PGTCL-PGSELECT-2"
+NAME="AEN21625"
 ></A
 ><H2
->Usage</H2
+>Arguments</H2
 ><P
->This would work if table <TT
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="PARAMETER"
+>conn</VAR
+></DT
+><DD
+><P
+>      The handle of the connection on which to execute the query.
+     </P
+></DD
+><DT
+><VAR
+CLASS="PARAMETER"
+>commandString</VAR
+></DT
+><DD
+><P
+>      The SQL query to execute.
+     </P
+></DD
+><DT
+><VAR
+CLASS="PARAMETER"
+>arrayVar</VAR
+></DT
+><DD
+><P
+>      An array variable for returned rows.
+     </P
+></DD
+><DT
+><VAR
+CLASS="PARAMETER"
+>procedure</VAR
+></DT
+><DD
+><P
+>      The procedure to run for each returned row.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21648"
+></A
+><H2
+>Return Value</H2
+><P
+>   None
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN21651"
+></A
+><H2
+>Examples</H2
+><P
+>   This examples assumes that the table <CODE
 CLASS="CLASSNAME"
->table</TT
-> has fields <TT
+>table1</CODE
+> has
+   columns <TT
 CLASS="STRUCTFIELD"
 >control</TT
 > and <TT
 CLASS="STRUCTFIELD"
 >name</TT
->
-(and, perhaps, other fields):
+> (and
+   perhaps others):
 </P><PRE
 CLASS="PROGRAMLISTING"
->	pg_select $pgconn "SELECT * FROM table" array {
-		puts [format "%5d %s" $array(control) $array(name)]
-	}</PRE
-><P></P
+>pg_select $pgconn "SELECT * FROM table1;" array {
+    puts [format "%5d %s" $array(control) $array(name)]
+}</PRE
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

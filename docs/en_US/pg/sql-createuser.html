@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >CREATE USER</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-CREATEUSER"
->CREATE USER</A
-></H1
+></A
+>CREATE USER</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41626"
+NAME="AEN40318"
 ></A
 ><H2
 >Name</H2
@@ -91,62 +91,48 @@ NAME="AEN41626"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41629"
+NAME="AEN40321"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->CREATE USER <TT
+>CREATE USER <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-> [ [ WITH ] <TT
+>username</VAR
+> [ [ WITH ] <VAR
 CLASS="REPLACEABLE"
-><I
->option</I
-></TT
+>option</VAR
 > [ ... ] ]
 
-where <TT
+where <VAR
 CLASS="REPLACEABLE"
-><I
->option</I
-></TT
+>option</VAR
 > can be:
     
-      SYSID <TT
+      SYSID <VAR
 CLASS="REPLACEABLE"
-><I
->uid</I
-></TT
+>uid</VAR
 > 
-    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<TT
+    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<VAR
 CLASS="REPLACEABLE"
-><I
->password</I
-></TT
+>password</VAR
 >'
     | CREATEDB | NOCREATEDB
     | CREATEUSER | NOCREATEUSER
-    | IN GROUP <TT
+    | IN GROUP <VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
+>groupname</VAR
 > [, ...]
-    | VALID UNTIL '<TT
+    | VALID UNTIL '<VAR
 CLASS="REPLACEABLE"
-><I
->abstime</I
-></TT
+>abstime</VAR
 >' </PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41638"
+NAME="AEN40330"
 ></A
 ><H2
 >Description</H2
@@ -154,37 +140,38 @@ NAME="AEN41638"
 >   <TT
 CLASS="COMMAND"
 >CREATE USER</TT
-> will add a new user to an instance
-   of <SPAN
+> adds a new user to a
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->. Refer to the
-   <I
-CLASS="CITETITLE"
->Administrator's Guide</I
-> for information about
-   managing users and authentication.  You must be a database
-   superuser to use this command.
+> database cluster.  Refer to
+   <A
+HREF="user-manag.html"
+>Chapter 17</A
+> and <A
+HREF="client-authentication.html"
+>Chapter 19</A
+> for information about managing
+   users and authentication.  You must be a database superuser to use
+   this command.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="AEN41644"
+NAME="AEN40337"
 ></A
-><H3
->Parameters</H3
+><H2
+>Parameters</H2
 ><P
->&#13;    <P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 ></DT
 ><DD
 ><P
@@ -192,25 +179,23 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->uid</I
-></TT
+>uid</VAR
 ></DT
 ><DD
 ><P
->        The <TT
+>        The <VAR
 CLASS="LITERAL"
->SYSID</TT
+>SYSID</VAR
 > clause can be used to choose the
         <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > user ID of the user that
-        is being created. It is not at all necessary that those match
-        the Unix user IDs, but some people choose to keep the numbers
-        the same.
+        is being created. This is not normally not necessary, but may
+        be useful if you need to recreate the owner of an orphaned
+        object.
        </P
 ><P
 >        If this is not specified, the highest assigned user ID plus one
@@ -218,19 +203,17 @@ CLASS="PRODUCTNAME"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->password</I
-></TT
+>password</VAR
 ></DT
 ><DD
 ><P
 >        Sets the user's password. If you do not plan to use password
-        authentication you can omit this option, but the user
-        won't be able to connect to a password-authenticated server.
-	The password can be set or changed later, using
-	<A
+        authentication you can omit this option, but then the user
+        won't be able to connect if you decide to switch to password
+        authentication.  The password can be set or changed later,
+        using <A
 HREF="sql-alteruser.html"
 ><I
 >ALTER USER</I
@@ -239,83 +222,75 @@ HREF="sql-alteruser.html"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->ENCRYPTED</TT
-><BR><TT
+>ENCRYPTED</VAR
+><BR><VAR
 CLASS="LITERAL"
->UNENCRYPTED</TT
+>UNENCRYPTED</VAR
 ></DT
 ><DD
 ><P
->	These keywords control whether the password is stored
-	encrypted in <TT
-CLASS="LITERAL"
->pg_shadow</TT
->.  (If neither is specified,
-	the default behavior is determined by the
-	<TT
+>	These key words control whether the password is stored
+	encrypted in the system catalogs.  (If neither is specified,
+	the default behavior is determined by the configuration
+	parameter <VAR
 CLASS="VARNAME"
->PASSWORD_ENCRYPTION</TT
-> server parameter.)  If
-	the presented string is already in MD5-encrypted format, then
-	it is stored as-is, regardless of whether
-	<TT
+>password_encryption</VAR
+>.)  If the
+	presented password string is already in MD5-encrypted format,
+	then it is stored encrypted as-is, regardless of whether
+	<VAR
 CLASS="LITERAL"
->ENCRYPTED</TT
-> or <TT
+>ENCRYPTED</VAR
+> or <VAR
 CLASS="LITERAL"
->UNENCRYPTED</TT
-> is specified.
-	This allows reloading of encrypted passwords during
-	dump/restore.
+>UNENCRYPTED</VAR
+> is specified
+	(since the system cannot decrypt the specified encrypted
+	password string).  This allows reloading of encrypted
+	passwords during dump/restore.
        </P
 ><P
->        See the chapter on client authentication in the
-        <I
-CLASS="CITETITLE"
->Administrator's Guide</I
-> for details on
-        how to set up authentication mechanisms.  Note that older
-        clients may lack support for the MD5 authentication mechanism
-        that is needed to work with passwords that are stored
-        encrypted.
+>        Note that older clients may lack support for the MD5
+        authentication mechanism that is needed to work with passwords
+        that are stored encrypted.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->CREATEDB</TT
-><BR><TT
+>CREATEDB</VAR
+><BR><VAR
 CLASS="LITERAL"
->NOCREATEDB</TT
+>NOCREATEDB</VAR
 ></DT
 ><DD
 ><P
 >	These clauses define a user's ability to create databases.  If
-	<TT
+	<VAR
 CLASS="LITERAL"
->CREATEDB</TT
+>CREATEDB</VAR
 > is specified, the user being
 	defined will be allowed to create his own databases. Using
-	<TT
+	<VAR
 CLASS="LITERAL"
->NOCREATEDB</TT
+>NOCREATEDB</VAR
 > will deny a user the ability to
 	create databases. If this clause is omitted,
-	<TT
+	<VAR
 CLASS="LITERAL"
->NOCREATEDB</TT
+>NOCREATEDB</VAR
 > is used by default.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="LITERAL"
->CREATEUSER</TT
-><BR><TT
+>CREATEUSER</VAR
+><BR><VAR
 CLASS="LITERAL"
->NOCREATEUSER</TT
+>NOCREATEUSER</VAR
 ></DT
 ><DD
 ><P
@@ -323,18 +298,16 @@ CLASS="LITERAL"
 	create new users himself. This option will also make the user
 	a superuser who can override all access restrictions.
 	Omitting this clause will set the user's value of this
-	attribute to be <TT
+	attribute to be <VAR
 CLASS="LITERAL"
->NOCREATEUSER</TT
+>NOCREATEUSER</VAR
 >.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->groupname</I
-></TT
+>groupname</VAR
 ></DT
 ><DD
 ><P
@@ -343,17 +316,15 @@ CLASS="REPLACEABLE"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="REPLACEABLE"
-><I
->abstime</I
-></TT
+>abstime</VAR
 ></DT
 ><DD
 ><P
->	The <TT
+>	The <VAR
 CLASS="LITERAL"
->VALID UNTIL</TT
+>VALID UNTIL</VAR
 > clause sets an absolute
 	time after which the user's password is no longer valid.  If
 	this clause is omitted the login will be valid for all time.
@@ -361,42 +332,36 @@ CLASS="LITERAL"
 ></DD
 ></DL
 ></DIV
-><P>
-   </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41709"
+NAME="AEN40399"
 ></A
 ><H2
 >Diagnostics</H2
 ><P
->   <P
 ></P
-></P><DIV
+><DIV
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><SAMP
 CLASS="COMPUTEROUTPUT"
->CREATE USER</TT
+>CREATE USER</SAMP
 ></DT
 ><DD
 ><P
->       Message returned if the command completes successfully.
+>       Message returned if the user account was successfully created.
       </P
 ></DD
 ></DL
 ></DIV
-><P>
-  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41718"
+NAME="AEN40407"
 ></A
 ><H2
 >Notes</H2
@@ -419,7 +384,9 @@ HREF="sql-altergroup.html"
 ></A
 > to add the
    user to groups or remove the user from groups.
-   <SPAN
+  </P
+><P
+>   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > includes a program <A
@@ -430,14 +397,17 @@ HREF="app-createuser.html"
 ></I
 ></A
 > that has
-   the same functionality as this command (in fact, it calls this
+   the same functionality as <TT
+CLASS="COMMAND"
+>CREATE USER</TT
+> (in fact, it calls this
    command) but can be run from the command shell.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41726"
+NAME="AEN40417"
 ></A
 ><H2
 >Examples</H2
@@ -456,13 +426,13 @@ CLASS="PROGRAMLISTING"
 ><P>
   </P
 ><P
->   Create a user with a password, whose account is valid until the end of 2001.
-   Note that after one second has ticked in 2002, the account is not
-   valid:
+>   Create a user with a password that is valid until the end of 2004.
+   After one second has ticked in 2005, the password is no longer
+   valid.
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE USER miriam WITH PASSWORD 'jw8s0F4' VALID UNTIL 'Jan 1 2002';</PRE
+>CREATE USER miriam WITH PASSWORD 'jw8s0F4' VALID UNTIL '2005-01-01';</PRE
 ><P>
   </P
 ><P
@@ -477,7 +447,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41736"
+NAME="AEN40427"
 ></A
 ><H2
 >Compatibility</H2
@@ -496,7 +466,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41741"
+NAME="AEN40432"
 ></A
 ><H2
 >See Also</H2

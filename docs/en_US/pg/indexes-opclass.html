@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Operator Classes</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
 HREF="indexes.html"><LINK
 REL="PREVIOUS"
-TITLE="Functional Indexes"
-HREF="indexes-functional.html"><LINK
+TITLE="Indexes on Expressions"
+HREF="indexes-expressional.html"><LINK
 REL="NEXT"
 TITLE="Partial Indexes"
 HREF="indexes-partial.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="indexes-functional.html"
+HREF="indexes-expressional.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 8. Indexes</TD
+>Chapter 11. Indexes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="INDEXES-OPCLASS"
->8.6. Operator Classes</A
+>11.6. Operator Classes</A
 ></H1
 ><P
 >   An index definition may specify an <I
@@ -91,76 +91,146 @@ CLASS="FIRSTTERM"
 > for each column of an index.
 </P><PRE
 CLASS="SYNOPSIS"
->CREATE INDEX <TT
+>CREATE INDEX <VAR
 CLASS="REPLACEABLE"
-><I
->name</I
-></TT
-> ON <TT
+>name</VAR
+> ON <VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
-> (<TT
+>table</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> <TT
+>column</VAR
+> <VAR
 CLASS="REPLACEABLE"
-><I
->opclass</I
-></TT
+>opclass</VAR
 > [<SPAN
 CLASS="OPTIONAL"
 >, ...</SPAN
 >]);</PRE
 ><P>
    The operator class identifies the operators to be used by the index
-   for that column.  For example, a B-tree index on four-byte integers
-   would use the <TT
+   for that column.  For example, a B-tree index on the type <TT
+CLASS="TYPE"
+>int4</TT
+>
+   would use the <VAR
 CLASS="LITERAL"
->int4_ops</TT
+>int4_ops</VAR
 > class; this operator
-   class includes comparison functions for four-byte integers.  In
-   practice the default operator class for the column's data type is
+   class includes comparison functions for values of type <TT
+CLASS="TYPE"
+>int4</TT
+>.
+   In practice the default operator class for the column's data type is
    usually sufficient.  The main point of having operator classes is
    that for some data types, there could be more than one meaningful
    ordering.  For example, we might want to sort a complex-number data
    type either by absolute value or by real part.  We could do this by
    defining two operator classes for the data type and then selecting
-   the proper class when making an index.  There are also some
-   operator classes with special purposes:
+   the proper class when making an index.
+  </P
+><P
+>   There are also some built-in operator classes besides the default ones:
 
    <P
 ></P
 ></P><UL
 ><LI
 ><P
->      The operator classes <TT
+>      The operator classes <VAR
 CLASS="LITERAL"
->box_ops</TT
+>box_ops</VAR
 > and
-      <TT
+      <VAR
 CLASS="LITERAL"
->bigbox_ops</TT
+>bigbox_ops</VAR
 > both support R-tree indexes on the
       <TT
-CLASS="LITERAL"
+CLASS="TYPE"
 >box</TT
 > data type.  The difference between them is
-      that <TT
+      that <VAR
 CLASS="LITERAL"
->bigbox_ops</TT
+>bigbox_ops</VAR
 > scales box coordinates down,
       to avoid floating-point exceptions from doing multiplication,
       addition, and subtraction on very large floating-point
       coordinates.  If the field on which your rectangles lie is about
-      20 000 units square or larger, you should use
-      <TT
+      20 000 square units or larger, you should use
+      <VAR
 CLASS="LITERAL"
->bigbox_ops</TT
+>bigbox_ops</VAR
 >.
+     </P
+></LI
+><LI
+><P
+>      The operator classes <VAR
+CLASS="LITERAL"
+>text_pattern_ops</VAR
+>,
+      <VAR
+CLASS="LITERAL"
+>varchar_pattern_ops</VAR
+>,
+      <VAR
+CLASS="LITERAL"
+>bpchar_pattern_ops</VAR
+>, and
+      <VAR
+CLASS="LITERAL"
+>name_pattern_ops</VAR
+> support B-tree indexes on
+      the types <TT
+CLASS="TYPE"
+>text</TT
+>, <TT
+CLASS="TYPE"
+>varchar</TT
+>,
+      <TT
+CLASS="TYPE"
+>char</TT
+>, and <TT
+CLASS="TYPE"
+>name</TT
+>, respectively.  The
+      difference from the ordinary operator classes is that the values
+      are compared strictly character by character rather than
+      according to the locale-specific collation rules.  This makes
+      these operator classes suitable for use by queries involving
+      pattern matching expressions (<VAR
+CLASS="LITERAL"
+>LIKE</VAR
+> or POSIX
+      regular expressions) if the server does not use the standard
+      <SPAN
+CLASS="QUOTE"
+>"C"</SPAN
+> locale.  As an example, you might index a
+      <TT
+CLASS="TYPE"
+>varchar</TT
+> column like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE INDEX test_index ON test_table (col varchar_pattern_ops);</PRE
+><P>
+      If you do use the C locale, you may instead create an index
+      with the default operator class, and it will still be useful
+      for pattern-matching queries.  Also note that you should
+      create an index with the default operator class if you want
+      queries involving ordinary comparisons to use an index.  Such
+      queries cannot use the
+      <VAR
+CLASS="LITERAL"
+><VAR
+CLASS="REPLACEABLE"
+>xxx</VAR
+>_pattern_ops</VAR
+>
+      operator classes.  It is allowed to create multiple
+      indexes on the same column with different operator classes.
      </P
 ></LI
 ></UL
@@ -169,28 +239,26 @@ CLASS="LITERAL"
 ><P
 >    The following query shows all defined operator classes:
 
-    </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->SELECT am.amname AS acc_method,
-       opc.opcname AS ops_name
+>SELECT am.amname AS index_method,
+       opc.opcname AS opclass_name
     FROM pg_am am, pg_opclass opc
     WHERE opc.opcamid = am.oid
-    ORDER BY acc_method, ops_name;
-    </PRE
+    ORDER BY index_method, opclass_name;</PRE
 ><P>
 
     It can be extended to show all the operators included in each class:
-    </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->SELECT am.amname AS acc_method,
-       opc.opcname AS ops_name,
-       opr.oprname AS ops_comp
+>SELECT am.amname AS index_method,
+       opc.opcname AS opclass_name,
+       opr.oprname AS opclass_operator
     FROM pg_am am, pg_opclass opc, pg_amop amop, pg_operator opr
     WHERE opc.opcamid = am.oid AND
           amop.amopclaid = opc.oid AND
           amop.amopopr = opr.oid
-    ORDER BY acc_method, ops_name, ops_comp;
-    </PRE
+    ORDER BY index_method, opclass_name, opclass_operator;</PRE
 ><P>
   </P
 ></DIV
@@ -210,7 +278,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="indexes-functional.html"
+HREF="indexes-expressional.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -238,7 +306,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Functional Indexes</TD
+>Indexes on Expressions</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

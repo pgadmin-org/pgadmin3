@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Migration between releases</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Backup and Restore"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 9. Backup and Restore</TD
+>Chapter 22. Backup and Restore</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,10 +81,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="MIGRATION"
->9.3. Migration between releases</A
+>22.3. Migration between releases</A
 ></H1
 ><A
-NAME="AEN22785"
+NAME="AEN18396"
 ></A
 ><P
 >   As a general rule, the internal data storage format is subject to
@@ -113,9 +113,9 @@ CLASS="APPLICATION"
 >. (There are checks in place
    that prevent you from doing the wrong thing, so no harm can be done
    by confusing these things.) The precise installation procedure is
-   not subject of this section, these details are in <A
+   not subject of this section; these details are in <A
 HREF="installation.html"
->Chapter 1</A
+>Chapter 14</A
 >.
   </P
 ><P
@@ -128,7 +128,7 @@ CLASS="PROGRAMLISTING"
 >pg_dumpall -p 5432 | psql -d template1 -p 6543</PRE
 ><P>
 
-   to transfer your data, or use an intermediate file if you want.
+   to transfer your data.  Or use an intermediate file if you want.
    Then you can shut down the old server and start the new server at
    the port the old one was running at. You should make sure that the
    database is not updated after you run <SPAN
@@ -137,7 +137,7 @@ CLASS="APPLICATION"
 >,
    otherwise you will obviously lose that data. See <A
 HREF="client-authentication.html"
->Chapter 6</A
+>Chapter 19</A
 > for information on how to prohibit
    access. In practice you probably want to test your client
    applications on the new setup before switching over.
@@ -153,7 +153,7 @@ CLASS="PROGRAMLISTING"
 >pg_dumpall &#62; backup
 pg_ctl stop
 mv /usr/local/pgsql /usr/local/pgsql.old
-cd /usr/src/postgresql-7.3.3
+cd ~/postgresql-7.4beta1
 gmake install
 initdb -D /usr/local/pgsql/data
 postmaster -D /usr/local/pgsql/data
@@ -162,7 +162,7 @@ psql template1 &#60; backup</PRE
 
    See <A
 HREF="runtime.html"
->Chapter 3</A
+>Chapter 16</A
 > about ways to start and stop the
    server and other details. The installation instructions will advise
    you of strategic places to perform these steps.

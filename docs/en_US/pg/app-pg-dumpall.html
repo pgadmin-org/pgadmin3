@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >pg_dumpall</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,15 +78,15 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-PG-DUMPALL"
+></A
 ><SPAN
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
-></A
 ></H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN48336"
+NAME="AEN46533"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN48340"
+NAME="AEN46537"
 ></A
 ><H2
 >Synopsis</H2
@@ -105,11 +105,9 @@ NAME="AEN48340"
 ><TT
 CLASS="COMMAND"
 >pg_dumpall</TT
-> [<TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->options</I
-></TT
+>option</VAR
 >...]</P
 ></DIV
 ><DIV
@@ -127,30 +125,36 @@ CLASS="APPLICATION"
    (<SPAN
 CLASS="QUOTE"
 >"dumping"</SPAN
->) all PostgreSQL databases of a cluster into
-   one script file.  The script file contains SQL commands that can be
-   used as input to <A
+>) all <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> databases
+   of a cluster into one script file.  The script file contains
+   <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands that can be used as input to <A
 HREF="app-psql.html"
 ><SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 ></A
->
-   to restore the databases.  It does this by calling <A
+> to restore the databases.  It does this by
+   calling <A
 HREF="app-pgdump.html"
 >pg_dump</A
-> for each database
-   in a cluster.  <SPAN
+> for each database in a cluster.
+   <SPAN
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
-> also dumps
-   global objects that are common to all databases.
+> also dumps global objects
+   that are common to all databases.
    (<SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > does not save these objects.)
-   This currently includes the information about database users and
-   groups.
+   This currently includes information about database users and
+   groups, and access permissions that apply to databases as a whole.
   </P
 ><P
 >   Thus, <SPAN
@@ -191,11 +195,11 @@ CLASS="APPLICATION"
 >  <SPAN
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
-> might need to connect several
+> needs to connect several
   times to the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> server, asking for
+> server and might be asking for
   a password each time. It is convenient to have a
   <TT
 CLASS="FILENAME"
@@ -206,12 +210,13 @@ CLASS="FILENAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48366"
+NAME="AEN46565"
 ></A
 ><H2
 >Options</H2
 ><P
->    The following command-line options are used to control the output format.
+>    The following command-line options are used to control the content and
+    format of the output.
 
     <P
 ></P
@@ -219,12 +224,25 @@ NAME="AEN48366"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-c</TT
-><BR><TT
+>-a</VAR
+><BR><VAR
 CLASS="OPTION"
->--clean</TT
+>--data-only</VAR
+></DT
+><DD
+><P
+>	Dump only the data, not the schema (data definitions).
+       </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-c</VAR
+><BR><VAR
+CLASS="OPTION"
+>--clean</VAR
 ></DT
 ><DD
 ><P
@@ -233,12 +251,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-d</TT
-><BR><TT
+>-d</VAR
+><BR><VAR
 CLASS="OPTION"
->--inserts</TT
+>--inserts</VAR
 ></DT
 ><DD
 ><P
@@ -250,20 +268,20 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >COPY</TT
 >). This will make restoration very
-	slow, but it makes the output more portable to other RDBMS
+	slow, but it makes the output more portable to other SQL database
 	packages.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-D</TT
-><BR><TT
+>-D</VAR
+><BR><VAR
 CLASS="OPTION"
->--column-inserts</TT
-><BR><TT
+>--column-inserts</VAR
+><BR><VAR
 CLASS="OPTION"
->--attribute-inserts</TT
+>--attribute-inserts</VAR
 ></DT
 ><DD
 ><P
@@ -271,33 +289,29 @@ CLASS="OPTION"
 CLASS="COMMAND"
 >INSERT</TT
 > commands with explicit
-	column names (<TT
+	column names (<VAR
 CLASS="LITERAL"
 >INSERT INTO
-	<TT
+	<VAR
 CLASS="REPLACEABLE"
-><I
->table</I
-></TT
+>table</VAR
 >
-	(<TT
+	(<VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
+>column</VAR
 >, ...) VALUES
-	...</TT
+	...</VAR
 >).  This will make restoration very slow,
 	but it is necessary if you desire to rearrange column ordering.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-g</TT
-><BR><TT
+>-g</VAR
+><BR><VAR
 CLASS="OPTION"
->--globals-only</TT
+>--globals-only</VAR
 ></DT
 ><DD
 ><P
@@ -305,12 +319,12 @@ CLASS="OPTION"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-i</TT
-><BR><TT
+>-i</VAR
+><BR><VAR
 CLASS="OPTION"
->--ignore-version</TT
+>--ignore-version</VAR
 ></DT
 ><DD
 ><P
@@ -325,29 +339,32 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
 > can handle databases
-        from previous releases of PostgreSQL, but very old versions
-        are not supported anymore (currently prior to 7.0).  Use this
-        option if you need to override the version check (and if
-        <SPAN
+        from previous releases of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, but very
+        old versions are not supported anymore (currently prior to
+        7.0).  Use this option if you need to override the version
+        check (and if <SPAN
 CLASS="APPLICATION"
 >pg_dumpall</SPAN
-> then fails, don't say
-        you weren't warned).
+> then
+        fails, don't say you weren't warned).
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-o</TT
-><BR><TT
+>-o</VAR
+><BR><VAR
 CLASS="OPTION"
->--oids</TT
+>--oids</VAR
 ></DT
 ><DD
 ><P
->	Dump object identifiers (<SPAN
+>	Dump object identifiers (<ACRONYM
 CLASS="ACRONYM"
->OID</SPAN
+>OID</ACRONYM
 >s) for every
 	table.  Use this option if your application references the OID
 	columns in some way (e.g., in a foreign key constraint).
@@ -355,12 +372,25 @@ CLASS="ACRONYM"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-v</TT
-><BR><TT
+>-s</VAR
+><BR><VAR
 CLASS="OPTION"
->--verbose</TT
+>--schema-only</VAR
+></DT
+><DD
+><P
+>	Dump only the schema (data definitions), no data.
+       </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-v</VAR
+><BR><VAR
+CLASS="OPTION"
+>--verbose</VAR
 ></DT
 ><DD
 ><P
@@ -370,6 +400,22 @@ CLASS="APPLICATION"
 >pg_dumpall</SPAN
 > to print progress
 	messages to standard error.
+       </P
+></DD
+><DT
+><VAR
+CLASS="OPTION"
+>-x</VAR
+><BR><VAR
+CLASS="OPTION"
+>--no-privileges</VAR
+><BR><VAR
+CLASS="OPTION"
+>--no-acl</VAR
+></DT
+><DD
+><P
+>	Prevent dumping of access privileges (grant/revoke commands).
        </P
 ></DD
 ></DL
@@ -385,47 +431,42 @@ CLASS="APPLICATION"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->-h <TT
+>-h <VAR
 CLASS="REPLACEABLE"
-><I
->host</I
-></TT
+>host</VAR
 ></DT
 ><DD
 ><P
 >	Specifies the host name of the machine on which the database
-	server is running.  If host begins with a slash, it is used as
-	the directory for the Unix domain socket.  The default is
-	taken from the <TT
+	server is running.  If the value begins with a slash, it is
+	used as the directory for the Unix domain socket.  The default
+	is taken from the <TT
 CLASS="ENVAR"
 >PGHOST</TT
-> environment variable, if
-	set, else a Unix domain socket connection is attempted.
+> environment variable,
+	if set, else a Unix domain socket connection is attempted.
        </P
 ></DD
 ><DT
->-p <TT
+>-p <VAR
 CLASS="REPLACEABLE"
-><I
->port</I
-></TT
+>port</VAR
 ></DT
 ><DD
 ><P
->        The port number on which the server is listening.  Defaults to
-        the <TT
+>	Specifies the TCP port or local Unix domain socket file
+	extension on which the server is listening for connections.
+	Defaults to the <TT
 CLASS="ENVAR"
 >PGPORT</TT
-> environment variable, if set, or a
-        compiled-in default.
+> environment variable, if
+	set, or a compiled-in default.
        </P
 ></DD
 ><DT
->-U <TT
+>-U <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
+>username</VAR
 ></DT
 ><DD
 ><P
@@ -444,14 +485,11 @@ CLASS="REPLACEABLE"
 ></DIV
 ><P>
   </P
-><P
->   Long options are only available on some platforms.
-  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48457"
+NAME="AEN46679"
 ></A
 ><H2
 >Environment</H2
@@ -473,7 +511,7 @@ CLASS="ENVAR"
 ></DT
 ><DD
 ><P
->      Default connection parameters.
+>      Default connection parameters
      </P
 ></DD
 ></DL
@@ -482,7 +520,7 @@ CLASS="ENVAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48469"
+NAME="AEN46691"
 ></A
 ><H2
 >Notes</H2
@@ -501,16 +539,16 @@ CLASS="APPLICATION"
 >.
   </P
 ><P
->   <SPAN
-CLASS="APPLICATION"
->pg_dumpall</SPAN
-> will need to connect several
-   times to the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server.  If password
-   authentication is configured, it will ask for a password each time. In
-   that case it would be convenient to set up a password file.
+>   Once restored, it is wise to run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> on each
+   database so the optimizer has useful statistics. You
+   can also run <TT
+CLASS="COMMAND"
+>vacuumdb -a -z</TT
+> to analyze all
+   databases.
   </P
 ></DIV
 ><DIV
@@ -525,14 +563,12 @@ NAME="APP-PG-DUMPALL-EX"
 
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->pg_dumpall &gt; db.out</B
-></TT
+>pg_dumpall &gt; db.out</KBD
 ></PRE
 ><P>
   </P
@@ -540,14 +576,12 @@ CLASS="USERINPUT"
 >   To reload this database use, for example:
 </P><PRE
 CLASS="SCREEN"
-><TT
+><SAMP
 CLASS="PROMPT"
->$</TT
-> <TT
+>$</SAMP
+> <KBD
 CLASS="USERINPUT"
-><B
->psql -f db.out template1</B
-></TT
+>psql -f db.out template1</KBD
 ></PRE
 ><P>
    (It is not important to which database you connect here since the
@@ -562,7 +596,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48490"
+NAME="AEN46711"
 ></A
 ><H2
 >See Also</H2

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Release 7.2.4</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix A. Release Notes</TD
+>Appendix D. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,7 +81,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-2-4"
->A.5. Release 7.2.4</A
+>D.7. Release 7.2.4</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -94,49 +94,72 @@ CLASS="NOTE"
 ></BLOCKQUOTE
 ></DIV
 ><P
->    This has a variety of fixes from 7.2.3, including fixes to prevent
-    possible data loss.
-   </P
+>   This release contains a variety of fixes for version 7.2.3,
+   including fixes to prevent possible data loss.
+  </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23759"
->A.5.1. Migration to version 7.2.4</A
+NAME="AEN62600"
+>D.7.1. Migration to version 7.2.4</A
 ></H2
 ><P
->     A dump/restore is <SPAN
+>    A dump/restore is <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
 >not</I
 ></SPAN
-> required for those running
-     7.2.X.
-    </P
+> required for those
+    running version 7.2.*.
+   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN23763"
->A.5.2. Changes</A
+NAME="AEN62604"
+>D.7.2. Changes</A
 ></H2
 ><P
+></P
+><UL
+><LI
 ><P
-CLASS="LITERALLAYOUT"
->Fix&nbsp;some&nbsp;additional&nbsp;cases&nbsp;of&nbsp;VACUUM&nbsp;"No&nbsp;one&nbsp;parent&nbsp;tuple&nbsp;was&nbsp;found"&nbsp;error<br>
-Prevent&nbsp;VACUUM&nbsp;from&nbsp;being&nbsp;called&nbsp;inside&nbsp;a&nbsp;function&nbsp;&nbsp;(Bruce)<br>
-Ensure&nbsp;pg_clog&nbsp;updates&nbsp;are&nbsp;sync'd&nbsp;to&nbsp;disk&nbsp;before&nbsp;marking&nbsp;checkpoint&nbsp;complete<br>
-Avoid&nbsp;integer&nbsp;overflow&nbsp;during&nbsp;large&nbsp;hash&nbsp;joins<br>
-Make&nbsp;GROUP&nbsp;commands&nbsp;work&nbsp;when&nbsp;pg_group.grolist&nbsp;is&nbsp;large&nbsp;enough&nbsp;to&nbsp;be&nbsp;toasted<br>
-Fix&nbsp;errors&nbsp;in&nbsp;datetime&nbsp;tables;&nbsp;some&nbsp;timezone&nbsp;names&nbsp;weren't&nbsp;being&nbsp;recognized<br>
-Fix&nbsp;integer&nbsp;overflows&nbsp;in&nbsp;circle_poly(),&nbsp;path_encode(),&nbsp;path_add()&nbsp;&nbsp;(Neil)<br>
-Repair&nbsp;long-standing&nbsp;logic&nbsp;errors&nbsp;in&nbsp;lseg_eq(),&nbsp;lseg_ne(),&nbsp;lseg_center()</P
->
-    </P
+>Fix some additional cases of VACUUM "No one parent tuple was found" error</P
+></LI
+><LI
+><P
+>Prevent VACUUM from being called inside a function  (Bruce)</P
+></LI
+><LI
+><P
+>Ensure pg_clog updates are sync'd to disk before marking checkpoint complete</P
+></LI
+><LI
+><P
+>Avoid integer overflow during large hash joins</P
+></LI
+><LI
+><P
+>Make GROUP commands work when pg_group.grolist is large enough to be toasted</P
+></LI
+><LI
+><P
+>Fix errors in datetime tables; some timezone names weren't being recognized</P
+></LI
+><LI
+><P
+>Fix integer overflows in circle_poly(), path_encode(), path_add()  (Neil)</P
+></LI
+><LI
+><P
+>Repair long-standing logic errors in lseg_eq(), lseg_ne(), lseg_center()</P
+></LI
+></UL
 ></DIV
 ></DIV
 ><DIV

@@ -1,21 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >UNION and CASE Constructs</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Type Conversion"
 HREF="typeconv.html"><LINK
 REL="PREVIOUS"
-TITLE="Query Targets"
+TITLE="Value Storage"
 HREF="typeconv-query.html"><LINK
 REL="NEXT"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 7. Type Conversion</TD
+>Chapter 10. Type Conversion</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,47 +81,47 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TYPECONV-UNION-CASE"
->7.5. <TT
+>10.5. <VAR
 CLASS="LITERAL"
->UNION</TT
-> and <TT
+>UNION</VAR
+> and <VAR
 CLASS="LITERAL"
->CASE</TT
+>CASE</VAR
 > Constructs</A
 ></H1
 ><P
->SQL <TT
+>SQL <VAR
 CLASS="LITERAL"
->UNION</TT
+>UNION</VAR
 > constructs must match up possibly dissimilar types to
 become a single result set.  The resolution algorithm is applied separately
-to each output column of a union query.  The <TT
+to each output column of a union query.  The <VAR
 CLASS="LITERAL"
->INTERSECT</TT
+>INTERSECT</VAR
 > and
-<TT
+<VAR
 CLASS="LITERAL"
->EXCEPT</TT
+>EXCEPT</VAR
 > constructs resolve dissimilar types in the same way as
-<TT
+<VAR
 CLASS="LITERAL"
->UNION</TT
+>UNION</VAR
 >.
-A <TT
+A <VAR
 CLASS="LITERAL"
->CASE</TT
+>CASE</VAR
 > construct also uses the identical algorithm to match up its
 component expressions and select a result data type.</P
 ><DIV
 CLASS="PROCEDURE"
 ><P
 ><B
-><TT
+><VAR
 CLASS="LITERAL"
->UNION</TT
-> and <TT
+>UNION</VAR
+> and <VAR
 CLASS="LITERAL"
->CASE</TT
+>CASE</VAR
 > Type Resolution</B
 ></P
 ><OL
@@ -135,11 +135,11 @@ CLASS="TYPE"
 <TT
 CLASS="TYPE"
 >text</TT
-> (the preferred type for string category).
+> (the preferred type of the string category).
 Otherwise, ignore the <TT
 CLASS="TYPE"
 >unknown</TT
-> inputs while choosing the type.</P
+> inputs while choosing the result type.</P
 ></LI
 ><LI
 ><P
@@ -149,71 +149,77 @@ CLASS="TYPE"
 ><P
 >Choose the first non-unknown input type which is a preferred type in
 that category or allows all the non-unknown inputs to be implicitly
-coerced to it.</P
+converted to it.</P
 ></LI
 ><LI
 ><P
->Coerce all inputs to the selected type.</P
+>Convert all inputs to the selected type.</P
 ></LI
 ></OL
 ></DIV
-><H3
-CLASS="BRIDGEHEAD"
-><A
-NAME="AEN10995">Examples</H3
+><P
+>Some examples follow.</P
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN10996"
+NAME="AEN12426"
 ></A
 ><P
 ><B
->Example 7-7. Underspecified Types in a Union</B
+>Example 10-7. Type Resolution with Underspecified Types in a Union</B
 ></P
 ><P
 ></P><PRE
 CLASS="SCREEN"
->tgl=&#62; SELECT text 'a' AS "Text" UNION SELECT 'b';
- Text
+>SELECT text 'a' AS "text" UNION SELECT 'b';
+
+ text
 ------
  a
  b
 (2 rows)</PRE
 ><P>
-Here, the unknown-type literal <TT
+Here, the unknown-type literal <VAR
 CLASS="LITERAL"
->'b'</TT
-> will be resolved as type text.</P
+>'b'</VAR
+> will be resolved as type <TT
+CLASS="TYPE"
+>text</TT
+>.</P
 ></DIV
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN11001"
+NAME="AEN12432"
 ></A
 ><P
 ><B
->Example 7-8. Type Conversion in a Simple Union</B
+>Example 10-8. Type Resolution in a Simple Union</B
 ></P
 ><P
 ></P><PRE
 CLASS="SCREEN"
->tgl=&#62; SELECT 1.2 AS "Numeric" UNION SELECT 1;
- Numeric
+>SELECT 1.2 AS "numeric" UNION SELECT 1;
+
+ numeric
 ---------
        1
      1.2
 (2 rows)</PRE
 ><P>
-The literal <TT
+The literal <VAR
 CLASS="LITERAL"
->1.2</TT
+>1.2</VAR
 > is of type <TT
 CLASS="TYPE"
 >numeric</TT
 >,
-and the integer value <TT
+and the <TT
+CLASS="TYPE"
+>integer</TT
+> value <VAR
 CLASS="LITERAL"
->1</TT
+>1</VAR
 > can be cast implicitly to
 <TT
 CLASS="TYPE"
@@ -223,18 +229,18 @@ CLASS="TYPE"
 ><DIV
 CLASS="EXAMPLE"
 ><A
-NAME="AEN11009"
+NAME="AEN12441"
 ></A
 ><P
 ><B
->Example 7-9. Type Conversion in a Transposed Union</B
+>Example 10-9. Type Resolution in a Transposed Union</B
 ></P
 ><P
 ></P><PRE
 CLASS="SCREEN"
->tgl=&#62; SELECT 1 AS "Real"
-tgl-&#62; UNION SELECT CAST('2.2' AS REAL);
- Real
+>SELECT 1 AS "real" UNION SELECT CAST('2.2' AS REAL);
+
+ real
 ------
     1
   2.2
@@ -304,7 +310,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Query Targets</TD
+>Value Storage</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Boolean Type</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,7 +60,7 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 5. Data Types</TD
+>Chapter 8. Data Types</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -81,25 +81,25 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="DATATYPE-BOOLEAN"
->5.6. Boolean Type</A
+>8.6. Boolean Type</A
 ></H1
 ><A
-NAME="AEN4207"
+NAME="AEN4185"
 ></A
 ><A
-NAME="AEN4210"
+NAME="AEN4188"
 ></A
 ><A
-NAME="AEN4212"
+NAME="AEN4190"
 ></A
 ><P
 >    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > provides the
-    standard <SPAN
+    standard <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > type <TT
 CLASS="TYPE"
 >boolean</TT
@@ -119,9 +119,9 @@ CLASS="QUOTE"
 CLASS="QUOTE"
 >"unknown"</SPAN
 >, is represented by the
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 > null value.
    </P
 ><P
@@ -136,44 +136,44 @@ BORDER="0"
 ><TBODY
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->TRUE</TT
+>TRUE</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'t'</TT
+>'t'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'true'</TT
+>'true'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'y'</TT
+>'y'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'yes'</TT
+>'yes'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'1'</TT
+>'1'</VAR
 ></TD
 ></TR
 ></TBODY
@@ -193,44 +193,44 @@ BORDER="0"
 ><TBODY
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->FALSE</TT
+>FALSE</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'f'</TT
+>'f'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'false'</TT
+>'false'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'n'</TT
+>'n'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'no'</TT
+>'no'</VAR
 ></TD
 ></TR
 ><TR
 ><TD
-><TT
+><VAR
 CLASS="LITERAL"
->'0'</TT
+>'0'</VAR
 ></TD
 ></TR
 ></TBODY
@@ -238,17 +238,17 @@ CLASS="LITERAL"
 ><P
 ></P
 >
-    Using the key words <TT
+    Using the key words <VAR
 CLASS="LITERAL"
->TRUE</TT
+>TRUE</VAR
 > and
-    <TT
+    <VAR
 CLASS="LITERAL"
->FALSE</TT
+>FALSE</VAR
 > is preferred (and
-    <SPAN
+    <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
+>SQL</ACRONYM
 >-compliant).
    </P
 ><DIV
@@ -258,7 +258,7 @@ NAME="DATATYPE-BOOLEAN-EXAMPLE"
 ></A
 ><P
 ><B
->Example 5-2. Using the <TT
+>Example 8-2. Using the <TT
 CLASS="TYPE"
 >boolean</TT
 > type</B
@@ -282,18 +282,18 @@ SELECT * FROM test1 WHERE a;
 ><P
 >    <A
 HREF="datatype-boolean.html#DATATYPE-BOOLEAN-EXAMPLE"
->Example 5-2</A
+>Example 8-2</A
 > shows that
     <TT
 CLASS="TYPE"
 >boolean</TT
 > values are output using the letters
-    <TT
+    <VAR
 CLASS="LITERAL"
->t</TT
-> and <TT
+>t</VAR
+> and <VAR
 CLASS="LITERAL"
->f</TT
+>f</VAR
 >.
    </P
 ><DIV
@@ -307,33 +307,29 @@ CLASS="TIP"
 CLASS="TYPE"
 >boolean</TT
 > type cannot be cast directly
-     to other types (e.g., <TT
+     to other types (e.g., <VAR
 CLASS="LITERAL"
 >CAST
-     (<TT
+     (<VAR
 CLASS="REPLACEABLE"
-><I
->boolval</I
-></TT
-> AS integer)</TT
+>boolval</VAR
+> AS integer)</VAR
 > does
      not work).  This can be accomplished using the
-     <TT
+     <VAR
 CLASS="LITERAL"
->CASE</TT
-> expression: <TT
+>CASE</VAR
+> expression: <VAR
 CLASS="LITERAL"
 >CASE WHEN
-     <TT
+     <VAR
 CLASS="REPLACEABLE"
-><I
->boolval</I
-></TT
+>boolval</VAR
 > THEN 'value if true' ELSE
-     'value if false' END</TT
+     'value if false' END</VAR
 >.  See also <A
 HREF="functions-conditional.html"
->Section 6.12</A
+>Section 9.12</A
 >.
     </P
 ></BLOCKQUOTE

@@ -1,30 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >Internal Functions</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="Extending SQL: Functions"
-HREF="xfunc.html"><LINK
+TITLE="Extending SQL"
+HREF="extend.html"><LINK
 REL="PREVIOUS"
 TITLE="Procedural Language Functions"
 HREF="xfunc-pl.html"><LINK
 REL="NEXT"
-TITLE="C Language Functions"
+TITLE="C-Language Functions"
 HREF="xfunc-c.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -60,10 +60,10 @@ ACCESSKEY="P"
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 9. Extending <SPAN
+>Chapter 34. Extending <ACRONYM
 CLASS="ACRONYM"
->SQL</SPAN
->: Functions</TD
+>SQL</ACRONYM
+></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -84,10 +84,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XFUNC-INTERNAL"
->9.4. Internal Functions</A
+>34.6. Internal Functions</A
 ></H1
 ><A
-NAME="AEN31504"
+NAME="AEN29723"
 ></A
 ><P
 >    Internal functions are functions written in C that have been statically
@@ -107,7 +107,7 @@ CLASS="QUOTE"
    </P
 ><P
 >    Normally, all internal functions present in the
-    backend are declared during the initialization of the database cluster (<TT
+    server are declared during the initialization of the database cluster (<TT
 CLASS="COMMAND"
 >initdb</TT
 >),
@@ -120,20 +120,20 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >CREATE FUNCTION</TT
 >
-    with language name <TT
+    with language name <VAR
 CLASS="LITERAL"
->internal</TT
+>internal</VAR
 >.  For instance, to
-    create an alias for the <TT
+    create an alias for the <CODE
 CLASS="FUNCTION"
->sqrt</TT
+>sqrt</CODE
 > function:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE FUNCTION square_root(double precision) RETURNS double precision
     AS 'dsqrt'
-    LANGUAGE INTERNAL
-    WITH (isStrict);</PRE
+    LANGUAGE internal
+    STRICT;</PRE
 ><P>
     (Most internal functions expect to be declared <SPAN
 CLASS="QUOTE"
@@ -210,7 +210,7 @@ WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="xfunc.html"
+HREF="extend.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -218,7 +218,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->C Language Functions</TD
+>C-Language Functions</TD
 ></TR
 ></TABLE
 ></DIV

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >DECLARE</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,249 +78,45 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SQL-DECLARE"
->DECLARE</A
-></H1
+></A
+>DECLARE</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41931"
+NAME="AEN40585"
 ></A
 ><H2
 >Name</H2
->   DECLARE
-  &nbsp;--&nbsp;   define a cursor
-  </DIV
+>DECLARE&nbsp;--&nbsp;define a cursor</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41934"
+NAME="AEN40588"
 ></A
 ><H2
 >Synopsis</H2
 ><PRE
 CLASS="SYNOPSIS"
->DECLARE <TT
+>DECLARE <VAR
 CLASS="REPLACEABLE"
-><I
->cursorname</I
-></TT
-> [ BINARY ] [ INSENSITIVE ] [ SCROLL ]
-    CURSOR FOR <TT
+>cursorname</VAR
+> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]
+    CURSOR [ { WITH | WITHOUT } HOLD ] FOR <VAR
 CLASS="REPLACEABLE"
-><I
->query</I
-></TT
+>query</VAR
 >
-    [ FOR { READ ONLY | UPDATE [ OF <TT
+    [ FOR { READ ONLY | UPDATE [ OF <VAR
 CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-> [, ...] ] ]
-  </PRE
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DECLARE-1"
-></A
-><H3
->    Inputs
-   </H3
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->cursorname</I
-></TT
-></DT
-><DD
-><P
->	The name of the cursor to be used in subsequent FETCH operations.
-       </P
-></DD
-><DT
->BINARY</DT
-><DD
-><P
->	Causes the cursor to fetch data in binary
-	rather than in text format.
-       </P
-></DD
-><DT
->INSENSITIVE</DT
-><DD
-><P
->	<SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> keyword indicating that data retrieved
-	from the cursor should be unaffected by updates from other processes or cursors.
-	Since cursor operations occur within transactions
-	in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> this is always the case.
-	This keyword has no effect.
-       </P
-></DD
-><DT
->SCROLL</DT
-><DD
-><P
->	<SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> keyword indicating that data may be retrieved
-	in multiple rows per FETCH operation. Since this is allowed at all times
-	by <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> this keyword has no effect.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->query</I
-></TT
-></DT
-><DD
-><P
->	An SQL query which will provide the rows to be governed by the
-	cursor.
-	Refer to the SELECT statement for further information about
-	valid arguments.
-       </P
-></DD
-><DT
->READ ONLY</DT
-><DD
-><P
->	<SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> keyword indicating that the cursor will be used
-	in a read only mode. Since this is the only cursor access mode
-	available in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> this keyword has no effect.
-       </P
-></DD
-><DT
->UPDATE</DT
-><DD
-><P
->	<SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> keyword indicating that the cursor will be used
-	to update tables. Since cursor updates are not currently
-	supported in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> this keyword
-	provokes an informational error message.
-       </P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->column</I
-></TT
-></DT
-><DD
-><P
->	Column(s) to be updated.
-	Since cursor updates are not currently
-	supported in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> the UPDATE clause
-	provokes an informational error message.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DECLARE-2"
-></A
-><H3
->    Outputs
-   </H3
-><P
->&#13;    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->DECLARE CURSOR
-       </TT
-></DT
-><DD
-><P
->	The message returned if the SELECT is run successfully.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->WARNING:  Closing pre-existing portal "<TT
-CLASS="REPLACEABLE"
-><I
->cursorname</I
-></TT
->"
-       </TT
-></DT
-><DD
-><P
->	This message is reported if the same cursor name was already declared
-	in the current transaction block.  The previous definition is
-	discarded.
-       </P
-></DD
-><DT
-><TT
-CLASS="COMPUTEROUTPUT"
->ERROR:  DECLARE CURSOR may only be used in begin/end transaction blocks
-       </TT
-></DT
-><DD
-><P
->	This error occurs if the cursor is not declared within a transaction block.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
+>column</VAR
+> [, ...] ] } ]</PRE
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DECLARE-1"
+NAME="AEN40593"
 ></A
 ><H2
->   Description
-  </H2
+>Description</H2
 ><P
 >   <TT
 CLASS="COMMAND"
@@ -337,43 +133,40 @@ HREF="sql-fetch.html"
 >.
   </P
 ><P
->   Normal cursors return data in text format, either ASCII or another
-   encoding scheme depending on how the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-   backend was built. Since
-   data is stored natively in binary format, the system must
-   do a conversion to produce the text format. In addition,
-   text formats are often larger in size than the corresponding binary format.
-   Once the information comes back in text form,  the client
-   application may need to convert it to a binary format to
-   manipulate it.
-   BINARY cursors give you back the data in the native binary
-   representation.
+>   Normal cursors return data in text format, the same as a
+   <TT
+CLASS="COMMAND"
+>SELECT</TT
+> would produce.  Since data is stored natively in
+   binary format, the system must do a conversion to produce the text
+   format.  Once the information comes back in text form, the client
+   application may need to convert it to a binary format to manipulate
+   it.  In addition, data in the text format is often larger in size
+   than in the binary format.  Binary cursors return the data in the
+   native binary representation.  Nevertheless, if you intend to
+   display the data as text anyway, retrieving it in text form will
+   save you some effort on the client side.
   </P
 ><P
 >   As an example, if a query returns a value of one from an integer column,
-   you would get a string of <TT
+   you would get a string of <VAR
 CLASS="LITERAL"
->1</TT
+>1</VAR
 > with a default cursor
    whereas with a binary cursor you would get
-   a 4-byte value equal to control-A (<TT
-CLASS="LITERAL"
->^A</TT
->).
+   a 4-byte value containing the internal representation of the value.
   </P
 ><P
->   BINARY cursors should be used carefully. User applications such
-   as <SPAN
+>   Binary cursors should be used carefully.  Many applications,
+   including <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
-> are not aware of binary cursors
-   and expect data to come back in a text format.
+>, are not prepared to
+   handle binary cursors and expect data to come back in the text
+   format.
   </P
 ><P
->   String representation is architecture-neutral whereas binary
+>   The string representation is architecture-neutral whereas binary
    representation can differ between different machine architectures.
    <SPAN
 CLASS="emphasis"
@@ -383,48 +176,291 @@ CLASS="EMPHASIS"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > does not resolve
-    byte ordering or representation issues for binary cursors</I
+   byte ordering or representation issues for binary
+   cursors.</I
 ></SPAN
->.
-   Therefore, if your client machine and server machine use different
-   representations (e.g., <SPAN
+>  Therefore, if your client machine and server
+   machine use different representations (e.g.,
+   <SPAN
 CLASS="QUOTE"
 >"big-endian"</SPAN
 > versus <SPAN
 CLASS="QUOTE"
 >"little-endian"</SPAN
->),
-   you will probably not want your data returned in
-   binary format.
-   However, binary cursors may be a
-   little more efficient since there is less conversion overhead in
-   the server to client data transfer.
-
-   <DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->     If you intend to display the data in
-     ASCII,  getting it back in ASCII will save you some
-     effort on the client side.
-    </P
-></BLOCKQUOTE
-></DIV
->
+>), you
+   will probably not want your data returned in binary format.
   </P
+></DIV
 ><DIV
-CLASS="REFSECT2"
+CLASS="REFSECT1"
 ><A
-NAME="R2-SQL-DECLARE-3"
+NAME="AEN40609"
 ></A
-><H3
->    Notes
-   </H3
+><H2
+>Parameters</H2
 ><P
->    Cursors are only available in transactions. Use to
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>cursorname</VAR
+></DT
+><DD
+><P
+>      The name of the cursor to be used in subsequent
+      <TT
+CLASS="COMMAND"
+>FETCH</TT
+> operations.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>BINARY</VAR
+></DT
+><DD
+><P
+>      Causes the cursor to return data in binary rather than in text format.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>INSENSITIVE</VAR
+></DT
+><DD
+><P
+>      Indicates that data retrieved from the cursor should be
+      unaffected by updates to the tables underlying the cursor while
+      the cursor exists.  In PostgreSQL, all cursors are insensitive;
+      this key word currently has no effect and is present for
+      compatibility with the SQL standard.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>SCROLL</VAR
+><BR><VAR
+CLASS="LITERAL"
+>NO SCROLL</VAR
+></DT
+><DD
+><P
+>      <VAR
+CLASS="LITERAL"
+>SCROLL</VAR
+> specifies that the cursor may be used
+      to retrieve rows in a nonsequential fashion (e.g.,
+      backward). Depending upon the complexity of the query's
+      execution plan, specifying <VAR
+CLASS="LITERAL"
+>SCROLL</VAR
+> may impose
+      a performance penalty on the query's execution time.
+      <VAR
+CLASS="LITERAL"
+>NO SCROLL</VAR
+> specifies that the cursor cannot be
+      used to retrieve rows in a nonsequential fashion.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>WITH HOLD</VAR
+><BR><VAR
+CLASS="LITERAL"
+>WITHOUT HOLD</VAR
+></DT
+><DD
+><P
+>      <VAR
+CLASS="LITERAL"
+>WITH HOLD</VAR
+> specifies that the cursor may
+      continue to be used after the transaction that created it
+      successfully commits.  <VAR
+CLASS="LITERAL"
+>WITHOUT HOLD</VAR
+> specifies
+      that the cursor cannot be used outside of the transaction that
+      created it. If neither <VAR
+CLASS="LITERAL"
+>WITHOUT HOLD</VAR
+> nor
+      <VAR
+CLASS="LITERAL"
+>WITH HOLD</VAR
+> is specified, <VAR
+CLASS="LITERAL"
+>WITHOUT
+      HOLD</VAR
+> is the default.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>query</VAR
+></DT
+><DD
+><P
+>      A <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command that will provide the rows to be
+      returned by the cursor.  Refer to <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+> for further information about valid
+      queries.
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>FOR READ ONLY</VAR
+><BR><VAR
+CLASS="LITERAL"
+>FOR UPDATE</VAR
+></DT
+><DD
+><P
+>      <VAR
+CLASS="LITERAL"
+>FOR READ ONLY</VAR
+> indicates that the cursor will
+      be used in a read-only mode.  <VAR
+CLASS="LITERAL"
+>FOR UPDATE</VAR
+>
+      indicates that the cursor will be used to update tables.  Since
+      cursor updates are not currently supported in
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, specifying <VAR
+CLASS="LITERAL"
+>FOR
+      UPDATE</VAR
+> will cause an error message and specifying
+      <VAR
+CLASS="LITERAL"
+>FOR READ ONLY</VAR
+> has no effect.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>column</VAR
+></DT
+><DD
+><P
+>      Column(s) to be updated by the cursor.  Since cursor updates are
+      not currently supported in
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, the <VAR
+CLASS="LITERAL"
+>FOR
+      UPDATE</VAR
+> clause provokes an error message.
+     </P
+></DD
+></DL
+></DIV
+><P
+>   The key words <VAR
+CLASS="LITERAL"
+>BINARY</VAR
+>,
+   <VAR
+CLASS="LITERAL"
+>INSENSITIVE</VAR
+>, and <VAR
+CLASS="LITERAL"
+>SCROLL</VAR
+> may
+   appear in any order.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40680"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>DECLARE CURSOR</SAMP
+></DT
+><DD
+><P
+>      The message returned if the cursor was successfully defined.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>WARNING:  Closing pre-existing portal "<VAR
+CLASS="REPLACEABLE"
+>cursorname</VAR
+>"</SAMP
+></DT
+><DD
+><P
+>      This message is reported if a cursor with the same name already
+      exists. The previous definition is discarded.
+     </P
+></DD
+><DT
+><SAMP
+CLASS="COMPUTEROUTPUT"
+>ERROR:  DECLARE CURSOR may only be used in begin/end transaction blocks</SAMP
+></DT
+><DD
+><P
+>      This error occurs if the cursor is not declared within a
+      transaction block, and <VAR
+CLASS="LITERAL"
+>WITH HOLD</VAR
+> is not
+      specified.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN40700"
+></A
+><H2
+>Notes</H2
+><P
+>    If <VAR
+CLASS="LITERAL"
+>WITH HOLD</VAR
+> is not specified, the cursor
+    created by this command can only be used within the current
+    transaction. Use
     <A
 HREF="sql-begin.html"
 ><I
@@ -447,105 +483,139 @@ HREF="sql-rollback.html"
     to define a transaction block.
    </P
 ><P
->    In <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> cursors are only available in
-    embedded <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
-> (<SPAN
-CLASS="ACRONYM"
->ESQL</SPAN
->) applications. 
-    The <SPAN
+>    If <VAR
+CLASS="LITERAL"
+>WITH HOLD</VAR
+> is specified and the transaction
+    that created the cursor successfully commits, the cursor can
+    continue to be accessed by subsequent transactions in the same
+    session.  (But if the creating transaction is aborted, the cursor
+    is removed.)  A cursor created with <VAR
+CLASS="LITERAL"
+>WITH HOLD</VAR
+>
+    is closed when an explicit <TT
+CLASS="COMMAND"
+>CLOSE</TT
+> command is
+    issued on it, or the session ends.  In the current implementation,
+    the rows represented by a held cursor are copied into a temporary
+    file or memory area so that they remain available for subsequent
+    transactions.
+   </P
+><P
+>    The <VAR
+CLASS="LITERAL"
+>SCROLL</VAR
+> option should be specified when defining a
+    cursor that will be used to fetch backwards.  This is required by
+    the SQL standard.  However, for compatibility with earlier
+    versions, <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> backend
-    does not implement an explicit <TT
-CLASS="COMMAND"
->OPEN cursor</TT
+> will allow
+    backward fetches without <VAR
+CLASS="LITERAL"
+>SCROLL</VAR
+>, if the cursor's query
+    plan is simple enough that no extra overhead is needed to support
+    it. However, application developers are advised not to rely on
+    using backward fetches from a cursor that has not been created
+    with <VAR
+CLASS="LITERAL"
+>SCROLL</VAR
+>.  If <VAR
+CLASS="LITERAL"
+>NO SCROLL</VAR
+> is
+    specified, then backward fetches are disallowed in any case.
+   </P
+><P
+>    The SQL standard only makes provisions for cursors in embedded
+    <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>.  The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
 >
-    statement; a cursor is considered to be open when it is declared.
+    server does not implement an <TT
+CLASS="COMMAND"
+>OPEN</TT
+> statement for
+    cursors; a cursor is considered to be open when it is declared.
     However, <SPAN
 CLASS="APPLICATION"
->ecpg</SPAN
->, the
-    embedded SQL preprocessor for <SPAN
+>ECPG</SPAN
+>, the embedded SQL
+    preprocessor for <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->,
-    supports the <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> cursor conventions, including those
-    involving DECLARE and OPEN statements.
+>, supports
+    the standard SQL cursor conventions, including those involving
+    <TT
+CLASS="COMMAND"
+>DECLARE</TT
+> and <TT
+CLASS="COMMAND"
+>OPEN</TT
+> statements.
    </P
-></DIV
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DECLARESTATEMENT-2"
+NAME="AEN40725"
 ></A
 ><H2
->   Usage
-  </H2
+>Examples</H2
 ><P
 >   To declare a cursor:
-
-   </P><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->DECLARE liahona CURSOR
-    FOR SELECT * FROM films;
-   </PRE
+>DECLARE liahona CURSOR FOR SELECT * FROM films;</PRE
 ><P>
+   See <A
+HREF="sql-fetch.html"
+><I
+>FETCH</I
+></A
+> for more
+   examples of cursor usage.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="R1-SQL-DECLARESTATEMENT-3"
+NAME="AEN40730"
 ></A
 ><H2
->   Compatibility
-  </H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="R2-SQL-DECLARESTATEMENT-4"
-></A
-><H3
->    SQL92
-   </H3
+>Compatibility</H2
 ><P
->    <SPAN
+>   The SQL standard allows cursors only in embedded
+   <ACRONYM
 CLASS="ACRONYM"
->SQL92</SPAN
-> allows cursors only in embedded <SPAN
-CLASS="ACRONYM"
->SQL</SPAN
->
-    and in modules. <SPAN
+>SQL</ACRONYM
+> and in modules. <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> permits cursors to be used
-    interactively.
-    <SPAN
-CLASS="ACRONYM"
->SQL92</SPAN
-> allows embedded or modular cursors to
-    update database information.
-    All <SPAN
+>
+   permits cursors to be used interactively.
+  </P
+><P
+>   The SQL standard allows cursors to update table data. All
+   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > cursors are read only.
-    The BINARY keyword is a <SPAN
+  </P
+><P
+>   Binary cursors are a <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> extension.
-   </P
-></DIV
+>
+   extension.
+  </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >initdb</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="APP-INITDB"
->initdb</A
-></H1
+></A
+>initdb</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN50695"
+NAME="AEN48908"
 ></A
 ><H2
 >Name</H2
@@ -94,7 +94,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN50699"
+NAME="AEN48912"
 ></A
 ><H2
 >Synopsis</H2
@@ -102,11 +102,12 @@ NAME="AEN50699"
 ><TT
 CLASS="COMMAND"
 >initdb</TT
-> [options...]  --pgdata  | -D <TT
+> [<VAR
 CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
+>option</VAR
+>...]  --pgdata  | -D <VAR
+CLASS="REPLACEABLE"
+>directory</VAR
 > </P
 ></DIV
 ><DIV
@@ -125,22 +126,22 @@ CLASS="COMMAND"
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> database cluster (or database
-   system).  A database cluster is a collection of databases that are
-   managed by a single server instance.
+> database cluster.  A database
+   cluster is a collection of databases that are managed by a single
+   server instance.
   </P
 ><P
->   Creating a database system consists of creating the directories in which
+>   Creating a database cluster consists of creating the directories in which
    the database data will live, generating the shared catalog tables 
    (tables that belong to the whole cluster rather than to any particular
-   database), and creating the <TT
+   database), and creating the <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 >
-   database.  When you create a new database, everything in the
-   <TT
+   database.  When you later create a new database, everything in the
+   <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 > database is copied.
    It contains catalog tables filled in for things like the
    built-in types.
@@ -171,23 +172,23 @@ CLASS="FILENAME"
 CLASS="COMMAND"
 >initdb</TT
 > uses, see the description of the
-   <TT
+   <VAR
 CLASS="OPTION"
->--locale</TT
+>--locale</VAR
 > option.  The character set encoding can
    be set separately for each database as it is created.
    <TT
 CLASS="COMMAND"
 >initdb</TT
 > determines the encoding for the
-   <TT
+   <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 > database, which will serve as the
    default for all other databases.  To alter the default encoding use
-   the <TT
+   the <VAR
 CLASS="OPTION"
->--encoding</TT
+>--encoding</VAR
 > option.
   </P
 ><P
@@ -233,7 +234,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50734"
+NAME="AEN48948"
 ></A
 ><H2
 >Options</H2
@@ -244,26 +245,22 @@ NAME="AEN50734"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-D <TT
+>-D <VAR
 CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
-></TT
-><BR><TT
+>directory</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--pgdata=<TT
+>--pgdata=<VAR
 CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
-></TT
+>directory</VAR
+></VAR
 ></DT
 ><DD
 ><P
->        This option specifies the directory where the database system
+>        This option specifies the directory where the database cluster
         should be stored. This is the only information required by
         <TT
 CLASS="COMMAND"
@@ -282,41 +279,36 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-E <TT
+>-E <VAR
 CLASS="REPLACEABLE"
-><I
->encoding</I
-></TT
-></TT
-><BR><TT
+>encoding</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--encoding=<TT
+>--encoding=<VAR
 CLASS="REPLACEABLE"
-><I
->encoding</I
-></TT
-></TT
+>encoding</VAR
+></VAR
 ></DT
 ><DD
 ><P
 >        Selects the encoding of the template database. This will also
         be the default encoding of any database you create later, unless you
-        override it there. To use the encoding feature, you must
-        have enabled it at build time, at which time you also select the default
-        for this option.
+        override it there.  The default is <VAR
+CLASS="LITERAL"
+>SQL_ASCII</VAR
+>.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--locale=<TT
+>--locale=<VAR
 CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
+>locale</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -329,81 +321,65 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->--lc-collate=<TT
+>--lc-collate=<VAR
 CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
+>locale</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--lc-ctype=<TT
+>--lc-ctype=<VAR
 CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
+>locale</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--lc-messages=<TT
+>--lc-messages=<VAR
 CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
+>locale</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--lc-monetary=<TT
+>--lc-monetary=<VAR
 CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
+>locale</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--lc-numeric=<TT
+>--lc-numeric=<VAR
 CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
-><BR><TT
+>locale</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--lc-time=<TT
+>--lc-time=<VAR
 CLASS="REPLACEABLE"
-><I
->locale</I
-></TT
-></TT
+>locale</VAR
+></VAR
 ></DT
 ><DD
 ><P
->        Like <TT
+>        Like <VAR
 CLASS="OPTION"
->--locale</TT
+>--locale</VAR
 >, but only sets the locale in
         the specified category.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-U <TT
+>-U <VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
-><BR><TT
+>username</VAR
+></VAR
+><BR><VAR
 CLASS="OPTION"
->--username=<TT
+>--username=<VAR
 CLASS="REPLACEABLE"
-><I
->username</I
-></TT
-></TT
+>username</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -422,12 +398,12 @@ CLASS="SYSTEMITEM"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-W</TT
-><BR><TT
+>-W</VAR
+><BR><VAR
 CLASS="OPTION"
->--pwprompt</TT
+>--pwprompt</VAR
 ></DT
 ><DD
 ><P
@@ -454,12 +430,12 @@ CLASS="COMMAND"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-d</TT
-><BR><TT
+>-d</VAR
+><BR><VAR
 CLASS="OPTION"
->--debug</TT
+>--debug</VAR
 ></DT
 ><DD
 ><P
@@ -474,14 +450,12 @@ CLASS="COMMAND"
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-L <TT
+>-L <VAR
 CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
-></TT
+>directory</VAR
+></VAR
 ></DT
 ><DD
 ><P
@@ -489,18 +463,18 @@ CLASS="REPLACEABLE"
 CLASS="COMMAND"
 >initdb</TT
 > should find
-        its input files to initialize the database system.  This is
+        its input files to initialize the database cluster.  This is
         normally not necessary.  You will be told if you need to
         specify their location explicitly.
        </P
 ></DD
 ><DT
-><TT
+><VAR
 CLASS="OPTION"
->-n</TT
-><BR><TT
+>-n</VAR
+><BR><VAR
 CLASS="OPTION"
->--noclean</TT
+>--noclean</VAR
 ></DT
 ><DD
 ><P
@@ -509,7 +483,7 @@ CLASS="COMMAND"
 >initdb</TT
 >
 	determines that an error prevented it from completely creating the database
-	system, it removes any files it may have created before discovering
+	cluster, it removes any files it may have created before discovering
 	that it can't finish the job. This option inhibits tidying-up and is
 	thus useful for debugging.
        </P
@@ -522,7 +496,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50832"
+NAME="AEN49047"
 ></A
 ><H2
 >Environment</H2
@@ -538,10 +512,10 @@ CLASS="ENVAR"
 ></DT
 ><DD
 ><P
->      Specifies the directory where the database system is to be
-      stored; may be overridden using the <TT
+>      Specifies the directory where the database cluster is to be
+      stored; may be overridden using the <VAR
 CLASS="OPTION"
->-D</TT
+>-D</VAR
 > option.
      </P
 ></DD
@@ -551,7 +525,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50841"
+NAME="AEN49056"
 ></A
 ><H2
 >See Also</H2
@@ -567,9 +541,6 @@ HREF="app-postmaster.html"
 CLASS="APPLICATION"
 >postmaster</SPAN
 ></A
->, <I
-CLASS="CITETITLE"
->PostgreSQL Administrator's Guide</I
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

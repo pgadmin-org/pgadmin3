@@ -1,15 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >SPI_connect</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Interface Functions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="REFENTRY"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -78,12 +78,12 @@ WIDTH="100%"></DIV
 ><H1
 ><A
 NAME="SPI-SPICONNECT"
->SPI_connect</A
-></H1
+></A
+>SPI_connect</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN33652"
+NAME="AEN32048"
 ></A
 ><H2
 >Name</H2
@@ -97,7 +97,7 @@ NAME="IX-SPI-SPICONNECT-2"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN33660"
+NAME="AEN32056"
 ></A
 ><H2
 >Synopsis</H2
@@ -170,51 +170,51 @@ NAME="R1-SPI-SPICONNECT-1"
 ><H2
 >Description</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 > opens a connection from a procedure
 invocation to the SPI manager.
    You must call this function if you will need to execute queries. Some
    utility SPI functions may be called from un-connected procedures.</P
 ><P
 >   If your procedure is already connected,
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 > will return an
    <SPAN
 CLASS="RETURNVALUE"
 >SPI_ERROR_CONNECT</SPAN
 > error.  Note that this
    may happen if a procedure which has called
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 > directly calls another procedure
-   which itself calls <TT
+   which itself calls <CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 >.  While
-   recursive calls to the <SPAN
+   recursive calls to the <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 > manager are permitted
-   when an <SPAN
+   when an <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 > query invokes another function which
-   uses <SPAN
+   uses <ACRONYM
 CLASS="ACRONYM"
->SPI</SPAN
+>SPI</ACRONYM
 >, directly nested calls to
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 > and
-   <TT
+   <CODE
 CLASS="FUNCTION"
->SPI_finish</TT
+>SPI_finish</CODE
 > are forbidden.</P
 ></DIV
 ><DIV
@@ -235,9 +235,9 @@ NAME="R1-SPI-SPICONNECT-3"
 ><H2
 >Algorithm</H2
 ><P
-><TT
+><CODE
 CLASS="FUNCTION"
->SPI_connect</TT
+>SPI_connect</CODE
 > performs the following:
   Initializes the SPI internal
    structures for query execution and memory management.</P

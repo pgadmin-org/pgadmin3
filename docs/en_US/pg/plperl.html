@@ -1,22 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML
 ><HEAD
 ><TITLE
 >PL/Perl - Perl Procedural Language</TITLE
 ><META
 NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.73
-"><LINK
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.3.3 Documentation"
+TITLE="PostgreSQL 7.4beta1 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="Procedural Languages"
-HREF="programmer-pl.html"><LINK
+TITLE="Server Programming"
+HREF="server-programming.html"><LINK
 REL="PREVIOUS"
-TITLE="Description"
-HREF="pltcl-description.html"><LINK
+TITLE="Tcl Procedure Names"
+HREF="pltcl-procnames.html"><LINK
 REL="NEXT"
 TITLE="Data Values in PL/Perl"
 HREF="plperl-data.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-05-24T21:33:34"></HEAD
+CONTENT="2003-08-05T05:04:12"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -44,7 +44,7 @@ CELLSPACING="0"
 ><TH
 COLSPAN="3"
 ALIGN="center"
->PostgreSQL 7.3.3 Documentation</TH
+>PostgreSQL 7.4beta1 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -52,7 +52,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="pltcl-description.html"
+HREF="pltcl-procnames.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -80,8 +80,8 @@ CLASS="CHAPTER"
 ><H1
 ><A
 NAME="PLPERL"
->Chapter 21. PL/Perl - Perl Procedural Language</A
-></H1
+></A
+>Chapter 42. PL/Perl - Perl Procedural Language</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -90,37 +90,37 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->21.1. <A
+>42.1. <A
 HREF="plperl.html#PLPERL-FUNCS"
 >PL/Perl Functions and Arguments</A
 ></DT
 ><DT
->21.2. <A
+>42.2. <A
 HREF="plperl-data.html"
 >Data Values in PL/Perl</A
 ></DT
 ><DT
->21.3. <A
+>42.3. <A
 HREF="plperl-database.html"
 >Database Access from PL/Perl</A
 ></DT
 ><DT
->21.4. <A
+>42.4. <A
 HREF="plperl-trusted.html"
 >Trusted and Untrusted PL/Perl</A
 ></DT
 ><DT
->21.5. <A
+>42.5. <A
 HREF="plperl-missing.html"
 >Missing Features</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN36900"
+NAME="AEN35385"
 ></A
 ><A
-NAME="AEN36902"
+NAME="AEN35387"
 ></A
 ><P
 >   PL/Perl is a loadable procedural language that enables you to write
@@ -135,14 +135,12 @@ TARGET="_top"
   </P
 ><P
 >   To install PL/Perl in a particular database, use
-   <TT
+   <VAR
 CLASS="LITERAL"
->createlang plperl <TT
+>createlang plperl <VAR
 CLASS="REPLACEABLE"
-><I
->dbname</I
-></TT
-></TT
+>dbname</VAR
+></VAR
 >.
   </P
 ><DIV
@@ -152,9 +150,9 @@ CLASS="TIP"
 ><P
 ><B
 >Tip: </B
->    If a language is installed into <TT
+>    If a language is installed into <VAR
 CLASS="LITERAL"
->template1</TT
+>template1</VAR
 >, all subsequently
     created databases will have the language installed automatically.
    </P
@@ -168,8 +166,8 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >    Users of source packages must specially enable the build of
-    PL/Perl during the installation process (refer to the installation
-    instructions for more information).  Users of binary packages
+    PL/Perl during the installation process.  (Refer to the installation
+    instructions for more information.)  Users of binary packages
     might find PL/Perl in a separate subpackage.
    </P
 ></BLOCKQUOTE
@@ -180,27 +178,21 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPERL-FUNCS"
->21.1. PL/Perl Functions and Arguments</A
+>42.1. PL/Perl Functions and Arguments</A
 ></H1
 ><P
 >   To create a function in the PL/Perl language, use the standard syntax:
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION <TT
+>CREATE FUNCTION <VAR
 CLASS="REPLACEABLE"
-><I
->funcname</I
-></TT
-> (<TT
+>funcname</VAR
+> (<VAR
 CLASS="REPLACEABLE"
-><I
->argument-types</I
-></TT
->) RETURNS <TT
+>argument-types</VAR
+>) RETURNS <VAR
 CLASS="REPLACEABLE"
-><I
->return-type</I
-></TT
+>return-type</VAR
 > AS '
     # PL/Perl function body
 ' LANGUAGE plperl;</PRE
@@ -209,16 +201,19 @@ CLASS="REPLACEABLE"
   </P
 ><P
 >   Arguments and results are handled as in any other Perl subroutine:
-   Arguments are passed in <TT
+   Arguments are passed in <VAR
 CLASS="VARNAME"
->@_</TT
+>@_</VAR
 >, and a result value
-   is returned with <TT
+   is returned with <VAR
 CLASS="LITERAL"
->return</TT
+>return</VAR
 > or as the last expression
-   evaluated in the function.  For example, a function returning the
-   greater of two integer values could be defined as:
+   evaluated in the function.
+  </P
+><P
+>   For example, a function returning the greater of two integer values
+   could be defined as:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -236,9 +231,9 @@ CLASS="QUOTE"
 > in Perl.  The above function
    definition will not behave very nicely with null inputs (in fact,
    it will act as though they are zeroes).  We could add
-   <TT
+   <VAR
 CLASS="LITERAL"
->STRICT</TT
+>STRICT</VAR
 > to the function definition to make
    <SPAN
 CLASS="PRODUCTNAME"
@@ -247,9 +242,9 @@ CLASS="PRODUCTNAME"
    if a null value is passed, the function will not be called at all,
    but will just return a null result automatically.  Alternatively,
    we could check for undefined inputs in the function body.  For
-   example, suppose that we wanted <TT
+   example, suppose that we wanted <CODE
 CLASS="FUNCTION"
->perl_max</TT
+>perl_max</CODE
 > with
    one null and one non-null argument to return the non-null argument,
    rather than a null value:
@@ -313,16 +308,16 @@ CLASS="COMMAND"
     quotes and backslashes within your Perl source, typically by
     doubling them as shown in the above example.  Another possible
     approach is to avoid writing single quotes by using Perl's
-    extended quoting operators (<TT
+    extended quoting operators (<VAR
 CLASS="LITERAL"
->q[]</TT
+>q[]</VAR
 >,
-    <TT
+    <VAR
 CLASS="LITERAL"
->qq[]</TT
->, <TT
+>qq[]</VAR
+>, <VAR
 CLASS="LITERAL"
->qw[]</TT
+>qw[]</VAR
 >).
    </P
 ></BLOCKQUOTE
@@ -345,7 +340,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="pltcl-description.html"
+HREF="pltcl-procnames.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -373,13 +368,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Description</TD
+>Tcl Procedure Names</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="programmer-pl.html"
+HREF="server-programming.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
