@@ -373,25 +373,7 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *propert
     {
         form->StartMsg(wxString::Format(_("Retrieving %s details"), wxGetTranslation(GetTypeName())));
 
-        bool canSql;
-        switch (GetType())
-        {
-            case PG_SERVERS:
-            case PG_SERVER:
-            case PG_DATABASES:
-            case PG_TABLESPACES:
-            case PG_TABLESPACE:
-            case PG_GROUPS:
-            case PG_GROUP:
-            case PG_USERS:
-            case PG_USER:
-                canSql=false;
-                break;
-            default:
-                canSql=true;
-                break;
-        }
-        form->SetButtons(TRUE, CanCreate(), CanDrop(), CanEdit(), canSql, CanView(), CanMaintenance());
+        form->SetButtons(this);
         SetContextInfo(form);
 
         ctlListView *statistics=form->GetStatistics();

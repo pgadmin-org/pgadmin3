@@ -63,6 +63,8 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool CanView() { return true; }
     bool CanMaintenance() { return true; }
+    bool CanBackup() { return true; }
+    bool CanRestore() { return true; }
     bool WantDummyChild() { return true; }
 
     wxMenu *GetNewMenu();

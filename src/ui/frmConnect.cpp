@@ -9,14 +9,11 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-// wxWindows headers
-#include <wx/wx.h>
-#include <wx/settings.h>
-#include <wx/xrc/xmlres.h>
 
 
 // App headers
 #include "pgAdmin3.h"
+
 #include "frmConnect.h"
 #include "pgConn.h"
 #include "pgServer.h"

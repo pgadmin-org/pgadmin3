@@ -45,7 +45,7 @@ public:
     void EndMsg();
     void SetStatusText(const wxString &msg);
 
-    void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool maintenance);
+    void SetButtons(pgObject *obj=0);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
 
     void Refresh(pgObject *data);
@@ -101,6 +101,8 @@ private:
     void OnIndexcheck(wxCommandEvent& event);
     void OnGrantWizard(wxCommandEvent& event);
     void OnStatus(wxCommandEvent& event);
+    void OnBackup(wxCommandEvent& event);
+    void OnRestore(wxCommandEvent& event);
     void OnCount(wxCommandEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 

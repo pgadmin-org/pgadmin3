@@ -17,12 +17,17 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "wx/process.h"
 #include "frmMain.h"
 #include "pgConn.h"
 
 #include "menu.h"
 
 
+BEGIN_EVENT_TABLE(pgDialog, wxDialog)
+    EVT_BUTTON (XRCID("btnCancel"),     pgDialog::OnCancel)
+    EVT_CLOSE(                          pgDialog::OnClose)
+END_EVENT_TABLE()
 
 void pgDialog::RestorePosition(int defaultX, int defaultY, int defaultW, int defaultH, int minW, int minH)
 {
@@ -53,6 +58,29 @@ void pgDialog::LoadResource(const wxChar *name)
     wxXmlResource::Get()->LoadDialog(this, GetParent(), dlgName); 
 }
 
+
+
+void pgDialog::OnClose(wxCloseEvent& event)
+{
+    if (IsModal())
+        EndModal(-1);
+    else
+        Destroy();
+}
+
+
+void pgDialog::OnCancel(wxCommandEvent& ev)
+{
+    if (IsModal())
+        EndModal(-1);
+    else
+        Destroy();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+
 void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defaultH, int minW, int minH)
 {
     wxPoint pos(settings->Read(dlgName, wxPoint(defaultX, defaultY)));
@@ -80,7 +108,7 @@ void pgFrame::SavePosition()
 
 //////////////////////////////////////////////////////
 
-BEGIN_EVENT_TABLE(DialogWithHelp, wxDialog)
+BEGIN_EVENT_TABLE(DialogWithHelp, pgDialog)
     EVT_MENU(MNU_HELP,                  DialogWithHelp::OnHelp)
     EVT_BUTTON(XRCID("btnHelp"),        DialogWithHelp::OnHelp)
 END_EVENT_TABLE();
@@ -132,7 +160,10 @@ ExecutionDialog::ExecutionDialog(frmMain *frame, pgObject *_object) : DialogWith
 void ExecutionDialog::OnClose(wxCloseEvent& event)
 {
     Abort();
-    Destroy();
+    if (IsModal())
+        EndModal(-1);
+    else
+        Destroy();
 }
 
 
@@ -150,7 +181,10 @@ void ExecutionDialog::OnCancel(wxCommandEvent& ev)
     }
     else
     {
-        Destroy();
+        if (IsModal())
+            EndModal(-1);
+        else
+            Destroy();
     }
 }
 
@@ -228,3 +262,151 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
 }
 
 
+
+#define TIMER_ID 4442
+
+BEGIN_EVENT_TABLE(ExternProcessDialog, DialogWithHelp)
+    EVT_BUTTON(XRCID("btnOK"),              ExternProcessDialog::OnOK)
+    EVT_BUTTON(XRCID("btnCancel"),          ExternProcessDialog::OnCancel)
+    EVT_CLOSE(                              ExternProcessDialog::OnClose)
+    EVT_END_PROCESS(-1,                     ExternProcessDialog::OnEndProcess)
+    EVT_TIMER(TIMER_ID,                     ExternProcessDialog::OnPollProcess)
+END_EVENT_TABLE()
+
+
+
+ExternProcessDialog::ExternProcessDialog(frmMain *frame) : DialogWithHelp(frame)
+{
+    txtMessages = 0;
+    process = 0;
+    done = false;
+
+    timer=new wxTimer(this, TIMER_ID);
+}
+
+
+
+ExternProcessDialog::~ExternProcessDialog()
+{
+    Abort();
+    delete timer;
+}
+
+
+void ExternProcessDialog::OnOK(wxCommandEvent& ev)
+{
+    if (!done)
+    {
+        btnOK->Disable();
+
+        wxString cmd=GetCmd();
+        if (txtMessages)
+            txtMessages->AppendText(GetDisplayCmd() + END_OF_LINE);
+
+        process = new wxProcess(this);
+        process->Redirect();
+        if (wxExecute(cmd, wxEXEC_ASYNC, process))
+        {
+            if (txtMessages)
+            {
+                readStream();
+                timer->Start(100L);
+            }
+        }
+        else
+            delete process;
+    }
+    else
+    {
+        Abort();
+        pgDialog::OnCancel(ev);
+    }
+}
+
+
+void ExternProcessDialog::OnCancel(wxCommandEvent &ev)
+{
+    if (process)
+    {
+        btnCancel->Disable();
+        Abort();
+    }
+    else
+        pgDialog::OnCancel(ev);
+}
+
+
+void ExternProcessDialog::OnClose(wxCloseEvent &ev)
+{
+    btnCancel->Disable();
+    Abort();
+    pgDialog::OnClose(ev);
+}
+
+
+void ExternProcessDialog::OnPollProcess(wxTimerEvent& event)
+{
+    readStream();
+}
+
+
+void ExternProcessDialog::readStream()
+{
+    if (txtMessages && process)
+    {
+        if (process->IsErrorAvailable())
+            readStream(process->GetErrorStream());
+        if (process->IsInputAvailable())
+            readStream(process->GetInputStream());
+    }
+}
+
+
+void ExternProcessDialog::readStream(wxInputStream *input)
+{
+    if (input)
+    {
+        char buffer[1000+1];
+        size_t size=1;
+        while (size && !input->Eof())
+        {
+            input->Read(buffer, sizeof(buffer)-1);
+            size=input->LastRead();
+            if (size)
+            {
+                buffer[size]=0;
+                txtMessages->AppendText(wxString::FromAscii(buffer));
+            }
+        }
+    }
+}
+
+
+void ExternProcessDialog::OnEndProcess(wxProcessEvent &ev)
+{
+    if (process)
+        done=true;
+    readStream();
+
+    timer->Stop();
+    if (process)
+    {
+        delete process;
+        process=0;
+    }
+    btnOK->Enable();
+    btnCancel->Enable();
+}
+
+
+void ExternProcessDialog::Abort()
+{
+    timer->Stop();
+    if (process)
+    {
+        done=false;
+        wxProcess *tmpProcess=process;
+        process=0;
+        delete tmpProcess;
+    }
+}

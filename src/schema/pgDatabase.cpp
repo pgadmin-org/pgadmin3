@@ -32,6 +32,7 @@ pgDatabase::pgDatabase(const wxString& newName)
     allowConnections = true;
     connected = false;
     conn = NULL;
+    missingFKs=0;
 }
 
 

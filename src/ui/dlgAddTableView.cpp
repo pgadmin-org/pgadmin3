@@ -13,7 +13,6 @@
 
 // wxWindows headers
 #include <wx/notebook.h>
-#include <wx/xrc/xmlres.h>
 
 // App headers
 #include "dlgAddTableView.h"

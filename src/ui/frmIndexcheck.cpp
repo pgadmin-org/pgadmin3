@@ -12,7 +12,6 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/settings.h>
-#include <wx/xrc/xmlres.h>
 
 
 // App headers

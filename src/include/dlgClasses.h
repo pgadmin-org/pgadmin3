@@ -32,7 +32,11 @@ public:
     void LoadResource(const wxChar *name=0);
 
 protected:
+    void OnCancel(wxCommandEvent& ev);
+    void OnClose(wxCloseEvent& event);
     wxString dlgName;
+
+    DECLARE_EVENT_TABLE();
 };
 
 
@@ -45,6 +49,7 @@ public:
     void SavePosition();
 
 protected:
+
     wxString dlgName;
 };
 
@@ -57,7 +62,6 @@ public:
 protected:
     frmMain *mainForm;
     void OnHelp(wxCommandEvent& ev);
-
 
 private:
     virtual wxString GetHelpPage() const = 0;
@@ -84,4 +88,40 @@ protected:
 private:
     DECLARE_EVENT_TABLE();
 };
+
+
+
+class wxProcess;
+class wxProcessEvent;
+class wxTimer;
+class wxTimerEvent;
+class ExternProcessDialog : public DialogWithHelp
+{
+public:
+    ExternProcessDialog(frmMain *frame);
+    ~ExternProcessDialog();
+    virtual wxString GetDisplayCmd()=0;
+    virtual wxString GetCmd()=0;
+
+
+protected:
+    wxProcess *process;
+    bool done;
+    wxTextCtrl *txtMessages;
+    void OnOK(wxCommandEvent& ev);
+    void OnCancel(wxCommandEvent& ev);
+    void OnClose(wxCloseEvent& event);
+    void OnEndProcess(wxProcessEvent& event);
+
+    void Abort();
+
+private:
+    void OnPollProcess(wxTimerEvent& event);
+    void readStream();
+    void readStream(wxInputStream *input);
+
+    wxTimer *timer;
+    DECLARE_EVENT_TABLE();
+};
+
 #endif

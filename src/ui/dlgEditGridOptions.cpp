@@ -13,7 +13,6 @@
 #include <wx/wx.h>
 #include <wx/grid.h>
 #include <wx/settings.h>
-#include <wx/xrc/xmlres.h>
 
 #ifdef __WX_FULLSOURCE
 #include "wx/generic/gridsel.h"

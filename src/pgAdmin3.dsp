@@ -376,6 +376,27 @@ SOURCE=.\utils\misc.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\utils\precomp.cpp
+
+!IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Debug"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Release"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
+
+# ADD CPP /Yc"pgAdmin3.h"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils\sysLogger.cpp
 # End Source File
 # Begin Source File
@@ -677,6 +698,10 @@ SOURCE=.\ui\frmAbout.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\frmBackup.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\frmConnect.cpp
 # End Source File
 # Begin Source File
@@ -718,6 +743,10 @@ SOURCE=.\ui\frmPassword.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmQuery.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmRestore.cpp
 # End Source File
 # Begin Source File
 
@@ -807,6 +836,10 @@ SOURCE=.\include\frmAbout.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\frmBackup.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\frmChildTableViewFrame.h
 # End Source File
 # Begin Source File
@@ -860,6 +893,10 @@ SOURCE=.\include\frmQuery.h
 # Begin Source File
 
 SOURCE=.\include\frmQueryBuilder.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmRestore.h
 # End Source File
 # Begin Source File
 
@@ -1642,7 +1679,31 @@ SOURCE=.\agent\pgaStep.cpp
 # Begin Source File
 
 SOURCE=.\pgAdmin3.cpp
+
+!IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
+
 # ADD CPP /Yc"pgadmin3.h"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Debug"
+
+# ADD CPP /Yc"pgadmin3.h"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Debug"
+
+# ADD CPP /Yc"pgadmin3.h"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode Release"
+
+# ADD CPP /Yc"pgadmin3.h"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Debug"
+
+!ELSEIF  "$(CFG)" == "pgAdmin3 - Win32 Unicode SSL Release"
+
+# ADD CPP /Yc"pgadmin3.h"
+
+!ENDIF 
+
 # End Source File
 # End Group
 # Begin Group "misc files"

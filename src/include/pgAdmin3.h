@@ -16,6 +16,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/listctrl.h>
+#include <wx/xrc/xmlres.h>
 
 #include "misc.h"
 #include "ctlListView.h"

@@ -64,6 +64,7 @@ public:
     void iSetIsStrict(bool b) { isStrict = b; }
 
     bool CanReload();
+    bool CanRestore() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("sql-createfunction"); }

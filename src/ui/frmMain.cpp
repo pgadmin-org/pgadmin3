@@ -103,6 +103,9 @@ WX_DEFINE_LIST(windowList);
 #error wxWindows must be compiled with wxDIALOG_UNIT_COMPATIBILITY=0!
 #endif
 
+
+extern wxString backupExecutable, restoreExecutable;
+
 frmMain::frmMain(const wxString& title)
 : pgFrame((wxFrame *)NULL, title)
 {
@@ -176,6 +179,8 @@ frmMain::frmMain(const wxString& title)
 	toolsMenu->Append(MNU_VIEWDATA, _("View &Data"),              _("View the data in the selected object."));
 	toolsMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"), _("Apply a filter and view the data in the selected object."));
     toolsMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),         _("Maintain the current database or table."));
+    toolsMenu->Append(MNU_BACKUP, _("&Backup"),                   _("Creates a backup of the current database to a local file"));
+    toolsMenu->Append(MNU_RESTORE, _("&Restore"),                 _("Restores a backup from a local file"));
     toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
     toolsMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),        _("Grants rights to multiple objects"));
     toolsMenu->Append(MNU_RELOAD, _("Re&load module"),            _("Reload library module which implements this function."));
@@ -271,7 +276,7 @@ frmMain::frmMain(const wxString& title)
 
     // Display the bar and configure buttons. 
     toolBar->Realize();
-    SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
+    SetButtons();
     toolBar->EnableTool(MNU_STOP, FALSE);
     
     // Setup the vertical splitter & treeview
@@ -860,8 +865,48 @@ void frmMain::RetrieveServers()
 }
 
 
-void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool maintenance)
+void frmMain::SetButtons(pgObject *obj)
 {
+    bool refresh=false,
+         create=false,
+         drop=false,
+         properties=false,
+         sql=false,
+         viewData=false,
+         maintenance=false,
+         backup=false,
+         restore=false;
+
+    if (obj)
+    {
+        refresh=true;
+        create=obj->CanCreate();
+        drop=obj->CanDrop();
+        properties=obj->CanEdit();
+        viewData=obj->CanView();
+        maintenance=obj->CanMaintenance();
+        backup=obj->CanBackup();
+        restore=obj->CanRestore();
+
+        switch (obj->GetType())
+        {
+            case PG_SERVERS:
+            case PG_SERVER:
+            case PG_DATABASES:
+            case PG_TABLESPACES:
+            case PG_TABLESPACE:
+            case PG_GROUPS:
+            case PG_GROUP:
+            case PG_USERS:
+            case PG_USER:
+                sql=false;
+                break;
+            default:
+                sql=true;
+                break;
+        }
+    }
+
     toolBar->EnableTool(MNU_REFRESH, refresh);
     toolBar->EnableTool(MNU_CREATE, create);
     toolBar->EnableTool(MNU_DROP, drop);
@@ -881,6 +926,8 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	toolsMenu->Enable(MNU_SQL, sql);
 	toolsMenu->Enable(MNU_QUERYBUILDER, sql);
 	toolsMenu->Enable(MNU_MAINTENANCE, maintenance);
+	toolsMenu->Enable(MNU_BACKUP, backup && !backupExecutable.IsNull());
+	toolsMenu->Enable(MNU_RESTORE, restore && !restoreExecutable.IsNull());
     toolsMenu->Enable(MNU_INDEXCHECK, false);
     toolsMenu->Enable(MNU_GRANTWIZARD, false);
 	toolsMenu->Enable(MNU_STATUS, sql);

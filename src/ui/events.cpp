@@ -47,6 +47,8 @@
 #include "frmHelp.h"
 #include "dlgProperty.h"
 #include "frmMaintenance.h"
+#include "frmBackup.h"
+#include "frmRestore.h"
 #include "frmIndexcheck.h"
 #include "frmGrantWizard.h"
 
@@ -75,6 +77,8 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
     EVT_MENU(MNU_EXIT,                      frmMain::OnExit)
     EVT_MENU(MNU_STATUS,                    frmMain::OnStatus)
+    EVT_MENU(MNU_BACKUP,                    frmMain::OnBackup)
+    EVT_MENU(MNU_RESTORE,                   frmMain::OnRestore)
     EVT_MENU(MNU_COUNT,                     frmMain::OnCount)
     EVT_MENU(MNU_VIEWDATA,                  frmMain::OnViewData)
     EVT_MENU(MNU_VIEWFILTEREDDATA,          frmMain::OnViewFilteredData)
@@ -396,6 +400,27 @@ void frmMain::OnMaintenance(wxCommandEvent &ev)
 }
 
 
+void frmMain::OnBackup(wxCommandEvent &event)
+{
+    pgObject *data = GetSelectedObject();
+    if (data)
+    {
+        frmBackup *frm=new frmBackup(this, data);
+        frm->Go();
+    }
+}
+
+
+void frmMain::OnRestore(wxCommandEvent &event)
+{
+    pgObject *data = GetSelectedObject();
+    if (data)
+    {
+        frmRestore *frm=new frmRestore(this, data);
+        frm->Go();
+    }
+}
+
 void frmMain::OnIndexcheck(wxCommandEvent &ev)
 {
     pgObject *data = GetSelectedObject();
@@ -652,7 +677,7 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 
     // Reset the toolbar & password menu options
 	// Handle the menus associated with the buttons
-    SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
+    SetButtons(0);
 
 
     // Get the item data, and feed it to the relevant handler,

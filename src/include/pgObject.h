@@ -145,6 +145,8 @@ public:
     virtual bool CanMaintenance() { return false; }
     virtual bool RequireDropConfirm() { return false; }
     virtual bool WantDummyChild() { return false; }
+    virtual bool CanBackup() { return false; }
+    virtual bool CanRestore() { return false; }
 
 protected:
     void CreateListColumns(ctlListView *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));

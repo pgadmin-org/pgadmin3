@@ -70,8 +70,6 @@ BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_BUTTON(XRCID("btnHelp"),                    dlgProperty::OnHelp)
     EVT_BUTTON(XRCID("btnOK"),                      dlgProperty::OnOK)
     EVT_BUTTON(XRCID("btnApply"),                   dlgProperty::OnApply)
-    EVT_BUTTON(XRCID("btnCancel"),                  dlgProperty::OnCancel)
-    EVT_CLOSE(                                      dlgProperty::OnClose)
 END_EVENT_TABLE();
 
 
@@ -336,16 +334,6 @@ void dlgProperty::OnChangeOwner(wxCommandEvent &ev)
 }
 
 
-void dlgProperty::OnClose(wxCloseEvent &ev)
-{
-    if (IsModal())
-        EndModal(-1);
-    else
-        Destroy();
-}
-
-
-
 bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 {
     wxTreeCtrl *browser=mainForm->GetBrowser();
@@ -502,16 +490,6 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
 }
 
 
-void dlgProperty::OnCancel(wxCommandEvent &ev)
-{
-    if (IsModal())
-        EndModal(-1);
-    else
-        Destroy();
-}
-
-
-
 void dlgProperty::OnPageSelect(wxNotebookEvent& event)
 {
     if (sqlPane && event.GetSelection() == (int)nbNotebook->GetPageCount()-1)
@@ -529,7 +507,6 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
         sqlPane->SetReadOnly(true);
     }
 }
-
 
 
 dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type)

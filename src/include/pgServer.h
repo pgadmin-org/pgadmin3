@@ -82,6 +82,7 @@ public:
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser) { return true; }
     bool CanDrop() { return true; }
+    bool CanRestore() { return connected; }
 
     pgConn *connection() { return conn; }
     

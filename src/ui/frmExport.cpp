@@ -9,14 +9,11 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-// wxWindows headers
-#include <wx/wx.h>
-#include <wx/xrc/xmlres.h>
-#include <wx/file.h>
 
 
 // App headers
 #include "pgAdmin3.h"
+#include <wx/file.h>
 #include "frmExport.h"
 #include "ctlSQLResult.h"
 #include "sysSettings.h"

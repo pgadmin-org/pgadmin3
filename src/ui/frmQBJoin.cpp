@@ -24,8 +24,8 @@
 // Event Table
 BEGIN_EVENT_TABLE(frmQBJoin, pgDialog)
 
-    EVT_BUTTON (XRCID("btnOK"), wxDialog::OnOK)
-    EVT_BUTTON (XRCID("btnCancel"), wxDialog::OnCancel)
+    EVT_BUTTON (XRCID("btnOK"), pgDialog::OnOK)
+    EVT_BUTTON (XRCID("btnCancel"), pgDialog::OnCancel)
     EVT_BUTTON (XRCID("btnAdd"), frmQBJoin::OnAdd)
     EVT_BUTTON (XRCID("btnDel"), frmQBJoin::OnDelete)
 

@@ -44,6 +44,7 @@ public:
     void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
     bool GetSystemObject() const { return schemaTyp < 1; }
 
+    bool CanBackup() { return true; }
     bool RequireDropConfirm() { return true; }
     bool WantDummyChild() { return true; }
 

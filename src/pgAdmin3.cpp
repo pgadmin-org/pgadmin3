@@ -20,10 +20,6 @@
 #include <wx/imagjpeg.h>
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
-#include <wx/fs_zip.h>
-#include "xh_calb.h"
-#include "xh_timespin.h"
-#include "xh_sqlbox.h"
 
 
 // Windows headers
@@ -38,6 +34,7 @@
 #endif 
 
 
+
 // App headers
 #include "pgAdmin3.h"
 #include "copyright.h"
@@ -47,6 +44,11 @@
 #include "sysSettings.h"
 #include "frmMain.h"
 #include "frmSplash.h"
+#include <wx/dir.h>
+#include <wx/fs_zip.h>
+#include "xh_calb.h"
+#include "xh_timespin.h"
+#include "xh_sqlbox.h"
 
 // Globals
 frmMain *winMain;
@@ -56,9 +58,12 @@ wxArrayInt existingLangs;
 wxArrayString existingLangNames;
 wxLocale *locale=0;
 
-wxString loadPath;      // Where the program is loaded from
-wxString docPath;       // Where docs are stored
-wxString uiPath;        // Where ui data is stored
+wxString loadPath;              // Where the program is loaded from
+wxString docPath;               // Where docs are stored
+wxString uiPath;                // Where ui data is stored
+wxString backupExecutable;      // complete filename of pg_dump and pg_restore, if available
+wxString restoreExecutable;
+
 double libpqVersion=0.0;
 
 #define DOC_DIR     wxT("/docs")
@@ -103,8 +108,17 @@ bool pgAdmin3::OnInit()
 	if (loadPath.IsEmpty())
 		loadPath = wxT(".");
 
+    wxPathList path;
+
+    path.Add(loadPath);
+    path.AddEnvList(wxT("PATH"));
+
     // evaluate all working paths
+
 #ifdef __WIN32__
+
+    backupExecutable  = path.FindValidPath(wxT("pg_dump.exe"));
+    restoreExecutable = path.FindValidPath(wxT("pg_restore.exe"));
 
     if (wxDir::Exists(loadPath + UI_DIR))
         uiPath = loadPath + UI_DIR;
@@ -117,6 +131,9 @@ bool pgAdmin3::OnInit()
         docPath = loadPath + wxT("/../..") DOC_DIR;
     
 #else
+
+    backupExecutable  = path.FindValidPath(wxT("pg_dump"));
+    restoreExecutable = path.FindValidPath(wxT("pg_restore"));
 
     if (wxDir::Exists(DATA_DIR UI_DIR))
         uiPath = DATA_DIR UI_DIR;

@@ -17,7 +17,6 @@
 #include <wx/notebook.h>
 #include "pgObject.h"
 #include "pgConn.h"
-#include <wx/xrc/xmlres.h>
 
 class pgSchema;
 class pgTable;
@@ -67,9 +66,7 @@ protected:
 
     void OnPageSelect(wxNotebookEvent& event);
     void OnOK(wxCommandEvent &ev);
-    void OnCancel(wxCommandEvent &ev);
     void OnApply(wxCommandEvent &ev);
-    void OnClose(wxCloseEvent &ev);
     void OnChangeOwner(wxCommandEvent &ev);
 
     void AddUsers(wxComboBox *cb1, wxComboBox *cb2=0);
