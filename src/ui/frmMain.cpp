@@ -20,7 +20,6 @@
 #include <wx/notebook.h>
 #include <wx/splitter.h>
 #include <wx/toolbar.h>
-#include <wx/tbarsmpl.h>
 #include <wx/imaglist.h>
 
 // App headers

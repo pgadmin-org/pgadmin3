@@ -20,6 +20,7 @@
 #include "misc.h"
 #include "menu.h"
 #include "pgDefs.h"
+#include <wx/imaglist.h>
 
 // Images
 #include "images/properties.xpm"
