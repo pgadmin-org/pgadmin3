@@ -165,6 +165,15 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
 
             // pgAgent
             pgaAgent::ReadObjects(this, browser);
+
+            missingFKs = StrToLong(conn->ExecuteScalar(
+                wxT("SELECT COUNT(*) FROM\n")
+                wxT("   (SELECT tgargs from pg_trigger tr\n")
+                wxT("      LEFT JOIN pg_depend dep ON dep.objid=tr.oid AND deptype = 'i'\n")
+                wxT("      LEFT JOIN pg_constraint co ON refobjid = co.oid AND contype = 'f'\n")
+                wxT("     WHERE co.oid IS NULL\n")
+                wxT("     GROUP BY tgargs\n")
+                wxT("    HAVING count(1) = 3) AS foo")));
         }
     }
 
@@ -192,6 +201,8 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         InsertListItem(properties, pos++, _("Allow connections?"), GetAllowConnections());
         InsertListItem(properties, pos++, _("Connected?"), GetConnected());
         InsertListItem(properties, pos++, _("System database?"), GetSystemObject());
+        if (GetMissingFKs())
+            InsertListItem(properties, pos++, _("Old style FKs"), GetMissingFKs());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }

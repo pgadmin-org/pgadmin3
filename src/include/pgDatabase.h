@@ -51,6 +51,7 @@ public:
     void iSetAllowConnections(bool newVal) { allowConnections = newVal; }
     bool GetConnected() const { return connected; }
     bool GetSystemObject() const;
+    long GetMissingFKs() const { return missingFKs; }
     
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool CanMaintenance() { return true; }
@@ -67,6 +68,7 @@ private:
     wxString path, encoding, variables;
     wxString prettyOption;
     bool allowConnections, connected, createPrivilege;
+    long missingFKs;
 };
 
 #endif
