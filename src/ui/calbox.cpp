@@ -110,31 +110,32 @@ bool wxCalendarBox::Create(wxWindow *parent,
     dc.SetFont(m_font);
     wxCoord width, dummy;
     dc.GetTextExtent(wxT("2000"), &width, &dummy);
-    width += ConvertDialogToPixels(wxSize(18,0)).x;
+    width += ConvertDialogToPixels(wxSize(20,0)).x;
 
-    wxSize calSize = m_cal->GetSize();
+    wxSize calSize = m_cal->GetBestSize();
     wxSize yearSize = yearControl->GetSize();
-    if (yearSize.x < width)
-        yearSize.x = width;
+    yearSize.x = width;
 
     wxPoint yearPosition = yearControl->GetPosition();
-    if (yearPosition.x + yearSize.x < calSize.x)
-    {
-        width = calSize.x;
-        yearControl->Move(calSize.x - yearSize.x, yearPosition.y);
-    }
-    else if (yearPosition.x + yearSize.x > calSize.x)
-    {
-        width = yearPosition.x + yearSize.x;
-        m_cal->Move((width - calSize.x) / 2, 0);
-        m_cal->GetMonthControl()->Move(0, 0);
-        yearControl->Move(width - yearSize.x, yearPosition.y);
-    }
-    yearControl->SetSize(yearSize);
+#define YEARPOS_ADD 4
+    width = yearPosition.x + yearSize.x+YEARPOS_ADD;
+    if (width < calSize.x-2)
+        width = calSize.x-2;
+
+	int calPos = (width-calSize.x)/2 -2;
+	if (calPos == -1)
+	{
+		calPos = 0;
+		width += 2;
+	}
+    m_cal->SetSize(calPos, 0, calSize.x, calSize.y);
+    yearControl->SetSize(width-yearSize.x-YEARPOS_ADD, yearPosition.y, yearSize.x, yearSize.y);
+	m_cal->GetMonthControl()->Move(0, 0);
 
 
-    panel->SetClientSize(width, calSize.y);
-    m_dlg->SetClientSize(panel->GetSize() + wxSize(0,0));
+
+    panel->SetClientSize(width, calSize.y+2);
+    m_dlg->SetClientSize(panel->GetSize());
 
     return TRUE;
 }
