@@ -359,10 +359,11 @@ void dlgOperator::AppendFilledOperator(wxString &sql, wxChar *txt, wxComboBox *c
     wxString op=cb->GetValue().Trim();
     if (!op.IsNull())
     {
+		sql += txt;
         if (op.Find('.') > 0)
-            sql += txt + wxT("OPERATOR(") + op + wxT(")");
+            sql += wxT("OPERATOR(") + op + wxT(")");
         else
-            sql += txt + op;
+            sql += op;
     }
 }
 
