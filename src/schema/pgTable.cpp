@@ -66,19 +66,23 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                 data=(pgObject*)browser->GetItemData(item);
                 if (data->GetType() == PG_COLUMN)
                 {
-                    if (colCount)
-                        sql += wxT(",\n");
-
                     pgColumn *column=(pgColumn*)data;
                     // make sure column details are read
                     column->ShowTreeDetail(browser);
-                    sql += wxT("    ") + (column->GetQuotedIdentifier() + wxString(' ', 50)).Left(50)
-                        +  column->GetFullType();
 
-                    if (column->GetNotNull())
-                        sql += wxT(" NOT");
-                    sql += wxT(" NULL");
-                    colCount++;
+                    if (column->GetColNumber() > 0)
+                    {
+                        if (colCount)
+                            sql += wxT(",\n");
+
+                        sql += wxT("    ") + (column->GetQuotedIdentifier() + wxString(' ', 50)).Left(50)
+                            +  column->GetFullType();
+
+                        if (column->GetNotNull())
+                            sql += wxT(" NOT");
+                        sql += wxT(" NULL");
+                        colCount++;
+                    }
                 }
                 
                 item=browser->GetNextChild(item, cookie);
@@ -307,7 +311,7 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
             pgSet *set=ExecuteSet(wxT(
                 "SELECT attname\n"
                 "  FROM pg_attribute\n"
-                " WHERE attrelid=") + GetOidStr() + wxT(" AND attnum=") + cn);
+                " WHERE attrelid=") + GetOidStr() + wxT(" AND attnum IN (") + cn + wxT(")"));
             if (set)
             {
                 if (!primaryKey.IsNull())
