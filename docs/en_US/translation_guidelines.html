@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="STYLESHEET" type="text/css" href="pg/stylesheet.css">
 <title>Translation guidelines</title>
 </head>
@@ -20,10 +20,10 @@
 </p>
 
 <p>
-	Sometimes, the border between the SQL language and the English language is not obvious, because SQL was designed to be close as possible to natural language. For example, there are three possible translations for "Create View" into French, depending on the context: "Cr�r vue" or "Create View" or "Cr�r Vue".
+	Sometimes, the border between the SQL language and the English language is not obvious, because SQL was designed to be close as possible to natural language. For example, there are three possible translations for "Create View" into French, depending on the context: "Créer vue" or "Create View" or "Créer Vue".
 </p>
 
-<p>The difficulty for the user is to keep in mind the correspondence between English and translated words. In our example "View" is translated into "Vue", which is an easy correspondence (called "translation pair" afterwards). But with dozens of translation pairs like "Trigger/D�lancheur", "Row/Ligne", "Column/Colonne", you need to keep in mind many variations and turn yourself into a translator, which was not the aim of the translation.
+<p>The difficulty for the user is to keep in mind the correspondence between English and translated words. In our example "View" is translated into "Vue", which is an easy correspondence (called "translation pair" afterwards). But with dozens of translation pairs like "Trigger/Déclencheur", "Row/Ligne", "Column/Colonne", you need to keep in mind many variations and turn yourself into a translator, which was not the aim of the translation.
 </p>
 
 <p>
@@ -39,7 +39,7 @@
 </p>
 
 <ul>
-	<li>"Create a new %s" is translated into French by "Cr�r nouveau/nouvelle %s" to handle feminine/masculine cases, which is not very obvious. In German, "%s" will not be replaced safely by a noun, because it must be derivated in accusative case. In several European languages, the replacement of "%s" by a noun may fail.
+	<li>"Create a new %s" is translated into French by "Créer nouveau/nouvelle %s" to handle feminine/masculine cases, which is not very obvious. In German, "%s" will not be replaced safely by a noun, because it must be derivated in accusative case. In several European languages, the replacement of "%s" by a noun may fail.
   <li>Some aggregative languages will not express the two words "new %s" separately but will join them, either writing "%snew" or "new%s" in a single noun, with derivation and cases. Hungarian is an example where "%s" constructions will sometimes fail.
  <li>Also, in non-European languages, adjectives like "new" or verbs like "create" may not exist and be expressed by a suffix or a prefix. In such cases, translating "Create a new %s" is simply impossible.
  </li>
@@ -75,7 +75,7 @@
   Stick as much as possible to words which are close to the original
   SQL syntax. For example, in French, you may use "vue" for "view",
   because both words start with the letter "v". Do not  choose distant
-  words, like "d�lencheur" for "trigger", because entry-level users
+  words, like "déclencheur" for "trigger", because entry-level users
   may not be able to make a good use of the SQL syntax ... and
   ultimately switch to the English version. Sometimes it's  better to
   simply leave these keywords untranslated, instead of creating a fancy word
@@ -83,12 +83,15 @@
 </p>
 
 <p>
-  Please take special care about including all %s and %d variable placeholders correctly. If you make a typo error, the application might crash. On rare occasions, it might be necessary to reorder placeholders. In the following (fictive) example, both parameter positions are exchanged: "Server %s user %s is logged in." could be  translated by "L'utilisateur %2$s est connect�au serveur %1$s.". At the moment, pgAdmin3 does not require any reorder placehorders, but it might change in the future. Just be aware of it!
+  Please take special care about including all %s and %d variable placeholders correctly. If you make a typo error, the application might crash. On rare occasions, it might be necessary to reorder placeholders. In the following (fictive) example, both parameter positions are exchanged: "Server %s user %s is logged in." could be  translated by "L'utilisateur %2$s est connecté au serveur %1$s.". At the moment, pgAdmin3 does not require any reorder placehorders, but it might change in the future. Just be aware of it!
 </p>
 
 <p>
   Keyboard shortcuts are denoted by a leading "&". For example "&Add", which is translated into French by "&Ajouter", can be triggered from keyboard using Alt + A. Do not change letters, because the new keyboard entry might conflict with other existing ones. Also, pgAdmin3 users might have problems remembering shortcuts in both English and translated pgAdmin3 versions. Therefore, do not create any shortcut if you cannot choose the same letter. Example: "&Close" is translated into French by "Fermer", not "&Fermer".
 </p>
 
+<p>
+  wxWindows forms do not support resizing very well. The only resizing form is the function property window. Therefore, you may need to shrink the translated text to the English size.
+</p>
 </body>
 </html>
