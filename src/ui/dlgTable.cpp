@@ -224,7 +224,7 @@ int dlgTable::Go(bool modal)
                     }
                 }
                 
-                item=mainForm->GetBrowser()->GetNextChild(columnsItem, cookie);
+                item=mainForm->GetBrowser()->GetNextChild(constraintsItem, cookie);
             }
         }
     }
