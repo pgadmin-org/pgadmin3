@@ -10,7 +10,6 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/treectrl.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -665,7 +664,7 @@ gotToken:
             }
             if (tp->doBreak)
             {
-                fc += wxT("\n") + wxString(' ', indent);
+                fc += wxT("\n") + wxString(' ', (size_t)indent);
                 position = indent;
             }
             else

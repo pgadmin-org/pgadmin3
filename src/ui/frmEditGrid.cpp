@@ -51,6 +51,7 @@ BEGIN_EVENT_TABLE(frmEditGrid, wxFrame)
     EVT_GRID_RANGE_SELECT(frmEditGrid::OnGridSelectCells)
     EVT_GRID_SELECT_CELL(frmEditGrid::OnCellChange)
     EVT_GRID_EDITOR_SHOWN(frmEditGrid::OnEditorShown)
+    EVT_GRID_LABEL_LEFT_DCLICK(frmEditGrid::OnLabelDoubleClick)
 END_EVENT_TABLE()
 
 
@@ -126,6 +127,96 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
         relkind = 'v';
         hasOids=false;
         tableName=view->GetQuotedFullIdentifier();
+    }
+}
+
+
+
+#define EXTRAEXTENT_HEIGHT 6
+#define EXTRAEXTENT_WIDTH  6
+
+void frmEditGrid::OnLabelDoubleClick(wxGridEvent& event)
+{
+    int maxHeight, maxWidth;
+    sqlGrid->GetClientSize(&maxWidth, &maxHeight);
+    int row=event.GetRow();
+    int col=event.GetCol();
+
+    int extent, extentWant=0;
+
+    if (row >= 0)
+    {
+        for (col=0 ; col < sqlGrid->GetNumberCols() ; col++)
+        {
+            extent = sqlGrid->GetBestSize(row, col).GetHeight();
+            if (extent > extentWant)
+                extentWant=extent;
+        }
+
+        extentWant += EXTRAEXTENT_HEIGHT;
+        extentWant = wxMax(extentWant, sqlGrid->GetRowMinimalAcceptableHeight());
+        extentWant = wxMin(extentWant, maxHeight*3/4);
+        int currentHeight=sqlGrid->GetRowHeight(row);
+            
+        if (currentHeight >= maxHeight*3/4 || currentHeight == extentWant)
+            extentWant = sqlGrid->GetRowMinimalAcceptableHeight();
+        else if (currentHeight < maxHeight/4)
+            extentWant = wxMin(maxHeight/4, extentWant);
+        else if (currentHeight < maxHeight/2)
+            extentWant = wxMin(maxHeight/2, extentWant);
+        else if (currentHeight < maxHeight*3/4)
+            extentWant = wxMin(maxHeight*3/4, extentWant);
+
+        if (extentWant != currentHeight)
+        {
+            sqlGrid->BeginBatch();
+            if(sqlGrid->IsCellEditControlShown())
+            {
+                sqlGrid->HideCellEditControl();
+                sqlGrid->SaveEditControlValue();
+            }
+
+            sqlGrid->SetRowHeight(row, extentWant);
+            sqlGrid->EndBatch();
+        }
+    }
+    else if (col >= 0)
+    {
+        for (row=0 ; row < sqlGrid->GetNumberRows() ; row++)
+        {
+            if (((sqlTable*)sqlGrid->GetTable())->CheckInCache(row))
+            {
+                extent = sqlGrid->GetBestSize(row, col).GetWidth();
+                if (extent > extentWant)
+                    extentWant=extent;
+            }
+        }
+
+        extentWant += EXTRAEXTENT_WIDTH;
+        extentWant = wxMax(extentWant, sqlGrid->GetColMinimalAcceptableWidth());
+        extentWant = wxMin(extentWant, maxWidth*3/4);
+        int currentWidth=sqlGrid->GetColumnWidth(col);
+            
+        if (currentWidth >= maxWidth*3/4 || currentWidth == extentWant)
+            extentWant = sqlGrid->GetColMinimalAcceptableWidth();
+        else if (currentWidth < maxWidth/4)
+            extentWant = wxMin(maxWidth/4, extentWant);
+        else if (currentWidth < maxWidth/2)
+            extentWant = wxMin(maxWidth/2, extentWant);
+        else if (currentWidth < maxWidth*3/4)
+            extentWant = wxMin(maxWidth*3/4, extentWant);
+
+        if (extentWant != currentWidth)
+        {
+            sqlGrid->BeginBatch();
+            if(sqlGrid->IsCellEditControlShown())
+            {
+                sqlGrid->HideCellEditControl();
+                sqlGrid->SaveEditControlValue();
+            }
+            sqlGrid->SetColumnWidth(col, extentWant);
+            sqlGrid->EndBatch();
+        }
     }
 }
 
@@ -346,6 +437,9 @@ void frmEditGrid::OnEditorShown(wxGridEvent& event)
 {
     toolBar->EnableTool(MNU_SAVE, true);
     toolBar->EnableTool(MNU_UNDO, true);
+
+    sqlGrid->ResizeEditor(event.GetRow(), event.GetCol());
+
     event.Skip();
 }
 
@@ -471,6 +565,7 @@ void frmEditGrid::Abort()
 {
     if (sqlGrid->GetTable())
     {
+        sqlGrid->HideCellEditControl();
         // thread is owned by table und will be destroyed there
         sqlGrid->SetTable(0);
     }
@@ -491,10 +586,80 @@ ctlSQLGrid::ctlSQLGrid(wxFrame *parent, wxWindowID id, const wxPoint& pos, const
 }
 
 
+
+
+void ctlSQLGrid::ResizeEditor(int row, int col)
+{
+
+    if (((sqlTable*)GetTable())->needsResizing(col))
+    {
+        wxGridCellAttr* attr = GetCellAttr(row, col);
+        wxGridCellRenderer* renderer = attr->GetRenderer(this, row, col);
+        if ( renderer )
+        {
+            wxClientDC dc(GetGridWindow());
+            wxSize size = renderer->GetBestSize(*this, *attr, dc, row, col);
+            renderer->DecRef();
+
+            int w=size.GetWidth()+20;
+            int h=size.GetHeight()+20;
+
+
+            wxGridCellEditor *editor=attr->GetEditor(this, row, col);
+            if (editor)
+            {
+                wxRect cellRect = CellToRect(m_currentCellCoords);
+                wxRect rect = cellRect;
+                rect.SetWidth(w);
+                rect.SetHeight(h);
+
+                // we might have scrolled
+                CalcUnscrolledPosition(0, 0, &w, &h);
+                rect.SetLeft(rect.GetLeft() - w);
+                rect.SetTop(rect.GetTop() - h);
+
+                // Clip rect to client size
+                GetClientSize(&w, &h);
+                rect.SetRight(wxMin(rect.GetRight(), w));
+                rect.SetBottom(wxMin(rect.GetBottom(), h));
+
+                // but not smaller than original cell
+                rect.SetWidth(wxMax(cellRect.GetWidth(), rect.GetWidth()));
+                rect.SetHeight(wxMax(cellRect.GetHeight(), rect.GetHeight()));
+
+                editor->SetSize(rect);
+                editor->DecRef();
+            }
+        }
+
+        attr->DecRef();
+    }
+}
+
+
+wxSize ctlSQLGrid::GetBestSize(int row, int col)
+{
+    wxSize size;
+
+    wxGridCellAttr* attr = GetCellAttr(row, col);
+    wxGridCellRenderer* renderer = attr->GetRenderer(this, row, col);
+    if ( renderer )
+    {
+        wxClientDC dc(GetGridWindow());
+        size = renderer->GetBestSize(*this, *attr, dc, row, col);
+        renderer->DecRef();
+    }
+
+    attr->DecRef();
+
+    return size;
+}
+
+
+
 #if wxCHECK_VERSION(2,5,0)
     // problems are fixed
 #else
-
 
 bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
 {
@@ -552,13 +717,13 @@ bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
 class sqlGridTextEditor : public wxGridCellTextEditor
 {
 public:
-    sqlGridTextEditor(int len=0) { textlen=len; }
-    virtual wxGridCellEditor *Clone() const { return new sqlGridTextEditor(textlen); }
+    sqlGridTextEditor(bool multiLine=false, int len=0) { isMultiLine=multiLine; textlen=len;  }
+    virtual wxGridCellEditor *Clone() const { return new sqlGridTextEditor(isMultiLine, textlen); }
     void Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler);
-    void SetSize(const wxRect& rectOrig);
 
 protected:
     int textlen;
+    bool isMultiLine;
 };
 
 
@@ -566,57 +731,18 @@ protected:
 
 void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler)
 {
+    int flags=0;
+    if (isMultiLine)
+        flags = wxTE_PROCESS_TAB | wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_AUTO_SCROLL;
+
     m_control = new wxTextCtrl(parent, id, wxEmptyString,
-                               wxDefaultPosition, wxDefaultSize,
-                               wxTE_PROCESS_TAB | wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_AUTO_SCROLL
+                               wxDefaultPosition, wxDefaultSize, flags
                               );
 
     if (textlen > 0)
         Text()->SetMaxLength(textlen);
 
     wxGridCellEditor::Create(parent, id, evtHandler);
-}
-
-
-
-void sqlGridTextEditor::SetSize(const wxRect& rectOrig)
-{
-    wxRect rect(rectOrig);
-
-
-    // currently, this is just a copy of wx' code.
-    // We should make the control bigger if scrollbars appear
-
-#if defined(__WXGTK__)
-    if (rect.x != 0)
-    {
-        rect.x += 1;
-        rect.y += 1;
-        rect.width -= 1;
-        rect.height -= 1;
-    }
-#else // !GTK
-    int extra_x = ( rect.x > 2 )? 2 : 1;
-
-// MB: treat MSW separately here otherwise the caret doesn't show
-// when the editor is in the first row.
-#if defined(__WXMSW__)
-    int extra_y = 2;
-#else
-    int extra_y = ( rect.y > 2 )? 2 : 1;
-#endif // MSW
-
-#if defined(__WXMOTIF__)
-    extra_x *= 2;
-    extra_y *= 2;
-#endif
-    rect.SetLeft( wxMax(0, rect.x - extra_x) );
-    rect.SetTop( wxMax(0, rect.y - extra_y) );
-    rect.SetRight( rect.GetRight() + 2*extra_x );
-    rect.SetBottom( rect.GetBottom() + 2*extra_y );
-#endif // GTK/!GTK
-
-    wxGridCellEditor::SetSize(rect);
 }
 
 
@@ -931,7 +1057,8 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                 default:
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
-                    editor = new sqlGridTextEditor();
+                    columns[i].needResize = true;
+                    editor = new sqlGridTextEditor(true);
                     break;
             }
             if (editor)
@@ -1059,6 +1186,17 @@ void sqlTable::SetNumberEditor(int col, int len)
     columns[col].numeric = true;
     columns[col].attr->SetReadOnly(false);
     columns[col].attr->SetEditor(new sqlGridNumericEditor(len, 0));
+}
+
+
+bool sqlTable::CheckInCache(int row)
+{
+    if (row > nRows - rowsDeleted + rowsAdded)
+        return false;
+    if (row >= nRows-rowsDeleted)
+        return true;
+
+    return dataPool->IsFilled(row);
 }
 
 
@@ -1591,4 +1729,10 @@ cacheLine *cacheLinePool::Get(int lineNo)
         return ptr[lineNo];
     }
     return 0;
+}
+
+
+bool cacheLinePool::IsFilled(int lineNo)
+{
+    return (lineNo < anzLines && ptr[lineNo]);
 }

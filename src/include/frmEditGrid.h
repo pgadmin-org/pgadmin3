@@ -34,6 +34,7 @@ public:
     ~cacheLinePool();
     cacheLine *operator[] (int line) { return Get(line); }
     cacheLine *Get(int lineNo);
+    bool IsFilled(int lineNo);
     void Delete(int lineNo);
 
 private:
@@ -48,7 +49,7 @@ private:
 class sqlCellAttr
 {
 public:
-    sqlCellAttr()  { attr = new wxGridCellAttr; isPrimaryKey=false; }
+    sqlCellAttr()  { attr = new wxGridCellAttr; isPrimaryKey=false; needResize=false; }
     ~sqlCellAttr() { attr->DecRef(); }
     int size();
     int precision();
@@ -58,7 +59,7 @@ public:
     Oid type;
     long typlen, typmod;
     wxString name, typeName;
-    bool numeric, isPrimaryKey;
+    bool numeric, isPrimaryKey, needResize;
 };
 
 
@@ -67,6 +68,9 @@ class ctlSQLGrid : public wxGrid
 {
 public:
     ctlSQLGrid(wxFrame *parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
+
+    wxSize GetBestSize(int row, int col);
+    void ResizeEditor(int row, int col);
 
 #if wxCHECK_VERSION(2,5,0)
     // problems are fixed
@@ -100,9 +104,12 @@ public:
     void SetValueAsBool(int row, int col, bool b);
 
     bool IsEmptyCell(int row, int col) { return false; }
+    bool needsResizing(int col) { return columns[col].needResize; }
     bool AppendRows(size_t rows);
     bool DeleteRows(size_t pos, size_t rows);
     int  LastRow() { return lastRow; }
+
+    bool CheckInCache(int row);
 
 
 private:
@@ -156,7 +163,7 @@ private:
     void OnGridSelectCells(wxGridRangeSelectEvent& event);
     void OnEditorShown(wxGridEvent& event);
     void OnKey(wxKeyEvent& event);
-
+    void OnLabelDoubleClick(wxGridEvent& event);
     void Abort();
 
     ctlSQLGrid *sqlGrid;
