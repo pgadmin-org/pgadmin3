@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: pgAdmin3\n"
-"POT-Creation-Date: 2003-08-25 02:50+0200\n"
+"POT-Creation-Date: 2003-09-06 17:07+0200\n"
 "PO-Revision-Date: 2003-08-18 16:05+0100\n"
 "Last-Translator: Andreas Pflug <Andreas.Pflug@web.de>\n"
 "Language-Team: pgAdmin Developers <pgadmin-hackers@postgresql.org>\n"
@@ -51,6 +51,7 @@ msgstr "получено строк: %d."
 
 #: src/ui/frmEditGrid.cpp:341 src/ui/frmEditGrid.cpp:439
 #: src/ui/frmMaintenance.cpp:212 src/ui/frmQuery.cpp:960
+#: src/ui/frmEditGrid.cpp:433 src/ui/frmEditGrid.cpp:532
 #, c-format
 msgid "%d rows."
 msgstr "строк: %d."
@@ -419,7 +420,7 @@ msgstr "<<"
 msgid "<html><body>Loading %s</body></html>"
 msgstr "<html><body>Загружается %s</body></html>"
 
-#: src/schema/pgTable.cpp:328
+#: src/schema/pgTable.cpp:328 src/schema/pgTable.cpp:329
 msgid "<none>"
 msgstr "<none>"
 
@@ -449,7 +450,8 @@ msgstr ""
 #: src/schema/pgDatabase.cpp:176 src/schema/pgFunction.cpp:122
 #: src/schema/pgLanguage.cpp:64 src/schema/pgSchema.cpp:149
 #: src/schema/pgSequence.cpp:90 src/schema/pgTable.cpp:326
-#: src/schema/pgView.cpp:83
+#: src/schema/pgView.cpp:83 src/schema/pgSchema.cpp:150
+#: src/schema/pgTable.cpp:327 src/schema/pgView.cpp:85
 msgid "ACL"
 msgstr "ACL"
 
@@ -526,27 +528,27 @@ msgstr "Добавить таблицы/виды"
 msgid "Add a connection to a server."
 msgstr "Добавить подсоединение к серверу."
 
-#: src/schema/pgObject.cpp:55
+#: src/schema/pgObject.cpp:55 src/schema/pgObject.cpp:54
 msgid "Add a new Check Constraint."
 msgstr "Добавить новое CHECK-ограничение."
 
-#: src/schema/pgObject.cpp:48
+#: src/schema/pgObject.cpp:48 src/schema/pgObject.cpp:47
 msgid "Add a new Column."
 msgstr "Добаить новою колонку."
 
-#: src/schema/pgObject.cpp:56
+#: src/schema/pgObject.cpp:56 src/schema/pgObject.cpp:55
 msgid "Add a new Foreign Key."
 msgstr "Добавить новый вторичный ключ."
 
-#: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:49 src/schema/pgObject.cpp:48
 msgid "Add a new Index."
 msgstr "Добавить новый индекс."
 
-#: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:51 src/schema/pgObject.cpp:50
 msgid "Add a new Trigger."
 msgstr "Добавить новый триггер."
 
-#: src/schema/pgObject.cpp:54
+#: src/schema/pgObject.cpp:54 src/schema/pgObject.cpp:53
 msgid "Add a new Unique Constraint."
 msgstr "Добавить новое UNIQUE-ограничение."
 
@@ -565,10 +567,11 @@ msgid "Add/Change"
 msgstr "Добавить/Изменить"
 
 #: src/schema/pgObject.cpp:36 src/ui/frmQueryBuilder.cpp:215
+#: src/schema/pgObject.cpp:35
 msgid "Aggregate"
 msgstr "Агрегат"
 
-#: src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:36 src/schema/pgObject.cpp:35
 msgid "Aggregates"
 msgstr "Агрегаты"
 
@@ -599,7 +602,7 @@ msgstr ""
 msgid "Analyze"
 msgstr "Проанализировать"
 
-#: src/ui/events.cpp:823 src/ui/events.cpp:879
+#: src/ui/events.cpp:823 src/ui/events.cpp:879 src/ui/events.cpp:889
 #, c-format
 msgid "Are you sure you wish to drop %s %s?"
 msgstr "Вы уверены вы хотите удалить %s %s?"
@@ -743,12 +746,12 @@ msgstr "Отменено"
 msgid "Cancelling."
 msgstr "Отменяется."
 
-#: src/ui/events.cpp:814 src/ui/events.cpp:870
+#: src/ui/events.cpp:814 src/ui/events.cpp:870 src/ui/events.cpp:880
 #, c-format
 msgid "Cannot drop system %s %s."
 msgstr "Нельзя удалить системый объект: %s %s."
 
-#: src/pgAdmin3.cpp:232 src/pgAdmin3.cpp:239
+#: src/pgAdmin3.cpp:232 src/pgAdmin3.cpp:239 src/pgAdmin3.cpp:242
 msgid "Cannot initialise the networking subsystem!"
 msgstr "Не получилось инициализировать сетевую подсистему!"
 
@@ -756,11 +759,11 @@ msgstr "Не получилось инициализировать сетеву�
 msgid "Cannot open the logfile!"
 msgstr "Не получилось открыит файл журнала (лог)."
 
-#: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:37 src/schema/pgObject.cpp:36
 msgid "Cast"
 msgstr "Конверсия типа"
 
-#: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:37 src/schema/pgObject.cpp:36
 msgid "Casts"
 msgstr "Конверсии типа"
 
@@ -782,7 +785,7 @@ msgstr "Поменять пароль"
 msgid "Change your password."
 msgstr "Поменяйте ваш пароль."
 
-#: src/ui/events.cpp:449 src/ui/events.cpp:468
+#: src/ui/events.cpp:449 src/ui/events.cpp:468 src/ui/events.cpp:473
 msgid ""
 "Changing the 'Show System Objects' option will cause all connections to be "
 "closed, and the treeview to be rebuilt.\n"
@@ -799,6 +802,7 @@ msgstr ""
 # standard
 #: src/schema/pgDomain.cpp:100 src/schema/pgObject.cpp:55
 #: src/ui/dlgTable.cpp:477 standard input:29 input:79
+#: src/schema/pgObject.cpp:54
 msgid "Check"
 msgstr "Проверка"
 
@@ -855,6 +859,7 @@ msgid "Clustered?"
 msgstr "Кластер?"
 
 #: src/schema/pgObject.cpp:48 src/ui/frmQueryBuilder.cpp:209
+#: src/schema/pgObject.cpp:47
 msgid "Column"
 msgstr "Колонка"
 
@@ -890,7 +895,7 @@ msgstr "Разделитеоь колонок"
 # standard
 #: src/schema/pgIndex.cpp:194 src/schema/pgIndexConstraint.cpp:89
 #: src/schema/pgObject.cpp:48 src/ui/dlgIndex.cpp:51 src/ui/dlgIndex.cpp:61
-#: standard input:93 input:153 input:164 input:248
+#: standard input:93 input:153 input:164 input:248 src/schema/pgObject.cpp:47
 msgid "Columns"
 msgstr "Колонки"
 
@@ -927,6 +932,8 @@ msgstr "Колонки"
 #: input:21 input:30 input:41 input:53 input:64 input:83 input:92 input:125
 #: input:152 input:163 input:187 input:212 input:221 input:235 input:247
 #: input:271 input:281 input:336 src/schema/pgAggregate.cpp:87
+#: src/schema/pgOperator.cpp:135 src/schema/pgSchema.cpp:152
+#: src/schema/pgTable.cpp:346 src/schema/pgView.cpp:88
 msgid "Comment"
 msgstr "Комментармй"
 
@@ -934,6 +941,7 @@ msgstr "Комментармй"
 # standard
 # standard
 #: src/schema/pgOperator.cpp:113 standard input:191
+#: src/schema/pgOperator.cpp:125
 msgid "Commutator"
 msgstr "Коммутатор"
 
@@ -997,7 +1005,7 @@ msgstr "Имя ограничения"
 # src/schema/pgObject.cpp:52 standard input:14
 # standard
 # standard
-#: src/schema/pgObject.cpp:52 standard input:252
+#: src/schema/pgObject.cpp:52 standard input:252 src/schema/pgObject.cpp:51
 msgid "Constraints"
 msgstr "Ограничения"
 
@@ -1005,15 +1013,15 @@ msgstr "Ограничения"
 msgid "Context"
 msgstr "Контекст"
 
-#: src/ui/events.cpp:450 src/ui/events.cpp:469
+#: src/ui/events.cpp:450 src/ui/events.cpp:469 src/ui/events.cpp:474
 msgid "Continue?"
 msgstr "Продолжить?"
 
-#: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:38 src/schema/pgObject.cpp:37
 msgid "Conversion"
 msgstr "Конверсия"
 
-#: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:38 src/schema/pgObject.cpp:37
 msgid "Conversions"
 msgstr "Конверсии"
 
@@ -1049,15 +1057,15 @@ msgstr "Не получилось создать диалог подсоедин
 msgid "Couldn't create a connection object!"
 msgstr "Не получилось создать объект подсоединения!"
 
-#: src/db/pgConn.cpp:265 src/db/pgConn.cpp:276
+#: src/db/pgConn.cpp:265 src/db/pgConn.cpp:276 src/db/pgConn.cpp:279
 msgid "Couldn't create a pgSet object!"
 msgstr "Не получилось создать объект pgSet!"
 
-#: src/pgAdmin3.cpp:306 src/pgAdmin3.cpp:313
+#: src/pgAdmin3.cpp:306 src/pgAdmin3.cpp:313 src/pgAdmin3.cpp:316
 msgid "Couldn't create the main window!"
 msgstr "Не получилось создать главное окно!"
 
-#: src/pgAdmin3.cpp:218 src/pgAdmin3.cpp:225
+#: src/pgAdmin3.cpp:218 src/pgAdmin3.cpp:225 src/pgAdmin3.cpp:228
 msgid "Couldn't create the splash screen!"
 msgstr "Не получилось создать заставку!"
 
@@ -1076,83 +1084,83 @@ msgstr "Считать строки если расчёное число мен�
 msgid "Create"
 msgstr "Создать"
 
-#: src/schema/pgObject.cpp:53
+#: src/schema/pgObject.cpp:53 src/schema/pgObject.cpp:52
 msgid "Create a Primary Key."
 msgstr "Создать главный ключ."
 
-#: src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:36 src/schema/pgObject.cpp:35
 msgid "Create a new Aggregate."
 msgstr "Создать агрегат."
 
-#: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:37 src/schema/pgObject.cpp:36
 msgid "Create a new Cast."
 msgstr "Создать конверсию типа."
 
-#: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:38 src/schema/pgObject.cpp:37
 msgid "Create a new Conversion."
 msgstr "Создать конверсию."
 
-#: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:31 src/schema/pgObject.cpp:30
 msgid "Create a new Database."
 msgstr "Создать базу."
 
-#: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:39 src/schema/pgObject.cpp:38
 msgid "Create a new Domain."
 msgstr "Создать домен."
 
-#: src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:40 src/schema/pgObject.cpp:39
 msgid "Create a new Function."
 msgstr "Создать функцию."
 
-#: src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:32 src/schema/pgObject.cpp:31
 msgid "Create a new Group."
 msgstr "Создать группу."
 
-#: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:34 src/schema/pgObject.cpp:33
 msgid "Create a new Language."
 msgstr "Создать язык."
 
-#: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:43 src/schema/pgObject.cpp:42
 msgid "Create a new Operator Class."
 msgstr "Создать класс оператора."
 
-#: src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:42 src/schema/pgObject.cpp:41
 msgid "Create a new Operator."
 msgstr "Создать оператор."
 
-#: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:50 src/schema/pgObject.cpp:49
 msgid "Create a new Rule."
 msgstr "Создать правило."
 
-#: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:35 src/schema/pgObject.cpp:34
 msgid "Create a new Schema."
 msgstr "Создать схему."
 
-#: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:44 src/schema/pgObject.cpp:43
 msgid "Create a new Sequence."
 msgstr "Создать последовательность."
 
-#: src/schema/pgObject.cpp:30
+#: src/schema/pgObject.cpp:30 src/schema/pgObject.cpp:29
 msgid "Create a new Server connection."
 msgstr "Создать новое подсоединение."
 
-#: src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:45 src/schema/pgObject.cpp:44
 msgid "Create a new Table."
 msgstr "Создать таблицу."
 
-#: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:41 src/schema/pgObject.cpp:40
 msgid "Create a new Trigger Function."
 msgstr "Создать триггер."
 
-#: src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:46 src/schema/pgObject.cpp:45
 msgid "Create a new Type."
 msgstr "Создать тип."
 
-#: src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:33 src/schema/pgObject.cpp:32
 msgid "Create a new User."
 msgstr "Создать пользователя."
 
-#: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:47 src/schema/pgObject.cpp:46
 msgid "Create a new View."
 msgstr "Создать вид."
 
@@ -1230,6 +1238,7 @@ msgid "Data type"
 msgstr "Тип данных"
 
 #: src/schema/pgObject.cpp:31 src/ui/frmStatus.cpp:56
+#: src/schema/pgObject.cpp:30
 msgid "Database"
 msgstr "База"
 
@@ -1240,7 +1249,7 @@ msgstr "База"
 msgid "Database Status"
 msgstr "Статус базы данных"
 
-#: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:31 src/schema/pgObject.cpp:30
 msgid "Databases"
 msgstr "Базы"
 
@@ -1252,6 +1261,7 @@ msgstr "Базы"
 #: src/pgAdmin3.cpp:181 src/schema/pgColumn.cpp:178 src/schema/pgDomain.cpp:99
 #: src/schema/pgType.cpp:135 src/ui/frmOptions.cpp:96 standard input:49
 #: input:78 input:289 src/ui/frmOptions.cpp:98 src/pgAdmin3.cpp:188
+#: src/pgAdmin3.cpp:191
 msgid "Default"
 msgstr "По умолчанию"
 
@@ -1297,14 +1307,15 @@ msgstr ""
 #: src/schema/pgCheck.cpp:72 src/schema/pgRule.cpp:68 src/schema/pgRule.cpp:72
 #: src/schema/pgView.cpp:84 src/ui/dlgTable.cpp:84 src/ui/dlgTable.cpp:89
 #: standard input:130 input:213 input:282 input:303 input:337
+#: src/schema/pgView.cpp:86
 msgid "Definition"
 msgstr "Определение"
 
-#: src/ui/frmEditGrid.cpp:89
+#: src/ui/frmEditGrid.cpp:89 src/ui/frmEditGrid.cpp:91
 msgid "Delete"
 msgstr "Удалить"
 
-#: src/ui/frmEditGrid.cpp:89
+#: src/ui/frmEditGrid.cpp:89 src/ui/frmEditGrid.cpp:91
 msgid "Delete selected lines."
 msgstr "Удалить выделенные строки."
 
@@ -1348,6 +1359,7 @@ msgstr "Вызов справки по СУБД PostgreSQL."
 
 #: src/ui/frmEditGrid.cpp:91 src/ui/frmMain.cpp:159 src/ui/frmMain.cpp:225
 #: src/ui/frmQuery.cpp:134 src/ui/frmQuery.cpp:186 src/ui/frmMain.cpp:226
+#: src/ui/frmEditGrid.cpp:93
 msgid "Display help on SQL commands."
 msgstr "Вызов справки по SQL-командам."
 
@@ -1382,11 +1394,11 @@ msgstr "Не спрашивать подтверждения для несохр
 msgid "Do you want to save changes?"
 msgstr "Сохранить изменения?"
 
-#: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:39 src/schema/pgObject.cpp:38
 msgid "Domain"
 msgstr "Домен"
 
-#: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:39 src/schema/pgObject.cpp:38
 msgid "Domains"
 msgstr "Домены"
 
@@ -1402,7 +1414,7 @@ msgstr ""
 msgid "Drop"
 msgstr "Удалить"
 
-#: src/ui/events.cpp:825 src/ui/events.cpp:881
+#: src/ui/events.cpp:825 src/ui/events.cpp:881 src/ui/events.cpp:891
 #, c-format
 msgid "Drop %s?"
 msgstr "Удалить %s?"
@@ -1527,7 +1539,7 @@ msgstr "Введите номер порта на котором сервер о
 msgid "Enter the username to use when connecting to the server."
 msgstr "Введите имя пользователя для подсоединения к сервера."
 
-#: src/ui/events.cpp:497 src/ui/events.cpp:516
+#: src/ui/events.cpp:497 src/ui/events.cpp:516 src/ui/events.cpp:521
 #, c-format
 msgid "Error connecting to the server: %s"
 msgstr "Ощибка при подсоединении к серверу: %s"
@@ -1662,7 +1674,7 @@ msgstr "FULL JOIN"
 msgid "Failed to open file %s."
 msgstr "Не удалось открыть файл %s."
 
-#: src/ui/events.cpp:438 src/ui/events.cpp:457
+#: src/ui/events.cpp:438 src/ui/events.cpp:457 src/ui/events.cpp:462
 #, c-format
 msgid "Failed to write to the output file: %s"
 msgstr "Не удалось записать в файл вывода: %s"
@@ -1698,7 +1710,8 @@ msgid "Find"
 msgstr "Найти"
 
 #: src/ui/ctlSQLBox.cpp:365 src/ui/ctlSQLBox.cpp:410 src/ui/ctlSQLBox.cpp:416
-#: src/ui/frmQuery.cpp:114 src/ui/frmQuery.cpp:180
+#: src/ui/frmQuery.cpp:114 src/ui/frmQuery.cpp:180 src/ui/ctlSQLBox.cpp:364
+#: src/ui/ctlSQLBox.cpp:409 src/ui/ctlSQLBox.cpp:415
 msgid "Find text"
 msgstr "Найти текст"
 
@@ -1725,6 +1738,7 @@ msgid "For type"
 msgstr "Для типа"
 
 #: src/schema/pgObject.cpp:56 src/ui/dlgTable.cpp:475
+#: src/schema/pgObject.cpp:55
 msgid "Foreign Key"
 msgstr "Второстепенный ключ"
 
@@ -1754,11 +1768,11 @@ msgstr "От"
 # standard
 #: src/schema/pgCast.cpp:66 src/schema/pgConversion.cpp:66
 #: src/schema/pgObject.cpp:40 src/schema/pgTrigger.cpp:144 standard input:19
-#: input:52
+#: input:52 src/schema/pgObject.cpp:39
 msgid "Function"
 msgstr "Функция"
 
-#: src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:40 src/schema/pgObject.cpp:39
 msgid "Functions"
 msgstr "Функции"
 
@@ -1769,12 +1783,12 @@ msgstr "Функции"
 msgid "General"
 msgstr ""
 
-#: src/schema/pgOperator.cpp:120
+#: src/schema/pgOperator.cpp:120 src/schema/pgOperator.cpp:132
 msgid "Greater than operator"
 msgstr "Оператор \"Больше\""
 
 #: src/schema/pgObject.cpp:32 src/ui/dlgProperty.cpp:911
-#: src/ui/dlgProperty.cpp:914
+#: src/ui/dlgProperty.cpp:914 src/schema/pgObject.cpp:31
 msgid "Group"
 msgstr "Группа"
 
@@ -1790,7 +1804,7 @@ msgstr "Группа/Пользователь"
 # src/schema/pgObject.cpp:32 standard input:8
 # standard
 # standard
-#: src/schema/pgObject.cpp:32 standard input:320
+#: src/schema/pgObject.cpp:32 standard input:320 src/schema/pgObject.cpp:31
 msgid "Groups"
 msgstr "Группы"
 
@@ -1812,7 +1826,7 @@ msgstr ""
 msgid "Has OIDs"
 msgstr "Имеет OID"
 
-#: src/schema/pgTable.cpp:343
+#: src/schema/pgTable.cpp:343 src/schema/pgTable.cpp:344
 msgid "Has OIDs?"
 msgstr "Имеет OID?"
 
@@ -1844,6 +1858,7 @@ msgstr "Имеет OID?"
 #: input:22 input:31 input:42 input:54 input:70 input:84 input:109 input:133
 #: input:144 input:156 input:167 input:177 input:199 input:214 input:222
 #: input:236 input:255 input:272 input:310 input:330 input:338
+#: src/ui/frmEditGrid.cpp:93
 msgid "Help"
 msgstr "Справка"
 
@@ -1916,11 +1931,11 @@ msgstr "Неверный пароль"
 msgid "Increment"
 msgstr ""
 
-#: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:49 src/schema/pgObject.cpp:48
 msgid "Index"
 msgstr "Индекс"
 
-#: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:49 src/schema/pgObject.cpp:48
 msgid "Indexes"
 msgstr "Индексы"
 
@@ -1933,11 +1948,11 @@ msgstr "Наследовано"
 msgid "Inherited from table %s"
 msgstr "Наследовано из таблицы %s"
 
-#: src/schema/pgTable.cpp:342
+#: src/schema/pgTable.cpp:342 src/schema/pgTable.cpp:343
 msgid "Inherited tables"
 msgstr "Наследованные таблицы"
 
-#: src/schema/pgTable.cpp:340
+#: src/schema/pgTable.cpp:340 src/schema/pgTable.cpp:341
 msgid "Inherited tables count"
 msgstr "Чило наследованных таблиц"
 
@@ -1948,7 +1963,7 @@ msgstr "Чило наследованных таблиц"
 msgid "Inherits from tables"
 msgstr "Наследует из таблиц"
 
-#: src/schema/pgTable.cpp:339
+#: src/schema/pgTable.cpp:339 src/schema/pgTable.cpp:340
 msgid "Inherits tables"
 msgstr "Наследует таблицы"
 
@@ -2018,10 +2033,11 @@ msgstr ""
 # standard
 # standard
 #: src/schema/pgOperator.cpp:115 standard input:190
+#: src/schema/pgOperator.cpp:127
 msgid "Join function"
 msgstr "Функция join"
 
-#: src/schema/pgOperator.cpp:106
+#: src/schema/pgOperator.cpp:106 src/schema/pgOperator.cpp:118
 msgid "Kind"
 msgstr "Разновидность"
 
@@ -2042,10 +2058,11 @@ msgstr "LF"
 # standard
 # standard
 #: src/schema/pgFunction.cpp:109 src/schema/pgObject.cpp:34 standard input:117
+#: src/schema/pgObject.cpp:33
 msgid "Language"
 msgstr "Язык"
 
-#: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:34 src/schema/pgObject.cpp:33
 msgid "Languages"
 msgstr "Языки"
 
@@ -2058,7 +2075,7 @@ msgid "Last system OID"
 msgstr "Последний системный OID"
 
 # standard input:16
-#: src/schema/pgOperator.cpp:117
+#: src/schema/pgOperator.cpp:117 src/schema/pgOperator.cpp:129
 msgid "Left Sort operator"
 msgstr ""
 
@@ -2080,6 +2097,7 @@ msgstr ""
 # standard
 # standard
 #: src/schema/pgOperator.cpp:108 standard input:184
+#: src/schema/pgOperator.cpp:120
 msgid "Left type"
 msgstr ""
 
@@ -2092,7 +2110,7 @@ msgstr ""
 msgid "Length"
 msgstr "Длина"
 
-#: src/schema/pgOperator.cpp:119
+#: src/schema/pgOperator.cpp:119 src/schema/pgOperator.cpp:131
 msgid "Less Than operator"
 msgstr "Оператор \"Меньше\""
 
@@ -2287,14 +2305,21 @@ msgstr ""
 #: src/schema/pgView.cpp:80 standard input:2 input:15 input:26 input:35
 #: input:46 input:58 input:74 input:88 input:113 input:148 input:160 input:171
 #: input:181 input:203 input:218 input:226 input:240 input:259 input:276
-#: input:334 src/schema/pgAggregate.cpp:77
+#: input:334 src/schema/pgAggregate.cpp:77 src/schema/pgOperator.cpp:115
+#: src/schema/pgSchema.cpp:147 src/schema/pgTable.cpp:324
+#: src/schema/pgView.cpp:82
 msgid "Name"
 msgstr "Имя"
+
+#: src/ui/dlgType.cpp:246
+msgid "Name may not start with '_'."
+msgstr ""
 
 # src/schema/pgOperator.cpp:110 standard input:13
 # standard
 # standard
 #: src/schema/pgOperator.cpp:114 standard input:192
+#: src/schema/pgOperator.cpp:126
 msgid "Negator"
 msgstr ""
 
@@ -2302,59 +2327,59 @@ msgstr ""
 msgid "New &Object"
 msgstr "Новый &объект"
 
-#: src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:36 src/schema/pgObject.cpp:35
 msgid "New Aggregate"
 msgstr "Новый агрегат"
 
-#: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:37 src/schema/pgObject.cpp:36
 msgid "New Cast"
 msgstr ""
 
-#: src/schema/pgObject.cpp:55
+#: src/schema/pgObject.cpp:55 src/schema/pgObject.cpp:54
 msgid "New Check Constraint"
 msgstr "Новое ограничение CHECK"
 
-#: src/schema/pgObject.cpp:48
+#: src/schema/pgObject.cpp:48 src/schema/pgObject.cpp:47
 msgid "New Column"
 msgstr "Новая колонка"
 
-#: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:38 src/schema/pgObject.cpp:37
 msgid "New Conversion"
 msgstr "Новая конверсия"
 
-#: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:31 src/schema/pgObject.cpp:30
 msgid "New Database"
 msgstr "Новая база данных"
 
-#: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:39 src/schema/pgObject.cpp:38
 msgid "New Domain"
 msgstr "Новый домен"
 
-#: src/schema/pgObject.cpp:56
+#: src/schema/pgObject.cpp:56 src/schema/pgObject.cpp:55
 msgid "New Foreign Key"
 msgstr "Новый вторичный ключ"
 
-#: src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:40 src/schema/pgObject.cpp:39
 msgid "New Function"
 msgstr "Новая функция"
 
-#: src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:32 src/schema/pgObject.cpp:31
 msgid "New Group"
 msgstr "Новая группа"
 
-#: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:49 src/schema/pgObject.cpp:48
 msgid "New Index"
 msgstr "Новый индекс"
 
-#: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:34 src/schema/pgObject.cpp:33
 msgid "New Language"
 msgstr "Новый язык"
 
-#: src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:42 src/schema/pgObject.cpp:41
 msgid "New Operator"
 msgstr "Новый оператор"
 
-#: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:43 src/schema/pgObject.cpp:42
 msgid "New Operator Class"
 msgstr "Новый класс операторов"
 
@@ -2365,51 +2390,51 @@ msgstr "Новый класс операторов"
 msgid "New Password"
 msgstr "Новый пароль"
 
-#: src/schema/pgObject.cpp:53
+#: src/schema/pgObject.cpp:53 src/schema/pgObject.cpp:52
 msgid "New Primary Key"
 msgstr "Новый первичный ключ"
 
-#: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:50 src/schema/pgObject.cpp:49
 msgid "New Rule"
 msgstr "Новое правило"
 
-#: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:35 src/schema/pgObject.cpp:34
 msgid "New Schema"
 msgstr "Новая схема"
 
-#: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:44 src/schema/pgObject.cpp:43
 msgid "New Sequence"
 msgstr "Новая последовательность"
 
-#: src/schema/pgObject.cpp:30
+#: src/schema/pgObject.cpp:30 src/schema/pgObject.cpp:29
 msgid "New Server"
 msgstr "Новый сервер"
 
-#: src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:45 src/schema/pgObject.cpp:44
 msgid "New Table"
 msgstr "Новая таблица"
 
-#: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:51 src/schema/pgObject.cpp:50
 msgid "New Trigger"
 msgstr "Новый триггер"
 
-#: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:41 src/schema/pgObject.cpp:40
 msgid "New Trigger Function"
 msgstr ""
 
-#: src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:46 src/schema/pgObject.cpp:45
 msgid "New Type"
 msgstr "Новый тип"
 
-#: src/schema/pgObject.cpp:54
+#: src/schema/pgObject.cpp:54 src/schema/pgObject.cpp:53
 msgid "New Unique Constraint"
 msgstr "Новое ограничение UNIQUE"
 
-#: src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:33 src/schema/pgObject.cpp:32
 msgid "New User"
 msgstr "Новый пользователь"
 
-#: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:47 src/schema/pgObject.cpp:46
 msgid "New View"
 msgstr "Новый вид"
 
@@ -2429,21 +2454,21 @@ msgstr ""
 msgid "No"
 msgstr "Нет"
 
-#: src/ui/frmEditGrid.cpp:402
+#: src/ui/frmEditGrid.cpp:402 src/ui/frmEditGrid.cpp:495
 msgid "No Table or view."
 msgstr "Нет таблицы или вида."
 
 #: src/ui/events.cpp:532 src/ui/frmMain.cpp:307 src/ui/events.cpp:557
-#: src/ui/frmMain.cpp:308
+#: src/ui/frmMain.cpp:308 src/ui/events.cpp:569
 msgid "No properties are available for the current selection"
 msgstr ""
 
 #: src/ui/events.cpp:535 src/ui/frmMain.cpp:313 src/ui/events.cpp:560
-#: src/ui/frmMain.cpp:314
+#: src/ui/frmMain.cpp:314 src/ui/events.cpp:572
 msgid "No statistics are available for the current selection"
 msgstr ""
 
-#: src/schema/pgObject.cpp:29
+#: src/schema/pgObject.cpp:29 src/schema/pgObject.cpp:28
 msgid "None"
 msgstr ""
 
@@ -2459,7 +2484,7 @@ msgstr "Не NULL"
 msgid "Not NULL?"
 msgstr "Не NULL?"
 
-#: src/ui/ctlSQLBox.cpp:416
+#: src/ui/ctlSQLBox.cpp:416 src/ui/ctlSQLBox.cpp:415
 msgid "Not implemented"
 msgstr ""
 
@@ -2500,7 +2525,9 @@ msgstr "Ничего"
 #: src/schema/pgType.cpp:125 src/schema/pgView.cpp:81 standard input:3
 #: input:16 input:47 input:59 input:75 input:115 input:172 input:182 input:204
 #: input:219 input:227 input:241 input:260 input:277 input:335
-#: src/schema/pgAggregate.cpp:79
+#: src/schema/pgAggregate.cpp:79 src/schema/pgOperator.cpp:116
+#: src/schema/pgSchema.cpp:148 src/schema/pgTable.cpp:325
+#: src/schema/pgView.cpp:83
 msgid "OID"
 msgstr "OID"
 
@@ -2599,14 +2626,15 @@ msgstr ""
 # standard
 # standard
 #: src/schema/pgObject.cpp:42 standard input:457 input:458
+#: src/schema/pgObject.cpp:41
 msgid "Operator"
 msgstr "Оператор"
 
-#: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:43 src/schema/pgObject.cpp:42
 msgid "Operator Class"
 msgstr "Класс операторов"
 
-#: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:43 src/schema/pgObject.cpp:42
 msgid "Operator Classes"
 msgstr "Классы операторов"
 
@@ -2618,10 +2646,11 @@ msgstr "Классы операторов"
 # standard
 # standard
 #: src/schema/pgOperator.cpp:112 standard input:186
+#: src/schema/pgOperator.cpp:124
 msgid "Operator function"
 msgstr ""
 
-#: src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:42 src/schema/pgObject.cpp:41
 msgid "Operators"
 msgstr "Операторы"
 
@@ -2643,6 +2672,7 @@ msgid "Or"
 msgstr "Или"
 
 #: src/ui/frmEditGrid.cpp:1255 src/ui/frmEditGrid.cpp:1313
+#: src/ui/frmEditGrid.cpp:1690 src/ui/frmEditGrid.cpp:1748
 msgid "Out of Memory for cacheLinePool"
 msgstr ""
 
@@ -2673,7 +2703,9 @@ msgstr ""
 #: src/schema/pgSequence.cpp:89 src/schema/pgTable.cpp:325
 #: src/schema/pgType.cpp:126 src/schema/pgView.cpp:82 standard input:4
 #: input:48 input:60 input:76 input:183 input:220 input:228 input:242
-#: src/schema/pgAggregate.cpp:80
+#: src/schema/pgAggregate.cpp:80 src/schema/pgOperator.cpp:117
+#: src/schema/pgSchema.cpp:149 src/schema/pgTable.cpp:326
+#: src/schema/pgView.cpp:84
 msgid "Owner"
 msgstr "Владелец"
 
@@ -2737,7 +2769,7 @@ msgstr ""
 msgid "Path"
 msgstr "Путь"
 
-#: src/pgAdmin3.cpp:191 src/pgAdmin3.cpp:198
+#: src/pgAdmin3.cpp:191 src/pgAdmin3.cpp:198 src/pgAdmin3.cpp:201
 msgid "Please choose user language:"
 msgstr ""
 
@@ -2765,7 +2797,7 @@ msgstr ""
 msgid "Please select language."
 msgstr ""
 
-#: src/ui/dlgOperator.cpp:172
+#: src/ui/dlgOperator.cpp:172 src/ui/dlgOperator.cpp:173
 msgid "Please select left or right datatype."
 msgstr ""
 
@@ -2781,11 +2813,11 @@ msgstr ""
 msgid "Please select target datatype."
 msgstr ""
 
-#: src/ui/dlgOperator.cpp:173
+#: src/ui/dlgOperator.cpp:173 src/ui/dlgOperator.cpp:174
 msgid "Please specify a procedure."
 msgstr ""
 
-#: src/ui/dlgTrigger.cpp:193
+#: src/ui/dlgTrigger.cpp:193 src/ui/dlgTrigger.cpp:195
 msgid "Please specify at least one action."
 msgstr ""
 
@@ -2793,7 +2825,8 @@ msgstr ""
 msgid "Please specify at least two members."
 msgstr ""
 
-#: src/ui/dlgIndex.cpp:144 src/ui/dlgTable.cpp:517
+#: src/ui/dlgIndex.cpp:144 src/ui/dlgTable.cpp:517 src/ui/dlgForeignKey.cpp:84
+#: src/ui/dlgIndex.cpp:190
 msgid "Please specify columns."
 msgstr ""
 
@@ -2824,7 +2857,8 @@ msgstr ""
 #: src/ui/dlgOperator.cpp:171 src/ui/dlgRule.cpp:162 src/ui/dlgSchema.cpp:97
 #: src/ui/dlgSequence.cpp:143 src/ui/dlgTable.cpp:515
 #: src/ui/dlgTrigger.cpp:190 src/ui/dlgUser.cpp:169 src/ui/dlgView.cpp:115
-#: src/ui/dlgAggregate.cpp:126
+#: src/ui/dlgAggregate.cpp:126 src/ui/dlgOperator.cpp:172
+#: src/ui/dlgTrigger.cpp:192 src/ui/dlgType.cpp:245
 msgid "Please specify name."
 msgstr ""
 
@@ -2852,7 +2886,7 @@ msgstr ""
 msgid "Please specify target encoding."
 msgstr ""
 
-#: src/ui/dlgTrigger.cpp:191
+#: src/ui/dlgTrigger.cpp:191 src/ui/dlgTrigger.cpp:193
 msgid "Please specify trigger function."
 msgstr ""
 
@@ -2900,10 +2934,12 @@ msgid "Precision"
 msgstr "Точность"
 
 #: src/schema/pgObject.cpp:53 src/ui/dlgTable.cpp:472
+#: src/schema/pgObject.cpp:52
 msgid "Primary Key"
 msgstr "Первичный ключ"
 
 #: src/schema/pgTable.cpp:328 src/schema/pgTable.cpp:330
+#: src/schema/pgTable.cpp:329 src/schema/pgTable.cpp:331
 msgid "Primary key"
 msgstr "Первичный ключ"
 
@@ -2958,11 +2994,12 @@ msgstr "Процедура"
 #: input:57 input:73 input:87 input:112 input:136 input:147 input:159
 #: input:170 input:180 input:202 input:217 input:225 input:239 input:258
 #: input:275 input:313 input:333 src/ui/events.cpp:556 src/ui/frmMain.cpp:220
-#: src/ui/frmMain.cpp:249 src/ui/frmMain.cpp:307
+#: src/ui/frmMain.cpp:249 src/ui/frmMain.cpp:307 src/ui/events.cpp:568
 msgid "Properties"
 msgstr "Свойства"
 
 #: src/include/pgObject.h:140 src/include/pgObject.h:141
+#: src/include/pgObject.h:139
 msgid "Property"
 msgstr "Свойстсво"
 
@@ -3066,7 +3103,7 @@ msgstr "&Обновить\tF5"
 msgid "Re&load module"
 msgstr "Перезагрузить мо&дуль"
 
-#: src/ui/ctlSQLBox.cpp:410
+#: src/ui/ctlSQLBox.cpp:410 src/ui/ctlSQLBox.cpp:409
 msgid "Reached end of the document"
 msgstr "Коней документа"
 
@@ -3117,7 +3154,7 @@ msgstr ""
 # standard
 # standard
 #: src/ui/frmEditGrid.cpp:86 src/ui/frmMain.cpp:215 standard input:494
-#: src/ui/frmMain.cpp:216 input:495
+#: src/ui/frmMain.cpp:216 input:495 src/ui/frmEditGrid.cpp:88
 msgid "Refresh"
 msgstr "Обновить"
 
@@ -3134,7 +3171,7 @@ msgstr "Частота обновления (в секундах)"
 msgid "Refresh the selected object."
 msgstr "Обновить выделенный объект."
 
-#: src/schema/pgTable.cpp:335
+#: src/schema/pgTable.cpp:335 src/schema/pgTable.cpp:336
 msgid "Refresh to count rows"
 msgstr ""
 
@@ -3143,7 +3180,7 @@ msgstr ""
 msgid "Refreshing %s..."
 msgstr "Обновление %s..."
 
-#: src/ui/frmEditGrid.cpp:406
+#: src/ui/frmEditGrid.cpp:406 src/ui/frmEditGrid.cpp:499
 msgid "Refreshing data, please wait."
 msgstr ""
 
@@ -3176,21 +3213,22 @@ msgstr ""
 msgid "Remove"
 msgstr "Удалить"
 
-#: src/ui/frmMain.cpp:476
+#: src/ui/frmMain.cpp:476 src/ui/frmMain.cpp:494
 msgid "Restoring previous environment"
 msgstr ""
 
 # standard
 # standard
 #: src/schema/pgOperator.cpp:116 standard input:189
+#: src/schema/pgOperator.cpp:128
 msgid "Restrict function"
 msgstr ""
 
-#: src/schema/pgOperator.cpp:111
+#: src/schema/pgOperator.cpp:111 src/schema/pgOperator.cpp:123
 msgid "Result type"
 msgstr "Тип результата"
 
-#: src/schema/pgObject.cpp:138
+#: src/schema/pgObject.cpp:138 src/schema/pgObject.cpp:137
 #, c-format
 msgid "Retrieving %s details"
 msgstr ""
@@ -3200,7 +3238,7 @@ msgstr ""
 msgid "Retrieving data: %d rows."
 msgstr ""
 
-#: src/ui/events.cpp:566 src/ui/events.cpp:598
+#: src/ui/events.cpp:566 src/ui/events.cpp:598 src/ui/events.cpp:612
 msgid "Retrieving server properties"
 msgstr ""
 
@@ -3222,7 +3260,7 @@ msgid "Returns set"
 msgstr ""
 
 # standard input:16
-#: src/schema/pgOperator.cpp:118
+#: src/schema/pgOperator.cpp:118 src/schema/pgOperator.cpp:130
 msgid "Right Sort operator"
 msgstr ""
 
@@ -3244,6 +3282,7 @@ msgstr ""
 # standard
 # standard
 #: src/schema/pgOperator.cpp:110 standard input:185
+#: src/schema/pgOperator.cpp:122
 msgid "Right type"
 msgstr ""
 
@@ -3266,18 +3305,19 @@ msgid "Row trigger"
 msgstr ""
 
 #: src/schema/pgTable.cpp:335 src/schema/pgTable.cpp:337
+#: src/schema/pgTable.cpp:336 src/schema/pgTable.cpp:338
 msgid "Rows (counted)"
 msgstr ""
 
-#: src/schema/pgTable.cpp:332
+#: src/schema/pgTable.cpp:332 src/schema/pgTable.cpp:333
 msgid "Rows (estimated)"
 msgstr ""
 
-#: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:50 src/schema/pgObject.cpp:49
 msgid "Rule"
 msgstr "Правило"
 
-#: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:50 src/schema/pgObject.cpp:49
 msgid "Rules"
 msgstr "Правила"
 
@@ -3310,7 +3350,7 @@ msgstr "SQL"
 msgid "SQL Help"
 msgstr "Справка по SQL"
 
-#: src/ui/events.cpp:430 src/ui/events.cpp:449
+#: src/ui/events.cpp:430 src/ui/events.cpp:449 src/ui/events.cpp:454
 msgid "SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr ""
 
@@ -3341,7 +3381,7 @@ msgid "STABLE"
 msgstr "STABLE"
 
 #: src/ui/frmEditGrid.cpp:84 src/ui/frmQuery.cpp:170
-#: src/ui/frmQueryBuilder.cpp:168
+#: src/ui/frmQueryBuilder.cpp:168 src/ui/frmEditGrid.cpp:86
 msgid "Save"
 msgstr "Сохранить"
 
@@ -3377,15 +3417,15 @@ msgstr "Сохранить файл запросов как"
 msgid "Save the SQL definition of the selected object."
 msgstr ""
 
-#: src/ui/frmEditGrid.cpp:84
+#: src/ui/frmEditGrid.cpp:84 src/ui/frmEditGrid.cpp:86
 msgid "Saved the changed row."
 msgstr ""
 
-#: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:35 src/schema/pgObject.cpp:34
 msgid "Schema"
 msgstr "Схема"
 
-#: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:35 src/schema/pgObject.cpp:34
 msgid "Schemas"
 msgstr "Схемы"
 
@@ -3418,7 +3458,7 @@ msgstr ""
 msgid "Select log file"
 msgstr "Выбраить файл журнала"
 
-#: src/ui/events.cpp:430 src/ui/events.cpp:449
+#: src/ui/events.cpp:430 src/ui/events.cpp:449 src/ui/events.cpp:454
 msgid "Select output file"
 msgstr "Выбрать файл вывода"
 
@@ -3443,11 +3483,11 @@ msgstr ""
 msgid "Send function"
 msgstr ""
 
-#: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:44 src/schema/pgObject.cpp:43
 msgid "Sequence"
 msgstr "Последовательность"
 
-#: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:44 src/schema/pgObject.cpp:43
 msgid "Sequences"
 msgstr "Последовательности"
 
@@ -3456,15 +3496,17 @@ msgstr "Последовательности"
 # standard
 # standard
 #: src/schema/pgObject.cpp:30 standard input:352 input:472 input:473
+#: src/schema/pgObject.cpp:29
 msgid "Server"
 msgstr "Сервер"
 
 #: src/schema/pgObject.cpp:30 src/ui/frmMain.cpp:302 src/ui/frmMain.cpp:303
+#: src/schema/pgObject.cpp:29
 msgid "Servers"
 msgstr "Сервера"
 
 #: src/ui/events.cpp:509 src/ui/frmMain.cpp:639 src/ui/events.cpp:528
-#: src/ui/frmMain.cpp:642
+#: src/ui/frmMain.cpp:642 src/ui/events.cpp:533 src/ui/frmMain.cpp:660
 #, c-format
 msgid "Servers (%d)"
 msgstr "Сервера (%d)"
@@ -3545,12 +3587,13 @@ msgid "State type"
 msgstr ""
 
 #: src/schema/pgObject.cpp:500 src/schema/pgSequence.cpp:106
-#: src/schema/pgObject.cpp:502
+#: src/schema/pgObject.cpp:502 src/schema/pgObject.cpp:512
 msgid "Statistic"
 msgstr "Статистика"
 
 #: src/ui/events.cpp:534 src/ui/frmMain.cpp:249 src/ui/frmMain.cpp:312
 #: src/ui/events.cpp:559 src/ui/frmMain.cpp:250 src/ui/frmMain.cpp:313
+#: src/ui/events.cpp:571
 msgid "Statistics"
 msgstr "Статистика"
 
@@ -3584,7 +3627,7 @@ msgstr ""
 msgid "Supports hash"
 msgstr ""
 
-#: src/schema/pgOperator.cpp:121
+#: src/schema/pgOperator.cpp:121 src/schema/pgOperator.cpp:133
 msgid "Supports hash?"
 msgstr ""
 
@@ -3640,7 +3683,7 @@ msgid "System operator class?"
 msgstr "Системный класс операторов?"
 
 # standard input:16
-#: src/schema/pgOperator.cpp:122
+#: src/schema/pgOperator.cpp:122 src/schema/pgOperator.cpp:134
 msgid "System operator?"
 msgstr "Системный оператор?"
 
@@ -3648,7 +3691,7 @@ msgstr "Системный оператор?"
 msgid "System rule?"
 msgstr "Системное правило?"
 
-#: src/schema/pgSchema.cpp:150
+#: src/schema/pgSchema.cpp:150 src/schema/pgSchema.cpp:151
 msgid "System schema?"
 msgstr "Системная схема?"
 
@@ -3656,7 +3699,7 @@ msgstr "Системная схема?"
 msgid "System sequence?"
 msgstr "Системная последовательность?"
 
-#: src/schema/pgTable.cpp:344
+#: src/schema/pgTable.cpp:344 src/schema/pgTable.cpp:345
 msgid "System table?"
 msgstr "Системная таблица?"
 
@@ -3668,18 +3711,19 @@ msgstr "Системный триггер?"
 msgid "System type?"
 msgstr "Системный тип?"
 
-#: src/schema/pgView.cpp:85
+#: src/schema/pgView.cpp:85 src/schema/pgView.cpp:87
 msgid "System view?"
 msgstr "Системный вид?"
 
 #: src/schema/pgObject.cpp:45 src/ui/frmQueryBuilder.cpp:207
+#: src/schema/pgObject.cpp:44
 msgid "Table"
 msgstr "Таблица"
 
 # src/schema/pgObject.cpp:45 standard input:5
 # standard
 # standard
-#: src/schema/pgObject.cpp:45 standard input:345
+#: src/schema/pgObject.cpp:45 standard input:345 src/schema/pgObject.cpp:44
 msgid "Tables"
 msgstr "Таблицы"
 
@@ -3786,11 +3830,11 @@ msgstr ""
 msgid "The username used when connecting to the server."
 msgstr ""
 
-#: src/ui/events.cpp:426 src/ui/events.cpp:445
+#: src/ui/events.cpp:426 src/ui/events.cpp:445 src/ui/events.cpp:450
 msgid "There is nothing in the SQL pane to save!"
 msgstr ""
 
-#: src/ui/frmEditGrid.cpp:281
+#: src/ui/frmEditGrid.cpp:281 src/ui/frmEditGrid.cpp:373
 msgid ""
 "There is unsaved data in a row.\n"
 "Do you want to store to the database?"
@@ -3820,15 +3864,15 @@ msgstr ""
 msgid "Total query runtime: "
 msgstr "Суммарное время выполнения запроса:"
 
-#: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:51 src/schema/pgObject.cpp:50
 msgid "Trigger"
 msgstr "Триггер"
 
-#: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:41 src/schema/pgObject.cpp:40
 msgid "Trigger Function"
 msgstr ""
 
-#: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:41 src/schema/pgObject.cpp:40
 msgid "Trigger Functions"
 msgstr ""
 
@@ -3839,7 +3883,7 @@ msgstr ""
 msgid "Trigger function"
 msgstr ""
 
-#: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:51 src/schema/pgObject.cpp:50
 msgid "Triggers"
 msgstr "Триггеры"
 
@@ -3862,18 +3906,18 @@ msgid ""
 "or more relationships."
 msgstr ""
 
-#: src/ui/events.cpp:816 src/ui/events.cpp:872
+#: src/ui/events.cpp:816 src/ui/events.cpp:872 src/ui/events.cpp:882
 msgid "Trying to drop system object"
 msgstr ""
 
 # src/schema/pgObject.cpp:46 standard input:4
 # standard
 # standard
-#: src/schema/pgObject.cpp:46 standard input:278
+#: src/schema/pgObject.cpp:46 standard input:278 src/schema/pgObject.cpp:45
 msgid "Type"
 msgstr "Тип"
 
-#: src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:46 src/schema/pgObject.cpp:45
 msgid "Types"
 msgstr "Типы"
 
@@ -3885,11 +3929,11 @@ msgstr "Типы"
 msgid "UPDATE"
 msgstr "UPDATE"
 
-#: src/ui/frmEditGrid.cpp:87 src/ui/frmQuery.cpp:177
+#: src/ui/frmEditGrid.cpp:87 src/ui/frmQuery.cpp:177 src/ui/frmEditGrid.cpp:89
 msgid "Undo"
 msgstr "Отменить"
 
-#: src/ui/frmEditGrid.cpp:87
+#: src/ui/frmEditGrid.cpp:87 src/ui/frmEditGrid.cpp:89
 msgid "Undo change of data."
 msgstr ""
 
@@ -3897,7 +3941,7 @@ msgstr ""
 msgid "Undo last action"
 msgstr ""
 
-#: src/ui/frmEditGrid.cpp:1044
+#: src/ui/frmEditGrid.cpp:1044 src/ui/frmEditGrid.cpp:1479
 msgid "Unexpected empty cache line: dataSet already closed."
 msgstr ""
 
@@ -3911,6 +3955,7 @@ msgstr ""
 # standard
 # standard
 #: src/schema/pgObject.cpp:54 src/ui/dlgTable.cpp:476 standard input:150
+#: src/schema/pgObject.cpp:53
 msgid "Unique"
 msgstr ""
 
@@ -3918,15 +3963,15 @@ msgstr ""
 msgid "Unique?"
 msgstr ""
 
-#: src/schema/pgObject.cpp:57
+#: src/schema/pgObject.cpp:57 src/schema/pgObject.cpp:56
 msgid "Unknown"
 msgstr ""
 
-#: src/ui/ctlSQLBox.cpp:427
+#: src/ui/ctlSQLBox.cpp:427 src/ui/ctlSQLBox.cpp:426
 msgid "Unknown find dialog event!"
 msgstr ""
 
-#: src/ui/frmEditGrid.cpp:281
+#: src/ui/frmEditGrid.cpp:281 src/ui/frmEditGrid.cpp:373
 msgid "Unsaved data"
 msgstr ""
 
@@ -3935,6 +3980,7 @@ msgid "Update catalogs?"
 msgstr "Обновить каталоги?"
 
 #: src/schema/pgObject.cpp:33 src/ui/frmStatus.cpp:57
+#: src/schema/pgObject.cpp:32
 msgid "User"
 msgstr "Пользователь"
 
@@ -3971,6 +4017,7 @@ msgstr "Пользователь может создавать других по
 # standard
 # standard
 #: src/pgAdmin3.cpp:191 standard input:412 src/pgAdmin3.cpp:198
+#: src/pgAdmin3.cpp:201
 msgid "User language"
 msgstr "Язык пользователя"
 
@@ -3990,7 +4037,7 @@ msgstr "Пользователь/Группа"
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:33 src/schema/pgObject.cpp:32
 msgid "Users"
 msgstr "Пользователи"
 
@@ -4023,7 +4070,8 @@ msgstr ""
 #: src/include/pgObject.h:140 src/schema/pgObject.cpp:500
 #: src/schema/pgSequence.cpp:106 src/ui/dlgDatabase.cpp:55
 #: src/ui/dlgUser.cpp:68 src/include/pgObject.h:141
-#: src/schema/pgObject.cpp:502
+#: src/schema/pgObject.cpp:502 src/include/pgObject.h:139
+#: src/schema/pgObject.cpp:512
 msgid "Value"
 msgstr "Значение"
 
@@ -4076,7 +4124,7 @@ msgstr "Номер версии"
 msgid "Version string"
 msgstr "Строка версии"
 
-#: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:47 src/schema/pgObject.cpp:46
 msgid "View"
 msgstr "Вид"
 
@@ -4096,7 +4144,7 @@ msgstr ""
 # src/schema/pgObject.cpp:47 standard input:6
 # standard
 # standard
-#: src/schema/pgObject.cpp:47 standard input:346
+#: src/schema/pgObject.cpp:47 standard input:346 src/schema/pgObject.cpp:46
 msgid "Views"
 msgstr "Виды"
 
@@ -4151,7 +4199,7 @@ msgid ""
 "table."
 msgstr ""
 
-#: src/ui/frmEditGrid.cpp:479
+#: src/ui/frmEditGrid.cpp:479 src/ui/frmEditGrid.cpp:573
 msgid "aborting."
 msgstr ""
 
@@ -4244,7 +4292,7 @@ msgstr "pgAdmin III &FAQ"
 msgid "pgAdmin III Query"
 msgstr ""
 
-#: src/ui/events.cpp:503 src/ui/events.cpp:522
+#: src/ui/events.cpp:503 src/ui/events.cpp:522 src/ui/events.cpp:527
 msgid "pgServer object didn't initialise because the user aborted."
 msgstr ""
 
