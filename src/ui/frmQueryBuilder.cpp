@@ -299,8 +299,10 @@ void frmQueryBuilder::setTools(const bool running)
 ////////////////////////////////////////////////////////////////////////////////
 wxMDIClientWindow* frmQueryBuilder::OnCreateClient()
 {
-	myClientWindow *tmpwin = new myClientWindow();
-	return tmpwin;
+	m_clientWindow = new myClientWindow();
+	return m_clientWindow;
+//	myClientWindow *tmpwin = new myClientWindow();
+//	return tmpwin;
 }
 
 
