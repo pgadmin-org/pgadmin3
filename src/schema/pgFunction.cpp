@@ -45,7 +45,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes() + wxT(")\n")
-            + wxT("CREATE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes()
+            + wxT("CREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes()
             + wxT(")\n  RETURNS ") + GetReturnType() 
             + wxT(" AS '")
             + GetSource()
@@ -55,7 +55,8 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
             sql += wxT(" STRICT");
         if (GetSecureDefiner())
             sql += wxT(" SECURE DEFINER");
-        sql += wxT(";\n");
+        sql += wxT(";\n")
+            + GetCommentSql();
     }
 
     return sql;
@@ -94,10 +95,11 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
     pgFunction *function=0;
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(wxT(
-            "SELECT pr.oid, pr.*, TYP.typname, lanname, pg_get_userbyid(proowner) as funcowner\n"
+            "SELECT pr.oid, pr.*, TYP.typname, lanname, pg_get_userbyid(proowner) as funcowner, description\n"
             "  FROM pg_proc pr\n"
             "  JOIN pg_type TYP ON TYP.oid=prorettype\n"
             "  JOIN pg_language LNG ON LNG.oid=prolang\n"
+            "  LEFT OUTER JOIN pg_description des ON des.objoid=pr.oid\n"
             + restriction +
             " ORDER BY proname"));
 
@@ -121,6 +123,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
             function->iSetReturnType(functions->GetVal(wxT("typname")));
+            function->iSetComment(functions->GetVal(wxT("description")));
             wxString oids=functions->GetVal(wxT("proargtypes"));
             function->iSetArgTypeOids(oids);
 

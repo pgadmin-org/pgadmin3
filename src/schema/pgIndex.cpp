@@ -66,7 +66,8 @@ wxString pgIndex::GetSql(wxTreeCtrl *browser)
     {
         sql = wxT("-- DROP INDEX ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetName())
             + wxT(";\n")
-            + GetCreate();
+            + GetCreate()
+            + GetCommentSql();
     }
     return sql;
 }
@@ -193,13 +194,14 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
         pgSet *indexes= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n"
-        "  proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass"
+        "  proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass, description"
         "  FROM pg_index idx\n"
         "  JOIN pg_class cls ON cls.oid=indexrelid\n"
         "  JOIN pg_class tab ON tab.oid=indrelid\n"
         "  JOIN pg_namespace n ON n.oid=tab.relnamespace\n"
         "  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n"
         "  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n"
         " WHERE indrelid = ") + collection->GetOidStr() 
         + restriction + wxT("\n"
         "   AND NOT indisprimary\n"
@@ -217,6 +219,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));
             index->iSetColumnNumbers(indexes->GetVal(wxT("indkey")));
             index->iSetIdxSchema(indexes->GetVal(wxT("nspname")));
+            index->iSetComment(indexes->GetVal(wxT("description")));
             index->iSetIdxTable(indexes->GetVal(wxT("tabname")));
             index->iSetRelTableOid(indexes->GetOid(wxT("indrelid")));
             index->iSetProcArgTypeList(indexes->GetVal(wxT("proargtypes")));

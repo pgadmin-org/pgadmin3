@@ -48,7 +48,8 @@ wxString pgOperator::GetSql(wxTreeCtrl *browser)
         AppendIfFilled(sql, wxT(",\n  SORT2 = "), GetRightSortOperator());
         AppendIfFilled(sql, wxT(",\n  LTCMP = "), GetLessOperator());
         AppendIfFilled(sql, wxT(",\n  GTCMP = "), GetGreaterOperator());
-        sql += wxT(";\n");
+        sql += wxT(";\n")
+            + GetCommentSql();
     }
 
     return sql;
@@ -116,7 +117,7 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
         "       lt.typname as lefttype, rt.typname as righttype, et.typname as resulttype,\n"
         "       co.oprname as compop, ne.oprname as negop, lso.oprname as leftsortop, rso.oprname as rightsortop,\n"
         "       lco.oprname as lscmpop, gco.oprname as gtcmpop,\n"
-        "       po.proname as operproc, pj.proname as joinproc, pr.proname as restrproc\n"
+        "       po.proname as operproc, pj.proname as joinproc, pr.proname as restrproc, description\n"
         "  FROM pg_operator op\n"
         "  JOIN pg_type lt ON lt.oid=op.oprleft\n"
         "  JOIN pg_type rt ON rt.oid=op.oprright\n"
@@ -130,6 +131,7 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
         "  JOIN pg_proc po ON po.oid=op.oprcode\n"
         "  LEFT OUTER JOIN pg_proc pr ON pr.oid=op.oprrest\n"
         "  LEFT OUTER JOIN pg_proc pj ON pj.oid=op.oprjoin\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=op.oid\n"
         " WHERE op.oprnamespace = ") + collection->GetSchema()->GetOidStr() 
         + restriction + wxT("\n"
         " ORDER BY op.oprname"));
@@ -141,6 +143,7 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             oper = new pgOperator(collection->GetSchema(), operators->GetVal(wxT("oprname")));
             oper->iSetOid(operators->GetOid(wxT("oid")));
             oper->iSetOwner(operators->GetVal(wxT("opowner")));
+            oper->iSetComment(operators->GetVal(wxT("description")));
             oper->iSetLeftType(operators->GetVal(wxT("lefttype")));
             oper->iSetRightType(operators->GetVal(wxT("righttype")));
             oper->iSetResultType(operators->GetVal(wxT("resulttype")));

@@ -102,9 +102,10 @@ pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 {
     pgType *type=0;
     pgSet *types= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element\n"
+        "SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description\n"
         "  FROM pg_type t\n"
         "  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n"
         " WHERE t.typtype != 'd' AND t.typtype != 'c' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
         " ORDER BY t.typname"));
     if (types)
@@ -115,6 +116,7 @@ pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
             type->iSetOid(types->GetOid(wxT("oid")));
             type->iSetOwner(types->GetVal(wxT("typeowner")));
+            type->iSetComment(types->GetVal(wxT("description")));
             type->iSetPassedByValue(types->GetBool(wxT("typbyval")));
             type->iSetInternalLength(types->GetLong(wxT("typlen")));
             type->iSetDelimiter(types->GetVal(wxT("typdelim")));

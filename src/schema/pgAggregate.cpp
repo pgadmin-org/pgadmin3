@@ -41,7 +41,8 @@ wxString pgAggregate::GetSql(wxTreeCtrl *browser)
         AppendIfFilled(sql, wxT(",\n  FFUNC="), qtIdent(GetFinalFunction()));
         if (GetInitialCondition().length() > 0)
           sql += wxT(",\n  INITCOND=") + GetInitialCondition() + wxT("'");
-        sql += wxT("\n);\n");
+        sql += wxT("\n);\n")
+            + GetCommentSql();
     }
 
     return sql;
@@ -104,12 +105,13 @@ pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
                 "CASE WHEN (tt.typlen = -1 AND tt.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tt.typelem) || '[]' ELSE tt.typname END as transname, "
                 "prorettype AS aggfinaltype, "
                 "CASE WHEN (tf.typlen = -1 AND tf.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tf.typelem) || '[]' ELSE tf.typname END as finalname, "
-                "agginitval\n"
+                "agginitval, description\n"
         "  FROM pg_aggregate ag\n"
         "  JOIN pg_proc pr ON pr.oid = ag.aggfnoid\n"
         "  JOIN pg_type ti on ti.oid=proargtypes[0]\n"
         "  JOIN pg_type tt on tt.oid=aggtranstype\n"
         "  JOIN pg_type tf on tf.oid=prorettype\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=aggfnoid::oid\n"
         " WHERE pronamespace = ") + collection->GetSchema()->GetOidStr() 
         + restriction
         + wxT("\n"
@@ -129,6 +131,7 @@ pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
             aggregate->iSetFinalType(aggregates->GetVal(wxT("finalname")));
             aggregate->iSetFinalFunction(aggregates->GetVal(wxT("aggfinalfn")));
             aggregate->iSetInitialCondition(aggregates->GetVal(wxT("agginitval")));
+            aggregate->iSetComment(aggregates->GetVal(wxT("description")));
 
 
             if (browser)

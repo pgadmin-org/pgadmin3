@@ -128,9 +128,10 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     pgSet *domains= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT d.oid, d.typname as domname, d.typbasetype, b.typname as basetype, pg_get_userbyid(d.typowner) as domainowner, \n"
         "       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim,\n"
-        "       CASE WHEN d.oid=1700 OR d.typbasetype=1700 THEN 1 ELSE 0 END AS isnumeric\n"
+        "       CASE WHEN d.oid=1700 OR d.typbasetype=1700 THEN 1 ELSE 0 END AS isnumeric, description\n"
         "  FROM pg_type d\n"
         "  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n"
         " WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n"
         + restriction +
         " ORDER BY d.typname"));
@@ -145,6 +146,7 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             domain->iSetOwner(domains->GetVal(wxT("domainowner")));
             domain->iSetBasetype(domains->GetVal(wxT("basetype")));
             domain->iSetBasetypeOid(domains->GetBool(wxT("typbasetype")));
+            domain->iSetComment(domains->GetVal(wxT("description")));
             long typlen=domains->GetLong(wxT("typlen"));
             long typmod=domains->GetLong(wxT("typtypmod"));
             bool isnum=domains->GetBool(wxT("isnumeric"));

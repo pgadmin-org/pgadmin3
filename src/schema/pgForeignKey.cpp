@@ -33,10 +33,9 @@ pgForeignKey::~pgForeignKey()
 wxString pgForeignKey::GetConstraint()
 {
     wxString con;
-    // MATCH FULL/PARTIAL missing
+    // MATCH FULL/PARTIAL missing; where is this stored?!?
     con = GetQuotedIdentifier() 
         +  wxT(" FOREIGN KEY (") + GetQuotedFkColumns()
-//        +  wxT(") REFERENCES ") + qtIdent(GetRefSchema()) + wxT(".") + qtIdent(GetReferences()) 
         +  wxT(") REFERENCES ") + qtIdent(GetReferences()) 
         +  wxT(" (") + GetQuotedRefColumns()
         +  wxT(")\n    ON UPDATE ") + GetOnUpdate()
@@ -63,6 +62,9 @@ wxString pgForeignKey::GetSql(wxTreeCtrl *browser)
             + wxT(";\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
             + wxT("\n    ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
+        if (!GetComment().IsEmpty())
+            sql += wxT("COMMENT ON CONSTRAINT ") + GetQuotedIdentifier() + wxT(" ON ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+                +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
     }
 
     return sql;
@@ -157,12 +159,13 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
     pgSet *foreignKeys= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT ct.oid, conname, condeferrable, condeferred, confupdtype, confdeltype, confmatchtype, "
                "conkey, confkey, confrelid, nl.nspname as fknsp, cl.relname as fktab, "
-               "nr.nspname as refnsp, cr.relname as reftab\n"
+               "nr.nspname as refnsp, cr.relname as reftab, description\n"
         "  FROM pg_constraint ct\n"
         "  JOIN pg_class cl ON cl.oid=conrelid\n"
         "  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n"
         "  JOIN pg_class cr ON cr.oid=confrelid\n"
         "  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=ct.oid\n"
         " WHERE contype='f' AND conrelid = ") + collection->GetOidStr() 
         + restriction + wxT("\n"
         " ORDER BY conname"));
@@ -177,6 +180,7 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
             foreignKey->iSetTableOid(collection->GetOid());
             foreignKey->iSetRelTableOid(foreignKeys->GetOid(wxT("confrelid")));
             foreignKey->iSetFkSchema(foreignKeys->GetVal(wxT("fknsp")));
+            foreignKey->iSetComment(foreignKeys->GetVal(wxT("description")));
             foreignKey->iSetFkTable(foreignKeys->GetVal(wxT("fktab")));
             foreignKey->iSetRefSchema(foreignKeys->GetVal(wxT("refnsp")));
             foreignKey->iSetReferences(foreignKeys->GetVal(wxT("reftab")));

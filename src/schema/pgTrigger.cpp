@@ -69,7 +69,9 @@ wxString pgTrigger::GetSql(wxTreeCtrl *browser)
             + wxT("\n    EXECUTE PROCEDURE ") + triggerFunction->GetFullName()
             + wxT(";\n");
 
-
+        if (!GetComment().IsEmpty())
+            sql += wxT("COMMENT ON TRIGGER ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable()
+                +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
     }
 
     return sql;
@@ -173,6 +175,7 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
         "  FROM pg_trigger t\n"
         "  JOIN pg_class cl ON cl.oid=tgrelid\n"
         "  JOIN pg_namespace na ON na.oid=relnamespace\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n"
         " WHERE NOT tgisconstraint AND tgrelid = ") + collection->GetOidStr() + wxT("\n"
         " ORDER BY tgname"));
 
@@ -184,6 +187,7 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
 
             trigger->iSetOid(triggers->GetOid(wxT("oid")));
             trigger->iSetTableOid(collection->GetOid());
+            trigger->iSetComment(triggers->GetVal(wxT("description")));
             trigger->iSetFunctionOid(triggers->GetOid(wxT("tgfoid")));
             trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
             trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));

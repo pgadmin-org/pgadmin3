@@ -145,7 +145,7 @@ pgObject *pgSchema::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_SCHEMAS)
-            schema = ReadObjects((pgCollection*)obj, 0, wxT(" WHERE oid=") + GetOidStr() + wxT("\n"));
+            schema = ReadObjects((pgCollection*)obj, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
     }
     return schema;
 }
@@ -157,9 +157,10 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     pgSchema *schema=0;
 
     pgSet *schemas= collection->GetDatabase()->ExecuteSet(wxT(
-       "SELECT CASE WHEN oid<100 THEN 0 WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1 ELSE 2 END AS nsptyp,\n"
-       "       nspname, oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl\n"
-       "  FROM pg_namespace\n"
+       "SELECT CASE WHEN nsp.oid<100 THEN 0 WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1 ELSE 2 END AS nsptyp,\n"
+       "       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description\n"
+       "  FROM pg_namespace nsp\n"
+       "  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n"
         + restriction +
        " ORDER BY 1, nspname"));
 
@@ -170,6 +171,7 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
             schema = new pgSchema(schemas->GetVal(wxT("nspname")));
             schema->iSetDatabase(collection->GetDatabase());
+            schema->iSetComment(schemas->GetVal(wxT("description")));
             schema->iSetOid(schemas->GetOid(wxT("oid")));
             schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
             schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
@@ -202,8 +204,8 @@ void pgSchema::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTre
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
             systemRestriction = wxT(
-                " WHERE oid >= 100\n"
-                "   AND nspname NOT LIKE 'pg\\_temp\\_%'\n");
+                " WHERE nsp.oid >= 100\n"
+                "   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n");
 
         // Get the schemas
         ReadObjects(collection, browser, systemRestriction);

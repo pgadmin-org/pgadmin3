@@ -131,7 +131,7 @@ pgObject *pgSequence::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_SEQUENCES)
-            sequence = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND oid=") + GetOidStr());
+            sequence = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND cl.oid=") + GetOidStr());
     }
     return sequence;
 }
@@ -143,8 +143,10 @@ pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
     pgSequence *sequence=0;
 
     pgSet *sequences= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl\n"
-        "  FROM pg_class WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr() 
+        "SELECT cl.oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl, description\n"
+        "  FROM pg_class cl\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=cl.oid\n"
+        " WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr() 
         + restriction + wxT("\n"
         " ORDER BY relname"));
 
@@ -156,6 +158,7 @@ pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
                                             sequences->GetVal(wxT("relname")));
 
             sequence->iSetOid(sequences->GetOid(wxT("oid")));
+            sequence->iSetComment(sequences->GetVal(wxT("description")));
             sequence->iSetOwner(sequences->GetVal(wxT("seqowner")));
             sequence->iSetAcl(sequences->GetVal(wxT("relacl")));
 

@@ -207,5 +207,18 @@ protected:
 };
 
 
+class pgRuleObject : public pgSchemaObject
+{
+public:
+    pgRuleObject(pgSchema *newSchema, int newType, const wxString& newName = wxString("")) 
+        : pgSchemaObject(newSchema, newType, newName) {}
+
+protected:
+    wxString GetFormattedDefinition();
+    wxString GetDefinition() const { return definition; }
+    void iSetDefinition(const wxString& s) { definition=s; }
+
+    wxString definition;
+};
 #endif
 

@@ -56,6 +56,9 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
                 sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                     + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                     + wxT(" SET NOT NULL;\n");
+            if (!GetComment().IsEmpty())
+                sql += wxT("COMMENT ON COLUMN ") + GetQuotedFullTable() + wxT(".") + GetQuotedIdentifier()
+                    +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
         }
     }
 
@@ -204,14 +207,14 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     pgSet *columns= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT att.*, def.*, ty.typname, et.typname as elemtypname, relname, nspname,\n"
         "       CASE WHEN atttypid IN (1231,1700) OR ty.typbasetype IN (1231,1700) "
-                    "THEN 1 ELSE 0 END AS isnumeric\n"
+                    "THEN 1 ELSE 0 END AS isnumeric, description\n"
         "  FROM pg_attribute att\n"
         "  JOIN pg_type ty ON ty.oid=atttypid\n"
         "  JOIN pg_class cl ON cl.oid=attrelid\n"
         "  JOIN pg_namespace na ON na.oid=cl.relnamespace\n"
         "  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n"
         "  LEFT OUTER JOIN pg_attrdef def ON adrelid=attrelid AND adnum=attnum\n"
-
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=attrelid AND des.objsubid=attnum\n"
         " WHERE attrelid = ") + collection->GetOidStr() 
         + restriction + systemRestriction + wxT("\n"
         " ORDER BY attnum"));
@@ -225,6 +228,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             column->iSetTableOid(collection->GetOid());
             column->iSetColNumber(columns->GetLong(wxT("attnum")));
             column->iSetIsArray(columns->GetLong(wxT("attndims")) > 0);
+            column->iSetComment(columns->GetVal(wxT("description")));
             if (column->GetIsArray())
                 column->iSetVarTypename(columns->GetVal(wxT("elemtypname")));
             else

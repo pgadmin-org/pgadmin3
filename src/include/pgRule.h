@@ -22,7 +22,7 @@
 
 class pgCollection;
 
-class pgRule : public pgSchemaObject
+class pgRule : public pgRuleObject
 {
 public:
     pgRule(pgSchema *newSchema, const wxString& newName = wxString(""));
@@ -38,17 +38,17 @@ public:
     void iSetCondition(const wxString& s) { condition=s; }
     wxString GetAction() const { return action; }
     void iSetAction(const wxString& s) { action=s; }
-    wxString GetDefinition() const { return definition; }
-    void iSetDefinition(const wxString& s) { definition=s; }
     bool GetDoInstead() const { return doInstead; }
     void iSetDoInstead(const bool b) { doInstead=b; }
+    wxString GetQuotedFullTable() const { return quotedFullTable; }
+    void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
 
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
-    wxString event, condition, action, definition;
+    wxString event, condition, action, quotedFullTable;
     bool doInstead;
 };
 

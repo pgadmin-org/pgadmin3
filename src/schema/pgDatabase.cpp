@@ -31,7 +31,7 @@ pgDatabase::pgDatabase(const wxString& newName)
 
 	// Keith 2003.03.05
 	// Must set to null to see if we can delete it later
-	database = NULL;
+	conn = NULL;
 }
 
 pgDatabase::~pgDatabase()
@@ -40,8 +40,8 @@ pgDatabase::~pgDatabase()
 
 	// Keith 2003.03.05
 	// Fixing memory leak 
-	if (database)
-		delete database;
+	if (conn)
+		delete conn;
 }
 
 int pgDatabase::Connect() {
@@ -49,27 +49,19 @@ int pgDatabase::Connect() {
         return PGCONN_REFUSED;
     }
     if (connected) {
-        return database->GetStatus();
+        return conn->GetStatus();
     } else {
 
-		database = new pgConn(this->GetServer()->GetName(), this->GetName(), this->GetServer()->GetUsername(), this->GetServer()->GetPassword(), this->GetServer()->GetPort());       
-		if (database->GetStatus() == PGCONN_OK) {
-
-            // As we connected, we should now get the comments
-            wxString sql, rawcomment;
-            sql.Printf(wxT("SELECT description FROM pg_description WHERE objoid = %s"), NumToStr(this->GetOid()).c_str());
-            rawcomment = database->ExecuteScalar(sql);
-            if (rawcomment != "(null)") {
-                this->iSetComment(rawcomment);
-            }
-
+		conn = new pgConn(this->GetServer()->GetName(), this->GetName(), this->GetServer()->GetUsername(), this->GetServer()->GetPassword(), this->GetServer()->GetPort());       
+		if (conn->GetStatus() == PGCONN_OK)
+        {
             // Now we're connected.
             connected = TRUE;
             return PGCONN_OK;
-
-        } else {
-
-			wxLogError(wxT("%s"), database->GetLastError().c_str());
+        }
+        else
+        {
+			wxLogError(wxT("%s"), conn->GetLastError().c_str());
             return PGCONN_BAD;
         }
     }
@@ -90,11 +82,8 @@ wxString pgDatabase::GetSql(wxTreeCtrl *browser)
     wxString sql;
     sql = wxT("-- Database: ") + GetQuotedFullIdentifier() + wxT("\n")
         + wxT("CREATE DATABASE ") + GetQuotedIdentifier()
-        + wxT("\n  WITH ENCODING = ") + qtString(this->GetEncoding()) + wxT(";\n");
-
-    if (!this->GetComment().IsEmpty())
-        sql.Printf(wxT("%sCOMMENT ON DATABASE %s IS %s;"),
-                     sql.c_str(), this->GetQuotedIdentifier().c_str(), qtString(this->GetComment()).c_str());
+        + wxT("\n  WITH ENCODING = ") + qtString(this->GetEncoding()) + wxT(";\n")
+        + GetCommentSql();
 
     return sql;
 }
@@ -170,8 +159,10 @@ void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
 
         // Get the databases
         pgSet *databases = collection->GetServer()->ExecuteSet(wxT(
-           "SELECT oid, datname, datpath, datallowconn, datconfig, datacl, pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner\n"
-           "  FROM pg_database\n"
+           "SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, "
+                  "pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner, description\n"
+           "  FROM pg_database db\n"
+           "  LEFT OUTER JOIN pg_description des ON des.objoid=db.oid\n"
            " ORDER BY datname"));
         
         if (databases)
@@ -187,6 +178,7 @@ void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
                 database->iSetEncoding(databases->GetVal(wxT("serverencoding")));
                 database->iSetVariables(databases->GetVal(wxT("datconfig")));
                 database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));
+                database->iSetComment(databases->GetVal(wxT("description")));
 
                 // Add the treeview node if required
                 if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 

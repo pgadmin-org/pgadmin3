@@ -204,6 +204,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         else
             sql += wxT("WITHOUT OIDS;\n")
                 + GetGrant() 
+                + GetCommentSql()
                 + wxT("\n\n");
 
         // add indexes here
@@ -397,7 +398,7 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
         "SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, "
                 "relhassubclass, reltuples, description, conname, conkey\n"
         "  FROM pg_class rel\n"
-        "  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid\n"
+        "  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid AND des.objsubid=0\n"
         "  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n"
         " WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
         + restriction + 
