@@ -23,6 +23,10 @@ browser, headers editing and can be used to create new catalogs or update
 existing catalogs from source code by single click.
 
 %prep
+if [ ! -e /usr/bin/wxgtkd-2.3-config ]
+then
+ ln -s /usr/bin/wxgtk2ud-2.5-config /usr/bin/wxgtkd-2.3-config
+fi
 %setup -q
 
 %build
