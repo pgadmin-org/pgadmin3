@@ -32,7 +32,7 @@ enum PG_OBJTYPE
 class pgObject : public wxTreeItemData
 {
 public:
-    pgObject(int iNewType = 0, wxString& szNewName = wxString(""));
+    pgObject(int iNewType = 0, const wxString& szNewName = wxString(""));
     ~pgObject();
     virtual int GetType();
     virtual wxString GetTypeName();

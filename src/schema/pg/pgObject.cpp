@@ -17,7 +17,7 @@
 #include "pgObject.h"
 
 
-pgObject::pgObject(int iNewType, wxString& szNewName)
+pgObject::pgObject(int iNewType, const wxString& szNewName)
 : wxTreeItemData()
 {
 

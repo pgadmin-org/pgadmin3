@@ -127,7 +127,7 @@ wxString sysSettings::GetLogFile()
 {
     return szLogFile;
 }
-void sysSettings::SetLogFile(wxString& szNewVal)
+void sysSettings::SetLogFile(const wxString& szNewVal)
 {
     szLogFile = szNewVal;
     sysConfig.Write(wxT("LogFile"), szLogFile);

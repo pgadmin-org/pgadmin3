@@ -19,6 +19,7 @@
 
 // App headers
 #include "../../pgAdmin3.h"
+#include "pgSet.h"
 
 // status enums
 enum PGCONN_CONN_STATUS
@@ -44,10 +45,11 @@ enum PGCONN_RES_STATUS
 class pgConn
 {
 public:
-    pgConn(wxString& szServer, wxString& szDatabase, wxString& szUsername, wxString& szPassword, int iPort);
+    pgConn(const wxString& szServer = wxString(""), const wxString& szDatabase = wxString(""), const wxString& szUsername = wxString(""), const wxString& szPassword = wxString(""), int iPort = 5432);
     ~pgConn();
-    int ExecuteVoid(wxString& szSQL);
-    wxString ExecuteScalar(wxString& szSQL);
+    int ExecuteVoid(const wxString& szSQL);
+    wxString ExecuteScalar(const wxString& szSQL);
+    pgSet *ExecuteSet(const wxString& szSQL);
     wxString GetUser();
     wxString GetPassword();
     wxString GetHost();

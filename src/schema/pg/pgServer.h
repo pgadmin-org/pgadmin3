@@ -26,18 +26,20 @@ class pgServer : public pgObject
 public:
     pgServer(wxFrame *parent);
     ~pgServer();
+    int GetType();
+    wxString GetTypeName();
     pgConn *cnMaster;
     int Connect();
     wxString GetIdentifier();
     wxString GetServerVersion();
     wxString GetServer();
-    void SetServer(wxString& szNewVal);
+    void SetServer(const wxString& szNewVal);
     wxString GetDatabase();
-    void SetDatabase(wxString& szNewVal);
+    void SetDatabase(const wxString& szNewVal);
     wxString GetUsername();
-    void SetUsername(wxString& szNewVal);
+    void SetUsername(const wxString& szNewVal);
     wxString GetPassword();
-    void SetPassword(wxString& szNewVal);
+    void SetPassword(const wxString& szNewVal);
     void SetPort(int iNewVal);
     int GetPort();
 

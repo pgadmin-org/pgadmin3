@@ -46,7 +46,7 @@ public:
 
     // Log
     wxString GetLogFile();
-    void SetLogFile(wxString& szNewVal);
+    void SetLogFile(const wxString& szNewVal);
     int GetLogLevel();
     void SetLogLevel(int iNewVal);
 private:

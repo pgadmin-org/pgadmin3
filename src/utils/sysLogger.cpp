@@ -100,7 +100,7 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     if (iIcon != 0) wxMessageBox(szPreamble + msg, szType, wxOK | wxCENTRE | iIcon);
 }
 
-void sysLogger::WriteLog(wxString& szMsg)
+void sysLogger::WriteLog(const wxString& szMsg)
 {
     extern sysSettings *objSettings;
     wxString szPID, szLogFile;

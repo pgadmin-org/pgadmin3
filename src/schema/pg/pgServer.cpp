@@ -83,7 +83,7 @@ wxString pgServer::GetServer()
 {
     return szServer;
 }
-void pgServer::SetServer(wxString& szNewVal)
+void pgServer::SetServer(const wxString& szNewVal)
 {
     szServer = szNewVal;
 }
@@ -92,7 +92,7 @@ wxString pgServer::GetDatabase()
 {
     return szDatabase;
 }
-void pgServer::SetDatabase(wxString& szNewVal)
+void pgServer::SetDatabase(const wxString& szNewVal)
 {
     szDatabase = szNewVal;
 }
@@ -101,7 +101,7 @@ wxString pgServer::GetUsername()
 {
     return szUsername;
 }
-void pgServer::SetUsername(wxString& szNewVal)
+void pgServer::SetUsername(const wxString& szNewVal)
 {
     szUsername = szNewVal;
 }
@@ -110,7 +110,7 @@ wxString pgServer::GetPassword()
 {
     return szPassword;
 }
-void pgServer::SetPassword(wxString& szNewVal)
+void pgServer::SetPassword(const wxString& szNewVal)
 {
     szPassword = szNewVal;
 }

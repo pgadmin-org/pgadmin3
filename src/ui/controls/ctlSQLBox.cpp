@@ -16,7 +16,7 @@
 #include "../../pgAdmin3.h"
 #include "ctlSQLBox.h"
 
-ctlSQLBox::ctlSQLBox(wxWindow *parent = (wxWindow *) NULL, wxWindowID id = -1, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0)
+ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 : wxStyledTextCtrl(parent,id , pos, size, style)
 {
     

@@ -147,6 +147,10 @@ SOURCE=.\schema\pg\pgServer.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\db\pg\pgSet.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils\sysLogger.cpp
 # End Source File
 # Begin Source File
@@ -200,6 +204,10 @@ SOURCE=.\schema\pg\pgObject.h
 # Begin Source File
 
 SOURCE=.\schema\pg\pgServer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\db\pg\pgSet.h
 # End Source File
 # Begin Source File
 

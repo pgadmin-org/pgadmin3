@@ -20,8 +20,9 @@
 // App headers
 #include "pgConn.h"
 #include "../../pgAdmin3.h"
+#include "pgSet.h"
 
-pgConn::pgConn(wxString& szServer = wxString(""), wxString& szDatabase = wxString(""), wxString& szUsername = wxString(""), wxString& szPassword = wxString(""), int iPort = 5432) : objConn()
+pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxString& szUsername, const wxString& szPassword, int iPort)
 {
     wxLogDebug(wxT("Creating pgConn object"));
     wxString szMsg, szHost;
@@ -93,7 +94,7 @@ pgConn::~pgConn()
 // Execute SQL
 //////////////////////////////////////////////////////////////////////////
 
-int pgConn::ExecuteVoid(wxString& szSQL)
+int pgConn::ExecuteVoid(const wxString& szSQL)
 {
     // Execute the query and get the status.
     PGresult *qryRes;
@@ -108,7 +109,7 @@ int pgConn::ExecuteVoid(wxString& szSQL)
     return iRes;
 }
 
-wxString pgConn::ExecuteScalar(wxString& szSQL)
+wxString pgConn::ExecuteScalar(const wxString& szSQL)
 {
     // Execute the query and get the status.
     PGresult *qryRes;
@@ -129,6 +130,20 @@ wxString pgConn::ExecuteScalar(wxString& szSQL)
     // Cleanup & exit
     PQclear(qryRes);
     return szResult;
+}
+
+pgSet *pgConn::ExecuteSet(const wxString& szSQL)
+{
+    // Execute the query and get the status.
+    PGresult *qryRes;
+    wxString szMsg;
+    szMsg.Printf(wxT("Executing set query: %s"), szSQL);
+    wxLogInfo(szMsg);
+    qryRes = PQexec(objConn, szSQL.c_str());
+    pgSet *objSet = new pgSet(qryRes, objConn);
+
+    // Don't cleanup here, let the pgSet do that itself.
+    return objSet;
 }
 
 //////////////////////////////////////////////////////////////////////////
