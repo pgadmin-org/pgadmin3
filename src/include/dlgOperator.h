@@ -32,6 +32,8 @@ private:
     void OnChangeType(wxNotifyEvent &ev);
     void OnChangeJoin(wxNotifyEvent &ev);
 
+    void AppendFilledOperator(wxString &sql, wxChar *txt, wxComboBox *cb);
+
     pgSchema *schema;
     pgOperator *oper;
     wxArrayString procedures;

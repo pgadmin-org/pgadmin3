@@ -353,6 +353,20 @@ void dlgOperator::OnChangeJoin(wxNotifyEvent &ev)
 }
 
 
+
+void dlgOperator::AppendFilledOperator(wxString &sql, wxChar *txt, wxComboBox *cb)
+{
+    wxString op=cb->GetValue().Trim();
+    if (!op.IsNull())
+    {
+        if (op.Find('.') > 0)
+            sql += txt + wxT("OPERATOR(") + op + wxT(")");
+        else
+            sql += txt + op;
+    }
+}
+
+
 wxString dlgOperator::GetSql()
 {
     wxString sql, name;
@@ -394,10 +408,11 @@ wxString dlgOperator::GetSql()
                 sql += wxT(",\n   RESTRICT=") + procedures.Item(cbRestrict->GetSelection()-1);
             if (cbJoin->GetSelection() > 0)
                 sql += wxT(",\n   JOIN=") + procedures.Item(cbJoin->GetSelection()-1);
-            AppendIfFilled(sql, wxT(",\n   SORT1="), qtString(cbLeftSort->GetValue().Trim()));
-            AppendIfFilled(sql, wxT(",\n   SORT2="), qtString(cbRightSort->GetValue().Trim()));
-            AppendIfFilled(sql, wxT(",\n   LTCMP="), qtString(cbLess->GetValue().Trim()));
-            AppendIfFilled(sql, wxT(",\n   GTCMP="), qtString(cbGreater->GetValue().Trim()));
+
+            AppendFilledOperator(sql, wxT(",\n   SORT1="), cbLeftSort);
+            AppendFilledOperator(sql, wxT(",\n   SORT2="), cbRightSort);
+            AppendFilledOperator(sql, wxT(",\n   LTCMP="), cbLess);
+            AppendFilledOperator(sql, wxT(",\n   GTCMP="), cbGreater);
 
             if (chkCanMerge->GetValue() || chkCanHash->GetValue())
             {
