@@ -25,6 +25,7 @@
 #define TIMER_ID 333
 BEGIN_EVENT_TABLE(frmStatus, wxDialog)
     EVT_BUTTON(XRCID("btnRefresh"),         frmStatus::OnRefresh)
+    EVT_BUTTON (XRCID("btnClose"),          frmStatus::OnClose)
     EVT_SPIN(XRCID("spnRefreshRate"),       frmStatus::OnRateChange)
     EVT_TIMER(TIMER_ID,                     frmStatus::OnRefresh)
 END_EVENT_TABLE();
@@ -32,6 +33,10 @@ END_EVENT_TABLE();
 
 #define statusList (XRCCTRL(*this, "lstStatus", wxListCtrl))
 
+void frmStatus::OnClose(wxCommandEvent &event)
+{
+    Destroy();
+}
 
 frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const wxPoint& pos, const wxSize& size)
 {

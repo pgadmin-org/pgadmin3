@@ -32,6 +32,7 @@ public:
     void Go();
     
 private:
+    void OnClose(wxCommandEvent &event);
     void OnRefresh(wxCommandEvent &event);
     void OnRateChange(wxCommandEvent &event);
     frmMain *mainForm;
