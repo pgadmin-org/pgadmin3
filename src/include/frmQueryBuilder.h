@@ -14,39 +14,32 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/laywin.h>
-#include <wx/settings.h>
-#include <wx/treectrl.h>
-#include <wx/listctrl.h>
-#include <wx/listbox.h>
-#include <wx/notebook.h>
-#include <wx/toolbar.h>
-#include <wx/tbarsmpl.h>
-#include <wx/imaglist.h>
-#include <wx/textctrl.h>
 #include <wx/grid.h>
-#include <wx/minifram.h>
-#include <wx/dialog.h>
-#include <wx/button.h>
-#include <wx/stc/stc.h>
 
 // App headers
-#include "pgAdmin3.h"
-#include "misc.h"
+#include "frmMain.h"
 #include "dlgAddTableView.h"
 #include "frmChildTableViewFrame.h"
-#include "pgConn.h"
-#include "pgDatabase.h"
-#include "pgSet.h"
-#include "pgServer.h"
-#include "pgObject.h"
-#include "pgCollection.h"
 
+struct JoinStruct
+{
+		wxString left;
+		wxString right;
+		int leftcolumn;
+		int rightcolumn;
+		wxString jointype;
+		wxArrayString conditions;
+		int conditionct;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 class frmQueryBuilder : public wxMDIParentFrame
 {
 public:
 
 	// Construction / Deconstruction
-    frmQueryBuilder(wxWindow* parent, pgDatabase *database);
+    frmQueryBuilder(frmMain *form, pgDatabase *database);
     ~frmQueryBuilder();
 
 	// Controls
@@ -54,6 +47,7 @@ public:
 
    	// Data
 	wxArrayPtrVoid m_children;
+	wxArrayPtrVoid m_joins; 
 	wxArrayString m_names;
 	wxArrayString m_aliases;
 	pgDatabase *m_database;
@@ -64,10 +58,13 @@ public:
 		wxString newname = "", int postfix = 1);
 	void AddColumn(frmChildTableViewFrame *frame,int item);
 	void UpdateGridTables(frmChildTableViewFrame *frame);
+	void DeleteChild(wxString talias);
+	frmChildTableViewFrame *GetFrameFromAlias(wxString alias);
 
 private:
 
 	// Data
+	frmMain *m_mainForm;
     bool m_changed;
 	wxString m_lastFilename;
 	wxString m_lastDir;
@@ -93,15 +90,15 @@ private:
 
 	// Methods
     void setTools(const bool running);
-	void DrawTablesAndViews();
 	void UpdateGridColumns(frmChildTableViewFrame *frame, int item,
 		bool _FORCE = FALSE, int _FORCEROW = 0);
 	void BuildQuery();
 	void RunQuery();
-	frmChildTableViewFrame *GetFrameFromAlias(wxString alias);
 	void VerifyExpression(int row);
 	wxString RebuildCondition(wxString condition, 
 		bool &errout);
+
+	virtual wxMDIClientWindow* OnCreateClient();
 
 	// Events
     void OnClose(wxCloseEvent& event);
@@ -189,6 +186,8 @@ private:
 		DESIGN_OR5 = 11
 	};
 
+public:
+
 	// Position of status line fields
 	enum
 	{
@@ -197,8 +196,29 @@ private:
 	   STATUSPOS_SECS
 	};
 
+private:
+
+	// Macros
+    DECLARE_EVENT_TABLE()
+};
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+class myClientWindow : public wxMDIClientWindow
+{
+
+private:
+
+	// Events
+	void OnPaint(wxPaintEvent& event);
+
+	// Methods
+	void DrawRotatedText(wxPaintDC *dc, const char* str, 
+		float x, float y, float angle);
+
 	// Macros
     DECLARE_EVENT_TABLE()
 };
 
 #endif
+
