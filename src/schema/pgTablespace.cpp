@@ -44,17 +44,6 @@ void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, co
     referencedBy->AddColumn(_("Database"), 80);
     referencedBy->AddColumn(_("Name"), 300);
 
-    OID stdOid;
-    wxString tsoid=GetOidStr();
-
-    if (GetName() == wxT("default"))
-    {
-        stdOid=0;
-        tsoid += wxT(", 0::oid");
-    }
-    else
-        stdOid = GetOid();
-
     wxArrayString dblist;
 
     pgSet *set=GetConnection()->ExecuteSet(
@@ -70,7 +59,7 @@ void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, co
             if (set->GetBool(wxT("datallowconn")))
                 dblist.Add(datname);
             OID oid=set->GetOid(wxT("dattablespace"));
-            if (oid == GetOid() || oid == stdOid)
+            if (oid == GetOid())
                 referencedBy->AppendItem(PGICON_DATABASE, _("Database"), datname);
 
             set->MoveNext();
@@ -84,11 +73,17 @@ void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, co
         wxT("  JOIN pg_namespace cln ON cl.relnamespace=cln.oid\n")
         wxT("  LEFT OUTER JOIN pg_index ind ON ind.indexrelid=cl.oid\n")
         wxT("  LEFT OUTER JOIN pg_class ci ON ind.indrelid=ci.oid\n")
-        wxT("  LEFT OUTER JOIN pg_namespace cin ON ci.relnamespace=cin.oid\n")
-        wxT(" WHERE cl.reltablespace IN (") + tsoid + wxT(")\n")
+        wxT("  LEFT OUTER JOIN pg_namespace cin ON ci.relnamespace=cin.oid,\n")
+        wxT("       pg_database\n")
+        wxT(" WHERE datname = current_database()\n")
+        wxT("   AND (cl.reltablespace = ") + GetOidStr() + wxT("\n")
+        wxT("        OR (cl.reltablespace=0 AND dattablespace = ") + GetOidStr() + wxT("))\n")
         wxT("UNION ALL\n")
         wxT("SELECT 'n', null, nspname, null\n")
-        wxT("  FROM pg_namespace WHERE nsptablespace IN (") + tsoid + wxT(")\n")
+        wxT("  FROM pg_namespace, pg_database\n")
+        wxT(" WHERE datname = current_database()\n")
+        wxT("   AND (nsptablespace = ") + GetOidStr() + wxT("\n")
+        wxT("        OR (nsptablespace=0 AND dattablespace = ") + GetOidStr() + wxT("))\n")
         wxT(" ORDER BY 1,2,3"));
 
     form->EndMsg();
