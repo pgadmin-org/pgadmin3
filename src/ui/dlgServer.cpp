@@ -134,7 +134,10 @@ wxString dlgServer::GetHelpPage() const
 
 int dlgServer::GoNew()
 {
-    return Go(true);
+    if (cbSSL->IsEmpty())
+        return Go(true);
+    else
+        return ShowModal();
 }
 
 
