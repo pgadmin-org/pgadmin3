@@ -23,6 +23,19 @@
 // Icons
 #include "images/pgAdmin3.xpm"
 
+// clientencoding
+typedef struct pg_clientencoding
+{
+	char *encoding;
+} pg_clientencoding;
+
+pg_clientencoding pg_clientencoding_tb[] =
+{
+	"SQL_ASCII","ALT","BIG5","EUC_CN","EUC_JP","EUC_KR","EUC_TW","GB18030",
+	"GBK","ISO_8859_5","ISO_8859_6","ISO_8859_7","ISO_8859_8","JOHAB","KOI8R",
+	"LATIN1","LATIN2","LATIN3","LATIN4","LATIN5","LATIN6","LATIN7","LATIN8",
+	"LATIN9","LATIN10","MULE_INTERNAL","SJIS","TCVN","UHC","UTF8","WIN1250",
+	"WIN1251","WIN1256","WIN874",NULL };
 
 extern wxLocale locale;
 extern wxArrayInt existingLangs;
@@ -40,6 +53,7 @@ extern wxArrayInt existingLangs;
 #define chkStickySql                CTRL("chkStickySql", wxCheckBox)
 #define chkDoubleClickProperties    CTRL("chkDoubleClickProperties", wxCheckBox)
 #define cbLanguage                  CTRL("cbLanguage", wxComboBox)
+#define cbClientEncoding            CTRL("cbClientEncoding", wxComboBox)
 
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
@@ -96,6 +110,15 @@ frmOptions::frmOptions(wxFrame *parent)
         }
     }
     cbLanguage->SetSelection(sel);
+
+    /* ClientEncoding */
+    pg_clientencoding  *clencode_p = (struct pg_clientencoding *)&pg_clientencoding_tb;
+    for (;clencode_p->encoding;*clencode_p++)
+        cbClientEncoding->Append(clencode_p->encoding);
+
+    int encodeNo = settings->Read(wxT("ClientEncoding"), (long)0);
+    cbClientEncoding->SetSelection(encodeNo);
+
 }
 
 
@@ -174,6 +197,12 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         }
 
     }
+       /*
+        * env is seen, and ibpq will send  clientencoding to the server.
+        */
+    int encodeNo = cbClientEncoding->GetSelection();
+    settings->Write(wxT("ClientEncoding"), (long)encodeNo);
+    
     Destroy();
 }
 
