@@ -140,8 +140,8 @@ wxString dlgSequence::GetSql()
         }
 
         if (txtStart->GetValue() != sequence->GetLastValue().ToString())
-            sql += wxT("SELECT setval(") + sequence->GetQuotedFullIdentifier()
-                +  wxT(", ") + txtStart->GetValue()
+            sql += wxT("SELECT setval('") + sequence->GetQuotedFullIdentifier()
+                +  wxT("', ") + txtStart->GetValue()
                 +  wxT(");\n");
     }
     else
