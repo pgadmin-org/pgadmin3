@@ -526,17 +526,20 @@ void frmQuery::OnChange(wxNotifyEvent& event)
 
 void frmQuery::openLastFile()
 {
-    FILE *f=fopen(lastPath.ToAscii(), "rt");
-    if (f)
+    wxFile file(lastPath);
+    if (file.IsOpened())
     {
-        fseek(f, 0, SEEK_END);
-        int len=ftell(f);
-        fseek(f, 0, SEEK_SET);
-        wxString buf(wxT("\0"), len+1);
-        memset((char*)buf.c_str(), 0, len+1);
-        fread((char*)buf.c_str(), len, 1, f);
-        fclose(f);
+        int len=file.Length();
+        char *buf=new char[len+1];
+        memset(buf, 0, len+1);
+        file.Read(buf, len);
+        file.Close();
+#if wxUSE_UNICODE
+        sqlQuery->SetText(wxString(buf, FILE_ENCODING));
+#else
         sqlQuery->SetText(buf);
+#endif
+        delete[] buf;
         wxYield();  // needed to process sqlQuery modify event
         changed = false;
         setExtendedTitle();
@@ -566,14 +569,14 @@ void frmQuery::OnSave(wxCommandEvent& event)
         return;
     }
 
-    FILE *f=fopen(lastPath.ToAscii(), "w+t");
-    if (f)
+    wxFile file(lastPath, wxFile::write);
+    if (file.IsOpened())
     {
         setExtendedTitle();
 
         wxString buf=sqlQuery->GetText();
-        fwrite(buf.c_str(), buf.Length(), 1, f);
-        fclose(f);
+        file.Write(buf, FILE_ENCODING);
+        file.Close();
         changed=false;
         setExtendedTitle();
         updateRecentFiles();
