@@ -37,7 +37,7 @@
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
-
+#include "frmQueryBuilder.h"
 
 
 // Event table
@@ -572,7 +572,9 @@ void frmMain::OnQueryBuilder(wxCommandEvent &ev)
     if (conn->GetStatus() == PGCONN_OK)
     {
 	    // Create the Query Builder Form
-	    qbform = new frmQueryBuilder(this, db); 
+	    frmQueryBuilder *qbform = new frmQueryBuilder(this, db); 
+
+		frames.Append(qbform);
 
 	    // Show the Query Builder
 	    qbform->Show(TRUE);
