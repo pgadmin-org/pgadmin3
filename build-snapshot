@@ -1,0 +1,31 @@
+#! /bin/sh
+
+# Setup the build environment
+PGDIR=/usr/local/pgsql
+WXDIR=/usr/local
+export PGDIR WXDIR
+
+# Cleanup
+cd /usr/local/src/pgadmin3
+rm -rf ./pgadmin3
+rm -rf ./src
+
+# CVS update
+/usr/bin/cvs update -d -C
+
+# Clean build
+cd src
+make clean
+make all
+cd ..
+
+# Build a clean distro
+mkdir ./pgadmin3
+mkdir ./pgadmin3/ui
+mkdir ./pgadmin3/ui/common
+cp ./src/pgAdmin3 ./pgadmin3
+cp ./src/tips.txt ./pgadmin3
+cp ./src/ui/common/*.xrc ./pgadmin3/ui/common
+
+# Build the snapshot and file it.
+/bin/tar czf /var/www/htdocs/pgadmin3-`/usr/bin/date -I`.tar.gz pgadmin3
