@@ -27,32 +27,45 @@
 #include "../controls/ctlSQLBox.h"
 
 // Icons
-#include "../../images/pgAdmin3.xpm"
+#include "../../images/aggregate.xpm"
+#include "../../images/arguments.xpm"
+#include "../../images/baddatabase.xpm"
+#include "../../images/check.xpm"
+#include "../../images/closeddatabase.xpm"
+#include "../../images/column.xpm"
 #include "../../images/connect.xpm"
-#include "../../images/refresh.xpm"
 #include "../../images/create.xpm"
-#include "../../images/drop.xpm"
-#include "../../images/properties.xpm"
-#include "../../images/sql.xpm"
-#include "../../images/viewdata.xpm"
-#include "../../images/vacuum.xpm"
-#include "../../images/record.xpm"
-#include "../../images/stop.xpm"
-#include "../../images/server.xpm"
 #include "../../images/database.xpm"
+#include "../../images/domain.xpm"
+#include "../../images/drop.xpm"
+#include "../../images/function.xpm"
+#include "../../images/group.xpm"
+#include "../../images/hiproperty.xpm"
+#include "../../images/index.xpm"
+#include "../../images/indexcolumn.xpm"
 #include "../../images/language.xpm"
 #include "../../images/namespace.xpm"
-#include "../../images/aggregate.xpm"
-#include "../../images/function.xpm"
 #include "../../images/operator.xpm"
+#include "../../images/pgAdmin3.xpm"
+#include "../../images/properties.xpm"
+#include "../../images/property.xpm"
+#include "../../images/public.xpm"
+#include "../../images/record.xpm"
+#include "../../images/refresh.xpm"
+#include "../../images/relationship.xpm"
+#include "../../images/rule.xpm"
 #include "../../images/sequence.xpm"
+#include "../../images/server.xpm"
+#include "../../images/sql.xpm"
+#include "../../images/statistics.xpm"
+#include "../../images/stop.xpm"
 #include "../../images/table.xpm"
+#include "../../images/trigger.xpm"
 #include "../../images/type.xpm"
-#include "../../images/view.xpm"
 #include "../../images/user.xpm"
-#include "../../images/group.xpm"
-#include "../../images/baddatabase.xpm"
-#include "../../images/closeddatabase.xpm"
+#include "../../images/vacuum.xpm"
+#include "../../images/view.xpm"
+#include "../../images/viewdata.xpm"
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
@@ -206,7 +219,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     //Associate the listview imagemap to the listview
     lvProperties->SetImageList(ilProperties, wxIMAGE_LIST_SMALL);
     //Stuff the BrowserImage Listu:
-    ilProperties->Add(wxIcon(pgAdmin3_xpm));
+    ilProperties->Add(wxIcon(property_xpm));
 
     // Add some listview items
     lvProperties->InsertColumn(0, "Property", wxLIST_FORMAT_LEFT, 100);
@@ -219,11 +232,24 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     lvProperties->InsertItem(1, "Property #2", 0);
     lvProperties->SetItem(1, 1, "Property #2a");
 
+    //Setup a listview imagemap
+    wxImageList *ilStatistics = new wxImageList(16, 16);
+    //Associate the listview imagemap to the listview
+    lvStatistics->SetImageList(ilStatistics, wxIMAGE_LIST_SMALL);
+    //Stuff the BrowserImage Listu:
+    ilStatistics->Add(wxIcon(statistics_xpm));
+
+    // Add some listview items
     lvStatistics->InsertColumn(0, "Statistic", wxLIST_FORMAT_LEFT, 100);
     lvStatistics->InsertColumn(1, "Value", wxLIST_FORMAT_LEFT, 400);
-    lvStatistics->InsertItem(0, "Statistic #1");
-    lvStatistics->InsertItem(0, "Statistic #2");
-    lvStatistics->InsertItem(0, "Statistic #3");
+
+    // This is the bit that puts it all on one line over 2 colums
+    lvStatistics->InsertItem(0, "Statistic #1", 0);
+    lvStatistics->SetItem(0, 1, "Statistic #1a");
+
+    lvStatistics->InsertItem(1, "Statistic #2", 0);
+    lvStatistics->SetItem(1, 1, "Statistic #2a");
+
 
     // Setup the SQL Pane
     txtSQLPane->InsertText(0, "-- Select all records from pg_class\nSELECT\n  *\nFROM\n  pg_class\nWHERE\n relname LIKE 'pg_%'\nORDER BY\n  rename;");

@@ -175,6 +175,30 @@ SOURCE=.\Makefile
 # PROP Default_Filter "xpm"
 # Begin Source File
 
+SOURCE=.\images\aggregate.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\arguments.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\baddatabase.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\check.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\closeddatabase.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\column.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\connect.xpm
 # End Source File
 # Begin Source File
@@ -183,7 +207,59 @@ SOURCE=.\images\create.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\images\database.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\domain.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\drop.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\encoding.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\event.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\function.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\group.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\hiproperty.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\index.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\indexcolumn.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\language.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\namespace.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\operator.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\pgAdmin3.ico
 # End Source File
 # Begin Source File
 
@@ -195,11 +271,35 @@ SOURCE=.\images\properties.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\images\property.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\public.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\record.xpm
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\refresh.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\relationship.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\rule.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\sequence.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\server.xpm
 # End Source File
 # Begin Source File
 
@@ -211,11 +311,47 @@ SOURCE=.\images\sql.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\images\statistics.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\stop.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\images\storage.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\table.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\trigger.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\type.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\unknown.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\upgrade.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\user.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\vacuum.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\view.xpm
 # End Source File
 # Begin Source File
 
