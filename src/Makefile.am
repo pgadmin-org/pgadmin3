@@ -125,6 +125,7 @@ ui/it_IT/pgadmin3.po \
 ui/ja_JP/pgadmin3.po \
 ui/pl_PL/pgadmin3.po \
 ui/ro_RO/pgadmin3.po \
+ui/ru_RU/pgadmin3.po \
 ui/tr_TR/pgadmin3.po \
 ui/zh_CN/pgadmin3.po
 
@@ -140,6 +141,7 @@ ui/it_IT/pgadmin3.mo \
 ui/ja_JP/pgadmin3.mo \
 ui/pl_PL/pgadmin3.mo \
 ui/ro_RO/pgadmin3.mo \
+ui/ru_RU/pgadmin3.mo \
 ui/tr_TR/pgadmin3.mo \
 ui/zh_CN/pgadmin3.mo \
 ui/de_DE/wxstd.mo \
