@@ -62,7 +62,28 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
     if (!expandedKids)
     {
         expandedKids = true;
-        // append type here
+        if (GetConnection()->BackendMinimumVersion(7, 4))
+        {
+            pgSet *set=ExecuteSet(
+                wxT("SELECT conname, consrc FROM pg_constraint WHERE contypid=") + GetOidStr());
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    if (!check.IsEmpty())
+                    {
+                        check += wxT(" ");
+                    }
+                    wxString conname=set->GetVal(wxT("conname"));
+                    if (!conname.StartsWith(wxT("$")))
+                        check += wxT("CONSTRAINT ") + conname + wxT(" ");
+                    check += wxT("CHECK ") + set->GetVal(wxT("consrc"));
+
+                    set->MoveNext();
+                }
+                delete set;
+            }
+        }
     }
     if (properties)
     {
@@ -103,20 +124,13 @@ pgObject *pgDomain::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgDomain *domain=0;
-    wxString checkQuery, checkColumn;
 
-    if (collection->GetConnection()->BackendMinimumVersion(7, 4))
-    {
-        checkQuery = wxT("   LEFT OUTER JOIN pg_constraint cs ON cs.contypid=d.oid\n");
-        checkColumn = wxT("consrc, ");
-    }
 
     pgSet *domains= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT d.oid, d.typname as domname, d.typbasetype, b.typname as basetype, pg_get_userbyid(d.typowner) as domainowner, \n")
         wxT("       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim,\n")
-        wxT("       ") + checkColumn + wxT("description\n")
+        wxT("       description\n")
         wxT("  FROM pg_type d\n")
-        + checkQuery +
         wxT("  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n")
         wxT(" WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
@@ -148,8 +162,6 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             domain->iSetNotNull(domains->GetBool(wxT("typnotnull")));
             domain->iSetDimensions(domains->GetLong(wxT("typndims")));
             domain->iSetDelimiter(domains->GetVal(wxT("typdelim")));
-            if (collection->GetConnection()->BackendMinimumVersion(7, 4))
-                domain->iSetCheck(domains->GetVal(wxT("consrc")));
 
             if (browser)
             {

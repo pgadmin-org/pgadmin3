@@ -26,18 +26,21 @@
 
 
 // pointer to controls
-#define txtOwner            CTRL("txtOwner", wxTextCtrl)
+#define cbOwner             CTRL("cbOwner", wxComboBox)
 #define chkNotNull          CTRL("chkNotNull", wxCheckBox)
 #define txtDefault          CTRL("txtDefault", wxTextCtrl)
 #define txtCheck            CTRL("txtCheck", wxTextCtrl)
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgDomain::OnChange)
+    EVT_COMBOBOX(XRCID("cbOwner"),                  dlgDomain::OnChange)
     EVT_TEXT(XRCID("txtLength"),                    dlgDomain::OnChange)
     EVT_TEXT(XRCID("txtPrecision"),                 dlgDomain::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgDomain::OnSelChangeTyp)
     EVT_TEXT(XRCID("txtComment"),                   dlgDomain::OnChange)
     EVT_TEXT(XRCID("txLength"),                     dlgDomain::OnChange)
+    EVT_TEXT(XRCID("txtDefault"),                   dlgDomain::OnChange)
+    EVT_CHECKBOX(XRCID("chkNotNull"),               dlgDomain::OnChange)
 END_EVENT_TABLE();
 
 
@@ -49,7 +52,6 @@ dlgDomain::dlgDomain(frmMain *frame, pgDomain *node, pgSchema *sch)
     domain=node;
 
     txtOID->Disable();
-    txtOwner->Disable();
     txtLength->Disable();
     txtPrecision->Disable();
 }
@@ -63,12 +65,26 @@ pgObject *dlgDomain::GetObject()
 
 int dlgDomain::Go(bool modal)
 {
+    if (!domain)
+        cbOwner->Append(wxT(""));
+
+    pgSet *set=connection->ExecuteSet(wxT("SELECT usename FROM pg_user ORDER BY usename"));
+
+    if (set)
+    {
+        while (!set->Eof())
+        {
+            cbOwner->Append(set->GetVal(0));
+            set->MoveNext();
+        }
+        delete set;
+    }
+
     if (domain)
     {
         // edit mode
         txtName->SetValue(domain->GetName());
         txtOID->SetValue(NumToStr((long)domain->GetOid()));
-        txtOwner->SetValue(domain->GetOwner());
         cbDatatype->Append(domain->GetBasetype());
         AddType(wxT(" "), 0, domain->GetBasetype());
         cbDatatype->SetSelection(0);
@@ -81,12 +97,18 @@ int dlgDomain::Go(bool modal)
         chkNotNull->SetValue(domain->GetNotNull());
         txtDefault->SetValue(domain->GetDefault());
         txtCheck->SetValue(domain->GetCheck());
+        cbOwner->SetValue(domain->GetOwner());
 
         txtName->Disable();
         cbDatatype->Disable();
-        txtDefault->Disable();
         txtCheck->Disable();
-        chkNotNull->Disable();
+
+        if (!connection->BackendMinimumVersion(7, 4))
+        {
+            cbOwner->Disable();
+            txtDefault->Disable();
+            chkNotNull->Disable();
+        }
     }
     else
     {
@@ -116,7 +138,10 @@ void dlgDomain::OnChange(wxNotifyEvent &ev)
 {
     if (domain)
     {
-        EnableOK(txtComment->GetValue() != domain->GetComment());
+        EnableOK(txtDefault->GetValue() != domain->GetDefault()
+            || chkNotNull->GetValue() != domain->GetNotNull()
+            || cbOwner->GetValue() != domain->GetOwner()
+            || txtComment->GetValue() != domain->GetComment());
     }
     else
     {
@@ -161,6 +186,28 @@ wxString dlgDomain::GetSql()
     if (domain)
     {
         // edit mode
+        if (chkNotNull->GetValue() != domain->GetNotNull())
+        {
+            sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier();
+            if (chkNotNull->GetValue())
+                sql += wxT(" SET NOT NULL;\n");
+            else
+                sql += wxT(" DROP NOT NULL;\n");
+        }
+        if (txtDefault->GetValue() != domain->GetDefault())
+        {
+            sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier();
+            if (txtDefault->GetValue().IsEmpty())
+                sql += wxT(" DROP DEFAULT;\n");
+            else
+                sql += wxT(" SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
+        }
+        if (cbOwner->GetValue() != domain->GetOwner())
+        {
+            sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier()
+                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+                + wxT(";\n");
+        }
     }
     else
     {
@@ -175,6 +222,12 @@ wxString dlgDomain::GetSql()
             sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
         sql += wxT(";\n");
 
+        if (cbOwner->GetSelection() > 0)
+        {
+            sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier()
+                +  wxT(" USER TO ") + qtIdent(cbOwner->GetValue())
+                + wxT(";\n");
+        }
     }
     AppendComment(sql, wxT("DOMAIN"), schema, domain);
 
