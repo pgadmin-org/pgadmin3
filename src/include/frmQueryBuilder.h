@@ -86,6 +86,7 @@ private:
 
     wxToolBar *toolBar;
 	wxSashLayoutWindow *m_sashwindow;
+	wxSplitterWindow *splitter;
     wxTextCtrl *msgResult, *msgHistory;
 	wxNotebook *notebook;
 	wxGrid *design;

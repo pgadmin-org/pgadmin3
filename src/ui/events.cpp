@@ -584,10 +584,10 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 {
     properties->ClearAll();
-    properties->AddColumn(_("Properties"));
+    properties->AddColumn(_("Properties"), 500);
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
     statistics->ClearAll();
-    statistics->AddColumn(_("Statistics"));
+    statistics->AddColumn(_("Statistics"), 500);
     statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
     sqlPane->Clear();
 

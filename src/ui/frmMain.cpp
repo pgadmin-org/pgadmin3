@@ -345,13 +345,13 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     properties->SetImageList(images, wxIMAGE_LIST_SMALL);
     // Add the property view columns
-    properties->AddColumn(_("Properties"));
+    properties->AddColumn(_("Properties"), 500);
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
 
 
     statistics->SetImageList(images, wxIMAGE_LIST_SMALL);
     // Add the statistics view columns & set the colour
-    statistics->AddColumn(_("Statistics"));
+    statistics->AddColumn(_("Statistics"), 500);
     statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
 
     wxColour background;
