@@ -451,6 +451,10 @@ SOURCE=.\ui\frmEditGrid.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\frmHelp.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\frmMain.cpp
 # End Source File
 # Begin Source File
@@ -468,10 +472,6 @@ SOURCE=.\ui\frmQuery.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmSplash.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmSqlHelp.cpp
 # End Source File
 # Begin Source File
 
@@ -519,6 +519,10 @@ SOURCE=.\include\frmConnect.h
 # Begin Source File
 
 SOURCE=.\include\frmEditGrid.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmHelp.h
 # End Source File
 # Begin Source File
 
