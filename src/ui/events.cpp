@@ -45,9 +45,6 @@
 #include "dlgProperty.h"
 #include "frmVacuum.h"
 
-#include "images/pgAdmin3.xpm"
-
-
 extern wxString loadPath;
 
 

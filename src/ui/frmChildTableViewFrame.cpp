@@ -292,7 +292,7 @@ void frmChildTableViewFrame::OnLeftDown(wxMouseEvent &event)
 {
 	wxPoint clientmouse = event.GetPosition();
 	wxPoint screenmouse = ClientToScreen(clientmouse);
-	wxPoint clientpos = GetPosition();
+	// wxPoint clientpos = GetPosition();
 
 	if (clientmouse.y <= 16)
 	{
@@ -316,12 +316,12 @@ void frmChildTableViewFrame::OnMotion(wxMouseEvent &event)
 	wxPoint clientmouse = event.GetPosition();
 	wxPoint screenmouse = ClientToScreen(clientmouse);
 	wxPoint clientpos = GetPosition();
-	wxSize clientsize = GetSize();
+	// wxSize clientsize = GetSize();
 
 	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
 
-	wxSize parentsize = tmpparent->GetSize();
-	wxSize parentclientsize = tmpparent->GetClientSize();
+	// wxSize parentsize = tmpparent->GetSize();
+	// wxSize parentclientsize = tmpparent->GetClientSize();
 	wxPoint parentoffset = tmpparent->GetClientAreaOrigin();
 
 	if (m_oldpos.x != -1 && m_oldpos.y != -1)
