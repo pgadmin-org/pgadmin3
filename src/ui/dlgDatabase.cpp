@@ -135,6 +135,11 @@ int dlgDatabase::Go(bool modal)
             }
             delete set;
         }
+#if wxUSE_UNICODE
+        int unicodeSel=cbEncoding->FindString(wxT("UNICODE"));
+        if (unicodeSel >= 0)
+            cbEncoding->SetSelection(unicodeSel);
+#endif
     }
 
     return dlgSecurityProperty::Go(modal);
