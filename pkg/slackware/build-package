@@ -37,9 +37,11 @@ if [ -x src/pgadmin3 ]; then
 	# And tweak for Slackware
 	mkdir -p ./slackpack/opt/kde/share/applnk/Development
 	mkdir -p ./slackpack/usr/share
+	mkdir -p ./slackpack/install
 	mv /usr/share/pgadmin3 ./slackpack/usr/share/
 	cp ./pkg/pgadmin3.desktop ./slackpack/opt/kde/share/applnk/Development
 	cp ./src/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
+	cp ./pkg/slackware/slack-desc ./slackpack/install
 
 	# Build the snapshot and file it.
 	cd slackpack
