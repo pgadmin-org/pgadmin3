@@ -39,6 +39,7 @@
 #include "pgConn.h"
 #include "pgDatabase.h"
 #include "pgSet.h"
+#include "slSet.h"
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
@@ -203,13 +204,21 @@ frmMain::frmMain(const wxString& title)
 //    toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
     toolsMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),        _("Grants rights to multiple objects"));
 
-#ifdef __WXDEBUG__
     wxMenu *cfgMenu=new wxMenu();
     cfgMenu->Append(MNU_MAINCONFIG, wxT("postgresql.conf"),       _("Edit general server configuration file."));
     cfgMenu->Append(MNU_HBACONFIG, wxT("pg_hba.conf"),            _("Edit server access configuration file."));
-
     toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server configuration"), cfgMenu);
-#endif
+
+    slonyMenu=new wxMenu();
+    slonyMenu->Append(MNU_SLONY_RESTART, _("Restart node"),       _("Restart node."));
+    slonyMenu->Append(MNU_SLONY_UPGRADE, _("Upgrade node"),       _("Upgrade node to newest function version."));
+    slonyMenu->Append(MNU_SLONY_FAILOVER, _("Failover"),          _("Failover to backup node."));
+    slonyMenu->Append(MNU_SLONY_MERGESET, _("Merge set"),         _("Merge two replication sets."));
+    slonyMenu->Append(MNU_SLONY_MOVESET, _("Move set"),           _("Move replication set to different node"));
+    toolsMenu->Append(MNU_SLONY_SUBMENU, _("Replication"), slonyMenu);
+
+    toolsMenu->AppendSeparator();
+
     toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
 
     menuBar->Append(toolsMenu, _("&Tools"));
@@ -987,7 +996,9 @@ void frmMain::SetButtons(pgObject *obj)
          backup=false,
          restore=false,
          status=false,
-         config=false;
+         config=false,
+         setissubscribed=false,
+         cluster=false;
 
     if (obj)
     {
@@ -1006,6 +1017,13 @@ void frmMain::SetButtons(pgObject *obj)
 
         switch (obj->GetType())
         {
+            case SL_CLUSTER:
+                cluster=true;
+                break;
+            case SL_SET:
+                if (((slSet*)obj)->GetSubscriptionCount() > 0)
+                    setissubscribed = true;
+                break;
             case PG_SERVERS:
             case PG_SERVER:
             case PG_DATABASES:
@@ -1049,10 +1067,16 @@ void frmMain::SetButtons(pgObject *obj)
 	toolsMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
     toolsMenu->Enable(MNU_STARTSERVICE, false);
     toolsMenu->Enable(MNU_STOPSERVICE, false);
-#ifdef __WXDEBUG__
     toolsMenu->Enable(MNU_CONFIGSUBMENU, config);
-#endif
-	viewMenu->Enable(MNU_REFRESH, refresh);
+
+    toolsMenu->Enable(MNU_SLONY_SUBMENU, cluster || setissubscribed);
+    slonyMenu->Enable(MNU_SLONY_RESTART, cluster);
+    slonyMenu->Enable(MNU_SLONY_UPGRADE, cluster);
+    slonyMenu->Enable(MNU_SLONY_FAILOVER, cluster);
+    slonyMenu->Enable(MNU_SLONY_MOVESET, setissubscribed);
+    slonyMenu->Enable(MNU_SLONY_MERGESET, setissubscribed);
+
+    viewMenu->Enable(MNU_REFRESH, refresh);
 	viewMenu->Enable(MNU_COUNT, false);
 }
 

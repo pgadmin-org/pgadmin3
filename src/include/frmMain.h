@@ -71,7 +71,7 @@ private:
     ctlListView *referencedBy, *dependsOn;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
-    wxMenu *newMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu;
+    wxMenu *newMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu;
     wxTreeItemId servers;
 	wxImageList *images;
     wxSplitterWindow *horizontal, *vertical;
@@ -110,6 +110,12 @@ private:
     void OnHbaConfig(wxCommandEvent& event);
     void OnMainFileConfig(wxCommandEvent& event);
     void OnHbaFileConfig(wxCommandEvent& event);
+
+    void OnMergeSet(wxCommandEvent& event);
+    void OnMoveSet(wxCommandEvent& event);
+    void OnFailover(wxCommandEvent& event);
+    void OnUpgradeNode(wxCommandEvent& event);
+    void OnRestartNode(wxCommandEvent& event);
 
     void OnPageChange(wxNotebookEvent& event);
     void OnPropSelChanged(wxListEvent& event);

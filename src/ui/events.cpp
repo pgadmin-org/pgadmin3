@@ -53,7 +53,7 @@
 #include "frmMainConfig.h"
 #include "frmHbaConfig.h"
 #include "frmUpdate.h"
-
+#include "slFunctions.h"
 
 extern wxString loadPath;
 
@@ -133,6 +133,12 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
     EVT_MENU(MNU_MAINCONFIG,                frmMain::OnMainConfig)
     EVT_MENU(MNU_HBACONFIG,                 frmMain::OnHbaConfig)
+    EVT_MENU(MNU_SLONY_RESTART,             frmMain::OnRestartNode)
+    EVT_MENU(MNU_SLONY_UPGRADE,             frmMain::OnUpgradeNode)
+    EVT_MENU(MNU_SLONY_FAILOVER,            frmMain::OnFailover)
+    EVT_MENU(MNU_SLONY_MERGESET,            frmMain::OnMergeSet)
+    EVT_MENU(MNU_SLONY_MOVESET,             frmMain::OnMoveSet)
+
     EVT_NOTEBOOK_PAGE_CHANGED(CTL_NOTEBOOK, frmMain::OnPageChange)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_LIST_ITEM_ACTIVATED(CTL_PROPVIEW,   frmMain::OnPropSelActivated)
@@ -1125,6 +1131,13 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
     appendIfEnabled(MNU_CONNECT);
     appendIfEnabled(MNU_DISCONNECT);
 
+    appendIfEnabled(MNU_SLONY_RESTART);
+    appendIfEnabled(MNU_SLONY_UPGRADE);
+    appendIfEnabled(MNU_SLONY_FAILOVER);
+    appendIfEnabled(MNU_SLONY_MERGESET);
+    appendIfEnabled(MNU_SLONY_MOVESET);
+
+
     int newSize = treeContextMenu->GetMenuItemCount();
     if (newSize > currentSize)
     {
@@ -1389,6 +1402,56 @@ void frmMain::OnProperties(wxCommandEvent &ev)
     if (currentObject)
     {
         if (!dlgProperty::EditObjectDialog(this, sqlPane, currentObject))
+            checkAlive();
+    }
+}
+
+
+void frmMain::OnMergeSet(wxCommandEvent& event)
+{
+    if (currentObject)
+    {
+        if (!slFunctions::MergeSet(this, currentObject))
+            checkAlive();
+    }
+}
+
+
+void frmMain::OnMoveSet(wxCommandEvent& event)
+{
+    if (currentObject)
+    {
+        if (!slFunctions::MoveSet(this, currentObject))
+            checkAlive();
+    }
+}
+
+
+void frmMain::OnFailover(wxCommandEvent& event)
+{
+    if (currentObject)
+    {
+        if (!slFunctions::Failover(this, currentObject))
+            checkAlive();
+    }
+}
+
+
+void frmMain::OnUpgradeNode(wxCommandEvent& event)
+{
+    if (currentObject)
+    {
+        if (!slFunctions::UpgradeNode(this, currentObject))
+            checkAlive();
+    }
+}
+
+
+void frmMain::OnRestartNode(wxCommandEvent& event)
+{
+    if (currentObject)
+    {
+        if (!slFunctions::RestartNode(this, currentObject))
             checkAlive();
     }
 }

@@ -1303,6 +1303,30 @@ SOURCE=.\include\images\servers.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\slcluster.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\sllisten.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\slnode.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\slpath.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\slset.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\slsubscription.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\splash.xpm
 # End Source File
 # Begin Source File
@@ -1603,6 +1627,10 @@ SOURCE=.\slony\include\slCluster.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\slony\include\slFunctions.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\slony\include\slListen.h
 # End Source File
 # Begin Source File
@@ -1705,6 +1733,10 @@ SOURCE=.\slony\dlgRepTable.cpp
 # Begin Source File
 
 SOURCE=.\slony\slCluster.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slFunctions.cpp
 # End Source File
 # Begin Source File
 

@@ -45,6 +45,12 @@ wxMenu *slNode::GetNewMenu()
 }
 
 
+bool slNode::CanDrop()
+{
+    return (GetSlId() != GetCluster()->GetLocalNodeID());
+}
+
+
 bool slNode::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     return GetDatabase()->ExecuteVoid(

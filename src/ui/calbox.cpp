@@ -84,8 +84,8 @@ bool wxCalendarBox::Create(wxWindow *parent,
     }
     
     m_txt=new wxTextCtrl(this, CTRLID_TXT, txt, wxPoint(0,0), wxSize(cs.x-bs.x-1, cs.y), wxNO_BORDER);
-    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, (wxObjectEventFunction)&wxCalendarBox::OnEditKey, 0, this);
-    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KILL_FOCUS, (wxObjectEventFunction)&wxCalendarBox::OnKillFocus, 0, this);
+    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, wxKeyEventHandler(wxCalendarBox::OnEditKey), 0, this);
+    m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(wxCalendarBox::OnKillFocus), 0, this);
     SetFormat(wxT("%x"));
 
     m_btn = new wxBitmapButton(this, CTRLID_BTN, bmp, wxPoint(cs.x - bs.x, 0), wxSize(bs.x, cs.y));
@@ -95,16 +95,16 @@ bool wxCalendarBox::Create(wxWindow *parent,
 
     wxPanel *panel=new wxPanel(m_dlg, CTRLID_PAN, wxPoint(0, 0), wxDefaultSize, wxSUNKEN_BORDER|wxCLIP_CHILDREN);
     m_cal = new wxCalendarCtrl(panel, CTRLID_CAL, wxDefaultDateTime, wxPoint(0,0), wxDefaultSize, wxSUNKEN_BORDER);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_SEL_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
-    m_cal->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, (wxObjectEventFunction)&wxCalendarBox::OnCalKey, 0, this);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DOUBLECLICKED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DAY_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_MONTH_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
-    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_YEAR_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_SEL_CHANGED, wxCalendarEventHandler(wxCalendarBox::OnSelChange), 0, this);
+    m_cal->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, wxKeyEventHandler(wxCalendarBox::OnCalKey), 0, this);
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DOUBLECLICKED, wxCalendarEventHandler(wxCalendarBox::OnSelChange), 0, this);
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DAY_CHANGED, wxCalendarEventHandler(wxCalendarBox::OnSelChange), 0, this);
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_MONTH_CHANGED, wxCalendarEventHandler(wxCalendarBox::OnSelChange), 0, this);
+    m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_YEAR_CHANGED, wxCalendarEventHandler(wxCalendarBox::OnSelChange), 0, this);
 
     wxWindow *yearControl = m_cal->GetYearControl();
 
-    Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)&wxCalendarBox::OnSetFocus);
+    Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(wxCalendarBox::OnSetFocus));
 
     wxClientDC dc(yearControl);
     dc.SetFont(m_font);
@@ -260,20 +260,20 @@ bool wxCalendarBox::SetFormat(const wxChar *fmt)
 
     if (m_txt)
     {
-        wxStringList valList;
+        wxArrayString valArray;
         wxChar c;
         for (c='0'; c <= '9'; c++)
-            valList.Add(wxString(c, 1));
+            valArray.Add(wxString(c, 1));
         wxChar *p=(wxChar*)m_format.c_str();
         while (*p)
         {
             if (*p == '%')
                 p += 2;
             else
-                valList.Add(wxString(*p++, 1));
+                valArray.Add(wxString(*p++, 1));
         }
         wxTextValidator tv(wxFILTER_INCLUDE_CHAR_LIST);
-        tv.SetIncludeList(valList);
+        tv.SetIncludes(valArray);
         
         m_txt->SetValidator(tv);
     }

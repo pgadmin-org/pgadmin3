@@ -36,7 +36,7 @@ public:
     static pgObject *ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(slCollection *coll, wxTreeCtrl *browser);
 
-//    bool CanBackup() { return true; }
+    bool CanDrop();
     bool RequireDropConfirm() { return true; }
     bool WantDummyChild() { return true; }
 

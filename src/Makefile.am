@@ -56,7 +56,7 @@ $(srcdir)/slony/slPath.cpp $(srcdir)/slony/slListen.cpp $(srcdir)/slony/slSet.cp
 $(srcdir)/slony/slSequence.cpp $(srcdir)/slony/slTable.cpp $(srcdir)/slony/slSubscription.cpp \
 $(srcdir)/slony/dlgRepCluster.cpp $(srcdir)/slony/dlgRepNode.cpp $(srcdir)/slony/dlgRepListen.cpp \
 $(srcdir)/slony/dlgRepPath.cpp $(srcdir)/slony/dlgRepSet.cpp $(srcdir)/slony/dlgRepSequence.cpp \
-$(srcdir)/slony/dlgRepTable.cpp $(srcdir)/slony/dlgRepSubscription.cpp \
+$(srcdir)/slony/dlgRepTable.cpp $(srcdir)/slony/dlgRepSubscription.cpp $(srcdir)/slony/slFunctions.cpp \
 $(srcdir)/ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = $(srcdir)/include/copyright.h $(srcdir)/include/version.h $(srcdir)/include/ctlSQLBox.h \
@@ -110,7 +110,7 @@ $(srcdir)/slony/include/slTable.h $(srcdir)/slony/include/slSubscription.h \
 $(srcdir)/slony/include/dlgRepCluster.h $(srcdir)/slony/include/dlgRepNode.h \
 $(srcdir)/slony/include/dlgRepListen.h $(srcdir)/slony/include/dlgRepPath.h \
 $(srcdir)/slony/include/dlgRepSet.h $(srcdir)/slony/include/dlgRepSequence.h \
-$(srcdir)/slony/include/dlgRepSubscription.h 
+$(srcdir)/slony/include/dlgRepSubscription.h $(srcdir)/slony/include/slFunctions.h
 
   
 EXTRA_DIST = $(srcdir)/pgAdmin3.dsp $(srcdir)/pgAdmin3.dsw \
