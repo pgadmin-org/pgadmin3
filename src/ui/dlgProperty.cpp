@@ -262,13 +262,20 @@ wxString dlgProperty::GetName()
 }
 
 
-void dlgProperty::AppendNameChange(wxString &sql)
+void dlgProperty::AppendNameChange(wxString &sql, const wxString &objName)
 {
     if (GetObject()->GetName() != GetName())
-        sql += wxT("ALTER ") + GetObject()->GetTypeName()
-            +  wxT(" ") + GetObject()->GetQuotedFullIdentifier()
-            +  wxT(" RENAME TO ") + qtIdent(GetName())
-            +  wxT(";\n");
+		if (objName.Length() > 0)
+		{
+			sql += wxT("ALTER ") + objName
+				+  wxT(" RENAME TO ") + qtIdent(GetName())
+				+  wxT(";\n");
+		} else {
+			sql += wxT("ALTER ") + GetObject()->GetTypeName()
+	            +  wxT(" ") + GetObject()->GetQuotedFullIdentifier()
+				+  wxT(" RENAME TO ") + qtIdent(GetName())
+				+  wxT(";\n");
+		}
 }
 
 

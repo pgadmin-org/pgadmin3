@@ -57,7 +57,7 @@ protected:
 
     void CheckValid(bool &enable, const bool condition, const wxString &msg);
     static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type=-1);
-    void AppendNameChange(wxString &sql);
+    void AppendNameChange(wxString &sql, const wxString &objname=wxEmptyString);
     void AppendOwnerChange(wxString &sql, const wxString &objName=wxEmptyString);
     void AppendOwnerNew(wxString &sql, const wxString &objname);
     void AppendComment(wxString &sql, const wxString &objType, pgSchema *schema, pgObject *obj);

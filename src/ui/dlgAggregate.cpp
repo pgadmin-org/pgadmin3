@@ -210,8 +210,10 @@ wxString dlgAggregate::GetSql()
     if (aggregate)
     {
         // edit mode
-        AppendNameChange(sql);
-        AppendOwnerChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name));
+        AppendNameChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(aggregate->GetName()) + 
+							   wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection()) + wxT(")"));
+        AppendOwnerChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(GetName()) + 
+							   wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection()) + wxT(")"));
     }
     else
     {
@@ -233,11 +235,12 @@ wxString dlgAggregate::GetSql()
         
         sql += wxT(");\n");
 
-        AppendOwnerNew(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name));
+        AppendOwnerNew(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)+ 
+			                wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection()) + wxT(")"));
     }
     AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
                   + wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection())
-                  +wxT(")"), aggregate);
+                  + wxT(")"), aggregate);
 
     return sql;
 }
