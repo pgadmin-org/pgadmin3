@@ -25,6 +25,7 @@ public:
     dlgView(frmMain *frame, pgView *v, pgSchema *sch);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -33,9 +34,6 @@ private:
     pgSchema *schema;
     pgView *view;
     wxString oldDefinition;
-
-    void OnChange(wxCommandEvent &ev);
-    void OnChangeStc(wxStyledTextEvent& event);
 
     DECLARE_EVENT_TABLE();
 };

@@ -30,10 +30,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgTablespace, dlgSecurityProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgTablespace::OnChange)
-    EVT_TEXT(XRCID("txtLocation"),                  dlgTablespace::OnChange)
-    EVT_TEXT(XRCID("cbOwner"),                      dlgTablespace::OnOwnerChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgTablespace::OnChange)
+    EVT_TEXT(XRCID("txtLocation"),                  dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -64,11 +61,8 @@ int dlgTablespace::Go(bool modal)
         // Edit Mode
         txtName->SetValue(tablespace->GetIdentifier());
         txtLocation->SetValue(tablespace->GetLocation());
-        cbOwner->SetValue(tablespace->GetOwner());
 
-        txtName->Disable();
         txtLocation->Disable();
-        cbOwner->Disable();
     }
     else
     {
@@ -78,25 +72,20 @@ int dlgTablespace::Go(bool modal)
 }
 
 
-void dlgTablespace::OnOwnerChange(wxCommandEvent &ev)
-{
-    cbOwner->GuessSelection();
-    OnChange(ev);
-}
-
-
-void dlgTablespace::OnChange(wxCommandEvent &ev)
+void dlgTablespace::CheckChange()
 {
     if (tablespace)
     {
-        EnableOK(txtComment->GetValue() != tablespace->GetComment());
+        EnableOK(txtComment->GetValue() != tablespace->GetComment()
+            || GetName() != tablespace->GetName()
+            || cbOwner->GetValue() != tablespace->GetOwner());
     }
     else
     {
         wxString name=GetName();
 
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
         CheckValid(enable, !txtLocation->GetValue().IsEmpty(), _("Please specify location."));
         EnableOK(enable);
     }
@@ -121,6 +110,9 @@ wxString dlgTablespace::GetSql()
     if (tablespace)
     {
         // Edit Mode
+
+        AppendNameChange(sql);
+        AppendOwnerChange(sql);
     }
     else
     {
@@ -130,7 +122,7 @@ wxString dlgTablespace::GetSql()
         sql += wxT(" LOCATION ") + qtString(txtLocation->GetValue())
             +  wxT(";\n");
     }
-    sql += GetGrant(wxT("C"), wxT("TABLESPACE ") + name);
+    sql += GetGrant(wxT("C"), wxT("TABLESPACE ") + qtIdent(name));
     return sql;
 }
 

@@ -37,13 +37,11 @@
 
 
 BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgTrigger::OnChange)
-    EVT_CHECKBOX(XRCID("chkInsert"),                dlgTrigger::OnChange)
-    EVT_CHECKBOX(XRCID("chkUpdate"),                dlgTrigger::OnChange)
-    EVT_CHECKBOX(XRCID("chkDelete"),                dlgTrigger::OnChange)
+    EVT_CHECKBOX(XRCID("chkInsert"),                dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkUpdate"),                dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkDelete"),                dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChangeFunc)
-    EVT_TEXT(XRCID("txtArguments"),                 dlgTrigger::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgTrigger::OnChange)
+    EVT_TEXT(XRCID("txtArguments"),                 dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -54,8 +52,6 @@ dlgTrigger::dlgTrigger(frmMain *frame, pgTrigger *node, pgTable *parentNode)
     trigger=node;
     table=parentNode;
     wxASSERT(!table || table->GetType() == PG_TABLE);
-
-    txtOID->Disable();
 }
 
 
@@ -70,8 +66,6 @@ int dlgTrigger::Go(bool modal)
     if (trigger)
     {
         // edit mode
-        txtName->SetValue(trigger->GetName());
-
         chkRow->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_ROW) != 0);
         chkInsert->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_INSERT) != 0);
         chkUpdate->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE) != 0);
@@ -86,7 +80,6 @@ int dlgTrigger::Go(bool modal)
         txtArguments->Disable();
         cbFunction->Disable();
         rdbFires->Disable();
-        txtComment->SetValue(trigger->GetComment());
         chkInsert->Disable();
         chkUpdate->Disable();
         chkDelete->Disable();
@@ -188,11 +181,11 @@ pgObject *dlgTrigger::CreateObject(pgCollection *collection)
 void dlgTrigger::OnChangeFunc(wxCommandEvent &ev)
 {
     cbFunction->GuessSelection();
-    OnChange(ev);
+    CheckChange();
 }
 
 
-void dlgTrigger::OnChange(wxCommandEvent &ev)
+void dlgTrigger::CheckChange()
 {
     if (trigger)
         EnableOK(txtComment->GetValue() != trigger->GetComment());

@@ -23,6 +23,7 @@ class dlgColumn : public dlgTypeProperty
 public:
     dlgColumn(frmMain *frame, pgColumn *column, pgTable *parentNode);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -35,7 +36,6 @@ public:
 private:
     pgColumn *column;
     pgTable *table;
-    void OnChange(wxCommandEvent &ev);
     void OnSelChangeTyp(wxCommandEvent &ev);
  
     wxString previousDefinition;

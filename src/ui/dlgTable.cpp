@@ -54,11 +54,8 @@
 
 
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgTable::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgTable::OnChange)
-    EVT_CHECKBOX(XRCID("chkHasOids"),               dlgTable::OnChange)
-    EVT_TEXT(XRCID("cbOwner"),                      dlgTable::OnChangeOwner)
-    EVT_TEXT(XRCID("cbTablespace"),                 dlgTable::OnChange)
+    EVT_CHECKBOX(XRCID("chkHasOids"),               dlgProperty::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTables"),                     dlgTable::OnChangeTable)
     EVT_BUTTON(XRCID("btnAddTable"),                dlgTable::OnAddTable)
     EVT_BUTTON(XRCID("btnRemoveTable"),             dlgTable::OnRemoveTable)
@@ -81,7 +78,6 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
     schema=sch;
     table=node;
 
-    txtOID->Disable();
     btnRemoveTable->Disable();
 
     lstColumns->CreateColumns(frame, _("Column name"), _("Definition"), 90);
@@ -111,12 +107,8 @@ int dlgTable::Go(bool modal)
     if (table)
     {
         // edit mode
-        txtName->SetValue(table->GetName());
-        txtOID->SetValue(NumToStr(table->GetOid()));
         chkHasOids->SetValue(table->GetHasOids());
-        txtComment->SetValue(table->GetComment());
 
-        cbOwner->SetValue(table->GetOwner());
         PrepareTablespace(cbTablespace);
         if (!table->GetTablespace().IsEmpty())
             cbTablespace->SetValue(table->GetTablespace());
@@ -131,7 +123,6 @@ int dlgTable::Go(bool modal)
         cbTables->Disable();
         chkHasOids->Disable();
         cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
-        txtOID->Disable();
 
         wxCookieType cookie;
         pgObject *data=0;
@@ -318,16 +309,8 @@ wxString dlgTable::GetSql()
         wxString definition;
         wxArrayString tmpDef=previousColumns;
 
-        if (GetName() != table->GetName())
-            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                +  wxT(" RENAME TO ") + qtIdent(GetName())
-                +  wxT(";\n");
-
-        if (cbOwner->GetValue() != table->GetOwner())
-            sql += wxT("ALTER TABLE ") + tabname 
-                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
-                + wxT(";\n");
-
+        AppendNameChange(sql);
+        AppendOwnerChange(sql);
 
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
@@ -472,10 +455,7 @@ wxString dlgTable::GetSql()
 
         sql += wxT(";\n");
 
-        if (cbOwner->GetGuessedSelection() > 0)
-            sql += wxT("ALTER TABLE ") + tabname 
-                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
-                + wxT(";\n");
+        AppendOwnerNew(sql, wxT("TABLE ") + tabname);
     }
     AppendComment(sql, wxT("TABLE"), schema, table);
     sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + tabname);
@@ -510,20 +490,13 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 }
 
 
-void dlgTable::OnChangeOwner(wxCommandEvent &ev)
-{
-    cbOwner->GuessSelection();
-    OnChange(ev);
-}
-
-
 void dlgTable::OnChangeTable(wxCommandEvent &ev)
 {
     cbTables->GuessSelection();
 }
 
 
-void dlgTable::OnChange(wxCommandEvent &ev)
+void dlgTable::CheckChange()
 {
     if (table)
     {
@@ -573,7 +546,7 @@ void dlgTable::OnAddTable(wxCommandEvent &ev)
             }
             delete set;
         }        
-        OnChange(ev);
+        CheckChange();
     }
 }
 
@@ -596,7 +569,7 @@ void dlgTable::OnRemoveTable(wxCommandEvent &ev)
             if (tabname == lstColumns->GetText(row, 2))
                 lstColumns->DeleteItem(row);
         }
-        OnChange(ev);
+        CheckChange();
     }
     btnRemoveTable->Disable();
 }
@@ -622,8 +595,7 @@ void dlgTable::OnChangeCol(wxCommandEvent &ev)
         lstColumns->SetItem(pos, 1, col.GetDefinition());
         lstColumns->SetItem(pos, 3, col.GetSql());
     }
-    wxNotifyEvent event;
-    OnChange(event);
+    CheckChange();
 }
 
 
@@ -634,8 +606,8 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
     col.SetDatabase(database);
     if (col.Go(true) >= 0)
         lstColumns->AppendItem(PGICON_COLUMN, col.GetName(), col.GetDefinition());
-    wxNotifyEvent event;
-    OnChange(event);
+
+    CheckChange();
 }
 
 
@@ -645,8 +617,7 @@ void dlgTable::OnRemoveCol(wxCommandEvent &ev)
 
     btnRemoveCol->Disable();
 
-    wxNotifyEvent event;
-    OnChange(event);
+    CheckChange();
 }
 
 
@@ -713,8 +684,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             break;
         }
     }
-    wxNotifyEvent event;
-    OnChange(event);
+    CheckChange();
 }
 
 
@@ -737,8 +707,8 @@ void dlgTable::OnRemoveConstr(wxCommandEvent &ev)
     
     lstConstraints->DeleteItem(pos);
     btnRemoveConstr->Disable();
-    wxNotifyEvent event;
-    OnChange(event);
+
+    CheckChange();
 }
 
 

@@ -37,9 +37,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgIndexBase::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgIndexBase::OnChange)
-    EVT_TEXT(XRCID("cbTablespace"),                 dlgIndexBase::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexBase::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexBase::OnRemoveCol)
 END_EVENT_TABLE();
@@ -77,12 +75,10 @@ int dlgIndexBase::Go(bool modal)
     if (index)
     {
         // edit mode: view only
-        txtName->SetValue(index->GetName());
         txtName->Disable();
         btnAddCol->Disable();
         btnRemoveCol->Disable();
         cbColumns->Disable();
-		txtComment->SetValue(index->GetComment());
 
 	    int pos = 0;
         wxStringTokenizer cols(index->GetColumns(), wxT(","));
@@ -113,8 +109,7 @@ void dlgIndexBase::OnAddCol(wxCommandEvent &ev)
         if (cbColumns->GetCount())
             cbColumns->SetSelection(0);
 
-        wxNotifyEvent event;
-        OnChange(event);
+        CheckChange();
     }
 }
 
@@ -128,13 +123,12 @@ void dlgIndexBase::OnRemoveCol(wxCommandEvent &ev)
         lstColumns->DeleteItem(pos);
         cbColumns->Append(col);
 
-        wxNotifyEvent event;
-        OnChange(event);
+        CheckChange();
     }
 }
 
 
-void dlgIndexBase::OnChange(wxCommandEvent &ev)
+void dlgIndexBase::CheckChange()
 {
     if (index)
     {
@@ -168,10 +162,8 @@ wxString dlgIndexBase::GetColumns()
 
 
 BEGIN_EVENT_TABLE(dlgIndex, dlgIndexBase)
-    EVT_TEXT(XRCID("txtName"),                      dlgIndex::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgIndex::OnChange)
-    EVT_TEXT(XRCID("cbTablespace"),                 dlgIndex::OnChange)
-    EVT_CHECKBOX(XRCID("chkClustered"),             dlgIndex::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkClustered"),             dlgProperty::OnChange)
 END_EVENT_TABLE();
 
         
@@ -181,7 +173,7 @@ dlgIndex::dlgIndex(frmMain *frame, pgIndex *index, pgTable *parentNode)
 }
 
 
-void dlgIndex::OnChange(wxCommandEvent &ev)
+void dlgIndex::CheckChange()
 {
     if (index)
     {

@@ -26,9 +26,7 @@
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 
 BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgSchema::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgSchema::OnChange)
-    EVT_TEXT(XRCID("cbTablespace"),                 dlgSchema::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -37,8 +35,6 @@ dlgSchema::dlgSchema(frmMain *frame, pgSchema *node)
 {
     SetIcon(wxIcon(namespace_xpm));
     schema=node;
-
-    txtOID->Disable();
 }
 
 
@@ -58,13 +54,12 @@ int dlgSchema::Go(bool modal)
     if (schema)
     {
         // edit mode
-        txtName->SetValue(schema->GetName());
-        txtOID->SetValue(NumToStr((long)schema->GetOid()));
-        txtComment->SetValue(schema->GetComment());
-        cbOwner->SetValue(schema->GetOwner());
         PrepareTablespace(cbTablespace, schema->GetTablespace());
-        cbOwner->Disable();
-        cbTablespace->Disable();
+
+        if (!connection->BackendMinimumVersion(7, 5))
+            cbOwner->Disable();
+        if (!connection->BackendMinimumVersion(7, 6))
+            cbTablespace->Disable();
     }
     else
     {
@@ -85,12 +80,13 @@ pgObject *dlgSchema::CreateObject(pgCollection *collection)
 }
 
 
-void dlgSchema::OnChange(wxCommandEvent &ev)
+void dlgSchema::CheckChange()
 {
     wxString name=GetName();
     if (schema)
     {
-        EnableOK(name != schema->GetName() || txtComment->GetValue() != schema->GetComment());
+        EnableOK(name != schema->GetName() || txtComment->GetValue() != schema->GetComment()
+            || cbOwner->GetValue() != schema->GetOwner());
     }
     else
     {
@@ -113,6 +109,7 @@ wxString dlgSchema::GetSql()
     {
         // edit mode
         AppendNameChange(sql);
+        AppendOwnerChange(sql);
     }
     else
     {

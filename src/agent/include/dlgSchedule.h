@@ -24,6 +24,8 @@ class dlgSchedule : public dlgOidProperty
 {
 public:
     dlgSchedule(frmMain *frame, pgaSchedule *s, pgaJob *j);
+
+    void CheckChange();
     int Go(bool modal);
 
     wxString GetComment();
@@ -37,7 +39,7 @@ private:
     OID jobOid;
     pgaSchedule *schedule;
     pgaJob *job;
-    void OnChange(wxCommandEvent &ev);
+    
     void OnChangeCal(wxCalendarEvent &ev);
     void OnChangeSpin(wxSpinEvent &ev);
     void OnChangeKind(wxCommandEvent &ev);

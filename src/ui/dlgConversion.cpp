@@ -26,7 +26,6 @@
 
 
 // pointer to controls
-#define txtOwner            CTRL_TEXT("txtOwner")
 #define cbSourceEncoding    CTRL_COMBOBOX("cbSourceEncoding")
 #define cbTargetEncoding    CTRL_COMBOBOX("cbTargetEncoding")
 #define cbFunction          CTRL_COMBOBOX("cbFunction")
@@ -35,11 +34,9 @@
 
 
 BEGIN_EVENT_TABLE(dlgConversion, dlgProperty)
-    EVT_TEXT(XRCID("txtName"),              dlgConversion::OnChange)
-    EVT_TEXT(XRCID("cbSourceEncoding"),     dlgConversion::OnChange)
-    EVT_TEXT(XRCID("cbTargetEncoding"),     dlgConversion::OnChange)
-    EVT_TEXT(XRCID("cbFunction"),           dlgConversion::OnChange)
-    EVT_TEXT(XRCID("txtComment"),           dlgConversion::OnChange)
+    EVT_TEXT(XRCID("cbSourceEncoding"),     dlgProperty::OnChange)
+    EVT_TEXT(XRCID("cbTargetEncoding"),     dlgProperty::OnChange)
+    EVT_TEXT(XRCID("cbFunction"),           dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -49,9 +46,6 @@ dlgConversion::dlgConversion(frmMain *frame, pgConversion *node, pgSchema *sch)
     SetIcon(wxIcon(conversion_xpm));
     conversion=node;
     schema=sch;
-
-    txtOwner->Disable();
-    txtOID->Disable();
 }
 
 
@@ -63,16 +57,17 @@ pgObject *dlgConversion::GetObject()
 
 int dlgConversion::Go(bool modal)
 {
+    AddUsers(cbOwner);
+
     if (!connection->BackendMinimumVersion(7, 4))
         txtComment->Disable();
+
+    if (!connection->BackendMinimumVersion(7, 5))
+        cbOwner->Disable();
 
     if (conversion)
     {
         // edit mode
-        txtName->SetValue(conversion->GetName());
-        txtOID->SetValue(NumToStr(conversion->GetOid()));
-        txtOwner->SetValue(conversion->GetOwner());
-        txtComment->SetValue(conversion->GetComment());
         cbSourceEncoding->Append(conversion->GetForEncoding());
         cbSourceEncoding->SetSelection(0);
         cbTargetEncoding->Append(conversion->GetToEncoding());
@@ -146,12 +141,13 @@ pgObject *dlgConversion::CreateObject(pgCollection *collection)
 }
 
 
-void dlgConversion::OnChange(wxCommandEvent &ev)
+void dlgConversion::CheckChange()
 {
     if (conversion)
     {
         EnableOK(txtName->GetValue() != conversion->GetName() 
-            || txtComment->GetValue() != conversion->GetComment());
+            || txtComment->GetValue() != conversion->GetComment()
+            || cbOwner->GetValue() != conversion->GetOwner());
     }
     else
     {
@@ -176,12 +172,9 @@ wxString dlgConversion::GetSql()
     if (conversion)
     {
         // edit mode
-        if (txtName->GetValue() != conversion->GetName())
-        {
-            sql += wxT("ALTER CONVERSION ") + conversion->GetQuotedFullIdentifier()
-                +  wxT(" RENAME TO ") + qtIdent(name)
-                +  wxT(";\n");
-        }
+
+        AppendNameChange(sql);
+        AppendOwnerChange(sql);
     }
     else
     {
@@ -194,6 +187,8 @@ wxString dlgConversion::GetSql()
             + wxT(" TO ") + qtString(cbTargetEncoding->GetValue())
             + wxT("\n   FROM ") + functions.Item(cbFunction->GetSelection())
             + wxT(";\n");
+
+        AppendOwnerNew(sql, wxT("CONVERSION ") + schema->GetQuotedPrefix() + qtIdent(name));
     }
     AppendComment(sql, wxT("CONVERSION"), schema, conversion);
 

@@ -23,13 +23,13 @@ public:
     dlgLanguage(frmMain *frame, pgLanguage *db);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
 private:
     pgLanguage *language;
-    void OnChange(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

@@ -24,13 +24,13 @@ public:
     dlgOperator(frmMain *frame, pgOperator *op, pgSchema *sch);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
 private:
-    void OnChange(wxCommandEvent &ev);
-    void OnChangeType(wxCommandEvent &ev);
+    void CheckChangeType();
     void OnChangeTypeLeft(wxCommandEvent &ev);
     void OnChangeTypeRight(wxCommandEvent &ev);
     void OnChangeJoin(wxCommandEvent &ev);

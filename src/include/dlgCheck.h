@@ -22,6 +22,8 @@ class dlgCheck : public dlgProperty
 {
 public:
     dlgCheck(frmMain *frame, pgCheck *node=0, pgTable *parentNode=0);
+
+    void CheckChange();
     wxString GetSql();
     wxString GetDefinition();
     pgObject *CreateObject(pgCollection *collection);
@@ -33,7 +35,6 @@ public:
 private:
     pgCheck *check;
     pgTable *table;
-    void OnChange(wxCommandEvent &ev);
     void OnCheckDeferrable(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();

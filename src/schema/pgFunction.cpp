@@ -62,9 +62,9 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypes() + wxT(")\n\n")
+        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")\n\n")
             + wxT("-- DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(");")
-            + wxT("\n\nCREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypes()
+            + wxT("\n\nCREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypeNames()
             + wxT(")\n  RETURNS ");
         if (GetReturnAsSet())
             sql += wxT("SETOF ");
@@ -111,7 +111,7 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("Argument count"), GetArgCount());
-        properties->AppendItem(_("Arguments"), GetArgTypes());
+        properties->AppendItem(_("Arguments"), GetArgTypeNames());
         properties->AppendItem(_("Return type"), GetReturnType());
         properties->AppendItem(_("Language"), GetLanguage());
         properties->AppendItem(_("Returns a set?"), GetReturnAsSet());
@@ -138,9 +138,13 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
 pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgFunction *function=0;
+    wxString argNamesCol;
+    if (obj->GetConnection()->BackendMinimumVersion(7, 5))
+        argNamesCol = wxT("proargnames, ");
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
-            wxT("SELECT pr.oid, pr.*, TYP.typname, TYPNS.nspname AS typnsp, lanname, pg_get_userbyid(proowner) as funcowner, description\n")
+            wxT("SELECT pr.oid, pr.*, TYP.typname, TYPNS.nspname AS typnsp, lanname, ") + argNamesCol + 
+                        wxT("pg_get_userbyid(proowner) as funcowner, description\n")
             wxT("  FROM pg_proc pr\n")
             wxT("  JOIN pg_type TYP ON TYP.oid=prorettype\n")
             wxT("  JOIN pg_namespace TYPNS ON TYPNS.oid=TYP.typnamespace\n")
@@ -168,10 +172,14 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             function->iSetReturnType(obj->GetDatabase()->GetSchemaPrefix(functions->GetVal(wxT("typnsp"))) + functions->GetVal(wxT("typname")));
             function->iSetComment(functions->GetVal(wxT("description")));
             wxString oids=functions->GetVal(wxT("proargtypes"));
+            wxString argNames;
+            if (obj->GetConnection()->BackendMinimumVersion(7, 5))
+                argNames = functions->GetVal(wxT("proargnames"));
             function->iSetArgTypeOids(oids);
 
-            wxString str, argTypes, quotedArgTypes;
+            wxString str, argTypes, quotedArgTypes, argTypeNames, quotedArgTypeNames;
             wxStringTokenizer args(oids);
+            wxStringTokenizer names(argNames.Mid(1, argNames.Length()-2), wxT(","));
             while (args.HasMoreTokens())
             {
                 str = args.GetNextToken();
@@ -182,11 +190,23 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
                     while (types->GetVal(wxT("oid")) != str)
                         types->MoveNext();
 
-                    if (!argTypes.IsNull()) {
+                    if (!argTypes.IsNull())
+                    {
                         argTypes += wxT(", ");
                         quotedArgTypes += wxT(", ");
-					}
+                        argTypeNames += wxT(", ");
+                        quotedArgTypeNames += wxT(", ");
+                    }
+                    str = names.GetNextToken();
+                    if (!str.IsNull())
+                    {
+                        function->iAddArgName(str);
+                        argTypeNames += str + wxT(" ");
+                        quotedArgTypeNames += qtIdent(str) + wxT(" ");
+                    }
 
+    				argTypeNames += obj->GetDatabase()->GetSchemaPrefix(types->GetVal(wxT("nspname"))) + types->GetVal(wxT("typname"));
+					quotedArgTypeNames += obj->GetDatabase()->GetQuotedSchemaPrefix(types->GetVal(wxT("nspname"))) + qtIdent(types->GetVal(wxT("typname")));
     				argTypes += obj->GetDatabase()->GetSchemaPrefix(types->GetVal(wxT("nspname"))) + types->GetVal(wxT("typname"));
 					quotedArgTypes += obj->GetDatabase()->GetQuotedSchemaPrefix(types->GetVal(wxT("nspname"))) + qtIdent(types->GetVal(wxT("typname")));
                 }
@@ -194,6 +214,8 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
 
             function->iSetArgTypes(argTypes);
             function->iSetQuotedArgTypes(quotedArgTypes);
+            function->iSetArgTypeNames(argTypeNames);
+            function->iSetQuotedArgTypeNames(quotedArgTypeNames);
 
             function->iSetLanguage(functions->GetVal(wxT("lanname")));
             function->iSetSecureDefiner(functions->GetBool(wxT("prosecdef")));

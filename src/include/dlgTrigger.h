@@ -24,6 +24,7 @@ public:
     dlgTrigger(frmMain *frame, pgTrigger *trg, pgTable *sch);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -32,7 +33,6 @@ private:
     pgTable *table;
     pgTrigger *trigger;
 
-    void OnChange(wxCommandEvent &ev);
     void OnChangeFunc(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();

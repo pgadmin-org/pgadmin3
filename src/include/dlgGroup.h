@@ -25,11 +25,12 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
+    void CheckChange();
     int Go(bool modal);
 
 private:
     pgGroup *group;
-    void OnChange(wxCommandEvent &ev);
+
     void OnUserAdd(wxCommandEvent &ev);
     void OnUserRemove(wxCommandEvent &ev);
 

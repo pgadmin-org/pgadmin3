@@ -31,9 +31,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgLanguage::OnChange)
-    EVT_TEXT(XRCID("cbHandler"),                    dlgLanguage::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgLanguage::OnChange)
+    EVT_TEXT(XRCID("cbHandler"),                    dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -42,8 +40,6 @@ dlgLanguage::dlgLanguage(frmMain *frame, pgLanguage *node)
 {
     SetIcon(wxIcon(language_xpm));
     language=node;
-
-    txtOID->Disable();
 }
 
 
@@ -63,9 +59,6 @@ int dlgLanguage::Go(bool modal)
     if (language)
     {
         // edit mode
-        txtName->SetValue(language->GetName());
-        txtOID->SetValue(NumToStr((long)language->GetOid()));
-        txtComment->SetValue(language->GetComment());
         chkTrusted->SetValue(language->GetTrusted());
         cbHandler->Append(language->GetHandlerProc());
         cbHandler->SetSelection(0);
@@ -121,7 +114,7 @@ pgObject *dlgLanguage::CreateObject(pgCollection *collection)
 }
 
 
-void dlgLanguage::OnChange(wxCommandEvent &ev)
+void dlgLanguage::CheckChange()
 {
     wxString name=GetName();
     if (language)
@@ -156,13 +149,13 @@ wxString dlgLanguage::GetSql()
         sql = wxT("CREATE ");
         if (chkTrusted->GetValue())
             sql += wxT("TRUSTED ");
-        sql += wxT("LANGUAGE ") + name + wxT("\n   HANDLER ") + qtIdent(cbHandler->GetValue());
+        sql += wxT("LANGUAGE ") + qtIdent(name) + wxT("\n   HANDLER ") + qtIdent(cbHandler->GetValue());
         AppendIfFilled(sql, wxT("\n   VALIDATOR "), qtIdent(cbValidator->GetValue()));
         sql += wxT(";\n");
 
     }
 
-    sql += GetGrant(wxT("X"), wxT("LANGUAGE ") + name);
+    sql += GetGrant(wxT("X"), wxT("LANGUAGE ") + qtIdent(name));
     AppendComment(sql, wxT("LANGUAGE"), 0, language);
 
     return sql;

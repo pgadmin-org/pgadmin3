@@ -27,10 +27,9 @@
 
 
 // pointer to controls
-#define txtOwner            CTRL_TEXT("txtOwner")
 #define cbLeftType          CTRL_COMBOBOX2("cbLeftType")
 #define cbRightType         CTRL_COMBOBOX2("cbRightType")
-#define cbProcedure         CTRL_COMBOBOX("cbProcedure")
+#define cbProcedure         CTRL_COMBOBOX2("cbProcedure")
 #define cbRestrict          CTRL_COMBOBOX("cbRestrict")
 #define cbJoin              CTRL_COMBOBOX("cbJoin")
 #define cbCommutator        CTRL_COMBOBOX("cbCommutator")
@@ -44,15 +43,13 @@
 
 
 BEGIN_EVENT_TABLE(dlgOperator, dlgTypeProperty)
-    EVT_TEXT(XRCID("txtName"),                  dlgOperator::OnChange)
     EVT_TEXT(XRCID("cbLeftType"),               dlgOperator::OnChangeTypeLeft)
     EVT_TEXT(XRCID("cbRightType"),              dlgOperator::OnChangeTypeRight)
-    EVT_TEXT(XRCID("cbProcedure"),              dlgOperator::OnChange)
+    EVT_TEXT(XRCID("cbProcedure"),              dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbLeftSort") ,              dlgOperator::OnChangeJoin)
     EVT_TEXT(XRCID("cbRightSort") ,             dlgOperator::OnChangeJoin)
     EVT_TEXT(XRCID("cbLess") ,                  dlgOperator::OnChangeJoin)
     EVT_TEXT(XRCID("cbGreater") ,               dlgOperator::OnChangeJoin)
-    EVT_TEXT(XRCID("txtComment"),               dlgOperator::OnChange)
 END_EVENT_TABLE();
 
 
@@ -62,9 +59,6 @@ dlgOperator::dlgOperator(frmMain *frame, pgOperator *node, pgSchema *sch)
     SetIcon(wxIcon(operator_xpm));
     schema=sch;
     oper=node;
-
-    txtOID->Disable();
-    txtOwner->Disable();
 
     cbRestrict->Disable();
     cbJoin->Disable();
@@ -90,10 +84,6 @@ int dlgOperator::Go(bool modal)
     if (oper)
     {
         // edit mode
-        txtName->SetValue(oper->GetName());
-        txtOID->SetValue(NumToStr(oper->GetOid()));
-        txtOwner->SetValue(oper->GetOwner());
-
         cbLeftType->Append(oper->GetLeftType());
         cbLeftType->SetSelection(0);
 
@@ -136,7 +126,6 @@ int dlgOperator::Go(bool modal)
             chkCanMerge->SetValue(TRUE);
 
 
-	    txtComment->SetValue(oper->GetComment());
         txtName->Disable();
         cbProcedure->Disable();
         cbLeftType->Disable();
@@ -191,11 +180,12 @@ pgObject *dlgOperator::CreateObject(pgCollection *collection)
 }
 
 
-void dlgOperator::OnChange(wxCommandEvent &ev)
+void dlgOperator::CheckChange()
 {
     if (oper)
     {
-        EnableOK(txtComment->GetValue() != oper->GetComment());
+        EnableOK(txtComment->GetValue() != oper->GetComment()
+            || cbOwner->GetValue() != oper->GetOwner());
     }
     else
     {
@@ -203,7 +193,7 @@ void dlgOperator::OnChange(wxCommandEvent &ev)
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
         CheckValid(enable, cbLeftType->GetGuessedSelection()>0 || cbRightType->GetGuessedSelection() > 0 , _("Please select left or right datatype."));
-        CheckValid(enable, cbProcedure->GetSelection() >= 0, _("Please specify a procedure."));
+        CheckValid(enable, cbProcedure->GetGuessedSelection() >= 0, _("Please specify a procedure."));
 
         EnableOK(enable);
     }
@@ -213,16 +203,16 @@ void dlgOperator::OnChange(wxCommandEvent &ev)
 void dlgOperator::OnChangeTypeLeft(wxCommandEvent &ev)
 {
     cbLeftType->GuessSelection();
-    OnChangeType(ev);
+    CheckChangeType();
 }
 
 void dlgOperator::OnChangeTypeRight(wxCommandEvent &ev)
 {
     cbRightType->GuessSelection();
-    OnChangeType(ev);
+    CheckChangeType();
 }
 
-void dlgOperator::OnChangeType(wxCommandEvent &ev)
+void dlgOperator::CheckChangeType()
 {
     bool binaryOp=cbLeftType->GetGuessedSelection() > 0 && cbRightType->GetGuessedSelection() > 0;
 
@@ -261,16 +251,24 @@ void dlgOperator::OnChangeType(wxCommandEvent &ev)
             wxT("SELECT proname, nspname\n")
             wxT("  FROM pg_proc p\n")
             wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-            wxT(" WHERE proargtypes[0] = ");
+            wxT(" WHERE pronargs = ");
+
+        if (binaryOp)
+            qry += wxT("2");
+        else
+            qry += wxT("1");
+
+        qry += wxT("\n   AND proargtypes[0] = ");
 
         if (cbLeftType->GetGuessedSelection() > 0)
             qry += GetTypeOid(cbLeftType->GetGuessedSelection());
 
         if (binaryOp)
             qry += wxT("\n   AND proargtypes[1] = ");
-
+        
         if (cbRightType->GetGuessedSelection() > 0)
             qry += GetTypeOid(cbRightType->GetGuessedSelection());
+
 
         pgSet *set=connection->ExecuteSet(qry);
         if (set)
@@ -337,7 +335,7 @@ void dlgOperator::OnChangeType(wxCommandEvent &ev)
         }
     }
 
-    OnChange(ev);
+    CheckChange();
 }
 
 
@@ -374,8 +372,13 @@ wxString dlgOperator::GetSql()
     if (oper)
     {
         // edit mode
-	name = oper->GetQuotedFullIdentifier()
-	    + wxT("(") + oper->GetOperands() + wxT(")");
+    	name = oper->GetQuotedFullIdentifier()
+	        + wxT("(") + oper->GetOperands() + wxT(")");
+
+        if (cbOwner->GetValue() != oper->GetOwner())
+            sql += wxT("ALTER OPERATOR ") + name 
+                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+                +  wxT(";\n");
     }
     else
     {
@@ -394,7 +397,7 @@ wxString dlgOperator::GetSql()
 
 
         sql = wxT("CREATE OPERATOR ") + schema->GetQuotedPrefix() + GetName()
-            + wxT("(\n   PROCEDURE=") + procedures.Item(cbProcedure->GetSelection());
+            + wxT("(\n   PROCEDURE=") + procedures.Item(cbProcedure->GetGuessedSelection());
         
         AppendIfFilled(sql, wxT(",\n   LEFTARG="), GetQuotedTypename(cbLeftType->GetGuessedSelection()));
         AppendIfFilled(sql, wxT(",\n   RIGHTARG="), GetQuotedTypename(cbRightType->GetGuessedSelection()));

@@ -66,7 +66,11 @@
 
 BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgProperty::OnPageSelect)  
+
+    EVT_TEXT(XRCID("txtName"),                      dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbOwner"),                      dlgProperty::OnChangeOwner)
+    EVT_TEXT(XRCID("txtComment"),                   dlgProperty::OnChange)
+    
     EVT_BUTTON(XRCID("btnHelp"),                    dlgProperty::OnHelp)
     EVT_BUTTON(XRCID("btnOK"),                      dlgProperty::OnOK)
     EVT_BUTTON(XRCID("btnApply"),                   dlgProperty::OnApply)
@@ -91,6 +95,12 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
         return;
     }
     SetIcon(wxIcon(properties_xpm));
+
+    txtName = CTRL_TEXT("txtName");
+    txtOid = CTRL_TEXT("txtOID");
+    txtComment = CTRL_TEXT("txtComment");
+    cbOwner = CTRL_COMBOBOX2("cbOwner");
+
 
 #ifdef __WIN32__
     wxNotebookPage *page=nbNotebook->GetPage(0);
@@ -193,8 +203,26 @@ int dlgProperty::Go(bool modal)
     if (pos.x >= 0 && pos.y >= 0)
         Move(pos);
 
+    wxComboBox *cbowner = cbOwner;
+
+    if (cbowner && !cbowner->GetCount())
+        AddUsers(cbowner);
+
+    if (txtOid)
+        txtOid->Disable();
+
     if (GetObject())
     {
+        if (txtName)
+            txtName->SetValue(GetObject()->GetName());
+        if (txtOid)
+            txtOid->SetValue(NumToStr((long)GetObject()->GetOid()));
+        if (cbOwner)
+            cbOwner->SetValue(GetObject()->GetOwner());
+        if (txtComment)
+            txtComment->SetValue(GetObject()->GetComment());
+
+
         if (!readOnly && !GetObject()->CanCreate())
         {
             // users who can't create will usually not be allowed to change either.
@@ -235,8 +263,27 @@ void dlgProperty::AppendNameChange(wxString &sql)
     if (GetObject()->GetName() != GetName())
         sql += wxT("ALTER ") + GetObject()->GetTypeName()
             +  wxT(" ") + GetObject()->GetQuotedFullIdentifier()
-            +  wxT(" RENAME TO ") + GetName()
-            + wxT(";\n");
+            +  wxT(" RENAME TO ") + qtIdent(GetName())
+            +  wxT(";\n");
+}
+
+
+void dlgProperty::AppendOwnerChange(wxString &sql)
+{
+    if (GetObject()->GetOwner() != cbOwner->GetValue())
+        sql += wxT("ALTER ") + GetObject()->GetTypeName()
+            +  wxT(" ") + qtIdent(GetName())
+            +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) 
+            +  wxT(";\n");
+}
+
+
+void dlgProperty::AppendOwnerNew(wxString &sql, const wxString &objName)
+{
+    if (cbOwner->GetGuessedSelection() > 0)
+        sql += wxT("ALTER ") + objName
+            +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+            +  wxT(";\n");
 }
 
 
@@ -327,11 +374,24 @@ void dlgProperty::PrepareTablespace(wxComboBox *cb, const wxChar *current)
 }
 
 
+void dlgProperty::OnChangeStc(wxStyledTextEvent &ev)
+{
+    CheckChange();
+}
+
+
+void dlgProperty::OnChange(wxCommandEvent &ev)
+{
+    CheckChange();
+}
+
+
 void dlgProperty::OnChangeOwner(wxCommandEvent &ev)
 {
     ctlComboBox *cb=cbOwner;
     if (cb)
         cb->GuessSelection();
+    CheckChange();
 }
 
 

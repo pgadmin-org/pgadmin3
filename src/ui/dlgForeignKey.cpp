@@ -40,11 +40,9 @@
 
 
 BEGIN_EVENT_TABLE(dlgForeignKey, dlgProperty)
-    EVT_TEXT(XRCID("txtName"),                  dlgForeignKey::OnChange)
     EVT_CHECKBOX(XRCID("chkDeferrable"),        dlgForeignKey::OnCheckDeferrable)
-    EVT_CHECKBOX(XRCID("chkAutoIndex") ,        dlgForeignKey::OnChange)
-    EVT_TEXT(XRCID("txtIndexName"),             dlgForeignKey::OnChange)
-    EVT_TEXT(XRCID("txtComment"),               dlgForeignKey::OnChange)
+    EVT_CHECKBOX(XRCID("chkAutoIndex") ,        dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtIndexName"),             dlgProperty::OnChange)
 
     EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"), dlgForeignKey::OnSelChangeCol)
     EVT_TEXT(XRCID("cbReferences"),             dlgForeignKey::OnSelChangeRef)
@@ -92,7 +90,7 @@ wxString dlgForeignKey::DefaultIndexName(const wxString &name)
 }
 
 
-void dlgForeignKey::OnChange(wxCommandEvent &ev)
+void dlgForeignKey::CheckChange()
 {
     if (processing)
         return;
@@ -234,8 +232,7 @@ void dlgForeignKey::OnAddRef(wxCommandEvent &ev)
         cbReferences->Disable();
         btnAddRef->Disable();
 
-        wxNotifyEvent event;
-        OnChange(event);
+        CheckChange();
     }
 }
 
@@ -296,7 +293,6 @@ int dlgForeignKey::Go(bool modal)
     if (foreignKey)
     {
         // edit mode: view only
-        txtName->SetValue(foreignKey->GetName());
         txtName->Disable();
         cbReferences->Append(foreignKey->GetReferences());
         cbReferences->SetValue(foreignKey->GetReferences());
@@ -319,7 +315,6 @@ int dlgForeignKey::Go(bool modal)
             chkAutoIndex->Disable();
             txtIndexName->Disable();
         }
-        txtComment->SetValue(foreignKey->GetComment());
 	    
         btnAddRef->Disable();
         btnRemoveRef->Disable();

@@ -32,15 +32,12 @@
 #define txtCheck            CTRL_TEXT("txtCheck")
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgDomain::OnChange)
-    EVT_TEXT(XRCID("cbOwner"),                      dlgDomain::OnChangeOwner)
-    EVT_TEXT(XRCID("txtLength"),                    dlgDomain::OnChange)
-    EVT_TEXT(XRCID("txtPrecision"),                 dlgDomain::OnChange)
+    EVT_TEXT(XRCID("txtLength"),                    dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtPrecision"),                 dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgDomain::OnSelChangeTyp)
-    EVT_TEXT(XRCID("txtComment"),                   dlgDomain::OnChange)
-    EVT_TEXT(XRCID("txLength"),                     dlgDomain::OnChange)
-    EVT_TEXT(XRCID("txtDefault"),                   dlgDomain::OnChange)
-    EVT_CHECKBOX(XRCID("chkNotNull"),               dlgDomain::OnChange)
+    EVT_TEXT(XRCID("txLength"),                     dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtDefault"),                   dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkNotNull"),               dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -51,7 +48,6 @@ dlgDomain::dlgDomain(frmMain *frame, pgDomain *node, pgSchema *sch)
     schema=sch;
     domain=node;
 
-    txtOID->Disable();
     txtLength->Disable();
     txtPrecision->Disable();
 }
@@ -83,8 +79,6 @@ int dlgDomain::Go(bool modal)
     if (domain)
     {
         // edit mode
-        txtName->SetValue(domain->GetName());
-        txtOID->SetValue(NumToStr((long)domain->GetOid()));
         cbDatatype->Append(domain->GetBasetype());
         AddType(wxT(" "), 0, domain->GetBasetype());
         cbDatatype->SetSelection(0);
@@ -97,12 +91,10 @@ int dlgDomain::Go(bool modal)
         chkNotNull->SetValue(domain->GetNotNull());
         txtDefault->SetValue(domain->GetDefault());
         txtCheck->SetValue(domain->GetCheck());
-        cbOwner->SetValue(domain->GetOwner());
 
         txtName->Disable();
         cbDatatype->Disable();
         txtCheck->Disable();
-        txtComment->SetValue(domain->GetComment());
 
         if (!connection->BackendMinimumVersion(7, 4))
         {
@@ -135,14 +127,7 @@ pgObject *dlgDomain::CreateObject(pgCollection *collection)
 }
 
 
-void dlgDomain::OnChangeOwner(wxCommandEvent &ev)
-{
-    cbOwner->GuessSelection();
-    OnChange(ev);
-}
-
-
-void dlgDomain::OnChange(wxCommandEvent &ev)
+void dlgDomain::CheckChange()
 {
     if (domain)
     {
@@ -182,7 +167,7 @@ void dlgDomain::OnSelChangeTyp(wxCommandEvent &ev)
         cbDatatype->GuessSelection();
         CheckLenEnable();
         txtLength->Enable(isVarLen);
-        OnChange(ev);
+        CheckChange();
     }
 }
 
@@ -211,12 +196,7 @@ wxString dlgDomain::GetSql()
             else
                 sql += wxT(" SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
         }
-        if (cbOwner->GetValue() != domain->GetOwner())
-        {
-            sql += wxT("ALTER DOMAIN ") + domain->GetQuotedFullIdentifier()
-                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
-                + wxT(";\n");
-        }
+        AppendOwnerChange(sql);
     }
     else
     {

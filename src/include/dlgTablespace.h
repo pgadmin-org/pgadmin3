@@ -21,6 +21,8 @@ class dlgTablespace : public dlgSecurityProperty
 {
 public:
     dlgTablespace(frmMain *frame, pgTablespace *node=0);
+
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -30,8 +32,6 @@ public:
 private:
     pgTablespace *tablespace;
 
-    void OnChange(wxCommandEvent &ev);
-    void OnOwnerChange(wxCommandEvent &ev);
     DECLARE_EVENT_TABLE();
 };
 

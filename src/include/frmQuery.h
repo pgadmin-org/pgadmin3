@@ -39,6 +39,7 @@ private:
     pgConn *conn;
     wxLongLong elapsedQuery, elapsedRetrieve;
 
+    void OnChangeStc(wxStyledTextEvent& event);
     void OnClose(wxCloseEvent& event);
     void OnSetFocus(wxFocusEvent& event);
     void OnContents(wxCommandEvent& event);
@@ -51,7 +52,6 @@ private:
     void OnSave(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
     void OnExport(wxCommandEvent& event);
-    void OnChangeStc(wxStyledTextEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnRecent(wxCommandEvent& event);
     void OnCut(wxCommandEvent& event);

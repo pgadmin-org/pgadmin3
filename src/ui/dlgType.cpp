@@ -50,14 +50,12 @@
 
 
 BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgType::OnChange)
     EVT_RADIOBOX(XRCID("rdbType"),                  dlgType::OnTypeChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgType::OnChange)
 
-    EVT_TEXT(XRCID("cbInput"),                      dlgType::OnChange)
-    EVT_TEXT(XRCID("cbOutput"),                     dlgType::OnChange)
-    EVT_TEXT(XRCID("txtIntLength"),                 dlgType::OnChange)
-    EVT_CHECKBOX(XRCID("chkVariable"),              dlgType::OnChange)
+    EVT_TEXT(XRCID("cbInput"),                      dlgProperty::OnChange)
+    EVT_TEXT(XRCID("cbOutput"),                     dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtIntLength"),                 dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkVariable"),              dlgProperty::OnChange)
     
     EVT_BUTTON(XRCID("btnAdd"),                     dlgType::OnVarAdd)
     EVT_BUTTON(XRCID("btnRemove"),                  dlgType::OnVarRemove)
@@ -79,7 +77,6 @@ dlgType::dlgType(frmMain *frame, pgType *node, pgSchema *sch)
 
     wxNotifyEvent event;
     OnTypeChange(event);
-    txtOID->Disable();
 }
 
 
@@ -100,7 +97,7 @@ void dlgType::OnTypeChange(wxCommandEvent &ev)
 {
     showDefinition(!rdbType->GetSelection());
     
-    OnChange(ev);
+    CheckChange();
 }
 
 
@@ -115,8 +112,7 @@ int dlgType::Go(bool modal)
     if (type)
     {
         // Edit Mode
-        txtName->SetValue(type->GetIdentifier()); txtName->Disable();
-        txtOID->SetValue(NumToStr((long)type->GetOid())); txtOID->Disable();
+        txtName->Disable();
         rdbType->SetSelection(type->GetIsComposite() ? 0 : 1); rdbType->Disable();
 
         showDefinition(type->GetIsComposite());
@@ -136,7 +132,6 @@ int dlgType::Go(bool modal)
         chkByValue->SetValue(type->GetPassedByValue()); chkByValue->Disable();
         cbAlignment->SetValue(type->GetAlignment()); cbAlignment->Disable();
         cbStorage->SetValue(type->GetStorage()); cbStorage->Disable();
-        txtComment->SetValue(type->GetComment());
 
         txtMembername->Disable();
         btnAdd->Disable();
@@ -151,10 +146,15 @@ int dlgType::Go(bool modal)
 
         cbDatatype->Disable();
         txtLength->Disable();
+
+        if (!connection->BackendMinimumVersion(7, 5))
+            cbOwner->Disable();
     }
     else
     {
         // Create mode
+        cbOwner->Append(wxEmptyString);
+        cbOwner->Disable();
 
         bool hasSendRcv = connection->BackendMinimumVersion(7, 4);
 
@@ -216,16 +216,17 @@ void dlgType::OnSelChangeTypOrLen(wxCommandEvent &ev)
     {
         CheckLenEnable();
         txtLength->Enable(isVarLen);
-        OnChange(ev);
+        CheckChange();
     }
 }
 
 
-void dlgType::OnChange(wxCommandEvent &ev)
+void dlgType::CheckChange()
 {
     if (type)
     {
-        EnableOK(txtComment->GetValue() != type->GetComment());
+        EnableOK(txtComment->GetValue() != type->GetComment()
+            || cbOwner->GetValue() != type->GetOwner());
     }
     else
     {
@@ -286,7 +287,8 @@ void dlgType::OnVarAdd(wxCommandEvent &ev)
         }
         lstMembers->SetItem(pos, 1, type);
     }
-    OnChange(ev);
+
+    CheckChange();
 }
 
 
@@ -299,7 +301,7 @@ void dlgType::OnVarRemove(wxCommandEvent &ev)
         lstMembers->DeleteItem(pos);
         memberTypes.RemoveAt(pos);
     }
-    OnChange(ev);
+    CheckChange();
 }
 
 
@@ -319,6 +321,7 @@ wxString dlgType::GetSql()
     if (type)
     {
         // Edit Mode
+        AppendOwnerChange(sql);
     }
     else
     {

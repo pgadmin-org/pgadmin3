@@ -34,8 +34,6 @@
 
 
 BEGIN_EVENT_TABLE(dlgGroup, dlgProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgGroup::OnChange)
-    
     EVT_LISTBOX_DCLICK(XRCID("lbUsersNotIn"),       dlgGroup::OnUserAdd)
     EVT_LISTBOX_DCLICK(XRCID("lbUsersIn"),          dlgGroup::OnUserRemove)
     EVT_BUTTON(XRCID("btnAddUser"),                 dlgGroup::OnUserAdd)
@@ -82,7 +80,6 @@ int dlgGroup::Go(bool modal)
         // Edit Mode
         readOnly=!group->GetServer()->GetSuperUser();
 
-        txtName->SetValue(group->GetIdentifier());
         txtID->SetValue(NumToStr(group->GetGroupId()));
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
@@ -102,7 +99,7 @@ int dlgGroup::Go(bool modal)
 }
 
 
-void dlgGroup::OnChange(wxCommandEvent &ev)
+void dlgGroup::CheckChange()
 {
     if (group)
     {
@@ -130,7 +127,7 @@ void dlgGroup::OnUserAdd(wxCommandEvent &ev)
             lbUsersIn->Append(lbUsersNotIn->GetString(pos));
             lbUsersNotIn->Delete(pos);
         }
-        OnChange(ev);
+        CheckChange();
     }
 }
 
@@ -145,7 +142,7 @@ void dlgGroup::OnUserRemove(wxCommandEvent &ev)
             lbUsersNotIn->Append(lbUsersIn->GetString(pos));
             lbUsersIn->Delete(pos);
         }
-        OnChange(ev);
+        CheckChange();
     }
 }
 

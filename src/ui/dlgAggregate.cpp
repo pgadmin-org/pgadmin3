@@ -27,7 +27,6 @@
 
 
 // pointer to controls
-#define txtOwner            CTRL_TEXT("txtOwner")
 #define cbBaseType          CTRL_COMBOBOX2("cbBaseType")
 #define cbStateType         CTRL_COMBOBOX2("cbStateType")
 #define cbStateFunc         CTRL_COMBOBOX("cbStateFunc")
@@ -37,11 +36,9 @@
 
 
 BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgAggregate::OnChange)
     EVT_TEXT(XRCID("cbBaseType"),                   dlgAggregate::OnChangeTypeBase)
     EVT_TEXT(XRCID("cbStateType"),                  dlgAggregate::OnChangeTypeState)
-    EVT_TEXT(XRCID("cbStateFunc"),                  dlgAggregate::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgAggregate::OnChange)
+    EVT_TEXT(XRCID("cbStateFunc"),                  dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -51,9 +48,6 @@ dlgAggregate::dlgAggregate(frmMain *frame, pgAggregate *node, pgSchema *sch)
     SetIcon(wxIcon(aggregate_xpm));
     schema=sch;
     aggregate=node;
-
-    txtOID->Disable();
-    txtOwner->Disable();
 }
 
 
@@ -65,12 +59,14 @@ pgObject *dlgAggregate::GetObject()
 
 int dlgAggregate::Go(bool modal)
 {
+    AddUsers(cbOwner);
+
+    if (!connection->BackendMinimumVersion(7, 5))
+        cbOwner->Disable();
+
     if (aggregate)
     {
         // edit mode
-        txtName->SetValue(aggregate->GetName());
-        txtOID->SetValue(NumToStr(aggregate->GetOid()));
-        txtOwner->SetValue(aggregate->GetOwner());
         cbBaseType->Append(aggregate->GetInputType());
         cbBaseType->SetSelection(0);
         AddType(wxT(" "), 0, aggregate->GetInputType());
@@ -83,7 +79,6 @@ int dlgAggregate::Go(bool modal)
         cbFinalFunc->SetSelection(0);
 
         txtInitial->SetValue(aggregate->GetInitialCondition());
-        txtComment->SetValue(aggregate->GetComment());
 
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
@@ -115,11 +110,13 @@ pgObject *dlgAggregate::CreateObject(pgCollection *collection)
 }
 
 
-void dlgAggregate::OnChange(wxCommandEvent &ev)
+void dlgAggregate::CheckChange()
 {
     if (aggregate)
     {
-        EnableOK(GetName() != aggregate->GetName() || txtComment->GetValue() != aggregate->GetComment());
+        EnableOK(GetName() != aggregate->GetName() 
+            || txtComment->GetValue() != aggregate->GetComment()
+            || cbOwner->GetValue() != aggregate->GetOwner());
     }
     else
     {
@@ -138,13 +135,13 @@ void dlgAggregate::OnChange(wxCommandEvent &ev)
 void dlgAggregate::OnChangeTypeBase(wxCommandEvent &ev)
 {
     cbBaseType->GuessSelection();
-    OnChangeType(ev);
+    CheckChange();
 }
 
 void dlgAggregate::OnChangeTypeState(wxCommandEvent &ev)
 {
     cbStateType->GuessSelection();
-    OnChangeType(ev);
+    CheckChange();
 }
 
 void dlgAggregate::OnChangeType(wxCommandEvent &ev)
@@ -201,7 +198,7 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
             delete set;
         }
     }
-    OnChange(ev);
+    CheckChange();
 }
 
 
@@ -213,6 +210,7 @@ wxString dlgAggregate::GetSql()
     {
         // edit mode
         AppendNameChange(sql);
+        AppendOwnerChange(sql);
     }
     else
     {
@@ -233,6 +231,8 @@ wxString dlgAggregate::GetSql()
             sql += wxT(",\n   INITCOND=") + qtString(initial);
         
         sql += wxT(");\n");
+
+        AppendOwnerNew(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name));
     }
     AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
                   + wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection())

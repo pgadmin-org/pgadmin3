@@ -25,6 +25,7 @@ public:
     dlgRule(frmMain *frame, pgRule *r, pgTable *tab);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -33,9 +34,6 @@ private:
     pgTable *table;
     pgRule *rule;
     wxString oldDefinition;
-
-    void OnChange(wxCommandEvent &ev);
-    void OnChangeStc(wxStyledTextEvent& event);
 
     bool didChange();
 

@@ -24,6 +24,7 @@ public:
     dlgFunction(frmMain *frame, pgFunction *func, pgSchema *sch);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -33,16 +34,16 @@ private:
     pgSchema *schema;
     pgFunction *function;
 
-    void OnChange(wxCommandEvent &ev);
+    void OnChangeArgName(wxCommandEvent &ev);
     void OnChangeReturn(wxCommandEvent &ev);
-    void OnChangeStc(wxStyledTextEvent& event);
     void OnSelChangeLanguage(wxCommandEvent &ev);
-    void OnSelChangeArg(wxCommandEvent &ev);
+    void OnSelChangeArg(wxListEvent &ev);
     void OnSelChangeType(wxCommandEvent &ev);
     void OnAddArg(wxCommandEvent &ev);
+    void OnChangeArg(wxCommandEvent &ev);
     void OnRemoveArg(wxCommandEvent &ev);
 
-    wxString GetArgs(bool quoted=false);
+    wxString GetArgs(bool withNames=true, bool quoted=false);
     void ReplaceSizer(wxWindow *w, bool isC, int border);
 
     wxArrayString typOids;
@@ -50,6 +51,7 @@ private:
     wxArrayString argOids;
 
     wxSizer *libcSizer;
+    int typeColNo;
 
     DECLARE_EVENT_TABLE();
 };

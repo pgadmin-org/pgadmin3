@@ -38,11 +38,17 @@ public:
     bool ReloadLibrary();
 
     wxString GetFullName() const {return GetName()+wxT("(")+GetArgTypes()+wxT(")"); }
+    wxString GetArgTypeNames() const { return argTypeNames; }
+    void iSetArgTypeNames(const wxString& s) { argTypeNames=s; }
+    wxString GetQuotedArgTypeNames() const { return quotedArgTypeNames; }
+    void iSetQuotedArgTypeNames(const wxString& s) { quotedArgTypeNames=s; }
     wxString GetArgTypes() const { return argTypes; }
     void iSetArgTypes(const wxString& s) { argTypes=s; }
     wxString GetQuotedArgTypes() const { return quotedArgTypes; }
     void iSetQuotedArgTypes(const wxString& s) { quotedArgTypes=s; }
     wxString GetArgTypeOids() const { return argTypeOids; }
+    wxArrayString &GetArgNames() { return argNames; }
+    void iAddArgName(const wxString &s) { argNames.Add(s); }
     void iSetArgTypeOids(const wxString& s) { argTypeOids = s; }
     wxString GetReturnType() const { return returnType; }
     void iSetReturnType(const wxString& s) { returnType = s; }
@@ -74,7 +80,10 @@ protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxT(""));
 
 private:
-    wxString argTypeOids, argTypes, returnType, language, volatility, source, bin, quotedArgTypes;
+    wxString argTypeOids, argTypes, quotedArgTypes,
+        argTypeNames, quotedArgTypeNames,
+        returnType, language, volatility, source, bin;
+    wxArrayString argNames;
     bool returnAsSet, secureDefiner, isStrict;
     long argCount;
 };

@@ -24,6 +24,7 @@ public:
     dlgSequence(frmMain *frame, pgSequence *seq, pgSchema *sch);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -31,9 +32,6 @@ public:
 private:
     pgSchema *schema;
     pgSequence *sequence;
-
-    void OnChangeOwner(wxCommandEvent &ev);
-    void OnChange(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

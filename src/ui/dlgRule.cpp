@@ -38,16 +38,14 @@
 
 
 BEGIN_EVENT_TABLE(dlgRule, dlgProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgRule::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgRule::OnChange)
-    EVT_TEXT(XRCID("txtCondition"),                 dlgRule::OnChange)
-    EVT_CHECKBOX(XRCID("chkSelect"),                dlgRule::OnChange)
-    EVT_CHECKBOX(XRCID("chkInsert"),                dlgRule::OnChange)
-    EVT_CHECKBOX(XRCID("chkUpdate"),                dlgRule::OnChange)
-    EVT_CHECKBOX(XRCID("chkDelete"),                dlgRule::OnChange)
-    EVT_CHECKBOX(XRCID("chkDoInstead"),             dlgRule::OnChange)
-    EVT_RADIOBOX(XRCID("rbxEvent"),                 dlgRule::OnChange)
-    EVT_STC_MODIFIED(XRCID("txtSQlBox"),            dlgRule::OnChangeStc)
+    EVT_TEXT(XRCID("txtCondition"),                 dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkSelect"),                dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkInsert"),                dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkUpdate"),                dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkDelete"),                dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkDoInstead"),             dlgProperty::OnChange)
+    EVT_RADIOBOX(XRCID("rbxEvent"),                 dlgProperty::OnChange)
+    EVT_STC_MODIFIED(XRCID("txtSQlBox"),            dlgProperty::OnChangeStc)
 END_EVENT_TABLE();
 
 
@@ -57,8 +55,6 @@ dlgRule::dlgRule(frmMain *frame, pgRule *node, pgTable *tab)
     SetIcon(wxIcon(rule_xpm));
     table=tab;
     rule=node;
-
-    txtOID->Disable();
 }
 
 
@@ -87,12 +83,9 @@ int dlgRule::Go(bool modal)
                     oldDefinition = oldDefinition.Mid(doPos+4).Strip(wxString::both);
             }
         }
-        txtName->SetValue(rule->GetName());
-        txtOID->SetValue(NumToStr(rule->GetOid()));
         chkDoInstead->SetValue(rule->GetDoInstead());
         rbxEvent->SetStringSelection(rule->GetEvent());
         txtCondition->SetValue(rule->GetCondition());
-        txtComment->SetValue(rule->GetComment());
         txtSqlBox->SetText(oldDefinition);
 
         txtName->Disable();
@@ -137,13 +130,7 @@ bool dlgRule::didChange()
 }
 
 
-void dlgRule::OnChangeStc(wxStyledTextEvent &ev)
-{
-    OnChange(*(wxCommandEvent*)&ev);
-}
-
-
-void dlgRule::OnChange(wxCommandEvent &ev)
+void dlgRule::CheckChange()
 {
     wxString name=GetName();
     if (rule)

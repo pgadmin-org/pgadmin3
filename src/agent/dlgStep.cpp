@@ -33,13 +33,11 @@
 #define CTL_SQLBOX  188
 
 BEGIN_EVENT_TABLE(dlgStep, dlgOidProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgStep::OnChange)
-    EVT_CHECKBOX(XRCID("chkEnabled"),               dlgStep::OnChange)
-    EVT_COMBOBOX(XRCID("cbDatabase"),               dlgStep::OnChange)
-    EVT_RADIOBOX(XRCID("rbxKind"),                  dlgStep::OnChange)
-    EVT_RADIOBOX(XRCID("rbxOnError"),               dlgStep::OnChange)
-    EVT_STC_MODIFIED(CTL_SQLBOX,                    dlgStep::OnChangeStc)
-    EVT_TEXT(XRCID("txtComment"),                   dlgStep::OnChange)
+    EVT_CHECKBOX(XRCID("chkEnabled"),               dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbDatabase"),               dlgProperty::OnChange)
+    EVT_RADIOBOX(XRCID("rbxKind"),                  dlgProperty::OnChange)
+    EVT_RADIOBOX(XRCID("rbxOnError"),               dlgProperty::OnChange)
+    EVT_STC_MODIFIED(CTL_SQLBOX,                    dlgProperty::OnChangeStc)
 END_EVENT_TABLE();
 
 
@@ -63,8 +61,6 @@ dlgStep::dlgStep(frmMain *frame, pgaStep *node, pgaJob *j)
     sizer->Remove(placeholder);
     delete placeholder;
     sizer->Layout();
-
-    txtOID->Disable();
 }
 
 
@@ -93,8 +89,6 @@ int dlgStep::Go(bool modal)
     if (step)
     {
         // edit mode
-        txtName->SetValue(step->GetName());
-        txtOID->SetValue(NumToStr((long)step->GetOid()));
         if (step->GetDbname().IsEmpty())
             cbDatabase->SetSelection(0);
         else
@@ -104,7 +98,6 @@ int dlgStep::Go(bool modal)
         sqlBox->SetText(step->GetCode());
 
         chkEnabled->SetValue(step->GetEnabled());
-        txtComment->SetValue(step->GetComment());
     }
     else
     {
@@ -124,13 +117,7 @@ pgObject *dlgStep::CreateObject(pgCollection *collection)
 }
 
 
-void dlgStep::OnChangeStc(wxStyledTextEvent &ev)
-{
-    OnChange(*(wxCommandEvent*)&ev);
-}
-
-
-void dlgStep::OnChange(wxCommandEvent &ev)
+void dlgStep::CheckChange()
 {
     wxString name=GetName();
     bool enable;

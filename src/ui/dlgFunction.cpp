@@ -37,8 +37,10 @@
 #define chkStrict           CTRL_CHECKBOX("chkStrict")
 #define chkSecureDefiner    CTRL_CHECKBOX("chkSecureDefiner")
 
-#define lstArguments        CTRL_LISTBOX("lstArguments")
+#define lstArguments        CTRL_LISTVIEW("lstArguments")
+#define txtArgName          CTRL_TEXT("txtArgName")
 #define btnAdd              CTRL_BUTTON("btnAdd")
+#define btnChange           CTRL_BUTTON("btnChange")
 #define btnRemove           CTRL_BUTTON("btnRemove")
 
 #define pnlParameter        CTRL_PANEL("pnlParameter")
@@ -52,21 +54,21 @@
 #define TXTOBJ_LIB  wxT("$libdir/")
 
 BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgFunction::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgFunction::OnChange)
-    EVT_TEXT(XRCID("cbVolatility"),                 dlgFunction::OnChange)
-    EVT_CHECKBOX(XRCID("chkStrict"),                dlgFunction::OnChange)
-    EVT_CHECKBOX(XRCID("chkSecureDefiner"),         dlgFunction::OnChange)
-    EVT_TEXT(XRCID("txtObjectFile"),                dlgFunction::OnChange)
-    EVT_TEXT(XRCID("txtLinkSymbol"),                dlgFunction::OnChange)
-    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgFunction::OnChangeStc)
+    EVT_TEXT(XRCID("cbVolatility"),                 dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkStrict"),                dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkSecureDefiner"),         dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtObjectFile"),                dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtLinkSymbol"),                dlgProperty::OnChange)
+    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgProperty::OnChangeStc)
 
     EVT_TEXT(XRCID("cbReturntype"),                 dlgFunction::OnChangeReturn)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgFunction::OnSelChangeType)
     EVT_TEXT(XRCID("cbLanguage"),                   dlgFunction::OnSelChangeLanguage)
 
-    EVT_LISTBOX(XRCID("lstArguments"),              dlgFunction::OnSelChangeArg)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstArguments"),   dlgFunction::OnSelChangeArg)
+    EVT_TEXT(XRCID("txtArgName"),                   dlgFunction::OnChangeArgName)
     EVT_BUTTON(XRCID("btnAdd"),                     dlgFunction::OnAddArg)
+    EVT_BUTTON(XRCID("btnChange"),                  dlgFunction::OnChangeArg)
     EVT_BUTTON(XRCID("btnRemove"),                  dlgFunction::OnRemoveArg)
 END_EVENT_TABLE();
 
@@ -78,7 +80,6 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
     schema=sch;
     function=node;
 
-    txtOID->Disable();
     txtArguments->Disable();
     btnAdd->Disable();
     btnRemove->Disable();
@@ -87,6 +88,10 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
     txtSqlBox->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
 
     libcSizer = stObjectFile->GetContainingSizer();
+
+    btnAdd->Disable();
+    btnRemove->Disable();
+    btnChange->Disable();
 }
 
 
@@ -99,7 +104,20 @@ pgObject *dlgFunction::GetObject()
 int dlgFunction::Go(bool modal)
 {
     AddGroups();
-    AddUsers();
+    AddUsers(cbOwner);
+
+    // the listview's column that contains the type name
+    typeColNo = (connection->BackendMinimumVersion(7, 5) ? 1 : 0);
+
+    if (objectType != PG_TRIGGERFUNCTION)
+    {
+        if (typeColNo)
+            lstArguments->CreateColumns((wxImageList*)0, _("Name"), _("Type"));
+        else
+            lstArguments->CreateColumns((wxImageList*)0, _("Type"), wxEmptyString, 0);
+    }
+    if (!typeColNo)
+        txtArgName->Disable();
 
     pgSet *lang=connection->ExecuteSet(wxT("SELECT lanname FROM pg_language"));
     if (lang)
@@ -116,10 +134,25 @@ int dlgFunction::Go(bool modal)
     if (function)
     {
         // edit mode
-        txtName->SetValue(function->GetName());
-        txtOID->SetValue(NumToStr((long)function->GetOid()));
-        txtComment->SetValue(function->GetComment());
-        txtArguments->SetValue(function->GetArgTypes());
+
+        if (objectType != PG_TRIGGERFUNCTION)
+        {
+            wxStringTokenizer types(function->GetArgTypes(), wxT(", "));
+            int cnt=0;
+
+            while (types.HasMoreTokens())
+            {
+                wxString str=types.GetNextToken();
+                if (str.IsEmpty())
+                    continue;
+                if (typeColNo)
+                    lstArguments->AppendItem(-1, function->GetArgNames().Item(cnt++), str);
+                else
+                    lstArguments->AppendItem(-1, str);
+            }
+        }
+
+        txtArguments->SetValue(function->GetArgTypeNames());
         cbReturntype->Append(function->GetReturnType());
         cbReturntype->SetSelection(0);
 
@@ -141,9 +174,8 @@ int dlgFunction::Go(bool modal)
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
         cbReturntype->Disable();
-        cbDatatype->Disable();
-        lstArguments->Disable();
         chkSetof->Disable();
+        cbDatatype->Disable();
     }
     else
     {
@@ -175,8 +207,7 @@ int dlgFunction::Go(bool modal)
             cbReturntype->Disable();
             lstArguments->Disable();
             cbDatatype->Disable();
-            btnAdd->Disable();
-            btnRemove->Disable();
+            txtArgName->Disable();
             sel=cbLanguage->FindString(wxT("c"));
         }
         else
@@ -210,13 +241,7 @@ pgObject *dlgFunction::CreateObject(pgCollection *collection)
 }
 
 
-void dlgFunction::OnChangeStc(wxStyledTextEvent &ev)
-{
-    OnChange(*(wxCommandEvent*)&ev);
-}
-
-
-void dlgFunction::OnChange(wxCommandEvent &ev)
+void dlgFunction::CheckChange()
 {
     wxString name=GetName();
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
@@ -229,6 +254,8 @@ void dlgFunction::OnChange(wxCommandEvent &ev)
               || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
               || chkStrict->GetValue() != function->GetIsStrict()
               || cbLanguage->GetValue() != function->GetLanguage()
+              || cbOwner->GetValue() != function->GetOwner()
+              || GetArgs(true, true) != function->GetQuotedArgTypeNames()
               || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
               || (!isC && txtSqlBox->GetText() != function->GetSource()));
     }
@@ -282,38 +309,92 @@ void dlgFunction::OnSelChangeLanguage(wxCommandEvent &ev)
     libcSizer->Layout();
     txtSqlBox->GetContainingSizer()->Layout();
 
-    OnChange(ev);
+    CheckChange();
 }
 
 
-void dlgFunction::OnSelChangeArg(wxCommandEvent &ev)
+void dlgFunction::OnSelChangeArg(wxListEvent &ev)
 {
-    if (objectType != PG_TRIGGERFUNCTION)
-        btnRemove->Enable();
-}
+    int row=lstArguments->GetSelection();
+    if (row >= 0)
+    {
+        if (typeColNo)
+        {
+            txtArgName->SetValue(lstArguments->GetText(row, 0));
+            cbDatatype->SetValue(lstArguments->GetText(row, typeColNo));
+        }
+        else
+            cbDatatype->SetValue(lstArguments->GetText(row, 0));
 
+        wxCommandEvent ev;
+        OnChangeArgName(ev);
+    }
+}
 
 
 void dlgFunction::OnChangeReturn(wxCommandEvent &ev)
 {
     cbReturntype->GuessSelection();
-    OnChange(ev);
+    CheckChange();
 }
 
 
 void dlgFunction::OnSelChangeType(wxCommandEvent &ev)
 {
     cbDatatype->GuessSelection();
-    if (objectType != PG_TRIGGERFUNCTION)
-        btnAdd->Enable();
+    OnChangeArgName(ev);
+}
+
+
+void dlgFunction::OnChangeArgName(wxCommandEvent &ev)
+{
+    int argNameRow=-1;
+    if (!txtArgName->GetValue().IsEmpty())
+        argNameRow = lstArguments->FindItem(-1, txtArgName->GetValue());
+
+    int pos=lstArguments->GetSelection();
+
+    btnAdd->Enable(argNameRow < 0);
+    btnChange->Enable(pos >= 0);
+    btnRemove->Enable(pos >= 0);
+}
+
+
+void dlgFunction::OnChangeArg(wxCommandEvent &ev)
+{
+    int row=lstArguments->GetSelection();
+
+    if (row >= 0)
+    {
+        if (typeColNo)
+        {
+            lstArguments->SetItem(row, 0, txtArgName->GetValue());
+            lstArguments->SetItem(row, typeColNo, cbDatatype->GetValue());
+        }
+        else
+            lstArguments->SetItem(row, 0, cbDatatype->GetValue());
+
+        if (!function)
+            argOids.Item(row) = typOids.Item(cbDatatype->GetGuessedSelection());
+        txtArguments->SetValue(GetArgs());
+    }
+    OnChangeArgName(ev);
+    CheckChange();
 }
 
 
 void dlgFunction::OnAddArg(wxCommandEvent &ev)
 {
-    lstArguments->Append(cbDatatype->GetValue());
-    argOids.Add(typOids.Item(cbDatatype->GetGuessedSelection()));
+    if (typeColNo)
+        lstArguments->AppendItem(-1, txtArgName->GetValue(), cbDatatype->GetValue());
+    else
+        lstArguments->AppendItem(-1, cbDatatype->GetValue());
+
+    if (!function)
+        argOids.Add(typOids.Item(cbDatatype->GetGuessedSelection()));
+
     txtArguments->SetValue(GetArgs());
+    OnChangeArgName(ev);
 }
 
 
@@ -321,24 +402,36 @@ void dlgFunction::OnRemoveArg(wxCommandEvent &ev)
 {
     int sel=lstArguments->GetSelection();
     argOids.RemoveAt(sel);
-    lstArguments->Delete(sel);
+    lstArguments->DeleteItem(sel);
     btnRemove->Disable();
     txtArguments->SetValue(GetArgs());
+    OnChangeArgName(ev);
 }
 
 
-wxString dlgFunction::GetArgs(bool quoted)
+wxString dlgFunction::GetArgs(bool withNames, bool quoted)
 {
     wxString args;
     int i;
-    for (i=0 ; i < lstArguments->GetCount() ; i++)
+    for (i=0 ; i < lstArguments->GetItemCount() ; i++)
     {
         if (i)
             args += wxT(", ");
+
+        if (typeColNo)
+        {
+            if (withNames)
+            {
+                if (quoted)
+                    args += qtIdent(lstArguments->GetText(i)) + wxT(" ");
+                else
+                    args += lstArguments->GetText(i) + wxT(" ");
+            }
+        }
         if (quoted)
-            AppendQuoted(args, lstArguments->GetString(i));
+            AppendQuoted(args, lstArguments->GetText(i, typeColNo));
         else
-            args += lstArguments->GetString(i);
+            args += lstArguments->GetText(i, typeColNo);
     }
 
     return args;
@@ -356,7 +449,8 @@ wxString dlgFunction::GetSql()
         || cbVolatility->GetValue() != function->GetVolatility()
         || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
         || chkStrict->GetValue() != function->GetIsStrict()
-        || cbLanguage->GetValue() != function->GetLanguage()
+        || cbOwner->GetValue() != function->GetOwner()
+        || GetArgs(true, true) != function->GetQuotedArgTypeNames()
         || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
         || (!isC && txtSqlBox->GetText() != function->GetSource());
 
@@ -367,22 +461,23 @@ wxString dlgFunction::GetSql()
         {
             sql = wxT("ALTER FUNCTION ") + function->GetQuotedFullIdentifier() 
                                          + wxT("(") + function->GetQuotedArgTypes() + wxT(")")
-                + wxT(" RENAME TO ") + name + wxT(";\n");
+                + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
         }
  
-        name = schema->GetQuotedPrefix() + qtIdent(name) 
-                            + wxT("(") + function->GetQuotedArgTypes() + wxT(")");
         if (didChange)
-            sql += wxT("CREATE OR REPLACE FUNCTION ") + name;
+            sql += wxT("CREATE OR REPLACE FUNCTION ");
     }
     else
     {
         // create mode
-        name = schema->GetQuotedPrefix() + qtIdent(name) 
-             + wxT("(") + GetArgs(true) + wxT(")");
-
-        sql = wxT("CREATE FUNCTION ") + name;
+        sql = wxT("CREATE FUNCTION ");
     }
+
+    name = schema->GetQuotedPrefix() + qtIdent(name) 
+         + wxT("(") + GetArgs(false, true) + wxT(")");
+
+    sql  += schema->GetQuotedPrefix() + qtIdent(GetName()) 
+         + wxT("(") + GetArgs(true, true) + wxT(")");
 
     if (didChange)
     {
@@ -413,6 +508,19 @@ wxString dlgFunction::GetSql()
             sql += wxT(" SECURITY DEFINER");
 
         sql += wxT(";\n");
+    }
+
+    if (function)
+    {
+        if (cbOwner->GetValue() != function->GetOwner())
+            sql += wxT("ALTER FUNCTION ") + name
+                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
+                + wxT(";\n");
+    }
+    else
+    {
+        if (cbOwner->GetGuessedSelection() > 0)
+            AppendOwnerNew(sql,wxT("FUNCTION ") + name);
     }
 
     sql += GetGrant(wxT("X"), wxT("FUNCTION ") + name);

@@ -28,9 +28,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgCheck, dlgProperty)
-    EVT_TEXT(XRCID("txtName"),                  dlgCheck::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                  dlgCheck::OnChange)
-    EVT_TEXT(XRCID("txtWhere"),                 dlgCheck::OnChange)
+    EVT_TEXT(XRCID("txtWhere"),                 dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkDeferrable"),        dlgCheck::OnCheckDeferrable)
 END_EVENT_TABLE();
 
@@ -55,7 +53,7 @@ void dlgCheck::OnCheckDeferrable(wxCommandEvent &ev)
 }
 
 
-void dlgCheck::OnChange(wxCommandEvent &ev)
+void dlgCheck::CheckChange()
 {
     if (check)
     {
@@ -96,13 +94,10 @@ int dlgCheck::Go(bool modal)
     if (check)
     {
         // edit mode: view only
-        txtName->SetValue(check->GetName());
         txtName->Disable();
 
         txtWhere->SetValue(check->GetDefinition());
         txtWhere->Disable();
-
-        txtComment->SetValue(check->GetComment());
 
         chkDeferrable->SetValue(check->GetDeferrable());
         chkDeferred->SetValue(check->GetDeferred());

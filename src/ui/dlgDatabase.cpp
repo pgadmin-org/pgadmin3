@@ -39,11 +39,9 @@
 
 
 BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgDatabase::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgDatabase::OnChange)
-    EVT_TEXT(XRCID("txtPath"),                      dlgDatabase::OnChange)
-    EVT_TEXT(XRCID("cbTablespace"),                 dlgDatabase::OnChange)
-    EVT_TEXT(XRCID("cbEncoding"),                   dlgDatabase::OnChange)
+    EVT_TEXT(XRCID("txtPath"),                      dlgProperty::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
+    EVT_TEXT(XRCID("cbEncoding"),                   dlgProperty::OnChange)
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgDatabase::OnVarSelChange)
     EVT_BUTTON(XRCID("btnAdd"),                     dlgDatabase::OnVarAdd)
     EVT_BUTTON(XRCID("btnRemove"),                  dlgDatabase::OnVarRemove)
@@ -58,7 +56,6 @@ dlgDatabase::dlgDatabase(frmMain *frame, pgDatabase *node)
     database=node;
     lstVariables->CreateColumns(frame, _("Variable"), _("Value"));
 
-    txtOID->Disable();
     chkValue->Hide();
 }
 
@@ -84,13 +81,19 @@ int dlgDatabase::Go(bool modal)
     AddGroups();
     AddUsers(cbOwner);
 
+    if (!connection->BackendMinimumVersion(7, 4))
+        txtName->Disable();
+
     if (connection->BackendMinimumVersion(7, 5))
     {
         stPath->SetLabel(_("Tablespace"));
         txtPath->Hide();
     }
     else
+    {
+        cbOwner->Disable();
         cbTablespace->Hide();
+    }
 
     if (database)
     {
@@ -105,20 +108,13 @@ int dlgDatabase::Go(bool modal)
             lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
         }
 
-        txtName->SetValue(database->GetName());
-        txtOID->SetValue(NumToStr((long)database->GetOid()));
-
         PrepareTablespace(cbTablespace, database->GetTablespace());
         txtPath->SetValue(database->GetPath());
         txtPath->Disable();
 
         cbEncoding->Append(database->GetEncoding());
         cbEncoding->SetSelection(0);
-        txtComment->SetValue(database->GetComment());
-        cbOwner->SetValue(database->GetOwner());
 
-        txtName->Disable();
-        cbOwner->Disable();
         cbTemplate->Disable();
         cbEncoding->Disable();
 
@@ -201,7 +197,7 @@ pgObject *dlgDatabase::CreateObject(pgCollection *collection)
 }
 
 
-void dlgDatabase::OnChange(wxCommandEvent &ev)
+void dlgDatabase::CheckChange()
 {
     if (database)
     {
@@ -280,14 +276,14 @@ void dlgDatabase::OnVarAdd(wxCommandEvent &ev)
         }
         lstVariables->SetItem(pos, 1, value);
     }
-    OnChange(ev);
+    CheckChange();
 }
 
 
 void dlgDatabase::OnVarRemove(wxCommandEvent &ev)
 {
     lstVariables->DeleteCurrentItem();
-    OnChange(ev);
+    CheckChange();
 }
 
 
@@ -299,6 +295,9 @@ wxString dlgDatabase::GetSql()
     if (database)
     {
         // edit mode
+
+        AppendNameChange(sql);
+        AppendOwnerChange(sql);
 
         wxArrayString vars;
 
@@ -329,7 +328,7 @@ wxString dlgDatabase::GetSql()
             }
             if (oldVal != newVal)
             {
-                sql += wxT("ALTER DATABASE ") + database->GetQuotedFullIdentifier()
+                sql += wxT("ALTER DATABASE ") + qtIdent(name)
                     +  wxT(" SET ") + newVar
                     +  wxT("=") + newVal
                     +  wxT(";\n");
@@ -339,10 +338,11 @@ wxString dlgDatabase::GetSql()
         // check for removed vars
         for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
         {
-            sql += wxT("ALTER DATABASE ") + database->GetQuotedFullIdentifier()
+            sql += wxT("ALTER DATABASE ") + qtIdent(name)
                 +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
                 + wxT(";\n");
         }
+
 
         AppendComment(sql, wxT("DATABASE"), 0, database);
     }
@@ -359,6 +359,7 @@ wxString dlgDatabase::GetSql()
 
         sql += wxT(";\n");
 
+        AppendOwnerNew(sql, wxT("DATABASE ") + qtIdent(name));
     }
     sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
 

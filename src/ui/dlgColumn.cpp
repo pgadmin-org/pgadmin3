@@ -36,13 +36,11 @@
 
 
 BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgColumn::OnChange)
-    EVT_TEXT(XRCID("txtLength"),                    dlgColumn::OnChange)
-    EVT_TEXT(XRCID("txtPrecision"),                 dlgColumn::OnChange)
-    EVT_TEXT(XRCID("txtDefault"),                   dlgColumn::OnChange)
-    EVT_CHECKBOX(XRCID("chkNotNull"),               dlgColumn::OnChange)
-    EVT_TEXT(XRCID("txtAttstattarget"),             dlgColumn::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgColumn::OnChange)
+    EVT_TEXT(XRCID("txtLength"),                    dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtPrecision"),                 dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtDefault"),                   dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkNotNull"),               dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtAttstattarget"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
 END_EVENT_TABLE();
 
@@ -72,7 +70,6 @@ int dlgColumn::Go(bool modal)
     if (column)
     {
         // edit mode
-        txtName->SetValue(column->GetName());
         if (column->GetLength() > 0)
             txtLength->SetValue(NumToStr(column->GetLength()));
         if (column->GetPrecision() >= 0)
@@ -80,8 +77,6 @@ int dlgColumn::Go(bool modal)
         txtDefault->SetValue(column->GetDefault());
         chkNotNull->SetValue(column->GetNotNull());
         txtAttstattarget->SetValue(NumToStr(column->GetAttstattarget()));
-        txtComment->SetValue(column->GetComment());
-
 
         cbDatatype->Append(column->GetRawTypename());
         AddType(wxT("?"), column->GetAttTypId(), column->GetRawTypename());
@@ -380,11 +375,11 @@ void dlgColumn::OnSelChangeTyp(wxCommandEvent &ev)
     chkNotNull->Enable(!isSerial);
     txtDefault->Enable(!isSerial);
 
-    OnChange(ev);
+    CheckChange();
 }
 
 
-void dlgColumn::OnChange(wxCommandEvent &ev)
+void dlgColumn::CheckChange()
 {
     long varlen=StrToLong(txtLength->GetValue()), 
          varprec=StrToLong(txtPrecision->GetValue());

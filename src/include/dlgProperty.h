@@ -23,13 +23,9 @@ class pgTable;
 class frmMain;
 class ctlSecurityPanel;
 
-#define txtName         CTRL_TEXT("txtName")
-#define txtOID          CTRL_TEXT("txtOID")
 #define stComment       CTRL_STATIC("stComment")
-#define txtComment      CTRL_TEXT("txtComment")
 #define lstColumns      CTRL_LISTVIEW("lstColumns")
 #define cbColumns       CTRL_COMBOBOX("cbColumns")
-#define cbOwner         CTRL_COMBOBOX2("cbOwner")
 
 class dlgProperty : public DialogWithHelp
 {
@@ -49,6 +45,7 @@ public:
     void SetConnection(pgConn *conn) { connection=conn; }
     void SetDatabase(pgDatabase *db);
     virtual int Go(bool modal=false);
+    virtual void CheckChange() =0;
 
 protected:
     dlgProperty(frmMain *frame, const wxString &resName);
@@ -60,6 +57,8 @@ protected:
     void CheckValid(bool &enable, const bool condition, const wxString &msg);
     static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type=-1);
     void AppendNameChange(wxString &sql);
+    void AppendOwnerChange(wxString &sql);
+    void AppendOwnerNew(wxString &sql, const wxString &objname);
     void AppendComment(wxString &sql, const wxString &objType, pgSchema *schema, pgObject *obj);
     void AppendComment(wxString &sql, const wxString &objName, pgObject *obj);
     void AppendQuoted(wxString &sql, const wxString &name);
@@ -67,7 +66,9 @@ protected:
     void OnPageSelect(wxNotebookEvent& event);
     void OnOK(wxCommandEvent &ev);
     void OnApply(wxCommandEvent &ev);
+    void OnChange(wxCommandEvent &ev);
     void OnChangeOwner(wxCommandEvent &ev);
+    void OnChangeStc(wxStyledTextEvent& event);
 
     void AddUsers(wxComboBox *cb1, wxComboBox *cb2=0);
     void FillCombobox(const wxString &query, wxComboBox *cb1, wxComboBox *cb2=0);
@@ -83,6 +84,9 @@ protected:
 
     wxTextCtrl *statusBox;
     wxNotebook *nbNotebook;
+    wxTextCtrl *txtName, *txtOid, *txtComment;
+    ctlComboBox *cbOwner;
+
     int width, height;
     wxTreeItemId item;
     int objectType;

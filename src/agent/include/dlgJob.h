@@ -21,6 +21,8 @@ class dlgJob : public dlgOidProperty
 {
 public:
     dlgJob(frmMain *frame, pgaJob *j);
+
+    void CheckChange();
     int Go(bool modal);
 
     wxString GetUpdateSql();
@@ -32,8 +34,6 @@ private:
     pgaJob *job;
 
     wxArrayString previousSteps, previousSchedules;
-
-    void OnChange(wxCommandEvent &ev);
 
     void OnSelChangeStep(wxListEvent &ev);
     void OnChangeStep(wxCommandEvent &ev);

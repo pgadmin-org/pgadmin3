@@ -23,13 +23,14 @@ class dlgIndexBase : public dlgCollistProperty
 public:
     dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *index, pgTable *parentNode);
     dlgIndexBase(frmMain *frame, const wxString &resName, ctlListView *colList);
+
+    void CheckChange();
     pgObject *GetObject();
     wxString GetColumns();
     int Go(bool modal);
 
 protected:
     pgIndex *index;
-    void OnChange(wxCommandEvent &ev);
 
 private:
     void OnAddCol(wxCommandEvent &ev);
@@ -45,11 +46,11 @@ public:
     dlgIndex(frmMain *frame, pgIndex *index, pgTable *parentNode);
 
     int Go(bool modal);
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
 
 private:
-    void OnChange(wxCommandEvent &ev);
     DECLARE_EVENT_TABLE();
 };
 

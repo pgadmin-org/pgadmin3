@@ -34,9 +34,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgView, dlgSecurityProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgView::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgView::OnChange)
-    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgView::OnChangeStc)
+    EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgProperty::OnChangeStc)
 END_EVENT_TABLE();
 
 
@@ -46,8 +44,6 @@ dlgView::dlgView(frmMain *frame, pgView *node, pgSchema *sch)
     SetIcon(wxIcon(view_xpm));
     schema=sch;
     view=node;
-
-    txtOID->Disable();
 }
 
 
@@ -67,9 +63,6 @@ int dlgView::Go(bool modal)
         // edit mode
 
         oldDefinition=view->GetFormattedDefinition();
-        txtName->SetValue(view->GetName());
-        txtOID->SetValue(NumToStr(view->GetOid()));
-        txtComment->SetValue(view->GetComment());
         txtSqlBox->SetText(oldDefinition);
     }
     else
@@ -90,19 +83,14 @@ pgObject *dlgView::CreateObject(pgCollection *collection)
 }
 
 
-void dlgView::OnChangeStc(wxStyledTextEvent &ev)
-{
-    OnChange(*(wxCommandEvent*)&ev);
-}
-
-
-void dlgView::OnChange(wxCommandEvent &ev)
+void dlgView::CheckChange()
 {
     wxString name=GetName();
     if (view)
     {
         EnableOK(txtComment->GetValue() != view->GetComment()
               || txtSqlBox->GetText() != oldDefinition
+              || cbOwner->GetValue() != view->GetOwner()
               || name != view->GetName());
     }
     else
@@ -129,8 +117,11 @@ wxString dlgView::GetSql()
         if (name != view->GetName())
         {
             sql += wxT("ALTER TABLE ") + view->GetQuotedFullIdentifier()
-                +  wxT(" RENAME TO ") + name + wxT(";\n");
+                +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
         }
+        if (cbOwner->GetValue() != view->GetOwner())
+            sql += wxT("ALTER TABLE ") + qtIdent(name)
+                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
     }
 
     if (!view || txtSqlBox->GetText() != oldDefinition)

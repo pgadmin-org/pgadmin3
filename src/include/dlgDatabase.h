@@ -23,6 +23,7 @@ public:
     dlgDatabase(frmMain *frame, pgDatabase *db);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -32,7 +33,6 @@ private:
     pgDatabase *database;
     wxArrayString varInfo;
 
-    void OnChange(wxCommandEvent &ev);
     void OnGroupAdd(wxCommandEvent &ev);
     void OnGroupRemove(wxCommandEvent &ev);
 

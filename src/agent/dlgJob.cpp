@@ -48,10 +48,8 @@
 
 
 BEGIN_EVENT_TABLE(dlgJob, dlgOidProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgJob::OnChange)
-    EVT_CHECKBOX(XRCID("chkEnabled"),               dlgJob::OnChange)
-    EVT_COMBOBOX(XRCID("cbJobclass"),               dlgJob::OnChange)
-    EVT_TEXT(XRCID("txtComment"),                   dlgJob::OnChange)
+    EVT_CHECKBOX(XRCID("chkEnabled"),               dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbJobclass"),               dlgProperty::OnChange)
 
     EVT_LIST_ITEM_SELECTED(XRCID("lstSteps"),       dlgJob::OnSelChangeStep)
     EVT_BUTTON(XRCID("btnChangeStep"),              dlgJob::OnChangeStep)
@@ -71,7 +69,6 @@ dlgJob::dlgJob(frmMain *frame, pgaJob *node)
     SetIcon(wxIcon(job_xpm));
     job=node;
 
-    txtOID->Disable();
     txtCreated->Disable();
     txtChanged->Disable();
     txtNextrun->Disable();
@@ -114,15 +111,12 @@ int dlgJob::Go(bool modal)
     {
         // edit mode
         cbJobclass->SetValue(job->GetJobclass());
-        txtName->SetValue(job->GetName());
-        txtOID->SetValue(NumToStr((long)job->GetOid()));
         chkEnabled->SetValue(job->GetEnabled());
         txtCreated->SetValue(DateToStr(job->GetCreated()));
         txtChanged->SetValue(DateToStr(job->GetChanged()));
         txtNextrun->SetValue(DateToStr(job->GetNextrun()));
         txtLastrun->SetValue(DateToStr(job->GetLastrun()));
         txtLastresult->SetValue(job->GetLastresult());
-        txtComment->SetValue(job->GetComment());
 
         
         wxCookieType cookie;
@@ -148,8 +142,7 @@ int dlgJob::Go(bool modal)
 
             item=mainForm->GetBrowser()->GetNextChild(job->GetId(), cookie);
 
-            wxNotifyEvent ev;
-            OnChange(ev);
+            CheckChange();
         }
     }
     else
@@ -169,7 +162,7 @@ pgObject *dlgJob::CreateObject(pgCollection *collection)
 }
 
 
-void dlgJob::OnChange(wxCommandEvent &ev)
+void dlgJob::CheckChange()
 {
     bool enable=true;
     wxString name=GetName();
@@ -212,7 +205,7 @@ void dlgJob::OnChangeStep(wxCommandEvent &ev)
         else
             lstSteps->SetItem(pos, 2, step.GetUpdateSql());
 
-        OnChange(ev);
+        CheckChange();
     }
 }
 
@@ -233,7 +226,7 @@ void dlgJob::OnAddStep(wxCommandEvent &ev)
     {
         int pos = lstSteps->AppendItem(PGAICON_STEP, step.GetName(), step.GetComment());
         lstSteps->SetItem(pos, 2, step.GetInsertSql());
-        OnChange(ev);
+        CheckChange();
     }
 }
 
@@ -245,7 +238,7 @@ void dlgJob::OnRemoveStep(wxCommandEvent &ev)
     btnChangeStep->Disable();
     btnRemoveStep->Disable();
 
-    OnChange(ev);
+    CheckChange();
 }
 
 
@@ -275,7 +268,7 @@ void dlgJob::OnChangeSchedule(wxCommandEvent &ev)
         else
             lstSchedules->SetItem(pos, 2, schedule.GetUpdateSql());
 
-        OnChange(ev);
+        CheckChange();
     }
 }
 
@@ -289,7 +282,7 @@ void dlgJob::OnAddSchedule(wxCommandEvent &ev)
     {
         int pos = lstSchedules->AppendItem(PGAICON_SCHEDULE, schedule.GetName(), schedule.GetComment());
         lstSchedules->SetItem(pos, 2, schedule.GetInsertSql());
-        OnChange(ev);
+        CheckChange();
     }
 }
 
@@ -301,7 +294,7 @@ void dlgJob::OnRemoveSchedule(wxCommandEvent &ev)
     btnChangeSchedule->Disable();
     btnRemoveSchedule->Disable();
 
-    OnChange(ev);
+    CheckChange();
 }
 
 

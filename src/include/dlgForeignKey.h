@@ -24,6 +24,8 @@ class dlgForeignKey : public dlgCollistProperty
 public:
     dlgForeignKey(frmMain *frame, pgForeignKey *node, pgTable *parentNode);
     dlgForeignKey(frmMain *frame, ctlListView *colList);
+
+    void CheckChange();
     wxString GetSql();
     wxString GetDefinition();
     pgObject *CreateObject(pgCollection *collection);
@@ -38,7 +40,6 @@ private:
 
     wxString DefaultIndexName(const wxString &name);
 
-    void OnChange(wxCommandEvent &ev);
     void OnCheckDeferrable(wxCommandEvent &ev);
     void OnSelChangeCol(wxListEvent &ev);
     void OnSelChangeRef(wxCommandEvent &ev);

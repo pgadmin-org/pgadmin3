@@ -23,6 +23,8 @@ class dlgUser : public dlgProperty
 {
 public:
     dlgUser(frmMain *frame, pgUser *node=0);
+
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -34,7 +36,6 @@ private:
     pgUser *user;
     wxArrayString varInfo;
 
-    void OnChange(wxCommandEvent &ev);
     void OnChangeSuperuser(wxCommandEvent &ev);
     void OnChangeSpin(wxSpinEvent &ev);
     void OnChangeCal(wxCalendarEvent &ev);

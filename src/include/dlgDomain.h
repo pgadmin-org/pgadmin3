@@ -24,13 +24,12 @@ public:
     dlgDomain(frmMain *frame, pgDomain *dom, pgSchema *sch);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
 private:
-    void OnChange(wxCommandEvent &ev);
-    void OnChangeOwner(wxCommandEvent &ev);
     void OnSelChangeTyp(wxCommandEvent &ev);
 
     pgSchema *schema;

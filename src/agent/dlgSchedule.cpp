@@ -42,8 +42,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgSchedule, dlgOidProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgSchedule::OnChange)
-    EVT_CHECKBOX(XRCID("chkEnabled"),               dlgSchedule::OnChange)
+    EVT_CHECKBOX(XRCID("chkEnabled"),               dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbKind"),                   dlgSchedule::OnChangeKind)
     EVT_SPIN(XRCID("timInterval"),                  dlgSchedule::OnChangeSpin)
     EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),     dlgSchedule::OnChangeCal)
@@ -52,7 +51,6 @@ BEGIN_EVENT_TABLE(dlgSchedule, dlgOidProperty)
     EVT_SPIN(XRCID("timEnd"),                       dlgSchedule::OnChangeSpin)
     EVT_CALENDAR_SEL_CHANGED(XRCID("calSchedule"),  dlgSchedule::OnChangeCal)
     EVT_SPIN(XRCID("timSchedule"),                  dlgSchedule::OnChangeSpin)
-    EVT_TEXT(XRCID("txtComment"),                   dlgSchedule::OnChange)
     EVT_LIST_ITEM_SELECTED(XRCID("lstIntervals"),   dlgSchedule::OnSelChangeInterval)
     EVT_BUTTON(XRCID("btnAddInterval"),             dlgSchedule::OnAddInterval)
     EVT_BUTTON(XRCID("btnChangeInterval"),          dlgSchedule::OnChangeInterval)
@@ -73,7 +71,6 @@ dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
         jobOid=0;
 
     timInterval->SetMax(365*24*60*60 -1, true);
-    txtOID->Disable();
 
     btnChangeInterval->Disable();
     btnRemoveInterval->Disable();
@@ -91,8 +88,6 @@ int dlgSchedule::Go(bool modal)
     if (schedule)
     {
         // edit mode
-        txtName->SetValue(schedule->GetName());
-        txtOID->SetValue(NumToStr((long)schedule->GetOid()));
         chkEnabled->SetValue(schedule->GetEnabled());
         cbKind->SetSelection(wxString(wxT("nsdwmy")).Find(schedule->GetKindChar()));
         calStart->SetDate(schedule->GetStart());
@@ -108,7 +103,6 @@ int dlgSchedule::Go(bool modal)
         timSchedule->SetTime(schedule->GetSchedule());
         timInterval->SetValue(schedule->GetIntervalList().Item(0));
 
-        txtComment->SetValue(schedule->GetComment());
         wxNotifyEvent ev;
         OnChangeKind(ev);
     }
@@ -165,22 +159,23 @@ void dlgSchedule::OnChangeKind(wxCommandEvent &ev)
         default:
             break;
     }
-    OnChange(ev);
+    
+    CheckChange();
 }
 
 void dlgSchedule::OnChangeCal(wxCalendarEvent &ev)
 {
-    OnChange(*(wxCommandEvent*)&ev);
+    CheckChange();
 }
 
 
 void dlgSchedule::OnChangeSpin(wxSpinEvent &ev)
 {
-    OnChange(*(wxCommandEvent*)&ev);
+    CheckChange();
 }
 
 
-void dlgSchedule::OnChange(wxCommandEvent &ev)
+void dlgSchedule::CheckChange()
 {
     timEnd->Enable(calEnd->GetDate().IsValid());
 

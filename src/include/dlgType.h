@@ -21,6 +21,8 @@ class dlgType : public dlgTypeProperty
 {
 public:
     dlgType(frmMain *frame, pgType *node, pgSchema *schema);
+
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -30,7 +32,6 @@ public:
 private:
     pgSchema *schema;
     pgType *type;
-    void OnChange(wxCommandEvent &ev);
     void OnTypeChange(wxCommandEvent &ev);
     void OnVarAdd(wxCommandEvent &ev);
     void OnVarRemove(wxCommandEvent &ev);

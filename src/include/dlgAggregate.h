@@ -24,6 +24,7 @@ public:
     dlgAggregate(frmMain *frame, pgAggregate *agg, pgSchema *sch);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -32,7 +33,6 @@ private:
     pgSchema *schema;
     pgAggregate *aggregate;
 
-    void OnChange(wxCommandEvent &ev);
     void OnChangeType(wxCommandEvent &ev);
     void OnChangeTypeBase(wxCommandEvent &ev);
     void OnChangeTypeState(wxCommandEvent &ev);

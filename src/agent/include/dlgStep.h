@@ -22,6 +22,8 @@ class dlgStep : public dlgOidProperty
 {
 public:
     dlgStep(frmMain *frame, pgaStep *s, pgaJob *j);
+
+    void CheckChange();
     int Go(bool modal);
 
     wxString GetUpdateSql();
@@ -36,8 +38,6 @@ private:
     ctlSQLBox *sqlBox;
     pgaStep *step;
     pgaJob *job;
-    void OnChange(wxCommandEvent &ev);
-    void OnChangeStc(wxStyledTextEvent& event);
 
     DECLARE_EVENT_TABLE();
 };

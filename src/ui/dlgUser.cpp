@@ -45,7 +45,6 @@
 
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgUser::OnChange)
     EVT_CALENDAR_SEL_CHANGED(XRCID("datValidUntil"),dlgUser::OnChangeCal)
     EVT_SPIN(XRCID("timValidUntil"),                dlgUser::OnChangeSpin)
     
@@ -106,7 +105,6 @@ int dlgUser::Go(bool modal)
         // Edit Mode
         readOnly=!user->GetServer()->GetSuperUser();
 
-        txtName->SetValue(user->GetIdentifier());
         txtID->SetValue(NumToStr(user->GetUserId()));
         chkCreateDB->SetValue(user->GetCreateDatabase());
         chkCreateUser->SetValue(user->GetSuperuser());
@@ -183,13 +181,13 @@ wxString dlgUser::GetHelpPage() const
 
 void dlgUser::OnChangeCal(wxCalendarEvent &ev)
 {
-	OnChange(*(wxCommandEvent*)&ev);
+	CheckChange();
 }
 
 
 void dlgUser::OnChangeSpin(wxSpinEvent &ev)
 {
-	OnChange(*(wxCommandEvent*)&ev);
+	CheckChange();
 }
 
 
@@ -207,11 +205,11 @@ void dlgUser::OnChangeSuperuser(wxCommandEvent &ev)
             return;
         }
     }
-    OnChange(ev);
+    CheckChange();
 }
 
 
-void dlgUser::OnChange(wxCommandEvent &ev)
+void dlgUser::CheckChange()
 {
     bool timEn=datValidUntil->GetDate().IsValid();
     timValidUntil->Enable(timEn);
@@ -243,7 +241,7 @@ void dlgUser::OnGroupAdd(wxCommandEvent &ev)
             lbGroupsIn->Append(lbGroupsNotIn->GetString(pos));
             lbGroupsNotIn->Delete(pos);
         }
-        OnChange(ev);
+        CheckChange();
     }
 }
 
@@ -258,7 +256,7 @@ void dlgUser::OnGroupRemove(wxCommandEvent &ev)
             lbGroupsNotIn->Append(lbGroupsIn->GetString(pos));
             lbGroupsIn->Delete(pos);
         }
-        OnChange(ev);
+        CheckChange();
     }
 }
 
@@ -327,14 +325,14 @@ void dlgUser::OnVarAdd(wxCommandEvent &ev)
         }
         lstVariables->SetItem(pos, 1, value);
     }
-    OnChange(ev);
+    CheckChange();
 }
 
 
 void dlgUser::OnVarRemove(wxCommandEvent &ev)
 {
     lstVariables->DeleteCurrentItem();
-    OnChange(ev);
+    CheckChange();
 }
 
 

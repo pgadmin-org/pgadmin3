@@ -25,6 +25,7 @@ public:
     dlgTable(frmMain *frame, pgTable *db, pgSchema *sch);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
@@ -33,8 +34,6 @@ private:
     pgSchema *schema;
     pgTable *table;
 
-    void OnChange(wxCommandEvent &ev);
-    void OnChangeOwner(wxCommandEvent &ev);
     void OnChangeTable(wxCommandEvent &ev);
 
     void OnAddTable(wxCommandEvent &ev);

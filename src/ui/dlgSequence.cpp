@@ -37,17 +37,13 @@
 // pointer to controls
 
 BEGIN_EVENT_TABLE(dlgSequence, dlgSecurityProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgSequence::OnChange)
-    EVT_TEXT(XRCID("cbOwner"),                      dlgSequence::OnChangeOwner)
-    EVT_TEXT(XRCID("cbTablespace"),                 dlgSequence::OnChange)
-    EVT_TEXT(XRCID("txtStart"),                     dlgSequence::OnChange)
-    EVT_TEXT(XRCID("txtMin"),                       dlgSequence::OnChange)
-    EVT_TEXT(XRCID("txtMax"),                       dlgSequence::OnChange)
-    EVT_TEXT(XRCID("txtCache"),                     dlgSequence::OnChange)
-    EVT_TEXT(XRCID("txtIncrement"),                 dlgSequence::OnChange)
-    EVT_CHECKBOX(XRCID("chkCycled"),                dlgSequence::OnChange)
-
-    EVT_TEXT(XRCID("txtComment"),                   dlgSequence::OnChange)
+    EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtStart"),                     dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtMin"),                       dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtMax"),                       dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtCache"),                     dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtIncrement"),                 dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkCycled"),                dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -57,8 +53,6 @@ dlgSequence::dlgSequence(frmMain *frame, pgSequence *node, pgSchema *sch)
     SetIcon(wxIcon(sequence_xpm));
     schema=sch;
     sequence=node;
-
-    txtOID->Disable();
 }
 
 
@@ -78,10 +72,6 @@ int dlgSequence::Go(bool modal)
     if (sequence)
     {
         // edit mode
-        txtName->SetValue(sequence->GetName());
-        txtOID->SetValue(NumToStr((long)sequence->GetOid()));
-        cbOwner->SetValue(sequence->GetOwner());
-        txtComment->SetValue(sequence->GetComment());
         txtIncrement->SetValue(sequence->GetIncrement().ToString());
         txtStart->SetValue(sequence->GetLastValue().ToString());
         txtMin->SetValue(sequence->GetMinValue().ToString());
@@ -127,14 +117,7 @@ pgObject *dlgSequence::CreateObject(pgCollection *collection)
 }
 
 
-void dlgSequence::OnChangeOwner(wxCommandEvent &ev)
-{
-    cbOwner->GuessSelection();
-    OnChange(ev);
-}
-
-
-void dlgSequence::OnChange(wxCommandEvent &ev)
+void dlgSequence::CheckChange()
 {
     wxString name=GetName();
     if (sequence)
@@ -147,7 +130,8 @@ void dlgSequence::OnChange(wxCommandEvent &ev)
                || txtMax->GetValue() != sequence->GetMaxValue().ToString()
                || txtCache->GetValue() != sequence->GetCacheValue().ToString()
                || txtIncrement->GetValue() != sequence->GetIncrement().ToString()
-               || chkCycled->GetValue() != sequence->GetCycled());
+               || chkCycled->GetValue() != sequence->GetCycled()
+               || cbTablespace->GetValue() != sequence->GetTablespace());
     }
     else
     {
@@ -162,9 +146,18 @@ wxString dlgSequence::GetSql()
 {
     wxString sql;
 
+    wxString name=GetName();
+
     if (sequence)
     {
         // edit mode
+
+        if (GetName() != sequence->GetName())
+        {
+            sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
+                +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+        }
+        AppendOwnerChange(sql);
 
         if (connection->BackendMinimumVersion(7, 4))
         {
@@ -202,7 +195,7 @@ wxString dlgSequence::GetSql()
 
             if (!tmp.IsEmpty())
             {
-                sql += wxT("ALTER SEQUENCE ") + sequence->GetQuotedFullIdentifier()
+                sql += wxT("ALTER SEQUENCE ") + qtIdent(name)
                     +  tmp + wxT(";\n");
             }
  
@@ -210,21 +203,14 @@ wxString dlgSequence::GetSql()
         else
         {
             if (txtStart->GetValue() != sequence->GetLastValue().ToString())
-                sql += wxT("SELECT setval('") + sequence->GetQuotedFullIdentifier()
+                sql += wxT("SELECT setval('") + qtString(name)
                     +  wxT("', ") + txtStart->GetValue()
                     +  wxT(");\n");
         }
-
-        if (cbOwner->GetValue() != sequence->GetOwner())
-        {
-            sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
-                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
-        }
-        if (GetName() != sequence->GetName())
-        {
-            sql += wxT("ALTER TABLE ") + sequence->GetQuotedFullIdentifier()
-                +  wxT(" RENAME TO ") + GetName() + wxT(";\n");
-        }
+        if (cbTablespace->GetValue() != sequence->GetTablespace())
+            sql += wxT("ALTER TABLE ") + qtIdent(name)
+                +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+                +  wxT(";\n");
     }
     else
     {

@@ -23,13 +23,13 @@ public:
     dlgSchema(frmMain *frame, pgSchema *db);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
 private:
     pgSchema *schema;
-    void OnChange(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

@@ -24,13 +24,12 @@ public:
     dlgConversion(frmMain *frame, pgConversion *cc, pgSchema *sch);
     int Go(bool modal);
 
+    void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
 private:
-    void OnChange(wxCommandEvent &ev);
-
     pgConversion *conversion;
     pgSchema *schema;
     wxArrayString functions;

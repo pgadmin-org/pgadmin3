@@ -37,7 +37,6 @@
 BEGIN_EVENT_TABLE(dlgCast, dlgTypeProperty)
     EVT_TEXT(XRCID("cbSourceType"),                 dlgCast::OnChangeTypeSrc)
     EVT_TEXT(XRCID("cbTargetType"),                 dlgCast::OnChangeTypeTrg)
-    EVT_TEXT(XRCID("txtComment"),                   dlgCast::OnChange)
 END_EVENT_TABLE();
 
 
@@ -48,7 +47,6 @@ dlgCast::dlgCast(frmMain *frame, pgCast *node)
     cast=node;
 
     txtName->Disable();
-    txtOID->Disable();
 }
 
 
@@ -67,9 +65,6 @@ int dlgCast::Go(bool modal)
     if (cast)
     {
         // edit mode
-        txtName->SetValue(cast->GetName());
-        txtOID->SetValue(NumToStr(cast->GetOid()));
-        txtComment->SetValue(cast->GetComment());
         cbSourceType->Append(cast->GetSourceType());
         cbSourceType->SetSelection(0);
         cbSourceType->Disable();
@@ -108,7 +103,7 @@ pgObject *dlgCast::CreateObject(pgCollection *collection)
 }
 
 
-void dlgCast::OnChange(wxCommandEvent &ev)
+void dlgCast::CheckChange()
 {
     if (cast)
     {
@@ -176,7 +171,7 @@ void dlgCast::OnChangeType(wxCommandEvent &ev)
         }
     }
 
-    OnChange(ev);
+    CheckChange();
 }
 
 
