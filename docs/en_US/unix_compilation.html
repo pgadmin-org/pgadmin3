@@ -9,58 +9,36 @@
 <body>
 
 <H3>Compilation on unix platforms</H3>
-<P>If you plan to contribute code, pgAdmin3 requires wxWindows from
-CVS version &gt; 20031010. We have our own version which is preferred
-as it is well tested and includes a number of additional patches (we
-use the CVS version of wxWindows because it supports Unicode, and 
-sizes controls much more nicely on *nix systems).
+<P>If you plan to contribute code, pgAdmin3 requires wxWidgets 2.5.3. On
+Mac OSX systems, you may need to use a newer CVS snapshot (the OSX port of pgAdmin
+is currently experimental).
  Use a recent GNU/Linux distro because
 recent versions of GTK2.2, automake and autoconf are needed. You will
 also need a copy of PostgreSQL on your development system to link
 libpq. We recommend using libpq 7.4 or newer, compiled with --enable-thread-safety.
 </P>
 <OL>
-	<LI><P>We provide a set of four wxGTK2
-	binaries (wxGTK2ud, wxGTK2ud-devel, wxGTK2ud-xrc and wxGTK2ud-stc)
-	suited for pgAdmin3 development, compiled with Unicode and logging
-	and linked against GTK 2.2, as described in the <A HREF="snapshots.html">binary
-	snapshots</A> instructions. These binaries are only available for
-	<A HREF="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">RedHat
-	9</A>, <A HREF="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">Mandrake
-	9.1</A> and <A HREF="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">SuSE
-	8.2</A>. If you install our wxGTK2 RPMs, please skip to step 6.
-	Otherwise, if you wish to install wxGTK 2.5 from source, continue
-	with step 2. 
+	<LI><P>Download wxWidgets 2.5.3 from <a href="http://www.wxwidgets.org">the wxWidgets website</a>. 
 	</P>
-	<LI><P>Download our supported wxWindows CVS version from
-        <A HREF="http://www.pgadmin.org/snapshots/">snapshots</A>. Alternatively,
-	you can install our wxGTK2 RPMs which provide all needed libraries
-	and headers files, as described in the <A HREF="snapshots.html">binary
-	snapshots</A> instructions. 
+	<PRE># wget http://heanet.dl.sourceforge.net/sourceforge/wxWidgets/wxGTK-2.5.3.tar.gz
+# tar -zxf wxGTK-2.5.3.tar.gz</PRE>
+	<LI><P>Install wxWidgets from source as follows: 
 	</P>
-	<PRE># wget http://www.pgadmin.org/snapshots/wxWindows/wxWindows-pgAdmin3-2003xxxx.tar.gz
-# tar -zxf wxWindows-pgAdmin3-2003xxxx.tar.gz</PRE>
-	<LI><P>(don't forget to replace the xxxx with the current version month and day). Install wxWindows from source as follows: 
-	</P>
-	<PRE># cd wxWindows-pgAdmin3
+	<PRE># cd wxWidgets-2.5.3
 # ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug
 # make
 # make install
 # ldconfig</PRE>
-	<LI><P>Install the wxWindows Styled Text Control as follows: 
+	<LI><P>Install the wxWidgets Styled Text Control as follows: 
 	</P>
 	<PRE STYLE="margin-right: 1cm"># cd contrib/src/stc
 # make
 # make install
 # ldconfig</PRE>
-	<LI><P>Install the wxWindows XML Recources as follows:# cd ../xrc 
-	</P>
-	<PRE># make
-# make install
-# ldconfig</PRE>
 	<LI><P>Download and unpack the pgAdmin source code. 
 	</P>
 	<PRE>If you wish to use CVS code:
+	
 # CVSROOT=:pserver:anonymous@cvs.pgadmin.org:/disk1/cvsroot export CVSROOT
 # cvs login
 # cvs -z9 checkout pgadmin3
@@ -69,8 +47,8 @@ libpq. We recommend using libpq 7.4 or newer, compiled with --enable-thread-safe
 
 or, if you wish to use the latest source tarball:
 
-# wget http://www.pgadmin.org/snapshots/pgadmin3-Alpha-src.tar.gz
-# tar -zxvf pgadmin3-Alpha-src.tar.gz
+# wget http://www.pgadmin.org/snapshots/pgadmin3-src.tar.gz
+# tar -zxvf pgadmin3-src.tar.gz
 # cd pgadmin3
 
 Now the source is downloaded:
