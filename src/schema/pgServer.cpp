@@ -20,11 +20,12 @@
 #include "pgCollection.h"
 
 
-pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _trusted, int _ssl)
+pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _trusted, int _ssl)
 : pgObject(PG_SERVER, newName)
 {  
     wxLogInfo(wxT("Creating a pgServer object"));
 
+	description = newDescription;
     database = newDatabase;
     username = newUsername;
     port = newPort;

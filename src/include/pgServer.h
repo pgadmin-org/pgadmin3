@@ -24,7 +24,7 @@
 class pgServer : public pgObject
 {
 public:
-    pgServer(const wxString& newServer = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool trusted=false, int sslMode=0);
+    pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool trusted=false, int sslMode=0);
     ~pgServer();
     int GetType() const { return PG_SERVER; }
     wxString GetTypeName() const { return wxT("Server"); }

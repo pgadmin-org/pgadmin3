@@ -174,7 +174,7 @@ void sysSettings::SetLastServer(const wxString& newval)
 void sysSettings::SetLastDescription(const wxString& newval)
 {
     lastDescription = newval;
-    Write(wxT("LastDescription"), lastDatabase);
+    Write(wxT("LastDescription"), lastDescription);
 }
 
 void sysSettings::SetLastDatabase(const wxString& newval)

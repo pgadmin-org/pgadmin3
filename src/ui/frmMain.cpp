@@ -656,8 +656,7 @@ void frmMain::RetrieveServers()
 #endif
 
         // Add the Server node
-        server = new pgServer(servername, database, username, port, StrToBool(trusted), ssl);
-        server->iSetDescription(description);
+        server = new pgServer(servername, description, database, username, port, StrToBool(trusted), ssl);
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
         browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
