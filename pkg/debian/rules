@@ -12,8 +12,8 @@
 
 
 # Please give the name of your wxgtk-config here :
-_wxconfig:=wxgtk2ud-2.5-config
-#_wxconfig:=wxgtk-2.4-config
+_deb_wxconfig?=wxgtk2ud-2.5-config
+#_deb_wxconfig:=wxgtk-2.4-config
 #
 # A bad hack to get it compile without errors concerning MNU_NEW
 # Raphael Enrici - 20030624
@@ -47,7 +47,7 @@ config.status: configure
 		--build=$(DEB_BUILD_GNU_TYPE) \
 		--prefix=/usr --mandir=\$${prefix}/share/man \
 		--infodir=\$${prefix}/share/info \
-		--with-wx-config=$(_wxconfig) \
+		--with-wx-config=$(_deb_wxconfig) \
 		--with-pgsql-include=$(_pgsql_inc) \
 		--enable-gtk2 \
 		--enable-unicode 
