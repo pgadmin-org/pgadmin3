@@ -47,7 +47,7 @@
 #define btnRemoveSchedule   CTRL_BUTTON("btnRemoveSchedule")
 
 
-BEGIN_EVENT_TABLE(dlgJob, dlgOidProperty)
+BEGIN_EVENT_TABLE(dlgJob, dlgAgentProperty)
     EVT_CHECKBOX(XRCID("chkEnabled"),               dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbJobclass"),               dlgProperty::OnChange)
 
@@ -64,7 +64,7 @@ END_EVENT_TABLE();
 
 
 dlgJob::dlgJob(frmMain *frame, pgaJob *node)
-: dlgOidProperty(frame, wxT("dlgJob"))
+: dlgAgentProperty(frame, wxT("dlgJob"))
 {
     SetIcon(wxIcon(job_xpm));
     job=node;
@@ -76,11 +76,11 @@ dlgJob::dlgJob(frmMain *frame, pgaJob *node)
     txtLastresult->Disable();
     lstSteps->CreateColumns(frame, _("Step"), _("Definition"), 90);
     lstSteps->AddColumn(wxT("cmd"), 0);
-    lstSteps->AddColumn(wxT("oid"), 0);
+    lstSteps->AddColumn(wxT("id"), 0);
 
     lstSchedules->CreateColumns(frame, _("Schedule"), _("Definition"), 90);
     lstSchedules->AddColumn(wxT("cmd"), 0);
-    lstSchedules->AddColumn(wxT("oid"), 0);
+    lstSchedules->AddColumn(wxT("id"), 0);
     btnChangeStep->Disable();
     btnRemoveStep->Disable();
     btnChangeSchedule->Disable();
@@ -96,7 +96,7 @@ pgObject *dlgJob::GetObject()
 
 int dlgJob::Go(bool modal)
 {
-    pgSet *jcl=connection->ExecuteSet(wxT("SELECT jclname FROM pg_admin.pga_jobclass"));
+    pgSet *jcl=connection->ExecuteSet(wxT("SELECT jclname FROM pgadmin.pga_jobclass"));
     if (jcl)
     {
         while (!jcl->Eof())
@@ -118,7 +118,6 @@ int dlgJob::Go(bool modal)
         txtLastrun->SetValue(DateToStr(job->GetLastrun()));
         txtLastresult->SetValue(job->GetLastresult());
 
-        
         wxCookieType cookie;
         pgObject *data=0;
         wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(job->GetId(), cookie);
@@ -157,7 +156,7 @@ int dlgJob::Go(bool modal)
 
 pgObject *dlgJob::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgaJob::ReadObjects((pgaAgent*)collection, 0, wxT("   AND j.oid=") + NumToStr(oid) + wxT("\n"));
+    pgObject *obj=pgaJob::ReadObjects((pgaAgent*)collection, 0, wxT("   AND jobid=") + NumToStr(id) + wxT("\n"));
     return obj;
 }
 
@@ -304,10 +303,10 @@ wxString dlgJob::GetInsertSql()
 
     if (!job)
     {
-        sql = wxT("INSERT INTO pg_admin.pga_job (jobjcloid, jobname, jobdesc, jobenabled)\n")
-              wxT("SELECT jcl.oid, ") + qtString(GetName()) + 
+        sql = wxT("INSERT INTO pgadmin.pga_job (jobid, jobjclid, jobname, jobdesc, jobenabled)\n")
+              wxT("SELECT <id>, jcl.jclid, ") + qtString(GetName()) + 
               wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ") + BoolToStr(chkEnabled->GetValue()) + wxT("\n")
-              wxT("  FROM pg_admin.pga_jobclass jcl WHERE jclname=") + qtString(cbJobclass->GetValue());
+              wxT("  FROM pgadmin.pga_jobclass jcl WHERE jclname=") + qtString(cbJobclass->GetValue());
     }
     return sql;
 }
@@ -333,7 +332,7 @@ wxString dlgJob::GetUpdateSql()
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jobjcloid= (SELECT oid FROM pg_admin.pga_jobclass WHERE jclname=") + qtString(cbJobclass->GetValue()) + wxT(")"));
+            vars.Append(wxT("jobjclid= (SELECT jclid FROM pgadmin.pga_jobclass WHERE jclname=") + qtString(cbJobclass->GetValue()) + wxT(")"));
         }
         if (chkEnabled->GetValue() != job->GetEnabled())
         {
@@ -345,12 +344,12 @@ wxString dlgJob::GetUpdateSql()
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jobdesc = ") + qtString(job->GetComment()));
+            vars.Append(wxT("jobdesc = ") + qtString(txtComment->GetValue()));
         }
 
         if (!vars.IsEmpty())
-            sql = wxT("UPDATE pg_admin.pga_job SET ") + vars + wxT("\n")
-                  wxT(" WHERE oid=") + job->GetOidStr();
+            sql = wxT("UPDATE pgadmin.pga_job SET ") + vars + wxT("\n")
+                  wxT(" WHERE jobid=") + NumToStr(job->GetId());
 
     }
     else
@@ -378,8 +377,8 @@ wxString dlgJob::GetUpdateSql()
 
     for (index = 0 ; index < (int)tmpSteps.GetCount() ; index++)
     {
-        sql += wxT("DELETE FROM pg_admin.pga_jobstep WHERE oid=") 
-            + ((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetOidStr() + wxT(";\n");
+        sql += wxT("DELETE FROM pgadmin.pga_jobstep WHERE jobid=") 
+            + NumToStr(((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetId()) + wxT(";\n");
     }
 
     wxArrayString tmpSchedules = previousSchedules;
@@ -399,11 +398,12 @@ wxString dlgJob::GetUpdateSql()
 
     for (index = 0 ; index < (int)tmpSchedules.GetCount() ; index++)
     {
-        sql += wxT("DELETE FROM pg_admin.pga_jobschedule WHERE oid=") 
-            + ((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetOidStr() + wxT(";\n");
+        sql += wxT("DELETE FROM pgadmin.pga_jobschedule WHERE jobid=") 
+            + NumToStr(((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetId()) + wxT(";\n");
     }
 
-    return sql;
+	return sql;
+
 }
 
 

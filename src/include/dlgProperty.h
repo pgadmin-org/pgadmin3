@@ -181,12 +181,12 @@ private:
 
 
 
-class dlgOidProperty : public dlgProperty
+class dlgAgentProperty : public dlgProperty
 {
 public:
 
 protected:
-    dlgOidProperty(frmMain *frame, const wxString &resName);
+    dlgAgentProperty(frmMain *frame, const wxString &resName);
     void OnOK(wxCommandEvent &ev);
     bool executeSql();
     virtual wxString GetInsertSql() =0;
@@ -195,7 +195,7 @@ protected:
 
     DECLARE_EVENT_TABLE();
 
-    OID oid;
+    long id;
 };
 
 

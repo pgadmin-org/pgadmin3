@@ -50,11 +50,14 @@ public:
     void iSetOnError(const wxString &s) { onError=s; }
     wxChar GetOnErrorChar() const { return onErrorChar; }
     void iSetOnErrorChar(const wxChar c) { onErrorChar = c; }
+	long GetId() const { return id; }
+    void iSetId(const long l) { id=l; }
 
 private:
     bool enabled;
     wxString kind, code, dbname, onError;
     wxChar kindChar, onErrorChar;
+	long id;
 };
 
 #endif

@@ -49,7 +49,7 @@ wxMenu *pgaJob::GetNewMenu()
 
 bool pgaJob::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pg_admin.pga_job WHERE oid=") + GetOidStr());
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgadmin.pga_job WHERE jobid=") + NumToStr(GetId()));
 }
 
 
@@ -73,7 +73,7 @@ void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("ID"), GetId());
         properties->AppendItem(_("Enabled"), GetEnabled());
         properties->AppendItem(_("Job class"), GetJobclass());
         properties->AppendItem(_("Created"), GetCreated());
@@ -110,8 +110,8 @@ pgObject *pgaJob::ReadObjects(pgaAgent *agent, wxTreeCtrl *browser, const wxStri
     pgaJob *job=0;
 
     pgSet *jobs= agent->GetDatabase()->ExecuteSet(
-       wxT("SELECT j.oid, *, ''::text AS joblastresult FROM pg_admin.pga_job j\n")
-       wxT("  JOIN pg_admin.pga_jobclass cl ON cl.oid=jobjcloid\n")
+       wxT("SELECT *, ''::text AS joblastresult FROM pgadmin.pga_job j\n")
+       wxT("  JOIN pgadmin.pga_jobclass cl ON cl.jclid=jobjclid\n")
        + restriction +
        wxT(" ORDER BY jobname"));
 
@@ -121,7 +121,7 @@ pgObject *pgaJob::ReadObjects(pgaAgent *agent, wxTreeCtrl *browser, const wxStri
         {
 
             job = new pgaJob(jobs->GetVal(wxT("jobname")));
-            job->iSetOid(jobs->GetOid(wxT("oid")));
+            job->iSetId(jobs->GetLong(wxT("jobid")));
             job->iSetDatabase(agent->GetDatabase());
             job->iSetComment(jobs->GetVal(wxT("jobdesc")));
 

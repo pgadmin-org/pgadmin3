@@ -53,6 +53,8 @@ public:
     wxString GetIntervalListString() const { return intervalListString; }
     void iSetIntervalList(const wxString &s);
     wxArrayTimeSpan GetIntervalList() const { return intervalList; }
+    long GetId() const { return id; }
+    void iSetId(const long l) { id=l; }
 
 private:
     bool enabled;
@@ -60,6 +62,7 @@ private:
     wxArrayTimeSpan intervalList;
     wxDateTime start, end, schedule;
     wxChar kindChar;
+	long id;
 };
 
 #endif

@@ -62,7 +62,7 @@ void pgaSchedule::iSetIntervalList(const wxString &s)
 
 bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pg_admin.pga_jobschedule WHERE oid=") + GetOidStr());
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgadmin.pga_jobschedule WHERE jscid=") + NumToStr(GetId()));
 }
 
 
@@ -78,7 +78,7 @@ void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("ID"), GetId());
         properties->AppendItem(_("Enabled"), GetEnabled());
         properties->AppendItem(_("Type"), GetKind());
         if (kindChar == 'n' || kindChar == 's')
@@ -120,10 +120,10 @@ pgObject *pgaSchedule::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxStr
     pgaSchedule *schedule=0;
 
     pgSet *schedules= job->GetDatabase()->ExecuteSet(
-       wxT("SELECT sc.oid, * FROM pg_admin.pga_schedule sc\n")
-       wxT(" WHERE sc.jscjoboid=") + job->GetOidStr() + wxT("\n")
+       wxT("SELECT * FROM pgadmin.pga_schedule\n")
+       wxT(" WHERE jscjobid=") + NumToStr(job->GetId()) + wxT("\n")
        + restriction +
-       wxT(" ORDER BY sc.oid"));
+       wxT(" ORDER BY jscid"));
 
     if (schedules)
     {
@@ -131,7 +131,7 @@ pgObject *pgaSchedule::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxStr
         {
 
             schedule = new pgaSchedule(job, schedules->GetVal(wxT("jscname")));
-            schedule->iSetOid(schedules->GetOid(wxT("oid")));
+            schedule->iSetId(schedules->GetLong(wxT("jscid")));
             schedule->iSetDatabase(job->GetDatabase());
             schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
             schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));

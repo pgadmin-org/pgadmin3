@@ -18,7 +18,7 @@
 class pgaStep;
 class pgaJob;
 
-class dlgStep : public dlgOidProperty
+class dlgStep : public dlgAgentProperty
 {
 public:
     dlgStep(frmMain *frame, pgaStep *s, pgaJob *j);
@@ -31,10 +31,10 @@ public:
     wxString GetComment();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
-    void SetJobOid(OID oid) { jobOid = oid; }
+    void SetJobId(long id) { jobId = id; }
 
 private:
-    OID jobOid;
+    long jobId;
     ctlSQLBox *sqlBox;
     pgaStep *step;
     pgaJob *job;

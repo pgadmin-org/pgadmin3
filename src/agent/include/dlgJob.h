@@ -17,7 +17,7 @@
 
 class pgaJob;
 
-class dlgJob : public dlgOidProperty
+class dlgJob : public dlgAgentProperty
 {
 public:
     dlgJob(frmMain *frame, pgaJob *j);

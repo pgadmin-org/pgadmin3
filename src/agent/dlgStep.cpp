@@ -32,7 +32,7 @@
 
 #define CTL_SQLBOX  188
 
-BEGIN_EVENT_TABLE(dlgStep, dlgOidProperty)
+BEGIN_EVENT_TABLE(dlgStep, dlgAgentProperty)
     EVT_CHECKBOX(XRCID("chkEnabled"),               dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbDatabase"),               dlgProperty::OnChange)
     EVT_RADIOBOX(XRCID("rbxKind"),                  dlgProperty::OnChange)
@@ -42,16 +42,16 @@ END_EVENT_TABLE();
 
 
 dlgStep::dlgStep(frmMain *frame, pgaStep *node, pgaJob *j)
-: dlgOidProperty(frame, wxT("dlgStep"))
+: dlgAgentProperty(frame, wxT("dlgStep"))
 {
     SetIcon(wxIcon(step_xpm));
     objectType=PGA_STEP;
     step=node;
     job=j;
     if (job)
-        jobOid=job->GetOid();
+        jobId=job->GetId();
     else
-        jobOid=0;
+        jobId=0;
 
     sqlBox=new ctlSQLBox(pnlDefinition, CTL_SQLBOX, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
 
@@ -112,7 +112,7 @@ pgObject *dlgStep::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgaStep::ReadObjects(job, 0, wxT("   AND st.oid=") + NumToStr(oid) + wxT("\n"));
+    pgObject *obj=pgaStep::ReadObjects(job, 0, wxT("   AND jstid=") + NumToStr(id) + wxT("\n"));
     return obj;
 }
 
@@ -159,19 +159,19 @@ wxString dlgStep::GetInsertSql()
         wxString kind = wxT("sb")[rbxKind->GetSelection()];
         wxString onerror = wxT("fsi")[rbxOnError->GetSelection()];
         wxString db;
-        wxString jstjoboid;
-        if (jobOid)
-            jstjoboid = NumToStr(jobOid);
+        wxString jstjobid;
+        if (jobId)
+            jstjobid = NumToStr(jobId);
         else
-            jstjoboid = wxT("<Oid>");
+            jstjobid = wxT("<id>");
 
         if (!cbDatabase->GetSelection())
             db = wxT("NULL");
         else
-            db = wxT(" oid FROM pg_database WHERE datname=") + qtString(cbDatabase->GetValue());
+            db = qtString(cbDatabase->GetValue());
 
-        sql = wxT("INSERT INTO pg_admin.pga_jobstep (jstjoboid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdboid)\n")
-              wxT("SELECT ") + jstjoboid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
+        sql = wxT("INSERT INTO pgadmin.pga_jobstep (jstjobid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdbname)\n")
+              wxT("SELECT ") + jstjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
                 + BoolToStr(chkEnabled->GetValue()) + wxT(", ") + qtString(kind) + wxT(", ") 
                 + qtString(onerror) + wxT(", ") + qtString(sqlBox->GetText()) + wxT(", ") + db;
     }
@@ -208,9 +208,9 @@ wxString dlgStep::GetUpdateSql()
                 vars.Append(wxT(", "));
             
             if (!cbDatabase->GetSelection())
-                vars.Append(wxT("jstdatoid=NULL"));
+                vars.Append(wxT("jstdbname=NULL"));
             else
-                vars.Append(wxT("jstdboid=(SELECT oid FROM pg_database WHERE datname=") + qtString(cbDatabase->GetValue()) + wxT(")"));
+                vars.Append(wxT("jstdbname=") + qtString(cbDatabase->GetValue()) + wxT(")"));
         }
         if (rbxKind->GetSelection() != wxString(wxT("sb")).Find(step->GetKindChar()))
         {
@@ -230,7 +230,7 @@ wxString dlgStep::GetUpdateSql()
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jstdescr=") + qtString(txtComment->GetValue()));
+            vars.Append(wxT("jstdesc=") + qtString(txtComment->GetValue()));
         }
         if (sqlBox->GetText() != step->GetCode())
         {
@@ -242,9 +242,9 @@ wxString dlgStep::GetUpdateSql()
         }
 
         if (!vars.IsEmpty())
-            sql = wxT("UPDATE pg_admin.pga_jobstep\n")
+            sql = wxT("UPDATE pgadmin.pga_jobstep\n")
                   wxT("   SET ") + vars + wxT("\n")
-                  wxT(" WHERE oid=") + step->GetOidStr();
+                  wxT(" WHERE jstid=") + NumToStr(step->GetId());
     }
     else
     {

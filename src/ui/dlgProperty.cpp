@@ -1274,18 +1274,18 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
 /////////////////////////////////////////////////////////////////////////////
 
 
-BEGIN_EVENT_TABLE(dlgOidProperty, dlgProperty)
-    EVT_BUTTON (wxID_OK,                            dlgOidProperty::OnOK)
+BEGIN_EVENT_TABLE(dlgAgentProperty, dlgProperty)
+    EVT_BUTTON (wxID_OK,                            dlgAgentProperty::OnOK)
 END_EVENT_TABLE();
 
-dlgOidProperty::dlgOidProperty(frmMain *frame, const wxString &resName)
+dlgAgentProperty::dlgAgentProperty(frmMain *frame, const wxString &resName)
 : dlgProperty(frame, resName)
 {
-    oid=0;
+    id=0;
 }
 
 
-wxString dlgOidProperty::GetSql()
+wxString dlgAgentProperty::GetSql()
 {
     wxString str=GetInsertSql();
     if (!str.IsEmpty())
@@ -1295,7 +1295,7 @@ wxString dlgOidProperty::GetSql()
 
 
 
-bool dlgOidProperty::executeSql()
+bool dlgAgentProperty::executeSql()
 {
     wxString sql;
     bool dataChanged=false;
@@ -1303,13 +1303,23 @@ bool dlgOidProperty::executeSql()
     sql=GetInsertSql();
     if (!sql.IsEmpty())
     {
+		// We should only need to get an ID if inserting a new Job
+		if (sql.Contains(wxT("<id>")) && sql.StartsWith(wxT("INSERT INTO pgadmin.pga_job")))
+		{
+
+		    id=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgadmin.pga_job_jobid_seq');")));
+
+            int pos;
+            while ((pos=sql.Find(wxT("<id>"))) >= 0)
+                sql = sql.Left(pos) + NumToStr(id) + sql.Mid(pos+4);
+		}
+
         pgSet *set=connection->ExecuteSet(sql);
         if (set)
         {
-            oid = set->GetInsertedOid();
             delete set;
         }
-        if (!set || !oid)
+        if (!set)
         {
             return false;
         }
@@ -1320,8 +1330,8 @@ bool dlgOidProperty::executeSql()
     if (!sql.IsEmpty())
     {
         int pos;
-        while ((pos=sql.Find(wxT("<Oid>"))) >= 0)
-            sql = sql.Left(pos) + NumToStr(oid) + wxT("::oid") + sql.Mid(pos+5);
+        while ((pos=sql.Find(wxT("<id>"))) >= 0)
+            sql = sql.Left(pos) + NumToStr(id) + sql.Mid(pos+4);
 
         if (!connection->ExecuteVoid(sql))
         {
@@ -1335,7 +1345,7 @@ bool dlgOidProperty::executeSql()
 }
 
 
-void dlgOidProperty::OnOK(wxCommandEvent &ev)
+void dlgAgentProperty::OnOK(wxCommandEvent &ev)
 {
     if (IsModal())
     {

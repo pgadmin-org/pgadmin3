@@ -37,7 +37,7 @@ pgaStep::~pgaStep()
 
 bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pg_admin.pga_jobstep WHERE oid=") + GetOidStr());
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgadmin.pga_jobstep WHERE jstid=") + NumToStr(GetId()));
 }
 
 
@@ -53,7 +53,7 @@ void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pr
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("ID"), GetId());
         properties->AppendItem(_("Enabled"), GetEnabled());
         properties->AppendItem(_("Kind"), GetKind());
         properties->AppendItem(_("Database"), GetDbname());
@@ -86,11 +86,10 @@ pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString 
     pgaStep *step=0;
 
     pgSet *steps= job->GetDatabase()->ExecuteSet(
-       wxT("SELECT st.oid, st.*, datname FROM pg_admin.pga_jobstep st\n")
-       wxT("  LEFT OUTER JOIN pg_database db ON db.oid=st.jstdboid")
-       wxT(" WHERE st.jstjoboid=") + job->GetOidStr() + wxT("\n")
+       wxT("SELECT * FROM pgadmin.pga_jobstep\n")
+       wxT(" WHERE jstjobid=") + NumToStr(job->GetId()) + wxT("\n")
        + restriction +
-       wxT(" ORDER BY st.oid"));
+       wxT(" ORDER BY jstid"));
 
     if (steps)
     {
@@ -98,9 +97,9 @@ pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString 
         {
 
             step = new pgaStep(job, steps->GetVal(wxT("jstname")));
-            step->iSetOid(steps->GetOid(wxT("oid")));
+            step->iSetId(steps->GetLong(wxT("jstid")));
             step->iSetDatabase(job->GetDatabase());
-            step->iSetDbname(steps->GetVal(wxT("datname")));
+            step->iSetDbname(steps->GetVal(wxT("jstdbname")));
             step->iSetCode(steps->GetVal(wxT("jstcode")));
             step->iSetEnabled(steps->GetBool(wxT("jstenabled")));
 

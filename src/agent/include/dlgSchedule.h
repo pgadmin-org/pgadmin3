@@ -20,7 +20,7 @@
 class pgaSchedule;
 class pgaJob;
 
-class dlgSchedule : public dlgOidProperty
+class dlgSchedule : public dlgAgentProperty
 {
 public:
     dlgSchedule(frmMain *frame, pgaSchedule *s, pgaJob *j);
@@ -33,10 +33,10 @@ public:
     wxString GetInsertSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
-    void SetJobOid(OID oid) { jobOid = oid; }
+    void SetJobId(long id) { jobId = id; }
 
 private:
-    OID jobOid;
+    long jobId;
     pgaSchedule *schedule;
     pgaJob *job;
     

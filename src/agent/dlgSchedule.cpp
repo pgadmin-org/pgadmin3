@@ -41,7 +41,7 @@
 #define btnRemoveInterval   CTRL_BUTTON("btnRemoveInterval")
 
 
-BEGIN_EVENT_TABLE(dlgSchedule, dlgOidProperty)
+BEGIN_EVENT_TABLE(dlgSchedule, dlgAgentProperty)
     EVT_CHECKBOX(XRCID("chkEnabled"),               dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbKind"),                   dlgSchedule::OnChangeKind)
     EVT_SPIN(XRCID("timInterval"),                  dlgSchedule::OnChangeSpin)
@@ -59,16 +59,16 @@ END_EVENT_TABLE();
 
 
 dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
-: dlgOidProperty(frame, wxT("dlgSchedule"))
+: dlgAgentProperty(frame, wxT("dlgSchedule"))
 {
     SetIcon(wxIcon(schedule_xpm));
     objectType=PGA_SCHEDULE;
     schedule=node;
     job=j;
     if (job)
-        jobOid=job->GetOid();
+        jobId=job->GetId();
     else
-        jobOid=0;
+        jobId=0;
 
     timInterval->SetMax(365*24*60*60 -1, true);
 
@@ -119,7 +119,7 @@ pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgaSchedule::ReadObjects(job, 0, wxT("   AND sc.oid=") + NumToStr(oid) + wxT("\n"));
+    pgObject *obj=pgaSchedule::ReadObjects(job, 0, wxT("   AND jscid=") + NumToStr(id) + wxT("\n"));
     return obj;
 }
 
@@ -234,14 +234,14 @@ wxString dlgSchedule::GetInsertSql()
     {
         wxString name=GetName();
         wxString kind = wxT("nsdwmy")[cbKind->GetSelection()];
-        wxString jscjoboid, list=wxT("NULL");
-        if (jobOid)
-            jscjoboid = NumToStr(jobOid);
+        wxString jscjobid, list=wxT("NULL");
+        if (jobId)
+            jscjobid = NumToStr(jobId);
         else
-            jscjoboid = wxT("<Oid>");
-        sql = wxT("INSERT INTO pg_admin.pga_jobschedule (jscjoboid, jscname, jscdesc, jscenabled, jsckind, ")
+            jscjobid = wxT("<id>");
+        sql = wxT("INSERT INTO pgadmin.pga_jobschedule (jscjobid, jscname, jscdesc, jscenabled, jsckind, ")
               wxT("jscstart, jscend, jscschedule, jsclist)\n")
-              wxT("VALUES(") + jscjoboid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
+              wxT("VALUES(") + jscjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
                 + BoolToStr(chkEnabled->GetValue()) + wxT(", ") + qtString(kind) + wxT(", ") 
                 + DateToAnsiStr(calStart->GetDate() + timStart->GetValue()) + wxT(", ")
                 + DateToAnsiStr(calEnd->GetDate() + timEnd->GetValue()) + wxT(", ")
