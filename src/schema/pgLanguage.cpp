@@ -36,7 +36,7 @@ wxString pgLanguage::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Language: \"") + GetName() + wxT("\"\n")
+        sql = wxT("-- Language: ") + GetQuotedFullIdentifier() + wxT("\n")
             + wxT("CREATE ");
         if (GetTrusted())
             sql += wxT("TRUSTED ");

@@ -35,17 +35,16 @@ public:
     void iSetProc(const wxString &s) { proc=s; }
     wxString GetProcNamespace() const { return procNamespace; }
     void iSetProcNamespace(const wxString &s) { procNamespace=s; }
-    long GetForEncoding() const { return forEncoding; }
-    void iSetForEncoding(const long l) { forEncoding=l; }
-    long GetToEncoding() const { return toEncoding; }
-    void iSetToEncoding(const long l) { toEncoding=l; }
+    wxString GetForEncoding() const { return forEncoding; }
+    void iSetForEncoding(const wxString &s) { forEncoding=s; }
+    wxString GetToEncoding() const { return toEncoding; }
+    void iSetToEncoding(const wxString &s) { toEncoding=s; }
     bool GetDefaultConversion() const { return defaultConversion; }
     void iSetDefaultConversion(const bool b) { defaultConversion=b; }
     wxString GetSql(wxTreeCtrl *browser);
 
 private:
-    wxString conversionName, proc, procNamespace;
-    long forEncoding, toEncoding;
+    wxString conversionName, proc, procNamespace, forEncoding, toEncoding;
     bool defaultConversion;
 };
 

@@ -90,7 +90,7 @@ bool pgDatabase::GetSystemObject() const
 wxString pgDatabase::GetSql(wxTreeCtrl *browser)
 {
     wxString sql;
-    sql = wxT("-- Database: \"") + GetName() + wxT("\"\n")
+    sql = wxT("-- Database: ") + GetQuotedFullIdentifier() + wxT("\n")
         + wxT("CREATE DATABASE ") + GetQuotedIdentifier()
         + wxT("\n  WITH ENCODING = ") + qtString(this->GetEncoding()) + wxT(";\n");
 

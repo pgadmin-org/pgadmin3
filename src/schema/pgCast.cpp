@@ -33,7 +33,7 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Cast: \"") + GetName() + wxT("\"\n")
+        sql = wxT("-- Cast: ") + GetQuotedFullIdentifier() + wxT("\n")
             + wxT("CREATE CAST (") + GetSourceType()
             + wxT(" AS ") + GetTargetType();
         if (GetCastFunction().IsNull())
@@ -64,7 +64,7 @@ void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, wxT("Target Type"), GetTargetType());
         InsertListItem(properties, pos++, wxT("Function"), GetCastFunction() + wxT("(") + GetSourceType() + wxT(")"));
         InsertListItem(properties, pos++, wxT("Context"), GetCastContext());
-        InsertListItem(properties, pos++, wxT("System object?"), GetSystemObject());
+        InsertListItem(properties, pos++, wxT("System Cast?"), GetSystemObject());
     }
 }
 

@@ -33,8 +33,9 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE DOMAIN ") + GetQuotedFullIdentifier() 
-            + wxT(" AS ") + GetBasetype();
+        sql = wxT("-- Domain: ") + GetQuotedFullIdentifier() + wxT("\n")
+            + wxT("CREATE DOMAIN ") + GetQuotedFullIdentifier() 
+            + wxT("\n  AS ") + GetBasetype();
         if (typlen == -1 && typmod > 0)
         {
             sql += wxT("(") + NumToStr(length);
@@ -52,10 +53,10 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
             }
             sql += wxT("]");
         }
-        AppendIfFilled(sql, wxT(" DEFAULT "), qtString(GetDefault()));
+        AppendIfFilled(sql, wxT("\n  DEFAULT "), GetDefault());
         // CONSTRAINT Name Dont know where it's stored, may be omitted anyway
         if (notNull)
-            sql += wxT(" NOT NULL");
+            sql += wxT("\n  NOT NULL");
 
 
         sql += wxT(";\n")

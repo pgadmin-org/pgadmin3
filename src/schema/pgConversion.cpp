@@ -28,20 +28,18 @@ pgConversion::~pgConversion()
 {
 }
 
-
-
-
 wxString pgConversion::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE ");
+        sql = wxT("-- Conversion: ") + GetQuotedFullIdentifier() + wxT("\n")
+            + wxT("CREATE ");
         if (GetDefaultConversion())
             sql += wxT("DEFAULT ");
         sql += wxT("CONVERSION ") + qtIdent(GetName())
-            + wxT(" FOR ") + NumToStr(GetForEncoding())
-            + wxT(" TO ") + NumToStr(GetToEncoding())
-            + wxT(" FROM ") + qtIdent(GetProcNamespace()) + wxT(".") + qtIdent(GetProc());
+            + wxT("\n  FOR '") + GetForEncoding() + wxT("'")
+            + wxT("\n  TO '") + GetToEncoding() + wxT("'")
+            + wxT("\n  FROM ") + qtIdent(GetProcNamespace()) + wxT(".") + qtIdent(GetProc()) + wxT(";\n");
     }
 
     return sql;
@@ -58,10 +56,13 @@ void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
         InsertListItem(properties, pos++, wxT("OID"), GetOid());
+        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
         InsertListItem(properties, pos++, wxT("From"), GetForEncoding());
-        InsertListItem(properties, pos++, wxT("From"), GetToEncoding());
-        InsertListItem(properties, pos++, wxT("Function"), GetProc());
-        InsertListItem(properties, pos, wxT("Default?"), GetDefaultConversion());
+        InsertListItem(properties, pos++, wxT("To"), GetToEncoding());
+        InsertListItem(properties, pos++, wxT("Function"), GetProcNamespace() + wxT(".") + GetProc());
+        InsertListItem(properties, pos++, wxT("Default?"), GetDefaultConversion());
+        InsertListItem(properties, pos++, wxT("System Conversion?"), GetSystemObject());
+
     }
 }
 
@@ -77,7 +78,7 @@ void pgConversion::ShowTreeCollection(pgCollection *collection, frmMain *form, w
 
         // Get the Conversions
         pgSet *conversions= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT co.oid, co.*, proname, nspname\n"
+            "SELECT co.oid, co.*, pg_encoding_to_char(conforencoding) as forencoding, pg_encoding_to_char(contoencoding) as toencoding, proname, nspname\n"
             "  FROM pg_conversion co\n"
             "  JOIN pg_proc pr ON pr.oid=conproc\n"
             "  JOIN pg_namespace na ON na.oid=pr.pronamespace\n"
@@ -93,8 +94,8 @@ void pgConversion::ShowTreeCollection(pgCollection *collection, frmMain *form, w
 
                 conversion->iSetOid(conversions->GetOid(wxT("oid")));
                 conversion->iSetOwner(conversions->GetVal(wxT("conowner")));
-                conversion->iSetForEncoding(conversions->GetLong(wxT("conforencoding")));
-                conversion->iSetToEncoding(conversions->GetLong(wxT("contoencoding")));
+                conversion->iSetForEncoding(conversions->GetVal(wxT("forencoding")));
+                conversion->iSetToEncoding(conversions->GetVal(wxT("toencoding")));
                 conversion->iSetProc(conversions->GetVal(wxT("proname")));
                 conversion->iSetProcNamespace(conversions->GetVal(wxT("nspname")));
                 conversion->iSetDefaultConversion(conversions->GetBool(wxT("condefault")));
