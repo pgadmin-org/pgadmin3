@@ -73,6 +73,7 @@
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
+    EVT_MENU(BTN_CONNECT, frmMain::OnConnect)
     EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
     EVT_MENU(MNU_CONNECT, frmMain::OnConnect)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
@@ -306,5 +307,10 @@ void frmMain::OnOptions(wxCommandEvent& event)
 
 void frmMain::OnConnect(wxCommandEvent& event)
 {
-     pgConn *objConnection = new pgConn(wxString("127.0.0.1"), wxString("template1"), wxString("postgres"));
+     pgConn *objConnection = new pgConn(wxString("127.0.0.1"), wxString("template1"), wxString("postgres"), wxString(""), 5432);
+     if (objConnection->GetStatus() == PGCONN_OK) {
+         wxMessageBox("Connected OK!");
+     } else {
+         wxMessageBox(objConnection->GetLastError());
+     }
 }

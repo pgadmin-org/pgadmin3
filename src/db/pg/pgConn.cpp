@@ -14,18 +14,21 @@
 // PostgreSQL headers
 #include <libpq-fe.h>
 
+// Windows headers
+#include "winsock.h"
+
 // App headers
 #include "pgConn.h"
 #include "../../pgAdmin3.h"
 
-pgConn::pgConn(wxString& szServer, wxString& szDatabase, wxString& szUsername, wxString& szPassword, long lPort) : objConn()
+pgConn::pgConn(wxString& szServer = wxString(""), wxString& szDatabase = wxString(""), wxString& szUsername = wxString(""), wxString& szPassword = wxString(""), int iPort = 5432) : objConn()
 {
     wxLogDebug(wxT("Creating pgConn object"));
 
     // Create the connection string
     wxString szConn;
     if (!szServer.IsEmpty()) {
-      szConn.Append(wxT(" host="));
+      szConn.Append(wxT(" hostaddr="));
       szConn.Append(szServer);
     }
     if (!szDatabase.IsEmpty()) {
@@ -40,46 +43,77 @@ pgConn::pgConn(wxString& szServer, wxString& szDatabase, wxString& szUsername, w
       szConn.Append(wxT(" password="));
       szConn.Append(szPassword);
     }
-    if (lPort > 0) {
+    if (iPort > 0) {
       szConn.Append(wxT(" port="));
-      szConn.Append(lPort);
+      szConn.Printf("%s%d", szConn, iPort);
     }
     szConn.Trim(FALSE);
 
     // Open the connection
+    wxString szMsg;
+    szMsg.Printf(wxT("Opening connection with connection string: %s"), szConn);
+    wxLogInfo(szMsg);
+
+    // Startup the windows sockets of required
+#ifdef __WXMSW__
+
+    // TODO: Error Handling!!
+    WSADATA	wsaData;
+    WSAStartup(MAKEWORD(1, 1), &wsaData);
+
+#endif
+
     objConn = PQconnectdb(szConn.c_str());
-
-    // Now check the status
-    switch(PQstatus(objConn))
-    {
-        case CONNECTION_STARTED:
-            wxLogInfo(wxT("Connecting..."));
-            break;
-
-        case CONNECTION_MADE:
-            wxLogInfo(wxT("Connected to server..."));
-            break;
-
-        case CONNECTION_AWAITING_RESPONSE:
-            wxLogInfo(wxT("Awaiting response from server..."));
-            break;
-
-        case CONNECTION_AUTH_OK:
-            wxLogInfo(wxT("Connection authenticated OK..."));
-            break;
-
-        case CONNECTION_SETENV:
-            wxLogInfo(wxT("Negotiating environment..."));
-            break;
-
-        default:
-            wxLogInfo(wxT("Connecting..."));
-    }
 }
-
 
 pgConn::~pgConn()
 {
     wxLogDebug(wxT("Destroying pgConn object"));
+    PQfinish(objConn);
+}
+
+wxString pgConn::GetUser()
+{
+  return wxString(PQuser(objConn));
+}
+
+wxString pgConn::GetPassword()
+{
+  return wxString(PQpass(objConn));
+}
+
+wxString pgConn::GetHost()
+{
+  return wxString(PQhost(objConn));
+}
+
+wxString pgConn::GetPort()
+{
+  return wxString(PQport(objConn));
+}
+
+wxString pgConn::GetTTY()
+{
+  return wxString(PQtty(objConn));
+}
+
+wxString pgConn::GetOptions()
+{
+  return wxString(PQoptions(objConn));
+}
+
+int pgConn::GetBackendPID()
+{
+    return PQbackendPID(objConn);
+}
+
+int pgConn::GetStatus()
+{
+  return PQstatus(objConn);
+}
+
+wxString pgConn::GetLastError()
+{
+  return wxString(PQerrorMessage(objConn));
 }
 
