@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATEVIEW"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN39146"
+NAME="AEN39194"
 ></A
 ><H2
 >Name</H2
 >CREATE VIEW&nbsp;--&nbsp;define a new view</DIV
 ><A
-NAME="AEN39149"
+NAME="AEN39197"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN39151"
+NAME="AEN39199"
 ></A
 ><H2
 >Synopsis</H2
@@ -126,7 +126,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39156"
+NAME="AEN39204"
 ></A
 ><H2
 >Description</H2
@@ -161,7 +161,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39164"
+NAME="AEN39212"
 ></A
 ><H2
 >Parameters</H2
@@ -220,7 +220,7 @@ HREF="sql-select.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39185"
+NAME="AEN39233"
 ></A
 ><H2
 >Notes</H2
@@ -263,11 +263,18 @@ CLASS="PROGRAMLISTING"
 >CREATE VIEW vista AS SELECT text 'Hello World' AS hello;</PRE
 ><P>
    </P
+><P
+>    Access to tables referenced in the view is determined by permissions of
+    the view owner.  However, functions called in the view are treated the
+    same as if they had been called directly from the query using the view.
+    Therefore the user of a view must have permissions to call all functions
+    used by the view.
+   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39196"
+NAME="AEN39245"
 ></A
 ><H2
 >Examples</H2
@@ -286,7 +293,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN39200"
+NAME="AEN39249"
 ></A
 ><H2
 >Compatibility</H2

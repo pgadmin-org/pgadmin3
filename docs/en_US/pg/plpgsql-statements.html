@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -197,7 +197,7 @@ CLASS="COMMAND"
 ></A
 ></H2
 ><A
-NAME="AEN33195"
+NAME="AEN33219"
 ></A
 ><P
 >     The result of a <TT
@@ -214,7 +214,7 @@ CLASS="REPLACEABLE"
 >target</VAR
 > <VAR
 CLASS="REPLACEABLE"
->expressions</VAR
+>select_expressions</VAR
 > FROM ...;</PRE
 ><P>
 
@@ -223,7 +223,11 @@ CLASS="REPLACEABLE"
 >target</VAR
 > can be a record variable, a row
      variable, or a comma-separated list of simple variables and
-     record/row fields.
+     record/row fields.  The <VAR
+CLASS="REPLACEABLE"
+>select_expressions</VAR
+>
+     and the remainder of the command are the same as in regular SQL.
     </P
 ><P
 >     Note that this is quite different from
@@ -525,15 +529,26 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >EXECUTE</TT
 >.
-     So, the only way to extract a result from a dynamically-created
+     There are two ways to extract a result from a dynamically-created
      <TT
 CLASS="COMMAND"
 >SELECT</TT
-> is to use the <TT
+>: one is to use the <TT
 CLASS="COMMAND"
 >FOR-IN-EXECUTE</TT
-> form
-     described later.
+>
+     loop form described in <A
+HREF="plpgsql-control-structures.html#PLPGSQL-RECORDS-ITERATING"
+>Section 39.7.4</A
+>,
+     and the other is to use a cursor with <TT
+CLASS="COMMAND"
+>OPEN-FOR-EXECUTE</TT
+>, as
+     described in <A
+HREF="plpgsql-cursors.html#PLPGSQL-CURSOR-OPENING"
+>Section 39.8.2</A
+>.
     </P
 ><P
 >     An example:
@@ -562,13 +577,13 @@ CLASS="TYPE"
 >text</TT
 >)</CODE
 >.<A
-NAME="AEN33282"
+NAME="AEN33310"
 ></A
 ><A
-NAME="AEN33285"
+NAME="AEN33313"
 ></A
-> Variables containing column and table
-     identifiers should be passed to function
+> For safety, variables containing column and
+     table identifiers should be passed to function
      <CODE
 CLASS="FUNCTION"
 >quote_ident</CODE
@@ -633,8 +648,8 @@ NAME="PLPGSQL-STATEMENTS-DIAGNOSTICS"
 	 first method is to use the <TT
 CLASS="COMMAND"
 >GET DIAGNOSTICS</TT
->,
-	 which has the form:
+>
+	 command, which has the form:
 
 </P><PRE
 CLASS="SYNOPSIS"
@@ -689,15 +704,15 @@ CLASS="COMMAND"
 >     An example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->GET DIAGNOSTICS var_integer = ROW_COUNT;</PRE
+>GET DIAGNOSTICS integer_var = ROW_COUNT;</PRE
 ><P>
     </P
 ><P
->     The second method to determine the effects of a command is the
+>     The second method to determine the effects of a command is to check the
      special variable named <VAR
 CLASS="LITERAL"
 >FOUND</VAR
-> of
+>, which is of
      type <TT
 CLASS="TYPE"
 >boolean</TT
@@ -708,7 +723,7 @@ CLASS="LITERAL"
      false within each <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
-> function.
+> function call.
      It is set by each of the following types of statements:
 	 <P
 ></P
@@ -735,7 +750,7 @@ CLASS="COMMAND"
 CLASS="LITERAL"
 >FOUND</VAR
 >
-		true if it produces (discards) a row, false if no row is
+		true if it produces (and discards) a row, false if no row is
 		produced.
 	   </P
 ></LI

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Server Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -98,7 +98,7 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN47880"
+NAME="AEN47917"
 ></A
 ><H2
 >Name</H2
@@ -107,12 +107,12 @@ CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server in single-user mode</DIV
 ><A
-NAME="AEN47884"
+NAME="AEN47921"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN47886"
+NAME="AEN47923"
 ></A
 ><H2
 >Synopsis</H2
@@ -197,7 +197,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47981"
+NAME="AEN48018"
 ></A
 ><H2
 >Description</H2
@@ -266,7 +266,7 @@ HREF="app-initdb.html"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47995"
+NAME="AEN48032"
 ></A
 ><H2
 >Options</H2
@@ -320,7 +320,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN48008"
+NAME="AEN48045"
 ></A
 ><H3
 >General Purpose</H3
@@ -438,12 +438,9 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->	Ignore system indexes while scanning/updating system tables. The
-	<TT
-CLASS="COMMAND"
->REINDEX</TT
-> command for system tables/indexes
-	requires this option to be used.
+>	Ignore system indexes when reading system tables (but still update
+	the indexes when modifying the tables).  This is useful when
+	recovering from damaged system indexes.
        </P
 ></DD
 ><DT
@@ -486,7 +483,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN48061"
+NAME="AEN48097"
 ></A
 ><H3
 >Options for stand-alone mode</H3
@@ -532,7 +529,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN48079"
+NAME="AEN48115"
 ></A
 ><H3
 >Semi-internal Options</H3
@@ -696,7 +693,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48132"
+NAME="AEN48168"
 ></A
 ><H2
 >Environment</H2
@@ -731,24 +728,51 @@ CLASS="APPLICATION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48142"
+NAME="AEN48178"
 ></A
 ><H2
 >Notes</H2
 ><P
->   To stop a running query use the <VAR
+>   To cancel a running query, send the <VAR
 CLASS="LITERAL"
 >SIGINT</VAR
-> signal. To
-   tell <TT
+> signal
+   to the <TT
+CLASS="COMMAND"
+>postgres</TT
+> process running that command.
+  </P
+><P
+>   To tell <TT
 CLASS="COMMAND"
 >postgres</TT
 > to reread the configuration file,
-   use a <VAR
+   send a <VAR
 CLASS="LITERAL"
 >SIGHUP</VAR
-> signal. The
-   <TT
+> signal.  Normally it's best to
+   <VAR
+CLASS="LITERAL"
+>SIGHUP</VAR
+> the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> instead;
+   the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> will in turn <VAR
+CLASS="LITERAL"
+>SIGHUP</VAR
+>
+   each of its children.  But in some cases it might be desirable to have only
+   one <TT
+CLASS="COMMAND"
+>postgres</TT
+> process reread the configuration file.
+  </P
+><P
+>   The <TT
 CLASS="COMMAND"
 >postmaster</TT
 > uses <VAR
@@ -763,19 +787,39 @@ CLASS="COMMAND"
 CLASS="LITERAL"
 >SIGQUIT</VAR
 > to terminate without the normal cleanup.
-   These <SPAN
+   These signals <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
 >should not</I
 ></SPAN
-> be used by users.
+> be used by users.  It is also
+   unwise to send <VAR
+CLASS="LITERAL"
+>SIGKILL</VAR
+> to a <TT
+CLASS="COMMAND"
+>postgres</TT
+>
+   process --- the <TT
+CLASS="COMMAND"
+>postmaster</TT
+> will interpret this as
+   a crash in <TT
+CLASS="COMMAND"
+>postgres</TT
+>, and will force all the sibling
+   <TT
+CLASS="COMMAND"
+>postgres</TT
+> processes to quit as part of its standard
+   crash-recovery procedure.
   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48153"
+NAME="AEN48202"
 ></A
 ><H2
 >Usage</H2
@@ -853,7 +897,7 @@ CLASS="ACRONYM"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN48174"
+NAME="AEN48223"
 ></A
 ><H2
 >See Also</H2

@@ -2,14 +2,14 @@
 <HTML
 ><HEAD
 ><TITLE
->Genetic Query Optimization</TITLE
+>Genetic Query Optimizer</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Internals"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="GEQO"
 ></A
->Chapter 47. Genetic Query Optimization</H1
+>Chapter 47. Genetic Query Optimizer</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -156,30 +156,31 @@ NAME="GEQO-INTRO"
 >47.1. Query Handling as a Complex Optimization Problem</A
 ></H1
 ><P
->    Among all relational operators the most difficult one to process and
-    optimize is the <I
+>    Among all relational operators the most difficult one to process
+    and optimize is the <I
 CLASS="FIRSTTERM"
 >join</I
->. The number of alternative plans to answer a query
-    grows exponentially with the number of joins included in it. Further
-    optimization effort is caused by the support of a variety of
-    <I
+>. The number of
+    alternative plans to answer a query grows exponentially with the
+    number of joins included in it. Further optimization effort is
+    caused by the support of a variety of <I
 CLASS="FIRSTTERM"
->join methods</I
->
-    (e.g., nested loop, hash join, merge join in <SPAN
+>join
+    methods</I
+> (e.g., nested loop, hash join, merge join in
+    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->) to
-    process individual joins and a diversity of
-    <I
+>) to process individual joins
+    and a diversity of <I
 CLASS="FIRSTTERM"
 >indexes</I
 > (e.g., R-tree,
     B-tree, hash in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->) as access paths for relations.
+>) as access
+    paths for relations.
    </P
 ><P
 >    The current <SPAN
@@ -188,12 +189,22 @@ CLASS="PRODUCTNAME"
 > optimizer
     implementation performs a <I
 CLASS="FIRSTTERM"
->near-exhaustive search</I
+>near-exhaustive
+    search</I
+> over the space of alternative strategies. This
+    algorithm, first introduced in the <SPAN
+CLASS="QUOTE"
+>"System R"</SPAN
 >
-    over the space of alternative strategies. This query 
-    optimization technique is inadequate to support database application
-    domains that involve the need for extensive queries, such as artificial
-    intelligence.
+    database, produces a near-optimal join order, but can take an
+    enormous amount of time and memory space when the number of joins
+    in the query grows large. This makes the ordinary
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query optimizer
+    inappropriate for database application domains that involve the
+    need for extensive queries, such as artificial intelligence.
    </P
 ><P
 >    The Institute of Automatic Control at the University of Mining and
@@ -208,14 +219,16 @@ CLASS="PRODUCTNAME"
    </P
 ><P
 >    Performance difficulties in exploring the space of possible query
-    plans created the demand for a new optimization technique being developed.
+    plans created the demand for a new optimization technique to be developed.
    </P
 ><P
->    In the following we propose the implementation of a <I
+>    In the following we describe the implementation of a
+    <I
 CLASS="FIRSTTERM"
 >Genetic Algorithm</I
->
-    as an option for the database query optimization problem.
+> to solve the join
+    ordering problem in a manner that is efficient for queries
+    involving large numbers of joins.
    </P
 ></DIV
 ></DIV

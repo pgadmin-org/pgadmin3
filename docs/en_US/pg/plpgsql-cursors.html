@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -102,7 +102,7 @@ NAME="PLPGSQL-CURSORS"
 >39.8. Cursors</A
 ></H1
 ><A
-NAME="AEN33589"
+NAME="AEN33620"
 ></A
 ><P
 >    Rather than executing a whole query at once, it is possible to set
@@ -121,7 +121,7 @@ CLASS="LITERAL"
 >FOR</VAR
 > loops automatically use a cursor
     internally to avoid memory problems.) A more interesting usage is to
-    return a reference to a cursor that it has created, allowing the
+    return a reference to a cursor that a function has created, allowing the
     caller to read the rows. This provides an efficient way to return
     large row sets from functions.
    </P
@@ -253,15 +253,15 @@ CLASS="APPLICATION"
      three forms of the <TT
 CLASS="COMMAND"
 >OPEN</TT
-> statement, two of which use unbound cursor
-     variables and the other uses a bound cursor variable.
+> statement, two of which use unbound
+     cursor variables while the third uses a bound cursor variable.
     </P
 ><DIV
 CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33628"
+NAME="AEN33659"
 >39.8.2.1. <TT
 CLASS="COMMAND"
 >OPEN FOR SELECT</TT
@@ -311,7 +311,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33641"
+NAME="AEN33672"
 >39.8.2.2. <TT
 CLASS="COMMAND"
 >OPEN FOR EXECUTE</TT
@@ -354,7 +354,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33652"
+NAME="AEN33683"
 >39.8.2.3. Opening a Bound Cursor</A
 ></H3
 ><PRE
@@ -437,7 +437,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33672"
+NAME="AEN33703"
 >39.8.3.1. <VAR
 CLASS="LITERAL"
 >FETCH</VAR
@@ -486,7 +486,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33685"
+NAME="AEN33716"
 >39.8.3.2. <VAR
 CLASS="LITERAL"
 >CLOSE</VAR
@@ -499,10 +499,10 @@ CLASS="REPLACEABLE"
 >cursor</VAR
 >;</PRE
 ><P
->    <TT
+>        <TT
 CLASS="COMMAND"
 >CLOSE</TT
-> closes the Portal underlying an open
+> closes the portal underlying an open
 	cursor.  This can be used to release resources earlier than end of
 	transaction, or to free up the cursor variable to be opened again.
        </P
@@ -519,7 +519,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN33694"
+NAME="AEN33725"
 >39.8.3.3. Returning Cursors</A
 ></H3
 ><P
@@ -527,17 +527,62 @@ NAME="AEN33694"
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > functions can return cursors to the
-        caller. This is used to return multiple rows or columns from
-        the function. To do this, the function opens the cursor and returns the
-        cursor name to the caller. The caller can then
-        fetch rows from the cursor. The cursor can
-        be closed by the caller, or it will be closed automatically
+        caller. This is useful to return multiple rows or columns,
+	especially with very large result sets.  To do this, the function
+	opens the cursor and returns the cursor name to the caller (or simply
+	opens the cursor using a portal name specified by or otherwise known
+	to the caller).  The caller can then fetch rows from the cursor. The
+	cursor can be closed by the caller, or it will be closed automatically
         when the transaction closes.
        </P
 ><P
->        The cursor name returned by the function can be specified by the
-        caller or automatically generated. The following example shows
-        how a cursor name can be supplied by the caller:
+>        The portal name used for a cursor can be specified by the
+	programmer or automatically generated.  To specify a portal name,
+	simply assign a string to the <TT
+CLASS="TYPE"
+>refcursor</TT
+> variable before
+	opening it.  The string value of the <TT
+CLASS="TYPE"
+>refcursor</TT
+> variable
+	will be used by <TT
+CLASS="COMMAND"
+>OPEN</TT
+> as the name of the underlying portal.
+	However, if the <TT
+CLASS="TYPE"
+>refcursor</TT
+> variable is NULL,
+	<TT
+CLASS="COMMAND"
+>OPEN</TT
+> automatically generates a name that does not
+	conflict with any existing portal, and assigns it to the
+	<TT
+CLASS="TYPE"
+>refcursor</TT
+> variable.
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	 A bound cursor variable is initialized to the string value
+	 representing its name, so that the portal name is the same as
+	 the cursor variable name, unless the programmer overrides it
+	 by assignment before opening the cursor.  But an unbound cursor
+	 variable defaults to an initial value of NULL, so it will receive
+	 an automatically-generated unique name, unless overridden.
+        </P
+></BLOCKQUOTE
+></DIV
+><P
+>        The following example shows one way a cursor name can be supplied by
+	the caller:
 
 </P><PRE
 CLASS="PROGRAMLISTING"

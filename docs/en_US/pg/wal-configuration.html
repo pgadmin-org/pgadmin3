@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Write-Ahead Logging (WAL)"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -118,7 +118,7 @@ HREF="runtime-config.html"
 CLASS="FIRSTTERM"
 >Checkpoints</I
 ><A
-NAME="AEN19705"
+NAME="AEN19729"
 ></A
 > are points in the sequence of
    transactions at which it is guaranteed that the data files have
@@ -302,15 +302,16 @@ CLASS="FUNCTION"
 >LogFlush</CODE
 >. This delay allows other
    server processes to add their commit records to the log so as to have all
-   of them flushed with a single log sync. No sleep will occur if <VAR
+   of them flushed with a single log sync. No sleep will occur if
+   <VAR
 CLASS="VARNAME"
 >fsync</VAR
 >
-   is not enabled or if fewer than <VAR
+   is not enabled, nor if fewer than <VAR
 CLASS="VARNAME"
 >commit_siblings</VAR
 >
-   other sessons are currently in active transactions; this avoids
+   other sessions are currently in active transactions; this avoids
    sleeping when it's unlikely that any other session will commit soon.
    Note that on most platforms, the resolution of a sleep request is
    ten milliseconds, so that any nonzero <VAR

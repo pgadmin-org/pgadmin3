@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-COPY"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN36230"
+NAME="AEN36272"
 ></A
 ><H2
 >Name</H2
->COPY&nbsp;--&nbsp;copy data between files and tables</DIV
+>COPY&nbsp;--&nbsp;copy data between a file and a table</DIV
 ><A
-NAME="AEN36233"
+NAME="AEN36275"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN36235"
+NAME="AEN36277"
 ></A
 ><H2
 >Synopsis</H2
@@ -114,7 +114,7 @@ NAME="AEN36235"
 CLASS="SYNOPSIS"
 >COPY <VAR
 CLASS="REPLACEABLE"
->table</VAR
+>tablename</VAR
 > [ ( <VAR
 CLASS="REPLACEABLE"
 >column</VAR
@@ -137,7 +137,7 @@ CLASS="REPLACEABLE"
 
 COPY <VAR
 CLASS="REPLACEABLE"
->table</VAR
+>tablename</VAR
 > [ ( <VAR
 CLASS="REPLACEABLE"
 >column</VAR
@@ -161,7 +161,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36247"
+NAME="AEN36289"
 ></A
 ><H2
 >Description</H2
@@ -235,7 +235,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36264"
+NAME="AEN36306"
 ></A
 ><H2
 >Parameters</H2
@@ -247,11 +247,11 @@ CLASS="VARIABLELIST"
 ><DT
 ><VAR
 CLASS="REPLACEABLE"
->table</VAR
+>tablename</VAR
 ></DT
 ><DD
 ><P
->      The name (possibly schema-qualified) of an existing table.
+>      The name (optionally schema-qualified) of an existing table.
      </P
 ></DD
 ><DT
@@ -380,7 +380,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36320"
+NAME="AEN36362"
 ></A
 ><H2
 >Notes</H2
@@ -520,14 +520,14 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36354"
+NAME="AEN36396"
 ></A
 ><H2
 >File Formats</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN36356"
+NAME="AEN36398"
 ></A
 ><H3
 >Text Format</H3
@@ -598,7 +598,7 @@ CLASS="INFORMALTABLE"
 ><P
 ></P
 ><A
-NAME="AEN36371"
+NAME="AEN36413"
 ></A
 ><TABLE
 BORDER="1"
@@ -733,19 +733,46 @@ CLASS="QUOTE"
 CLASS="LITERAL"
 >\n</VAR
 >"</SPAN
->),  or carriage return/newline 
-    ("\r\n") for servers running MS Windows.
+>).  Servers running on MS Windows instead
+    output carriage return/newline (<SPAN
+CLASS="QUOTE"
+>"<VAR
+CLASS="LITERAL"
+>\r\n</VAR
+>"</SPAN
+>), but only for
+    <TT
+CLASS="COMMAND"
+>COPY</TT
+> to a server file; for consistency across platforms,
+    <TT
+CLASS="COMMAND"
+>COPY TO STDOUT</TT
+> always sends <SPAN
+CLASS="QUOTE"
+>"<VAR
+CLASS="LITERAL"
+>\n</VAR
+>"</SPAN
+>
+    regardless of server platform.
     <TT
 CLASS="COMMAND"
 >COPY FROM</TT
 > can handle lines ending with newlines,
-    carriage returns, or carriage return/newlines.
+    carriage returns, or carriage return/newlines.  To reduce the risk of
+    error due to un-backslashed newlines or carriage returns that were
+    meant as data, <TT
+CLASS="COMMAND"
+>COPY FROM</TT
+> will complain if the line
+    endings in the input are not all alike.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN36419"
+NAME="AEN36468"
 ></A
 ><H3
 >Binary Format</H3
@@ -764,7 +791,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN36424"
+NAME="AEN36473"
 ></A
 ><H4
 >File Header</H4
@@ -858,7 +885,7 @@ is left for a later release.
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN36450"
+NAME="AEN36499"
 ></A
 ><H4
 >Tuples</H4
@@ -895,15 +922,12 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >*recv</CODE
 > functions for
-the data type (typically found in the <TT
+each column's data type (typically these functions are found in the
+<TT
 CLASS="FILENAME"
->src/backend/utils/adt</TT
->
-directory). The <SPAN
-CLASS="APPLICATION"
->contrib/binarycopy</SPAN
-> module
-can also be used to create an appropriate format file.
+>src/backend/utils/adt/</TT
+> directory of the source
+distribution).
     </P
 ><P
 >If OIDs are included in the file, the OID field immediately follows the
@@ -916,7 +940,7 @@ OIDs to be shown as null if that ever proves desirable.
 ><DIV
 CLASS="REFSECT3"
 ><A
-NAME="AEN36463"
+NAME="AEN36511"
 ></A
 ><H4
 >File Trailer</H4
@@ -935,7 +959,7 @@ NAME="AEN36463"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36467"
+NAME="AEN36515"
 ></A
 ><H2
 >Examples</H2
@@ -1012,7 +1036,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN36484"
+NAME="AEN36532"
 ></A
 ><H2
 >Compatibility</H2
@@ -1030,7 +1054,7 @@ CLASS="COMMAND"
 CLASS="SYNOPSIS"
 >COPY [ BINARY ] <VAR
 CLASS="REPLACEABLE"
->table</VAR
+>tablename</VAR
 > [ WITH OIDS ]
     FROM { '<VAR
 CLASS="REPLACEABLE"
@@ -1047,7 +1071,7 @@ CLASS="REPLACEABLE"
 
 COPY [ BINARY ] <VAR
 CLASS="REPLACEABLE"
->table</VAR
+>tablename</VAR
 > [ WITH OIDS ]
     TO { '<VAR
 CLASS="REPLACEABLE"

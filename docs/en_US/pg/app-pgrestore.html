@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta3 Documentation"
+TITLE="PostgreSQL 7.4beta4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PostgreSQL Client Applications"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-09-15T14:41:50"></HEAD
+CONTENT="2003-10-03T03:19:47"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta3 Documentation</TH
+>PostgreSQL 7.4beta4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,7 +95,7 @@ NAME="APP-PGRESTORE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN45074"
+NAME="AEN45121"
 ></A
 ><H2
 >Name</H2
@@ -105,12 +105,12 @@ CLASS="PRODUCTNAME"
 > database from an archive file created by pg_dump
   </DIV
 ><A
-NAME="AEN45078"
+NAME="AEN45125"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN45080"
+NAME="AEN45127"
 ></A
 ><H2
 >Synopsis</H2
@@ -537,16 +537,25 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->        Prevent any attempt to restore original object
-        ownership. Objects will be owned by the user name used to
-        attach to the database. See also under <VAR
+>        Do not output commands to set
+	ownership of objects to match the original database.
+	By default, <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+> issues
+	<TT
+CLASS="COMMAND"
+>SET SESSION AUTHORIZATION</TT
+>
+	statements to set ownership of created schema elements.
+	These statements will fail unless the initial connection to the
+	database is made by a superuser
+	(or the same user that owns all of the objects in the script).
+	With <VAR
 CLASS="OPTION"
->-R</VAR
-> and
-        <VAR
-CLASS="OPTION"
->-X use-set-session-authorization</VAR
->.
+>-O</VAR
+>, any user name can be used for the
+	initial connection, and this user will own all the created objects.
        </P
 ></DD
 ><DT
@@ -639,46 +648,8 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->        While restoring an archive, <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
->
-        typically has to reconnect to the database several times with
-        different user names to set the correct ownership of the
-        created objects.  If this is undesirable (e.g., because manual
-        interaction (passwords) would be necessary for each
-        reconnection), this option prevents
-        <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> from issuing any reconnection
-        requests.  (A connection request while in plain text mode, not
-        connected to a database, is made by putting out a <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-> <TT
-CLASS="COMMAND"
->\connect</TT
-> command.)
-        However, this option is a rather blunt instrument because it
-        makes <SPAN
-CLASS="APPLICATION"
->pg_restore</SPAN
-> lose all object ownership
-        information, <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->unless</I
-></SPAN
-> you use the
-        <VAR
-CLASS="OPTION"
->-X use-set-session-authorization</VAR
-> option.
+>        This option is obsolete but still accepted for backwards
+	compatibility.
        </P
 ></DD
 ><DT
@@ -795,29 +766,13 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->        Normally, if restoring an archive requires altering the
-        current database user (e.g., to set correct object
-        ownerships), a new connection to the database must be opened,
-        which might require manual interaction (e.g., passwords).  If
-        you use the <VAR
-CLASS="OPTION"
->-X use-set-session-authorization</VAR
-> option,
-        then <SPAN
+>        This option is obsolete but still accepted for backwards
+	compatibility.
+        <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
-> will instead use the <A
-HREF="sql-set-session-authorization.html"
-><I
->SET SESSION AUTHORIZATION</I
-></A
-> command.  This has
-        the same effect, but it requires that the user restoring the
-        archive is a database superuser.  This option effectively
-        overrides the <VAR
-CLASS="OPTION"
->-R</VAR
-> option.
+> now always behaves in the
+	way formerly selected by this option.
        </P
 ></DD
 ><DT
@@ -850,11 +805,7 @@ CLASS="OPTION"
 CLASS="OPTION"
 >-S</VAR
 >, or
-	preferably specify <VAR
-CLASS="OPTION"
->--use-set-session-authorization</VAR
-> and
-	run <SPAN
+	preferably run <SPAN
 CLASS="APPLICATION"
 >pg_restore</SPAN
 > as a
@@ -963,7 +914,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45396"
+NAME="AEN45433"
 ></A
 ><H2
 >Environment</H2
@@ -1227,7 +1178,7 @@ CLASS="USERINPUT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45463"
+NAME="AEN45500"
 ></A
 ><H2
 >History</H2
@@ -1245,7 +1196,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN45468"
+NAME="AEN45505"
 ></A
 ><H2
 >See Also</H2
