@@ -130,7 +130,7 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
         sqlGrid->DeleteRows(delrows.Item(i), 1);
     sqlGrid->EndBatch();
 
-    SetStatusText(NumToStr((long)((sqlTable*)sqlGrid->GetTable())->GetNumberStoredRows()) + _(" rows."), 0);
+    SetStatusText(wxString::Format(_("%d rows."), ((sqlTable*)sqlGrid->GetTable())->GetNumberStoredRows()), 0);
 }
 
 
@@ -195,7 +195,7 @@ void frmEditGrid::Go()
         Abort();
         return;
     }
-    SetStatusText(NumToStr(thread->DataSet()->NumRows()) + _(" rows."), 0);
+    SetStatusText(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()), 0);
 
     sqlGrid->BeginBatch();
 
@@ -707,7 +707,7 @@ void sqlTable::StoreLine()
 
                 done=true;
                 rowsStored++;
-                ((wxFrame*)GetView()->GetParent())->SetStatusText(NumToStr((long)GetNumberStoredRows()) + wxT(" rows."));
+                ((wxFrame*)GetView()->GetParent())->SetStatusText(wxString::Format(wxT("%d rows."), GetNumberStoredRows()));
                 if (rowsAdded == rowsStored)
                     GetView()->AppendRows();
             }

@@ -354,10 +354,10 @@ void dlgTable::FillConstraint()
 {
     cbConstrType->Clear();
     if (!hasPK)
-        cbConstrType->Append(wxT("Primary Key"));
-    cbConstrType->Append(wxT("Foreign Key"));
-    cbConstrType->Append(wxT("Unique"));
-    cbConstrType->Append(wxT("Check"));
+        cbConstrType->Append(_("Primary Key"));
+    cbConstrType->Append(_("Foreign Key"));
+    cbConstrType->Append(_("Unique"));
+    cbConstrType->Append(_("Check"));
     cbConstrType->SetSelection(0);
 }
 

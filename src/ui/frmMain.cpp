@@ -641,7 +641,7 @@ void frmMain::RetrieveServers()
 
     // Reset the Servers node text
     wxString label;
-    label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
+    label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
     browser->SetItemText(servers, label);
 }
 

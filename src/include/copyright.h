@@ -18,7 +18,7 @@
 #ifdef __WIN32__
 #define SPLASH_FONTSIZE 8
 #else
-#define SPLASH_FONTSIZE 11
+#define SPLASH_FONTSIZE 10
 #endif
 #define SPLASH_X0       10
 #define SPLASH_Y0       100

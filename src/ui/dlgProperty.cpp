@@ -337,9 +337,9 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
         else
         {
             if (GetObject())
-                sqlPane->SetText(wxT("-- nothing to change"));
+                sqlPane->SetText(_("-- nothing to change"));
             else
-                sqlPane->SetText(wxT("-- definition incomplete"));
+                sqlPane->SetText(_("-- definition incomplete"));
         }
     }
 }
@@ -807,7 +807,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
         privCheckboxes = new wxCheckBox*[privilegeCount*2];
         int i=0;
 
-        nbNotebook->AddPage(page, wxT("Security"));
+        nbNotebook->AddPage(page, _("Security"));
 
         lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount+ (needAll ? 0 : 20)));
         CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
@@ -817,7 +817,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
         btnDelPriv = new wxButton(page, CTL_DELPRIV, _("Remove"), wxPoint(95, y), wxSize(75, 25));
         y += 35;
 
-        new wxStaticBox(page, -1, wxT("Privileges"), wxPoint(10, y), wxSize(width-20, 65+20*privilegeCount-(needAll?0:20)));
+        new wxStaticBox(page, -1, _("Privileges"), wxPoint(10, y), wxSize(width-20, 65+20*privilegeCount-(needAll?0:20)));
         y += 15;
 
         stGroup = new wxStaticText(page, CTL_STATICGROUP, _("Group"), wxPoint(20, y+3), wxSize(100, 20));

@@ -323,12 +323,12 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         else
             InsertListItem(properties, pos++, _("Primary Key"), GetPrimaryKey());
 
-        InsertListItem(properties, pos++, _("Rows estimated"), GetEstimatedRows());
+        InsertListItem(properties, pos++, _("Rows (estimated)"), GetEstimatedRows());
 
         if (rows < 0)
-            InsertListItem(properties, pos++, _("Rows"), _("Refresh to count rows"));
+            InsertListItem(properties, pos++, _("Rows (counted)"), _("Refresh to count rows"));
         else
-            InsertListItem(properties, pos++, _("Rows"), rows);
+            InsertListItem(properties, pos++, _("Rows (counted)"), rows);
 
         InsertListItem(properties, pos++, _("Inherits Tables"), GetHasSubclass());
         InsertListItem(properties, pos++, _("Inherited Tables Count"), GetInheritedTableCount());

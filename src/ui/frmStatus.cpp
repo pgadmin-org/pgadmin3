@@ -31,7 +31,8 @@ BEGIN_EVENT_TABLE(frmStatus, wxDialog)
 END_EVENT_TABLE();
 
 
-#define statusList (XRCCTRL(*this, "lstStatus", wxListCtrl))
+#define statusList      CTRL("lstStatus", wxListCtrl)
+#define spnRefreshRate  CTRL("spnRefreshRate", wxSpinButton)
 
 void frmStatus::OnClose(wxCommandEvent &event)
 {
@@ -49,10 +50,10 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const 
     connection=conn;
     backend_pid=conn->GetBackendPID();
 
-    statusList->InsertColumn(0, wxT("PID"), wxLIST_FORMAT_LEFT, 55);
-    statusList->InsertColumn(1, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
-    statusList->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
-    statusList->InsertColumn(3, wxT("Query"), wxLIST_FORMAT_LEFT, 850);
+    statusList->InsertColumn(0, _("PID"), wxLIST_FORMAT_LEFT, 55);
+    statusList->InsertColumn(1, _("Database"), wxLIST_FORMAT_LEFT, 100);
+    statusList->InsertColumn(2, _("User"), wxLIST_FORMAT_LEFT, 100);
+    statusList->InsertColumn(3, _("Query"), wxLIST_FORMAT_LEFT, 850);
 
     timer=new wxTimer(this, TIMER_ID);
     timer->Start(1000);
@@ -86,7 +87,7 @@ void frmStatus::Go()
 void frmStatus::OnRateChange(wxCommandEvent &event)
 {
     timer->Stop();
-    long rate=(XRCCTRL(*this, "spnRefreshRate", wxSpinButton))->GetValue();
+    long rate=spnRefreshRate->GetValue();
     if (rate)
     {
         timer->Start(rate*1000L);
