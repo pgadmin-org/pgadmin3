@@ -336,17 +336,24 @@ frmMain::~frmMain()
     // Clear the treeview
     browser->DeleteAllItems();
 
-/*
+
 	// Keith 2003.03.05
 	// Fixed memory leak -- These are not destroyed automatically 
         // Andreas 2003-04-08 yes they are, cascaded through the splitter! 
         // GTK won't like explicit deletes.
+	// Keith 2003.04.16
+	// Incorrect, SEE DOCS for wxTreeCtrl
+	// treecontextmenu is a popup menu, must be explicitly deleted, SEE DOCS
+	// imagelists must be explicitly deleted, SEE DOCS
 	delete treeContextMenu;
 	delete browserImages;
 	delete statisticsImages;
 	delete propertiesImages;
-	delete statistics;
-*/
+
+	// Keith 2003.04.16
+	// Probably does not need to be deleted
+	//delete statistics;
+
 }
 
 
