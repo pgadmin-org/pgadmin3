@@ -86,7 +86,6 @@ bool pgAdmin3::OnInit()
 		wxYield();
 	#endif
     wxSleep(2);
-	
 #endif
 
     // Create & show the main form
