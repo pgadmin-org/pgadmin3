@@ -79,7 +79,14 @@ BEGIN_EVENT_TABLE(myClientWindow, wxMDIClientWindow)
     EVT_PAINT(myClientWindow::OnPaint)
 END_EVENT_TABLE()
 
-frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
+frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database):
+ wxMDIParentFrame(form, -1, 
+   wxT("Query Builder: ") + database->GetName()
+    + wxT(" (") + database->GetServer()->GetName() + wxT(")"),
+   settings->GetFrmQueryBuilderPos(), 
+   settings->GetFrmQueryBuilderSize(), 
+   wxFRAME_NO_WINDOW_MENU | wxSYSTEM_MENU | wxMAXIMIZE_BOX | 
+   wxMINIMIZE_BOX | wxRESIZE_BORDER)
 {
 	// Log
 	wxLogInfo(wxT("Creating Query builder"));
@@ -90,18 +97,6 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 	m_database = database;
 	m_server = m_database->GetServer();
 	changed = FALSE;
-
-	wxString title = wxT("Query Builder: ") + 
-		m_database->GetName() +
-		wxT(" (") + 
-		m_server->GetName() + 
-		wxT(")");
-
-	// Create
-	this->Create(form, -1, title,
-		settings->GetFrmQueryBuilderPos(), 
-		settings->GetFrmQueryBuilderSize(),
-        wxFRAME_NO_WINDOW_MENU | wxSYSTEM_MENU | wxMAXIMIZE_BOX | wxMINIMIZE_BOX | wxRESIZE_BORDER);
 
     // Icon
     SetIcon(wxIcon(sql_xpm));
