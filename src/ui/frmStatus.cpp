@@ -510,7 +510,7 @@ void frmStatus::OnTerminateBtn(wxCommandEvent &event)
 	wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
 }
 
-void frmStatus::OnSelStatusItem(wxCommandEvent &event)
+void frmStatus::OnSelStatusItem(wxListEvent &event)
 {
 	if (connection->BackendMinimumVersion(7, 5))
 	{
@@ -521,7 +521,7 @@ void frmStatus::OnSelStatusItem(wxCommandEvent &event)
 		} 
 		else 
 		{
-			btnCancel->Enable(false);
+			btnCancel->Enablcd sre(false);
 			btnTerminate->Enable(false);
 		}
 	}

@@ -44,7 +44,7 @@ private:
 	void OnNotebookPageChanged(wxNotebookEvent& event);
     void OnTerminateBtn(wxCommandEvent &event);
     void OnCancelBtn(wxCommandEvent &event);
-	void OnSelStatusItem(wxCommandEvent &event);
+	void OnSelStatusItem(wxListEvent &event);
 
 
     void addLog(const wxString &str);
