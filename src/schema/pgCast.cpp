@@ -38,9 +38,10 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         sql = wxT("-- Cast: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-            + wxT("-- DROP CAST (") + GetSourceType() + wxT(" AS ") + GetTargetType() + wxT(")")
-            + wxT("\n\nCREATE CAST (") + GetSourceType()
-            + wxT(" AS ") + GetTargetType();
+              wxT("-- DROP CAST (") + GetQuotedSchemaPrefix(GetSourceNamespace()) + GetSourceType() +
+                              wxT(" AS ") + GetQuotedSchemaPrefix(GetTargetNamespace()) + GetTargetType() + wxT(")") 
+              wxT("\n\nCREATE CAST (") + GetQuotedSchemaPrefix(GetSourceNamespace()) + GetSourceType() +
+              wxT(" AS ") + GetQuotedSchemaPrefix(GetTargetNamespace()) + GetTargetType();
         if (GetCastFunction().IsNull())
             sql += wxT(")\n  WITHOUT FUNCTION");
         else
@@ -61,8 +62,8 @@ void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
-        properties->AppendItem(_("Source type"), GetSourceType());
-        properties->AppendItem(_("Target type"), GetTargetType());
+        properties->AppendItem(_("Source type"), GetSchemaPrefix(GetSourceNamespace()) + GetSourceType());
+        properties->AppendItem(_("Target type"), GetSchemaPrefix(GetTargetNamespace()) + GetTargetType());
         if (GetCastFunction().IsNull())
             properties->AppendItem(_("Function"), _("(binary compatible)"));
         else
@@ -99,12 +100,16 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
         systemRestriction = wxT(" WHERE ca.oid > ") + NumToStr(collection->GetConnection()->GetLastSystemOID()) + wxT("\n");
 
     pgSet *casts= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp, proname, nspname, description\n")
+        wxT("SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp,")
+        wxT(      " ns.nspname AS srcnspname, nt.nspname AS trgnspname,\n")
+        wxT(      " proname, np.nspname AS pronspname, description\n")
         wxT("  FROM pg_cast ca\n")
         wxT("  JOIN pg_type st ON st.oid=castsource\n")
+        wxT("  JOIN pg_namespace ns ON ns.oid=st.typnamespace\n")
         wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
+        wxT("  JOIN pg_namespace nt ON nt.oid=tt.typnamespace\n")
         wxT("  LEFT JOIN pg_proc pr ON pr.oid=castfunc\n")
-        wxT("  LEFT JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
+        wxT("  LEFT JOIN pg_namespace np ON np.oid=pr.pronamespace\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ca.oid AND des.objsubid=0\n")
         + restriction + systemRestriction +
         wxT(" ORDER BY st.typname, tt.typname"));
@@ -119,11 +124,13 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             cast->iSetOid(casts->GetOid(wxT("oid")));
             cast->iSetDatabase(collection->GetDatabase());
             cast->iSetSourceType(casts->GetVal(wxT("srctyp")));
+            cast->iSetSourceNamespace(casts->GetVal(wxT("srcnspname")));
             cast->iSetSourceTypeOid(casts->GetOid(wxT("castsource")));
             cast->iSetTargetType(casts->GetVal(wxT("trgtyp")));
+            cast->iSetTargetNamespace(casts->GetVal(wxT("trgnspname")));
             cast->iSetTargetTypeOid(casts->GetOid(wxT("casttarget")));
             cast->iSetCastFunction(casts->GetVal(wxT("proname")));
-            cast->iSetCastNamespace(casts->GetVal(wxT("nspname")));
+            cast->iSetCastNamespace(casts->GetVal(wxT("pronspname")));
             cast->iSetComment(casts->GetVal(wxT("description")));
             wxString ct=casts->GetVal(wxT("castcontext"));
             cast->iSetCastContext(
