@@ -13,7 +13,9 @@ EXTRA_DIST = 	README.txt BUGS.txt LICENCE.txt \
 		pkg/debian/pgadmin3.menu \
 		pkg/redhat/pgadmin3.spec \
 		pkg/slackware/build-package pkg/slackware/slack-desc \
-		pkg/src/build-tarball
+		pkg/src/build-tarball \
+		pkg/win32/screen.bmp pkg/win32/banner.bmp \
+		pkg/win32/licence.rtf pkg/win32/pgadmin3.wsi
 
 nobase_dist_pkgdata_DATA = \
 		docs/en_US/pg/*.html \
