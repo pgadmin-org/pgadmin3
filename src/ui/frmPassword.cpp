@@ -27,7 +27,7 @@
 #define txtConfirm      CTRL_TEXT("txtConfirm")
 
 
-BEGIN_EVENT_TABLE(frmPassword, wxDialog)
+BEGIN_EVENT_TABLE(frmPassword, pgDialog)
     EVT_BUTTON (XRCID("btnHelp"),     frmPassword::OnHelp)
     EVT_BUTTON (XRCID("btnOK"),       frmPassword::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),   frmPassword::OnCancel)
@@ -39,7 +39,7 @@ frmPassword::frmPassword(wxFrame *parent)
     wxLogInfo(wxT("Creating a change password dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmPassword")); 
+    LoadResource(wxT("frmPassword")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

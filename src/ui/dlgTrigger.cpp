@@ -188,7 +188,7 @@ pgObject *dlgTrigger::CreateObject(pgCollection *collection)
 void dlgTrigger::OnChange(wxCommandEvent &ev)
 {
     if (trigger)
-        btnOK->Enable(txtComment->GetValue() != trigger->GetComment());
+        EnableOK(txtComment->GetValue() != trigger->GetComment());
     else
     {
         wxString function=cbFunction->GetValue();

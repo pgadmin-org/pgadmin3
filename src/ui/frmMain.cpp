@@ -102,10 +102,13 @@ WX_DEFINE_LIST(windowList);
 #error wxWindows must be compiled with wxDIALOG_UNIT_COMPATIBILITY=0!
 #endif
 
-frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
-: wxFrame((wxFrame *)NULL, -1, title, pos, size)
+frmMain::frmMain(const wxString& title)
+: pgFrame((wxFrame *)NULL, title)
 {
     msgLevel=0;
+
+    dlgName = wxT("frmMain");
+    RestorePosition(50, 50, 750, 550, 300, 200);
 
     wxWindowBase::SetFont(settings->GetSystemFont());
 
@@ -379,7 +382,7 @@ frmMain::~frmMain()
 {
     StoreServers();
 
-    settings->Write(wxT("frmMain"), GetSize(), GetPosition());
+    SavePosition();
     settings->Write(wxT("frmMain/SplitHorizontal"), horizontal->GetSashPosition());
     settings->Write(wxT("frmMain/SplitVertical"), vertical->GetSashPosition());
 

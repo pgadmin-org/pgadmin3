@@ -220,7 +220,7 @@ void dlgUser::OnChange(wxCommandEvent &ev)
     }
     else
     {
-        btnOK->Enable(!GetSql().IsEmpty());
+        EnableOK(!GetSql().IsEmpty());
     }
 }
 

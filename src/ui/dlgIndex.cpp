@@ -136,7 +136,7 @@ void dlgIndexBase::OnChange(wxCommandEvent &ev)
 {
     if (index)
     {
-        btnOK->Enable(txtComment->GetValue() != index->GetComment());
+        EnableOK(txtComment->GetValue() != index->GetComment());
     }
     else
     {
@@ -180,7 +180,7 @@ void dlgIndex::OnChange(wxCommandEvent &ev)
 {
     if (index)
     {
-        btnOK->Enable(txtComment->GetValue() != index->GetComment());
+        EnableOK(txtComment->GetValue() != index->GetComment());
     }
     else
     {

@@ -20,10 +20,10 @@
 #include "ctlSQLResult.h"
 
 
-class frmQuery : public wxFrame
+class frmQuery : public pgFrame
 {
 public:
-    frmQuery(frmMain *form, const wxString& _title, pgConn *conn, const wxPoint& pos, const wxSize& size, const wxString& qry);
+    frmQuery(frmMain *form, const wxString& _title, pgConn *conn, const wxString& qry);
     ~frmQuery();
     void Go();
 

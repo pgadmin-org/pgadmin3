@@ -20,7 +20,7 @@
 #include "pgAdmin3.h"
 
 // Class declarations
-class frmSplash : public wxFrame
+class frmSplash : public pgFrame
 {
 public:
     frmSplash(wxFrame *parent);

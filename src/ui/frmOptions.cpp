@@ -52,7 +52,7 @@ extern wxArrayString existingLangNames;
 #define txtSqlFont                  CTRL_TEXT("txtSqlFont")
 
 
-BEGIN_EVENT_TABLE(frmOptions, wxDialog)
+BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_MENU(MNU_HELP,                        frmOptions::OnHelp)
     EVT_BUTTON (XRCID("btnFont"),             frmOptions::OnFontSelect)
     EVT_BUTTON (XRCID("btnSqlFont"),          frmOptions::OnSqlFontSelect)
@@ -67,7 +67,7 @@ frmOptions::frmOptions(frmMain *parent)
     wxLogInfo(wxT("Creating an options dialogue"));
     mainForm=parent;
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmOptions")); 
+    LoadResource(wxT("frmOptions")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

@@ -80,6 +80,11 @@ public:
     OID GetOid(const int col) const;
     OID GetOid(const wxString &col) const;
 
+    char *GetCharPtr(const int col) const;
+    char *GetCharPtr(const wxString &col) const;
+
+    wxMBConv &GetConversion() const { return conv; }
+
 
 private:
     pgConn *conn;

@@ -18,7 +18,6 @@
 #include "pgObject.h"
 #include "pgConn.h"
 #include <wx/xrc/xmlres.h>
-#include "dlgClasses.h"
 
 class pgSchema;
 class pgTable;
@@ -32,7 +31,6 @@ class ctlSecurityPanel;
 #define lstColumns      CTRL_LISTVIEW("lstColumns")
 #define cbColumns       CTRL_COMBOBOX("cbColumns")
 
-
 class dlgProperty : public DialogWithHelp
 {
 public:
@@ -44,6 +42,7 @@ public:
     virtual wxString GetSql() =0;
     virtual pgObject *CreateObject(pgCollection *collection) =0;
     virtual pgObject *GetObject() =0;
+    virtual void SetObject(pgObject *obj) {} // only necessary if apply is implemented
 
     virtual void CreateAdditionalPages();
     virtual wxString GetHelpPage() const;
@@ -68,6 +67,7 @@ protected:
     void OnPageSelect(wxNotebookEvent& event);
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);
+    void OnApply(wxCommandEvent &ev);
     void OnClose(wxCloseEvent &ev);
 
 
@@ -89,6 +89,7 @@ protected:
 
 private:
     bool tryUpdate(wxTreeItemId collectionItem);
+    bool apply(const wxString &sql);
 
     DECLARE_EVENT_TABLE();
 };

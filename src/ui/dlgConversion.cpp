@@ -150,7 +150,7 @@ void dlgConversion::OnChange(wxCommandEvent &ev)
 {
     if (conversion)
     {
-        btnOK->Enable(txtName->GetValue() != conversion->GetName() 
+        EnableOK(txtName->GetValue() != conversion->GetName() 
             || txtComment->GetValue() != conversion->GetComment());
     }
     else

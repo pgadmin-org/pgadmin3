@@ -18,7 +18,7 @@
 
 class ctlHelpWindow;
 class frmMain;
-class frmHelp : public wxFrame
+class frmHelp : public pgFrame
 {
 public:
     frmHelp(wxWindow *fr);

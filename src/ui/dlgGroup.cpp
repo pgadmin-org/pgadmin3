@@ -106,7 +106,7 @@ void dlgGroup::OnChange(wxCommandEvent &ev)
 {
     if (group)
     {
-        btnOK->Enable(!GetSql().IsEmpty());
+        EnableOK(!GetSql().IsEmpty());
     }
     else
     {

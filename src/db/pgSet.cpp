@@ -146,9 +146,22 @@ int pgSet::ColNumber(const wxString &colname) const
 }
 
 
+
+char *pgSet::GetCharPtr(const int col) const
+{
+    return PQgetvalue(res, pos -1, col);
+}
+
+
+char *pgSet::GetCharPtr(const wxString &col) const
+{
+    return PQgetvalue(res, pos -1, ColNumber(col));
+}
+
+
 wxString pgSet::GetVal(const int col) const
 {
-    return wxString(PQgetvalue(res, pos -1, col), conv);
+    return wxString(GetCharPtr(col), conv);
 }
 
 

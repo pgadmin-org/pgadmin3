@@ -26,10 +26,10 @@
 
 // Class declarations
 
-class frmStatus : public wxDialog
+class frmStatus : public pgDialog
 {
 public:
-    frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const wxPoint& pos, const wxSize& size);
+    frmStatus(frmMain *form, const wxString& _title, pgConn *conn);
     ~frmStatus();
     void Go();
     
@@ -41,11 +41,19 @@ private:
     void OnRateChange(wxCommandEvent &event);
     void OnRateChangeSpin(wxSpinEvent &event);
 	void OnNotebookPageChanged(wxNotebookEvent& event);
+
+    void addLog(const wxString &str);
+    
     frmMain *mainForm;
+    wxString logFormat;
+    bool logHasTimestamp, logFormatKnown;
+    int logFmtPos;
+
     pgConn *connection;
     long backend_pid;
     wxTimer *timer;
 	bool loaded;
+    long logFileLength;
 
     DECLARE_EVENT_TABLE();
 };

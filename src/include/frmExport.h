@@ -22,7 +22,7 @@ class ctlSQLResult;
 class pgSet;
 
 // Class declarations
-class frmExport : public wxDialog
+class frmExport : public pgDialog
 {
 public:
     frmExport(wxWindow *parent);

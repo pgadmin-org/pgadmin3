@@ -196,7 +196,7 @@ void dlgOperator::OnChange(wxCommandEvent &ev)
 {
     if (oper)
     {
-        btnOK->Enable(txtComment->GetValue() != oper->GetComment());
+        EnableOK(txtComment->GetValue() != oper->GetComment());
     }
     else
     {

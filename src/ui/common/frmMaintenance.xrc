@@ -3,96 +3,125 @@
   <object class="wxDialog" name="frmMaintenance">
     <title>Maintenance</title>
     <size>200,153d</size>
-    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU</style>
-    <object class="wxNotebook" name="nbNotebook">
-      <object class="notebookpage">
-        <label>Options</label>
-        <object class="wxPanel" name="pnlOptions">
-          <object class="wxRadioBox" name="rbxAction">
-            <label>Maintenance operation</label>
-            <content>
-              <item>VACUUM</item>
-              <item>ANALYZE</item>
-              <item>REINDEX</item>
-            </content>
-            <selection>0</selection>
-            <pos>5,5d</pos>
-            <size>180,27d</size>
-            <style>wxRA_SPECIFY_ROWS</style>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <rows>2</rows>
+      <object class="sizeritem">
+        <object class="wxNotebook" name="nbNotebook">
+          <object class="notebookpage">
+            <label>Options</label>
+            <object class="wxPanel" name="pnlOptions">
+              <object class="wxRadioBox" name="rbxAction">
+                <label>Maintenance operation</label>
+                <content>
+                  <item>VACUUM</item>
+                  <item>ANALYZE</item>
+                  <item>REINDEX</item>
+                </content>
+                <selection>0</selection>
+                <pos>5,5d</pos>
+                <size>180,27d</size>
+                <style>wxRA_SPECIFY_ROWS</style>
+              </object>
+              <object class="wxStaticBox" name="sbxOptions">
+                <label>VACUUM options</label>
+                <pos>5,40d</pos>
+                <size>85,50d</size>
+              </object>
+              <object class="wxCheckBox" name="chkFull">
+                <label>FULL</label>
+                <pos>22,52d</pos>
+              </object>
+              <object class="wxCheckBox" name="chkFreeze">
+                <label>FREEZE</label>
+                <pos>22,64d</pos>
+              </object>
+              <object class="wxCheckBox" name="chkAnalyze">
+                <label>ANALYZE</label>
+                <checked>1</checked>
+                <pos>22,76d</pos>
+              </object>
+              <object class="wxStaticBox" name="sbxReindexOptions">
+                <label>REINDEX options</label>
+                <pos>100,40d</pos>
+                <size>85,40d</size>
+              </object>
+              <object class="wxCheckBox" name="chkForce">
+                <label>FORCE</label>
+                <pos>113,52d</pos>
+              </object>
+              <object class="wxCheckBox" name="chkRecreate">
+                <label>RECREATE</label>
+                <pos>113,64d</pos>
+              </object>
+              <object class="wxCheckBox" name="chkVerbose">
+                <label>Verbose messages</label>
+                <checked>1</checked>
+                <pos>8,95d</pos>
+              </object>
+              <object class="wxStaticBitmap" name="stBitmap">
+                <bitmap stock_id="wxART_MISSING_IMAGE"></bitmap>
+                <pos>800,18d</pos>
+                <size>42,39d</size>
+              </object>
+              <style></style>
+            </object>
+            <selected>1</selected>
           </object>
-          <object class="wxStaticBox" name="sbxOptions">
-            <label>VACUUM options</label>
-            <pos>5,40d</pos>
-            <size>85,50d</size>
-          </object>
-          <object class="wxCheckBox" name="chkFull">
-            <label>FULL</label>
-            <pos>22,52d</pos>
-          </object>
-          <object class="wxCheckBox" name="chkFreeze">
-            <label>FREEZE</label>
-            <pos>22,64d</pos>
-          </object>
-          <object class="wxCheckBox" name="chkAnalyze">
-            <label>ANALYZE</label>
-            <checked>1</checked>
-            <pos>22,76d</pos>
-          </object>
-          <object class="wxStaticBox" name="sbxReindexOptions">
-            <label>REINDEX options</label>
-            <pos>100,40d</pos>
-            <size>85,40d</size>
-          </object>
-          <object class="wxCheckBox" name="chkForce">
-            <label>FORCE</label>
-            <pos>113,52d</pos>
-          </object>
-          <object class="wxCheckBox" name="chkRecreate">
-            <label>RECREATE</label>
-            <pos>113,64d</pos>
-          </object>
-          <object class="wxCheckBox" name="chkVerbose">
-            <label>Verbose messages</label>
-            <checked>1</checked>
-            <pos>8,95d</pos>
-          </object>
-          <object class="wxStaticBitmap" name="stBitmap">
-            <bitmap stock_id="wxART_MISSING_IMAGE"></bitmap>
-            <pos>800,18d</pos>
-            <size>42,39d</size>
+          <pos>2,2d</pos>
+          <size>195,126d</size>
+          <style>wxNB_BOTTOM</style>
+          <object class="notebookpage">
+            <label>Messages</label>
+            <object class="wxTextCtrl" name="txtMessages">
+              <style>wxTE_MULTILINE|wxTE_READONLY|wxHSCROLL</style>
+            </object>
           </object>
         </object>
-        <selected>1</selected>
+        <flag>wxTOP|wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxGROW|wxALIGN_CENTRE</flag>
       </object>
-      <pos>2,2d</pos>
-      <size>195,126d</size>
-      <style>wxNB_BOTTOM</style>
-      <object class="notebookpage">
-        <label>Messages</label>
-        <object class="wxPanel" name="pnlMessages">
-          <object class="wxTextCtrl" name="txtMessages">
-            <pos>2,3d</pos>
-            <size>180,104d</size>
-            <style>wxTE_MULTILINE|wxTE_READONLY|wxHSCROLL</style>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>4</cols>
+          <rows>1</rows>
+          <object class="sizeritem">
+            <object class="wxButton" name="btnHelp">
+              <label>&amp;Help</label>
+              <pos>2,135d</pos>
+              <size>50,15d</size>
+            </object>
+            <flag>wxTOP|wxBOTTOM|wxLEFT|wxRIGHT</flag>
+            <border>5</border>
           </object>
+          <object class="spacer">
+            <size>0,0</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="btnOK">
+              <label>&amp;OK</label>
+              <default>1</default>
+              <pos>93,135d</pos>
+              <size>50,15d</size>
+            </object>
+            <flag>wxTOP|wxBOTTOM|wxLEFT|wxRIGHT</flag>
+            <border>5</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="btnCancel">
+              <label>&amp;Cancel</label>
+              <pos>146,135d</pos>
+              <size>50,15d</size>
+            </object>
+            <flag>wxTOP|wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxGROW|wxALIGN_RIGHT</flag>
+            <border>5</border>
+          </object>
+          <growablecols>1</growablecols>
         </object>
+        <flag>wxEXPAND|wxGROW</flag>
       </object>
-    </object>
-    <object class="wxButton" name="btnHelp">
-      <label>&amp;Help</label>
-      <pos>2,135d</pos>
-      <size>50,15d</size>
-    </object>
-    <object class="wxButton" name="btnOK">
-      <label>&amp;OK</label>
-      <default>1</default>
-      <pos>93,135d</pos>
-      <size>50,15d</size>
-    </object>
-    <object class="wxButton" name="btnCancel">
-      <label>&amp;Cancel</label>
-      <pos>146,135d</pos>
-      <size>50,15d</size>
+      <growablecols>0</growablecols>
+      <growablerows>0</growablerows>
     </object>
   </object>
 </resource>

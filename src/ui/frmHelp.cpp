@@ -34,7 +34,7 @@
 
 
 
-BEGIN_EVENT_TABLE(frmHelp, wxFrame)
+BEGIN_EVENT_TABLE(frmHelp, pgFrame)
     EVT_MENU(MNU_BACK,                  frmHelp::OnBack)
     EVT_MENU(MNU_FORWARD,               frmHelp::OnForward)
     EVT_MENU(MNU_REFRESH,               frmHelp::OnRefresh)
@@ -43,9 +43,10 @@ END_EVENT_TABLE();
 
 
 frmHelp::frmHelp(wxWindow *fr) 
-: wxFrame(fr, -1, wxT(""))
+: pgFrame((wxFrame*)fr, wxEmptyString)
 {
     SetIcon(wxIcon(pgAdmin3_xpm));
+    dlgName = wxT("frmHelp");
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     wxToolBar *toolBar=CreateToolBar();
@@ -69,11 +70,7 @@ frmHelp::frmHelp(wxWindow *fr)
     htmlWindow->SetRelatedFrame(this, APPNAME_L wxT(" - %s"));
     htmlWindow->SetRelatedStatusBar(0);
 
-    wxPoint pos(settings->Read(wxT("frmHelp"), wxPoint(100, 100)));
-    wxSize size(settings->Read(wxT("frmHelp"), wxSize(400, 500)));
-    CheckOnScreen(pos, size, 200, 150);
-    Move(pos);
-    SetSize(size);
+    RestorePosition(-1, -1, 400, 500, 200, 150);
 
     CheckToolBar();
 };
@@ -81,7 +78,7 @@ frmHelp::frmHelp(wxWindow *fr)
 
 frmHelp::~frmHelp()
 {
-    settings->Write(wxT("frmHelp"), GetSize(), GetPosition());
+    SavePosition();
 }
 
 

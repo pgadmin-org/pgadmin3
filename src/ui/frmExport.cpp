@@ -40,7 +40,7 @@
 #define cbQuoteChar     CTRL_COMBOBOX("cbQuoteChar")
 
 
-BEGIN_EVENT_TABLE(frmExport, wxDialog)
+BEGIN_EVENT_TABLE(frmExport, pgDialog)
     EVT_TEXT(XRCID("txtFilename"),          frmExport::OnChange)
     EVT_RADIOBUTTON(XRCID("rbQuoteNone"),   frmExport::OnChange)
     EVT_RADIOBUTTON(XRCID("rbQuoteStrings"),frmExport::OnChange)
@@ -59,7 +59,7 @@ frmExport::frmExport(wxWindow *p)
     wxLogInfo(wxT("Creating the export dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmExport")); 
+    LoadResource(wxT("frmExport")); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

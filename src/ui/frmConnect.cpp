@@ -29,7 +29,7 @@
 extern double libpqVersion;
 
 
-BEGIN_EVENT_TABLE(frmConnect, wxDialog)
+BEGIN_EVENT_TABLE(frmConnect, pgDialog)
     EVT_BUTTON (XRCID("btnHelp"),     frmConnect::OnHelp)
     EVT_BUTTON (XRCID("btnOK"),       frmConnect::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),   frmConnect::OnCancel)
@@ -55,7 +55,7 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
     wxLogInfo(wxT("Creating a connect dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxXmlResource::Get()->LoadDialog(this, form, wxT("frmConnect")); 
+    LoadResource(wxT("frmConnect"));
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

@@ -145,10 +145,10 @@ private:
 
 
 
-class frmEditGrid : public wxFrame
+class frmEditGrid : public pgFrame
 {
 public:
-    frmEditGrid(frmMain *form, const wxString& _title, pgConn *conn, const wxPoint& pos, const wxSize& size, pgSchemaObject *obj);
+    frmEditGrid(frmMain *form, const wxString& _title, pgConn *conn, pgSchemaObject *obj);
     ~frmEditGrid();
 
 	void ShowForm(bool filter = false);

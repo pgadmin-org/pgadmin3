@@ -433,11 +433,7 @@ bool pgAdmin3::OnInit()
 #endif
 
     // Create & show the main form
-    wxPoint pos(settings->Read(wxT("frmMain"), wxPoint(50,50)));
-    wxSize size(settings->Read(wxT("frmMain"), wxSize(750,550)));
-    CheckOnScreen(pos, size, 300, 200);
-
-    winMain = new frmMain(APPNAME_L, pos, size);
+    winMain = new frmMain(APPNAME_L);
 
     if (!winMain) 
         wxLogFatalError(__("Couldn't create the main window!"));

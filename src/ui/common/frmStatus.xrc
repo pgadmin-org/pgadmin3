@@ -2,47 +2,94 @@
 <resource>
   <object class="wxDialog" name="frmStatus">
     <title>Database Status</title>
-    <object class="wxStaticText" name="stRate">
-      <label>Refresh rate (seconds)</label>
-      <pos>5,7d</pos>
-    </object>
-    <object class="wxSpinCtrl" name="spnRefreshRate">
-      <value>1</value>
-      <min>0</min>
-      <pos>90,6d</pos>
-      <size>33,12d</size>
-    </object>
-    <object class="wxButton" name="btnRefresh">
-      <label>Refresh</label>
-      <default>1</default>
-      <pos>283,4d</pos>
-      <size>53,15d</size>
-    </object>
-    <object class="wxButton" name="btnClose">
-      <label>Close</label>
-      <pos>342,4d</pos>
-      <size>53,15d</size>
-    </object>
     <size>400,300d</size>
-    <object class="wxNotebook" name="nbStatus">
-      <pos>2,24d</pos>
-      <size>395,273d</size>
-      <object class="notebookpage">
-        <label>Status</label>
-        <object class="wxListCtrl" name="lstStatus">
-          <pos>5,24</pos>
-          <size>385,270</size>
-          <style>wxLC_REPORT|wxSUNKEN_BORDER</style>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <rows>2</rows>
+      <growablerows>1</growablerows>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>5</cols>
+          <rows>1</rows>
+          <object class="sizeritem">
+            <object class="wxStaticText" name="stRate">
+              <label>Refresh rate (seconds)</label>
+              <pos>5,7d</pos>
+            </object>
+            <flag>wxLEFT|wxRIGHT|wxALIGN_CENTRE_VERTICAL</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxSpinCtrl" name="spnRefreshRate">
+              <value>1</value>
+              <min>0</min>
+              <pos>90,6d</pos>
+              <size>33,12d</size>
+            </object>
+            <flag>wxTOP|wxLEFT|wxALIGN_CENTRE_VERTICAL</flag>
+            <border>3</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxStaticText">
+              <label></label>
+            </object>
+            <flag>wxEXPAND|wxGROW|wxALIGN_CENTRE</flag>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="btnRefresh">
+              <label>Refresh</label>
+              <default>1</default>
+              <pos>283,4d</pos>
+              <size>53,15d</size>
+            </object>
+            <flag>wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>5</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="btnClose">
+              <label>Close</label>
+              <pos>342,4d</pos>
+              <size>53,15d</size>
+            </object>
+            <flag>wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>5</border>
+          </object>
+          <growablecols>2</growablecols>
         </object>
+        <flag>wxTOP|wxEXPAND|wxGROW</flag>
       </object>
-      <object class="notebookpage">
-        <label>Locks</label>
-        <object class="wxListCtrl" name="lstLocks">
-          <pos>5,24</pos>
-          <size>385,270</size>
-          <style>wxLC_REPORT|wxSUNKEN_BORDER</style>
+      <object class="sizeritem">
+        <object class="wxNotebook" name="nbStatus">
+          <pos>2,24d</pos>
+          <size>395,273d</size>
+          <object class="notebookpage">
+            <label>Status</label>
+            <object class="wxListCtrl" name="lstStatus">
+              <pos>5,24</pos>
+              <size>385,270</size>
+              <style>wxLC_REPORT|wxSUNKEN_BORDER</style>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Locks</label>
+            <object class="wxListCtrl" name="lstLocks">
+              <pos>5,24</pos>
+              <size>385,270</size>
+              <style>wxLC_REPORT|wxSUNKEN_BORDER</style>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Log</label>
+            <object class="wxListCtrl" name="lstLog">
+              <style>wxLC_REPORT|wxSUNKEN_BORDER</style>
+            </object>
+          </object>
         </object>
+        <flag>wxTOP|wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxGROW|wxALIGN_CENTRE</flag>
+        <border>2</border>
       </object>
+      <growablecols>0</growablecols>
     </object>
   </object>
 </resource>

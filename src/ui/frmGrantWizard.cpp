@@ -44,7 +44,9 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
     nbNotebook = 0;
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxXmlResource::Get()->LoadDialog(this, form, wxT("frmGrantWizard"));
+    LoadResource(wxT("frmGrantWizard"));
+    RestorePosition();
+
     SetTitle(wxString::Format(_("Privileges for %s %s"), object->GetTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
     // Icon
@@ -52,13 +54,14 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
     nbNotebook = CTRL_NOTEBOOK("nbNotebook");
     sqlPane = 0;
 
-    CenterOnParent();
+    Restore();
 }
 
 
 frmGrantWizard::~frmGrantWizard()
 {
     wxLogInfo(wxT("Destroying a grant wizard dialogue"));
+    SavePosition();
     Abort();
 }
 

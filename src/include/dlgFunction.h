@@ -27,6 +27,7 @@ public:
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    void SetObject(pgObject *obj) { function = (pgFunction*)obj; }
 
 private:
     pgSchema *schema;

@@ -85,12 +85,15 @@ END_EVENT_TABLE()
 
 
 
-frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxPoint& pos, const wxSize& size, const wxString& query)
-: wxFrame(NULL, -1, _title, pos, size)
+frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query)
+: pgFrame(NULL, _title)
 {
     mainForm=form;
     title = _title;
     conn=_conn;
+
+    dlgName = wxT("frmQuery");
+    RestorePosition(100, 100, 600, 500, 200, 150);
 
     SetIcon(wxIcon(sql_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -239,7 +242,7 @@ frmQuery::~frmQuery()
     wxLogInfo(wxT("Destroying SQL Query box"));
 
     mainForm->RemoveFrame(this);
-    settings->Write(wxT("frmQuery"), GetSize(), GetPosition());
+    SavePosition();
     settings->Write(wxT("frmQuery/Split"), horizontal->GetSashPosition());
     settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
     settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));

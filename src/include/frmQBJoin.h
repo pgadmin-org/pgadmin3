@@ -16,7 +16,7 @@
 #include <wx/wx.h>
 
 // Class declarations
-class frmQBJoin : public wxDialog
+class frmQBJoin : public pgDialog
 {
 public:
 

@@ -21,7 +21,7 @@
 class frmMain;
 
 // Class declarations
-class frmOptions : public wxDialog
+class frmOptions : public pgDialog
 {
 public:
     frmOptions(frmMain *parent);

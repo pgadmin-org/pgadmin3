@@ -27,12 +27,12 @@
 #include "copyright.h"
 #include "version.h"
 
-BEGIN_EVENT_TABLE(frmSplash, wxFrame)
+BEGIN_EVENT_TABLE(frmSplash, pgFrame)
     EVT_PAINT(frmSplash::OnPaint)
 END_EVENT_TABLE()
 
 frmSplash::frmSplash(wxFrame *parent)
-: wxFrame(parent, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW)
+: pgFrame(parent,  wxT(""), wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW)
 {
     
     wxLogInfo(wxT("Creating a splash screen"));

@@ -95,6 +95,10 @@ public:
     bool GetDoubleClickProperties() const { return doubleClickProperties; }
     void SetDoubleClickProperties(const bool newval);
 
+    // maximum size of server log to read
+    long GetMaxServerLogSize() const { return maxServerLogSize; }
+    void SetMaxServerLogSize(long l) { maxServerLogSize = l; }
+
     wxString GetSearchPath() const { return searchPath; }
     void SetSearchPath(const wxString &s) { searchPath=s; }
 
@@ -165,6 +169,7 @@ private:
     long maxRows, maxColSize, autoRowCountThreshold;
     bool stickySql, unicodeFile;
     bool doubleClickProperties;
+    long maxServerLogSize;
 
     wxString searchPath;
 };

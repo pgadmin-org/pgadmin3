@@ -151,10 +151,10 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), NumToStr(GetOid()));
         properties->AppendItem(_("Child columns"), GetFkColumns());
-        properties->AppendItem(_("Covering index"), GetCoveringIndex());
         properties->AppendItem(_("References"), GetReferences() 
             + wxT("(") +GetRefColumns() + wxT(")"));
 
+        properties->AppendItem(_("Covering index"), GetCoveringIndex());
         properties->AppendItem(_("On update"), GetOnUpdate());
         properties->AppendItem(_("On delete"), GetOnDelete());
         properties->AppendItem(_("Deferrable?"), BoolToYesNo(GetDeferrable()));

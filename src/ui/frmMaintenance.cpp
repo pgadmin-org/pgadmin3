@@ -49,7 +49,9 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
     wxLogInfo(wxT("Creating a maintenance dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxXmlResource::Get()->LoadDialog(this, form, wxT("frmMaintenance"));
+    LoadResource(wxT("frmMaintenance"));
+    RestorePosition();
+
     SetTitle(wxString::Format(_("Maintain %s %s"), object->GetTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
     txtMessages = CTRL_TEXT("txtMessages");
@@ -76,6 +78,7 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
 frmMaintenance::~frmMaintenance()
 {
     wxLogInfo(wxT("Destroying a maintenance dialogue"));
+    SavePosition();
     Abort();
 }
 

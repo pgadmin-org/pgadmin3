@@ -53,7 +53,7 @@ extern wxString loadPath;
 
 
 // Event table
-BEGIN_EVENT_TABLE(frmMain, wxFrame)
+BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_SQL,                       frmMain::OnSql)
     EVT_MENU(MNU_MAINTENANCE,               frmMain::OnMaintenance)
     EVT_MENU(MNU_INDEXCHECK,                frmMain::OnIndexcheck)
@@ -328,10 +328,7 @@ void frmMain::OnStatus(wxCommandEvent &event)
         wxString txt = wxT("pgAdmin III Server Status - ") + server->GetDescription() 
             + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(")");
 
-        wxPoint pos(settings->Read(wxT("frmStatus"), wxPoint(100, 100)));
-        wxSize size(settings->Read(wxT("frmStatus"), wxSize(400, 240)));
-        CheckOnScreen(pos, size, 200, 150);
-        frmStatus *status = new frmStatus(this, txt, conn, pos, size);
+        frmStatus *status = new frmStatus(this, txt, conn);
         frames.Append(status);
         status->Go();
     }
@@ -424,14 +421,10 @@ void frmMain::OnSql(wxCommandEvent &ev)
     {
         wxString txt = wxT("pgAdmin III Query - ") + server->GetDescription() + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(") - ") + db->GetName();
 
-        wxPoint pos(settings->Read(wxT("frmQuery"), wxPoint(100, 100)));
-        wxSize size(settings->Read(wxT("frmQuery"), wxSize(600, 500)));
-        CheckOnScreen(pos, size, 200, 150);
-
         wxString qry;
         if (settings->GetStickySql()) 
             qry = sqlPane->GetText();
-        frmQuery *fq= new frmQuery(this, txt, conn, pos, size, qry);
+        frmQuery *fq= new frmQuery(this, txt, conn, qry);
         frames.Append(fq);
         fq->Go();
     }
@@ -479,11 +472,7 @@ void frmMain::ViewData(bool filter)
             + wxT(") - ") + db->GetName()
             + wxT(" - ") + data->GetFullIdentifier();
 
-        wxPoint pos(settings->Read(wxT("frmEditGrid"), wxPoint(100, 100)));
-        wxSize size(settings->Read(wxT("frmEditGrid"), wxSize(600, 500)));
-        CheckOnScreen(pos, size, 200, 150);
-
-        frmEditGrid *eg= new frmEditGrid(this, txt, conn, pos, size, data);
+        frmEditGrid *eg= new frmEditGrid(this, txt, conn, data);
         frames.Append(eg);
         eg->ShowForm(filter);
     }
@@ -828,7 +817,9 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     treeContextMenu->Enable(MNU_CONNECT, canConnect);               
     toolsMenu->Enable(MNU_DISCONNECT, canDisconnect);
 //    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
+//    treeContextMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
     toolsMenu->Enable(MNU_GRANTWIZARD, canGrantWizard);
+    treeContextMenu->Enable(MNU_GRANTWIZARD, canGrantWizard);
     treeContextMenu->Enable(MNU_DISCONNECT, canDisconnect);
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
 }

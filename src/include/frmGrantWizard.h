@@ -19,7 +19,6 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frmMain.h"
-#include "dlgClasses.h"
 
 
 class ctlSecurityPanel;

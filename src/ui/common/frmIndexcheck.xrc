@@ -1,20 +1,49 @@
 <?xml version="1.0" ?>
 <resource>
-  <object class="wxWizard" name="frmIndexcheck">
-    <title>Index check</title>
-    <size>200,153d</size>
+  <object class="wxDialog" name="frmIndexCheck">
+    <title>Foreign Key Check</title>
+    <size>200,303d</size>
     <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU</style>
-    <object class="wxWizardPageSimple" name="pnlOptions">
-      <object class="wxListBox" name="lbxXX">
-        <content/>
+    <object class="wxNotebook" name="nbNotebook">
+      <object class="notebookpage">
+        <label>Selection</label>
+        <object class="wxPanel" name="pnlSelection">
+          <object class="wxCheckList" name="chkList">
+            <content/>
+            <pos>2,3d</pos>
+            <size>183,234d</size>
+          </object>
+          <object class="wxButton" name="btnChkAll">
+            <label>Check all</label>
+            <pos>2,240d</pos>
+            <size>50,15d</size>
+          </object>
+          <object class="wxButton" name="btnUnchkAll">
+            <label>Uncheck all</label>
+            <pos>60,240d</pos>
+            <size>50,15d</size>
+          </object>
+        </object>
+        <selected>1</selected>
       </object>
+      <pos>2,2d</pos>
+      <size>195,276d</size>
     </object>
-    <object class="wxWizardPageSimple" name="pnlMessages">
-      <object class="wxTextCtrl" name="txtMessages">
-        <pos>2,3d</pos>
-        <size>180,104d</size>
-        <style>wxTE_MULTILINE|wxTE_READONLY|wxHSCROLL</style>
-      </object>
+    <object class="wxButton" name="btnHelp">
+      <label>&amp;Help</label>
+      <pos>2,285d</pos>
+      <size>50,15d</size>
+    </object>
+    <object class="wxButton" name="btnOK">
+      <label>&amp;OK</label>
+      <default>1</default>
+      <pos>93,285d</pos>
+      <size>50,15d</size>
+    </object>
+    <object class="wxButton" name="btnCancel">
+      <label>&amp;Cancel</label>
+      <pos>146,285d</pos>
+      <size>50,15d</size>
     </object>
   </object>
 </resource>

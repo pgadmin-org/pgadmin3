@@ -39,7 +39,7 @@
 // Class declaration
 ////////////////////////////////////////////////////////////////////////////////
 
-class dlgEditGridOptions : public wxDialog
+class dlgEditGridOptions : public pgDialog
 {
 public:
 

@@ -34,10 +34,10 @@ WX_DECLARE_LIST(wxWindow, windowList);
 
 
 // Class declarations
-class frmMain : public wxFrame
+class frmMain : public pgFrame
 {
 public:
-    frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
+    frmMain(const wxString& title);
     ~frmMain();
     void OnTipOfTheDay(wxCommandEvent& event);
 

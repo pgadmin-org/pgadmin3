@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Event Table
 ////////////////////////////////////////////////////////////////////////////////
-BEGIN_EVENT_TABLE(dlgAddTableView, wxDialog)
+BEGIN_EVENT_TABLE(dlgAddTableView, pgDialog)
 
     EVT_LISTBOX_DCLICK(-1,dlgAddTableView::OnOK)
 
@@ -44,7 +44,7 @@ dlgAddTableView::dlgAddTableView(wxWindow *frame, pgDatabase *database)
     wxLogInfo(wxT("Creating the Query Builder Add Table/View dialogue"));
 
 	// Load the XML resource for this dialog
-    wxXmlResource::Get()->LoadDialog(this, frame, wxT("frmAddTableView")); 
+    LoadResource(wxT("frmAddTableView")); 
 
     // Set the Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

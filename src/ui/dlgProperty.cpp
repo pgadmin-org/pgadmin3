@@ -67,6 +67,7 @@ BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgProperty::OnPageSelect)  
     EVT_BUTTON (XRCID("btnHelp"),                   dlgProperty::OnHelp)
     EVT_BUTTON (XRCID("btnOK"),                     dlgProperty::OnOK)
+    EVT_BUTTON (XRCID("btnApply"),                  dlgProperty::OnApply)
     EVT_BUTTON (XRCID("btnCancel"),                 dlgProperty::OnCancel)
     EVT_CLOSE(                                      dlgProperty::OnClose)
 END_EVENT_TABLE();
@@ -81,7 +82,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     mainForm=frame;
     database=0;
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxXmlResource::Get()->LoadDialog(this, frame, resName);
+    LoadResource(resName);
     nbNotebook = CTRL_NOTEBOOK("nbNotebook");
 
     if (!nbNotebook)
@@ -170,6 +171,10 @@ void dlgProperty::SetDatabase(pgDatabase *db)
     
 void dlgProperty::EnableOK(bool enable)
 {
+    wxButton *btn=btnApply;
+    if (btn)
+        btn->Enable(enable);
+
     btnOK->Enable(enable);
     if (enable)
         statusBox->SetValue(wxT(""));
@@ -199,8 +204,12 @@ int dlgProperty::Go(bool modal)
         SetTitle(wxString(typesList[objectType].typName) + wxT(" ") + GetObject()->GetFullIdentifier());
     }
     else
+    {
+        wxButton *btn=btnApply;
+        if (btn)
+            btn->Hide();
         SetTitle(wxGetTranslation(typesList[objectType].newString));
-
+    }
     if (modal)
         return ShowModal();
     else
@@ -339,6 +348,7 @@ void dlgProperty::ShowObject()
             mainForm->GetBrowser()->SetItemImage(item, newData->GetIcon(), wxTreeItemIcon_Selected);
             newData->SetId(item);
             delete data;
+            SetObject(newData);
         }
         if (newData)
         {
@@ -381,9 +391,41 @@ void dlgProperty::ShowObject()
     }
 }
 
-        
+
+bool dlgProperty::apply(const wxString &sql)
+{
+    if (!connection->ExecuteVoid(sql))
+    {
+        // error message is displayed inside ExecuteVoid
+        return false;
+    }
+
+    if (database)
+        database->AppendSchemaChange(sql);
+
+    ShowObject();
+
+    return true;
+}
+
+
+void dlgProperty::OnApply(wxCommandEvent &ev)
+{
+    EnableOK(false);
+
+    wxString sql=GetSql();
+
+    if (!sql.IsEmpty())
+        if (!apply(sql))
+            return;
+
+    statusBox->SetValue(_("Changes applied."));
+}
+
+
 void dlgProperty::OnOK(wxCommandEvent &ev)
 {
+    EnableOK(false);
 
     if (IsModal())
     {
@@ -392,21 +434,10 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
     }
 
     wxString sql=GetSql();
-    if (!sql.IsEmpty())
-    {
-        if (!connection->ExecuteVoid(sql))
-        {
-            // error message is displayed inside ExecuteVoid
-            return;
-        }
-        else
-        {
-            if (database)
-                database->AppendSchemaChange(sql);
-        }
 
-        ShowObject();
-    }
+    if (!sql.IsEmpty())
+        if (!apply(sql))
+            return;
 
     Destroy();
 }

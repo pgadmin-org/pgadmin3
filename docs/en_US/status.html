@@ -27,7 +27,6 @@ for each lock. In particular, the Relation name may be shown as an OID
 instead of by it's name, if the relation is in a different database to 
 that being monitored.
 </p>
-
 <p>
 <b>Note:</b> When the pg_locks view is accessed as is the case whenever 
 this dialgue is open, PostgreSQL's internal lock manager data structures are 
@@ -39,6 +38,13 @@ there could be some impact on database performance if this view is read often.
 
 <center><img src="images/locks.jpg"></center>
 
+<p>
+The Log tab shows the current server log file, if configured in postgresql.conf
+(log_destination='file'). pgAdmin III will extract a time stamp from the logfile in 
+a separate column, if the log_line_prefix is configured accordingly. We recommend
+using '%t:' as format, because more complicate formats might not be interpretable
+correctly
+</p>
 <p>
 To refresh the display click the <i>Refresh</i> button. The display will
 also be automatically refreshed based on the refresh interval specified.

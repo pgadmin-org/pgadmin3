@@ -18,7 +18,6 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frmMain.h"
-#include "dlgClasses.h"
 
 
 // Class declarations
@@ -28,11 +27,20 @@ public:
     frmIndexcheck(frmMain *form, pgObject *_object);
     ~frmIndexcheck();
 
+    wxString GetHelpPage() const;
     wxString GetSql();
     void Go();
     
 private:
-    wxString GetHelpPage() const;
+    void OnPageSelect(wxNotebookEvent& event);
+    void OnCheckAll(wxCommandEvent &event);
+    void OnUncheckAll(wxCommandEvent &event);
+
+    void AddObjects(const wxString &where);
+    
+    ctlSQLBox *sqlPane;
+    wxNotebook *nbNotebook;
+
     DECLARE_EVENT_TABLE()
 };
 

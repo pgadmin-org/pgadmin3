@@ -119,7 +119,7 @@ void dlgAggregate::OnChange(wxCommandEvent &ev)
 {
     if (aggregate)
     {
-        btnOK->Enable(GetName() != aggregate->GetName() || txtComment->GetValue() != aggregate->GetComment());
+        EnableOK(GetName() != aggregate->GetName() || txtComment->GetValue() != aggregate->GetComment());
     }
     else
     {

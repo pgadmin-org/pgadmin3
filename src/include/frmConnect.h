@@ -22,7 +22,7 @@
 
 
 // Class declarations
-class frmConnect : public wxDialog
+class frmConnect : public pgDialog
 {
 public:
     frmConnect(wxFrame *form, const wxString& server = wxT(""), const wxString& description=wxT(""),

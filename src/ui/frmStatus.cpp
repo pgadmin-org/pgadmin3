@@ -15,6 +15,7 @@
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/image.h>
+#include <wx/textbuf.h>
 
 // App headers
 #include "frmStatus.h"
@@ -24,9 +25,10 @@
 
 
 #define TIMER_ID 333
-BEGIN_EVENT_TABLE(frmStatus, wxDialog)
+BEGIN_EVENT_TABLE(frmStatus, pgDialog)
     EVT_BUTTON(XRCID("btnRefresh"),         frmStatus::OnRefresh)
     EVT_BUTTON (XRCID("btnClose"),          frmStatus::OnClose)
+    EVT_CLOSE(                              frmStatus::OnClose)
     EVT_SPINCTRL(XRCID("spnRefreshRate"),   frmStatus::OnRateChangeSpin)
     EVT_TEXT(XRCID("spnRefreshRate"),       frmStatus::OnRateChange)
 	EVT_NOTEBOOK_PAGE_CHANGING(XRCID("nbStatus"),       frmStatus::OnNotebookPageChanged)
@@ -36,6 +38,7 @@ END_EVENT_TABLE();
 
 #define statusList      CTRL_LISTVIEW("lstStatus")
 #define lockList        CTRL_LISTVIEW("lstLocks")
+#define logList         CTRL_LISTVIEW("lstLog")
 #define spnRefreshRate  CTRL_SPIN("spnRefreshRate")
 #define nbStatus		CTRL_NOTEBOOK("nbStatus")
 
@@ -44,18 +47,26 @@ void frmStatus::OnClose(wxCommandEvent &event)
     Destroy();
 }
 
-frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const wxPoint& pos, const wxSize& size)
+frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 {
     wxLogInfo(wxT("Creating server status box"));
 	loaded = FALSE;
+
+
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxXmlResource::Get()->LoadDialog(this, form, wxT("frmStatus")); 
+    LoadResource(wxT("frmStatus")); 
+
+    RestorePosition(-1, -1, 400, 240, 200, 150);
     SetTitle(_title);
     SetIcon(wxIcon(pgAdmin3_xpm));
 
     mainForm=form;
     timer=0;
     connection=conn;
+    logHasTimestamp = false;
+    logFormatKnown = false;
+
+    logFileLength = 0;
     backend_pid=conn->GetBackendPID();
 
     statusList->AddColumn(_("PID"), 35);
@@ -82,10 +93,33 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const 
         lockList->AddColumn(_("Query"), 500);
     }
 
+    if (connection->BackendMinimumVersion(7, 5))
+    {
+        logFormat = connection->ExecuteScalar(wxT("SHOW log_line_prefix"));
+        logFmtPos=logFormat.Find('%', true);
+
+        if (logFmtPos < 0)
+            logFormatKnown = true;
+        else if (!logFmtPos && logFormat.Mid(logFmtPos, 2) == wxT("%t") && logFormat.Length() > 2)
+        {
+            logFormatKnown = true;
+            logHasTimestamp = true;
+            logList->AddColumn(_("Timestamp"), 100);
+        }
+
+        if (logFormatKnown)
+            logList->AddColumn(_("Level"), 35);
+
+        logList->AddColumn(_("Log entry"), 800);
+    }
+    else
+        nbStatus->DeletePage(2);
+
     long rate;
     settings->Read(wxT("frmStatus/Refreshrate"), &rate, 1);
     spnRefreshRate->SetValue(rate);
     timer=new wxTimer(this, TIMER_ID);
+
 	loaded = TRUE;
 }
 
@@ -95,7 +129,7 @@ frmStatus::~frmStatus()
     wxLogInfo(wxT("Destroying server status box"));
     mainForm->RemoveFrame(this);
 
-    settings->Write(wxT("frmStatus"), GetSize(), GetPosition());
+    SavePosition();
     settings->Write(wxT("frmStatus/Refreshrate"), spnRefreshRate->GetValue());
 
     delete timer;
@@ -208,8 +242,12 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				}
 				dataSet1->MoveNext();
 			}
-
+            delete dataSet1;
+            lockList->Thaw();
 		}
+        else
+            connection->IsAlive();
+
         row=0;
 		while (row < statusList->GetItemCount())
 		{
@@ -220,7 +258,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                 row++;
 		}
 	}
-    else
+	else if (nbStatus->GetSelection() == 1)
     {
 		// Locks
 		long row=0;
@@ -247,6 +285,8 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 		pgSet *dataSet2=connection->ExecuteSet(sql);
 		if (dataSet2)
 		{
+            lockList->Freeze();
+
 			while (!dataSet2->Eof())
 			{
 				pid=dataSet2->GetLong(wxT("pid"));
@@ -297,7 +337,13 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				}
 				dataSet2->MoveNext();
 			}
+
+            delete dataSet2;
+            lockList->Thaw();
 		}
+        else
+            connection->IsAlive();
+
         row=0;
 		while (row < lockList->GetItemCount())
 		{
@@ -308,4 +354,88 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                 row++;
 		}
 	}
+    else
+    {
+        long newlen = StrToLong(connection->ExecuteScalar(wxT("SELECT pg_logfile_length()")));
+        wxString line;
+        bool skipFirst=false;
+
+        long maxServerLogSize=settings->GetMaxServerLogSize();
+
+        if (!newlen && maxServerLogSize && logFileLength > maxServerLogSize)
+        {
+            skipFirst = true;
+            newlen = logFileLength-maxServerLogSize;
+        }
+
+        while (newlen > logFileLength)
+        {
+            pgSet *set=connection->ExecuteSet(wxT("SELECT pg_logfile(NULL, ") + NumToStr(logFileLength) + wxT(")"));
+            if (!set)
+            {
+                connection->IsAlive();
+                return;
+            }
+            char *res=set->GetCharPtr(0);
+            
+            logFileLength += strlen(res);
+
+            wxString str = line + wxTextBuffer::Translate(wxString(res, set->GetConversion()), wxTextFileType_Unix);
+            delete set;
+
+            if (str.IsEmpty())
+                return;
+
+            bool hasCr = (str.Right(1) == wxT("\n"));
+
+            wxStringTokenizer tk(str, wxT("\n"));
+
+            logList->Freeze();
+            while (tk.HasMoreTokens())
+            {
+                str = tk.GetNextToken();
+                if (skipFirst)
+                {
+                    // could be truncated
+                    skipFirst = false;
+                    continue;
+                }
+                if (tk.HasMoreTokens() || hasCr)
+                    addLog(str);
+                else
+                    line = str;
+            }
+            logList->Thaw();
+        }
+        if (!line.IsEmpty())
+            addLog(line);
+    }
+}
+
+
+void frmStatus::addLog(const wxString &str)
+{
+    if (!logFormatKnown)
+        logList->AppendItem(-1, str);
+    else
+    {
+        wxString rest;
+        int row=logList->GetItemCount();
+
+        if (logHasTimestamp)
+        {
+            wxString ts=str.Mid(logFmtPos);
+            int pos = ts.Mid(22).Find(logFormat[logFmtPos+2]);
+            logList->AppendItem(ts.Left(22+pos));
+            rest = ts.Mid(22+pos + logFormat.Length() - logFmtPos-2);
+            logList->SetItem(row, 1, rest.BeforeFirst(':'));
+            logList->SetItem(row, 2, rest.AfterFirst(':'));
+        }
+        else
+        {
+            rest = str.Mid(logFormat.Length());
+            logList->AppendItem(-1, rest.BeforeFirst(':'));
+            logList->SetItem(row, 2, rest.AfterFirst(':'));
+        }
+    }
 }

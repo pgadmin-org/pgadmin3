@@ -232,7 +232,7 @@ void dlgType::OnChange(wxCommandEvent &ev)
 {
     if (type)
     {
-        btnOK->Enable(txtComment->GetValue() != type->GetComment());
+        EnableOK(txtComment->GetValue() != type->GetComment());
     }
     else
     {

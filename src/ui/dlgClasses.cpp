@@ -18,11 +18,67 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frmMain.h"
-#include "dlgClasses.h"
 #include "pgConn.h"
 
 #include "menu.h"
 
+
+
+void pgDialog::RestorePosition(int defaultX, int defaultY, int defaultW, int defaultH, int minW, int minH)
+{
+    wxPoint pos(settings->Read(dlgName, wxPoint(defaultX, defaultY)));
+    wxSize size;
+    if (defaultW < 0)
+        size = GetSize();
+    else
+        size = settings->Read(dlgName, wxSize(defaultW, defaultH));
+
+    bool posDefault = (pos.x == -1 && pos.y == -1);
+
+    CheckOnScreen(pos, size, minW, minH);
+    SetSize(pos.x, pos.y, size.x, size.y);
+    if (posDefault)
+        CenterOnParent();
+}
+
+void pgDialog::SavePosition()
+{
+    settings->Write(dlgName, GetSize(), GetPosition());
+}
+
+void pgDialog::LoadResource(const wxChar *name)
+{
+    if (name)
+        dlgName = name;
+    wxXmlResource::Get()->LoadDialog(this, GetParent(), dlgName); 
+}
+
+void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defaultH, int minW, int minH)
+{
+    wxPoint pos(settings->Read(dlgName, wxPoint(defaultX, defaultY)));
+    wxSize size;
+    if (defaultW < 0)
+        size = GetSize();
+    else
+        size = settings->Read(dlgName, wxSize(defaultW, defaultH));
+
+    bool posDefault = (pos.x == -1 && pos.y == -1);
+
+    CheckOnScreen(pos, size, minW, minH);
+    SetSize(pos.x, pos.y, size.x, size.y);
+    if (posDefault)
+        CenterOnParent();
+}
+
+
+void pgFrame::SavePosition()
+{
+    settings->Write(dlgName, GetSize(), GetPosition());
+}
+
+
+
+//////////////////////////////////////////////////////
 
 BEGIN_EVENT_TABLE(DialogWithHelp, wxDialog)
     EVT_MENU(MNU_HELP,                  DialogWithHelp::OnHelp)
@@ -30,7 +86,7 @@ BEGIN_EVENT_TABLE(DialogWithHelp, wxDialog)
 END_EVENT_TABLE();
 
 
-DialogWithHelp::DialogWithHelp(frmMain *frame) : wxDialog()
+DialogWithHelp::DialogWithHelp(frmMain *frame) : pgDialog()
 {
     mainForm = frame;
 
@@ -88,6 +144,9 @@ void ExecutionDialog::OnCancel(wxCommandEvent& ev)
         Abort();
         btnCancel->Enable();
         btnOK->Enable();
+        wxButton *btn=btnApply;
+        if (btn)
+            btn->Enable();
     }
     else
     {
@@ -157,6 +216,9 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
                 txtMessages->AppendText(_("\nCancelled.\n"));
 
         btnOK->Enable();
+        wxButton *btn=btnApply;
+        if (btn)
+            btn->Enable();
     }
     else
     {

@@ -59,7 +59,7 @@ void dlgCheck::OnChange(wxCommandEvent &ev)
 {
     if (check)
     {
-        btnOK->Enable(txtComment->GetValue() != check->GetComment());
+        EnableOK(txtComment->GetValue() != check->GetComment());
     }
     else
     {

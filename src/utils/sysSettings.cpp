@@ -68,10 +68,11 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     confirmDelete=StrToBool(Read(wxT("ConfirmDelete"), wxT("Yes")));
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
     autoRowCountThreshold=Read(wxT("AutoRowCount"), 2000);
-    Read(wxT("StickySql"), &stickySql, true);
+    Read(wxT("StickySql"), &stickySql, false);
     Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
     Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
     Read(wxT("SearchPath"), &searchPath, wxEmptyString);
+    Read(wxT("MaxServerLogSize"), &maxServerLogSize, 100000L);
 
     const wxLanguageInfo *langInfo;
     langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN));
@@ -126,6 +127,8 @@ void sysSettings::Save()
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
     Write(wxT("SearchPath"), searchPath);
+    Write(wxT("MaxServerLogSize"), maxServerLogSize);
+
 	wxString fontName = systemFont.GetNativeFontInfoDesc();
 
 	if (fontName == wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT).GetNativeFontInfoDesc())

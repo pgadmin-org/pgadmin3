@@ -19,6 +19,7 @@
 
 #include "misc.h"
 #include "ctlListView.h"
+#include "dlgClasses.h"
 
 // App headers
 #include "sysSettings.h"

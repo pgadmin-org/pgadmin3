@@ -22,7 +22,7 @@
 #include "images/pgAdmin3.xpm"
 
 // Event Table
-BEGIN_EVENT_TABLE(frmQBJoin, wxDialog)
+BEGIN_EVENT_TABLE(frmQBJoin, pgDialog)
 
     EVT_BUTTON (XRCID("btnOK"), wxDialog::OnOK)
     EVT_BUTTON (XRCID("btnCancel"), wxDialog::OnCancel)
@@ -43,7 +43,7 @@ frmQBJoin::frmQBJoin(wxFrame *frame, wxString txt)
     wxLogInfo(wxT("Creating a Query Builder Join dialogue"));
 
 	// Load the XML resource for this dialog
-    wxXmlResource::Get()->LoadDialog(this, frame, wxT("frmQBJoin")); 
+    LoadResource(wxT("frmQBJoin")); 
 
     // Set the Icon
     SetIcon(wxIcon(pgAdmin3_xpm));

@@ -41,14 +41,12 @@
 #define btnAsc                        CTRL("btnAsc", wxButton)
 #define btnDesc                        CTRL("btnDesc", wxButton)
 #define btnRemove                    CTRL("btnRemove", wxButton)
-#define btnOK                        CTRL("btnOK", wxRadioBox)
-#define btnCancel                    CTRL("btnCancel", wxTextCtrl)
 #define cboColumns                  CTRL("cboColumns", wxComboBox)
 #define lstSortCols                 CTRL("lstSortCols", wxListCtrl)
 #define pnlSort                     CTRL("pnlSort", wxPanel)
 #define pnlFilter                   CTRL("pnlFilter", wxPanel)
 
-BEGIN_EVENT_TABLE(dlgEditGridOptions, wxDialog)
+BEGIN_EVENT_TABLE(dlgEditGridOptions, pgDialog)
     EVT_BUTTON               (XRCID("btnOK"),       dlgEditGridOptions::OnOK)
     EVT_BUTTON               (XRCID("btnCancel"),   dlgEditGridOptions::OnCancel)
     EVT_BUTTON               (XRCID("btnRemove"),   dlgEditGridOptions::OnRemove)
@@ -68,7 +66,7 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
     relation=rel;
     parent=win;
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxXmlResource::Get()->LoadDialog(this, parent, wxT("dlgEditGridOptions")); 
+    LoadResource(wxT("dlgEditGridOptions")); 
     conv = &wxConvLibc;
 
     // Icon

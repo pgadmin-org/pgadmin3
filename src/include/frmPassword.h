@@ -20,7 +20,7 @@
 #include "pgServer.h"
 
 // Class declarations
-class frmPassword : public wxDialog
+class frmPassword : public pgDialog
 {
 public:
     frmPassword(wxFrame *parent);

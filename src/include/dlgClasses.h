@@ -16,13 +16,40 @@
 
 
 #define btnOK                   CTRL_BUTTON("btnOK")
+#define btnApply                CTRL_BUTTON("btnApply")
 #define btnCancel               CTRL_BUTTON("btnCancel")
 
 
-
 class frmMain;
+class pgObject;
+class pgQueryThread;
 
-class DialogWithHelp : public wxDialog
+class pgDialog : public wxDialog
+{
+public:
+    void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
+    void SavePosition();
+    void LoadResource(const wxChar *name=0);
+
+protected:
+    wxString dlgName;
+};
+
+
+class pgFrame : public wxFrame
+{
+public:
+    pgFrame(wxFrame *parent, const wxString &title, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize, long flags=wxDEFAULT_FRAME_STYLE) 
+        : wxFrame(parent, -1, title, pos, size, flags) {}
+    void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
+    void SavePosition();
+
+protected:
+    wxString dlgName;
+};
+
+
+class DialogWithHelp : public pgDialog
 {
 public:
     DialogWithHelp(frmMain *frame);

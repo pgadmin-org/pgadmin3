@@ -44,7 +44,7 @@
 
 
 
-BEGIN_EVENT_TABLE(frmEditGrid, wxFrame)
+BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_MENU(MNU_REFRESH,   frmEditGrid::OnRefresh)
     EVT_MENU(MNU_DELETE,    frmEditGrid::OnDelete)
     EVT_MENU(MNU_SAVE,      frmEditGrid::OnSave)
@@ -60,12 +60,14 @@ BEGIN_EVENT_TABLE(frmEditGrid, wxFrame)
 END_EVENT_TABLE()
 
 
-frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, const wxPoint& pos, const wxSize& size, pgSchemaObject *obj)
-: wxFrame(NULL, -1, _title, pos, size)
+frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, pgSchemaObject *obj)
+: pgFrame(NULL, _title)
 {
     wxLogInfo(wxT("Creating EditGrid"));
     SetIcon(wxIcon(viewdata_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
+    dlgName = wxT("frmEditGrid");
+    RestorePosition(-1, -1, 600, 500, 200, 150);
     connection=_conn;
     mainForm=form;
     thread=0;
@@ -606,7 +608,7 @@ frmEditGrid::~frmEditGrid()
 {
     wxLogInfo(wxT("Destroying SQL EditGrid"));
     mainForm->RemoveFrame(this);
-    settings->Write(wxT("frmEditGrid"), GetSize(), GetPosition());
+    SavePosition();
     if (connection)
         delete connection;
 }
