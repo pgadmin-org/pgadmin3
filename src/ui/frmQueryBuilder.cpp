@@ -26,7 +26,6 @@
 #include "images/sql.xpm"
 
 // Bitmaps
-#include "images/file_open.xpm"
 #include "images/file_save.xpm"
 #include "images/query_execute.xpm"
 #include "images/query_explain.xpm"
@@ -87,6 +86,7 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 	m_sashwindow = NULL;
 	m_database = database;
 	m_server = m_database->GetServer();
+	changed = FALSE;
 
 	wxString title = wxT("Query Builder: ") + 
 		m_database->GetName() +
@@ -169,7 +169,7 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
     toolBar = GetToolBar();
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
-
+    toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save current file"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
@@ -177,7 +177,6 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 
     toolBar->Realize();
     setTools(false);
-    toolBar->EnableTool(MNU_SAVE, false);
     toolBar->EnableTool(MNU_CANCEL, false);
 
     // Datagram Context Menu
