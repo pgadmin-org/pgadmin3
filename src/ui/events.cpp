@@ -854,7 +854,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     if (data->GetSystemObject())
     {
         wxMessageDialog msg(this, wxString::Format(_("Cannot drop system %s %s."), 
-            data->GetTypeName().c_str(), data->GetFullIdentifier().c_str()), 
+            wxGetTranslation(data->GetTypeName()), data->GetFullIdentifier().c_str()), 
             _("Trying to drop system object"), wxICON_EXCLAMATION);
         msg.ShowModal();
         return;
@@ -863,8 +863,8 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     if (data->RequireDropConfirm() || settings->GetConfirmDelete())
     {
         wxMessageDialog msg(this, wxString::Format(_("Are you sure you wish to drop %s %s?"),
-                + data->GetTypeName().c_str(), data->GetFullIdentifier().c_str()),
-                wxString::Format(_("Drop %s?"), data->GetTypeName().c_str()), wxYES_NO | wxICON_QUESTION);
+                wxGetTranslation(data->GetTypeName()), data->GetFullIdentifier().c_str()),
+                wxString::Format(_("Drop %s?"), wxGetTranslation(data->GetTypeName())), wxYES_NO | wxICON_QUESTION);
         if (msg.ShowModal() != wxID_YES)
         {
             return;
@@ -882,15 +882,14 @@ void frmMain::OnDrop(wxCommandEvent &ev)
         if (nextItem)
         {
             pgObject *nextData=(pgObject*)browser->GetItemData(nextItem);
-            if (nextData && nextData->GetType() == data->GetType())
-                browser->SelectItem(nextItem);
-            else
-            {
-                browser->SelectItem(browser->GetPrevVisible(item));
-            }
+            if (!nextData || nextData->GetType() != data->GetType())
+                nextItem=browser->GetPrevVisible(item);
         }
         else
-            browser->SelectItem(browser->GetPrevVisible(item));
+            nextItem=browser->GetPrevVisible(item);
+
+        if (nextItem)
+            browser->SelectItem(nextItem);
 
         int droppedType = data->GetType();
         browser->Delete(item);
