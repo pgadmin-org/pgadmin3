@@ -1566,5 +1566,89 @@ SOURCE=.\tips.txt
 SOURCE=..\TODO.txt
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\blank.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\bullseye.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\cdrom.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\computer.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\drive.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\file1.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\floppy.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\folder1.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\folder2.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\hand.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\magnif1.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\noentry.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\pbrush.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\pencil.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\pntleft.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\pntright.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\query.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\removble.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\rightarr.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\roller.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\wx\msw\watch1.cur
+# End Source File
 # End Target
 # End Project

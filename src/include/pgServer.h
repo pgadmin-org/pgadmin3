@@ -46,6 +46,11 @@ public:
     bool GetTrusted() const { return trusted; }
     wxString GetLastError() const;
 
+    bool GetDiscovered() const { return discovered; }
+    void iSetDiscovered(const bool b) { discovered=b; }
+    wxString GetServiceID() const { return serviceId; }
+    void iSetServiceID(const wxString& s) { serviceId=s; }
+
     bool GetCreatePrivilege() const { return createPrivilege; }
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
     bool GetSuperUser() const { return superUser; }
@@ -93,9 +98,9 @@ private:
     pgConn *conn;
     bool connected;
     wxString database, username, password, ver, error;
-    wxString lastDatabase, lastSchema, description;
+    wxString lastDatabase, lastSchema, description, serviceId;
     int port, ssl;
-    bool trusted, createPrivilege, superUser;
+    bool trusted, discovered, createPrivilege, superUser;
     OID lastSystemOID;
     wxString versionNum;
     frmMain *parentWin;

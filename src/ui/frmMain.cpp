@@ -765,46 +765,63 @@ void frmMain::StoreServers()
 
     wxTreeItemId item = browser->GetFirstChild(servers, cookie);
     while (item) {
+
         data = (pgObject *)browser->GetItemData(item);
         if (data->GetType() == PG_SERVER) {
-            // We have a sever, so cast the object and save the settings
-            ++numServers;
-            server = (pgServer *)data;
 
-            // Hostname
-            key.Printf(wxT("Servers/Server%d"), numServers);
-            settings->Write(key, server->GetName());
+			// Cast the object, and check if it was autodiscovered before saving.
+			server = (pgServer *)data;
 
-            key.Printf(wxT("Servers/Description%d"), numServers);
-            settings->Write(key, server->GetDescription());
+			if (!server->GetDiscovered()) {
+			
+				// We have an 'added' server, so save it
+				++numServers;
 
-            // Port
-            key.Printf(wxT("Servers/Port%d"), numServers);
-            settings->Write(key, server->GetPort());
+				// Hostname
+			    key.Printf(wxT("Servers/Server%d"), numServers);
+		        settings->Write(key, server->GetName());
+	
+		        key.Printf(wxT("Servers/Description%d"), numServers);
+	            settings->Write(key, server->GetDescription());
 
-            // Trusted
-            key.Printf(wxT("Servers/Trusted%d"), numServers);
-            settings->Write(key, BoolToStr(server->GetTrusted()));
+				// Port
+				key.Printf(wxT("Servers/Port%d"), numServers);
+		        settings->Write(key, server->GetPort());
+	
+				// Trusted
+				key.Printf(wxT("Servers/Trusted%d"), numServers);
+	            settings->Write(key, BoolToStr(server->GetTrusted()));
 
-            // Database
-            key.Printf(wxT("Servers/Database%d"), numServers);
-            settings->Write(key, server->GetDatabaseName());
+				// Database
+				key.Printf(wxT("Servers/Database%d"), numServers);
+	            settings->Write(key, server->GetDatabaseName());
 
-            // Username
-            key.Printf(wxT("Servers/Username%d"), numServers);
-            settings->Write(key, server->GetUsername());
+				// Username
+				key.Printf(wxT("Servers/Username%d"), numServers);
+	            settings->Write(key, server->GetUsername());
 
-            // last Database
-            key.Printf(wxT("Servers/LastDatabase%d"), numServers);
-            settings->Write(key, server->GetLastDatabase());
+				// last Database
+				key.Printf(wxT("Servers/LastDatabase%d"), numServers);
+				settings->Write(key, server->GetLastDatabase());
+	
+				// last Schema
+				key.Printf(wxT("Servers/LastSchema%d"), numServers);
+				settings->Write(key, server->GetLastSchema());
+	            
+				key.Printf(wxT("Servers/SSL%d"), numServers);
+	            settings->Write(key, server->GetSSL());
 
-            // last Schema
-            key.Printf(wxT("Servers/LastSchema%d"), numServers);
-            settings->Write(key, server->GetLastSchema());
-            
-            key.Printf(wxT("Servers/SSL%d"), numServers);
-            settings->Write(key, server->GetSSL());
-        }
+			} else {
+
+				// This is a discovered server, so just store the lastSchema/lastDatabase
+				key.Printf(wxT("Servers/LastDatabase-%s"), server->GetServiceID());
+				settings->Write(key, server->GetLastDatabase());
+	
+				// last Schema
+				key.Printf(wxT("Servers/LastSchema-%s"), server->GetServiceID());
+				settings->Write(key, server->GetLastSchema());
+			}
+		}
 
         // Get the next item
         item = browser->GetNextChild(servers, cookie);
@@ -812,7 +829,6 @@ void frmMain::StoreServers()
 
     // Write the server count
     settings->Write(wxT("Servers/Count"), numServers);
-
     wxLogInfo(wxT("Stored %d servers."), numServers);
 }
 
@@ -871,13 +887,61 @@ void frmMain::RetrieveServers()
         server = new pgServer(servername, description, database, username, port, StrToBool(trusted), ssl);
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
+		server->iSetDiscovered(false);
         browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
     }
+
+#ifdef WIN32
+
+	// Add local servers. Will currently only work on Win32 with >= BETA3 
+	// of the Win32 PostgreSQL installer.
+	wxRegKey *pgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services"));
+
+	wxString svcName;
+	long cookie = 0;
+	bool flag = false;
+
+	flag = pgKey->GetFirstKey(svcName, cookie);
+
+	while (flag != false)
+	{
+		key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
+		wxRegKey *svcKey = new wxRegKey(key);
+
+        // Comment
+		svcKey->QueryValue(wxT("Display Name"), description);
+
+        // Username
+		svcKey->QueryValue(wxT("Database Superuser"), username);
+
+        // last Database
+        key.Printf(wxT("Servers/LastDatabase-%s"), svcName);
+        settings->Read(key, &lastDatabase, wxT(""));
+
+        // last Schema
+        key.Printf(wxT("Servers/LastSchema-%s"), svcName);
+        settings->Read(key, &lastSchema, wxT(""));
+
+        // Add the Server node
+        server = new pgServer(wxT("127.0.0.1"), description, wxT("template1"), username, 5432, false, false);
+        server->iSetLastDatabase(lastDatabase);
+        server->iSetLastSchema(lastSchema);
+		server->iSetDiscovered(true);
+		server->iSetServiceID(svcName);
+        browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
+
+		// Get the next one...
+		flag = pgKey->GetNextKey(svcName, cookie);
+	}
+
+
+#endif //WIN32
 
     // Reset the Servers node text
     wxString label;
     label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
     browser->SetItemText(servers, label);
+
 }
 
 
