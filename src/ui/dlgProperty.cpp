@@ -226,8 +226,11 @@ int dlgProperty::Go(bool modal)
     wxComboBox *cbowner = cbOwner;
 
     if (cbowner && !cbowner->GetCount())
+    {
+        if (!GetObject())
+            cbOwner->Append(wxEmptyString);
         AddUsers(cbowner);
-
+    }
     if (txtOid)
         txtOid->Disable();
 

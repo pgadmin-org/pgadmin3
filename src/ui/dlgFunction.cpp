@@ -103,6 +103,8 @@ pgObject *dlgFunction::GetObject()
 
 int dlgFunction::Go(bool modal)
 {
+    if (!function)
+        cbOwner->Append(wxEmptyString);
     AddGroups();
     AddUsers(cbOwner);
 

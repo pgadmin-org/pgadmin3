@@ -57,8 +57,6 @@ pgObject *dlgConversion::GetObject()
 
 int dlgConversion::Go(bool modal)
 {
-    AddUsers(cbOwner);
-
     if (!connection->BackendMinimumVersion(7, 4))
         txtComment->Disable();
 

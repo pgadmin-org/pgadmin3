@@ -52,6 +52,8 @@ pgObject *dlgTablespace::GetObject()
 
 int dlgTablespace::Go(bool modal)
 {
+    if (!tablespace)
+        cbOwner->Append(wxEmptyString);
     AddGroups();
     AddUsers(cbOwner);
     txtComment->Disable();

@@ -59,8 +59,6 @@ pgObject *dlgAggregate::GetObject()
 
 int dlgAggregate::Go(bool modal)
 {
-    AddUsers(cbOwner);
-
     if (!connection->BackendMinimumVersion(7, 5))
         cbOwner->Disable();
 

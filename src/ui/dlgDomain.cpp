@@ -61,21 +61,6 @@ pgObject *dlgDomain::GetObject()
 
 int dlgDomain::Go(bool modal)
 {
-    if (!domain)
-        cbOwner->Append(wxT(""));
-
-    pgSet *set=connection->ExecuteSet(wxT("SELECT usename FROM pg_user ORDER BY usename"));
-
-    if (set)
-    {
-        while (!set->Eof())
-        {
-            cbOwner->Append(set->GetVal(0));
-            set->MoveNext();
-        }
-        delete set;
-    }
-
     if (domain)
     {
         // edit mode
