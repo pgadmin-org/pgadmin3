@@ -142,6 +142,10 @@ SOURCE=.\schema\pgDatabase.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pgDatatype.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgDomain.cpp
 # End Source File
 # Begin Source File
@@ -327,6 +331,10 @@ SOURCE=.\ui\dlgTable.cpp
 # Begin Source File
 
 SOURCE=.\ui\dlgTrigger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgType.cpp
 # End Source File
 # Begin Source File
 
@@ -586,6 +594,10 @@ SOURCE=.\include\pgDatabase.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\pgDatatype.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\pgDomain.h
 # End Source File
 # Begin Source File
@@ -727,6 +739,10 @@ SOURCE=.\include\dlgTable.h
 # Begin Source File
 
 SOURCE=.\include\dlgTrigger.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgType.h
 # End Source File
 # Begin Source File
 

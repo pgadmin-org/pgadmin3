@@ -126,7 +126,7 @@ pgObject *pgOperator::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
-    pgOperator *oper;
+    pgOperator *oper=0;
 
     pgSet *operators= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT op.oid, op.oprname, pg_get_userbyid(op.oprowner) as opowner, op.oprkind, op.oprcanhash,\n"

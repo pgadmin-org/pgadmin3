@@ -155,7 +155,7 @@ pgObject *pgUser::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
-    pgUser *user;
+    pgUser *user=0;
 
     pgSet *users= collection->GetServer()->ExecuteSet(wxT(
         "SELECT * FROM pg_shadow") + restriction);

@@ -115,7 +115,7 @@ void dlgUser::OnChange(wxNotifyEvent &ev)
 {
     if (!user)
     {
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
@@ -165,7 +165,7 @@ void dlgUser::OnVarSelChange(wxListEvent &ev)
 
 void dlgUser::OnVarAdd(wxNotifyEvent &ev)
 {
-    wxString name=txtName->GetValue().Strip(wxString::both);
+    wxString name=GetName().Strip(wxString::both);
     wxString value=txtValue->GetValue().Strip(wxString::both);
     if (value.IsEmpty())
         value = wxT("DEFAULT");
@@ -193,7 +193,7 @@ void dlgUser::OnVarRemove(wxNotifyEvent &ev)
 
 pgObject *dlgUser::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     pgObject *obj=pgUser::ReadObjects(collection, 0, wxT("\n WHERE usename=") + qtString(name));
     return obj;
@@ -308,7 +308,7 @@ wxString dlgUser::GetSql()
     else
     {
         // Create Mode
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
 
         long id=atol(txtID->GetValue());
 

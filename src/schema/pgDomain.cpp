@@ -17,6 +17,7 @@
 #include "pgObject.h"
 #include "pgDomain.h"
 #include "pgCollection.h"
+#include "pgDatatype.h"
 
 
 pgDomain::pgDomain(pgSchema *newSchema, const wxString& newName)
@@ -39,24 +40,7 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
     {
         sql = wxT("-- Domain: ") + GetQuotedFullIdentifier() + wxT("\n")
             + wxT("CREATE DOMAIN ") + GetQuotedFullIdentifier() 
-            + wxT("\n  AS ") + GetBasetype();
-        if (typlen == -1 && typmod > 0)
-        {
-            sql += wxT("(") + NumToStr(length);
-            if (precision >= 0)
-                sql += wxT(", ") + NumToStr(precision);
-            sql += wxT(")");
-        }
-        if (dimensions)
-        {
-            sql += wxT("[");
-            for (int i=0 ; i < dimensions ; i++)
-            {
-                if (i)
-                    sql += GetDelimiter() + wxT(" ");
-            }
-            sql += wxT("]");
-        }
+            + wxT("\n  AS ") + GetQuotedBasetype();
         AppendIfFilled(sql, wxT("\n  DEFAULT "), GetDefault());
         // CONSTRAINT Name Dont know where it's stored, may be omitted anyway
         if (notNull)
@@ -88,18 +72,6 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, wxT("OID"), GetOid());
         InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
         InsertListItem(properties, pos++, wxT("Base Type"), GetBasetype());
-        if (GetLength() == -2)
-            InsertListItem(properties, pos++, wxT("Length"), wxT("null-terminated"));
-        else
-        {
-            if (GetDimensions() || GetLength() < 0)
-                InsertListItem(properties, pos++, wxT("Length"), wxT("variable"));
-            else
-                InsertListItem(properties, pos++, wxT("Length"), GetLength());
-        }
-        if (GetPrecision() >= 0)
-            InsertListItem(properties, pos++, wxT("Precision"), GetPrecision());
-        // dimensions, delimiter missing
         if (GetDimensions())
             InsertListItem(properties, pos++, wxT("Dimensions"), GetDimensions());
         InsertListItem(properties, pos++, wxT("Default"), GetDefault());
@@ -132,7 +104,7 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     pgSet *domains= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT d.oid, d.typname as domname, d.typbasetype, b.typname as basetype, pg_get_userbyid(d.typowner) as domainowner, \n"
         "       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim,\n"
-        "       CASE WHEN d.oid=1700 OR d.typbasetype=1700 THEN 1 ELSE 0 END AS isnumeric, description\n"
+        "       description\n"
         "  FROM pg_type d\n"
         "  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n"
         "  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n"
@@ -151,24 +123,16 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             domain->iSetBasetype(domains->GetVal(wxT("basetype")));
             domain->iSetBasetypeOid(domains->GetBool(wxT("typbasetype")));
             domain->iSetComment(domains->GetVal(wxT("description")));
-            long typlen=domains->GetLong(wxT("typlen"));
             long typmod=domains->GetLong(wxT("typtypmod"));
-            bool isnum=domains->GetBool(wxT("isnumeric"));
-            long length=typlen, precision=-1;
-            if (typlen == -1 && typmod > 0)
-            {
-                    if (isnum)
-                    {
-                        length=(typmod-4) >> 16;
-                        precision=(typmod-4) & 0xffff;
-                    }
-                    else
-                        length = typmod-4;
-            }
-            domain->iSetTyplen(typlen);
+
+            pgDatatype dt(domains->GetVal(wxT("basetype")), domains->GetLong(wxT("typndims")), typmod);
+
+            domain->iSetTyplen(domains->GetLong(wxT("typlen")));
             domain->iSetTypmod(typmod);
-            domain->iSetLength(length);
-            domain->iSetPrecision(precision);
+            domain->iSetLength(dt.Length());
+            domain->iSetPrecision(dt.Precision());
+            domain->iSetBasetype(dt.FullName());
+            domain->iSetQuotedBasetype(dt.QuotedFullName());
             domain->iSetDefault(domains->GetVal(wxT("typdefault")));
             domain->iSetNotNull(domains->GetBool(wxT("typnotnull")));
             domain->iSetDimensions(domains->GetLong(wxT("typndims")));

@@ -15,6 +15,7 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "pgDefs.h"
+#include "pgDatatype.h"
 
 #include "pgObject.h"
 #include "pgColumn.h"
@@ -51,7 +52,7 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
         {
             sql = wxT("-- Just a proposal; indexes, foreign keys and trigger might prevent this\n\n"
                       "ALTER TABLE ") + GetQuotedFullTable()
-                + wxT(" ADD COLUMN pgadmin_tmpcol ") + GetFullType();
+                + wxT(" ADD COLUMN pgadmin_tmpcol ") + GetQuotedTypename();
 // plain not always default!            if (GetStorage() != "PLAIN")
                 sql += wxT(";\nALTER TABLE ")+ GetQuotedFullTable()
                     +  wxT(" ALTER COLUMN pgadmin_tmpcol SET STORAGE ") + GetStorage();
@@ -83,29 +84,12 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
 wxString pgColumn::GetDefinition()
 {
     wxString sql;
-    sql = GetFullType();
+    sql = GetQuotedTypename();
     if (GetNotNull())
         sql += wxT(" NOT NULL");
     AppendIfFilled(sql, wxT(" DEFAULT "), GetDefault());
 
     return sql;
-}
-
-
-wxString pgColumn::GetFullType()
-{
-    wxString tn=qtIdent(GetVarTypename());
-    if (typlen == -1 && typmod > 0)
-    {
-        tn += wxT("(") + NumToStr(length);
-        if (precision >= 0)
-            tn += wxT(", ") + NumToStr(precision);
-        tn += wxT(")");
-    }
-    if (isArray)
-        tn += wxT("[]");
-
-    return tn;
 }
 
 
@@ -177,14 +161,6 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, wxT("Name"), GetName());
         InsertListItem(properties, pos++, wxT("Position"), GetColNumber());
         InsertListItem(properties, pos++, wxT("Data Type"), GetVarTypename());
-        if (GetLength() == -2)
-            InsertListItem(properties, pos++, wxT("Length"), wxT("null-terminated"));
-        else if (GetLength() < 0)
-            InsertListItem(properties, pos++, wxT("Length"), wxT("variable"));
-        else
-            InsertListItem(properties, pos++, wxT("Length"), GetLength());
-        if (GetPrecision() >= 0)
-            InsertListItem(properties, pos++, wxT("Base Type"), GetPrecision());
         InsertListItem(properties, pos++, wxT("Default"), GetDefault());
         InsertListItem(properties, pos++, wxT("Not Null?"), GetNotNull());
         InsertListItem(properties, pos++, wxT("Primary Key?"), GetIsPK());
@@ -230,18 +206,11 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     if (!settings->GetShowSystemObjects())
         systemRestriction = "\n   AND attnum > 0";
 
-    wxString numTypes
-        = NumToStr(PGOID_TYPE_NUMERIC)
-        + wxT(", ")
-        + NumToStr(PGOID_TYPE_NUMERIC_ARRAY);
-
     pgSet *columns= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT att.*, def.*, ty.typname, et.typname as elemtypname, relname, nspname,\n"
-        "       CASE WHEN atttypid IN (") +  numTypes + wxT(") "
-                    "OR ty.typbasetype IN (") + numTypes + wxT(") "
-                    "THEN 1 ELSE 0 END AS isnumeric, description\n"
+        "SELECT att.*, def.*, CASE when attndims > 0 THEN 1 ELSE 0 END AS isarray, ty.typname, tn.nspname as typnspname, et.typname as elemtypname, relname, na.nspname, description\n"
         "  FROM pg_attribute att\n"
         "  JOIN pg_type ty ON ty.oid=atttypid\n"
+        "  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n"
         "  JOIN pg_class cl ON cl.oid=attrelid\n"
         "  JOIN pg_namespace na ON na.oid=cl.relnamespace\n"
         "  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n"
@@ -260,12 +229,8 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
             column->iSetTableOid(collection->GetOid());
             column->iSetColNumber(columns->GetLong(wxT("attnum")));
-            column->iSetIsArray(columns->GetLong(wxT("attndims")) > 0);
+            column->iSetIsArray(columns->GetBool(wxT("isarray")));
             column->iSetComment(columns->GetVal(wxT("description")));
-            if (column->GetIsArray())
-                column->iSetVarTypename(columns->GetVal(wxT("elemtypname")));
-            else
-                column->iSetVarTypename(columns->GetVal(wxT("typname")));
             if (columns->GetBool(wxT("atthasdef")))
                 column->iSetDefault(columns->GetVal(wxT("adsrc")));
             column->iSetStatistics(columns->GetLong(wxT("attstattarget")));
@@ -277,28 +242,28 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
                 storage == wxT("m") ? wxT("MAIN") :
                 storage == wxT("s") ? wxT("EXTENDED") : wxT("unknown"));
 
-            long typlen=columns->GetLong(wxT("attlen"));
-            long typmod=columns->GetLong(wxT("atttypmod"));
-            bool isnum=columns->GetBool(wxT("isnumeric"));
+            column->iSetTyplen(columns->GetLong(wxT("attlen")));
 
-            long precision=-1, length=typlen;
-            if (length == -1)
-            {
-                if (typmod > 0)
-                {
-                    if (isnum)
-                    {
-                        length=(typmod-4) >> 16;
-                        precision=(typmod-4) & 0xffff;
-                    }
-                    else
-                        length = typmod-4;
-                }
-            }
-            column->iSetTyplen(typlen);
+            long typmod=columns->GetLong(wxT("atttypmod"));
+            pgDatatype dt(columns->GetVal(wxT("typname")), columns->GetBool(wxT("isarray"))? 1 : 0, typmod);
+
+
             column->iSetTypmod(typmod);
-            column->iSetLength(length);
-            column->iSetPrecision(precision);
+            column->iSetLength(dt.Length());
+            column->iSetPrecision(dt.Precision());
+
+            wxString nsp=columns->GetVal(wxT("typnspname"));
+            if (nsp == wxT("pg_catalog"))
+            {
+                column->iSetVarTypename(nsp + dt.FullName());
+                column->iSetQuotedTypename(dt.QuotedFullName());
+            }
+            else
+            {
+                column->iSetVarTypename(nsp + wxT(".") + dt.FullName());
+                column->iSetQuotedTypename(qtIdent(nsp) + wxT(".") + dt.QuotedFullName());
+            }
+
             column->iSetNotNull(columns->GetBool(wxT("attnotnull")));
             column->iSetQuotedFullTable(qtIdent(columns->GetVal(wxT("nspname"))) + wxT(".")
                 + qtIdent(columns->GetVal(wxT("relname"))));

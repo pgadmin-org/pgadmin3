@@ -101,7 +101,7 @@ int dlgSequence::Go(bool modal)
 pgObject *dlgSequence::CreateObject(pgCollection *collection)
 {
     pgObject *obj=pgSequence::ReadObjects(collection, 0, 
-        wxT("   AND relname=") + qtString(txtName->GetValue()) +
+        wxT("   AND relname=") + qtString(GetName()) +
         wxT("\n   AND relnamespace=") + schema->GetOidStr());
          
     return obj;
@@ -117,7 +117,7 @@ void dlgSequence::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
@@ -142,7 +142,7 @@ wxString dlgSequence::GetSql()
     {
         // create mode
         sql = wxT("CREATE SEQUENCE ") + schema->GetQuotedFullIdentifier()
-            + wxT(".") + qtIdent(txtName->GetValue());
+            + wxT(".") + qtIdent(GetName());
         if (chkCycled->GetValue())
             sql += wxT(" CYCLE");
         AppendIfFilled(sql, wxT("\n   INCREMENT "), txtIncrement->GetValue());
@@ -154,8 +154,8 @@ wxString dlgSequence::GetSql()
         sql += wxT(";\n");
     }
 
-    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(txtName->GetValue()));
-    AppendComment(sql, wxT("Sequence"), sequence);
+    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName()));
+    AppendComment(sql, wxT("Sequence"), schema, sequence);
 
     return sql;
 }

@@ -52,6 +52,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_REFRESH,                   frmMain::OnRefresh)
     EVT_MENU(MNU_CONNECT,                   frmMain::OnConnect)
     EVT_MENU(MNU_DISCONNECT,                frmMain::OnDisconnect)
+    EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
     EVT_MENU(MNU_DROP,                      frmMain::OnDrop)
     EVT_MENU(MNU_CREATE,                    frmMain::OnCreate)
     EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
@@ -621,6 +622,14 @@ void frmMain::OnSelRightClick(wxTreeEvent& event)
 }
 
 
+void frmMain::OnDelete(wxCommandEvent &ev)
+{
+    wxWindow *current=wxWindow::FindFocus();
+    if (current == browser)
+        OnDrop(ev);
+}
+
+
 void frmMain::OnDrop(wxCommandEvent &ev)
 {
     // This handler will primarily deal with dropping items
@@ -709,7 +718,7 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 void frmMain::OnDisconnect(wxCommandEvent &ev)
 {
     // Disconnect -- does nothing yet
-	int res = wxMessageBox("This is not yet implemented" );
+	wxMessageBox("This is not yet implemented" );
 }
 
 

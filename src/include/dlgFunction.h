@@ -43,6 +43,7 @@ private:
 
     ctlSQLBox *sqlBox;
     wxArrayString typOids;
+    wxArrayString types;
     wxArrayString argOids;
 
     DECLARE_EVENT_TABLE();

@@ -58,7 +58,7 @@ void dlgCheck::OnChange(wxNotifyEvent &ev)
 {
     if (check)
     {
-        txtComment->Enable(!txtName->GetValue().IsEmpty());
+        txtComment->Enable(!GetName().IsEmpty());
         btnOK->Enable(txtComment->GetValue() != check->GetComment());
     }
     else
@@ -78,7 +78,7 @@ pgObject *dlgCheck::GetObject()
 
 pgObject *dlgCheck::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     if (name.IsEmpty())
         return 0;
@@ -118,7 +118,7 @@ int dlgCheck::Go(bool modal)
 wxString dlgCheck::GetSql()
 {
     wxString sql;
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     if (!check)
     {
@@ -130,12 +130,8 @@ wxString dlgCheck::GetSql()
     }
     else
     {
-        wxString cmt=txtComment->GetValue();
-        if (check->GetComment() != cmt)
-            sql += wxT("COMMENT ON CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
-                +  wxT(".") + qtIdent(name)
-                +  wxT(" IS ") + qtString(cmt)
-                + wxT(";\n");
+        AppendComment(sql, wxT("CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
+                + wxT(".") + qtIdent(name), check);
     }
     return sql;
 }

@@ -92,6 +92,7 @@ private:
 	void OnNew(wxCommandEvent& event);
     void OnCreate(wxCommandEvent &ev);
     void OnDrop(wxCommandEvent &ev);
+    void OnDelete(wxCommandEvent &ev);
 	void OnProperties(wxCommandEvent &ev);
     void OnRefresh(wxCommandEvent &ev);
 	void OnDisconnect(wxCommandEvent &ev);

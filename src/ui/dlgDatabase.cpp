@@ -22,14 +22,13 @@
 
 
 // pointer to controls
-#define txtName         CTRL("txtName", wxTextCtrl)
 #define cbOwner         CTRL("cbOwner", wxComboBox)
 #define cbEncoding      CTRL("cbEncoding", wxComboBox)
 #define cbTemplate      CTRL("cbTemplate", wxComboBox)
 #define txtPath         CTRL("txtPath", wxTextCtrl)
 
 #define lstVariables    CTRL("lstVariables", wxListCtrl)
-#define txtName         CTRL("txtName", wxTextCtrl)
+#define txtVarname      CTRL("txtVarname", wxTextCtrl)
 #define txtValue        CTRL("txtValue", wxTextCtrl)
 
 #define btnOK           CTRL("btnOK", wxButton)
@@ -112,7 +111,7 @@ int dlgDatabase::Go(bool modal)
 
 pgObject *dlgDatabase::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     pgObject *obj=pgDatabase::ReadObjects(collection, 0, wxT(" WHERE datname=") + qtString(name) + wxT("\n"));
     return obj;
@@ -123,7 +122,7 @@ void dlgDatabase::OnChange(wxNotifyEvent &ev)
 {
     if (!database)
     {
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
         EnableOK(enable);
@@ -136,7 +135,7 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
     long pos=lstVariables->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     if (pos >= 0)
     {
-        txtName->SetValue(lstVariables->GetItemText(pos));
+        txtVarname->SetValue(lstVariables->GetItemText(pos));
         txtValue->SetValue(GetListText(lstVariables, pos, 1));
     }
 }
@@ -144,7 +143,7 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
 
 void dlgDatabase::OnVarAdd(wxNotifyEvent &ev)
 {
-    wxString name=txtName->GetValue().Strip(wxString::both);
+    wxString name=txtVarname->GetValue().Strip(wxString::both);
     wxString value=txtValue->GetValue().Strip(wxString::both);
     if (value.IsEmpty())
         value = wxT("DEFAULT");
@@ -171,13 +170,12 @@ void dlgDatabase::OnVarRemove(wxNotifyEvent &ev)
 wxString dlgDatabase::GetSql()
 {
     wxString sql, name;
-    name=txtName->GetValue();
+    name=GetName();
 
     if (database)
     {
         // edit mode
-        wxString comment=txtComment->GetValue();
-        AppendComment(sql, wxT("DATABASE"), database);
+        AppendComment(sql, wxT("DATABASE"), 0, database);
     }
     else
     {

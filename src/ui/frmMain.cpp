@@ -42,7 +42,7 @@ WX_DEFINE_LIST(windowList);
 
 // Icons
 #include "images/aggregate.xpm"
-#include "images/arguments.xpm"
+// #include "images/arguments.xpm"
 #include "images/baddatabase.xpm"
 #include "images/check.xpm"
 #include "images/closeddatabase.xpm"
@@ -56,9 +56,9 @@ WX_DEFINE_LIST(windowList);
 #include "images/drop.xpm"
 #include "images/function.xpm"
 #include "images/group.xpm"
-#include "images/hiproperty.xpm"
+// #include "images/hiproperty.xpm"
 #include "images/index.xpm"
-#include "images/indexcolumn.xpm"
+// #include "images/indexcolumn.xpm"
 #include "images/language.xpm"
 #include "images/foreignkey.xpm"
 #include "images/namespace.xpm"
@@ -182,7 +182,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_NORMAL, WXK_F5, MNU_REFRESH);
-    entries[1].Set(wxACCEL_NORMAL, WXK_DELETE, MNU_DROP);
+    entries[1].Set(wxACCEL_NORMAL, WXK_DELETE, MNU_DELETE);
     wxAcceleratorTable accel(2, entries);
 
     SetAcceleratorTable(accel);

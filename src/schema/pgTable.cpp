@@ -104,7 +104,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         // make sure all kids are appended
         ShowTreeDetail(browser);
         sql = wxT("-- Table: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("CREATE TABLE ") + GetQuotedFullIdentifier() + wxT("   (\n");
+            + wxT("CREATE TABLE ") + GetQuotedFullIdentifier() + wxT("\n(\n");
 
         pgObject *data;
         long cookie;

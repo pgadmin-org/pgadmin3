@@ -36,6 +36,8 @@ public:
 
     wxString GetVarTypename() const { return varTypename; }
     void iSetVarTypename(const wxString& s) { varTypename=s; }
+    wxString GetQuotedTypename() const { return quotedTypename; }
+    void iSetQuotedTypename(const wxString& s) { quotedTypename=s; }
     wxString GetDefault() const { return defaultVal; }
     void iSetDefault(const wxString& s) { defaultVal=s; }
     long GetColNumber() const { return colNumber; }
@@ -68,13 +70,12 @@ public:
     bool CanDrop() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool GetSystemObject() const { return colNumber < 0; }
-    wxString GetFullType();
     wxString GetSql(wxTreeCtrl *browser);
 
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString varTypename, defaultVal, quotedFullTable, storage;
+    wxString varTypename, quotedTypename, defaultVal, quotedFullTable, storage;
     long colNumber, length, precision, statistics;
     long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray;

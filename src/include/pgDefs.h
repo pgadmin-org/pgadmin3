@@ -11,14 +11,14 @@
 #ifndef PGDEFS_H
 #define PGDEFS_H
 
-#define PGOID_TYPE_BYTEA                    2L
-#define PGOID_TYPE_CHAR                     3L
-#define PGOID_TYPE_NAME                     4L
-#define PGOID_TYPE_TEXT                     10L
 #define PGOID_TYPE_BOOL                     16L
+#define PGOID_TYPE_BYTEA                    17L
+#define PGOID_TYPE_CHAR                     18L
+#define PGOID_TYPE_NAME                     19L
 #define PGOID_TYPE_INT8                     20L
 #define PGOID_TYPE_INT2                     21L
 #define PGOID_TYPE_INT4                     23L
+#define PGOID_TYPE_TEXT                     25L
 #define PGOID_TYPE_OID                      26L
 #define PGOID_TYPE_TID                      27L
 #define PGOID_TYPE_XID                      28L
@@ -26,7 +26,11 @@
 #define PGOID_TYPE_FLOAT4                   700L
 #define PGOID_TYPE_FLOAT8                   701L
 #define PGOID_TYPE_MONEY                    790L
-#define PGOID_TYPE_NUMERIC_ARRAY            1231L
+#define PGOID_TYPE_VARCHAR                  1043L
+#define PGOID_TYPE_TIMESTAMP                1114L
+#define PGOID_TYPE_TIME                     1083L
+#define PGOID_TYPE_INTERVAL                 1186L
+#define PGOID_TYPE_BIT                      1560L
 #define PGOID_TYPE_NUMERIC                  1700L
 #define PGOID_TYPE_VOID                     2278L
 #define PGOID_TYPE_TRIGGER                  2279L

@@ -18,6 +18,7 @@
 #include "dlgFunction.h"
 #include "pgFunction.h"
 #include "pgCollection.h"
+#include "pgDatatype.h"
 
 // Images
 #include "images/function.xpm"
@@ -144,32 +145,17 @@ int dlgFunction::Go(bool modal)
     else
     {
         // create mode
-        pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT CASE WHEN COALESCE(t.typelem, 0) = 0 OR SUBSTR(t.typname, 1,1) <> '_' THEN t.typname ELSE b.typname || '[]' END AS typname, t.typlen, t.oid, nspname\n"
-            "  FROM pg_type t\n"
-            "  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n"
-            "  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n"
-            " WHERE t.typisdefined AND t.typtype IN ('b', 'd')\n"
-            " ORDER BY t.typtype DESC, (t.typelem>0)::bool, COALESCE(b.typname, t.typname)"));
-
-        if (set)
+        DatatypeReader tr(connection);
+        while (tr.HasMore())
         {
-            while (!set->Eof())
-            {
-                wxString nsp=set->GetVal(wxT("nspname"));
-                if (nsp == wxT("public") || nsp == wxT("pg_catalog"))
-                    nsp = wxT("");
-                else
-                    nsp += wxT(".");
+            pgDatatype dt=tr.GetDatatype();
+            typOids.Add(tr.GetOidStr());
+            types.Add(tr.GetSchemaPrefix() + dt.QuotedFullName());
 
-                typOids.Add(set->GetVal(2));
-                cbDatatype->Append(nsp + set->GetVal(0));
-                if (objectType != PG_TRIGGERFUNCTION)
-                    cbReturntype->Append(nsp + set->GetVal(0));
-
-                set->MoveNext();
-            }
-            delete set;
+            cbDatatype->Append(tr.GetSchemaPrefix() + dt.FullName());
+            if (objectType != PG_TRIGGERFUNCTION)
+                cbReturntype->Append(tr.GetSchemaPrefix() + dt.FullName());
+            tr.MoveNext();
         }
 
         long sel;
@@ -196,7 +182,7 @@ int dlgFunction::Go(bool modal)
 
 pgObject *dlgFunction::CreateObject(pgCollection *collection)
 {
-    wxString sql=wxT(" WHERE proname=") + qtString(txtName->GetValue()) +
+    wxString sql=wxT(" WHERE proname=") + qtString(GetName()) +
         wxT("\n   AND pronamespace=") + schema->GetOidStr();
 
     long argCount;
@@ -226,7 +212,7 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
 
         bool enable=true;
 
@@ -316,7 +302,7 @@ wxString dlgFunction::GetSql()
     {
         // create mode
         name = schema->GetQuotedFullIdentifier() + wxT(".") 
-             + qtIdent(txtName->GetValue()) 
+             + qtIdent(GetName()) 
              + wxT("(") + GetArgs(true) + wxT(")");
 
         sql = wxT("CREATE FUNCTION ") + name;

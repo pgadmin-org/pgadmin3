@@ -145,7 +145,7 @@ void sysLogger::WriteLog(const wxString& msg)
     extern sysSettings *settings;
     wxString pid, logfile;
 
-    pid.Printf("%d", wxGetProcessId());
+    pid.Printf("%ld", wxGetProcessId());
     logfile.Printf("%s", settings->GetLogFile().c_str());
     logfile.Replace("%ID", pid);
 

@@ -17,7 +17,7 @@
 class pgColumn;
 class pgTable;
 
-class dlgColumn : public dlgProperty
+class dlgColumn : public dlgTypeProperty
 {
 public:
     dlgColumn(frmMain *frame, pgColumn *column, pgTable *parentNode);
@@ -26,20 +26,17 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
     wxString GetDefinition();
-    wxString GetFullType();
     wxString GetPreviousDefinition() { return previousDefinition; }
 
     int Go(bool modal);
 
 
 private:
-    bool isVarLen, isVarPrec;
     pgColumn *column;
     pgTable *table;
     void OnChange(wxNotifyEvent &ev);
     void OnSelChangeTyp(wxNotifyEvent &ev);
  
-    wxArrayString typmods;
     wxString previousDefinition;
 
     DECLARE_EVENT_TABLE();

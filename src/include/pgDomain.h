@@ -34,6 +34,8 @@ public:
 
     wxString GetBasetype() const { return basetype; }
     void iSetBasetype(const wxString& s) { basetype = s; }
+    wxString GetQuotedBasetype() const { return quotedBasetype; }
+    void iSetQuotedBasetype(const wxString& s) { quotedBasetype = s; }
     long GetLength() const { return length; }
     void iSetLength(long l) { length=l; }
     long GetPrecision() const { return precision; }
@@ -61,7 +63,7 @@ public:
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString basetype, defaultVal, delimiter;
+    wxString basetype, quotedBasetype, defaultVal, delimiter;
     long length, precision, dimensions;
     long typlen, typmod;
     bool notNull;

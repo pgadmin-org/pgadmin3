@@ -138,7 +138,7 @@ void dlgIndexBase::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
         
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
@@ -184,7 +184,7 @@ void dlgIndex::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        txtComment->Enable(!txtName->GetValue().IsEmpty());
+        txtComment->Enable(!GetName().IsEmpty());
 
         bool enable=true;
         CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));
@@ -239,7 +239,7 @@ wxString dlgIndex::GetSql()
             sql = wxT("CREATE ");
             if (chkUnique->GetValue())
                 sql += wxT("UNIQUE ");
-            sql += wxT("INDEX ") + qtIdent(txtName->GetValue());
+            sql += wxT("INDEX ") + qtIdent(GetName());
             AppendIfFilled(sql, wxT(" USING "), cbType->GetValue());
             sql += wxT("\n   ON ") + table->GetFullIdentifier() 
                 + wxT("(") + GetColumns()
@@ -249,8 +249,7 @@ wxString dlgIndex::GetSql()
             AppendIfFilled(sql, wxT(" WHERE "), txtWhere->GetValue());
             sql +=  wxT(";\n");
         }
-        wxString cmt=txtComment->GetValue();
-        AppendComment(sql, wxT("INDEX"), index);
+        AppendComment(sql, wxT("INDEX"), table->GetSchema(), index);
     }
     return sql;
 }
@@ -258,7 +257,7 @@ wxString dlgIndex::GetSql()
 
 pgObject *dlgIndex::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     pgObject *obj=pgIndex::ReadObjects(collection, 0, wxT(
         "\n   AND cls.relname=") + qtString(name) + wxT(

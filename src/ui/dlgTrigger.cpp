@@ -124,7 +124,7 @@ wxString dlgTrigger::GetSql()
     }
     else
     {
-        sql = wxT("CREATE TRIGGER ") + qtIdent(txtName->GetValue());
+        sql = wxT("CREATE TRIGGER ") + qtIdent(GetName());
         if (rdbFires->GetSelection())
             sql += wxT(" AFTER");
         else
@@ -158,7 +158,8 @@ wxString dlgTrigger::GetSql()
             + wxT("(") + txtArguments->GetValue()
             + wxT(");\n");
     }
-    AppendComment(sql, wxT("TRIGGER ") + qtIdent(txtName->GetValue()) + wxT(" ON ") + table->GetQuotedFullIdentifier(), trigger);
+    AppendComment(sql, wxT("TRIGGER ") + qtIdent(GetName()) 
+        + wxT(" ON ") + table->GetQuotedFullIdentifier(), trigger);
 
     return sql;
 }
@@ -167,7 +168,7 @@ wxString dlgTrigger::GetSql()
 pgObject *dlgTrigger::CreateObject(pgCollection *collection)
 {
     pgObject *obj=pgTrigger::ReadObjects(collection, 0, 
-        wxT("\n   AND tgname=") + qtString(txtName->GetValue()) +
+        wxT("\n   AND tgname=") + qtString(GetName()) +
         wxT("\n   AND tgreloid=") + table->GetOidStr() +
         wxT("\n   AND relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;
@@ -182,7 +183,7 @@ void dlgTrigger::OnChange(wxNotifyEvent &ev)
     else
     {
         wxString function=cbFunction->GetValue();
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));

@@ -38,6 +38,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const 
     wxLogInfo(wxT("Creating server status box"));
     wxXmlResource::Get()->LoadDialog(this, form, "frmStatus"); 
     SetTitle(_title);
+    SetIcon(wxIcon(pgAdmin3_xpm));
 
     mainForm=form;
     connection=conn;
@@ -103,7 +104,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 
             if (pid != backend_pid)
             {
-                long itempid;
+                long itempid=0;
 
                 while (row < statusList->GetItemCount())
                 {

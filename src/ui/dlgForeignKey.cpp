@@ -76,7 +76,7 @@ void dlgForeignKey::OnChange(wxNotifyEvent &ev)
     if (foreignKey)
     {
         btnOK->Enable(txtComment->GetValue() != foreignKey->GetComment());
-        txtComment->Enable(!txtName->GetValue().IsEmpty());
+        txtComment->Enable(!GetName().IsEmpty());
     }
     else
     {
@@ -177,7 +177,7 @@ pgObject *dlgForeignKey::GetObject()
 
 pgObject *dlgForeignKey::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
     if (name.IsEmpty())
         return 0;
 
@@ -274,7 +274,7 @@ int dlgForeignKey::Go(bool modal)
 wxString dlgForeignKey::GetSql()
 {
     wxString sql;
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     if (!foreignKey)
     {
@@ -286,12 +286,8 @@ wxString dlgForeignKey::GetSql()
     }
     else
     {
-        wxString cmt=txtComment->GetValue();
-        if (foreignKey->GetComment() != cmt)
-            sql += wxT("COMMENT ON CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
-                +  wxT(".") + qtIdent(name)
-                +  wxT(" IS ") + qtString(cmt)
-                + wxT(";\n");
+        AppendComment(sql, wxT("CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
+                +  wxT(".") + qtIdent(name), foreignKey);
     }
     return sql;
 }

@@ -4,35 +4,41 @@
 // Copyright (C) 2002, The pgAdmin Development Team
 // This software is released under the pgAdmin Public Licence
 //
-// dlgDomain.h - Domain property 
+// dlgType.h - Typeproperty 
 //
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __DLG_DOMAINPROP
-#define __DLG_DOMAINPROP
+#ifndef __DLG_TYPEPROP
+#define __DLG_TYPEPROP
 
 #include "dlgProperty.h"
 
-class pgSchema;
-class pgDomain;
+class pgType;
 
-class dlgDomain : public dlgTypeProperty
+class dlgType : public dlgTypeProperty
 {
 public:
-    dlgDomain(frmMain *frame, pgDomain *dom, pgSchema *sch);
-    int Go(bool modal);
-
+    dlgType(frmMain *frame, pgType *node, pgSchema *schema);
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
-private:
-    void OnChange(wxNotifyEvent &ev);
-    void OnSelChangeTyp(wxNotifyEvent &ev);
+    int Go(bool modal);
 
+private:
     pgSchema *schema;
-    pgDomain *domain;
+    pgType *type;
+    void OnChange(wxNotifyEvent &ev);
+    void OnTypeChange(wxNotifyEvent &ev);
+    void OnVarAdd(wxNotifyEvent &ev);
+    void OnVarRemove(wxNotifyEvent &ev);
+    void OnVarSelChange(wxListEvent &ev);
+    void OnSelChangeTyp(wxNotifyEvent &ev);
+    void OnChangeMember(wxNotifyEvent &ev);
+
+    wxArrayString memberTypes;
+    wxWindowList compositeWindows, externalWindows;
 
     DECLARE_EVENT_TABLE();
 };

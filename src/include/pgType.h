@@ -50,16 +50,28 @@ public:
     void iSetInternalLength(const long l)  { internalLength=l; }
     bool GetPassedByValue() const { return passedByValue; }
     void iSetPassedByValue(const bool b) { passedByValue=b; }
+    bool GetIsComposite() const {return isComposite; }
+    void iSetIsComposite(const bool b) { isComposite=b; }
+    bool GetIsRecordType() const { return isRecordType; }
+    void iSetIsRecordType(const bool b) { isRecordType=b; }
+    void iSetRelOid(const double d) { relOid=d; }
+    wxString GetTypesList() const { return typesList; }
+    wxString GetQuotedTypesList() const {return quotedTypesList; }
+    bool GetSystemObject() const { return pgSchemaObject::GetSystemObject() || isRecordType; }
 
     bool CanDrop() { return true; }
+    bool CanEdit() { return true; }
+    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage;
+    wxString inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,
+        typesList, quotedTypesList;
     long internalLength;
-    bool passedByValue;
+    bool passedByValue, isComposite, isRecordType;
+    double relOid;
 };
 
 #endif

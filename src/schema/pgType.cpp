@@ -17,6 +17,7 @@
 #include "pgObject.h"
 #include "pgType.h"
 #include "pgCollection.h"
+#include "pgDatatype.h"
 
 
 pgType::pgType(pgSchema *newSchema, const wxString& newName)
@@ -37,19 +38,27 @@ wxString pgType::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE TYPE ") + GetQuotedFullIdentifier() 
-            + wxT("(INPUT=") + qtIdent(GetInputFunction()) 
-            + wxT(", OUTPUT=") + qtIdent(GetOutputFunction());
-        AppendIfFilled(sql, wxT(", DEFAULT="), qtString(GetDefault()));
-        if (!GetElement().IsNull())
+        sql = wxT("CREATE TYPE ") + GetQuotedFullIdentifier();
+        if (GetIsComposite())
         {
-            sql += wxT(",\n       ELEMENT=") + GetElement()
-                + wxT(", DELIMITER='") + GetDelimiter() + wxT("'");
+            sql += wxT(" AS\n   (");
+            sql += GetQuotedTypesList();
         }
-        sql +=wxT(",\n       INTERNALLENGTH=") + NumToStr(GetInternalLength())
-            + wxT(", ALIGNMENT=" + GetAlignment()
-            + wxT(", STORAGE=") + GetStorage())
-            + wxT(");\n")
+        else
+        {
+            sql += wxT("\n   (INPUT=") + qtIdent(GetInputFunction()) 
+                + wxT(", OUTPUT=") + qtIdent(GetOutputFunction());
+            AppendIfFilled(sql, wxT(", DEFAULT="), qtString(GetDefault()));
+            if (!GetElement().IsNull())
+            {
+                sql += wxT(",\n       ELEMENT=") + GetElement()
+                    + wxT(", DELIMITER='") + GetDelimiter() + wxT("'");
+            }
+            sql +=wxT(",\n       INTERNALLENGTH=") + NumToStr(GetInternalLength())
+                + wxT(", ALIGNMENT=" + GetAlignment()
+                + wxT(", STORAGE=") + GetStorage());
+        }
+        sql += wxT(");\n")
             + GetCommentSql();
     }
 
@@ -60,7 +69,49 @@ wxString pgType::GetSql(wxTreeCtrl *browser)
 
 void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
+    if (!expandedKids)
+    {
+        expandedKids=true;
+        if (isComposite)
+        {
+            pgSet *set=ExecuteSet(wxT(
+                "SELECT attname, t.typname, attndims, atttypmod, nspname\n"
+                "  FROM pg_attribute att\n"
+                "  JOIN pg_type t ON t.oid=atttypid\n"
+                "  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n"
+                "  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n"
+                " WHERE att.attrelid=") + NumToStr(relOid) + wxT("\n"
+                " ORDER by attnum"));
+            if (set)
+            {
+                int anzvar=0;
+                while (!set->Eof())
+                {
+                    if (anzvar++)
+                    {
+                        typesList += wxT(", ");
+                        quotedTypesList += wxT(",\n    ");
+                    }
+                    typesList += set->GetVal(wxT("attname")) + wxT(" ");
+                    quotedTypesList += qtIdent(set->GetVal(wxT("attname"))) + wxT(" ");
 
+                    pgDatatype dt(set->GetVal(wxT("typname")), set->GetLong(wxT("attndims")) > 0, set->GetLong(wxT("atttypmod")));
+                    wxString nspname=set->GetVal(wxT("nspname"));
+                    if (!nspname.IsSameAs(wxT("pg_catalog")))
+                    {
+                        typesList += nspname + wxT(".");
+                        quotedTypesList += qtIdent(nspname) + wxT(".");
+                    }
+
+                    typesList +=  dt.FullName();
+                    quotedTypesList += dt.QuotedFullName();
+
+                    set->MoveNext();
+                }
+                delete set;
+            }
+        }
+    }
     if (properties)
     {
         wxLogInfo(wxT("Displaying properties for type %s"), GetIdentifier().c_str());
@@ -71,15 +122,25 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, wxT("Name"), GetName());
         InsertListItem(properties, pos++, wxT("OID"), GetOid());
         InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-        InsertListItem(properties, pos++, wxT("Alignment"), GetAlignment());
-        InsertListItem(properties, pos++, wxT("Internal Length"), GetInternalLength());
-        InsertListItem(properties, pos++, wxT("Default"), GetDefault());
-        InsertListItem(properties, pos++, wxT("Passed by Value?"), BoolToYesNo(GetPassedByValue()));
-        InsertListItem(properties, pos++, wxT("Delimiter"), GetDelimiter());
-    //    InsertListItem(properties, pos++, wxT("Element"), GetElement());
-        InsertListItem(properties, pos++, wxT("Input Function"), GetInputFunction());
-        InsertListItem(properties, pos++, wxT("Output Function"), GetOutputFunction());
-        InsertListItem(properties, pos++, wxT("Storage"), GetStorage());
+        if (isComposite)
+        {
+            InsertListItem(properties, pos++, wxT("Members"), GetTypesList());
+        }
+        else
+        {
+            InsertListItem(properties, pos++, wxT("Alignment"), GetAlignment());
+            InsertListItem(properties, pos++, wxT("Internal Length"), GetInternalLength());
+            InsertListItem(properties, pos++, wxT("Default"), GetDefault());
+            InsertListItem(properties, pos++, wxT("Passed by Value?"), BoolToYesNo(GetPassedByValue()));
+            if (!GetElement().IsEmpty())
+            {
+                InsertListItem(properties, pos++, wxT("Element"), GetElement());
+                InsertListItem(properties, pos++, wxT("Delimiter"), GetDelimiter());
+            }
+            InsertListItem(properties, pos++, wxT("Input Function"), GetInputFunction());
+            InsertListItem(properties, pos++, wxT("Output Function"), GetOutputFunction());
+            InsertListItem(properties, pos++, wxT("Storage"), GetStorage());
+        }
         InsertListItem(properties, pos++, wxT("System Type?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
@@ -105,12 +166,18 @@ pgObject *pgType::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgType *type=0;
+    wxString systemRestriction;
+    if (!settings->GetShowSystemObjects())
+        systemRestriction = wxT("   AND ct.oid IS NULL\n");
+
     pgSet *types= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description\n"
+        "SELECT t.oid, t.*, pg_get_userbyid(t.typowner) as typeowner, e.typname as element, description, ct.oid AS taboid\n"
         "  FROM pg_type t\n"
         "  LEFT OUTER JOIN pg_type e ON e.oid=t.typelem\n"
+        "  LEFT OUTER JOIN pg_class ct ON ct.oid=t.typrelid AND ct.relkind <> 'c'\n"
         "  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n"
-        " WHERE t.typtype != 'd' AND t.typtype != 'c' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
+        " WHERE t.typtype != 'd' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+        + systemRestriction + wxT(
         " ORDER BY t.typname"));
     if (types)
     {
@@ -122,6 +189,9 @@ pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             type->iSetOwner(types->GetVal(wxT("typeowner")));
             type->iSetComment(types->GetVal(wxT("description")));
             type->iSetPassedByValue(types->GetBool(wxT("typbyval")));
+            type->iSetIsComposite(types->GetVal(wxT("typtype")) == wxT("c"));
+            type->iSetRelOid(types->GetOid(wxT("typrelid")));
+            type->iSetIsRecordType(types->GetOid(wxT("taboid")) != 0);
             type->iSetInternalLength(types->GetLong(wxT("typlen")));
             type->iSetDelimiter(types->GetVal(wxT("typdelim")));
             type->iSetElement(types->GetVal(wxT("element")));

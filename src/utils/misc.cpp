@@ -114,7 +114,7 @@ bool StrToBool(const wxString& value)
 wxString NumToStr(long value)
 {
     wxString result;
-    result.Printf("%d", value);
+    result.Printf("%ld", value);
     return result;
 }
 

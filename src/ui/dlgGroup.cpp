@@ -100,7 +100,7 @@ void dlgGroup::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
@@ -138,7 +138,7 @@ void dlgGroup::OnUserRemove(wxNotifyEvent &ev)
 
 pgObject *dlgGroup::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     pgObject *obj=pgGroup::ReadObjects(collection, 0, wxT("\n WHERE groname=") + qtString(name));
     return obj;
@@ -148,7 +148,7 @@ pgObject *dlgGroup::CreateObject(pgCollection *collection)
 wxString dlgGroup::GetSql()
 {
     wxString sql;
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
     int cnt, pos;
 
     if (group)
@@ -181,7 +181,7 @@ wxString dlgGroup::GetSql()
     else
     {
         // Create Mode
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
 
         long id=atol(txtID->GetValue());
 

@@ -76,7 +76,7 @@ int dlgSchema::Go(bool modal)
 
 pgObject *dlgSchema::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     pgObject *obj=pgSchema::ReadObjects(collection, 0, wxT(" WHERE nspname=") + qtString(name) + wxT("\n"));
     return obj;
@@ -91,7 +91,7 @@ void dlgSchema::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
@@ -105,7 +105,7 @@ void dlgSchema::OnChange(wxNotifyEvent &ev)
 wxString dlgSchema::GetSql()
 {
     wxString sql, name;
-    name=txtName->GetValue();
+    name=GetName();
 
     if (schema)
     {
@@ -119,7 +119,7 @@ wxString dlgSchema::GetSql()
         sql += wxT(";\n");
 
     }
-    AppendComment(sql, wxT("SCHEMA"), schema);
+    AppendComment(sql, wxT("SCHEMA"), 0, schema);
 
     sql += GetGrant(wxT("UC"), wxT("SCHEMA ") + qtIdent(name));
 

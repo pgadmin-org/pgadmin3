@@ -18,6 +18,7 @@
 #include "pgConn.h"
 #include <wx/xrc/xmlres.h>
 
+class pgSchema;
 class pgTable;
 
 #define nbNotebook      CTRL("nbNotebook",      wxNotebook)
@@ -56,7 +57,8 @@ protected:
 
     void CheckValid(bool &enable, const bool condition, const wxString &msg);
     static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type=-1);
-    void AppendComment(wxString &sql, const wxString &objName, pgObject *obj=0);
+    void AppendComment(wxString &sql, const wxString &objType, pgSchema *schema, pgObject *obj);
+    void AppendComment(wxString &sql, const wxString &objName, pgObject *obj);
     void AppendQuoted(wxString &sql, const wxString &name);
 
     void OnPageSelect(wxNotebookEvent& event);
@@ -76,12 +78,33 @@ protected:
 
     wxTextCtrl *statusBox;
     int width, height;
-    int sqlPageNo;
     wxTreeItemId item;
     int objectType;
 
 private:
     DECLARE_EVENT_TABLE();
+};
+
+
+#define cbDatatype      CTRL("cbDatatype",      wxComboBox)
+#define txtLength       CTRL("txtLength", wxTextCtrl)
+#define txtPrecision    CTRL("txtPrecision", wxTextCtrl)
+
+
+class dlgTypeProperty : public dlgProperty
+{
+public:
+    wxString GetQuotedTypename();
+    int Go(bool modal);
+
+protected:
+    dlgTypeProperty(frmMain *frame, const wxString &resName);
+    void CheckLenEnable();
+    void FillDatatype(wxComboBox *cb, bool withDomains=true);
+    void FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDomains=true);
+
+    bool isVarLen, isVarPrec;
+    wxArrayString types;
 };
 
 

@@ -93,7 +93,7 @@ void dlgIndexConstraint::OnCheckDeferrable(wxNotifyEvent &ev)
 wxString dlgIndexConstraint::GetSql()
 {
     wxString sql;
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     if (!index)
     {
@@ -105,12 +105,8 @@ wxString dlgIndexConstraint::GetSql()
     }
     else
     {
-        wxString cmt=txtComment->GetValue();
-        if (index->GetComment() != cmt)
-            sql += wxT("COMMENT ON CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
-                +  wxT(".") + qtIdent(name)
-                +  wxT(" IS ") + qtString(cmt)
-                + wxT(";\n");
+        AppendComment(sql, wxT("CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
+                +  wxT(".") + qtIdent(name), index);
     }
     return sql;
 }
@@ -133,7 +129,7 @@ dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, wxListCtrl *colList)
 
 pgObject *dlgPrimaryKey::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
     if (name.IsEmpty())
         return 0;
 
@@ -160,7 +156,7 @@ dlgUnique::dlgUnique(frmMain *frame, wxListCtrl *colList)
 
 pgObject *dlgUnique::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     pgObject *obj=pgUnique::ReadObjects(collection, 0, wxT(
         "\n   AND cls.relname=") + qtString(name) + wxT(

@@ -105,7 +105,7 @@ int dlgTable::Go(bool modal)
         chkHasOids->Disable();
 
         long cookie;
-        pgObject *data;
+        pgObject *data=0;
         wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(table->GetId(), cookie);
         while (item)
         {
@@ -305,7 +305,7 @@ wxString dlgTable::GetSql()
         }
 
         
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
         if (name != table->GetName())
             sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                 +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
@@ -316,7 +316,7 @@ wxString dlgTable::GetSql()
     }
     else
     {
-        sql = wxT("CREATE TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(txtName->GetValue())
+        sql = wxT("CREATE TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName())
             + wxT("\n(");
 
         int pos;
@@ -344,7 +344,7 @@ wxString dlgTable::GetSql()
 
         sql += wxT("\n);\n");
     }
-    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(txtName->GetValue()));
+    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName()));
 
     return sql;
 }
@@ -364,7 +364,7 @@ void dlgTable::FillConstraint()
 
 pgObject *dlgTable::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     pgObject *obj=pgTable::ReadObjects(collection, 0, wxT(
         "\n   AND rel.relname=") + qtString(name) + wxT(
@@ -381,7 +381,7 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
         bool changed=false;
         if (lstColumns->GetItemCount() > 0)
         {
-            if (txtName->GetValue() != table->GetName() ||
+            if (GetName() != table->GetName() ||
                 txtComment->GetValue() != table->GetComment() ||
                 cbOwner->GetValue() != table->GetOwner())
                 changed=true;
@@ -392,7 +392,7 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
         CheckValid(enable, lstColumns->GetItemCount() > 0, wxT("Please specify columns."));

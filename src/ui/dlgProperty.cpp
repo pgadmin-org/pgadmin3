@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "ctlSQLBox.h"
 #include "pgCollection.h"
+#include "pgDatatype.h"
 
 // Images
 #include "images/properties.xpm"
@@ -39,6 +40,8 @@
 #include "dlgCheck.h"
 #include "dlgSequence.h"
 #include "dlgTrigger.h"
+#include "dlgType.h"
+
 
 #include "pgTable.h"
 #include "pgColumn.h"
@@ -70,7 +73,6 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
 {
     objectType=-1;
     sqlPane=0;
-    sqlPageNo=-1;
     mainForm = frame;
     wxXmlResource::Get()->LoadDialog(this, frame, resName);
     if (!nbNotebook)
@@ -136,21 +138,20 @@ int dlgProperty::Go(bool modal)
     if (modal)
         return ShowModal();
     else
-        Show();
+        Show(true);
     return 0;
 }
 
 void dlgProperty::CreateAdditionalPages()
 {
     sqlPane = new ctlSQLBox(nbNotebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_READONLY | wxTE_RICH2);
-    sqlPageNo=nbNotebook->GetPageCount();
     nbNotebook->AddPage(sqlPane, wxT("SQL"));
 }
 
 
 wxString dlgProperty::GetName()
 {
-    return txtName->GetValue();
+    return txtName->GetValue().Strip(wxString::both);
 }
 
 
@@ -158,10 +159,24 @@ void dlgProperty::AppendComment(wxString &sql, const wxString &objName, pgObject
 {
     wxString comment=txtComment->GetValue();
     if ((!obj && !comment.IsEmpty()) ||(obj && obj->GetComment() != comment))
-        sql += wxT("COMMENT ON ") + objName + wxT(" ") + qtIdent(txtName->GetValue())
-            +  wxT(" IS ") + qtString(comment) + wxT(";\n");
+    {
+        sql += wxT("COMMENT ON ") + objName
+            + wxT(" IS ") + qtString(comment) + wxT(";\n");
+    }
 }
 
+
+void dlgProperty::AppendComment(wxString &sql, const wxString &objType, pgSchema *schema, pgObject *obj)
+{
+    wxString comment=txtComment->GetValue();
+    if ((!obj && !comment.IsEmpty()) ||(obj && obj->GetComment() != comment))
+    {
+        sql += wxT("COMMENT ON ") + objType + wxT(" ");
+        if (schema)
+           sql += schema->GetQuotedIdentifier() + wxT(".");
+        sql += qtIdent(GetName()) + wxT(" IS ") + qtString(comment) + wxT(";\n");
+    }
+}
 
 
 void dlgProperty::AppendQuoted(wxString &sql, const wxString &name)
@@ -262,7 +277,7 @@ void dlgProperty::OnCancel(wxNotifyEvent &ev)
 
 void dlgProperty::OnPageSelect(wxNotebookEvent& event)
 {
-    if (sqlPane && event.GetSelection() == sqlPageNo)
+    if (sqlPane && event.GetSelection() == nbNotebook->GetPageCount()-1)
     {
         if (btnOK->IsEnabled())
             sqlPane->SetText(GetSql());
@@ -377,6 +392,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_TRIGGERS:
             dlg=new dlgTrigger(frame, (pgTrigger*)currentNode, (pgTable*)parentNode);
             break;
+        case PG_TYPE:
+        case PG_TYPES:
+            dlg=new dlgType(frame, (pgType*)currentNode, (pgSchema*)parentNode);
+            break;
         default:
             break;
     }
@@ -434,7 +453,6 @@ void dlgProperty::EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxLis
         return;
 
     dlgProperty *dlg=CreateDlg(frame, node, false);
-    pgObject *obj=0;
 
     if (dlg)
     {
@@ -484,6 +502,87 @@ void dlgProperty::AppendListItem(wxListCtrl *list, const wxString& str1, const w
         list->SetItem(pos, 1, str2);
 }
 
+
+dlgTypeProperty::dlgTypeProperty(frmMain *frame, const wxString &resName)
+: dlgProperty(frame, resName)
+{
+    isVarLen=false;
+    isVarPrec=false;
+    txtLength->Disable();
+    txtPrecision->Disable();
+}
+
+
+
+void dlgTypeProperty::FillDatatype(wxComboBox *cb, bool withDomains)
+{
+    FillDatatype(cb, 0, withDomains);
+}
+
+
+void dlgTypeProperty::FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDomains)
+{
+    DatatypeReader tr(connection, withDomains);
+    while (tr.HasMore())
+    {
+        pgDatatype dt=tr.GetDatatype();
+        wxString typinfo;
+        if (tr.MaySpecifyPrecision())
+            typinfo=wxT("P");
+        else if (tr.MaySpecifyLength())
+            typinfo=wxT("L");
+
+        types.Add(typinfo + wxT(":") + tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
+
+        cb->Append(tr.GetSchemaPrefix() + dt.FullName());
+        if (cb2)
+            cb2->Append(tr.GetSchemaPrefix() + dt.FullName());
+        tr.MoveNext();
+    }
+}
+
+
+int dlgTypeProperty::Go(bool modal)
+{
+    if (GetObject())
+    {
+        txtLength->SetValidator(numericValidator);
+        txtPrecision->SetValidator(numericValidator);
+    }
+    return dlgProperty::Go(modal);
+}
+
+
+wxString dlgTypeProperty::GetQuotedTypename()
+{
+    wxString sql = types.Item(cbDatatype->GetSelection()).AfterFirst(':');
+
+    if (isVarLen && StrToLong(txtLength->GetValue()) > 0)
+    {
+        sql += wxT("(") + txtLength->GetValue();
+        if (isVarPrec)
+        {
+            wxString varprec=txtPrecision->GetValue();
+            if (!varprec.IsEmpty())
+                sql += wxT(", ") + varprec;
+        }
+        sql += wxT(")");
+    }
+    return sql;
+}
+
+
+void dlgTypeProperty::CheckLenEnable()
+{
+    int sel=cbDatatype->GetSelection();
+    if (sel >= 0)
+    {
+        wxString info=types.Item(sel);
+
+        isVarPrec = info.StartsWith(wxT("P"));
+        isVarLen =  isVarPrec || info.StartsWith(wxT("L"));
+    }
+}
 
 
 dlgCollistProperty::dlgCollistProperty(frmMain *frame, const wxString &resName, pgTable *parentNode)

@@ -427,7 +427,6 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             columns[i].typlen=colSet->GetLong(wxT("typlen"));
             columns[i].typmod=colSet->GetLong(wxT("typmod"));
 
-            int len=0;
             switch (columns[i].type)
             {
                 case PGOID_TYPE_BOOL:
@@ -499,6 +498,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
             while (collist.HasMoreTokens())
             {
+                pkcolcount++;
                 cn=StrToLong(collist.GetNextToken());
                 columns[cn-1].isPrimaryKey = true;
             }
@@ -613,7 +613,6 @@ wxString sqlTable::MakeKey(cacheLine *line)
     {
         wxStringTokenizer collist(primaryKeyColNumbers, ',');
         long cn;
-        int pkcolcount=0;
 
         while (collist.HasMoreTokens())
         {

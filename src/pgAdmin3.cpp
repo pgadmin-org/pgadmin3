@@ -87,16 +87,29 @@ bool pgAdmin3::OnInit()
     // Setup the XML resources
     wxXmlResource::Get()->InitAllHandlers();
 
-    bool done;
-    wxString loadPath=DATA_DIR;
 
-    done=LoadAllXrc(loadPath + wxT("/") + XRC_PATH);
+    wxString loadPath=wxPathOnly(argv[0]);
+
+#ifdef __WIN32__
+    bool done;
+    done=LoadAllXrc(loadPath + XRC_PATH);
     if (!done)
-        done=LoadAllXrc(loadPath + wxT("/../") + XRC_PATH);
+        done=LoadAllXrc(loadPath + wxT("/..") + XRC_PATH);
 
     done=LoadAllXrc(loadPath + wxT("/ui/common"));
     if (!done)
         done=LoadAllXrc(loadPath + wxT("/../ui/common"));
+#else
+    bool done;
+    done=LoadAllXrc(DATA_DIR wxT("/") + XRC_PATH);
+    if (!done)
+        done=LoadAllXrc(loadPath + wxT("/") + XRC_PATH);
+
+    done=LoadAllXrc(DATA_DIR wxT("/ui/common"));
+    if (!done)
+        done=LoadAllXrc(loadPath + wxT("/ui/common"));
+#endif
+
 
 
     // Set some defaults

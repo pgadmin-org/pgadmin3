@@ -149,5 +149,5 @@ void frmVacuum::OnCancel(wxCommandEvent& ev)
 void frmVacuum::Go()
 {
     chkFull->SetFocus();
-    Show();
+    Show(true);
 }

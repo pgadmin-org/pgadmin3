@@ -111,7 +111,7 @@ int dlgLanguage::Go(bool modal)
 
 pgObject *dlgLanguage::CreateObject(pgCollection *collection)
 {
-    wxString name=txtName->GetValue();
+    wxString name=GetName();
 
     pgObject *obj=pgLanguage::ReadObjects(collection, 0, wxT("\n   AND lanname ILIKE ") + qtString(name));
     return obj;
@@ -125,7 +125,7 @@ void dlgLanguage::OnChange(wxNotifyEvent &ev)
     }
     else
     {
-        wxString name=txtName->GetValue();
+        wxString name=GetName();
 
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
@@ -139,7 +139,7 @@ void dlgLanguage::OnChange(wxNotifyEvent &ev)
 wxString dlgLanguage::GetSql()
 {
     wxString sql, name;
-    name=txtName->GetValue();
+    name=GetName();
 
     if (language)
     {
