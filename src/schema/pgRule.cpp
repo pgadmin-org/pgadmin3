@@ -119,6 +119,11 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             rule->iSetDoInstead(rules->GetBool(wxT("is_instead")));
             rule->iSetAction(rules->GetVal(wxT("ev_action")));
             wxString definition=rules->GetVal(wxT("definition"));
+            int doPos = definition.Find(wxT(" DO "));
+            int wherePos = definition.Find(wxT(" WHERE "));
+            if (wherePos > 0 && wherePos < doPos)
+                rule->iSetCondition(definition.Mid(wherePos+7, doPos-wherePos-7));
+
             rule->iSetDefinition(definition);
             rule->iSetQuotedFullTable(qtIdent(rules->GetVal(wxT("nspname"))) + wxT(".")
                 + qtIdent(rules->GetVal(wxT("relname"))));
