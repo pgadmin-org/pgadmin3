@@ -199,21 +199,17 @@ void frmEditGrid::Go()
 
     sqlGrid->BeginBatch();
 
-#ifndef __WIN32__
     // to force the grid to create scrollbars, we make sure the size  so small that scrollbars are needed 
     // later, we will resize the grid's parent to force the correct size (now including scrollbars, even if
     // they are suppressed initially. Win32 won't need this.
     sqlGrid->SetSize(10,10);
-#endif
 
     sqlGrid->SetTable(new sqlTable(connection, thread, tableName, relid, hasOids, primaryKeyColNumbers, relkind), true);
     sqlGrid->EndBatch();
 
-#ifndef __WIN32__
     wxSizeEvent event;
     event.m_size = GetSize();
     OnSize(event);
-#endif
 }
 
 
