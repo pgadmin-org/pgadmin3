@@ -21,17 +21,17 @@
 #include "dlgForeignKey.h"
 
 
-#define chkDeferrable   CTRL("chkDeferrable",   wxCheckBox)
-#define chkDeferred     CTRL("chkDeferred",     wxCheckBox)
-#define stDeferred      CTRL("stDeferred",      wxStaticText)
-#define cbReferences    CTRL("cbReferences",    wxComboBox)
+#define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
+#define chkDeferred     CTRL_CHECKBOX("chkDeferred")
+#define stDeferred      CTRL_STATIC("stDeferred")
+#define cbReferences    CTRL_COMBOBOX("cbReferences")
 
-#define cbRefColumns    CTRL("cbRefColumns",    wxComboBox)
-#define btnAddRef       CTRL("btnAddRef",       wxButton)
-#define btnRemoveRef    CTRL("btnRemoveRef",    wxButton)
+#define cbRefColumns    CTRL_COMBOBOX("cbRefColumns")
+#define btnAddRef       CTRL_BUTTON("btnAddRef")
+#define btnRemoveRef    CTRL_BUTTON("btnRemoveRef")
 
-#define rbOnUpdate      CTRL("rbOnUpdate",      wxRadioBox)
-#define rbOnDelete      CTRL("rbOnDelete",      wxRadioBox)
+#define rbOnUpdate      CTRL_RADIOBOX("rbOnUpdate")
+#define rbOnDelete      CTRL_RADIOBOX("rbOnDelete")
 
 
 BEGIN_EVENT_TABLE(dlgForeignKey, dlgProperty)
@@ -55,7 +55,7 @@ dlgForeignKey::dlgForeignKey(frmMain *frame, pgForeignKey *node, pgTable *parent
 }
 
 
-dlgForeignKey::dlgForeignKey(frmMain *frame, wxListCtrl *colList)
+dlgForeignKey::dlgForeignKey(frmMain *frame, ctlListView *colList)
 : dlgCollistProperty(frame, wxT("dlgForeignKey"), colList)
 {
     foreignKey=0;
@@ -154,12 +154,12 @@ void dlgForeignKey::OnAddRef(wxNotifyEvent &ev)
 
 void dlgForeignKey::OnRemoveRef(wxNotifyEvent &ev)
 {
-    long pos=GetListSelected(lstColumns);
+    long pos=lstColumns->GetSelection();
 
     if (pos >= 0)
     {
-        wxString col=lstColumns->GetItemText(pos);
-        wxString ref=GetListText(lstColumns, pos, 1);
+        wxString col=lstColumns->GetText(pos);
+        wxString ref=lstColumns->GetText(pos, 1);
         cbColumns->Append(col);
         cbRefColumns->Append(ref);
 
@@ -309,8 +309,8 @@ wxString dlgForeignKey::GetDefinition()
             cols += wxT(", ");
             refs += wxT(", ");
         }
-        cols += qtIdent(lstColumns->GetItemText(pos));
-        refs += qtIdent(GetListText(lstColumns, pos, 1));
+        cols += qtIdent(lstColumns->GetText(pos));
+        refs += qtIdent(lstColumns->GetText(pos, 1));
     }
 
     sql = wxT("(") + cols 

@@ -28,9 +28,9 @@
 
 
 // pointer to controls
-#define txtDefault          CTRL("txtDefault", wxTextCtrl)
-#define chkNotNull          CTRL("chkNotNull", wxCheckBox)
-#define txtAttstattarget    CTRL("txtAttstattarget", wxTextCtrl)
+#define txtDefault          CTRL_TEXT("txtDefault")
+#define chkNotNull          CTRL_CHECKBOX("chkNotNull")
+#define txtAttstattarget    CTRL_TEXT("txtAttstattarget")
 
 
 

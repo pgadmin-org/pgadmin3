@@ -253,7 +253,7 @@ void pgTable::UpdateInheritance()
 
 
 
-void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -324,31 +324,30 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("ACL"), GetAcl());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("ACL"), GetAcl());
         if (GetPrimaryKey().IsNull())
-            InsertListItem(properties, pos++, _("Primary key"), _("<none>"));
+            properties->AppendItem(_("Primary key"), _("<none>"));
         else
-            InsertListItem(properties, pos++, _("Primary key"), GetPrimaryKey());
+            properties->AppendItem(_("Primary key"), GetPrimaryKey());
 
-        InsertListItem(properties, pos++, _("Rows (estimated)"), GetEstimatedRows());
+        properties->AppendItem(_("Rows (estimated)"), GetEstimatedRows());
 
         if (rowsCounted)
-            InsertListItem(properties, pos++, _("Rows (counted)"), rows);
+            properties->AppendItem(_("Rows (counted)"), rows);
         else
-            InsertListItem(properties, pos++, _("Rows (counted)"), _("Refresh to count rows"));
+            properties->AppendItem(_("Rows (counted)"), _("Refresh to count rows"));
 
-        InsertListItem(properties, pos++, _("Inherits tables"), GetHasSubclass());
-        InsertListItem(properties, pos++, _("Inherited tables count"), GetInheritedTableCount());
+        properties->AppendItem(_("Inherits tables"), GetHasSubclass());
+        properties->AppendItem(_("Inherited tables count"), GetInheritedTableCount());
         if (GetInheritedTableCount())
-            InsertListItem(properties, pos++, _("Inherited tables"), GetInheritedTables());
-        InsertListItem(properties, pos++, _("Has OIDs?"), GetHasOids());
-        InsertListItem(properties, pos++, _("System table?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+            properties->AppendItem(_("Inherited tables"), GetInheritedTables());
+        properties->AppendItem(_("Has OIDs?"), GetHasOids());
+        properties->AppendItem(_("System table?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 
     DisplayStatistics(statistics, 
@@ -441,16 +440,16 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 }
 
 
-void pgTable::ShowStatistics(pgCollection *collection, wxListCtrl *statistics)
+void pgTable::ShowStatistics(pgCollection *collection, ctlListView *statistics)
 {
     wxLogInfo(wxT("Displaying statistics for tables on ")+ collection->GetSchema()->GetIdentifier());
 
     // Add the statistics view columns
     statistics->ClearAll();
-    statistics->InsertColumn(0, _("Table"), wxLIST_FORMAT_LEFT, 150);
-    statistics->InsertColumn(1, _("Tuples inserted"), wxLIST_FORMAT_LEFT, 80);
-    statistics->InsertColumn(2, _("Tuples updated"), wxLIST_FORMAT_LEFT, 80);
-    statistics->InsertColumn(3, _("Tuples deleted"), wxLIST_FORMAT_LEFT, 80);
+    statistics->AddColumn(_("Table"), 100);
+    statistics->AddColumn(_("Tuples inserted"), 50);
+    statistics->AddColumn(_("Tuples updated"), 50);
+    statistics->AddColumn(_("Tuples deleted"), 50);
 
     pgSet *stats = collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT relname, n_tup_ins, n_tup_upd, n_tup_del FROM pg_stat_all_tables ORDER BY relname"));

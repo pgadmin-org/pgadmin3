@@ -91,7 +91,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     sqlPane=0;
     wxWindowBase::SetFont(settings->GetSystemFont());
     wxXmlResource::Get()->LoadDialog(this, frame, resName);
-    nbNotebook = CTRL("nbNotebook", wxNotebook);
+    nbNotebook = CTRL_NOTEBOOK("nbNotebook");
 
     if (!nbNotebook)
     {
@@ -113,7 +113,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     btnOK->Disable();
 
     if (wxWindow::FindWindow(XRCID("txtStatus")))
-        statusBox=CTRL("txtStatus", wxTextCtrl);
+        statusBox=CTRL_TEXT("txtStatus");
     else
     {
         wxSize stdTxtSize=ConvertDialogToPixels(wxSize(0, 12));
@@ -572,7 +572,7 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 }
 
 
-void dlgProperty::CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, int type)
+void dlgProperty::CreateObjectDialog(frmMain *frame, ctlListView *properties, pgObject *node, int type)
 {
     dlgProperty *dlg=CreateDlg(frame, node, true, type);
 
@@ -590,7 +590,7 @@ void dlgProperty::CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgO
 }
 
 
-void dlgProperty::EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node)
+void dlgProperty::EditObjectDialog(frmMain *frame, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlbox, pgObject *node)
 {
     pgConn *conn=node->GetConnection();
     if (!conn)
@@ -614,7 +614,7 @@ void dlgProperty::EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxLis
 }
 
 
-void dlgProperty::CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right, int leftSize)
+void dlgProperty::CreateListColumns(ctlListView *list, const wxString &left, const wxString &right, int leftSize)
 {
     int rightSize;
     if (leftSize < 0)
@@ -640,7 +640,7 @@ void dlgProperty::CreateListColumns(wxListCtrl *list, const wxString &left, cons
 }
 
 
-int dlgProperty::AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon)
+int dlgProperty::AppendListItem(ctlListView *list, const wxString& str1, const wxString& str2, int icon)
 {
     int pos=list->GetItemCount();
     list->InsertItem(pos, str1, icon);
@@ -661,7 +661,7 @@ dlgTypeProperty::dlgTypeProperty(frmMain *frame, const wxString &resName)
     isVarPrec=false;
     if (wxWindow::FindWindow(XRCID("txtLength")))
     {
-        txtLength = CTRL("txtLength", wxTextCtrl);
+        txtLength = CTRL_TEXT("txtLength");
         txtLength->SetValidator(numericValidator);
         txtLength->Disable();
     }
@@ -669,7 +669,7 @@ dlgTypeProperty::dlgTypeProperty(frmMain *frame, const wxString &resName)
         txtLength = 0;
     if (wxWindow::FindWindow(XRCID("txtPrecision")))
     {
-        txtPrecision= CTRL("txtPrecision", wxTextCtrl);
+        txtPrecision= CTRL_TEXT("txtPrecision");
         txtPrecision->SetValidator(numericValidator);
         txtPrecision->Disable();
     }
@@ -838,7 +838,7 @@ dlgCollistProperty::dlgCollistProperty(frmMain *frame, const wxString &resName, 
 }
 
 
-dlgCollistProperty::dlgCollistProperty(frmMain *frame, const wxString &resName, wxListCtrl *colList)
+dlgCollistProperty::dlgCollistProperty(frmMain *frame, const wxString &resName, ctlListView *colList)
 : dlgProperty(frame, resName)
 {
     columns=colList;
@@ -950,8 +950,8 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
             // We can't create, so we won't be allowed to change privileges either.
             // later, we can check individually too.
 
-            lbPrivileges = new wxListView(page, CTL_LBPRIV, zeroPos, 
-                wxSize(width - zeroPos.x * 2, height - zeroPos.y * 2), wxSUNKEN_BORDER|wxLC_REPORT);
+            lbPrivileges = new ctlListView(page, CTL_LBPRIV, zeroPos, 
+                wxSize(width - zeroPos.x * 2, height - zeroPos.y * 2), wxSUNKEN_BORDER);
             CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
             cbGroups=0;
         }
@@ -962,7 +962,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                 - zeroPos.y * 2
                 - chkSize.GetHeight() * (4 + privilegeCount + (needAll ? 0 : 1));
 
-            lbPrivileges = new wxListView(page, CTL_LBPRIV, 
+            lbPrivileges = new ctlListView(page, CTL_LBPRIV, 
                 zeroPos, 
                 wxSize(width - zeroPos.x * 2, y - zeroPos.y - spcSize.GetHeight()), wxSUNKEN_BORDER|wxLC_REPORT);
 
@@ -1155,7 +1155,7 @@ void dlgSecurityProperty::OnPrivSelChange(wxListEvent &ev)
     if (pos >= 0)
     {
         wxString name=lbPrivileges->GetItemText(pos);
-        wxString value=GetListText(lbPrivileges, pos, 1);
+        wxString value=lbPrivileges->GetText(pos, 1);
 
         pos=cbGroups->FindString(name);
         if (pos < 0)
@@ -1248,7 +1248,7 @@ void dlgSecurityProperty::OnAddPriv(wxNotifyEvent &ev)
 
 void dlgSecurityProperty::OnDelPriv(wxNotifyEvent &ev)
 {
-    lbPrivileges->DeleteItem(GetListSelected(lbPrivileges));
+    lbPrivileges->DeleteItem(lbPrivileges->GetSelection());
     securityChanged=true;
     EnableOK(btnOK->IsEnabled());
 }
@@ -1305,8 +1305,8 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
 
     for (pos=0 ; pos < cnt ; pos++)
     {
-        wxString name=lbPrivileges->GetItemText(pos);
-        wxString value=GetListText(lbPrivileges, pos, 1);
+        wxString name=lbPrivileges->GetText(pos);
+        wxString value=lbPrivileges->GetText(pos, 1);
 
         int nameLen=name.Length();
 

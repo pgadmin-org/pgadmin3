@@ -76,30 +76,29 @@ wxString pgIndexConstraint::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     ReadColumnDetails();
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
         if (GetProcName().IsNull())
-            InsertListItem(properties, pos++, _("Columns"), GetColumns());
+            properties->AppendItem(_("Columns"), GetColumns());
         else
         {
-            InsertListItem(properties, pos++, _("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
-            InsertListItem(properties, pos++, _("Operator classes"), GetOperatorClasses());
+            properties->AppendItem(_("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
+            properties->AppendItem(_("Operator classes"), GetOperatorClasses());
         }
-        InsertListItem(properties, pos++, _("Unique?"), GetIsUnique());
-        InsertListItem(properties, pos++, _("Primary?"), GetIsPrimary());
-        InsertListItem(properties, pos++, _("Clustered?"), GetIsClustered());
-        InsertListItem(properties, pos++, _("Access method"), GetIndexType());
-        InsertListItem(properties, pos++, _("Constraint"), GetConstraint());
-        InsertListItem(properties, pos++, _("System index?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Unique?"), GetIsUnique());
+        properties->AppendItem(_("Primary?"), GetIsPrimary());
+        properties->AppendItem(_("Clustered?"), GetIsClustered());
+        properties->AppendItem(_("Access method"), GetIndexType());
+        properties->AppendItem(_("Constraint"), GetConstraint());
+        properties->AppendItem(_("System index?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

@@ -111,7 +111,7 @@ wxString pgTrigger::GetForEach() const
 
 
 
-void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -135,17 +135,16 @@ void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *p
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Fires"), GetFireWhen());
-        InsertListItem(properties, pos++, _("Event"), GetEvent());
-        InsertListItem(properties, pos++, _("For each"), GetForEach());
-        InsertListItem(properties, pos++, _("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));
-        InsertListItem(properties, pos++, _("Enabled?"), GetEnabled());
-        InsertListItem(properties, pos++, _("System trigger?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Fires"), GetFireWhen());
+        properties->AppendItem(_("Event"), GetEvent());
+        properties->AppendItem(_("For each"), GetForEach());
+        properties->AppendItem(_("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));
+        properties->AppendItem(_("Enabled?"), GetEnabled());
+        properties->AppendItem(_("System trigger?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

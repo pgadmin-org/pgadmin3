@@ -25,12 +25,12 @@
 #include "images/index.xpm"
 
 
-#define cbType          CTRL("cbType", wxComboBox)
-#define chkUnique       CTRL("chkUnique", wxCheckBox)
-#define txtWhere        CTRL("txtWhere", wxTextCtrl)
+#define cbType          CTRL_COMBOBOX("cbType")
+#define chkUnique       CTRL_CHECKBOX("chkUnique")
+#define txtWhere        CTRL_TEXT("txtWhere")
 
-#define btnAddCol       CTRL("btnAddCol", wxButton)
-#define btnRemoveCol    CTRL("btnRemoveCol", wxButton)
+#define btnAddCol       CTRL_BUTTON("btnAddCol")
+#define btnRemoveCol    CTRL_BUTTON("btnRemoveCol")
 
 
 
@@ -53,7 +53,7 @@ dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *nod
 }
 
 
-dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, wxListCtrl *colList)
+dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, ctlListView *colList)
 : dlgCollistProperty(frame, resName, colList)
 {
     SetIcon(wxIcon(index_xpm));
@@ -119,7 +119,7 @@ void dlgIndexBase::OnAddCol(wxNotifyEvent &ev)
 
 void dlgIndexBase::OnRemoveCol(wxNotifyEvent &ev)
 {
-    long pos=lstColumns->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    long pos=lstColumns->GetSelection();
     if (pos >= 0)
     {
         wxString col=lstColumns->GetItemText(pos);

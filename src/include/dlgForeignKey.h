@@ -23,7 +23,7 @@ class dlgForeignKey : public dlgCollistProperty
 {
 public:
     dlgForeignKey(frmMain *frame, pgForeignKey *node, pgTable *parentNode);
-    dlgForeignKey(frmMain *frame, wxListCtrl *colList);
+    dlgForeignKey(frmMain *frame, ctlListView *colList);
     wxString GetSql();
     wxString GetDefinition();
     pgObject *CreateObject(pgCollection *collection);

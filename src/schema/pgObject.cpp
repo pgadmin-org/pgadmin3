@@ -26,39 +26,61 @@
 
 pgTypes typesList[] =
 {
-    {__("None"), 0, 0},
-    {__("Servers"), 0, 0},          {__("Server"), __("New Server"), __("Create a new Server connection.") },
-    {__("Databases"), 0, 0},        {__("Database"), __("New Database"), __("Create a new Database.") },
-    {__("Groups"), 0, 0},           {__("Group"), __("New Group"), __("Create a new Group.") },
-    {__("Users"), 0, 0},            {__("User"), __("New User"), __("Create a new User.") },
-    {__("Languages"), 0, 0},        {__("Language"), __("New Language"), __("Create a new Language.") },
-    {__("Schemas"), 0, 0},          {__("Schema"), __("New Schema"), __("Create a new Schema.") },
-    {__("Aggregates"), 0, 0},       {__("Aggregate"), __("New Aggregate"), __("Create a new Aggregate.") },
-    {__("Casts"), 0, 0},            {__("Cast"), __("New Cast"), __("Create a new Cast.") },
-    {__("Conversions"), 0, 0},      {__("Conversion"), __("New Conversion"), __("Create a new Conversion.") },
-    {__("Domains"), 0, 0},          {__("Domain"), __("New Domain"), __("Create a new Domain.") },
-    {__("Functions"), 0, 0},        {__("Function"), __("New Function"), __("Create a new Function.") },
-    {__("Trigger Functions"), 0, 0},{__("Trigger Function"), __("New Trigger Function"), __("Create a new Trigger Function.") },
-    {__("Operators"), 0, 0},        {__("Operator"), __("New Operator"), __("Create a new Operator.") },
-    {__("Operator Classes"), 0, 0}, {__("Operator Class"), __("New Operator Class"), __("Create a new Operator Class.") },
-    {__("Sequences"), 0, 0},        {__("Sequence"), __("New Sequence"), __("Create a new Sequence.") },
-    {__("Tables"), 0, 0},           {__("Table"), __("New Table"), __("Create a new Table.") },
-    {__("Types"), 0, 0},            {__("Type"), __("New Type"), __("Create a new Type.") },
-    {__("Views"), 0, 0},            {__("View"), __("New View"), __("Create a new View.") },
-    {__("Columns"), 0, 0},          {__("Column"), __("New Column"), __("Add a new Column.") },
-    {__("Indexes"), 0, 0},          {__("Index"), __("New Index"), __("Add a new Index.") },
-    {__("Rules"), 0, 0},            {__("Rule"), __("New Rule"), __("Create a new Rule.") },
-    {__("Triggers"), 0, 0},         {__("Trigger"), __("New Trigger"), __("Add a new Trigger.") },
-    {__("Constraints"), 0, 0},      
-    {__("Primary Key"), __("New Primary Key"), __("Create a Primary Key.") },
-    {__("Unique"), __("New Unique Constraint"), __("Add a new Unique Constraint.") },
-    {__("Check"), __("New Check Constraint"), __("Add a new Check Constraint.") },
-    {__("Foreign Key"), __("New Foreign Key"), __("Add a new Foreign Key.") },
-    {__("Agent"), 0, 0},
-    {__("Job"), __("New Job"), __("Create a new Job") },
-    {__("Step"), __("New Step"), __("Create new Step") }, 
-    {__("Schedule"), __("New Schedule"), __("Create new Schedule") },
-    {__("Unknown"), 0, 0}
+    {__("None"), -1, 0, 0},
+    {__("Servers"), PGICON_SERVER, 0, 0},
+    {__("Server"), PGICON_SERVER, __("New Server"), __("Create a new Server connection.") },
+    {__("Databases"), PGICON_DATABASE, 0, 0},
+    {__("Database"), PGICON_DATABASE, __("New Database"), __("Create a new Database.") },
+    {__("Groups"), PGICON_GROUP, 0, 0},
+    {__("Group"), PGICON_GROUP, __("New Group"), __("Create a new Group.") },
+    {__("Users"), PGICON_USER, 0, 0},
+    {__("User"), PGICON_USER, __("New User"),__("Create a new User.") },
+    {__("Languages"), PGICON_LANGUAGE, 0, 0},
+    {__("Language"), PGICON_LANGUAGE, __("New Language"), __("Create a new Language.") },
+    {__("Schemas"), PGICON_SCHEMA, 0, 0},
+    {__("Schema"), PGICON_SCHEMA, __("New Schema"), __("Create a new Schema.") },
+    {__("Aggregates"), PGICON_AGGREGATE, 0, 0},
+    {__("Aggregate"), PGICON_AGGREGATE, __("New Aggregate"), __("Create a new Aggregate.") },
+    {__("Casts"), PGICON_CAST, 0, 0},
+    {__("Cast"), PGICON_CAST, __("New Cast"), __("Create a new Cast.") },
+    {__("Conversions"), PGICON_CONVERSION, 0, 0},
+    {__("Conversion"), PGICON_CONVERSION, __("New Conversion"), __("Create a new Conversion.") },
+    {__("Domains"), PGICON_DOMAIN, 0, 0},
+    {__("Domain"), PGICON_DOMAIN, __("New Domain"), __("Create a new Domain.") },
+    {__("Functions"), PGICON_FUNCTION, 0, 0},
+    {__("Function"), PGICON_FUNCTION, __("New Function"), __("Create a new Function.") },
+    {__("Trigger Functions"), PGICON_TRIGGERFUNCTION, 0, 0},
+    {__("Trigger Function"), PGICON_TRIGGERFUNCTION, __("New Trigger Function"), __("Create a new Trigger Function.") },
+    {__("Operators"), PGICON_OPERATOR, 0, 0},
+    {__("Operator"), PGICON_OPERATOR, __("New Operator"), __("Create a new Operator.") },
+    {__("Operator Classes"), PGICON_OPERATORCLASS, 0, 0},
+    {__("Operator Class"), PGICON_OPERATORCLASS, __("New Operator Class"), __("Create a new Operator Class.") },
+    {__("Sequences"), PGICON_SEQUENCE, 0, 0},
+    {__("Sequence"), PGICON_SEQUENCE, __("New Sequence"), __("Create a new Sequence.") },
+    {__("Tables"), PGICON_TABLE, 0, 0},
+    {__("Table"), PGICON_TABLE, __("New Table"), __("Create a new Table.") },
+    {__("Types"), PGICON_TYPE, 0, 0},
+    {__("Type"), PGICON_TYPE, __("New Type"), __("Create a new Type.") },
+    {__("Views"), PGICON_VIEW, 0, 0},
+    {__("View"), PGICON_VIEW, __("New View"), __("Create a new View.") },
+    {__("Columns"), PGICON_COLUMN, 0, 0},
+    {__("Column"), PGICON_COLUMN, __("New Column"), __("Add a new Column.") },
+    {__("Indexes"), PGICON_INDEX, 0, 0},
+    {__("Index"), PGICON_INDEX, __("New Index"), __("Add a new Index.") },
+    {__("Rules"), PGICON_RULE, 0, 0},
+    {__("Rule"), PGICON_RULE, __("New Rule"), __("Create a new Rule.") },
+    {__("Triggers"), PGICON_TRIGGER, 0, 0},
+    {__("Trigger"), PGICON_TRIGGER, __("New Trigger"), __("Add a new Trigger.") },
+    {__("Constraints"), PGICON_CONSTRAINT, 0, 0},      
+    {__("Primary Key"), PGICON_PRIMARYKEY, __("New Primary Key"), __("Create a Primary Key.") },
+    {__("Unique"), PGICON_UNIQUE, __("New Unique Constraint"), __("Add a new Unique Constraint.") },
+    {__("Check"), PGICON_CHECK, __("New Check Constraint"), __("Add a new Check Constraint.") },
+    {__("Foreign Key"), PGICON_FOREIGNKEY, __("New Foreign Key"), __("Add a new Foreign Key.") },
+    {__("Agent"), PGAICON_AGENT, 0, 0},
+    {__("Job"), PGAICON_JOB, __("New Job"), __("Create a new Job") },
+    {__("Step"), PGAICON_STEP, __("New Step"), __("Create new Step") }, 
+    {__("Schedule"), PGAICON_SCHEDULE, __("New Schedule"), __("Create new Schedule") },
+    {__("Unknown"), -1, 0, 0}
 };
 
 
@@ -114,7 +136,103 @@ wxMenu *pgObject::GetNewMenu()
 }
 
 
-void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgObject::ShowDependency(ctlListView *list, const wxString &query)
+{
+    list->AddColumn(_("Type"), 60);
+    list->AddColumn(_("Name"), 100);
+    list->AddColumn(_("Restriction"), 50);
+    pgConn *conn = GetConnection();
+    if (conn)
+    {
+        pgSet *set;
+        set=conn->ExecuteSet(query + wxT("\n")
+            wxT("   AND classid IN (\n")
+            wxT("   SELECT oid FROM pg_class\n")
+            wxT("    WHERE relname IN ('pg_class', 'pg_constraint', 'pg_conversion', 'pg_language', 'pg_proc',\n")
+            wxT("                      'pg_rewrite', 'pg_trigger', 'pg_type'))\n")
+            wxT(" ORDER BY 1"));
+
+        if (set)
+        {
+            long pos=0;
+
+            while (!set->Eof())
+            {
+                wxString nspname=set->GetVal(wxT("nspname"));
+                wxString refname;
+                if (!nspname.IsEmpty() && nspname != wxT("public") && nspname != wxT("pg_catalog"))
+                    refname = nspname + wxT(".");
+
+                wxString typestr=set->GetVal(wxT("type"));
+                int id;
+
+                switch (typestr.c_str()[0])
+                {
+                    case 's':   // we don't know these; internally handled
+                    case 't':   set->MoveNext(); continue;
+
+                    case 'r':   id=PG_TABLE;    break;
+                    case 'i':   id=PG_INDEX;    break;
+                    case 'S':   id=PG_SEQUENCE; break;
+                    case 'v':   id=PG_VIEW;     break;
+                    case 'p':   id=PG_FUNCTION; break;
+                    case 'n':   id=PG_SCHEMA;   break;
+                    case 'y':   id=PG_TYPE;     break;
+                    case 'T':   id=PG_TRIGGER;  break;
+                    case 'l':   id=PG_LANGUAGE; break;
+                    case 'c':
+                    {
+                        switch (typestr.c_str()[1])
+                        {
+                            case 'c':   id=PG_CHECK;        break;
+                            case 'f':   
+                                refname += set->GetVal(wxT("ownertable")) + wxT(".");
+                                id=PG_FOREIGNKEY;   break;
+                            case 'p':   id=PG_PRIMARYKEY;   break;
+                            case 'u':   id=PG_UNIQUE;       break;
+                            default:    id=PG_UNKNOWN;      break;
+                        }
+                        break;
+                    }
+                    default:    id=PG_UNKNOWN;  break;
+                }
+
+                refname += set->GetVal(wxT("refname"));
+
+                wxString typname = typesList[id].typName;
+                int icon = typesList[id].typeIcon;
+
+                wxString deptype;
+
+                switch (set->GetVal(wxT("deptype")).c_str()[0])
+                {
+                    case 'n':   deptype=wxT("normal");      break;
+                    case 'a':   deptype=wxT("auto");        break;
+                    case 'i': 
+                    {
+                        if (settings->GetShowSystemObjects())
+                            deptype=wxT("internal");
+                        else
+                        {
+                            set->MoveNext();
+                            continue;
+                        }
+                        break;
+                    }
+                    case 'p':   deptype=wxT("pin");  typname=wxEmptyString;        break;
+                    default:                                break;
+                }
+
+                list->AppendItem(icon, typname, refname, deptype);
+                set->MoveNext();
+            }
+            delete set;
+        }
+    }
+}
+
+
+void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (form)
     {
@@ -136,6 +254,66 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
         }
         form->SetButtons(TRUE, CanCreate(), CanDrop(), CanEdit(), canSql, CanView(), CanMaintenance());
         SetContextInfo(form);
+
+
+        form->GetDependsOnView()->ClearAll();
+        form->GetReferencedByView()->ClearAll();
+        if (!IsCollection())
+        {
+            ShowDependency(form->GetDependsOnView(),
+                wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
+                wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
+                wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
+                wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
+                wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
+                wxT("            WHWN la.oid IS NOT NULL THEN 'l'::text\n")
+                wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
+                wxT("            ELSE '' END AS type,\n")
+                wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
+                wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname,\n")
+                wxT("       deptype, coc.relname AS ownertable\n") 
+                wxT("  FROM pg_depend dep\n")
+                wxT("  LEFT JOIN pg_class cl ON dep.refobjid=cl.oid\n")
+                wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
+                wxT("  LEFT JOIN pg_proc pr on dep.refobjid=pr.oid\n")
+                wxT("  LEFT JOIN pg_namespace nsp ON pronamespace=nsp.oid\n")
+                wxT("  LEFT JOIN pg_trigger tg ON dep.refobjid=tg.oid\n")
+                wxT("  LEFT JOIN pg_type ty on dep.refobjid=ty.oid\n")
+                wxT("  LEFT JOIN pg_namespace nst ON typnamespace=nst.oid\n")
+                wxT("  LEFT JOIN pg_constraint co ON dep.refobjid=co.oid\n")
+                wxT("  LEFT JOIN pg_class coc ON conrelid=coc.oid\n")
+                wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
+                wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
+                wxT("  LEFT JOIN pg_namespace ns ON dep.refobjid=ns.oid\n")
+                wxT(" WHERE dep.objid=") + GetOidStr());
+
+            ShowDependency(form->GetReferencedByView(),
+                wxT("SELECT CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind\n")
+                wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
+                wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
+                wxT("            WHEN ns.oid IS NOT NULL THEN 'n'::text\n")
+                wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
+                wxT("            WHWN la.oid IS NOT NULL THEN 'l'::text\n")
+                wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
+                wxT("            ELSE '' END AS type,\n")
+                wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, ns.nspname) AS refname,\n")
+                wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname) AS nspname,\n")
+                wxT("       deptype, coc.relname AS ownertable\n") 
+                wxT("  FROM pg_depend dep\n")
+                wxT("  LEFT JOIN pg_class cl ON dep.objid=cl.oid\n")
+                wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
+                wxT("  LEFT JOIN pg_proc pr on dep.objid=pr.oid\n")
+                wxT("  LEFT JOIN pg_namespace nsp ON pronamespace=nsp.oid\n")
+                wxT("  LEFT JOIN pg_trigger tg ON dep.objid=tg.oid\n")
+                wxT("  LEFT JOIN pg_type ty on dep.objid=ty.oid\n")
+                wxT("  LEFT JOIN pg_namespace nst ON typnamespace=nst.oid\n")
+                wxT("  LEFT JOIN pg_constraint co on dep.objid=co.oid\n")
+                wxT("  LEFT JOIN pg_class coc ON conrelid=coc.oid\n")
+                wxT("  LEFT JOIN pg_namespace nso ON connamespace=nso.oid\n")
+                wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
+                wxT("  LEFT JOIN pg_namespace ns ON dep.objid=ns.oid\n")
+                wxT(" WHERE dep.refobjid=") + GetOidStr());
+        }
     }
 
     wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
@@ -145,11 +323,11 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
 }
 
 
-void pgObject::CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right)
+void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const wxString &right)
 {
     list->ClearAll();
-    list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, list->ConvertDialogToPixels(wxPoint(90,0)).x);
-    list->InsertColumn(1, right, wxLIST_FORMAT_LEFT, list->ConvertDialogToPixels(wxPoint(450,0)).x);
+    list->AddColumn(left, 90);
+    list->AddColumn(right, 450);
 }
 
 
@@ -177,14 +355,6 @@ void pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
         object->ShowTreeDetail(browser);
     else if (object->WantDummyChild())
         browser->AppendItem(object->GetId(), wxT("Dummy"));
-}
-
-
-void pgObject::InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2)
-{
-    list->InsertItem(pos, str1, PGICON_PROPERTY);
-    if (str2 != wxT(""))
-        list->SetItem(pos, 1, str2);
 }
 
 
@@ -511,7 +681,7 @@ bool pgSchemaObject::ExecuteVoid(const wxString& sql)
     return schema->GetDatabase()->ExecuteVoid(sql);
 }
 
-void pgSchemaObject::DisplayStatistics(wxListCtrl *statistics, const wxString& query)
+void pgSchemaObject::DisplayStatistics(ctlListView *statistics, const wxString& query)
 {
     if (statistics)
     {
@@ -525,8 +695,8 @@ void pgSchemaObject::DisplayStatistics(wxListCtrl *statistics, const wxString& q
         if (stats)
         {
             int col=0;
-            while (col < stats->NumCols())
-                InsertListItem(statistics, col++, stats->ColName(col), stats->GetVal(col));
+            while (col++ < stats->NumCols())
+                statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
 
             delete stats;
         }

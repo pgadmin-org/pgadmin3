@@ -41,7 +41,7 @@ bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 }
 
 
-void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -51,17 +51,16 @@ void pgaStep::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Enabled"), GetEnabled());
-        InsertListItem(properties, pos++, _("Kind"), GetKind());
-        InsertListItem(properties, pos++, _("Database"), GetDbname());
-        InsertListItem(properties, pos++, _("Code"), GetCode());
-        InsertListItem(properties, pos++, _("On error"), GetOnError());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Enabled"), GetEnabled());
+        properties->AppendItem(_("Kind"), GetKind());
+        properties->AppendItem(_("Database"), GetDbname());
+        properties->AppendItem(_("Code"), GetCode());
+        properties->AppendItem(_("On error"), GetOnError());
 
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

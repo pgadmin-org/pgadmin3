@@ -23,7 +23,7 @@
 
 
 // pointer to controls
-#define cbOwner         CTRL("cbOwner", wxComboBox)
+#define cbOwner         CTRL_COMBOBOX("cbOwner")
 
 
 BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)

@@ -26,24 +26,24 @@
 
 
 // pointer to controls
-#define rdbType         CTRL("rdbType",             wxRadioBox)
+#define rdbType         CTRL_RADIOBOX("rdbType")
 
-#define cbInput         CTRL("cbInput",             wxComboBox)
-#define cbOutput        CTRL("cbOutput",            wxComboBox)
-#define cbReceive       CTRL("cbReceive",           wxComboBox)
-#define cbSend          CTRL("cbSend",              wxComboBox)
-#define chkVariable     CTRL("chkVariable",         wxCheckBox)
-#define txtIntLength    CTRL("txtIntLength",        wxTextCtrl)
-#define txtDefault      CTRL("txtDefault",          wxTextCtrl)
-#define cbElement       CTRL("cbElement",           wxComboBox)
-#define txtDelimiter    CTRL("txtDelimiter",        wxTextCtrl)
-#define chkByValue      CTRL("chkByValue",          wxCheckBox)
-#define cbAlignment     CTRL("cbAlignment",         wxComboBox)
-#define cbStorage       CTRL("cbStorage",           wxComboBox)
-#define lstMembers      CTRL("lstMembers",          wxListCtrl)
-#define txtMembername   CTRL("txtMembername",       wxTextCtrl)
-#define btnAdd          CTRL("btnAdd",              wxButton)
-#define btnRemove       CTRL("btnRemove",           wxButton)
+#define cbInput         CTRL_COMBOBOX("cbInput")
+#define cbOutput        CTRL_COMBOBOX("cbOutput")
+#define cbReceive       CTRL_COMBOBOX("cbReceive")
+#define cbSend          CTRL_COMBOBOX("cbSend")
+#define chkVariable     CTRL_CHECKBOX("chkVariable")
+#define txtIntLength    CTRL_TEXT("txtIntLength")
+#define txtDefault      CTRL_TEXT("txtDefault")
+#define cbElement       CTRL_COMBOBOX("cbElement")
+#define txtDelimiter    CTRL_TEXT("txtDelimiter")
+#define chkByValue      CTRL_CHECKBOX("chkByValue")
+#define cbAlignment     CTRL_COMBOBOX("cbAlignment")
+#define cbStorage       CTRL_COMBOBOX("cbStorage")
+#define lstMembers      CTRL_LISTVIEW("lstMembers")
+#define txtMembername   CTRL_TEXT("txtMembername")
+#define btnAdd          CTRL_BUTTON("btnAdd")
+#define btnRemove       CTRL_BUTTON("btnRemove")
 
 BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgType::OnChange)
@@ -267,11 +267,11 @@ void dlgType::OnChange(wxNotifyEvent &ev)
 
 void dlgType::OnVarSelChange(wxListEvent &ev)
 {
-    long pos=GetListSelected(lstMembers);
+    long pos=lstMembers->GetSelection();
     if (pos >= 0)
     {
-        txtMembername->SetValue(lstMembers->GetItemText(pos));
-        cbDatatype->SetValue(GetListText(lstMembers, pos, 1));
+        txtMembername->SetValue(lstMembers->GetText(pos));
+        cbDatatype->SetValue(lstMembers->GetText(pos, 1));
     }
 }
 
@@ -303,7 +303,7 @@ void dlgType::OnVarAdd(wxNotifyEvent &ev)
 
 void dlgType::OnVarRemove(wxNotifyEvent &ev)
 {
-    long pos=GetListSelected(lstMembers);
+    long pos=lstMembers->GetSelection();
 
     if (pos >= 0)
     {

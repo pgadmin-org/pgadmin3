@@ -49,7 +49,7 @@ private:
     void OnSelChangeConstr(wxListEvent &ev);
 
     void FillConstraint();
-    wxString GetItemConstraintType(wxListCtrl *list, long pos);
+    wxString GetItemConstraintType(ctlListView *list, long pos);
     bool hasPK;
 
     wxArrayString previousColumns, previousConstraints;

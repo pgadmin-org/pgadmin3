@@ -117,9 +117,9 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
                 iSetPassword(winConnect.GetPassword());
         }
         if (password.IsNull())
-            StartMsg(wxT("Connecting to database without password"));
+            StartMsg(_("Connecting to database without password"));
         else
-            StartMsg(wxT("Connecting to database"));
+            StartMsg(_("Connecting to database"));
         if (conn) delete conn;
         conn = new pgConn(GetName(), database, username, password, port, ssl);   
         EndMsg();
@@ -239,7 +239,7 @@ wxString pgServer::GetLastError() const
 
 
 
-void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     // Add child nodes if necessary
     if (GetConnected()) {
@@ -277,15 +277,15 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         CreateListColumns(properties);
 
         // Display the Server properties
-        int pos=0;
-        InsertListItem(properties, pos++, _("Hostname"), GetName());
-        InsertListItem(properties, pos++, _("Description"), GetDescription());
-        InsertListItem(properties, pos++, _("Port"), (long)GetPort());
+
+        properties->AppendItem(_("Hostname"), GetName());
+        properties->AppendItem(_("Description"), GetDescription());
+        properties->AppendItem(_("Port"), (long)GetPort());
 
 #ifdef SSL
         if (GetConnected())
         {
-            InsertListItem(properties, pos++, _("Encryption"), 
+            properties->AppendItem(_("Encryption"), 
                 conn->IsSSLconnected() ? _("SSL encrypted") : _("not encrypted"));
         }
         else
@@ -300,20 +300,20 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
                     case 3: sslMode = _("allow"); break;
                     case 4: sslMode = _("disable"); break;
                 }
-                InsertListItem(properties, pos++, _("SSL Mode"), sslMode);
+                properties->AppendItem(_("SSL Mode"), sslMode);
             }
         }
 #endif
-        InsertListItem(properties, pos++, _("Initial database"), GetDatabase());
-        InsertListItem(properties, pos++, _("Username"), GetUsername());
-        InsertListItem(properties, pos++, _("Trusted?"), GetTrusted());
+        properties->AppendItem(_("Initial database"), GetDatabase());
+        properties->AppendItem(_("Username"), GetUsername());
+        properties->AppendItem(_("Trusted?"), GetTrusted());
         if (GetConnected())
         {
-            InsertListItem(properties, pos++, _("Version string"), GetVersionString());
-            InsertListItem(properties, pos++, _("Version number"), GetVersionNumber());
-            InsertListItem(properties, pos++, _("Last system OID"), GetLastSystemOID());
+            properties->AppendItem(_("Version string"), GetVersionString());
+            properties->AppendItem(_("Version number"), GetVersionNumber());
+            properties->AppendItem(_("Last system OID"), GetLastSystemOID());
         }
-        InsertListItem(properties, pos++, _("Connected?"), BoolToYesNo(GetConnected()));
+        properties->AppendItem(_("Connected?"), BoolToYesNo(GetConnected()));
     }
 
     if(!GetConnected())
@@ -325,10 +325,10 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
         // Add the statistics view columns
         statistics->ClearAll();
-        statistics->InsertColumn(0, wxT("PID"), wxLIST_FORMAT_LEFT, 50);
-        statistics->InsertColumn(1, _("User"), wxLIST_FORMAT_LEFT, 100);
-        statistics->InsertColumn(2, _("Database"), wxLIST_FORMAT_LEFT, 100);
-        statistics->InsertColumn(3, _("Current Query"), wxLIST_FORMAT_LEFT, 400);
+        statistics->AddColumn(wxT("PID"), 35);
+        statistics->AddColumn(_("User"), 70);
+        statistics->AddColumn(_("Database"), 70);
+        statistics->AddColumn(_("Current Query"), 300);
 
         pgSet *stats = ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
         if (stats)

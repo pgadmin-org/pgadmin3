@@ -22,20 +22,20 @@
 class pgSchema;
 class pgTable;
 
-#define txtName         CTRL("txtName",         wxTextCtrl)
-#define txtOID          CTRL("txtOID",          wxTextCtrl)
-#define txtComment      CTRL("txtComment",      wxTextCtrl)
-#define lstColumns      CTRL("lstColumns",      wxListCtrl)
-#define cbColumns       CTRL("cbColumns",       wxComboBox)
-#define btnOK           CTRL("btnOK",           wxButton)
-#define btnCancel       CTRL("btnCancel",       wxButton)
+#define txtName         CTRL_TEXT("txtName")
+#define txtOID          CTRL_TEXT("txtOID")
+#define txtComment      CTRL_TEXT("txtComment")
+#define lstColumns      CTRL_LISTVIEW("lstColumns")
+#define cbColumns       CTRL_COMBOBOX("cbColumns")
+#define btnOK           CTRL_BUTTON("btnOK")
+#define btnCancel       CTRL_BUTTON("btnCancel")
 
 
 class dlgProperty : public DialogWithHelp
 {
 public:
-    static void CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, int type);
-    static void EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node);
+    static void CreateObjectDialog(frmMain *frame, ctlListView *properties, pgObject *node, int type);
+    static void EditObjectDialog(frmMain *frame, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlbox, pgObject *node);
 
     wxString GetName();
 
@@ -54,8 +54,8 @@ protected:
     void EnableOK(bool enable);
     void ShowObject();
 
-    void CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right, int leftSize=60);
-    int AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon);
+    void CreateListColumns(ctlListView *list, const wxString &left, const wxString &right, int leftSize=60);
+    int AppendListItem(ctlListView *list, const wxString& str1, const wxString& str2, int icon);
 
     void CheckValid(bool &enable, const bool condition, const wxString &msg);
     static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type=-1);
@@ -72,7 +72,7 @@ protected:
     pgConn *connection;
 
     ctlSQLBox *sqlPane;
-    wxListCtrl *properties, *statistics;
+    ctlListView *properties, *statistics;
     ctlSQLBox *sqlFormPane;
 
     wxTextValidator numericValidator;
@@ -91,7 +91,7 @@ private:
 };
 
 
-#define cbDatatype      CTRL("cbDatatype",      wxComboBox)
+#define cbDatatype      CTRL_COMBOBOX("cbDatatype")
 
 
 class dlgTypeProperty : public dlgProperty
@@ -127,9 +127,9 @@ public:
 
 protected:
     dlgCollistProperty(frmMain *frame, const wxString &resName, pgTable *table);
-    dlgCollistProperty(frmMain *frame, const wxString &resName, wxListCtrl *colList);
+    dlgCollistProperty(frmMain *frame, const wxString &resName, ctlListView *colList);
 
-    wxListCtrl *columns;
+    ctlListView *columns;
     pgTable *table;
 };
 
@@ -159,7 +159,7 @@ private:
 
     bool securityChanged;
     wxArrayString currentAcl;
-    wxListView *lbPrivileges;
+    ctlListView *lbPrivileges;
     wxComboBox *cbGroups;
     wxStaticText *stGroup;
     wxButton *btnAddPriv, *btnDelPriv;

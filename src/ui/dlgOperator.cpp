@@ -27,22 +27,21 @@
 
 
 // pointer to controls
-#define txtOwner            CTRL("txtOwner", wxTextCtrl)
-#define cbLeftType          CTRL("cbLeftType", wxComboBox)
-#define cbRightType         CTRL("cbRightType", wxComboBox)
-#define cbLeftType          CTRL("cbLeftType", wxComboBox)
-#define cbProcedure         CTRL("cbProcedure", wxComboBox)
-#define cbRestrict          CTRL("cbRestrict", wxComboBox)
-#define cbJoin              CTRL("cbJoin", wxComboBox)
-#define cbCommutator        CTRL("cbCommutator", wxComboBox)
-#define cbNegator           CTRL("cbNegator", wxComboBox)
-#define cbLeftSort          CTRL("cbLeftSort", wxComboBox)
-#define cbRightSort         CTRL("cbRightSort", wxComboBox)
-#define cbLess              CTRL("cbLess", wxComboBox)
-#define cbGreater           CTRL("cbGreater", wxComboBox)
-#define chkCanHash          CTRL("chkCanHash", wxCheckBox)
-#define chkCanMerge         CTRL("chkCanMerge", wxCheckBox)
-
+#define txtOwner            CTRL_TEXT("txtOwner")
+#define cbLeftType          CTRL_COMBOBOX("cbLeftType")
+#define cbRightType         CTRL_COMBOBOX("cbRightType")
+#define cbLeftType          CTRL_COMBOBOX("cbLeftType")
+#define cbProcedure         CTRL_COMBOBOX("cbProcedure")
+#define cbRestrict          CTRL_COMBOBOX("cbRestrict")
+#define cbJoin              CTRL_COMBOBOX("cbJoin")
+#define cbCommutator        CTRL_COMBOBOX("cbCommutator")
+#define cbNegator           CTRL_COMBOBOX("cbNegator")
+#define cbLeftSort          CTRL_COMBOBOX("cbLeftSort")
+#define cbRightSort         CTRL_COMBOBOX("cbRightSort")
+#define cbLess              CTRL_COMBOBOX("cbLess")
+#define cbGreater           CTRL_COMBOBOX("cbGreater")
+#define chkCanHash          CTRL_CHECKBOX("chkCanHash")
+#define chkCanMerge         CTRL_CHECKBOX("chkCanMerge")
 
 
 BEGIN_EVENT_TABLE(dlgOperator, dlgTypeProperty)

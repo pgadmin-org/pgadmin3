@@ -77,26 +77,25 @@ wxString pgSequence::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     UpdateValues();
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("ACL"), GetAcl());
-        InsertListItem(properties, pos++, _("Current value"), GetLastValue());
-        InsertListItem(properties, pos++, _("Minimum"), GetMinValue());
-        InsertListItem(properties, pos++, _("Maximum"), GetMaxValue());
-        InsertListItem(properties, pos++, _("Increment"), GetIncrement());
-        InsertListItem(properties, pos++, _("Cache"), GetCacheValue());
-        InsertListItem(properties, pos++, _("Cycled"), GetCycled());
-        InsertListItem(properties, pos++, _("System sequence?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("ACL"), GetAcl());
+        properties->AppendItem(_("Current value"), GetLastValue());
+        properties->AppendItem(_("Minimum"), GetMinValue());
+        properties->AppendItem(_("Maximum"), GetMaxValue());
+        properties->AppendItem(_("Increment"), GetIncrement());
+        properties->AppendItem(_("Cache"), GetCacheValue());
+        properties->AppendItem(_("Cycled"), GetCycled());
+        properties->AppendItem(_("System sequence?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 
     wxLogInfo(wxT("Displaying statistics for sequence on ") +GetSchema()->GetIdentifier());

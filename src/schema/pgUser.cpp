@@ -75,7 +75,7 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -110,14 +110,13 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         wxLogInfo(wxT("Displaying properties for User ") + GetIdentifier());
 
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("User ID"), GetUserId());
-        InsertListItem(properties, pos++, _("Account expires"), GetAccountExpires());
-        InsertListItem(properties, pos++, _("Superuser?"), BoolToYesNo(GetSuperuser()));
-        InsertListItem(properties, pos++, _("Create databases?"), BoolToYesNo(GetCreateDatabase()));
-        InsertListItem(properties, pos++, _("Update catalogs?"), BoolToYesNo(GetUpdateCatalog()));
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("User ID"), GetUserId());
+        properties->AppendItem(_("Account expires"), GetAccountExpires());
+        properties->AppendItem(_("Superuser?"), BoolToYesNo(GetSuperuser()));
+        properties->AppendItem(_("Create databases?"), BoolToYesNo(GetCreateDatabase()));
+        properties->AppendItem(_("Update catalogs?"), BoolToYesNo(GetUpdateCatalog()));
 
         wxString groupList;
 
@@ -128,13 +127,13 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
                 groupList += wxT(", ");
             groupList += groupsIn.Item(index);
         }
-        InsertListItem(properties, pos, wxT("Member of"), groupList);
+        properties->AppendItem(wxT("Member of"), groupList);
 
         wxStringTokenizer cfgTokens(configList, wxT(","));
         while (cfgTokens.HasMoreTokens())
         {
             wxString token=cfgTokens.GetNextToken();
-            InsertListItem(properties, pos++, token.BeforeFirst('='), token.AfterFirst('='));
+            properties->AppendItem(token.BeforeFirst('='), token.AfterFirst('='));
         }
     }
 }

@@ -45,7 +45,7 @@ wxMenu *pgaAgent::GetNewMenu()
     return menu;
 }
 
-void pgaAgent::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgaAgent::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -61,10 +61,10 @@ void pgaAgent::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
     if (properties)
     {
         properties->ClearAll();
-        properties->InsertColumn(0, _("Instance"), wxLIST_FORMAT_LEFT, properties->ConvertDialogToPixels(wxPoint(90,0)).x);
-        properties->InsertColumn(1, _("PID"), wxLIST_FORMAT_LEFT, properties->ConvertDialogToPixels(wxPoint(35,0)).x);
-        properties->InsertColumn(2, _("Login time"), wxLIST_FORMAT_LEFT, properties->ConvertDialogToPixels(wxPoint(75,0)).x);
-        properties->InsertColumn(3, _("Current job"), wxLIST_FORMAT_LEFT, properties->ConvertDialogToPixels(wxPoint(250,0)).x);
+        properties->AddColumn(_("Instance"), 90);
+        properties->AddColumn(_("PID"), 35);
+        properties->AddColumn(_("Login time"), 75);
+        properties->AddColumn(_("Current job"), 250);
 
         pgSet *props = GetDatabase()->ExecuteSet(
             wxT("SELECT station, jagpid, logintime, jobname\n")

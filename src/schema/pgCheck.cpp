@@ -62,20 +62,19 @@ wxString pgCheck::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Definition"), GetDefinition());
-        InsertListItem(properties, pos++, _("Deferrable?"), BoolToYesNo(GetDeferrable()));
-        InsertListItem(properties, pos++, _("Initially?"), 
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Definition"), GetDefinition());
+        properties->AppendItem(_("Deferrable?"), BoolToYesNo(GetDeferrable()));
+        properties->AppendItem(_("Initially?"), 
             GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

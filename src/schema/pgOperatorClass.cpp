@@ -74,7 +74,7 @@ wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -153,22 +153,21 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("Default?"), GetOpcDefault());
-        InsertListItem(properties, pos++, _("For type"), GetInType());
-        InsertListItem(properties, pos++, _("Access method"), GetAccessMethod());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("Default?"), GetOpcDefault());
+        properties->AppendItem(_("For type"), GetInType());
+        properties->AppendItem(_("Access method"), GetAccessMethod());
         if (!GetKeyType().IsEmpty())
-            InsertListItem(properties, pos++, _("Storage"), GetKeyType());  
+            properties->AppendItem(_("Storage"), GetKeyType());  
         unsigned int i;
         for (i=0 ; i < operators.Count() ; i++)
-            InsertListItem(properties, pos++, wxT("OPERATOR"), operators.Item(i));
+            properties->AppendItem(wxT("OPERATOR"), operators.Item(i));
         for (i=0 ; i < functions.Count() ; i++)
-            InsertListItem(properties, pos++, wxT("FUNCTION"), functions.Item(i));
-        InsertListItem(properties, pos++, _("System operator class?"), GetSystemObject());
+            properties->AppendItem(wxT("FUNCTION"), functions.Item(i));
+        properties->AppendItem(_("System operator class?"), GetSystemObject());
     }
 }
 

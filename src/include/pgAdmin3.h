@@ -17,6 +17,9 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 
+#include "misc.h"
+#include "ctlListView.h"
+
 // App headers
 #include "sysSettings.h"
 

@@ -27,10 +27,10 @@
 
 
 // pointer to controls
-#define cbOwner             CTRL("cbOwner", wxComboBox)
-#define chkNotNull          CTRL("chkNotNull", wxCheckBox)
-#define txtDefault          CTRL("txtDefault", wxTextCtrl)
-#define txtCheck            CTRL("txtCheck", wxTextCtrl)
+#define cbOwner             CTRL_COMBOBOX("cbOwner")
+#define chkNotNull          CTRL_CHECKBOX("chkNotNull")
+#define txtDefault          CTRL_TEXT("txtDefault")
+#define txtCheck            CTRL_TEXT("txtCheck")
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgDomain::OnChange)

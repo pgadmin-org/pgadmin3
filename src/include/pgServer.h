@@ -70,7 +70,7 @@ public:
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
     pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlListView *statistics=0, ctlSQLBox *sqlPane=0);
     wxString GetHelpPage(bool forCreate) const { return wxT("managing-databases"); }
     int GetIcon() { return PGICON_SERVER; }
 

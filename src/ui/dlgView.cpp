@@ -28,8 +28,8 @@
 
 
 // pointer to controls
-#define pnlDefinition CTRL("pnlDefinition", wxPanel)
-#define txtSqlBox CTRL("txtSqlBox", ctlSQLBox)
+#define pnlDefinition   CTRL_PANEL("pnlDefinition")
+#define txtSqlBox       CTRL_SQLBOX("txtSqlBox")
 
 
 

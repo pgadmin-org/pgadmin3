@@ -51,13 +51,16 @@ public:
     wxImageList *GetImageList() { return images; }
     wxTreeCtrl *GetBrowser() { return browser; }
     ctlSQLBox *GetSqlPane() { return sqlPane; }
+    ctlListView *GetDependsOnView() { return dependsOn; }
+    ctlListView *GetReferencedByView() { return referencedBy; }
 
 private:
     windowList frames;
 	pgDatabase *m_database;
     wxTreeCtrl *browser;
-    wxListCtrl *properties;
-    wxListCtrl *statistics;
+    ctlListView *properties;
+    ctlListView *statistics;
+    ctlListView *referencedBy, *dependsOn;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenuBar *menuBar;
@@ -109,7 +112,7 @@ private:
     void OnQueryBuilder(wxCommandEvent &ev);
 
     void execSelChange(wxTreeItemId item, bool currentNode);
-    void setDisplay(pgObject *data, wxListCtrl *props=0, wxListCtrl *stats=0, ctlSQLBox *sqlbox=0);
+    void setDisplay(pgObject *data, ctlListView *props=0, ctlListView *stats=0, ctlSQLBox *sqlbox=0);
     void StoreServers();
     void RetrieveServers();
     int ReconnectServer(pgServer *server);
@@ -128,9 +131,11 @@ private:
 enum
 {
     CTL_BROWSER = 301,
-    CTL_PROPVIEW = 302,
-    CTL_STATVIEW = 303,
-    CTL_SQLPANE = 304
+    CTL_PROPVIEW,
+    CTL_STATVIEW,
+    CTL_DEPVIEW,
+    CTL_REFVIEW,
+    CTL_SQLPANE
 };
 
 #endif

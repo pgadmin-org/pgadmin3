@@ -274,10 +274,14 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // Setup the horizontal splitter for the listview & sql pane
     wxNotebook* listViews = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
-    properties = new wxListCtrl(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
-    statistics = new wxListCtrl(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
+    properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    dependsOn = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    referencedBy = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     listViews->AddPage(properties, _("Properties"));
     listViews->AddPage(statistics, _("Statistics"));
+    listViews->AddPage(dependsOn, _("Depends on"));
+    listViews->AddPage(referencedBy, _("Referenced by"));
     sqlPane = new ctlSQLBox(horizontal, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
 
     splitpos=settings->Read(wxT("frmMain/SplitHorizontal"), 300);
@@ -341,18 +345,20 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     properties->SetImageList(images, wxIMAGE_LIST_SMALL);
     // Add the property view columns
-    properties->InsertColumn(0, _("Properties"), wxLIST_FORMAT_LEFT, 500);
+    properties->AddColumn(_("Properties"));
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
 
 
     statistics->SetImageList(images, wxIMAGE_LIST_SMALL);
     // Add the statistics view columns & set the colour
-    statistics->InsertColumn(0, _("Statistics"), wxLIST_FORMAT_LEFT, 500);
+    statistics->AddColumn(_("Statistics"));
     statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
 
     wxColour background;
     background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
     statistics->SetBackgroundColour(background);
+    dependsOn->SetBackgroundColour(background);
+    referencedBy->SetBackgroundColour(background);
     sqlPane->SetBackgroundColour(background);
 
     // Load servers

@@ -225,23 +225,6 @@ wxDateTime StrToDateTime(const wxString &value)
 }
 
 
-wxString GetListText(wxListCtrl *lst, long row, long col)
-{
-    wxListItem item;
-    item.SetId(row);
-    item.SetColumn(col);
-    item.SetMask(wxLIST_MASK_TEXT);
-    lst->GetItem(item);
-    return item.GetText();
-}
-
-
-long GetListSelected(wxListCtrl *lst)
-{
-    return lst->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-}
-
-
 void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0, const int h0)
 {
     wxSize screenSize = wxGetDisplaySize();

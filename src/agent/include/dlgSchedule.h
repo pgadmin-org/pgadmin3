@@ -36,6 +36,11 @@ private:
     pgaSchedule *schedule;
     pgaJob *job;
     void OnChange(wxNotifyEvent &ev);
+    void OnChangeKind(wxNotifyEvent &ev);
+    void OnSelChangeInterval(wxNotifyEvent &ev);
+    void OnAddInterval(wxNotifyEvent &ev);
+    void OnChangeInterval(wxNotifyEvent &ev);
+    void OnRemoveInterval(wxNotifyEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

@@ -134,7 +134,7 @@ wxString pgDatabase::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (Connect() == PGCONN_OK)
     {
@@ -183,27 +183,26 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     {
         // Setup listview
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), NumToStr(GetOid()));
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("ACL"), GetAcl());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), NumToStr(GetOid()));
+        properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("ACL"), GetAcl());
         if (!GetPath().IsEmpty())
-            InsertListItem(properties, pos++, _("Path"), GetPath());
-        InsertListItem(properties, pos++, _("Encoding"), GetEncoding());
+            properties->AppendItem(_("Path"), GetPath());
+        properties->AppendItem(_("Encoding"), GetEncoding());
         wxStringTokenizer vars(GetVariables());
         while (vars.HasMoreTokens())
         {
             wxString str=vars.GetNextToken();
-            InsertListItem(properties, pos++, str.BeforeFirst('='), str.AfterFirst('='));
+            properties->AppendItem(str.BeforeFirst('='), str.AfterFirst('='));
         }
-        InsertListItem(properties, pos++, _("Allow connections?"), GetAllowConnections());
-        InsertListItem(properties, pos++, _("Connected?"), GetConnected());
-        InsertListItem(properties, pos++, _("System database?"), GetSystemObject());
+        properties->AppendItem(_("Allow connections?"), GetAllowConnections());
+        properties->AppendItem(_("Connected?"), GetConnected());
+        properties->AppendItem(_("System database?"), GetSystemObject());
         if (GetMissingFKs())
-            InsertListItem(properties, pos++, _("Old style FKs"), GetMissingFKs());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+            properties->AppendItem(_("Old style FKs"), GetMissingFKs());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 
@@ -281,18 +280,18 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 }
 
 
-void pgDatabase::ShowStatistics(pgCollection *collection, wxListCtrl *statistics)
+void pgDatabase::ShowStatistics(pgCollection *collection, ctlListView *statistics)
 {
     wxLogInfo(wxT("Displaying statistics for databases on ") + collection->GetServer()->GetIdentifier());
 
     // Add the statistics view columns
     statistics->ClearAll();
-    statistics->InsertColumn(0, _("Database"), wxLIST_FORMAT_LEFT, 100);
-    statistics->InsertColumn(1, _("Backends"), wxLIST_FORMAT_LEFT, 75);
-    statistics->InsertColumn(2, _("Xact Committed"), wxLIST_FORMAT_LEFT, 100);
-    statistics->InsertColumn(3, _("Xact Rolled Back"), wxLIST_FORMAT_LEFT, 100);
-    statistics->InsertColumn(4, _("Blocks Read"), wxLIST_FORMAT_LEFT, 100);
-    statistics->InsertColumn(5, _("Blocks Hit"), wxLIST_FORMAT_LEFT, 100);
+    statistics->AddColumn(_("Database"), 60);
+    statistics->AddColumn(_("Backends"), 50);
+    statistics->AddColumn(_("Xact Committed"), 60);
+    statistics->AddColumn(_("Xact Rolled Back"), 60);
+    statistics->AddColumn(_("Blocks Read"), 60);
+    statistics->AddColumn(_("Blocks Hit"), 60);
 
     pgSet *stats = collection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
     if (stats)

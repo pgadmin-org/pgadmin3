@@ -58,7 +58,7 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -89,19 +89,18 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("Base type"), GetBasetype());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("Base type"), GetBasetype());
         if (GetDimensions())
-            InsertListItem(properties, pos++, _("Dimensions"), GetDimensions());
-        InsertListItem(properties, pos++, _("Default"), GetDefault());
-        InsertListItem(properties, pos++, _("Check"), GetCheck());
-        InsertListItem(properties, pos++, _("Not NULL?"), GetNotNull());
-        InsertListItem(properties, pos++, _("System domain?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+            properties->AppendItem(_("Dimensions"), GetDimensions());
+        properties->AppendItem(_("Default"), GetDefault());
+        properties->AppendItem(_("Check"), GetCheck());
+        properties->AppendItem(_("Not NULL?"), GetNotNull());
+        properties->AppendItem(_("System domain?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

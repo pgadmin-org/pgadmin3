@@ -53,20 +53,19 @@ wxString pgLanguage::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
-
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("ACL"), GetAcl());
-        InsertListItem(properties, pos++, _("Trusted?"), GetTrusted());
-        InsertListItem(properties, pos++, _("Handler"), GetHandlerProc());
-        InsertListItem(properties, pos++, _("Validator"), GetValidatorProc());
-        InsertListItem(properties, pos++, _("System language?"), GetSystemObject());
+        
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("ACL"), GetAcl());
+        properties->AppendItem(_("Trusted?"), GetTrusted());
+        properties->AppendItem(_("Handler"), GetHandlerProc());
+        properties->AppendItem(_("Validator"), GetValidatorProc());
+        properties->AppendItem(_("System language?"), GetSystemObject());
     }
 }
 

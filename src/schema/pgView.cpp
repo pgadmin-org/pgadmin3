@@ -60,7 +60,7 @@ wxString pgView::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -76,17 +76,16 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
         wxString def=GetDefinition().Left(250);
         def.Replace(wxT("\n"), wxT(" "));
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("ACL"), GetAcl());
-        InsertListItem(properties, pos++, _("Definition"), def);
-        InsertListItem(properties, pos++, _("System view?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("ACL"), GetAcl());
+        properties->AppendItem(_("Definition"), def);
+        properties->AppendItem(_("System view?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

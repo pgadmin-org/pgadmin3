@@ -32,22 +32,21 @@ BEGIN_EVENT_TABLE(frmMaintenance, DialogWithHelp)
     EVT_CLOSE(                          frmMaintenance::OnClose)
 END_EVENT_TABLE()
 
-#define rbxAction       CTRL("rbxAction",  wxRadioBox)
-#define sbxOptions      CTRL("sbxOptions", wxStaticBox)
-#define chkFull         CTRL("chkFull",    wxCheckBox)
-#define chkFreeze       CTRL("chkFreeze",  wxCheckBox)
-#define chkAnalyze      CTRL("chkAnalyze", wxCheckBox)
-#define sbxReindexOptions      CTRL("sbxReindexOptions", wxStaticBox)
-#define chkForce        CTRL("chkForce", wxCheckBox)
-#define chkRecreate     CTRL("chkRecreate", wxCheckBox)
-#define chkVerbose      CTRL("chkVerbose", wxCheckBox)
-#define txtMessages     CTRL("txtMessages",wxTextCtrl)
+#define rbxAction               CTRL_RADIOBOX("rbxAction")
+#define sbxOptions              CTRL_STATICBOX("sbxOptions")
+#define chkFull                 CTRL_CHECKBOX("chkFull")
+#define chkFreeze               CTRL_CHECKBOX("chkFreeze")
+#define chkAnalyze              CTRL_CHECKBOX("chkAnalyze")
+#define sbxReindexOptions       CTRL_STATICBOX("sbxReindexOptions")
+#define chkForce                CTRL_CHECKBOX("chkForce")
+#define chkRecreate             CTRL_CHECKBOX("chkRecreate")
+#define chkVerbose              CTRL_CHECKBOX("chkVerbose")
+#define txtMessages             CTRL_TEXT("txtMessages")
 
+#define stBitmap                CTRL("stBitmap", wxStaticBitmap)
 
-#define stBitmap        CTRL("stBitmap", wxStaticBitmap)
-
-#define btnOK           CTRL("btnOK", wxButton)
-#define btnCancel       CTRL("btnCancel", wxButton)
+#define btnOK                   CTRL_BUTTON("btnOK")
+#define btnCancel               CTRL_BUTTON("btnCancel")
 
 
 

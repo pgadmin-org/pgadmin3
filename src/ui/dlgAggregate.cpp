@@ -27,12 +27,12 @@
 
 
 // pointer to controls
-#define txtOwner            CTRL("txtOwner", wxTextCtrl)
-#define cbBaseType          CTRL("cbBaseType", wxComboBox)
-#define cbStateType         CTRL("cbStateType", wxComboBox)
-#define cbStateFunc         CTRL("cbStateFunc", wxComboBox)
-#define cbFinalFunc         CTRL("cbFinalFunc", wxComboBox)
-#define txtInitial          CTRL("txtInitial", wxTextCtrl)
+#define txtOwner            CTRL_TEXT("txtOwner")
+#define cbBaseType          CTRL_COMBOBOX("cbBaseType")
+#define cbStateType         CTRL_COMBOBOX("cbStateType")
+#define cbStateFunc         CTRL_COMBOBOX("cbStateFunc")
+#define cbFinalFunc         CTRL_COMBOBOX("cbFinalFunc")
+#define txtInitial          CTRL_TEXT("txtInitial")
 
 
 

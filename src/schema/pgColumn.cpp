@@ -112,7 +112,7 @@ wxString pgColumn::GetDefinition()
 }
 
 
-void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -175,22 +175,21 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("Position"), GetColNumber());
-        InsertListItem(properties, pos++, _("Data type"), GetVarTypename());
-        InsertListItem(properties, pos++, _("Default"), GetDefault());
-        InsertListItem(properties, pos++, _("Not NULL?"), GetNotNull());
-        InsertListItem(properties, pos++, _("Primary key?"), GetIsPK());
-        InsertListItem(properties, pos++, _("Foreign key?"), GetIsFK());
-        InsertListItem(properties, pos++, _("Storage"), GetStorage());
-        InsertListItem(properties, pos++, _("Inherited"), GetInheritedCount() != 0);
-        InsertListItem(properties, pos++, _("Statistics"), GetAttstattarget());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("Position"), GetColNumber());
+        properties->AppendItem(_("Data type"), GetVarTypename());
+        properties->AppendItem(_("Default"), GetDefault());
+        properties->AppendItem(_("Not NULL?"), GetNotNull());
+        properties->AppendItem(_("Primary key?"), GetIsPK());
+        properties->AppendItem(_("Foreign key?"), GetIsFK());
+        properties->AppendItem(_("Storage"), GetStorage());
+        properties->AppendItem(_("Inherited"), GetInheritedCount() != 0);
+        properties->AppendItem(_("Statistics"), GetAttstattarget());
 
 
-        InsertListItem(properties, pos++, _("System column?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("System column?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 
     // statistic 

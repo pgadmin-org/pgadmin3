@@ -27,7 +27,7 @@ agent/pgaAgent.cpp agent/pgaJob.cpp \
 agent/pgaStep.cpp agent/pgaSchedule.cpp \
 agent/dlgJob.cpp agent/dlgSchedule.cpp agent/dlgStep.cpp \
 ui/xh_sqlbox.cpp ui/xh_calb.cpp ui/xh_timespin.cpp \
-ui/calbox.cpp ui/timespin.cpp \
+ui/calbox.cpp ui/timespin.cpp ui/ctlListView.cpp \
 ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp ui/frmExport.cpp \
 ui/dlgAddTableView.cpp ui/dlgEditGridOptions.cpp \
 ui/events.cpp ui/frmAbout.cpp ui/frmIndexcheck.cpp \
@@ -49,7 +49,7 @@ utils/utffile.cpp \
 ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = include/copyright.h include/version.h include/ctlSQLBox.h \
-include/ctlSQLResult.h include/dlgAddTableView.h \
+include/ctlSQLResult.h include/ctlListView.h include/dlgAddTableView.h \
 include/parser/parse.h include/parser/keywords.h include/nodes/parsenodes.h \
 include/postgres.h include/pgDefs.h include/pgDatatype.h \
 include/dlgCheck.h include/dlgColumn.h \

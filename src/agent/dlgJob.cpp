@@ -28,22 +28,23 @@
 
 
 // pointer to controls
-#define chkEnabled          CTRL("chkEnabled", wxCheckBox)
-#define cbJobclass          CTRL("cbJobclass", wxComboBox)
-#define txtCreated          CTRL("txtCreated", wxTextCtrl)
-#define txtChanged          CTRL("txtChanged", wxTextCtrl)
-#define txtNextrun          CTRL("txtNextrun", wxTextCtrl)
-#define txtLastrun          CTRL("txtLastrun", wxTextCtrl)
-#define txtLastresult       CTRL("txtLastResult", wxTextCtrl)
+#define chkEnabled          CTRL_CHECKBOX("chkEnabled")
+#define cbJobclass          CTRL_COMBOBOX("cbJobclass")
+#define txtCreated          CTRL_TEXT("txtCreated")
+#define txtChanged          CTRL_TEXT("txtChanged")
+#define txtNextrun          CTRL_TEXT("txtNextrun")
+#define txtLastrun          CTRL_TEXT("txtLastrun")
+#define txtLastresult       CTRL_TEXT("txtLastResult")
 
-#define lstSteps            CTRL("lstSteps", wxListCtrl)
-#define btnChangeStep       CTRL("btnChangeStep", wxButton)
-#define btnAddStep          CTRL("btnAddStep", wxButton)
-#define btnRemoveStep       CTRL("btnRemoveStep", wxButton)
-#define lstSchedules        CTRL("lstSchedules", wxListCtrl)
-#define btnChangeSchedule   CTRL("btnChangeSchedule", wxButton)
-#define btnAddSchedule      CTRL("btnAddSchedule", wxButton)
-#define btnRemoveSchedule   CTRL("btnRemoveSchedule", wxButton)
+#define lstSteps            CTRL_LISTVIEW("lstSteps")
+#define btnChangeStep       CTRL_BUTTON("btnChangeStep")
+#define btnAddStep          CTRL_BUTTON("btnAddStep")
+#define btnRemoveStep       CTRL_BUTTON("btnRemoveStep")
+
+#define lstSchedules        CTRL_LISTVIEW("lstSchedules")
+#define btnChangeSchedule   CTRL_BUTTON("btnChangeSchedule")
+#define btnAddSchedule      CTRL_BUTTON("btnAddSchedule")
+#define btnRemoveSchedule   CTRL_BUTTON("btnRemoveSchedule")
 
 
 BEGIN_EVENT_TABLE(dlgJob, dlgOidProperty)
@@ -77,11 +78,12 @@ dlgJob::dlgJob(frmMain *frame, pgaJob *node)
     txtLastrun->Disable();
     txtLastresult->Disable();
     CreateListColumns(lstSteps, _("Step"), _("Definition"), 90);
-    lstSteps->InsertColumn(2, wxT("cmd"), wxLIST_FORMAT_LEFT, 0);
-    lstSteps->InsertColumn(3, wxT("oid"), wxLIST_FORMAT_LEFT, 0);
+    lstSteps->AddColumn(wxT("cmd"), 0);
+    lstSteps->AddColumn(wxT("oid"), 0);
+
     CreateListColumns(lstSchedules, _("Schedule"), _("Definition"), 90);
-    lstSchedules->InsertColumn(2, wxT("cmd"), wxLIST_FORMAT_LEFT, 0);
-    lstSchedules->InsertColumn(3, wxT("oid"), wxLIST_FORMAT_LEFT, 0);
+    lstSchedules->AddColumn(wxT("cmd"), 0);
+    lstSchedules->AddColumn(wxT("oid"), 0);
     btnChangeStep->Disable();
     btnRemoveStep->Disable();
     btnChangeSchedule->Disable();
@@ -193,8 +195,8 @@ void dlgJob::OnChange(wxNotifyEvent &ev)
 
 void dlgJob::OnChangeStep(wxNotifyEvent &ev)
 {
-    long pos=GetListSelected(lstSteps);
-    pgaStep *obj=(pgaStep*) StrToLong(GetListText(lstSteps, pos, 3));
+    long pos=lstSteps->GetSelection();
+    pgaStep *obj=(pgaStep*) StrToLong(lstSteps->GetText(pos, 3));
 
     dlgStep step(mainForm, obj, job);
     step.CenterOnParent();
@@ -205,7 +207,7 @@ void dlgJob::OnChangeStep(wxNotifyEvent &ev)
         lstSteps->SetItem(pos, 0, step.GetName());
         lstSteps->SetItem(pos, 1, step.GetComment());
 
-        if (GetListText(lstSteps, pos, 3).IsEmpty())
+        if (lstSteps->GetText(pos, 3).IsEmpty())
             lstSteps->SetItem(pos, 2, step.GetInsertSql());
         else
             lstSteps->SetItem(pos, 2, step.GetUpdateSql());
@@ -238,7 +240,7 @@ void dlgJob::OnAddStep(wxNotifyEvent &ev)
 
 void dlgJob::OnRemoveStep(wxNotifyEvent &ev)
 {
-    lstSteps->DeleteItem(GetListSelected(lstSteps));
+    lstSteps->DeleteCurrentItem();
 
     btnChangeStep->Disable();
     btnRemoveStep->Disable();
@@ -256,8 +258,8 @@ void dlgJob::OnSelChangeSchedule(wxNotifyEvent &ev)
 
 void dlgJob::OnChangeSchedule(wxNotifyEvent &ev)
 {
-    long pos=GetListSelected(lstSchedules);
-    pgaSchedule *obj=(pgaSchedule*) StrToLong(GetListText(lstSchedules, pos, 3));
+    long pos=lstSchedules->GetSelection();
+    pgaSchedule *obj=(pgaSchedule*) StrToLong(lstSchedules->GetText(pos, 3));
 
     dlgSchedule schedule(mainForm, obj, job);
     schedule.CenterOnParent();
@@ -268,7 +270,7 @@ void dlgJob::OnChangeSchedule(wxNotifyEvent &ev)
         lstSchedules->SetItem(pos, 0, schedule.GetName());
         lstSchedules->SetItem(pos, 1, schedule.GetComment());
 
-        if (GetListText(lstSchedules, pos, 3).IsEmpty())
+        if (lstSchedules->GetText(pos, 3).IsEmpty())
             lstSchedules->SetItem(pos, 2, schedule.GetInsertSql());
         else
             lstSchedules->SetItem(pos, 2, schedule.GetUpdateSql());
@@ -294,7 +296,7 @@ void dlgJob::OnAddSchedule(wxNotifyEvent &ev)
 
 void dlgJob::OnRemoveSchedule(wxNotifyEvent &ev)
 {
-    lstSchedules->DeleteItem(GetListSelected(lstSchedules));
+    lstSchedules->DeleteCurrentItem();
 
     btnChangeSchedule->Disable();
     btnRemoveSchedule->Disable();
@@ -369,14 +371,14 @@ wxString dlgJob::GetUpdateSql()
     wxArrayString tmpSteps = previousSteps;
     for (pos=0 ; pos < lstSteps->GetItemCount() ; pos++)
     {
-        wxString str=GetListText(lstSteps, pos, 3);
+        wxString str=lstSteps->GetText(pos, 3);
         if (!str.IsEmpty())
         {
             index=tmpSteps.Index(str);
             if (index >= 0)
                 tmpSteps.RemoveAt(index);
         }
-        str=GetListText(lstSteps, pos, 2);
+        str=lstSteps->GetText(pos, 2);
         if (!str.IsEmpty())
             sql += str + wxT(";\n");
     }
@@ -390,14 +392,14 @@ wxString dlgJob::GetUpdateSql()
     wxArrayString tmpSchedules = previousSchedules;
     for (pos=0 ; pos < lstSchedules->GetItemCount() ; pos++)
     {
-        wxString str=GetListText(lstSchedules, pos, 3);
+        wxString str=lstSchedules->GetText(pos, 3);
         if (!str.IsEmpty())
         {
             index=tmpSchedules.Index(str);
             if (index >= 0)
                 tmpSchedules.RemoveAt(index);
         }
-        str=GetListText(lstSchedules, pos, 2);
+        str=lstSchedules->GetText(pos, 2);
         if (!str.IsEmpty())
             sql += str + wxT(";\n");
     }

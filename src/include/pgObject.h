@@ -19,7 +19,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "misc.h"
+
 
 
 class frmMain;
@@ -29,7 +29,7 @@ class pgCollection;
 class pgConn;
 class pgSet;
 class pgServer;
-class wxListCtrl;
+
 // This enum lists the type of objects that may be included in the treeview
 // as objects. If changing, update typesList[] as well.
 enum PG_OBJTYPE
@@ -70,6 +70,7 @@ class pgTypes
 {
 public:
     wxChar *typName;
+    long    typeIcon;
     wxChar *newString;
     wxChar *newLongString;
 };
@@ -104,7 +105,7 @@ public:
     virtual bool GetSystemObject() const { return false; }
     virtual bool IsCollection() const { return false; }
 
-    void ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+    void ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane);
     void AppendBrowserItem(wxTreeCtrl *browser, pgObject *object);
     void RemoveDummyChild(wxTreeCtrl *browser);
     virtual wxString GetHelpPage(bool forCreate) const;
@@ -123,7 +124,7 @@ public:
     virtual wxString GetFullIdentifier() const { return GetName(); }
     virtual wxString GetQuotedFullIdentifier() const { return qtIdent(name); }
 
-    virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0)
+    virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlListView *statistics=0, ctlSQLBox *sqlPane=0)
         =0;
     virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
     virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
@@ -140,24 +141,7 @@ public:
     virtual bool WantDummyChild() { return false; }
 
 protected:
-    void CreateListColumns(wxListCtrl *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2);
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxChar *s)
-        { InsertListItem(list, pos, str1, wxString(s)); }
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const long l)
-        { InsertListItem(list, pos, str1, NumToStr(l)); }
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const bool b)
-        { InsertListItem(list, pos, str1, BoolToYesNo(b)); }
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const double d)
-        { InsertListItem(list, pos, str1, NumToStr(d)); }
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const OID o)
-        { InsertListItem(list, pos, str1, NumToStr(o)); }
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxDateTime &d)
-        { InsertListItem(list, pos, str1, DateToStr(d)); }
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxLongLong &l)
-        { InsertListItem(list, pos, str1, l.ToString()); }
-    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxULongLong &l)
-        { InsertListItem(list, pos, str1, l.ToString()); }
+    void CreateListColumns(ctlListView *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));
 
     void AppendMenu(wxMenu *menu, int type=-1);
     virtual void SetContextInfo(frmMain *form) {}
@@ -167,7 +151,7 @@ protected:
     
 private:
     static wxString GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
-
+    void ShowDependency(ctlListView *list, const wxString &query);
     wxString name, owner, comment, acl;
     int type;
     OID oid;
@@ -233,7 +217,7 @@ public:
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     bool ExecuteVoid(const wxString& sql);
-    void DisplayStatistics(wxListCtrl *statistics, const wxString& query);
+    void DisplayStatistics(ctlListView *statistics, const wxString& query);
     OID GetTableOid() const {return tableOid; }
     void iSetTableOid(const OID d) { tableOid=d; }
     wxString GetTableOidStr() const {return NumToStr(tableOid) + wxT("::oid"); }

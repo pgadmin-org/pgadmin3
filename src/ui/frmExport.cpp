@@ -26,18 +26,18 @@
 #include "images/pgAdmin3.xpm"
 
 
-#define txtFilename     CTRL("txtFilename",     wxTextCtrl)
-#define btnOK           CTRL("btnOK",           wxButton)
-#define rbUnicode       CTRL("rbUnicode",       wxRadioButton)
-#define rbLocal         CTRL("rbLocal",         wxRadioButton)
-#define rbCRLF          CTRL("rbCRLF",          wxRadioButton)
-#define rbLF            CTRL("rbLF",            wxRadioButton)
-#define rbQuoteStrings  CTRL("rbQuoteStrings",  wxRadioButton)
-#define rbQuoteAll      CTRL("rbQuoteAll",      wxRadioButton)
-#define rbQuoteNone     CTRL("rbQuoteNone",     wxRadioButton)
-#define chkColnames     CTRL("chkColnames",     wxCheckBox)
-#define cbColSeparator  CTRL("cbColSeparator",  wxComboBox)
-#define cbQuoteChar     CTRL("cbQuoteChar",     wxComboBox)
+#define txtFilename     CTRL_TEXT("txtFilename")
+#define btnOK           CTRL_BUTTON("btnOK")
+#define rbUnicode       CTRL_RADIOBUTTON("rbUnicode")
+#define rbLocal         CTRL_RADIOBUTTON("rbLocal")
+#define rbCRLF          CTRL_RADIOBUTTON("rbCRLF")
+#define rbLF            CTRL_RADIOBUTTON("rbLF")
+#define rbQuoteStrings  CTRL_RADIOBUTTON("rbQuoteStrings")
+#define rbQuoteAll      CTRL_RADIOBUTTON("rbQuoteAll")
+#define rbQuoteNone     CTRL_RADIOBUTTON("rbQuoteNone")
+#define chkColnames     CTRL_CHECKBOX("chkColnames")
+#define cbColSeparator  CTRL_COMBOBOX("cbColSeparator")
+#define cbQuoteChar     CTRL_COMBOBOX("cbQuoteChar")
 
 
 BEGIN_EVENT_TABLE(frmExport, wxDialog)

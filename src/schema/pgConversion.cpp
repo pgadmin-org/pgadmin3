@@ -52,21 +52,20 @@ wxString pgConversion::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("From"), GetForEncoding());
-        InsertListItem(properties, pos++, _("To"), GetToEncoding());
-        InsertListItem(properties, pos++, _("Function"), GetProcNamespace() + wxT(".") + GetProc());
-        InsertListItem(properties, pos++, _("Default?"), GetDefaultConversion());
-        InsertListItem(properties, pos++, _("System conversion?"), GetSystemObject());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("From"), GetForEncoding());
+        properties->AppendItem(_("To"), GetToEncoding());
+        properties->AppendItem(_("Function"), GetProcNamespace() + wxT(".") + GetProc());
+        properties->AppendItem(_("Default?"), GetDefaultConversion());
+        properties->AppendItem(_("System conversion?"), GetSystemObject());
 
     }
 }

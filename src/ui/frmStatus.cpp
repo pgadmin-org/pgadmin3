@@ -35,10 +35,10 @@ BEGIN_EVENT_TABLE(frmStatus, wxDialog)
 END_EVENT_TABLE();
 
 
-#define statusList      CTRL("lstStatus", wxListCtrl)
-#define lockList        CTRL("lstLocks", wxListCtrl)
-#define spnRefreshRate  CTRL("spnRefreshRate", wxSpinCtrl)
-#define nbStatus		CTRL("nbStatus", wxNotebook)
+#define statusList      CTRL_LISTVIEW("lstStatus")
+#define lockList        CTRL_LISTVIEW("lstLocks")
+#define spnRefreshRate  CTRL_SPIN("spnRefreshRate")
+#define nbStatus		CTRL_NOTEBOOK("nbStatus")
 
 void frmStatus::OnClose(wxCommandEvent &event)
 {
@@ -59,28 +59,28 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const 
     connection=conn;
     backend_pid=conn->GetBackendPID();
 
-    statusList->InsertColumn(0, _("PID"), wxLIST_FORMAT_LEFT, 55);
-    statusList->InsertColumn(1, _("Database"), wxLIST_FORMAT_LEFT, 100);
-    statusList->InsertColumn(2, _("User"), wxLIST_FORMAT_LEFT, 100);
+    statusList->AddColumn(_("PID"), 35);
+    statusList->AddColumn(_("Database"), 70);
+    statusList->AddColumn(_("User"), 70);
     if (connection->BackendMinimumVersion(7, 4)) {
-        statusList->InsertColumn(4, _("Start"), wxLIST_FORMAT_LEFT, 70);
-        statusList->InsertColumn(5, _("Query"), wxLIST_FORMAT_LEFT, 850);
+        statusList->AddColumn(_("Start"), 50);
+        statusList->AddColumn(_("Query"), 500);
     } else {
-        statusList->InsertColumn(4, _("Query"), wxLIST_FORMAT_LEFT, 850);
+        statusList->AddColumn(_("Query"), 500);
     }
 
-    lockList->InsertColumn(0, _("PID"), wxLIST_FORMAT_LEFT, 50);
-    lockList->InsertColumn(1, _("Database"), wxLIST_FORMAT_LEFT, 75);
-    lockList->InsertColumn(2, _("Relation"), wxLIST_FORMAT_LEFT, 75);
-    lockList->InsertColumn(3, _("User"), wxLIST_FORMAT_LEFT, 75);
-    lockList->InsertColumn(4, _("TX"), wxLIST_FORMAT_LEFT, 75);
-    lockList->InsertColumn(5, _("Mode"), wxLIST_FORMAT_LEFT, 75);
-    lockList->InsertColumn(6, _("Granted"), wxLIST_FORMAT_LEFT, 75);
+    lockList->AddColumn(_("PID"), 50);
+    lockList->AddColumn(_("Database"), 50);
+    lockList->AddColumn(_("Relation"), 50);
+    lockList->AddColumn(_("User"), 50);
+    lockList->AddColumn(_("TX"), 50);
+    lockList->AddColumn(_("Mode"), 50);
+    lockList->AddColumn(_("Granted"), 50);
     if (connection->BackendMinimumVersion(7, 4)) {
-        lockList->InsertColumn(7, _("Start"), wxLIST_FORMAT_LEFT, 75);
-        lockList->InsertColumn(8, _("Query"), wxLIST_FORMAT_LEFT, 850);
+        lockList->AddColumn(_("Start"), 50);
+        lockList->AddColumn(_("Query"), 500);
     } else {
-        lockList->InsertColumn(7, _("Query"), wxLIST_FORMAT_LEFT, 850);
+        lockList->AddColumn(_("Query"), 500);
     }
 
     long rate;

@@ -75,7 +75,7 @@ wxString pgSchema::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (form)
         form->SetDatabase(GetDatabase());
@@ -143,14 +143,13 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         wxLogInfo(wxT("Displaying properties for schema ") + GetIdentifier());
 
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("ACL"), GetAcl());
-        InsertListItem(properties, pos++, _("System schema?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("ACL"), GetAcl());
+        properties->AppendItem(_("System schema?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

@@ -26,11 +26,11 @@
 
 
 // pointer to controls
-#define txtOwner            CTRL("txtOwner", wxTextCtrl)
-#define cbSourceEncoding    CTRL("cbSourceEncoding", wxComboBox)
-#define cbTargetEncoding    CTRL("cbTargetEncoding", wxComboBox)
-#define cbFunction          CTRL("cbFunction", wxComboBox)
-#define chkDefault          CTRL("chkDefault", wxCheckBox)
+#define txtOwner            CTRL_TEXT("txtOwner")
+#define cbSourceEncoding    CTRL_COMBOBOX("cbSourceEncoding")
+#define cbTargetEncoding    CTRL_COMBOBOX("cbTargetEncoding")
+#define cbFunction          CTRL_COMBOBOX("cbFunction")
+#define chkDefault          CTRL_CHECKBOX("chkDefault")
 
 
 

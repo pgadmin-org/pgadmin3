@@ -26,24 +26,24 @@
 
 
 // pointer to controls
-#define txtID           CTRL("txtID", wxTextCtrl)
-#define txtPasswd       CTRL("txtPasswd", wxTextCtrl)
-#define datValidUntil   CTRL("datValidUntil", wxCalendarBox)
-#define timValidUntil   CTRL("timValidUntil", wxTimeSpinCtrl)
-#define chkCreateDB     CTRL("chkCreateDB", wxCheckBox)
-#define chkCreateUser   CTRL("chkCreateUser", wxCheckBox)
+#define txtID           CTRL_TEXT("txtID")
+#define txtPasswd       CTRL_TEXT("txtPasswd")
+#define datValidUntil   CTRL_CALENDAR("datValidUntil")
+#define timValidUntil   CTRL_TIME("timValidUntil")
+#define chkCreateDB     CTRL_CHECKBOX("chkCreateDB")
+#define chkCreateUser   CTRL_CHECKBOX("chkCreateUser")
 
-#define lbGroupsNotIn   CTRL("lbGroupsNotIn", wxListBox)
-#define lbGroupsIn      CTRL("lbGroupsIn", wxListBox)
-#define btnAddGroup     CTRL("btnAddGroup", wxButton)
-#define btnDelGroup     CTRL("btnDelGroup", wxButton)
+#define lbGroupsNotIn   CTRL_LISTBOX("lbGroupsNotIn")
+#define lbGroupsIn      CTRL_LISTBOX("lbGroupsIn")
+#define btnAddGroup     CTRL_BUTTON("btnAddGroup")
+#define btnDelGroup     CTRL_BUTTON("btnDelGroup")
 
-#define lstVariables    CTRL("lstVariables", wxListCtrl)
-#define btnAdd          CTRL("btnAdd", wxButton)
-#define btnRemove       CTRL("btnRemove", wxButton)
-#define cbVarname       CTRL("cbVarname", wxComboBox)
-#define txtValue        CTRL("txtValue", wxTextCtrl)
-#define chkValue        CTRL("chkValue", wxCheckBox)
+#define lstVariables    CTRL_LISTVIEW("lstVariables")
+#define btnAdd          CTRL_BUTTON("btnAdd")
+#define btnRemove       CTRL_BUTTON("btnRemove")
+#define cbVarname       CTRL_COMBOBOX("cbVarname")
+#define txtValue        CTRL_TEXT("txtValue")
+#define chkValue        CTRL_CHECKBOX("chkValue")
 
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
@@ -131,6 +131,7 @@ int dlgUser::Go(bool modal)
             chkCreateDB->Disable();
             chkCreateUser->Disable();
             datValidUntil->Disable();
+            timValidUntil->Disable();
             txtPasswd->Disable();
             btnAddGroup->Disable();
             btnDelGroup->Disable();
@@ -253,11 +254,11 @@ void dlgUser::OnVarnameSelChange(wxNotifyEvent &ev)
 
 void dlgUser::OnVarSelChange(wxListEvent &ev)
 {
-    long pos=GetListSelected(lstVariables);
+    long pos=lstVariables->GetSelection();
     if (pos >= 0)
     {
-        wxString value=GetListText(lstVariables, pos, 1);
-        cbVarname->SetValue(lstVariables->GetItemText(pos));
+        wxString value=lstVariables->GetText(pos, 1);
+        cbVarname->SetValue(lstVariables->GetText(pos));
         wxNotifyEvent nullev;
         OnVarnameSelChange(nullev);
 
@@ -295,7 +296,7 @@ void dlgUser::OnVarAdd(wxNotifyEvent &ev)
 
 void dlgUser::OnVarRemove(wxNotifyEvent &ev)
 {
-    lstVariables->DeleteItem(GetListSelected(lstVariables));
+    lstVariables->DeleteCurrentItem();
     OnChange(ev);
 }
 
@@ -365,8 +366,8 @@ wxString dlgUser::GetSql()
         // check for changed or added vars
         for (pos=0 ; pos < cnt ; pos++)
         {
-            wxString newVar=lstVariables->GetItemText(pos);
-            wxString newVal=GetListText(lstVariables, pos, 1);
+            wxString newVar=lstVariables->GetText(pos);
+            wxString newVal=lstVariables->GetText(pos, 1);
 
             wxString oldVal;
 
@@ -453,8 +454,8 @@ wxString dlgUser::GetSql()
         for (pos=0 ; pos < cnt ; pos++)
         {
             sql += wxT("ALTER USER ") + qtIdent(name) 
-                +  wxT(" SET ") + lstVariables->GetItemText(pos)
-                +  wxT("=") + GetListText(lstVariables, pos, 1)
+                +  wxT(" SET ") + lstVariables->GetText(pos)
+                +  wxT("=") + lstVariables->GetText(pos, 1)
                 +  wxT(";\n");
         }
 

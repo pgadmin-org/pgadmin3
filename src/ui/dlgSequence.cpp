@@ -24,14 +24,14 @@
 #include "images/sequence.xpm"
 
 
-#define txtIncrement        CTRL("txtIncrement",    wxTextCtrl)
-#define cbOwner             CTRL("cbOwner",         wxComboBox)
-#define txtMin              CTRL("txtMin",          wxTextCtrl)
-#define txtMax              CTRL("txtMax",          wxTextCtrl)
-#define txtStart            CTRL("txtStart",        wxTextCtrl)
-#define txtCache            CTRL("txtCache",        wxTextCtrl)
-#define chkCycled           CTRL("chkCycled",       wxCheckBox)
-#define stStart             CTRL("stStart",         wxStaticText)
+#define txtIncrement        CTRL_TEXT("txtIncrement")
+#define cbOwner             CTRL_COMBOBOX("cbOwner")
+#define txtMin              CTRL_TEXT("txtMin")
+#define txtMax              CTRL_TEXT("txtMax")
+#define txtStart            CTRL_TEXT("txtStart")
+#define txtCache            CTRL_TEXT("txtCache")
+#define chkCycled           CTRL_CHECKBOX("chkCycled")
+#define stStart             CTRL_STATIC("stStart")
 
 // pointer to controls
 

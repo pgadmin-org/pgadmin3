@@ -27,13 +27,13 @@
 
 
 // pointer to controls
-#define chkRow          CTRL("chkRow",          wxCheckBox)
-#define cbFunction      CTRL("cbFunction",      wxComboBox)
-#define txtArguments    CTRL("txtArguments",    wxTextCtrl)
-#define rdbFires        CTRL("rdbFires",        wxRadioBox)
-#define chkInsert       CTRL("chkInsert",       wxCheckBox)
-#define chkUpdate       CTRL("chkUpdate",       wxCheckBox)
-#define chkDelete       CTRL("chkDelete",       wxCheckBox)
+#define chkRow          CTRL_CHECKBOX("chkRow")
+#define cbFunction      CTRL_COMBOBOX("cbFunction")
+#define txtArguments    CTRL_TEXT("txtArguments")
+#define rdbFires        CTRL_RADIOBOX("rdbFires")
+#define chkInsert       CTRL_CHECKBOX("chkInsert")
+#define chkUpdate       CTRL_CHECKBOX("chkUpdate")
+#define chkDelete       CTRL_CHECKBOX("chkDelete")
 
 
 BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)

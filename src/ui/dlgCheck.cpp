@@ -21,10 +21,10 @@
 #include "dlgCheck.h"
 
 
-#define chkDeferrable   CTRL("chkDeferrable",   wxCheckBox)
-#define chkDeferred     CTRL("chkDeferred",     wxCheckBox)
-#define stDeferred      CTRL("stDeferred",      wxStaticText)
-#define txtWhere        CTRL("txtWhere",        wxTextCtrl)
+#define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
+#define chkDeferred     CTRL_CHECKBOX("chkDeferred")
+#define stDeferred      CTRL_STATIC("stDeferred")
+#define txtWhere        CTRL_TEXT("txtWhere")
 
 
 BEGIN_EVENT_TABLE(dlgCheck, dlgProperty)

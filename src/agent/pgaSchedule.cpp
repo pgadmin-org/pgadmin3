@@ -66,7 +66,7 @@ bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 }
 
 
-void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -76,26 +76,25 @@ void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl 
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Enabled"), GetEnabled());
-        InsertListItem(properties, pos++, _("Type"), GetKind());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Enabled"), GetEnabled());
+        properties->AppendItem(_("Type"), GetKind());
         if (kindChar == 'n' || kindChar == 's')
-            InsertListItem(properties, pos++, _("Scheduled"), GetSchedule());
+            properties->AppendItem(_("Scheduled"), GetSchedule());
         if (kindChar != 's')
         {
             wxTimeSpan ts=intervalList.Item(0);
             if (ts.GetDays() > 0)
-                InsertListItem(properties, pos++, _("Interval"), ts.Format(wxT("%D:%H:%M:%S")));
+                properties->AppendItem(_("Interval"), ts.Format(wxT("%D:%H:%M:%S")));
             else
-                InsertListItem(properties, pos++, _("Interval"), ts.Format(wxT("%H:%M:%S")));
+                properties->AppendItem(_("Interval"), ts.Format(wxT("%H:%M:%S")));
         }
-        InsertListItem(properties, pos++, _("Start date"), GetStart());
-        InsertListItem(properties, pos++, _("End date"), GetEnd());
+        properties->AppendItem(_("Start date"), GetStart());
+        properties->AppendItem(_("End date"), GetEnd());
 
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

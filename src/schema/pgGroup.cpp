@@ -52,7 +52,7 @@ wxString pgGroup::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -90,12 +90,11 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         wxLogInfo(wxT("Displaying properties for Group ") + GetIdentifier());
 
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("Group ID"), GetGroupId());
-        InsertListItem(properties, pos++, _("Member count"), GetMemberCount());
-        InsertListItem(properties, pos++, _("Members"), GetMembers());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("Group ID"), GetGroupId());
+        properties->AppendItem(_("Member count"), GetMemberCount());
+        properties->AppendItem(_("Members"), GetMembers());
     }
 }
 

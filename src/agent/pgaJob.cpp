@@ -53,7 +53,7 @@ bool pgaJob::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 }
 
 
-void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -71,21 +71,20 @@ void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Enabled"), GetEnabled());
-        InsertListItem(properties, pos++, _("Job class"), GetJobclass());
-        InsertListItem(properties, pos++, _("Created"), GetCreated());
-        InsertListItem(properties, pos++, _("Changed"), GetChanged());
-        InsertListItem(properties, pos++, _("Next run"), GetNextrun());
-        InsertListItem(properties, pos++, _("Last run"), GetLastrun());
-        InsertListItem(properties, pos++, _("Last result"), GetLastresult());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Enabled"), GetEnabled());
+        properties->AppendItem(_("Job class"), GetJobclass());
+        properties->AppendItem(_("Created"), GetCreated());
+        properties->AppendItem(_("Changed"), GetChanged());
+        properties->AppendItem(_("Next run"), GetNextrun());
+        properties->AppendItem(_("Last run"), GetLastrun());
+        properties->AppendItem(_("Last result"), GetLastresult());
         if (GetAgentId())
-            InsertListItem(properties, pos++, _("Running at"), GetAgentId());
+            properties->AppendItem(_("Running at"), GetAgentId());
 
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

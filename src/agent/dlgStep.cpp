@@ -23,12 +23,12 @@
 
 
 // pointer to controls
-#define chkEnabled          CTRL("chkEnabled", wxCheckBox)
-#define cbDatabase          CTRL("cbDatabase", wxComboBox)
-#define rbxKind             CTRL("rbxKind", wxRadioBox)
-#define rbxOnError          CTRL("rbxOnError", wxRadioBox)
-#define pnlDefinition       CTRL("pnlDefinition", wxPanel)
-#define txtSqlBox           CTRL("txtSqlBox", wxTextCtrl)
+#define chkEnabled          CTRL_CHECKBOX("chkEnabled")
+#define cbDatabase          CTRL_COMBOBOX("cbDatabase")
+#define rbxKind             CTRL_RADIOBOX("rbxKind")
+#define rbxOnError          CTRL_RADIOBOX("rbxOnError")
+#define pnlDefinition       CTRL_PANEL("pnlDefinition")
+#define txtSqlBox           CTRL_TEXT("txtSqlBox")
 
 #define CTL_SQLBOX  188
 
@@ -57,7 +57,7 @@ dlgStep::dlgStep(frmMain *frame, pgaStep *node, pgaJob *j)
 
     sqlBox=new ctlSQLBox(pnlDefinition, CTL_SQLBOX, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
 
-    wxWindow *placeholder=CTRL("txtSqlBox", wxTextCtrl);
+    wxWindow *placeholder=CTRL_TEXT("txtSqlBox");
     wxSizer *sizer=placeholder->GetContainingSizer();
     sizer->Add(sqlBox, 1, wxRIGHT|wxGROW, 5);
     sizer->Remove(placeholder);

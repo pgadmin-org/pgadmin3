@@ -26,21 +26,27 @@
 
 
 // pointer to controls
-#define chkEnabled          CTRL("chkEnabled", wxCheckBox)
-#define cbKind              CTRL("cbKind", wxComboBox)
-#define timInterval         CTRL("timInterval", wxTimeSpinCtrl)
-#define calStart            CTRL("calStart", wxCalendarBox)
-#define timStart            CTRL("timStart", wxTimeSpinCtrl)
-#define calEnd              CTRL("calEnd", wxCalendarBox)
-#define timEnd              CTRL("timEnd", wxTimeSpinCtrl)
-#define calSchedule         CTRL("calSchedule", wxCalendarBox)
-#define timSchedule         CTRL("timSchedule", wxTimeSpinCtrl)
+#define chkEnabled          CTRL_CHECKBOX("chkEnabled")
+#define cbKind              CTRL_COMBOBOX("cbKind")
+#define timInterval         CTRL_TIME("timInterval")
+#define calStart            CTRL_CALENDAR("calStart")
+#define timStart            CTRL_TIME("timStart")
+#define calEnd              CTRL_CALENDAR("calEnd")
+#define timEnd              CTRL_TIME("timEnd")
+#define calSchedule         CTRL_CALENDAR("calSchedule")
+#define timSchedule         CTRL_TIME("timSchedule")
+#define pnlSchedule         CTRL_PANEL("pnlSchedule")
+#define lstIntervals        CTRL_TIME("lstIntervals")
+#define timOffset           CTRL_TIME("timOffset")
+#define btnAddInterval      CTRL_BUTTON("btnAddInterval")
+#define btnChangeInterval   CTRL_BUTTON("btnChangeInterval")
+#define btnRemoveInterval   CTRL_BUTTON("btnRemoveInterval")
 
 
 BEGIN_EVENT_TABLE(dlgSchedule, dlgOidProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgSchedule::OnChange)
     EVT_CHECKBOX(XRCID("chkEnabled"),               dlgSchedule::OnChange)
-    EVT_COMBOBOX(XRCID("cbKind"),                   dlgSchedule::OnChange)
+    EVT_COMBOBOX(XRCID("cbKind"),                   dlgSchedule::OnChangeKind)
     EVT_SPIN(XRCID("timInterval"),                  dlgSchedule::OnChange)
     EVT_CALENDAR_SEL_CHANGED(XRCID("calStart"),     dlgSchedule::OnChange)
     EVT_SPIN(XRCID("timStart"),                     dlgSchedule::OnChange)
@@ -49,6 +55,10 @@ BEGIN_EVENT_TABLE(dlgSchedule, dlgOidProperty)
     EVT_CALENDAR_SEL_CHANGED(XRCID("calSchedule"),  dlgSchedule::OnChange)
     EVT_SPIN(XRCID("timSchedule"),                  dlgSchedule::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgSchedule::OnChange)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstIntervals"),   dlgSchedule::OnSelChangeInterval)
+    EVT_BUTTON(XRCID("btnAddInterval"),             dlgSchedule::OnAddInterval)
+    EVT_BUTTON(XRCID("btnChangeInterval"),          dlgSchedule::OnChangeInterval)
+    EVT_BUTTON(XRCID("btnRemoveInterval"),          dlgSchedule::OnRemoveInterval)
 END_EVENT_TABLE();
 
 
@@ -66,6 +76,9 @@ dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
 
     timInterval->SetMax(365*24*60*60 -1, true);
     txtOID->Disable();
+
+    btnChangeInterval->Disable();
+    btnRemoveInterval->Disable();
 }
 
 
@@ -98,6 +111,8 @@ int dlgSchedule::Go(bool modal)
         timInterval->SetValue(schedule->GetIntervalList().Item(0));
 
         txtComment->SetValue(schedule->GetComment());
+        wxNotifyEvent ev;
+        OnChangeKind(ev);
     }
     else
     {
@@ -114,6 +129,45 @@ pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 
     pgObject *obj=pgaSchedule::ReadObjects(job, 0, wxT("   AND sc.oid=") + NumToStr(oid) + wxT("\n"));
     return obj;
+}
+
+
+void dlgSchedule::OnChangeKind(wxNotifyEvent &ev)
+{
+    switch (cbKind->GetSelection())
+    {
+        case 0: // repeat
+            timInterval->Enable();
+            pnlSchedule->Disable();
+            break;
+        case 1: // single
+            timInterval->Disable();
+            pnlSchedule->Disable();
+            break;
+        case 2: // day
+            timOffset->SetMax(24*60*60-1);
+            timInterval->Disable();
+            pnlSchedule->Enable();
+            break;
+        case 3: // week
+            timOffset->SetMax(7*24*60*60-1, true);
+            timInterval->Disable();
+            pnlSchedule->Enable();
+            break;
+        case 4: // month
+            timOffset->SetMax(31*24*60*60-1, true);
+            timInterval->Disable();
+            pnlSchedule->Enable();
+            break;
+        case 5: // year
+            timOffset->SetMax(365*24*60*60-1, true);
+            timInterval->Disable();
+            pnlSchedule->Enable();
+            break;
+        default:
+            break;
+    }
+    OnChange(ev);
 }
 
 
@@ -139,6 +193,30 @@ void dlgSchedule::OnChange(wxNotifyEvent &ev)
 }
 
 
+void dlgSchedule::OnSelChangeInterval(wxNotifyEvent &ev)
+{
+    btnChangeInterval->Enable();
+    btnRemoveInterval->Enable();
+}
+
+
+void dlgSchedule::OnAddInterval(wxNotifyEvent &ev)
+{
+}
+
+
+void dlgSchedule::OnChangeInterval(wxNotifyEvent &ev)
+{
+}
+
+
+void dlgSchedule::OnRemoveInterval(wxNotifyEvent &ev)
+{
+    btnChangeInterval->Disable();
+    btnRemoveInterval->Disable();
+}
+
+
 wxString dlgSchedule::GetComment()
 {
     return txtComment->GetValue();
@@ -152,18 +230,20 @@ wxString dlgSchedule::GetInsertSql()
     {
         wxString name=GetName();
         wxString kind = wxT("nsdwmy")[cbKind->GetSelection()];
-        wxString jstjoboid;
+        wxString jscjoboid, list=wxT("NULL");
         if (jobOid)
-            jstjoboid = NumToStr(jobOid);
+            jscjoboid = NumToStr(jobOid);
         else
-            jstjoboid = wxT("<Oid>");
-#if 0
-
-        sql = wxT("INSERT INTO pgXXXXXXXXXXXa_jobschedule (jstjoboid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdboid)\n")
-              wxT("SELECT ") + jstjoboid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
+            jscjoboid = wxT("<Oid>");
+        sql = wxT("INSERT INTO pga_jobschedule (jscjoboid, jscname, jscdesc, jscenabled, jsckind, ")
+              wxT("jscstart, jscend, jscschedule, jsclist)\n")
+              wxT("VALUES(") + jscjoboid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
                 + BoolToStr(chkEnabled->GetValue()) + wxT(", ") + qtString(kind) + wxT(", ") 
-                + qtString(onerror) + wxT(", ") + qtString(sqlBox->GetText()) + wxT(", ") + db;
-#endif
+                + DateToAnsiStr(calStart->GetDate() + timStart->GetValue()) + wxT(", ")
+                + DateToAnsiStr(calEnd->GetDate() + timEnd->GetValue()) + wxT(", ")
+                + DateToAnsiStr(calSchedule->GetDate() + timSchedule->GetValue()) + wxT(", ")
+                + list + wxT(")");
+
     }
     return sql;
 }

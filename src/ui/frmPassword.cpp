@@ -22,6 +22,11 @@
 // Icons
 #include "images/pgAdmin3.xpm"
 
+#define txtCurrent      CTRL_TEXT("txtCurrent")
+#define txtNew          CTRL_TEXT("txtNew")
+#define txtConfirm      CTRL_TEXT("txtConfirm")
+
+
 BEGIN_EVENT_TABLE(frmPassword, wxDialog)
     EVT_BUTTON (XRCID("btnHelp"),     frmPassword::OnHelp)
     EVT_BUTTON (XRCID("btnOK"),       frmPassword::OnOK)
@@ -57,19 +62,19 @@ void frmPassword::OnOK(wxCommandEvent& event)
 {
 
     // Is the old password right?
-    if (XRCCTRL(*this, "txtCurrent", wxTextCtrl)->GetValue() != server->GetPassword()) {
+    if (txtCurrent->GetValue() != server->GetPassword()) {
         wxLogError(__("Incorrect password!"));
         return;
     }
 
     // Did we confirm the password OK?
-    if (XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue() != XRCCTRL(*this, "txtConfirm", wxTextCtrl)->GetValue()) {
+    if (txtNew->GetValue() != txtConfirm->GetValue()) {
         wxLogError(__("Passwords do not match!"));
         return;
     }
 
     // Set the new password
-    if (!server->SetPassword(XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue()))
+    if (!server->SetPassword(txtNew->GetValue()))
     {
         wxLogError(__("The password could not be changed!"));
         return;

@@ -101,35 +101,34 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("Argument count"), GetArgCount());
-        InsertListItem(properties, pos++, _("Arguments"), GetArgTypes());
-        InsertListItem(properties, pos++, _("Return type"), GetReturnType());
-        InsertListItem(properties, pos++, _("Language"), GetLanguage());
-        InsertListItem(properties, pos++, _("Returns a set?"), GetReturnAsSet());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Owner"), GetOwner());
+        properties->AppendItem(_("Argument count"), GetArgCount());
+        properties->AppendItem(_("Arguments"), GetArgTypes());
+        properties->AppendItem(_("Return type"), GetReturnType());
+        properties->AppendItem(_("Language"), GetLanguage());
+        properties->AppendItem(_("Returns a set?"), GetReturnAsSet());
         if (GetLanguage().IsSameAs(wxT("C"), false))
         {
-            InsertListItem(properties, pos++, _("Object file"), GetBin());
-            InsertListItem(properties, pos++, _("Link symbol"), GetSource());
+            properties->AppendItem(_("Object file"), GetBin());
+            properties->AppendItem(_("Link symbol"), GetSource());
         }
         else
-            InsertListItem(properties, pos++, _("Source"), GetSource());
+            properties->AppendItem(_("Source"), GetSource());
 
-        InsertListItem(properties, pos++, _("Volatility"), GetVolatility());
-        InsertListItem(properties, pos++, _("Security of definer?"), GetSecureDefiner());
-        InsertListItem(properties, pos++, _("Strict?"), GetIsStrict());
-        InsertListItem(properties, pos++, _("ACL"), GetAcl());
-        InsertListItem(properties, pos++, _("System function?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("Volatility"), GetVolatility());
+        properties->AppendItem(_("Security of definer?"), GetSecureDefiner());
+        properties->AppendItem(_("Strict?"), GetIsStrict());
+        properties->AppendItem(_("ACL"), GetAcl());
+        properties->AppendItem(_("System function?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

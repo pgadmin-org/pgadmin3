@@ -29,7 +29,7 @@ public:
     ~pgaAgent();
 
     int GetIcon() { return PGAICON_AGENT; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlListView *statistics=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgDatabase *database, wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     wxMenu *GetNewMenu();

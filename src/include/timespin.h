@@ -34,7 +34,7 @@ public:
                    long style = wxWANTS_CHARS, const wxString& name=wxT("wxTimeSpinCtrl"));
 
     bool Destroy();
-    bool Enable(bool enable);
+    bool Enable(bool enable=true);
 
     void SetMax(long seconds, bool useDay=false);
     bool SetValue(const wxTimeSpan& span);

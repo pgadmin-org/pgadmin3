@@ -23,17 +23,17 @@
 
 
 // pointer to controls
-#define cbOwner         CTRL("cbOwner", wxComboBox)
-#define cbEncoding      CTRL("cbEncoding", wxComboBox)
-#define cbTemplate      CTRL("cbTemplate", wxComboBox)
-#define txtPath         CTRL("txtPath", wxTextCtrl)
+#define cbOwner         CTRL_COMBOBOX("cbOwner")
+#define cbEncoding      CTRL_COMBOBOX("cbEncoding")
+#define cbTemplate      CTRL_COMBOBOX("cbTemplate")
+#define txtPath         CTRL_TEXT("txtPath")
 
-#define lstVariables    CTRL("lstVariables", wxListCtrl)
-#define cbVarname       CTRL("cbVarname", wxComboBox)
-#define txtValue        CTRL("txtValue", wxTextCtrl)
-#define chkValue        CTRL("chkValue", wxCheckBox)
-#define btnAdd          CTRL("btnAdd", wxButton)
-#define btnRemove       CTRL("btnRemove", wxButton)
+#define lstVariables    CTRL_LISTVIEW("lstVariables")
+#define cbVarname       CTRL_COMBOBOX("cbVarname")
+#define txtValue        CTRL_TEXT("txtValue")
+#define chkValue        CTRL_CHECKBOX("chkValue")
+#define btnAdd          CTRL_BUTTON("btnAdd")
+#define btnRemove       CTRL_BUTTON("btnRemove")
 
 
 
@@ -227,11 +227,11 @@ void dlgDatabase::OnVarnameSelChange(wxNotifyEvent &ev)
 
 void dlgDatabase::OnVarSelChange(wxListEvent &ev)
 {
-    long pos=GetListSelected(lstVariables);
+    long pos=lstVariables->GetSelection();
     if (pos >= 0)
     {
-        wxString value=GetListText(lstVariables, pos, 1);
-        cbVarname->SetValue(lstVariables->GetItemText(pos));
+        wxString value=lstVariables->GetText(pos, 1);
+        cbVarname->SetValue(lstVariables->GetText(pos));
         wxNotifyEvent nullev;
         OnVarnameSelChange(nullev);
 
@@ -269,7 +269,7 @@ void dlgDatabase::OnVarAdd(wxNotifyEvent &ev)
 
 void dlgDatabase::OnVarRemove(wxNotifyEvent &ev)
 {
-    lstVariables->DeleteItem(lstVariables->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+    lstVariables->DeleteCurrentItem();
     OnChange(ev);
 }
 
@@ -295,8 +295,8 @@ wxString dlgDatabase::GetSql()
         // check for changed or added vars
         for (pos=0 ; pos < cnt ; pos++)
         {
-            wxString newVar=lstVariables->GetItemText(pos);
-            wxString newVal=GetListText(lstVariables, pos, 1);
+            wxString newVar=lstVariables->GetText(pos);
+            wxString newVal=lstVariables->GetText(pos, 1);
 
             wxString oldVal;
 

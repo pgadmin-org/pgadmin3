@@ -48,7 +48,25 @@ class sysSettings;
 extern sysSettings *settings;
 
 // making life easier
-#define CTRL(id, typ) (XRCCTRL(*this, id, typ))
+#define CTRL(id, typ)           (XRCCTRL(*this, id, typ))
+
+#define CTRL_STATIC(id)         (XRCCTRL(*this, id, wxStaticText))
+#define CTRL_STATICBOX(id)      (XRCCTRL(*this, id, wxStaticBox))
+#define CTRL_TEXT(id)           (XRCCTRL(*this, id, wxTextCtrl))
+#define CTRL_LISTBOX(id)        (XRCCTRL(*this, id, wxListBox))
+#define CTRL_LISTCTRL(id)       (XRCCTRL(*this, id, wxListCtrl))
+#define CTRL_LISTVIEW(id)       ((ctlListView*)(XRCCTRL(*this, id, wxListCtrl)))
+#define CTRL_COMBOBOX(id)       (XRCCTRL(*this, id, wxComboBox))
+#define CTRL_CHECKBOX(id)       (XRCCTRL(*this, id, wxCheckBox))
+#define CTRL_RADIOBOX(id)       (XRCCTRL(*this, id, wxRadioBox))
+#define CTRL_BUTTON(id)         (XRCCTRL(*this, id, wxButton))
+#define CTRL_CALENDAR(id)       (XRCCTRL(*this, id, wxCalendarBox))
+#define CTRL_TIME(id)           (XRCCTRL(*this, id, wxTimeSpinCtrl))
+#define CTRL_PANEL(id)          (XRCCTRL(*this, id, wxPanel))
+#define CTRL_SQLBOX(id)         (XRCCTRL(*this, id, ctlSQLBox))
+#define CTRL_RADIOBUTTON(id)    (XRCCTRL(*this, id, wxRadioButton))
+#define CTRL_NOTEBOOK(id)       (XRCCTRL(*this, id, wxNotebook))
+#define CTRL_SPIN(id)           (XRCCTRL(*this, id, wxSpinCtrl))
 
 // Conversions
 wxString BoolToStr(bool value);         // english; used for config values
@@ -86,10 +104,6 @@ bool IsValidIdentifier(wxString ident);
 // string build helper
 void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &what);
 
-// easier getting of text
-class wxListCtrl;
-wxString GetListText(wxListCtrl *lst, long row, long col);
-long GetListSelected(wxListCtrl *lst);
 
 // splitting of strings, obeying quotes
 class queryTokenizer : public wxStringTokenizer

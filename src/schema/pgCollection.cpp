@@ -74,7 +74,7 @@ pgCollection::~pgCollection()
 }
 
 
-void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, wxListCtrl *properties)
+void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, ctlListView *properties)
 {
     if (properties)
     {
@@ -202,7 +202,7 @@ pgObject *pgCollection::FindChild(wxTreeCtrl *browser, int index)
 
 
 
-void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(GetId(), FALSE) == 0)
     {

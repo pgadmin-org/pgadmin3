@@ -25,9 +25,9 @@
 
 
 // pointer to controls
-#define chkTrusted      CTRL("chkTrusted", wxCheckBox)
-#define cbHandler       CTRL("cbHandler", wxComboBox)
-#define cbValidator     CTRL("cbValidator", wxComboBox)
+#define chkTrusted      CTRL_CHECKBOX("chkTrusted")
+#define cbHandler       CTRL_COMBOBOX("cbHandler")
+#define cbValidator     CTRL_COMBOBOX("cbValidator")
 
 
 BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)

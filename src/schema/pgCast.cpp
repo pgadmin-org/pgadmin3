@@ -53,23 +53,22 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
-void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Source type"), GetSourceType());
-        InsertListItem(properties, pos++, _("Target type"), GetTargetType());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Source type"), GetSourceType());
+        properties->AppendItem(_("Target type"), GetTargetType());
         if (GetCastFunction().IsNull())
-            InsertListItem(properties, pos++, _("Function"), _("(binary compatible)"));
+            properties->AppendItem(_("Function"), _("(binary compatible)"));
         else
-        InsertListItem(properties, pos++, _("Function"), GetCastFunction() + wxT("(") + GetSourceType() + wxT(")"));
-        InsertListItem(properties, pos++, _("Context"), GetCastContext());
-        InsertListItem(properties, pos++, _("System cast?"), GetSystemObject());
+        properties->AppendItem(_("Function"), GetCastFunction() + wxT("(") + GetSourceType() + wxT(")"));
+        properties->AppendItem(_("Context"), GetCastContext());
+        properties->AppendItem(_("System cast?"), GetSystemObject());
     }
 }
 

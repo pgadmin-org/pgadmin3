@@ -29,12 +29,12 @@
 
 
 // pointer to controls
-#define rbxEvent        CTRL("rbxEvent", wxRadioBox)
-#define chkDoInstead    CTRL("chkDoInstead", wxCheckBox)
-#define txtCondition    CTRL("txtCondition", wxTextCtrl)
+#define rbxEvent        CTRL_RADIOBOX("rbxEvent")
+#define chkDoInstead    CTRL_CHECKBOX("chkDoInstead")
+#define txtCondition    CTRL_TEXT("txtCondition")
 
-#define pnlDefinition   CTRL("pnlDefinition", wxPanel)
-#define txtSqlBox       CTRL("txtSqlBox", ctlSQLBox)
+#define pnlDefinition   CTRL_PANEL("pnlDefinition")
+#define txtSqlBox       CTRL_SQLBOX("txtSqlBox")
 
 
 BEGIN_EVENT_TABLE(dlgRule, dlgProperty)

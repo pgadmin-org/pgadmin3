@@ -51,29 +51,28 @@ wxString pgRule::GetSql(wxTreeCtrl *browser)
 }
 
 
-void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
         wxString def=GetDefinition().Left(250);
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Event"), GetEvent());
-        InsertListItem(properties, pos++, _("Condition"), GetCondition());
-        InsertListItem(properties, pos++, _("Do instead?"), GetDoInstead());
-        InsertListItem(properties, pos++, _("Action"), GetAction().Left(250));
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Event"), GetEvent());
+        properties->AppendItem(_("Condition"), GetCondition());
+        properties->AppendItem(_("Do instead?"), GetDoInstead());
+        properties->AppendItem(_("Action"), GetAction().Left(250));
         if (def.IsEmpty())
-            InsertListItem(properties, pos++, _("Definition"), wxT("NOTHING"));
+            properties->AppendItem(_("Definition"), wxT("NOTHING"));
         else
         {
             def.Replace(wxT("\n"), wxT(" "));
-            InsertListItem(properties, pos++, _("Definition"), def);
+            properties->AppendItem(_("Definition"), def);
         }
-        InsertListItem(properties, pos++, _("System rule?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("System rule?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

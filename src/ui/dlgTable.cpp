@@ -35,22 +35,22 @@
 // Images
 #include "images/table.xpm"
 
-#define cbOwner         CTRL("cbOwner",         wxComboBox)
-#define stHasOids       CTRL("stHasOids",       wxStaticText)
-#define chkHasOids      CTRL("chkHasOids",      wxCheckBox)
-#define lbTables        CTRL("lbTables",        wxListBox)
-#define btnAddTable     CTRL("btnAddTable",     wxButton)
-#define btnRemoveTable  CTRL("btnRemoveTable",  wxButton)
-#define cbTables        CTRL("cbTables",        wxComboBox)
+#define cbOwner         CTRL_COMBOBOX("cbOwner")
+#define stHasOids       CTRL_STATIC("stHasOids")
+#define chkHasOids      CTRL_CHECKBOX("chkHasOids")
+#define lbTables        CTRL_LISTBOX("lbTables")
+#define btnAddTable     CTRL_BUTTON("btnAddTable")
+#define btnRemoveTable  CTRL_BUTTON("btnRemoveTable")
+#define cbTables        CTRL_COMBOBOX("cbTables")
 
-#define btnAddCol       CTRL("btnAddCol"        wxButton)
-#define btnChangeCol    CTRL("btnChangeCol",     wxButton)
-#define btnRemoveCol    CTRL("btnRemoveCol",    wxButton)
+#define btnAddCol       CTRL_BUTTON("btnAddCol")
+#define btnChangeCol    CTRL_BUTTON("btnChangeCol")
+#define btnRemoveCol    CTRL_BUTTON("btnRemoveCol")
 
-#define lstConstraints  CTRL("lstConstraints",  wxListCtrl)
-#define btnAddConstr    CTRL("btnAddConstr"     wxButton)
-#define cbConstrType    CTRL("cbConstrType",    wxComboBox)
-#define btnRemoveConstr CTRL("btnRemoveConstr", wxButton)
+#define lstConstraints  CTRL_LISTVIEW("lstConstraints")
+#define btnAddConstr    CTRL_BUTTON("btnAddConstr")
+#define cbConstrType    CTRL_COMBOBOX("cbConstrType")
+#define btnRemoveConstr CTRL_BUTTON("btnRemoveConstr")
 
 
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
@@ -83,9 +83,9 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
     btnRemoveTable->Disable();
 
     CreateListColumns(lstColumns, _("Column name"), _("Definition"), 90);
-    lstColumns->InsertColumn(2, wxT("Inherited from table"), wxLIST_FORMAT_LEFT, 0);
-    lstColumns->InsertColumn(3, wxT("Column definition"), wxLIST_FORMAT_LEFT, 0);
-    lstColumns->InsertColumn(4, wxT("Column"), wxLIST_FORMAT_LEFT, 0);
+    lstColumns->AddColumn(wxT("Inherited from table"), 0);
+    lstColumns->AddColumn(wxT("Column definition"), 0);
+    lstColumns->AddColumn(wxT("Column"), 0);
 
     CreateListColumns(lstConstraints, _("Constraint name"), _("Definition"), 90);
 }
@@ -272,7 +272,7 @@ int dlgTable::Go(bool modal)
 
 
 
-wxString dlgTable::GetItemConstraintType(wxListCtrl *list, long pos)
+wxString dlgTable::GetItemConstraintType(ctlListView *list, long pos)
 {
     wxString con;
     wxListItem item;
@@ -325,10 +325,10 @@ wxString dlgTable::GetSql()
 
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
-            definition = GetListText(lstColumns, pos, 3);
+            definition = lstColumns->GetText(pos, 3);
             if (definition.IsEmpty())
             {
-                definition=qtIdent(lstColumns->GetItemText(pos)) + wxT(" ") + GetListText(lstColumns, pos, 1);
+                definition=qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
                 index=tmpDef.Index(definition);
                 if (index < 0)
                     sql += wxT("ALTER TABLE ") + tabname
@@ -338,7 +338,7 @@ wxString dlgTable::GetSql()
             {
                 sql += definition;
 
-                pgColumn *column=(pgColumn*) StrToLong(GetListText(lstColumns, pos, 4));
+                pgColumn *column=(pgColumn*) StrToLong(lstColumns->GetText(pos, 4));
                 index=tmpDef.Index(column->GetQuotedIdentifier() 
                             + wxT(" ") + column->GetDefinition());
             }
@@ -366,7 +366,7 @@ wxString dlgTable::GetSql()
             wxString conname= qtIdent(lstConstraints->GetItemText(pos));
             definition = conname;
             definition += wxT(" ") + GetItemConstraintType(lstConstraints, pos) 
-                        + wxT(" ") + GetListText(lstConstraints, pos, 1);
+                        + wxT(" ") + lstConstraints->GetText(pos, 1);
             index=tmpDef.Index(definition);
             if (index >= 0)
                 tmpDef.RemoveAt(index);
@@ -406,7 +406,7 @@ wxString dlgTable::GetSql()
         bool needComma=false;
         for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
         {
-            if (GetListText(lstColumns, pos, 2).IsEmpty())
+            if (lstColumns->GetText(pos, 2).IsEmpty())
             {
                 // standard definition, not inherited
                 if (needComma)
@@ -414,8 +414,8 @@ wxString dlgTable::GetSql()
                 else
                     needComma=true;
 
-                wxString name=lstColumns->GetItemText(pos);
-                wxString definition = GetListText(lstColumns, pos, 1);
+                wxString name=lstColumns->GetText(pos);
+                wxString definition = lstColumns->GetText(pos, 1);
 
                 sql += wxT("\n   ") + qtIdent(name)
                     + wxT(" ") + definition;
@@ -425,7 +425,7 @@ wxString dlgTable::GetSql()
         for (pos=0 ; pos < lstConstraints->GetItemCount() ; pos++)
         {
             wxString name=lstConstraints->GetItemText(pos);
-            wxString definition = GetListText(lstConstraints, pos, 1);
+            wxString definition = lstConstraints->GetText(pos, 1);
 
             if (needComma)
                 sql += wxT(", ");
@@ -568,7 +568,7 @@ void dlgTable::OnRemoveTable(wxNotifyEvent &ev)
         size_t row=lstColumns->GetItemCount();
         while (row--)
         {
-            if (tabname == GetListText(lstColumns, row, 2))
+            if (tabname == lstColumns->GetText(row, 2))
                 lstColumns->DeleteItem(row);
         }
         OnChange(ev);
@@ -585,8 +585,8 @@ void dlgTable::OnSelChangeTable(wxListEvent &ev)
 
 void dlgTable::OnChangeCol(wxNotifyEvent &ev)
 {
-    long pos=GetListSelected(lstColumns);
-    pgColumn *column=(pgColumn*) StrToLong(GetListText(lstColumns, pos, 4));
+    long pos=lstColumns->GetSelection();
+    pgColumn *column=(pgColumn*) StrToLong(lstColumns->GetText(pos, 4));
 
     dlgColumn col(mainForm, column, table);
     col.CenterOnParent();
@@ -616,7 +616,7 @@ void dlgTable::OnAddCol(wxNotifyEvent &ev)
 
 void dlgTable::OnRemoveCol(wxNotifyEvent &ev)
 {
-    lstColumns->DeleteItem(GetListSelected(lstColumns));
+    lstColumns->DeleteCurrentItem();
 
     btnRemoveCol->Disable();
 
@@ -627,11 +627,11 @@ void dlgTable::OnRemoveCol(wxNotifyEvent &ev)
 
 void dlgTable::OnSelChangeCol(wxListEvent &ev)
 {
-    long pos=GetListSelected(lstColumns);
-    wxString inheritedFromTable=GetListText(lstColumns, pos, 2);
+    long pos=lstColumns->GetSelection();
+    wxString inheritedFromTable=lstColumns->GetText(pos, 2);
     
     btnRemoveCol->Enable(inheritedFromTable.IsEmpty());
-    btnChangeCol->Enable(table != 0 && !GetListText(lstColumns, pos, 4).IsEmpty());
+    btnChangeCol->Enable(table != 0 && !lstColumns->GetText(pos, 4).IsEmpty());
 }
 
 
@@ -695,7 +695,7 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
 
 void dlgTable::OnRemoveConstr(wxNotifyEvent &ev)
 {
-    int pos=GetListSelected(lstConstraints);
+    int pos=lstConstraints->GetSelection();
     if (pos < 0)
         return;
 

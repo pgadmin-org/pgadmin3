@@ -22,7 +22,7 @@ class dlgIndexBase : public dlgCollistProperty
 {
 public:
     dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *index, pgTable *parentNode);
-    dlgIndexBase(frmMain *frame, const wxString &resName, wxListCtrl *colList);
+    dlgIndexBase(frmMain *frame, const wxString &resName, ctlListView *colList);
     pgObject *GetObject();
     wxString GetColumns();
     int Go(bool modal);

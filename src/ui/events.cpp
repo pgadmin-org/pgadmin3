@@ -584,10 +584,10 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 {
     properties->ClearAll();
-    properties->InsertColumn(0, _("Properties"), wxLIST_FORMAT_LEFT, 500);
+    properties->AddColumn(_("Properties"));
     properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
     statistics->ClearAll();
-    statistics->InsertColumn(0, _("Statistics"), wxLIST_FORMAT_LEFT, 500);
+    statistics->AddColumn(_("Statistics"));
     statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
     sqlPane->Clear();
 
@@ -617,7 +617,7 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 }
 
 
-void frmMain::setDisplay(pgObject *data, wxListCtrl *props, wxListCtrl *stats, ctlSQLBox *sqlbox)
+void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlListView *stats, ctlSQLBox *sqlbox)
 {
     data->RemoveDummyChild(browser);
 

@@ -94,7 +94,7 @@ wxString pgForeignKey::GetFullName() const
     return GetName() + wxT(" -> ") + GetReferences();
 }
 
-void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -134,21 +134,20 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
     if (properties)
     {
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), NumToStr(GetOid()));
-        InsertListItem(properties, pos++, _("Child columns"), GetFkColumns());
-        InsertListItem(properties, pos++, _("References"), GetReferences() 
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), NumToStr(GetOid()));
+        properties->AppendItem(_("Child columns"), GetFkColumns());
+        properties->AppendItem(_("References"), GetReferences() 
             + wxT("(") +GetRefColumns() + wxT(")"));
 
-        InsertListItem(properties, pos++, _("On update"), GetOnUpdate());
-        InsertListItem(properties, pos++, _("On delete"), GetOnDelete());
-        InsertListItem(properties, pos++, _("Deferrable?"), BoolToYesNo(GetDeferrable()));
-        InsertListItem(properties, pos++, _("Initially?"), 
+        properties->AppendItem(_("On update"), GetOnUpdate());
+        properties->AppendItem(_("On delete"), GetOnDelete());
+        properties->AppendItem(_("Deferrable?"), BoolToYesNo(GetDeferrable()));
+        properties->AppendItem(_("Initially?"), 
             GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
-        InsertListItem(properties, pos++, _("System foreign key?"), BoolToYesNo(GetSystemObject()));
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("System foreign key?"), BoolToYesNo(GetSystemObject()));
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

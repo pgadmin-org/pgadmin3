@@ -33,7 +33,7 @@ public:
     ~pgaSchedule();
 
     int GetIcon() { return PGAICON_SCHEDULE; }
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlListView *statistics=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);

@@ -37,15 +37,15 @@ BEGIN_EVENT_TABLE(frmConnect, wxDialog)
 END_EVENT_TABLE()
 
 
-#define txtDescription  CTRL("txtDescription", wxTextCtrl)
-#define txtServer       CTRL("txtServer", wxTextCtrl)
-#define txtDatabase     CTRL("txtDatabase", wxTextCtrl)
-#define txtUsername     CTRL("txtUsername", wxTextCtrl)
-#define chkTrusted      CTRL("chkTrusted", wxCheckBox)
-#define txtPort         CTRL("txtPort", wxTextCtrl)
-#define lblSSL          CTRL("lblSSL", wxStaticText)
-#define cbSSL           CTRL("cbSSL", wxComboBox)
-#define txtPassword     CTRL("txtPassword", wxTextCtrl)
+#define txtDescription  CTRL_TEXT("txtDescription")
+#define txtServer       CTRL_TEXT("txtServer")
+#define txtDatabase     CTRL_TEXT("txtDatabase")
+#define txtUsername     CTRL_TEXT("txtUsername")
+#define chkTrusted      CTRL_CHECKBOX("chkTrusted")
+#define txtPort         CTRL_TEXT("txtPort")
+#define lblSSL          CTRL_STATIC("lblSSL")
+#define cbSSL           CTRL_COMBOBOX("cbSSL")
+#define txtPassword     CTRL_TEXT("txtPassword")
 
 
 

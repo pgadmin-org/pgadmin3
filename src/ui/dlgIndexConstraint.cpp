@@ -24,9 +24,9 @@
 
 
 
-#define chkDeferrable   CTRL("chkDeferrable",   wxCheckBox)
-#define chkDeferred     CTRL("chkDeferred",     wxCheckBox)
-#define stDeferred      CTRL("stDeferred",      wxStaticText)
+#define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
+#define chkDeferred     CTRL_CHECKBOX("chkDeferred")
+#define stDeferred      CTRL_STATIC("stDeferred")
 
 
 
@@ -42,7 +42,7 @@ dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, 
 }
 
 
-dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, wxListCtrl *colList)
+dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, ctlListView *colList)
 : dlgIndexBase(frame, resName, colList)
 {
 }
@@ -121,7 +121,7 @@ dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, pgIndex *index, pgTable *parentNode
 }
 
 
-dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, wxListCtrl *colList)
+dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, ctlListView *colList)
 : dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), colList)
 {
     objectType=PG_PRIMARYKEY;
@@ -148,7 +148,7 @@ dlgUnique::dlgUnique(frmMain *frame, pgIndex *index, pgTable *parentNode)
 }
 
 
-dlgUnique::dlgUnique(frmMain *frame, wxListCtrl *colList)
+dlgUnique::dlgUnique(frmMain *frame, ctlListView *colList)
 : dlgIndexConstraint(frame, wxT("dlgIndexConstraint"), colList)
 {
     objectType = PG_UNIQUE;

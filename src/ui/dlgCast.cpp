@@ -26,11 +26,11 @@
 
 
 // pointer to controls
-#define cbSourceType        CTRL("cbSourceType", wxComboBox)
-#define cbTargetType        CTRL("cbTargetType", wxComboBox)
-#define cbFunction          CTRL("cbFunction", wxComboBox)
-#define chkImplicit         CTRL("chkImplicit", wxCheckBox)
-#define stComment           CTRL("stComment", wxStaticText)
+#define cbSourceType        CTRL_COMBOBOX("cbSourceType")
+#define cbTargetType        CTRL_COMBOBOX("cbTargetType")
+#define cbFunction          CTRL_COMBOBOX("cbFunction")
+#define chkImplicit         CTRL_CHECKBOX("chkImplicit")
+#define stComment           CTRL_STATIC("stComment")
 
 
 

@@ -24,12 +24,12 @@
 
 
 // pointer to controls
-#define txtID           CTRL("txtID", wxTextCtrl)
+#define txtID           CTRL_TEXT("txtID")
 
-#define lbUsersNotIn    CTRL("lbUsersNotIn", wxListBox)
-#define lbUsersIn       CTRL("lbUsersIn", wxListBox)
-#define btnAddUser      CTRL("btnAddUser", wxButton)
-#define btnDelUser      CTRL("btnDelUser", wxButton)
+#define lbUsersNotIn    CTRL_LISTBOX("lbUsersNotIn")
+#define lbUsersIn       CTRL_LISTBOX("lbUsersIn")
+#define btnAddUser      CTRL_BUTTON("btnAddUser")
+#define btnDelUser      CTRL_BUTTON("btnDelUser")
 
 
 

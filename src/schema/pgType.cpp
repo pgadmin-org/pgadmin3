@@ -70,7 +70,7 @@ wxString pgType::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlListView *statistics, ctlSQLBox *sqlPane)
 {
     if (!expandedKids)
     {
@@ -120,37 +120,36 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         wxLogInfo(wxT("Displaying properties for type %s"), GetIdentifier().c_str());
 
         CreateListColumns(properties);
-        int pos=0;
 
-        InsertListItem(properties, pos++, _("Name"), GetName());
-        InsertListItem(properties, pos++, _("OID"), GetOid());
-        InsertListItem(properties, pos++, _("Owner"), GetOwner());
+        properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
+        properties->AppendItem(_("Owner"), GetOwner());
         if (isComposite)
         {
-            InsertListItem(properties, pos++, _("Members"), GetTypesList());
+            properties->AppendItem(_("Members"), GetTypesList());
         }
         else
         {
-            InsertListItem(properties, pos++, _("Alignment"), GetAlignment());
-            InsertListItem(properties, pos++, _("Internal length"), GetInternalLength());
-            InsertListItem(properties, pos++, _("Default"), GetDefault());
-            InsertListItem(properties, pos++, _("Passed by Value?"), BoolToYesNo(GetPassedByValue()));
+            properties->AppendItem(_("Alignment"), GetAlignment());
+            properties->AppendItem(_("Internal length"), GetInternalLength());
+            properties->AppendItem(_("Default"), GetDefault());
+            properties->AppendItem(_("Passed by Value?"), BoolToYesNo(GetPassedByValue()));
             if (!GetElement().IsEmpty())
             {
-                InsertListItem(properties, pos++, _("Element"), GetElement());
-                InsertListItem(properties, pos++, _("Delimiter"), GetDelimiter());
+                properties->AppendItem(_("Element"), GetElement());
+                properties->AppendItem(_("Delimiter"), GetDelimiter());
             }
-            InsertListItem(properties, pos++, _("Input function"), GetInputFunction());
-            InsertListItem(properties, pos++, _("Output function"), GetOutputFunction());
+            properties->AppendItem(_("Input function"), GetInputFunction());
+            properties->AppendItem(_("Output function"), GetOutputFunction());
             if (GetConnection()->BackendMinimumVersion(7, 4))
             {
-            InsertListItem(properties, pos++, _("Receive function"), GetReceiveFunction());
-            InsertListItem(properties, pos++, _("Send function"), GetSendFunction());
+            properties->AppendItem(_("Receive function"), GetReceiveFunction());
+            properties->AppendItem(_("Send function"), GetSendFunction());
             }
-            InsertListItem(properties, pos++, _("Storage"), GetStorage());
+            properties->AppendItem(_("Storage"), GetStorage());
         }
-        InsertListItem(properties, pos++, _("System type?"), GetSystemObject());
-        InsertListItem(properties, pos++, _("Comment"), GetComment());
+        properties->AppendItem(_("System type?"), GetSystemObject());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 

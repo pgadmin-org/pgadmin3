@@ -556,6 +556,10 @@ SOURCE=.\ui\common\dlgIndexConstraint.xrc
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\common\dlgJob.xrc
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\common\dlgLanguage.xrc
 # End Source File
 # Begin Source File
@@ -568,11 +572,19 @@ SOURCE=.\ui\common\dlgRule.xrc
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\common\dlgSchedule.xrc
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\common\dlgSchema.xrc
 # End Source File
 # Begin Source File
 
 SOURCE=.\ui\common\dlgSequence.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgStep.xrc
 # End Source File
 # Begin Source File
 
@@ -714,6 +726,10 @@ SOURCE=.\ui\calbox.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\ctlListView.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\ctlSQLBox.cpp
 # End Source File
 # Begin Source File
@@ -752,6 +768,10 @@ SOURCE=.\ui\xh_timespin.cpp
 # Begin Source File
 
 SOURCE=.\include\calbox.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\ctlListView.h
 # End Source File
 # Begin Source File
 

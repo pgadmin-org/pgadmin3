@@ -21,10 +21,10 @@ class dlgIndexConstraint : public dlgIndexBase
 {
 protected:
     dlgIndexConstraint(frmMain *frame, const wxString &resName, pgIndex *index, pgTable *parentNode);
-    dlgIndexConstraint(frmMain *frame, const wxString &resName, wxListCtrl *colList);
+    dlgIndexConstraint(frmMain *frame, const wxString &resName, ctlListView *colList);
 
 public:
-    wxListCtrl *columns;
+    ctlListView *columns;
 
 
     int Go(bool modal);
@@ -41,7 +41,7 @@ class dlgPrimaryKey : public dlgIndexConstraint
 {
 public:
     dlgPrimaryKey(frmMain *frame, pgIndex *index, pgTable *parentNode);
-    dlgPrimaryKey(frmMain *frame, wxListCtrl *colList);
+    dlgPrimaryKey(frmMain *frame, ctlListView *colList);
 
     pgObject *CreateObject(pgCollection *collection);
 };
@@ -51,7 +51,7 @@ class dlgUnique : public dlgIndexConstraint
 {
 public:
     dlgUnique(frmMain *frame, pgIndex *index, pgTable *parentNode);
-    dlgUnique(frmMain *frame, wxListCtrl *colList);
+    dlgUnique(frmMain *frame, ctlListView *colList);
 
     pgObject *CreateObject(pgCollection *collection);
 };
