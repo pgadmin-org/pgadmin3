@@ -1,0 +1,377 @@
+<HTML
+><HEAD
+><TITLE
+>pg_opclass</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_namespace"
+HREF="catalog-pg-namespace.html"><LINK
+REL="NEXT"
+TITLE="pg_operator"
+HREF="catalog-pg-operator.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="catalog-pg-namespace.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="catalog-pg-operator.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-OPCLASS"
+>3.22. pg_opclass</A
+></H1
+><P
+>   <TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
+> defines
+   index access method operator classes.  Each operator class defines
+   semantics for index columns of a particular datatype and a particular
+   index access method.  Note that there can be multiple operator classes
+   for a given datatype/access method combination, thus supporting multiple
+   behaviors.
+  </P
+><P
+>   Operator classes are described at length in the
+   <I
+CLASS="CITETITLE"
+>Programmer's Guide</I
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN53763"
+></A
+><P
+><B
+>Table 3-22. pg_opclass Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>References</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>opcamid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_am.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>index access method opclass is for</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>opcname</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>name of this opclass</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>opcnamespace</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_namespace.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>namespace of this opclass</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>opcowner</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_shadow.usesysid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>opclass owner</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>opcintype</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_type.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>type of input data for opclass</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>opcdefault</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bool</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>true if opclass is default for opcintype</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>opckeytype</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_type.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>type of index data, or zero if same as opcintype</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   The majority of the information defining an operator class is actually
+   not in its <TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
+> row, but in the associated
+   rows in <TT
+CLASS="STRUCTNAME"
+>pg_amop</TT
+> and
+   <TT
+CLASS="STRUCTNAME"
+>pg_amproc</TT
+>.  Those rows are considered to be
+   part of the operator class definition --- this is not unlike the way
+   that a relation is defined by a single <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+>
+   row, plus associated rows in <TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+> and
+   other tables.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-namespace.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-operator.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_namespace</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>pg_operator</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

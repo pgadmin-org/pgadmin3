@@ -1,0 +1,249 @@
+<HTML
+><HEAD
+><TITLE
+>Porting From Other RDBMS Packages</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="PREVIOUS"
+TITLE="Library Functions"
+HREF="ecpg-library.html"><LINK
+REL="NEXT"
+TITLE="For the Developer"
+HREF="ecpg-develop.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecpg-library.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> in C</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecpg-develop.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-PORTING"
+>4.10. Porting From Other <SPAN
+CLASS="ACRONYM"
+>RDBMS</SPAN
+> Packages</A
+></H1
+><P
+>   The design of <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+> follows the SQL
+   standard. Porting from a standard RDBMS should not be a problem.
+   Unfortunately there is no such thing as a standard RDBMS. Therefore
+   <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+> tries to understand syntax
+   extensions as long as they do not create conflicts with the
+   standard.
+  </P
+><P
+>   The following list shows all the known incompatibilities. If you
+   find one not listed please notify the developers. Note, however,
+   that we list only incompatibilities from a preprocessor of another
+   RDBMS to <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+> and not
+   <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+> features that these RDBMS do not
+   support.
+  </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Syntax of <TT
+CLASS="COMMAND"
+>FETCH</TT
+></DT
+><DD
+><P
+>      The standard syntax for <TT
+CLASS="COMMAND"
+>FETCH</TT
+> is:
+</P><PRE
+CLASS="SYNOPSIS"
+>FETCH [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>direction</I
+></TT
+></SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>amount</I
+></TT
+></SPAN
+>] IN|FROM <TT
+CLASS="REPLACEABLE"
+><I
+>cursor</I
+></TT
+></PRE
+><P>
+      <A
+NAME="AEN27932"
+></A
+>
+      <SPAN
+CLASS="APPLICATION"
+>Oracle</SPAN
+>, however, does not use the
+      keywords <TT
+CLASS="LITERAL"
+>IN</TT
+> or <TT
+CLASS="LITERAL"
+>FROM</TT
+>. This
+      feature cannot be added since it would create parsing conflicts.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-library.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-develop.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Library Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>For the Developer</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

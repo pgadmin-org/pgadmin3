@@ -1,0 +1,332 @@
+<HTML
+><HEAD
+><TITLE
+>Installation on Windows</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Supported Platforms"
+HREF="supported-platforms.html"><LINK
+REL="NEXT"
+TITLE="Server Run-time Environment"
+HREF="runtime.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="supported-platforms.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="runtime.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="INSTALL-WIN32"
+>Chapter 2. Installation on <SPAN
+CLASS="PRODUCTNAME"
+>Windows</SPAN
+></A
+></H1
+><A
+NAME="AEN19118"
+></A
+><P
+>  Although <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is written for
+  Unix-like operating systems, the C client library
+  (<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>) and the interactive terminal
+  (<SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>) can be compiled natively under
+  Windows.  The makefiles included in the source distribution are
+  written for <SPAN
+CLASS="PRODUCTNAME"
+>Microsoft Visual C++</SPAN
+> and will
+  probably not work with other systems.  It should be possible to
+  compile the libraries manually in other cases.
+ </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>   If you are using Windows 98 or newer you can build and use all of
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <SPAN
+CLASS="QUOTE"
+>"the Unix way"</SPAN
+>
+   if you install the <SPAN
+CLASS="PRODUCTNAME"
+>Cygwin</SPAN
+> toolkit first.
+   In that case see <A
+HREF="installation.html"
+>Chapter 1</A
+>.
+  </P
+></BLOCKQUOTE
+></DIV
+><P
+>  To build everything that you can on
+  <SPAN
+CLASS="PRODUCTNAME"
+>Windows</SPAN
+>, change into the
+  <TT
+CLASS="FILENAME"
+>src</TT
+> directory and type the command
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="USERINPUT"
+><B
+>nmake /f win32.mak</B
+></TT
+></PRE
+><P>
+  This assumes that you have <SPAN
+CLASS="PRODUCTNAME"
+>Visual C++</SPAN
+> in
+  your path.
+ </P
+><P
+>  The following files will be built:
+
+  <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="FILENAME"
+>interfaces\libpq\Release\libpq.dll</TT
+></DT
+><DD
+><P
+>      The dynamically linkable frontend library
+     </P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>interfaces\libpq\Release\libpqdll.lib</TT
+></DT
+><DD
+><P
+>      Import library to link your program to <TT
+CLASS="FILENAME"
+>libpq.dll</TT
+>
+     </P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>interfaces\libpq\Release\libpq.lib</TT
+></DT
+><DD
+><P
+>      Static library version of the frontend library
+     </P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>bin\psql\Release\psql.exe</TT
+></DT
+><DD
+><P
+>      The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interactive terminal
+     </P
+></DD
+></DL
+></DIV
+><P>
+ </P
+><P
+>  The only file that really needs to be installed is the
+  <TT
+CLASS="FILENAME"
+>libpq.dll</TT
+> library.  This file should in most
+  cases be placed in the <TT
+CLASS="FILENAME"
+>WINNT\SYSTEM32</TT
+> directory
+  (or in <TT
+CLASS="FILENAME"
+>WINDOWS\SYSTEM</TT
+> on a Windows 95/98/ME
+  system).  If this file is installed using a setup program, it should
+  be installed with version checking using the
+  <TT
+CLASS="SYMBOL"
+>VERSIONINFO</TT
+> resource included in the file, to
+  ensure that a newer version of the library is not overwritten.
+ </P
+><P
+>  If you plan to do development using <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> on this machine, you will
+  have to add the <TT
+CLASS="FILENAME"
+>src\include</TT
+> and
+  <TT
+CLASS="FILENAME"
+>src\interfaces\libpq</TT
+> subdirectories of the
+  source tree to the include path in your compilers settings.
+ </P
+><P
+>  To use the libraries, you must add the
+  <TT
+CLASS="FILENAME"
+>libpqdll.lib</TT
+> file to your project.  (In Visual
+  C++, just right-click on the project and choose to add it.)
+ </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="supported-platforms.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtime.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Supported Platforms</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Server Run-time Environment</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

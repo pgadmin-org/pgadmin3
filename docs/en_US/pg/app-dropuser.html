@@ -1,0 +1,633 @@
+<HTML
+><HEAD
+><TITLE
+>dropuser</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="droplang"
+HREF="app-droplang.html"><LINK
+REL="NEXT"
+TITLE="ecpg"
+HREF="app-ecpg.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="app-droplang.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="app-ecpg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-DROPUSER"
+><SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+></A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN47583"
+></A
+><H2
+>Name</H2
+>dropuser&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN47587"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>dropuser</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>options</I
+></TT
+>...] [<TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47594"
+></A
+><H2
+>Description</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+> removes an existing
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user
+   <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>and</I
+></SPAN
+> the databases which that user owned.
+   Only users with <TT
+CLASS="LITERAL"
+>usesuper</TT
+> set in
+   the <TT
+CLASS="LITERAL"
+>pg_shadow</TT
+> table can destroy 
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> users.
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+> is a shell script wrapper around the
+   <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> command
+   <A
+HREF="sql-dropuser.html"
+><I
+>DROP USER</I
+></A
+> via
+   the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interactive terminal
+   <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>. Thus, there is nothing
+   special about removing users via this or other methods. This means
+   that the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> must be found by the script and that
+   a database server is running at the targeted host. Also, any default
+   settings and environment variables available to <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+   and the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end library do apply.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47612"
+></A
+><H2
+>Options</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+> accepts the following command-line arguments:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the name of the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user to be removed. 
+	This name must exist in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installation.
+	You will be prompted for a name if none is specified on the command line.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-e</TT
+><BR><TT
+CLASS="OPTION"
+>--echo</TT
+></DT
+><DD
+><P
+>        Echo the queries that <SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+> generates
+	and sends to the server.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-i</TT
+><BR><TT
+CLASS="OPTION"
+>--interactive</TT
+></DT
+><DD
+><P
+>        Prompt for confirmation before actually removing the user.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-q</TT
+><BR><TT
+CLASS="OPTION"
+>--quiet</TT
+></DT
+><DD
+><P
+>        Do not display a response.
+       </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>createuser</SPAN
+> also accepts the following
+   command-line arguments for connection parameters:
+    
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the host name of the machine on which the 
+	server
+	is running.  If host begins with a slash, it is used 
+	as the directory for the Unix domain socket.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the Internet TCP/IP port or local Unix domain socket file 
+	extension on which the server
+	is listening for connections.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        User name to connect as (not the user name to drop)
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--password</TT
+></DT
+><DD
+><P
+>        Force password prompt (to connect to the server, not for the
+        password of the user to be dropped).
+       </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47683"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47695"
+></A
+><H2
+>Diagnostics</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DROP USER</TT
+></DT
+><DD
+><P
+>        All is well.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>dropuser: deletion of user "<TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>" failed</TT
+></DT
+><DD
+><P
+>        Something went wrong. The user was not removed.
+       </P
+></DD
+></DL
+></DIV
+><P
+>    If there is an error condition, the backend error message will be displayed.
+    See <A
+HREF="sql-dropuser.html"
+><I
+>DROP USER</I
+></A
+>
+    and <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> for possibilities.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47712"
+></A
+><H2
+>Examples</H2
+><P
+>    To remove user <TT
+CLASS="LITERAL"
+>joe</TT
+> from the default database
+    server:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$ </TT
+><TT
+CLASS="USERINPUT"
+><B
+>dropuser joe</B
+></TT
+>
+<TT
+CLASS="COMPUTEROUTPUT"
+>DROP USER</TT
+></PRE
+><P>
+   </P
+><P
+>    To remove user <TT
+CLASS="LITERAL"
+>joe</TT
+> using the postmaster on host
+    <TT
+CLASS="LITERAL"
+>eden</TT
+>, port 5000, with verification and a peek at the underlying
+    query:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$ </TT
+><TT
+CLASS="USERINPUT"
+><B
+>dropuser -p 5000 -h eden -i -e joe</B
+></TT
+>
+<TT
+CLASS="COMPUTEROUTPUT"
+>User "joe" and any owned databases will be permanently deleted.
+Are you sure? (y/n) </TT
+><TT
+CLASS="USERINPUT"
+><B
+>y</B
+></TT
+>
+<TT
+CLASS="COMPUTEROUTPUT"
+>DROP USER "joe"
+DROP USER</TT
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47729"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-createuser.html"
+><SPAN
+CLASS="APPLICATION"
+>createuser</SPAN
+></A
+>, <A
+HREF="sql-dropuser.html"
+><I
+>DROP USER</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-droplang.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-ecpg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

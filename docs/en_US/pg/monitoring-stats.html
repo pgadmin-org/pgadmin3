@@ -1,0 +1,1196 @@
+<HTML
+><HEAD
+><TITLE
+>Statistics Collector</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Monitoring Database Activity"
+HREF="monitoring.html"><LINK
+REL="PREVIOUS"
+TITLE="Monitoring Database Activity"
+HREF="monitoring.html"><LINK
+REL="NEXT"
+TITLE="Viewing Locks"
+HREF="monitoring-locks.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="monitoring.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Monitoring Database Activity</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="monitoring-locks.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MONITORING-STATS"
+>10.2. Statistics Collector</A
+></H1
+><A
+NAME="AEN22850"
+></A
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s <I
+CLASS="FIRSTTERM"
+>statistics collector</I
+>
+   is a subsystem that supports collection and reporting of information about
+   server activity.  Presently, the collector can count accesses to tables
+   and indexes in both disk-block and individual-row terms.  It also supports
+   determining the exact query currently being executed by other server
+   processes.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MONITORING-STATS-SETUP"
+>10.2.1. Statistics Collection Configuration</A
+></H2
+><P
+>   Since collection of statistics adds some overhead to query execution,
+   the system can be configured to collect or not collect information.
+   This is controlled by configuration variables that are normally set in
+   <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> (see <A
+HREF="runtime-config.html"
+>Section 3.4</A
+> for
+   details about setting configuration variables).
+  </P
+><P
+>   The variable <TT
+CLASS="VARNAME"
+>STATS_START_COLLECTOR</TT
+> must be set to
+   <TT
+CLASS="LITERAL"
+>true</TT
+> for the statistics collector to
+   be launched at all.  This is the default and recommended setting,
+   but it may be turned off if you have no interest in statistics and
+   want to squeeze out every last drop of overhead.  (The savings is
+   likely to be small, however.)  Note that this option
+   cannot be changed while the server is running.
+  </P
+><P
+>   The variables <TT
+CLASS="VARNAME"
+>STATS_COMMAND_STRING</TT
+>,
+   <TT
+CLASS="VARNAME"
+>STATS_BLOCK_LEVEL</TT
+>,
+   and <TT
+CLASS="VARNAME"
+>STATS_ROW_LEVEL</TT
+> control how much information is
+   actually sent to the collector, and thus determine how much run-time
+   overhead occurs.  These respectively determine whether a server process
+   sends its current command string, disk-block-level access statistics, and
+   row-level access statistics to the collector.  Normally these variables are
+   set in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> so that they apply to all server
+   processes, but it is possible to turn them on or off in individual server
+   processes using the <TT
+CLASS="COMMAND"
+>SET</TT
+> command.  (To prevent ordinary users
+   from hiding their activity from the administrator, only superusers are
+   allowed to change these variables with <TT
+CLASS="COMMAND"
+>SET</TT
+>.)
+  </P
+><DIV
+CLASS="IMPORTANT"
+><BLOCKQUOTE
+CLASS="IMPORTANT"
+><P
+><B
+>Important: </B
+>     Since the variables <TT
+CLASS="VARNAME"
+>STATS_COMMAND_STRING</TT
+>,
+     <TT
+CLASS="VARNAME"
+>STATS_BLOCK_LEVEL</TT
+>,
+     and <TT
+CLASS="VARNAME"
+>STATS_ROW_LEVEL</TT
+>
+     default to <TT
+CLASS="LITERAL"
+>false</TT
+>, no statistics are actually collected
+     in the default configuration.  You must turn one or more of them on
+     before you will get useful results from the statistical display
+     functions.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="MONITORING-STATS-VIEWS"
+>10.2.2. Viewing Collected Statistics</A
+></H2
+><P
+>   Several predefined views are available to show the results of
+   statistics collection, listed in <A
+HREF="monitoring-stats.html#MONITORING-STATS-VIEWS-TABLE"
+>Table 10-1</A
+>.  Alternatively, one can
+   build custom views using the underlying statistics functions.
+  </P
+><P
+>   When using the statistics to monitor current activity, it is important
+   to realize that the information does not update instantaneously.
+   Each individual server process transmits new access counts to the collector
+   just before waiting for another client command; so a query still in
+   progress does not affect the displayed totals.  Also, the collector itself
+   emits new totals at most once per <TT
+CLASS="VARNAME"
+>pgstat_stat_interval</TT
+> milliseconds
+   (500 by default).  So the displayed totals lag behind actual activity.
+  </P
+><P
+>   Another important point is that when a server process is asked to display
+   any of these statistics, it first fetches the most recent totals emitted by
+   the collector process.  It then continues to use this snapshot for all
+   statistical views and functions until the end of its current transaction.
+   So the statistics will appear not to change as long as you continue the
+   current transaction.
+   This is a feature, not a bug, because it allows you to perform several
+   queries on the statistics and correlate the results without worrying that
+   the numbers are changing underneath you.  But if you want to see new
+   results with each query, be sure to do the queries outside any transaction
+   block.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="MONITORING-STATS-VIEWS-TABLE"
+></A
+><P
+><B
+>Table 10-1. Standard Statistics Views</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>View Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_stat_activity</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>One row per server process, showing process <SPAN
+CLASS="ACRONYM"
+>ID</SPAN
+>, database,
+      user, and current query.  The current query column is only available
+      to superusers; for others it reads as null.  (Note that because of
+      the collector's reporting delay, current query will only be up-to-date
+      for long-running queries.)</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_stat_database</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>One row per database, showing number of active backends,
+      total transactions committed and total rolled back in that database,
+      total disk blocks read, and total number of buffer hits (i.e., block
+      read requests avoided by finding the block already in buffer cache).
+     </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_stat_all_tables</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>For each table in the current database, total numbers of
+      sequential and index scans, total numbers of tuples returned by
+      each type of scan, and totals of tuple insertions, updates,
+      and deletes.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_stat_sys_tables</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_stat_all_tables</TT
+>, except that only system tables
+      are shown.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_stat_user_tables</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_stat_all_tables</TT
+>, except that only user tables
+      are shown.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_stat_all_indexes</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>For each index in the current database, the total number
+      of index scans that have used that index, the number of index tuples
+      read, and the number of successfully fetched heap tuples. (This may
+      be less when there are index entries pointing to expired heap tuples.)
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_stat_sys_indexes</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_stat_all_indexes</TT
+>, except that only indexes on
+      system tables are shown.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_stat_user_indexes</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_stat_all_indexes</TT
+>, except that only indexes on
+      user tables are shown.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_statio_all_tables</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>For each table in the current database, the total number of disk
+      blocks read from that table, the number of buffer hits, the numbers of
+      disk blocks read and buffer hits in all the indexes of that table,
+      the numbers of disk blocks read and buffer hits from the table's
+      auxiliary TOAST table (if any), and the numbers of disk blocks read
+      and buffer hits for the TOAST table's index.
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_statio_sys_tables</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_statio_all_tables</TT
+>, except that only system tables
+      are shown.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_statio_user_tables</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_statio_all_tables</TT
+>, except that only user tables
+      are shown.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_statio_all_indexes</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>For each index in the current database, the numbers of
+      disk blocks read and buffer hits in that index.
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_statio_sys_indexes</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_statio_all_indexes</TT
+>, except that only indexes on
+      system tables are shown.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_statio_user_indexes</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_statio_all_indexes</TT
+>, except that only indexes on
+      user tables are shown.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_statio_all_sequences</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>For each sequence object in the current database, the numbers
+      of disk blocks read and buffer hits in that sequence.
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_statio_sys_sequences</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_statio_all_sequences</TT
+>, except that only system
+      sequences are shown.  (Presently, no system sequences are defined,
+      so this view is always empty.)</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_statio_user_sequences</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Same as <TT
+CLASS="STRUCTNAME"
+>pg_statio_all_sequences</TT
+>, except that only user
+      sequences are shown.</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   The per-index statistics are particularly useful to determine which
+   indexes are being used and how effective they are.
+  </P
+><P
+>   The <TT
+CLASS="STRUCTNAME"
+>pg_statio_</TT
+> views are primarily useful to determine
+   the effectiveness of the buffer cache.  When the number of actual disk
+   reads is much smaller than the number of buffer hits, then the cache
+   is satisfying most read requests without invoking a kernel call.
+  </P
+><P
+>   Other ways of looking at the statistics can be set up by writing
+   queries that use the same underlying statistics access functions as
+   these standard views do.  These functions are listed in <A
+HREF="monitoring-stats.html#MONITORING-STATS-FUNCS-TABLE"
+>Table 10-2</A
+>.  The per-database access
+   functions accept a database OID to identify which database to
+   report on.  The per-table and per-index functions accept a table or
+   index OID (note that only tables and indexes in the current
+   database can be seen with these functions).  The per-backend access
+   functions accept a backend ID number, which ranges from one to the
+   number of currently active backends.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="MONITORING-STATS-FUNCS-TABLE"
+></A
+><P
+><B
+>Table 10-2. Statistics Access Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Return Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_db_numbackends</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of active backends in database
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_db_xact_commit</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Transactions committed in database
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_db_xact_rollback</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Transactions rolled back in database
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_db_blocks_fetched</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of disk block fetch requests for database
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_db_blocks_hit</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of disk block requests found in cache for database
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_numscans</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of sequential scans done when argument is a table,
+       or number of index scans done when argument is an index
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_tuples_returned</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of tuples read by sequential scans when argument is a table,
+       or number of index tuples read when argument is an index
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_tuples_fetched</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of valid (unexpired) table tuples fetched by sequential scans
+       when argument is a table, or fetched by index scans using this index
+       when argument is an index
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_tuples_inserted</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of tuples inserted into table
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_tuples_updated</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of tuples updated in table
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_tuples_deleted</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of tuples deleted from table
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_blocks_fetched</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of disk block fetch requests for table or index
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_blocks_hit</TT
+>(<TT
+CLASS="TYPE"
+>oid</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Number of disk block requests found in cache for table or index
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_backend_idset</TT
+>()</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>set of integer</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Set of currently active backend IDs (from 1 to N where N is the
+       number of active backends).  See usage example below.
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_backend_pid</TT
+>()</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Process ID of the attached backend
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_backend_pid</TT
+>(<TT
+CLASS="TYPE"
+>integer</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Process ID of all backend processes
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_backend_dbid</TT
+>(<TT
+CLASS="TYPE"
+>integer</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Database ID of backend process
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_backend_userid</TT
+>(<TT
+CLASS="TYPE"
+>integer</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       User ID of backend process
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_get_backend_activity</TT
+>(<TT
+CLASS="TYPE"
+>integer</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Current query of backend process (NULL if caller is not superuser)
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_stat_reset</TT
+>()</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>boolean</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       Reset all currently collected statistics.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Blocks_fetched minus blocks_hit gives the number of kernel
+     <TT
+CLASS="FUNCTION"
+>read()</TT
+> calls issued for the table, index, or
+     database; but the actual number of physical reads is usually
+     lower due to kernel-level buffering.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>   The function <TT
+CLASS="FUNCTION"
+>pg_stat_get_backend_idset</TT
+> provides
+   a convenient way to generate one row for each active backend.  For
+   example, to show the <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+>s and current queries of all backends:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT pg_stat_get_backend_pid(S.backendid) AS procpid,
+       pg_stat_get_backend_activity(S.backendid) AS current_query
+FROM (SELECT pg_stat_get_backend_idset() AS backendid) AS S;</PRE
+><P>
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="monitoring.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="monitoring-locks.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Monitoring Database Activity</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="monitoring.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Viewing Locks</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

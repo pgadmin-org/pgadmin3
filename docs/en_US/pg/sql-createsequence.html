@@ -1,0 +1,838 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE SEQUENCE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE SCHEMA"
+HREF="sql-createschema.html"><LINK
+REL="NEXT"
+TITLE="CREATE TABLE"
+HREF="sql-createtable.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createschema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createtable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATESEQUENCE"
+>CREATE SEQUENCE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN40615"
+></A
+><H2
+>Name</H2
+>   CREATE SEQUENCE
+  &nbsp;--&nbsp;   define a new sequence generator
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN40618"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE [ TEMPORARY | TEMP ] SEQUENCE <TT
+CLASS="REPLACEABLE"
+><I
+>seqname</I
+></TT
+> [ INCREMENT <TT
+CLASS="REPLACEABLE"
+><I
+>increment</I
+></TT
+> ]
+    [ MINVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+> ] [ MAXVALUE <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+> ]
+    [ START <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+> ] [ CACHE <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+> ] [ CYCLE ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATESEQUENCE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>TEMPORARY or TEMP</DT
+><DD
+><P
+>	If specified, the sequence object is created only for this session,
+	and is automatically dropped on session exit.
+	Existing permanent sequences with the same name are not visible
+	(in this session) while the temporary sequence exists, unless
+	they are referenced with schema-qualified names.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>seqname</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of a sequence to be created.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>increment</I
+></TT
+></DT
+><DD
+><P
+>	The
+	<TT
+CLASS="OPTION"
+>INCREMENT <TT
+CLASS="REPLACEABLE"
+><I
+>increment</I
+></TT
+></TT
+>
+	clause is optional. A positive value will make an
+	ascending sequence, a negative one a descending sequence.
+	The default value is one (1).
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+></DT
+><DD
+><P
+>	The optional clause <TT
+CLASS="OPTION"
+>MINVALUE
+	 <TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+></TT
+>
+	determines the minimum value
+	a sequence can generate. The defaults are 1 and -2^63-1 for
+	ascending and descending sequences, respectively.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+></DT
+><DD
+><P
+>	The optional clause <TT
+CLASS="OPTION"
+>MAXVALUE
+	 <TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+></TT
+>
+	determines the maximum
+	value for the sequence. The defaults are 2^63-1 and -1 for
+	ascending and descending sequences, respectively.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+></DT
+><DD
+><P
+>	The optional <TT
+CLASS="OPTION"
+>START
+	 <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+>
+	 clause</TT
+> enables the sequence to begin anywhere.
+	The default starting value is
+	<TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+>
+	for ascending sequences and
+	<TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+>
+	for descending ones.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+></DT
+><DD
+><P
+>	The <TT
+CLASS="OPTION"
+>CACHE <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+></TT
+> option
+	enables sequence numbers to be preallocated
+	and stored in memory for faster access. The  minimum
+	value is 1 (only one value can be generated at a time, i.e., no cache)
+	and this is also the default.
+       </P
+></DD
+><DT
+>CYCLE</DT
+><DD
+><P
+>	The optional CYCLE keyword may be used to enable the sequence
+	to wrap around when the
+	<TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+> or
+	<TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+> has been
+	reached by
+	an ascending or descending sequence respectively. If the limit is
+	reached, the next number generated will be the
+	<TT
+CLASS="REPLACEABLE"
+><I
+>minvalue</I
+></TT
+> or
+	<TT
+CLASS="REPLACEABLE"
+><I
+>maxvalue</I
+></TT
+>,
+	respectively.
+	Without CYCLE, after the limit is reached <TT
+CLASS="FUNCTION"
+>nextval</TT
+> calls
+	will return an error.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATESEQUENCE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>CREATE SEQUENCE
+       </TT
+></DT
+><DD
+><P
+>	Message returned if the command is successful.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  Relation '<TT
+CLASS="REPLACEABLE"
+><I
+>seqname</I
+></TT
+>' already exists
+       </TT
+></DT
+><DD
+><P
+>	If the sequence specified already exists.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  DefineSequence: MINVALUE (<TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+>) can't be &#62;= MAXVALUE (<TT
+CLASS="REPLACEABLE"
+><I
+>max</I
+></TT
+>)
+       </TT
+></DT
+><DD
+><P
+>	If the specified starting value is out of range.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  DefineSequence: START value (<TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+>) can't be &#60; MINVALUE (<TT
+CLASS="REPLACEABLE"
+><I
+>min</I
+></TT
+>)
+       </TT
+></DT
+><DD
+><P
+>	If the specified starting value is out of range.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  DefineSequence: MINVALUE (<TT
+CLASS="REPLACEABLE"
+><I
+>min</I
+></TT
+>) can't be &#62;= MAXVALUE (<TT
+CLASS="REPLACEABLE"
+><I
+>max</I
+></TT
+>)
+       </TT
+></DT
+><DD
+><P
+>	If the minimum and maximum values are inconsistent.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATESEQUENCE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE SEQUENCE</TT
+> will enter a new sequence number generator
+   into the current database. This involves creating and initializing a
+   new single-row
+   table with the name <TT
+CLASS="REPLACEABLE"
+><I
+>seqname</I
+></TT
+>.
+   The generator will be owned by the user issuing the command.
+  </P
+><P
+>   If a schema name is given then the sequence is created in the
+   specified schema.  Otherwise it is created in the current schema (the one
+   at the front of the search path; see <TT
+CLASS="LITERAL"
+>CURRENT_SCHEMA()</TT
+>).
+   TEMP sequences exist in a special schema, so a schema name may not be
+   given when creating a TEMP sequence.
+   The sequence name must be distinct from the name of any other sequence,
+   table, index, or view in the same schema.
+  </P
+><P
+>   After a sequence is created, you use the functions
+   <TT
+CLASS="FUNCTION"
+>nextval</TT
+>,
+   <TT
+CLASS="FUNCTION"
+>currval</TT
+> and
+   <TT
+CLASS="FUNCTION"
+>setval</TT
+>
+   to operate on the sequence.  These functions are documented in
+   the <I
+CLASS="CITETITLE"
+>User's Guide</I
+>.
+  </P
+><P
+>   Although you cannot update a sequence directly, you can use a query like
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM <TT
+CLASS="REPLACEABLE"
+><I
+>seqname</I
+></TT
+>;
+   </PRE
+><P>
+
+   to examine the parameters and current state of a sequence.  In particular,
+   the <TT
+CLASS="LITERAL"
+>last_value</TT
+> field of the sequence shows the last value
+   allocated by any backend process.  (Of course, this value may be obsolete
+   by the time it's printed, if other processes are actively doing
+   <TT
+CLASS="FUNCTION"
+>nextval</TT
+> calls.)
+  </P
+><DIV
+CLASS="CAUTION"
+><P
+></P
+><TABLE
+CLASS="CAUTION"
+BORDER="1"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="CENTER"
+><B
+>Caution</B
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+><P
+>    Unexpected results may be obtained if a <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+> setting greater than one
+    is used for a sequence object that will be used concurrently by multiple
+    backends.  Each backend will allocate and cache successive sequence values
+    during one access to the sequence object and increase the sequence
+    object's <TT
+CLASS="LITERAL"
+>last_value</TT
+> accordingly.  Then, the next <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+>-1 uses of <TT
+CLASS="FUNCTION"
+>nextval</TT
+>
+    within that backend simply return the preallocated values without touching
+    the shared object.  So, any numbers allocated but not used within a session
+    will be lost when that session ends.  Furthermore, although multiple backends are guaranteed to
+    allocate distinct sequence values, the values may be generated out of
+    sequence when all the backends are considered.  (For example, with a <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+>
+    setting of 10, backend A might reserve values 1..10 and return <TT
+CLASS="FUNCTION"
+>nextval</TT
+>=1, 
+    then
+    backend B might reserve values 11..20 and return <TT
+CLASS="FUNCTION"
+>nextval</TT
+>=11 before backend
+    A has generated <TT
+CLASS="LITERAL"
+>nextval</TT
+>=2.)  Thus, with a <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+> setting of one it is safe
+    to assume that <TT
+CLASS="FUNCTION"
+>nextval</TT
+> values are generated sequentially; with a <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+>
+    setting greater than one you should only assume that the <TT
+CLASS="FUNCTION"
+>nextval</TT
+> values
+    are all distinct, not that they are generated purely sequentially.
+    Also, <TT
+CLASS="LITERAL"
+>last_value</TT
+> will reflect the latest value reserved by any backend,
+    whether or not it has yet been returned by <TT
+CLASS="FUNCTION"
+>nextval</TT
+>.
+    Another consideration is that a <TT
+CLASS="FUNCTION"
+>setval</TT
+> executed on such a sequence
+    will not be noticed by other backends until they have used up any
+    preallocated values they have cached.
+   </P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATESEQUENCE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    Use <TT
+CLASS="COMMAND"
+>DROP SEQUENCE</TT
+> to remove a sequence.
+   </P
+><P
+>    Sequences are based on <TT
+CLASS="TYPE"
+>bigint</TT
+> arithmetic, so the range cannot
+    exceed the range of an eight-byte integer
+    (-9223372036854775808 to 9223372036854775807).  On some older platforms,
+    there may be no compiler support for eight-byte integers, in which case
+    sequences use regular <TT
+CLASS="TYPE"
+>integer</TT
+> arithmetic (range
+    -2147483648 to +2147483647).
+   </P
+><P
+>    When <TT
+CLASS="REPLACEABLE"
+><I
+>cache</I
+></TT
+> is greater than
+    one, each backend uses its own cache to store preallocated numbers.
+    Numbers that are cached but not used in the current session will be
+    lost, resulting in <SPAN
+CLASS="QUOTE"
+>"holes"</SPAN
+> in the sequence.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATESEQUENCE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Create an ascending sequence called <TT
+CLASS="LITERAL"
+>serial</TT
+>, starting at 101:
+  </P
+><PRE
+CLASS="PROGRAMLISTING"
+>CREATE SEQUENCE serial START 101;
+  </PRE
+><P
+>   Select the next number from this sequence:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT nextval('serial');
+    
+nextval
+-------
+    114
+   </PRE
+><P>
+  </P
+><P
+>   Use this sequence in an INSERT:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO distributors VALUES (nextval('serial'), 'nothing');
+   </PRE
+><P>
+  </P
+><P
+>   Update the sequence value after a COPY FROM:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
+    COPY distributors FROM 'input_file';
+    SELECT setval('serial', max(id)) FROM distributors;
+END;
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATESEQUENCE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATESEQUENCE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>CREATE SEQUENCE</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    language extension.
+    There is no <TT
+CLASS="COMMAND"
+>CREATE SEQUENCE</TT
+> statement
+    in <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createschema.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createtable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE SCHEMA</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE TABLE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,342 @@
+<HTML
+><HEAD
+><TITLE
+>RESET</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="REINDEX"
+HREF="sql-reindex.html"><LINK
+REL="NEXT"
+TITLE="REVOKE"
+HREF="sql-revoke.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-reindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-revoke.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-RESET"
+>RESET</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44914"
+></A
+><H2
+>Name</H2
+>RESET&nbsp;--&nbsp;restore the value of a run-time parameter to a default value</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44917"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>RESET <TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+>
+  </PRE
+><PRE
+CLASS="SYNOPSIS"
+>RESET ALL
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-RESET-1"
+></A
+><H3
+>Inputs</H3
+><P
+>		
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+></DT
+><DD
+><P
+>	The name of a run-time parameter. See <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> for a list.
+       </P
+></DD
+><DT
+>ALL</DT
+><DD
+><P
+>        Resets all settable run-time parameters to default values.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44935"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>RESET</TT
+> restores run-time parameters to their
+   default values. Refer to
+   <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+>
+   for details. <TT
+CLASS="COMMAND"
+>RESET</TT
+> is an alternate spelling for
+
+   </P><PRE
+CLASS="SYNOPSIS"
+>SET <TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+> TO DEFAULT
+   </PRE
+><P>
+
+   The default value is defined as the value that the variable would
+   have had, had no <TT
+CLASS="COMMAND"
+>SET</TT
+> ever been issued for it in the
+   current session.  The actual source of this value might be a
+   compiled-in default, the postmaster's configuration file or command-line
+   switches, or per-database or per-user default settings.  See the
+   <I
+CLASS="CITETITLE"
+>Administrator's Guide</I
+> for details.
+  </P
+><P
+>   See the <TT
+CLASS="COMMAND"
+>SET</TT
+> manual page for details on the transaction
+   behavior of <TT
+CLASS="COMMAND"
+>RESET</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44948"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   See under the <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> command.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44952"
+></A
+><H2
+>Examples</H2
+><P
+>   Set <TT
+CLASS="VARNAME"
+>DateStyle</TT
+> to its default value:
+
+</P><PRE
+CLASS="SCREEN"
+>RESET DateStyle;</PRE
+><P>
+  </P
+><P
+>   Set <TT
+CLASS="VARNAME"
+>geqo</TT
+> to its default value:
+
+</P><PRE
+CLASS="SCREEN"
+>   
+RESET GEQO;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44960"
+></A
+><H2
+>Compatibility</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>RESET</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-reindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-revoke.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>REINDEX</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>REVOKE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

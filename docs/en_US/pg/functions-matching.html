@@ -1,0 +1,1623 @@
+<HTML
+><HEAD
+><TITLE
+>Pattern Matching</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Binary String Functions and Operators"
+HREF="functions-binarystring.html"><LINK
+REL="NEXT"
+TITLE="Data Type Formatting Functions"
+HREF="functions-formatting.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="functions-binarystring.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="functions-formatting.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-MATCHING"
+>6.6. Pattern Matching</A
+></H1
+><P
+>    There are three separate approaches to pattern matching provided by
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>:  the traditional
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> 
+    <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> operator, the more recent
+    <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+> 
+    <TT
+CLASS="FUNCTION"
+>SIMILAR TO</TT
+> operator, and
+    <SPAN
+CLASS="ACRONYM"
+>POSIX</SPAN
+>-style regular expressions.
+    Additionally, a pattern matching function,
+    <TT
+CLASS="FUNCTION"
+>SUBSTRING</TT
+>, is available, using either
+    <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>-style or POSIX-style regular expressions.
+   </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>     If you have pattern matching needs that go beyond this,
+     consider writing a user-defined function in Perl or Tcl.
+    </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="FUNCTIONS-LIKE"
+>6.6.1. <TT
+CLASS="FUNCTION"
+>LIKE</TT
+></A
+></H2
+><A
+NAME="AEN7350"
+></A
+><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>string</I
+></TT
+> LIKE <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>ESCAPE <TT
+CLASS="REPLACEABLE"
+><I
+>escape-character</I
+></TT
+></SPAN
+>]
+<TT
+CLASS="REPLACEABLE"
+><I
+>string</I
+></TT
+> NOT LIKE <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>ESCAPE <TT
+CLASS="REPLACEABLE"
+><I
+>escape-character</I
+></TT
+></SPAN
+>]</PRE
+><P
+>     Every <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> defines a set of strings.
+     The <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> expression returns true if the
+     <TT
+CLASS="REPLACEABLE"
+><I
+>string</I
+></TT
+> is contained in the set of
+     strings represented by <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>.  (As
+     expected, the <TT
+CLASS="FUNCTION"
+>NOT LIKE</TT
+> expression returns
+     false if <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> returns true, and vice versa.
+     An equivalent expression is
+     <TT
+CLASS="LITERAL"
+>NOT (<TT
+CLASS="REPLACEABLE"
+><I
+>string</I
+></TT
+> LIKE
+      <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>)</TT
+>.)
+    </P
+><P
+>     If <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> does not contain percent
+     signs or underscore, then the pattern only represents the string
+     itself; in that case <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> acts like the
+     equals operator.  An underscore (<TT
+CLASS="LITERAL"
+>_</TT
+>) in
+     <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> stands for (matches) any single
+     character; a percent sign (<TT
+CLASS="LITERAL"
+>%</TT
+>) matches any string
+     of zero or more characters.
+    </P
+><P
+>    Some examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>'abc' LIKE 'abc'    <I
+CLASS="LINEANNOTATION"
+>true</I
+>
+'abc' LIKE 'a%'     <I
+CLASS="LINEANNOTATION"
+>true</I
+>
+'abc' LIKE '_b_'    <I
+CLASS="LINEANNOTATION"
+>true</I
+>
+'abc' LIKE 'c'      <I
+CLASS="LINEANNOTATION"
+>false</I
+></PRE
+><P>
+   </P
+><P
+>    <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> pattern matches always cover the entire
+    string.  To match a pattern anywhere within a string, the
+    pattern must therefore start and end with a percent sign.
+   </P
+><P
+>    To match a literal underscore or percent sign without matching
+    other characters, the respective character in
+    <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> must be 
+    preceded by the escape character.  The default escape
+    character is the backslash but a different one may be selected by
+    using the <TT
+CLASS="LITERAL"
+>ESCAPE</TT
+> clause.  To match the escape
+    character itself, write two escape characters.
+   </P
+><P
+>    Note that the backslash already has a special meaning in string
+    literals, so to write a pattern constant that contains a backslash
+    you must write two backslashes in the query.  Thus, writing a pattern
+    that actually matches a literal backslash means writing four backslashes
+    in the query.  You can avoid this by selecting a different escape
+    character with <TT
+CLASS="LITERAL"
+>ESCAPE</TT
+>; then backslash is not special
+    to <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> anymore. (But it is still special to the string
+    literal parser, so you still need two of them.)
+   </P
+><P
+>    It's also possible to select no escape character by writing
+    <TT
+CLASS="LITERAL"
+>ESCAPE ''</TT
+>.  This effectively disables the
+    escape mechanism, which makes it impossible to turn off the
+    special meaning of underscore and percent signs in the pattern.
+   </P
+><P
+>    The keyword <TT
+CLASS="TOKEN"
+>ILIKE</TT
+> can be used instead of
+    <TT
+CLASS="TOKEN"
+>LIKE</TT
+> to make the match case insensitive according
+    to the active locale.  This is not in the <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> standard but is a
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+   </P
+><P
+>    The operator <TT
+CLASS="LITERAL"
+>~~</TT
+> is equivalent to
+    <TT
+CLASS="FUNCTION"
+>LIKE</TT
+>, and <TT
+CLASS="LITERAL"
+>~~*</TT
+> corresponds to
+    <TT
+CLASS="FUNCTION"
+>ILIKE</TT
+>.  There are also
+    <TT
+CLASS="LITERAL"
+>!~~</TT
+> and <TT
+CLASS="LITERAL"
+>!~~*</TT
+> operators that
+    represent <TT
+CLASS="FUNCTION"
+>NOT LIKE</TT
+> and <TT
+CLASS="FUNCTION"
+>NOT
+    ILIKE</TT
+>.  All of these operators are
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>-specific.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="FUNCTIONS-SQL99-REGEXP"
+>6.6.2. <TT
+CLASS="FUNCTION"
+>SIMILAR TO</TT
+> and <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>
+     Regular Expressions</A
+></H2
+><A
+NAME="AEN7412"
+></A
+><A
+NAME="AEN7414"
+></A
+><A
+NAME="AEN7416"
+></A
+><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>string</I
+></TT
+> SIMILAR TO <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>ESCAPE <TT
+CLASS="REPLACEABLE"
+><I
+>escape-character</I
+></TT
+></SPAN
+>]
+<TT
+CLASS="REPLACEABLE"
+><I
+>string</I
+></TT
+> NOT SIMILAR TO <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>ESCAPE <TT
+CLASS="REPLACEABLE"
+><I
+>escape-character</I
+></TT
+></SPAN
+>]</PRE
+><P
+>     The <TT
+CLASS="FUNCTION"
+>SIMILAR TO</TT
+> operator returns true or false
+     depending on whether its pattern matches the given string.  It is
+     much like <TT
+CLASS="FUNCTION"
+>LIKE</TT
+>, except that it interprets the
+     pattern using <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>'s definition of a regular
+     expression.
+     <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>'s regular expressions are a curious cross
+     between <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> notation and common regular expression
+     notation.
+    </P
+><P
+>     Like <TT
+CLASS="FUNCTION"
+>LIKE</TT
+>, the  <TT
+CLASS="FUNCTION"
+>SIMILAR TO</TT
+>
+     operator succeeds only if its pattern matches the entire string;
+     this is unlike common regular expression practice, wherein the pattern
+     may match any part of the string.
+     Also like
+     <TT
+CLASS="FUNCTION"
+>LIKE</TT
+>, <TT
+CLASS="FUNCTION"
+>SIMILAR TO</TT
+> uses
+     <TT
+CLASS="LITERAL"
+>%</TT
+> and <TT
+CLASS="LITERAL"
+>_</TT
+> as wildcard characters denoting
+     any string and any single character, respectively (these are
+     comparable to <TT
+CLASS="LITERAL"
+>.*</TT
+> and <TT
+CLASS="LITERAL"
+>.</TT
+> in POSIX regular
+     expressions).
+    </P
+><P
+>     In addition to these facilities borrowed from <TT
+CLASS="FUNCTION"
+>LIKE</TT
+>,
+     <TT
+CLASS="FUNCTION"
+>SIMILAR TO</TT
+> supports these pattern-matching
+     metacharacters borrowed from POSIX regular expressions:
+
+    <P
+></P
+></P><UL
+><LI
+><P
+>       <TT
+CLASS="LITERAL"
+>|</TT
+> denotes alternation (either of two alternatives).
+      </P
+></LI
+><LI
+><P
+>       <TT
+CLASS="LITERAL"
+>*</TT
+> denotes repetition of the previous item zero
+       or more times.
+      </P
+></LI
+><LI
+><P
+>       <TT
+CLASS="LITERAL"
+>+</TT
+> denotes repetition of the previous item one
+       or more times.
+      </P
+></LI
+><LI
+><P
+>       Parentheses <TT
+CLASS="LITERAL"
+>()</TT
+> may be used to group items into
+       a single logical item.
+      </P
+></LI
+><LI
+><P
+>       A bracket expression <TT
+CLASS="LITERAL"
+>[...]</TT
+> specifies a character
+       class, just as in POSIX regular expressions.
+      </P
+></LI
+></UL
+><P>
+
+     Notice that bounded repetition (<TT
+CLASS="LITERAL"
+>?</TT
+> and <TT
+CLASS="LITERAL"
+>{...}</TT
+>)
+     are not provided, though they exist in POSIX.  Also, dot (<TT
+CLASS="LITERAL"
+>.</TT
+>)
+     is not a metacharacter.
+    </P
+><P
+>     As with <TT
+CLASS="FUNCTION"
+>LIKE</TT
+>, a backslash disables the special meaning
+     of any of these metacharacters; or a different escape character can
+     be specified with <TT
+CLASS="LITERAL"
+>ESCAPE</TT
+>.
+    </P
+><P
+>    Some examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>'abc' SIMILAR TO 'abc'      <I
+CLASS="LINEANNOTATION"
+>true</I
+>
+'abc' SIMILAR TO 'a'        <I
+CLASS="LINEANNOTATION"
+>false</I
+>
+'abc' SIMILAR TO '%(b|d)%'  <I
+CLASS="LINEANNOTATION"
+>true</I
+>
+'abc' SIMILAR TO '(b|c)%'   <I
+CLASS="LINEANNOTATION"
+>false</I
+></PRE
+><P>
+   </P
+><P
+>     The <TT
+CLASS="FUNCTION"
+>SUBSTRING</TT
+> function with three parameters,
+     <TT
+CLASS="FUNCTION"
+>SUBSTRING(<TT
+CLASS="PARAMETER"
+><I
+>string</I
+></TT
+> FROM
+     <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> FOR
+     <TT
+CLASS="REPLACEABLE"
+><I
+>escape</I
+></TT
+>)</TT
+>, provides
+     extraction of a substring that matches a SQL99 regular expression
+     pattern.  As with <TT
+CLASS="LITERAL"
+>SIMILAR TO</TT
+>, the specified pattern
+     must match to the entire data string, else the function fails and
+     returns null.  To indicate the part of the pattern that should be
+     returned on success, SQL99 specifies that the pattern must
+     contain two occurrences of the escape character followed by
+     double quote (<TT
+CLASS="LITERAL"
+>"</TT
+>).  The text matching the portion of
+     the pattern between these markers is returned.
+    </P
+><P
+>    Some examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SUBSTRING('foobar' FROM '%#"o_b#"%' FOR '#')   <I
+CLASS="LINEANNOTATION"
+>oob</I
+>
+SUBSTRING('foobar' FROM '#"o_b#"%' FOR '#')    <I
+CLASS="LINEANNOTATION"
+>NULL</I
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="FUNCTIONS-POSIX-REGEXP"
+>6.6.3. <SPAN
+CLASS="ACRONYM"
+>POSIX</SPAN
+> Regular Expressions</A
+></H2
+><A
+NAME="AEN7488"
+></A
+><P
+>    <A
+HREF="functions-matching.html#FUNCTIONS-POSIX-TABLE"
+>Table 6-11</A
+> lists the available
+    operators for pattern matching using POSIX regular expressions.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-POSIX-TABLE"
+></A
+><P
+><B
+>Table 6-11. Regular Expression Match Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Operator</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Example</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>~</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Matches regular expression, case sensitive</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>'thomas' ~ '.*thomas.*'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>~*</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Matches regular expression, case insensitive</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>'thomas' ~* '.*Thomas.*'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>!~</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Does not match regular expression, case sensitive</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>'thomas' !~ '.*Thomas.*'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>!~*</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Does not match regular expression, case insensitive</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>'thomas' !~* '.*vadim.*'</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>     <SPAN
+CLASS="ACRONYM"
+>POSIX</SPAN
+> regular expressions provide a more
+     powerful means for 
+     pattern matching than the <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> and
+     <TT
+CLASS="FUNCTION"
+>SIMILAR TO</TT
+> operators.
+     Many Unix tools such as <TT
+CLASS="COMMAND"
+>egrep</TT
+>,
+     <TT
+CLASS="COMMAND"
+>sed</TT
+>, or <TT
+CLASS="COMMAND"
+>awk</TT
+> use a pattern
+     matching language that is similar to the one described here.
+    </P
+><P
+>     A regular expression is a character sequence that is an
+     abbreviated definition of a set of strings (a <I
+CLASS="FIRSTTERM"
+>regular
+      set</I
+>).  A string is said to match a regular expression
+     if it is a member of the regular set described by the regular
+     expression.  As with <TT
+CLASS="FUNCTION"
+>LIKE</TT
+>, pattern characters
+     match string characters exactly unless they are special characters
+     in the regular expression language --- but regular expressions use
+     different special characters than <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> does.
+     Unlike <TT
+CLASS="FUNCTION"
+>LIKE</TT
+> patterns, a
+     regular expression is allowed to match anywhere within a string, unless
+     the regular expression is explicitly anchored to the beginning or
+     end of the string.
+    </P
+><P
+>    Some examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>'abc' ~ 'abc'    <I
+CLASS="LINEANNOTATION"
+>true</I
+>
+'abc' ~ '^a'     <I
+CLASS="LINEANNOTATION"
+>true</I
+>
+'abc' ~ '(b|d)'  <I
+CLASS="LINEANNOTATION"
+>true</I
+>
+'abc' ~ '^(b|c)' <I
+CLASS="LINEANNOTATION"
+>false</I
+></PRE
+><P>
+   </P
+><P
+>     The <TT
+CLASS="FUNCTION"
+>SUBSTRING</TT
+> function with two parameters,
+     <TT
+CLASS="FUNCTION"
+>SUBSTRING(<TT
+CLASS="PARAMETER"
+><I
+>string</I
+></TT
+> FROM
+     <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>)</TT
+>, provides extraction of a substring
+     that matches a POSIX regular expression pattern.  It returns null if
+     there is no match, otherwise the portion of the text that matched the
+     pattern.  But if the pattern contains any parentheses, the portion
+     of the text that matched the first parenthesized subexpression (the
+     one whose left parenthesis comes first) is
+     returned.  You can always put parentheses around the whole expression
+     if you want to use parentheses within it without triggering this
+     exception.
+    </P
+><P
+>    Some examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SUBSTRING('foobar' FROM 'o.b')     <I
+CLASS="LINEANNOTATION"
+>oob</I
+>
+SUBSTRING('foobar' FROM 'o(.)b')   <I
+CLASS="LINEANNOTATION"
+>o</I
+></PRE
+><P>
+   </P
+><P
+>    Regular expressions (<SPAN
+CLASS="ACRONYM"
+>RE</SPAN
+>s), as defined in
+     <SPAN
+CLASS="ACRONYM"
+>POSIX</SPAN
+> 
+    1003.2, come in two forms: modern <SPAN
+CLASS="ACRONYM"
+>RE</SPAN
+>s (roughly those of
+    <TT
+CLASS="COMMAND"
+>egrep</TT
+>; 1003.2 calls these
+    <SPAN
+CLASS="QUOTE"
+>"extended"</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>RE</SPAN
+>s) and obsolete <SPAN
+CLASS="ACRONYM"
+>RE</SPAN
+>s (roughly those of
+    <TT
+CLASS="COMMAND"
+>ed</TT
+>; 1003.2 <SPAN
+CLASS="QUOTE"
+>"basic"</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>RE</SPAN
+>s).
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> implements the modern form.
+   </P
+><P
+>    A (modern) RE is one or more non-empty
+    <I
+CLASS="FIRSTTERM"
+>branches</I
+>, separated by
+    <TT
+CLASS="LITERAL"
+>|</TT
+>.  It matches anything that matches one of the
+    branches.
+   </P
+><P
+>    A branch is one or more <I
+CLASS="FIRSTTERM"
+>pieces</I
+>,
+    concatenated.  It matches a match for the first, followed by a
+    match for the second, etc.
+   </P
+><P
+>    A piece is an <I
+CLASS="FIRSTTERM"
+>atom</I
+> possibly followed by a
+    single <TT
+CLASS="LITERAL"
+>*</TT
+>, <TT
+CLASS="LITERAL"
+>+</TT
+>,
+    <TT
+CLASS="LITERAL"
+>?</TT
+>, or <I
+CLASS="FIRSTTERM"
+>bound</I
+>.  An atom
+    followed by <TT
+CLASS="LITERAL"
+>*</TT
+> matches a sequence of 0 or more
+    matches of the atom.  An atom followed by <TT
+CLASS="LITERAL"
+>+</TT
+>
+    matches a sequence of 1 or more matches of the atom.  An atom
+    followed by <TT
+CLASS="LITERAL"
+>?</TT
+> matches a sequence of 0 or 1
+    matches of the atom.
+   </P
+><P
+>    A <I
+CLASS="FIRSTTERM"
+>bound</I
+> is <TT
+CLASS="LITERAL"
+>{</TT
+> followed by
+    an unsigned decimal integer, possibly followed by
+    <TT
+CLASS="LITERAL"
+>,</TT
+> possibly followed by another unsigned decimal
+    integer, always followed by <TT
+CLASS="LITERAL"
+>}</TT
+>.  The integers
+    must lie between 0 and <TT
+CLASS="SYMBOL"
+>RE_DUP_MAX</TT
+> (255)
+    inclusive, and if there are two of them, the first may not exceed
+    the second.  An atom followed by a bound containing one integer
+    <TT
+CLASS="REPLACEABLE"
+><I
+>i</I
+></TT
+> and no comma matches a sequence of
+    exactly <TT
+CLASS="REPLACEABLE"
+><I
+>i</I
+></TT
+> matches of the atom.  An atom
+    followed by a bound containing one integer
+    <TT
+CLASS="REPLACEABLE"
+><I
+>i</I
+></TT
+> and a comma matches a sequence of
+    <TT
+CLASS="REPLACEABLE"
+><I
+>i</I
+></TT
+> or more matches of the atom.  An atom
+    followed by a bound containing two integers
+    <TT
+CLASS="REPLACEABLE"
+><I
+>i</I
+></TT
+> and <TT
+CLASS="REPLACEABLE"
+><I
+>j</I
+></TT
+>
+    matches a sequence of <TT
+CLASS="REPLACEABLE"
+><I
+>i</I
+></TT
+> through
+    <TT
+CLASS="REPLACEABLE"
+><I
+>j</I
+></TT
+> (inclusive) matches of the atom.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     A repetition operator (<TT
+CLASS="LITERAL"
+>?</TT
+>,
+     <TT
+CLASS="LITERAL"
+>*</TT
+>, <TT
+CLASS="LITERAL"
+>+</TT
+>, or bounds) cannot
+     follow another repetition operator.  A repetition operator cannot
+     begin an expression or subexpression or follow
+     <TT
+CLASS="LITERAL"
+>^</TT
+> or <TT
+CLASS="LITERAL"
+>|</TT
+>.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    An <I
+CLASS="FIRSTTERM"
+>atom</I
+> is a regular expression enclosed in
+    <TT
+CLASS="LITERAL"
+>()</TT
+> (matching a match for the regular
+    expression), an empty set of <TT
+CLASS="LITERAL"
+>()</TT
+> (matching the
+    null string), a <I
+CLASS="FIRSTTERM"
+>bracket expression</I
+> (see
+    below), <TT
+CLASS="LITERAL"
+>.</TT
+> (matching any single character),
+    <TT
+CLASS="LITERAL"
+>^</TT
+> (matching the null string at the beginning of the
+    input string), <TT
+CLASS="LITERAL"
+>$</TT
+> (matching the null string at the end
+    of the input string), a <TT
+CLASS="LITERAL"
+>\</TT
+> followed by one of the
+    characters <TT
+CLASS="LITERAL"
+>^.[$()|*+?{\</TT
+> (matching that
+    character taken as an ordinary character), a <TT
+CLASS="LITERAL"
+>\</TT
+>
+    followed by any other character (matching that character taken as
+    an ordinary character, as if the <TT
+CLASS="LITERAL"
+>\</TT
+> had not been
+    present), or a single character with no other significance
+    (matching that character).  A <TT
+CLASS="LITERAL"
+>{</TT
+> followed by a
+    character other than a digit is an ordinary character, not the
+    beginning of a bound.  It is illegal to end an RE with
+    <TT
+CLASS="LITERAL"
+>\</TT
+>.
+   </P
+><P
+>    Note that the backslash (<TT
+CLASS="LITERAL"
+>\</TT
+>) already has a special
+    meaning in string
+    literals, so to write a pattern constant that contains a backslash
+    you must write two backslashes in the query.
+   </P
+><P
+>    A <I
+CLASS="FIRSTTERM"
+>bracket expression</I
+> is a list of
+    characters enclosed in <TT
+CLASS="LITERAL"
+>[]</TT
+>.  It normally matches
+    any single character from the list (but see below).  If the list
+    begins with <TT
+CLASS="LITERAL"
+>^</TT
+>, it matches any single character
+    (but see below) not from the rest of the list.  If two characters
+    in the list are separated by <TT
+CLASS="LITERAL"
+>-</TT
+>, this is
+    shorthand for the full range of characters between those two
+    (inclusive) in the collating sequence,
+    e.g. <TT
+CLASS="LITERAL"
+>[0-9]</TT
+> in <SPAN
+CLASS="ACRONYM"
+>ASCII</SPAN
+> matches
+    any decimal digit.  It is illegal for two ranges to share an
+    endpoint, e.g.  <TT
+CLASS="LITERAL"
+>a-c-e</TT
+>.  Ranges are very
+    collating-sequence-dependent, and portable programs should avoid
+    relying on them.
+   </P
+><P
+>    To include a literal <TT
+CLASS="LITERAL"
+>]</TT
+> in the list, make it the
+    first character (following a possible <TT
+CLASS="LITERAL"
+>^</TT
+>).  To
+    include a literal <TT
+CLASS="LITERAL"
+>-</TT
+>, make it the first or last
+    character, or the second endpoint of a range.  To use a literal
+    <TT
+CLASS="LITERAL"
+>-</TT
+> as the first endpoint of a range, enclose it
+    in <TT
+CLASS="LITERAL"
+>[.</TT
+> and <TT
+CLASS="LITERAL"
+>.]</TT
+> to make it a
+    collating element (see below).  With the exception of these and
+    some combinations using <TT
+CLASS="LITERAL"
+>[</TT
+> (see next
+    paragraphs), all other special characters, including
+    <TT
+CLASS="LITERAL"
+>\</TT
+>, lose their special significance within a
+    bracket expression.
+   </P
+><P
+>    Within a bracket expression, a collating element (a character, a
+    multiple-character sequence that collates as if it were a single
+    character, or a collating-sequence name for either) enclosed in
+    <TT
+CLASS="LITERAL"
+>[.</TT
+> and <TT
+CLASS="LITERAL"
+>.]</TT
+> stands for the
+    sequence of characters of that collating element.  The sequence is
+    a single element of the bracket expression's list.  A bracket
+    expression containing a multiple-character collating element can thus
+    match more than one character, e.g. if the collating sequence
+    includes a <TT
+CLASS="LITERAL"
+>ch</TT
+> collating element, then the RE
+    <TT
+CLASS="LITERAL"
+>[[.ch.]]*c</TT
+> matches the first five characters of
+    <TT
+CLASS="LITERAL"
+>chchcc</TT
+>.
+   </P
+><P
+>    Within a bracket expression, a collating element enclosed in
+    <TT
+CLASS="LITERAL"
+>[=</TT
+> and <TT
+CLASS="LITERAL"
+>=]</TT
+> is an equivalence
+    class, standing for the sequences of characters of all collating
+    elements equivalent to that one, including itself.  (If there are
+    no other equivalent collating elements, the treatment is as if the
+    enclosing delimiters were <TT
+CLASS="LITERAL"
+>[.</TT
+> and
+    <TT
+CLASS="LITERAL"
+>.]</TT
+>.)  For example, if <TT
+CLASS="LITERAL"
+>o</TT
+> and
+    <TT
+CLASS="LITERAL"
+>^</TT
+> are the members of an equivalence class, then
+    <TT
+CLASS="LITERAL"
+>[[=o=]]</TT
+>, <TT
+CLASS="LITERAL"
+>[[=^=]]</TT
+>, and
+    <TT
+CLASS="LITERAL"
+>[o^]</TT
+> are all synonymous.  An equivalence class
+    may not be an endpoint of a range.
+   </P
+><P
+>    Within a bracket expression, the name of a character class
+    enclosed in <TT
+CLASS="LITERAL"
+>[:</TT
+> and <TT
+CLASS="LITERAL"
+>:]</TT
+> stands
+    for the list of all characters belonging to that class.  Standard
+    character class names are: <TT
+CLASS="LITERAL"
+>alnum</TT
+>,
+    <TT
+CLASS="LITERAL"
+>alpha</TT
+>, <TT
+CLASS="LITERAL"
+>blank</TT
+>,
+    <TT
+CLASS="LITERAL"
+>cntrl</TT
+>, <TT
+CLASS="LITERAL"
+>digit</TT
+>,
+    <TT
+CLASS="LITERAL"
+>graph</TT
+>, <TT
+CLASS="LITERAL"
+>lower</TT
+>,
+    <TT
+CLASS="LITERAL"
+>print</TT
+>, <TT
+CLASS="LITERAL"
+>punct</TT
+>,
+    <TT
+CLASS="LITERAL"
+>space</TT
+>, <TT
+CLASS="LITERAL"
+>upper</TT
+>,
+    <TT
+CLASS="LITERAL"
+>xdigit</TT
+>.  These stand for the character classes
+    defined in
+    <SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>ctype</SPAN
+></SPAN
+>.
+    A locale may provide others.  A character class may not be used as
+    an endpoint of a range.
+   </P
+><P
+>    There are two special cases of bracket expressions:  the bracket
+    expressions <TT
+CLASS="LITERAL"
+>[[:&lt;:]]</TT
+> and
+    <TT
+CLASS="LITERAL"
+>[[:&#62;:]]</TT
+> match the null string at the beginning
+    and end of a word respectively.  A word is defined as a sequence
+    of word characters which is neither preceded nor followed by word
+    characters.  A word character is an alnum character (as defined by
+    <SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>ctype</SPAN
+></SPAN
+>)
+    or an underscore.  This is an extension, compatible with but not
+    specified by <SPAN
+CLASS="ACRONYM"
+>POSIX</SPAN
+> 1003.2, and should be used with caution in
+    software intended to be portable to other systems.
+   </P
+><P
+>    In the event that an RE could match more than one substring of a
+    given string, the RE matches the one starting earliest in the
+    string.  If the RE could match more than one substring starting at
+    that point, it matches the longest.  Subexpressions also match the
+    longest possible substrings, subject to the constraint that the
+    whole match be as long as possible, with subexpressions starting
+    earlier in the RE taking priority over ones starting later.  Note
+    that higher-level subexpressions thus take priority over their
+    lower-level component subexpressions.
+   </P
+><P
+>    Match lengths are measured in characters, not collating
+    elements.  A null string is considered longer than no match at
+    all.  For example, <TT
+CLASS="LITERAL"
+>bb*</TT
+> matches the three middle
+    characters of <TT
+CLASS="LITERAL"
+>abbbc</TT
+>,
+    <TT
+CLASS="LITERAL"
+>(wee|week)(knights|nights)</TT
+> matches all ten
+    characters of <TT
+CLASS="LITERAL"
+>weeknights</TT
+>, when
+    <TT
+CLASS="LITERAL"
+>(.*).*</TT
+> is matched against
+    <TT
+CLASS="LITERAL"
+>abc</TT
+> the parenthesized subexpression matches all
+    three characters, and when <TT
+CLASS="LITERAL"
+>(a*)*</TT
+> is matched
+    against <TT
+CLASS="LITERAL"
+>bc</TT
+> both the whole RE and the
+    parenthesized subexpression match the null string.
+   </P
+><P
+>    If case-independent matching is specified, the effect is much as
+    if all case distinctions had vanished from the alphabet.  When an
+    alphabetic that exists in multiple cases appears as an ordinary
+    character outside a bracket expression, it is effectively
+    transformed into a bracket expression containing both cases,
+    e.g. <TT
+CLASS="LITERAL"
+>x</TT
+> becomes <TT
+CLASS="LITERAL"
+>[xX]</TT
+>.  When
+    it appears inside a bracket expression, all case counterparts of
+    it are added to the bracket expression, so that (e.g.)
+    <TT
+CLASS="LITERAL"
+>[x]</TT
+> becomes <TT
+CLASS="LITERAL"
+>[xX]</TT
+> and
+    <TT
+CLASS="LITERAL"
+>[^x]</TT
+> becomes <TT
+CLASS="LITERAL"
+>[^xX]</TT
+>.
+   </P
+><P
+>    There is no particular limit on the length of <SPAN
+CLASS="ACRONYM"
+>RE</SPAN
+>s, except insofar
+    as memory is limited.  Memory usage is approximately linear in RE
+    size, and largely insensitive to RE complexity, except for bounded
+    repetitions.  Bounded repetitions are implemented by macro
+    expansion, which is costly in time and space if counts are large
+    or bounded repetitions are nested.  An RE like, say,
+    <TT
+CLASS="LITERAL"
+>((((a{1,100}){1,100}){1,100}){1,100}){1,100}</TT
+>
+    will (eventually) run almost any existing machine out of swap
+    space.
+    <A
+NAME="AEN7694"
+HREF="#FTN.AEN7694"
+>[1]</A
+>
+   </P
+></DIV
+></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN7694"
+HREF="functions-matching.html#AEN7694"
+>[1]</A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+>      This was written in 1994, mind you.  The
+      numbers have probably changed, but the problem
+      persists.
+     </P
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-binarystring.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-formatting.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Binary String Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Data Type Formatting Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

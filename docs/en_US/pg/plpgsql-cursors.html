@@ -1,0 +1,613 @@
+<HTML
+><HEAD
+><TITLE
+>Cursors</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/pgSQL - SQL Procedural Language"
+HREF="plpgsql.html"><LINK
+REL="PREVIOUS"
+TITLE="Control Structures"
+HREF="plpgsql-control-structures.html"><LINK
+REL="NEXT"
+TITLE="Errors and Messages"
+HREF="plpgsql-errors-and-messages.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="plpgsql-control-structures.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 19. <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> - <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="plpgsql-errors-and-messages.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPGSQL-CURSORS"
+>19.7. Cursors</A
+></H1
+><P
+>    Rather than executing a whole query at once, it is possible to set
+    up a <I
+CLASS="FIRSTTERM"
+>cursor</I
+> that encapsulates the query, and then read
+    the query result a few rows at a time. One reason for doing this is
+    to avoid memory overrun when the result contains a large number of
+    rows. (However, <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> users don't normally need
+    to worry about that, since FOR loops automatically use a cursor
+    internally to avoid memory problems.) A more interesting usage is to
+    return a reference to a cursor that it has created, allowing the
+    caller to read the rows. This provides an efficient way to return
+    large row sets from functions.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-CURSOR-DECLARATIONS"
+>19.7.1. Declaring Cursor Variables</A
+></H2
+><P
+>     All access to cursors in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> goes through
+     cursor variables, which are always of the special data type
+     <TT
+CLASS="TYPE"
+>refcursor</TT
+>.  One way to create a cursor variable
+     is just to declare it as a variable of type <TT
+CLASS="TYPE"
+>refcursor</TT
+>.
+     Another way is to use the cursor declaration syntax,
+     which in general is:
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> CURSOR [<SPAN
+CLASS="OPTIONAL"
+> ( <TT
+CLASS="REPLACEABLE"
+><I
+>arguments</I
+></TT
+> ) </SPAN
+>] FOR <TT
+CLASS="REPLACEABLE"
+><I
+>select_query</I
+></TT
+> ;</PRE
+><P>
+     (<TT
+CLASS="LITERAL"
+>FOR</TT
+> may be replaced by <TT
+CLASS="LITERAL"
+>IS</TT
+> for Oracle
+     compatibility.)  <TT
+CLASS="REPLACEABLE"
+><I
+>arguments</I
+></TT
+>, if any,
+     are a comma-separated list of <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+     <TT
+CLASS="REPLACEABLE"
+><I
+>datatype</I
+></TT
+> pairs that define names to
+     be replaced by parameter values in the given query.  The actual
+     values to substitute for these names will be specified later,
+     when the cursor is opened.
+    </P
+><P
+>     Some examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DECLARE
+    curs1 refcursor;
+    curs2 CURSOR FOR SELECT * from tenk1;
+    curs3 CURSOR (key int) IS SELECT * from tenk1 where unique1 = key;</PRE
+><P>
+     All three of these variables have the data type <TT
+CLASS="TYPE"
+>refcursor</TT
+>,
+     but the first may be used with any query, while the second has
+     a fully specified query already <I
+CLASS="FIRSTTERM"
+>bound</I
+> to it, and the last
+     has a parameterized query bound to it.  (<TT
+CLASS="LITERAL"
+>key</TT
+> will be
+     replaced by an integer parameter value when the cursor is opened.)
+     The variable <TT
+CLASS="LITERAL"
+>curs1</TT
+>
+     is said to be <I
+CLASS="FIRSTTERM"
+>unbound</I
+> since it is not bound to
+     any particular query.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-CURSOR-OPENING"
+>19.7.2. Opening Cursors</A
+></H2
+><P
+>     Before a cursor can be used to retrieve rows, it must be
+     <I
+CLASS="FIRSTTERM"
+>opened</I
+>. (This is the equivalent action to the SQL
+     command <TT
+CLASS="COMMAND"
+>DECLARE CURSOR</TT
+>.) <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> has
+     four forms of the OPEN statement, two of which use unbound cursor
+     variables and the other two use bound cursor variables.
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36119"
+>19.7.2.1. OPEN FOR SELECT</A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>OPEN <TT
+CLASS="REPLACEABLE"
+><I
+>unbound-cursor</I
+></TT
+> FOR SELECT ...;</PRE
+><P>
+
+        The cursor variable is opened and given the specified query
+	to execute.  The cursor cannot be open already, and it must
+	have been declared as an unbound cursor (that is, as a simple
+	<TT
+CLASS="TYPE"
+>refcursor</TT
+> variable).  The SELECT query is treated
+	in the same way as other SELECT statements in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>:
+	<SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> variable names are substituted,
+	and the query plan is cached for possible re-use.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>OPEN curs1 FOR SELECT * FROM foo WHERE key = mykey;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36128"
+>19.7.2.2. OPEN FOR EXECUTE</A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>OPEN <TT
+CLASS="REPLACEABLE"
+><I
+>unbound-cursor</I
+></TT
+> FOR EXECUTE <TT
+CLASS="REPLACEABLE"
+><I
+>query-string</I
+></TT
+>;</PRE
+><P>
+
+        The cursor variable is opened and given the specified query
+	to execute.  The cursor cannot be open already, and it must
+	have been declared as an unbound cursor (that is, as a simple
+	<TT
+CLASS="TYPE"
+>refcursor</TT
+> variable).  The query is specified as a
+	string expression in the same way as in the EXECUTE command.
+	As usual, this gives flexibility so the query can vary
+	from one run to the next.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>OPEN curs1 FOR EXECUTE ''SELECT * FROM '' || quote_ident($1);</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36136"
+>19.7.2.3. Opening a bound cursor</A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>OPEN <TT
+CLASS="REPLACEABLE"
+><I
+>bound-cursor</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+> ( <TT
+CLASS="REPLACEABLE"
+><I
+>argument_values</I
+></TT
+> ) </SPAN
+>];</PRE
+><P>
+
+        This form of OPEN is used to open a cursor variable whose query
+	was bound to it when it was declared.
+	The cursor cannot be open already.  A list of actual argument
+	value expressions must appear if and only if the cursor was
+	declared to take arguments.  These values will be substituted
+	in the query.
+	The query plan for a bound cursor is always considered
+	cacheable --- there is no equivalent of EXECUTE in this case.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>OPEN curs2;
+OPEN curs3(42);</PRE
+><P>
+       </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-CURSOR-USING"
+>19.7.3. Using Cursors</A
+></H2
+><P
+>     Once a cursor has been opened, it can be manipulated with the
+     statements described here.
+    </P
+><P
+>     These manipulations need not occur in the same function that
+     opened the cursor to begin with.  You can return a <TT
+CLASS="TYPE"
+>refcursor</TT
+>
+     value out of a function and let the caller operate on the cursor.
+     (Internally, a <TT
+CLASS="TYPE"
+>refcursor</TT
+> value is simply the string name
+     of a Portal containing the active query for the cursor.  This name
+     can be passed around, assigned to other <TT
+CLASS="TYPE"
+>refcursor</TT
+> variables,
+     and so on, without disturbing the Portal.)
+    </P
+><P
+>     All Portals are implicitly closed at transaction end.  Therefore
+     a <TT
+CLASS="TYPE"
+>refcursor</TT
+> value is useful to reference an open cursor
+     only until the end of the transaction.
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36153"
+>19.7.3.1. FETCH</A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>FETCH <TT
+CLASS="REPLACEABLE"
+><I
+>cursor</I
+></TT
+> INTO <TT
+CLASS="REPLACEABLE"
+><I
+>target</I
+></TT
+>;</PRE
+><P>
+
+        FETCH retrieves the next row from the cursor into a target,
+	which may be a row variable, a record variable, or a comma-separated
+	list of simple variables, just like SELECT INTO.  As with
+	SELECT INTO, the special variable <TT
+CLASS="LITERAL"
+>FOUND</TT
+> may be
+	checked to see whether a row was obtained or not.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>FETCH curs1 INTO rowvar;
+FETCH curs2 INTO foo,bar,baz;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36161"
+>19.7.3.2. CLOSE</A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>CLOSE <TT
+CLASS="REPLACEABLE"
+><I
+>cursor</I
+></TT
+>;</PRE
+><P>
+
+        CLOSE closes the Portal underlying an open cursor.
+	This can be used to release resources earlier than end of
+	transaction, or to free up the cursor variable to be opened again.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CLOSE curs1;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36167"
+>19.7.3.3. Returning Cursors</A
+></H3
+><P
+>&#13;        <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> functions can return cursors to the
+        caller. This is used to return multiple rows or columns from the
+        function. The function opens the cursor and returns the cursor
+        name to the caller. The caller can then FETCH rows from the
+        cursor. The cursor can be closed by the caller, or it will be
+        closed automatically when the transaction closes.
+
+       </P
+><P
+>        The cursor name returned by the function can be specified by the
+        caller or automatically generated. The following example shows
+        how a cursor name can be supplied by the caller:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE test (col text);
+INSERT INTO test VALUES ('123');
+
+CREATE FUNCTION reffunc(refcursor) RETURNS refcursor AS '
+BEGIN
+        OPEN $1 FOR SELECT col FROM test;
+        RETURN $1;
+END;
+' LANGUAGE 'plpgsql';
+
+BEGIN;
+SELECT reffunc('funccursor');
+FETCH ALL IN funccursor;
+COMMIT;</PRE
+><P>
+       </P
+><P
+>        The following example uses automatic cursor name generation:
+         
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION reffunc2() RETURNS refcursor AS '
+DECLARE
+        ref refcursor;
+BEGIN
+        OPEN ref FOR SELECT col FROM test;
+        RETURN ref;
+END;
+' LANGUAGE 'plpgsql';
+
+BEGIN;
+SELECT reffunc2();
+  
+        reffunc2      
+  --------------------
+   &lt;unnamed cursor 1&gt;
+  (1 row)
+
+FETCH ALL IN "&lt;unnamed cursor 1&gt;";
+COMMIT;</PRE
+><P>
+       </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-control-structures.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-errors-and-messages.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Control Structures</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Errors and Messages</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,339 @@
+<HTML
+><HEAD
+><TITLE
+>Architecture</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="NEXT"
+TITLE="Extending SQL: An Overview"
+HREF="extend.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="extend.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="ARCH-PG"
+>Chapter 7. Architecture</A
+></H1
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ARCH-PG-CONCEPTS"
+>7.1. <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Architectural Concepts</A
+></H1
+><P
+>     Before we begin, you  should  understand  the  basic
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>  system  architecture.   Understanding how the
+     parts of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interact will make the  next  chapter
+     somewhat clearer.
+     In  database  jargon,  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses a simple "process  
+     per-user" client/server model.  A <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> session 
+     consists of the following cooperating Unix processes (programs):
+
+<P
+></P
+></P><UL
+><LI
+><P
+>      	A supervisory daemon process (the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>),</P
+></LI
+><LI
+><P
+>      	the user's frontend application (e.g., the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> program), and</P
+></LI
+><LI
+><P
+>      	one or more backend database servers (the <SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+> process itself).</P
+></LI
+></UL
+><P></P
+><P
+>     A single  <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>  manages  a  given  collection  of
+     databases  on  a  single  host.   Such  a collection of
+     databases is called a cluster (of databases).   A frontend
+     application  that  wishes  to  access  a  given database
+     within a cluster makes calls to an interface library (e.g., <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>)
+     that is linked into the application.
+     The library sends user requests over the network to the
+     <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+(<A
+HREF="arch-pg.html#PGARCH-CONNECTIONS"
+>Figure 7-1</A
+>(a)), 
+which in turn  starts  a  new backend  server  process 
+(<A
+HREF="arch-pg.html#PGARCH-CONNECTIONS"
+>Figure 7-1</A
+>(b)) 
+     
+<DIV
+CLASS="FIGURE"
+><A
+NAME="PGARCH-CONNECTIONS"
+></A
+><P
+><B
+>Figure 7-1. How a connection is established</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="connections.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+
+     and connects the frontend process to the new server 
+(<A
+HREF="arch-pg.html#PGARCH-CONNECTIONS"
+>Figure 7-1</A
+>(c)).
+From that  point  on,  the  frontend process and the backend
+     server communicate without intervention by the 
+     <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>.   Hence, the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> is always running, waiting
+     for connection requests, whereas frontend  and  backend  processes
+     come  and  go.  The <TT
+CLASS="FILENAME"
+>libpq</TT
+> library allows a single 
+     frontend to make multiple connections to backend processes.
+     However,  each backend process is a single-threaded process that can
+     only execute one query at a time; so the communication over any one
+     frontend-to-backend connection is single-threaded.</P
+><P
+>     One  implication of this architecture is that the 
+     <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> and the backend always run on the
+     same machine (the  database  server), while the frontend 
+     application may run  anywhere.   You  should  keep  this  
+     in  mind,
+     because  the  files  that  can  be accessed on a client
+     machine may not be accessible (or may only be  accessed
+     using  a  different  path name)  on  the database server
+     machine.</P
+><P
+>     You should also be aware that the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> and
+     <SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+>  servers  run  with  the  user ID  of the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+     <SPAN
+CLASS="QUOTE"
+>"superuser"</SPAN
+>.
+Note that the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> superuser does not
+have  to  be  any particular user (e.g., a user named 
+<TT
+CLASS="LITERAL"
+>postgres</TT
+>), although many systems are installed that way.
+Furthermore,  the  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>  superuser should
+definitely  not  be the Unix superuser, <TT
+CLASS="LITERAL"
+>root</TT
+>!
+It is safest if the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>  superuser is an
+ordinary, unprivileged user so far as the surrounding Unix system is
+concerned.
+     In any case, all files relating to a database should belong to
+     this <SPAN
+CLASS="PRODUCTNAME"
+>Postgres</SPAN
+> superuser.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="extend.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Server Programming</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: An Overview</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

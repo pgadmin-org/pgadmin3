@@ -1,0 +1,264 @@
+<HTML
+><HEAD
+><TITLE
+>Executor</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Overview of PostgreSQL Internals"
+HREF="overview.html"><LINK
+REL="PREVIOUS"
+TITLE="Planner/Optimizer"
+HREF="planner-optimizer.html"><LINK
+REL="NEXT"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="planner-optimizer.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Overview of PostgreSQL Internals</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="catalogs.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="EXECUTOR"
+>2.6. Executor</A
+></H1
+><P
+>    The <I
+CLASS="FIRSTTERM"
+>executor</I
+> takes the plan handed back by the
+    planner/optimizer and starts processing the top node. In the case of
+    our example (the query given in example \ref{simple_select}) the top
+    node is a <TT
+CLASS="LITERAL"
+>MergeJoin</TT
+> node. 
+   </P
+><P
+>    Before any merge can be done two tuples have to be fetched (one from
+    each subplan). So the executor recursively calls itself to
+    process the subplans (it starts with the subplan attached to
+    <TT
+CLASS="LITERAL"
+>lefttree</TT
+>). The new top node (the top node of the left subplan) is a
+    <TT
+CLASS="LITERAL"
+>SeqScan</TT
+> node and again a tuple has to be fetched before the node
+    itself can be processed. The executor calls itself recursively
+    another time for the subplan attached to <TT
+CLASS="LITERAL"
+>lefttree</TT
+> of the
+    <TT
+CLASS="LITERAL"
+>SeqScan</TT
+> node.
+   </P
+><P
+>    Now the new top node is a <TT
+CLASS="LITERAL"
+>Sort</TT
+> node. As a sort has to be done on
+    the whole relation, the executor starts fetching tuples
+    from the <TT
+CLASS="LITERAL"
+>Sort</TT
+> node's subplan and sorts them into a temporary
+    relation (in memory or a file) when the <TT
+CLASS="LITERAL"
+>Sort</TT
+> node is visited for
+    the first time. (Further examinations of the <TT
+CLASS="LITERAL"
+>Sort</TT
+> node will
+    always return just one tuple from the sorted temporary
+    relation.)
+   </P
+><P
+>    Every time the processing of the <TT
+CLASS="LITERAL"
+>Sort</TT
+> node needs a new tuple the
+    executor is recursively called for the <TT
+CLASS="LITERAL"
+>SeqScan</TT
+> node
+    attached as subplan. The relation (internally referenced by the
+    value given in the <TT
+CLASS="LITERAL"
+>scanrelid</TT
+> field) is scanned for the next
+    tuple. If the tuple satisfies the qualification given by the tree
+    attached to <TT
+CLASS="LITERAL"
+>qpqual</TT
+> it is handed back, otherwise the next tuple
+    is fetched until the qualification is satisfied. If the last tuple of
+    the relation has been processed a <TT
+CLASS="LITERAL"
+>NULL</TT
+> pointer is
+    returned.
+   </P
+><P
+>    After a tuple has been handed back by the <TT
+CLASS="LITERAL"
+>lefttree</TT
+> of the
+    <TT
+CLASS="LITERAL"
+>MergeJoin</TT
+> the <TT
+CLASS="LITERAL"
+>righttree</TT
+> is processed in the same way. If both
+    tuples are present the executor processes the <TT
+CLASS="LITERAL"
+>MergeJoin</TT
+>
+    node. Whenever a new tuple from one of the subplans is needed a
+    recursive call to the executor is performed to obtain it. If a
+    joined tuple could be created it is handed back and one complete
+    processing of the plan tree has finished. 
+   </P
+><P
+>    Now the described steps are performed once for every tuple, until a
+    <TT
+CLASS="LITERAL"
+>NULL</TT
+> pointer is returned for the processing of the
+    <TT
+CLASS="LITERAL"
+>MergeJoin</TT
+> node, indicating that we are finished.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="planner-optimizer.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Planner/Optimizer</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="overview.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>System Catalogs</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

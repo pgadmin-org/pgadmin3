@@ -1,0 +1,829 @@
+<HTML
+><HEAD
+><TITLE
+>Query Language (SQL) Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Extending SQL: Functions"
+HREF="xfunc.html"><LINK
+REL="PREVIOUS"
+TITLE="Extending SQL: Functions"
+HREF="xfunc.html"><LINK
+REL="NEXT"
+TITLE="Procedural Language Functions"
+HREF="xfunc-pl.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xfunc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Functions</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xfunc-pl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XFUNC-SQL"
+>9.2. Query Language (<SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>) Functions</A
+></H1
+><A
+NAME="AEN31362"
+></A
+><P
+>    SQL functions execute an arbitrary list of SQL statements, returning
+    the result of the last query in the list, which must be a
+    <TT
+CLASS="LITERAL"
+>SELECT</TT
+>.
+    In the simple (non-set)
+    case, the first row of the last query's result will be returned.
+    (Bear in mind that <SPAN
+CLASS="QUOTE"
+>"the first row"</SPAN
+> of a multirow
+    result is not well-defined unless you use <TT
+CLASS="LITERAL"
+>ORDER BY</TT
+>.)
+    If the last query happens
+    to return no rows at all, NULL will be returned.
+   </P
+><P
+>    <A
+NAME="AEN31370"
+></A
+>
+    Alternatively, an SQL function may be declared to return a set,
+    by specifying the function's return type
+    as <TT
+CLASS="LITERAL"
+>SETOF</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>sometype</I
+></TT
+>.  In this case
+    all rows of the last query's result are returned.  Further details
+    appear below.
+   </P
+><P
+>    The body of an SQL function should be a list of one or more SQL
+    statements separated by semicolons.  Note that because the syntax
+    of the <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> command requires the body of the
+    function to be enclosed in single quotes, single quote marks
+    (<TT
+CLASS="LITERAL"
+>'</TT
+>) used
+    in the body of the function must be escaped, by writing two single
+    quotes (<TT
+CLASS="LITERAL"
+>''</TT
+>) or a backslash (<TT
+CLASS="LITERAL"
+>\'</TT
+>) where each
+    quote is desired.
+   </P
+><P
+>    Arguments to the SQL function may be referenced in the function
+    body using the syntax <TT
+CLASS="LITERAL"
+>$<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+></TT
+>: $1 refers to
+    the first argument, $2 to the second, and so on.  If an argument
+    is of a composite type, then the <SPAN
+CLASS="QUOTE"
+>"dot notation"</SPAN
+>,
+    e.g., <TT
+CLASS="LITERAL"
+>$1.emp</TT
+>, may be used to access attributes
+    of the argument.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN31385"
+>9.2.1. Examples</A
+></H2
+><P
+>     To illustrate a simple SQL function, consider the following,
+     which might be used to debit a bank account:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION tp1 (integer, numeric) RETURNS integer AS '
+    UPDATE bank 
+        SET balance = balance - $2
+        WHERE accountno = $1;
+    SELECT 1;
+' LANGUAGE SQL;</PRE
+><P>
+
+     A user could execute this function to debit account 17 by $100.00 as
+     follows:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT tp1(17, 100.0);</PRE
+><P>
+    </P
+><P
+>     In practice one would probably like a more useful result from the
+     function than a constant <SPAN
+CLASS="QUOTE"
+>"1"</SPAN
+>, so a more likely definition
+     is
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION tp1 (integer, numeric) RETURNS numeric AS '
+    UPDATE bank 
+        SET balance = balance - $2
+        WHERE accountno = $1;
+    SELECT balance FROM bank WHERE accountno = $1;
+' LANGUAGE SQL;</PRE
+><P>
+
+     which adjusts the balance and returns the new balance.
+    </P
+><P
+>     Any collection of commands in the  <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+     language can be packaged together and defined as a function.
+     The commands can include data modification (i.e.,
+     <TT
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, and
+     <TT
+CLASS="COMMAND"
+>DELETE</TT
+>) as well
+     as <TT
+CLASS="COMMAND"
+>SELECT</TT
+> queries.  However, the final command 
+     must be a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> that returns whatever is
+     specified as the function's return type.  Alternatively, if you
+     want to define a SQL function that performs actions but has no
+     useful value to return, you can define it as returning <TT
+CLASS="TYPE"
+>void</TT
+>.
+     In that case it must not end with a <TT
+CLASS="COMMAND"
+>SELECT</TT
+>.
+     For example:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION clean_EMP () RETURNS void AS '
+    DELETE FROM EMP 
+        WHERE EMP.salary &lt;= 0;
+' LANGUAGE SQL;
+
+SELECT clean_EMP();</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> clean_emp
+-----------
+
+(1 row)</PRE
+><P>
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN31404"
+>9.2.2. <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Functions on Base Types</A
+></H2
+><P
+>     The simplest possible <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> function has no arguments and
+     simply returns a base type, such as <TT
+CLASS="TYPE"
+>integer</TT
+>:
+     
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION one() RETURNS integer AS '
+    SELECT 1 as RESULT;
+' LANGUAGE SQL;
+
+SELECT one();</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> one
+-----
+   1</PRE
+><P>
+    </P
+><P
+>     Notice that we defined a column alias within the function body for the result of the function
+     (with  the  name <TT
+CLASS="LITERAL"
+>RESULT</TT
+>),  but this column alias is not visible
+     outside the function.  Hence,  the  result  is labeled <TT
+CLASS="LITERAL"
+>one</TT
+>
+     instead of <TT
+CLASS="LITERAL"
+>RESULT</TT
+>.
+    </P
+><P
+>     It is almost as easy to define <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> functions  
+     that take base types as arguments.  In the example below, notice
+     how we refer to the arguments within the function as <TT
+CLASS="LITERAL"
+>$1</TT
+>
+     and <TT
+CLASS="LITERAL"
+>$2</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION add_em(integer, integer) RETURNS integer AS '
+    SELECT $1 + $2;
+' LANGUAGE SQL;
+
+SELECT add_em(1, 2) AS answer;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> answer
+--------
+      3</PRE
+><P>
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN31422"
+>9.2.3. <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Functions on Composite Types</A
+></H2
+><P
+>     When  specifying  functions with arguments of composite
+     types, we must  not  only  specify  which
+     argument  we  want (as we did above with <TT
+CLASS="LITERAL"
+>$1</TT
+> and <TT
+CLASS="LITERAL"
+>$2</TT
+>) but
+     also the attributes of  that  argument.   For  example, suppose that
+     <TT
+CLASS="TYPE"
+>EMP</TT
+> is a table containing employee data, and therefore
+     also the name of the composite type of each row of the table.  Here
+     is a function <TT
+CLASS="FUNCTION"
+>double_salary</TT
+> that computes what your
+     salary would be if it were doubled:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION double_salary(EMP) RETURNS integer AS '
+    SELECT $1.salary * 2 AS salary;
+' LANGUAGE SQL;
+
+SELECT name, double_salary(EMP) AS dream
+    FROM EMP
+    WHERE EMP.cubicle ~= point '(2,1)';</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> name | dream
+------+-------
+ Sam  |  2400</PRE
+><P>
+    </P
+><P
+>     Notice the use of the syntax <TT
+CLASS="LITERAL"
+>$1.salary</TT
+>
+     to select one field of the argument row value.  Also notice
+     how the calling <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command uses a table name to denote
+     the entire current row of that table as a composite value.
+    </P
+><P
+>     It is also possible to build a function that returns a composite type.
+     This is an example of a function 
+     that returns a single <TT
+CLASS="TYPE"
+>EMP</TT
+> row:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION new_emp() RETURNS EMP AS '
+    SELECT text ''None'' AS name,
+        1000 AS salary,
+        25 AS age,
+        point ''(2,2)'' AS cubicle;
+' LANGUAGE SQL;</PRE
+><P>
+    </P
+><P
+>     In this case we have specified each of  the  attributes
+     with  a  constant value, but any computation or expression 
+     could have been substituted for these constants.
+     Note two important things about defining the function:
+
+     <P
+></P
+></P><UL
+><LI
+><P
+>	The  target  list  order must be exactly the same as
+	that in which the columns appear in the table associated
+	with the composite type.  (Naming the columns, as we did above,
+	is irrelevant to the system.)
+       </P
+></LI
+><LI
+><P
+>	You must typecast the expressions to match the
+	definition of the composite type, or you will get errors like this:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  function declared to return emp returns varchar instead of text at column 1</TT
+></PRE
+><P>
+       </P
+></LI
+></UL
+><P>
+    </P
+><P
+>     A function that returns a row (composite type) can be used as a table
+     function, as described below.  It can also be called in the context
+     of an SQL expression, but only when you
+     extract a single attribute out of the row or pass the entire row into
+     another function that accepts the same composite type.  For example,
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT (new_emp()).name;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> name
+------
+ None</PRE
+><P>
+
+     We need the extra parentheses to keep the parser from getting confused:
+
+</P><PRE
+CLASS="SCREEN"
+>SELECT new_emp().name;
+ERROR:  parser: parse error at or near "."</PRE
+><P>
+    </P
+><P
+>     Another option is to use
+     functional notation for extracting an attribute.  The  simple  way 
+     to explain this is that we can use the
+     notations <TT
+CLASS="LITERAL"
+>attribute(table)</TT
+>  and  <TT
+CLASS="LITERAL"
+>table.attribute</TT
+>
+     interchangeably:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name(new_emp());</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> name
+------
+ None</PRE
+><P>
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>--
+-- this is the same as:
+--  SELECT EMP.name AS youngster FROM EMP WHERE EMP.age &lt; 30
+--
+SELECT name(EMP) AS youngster
+    FROM EMP
+    WHERE age(EMP) &lt; 30;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> youngster
+-----------
+ Sam</PRE
+><P>
+    </P
+><P
+>     Another way to use a function returning a row result is to declare a
+     second function accepting a row type parameter, and pass the function
+     result to it:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION getname(emp) RETURNS text AS
+'SELECT $1.name;'
+LANGUAGE SQL;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+>SELECT getname(new_emp());
+ getname
+---------
+ None
+(1 row)</PRE
+><P>
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN31460"
+>9.2.4. <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Table Functions</A
+></H2
+><P
+>     A table function is one that may be used in the <TT
+CLASS="COMMAND"
+>FROM</TT
+>
+     clause of a query. All SQL language functions may be used in this manner,
+     but it is particularly useful for functions returning composite types.
+     If the function is defined to return a base type, the table function
+     produces a one-column table.  If the function is defined to return
+     a composite type, the table function produces a column for each column
+     of the composite type.
+    </P
+><P
+>     Here is an example:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE foo (fooid int, foosubid int, fooname text);
+INSERT INTO foo VALUES(1,1,'Joe');
+INSERT INTO foo VALUES(1,2,'Ed');
+INSERT INTO foo VALUES(2,1,'Mary');
+
+CREATE FUNCTION getfoo(int) RETURNS foo AS '
+    SELECT * FROM foo WHERE fooid = $1;
+' LANGUAGE SQL;
+
+SELECT *, upper(fooname) FROM getfoo(1) AS t1;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> fooid | foosubid | fooname | upper
+-------+----------+---------+-------
+     1 |        1 | Joe     | JOE
+(2 rows)</PRE
+><P>
+
+     As the example shows, we can work with the columns of the function's
+     result just the same as if they were columns of a regular table.
+    </P
+><P
+>     Note that we only got one row out of the function.  This is because
+     we did not say <TT
+CLASS="LITERAL"
+>SETOF</TT
+>.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN31470"
+>9.2.5. <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Functions Returning Sets</A
+></H2
+><P
+>     When an SQL function is declared as returning <TT
+CLASS="LITERAL"
+>SETOF</TT
+>
+     <TT
+CLASS="REPLACEABLE"
+><I
+>sometype</I
+></TT
+>, the function's final
+     <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query is executed to completion, and each row it
+     outputs is returned as an element of the set.
+    </P
+><P
+>     This feature is normally used by calling the function as a table
+     function.  In this case each row returned by the function becomes
+     a row of the table seen by the query.  For example, assume that
+     table <TT
+CLASS="LITERAL"
+>foo</TT
+> has the same contents as above, and we say:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION getfoo(int) RETURNS setof foo AS '
+    SELECT * FROM foo WHERE fooid = $1;
+' LANGUAGE SQL;
+
+SELECT * FROM getfoo(1) AS t1;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> fooid | foosubid | fooname
+-------+----------+---------
+     1 |        1 | Joe
+     1 |        2 | Ed
+(2 rows)</PRE
+><P>
+    </P
+><P
+>     Currently, functions returning sets may also be called in the target list
+     of a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query.  For each row that the <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+     generates by itself, the function returning set is invoked, and an output
+     row is generated for each element of the function's result set. Note,
+     however, that this capability is deprecated and may be removed in future
+     releases. The following is an example function returning a set from the
+     target list:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION listchildren(text) RETURNS SETOF text AS
+'SELECT name FROM nodes WHERE parent = $1'
+LANGUAGE SQL;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+>SELECT * FROM nodes;
+   name    | parent
+-----------+--------
+ Top       |
+ Child1    | Top
+ Child2    | Top
+ Child3    | Top
+ SubChild1 | Child1
+ SubChild2 | Child1
+(6 rows)
+
+SELECT listchildren('Top');
+ listchildren
+--------------
+ Child1
+ Child2
+ Child3
+(3 rows)
+
+SELECT name, listchildren(name) FROM nodes;
+  name  | listchildren
+--------+--------------
+ Top    | Child1
+ Top    | Child2
+ Top    | Child3
+ Child1 | SubChild1
+ Child1 | SubChild2
+(5 rows)</PRE
+><P>
+
+     In the last <TT
+CLASS="COMMAND"
+>SELECT</TT
+>,
+     notice that no output row appears for <TT
+CLASS="LITERAL"
+>Child2</TT
+>, <TT
+CLASS="LITERAL"
+>Child3</TT
+>, etc.
+     This happens because <TT
+CLASS="FUNCTION"
+>listchildren</TT
+> returns an empty set
+     for those inputs, so no output rows are generated.
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xfunc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xfunc-pl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="xfunc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Procedural Language Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

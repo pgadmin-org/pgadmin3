@@ -1,0 +1,516 @@
+<HTML
+><HEAD
+><TITLE
+>Server Programming Interface</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="Examples"
+HREF="trigger-examples.html"><LINK
+REL="NEXT"
+TITLE="SPI_connect"
+HREF="spi-spiconnect.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="trigger-examples.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="spi-spiconnect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="SPI"
+>Chapter 17. Server Programming Interface</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>17.1. <A
+HREF="spi.html#SPI-INTERFACE"
+>Interface Functions</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="spi-spiconnect.html"
+>SPI_connect</A
+>&nbsp;--&nbsp;   Connects your procedure to the SPI manager.</DT
+><DT
+><A
+HREF="spi-spifinish.html"
+>SPI_finish</A
+>&nbsp;--&nbsp;   Disconnects your procedure from the SPI manager.</DT
+><DT
+><A
+HREF="spi-spiexec.html"
+>SPI_exec</A
+>&nbsp;--&nbsp;   Creates an execution plan (parser+planner+optimizer) and executes a query.</DT
+><DT
+><A
+HREF="spi-spiprepare.html"
+>SPI_prepare</A
+>&nbsp;--&nbsp;   Prepares a plan for a query, without executing it yet</DT
+><DT
+><A
+HREF="spi-spiexecp.html"
+>SPI_execp</A
+>&nbsp;--&nbsp;Executes a plan from <TT
+CLASS="FUNCTION"
+>SPI_prepare</TT
+></DT
+><DT
+><A
+HREF="spi-spicursor-open.html"
+>SPI_cursor_open</A
+>&nbsp;--&nbsp;Sets up a cursor using a plan created with <TT
+CLASS="FUNCTION"
+>SPI_prepare</TT
+></DT
+><DT
+><A
+HREF="spi-spicursor-find.html"
+>SPI_cursor_find</A
+>&nbsp;--&nbsp;Finds an existing cursor (Portal) by name</DT
+><DT
+><A
+HREF="spi-spicursor-fetch.html"
+>SPI_cursor_fetch</A
+>&nbsp;--&nbsp;Fetches some rows from a cursor</DT
+><DT
+><A
+HREF="spi-spicursor-move.html"
+>SPI_cursor_move</A
+>&nbsp;--&nbsp;Moves a cursor</DT
+><DT
+><A
+HREF="spi-spicursor-close.html"
+>SPI_cursor_close</A
+>&nbsp;--&nbsp;Closes a cursor</DT
+><DT
+><A
+HREF="spi-spisaveplan.html"
+>SPI_saveplan</A
+>&nbsp;--&nbsp;   Saves a passed plan</DT
+></DL
+></DD
+><DT
+>17.2. <A
+HREF="spi-interface-support.html"
+>Interface Support Functions</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="spi-spifnumber.html"
+>SPI_fnumber</A
+>&nbsp;--&nbsp;Finds the attribute number for specified attribute name</DT
+><DT
+><A
+HREF="spi-spifname.html"
+>SPI_fname</A
+>&nbsp;--&nbsp;Finds the attribute name for the specified attribute number</DT
+><DT
+><A
+HREF="spi-spigetvalue.html"
+>SPI_getvalue</A
+>&nbsp;--&nbsp;Returns the string value of the specified attribute</DT
+><DT
+><A
+HREF="spi-spigetbinval.html"
+>SPI_getbinval</A
+>&nbsp;--&nbsp;Returns the binary value of the specified attribute</DT
+><DT
+><A
+HREF="spi-spigettype.html"
+>SPI_gettype</A
+>&nbsp;--&nbsp;Returns the type name of the specified attribute</DT
+><DT
+><A
+HREF="spi-spigettypeid.html"
+>SPI_gettypeid</A
+>&nbsp;--&nbsp;Returns the type <SPAN
+CLASS="ACRONYM"
+>OID</SPAN
+> of the specified attribute</DT
+><DT
+><A
+HREF="spi-spigetrelname.html"
+>SPI_getrelname</A
+>&nbsp;--&nbsp;Returns the name of the specified relation</DT
+></DL
+></DD
+><DT
+>17.3. <A
+HREF="spi-memory.html"
+>Memory Management</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="spi-spicopytuple.html"
+>SPI_copytuple</A
+>&nbsp;--&nbsp;Makes copy of tuple in upper Executor context</DT
+><DT
+><A
+HREF="spi-spicopytupledesc.html"
+>SPI_copytupledesc</A
+>&nbsp;--&nbsp;Makes copy of tuple descriptor in upper Executor context</DT
+><DT
+><A
+HREF="spi-spicopytupleintoslot.html"
+>SPI_copytupleintoslot</A
+>&nbsp;--&nbsp;Makes copy of tuple and descriptor in upper Executor context</DT
+><DT
+><A
+HREF="spi-spimodifytuple.html"
+>SPI_modifytuple</A
+>&nbsp;--&nbsp;Creates a tuple by replacing selected fields of a given tuple</DT
+><DT
+><A
+HREF="spi-spipalloc.html"
+>SPI_palloc</A
+>&nbsp;--&nbsp;Allocates memory in upper Executor context</DT
+><DT
+><A
+HREF="spi-spirepalloc.html"
+>SPI_repalloc</A
+>&nbsp;--&nbsp;Re-allocates memory in upper Executor context</DT
+><DT
+><A
+HREF="spi-spipfree.html"
+>SPI_pfree</A
+>&nbsp;--&nbsp;Frees memory in upper Executor context</DT
+><DT
+><A
+HREF="spi-spifreetuple.html"
+>SPI_freetuple</A
+>&nbsp;--&nbsp;Frees a tuple allocated in upper Executor context</DT
+><DT
+><A
+HREF="spi-spifreetuptable.html"
+>SPI_freetuptable</A
+>&nbsp;--&nbsp;Frees a tuple set created by <TT
+CLASS="FUNCTION"
+>SPI_exec</TT
+> or similar function</DT
+><DT
+><A
+HREF="spi-spifreeplan.html"
+>SPI_freeplan</A
+>&nbsp;--&nbsp;   Releases a previously saved plan</DT
+></DL
+></DD
+><DT
+>17.4. <A
+HREF="spi-visibility.html"
+>Visibility of Data Changes</A
+></DT
+><DT
+>17.5. <A
+HREF="spi-examples.html"
+>Examples</A
+></DT
+></DL
+></DIV
+><P
+>The <I
+CLASS="FIRSTTERM"
+>Server Programming Interface</I
+> 
+(<SPAN
+CLASS="ACRONYM"
+>SPI</SPAN
+>) gives users the
+ability to run <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> queries inside user-defined 
+<SPAN
+CLASS="ACRONYM"
+>C</SPAN
+> functions.</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>The available Procedural Languages (<SPAN
+CLASS="ACRONYM"
+>PL</SPAN
+>) give an alternate
+means to build functions that can execute queries.</P
+></BLOCKQUOTE
+></DIV
+><P
+>In fact, <SPAN
+CLASS="ACRONYM"
+>SPI</SPAN
+> is just a set of native interface functions
+to simplify access to the Parser, Planner, Optimizer and Executor. 
+<SPAN
+CLASS="ACRONYM"
+>SPI</SPAN
+> also does some memory management.</P
+><P
+>To avoid misunderstanding we'll use <I
+CLASS="FIRSTTERM"
+>function</I
+> 
+to mean <SPAN
+CLASS="ACRONYM"
+>SPI</SPAN
+> interface functions and 
+<I
+CLASS="FIRSTTERM"
+>procedure</I
+> for user-defined C-functions 
+using <SPAN
+CLASS="ACRONYM"
+>SPI</SPAN
+>.</P
+><P
+>Procedures which use <SPAN
+CLASS="ACRONYM"
+>SPI</SPAN
+> are called by the
+Executor.  The <SPAN
+CLASS="ACRONYM"
+>SPI</SPAN
+> calls recursively invoke the
+Executor in turn to run queries.  When the Executor is invoked
+recursively, it may itself call procedures which may make
+<SPAN
+CLASS="ACRONYM"
+>SPI</SPAN
+> calls.</P
+><P
+>Note that if during execution of a query from a procedure the transaction is
+aborted, then control will not be returned to your procedure. Rather, all work
+will be rolled back and the server will wait for the next command from the
+client.  This will probably be changed in future versions.</P
+><P
+>A related restriction is the inability to execute BEGIN, END and ABORT
+(transaction control statements).  This will also be
+changed in the future.</P
+><P
+>If successful, <SPAN
+CLASS="ACRONYM"
+>SPI</SPAN
+> functions return a non-negative result (either via
+a returned integer value or in SPI_result global variable, as described below).
+On error, a negative or NULL result will be returned.</P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SPI-INTERFACE"
+>17.1. Interface Functions</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="spi-spiconnect.html"
+>SPI_connect</A
+>&nbsp;--&nbsp;   Connects your procedure to the SPI manager.</DT
+><DT
+><A
+HREF="spi-spifinish.html"
+>SPI_finish</A
+>&nbsp;--&nbsp;   Disconnects your procedure from the SPI manager.</DT
+><DT
+><A
+HREF="spi-spiexec.html"
+>SPI_exec</A
+>&nbsp;--&nbsp;   Creates an execution plan (parser+planner+optimizer) and executes a query.</DT
+><DT
+><A
+HREF="spi-spiprepare.html"
+>SPI_prepare</A
+>&nbsp;--&nbsp;   Prepares a plan for a query, without executing it yet</DT
+><DT
+><A
+HREF="spi-spiexecp.html"
+>SPI_execp</A
+>&nbsp;--&nbsp;Executes a plan from <TT
+CLASS="FUNCTION"
+>SPI_prepare</TT
+></DT
+><DT
+><A
+HREF="spi-spicursor-open.html"
+>SPI_cursor_open</A
+>&nbsp;--&nbsp;Sets up a cursor using a plan created with <TT
+CLASS="FUNCTION"
+>SPI_prepare</TT
+></DT
+><DT
+><A
+HREF="spi-spicursor-find.html"
+>SPI_cursor_find</A
+>&nbsp;--&nbsp;Finds an existing cursor (Portal) by name</DT
+><DT
+><A
+HREF="spi-spicursor-fetch.html"
+>SPI_cursor_fetch</A
+>&nbsp;--&nbsp;Fetches some rows from a cursor</DT
+><DT
+><A
+HREF="spi-spicursor-move.html"
+>SPI_cursor_move</A
+>&nbsp;--&nbsp;Moves a cursor</DT
+><DT
+><A
+HREF="spi-spicursor-close.html"
+>SPI_cursor_close</A
+>&nbsp;--&nbsp;Closes a cursor</DT
+><DT
+><A
+HREF="spi-spisaveplan.html"
+>SPI_saveplan</A
+>&nbsp;--&nbsp;   Saves a passed plan</DT
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="trigger-examples.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spiconnect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Examples</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_connect</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,826 @@
+<HTML
+><HEAD
+><TITLE
+>pg_ctl</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="PREVIOUS"
+TITLE="ipcclean"
+HREF="app-ipcclean.html"><LINK
+REL="NEXT"
+TITLE="pg_controldata"
+HREF="app-pgcontroldata.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="app-ipcclean.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="app-pgcontroldata.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-PG-CTL"
+><SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+></A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN50933"
+></A
+><H2
+>Name</H2
+>pg_ctl&nbsp;--&nbsp;start, stop, or restart a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN50937"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>pg_ctl</TT
+>  start  [-w] [-s] [-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+>] [-l <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>] [-o <TT
+CLASS="REPLACEABLE"
+><I
+>options</I
+></TT
+>] [-p <TT
+CLASS="REPLACEABLE"
+><I
+>path</I
+></TT
+>]<BR><TT
+CLASS="COMMAND"
+>pg_ctl</TT
+>  stop  [-W] [-s] [-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+>] [-m
+       s[mart] | f[ast] | i[mmediate] 
+   ]<BR><TT
+CLASS="COMMAND"
+>pg_ctl</TT
+>  restart  [-w] [-s] [-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+>] [-m
+       s[mart] | f[ast] | i[mmediate] 
+   ] [-o <TT
+CLASS="REPLACEABLE"
+><I
+>options</I
+></TT
+>]<BR><TT
+CLASS="COMMAND"
+>pg_ctl</TT
+>  reload  [-s] [-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+>]<BR><TT
+CLASS="COMMAND"
+>pg_ctl</TT
+>  status  [-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-PG-CTL-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+> is a utility for starting,
+   stopping, or restarting <A
+HREF="app-postmaster.html"
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></A
+>, the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend server, or displaying
+   the status of a running postmaster.  Although the postmaster can be
+   started manually, <SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+> encapsulates
+   tasks such as redirecting log output, properly detaching from the
+   terminal and process group, and it provides convenient options for
+   controlled shutdown.
+  </P
+><P
+>   In <TT
+CLASS="OPTION"
+>start</TT
+> mode, a new postmaster is launched.  The
+   server is started in the background, the standard input attached to
+   <TT
+CLASS="FILENAME"
+>/dev/null</TT
+>.  The standard output and standard
+   error are either appended to a log file, if the <TT
+CLASS="OPTION"
+>-l</TT
+>
+   option is used, or are redirected to
+   <SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+>'s standard output (not standard
+   error).  If no log file is chosen, the standard output of
+   <SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+> should be redirected to a file or
+   piped to another process, for example a log rotating program,
+   otherwise the postmaster will write its output the the controlling
+   terminal (from the background) and will not leave the shell's
+   process group.
+  </P
+><P
+>   In <TT
+CLASS="OPTION"
+>stop</TT
+> mode, the postmaster that is running in
+   the specified data directory is shut down.  Three different
+   shutdown methods can be selected with the <TT
+CLASS="OPTION"
+>-m</TT
+>
+   option: <SPAN
+CLASS="QUOTE"
+>"Smart"</SPAN
+> mode waits for all the clients to
+   disconnect.  This is the default.  <SPAN
+CLASS="QUOTE"
+>"Fast"</SPAN
+> mode does
+   not wait for clients to disconnect.  All active transactions are
+   rolled back and clients are forcibly disconnected, then the
+   database is shut down.  <SPAN
+CLASS="QUOTE"
+>"Immediate"</SPAN
+> mode will abort
+   all server processes without clean shutdown.  This will lead to a recovery
+   run on restart.
+  </P
+><P
+>   <TT
+CLASS="OPTION"
+>restart</TT
+> mode effectively executes a stop followed
+   by a start.  This allows the changing of postmaster command line
+   options.
+  </P
+><P
+>   <TT
+CLASS="OPTION"
+>reload</TT
+> mode simply sends the postmaster a <SPAN
+CLASS="SYSTEMITEM"
+>SIGHUP</SPAN
+> signal,
+   causing it to reread its configuration files
+   (<TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>, <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+>,
+   etc.).  This allows changing of configuration-file options that do not
+   require a complete restart to take effect.
+  </P
+><P
+>   <TT
+CLASS="OPTION"
+>status</TT
+> mode checks whether a postmaster is running
+   and if so displays the <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+> and the command line
+   options that were used to invoke it.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-PG-CTL-OPTIONS"
+></A
+><H2
+>Options</H2
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the file system location of the database files.  If
+	this is omitted, the environment variable
+	<TT
+CLASS="ENVAR"
+>PGDATA</TT
+> is used.
+       </P
+></DD
+><DT
+>-l <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></DT
+><DD
+><P
+>        Append the server log output to
+        <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>.  If the file does not
+        exist, it is created.  The <SPAN
+CLASS="SYSTEMITEM"
+>umask</SPAN
+> is set to 077, so access to
+        the log file from other users is disallowed by default.
+       </P
+></DD
+><DT
+>-m <TT
+CLASS="REPLACEABLE"
+><I
+>mode</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the shutdown mode.  <TT
+CLASS="REPLACEABLE"
+><I
+>mode</I
+></TT
+>
+	may be <TT
+CLASS="LITERAL"
+>smart</TT
+>, <TT
+CLASS="LITERAL"
+>fast</TT
+>, or
+	<TT
+CLASS="LITERAL"
+>immediate</TT
+>, or the first letter of one of
+	these three.
+       </P
+></DD
+><DT
+>-o <TT
+CLASS="REPLACEABLE"
+><I
+>options</I
+></TT
+></DT
+><DD
+><P
+>        Specifies options to be passed directly to
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>.
+       </P
+><P
+>	The parameters are usually surrounded by single or double
+	quotes to ensure that they are passed through as a group.
+       </P
+></DD
+><DT
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>path</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the location of the <TT
+CLASS="FILENAME"
+>postmaster</TT
+>
+	executable.  By default the postmaster is taken from the same
+	directory as <TT
+CLASS="COMMAND"
+>pg_ctl</TT
+>, or failing that, the hard-wired
+	installation directory.  It is not necessary to use this
+	option unless you are doing something unusual and get errors
+	that the postmaster was not found.
+       </P
+></DD
+><DT
+>-s</DT
+><DD
+><P
+>        Only print errors, no informational messages.
+       </P
+></DD
+><DT
+>-w</DT
+><DD
+><P
+>	Wait for the start or shutdown to complete.  Times out after
+	60 seconds.  This is the default for shutdowns.
+       </P
+></DD
+><DT
+>-W</DT
+><DD
+><P
+>        Do not wait for start or shutdown to complete.  This is the
+        default for starts and restarts.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51069"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATA</TT
+></DT
+><DD
+><P
+>      Default data direction location
+     </P
+></DD
+></DL
+></DIV
+><P
+>   For others, see <A
+HREF="app-postmaster.html"
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></A
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51079"
+></A
+><H2
+>Files</H2
+><P
+>    If the file <TT
+CLASS="FILENAME"
+>postmaster.opts.default</TT
+> exists in
+    the data directory, the contents of the file will be passed as
+    options to the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>, unless
+    overridden by the <TT
+CLASS="OPTION"
+>-o</TT
+> option.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51085"
+></A
+><H2
+>Notes</H2
+><P
+>   Waiting for complete start is not a well-defined operation and may
+   fail if access control is set up so that a local client cannot
+   connect without manual interaction.  It should be avoided.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-PGCTL-2"
+></A
+><H2
+>Examples</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-APP-PGCTL-3"
+></A
+><H3
+>Starting the postmaster</H3
+><P
+>    To start up a <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_ctl start</B
+></TT
+></PRE
+><P>
+   </P
+><P
+>    An example of starting the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>,
+    blocking until the postmaster comes up is:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_ctl -w start</B
+></TT
+></PRE
+><P>
+   </P
+><P
+>    For a <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> using port 5433, and
+    running without <TT
+CLASS="FUNCTION"
+>fsync</TT
+>, use:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_ctl -o "-F -p 5433" start</B
+></TT
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-APP-PGCTL-4"
+></A
+><H3
+>Stopping the postmaster</H3
+><P
+></P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_ctl stop</B
+></TT
+></PRE
+><P>
+    stops the postmaster. Using the <TT
+CLASS="OPTION"
+>-m</TT
+> switch allows one
+    to control <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>how</I
+></SPAN
+> the backend shuts down.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-APP-PGCTL-5"
+></A
+><H3
+>Restarting the postmaster</H3
+><P
+>    This is almost equivalent to stopping the
+    <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> and starting it again
+    except that <TT
+CLASS="COMMAND"
+>pg_ctl</TT
+> saves and reuses the command line options that
+    were passed to the previously running instance.  To restart
+    the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> in the simplest form:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_ctl restart</B
+></TT
+></PRE
+><P>
+   </P
+><P
+>    To restart <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>,
+    waiting for it to shut down and to come up:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_ctl -w restart</B
+></TT
+></PRE
+><P>
+   </P
+><P
+>    To restart using port 5433 and disabling <TT
+CLASS="FUNCTION"
+>fsync</TT
+> after restarting:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_ctl -o "-F -p 5433" restart</B
+></TT
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-APP-PGCTL-6"
+></A
+><H3
+>Showing postmaster status</H3
+><P
+>    Here is a sample status output from
+    <SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+>:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_ctl status</B
+></TT
+>
+<TT
+CLASS="COMPUTEROUTPUT"
+>pg_ctl: postmaster is running (pid: 13718)
+Command line was:
+/usr/local/pgsql/bin/postmaster '-D' '/usr/local/pgsql/data' '-p' '5433' '-B' '128'</TT
+></PRE
+><P>
+    This is the command line that would be invoked in restart mode.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51143"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="app-postmaster.html"
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></A
+>, <I
+CLASS="CITETITLE"
+>PostgreSQL Administrator's Guide</I
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-ipcclean.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pgcontroldata.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>ipcclean</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>pg_controldata</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

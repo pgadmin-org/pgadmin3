@@ -1,0 +1,349 @@
+<HTML
+><HEAD
+><TITLE
+>ALTER GROUP</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER DATABASE"
+HREF="sql-alterdatabase.html"><LINK
+REL="NEXT"
+TITLE="ALTER TABLE"
+HREF="sql-altertable.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERGROUP"
+>ALTER GROUP</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN37344"
+></A
+><H2
+>Name</H2
+>   ALTER GROUP
+  &nbsp;--&nbsp;   add users to a group or remove users from a group
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN37347"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ADD USER <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> [, ... ]
+ALTER GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> DROP USER <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> [, ... ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERGROUP-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name of the group to modify.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></DT
+><DD
+><P
+>        Users which are to be added or removed from the group. The user
+        names must exist.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERGROUP-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ALTER GROUP</TT
+></DT
+><DD
+><P
+>	Message returned if the alteration was successful.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERGROUP-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER GROUP</TT
+> is used to add or remove users from a
+   group. Only database superusers can use this command.
+   Adding a user to a group does not create the user. Similarly, removing
+   a user from a group does not drop the user itself.
+  </P
+><P
+>   Use <A
+HREF="sql-creategroup.html"
+><I
+>CREATE GROUP</I
+></A
+>
+   to create a new group and <A
+HREF="sql-dropgroup.html"
+><I
+>DROP GROUP</I
+></A
+> to remove a group.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERGROUP-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Add users to a group:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER GROUP staff ADD USER karl, john;</PRE
+><P>
+
+   Remove a user from a group:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER GROUP workers DROP USER beth;</PRE
+><P>
+
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERGROUP-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERGROUP-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>ALTER GROUP</TT
+> statement in
+    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>. The concept of roles is
+    similar.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER DATABASE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER TABLE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

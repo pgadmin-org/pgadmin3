@@ -1,0 +1,287 @@
+<HTML
+><HEAD
+><TITLE
+>inserttable</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Connection Object: pgobject"
+HREF="pygresql-pg-pgobject.html"><LINK
+REL="PREVIOUS"
+TITLE="getnotify"
+HREF="pygresql-getnotify.html"><LINK
+REL="NEXT"
+TITLE="putline"
+HREF="pygresql-putline.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="pygresql-getnotify.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="pygresql-putline.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="PYGRESQL-INSERTTABLE"
+>inserttable</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN29884"
+></A
+><H2
+>Name</H2
+>inserttable&nbsp;--&nbsp;insert a list into a table</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN29887"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>inserttable(<TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+>, <TT
+CLASS="PARAMETER"
+><I
+>values</I
+></TT
+>)</PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PYGRESQL-INSERTTABLE-1"
+></A
+><H3
+>Parameters</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>The table name (string).</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>values</I
+></TT
+></DT
+><DD
+><P
+>The list of rows values to insert (list).</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PYGRESQL-INSERTTABLE-2"
+></A
+><H3
+>Return Type</H3
+><P
+>            none
+          </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PYGRESQL-INSERTTABLE-3"
+></A
+><H3
+>Exceptions</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="CLASSNAME"
+>TypeError</TT
+></DT
+><DD
+><P
+>                Bad argument type or too many (any) arguments.
+              </P
+></DD
+><DT
+><TT
+CLASS="CLASSNAME"
+>pg.error</TT
+></DT
+><DD
+><P
+>                Invalid connection.
+              </P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-PYGRESQL-INSERTTABLE-1"
+></A
+><H2
+>Description</H2
+><P
+>        <TT
+CLASS="FUNCTION"
+>inserttable()</TT
+> method allows to quickly
+        insert large blocks of data in a table: it inserts the whole
+        values list into the given table. The list is a list of
+        tuples/lists that define the values for each inserted row. The
+        rows values may contain string, integer, long or double (real)
+        values.  <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Be very careful:</I
+></SPAN
+> this method
+        does not type-check the fields according to the table
+        definition; it just look whether or not it knows how to handle
+        such types.
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pygresql-getnotify.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pygresql-putline.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>getnotify</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="pygresql-pg-pgobject.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>putline</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

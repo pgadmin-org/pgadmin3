@@ -1,0 +1,537 @@
+<HTML
+><HEAD
+><TITLE
+>COMMENT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CLUSTER"
+HREF="sql-cluster.html"><LINK
+REL="NEXT"
+TITLE="COMMIT"
+HREF="sql-commit.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-cluster.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-commit.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-COMMENT"
+>COMMENT</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38229"
+></A
+><H2
+>Name</H2
+>   COMMENT
+  &nbsp;--&nbsp;   define or change the comment of an object
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38232"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>COMMENT ON
+[
+  TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  COLUMN <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+>.<TT
+CLASS="REPLACEABLE"
+><I
+>column_name</I
+></TT
+> |
+  AGGREGATE <TT
+CLASS="REPLACEABLE"
+><I
+>agg_name</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>agg_type</I
+></TT
+>) |
+  CONSTRAINT <TT
+CLASS="REPLACEABLE"
+><I
+>constraint_name</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+> |
+  DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  DOMAIN <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>func_name</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>arg1_type</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>arg2_type</I
+></TT
+>, ...) |
+  INDEX <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  OPERATOR <TT
+CLASS="REPLACEABLE"
+><I
+>op</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>leftoperand_type</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>rightoperand_type</I
+></TT
+>) |
+  RULE <TT
+CLASS="REPLACEABLE"
+><I
+>rule_name</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+> |
+  SCHEMA <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  SEQUENCE <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  TRIGGER <TT
+CLASS="REPLACEABLE"
+><I
+>trigger_name</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+> |
+  TYPE <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+> |
+  VIEW <TT
+CLASS="REPLACEABLE"
+><I
+>object_name</I
+></TT
+>
+] IS <TT
+CLASS="REPLACEABLE"
+><I
+>'text'</I
+></TT
+>
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-COMMENT-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>object_name,
+      table_name.column_name, agg_name, constraint_name, func_name, op, rule_name, trigger_name</I
+></TT
+></DT
+><DD
+><P
+>	The name of the object to be be commented.  Names of tables,
+	aggregates, domains, functions, indexes, operators, sequences, types,
+	and views
+	may be schema-qualified.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>text</I
+></TT
+></DT
+><DD
+><P
+>	The comment to add.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-COMMENT-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>COMMENT
+       </TT
+></DT
+><DD
+><P
+>	Message returned if the table is successfully commented.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-COMMENT-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>COMMENT</TT
+> stores a comment about a database object.
+    Comments can be
+    easily retrieved with <TT
+CLASS="COMMAND"
+>psql</TT
+>'s
+    <TT
+CLASS="COMMAND"
+>\dd</TT
+>, <TT
+CLASS="COMMAND"
+>\d+</TT
+>, or <TT
+CLASS="COMMAND"
+>\l+</TT
+>
+    commands.  Other user interfaces to retrieve comments can be built atop
+    the same built-in functions that <TT
+CLASS="COMMAND"
+>psql</TT
+> uses, namely
+    <TT
+CLASS="FUNCTION"
+>obj_description()</TT
+> and <TT
+CLASS="FUNCTION"
+>col_description()</TT
+>.
+  </P
+><P
+>    To modify a comment, issue a new <TT
+CLASS="COMMAND"
+>COMMENT</TT
+> command for the
+    same object.  Only one comment string is stored for each object.
+    To remove a comment, write <TT
+CLASS="LITERAL"
+>NULL</TT
+> in place of the text
+    string.
+    Comments are automatically dropped when the object is dropped.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    There is presently no security mechanism
+    for comments: any user connected to a database can see all the comments
+    for objects in that database (although only superusers can change
+    comments for objects that they don't own).  Therefore, don't put
+    security-critical information in comments.
+  </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-COMMENT-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Attach a comment to the table <TT
+CLASS="LITERAL"
+>mytable</TT
+>:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>COMMENT ON TABLE mytable IS 'This is my table.';
+   </PRE
+><P>
+
+   Remove it again:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>COMMENT ON TABLE mytable IS NULL;
+   </PRE
+><P>
+  </P
+><P
+>   Some more examples:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>COMMENT ON AGGREGATE my_aggregate (double precision) IS 'Computes sample variance';
+COMMENT ON COLUMN my_table.my_field IS 'Employee ID number';
+COMMENT ON DATABASE my_database IS 'Development Database';
+COMMENT ON DOMAIN my_domain IS 'Email Address Domain';
+COMMENT ON FUNCTION my_function (timestamp) IS 'Returns Roman Numeral';
+COMMENT ON INDEX my_index IS 'Enforces uniqueness on employee id';
+COMMENT ON OPERATOR ^ (text, text) IS 'Performs intersection of two texts';
+COMMENT ON OPERATOR ^ (NONE, text) IS 'This is a prefix operator on text';
+COMMENT ON RULE my_rule ON my_table IS 'Logs UPDATES of employee records';
+COMMENT ON SCHEMA my_schema IS 'Departmental data';
+COMMENT ON SEQUENCE my_sequence IS 'Used to generate primary keys';
+COMMENT ON TABLE my_schema.my_table IS 'Employee Information';
+COMMENT ON TRIGGER my_trigger ON my_table IS 'Used for R.I.';
+COMMENT ON TYPE complex IS 'Complex Number datatype';
+COMMENT ON VIEW my_view IS 'View of departmental costs';
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-COMMENT-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-COMMENT-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>COMMENT</TT
+> in <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-cluster.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-commit.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CLUSTER</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>COMMIT</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,204 @@
+<HTML
+><HEAD
+><TITLE
+>Functional Indexes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Indexes"
+HREF="indexes.html"><LINK
+REL="PREVIOUS"
+TITLE="Unique Indexes"
+HREF="indexes-unique.html"><LINK
+REL="NEXT"
+TITLE="Operator Classes"
+HREF="indexes-opclass.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="indexes-unique.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="indexes-opclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INDEXES-FUNCTIONAL"
+>8.5. Functional Indexes</A
+></H1
+><A
+NAME="AEN11170"
+></A
+><P
+>   For a <I
+CLASS="FIRSTTERM"
+>functional index</I
+>, an index is defined
+   on the result of a function applied to one or more columns of a
+   single table.  Functional indexes can be used to obtain fast access
+   to data based on the result of function calls.
+  </P
+><P
+>   For example, a common way to do case-insensitive comparisons is to
+   use the <TT
+CLASS="FUNCTION"
+>lower</TT
+> function:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM test1 WHERE lower(col1) = 'value';</PRE
+><P>
+   This query can use an index, if one has been
+   defined on the result of the <TT
+CLASS="LITERAL"
+>lower(column)</TT
+>
+   operation:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE INDEX test1_lower_col1_idx ON test1 (lower(col1));</PRE
+><P>
+  </P
+><P
+>   The function in the index definition can take more than one
+   argument, but they must be table columns, not constants.
+   Functional indexes are always single-column (namely, the function
+   result) even if the function uses more than one input field; there
+   cannot be multicolumn indexes that contain function calls.
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>    The restrictions mentioned in the previous paragraph can easily be
+    worked around by defining a custom function to use in the index
+    definition that computes any desired result internally.
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-unique.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-opclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Unique Indexes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="indexes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Operator Classes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

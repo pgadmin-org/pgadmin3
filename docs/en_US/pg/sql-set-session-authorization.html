@@ -1,0 +1,313 @@
+<HTML
+><HEAD
+><TITLE
+>SET SESSION AUTHORIZATION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="SET CONSTRAINTS"
+HREF="sql-set-constraints.html"><LINK
+REL="NEXT"
+TITLE="SET TRANSACTION"
+HREF="sql-set-transaction.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-set-constraints.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-set-transaction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-SET-SESSION-AUTHORIZATION"
+>SET SESSION AUTHORIZATION</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45908"
+></A
+><H2
+>Name</H2
+>SET SESSION AUTHORIZATION&nbsp;--&nbsp;set the session user identifier and the current user identifier of the current session</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45911"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SET [ SESSION | LOCAL ] SESSION AUTHORIZATION <TT
+CLASS="PARAMETER"
+><I
+>username</I
+></TT
+>
+SET [ SESSION | LOCAL ] SESSION AUTHORIZATION DEFAULT
+RESET SESSION AUTHORIZATION</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45914"
+></A
+><H2
+>Description</H2
+><P
+>   This command sets the session user identifier and the current user
+   identifier of the current SQL-session context to be
+   <TT
+CLASS="PARAMETER"
+><I
+>username</I
+></TT
+>.  The user name may be written as
+   either an identifier or a string literal.
+   The session user identifier is valid for the duration of a
+   connection; for example, it is possible to temporarily become an
+   unprivileged user and later switch back to become a superuser.
+  </P
+><P
+>   The session user identifier is initially set to be the (possibly
+   authenticated) user name provided by the client.  The current user
+   identifier is normally equal to the session user identifier, but
+   may change temporarily in the context of <SPAN
+CLASS="QUOTE"
+>"setuid"</SPAN
+>
+   functions and similar mechanisms.  The current user identifier is
+   relevant for permission checking.
+  </P
+><P
+>   The session user identifier may be changed only if the initial session
+   user (the <I
+CLASS="FIRSTTERM"
+>authenticated user</I
+>) had the
+   superuser privilege.  Otherwise, the command is accepted only if it
+   specifies the authenticated user name.
+  </P
+><P
+>   The <TT
+CLASS="OPTION"
+>SESSION</TT
+> and <TT
+CLASS="OPTION"
+>LOCAL</TT
+> modifiers act the same
+   as for the regular <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+>
+   command.
+  </P
+><P
+>   The <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> and <TT
+CLASS="LITERAL"
+>RESET</TT
+> forms reset the session
+   and current user identifiers to be the originally authenticated user
+   name.  These forms are always accepted.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45929"
+></A
+><H2
+>Examples</H2
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="USERINPUT"
+><B
+>SELECT SESSION_USER, CURRENT_USER;</B
+></TT
+>
+ current_user | session_user
+--------------+--------------
+ peter        | peter
+
+<TT
+CLASS="USERINPUT"
+><B
+>SET SESSION AUTHORIZATION 'paul';</B
+></TT
+>
+
+<TT
+CLASS="USERINPUT"
+><B
+>SELECT SESSION_USER, CURRENT_USER;</B
+></TT
+>
+ current_user | session_user
+--------------+--------------
+ paul         | paul</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45935"
+></A
+><H2
+>Compatibility</H2
+><P
+>SQL99</P
+><P
+>   SQL99 allows some other expressions to appear in place of the
+   literal <TT
+CLASS="PARAMETER"
+><I
+>username</I
+></TT
+> which are not important in
+   practice.  <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> allows identifier
+   syntax (<TT
+CLASS="LITERAL"
+>"username"</TT
+>), which SQL does not.  SQL
+   does not allow this command during a transaction;
+   <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> does not make
+   this restriction because there is no reason to.  The
+   privileges necessary to execute this command are left
+   implementation-defined by the standard.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-constraints.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-set-transaction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SET CONSTRAINTS</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SET TRANSACTION</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

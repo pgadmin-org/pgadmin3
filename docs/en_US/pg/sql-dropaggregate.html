@@ -1,0 +1,391 @@
+<HTML
+><HEAD
+><TITLE
+>DROP AGGREGATE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DELETE"
+HREF="sql-delete.html"><LINK
+REL="NEXT"
+TITLE="DROP CAST"
+HREF="sql-dropcast.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-delete.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-dropcast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPAGGREGATE"
+>DROP AGGREGATE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42154"
+></A
+><H2
+>Name</H2
+>   DROP AGGREGATE
+  &nbsp;--&nbsp;   remove a user-defined aggregate function
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42157"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP AGGREGATE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( <TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+> ) [ CASCADE | RESTRICT ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPAGGREGATE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of an existing aggregate function.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+></DT
+><DD
+><P
+>	The input data type of the aggregate function,
+	or <TT
+CLASS="LITERAL"
+>*</TT
+> if the function accepts any input type.
+	(Refer to the <I
+CLASS="CITETITLE"
+>PostgreSQL User's Guide</I
+> for
+	further information about data types.)
+	
+       </P
+></DD
+><DT
+>CASCADE</DT
+><DD
+><P
+>        Automatically drop objects that depend on the aggregate.
+       </P
+></DD
+><DT
+>RESTRICT</DT
+><DD
+><P
+>        Refuse to drop the aggregate if there are any dependent objects.
+	This is the default.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPAGGREGATE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DROP AGGREGATE
+       </TT
+></DT
+><DD
+><P
+>	Message returned if the command is successful.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR: RemoveAggregate: aggregate '<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>' for type <TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+> does not exist
+       </TT
+></DT
+><DD
+><P
+>	This message occurs if the aggregate function specified does not
+	exist in the database.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPAGGREGATE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP AGGREGATE</TT
+> will delete an existing
+   aggregate definition. To execute this command the current
+   user must be the owner of the aggregate.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPAGGREGATE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    Use
+    <A
+HREF="sql-createaggregate.html"
+><I
+>CREATE AGGREGATE</I
+></A
+>
+    to create aggregate functions.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPAGGREGATE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To remove the <TT
+CLASS="LITERAL"
+>myavg</TT
+> aggregate for type
+   <TT
+CLASS="LITERAL"
+>int4</TT
+>:
+  </P
+><PRE
+CLASS="PROGRAMLISTING"
+>DROP AGGREGATE myavg(int4);
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPAGGREGATE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPAGGREGATE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>DROP AGGREGATE</TT
+> statement
+    in <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>; the statement is a
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    language extension.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-delete.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropcast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DELETE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP CAST</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

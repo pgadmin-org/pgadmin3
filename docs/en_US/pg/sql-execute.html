@@ -1,0 +1,309 @@
+<HTML
+><HEAD
+><TITLE
+>EXECUTE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="END"
+HREF="sql-end.html"><LINK
+REL="NEXT"
+TITLE="EXPLAIN"
+HREF="sql-explain.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-end.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-explain.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-EXECUTE"
+>EXECUTE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN43651"
+></A
+><H2
+>Name</H2
+>   EXECUTE
+  &nbsp;--&nbsp;   execute a prepared query
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN43654"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>   EXECUTE <TT
+CLASS="REPLACEABLE"
+><I
+>plan_name</I
+></TT
+> [ (<TT
+CLASS="REPLACEABLE"
+><I
+>parameter</I
+></TT
+> [, ...] ) ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-EXECUTE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>plan_name</I
+></TT
+></DT
+><DD
+><P
+>		The name of the prepared query to execute.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>parameter</I
+></TT
+></DT
+><DD
+><P
+>		The actual value of a parameter to the prepared query.
+		This must be an expression yielding a value of a type
+		compatible with
+		the data-type specified for this parameter position in the
+		<TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statement that created the prepared
+		query.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-EXECUTE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> is used to execute a previously prepared
+   query. Since prepared queries only exist for the duration of a
+   session, the prepared query must have been created by a
+   <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statement executed earlier in the
+   current session.
+  </P
+><P
+>   If the <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statement that created the query
+   specified some parameters, a compatible set of parameters must be
+   passed to the <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement, or else an
+   error is raised. Note that (unlike functions) prepared queries are
+   not overloaded based on the type or number of their parameters: the
+   name of a prepared query must be unique within a database session.
+  </P
+><P
+>   For more information on the creation and usage of prepared queries,
+   see <A
+HREF="sql-prepare.html"
+><I
+>PREPARE</I
+></A
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-EXECUTE-2"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-EXECUTE-2"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>	SQL92 includes an <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement, but it is
+    only for use in embedded SQL clients. The
+    <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement implemented by
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> also uses a somewhat
+    different syntax.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-end.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-explain.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>END</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>EXPLAIN</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

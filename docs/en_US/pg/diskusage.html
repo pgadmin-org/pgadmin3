@@ -1,0 +1,328 @@
+<HTML
+><HEAD
+><TITLE
+>Monitoring Disk Usage</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Viewing Locks"
+HREF="monitoring-locks.html"><LINK
+REL="NEXT"
+TITLE="Disk Full Failure"
+HREF="disk-full.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="monitoring-locks.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="disk-full.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="DISKUSAGE"
+>Chapter 11. Monitoring Disk Usage</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>11.1. <A
+HREF="diskusage.html#DISK-USAGE"
+>Determining Disk Usage</A
+></DT
+><DT
+>11.2. <A
+HREF="disk-full.html"
+>Disk Full Failure</A
+></DT
+></DL
+></DIV
+><P
+>  This chapter discusses how to monitor the disk usage of a PostgreSQL
+  database system.  In the current release, the database administrator
+  does not have much control over the on-disk storage layout, so this
+  chapter is mostly informative and can give you some ideas how to
+  manage the disk usage with operating system tools.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DISK-USAGE"
+>11.1. Determining Disk Usage</A
+></H1
+><A
+NAME="AEN23206"
+></A
+><P
+>   Each table has a primary heap disk file where most of the data is
+   stored. To store long column values, there is also a
+   <SPAN
+CLASS="ACRONYM"
+>TOAST</SPAN
+> file associated with the table, named based on the
+   table's OID (actually <TT
+CLASS="LITERAL"
+>pg_class.relfilenode</TT
+>), and an index on the
+   <SPAN
+CLASS="ACRONYM"
+>TOAST</SPAN
+> table. There also may be indexes associated with
+   the base table.
+  </P
+><P
+>   You can monitor disk space from three places: from
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> using <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> information, from
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> using <TT
+CLASS="FILENAME"
+>contrib/dbsize</TT
+>, and from
+   the command line using <SPAN
+CLASS="APPLICATION"
+>contrib/oid2name</SPAN
+>. Using
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> on a recently vacuumed (or analyzed) database,
+   you can issue queries to see the disk usage of any table:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>play=# SELECT relfilenode, relpages
+play-# FROM pg_class
+play-# WHERE relname = 'customer';
+ relfilenode | relpages 
+-------------+----------
+       16806 |       60
+(1 row)</PRE
+><P>
+  </P
+><P
+>   
+   Each page is typically 8 kilobytes. (Remember, <TT
+CLASS="LITERAL"
+>relpages</TT
+>
+   is only updated by <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> and <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>.) To
+   show the space used by <SPAN
+CLASS="ACRONYM"
+>TOAST</SPAN
+> tables, use a query based on
+   the heap relfilenode shown above:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>play=# SELECT relname, relpages
+play-# FROM pg_class
+play-# WHERE relname = 'pg_toast_16806' OR
+play-#       relname = 'pg_toast_16806_index'
+play-# ORDER BY relname;
+       relname        | relpages 
+----------------------+----------
+ pg_toast_16806       |        0
+ pg_toast_16806_index |        1</PRE
+><P>
+  </P
+><P
+>   You can easily display index usage too:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>play=# SELECT c2.relname, c2.relpages
+play-# FROM pg_class c, pg_class c2, pg_index i
+play-# WHERE c.relname = 'customer' AND
+play-#       c.oid = i.indrelid AND
+play-#       c2.oid = i.indexrelid
+play-# ORDER BY c2.relname;
+       relname        | relpages 
+----------------------+----------
+ customer_id_indexdex |       26</PRE
+><P>
+  </P
+><P
+>   It is easy to find your largest files using <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>play=# SELECT relname, relpages
+play-# FROM pg_class
+play-# ORDER BY relpages DESC;
+       relname        | relpages 
+----------------------+----------
+ bigtable             |     3290
+ customer             |     3144</PRE
+><P>
+  </P
+><P
+>   <TT
+CLASS="FILENAME"
+>contrib/dbsize</TT
+> loads functions into your database that allow
+   you to find the size of a table or database from inside
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> without the need for <TT
+CLASS="COMMAND"
+>VACUUM/ANALYZE.</TT
+>
+  </P
+><P
+>   You can also use <TT
+CLASS="FILENAME"
+>contrib/oid2name</TT
+> to show disk usage. See
+   <TT
+CLASS="FILENAME"
+>README.oid2name</TT
+> for examples. It includes a script that
+   shows disk usage for each database.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="monitoring-locks.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="disk-full.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Viewing Locks</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Disk Full Failure</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,270 @@
+<HTML
+><HEAD
+><TITLE
+>Managing Databases</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Functions and Triggers"
+HREF="perm-functions.html"><LINK
+REL="NEXT"
+TITLE="Creating a Database"
+HREF="manage-ag-createdb.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="perm-functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="manage-ag-createdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="MANAGING-DATABASES"
+>Chapter 5. Managing Databases</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>5.1. <A
+HREF="managing-databases.html#AEN21044"
+>Overview</A
+></DT
+><DT
+>5.2. <A
+HREF="manage-ag-createdb.html"
+>Creating a Database</A
+></DT
+><DT
+>5.3. <A
+HREF="manage-ag-templatedbs.html"
+>Template Databases</A
+></DT
+><DT
+>5.4. <A
+HREF="manage-ag-config.html"
+>Database Configuration</A
+></DT
+><DT
+>5.5. <A
+HREF="manage-ag-alternate-locs.html"
+>Alternative Locations</A
+></DT
+><DT
+>5.6. <A
+HREF="manage-ag-dropdb.html"
+>Destroying a Database</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN21040"
+></A
+><P
+>  Every instance of a running PostgreSQL server manages one or more
+  databases.  Databases are therefore the topmost hierarchical level
+  for organizing SQL objects (<SPAN
+CLASS="QUOTE"
+>"database objects"</SPAN
+>).  This
+  chapter describes the properties of databases, and how to create,
+  manage, and destroy them.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN21044"
+>5.1. Overview</A
+></H1
+><P
+>   A database is a named collection of SQL objects (<SPAN
+CLASS="QUOTE"
+>"database
+   objects"</SPAN
+>).  Generally, every database object (tables,
+   functions, etc.) belongs to one and only one database.  (But there
+   are a few system catalogs, for example <TT
+CLASS="LITERAL"
+>pg_database</TT
+>,
+   that belong to a whole installation and are accessible from each
+   database within the installation.)  More accurately, a database is
+   a collection of schemas and the schemas contain the tables,
+   functions, etc.  So the full hierarchy is:
+   server, database, schema, table (or something else instead of a
+   table).
+  </P
+><P
+>   An application that connects to the database server specifies in
+   its connection request the name of the database it wants to connect
+   to. It is not possible to access more than one database per
+   connection. (But an application is not restricted in the number of
+   connections it opens to the same or other databases.)  It is
+   possible, however, to access more than one schema from the same
+   connection.  Schemas are a purely logical structure and who can
+   access what is managed by the privilege system.  Databases are
+   physically separated and access control is managed at the
+   connection level.  If one PostgreSQL server instance is to house
+   projects or users that should be separate and for the most part
+   unaware of each other, it is therefore recommendable to put them
+   into separate databases.  If the projects or users are interrelated
+   and should be able to use each other's resources they should be put
+   in the same databases but possibly into separate schemas.  More
+   information about managing schemas is in the <A
+HREF="user.html"
+><I
+>PostgreSQL 7.3.3 User's Guide</I
+></A
+>.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> calls databases <SPAN
+CLASS="QUOTE"
+>"catalogs"</SPAN
+>, but there is no
+    difference in practice.
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="perm-functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="manage-ag-createdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Functions and Triggers</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating a Database</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,336 @@
+<HTML
+><HEAD
+><TITLE
+>The SQL Language</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Tutorial"
+HREF="tutorial.html"><LINK
+REL="PREVIOUS"
+TITLE="Accessing a Database"
+HREF="tutorial-accessdb.html"><LINK
+REL="NEXT"
+TITLE="Concepts"
+HREF="tutorial-concepts.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="tutorial-accessdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tutorial-concepts.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="TUTORIAL-SQL"
+>Chapter 2. The <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Language</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>2.1. <A
+HREF="tutorial-sql.html#TUTORIAL-SQL-INTRO"
+>Introduction</A
+></DT
+><DT
+>2.2. <A
+HREF="tutorial-concepts.html"
+>Concepts</A
+></DT
+><DT
+>2.3. <A
+HREF="tutorial-table.html"
+>Creating a New Table</A
+></DT
+><DT
+>2.4. <A
+HREF="tutorial-populate.html"
+>Populating a Table With Rows</A
+></DT
+><DT
+>2.5. <A
+HREF="tutorial-select.html"
+>Querying a Table</A
+></DT
+><DT
+>2.6. <A
+HREF="tutorial-join.html"
+>Joins Between Tables</A
+></DT
+><DT
+>2.7. <A
+HREF="tutorial-agg.html"
+>Aggregate Functions</A
+></DT
+><DT
+>2.8. <A
+HREF="tutorial-update.html"
+>Updates</A
+></DT
+><DT
+>2.9. <A
+HREF="tutorial-delete.html"
+>Deletions</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-SQL-INTRO"
+>2.1. Introduction</A
+></H1
+><P
+>    This chapter provides an overview of how to use
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> to perform simple operations.  This
+    tutorial is only intended to give you an introduction and is in no
+    way a complete tutorial on <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>.  Numerous books
+    have been written on <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>, including <A
+HREF="biblio.html#MELT93"
+><I
+>Understanding the New <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+></I
+></A
+> and <A
+HREF="biblio.html#DATE97"
+><I
+>A Guide to the <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Standard</I
+></A
+>.
+    You should be aware that some <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    language features are extensions to the standard.
+   </P
+><P
+>    In the examples that follow, we assume that you have created a
+    database named <TT
+CLASS="LITERAL"
+>mydb</TT
+>, as described in the previous
+    chapter, and have started <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>.
+   </P
+><P
+>    Examples in this manual can also be found in the
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> source distribution
+    in the directory <TT
+CLASS="FILENAME"
+>src/tutorial/</TT
+>.  Refer to the
+    <TT
+CLASS="FILENAME"
+>README</TT
+> file in that directory for how to use
+    them.  To start the tutorial, do the following:
+
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>cd <TT
+CLASS="REPLACEABLE"
+><I
+>....</I
+></TT
+>/src/tutorial</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>psql -s mydb</B
+></TT
+>
+<TT
+CLASS="COMPUTEROUTPUT"
+>...</TT
+>
+
+<TT
+CLASS="PROMPT"
+>mydb=&gt;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>\i basics.sql</B
+></TT
+></PRE
+><P>
+
+    The <TT
+CLASS="LITERAL"
+>\i</TT
+> command reads in commands from the
+    specified file. The <TT
+CLASS="LITERAL"
+>-s</TT
+> option puts you in
+    single step mode which pauses before sending each statement to the
+    server.  The commands used in this section are in the file
+    <TT
+CLASS="FILENAME"
+>basics.sql</TT
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-accessdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-concepts.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Accessing a Database</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Concepts</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

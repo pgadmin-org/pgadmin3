@@ -1,0 +1,391 @@
+<HTML
+><HEAD
+><TITLE
+>Creating the Operators and Support Routines</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interfacing Extensions To Indexes"
+HREF="xindex.html"><LINK
+REL="PREVIOUS"
+TITLE="Access Method Support Routines"
+HREF="xindex-support.html"><LINK
+REL="NEXT"
+TITLE="Creating the Operator Class"
+HREF="xindex-opclass.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xindex-support.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 14. Interfacing Extensions To Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xindex-opclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XINDEX-OPERATORS"
+>14.5. Creating the Operators and Support Routines</A
+></H1
+><P
+>   Now that we have seen the ideas, here is the promised example
+   of creating a new operator class.  First, we need a set of operators.
+   The procedure for
+   defining operators was discussed in <A
+HREF="xoper.html"
+>Chapter 11</A
+>.
+   For  the  <TT
+CLASS="LITERAL"
+>complex_abs_ops</TT
+>  operator  class on B-trees,
+   the operators we require are:
+
+   <P
+></P
+></P><UL
+COMPACT="COMPACT"
+><LI
+><SPAN
+>absolute-value less-than (strategy 1)</SPAN
+></LI
+><LI
+><SPAN
+>absolute-value less-than-or-equal (strategy 2)</SPAN
+></LI
+><LI
+><SPAN
+>absolute-value equal (strategy 3)</SPAN
+></LI
+><LI
+><SPAN
+>absolute-value greater-than-or-equal (strategy 4)</SPAN
+></LI
+><LI
+><SPAN
+>absolute-value greater-than (strategy 5)</SPAN
+></LI
+></UL
+><P>
+  </P
+><P
+>   Suppose the code that implements these functions
+   is stored in the file
+   <TT
+CLASS="FILENAME"
+><TT
+CLASS="REPLACEABLE"
+><I
+>PGROOT</I
+></TT
+>/src/tutorial/complex.c</TT
+>,
+   which we have compiled into
+   <TT
+CLASS="FILENAME"
+><TT
+CLASS="REPLACEABLE"
+><I
+>PGROOT</I
+></TT
+>/src/tutorial/complex.so</TT
+>.
+   Part of the C code looks like this:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>#define Mag(c) ((c)-&gt;x*(c)-&gt;x + (c)-&gt;y*(c)-&gt;y)
+
+         bool
+         complex_abs_eq(Complex *a, Complex *b)
+         {
+             double amag = Mag(a), bmag = Mag(b);
+             return (amag==bmag);
+         }</PRE
+><P>
+   (Note that we will only show the equality operator in this text.
+   The other four operators are very similar.  Refer to
+   <TT
+CLASS="FILENAME"
+>complex.c</TT
+> or
+   <TT
+CLASS="FILENAME"
+>complex.source</TT
+> for the details.)
+  </P
+><P
+>   We make the function known to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION complex_abs_eq(complex, complex) RETURNS boolean
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>PGROOT</I
+></TT
+>/src/tutorial/complex'
+    LANGUAGE C;</PRE
+><P>
+  </P
+><P
+>   There are some important things that are happening here:
+
+  <P
+></P
+></P><UL
+><LI
+><P
+>   First, note that operators for less-than, less-than-or-equal, equal,
+   greater-than-or-equal, and greater-than for <TT
+CLASS="FILENAME"
+>complex</TT
+>
+   are being defined.  We can only have one operator named, say, = and
+   taking type <TT
+CLASS="FILENAME"
+>complex</TT
+> for both operands.  In this case
+   we don't have any other operator = for <TT
+CLASS="FILENAME"
+>complex</TT
+>,
+   but if we were building a practical data type we'd probably want = to
+   be the ordinary equality operation for complex numbers.  In that case,
+   we'd need to use some other operator name for <TT
+CLASS="FUNCTION"
+>complex_abs_eq</TT
+>.
+  </P
+></LI
+><LI
+><P
+>   Second, although <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can cope with operators having
+   the same name as long as they have different input data types, C can only
+   cope with one global routine having a given name, period.  So we shouldn't
+   name the C function something simple like <TT
+CLASS="FILENAME"
+>abs_eq</TT
+>.
+   Usually it's a good practice to include the data type name in the C
+   function name, so as not to conflict with functions for other data types.
+  </P
+></LI
+><LI
+><P
+>   Third, we could have made the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> name of the function
+   <TT
+CLASS="FILENAME"
+>abs_eq</TT
+>, relying on <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to distinguish it
+   by input data types from any other <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> function of the same name.
+   To keep the example simple, we make the function have the same names
+   at the C level and <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> level.
+  </P
+></LI
+><LI
+><P
+>   Finally, note that these operator functions return Boolean values.
+   In practice, all operators defined as index access method
+   strategies must return type <TT
+CLASS="TYPE"
+>boolean</TT
+>, since they must
+   appear at the top level of a <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause to be used with an index.
+   (On the other hand, support functions return whatever the
+   particular access method expects -- in the case of the comparison
+   function for B-trees, a signed integer.)
+  </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   Now we are ready to define the operators:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE OPERATOR = (
+     leftarg = complex, rightarg = complex,
+     procedure = complex_abs_eq,
+     restrict = eqsel, join = eqjoinsel
+         );</PRE
+><P>
+
+   The important
+   things here are the procedure names (which are the C
+   functions defined above) and the restriction and join selectivity
+   functions.  You should just use the selectivity functions used in
+   the example (see <TT
+CLASS="FILENAME"
+>complex.source</TT
+>).
+   Note that there
+   are different such functions for the less-than, equal, and greater-than
+   cases.  These must be supplied or the optimizer will be unable to
+   make effective use of the index.
+  </P
+><P
+>   The next step is the registration of the comparison <SPAN
+CLASS="QUOTE"
+>"support
+   routine"</SPAN
+> required by B-trees.  The C code that implements this
+   is in the same file that contains the operator procedures:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION complex_abs_cmp(complex, complex)
+    RETURNS integer
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>PGROOT</I
+></TT
+>/src/tutorial/complex'
+    LANGUAGE C;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xindex-support.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xindex-opclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Access Method Support Routines</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="xindex.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating the Operator Class</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

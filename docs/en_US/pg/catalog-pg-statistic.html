@@ -1,0 +1,476 @@
+<HTML
+><HEAD
+><TITLE
+>pg_statistic</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_shadow"
+HREF="catalog-pg-shadow.html"><LINK
+REL="NEXT"
+TITLE="pg_trigger"
+HREF="catalog-pg-trigger.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="catalog-pg-shadow.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="catalog-pg-trigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-STATISTIC"
+>3.27. pg_statistic</A
+></H1
+><P
+>   <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> stores statistical data about
+   the contents of the database.  Entries are created by
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> and subsequently used by the query planner.
+   There is one entry for each table column that has been analyzed.
+   Note that all the statistical data is inherently approximate,
+   even assuming that it is up-to-date.
+  </P
+><P
+>   Since different kinds of statistics may be appropriate for different
+   kinds of data, <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> is designed not
+   to assume very much about what sort of statistics it stores.  Only
+   extremely general statistics (such as NULL-ness) are given dedicated
+   columns in <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+>.  Everything else
+   is stored in <SPAN
+CLASS="QUOTE"
+>"slots"</SPAN
+>, which are groups of associated columns whose
+   content is identified by a code number in one of the slot's columns.
+   For more information see
+   <TT
+CLASS="FILENAME"
+>src/include/catalog/pg_statistic.h</TT
+>.
+  </P
+><P
+>   <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> should not be readable by the
+   public, since even statistical information about a table's contents
+   may be considered sensitive.  (Example: minimum and maximum values
+   of a salary column might be quite interesting.)
+   <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> is a publicly readable view on
+   <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> that only exposes information
+   about those tables that are readable by the current user.
+   <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> is also designed to present the
+   information in a more readable format than the underlying
+   <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> table --- at the cost that
+   its schema must be extended whenever new slot types are added.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN54210"
+></A
+><P
+><B
+>Table 3-27. pg_statistic Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>References</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>starelid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_class.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The table that the described column belongs to</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>staattnum</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>int2</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_attribute.attnum</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The number of the described column</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>stanullfrac</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>float4</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The fraction of the column's entries that are NULL</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>stawidth</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>int4</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The average stored width, in bytes, of non-NULL entries</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>stadistinct</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>float4</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The number of distinct non-NULL data values in the column.
+      A value greater than zero is the actual number of distinct values.
+      A value less than zero is the negative of a fraction of the number
+      of rows in the table (for example, a column in which values appear about
+      twice on the average could be represented by stadistinct = -0.5).
+      A zero value means the number of distinct values is unknown.
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>stakindN</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>int2</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>A code number indicating the kind of statistics stored in the Nth
+      <SPAN
+CLASS="QUOTE"
+>"slot"</SPAN
+> of the <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> row.
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>staopN</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_operator.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>An operator used to derive the statistics stored in the
+      Nth <SPAN
+CLASS="QUOTE"
+>"slot"</SPAN
+>.  For example, a histogram slot would show the <TT
+CLASS="LITERAL"
+>&lt;</TT
+>
+      operator that defines the sort order of the data.
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>stanumbersN</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>float4[]</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Numerical statistics of the appropriate kind for the Nth
+      <SPAN
+CLASS="QUOTE"
+>"slot"</SPAN
+>, or NULL if the slot kind does not involve numerical values.
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>stavaluesN</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text[]</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Column data values of the appropriate kind for the Nth
+      <SPAN
+CLASS="QUOTE"
+>"slot"</SPAN
+>, or NULL if the slot kind does not store any data values.
+      For data-type independence, all column data values are converted
+      to external textual form and stored as TEXT datums.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-shadow.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-trigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_shadow</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>pg_trigger</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

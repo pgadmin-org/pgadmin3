@@ -1,0 +1,1363 @@
+<HTML
+><HEAD
+><TITLE
+>Database Connection Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="NEXT"
+TITLE="Command Execution Functions"
+HREF="libpq-exec.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpq.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq-exec.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-CONNECT"
+>1.2. Database Connection Functions</A
+></H1
+><P
+>   The following routines deal with making a connection to a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend server.  The
+   application program can have several backend connections open at
+   one time.  (One reason to do that is to access more than one
+   database.)  Each connection is represented by a
+   <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object which is obtained from
+   <TT
+CLASS="FUNCTION"
+>PQconnectdb</TT
+> or <TT
+CLASS="FUNCTION"
+>PQsetdbLogin</TT
+>.  Note that
+   these functions will always return a non-null object pointer,
+   unless perhaps there is too little memory even to allocate the
+   <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object.  The <TT
+CLASS="FUNCTION"
+>PQstatus</TT
+> function
+   should be called to check whether a connection was successfully
+   made before queries are sent via the connection object.
+
+    <P
+></P
+></P><UL
+><LI
+><P
+>       <TT
+CLASS="FUNCTION"
+>PQconnectdb</TT
+> 
+       Makes a new connection to the database server.
+       </P><PRE
+CLASS="SYNOPSIS"
+>PGconn *PQconnectdb(const char *conninfo)
+       </PRE
+><P>
+
+   This routine opens a new database connection using the parameters taken
+   from the string <TT
+CLASS="LITERAL"
+>conninfo</TT
+>.  Unlike <TT
+CLASS="FUNCTION"
+>PQsetdbLogin</TT
+> below,
+   the parameter set can be extended without changing the function signature,
+   so use either of this routine or the nonblocking analogues <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+>
+   and <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+> is preferred for application programming.  The passed string
+   can be empty to use all default parameters, or it can contain one or more
+   parameter settings separated by whitespace.
+   </P
+><P
+>   Each parameter setting is in the form <TT
+CLASS="LITERAL"
+>keyword = value</TT
+>.
+   (To write an empty value or a value containing
+   spaces, surround it with single quotes, e.g.,
+   <TT
+CLASS="LITERAL"
+>keyword = 'a value'</TT
+>.
+   Single quotes and backslashes within the value must be escaped with a
+   backslash, e.g., <TT
+CLASS="LITERAL"
+>\'</TT
+> or <TT
+CLASS="LITERAL"
+>\\</TT
+>.)
+   Spaces around the equal sign are optional.  The currently recognized
+   parameter keywords are:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>host</TT
+></DT
+><DD
+><P
+>      Name of host to connect to. 
+      If this begins with a slash, it specifies Unix-domain communication
+      rather than TCP/IP communication; the value is the name of the
+      directory in which the socket file is stored.
+      The default is to connect to a Unix-domain socket in
+      <TT
+CLASS="FILENAME"
+>/tmp</TT
+>.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>hostaddr</TT
+></DT
+><DD
+><P
+>      IP address of host to connect to. This should be in standard
+      numbers-and-dots form, as used by the BSD functions <TT
+CLASS="FUNCTION"
+>inet_aton</TT
+> et al. If
+      a nonzero-length string is specified, TCP/IP communication is used.
+     </P
+><P
+>      Using <TT
+CLASS="LITERAL"
+>hostaddr</TT
+> instead of host allows the application to avoid a host
+      name look-up, which may be important in applications with time
+      constraints. However, Kerberos authentication requires the host
+      name. The following therefore applies. If host is specified without
+      <TT
+CLASS="LITERAL"
+>hostaddr</TT
+>, a host name lookup is forced. If <TT
+CLASS="LITERAL"
+>hostaddr</TT
+> is specified without
+      host, the value for <TT
+CLASS="LITERAL"
+>hostaddr</TT
+> gives the remote address; if Kerberos is
+      used, this causes a reverse name query. If both host and <TT
+CLASS="LITERAL"
+>hostaddr</TT
+> are
+      specified, the value for <TT
+CLASS="LITERAL"
+>hostaddr</TT
+> gives the remote address; the value
+      for host is ignored, unless Kerberos is used, in which case that value
+      is used for Kerberos authentication. Note that authentication is likely
+      to fail if <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> is passed a host name that is not the name of the
+      machine at <TT
+CLASS="LITERAL"
+>hostaddr</TT
+>.
+     </P
+><P
+>      Without either a host name or host address, <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> will connect using a
+      local Unix domain socket.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>port</TT
+></DT
+><DD
+><P
+>      Port number to connect to at the server host,
+      or socket file name extension for Unix-domain connections.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>dbname</TT
+></DT
+><DD
+><P
+>      The database name.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>user</TT
+></DT
+><DD
+><P
+>      User name to connect as.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>password</TT
+></DT
+><DD
+><P
+>      Password to be used if the server demands password authentication.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>connect_timeout</TT
+></DT
+><DD
+><P
+>      Time space in seconds given to connect routine. Zero or not set means infinite.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>options</TT
+></DT
+><DD
+><P
+>       Trace/debug options to be sent to the server.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>tty</TT
+></DT
+><DD
+><P
+>      A file or <SPAN
+CLASS="ACRONYM"
+>tty</SPAN
+> for optional debug output from the backend.
+     </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>requiressl</TT
+></DT
+><DD
+><P
+>      Set to 1 to require <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+> connection to the server.
+      <SPAN
+CLASS="APPLICATION"
+>Libpq</SPAN
+> will then refuse to connect if the server does not
+      accept an <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+> connection.
+      Set to 0 (default) to negotiate with server.
+      This option is only available if
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is compiled with SSL support.
+     </P
+></DD
+></DL
+></DIV
+><P>
+
+   If  any  parameter is unspecified, then the corresponding
+   environment variable (see <A
+HREF="libpq-envars.html"
+>Section 1.10</A
+>)
+   is checked. If the  environment  variable is not set either,
+   then hardwired defaults are used.
+   The return value is a pointer to an abstract <TT
+CLASS="TYPE"
+>struct</TT
+>
+   representing the connection to the backend.
+   </P
+></LI
+><LI
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQsetdbLogin</TT
+>
+       Makes a new connection to the database server.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGconn *PQsetdbLogin(const char *pghost,
+                     const char *pgport,
+                     const char *pgoptions,
+                     const char *pgtty,
+                     const char *dbName,
+                     const char *login,
+                     const char *pwd)</PRE
+><P>
+
+   This is the predecessor of <TT
+CLASS="FUNCTION"
+>PQconnectdb</TT
+> with a fixed number
+   of parameters but the same functionality.   
+   </P
+></LI
+><LI
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQsetdb</TT
+> Makes a new connection to the database server.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGconn *PQsetdb(char *pghost,
+                char *pgport,
+                char *pgoptions,
+                char *pgtty,
+                char *dbName)</PRE
+><P>
+   This is a macro that calls <TT
+CLASS="FUNCTION"
+>PQsetdbLogin</TT
+> with null pointers
+   for the <TT
+CLASS="PARAMETER"
+><I
+>login</I
+></TT
+> and <TT
+CLASS="PARAMETER"
+><I
+>pwd</I
+></TT
+> parameters.  It is provided primarily
+   for backward compatibility with old programs.
+   </P
+></LI
+><LI
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+>,
+   <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+>
+   <A
+NAME="AEN24894"
+></A
+>
+   Make a connection to the database server in a nonblocking manner.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGconn *PQconnectStart(const char *conninfo)</PRE
+><P>
+</P><PRE
+CLASS="SYNOPSIS"
+>PostgresPollingStatusType PQconnectPoll(PGconn *conn)</PRE
+><P>
+   These two routines are used to open a connection to a database server such
+   that your application's thread of execution is not blocked on remote I/O
+   whilst doing so.
+  </P
+><P
+>   The database connection is made using the parameters taken from the string
+   <TT
+CLASS="LITERAL"
+>conninfo</TT
+>, passed to <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+>. This string is in
+   the same format as described above for <TT
+CLASS="FUNCTION"
+>PQconnectdb</TT
+>.
+  </P
+><P
+>   Neither <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+> nor <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+> will block, as long as a number of
+   restrictions are met:
+   <P
+></P
+></P><UL
+><LI
+><P
+>      The <TT
+CLASS="LITERAL"
+>hostaddr</TT
+> and <TT
+CLASS="LITERAL"
+>host</TT
+> parameters are used appropriately to ensure that
+      name and reverse name queries are not made. See the documentation of
+      these parameters under <TT
+CLASS="FUNCTION"
+>PQconnectdb</TT
+> above for details.
+     </P
+></LI
+><LI
+><P
+>      If you call <TT
+CLASS="FUNCTION"
+>PQtrace</TT
+>, ensure that the stream object into which you trace
+      will not block.
+     </P
+></LI
+><LI
+><P
+>      You ensure for yourself that the socket is in the appropriate state
+      before calling <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+>, as described below.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   To begin, call <TT
+CLASS="LITERAL"
+>conn=PQconnectStart("<TT
+CLASS="REPLACEABLE"
+><I
+>connection_info_string</I
+></TT
+>")</TT
+>.
+   If <TT
+CLASS="VARNAME"
+>conn</TT
+> is NULL, then <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> has been unable to allocate a new <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+>
+   structure. Otherwise, a valid <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> pointer is returned (though not yet
+   representing a valid connection to the database). On return from
+   <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+>, call <TT
+CLASS="LITERAL"
+>status=PQstatus(conn)</TT
+>. If status equals
+   <TT
+CLASS="SYMBOL"
+>CONNECTION_BAD</TT
+>, <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+> has failed.
+  </P
+><P
+>   If <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+> succeeds, the next stage is to poll <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> so that it may
+   proceed with the connection sequence.  Loop thus: Consider a connection
+   <SPAN
+CLASS="QUOTE"
+>"inactive"</SPAN
+> by default. If <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+> last returned <TT
+CLASS="SYMBOL"
+>PGRES_POLLING_ACTIVE</TT
+>,
+   consider it <SPAN
+CLASS="QUOTE"
+>"active"</SPAN
+> instead. If <TT
+CLASS="FUNCTION"
+>PQconnectPoll(conn)</TT
+> last returned
+   <TT
+CLASS="SYMBOL"
+>PGRES_POLLING_READING</TT
+>, perform a <TT
+CLASS="FUNCTION"
+>select()</TT
+> for reading on <TT
+CLASS="FUNCTION"
+>PQsocket(conn)</TT
+>. If
+   it last returned <TT
+CLASS="SYMBOL"
+>PGRES_POLLING_WRITING</TT
+>, perform a <TT
+CLASS="FUNCTION"
+>select()</TT
+> for writing on
+   <TT
+CLASS="FUNCTION"
+>PQsocket(conn)</TT
+>. If you have yet to call <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+>, i.e. after the call
+   to <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+>, behave as if it last returned <TT
+CLASS="SYMBOL"
+>PGRES_POLLING_WRITING</TT
+>.  If
+   the <TT
+CLASS="FUNCTION"
+>select()</TT
+> shows that the socket is ready, consider it <SPAN
+CLASS="QUOTE"
+>"active"</SPAN
+>. If it has
+   been decided that this connection is <SPAN
+CLASS="QUOTE"
+>"active"</SPAN
+>, call <TT
+CLASS="FUNCTION"
+>PQconnectPoll(conn)</TT
+>
+   again. If this call returns <TT
+CLASS="SYMBOL"
+>PGRES_POLLING_FAILED</TT
+>, the connection procedure
+   has failed.  If this call returns <TT
+CLASS="SYMBOL"
+>PGRES_POLLING_OK</TT
+>, the connection has been
+   successfully made.
+  </P
+><P
+>    Note that the use of <TT
+CLASS="FUNCTION"
+>select()</TT
+> to ensure that the socket is ready is merely
+    a (likely) example; those with other facilities available, such as a
+    <TT
+CLASS="FUNCTION"
+>poll()</TT
+> call, may of course use that instead.
+  </P
+><P
+>    At any time during connection, the status of the connection may be
+    checked, by calling <TT
+CLASS="FUNCTION"
+>PQstatus</TT
+>. If this is <TT
+CLASS="SYMBOL"
+>CONNECTION_BAD</TT
+>, then the
+    connection procedure has failed; if this is <TT
+CLASS="FUNCTION"
+>CONNECTION_OK</TT
+>, then the
+    connection is ready.  Either of these states should be equally detectable
+    from the return value of <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+>, as above. Other states may be
+    shown during (and only during) an asynchronous connection procedure. These
+    indicate the current stage of the connection procedure, and may be useful
+    to provide feedback to the user for example. These statuses may include:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="SYMBOL"
+>CONNECTION_STARTED</TT
+></DT
+><DD
+><P
+>        Waiting for connection to be made.
+       </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>CONNECTION_MADE</TT
+></DT
+><DD
+><P
+>        Connection OK; waiting to send.
+       </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>CONNECTION_AWAITING_RESPONSE</TT
+></DT
+><DD
+><P
+>        Waiting for a response from the server.
+       </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>CONNECTION_AUTH_OK</TT
+></DT
+><DD
+><P
+>        Received authentication; waiting for connection start-up to continue.
+       </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>CONNECTION_SETENV</TT
+></DT
+><DD
+><P
+>        Negotiating environment (part of the connection start-up).
+       </P
+></DD
+></DL
+></DIV
+><P>
+
+    Note that, although these constants will remain (in order to maintain
+    compatibility), an application should never rely upon these appearing in a
+    particular order, or at all, or on the status always being one of these
+    documented values. An application may do something like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>switch(PQstatus(conn))
+{
+    case CONNECTION_STARTED:
+        feedback = "Connecting...";
+        break;
+
+    case CONNECTION_MADE:
+        feedback = "Connected to server...";
+        break;
+.
+.
+.
+    default:
+        feedback = "Connecting...";
+}</PRE
+><P>
+  </P
+><P
+>   Note that if <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+> returns a non-NULL pointer, you must call
+   <TT
+CLASS="FUNCTION"
+>PQfinish</TT
+> when you are finished with it, in order to dispose of
+   the structure and any associated memory blocks. This must be done even if a
+   call to <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+> or <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+> failed.
+  </P
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+> will currently block if
+   <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> is compiled with <TT
+CLASS="SYMBOL"
+>USE_SSL</TT
+>
+   defined. This restriction may be removed in the future.
+  </P
+><P
+>   These functions leave the socket in a nonblocking state as if 
+   <TT
+CLASS="FUNCTION"
+>PQsetnonblocking</TT
+> had been called.
+  </P
+></LI
+><LI
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQconndefaults</TT
+> Returns the default connection options.
+</P><PRE
+CLASS="SYNOPSIS"
+>PQconninfoOption *PQconndefaults(void)
+
+struct PQconninfoOption
+{
+    char   *keyword;   /* The keyword of the option */
+    char   *envvar;    /* Fallback environment variable name */
+    char   *compiled;  /* Fallback compiled in default value */
+    char   *val;       /* Option's current value, or NULL */
+    char   *label;     /* Label for field in connect dialog */
+    char   *dispchar;  /* Character to display for this field
+                          in a connect dialog. Values are:
+                          ""        Display entered value as is
+                          "*"       Password field - hide value
+                          "D"       Debug option - don't show by default */
+    int     dispsize;  /* Field size in characters for dialog */
+}</PRE
+><P>
+   Returns a connection options array.  This may
+   be used to determine all possible <TT
+CLASS="FUNCTION"
+>PQconnectdb</TT
+> options and their
+   current default values.  The return value points to an array of
+   <TT
+CLASS="STRUCTNAME"
+>PQconninfoOption</TT
+> <TT
+CLASS="TYPE"
+>struct</TT
+>s, which ends with an entry having a NULL
+   keyword pointer.  Note that the default values (<TT
+CLASS="STRUCTFIELD"
+>val</TT
+> fields)
+   will depend on environment variables and other context.
+   Callers must treat the connection options data as read-only.
+   </P
+><P
+>    After processing the options array, free it by passing it to
+    <TT
+CLASS="FUNCTION"
+>PQconninfoFree</TT
+>.  If this is not done, a small amount of memory
+    is leaked for each call to <TT
+CLASS="FUNCTION"
+>PQconndefaults</TT
+>.
+   </P
+><P
+>    In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> versions before 7.0, <TT
+CLASS="FUNCTION"
+>PQconndefaults</TT
+> returned a pointer
+    to a static array, rather than a dynamically allocated array.  That
+    was not thread-safe, so the behavior has been changed.
+   </P
+></LI
+><LI
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQfinish</TT
+>
+   Close  the  connection to the backend.  Also frees
+   memory used by the <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object.
+</P><PRE
+CLASS="SYNOPSIS"
+>void PQfinish(PGconn *conn)</PRE
+><P>
+   Note that even if the backend connection attempt fails (as
+   indicated by <TT
+CLASS="FUNCTION"
+>PQstatus</TT
+>), the application should call <TT
+CLASS="FUNCTION"
+>PQfinish</TT
+>
+   to free the memory used by the <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object.
+   The <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> pointer should not be used after <TT
+CLASS="FUNCTION"
+>PQfinish</TT
+> has been called.
+   </P
+></LI
+><LI
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQreset</TT
+>
+   Reset the communication  port  with  the  backend.
+</P><PRE
+CLASS="SYNOPSIS"
+>void PQreset(PGconn *conn)</PRE
+><P>
+   This function will close the connection
+   to the backend and attempt to  reestablish  a  new
+   connection to the same server, using all the same
+   parameters previously used.  This may be useful for
+   error recovery if a working connection is lost.
+   </P
+></LI
+><LI
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQresetStart</TT
+>
+   <TT
+CLASS="FUNCTION"
+>PQresetPoll</TT
+>
+   Reset the communication  port  with  the  backend, in a nonblocking manner.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQresetStart(PGconn *conn);</PRE
+><P>
+</P><PRE
+CLASS="SYNOPSIS"
+>PostgresPollingStatusType PQresetPoll(PGconn *conn);</PRE
+><P>
+    These functions will close the connection to the backend and attempt to
+    reestablish a new connection to the same server, using all the same
+    parameters previously used. This may be useful for error recovery if a
+    working connection is lost. They differ from <TT
+CLASS="FUNCTION"
+>PQreset</TT
+> (above) in that they
+    act in a nonblocking manner. These functions suffer from the same
+    restrictions as <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+> and <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+>.
+   </P
+><P
+>    Call <TT
+CLASS="FUNCTION"
+>PQresetStart</TT
+>. If it returns 0, the reset has failed. If it returns 1,
+    poll the reset using <TT
+CLASS="FUNCTION"
+>PQresetPoll</TT
+> in exactly the same way as you would
+    create the connection using <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+>.
+   </P
+></LI
+></UL
+><P></P
+><P
+><A
+NAME="AEN25039"
+></A
+>
+<A
+NAME="AEN25041"
+></A
+>
+<SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> application programmers should be careful to
+maintain the <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> abstraction.  Use the accessor functions below to get
+at the contents of <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+>.  Avoid directly referencing the fields of the
+<TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> structure because they are subject to change in the future.
+(Beginning in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> release 6.4, the
+definition of <TT
+CLASS="TYPE"
+>struct PGconn</TT
+> is not even provided in <TT
+CLASS="FILENAME"
+>libpq-fe.h</TT
+>.
+If you have old code that accesses <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> fields directly, you can keep using it
+by including <TT
+CLASS="FILENAME"
+>libpq-int.h</TT
+> too, but you are encouraged to fix the code
+soon.)
+
+<P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQdb</TT
+>  
+         Returns the database name of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQdb(const PGconn *conn)</PRE
+><P>
+<TT
+CLASS="FUNCTION"
+>PQdb</TT
+> and the next several functions return the values established
+at connection.  These values are fixed for the life of the <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+>
+object.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQuser</TT
+>
+         Returns the user name of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQuser(const PGconn *conn)</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQpass</TT
+>
+         Returns the password of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQpass(const PGconn *conn)</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQhost</TT
+>
+         Returns the server host name of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQhost(const PGconn *conn)</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQport</TT
+>
+         Returns the port of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQport(const PGconn *conn)</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQtty</TT
+>
+         Returns the debug <SPAN
+CLASS="ACRONYM"
+>tty</SPAN
+> of the connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQtty(const PGconn *conn)</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQoptions</TT
+>
+       Returns the backend options used in  the  connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQoptions(const PGconn *conn)</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQstatus</TT
+>
+         Returns the status of the connection. 
+</P><PRE
+CLASS="SYNOPSIS"
+>ConnStatusType PQstatus(const PGconn *conn)</PRE
+><P></P
+><P
+>       The status can be one of a number of values.
+       However, only two of these are
+       seen outside of an asynchronous connection procedure -
+       <TT
+CLASS="LITERAL"
+>CONNECTION_OK</TT
+> or
+       <TT
+CLASS="LITERAL"
+>CONNECTION_BAD</TT
+>. A good
+       connection to the database has the status <TT
+CLASS="LITERAL"
+>CONNECTION_OK</TT
+>.
+       A failed connection
+       attempt is signaled by status
+       <TT
+CLASS="LITERAL"
+>CONNECTION_BAD</TT
+>.
+       Ordinarily, an OK status will remain so until
+       <TT
+CLASS="FUNCTION"
+>PQfinish</TT
+>, but a
+       communications failure might result in the status changing to
+       <TT
+CLASS="LITERAL"
+>CONNECTION_BAD</TT
+> prematurely.
+       In that case the application
+       could try to recover by calling <TT
+CLASS="FUNCTION"
+>PQreset</TT
+>.
+      </P
+><P
+>       See the entry for <TT
+CLASS="FUNCTION"
+>PQconnectStart</TT
+> and <TT
+CLASS="FUNCTION"
+>PQconnectPoll</TT
+> with regards
+       to other status codes
+       that might be seen.
+      </P
+></LI
+><LI
+><P
+>       <TT
+CLASS="FUNCTION"
+>PQerrorMessage</TT
+>
+       <A
+NAME="AEN25102"
+></A
+>
+       Returns the error message most recently generated by
+       an operation on the connection.
+       </P><PRE
+CLASS="SYNOPSIS"
+>char *PQerrorMessage(const PGconn* conn);
+       </PRE
+><P>
+      </P
+><P
+>       Nearly all <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> functions will set
+       <TT
+CLASS="FUNCTION"
+>PQerrorMessage</TT
+> if they fail.
+       Note that by <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> convention, a non-empty
+       <TT
+CLASS="FUNCTION"
+>PQerrorMessage</TT
+> will
+       include a trailing newline.
+      </P
+></LI
+><LI
+><P
+>       <TT
+CLASS="FUNCTION"
+>PQbackendPID</TT
+>
+       Returns the process <SPAN
+CLASS="ACRONYM"
+>ID</SPAN
+> of the backend server 
+      handling this connection.
+       </P><PRE
+CLASS="SYNOPSIS"
+>int PQbackendPID(const PGconn *conn);
+       </PRE
+><P>
+       The backend <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+> is useful for debugging
+       purposes and for comparison
+       to NOTIFY messages (which include the <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+> of
+       the notifying backend).
+       Note that the <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+> belongs to a process
+       executing on the database
+       server host, not the local host!
+      </P
+></LI
+><LI
+><P
+>       <TT
+CLASS="FUNCTION"
+>PQgetssl</TT
+>
+       <A
+NAME="AEN25121"
+></A
+>
+       Returns the SSL structure used in the connection, or NULL
+       if SSL is not in use. 
+       </P><PRE
+CLASS="SYNOPSIS"
+>SSL *PQgetssl(const PGconn *conn);
+       </PRE
+><P>
+       This structure can be used to verify encryption levels, check
+       server certificate and more. Refer to the SSL documentation
+       for information about this structure.
+      </P
+><P
+>       You must define <TT
+CLASS="LITERAL"
+>USE_SSL</TT
+> in order to get the
+       prototype for this function. Doing this will also 
+       automatically include <TT
+CLASS="FILENAME"
+>ssl.h</TT
+> from <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+>.
+      </P
+></LI
+></UL
+><P>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-exec.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Command Execution Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

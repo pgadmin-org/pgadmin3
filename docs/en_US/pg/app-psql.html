@@ -1,0 +1,5167 @@
+<HTML
+><HEAD
+><TITLE
+>psql</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_restore"
+HREF="app-pgrestore.html"><LINK
+REL="NEXT"
+TITLE="pgtclsh"
+HREF="app-pgtclsh.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="app-pgrestore.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="app-pgtclsh.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-PSQL"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN48906"
+></A
+><H2
+>Name</H2
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>&nbsp;--&nbsp;      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interactive terminal
+    </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN48911"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>psql</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>options</I
+></TT
+>] [<TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+>
+    [<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>]]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48920"
+></A
+><H2
+>Description</H2
+><P
+>     <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> is a terminal-based front-end to
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. It enables you to type in
+     queries interactively, issue them to
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, and see the query results.
+     Alternatively, input can be from a file. In addition, it provides a
+     number of meta-commands and various shell-like features to
+     facilitate writing scripts and automating a wide variety of tasks.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-PSQL-3"
+></A
+><H2
+>Options</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-a</TT
+><BR><TT
+CLASS="OPTION"
+>--echo-all</TT
+></DT
+><DD
+><P
+>      Print all the lines to the screen as they are read. This is more
+      useful for script processing rather than interactive mode. This is
+      equivalent to setting the variable <TT
+CLASS="VARNAME"
+>ECHO</TT
+> to
+      <TT
+CLASS="LITERAL"
+>all</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-A</TT
+><BR><TT
+CLASS="OPTION"
+>--no-align</TT
+></DT
+><DD
+><P
+>      Switches to unaligned output mode. (The default output mode is
+      otherwise aligned.)
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-c <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--command <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Specifies that <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> is to execute one
+      query string, <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+>,
+      and then exit. This is useful in shell scripts.
+      </P
+><P
+>      <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+> must be either
+      a query string that is completely parsable by the backend (i.e.,
+      it contains no <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> specific features),
+      or it is a single backslash command. Thus you cannot mix
+      <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> and <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+      meta-commands. To achieve that, you could pipe the string into
+      <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, like this: <TT
+CLASS="LITERAL"
+>echo "\x \\
+      select * from foo;" | psql</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-d <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--dbname <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Specifies the name of the database to connect to. This is
+      equivalent to specifying <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> as the first non-option
+      argument on the command line.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-e</TT
+><BR><TT
+CLASS="OPTION"
+>--echo-queries</TT
+></DT
+><DD
+><P
+>      Show all queries that are sent to the backend. This is equivalent
+      to setting the variable <TT
+CLASS="VARNAME"
+>ECHO</TT
+> to
+      <TT
+CLASS="LITERAL"
+>queries</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-E</TT
+><BR><TT
+CLASS="OPTION"
+>--echo-hidden</TT
+></DT
+><DD
+><P
+>      Echoes the actual queries generated by \d and other backslash
+      commands. You can use this if you wish to include similar
+      functionality into your own programs. This is equivalent to
+      setting the variable <TT
+CLASS="VARNAME"
+>ECHO_HIDDEN</TT
+> from within
+      <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-f <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--file <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Use the file <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>
+      as the source of queries instead of reading queries interactively.
+      After the file is processed, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+      terminates. This is in many ways equivalent to the internal
+      command <TT
+CLASS="COMMAND"
+>\i</TT
+>.
+      </P
+><P
+>       If <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> is <TT
+CLASS="LITERAL"
+>-</TT
+>
+       (hyphen), then standard input is read.
+      </P
+><P
+>      Using this option is subtly different from writing <TT
+CLASS="LITERAL"
+>psql
+      &lt; <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></TT
+>. In general,
+      both will do what you expect, but using <TT
+CLASS="LITERAL"
+>-f</TT
+>
+      enables some nice features such as error messages with line
+      numbers. There is also a slight chance that using this option will
+      reduce the start-up overhead. On the other hand, the variant using
+      the shell's input redirection is (in theory) guaranteed to yield
+      exactly the same output that you would have gotten had you entered
+      everything by hand.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-F <TT
+CLASS="REPLACEABLE"
+><I
+>separator</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--field-separator <TT
+CLASS="REPLACEABLE"
+><I
+>separator</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Use <TT
+CLASS="REPLACEABLE"
+><I
+>separator</I
+></TT
+> as the
+      field separator. This is equivalent to <TT
+CLASS="COMMAND"
+>\pset
+      fieldsep</TT
+> or <TT
+CLASS="COMMAND"
+>\f</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>hostname</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host <TT
+CLASS="REPLACEABLE"
+><I
+>hostname</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Specifies the host name of the machine on which the
+      <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> is running. If host begins
+      with a slash, it is used as the directory for the Unix-domain
+      socket.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-H</TT
+><BR><TT
+CLASS="OPTION"
+>--html</TT
+></DT
+><DD
+><P
+>      Turns on <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> tabular output. This is
+      equivalent to <TT
+CLASS="LITERAL"
+>\pset format html</TT
+> or the
+      <TT
+CLASS="COMMAND"
+>\H</TT
+> command.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-l</TT
+><BR><TT
+CLASS="OPTION"
+>--list</TT
+></DT
+><DD
+><P
+>      Lists all available databases, then exits. Other non-connection
+      options are ignored. This is similar to the internal command
+      <TT
+CLASS="COMMAND"
+>\list</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-o <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--output <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Put all query output into file <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>. This is equivalent to
+      the command <TT
+CLASS="COMMAND"
+>\o</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Specifies the TCP/IP port or, by omission, the local Unix domain
+      socket file extension on which the
+      <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> is listening for
+      connections. Defaults to the value of the <TT
+CLASS="ENVAR"
+>PGPORT</TT
+>
+      environment variable or, if not set, to the port specified at
+      compile time, usually 5432.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-P <TT
+CLASS="REPLACEABLE"
+><I
+>assignment</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--pset <TT
+CLASS="REPLACEABLE"
+><I
+>assignment</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Allows you to specify printing options in the style of
+      <TT
+CLASS="COMMAND"
+>\pset</TT
+> on the command line. Note that here you
+      have to separate name and value with an equal sign instead of a
+      space. Thus to set the output format to LaTeX, you could write
+      <TT
+CLASS="LITERAL"
+>-P format=latex</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-q</TT
+><BR><TT
+CLASS="OPTION"
+>--quiet</TT
+></DT
+><DD
+><P
+>      Specifies that <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> should do its work
+      quietly. By default, it prints welcome messages and various
+      informational output. If this option is used, none of this
+      happens. This is useful with the <TT
+CLASS="OPTION"
+>-c</TT
+> option.
+      Within <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> you can also set the
+      <TT
+CLASS="VARNAME"
+>QUIET</TT
+> variable to achieve the same effect.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-R <TT
+CLASS="REPLACEABLE"
+><I
+>separator</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--record-separator <TT
+CLASS="REPLACEABLE"
+><I
+>separator</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Use <TT
+CLASS="REPLACEABLE"
+><I
+>separator</I
+></TT
+> as the
+      record separator. This is equivalent to the <TT
+CLASS="COMMAND"
+>\pset
+      recordsep</TT
+> command.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-s</TT
+><BR><TT
+CLASS="OPTION"
+>--single-step</TT
+></DT
+><DD
+><P
+>      Run in single-step mode. That means the user is prompted before
+      each query is sent to the backend, with the option to cancel
+      execution as well. Use this to debug scripts.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-S</TT
+><BR><TT
+CLASS="OPTION"
+>--single-line</TT
+></DT
+><DD
+><P
+>      Runs in single-line mode where a newline terminates a query, as a
+      semicolon does.
+      </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      This mode is provided for those who insist on it, but you are not
+      necessarily encouraged to use it. In particular, if you mix
+      <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> and meta-commands on a line the order of
+      execution might not always be clear to the inexperienced user.
+      </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-t</TT
+><BR><TT
+CLASS="OPTION"
+>--tuples-only</TT
+></DT
+><DD
+><P
+>      Turn off printing of column names and result row count footers,
+      etc. It is completely equivalent to the <TT
+CLASS="COMMAND"
+>\t</TT
+>
+      meta-command.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-T <TT
+CLASS="REPLACEABLE"
+><I
+>table_options</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--table-attr <TT
+CLASS="REPLACEABLE"
+><I
+>table_options</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Allows you to specify options to be placed within the
+      <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> <TT
+CLASS="SGMLTAG"
+>table</TT
+> tag. See
+      <TT
+CLASS="COMMAND"
+>\pset</TT
+> for details.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-u</TT
+></DT
+><DD
+><P
+>      Makes <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> prompt for the user name and
+      password before connecting to the database.
+      </P
+><P
+>      This option is deprecated, as it is conceptually flawed.
+      (Prompting for a non-default user name and prompting for a
+      password because the backend requires it are really two different
+      things.) You are encouraged to look at the <TT
+CLASS="OPTION"
+>-U</TT
+> and
+      <TT
+CLASS="OPTION"
+>-W</TT
+> options instead.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Connects to the database as the user <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> instead of the default.
+      (You must have permission to do so, of course.)
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-v <TT
+CLASS="REPLACEABLE"
+><I
+>assignment</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--set <TT
+CLASS="REPLACEABLE"
+><I
+>assignment</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--variable <TT
+CLASS="REPLACEABLE"
+><I
+>assignment</I
+></TT
+></TT
+></DT
+><DD
+><P
+>      Performs a variable assignment, like the <TT
+CLASS="COMMAND"
+>\set</TT
+>
+      internal command. Note that you must separate name and value, if
+      any, by an equal sign on the command line. To unset a variable,
+      leave off the equal sign. To just set a variable without a value,
+      use the equal sign but leave off the value. These assignments are
+      done during a very early stage of start-up, so variables reserved
+      for internal purposes might get overwritten later.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-V</TT
+><BR><TT
+CLASS="OPTION"
+>--version</TT
+></DT
+><DD
+><P
+>      Shows the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> version.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--password</TT
+></DT
+><DD
+><P
+>      Requests that <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> should prompt for a
+      password before connecting to a database. This will remain set for
+      the entire session, even if you change the database connection
+      with the meta-command <TT
+CLASS="COMMAND"
+>\connect</TT
+>.
+      </P
+><P
+>      In the current version, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+      automatically issues a password prompt whenever the backend
+      requests password authentication. Because this is currently based
+      on a hack, the automatic recognition might mysteriously fail,
+      hence this option to force a prompt. If no password prompt is
+      issued and the backend requires password authentication the
+      connection attempt will fail.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-x</TT
+><BR><TT
+CLASS="OPTION"
+>--expanded</TT
+></DT
+><DD
+><P
+>      Turns on extended row format mode. This is equivalent to the
+      command <TT
+CLASS="COMMAND"
+>\x</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X,</TT
+><BR><TT
+CLASS="OPTION"
+>--no-psqlrc</TT
+></DT
+><DD
+><P
+>      Do not read the start-up file <TT
+CLASS="FILENAME"
+>~/.psqlrc</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-?</TT
+><BR><TT
+CLASS="OPTION"
+>--help</TT
+></DT
+><DD
+><P
+>      Shows help about <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> command line
+      arguments.
+      </P
+></DD
+></DL
+></DIV
+><P
+>   Long options are not available on all platforms.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN49218"
+></A
+><H2
+>Exit Status</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> returns 0 to the shell if it
+   finished normally, 1 if a fatal error of its own (out of memory,
+   file not found) occurs, 2 if the connection to the backend went bad
+   and the session is not interactive, and 3 if an error occurred in a
+   script and the variable <TT
+CLASS="VARNAME"
+>ON_ERROR_STOP</TT
+> was set.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN49223"
+></A
+><H2
+>Usage</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-APP-PSQL-CONNECTING"
+></A
+><H3
+>Connecting To A Database</H3
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> is a regular
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> client application. In order
+    to connect to a database you need to know the name of your target
+    database, the host name and port number of the server and what user
+    name you want to connect as. <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> can be
+    told about those parameters via command line options, namely
+    <TT
+CLASS="OPTION"
+>-d</TT
+>, <TT
+CLASS="OPTION"
+>-h</TT
+>, <TT
+CLASS="OPTION"
+>-p</TT
+>, and
+    <TT
+CLASS="OPTION"
+>-U</TT
+> respectively. If an argument is found that does
+    not belong to any option it will be interpreted as the database name
+    (or the user name, if the database name is also given). Not all
+    these options are required, defaults do apply. If you omit the host
+    name, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> will connect via a Unix domain socket to a server on the
+    local host. The default port number is compile-time determined.
+    Since the database server uses the same default, you will not have
+    to specify the port in most cases. The default user name is your
+    Unix user name, as is the default database name. Note that you can't
+    just connect to any database under any user name. Your database
+    administrator should have informed you about your access rights. To
+    save you some typing you can also set the environment variables
+    <TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+>, <TT
+CLASS="ENVAR"
+>PGHOST</TT
+>,
+    <TT
+CLASS="ENVAR"
+>PGPORT</TT
+> and <TT
+CLASS="ENVAR"
+>PGUSER</TT
+> to appropriate
+    values.
+    </P
+><P
+>    If the connection could not be made for any reason (e.g., insufficient
+    privileges, postmaster is not running on the server, etc.),
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> will return an error and terminate.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-APP-PSQL-4"
+></A
+><H3
+>Entering Queries</H3
+><P
+>    In normal operation, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> provides a
+    prompt with the name of the database to which
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> is currently connected, followed by
+    the string <TT
+CLASS="LITERAL"
+>=&gt;</TT
+>. For example,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$ <TT
+CLASS="USERINPUT"
+><B
+>psql testdb</B
+></TT
+>
+Welcome to psql 7.3.3, the PostgreSQL interactive terminal.
+
+Type:  \copyright for distribution terms
+       \h for help with SQL commands
+       \? for help on internal slash commands
+       \g or terminate with semicolon to execute query
+       \q to quit
+
+testdb=&#62;</PRE
+><P>
+    </P
+><P
+>    At the prompt, the user may type in <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> queries.
+    Ordinarily, input lines are sent to the backend when a
+    query-terminating semicolon is reached. An end of line does not
+    terminate a query! Thus queries can be spread over several lines for
+    clarity. If the query was sent and without error, the query results
+    are displayed on the screen.
+    </P
+><P
+>    Whenever a query is executed, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> also polls
+    for asynchronous notification events generated by
+    <A
+HREF="sql-listen.html"
+><I
+>LISTEN</I
+></A
+> and
+    <A
+HREF="sql-notify.html"
+><I
+>NOTIFY</I
+></A
+>.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN49256"
+></A
+><H3
+>Meta-Commands</H3
+><P
+>    Anything you enter in <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> that begins
+    with an unquoted backslash is a <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+    meta-command that is processed by <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+    itself. These commands are what makes
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> interesting for administration or
+    scripting. Meta-commands are more commonly called slash or backslash
+    commands.
+    </P
+><P
+>    The format of a <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> command is the backslash, 
+    followed immediately by a command verb, then any arguments. The arguments
+    are separated from the command verb and each other by any number of 
+    whitespace characters.
+    </P
+><P
+>    To include whitespace into an argument you may quote it with a
+    single quote. To include a single quote into such an argument,
+    precede it by a backslash. Anything contained in single quotes is
+    furthermore subject to C-like substitutions for
+    <TT
+CLASS="LITERAL"
+>\n</TT
+> (new line), <TT
+CLASS="LITERAL"
+>\t</TT
+> (tab),
+    <TT
+CLASS="LITERAL"
+>\</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>digits</I
+></TT
+>,
+    <TT
+CLASS="LITERAL"
+>\0</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>digits</I
+></TT
+>, and
+    <TT
+CLASS="LITERAL"
+>\0x</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>digits</I
+></TT
+> (the
+    character with the given decimal, octal, or hexadecimal code).
+    </P
+><P
+>    If an unquoted argument begins with a colon (<TT
+CLASS="LITERAL"
+>:</TT
+>),
+    it is taken as a <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> variable and the value of the
+    variable is used as the argument instead.
+    </P
+><P
+>    Arguments that are enclosed in backquotes (<TT
+CLASS="LITERAL"
+>`</TT
+>)
+    are taken as a command line that is passed to the shell. The
+    output of the command (with any trailing newline removed) is taken
+    as the argument value. The above escape sequences also apply in
+    backquotes.
+    </P
+><P
+>    Some commands take an <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> identifier
+    (such as a table name) as argument. These arguments follow the
+    syntax rules of <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> regarding double quotes: an
+    identifier without double quotes is coerced to lower-case, while
+    whitespace within double quotes is included in the argument.
+    </P
+><P
+>    Parsing for arguments stops when another unquoted backslash occurs.
+    This is taken as the beginning of a new meta-command. The special
+    sequence <TT
+CLASS="LITERAL"
+>\\</TT
+> (two backslashes) marks the end of
+    arguments and continues parsing <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> queries, if
+    any. That way <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> and
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> commands can be freely mixed on a
+    line. But in any case, the arguments of a meta-command cannot
+    continue beyond the end of the line.
+    </P
+><P
+>    The following meta-commands are defined:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>\a</TT
+></DT
+><DD
+><P
+>	If the current table output format is unaligned, switch to aligned.
+	If it is not unaligned, set it to unaligned. This command is
+	kept for backwards compatibility. See <TT
+CLASS="COMMAND"
+>\pset</TT
+> for a
+	general solution.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\cd</TT
+> [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></SPAN
+>]</DT
+><DD
+><P
+>	 Change the current working directory to
+	 <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+>. Without argument, change
+	 to the current user's home directory.
+        </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	  To print your current working directory, use <TT
+CLASS="LITERAL"
+>\!pwd</TT
+>.
+	 </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\C</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>title</I
+></TT
+> ]</DT
+><DD
+><P
+>        Set the title of any tables being printed as the result of a
+        query or unset any such title. This command is equivalent to
+        <TT
+CLASS="LITERAL"
+>\pset title <TT
+CLASS="REPLACEABLE"
+><I
+>title</I
+></TT
+></TT
+>. (The name of
+        this command derives from <SPAN
+CLASS="QUOTE"
+>"caption"</SPAN
+>, as it was
+        previously only used to set the caption in an
+        <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> table.)
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\connect</TT
+> (or <TT
+CLASS="LITERAL"
+>\c</TT
+>) [ <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> ] ]</DT
+><DD
+><P
+>	Establishes a connection to a new database and/or under a user
+	name. The previous connection is closed. If <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> is <TT
+CLASS="LITERAL"
+>-</TT
+>
+	the current database name is assumed.
+	</P
+><P
+>	If <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> is
+	omitted the current user name is assumed. </P
+><P
+>	As a special rule, <TT
+CLASS="COMMAND"
+>\connect</TT
+> without any
+	arguments will connect to the default database as the default
+	user (as you would have gotten by starting
+	<SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> without any arguments).
+	</P
+><P
+>	If the connection attempt failed (wrong user name, access
+	denied, etc.), the previous connection will be kept if and only
+	if <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> is in interactive mode. When
+	executing a non-interactive script, processing will immediately
+	stop with an error. This distinction was chosen as a user
+	convenience against typos on the one hand, and a safety
+	mechanism that scripts are not accidentally acting on the wrong
+	database on the other hand.
+	</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\copy <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>
+	[ ( <TT
+CLASS="REPLACEABLE"
+><I
+>column_list</I
+></TT
+> ) ]
+        { <TT
+CLASS="LITERAL"
+>from</TT
+> | <TT
+CLASS="LITERAL"
+>to</TT
+> }
+	<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> | stdin | stdout
+        [ <TT
+CLASS="LITERAL"
+>with</TT
+> ] 
+            [ <TT
+CLASS="LITERAL"
+>oids</TT
+> ] 
+            [ <TT
+CLASS="LITERAL"
+>delimiter [as] </TT
+> '<TT
+CLASS="REPLACEABLE"
+><I
+>character</I
+></TT
+>' ]
+            [ <TT
+CLASS="LITERAL"
+>null [as] </TT
+> '<TT
+CLASS="REPLACEABLE"
+><I
+>string</I
+></TT
+>' ]</TT
+></DT
+><DD
+><P
+>        Performs a frontend (client) copy. This is an operation that
+        runs an <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> <A
+HREF="sql-copy.html"
+><I
+>COPY</I
+></A
+> command, but instead of the backend's
+        reading or writing the specified file,
+        <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> reads or writes the file and
+        routes the data between the backend and the local file system.
+	This means that file accessibility and privileges are those
+	of the local user, not the server, and no SQL superuser
+	privileges are required.
+	</P
+><P
+>	The syntax of the command is similar to that of the
+	<SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> <TT
+CLASS="COMMAND"
+>COPY</TT
+> command (see its
+	description for the details). Note that, because of this,
+	special parsing rules apply to the <TT
+CLASS="COMMAND"
+>\copy</TT
+>
+	command. In particular, the variable substitution rules and
+	backslash escapes do not apply.
+	</P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	This operation is not as efficient as the <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+	<TT
+CLASS="COMMAND"
+>COPY</TT
+> command because all data must pass
+	through the client/server IP or socket connection. For large
+	amounts of data the other technique may be preferable.
+        </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>        Note the difference in interpretation of
+        <TT
+CLASS="LITERAL"
+>stdin</TT
+> and <TT
+CLASS="LITERAL"
+>stdout</TT
+> between
+        frontend and backend copies: in a frontend copy these always
+        refer to <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>'s input and output
+        stream. On a backend copy <TT
+CLASS="LITERAL"
+>stdin</TT
+> comes from
+        wherever the <TT
+CLASS="COMMAND"
+>COPY</TT
+> itself came from (for
+        example, a script run with the <TT
+CLASS="OPTION"
+>-f</TT
+> option), and
+        <TT
+CLASS="LITERAL"
+>stdout</TT
+> refers to the query output stream (see
+        <TT
+CLASS="COMMAND"
+>\o</TT
+> meta-command below).
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\copyright</TT
+></DT
+><DD
+><P
+>        Shows the copyright and distribution terms of
+        <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+>.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\d</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</DT
+><DD
+><P
+>	For each relation (table, view, index, or sequence) matching the
+	<TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>, show all
+	columns, their types, and any special
+	attributes such as <TT
+CLASS="LITERAL"
+>NOT NULL</TT
+> or defaults, if
+	any. Associated indexes, constraints, rules, and triggers are
+	also shown, as is the view definition if the relation is a view.
+	(<SPAN
+CLASS="QUOTE"
+>"Matching the pattern"</SPAN
+> is defined below.)
+	</P
+><P
+>	The command form <TT
+CLASS="LITERAL"
+>\d+</TT
+> is identical, but any
+	comments associated with the table columns are shown as well.
+	</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	If <TT
+CLASS="COMMAND"
+>\d</TT
+> is used without a
+	<TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> argument, it is
+	equivalent to <TT
+CLASS="COMMAND"
+>\dtvs</TT
+> which will show a list of
+	all tables, views, and sequences. This is purely a convenience
+	measure.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\da</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</DT
+><DD
+><P
+>        Lists all available aggregate functions, together with the data
+        type they operate on. If <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> (a regular expression)
+        is specified, only matching aggregates are shown.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\dd</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</DT
+><DD
+><P
+>        Shows the descriptions of objects matching the <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>, or of all visible objects if
+	no argument is given.  But in either case, only objects that have
+	a description are listed.
+        (<SPAN
+CLASS="QUOTE"
+>"Object"</SPAN
+> covers aggregates, functions, operators,
+        types, relations (tables, views, indexes, sequences, large
+        objects), rules, and triggers.) For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\dd version</B
+></TT
+>
+                     Object descriptions
+   Schema   |  Name   |  Object  |        Description
+------------+---------+----------+---------------------------
+ pg_catalog | version | function | PostgreSQL version string
+(1 row)</PRE
+><P>
+        </P
+><P
+>        Descriptions for objects can be created with the
+        <TT
+CLASS="COMMAND"
+>COMMENT ON</TT
+> <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> command.
+	</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> stores the object
+        descriptions in the <TT
+CLASS="STRUCTNAME"
+>pg_description</TT
+> system table.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\dD</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</DT
+><DD
+><P
+>        Lists all available domains (derived types). If <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>
+        is specified, only matching domains are shown.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\df [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</TT
+></DT
+><DD
+><P
+>        Lists available functions, together with their argument and
+        return types. If <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>
+        is specified, only matching functions are shown. If the form
+        <TT
+CLASS="LITERAL"
+>\df+</TT
+> is used, additional information about
+        each function, including language and description, is shown.
+        </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>        To reduce clutter, <TT
+CLASS="LITERAL"
+>\df</TT
+> does not show data type I/O
+	functions.  This is implemented by ignoring functions that accept
+	or return type <TT
+CLASS="TYPE"
+>cstring</TT
+>.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\distvS [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</TT
+></DT
+><DD
+><P
+>	This is not the actual command name: the letters i, s, t, v, S
+	stand for index, sequence, table, view, and system table,
+	respectively. You can specify any or all of these letters, in any
+	order, to obtain a listing of all the matching objects.  The letter
+	S restricts the listing to system objects; without S, only non-system
+	objects are shown.
+	If <SPAN
+CLASS="QUOTE"
+>"+"</SPAN
+> is appended to the command name, each object is
+	listed with its associated description, if any.
+	</P
+><P
+>	If a <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> is
+	specified, only objects whose name matches the pattern are listed.
+	</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\dl</TT
+></DT
+><DD
+><P
+>	This is an alias for <TT
+CLASS="COMMAND"
+>\lo_list</TT
+>, which shows a
+	list of large objects.
+	</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\do [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</TT
+></DT
+><DD
+><P
+>        Lists available operators with their operand and return types.
+	If a <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> is
+	specified, only operators whose name matches the pattern are listed.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\dp</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</DT
+><DD
+><P
+>        Produces a list of all available tables with their
+        associated access permissions.
+	If a <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> is
+	specified, only tables whose name matches the pattern are listed.
+	</P
+><P
+>	The commands <A
+HREF="sql-grant.html"
+>GRANT</A
+> and
+	<A
+HREF="sql-revoke.html"
+>REVOKE</A
+>
+	are used to set access permissions.  See <A
+HREF="sql-grant.html"
+>GRANT</A
+>
+	for more information.
+	</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\dT [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</TT
+></DT
+><DD
+><P
+>        Lists all data types or only those that match <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>. The command form
+        <TT
+CLASS="LITERAL"
+>\dT+</TT
+> shows extra information.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\du [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</TT
+></DT
+><DD
+><P
+>        Lists all database users, or only those that match <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+>.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\edit</TT
+> (or <TT
+CLASS="LITERAL"
+>\e</TT
+>) [ <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> ]</DT
+><DD
+><P
+>        If <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> is
+        specified, the file is edited; after the editor exits, its
+        content is copied back to the query buffer. If no argument is
+        given, the current query buffer is copied to a temporary file
+        which is then edited in the same fashion.
+        </P
+><P
+>        The new query buffer is then re-parsed according to the normal
+        rules of <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, where the whole buffer
+        is treated as a single line. (Thus you cannot make scripts this
+        way. Use <TT
+CLASS="COMMAND"
+>\i</TT
+> for that.) This means also that
+        if the query ends with (or rather contains) a semicolon, it is
+        immediately executed. In other cases it will merely wait in the
+        query buffer.
+        </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>        <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> searches the environment
+        variables <TT
+CLASS="ENVAR"
+>PSQL_EDITOR</TT
+>, <TT
+CLASS="ENVAR"
+>EDITOR</TT
+>, and
+        <TT
+CLASS="ENVAR"
+>VISUAL</TT
+> (in that order) for an editor to use. If
+        all of them are unset, <TT
+CLASS="FILENAME"
+>/bin/vi</TT
+> is run.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\echo</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>text</I
+></TT
+> [ ... ]</DT
+><DD
+><P
+>        Prints the arguments to the standard output, separated by one
+        space and followed by a newline. This can be useful to
+        intersperse information in the output of scripts. For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\echo `date`</B
+></TT
+>
+Tue Oct 26 21:40:57 CEST 1999</PRE
+><P>
+        If the first argument is an unquoted <TT
+CLASS="LITERAL"
+>-n</TT
+> the the trailing
+        newline is not written.
+	</P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	If you use the <TT
+CLASS="COMMAND"
+>\o</TT
+> command to redirect your
+	query output you may wish to use <TT
+CLASS="COMMAND"
+>\qecho</TT
+>
+	instead of this command.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\encoding</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>encoding</I
+></TT
+> ]</DT
+><DD
+><P
+>        Sets the client encoding, if you are using multibyte encodings.
+        Without an argument, this command shows the current encoding.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\f</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>string</I
+></TT
+> ]</DT
+><DD
+><P
+>        Sets the field separator for unaligned query output. The default
+        is pipe (<TT
+CLASS="LITERAL"
+>|</TT
+>). See also
+        <TT
+CLASS="COMMAND"
+>\pset</TT
+> for a generic way of setting output
+        options.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\g</TT
+> [ { <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> | <TT
+CLASS="LITERAL"
+>|</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+> } ]</DT
+><DD
+><P
+>        Sends the current query input buffer to the backend and
+        optionally saves the output in <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> or pipes the output
+        into a separate Unix shell to execute <TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>. A bare
+        <TT
+CLASS="LITERAL"
+>\g</TT
+> is virtually equivalent to a semicolon. A
+        <TT
+CLASS="LITERAL"
+>\g</TT
+> with argument is a <SPAN
+CLASS="QUOTE"
+>"one-shot"</SPAN
+>
+        alternative to the <TT
+CLASS="COMMAND"
+>\o</TT
+> command.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\help</TT
+> (or <TT
+CLASS="LITERAL"
+>\h</TT
+>) [ <TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+> ]</DT
+><DD
+><P
+>        Give syntax help on the specified <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+        command. If <TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>
+        is not specified, then <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> will list
+        all the commands for which syntax help is available. If
+        <TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+> is an
+        asterisk (<SPAN
+CLASS="QUOTE"
+>"*"</SPAN
+>), then syntax help on all
+        <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> commands is shown.
+        </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	To simplify typing, commands that consists of several words do
+	not have to be quoted. Thus it is fine to type <TT
+CLASS="USERINPUT"
+><B
+>\help
+	alter table</B
+></TT
+>.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\H</TT
+></DT
+><DD
+><P
+>	Turns on <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> query output format. If the
+	<SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> format is already on, it is switched
+	back to the default aligned text format. This command is for
+	compatibility and convenience, but see <TT
+CLASS="COMMAND"
+>\pset</TT
+>
+	about setting other output options.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\i</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></DT
+><DD
+><P
+>        Reads input from the file <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> and executes it as
+        though it had been typed on the keyboard.
+        </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	If you want to see the lines on the screen as they are read you
+	must set the variable <TT
+CLASS="VARNAME"
+>ECHO</TT
+> to
+	<TT
+CLASS="LITERAL"
+>all</TT
+>.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\l</TT
+> (or <TT
+CLASS="LITERAL"
+>\list</TT
+>)</DT
+><DD
+><P
+>        List all the databases in the server as well as their owners.
+        Append a <SPAN
+CLASS="QUOTE"
+>"+"</SPAN
+> to the command name to see any
+        descriptions for the databases as well. If your
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installation was compiled
+        with multibyte encoding support, the encoding scheme of each
+        database is shown as well.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\lo_export</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>loid</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></DT
+><DD
+><P
+>	Reads the large object with <SPAN
+CLASS="ACRONYM"
+>OID</SPAN
+> <TT
+CLASS="REPLACEABLE"
+><I
+>loid</I
+></TT
+> from the database and
+	writes it to <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>. Note that this is
+	subtly different from the server function
+	<TT
+CLASS="FUNCTION"
+>lo_export</TT
+>, which acts with the permissions
+	of the user that the database server runs as and on the server's
+	file system.
+	</P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	Use <TT
+CLASS="COMMAND"
+>\lo_list</TT
+> to find out the large object's
+	<SPAN
+CLASS="ACRONYM"
+>OID</SPAN
+>.
+	</P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	See the description of the <TT
+CLASS="VARNAME"
+>LO_TRANSACTION</TT
+>
+	variable for important information concerning all large object
+	operations.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\lo_import</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>comment</I
+></TT
+> ]</DT
+><DD
+><P
+>	Stores the file into a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+	<SPAN
+CLASS="QUOTE"
+>"large object"</SPAN
+>. Optionally, it associates the given
+	comment with the object. Example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>foo=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\lo_import '/home/peter/pictures/photo.xcf' 'a picture of me'</B
+></TT
+>
+lo_import 152801</PRE
+><P>
+	The response indicates that the large object received object id
+	152801 which one ought to remember if one wants to access the
+	object ever again. For that reason it is recommended to always
+	associate a human-readable comment with every object. Those can
+	then be seen with the <TT
+CLASS="COMMAND"
+>\lo_list</TT
+> command.
+	</P
+><P
+>	Note that this command is subtly different from the server-side
+	<TT
+CLASS="FUNCTION"
+>lo_import</TT
+> because it acts as the local user
+	on the local file system, rather than the server's user and file
+	system.
+	</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	See the description of the <TT
+CLASS="VARNAME"
+>LO_TRANSACTION</TT
+>
+	variable for important information concerning all large object
+	operations.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\lo_list</TT
+></DT
+><DD
+><P
+>	Shows a list of all <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+	<SPAN
+CLASS="QUOTE"
+>"large objects"</SPAN
+> currently stored in the database,
+	along with any comments provided for them.
+	</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\lo_unlink</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>loid</I
+></TT
+></DT
+><DD
+><P
+>	Deletes the large object with <SPAN
+CLASS="ACRONYM"
+>OID</SPAN
+>
+	<TT
+CLASS="REPLACEABLE"
+><I
+>loid</I
+></TT
+> from the
+	database.
+	</P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	Use <TT
+CLASS="COMMAND"
+>\lo_list</TT
+> to find out the large object's
+	<SPAN
+CLASS="ACRONYM"
+>OID</SPAN
+>.
+	</P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	See the description of the <TT
+CLASS="VARNAME"
+>LO_TRANSACTION</TT
+>
+	variable for important information concerning all large object
+	operations.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\o</TT
+> [ {<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> | <TT
+CLASS="LITERAL"
+>|</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>} ]</DT
+><DD
+><P
+>        Saves future query results to the file <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> or pipes future results
+        into a separate Unix shell to execute <TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>. If no arguments are
+        specified, the query output will be reset to
+        <TT
+CLASS="FILENAME"
+>stdout</TT
+>.
+        </P
+><P
+>	<SPAN
+CLASS="QUOTE"
+>"Query results"</SPAN
+> includes all tables, command
+	responses, and notices obtained from the database server, as
+	well as output of various backslash commands that query the
+	database (such as <TT
+CLASS="COMMAND"
+>\d</TT
+>), but not error
+	messages.
+	</P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	To intersperse text output in between query results, use
+	<TT
+CLASS="COMMAND"
+>\qecho</TT
+>.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\p</TT
+></DT
+><DD
+><P
+>        Print the current query buffer to the standard output.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\pset</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>parameter</I
+></TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> ]</DT
+><DD
+><P
+>	This command sets options affecting the output of query result
+	tables. <TT
+CLASS="REPLACEABLE"
+><I
+>parameter</I
+></TT
+>
+	describes which option is to be set. The semantics of
+	<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> depend
+	thereon.
+	</P
+><P
+>	Adjustable printing options are:
+	<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>format</TT
+></DT
+><DD
+><P
+>	  Sets the output format to one of <TT
+CLASS="LITERAL"
+>unaligned</TT
+>,
+	  <TT
+CLASS="LITERAL"
+>aligned</TT
+>, <TT
+CLASS="LITERAL"
+>html</TT
+>, or
+	  <TT
+CLASS="LITERAL"
+>latex</TT
+>. Unique abbreviations are allowed.
+	  (That would mean one letter is enough.)
+	  </P
+><P
+>	  <SPAN
+CLASS="QUOTE"
+>"Unaligned"</SPAN
+> writes all fields of a tuple on a
+	  line, separated by the currently active field separator. This
+	  is intended to create output that might be intended to be read
+	  in by other programs (tab-separated, comma-separated).
+	  <SPAN
+CLASS="QUOTE"
+>"Aligned"</SPAN
+> mode is the standard, human-readable,
+	  nicely formatted text output that is default. The
+	  <SPAN
+CLASS="QUOTE"
+>"<SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+>"</SPAN
+> and
+	  <SPAN
+CLASS="QUOTE"
+>"LaTeX"</SPAN
+> modes put out tables that are intended to
+	  be included in documents using the respective mark-up
+	  language. They are not complete documents! (This might not be
+	  so dramatic in <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+>, but in LaTeX you must
+	  have a complete document wrapper.)
+	  </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>border</TT
+></DT
+><DD
+><P
+>	  The second argument must be a number. In general, the higher
+	  the number the more borders and lines the tables will have,
+	  but this depends on the particular format. In
+	  <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> mode, this will translate directly
+	  into the <TT
+CLASS="LITERAL"
+>border=...</TT
+> attribute, in the
+	  others only values 0 (no border), 1 (internal dividing lines),
+	  and 2 (table frame) make sense.
+	  </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>expanded</TT
+> (or <TT
+CLASS="LITERAL"
+>x</TT
+>)</DT
+><DD
+><P
+>	  Toggles between regular and expanded format. When expanded
+	  format is enabled, all output has two columns with the field
+	  name on the left and the data on the right. This mode is
+	  useful if the data wouldn't fit on the screen in the normal
+	  <SPAN
+CLASS="QUOTE"
+>"horizontal"</SPAN
+> mode.
+	  </P
+><P
+>	  Expanded mode is supported by all four output modes.
+	  </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>null</TT
+></DT
+><DD
+><P
+>	  The second argument is a string that should be printed
+	  whenever a field is null. The default is not to print
+	  anything, which can easily be mistaken for, say, an empty
+	  string. Thus, one might choose to write <TT
+CLASS="LITERAL"
+>\pset null
+	  '(null)'</TT
+>.
+	  </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>fieldsep</TT
+></DT
+><DD
+><P
+>	  Specifies the field separator to be used in unaligned output
+	  mode. That way one can create, for example, tab- or
+	  comma-separated output, which other programs might prefer. To
+	  set a tab as field separator, type <TT
+CLASS="LITERAL"
+>\pset fieldsep
+	  '\t'</TT
+>. The default field separator is
+	  <TT
+CLASS="LITERAL"
+>'|'</TT
+> (a <SPAN
+CLASS="QUOTE"
+>"pipe"</SPAN
+> symbol).
+	  </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>footer</TT
+></DT
+><DD
+><P
+>	  Toggles the display of the default footer <TT
+CLASS="LITERAL"
+>(x
+	  rows)</TT
+>.
+	  </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>recordsep</TT
+></DT
+><DD
+><P
+>          Specifies the record (line) separator to use in unaligned
+          output mode. The default is a newline character.
+	  </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>tuples_only</TT
+> (or <TT
+CLASS="LITERAL"
+>t</TT
+>)</DT
+><DD
+><P
+>	  Toggles between tuples only and full display. Full display may
+	  show extra information such as column headers, titles, and
+	  various footers. In tuples only mode, only actual table data
+	  is shown.
+	  </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>title</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>text</I
+></TT
+> ]</DT
+><DD
+><P
+>	  Sets the table title for any subsequently printed tables. This
+	  can be used to give your output descriptive tags. If no
+	  argument is given, the title is unset.
+	  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	  This formerly only affected <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> mode. You
+	  can now set titles in any output format.
+	  </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>tableattr</TT
+> (or <TT
+CLASS="LITERAL"
+>T</TT
+>) [ <TT
+CLASS="REPLACEABLE"
+><I
+>text</I
+></TT
+> ]</DT
+><DD
+><P
+>	  Allows you to specify any attributes to be placed inside the
+	  <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> <TT
+CLASS="SGMLTAG"
+>table</TT
+> tag. This
+	  could for example be <TT
+CLASS="LITERAL"
+>cellpadding</TT
+> or
+	  <TT
+CLASS="LITERAL"
+>bgcolor</TT
+>. Note that you probably don't want
+	  to specify <TT
+CLASS="LITERAL"
+>border</TT
+> here, as that is already
+	  taken care of by <TT
+CLASS="LITERAL"
+>\pset border</TT
+>.
+	  </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>pager</TT
+></DT
+><DD
+><P
+>	  Toggles the use of a pager for query and <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> help output. If the
+	  environment variable <TT
+CLASS="ENVAR"
+>PAGER</TT
+> is set, the output
+	  is piped to the specified program. Otherwise a platform-dependent default (such as
+	  <TT
+CLASS="FILENAME"
+>more</TT
+>) is used.
+	  </P
+><P
+>	  In any case, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> only uses the
+	  pager if it seems appropriate. That means among other things
+	  that the output is to a terminal and that the table would
+	  normally not fit on the screen. Because of the modular nature
+	  of the printing routines it is not always possible to predict
+	  the number of lines that will actually be printed. For that
+	  reason <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> might not appear very
+	  discriminating about when to use the pager.
+	  </P
+></DD
+></DL
+></DIV
+><P>
+	Illustrations on how these different formats look can be seen in
+	the <A
+HREF="app-psql.html#APP-PSQL-EXAMPLES"
+><I
+>Examples</I
+></A
+> section.
+	</P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	There are various shortcut commands for <TT
+CLASS="COMMAND"
+>\pset</TT
+>. See
+	<TT
+CLASS="COMMAND"
+>\a</TT
+>, <TT
+CLASS="COMMAND"
+>\C</TT
+>, <TT
+CLASS="COMMAND"
+>\H</TT
+>,
+	<TT
+CLASS="COMMAND"
+>\t</TT
+>, <TT
+CLASS="COMMAND"
+>\T</TT
+>, and <TT
+CLASS="COMMAND"
+>\x</TT
+>.
+	</P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	It is an error to call <TT
+CLASS="COMMAND"
+>\pset</TT
+> without
+	arguments. In the future this call might show the current status
+	of all printing options.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\q</TT
+></DT
+><DD
+><P
+>        Quit the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> program.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\qecho</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>text</I
+></TT
+> [ ... ]</DT
+><DD
+><P
+>	This command is identical to <TT
+CLASS="COMMAND"
+>\echo</TT
+> except
+	that all output will be written to the query output channel, as
+	set by <TT
+CLASS="COMMAND"
+>\o</TT
+>.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\r</TT
+></DT
+><DD
+><P
+>        Resets (clears) the query buffer.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\s</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> ]</DT
+><DD
+><P
+>        Print or save the command line history to <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>. If <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> is omitted, the history
+        is written to the standard output. This option is only available
+        if <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> is configured to use the
+        <SPAN
+CLASS="ACRONYM"
+>GNU</SPAN
+> history library.
+        </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	In the current version, it is no longer necessary to save the
+	command history, since that will be done automatically on
+	program termination. The history is also loaded automatically
+	every time <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> starts up.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\set</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> [ ... ]]]</DT
+><DD
+><P
+>	Sets the internal variable <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> to <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> or, if more than one value
+	is given, to the concatenation of all of them. If no second
+	argument is given, the variable is just set with no value. To
+	unset a variable, use the <TT
+CLASS="COMMAND"
+>\unset</TT
+> command.
+	</P
+><P
+>	Valid variable names can contain characters, digits, and
+	underscores. See the section about
+	<SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> variables for details.
+	</P
+><P
+>	Although you are welcome to set any variable to anything you
+	want, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> treats several variables
+	as special. They are documented in the section about variables.
+	</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	This command is totally separate from the <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+	command <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+>.
+	</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\t</TT
+></DT
+><DD
+><P
+>        Toggles the display of output column name headings and row count
+        footer. This command is equivalent to <TT
+CLASS="LITERAL"
+>\pset
+        tuples_only</TT
+> and is provided for convenience.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\T</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>table_options</I
+></TT
+></DT
+><DD
+><P
+>        Allows you to specify options to be placed within the
+        <TT
+CLASS="SGMLTAG"
+>table</TT
+> tag in <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> tabular
+        output mode. This command is equivalent to <TT
+CLASS="LITERAL"
+>\pset
+        tableattr <TT
+CLASS="REPLACEABLE"
+><I
+>table_options</I
+></TT
+></TT
+>.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\timing</TT
+></DT
+><DD
+><P
+>         Toggles a display of how long each SQL statement takes, in milliseconds.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\w</TT
+> {<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> | <TT
+CLASS="REPLACEABLE"
+><I
+>|command</I
+></TT
+>}</DT
+><DD
+><P
+>        Outputs the current query buffer to the file <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+> or pipes it to the Unix
+        command <TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\x</TT
+></DT
+><DD
+><P
+>        Toggles extended row format mode. As such it is equivalent to
+	<TT
+CLASS="LITERAL"
+>\pset expanded</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\z</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> ]</DT
+><DD
+><P
+>        Produces a list of all available tables with their
+        associated access permissions.
+	If a <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> is
+	specified, only tables whose name matches the pattern are listed.
+	</P
+><P
+>	The commands <A
+HREF="sql-grant.html"
+>GRANT</A
+> and
+	<A
+HREF="sql-revoke.html"
+>REVOKE</A
+>
+	are used to set access permissions.  See <A
+HREF="sql-grant.html"
+>GRANT</A
+>
+	for more information.
+	</P
+><P
+>	This is an alias for <TT
+CLASS="COMMAND"
+>\dp</TT
+> (<SPAN
+CLASS="QUOTE"
+>"display
+	permissions"</SPAN
+>).
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\!</TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+> ]</DT
+><DD
+><P
+>        Escapes to a separate Unix shell or executes the Unix command
+        <TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>. The
+        arguments are not further interpreted, the shell will see them
+        as is.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>\?</TT
+></DT
+><DD
+><P
+>        Get help information about the backslash (<SPAN
+CLASS="QUOTE"
+>"\"</SPAN
+>)
+        commands.
+        </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+><P
+>   The various <TT
+CLASS="LITERAL"
+>\d</TT
+> commands accept a <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> parameter to specify the
+   object name(s) to be displayed.  Patterns are interpreted similarly
+   to SQL identifiers, in that unquoted letters are forced to lowercase,
+   while double quotes (<TT
+CLASS="LITERAL"
+>"</TT
+>) protect letters from case conversion
+   and allow incorporation of whitespace into the identifier.  Within
+   double quotes, paired double quotes reduce to a single double quote in
+   the resulting name.  For example, <TT
+CLASS="LITERAL"
+>FOO"BAR"BAZ</TT
+> is interpreted
+   as <TT
+CLASS="LITERAL"
+>fooBARbaz</TT
+>, and <TT
+CLASS="LITERAL"
+>"A weird"" name"</TT
+> becomes
+   <TT
+CLASS="LITERAL"
+>A weird" name</TT
+>.
+  </P
+><P
+>   More interestingly, <TT
+CLASS="LITERAL"
+>\d</TT
+> patterns allow the use of
+   <TT
+CLASS="LITERAL"
+>*</TT
+> to mean <SPAN
+CLASS="QUOTE"
+>"any sequence of characters"</SPAN
+>, and
+   <TT
+CLASS="LITERAL"
+>?</TT
+> to mean <SPAN
+CLASS="QUOTE"
+>"any single character"</SPAN
+>.  (This notation
+   is comparable to Unix shell filename patterns.)  Advanced users can
+   also use regular-expression notations such as character classes, for
+   example <TT
+CLASS="LITERAL"
+>[0-9]</TT
+> to match <SPAN
+CLASS="QUOTE"
+>"any digit"</SPAN
+>.  To make any of
+   these pattern-matching characters be interpreted literally, surround it
+   with double quotes.
+  </P
+><P
+>   A pattern that contains an (unquoted) dot is interpreted as a schema
+   name pattern followed by an object name pattern.  For example,
+   <TT
+CLASS="LITERAL"
+> \dt foo*.bar*</TT
+> displays all tables in schemas whose name
+   starts with <TT
+CLASS="LITERAL"
+>foo</TT
+> and whose table name 
+   starts with <TT
+CLASS="LITERAL"
+>bar</TT
+>.  If no dot appears, then the pattern
+   matches only objects that are visible in the current schema search path.
+  </P
+><P
+>   Whenever the <TT
+CLASS="REPLACEABLE"
+><I
+>pattern</I
+></TT
+> parameter
+   is omitted completely, the <TT
+CLASS="LITERAL"
+>\d</TT
+> commands display all objects
+   that are visible in the current schema search path.  To see all objects
+   in the database, use the pattern <TT
+CLASS="LITERAL"
+>*.*</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN49920"
+></A
+><H3
+>Advanced features</H3
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="APP-PSQL-VARIABLES"
+></A
+><H4
+>Variables</H4
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> provides variable substitution
+    features similar to common Unix command shells. This feature is new
+    and not very sophisticated, yet, but there are plans to expand it in
+    the future. Variables are simply name/value pairs, where the value
+    can be any string of any length. To set variables, use the
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> meta-command
+    <TT
+CLASS="COMMAND"
+>\set</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\set foo bar</B
+></TT
+></PRE
+><P>
+    sets the variable <SPAN
+CLASS="QUOTE"
+>"foo"</SPAN
+> to the value
+    <SPAN
+CLASS="QUOTE"
+>"bar"</SPAN
+>. To retrieve the content of the variable, precede
+    the name with a colon and use it as the argument of any slash
+    command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\echo :foo</B
+></TT
+>
+bar</PRE
+><P>
+    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    The arguments of <TT
+CLASS="COMMAND"
+>\set</TT
+> are subject to the same
+    substitution rules as with other commands. Thus you can construct
+    interesting references such as <TT
+CLASS="LITERAL"
+>\set :foo
+    'something'</TT
+> and get <SPAN
+CLASS="QUOTE"
+>"soft links"</SPAN
+> or
+    <SPAN
+CLASS="QUOTE"
+>"variable variables"</SPAN
+> of <SPAN
+CLASS="PRODUCTNAME"
+>Perl</SPAN
+>
+    or <SPAN
+CLASS="PRODUCTNAME"
+><SPAN
+CLASS="ACRONYM"
+>PHP</SPAN
+></SPAN
+> fame,
+    respectively. Unfortunately (or fortunately?), there is no way to do
+    anything useful with these constructs. On the other hand,
+    <TT
+CLASS="LITERAL"
+>\set bar :foo</TT
+> is a perfectly valid way to copy a
+    variable.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    If you call <TT
+CLASS="COMMAND"
+>\set</TT
+> without a second argument, the
+    variable is simply set, but has no value. To unset (or delete) a
+    variable, use the command <TT
+CLASS="COMMAND"
+>\unset</TT
+>.
+    </P
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>'s internal variable names can
+    consist of letters, numbers, and underscores in any order and any
+    number of them. A number of regular variables are treated specially
+    by <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>. They indicate certain option
+    settings that can be changed at run time by altering the value of
+    the variable or represent some state of the application. Although
+    you can use these variables for any other purpose, this is not
+    recommended, as the program behavior might grow really strange
+    really quickly. By convention, all specially treated variables
+    consist of all upper-case letters (and possibly numbers and
+    underscores). To ensure maximum compatibility in the future, avoid
+    such variables. A list of all specially treated variables follows.
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>DBNAME</TT
+></DT
+><DD
+><P
+>        The name of the database you are currently connected to. This is
+        set every time you connect to a database (including program
+        start-up), but can be unset.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ECHO</TT
+></DT
+><DD
+><P
+>	If set to <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>all</TT
+>"</SPAN
+>, all lines
+	entered or from a script are written to the standard output
+	before they are parsed or executed. To specify this on program
+	start-up, use the switch <TT
+CLASS="OPTION"
+>-a</TT
+>. If set to
+	<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>queries</TT
+>"</SPAN
+>,
+	<SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> merely prints all queries as
+	they are sent to the backend. The option for this is
+	<TT
+CLASS="OPTION"
+>-e</TT
+>.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ECHO_HIDDEN</TT
+></DT
+><DD
+><P
+>	When this variable is set and a backslash command queries the
+	database, the query is first shown. This way you can study the
+	<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> internals and provide
+	similar functionality in your own programs. If you set the
+	variable to the value <TT
+CLASS="LITERAL"
+>noexec</TT
+>, the queries are
+	just shown but are not actually sent to the backend and
+	executed.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ENCODING</TT
+></DT
+><DD
+><P
+>        The current client multibyte encoding. If you are not set up to
+        use multibyte characters, this variable will always contain
+        <SPAN
+CLASS="QUOTE"
+>"SQL_ASCII"</SPAN
+>.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>HISTCONTROL</TT
+></DT
+><DD
+><P
+>         If this variable is set to <TT
+CLASS="LITERAL"
+>ignorespace</TT
+>,
+         lines which begin with a space are not entered into the history
+         list. If set to a value of <TT
+CLASS="LITERAL"
+>ignoredups</TT
+>, lines
+         matching the previous history line are not entered. A value of
+         <TT
+CLASS="LITERAL"
+>ignoreboth</TT
+> combines the two options. If
+         unset, or if set to any other value than those above, all lines
+         read in interactive mode are saved on the history list.
+	</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>        This feature was shamelessly plagiarized from
+        <SPAN
+CLASS="APPLICATION"
+>bash</SPAN
+>.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>HISTSIZE</TT
+></DT
+><DD
+><P
+>        The number of commands to store in the command history. The
+        default value is 500.
+	</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>        This feature was shamelessly plagiarized from
+        <SPAN
+CLASS="APPLICATION"
+>bash</SPAN
+>.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>HOST</TT
+></DT
+><DD
+><P
+>        The database server host you are currently connected to. This is
+        set every time you connect to a database (including program
+        start-up), but can be unset.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>IGNOREEOF</TT
+></DT
+><DD
+><P
+>         If unset, sending an <SPAN
+CLASS="ACRONYM"
+>EOF</SPAN
+> character (usually
+         <B
+CLASS="KEYCAP"
+>Control</B
+>+<B
+CLASS="KEYCAP"
+>D</B
+>)
+         to an interactive session of <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+         will terminate the application. If set to a numeric value,
+         that many <SPAN
+CLASS="ACRONYM"
+>EOF</SPAN
+> characters are ignored before the
+         application terminates.  If the variable is set but has no
+         numeric value, the default is 10.
+	</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>        This feature was shamelessly plagiarized from
+        <SPAN
+CLASS="APPLICATION"
+>bash</SPAN
+>.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LASTOID</TT
+></DT
+><DD
+><P
+>        The value of the last affected OID, as returned from an
+        <TT
+CLASS="COMMAND"
+>INSERT</TT
+> or <TT
+CLASS="COMMAND"
+>lo_insert</TT
+>
+        command. This variable is only guaranteed to be valid until
+        after the result of the next <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> command has
+        been displayed.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LO_TRANSACTION</TT
+></DT
+><DD
+><P
+>	If you use the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> large
+	object interface to specially store data that does not fit into
+	one tuple, all the operations must be contained in a transaction
+	block. (See the documentation of the large object interface for
+	more information.) Since <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> has no
+	way to tell if you already have a transaction in progress when
+	you call one of its internal commands
+	(<TT
+CLASS="COMMAND"
+>\lo_export</TT
+>, <TT
+CLASS="COMMAND"
+>\lo_import</TT
+>,
+	<TT
+CLASS="COMMAND"
+>\lo_unlink</TT
+>) it must take some arbitrary
+	action. This action could either be to roll back any transaction
+	that might already be in progress, or to commit any such
+	transaction, or to do nothing at all. In the last case you must
+	provide your own <TT
+CLASS="COMMAND"
+>BEGIN
+	TRANSACTION</TT
+>/<TT
+CLASS="COMMAND"
+>COMMIT</TT
+> block or the
+	results will be unpredictable (usually resulting in the desired
+	action's not being performed in any case).
+	</P
+><P
+>	To choose what you want to do you set this variable to one of
+	<SPAN
+CLASS="QUOTE"
+>"rollback"</SPAN
+>, <SPAN
+CLASS="QUOTE"
+>"commit"</SPAN
+>, or
+	<SPAN
+CLASS="QUOTE"
+>"nothing"</SPAN
+>. The default is to roll back the
+	transaction. If you just want to load one or a few objects this
+	is fine. However, if you intend to transfer many large objects,
+	it might be advisable to provide one explicit transaction block
+	around all commands.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ON_ERROR_STOP</TT
+></DT
+><DD
+><P
+>	By default, if non-interactive scripts encounter an error, such
+	as a malformed <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> query or internal
+	meta-command, processing continues. This has been the
+	traditional behavior of <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> but it
+	is sometimes not desirable. If this variable is set, script
+	processing will immediately terminate. If the script was called
+	from another script it will terminate in the same fashion. If
+	the outermost script was not called from an interactive
+	<SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> session but rather using the
+	<TT
+CLASS="OPTION"
+>-f</TT
+> option, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> will
+	return error code 3, to distinguish this case from fatal error
+	conditions (error code 1).
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>PORT</TT
+></DT
+><DD
+><P
+>        The database server port to which you are currently connected.
+        This is set every time you connect to a database (including
+        program start-up), but can be unset.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>PROMPT1</TT
+><BR><TT
+CLASS="VARNAME"
+>PROMPT2</TT
+><BR><TT
+CLASS="VARNAME"
+>PROMPT3</TT
+></DT
+><DD
+><P
+>	These specify what the prompt <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+	issues is supposed to look like. See <SPAN
+CLASS="QUOTE"
+>"<A
+HREF="app-psql.html#APP-PSQL-PROMPTING"
+><I
+>Prompting</I
+></A
+>"</SPAN
+> below.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>QUIET</TT
+></DT
+><DD
+><P
+>	This variable is equivalent to the command line option
+	<TT
+CLASS="OPTION"
+>-q</TT
+>. It is probably not too useful in
+	interactive mode.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SINGLELINE</TT
+></DT
+><DD
+><P
+>	This variable is set by the command line option
+	<TT
+CLASS="OPTION"
+>-S</TT
+>. You can unset or reset it at run time.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SINGLESTEP</TT
+></DT
+><DD
+><P
+>	This variable is equivalent to the command line option
+	<TT
+CLASS="OPTION"
+>-s</TT
+>.
+	</P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>USER</TT
+></DT
+><DD
+><P
+>        The database user you are currently connected as. This is set
+        every time you connect to a database (including program
+        start-up), but can be unset.
+	</P
+></DD
+></DL
+></DIV
+><P>
+
+    </P
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN50093"
+></A
+><H4
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Interpolation</H4
+><P
+>    An additional useful feature of <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+    variables is that you can substitute (<SPAN
+CLASS="QUOTE"
+>"interpolate"</SPAN
+>)
+    them into regular <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> statements. The syntax for
+    this is again to prepend the variable name with a colon
+    (<TT
+CLASS="LITERAL"
+>:</TT
+>).
+</P><PRE
+CLASS="PROGRAMLISTING"
+>testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\set foo 'my_table'</B
+></TT
+>
+testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM :foo;</B
+></TT
+></PRE
+><P>
+    would then query the table <TT
+CLASS="LITERAL"
+>my_table</TT
+>. The value of
+    the variable is copied literally, so it can even contain unbalanced
+    quotes or backslash commands. You must make sure that it makes sense
+    where you put it. Variable interpolation will not be performed into
+    quoted <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> entities.
+    </P
+><P
+>    A popular application of this facility is to refer to the last
+    inserted <SPAN
+CLASS="ACRONYM"
+>OID</SPAN
+> in subsequent statements to build a
+    foreign key scenario. Another possible use of this mechanism is to
+    copy the contents of a file into a field. First load the file into a
+    variable and then proceed as above.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\set content '\'' `cat my_file.txt` '\''</B
+></TT
+>
+testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>INSERT INTO my_table VALUES (:content);</B
+></TT
+></PRE
+><P>
+    One possible problem with this approach is that <TT
+CLASS="FILENAME"
+>my_file.txt</TT
+>
+    might contain single quotes. These need to be escaped so that
+    they don't cause a syntax error when the third line is processed. This
+    could be done with the program <SPAN
+CLASS="APPLICATION"
+>sed</SPAN
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\set content '\'' `sed -e "s/'/\\\\\\'/g" &#60; my_file.txt` '\''</B
+></TT
+></PRE
+><P>
+    Observe the correct number of backslashes (6)! You can resolve it
+    this way: After <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> has parsed this
+    line, it passes <TT
+CLASS="LITERAL"
+>sed -e "s/'/\\\'/g" &#60; my_file.txt</TT
+>
+    to the shell. The shell will do its own thing inside the double
+    quotes and execute <TT
+CLASS="FILENAME"
+>sed</TT
+> with the arguments
+    <TT
+CLASS="LITERAL"
+>-e</TT
+> and <TT
+CLASS="LITERAL"
+>s/'/\\'/g</TT
+>. When
+    <SPAN
+CLASS="APPLICATION"
+>sed</SPAN
+> parses this it will replace the two
+    backslashes with a single one and then do the substitution. Perhaps
+    at one point you thought it was great that all Unix commands use the
+    same escape character. And this is ignoring the fact that you might
+    have to escape all backslashes as well because
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> text constants are also subject to certain
+    interpretations. In that case you might be better off preparing the
+    file externally.
+    </P
+><P
+>    Since colons may legally appear in queries, the following rule
+    applies: If the variable is not set, the character sequence
+    <SPAN
+CLASS="QUOTE"
+>"colon+name"</SPAN
+> is not changed. In any case you can escape
+    a colon with a backslash to protect it from interpretation. (The
+    colon syntax for variables is standard <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> for
+    embedded query languages, such as <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+>.
+    The colon syntax for array slices and type casts are
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extensions, hence the
+    conflict.)
+    </P
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="APP-PSQL-PROMPTING"
+></A
+><H4
+>Prompting</H4
+><P
+>    The prompts <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> issues can be customized
+    to your preference. The three variables <TT
+CLASS="VARNAME"
+>PROMPT1</TT
+>,
+    <TT
+CLASS="VARNAME"
+>PROMPT2</TT
+>, and <TT
+CLASS="VARNAME"
+>PROMPT3</TT
+> contain strings
+    and special escape sequences that describe the appearance of the
+    prompt. Prompt 1 is the normal prompt that is issued when
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> requests a new query. Prompt 2 is
+    issued when more input is expected during query input because the
+    query was not terminated with a semicolon or a quote was not closed.
+    Prompt 3 is issued when you run an <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+    <TT
+CLASS="COMMAND"
+>COPY</TT
+> command and you are expected to type in the
+    tuples on the terminal.
+    </P
+><P
+>    The value of the respective prompt variable is printed literally,
+    except where a percent sign (<SPAN
+CLASS="QUOTE"
+>"%"</SPAN
+>) is encountered.
+    Depending on the next character, certain other text is substituted
+    instead. Defined substitutions are:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>%M</TT
+></DT
+><DD
+><P
+>          The full host name (with domain name) of the database server,
+          or <TT
+CLASS="LITERAL"
+>[local]</TT
+> if the connection is over a Unix
+          domain socket, or
+          <TT
+CLASS="LITERAL"
+>[local:<TT
+CLASS="REPLACEABLE"
+><I
+>/dir/name</I
+></TT
+>]</TT
+>, if the Unix domain socket is not at the compiled in default
+          location.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%m</TT
+></DT
+><DD
+><P
+>          The host name of the database server, truncated after the
+          first dot, or <TT
+CLASS="LITERAL"
+>[local]</TT
+> if the connection is
+          over a Unix domain socket.
+         </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%&gt;</TT
+></DT
+><DD
+><P
+>The port number at which the database server is listening.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%n</TT
+></DT
+><DD
+><P
+>The user name you are connected as (not your local system
+         user name).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%/</TT
+></DT
+><DD
+><P
+>The name of the current database.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%~</TT
+></DT
+><DD
+><P
+>Like <TT
+CLASS="LITERAL"
+>%/</TT
+>, but the output is <SPAN
+CLASS="QUOTE"
+>"~"</SPAN
+>
+         (tilde) if the database is your default database.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%#</TT
+></DT
+><DD
+><P
+>If the current user is a database superuser, then a
+         <SPAN
+CLASS="QUOTE"
+>"#"</SPAN
+>, otherwise a <SPAN
+CLASS="QUOTE"
+>"&gt;"</SPAN
+>.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%R</TT
+></DT
+><DD
+><P
+>	In prompt 1 normally <SPAN
+CLASS="QUOTE"
+>"="</SPAN
+>, but <SPAN
+CLASS="QUOTE"
+>"^"</SPAN
+> if
+	in single-line mode, and <SPAN
+CLASS="QUOTE"
+>"!"</SPAN
+> if the session is
+	disconnected from the database (which can happen if
+	<TT
+CLASS="COMMAND"
+>\connect</TT
+> fails). In prompt 2 the sequence is
+	replaced by <SPAN
+CLASS="QUOTE"
+>"-"</SPAN
+>, <SPAN
+CLASS="QUOTE"
+>"*"</SPAN
+>, a single quote,
+	or a double quote, depending on whether
+	<SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> expects more input because the
+	query wasn't terminated yet, because you are inside a
+	<TT
+CLASS="LITERAL"
+>/* ... */</TT
+> comment, or because you are inside
+	a quote. In prompt 3 the sequence doesn't resolve to anything.
+	</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>digits</I
+></TT
+></DT
+><DD
+><P
+>	If <TT
+CLASS="REPLACEABLE"
+><I
+>digits</I
+></TT
+> starts
+	with <TT
+CLASS="LITERAL"
+>0x</TT
+> the rest of the characters are
+	interpreted as a hexadecimal digit and the character with the
+	corresponding code is substituted. If the first digit is
+	<TT
+CLASS="LITERAL"
+>0</TT
+> the characters are interpreted as on octal
+	number and the corresponding character is substituted. Otherwise
+	a decimal number is assumed.
+	</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%:</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+><TT
+CLASS="LITERAL"
+>:</TT
+></DT
+><DD
+><P
+>	The value of the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, variable
+	<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>. See the
+	section <SPAN
+CLASS="QUOTE"
+>"<A
+HREF="app-psql.html#APP-PSQL-VARIABLES"
+><I
+>Variables</I
+></A
+>"</SPAN
+> for details.
+	</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>%`</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+><TT
+CLASS="LITERAL"
+>`</TT
+></DT
+><DD
+><P
+>	The output of <TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>, similar to ordinary
+	<SPAN
+CLASS="QUOTE"
+>"back-tick"</SPAN
+> substitution.
+	</P
+></DD
+></DL
+></DIV
+><P>
+
+    To insert a percent sign into your prompt, write
+    <TT
+CLASS="LITERAL"
+>%%</TT
+>. The default prompts are equivalent to
+    <TT
+CLASS="LITERAL"
+>'%/%R%# '</TT
+> for prompts 1 and 2, and
+    <TT
+CLASS="LITERAL"
+>'&gt;&gt; '</TT
+> for prompt 3.
+    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    This feature was shamelessly plagiarized from
+    <SPAN
+CLASS="APPLICATION"
+>tcsh</SPAN
+>.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN50231"
+></A
+><H4
+>Command-Line Editing</H4
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> supports the <SPAN
+CLASS="APPLICATION"
+>Readline</SPAN
+>
+    library for convenient line editing and retrieval. The command
+    history is stored in a file named <TT
+CLASS="FILENAME"
+>.psql_history</TT
+>
+    in your home directory and is reloaded when
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> starts up. Tab-completion is also
+    supported, although the completion logic makes no claim to be an
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> parser. When available,
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> is automatically built to use these
+    features. If for some reason you do not like the tab completion, you
+    can turn if off by putting this in a file named
+    <TT
+CLASS="FILENAME"
+>.inputrc</TT
+> in your home directory:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>$if psql
+set disable-completion on
+$endif</PRE
+><P>
+    (This is not a <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> but a
+    <SPAN
+CLASS="APPLICATION"
+>readline</SPAN
+> feature. Read its documentation
+    for further details.)
+    </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50244"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>HOME</TT
+></DT
+><DD
+><P
+>      Directory for initialization file (<TT
+CLASS="FILENAME"
+>.psqlrc</TT
+>)
+      and command history file (<TT
+CLASS="FILENAME"
+>.psql_history</TT
+>).
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PAGER</TT
+></DT
+><DD
+><P
+>      If the query results do not fit on the screen, they are piped
+      through this command.  Typical values are
+      <TT
+CLASS="LITERAL"
+>more</TT
+> or <TT
+CLASS="LITERAL"
+>less</TT
+>.  The default
+      is platform-dependent.  The use of the pager can be disabled by
+      using the <TT
+CLASS="COMMAND"
+>\pset</TT
+> command.
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+></DT
+><DD
+><P
+>      Default database to connect to
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PSQL_EDITOR</TT
+><BR><TT
+CLASS="ENVAR"
+>EDITOR</TT
+><BR><TT
+CLASS="ENVAR"
+>VISUAL</TT
+></DT
+><DD
+><P
+>      Editor used by the <TT
+CLASS="COMMAND"
+>\e</TT
+> command.  The variables
+      are examined in the order listed; the first that is set is used.
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>SHELL</TT
+></DT
+><DD
+><P
+>      Command executed by the <TT
+CLASS="COMMAND"
+>\!</TT
+> command.
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>TMPDIR</TT
+></DT
+><DD
+><P
+>      Directory for storing temporary files.  The default is
+      <TT
+CLASS="FILENAME"
+>/tmp</TT
+>.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50298"
+></A
+><H2
+>Files</H2
+><P
+></P
+><UL
+><LI
+><P
+>     Before starting up, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> attempts to
+     read and execute commands from the file
+     <TT
+CLASS="FILENAME"
+>$HOME/.psqlrc</TT
+>. It could be used to set up
+     the client or the server to taste (using the <TT
+CLASS="COMMAND"
+>\set
+     </TT
+> and <TT
+CLASS="COMMAND"
+>SET</TT
+> commands).
+    </P
+></LI
+><LI
+><P
+>     The command-line history is stored in the file
+     <TT
+CLASS="FILENAME"
+>$HOME/.psql_history</TT
+>.
+    </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50310"
+></A
+><H2
+>Notes</H2
+><P
+></P
+><UL
+><LI
+><P
+>      In an earlier life <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> allowed the
+      first argument of a single-letter backslash command to start
+      directly after the command, without intervening whitespace. For
+      compatibility this is still supported to some extent,
+      but I am not going to explain the details here as this use is
+      discouraged.  If you get strange messages, keep this in mind.
+      For example
+</P><PRE
+CLASS="PROGRAMLISTING"
+>testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\foo</B
+></TT
+>
+Field separator is "oo",</PRE
+><P>
+      which is perhaps not what one would expect.
+      </P
+></LI
+><LI
+><P
+>      <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> only works smoothly with servers
+      of the same version. That does not mean other combinations will
+      fail outright, but subtle and not-so-subtle problems might come
+      up.  Backslash commands are particularly likely to fail if the
+      server is of a different version.
+      </P
+></LI
+><LI
+><P
+>      Pressing Control-C during a <SPAN
+CLASS="QUOTE"
+>"copy in"</SPAN
+> (data sent to
+      the server) doesn't show the most ideal of behaviors. If you get a
+      message such as <SPAN
+CLASS="QUOTE"
+>"COPY state must be terminated
+      first"</SPAN
+>, simply reset the connection by entering <TT
+CLASS="LITERAL"
+>\c
+      - -</TT
+>.
+      </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-PSQL-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>  This section only shows a few examples specific to
+  <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>. If you want to learn
+  <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> or get familiar with
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, you might wish to read the
+  Tutorial that is included in the distribution.
+  </P
+></BLOCKQUOTE
+></DIV
+><P
+>  The first example shows how to spread a query over several lines of
+  input. Notice the changing prompt:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>CREATE TABLE my_table (</B
+></TT
+>
+testdb(&#62; <TT
+CLASS="USERINPUT"
+><B
+> first integer not null default 0,</B
+></TT
+>
+testdb(&#62; <TT
+CLASS="USERINPUT"
+><B
+> second text</B
+></TT
+>
+testdb-&#62; <TT
+CLASS="USERINPUT"
+><B
+>);</B
+></TT
+>
+CREATE</PRE
+><P>
+  Now look at the table definition again:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\d my_table</B
+></TT
+>
+             Table "my_table"
+ Attribute |  Type   |      Modifier
+-----------+---------+--------------------
+ first     | integer | not null default 0
+ second    | text    |&#13;</PRE
+><P>
+  At this point you decide to change the prompt to something more
+  interesting:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\set PROMPT1 '%n@%m %~%R%# '</B
+></TT
+>
+peter@localhost testdb=&#62;</PRE
+><P>
+  Let's assume you have filled the table with data and want to take a
+  look at it:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>peter@localhost testdb=&#62; SELECT * FROM my_table;
+ first | second
+-------+--------
+     1 | one
+     2 | two
+     3 | three
+     4 | four
+(4 rows)&#13;</PRE
+><P>
+  You can make this table look differently by using the
+  <TT
+CLASS="COMMAND"
+>\pset</TT
+> command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\pset border 2</B
+></TT
+>
+Border style is 2.
+peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM my_table;</B
+></TT
+>
++-------+--------+
+| first | second |
++-------+--------+
+|     1 | one    |
+|     2 | two    |
+|     3 | three  |
+|     4 | four   |
++-------+--------+
+(4 rows)
+
+peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\pset border 0</B
+></TT
+>
+Border style is 0.
+peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM my_table;</B
+></TT
+>
+first second
+----- ------
+    1 one
+    2 two
+    3 three
+    4 four
+(4 rows)
+
+peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\pset border 1</B
+></TT
+>
+Border style is 1.
+peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\pset format unaligned</B
+></TT
+>
+Output format is unaligned.
+peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\pset fieldsep ","</B
+></TT
+>
+Field separator is ",".
+peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\pset tuples_only</B
+></TT
+>
+Showing only tuples.
+peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>SELECT second, first FROM my_table;</B
+></TT
+>
+one,1
+two,2
+three,3
+four,4</PRE
+><P>
+  Alternatively, use the short commands:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>\a \t \x</B
+></TT
+>
+Output format is aligned.
+Tuples only is off.
+Expanded display is on.
+peter@localhost testdb=&#62; <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM my_table;</B
+></TT
+>
+-[ RECORD 1 ]-
+first  | 1
+second | one
+-[ RECORD 2 ]-
+first  | 2
+second | two
+-[ RECORD 3 ]-
+first  | 3
+second | three
+-[ RECORD 4 ]-
+first  | 4
+second | four</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pgrestore.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pgtclsh.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_restore</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>pgtclsh</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,438 @@
+<HTML
+><HEAD
+><TITLE
+>DELETE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DECLARE"
+HREF="sql-declare.html"><LINK
+REL="NEXT"
+TITLE="DROP AGGREGATE"
+HREF="sql-dropaggregate.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-declare.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-dropaggregate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DELETE"
+>DELETE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42072"
+></A
+><H2
+>Name</H2
+>   DELETE
+  &nbsp;--&nbsp;   delete rows of a table
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42075"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DELETE FROM [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DELETE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of an existing table.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+></DT
+><DD
+><P
+>	This is an SQL selection query which returns the rows which
+	are to be deleted.
+       </P
+><P
+>	Refer to the SELECT statement for further description
+	of the WHERE clause.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DELETE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DELETE <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+>
+       </TT
+></DT
+><DD
+><P
+>	Message returned if items are successfully deleted. The
+	<TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> is the number
+	of rows deleted.
+       </P
+><P
+>	If <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> is 0,
+	no rows were deleted.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DELETE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DELETE</TT
+> removes rows which satisfy the WHERE
+   clause from the specified table.
+  </P
+><P
+>   If the <I
+CLASS="FIRSTTERM"
+>condition</I
+> (WHERE clause) is absent,
+   the effect is to delete all rows in the table.
+   The result is a valid, but empty table.
+
+   <DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>     <A
+HREF="sql-truncate.html"
+><I
+>TRUNCATE</I
+></A
+> is a
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension which provides a
+     faster mechanism to remove all rows from a table.
+    </P
+></BLOCKQUOTE
+></DIV
+>
+  </P
+><P
+>  By default DELETE will delete tuples in the table specified 
+  and all its sub-tables. If you wish to only update the
+  specific table mentioned, you should use the ONLY clause.
+  </P
+><P
+>   You must have write access to the table in order to modify
+   it, as well as read access to any table whose values are
+   read in the <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DELETE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Remove all films but musicals:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM films WHERE kind &lt;&gt; 'Musical';
+SELECT * FROM films;
+
+<TT
+CLASS="COMPUTEROUTPUT"
+> code  |           title           | did | date_prod  |  kind   | len
+-------+---------------------------+-----+------------+---------+-------
+ UA501 | West Side Story           | 105 | 1961-01-03 | Musical | 02:32
+ TC901 | The King and I            | 109 | 1956-08-11 | Musical | 02:13
+ WD101 | Bed Knobs and Broomsticks | 111 |            | Musical | 01:57
+(3 rows)</TT
+></PRE
+><P>
+  </P
+><P
+>   Clear the table <TT
+CLASS="LITERAL"
+>films</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM films;
+SELECT * FROM films;
+
+<TT
+CLASS="COMPUTEROUTPUT"
+> code | title | did | date_prod | kind | len
+------+-------+-----+-----------+------+-----
+(0 rows)</TT
+></PRE
+><P>      
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DELETE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DELETE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> allows a positioned DELETE statement:
+   
+    </P><PRE
+CLASS="SYNOPSIS"
+>DELETE FROM <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> WHERE
+    CURRENT OF <TT
+CLASS="REPLACEABLE"
+><I
+>cursor</I
+></TT
+>
+    </PRE
+><P>
+
+    where <TT
+CLASS="REPLACEABLE"
+><I
+>cursor</I
+></TT
+>
+    identifies an open cursor.
+    Interactive cursors in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> are read-only.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-declare.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropaggregate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DECLARE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP AGGREGATE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

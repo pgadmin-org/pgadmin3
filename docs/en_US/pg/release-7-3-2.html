@@ -1,0 +1,227 @@
+<HTML
+><HEAD
+><TITLE
+>Release 7.3.2</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="NEXT"
+TITLE="Release 7.3.1"
+HREF="release-7-3-1.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="release.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix A. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="release-7-3-1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-3-2"
+>A.2. Release 7.3.2</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2003-02-04</P
+></BLOCKQUOTE
+></DIV
+><P
+>    This has a variety of fixes from 7.3.1.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN23571"
+>A.2.1. Migration to version 7.3.2</A
+></H2
+><P
+>     A dump/restore is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> required for those
+     running 7.3.*.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN23575"
+>A.2.2. Changes</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>Restore&nbsp;creation&nbsp;of&nbsp;OID&nbsp;column&nbsp;in&nbsp;CREATE&nbsp;TABLE&nbsp;AS&nbsp;/&nbsp;SELECT&nbsp;INTO<br>
+Fix&nbsp;pg_dump&nbsp;core&nbsp;dump&nbsp;when&nbsp;dumping&nbsp;views&nbsp;having&nbsp;comments<br>
+Dump&nbsp;DEFERRABLE/INITIALLY&nbsp;DEFERRED&nbsp;constraints&nbsp;properly<br>
+Fix&nbsp;UPDATE&nbsp;when&nbsp;child&nbsp;table's&nbsp;column&nbsp;numbering&nbsp;differs&nbsp;from&nbsp;parent<br>
+Increase&nbsp;default&nbsp;value&nbsp;of&nbsp;max_fsm_relations<br>
+Fix&nbsp;problem&nbsp;when&nbsp;fetching&nbsp;backwards&nbsp;in&nbsp;a&nbsp;cursor&nbsp;for&nbsp;a&nbsp;single-row&nbsp;query<br>
+Make&nbsp;backward&nbsp;fetch&nbsp;work&nbsp;properly&nbsp;with&nbsp;cursor&nbsp;on&nbsp;SELECT&nbsp;DISTINCT&nbsp;query<br>
+Fix&nbsp;problems&nbsp;with&nbsp;loading&nbsp;pg_dump&nbsp;files&nbsp;containing&nbsp;contrib/lo&nbsp;usage<br>
+Fix&nbsp;problem&nbsp;with&nbsp;all-numeric&nbsp;user&nbsp;names<br>
+Fix&nbsp;possible&nbsp;memory&nbsp;leak&nbsp;and&nbsp;core&nbsp;dump&nbsp;during&nbsp;disconnect&nbsp;in&nbsp;libpgtcl<br>
+Make&nbsp;plpython's&nbsp;spi_execute&nbsp;command&nbsp;handle&nbsp;nulls&nbsp;properly&nbsp;(Andrew&nbsp;Bosma)<br>
+Adjust&nbsp;plpython&nbsp;error&nbsp;reporting&nbsp;so&nbsp;that&nbsp;its&nbsp;regression&nbsp;test&nbsp;passes&nbsp;again<br>
+Work&nbsp;with&nbsp;bison&nbsp;1.875<br>
+Handle&nbsp;mixed-case&nbsp;names&nbsp;properly&nbsp;in&nbsp;plpgsql's&nbsp;%type&nbsp;(Neil)<br>
+Fix&nbsp;core&nbsp;dump&nbsp;in&nbsp;pltcl&nbsp;when&nbsp;executing&nbsp;a&nbsp;query&nbsp;rewritten&nbsp;by&nbsp;a&nbsp;rule<br>
+Repair&nbsp;array&nbsp;subscript&nbsp;overruns&nbsp;(per&nbsp;report&nbsp;from&nbsp;Yichen&nbsp;Xie)<br>
+Reduce&nbsp;MAX_TIME_PRECISION&nbsp;from&nbsp;13&nbsp;to&nbsp;10&nbsp;in&nbsp;floating-point&nbsp;case<br>
+Correctly&nbsp;case-fold&nbsp;variable&nbsp;names&nbsp;in&nbsp;per-database&nbsp;and&nbsp;per-user&nbsp;settings<br>
+Fix&nbsp;coredump&nbsp;in&nbsp;plpgsql's&nbsp;RETURN&nbsp;NEXT&nbsp;when&nbsp;SELECT&nbsp;into&nbsp;record&nbsp;returns&nbsp;no&nbsp;rows<br>
+Fix&nbsp;outdated&nbsp;use&nbsp;of&nbsp;pg_type.typprtlen&nbsp;in&nbsp;python&nbsp;client&nbsp;interface<br>
+Correctly&nbsp;handle&nbsp;fractional&nbsp;seconds&nbsp;in&nbsp;timestamps&nbsp;in&nbsp;JDBC&nbsp;driver<br>
+Improve&nbsp;performance&nbsp;of&nbsp;getImportedKeys()&nbsp;in&nbsp;JDBC<br>
+Make&nbsp;shared-library&nbsp;symlinks&nbsp;work&nbsp;standardly&nbsp;on&nbsp;HPUX&nbsp;(Giles)<br>
+Repair&nbsp;inconsistent&nbsp;rounding&nbsp;behavior&nbsp;for&nbsp;timestamp,&nbsp;time,&nbsp;interval<br>
+SSL&nbsp;negotiation&nbsp;fixes&nbsp;(Nathan&nbsp;Mueller)<br>
+Make&nbsp;libpq's&nbsp;~/.pgpass&nbsp;feature&nbsp;work&nbsp;when&nbsp;connecting&nbsp;with&nbsp;PQconnectDB<br>
+Update&nbsp;my2pg,&nbsp;ora2pg<br>
+Translation&nbsp;updates<br>
+Add&nbsp;casts&nbsp;between&nbsp;types&nbsp;lo&nbsp;and&nbsp;oid&nbsp;in&nbsp;contrib/lo<br>
+fastpath&nbsp;code&nbsp;now&nbsp;checks&nbsp;for&nbsp;privilege&nbsp;to&nbsp;call&nbsp;function</P
+>
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release Notes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.3.1</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

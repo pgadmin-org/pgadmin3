@@ -1,0 +1,1166 @@
+<HTML
+><HEAD
+><TITLE
+>Command Execution Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="Database Connection Functions"
+HREF="libpq-connect.html"><LINK
+REL="NEXT"
+TITLE="Asynchronous Query Processing"
+HREF="libpq-async.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpq-connect.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq-async.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-EXEC"
+>1.3. Command Execution Functions</A
+></H1
+><P
+>Once a connection to a database server has been successfully
+established, the functions described here are used to perform
+SQL queries and commands.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LIBPQ-EXEC-MAIN"
+>1.3.1. Main Routines</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQexec</TT
+>
+          Submit a command to the server
+          and wait for the result.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGresult *PQexec(PGconn *conn,
+                 const char *query);</PRE
+><P>
+          Returns a <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> pointer or possibly a NULL pointer.
+          A non-NULL pointer will generally be returned except in
+          out-of-memory conditions or serious errors such as inability
+          to send the command to the backend.
+          If a NULL is returned, it
+	  should be treated like a <TT
+CLASS="SYMBOL"
+>PGRES_FATAL_ERROR</TT
+> result.  Use
+	  <TT
+CLASS="FUNCTION"
+>PQerrorMessage</TT
+> to get more information about the error.</P
+></LI
+></UL
+><P
+>The <TT
+CLASS="FUNCTION"
+>PGresult</TT
+> structure encapsulates the result
+returned by the backend.
+<TT
+CLASS="FILENAME"
+>libpq</TT
+> application programmers should be careful to
+maintain the <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> abstraction.  Use the accessor functions below to get
+at the contents of <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+>.  Avoid directly referencing the fields of the
+<TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> structure because they are subject to change in the future.
+(Beginning in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 6.4, the
+definition of <TT
+CLASS="TYPE"
+>struct PGresult</TT
+> is not even provided in <TT
+CLASS="FILENAME"
+>libpq-fe.h</TT
+>.  If you
+have old code that accesses <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> fields directly, you can keep using it
+by including <TT
+CLASS="FILENAME"
+>libpq-int.h</TT
+> too, but you are encouraged to fix the code
+soon.)</P
+><P
+></P
+><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQresultStatus</TT
+>
+          Returns the result status of the command.
+</P><PRE
+CLASS="SYNOPSIS"
+>ExecStatusType PQresultStatus(const PGresult *res)</PRE
+><P>
+<TT
+CLASS="FUNCTION"
+>PQresultStatus</TT
+> can return one of the following values:
+
+<P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>PGRES_EMPTY_QUERY</TT
+> -- The string sent to the backend was empty.</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>PGRES_COMMAND_OK</TT
+> -- Successful completion of a command returning no data</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>PGRES_TUPLES_OK</TT
+> -- The query successfully executed</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>PGRES_COPY_OUT</TT
+> -- Copy Out (from server) data transfer started</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>PGRES_COPY_IN</TT
+> -- Copy In (to server) data transfer started</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>PGRES_BAD_RESPONSE</TT
+> -- The server's response was not understood</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>PGRES_NONFATAL_ERROR</TT
+></P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>PGRES_FATAL_ERROR</TT
+></P
+></LI
+></UL
+><P>
+
+If  the result status is <TT
+CLASS="LITERAL"
+>PGRES_TUPLES_OK</TT
+>, then the
+routines described below can be  used  to  retrieve  the
+rows returned by the query.  Note that a SELECT command that
+happens to retrieve zero rows still shows <TT
+CLASS="LITERAL"
+>PGRES_TUPLES_OK</TT
+>.
+<TT
+CLASS="LITERAL"
+>PGRES_COMMAND_OK</TT
+> is for commands that can never return rows
+(INSERT, UPDATE, etc.). A response of <TT
+CLASS="LITERAL"
+>PGRES_EMPTY_QUERY</TT
+> often
+exposes a bug in the client software.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQresStatus</TT
+>
+	Converts the enumerated type returned by <TT
+CLASS="FUNCTION"
+>PQresultStatus</TT
+> into
+	a string constant describing the status code.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQresStatus(ExecStatusType status);</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQresultErrorMessage</TT
+>
+returns the error message associated with the query, or an empty string
+if there was no error.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQresultErrorMessage(const PGresult *res);</PRE
+><P>
+Immediately following a <TT
+CLASS="FUNCTION"
+>PQexec</TT
+> or <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+>
+call, <TT
+CLASS="FUNCTION"
+>PQerrorMessage</TT
+> (on the connection) will return the same
+string as <TT
+CLASS="FUNCTION"
+>PQresultErrorMessage</TT
+> (on the result).  However, a
+<TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> will retain its error message
+until destroyed, whereas the connection's error message will change when
+subsequent operations are done.  Use <TT
+CLASS="FUNCTION"
+>PQresultErrorMessage</TT
+> when you want to
+know the status associated with a particular <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+>; use <TT
+CLASS="FUNCTION"
+>PQerrorMessage</TT
+>
+when you want to know the status from the latest operation on the connection.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQclear</TT
+>
+          Frees  the  storage  associated with the <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+>.
+          Every query result should be freed via <TT
+CLASS="FUNCTION"
+>PQclear</TT
+> when
+          it  is  no  longer needed.
+</P><PRE
+CLASS="SYNOPSIS"
+>void PQclear(PQresult *res);</PRE
+><P>
+          You can keep a <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> object around for as long as you
+          need it; it does not go away when you issue a new query,
+          nor even if you close the connection.  To get rid of it,
+          you must call <TT
+CLASS="FUNCTION"
+>PQclear</TT
+>.  Failure to do this will
+          result in memory leaks in  the  frontend  application.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQmakeEmptyPGresult</TT
+>
+          Constructs an empty <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> object with the given status.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGresult* PQmakeEmptyPGresult(PGconn *conn, ExecStatusType status);</PRE
+><P>
+This is <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>'s internal routine to allocate and initialize an empty
+<TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> object.  It is exported because some applications find it
+useful to generate result objects (particularly objects with error
+status) themselves.  If <TT
+CLASS="PARAMETER"
+><I
+>conn</I
+></TT
+> is not NULL and status indicates an error,
+the connection's current error message is copied into the <TT
+CLASS="STRUCTNAME"
+>PGresult.</TT
+>
+Note that <TT
+CLASS="FUNCTION"
+>PQclear</TT
+> should eventually be called on the object, just
+as with a <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> returned by <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> itself.</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LIBPQ-EXEC-ESCAPE-STRING"
+>1.3.2. Escaping strings for inclusion in SQL queries</A
+></H2
+><A
+NAME="AEN25226"
+></A
+><P
+><TT
+CLASS="FUNCTION"
+>PQescapeString</TT
+>
+          Escapes a string for use within an SQL query.
+</P><PRE
+CLASS="SYNOPSIS"
+>size_t PQescapeString (char *to, const char *from, size_t length);</PRE
+><P>
+If you want to include strings that have been received
+from a source that is not trustworthy (for example, because a random user
+entered them), you cannot directly include them in SQL
+queries for security reasons.  Instead, you have to quote special
+characters that are otherwise interpreted by the SQL parser.</P
+><P
+><TT
+CLASS="FUNCTION"
+>PQescapeString</TT
+> performs this operation.  The
+<TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> points to the first character of the string that
+is to be escaped, and the <TT
+CLASS="PARAMETER"
+><I
+>length</I
+></TT
+> parameter counts the
+number of characters in this string (a terminating zero byte is
+neither necessary nor counted).  <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+> shall point to a
+buffer that is able to hold at least one more character than twice
+the value of <TT
+CLASS="PARAMETER"
+><I
+>length</I
+></TT
+>, otherwise the behavior is
+undefined.  A call to <TT
+CLASS="FUNCTION"
+>PQescapeString</TT
+> writes an escaped
+version of the <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> string to the <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+>
+buffer, replacing special characters so that they cannot cause any
+harm, and adding a terminating zero byte.  The single quotes that
+must surround <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> string literals are not part of the result
+string.</P
+><P
+><TT
+CLASS="FUNCTION"
+>PQescapeString</TT
+> returns the number of characters written
+to <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+>, not including the terminating zero byte.
+Behavior is undefined when the <TT
+CLASS="PARAMETER"
+><I
+>to</I
+></TT
+> and <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+>
+strings overlap.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LIBPQ-EXEC-ESCAPE-BYTEA"
+>1.3.3. Escaping binary strings for inclusion in SQL queries</A
+></H2
+><A
+NAME="AEN25248"
+></A
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQescapeBytea</TT
+>
+   Escapes a binary string (<TT
+CLASS="TYPE"
+>bytea</TT
+> type) for use within an SQL query.
+   </P><PRE
+CLASS="SYNOPSIS"
+>    unsigned char *PQescapeBytea(unsigned char *from,
+                                         size_t from_length,
+                                         size_t *to_length);
+   </PRE
+><P>
+
+   Certain <SPAN
+CLASS="ACRONYM"
+>ASCII</SPAN
+> characters <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+>
+   be escaped (but all characters <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>may</I
+></SPAN
+> be escaped)
+   when used as part of a <TT
+CLASS="TYPE"
+>bytea</TT
+>
+   string literal in an <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> statement. In general, to
+   escape a character, it is converted into the three digit octal number
+   equal to the decimal <SPAN
+CLASS="ACRONYM"
+>ASCII</SPAN
+> value, and preceded by
+   two backslashes. The single quote (') and backslash (\) characters have
+   special alternate escape sequences. See the <I
+CLASS="CITETITLE"
+>User's Guide</I
+>
+   for more information. <TT
+CLASS="FUNCTION"
+>PQescapeBytea
+   </TT
+> performs this operation, escaping only the minimally
+   required characters.
+  </P
+><P
+>   The <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> parameter points to the first
+   character of the string that is to be escaped, and the
+   <TT
+CLASS="PARAMETER"
+><I
+>from_length</I
+></TT
+> parameter reflects the number of
+   characters in this binary string (a terminating zero byte is
+   neither necessary nor counted).  The <TT
+CLASS="PARAMETER"
+><I
+>to_length</I
+></TT
+>
+   parameter shall point to a buffer suitable to hold the resultant
+   escaped string length. The result string length includes the terminating
+   zero byte of the result.
+  </P
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQescapeBytea</TT
+> returns an escaped version of the
+   <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> parameter binary string, to a caller-provided
+    buffer. The return string has all special characters replaced
+   so that they can be properly processed by the PostgreSQL string literal
+   parser, and the <TT
+CLASS="TYPE"
+>bytea</TT
+> input function. A terminating zero
+   byte is also added.  The single quotes that must surround
+   PostgreSQL string literals are not part of the result string.
+  </P
+><P
+>   <TT
+CLASS="FUNCTION"
+>PQunescapeBytea</TT
+>
+   Converts an escaped string representation of binary data into binary
+   data - the reverse of <TT
+CLASS="FUNCTION"
+>PQescapeBytea</TT
+>.
+   </P><PRE
+CLASS="SYNOPSIS"
+>    unsigned char *PQunescapeBytea(unsigned char *from, size_t *to_length);
+   </PRE
+><P>
+
+   The <TT
+CLASS="PARAMETER"
+><I
+>from</I
+></TT
+> parameter points to an escaped string
+   such as might be returned by <TT
+CLASS="FUNCTION"
+>PQgetvalue</TT
+> of a
+   <TT
+CLASS="TYPE"
+>BYTEA</TT
+> column. <TT
+CLASS="FUNCTION"
+>PQunescapeBytea</TT
+> converts
+   this string representation into its binary representation, filling the supplied buffer.
+   It returns a pointer to the buffer which is NULL on error, and the size
+   of the buffer in <TT
+CLASS="PARAMETER"
+><I
+>to_length</I
+></TT
+>. The pointer may
+   subsequently be used as an argument to the function
+   <TT
+CLASS="FUNCTION"
+>free(3)</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LIBPQ-EXEC-SELECT-INFO"
+>1.3.4. Retrieving SELECT Result Information</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQntuples</TT
+>
+          Returns the number of tuples (rows)
+          in the query result.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQntuples(const PGresult *res);</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQnfields</TT
+>
+          Returns   the   number    of    fields
+          (columns) in each row of the query result.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQnfields(const PGresult *res);</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQfname</TT
+>
+ Returns the field (column) name associated with the given field index.
+ Field  indices start at 0.
+</P><PRE
+CLASS="SYNOPSIS"
+>char *PQfname(const PGresult *res,
+                    int field_index);</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQfnumber</TT
+>
+            Returns  the  field  (column)  index
+          associated with the given field name.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQfnumber(const PGresult *res,
+              const char *field_name);</PRE
+><P></P
+><P
+>        -1 is returned if the given name does not match any field.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQftype</TT
+>
+            Returns the field type associated with the
+          given  field  index.  The  integer  returned is an
+          internal coding of the type.  Field indices  start
+          at 0.
+</P><PRE
+CLASS="SYNOPSIS"
+>Oid PQftype(const PGresult *res,
+            int field_index);</PRE
+><P>
+You can query the system table <TT
+CLASS="LITERAL"
+>pg_type</TT
+> to obtain
+the name and properties of the various data types. The <SPAN
+CLASS="ACRONYM"
+>OID</SPAN
+>s
+of the built-in data types are defined in <TT
+CLASS="FILENAME"
+>src/include/catalog/pg_type.h</TT
+>
+in the source tree.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQfmod</TT
+>
+          Returns  the type-specific modification data of the field
+          associated with the given field index.
+          Field indices start at 0.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQfmod(const PGresult *res,
+           int field_index);</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQfsize</TT
+>
+          Returns  the  size  in bytes of the field
+          associated with the given field index.
+          Field indices start at 0.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQfsize(const PGresult *res,
+            int field_index);</PRE
+><P>
+	<TT
+CLASS="FUNCTION"
+>PQfsize</TT
+> returns the space allocated for this field in a database
+	tuple, in other words the size of the server's binary representation
+	of the data type.  -1 is returned if the field is variable size.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQbinaryTuples</TT
+>
+          Returns 1 if the <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> contains binary tuple data,
+	  0 if it contains ASCII data.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQbinaryTuples(const PGresult *res);</PRE
+><P>
+Currently, binary tuple data can only be returned by a query that
+extracts data from a binary cursor.</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LIBPQ-EXEC-SELECT-VALUES"
+>1.3.5. Retrieving SELECT Result Values</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQgetvalue</TT
+>
+            Returns a single field  (column)  value of one tuple (row)
+	    of a <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+>.
+	    Tuple and field indices start at 0.
+</P><PRE
+CLASS="SYNOPSIS"
+>char* PQgetvalue(const PGresult *res,
+                 int tup_num,
+                 int field_num);</PRE
+><P>
+For most queries, the value returned by <TT
+CLASS="FUNCTION"
+>PQgetvalue</TT
+>
+is a null-terminated character string  representation
+of the attribute value.  But if <TT
+CLASS="FUNCTION"
+>PQbinaryTuples()</TT
+> is 1,
+the  value  returned  by <TT
+CLASS="FUNCTION"
+>PQgetvalue</TT
+>  is  the  binary
+representation of the
+type in the internal format of the backend server
+(but not including the size word, if the field is variable-length).
+It  is then the programmer's responsibility to cast and
+convert the data to the correct C type.  The pointer
+returned  by  <TT
+CLASS="FUNCTION"
+>PQgetvalue</TT
+> points to storage that is
+part of the <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> structure.  One should not modify it,
+and one must explicitly 
+copy the value into other storage if it is to
+be used past the lifetime of the  <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+>  structure itself.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQgetisnull</TT
+>
+           Tests a field for a NULL entry.
+           Tuple and field indices start at 0.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQgetisnull(const PGresult *res,
+                int tup_num,
+                int field_num);</PRE
+><P>
+            This function returns  1 if the field contains a NULL, 0 if
+            it contains a non-null value.  (Note that <TT
+CLASS="FUNCTION"
+>PQgetvalue</TT
+>
+            will return an empty string, not a null pointer, for a NULL
+            field.)</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQgetlength</TT
+>
+          Returns   the   length  of  a  field (attribute) value in bytes.
+          Tuple and field indices start at 0.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQgetlength(const PGresult *res,
+                int tup_num,
+                int field_num);</PRE
+><P>
+This is the actual data length for the particular data value, that is the
+size of the object pointed to by <TT
+CLASS="FUNCTION"
+>PQgetvalue</TT
+>.  Note that for character-represented
+values, this size has little to do with the binary size reported by <TT
+CLASS="FUNCTION"
+>PQfsize</TT
+>.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQprint</TT
+>
+          Prints out all the  tuples  and,  optionally,  the
+          attribute  names  to  the specified output stream.
+       </P><PRE
+CLASS="SYNOPSIS"
+>void PQprint(FILE* fout,      /* output stream */
+             const PGresult *res,
+             const PQprintOpt *po);
+
+struct {
+    pqbool  header;      /* print output field headings and row count */
+    pqbool  align;       /* fill align the fields */
+    pqbool  standard;    /* old brain dead format */
+    pqbool  html3;       /* output html tables */
+    pqbool  expanded;    /* expand tables */
+    pqbool  pager;       /* use pager for output if needed */
+    char    *fieldSep;   /* field separator */
+    char    *tableOpt;   /* insert to HTML <TT
+CLASS="REPLACEABLE"
+><I
+>table ...</I
+></TT
+> */
+    char    *caption;    /* HTML <TT
+CLASS="REPLACEABLE"
+><I
+>caption</I
+></TT
+> */
+    char    **fieldName; /* null terminated array of replacement field names */
+} PQprintOpt;
+       </PRE
+><P>
+This function was formerly used by <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+to print query results, but this is no longer the case and this
+function is no longer actively supported.</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LIBPQ-EXEC-NONSELECT"
+>1.3.6. Retrieving Non-SELECT Result Information</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQcmdStatus</TT
+>
+          Returns the command status string from the SQL command that
+	  generated the <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+>.
+</P><PRE
+CLASS="SYNOPSIS"
+>char * PQcmdStatus(PGresult *res);</PRE
+><P></P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQcmdTuples</TT
+>
+	  Returns the number of rows affected by the SQL command.
+</P><PRE
+CLASS="SYNOPSIS"
+>char * PQcmdTuples(PGresult *res);</PRE
+><P>
+          If the <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> command that generated the
+	  <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> was INSERT, UPDATE or DELETE, this returns a
+	  string containing the number of rows affected.  If the
+          command was anything else, it returns the empty string.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQoidValue</TT
+>
+          Returns the object ID of the inserted row, if the
+	  <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> command was an INSERT
+	  that inserted exactly one row into a table that has OIDs.
+          Otherwise, returns <TT
+CLASS="LITERAL"
+>InvalidOid</TT
+>.
+</P><PRE
+CLASS="SYNOPSIS"
+>Oid PQoidValue(const PGresult *res);</PRE
+><P>
+          The type <TT
+CLASS="TYPE"
+>Oid</TT
+> and the constant <TT
+CLASS="LITERAL"
+>InvalidOid</TT
+>
+          will be defined if you include the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>
+          header file. They will both be some integer type.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQoidStatus</TT
+>
+          Returns a string with the object ID of the inserted row, if the
+	  <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> command was an INSERT.
+	  (The string will be <TT
+CLASS="LITERAL"
+>0</TT
+> if the INSERT did not insert exactly one
+	  row, or if the target table does not have OIDs.)  If the command
+	  was not an INSERT, returns an empty string.
+</P><PRE
+CLASS="SYNOPSIS"
+>char * PQoidStatus(const PGresult *res);</PRE
+><P>
+This function is deprecated in favor of <TT
+CLASS="FUNCTION"
+>PQoidValue</TT
+>
+and is not thread-safe.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-connect.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-async.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Database Connection Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Asynchronous Query Processing</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

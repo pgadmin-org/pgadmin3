@@ -1,0 +1,402 @@
+<HTML
+><HEAD
+><TITLE
+>Release 1.01</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 1.02"
+HREF="release-1-02.html"><LINK
+REL="NEXT"
+TITLE="Release 1.0"
+HREF="release-1-0.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="release-1-02.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix A. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="release-1-0.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-1-01"
+>A.35. Release 1.01</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>1996-02-23</P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN24629"
+>A.35.1. Migration from version 1.0 to version 1.01</A
+></H2
+><P
+>The following notes are for the benefit of users who want to migrate
+databases from <SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> 1.0 to <SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> 1.01.  </P
+><P
+>If you are starting afresh with <SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> 1.01 and do not need
+to migrate old databases, you do not need to read any further.</P
+><P
+>In order to <SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> version 1.01 with databases created with
+<SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> version 1.0, the following steps are required:  </P
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+><P
+>Set the definition of <TT
+CLASS="SYMBOL"
+>NAMEDATALEN</TT
+> in <TT
+CLASS="FILENAME"
+>src/Makefile.global</TT
+> to 16
+   and <TT
+CLASS="SYMBOL"
+>OIDNAMELEN</TT
+> to 20.</P
+></LI
+><LI
+><P
+>Decide whether you want to use Host based authentication.  </P
+><OL
+CLASS="SUBSTEPS"
+TYPE="a"
+><LI
+><P
+>If you do, you must create a file name <TT
+CLASS="LITERAL"
+>pg_hba</TT
+> in your top-level data
+   directory (typically the value of your <TT
+CLASS="ENVAR"
+>$PGDATA</TT
+>).  <TT
+CLASS="FILENAME"
+>src/libpq/pg_hba</TT
+>
+   shows an example syntax.</P
+></LI
+><LI
+><P
+>If you do not want host-based authentication, you can comment out
+   the line
+</P><PRE
+CLASS="PROGRAMLISTING"
+>	HBA = 1</PRE
+><P>
+   in <TT
+CLASS="FILENAME"
+>src/Makefile.global</TT
+></P
+><P
+>   Note that host-based authentication is turned on by default, and if
+   you do not take steps A or B above, the out-of-the-box 1.01 will
+   not allow you to connect to 1.0 databases.</P
+></LI
+></OL
+></LI
+><LI
+><P
+>Compile and install 1.01, but DO NOT do the <TT
+CLASS="COMMAND"
+>initdb</TT
+> step.</P
+></LI
+><LI
+><P
+>Before doing anything else, terminate your 1.0 postmaster, and
+   backup your existing <TT
+CLASS="ENVAR"
+>$PGDATA</TT
+> directory.   </P
+></LI
+><LI
+><P
+>Set your <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> environment variable to your 1.0 databases, but set up
+   path up so that 1.01 binaries are being used.</P
+></LI
+><LI
+><P
+>Modify the file <TT
+CLASS="FILENAME"
+><TT
+CLASS="ENVAR"
+>$PGDATA</TT
+>/PG_VERSION</TT
+> from 5.0 to 5.1</P
+></LI
+><LI
+><P
+>Start up a new 1.01 postmaster</P
+></LI
+><LI
+><P
+>Add the new built-in functions and operators of 1.01 to 1.0
+   databases.  This is done by running the new 1.01 server against
+   your own 1.0 database and applying the queries attached and saving 
+   in the file 1.0_to_1.01.sql.   This can be done easily through <TT
+CLASS="COMMAND"
+>psql</TT
+>.
+   If your 1.0 database is name <TT
+CLASS="LITERAL"
+>testdb</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>	% psql testdb -f 1.0_to_1.01.sql</PRE
+><P>
+
+and then execute the following commands (cut and paste from here):
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>-- add builtin functions that are new to 1.01
+
+create function int4eqoid (int4, oid) returns bool as 'foo'
+language 'internal';
+create function oideqint4 (oid, int4) returns bool as 'foo'
+language 'internal';
+create function char2icregexeq (char2, text) returns bool as 'foo'
+language 'internal';
+create function char2icregexne (char2, text) returns bool as 'foo'
+language 'internal';
+create function char4icregexeq (char4, text) returns bool as 'foo'
+language 'internal';
+create function char4icregexne (char4, text) returns bool as 'foo'
+language 'internal';
+create function char8icregexeq (char8, text) returns bool as 'foo'
+language 'internal';
+create function char8icregexne (char8, text) returns bool as 'foo'
+language 'internal';
+create function char16icregexeq (char16, text) returns bool as 'foo'
+language 'internal';
+create function char16icregexne (char16, text) returns bool as 'foo'
+language 'internal';
+create function texticregexeq (text, text) returns bool as 'foo'
+language 'internal';
+create function texticregexne (text, text) returns bool as 'foo'
+language 'internal';
+
+-- add builtin functions that are new to 1.01
+
+create operator = (leftarg = int4, rightarg = oid, procedure = int4eqoid);
+create operator = (leftarg = oid, rightarg = int4, procedure = oideqint4);
+create operator ~* (leftarg = char2, rightarg = text, procedure = char2icregexeq);
+create operator !~* (leftarg = char2, rightarg = text, procedure = char2icregexne);
+create operator ~* (leftarg = char4, rightarg = text, procedure = char4icregexeq);
+create operator !~* (leftarg = char4, rightarg = text, procedure = char4icregexne);
+create operator ~* (leftarg = char8, rightarg = text, procedure = char8icregexeq);
+create operator !~* (leftarg = char8, rightarg = text, procedure = char8icregexne);
+create operator ~* (leftarg = char16, rightarg = text, procedure = char16icregexeq);
+create operator !~* (leftarg = char16, rightarg = text, procedure = char16icregexne);
+create operator ~* (leftarg = text, rightarg = text, procedure = texticregexeq);
+create operator !~* (leftarg = text, rightarg = text, procedure = texticregexne);</PRE
+><P></P
+></LI
+></OL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN24679"
+>A.35.2. Changes</A
+></H2
+><P
+></P><PRE
+CLASS="PROGRAMLISTING"
+>Incompatibilities:
+ * 1.01 is backwards compatible with 1.0 database provided the user
+   follow the steps outlined in the MIGRATION_from_1.0_to_1.01 file.
+   If those steps are not taken, 1.01 is not compatible with 1.0 database.
+
+Enhancements:
+ * added PQdisplayTuples() to libpq and changed monitor and psql to use it
+ * added NeXT port (requires SysVIPC implementation)
+ * added CAST .. AS ... syntax
+ * added ASC and DESC keywords
+ * added 'internal' as a possible language for CREATE FUNCTION
+   internal functions are C functions which have been statically linked
+   into the postgres backend.
+ * a new type "name" has been added for system identifiers (table names,
+   attribute names, etc.)  This replaces the old char16 type.   The
+   of name is set by the NAMEDATALEN #define in src/Makefile.global
+ * a readable reference manual that describes the query language.
+ * added host-based access control.  A configuration file ($PGDATA/pg_hba)
+   is used to hold the configuration data.  If host-based access control
+   is not desired, comment out HBA=1 in src/Makefile.global.
+ * changed regex handling to be uniform use of Henry Spencer's regex code
+   regardless of platform.  The regex code is included in the distribution
+ * added functions and operators for case-insensitive regular expressions. 
+   The operators are ~* and !~*.
+ * pg_dump uses COPY instead of SELECT loop for better performance
+
+Bug fixes:
+ * fixed an optimizer bug that was causing core dumps when 
+   functions calls were used in comparisons in the WHERE clause
+ * changed all uses of getuid to geteuid so that effective uids are used
+ * psql now returns non-zero status on errors when using -c
+ * applied public patches 1-14</PRE
+><P></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-1-02.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-1-0.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 1.02</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 1.0</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

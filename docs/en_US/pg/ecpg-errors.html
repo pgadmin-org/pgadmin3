@@ -1,0 +1,646 @@
+<HTML
+><HEAD
+><TITLE
+>Error Handling</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="PREVIOUS"
+TITLE="Passing Data"
+HREF="ecpg-variables.html"><LINK
+REL="NEXT"
+TITLE="Including Files"
+HREF="ecpg-include.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecpg-variables.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> in C</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecpg-include.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-ERRORS"
+>4.6. Error Handling</A
+></H1
+><P
+>   The embedded SQL interface provides a simplistic and a complex way
+   to handle exceptional conditions in a program.  The first method
+   causes a message to printed automatically when a certain condition
+   occurs.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL WHENEVER sqlerror sqlprint;</PRE
+><P>
+   or
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL WHENEVER not found sqlprint;</PRE
+><P>
+   This error handling remains enabled throughout the entire program.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    This is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> an exhaustive example of usage
+    for the <TT
+CLASS="COMMAND"
+>EXEC SQL WHENEVER</TT
+> statement.  Further
+    examples of usage may be found in SQL manuals (e.g.,
+    <I
+CLASS="CITETITLE"
+>The LAN TIMES Guide to SQL</I
+> by Groff and Weinberg).
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   For a more powerful error handling, the embedded SQL interface
+   provides a <TT
+CLASS="TYPE"
+>struct</TT
+> and a variable with the name
+   <TT
+CLASS="VARNAME"
+>sqlca</TT
+> as follows:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>struct sqlca
+{
+    char sqlcaid[8];
+    long sqlabc;
+    long sqlcode;
+    struct
+    {
+        int sqlerrml;
+        char sqlerrmc[70];
+    } sqlerrm;
+    char sqlerrp[8];
+
+    long sqlerrd[6];
+    /* 0: empty                                         */
+    /* 1: OID of processed tuple if applicable          */
+    /* 2: number of rows processed in an INSERT, UPDATE */
+    /*    or DELETE statement                           */
+    /* 3: empty                                         */
+    /* 4: empty                                         */
+    /* 5: empty                                         */
+
+    char sqlwarn[8];
+    /* 0: set to 'W' if at least one other is 'W'       */
+    /* 1: if 'W' at least one character string          */
+    /*    value was truncated when it was               */
+    /*    stored into a host variable.                  */
+    /* 2: empty                                         */
+    /* 3: empty                                         */
+    /* 4: empty                                         */
+    /* 5: empty                                         */
+    /* 6: empty                                         */
+    /* 7: empty                                         */
+
+    char sqlext[8];
+} sqlca;</PRE
+><P>
+   (Many of the empty fields may be used in a future release.)
+  </P
+><P
+>   If no error occurred in the last <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> statement,
+   <TT
+CLASS="LITERAL"
+>sqlca.sqlcode</TT
+> will be 0
+   (<TT
+CLASS="SYMBOL"
+>ECPG_NO_ERROR</TT
+>). If <TT
+CLASS="LITERAL"
+>sqlca.sqlcode</TT
+> is
+   less that zero, this is a serious error, like the database
+   definition does not match the query. If it is greater than zero, it
+   is a normal error like the table did not contain the requested row.
+  </P
+><P
+>   <TT
+CLASS="LITERAL"
+>sqlca.sqlerrm.sqlerrmc</TT
+> will contain a string
+   that describes the error. The string ends with the line number in
+   the source file.
+  </P
+><P
+>   These are the errors that can occur:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-12, Out of memory in line %d.</TT
+></DT
+><DD
+><P
+>       Should not normally occur. This indicates your virtual memory
+       is exhausted.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-200 (ECPG_UNSUPPORTED): Unsupported type %s on line %d.</TT
+></DT
+><DD
+><P
+>       Should not normally occur. This indicates the preprocessor has
+       generated something that the library does not know about.
+       Perhaps you are running incompatible versions of the
+       preprocessor and the library.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-201 (ECPG_TOO_MANY_ARGUMENTS): Too many arguments line %d.</TT
+></DT
+><DD
+><P
+>       This means that the server has returned more arguments than we
+       have matching variables.  Perhaps you have forgotten a couple
+       of the host variables in the <TT
+CLASS="COMMAND"
+>INTO
+       :var1,:var2</TT
+> list.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-202 (ECPG_TOO_FEW_ARGUMENTS): Too few arguments line %d.</TT
+></DT
+><DD
+><P
+>       This means that the server has returned fewer arguments than we
+       have host variables. Perhaps you have too many host variables
+       in the <TT
+CLASS="COMMAND"
+>INTO :var1,:var2</TT
+> list.  </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-203 (ECPG_TOO_MANY_MATCHES): Too many matches line %d.</TT
+></DT
+><DD
+><P
+>       This means the query has returned several rows but the
+       variables specified are not arrays. The
+       <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command was not unique.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-204 (ECPG_INT_FORMAT): Not correctly formatted int type: %s line %d.</TT
+></DT
+><DD
+><P
+>       This means the host variable is of type <TT
+CLASS="TYPE"
+>int</TT
+> and
+       the field in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database
+       is of another type and contains a value that cannot be
+       interpreted as an <TT
+CLASS="TYPE"
+>int</TT
+>. The library uses
+       <TT
+CLASS="FUNCTION"
+>strtol()</TT
+> for this conversion.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-205 (ECPG_UINT_FORMAT): Not correctly formatted unsigned type: %s line %d.</TT
+></DT
+><DD
+><P
+>       This means the host variable is of type <TT
+CLASS="TYPE"
+>unsigned
+       int</TT
+> and the field in the
+       <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database is of another
+       type and contains a value that cannot be interpreted as an
+       <TT
+CLASS="TYPE"
+>unsigned int</TT
+>. The library uses
+       <TT
+CLASS="FUNCTION"
+>strtoul()</TT
+> for this conversion.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-206 (ECPG_FLOAT_FORMAT): Not correctly formatted floating-point type: %s line %d.</TT
+></DT
+><DD
+><P
+>       This means the host variable is of type <TT
+CLASS="TYPE"
+>float</TT
+> and
+       the field in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database
+       is of another type and contains a value that cannot be
+       interpreted as a <TT
+CLASS="TYPE"
+>float</TT
+>. The library uses
+       <TT
+CLASS="FUNCTION"
+>strtod()</TT
+> for this conversion.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-207 (ECPG_CONVERT_BOOL): Unable to convert %s to bool on line %d.</TT
+></DT
+><DD
+><P
+>       This means the host variable is of type <TT
+CLASS="TYPE"
+>bool</TT
+> and
+       the field in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database
+       is neither <TT
+CLASS="LITERAL"
+>'t'</TT
+> nor <TT
+CLASS="LITERAL"
+>'f'</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-208 (ECPG_EMPTY): Empty query line %d.</TT
+></DT
+><DD
+><P
+>       The query was empty.  (This cannot normally happen in an
+       embedded SQL program, so it may point to an internal error.)
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-209 (ECPG_MISSING_INDICATOR): NULL value without indicator in line %d.</TT
+></DT
+><DD
+><P
+>       A null value was returned and no null indicator variable was
+       supplied.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-210 (ECPG_NO_ARRAY): Variable is not an array in line %d.</TT
+></DT
+><DD
+><P
+>       An ordinary variable was used in a place that requires an
+       array.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-211 (ECPG_DATA_NOT_ARRAY): Data read from backend is not an array in line %d.</TT
+></DT
+><DD
+><P
+>       The database returned an ordinary variable in a place that
+       requires array value.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-220 (ECPG_NO_CONN): No such connection %s in line %d.</TT
+></DT
+><DD
+><P
+>       The program tried to access a connection that does not exist.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-221 (ECPG_NOT_CONN): Not connected in line %d.</TT
+></DT
+><DD
+><P
+>       The program tried to access a connection that does exist but is
+       not open.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-230 (ECPG_INVALID_STMT): Invalid statement name %s in line %d.</TT
+></DT
+><DD
+><P
+>       The statement you are trying to use has not been prepared.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-240 (ECPG_UNKNOWN_DESCRIPTOR): Descriptor %s not found in line %d.</TT
+></DT
+><DD
+><P
+>       The descriptor specified was not found. The statement you are
+       trying to use has not been prepared.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-241 (ECPG_INVALID_DESCRIPTOR_INDEX): Descriptor index out of range in line %d.</TT
+></DT
+><DD
+><P
+>       The descriptor index specified was out of range.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-242 (ECPG_UNKNOWN_DESCRIPTOR_ITEM): Descriptor %s not found in line %d.</TT
+></DT
+><DD
+><P
+>       The descriptor specified was not found. The statement you are trying to use has not been prepared.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-243 (ECPG_VAR_NOT_NUMERIC): Variable is not a numeric type in line %d.</TT
+></DT
+><DD
+><P
+>       The database returned a numeric value and the variable was not
+       numeric.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-244 (ECPG_VAR_NOT_CHAR): Variable is not a character type in line %d.</TT
+></DT
+><DD
+><P
+>       The database returned a non-numeric value and the variable was
+       numeric.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-400 (ECPG_PGSQL): Postgres error: %s line %d.</TT
+></DT
+><DD
+><P
+>       Some <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> error. The message
+       contains the error message from the
+       <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-401 (ECPG_TRANS): Error in transaction processing line %d.</TT
+></DT
+><DD
+><P
+>       <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> signaled that we cannot
+       start, commit, or rollback the transaction.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>-402 (ECPG_CONNECT): Could not connect to database %s in line %d.</TT
+></DT
+><DD
+><P
+>       The connect to the database did not work.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>100 (ECPG_NOT_FOUND): Data not found line %d.</TT
+></DT
+><DD
+><P
+>       This is a <SPAN
+CLASS="QUOTE"
+>"normal"</SPAN
+> error that tells you that what
+       you are querying cannot be found or you are at the end of the
+       cursor.
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-variables.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-include.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Passing Data</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Including Files</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,590 @@
+<HTML
+><HEAD
+><TITLE
+>Statistics Used by the Planner</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Performance Tips"
+HREF="performance-tips.html"><LINK
+REL="PREVIOUS"
+TITLE="Performance Tips"
+HREF="performance-tips.html"><LINK
+REL="NEXT"
+TITLE="Controlling the Planner with Explicit JOIN Clauses"
+HREF="explicit-joins.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Performance Tips</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="explicit-joins.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLANNER-STATS"
+>10.2. Statistics Used by the Planner</A
+></H1
+><P
+>   As we saw in the previous section, the query planner needs to estimate
+   the number of rows retrieved by a query in order to make good choices
+   of query plans.  This section provides a quick look at the statistics
+   that the system uses for these estimates.
+  </P
+><P
+>   One component of the statistics is the total number of entries in each
+   table and index, as well as the number of disk blocks occupied by each
+   table and index.  This information is kept in
+   <TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+>'s <TT
+CLASS="STRUCTFIELD"
+>reltuples</TT
+>
+   and <TT
+CLASS="STRUCTFIELD"
+>relpages</TT
+> columns.  We can look at it
+   with queries similar to this one:
+
+</P><PRE
+CLASS="SCREEN"
+>regression=# SELECT relname, relkind, reltuples, relpages FROM pg_class
+regression-# WHERE relname LIKE 'tenk1%';
+    relname    | relkind | reltuples | relpages
+---------------+---------+-----------+----------
+ tenk1         | r       |     10000 |      233
+ tenk1_hundred | i       |     10000 |       30
+ tenk1_unique1 | i       |     10000 |       30
+ tenk1_unique2 | i       |     10000 |       30
+(4 rows)</PRE
+><P>
+
+   Here we can see that <TT
+CLASS="STRUCTNAME"
+>tenk1</TT
+> contains 10000
+   rows, as do its indexes, but the indexes are (unsurprisingly) much
+   smaller than the table.
+  </P
+><P
+>   For efficiency reasons, <TT
+CLASS="STRUCTFIELD"
+>reltuples</TT
+> 
+   and <TT
+CLASS="STRUCTFIELD"
+>relpages</TT
+> are not updated on-the-fly,
+   and so they usually contain only approximate values (which is good
+   enough for the planner's purposes).  They are initialized with dummy
+   values (presently 1000 and 10 respectively) when a table is created.
+   They are updated by certain commands, presently <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>,
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>, and <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+>.  A stand-alone
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>, that is one not part of <TT
+CLASS="COMMAND"
+>VACUUM</TT
+>,
+   generates an approximate <TT
+CLASS="STRUCTFIELD"
+>reltuples</TT
+> value
+   since it does not read every row of the table.
+  </P
+><P
+>   Most queries retrieve only a fraction of the rows in a table, due
+   to having <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clauses that restrict the rows to be examined.
+   The planner thus needs to make an estimate of the
+   <I
+CLASS="FIRSTTERM"
+>selectivity</I
+> of <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clauses, that is, the fraction of
+   rows that match each clause of the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> condition.  The information
+   used for this task is stored in the <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+>
+   system catalog.  Entries in <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> are
+   updated by <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> and <TT
+CLASS="COMMAND"
+>VACUUM ANALYZE</TT
+> commands,
+   and are always approximate even when freshly updated.
+  </P
+><P
+>   Rather than look at <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> directly,
+   it's better to look at its view <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+>
+   when examining the statistics manually.  <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+>
+   is designed to be more easily readable.  Furthermore,
+   <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> is readable by all, whereas
+   <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> is only readable by the superuser.
+   (This prevents unprivileged users from learning something about
+   the contents of other people's tables from the statistics.  The
+   <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> view is restricted to show only
+   rows about tables that the current user can read.)
+   For example, we might do:
+
+</P><PRE
+CLASS="SCREEN"
+>regression=# SELECT attname, n_distinct, most_common_vals FROM pg_stats WHERE tablename = 'road';
+ attname | n_distinct |                                                                                                                                                                                  most_common_vals                                                                                                                                                                                   
+---------+------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ name    |  -0.467008 | {"I- 580                        Ramp","I- 880                        Ramp","Sp Railroad                       ","I- 580                            ","I- 680                        Ramp","I- 80                         Ramp","14th                          St  ","5th                           St  ","Mission                       Blvd","I- 880                            "}
+ thepath |         20 | {"[(-122.089,37.71),(-122.0886,37.711)]"}
+(2 rows)
+regression=#</PRE
+><P>
+  </P
+><P
+>   <A
+HREF="planner-stats.html#PLANNER-PG-STATS-TABLE"
+>Table 10-1</A
+> shows the columns that
+   exist in <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="PLANNER-PG-STATS-TABLE"
+></A
+><P
+><B
+>Table 10-1. <TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>tablename</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Name of the table containing the column</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>attname</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>name</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Column described by this row</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>null_frac</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>real</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Fraction of column's entries that are null</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>avg_width</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Average width in bytes of the column's entries</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>n_distinct</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>real</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>If greater than zero, the estimated number of distinct values
+      in the column.  If less than zero, the negative of the number of
+      distinct values divided by the number of rows.  (The negated form
+      is used when <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> believes that the number of distinct values
+      is likely to increase as the table grows; the positive form is used
+      when the column seems to have a fixed number of possible values.)
+      For example, -1 indicates a unique column in which the number of
+      distinct values is the same as the number of rows.
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>most_common_vals</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text[]</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>A list of the most common values in the column. (Omitted if
+      no values seem to be more common than any others.)</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>most_common_freqs</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>real[]</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>A list of the frequencies of the most common values,
+      i.e., number of occurrences of each divided by total number of rows.
+     </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>histogram_bounds</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text[]</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>A list of values that divide the column's values into
+      groups of approximately equal population.  The 
+      <TT
+CLASS="STRUCTFIELD"
+>most_common_vals</TT
+>, if present, are omitted from the
+      histogram calculation.  (Omitted if column data type does not have a
+      <TT
+CLASS="LITERAL"
+>&lt;</TT
+> operator, or if the <TT
+CLASS="STRUCTFIELD"
+>most_common_vals</TT
+>
+      list accounts for the entire population.)
+      </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>correlation</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>real</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Statistical correlation between physical row ordering and
+      logical ordering of the column values.  This ranges from -1 to +1.
+      When the value is near -1 or +1, an index scan on the column will
+      be estimated to be cheaper than when it is near zero, due to reduction
+      of random access to the disk.  (Omitted if column data type does
+      not have a <TT
+CLASS="LITERAL"
+>&lt;</TT
+> operator.)
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   The maximum number of entries in the <TT
+CLASS="STRUCTFIELD"
+>most_common_vals</TT
+>
+   and <TT
+CLASS="STRUCTFIELD"
+>histogram_bounds</TT
+> arrays can be set on a
+   column-by-column basis using the <TT
+CLASS="COMMAND"
+>ALTER TABLE SET STATISTICS</TT
+>
+   command.  The default limit is presently 10 entries.  Raising the limit
+   may allow more accurate planner estimates to be made, particularly for
+   columns with irregular data distributions, at the price of consuming
+   more space in <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> and slightly more
+   time to compute the estimates.  Conversely, a lower limit may be
+   appropriate for columns with simple data distributions.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="explicit-joins.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Performance Tips</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Controlling the Planner with Explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+> Clauses</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,378 @@
+<HTML
+><HEAD
+><TITLE
+>Planner/Optimizer</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Overview of PostgreSQL Internals"
+HREF="overview.html"><LINK
+REL="PREVIOUS"
+TITLE="The PostgreSQL Rule System"
+HREF="rule-system.html"><LINK
+REL="NEXT"
+TITLE="Executor"
+HREF="executor.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="rule-system.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Overview of PostgreSQL Internals</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="executor.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLANNER-OPTIMIZER"
+>2.5. Planner/Optimizer</A
+></H1
+><P
+>    The task of the <I
+CLASS="FIRSTTERM"
+>planner/optimizer</I
+> is to create an optimal
+    execution plan. It first combines all possible ways of
+    <I
+CLASS="FIRSTTERM"
+>scanning</I
+> and <I
+CLASS="FIRSTTERM"
+>joining</I
+>
+    the relations that appear in a
+    query. All the created paths lead to the same result and it's the
+    task of the optimizer to estimate the cost of executing each path and
+    find out which one is the cheapest.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN52179"
+>2.5.1. Generating Possible Plans</A
+></H2
+><P
+>     The planner/optimizer decides which plans should be generated
+     based upon the types of indexes defined on the relations appearing in
+     a query. There is always the possibility of performing a
+     sequential scan on a relation, so a plan using only
+     sequential scans is always created. Assume an index is defined on a
+     relation (for example a B-tree index) and a query contains the
+     restriction
+     <TT
+CLASS="LITERAL"
+>relation.attribute OPR constant</TT
+>. If
+     <TT
+CLASS="LITERAL"
+>relation.attribute</TT
+> happens to match the key of the B-tree
+     index and <TT
+CLASS="LITERAL"
+>OPR</TT
+> is anything but '&lt;&gt;' another plan is created using
+     the B-tree index to scan the relation. If there are further indexes
+     present and the restrictions in the query happen to match a key of an
+     index further plans will be considered.
+    </P
+><P
+>     After all feasible plans have been found for scanning single
+     relations, plans for joining relations are created. The
+     planner/optimizer considers only joins between every two relations for
+     which there exists a corresponding join clause (i.e. for which a
+     restriction like <TT
+CLASS="LITERAL"
+>where rel1.attr1=rel2.attr2</TT
+> exists) in the
+     where qualification. All possible plans are generated for every
+     join pair considered by the planner/optimizer. The three possible join
+     strategies are:
+
+     <P
+></P
+></P><UL
+><LI
+><P
+>	<I
+CLASS="FIRSTTERM"
+>nested iteration join</I
+>: The right relation is scanned
+	once for every tuple found in the left relation. This strategy
+	is easy to implement but can be very time consuming.
+       </P
+></LI
+><LI
+><P
+>	<I
+CLASS="FIRSTTERM"
+>merge sort join</I
+>: Each relation is sorted on the join
+	attributes before the join starts. Then the two relations are
+	merged together taking into account that both relations are
+	ordered on the join attributes. This kind of join is more
+	attractive because every relation has to be scanned only once.
+       </P
+></LI
+><LI
+><P
+>	<I
+CLASS="FIRSTTERM"
+>hash join</I
+>: the right relation is first hashed on its
+	join attributes. Next the left relation is scanned and the
+	appropriate values of every tuple found are used as hash keys to
+	locate the tuples in the right relation.
+       </P
+></LI
+></UL
+><P>
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN52197"
+>2.5.2. Data Structure of the Plan</A
+></H2
+><P
+>     Here we will give a little description of the nodes appearing in the
+     plan. Figure \ref{plan} shows the plan produced for the query in
+     example \ref{simple_select}.
+    </P
+><P
+>     The top node of the plan is a <TT
+CLASS="LITERAL"
+>MergeJoin</TT
+> node that has two
+     successors, one attached to the field <TT
+CLASS="LITERAL"
+>lefttree</TT
+> and the second
+     attached to the field <TT
+CLASS="LITERAL"
+>righttree</TT
+>. Each of the subnodes represents
+     one relation of the join. As mentioned above a merge sort
+     join requires each relation to be sorted. That's why we find
+     a <TT
+CLASS="LITERAL"
+>Sort</TT
+> node in each subplan. The additional qualification given
+     in the query (<TT
+CLASS="LITERAL"
+>s.sno &gt; 2</TT
+>) is pushed down as far as possible and is
+     attached to the <TT
+CLASS="LITERAL"
+>qpqual</TT
+> field of the leaf <TT
+CLASS="LITERAL"
+>SeqScan</TT
+> node of
+     the corresponding subplan.
+    </P
+><P
+>     The list attached to the field <TT
+CLASS="LITERAL"
+>mergeclauses</TT
+> of the
+     <TT
+CLASS="LITERAL"
+>MergeJoin</TT
+> node contains information about the join attributes.
+     The values <TT
+CLASS="LITERAL"
+>65000</TT
+> and <TT
+CLASS="LITERAL"
+>65001</TT
+>
+     for the <TT
+CLASS="LITERAL"
+>varno</TT
+> fields in the
+     <TT
+CLASS="LITERAL"
+>VAR</TT
+> nodes appearing in the <TT
+CLASS="LITERAL"
+>mergeclauses</TT
+> list (and also in the
+     <TT
+CLASS="LITERAL"
+>targetlist</TT
+>) mean that not the tuples of the current node should be
+     considered but the tuples of the next "deeper" nodes (i.e. the top
+     nodes of the subplans) should be used instead.
+    </P
+><P
+>     Note that every <TT
+CLASS="LITERAL"
+>Sort</TT
+> and <TT
+CLASS="LITERAL"
+>SeqScan</TT
+> node appearing in figure
+     \ref{plan} has got a <TT
+CLASS="LITERAL"
+>targetlist</TT
+> but because there was not enough space
+     only the one for the <TT
+CLASS="LITERAL"
+>MergeJoin</TT
+> node could be drawn.
+    </P
+><P
+>     Another task performed by the planner/optimizer is fixing the
+     <I
+CLASS="FIRSTTERM"
+>operator ids</I
+> in the <TT
+CLASS="LITERAL"
+>Expr</TT
+>
+     and <TT
+CLASS="LITERAL"
+>Oper</TT
+> nodes. As
+     mentioned earlier, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports a variety of different data
+     types and even user defined types can be used. To be able to maintain
+     the huge amount of functions and operators it is necessary to store
+     them in a system table. Each function and operator gets a unique
+     operator id. According to the types of the attributes used
+     within the qualifications etc., the appropriate operator ids
+     have to be used.
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rule-system.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="executor.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Rule System</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="overview.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Executor</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

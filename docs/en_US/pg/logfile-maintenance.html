@@ -1,0 +1,254 @@
+<HTML
+><HEAD
+><TITLE
+>Log File Maintenance</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Routine Database Maintenance Tasks"
+HREF="maintenance.html"><LINK
+REL="PREVIOUS"
+TITLE="Routine Reindexing"
+HREF="routine-reindex.html"><LINK
+REL="NEXT"
+TITLE="Backup and Restore"
+HREF="backup.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="routine-reindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Routine Database Maintenance Tasks</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="backup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LOGFILE-MAINTENANCE"
+>8.4. Log File Maintenance</A
+></H1
+><A
+NAME="AEN22575"
+></A
+><P
+>   It's a good idea to save the database server's log output somewhere,
+   rather than just routing it to <TT
+CLASS="FILENAME"
+>/dev/null</TT
+>.  The log output
+   is invaluable when it comes time to diagnose problems.  However, the
+   log output tends to be voluminous (especially at higher debug levels)
+   and you won't want to save it indefinitely.  You need to <SPAN
+CLASS="QUOTE"
+>"rotate"</SPAN
+>
+   the log files so that new log files are started and old ones thrown
+   away every so often.
+  </P
+><P
+>   If you simply direct the postmaster's <SPAN
+CLASS="SYSTEMITEM"
+>stderr</SPAN
+> into a
+   file, the only way to truncate the log file is to stop and restart
+   the postmaster. This may be OK for development setups but you won't
+   want to run a production server that way.
+  </P
+><P
+>   The simplest production-grade approach to managing log output is to
+   send it all to <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> and let
+   <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> deal with file rotation. To do this, set
+   <TT
+CLASS="LITERAL"
+>syslog</TT
+> to 2 (log to <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> only) in
+   <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>. Then you can send a
+   <TT
+CLASS="LITERAL"
+>SIGHUP</TT
+> signal to the <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+>
+   daemon whenever you want to force it to start writing a new log
+   file.
+  </P
+><P
+>   On many systems, however, <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> is not very reliable, particularly
+   with large log messages; it may truncate or drop messages just when
+   you need them the most. You may find it more useful to pipe the
+   <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>'s <SPAN
+CLASS="SYSTEMITEM"
+>stderr</SPAN
+> to some type of
+   log rotation script. If you start the postmaster with
+   <SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+>, then the postmaster's <SPAN
+CLASS="SYSTEMITEM"
+>stderr</SPAN
+>
+   is already redirected to <SPAN
+CLASS="SYSTEMITEM"
+>stdout</SPAN
+>, so you just need a
+   pipe command:
+   
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="USERINPUT"
+><B
+>pg_ctl start | logrotate</B
+></TT
+></PRE
+><P>
+
+   The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> distribution doesn't include a suitable
+   log rotation program, but there are many available on the net;
+   one is included in the Apache distribution, for example.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="routine-reindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="backup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Routine Reindexing</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="maintenance.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Backup and Restore</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

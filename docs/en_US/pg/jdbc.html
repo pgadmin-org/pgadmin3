@@ -1,0 +1,638 @@
+<HTML
+><HEAD
+><TITLE
+>JDBC Interface</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Client Interfaces"
+HREF="programmer-client.html"><LINK
+REL="PREVIOUS"
+TITLE="For the Developer"
+HREF="ecpg-develop.html"><LINK
+REL="NEXT"
+TITLE="Using the Driver"
+HREF="jdbc-use.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecpg-develop.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="jdbc-use.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="JDBC"
+>Chapter 5. <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Interface</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>5.1. <A
+HREF="jdbc.html#JDBC-SETUP"
+>Setting up the <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Driver</A
+></DT
+><DD
+><DL
+><DT
+>5.1.1. <A
+HREF="jdbc.html#JDBC-BUILD"
+>Getting the Driver</A
+></DT
+><DT
+>5.1.2. <A
+HREF="jdbc.html#JDBC-CLASSPATH"
+>Setting up the Class Path</A
+></DT
+><DT
+>5.1.3. <A
+HREF="jdbc.html#JDBC-PREPARE"
+>Preparing the Database for <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+></A
+></DT
+></DL
+></DD
+><DT
+>5.2. <A
+HREF="jdbc-use.html"
+>Using the Driver</A
+></DT
+><DD
+><DL
+><DT
+>5.2.1. <A
+HREF="jdbc-use.html#JDBC-IMPORT"
+>Importing <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+></A
+></DT
+><DT
+>5.2.2. <A
+HREF="jdbc-use.html#JDBC-LOAD"
+>Loading the Driver</A
+></DT
+><DT
+>5.2.3. <A
+HREF="jdbc-use.html#JDBC-CONNECT"
+>Connecting to the Database</A
+></DT
+><DT
+>5.2.4. <A
+HREF="jdbc-use.html#JDBC-DISCONNECT"
+>Closing the Connection</A
+></DT
+></DL
+></DD
+><DT
+>5.3. <A
+HREF="jdbc-query.html"
+>Issuing a Query and Processing the Result</A
+></DT
+><DD
+><DL
+><DT
+>5.3.1. <A
+HREF="jdbc-query.html#AEN28202"
+>Using the <TT
+CLASS="CLASSNAME"
+>Statement</TT
+> or <TT
+CLASS="CLASSNAME"
+>    PreparedStatement</TT
+> Interface</A
+></DT
+><DT
+>5.3.2. <A
+HREF="jdbc-query.html#AEN28228"
+>Using the <TT
+CLASS="CLASSNAME"
+>ResultSet</TT
+> Interface</A
+></DT
+></DL
+></DD
+><DT
+>5.4. <A
+HREF="jdbc-update.html"
+>Performing Updates</A
+></DT
+><DT
+>5.5. <A
+HREF="jdbc-ddl.html"
+>Creating and Modifying Database Objects</A
+></DT
+><DT
+>5.6. <A
+HREF="jdbc-binary-data.html"
+>Storing Binary Data</A
+></DT
+><DT
+>5.7. <A
+HREF="jdbc-ext.html"
+><SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> Extensions to the
+    <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+></A
+></DT
+><DD
+><DL
+><DT
+>5.7.1. <A
+HREF="jdbc-ext.html#AEN28363"
+>Accessing the Extensions</A
+></DT
+><DT
+>5.7.2. <A
+HREF="jdbc-ext.html#AEN28609"
+>Geometric Data Types</A
+></DT
+><DT
+>5.7.3. <A
+HREF="jdbc-ext.html#AEN28638"
+>Large Objects</A
+></DT
+></DL
+></DD
+><DT
+>5.8. <A
+HREF="jdbc-thread.html"
+>Using the driver in a multithreaded or a servlet environment</A
+></DT
+><DT
+>5.9. <A
+HREF="jdbc-datasource.html"
+>Connection Pools And DataSources</A
+></DT
+><DD
+><DL
+><DT
+>5.9.1. <A
+HREF="jdbc-datasource.html#JDBC-DS-VERSION"
+>JDBC, JDK Version Support</A
+></DT
+><DT
+>5.9.2. <A
+HREF="jdbc-datasource.html#JDBC-DS-INTRO"
+>JDBC Connection Pooling API</A
+></DT
+><DT
+>5.9.3. <A
+HREF="jdbc-datasource.html#JDBC-DS-CPDS"
+>Application Servers: ConnectionPoolDataSource</A
+></DT
+><DT
+>5.9.4. <A
+HREF="jdbc-datasource.html#JDBC-DS-DS"
+>Applications: DataSource</A
+></DT
+><DT
+>5.9.5. <A
+HREF="jdbc-datasource.html#JDBC-JNDI"
+>DataSources and <SPAN
+CLASS="ACRONYM"
+>JNDI</SPAN
+></A
+></DT
+><DT
+>5.9.6. <A
+HREF="jdbc-datasource.html#JDBC-APP-SERVERS"
+>Specific Application Server Configurations</A
+></DT
+></DL
+></DD
+><DT
+>5.10. <A
+HREF="jdbc-reading.html"
+>Further Reading</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Author: </B
+>    Originally written by Peter T. Mount (<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:peter@retep.org.uk"
+>peter@retep.org.uk</A
+>&#62;</TT
+>), 
+    the original author of the <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> driver.
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> is a core <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+> of Java 1.1 and later.
+   It provides a standard set of
+   interfaces to <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>-compliant databases.
+  </P
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> provides a <I
+CLASS="FIRSTTERM"
+>type
+   4</I
+> <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Driver.  Type 4 indicates
+   that the driver is written in Pure Java, and communicates in the
+   database system's own network protocol. Because of this, the driver
+   is platform independent; once compiled, the driver can be used on
+   any system.
+  </P
+><P
+>   This chapter is not intended as a complete guide to
+   <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> programming, but should help to get you
+   started. For more information refer to the standard
+   <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+> documentation.
+   Also, take a look at the examples included with the source. The
+   basic example is used here.
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JDBC-SETUP"
+>5.1. Setting up the <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Driver</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-BUILD"
+>5.1.1. Getting the Driver</A
+></H2
+><P
+>    Precompiled versions of the driver can be downloaded from
+    the <A
+HREF="http://jdbc.postgresql.org"
+TARGET="_top"
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> web site</A
+>.
+   </P
+><P
+>    Alternatively you can build the driver from source, but you
+    should only need to do this if you are making changes to the
+    source code.  For details, refer to the PostgreSQL installation
+    instructions.  After installation, the driver should be found in
+    <TT
+CLASS="FILENAME"
+><TT
+CLASS="REPLACEABLE"
+><I
+>PREFIX</I
+></TT
+>/share/java/postgresql.jar</TT
+>.
+    The resulting driver will be built for the version of Java you are
+    running.  If you build with a 1.1 <SPAN
+CLASS="ACRONYM"
+>JDK</SPAN
+> you will build a version
+    that supports the JDBC 1 specification, if you build with a Java 2
+    <SPAN
+CLASS="ACRONYM"
+>JDK</SPAN
+> (e.g., <SPAN
+CLASS="ACRONYM"
+>JDK</SPAN
+> 1.2 or <SPAN
+CLASS="ACRONYM"
+>JDK</SPAN
+> 1.3) you will build a version that
+    supports the JDBC 2 specification.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-CLASSPATH"
+>5.1.2. Setting up the Class Path</A
+></H2
+><P
+>    To use the driver, the JAR archive (named
+    <TT
+CLASS="FILENAME"
+>postgresql.jar</TT
+> if you built from source, otherwise
+    it will likely be named <TT
+CLASS="FILENAME"
+>jdbc7.2-1.1.jar</TT
+> or 
+    <TT
+CLASS="FILENAME"
+>jdbc7.2-1.2.jar</TT
+> for the JDBC 1 and JDBC 2 versions
+    respectively)
+    needs to be included in the
+    class path, either by putting it in the <TT
+CLASS="ENVAR"
+>CLASSPATH</TT
+>
+    environment variable, or by using flags on the
+    <TT
+CLASS="COMMAND"
+>java</TT
+> command line.
+   </P
+><P
+>     For instance, I have an application that uses the
+     <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> driver to access a large database
+     containing astronomical objects. I have the application and the
+     <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> driver installed in the <TT
+CLASS="FILENAME"
+>/usr/local/lib</TT
+> directory, and the
+     Java <SPAN
+CLASS="ACRONYM"
+>JDK</SPAN
+> installed in
+     <TT
+CLASS="FILENAME"
+>/usr/local/jdk1.3.1</TT
+>.  To run the
+     application, I would use:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>export CLASSPATH=/usr/local/lib/finder.jar<A
+NAME="CO.JDBC-FINDER"
+><B
+>(1)</B
+></A
+>:/usr/local/pgsql/share/java/postgresql.jar:.
+java Finder</PRE
+><P>
+     <DIV
+CLASS="CALLOUTLIST"
+><DL
+COMPACT="COMPACT"
+><DT
+><A
+HREF="jdbc.html#CO.JDBC-FINDER"
+><B
+>(1)</B
+></A
+></DT
+><DD
+>        <TT
+CLASS="FILENAME"
+>finder.jar</TT
+> contains the Finder application.
+       </DD
+></DL
+></DIV
+>
+    </P
+><P
+>     Loading the driver from within the application is covered in
+     <A
+HREF="jdbc-use.html"
+>Section 5.2</A
+>.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-PREPARE"
+>5.1.3. Preparing the Database for <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+></A
+></H2
+><P
+>    Because Java only uses TCP/IP connections, the
+    <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> server must be configured to
+    accept TCP/IP connections.  This can be done by setting 
+    <TT
+CLASS="LITERAL"
+>tcpip_socket = true</TT
+> in the 
+    <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file or by supplying the
+    <TT
+CLASS="OPTION"
+>-i</TT
+> option flag when starting
+    <TT
+CLASS="COMMAND"
+>postmaster</TT
+>.
+   </P
+><P
+>    Also, the client authentication setup in the
+    <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+> file may need to be configured.
+    Refer to the <I
+CLASS="CITETITLE"
+>Administrator's Guide</I
+> for
+    details.  The <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Driver supports the trust,
+    ident, password, md5, and crypt authentication methods.
+   </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-develop.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="jdbc-use.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>For the Developer</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Using the Driver</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

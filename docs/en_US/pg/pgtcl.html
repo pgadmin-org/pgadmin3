@@ -1,0 +1,698 @@
+<HTML
+><HEAD
+><TITLE
+>pgtcl - Tcl Binding Library</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Client Interfaces"
+HREF="programmer-client.html"><LINK
+REL="PREVIOUS"
+TITLE="Accessing Large Objects from Libpq"
+HREF="lo-libpq.html"><LINK
+REL="NEXT"
+TITLE="Loading pgtcl into your application"
+HREF="libpgtcl-loading.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="lo-libpq.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpgtcl-loading.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="PGTCL"
+>Chapter 3. <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> - Tcl Binding Library</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>3.1. <A
+HREF="pgtcl.html#PGTCL-INTRO"
+>Introduction</A
+></DT
+><DT
+>3.2. <A
+HREF="libpgtcl-loading.html"
+>Loading <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> into your application</A
+></DT
+><DT
+>3.3. <A
+HREF="libpgtcl-ref.html"
+><SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> Command Reference Information</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="pgtcl-pgconnect.html"
+>pg_connect</A
+>&nbsp;--&nbsp;open a connection to the backend server</DT
+><DT
+><A
+HREF="pgtcl-pgdisconnect.html"
+>pg_disconnect</A
+>&nbsp;--&nbsp;close a connection to the backend server</DT
+><DT
+><A
+HREF="pgtcl-pgconndefaults.html"
+>pg_conndefaults</A
+>&nbsp;--&nbsp;obtain information about default connection parameters</DT
+><DT
+><A
+HREF="pgtcl-pgexec.html"
+>pg_exec</A
+>&nbsp;--&nbsp;send a command string to the server</DT
+><DT
+><A
+HREF="pgtcl-pgresult.html"
+>pg_result</A
+>&nbsp;--&nbsp;get information about a query result</DT
+><DT
+><A
+HREF="pgtcl-pgselect.html"
+>pg_select</A
+>&nbsp;--&nbsp;loop over the result of a SELECT statement</DT
+><DT
+><A
+HREF="pgtcl-pgexecute.html"
+>pg_execute</A
+>&nbsp;--&nbsp;send a query and optionally loop over the results</DT
+><DT
+><A
+HREF="pgtcl-pglisten.html"
+>pg_listen</A
+>&nbsp;--&nbsp;set or change a callback for asynchronous NOTIFY messages</DT
+><DT
+><A
+HREF="pgtcl-pgon-connection-loss.html"
+>pg_on_connection_loss</A
+>&nbsp;--&nbsp;set or change a callback for unexpected connection loss</DT
+><DT
+><A
+HREF="pgtcl-pglocreat.html"
+>pg_lo_creat</A
+>&nbsp;--&nbsp;create a large object</DT
+><DT
+><A
+HREF="pgtcl-pgloopen.html"
+>pg_lo_open</A
+>&nbsp;--&nbsp;open a large object</DT
+><DT
+><A
+HREF="pgtcl-pgloclose.html"
+>pg_lo_close</A
+>&nbsp;--&nbsp;close a large object</DT
+><DT
+><A
+HREF="pgtcl-pgloread.html"
+>pg_lo_read</A
+>&nbsp;--&nbsp;read a large object</DT
+><DT
+><A
+HREF="pgtcl-pglowrite.html"
+>pg_lo_write</A
+>&nbsp;--&nbsp;write a large object</DT
+><DT
+><A
+HREF="pgtcl-pglolseek.html"
+>pg_lo_lseek</A
+>&nbsp;--&nbsp;seek to a position in a large object</DT
+><DT
+><A
+HREF="pgtcl-pglotell.html"
+>pg_lo_tell</A
+>&nbsp;--&nbsp;return the current seek position of a large object</DT
+><DT
+><A
+HREF="pgtcl-pglounlink.html"
+>pg_lo_unlink</A
+>&nbsp;--&nbsp;delete a large object</DT
+><DT
+><A
+HREF="pgtcl-pgloimport.html"
+>pg_lo_import</A
+>&nbsp;--&nbsp;import a large object from a file</DT
+><DT
+><A
+HREF="pgtcl-pgloexport.html"
+>pg_lo_export</A
+>&nbsp;--&nbsp;export a large object to a file</DT
+></DL
+></DD
+></DL
+></DIV
+><A
+NAME="AEN26116"
+></A
+><A
+NAME="AEN26118"
+></A
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PGTCL-INTRO"
+>3.1. Introduction</A
+></H1
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> is a Tcl package for client
+   programs to interface with <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   servers.  It makes most of the functionality of
+   <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> available to Tcl scripts.
+  </P
+><P
+>   This package was originally written by Jolly Chen.
+  </P
+><P
+>   <A
+HREF="pgtcl.html#PGTCL-COMMANDS-TABLE"
+>Table 3-1</A
+> gives an overview over the
+   commands available in <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+>. These
+   commands are described further on subsequent pages.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="PGTCL-COMMANDS-TABLE"
+></A
+><P
+><B
+>Table 3-1. <TT
+CLASS="LITERAL"
+>pgtcl</TT
+> Commands</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Command</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_connect</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>opens a connection to the backend server</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_disconnect</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>closes a connection</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_conndefaults</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>get connection options and their defaults</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_exec</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>send a query to the backend</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_result</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>manipulate the results of a query</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_select</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>loop over the result of a SELECT statement</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_execute</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>send a query and optionally loop over the results</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_listen</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>establish a callback for NOTIFY messages</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_on_connection_loss</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>establish a callback for unexpected connection loss</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_creat</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>create a large object</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_open</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>open a large object</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_close</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>close a large object</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_read</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>read a large object</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_write</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>write a large object</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_lseek</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>seek to a position in a large object</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_tell</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>return the current seek position of a large object</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_unlink</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>delete a large object</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_import</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>import a Unix file into a large object</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pg_lo_export</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>export a large object into a Unix file</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   The <TT
+CLASS="FUNCTION"
+>pg_lo_*</TT
+> routines are interfaces to the
+   large object features of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+   The functions are designed to mimic the analogous file system
+   functions in the standard Unix file system interface.  The
+   <TT
+CLASS="FUNCTION"
+>pg_lo_*</TT
+> routines should be used within a
+   <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>/<TT
+CLASS="COMMAND"
+>COMMIT</TT
+> transaction
+   block because the file descriptor returned by
+   <TT
+CLASS="FUNCTION"
+>pg_lo_open</TT
+> is only valid for the current
+   transaction.  <TT
+CLASS="FUNCTION"
+>pg_lo_import</TT
+> and
+   <TT
+CLASS="FUNCTION"
+>pg_lo_export</TT
+> <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+> be used
+   in a <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>/<TT
+CLASS="COMMAND"
+>COMMIT</TT
+> transaction
+   block.
+  </P
+><P
+>   <A
+HREF="pgtcl.html#PGTCL-EXAMPLE"
+>Example 3-1</A
+> shows a small example of how to use
+   the routines.
+  </P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="PGTCL-EXAMPLE"
+></A
+><P
+><B
+>Example 3-1. <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> Example Program</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+># getDBs :
+#   get the names of all the databases at a given host and port number
+#   with the defaults being the localhost and port 5432
+#   return them in alphabetical order
+proc getDBs { {host "localhost"} {port "5432"} } {
+    # datnames is the list to be result
+    set conn [pg_connect template1 -host $host -port $port]
+    set res [pg_exec $conn "SELECT datname FROM pg_database ORDER BY datname"]
+    set ntups [pg_result $res -numTuples]
+    for {set i 0} {$i &#60; $ntups} {incr i} {
+	lappend datnames [pg_result $res -getTuple $i]
+    }
+    pg_result $res -clear
+    pg_disconnect $conn
+    return $datnames
+}</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="lo-libpq.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpgtcl-loading.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Accessing Large Objects from <SPAN
+CLASS="APPLICATION"
+>Libpq</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Loading <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> into your application</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

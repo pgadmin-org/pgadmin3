@@ -1,0 +1,230 @@
+<HTML
+><HEAD
+><TITLE
+>Example</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Extending SQL: Operators"
+HREF="xoper.html"><LINK
+REL="PREVIOUS"
+TITLE="Extending SQL: Operators"
+HREF="xoper.html"><LINK
+REL="NEXT"
+TITLE="Operator Optimization Information"
+HREF="xoper-optimization.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xoper.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 11. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xoper-optimization.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XOPER-EXAMPLE"
+>11.2. Example</A
+></H1
+><P
+>   Here is an example of creating an operator for adding two complex
+   numbers.  We assume we've already created the definition of type
+   <TT
+CLASS="TYPE"
+>complex</TT
+> (see <A
+HREF="xtypes.html"
+>Chapter 10</A
+>).  First we need a
+   function that does the work, then we can define the operator:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION complex_add(complex, complex)
+    RETURNS complex
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>PGROOT</I
+></TT
+>/tutorial/complex'
+    LANGUAGE C;
+
+CREATE OPERATOR + (
+    leftarg = complex,
+    rightarg = complex,
+    procedure = complex_add,
+    commutator = +
+);</PRE
+><P>
+  </P
+><P
+>   Now we can do:
+     
+</P><PRE
+CLASS="SCREEN"
+>SELECT (a + b) AS c FROM test_complex;
+
+        c
+-----------------
+ (5.2,6.05)
+ (133.42,144.95)</PRE
+><P>
+  </P
+><P
+>   We've shown how to create a binary operator here.  To create unary
+   operators, just omit one of <TT
+CLASS="LITERAL"
+>leftarg</TT
+> (for left unary) or
+   <TT
+CLASS="LITERAL"
+>rightarg</TT
+> (for right unary).  The <TT
+CLASS="LITERAL"
+>procedure</TT
+>
+   clause and the argument clauses are the only required items in
+   <TT
+CLASS="COMMAND"
+>CREATE OPERATOR</TT
+>.  The <TT
+CLASS="LITERAL"
+>commutator</TT
+>
+   clause shown in the example is an optional hint to the query
+   optimizer.  Further details about <TT
+CLASS="LITERAL"
+>commutator</TT
+> and other
+   optimizer hints appear below.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xoper.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xoper-optimization.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="xoper.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Operator Optimization Information</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

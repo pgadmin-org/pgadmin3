@@ -1,0 +1,323 @@
+<HTML
+><HEAD
+><TITLE
+>START TRANSACTION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="SHOW"
+HREF="sql-show.html"><LINK
+REL="NEXT"
+TITLE="TRUNCATE"
+HREF="sql-truncate.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-show.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-truncate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-START-TRANSACTION"
+>START TRANSACTION</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN46076"
+></A
+><H2
+>Name</H2
+>START TRANSACTION&nbsp;--&nbsp;start a transaction block</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN46079"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>START TRANSACTION [ ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE } ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-START-TRANSACTION-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    None.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-START-TRANSACTION-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>START TRANSACTION
+       </TT
+></DT
+><DD
+><P
+>    Message returned if successful.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>WARNING:  BEGIN: already a transaction in progress
+       </TT
+></DT
+><DD
+><P
+>    If there is already a transaction in progress when the
+    command is issued.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46102"
+></A
+><H2
+>Description</H2
+><P
+>   This command begins a new transaction. If the isolation level is
+   specified, the new transaction has that isolation level. In all other
+   respects, the behavior of this command is identical to the
+   <A
+HREF="sql-begin.html"
+><I
+>BEGIN</I
+></A
+> command.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46106"
+></A
+><H2
+>Notes</H2
+><P
+>   The isolation level of a transaction can also be set with the <A
+HREF="sql-set-transaction.html"
+><I
+>SET TRANSACTION</I
+></A
+>
+   command. If no isolation level is specified, the default isolation
+   level is used.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-START-TRANSACTION-3"
+></A
+><H2
+>Compatibility</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-START-TRANSACTION-4"
+></A
+><H3
+>SQL99</H3
+><P
+>    <TT
+CLASS="OPTION"
+>SERIALIZABLE</TT
+> is the default isolation level in
+    <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>, but it is not the usual default in
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>: the factory default setting
+    is READ COMMITTED.
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
+    does not provide the isolation levels <TT
+CLASS="OPTION"
+>READ UNCOMMITTED</TT
+>
+    and <TT
+CLASS="OPTION"
+>REPEATABLE READ</TT
+>. Because of lack of predicate
+    locking, the <TT
+CLASS="OPTION"
+>SERIALIZABLE</TT
+> level is
+    not truly serializable. See the <I
+CLASS="CITETITLE"
+>User's Guide</I
+>
+    for details.
+   </P
+><P
+>    In <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+> this statement can specify two other
+    properties of the new transaction: whether the transaction is
+    read-only and the size of the diagnostics area. Neither of these
+    concepts are currently supported in
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-show.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-truncate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SHOW</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>TRUNCATE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

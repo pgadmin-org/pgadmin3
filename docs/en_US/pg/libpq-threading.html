@@ -1,0 +1,221 @@
+<HTML
+><HEAD
+><TITLE
+>Threading Behavior</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="Files"
+HREF="libpq-files.html"><LINK
+REL="NEXT"
+TITLE="Building Libpq Programs"
+HREF="libpq-build.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpq-files.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq-build.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-THREADING"
+>1.12. Threading Behavior</A
+></H1
+><A
+NAME="AEN25854"
+></A
+><P
+><TT
+CLASS="FILENAME"
+>libpq</TT
+> is thread-safe as of
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.0, so long as no two threads
+attempt to manipulate the same <TT
+CLASS="STRUCTNAME"
+>PGconn</TT
+> object at the same
+time. In particular, you cannot issue concurrent queries from different
+threads through the same connection object. (If you need to run
+concurrent queries, start up multiple connections.)</P
+><P
+><TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> objects are read-only after creation, and so can be passed around
+freely between threads.</P
+><P
+>The deprecated functions <TT
+CLASS="FUNCTION"
+>PQoidStatus</TT
+> and
+<TT
+CLASS="FUNCTION"
+>fe_setauthsvc</TT
+> are not thread-safe and should not be
+used in multithread programs.  <TT
+CLASS="FUNCTION"
+>PQoidStatus</TT
+> can be
+replaced by <TT
+CLASS="FUNCTION"
+>PQoidValue</TT
+>.  There is no good reason to
+call <TT
+CLASS="FUNCTION"
+>fe_setauthsvc</TT
+> at all.</P
+><P
+><TT
+CLASS="FILENAME"
+>Libpq</TT
+> clients using the <TT
+CLASS="LITERAL"
+>crypt</TT
+>
+encryption method rely on the <TT
+CLASS="LITERAL"
+>crypt()</TT
+> operating
+system function, which is often not thread-safe. It is better to use
+<TT
+CLASS="LITERAL"
+>MD5</TT
+> encryption, which is thread-safe on all
+platforms.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-files.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-build.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Files</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Building <SPAN
+CLASS="APPLICATION"
+>Libpq</SPAN
+> Programs</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

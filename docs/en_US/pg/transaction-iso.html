@@ -1,0 +1,591 @@
+<HTML
+><HEAD
+><TITLE
+>Transaction Isolation</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Concurrency Control"
+HREF="mvcc.html"><LINK
+REL="PREVIOUS"
+TITLE="Concurrency Control"
+HREF="mvcc.html"><LINK
+REL="NEXT"
+TITLE="Explicit Locking"
+HREF="explicit-locking.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mvcc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Concurrency Control</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="explicit-locking.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TRANSACTION-ISO"
+>9.2. Transaction Isolation</A
+></H1
+><P
+>    The <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+    standard defines four levels of transaction
+    isolation in terms of three phenomena that must be prevented 
+    between concurrent transactions.
+    These undesirable phenomena are:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>dirty read
+       <A
+NAME="AEN11315"
+></A
+></DT
+><DD
+><P
+>	A transaction reads data written by a concurrent uncommitted transaction.
+       </P
+></DD
+><DT
+>nonrepeatable read
+       <A
+NAME="AEN11321"
+></A
+></DT
+><DD
+><P
+>	A transaction re-reads data it has previously read and finds that data
+	has been modified by another transaction (that committed since the
+	initial read).
+       </P
+></DD
+><DT
+>phantom read
+       <A
+NAME="AEN11327"
+></A
+></DT
+><DD
+><P
+>	A transaction re-executes a query returning a set of rows that satisfy a
+	search condition and finds that the set of rows satisfying the condition
+	has changed due to another recently-committed transaction.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    <A
+NAME="AEN11332"
+></A
+>
+    The four transaction isolation levels and the corresponding
+    behaviors are described in <A
+HREF="transaction-iso.html#MVCC-ISOLEVEL-TABLE"
+>Table 9-1</A
+>.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="MVCC-ISOLEVEL-TABLE"
+></A
+><P
+><B
+>Table 9-1. <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Transaction Isolation Levels</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>         Isolation Level
+	</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Dirty Read
+	</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Nonrepeatable Read
+	</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Phantom Read
+	</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Read uncommitted
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Possible
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Possible
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Possible
+	</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Read committed
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Not possible
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Possible
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Possible
+	</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Repeatable read
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Not possible
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Not possible
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Possible
+	</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Serializable
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Not possible
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Not possible
+	</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>	 Not possible
+	</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    offers the read committed and serializable isolation levels.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="XACT-READ-COMMITTED"
+>9.2.1. Read Committed Isolation Level</A
+></H2
+><A
+NAME="AEN11371"
+></A
+><P
+>    <I
+CLASS="FIRSTTERM"
+>Read Committed</I
+>
+    is the default isolation level in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. 
+    When a transaction runs on this isolation level,
+    a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query sees only data committed before the
+    query began; it never sees either uncommitted data or changes committed
+    during query execution by concurrent transactions.  (However, the
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> does see the effects of previous updates
+    executed within its own transaction, even though they are not yet
+    committed.)  In effect, a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query
+    sees a snapshot of the database as of the instant that that query
+    begins to run.  Notice that two successive <TT
+CLASS="COMMAND"
+>SELECT</TT
+>s can
+    see different data, even though they are within a single transaction, if
+    other transactions 
+    commit changes during execution of the first <TT
+CLASS="COMMAND"
+>SELECT</TT
+>.
+   </P
+><P
+>    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, <TT
+CLASS="COMMAND"
+>DELETE</TT
+>, and <TT
+CLASS="COMMAND"
+>SELECT
+    FOR UPDATE</TT
+> commands behave the same as <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+    in terms of searching for target rows: they will only find target rows
+    that were committed as of the query start time.  However, such a target
+    row may have already been updated (or deleted or marked for update) by
+    another concurrent transaction by the time it is found.  In this case, the
+    would-be updater will wait for the first updating transaction to commit or
+    roll back (if it is still in progress).  If the first updater rolls back,
+    then its effects are negated and the second updater can proceed with
+    updating the originally found row.  If the first updater commits, the
+    second updater will ignore the row if the first updater deleted it,
+    otherwise it will attempt to apply its operation to the updated version of
+    the row.  The query search condition (<TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause) is
+    re-evaluated to see if the updated version of the row still matches the
+    search condition.  If so, the second updater proceeds with its operation,
+    starting from the updated version of the row.
+   </P
+><P
+>    Because of the above rule, it is possible for updating queries to see
+    inconsistent snapshots --- they can see the effects of concurrent updating
+    queries that affected the same rows they are trying to update, but they
+    do not see effects of those queries on other rows in the database.
+    This behavior makes Read Committed mode unsuitable for queries that
+    involve complex search conditions.  However, it is just right for simpler
+    cases.  For example, consider updating bank balances with transactions
+    like
+
+</P><PRE
+CLASS="SCREEN"
+>BEGIN;
+UPDATE accounts SET balance = balance + 100.00 WHERE acctnum = 12345;
+UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 7534;
+COMMIT;</PRE
+><P>
+
+    If two such transactions concurrently try to change the balance of account
+    12345, we clearly want the second transaction to start from the updated
+    version of the account's row.  Because each query is affecting only a
+    predetermined row, letting it see the updated version of the row does
+    not create any troublesome inconsistency.
+   </P
+><P
+>    Since in Read Committed mode each new query starts with a new snapshot
+    that includes all transactions committed up to that instant, subsequent
+    queries in the same transaction will see the effects of the committed
+    concurrent transaction in any case.  The point at issue here is whether
+    or not within a <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>single</I
+></SPAN
+> query we see an absolutely consistent
+    view of the database.
+   </P
+><P
+>    The partial transaction isolation provided by Read Committed mode is
+    adequate for many applications, and this mode is fast and simple to use.
+    However, for applications that do complex queries and updates, it may
+    be necessary to guarantee a more rigorously consistent view of the
+    database than the Read Committed mode provides.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="XACT-SERIALIZABLE"
+>9.2.2. Serializable Isolation Level</A
+></H2
+><A
+NAME="AEN11395"
+></A
+><P
+>    <I
+CLASS="FIRSTTERM"
+>Serializable</I
+> provides the strictest transaction
+    isolation.  This level emulates serial transaction execution,
+    as if transactions had been executed one after another, serially,
+    rather than concurrently.  However, applications using this level must
+    be prepared to retry transactions due to serialization failures.
+   </P
+><P
+>    When a transaction is on the serializable level,
+    a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query sees only data committed before the
+    transaction began; it never sees either uncommitted data or changes
+    committed
+    during transaction execution by concurrent transactions.  (However, the
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> does see the effects of previous updates
+    executed within its own transaction, even though they are not yet
+    committed.)  This is different from Read Committed in that the
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+    sees a snapshot as of the start of the transaction, not as of the start
+    of the current query within the transaction.  Thus, successive
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+>s within a single transaction always see the same
+    data.
+   </P
+><P
+>    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, <TT
+CLASS="COMMAND"
+>DELETE</TT
+>, and <TT
+CLASS="COMMAND"
+>SELECT
+    FOR UPDATE</TT
+> commands behave the same as <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+    in terms of searching for target rows: they will only find target rows
+    that were committed as of the transaction start time.  However, such a
+    target
+    row may have already been updated (or deleted or marked for update) by
+    another concurrent transaction by the time it is found.  In this case, the
+    serializable transaction will wait for the first updating transaction to commit or
+    roll back (if it is still in progress).  If the first updater rolls back,
+    then its effects are negated and the serializable transaction can proceed
+    with updating the originally found row.  But if the first updater commits
+    (and actually updated or deleted the row, not just selected it for update)
+    then the serializable transaction will be rolled back with the message
+
+</P><PRE
+CLASS="SCREEN"
+>ERROR:  Can't serialize access due to concurrent update</PRE
+><P>
+
+    because a serializable transaction cannot modify rows changed by
+    other transactions after the serializable transaction began.
+   </P
+><P
+>    When the application receives this error message, it should abort
+    the current transaction and then retry the whole transaction from
+    the beginning.  The second time through, the transaction sees the
+    previously-committed change as part of its initial view of the database,
+    so there is no logical conflict in using the new version of the row
+    as the starting point for the new transaction's update.
+   </P
+><P
+>    Note that only updating transactions may need to be retried --- read-only
+    transactions will never have serialization conflicts.
+   </P
+><P
+>    The Serializable mode provides a rigorous guarantee that each
+    transaction sees a wholly consistent view of the database.  However,
+    the application has to be prepared to retry transactions when concurrent
+    updates make it impossible to sustain the illusion of serial execution.
+    Since the cost of redoing complex transactions may be significant,
+    this mode is recommended only when updating transactions contain logic
+    sufficiently complex that they may give wrong answers in Read
+    Committed mode.  Most commonly, Serializable mode is necessary when
+    a transaction performs several successive queries that must see
+    identical views of the database.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mvcc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="explicit-locking.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Concurrency Control</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="mvcc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Explicit Locking</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

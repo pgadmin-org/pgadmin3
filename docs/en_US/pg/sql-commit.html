@@ -1,0 +1,322 @@
+<HTML
+><HEAD
+><TITLE
+>COMMIT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="COMMENT"
+HREF="sql-comment.html"><LINK
+REL="NEXT"
+TITLE="COPY"
+HREF="sql-copy.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-comment.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-copy.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-COMMIT"
+>COMMIT</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38327"
+></A
+><H2
+>Name</H2
+>   COMMIT
+  &nbsp;--&nbsp;   commit the current transaction
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38330"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>COMMIT [ WORK | TRANSACTION ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-COMMIT-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>WORK<BR>TRANSACTION</DT
+><DD
+><P
+>	Optional keywords. They have no effect.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-COMMIT-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>COMMIT
+       </TT
+></DT
+><DD
+><P
+>	Message returned if the transaction is successfully committed.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>WARNING:  COMMIT: no transaction in progress
+       </TT
+></DT
+><DD
+><P
+>	If there is no transaction in progress.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-COMMIT-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> commits the current transaction. All
+   changes made by the transaction become visible to others
+   and are guaranteed to be durable if a crash occurs.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-COMMIT-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    The keywords WORK and TRANSACTION are noise and can be omitted.
+   </P
+><P
+>    Use <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
+>
+    to abort a transaction.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-COMMIT-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To make all changes permanent:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>COMMIT WORK;
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-COMMIT-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-COMMIT-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> only specifies the two forms <TT
+CLASS="LITERAL"
+>COMMIT</TT
+>
+    and <TT
+CLASS="LITERAL"
+>COMMIT WORK</TT
+>. Otherwise full compatibility.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-comment.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-copy.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>COMMENT</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>COPY</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

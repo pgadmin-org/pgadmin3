@@ -1,0 +1,250 @@
+<HTML
+><HEAD
+><TITLE
+>Loading pgtcl into your application</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="pgtcl - Tcl Binding Library"
+HREF="pgtcl.html"><LINK
+REL="PREVIOUS"
+TITLE="pgtcl - Tcl Binding Library"
+HREF="pgtcl.html"><LINK
+REL="NEXT"
+TITLE="pgtcl Command Reference Information"
+HREF="libpgtcl-ref.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="pgtcl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> - Tcl Binding Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpgtcl-ref.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPGTCL-LOADING"
+>3.2. Loading <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> into your application</A
+></H1
+><P
+>    Before using <SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> commands, you must load
+    <TT
+CLASS="FILENAME"
+>libpgtcl</TT
+> into your Tcl application.  This is normally
+    done with the Tcl <TT
+CLASS="LITERAL"
+>load</TT
+> command.  Here is an example:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>load libpgtcl[info sharedlibextension]</PRE
+><P>
+
+    The use of <TT
+CLASS="LITERAL"
+>info sharedlibextension</TT
+> is recommended in
+    preference to hard-wiring <TT
+CLASS="LITERAL"
+>.so</TT
+> or  <TT
+CLASS="LITERAL"
+>.sl</TT
+> into
+    the program.
+   </P
+><P
+>    The <TT
+CLASS="LITERAL"
+>load</TT
+> command will fail unless the system's dynamic
+    loader knows where to look for the <TT
+CLASS="FILENAME"
+>libpgtcl</TT
+> shared
+    library file.  You may need to work with <TT
+CLASS="COMMAND"
+>ldconfig</TT
+>, or
+    set the environment variable <TT
+CLASS="ENVAR"
+>LD_LIBRARY_PATH</TT
+>, or use
+    some equivalent facility for your platform to make it work.  Refer
+    to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> installation instructions for
+    more information.
+   </P
+><P
+>    <TT
+CLASS="FILENAME"
+>libpgtcl</TT
+> in turn depends on <TT
+CLASS="FILENAME"
+>libpq</TT
+>, so the
+    dynamic loader must also be able to find the <TT
+CLASS="FILENAME"
+>libpq</TT
+> shared
+    library.  In practice this is seldom an issue, since both of these
+    shared libraries are normally stored in the same directory, but it
+    can be a stumbling block in some configurations.
+   </P
+><P
+>    If you use a custom executable for your application, you might choose
+    to statically bind <TT
+CLASS="FILENAME"
+>libpgtcl</TT
+> into the executable and thereby
+    avoid the <TT
+CLASS="LITERAL"
+>load</TT
+> command and the potential problems of dynamic
+    linking.  See the source code for <SPAN
+CLASS="APPLICATION"
+>pgtclsh</SPAN
+> for an example.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pgtcl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpgtcl-ref.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> - Tcl Binding Library</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="pgtcl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> Command Reference Information</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

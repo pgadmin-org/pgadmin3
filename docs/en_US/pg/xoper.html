@@ -1,0 +1,272 @@
+<HTML
+><HEAD
+><TITLE
+>Extending SQL: Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="Extending SQL: Types"
+HREF="xtypes.html"><LINK
+REL="NEXT"
+TITLE="Example"
+HREF="xoper-example.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xtypes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xoper-example.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="XOPER"
+>Chapter 11. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Operators</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>11.1. <A
+HREF="xoper.html#XOPER-INTRO"
+>Introduction</A
+></DT
+><DT
+>11.2. <A
+HREF="xoper-example.html"
+>Example</A
+></DT
+><DT
+>11.3. <A
+HREF="xoper-optimization.html"
+>Operator Optimization Information</A
+></DT
+><DD
+><DL
+><DT
+>11.3.1. <A
+HREF="xoper-optimization.html#AEN32448"
+>COMMUTATOR</A
+></DT
+><DT
+>11.3.2. <A
+HREF="xoper-optimization.html#AEN32473"
+>NEGATOR</A
+></DT
+><DT
+>11.3.3. <A
+HREF="xoper-optimization.html#AEN32487"
+>RESTRICT</A
+></DT
+><DT
+>11.3.4. <A
+HREF="xoper-optimization.html#AEN32536"
+>JOIN</A
+></DT
+><DT
+>11.3.5. <A
+HREF="xoper-optimization.html#AEN32567"
+>HASHES</A
+></DT
+><DT
+>11.3.6. <A
+HREF="xoper-optimization.html#AEN32584"
+><TT
+CLASS="LITERAL"
+>MERGES</TT
+> (<TT
+CLASS="LITERAL"
+>SORT1</TT
+>, <TT
+CLASS="LITERAL"
+>SORT2</TT
+>, <TT
+CLASS="LITERAL"
+>LTCMP</TT
+>, <TT
+CLASS="LITERAL"
+>GTCMP</TT
+>)</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XOPER-INTRO"
+>11.1. Introduction</A
+></H1
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports left unary,
+   right  unary,  and  binary
+   operators.   Operators  can  be  overloaded; that is,
+   the same operator name can be used for different operators
+   that have different numbers and types of operands.   If
+   there  is  an ambiguous situation and the system cannot
+   determine the correct operator to use, it  will  return
+   an  error.  You may have to type-cast the left and/or
+   right operands to help it understand which operator you
+   meant to use.
+  </P
+><P
+>   Every operator is <SPAN
+CLASS="QUOTE"
+>"syntactic sugar"</SPAN
+> for a call to an
+   underlying function that does the real work; so you must
+   first create the underlying function before you can create
+   the operator.  However, an operator is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not merely</I
+></SPAN
+>
+   syntactic sugar, because it carries additional information
+   that helps the query planner optimize queries that use the
+   operator.  Much of this chapter will be devoted to explaining
+   that additional information.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xtypes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xoper-example.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Example</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,449 @@
+<HTML
+><HEAD
+><TITLE
+>LISTEN</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="INSERT"
+HREF="sql-insert.html"><LINK
+REL="NEXT"
+TITLE="LOAD"
+HREF="sql-load.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-insert.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-load.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-LISTEN"
+>LISTEN</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44238"
+></A
+><H2
+>Name</H2
+>   LISTEN
+  &nbsp;--&nbsp;   listen for a notification
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44241"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>LISTEN <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-LISTEN-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	Name of notify condition.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-LISTEN-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>LISTEN
+       </TT
+></DT
+><DD
+><P
+>	Message returned upon successful completion of registration.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>WARNING:  Async_Listen: We are already listening on <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+       </TT
+></DT
+><DD
+><P
+>	If this backend is already registered for that notify condition.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-LISTEN-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> registers the current 
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend as a
+   listener on the notify condition
+   <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>.
+  </P
+><P
+>   Whenever the command 
+   <TT
+CLASS="COMMAND"
+>NOTIFY <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></TT
+>
+   is invoked, either by this backend or another one connected to
+   the same database, all the backends currently listening on that notify
+   condition are notified, and each will in turn notify its connected
+   frontend application.  See the discussion of <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>
+   for more information.
+  </P
+><P
+>   A backend can be unregistered for a given notify condition with the
+   <TT
+CLASS="COMMAND"
+>UNLISTEN</TT
+> command.  Also, a backend's listen registrations
+   are automatically cleared when the backend process exits.
+  </P
+><P
+>   The method a frontend application must use to detect notify events depends on
+   which <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> application programming interface it
+   uses.  With the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> library, the application issues
+   <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> as an ordinary SQL command, and then must
+   periodically call the routine <TT
+CLASS="FUNCTION"
+>PQnotifies</TT
+> to find out
+   whether any notify events have been received.  Other interfaces such as
+   <SPAN
+CLASS="APPLICATION"
+>libpgtcl</SPAN
+> provide higher-level methods for handling notify events; indeed,
+   with <SPAN
+CLASS="APPLICATION"
+>libpgtcl</SPAN
+> the application programmer should not even issue
+   <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> or <TT
+CLASS="COMMAND"
+>UNLISTEN</TT
+> directly.  See the
+   documentation for the library you are using for more details.
+  </P
+><P
+>   <A
+HREF="sql-notify.html"
+><I
+>NOTIFY</I
+></A
+>
+   contains a more extensive
+   discussion of the use of <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> and
+   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-LISTEN-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+    can be any string valid as a name;
+    it need not correspond to the name of any actual table.  If
+    <TT
+CLASS="REPLACEABLE"
+><I
+>notifyname</I
+></TT
+>
+    is enclosed in double-quotes, it need not even be a syntactically
+    valid name, but can be any string up to 63 characters long.
+   </P
+><P
+>    In some previous releases of
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>,
+    <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+    had to be enclosed in double-quotes when it did not correspond to any existing
+    table name, even if syntactically valid as a name.  That is no longer required.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-LISTEN-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Configure and execute a listen/notify sequence from <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>LISTEN virtual;
+NOTIFY virtual;
+
+Asynchronous NOTIFY 'virtual' from backend with pid '8448' received.</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-LISTEN-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-LISTEN-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> in <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-insert.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-load.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>INSERT</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>LOAD</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,422 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE TABLE AS</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE TABLE"
+HREF="sql-createtable.html"><LINK
+REL="NEXT"
+TITLE="CREATE TRIGGER"
+HREF="sql-createtrigger.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createtable.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createtrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATETABLEAS"
+>CREATE TABLE AS</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN41163"
+></A
+><H2
+>Name</H2
+>CREATE TABLE AS&nbsp;--&nbsp;create a new table from the results of a query</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN41166"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE [ [ LOCAL ] { TEMPORARY | TEMP } ] TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+> [ (<TT
+CLASS="REPLACEABLE"
+><I
+>column_name</I
+></TT
+> [, ...] ) ]
+    AS <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+>
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41171"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> creates a table and fills it
+   with data computed by a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command.  The
+   table columns have the names and data types associated with the
+   output columns of the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> (except that you
+   can override the column names by giving an explicit list of new
+   column names).
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> bears some resemblance to
+   creating a view, but it is really quite different: it creates a new
+   table and evaluates the query just once to fill the new table
+   initially.  The new table will not track subsequent changes to the
+   source tables of the query.  In contrast, a view re-evaluates its
+   defining <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement whenever it is
+   queried.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41182"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>[LOCAL] TEMPORARY</TT
+> or <TT
+CLASS="LITERAL"
+>[LOCAL] TEMP</TT
+></DT
+><DD
+><P
+>      If specified, the table is created as a temporary table.
+      Refer to <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+> for details.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+></DT
+><DD
+><P
+>      The name (optionally schema-qualified) of the table to be created.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>column_name</I
+></TT
+></DT
+><DD
+><P
+>      The name of a column in the new table. Multiple column names can
+      be specified using a comma-delimited list of column names.  If
+      column names are not provided, they are taken from the output
+      column names of the query.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+></DT
+><DD
+><P
+>      A query statement (that is, a <TT
+CLASS="COMMAND"
+>SELECT</TT
+>
+      command).  Refer to
+      <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>
+      for a description of the allowed syntax.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41209"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   Refer to <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+> and
+   <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>
+   for a summary of possible output messages.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41214"
+></A
+><H2
+>Notes</H2
+><P
+>   This command is functionally equivalent to <A
+HREF="sql-selectinto.html"
+><I
+>SELECT INTO</I
+></A
+>, but it is preferred since it is less
+   likely to be confused with other uses of the <TT
+CLASS="COMMAND"
+>SELECT
+   ... INTO</TT
+> syntax.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41219"
+></A
+><H2
+>Compatibility</H2
+><P
+>   This command is modeled after an <SPAN
+CLASS="PRODUCTNAME"
+>Oracle</SPAN
+>
+   feature.  There is no command with equivalent functionality in
+   SQL92 or SQL99.  However, a combination of <TT
+CLASS="LITERAL"
+>CREATE
+   TABLE</TT
+> and <TT
+CLASS="LITERAL"
+>INSERT ... SELECT</TT
+> can
+   accomplish the same thing with little more effort.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41225"
+></A
+><H2
+>History</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> command has been available
+   since <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 6.3.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41230"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+>, <A
+HREF="sql-createview.html"
+><I
+>CREATE VIEW</I
+></A
+>, <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>, <A
+HREF="sql-selectinto.html"
+><I
+>SELECT INTO</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createtable.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createtrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE TABLE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE TRIGGER</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

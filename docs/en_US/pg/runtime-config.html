@@ -1,0 +1,3599 @@
+<HTML
+><HEAD
+><TITLE
+>Run-time Configuration</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Run-time Environment"
+HREF="runtime.html"><LINK
+REL="PREVIOUS"
+TITLE="Starting the Database Server"
+HREF="postmaster-start.html"><LINK
+REL="NEXT"
+TITLE="Managing Kernel Resources"
+HREF="kernel-resources.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="postmaster-start.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Server Run-time Environment</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="kernel-resources.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RUNTIME-CONFIG"
+>3.4. Run-time Configuration</A
+></H1
+><A
+NAME="AEN19388"
+></A
+><P
+>    There are a lot of configuration parameters that affect the behavior
+    of the database system. Here we describe how to set them and the
+    following subsections will discuss each in detail.
+   </P
+><P
+>    All parameter names are case-insensitive. Every parameter takes a
+    value of one of the four types: Boolean, integer, floating point,
+    and string. Boolean values are <TT
+CLASS="LITERAL"
+>ON</TT
+>,
+    <TT
+CLASS="LITERAL"
+>OFF</TT
+>, <TT
+CLASS="LITERAL"
+>TRUE</TT
+>,
+    <TT
+CLASS="LITERAL"
+>FALSE</TT
+>, <TT
+CLASS="LITERAL"
+>YES</TT
+>,
+    <TT
+CLASS="LITERAL"
+>NO</TT
+>, <TT
+CLASS="LITERAL"
+>1</TT
+>, <TT
+CLASS="LITERAL"
+>0</TT
+>
+    (case-insensitive) or any non-ambiguous prefix of these.
+   </P
+><P
+>    One way to set these options is to edit the file
+    <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> in the data directory. (A
+    default file is installed there.) An example of what this file might
+    look like is:
+</P><PRE
+CLASS="PROGRAMLISTING"
+># This is a comment
+log_connections = yes
+syslog = 2
+search_path = '$user, public'</PRE
+><P>
+    As you see, options are one per line. The equal sign between name
+    and value is optional. Whitespace is insignificant and blank lines
+    are ignored. Hash marks (<SPAN
+CLASS="QUOTE"
+>"#"</SPAN
+>) introduce comments
+    anywhere.  Parameter values that are not simple identifiers or
+    numbers should be single-quoted.
+   </P
+><P
+>    <A
+NAME="AEN19406"
+></A
+>
+    The configuration file is reread whenever the postmaster receives a
+    <SPAN
+CLASS="SYSTEMITEM"
+>SIGHUP</SPAN
+> signal (which is most easily sent by means of
+    <TT
+CLASS="LITERAL"
+>pg_ctl reload</TT
+>). The postmaster also propagates this
+    signal to all currently running backend processes so that existing
+    sessions also get the new value. Alternatively, you can send the
+    signal to a single backend process directly.
+   </P
+><P
+>    A second way to set these configuration parameters is to give them
+    as a command line option to the postmaster, such as:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>postmaster -c log_connections=yes -c syslog=2</PRE
+><P>
+    which would have the same effect as the previous example.
+    Command-line options override any conflicting settings in
+    <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>.
+   </P
+><P
+>    Occasionally it is also useful to give a command line option to
+    one particular backend session only. The environment variable
+    <TT
+CLASS="ENVAR"
+>PGOPTIONS</TT
+> can be used for this purpose on the
+    client side:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>env PGOPTIONS='-c geqo=off' psql</PRE
+><P>
+    (This works for any <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>-based client application, not just
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>.) Note that this won't work for
+    options that are fixed when the server is started, such as the port
+    number.
+   </P
+><P
+>    Some options can be changed in individual SQL sessions with the
+    <TT
+CLASS="COMMAND"
+>SET</TT
+> command, for example:
+</P><PRE
+CLASS="SCREEN"
+>=&gt; <TT
+CLASS="USERINPUT"
+><B
+>SET ENABLE_SEQSCAN TO OFF;</B
+></TT
+></PRE
+><P>
+    See the SQL command language reference for details on the syntax.
+   </P
+><P
+>    Furthermore, it is possible to assign a set of option settings to
+    a user or a database.  Whenever a session is started, the default
+    settings for the user and database involved are loaded.  The
+    commands <TT
+CLASS="LITERAL"
+>ALTER DATABASE</TT
+> and <TT
+CLASS="LITERAL"
+>ALTER
+    USER</TT
+>, respectively, are used to configure these settings.
+    Such per-database settings override anything received from the postmaster
+    or the configuration file, and in turn are overridden by per-user
+    settings.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="CATALOG-PG-SETTINGS"
+>3.4.1. pg_settings</A
+></H2
+><P
+>     The <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+> virtual table allows display and update
+     of current session run-time parameters. There is one entry for each of the 
+     available parameters provided by <TT
+CLASS="COMMAND"
+>SHOW ALL</TT
+>. But it is
+     in a form that allows it to be joined with other relations and have a
+     selection criteria applied.
+    </P
+><P
+>     An <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> performed on <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+>
+     is equivalent to executing the <TT
+CLASS="COMMAND"
+>SET</TT
+> command on that named
+     parameter. The change only affects the value used by the current session. If
+     an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> is issued within a transaction that is later
+     aborted, the effects of the <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> command disappear when
+     the transaction is rolled back. Once the surrounding transaction is
+     committed, the effects will persist until the end of the session, unless
+     overridden by another <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> or <TT
+CLASS="COMMAND"
+>SET</TT
+>.
+    </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN19438"
+></A
+><P
+><B
+>Table 3-1. pg_settings Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>name</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The name of a current session run-time parameter</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>setting</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The value of a current session run-time parameter</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="RUNTIME-CONFIG-OPTIMIZER"
+>3.4.2. Planner and Optimizer Tuning</A
+></H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>CPU_INDEX_TUPLE_COST</TT
+> (<TT
+CLASS="TYPE"
+>floating point</TT
+>)</DT
+><DD
+><P
+>        Sets the query optimizer's estimate of the cost of processing
+	each index tuple during an index scan. This is measured as a
+	fraction of the cost of a sequential page fetch.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>CPU_OPERATOR_COST</TT
+> (<TT
+CLASS="TYPE"
+>floating point</TT
+>)</DT
+><DD
+><P
+>        Sets the optimizer's estimate of the cost of processing each
+	operator in a <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause. This is measured as a fraction of
+	the cost of a sequential page fetch.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>CPU_TUPLE_COST</TT
+> (<TT
+CLASS="TYPE"
+>floating point</TT
+>)</DT
+><DD
+><P
+>        Sets the query optimizer's estimate of the cost of processing
+	each tuple during a query. This is measured as a fraction of
+	the cost of a sequential page fetch.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DEFAULT_STATISTICS_TARGET</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Sets the default statistics target for table columns that have not
+	had a column-specific target set via <TT
+CLASS="COMMAND"
+>ALTER TABLE SET
+	STATISTICS</TT
+>.  Larger values increase the time needed to do
+	<TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>, but may improve the quality of the planner's
+	estimates.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>EFFECTIVE_CACHE_SIZE</TT
+> (<TT
+CLASS="TYPE"
+>floating point</TT
+>)</DT
+><DD
+><P
+>        Sets the optimizer's assumption about the effective size of the
+        disk cache (that is, the portion of the kernel's disk cache that
+        will be used for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> data
+        files). This is measured in disk pages, which are normally 8 kB
+        each.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ENABLE_HASHJOIN</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables or disables the query planner's use of hash-join plan
+        types. The default is on. This is used for debugging the
+        query planner.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ENABLE_INDEXSCAN</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables or disables the query planner's use of index-scan plan
+        types. The default is on. This is used to debugging the
+        query planner.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ENABLE_MERGEJOIN</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables or disables the query planner's use of merge-join plan
+        types. The default is on. This is used for debugging the
+        query planner.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ENABLE_NESTLOOP</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables or disables the query planner's use of nested-loop join
+        plans. It's not possible to suppress nested-loop joins entirely,
+        but turning this variable off discourages the planner from using
+        one if there are other methods available. The default is
+        on. This is used for debugging the query planner.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ENABLE_SEQSCAN</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables or disables the query planner's use of sequential scan
+        plan types. It's not possible to suppress sequential scans
+        entirely, but turning this variable off discourages the planner
+        from using one if there are other methods available. The
+        default is on. This is used for debugging the query planner.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ENABLE_SORT</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables or disables the query planner's use of explicit sort
+	steps. It's not possible to suppress explicit sorts entirely,
+	but turning this variable off discourages the planner from
+	using one if there are other methods available. The default
+	is on. This is used for debugging the query planner.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ENABLE_TIDSCAN</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables or disables the query planner's use of <SPAN
+CLASS="ACRONYM"
+>TID</SPAN
+> scan plan
+        types. The default is on. This is used for debugging the
+        query planner.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>GEQO</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables or disables genetic query optimization, which is an
+        algorithm that attempts to do query planning without exhaustive
+        searching. This is on by default. See also the various other
+        <TT
+CLASS="VARNAME"
+>GEQO_</TT
+> settings.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>GEQO_EFFORT</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)<BR><TT
+CLASS="VARNAME"
+>GEQO_GENERATIONS</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)<BR><TT
+CLASS="VARNAME"
+>GEQO_POOL_SIZE</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)<BR><TT
+CLASS="VARNAME"
+>GEQO_RANDOM_SEED</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)<BR><TT
+CLASS="VARNAME"
+>GEQO_SELECTION_BIAS</TT
+> (<TT
+CLASS="TYPE"
+>floating point</TT
+>)</DT
+><DD
+><P
+>        Various tuning parameters for the genetic query optimization
+        algorithm: The pool size is the number of individuals in one
+        population. Valid values are between 128 and 1024. If it is set
+        to 0 (the default) a pool size of 2^(QS+1), where QS is the
+        number of FROM items in the query, is taken. The effort is used
+        to calculate a default for generations. Valid values are between
+        1 and 80, 40 being the default. Generations specifies the number
+        of iterations in the algorithm. The number must be a positive
+        integer. If 0 is specified then <TT
+CLASS="LITERAL"
+>Effort *
+        Log2(PoolSize)</TT
+> is used. The run time of the algorithm
+        is roughly proportional to the sum of pool size and generations.
+        The selection bias is the selective pressure within the
+        population. Values can be from 1.50 to 2.00; the latter is the
+        default. The random seed can be set to get reproducible results
+        from the algorithm. If it is set to -1 then the algorithm
+        behaves non-deterministically.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>GEQO_THRESHOLD</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Use genetic query optimization to plan queries with at least
+        this many <TT
+CLASS="LITERAL"
+>FROM</TT
+> items involved. (Note that a
+        <TT
+CLASS="LITERAL"
+>JOIN</TT
+> construct counts as only one <TT
+CLASS="LITERAL"
+>FROM</TT
+>
+        item.) The default is 11. For simpler queries it is usually best
+        to use the deterministic, exhaustive planner. This parameter
+        also controls how hard the optimizer will try to merge subquery
+        <TT
+CLASS="LITERAL"
+>FROM</TT
+> clauses into the upper query.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>RANDOM_PAGE_COST</TT
+> (<TT
+CLASS="TYPE"
+>floating point</TT
+>)</DT
+><DD
+><P
+>        Sets the query optimizer's estimate of the cost of a
+        nonsequentially fetched disk page. This is measured as a
+        multiple of the cost of a sequential page fetch.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Unfortunately, there is no well-defined method for determining
+     ideal values for the family of <SPAN
+CLASS="QUOTE"
+>"COST"</SPAN
+> variables that
+     were just described. You are encouraged to experiment and share
+     your findings.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="LOGGING"
+>3.4.3. Logging and Debugging</A
+></H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>SERVER_MIN_MESSAGES</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        This controls how much message detail is written to the server
+        logs.  Valid values are <TT
+CLASS="LITERAL"
+>DEBUG5</TT
+>,
+        <TT
+CLASS="LITERAL"
+>DEBUG4</TT
+>, <TT
+CLASS="LITERAL"
+>DEBUG3</TT
+>, <TT
+CLASS="LITERAL"
+>DEBUG2</TT
+>,
+        <TT
+CLASS="LITERAL"
+>DEBUG1</TT
+>, <TT
+CLASS="LITERAL"
+>INFO</TT
+>, <TT
+CLASS="LITERAL"
+>NOTICE</TT
+>,
+        <TT
+CLASS="LITERAL"
+>WARNING</TT
+>, <TT
+CLASS="LITERAL"
+>ERROR</TT
+>, <TT
+CLASS="LITERAL"
+>LOG</TT
+>,
+        <TT
+CLASS="LITERAL"
+>FATAL</TT
+>, and <TT
+CLASS="LITERAL"
+>PANIC</TT
+>. Later values send
+        less detail to the logs.  The default is <TT
+CLASS="LITERAL"
+>NOTICE</TT
+>.
+        Note that <TT
+CLASS="LITERAL"
+>LOG</TT
+> has a different precedence here than
+        in <TT
+CLASS="LITERAL"
+>CLIENT_MIN_MESSAGES</TT
+>.
+       </P
+><P
+>        Here is a summary of the various message types:
+        <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>DEBUG[1-5]</TT
+></DT
+><DD
+><P
+>            Provides information for use by developers.
+	   </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>INFO</TT
+></DT
+><DD
+><P
+>            Provides information implicitly requested by the user,
+            e.g., during <TT
+CLASS="COMMAND"
+>VACUUM VERBOSE</TT
+>.
+	   </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>NOTICE</TT
+></DT
+><DD
+><P
+>            Provides information that may be helpful to users, e.g.,
+            truncation of long identifiers and index creation as part
+            of primary keys.
+	   </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>WARNING</TT
+></DT
+><DD
+><P
+>            Provides warnings to the user, e.g., <TT
+CLASS="COMMAND"
+>COMMIT</TT
+>
+            outside a transaction.
+	   </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>ERROR</TT
+></DT
+><DD
+><P
+>            Reports the error that caused a transaction to abort.
+	   </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>LOG</TT
+></DT
+><DD
+><P
+>            Reports information of interest to administrators, e.g.,
+	    checkpoint activity.
+	   </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>FATAL</TT
+></DT
+><DD
+><P
+>            Reports why a backend session terminated.
+	   </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>PANIC</TT
+></DT
+><DD
+><P
+>            Reports why all backend sessions restarted.
+	   </P
+></DD
+></DL
+></DIV
+><P>
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>CLIENT_MIN_MESSAGES</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        This controls how much message detail is written to the
+        client.  Valid values are <TT
+CLASS="LITERAL"
+>DEBUG5</TT
+>,
+        <TT
+CLASS="LITERAL"
+>DEBUG4</TT
+>, <TT
+CLASS="LITERAL"
+>DEBUG3</TT
+>, <TT
+CLASS="LITERAL"
+>DEBUG2</TT
+>,
+        <TT
+CLASS="LITERAL"
+>DEBUG1</TT
+>, <TT
+CLASS="LITERAL"
+>LOG</TT
+>, <TT
+CLASS="LITERAL"
+>NOTICE</TT
+>,
+        <TT
+CLASS="LITERAL"
+>WARNING</TT
+>, and <TT
+CLASS="LITERAL"
+>ERROR</TT
+>.  Later values send
+        less information to the client.  The default is
+        <TT
+CLASS="LITERAL"
+>NOTICE</TT
+>.  Note that <TT
+CLASS="LITERAL"
+>LOG</TT
+> has a different
+        precedence here than in <TT
+CLASS="LITERAL"
+>SERVER_MIN_MESSAGES</TT
+>. Also
+        see that section for an explanation of the various values.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DEBUG_ASSERTIONS</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Turns on various assertion checks. This is a debugging aid. If
+        you are experiencing strange problems or crashes you might want
+        to turn this on, as it might expose programming mistakes. To use
+        this option, the macro <TT
+CLASS="LITERAL"
+>USE_ASSERT_CHECKING</TT
+>
+        must be defined when <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is
+        built (accomplished by the <TT
+CLASS="COMMAND"
+>configure</TT
+> option
+        <TT
+CLASS="OPTION"
+>--enable-cassert</TT
+>). Note that
+        <TT
+CLASS="LITERAL"
+>DEBUG_ASSERTIONS</TT
+> defaults to on if
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has been built with
+	assertions enabled.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DEBUG_PRINT_PARSE</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>DEBUG_PRINT_REWRITTEN</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>DEBUG_PRINT_PLAN</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>DEBUG_PRETTY_PRINT</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        These flags enable various debugging output to be sent to the
+	server log.  For each executed query, print either the query text,
+	the resulting parse tree, the query rewriter output, or the execution
+	plan. <TT
+CLASS="OPTION"
+>DEBUG_PRETTY_PRINT</TT
+> indents these displays
+	to produce a more readable but much longer output format.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>EXPLAIN_PRETTY_PRINT</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Determines whether <TT
+CLASS="COMMAND"
+>EXPLAIN VERBOSE</TT
+> uses the indented
+	or non-indented format for displaying detailed query-tree dumps.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>HOSTNAME_LOOKUP</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        By default, connection logs only show the IP address of the
+        connecting host. If you want it to show the host name you can
+        turn this on, but depending on your host name resolution setup
+        it might impose a non-negligible performance penalty. This
+        option can only be set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LOG_CONNECTIONS</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        This outputs a line to the server logs detailing each successful
+        connection. This is off by default, although it is probably very
+        useful. This option can only be set at server start or in the
+        <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> configuration file.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LOG_DURATION</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Causes the duration of every completed statement to be logged.
+        To use this option, enable <TT
+CLASS="VARNAME"
+>LOG_STATEMENT</TT
+> and
+        <TT
+CLASS="VARNAME"
+>LOG_PID</TT
+> so you can link the statement to the
+        duration using the process ID.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LOG_MIN_ERROR_STATEMENT</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        This controls for which message levels the SQL statement
+        causing that message is to be recorded in the server log. All
+        statements causing a message of the level of the setting or
+        higher are logged. The default is <TT
+CLASS="LITERAL"
+>PANIC</TT
+>
+        (effectively turning this feature off). Valid values are
+        <TT
+CLASS="LITERAL"
+>DEBUG5</TT
+>, <TT
+CLASS="LITERAL"
+>DEBUG4</TT
+>,
+        <TT
+CLASS="LITERAL"
+>DEBUG3</TT
+>, <TT
+CLASS="LITERAL"
+>DEBUG2</TT
+>,
+        <TT
+CLASS="LITERAL"
+>DEBUG1</TT
+>, <TT
+CLASS="LITERAL"
+>INFO</TT
+>,
+        <TT
+CLASS="LITERAL"
+>NOTICE</TT
+>, <TT
+CLASS="LITERAL"
+>WARNING</TT
+>,
+        <TT
+CLASS="LITERAL"
+>ERROR</TT
+>, <TT
+CLASS="LITERAL"
+>FATAL</TT
+>, and
+        <TT
+CLASS="LITERAL"
+>PANIC</TT
+>.  For example, if you set this to
+        <TT
+CLASS="LITERAL"
+>ERROR</TT
+> then all SQL statements causing
+        errors, fatal errors, or panics will be logged.
+       </P
+><P
+>        It is recommended you enable <TT
+CLASS="VARNAME"
+>LOG_PID</TT
+> as well
+        so you can more easily match the error statement with the error
+        message.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LOG_PID</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Prefixes each server message in the log file with the process ID of
+        the backend process. This is useful to sort out which messages
+        pertain to which connection. The default is off.  This parameter
+        does not affect messages logged via <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+>, which always contain
+        the process ID.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LOG_STATEMENT</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Causes each SQL statement to be logged.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LOG_TIMESTAMP</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Prefixes each server log message with a time stamp. The default
+        is off.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SHOW_STATEMENT_STATS</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>SHOW_PARSER_STATS</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>SHOW_PLANNER_STATS</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>SHOW_EXECUTOR_STATS</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        For each query, write performance statistics of the respective
+        module to the server log. This is a crude profiling
+        instrument.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SHOW_SOURCE_PORT</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Shows the outgoing port number of the connecting host in the
+        connection log messages. You could trace back the port number
+        to find out what user initiated the connection. Other than
+        that, it's pretty useless and therefore off by default. This
+        option can only be set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>STATS_COMMAND_STRING</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>STATS_BLOCK_LEVEL</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)<BR><TT
+CLASS="VARNAME"
+>STATS_ROW_LEVEL</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        These flags determine what information backends send to the statistics
+	collector process: current commands, block-level activity statistics,
+	or row-level activity statistics.  All default to off.  Enabling
+	statistics collection costs a small amount of time per query, but
+	is invaluable for debugging and performance tuning.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>STATS_RESET_ON_SERVER_START</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        If on, collected statistics are zeroed out whenever the server
+        is restarted. If off, statistics are accumulated across server
+        restarts. The default is on. This option can only be set at
+        server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>STATS_START_COLLECTOR</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Controls whether the server should start the statistics-collection
+	subprocess.  This is on by default, but may be turned off if you
+	know you have no interest in collecting statistics.  This option
+	can only be set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SYSLOG</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows the use of
+        <SPAN
+CLASS="SYSTEMITEM"
+>syslog</SPAN
+> for logging. If this option is
+        set to 1, messages go both to <SPAN
+CLASS="SYSTEMITEM"
+>syslog</SPAN
+> and the
+        standard output. A setting of 2 sends output only to
+        <SPAN
+CLASS="SYSTEMITEM"
+>syslog</SPAN
+>. (Some messages will still go to the
+        standard output/error.) The default is 0, which means
+        <SPAN
+CLASS="SYSTEMITEM"
+>syslog</SPAN
+> is off. This option must be set at server
+        start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SYSLOG_FACILITY</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>          This option determines the <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+>
+          <SPAN
+CLASS="QUOTE"
+>"facility"</SPAN
+> to be used when
+          <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> is enabled. You may choose
+          from <TT
+CLASS="LITERAL"
+>LOCAL0</TT
+>, <TT
+CLASS="LITERAL"
+>LOCAL1</TT
+>,
+          <TT
+CLASS="LITERAL"
+>LOCAL2</TT
+>, <TT
+CLASS="LITERAL"
+>LOCAL3</TT
+>, <TT
+CLASS="LITERAL"
+>LOCAL4</TT
+>,
+          <TT
+CLASS="LITERAL"
+>LOCAL5</TT
+>, <TT
+CLASS="LITERAL"
+>LOCAL6</TT
+>, <TT
+CLASS="LITERAL"
+>LOCAL7</TT
+>;
+          the default is <TT
+CLASS="LITERAL"
+>LOCAL0</TT
+>. See also the
+          documentation of your system's
+          <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+>.
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SYSLOG_IDENT</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>         If logging to <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> is enabled, this option
+         determines the program name used to identify
+         <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> messages in
+         <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> log messages. The default is
+         <TT
+CLASS="LITERAL"
+>postgres</TT
+>.
+        </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TRACE_NOTIFY</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Generates a great amount of debugging output for the
+        <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> and <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>
+        commands.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="RUNTIME-CONFIG-GENERAL"
+>3.4.4. General Operation</A
+></H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>AUTOCOMMIT</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        If set to true, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will
+	automatically do a <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> after each successful command
+	that is not inside an explicit transaction block (that is, unless a
+	<TT
+CLASS="COMMAND"
+>BEGIN</TT
+> with no matching <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> has been
+	given).
+	If set to false, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will
+	commit only upon receiving an explicit
+	<TT
+CLASS="COMMAND"
+>COMMIT</TT
+> command. This mode can also be thought of as
+	implicitly issuing <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> whenever a command is
+	received that is not already inside a transaction block. The
+	default is true, for compatibility with historical
+	<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> behavior. However, for
+	maximum compatibility with the SQL specification, set it to
+	false.
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	 Even with <TT
+CLASS="VARNAME"
+>autocommit</TT
+> set to false, <TT
+CLASS="COMMAND"
+>SET</TT
+>,
+	 <TT
+CLASS="COMMAND"
+>SHOW</TT
+>, and <TT
+CLASS="COMMAND"
+>RESET</TT
+> do not start new
+	 transaction blocks. They are run in their own transactions.
+	 Once another command is issued, a transaction block
+	 begins and any <TT
+CLASS="COMMAND"
+>SET</TT
+>, <TT
+CLASS="COMMAND"
+>SHOW</TT
+>, or
+	 <TT
+CLASS="COMMAND"
+>RESET</TT
+> commands are considered to be part of the
+	 transaction, i.e., they are committed or rolled back depending
+	 on the completion status of the transaction. To execute a
+	 <TT
+CLASS="COMMAND"
+>SET</TT
+>, <TT
+CLASS="COMMAND"
+>SHOW</TT
+>, or <TT
+CLASS="COMMAND"
+>RESET</TT
+>
+	 command at the start of a transaction block, use <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>
+	 first.
+        </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	 As of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3, setting
+	 <TT
+CLASS="VARNAME"
+>autocommit</TT
+> to false is not well-supported.
+	 This is a new feature and is not yet handled by all client
+	 libraries and applications.  Before making it the default
+	 setting in your installation, test carefully.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>AUSTRALIAN_TIMEZONES</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        If set to true, <TT
+CLASS="LITERAL"
+>CST</TT
+>, <TT
+CLASS="LITERAL"
+>EST</TT
+>,
+        and <TT
+CLASS="LITERAL"
+>SAT</TT
+> are interpreted as Australian
+        time zones rather than as North American Central/Eastern
+        time zones and Saturday. The default is false.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>AUTHENTICATION_TIMEOUT</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Maximum time to complete client authentication, in seconds. If a
+        would-be client has not completed the authentication protocol in
+        this much time, the server breaks the connection. This prevents
+        hung clients from occupying a connection indefinitely. This
+        option can only be set at server start or in the
+        <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>CLIENT_ENCODING</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the client-side encoding for multibyte character sets.
+	The default is to use the database encoding.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DATESTYLE</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the display format for dates, as well as the rules for
+	interpreting ambiguous input dates.
+        The default is <TT
+CLASS="LITERAL"
+>ISO, US</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DB_USER_NAMESPACE</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        This allows per-database user names.  It is off by default.
+       </P
+><P
+>        If this is on, create users as <TT
+CLASS="LITERAL"
+> username@dbname</TT
+>.
+        When <TT
+CLASS="LITERAL"
+>username</TT
+> is passed by a connecting client,
+        <TT
+CLASS="LITERAL"
+>@</TT
+> and the database name is appended to the user
+        name and that database-specific user name is looked up by the
+        server. Note that when you create users with names containing
+        <TT
+CLASS="LITERAL"
+>@</TT
+> within the SQL environment, you will need to
+        quote the user name.
+       </P
+><P
+>        With this option enabled, you can still create ordinary global
+        users.  Simply append <TT
+CLASS="LITERAL"
+>@</TT
+> when specifying the user
+        name in the client.  The <TT
+CLASS="LITERAL"
+>@</TT
+> will be stripped off
+        before the user name is looked up by the server.
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>         This feature is intended as a temporary measure until a
+         complete solution is found.  At that time, this option will
+         be removed.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DEADLOCK_TIMEOUT</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        This is the amount of time, in milliseconds, to wait on a lock
+        before checking to see if there is a deadlock condition. The
+        check for deadlock is relatively slow, so the server doesn't run
+        it every time it waits for a lock. We (optimistically?) assume
+        that deadlocks are not common in production applications and
+        just wait on the lock for a while before starting check for a
+        deadlock. Increasing this value reduces the amount of time
+        wasted in needless deadlock checks, but slows down reporting of
+        real deadlock errors. The default is 1000 (i.e., one second),
+        which is probably about the smallest value you would want in
+        practice. On a heavily loaded server you might want to raise it.
+        Ideally the setting should exceed your typical transaction time,
+        so as to improve the odds that the lock will be released before
+        the waiter decides to check for deadlock. This option can only
+        be set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DEFAULT_TRANSACTION_ISOLATION</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Each SQL transaction has an isolation level, which can be either
+        <SPAN
+CLASS="QUOTE"
+>"read committed"</SPAN
+> or <SPAN
+CLASS="QUOTE"
+>"serializable"</SPAN
+>.
+        This parameter controls the default isolation level of each new
+        transaction. The default is <SPAN
+CLASS="QUOTE"
+>"read committed"</SPAN
+>.
+       </P
+><P
+>        Consult the <A
+HREF="user.html"
+><I
+>PostgreSQL 7.3.3 User's Guide</I
+></A
+> and
+        the command <TT
+CLASS="COMMAND"
+>SET TRANSACTION</TT
+> for more
+        information.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>DYNAMIC_LIBRARY_PATH</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        If a dynamically loadable module needs to be opened and the
+        specified name does not have a directory component (i.e. the
+        name does not contain a slash), the system will search this
+        path for the specified file.  (The name that is used is the
+        name specified in the <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> or
+        <TT
+CLASS="COMMAND"
+>LOAD</TT
+> command.)
+       </P
+><P
+>        The value for dynamic_library_path has to be a colon-separated
+        list of absolute directory names. If a directory name starts
+        with the special value <TT
+CLASS="LITERAL"
+>$libdir</TT
+>, the
+        compiled-in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> package
+        library directory is substituted. This where the modules
+        provided by the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+        distribution are installed. (Use <TT
+CLASS="LITERAL"
+>pg_config
+        --pkglibdir</TT
+> to print the name of this directory.) For
+        example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>dynamic_library_path = '/usr/local/lib/postgresql:/home/my_project/lib:$libdir'</PRE
+><P>
+       </P
+><P
+>        The default value for this parameter is
+        <TT
+CLASS="LITERAL"
+>'$libdir'</TT
+>. If the value is set to an empty
+        string, the automatic path search is turned off.
+       </P
+><P
+>        This parameter can be changed at run time by superusers, but a
+        setting done that way will only persist until the end of the
+        client connection, so this method should be reserved for
+        development purposes. The recommended way to set this parameter
+        is in the <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> configuration
+        file.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>KRB_SERVER_KEYFILE</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the location of the Kerberos server key file. See
+        <A
+HREF="auth-methods.html#KERBEROS-AUTH"
+>Section 6.2.3</A
+> for details.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>FSYNC</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        If this option is on, the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend
+        will use the <TT
+CLASS="FUNCTION"
+>fsync()</TT
+> system call in several places
+        to make sure that updates are physically written to disk. This
+        insures that a database installation will recover to a
+        consistent state after an operating system or hardware crash.
+        (Crashes of the database server itself are <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+>
+        related to this.)
+       </P
+><P
+>        However, this operation does slow down
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> because at transaction commit it has
+        wait for the operating system to flush the write-ahead log.
+        Without <TT
+CLASS="FUNCTION"
+>fsync</TT
+>, the operating system is allowed to
+        do its best in buffering, sorting, and delaying writes, which
+        can considerably increase performance. However, if the system
+        crashes, the results of the last few committed transactions may
+        be lost in part or whole. In the worst case, unrecoverable data
+        corruption may occur.
+       </P
+><P
+>        For the above reasons, some administrators always leave it off,
+        some turn it off only for bulk loads, where there is a clear
+        restart point if something goes wrong, and some leave it on just
+        to be on the safe side. Because it is always safe, the default
+        is on. If you trust your operating system, your hardware, and
+        your utility company (or better your UPS), you might want to
+        disable <TT
+CLASS="VARNAME"
+>fsync</TT
+>.
+       </P
+><P
+>        It should be noted that the performance penalty of having
+        <TT
+CLASS="FUNCTION"
+>fsync</TT
+> on is considerably less in
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> version 7.1 and later. If you
+        previously suppressed <TT
+CLASS="FUNCTION"
+>fsync</TT
+> for performance
+        reasons, you may wish to reconsider your choice.
+       </P
+><P
+>	This option can only be set at server start or in the
+	<TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LC_MESSAGES</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the language in which messages are displayed.  Acceptable
+        values are system-dependent; see <A
+HREF="charset.html#LOCALE"
+>Section 7.1</A
+> for
+        more information.  If this variable is set to the empty string
+        (which is the default) then the value is inherited from the
+        execution environment of the server in a system-dependent way.
+       </P
+><P
+>        On some systems, this locale category does not exist.  Setting
+        this variable will still work, but there will be no effect.
+        Also, there is a chance that no translated messages for the
+        desired language exist.  In that case you will continue to see
+        the English messages.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LC_MONETARY</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the locale to use for formatting monetary amounts, for
+        example with the <TT
+CLASS="FUNCTION"
+>to_char()</TT
+> family of
+        functions.  Acceptable values are system-dependent; see <A
+HREF="charset.html#LOCALE"
+>Section 7.1</A
+> for more information.  If this variable is
+        set to the empty string (which is the default) then the value
+        is inherited from the execution environment of the server in a
+        system-dependent way.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LC_NUMERIC</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the locale to use for formatting numbers, for example
+        with the <TT
+CLASS="FUNCTION"
+>to_char()</TT
+> family of
+        functions. Acceptable values are system-dependent; see <A
+HREF="charset.html#LOCALE"
+>Section 7.1</A
+> for more information.  If this variable is
+        set to the empty string (which is the default) then the value
+        is inherited from the execution environment of the server in a
+        system-dependent way.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>LC_TIME</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the locale to use for formatting date and time values.
+        (Currently, this setting does nothing, but it may in the
+        future.)  Acceptable values are system-dependent; see <A
+HREF="charset.html#LOCALE"
+>Section 7.1</A
+> for more information.  If this variable is
+        set to the empty string (which is the default) then the value
+        is inherited from the execution environment of the server in a
+        system-dependent way.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>MAX_CONNECTIONS</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Determines the maximum number of concurrent connections to the
+        database server. The default is 32 (unless altered while
+        building the server). This parameter can only be set at server
+        start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>MAX_EXPR_DEPTH</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Sets the maximum expression nesting depth of the parser. The
+        default value is high enough for any normal query, but you can
+        raise it if needed. (But if you raise it too high, you run
+        the risk of backend crashes due to stack overflow.)
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>MAX_FILES_PER_PROCESS</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Sets the maximum number of simultaneously open files in each
+        server subprocess. The default is 1000. The limit actually used
+        by the code is the smaller of this setting and the result of
+        <TT
+CLASS="LITERAL"
+>sysconf(_SC_OPEN_MAX)</TT
+>. Therefore, on systems
+        where <TT
+CLASS="FUNCTION"
+>sysconf</TT
+> returns a reasonable limit, you don't
+        need to worry about this setting. But on some platforms
+        (notably, most BSD systems), <TT
+CLASS="FUNCTION"
+>sysconf</TT
+> returns a
+        value that is much larger than the system can really support
+        when a large number of processes all try to open that many
+        files. If you find yourself seeing <SPAN
+CLASS="QUOTE"
+>"Too many open files"</SPAN
+>
+        failures, try reducing this setting. This option can only be set
+        at server start or in the <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>
+        configuration file; if changed in the configuration file, it
+        only affects subsequently-started server subprocesses.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>MAX_FSM_RELATIONS</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Sets the maximum number of relations (tables) for which free
+        space will be tracked in the shared free-space map. The default
+        is 1000. This option can only be set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>MAX_FSM_PAGES</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Sets the maximum number of disk pages for which free space will
+        be tracked in the shared free-space map. The default is 10000.
+        This option can only be set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>MAX_LOCKS_PER_TRANSACTION</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        The shared lock table is sized on the assumption that at most
+        <TT
+CLASS="VARNAME"
+>max_locks_per_transaction</TT
+> *
+        <TT
+CLASS="VARNAME"
+>max_connections</TT
+> distinct objects will need to
+        be locked at any one time. The default, 64, which has historically
+        proven sufficient, but you might need to raise this value if you
+        have clients that touch many different tables in a single
+        transaction. This option can only be set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>PASSWORD_ENCRYPTION</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        When a password is specified in <TT
+CLASS="COMMAND"
+>CREATE USER</TT
+> or
+        <TT
+CLASS="COMMAND"
+>ALTER USER</TT
+> without writing either <TT
+CLASS="LITERAL"
+>ENCRYPTED</TT
+> or
+        <TT
+CLASS="LITERAL"
+>UNENCRYPTED</TT
+>, this flag determines whether the password is to be
+        encrypted. The default is on (encrypt the password).
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>PORT</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        The TCP port the server listens on; 5432 by default. This
+        option can only be set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SEARCH_PATH</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        This variable specifies the order in which schemas are searched
+	when an object (table, data type, function, etc.) is referenced by a
+	simple name with no schema component.  When there are objects of
+	identical names in different schemas, the one found first
+	in the search path is used.  An object that is not in any of the
+	schemas in the search path can only be referenced by specifying
+	its containing schema with a qualified (dotted) name.
+       </P
+><P
+>        The value for <TT
+CLASS="VARNAME"
+>search_path</TT
+> has to be a comma-separated
+        list of schema names.  If one of the list items is
+        the special value <TT
+CLASS="LITERAL"
+>$user</TT
+>, then the schema
+	having the same name as the <TT
+CLASS="FUNCTION"
+>SESSION_USER</TT
+> is substituted, if there
+	is such a schema.  (If not, <TT
+CLASS="LITERAL"
+>$user</TT
+> is ignored.)
+       </P
+><P
+>        The system catalog schema, <TT
+CLASS="LITERAL"
+>pg_catalog</TT
+>, is always
+	searched, whether it is mentioned in the path or not.  If it is
+	mentioned in the path then it will be searched in the specified
+	order.  If <TT
+CLASS="LITERAL"
+>pg_catalog</TT
+> is not in the path then it will
+	be searched <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>before</I
+></SPAN
+> searching any of the path items.
+	It should also be noted that the temporary-table schema,
+	<TT
+CLASS="LITERAL"
+>pg_temp_<TT
+CLASS="REPLACEABLE"
+><I
+>nnn</I
+></TT
+></TT
+>, is implicitly searched before any of
+	these.
+       </P
+><P
+>        When objects are created without specifying a particular target
+	schema, they will be placed in the first schema listed
+	in the search path.  An error is reported if the search path is
+	empty.
+       </P
+><P
+>        The default value for this parameter is
+        <TT
+CLASS="LITERAL"
+>'$user, public'</TT
+> (where the second part will be
+	ignored if there is no schema named <TT
+CLASS="LITERAL"
+>public</TT
+>).
+	This supports shared use of a database (where no users
+	have private schemas, and all share use of <TT
+CLASS="LITERAL"
+>public</TT
+>),
+	private per-user schemas, and combinations of these.  Other
+	effects can be obtained by altering the default search path
+	setting, either globally or per-user.
+       </P
+><P
+>	 <A
+NAME="AEN20157"
+></A
+>
+        The current effective value of the search path can be examined
+	via the SQL function <TT
+CLASS="FUNCTION"
+>current_schemas()</TT
+>.  This is not
+	quite the same as examining the value of
+	<TT
+CLASS="VARNAME"
+>search_path</TT
+>, since <TT
+CLASS="FUNCTION"
+>current_schemas()</TT
+>
+	shows how the requests appearing in <TT
+CLASS="VARNAME"
+>search_path</TT
+>
+	were resolved.
+       </P
+><P
+>        For more information on schema handling, see the <A
+HREF="user.html"
+><I
+>PostgreSQL 7.3.3 User's Guide</I
+></A
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>STATEMENT_TIMEOUT</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Aborts any statement that takes over the specified number of
+        milliseconds.  A value of zero turns off the timer.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SHARED_BUFFERS</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Sets the number of shared memory buffers used by the database
+        server. The default is 64. Each buffer is typically 8192
+        bytes. This must be greater than 16, as well as at least twice
+        the value of <TT
+CLASS="VARNAME"
+>MAX_CONNECTIONS</TT
+>; however, a
+        higher value can often improve performance on modern
+        machines. Values of at least a few thousand are recommended
+        for production installations. This option can only be set at
+        server start.
+       </P
+><P
+>        Increasing this parameter may cause <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+        to request more <SPAN
+CLASS="SYSTEMITEM"
+>System V</SPAN
+> shared
+        memory than your operating system's default configuration
+        allows. See <A
+HREF="kernel-resources.html#SYSVIPC"
+>Section 3.5.1</A
+> for information on how to
+        adjust these parameters, if necessary.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SILENT_MODE</TT
+> (<TT
+CLASS="TYPE"
+>bool</TT
+>)</DT
+><DD
+><P
+>        Runs the server silently. If this option is set, the server
+        will automatically run in background and any controlling ttys
+        are disassociated, thus no messages are written to standard
+        output or standard error (same effect as <TT
+CLASS="COMMAND"
+>postmaster</TT
+>'s <TT
+CLASS="OPTION"
+>-S</TT
+>
+        option). Unless some logging system such as
+        <SPAN
+CLASS="APPLICATION"
+>syslog</SPAN
+> is enabled, using this option is
+        discouraged since it makes it impossible to see error messages.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SORT_MEM</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>	Specifies the amount of memory to be used by internal sorts and
+	hashes before switching to temporary disk files. The value is
+	specified in kilobytes, and defaults to 1024 kilobytes (1 MB).
+	Note that for a complex query, several sorts might be running in
+	parallel, and each one will be allowed to use as much memory as
+	this value specifies before it starts to put data into temporary
+	files. Also, each running backend could be doing one or more
+	sorts simultaneously, so the total memory used could be many
+	times the value of <TT
+CLASS="VARNAME"
+>SORT_MEM</TT
+>. Sorts are used
+	by <TT
+CLASS="LITERAL"
+>ORDER BY</TT
+>, merge joins, and <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SQL_INHERITANCE</TT
+> (<TT
+CLASS="TYPE"
+>bool</TT
+>)</DT
+><DD
+><P
+>        This controls the inheritance semantics, in particular whether
+        subtables are included by various commands by default. They were
+        not included in versions prior to 7.1. If you need the old
+        behavior you can set this variable to off, but in the long run
+        you are encouraged to change your applications to use the
+        <TT
+CLASS="LITERAL"
+>ONLY</TT
+> keyword to exclude subtables. See the
+        SQL language reference and the <A
+HREF="user.html"
+><I
+>PostgreSQL 7.3.3 User's Guide</I
+></A
+> for more information about inheritance.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SSL</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Enables <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+> connections. Please read
+        <A
+HREF="ssl-tcp.html"
+>Section 3.7</A
+> before using this. The default
+        is off.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>SUPERUSER_RESERVED_CONNECTIONS</TT
+>
+      (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Determines the number of <SPAN
+CLASS="QUOTE"
+>"connection slots"</SPAN
+> that
+        are reserved for connections by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+        superusers.  At most <TT
+CLASS="VARNAME"
+>max_connections</TT
+> connections can
+	ever be active simultaneously.  Whenever the number of active
+	concurrent connections is at least <TT
+CLASS="VARNAME"
+>max_connections</TT
+> minus
+        <TT
+CLASS="VARNAME"
+>superuser_reserved_connections</TT
+>, new connections
+	will be accepted only from superuser accounts.
+       </P
+><P
+>        The default value is 2. The value must be less than the value of
+        <TT
+CLASS="VARNAME"
+>max_connections</TT
+>. This parameter can only be
+        set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TCPIP_SOCKET</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        If this is true, then the server will accept TCP/IP connections.
+        Otherwise only local Unix domain socket connections are
+        accepted. It is off by default. This option can only be set at
+        server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TIMEZONE</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the time zone for displaying and interpreting timestamps.
+	The default is to use whatever the system environment
+	specifies as the time zone.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TRANSFORM_NULL_EQUALS</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        When turned on, expressions of the form
+        <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+> = NULL</TT
+> (or <TT
+CLASS="LITERAL"
+>NULL
+        = <TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+></TT
+>) are treated as
+        <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+> IS NULL</TT
+>, that is, they
+        return true if <TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+> evaluates to the null value,
+        and false otherwise. The correct behavior of
+        <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+> = NULL</TT
+> is to always
+        return null (unknown). Therefore this option defaults to off.
+       </P
+><P
+>        However, filtered forms in <SPAN
+CLASS="PRODUCTNAME"
+>Microsoft
+        Access</SPAN
+> generate queries that appear to use
+        <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+> = NULL</TT
+> to test for
+        null values, so if you use that interface to access the database you
+        might want to turn this option on.  Since expressions of the
+        form <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+> = NULL</TT
+> always
+        return the null value (using the correct interpretation) they are not
+        very useful and do not appear often in normal applications, so
+        this option does little harm in practice.  But new users are
+        frequently confused about the semantics of expressions
+        involving null values, so this option is not on by default.
+       </P
+><P
+>        Note that this option only affects the literal <TT
+CLASS="LITERAL"
+>=</TT
+>
+        operator, not other comparison operators or other expressions
+        that are computationally equivalent to some expression
+        involving the equals operator (such as <TT
+CLASS="LITERAL"
+>IN</TT
+>).
+        Thus, this option is not a general fix for bad programming.
+       </P
+><P
+>        Refer to the <A
+HREF="user.html"
+><I
+>PostgreSQL 7.3.3 User's Guide</I
+></A
+> for related information.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>UNIX_SOCKET_DIRECTORY</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>	Specifies the directory of the Unix-domain socket on which the
+	server is to listen for
+	connections from client applications.  The default is normally
+	<TT
+CLASS="FILENAME"
+>/tmp</TT
+>, but can be changed at build time.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>UNIX_SOCKET_GROUP</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Sets the group owner of the Unix domain socket.  (The owning
+        user of the socket is always the user that starts the
+        server.)  In combination with the option
+        <TT
+CLASS="OPTION"
+>UNIX_SOCKET_PERMISSIONS</TT
+> this can be used as
+        an additional access control mechanism for this socket type.
+        By default this is the empty string, which uses the default
+        group for the current user.  This option can only be set at
+        server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>UNIX_SOCKET_PERMISSIONS</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Sets the access permissions of the Unix domain socket.  Unix
+        domain sockets use the usual Unix file system permission set.
+        The option value is expected to be an numeric mode
+        specification in the form accepted by the
+        <TT
+CLASS="FUNCTION"
+>chmod</TT
+> and <TT
+CLASS="FUNCTION"
+>umask</TT
+>
+        system calls.  (To use the customary octal format the number
+        must start with a <TT
+CLASS="LITERAL"
+>0</TT
+> (zero).)
+       </P
+><P
+>        The default permissions are <TT
+CLASS="LITERAL"
+>0777</TT
+>, meaning
+        anyone can connect. Reasonable alternatives are
+        <TT
+CLASS="LITERAL"
+>0770</TT
+> (only user and group, see also under
+        <TT
+CLASS="OPTION"
+>UNIX_SOCKET_GROUP</TT
+>) and <TT
+CLASS="LITERAL"
+>0700</TT
+>
+        (only user). (Note that actually for a Unix domain socket, only write
+        permission matters and there is no point in setting or revoking
+        read or execute permissions.)
+       </P
+><P
+>        This access control mechanism is independent of the one
+        described in <A
+HREF="client-authentication.html"
+>Chapter 6</A
+>.
+       </P
+><P
+>        This option can only be set at server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>VACUUM_MEM</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>	Specifies the maximum amount of memory to be used by
+	<TT
+CLASS="COMMAND"
+>VACUUM</TT
+> to keep track of to-be-reclaimed
+	tuples. The value is specified in kilobytes, and defaults to
+	8192 kilobytes. Larger settings may improve the speed of
+	vacuuming large tables that have many deleted tuples.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>VIRTUAL_HOST</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>	Specifies the TCP/IP host name or address on which the
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> is to listen for
+	connections from client applications. Defaults to listening on
+	all configured addresses (including <SPAN
+CLASS="SYSTEMITEM"
+>localhost</SPAN
+>).
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>ZERO_DAMAGED_PAGES</TT
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        Detection of a damaged page header normally causes
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to report an error, aborting the current
+	transaction.  Setting <TT
+CLASS="VARNAME"
+>zero_damaged_pages</TT
+> to true causes
+	the system to instead report a warning, zero out the damaged page,
+	and continue processing.  This behavior <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>will destroy data</I
+></SPAN
+>,
+	namely all the rows on the damaged page.  But it allows you to get
+	past the error and retrieve rows from any undamaged pages that may
+	be present in the table.  So it is useful for recovering data if
+	corruption has occurred due to hardware or software error.  You should
+	generally not set this true until you have given up hope of recovering
+	data from the damaged page(s) of a table.  The
+	default setting is off, and it can only be changed by a superuser.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="RUNTIME-CONFIG-WAL"
+>3.4.5. WAL</A
+></H2
+><P
+>    See also <A
+HREF="wal-configuration.html"
+>Section 12.3</A
+> for details on WAL
+    tuning.
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>CHECKPOINT_SEGMENTS</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Maximum distance between automatic WAL checkpoints, in log file
+	segments (each segment is normally 16 megabytes).
+	This option can only be set at server start or in the
+	<TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>CHECKPOINT_TIMEOUT</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Maximum time between automatic WAL checkpoints, in seconds.
+	This option can only be set at server start or in the
+	<TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>COMMIT_DELAY</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Time delay between writing a commit record to the WAL buffer and
+        flushing the buffer out to disk, in microseconds. A nonzero
+        delay allows multiple transactions to be committed with only one
+        <TT
+CLASS="FUNCTION"
+>fsync</TT
+> system call, if system load is high
+        enough additional transactions may become ready to commit within
+        the given interval. But the delay is just wasted if no other
+        transactions become ready to commit. Therefore, the delay is
+        only performed if at least <TT
+CLASS="VARNAME"
+>COMMIT_SIBLINGS</TT
+> other transactions
+        are active at the instant that a backend process has written its commit
+        record.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>COMMIT_SIBLINGS</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Minimum number of concurrent open transactions to require before
+        performing the <TT
+CLASS="VARNAME"
+>COMMIT_DELAY</TT
+> delay. A larger value
+        makes it more probable that at least one other transaction will
+        become ready to commit during the delay interval.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>WAL_BUFFERS</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        Number of disk-page buffers in shared memory for WAL
+        logging. The default is 4. This option can only be set at
+        server start.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>WAL_DEBUG</TT
+> (<TT
+CLASS="TYPE"
+>integer</TT
+>)</DT
+><DD
+><P
+>        If nonzero, turn on WAL-related debugging output on standard
+        error.
+       </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>WAL_SYNC_METHOD</TT
+> (<TT
+CLASS="TYPE"
+>string</TT
+>)</DT
+><DD
+><P
+>        Method used for forcing WAL updates out to disk.  Possible
+	values are
+	<TT
+CLASS="LITERAL"
+>FSYNC</TT
+> (call <TT
+CLASS="FUNCTION"
+>fsync()</TT
+> at each commit),
+	<TT
+CLASS="LITERAL"
+>FDATASYNC</TT
+> (call <TT
+CLASS="FUNCTION"
+>fdatasync()</TT
+> at each commit),
+	<TT
+CLASS="LITERAL"
+>OPEN_SYNC</TT
+> (write WAL files with <TT
+CLASS="FUNCTION"
+>open()</TT
+> option <TT
+CLASS="SYMBOL"
+>O_SYNC</TT
+>), or
+	<TT
+CLASS="LITERAL"
+>OPEN_DATASYNC</TT
+> (write WAL files with <TT
+CLASS="FUNCTION"
+>open()</TT
+> option <TT
+CLASS="SYMBOL"
+>O_DSYNC</TT
+>).
+	Not all of these choices are available on all platforms.
+        This option can only be set at server start or in the
+	<TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> file.
+       </P
+></DD
+></DL
+></DIV
+><P>
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="RUNTIME-CONFIG-SHORT"
+>3.4.6. Short Options</A
+></H2
+><P
+>    For convenience there are also single letter option switches
+    available for many parameters. They are described in <A
+HREF="runtime-config.html#RUNTIME-CONFIG-SHORT-TABLE"
+>Table 3-2</A
+>.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="RUNTIME-CONFIG-SHORT-TABLE"
+></A
+><P
+><B
+>Table 3-2. Short option key</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Short option</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Equivalent</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-B <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>shared_buffers = <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-d <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>server_min_messages = DEBUG<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-F</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>fsync = off</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>virtual_host = <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-i</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>tcpip_socket = on</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-k <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>unix_socket_directory = <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-l</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>ssl = on</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-N <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>max_connections = <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>port = <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>          <TT
+CLASS="OPTION"
+>-fi</TT
+>, <TT
+CLASS="OPTION"
+>-fh</TT
+>,
+          <TT
+CLASS="OPTION"
+>-fm</TT
+>, <TT
+CLASS="OPTION"
+>-fn</TT
+>,
+          <TT
+CLASS="OPTION"
+>-fs</TT
+>, <TT
+CLASS="OPTION"
+>-ft</TT
+><A
+NAME="FN.RUNTIME-CONFIG-SHORT"
+HREF="#FTN.FN.RUNTIME-CONFIG-SHORT"
+>[a]</A
+>
+         </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>          <TT
+CLASS="LITERAL"
+>enable_indexscan=off</TT
+>,
+          <TT
+CLASS="LITERAL"
+>enable_hashjoin=off</TT
+>,
+          <TT
+CLASS="LITERAL"
+>enable_mergejoin=off</TT
+>,
+          <TT
+CLASS="LITERAL"
+>enable_nestloop=off</TT
+>,
+          <TT
+CLASS="LITERAL"
+>enable_seqscan=off</TT
+>,
+          <TT
+CLASS="LITERAL"
+>enable_tidscan=off</TT
+>
+         </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-s</TT
+><A
+HREF="runtime-config.html#FTN.FN.RUNTIME-CONFIG-SHORT"
+>[a]</A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>show_statement_stats = on</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-S <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+><A
+HREF="runtime-config.html#FTN.FN.RUNTIME-CONFIG-SHORT"
+>[a]</A
+>
+        </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>sort_mem = <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+></TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="OPTION"
+>-tpa</TT
+>, <TT
+CLASS="OPTION"
+>-tpl</TT
+>, <TT
+CLASS="OPTION"
+>-te</TT
+><A
+HREF="runtime-config.html#FTN.FN.RUNTIME-CONFIG-SHORT"
+>[a]</A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>show_parser_stats=on</TT
+>, <TT
+CLASS="LITERAL"
+>show_planner_stats=on</TT
+>, <TT
+CLASS="LITERAL"
+>show_executor_stats=on</TT
+></TD
+></TR
+></TBODY
+><TR
+><TD
+COLSPAN="2"
+>Notes:<BR><A
+NAME="FTN.FN.RUNTIME-CONFIG-SHORT"
+>a. </A
+>            For historical reasons, these options must be passed to
+            the individual backend process via the <TT
+CLASS="OPTION"
+>-o</TT
+>
+            postmaster option, for example,
+</P><PRE
+CLASS="SCREEN"
+>$ <TT
+CLASS="USERINPUT"
+><B
+>postmaster -o '-S 1024 -s'</B
+></TT
+></PRE
+><P>
+            or via <TT
+CLASS="ENVAR"
+>PGOPTIONS</TT
+> from the client side, as
+            explained above.
+           <BR></TD
+></TR
+></TABLE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="postmaster-start.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="kernel-resources.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Starting the Database Server</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Managing Kernel Resources</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

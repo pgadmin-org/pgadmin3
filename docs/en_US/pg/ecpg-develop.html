@@ -1,0 +1,467 @@
+<HTML
+><HEAD
+><TITLE
+>For the Developer</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="PREVIOUS"
+TITLE="Porting From Other RDBMS Packages"
+HREF="ecpg-porting.html"><LINK
+REL="NEXT"
+TITLE="JDBC Interface"
+HREF="jdbc.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecpg-porting.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> in C</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="jdbc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-DEVELOP"
+>4.11. For the Developer</A
+></H1
+><P
+>   This section explain how <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+> works
+   internally. This information can occasionally be useful to help
+   users understand how to use <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+>.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN27942"
+>4.11.1. The Preprocessor</A
+></H2
+><P
+>    The first four lines written by <TT
+CLASS="COMMAND"
+>ecpg</TT
+> to the
+    output are fixed lines.  Two are comments and two are include
+    lines necessary to interface to the library.  Then the
+    preprocessor reads through the file and writes output.  Normally
+    it just echoes everything to the output.
+   </P
+><P
+>    When it sees an <TT
+CLASS="COMMAND"
+>EXEC SQL</TT
+> statement, it
+    intervenes and changes it. The command starts with <TT
+CLASS="COMMAND"
+>exec
+    sql</TT
+> and ends with <TT
+CLASS="COMMAND"
+>;</TT
+>. Everything in
+    between is treated as an <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> statement and
+    parsed for variable substitution.
+   </P
+><P
+>    Variable substitution occurs when a symbol starts with a colon
+    (<TT
+CLASS="LITERAL"
+>:</TT
+>). The variable with that name is looked up
+    among the variables that were previously declared within a
+    <TT
+CLASS="LITERAL"
+>EXEC SQL DECLARE</TT
+> section. Depending on whether the
+    variable is being use for input or output, a pointer to the
+    variable is output to allow access by the function.
+   </P
+><P
+>    For every variable that is part of the <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+    query, the function gets other arguments:
+
+    <P
+></P
+></P><UL
+><LI
+><P
+>       The type as a special symbol.
+      </P
+></LI
+><LI
+><P
+> 
+       A pointer to the value or a pointer to the pointer.
+      </P
+></LI
+><LI
+><P
+>       The size of the variable if it is a <TT
+CLASS="TYPE"
+>char</TT
+> or <TT
+CLASS="TYPE"
+>varchar</TT
+>.
+      </P
+></LI
+><LI
+><P
+>       The number of elements in the array (for array fetches).
+      </P
+></LI
+><LI
+><P
+>       The offset to the next element in the array (for array fetches).
+      </P
+></LI
+><LI
+><P
+>       The type of the indicator variable as a special symbol.
+      </P
+></LI
+><LI
+><P
+>       A pointer to the value of the indicator variable or a pointer
+       to the pointer of the indicator variable.
+      </P
+></LI
+><LI
+><P
+>       0
+      </P
+></LI
+><LI
+><P
+>       Number of elements in the indicator array (for array fetches).
+      </P
+></LI
+><LI
+><P
+>       The offset to the next element in the indicator array (for
+       array fetches).
+      </P
+></LI
+></UL
+><P>
+   </P
+><P
+>    Note that not all SQL commands are treated in this way.  For
+    instance, an open cursor statement like
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL OPEN <TT
+CLASS="REPLACEABLE"
+><I
+>cursor</I
+></TT
+>;</PRE
+><P>
+    is not copied to the output. Instead, the cursor's
+    <TT
+CLASS="COMMAND"
+>DECLARE</TT
+> command is used because it opens the cursor as
+    well.
+   </P
+><P
+>    Here is a complete example describing the output of the
+    preprocessor of a file <TT
+CLASS="FILENAME"
+>foo.pgc</TT
+> (details may
+    change with each particular version of the preprocessor):
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL BEGIN DECLARE SECTION;
+int index;
+int result;
+EXEC SQL END DECLARE SECTION;
+...
+EXEC SQL SELECT res INTO :result FROM mytable WHERE index = :index;</PRE
+><P>
+    is translated into:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>/* Processed by ecpg (2.6.0) */
+/* These two include files are added by the preprocessor */
+#include &lt;ecpgtype.h&gt;;
+#include &lt;ecpglib.h&gt;;
+
+/* exec sql begin declare section */
+
+#line 1 "foo.pgc"
+
+ int index;
+ int result;
+/* exec sql end declare section */
+...
+ECPGdo(__LINE__, NULL, "SELECT res FROM mytable WHERE index = ?     ",
+        ECPGt_int,&amp;(index),1L,1L,sizeof(int),
+        ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT,
+        ECPGt_int,&amp;(result),1L,1L,sizeof(int),
+        ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);
+#line 147 "foo.pgc"</PRE
+><P>
+    (The indentation in this manual is added for readability and not
+    something the preprocessor does.)
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN27987"
+>4.11.2. The Library</A
+></H2
+><P
+>    The most important function in the library is
+    <TT
+CLASS="FUNCTION"
+>ECPGdo</TT
+>. It takes a variable number of
+    arguments. Hopefully there are no computers that limit the number
+    of variables that can be accepted by a
+    <TT
+CLASS="FUNCTION"
+>varargs()</TT
+> function. This can easily add up to
+    50 or so arguments.
+   </P
+><P
+>    The arguments are:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>A line number</DT
+><DD
+><P
+>        This is a line number of the original line; used in error
+        messages only.
+       </P
+></DD
+><DT
+>A string</DT
+><DD
+><P
+>        This is the <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> query that is to be issued.
+        It is modified by the input variables, i.e. the variables that
+        where not known at compile time but are to be entered in the
+        query. Where the variables should go the string contains
+        <TT
+CLASS="LITERAL"
+>?</TT
+>.
+       </P
+></DD
+><DT
+>Input variables</DT
+><DD
+><P
+>        As described in the section about the preprocessor, every
+        input variable gets ten arguments.
+       </P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>ECPGt_EOIT</I
+></TT
+></DT
+><DD
+><P
+>        An <TT
+CLASS="TYPE"
+>enum</TT
+> telling that there are no more input
+        variables.
+       </P
+></DD
+><DT
+>Output variables</DT
+><DD
+><P
+>        As described in the section about the preprocessor, every
+        input variable gets ten arguments. These variables are filled
+        by the function.
+       </P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>ECPGt_EORT</I
+></TT
+></DT
+><DD
+><P
+>        An <TT
+CLASS="TYPE"
+>enum</TT
+> telling that there are no more variables.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-porting.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="jdbc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Porting From Other <SPAN
+CLASS="ACRONYM"
+>RDBMS</SPAN
+> Packages</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Interface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

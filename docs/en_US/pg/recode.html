@@ -1,0 +1,295 @@
+<HTML
+><HEAD
+><TITLE
+>Single-byte character set recoding</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Localization"
+HREF="charset.html"><LINK
+REL="PREVIOUS"
+TITLE="Multibyte Support"
+HREF="multibyte.html"><LINK
+REL="NEXT"
+TITLE="Routine Database Maintenance Tasks"
+HREF="maintenance.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="multibyte.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. Localization</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="maintenance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RECODE"
+>7.3. Single-byte character set recoding</A
+></H1
+><P
+>   You can set up this feature with the <TT
+CLASS="OPTION"
+>--enable-recode</TT
+> option
+   to <TT
+CLASS="FILENAME"
+>configure</TT
+>. This option was formerly described as
+   <SPAN
+CLASS="QUOTE"
+>"Cyrillic recode support"</SPAN
+> which doesn't express all its
+   power. It can be used for <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>any</I
+></SPAN
+> single-byte character
+   set recoding.
+  </P
+><P
+>   This method uses a file <TT
+CLASS="FILENAME"
+>charset.conf</TT
+> file located in
+   the database directory (<TT
+CLASS="ENVAR"
+>PGDATA</TT
+>).  It's a typical
+   configuration text file where spaces and newlines separate items
+   and records and # specifies comments.  Three keywords with the
+   following syntax are recognized here:
+</P><PRE
+CLASS="SYNOPSIS"
+>BaseCharset      <TT
+CLASS="REPLACEABLE"
+><I
+>server_charset</I
+></TT
+>
+RecodeTable      <TT
+CLASS="REPLACEABLE"
+><I
+>from_charset</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>to_charset</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>file_name</I
+></TT
+>
+HostCharset      <TT
+CLASS="REPLACEABLE"
+><I
+>host_spec</I
+></TT
+>    <TT
+CLASS="REPLACEABLE"
+><I
+>host_charset</I
+></TT
+></PRE
+><P>
+  </P
+><P
+>   <TT
+CLASS="TOKEN"
+>BaseCharset</TT
+> defines the encoding of the database server.
+   All character set names are only used for mapping inside of
+   <TT
+CLASS="FILENAME"
+>charset.conf</TT
+> so you can freely use typing-friendly
+   names.
+  </P
+><P
+>   <TT
+CLASS="TOKEN"
+>RecodeTable</TT
+> records specify translation tables between
+   server and client.  The file name is relative to the
+   <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> directory.  The table file format is very
+   simple. There are no keywords and characters are represented by a
+   pair of decimal or hexadecimal (0x prefixed) values on single
+   lines:
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>char_value</I
+></TT
+>   <TT
+CLASS="REPLACEABLE"
+><I
+>translated_char_value</I
+></TT
+></PRE
+><P>
+  </P
+><P
+>   <TT
+CLASS="TOKEN"
+>HostCharset</TT
+> records define the client character set by IP
+   address. You can use a single IP address, an IP mask range starting
+   from the given address or an IP interval (e.g., 127.0.0.1,
+   192.168.1.100/24, 192.168.1.20-192.168.1.40).
+  </P
+><P
+>   The <TT
+CLASS="FILENAME"
+>charset.conf</TT
+> file is always processed up to the
+   end, so you can easily specify exceptions from the previous
+   rules. In the <TT
+CLASS="FILENAME"
+>src/data/</TT
+> directory you will find an
+   example <TT
+CLASS="FILENAME"
+>charset.conf</TT
+> and a few recoding tables.
+  </P
+><P
+>   As this solution is based on the client's IP address and character
+   set mapping there are obviously some restrictions as well. You
+   cannot use different encodings on the same host at the same
+   time. It is also inconvenient when you boot your client hosts into
+   multiple operating systems.  Nevertheless, when these restrictions are
+   not limiting and you do not need multibyte characters then it is a
+   simple and effective solution.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="multibyte.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="maintenance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Multibyte Support</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="charset.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Routine Database Maintenance Tasks</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

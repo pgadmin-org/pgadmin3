@@ -1,0 +1,263 @@
+<HTML
+><HEAD
+><TITLE
+>Routine Database Maintenance Tasks</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Single-byte character set recoding"
+HREF="recode.html"><LINK
+REL="NEXT"
+TITLE="Routine Vacuuming"
+HREF="routine-vacuuming.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="recode.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="routine-vacuuming.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="MAINTENANCE"
+>Chapter 8. Routine Database Maintenance Tasks</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>8.1. <A
+HREF="maintenance.html#MAINTENANCE-GENERAL"
+>General Discussion</A
+></DT
+><DT
+>8.2. <A
+HREF="routine-vacuuming.html"
+>Routine Vacuuming</A
+></DT
+><DD
+><DL
+><DT
+>8.2.1. <A
+HREF="routine-vacuuming.html#VACUUM-FOR-SPACE-RECOVERY"
+>Recovering disk space</A
+></DT
+><DT
+>8.2.2. <A
+HREF="routine-vacuuming.html#VACUUM-FOR-STATISTICS"
+>Updating planner statistics</A
+></DT
+><DT
+>8.2.3. <A
+HREF="routine-vacuuming.html#VACUUM-FOR-WRAPAROUND"
+>Preventing transaction ID wraparound failures</A
+></DT
+></DL
+></DD
+><DT
+>8.3. <A
+HREF="routine-reindex.html"
+>Routine Reindexing</A
+></DT
+><DT
+>8.4. <A
+HREF="logfile-maintenance.html"
+>Log File Maintenance</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MAINTENANCE-GENERAL"
+>8.1. General Discussion</A
+></H1
+><P
+>   There are a few routine maintenance chores that must be performed on
+   a regular basis to keep a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   installation running smoothly.  The tasks discussed here are repetitive
+   in nature and can easily be automated using standard Unix tools such
+   as <SPAN
+CLASS="APPLICATION"
+>cron</SPAN
+> scripts.  But it is the database
+   administrator's responsibility to set up appropriate scripts, and to
+   check that they execute successfully.
+  </P
+><P
+>   One obvious maintenance task is creation of backup copies of the data on a
+   regular schedule.  Without a recent backup, you have no chance of recovery
+   after a catastrophe (disk failure, fire, mistakenly dropping a critical
+   table, etc).  The backup and recovery mechanisms available in
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> are discussed at length in
+   <A
+HREF="backup.html"
+>Chapter 9</A
+>.
+  </P
+><P
+>   The other main category of maintenance task is periodic <SPAN
+CLASS="QUOTE"
+>"vacuuming"</SPAN
+>
+   of the database.  This activity is discussed in
+   <A
+HREF="routine-vacuuming.html"
+>Section 8.2</A
+>.
+  </P
+><P
+>   Something else that might need periodic attention is log file management.
+   This is discussed in <A
+HREF="logfile-maintenance.html"
+>Section 8.4</A
+>.
+  </P
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is low-maintenance compared to
+   some other database products.  Nonetheless, appropriate attention to
+   these tasks will go far towards ensuring a pleasant and productive
+   experience with the system.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="recode.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="routine-vacuuming.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Single-byte character set recoding</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Routine Vacuuming</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,323 @@
+<HTML
+><HEAD
+><TITLE
+>Index Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Indexes"
+HREF="indexes.html"><LINK
+REL="PREVIOUS"
+TITLE="Indexes"
+HREF="indexes.html"><LINK
+REL="NEXT"
+TITLE="Multicolumn Indexes"
+HREF="indexes-multicolumn.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="indexes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="indexes-multicolumn.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INDEXES-TYPES"
+>8.2. Index Types</A
+></H1
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> provides several index types:
+   B-tree, R-tree, GiST, and Hash.  Each index type is more appropriate for
+   a particular query type because of the algorithm it uses.
+   <A
+NAME="AEN11051"
+></A
+>
+   <A
+NAME="AEN11054"
+></A
+>
+   By
+   default, the <TT
+CLASS="COMMAND"
+>CREATE INDEX</TT
+> command will create a
+   B-tree index, which fits the most common situations.  In
+   particular, the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query optimizer
+   will consider using a B-tree index whenever an indexed column is
+   involved in a comparison using one of these operators:
+
+   <TT
+CLASS="LITERAL"
+>&lt;</TT
+>, <TT
+CLASS="LITERAL"
+>&lt;=</TT
+>, <TT
+CLASS="LITERAL"
+>=</TT
+>, <TT
+CLASS="LITERAL"
+>&gt;=</TT
+>, <TT
+CLASS="LITERAL"
+>&gt;</TT
+>
+  </P
+><P
+>   <A
+NAME="AEN11071"
+></A
+>
+   <A
+NAME="AEN11074"
+></A
+>
+   R-tree indexes are especially suited for spatial data.  To create
+   an R-tree index, use a command of the form
+</P><PRE
+CLASS="SYNOPSIS"
+>CREATE INDEX <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> USING RTREE (<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+>);</PRE
+><P>
+   The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query optimizer will
+   consider using an R-tree index whenever an indexed column is
+   involved in a comparison using one of these operators:
+
+   <TT
+CLASS="LITERAL"
+>&lt;&lt;</TT
+>, <TT
+CLASS="LITERAL"
+>&amp;&lt;</TT
+>, <TT
+CLASS="LITERAL"
+>&amp;&gt;</TT
+>, <TT
+CLASS="LITERAL"
+>&gt;&gt;</TT
+>, <TT
+CLASS="LITERAL"
+>@</TT
+>, <TT
+CLASS="LITERAL"
+>~=</TT
+>, <TT
+CLASS="LITERAL"
+>&amp;&amp;</TT
+>
+   (Refer to <A
+HREF="functions-geometry.html"
+>Section 6.9</A
+> about the meaning of
+   these operators.)
+  </P
+><P
+>   <A
+NAME="AEN11099"
+></A
+>
+   <A
+NAME="AEN11102"
+></A
+>
+   The query optimizer will consider using a hash index whenever an
+   indexed column is involved in a comparison using the
+   <TT
+CLASS="LITERAL"
+>=</TT
+> operator.  The following command is used to
+   create a hash index:
+</P><PRE
+CLASS="SYNOPSIS"
+>CREATE INDEX <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> USING HASH (<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+>);</PRE
+><P>
+   </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Testing has shown PostgreSQL's hash indexes to be similar or slower
+     than B-tree indexes, and the index size and build time for hash
+     indexes is much worse. Hash indexes also suffer poor performance
+     under high concurrency. For these reasons, hash index use is
+     discouraged.
+    </P
+></BLOCKQUOTE
+></DIV
+><P>  
+  </P
+><P
+>   The B-tree index is an implementation of Lehman-Yao
+   high-concurrency B-trees.  The R-tree index method implements
+   standard R-trees using Guttman's quadratic split algorithm.  The
+   hash index is an implementation of Litwin's linear hashing.  We
+   mention the algorithms used solely to indicate that all of these
+   access methods are fully dynamic and do not have to be optimized
+   periodically (as is the case with, for example, static hash access
+   methods).
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-multicolumn.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Indexes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="indexes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Multicolumn Indexes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,1715 @@
+<HTML
+><HEAD
+><TITLE
+>PostgreSQL 7.3.3 User's Guide</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Conclusion"
+HREF="tutorial-conclusion.html"><LINK
+REL="NEXT"
+TITLE="Preface"
+HREF="user-preface.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="BOOK"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="BOOK"
+><A
+NAME="USER"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+><A
+NAME="USER"
+>PostgreSQL 7.3.3 User's Guide</A
+></H1
+><H3
+CLASS="CORPAUTHOR"
+>The PostgreSQL Global Development Group</H3
+><P
+CLASS="COPYRIGHT"
+><A
+HREF="ln659.html"
+>Copyright</A
+> &copy; 1996-2002 by The PostgreSQL Global Development Group</P
+><HR></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="user-preface.html"
+>Preface</A
+></DT
+><DD
+><DL
+><DT
+>1. <A
+HREF="user-preface.html#INTRO-WHATIS"
+>What is <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>?</A
+></DT
+><DT
+>2. <A
+HREF="history.html"
+>A Short History of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></A
+></DT
+><DD
+><DL
+><DT
+>2.1. <A
+HREF="history.html#AEN721"
+>The Berkeley <SPAN
+CLASS="PRODUCTNAME"
+>POSTGRES</SPAN
+> Project</A
+></DT
+><DT
+>2.2. <A
+HREF="history.html#AEN749"
+><SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+></A
+></DT
+><DT
+>2.3. <A
+HREF="history.html#AEN795"
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></A
+></DT
+></DL
+></DD
+><DT
+>3. <A
+HREF="user-preface-thisbook.html"
+>What's In This Book</A
+></DT
+><DT
+>4. <A
+HREF="resources.html"
+>Overview of Documentation Resources</A
+></DT
+><DT
+>5. <A
+HREF="notation.html"
+>Terminology and Notation</A
+></DT
+><DT
+>6. <A
+HREF="bug-reporting.html"
+>Bug Reporting Guidelines</A
+></DT
+><DD
+><DL
+><DT
+>6.1. <A
+HREF="bug-reporting.html#AEN941"
+>Identifying Bugs</A
+></DT
+><DT
+>6.2. <A
+HREF="bug-reporting.html#AEN961"
+>What to report</A
+></DT
+><DT
+>6.3. <A
+HREF="bug-reporting.html#AEN1015"
+>Where to report bugs</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>1. <A
+HREF="sql-syntax.html"
+>SQL Syntax</A
+></DT
+><DD
+><DL
+><DT
+>1.1. <A
+HREF="sql-syntax.html#SQL-SYNTAX-LEXICAL"
+>Lexical Structure</A
+></DT
+><DD
+><DL
+><DT
+>1.1.1. <A
+HREF="sql-syntax.html#SQL-SYNTAX-IDENTIFIERS"
+>Identifiers and Key Words</A
+></DT
+><DT
+>1.1.2. <A
+HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
+>Constants</A
+></DT
+><DT
+>1.1.3. <A
+HREF="sql-syntax.html#SQL-SYNTAX-OPERATORS"
+>Operators</A
+></DT
+><DT
+>1.1.4. <A
+HREF="sql-syntax.html#AEN1302"
+>Special Characters</A
+></DT
+><DT
+>1.1.5. <A
+HREF="sql-syntax.html#SQL-SYNTAX-COMMENTS"
+>Comments</A
+></DT
+><DT
+>1.1.6. <A
+HREF="sql-syntax.html#SQL-PRECEDENCE"
+>Lexical Precedence</A
+></DT
+></DL
+></DD
+><DT
+>1.2. <A
+HREF="sql-expressions.html"
+>Value Expressions</A
+></DT
+><DD
+><DL
+><DT
+>1.2.1. <A
+HREF="sql-expressions.html#AEN1527"
+>Column References</A
+></DT
+><DT
+>1.2.2. <A
+HREF="sql-expressions.html#AEN1550"
+>Positional Parameters</A
+></DT
+><DT
+>1.2.3. <A
+HREF="sql-expressions.html#AEN1559"
+>Operator Invocations</A
+></DT
+><DT
+>1.2.4. <A
+HREF="sql-expressions.html#AEN1585"
+>Function Calls</A
+></DT
+><DT
+>1.2.5. <A
+HREF="sql-expressions.html#SYNTAX-AGGREGATES"
+>Aggregate Expressions</A
+></DT
+><DT
+>1.2.6. <A
+HREF="sql-expressions.html#SQL-SYNTAX-TYPE-CASTS"
+>Type Casts</A
+></DT
+><DT
+>1.2.7. <A
+HREF="sql-expressions.html#AEN1653"
+>Scalar Subqueries</A
+></DT
+><DT
+>1.2.8. <A
+HREF="sql-expressions.html#AEN1662"
+>Expression Evaluation</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>2. <A
+HREF="ddl.html"
+>Data Definition</A
+></DT
+><DD
+><DL
+><DT
+>2.1. <A
+HREF="ddl.html#DDL-BASICS"
+>Table Basics</A
+></DT
+><DT
+>2.2. <A
+HREF="ddl-system-columns.html"
+>System Columns</A
+></DT
+><DT
+>2.3. <A
+HREF="x1779.html"
+>Default Values</A
+></DT
+><DT
+>2.4. <A
+HREF="ddl-constraints.html"
+>Constraints</A
+></DT
+><DD
+><DL
+><DT
+>2.4.1. <A
+HREF="ddl-constraints.html#AEN1793"
+>Check Constraints</A
+></DT
+><DT
+>2.4.2. <A
+HREF="ddl-constraints.html#AEN1811"
+>Not-Null Constraints</A
+></DT
+><DT
+>2.4.3. <A
+HREF="ddl-constraints.html#AEN1832"
+>Unique Constraints</A
+></DT
+><DT
+>2.4.4. <A
+HREF="ddl-constraints.html#AEN1846"
+>Primary Keys</A
+></DT
+><DT
+>2.4.5. <A
+HREF="ddl-constraints.html#DDL-CONSTRAINTS-FK"
+>Foreign Keys</A
+></DT
+></DL
+></DD
+><DT
+>2.5. <A
+HREF="ddl-inherit.html"
+>Inheritance</A
+></DT
+><DT
+>2.6. <A
+HREF="ddl-alter.html"
+>Modifying Tables</A
+></DT
+><DD
+><DL
+><DT
+>2.6.1. <A
+HREF="ddl-alter.html#AEN1968"
+>Adding a Column</A
+></DT
+><DT
+>2.6.2. <A
+HREF="ddl-alter.html#AEN1974"
+>Removing a Column</A
+></DT
+><DT
+>2.6.3. <A
+HREF="ddl-alter.html#AEN1978"
+>Adding a Constraint</A
+></DT
+><DT
+>2.6.4. <A
+HREF="ddl-alter.html#AEN1984"
+>Removing a Constraint</A
+></DT
+><DT
+>2.6.5. <A
+HREF="ddl-alter.html#AEN1992"
+>Changing the Default</A
+></DT
+><DT
+>2.6.6. <A
+HREF="ddl-alter.html#AEN1997"
+>Renaming a Column</A
+></DT
+><DT
+>2.6.7. <A
+HREF="ddl-alter.html#AEN2001"
+>Renaming a Table</A
+></DT
+></DL
+></DD
+><DT
+>2.7. <A
+HREF="ddl-priv.html"
+>Privileges</A
+></DT
+><DT
+>2.8. <A
+HREF="ddl-schemas.html"
+>Schemas</A
+></DT
+><DD
+><DL
+><DT
+>2.8.1. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-CREATE"
+>Creating a Schema</A
+></DT
+><DT
+>2.8.2. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PUBLIC"
+>The Public Schema</A
+></DT
+><DT
+>2.8.3. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PATH"
+>The Schema Search Path</A
+></DT
+><DT
+>2.8.4. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PRIV"
+>Schemas and Privileges</A
+></DT
+><DT
+>2.8.5. <A
+HREF="ddl-schemas.html#AEN2157"
+>The System Catalog Schema</A
+></DT
+><DT
+>2.8.6. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PATTERNS"
+>Usage Patterns</A
+></DT
+><DT
+>2.8.7. <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PORTABILITY"
+>Portability</A
+></DT
+></DL
+></DD
+><DT
+>2.9. <A
+HREF="ddl-others.html"
+>Other Database Objects</A
+></DT
+><DT
+>2.10. <A
+HREF="ddl-depend.html"
+>Dependency Tracking</A
+></DT
+></DL
+></DD
+><DT
+>3. <A
+HREF="dml.html"
+>Data Manipulation</A
+></DT
+><DD
+><DL
+><DT
+>3.1. <A
+HREF="dml.html#DML-INSERT"
+>Inserting Data</A
+></DT
+><DT
+>3.2. <A
+HREF="dml-update.html"
+>Updating Data</A
+></DT
+><DT
+>3.3. <A
+HREF="dml-delete.html"
+>Deleting Data</A
+></DT
+></DL
+></DD
+><DT
+>4. <A
+HREF="queries.html"
+>Queries</A
+></DT
+><DD
+><DL
+><DT
+>4.1. <A
+HREF="queries.html#QUERIES-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>4.2. <A
+HREF="queries-table-expressions.html"
+>Table Expressions</A
+></DT
+><DD
+><DL
+><DT
+>4.2.1. <A
+HREF="queries-table-expressions.html#QUERIES-FROM"
+>The FROM Clause</A
+></DT
+><DT
+>4.2.2. <A
+HREF="queries-table-expressions.html#QUERIES-WHERE"
+>The WHERE Clause</A
+></DT
+><DT
+>4.2.3. <A
+HREF="queries-table-expressions.html#QUERIES-GROUP"
+>The GROUP BY and HAVING Clauses</A
+></DT
+></DL
+></DD
+><DT
+>4.3. <A
+HREF="queries-select-lists.html"
+>Select Lists</A
+></DT
+><DD
+><DL
+><DT
+>4.3.1. <A
+HREF="queries-select-lists.html#QUERIES-SELECT-LIST-ITEMS"
+>Select-List Items</A
+></DT
+><DT
+>4.3.2. <A
+HREF="queries-select-lists.html#QUERIES-COLUMN-LABELS"
+>Column Labels</A
+></DT
+><DT
+>4.3.3. <A
+HREF="queries-select-lists.html#QUERIES-DISTINCT"
+>DISTINCT</A
+></DT
+></DL
+></DD
+><DT
+>4.4. <A
+HREF="queries-union.html"
+>Combining Queries</A
+></DT
+><DT
+>4.5. <A
+HREF="queries-order.html"
+>Sorting Rows</A
+></DT
+><DT
+>4.6. <A
+HREF="queries-limit.html"
+>LIMIT and OFFSET</A
+></DT
+></DL
+></DD
+><DT
+>5. <A
+HREF="datatype.html"
+>Data Types</A
+></DT
+><DD
+><DL
+><DT
+>5.1. <A
+HREF="datatype.html#DATATYPE-NUMERIC"
+>Numeric Types</A
+></DT
+><DD
+><DL
+><DT
+>5.1.1. <A
+HREF="datatype.html#DATATYPE-INT"
+>The Integer Types</A
+></DT
+><DT
+>5.1.2. <A
+HREF="datatype.html#DATATYPE-NUMERIC-DECIMAL"
+>Arbitrary Precision Numbers</A
+></DT
+><DT
+>5.1.3. <A
+HREF="datatype.html#DATATYPE-FLOAT"
+>Floating-Point Types</A
+></DT
+><DT
+>5.1.4. <A
+HREF="datatype.html#DATATYPE-SERIAL"
+>The Serial Types</A
+></DT
+></DL
+></DD
+><DT
+>5.2. <A
+HREF="datatype-money.html"
+>Monetary Type</A
+></DT
+><DT
+>5.3. <A
+HREF="datatype-character.html"
+>Character Types</A
+></DT
+><DT
+>5.4. <A
+HREF="datatype-binary.html"
+>Binary Strings</A
+></DT
+><DT
+>5.5. <A
+HREF="datatype-datetime.html"
+>Date/Time Types</A
+></DT
+><DD
+><DL
+><DT
+>5.5.1. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-INPUT"
+>Date/Time Input</A
+></DT
+><DT
+>5.5.2. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-OUTPUT"
+>Date/Time Output</A
+></DT
+><DT
+>5.5.3. <A
+HREF="datatype-datetime.html#DATATYPE-TIMEZONES"
+>Time Zones</A
+></DT
+><DT
+>5.5.4. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-INTERNALS"
+>Internals</A
+></DT
+></DL
+></DD
+><DT
+>5.6. <A
+HREF="datatype-boolean.html"
+>Boolean Type</A
+></DT
+><DT
+>5.7. <A
+HREF="datatype-geometric.html"
+>Geometric Types</A
+></DT
+><DD
+><DL
+><DT
+>5.7.1. <A
+HREF="datatype-geometric.html#AEN4340"
+>Point</A
+></DT
+><DT
+>5.7.2. <A
+HREF="datatype-geometric.html#AEN4362"
+>Line Segment</A
+></DT
+><DT
+>5.7.3. <A
+HREF="datatype-geometric.html#AEN4392"
+>Box</A
+></DT
+><DT
+>5.7.4. <A
+HREF="datatype-geometric.html#AEN4422"
+>Path</A
+></DT
+><DT
+>5.7.5. <A
+HREF="datatype-geometric.html#AEN4466"
+>Polygon</A
+></DT
+><DT
+>5.7.6. <A
+HREF="datatype-geometric.html#AEN4498"
+>Circle</A
+></DT
+></DL
+></DD
+><DT
+>5.8. <A
+HREF="datatype-net-types.html"
+>Network Address Data Types</A
+></DT
+><DD
+><DL
+><DT
+>5.8.1. <A
+HREF="datatype-net-types.html#DATATYPE-INET"
+><TT
+CLASS="TYPE"
+>inet</TT
+></A
+></DT
+><DT
+>5.8.2. <A
+HREF="datatype-net-types.html#DATATYPE-CIDR"
+><TT
+CLASS="TYPE"
+>cidr</TT
+></A
+></DT
+><DT
+>5.8.3. <A
+HREF="datatype-net-types.html#DATATYPE-INET-VS-CIDR"
+><TT
+CLASS="TYPE"
+>inet</TT
+> vs <TT
+CLASS="TYPE"
+>cidr</TT
+></A
+></DT
+><DT
+>5.8.4. <A
+HREF="datatype-net-types.html#DATATYPE-MACADDR"
+><TT
+CLASS="TYPE"
+>macaddr</TT
+></A
+></DT
+></DL
+></DD
+><DT
+>5.9. <A
+HREF="datatype-bit.html"
+>Bit String Types</A
+></DT
+><DT
+>5.10. <A
+HREF="datatype-oid.html"
+>Object Identifier Types</A
+></DT
+><DT
+>5.11. <A
+HREF="datatype-pseudo.html"
+>Pseudo-Types</A
+></DT
+><DT
+>5.12. <A
+HREF="arrays.html"
+>Arrays</A
+></DT
+></DL
+></DD
+><DT
+>6. <A
+HREF="functions.html"
+>Functions and Operators</A
+></DT
+><DD
+><DL
+><DT
+>6.1. <A
+HREF="functions.html#FUNCTIONS-LOGICAL"
+>Logical Operators</A
+></DT
+><DT
+>6.2. <A
+HREF="functions-comparison.html"
+>Comparison Operators</A
+></DT
+><DT
+>6.3. <A
+HREF="functions-math.html"
+>Mathematical Functions and Operators</A
+></DT
+><DT
+>6.4. <A
+HREF="functions-string.html"
+>String Functions and Operators</A
+></DT
+><DT
+>6.5. <A
+HREF="functions-binarystring.html"
+>Binary String Functions and Operators</A
+></DT
+><DT
+>6.6. <A
+HREF="functions-matching.html"
+>Pattern Matching</A
+></DT
+><DD
+><DL
+><DT
+>6.6.1. <A
+HREF="functions-matching.html#FUNCTIONS-LIKE"
+><TT
+CLASS="FUNCTION"
+>LIKE</TT
+></A
+></DT
+><DT
+>6.6.2. <A
+HREF="functions-matching.html#FUNCTIONS-SQL99-REGEXP"
+><TT
+CLASS="FUNCTION"
+>SIMILAR TO</TT
+> and <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>
+     Regular Expressions</A
+></DT
+><DT
+>6.6.3. <A
+HREF="functions-matching.html#FUNCTIONS-POSIX-REGEXP"
+><SPAN
+CLASS="ACRONYM"
+>POSIX</SPAN
+> Regular Expressions</A
+></DT
+></DL
+></DD
+><DT
+>6.7. <A
+HREF="functions-formatting.html"
+>Data Type Formatting Functions</A
+></DT
+><DT
+>6.8. <A
+HREF="functions-datetime.html"
+>Date/Time Functions and Operators</A
+></DT
+><DD
+><DL
+><DT
+>6.8.1. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"
+><TT
+CLASS="FUNCTION"
+>EXTRACT</TT
+>, <TT
+CLASS="FUNCTION"
+>date_part</TT
+></A
+></DT
+><DT
+>6.8.2. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-TRUNC"
+><TT
+CLASS="FUNCTION"
+>date_trunc</TT
+></A
+></DT
+><DT
+>6.8.3. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-ZONECONVERT"
+><TT
+CLASS="FUNCTION"
+>AT TIME ZONE</TT
+></A
+></DT
+><DT
+>6.8.4. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
+>Current Date/Time</A
+></DT
+></DL
+></DD
+><DT
+>6.9. <A
+HREF="functions-geometry.html"
+>Geometric Functions and Operators</A
+></DT
+><DT
+>6.10. <A
+HREF="functions-net.html"
+>Network Address Type Functions</A
+></DT
+><DT
+>6.11. <A
+HREF="functions-sequence.html"
+>Sequence-Manipulation Functions</A
+></DT
+><DT
+>6.12. <A
+HREF="functions-conditional.html"
+>Conditional Expressions</A
+></DT
+><DD
+><DL
+><DT
+>6.12.1. <A
+HREF="functions-conditional.html#AEN9772"
+>CASE</A
+></DT
+><DT
+>6.12.2. <A
+HREF="functions-conditional.html#AEN9827"
+>COALESCE</A
+></DT
+><DT
+>6.12.3. <A
+HREF="functions-conditional.html#AEN9836"
+>NULLIF</A
+></DT
+></DL
+></DD
+><DT
+>6.13. <A
+HREF="functions-misc.html"
+>Miscellaneous Functions</A
+></DT
+><DT
+>6.14. <A
+HREF="functions-aggregate.html"
+>Aggregate Functions</A
+></DT
+><DT
+>6.15. <A
+HREF="functions-subquery.html"
+>Subquery Expressions</A
+></DT
+><DD
+><DL
+><DT
+>6.15.1. <A
+HREF="functions-subquery.html#AEN10482"
+>EXISTS</A
+></DT
+><DT
+>6.15.2. <A
+HREF="functions-subquery.html#AEN10505"
+>IN (scalar form)</A
+></DT
+><DT
+>6.15.3. <A
+HREF="functions-subquery.html#AEN10524"
+>IN (subquery form)</A
+></DT
+><DT
+>6.15.4. <A
+HREF="functions-subquery.html#AEN10550"
+>NOT IN (scalar form)</A
+></DT
+><DT
+>6.15.5. <A
+HREF="functions-subquery.html#AEN10571"
+>NOT IN (subquery form)</A
+></DT
+><DT
+>6.15.6. <A
+HREF="functions-subquery.html#AEN10597"
+>ANY/SOME</A
+></DT
+><DT
+>6.15.7. <A
+HREF="functions-subquery.html#AEN10643"
+>ALL</A
+></DT
+><DT
+>6.15.8. <A
+HREF="functions-subquery.html#AEN10679"
+>Row-wise Comparison</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>7. <A
+HREF="typeconv.html"
+>Type Conversion</A
+></DT
+><DD
+><DL
+><DT
+>7.1. <A
+HREF="typeconv.html#TYPECONV-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>7.2. <A
+HREF="typeconv-oper.html"
+>Operators</A
+></DT
+><DT
+>7.3. <A
+HREF="typeconv-func.html"
+>Functions</A
+></DT
+><DT
+>7.4. <A
+HREF="typeconv-query.html"
+>Query Targets</A
+></DT
+><DT
+>7.5. <A
+HREF="typeconv-union-case.html"
+><TT
+CLASS="LITERAL"
+>UNION</TT
+> and <TT
+CLASS="LITERAL"
+>CASE</TT
+> Constructs</A
+></DT
+></DL
+></DD
+><DT
+>8. <A
+HREF="indexes.html"
+>Indexes</A
+></DT
+><DD
+><DL
+><DT
+>8.1. <A
+HREF="indexes.html#INDEXES-INTRO"
+>Introduction</A
+></DT
+><DT
+>8.2. <A
+HREF="indexes-types.html"
+>Index Types</A
+></DT
+><DT
+>8.3. <A
+HREF="indexes-multicolumn.html"
+>Multicolumn Indexes</A
+></DT
+><DT
+>8.4. <A
+HREF="indexes-unique.html"
+>Unique Indexes</A
+></DT
+><DT
+>8.5. <A
+HREF="indexes-functional.html"
+>Functional Indexes</A
+></DT
+><DT
+>8.6. <A
+HREF="indexes-opclass.html"
+>Operator Classes</A
+></DT
+><DT
+>8.7. <A
+HREF="indexes-partial.html"
+>Partial Indexes</A
+></DT
+><DT
+>8.8. <A
+HREF="indexes-examine.html"
+>Examining Index Usage</A
+></DT
+></DL
+></DD
+><DT
+>9. <A
+HREF="mvcc.html"
+>Concurrency Control</A
+></DT
+><DD
+><DL
+><DT
+>9.1. <A
+HREF="mvcc.html#MVCC-INTRO"
+>Introduction</A
+></DT
+><DT
+>9.2. <A
+HREF="transaction-iso.html"
+>Transaction Isolation</A
+></DT
+><DD
+><DL
+><DT
+>9.2.1. <A
+HREF="transaction-iso.html#XACT-READ-COMMITTED"
+>Read Committed Isolation Level</A
+></DT
+><DT
+>9.2.2. <A
+HREF="transaction-iso.html#XACT-SERIALIZABLE"
+>Serializable Isolation Level</A
+></DT
+></DL
+></DD
+><DT
+>9.3. <A
+HREF="explicit-locking.html"
+>Explicit Locking</A
+></DT
+><DD
+><DL
+><DT
+>9.3.1. <A
+HREF="explicit-locking.html#LOCKING-TABLES"
+>Table-Level Locks</A
+></DT
+><DT
+>9.3.2. <A
+HREF="explicit-locking.html#LOCKING-ROWS"
+>Row-Level Locks</A
+></DT
+><DT
+>9.3.3. <A
+HREF="explicit-locking.html#LOCKING-DEADLOCKS"
+>Deadlocks</A
+></DT
+></DL
+></DD
+><DT
+>9.4. <A
+HREF="applevel-consistency.html"
+>Data Consistency Checks at the Application Level</A
+></DT
+><DT
+>9.5. <A
+HREF="locking-indexes.html"
+>Locking and Indexes</A
+></DT
+></DL
+></DD
+><DT
+>10. <A
+HREF="performance-tips.html"
+>Performance Tips</A
+></DT
+><DD
+><DL
+><DT
+>10.1. <A
+HREF="performance-tips.html#USING-EXPLAIN"
+>Using <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+></A
+></DT
+><DT
+>10.2. <A
+HREF="planner-stats.html"
+>Statistics Used by the Planner</A
+></DT
+><DT
+>10.3. <A
+HREF="explicit-joins.html"
+>Controlling the Planner with Explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+> Clauses</A
+></DT
+><DT
+>10.4. <A
+HREF="populate.html"
+>Populating a Database</A
+></DT
+><DD
+><DL
+><DT
+>10.4.1. <A
+HREF="populate.html#DISABLE-AUTOCOMMIT"
+>Disable Autocommit</A
+></DT
+><DT
+>10.4.2. <A
+HREF="populate.html#POPULATE-COPY-FROM"
+>Use COPY FROM</A
+></DT
+><DT
+>10.4.3. <A
+HREF="populate.html#POPULATE-RM-INDEXES"
+>Remove Indexes</A
+></DT
+><DT
+>10.4.4. <A
+HREF="populate.html#POPULATE-ANALYZE"
+>Run ANALYZE Afterwards</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>A. <A
+HREF="datetime-appendix.html"
+>Date/Time Support</A
+></DT
+><DD
+><DL
+><DT
+>A.1. <A
+HREF="datetime-appendix.html#AEN11877"
+>Date/Time Input Interpretation</A
+></DT
+><DT
+>A.2. <A
+HREF="x11950.html"
+>Date/Time Key Words</A
+></DT
+><DT
+>A.3. <A
+HREF="units-history.html"
+>History of Units</A
+></DT
+></DL
+></DD
+><DT
+>B. <A
+HREF="sql-keywords-appendix.html"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Key Words</A
+></DT
+><DT
+>C. <A
+HREF="features.html"
+>SQL Conformance</A
+></DT
+><DD
+><DL
+><DT
+>C.1. <A
+HREF="features.html#FEATURES-SQL99"
+>Supported Features</A
+></DT
+><DT
+>C.2. <A
+HREF="unsupported-features-sql99.html"
+>Unsupported Features</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="biblio.html"
+>Bibliography</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Tables</B
+></DT
+><DT
+>1-1. <A
+HREF="sql-syntax.html#SQL-PRECEDENCE-TABLE"
+>Operator Precedence (decreasing)</A
+></DT
+><DT
+>5-1. <A
+HREF="datatype.html#DATATYPE-TABLE"
+>Data Types</A
+></DT
+><DT
+>5-2. <A
+HREF="datatype.html#DATATYPE-NUMERIC-TABLE"
+>Numeric Types</A
+></DT
+><DT
+>5-3. <A
+HREF="datatype-money.html#DATATYPE-MONEY-TABLE"
+>Monetary Types</A
+></DT
+><DT
+>5-4. <A
+HREF="datatype-character.html#DATATYPE-CHARACTER-TABLE"
+>Character Types</A
+></DT
+><DT
+>5-5. <A
+HREF="datatype-character.html#DATATYPE-CHARACTER-SPECIAL-TABLE"
+>Specialty Character Types</A
+></DT
+><DT
+>5-6. <A
+HREF="datatype-binary.html#DATATYPE-BINARY-TABLE"
+>Binary String Types</A
+></DT
+><DT
+>5-7. <A
+HREF="datatype-binary.html#DATATYPE-BINARY-SQLESC"
+><TT
+CLASS="TYPE"
+>bytea</TT
+> Literal Escaped Octets</A
+></DT
+><DT
+>5-8. <A
+HREF="datatype-binary.html#DATATYPE-BINARY-RESESC"
+><TT
+CLASS="TYPE"
+>bytea</TT
+> Output Escaped Octets</A
+></DT
+><DT
+>5-9. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-TABLE"
+>Date/Time Types</A
+></DT
+><DT
+>5-10. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-DATE-TABLE"
+>Date Input</A
+></DT
+><DT
+>5-11. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-TIME-TABLE"
+>Time Input</A
+></DT
+><DT
+>5-12. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-TIMETZ-TABLE"
+>Time With Time Zone Input</A
+></DT
+><DT
+>5-13. <A
+HREF="datatype-datetime.html#DATATYPE-TIMEZONE-TABLE"
+>Time Zone Input</A
+></DT
+><DT
+>5-14. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-SPECIAL-TABLE"
+>Special Date/Time Inputs</A
+></DT
+><DT
+>5-15. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-OUTPUT-TABLE"
+>Date/Time Output Styles</A
+></DT
+><DT
+>5-16. <A
+HREF="datatype-datetime.html#DATATYPE-DATETIME-OUTPUT2-TABLE"
+>Date Order Conventions</A
+></DT
+><DT
+>5-17. <A
+HREF="datatype-geometric.html#DATATYPE-GEO-TABLE"
+>Geometric Types</A
+></DT
+><DT
+>5-18. <A
+HREF="datatype-net-types.html#DATATYPE-NET-TYPES-TABLE"
+>Network Address Data Types</A
+></DT
+><DT
+>5-19. <A
+HREF="datatype-net-types.html#DATATYPE-NET-CIDR-TABLE"
+><TT
+CLASS="TYPE"
+>cidr</TT
+> Type Input Examples</A
+></DT
+><DT
+>5-20. <A
+HREF="datatype-oid.html#DATATYPE-OID-TABLE"
+>Object Identifier Types</A
+></DT
+><DT
+>5-21. <A
+HREF="datatype-pseudo.html#DATATYPE-PSEUDOTYPES-TABLE"
+>Pseudo-Types</A
+></DT
+><DT
+>6-1. <A
+HREF="functions-comparison.html#FUNCTIONS-COMPARISON-TABLE"
+>Comparison Operators</A
+></DT
+><DT
+>6-2. <A
+HREF="functions-math.html#FUNCTIONS-MATH-OP-TABLE"
+>Mathematical Operators</A
+></DT
+><DT
+>6-3. <A
+HREF="functions-math.html#FUNCTIONS-MATH-BIT-TABLE"
+>Bit String Binary Operators</A
+></DT
+><DT
+>6-4. <A
+HREF="functions-math.html#FUNCTIONS-MATH-FUNC-TABLE"
+>Mathematical Functions</A
+></DT
+><DT
+>6-5. <A
+HREF="functions-math.html#FUNCTIONS-MATH-TRIG-TABLE"
+>Trigonometric Functions</A
+></DT
+><DT
+>6-6. <A
+HREF="functions-string.html#FUNCTIONS-STRING-SQL"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> String Functions and Operators</A
+></DT
+><DT
+>6-7. <A
+HREF="functions-string.html#FUNCTIONS-STRING-OTHER"
+>Other String Functions</A
+></DT
+><DT
+>6-8. <A
+HREF="functions-string.html#CONVERSION-NAMES"
+>Built-in Conversions</A
+></DT
+><DT
+>6-9. <A
+HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-SQL"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Binary String Functions and Operators</A
+></DT
+><DT
+>6-10. <A
+HREF="functions-binarystring.html#FUNCTIONS-BINARYSTRING-OTHER"
+>Other Binary String Functions</A
+></DT
+><DT
+>6-11. <A
+HREF="functions-matching.html#FUNCTIONS-POSIX-TABLE"
+>Regular Expression Match Operators</A
+></DT
+><DT
+>6-12. <A
+HREF="functions-formatting.html#FUNCTIONS-FORMATTING-TABLE"
+>Formatting Functions</A
+></DT
+><DT
+>6-13. <A
+HREF="functions-formatting.html#FUNCTIONS-FORMATTING-DATETIME-TABLE"
+>Template patterns for date/time conversions</A
+></DT
+><DT
+>6-14. <A
+HREF="functions-formatting.html#FUNCTIONS-FORMATTING-DATETIMEMOD-TABLE"
+>Template pattern modifiers for date/time conversions</A
+></DT
+><DT
+>6-15. <A
+HREF="functions-formatting.html#FUNCTIONS-FORMATTING-NUMERIC-TABLE"
+>Template patterns for numeric conversions</A
+></DT
+><DT
+>6-16. <A
+HREF="functions-formatting.html#FUNCTIONS-FORMATTING-EXAMPLES-TABLE"
+><TT
+CLASS="FUNCTION"
+>to_char</TT
+> Examples</A
+></DT
+><DT
+>6-17. <A
+HREF="functions-datetime.html#OPERATORS-DATETIME-TABLE"
+>Date/Time Operators</A
+></DT
+><DT
+>6-18. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-TABLE"
+>Date/Time Functions</A
+></DT
+><DT
+>6-19. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-ZONECONVERT-TABLE"
+>AT TIME ZONE Variants</A
+></DT
+><DT
+>6-20. <A
+HREF="functions-geometry.html#FUNCTIONS-GEOMETRY-OP-TABLE"
+>Geometric Operators</A
+></DT
+><DT
+>6-21. <A
+HREF="functions-geometry.html#FUNCTIONS-GEOMETRY-FUNC-TABLE"
+>Geometric Functions</A
+></DT
+><DT
+>6-22. <A
+HREF="functions-geometry.html#FUNCTIONS-GEOMETRY-CONV-TABLE"
+>Geometric Type Conversion Functions</A
+></DT
+><DT
+>6-23. <A
+HREF="functions-net.html#CIDR-INET-OPERATORS-TABLE"
+><TT
+CLASS="TYPE"
+>cidr</TT
+> and <TT
+CLASS="TYPE"
+>inet</TT
+> Operators</A
+></DT
+><DT
+>6-24. <A
+HREF="functions-net.html#CIDR-INET-FUNCTIONS-TABLE"
+><TT
+CLASS="TYPE"
+>cidr</TT
+> and <TT
+CLASS="TYPE"
+>inet</TT
+> Functions</A
+></DT
+><DT
+>6-25. <A
+HREF="functions-net.html#MACADDR-FUNCTIONS-TABLE"
+><TT
+CLASS="TYPE"
+>macaddr</TT
+> Functions</A
+></DT
+><DT
+>6-26. <A
+HREF="functions-sequence.html#FUNCTIONS-SEQUENCE-TABLE"
+>Sequence Functions</A
+></DT
+><DT
+>6-27. <A
+HREF="functions-misc.html#FUNCTIONS-MISC-SESSION-TABLE"
+>Session Information Functions</A
+></DT
+><DT
+>6-28. <A
+HREF="functions-misc.html#FUNCTIONS-MISC-SET-TABLE"
+>Configuration Settings Information Functions</A
+></DT
+><DT
+>6-29. <A
+HREF="functions-misc.html#FUNCTIONS-MISC-ACCESS-TABLE"
+>Access Privilege Inquiry Functions</A
+></DT
+><DT
+>6-30. <A
+HREF="functions-misc.html#FUNCTIONS-MISC-SCHEMA-TABLE"
+>Schema Visibility Inquiry Functions</A
+></DT
+><DT
+>6-31. <A
+HREF="functions-misc.html#FUNCTIONS-MISC-CATALOG-TABLE"
+>Catalog Information Functions</A
+></DT
+><DT
+>6-32. <A
+HREF="functions-misc.html#FUNCTIONS-MISC-COMMENT-TABLE"
+>Comment Information Functions</A
+></DT
+><DT
+>6-33. <A
+HREF="functions-aggregate.html#FUNCTIONS-AGGREGATE-TABLE"
+>Aggregate Functions</A
+></DT
+><DT
+>9-1. <A
+HREF="transaction-iso.html#MVCC-ISOLEVEL-TABLE"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Transaction Isolation Levels</A
+></DT
+><DT
+>10-1. <A
+HREF="planner-stats.html#PLANNER-PG-STATS-TABLE"
+><TT
+CLASS="STRUCTNAME"
+>pg_stats</TT
+> Columns</A
+></DT
+><DT
+>A-1. <A
+HREF="x11950.html#DATETIME-MONTH-TABLE"
+>Month Abbreviations</A
+></DT
+><DT
+>A-2. <A
+HREF="x11950.html#DATETIME-DOW-TABLE"
+>Day of the Week Abbreviations</A
+></DT
+><DT
+>A-3. <A
+HREF="x11950.html#DATETIME-MOD-TABLE"
+>Date/Time Field Modifiers</A
+></DT
+><DT
+>A-4. <A
+HREF="x11950.html#DATETIME-TIMEZONE-TABLE"
+>Time Zone Abbreviations</A
+></DT
+><DT
+>A-5. <A
+HREF="x11950.html#DATETIME-OZTZ-TABLE"
+>Australian Time Zone Abbreviations</A
+></DT
+><DT
+>B-1. <A
+HREF="sql-keywords-appendix.html#KEYWORDS-TABLE"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Key Words</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Examples</B
+></DT
+><DT
+>5-1. <A
+HREF="datatype-character.html#AEN3459"
+>Using the character types</A
+></DT
+><DT
+>5-2. <A
+HREF="datatype-boolean.html#DATATYPE-BOOLEAN-EXAMPLE"
+>Using the <TT
+CLASS="TYPE"
+>boolean</TT
+> type</A
+></DT
+><DT
+>5-3. <A
+HREF="datatype-bit.html#AEN4731"
+>Using the bit string types</A
+></DT
+><DT
+>7-1. <A
+HREF="typeconv-oper.html#AEN10834"
+>Exponentiation Operator Type Resolution</A
+></DT
+><DT
+>7-2. <A
+HREF="typeconv-oper.html#AEN10844"
+>String Concatenation Operator Type Resolution</A
+></DT
+><DT
+>7-3. <A
+HREF="typeconv-oper.html#AEN10857"
+>Absolute-Value and Factorial Operator Type Resolution</A
+></DT
+><DT
+>7-4. <A
+HREF="typeconv-func.html#AEN10908"
+>Factorial Function Argument Type Resolution</A
+></DT
+><DT
+>7-5. <A
+HREF="typeconv-func.html#AEN10917"
+>Substring Function Type Resolution</A
+></DT
+><DT
+>7-6. <A
+HREF="typeconv-query.html#AEN10955"
+><TT
+CLASS="TYPE"
+>character</TT
+> Storage Type Conversion</A
+></DT
+><DT
+>7-7. <A
+HREF="typeconv-union-case.html#AEN10996"
+>Underspecified Types in a Union</A
+></DT
+><DT
+>7-8. <A
+HREF="typeconv-union-case.html#AEN11001"
+>Type Conversion in a Simple Union</A
+></DT
+><DT
+>7-9. <A
+HREF="typeconv-union-case.html#AEN11009"
+>Type Conversion in a Transposed Union</A
+></DT
+><DT
+>8-1. <A
+HREF="indexes-partial.html#INDEXES-PARTIAL-EX1"
+>Setting up a Partial Index to Exclude Common Values</A
+></DT
+><DT
+>8-2. <A
+HREF="indexes-partial.html#INDEXES-PARTIAL-EX2"
+>Setting up a Partial Index to Exclude Uninteresting Values</A
+></DT
+><DT
+>8-3. <A
+HREF="indexes-partial.html#INDEXES-PARTIAL-EX3"
+>Setting up a Partial Unique Index</A
+></DT
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-conclusion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="user-preface.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Conclusion</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Preface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

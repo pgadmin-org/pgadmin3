@@ -1,0 +1,496 @@
+<HTML
+><HEAD
+><TITLE
+>UPDATE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="UNLISTEN"
+HREF="sql-unlisten.html"><LINK
+REL="NEXT"
+TITLE="VACUUM"
+HREF="sql-vacuum.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-unlisten.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-vacuum.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-UPDATE"
+>UPDATE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN46269"
+></A
+><H2
+>Name</H2
+>   UPDATE
+  &nbsp;--&nbsp;   update rows of a table
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN46272"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>UPDATE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> SET <TT
+CLASS="REPLACEABLE"
+><I
+>col</I
+></TT
+> = <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [, ...]
+    [ FROM <TT
+CLASS="REPLACEABLE"
+><I
+>fromlist</I
+></TT
+> ]
+    [ WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-UPDATE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of an existing table. If
+	<TT
+CLASS="LITERAL"
+>ONLY</TT
+> is specified, only that table is updated.  If
+	<TT
+CLASS="LITERAL"
+>ONLY</TT
+> is not specified, the table and all its
+	descendant tables (if any) are updated. <TT
+CLASS="LITERAL"
+>*</TT
+> can be
+	appended to the table name to indicate that descendant tables are
+	to be scanned, but in the current version, this is the default
+	behavior.  (In releases before 7.1, <TT
+CLASS="LITERAL"
+>ONLY</TT
+> was the
+	default behavior.)  The default can be altered by changing the
+	<TT
+CLASS="OPTION"
+>SQL_INHERITANCE</TT
+> configuration option.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+></DT
+><DD
+><P
+>	The name of a column in <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+></DT
+><DD
+><P
+>	A valid expression or value to assign to column.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>fromlist</I
+></TT
+></DT
+><DD
+><P
+>	A <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+	non-standard extension to allow columns
+	from other tables to appear in the WHERE condition.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+></DT
+><DD
+><P
+>	Refer to the SELECT statement for a further description
+	of the WHERE clause.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-UPDATE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>UPDATE <TT
+CLASS="REPLACEABLE"
+><I
+>#</I
+></TT
+>
+      </TT
+></DT
+><DD
+><P
+>	Message returned if successful.
+	The <TT
+CLASS="REPLACEABLE"
+><I
+>#</I
+></TT
+>
+	means the number of rows updated.
+	If <TT
+CLASS="REPLACEABLE"
+><I
+>#</I
+></TT
+>
+	is 0 no rows are updated.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-UPDATE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> changes the values of the columns specified for
+   all rows which satisfy condition. Only the columns 
+   to be modified need appear as columns in the statement.
+  </P
+><P
+>   Array references use the same syntax found in
+   <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>.
+   That is, either single array elements, a range of array
+   elements or the entire array may be replaced with a single
+   query.
+  </P
+><P
+>   You must have write access to the table in order to modify
+   it, as well as read access to any table whose values are
+   mentioned in the WHERE condition.
+  </P
+><P
+>  By default UPDATE will update tuples in the table specified 
+  and all its sub-tables. If you wish to only update the
+  specific table mentioned, you should use the ONLY clause.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-UPDATE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Change word <TT
+CLASS="LITERAL"
+>Drama</TT
+> with <TT
+CLASS="LITERAL"
+>Dramatic</TT
+> on column <TT
+CLASS="STRUCTFIELD"
+>kind</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE films 
+SET kind = 'Dramatic' 
+WHERE kind = 'Drama';
+SELECT * 
+FROM films 
+WHERE kind = 'Dramatic' OR kind = 'Drama';
+
+ code  |     title     | did | date_prod  |   kind   | len
+-------+---------------+-----+------------+----------+-------
+ BL101 | The Third Man | 101 | 1949-12-23 | Dramatic | 01:44
+ P_302 | Becket        | 103 | 1964-02-03 | Dramatic | 02:28
+ M_401 | War and Peace | 104 | 1967-02-12 | Dramatic | 05:57
+ T_601 | Yojimbo       | 106 | 1961-06-16 | Dramatic | 01:50
+ DA101 | Das Boot      | 110 | 1981-11-11 | Dramatic | 02:29</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-UPDATE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-UPDATE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> defines a different syntax for
+    the positioned UPDATE statement:
+
+    </P><PRE
+CLASS="SYNOPSIS"
+>UPDATE <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> SET <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> = <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [, ...]
+    WHERE CURRENT OF <TT
+CLASS="REPLACEABLE"
+><I
+>cursor</I
+></TT
+>
+    </PRE
+><P>
+
+    where <TT
+CLASS="REPLACEABLE"
+><I
+>cursor</I
+></TT
+>
+    identifies an open cursor.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-unlisten.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-vacuum.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>UNLISTEN</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>VACUUM</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

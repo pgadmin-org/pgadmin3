@@ -1,0 +1,408 @@
+<HTML
+><HEAD
+><TITLE
+>SHOW</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="SET TRANSACTION"
+HREF="sql-set-transaction.html"><LINK
+REL="NEXT"
+TITLE="START TRANSACTION"
+HREF="sql-start-transaction.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-set-transaction.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-start-transaction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-SHOW"
+>SHOW</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN46003"
+></A
+><H2
+>Name</H2
+>SHOW&nbsp;--&nbsp;show the value of a run-time parameter</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN46006"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SHOW <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+  </PRE
+><PRE
+CLASS="SYNOPSIS"
+>SHOW ALL
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-SHOW-1"
+></A
+><H3
+>Inputs</H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>        The name of a run-time parameter. See
+	<A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+>
+        for a list.
+       </P
+></DD
+><DT
+>ALL</DT
+><DD
+><P
+>        Show all current session parameters.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SHOW-1"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>SHOW</TT
+> will display the current setting of a
+   run-time parameter. These variables can be set using the
+   <TT
+CLASS="COMMAND"
+>SET</TT
+> statement, by editing the
+   <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>, through the
+   <TT
+CLASS="ENVAR"
+>PGOPTIONS</TT
+> environmental variable, or through a
+   command-line flag when starting the
+   <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>.
+  </P
+><P
+>   Even with <TT
+CLASS="LITERAL"
+>autocommit</TT
+> set to <TT
+CLASS="LITERAL"
+>off</TT
+>, <TT
+CLASS="COMMAND"
+>SHOW</TT
+>
+   does not start a new transaction block. See the
+   <TT
+CLASS="LITERAL"
+>autocommit</TT
+> section of the <I
+CLASS="CITETITLE"
+>Administrator's
+   Guide</I
+> for details.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46038"
+></A
+><H2
+>Diagnostics</H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR: Option '<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>'
+	  is not recognized</TT
+></DT
+><DD
+><P
+>	Message returned if <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> does
+	not stand for an existing parameter.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SHOW-2"
+></A
+><H2
+>Examples</H2
+><P
+>   Show the current <TT
+CLASS="LITERAL"
+>DateStyle</TT
+> setting:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SHOW DateStyle;
+               DateStyle
+---------------------------------------
+ ISO with US (NonEuropean) conventions
+(1 row)</PRE
+><P>
+  </P
+><P
+>   Show the current genetic optimizer (<TT
+CLASS="LITERAL"
+>geqo</TT
+>) setting:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SHOW GEQO;
+ geqo
+------
+ on
+(1 row)</PRE
+><P>
+  </P
+><P
+>   Show all settings:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SHOW ALL;
+             name              |                setting
+-------------------------------+---------------------------------------
+ australian_timezones          | off
+ authentication_timeout        | 60
+ checkpoint_segments           | 3
+    .
+    .
+    .
+ wal_debug                     | 0
+ wal_sync_method               | fdatasync
+(94 rows)</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SHOW-3"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>SHOW</TT
+> command is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN46064"
+></A
+><H2
+>See Also</H2
+><P
+>    The function <TT
+CLASS="FUNCTION"
+>current_setting</TT
+> produces equivalent
+    output. See <I
+CLASS="CITETITLE"
+>Miscellaneous Functions</I
+> in the
+    <I
+CLASS="CITETITLE"
+>PostgreSQL User's Guide</I
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-transaction.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-start-transaction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SET TRANSACTION</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>START TRANSACTION</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

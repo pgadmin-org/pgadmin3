@@ -1,0 +1,601 @@
+<HTML
+><HEAD
+><TITLE
+>ALTER USER</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="   ALTER TRIGGER
+  "
+HREF="sql-altertrigger.html"><LINK
+REL="NEXT"
+TITLE="ANALYZE"
+HREF="sql-analyze.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-altertrigger.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-analyze.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERUSER"
+>ALTER USER</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN37722"
+></A
+><H2
+>Name</H2
+>ALTER USER&nbsp;--&nbsp;change a database user account</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN37725"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER USER <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> [ [ WITH ] <TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+> [ ... ] ]
+
+where <TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+> can be:
+
+      [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<TT
+CLASS="REPLACEABLE"
+><I
+>password</I
+></TT
+>' 
+    | CREATEDB | NOCREATEDB
+    | CREATEUSER | NOCREATEUSER 
+    | VALID UNTIL '<TT
+CLASS="REPLACEABLE"
+><I
+>abstime</I
+></TT
+>'
+
+ALTER USER <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> SET <TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+> { TO | = } { <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> | DEFAULT }
+ALTER USER <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> RESET <TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37737"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER USER</TT
+> is used to change the attributes of a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account.  Attributes not
+   mentioned in the command retain their previous settings.
+  </P
+><P
+>   The first variant of this command in the synopsis changes certain
+   global user privileges and authentication settings.  (See below for
+   details.)  Only a database superuser can change privileges and
+   password expiration with this command.  Ordinary users can only
+   change their own password.
+  </P
+><P
+>   The second and the third variant change a user's session default for
+   a specified configuration variable.  Whenever the user subsequently
+   starts a new session, the specified value becomes the session default,
+   overriding whatever setting is present in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>
+   or has been received from the postmaster.
+   Ordinary users can change their own session defaults.
+   Superusers can change anyone's session defaults.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN37745"
+></A
+><H3
+>Parameters</H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></DT
+><DD
+><P
+>	The name of the user whose attributes are to be altered.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>password</I
+></TT
+></DT
+><DD
+><P
+>	The new password to be used for this account.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>ENCRYPTED</TT
+><BR><TT
+CLASS="LITERAL"
+>UNENCRYPTED</TT
+></DT
+><DD
+><P
+>	These key words control whether the password is stored
+	encrypted in <TT
+CLASS="LITERAL"
+>pg_shadow</TT
+>.  (See
+	<A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+>
+	for more information about this choice.)
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CREATEDB</TT
+><BR><TT
+CLASS="LITERAL"
+>NOCREATEDB</TT
+></DT
+><DD
+><P
+>	These clauses define a user's ability to create databases.  If
+	<TT
+CLASS="LITERAL"
+>CREATEDB</TT
+> is specified, the user being
+	defined will be allowed to create his own databases. Using
+	<TT
+CLASS="LITERAL"
+>NOCREATEDB</TT
+> will deny a user the ability to
+	create databases.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CREATEUSER</TT
+><BR><TT
+CLASS="LITERAL"
+>NOCREATEUSER</TT
+></DT
+><DD
+><P
+>	These clauses determine whether a user will be permitted to
+	create new users himself. This option will also make the user
+	a superuser who can override all access restrictions.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>abstime</I
+></TT
+></DT
+><DD
+><P
+>	The date (and, optionally, the time)
+	at which this user's password is to expire.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+></DT
+><DD
+><P
+>        Set this user's session default for the specified configuration
+        variable to the given value.  If
+        <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> is <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+>
+        or, equivalently, <TT
+CLASS="LITERAL"
+>RESET</TT
+> is used, the
+        user-specific variable setting is removed and the user will
+        inherit the system-wide default setting in new sessions.  Use
+        <TT
+CLASS="LITERAL"
+>RESET ALL</TT
+> to clear all settings.
+       </P
+><P
+>        See <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> and the
+        <I
+CLASS="CITETITLE"
+>Administrator's Guide</I
+> for more
+        information about allowed variable names and values.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37803"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ALTER USER</TT
+></DT
+><DD
+><P
+>       Message returned if the alteration was successful.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  ALTER USER: user "username" does not exist</TT
+></DT
+><DD
+><P
+>       Error message returned if the specified user is not known to
+       the database.
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37817"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+>
+   to add new users, and <A
+HREF="sql-dropuser.html"
+><I
+>DROP USER</I
+></A
+> to remove a user.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER USER</TT
+> cannot change a user's group memberships.
+   Use <A
+HREF="sql-altergroup.html"
+><I
+>ALTER GROUP</I
+></A
+>
+   to do that.
+  </P
+><P
+>   Using <A
+HREF="sql-alterdatabase.html"
+><I
+>ALTER DATABASE</I
+></A
+>, it is also possible to tie a
+   session default to a specific database rather than a user.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37827"
+></A
+><H2
+>Examples</H2
+><P
+>   Change a user password:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER USER davide WITH PASSWORD 'hu8jmn3';</PRE
+><P>
+  </P
+><P
+>   Change a user's valid until date:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER USER manuel VALID UNTIL 'Jan 31 2030';</PRE
+><P>
+  </P
+><P
+>   Change a user's valid until date, specifying that his
+   authorization should expire at midday on 4th May 1998 using
+   the time zone which is one hour ahead of <SPAN
+CLASS="ACRONYM"
+>UTC</SPAN
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER USER chris VALID UNTIL 'May 4 12:00:00 1998 +1';</PRE
+><P>
+  </P
+><P
+>   Give a user the ability to create other users and new databases:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER USER miriam CREATEUSER CREATEDB;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37838"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>ALTER USER</TT
+> statement is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.  The SQL standard
+   leaves the definition of users to the implementation.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37843"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+>, <A
+HREF="sql-dropuser.html"
+><I
+>DROP USER</I
+></A
+>, <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altertrigger.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-analyze.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER TRIGGER</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ANALYZE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

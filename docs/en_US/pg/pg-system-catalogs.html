@@ -1,0 +1,485 @@
+<HTML
+><HEAD
+><TITLE
+>About the PostgreSQL System Catalogs</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Extending SQL: An Overview"
+HREF="extend.html"><LINK
+REL="PREVIOUS"
+TITLE="The PostgreSQL Type System"
+HREF="type-system.html"><LINK
+REL="NEXT"
+TITLE="Extending SQL: Functions"
+HREF="xfunc.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="type-system.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: An Overview</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xfunc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PG-SYSTEM-CATALOGS"
+>8.3. About the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> System Catalogs</A
+></H1
+><A
+NAME="AEN31248"
+></A
+><P
+>    Having  introduced the basic extensibility concepts, we
+    can now take a look at how the  catalogs  are  actually
+    laid  out.  You can skip this section for now, but some
+    later sections will  be  incomprehensible  without  the
+    information  given  here,  so  mark this page for later
+    reference.
+    All system catalogs have names  that  begin  with
+    <TT
+CLASS="LITERAL"
+>pg_</TT
+>.
+    The  following  tables contain information that may be
+    useful to the end user.  (There are many  other  system
+    catalogs,  but there should rarely be a reason to query
+    them directly.)
+
+    <DIV
+CLASS="TABLE"
+><A
+NAME="AEN31252"
+></A
+><P
+><B
+>Table 8-1. PostgreSQL System Catalogs</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Catalog Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_database</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> databases</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> tables</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_attribute</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> table columns</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_index</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> indexes</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> procedures/functions </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> data types (both base and complex)</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> operators</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_aggregate</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> aggregate functions</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_am</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> access methods</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_amop</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> access method operators</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_amproc</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> access method support functions</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_opclass</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> access method operator classes</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+>
+   </P
+><P
+>    <DIV
+CLASS="FIGURE"
+><A
+NAME="EXTEND-CATALOGS"
+></A
+><P
+><B
+>Figure 8-1. The major <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> system catalogs</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="catalogs.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+
+    The <I
+CLASS="CITETITLE"
+>Developer's Guide</I
+> gives a more detailed  explanation
+    of  these catalogs and their columns.  However,
+    <A
+HREF="pg-system-catalogs.html#EXTEND-CATALOGS"
+>Figure 8-1</A
+>
+    shows the major entities and their  relationships
+    in  the system catalogs.  (Columns that do not refer
+    to other entities are not shown unless they are part of
+    a primary key.)
+    This diagram is more or less incomprehensible until you
+    actually start looking at the contents of the  catalogs
+    and  see  how  they relate to each other.  For now, the
+    main things to take away from this diagram are as  follows:
+     
+    <P
+></P
+></P><UL
+COMPACT="COMPACT"
+><LI
+STYLE="list-style-type: disc"
+><P
+>       In  several of the sections that follow, we will
+       present various join queries on the system 
+       catalogs  that display information we need to extend
+       the system.  Looking at this diagram should make
+       some  of  these  join  queries  (which are often
+       three- or four-way joins)  more  understandable,
+       because  you  will  be  able  to  see  that  the
+       columns used in the queries form foreign keys
+       in other tables.
+      </P
+></LI
+><LI
+STYLE="list-style-type: disc"
+><P
+>       Many  different  features  (tables, columns,
+       functions,  types,  access  methods,  etc.)  are
+       tightly  integrated  in  this  schema.  A simple
+       create command may modify many  of  these  catalogs.
+      </P
+></LI
+><LI
+STYLE="list-style-type: disc"
+><P
+>       Types and procedures
+       are central to the schema.
+
+       </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	 We  use  the words <I
+CLASS="FIRSTTERM"
+>procedure</I
+>
+	 and <I
+CLASS="FIRSTTERM"
+>function</I
+> more or less interchangeably.
+	</P
+></BLOCKQUOTE
+></DIV
+><P>
+
+       Nearly  every catalog contains some reference to
+       rows in one or both of these tables.   For
+       example,  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>  frequently  uses type 
+       signatures (e.g.,  of  functions  and  operators)  to
+       identify unique rows of other catalogs.
+      </P
+></LI
+><LI
+STYLE="list-style-type: disc"
+><P
+>       There are many columns and relationships that
+       have obvious meanings, but there are many  
+       (particularly  those  that  have  to  do with access
+       methods) that do not.
+      </P
+></LI
+></UL
+><P>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="type-system.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xfunc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Type System</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="extend.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

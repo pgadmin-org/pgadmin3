@@ -1,0 +1,250 @@
+<HTML
+><HEAD
+><TITLE
+>Table Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Extending SQL: Functions"
+HREF="xfunc.html"><LINK
+REL="PREVIOUS"
+TITLE="Function Overloading"
+HREF="xfunc-overload.html"><LINK
+REL="NEXT"
+TITLE="Procedural Language Handlers"
+HREF="xfunc-plhandler.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xfunc-overload.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Functions</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xfunc-plhandler.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XFUNC-TABLEFUNCTIONS"
+>9.7. Table Functions</A
+></H1
+><A
+NAME="AEN32292"
+></A
+><P
+>    Table functions are functions that produce a set of rows, made up of
+    either base (scalar) data types, or composite (multi-column) data types.
+    They are used like a table, view, or subselect in the <TT
+CLASS="LITERAL"
+>FROM</TT
+>
+    clause of a query. Columns returned by table functions may be included in
+    <TT
+CLASS="LITERAL"
+>SELECT</TT
+>, <TT
+CLASS="LITERAL"
+>JOIN</TT
+>, or <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clauses in the
+    same manner as a table, view, or subselect column.
+   </P
+><P
+>    If a table function returns a base data type, the single result column
+    is named for the function. If the function returns a composite type, the
+    result columns get the same names as the individual attributes of the type.
+   </P
+><P
+>    A table function may be aliased in the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause, but it also
+    may be left unaliased. If a function is used in the FROM clause with no
+    alias, the function name is used as the relation name.
+   </P
+><P
+>    Table functions work wherever tables do in <TT
+CLASS="LITERAL"
+>SELECT</TT
+> statements.
+    For example
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE foo (fooid int, foosubid int, fooname text);
+
+CREATE FUNCTION getfoo(int) RETURNS setof foo AS '
+    SELECT * FROM foo WHERE fooid = $1;
+' LANGUAGE SQL;
+
+SELECT * FROM getfoo(1) AS t1;
+
+SELECT * FROM foo
+WHERE foosubid in (select foosubid from getfoo(foo.fooid) z
+                   where z.fooid = foo.fooid);
+
+CREATE VIEW vw_getfoo AS SELECT * FROM getfoo(1);
+SELECT * FROM vw_getfoo;</PRE
+><P>
+    are all valid statements.
+   </P
+><P
+>    In some cases it is useful to define table functions that can return
+    different column sets depending on how they are invoked.  To support this,
+    the table function can be declared as returning the pseudo-type
+    <TT
+CLASS="TYPE"
+>record</TT
+>.  When such a function is used in a query, the expected
+    row structure must be specified in the query itself, so that the system
+    can know how to parse and plan the query.  Consider this example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT *
+FROM dblink('dbname=template1', 'select proname, prosrc from pg_proc')
+  AS t1(proname name, prosrc text)
+WHERE proname LIKE 'bytea%';</PRE
+><P>
+    The <TT
+CLASS="LITERAL"
+>dblink</TT
+> function executes a remote query (see
+    <TT
+CLASS="LITERAL"
+>contrib/dblink</TT
+>).  It is declared to return <TT
+CLASS="TYPE"
+>record</TT
+>
+    since it might be used for any kind of query.  The actual column set
+    must be specified in the calling query so that the parser knows, for
+    example, what <TT
+CLASS="LITERAL"
+>*</TT
+> should expand to.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xfunc-overload.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xfunc-plhandler.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Function Overloading</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="xfunc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Procedural Language Handlers</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,363 @@
+<HTML
+><HEAD
+><TITLE
+>DROP TABLE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP SEQUENCE"
+HREF="sql-dropsequence.html"><LINK
+REL="NEXT"
+TITLE="DROP TRIGGER"
+HREF="sql-droptrigger.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-dropsequence.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-droptrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPTABLE"
+>DROP TABLE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN43208"
+></A
+><H2
+>Name</H2
+>   DROP TABLE
+  &nbsp;--&nbsp;   remove a table
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN43211"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [, ...] [ CASCADE | RESTRICT ]
+
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPTABLE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of an existing table to drop.
+       </P
+></DD
+><DT
+>CASCADE</DT
+><DD
+><P
+>        Automatically drop objects that depend on the table
+	(such as views).
+       </P
+></DD
+><DT
+>RESTRICT</DT
+><DD
+><P
+>        Refuse to drop the table if there are any dependent objects.
+	This is the default.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPTABLE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DROP TABLE
+       </TT
+></DT
+><DD
+><P
+>	The message returned if the command completes successfully.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR: table "<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>" does not exist
+       </TT
+></DT
+><DD
+><P
+>	If the specified table does not exist in the database.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPTABLE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP TABLE</TT
+> removes tables from the database.
+   Only its owner may destroy a table. A table may be emptied of rows, but not
+   destroyed, by using <TT
+CLASS="COMMAND"
+>DELETE</TT
+>.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP TABLE</TT
+> always removes any indexes, rules,
+   triggers, and constraints that exist for the target table.  However,
+   to drop a table that is referenced by a foreign-key constraint of another
+   table, CASCADE must be specified. (CASCADE will remove the foreign-key
+   constraint, not the other table itself.)
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPTABLE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    Refer to <TT
+CLASS="COMMAND"
+>CREATE TABLE</TT
+> and
+    <TT
+CLASS="COMMAND"
+>ALTER TABLE</TT
+> for information on
+    how to create or modify tables.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPTABLE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To destroy two tables, <TT
+CLASS="LITERAL"
+>films</TT
+> and 
+   <TT
+CLASS="LITERAL"
+>distributors</TT
+>:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>DROP TABLE films, distributors;
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPTABLE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPTABLE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropsequence.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-droptrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP SEQUENCE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP TRIGGER</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,495 @@
+<HTML
+><HEAD
+><TITLE
+>Using the Driver</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="JDBC Interface"
+HREF="jdbc.html"><LINK
+REL="PREVIOUS"
+TITLE="JDBC Interface"
+HREF="jdbc.html"><LINK
+REL="NEXT"
+TITLE="Issuing a Query and Processing the Result"
+HREF="jdbc-query.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="jdbc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Interface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="jdbc-query.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JDBC-USE"
+>5.2. Using the Driver</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-IMPORT"
+>5.2.1. Importing <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+></A
+></H2
+><P
+>    Any source that uses <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> needs to import the
+    <TT
+CLASS="LITERAL"
+>java.sql</TT
+> package, using:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>import java.sql.*;</PRE
+><P>
+
+    <DIV
+CLASS="IMPORTANT"
+><BLOCKQUOTE
+CLASS="IMPORTANT"
+><P
+><B
+>Important: </B
+>      Do not import the <TT
+CLASS="LITERAL"
+>org.postgresql</TT
+> package. If
+      you do, your source will not compile, as
+      <TT
+CLASS="COMMAND"
+>javac</TT
+> will get confused.
+     </P
+></BLOCKQUOTE
+></DIV
+>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-LOAD"
+>5.2.2. Loading the Driver</A
+></H2
+><P
+>    Before you can connect to a database, you need to load the
+    driver. There are two methods available, and it depends on your
+    code which is the best one to use.
+   </P
+><P
+>    In the first method, your code implicitly loads the driver using the
+    <TT
+CLASS="FUNCTION"
+>Class.forName()</TT
+> method.
+    For <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, you would use:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Class.forName("org.postgresql.Driver");</PRE
+><P>
+
+    This will load the driver, and while loading, the driver will automatically
+    register itself with <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+>.
+
+    </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      The <TT
+CLASS="FUNCTION"
+>forName()</TT
+> method can throw a
+      <TT
+CLASS="CLASSNAME"
+>ClassNotFoundException</TT
+> if the driver is
+      not available.
+     </P
+></BLOCKQUOTE
+></DIV
+><P>
+   </P
+><P
+>    This is the most common method to use, but restricts your code to
+    use just <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  If your code may
+    access another database system in the future, and you do not use
+    any <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>-specific extensions, then
+    the second method is advisable.
+   </P
+><P
+>    The second method passes the driver as a parameter to the
+    <SPAN
+CLASS="ACRONYM"
+>JVM</SPAN
+> as it starts, using the <TT
+CLASS="OPTION"
+>-D</TT
+>
+    argument. Example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>java -Djdbc.drivers=org.postgresql.Driver example.ImageViewer</PRE
+><P>
+    In this example, the <SPAN
+CLASS="ACRONYM"
+>JVM</SPAN
+> will attempt to load
+    the driver as part of its initialization. Once done, the
+    <TT
+CLASS="CLASSNAME"
+>ImageViewer</TT
+> is started.
+   </P
+><P
+>    Now, this method is the better one to use because it allows your
+    code to be used with other database packages without recompiling
+    the code. The only thing that would also change is the connection
+    <SPAN
+CLASS="ACRONYM"
+>URL</SPAN
+>, which is covered next.
+   </P
+><P
+>    One last thing: When your code then tries to open a
+    <TT
+CLASS="CLASSNAME"
+>Connection</TT
+>, and you get a <SPAN
+CLASS="ERRORNAME"
+>No
+    driver available</SPAN
+> <TT
+CLASS="CLASSNAME"
+>SQLException</TT
+>
+    being thrown, this is probably caused by the driver not being in
+    the class path, or the value in the parameter not being correct.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-CONNECT"
+>5.2.3. Connecting to the Database</A
+></H2
+><P
+>    With <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+>, a database is represented by a
+    <SPAN
+CLASS="ACRONYM"
+>URL</SPAN
+> (Uniform Resource Locator).  With
+    <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+>, this takes one of the
+    following forms:
+
+    <P
+></P
+></P><UL
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>jdbc:postgresql:<TT
+CLASS="REPLACEABLE"
+><I
+>database</I
+></TT
+></PRE
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>jdbc:postgresql://<TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>database</I
+></TT
+></PRE
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>jdbc:postgresql://<TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+>:<TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>database</I
+></TT
+></PRE
+></LI
+></UL
+><P>
+
+    where:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></DT
+><DD
+><P
+>        The host name of the server. Defaults to <TT
+CLASS="LITERAL"
+>localhost</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></DT
+><DD
+><P
+>        The port number the server is listening on. Defaults to the
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> standard port number (5432).
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>database</I
+></TT
+></DT
+><DD
+><P
+>        The database name.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    To connect, you need to get a <TT
+CLASS="CLASSNAME"
+>Connection</TT
+> instance from 
+    <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+>. To do this,
+    you would use the <TT
+CLASS="FUNCTION"
+>DriverManager.getConnection()</TT
+> method:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Connection db = DriverManager.getConnection(url, username, password);</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-DISCONNECT"
+>5.2.4. Closing the Connection</A
+></H2
+><P
+>    To close the database connection, simply call the
+    <TT
+CLASS="FUNCTION"
+>close()</TT
+> method to the <TT
+CLASS="CLASSNAME"
+>Connection</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>db.close();</PRE
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="jdbc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="jdbc-query.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Interface</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="jdbc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Issuing a Query and Processing the Result</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

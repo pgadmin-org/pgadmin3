@@ -1,0 +1,396 @@
+<HTML
+><HEAD
+><TITLE
+>WAL Configuration</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Write-Ahead Logging (WAL)"
+HREF="wal.html"><LINK
+REL="PREVIOUS"
+TITLE="Implementation"
+HREF="wal-implementation.html"><LINK
+REL="NEXT"
+TITLE="Regression Tests"
+HREF="regress.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="wal-implementation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 12. Write-Ahead Logging (<SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="regress.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="WAL-CONFIGURATION"
+>12.3. <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> Configuration</A
+></H1
+><P
+>   There are several <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>-related parameters that
+   affect database performance. This section explains their use.
+   Consult <A
+HREF="runtime-config.html"
+>Section 3.4</A
+> for details about setting
+   configuration parameters.
+  </P
+><P
+>   <I
+CLASS="FIRSTTERM"
+>Checkpoints</I
+> are points in the sequence of
+   transactions at which it is guaranteed that the data files have
+   been updated with all information logged before the checkpoint.  At
+   checkpoint time, all dirty data pages are flushed to disk and a
+   special checkpoint record is written to the log file. As result, in
+   the event of a crash, the recoverer knows from what record in the
+   log (known as the redo record) it should start the REDO operation,
+   since any changes made to data files before that record are already
+   on disk. After a checkpoint has been made, any log segments written
+   before the undo records are no longer needed and can be recycled or
+   removed. (When <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>-based <SPAN
+CLASS="ACRONYM"
+>BAR</SPAN
+> is
+   implemented, the log segments would be archived before being recycled
+   or removed.)
+  </P
+><P
+>   The postmaster spawns a special backend process every so often
+   to create the next checkpoint.  A checkpoint is created every
+   <TT
+CLASS="VARNAME"
+>CHECKPOINT_SEGMENTS</TT
+> log segments, or every
+   <TT
+CLASS="VARNAME"
+>CHECKPOINT_TIMEOUT</TT
+> seconds, whichever comes first.
+   The default settings are 3 segments and 300 seconds respectively.
+   It is also possible to force a checkpoint by using the SQL command
+   <TT
+CLASS="COMMAND"
+>CHECKPOINT</TT
+>.
+  </P
+><P
+>   Reducing <TT
+CLASS="VARNAME"
+>CHECKPOINT_SEGMENTS</TT
+> and/or
+   <TT
+CLASS="VARNAME"
+>CHECKPOINT_TIMEOUT</TT
+> causes checkpoints to be done
+   more often. This allows faster after-crash recovery (since less work
+   will need to be redone). However, one must balance this against the
+   increased cost of flushing dirty data pages more often. In addition,
+   to ensure data page consistency, the first modification of a data
+   page after each checkpoint results in logging the entire page
+   content. Thus a smaller checkpoint interval increases the volume of
+   output to the log, partially negating the goal of using a smaller
+   interval, and in any case causing more disk I/O.
+  </P
+><P
+>   There will be at least one 16MB segment file, and will normally 
+   not be more than 2 * <TT
+CLASS="VARNAME"
+>CHECKPOINT_SEGMENTS</TT
+>
+   + 1 files.  You can use this to estimate space requirements for 
+   WAL.  Ordinarily, when old log segment files are no longer needed, 
+   they are recycled (renamed to become the next sequential future 
+   segments). If, due to a short-term peak of log output rate, there 
+   are more than 2 * <TT
+CLASS="VARNAME"
+>CHECKPOINT_SEGMENTS</TT
+> + 1 segment files, 
+   the unneeded segment files will be deleted instead of recycled until the
+   system gets back under this limit.
+  </P
+><P
+>   There are two commonly used <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> functions:
+   <TT
+CLASS="FUNCTION"
+>LogInsert</TT
+> and <TT
+CLASS="FUNCTION"
+>LogFlush</TT
+>.
+   <TT
+CLASS="FUNCTION"
+>LogInsert</TT
+> is used to place a new record into
+   the <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> buffers in shared memory. If there is no
+   space for the new record, <TT
+CLASS="FUNCTION"
+>LogInsert</TT
+> will have
+   to write (move to kernel cache) a few filled <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>
+   buffers. This is undesirable because <TT
+CLASS="FUNCTION"
+>LogInsert</TT
+>
+   is used on every database low level modification (for example,
+   tuple insertion) at a time when an exclusive lock is held on
+   affected data pages, so the operation needs to be as fast as
+   possible.  What is worse, writing <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> buffers may
+   also force the creation of a new log segment, which takes even more
+   time. Normally, <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> buffers should be written
+   and flushed by a <TT
+CLASS="FUNCTION"
+>LogFlush</TT
+> request, which is
+   made, for the most part, at transaction commit time to ensure that
+   transaction records are flushed to permanent storage. On systems
+   with high log output, <TT
+CLASS="FUNCTION"
+>LogFlush</TT
+> requests may
+   not occur often enough to prevent <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> buffers
+   being written by <TT
+CLASS="FUNCTION"
+>LogInsert</TT
+>. On such systems
+   one should increase the number of <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> buffers by
+   modifying the <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> <TT
+CLASS="VARNAME"
+>   WAL_BUFFERS</TT
+> parameter. The default number of <SPAN
+CLASS="ACRONYM"
+>   WAL</SPAN
+> buffers is 8.  Increasing this value will 
+   correspondingly increase shared memory usage.
+  </P
+><P
+>   The <TT
+CLASS="VARNAME"
+>COMMIT_DELAY</TT
+> parameter defines for how many
+   microseconds the backend will sleep after writing a commit
+   record to the log with <TT
+CLASS="FUNCTION"
+>LogInsert</TT
+> but before
+   performing a <TT
+CLASS="FUNCTION"
+>LogFlush</TT
+>. This delay allows other
+   backends to add their commit records to the log so as to have all
+   of them flushed with a single log sync. No sleep will occur if <TT
+CLASS="VARNAME"
+>fsync</TT
+>
+   is not enabled or if fewer than <TT
+CLASS="VARNAME"
+>COMMIT_SIBLINGS</TT
+>
+   other backends are not currently in active transactions; this avoids
+   sleeping when it's unlikely that any other backend will commit soon.
+   Note that on most platforms, the resolution of a sleep request is
+   ten milliseconds, so that any nonzero <TT
+CLASS="VARNAME"
+>COMMIT_DELAY</TT
+>
+   setting between 1 and 10000 microseconds will have the same effect.
+   Good values for these parameters are not yet clear; experimentation
+   is encouraged.
+  </P
+><P
+>   The <TT
+CLASS="VARNAME"
+>WAL_SYNC_METHOD</TT
+> parameter determines how
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will ask the kernel to force
+    WAL updates out to disk. 
+   All the options should be the same as far as reliability goes,
+   but it's quite platform-specific which one will be the fastest.
+   Note that this parameter is irrelevant if <TT
+CLASS="VARNAME"
+>FSYNC</TT
+>
+   has been turned off.
+  </P
+><P
+>   Setting the <TT
+CLASS="VARNAME"
+>WAL_DEBUG</TT
+> parameter to any nonzero
+   value will result in each <TT
+CLASS="FUNCTION"
+>LogInsert</TT
+> and
+   <TT
+CLASS="FUNCTION"
+>LogFlush</TT
+> <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> call being
+   logged to standard error.  At present, it makes no difference what
+   the nonzero value is.  This option may be replaced by a more
+   general mechanism in the future.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="wal-implementation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="regress.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Implementation</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="wal.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Regression Tests</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

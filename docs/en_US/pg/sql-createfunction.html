@@ -1,0 +1,916 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE FUNCTION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="   CREATE DOMAIN
+  "
+HREF="sql-createdomain.html"><LINK
+REL="NEXT"
+TITLE="CREATE GROUP"
+HREF="sql-creategroup.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createdomain.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-creategroup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEFUNCTION"
+>CREATE FUNCTION</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39393"
+></A
+><H2
+>Name</H2
+>CREATE FUNCTION&nbsp;--&nbsp;define a new function</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN39396"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE [ OR REPLACE ] FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( [ <TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+> [, ...] ] )
+    RETURNS <TT
+CLASS="REPLACEABLE"
+><I
+>rettype</I
+></TT
+>
+  { LANGUAGE <TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+>
+    | IMMUTABLE | STABLE | VOLATILE
+    | CALLED ON NULL INPUT | RETURNS NULL ON NULL INPUT | STRICT
+    | [EXTERNAL] SECURITY INVOKER | [EXTERNAL] SECURITY DEFINER
+    | AS '<TT
+CLASS="REPLACEABLE"
+><I
+>definition</I
+></TT
+>'
+    | AS '<TT
+CLASS="REPLACEABLE"
+><I
+>obj_file</I
+></TT
+>', '<TT
+CLASS="REPLACEABLE"
+><I
+>link_symbol</I
+></TT
+>'
+  } ...
+    [ WITH ( <TT
+CLASS="REPLACEABLE"
+><I
+>attribute</I
+></TT
+> [, ...] ) ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATEFUNCTION-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> defines a new function.
+   <TT
+CLASS="COMMAND"
+>CREATE OR REPLACE FUNCTION</TT
+> will either create a
+   new function, or replace an existing definition.
+  </P
+><P
+>   The user that creates the function becomes the owner of the function.
+  </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>Parameters</B
+></P
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>       The name of a function to create.  If a schema name is included,
+       then the function is created in the
+       specified schema.  Otherwise it is created in the current schema (the
+       one at the front of the search path; see <TT
+CLASS="LITERAL"
+>CURRENT_SCHEMA()</TT
+>).
+       The name of the new function must not match any existing function
+       with the same argument types in the same schema.  However, functions of
+       different argument types may share a name (this is called
+       <I
+CLASS="FIRSTTERM"
+>overloading</I
+>).
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+></DT
+><DD
+><P
+>       The data type(s) of the function's arguments, if any.  The
+       input types may be base, complex, or domain types,
+       or the same as the type of an existing column.
+	The type of a column is referenced by writing <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>.<TT
+CLASS="REPLACEABLE"
+><I
+>columnname</I
+></TT
+><TT
+CLASS="LITERAL"
+>%TYPE</TT
+>;
+	using this can sometimes help make a function independent from
+	changes to the definition of a table.
+	Depending on the implementation language it may also be allowed
+	to specify <SPAN
+CLASS="QUOTE"
+>"pseudo-types"</SPAN
+> such as <TT
+CLASS="TYPE"
+>cstring</TT
+>.
+	Pseudo-types indicate that the actual argument type is either
+	incompletely specified, or outside the set of ordinary SQL data types.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>rettype</I
+></TT
+></DT
+><DD
+><P
+>       The return data type.  The return type may be specified as a
+       base, complex, or domain type, or the same as the type of an
+       existing column.
+       Depending on the implementation language it may also be allowed
+       to specify <SPAN
+CLASS="QUOTE"
+>"pseudo-types"</SPAN
+> such as <TT
+CLASS="TYPE"
+>cstring</TT
+>.
+       The <TT
+CLASS="LITERAL"
+>setof</TT
+>
+       modifier indicates that the function will return a set of
+       items, rather than a single item.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+></DT
+><DD
+><P
+>       The name of the language that the function is implemented in.
+       May be <TT
+CLASS="LITERAL"
+>SQL</TT
+>, <TT
+CLASS="LITERAL"
+>C</TT
+>,
+       <TT
+CLASS="LITERAL"
+>internal</TT
+>, or the name of a user-defined
+       procedural language.  (See also <A
+HREF="app-createlang.html"
+><I
+><I
+>createlang</I
+></I
+></A
+>.)  For backward compatibility,
+       the name may be enclosed by single quotes.
+      </P
+></DD
+><DT
+>IMMUTABLE<BR>STABLE<BR>VOLATILE</DT
+><DD
+><P
+>       These attributes inform the system whether it is safe to
+       replace multiple evaluations of the function with a single
+       evaluation, for run-time optimization.  At most one choice
+       should be specified.  If none of these appear,
+       <TT
+CLASS="LITERAL"
+>VOLATILE</TT
+> is the default assumption.
+      </P
+><P
+>       <TT
+CLASS="LITERAL"
+>IMMUTABLE</TT
+> indicates that the function always
+       returns the same result when given the same argument values; that
+       is, it does not do database lookups or otherwise use information not
+       directly present in its parameter list.  If this option is given,
+       any call of the function with all-constant arguments can be
+       immediately replaced with the function value.
+      </P
+><P
+>       <TT
+CLASS="LITERAL"
+>STABLE</TT
+> indicates that within a single table scan
+       the function will consistently
+       return the same result for the same argument values, but that its
+       result could change across SQL statements.  This is the appropriate
+       selection for functions whose results depend on database lookups,
+       parameter variables (such as the current time zone), etc.  Also note
+       that the <TT
+CLASS="LITERAL"
+>CURRENT_TIMESTAMP</TT
+> family of functions qualify
+       as stable, since their values do not change within a transaction.
+      </P
+><P
+>       <TT
+CLASS="LITERAL"
+>VOLATILE</TT
+> indicates that the function value can
+       change even within a single table scan, so no optimizations can be
+       made.  Relatively few database functions are volatile in this sense;
+       some examples are <TT
+CLASS="LITERAL"
+>random()</TT
+>, <TT
+CLASS="LITERAL"
+>currval()</TT
+>,
+       <TT
+CLASS="LITERAL"
+>timeofday()</TT
+>.  Note that any function that has side-effects
+       must be classified volatile, even if its result is quite predictable,
+       to prevent calls from being optimized away; an example is
+       <TT
+CLASS="LITERAL"
+>setval()</TT
+>.
+      </P
+></DD
+><DT
+>CALLED ON NULL INPUT<BR>RETURNS NULL ON NULL INPUT<BR>STRICT</DT
+><DD
+><P
+>       <TT
+CLASS="LITERAL"
+>CALLED ON NULL INPUT</TT
+> (the default) indicates
+       that the function will be called normally when some of its
+       arguments are null.  It is then the function author's
+       responsibility to check for null values if necessary and respond
+       appropriately.
+      </P
+><P
+>       <TT
+CLASS="LITERAL"
+>RETURNS NULL ON NULL INPUT</TT
+> or
+       <TT
+CLASS="LITERAL"
+>STRICT</TT
+> indicates that the function always
+       returns NULL whenever any of its arguments are NULL.  If this
+       parameter is specified, the function is not executed when there
+       are NULL arguments; instead a NULL result is assumed
+       automatically.
+      </P
+></DD
+><DT
+>[<SPAN
+CLASS="OPTIONAL"
+>EXTERNAL</SPAN
+>] SECURITY INVOKER<BR>[<SPAN
+CLASS="OPTIONAL"
+>EXTERNAL</SPAN
+>] SECURITY DEFINER</DT
+><DD
+><P
+>      <TT
+CLASS="LITERAL"
+>SECURITY INVOKER</TT
+> indicates that the function
+      is to be executed with the privileges of the user that calls it.
+      That is the default.  <TT
+CLASS="LITERAL"
+>SECURITY DEFINER</TT
+>
+      specifies that the function is to be executed with the
+      privileges of the user that created it.
+     </P
+><P
+>      The key word <TT
+CLASS="LITERAL"
+>EXTERNAL</TT
+> is present for SQL
+      compatibility but is optional since, unlike in SQL, this feature
+      does not only apply to external functions.
+     </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>definition</I
+></TT
+></DT
+><DD
+><P
+>       A string defining the function; the meaning depends on the
+       language.  It may be an internal function name, the path to an
+       object file, an SQL query, or text in a procedural language.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>obj_file</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>link_symbol</I
+></TT
+></DT
+><DD
+><P
+>       This form of the <TT
+CLASS="LITERAL"
+>AS</TT
+> clause is used for
+       dynamically linked C language functions when the function name
+       in the C language source code is not the same as the name of
+       the SQL function. The string <TT
+CLASS="REPLACEABLE"
+><I
+>obj_file</I
+></TT
+> is the name of the
+       file containing the dynamically loadable object, and
+       <TT
+CLASS="REPLACEABLE"
+><I
+>link_symbol</I
+></TT
+> is the
+       object's link symbol, that is, the name of the function in the C
+       language source code.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>attribute</I
+></TT
+></DT
+><DD
+><P
+>       The historical way to specify optional pieces of information
+       about the function.  The following attributes may appear here:
+
+      <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>isStrict</TT
+></DT
+><DD
+><P
+>          Equivalent to <TT
+CLASS="LITERAL"
+>STRICT</TT
+> or <TT
+CLASS="LITERAL"
+>RETURNS NULL ON NULL INPUT</TT
+>
+         </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>isCachable</TT
+></DT
+><DD
+><P
+>          <TT
+CLASS="LITERAL"
+>isCachable</TT
+> is an obsolete equivalent of
+          <TT
+CLASS="LITERAL"
+>IMMUTABLE</TT
+>; it's still accepted for
+          backwards-compatibility reasons.
+         </P
+></DD
+></DL
+></DIV
+><P>
+
+      Attribute names are not case-sensitive.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATEFUNCTION-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>    Refer to the chapter in the
+    <I
+CLASS="CITETITLE"
+>PostgreSQL Programmer's Guide</I
+>
+    on the topic of extending
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> via functions 
+    for further information on writing external functions.
+   </P
+><P
+>    The full <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> type syntax is allowed for
+    input arguments and return value. However, some details of the
+    type specification (e.g., the precision field for
+    <TT
+CLASS="TYPE"
+>numeric</TT
+> types) are the responsibility of the
+    underlying function implementation and are silently swallowed
+    (i.e., not recognized or
+    enforced) by the <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> command.
+   </P
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows function <I
+CLASS="FIRSTTERM"
+>overloading</I
+>;
+    that is, the same name can be used for several different functions
+    so long as they have distinct argument types.  This facility must
+    be used with caution for internal and C-language functions, however.    
+   </P
+><P
+>    Two <TT
+CLASS="LITERAL"
+>internal</TT
+>
+    functions cannot have the same C name without causing
+    errors at link time.  To get around that, give them different C names
+    (for example, use the argument types as part of the C names), then
+    specify those names in the AS clause of <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+>.
+    If the AS clause is left empty, then <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+>
+    assumes the C name of the function is the same as the SQL name.
+   </P
+><P
+>    Similarly, when overloading SQL function names with multiple C-language
+    functions, give
+    each C-language instance of the function a distinct name, then use
+    the alternative form of the <TT
+CLASS="COMMAND"
+>AS</TT
+> clause in the
+    <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> syntax to select the appropriate
+    C-language implementation of each overloaded SQL function.
+   </P
+><P
+>    When repeated <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> calls refer to
+    the same object file, the file is only loaded once.  To unload and
+    reload the file (perhaps during development), use the <A
+HREF="sql-load.html"
+><I
+>LOAD</I
+></A
+> command.
+   </P
+><P
+>    Use <TT
+CLASS="COMMAND"
+>DROP FUNCTION</TT
+>
+    to remove user-defined functions.
+   </P
+><P
+>    To update the definition of an existing function, use
+    <TT
+CLASS="COMMAND"
+>CREATE OR REPLACE FUNCTION</TT
+>.  Note that it is
+    not possible to change the name or argument types of a function
+    this way (if you tried, you'd just be creating a new, distinct
+    function).  Also, <TT
+CLASS="COMMAND"
+>CREATE OR REPLACE FUNCTION</TT
+>
+    will not let you change the return type of an existing function.
+    To do that, you must drop and re-create the function.
+   </P
+><P
+>    If you drop and then re-create a function, the new function is not
+    the same entity as the old; you will break existing rules, views,
+    triggers, etc that referred to the old function.  Use 
+    <TT
+CLASS="COMMAND"
+>CREATE OR REPLACE FUNCTION</TT
+> to change a function
+    definition without breaking objects that refer to the function.
+   </P
+><P
+>   To be able to define a function, the user must have the
+   <TT
+CLASS="LITERAL"
+>USAGE</TT
+> privilege on the language.
+  </P
+><P
+>   By default, only the owner (creator) of the function has the right
+   to execute it.  Other users must be granted the
+   <TT
+CLASS="LITERAL"
+>EXECUTE</TT
+> privilege on the function to be able to
+   use it.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATEFUNCTION-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To create a simple SQL function:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION one() RETURNS integer
+    AS 'SELECT 1 AS RESULT;'
+    LANGUAGE SQL;
+
+SELECT one() AS answer;
+<TT
+CLASS="COMPUTEROUTPUT"
+> answer 
+--------
+      1</TT
+></PRE
+><P>
+  </P
+><P
+>   The next example creates a C function by calling a routine from a
+   user-created shared library named <TT
+CLASS="FILENAME"
+>funcs.so</TT
+> (the extension
+   may vary across platforms).  The shared library file is sought in the
+   server's dynamic library search path.  This particular routine calculates
+   a check digit and returns true if the check digit in the function
+   parameters is correct.  It is intended for use in a CHECK
+   constraint.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION ean_checkdigit(char, char) RETURNS boolean
+    AS 'funcs' LANGUAGE C;
+    
+CREATE TABLE product (
+    id        char(8) PRIMARY KEY,
+    eanprefix char(8) CHECK (eanprefix ~ '[0-9]{2}-[0-9]{5}')
+                      REFERENCES brandname(ean_prefix),
+    eancode   char(6) CHECK (eancode ~ '[0-9]{6}'),
+    CONSTRAINT ean    CHECK (ean_checkdigit(eanprefix, eancode))
+);</PRE
+><P>
+  </P
+><P
+>   The next example creates a function that does type conversion from the
+   user-defined type complex to the built-in type point.  The
+   function is implemented by a dynamically loaded object that was
+   compiled from C source (we illustrate the now-deprecated alternative
+   of specifying the absolute file name to the shared object file).
+   For <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to
+   find a type conversion function automatically, the SQL function has
+   to have the same name as the return type, and so overloading is
+   unavoidable.  The function name is overloaded by using the second
+   form of the <TT
+CLASS="COMMAND"
+>AS</TT
+> clause in the SQL definition:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION point(complex) RETURNS point
+    AS '/home/bernie/pgsql/lib/complex.so', 'complex_to_point'
+    LANGUAGE C STRICT;</PRE
+><P>
+
+  The C declaration of the function could be:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Point * complex_to_point (Complex *z)
+{
+	Point *p;
+
+	p = (Point *) palloc(sizeof(Point));
+	p-&#62;x = z-&#62;x;
+	p-&#62;y = z-&#62;y;
+		
+	return p;
+}</PRE
+><P>
+
+   Note that the function is marked <SPAN
+CLASS="QUOTE"
+>"strict"</SPAN
+>; this allows us
+   to skip checking for NULL input in the function body.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATEFUNCTION-COMPAT"
+></A
+><H2
+>Compatibility</H2
+><P
+>   A <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> command is defined in SQL99.
+   The <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> version is similar but
+   not fully compatible.  The attributes are not portable, neither are the
+   different available languages.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATEFUNCTION-SEEALSO"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="sql-dropfunction.html"
+><I
+>DROP FUNCTION</I
+></A
+>,
+   <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+>,
+   <A
+HREF="sql-load.html"
+><I
+>LOAD</I
+></A
+>,
+   <A
+HREF="sql-revoke.html"
+><I
+>REVOKE</I
+></A
+>,
+   <A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+>,
+   <I
+CLASS="CITETITLE"
+>PostgreSQL Programmer's Guide</I
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createdomain.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-creategroup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE DOMAIN</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE GROUP</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

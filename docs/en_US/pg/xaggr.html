@@ -1,0 +1,332 @@
+<HTML
+><HEAD
+><TITLE
+>Extending SQL: Aggregates</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="Operator Optimization Information"
+HREF="xoper-optimization.html"><LINK
+REL="NEXT"
+TITLE="The Rule System"
+HREF="rules.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xoper-optimization.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="rules.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="XAGGR"
+>Chapter 12. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Aggregates</A
+></H1
+><A
+NAME="AEN32637"
+></A
+><P
+>   Aggregate functions  in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
+   are expressed as <I
+CLASS="FIRSTTERM"
+>state values</I
+>
+   and <I
+CLASS="FIRSTTERM"
+>state transition functions</I
+>.
+   That is,  an  aggregate  can  be
+   defined  in terms of state that is modified whenever an
+   input item is processed.  To define a new aggregate
+   function, one selects a data type for the state value,
+   an initial value for the state, and a state transition
+   function.  The state transition function is just an
+   ordinary function that could also be used outside the
+   context of the aggregate.  A <I
+CLASS="FIRSTTERM"
+>final function</I
+>
+   can also be specified, in case the desired output of the aggregate
+   is different from the data that needs to be kept in the running
+   state value.
+  </P
+><P
+>   Thus, in addition to the input and result data types seen by a user
+   of the aggregate, there is an internal state-value data type that
+   may be different from both the input and result types.
+  </P
+><P
+>   If we define an aggregate that does not use a final function,
+   we have an aggregate that computes a running function of
+   the column values from each row.  <TT
+CLASS="FUNCTION"
+>Sum</TT
+>  is  an
+   example  of  this  kind  of aggregate.  <TT
+CLASS="FUNCTION"
+>Sum</TT
+> starts at
+   zero and always adds the current  row's  value  to
+   its  running  total.  For example, if we want to make a <TT
+CLASS="FUNCTION"
+>sum</TT
+>
+   aggregate to work on a data type for complex numbers,
+   we only need the addition function for that data type.
+   The aggregate definition is:
+   
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE AGGREGATE complex_sum (
+    sfunc = complex_add,
+    basetype = complex,
+    stype = complex,
+    initcond = '(0,0)'
+);</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+>SELECT complex_sum(a) FROM test_complex;
+
+ complex_sum
+-------------
+ (34,53.9)</PRE
+><P>
+
+   (In practice, we'd just name the aggregate <TT
+CLASS="FUNCTION"
+>sum</TT
+>, and rely on
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to figure out which kind
+   of sum to apply to a column of type <TT
+CLASS="TYPE"
+>complex</TT
+>.)
+  </P
+><P
+>   The above definition of <TT
+CLASS="FUNCTION"
+>sum</TT
+> will return zero (the initial
+   state condition) if there are no non-null input values.
+   Perhaps we want to return NULL in that case instead --- the SQL standard
+   expects <TT
+CLASS="FUNCTION"
+>sum</TT
+> to behave that way.  We can do this simply by
+   omitting the <TT
+CLASS="LITERAL"
+>initcond</TT
+> phrase, so that the initial state
+   condition is NULL.  Ordinarily this would mean that the <TT
+CLASS="LITERAL"
+>sfunc</TT
+>
+   would need to check for a NULL state-condition input, but for
+   <TT
+CLASS="FUNCTION"
+>sum</TT
+> and some other simple aggregates like <TT
+CLASS="FUNCTION"
+>max</TT
+> and <TT
+CLASS="FUNCTION"
+>min</TT
+>,
+   it's sufficient to insert the first non-null input value into
+   the state variable and then start applying the transition function
+   at the second non-null input value.  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   will do that automatically if the initial condition is NULL and
+   the transition function is marked <SPAN
+CLASS="QUOTE"
+>"strict"</SPAN
+> (i.e., not to be called
+   for NULL inputs).
+  </P
+><P
+>   Another bit of default behavior for a <SPAN
+CLASS="QUOTE"
+>"strict"</SPAN
+> transition function
+   is that the previous state value is retained unchanged whenever a
+   NULL input value is encountered.  Thus, null values are ignored.  If you
+   need some other behavior for NULL inputs, just define your transition
+   function as non-strict, and code it to test for NULL inputs and do
+   whatever is needed.
+  </P
+><P
+>   <TT
+CLASS="FUNCTION"
+>Avg</TT
+> (average) is a more complex example of an aggregate.  It requires
+   two pieces of running state: the sum of the inputs and the count
+   of the number of inputs.  The final result is obtained by dividing
+   these quantities.  Average is typically implemented by using a
+   two-element array as the transition state value.  For example,
+   the built-in implementation of <TT
+CLASS="FUNCTION"
+>avg(float8)</TT
+>
+   looks like:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE AGGREGATE avg (
+    sfunc = float8_accum,
+    basetype = float8,
+    stype = float8[],
+    finalfunc = float8_avg,
+    initcond = '{0,0}'
+);</PRE
+><P>
+  </P
+><P
+>   For further details see the description of the <TT
+CLASS="COMMAND"
+>CREATE
+   AGGREGATE</TT
+> command in the <I
+CLASS="CITETITLE"
+>Reference
+   Manual</I
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xoper-optimization.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Operator Optimization Information</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The Rule System</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,718 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE RULE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE OPERATOR CLASS"
+HREF="sql-createopclass.html"><LINK
+REL="NEXT"
+TITLE="CREATE SCHEMA"
+HREF="sql-createschema.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createopclass.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createschema.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATERULE"
+>CREATE RULE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN40377"
+></A
+><H2
+>Name</H2
+>   CREATE RULE
+  &nbsp;--&nbsp;   define a new rewrite rule
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN40380"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE [ OR REPLACE ] RULE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> AS ON <TT
+CLASS="REPLACEABLE"
+><I
+>event</I
+></TT
+>
+    TO <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> ]
+    DO [ INSTEAD ] <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+>
+
+where <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+> can be:
+
+NOTHING
+| <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+>
+| ( <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+> ; <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+> ... )
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATERULE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name of a rule to create.  This must be distinct from the name
+	of any other rule for the same table.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>event</I
+></TT
+></DT
+><DD
+><P
+>	Event is one of <TT
+CLASS="LITERAL"
+>SELECT</TT
+>,
+	<TT
+CLASS="LITERAL"
+>UPDATE</TT
+>, <TT
+CLASS="LITERAL"
+>DELETE</TT
+>
+	or <TT
+CLASS="LITERAL"
+>INSERT</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of the table or view the rule
+	applies to.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+></DT
+><DD
+><P
+>	Any SQL conditional expression (returning <TT
+CLASS="TYPE"
+>boolean</TT
+>).
+	The condition expression may not
+	refer to any tables except <TT
+CLASS="LITERAL"
+>new</TT
+> and
+	<TT
+CLASS="LITERAL"
+>old</TT
+>, and may not contain aggregate functions.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+></DT
+><DD
+><P
+>        The query or queries making up the
+	<TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+>
+	can be any SQL <TT
+CLASS="LITERAL"
+>SELECT</TT
+>, <TT
+CLASS="LITERAL"
+>INSERT</TT
+>,
+	<TT
+CLASS="LITERAL"
+>UPDATE</TT
+>, <TT
+CLASS="LITERAL"
+>DELETE</TT
+>, or
+	<TT
+CLASS="LITERAL"
+>NOTIFY</TT
+> statement.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    Within the <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+>
+    and <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+>, the special
+    table names <TT
+CLASS="LITERAL"
+>new</TT
+> and <TT
+CLASS="LITERAL"
+>old</TT
+> may be
+    used to refer to values in the referenced table.
+    <TT
+CLASS="LITERAL"
+>new</TT
+> is valid in ON INSERT and ON UPDATE rules
+    to refer to the new row being inserted or updated.
+    <TT
+CLASS="LITERAL"
+>old</TT
+> is valid in ON UPDATE and ON DELETE
+    rules to refer to the existing row being updated or deleted.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATERULE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>CREATE RULE
+       </TT
+></DT
+><DD
+><P
+>	Message returned if the rule is successfully created.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATERULE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+> defines a new rule applying to a specified
+   table or view.
+   <TT
+CLASS="COMMAND"
+>CREATE OR REPLACE RULE</TT
+> will either create a
+   new rule, or replace an existing rule of the same name for the same
+   table.
+  </P
+><P
+>   The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
+   <I
+CLASS="FIRSTTERM"
+>rule system</I
+> allows one to define an
+   alternate action to be performed on inserts, updates, or deletions
+   from database tables. Rules are used to
+   implement table views as well.
+  </P
+><P
+>   The semantics of a rule is that at the time an individual instance (row)
+   is
+   accessed, inserted, updated, or deleted, there is an old instance (for
+   selects, updates and deletes) and a new instance (for inserts and
+   updates).  All the rules for the given event type and the given target
+   table are examined successively (in order by name).  If the
+   <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> specified in the
+   WHERE clause (if any) is true, the 
+   <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+> part of the rule is
+   executed.  The <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+> is
+   done instead of the original query if INSTEAD is specified; otherwise
+   it is done after the original query in the case of ON INSERT, or before
+   the original query in the case of ON UPDATE or ON DELETE.
+   Within both the <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+>
+   and <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+>, values from
+   fields in the old instance and/or the new instance are substituted for
+   <TT
+CLASS="LITERAL"
+>old.</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>attribute-name</I
+></TT
+>
+   and <TT
+CLASS="LITERAL"
+>new.</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>attribute-name</I
+></TT
+>.
+  </P
+><P
+>   The <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+> part of the
+   rule can consist of one or more queries. To write multiple queries,
+   surround them with parentheses. Such queries will be performed in the
+   specified order. The <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+> can also be NOTHING indicating
+   no action. Thus, a DO INSTEAD NOTHING rule suppresses the original
+   query from executing (when its condition is true); a DO NOTHING rule
+   is useless.
+  </P
+><P
+>   The <TT
+CLASS="REPLACEABLE"
+><I
+>action</I
+></TT
+> part of the rule
+   executes with the same command and transaction identifier as the user
+   command that caused activation.
+  </P
+><P
+>   It is important to realize that a rule is really a query transformation
+   mechanism, or query macro.  The entire query is processed to convert it
+   into a series of queries that include the rule actions.  This occurs
+   before evaluation of the query starts.  So, conditional rules are
+   handled by adding the rule condition to the WHERE clause of the action(s)
+   derived from the rule.  The above description of a rule as an operation
+   that executes for each row is thus somewhat misleading.  If you actually
+   want an operation that fires independently for each physical row, you
+   probably want to use a trigger not a rule.  Rules are most useful for
+   situations that call for transforming entire queries independently of
+   the specific data being handled.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATERULE-3"
+></A
+><H3
+>    Rules and Views
+   </H3
+><P
+>    Presently, ON SELECT rules must be unconditional INSTEAD rules and must
+    have actions that consist of a single SELECT query.  Thus, an ON SELECT
+    rule effectively turns the table into a view, whose visible
+    contents are the rows returned by the rule's SELECT query rather than
+    whatever had been stored in the table (if anything).  It is considered
+    better style to write a CREATE VIEW command than to create a real table
+    and define an ON SELECT rule for it.
+   </P
+><P
+>    <A
+HREF="sql-createview.html"
+><I
+>CREATE VIEW</I
+></A
+> creates a dummy table (with no underlying
+    storage) and associates an ON SELECT rule with it.  The system will not
+    allow updates to the view, since it knows there is no real table there.
+    You can create the
+    illusion of an updatable view by defining ON INSERT, ON UPDATE, and
+    ON DELETE rules (or any subset of those that's sufficient
+    for your purposes) to replace update actions on the view with
+    appropriate updates on other tables.
+   </P
+><P
+>    There is a catch if you try to use conditional
+    rules for view updates: there <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+> be an unconditional
+    INSTEAD rule for each action you wish to allow on the view.  If the
+    rule is conditional, or is not INSTEAD, then the system will still reject
+    attempts to perform the update action, because it thinks it might end up
+    trying to perform the action on the dummy table in some cases.
+    If you want to
+    handle all the useful cases in conditional rules, you can; just add an
+    unconditional DO INSTEAD NOTHING rule to ensure that the system
+    understands it will never be called on to update the dummy table.  Then
+    make the conditional rules non-INSTEAD; in the cases where they fire,
+    they add to the default INSTEAD NOTHING action.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATERULE-4"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    You must have rule definition access to a table in order
+    to define a rule on it. Use <TT
+CLASS="COMMAND"
+>GRANT</TT
+>
+    and <TT
+CLASS="COMMAND"
+>REVOKE</TT
+> to change permissions.
+   </P
+><P
+>    It is very important to take care to avoid circular rules.
+    For example, though each
+    of the following two rule definitions are accepted by
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, the
+    select command will cause <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to 
+    report an error because the query cycled too many times:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE RULE "_RETURN" AS
+    ON SELECT TO emp
+    DO INSTEAD 
+	SELECT * FROM toyemp;
+
+CREATE RULE "_RETURN" AS
+    ON SELECT TO toyemp
+    DO INSTEAD 
+	SELECT * FROM emp;</PRE
+><P>
+
+      This attempt to select from <TT
+CLASS="LITERAL"
+>EMP</TT
+> will cause
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to issue an error
+      because the queries cycled too many times:
+
+ </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM emp;</PRE
+><P>
+   </P
+><P
+>    Presently, if a rule contains a NOTIFY query, the NOTIFY will be executed
+    unconditionally --- that is, the NOTIFY will be issued even if there are
+    not any rows that the rule should apply to.  For example, in
+      </P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE RULE notify_me AS ON UPDATE TO mytable DO NOTIFY mytable;
+
+UPDATE mytable SET name = 'foo' WHERE id = 42;
+      </PRE
+><P>
+    one NOTIFY event will be sent during the UPDATE, whether or not there
+    are any rows with id = 42.  This is an implementation restriction that
+    may be fixed in future releases.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATERULE-4"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATERULE-5"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    language extension.
+    There is no <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+> statement in <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createopclass.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createschema.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE OPERATOR CLASS</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE SCHEMA</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

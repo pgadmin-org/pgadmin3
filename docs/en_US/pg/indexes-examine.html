@@ -1,0 +1,288 @@
+<HTML
+><HEAD
+><TITLE
+>Examining Index Usage</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Indexes"
+HREF="indexes.html"><LINK
+REL="PREVIOUS"
+TITLE="Partial Indexes"
+HREF="indexes-partial.html"><LINK
+REL="NEXT"
+TITLE="Concurrency Control"
+HREF="mvcc.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="indexes-partial.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mvcc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INDEXES-EXAMINE"
+>8.8. Examining Index Usage</A
+></H1
+><P
+>   Although indexes in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> do not need
+   maintenance and tuning, it is still important to check
+   which indexes are actually used by the real-life query workload.
+   Examining index usage is done with the <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+> command;
+   its application for this purpose is illustrated in <A
+HREF="performance-tips.html#USING-EXPLAIN"
+>Section 10.1</A
+>.
+  </P
+><P
+>   It is difficult to formulate a general procedure for determining
+   which indexes to set up.  There are a number of typical cases that
+   have been shown in the examples throughout the previous sections.
+   A good deal of experimentation will be necessary in most cases.
+   The rest of this section gives some tips for that.
+  </P
+><P
+></P
+><UL
+><LI
+><P
+>     Always run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> first.  This command
+     collects statistics about the distribution of the values in the
+     table.  This information is required to guess the number of rows
+     returned by a query, which is needed by the planner to assign
+     realistic costs to each possible query plan.  In absence of any
+     real statistics, some default values are assumed, which are
+     almost certain to be inaccurate.  Examining an application's
+     index usage without having run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> is
+     therefore a lost cause.
+    </P
+></LI
+><LI
+><P
+>     Use real data for experimentation.  Using test data for setting
+     up indexes will tell you what indexes you need for the test data,
+     but that is all.
+    </P
+><P
+>     It is especially fatal to use proportionally reduced data sets.
+     While selecting 1000 out of 100000 rows could be a candidate for
+     an index, selecting 1 out of 100 rows will hardly be, because the
+     100 rows will probably fit within a single disk page, and there
+     is no plan that can beat sequentially fetching 1 disk page.
+    </P
+><P
+>     Also be careful when making up test data, which is often
+     unavoidable when the application is not in production use yet.
+     Values that are very similar, completely random, or inserted in
+     sorted order will skew the statistics away from the distribution
+     that real data would have.
+    </P
+></LI
+><LI
+><P
+>     When indexes are not used, it can be useful for testing to force
+     their use.  There are run-time parameters that can turn off
+     various plan types (described in the <A
+HREF="admin.html"
+><I
+>PostgreSQL 7.3.3 Administrator's Guide</I
+></A
+>).
+     For instance, turning off sequential scans
+     (<TT
+CLASS="VARNAME"
+>enable_seqscan</TT
+>) and nested-loop joins
+     (<TT
+CLASS="VARNAME"
+>enable_nestloop</TT
+>), which are the most basic plans,
+     will force the system to use a different plan.  If the system
+     still chooses a sequential scan or nested-loop join then there is
+     probably a more fundamental problem for why the index is not
+     used, for example, the query condition does not match the index.
+     (What kind of query can use what kind of index is explained in
+     the previous sections.)
+    </P
+></LI
+><LI
+><P
+>     If forcing index usage does use the index, then there are two
+     possibilities: Either the system is right and using the index is
+     indeed not appropriate, or the cost estimates of the query plans
+     are not reflecting reality.  So you should time your query with
+     and without indexes.  The <TT
+CLASS="COMMAND"
+>EXPLAIN ANALYZE</TT
+>
+     command can be useful here.
+    </P
+></LI
+><LI
+><P
+>     If it turns out that the cost estimates are wrong, there are,
+     again, two possibilities.  The total cost is computed from the
+     per-row costs of each plan node times the selectivity estimate of
+     the plan node.  The costs of the plan nodes can be tuned with
+     run-time parameters (described in the <A
+HREF="admin.html"
+><I
+>PostgreSQL 7.3.3 Administrator's Guide</I
+></A
+>).
+     An inaccurate selectivity estimate is due to
+     insufficient statistics.  It may be possible to help this by
+     tuning the statistics-gathering parameters (see <TT
+CLASS="COMMAND"
+>ALTER
+     TABLE</TT
+> reference).
+    </P
+><P
+>     If you do not succeed in adjusting the costs to be more
+     appropriate, then you may have to resort to forcing index usage
+     explicitly.  You may also want to contact the
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> developers to examine the issue.
+    </P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-partial.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mvcc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Partial Indexes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="indexes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Concurrency Control</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

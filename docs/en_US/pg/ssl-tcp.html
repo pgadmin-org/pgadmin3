@@ -1,0 +1,282 @@
+<HTML
+><HEAD
+><TITLE
+>Secure TCP/IP Connections with SSL</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Run-time Environment"
+HREF="runtime.html"><LINK
+REL="PREVIOUS"
+TITLE="Shutting Down the Server"
+HREF="postmaster-shutdown.html"><LINK
+REL="NEXT"
+TITLE="Secure TCP/IP Connections with SSH Tunnels"
+HREF="ssh-tunnels.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="postmaster-shutdown.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Server Run-time Environment</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ssh-tunnels.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SSL-TCP"
+>3.7. Secure TCP/IP Connections with SSL</A
+></H1
+><A
+NAME="AEN20865"
+></A
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has native support for using
+   <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+> connections to encrypt client/server communications
+   for increased security. This requires
+   <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+> be installed on both client and
+   server systems and support enabled at build time (see <A
+HREF="installation.html"
+>Chapter 1</A
+>).
+  </P
+><P
+>   With <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+> support compiled in, the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server can be started with
+   <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+> support by setting the parameter
+   <TT
+CLASS="VARNAME"
+>ssl</TT
+> to on in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>. When
+   starting in <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+> mode, the server will look for the
+   files <TT
+CLASS="FILENAME"
+>server.key</TT
+> and <TT
+CLASS="FILENAME"
+>server.crt</TT
+> in the
+   data directory.  These files should contain the server private key
+   and certificate respectively. These files must be set up correctly
+   before an <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+>-enabled server can start. If the private key is
+   protected with a passphrase, the server will prompt for the
+   passphrase and will not start until it has been entered.
+  </P
+><P
+>   The server will listen for both standard and <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+>
+   connections on the same TCP/IP port, and will negotiate with any
+   connecting client on whether to use <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+>. See <A
+HREF="client-authentication.html"
+>Chapter 6</A
+> about how to force the server to
+   require use of <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+> for certain connections.
+  </P
+><P
+>   For details on how to create your server private key and certificate,
+   refer to the <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+> documentation. A simple
+   self-signed certificate can be used to get started for testing, but a
+   certificate signed by a certificate authority (<SPAN
+CLASS="ACRONYM"
+>CA</SPAN
+>) (either one of the global
+   <SPAN
+CLASS="ACRONYM"
+>CAs</SPAN
+> or a local one) should be used in production so the
+   client can verify the server's identity. To create a quick
+   self-signed certificate, use the following
+   <SPAN
+CLASS="PRODUCTNAME"
+>OpenSSL</SPAN
+> command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>openssl req -new -text -out server.req</PRE
+><P>
+   Fill out the information that <TT
+CLASS="COMMAND"
+>openssl</TT
+> asks for. Make sure
+   that you enter the local host name as Common Name; the challenge
+   password can be left blank. The script will generate a key that is
+   passphrase protected; it will not accept a passphrase that is less
+   than four characters long. To remove the passphrase (as you must if
+   you want automatic start-up of the server), run the commands
+</P><PRE
+CLASS="PROGRAMLISTING"
+>openssl rsa -in privkey.pem -out server.key
+rm privkey.pem</PRE
+><P>
+   Enter the old passphrase to unlock the existing key. Now do
+</P><PRE
+CLASS="PROGRAMLISTING"
+>openssl req -x509 -in server.req -text -key server.key -out server.crt
+chmod og-rwx server.key</PRE
+><P>
+   to turn the certificate into a self-signed certificate and to copy the
+   key and certificate to where the server will look for them.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="postmaster-shutdown.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ssh-tunnels.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Shutting Down the Server</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="runtime.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Secure TCP/IP Connections with <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> Tunnels</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

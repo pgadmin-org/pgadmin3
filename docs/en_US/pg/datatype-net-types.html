@@ -1,0 +1,753 @@
+<HTML
+><HEAD
+><TITLE
+>Network Address Data Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Types"
+HREF="datatype.html"><LINK
+REL="PREVIOUS"
+TITLE="Geometric Types"
+HREF="datatype-geometric.html"><LINK
+REL="NEXT"
+TITLE="Bit String Types"
+HREF="datatype-bit.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="datatype-geometric.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Data Types</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="datatype-bit.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATATYPE-NET-TYPES"
+>5.8. Network Address Data Types</A
+></H1
+><A
+NAME="AEN4532"
+></A
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> offers data types to store IP and MAC
+    addresses, shown in <A
+HREF="datatype-net-types.html#DATATYPE-NET-TYPES-TABLE"
+>Table 5-18</A
+>.  It
+    is preferable to use these types over plain text types, because
+    these types offer input error checking and several specialized
+    operators and functions.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-NET-TYPES-TABLE"
+></A
+><P
+><B
+>Table 5-18. Network Address Data Types</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Storage</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Range</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>cidr</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>12 bytes</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>IP networks</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>valid IPv4 networks</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>inet</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>12 bytes</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>IP hosts and networks</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>valid IPv4 hosts or networks</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>macaddr</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>6 bytes</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>MAC addresses</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>customary formats</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    IPv6 is not yet supported.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DATATYPE-INET"
+>5.8.1. <TT
+CLASS="TYPE"
+>inet</TT
+></A
+></H2
+><A
+NAME="AEN4570"
+></A
+><P
+>     The <TT
+CLASS="TYPE"
+>inet</TT
+> type holds an IP host address, and
+     optionally the identity of the subnet it is in, all in one field.
+     The subnet identity is represented by the number of bits in the
+     network part of the address (the <SPAN
+CLASS="QUOTE"
+>"netmask"</SPAN
+>).  If the
+     netmask is 32, 
+     then the value does not indicate a subnet, only a single host.
+     Note that if you want to accept networks only, you should use the
+     <TT
+CLASS="TYPE"
+>cidr</TT
+> type rather than <TT
+CLASS="TYPE"
+>inet</TT
+>.
+    </P
+><P
+>     The input format for this type is <TT
+CLASS="REPLACEABLE"
+><I
+>x.x.x.x/y</I
+></TT
+> where <TT
+CLASS="REPLACEABLE"
+><I
+>x.x.x.x</I
+></TT
+> is an IP address and
+     <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+> is the number of
+     bits in the netmask.  If the <TT
+CLASS="REPLACEABLE"
+><I
+>/y</I
+></TT
+> part is left off, then the
+     netmask is 32, and the value represents just a single host.
+     On display, the <TT
+CLASS="REPLACEABLE"
+><I
+>/y</I
+></TT
+>
+     portion is suppressed if the netmask is 32.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DATATYPE-CIDR"
+>5.8.2. <TT
+CLASS="TYPE"
+>cidr</TT
+></A
+></H2
+><A
+NAME="AEN4586"
+></A
+><P
+>     The <TT
+CLASS="TYPE"
+>cidr</TT
+> type holds an IP network specification.
+     Input and output formats follow Classless Internet Domain Routing
+     conventions.
+     The format for
+     specifying classless networks is <TT
+CLASS="REPLACEABLE"
+><I
+>x.x.x.x/y</I
+></TT
+> where <TT
+CLASS="REPLACEABLE"
+><I
+>x.x.x.x</I
+></TT
+> is the network and <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+> is the number of bits in the netmask.  If
+     <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+> is omitted, it is calculated
+     using assumptions from the older classful numbering system, except
+     that it will be at least large enough to include all of the octets
+     written in the input.
+    </P
+><P
+>     <A
+HREF="datatype-net-types.html#DATATYPE-NET-CIDR-TABLE"
+>Table 5-19</A
+> shows some examples.
+    </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-NET-CIDR-TABLE"
+></A
+><P
+><B
+>Table 5-19. <TT
+CLASS="TYPE"
+>cidr</TT
+> Type Input Examples</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>CIDR</TT
+> Input</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>CIDR</TT
+> Displayed</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>abbrev</TT
+>(<TT
+CLASS="TYPE"
+>CIDR</TT
+>)</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.100.128/25</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.100.128/25</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.100.128/25</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168/24</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.0.0/24</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.0/24</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168/25</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.0.0/25</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.0.0/25</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.1</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.1.0/24</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.1/24</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.0.0/24</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>192.168.0/24</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>128.1</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>128.1.0.0/16</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>128.1/16</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>128</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>128.0.0.0/16</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>128.0/16</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>128.1.2</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>128.1.2.0/24</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>128.1.2/24</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>10.1.2</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>10.1.2.0/24</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>10.1.2/24</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>10.1</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>10.1.0.0/16</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>10.1/16</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>10</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>10.0.0.0/8</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>10/8</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DATATYPE-INET-VS-CIDR"
+>5.8.3. <TT
+CLASS="TYPE"
+>inet</TT
+> vs <TT
+CLASS="TYPE"
+>cidr</TT
+></A
+></H2
+><P
+>    The essential difference between <TT
+CLASS="TYPE"
+>inet</TT
+> and <TT
+CLASS="TYPE"
+>cidr</TT
+>
+    data types is that <TT
+CLASS="TYPE"
+>inet</TT
+> accepts values with nonzero bits to
+    the right of the netmask, whereas <TT
+CLASS="TYPE"
+>cidr</TT
+> does not.
+
+      <DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	If you do not like the output format for <TT
+CLASS="TYPE"
+>inet</TT
+> or
+	<TT
+CLASS="TYPE"
+>cidr</TT
+> values, try the <TT
+CLASS="FUNCTION"
+>host</TT
+>(),
+	<TT
+CLASS="FUNCTION"
+>text</TT
+>(), and <TT
+CLASS="FUNCTION"
+>abbrev</TT
+>() functions.
+	</P
+></BLOCKQUOTE
+></DIV
+>
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DATATYPE-MACADDR"
+>5.8.4. <TT
+CLASS="TYPE"
+>macaddr</TT
+></A
+></H2
+><A
+NAME="AEN4673"
+></A
+><A
+NAME="AEN4675"
+></A
+><P
+>     The <TT
+CLASS="TYPE"
+>macaddr</TT
+> type stores MAC addresses, i.e., Ethernet
+     card hardware addresses (although MAC addresses are used for
+     other purposes as well).  Input is accepted in various customary
+     formats, including
+
+     <P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>'08002b:010203'</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>'08002b-010203'</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>'0800.2b01.0203'</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>'08-00-2b-01-02-03'</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>'08:00:2b:01:02:03'</TT
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+>
+
+     which would all specify the same
+     address.  Upper and lower case is accepted for the digits
+     <TT
+CLASS="LITERAL"
+>a</TT
+> through <TT
+CLASS="LITERAL"
+>f</TT
+>.  Output is always in the
+     last of the shown forms.
+    </P
+><P
+>     The directory <TT
+CLASS="FILENAME"
+>contrib/mac</TT
+>
+     in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> source distribution
+     contains tools that can be used to map MAC addresses to hardware
+     manufacturer names.
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype-geometric.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-bit.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Geometric Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Bit String Types</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

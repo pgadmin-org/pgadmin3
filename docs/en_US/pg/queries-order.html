@@ -1,0 +1,286 @@
+<HTML
+><HEAD
+><TITLE
+>Sorting Rows</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Queries"
+HREF="queries.html"><LINK
+REL="PREVIOUS"
+TITLE="Combining Queries"
+HREF="queries-union.html"><LINK
+REL="NEXT"
+TITLE="LIMIT and OFFSET"
+HREF="queries-limit.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="queries-union.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Queries</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="queries-limit.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="QUERIES-ORDER"
+>4.5. Sorting Rows</A
+></H1
+><A
+NAME="AEN2781"
+></A
+><P
+>   After a query has produced an output table (after the select list
+   has been processed) it can optionally be sorted.  If sorting is not
+   chosen, the rows will be returned in random order.  The actual
+   order in that case will depend on the scan and join plan types and
+   the order on disk, but it must not be relied on.  A particular
+   output ordering can only be guaranteed if the sort step is explicitly
+   chosen.
+  </P
+><P
+>   The <TT
+CLASS="LITERAL"
+>ORDER BY</TT
+> clause specifies the sort order:
+</P><PRE
+CLASS="SYNOPSIS"
+>SELECT <TT
+CLASS="REPLACEABLE"
+><I
+>select_list</I
+></TT
+>
+    FROM <TT
+CLASS="REPLACEABLE"
+><I
+>table_expression</I
+></TT
+>
+    ORDER BY <TT
+CLASS="REPLACEABLE"
+><I
+>column1</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>ASC | DESC</SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>column2</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>ASC | DESC</SPAN
+>] ...</SPAN
+>]</PRE
+><P>
+   <TT
+CLASS="REPLACEABLE"
+><I
+>column1</I
+></TT
+>, etc., refer to select list
+   columns.  These can be either the output name of a column (see
+   <A
+HREF="queries-select-lists.html#QUERIES-COLUMN-LABELS"
+>Section 4.3.2</A
+>) or the number of a column.  Some
+   examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT a, b FROM table1 ORDER BY a;
+SELECT a + b AS sum, c FROM table1 ORDER BY sum;
+SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</PRE
+><P>
+  </P
+><P
+>   As an extension to the SQL standard, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> also allows ordering
+   by arbitrary expressions:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT a, b FROM table1 ORDER BY a + b;</PRE
+><P>
+   References to column names in the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause that are
+   renamed in the select list are also allowed:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT a AS b FROM table1 ORDER BY a;</PRE
+><P>
+   But these extensions do not work in queries involving
+   <TT
+CLASS="LITERAL"
+>UNION</TT
+>, <TT
+CLASS="LITERAL"
+>INTERSECT</TT
+>, or <TT
+CLASS="LITERAL"
+>EXCEPT</TT
+>,
+   and are not portable to other SQL databases.
+  </P
+><P
+>   Each column specification may be followed by an optional
+   <TT
+CLASS="LITERAL"
+>ASC</TT
+> or <TT
+CLASS="LITERAL"
+>DESC</TT
+> to set the sort direction to
+   ascending or descending.  <TT
+CLASS="LITERAL"
+>ASC</TT
+> order is the default.
+   Ascending order puts smaller values first, where
+   <SPAN
+CLASS="QUOTE"
+>"smaller"</SPAN
+> is defined in terms of the
+   <TT
+CLASS="LITERAL"
+>&lt;</TT
+> operator.  Similarly, descending order is
+   determined with the <TT
+CLASS="LITERAL"
+>&gt;</TT
+> operator.
+  </P
+><P
+>   If more than one sort column is specified, the later entries are
+   used to sort rows that are equal under the order imposed by the
+   earlier sort columns.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries-union.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries-limit.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Combining Queries</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="queries.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>LIMIT and OFFSET</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

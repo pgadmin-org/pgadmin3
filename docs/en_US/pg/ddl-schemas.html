@@ -1,0 +1,792 @@
+<HTML
+><HEAD
+><TITLE
+>Schemas</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Definition"
+HREF="ddl.html"><LINK
+REL="PREVIOUS"
+TITLE="Privileges"
+HREF="ddl-priv.html"><LINK
+REL="NEXT"
+TITLE="Other Database Objects"
+HREF="ddl-others.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ddl-priv.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Data Definition</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ddl-others.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DDL-SCHEMAS"
+>2.8. Schemas</A
+></H1
+><A
+NAME="AEN2045"
+></A
+><A
+NAME="AEN2047"
+></A
+><P
+>   A <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster (installation)
+   contains one or more named databases.  Users and groups of users are
+   shared across the entire cluster, but no other data is shared across
+   databases.  Any given client connection to the server can access
+   only the data in a single database, the one specified in the connection
+   request.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    Users of a cluster do not necessarily have the privilege to access every
+    database in the cluster.  Sharing of user names means that there
+    cannot be different users named, say, <TT
+CLASS="LITERAL"
+>joe</TT
+> in two databases
+    in the same cluster; but the system can be configured to allow
+    <TT
+CLASS="LITERAL"
+>joe</TT
+> access to only some of the databases.
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   A database contains one or more named <I
+CLASS="FIRSTTERM"
+>schemas</I
+>, which
+   in turn contain tables.  Schemas also contain other kinds of named
+   objects, including data types, functions, and operators.  The same
+   object name can be used in different schemas without conflict; for
+   example, both <TT
+CLASS="LITERAL"
+>schema1</TT
+> and <TT
+CLASS="LITERAL"
+>myschema</TT
+> may
+   contain tables named <TT
+CLASS="LITERAL"
+>mytable</TT
+>.  Unlike databases,
+   schemas are not rigidly separated: a user may access objects in any
+   of the schemas in the database he is connected to, if he has
+   privileges to do so.
+  </P
+><P
+>   There are several reasons why one might want to use schemas:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      To allow many users to use one database without interfering with
+      each other.
+     </P
+></LI
+><LI
+><P
+>      To organize database objects into logical groups to make them
+      more manageable.
+     </P
+></LI
+><LI
+><P
+>      Third-party applications can be put into separate schemas so
+      they cannot collide with the names of other objects.
+     </P
+></LI
+></UL
+><P>
+
+   Schemas are analogous to directories at the operating system level,
+   except that schemas cannot be nested.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DDL-SCHEMAS-CREATE"
+>2.8.1. Creating a Schema</A
+></H2
+><P
+>    To create a separate schema, use the command <TT
+CLASS="LITERAL"
+>CREATE
+    SCHEMA</TT
+>.  Give the schema a name of your choice.  For
+    example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE SCHEMA myschema;</PRE
+><P>
+   </P
+><A
+NAME="AEN2073"
+></A
+><A
+NAME="AEN2075"
+></A
+><P
+>    To create or access objects in a schema, write a
+    <I
+CLASS="FIRSTTERM"
+>qualified name</I
+> consisting of the schema name and
+    table name separated by a dot:
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>schema</I
+></TT
+><TT
+CLASS="LITERAL"
+>.</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></PRE
+><P>
+    Actually, the even more general syntax
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>database</I
+></TT
+><TT
+CLASS="LITERAL"
+>.</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>schema</I
+></TT
+><TT
+CLASS="LITERAL"
+>.</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></PRE
+><P>
+    can be used too, but at present this is just for pro-forma compliance
+    with the SQL standard; if you write a database name it must be the
+    same as the database you are connected to.
+   </P
+><P
+>    So to create a table in the new schema, use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE myschema.mytable (
+ ...
+);</PRE
+><P>
+    This works anywhere a table name is expected, including the table
+    modification commands and the data access commands discussed in
+    the following chapters.
+   </P
+><P
+>    To drop a schema if it's empty (all objects in it have been
+    dropped), use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP SCHEMA myschema;</PRE
+><P>
+    To drop a schema including all contained objects, use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP SCHEMA myschema CASCADE;</PRE
+><P>
+    See <A
+HREF="ddl-depend.html"
+>Section 2.10</A
+> for a description of the general
+    mechanism behind this.
+   </P
+><P
+>    Often you will want to create a schema owned by someone else
+    (since this is one of the ways to restrict the activities of your
+    users to well-defined namespaces).  The syntax for that is:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE SCHEMA <TT
+CLASS="REPLACEABLE"
+><I
+>schemaname</I
+></TT
+> AUTHORIZATION <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>;</PRE
+><P>
+    You can even omit the schema name, in which case the schema name
+    will be the same as the user name.  See <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PATTERNS"
+>Section 2.8.6</A
+> for how this can be useful.
+   </P
+><P
+>    Schema names beginning with <TT
+CLASS="LITERAL"
+>pg_</TT
+> are reserved for
+    system purposes and may not be created by users.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DDL-SCHEMAS-PUBLIC"
+>2.8.2. The Public Schema</A
+></H2
+><P
+>    In the previous sections we created tables without specifying any
+    schema names.  By default, such tables (and other objects) are
+    automatically put into a schema named <SPAN
+CLASS="QUOTE"
+>"public"</SPAN
+>.  Every new
+    database contains such a schema.  Thus, the following are equivalent:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE products ( ... );</PRE
+><P>
+    and
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE public.products ( ... );</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DDL-SCHEMAS-PATH"
+>2.8.3. The Schema Search Path</A
+></H2
+><A
+NAME="AEN2111"
+></A
+><A
+NAME="AEN2113"
+></A
+><A
+NAME="AEN2115"
+></A
+><P
+>    Qualified names are tedious to write, and it's often best not to
+    wire a particular schema name into applications anyway.  Therefore
+    tables are often referred to by <I
+CLASS="FIRSTTERM"
+>unqualified names</I
+>,
+    which consist of just the table name.  The system determines which table
+    is meant by following a <I
+CLASS="FIRSTTERM"
+>search path</I
+>, which is a list
+    of schemas to look in.  The first matching table in the search path
+    is taken to be the one wanted.  If there is no match in the search
+    path, an error is reported, even if matching table names exist
+    in other schemas in the database.
+   </P
+><P
+>    The first schema named in the search path is called the current schema.
+    Aside from being the first schema searched, it is also the schema in
+    which new tables will be created if the <TT
+CLASS="COMMAND"
+>CREATE TABLE</TT
+>
+    command does not specify a schema name.
+   </P
+><P
+>    To show the current search path, use the following command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SHOW search_path;</PRE
+><P>
+    In the default setup this returns:
+</P><PRE
+CLASS="SCREEN"
+> search_path
+--------------
+ $user,public</PRE
+><P>
+    The first element specifies that a schema with the same name as
+    the current user is to be searched.  Since no such schema exists
+    yet, this entry is ignored.  The second element refers to the
+    public schema that we have seen already.
+   </P
+><P
+>    The first schema in the search path that exists is the default
+    location for creating new objects.  That is the reason that by
+    default objects are created in the public schema.  When objects
+    are referenced in any other context without schema qualification
+    (table modification, data modification, or query commands) the
+    search path is traversed until a matching object is found.
+    Therefore, in the default configuration, any unqualified access
+    again can only refer to the public schema.
+   </P
+><P
+>    To put our new schema in the path, we use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET search_path TO myschema,public;</PRE
+><P>
+    (We omit the <TT
+CLASS="LITERAL"
+>$user</TT
+> here because we have no
+    immediate need for it.)  And then we can access the table without
+    schema qualification:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP TABLE mytable;</PRE
+><P>
+    Also, since <TT
+CLASS="LITERAL"
+>myschema</TT
+> is the first element in
+    the path, new objects would by default be created in it.
+   </P
+><P
+>    We could also have written
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET search_path TO myschema;</PRE
+><P>
+    Then we no longer have access to the public schema without
+    explicit qualification.  There is nothing special about the public
+    schema except that it exists by default.  It can be dropped, too.
+   </P
+><P
+>    See also <A
+HREF="functions-misc.html"
+>Section 6.13</A
+> for other ways to access
+    the schema search path.
+   </P
+><P
+>    The search path works in the same way for data type names, function names,
+    and operator names as it does for table names.  Data type and function
+    names can be qualified in exactly the same way as table names.  If you
+    need to write a qualified operator name in an expression, there is a
+    special provision: you must write
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="LITERAL"
+>OPERATOR(</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>schema</I
+></TT
+><TT
+CLASS="LITERAL"
+>.</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+><TT
+CLASS="LITERAL"
+>)</TT
+></PRE
+><P>
+    This is needed to avoid syntactic ambiguity.  An example is
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT 3 OPERATOR(pg_catalog.+) 4;</PRE
+><P>
+    In practice one usually relies on the search path for operators,
+    so as not to have to write anything so ugly as that.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DDL-SCHEMAS-PRIV"
+>2.8.4. Schemas and Privileges</A
+></H2
+><P
+>    By default, users cannot see the objects in schemas they do not
+    own.  To allow that, the owner of the schema needs to grant the
+    <TT
+CLASS="LITERAL"
+>USAGE</TT
+> privilege on the schema.  To allow users
+    to make use of the objects in the schema, additional privileges
+    may need to be granted, as appropriate for the object.
+   </P
+><P
+>    A user can also be allowed to create objects in someone else's
+    schema.  To allow that, the <TT
+CLASS="LITERAL"
+>CREATE</TT
+> privilege on
+    the schema needs to be granted.  Note that by default, everyone
+    has the <TT
+CLASS="LITERAL"
+>CREATE</TT
+> privilege on the schema
+    <TT
+CLASS="LITERAL"
+>public</TT
+>.  This allows all users that manage to
+    connect to a given database to create objects there.  If you do
+    not want to allow that, you can revoke that privilege:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>REVOKE CREATE ON public FROM PUBLIC;</PRE
+><P>
+    (The first <SPAN
+CLASS="QUOTE"
+>"public"</SPAN
+> is the schema, the second
+    <SPAN
+CLASS="QUOTE"
+>"public"</SPAN
+> means <SPAN
+CLASS="QUOTE"
+>"every user"</SPAN
+>.  In the
+    first sense it is an identifier, in the second sense it is a
+    reserved word, hence the different capitalization; recall the
+    guidelines from <A
+HREF="sql-syntax.html#SQL-SYNTAX-IDENTIFIERS"
+>Section 1.1.1</A
+>.)
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2157"
+>2.8.5. The System Catalog Schema</A
+></H2
+><P
+>    In addition to <TT
+CLASS="LITERAL"
+>public</TT
+> and user-created schemas, each
+    database contains a <TT
+CLASS="LITERAL"
+>pg_catalog</TT
+> schema, which contains
+    the system tables and all the built-in data types, functions, and
+    operators.  <TT
+CLASS="LITERAL"
+>pg_catalog</TT
+> is always effectively part of
+    the search path.  If it is not named explicitly in the path then
+    it is implicitly searched <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>before</I
+></SPAN
+> searching the path's
+    schemas.  This ensures that built-in names will always be
+    findable.  However, you may explicitly place
+    <TT
+CLASS="LITERAL"
+>pg_catalog</TT
+> at the end of your search path if you
+    prefer to have user-defined names override built-in names.
+   </P
+><P
+>    In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> versions before 7.3,
+    table names beginning with <TT
+CLASS="LITERAL"
+>pg_</TT
+> were reserved.  This is
+    no longer true: you may create such a table name if you wish, in
+    any non-system schema.  However, it's best to continue to avoid
+    such names, to ensure that you won't suffer a conflict if some
+    future version defines a system catalog named the same as your
+    table.  (With the default search path, an unqualified reference to
+    your table name would be resolved as the system catalog instead.)
+    System catalogs will continue to follow the convention of having
+    names beginning with <TT
+CLASS="LITERAL"
+>pg_</TT
+>, so that they will not
+    conflict with unqualified user-table names so long as users avoid
+    the <TT
+CLASS="LITERAL"
+>pg_</TT
+> prefix.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DDL-SCHEMAS-PATTERNS"
+>2.8.6. Usage Patterns</A
+></H2
+><P
+>    Schemas can be used to organize your data in many ways.  There are
+    a few usage patterns that are recommended and are easily supported by
+    the default configuration:
+    <P
+></P
+></P><UL
+><LI
+><P
+>       If you do not create any schemas then all users access the
+       public schema implicitly.  This simulates the situation where
+       schemas are not available at all.  This setup is mainly
+       recommended when there is only a single user or a few cooperating
+       users in a database.  This setup also allows smooth transition
+       from the non-schema-aware world.
+      </P
+></LI
+><LI
+><P
+>       You can create a schema for each user with the same name as
+       that user.  Recall that the default search path starts with
+       <TT
+CLASS="LITERAL"
+>$user</TT
+>, which resolves to the user name.
+       Therefore, if each user has a separate schema, they access their
+       own schemas by default.
+      </P
+><P
+>       If you use this setup then you might also want to revoke access
+       to the public schema (or drop it altogether), so users are
+       truly constrained to their own schemas.
+      </P
+></LI
+><LI
+><P
+>       To install shared applications (tables to be used by everyone,
+       additional functions provided by third parties, etc.), put them
+       into separate schemas.  Remember to grant appropriate
+       privileges to allow the other users to access them.  Users can
+       then refer to these additional objects by qualifying the names
+       with a schema name, or they can put the additional schemas into
+       their path, as they choose.
+      </P
+></LI
+></UL
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DDL-SCHEMAS-PORTABILITY"
+>2.8.7. Portability</A
+></H2
+><P
+>    In the SQL standard, the notion of objects in the same schema
+    being owned by different users does not exist.  Moreover, some
+    implementations don't allow you to create schemas that have a
+    different name than their owner.  In fact, the concepts of schema
+    and user are nearly equivalent in a database system that
+    implements only the basic schema support specified in the
+    standard.  Therefore, many users consider qualified names to
+    really consist of
+    <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>.<TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+></TT
+>.
+    This is how PostgreSQL will effectively behave if you create a per-user
+    schema for every user.
+   </P
+><P
+>    Also, there is no concept of a <TT
+CLASS="LITERAL"
+>public</TT
+> schema in the
+    SQL standard.  For maximum conformance to the standard, you should
+    not use (perhaps even remove) the <TT
+CLASS="LITERAL"
+>public</TT
+> schema.
+   </P
+><P
+>    Of course, some SQL database systems might not implement schemas
+    at all, or provide namespace support by allowing (possibly
+    limited) cross-database access.  If you need to work with those
+    systems, then maximum portability would be achieved by not using
+    schemas at all.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl-priv.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl-others.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Privileges</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Other Database Objects</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

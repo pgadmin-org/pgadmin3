@@ -1,0 +1,278 @@
+<HTML
+><HEAD
+><TITLE
+>Concurrency Control</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 User's Guide"
+HREF="user.html"><LINK
+REL="PREVIOUS"
+TITLE="Examining Index Usage"
+HREF="indexes-examine.html"><LINK
+REL="NEXT"
+TITLE="Transaction Isolation"
+HREF="transaction-iso.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="indexes-examine.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="transaction-iso.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="MVCC"
+>Chapter 9. Concurrency Control</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>9.1. <A
+HREF="mvcc.html#MVCC-INTRO"
+>Introduction</A
+></DT
+><DT
+>9.2. <A
+HREF="transaction-iso.html"
+>Transaction Isolation</A
+></DT
+><DD
+><DL
+><DT
+>9.2.1. <A
+HREF="transaction-iso.html#XACT-READ-COMMITTED"
+>Read Committed Isolation Level</A
+></DT
+><DT
+>9.2.2. <A
+HREF="transaction-iso.html#XACT-SERIALIZABLE"
+>Serializable Isolation Level</A
+></DT
+></DL
+></DD
+><DT
+>9.3. <A
+HREF="explicit-locking.html"
+>Explicit Locking</A
+></DT
+><DD
+><DL
+><DT
+>9.3.1. <A
+HREF="explicit-locking.html#LOCKING-TABLES"
+>Table-Level Locks</A
+></DT
+><DT
+>9.3.2. <A
+HREF="explicit-locking.html#LOCKING-ROWS"
+>Row-Level Locks</A
+></DT
+><DT
+>9.3.3. <A
+HREF="explicit-locking.html#LOCKING-DEADLOCKS"
+>Deadlocks</A
+></DT
+></DL
+></DD
+><DT
+>9.4. <A
+HREF="applevel-consistency.html"
+>Data Consistency Checks at the Application Level</A
+></DT
+><DT
+>9.5. <A
+HREF="locking-indexes.html"
+>Locking and Indexes</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN11295"
+></A
+><P
+>   This chapter describes the behavior of the PostgreSQL database
+   system when two or more sessions try to access the same data at the
+   same time.  The goals in that situation are to allow efficient
+   access for all sessions while maintaining strict data integrity.
+   Every developer of database applications should be familiar with
+   the topics covered in this chapter.
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MVCC-INTRO"
+>9.1. Introduction</A
+></H1
+><P
+>    Unlike traditional database systems which use locks for concurrency control,
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    maintains data consistency by using a multiversion model
+    (Multiversion Concurrency Control, <SPAN
+CLASS="ACRONYM"
+>MVCC</SPAN
+>). 
+    This means that while querying a database each transaction sees
+    a snapshot of data (a <I
+CLASS="FIRSTTERM"
+>database version</I
+>)
+    as it was some
+    time ago, regardless of the current state of the underlying data.
+    This protects the transaction from viewing inconsistent data that
+    could be caused by (other) concurrent transaction updates on the same
+    data rows, providing <I
+CLASS="FIRSTTERM"
+>transaction isolation</I
+>
+    for each database session.
+   </P
+><P
+>    The main difference between multiversion and lock models is that
+    in MVCC locks acquired for querying (reading) data don't conflict
+    with locks acquired for writing data, and so reading never blocks
+    writing and writing never blocks reading.
+   </P
+><P
+>    Table- and row-level locking facilities are also available in
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> for applications that cannot
+    adapt easily to MVCC behavior.  However, proper use of MVCC will
+    generally provide better performance than locks.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-examine.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="transaction-iso.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Examining Index Usage</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Transaction Isolation</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

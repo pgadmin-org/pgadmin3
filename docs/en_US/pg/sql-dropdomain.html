@@ -1,0 +1,344 @@
+<HTML
+><HEAD
+><TITLE
+>   DROP DOMAIN
+  </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP DATABASE"
+HREF="sql-dropdatabase.html"><LINK
+REL="NEXT"
+TITLE="DROP FUNCTION"
+HREF="sql-dropfunction.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-dropdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-dropfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPDOMAIN"
+>DROP DOMAIN</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42414"
+></A
+><H2
+>Name</H2
+>   DROP DOMAIN
+  &nbsp;--&nbsp;   remove a user-defined domain
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42417"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP DOMAIN <TT
+CLASS="REPLACEABLE"
+><I
+>domainname</I
+></TT
+> [, ...]  [ CASCADE | RESTRICT ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPDOMAIN-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>domainname</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of an existing domain.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
+></DT
+><DD
+><P
+>        Automatically drop objects that depend on the domain
+	(such as table columns).
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>        Refuse to drop the domain if there are any dependent objects.
+	This is the default.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPDOMAIN-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DROP DOMAIN
+       </TT
+></DT
+><DD
+><P
+>	The message returned if the command is successful.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  RemoveDomain: type '<TT
+CLASS="REPLACEABLE"
+><I
+>domainname</I
+></TT
+>' does not exist
+       </TT
+></DT
+><DD
+><P
+>	This message occurs if the specified domain (or type) is not found.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPDOMAIN-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP DOMAIN</TT
+> will remove a user domain from the
+   system catalogs.
+  </P
+><P
+>   Only the owner of a domain can remove it.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPDOMAIN-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To remove the <TT
+CLASS="TYPE"
+>box</TT
+> domain:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP DOMAIN box;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPDOMAIN-COMPATIBILITY"
+></A
+><H2
+>Compatibility</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPDOMAIN-SQL92"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPDOMAIN-SEE-ALSO"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createdomain.html"
+><I
+>CREATE DOMAIN</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP DATABASE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP FUNCTION</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

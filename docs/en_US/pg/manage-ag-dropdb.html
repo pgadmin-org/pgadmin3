@@ -1,0 +1,202 @@
+<HTML
+><HEAD
+><TITLE
+>Destroying a Database</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Managing Databases"
+HREF="managing-databases.html"><LINK
+REL="PREVIOUS"
+TITLE="Alternative Locations"
+HREF="manage-ag-alternate-locs.html"><LINK
+REL="NEXT"
+TITLE="Client Authentication"
+HREF="client-authentication.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="manage-ag-alternate-locs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Managing Databases</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="client-authentication.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MANAGE-AG-DROPDB"
+>5.6. Destroying a Database</A
+></H1
+><P
+>   Databases are destroyed with the command <TT
+CLASS="COMMAND"
+>DROP DATABASE</TT
+>:
+</P><PRE
+CLASS="SYNOPSIS"
+>DROP DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></PRE
+><P>
+   Only the owner of the database (i.e., the user that created it), or
+   a superuser, can drop a database. Dropping a database removes all objects
+   that were 
+   contained within the database. The destruction of a database cannot
+   be undone.
+  </P
+><P
+>   You cannot execute the <TT
+CLASS="COMMAND"
+>DROP DATABASE</TT
+> command
+   while connected to the victim database. You can, however, be
+   connected to any other database, including the <TT
+CLASS="LITERAL"
+>template1</TT
+>
+   database, 
+   which would be the only option for dropping the last user database of a
+   given cluster.
+  </P
+><P
+>   For convenience, there is also a shell program to drop databases:
+</P><PRE
+CLASS="SYNOPSIS"
+>dropdb <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></PRE
+><P>
+   (Unlike <TT
+CLASS="COMMAND"
+>createdb</TT
+>, it is not the default action to drop
+   the database with the current user name.)
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="manage-ag-alternate-locs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="client-authentication.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Alternative Locations</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Client Authentication</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

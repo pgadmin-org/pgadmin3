@@ -1,0 +1,241 @@
+<HTML
+><HEAD
+><TITLE
+>Database Access from PL/Perl</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/Perl - Perl Procedural Language"
+HREF="plperl.html"><LINK
+REL="PREVIOUS"
+TITLE="Data Values in PL/Perl"
+HREF="plperl-data.html"><LINK
+REL="NEXT"
+TITLE="Trusted and Untrusted PL/Perl"
+HREF="plperl-trusted.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="plperl-data.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 21. PL/Perl - Perl Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="plperl-trusted.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPERL-DATABASE"
+>21.3. Database Access from PL/Perl</A
+></H1
+><P
+>   Access to the database itself from your Perl function can be done via
+   an experimental module <A
+HREF="http://www.cpan.org/modules/by-module/DBD/APILOS/"
+TARGET="_top"
+><TT
+CLASS="LITERAL"
+>DBD::PgSPI</TT
+></A
+>
+   (also available at <A
+HREF="http://www.cpan.org/SITES.html"
+TARGET="_top"
+><SPAN
+CLASS="ACRONYM"
+>CPAN</SPAN
+>
+   mirror sites</A
+>). This module makes available a
+   <SPAN
+CLASS="ACRONYM"
+>DBI</SPAN
+>-compliant database-handle named
+   <TT
+CLASS="VARNAME"
+>$pg_dbh</TT
+> that can be used to perform queries
+   with normal <SPAN
+CLASS="ACRONYM"
+>DBI</SPAN
+> syntax.
+  </P
+><P
+>   PL/Perl itself presently provides only one additional Perl command:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="FUNCTION"
+>elog</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>level</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>msg</I
+></TT
+></DT
+><DD
+><P
+>       Emit a log or error message. Possible levels are
+       <TT
+CLASS="LITERAL"
+>DEBUG</TT
+>, <TT
+CLASS="LITERAL"
+>LOG</TT
+>, <TT
+CLASS="LITERAL"
+>INFO</TT
+>,
+       <TT
+CLASS="LITERAL"
+>NOTICE</TT
+>, <TT
+CLASS="LITERAL"
+>WARNING</TT
+>, and <TT
+CLASS="LITERAL"
+>ERROR</TT
+>.
+       <TT
+CLASS="LITERAL"
+>ERROR</TT
+> raises an error condition: further execution
+       of the function is abandoned, and the current transaction is
+       aborted.
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plperl-data.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plperl-trusted.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Data Values in PL/Perl</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="plperl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Trusted and Untrusted PL/Perl</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

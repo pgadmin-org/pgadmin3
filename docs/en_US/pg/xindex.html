@@ -1,0 +1,250 @@
+<HTML
+><HEAD
+><TITLE
+>Interfacing Extensions To Indexes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="Rules versus Triggers"
+HREF="rules-triggers.html"><LINK
+REL="NEXT"
+TITLE="Access Methods and Operator Classes"
+HREF="xindex-am.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="rules-triggers.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xindex-am.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="XINDEX"
+>Chapter 14. Interfacing Extensions To Indexes</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>14.1. <A
+HREF="xindex.html#XINDEX-INTRO"
+>Introduction</A
+></DT
+><DT
+>14.2. <A
+HREF="xindex-am.html"
+>Access Methods and Operator Classes</A
+></DT
+><DT
+>14.3. <A
+HREF="xindex-strategies.html"
+>Access Method Strategies</A
+></DT
+><DT
+>14.4. <A
+HREF="xindex-support.html"
+>Access Method Support Routines</A
+></DT
+><DT
+>14.5. <A
+HREF="xindex-operators.html"
+>Creating the Operators and Support Routines</A
+></DT
+><DT
+>14.6. <A
+HREF="xindex-opclass.html"
+>Creating the Operator Class</A
+></DT
+><DT
+>14.7. <A
+HREF="xindex-opclass-features.html"
+>Special Features of Operator Classes</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XINDEX-INTRO"
+>14.1. Introduction</A
+></H1
+><P
+>   The procedures described thus far let you define new types, new
+   functions, and new operators. However, we cannot yet define a
+   secondary index (such as a B-tree, R-tree, or hash access method)
+   over a new type, nor associate operators of a new type with secondary
+   indexes.
+   To do these things, we must define an <I
+CLASS="FIRSTTERM"
+>operator class</I
+>
+   for the new data type.  We will describe operator classes in the
+   context of a running example:  a  new  operator
+   class for the B-tree access method that stores and
+   sorts complex numbers in ascending absolute value order.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> release 7.3, it was
+    necessary to make manual additions to
+    <TT
+CLASS="CLASSNAME"
+>pg_amop</TT
+>, <TT
+CLASS="CLASSNAME"
+>pg_amproc</TT
+>, and
+    <TT
+CLASS="CLASSNAME"
+>pg_opclass</TT
+> in order to create a user-defined
+    operator class.  That approach is now deprecated in favor of
+    using <TT
+CLASS="COMMAND"
+>CREATE OPERATOR CLASS</TT
+>, which is a much simpler
+    and less error-prone way of creating the necessary catalog entries.
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules-triggers.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xindex-am.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Rules versus Triggers</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Access Methods and Operator Classes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

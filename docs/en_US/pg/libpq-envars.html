@@ -1,0 +1,417 @@
+<HTML
+><HEAD
+><TITLE
+>Environment Variables</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="libpq Control Functions"
+HREF="libpq-control.html"><LINK
+REL="NEXT"
+TITLE="Files"
+HREF="libpq-files.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpq-control.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq-files.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-ENVARS"
+>1.10. Environment Variables</A
+></H1
+><A
+NAME="AEN25739"
+></A
+><P
+>The following environment variables can be used to select default
+connection parameter values, which will be used by
+<TT
+CLASS="FUNCTION"
+>PQconnectdb</TT
+>, <TT
+CLASS="FUNCTION"
+>PQsetdbLogin</TT
+> and
+<TT
+CLASS="FUNCTION"
+>PQsetdb</TT
+> if no value is directly specified by the calling
+code.  These are useful to avoid hard-coding database connection
+information into simple client applications.
+
+<P
+></P
+></P><UL
+><LI
+><P
+><A
+NAME="AEN25748"
+></A
+>
+<TT
+CLASS="ENVAR"
+>PGHOST</TT
+> sets the default server name.
+If this begins with a slash, it specifies Unix-domain communication
+rather than TCP/IP communication; the value is the name of the
+directory in which the socket file is stored (default <TT
+CLASS="FILENAME"
+>/tmp</TT
+>).</P
+></LI
+><LI
+><P
+><A
+NAME="AEN25755"
+></A
+>
+<TT
+CLASS="ENVAR"
+>PGPORT</TT
+> sets the default TCP port number or Unix-domain
+socket file extension for communicating with the
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend.</P
+></LI
+><LI
+><P
+><A
+NAME="AEN25762"
+></A
+>
+<TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+>  sets the default 
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database name.</P
+></LI
+><LI
+><P
+><A
+NAME="AEN25769"
+></A
+>
+<TT
+CLASS="ENVAR"
+>PGUSER</TT
+>
+sets the user name used to connect to the database and for authentication.</P
+></LI
+><LI
+><P
+><A
+NAME="AEN25775"
+></A
+>
+<TT
+CLASS="ENVAR"
+>PGPASSWORD</TT
+>
+sets the password used if the backend demands password
+authentication.  This functionality is deprecated for security
+reasons; consider migrating to use the <A
+HREF="libpq-files.html#PGPASSFILE"
+><TT
+CLASS="FILENAME"
+>$HOME/.pgpass</TT
+></A
+>
+file.</P
+></LI
+><LI
+><P
+><TT
+CLASS="ENVAR"
+>PGREALM</TT
+> sets the Kerberos realm to  use  with  
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, if  it is different from the local realm.
+If <TT
+CLASS="ENVAR"
+>PGREALM</TT
+> is set, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
+applications  will  attempt authentication  with  servers for this realm and use
+separate ticket files to avoid conflicts with  local
+ticket  files.   This  environment  variable is only
+used if Kerberos authentication is selected by the backend.</P
+></LI
+><LI
+><P
+><TT
+CLASS="ENVAR"
+>PGOPTIONS</TT
+> sets additional run-time  options  for  
+the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend.</P
+></LI
+><LI
+><P
+><TT
+CLASS="ENVAR"
+>PGTTY</TT
+> sets the file or tty on which  debugging  
+messages from the backend server are displayed.</P
+></LI
+><LI
+><P
+><TT
+CLASS="ENVAR"
+>PGREQUIRESSL</TT
+> sets whether or not the connection must be
+made over <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+>. If set to
+<SPAN
+CLASS="QUOTE"
+>"1"</SPAN
+>, <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>
+will refuse to connect if the server does not accept
+an <SPAN
+CLASS="ACRONYM"
+>SSL</SPAN
+> connection.
+This option is only available if
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is compiled with SSL support.</P
+></LI
+><LI
+><P
+><TT
+CLASS="ENVAR"
+>PGCONNECT_TIMEOUT</TT
+> sets the maximum number of seconds
+that <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> will wait when attempting to
+connect to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server. This
+option should be set to at least 2 seconds.</P
+></LI
+></UL
+><P></P
+><P
+>The following environment variables can be used to specify user-level default
+behavior for every <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> session:
+
+<P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="ENVAR"
+>PGDATESTYLE</TT
+>
+sets the default style of date/time representation.</P
+></LI
+><LI
+><P
+><TT
+CLASS="ENVAR"
+>PGTZ</TT
+>
+sets the default time zone.</P
+></LI
+><LI
+><P
+><TT
+CLASS="ENVAR"
+>PGCLIENTENCODING</TT
+>
+sets the default client encoding (if multibyte support was selected
+when configuring <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>).</P
+></LI
+></UL
+><P></P
+><P
+>The following environment variables can be used to specify default internal
+behavior for every <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> session:
+
+<P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="ENVAR"
+>PGGEQO</TT
+>
+sets the default mode for the genetic optimizer.</P
+></LI
+></UL
+><P></P
+><P
+>Refer to the <TT
+CLASS="COMMAND"
+>SET</TT
+> <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> command
+for information on correct values for these environment variables.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-control.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-files.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> Control Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Files</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

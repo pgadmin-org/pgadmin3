@@ -1,0 +1,308 @@
+<HTML
+><HEAD
+><TITLE
+>Alternative Locations</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Managing Databases"
+HREF="managing-databases.html"><LINK
+REL="PREVIOUS"
+TITLE="Database Configuration"
+HREF="manage-ag-config.html"><LINK
+REL="NEXT"
+TITLE="Destroying a Database"
+HREF="manage-ag-dropdb.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="manage-ag-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Managing Databases</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="manage-ag-dropdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MANAGE-AG-ALTERNATE-LOCS"
+>5.5. Alternative Locations</A
+></H1
+><P
+>    It is possible to create a database in a location other than the
+    default location for the installation. Remember that all database access
+    occurs through the 
+    database server, so any location specified must be
+    accessible by the server.
+   </P
+><P
+>    Alternative database locations are referenced by an environment
+    variable which gives the absolute path to the intended storage
+    location. This environment variable must be present in the server's
+    environment, so it must have been defined before the server
+    was started.  (Thus, the set of available alternative locations is
+    under the site administrator's control; ordinary users can't
+    change it.)  Any valid environment variable name may
+    be used to reference an alternative location, although using
+    variable names with a prefix of <TT
+CLASS="LITERAL"
+>PGDATA</TT
+> is recommended
+    to avoid confusion and conflict with other variables.
+   </P
+><P
+>    To create the variable in the environment of the server process
+    you must first shut down the server, define the variable,
+    initialize the data area, and finally restart the server. (See
+    <A
+HREF="postmaster-shutdown.html"
+>Section 3.6</A
+> and <A
+HREF="postmaster-start.html"
+>Section 3.3</A
+>.) To set an environment variable, type
+</P><PRE
+CLASS="PROGRAMLISTING"
+>PGDATA2=/home/postgres/data
+export PGDATA2</PRE
+><P>
+    in Bourne shells, or
+</P><PRE
+CLASS="PROGRAMLISTING"
+>setenv PGDATA2 /home/postgres/data</PRE
+><P>
+    in <SPAN
+CLASS="APPLICATION"
+>csh</SPAN
+> or <SPAN
+CLASS="APPLICATION"
+>tcsh</SPAN
+>. You have to make sure that this environment
+    variable is always defined in the server environment, otherwise
+    you won't be able to access that database. Therefore you probably
+    want to set it in some sort of shell start-up file or server
+    start-up script.
+   </P
+><P
+>    <A
+NAME="AEN21188"
+></A
+>
+    To create a data storage area in <TT
+CLASS="ENVAR"
+>PGDATA2</TT
+>, ensure that
+    the containing directory (here, <TT
+CLASS="FILENAME"
+>/home/postgres</TT
+>)
+    already exists and is writable
+    by the user account that runs the server (see <A
+HREF="runtime.html#POSTGRES-USER"
+>Section 3.1</A
+>). Then from the command line, type
+</P><PRE
+CLASS="PROGRAMLISTING"
+>initlocation PGDATA2</PRE
+><P>
+    (<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> <TT
+CLASS="LITERAL"
+>initlocation
+    $PGDATA2</TT
+>).  Then you can restart the server.
+   </P
+><P
+>    To create a database within the new location, use the command
+</P><PRE
+CLASS="SYNOPSIS"
+>CREATE DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> WITH LOCATION = '<TT
+CLASS="REPLACEABLE"
+><I
+>location</I
+></TT
+>'</PRE
+><P>
+    where <TT
+CLASS="REPLACEABLE"
+><I
+>location</I
+></TT
+> is the environment variable you
+    used, <TT
+CLASS="ENVAR"
+>PGDATA2</TT
+> in this example. The <TT
+CLASS="COMMAND"
+>createdb</TT
+>
+    command has the option <TT
+CLASS="OPTION"
+>-D</TT
+> for this purpose.
+   </P
+><P
+>    Databases created in alternative locations can be
+    accessed and dropped like any other database.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     It can also be possible to specify absolute paths directly to the
+     <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> command without defining environment
+     variables. This is disallowed by default because it is a security
+     risk. To allow it, you must compile <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> with
+     the C preprocessor macro <TT
+CLASS="LITERAL"
+>ALLOW_ABSOLUTE_DBPATHS</TT
+>
+     defined. One way to do this is to run the compilation step like
+     this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>gmake CPPFLAGS=-DALLOW_ABSOLUTE_DBPATHS all</PRE
+><P>
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="manage-ag-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="manage-ag-dropdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Database Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Destroying a Database</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

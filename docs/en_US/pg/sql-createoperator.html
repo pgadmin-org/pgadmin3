@@ -1,0 +1,1015 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE OPERATOR</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE LANGUAGE"
+HREF="sql-createlanguage.html"><LINK
+REL="NEXT"
+TITLE="CREATE OPERATOR CLASS"
+HREF="sql-createopclass.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createlanguage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createopclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEOPERATOR"
+>CREATE OPERATOR</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39997"
+></A
+><H2
+>Name</H2
+>   CREATE OPERATOR
+  &nbsp;--&nbsp;   define a new operator
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN40000"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE OPERATOR <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( PROCEDURE = <TT
+CLASS="REPLACEABLE"
+><I
+>func_name</I
+></TT
+>
+     [, LEFTARG = <TT
+CLASS="REPLACEABLE"
+><I
+>lefttype</I
+></TT
+>
+     ] [, RIGHTARG = <TT
+CLASS="REPLACEABLE"
+><I
+>righttype</I
+></TT
+> ]
+     [, COMMUTATOR = <TT
+CLASS="REPLACEABLE"
+><I
+>com_op</I
+></TT
+> ] [, NEGATOR = <TT
+CLASS="REPLACEABLE"
+><I
+>neg_op</I
+></TT
+> ]
+     [, RESTRICT = <TT
+CLASS="REPLACEABLE"
+><I
+>res_proc</I
+></TT
+> ] [, JOIN = <TT
+CLASS="REPLACEABLE"
+><I
+>join_proc</I
+></TT
+> ]
+     [, HASHES ] [, MERGES ]
+     [, SORT1 = <TT
+CLASS="REPLACEABLE"
+><I
+>left_sort_op</I
+></TT
+> ] [, SORT2 = <TT
+CLASS="REPLACEABLE"
+><I
+>right_sort_op</I
+></TT
+> ]
+     [, LTCMP = <TT
+CLASS="REPLACEABLE"
+><I
+>less_than_op</I
+></TT
+> ] [, GTCMP = <TT
+CLASS="REPLACEABLE"
+><I
+>greater_than_op</I
+></TT
+> ] )
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEOPERATOR-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The operator to be defined. See below for allowable characters.
+	The name may be schema-qualified, for example
+	<TT
+CLASS="LITERAL"
+>CREATE OPERATOR myschema.+ (...)</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>func_name</I
+></TT
+></DT
+><DD
+><P
+>	The function used to implement this operator.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>lefttype</I
+></TT
+></DT
+><DD
+><P
+>	The type of the left-hand argument of the operator, if any.
+	This option would be omitted for a left-unary operator.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>righttype</I
+></TT
+></DT
+><DD
+><P
+>	The type of the right-hand argument of the operator, if any.
+	This option would be omitted for a right-unary operator.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>com_op</I
+></TT
+></DT
+><DD
+><P
+>	The commutator of this operator.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>neg_op</I
+></TT
+></DT
+><DD
+><P
+>	The negator of this operator.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>res_proc</I
+></TT
+></DT
+><DD
+><P
+>	The restriction selectivity estimator function for this operator.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>join_proc</I
+></TT
+></DT
+><DD
+><P
+>	The join selectivity estimator function for this operator.
+       </P
+></DD
+><DT
+>HASHES</DT
+><DD
+><P
+>       Indicates this operator can support a hash join.
+       </P
+></DD
+><DT
+>MERGES</DT
+><DD
+><P
+>       Indicates this operator can support a merge join.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>left_sort_op</I
+></TT
+></DT
+><DD
+><P
+>	If this operator can support a merge join, the less-than
+	operator that sorts the left-hand data type of this operator.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>right_sort_op</I
+></TT
+></DT
+><DD
+><P
+>	If this operator can support a merge join, the less-than
+	operator that sorts the right-hand data type of this operator.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>less_than_op</I
+></TT
+></DT
+><DD
+><P
+>	If this operator can support a merge join, the less-than
+	operator that compares the input data types of this operator.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>greater_than_op</I
+></TT
+></DT
+><DD
+><P
+>	If this operator can support a merge join, the greater-than
+	operator that compares the input data types of this operator.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEOPERATOR-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>CREATE OPERATOR
+       </TT
+></DT
+><DD
+><P
+>	Message returned if the operator is successfully created.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEOPERATOR-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE OPERATOR</TT
+>  defines a new operator,
+   <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>.
+   The user who defines an operator becomes its owner.
+  </P
+><P
+>   If a schema name is given then the operator is created in the
+   specified schema.  Otherwise it is created in the current schema (the one
+   at the front of the search path; see <TT
+CLASS="LITERAL"
+>CURRENT_SCHEMA()</TT
+>).
+  </P
+><P
+>   Two operators in the same schema can have the same name if they operate on
+   different data types.  This is called <I
+CLASS="FIRSTTERM"
+>overloading</I
+>.  The
+   system will attempt to pick the intended operator based on the actual
+   input data types when there is ambiguity.
+  </P
+><P
+>   The operator <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+   is a sequence of up to <TT
+CLASS="SYMBOL"
+>NAMEDATALEN</TT
+>-1 (63 by default) characters
+   from the following list:
+   <P
+CLASS="LITERALLAYOUT"
+>+&nbsp;-&nbsp;*&nbsp;/&nbsp;&lt;&nbsp;&gt;&nbsp;=&nbsp;~&nbsp;!&nbsp;@&nbsp;#&nbsp;%&nbsp;^&nbsp;&amp;&nbsp;|&nbsp;`&nbsp;?&nbsp;$<br>
+&nbsp;&nbsp;&nbsp;</P
+>
+
+   There are a few restrictions on your choice of name:
+   <P
+></P
+></P><UL
+><LI
+><P
+>     <TT
+CLASS="LITERAL"
+>$</TT
+> cannot be defined as a single-character operator,
+     although it can be part of a multicharacter operator name.
+     </P
+></LI
+><LI
+><P
+>     <TT
+CLASS="LITERAL"
+>--</TT
+> and <TT
+CLASS="LITERAL"
+>/*</TT
+> cannot appear anywhere in an operator name,
+     since they will be taken as the start of a comment.
+     </P
+></LI
+><LI
+><P
+>     A multicharacter operator name cannot end in <TT
+CLASS="LITERAL"
+>+</TT
+> or
+     <TT
+CLASS="LITERAL"
+>-</TT
+>,
+     unless the name also contains at least one of these characters:
+     <P
+CLASS="LITERALLAYOUT"
+>~&nbsp;!&nbsp;@&nbsp;#&nbsp;%&nbsp;^&nbsp;&amp;&nbsp;|&nbsp;`&nbsp;?&nbsp;$<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</P
+>
+     For example, <TT
+CLASS="LITERAL"
+>@-</TT
+> is an allowed operator name,
+     but <TT
+CLASS="LITERAL"
+>*-</TT
+> is not.
+     This restriction allows <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to
+     parse SQL-compliant queries without requiring spaces between tokens.
+     </P
+></LI
+></UL
+><P>
+
+   </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     When working with non-SQL-standard operator names, you will usually
+     need to separate adjacent operators with spaces to avoid ambiguity.
+     For example, if you have defined a left-unary operator named <TT
+CLASS="LITERAL"
+>@</TT
+>,
+     you cannot write <TT
+CLASS="LITERAL"
+>X*@Y</TT
+>; you must write
+     <TT
+CLASS="LITERAL"
+>X* @Y</TT
+> to ensure that
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> reads it as two operator names
+     not one.
+     </P
+></BLOCKQUOTE
+></DIV
+><P>   
+  </P
+><P
+>   The operator <TT
+CLASS="LITERAL"
+>!=</TT
+> is mapped to <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> on input, so these two names
+   are always equivalent.
+  </P
+><P
+>   At least one of <TT
+CLASS="LITERAL"
+>LEFTARG</TT
+> and <TT
+CLASS="LITERAL"
+>RIGHTARG</TT
+> must be defined.  For
+   binary operators, both should be defined. For right  unary
+   operators,  only  <TT
+CLASS="LITERAL"
+>LEFTARG</TT
+>  should  be defined, while for left
+   unary operators only <TT
+CLASS="LITERAL"
+>RIGHTARG</TT
+> should be defined.
+  </P
+><P
+>   The
+   <TT
+CLASS="REPLACEABLE"
+><I
+>func_name</I
+></TT
+> procedure must have
+   been previously defined using <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> and  must
+   be defined to accept the correct number of arguments
+   (either  one or two) of the indicated types.
+  </P
+><P
+>   The commutator operator should be identified if one exists,
+   so that <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can
+   reverse the order of the operands if it wishes.
+   For example, the operator area-less-than, &lt;&lt;&lt;,
+   would probably have a commutator
+   operator, area-greater-than, &gt;&gt;&gt;.
+   Hence, the query optimizer could freely  convert:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>box '((0,0), (1,1))'  &gt;&gt;&gt; MYBOXES.description
+   </PRE
+><P>
+
+   to
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>MYBOXES.description &lt;&lt;&lt; box '((0,0), (1,1))'
+   </PRE
+><P>
+  </P
+><P
+>   This  allows  the  execution code to always use the latter
+   representation and simplifies the  query  optimizer  somewhat.
+  </P
+><P
+>   Similarly, if there is a negator operator then it should be
+   identified.
+   Suppose  that  an
+   operator,  area-equal, ===, exists, as well as an area not
+   equal, !==.
+   The negator link allows the query optimizer to simplify
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>NOT MYBOXES.description === box '((0,0), (1,1))'
+   </PRE
+><P>
+   to
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>MYBOXES.description !== box '((0,0), (1,1))'
+   </PRE
+><P>
+  </P
+><P
+>   If  a  commutator  operator  name  is  supplied,  
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   searches  for  it  in  the catalog.  If it is found and it
+   does not yet have a commutator itself, then the commutator's
+   entry is updated to have the newly created operator as its
+   commutator.  This applies to the negator, as well.
+   This  is to allow the definition of two operators that are
+   the commutators or the negators of each other.  The  first
+   operator should be defined without a commutator or negator
+   (as appropriate).  When the second  operator  is  defined,
+   name  the  first  as the commutator or negator.  The first
+   will be updated as a side effect.  (As of
+   <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> <TT
+CLASS="LITERAL"
+>6.5</TT
+>, 
+   it also works to just have both operators refer to each other.)
+  </P
+><P
+>   The <TT
+CLASS="LITERAL"
+>HASHES</TT
+>, <TT
+CLASS="LITERAL"
+>MERGES</TT
+>, <TT
+CLASS="LITERAL"
+>SORT1</TT
+>,
+   <TT
+CLASS="LITERAL"
+>SORT2</TT
+>, <TT
+CLASS="LITERAL"
+>LTCMP</TT
+>, and <TT
+CLASS="LITERAL"
+>GTCMP</TT
+> options
+   are present to support the query optimizer in performing joins.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can always evaluate a join
+   (i.e., processing a clause with two tuple variables separated by an
+   operator that returns a <TT
+CLASS="TYPE"
+>boolean</TT
+>) by iterative
+   substitution .  In addition,
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can use a hash-join algorithm
+   ; however, it must know whether this
+   strategy is applicable.  The current hash-join algorithm is only
+   correct for operators that represent equality tests; furthermore,
+   equality of the data type must mean bitwise equality of the
+   representation of the type.  (For example, a data type that
+   contains unused bits that don't matter for equality tests could not
+   be hash-joined.)  The <TT
+CLASS="LITERAL"
+>HASHES</TT
+> flag indicates to the query optimizer
+   that a hash join may safely be used with this operator.
+  </P
+><P
+>   Similarly, the <TT
+CLASS="LITERAL"
+>MERGES</TT
+> flag indicates whether merge-sort
+   is a usable join strategy for this operator.  A merge join requires
+   that the two input data types have consistent orderings, and that
+   the merge-join operator behave like equality with respect to that
+   ordering.  For example, it is possible to merge-join equality
+   between an integer and a float variable by sorting both inputs in
+   ordinary numeric order.  Execution of a merge join requires that
+   the system be able to identify four operators related to the
+   merge-join equality operator: less-than comparison for the left
+   input data type, less-than comparison for the right input data
+   type, less-than comparison between the two data types, and
+   greater-than comparison between the two data types.  It is possible
+   to specify these by name, as the <TT
+CLASS="LITERAL"
+>SORT1</TT
+>,
+   <TT
+CLASS="LITERAL"
+>SORT2</TT
+>, <TT
+CLASS="LITERAL"
+>LTCMP</TT
+>, and <TT
+CLASS="LITERAL"
+>GTCMP</TT
+> options
+   respectively.  The system will fill in the default names
+   <TT
+CLASS="LITERAL"
+>&lt;</TT
+>, <TT
+CLASS="LITERAL"
+>&lt;</TT
+>, <TT
+CLASS="LITERAL"
+>&lt;</TT
+>,
+   <TT
+CLASS="LITERAL"
+>&gt;</TT
+> respectively if any of these are omitted when
+   <TT
+CLASS="LITERAL"
+>MERGES</TT
+> is specified.  Also, <TT
+CLASS="LITERAL"
+>MERGES</TT
+> will be
+   assumed to be implied if any of these four operator options appear.
+  </P
+><P
+>   If  other join strategies are found to be practical,
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   will change the optimizer and run-time system to  use
+   them  and  will  require  additional specification when an
+   operator is defined.  Fortunately, the research  community
+   invents  new  join  strategies infrequently, and the added
+   generality of user-defined join strategies was not felt to
+   be worth the complexity involved.
+  </P
+><P
+>   The <TT
+CLASS="LITERAL"
+>RESTRICT</TT
+> and <TT
+CLASS="LITERAL"
+>JOIN</TT
+> options assist the
+   query optimizer in estimating result sizes.  If a clause of the
+   form:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>myboxes.description &lt;&lt;&lt; box '((0,0), (1,1))'</PRE
+><P>
+   is present in the qualification,
+   then <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> may have to
+   estimate the fraction of the  instances  in <TT
+CLASS="LITERAL"
+>myboxes</TT
+> that
+   satisfy  the clause.  The function
+   <TT
+CLASS="REPLACEABLE"
+><I
+>res_proc</I
+></TT
+>
+   must be a registered function (meaning  it  is  already  defined  using
+   <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+>) which accepts arguments of the correct
+   data types and returns a floating-point number.   The
+   query  optimizer  simply  calls this function, passing the
+   parameter <TT
+CLASS="LITERAL"
+>((0,0), (1,1))</TT
+> and multiplies the result by the relation
+   size to get the expected number of instances.
+  </P
+><P
+>   Similarly, when the operands of the operator both  contain
+   instance  variables, the query optimizer must estimate the
+   size of the resulting join.  The function <TT
+CLASS="FUNCTION"
+>join_proc</TT
+> will
+   return  another floating-point number which will be multiplied
+   by the cardinalities of the two tables involved  to
+   compute the expected result size.
+  </P
+><P
+>   The difference between the function
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>my_procedure_1 (MYBOXES.description, box '((0,0), (1,1))')
+   </PRE
+><P>
+   and the operator
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>MYBOXES.description === box '((0,0), (1,1))'
+   </PRE
+><P>
+   is  that  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   attempts to optimize operators and can
+   decide to use an index to restrict the search  space  when
+   operators  are  involved.  However, there is no attempt to
+   optimize functions, and they are performed by brute force.
+   Moreover, functions can have any number of arguments while
+   operators are restricted to one or two.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEOPERATOR-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    Refer to the chapter on operators in the
+    <I
+CLASS="CITETITLE"
+>PostgreSQL User's Guide</I
+>
+    for further information.
+    Refer to <TT
+CLASS="COMMAND"
+>DROP OPERATOR</TT
+> to delete
+    user-defined operators from a database.
+   </P
+><P
+>    To give a schema-qualified operator name in <TT
+CLASS="REPLACEABLE"
+><I
+>com_op</I
+></TT
+> or the other optional
+    arguments, use the <TT
+CLASS="LITERAL"
+>OPERATOR()</TT
+> syntax, for example
+</P><PRE
+CLASS="PROGRAMLISTING"
+>   COMMUTATOR = OPERATOR(myschema.===) ,</PRE
+><P>  
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEOPERATOR-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>The following command defines a new operator,
+   area-equality, for the BOX data type:
+  </P
+><PRE
+CLASS="PROGRAMLISTING"
+>CREATE OPERATOR === (
+   LEFTARG = box,
+   RIGHTARG = box,
+   PROCEDURE = area_equal_procedure,
+   COMMUTATOR = ===,
+   NEGATOR = !==,
+   RESTRICT = area_restriction_procedure,
+   JOIN = area_join_procedure,
+   HASHES,
+   SORT1 = &lt;&lt;&lt;,
+   SORT2 = &lt;&lt;&lt;
+   -- Since sort operators were given, MERGES is implied.
+   -- LTCMP and GTCMP are assumed to be &lt; and &gt; respectively
+);
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEOPERATOR-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEOPERATOR-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>CREATE OPERATOR</TT
+>
+    is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+    There is no <TT
+CLASS="COMMAND"
+>CREATE OPERATOR</TT
+>
+    statement in <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createlanguage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createopclass.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE LANGUAGE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE OPERATOR CLASS</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

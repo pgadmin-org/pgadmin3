@@ -1,0 +1,237 @@
+<HTML
+><HEAD
+><TITLE
+>Passing Data</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="PREVIOUS"
+TITLE="Running SQL Commands"
+HREF="ecpg-commands.html"><LINK
+REL="NEXT"
+TITLE="Error Handling"
+HREF="ecpg-errors.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecpg-commands.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> in C</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecpg-errors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-VARIABLES"
+>4.5. Passing Data</A
+></H1
+><P
+>   To pass data from the program to the database, for example as
+   parameters in a query, or to pass data from the database back to
+   the program, the C variables that are intended to contain this data
+   need to be declared in a specially marked section, so the embedded
+   SQL preprocessor is made aware of them.
+  </P
+><P
+>   This section starts with
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL BEGIN DECLARE SECTION;</PRE
+><P>
+   and ends with
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL END DECLARE SECTION;</PRE
+><P>
+   Between those lines, there must be normal C variable declarations, such as
+</P><PRE
+CLASS="PROGRAMLISTING"
+>int   x;
+char  foo[16], bar[16];</PRE
+><P>
+  </P
+><P
+>   The declarations are also echoed to the output file as a normal C
+   variables, so there's no need to declare them again.  Variables
+   that are not intended to be used with SQL commands can be declared
+   normally outside these special sections.
+  </P
+><P
+>   The definition of a structure or union also must be listed inside a
+   <TT
+CLASS="LITERAL"
+>DECLARE</TT
+> section. Otherwise the preprocessor cannot
+   handle these types since it does not know the definition.
+  </P
+><P
+>   The special types <TT
+CLASS="TYPE"
+>VARCHAR</TT
+> and <TT
+CLASS="TYPE"
+>VARCHAR2</TT
+>
+   are converted into a named <TT
+CLASS="TYPE"
+>struct</TT
+> for every variable. A
+   declaration like:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>VARCHAR var[180];</PRE
+><P>
+   is converted into:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>struct varchar_var { int len; char arr[180]; } var;</PRE
+><P>
+   This structure is suitable for interfacing with SQL datums of type
+   <TT
+CLASS="TYPE"
+>VARCHAR</TT
+>.
+  </P
+><P
+>   To use a properly declared C variable in an SQL statement, write
+   <TT
+CLASS="LITERAL"
+>:<TT
+CLASS="REPLACEABLE"
+><I
+>varname</I
+></TT
+></TT
+> where an expression is
+   expected.  See the previous section for some examples.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-commands.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-errors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Running SQL Commands</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Error Handling</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

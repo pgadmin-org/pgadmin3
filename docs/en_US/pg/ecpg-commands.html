@@ -1,0 +1,260 @@
+<HTML
+><HEAD
+><TITLE
+>Running SQL Commands</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="ECPG - Embedded SQL in C"
+HREF="ecpg.html"><LINK
+REL="PREVIOUS"
+TITLE="Closing a Connection"
+HREF="ecpg-disconnect.html"><LINK
+REL="NEXT"
+TITLE="Passing Data"
+HREF="ecpg-variables.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecpg-disconnect.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> in C</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecpg-variables.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-COMMANDS"
+>4.4. Running SQL Commands</A
+></H1
+><P
+>   Any SQL command can be run from within an embedded SQL application.
+   Below are some examples of how to do that.
+  </P
+><P
+>   Creating a table:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL CREATE TABLE foo (number integer, ascii char(16));
+EXEC SQL CREATE UNIQUE INDEX num1 ON foo(number);
+EXEC SQL COMMIT;</PRE
+><P>
+  </P
+><P
+>   Inserting rows:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL INSERT INTO foo (number, ascii) VALUES (9999, 'doodad');
+EXEC SQL COMMIT;</PRE
+><P>
+  </P
+><P
+>   Deleting rows:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL DELETE FROM foo WHERE number = 9999;
+EXEC SQL COMMIT;</PRE
+><P>
+  </P
+><P
+>   Singleton Select:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL SELECT foo INTO :FooBar FROM table1 WHERE ascii = 'doodad';</PRE
+><P>
+  </P
+><P
+>   Select using Cursors:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL DECLARE foo_bar CURSOR FOR
+    SELECT number, ascii FROM foo
+    ORDER BY ascii;
+EXEC SQL FETCH foo_bar INTO :FooBar, DooDad;
+...
+EXEC SQL CLOSE foo_bar;
+EXEC SQL COMMIT;</PRE
+><P>
+  </P
+><P
+>   Updates:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL UPDATE foo
+    SET ascii = 'foobar'
+    WHERE number = 9999;
+EXEC SQL COMMIT;</PRE
+><P>
+  </P
+><P
+>   The tokens of the form
+   <TT
+CLASS="LITERAL"
+>:<TT
+CLASS="REPLACEABLE"
+><I
+>something</I
+></TT
+></TT
+> are
+   <I
+CLASS="FIRSTTERM"
+>host variables</I
+>, that is, they refer to
+   variables in the C program.  They are explained in the next
+   section.
+  </P
+><P
+>   In the default mode, statements are committed only when
+   <TT
+CLASS="COMMAND"
+>EXEC SQL COMMIT</TT
+> is issued. The embedded SQL
+   interface also supports autocommit of transactions (as known from
+   other interfaces) via the <TT
+CLASS="OPTION"
+>-t</TT
+> command-line option
+   to <TT
+CLASS="COMMAND"
+>ecpg</TT
+> (see below) or via the <TT
+CLASS="LITERAL"
+>EXEC SQL
+   SET AUTOCOMMIT TO ON</TT
+> statement. In autocommit mode, each
+   query is automatically committed unless it is inside an explicit
+   transaction block. This mode can be explicitly turned off using
+   <TT
+CLASS="LITERAL"
+>EXEC SQL SET AUTOCOMMIT TO OFF</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecpg-disconnect.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-variables.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Closing a Connection</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecpg.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Passing Data</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,1154 @@
+<HTML
+><HEAD
+><TITLE
+>Connection Pools And DataSources</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="JDBC Interface"
+HREF="jdbc.html"><LINK
+REL="PREVIOUS"
+TITLE="Using the driver in a multithreaded or a servlet environment"
+HREF="jdbc-thread.html"><LINK
+REL="NEXT"
+TITLE="Further Reading"
+HREF="jdbc-reading.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="jdbc-thread.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Interface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="jdbc-reading.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JDBC-DATASOURCE"
+>5.9. Connection Pools And DataSources</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-DS-VERSION"
+>5.9.1. JDBC, JDK Version Support</A
+></H2
+><P
+>    JDBC 2 introduced standard connection pooling features in an
+    add-on API known as the <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> 2.0 Optional
+    Package (also known as the <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> 2.0
+    Standard Extension).  These features have since been included in
+    the core JDBC 3 API.  The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> drivers support these features with
+    <SPAN
+CLASS="ACRONYM"
+>JDK</SPAN
+> 1.3.x in combination with the
+    <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> 2.0 Optional Package
+    (<SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> 2), or with <SPAN
+CLASS="ACRONYM"
+>JDK</SPAN
+> 1.4+
+    (<SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> 3).  Most application servers include
+    the <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> 2.0 Optional Package, but it is
+    also available separately from the Sun
+    <A
+HREF="http://java.sun.com/products/jdbc/download.html#spec"
+TARGET="_top"
+><SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> download site</A
+>.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-DS-INTRO"
+>5.9.2. JDBC Connection Pooling API</A
+></H2
+><P
+>The <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> API provides a client
+     and a server interface for connection pooling.  The client
+     interface is <TT
+CLASS="LITERAL"
+>javax.sql.DataSource</TT
+>,
+     which is what application code will typically use to
+     acquire a pooled database connection.  The server interface
+     is <TT
+CLASS="LITERAL"
+>javax.sql.ConnectionPoolDataSource</TT
+>,
+     which is how most application servers will interface with
+     the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+>
+     driver.</P
+><P
+>In an application server environment, the
+     application server configuration will typically refer to
+     the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+     <TT
+CLASS="LITERAL"
+>ConnectionPoolDataSource</TT
+> implementation,
+     while the application component code will typically acquire a
+     <TT
+CLASS="LITERAL"
+>DataSource</TT
+> implementation provided by
+     the application server (not by
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>).</P
+><P
+>In an environment without an application server,
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> provides two implementations
+     of <TT
+CLASS="LITERAL"
+>DataSource</TT
+> which an application can use
+     directly.  One implementation performs connection pooling,
+     while the other simply provides access to database connections
+     through the <TT
+CLASS="LITERAL"
+>DataSource</TT
+> interface without
+     any pooling.  Again, these implementations should not be used
+     in an application server environment unless the application
+     server does not support the
+     <TT
+CLASS="LITERAL"
+>ConnectionPoolDataSource</TT
+> interface.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-DS-CPDS"
+>5.9.3. Application Servers: ConnectionPoolDataSource</A
+></H2
+><P
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> includes one
+     implementation of <TT
+CLASS="LITERAL"
+>ConnectionPoolDataSource</TT
+>
+     for <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> 2, and one for 
+     <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> 3:</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN28859"
+></A
+><P
+><B
+>Table 5-1. ConnectionPoolDataSource Implementations</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+></TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Implementation Class</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>org.postgresql.jdbc2.optional.ConnectionPool</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>3</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>org.postgresql.jdbc3.Jdbc3ConnectionPool</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>Both implementations use the same configuration scheme.
+     <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> requires that a
+     <TT
+CLASS="LITERAL"
+>ConnectionPoolDataSource</TT
+> be configured via
+     JavaBean properties, so there are get and set methods for each of
+     these properties:</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN28879"
+></A
+><P
+><B
+>Table 5-2. ConnectionPoolDataSource Configuration Properties</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Property</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>serverName</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>String</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database server
+         hostname</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>databaseName</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>String</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database name</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>portNumber</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>int</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="ACRONYM"
+>TCP/IP</SPAN
+> port which the 
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database server is
+	listening on (or 0 to use the default port)</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>user</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>String</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>User used to make database connections</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>password</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>String</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Password used to make database connections</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>defaultAutoCommit</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>boolean</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Whether connections should have autoCommit
+	enabled or disabled when they are supplied to the
+	caller.  The default is <TT
+CLASS="LITERAL"
+>false</TT
+>, to
+	disable autoCommit.</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>Many application servers use a properties-style syntax to
+     configure these properties, so it would not be unusual to
+     enter properties as a block of text.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JDBC-CPDS-CONFIG"
+></A
+><P
+><B
+>Example 5-5. <TT
+CLASS="LITERAL"
+>ConnectionPoolDataSource</TT
+> Configuration Example</B
+></P
+><P
+>     If the application server provides a single area to enter all
+      the properties, they might be listed like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>serverName=localhost
+databaseName=test
+user=testuser
+password=testpassword</PRE
+><P>
+      Or, separated by semicolons instead of newlines, like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>serverName=localhost;databaseName=test;user=testuser;password=testpassword</PRE
+><P>
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-DS-DS"
+>5.9.4. Applications: DataSource</A
+></H2
+><P
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> includes two
+     implementations of <TT
+CLASS="LITERAL"
+>DataSource</TT
+>
+     for <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> 2, and two for <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+>
+     3.  The pooling implementations do not actually close connections
+     when the client calls the <TT
+CLASS="LITERAL"
+>close</TT
+> method, but
+     instead return the connections to a pool of available connections
+     for other clients to use.  This avoids any overhead of repeatedly
+     opening and closing connections, and allows a large number of
+     clients to share a small number of database connections.</P
+><P
+>The pooling datasource implementation provided here is not
+     the most feature-rich in the world.  Among other things,
+     connections are never closed until the pool itself is closed;
+     there is no way to shrink the pool.  As well, connections
+     requested for users other than the default configured user are
+     not pooled.  Many application servers
+     provide more advanced pooling features, and use the
+     <TT
+CLASS="LITERAL"
+>ConnectionPoolDataSource</TT
+> implementation
+     instead.</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN28940"
+></A
+><P
+><B
+>Table 5-3. DataSource Implementations</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+></TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Pooling</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Implementation Class</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>No</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>org.postgresql.jdbc2.optional.SimpleDataSource</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Yes</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>org.postgresql.jdbc2.optional.PoolingDataSource</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>3</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>No</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>org.postgresql.jdbc3.Jdbc3SimpleDataSource</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>3</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Yes</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>org.postgresql.jdbc3.Jdbc3PoolingDataSource</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>All the implementations use the same configuration scheme.
+     <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> requires that a
+     <TT
+CLASS="LITERAL"
+>DataSource</TT
+> be configured via
+     JavaBean properties, so there are get and set methods for each of
+     these properties.</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN28973"
+></A
+><P
+><B
+>Table 5-4. DataSource Configuration Properties</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Property</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>serverName</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>String</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database server
+         hostname</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>databaseName</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>String</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database name</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>portNumber</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>int</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="ACRONYM"
+>TCP/IP</SPAN
+> port which the 
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database server is
+	listening on (or 0 to use the default port)</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>user</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>String</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>User used to make database connections</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>password</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>String</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Password used to make database connections</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>The pooling implementations require some additional
+      configuration properties:</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN29012"
+></A
+><P
+><B
+>Table 5-5. Additional Pooling DataSource Configuration Properties</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Property</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>dataSourceName</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>String</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Every pooling <TT
+CLASS="LITERAL"
+>DataSource</TT
+> must have a
+	 unique name</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>initialConnections</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>int</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The number of database connections to be created
+	when the pool is initialized.</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>maxConnections</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>int</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The maximum number of open database connections to
+	allow.  When more connections are requested, the caller
+	will hang until a connection is returned to the pool.</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>Here's an example of typical application code using a
+     pooling <TT
+CLASS="LITERAL"
+>DataSource</TT
+>:</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JDBC-DS-CODE"
+></A
+><P
+><B
+>Example 5-6. <TT
+CLASS="LITERAL"
+>DataSource</TT
+> Code Example</B
+></P
+><P
+>     Code to initialize a pooling DataSource might look like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Jdbc3PoolingDataSource source = new Jdbc3PoolingDataSource();
+source.setDataSourceName("A Data Source");
+source.setServerName("localhost");
+source.setDatabaseName("test");
+source.setUser("testuser");
+source.setPassword("testpassword");
+source.setMaxConnections(10);</PRE
+><P>
+      Then code to use a connection from the pool might look
+      like this.  Note that it is critical that the connections
+      are closed, or else the pool will "leak" connections, and
+      eventually lock all the clients out.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Connection con = null;
+try {
+    con = source.getConnection();
+    // use connection
+} catch(SQLException e) {
+    // log error
+} finally {
+    if(con != null) {
+        try {con.close();}catch(SQLException e) {}
+    }
+}</PRE
+><P>
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-JNDI"
+>5.9.5. DataSources and <SPAN
+CLASS="ACRONYM"
+>JNDI</SPAN
+></A
+></H2
+><P
+>All the <TT
+CLASS="LITERAL"
+>ConnectionPoolDataSource</TT
+> and
+     <TT
+CLASS="LITERAL"
+>DataSource</TT
+> implementations can be stored
+     in <SPAN
+CLASS="ACRONYM"
+>JNDI</SPAN
+>.  In the case of the non-pooling
+     implementations, a new instance will be created every time the
+     object is retrieved from <SPAN
+CLASS="ACRONYM"
+>JNDI</SPAN
+>, with the
+     same settings as the instance which was stored.  For the
+     pooling implementations, the same instance will be retrieved
+     as long as it is available (e.g. not a different
+     <SPAN
+CLASS="ACRONYM"
+>JVM</SPAN
+> retrieving the pool from
+     <SPAN
+CLASS="ACRONYM"
+>JNDI</SPAN
+>), or a new instance with the same
+     settings created otherwise.</P
+><P
+>In the application server environment, typically the
+     application server's <TT
+CLASS="LITERAL"
+>DataSource</TT
+> instance
+     will be stored in <SPAN
+CLASS="ACRONYM"
+>JNDI</SPAN
+>, instead of the
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+     <TT
+CLASS="LITERAL"
+>ConnectionPoolDataSource</TT
+> implementation.
+     </P
+><P
+>In an application environment, the application may store
+     the <TT
+CLASS="LITERAL"
+>DataSource</TT
+> in <SPAN
+CLASS="ACRONYM"
+>JNDI</SPAN
+>
+     so that it doesn't have to make a reference to the
+     <TT
+CLASS="LITERAL"
+>DataSource</TT
+> available to all application
+     components that may need to use it:</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JDBC-DS-JNDI"
+></A
+><P
+><B
+>Example 5-7. <TT
+CLASS="LITERAL"
+>DataSource</TT
+> <SPAN
+CLASS="ACRONYM"
+>JNDI</SPAN
+> Code Example</B
+></P
+><P
+>     Application code to initialize a pooling DataSource and add
+     it to <SPAN
+CLASS="ACRONYM"
+>JNDI</SPAN
+> might look like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Jdbc3PoolingDataSource source = new Jdbc3PoolingDataSource();
+source.setDataSourceName("A Data Source");
+source.setServerName("localhost");
+source.setDatabaseName("test");
+source.setUser("testuser");
+source.setPassword("testpassword");
+source.setMaxConnections(10);
+new InitialContext().rebind("DataSource", source);</PRE
+><P>
+      Then code to use a connection from the pool might look
+      like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Connection con = null;
+try {
+    DataSource source = (DataSource)new InitialContext().lookup("DataSource");
+    con = source.getConnection();
+    // use connection
+} catch(SQLException e) {
+    // log error
+} catch(NamingException e) {
+    // DataSource wasn't found in JNDI
+} finally {
+    if(con != null) {
+        try {con.close();}catch(SQLException e) {}
+    }
+}</PRE
+><P>
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JDBC-APP-SERVERS"
+>5.9.6. Specific Application Server Configurations</A
+></H2
+><P
+>Configuration examples for specific application servers
+     will be included here.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="jdbc-thread.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="jdbc-reading.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Using the driver in a multithreaded or a servlet environment</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="jdbc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Further Reading</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

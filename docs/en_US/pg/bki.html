@@ -1,0 +1,305 @@
+<HTML
+><HEAD
+><TITLE
+>BKI Backend Interface</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Developer's Guide"
+HREF="developer.html"><LINK
+REL="PREVIOUS"
+TITLE="gcc Default Optimizations"
+HREF="compiler.html"><LINK
+REL="NEXT"
+TITLE="BKI Commands"
+HREF="bki-commands.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="compiler.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="bki-commands.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="BKI"
+>Chapter 6. <SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> Backend Interface</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>6.1. <A
+HREF="bki.html#BKI-FORMAT"
+><SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> File Format</A
+></DT
+><DT
+>6.2. <A
+HREF="bki-commands.html"
+><SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> Commands</A
+></DT
+><DT
+>6.3. <A
+HREF="bki-example.html"
+>Example</A
+></DT
+></DL
+></DIV
+><P
+>  Backend Interface (<SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+>) files are scripts in a
+  special language that are input to the
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend running in the special
+  <SPAN
+CLASS="QUOTE"
+>"bootstrap"</SPAN
+> mode that allows it to perform database
+  functions without a database system already existing.
+  <SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> files can therefore be used to create the
+  database system in the first place.  (And they are probably not
+  useful for anything else.)
+ </P
+><P
+>  <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+> uses a <SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> file
+  to do part of its job when creating a new database cluster.  The
+  input file used by <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+> is created as
+  part of building and installing <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+  by a program named <TT
+CLASS="FILENAME"
+>genbki.sh</TT
+> from some
+  specially formatted C header files in the source tree.  The created
+  <SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> file is called <TT
+CLASS="FILENAME"
+>postgres.bki</TT
+> and is
+  normally installed in the
+  <TT
+CLASS="FILENAME"
+>share</TT
+> subdirectory of the installation tree.
+ </P
+><P
+>  Related information may be found in the documentation for
+  <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+>.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="BKI-FORMAT"
+>6.1. <SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> File Format</A
+></H1
+><P
+>   This section describes how the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   backend interprets <SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> files.  This description
+   will be easier to understand if the <TT
+CLASS="FILENAME"
+>postgres.bki</TT
+>
+   file is at hand as an example.  You should also study the source
+   code of <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+> to get an idea of how the
+   backend is invoked.
+  </P
+><P
+>   <SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> input consists of a sequence of commands.  Commands are made up
+   of a number of tokens, depending on the syntax of the command.
+   Tokens are usually separated by whitespace, but need not be if
+   there is no ambiguity.  There is no special command separator; the
+   next token that syntactically cannot belong to the preceding
+   command starts a new one.  (Usually you would put a new command on
+   a new line, for clarity.)  Tokens can be certain key words, special
+   characters (parentheses, commas, etc.), numbers, or double-quoted
+   strings.  Everything is case sensitive.
+  </P
+><P
+>   Lines starting with a <TT
+CLASS="LITERAL"
+>#</TT
+> are ignored.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="compiler.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="bki-commands.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>gcc</SPAN
+> Default Optimizations</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="developer.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> Commands</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

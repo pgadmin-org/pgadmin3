@@ -1,0 +1,356 @@
+<HTML
+><HEAD
+><TITLE
+>DROP SCHEMA</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP RULE"
+HREF="sql-droprule.html"><LINK
+REL="NEXT"
+TITLE="DROP SEQUENCE"
+HREF="sql-dropsequence.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-droprule.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-dropsequence.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPSCHEMA"
+>DROP SCHEMA</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN43055"
+></A
+><H2
+>Name</H2
+>   DROP SCHEMA
+  &nbsp;--&nbsp;   remove a schema
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN43058"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP SCHEMA <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [, ...] [ CASCADE | RESTRICT ]
+
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPSCHEMA-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name of a schema.
+       </P
+></DD
+><DT
+>CASCADE</DT
+><DD
+><P
+>        Automatically drop objects (tables, functions, etc) that are contained
+	in the schema.
+       </P
+></DD
+><DT
+>RESTRICT</DT
+><DD
+><P
+>        Refuse to drop the schema if it contains any objects.
+	This is the default.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPSCHEMA-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DROP SCHEMA
+       </TT
+></DT
+><DD
+><P
+>	The message returned if the schema is successfully dropped.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR: Schema "<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>" does not exist
+       </TT
+></DT
+><DD
+><P
+>	This message occurs if the specified schema does not exist.
+       </P
+></DD
+></DL
+></DIV
+><P>
+
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPSCHEMA-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP SCHEMA</TT
+> removes schemas from the data base.
+  </P
+><P
+>   A schema can only be dropped by its owner or a superuser.  Note that
+   the owner can drop the schema (and thereby all contained objects)
+   even if he does not own some of the objects within the schema.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPSCHEMA-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    Refer to the <TT
+CLASS="COMMAND"
+>CREATE SCHEMA</TT
+> statement for
+    information on how to create a schema.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPSCHEMA-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To remove schema <TT
+CLASS="LITERAL"
+>mystuff</TT
+> from the database,
+   along with everything it contains:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>DROP SCHEMA mystuff CASCADE;
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPSCHEMA-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPSCHEMA-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>DROP SCHEMA</TT
+> is fully compatible with
+    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>, except that the standard only allows
+    one schema to be dropped per command.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-droprule.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropsequence.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP RULE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP SEQUENCE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,311 @@
+<HTML
+><HEAD
+><TITLE
+>Extending SQL: An Overview</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="Architecture"
+HREF="arch-pg.html"><LINK
+REL="NEXT"
+TITLE="The PostgreSQL Type System"
+HREF="type-system.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="arch-pg.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="type-system.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="EXTEND"
+>Chapter 8. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: An Overview</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>8.1. <A
+HREF="extend.html#EXTEND-HOW"
+>How Extensibility Works</A
+></DT
+><DT
+>8.2. <A
+HREF="type-system.html"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Type System</A
+></DT
+><DT
+>8.3. <A
+HREF="pg-system-catalogs.html"
+>About the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> System Catalogs</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN31196"
+></A
+><P
+>   In  the  sections  that follow, we will discuss how you
+   can extend the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
+   <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> query language by adding:
+
+   <P
+></P
+></P><UL
+COMPACT="COMPACT"
+><LI
+STYLE="list-style-type: disc"
+><P
+>      functions
+     </P
+></LI
+><LI
+STYLE="list-style-type: disc"
+><P
+>      data types
+     </P
+></LI
+><LI
+STYLE="list-style-type: disc"
+><P
+>      operators
+     </P
+></LI
+><LI
+STYLE="list-style-type: disc"
+><P
+>      aggregates
+     </P
+></LI
+></UL
+><P>
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="EXTEND-HOW"
+>8.1. How Extensibility Works</A
+></H1
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is extensible because its operation  is  
+    catalog-driven.   If  you  are familiar with standard 
+    relational systems, you know that  they  store  information
+    about  databases,  tables,  columns,  etc., in what are
+    commonly known as system catalogs.  (Some systems  call
+    this  the data dictionary).  The catalogs appear to the
+    user as tables like any other, but  the  <SPAN
+CLASS="ACRONYM"
+>DBMS</SPAN
+>  stores
+    its  internal  bookkeeping in them.  One key difference
+    between <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> and  standard  relational  systems  is
+    that <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> stores much more information in its 
+    catalogs -- not only information about tables and  columns,
+    but also information about its types, functions, access
+    methods, and so on.  These tables can be  modified  by
+    the  user, and since <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> bases its internal operation 
+    on these tables, this means that <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> can  be
+    extended   by   users.    By  comparison,  conventional
+    database systems can only be extended by changing hardcoded  
+    procedures within the <SPAN
+CLASS="ACRONYM"
+>DBMS</SPAN
+> or by loading modules
+    specially written by the <SPAN
+CLASS="ACRONYM"
+>DBMS</SPAN
+> vendor.
+   </P
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is also unlike most  other  data  managers  in
+    that  the server can incorporate user-written code into
+    itself through dynamic loading.  That is, the user  can
+    specify  an  object code file (e.g., a shared library) that implements a new type or  function 
+    and <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will load it as required.  Code written 
+    in <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> is even more trivial to add to the  server.
+    This ability to modify its operation <SPAN
+CLASS="QUOTE"
+>"on the fly"</SPAN
+> makes
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uniquely suited for rapid prototyping  of  new
+    applications and storage structures.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="arch-pg.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="type-system.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Architecture</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Type System</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,744 @@
+<HTML
+><HEAD
+><TITLE
+>Asynchronous Query Processing</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="Command Execution Functions"
+HREF="libpq-exec.html"><LINK
+REL="NEXT"
+TITLE="The Fast-Path Interface"
+HREF="libpq-fastpath.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpq-exec.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq-fastpath.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-ASYNC"
+>1.4. Asynchronous Query Processing</A
+></H1
+><A
+NAME="AEN25385"
+></A
+><P
+>The <TT
+CLASS="FUNCTION"
+>PQexec</TT
+> function is adequate for submitting commands in
+simple synchronous
+applications.  It has a couple of major deficiencies however:
+
+<P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQexec</TT
+> waits for the command to be completed.  The application may have other
+work to do (such as maintaining a user interface), in which case it won't
+want to block waiting for the response.</P
+></LI
+><LI
+><P
+>Since control is buried inside <TT
+CLASS="FUNCTION"
+>PQexec</TT
+>, it is hard for the frontend
+to decide it would like to try to cancel the ongoing command.  (It can be
+done from a signal handler, but not otherwise.)</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQexec</TT
+> can return only one <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> structure.  If the submitted command
+string contains multiple <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> commands, all but the last <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> are
+discarded by <TT
+CLASS="FUNCTION"
+>PQexec</TT
+>.</P
+></LI
+></UL
+><P></P
+><P
+>Applications that do not like these limitations can instead use the
+underlying functions that <TT
+CLASS="FUNCTION"
+>PQexec</TT
+> is built from:
+<TT
+CLASS="FUNCTION"
+>PQsendQuery</TT
+> and <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+>.</P
+><P
+>Older programs that used this functionality as well as 
+<TT
+CLASS="FUNCTION"
+>PQputline</TT
+> and <TT
+CLASS="FUNCTION"
+>PQputnbytes</TT
+>
+could block waiting to send data to the backend. To
+address that issue, the function <TT
+CLASS="FUNCTION"
+>PQsetnonblocking</TT
+>
+was added.</P
+><P
+>Old applications can neglect to use <TT
+CLASS="FUNCTION"
+>PQsetnonblocking</TT
+>
+and get the older potentially blocking behavior.  Newer programs can use 
+<TT
+CLASS="FUNCTION"
+>PQsetnonblocking</TT
+> to achieve a completely nonblocking
+connection to the backend.
+
+<P
+></P
+></P><UL
+><LI
+><P
+>    <TT
+CLASS="FUNCTION"
+>PQsetnonblocking</TT
+> Sets the nonblocking status of the
+    connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQsetnonblocking(PGconn *conn, int arg)</PRE
+><P>
+    Sets the state of the connection to nonblocking if <TT
+CLASS="PARAMETER"
+><I
+>arg</I
+></TT
+> is 1,
+    blocking if <TT
+CLASS="PARAMETER"
+><I
+>arg</I
+></TT
+> is 0.  Returns 0 if OK, -1 if error.
+   </P
+><P
+>    In the nonblocking state, calls to
+    <TT
+CLASS="FUNCTION"
+>PQputline</TT
+>, <TT
+CLASS="FUNCTION"
+>PQputnbytes</TT
+>,
+    <TT
+CLASS="FUNCTION"
+>PQsendQuery</TT
+> and <TT
+CLASS="FUNCTION"
+>PQendcopy</TT
+>
+    will not block but instead return an error if they need to be called
+    again.
+   </P
+><P
+>    When a database connection has been set to nonblocking mode and
+    <TT
+CLASS="FUNCTION"
+>PQexec</TT
+> is called, it will temporarily set the state
+    of the connection to blocking until the <TT
+CLASS="FUNCTION"
+>PQexec</TT
+> 
+    completes. 
+   </P
+><P
+>    More of <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> is expected to be made safe for 
+    <TT
+CLASS="FUNCTION"
+>PQsetnonblocking</TT
+> functionality in the near future.
+  </P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQisnonblocking</TT
+>
+       Returns the blocking status of the database connection.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQisnonblocking(const PGconn *conn)</PRE
+><P>
+       Returns 1 if the connection is set to nonblocking mode,
+       0 if blocking.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQsendQuery</TT
+>
+          Submit a command to the server without
+	  waiting for the result(s).  1 is returned if the command was
+	  successfully dispatched, 0 if not (in which case, use
+	  <TT
+CLASS="FUNCTION"
+>PQerrorMessage</TT
+> to get more information about the failure).
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQsendQuery(PGconn *conn,
+                const char *query);</PRE
+><P>
+	  After successfully calling <TT
+CLASS="FUNCTION"
+>PQsendQuery</TT
+>, call
+          <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> one or more
+	  times to obtain the results.  <TT
+CLASS="FUNCTION"
+>PQsendQuery</TT
+> may not be called
+	  again (on the same connection) until <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> has returned NULL,
+	  indicating that the command is done.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+>
+          Wait for the next result from a prior <TT
+CLASS="FUNCTION"
+>PQsendQuery</TT
+>,
+	  and return it.  NULL is returned when the query is complete
+	  and there will be no more results.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGresult *PQgetResult(PGconn *conn);</PRE
+><P>
+	  <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> must be called repeatedly until it returns NULL,
+	  indicating that the command is done.  (If called when no command is
+	  active, <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> will just return NULL at once.)
+	  Each non-NULL result from <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> should be processed using
+	  the same <TT
+CLASS="STRUCTNAME"
+>PGresult</TT
+> accessor functions previously described.
+	  Don't forget to free each result object with <TT
+CLASS="FUNCTION"
+>PQclear</TT
+> when done with it.
+	  Note that <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> will block only if a query is active and the
+	  necessary response data has not yet been read by <TT
+CLASS="FUNCTION"
+>PQconsumeInput</TT
+>.</P
+></LI
+></UL
+><P></P
+><P
+>Using <TT
+CLASS="FUNCTION"
+>PQsendQuery</TT
+> and <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+>
+solves one of <TT
+CLASS="FUNCTION"
+>PQexec</TT
+>'s problems:
+If a command string contains multiple <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> commands, the results of those
+commands can be obtained individually.  (This allows a simple form of
+overlapped processing, by the way: the frontend can be handling the
+results of one query while the backend is still working on later
+queries in the same command string.)  However, calling <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> will
+still cause the frontend to block until the backend completes the
+next <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> command.  This can be avoided by proper use of three more
+functions:
+
+<P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQconsumeInput</TT
+>
+	  If input is available from the backend, consume it.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQconsumeInput(PGconn *conn);</PRE
+><P>
+<TT
+CLASS="FUNCTION"
+>PQconsumeInput</TT
+> normally returns 1 indicating <SPAN
+CLASS="QUOTE"
+>"no error"</SPAN
+>,
+but returns 0 if there was some kind of trouble (in which case
+<TT
+CLASS="FUNCTION"
+>PQerrorMessage</TT
+> is set).  Note that the result does not say
+whether any input data was actually collected. After calling
+<TT
+CLASS="FUNCTION"
+>PQconsumeInput</TT
+>, the application may check
+<TT
+CLASS="FUNCTION"
+>PQisBusy</TT
+> and/or <TT
+CLASS="FUNCTION"
+>PQnotifies</TT
+> to see if
+their state has changed.</P
+><P
+><TT
+CLASS="FUNCTION"
+>PQconsumeInput</TT
+> may be called even if the application is not
+prepared to deal with a result or notification just yet.  The
+routine will read available data and save it in a buffer, thereby
+causing a <TT
+CLASS="FUNCTION"
+>select()</TT
+> read-ready indication to go away.  The
+application can thus use <TT
+CLASS="FUNCTION"
+>PQconsumeInput</TT
+> to clear the
+<TT
+CLASS="FUNCTION"
+>select()</TT
+> condition immediately, and then examine the results at leisure.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQisBusy</TT
+>
+Returns 1 if a query is busy, that is, <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> would block
+waiting for input.  A 0 return indicates that <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> can
+be called with assurance of not blocking.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQisBusy(PGconn *conn);</PRE
+><P>
+<TT
+CLASS="FUNCTION"
+>PQisBusy</TT
+> will not itself attempt to read data from the backend;
+therefore <TT
+CLASS="FUNCTION"
+>PQconsumeInput</TT
+> must be invoked first, or the busy
+state will never end.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQflush</TT
+> Attempt to flush any data queued to the backend,
+returns 0 if successful (or if the send queue is empty) or <TT
+CLASS="SYMBOL"
+>EOF</TT
+> if it failed for
+some reason.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQflush(PGconn *conn);</PRE
+><P>
+<TT
+CLASS="FUNCTION"
+>PQflush</TT
+> needs to be called on a nonblocking connection 
+before calling <TT
+CLASS="FUNCTION"
+>select()</TT
+> to determine if a response has
+arrived.  If 0 is returned it ensures that there is no data queued to the 
+backend that has not actually been sent.  Only applications that have used
+<TT
+CLASS="FUNCTION"
+>PQsetnonblocking</TT
+> have a need for this.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQsocket</TT
+>
+	  Obtain the file descriptor number for the backend connection socket.
+	  A valid descriptor will be &gt;= 0; a result of -1 indicates that
+	  no backend connection is currently open.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQsocket(const PGconn *conn);</PRE
+><P>
+<TT
+CLASS="FUNCTION"
+>PQsocket</TT
+> should be used to obtain the backend socket descriptor
+in preparation for executing <TT
+CLASS="FUNCTION"
+>select()</TT
+>.  This allows an
+application using a blocking connection to wait for either backend responses or
+other conditions.
+If the result of <TT
+CLASS="FUNCTION"
+>select()</TT
+> indicates that data can be read from
+the backend socket, then <TT
+CLASS="FUNCTION"
+>PQconsumeInput</TT
+> should be called to read the
+data; after which, <TT
+CLASS="FUNCTION"
+>PQisBusy</TT
+>, <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+>,
+and/or <TT
+CLASS="FUNCTION"
+>PQnotifies</TT
+> can be used to process the response.</P
+><P
+>Nonblocking connections (that have used <TT
+CLASS="FUNCTION"
+>PQsetnonblocking</TT
+>)
+should not use <TT
+CLASS="FUNCTION"
+>select()</TT
+> until <TT
+CLASS="FUNCTION"
+>PQflush</TT
+>
+has returned 0 indicating that there is no buffered data waiting to be sent
+to the backend.</P
+></LI
+></UL
+><P></P
+><P
+>A typical frontend using these functions will have a main loop that uses
+<TT
+CLASS="FUNCTION"
+>select</TT
+> to wait for all the conditions that it must
+respond to.  One of the conditions will be input available from the backend,
+which in <TT
+CLASS="FUNCTION"
+>select</TT
+>'s terms is readable data on the file
+descriptor identified by <TT
+CLASS="FUNCTION"
+>PQsocket</TT
+>.
+When the main loop detects input ready, it should call
+<TT
+CLASS="FUNCTION"
+>PQconsumeInput</TT
+> to read the input.  It can then call
+<TT
+CLASS="FUNCTION"
+>PQisBusy</TT
+>, followed by <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+>
+if <TT
+CLASS="FUNCTION"
+>PQisBusy</TT
+> returns false (0).  It can also call
+<TT
+CLASS="FUNCTION"
+>PQnotifies</TT
+> to detect NOTIFY messages (see <A
+HREF="libpq-notify.html"
+>Section 1.6</A
+>).</P
+><P
+>A frontend that uses <TT
+CLASS="FUNCTION"
+>PQsendQuery</TT
+>/<TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+>
+can also attempt to cancel a command that is still being processed by the backend.</P
+><P
+><P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQrequestCancel</TT
+>
+	  Request that <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> abandon
+	  processing of the current command.
+</P><PRE
+CLASS="SYNOPSIS"
+>int PQrequestCancel(PGconn *conn);</PRE
+><P>
+The return value is 1 if the cancel request was successfully
+dispatched, 0 if not.  (If not, <TT
+CLASS="FUNCTION"
+>PQerrorMessage</TT
+> tells why not.)
+Successful dispatch is no guarantee that the request will have any
+effect, however.  Regardless of the return value of <TT
+CLASS="FUNCTION"
+>PQrequestCancel</TT
+>,
+the application must continue with the normal result-reading
+sequence using <TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+>.  If the cancellation
+is effective, the current command will terminate early and return
+an error result.  If the cancellation fails (say, because the
+backend was already done processing the command), then there will
+be no visible result at all.</P
+></LI
+></UL
+><P></P
+><P
+>Note that if the current command is part of a transaction, cancellation
+will abort the whole transaction.</P
+><P
+><TT
+CLASS="FUNCTION"
+>PQrequestCancel</TT
+> can safely be invoked from a signal handler.
+So, it is also possible to use it in conjunction with plain
+<TT
+CLASS="FUNCTION"
+>PQexec</TT
+>, if the decision to cancel can be made in a signal
+handler.  For example, <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> invokes
+<TT
+CLASS="FUNCTION"
+>PQrequestCancel</TT
+> from a <SPAN
+CLASS="SYSTEMITEM"
+>SIGINT</SPAN
+> signal handler, thus allowing
+interactive cancellation of queries that it issues through <TT
+CLASS="FUNCTION"
+>PQexec</TT
+>.
+Note that <TT
+CLASS="FUNCTION"
+>PQrequestCancel</TT
+> will have no effect if the connection
+is not currently open or the backend is not currently processing a command.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-exec.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-fastpath.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Command Execution Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The Fast-Path Interface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

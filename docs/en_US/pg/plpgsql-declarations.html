@@ -1,0 +1,646 @@
+<HTML
+><HEAD
+><TITLE
+>Declarations</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/pgSQL - SQL Procedural Language"
+HREF="plpgsql.html"><LINK
+REL="PREVIOUS"
+TITLE="Structure of PL/pgSQL"
+HREF="plpgsql-structure.html"><LINK
+REL="NEXT"
+TITLE="Expressions"
+HREF="plpgsql-expressions.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="plpgsql-structure.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 19. <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> - <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="plpgsql-expressions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPGSQL-DECLARATIONS"
+>19.3. Declarations</A
+></H1
+><P
+>     All variables, rows and records used in a block must be declared in the
+     declarations section of the block. 
+     (The only exception is that the loop variable of a FOR loop iterating
+     over a range of integer values is automatically declared as an integer
+     variable.)
+    </P
+><P
+>     <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> variables can have any SQL data type, such as
+     <TT
+CLASS="TYPE"
+>INTEGER</TT
+>, <TT
+CLASS="TYPE"
+>VARCHAR</TT
+> and
+     <TT
+CLASS="TYPE"
+>CHAR</TT
+>.
+    </P
+><P
+>     Here are some examples of variable declarations:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>user_id INTEGER;
+quantity NUMERIC(5);
+url VARCHAR;
+myrow tablename%ROWTYPE;
+myfield tablename.fieldname%TYPE;
+arow RECORD;</PRE
+><P>
+    </P
+><P
+>     The general syntax of a variable declaration is:
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+> CONSTANT </SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+> NOT NULL </SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+> { DEFAULT | := } <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> </SPAN
+>];</PRE
+><P>
+     </P
+><P
+>      The DEFAULT clause, if given, specifies the initial value assigned
+      to the variable when the block is entered.  If the DEFAULT clause
+      is not given then the variable is initialized to the
+     <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> NULL value. 
+     </P
+><P
+>      The CONSTANT option prevents the variable from being assigned to,
+      so that its value remains constant for the duration of the block.
+      If NOT NULL
+      is specified, an assignment of a NULL value results in a run-time
+      error. All variables declared as NOT NULL
+      must have a non-NULL default value specified.
+     </P
+><P
+>      The default value is evaluated every time the block is entered. So,
+      for example, assigning '<TT
+CLASS="LITERAL"
+>now</TT
+>' to a variable of type
+      <TT
+CLASS="TYPE"
+>timestamp</TT
+> causes the variable to have the
+      time of the current function call, not when the function was
+      precompiled.
+     </P
+><P
+>      Examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>quantity INTEGER DEFAULT 32;
+url varchar := ''http://mysite.com'';
+user_id CONSTANT INTEGER := 10;</PRE
+><P>
+     </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-DECLARATION-ALIASES"
+>19.3.1. Aliases for Function Parameters</A
+></H2
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ALIAS FOR <TT
+CLASS="REPLACEABLE"
+><I
+>$n</I
+></TT
+>;</PRE
+><P>
+    </P
+><P
+>      Parameters passed to functions are named with the identifiers
+      <TT
+CLASS="LITERAL"
+>$1</TT
+>, <TT
+CLASS="LITERAL"
+>$2</TT
+>,
+      etc.  Optionally, aliases can be declared for <TT
+CLASS="LITERAL"
+>$n</TT
+>
+      parameter names for increased readability.  Either the alias or the
+      numeric identifier can then be used to refer to the parameter value.
+      Some examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION sales_tax(REAL) RETURNS REAL AS '
+DECLARE
+    subtotal ALIAS FOR $1;
+BEGIN
+    return subtotal * 0.06;
+END;
+' LANGUAGE 'plpgsql';
+
+
+CREATE FUNCTION instr(VARCHAR,INTEGER) RETURNS INTEGER AS '
+DECLARE
+    v_string ALIAS FOR $1;
+    index ALIAS FOR $2;
+BEGIN
+    -- Some computations here
+END;
+' LANGUAGE 'plpgsql';
+
+
+CREATE FUNCTION use_many_fields(tablename) RETURNS TEXT AS '
+DECLARE
+    in_t ALIAS FOR $1;
+BEGIN
+    RETURN in_t.f1 || in_t.f3 || in_t.f5 || in_t.f7;
+END;
+' LANGUAGE 'plpgsql';</PRE
+><P>
+     </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-DECLARATION-ROWTYPES"
+>19.3.2. Row Types</A
+></H2
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+><TT
+CLASS="LITERAL"
+>%ROWTYPE</TT
+>;</PRE
+><P>
+    </P
+><P
+>    A variable of a composite type is called a <I
+CLASS="FIRSTTERM"
+>row</I
+>
+    variable (or <I
+CLASS="FIRSTTERM"
+>row-type</I
+> variable).  Such a variable can hold a
+    whole row of a SELECT or FOR
+    query result, so long as that query's column set matches the declared
+    type of the variable.  The individual fields of the row value are
+    accessed using the usual dot notation, for example
+    <TT
+CLASS="LITERAL"
+>rowvar.field</TT
+>.
+   </P
+><P
+>    Presently, a row variable can only be declared using the
+    <TT
+CLASS="LITERAL"
+>%ROWTYPE</TT
+> notation; although one might expect a
+    bare table name to work as a type declaration, it won't be accepted
+    within <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> functions.
+   </P
+><P
+>    Parameters to a function can be
+    composite types (complete table rows). In that case, the
+    corresponding identifier $n will be a row variable, and fields can
+    be selected from it, for example <TT
+CLASS="LITERAL"
+>$1.user_id</TT
+>.
+   </P
+><P
+>    Only the user-defined attributes of a table row are accessible in a
+    row-type variable, not OID or other system attributes (because the
+    row could be from a view).  The fields of the row type inherit the
+    table's field size or precision for data types such as
+    <TT
+CLASS="TYPE"
+>char(n)</TT
+>.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION use_two_tables(tablename) RETURNS TEXT AS '
+DECLARE
+    in_t ALIAS FOR $1;
+    use_t table2name%ROWTYPE;
+BEGIN
+    SELECT * INTO use_t FROM table2name WHERE ... ;
+    RETURN in_t.f1 || use_t.f3 || in_t.f5 || use_t.f7;
+END;
+' LANGUAGE 'plpgsql';</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-DECLARATION-RECORDS"
+>19.3.3. Records</A
+></H2
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> RECORD;</PRE
+><P>
+    </P
+><P
+>    Record variables are similar to row-type variables, but they have no
+    predefined structure.  They take on the actual row structure of the
+    row they are assigned during a SELECT or FOR command.  The substructure
+    of a record variable can change each time it is assigned to.
+    A consequence of this is that until a record variable is first assigned
+    to, <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>it has no</I
+></SPAN
+> substructure, and any attempt to access a
+    field in it will draw a run-time error.
+   </P
+><P
+>    Note that <TT
+CLASS="LITERAL"
+>RECORD</TT
+> is not a true data type, only a placeholder.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-DECLARATION-ATTRIBUTES"
+>19.3.4. Attributes</A
+></H2
+><P
+>      Using the <TT
+CLASS="TYPE"
+>%TYPE</TT
+> and <TT
+CLASS="TYPE"
+>%ROWTYPE</TT
+>
+      attributes, you can declare variables with the same
+      data type or structure as another database item (e.g: a
+      table field).
+     </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+>%TYPE</DT
+><DD
+><P
+>         <TT
+CLASS="TYPE"
+>%TYPE</TT
+> provides the data type of a
+         variable or database column. You can use this to
+         declare variables that will hold database
+         values. For example, let's say you have a column
+         named <TT
+CLASS="TYPE"
+>user_id</TT
+> in your
+         <TT
+CLASS="TYPE"
+>users</TT
+> table. To declare a variable with
+         the same data type as <TT
+CLASS="STRUCTNAME"
+>users</TT
+>.<TT
+CLASS="STRUCTFIELD"
+>user_id</TT
+> you write:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>user_id   users.user_id%TYPE;</PRE
+><P>
+        </P
+><P
+>         By using <TT
+CLASS="TYPE"
+>%TYPE</TT
+> you don't need to know
+         the data type of the structure you are referencing,
+         and most important, if the data type of the
+         referenced item changes in the future (e.g: you
+         change your table definition of user_id from INTEGER to
+         REAL), you may not need to change your function
+         definition.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>%ROWTYPE</TT
+></DT
+><DD
+><P
+>	 <TT
+CLASS="TYPE"
+>%ROWTYPE</TT
+> provides the composite data type corresponding
+	 to a whole row of the specified table.
+	 <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> must be an existing
+	 table or view name of the database.
+        </P
+><PRE
+CLASS="PROGRAMLISTING"
+>DECLARE
+    users_rec users%ROWTYPE;
+    user_id users.user_id%TYPE;
+BEGIN
+    user_id := users_rec.user_id;
+    ...
+
+CREATE FUNCTION does_view_exist(INTEGER) RETURNS bool AS '
+   DECLARE
+        key ALIAS FOR $1;
+        table_data cs_materialized_views%ROWTYPE;
+   BEGIN
+        SELECT INTO table_data * FROM cs_materialized_views
+               WHERE sort_key=key;
+
+        IF NOT FOUND THEN
+           RETURN false;
+        END IF;
+        RETURN true;
+   END;
+' LANGUAGE 'plpgsql';</PRE
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-DECLARATION-RENAMING-VARS"
+>19.3.5. RENAME</A
+></H2
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>RENAME <TT
+CLASS="REPLACEABLE"
+><I
+>oldname</I
+></TT
+> TO <TT
+CLASS="REPLACEABLE"
+><I
+>newname</I
+></TT
+>;</PRE
+><P>
+
+      Using the RENAME declaration you can change the name of a variable,
+      record or row. This is primarily useful if NEW or OLD should be
+      referenced by another name inside a trigger procedure.  See also ALIAS.
+     </P
+><P
+>      Examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>RENAME id TO user_id;
+RENAME this_var TO that_var;</PRE
+><P>
+     </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	  RENAME appears to be broken as of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+	  7.3.  Fixing this is of low priority, since ALIAS covers most of
+	  the practical uses of RENAME.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-structure.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-expressions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Structure of <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Expressions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

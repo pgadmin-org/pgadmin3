@@ -1,0 +1,305 @@
+<HTML
+><HEAD
+><TITLE
+>initlocation</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="PREVIOUS"
+TITLE="initdb"
+HREF="app-initdb.html"><LINK
+REL="NEXT"
+TITLE="ipcclean"
+HREF="app-ipcclean.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="app-initdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="app-ipcclean.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-INITLOCATION"
+><SPAN
+CLASS="APPLICATION"
+>initlocation</SPAN
+></A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN50856"
+></A
+><H2
+>Name</H2
+>initlocation&nbsp;--&nbsp;create a secondary <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database storage area</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN50860"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>initlocation</TT
+>  <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+> </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-INITLOCATION-1"
+></A
+><H2
+>Description</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>initlocation</SPAN
+> 
+   creates a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> secondary database storage area.
+   See the discussion under <A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
+>
+   about how to manage and use secondary storage areas. If the argument does not contain
+   a slash and is not valid as a path, it is assumed to be an environment variable,
+   which is referenced. See the examples at the end.
+  </P
+><P
+>   In order to use this command you must be logged in (using <TT
+CLASS="COMMAND"
+>su</TT
+>, for example)
+   as the database superuser.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-INITLOCATION-2"
+></A
+><H2
+>Examples</H2
+><P
+>    To create a database in an alternate location, using an
+    environment variable:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$ </TT
+><TT
+CLASS="USERINPUT"
+><B
+>export PGDATA2=/opt/postgres/data</B
+></TT
+></PRE
+><P>
+    Stop and start postmaster so it sees the <TT
+CLASS="ENVAR"
+>PGDATA2</TT
+>
+    environment variable.  The system must be configured so the
+    postmaster sees <TT
+CLASS="ENVAR"
+>PGDATA2</TT
+> every time it starts.  Finally:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>initlocation PGDATA2</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>createdb -D PGDATA2 testdb</B
+></TT
+></PRE
+><P>
+   </P
+><P
+>    Alternatively, if you allow absolute paths you could write:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>initlocation /opt/postgres/data</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>createdb -D /opt/postgres/data/testdb testdb</B
+></TT
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50892"
+></A
+><H2
+>See Also</H2
+><I
+CLASS="CITETITLE"
+>PostgreSQL Administrator's Guide</I
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-initdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-ipcclean.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>initdb</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>ipcclean</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,187 @@
+<HTML
+><HEAD
+><TITLE
+>Deleting Data</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Manipulation"
+HREF="dml.html"><LINK
+REL="PREVIOUS"
+TITLE="Updating Data"
+HREF="dml-update.html"><LINK
+REL="NEXT"
+TITLE="Queries"
+HREF="queries.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="dml-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Data Manipulation</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="queries.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DML-DELETE"
+>3.3. Deleting Data</A
+></H1
+><P
+>   So far we have explained how to add data to tables and how to
+   change data.  What remains is to discuss how to remove data that is
+   no longer needed.  Just as adding data is only possible in whole
+   rows, you can only remove entire rows from a table.  In the
+   previous section we discussed that SQL does not provide a way to
+   directly address individual rows.  Therefore, removing rows can
+   only be done by specifying conditions that the rows to be removed
+   have to match.  If you have a primary key in the table then you can
+   specify the exact row.  But you can also remove groups of rows
+   matching a condition, or you can remove all rows in the table at
+   once.
+  </P
+><P
+>   You use the <TT
+CLASS="LITERAL"
+>DELETE</TT
+> command to remove rows; the
+   syntax is very similar to the <TT
+CLASS="LITERAL"
+>UPDATE</TT
+> command.
+   For instance, to remove all rows from the products table that have a price of 10, use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM products WHERE price = 10;</PRE
+><P>
+  </P
+><P
+>   If you simply write
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DELETE FROM products;</PRE
+><P>
+   then all rows in the table will be deleted!  Caveat programmer.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="dml-update.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Updating Data</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="dml.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Queries</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

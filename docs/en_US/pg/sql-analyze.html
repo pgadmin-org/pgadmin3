@@ -1,0 +1,445 @@
+<HTML
+><HEAD
+><TITLE
+>ANALYZE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER USER"
+HREF="sql-alteruser.html"><LINK
+REL="NEXT"
+TITLE="BEGIN"
+HREF="sql-begin.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-alteruser.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-begin.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ANALYZE"
+>ANALYZE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN37856"
+></A
+><H2
+>Name</H2
+>   ANALYZE
+  &nbsp;--&nbsp;   collect statistics about a database
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN37859"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ANALYZE [ VERBOSE ] [ <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ (<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [, ...] ) ] ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ANALYZE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>VERBOSE</DT
+><DD
+><P
+>	Enables display of progress messages.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>	The name (possibly schema-qualified) of a specific table to
+	analyze. Defaults to all tables in the current database.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+></DT
+><DD
+><P
+>	The name of a specific column to analyze. Defaults to all columns.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ANALYZE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+><SPAN
+CLASS="RETURNVALUE"
+>ANALYZE</SPAN
+>
+       </TT
+></DT
+><DD
+><P
+>	The command is complete.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ANALYZE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> collects statistics about the contents of
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> tables, and stores the results in
+   the system table <TT
+CLASS="LITERAL"
+>pg_statistic</TT
+>.  Subsequently,
+   the query planner uses the statistics to help determine the most efficient
+   execution plans for queries.
+  </P
+><P
+>   With no parameter, <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> examines every table in the
+   current database.  With a parameter, <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> examines
+   only that table.  It is further possible to give a list of column names,
+   in which case only the statistics for those columns are updated.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ANALYZE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>   It is a good idea to run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> periodically, or
+   just after making major changes in the contents of a table.  Accurate
+   statistics will help the planner to choose the most appropriate query
+   plan, and thereby improve the speed of query processing.  A common
+   strategy is to run <A
+HREF="sql-vacuum.html"
+><I
+>VACUUM</I
+></A
+>
+   and <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> once a day during a low-usage time of day.
+  </P
+><P
+>   Unlike <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+>,
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> requires
+   only a read lock on the target table, so it can run in parallel with
+   other activity on the table.
+  </P
+><P
+>   For large tables, <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> takes a random sample of the
+   table contents, rather than examining every row.  This allows even very
+   large tables to be analyzed in a small amount of time.  Note however
+   that the statistics are only approximate, and will change slightly each
+   time <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> is run, even if the actual table contents
+   did not change.  This may result in small changes in the planner's
+   estimated costs shown by <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+>.
+  </P
+><P
+>   The collected statistics usually include a list of some of the most common
+   values in each column and a histogram showing the approximate data
+   distribution in each column.  One or both of these may be omitted if
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> deems them uninteresting (for example, in
+   a unique-key column, there are no common values) or if the column
+   data type does not support the appropriate operators.  There is more
+   information about the statistics in the <I
+CLASS="CITETITLE"
+>User's
+   Guide</I
+>.
+  </P
+><P
+>   The extent of analysis can be controlled by adjusting the
+   <TT
+CLASS="LITERAL"
+>default_statistics_target</TT
+> parameter variable, or on a
+   column-by-column basis by setting the per-column
+   statistics target with <TT
+CLASS="COMMAND"
+>ALTER TABLE ALTER COLUMN SET
+   STATISTICS</TT
+> (see
+   <A
+HREF="sql-altertable.html"
+><I
+>ALTER TABLE</I
+></A
+>).  The
+   target value sets the maximum number of entries in the most-common-value
+   list and the maximum number of bins in the histogram.  The default
+   target value is 10, but this can be adjusted up or down to trade off
+   accuracy of planner estimates against the time taken for
+   <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> and the amount of space occupied
+   in <TT
+CLASS="LITERAL"
+>pg_statistic</TT
+>.
+   In particular, setting the statistics target to zero disables collection of
+   statistics for that column.  It may be useful to do that for columns that
+   are never used as part of the WHERE, GROUP BY, or ORDER BY clauses of
+   queries, since the planner will have no use for statistics on such columns.
+  </P
+><P
+>   The largest statistics target among the columns being analyzed determines
+   the number of table rows sampled to prepare the statistics.  Increasing
+   the target causes a proportional increase in the time and space needed
+   to do <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+>.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ANALYZE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ANALYZE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> statement in <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-alteruser.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-begin.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER USER</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>BEGIN</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

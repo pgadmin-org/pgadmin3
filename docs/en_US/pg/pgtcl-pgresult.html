@@ -1,0 +1,417 @@
+<HTML
+><HEAD
+><TITLE
+>pg_result</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="pgtcl Command Reference Information"
+HREF="libpgtcl-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_exec"
+HREF="pgtcl-pgexec.html"><LINK
+REL="NEXT"
+TITLE="pg_select"
+HREF="pgtcl-pgselect.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="pgtcl-pgexec.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="pgtcl-pgselect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="PGTCL-PGRESULT"
+>pg_result</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN26506"
+></A
+><H2
+>Name</H2
+>pg_result&nbsp;--&nbsp;get information about a query result<A
+NAME="IX-PGTCL-PGRESULT-1"
+></A
+><A
+NAME="IX-PGTCL-PGRESULT-2"
+></A
+></DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN26514"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>pg_result <TT
+CLASS="REPLACEABLE"
+><I
+>resultHandle</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>resultOption</I
+></TT
+></PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PGTCL-PGRESULT-1"
+></A
+><H3
+>Inputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>resultHandle</I
+></TT
+></DT
+><DD
+><P
+>  The handle for a query result.</P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>resultOption</I
+></TT
+></DT
+><DD
+><P
+>Specifies one of several possible options.</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AEN26535"
+></A
+><H4
+>Options</H4
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-status</TT
+></DT
+><DD
+><P
+>the status of the result.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-error</TT
+></DT
+><DD
+><P
+>the error message, if the status indicates error; otherwise an empty string.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-conn</TT
+></DT
+><DD
+><P
+>the connection that produced the result.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-oid</TT
+></DT
+><DD
+><P
+>if the command was an INSERT, the OID of the 
+inserted tuple; otherwise 0.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-numTuples</TT
+></DT
+><DD
+><P
+>the number of tuples returned by the query.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-numAttrs</TT
+></DT
+><DD
+><P
+>the number of attributes in each tuple.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-assign arrayName</TT
+></DT
+><DD
+><P
+>assign the results to an array, using subscripts of the form
+<TT
+CLASS="LITERAL"
+>(tupno,attributeName)</TT
+>.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-assignbyidx arrayName ?appendstr?</TT
+></DT
+><DD
+><P
+>assign the results to an array using the first attribute's value and
+the remaining attributes' names as keys.  If <TT
+CLASS="PARAMETER"
+><I
+>appendstr</I
+></TT
+> is given then
+it is appended to each key.  In short, all but the first field of each
+tuple are stored into the array, using subscripts of the form
+<TT
+CLASS="LITERAL"
+>(firstFieldValue,fieldNameAppendStr)</TT
+>.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-getTuple tupleNumber</TT
+></DT
+><DD
+><P
+>returns the fields of the indicated tuple in a list.  Tuple numbers
+start at zero.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-tupleArray tupleNumber arrayName</TT
+></DT
+><DD
+><P
+>stores the fields of the tuple in array <TT
+CLASS="PARAMETER"
+><I
+>arrayName</I
+></TT
+>, indexed by field names.
+Tuple numbers start at zero.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-attributes</TT
+></DT
+><DD
+><P
+>returns a list of the names of the tuple attributes.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-lAttributes</TT
+></DT
+><DD
+><P
+>returns a list of sublists, <TT
+CLASS="LITERAL"
+>{name ftype fsize}</TT
+> for each tuple attribute.</P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-clear</TT
+></DT
+><DD
+><P
+>clear the result query object.</P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PGTCL-PGRESULT-2"
+></A
+><H3
+>Outputs</H3
+><P
+>The result depends on the selected option, as described above.</P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-PGTCL-PGRESULT-1"
+></A
+><H2
+>Description</H2
+><P
+><TT
+CLASS="FUNCTION"
+>pg_result</TT
+> returns information about a query result
+created by a prior <TT
+CLASS="FUNCTION"
+>pg_exec</TT
+>.</P
+><P
+>You can keep a query result around for as long as you need it, but when
+you are done with it, be sure to free it by
+executing <TT
+CLASS="FUNCTION"
+>pg_result -clear</TT
+>.  Otherwise, you have
+a memory leak, and <SPAN
+CLASS="APPLICATION"
+>Pgtcl</SPAN
+> will eventually start complaining that you've
+created too many query result objects.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pgtcl-pgexec.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pgtcl-pgselect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_exec</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpgtcl-ref.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>pg_select</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

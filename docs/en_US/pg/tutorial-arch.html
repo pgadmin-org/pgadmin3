@@ -1,0 +1,245 @@
+<HTML
+><HEAD
+><TITLE
+>Architectural Fundamentals</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Getting Started"
+HREF="tutorial-start.html"><LINK
+REL="PREVIOUS"
+TITLE="Getting Started"
+HREF="tutorial-start.html"><LINK
+REL="NEXT"
+TITLE="Creating a Database"
+HREF="tutorial-createdb.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="tutorial-start.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Getting Started</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tutorial-createdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-ARCH"
+>1.2. Architectural Fundamentals</A
+></H1
+><P
+>    Before we proceed, you should understand the basic
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> system architecture.
+    Understanding how the parts of
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interact will make this
+    chapter somewhat clearer.
+   </P
+><P
+>    In database jargon, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses a
+    client/server model.  A <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    session consists of the following cooperating processes
+    (programs):
+
+    <P
+></P
+></P><UL
+><LI
+><P
+>       A server process, which manages the database files, accepts
+       connections to the database from client applications, and
+       performs actions on the database on behalf of the clients.  The
+       database server program is called
+       <TT
+CLASS="FILENAME"
+>postmaster</TT
+>.
+       <A
+NAME="AEN78"
+></A
+>
+      </P
+></LI
+><LI
+><P
+>       The user's client (frontend) application that wants to perform
+       database operations.  Client applications can be very diverse
+       in nature:  a client could be a text-oriented tool, a graphical
+       application, a web server that accesses the database to
+       display web pages, or a specialized database maintenance tool.
+       Some client applications are supplied with the
+       <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> distribution, most are
+       developed by users.
+      </P
+></LI
+></UL
+><P>
+   </P
+><P
+>    As is typical of client/server applications, the client and the
+    server can be on different hosts.  In that case they communicate
+    over a TCP/IP network connection.  You should keep this in mind,
+    because the files that can be accessed on a client machine might
+    not be accessible (or might only be accessible using a different
+    file name) on the database server machine.
+   </P
+><P
+>    The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server can handle
+    multiple concurrent connections from clients.  For that purpose it
+    starts (<SPAN
+CLASS="QUOTE"
+>"forks"</SPAN
+>) a new process for each connection.
+    From that point on, the client and the new server process
+    communicate without intervention by the original
+    <TT
+CLASS="FILENAME"
+>postmaster</TT
+> process.  Thus, the
+    <TT
+CLASS="FILENAME"
+>postmaster</TT
+> is always running, waiting for
+    client connections, whereas client and associated server processes
+    come and go.  (All of this is of course invisible to the user.  We
+    only mention it here for completeness.)
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-start.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-createdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Getting Started</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial-start.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating a Database</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

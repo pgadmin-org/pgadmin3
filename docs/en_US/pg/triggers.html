@@ -1,0 +1,422 @@
+<HTML
+><HEAD
+><TITLE
+>Triggers</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="Index Cost Estimation Functions"
+HREF="indexcost.html"><LINK
+REL="NEXT"
+TITLE="Interaction with the Trigger Manager"
+HREF="trigger-manager.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="indexcost.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="trigger-manager.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="TRIGGERS"
+>Chapter 16. Triggers</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>16.1. <A
+HREF="triggers.html#TRIGGER-DEFINITION"
+>Trigger Definition</A
+></DT
+><DT
+>16.2. <A
+HREF="trigger-manager.html"
+>Interaction with the Trigger Manager</A
+></DT
+><DT
+>16.3. <A
+HREF="trigger-datachanges.html"
+>Visibility of Data Changes</A
+></DT
+><DT
+>16.4. <A
+HREF="trigger-examples.html"
+>Examples</A
+></DT
+></DL
+></DIV
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has various server-side
+   function interfaces. Server-side functions can be written in SQL,
+   C, or any defined procedural language. Trigger functions can be
+   written in C and most procedural languages, but not in SQL. Note that
+   statement-level trigger events are not supported in the current
+   version. You can currently specify BEFORE or AFTER on INSERT,
+   DELETE or UPDATE of a tuple as a trigger event.
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TRIGGER-DEFINITION"
+>16.1. Trigger Definition</A
+></H1
+><P
+>    If a trigger event occurs, the trigger manager (called by the Executor)
+    sets up a <TT
+CLASS="STRUCTNAME"
+>TriggerData</TT
+> information structure (described below) and calls
+    the trigger function to handle the event.
+   </P
+><P
+>    The trigger function must be defined before the trigger itself can be
+    created.  The trigger function must be declared as a 
+    function taking no arguments and returning type <TT
+CLASS="LITERAL"
+>trigger</TT
+>.
+    (The trigger function receives its input through a <TT
+CLASS="STRUCTNAME"
+>TriggerData</TT
+>
+    structure, not in the form of ordinary function arguments.)
+    If the function is written in C, it must use the <SPAN
+CLASS="QUOTE"
+>"version 1"</SPAN
+>
+    function manager interface.
+   </P
+><P
+>    The syntax for creating triggers is:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TRIGGER <TT
+CLASS="REPLACEABLE"
+><I
+>trigger</I
+></TT
+> [ BEFORE | AFTER ] [ INSERT | DELETE | UPDATE [ OR ... ] ]
+    ON <TT
+CLASS="REPLACEABLE"
+><I
+>relation</I
+></TT
+> FOR EACH [ ROW | STATEMENT ]
+    EXECUTE PROCEDURE <TT
+CLASS="REPLACEABLE"
+><I
+>procedure</I
+></TT
+>
+     (<TT
+CLASS="REPLACEABLE"
+><I
+>args</I
+></TT
+>);</PRE
+><P>
+
+    where the arguments are:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>trigger</I
+></TT
+></DT
+><DD
+><P
+>        The trigger must have a name distinct from all other triggers on
+	the same table.  The name is needed
+	if you ever have to delete the trigger.
+       </P
+></DD
+><DT
+>BEFORE<BR>AFTER</DT
+><DD
+><P
+>	Determines whether the function is called before or after
+	the event.
+       </P
+></DD
+><DT
+>INSERT<BR>DELETE<BR>UPDATE</DT
+><DD
+><P
+>	The next element of the command determines what event(s) will trigger
+	the function.  Multiple events can be specified separated by OR.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>relation</I
+></TT
+></DT
+><DD
+><P
+>	The relation name indicates which table the event applies to.
+       </P
+></DD
+><DT
+>ROW<BR>STATEMENT</DT
+><DD
+><P
+>	The FOR EACH clause determines whether the trigger is fired for each
+	affected row or before (or after) the entire statement has completed.
+	Currently only the ROW case is supported.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>procedure</I
+></TT
+></DT
+><DD
+><P
+>	The procedure name is the function to be called.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>args</I
+></TT
+></DT
+><DD
+><P
+>	The arguments passed to the function in the <TT
+CLASS="STRUCTNAME"
+>TriggerData</TT
+> structure.
+	This is either empty or a list of one or more simple literal
+	constants (which will be passed to the function as strings).
+       </P
+><P
+>	The purpose of including arguments in the trigger definition
+	is to allow different
+	triggers with similar requirements to call the same function.
+	As an example, there could be a generalized trigger
+	function that takes as its arguments two field names and puts the
+	current user in one and the current time stamp in the other.
+	Properly written, this trigger function would be independent of
+	the specific table it is triggering on.  So the same function
+	could be used for INSERT events on any table with suitable fields,
+	to automatically track creation of records in a transaction table for
+	example. It could also be used to track last-update events if
+	defined as an UPDATE trigger.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    Trigger functions return a <TT
+CLASS="STRUCTNAME"
+>HeapTuple</TT
+> to the calling executor.  The return
+    value is ignored for triggers fired AFTER an operation,
+    but it allows BEFORE triggers to:
+
+    <P
+></P
+></P><UL
+><LI
+><P
+>       Return a <TT
+CLASS="SYMBOL"
+>NULL</TT
+> pointer to skip the operation for the
+       current tuple (and so the tuple will not be
+       inserted/updated/deleted).
+      </P
+></LI
+><LI
+><P
+>       For INSERT and UPDATE triggers only, the returned tuple becomes the
+       tuple which will be inserted or will replace the tuple being updated.
+       This allows the trigger function to modify the row being inserted or
+       updated.
+      </P
+></LI
+></UL
+><P>
+
+    A BEFORE trigger that does not intend to cause either of these behaviors
+    must be careful to return the same NEW tuple it is passed.
+   </P
+><P
+>    Note that there is no initialization performed by the CREATE TRIGGER
+    handler.  This may be changed in the future.
+   </P
+><P
+>    If more than one trigger is defined for the same event on the same
+    relation, the triggers will be fired in alphabetical order by
+    name.  In the case of BEFORE triggers, the possibly-modified tuple
+    returned by each trigger becomes the input to the next trigger.
+    If any BEFORE trigger returns <TT
+CLASS="SYMBOL"
+>NULL</TT
+>, the operation is
+    abandoned and subsequent triggers are not fired.
+   </P
+><P
+>    If a trigger function executes SQL-queries (using SPI) then these queries
+    may fire triggers again. This is known as cascading triggers.  There is no
+    direct limitation on the number of cascade levels.  It is possible for
+    cascades to cause recursive invocation of the same trigger --- for
+    example, an INSERT trigger might execute a query that inserts an
+    additional tuple into the same table, causing the INSERT trigger to be
+    fired again.  It is the trigger programmer's
+    responsibility to avoid infinite recursion in such scenarios.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexcost.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="trigger-manager.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Index Cost Estimation Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Interaction with the Trigger Manager</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

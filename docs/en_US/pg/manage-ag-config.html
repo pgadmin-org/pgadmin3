@@ -1,0 +1,201 @@
+<HTML
+><HEAD
+><TITLE
+>Database Configuration</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Managing Databases"
+HREF="managing-databases.html"><LINK
+REL="PREVIOUS"
+TITLE="Template Databases"
+HREF="manage-ag-templatedbs.html"><LINK
+REL="NEXT"
+TITLE="Alternative Locations"
+HREF="manage-ag-alternate-locs.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="manage-ag-templatedbs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Managing Databases</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="manage-ag-alternate-locs.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MANAGE-AG-CONFIG"
+>5.4. Database Configuration</A
+></H1
+><P
+>   Recall from <A
+HREF="runtime-config.html"
+>Section 3.4</A
+> that the PostgreSQL
+   server provides a large number of run-time configuration variables.
+   You can set database-specific default values for many of these
+   settings.
+  </P
+><P
+>   For example, if for some reason you want to disable the
+   <SPAN
+CLASS="ACRONYM"
+>GEQO</SPAN
+> optimizer for a given database, you'd
+   ordinarily have to either disable it for all databases or make sure
+   that every connecting client is careful to issue <TT
+CLASS="LITERAL"
+>SET geqo
+   TO off;</TT
+>.  To make this setting the default you can
+   execute the command
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DATABASE mydb SET geqo TO off;</PRE
+><P>
+   This will save the setting (but not set it immediately) and in
+   subsequent connections it will appear as though <TT
+CLASS="LITERAL"
+>SET geqo
+   TO off;</TT
+> had been called right before the session started.
+   Note that users can still alter this setting during the session; it
+   will only be the default.  To undo any such setting, use
+   <TT
+CLASS="LITERAL"
+>ALTER DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> RESET
+   <TT
+CLASS="REPLACEABLE"
+><I
+>varname</I
+></TT
+>;</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="manage-ag-templatedbs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="manage-ag-alternate-locs.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Template Databases</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Alternative Locations</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

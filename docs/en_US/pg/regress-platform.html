@@ -1,0 +1,255 @@
+<HTML
+><HEAD
+><TITLE
+>Platform-specific comparison files</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Regression Tests"
+HREF="regress.html"><LINK
+REL="PREVIOUS"
+TITLE="Test Evaluation"
+HREF="regress-evaluation.html"><LINK
+REL="NEXT"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="regress-evaluation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 13. Regression Tests</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="release.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="REGRESS-PLATFORM"
+>13.4. Platform-specific comparison files</A
+></H1
+><P
+>    Since some of the tests inherently produce platform-specific
+    results, we have provided a way to supply platform-specific result
+    comparison files.  Frequently, the same variation applies to
+    multiple platforms; rather than supplying a separate comparison
+    file for every platform, there is a mapping file that defines
+    which comparison file to use.  So, to eliminate bogus test
+    <SPAN
+CLASS="QUOTE"
+>"failures"</SPAN
+> for a particular platform, you must choose
+    or make a variant result file, and then add a line to the mapping
+    file, which is <TT
+CLASS="FILENAME"
+>resultmap</TT
+>.
+   </P
+><P
+>    Each line in the mapping file is of the form
+</P><PRE
+CLASS="SYNOPSIS"
+>testname/platformpattern=comparisonfilename</PRE
+><P>
+    The test name is just the name of the particular regression test
+    module.  The platform pattern is a pattern in the style of
+    <SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>expr</SPAN
+></SPAN
+> (that is, a regular expression with an implicit
+    <TT
+CLASS="LITERAL"
+>^</TT
+> anchor
+    at the start).  It is matched against the platform name as printed
+    by <TT
+CLASS="FILENAME"
+>config.guess</TT
+> followed by
+    <TT
+CLASS="LITERAL"
+>:gcc</TT
+> or <TT
+CLASS="LITERAL"
+>:cc</TT
+>, depending on
+    whether you use the GNU compiler or the system's native compiler
+    (on systems where there is a difference).  The comparison file
+    name is the name of the substitute result comparison file.
+   </P
+><P
+>    For example: some systems using older time zone libraries fail to apply
+    daylight-saving corrections to dates before 1970, causing
+    pre-1970 <SPAN
+CLASS="ACRONYM"
+>PDT</SPAN
+> times to be displayed in <SPAN
+CLASS="ACRONYM"
+>PST</SPAN
+> instead.  This causes a
+    few differences in the <TT
+CLASS="FILENAME"
+>horology</TT
+> regression test.
+    Therefore, we provide a variant comparison file,
+    <TT
+CLASS="FILENAME"
+>horology-no-DST-before-1970.out</TT
+>, which includes
+    the results to be expected on these systems.  To silence the bogus
+    <SPAN
+CLASS="QUOTE"
+>"failure"</SPAN
+> message on <SPAN
+CLASS="SYSTEMITEM"
+>HPPA</SPAN
+> platforms, <TT
+CLASS="FILENAME"
+>resultmap</TT
+>
+    includes
+</P><PRE
+CLASS="PROGRAMLISTING"
+>horology/hppa=horology-no-DST-before-1970</PRE
+><P>
+    which will trigger on any machine for which the output of <TT
+CLASS="COMMAND"
+>config.guess</TT
+>
+    begins with <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>hppa</TT
+>"</SPAN
+>.  Other lines
+    in <TT
+CLASS="FILENAME"
+>resultmap</TT
+> select the variant comparison file for other
+    platforms where it's appropriate.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="regress-evaluation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Test Evaluation</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="regress.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release Notes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,346 @@
+<HTML
+><HEAD
+><TITLE
+>SET TRANSACTION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="SET SESSION AUTHORIZATION"
+HREF="sql-set-session-authorization.html"><LINK
+REL="NEXT"
+TITLE="SHOW"
+HREF="sql-show.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-set-session-authorization.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-show.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-SET-TRANSACTION"
+>SET TRANSACTION</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45949"
+></A
+><H2
+>Name</H2
+>SET TRANSACTION&nbsp;--&nbsp;set the characteristics of the current transaction</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45952"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SET TRANSACTION ISOLATION LEVEL { READ COMMITTED | SERIALIZABLE }
+SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL
+    { READ COMMITTED | SERIALIZABLE }
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45954"
+></A
+><H2
+>Description</H2
+><P
+>   This command sets the transaction isolation level.  The
+   <TT
+CLASS="COMMAND"
+>SET TRANSACTION</TT
+> command sets the characteristics
+   for the current SQL-transaction. It has no effect on any subsequent
+   transactions.  This command cannot be used after the first query or data-modification
+   statement (<TT
+CLASS="COMMAND"
+>SELECT</TT
+>, <TT
+CLASS="COMMAND"
+>INSERT</TT
+>,
+   <TT
+CLASS="COMMAND"
+>DELETE</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>,
+   <TT
+CLASS="COMMAND"
+>FETCH</TT
+>, <TT
+CLASS="COMMAND"
+>COPY</TT
+>) of a transaction
+   has been executed.  <TT
+CLASS="COMMAND"
+>SET SESSION CHARACTERISTICS</TT
+>
+   sets the default transaction isolation level for each transaction
+   for a session.  <TT
+CLASS="COMMAND"
+>SET TRANSACTION</TT
+> can override it
+   for an individual transaction.
+  </P
+><P
+>   The isolation level of a transaction determines what data the
+   transaction can see when other transactions are running concurrently.
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>READ COMMITTED</DT
+><DD
+><P
+>       A statement can only see rows committed before it began. This
+       is the default.
+      </P
+></DD
+><DT
+>SERIALIZABLE</DT
+><DD
+><P
+>       The current transaction can only see rows committed before
+       first query or data-modification statement was executed in this transaction.
+      </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>        Intuitively, serializable means that two concurrent
+        transactions will leave the database in the same state as if
+        the two has been executed strictly after one another in either
+        order.
+       </P
+></BLOCKQUOTE
+></DIV
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45978"
+></A
+><H2
+>Notes</H2
+><P
+>   The session default transaction isolation level can also be set
+   with the command
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SET default_transaction_isolation = '<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+>'</PRE
+><P>
+   and in the
+   configuration file.  Consult the <I
+CLASS="CITETITLE"
+>Administrator's
+   Guide</I
+> for more information.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SET-TRANSACTION-3"
+></A
+><H2
+>Compatibility</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-SET-TRANSACTION-4"
+></A
+><H3
+>SQL92, SQL99</H3
+><P
+>    <TT
+CLASS="OPTION"
+>SERIALIZABLE</TT
+> is the default level in
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>.  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> does
+    not provide the isolation levels <TT
+CLASS="OPTION"
+>READ UNCOMMITTED</TT
+> 
+    and <TT
+CLASS="OPTION"
+>REPEATABLE READ</TT
+>. Because of multiversion
+    concurrency control, the <TT
+CLASS="OPTION"
+>SERIALIZABLE</TT
+> level is not
+    truly serializable. See the <I
+CLASS="CITETITLE"
+>User's Guide</I
+> for
+    details.
+   </P
+><P
+>    In <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> there are two other transaction
+    characteristics that can be set with these commands: whether the
+    transaction is read-only and the size of the diagnostics area.
+    Neither of these concepts are supported in
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. 
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set-session-authorization.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-show.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SET SESSION AUTHORIZATION</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SHOW</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,306 @@
+<HTML
+><HEAD
+><TITLE
+>System Columns</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Definition"
+HREF="ddl.html"><LINK
+REL="PREVIOUS"
+TITLE="Data Definition"
+HREF="ddl.html"><LINK
+REL="NEXT"
+TITLE="Default Values"
+HREF="x1779.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ddl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Data Definition</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1779.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DDL-SYSTEM-COLUMNS"
+>2.2. System Columns</A
+></H1
+><P
+>   Every table has several <I
+CLASS="FIRSTTERM"
+>system columns</I
+> that are
+   implicitly defined by the system.  Therefore, these names cannot be
+   used as names of user-defined columns.  (Note that these
+   restrictions are separate from whether the name is a key word or
+   not; quoting a name will not allow you to escape these
+   restrictions.)  You do not really need to be concerned about these
+   columns, just know they exist.
+  </P
+><A
+NAME="AEN1727"
+></A
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>oid</TT
+></DT
+><DD
+><P
+>      <A
+NAME="AEN1736"
+></A
+>
+      The object identifier (object ID) of a row.  This is a serial
+      number that is automatically added by
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to all table rows (unless
+      the table was created <TT
+CLASS="LITERAL"
+>WITHOUT OIDS</TT
+>, in which
+      case this column is not present).  This column is of type
+      <TT
+CLASS="LITERAL"
+>oid</TT
+> (same name as the column); see <A
+HREF="datatype-oid.html"
+>Section 5.10</A
+> for more information about the type.
+     </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>tableoid</TT
+></DT
+><DD
+><P
+>      The OID of the table containing this row.  This attribute is
+      particularly handy for queries that select from inheritance
+      hierarchies, since without it, it's difficult to tell which
+      individual table a row came from.  The
+      <TT
+CLASS="STRUCTFIELD"
+>tableoid</TT
+> can be joined against the
+      <TT
+CLASS="STRUCTFIELD"
+>oid</TT
+> column of
+      <TT
+CLASS="CLASSNAME"
+>pg_class</TT
+> to obtain the table name.
+     </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>xmin</TT
+></DT
+><DD
+><P
+>      The identity (transaction ID) of the inserting transaction for
+      this tuple.  (Note: In this context, a tuple is an individual
+      state of a row; each update of a row creates a new tuple for the
+      same logical row.)
+     </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>cmin</TT
+></DT
+><DD
+><P
+>      The command identifier (starting at zero) within the inserting
+      transaction.
+     </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>xmax</TT
+></DT
+><DD
+><P
+>      The identity (transaction ID) of the deleting transaction, or
+      zero for an undeleted tuple.  It is possible for this field to
+      be nonzero in a visible tuple: That usually indicates that the
+      deleting transaction hasn't committed yet, or that an attempted
+      deletion was rolled back.
+     </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>cmax</TT
+></DT
+><DD
+><P
+>      The command identifier within the deleting transaction, or zero.
+     </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>ctid</TT
+></DT
+><DD
+><P
+>      The physical location of the tuple within its table.  Note that
+      although the <TT
+CLASS="STRUCTFIELD"
+>ctid</TT
+> can be used to
+      locate the tuple very quickly, a row's
+      <TT
+CLASS="STRUCTFIELD"
+>ctid</TT
+> will change each time it is
+      updated or moved by <TT
+CLASS="COMMAND"
+>VACUUM FULL</TT
+>.  Therefore
+      <TT
+CLASS="STRUCTFIELD"
+>ctid</TT
+> is useless as a long-term row
+      identifier.  The OID, or even better a user-defined serial
+      number, should be used to identify logical rows.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1779.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Data Definition</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Default Values</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,261 @@
+<HTML
+><HEAD
+><TITLE
+>Operator Classes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Indexes"
+HREF="indexes.html"><LINK
+REL="PREVIOUS"
+TITLE="Functional Indexes"
+HREF="indexes-functional.html"><LINK
+REL="NEXT"
+TITLE="Partial Indexes"
+HREF="indexes-partial.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="indexes-functional.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="indexes-partial.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INDEXES-OPCLASS"
+>8.6. Operator Classes</A
+></H1
+><P
+>   An index definition may specify an <I
+CLASS="FIRSTTERM"
+>operator
+   class</I
+> for each column of an index.
+</P><PRE
+CLASS="SYNOPSIS"
+>CREATE INDEX <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>opclass</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>]);</PRE
+><P>
+   The operator class identifies the operators to be used by the index
+   for that column.  For example, a B-tree index on four-byte integers
+   would use the <TT
+CLASS="LITERAL"
+>int4_ops</TT
+> class; this operator
+   class includes comparison functions for four-byte integers.  In
+   practice the default operator class for the column's data type is
+   usually sufficient.  The main point of having operator classes is
+   that for some data types, there could be more than one meaningful
+   ordering.  For example, we might want to sort a complex-number data
+   type either by absolute value or by real part.  We could do this by
+   defining two operator classes for the data type and then selecting
+   the proper class when making an index.  There are also some
+   operator classes with special purposes:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      The operator classes <TT
+CLASS="LITERAL"
+>box_ops</TT
+> and
+      <TT
+CLASS="LITERAL"
+>bigbox_ops</TT
+> both support R-tree indexes on the
+      <TT
+CLASS="LITERAL"
+>box</TT
+> data type.  The difference between them is
+      that <TT
+CLASS="LITERAL"
+>bigbox_ops</TT
+> scales box coordinates down,
+      to avoid floating-point exceptions from doing multiplication,
+      addition, and subtraction on very large floating-point
+      coordinates.  If the field on which your rectangles lie is about
+      20 000 units square or larger, you should use
+      <TT
+CLASS="LITERAL"
+>bigbox_ops</TT
+>.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>    The following query shows all defined operator classes:
+
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT am.amname AS acc_method,
+       opc.opcname AS ops_name
+    FROM pg_am am, pg_opclass opc
+    WHERE opc.opcamid = am.oid
+    ORDER BY acc_method, ops_name;
+    </PRE
+><P>
+
+    It can be extended to show all the operators included in each class:
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT am.amname AS acc_method,
+       opc.opcname AS ops_name,
+       opr.oprname AS ops_comp
+    FROM pg_am am, pg_opclass opc, pg_amop amop, pg_operator opr
+    WHERE opc.opcamid = am.oid AND
+          amop.amopclaid = opc.oid AND
+          amop.amopopr = opr.oid
+    ORDER BY acc_method, ops_name, ops_comp;
+    </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="indexes-functional.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="indexes-partial.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Functional Indexes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="indexes.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Partial Indexes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

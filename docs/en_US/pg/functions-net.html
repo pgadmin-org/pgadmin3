@@ -1,0 +1,891 @@
+<HTML
+><HEAD
+><TITLE
+>Network Address Type Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Geometric Functions and Operators"
+HREF="functions-geometry.html"><LINK
+REL="NEXT"
+TITLE="Sequence-Manipulation Functions"
+HREF="functions-sequence.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="functions-geometry.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="functions-sequence.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-NET"
+>6.10. Network Address Type Functions</A
+></H1
+><P
+>   <A
+HREF="functions-net.html#CIDR-INET-OPERATORS-TABLE"
+>Table 6-23</A
+> shows the operators
+   available for the <TT
+CLASS="TYPE"
+>inet</TT
+> and <TT
+CLASS="TYPE"
+>cidr</TT
+> types.
+   The operators <TT
+CLASS="LITERAL"
+>&lt;&lt;</TT
+>,
+   <TT
+CLASS="LITERAL"
+>&lt;&lt;=</TT
+>, <TT
+CLASS="LITERAL"
+>&gt;&gt;</TT
+>,
+   <TT
+CLASS="LITERAL"
+>&gt;&gt;=</TT
+> test for subnet inclusion: they
+   consider only the network parts of the two addresses, ignoring any
+   host part, and determine whether one network part is identical to
+   or a subnet of the other.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="CIDR-INET-OPERATORS-TABLE"
+></A
+><P
+><B
+>Table 6-23. <TT
+CLASS="TYPE"
+>cidr</TT
+> and <TT
+CLASS="TYPE"
+>inet</TT
+> Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Operator</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Usage</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &lt; </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Less than</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet '192.168.1.5' &lt; inet '192.168.1.6'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &lt;= </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Less than or equal</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet '192.168.1.5' &lt;= inet '192.168.1.5'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> = </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Equals</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet '192.168.1.5' = inet '192.168.1.5'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &gt;= </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Greater or equal</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet '192.168.1.5' &gt;= inet '192.168.1.5'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &gt; </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Greater</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet '192.168.1.5' &gt; inet '192.168.1.4'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &lt;&gt; </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Not equal</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet '192.168.1.5' &lt;&gt; inet '192.168.1.4'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &lt;&lt; </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>is contained within</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet '192.168.1.5' &lt;&lt; inet '192.168.1/24'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &lt;&lt;= </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>is contained within or equals</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet '192.168.1/24' &lt;&lt;= inet '192.168.1/24'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &gt;&gt; </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>contains</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet'192.168.1/24' &gt;&gt; inet '192.168.1.5'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &gt;&gt;= </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>contains or equals</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>inet '192.168.1/24' &gt;&gt;= inet '192.168.1/24'</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   <A
+HREF="functions-net.html#CIDR-INET-FUNCTIONS-TABLE"
+>Table 6-24</A
+> shows the functions
+   available for use with the <TT
+CLASS="TYPE"
+>inet</TT
+> and <TT
+CLASS="TYPE"
+>cidr</TT
+>
+   types.  The <TT
+CLASS="FUNCTION"
+>host()</TT
+>,
+   <TT
+CLASS="FUNCTION"
+>text()</TT
+>, and <TT
+CLASS="FUNCTION"
+>abbrev()</TT
+>
+   functions are primarily intended to offer alternative display
+   formats. You can cast a text field to inet using normal casting
+   syntax: <TT
+CLASS="LITERAL"
+>inet(expression)</TT
+> or
+   <TT
+CLASS="LITERAL"
+>colname::inet</TT
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="CIDR-INET-FUNCTIONS-TABLE"
+></A
+><P
+><B
+>Table 6-24. <TT
+CLASS="TYPE"
+>cidr</TT
+> and <TT
+CLASS="TYPE"
+>inet</TT
+> Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Returns</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Example</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>broadcast</TT
+>(<TT
+CLASS="TYPE"
+>inet</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>inet</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>broadcast address for network</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>broadcast('192.168.1.5/24')</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>192.168.1.255/24</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>host</TT
+>(<TT
+CLASS="TYPE"
+>inet</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>extract IP address as text</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>host('192.168.1.5/24')</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>192.168.1.5</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>masklen</TT
+>(<TT
+CLASS="TYPE"
+>inet</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>integer</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>extract netmask length</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>masklen('192.168.1.5/24')</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>24</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>set_masklen</TT
+>(<TT
+CLASS="TYPE"
+>inet</TT
+>,<TT
+CLASS="TYPE"
+>integer</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>inet</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>set netmask length for <TT
+CLASS="TYPE"
+>inet</TT
+> value</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>set_masklen('192.168.1.5/24',16)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>192.168.1.5/16</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>netmask</TT
+>(<TT
+CLASS="TYPE"
+>inet</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>inet</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>construct netmask for network</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>netmask('192.168.1.5/24')</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>255.255.255.0</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>network</TT
+>(<TT
+CLASS="TYPE"
+>inet</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>cidr</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>extract network part of address</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>network('192.168.1.5/24')</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>192.168.1.0/24</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>text</TT
+>(<TT
+CLASS="TYPE"
+>inet</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>extract IP address and masklen as text</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>text(inet '192.168.1.5')</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>192.168.1.5/32</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>abbrev</TT
+>(<TT
+CLASS="TYPE"
+>inet</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>extract abbreviated display as text</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>abbrev(cidr '10.1.0.0/16')</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>10.1/16</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   <A
+HREF="functions-net.html#MACADDR-FUNCTIONS-TABLE"
+>Table 6-25</A
+> shows the functions
+   available for use with the <TT
+CLASS="TYPE"
+>mac</TT
+> type.  The function
+   <TT
+CLASS="FUNCTION"
+>trunc</TT
+>(<TT
+CLASS="TYPE"
+>macaddr</TT
+>) returns a MAC
+   address with the last 3 bytes set to 0.  This can be used to
+   associate the remaining prefix with a manufacturer.  The directory
+   <TT
+CLASS="FILENAME"
+>contrib/mac</TT
+> in the source distribution
+   contains some utilities to create and maintain such an association
+   table.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="MACADDR-FUNCTIONS-TABLE"
+></A
+><P
+><B
+>Table 6-25. <TT
+CLASS="TYPE"
+>macaddr</TT
+> Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Returns</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Example</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>trunc</TT
+>(<TT
+CLASS="TYPE"
+>macaddr</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>macaddr</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>set last 3 bytes to zero</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>trunc(macaddr '12:34:56:78:90:ab')</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>12:34:56:00:00:00</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    The <TT
+CLASS="TYPE"
+>macaddr</TT
+> type also supports the standard relational
+    operators (<TT
+CLASS="LITERAL"
+>&gt;</TT
+>, <TT
+CLASS="LITERAL"
+>&lt;=</TT
+>, etc.) for
+    lexicographical ordering.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-geometry.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-sequence.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Geometric Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Sequence-Manipulation Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,418 @@
+<HTML
+><HEAD
+><TITLE
+>pg_connect</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="pgtcl Command Reference Information"
+HREF="libpgtcl-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="pgtcl Command Reference Information"
+HREF="libpgtcl-ref.html"><LINK
+REL="NEXT"
+TITLE="pg_disconnect"
+HREF="pgtcl-pgdisconnect.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpgtcl-ref.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="pgtcl-pgdisconnect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="PGTCL-PGCONNECT"
+>pg_connect</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN26265"
+></A
+><H2
+>Name</H2
+>pg_connect&nbsp;--&nbsp;open a connection to the backend server<A
+NAME="IX-PGTCL-PGCONNECT-1"
+></A
+><A
+NAME="IX-PGTCL-PGCONNECT-2"
+></A
+></DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN26273"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>pg_connect -conninfo <TT
+CLASS="REPLACEABLE"
+><I
+>connectOptions</I
+></TT
+>
+pg_connect <TT
+CLASS="REPLACEABLE"
+><I
+>dbName</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>-host <TT
+CLASS="REPLACEABLE"
+><I
+>hostName</I
+></TT
+></SPAN
+>]
+  [<SPAN
+CLASS="OPTIONAL"
+>-port <TT
+CLASS="REPLACEABLE"
+><I
+>portNumber</I
+></TT
+></SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+>-tty <TT
+CLASS="REPLACEABLE"
+><I
+>pqtty</I
+></TT
+></SPAN
+>]
+  [<SPAN
+CLASS="OPTIONAL"
+>-options <TT
+CLASS="REPLACEABLE"
+><I
+>optionalBackendArgs</I
+></TT
+></SPAN
+>]</PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PGTCL-PGCONNECT-1"
+></A
+><H3
+>Inputs (new style)</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>connectOptions</I
+></TT
+></DT
+><DD
+><P
+>A string of connection options, each written in the form keyword = value.
+A list of valid options can be found in <TT
+CLASS="FILENAME"
+>libpq</TT
+>'s
+<TT
+CLASS="FUNCTION"
+>PQconnectdb()</TT
+> manual entry.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PGTCL-PGCONNECT-2"
+></A
+><H3
+>Inputs (old style)</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>dbName</I
+></TT
+></DT
+><DD
+><P
+>Specifies a valid database name.</P
+></DD
+><DT
+>[<SPAN
+CLASS="OPTIONAL"
+>-host <TT
+CLASS="REPLACEABLE"
+><I
+>hostName</I
+></TT
+></SPAN
+>]</DT
+><DD
+><P
+>Specifies the domain name of the backend server for <TT
+CLASS="REPLACEABLE"
+><I
+>dbName</I
+></TT
+>.</P
+></DD
+><DT
+>[<SPAN
+CLASS="OPTIONAL"
+>-port <TT
+CLASS="REPLACEABLE"
+><I
+>portNumber</I
+></TT
+></SPAN
+>]</DT
+><DD
+><P
+>Specifies the IP port number of the backend server for <TT
+CLASS="REPLACEABLE"
+><I
+>dbName</I
+></TT
+>.</P
+></DD
+><DT
+>[<SPAN
+CLASS="OPTIONAL"
+>-tty <TT
+CLASS="REPLACEABLE"
+><I
+>pqtty</I
+></TT
+></SPAN
+>]</DT
+><DD
+><P
+>Specifies file or <SPAN
+CLASS="ACRONYM"
+>tty</SPAN
+> for optional debug output from backend.</P
+></DD
+><DT
+>[<SPAN
+CLASS="OPTIONAL"
+>-options <TT
+CLASS="REPLACEABLE"
+><I
+>optionalBackendArgs</I
+></TT
+></SPAN
+>]</DT
+><DD
+><P
+>Specifies options for the backend server for <TT
+CLASS="REPLACEABLE"
+><I
+>dbName</I
+></TT
+>.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PGTCL-PGCONNECT-3"
+></A
+><H3
+>Outputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>dbHandle</I
+></TT
+></DT
+><DD
+><P
+>If successful, a handle for a database connection is returned.
+Handles start with the prefix <TT
+CLASS="LITERAL"
+>pgsql</TT
+>.</P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-PGTCL-PGCONNECT-1"
+></A
+><H2
+>Description</H2
+><P
+><TT
+CLASS="FUNCTION"
+>pg_connect</TT
+> opens a connection to the
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend.</P
+><P
+>Two syntaxes are available.  In the older one, each possible option
+has a separate option switch in the pg_connect statement.  In the
+newer form, a single option string is supplied that can contain
+multiple option values.  See <TT
+CLASS="FUNCTION"
+>pg_conndefaults</TT
+>
+for info about the available options in the newer syntax.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-PGTCL-PGCONNECT-2"
+></A
+><H2
+>Usage</H2
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpgtcl-ref.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pgtcl-pgdisconnect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>pgtcl</SPAN
+> Command Reference Information</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpgtcl-ref.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>pg_disconnect</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

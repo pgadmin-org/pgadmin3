@@ -1,0 +1,339 @@
+<HTML
+><HEAD
+><TITLE
+>Creating a Database</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Managing Databases"
+HREF="managing-databases.html"><LINK
+REL="PREVIOUS"
+TITLE="Managing Databases"
+HREF="managing-databases.html"><LINK
+REL="NEXT"
+TITLE="Template Databases"
+HREF="manage-ag-templatedbs.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="managing-databases.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Managing Databases</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="manage-ag-templatedbs.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MANAGE-AG-CREATEDB"
+>5.2. Creating a Database</A
+></H1
+><P
+>   In order to create a databases, the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   server must be up and running (see <A
+HREF="postmaster-start.html"
+>Section 3.3</A
+>).
+  </P
+><P
+>   Databases are created with the query language command
+   <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+>:
+</P><PRE
+CLASS="SYNOPSIS"
+>CREATE DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></PRE
+><P>
+   where <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> follows the usual rules for SQL identifiers.
+   The current user automatically becomes
+   the owner of the new database. It is the privilege of the owner of
+   a database to remove it later on (which also removes all the
+   objects in it, even if they have a different owner).
+  </P
+><P
+>   The creation of databases is a restricted operation. See <A
+HREF="user-attributes.html"
+>Section 4.2</A
+> for how to grant permission.
+  </P
+><P
+>   Since you need to be connected to the database server in order to
+   execute the <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> command, the
+   question remains how the <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>first</I
+></SPAN
+> database at any given
+   site can be created. The first database is always created by the
+   <TT
+CLASS="COMMAND"
+>initdb</TT
+> command when the data storage area is
+   initialized. (See <A
+HREF="creating-cluster.html"
+>Section 3.2</A
+>.) By convention
+   this database is called <TT
+CLASS="LITERAL"
+>template1</TT
+>. So to create the
+   first <SPAN
+CLASS="QUOTE"
+>"real"</SPAN
+> database you can connect to
+   <TT
+CLASS="LITERAL"
+>template1</TT
+>.
+  </P
+><P
+>   The name <SPAN
+CLASS="QUOTE"
+>"template1"</SPAN
+> is no accident: When a new
+   database is created, the template database is essentially cloned.
+   This means that any changes you make in <TT
+CLASS="LITERAL"
+>template1</TT
+> are
+   propagated to all subsequently created databases. This implies that
+   you should not use the template database for real work, but when
+   used judiciously this feature can be convenient.  More details
+   appear in <A
+HREF="manage-ag-templatedbs.html"
+>Section 5.3</A
+>.
+  </P
+><P
+>   As an extra convenience, there is also a program that you can
+   execute from the shell to create new databases,
+   <TT
+CLASS="COMMAND"
+>createdb</TT
+>.
+
+</P><PRE
+CLASS="SYNOPSIS"
+>createdb <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></PRE
+><P>
+
+   <TT
+CLASS="COMMAND"
+>createdb</TT
+> does no magic. It connects to the template1
+   database and issues the <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> command,
+   exactly as described above. It uses the <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> program
+   internally. The reference page on <TT
+CLASS="COMMAND"
+>createdb</TT
+> contains the invocation
+   details. Note that <TT
+CLASS="COMMAND"
+>createdb</TT
+> without any arguments will create
+   a database with the current user name, which may or may not be what
+   you want.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    <A
+HREF="client-authentication.html"
+>Chapter 6</A
+> contains information about
+    how to restrict who can connect to a given database.
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   Sometimes you want to create a database for someone else.  That
+   user should become the owner of the new database, so he can
+   configure and manage it himself.  To achieve that, use one of the
+   following commands:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> OWNER <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>;</PRE
+><P>
+   from the SQL environment, or
+</P><PRE
+CLASS="PROGRAMLISTING"
+>createdb -O <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></PRE
+><P>
+   You must be a superuser to be allowed to create a database for
+   someone else.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="manage-ag-templatedbs.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Managing Databases</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="managing-databases.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Template Databases</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

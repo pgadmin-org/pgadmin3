@@ -1,0 +1,1379 @@
+<HTML
+><HEAD
+><TITLE
+>pg_dump</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_config"
+HREF="app-pgconfig.html"><LINK
+REL="NEXT"
+TITLE="pg_dumpall"
+HREF="app-pg-dumpall.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="app-pgconfig.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="app-pg-dumpall.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-PGDUMP"
+>pg_dump</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN47936"
+></A
+><H2
+>Name</H2
+>pg_dump&nbsp;--&nbsp;   extract a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database into a script file or other archive file 
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN47940"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>pg_dump</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>options</I
+></TT
+>...] [<TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PG-DUMP-DESCRIPTION"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> is a utility for saving a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database into a script or an
+   archive file.  The script files are in plain-text format and
+   contain the SQL commands required to reconstruct the database to
+   the state it was in at the time it was saved.  To restore these
+   scripts, use <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>.  They can be used to
+   reconstruct the database even on other machines and other
+   architectures, with some modifications even on other SQL database
+   products.
+  </P
+><P
+>   Furthermore, there are alternative archive file formats
+   that are meant to be used with <A
+HREF="app-pgrestore.html"
+>pg_restore</A
+> to
+   rebuild the database, and they also allow
+   <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+> to be selective about what is
+   restored, or even to reorder the items prior to being restored. The
+   archive files are also designed to be portable across
+   architectures.
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> will save the information necessary to
+   re-generate all user-defined types, functions, tables, indexes,
+   aggregates, and operators.  In addition, all the data is copied out
+   in text format so that it can be readily copied in again, as well
+   as imported into tools for editing.
+  </P
+><P
+>   When used with one of the archive file formats and combined with
+   <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+>, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> provides a
+   flexible archival and 
+   transfer mechanism. <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> can be used to
+   backup an entire database, then <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+> can
+   be used to examine the archive and/or select which parts of the
+   database are to be restored.
+   The most flexible output file format is the <SPAN
+CLASS="QUOTE"
+>"custom"</SPAN
+>
+   format (<TT
+CLASS="OPTION"
+>-Fc</TT
+>). It allows for selection and
+   reordering of all archived items, and is compressed by default. The
+   <TT
+CLASS="FILENAME"
+>tar</TT
+> format (<TT
+CLASS="OPTION"
+>-Ft</TT
+>) is not
+   compressed and it is not possible to reorder data when loading, but
+   it is otherwise quite flexible; moreover, it can be manipulated with
+   other tools such as <TT
+CLASS="FILENAME"
+>tar</TT
+>.
+  </P
+><P
+>   While running <TT
+CLASS="COMMAND"
+>pg_dump</TT
+>, one should examine the
+   output for any warnings (printed on standard error), especially in
+   light of the limitations listed below.
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> makes consistent backups even if the
+   database is being used concurrently.  <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>
+   does not block other users accessing the database (readers or
+   writers).
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PG-DUMP-OPTIONS"
+></A
+><H2
+>Options</H2
+><P
+>   The following command-line options are used to control the output format.
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the name of the database to be dumped.  If this is
+	not specified, the environment variable
+	<TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+> is used.  If that is not set, the
+	user name specified for the connection is used.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-a</TT
+><BR><TT
+CLASS="OPTION"
+>--data-only</TT
+></DT
+><DD
+><P
+>	Dump only the data, not the schema (data definitions).
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
+        the other formats, you may specify the option when you
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-b</TT
+><BR><TT
+CLASS="OPTION"
+>--blobs</TT
+></DT
+><DD
+><P
+> 	Include large objects in dump.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-c</TT
+><BR><TT
+CLASS="OPTION"
+>--clean</TT
+></DT
+><DD
+><P
+>        Output commands to clean (drop)
+	database objects prior to (the commands for) creating them.
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
+        the other formats, you may specify the option when you
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-C</TT
+><BR><TT
+CLASS="OPTION"
+>--create</TT
+></DT
+><DD
+><P
+>	Begin the output with a command to create the
+	database itself and reconnect to the created database.  (With a
+	script of this form, it doesn't matter which database you connect
+	to before running the script.)
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
+        the other formats, you may specify the option when you
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-d</TT
+><BR><TT
+CLASS="OPTION"
+>--inserts</TT
+></DT
+><DD
+><P
+>	Dump data as <TT
+CLASS="COMMAND"
+>INSERT</TT
+> commands (rather
+	than <TT
+CLASS="COMMAND"
+>COPY</TT
+>). This will make restoration very
+	slow, but it makes the archives more portable to other SQL database
+	packages.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-D</TT
+><BR><TT
+CLASS="OPTION"
+>--column-inserts</TT
+><BR><TT
+CLASS="OPTION"
+>--attribute-inserts</TT
+></DT
+><DD
+><P
+>	Dump data as <TT
+CLASS="COMMAND"
+>INSERT</TT
+> commands with explicit
+	column names (<TT
+CLASS="LITERAL"
+>INSERT INTO
+	<TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>
+	(<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+>, ...) VALUES
+	...</TT
+>).  This will make restoration very slow,
+	but it is necessary if you desire to rearrange column ordering.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-f <TT
+CLASS="REPLACEABLE"
+><I
+>file</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--file=<TT
+CLASS="REPLACEABLE"
+><I
+>file</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Send output to the specified file.  If this is omitted, the
+	standard output is used.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-F <TT
+CLASS="REPLACEABLE"
+><I
+>format</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--format=<TT
+CLASS="REPLACEABLE"
+><I
+>format</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Selects the format of the output.
+	<TT
+CLASS="REPLACEABLE"
+><I
+>format</I
+></TT
+> can be one of the following:
+
+       <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>p</DT
+><DD
+><P
+>           Output a plain-text <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> script file (default)
+          </P
+></DD
+><DT
+>t</DT
+><DD
+><P
+>         Output a <TT
+CLASS="FILENAME"
+>tar</TT
+> archive suitable for input into 
+         <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+>. Using this archive format 
+         allows reordering and/or exclusion of schema elements 
+         at the time the database is restored. It is also possible to limit 
+         which data is reloaded at restore time.
+          </P
+></DD
+><DT
+>c</DT
+><DD
+><P
+>         Output a custom archive suitable for input into 
+         <SPAN
+CLASS="APPLICATION"
+>pg_restore</SPAN
+>. This is the most flexible 
+         format in that it allows reordering of data load as well 
+         as schema elements. This format is also compressed by default.
+          </P
+></DD
+></DL
+></DIV
+><P>
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-i</TT
+><BR><TT
+CLASS="OPTION"
+>--ignore-version</TT
+></DT
+><DD
+><P
+>        Ignore version mismatch between
+        <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> and the database server.
+       </P
+><P
+>        <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> can handle databases from
+        previous releases of PostgreSQL, but very old versions are not
+        supported anymore (currently prior to 7.0).  Use this option
+        if you need to override the version check (and if
+        <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> then fails, don't say you
+        weren't warned).
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-o</TT
+><BR><TT
+CLASS="OPTION"
+>--oids</TT
+></DT
+><DD
+><P
+>	Dump object identifiers (<SPAN
+CLASS="ACRONYM"
+>OID</SPAN
+>s) for every
+	table.  Use this option if your application references the OID
+	columns in some way (e.g., in a foreign key constraint).
+	Otherwise, this option should not be used.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-O</TT
+><BR><TT
+CLASS="OPTION"
+>--no-owner</TT
+></DT
+><DD
+><P
+>        Do not output commands to set the
+	object ownership to match the original database.  Typically,
+	<SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> issues
+	(<SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>-specific) <TT
+CLASS="COMMAND"
+>\connect</TT
+>
+	statements to set ownership of schema elements.  See also
+	under <TT
+CLASS="OPTION"
+>-R</TT
+> and <TT
+CLASS="OPTION"
+>-X
+	use-set-session-authorization</TT
+>.  Note that
+	<TT
+CLASS="OPTION"
+>-O</TT
+> does not prevent all reconnections to the
+	database, only the ones that are exclusively used for
+	ownership adjustments.
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
+        the other formats, you may specify the option when you
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-R</TT
+><BR><TT
+CLASS="OPTION"
+>--no-reconnect</TT
+></DT
+><DD
+><P
+>	Prohibit <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>
+        from outputting a script that would require reconnections to
+        the database while being restored.  An average restoration
+        script usually has to reconnect several times as different
+        users to set the original ownerships of the objects.  This
+        option is a rather blunt instrument because it makes
+        <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> lose this ownership information,
+        <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>unless</I
+></SPAN
+> you use the <TT
+CLASS="OPTION"
+>-X
+        use-set-session-authorization</TT
+> option.
+       </P
+><P
+>        One possible reason why reconnections during restore might not
+        be desired is if the access to the database requires manual
+        interaction (e.g., passwords).
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
+        the other formats, you may specify the option when you
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-s</TT
+><BR><TT
+CLASS="OPTION"
+>--schema-only</TT
+></DT
+><DD
+><P
+>	Dump only the schema (data definitions), no data.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-S <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--superuser=<TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specify the superuser user name to use when disabling triggers.
+	This is only relevant if <TT
+CLASS="OPTION"
+>--disable-triggers</TT
+> is used.
+	(Usually, it's better to specify
+	<TT
+CLASS="OPTION"
+>--use-set-session-authorization</TT
+>, and then start the
+	resulting script as superuser.)
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-t <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--table=<TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Dump data for <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> only.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-v</TT
+><BR><TT
+CLASS="OPTION"
+>--verbose</TT
+></DT
+><DD
+><P
+>	Specifies verbose mode.  This will cause
+	<SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> to print progress messages
+	to standard error.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-x</TT
+><BR><TT
+CLASS="OPTION"
+>--no-privileges</TT
+><BR><TT
+CLASS="OPTION"
+>--no-acl</TT
+></DT
+><DD
+><P
+>	Prevent dumping of access privileges (grant/revoke commands).
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X use-set-session-authorization</TT
+><BR><TT
+CLASS="OPTION"
+>--use-set-session-authorization</TT
+></DT
+><DD
+><P
+>        Normally, if a (plain-text mode) script generated by
+        <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> must alter the current database
+        user (e.g., to set correct object ownerships), it uses the
+        <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> <TT
+CLASS="COMMAND"
+>\connect</TT
+> command.
+        This command actually opens a new connection, which might
+        require manual interaction (e.g., passwords).  If you use the
+        <TT
+CLASS="OPTION"
+>-X use-set-session-authorization</TT
+> option, then
+        <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> will instead output <A
+HREF="sql-set-session-authorization.html"
+><I
+>SET SESSION AUTHORIZATION</I
+></A
+> commands.  This has
+        the same effect, but it requires that the user restoring the
+        database from the generated script be a database superuser.
+        This option effectively overrides the <TT
+CLASS="OPTION"
+>-R</TT
+>
+        option.
+       </P
+><P
+>        Since <A
+HREF="sql-set-session-authorization.html"
+><I
+>SET SESSION AUTHORIZATION</I
+></A
+> is a
+        standard SQL command, whereas <TT
+CLASS="COMMAND"
+>\connect</TT
+> only
+        works in <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, this option also enhances
+        the theoretical portability of the output script.
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
+        the other formats, you may specify the option when you
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-X disable-triggers</TT
+><BR><TT
+CLASS="OPTION"
+>--disable-triggers</TT
+></DT
+><DD
+><P
+>        This option is only relevant when creating a data-only dump.
+	It instructs <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> to include commands
+	to temporarily disable triggers on the target tables while
+	the data is reloaded.  Use this if you have referential
+	integrity checks or other triggers on the tables that you
+	do not want to invoke during data reload.
+       </P
+><P
+>        Presently, the commands emitted for <TT
+CLASS="OPTION"
+>--disable-triggers</TT
+>
+	must be done as superuser.  So, you should also specify
+	a superuser name with <TT
+CLASS="OPTION"
+>-S</TT
+>, or preferably specify
+	<TT
+CLASS="OPTION"
+>--use-set-session-authorization</TT
+> and then be careful to
+	start the resulting script as a superuser.  If you give neither
+	option, the entire script must be run as superuser.
+       </P
+><P
+>        This option is only meaningful for the plain-text format.  For
+        the other formats, you may specify the option when you
+        call <TT
+CLASS="COMMAND"
+>pg_restore</TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-Z <TT
+CLASS="REPLACEABLE"
+><I
+>0..9</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--compress=<TT
+CLASS="REPLACEABLE"
+><I
+>0..9</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specify the compression level to use in archive formats that support 
+      compression (currently only the custom archive format supports compression).
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    The following command-line options control the database connection parameters.
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host=<TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the host name of the machine on which the 
+	server
+	is running.  If host begins with a slash, it is used 
+	as the directory for the Unix domain socket.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port=<TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the Internet TCP/IP port or local Unix domain socket file 
+	extension on which the server
+	is listening for connections.  The port number defaults to 5432,
+	or the value of the <TT
+CLASS="ENVAR"
+>PGPORT</TT
+>
+	environment variable (if set).
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Connect as the given user
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+></DT
+><DD
+><P
+>        Force a password prompt.  This should happen automatically if
+        the server requires password authentication.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>   Long option forms are only available on some platforms.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48244"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+><BR><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-PGDUMP-DIAGNOSTICS"
+></A
+><H2
+>Diagnostics</H2
+><DIV
+CLASS="MSGENTRY"
+><A
+NAME="AEN48261"
+></A
+><DIV
+CLASS="MSG"
+><A
+NAME="AEN48262"
+></A
+><PRE
+CLASS="SCREEN"
+>Connection to database 'template1' failed.
+connectDBStart() -- connect() failed: No such file or directory
+        Is the postmaster running locally
+        and accepting connections on Unix socket '/tmp/.s.PGSQL.5432'?</PRE
+></DIV
+><BLOCKQUOTE
+CLASS="MSGEXPLAN"
+>	<SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> could not attach to the 
+	PostgreSQL server on the specified host and port.  If you see this message,
+	ensure that the server
+	is running on the proper host and that you have specified the proper
+	port.
+       </BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> internally executes
+     <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statements. If you have problems running
+     <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>,
+     make sure you are able to select information from the database using, for
+     example, <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PG-DUMP-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>   If your installation has any local additions to the template1 database,
+   be careful to restore the output of <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> into a
+   truly empty database; otherwise you are likely to get errors due to
+   duplicate definitions of the added objects.  To make an empty database
+   without any local additions, copy from template0 not template1,
+   for example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE DATABASE foo WITH TEMPLATE template0;</PRE
+><P>
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> has a few limitations:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      When dumping a single table or as plain text, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> 
+      does not handle large objects. Large objects must be dumped in their
+      entirety using one of the binary archive formats.
+     </P
+></LI
+><LI
+><P
+>      When doing a data only dump, <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> emits queries
+      to disable triggers on user tables before inserting the data and queries to
+      re-enable them after the data has been inserted.  If the restore is stopped
+      in the middle, the system catalogs may be left in the wrong state.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   Members of tar archives are limited to a size less than 8 GB.
+   (This is an inherent limitation of the tar file format.)  Therefore
+   this format cannot be used if the textual representation of a table
+   exceeds that size.  The total size of a tar archive and any of the
+   other output formats is not limited, except possibly by the
+   operating system.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PG-DUMP-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To dump a database:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_dump mydb &gt; db.out</B
+></TT
+></PRE
+><P>
+  </P
+><P
+>   To reload this database:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>psql -d database -f db.out</B
+></TT
+></PRE
+><P>
+  </P
+><P
+>   To dump a database called <TT
+CLASS="LITERAL"
+>mydb</TT
+> that contains
+   large objects to a <TT
+CLASS="FILENAME"
+>tar</TT
+> file:
+
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_dump -Ft -b mydb &gt; db.tar</B
+></TT
+></PRE
+><P>
+  </P
+><P
+>   To reload this database (with large objects) to an
+   existing database called <TT
+CLASS="LITERAL"
+>newdb</TT
+>:
+
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>pg_restore -d newdb db.tar</B
+></TT
+></PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48311"
+></A
+><H2
+>History</H2
+><P
+>   The <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> utility first appeared in
+   <SPAN
+CLASS="APPLICATION"
+>Postgres95</SPAN
+> release <TT
+CLASS="LITERAL"
+>0.02</TT
+>.  The
+   non-plain-text output formats were introduced in
+   <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> release <TT
+CLASS="LITERAL"
+>7.1</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN48319"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-pg-dumpall.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+></A
+>, <A
+HREF="app-pgrestore.html"
+>pg_restore</A
+>, <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>, <I
+CLASS="CITETITLE"
+>PostgreSQL Administrator's Guide</I
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pgconfig.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-pg-dumpall.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_config</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

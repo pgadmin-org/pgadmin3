@@ -1,0 +1,363 @@
+<HTML
+><HEAD
+><TITLE
+>Large Objects</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Client Interfaces"
+HREF="programmer-client.html"><LINK
+REL="PREVIOUS"
+TITLE="Example Programs"
+HREF="libpq-example.html"><LINK
+REL="NEXT"
+TITLE="Implementation Features"
+HREF="lo-implementation.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpq-example.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="lo-implementation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="LARGEOBJECTS"
+>Chapter 2. Large Objects</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>2.1. <A
+HREF="largeobjects.html#LO-INTRO"
+>Introduction</A
+></DT
+><DT
+>2.2. <A
+HREF="lo-implementation.html"
+>Implementation Features</A
+></DT
+><DT
+>2.3. <A
+HREF="lo-interfaces.html"
+>Interfaces</A
+></DT
+><DD
+><DL
+><DT
+>2.3.1. <A
+HREF="lo-interfaces.html#AEN26010"
+>Creating a Large Object</A
+></DT
+><DT
+>2.3.2. <A
+HREF="lo-interfaces.html#AEN26021"
+>Importing a Large Object</A
+></DT
+><DT
+>2.3.3. <A
+HREF="lo-interfaces.html#AEN26028"
+>Exporting a Large Object</A
+></DT
+><DT
+>2.3.4. <A
+HREF="lo-interfaces.html#AEN26037"
+>Opening an Existing Large Object</A
+></DT
+><DT
+>2.3.5. <A
+HREF="lo-interfaces.html#AEN26051"
+>Writing Data to a Large Object</A
+></DT
+><DT
+>2.3.6. <A
+HREF="lo-interfaces.html#AEN26060"
+>Reading Data from a Large Object</A
+></DT
+><DT
+>2.3.7. <A
+HREF="lo-interfaces.html#AEN26069"
+>Seeking on a Large Object</A
+></DT
+><DT
+>2.3.8. <A
+HREF="lo-interfaces.html#AEN26079"
+>Closing a Large Object Descriptor</A
+></DT
+><DT
+>2.3.9. <A
+HREF="lo-interfaces.html#AEN26086"
+>Removing a Large Object</A
+></DT
+></DL
+></DD
+><DT
+>2.4. <A
+HREF="lo-funcs.html"
+>Server-side Built-in Functions</A
+></DT
+><DT
+>2.5. <A
+HREF="lo-libpq.html"
+>Accessing Large Objects from <SPAN
+CLASS="APPLICATION"
+>Libpq</SPAN
+></A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN25948"
+></A
+><A
+NAME="AEN25950"
+></A
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LO-INTRO"
+>2.1. Introduction</A
+></H1
+><P
+>    In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> releases prior to 7.1,
+    the size of any row in the database could not exceed the size of a
+    data page.  Since the size of a data page is 8192 bytes (the
+    default, which can be raised up to 32768), the upper limit on the
+    size of a data value was relatively low. To support the storage of
+    larger atomic values, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    provided and continues to provide a large object interface.  This
+    interface provides file-oriented access to user data that has been
+    declared to be a large object.
+   </P
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>POSTGRES 4.2</SPAN
+>, the indirect predecessor
+    of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, supported three standard
+    implementations of large objects: as files external to the
+    <SPAN
+CLASS="PRODUCTNAME"
+>POSTGRES</SPAN
+> server, as external files
+    managed by the <SPAN
+CLASS="PRODUCTNAME"
+>POSTGRES</SPAN
+> server, and as
+    data stored within the <SPAN
+CLASS="PRODUCTNAME"
+>POSTGRES</SPAN
+>
+    database. This caused considerable confusion among users. As a
+    result, only support for large objects as data stored within the
+    database is retained in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+    Even though this is slower to access, it provides stricter data
+    integrity.  For historical reasons, this storage scheme is
+    referred to as <I
+CLASS="FIRSTTERM"
+>Inversion large
+    objects</I
+>. (You will see the term Inversion used
+    occasionally to mean the same thing as large object.)  Since
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL 7.1</SPAN
+>, all large objects are
+    placed in one system table called
+    <TT
+CLASS="CLASSNAME"
+>pg_largeobject</TT
+>.
+   </P
+><P
+>    <A
+NAME="AEN25969"
+></A
+>
+    <A
+NAME="AEN25971"
+></A
+>
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL 7.1</SPAN
+> introduced a mechanism
+    (nicknamed <SPAN
+CLASS="QUOTE"
+>"<SPAN
+CLASS="ACRONYM"
+>TOAST</SPAN
+>"</SPAN
+>) that allows
+    data rows to be much larger than individual data pages.  This
+    makes the large object interface partially obsolete.  One
+    remaining advantage of the large object interface is that it
+    allows random access to the data, i.e., the ability to read or
+    write small chunks of a large value.  It is planned to equip
+    <SPAN
+CLASS="ACRONYM"
+>TOAST</SPAN
+> with such functionality in the future.
+   </P
+><P
+>    This section describes the implementation and the programming and
+    query language interfaces to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    large object data.  We use the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> C
+    library for the examples in this section, but most programming
+    interfaces native to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> support
+    equivalent functionality.  Other interfaces may use the large
+    object interface internally to provide generic support for large
+    values.  This is not described here.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-example.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="lo-implementation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Example Programs</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Implementation Features</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

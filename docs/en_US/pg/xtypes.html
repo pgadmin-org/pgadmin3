@@ -1,0 +1,396 @@
+<HTML
+><HEAD
+><TITLE
+>Extending SQL: Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="Procedural Language Handlers"
+HREF="xfunc-plhandler.html"><LINK
+REL="NEXT"
+TITLE="Extending SQL: Operators"
+HREF="xoper.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xfunc-plhandler.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xoper.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="XTYPES"
+>Chapter 10. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Types</A
+></H1
+><A
+NAME="AEN32360"
+></A
+><P
+>   As previously mentioned, there are two kinds of types in
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>: base types (defined in a
+   programming language) and composite types. This chapter describes
+   how to define new base types.
+  </P
+><P
+>   The examples in this section can be found in
+   <TT
+CLASS="FILENAME"
+>complex.sql</TT
+> and <TT
+CLASS="FILENAME"
+>complex.c</TT
+>
+   in the tutorial directory.  Composite examples are in
+   <TT
+CLASS="FILENAME"
+>funcs.sql</TT
+>.
+  </P
+><P
+>  <A
+NAME="AEN32371"
+></A
+>
+  <A
+NAME="AEN32373"
+></A
+>
+  A user-defined type must always have input and output functions.
+  These functions determine how the type appears in strings (for input
+  by the user and output to the user) and how the type is organized in
+  memory.  The input function takes a null-terminated character string
+  as its input and returns the internal (in memory) representation of
+  the type.  The output function takes the internal representation of
+  the type and returns a null-terminated character string.
+ </P
+><P
+>  Suppose we want to define a complex type which represents complex
+  numbers. Naturally, we would choose to represent a complex in memory
+  as the following <SPAN
+CLASS="ACRONYM"
+>C</SPAN
+> structure:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct Complex {
+    double      x;
+    double      y;
+} Complex;</PRE
+><P>
+
+  and  a  string of the form <TT
+CLASS="LITERAL"
+>(x,y)</TT
+> as the external string
+  representation.
+ </P
+><P
+>  The functions are usually not hard to write, especially the output
+  function.  However, there are a number of points to remember:
+
+  <P
+></P
+></P><UL
+><LI
+><P
+>     When defining your external (string) representation, remember
+     that you must eventually write a complete and robust parser for
+     that representation as your input function!
+    </P
+><P
+>     For instance:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Complex *
+complex_in(char *str)
+{
+    double x, y;
+    Complex *result;
+    if (sscanf(str, " ( %lf , %lf )", &amp;x, &amp;y) != 2) {
+        elog(ERROR, "complex_in: error in parsing %s", str);
+        return NULL;
+    }
+    result = (Complex *)palloc(sizeof(Complex));
+    result-&gt;x = x;
+    result-&gt;y = y;
+    return (result);
+}</PRE
+><P>
+    </P
+><P
+>     The output function can simply be:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>char *
+complex_out(Complex *complex)
+{
+    char *result;
+    if (complex == NULL)
+        return(NULL);
+    result = (char *) palloc(60);
+    sprintf(result, "(%g,%g)", complex-&gt;x, complex-&gt;y);
+    return(result);
+}</PRE
+><P>
+
+    </P
+></LI
+><LI
+><P
+>     You should try to make the input and output functions inverses of
+     each other.  If you do not, you will have severe problems when
+     you need to dump your data into a file and then read it back in
+     (say, into someone else's database on another computer).  This is
+     a particularly common problem when floating-point numbers are
+     involved.
+    </P
+></LI
+></UL
+><P>
+ </P
+><P
+>  To define the <TT
+CLASS="TYPE"
+>complex</TT
+> type, we need to create the two
+  user-defined functions <TT
+CLASS="FUNCTION"
+>complex_in</TT
+> and
+  <TT
+CLASS="FUNCTION"
+>complex_out</TT
+> before creating the type:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION complex_in(cstring)
+    RETURNS complex
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>PGROOT</I
+></TT
+>/tutorial/complex'
+    LANGUAGE C;
+
+CREATE FUNCTION complex_out(complex)
+    RETURNS cstring
+    AS '<TT
+CLASS="REPLACEABLE"
+><I
+>PGROOT</I
+></TT
+>/tutorial/complex'
+    LANGUAGE C;</PRE
+><P>
+ </P
+><P
+>  Finally, we can declare the data type:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TYPE complex (
+    internallength = 16,
+    input = complex_in,
+    output = complex_out
+);</PRE
+><P>
+
+  Notice that the declarations of the input and output functions must
+  reference the not-yet-defined type.  This is allowed, but will draw
+  warning messages that may be ignored.
+ </P
+><P
+>  <A
+NAME="AEN32399"
+></A
+>
+  As discussed earlier, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> fully
+  supports arrays of base types.  Additionally,
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports arrays of
+  user-defined types as well.  When you define a type,
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> automatically provides support
+  for arrays of that type.  For historical reasons, the array type has
+  the same name as the user-defined type with the underscore character
+  <TT
+CLASS="LITERAL"
+>_</TT
+> prepended.
+ </P
+><P
+>  Composite types do not need any function defined on them, since the
+  system already understands what they look like inside.
+ </P
+><P
+>  <A
+NAME="AEN32407"
+></A
+>
+  If the values of your data type might exceed a few hundred bytes in
+  size (in internal form), you should be careful to mark them
+  TOAST-able.  To do this, the internal representation must follow the
+  standard layout for variable-length data: the first four bytes must
+  be an <TT
+CLASS="TYPE"
+>int32</TT
+> containing the total length in bytes of the
+  datum (including itself).  Then, all your functions that accept
+  values of the type must be careful to call
+  <TT
+CLASS="FUNCTION"
+>pg_detoast_datum()</TT
+> on the supplied values ---
+  after checking that the value is not NULL, if your function is not
+  strict.  Finally, select the appropriate storage option when giving
+  the <TT
+CLASS="COMMAND"
+>CREATE TYPE</TT
+> command.
+ </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xfunc-plhandler.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xoper.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Procedural Language Handlers</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

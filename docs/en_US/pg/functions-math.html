@@ -1,0 +1,1759 @@
+<HTML
+><HEAD
+><TITLE
+>Mathematical Functions and Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Comparison Operators"
+HREF="functions-comparison.html"><LINK
+REL="NEXT"
+TITLE="String Functions and Operators"
+HREF="functions-string.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="functions-comparison.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="functions-string.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-MATH"
+>6.3. Mathematical Functions and Operators</A
+></H1
+><P
+>    Mathematical operators are provided for many
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> types. For types without
+    common mathematical conventions for all possible permutations 
+    (e.g., date/time types) we
+    describe the actual behavior in subsequent sections.
+   </P
+><P
+>    <A
+HREF="functions-math.html#FUNCTIONS-MATH-OP-TABLE"
+>Table 6-2</A
+> shows the available mathematical operators.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-MATH-OP-TABLE"
+></A
+><P
+><B
+>Table 6-2. Mathematical Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Example</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>+</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>addition</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2 + 3</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>5</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>-</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>subtraction</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2 - 3</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>-1</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>*</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>multiplication</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2 * 3</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>6</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>/</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>division (integer division truncates results)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>4 / 2</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>%</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>modulo (remainder)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>5 % 4</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>1</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>^</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>exponentiation</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2.0 ^ 3.0</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>8</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>|/</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>square root</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>|/ 25.0</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>5</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>||/</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>cube root</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>||/ 27.0</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>3</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>!</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>factorial</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>5 !</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>120</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>!!</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>factorial (prefix operator)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>!! 5</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>120</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>@</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>absolute value</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>@ -5.0</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>5</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>&amp;</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>binary AND</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>91 &#38; 15</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>11</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>|</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>binary OR</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>32 | 3</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>35</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>#</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>binary XOR</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>17 # 5</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>20</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>~</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>binary NOT</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>~1</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>-2</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &lt;&lt; </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>binary shift left</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 &lt;&lt; 4</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>16</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> &gt;&gt; </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>binary shift right</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>8 &gt;&gt; 2</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    The <SPAN
+CLASS="QUOTE"
+>"binary"</SPAN
+> operators are also available for the bit
+    string types <TT
+CLASS="TYPE"
+>BIT</TT
+> and <TT
+CLASS="TYPE"
+>BIT VARYING</TT
+>, as
+    shown in <A
+HREF="functions-math.html#FUNCTIONS-MATH-BIT-TABLE"
+>Table 6-3</A
+>.
+    Bit string arguments to <TT
+CLASS="LITERAL"
+>&#38;</TT
+>, <TT
+CLASS="LITERAL"
+>|</TT
+>,
+    and <TT
+CLASS="LITERAL"
+>#</TT
+> must be of equal length.  When bit
+    shifting, the original length of the string is preserved, as shown
+    in the table.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-MATH-BIT-TABLE"
+></A
+><P
+><B
+>Table 6-3. Bit String Binary Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Example</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>B'10001' &#38; B'01101'</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>00001</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>B'10001' | B'01101'</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>11101</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>B'10001' # B'01101'</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>11110</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>~ B'10001'</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>01110</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>B'10001' &lt;&lt; 3</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>01000</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>B'10001' &gt;&gt; 2</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>00100</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   <A
+HREF="functions-math.html#FUNCTIONS-MATH-FUNC-TABLE"
+>Table 6-4</A
+> shows the available
+   mathematical functions.  In the table, <TT
+CLASS="LITERAL"
+>dp</TT
+>
+   indicates <TT
+CLASS="TYPE"
+>double precision</TT
+>.  Many of these functions
+   are provided in multiple forms with different argument types.
+   Except where noted, any given form of a function returns the same
+   datatype as its argument.
+   The functions working with <TT
+CLASS="TYPE"
+>double precision</TT
+> data are mostly
+   implemented on top of the host system's C library; accuracy and behavior in
+   boundary cases may therefore vary depending on the host system.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-MATH-FUNC-TABLE"
+></A
+><P
+><B
+>Table 6-4. Mathematical Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Return Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Example</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>abs</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>absolute value</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>abs(-17.4)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>17.4</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>cbrt</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>dp</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>cube root</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>cbrt(27.0)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>3</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>ceil</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+> or <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as input)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>smallest integer not less than argument</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>ceil(-42.8)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>-42</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>degrees</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>dp</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>radians to degrees</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>degrees(0.5)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>28.6478897565412</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>exp</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+> or <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as input)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>exponential</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>exp(1.0)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2.71828182845905</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>floor</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+> or <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as input)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>largest integer not greater than argument</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>floor(-42.8)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>-43</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>ln</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+> or <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as input)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>natural logarithm</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>ln(2.0)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>0.693147180559945</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>log</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+> or <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as input)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>base 10 logarithm</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>log(100.0)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>log</TT
+>(<TT
+CLASS="PARAMETER"
+><I
+>b</I
+></TT
+> <TT
+CLASS="TYPE"
+>numeric</TT
+>,
+        <TT
+CLASS="PARAMETER"
+><I
+>x</I
+></TT
+> <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>numeric</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>logarithm to base <TT
+CLASS="PARAMETER"
+><I
+>b</I
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>log(2.0, 64.0)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>6.0000000000</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>mod</TT
+>(<TT
+CLASS="PARAMETER"
+><I
+>y</I
+></TT
+>,
+        <TT
+CLASS="PARAMETER"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as argument types)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>remainder of <TT
+CLASS="PARAMETER"
+><I
+>y</I
+></TT
+>/<TT
+CLASS="PARAMETER"
+><I
+>x</I
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>mod(9,4)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>1</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pi</TT
+>()</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>dp</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="QUOTE"
+>"Pi"</SPAN
+> constant</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>pi()</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>3.14159265358979</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pow</TT
+>(<TT
+CLASS="PARAMETER"
+><I
+>x</I
+></TT
+> <TT
+CLASS="TYPE"
+>dp</TT
+>,
+        <TT
+CLASS="PARAMETER"
+><I
+>e</I
+></TT
+> <TT
+CLASS="TYPE"
+>dp</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>dp</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>raise a number to exponent <TT
+CLASS="PARAMETER"
+><I
+>e</I
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>pow(9.0, 3.0)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>729</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>pow</TT
+>(<TT
+CLASS="PARAMETER"
+><I
+>x</I
+></TT
+> <TT
+CLASS="TYPE"
+>numeric</TT
+>,
+        <TT
+CLASS="PARAMETER"
+><I
+>e</I
+></TT
+> <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>numeric</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>raise a number to exponent <TT
+CLASS="PARAMETER"
+><I
+>e</I
+></TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>pow(9.0, 3.0)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>729</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>radians</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>dp</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>degrees to radians</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>radians(45.0)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>0.785398163397448</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>random</TT
+>()</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>dp</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>random value between 0.0 and 1.0</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>random()</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>round</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+> or <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as input)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>round to nearest integer</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>round(42.4)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>42</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>round</TT
+>(<TT
+CLASS="PARAMETER"
+><I
+>v</I
+></TT
+> <TT
+CLASS="TYPE"
+>numeric</TT
+>, <TT
+CLASS="PARAMETER"
+><I
+>s</I
+></TT
+> <TT
+CLASS="TYPE"
+>integer</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>numeric</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>round to <TT
+CLASS="PARAMETER"
+><I
+>s</I
+></TT
+> decimal places</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>round(42.4382, 2)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>42.44</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>sign</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+> or <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as input)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>sign of the argument (-1, 0, +1)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>sign(-8.4)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>-1</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>sqrt</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+> or <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as input)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>square root</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>sqrt(2.0)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>1.4142135623731</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>trunc</TT
+>(<TT
+CLASS="TYPE"
+>dp</TT
+> or <TT
+CLASS="TYPE"
+>numeric</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>(same as input)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>truncate toward zero</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>trunc(42.8)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>42</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>trunc</TT
+>(<TT
+CLASS="PARAMETER"
+><I
+>v</I
+></TT
+> <TT
+CLASS="TYPE"
+>numeric</TT
+>, <TT
+CLASS="PARAMETER"
+><I
+>s</I
+></TT
+> <TT
+CLASS="TYPE"
+>integer</TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>numeric</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>truncate to <TT
+CLASS="PARAMETER"
+><I
+>s</I
+></TT
+> decimal places</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>trunc(42.4382, 2)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>42.43</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   Finally, <A
+HREF="functions-math.html#FUNCTIONS-MATH-TRIG-TABLE"
+>Table 6-5</A
+> shows the
+   available trigonometric functions.  All trigonometric functions
+   take arguments and return values of type <TT
+CLASS="TYPE"
+>double
+   precision</TT
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-MATH-TRIG-TABLE"
+></A
+><P
+><B
+>Table 6-5. Trigonometric Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>acos</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>inverse cosine</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>asin</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>inverse sine</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>atan</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>inverse tangent</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>atan2</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>,
+        <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>inverse tangent of
+        <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>cos</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>cosine</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>cot</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>cotangent</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>sin</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>sine</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>tan</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>tangent</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-comparison.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-string.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Comparison Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>String Functions and Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,203 @@
+<HTML
+><HEAD
+><TITLE
+>Rules and Command Status</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Rule System"
+HREF="rules.html"><LINK
+REL="PREVIOUS"
+TITLE="Rules and Permissions"
+HREF="rules-permissions.html"><LINK
+REL="NEXT"
+TITLE="Rules versus Triggers"
+HREF="rules-triggers.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="rules-permissions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 13. The Rule System</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="rules-triggers.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RULES-STATUS"
+>13.6. Rules and Command Status</A
+></H1
+><P
+>    The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server returns a command
+    status string, such as <TT
+CLASS="LITERAL"
+>INSERT 149592 1</TT
+>, for each
+    query it receives.  This is simple enough when there are no rules
+    involved, but what happens when the query is rewritten by rules?</P
+><P
+>    As of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.3, rules affect the
+    command status as follows:
+
+    <P
+></P
+></P><OL
+TYPE="1"
+><LI
+><P
+>       If there is no unconditional INSTEAD rule for the query, then
+       the originally given query will be executed, and its command
+       status will be returned as usual.  (But note that if there were
+       any conditional INSTEAD rules, the negation of their qualifications
+       will have been added to the original query.  This may reduce the
+       number of rows it processes, and if so the reported status will
+       be affected.)
+      </P
+></LI
+><LI
+><P
+>       If there is any unconditional INSTEAD rule for the query, then
+       the original query will not be executed at all.  In this case,
+       the server will return the command status for the last query that
+       was inserted by an INSTEAD rule (conditional or unconditional)
+       and is of the same type (INSERT, UPDATE, or DELETE) as the original
+       query.  If no query meeting those requirements is added by any
+       rule, then the returned command status shows the original query
+       type and zeroes for the tuple-count and OID fields.
+      </P
+></LI
+></OL
+><P></P
+><P
+>    The programmer can ensure that any desired INSTEAD rule is the one
+    that sets the command status in the second case, by giving it the
+    alphabetically last rule name among the active rules, so that it
+    fires last.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules-permissions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules-triggers.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Rules and Permissions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="rules.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Rules versus Triggers</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,434 @@
+<HTML
+><HEAD
+><TITLE
+>Access Method Support Routines</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interfacing Extensions To Indexes"
+HREF="xindex.html"><LINK
+REL="PREVIOUS"
+TITLE="Access Method Strategies"
+HREF="xindex-strategies.html"><LINK
+REL="NEXT"
+TITLE="Creating the Operators and Support Routines"
+HREF="xindex-operators.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xindex-strategies.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 14. Interfacing Extensions To Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xindex-operators.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XINDEX-SUPPORT"
+>14.4. Access Method Support Routines</A
+></H1
+><P
+>   Strategies aren't usually enough information for the system to figure
+   out how to use an index.  In practice, the access methods require
+   additional support routines in order to work. For example, the B-tree
+   access method must be able to compare two keys and determine whether one
+   is greater than, equal to, or less than the other.  Similarly, the
+   R-tree access method must be able to compute
+   intersections,  unions, and sizes of rectangles.  These
+   operations do not correspond to operators used in qualifications in
+   SQL queries;  they are administrative routines used by
+   the access methods, internally.
+  </P
+><P
+>   Just as with operators, the operator class identifies which specific
+   functions should play each of these roles for a given data type and
+   semantic interpretation.  The index access method specifies the set
+   of functions it needs, and the operator class identifies the correct
+   functions to use by assigning <SPAN
+CLASS="QUOTE"
+>"support function numbers"</SPAN
+> to them.
+  </P
+><P
+>   B-trees require a single support function, as shown in <A
+HREF="xindex-support.html#XINDEX-BTREE-SUPPORT-TABLE"
+>Table 14-4</A
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="XINDEX-BTREE-SUPPORT-TABLE"
+></A
+><P
+><B
+>Table 14-4. B-tree Support Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Support Number</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>   Compare two keys and return an integer less than zero, zero, or
+   greater than zero, indicating whether the first key is less than, equal to,
+   or greater than the second.
+       </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>1</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   Hash indexes likewise require one support function, as shown in <A
+HREF="xindex-support.html#XINDEX-HASH-SUPPORT-TABLE"
+>Table 14-5</A
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="XINDEX-HASH-SUPPORT-TABLE"
+></A
+><P
+><B
+>Table 14-5. Hash Support Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Support Number</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Compute the hash value for a key</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>1</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   R-tree indexes require three support functions,
+   as shown in <A
+HREF="xindex-support.html#XINDEX-RTREE-SUPPORT-TABLE"
+>Table 14-6</A
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="XINDEX-RTREE-SUPPORT-TABLE"
+></A
+><P
+><B
+>Table 14-6. R-tree Support Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Support Number</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>union</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>1</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>intersection</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>size</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>3</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   GiST indexes require seven support functions,
+   as shown in <A
+HREF="xindex-support.html#XINDEX-GIST-SUPPORT-TABLE"
+>Table 14-7</A
+>.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="XINDEX-GIST-SUPPORT-TABLE"
+></A
+><P
+><B
+>Table 14-7. GiST Support Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Support Number</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>consistent</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>1</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>union</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>2</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>compress</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>3</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>decompress</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>4</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>penalty</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>5</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>picksplit</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>6</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>equal</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>7</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xindex-strategies.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xindex-operators.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Access Method Strategies</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="xindex.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating the Operators and Support Routines</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

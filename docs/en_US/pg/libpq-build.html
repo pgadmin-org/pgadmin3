@@ -1,0 +1,371 @@
+<HTML
+><HEAD
+><TITLE
+>Building Libpq Programs</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="Threading Behavior"
+HREF="libpq-threading.html"><LINK
+REL="NEXT"
+TITLE="Example Programs"
+HREF="libpq-example.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpq-threading.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq-example.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-BUILD"
+>1.13. Building <SPAN
+CLASS="APPLICATION"
+>Libpq</SPAN
+> Programs</A
+></H1
+><P
+>   To build (i.e., compile and link) your <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> programs you need to
+   do all of the following things:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      Include the <TT
+CLASS="FILENAME"
+>libpq-fe.h</TT
+> header file:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;libpq-fe.h&gt;</PRE
+><P>
+      If you failed to do that then you will normally get error
+      messages from your compiler similar to
+</P><PRE
+CLASS="SCREEN"
+>foo.c: In function `main':
+foo.c:34: `PGconn' undeclared (first use in this function)
+foo.c:35: `PGresult' undeclared (first use in this function)
+foo.c:54: `CONNECTION_BAD' undeclared (first use in this function)
+foo.c:68: `PGRES_COMMAND_OK' undeclared (first use in this function)
+foo.c:95: `PGRES_TUPLES_OK' undeclared (first use in this function)</PRE
+><P>
+     </P
+></LI
+><LI
+><P
+>      Point your compiler to the directory where the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> header
+      files were installed, by supplying the
+      <TT
+CLASS="LITERAL"
+>-I<TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></TT
+> option
+      to your compiler.  (In some cases the compiler will look into
+      the directory in question by default, so you can omit this
+      option.)  For instance, your compile command line could look
+      like:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>cc -c -I/usr/local/pgsql/include testprog.c</PRE
+><P>
+      If you are using makefiles then add the option to the
+      <TT
+CLASS="VARNAME"
+>CPPFLAGS</TT
+> variable:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CPPFLAGS += -I/usr/local/pgsql/include</PRE
+><P>
+     </P
+><P
+>      <A
+NAME="AEN25894"
+></A
+>
+      If there is any chance that your program might be compiled by
+      other users then you should not hardcode the directory location
+      like that.  Instead, you can run the utility
+      <TT
+CLASS="COMMAND"
+>pg_config</TT
+> to find out where the header files
+      are on the local system:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> pg_config --includedir
+<TT
+CLASS="COMPUTEROUTPUT"
+>/usr/local/include</TT
+></PRE
+><P>
+     </P
+><P
+>      Failure to specify the correct option to the compiler will
+      result in an error message such as
+</P><PRE
+CLASS="SCREEN"
+>testlibpq.c:8:22: libpq-fe.h: No such file or directory</PRE
+><P>
+     </P
+></LI
+><LI
+><P
+>      When linking the final program, specify the option
+      <TT
+CLASS="LITERAL"
+>-lpq</TT
+> so that the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> library gets pulled
+      in, as well as the option
+      <TT
+CLASS="LITERAL"
+>-L<TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></TT
+> to
+      point it to the directory where the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> library resides.  (Again, the
+      compiler will search some directories by default.)  For maximum
+      portability, put the <TT
+CLASS="OPTION"
+>-L</TT
+> option before the
+      <TT
+CLASS="OPTION"
+>-lpq</TT
+> option.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>cc -o testprog testprog1.o testprog2.o -L/usr/local/pgsql/lib -lpq</PRE
+><P>
+     </P
+><P
+>      You can find out the library directory using
+      <TT
+CLASS="COMMAND"
+>pg_config</TT
+> as well:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> pg_config --libdir
+<TT
+CLASS="COMPUTEROUTPUT"
+>/usr/local/pgsql/lib</TT
+></PRE
+><P>
+     </P
+><P
+>      Error messages that point to problems in this area could look
+      like the following.
+</P><PRE
+CLASS="SCREEN"
+>testlibpq.o: In function `main':
+testlibpq.o(.text+0x60): undefined reference to `PQsetdbLogin'
+testlibpq.o(.text+0x71): undefined reference to `PQstatus'
+testlibpq.o(.text+0xa4): undefined reference to `PQerrorMessage'</PRE
+><P>
+      This means you forgot <TT
+CLASS="OPTION"
+>-lpq</TT
+>.
+</P><PRE
+CLASS="SCREEN"
+>/usr/bin/ld: cannot find -lpq</PRE
+><P>
+      This means you forgot the <TT
+CLASS="OPTION"
+>-L</TT
+> or did not specify
+      the right path.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   <A
+NAME="AEN25923"
+></A
+>
+   If your codes references the header file
+   <TT
+CLASS="FILENAME"
+>libpq-int.h</TT
+> and you refuse to fix your code to
+   not use it, starting in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.2, this file will be found in
+   <TT
+CLASS="FILENAME"
+><TT
+CLASS="REPLACEABLE"
+><I
+>includedir</I
+></TT
+>/postgresql/internal/libpq-int.h</TT
+>,
+   so you need to add the appropriate <TT
+CLASS="OPTION"
+>-I</TT
+> option to
+   your compiler command line.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-threading.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-example.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Threading Behavior</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Example Programs</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

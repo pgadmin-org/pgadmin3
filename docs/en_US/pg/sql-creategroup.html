@@ -1,0 +1,375 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE GROUP</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE FUNCTION"
+HREF="sql-createfunction.html"><LINK
+REL="NEXT"
+TITLE="CREATE INDEX"
+HREF="sql-createindex.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createfunction.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createindex.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEGROUP"
+>CREATE GROUP</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39586"
+></A
+><H2
+>Name</H2
+>   CREATE GROUP
+  &nbsp;--&nbsp;   define a new user group
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN39589"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> [ [ WITH ] <TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+> [ ... ] ]
+
+where <TT
+CLASS="REPLACEABLE"
+><I
+>option</I
+></TT
+> can be:
+
+     SYSID <TT
+CLASS="REPLACEABLE"
+><I
+>gid</I
+></TT
+>
+   | USER  <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> [, ...]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEGROUP-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name of the group.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>gid</I
+></TT
+></DT
+><DD
+><P
+>        The <TT
+CLASS="LITERAL"
+>SYSID</TT
+> clause can be used to choose
+        the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> group id of the new
+        group. It is not necessary to do so, however.
+       </P
+><P
+>        If this is not specified, the highest assigned group id plus one,
+        starting at 1, will be used as default.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></DT
+><DD
+><P
+>        A list of users to include in the group. The users must already exist.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEGROUP-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>CREATE GROUP</TT
+></DT
+><DD
+><P
+>	Message returned if the command completes successfully.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEGROUP-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   CREATE GROUP will create a new group in the database installation.
+   Refer to the <I
+CLASS="CITETITLE"
+>Administrator's Guide</I
+> for information about using groups
+   for authentication.
+   You must be a database superuser to use this command.
+  </P
+><P
+>   Use <A
+HREF="sql-altergroup.html"
+><I
+>ALTER GROUP</I
+></A
+>
+   to change a group's membership, and <A
+HREF="sql-dropgroup.html"
+><I
+>DROP GROUP</I
+></A
+> to remove a group.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEGROUP-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Create an empty group:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE GROUP staff;</PRE
+><P>
+  </P
+><P
+>   Create a group with members:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE GROUP marketing WITH USER jonathan, david;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEGROUP-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEGROUP-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>CREATE GROUP</TT
+> statement in SQL92.
+    Roles are similar in concept to groups.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createfunction.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createindex.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE FUNCTION</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE INDEX</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

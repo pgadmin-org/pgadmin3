@@ -1,0 +1,576 @@
+<HTML
+><HEAD
+><TITLE
+>Comparison Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="NEXT"
+TITLE="Mathematical Functions and Operators"
+HREF="functions-math.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="functions-math.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-COMPARISON"
+>6.2. Comparison Operators</A
+></H1
+><A
+NAME="AEN5158"
+></A
+><P
+>    The usual comparison operators are available, shown in <A
+HREF="functions-comparison.html#FUNCTIONS-COMPARISON-TABLE"
+>Table 6-1</A
+>.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-COMPARISON-TABLE"
+></A
+><P
+><B
+>Table 6-1. Comparison Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Operator</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>&lt;</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>less than</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>&gt;</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>greater than</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>&lt;=</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>less than or equal to</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>&gt;=</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>greater than or equal to</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>=</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>equal</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+> <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> or <TT
+CLASS="LITERAL"
+>!=</TT
+> </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>not equal</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     The <TT
+CLASS="LITERAL"
+>!=</TT
+> operator is converted to
+     <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> in the parser stage.  It is not
+     possible to implement <TT
+CLASS="LITERAL"
+>!=</TT
+> and
+     <TT
+CLASS="LITERAL"
+>&lt;&gt;</TT
+> operators that do different things.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    Comparison operators are available for all data types where this
+    makes sense.  All comparison operators are binary operators that
+    return values of type <TT
+CLASS="TYPE"
+>boolean</TT
+>; expressions like
+    <TT
+CLASS="LITERAL"
+>1 &lt; 2 &lt; 3</TT
+> are not valid (because there is
+    no <TT
+CLASS="LITERAL"
+>&lt;</TT
+> operator to compare a Boolean value with
+    <TT
+CLASS="LITERAL"
+>3</TT
+>).
+   </P
+><P
+>    <A
+NAME="AEN5208"
+></A
+>
+    In addition to the comparison operators, the special
+    <TT
+CLASS="TOKEN"
+>BETWEEN</TT
+> construct is available.
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> BETWEEN <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> AND <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></PRE
+><P>
+    is equivalent to
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> &gt;= <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> AND <TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> &lt;= <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></PRE
+><P>
+    Similarly,
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> NOT BETWEEN <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> AND <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></PRE
+><P>
+    is equivalent to
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> &lt; <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> OR <TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> &gt; <TT
+CLASS="REPLACEABLE"
+><I
+>y</I
+></TT
+></PRE
+><P>
+    There is no difference between the two respective forms apart from
+    the <SPAN
+CLASS="ACRONYM"
+>CPU</SPAN
+> cycles required to rewrite the first one
+    into the second one internally.
+   </P
+><P
+>    To check whether a value is or is not null, use the constructs
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NULL
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NOT NULL</PRE
+><P>
+    or the equivalent, but nonstandard, constructs
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> ISNULL
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> NOTNULL</PRE
+><P>
+   </P
+><P
+>    Do <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> write
+    <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> = NULL</TT
+>
+    because <TT
+CLASS="LITERAL"
+>NULL</TT
+> is not <SPAN
+CLASS="QUOTE"
+>"equal to"</SPAN
+>
+    <TT
+CLASS="LITERAL"
+>NULL</TT
+>.  (The null value represents an unknown value,
+    and it is not known whether two unknown values are equal.)
+   </P
+><P
+>    Some applications may (incorrectly) require that
+    <TT
+CLASS="LITERAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> = NULL</TT
+>
+    returns true if <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> evaluates to
+    the null value.  To support these applications, the run-time option
+    <TT
+CLASS="VARNAME"
+>transform_null_equals</TT
+> can be turned on (e.g.,
+    <TT
+CLASS="LITERAL"
+>SET transform_null_equals TO ON;</TT
+>).
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will then convert
+    <TT
+CLASS="LITERAL"
+>x = NULL</TT
+> clauses to
+    <TT
+CLASS="LITERAL"
+>x IS NULL</TT
+>.  This was 
+    the default behavior in releases 6.5 through 7.1.
+   </P
+><P
+>    Boolean values can also be tested using the constructs
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS TRUE
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NOT TRUE
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS FALSE
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NOT FALSE
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS UNKNOWN
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> IS NOT UNKNOWN</PRE
+><P>
+    These are similar to <TT
+CLASS="LITERAL"
+>IS NULL</TT
+> in that they will
+    always return true or false, never a null value, even when the operand is null.
+    A null input is treated as the logical value <SPAN
+CLASS="QUOTE"
+>"unknown"</SPAN
+>.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-math.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Mathematical Functions and Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,379 @@
+<HTML
+><HEAD
+><TITLE
+>Extending SQL: Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="About the PostgreSQL System Catalogs"
+HREF="pg-system-catalogs.html"><LINK
+REL="NEXT"
+TITLE="Query Language (SQL) Functions"
+HREF="xfunc-sql.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="pg-system-catalogs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xfunc-sql.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="XFUNC"
+>Chapter 9. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Functions</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>9.1. <A
+HREF="xfunc.html#XFUNC-INTRO"
+>Introduction</A
+></DT
+><DT
+>9.2. <A
+HREF="xfunc-sql.html"
+>Query Language (<SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>) Functions</A
+></DT
+><DD
+><DL
+><DT
+>9.2.1. <A
+HREF="xfunc-sql.html#AEN31385"
+>Examples</A
+></DT
+><DT
+>9.2.2. <A
+HREF="xfunc-sql.html#AEN31404"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Functions on Base Types</A
+></DT
+><DT
+>9.2.3. <A
+HREF="xfunc-sql.html#AEN31422"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Functions on Composite Types</A
+></DT
+><DT
+>9.2.4. <A
+HREF="xfunc-sql.html#AEN31460"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Table Functions</A
+></DT
+><DT
+>9.2.5. <A
+HREF="xfunc-sql.html#AEN31470"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Functions Returning Sets</A
+></DT
+></DL
+></DD
+><DT
+>9.3. <A
+HREF="xfunc-pl.html"
+>Procedural Language Functions</A
+></DT
+><DT
+>9.4. <A
+HREF="xfunc-internal.html"
+>Internal Functions</A
+></DT
+><DT
+>9.5. <A
+HREF="xfunc-c.html"
+>C Language Functions</A
+></DT
+><DD
+><DL
+><DT
+>9.5.1. <A
+HREF="xfunc-c.html#XFUNC-C-DYNLOAD"
+>Dynamic Loading</A
+></DT
+><DT
+>9.5.2. <A
+HREF="xfunc-c.html#AEN31577"
+>Base Types in C-Language Functions</A
+></DT
+><DT
+>9.5.3. <A
+HREF="xfunc-c.html#AEN31848"
+>Version-0 Calling Conventions for C-Language Functions</A
+></DT
+><DT
+>9.5.4. <A
+HREF="xfunc-c.html#AEN31875"
+>Version-1 Calling Conventions for C-Language Functions</A
+></DT
+><DT
+>9.5.5. <A
+HREF="xfunc-c.html#AEN31930"
+>Composite Types in C-Language Functions</A
+></DT
+><DT
+>9.5.6. <A
+HREF="xfunc-c.html#AEN31952"
+>Table Function API</A
+></DT
+><DT
+>9.5.7. <A
+HREF="xfunc-c.html#AEN32039"
+>Writing Code</A
+></DT
+><DT
+>9.5.8. <A
+HREF="xfunc-c.html#DFUNC"
+>Compiling and Linking Dynamically-Loaded Functions</A
+></DT
+></DL
+></DD
+><DT
+>9.6. <A
+HREF="xfunc-overload.html"
+>Function Overloading</A
+></DT
+><DT
+>9.7. <A
+HREF="xfunc-tablefunctions.html"
+>Table Functions</A
+></DT
+><DT
+>9.8. <A
+HREF="xfunc-plhandler.html"
+>Procedural Language Handlers</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN31335"
+></A
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XFUNC-INTRO"
+>9.1. Introduction</A
+></H1
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> provides four kinds of
+   functions:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      query language functions 
+      (functions written in <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>)
+     </P
+></LI
+><LI
+><P
+>      procedural language 
+      functions (functions written in, for example, <SPAN
+CLASS="APPLICATION"
+>PL/Tcl</SPAN
+> or <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>)
+     </P
+></LI
+><LI
+><P
+>      internal functions
+     </P
+></LI
+><LI
+><P
+>      C language functions
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   Every kind
+   of  function  can take a base type, a composite type, or
+   some combination as arguments (parameters).   In  addition, 
+   every kind of function can return a base type or
+   a composite type.  It's easiest to define <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> 
+   functions, so we'll start with those.  Examples in this section 
+   can also be found in <TT
+CLASS="FILENAME"
+>funcs.sql</TT
+> 
+   and <TT
+CLASS="FILENAME"
+>funcs.c</TT
+> in the tutorial directory.
+  </P
+><P
+>   Throughout this chapter, it can be useful to look at the reference
+   page of the <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> command to
+   understand the examples better.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pg-system-catalogs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xfunc-sql.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>About the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> System Catalogs</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Query Language (<SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>) Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,298 @@
+<HTML
+><HEAD
+><TITLE
+>Privileges</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Definition"
+HREF="ddl.html"><LINK
+REL="PREVIOUS"
+TITLE="Modifying Tables"
+HREF="ddl-alter.html"><LINK
+REL="NEXT"
+TITLE="Schemas"
+HREF="ddl-schemas.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ddl-alter.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Data Definition</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ddl-schemas.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DDL-PRIV"
+>2.7. Privileges</A
+></H1
+><P
+>   When you create a database object, you become its owner.  By
+   default, only the owner of an object can do anything with the
+   object. In order to allow other users to use it,
+   <I
+CLASS="FIRSTTERM"
+>privileges</I
+> must be granted.  (There are also
+   users that have the superuser privilege.  Those users can always
+   access any object.)
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>    To change the owner of a table, index, sequence, or view, use the
+    <TT
+CLASS="COMMAND"
+>ALTER TABLE</TT
+> command.
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   There are several different privileges: <TT
+CLASS="LITERAL"
+>SELECT</TT
+>,
+   <TT
+CLASS="LITERAL"
+>INSERT</TT
+>, <TT
+CLASS="LITERAL"
+>UPDATE</TT
+>, <TT
+CLASS="LITERAL"
+>DELETE</TT
+>,
+   <TT
+CLASS="LITERAL"
+>RULE</TT
+>, <TT
+CLASS="LITERAL"
+>REFERENCES</TT
+>, <TT
+CLASS="LITERAL"
+>TRIGGER</TT
+>,
+   <TT
+CLASS="LITERAL"
+>CREATE</TT
+>, <TT
+CLASS="LITERAL"
+>TEMPORARY</TT
+>, <TT
+CLASS="LITERAL"
+>EXECUTE</TT
+>,
+   <TT
+CLASS="LITERAL"
+>USAGE</TT
+>, and <TT
+CLASS="LITERAL"
+>ALL PRIVILEGES</TT
+>. For complete
+   information on the different types of privileges supported by
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, refer to the
+   <TT
+CLASS="COMMAND"
+>GRANT</TT
+> reference page.  The following sections
+   and chapters will also show you how those privileges are used.
+  </P
+><P
+>   The right to modify or destroy an object is always the privilege of
+   the owner only.
+  </P
+><P
+>   To assign privileges, the <TT
+CLASS="COMMAND"
+>GRANT</TT
+> command is
+   used. So, if <TT
+CLASS="LITERAL"
+>joe</TT
+> is an existing user, and
+   <TT
+CLASS="LITERAL"
+>accounts</TT
+> is an existing table, the privilege to
+   update the table can be granted with
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT UPDATE ON accounts TO joe;</PRE
+><P>
+   The user executing this command must be the owner of the table. To
+   grant a privilege to a group, use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT SELECT ON accounts TO GROUP staff;</PRE
+><P>
+   The special <SPAN
+CLASS="QUOTE"
+>"user"</SPAN
+> name <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+> can
+   be used to grant a privilege to every user on the system. Writing
+   <TT
+CLASS="LITERAL"
+>ALL</TT
+> in place of a specific privilege specifies that all
+   privileges will be granted.
+  </P
+><P
+>   To revoke a privilege, use the fittingly named
+   <TT
+CLASS="COMMAND"
+>REVOKE</TT
+> command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>REVOKE ALL ON accounts FROM PUBLIC;</PRE
+><P>
+   The special privileges of the table owner (i.e., the right to do
+   <TT
+CLASS="COMMAND"
+>DROP</TT
+>, <TT
+CLASS="COMMAND"
+>GRANT</TT
+>, <TT
+CLASS="COMMAND"
+>REVOKE</TT
+>, etc)
+   are always implicit in being the owner,
+   and cannot be granted or revoked.  But the table owner can choose
+   to revoke his own ordinary privileges, for example to make a
+   table read-only for himself as well as others.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl-alter.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl-schemas.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Modifying Tables</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Schemas</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

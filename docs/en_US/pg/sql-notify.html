@@ -1,0 +1,524 @@
+<HTML
+><HEAD
+><TITLE
+>NOTIFY</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="MOVE"
+HREF="sql-move.html"><LINK
+REL="NEXT"
+TITLE="PREPARE"
+HREF="sql-prepare.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-move.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-prepare.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-NOTIFY"
+>NOTIFY</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44616"
+></A
+><H2
+>Name</H2
+>   NOTIFY
+  &nbsp;--&nbsp;   generate a notification
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44619"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>NOTIFY <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>        
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-NOTIFY-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>notifyname</I
+></TT
+></DT
+><DD
+><P
+>	Notify condition to be signaled.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-NOTIFY-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>NOTIFY
+       </TT
+></DT
+><DD
+><P
+>	Acknowledgement that notify command has executed.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>Notify events</I
+></TT
+></DT
+><DD
+><P
+>	Events are delivered to listening frontends; whether and how each frontend
+	application reacts depends on its programming.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-NOTIFY-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> command sends a notify event to each
+   frontend application that has previously executed
+   <TT
+CLASS="COMMAND"
+>LISTEN <TT
+CLASS="REPLACEABLE"
+><I
+>notifyname</I
+></TT
+></TT
+>
+   for the specified notify condition in the current database.
+  </P
+><P
+>   The information passed to the frontend for a notify event includes the notify
+   condition name and the notifying backend process's <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+>.  It is up to the
+   database designer to define the condition names that will be used in a given
+   database and what each one means.
+  </P
+><P
+>   Commonly, the notify condition name is the same as the name of some table in
+   the database, and the notify event essentially means <SPAN
+CLASS="QUOTE"
+>"I changed this table,
+   take a look at it to see what's new"</SPAN
+>.  But no such association is enforced by
+   the <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> and <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> commands.  For
+   example, a database designer could use several different condition names
+   to signal different sorts of changes to a single table.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> provides a simple form of signal or
+   <SPAN
+CLASS="ACRONYM"
+>IPC</SPAN
+> (interprocess communication) mechanism for a collection of processes
+   accessing the same <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.
+   Higher-level mechanisms can be built by using tables in the database to
+   pass additional data (beyond a mere condition name) from notifier to
+   listener(s).
+  </P
+><P
+>   When <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> is used to signal the occurrence of changes
+   to a particular table, a useful programming technique is to put the
+   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> in a rule that is triggered by table updates.
+   In this way, notification happens automatically when the table is changed,
+   and the application programmer can't accidentally forget to do it.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> interacts with SQL transactions in some important
+   ways.  Firstly, if a <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> is executed inside a
+   transaction, the notify events are not delivered until and unless the
+   transaction is committed.  This is appropriate, since if the transaction
+   is aborted we would like all the commands within it to have had no
+   effect, including <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>.  But it can be disconcerting if one
+   is expecting the notify events to be delivered immediately.  Secondly, if
+   a listening backend receives a notify signal while it is within a transaction,
+   the notify event will not be delivered to its connected frontend until just
+   after the transaction is completed (either committed or aborted).  Again, the
+   reasoning is that if a notify were delivered within a transaction that was
+   later aborted, one would want the notification to be undone somehow---but
+   the backend cannot <SPAN
+CLASS="QUOTE"
+>"take back"</SPAN
+> a notify once it has sent it to the frontend.
+   So notify events are only delivered between transactions.  The upshot of this
+   is that applications using <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> for real-time signaling
+   should try to keep their transactions short.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> behaves like Unix signals in one important
+   respect: if the same condition name is signaled multiple times in quick
+   succession, recipients may get only one notify event for several executions
+   of <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>.  So it is a bad idea to depend on the number
+   of notifies received.  Instead, use <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> to wake up
+   applications that need to pay attention to something, and use a database
+   object (such as a sequence) to keep track of what happened or how many times
+   it happened.
+  </P
+><P
+>   It is common for a frontend that sends <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> to be
+   listening on the same notify name itself.  In that case it will get back a
+   notify event, just like all the other listening frontends.  Depending on the
+   application logic, this could result in useless work---for example,
+   re-reading a database table to find the same updates that that frontend just
+   wrote out.  In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 6.4 and later, it is
+   possible to avoid such extra work by noticing whether the notifying backend
+   process's <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+> (supplied in the notify event message) is the same as one's own
+   backend's <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+> (available from <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>).  When they are the same, the notify
+   event is one's own work bouncing back, and can be ignored.  (Despite what was
+   said in the preceding paragraph, this is a safe technique.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> keeps self-notifies separate from notifies
+   arriving from other backends, so you cannot miss an outside notify by ignoring
+   your own notifies.)
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-NOTIFY-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+    can be any string valid as a name;
+    it need not correspond to the name of any actual table.  If
+    <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+    is enclosed in double-quotes, it need not even be a syntactically
+    valid name, but can be any string up to 63 characters long.
+   </P
+><P
+>    In some previous releases of
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>,
+    <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+    had to be enclosed in double-quotes when it did not correspond to any existing
+    table name, even if syntactically valid as a name.  That is no longer required.
+   </P
+><P
+>    In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> releases prior to 6.4, the backend
+    <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+> delivered in a notify message was always the <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+> of the frontend's own
+    backend.  So it was not possible to distinguish one's own notifies from other
+    clients' notifies in those earlier releases.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-NOTIFY-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Configure and execute a listen/notify sequence from
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>LISTEN virtual;
+NOTIFY virtual;
+Asynchronous NOTIFY 'virtual' from backend with pid '8448' received. </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-NOTIFY-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-NOTIFY-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> statement in
+    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-move.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-prepare.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>MOVE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>PREPARE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

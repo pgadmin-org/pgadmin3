@@ -1,0 +1,1225 @@
+<HTML
+><HEAD
+><TITLE
+>postmaster</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="PREVIOUS"
+TITLE="postgres"
+HREF="app-postgres.html"><LINK
+REL="NEXT"
+TITLE="PostgreSQL 7.3.3 Developer's Guide"
+HREF="developer.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="app-postgres.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="developer.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-POSTMASTER"
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN51563"
+></A
+><H2
+>Name</H2
+>postmaster&nbsp;--&nbsp;<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> multiuser database server</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN51567"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>postmaster</TT
+> [-A   0 | 1 ] [-B <TT
+CLASS="REPLACEABLE"
+><I
+>nbuffers</I
+></TT
+>] [-c <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>=<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+>] [-d <TT
+CLASS="REPLACEABLE"
+><I
+>debug-level</I
+></TT
+>] [-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+>] [-F] [-h <TT
+CLASS="REPLACEABLE"
+><I
+>hostname</I
+></TT
+>] [-i] [-k <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+>] [-l] [-N <TT
+CLASS="REPLACEABLE"
+><I
+>max-connections</I
+></TT
+>] [-o <TT
+CLASS="REPLACEABLE"
+><I
+>extra-options</I
+></TT
+>] [-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+>] [-S] [--<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>=<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+>] [-n | -s]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51603"
+></A
+><H2
+>Description</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> is the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> multiuser database server.
+   In order for a client application to access a database it connects
+   (over a network or locally) to a running
+   <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>.  The
+   <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> then starts a separate server
+   process (<SPAN
+CLASS="QUOTE"
+>"<A
+HREF="app-postgres.html"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></A
+>"</SPAN
+>) to handle
+   the connection.  The <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> also
+   manages the communication among server processes.
+  </P
+><P
+>   By default the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> starts in the
+   foreground and prints log messages to the standard output.  In
+   practical applications the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+   should be started as a background process, perhaps at boot time.
+  </P
+><P
+>   One <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> always manages the data
+   from exactly one database cluster.  A database cluster is a
+   collection of databases that is stored at a common file system
+   location.  When the postmaster starts it needs to know the location
+   of the database cluster files (<SPAN
+CLASS="QUOTE"
+>"data area"</SPAN
+>).  This is
+   done with the <TT
+CLASS="OPTION"
+>-D</TT
+> invocation option or the
+   <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> environment variable; there is no default.
+   More than one postmaster process can run on a system at one time,
+   as long as they use different data areas and different
+   communication ports (see below).  A data area is created with <A
+HREF="app-initdb.html"
+>initdb</A
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-POSTMASTER-OPTIONS"
+></A
+><H2
+>Options</H2
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> accepts the following
+    command line arguments.  For a detailed discussion of the options
+    consult the <I
+CLASS="CITETITLE"
+>Administrator's Guide</I
+>.  You can
+    also save typing most of these options by setting up a
+    configuration file.
+    
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>-A 0|1</DT
+><DD
+><P
+>        Enables run-time assert checks, which is a debugging aid to
+        detect programming mistakes.  This is only available if it was
+        enabled during compilation.  If so, the default is on.
+       </P
+></DD
+><DT
+>-B <TT
+CLASS="REPLACEABLE"
+><I
+>nbuffers</I
+></TT
+></DT
+><DD
+><P
+>	Sets the number of shared buffers for use by the server
+	processes.  This value defaults to 64 buffers, where each
+	buffer is 8 kB.
+       </P
+></DD
+><DT
+>-c <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>=<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+></DT
+><DD
+><P
+>        Sets a named run-time parameter. Consult the
+        <I
+CLASS="CITETITLE"
+>Administrator's Guide</I
+> for a list and
+        descriptions.  Most of the other command line options are in
+        fact short forms of such a parameter assignment.  <TT
+CLASS="OPTION"
+>-c</TT
+>
+	can appear multiple times to set multiple parameters.
+       </P
+></DD
+><DT
+>-d <TT
+CLASS="REPLACEABLE"
+><I
+>debug-level</I
+></TT
+></DT
+><DD
+><P
+>        Sets the debug level.  The higher this value is set, the more
+        debugging output is written to the server log.  Values are from
+	1 to 5.
+       </P
+></DD
+><DT
+>-D <TT
+CLASS="REPLACEABLE"
+><I
+>datadir</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the file system location of the data directory.  See
+	discussion above.
+       </P
+></DD
+><DT
+>-F</DT
+><DD
+><P
+>        Disables <TT
+CLASS="FUNCTION"
+>fsync</TT
+> calls for performance
+        improvement, at the risk of data corruption in event of a
+        system crash.  This parameter corresponds to setting
+        <TT
+CLASS="LITERAL"
+>fsync=false</TT
+> in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>. Read the detailed
+        documentation before using this!
+       </P
+><P
+>        <TT
+CLASS="OPTION"
+>--fsync=true</TT
+> has the opposite effect
+        of this option.
+       </P
+></DD
+><DT
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>hostname</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the TCP/IP host name or address on which the
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> is to listen for
+	connections from client applications.  Defaults to
+	listening on all configured addresses (including
+        <SPAN
+CLASS="SYSTEMITEM"
+>localhost</SPAN
+>).
+       </P
+></DD
+><DT
+>-i</DT
+><DD
+><P
+>        Allows clients to connect via TCP/IP (Internet domain)
+	connections.  Without this option, only local Unix domain
+        socket connections are accepted. This option corresponds
+        to setting <TT
+CLASS="LITERAL"
+>tcpip_socket=true</TT
+> in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>.
+       </P
+><P
+>        <TT
+CLASS="OPTION"
+>--tcpip_socket=false</TT
+> has the opposite
+        effect of this option.
+       </P
+></DD
+><DT
+>-k <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the directory of the Unix-domain socket on which the
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> is to listen for
+	connections from client applications.  The default is normally
+	<TT
+CLASS="FILENAME"
+>/tmp</TT
+>, but can be changed at build time.
+       </P
+></DD
+><DT
+>-l</DT
+><DD
+><P
+>	Enables secure connections using SSL.  The <TT
+CLASS="OPTION"
+>-i</TT
+>
+	option is also required.  You must have compiled with SSL
+	enabled to use this option.
+       </P
+></DD
+><DT
+>-N <TT
+CLASS="REPLACEABLE"
+><I
+>max-connections</I
+></TT
+></DT
+><DD
+><P
+>	Sets the maximum number of client connections that this
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> will accept.  By
+	default, this value is 32, but it can be set as high as your
+	system will support.  (Note that
+	<TT
+CLASS="OPTION"
+>-B</TT
+> is required to be at least twice
+	<TT
+CLASS="OPTION"
+>-N</TT
+>.  See the <I
+CLASS="CITETITLE"
+>Administrator's
+	Guide</I
+> for a discussion of system resource requirements
+	for large numbers of client connections.)
+       </P
+></DD
+><DT
+>-o <TT
+CLASS="REPLACEABLE"
+><I
+>extra-options</I
+></TT
+></DT
+><DD
+><P
+>	The command line-style options specified in <TT
+CLASS="REPLACEABLE"
+><I
+>extra-options</I
+></TT
+> are passed to
+	all backend server processes started by this
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>.  See <A
+HREF="app-postgres.html"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></A
+> for possibilities.  If the option
+	string contains any spaces, the entire string must be quoted.
+       </P
+></DD
+><DT
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the TCP/IP port or local Unix domain socket file
+	extension on which the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+	is to listen for connections from client applications.
+	Defaults to the value of the <TT
+CLASS="ENVAR"
+>PGPORT</TT
+> environment
+	variable, or if <TT
+CLASS="ENVAR"
+>PGPORT</TT
+> is not set, then
+	defaults to the value established during compilation (normally
+	5432).  If you specify a port other than the default port,
+	then all client applications must specify the same port using
+	either command-line options or <TT
+CLASS="ENVAR"
+>PGPORT</TT
+>.
+       </P
+></DD
+><DT
+>-S</DT
+><DD
+><P
+>	Specifies that the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+	process should start up in silent mode.  That is, it will
+	disassociate from the user's (controlling) terminal, start its
+	own process group, and redirect its standard output and
+	standard error to <TT
+CLASS="FILENAME"
+>/dev/null</TT
+>.
+       </P
+><P
+>        Using this switch discards all logging output, which is
+	probably not what you want, since it makes it very difficult
+	to troubleshoot problems.  See below for a better way to start
+	the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> in the background.
+       </P
+><P
+>        <TT
+CLASS="OPTION"
+>--silent_mode=false</TT
+> has the opposite effect
+        of this option.
+       </P
+></DD
+><DT
+>--<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>=<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+></DT
+><DD
+><P
+>        Sets a named run-time parameter; a shorter form of
+        <TT
+CLASS="OPTION"
+>-c</TT
+>.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    Two additional command line options are available for debugging
+    problems that cause a backend to die abnormally.  These options
+    control the behavior of the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+    in this situation, and <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>neither option is intended for
+    use in ordinary operation</I
+></SPAN
+>.
+   </P
+><P
+>    The ordinary strategy for this situation is to notify all other
+    backends that they must terminate and then reinitialize the shared
+    memory and semaphores.  This is because an errant backend could
+    have corrupted some shared state before terminating.
+   </P
+><P
+>    These special-case options are:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>-n</DT
+><DD
+><P
+>	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+	will not reinitialize shared data structures.  A knowledgeable system
+	programmer can then use a debugger
+	to examine shared memory and semaphore state.
+       </P
+></DD
+><DT
+>-s</DT
+><DD
+><P
+>	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+	will stop all other backend processes by sending the signal
+	<TT
+CLASS="LITERAL"
+>SIGSTOP</TT
+>,
+	but will not cause them to terminate.  This permits system programmers
+	to collect core dumps from all backend processes by hand.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51751"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGCLIENTENCODING</TT
+></DT
+><DD
+><P
+>      Default character encoding used by clients.  (The clients may
+      override this individually.)  This value can also be set in the
+      configuration file.
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATA</TT
+></DT
+><DD
+><P
+>      Default data direction location
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATASTYLE</TT
+></DT
+><DD
+><P
+>      Default value of the <TT
+CLASS="LITERAL"
+>datestyle</TT
+> run-time
+      parameter.  (The use of this environment variable is deprecated.)
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>PGPORT</TT
+></DT
+><DD
+><P
+>      Default port (preferably set in the configuration file)
+     </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>TZ</TT
+></DT
+><DD
+><P
+>      Server time zone
+     </P
+></DD
+><DT
+>others</DT
+><DD
+><P
+>      Other environment variables may be used to designate alternative
+      data storage locations.  See the <I
+CLASS="CITETITLE"
+>Administrator's
+      Guide</I
+> for more information.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51785"
+></A
+><H2
+>Diagnostics</H2
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>semget: No space left on device
+       </TT
+></DT
+><DD
+><P
+>	If you see this message, you should run the
+	<SPAN
+CLASS="APPLICATION"
+>ipcclean</SPAN
+>
+	command.  After doing so, try starting
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+	again.  If this still doesn't work, you probably need to configure
+	your kernel for shared memory and semaphores as described in the
+	installation notes.  If you run multiple instances of
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+	on a single host, or have a kernel with particularly small shared memory
+	and/or semaphore limits, you may have to reconfigure your kernel to increase
+	its shared memory or semaphore parameters.
+
+	<DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>	  You may be able to postpone
+	  reconfiguring your kernel by decreasing <TT
+CLASS="OPTION"
+>-B</TT
+> to reduce
+	  the shared memory consumption of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>,
+	  and/or by reducing <TT
+CLASS="OPTION"
+>-N</TT
+> to reduce the semaphore
+	  consumption.
+	 </P
+></BLOCKQUOTE
+></DIV
+>
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>StreamServerPort: cannot bind to port
+       </TT
+></DT
+><DD
+><P
+>	If you see this message, you should make certain that there is no
+	other <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+	process already running on the same port number.  The easiest way to
+	determine this is by using the command
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ps ax | grep postmaster</B
+></TT
+></PRE
+><P>
+        or
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ps -e | grep postmaster</B
+></TT
+></PRE
+><P>
+	depending on your system.
+       </P
+><P
+>	If you 
+	are sure that no other
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+	processes are running and you still get this error, try specifying a
+	different port using the
+	<TT
+CLASS="LITERAL"
+>-p</TT
+>
+	option.  You may also get this error if you terminate the
+	<SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+	and immediately restart it using the same port; in this case, you must
+	simply wait a few seconds until the operating system closes the port
+	before trying again.  Finally, you may get this error if you specify
+	a port number that your operating system considers to be reserved.
+	For example, many versions of Unix consider port numbers under 1024 to
+	be <I
+CLASS="FIRSTTERM"
+>trusted</I
+>
+	and only permit the Unix superuser to access them.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51819"
+></A
+><H2
+>Notes</H2
+><P
+>   If at all possible, <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>do not</I
+></SPAN
+> use
+   <TT
+CLASS="LITERAL"
+>SIGKILL</TT
+> to kill the
+   <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>.  This will prevent
+   <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> from freeing the system
+   resources (e.g., shared memory and semaphores) that it holds before
+   terminating.
+  </P
+><P
+>   To terminate the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> normally,
+   the signals <TT
+CLASS="LITERAL"
+>SIGTERM</TT
+>, <TT
+CLASS="LITERAL"
+>SIGINT</TT
+>,
+   or <TT
+CLASS="LITERAL"
+>SIGQUIT</TT
+> can be used.  The first will wait for
+   all clients to terminate before quitting, the second will
+   forcefully disconnect all clients, and the third will quit
+   immediately without proper shutdown, resulting in a recovery run
+   during restart.
+  </P
+><P
+>   The utility command <A
+HREF="app-pg-ctl.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+></A
+> can be used to
+   start and shut down the <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+   safely and comfortably.
+  </P
+><P
+>   The <TT
+CLASS="OPTION"
+>--</TT
+> options will not work on <SPAN
+CLASS="SYSTEMITEM"
+>FreeBSD</SPAN
+> or <SPAN
+CLASS="SYSTEMITEM"
+>OpenBSD</SPAN
+>.
+   Use <TT
+CLASS="OPTION"
+>-c</TT
+> instead. This is a bug in the affected operating
+   systems; a future release of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   will provide a workaround if this is not fixed.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="APP-POSTMASTER-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To start <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> in the background
+   using default values, type:
+
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>nohup postmaster &gt;logfile 2&gt;&amp;1 &lt;/dev/null &amp;</B
+></TT
+></PRE
+><P>
+  </P
+><P
+>   To start <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> with a specific
+   port:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>postmaster -p 1234</B
+></TT
+></PRE
+><P>
+   This command will start up <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+   communicating through the port 1234. In order to connect to this
+   <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> using <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>, you would need to
+   run it as
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>psql -p 1234</B
+></TT
+></PRE
+><P>
+   or set the environment variable <TT
+CLASS="ENVAR"
+>PGPORT</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>export PGPORT=1234</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>psql</B
+></TT
+></PRE
+><P>
+  </P
+><P
+>   Named run-time parameters can be set in either of these styles:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>postmaster -c sort_mem=1234</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>postmaster --sort-mem=1234</B
+></TT
+></PRE
+><P>
+   Either form overrides whatever setting might exist for <TT
+CLASS="LITERAL"
+>sort_mem</TT
+>
+   in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>.  Notice that underscores in parameter
+   names can be written as either underscore or dash on the command line.
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>   Except for short-term experiments,
+   it's probably better practice to edit the setting in
+   <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> than to rely on a command-line switch
+   to set a parameter.
+  </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN51875"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="app-initdb.html"
+>initdb</A
+>,
+   <A
+HREF="app-pg-ctl.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+></A
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-postgres.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="developer.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>PostgreSQL 7.3.3 Developer's Guide</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

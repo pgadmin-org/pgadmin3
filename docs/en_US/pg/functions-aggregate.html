@@ -1,0 +1,631 @@
+<HTML
+><HEAD
+><TITLE
+>Aggregate Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Miscellaneous Functions"
+HREF="functions-misc.html"><LINK
+REL="NEXT"
+TITLE="Subquery Expressions"
+HREF="functions-subquery.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="functions-misc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="functions-subquery.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-AGGREGATE"
+>6.14. Aggregate Functions</A
+></H1
+><P
+>   <I
+CLASS="FIRSTTERM"
+>Aggregate functions</I
+> compute a single result
+   value from a set of input values.  <A
+HREF="functions-aggregate.html#FUNCTIONS-AGGREGATE-TABLE"
+>Table 6-33</A
+> show the built-in aggregate
+   functions.  The special syntax considerations for aggregate
+   functions are explained in <A
+HREF="sql-expressions.html#SYNTAX-AGGREGATES"
+>Section 1.2.5</A
+>.
+   Consult the <A
+HREF="tutorial.html"
+><I
+>PostgreSQL 7.3.3 Tutorial</I
+></A
+> for additional introductory
+   information.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-AGGREGATE-TABLE"
+></A
+><P
+><B
+>Table 6-33. Aggregate Functions</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Function</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Argument Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Return Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TD
+>&nbsp;</TD
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <A
+NAME="AEN10355"
+></A
+>
+       <TT
+CLASS="FUNCTION"
+>avg(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</TT
+>
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>,
+       <TT
+CLASS="TYPE"
+>bigint</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>, <TT
+CLASS="TYPE"
+>double
+       precision</TT
+>, <TT
+CLASS="TYPE"
+>numeric</TT
+>, or <TT
+CLASS="TYPE"
+>interval</TT
+>.
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <TT
+CLASS="TYPE"
+>numeric</TT
+> for any integer type argument,
+       <TT
+CLASS="TYPE"
+>double precision</TT
+> for a floating-point argument,
+       otherwise the same as the argument data type
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>the average (arithmetic mean) of all input values</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>count(*)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>number of input values</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>count(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>any</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bigint</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       number of input values for which the value of <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> is not null
+      </TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>max(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>any numeric, string, or date/time type</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>same as argument type</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       maximum value of <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> across all input
+       values
+      </TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>min(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>any numeric, string, or date/time type</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>same as argument type</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       minimum value of <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> across all input
+       values
+      </TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <A
+NAME="AEN10406"
+></A
+>
+       <TT
+CLASS="FUNCTION"
+>stddev(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</TT
+>
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>,
+       <TT
+CLASS="TYPE"
+>bigint</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>, <TT
+CLASS="TYPE"
+>double
+       precision</TT
+>, or <TT
+CLASS="TYPE"
+>numeric</TT
+>.
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <TT
+CLASS="TYPE"
+>double precision</TT
+> for floating-point arguments,
+       otherwise <TT
+CLASS="TYPE"
+>numeric</TT
+>.
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>sample standard deviation of the input values</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="FUNCTION"
+>sum(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>,
+       <TT
+CLASS="TYPE"
+>bigint</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>, <TT
+CLASS="TYPE"
+>double
+       precision</TT
+>, <TT
+CLASS="TYPE"
+>numeric</TT
+>, or
+       <TT
+CLASS="TYPE"
+>interval</TT
+>
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <TT
+CLASS="TYPE"
+>bigint</TT
+> for <TT
+CLASS="TYPE"
+>smallint</TT
+> or
+       <TT
+CLASS="TYPE"
+>integer</TT
+> arguments, <TT
+CLASS="TYPE"
+>numeric</TT
+> for
+       <TT
+CLASS="TYPE"
+>bigint</TT
+> arguments, <TT
+CLASS="TYPE"
+>double precision</TT
+>
+       for floating-point arguments, otherwise the same as the
+       argument data type
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>sum of <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> across all input values</TD
+><TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <A
+NAME="AEN10444"
+></A
+>
+       <TT
+CLASS="FUNCTION"
+>variance</TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <TT
+CLASS="TYPE"
+>smallint</TT
+>, <TT
+CLASS="TYPE"
+>integer</TT
+>,
+       <TT
+CLASS="TYPE"
+>bigint</TT
+>, <TT
+CLASS="TYPE"
+>real</TT
+>, <TT
+CLASS="TYPE"
+>double
+       precision</TT
+>, or <TT
+CLASS="TYPE"
+>numeric</TT
+>.
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       <TT
+CLASS="TYPE"
+>double precision</TT
+> for floating-point arguments,
+       otherwise <TT
+CLASS="TYPE"
+>numeric</TT
+>.
+      </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>sample variance of the input values (square of the sample standard deviation)</TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   It should be noted that except for <TT
+CLASS="FUNCTION"
+>count</TT
+>,
+   these functions return a null value when no rows are selected.  In
+   particular, <TT
+CLASS="FUNCTION"
+>sum</TT
+> of no rows returns null, not
+   zero as one might expect.  The function <TT
+CLASS="FUNCTION"
+>coalesce</TT
+> may be
+   used to substitute zero for null when necessary.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-misc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-subquery.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Miscellaneous Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Subquery Expressions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,387 @@
+<HTML
+><HEAD
+><TITLE
+>libpq - C Library</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Client Interfaces"
+HREF="programmer-client.html"><LINK
+REL="PREVIOUS"
+TITLE="Client Interfaces"
+HREF="programmer-client.html"><LINK
+REL="NEXT"
+TITLE="Database Connection Functions"
+HREF="libpq-connect.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="programmer-client.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq-connect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="LIBPQ"
+>Chapter 1. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>1.1. <A
+HREF="libpq.html#LIBPQ-INTRO"
+>Introduction</A
+></DT
+><DT
+>1.2. <A
+HREF="libpq-connect.html"
+>Database Connection Functions</A
+></DT
+><DT
+>1.3. <A
+HREF="libpq-exec.html"
+>Command Execution Functions</A
+></DT
+><DD
+><DL
+><DT
+>1.3.1. <A
+HREF="libpq-exec.html#LIBPQ-EXEC-MAIN"
+>Main Routines</A
+></DT
+><DT
+>1.3.2. <A
+HREF="libpq-exec.html#LIBPQ-EXEC-ESCAPE-STRING"
+>Escaping strings for inclusion in SQL queries</A
+></DT
+><DT
+>1.3.3. <A
+HREF="libpq-exec.html#LIBPQ-EXEC-ESCAPE-BYTEA"
+>Escaping binary strings for inclusion in SQL queries</A
+></DT
+><DT
+>1.3.4. <A
+HREF="libpq-exec.html#LIBPQ-EXEC-SELECT-INFO"
+>Retrieving SELECT Result Information</A
+></DT
+><DT
+>1.3.5. <A
+HREF="libpq-exec.html#LIBPQ-EXEC-SELECT-VALUES"
+>Retrieving SELECT Result Values</A
+></DT
+><DT
+>1.3.6. <A
+HREF="libpq-exec.html#LIBPQ-EXEC-NONSELECT"
+>Retrieving Non-SELECT Result Information</A
+></DT
+></DL
+></DD
+><DT
+>1.4. <A
+HREF="libpq-async.html"
+>Asynchronous Query Processing</A
+></DT
+><DT
+>1.5. <A
+HREF="libpq-fastpath.html"
+>The Fast-Path Interface</A
+></DT
+><DT
+>1.6. <A
+HREF="libpq-notify.html"
+>Asynchronous Notification</A
+></DT
+><DT
+>1.7. <A
+HREF="libpq-copy.html"
+>Functions Associated with the COPY Command</A
+></DT
+><DT
+>1.8. <A
+HREF="libpq-trace.html"
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> Tracing Functions</A
+></DT
+><DT
+>1.9. <A
+HREF="libpq-control.html"
+><SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> Control Functions</A
+></DT
+><DT
+>1.10. <A
+HREF="libpq-envars.html"
+>Environment Variables</A
+></DT
+><DT
+>1.11. <A
+HREF="libpq-files.html"
+>Files</A
+></DT
+><DT
+>1.12. <A
+HREF="libpq-threading.html"
+>Threading Behavior</A
+></DT
+><DT
+>1.13. <A
+HREF="libpq-build.html"
+>Building <SPAN
+CLASS="APPLICATION"
+>Libpq</SPAN
+> Programs</A
+></DT
+><DT
+>1.14. <A
+HREF="libpq-example.html"
+>Example Programs</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN24755"
+></A
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-INTRO"
+>1.1. Introduction</A
+></H1
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> is the <SPAN
+CLASS="ACRONYM"
+>C</SPAN
+>
+   application programmer's interface to
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> is a set
+   of library routines that allow client programs to pass queries to the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend server and to receive the
+   results of these queries.  <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> is also the
+   underlying engine for several other <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   application interfaces, including <SPAN
+CLASS="APPLICATION"
+>libpq++</SPAN
+> (C++),
+   <TT
+CLASS="FILENAME"
+>libpgtcl</TT
+> (Tcl), <SPAN
+CLASS="PRODUCTNAME"
+>Perl</SPAN
+>, and
+   <TT
+CLASS="FILENAME"
+>ecpg</TT
+>.  So some aspects of <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>'s behavior will be
+   important to you if you use one of those packages.
+  </P
+><P
+>   Three short programs are included at the end of this section to show how
+   to write programs that use <TT
+CLASS="FILENAME"
+>libpq</TT
+>.  There are several
+   complete examples of <TT
+CLASS="FILENAME"
+>libpq</TT
+> applications in the
+   following directories:
+
+   <P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+><TT
+CLASS="FILENAME"
+>src/test/examples</TT
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="FILENAME"
+>src/bin/psql</TT
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+>
+  </P
+><P
+>   Frontend programs that use <TT
+CLASS="FILENAME"
+>libpq</TT
+> must include the
+   header file <TT
+CLASS="FILENAME"
+>libpq-fe.h</TT
+> and must link with the
+   <TT
+CLASS="FILENAME"
+>libpq</TT
+> library.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="programmer-client.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-connect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Client Interfaces</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Database Connection Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,724 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE DATABASE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE CONVERSION"
+HREF="sql-createconversion.html"><LINK
+REL="NEXT"
+TITLE="   CREATE DOMAIN
+  "
+HREF="sql-createdomain.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createconversion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createdomain.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEDATABASE"
+>CREATE DATABASE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39127"
+></A
+><H2
+>Name</H2
+>   CREATE DATABASE
+  &nbsp;--&nbsp;   create a new database
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN39130"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+    [ [ WITH ] [ OWNER [=] <TT
+CLASS="REPLACEABLE"
+><I
+>dbowner</I
+></TT
+> ]
+           [ LOCATION [=] '<TT
+CLASS="REPLACEABLE"
+><I
+>dbpath</I
+></TT
+>' ]
+           [ TEMPLATE [=] <TT
+CLASS="REPLACEABLE"
+><I
+>template</I
+></TT
+> ]
+           [ ENCODING [=] <TT
+CLASS="REPLACEABLE"
+><I
+>encoding</I
+></TT
+> ] ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEDATABASE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name of a database to create.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>dbowner</I
+></TT
+></DT
+><DD
+><P
+>        Name of the database user who will own the new database,
+	or <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> to use the default (namely, the
+	user executing the command).
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>dbpath</I
+></TT
+></DT
+><DD
+><P
+>	An alternate file-system location in which to store the new database,
+	specified as a string literal;
+	or <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> to use the default location.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>template</I
+></TT
+></DT
+><DD
+><P
+>        Name of template from which to create the new database,
+	or <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> to use the default template
+	(<TT
+CLASS="LITERAL"
+>template1</TT
+>).
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>encoding</I
+></TT
+></DT
+><DD
+><P
+>        Multibyte encoding method to use in the new database.  Specify
+	a string literal name (e.g., <TT
+CLASS="LITERAL"
+>'SQL_ASCII'</TT
+>),
+	or an integer encoding number, or <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+>
+	to use the default encoding.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEDATABASE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>CREATE DATABASE</TT
+></DT
+><DD
+><P
+>	Message returned if the command completes successfully.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  user '<TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>' is not allowed to create/drop databases</TT
+></DT
+><DD
+><P
+>        You must have the special <TT
+CLASS="LITERAL"
+>CREATEDB</TT
+> privilege to create databases.
+        See <A
+HREF="sql-createuser.html"
+><I
+>CREATE USER</I
+></A
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  createdb: database "<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>" already exists</TT
+></DT
+><DD
+><P
+>	This occurs if a database with the <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+        specified already exists.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  database path may not contain single quotes</TT
+></DT
+><DD
+><P
+>	The database location
+        <TT
+CLASS="REPLACEABLE"
+><I
+>dbpath</I
+></TT
+> cannot contain
+        single quotes. This is required so that the shell commands that
+        create the database directory can execute safely.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  CREATE DATABASE: may not be called in a transaction block</TT
+></DT
+><DD
+><P
+>        If you have an explicit transaction block in progress you cannot call
+        <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+>. You must finish the transaction first.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  Unable to create database directory '<TT
+CLASS="REPLACEABLE"
+><I
+>path</I
+></TT
+>'.</TT
+><BR><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  Could not initialize database directory.</TT
+></DT
+><DD
+><P
+>        These are most likely related to insufficient permissions on the data
+        directory, a full disk, or other file system problems. The user under
+        which the database server is running must have access to the location.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEDATABASE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> creates a new
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.
+  </P
+><P
+>   Normally, the creator becomes the owner of the new database.
+   Superusers can create databases owned by other users using the
+   <TT
+CLASS="OPTION"
+>OWNER</TT
+> clause. They can even create databases owned by
+   users with no special privileges. Non-superusers with <TT
+CLASS="LITERAL"
+>CREATEDB</TT
+>
+   privilege can only create databases owned by themselves.
+  </P
+><P
+>   An alternate location can be specified in order to,
+   for example, store the database on a different disk.
+   The path must have been prepared with the 
+   <A
+HREF="app-initlocation.html"
+><I
+><I
+>initlocation</I
+></I
+></A
+>
+   command.
+  </P
+><P
+>   If the path name does not contain a slash, it is interpreted
+   as an environment variable name, which must be known to the
+   server process. This way the database administrator can
+   exercise control over locations in which databases can be created.
+   (A customary choice is, e.g., <TT
+CLASS="ENVAR"
+>PGDATA2</TT
+>.)
+   If the server is compiled with <TT
+CLASS="LITERAL"
+>ALLOW_ABSOLUTE_DBPATHS</TT
+>
+   (not so by default), absolute path names, as identified by
+   a leading slash
+   (e.g., <TT
+CLASS="FILENAME"
+>/usr/local/pgsql/data</TT
+>),
+   are allowed as well.
+  </P
+><P
+>   By default, the new database will be created by cloning the standard
+   system database <TT
+CLASS="LITERAL"
+>template1</TT
+>.  A different template can be
+   specified by writing <TT
+CLASS="LITERAL"
+>TEMPLATE =</TT
+>
+   <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>.  In particular,
+   by writing <TT
+CLASS="LITERAL"
+>TEMPLATE = template0</TT
+>, you can create a virgin
+   database containing only the standard objects predefined by your
+   version of <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+>.  This is useful
+   if you wish to avoid copying
+   any installation-local objects that may have been added to
+   <TT
+CLASS="LITERAL"
+>template1</TT
+>. 
+  </P
+><P
+>   The optional encoding parameter allows selection of the database encoding,
+   if your server was compiled with multibyte encoding support.  When not
+   specified, it defaults to the encoding used by the selected template
+   database.
+  </P
+><P
+>   Optional parameters can be written in any order, not only the order
+   illustrated above.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEDATABASE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    language extension.
+   </P
+><P
+>    Use <A
+HREF="sql-dropdatabase.html"
+><I
+>DROP DATABASE</I
+></A
+> to remove a database.
+   </P
+><P
+>    The program <A
+HREF="app-createdb.html"
+><I
+><I
+>createdb</I
+></I
+></A
+> is a
+    shell script wrapper around this command, provided for convenience.
+   </P
+><P
+>    There are security and data integrity issues
+    involved with using alternate database locations
+    specified with absolute path names, and by default
+    only an environment variable known to the backend may be
+    specified for an alternate location.
+    See the Administrator's Guide for more information.
+   </P
+><P
+>   Although it is possible to copy a database other than <TT
+CLASS="LITERAL"
+>template1</TT
+>
+   by specifying its name as the template, this is not (yet) intended as
+   a general-purpose COPY DATABASE facility.
+   We recommend that databases used as templates be treated as read-only.
+   See the <I
+CLASS="CITETITLE"
+>Administrator's Guide</I
+> for more information.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEDATABASE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To create a new database:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+><TT
+CLASS="PROMPT"
+>olly=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>create database lusiadas;</B
+></TT
+>
+   </PRE
+><P>
+  </P
+><P
+>   To create a new database in an alternate area <TT
+CLASS="FILENAME"
+>~/private_db</TT
+>:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>mkdir private_db</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>initlocation ~/private_db</B
+></TT
+>
+    <TT
+CLASS="COMPUTEROUTPUT"
+>The location will be initialized with username "olly".
+This user will own all the files and must also own the server process.
+Creating directory /home/olly/private_db
+Creating directory /home/olly/private_db/base
+
+initlocation is complete.
+    </TT
+>
+   
+<TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>psql olly</B
+></TT
+>
+<TT
+CLASS="COMPUTEROUTPUT"
+>Welcome to psql, the PostgreSQL interactive terminal.
+ 
+Type:  \copyright for distribution terms
+       \h for help with SQL commands
+       \? for help on internal slash commands
+       \g or terminate with semicolon to execute query
+       \q to quit
+
+<TT
+CLASS="PROMPT"
+>olly=&#62;</TT
+></TT
+> <TT
+CLASS="USERINPUT"
+><B
+>CREATE DATABASE elsewhere WITH LOCATION = '/home/olly/private_db';</B
+></TT
+>
+<TT
+CLASS="COMPUTEROUTPUT"
+>CREATE DATABASE</TT
+>
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEDATABASE-4"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEDATABASE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>CREATE DATABASE</TT
+> statement in SQL92.
+    Databases are equivalent to catalogs, whose creation is
+    implementation-defined.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createconversion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createdomain.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE CONVERSION</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE DOMAIN</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

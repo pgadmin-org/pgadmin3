@@ -1,0 +1,297 @@
+<HTML
+><HEAD
+><TITLE
+>Genetic Algorithms</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Genetic Query Optimization"
+HREF="geqo.html"><LINK
+REL="PREVIOUS"
+TITLE="Genetic Query Optimization"
+HREF="geqo.html"><LINK
+REL="NEXT"
+TITLE="Genetic Query Optimization (GEQO) in PostgreSQL"
+HREF="geqo-pg-intro.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="geqo.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Genetic Query Optimization</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="geqo-pg-intro.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GEQO-INTRO2"
+>8.2. Genetic Algorithms</A
+></H1
+><P
+>    The genetic algorithm (<SPAN
+CLASS="ACRONYM"
+>GA</SPAN
+>) is a heuristic optimization method which
+    operates through
+    determined, randomized search. The set of possible solutions for the
+    optimization problem is considered as a
+    <I
+CLASS="FIRSTTERM"
+>population</I
+> of <I
+CLASS="FIRSTTERM"
+>individuals</I
+>.
+    The degree of adaptation of an individual to its environment is specified
+    by its <I
+CLASS="FIRSTTERM"
+>fitness</I
+>.
+   </P
+><P
+>    The coordinates of an individual in the search space are represented
+    by <I
+CLASS="FIRSTTERM"
+>chromosomes</I
+>, in essence a set of character
+    strings. A <I
+CLASS="FIRSTTERM"
+>gene</I
+> is a
+    subsection of a chromosome which encodes the value of a single parameter
+    being optimized. Typical encodings for a gene could be <I
+CLASS="FIRSTTERM"
+>binary</I
+> or
+    <I
+CLASS="FIRSTTERM"
+>integer</I
+>.
+   </P
+><P
+>    Through simulation of the evolutionary operations <I
+CLASS="FIRSTTERM"
+>recombination</I
+>,
+    <I
+CLASS="FIRSTTERM"
+>mutation</I
+>, and
+    <I
+CLASS="FIRSTTERM"
+>selection</I
+> new generations of search points are found
+    that show a higher average fitness than their ancestors.
+   </P
+><P
+>    According to the <SPAN
+CLASS="SYSTEMITEM"
+>comp.ai.genetic</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>FAQ</SPAN
+> it cannot be stressed too
+    strongly that a <SPAN
+CLASS="ACRONYM"
+>GA</SPAN
+> is not a pure random search for a solution to a
+    problem. A <SPAN
+CLASS="ACRONYM"
+>GA</SPAN
+> uses stochastic processes, but the result is distinctly
+    non-random (better than random). 
+   </P
+><DIV
+CLASS="FIGURE"
+><A
+NAME="GEQO-DIAGRAM"
+></A
+><P
+><B
+>Figure 8-1. Structured Diagram of a Genetic Algorithm</B
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN55754"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>P(t)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>generation of ancestors at a time t</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>P''(t)</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>generation of descendants at a time t</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+><PRE
+CLASS="LITERALLAYOUT"
+>+=========================================+
+|&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;  Algorithm GA  &#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;&#60;|
++=========================================+
+| INITIALIZE t := 0                       |
++=========================================+
+| INITIALIZE P(t)                         |
++=========================================+
+| evaluate FITNESS of P(t)                |
++=========================================+
+| while not STOPPING CRITERION do         |
+|   +-------------------------------------+
+|   | P'(t)  := RECOMBINATION{P(t)}       |
+|   +-------------------------------------+
+|   | P''(t) := MUTATION{P'(t)}           |
+|   +-------------------------------------+
+|   | P(t+1) := SELECTION{P''(t) + P(t)}  |
+|   +-------------------------------------+
+|   | evaluate FITNESS of P''(t)          |
+|   +-------------------------------------+
+|   | t := t + 1                          |
++===+=====================================+</PRE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="geqo.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="geqo-pg-intro.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Genetic Query Optimization</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="geqo.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Genetic Query Optimization (<SPAN
+CLASS="ACRONYM"
+>GEQO</SPAN
+>) in PostgreSQL</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

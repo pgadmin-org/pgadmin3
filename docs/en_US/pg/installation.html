@@ -1,0 +1,249 @@
+<HTML
+><HEAD
+><TITLE
+>  Installation Instructions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Preface"
+HREF="admin-preface.html"><LINK
+REL="NEXT"
+TITLE="Requirements"
+HREF="install-requirements.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="admin-preface.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="install-requirements.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="INSTALLATION"
+>Chapter 1.   Installation Instructions</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>1.1. <A
+HREF="installation.html#INSTALL-SHORT"
+>Short Version</A
+></DT
+><DT
+>1.2. <A
+HREF="install-requirements.html"
+>Requirements</A
+></DT
+><DT
+>1.3. <A
+HREF="install-getsource.html"
+>Getting The Source</A
+></DT
+><DT
+>1.4. <A
+HREF="install-upgrading.html"
+>If You Are Upgrading</A
+></DT
+><DT
+>1.5. <A
+HREF="install-procedure.html"
+>Installation Procedure</A
+></DT
+><DT
+>1.6. <A
+HREF="install-post.html"
+>Post-Installation Setup</A
+></DT
+><DD
+><DL
+><DT
+>1.6.1. <A
+HREF="install-post.html#AEN18587"
+>Shared Libraries</A
+></DT
+><DT
+>1.6.2. <A
+HREF="install-post.html#AEN18644"
+>Environment Variables</A
+></DT
+></DL
+></DD
+><DT
+>1.7. <A
+HREF="supported-platforms.html"
+>Supported Platforms</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN18001"
+></A
+><P
+>  This 
+  chapter describes the installation of
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> from the source code
+  distribution.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INSTALL-SHORT"
+>1.1. Short Version</A
+></H1
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>./configure
+gmake
+su
+gmake install
+adduser postgres
+mkdir /usr/local/pgsql/data
+chown postgres /usr/local/pgsql/data
+su - postgres
+/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+/usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;
+/usr/local/pgsql/bin/createdb test
+/usr/local/pgsql/bin/psql test</PRE
+><P>
+   The long version is the rest of this
+   
+   chapter.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="admin-preface.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-requirements.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Preface</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Requirements</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

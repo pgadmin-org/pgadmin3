@@ -1,0 +1,378 @@
+<HTML
+><HEAD
+><TITLE
+>Monitoring Database Activity</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Migration between releases"
+HREF="migration.html"><LINK
+REL="NEXT"
+TITLE="Statistics Collector"
+HREF="monitoring-stats.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="migration.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="monitoring-stats.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="MONITORING"
+>Chapter 10. Monitoring Database Activity</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>10.1. <A
+HREF="monitoring.html#MONITORING-PS"
+>Standard Unix Tools</A
+></DT
+><DT
+>10.2. <A
+HREF="monitoring-stats.html"
+>Statistics Collector</A
+></DT
+><DD
+><DL
+><DT
+>10.2.1. <A
+HREF="monitoring-stats.html#MONITORING-STATS-SETUP"
+>Statistics Collection Configuration</A
+></DT
+><DT
+>10.2.2. <A
+HREF="monitoring-stats.html#MONITORING-STATS-VIEWS"
+>Viewing Collected Statistics</A
+></DT
+></DL
+></DD
+><DT
+>10.3. <A
+HREF="monitoring-locks.html"
+>Viewing Locks</A
+></DT
+></DL
+></DIV
+><P
+>  A database administrator frequently wonders, <SPAN
+CLASS="QUOTE"
+>"What is the system
+  doing right now?"</SPAN
+>
+  This chapter discusses how to find that out.
+ </P
+><P
+>   Several tools are available for monitoring database activity and
+   analyzing performance.  Most of this chapter is devoted to describing
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s <I
+CLASS="FIRSTTERM"
+>statistics collector</I
+>,
+   but one should not neglect regular Unix monitoring programs such as
+   <TT
+CLASS="COMMAND"
+>ps</TT
+> and <TT
+CLASS="COMMAND"
+>top</TT
+>.  Also, once one has identified a
+   poorly-performing query, further investigation may be needed using
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+> command.
+   The <A
+HREF="user.html"
+><I
+>PostgreSQL 7.3.3 User's Guide</I
+></A
+> discusses <TT
+CLASS="COMMAND"
+>EXPLAIN</TT
+>
+   and other methods for understanding the behavior of an individual
+   query.
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MONITORING-PS"
+>10.1. Standard Unix Tools</A
+></H1
+><A
+NAME="AEN22819"
+></A
+><P
+>   On most platforms, <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> modifies its
+   command title as reported by <TT
+CLASS="COMMAND"
+>ps</TT
+>, so that individual server
+   processes can readily be identified.  A sample display is
+
+</P><PRE
+CLASS="SCREEN"
+>$ ps auxww | grep ^postgres
+postgres   960  0.0  1.1  6104 1480 pts/1    SN   13:17   0:00 postmaster -i
+postgres   963  0.0  1.1  7084 1472 pts/1    SN   13:17   0:00 postgres: stats buffer process   
+postgres   965  0.0  1.1  6152 1512 pts/1    SN   13:17   0:00 postgres: stats collector process   
+postgres   998  0.0  2.3  6532 2992 pts/1    SN   13:18   0:00 postgres: tgl runbug 127.0.0.1 idle
+postgres  1003  0.0  2.4  6532 3128 pts/1    SN   13:19   0:00 postgres: tgl regression [local] SELECT waiting
+postgres  1016  0.1  2.4  6532 3080 pts/1    SN   13:19   0:00 postgres: tgl regression [local] idle in transaction</PRE
+><P>
+
+   (The appropriate invocation of <TT
+CLASS="COMMAND"
+>ps</TT
+> varies across different
+   platforms, as do the details of what is shown.  This example is from a
+   recent Linux system.)  The first process listed here is the
+   <I
+CLASS="FIRSTTERM"
+>postmaster</I
+>, the master server process.  The command arguments
+   shown for it are the same ones given when it was launched.  The next two
+   processes implement the statistics collector, which will be described in
+   detail in the next section.  (These will not be present if you have set
+   the system not to start the statistics collector.)  Each of the remaining
+   processes is a server process handling one client connection.  Each such
+   process sets its command line display in the form
+
+</P><PRE
+CLASS="SCREEN"
+>postgres: <TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>database</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>activity</I
+></TT
+></PRE
+><P>
+
+  The user, database, and connection source host items remain the same for
+  the life of the client connection, but the activity indicator changes.
+  The activity may be <TT
+CLASS="LITERAL"
+>idle</TT
+> (i.e., waiting for a client command),
+  <TT
+CLASS="LITERAL"
+>idle in transaction</TT
+> (waiting for client inside a <TT
+CLASS="COMMAND"
+>BEGIN</TT
+> block),
+  or a command type name such as <TT
+CLASS="LITERAL"
+>SELECT</TT
+>.  Also,
+  <TT
+CLASS="LITERAL"
+>waiting</TT
+> is attached if the server is presently waiting
+  on a lock held by another server process.  In the above example we can infer
+  that process 1003 is waiting for process 1016 to complete its transaction and
+  thereby release some lock or other.
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>  <SPAN
+CLASS="PRODUCTNAME"
+>Solaris</SPAN
+> requires special handling. You must
+  use <TT
+CLASS="COMMAND"
+>/usr/ucb/ps</TT
+>, rather than
+  <TT
+CLASS="COMMAND"
+>/bin/ps</TT
+>. You also must use two <TT
+CLASS="COMMAND"
+>w</TT
+>
+  flags, not just one. In addition, your original invocation of the
+  <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+> must have a shorter
+  <TT
+CLASS="COMMAND"
+>ps</TT
+> status display than that provided by each
+  backend.   If you fail to do all three things, the <TT
+CLASS="COMMAND"
+>ps</TT
+>
+  output for each backend will be the original <SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+>
+  command line.
+  </P
+></BLOCKQUOTE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="migration.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="monitoring-stats.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Migration between releases</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Statistics Collector</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,447 @@
+<HTML
+><HEAD
+><TITLE
+>Trigger Procedures</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/pgSQL - SQL Procedural Language"
+HREF="plpgsql.html"><LINK
+REL="PREVIOUS"
+TITLE="Errors and Messages"
+HREF="plpgsql-errors-and-messages.html"><LINK
+REL="NEXT"
+TITLE="Examples"
+HREF="plpgsql-examples.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="plpgsql-errors-and-messages.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 19. <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> - <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="plpgsql-examples.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPGSQL-TRIGGER"
+>19.9. Trigger Procedures</A
+></H1
+><P
+>	<SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> can be used to define trigger
+	procedures. A trigger procedure is created with the
+	<TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+> command as a function with no
+	arguments and a return type of <TT
+CLASS="TYPE"
+>TRIGGER</TT
+>.  Note that
+	the function must be declared with no arguments even if it expects
+	to receive arguments specified in <TT
+CLASS="COMMAND"
+>CREATE TRIGGER</TT
+> ---
+	trigger arguments are passed via <TT
+CLASS="VARNAME"
+>TG_ARGV</TT
+>, as described
+	below.
+  </P
+><P
+>   When a <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> function is called as a
+   trigger, several special variables are created automatically in the 
+   top-level block. They are:
+   
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="VARNAME"
+>NEW</TT
+></DT
+><DD
+><P
+>       Data type <TT
+CLASS="TYPE"
+>RECORD</TT
+>; variable holding the new database row for INSERT/UPDATE
+       operations in ROW level triggers.
+      </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>OLD</TT
+></DT
+><DD
+><P
+>       Data type <TT
+CLASS="TYPE"
+>RECORD</TT
+>; variable holding the old database row for UPDATE/DELETE
+       operations in ROW level triggers.
+      </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TG_NAME</TT
+></DT
+><DD
+><P
+>       Data type <TT
+CLASS="TYPE"
+>name</TT
+>; variable that contains the name of the trigger actually
+       fired.
+      </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TG_WHEN</TT
+></DT
+><DD
+><P
+>       Data type <TT
+CLASS="TYPE"
+>text</TT
+>; a string of either 
+              <TT
+CLASS="LITERAL"
+>BEFORE</TT
+> or <TT
+CLASS="LITERAL"
+>AFTER</TT
+> 
+              depending on the trigger's definition.
+      </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TG_LEVEL</TT
+></DT
+><DD
+><P
+>       Data type <TT
+CLASS="TYPE"
+>text</TT
+>; a string of either 
+              <TT
+CLASS="LITERAL"
+>ROW</TT
+> or <TT
+CLASS="LITERAL"
+>STATEMENT</TT
+> depending on the
+       trigger's definition.
+      </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TG_OP</TT
+></DT
+><DD
+><P
+>       Data type <TT
+CLASS="TYPE"
+>text</TT
+>; a string of 
+              <TT
+CLASS="LITERAL"
+>INSERT</TT
+>, <TT
+CLASS="LITERAL"
+>UPDATE</TT
+> 
+              or <TT
+CLASS="LITERAL"
+>DELETE</TT
+> telling
+       for which operation the trigger is fired.
+      </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TG_RELID</TT
+></DT
+><DD
+><P
+>       Data type <TT
+CLASS="TYPE"
+>oid</TT
+>; the object ID of the table that caused the
+       trigger invocation.
+      </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TG_RELNAME</TT
+></DT
+><DD
+><P
+>       Data type <TT
+CLASS="TYPE"
+>name</TT
+>; the name of the table that caused the trigger
+       invocation.
+      </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TG_NARGS</TT
+></DT
+><DD
+><P
+>       Data type <TT
+CLASS="TYPE"
+>integer</TT
+>; the number of arguments given to the trigger
+       procedure in the <TT
+CLASS="COMMAND"
+>CREATE TRIGGER</TT
+> statement.
+      </P
+></DD
+><DT
+><TT
+CLASS="VARNAME"
+>TG_ARGV[]</TT
+></DT
+><DD
+><P
+>       Data type array of <TT
+CLASS="TYPE"
+>text</TT
+>; the arguments from
+              the <TT
+CLASS="COMMAND"
+>CREATE TRIGGER</TT
+> statement.
+       The index counts from 0 and can be given as an expression. Invalid
+       indices (&lt; 0 or &gt;= <TT
+CLASS="VARNAME"
+>tg_nargs</TT
+>) result in a null value.
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+><P
+>    A trigger function must return either NULL or a record/row value
+    having exactly the structure of the table the trigger was fired for.
+    Triggers fired BEFORE may return NULL to signal the trigger manager
+    to skip the rest of the operation for this row (ie, subsequent triggers
+    are not fired, and the INSERT/UPDATE/DELETE does not occur for this
+    row).  If a non-NULL value is returned then the operation proceeds with
+    that row value.  Note that returning a row value different from the
+    original value of NEW alters the row that will be inserted or updated.
+    It is possible to replace single values directly
+    in NEW and return that, or to build a complete new record/row to
+    return.
+   </P
+><P
+>    The return value of a trigger fired AFTER is ignored; it may as well
+    always return a NULL value.  But an AFTER trigger can still abort the
+    operation by raising an error.
+   </P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN36293"
+></A
+><P
+><B
+>Example 19-1. A <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> Trigger Procedure Example</B
+></P
+><P
+>     This example trigger ensures that any time a row is inserted or updated
+     in the table, the current user name and time are stamped into the
+     row. And it ensures that an employee's name is given and that the
+     salary is a positive value.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE emp (
+    empname text,
+    salary integer,
+    last_date timestamp,
+    last_user text
+);
+
+CREATE FUNCTION emp_stamp () RETURNS TRIGGER AS '
+    BEGIN
+        -- Check that empname and salary are given
+        IF NEW.empname ISNULL THEN
+            RAISE EXCEPTION ''empname cannot be NULL value'';
+        END IF;
+        IF NEW.salary ISNULL THEN
+            RAISE EXCEPTION ''% cannot have NULL salary'', NEW.empname;
+        END IF;
+
+        -- Who works for us when she must pay for?
+        IF NEW.salary &#60; 0 THEN
+            RAISE EXCEPTION ''% cannot have a negative salary'', NEW.empname;
+        END IF;
+
+        -- Remember who changed the payroll when
+        NEW.last_date := ''now'';
+        NEW.last_user := current_user;
+        RETURN NEW;
+    END;
+' LANGUAGE 'plpgsql';
+
+CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
+    FOR EACH ROW EXECUTE PROCEDURE emp_stamp();</PRE
+><P>
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-errors-and-messages.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-examples.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Errors and Messages</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Examples</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

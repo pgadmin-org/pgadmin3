@@ -1,0 +1,393 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE CONVERSION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE CONSTRAINT TRIGGER"
+HREF="sql-createconstraint.html"><LINK
+REL="NEXT"
+TITLE="CREATE DATABASE"
+HREF="sql-createdatabase.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createconstraint.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATECONVERSION"
+>CREATE CONVERSION</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39056"
+></A
+><H2
+>Name</H2
+>CREATE CONVERSION&nbsp;--&nbsp;define a user-defined conversion</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN39059"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE [DEFAULT] CONVERSION <TT
+CLASS="REPLACEABLE"
+><I
+>conversion_name</I
+></TT
+>
+    FOR <TT
+CLASS="REPLACEABLE"
+><I
+>source_encoding</I
+></TT
+> TO <TT
+CLASS="REPLACEABLE"
+><I
+>dest_encoding</I
+></TT
+> FROM <TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECONVERSION-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE CONVERSION</TT
+> defines a new encoding
+   conversion.  Conversion names may be used in the CONVERT() function
+   to specify a particular encoding conversion.  Also, conversions that
+   are marked DEFAULT can be used for automatic encoding conversion between
+   frontend and backend. For this purpose, two conversions, from encoding A to
+   B AND from encoding B to A, must be defined.
+ </P
+><P
+>   To be able to create a conversion, you must have the execute right
+   on the function and the create right on the destination schema.
+  </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>Parameters</B
+></P
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>DEFAULT</TT
+></DT
+><DD
+><P
+>       The <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> clause indicates that this conversion
+       is the default for this particular source to destination
+       encoding. There should be only one default encoding in a schema
+       for the encoding pair.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>conversion_name</I
+></TT
+></DT
+><DD
+><P
+>       The name of the conversion. The conversion name may be
+       schema-qualified. If it is not, the conversion is defined in the
+       current schema. The conversion name must be unique within a
+       schema.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>source_encoding</I
+></TT
+></DT
+><DD
+><P
+>       The source encoding name.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>source_encoding</I
+></TT
+></DT
+><DD
+><P
+>       The destination encoding name.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+></DT
+><DD
+><P
+>       The function used to perform the conversion.  The function name may
+       be schema-qualified.  If it is not, the function will be looked
+       up in the path.
+       </P
+><P
+>       The function must have the following signature:
+
+       </P><PRE
+CLASS="PROGRAMLISTING"
+>	conv_proc(
+	INTEGER,	-- source encoding id
+	INTEGER,	-- destination encoding id
+	CSTRING,	-- source string (null terminated C string)
+	CSTRING,	-- destination string (null terminated C string)
+	INTEGER		-- source string length
+	) returns VOID;
+       </PRE
+><P>
+      </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECONVERSION-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <TT
+CLASS="COMMAND"
+>DROP CONVERSION</TT
+> to remove user-defined conversions.
+  </P
+><P
+>   The privileges required to create a conversion may be changed in a future
+   release.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECONVERSION-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To create a conversion from encoding UNICODE to LATIN1 using <TT
+CLASS="FUNCTION"
+>myfunc</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE CONVERSION myconv FOR 'UNICODE' TO 'LATIN1' FROM myfunc;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECONVERSION-COMPAT"
+></A
+><H2
+>Compatibility</H2
+><P
+>    <TT
+CLASS="COMMAND"
+>CREATE CONVERSION</TT
+>
+    is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+    There is no <TT
+CLASS="COMMAND"
+>CREATE CONVERSION</TT
+>
+    statement in <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECONVERSION-SEEALSO"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="sql-createfunction.html"
+><I
+>CREATE FUNCTION</I
+></A
+>,
+   <A
+HREF="sql-dropconversion.html"
+><I
+>DROP CONVERSION</I
+></A
+>,
+   <I
+CLASS="CITETITLE"
+>PostgreSQL Programmer's Guide</I
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createconstraint.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE CONSTRAINT TRIGGER</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE DATABASE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

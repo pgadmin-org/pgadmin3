@@ -1,0 +1,789 @@
+<HTML
+><HEAD
+><TITLE
+>GRANT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="FETCH"
+HREF="sql-fetch.html"><LINK
+REL="NEXT"
+TITLE="INSERT"
+HREF="sql-insert.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-fetch.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-insert.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-GRANT"
+>GRANT</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN43964"
+></A
+><H2
+>Name</H2
+>GRANT&nbsp;--&nbsp;define access privileges</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN43967"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>GRANT { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
+    [,...] | ALL [ PRIVILEGES ] }
+    ON [ TABLE ] <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+> [, ...]
+    TO { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]
+
+GRANT { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
+    ON DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> [, ...]
+    TO { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]
+
+GRANT { EXECUTE | ALL [ PRIVILEGES ] }
+    ON FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+> ([<TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+>, ...]) [, ...]
+    TO { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]
+
+GRANT { USAGE | ALL [ PRIVILEGES ] }
+    ON LANGUAGE <TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+> [, ...]
+    TO { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]
+
+GRANT { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }
+    ON SCHEMA <TT
+CLASS="REPLACEABLE"
+><I
+>schemaname</I
+></TT
+> [, ...]
+    TO { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-GRANT-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>GRANT</TT
+> command gives specific permissions on
+   an object (table, view, sequence, database, function, procedural language,
+   or schema) to
+   one or more users or groups of users.  These permissions are added
+   to those already granted, if any.
+  </P
+><P
+>   The key word <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+> indicates that the
+   privileges are to be granted to all users, including those that may
+   be created later.  <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+> may be thought of as an
+   implicitly defined group that always includes all users.
+   Note that any particular user will have the sum
+   of privileges granted directly to him, privileges granted to any group he
+   is presently a member of, and privileges granted to
+   <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+>.
+  </P
+><P
+>   There is no need to grant privileges to the creator of an object,
+   as the creator has all privileges by default.
+   (The creator could, however, choose to revoke
+   some of his own privileges for safety.)  Note that the ability to
+   grant and revoke privileges is inherent in the creator and cannot
+   be lost.  The right to drop an object, or to alter it in any way
+   not described by a grantable right, is likewise inherent in the
+   creator, and cannot be granted or revoked.
+  </P
+><P
+>   Depending on the type of object, the initial default privileges may
+   include granting some privileges to <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+>.
+   The default is no public access for tables and schemas;
+   <TT
+CLASS="LITERAL"
+>TEMP</TT
+> table creation privilege for databases;
+   <TT
+CLASS="LITERAL"
+>EXECUTE</TT
+> privilege for functions; and
+   <TT
+CLASS="LITERAL"
+>USAGE</TT
+> privilege for languages.
+   The object creator may of course revoke these privileges.  (For maximum
+   security, issue the <TT
+CLASS="COMMAND"
+>REVOKE</TT
+> in the same transaction that
+   creates the object; then there is no window in which another user
+   may use the object.)
+  </P
+><P
+>   The possible privileges are:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>SELECT</DT
+><DD
+><P
+>       Allows <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+> from any column of the
+       specified table, view, or sequence.  Also allows the use of
+       <A
+HREF="sql-copy.html"
+><I
+>COPY</I
+></A
+> TO.  For sequences, this
+       privilege also allows the use of the <TT
+CLASS="FUNCTION"
+>currval</TT
+> function.
+      </P
+></DD
+><DT
+>INSERT</DT
+><DD
+><P
+>       Allows <A
+HREF="sql-insert.html"
+><I
+>INSERT</I
+></A
+> of a new row into the
+       specified table.  Also allows <A
+HREF="sql-copy.html"
+><I
+>COPY</I
+></A
+> FROM.
+      </P
+></DD
+><DT
+>UPDATE</DT
+><DD
+><P
+>       Allows <A
+HREF="sql-update.html"
+><I
+>UPDATE</I
+></A
+> of any column of the
+       specified table.  <TT
+CLASS="LITERAL"
+>SELECT ... FOR UPDATE</TT
+>
+       also requires this privilege (besides the
+       <TT
+CLASS="LITERAL"
+>SELECT</TT
+> privilege).  For sequences, this
+       privilege allows the use of the <TT
+CLASS="FUNCTION"
+>nextval</TT
+> and
+       <TT
+CLASS="FUNCTION"
+>setval</TT
+> functions.
+      </P
+></DD
+><DT
+>DELETE</DT
+><DD
+><P
+>       Allows <A
+HREF="sql-delete.html"
+><I
+>DELETE</I
+></A
+> of a row from the
+       specified table.
+      </P
+></DD
+><DT
+>RULE</DT
+><DD
+><P
+>       Allows the creation of a rule on the table/view.  (See <A
+HREF="sql-createrule.html"
+><I
+>CREATE RULE</I
+></A
+> statement.)
+      </P
+></DD
+><DT
+>REFERENCES</DT
+><DD
+><P
+>       To create a foreign key constraint, it is
+       necessary to have this privilege on both the referencing and
+       referenced tables.
+      </P
+></DD
+><DT
+>TRIGGER</DT
+><DD
+><P
+>       Allows the creation of a trigger on the specified table.  (See
+       <A
+HREF="sql-createtrigger.html"
+><I
+>CREATE TRIGGER</I
+></A
+> statement.)
+      </P
+></DD
+><DT
+>CREATE</DT
+><DD
+><P
+>       For databases, allows new schemas to be created within the database.
+      </P
+><P
+>       For schemas, allows new objects to be created within the schema.
+       To rename an existing object, you must own the object <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>and</I
+></SPAN
+>
+       have this privilege for the containing schema.
+      </P
+></DD
+><DT
+>TEMPORARY<BR>TEMP</DT
+><DD
+><P
+>       Allows temporary tables to be created while using the database.
+      </P
+></DD
+><DT
+>EXECUTE</DT
+><DD
+><P
+>       Allows the use of the specified function and the use of any
+       operators that are implemented on top of the function.  This is
+       the only type of privilege that is applicable to functions.
+       (This syntax works for aggregate functions, as well.)
+      </P
+></DD
+><DT
+>USAGE</DT
+><DD
+><P
+>       For procedural languages, allows the use of the specified language for
+       the creation of functions in that language.  This is the only type
+       of privilege that is applicable to procedural languages.
+      </P
+><P
+>       For schemas, allows access to objects contained in the specified 
+       schema (assuming that the objects' own privilege requirements are
+       also met).  Essentially this allows the grantee to <SPAN
+CLASS="QUOTE"
+>"look up"</SPAN
+>
+       objects within the schema.
+      </P
+></DD
+><DT
+>ALL PRIVILEGES</DT
+><DD
+><P
+>       Grant all of the privileges applicable to the object at once.
+       The <TT
+CLASS="LITERAL"
+>PRIVILEGES</TT
+> key word is optional in
+       <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, though it is required by
+       strict SQL.
+      </P
+></DD
+></DL
+></DIV
+><P>
+
+   The privileges required by other commands are listed on the
+   reference page of the respective command.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-GRANT-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>    The <A
+HREF="sql-revoke.html"
+><I
+>REVOKE</I
+></A
+> command is used
+    to revoke access privileges.
+   </P
+><P
+>    It should be noted that database <I
+CLASS="FIRSTTERM"
+>superusers</I
+> can access
+    all objects regardless of object privilege settings.  This
+    is comparable to the rights of <TT
+CLASS="LITERAL"
+>root</TT
+> in a Unix system.
+    As with <TT
+CLASS="LITERAL"
+>root</TT
+>, it's unwise to operate as a superuser
+    except when absolutely necessary.
+   </P
+><P
+>    Currently, to grant privileges in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    to only a few columns, you must
+    create a view having the desired columns and then grant privileges
+    to that view.
+   </P
+><P
+>    Use <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>'s <TT
+CLASS="COMMAND"
+>\dp</TT
+> command
+    to obtain information about existing privileges, for example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>lusitania=&#62; \dp mytable
+        Access privileges for database "lusitania"
+ Schema |  Table  |           Access privileges
+--------+---------+---------------------------------------
+ public | mytable | {=r,miriam=arwdRxt,"group todos=arw"}
+(1 row)</PRE
+><P>
+    The entries shown by <TT
+CLASS="COMMAND"
+>\dp</TT
+> are interpreted thus:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>              =xxxx -- privileges granted to PUBLIC
+         uname=xxxx -- privileges granted to a user
+   group gname=xxxx -- privileges granted to a group
+
+                  r -- SELECT ("read")
+                  w -- UPDATE ("write")
+                  a -- INSERT ("append")
+                  d -- DELETE
+                  R -- RULE
+                  x -- REFERENCES
+                  t -- TRIGGER
+                  X -- EXECUTE
+                  U -- USAGE
+                  C -- CREATE
+                  T -- TEMPORARY
+            arwdRxt -- ALL PRIVILEGES (for tables)</PRE
+><P>
+
+    The above example display would be seen by user <TT
+CLASS="LITERAL"
+>miriam</TT
+> after
+    creating table <TT
+CLASS="LITERAL"
+>mytable</TT
+> and doing
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT SELECT ON mytable TO PUBLIC;
+GRANT SELECT,UPDATE,INSERT ON mytable TO GROUP todos;</PRE
+><P>
+   </P
+><P
+>   If the <SPAN
+CLASS="QUOTE"
+>"Access privileges"</SPAN
+> column is empty for a given object,
+it means the object has default privileges (that is, its privileges field
+is NULL).  Default privileges always include all privileges for the owner,
+and may include some privileges for <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+> depending on the
+object type, as explained above.  The first <TT
+CLASS="COMMAND"
+>GRANT</TT
+> or
+<TT
+CLASS="COMMAND"
+>REVOKE</TT
+> on an object
+will instantiate the default privileges (producing, for example,
+<TT
+CLASS="LITERAL"
+>{=,miriam=arwdRxt}</TT
+>) and then modify them per the specified request.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-GRANT-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   Grant insert privilege to all users on table films:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT INSERT ON films TO PUBLIC;</PRE
+><P>
+  </P
+><P
+>   Grant all privileges to user <TT
+CLASS="LITERAL"
+>manuel</TT
+> on view <TT
+CLASS="LITERAL"
+>kinds</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT ALL PRIVILEGES ON kinds TO manuel;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-GRANT-COMPATIBILITY"
+></A
+><H2
+>Compatibility</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN44105"
+></A
+><H3
+>SQL92</H3
+><P
+>    The <TT
+CLASS="LITERAL"
+>PRIVILEGES</TT
+> key word in <TT
+CLASS="LITERAL"
+>ALL
+    PRIVILEGES</TT
+> is required.  <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> does not
+    support setting the privileges on more than one table per command.
+   </P
+><P
+>    The <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> syntax for GRANT allows setting
+    privileges for individual columns within a table, and allows
+    setting a privilege to grant the same privileges to others:
+
+</P><PRE
+CLASS="SYNOPSIS"
+>GRANT <TT
+CLASS="REPLACEABLE"
+><I
+>privilege</I
+></TT
+> [, ...]
+    ON <TT
+CLASS="REPLACEABLE"
+><I
+>object</I
+></TT
+> [ ( <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [, ...] ) ] [, ...]
+    TO { PUBLIC | <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> [, ...] } [ WITH GRANT OPTION ]</PRE
+><P>
+   </P
+><P
+>    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> allows to grant the USAGE privilege on
+    other kinds of objects:  CHARACTER SET, COLLATION, TRANSLATION, DOMAIN.
+   </P
+><P
+>    The TRIGGER privilege was introduced in SQL99.  The RULE privilege
+    is a PostgreSQL extension.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN44121"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="sql-revoke.html"
+><I
+>REVOKE</I
+></A
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-fetch.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-insert.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>FETCH</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>INSERT</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

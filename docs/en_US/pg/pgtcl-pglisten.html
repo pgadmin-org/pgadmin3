@@ -1,0 +1,331 @@
+<HTML
+><HEAD
+><TITLE
+>pg_listen</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="pgtcl Command Reference Information"
+HREF="libpgtcl-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_execute"
+HREF="pgtcl-pgexecute.html"><LINK
+REL="NEXT"
+TITLE="pg_on_connection_loss"
+HREF="pgtcl-pgon-connection-loss.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="pgtcl-pgexecute.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="pgtcl-pgon-connection-loss.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="PGTCL-PGLISTEN"
+>pg_listen</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN26823"
+></A
+><H2
+>Name</H2
+>pg_listen&nbsp;--&nbsp;set or change a callback for asynchronous NOTIFY messages<A
+NAME="IX-PGTCL-PGLISTEN-1"
+></A
+><A
+NAME="IX-PGTCL-PGLISTEN-2"
+></A
+></DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN26831"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>pg_listen <TT
+CLASS="REPLACEABLE"
+><I
+>dbHandle</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>notifyName</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>callbackCommand</I
+></TT
+></PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PGTCL-PGLISTEN-1"
+></A
+><H3
+>Inputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>dbHandle</I
+></TT
+></DT
+><DD
+><P
+>Specifies a valid database handle.</P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>notifyName</I
+></TT
+></DT
+><DD
+><P
+>Specifies the notify condition name to start or stop listening to.</P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>callbackCommand</I
+></TT
+></DT
+><DD
+><P
+>If present, provides the command string to execute
+when a matching notification arrives.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PGTCL-PGLISTEN-2"
+></A
+><H3
+>Outputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>None</DT
+><DD
+><P
+></P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-PGTCL-PGLISTEN-1"
+></A
+><H2
+>Description</H2
+><P
+><TT
+CLASS="FUNCTION"
+>pg_listen</TT
+> creates, changes, or cancels a request
+to listen for asynchronous NOTIFY messages from the
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend.  With a <TT
+CLASS="PARAMETER"
+><I
+>callbackCommand</I
+></TT
+>
+parameter, the request is established, or the command string of an already
+existing request is replaced.  With no <TT
+CLASS="PARAMETER"
+><I
+>callbackCommand</I
+></TT
+> parameter, a prior
+request is canceled.</P
+><P
+>After a <TT
+CLASS="FUNCTION"
+>pg_listen</TT
+> request is established,
+the specified command string is executed whenever a NOTIFY message bearing
+the given name arrives from the backend.  This occurs when any
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> client application issues a NOTIFY command
+referencing that name.  (Note that the name can be, but does not have to be,
+that of an existing relation in the database.)
+The command string is executed from the Tcl idle loop.  That is the normal
+idle state of an application written with Tk.  In non-Tk Tcl shells, you can
+execute <TT
+CLASS="FUNCTION"
+>update</TT
+> or <TT
+CLASS="FUNCTION"
+>vwait</TT
+> to cause
+the idle loop to be entered.</P
+><P
+>You should not invoke the SQL statements <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> or <TT
+CLASS="COMMAND"
+>UNLISTEN</TT
+> directly when
+using <TT
+CLASS="FUNCTION"
+>pg_listen</TT
+>.  <SPAN
+CLASS="APPLICATION"
+>Pgtcl</SPAN
+> takes care of issuing those
+statements for you.  But if you want to send a NOTIFY message yourself,
+invoke the SQL NOTIFY statement using <TT
+CLASS="FUNCTION"
+>pg_exec</TT
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pgtcl-pgexecute.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pgtcl-pgon-connection-loss.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_execute</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpgtcl-ref.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>pg_on_connection_loss</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,348 @@
+<HTML
+><HEAD
+><TITLE
+>DROP DATABASE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP CONVERSION"
+HREF="sql-dropconversion.html"><LINK
+REL="NEXT"
+TITLE="   DROP DOMAIN
+  "
+HREF="sql-dropdomain.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-dropconversion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-dropdomain.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPDATABASE"
+>DROP DATABASE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42343"
+></A
+><H2
+>Name</H2
+>   DROP DATABASE
+  &nbsp;--&nbsp;   remove a database
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42346"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPDATABASE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name of an existing database to remove.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPDATABASE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DROP DATABASE</TT
+></DT
+><DD
+><P
+>	This message is returned if the command is successful.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DROP DATABASE: cannot be executed on the currently open database</TT
+></DT
+><DD
+><P
+>        You cannot be connected to the database you are about to remove.
+        Instead, connect to <TT
+CLASS="LITERAL"
+>template1</TT
+> or any other
+        database and run this command again.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DROP DATABASE: may not be called in a transaction block</TT
+></DT
+><DD
+><P
+>        You must finish the transaction in progress before you can call this command.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPDATABASE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP DATABASE</TT
+> removes the catalog entries for an existing
+   database and deletes the directory containing the data.
+   It can only be executed by the database owner (usually the user that created
+   it).
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP DATABASE</TT
+> cannot be undone.  Use it with care!
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPDATABASE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    This command cannot be executed while connected to the target
+    database. Thus, it might be more convenient to use the shell
+    script <A
+HREF="app-dropdb.html"
+><I
+><I
+>dropdb</I
+></I
+></A
+>,
+    which is a wrapper around this command, instead.
+   </P
+><P
+>    Refer to
+    <A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
+>
+    for information on how to create a database.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPDATABASE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPDATABASE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>DROP DATABASE</TT
+> statement is a
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> language extension;
+    there is no such command in <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropconversion.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropdomain.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP CONVERSION</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP DOMAIN</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

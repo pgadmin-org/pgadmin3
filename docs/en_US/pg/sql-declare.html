@@ -1,0 +1,614 @@
+<HTML
+><HEAD
+><TITLE
+>DECLARE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DEALLOCATE"
+HREF="sql-deallocate.html"><LINK
+REL="NEXT"
+TITLE="DELETE"
+HREF="sql-delete.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-deallocate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-delete.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DECLARE"
+>DECLARE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN41931"
+></A
+><H2
+>Name</H2
+>   DECLARE
+  &nbsp;--&nbsp;   define a cursor
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN41934"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DECLARE <TT
+CLASS="REPLACEABLE"
+><I
+>cursorname</I
+></TT
+> [ BINARY ] [ INSENSITIVE ] [ SCROLL ]
+    CURSOR FOR <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+>
+    [ FOR { READ ONLY | UPDATE [ OF <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [, ...] ] ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DECLARE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>cursorname</I
+></TT
+></DT
+><DD
+><P
+>	The name of the cursor to be used in subsequent FETCH operations.
+       </P
+></DD
+><DT
+>BINARY</DT
+><DD
+><P
+>	Causes the cursor to fetch data in binary
+	rather than in text format.
+       </P
+></DD
+><DT
+>INSENSITIVE</DT
+><DD
+><P
+>	<SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> keyword indicating that data retrieved
+	from the cursor should be unaffected by updates from other processes or cursors.
+	Since cursor operations occur within transactions
+	in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> this is always the case.
+	This keyword has no effect.
+       </P
+></DD
+><DT
+>SCROLL</DT
+><DD
+><P
+>	<SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> keyword indicating that data may be retrieved
+	in multiple rows per FETCH operation. Since this is allowed at all times
+	by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> this keyword has no effect.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+></DT
+><DD
+><P
+>	An SQL query which will provide the rows to be governed by the
+	cursor.
+	Refer to the SELECT statement for further information about
+	valid arguments.
+       </P
+></DD
+><DT
+>READ ONLY</DT
+><DD
+><P
+>	<SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> keyword indicating that the cursor will be used
+	in a read only mode. Since this is the only cursor access mode
+	available in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> this keyword has no effect.
+       </P
+></DD
+><DT
+>UPDATE</DT
+><DD
+><P
+>	<SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> keyword indicating that the cursor will be used
+	to update tables. Since cursor updates are not currently
+	supported in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> this keyword
+	provokes an informational error message.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+></DT
+><DD
+><P
+>	Column(s) to be updated.
+	Since cursor updates are not currently
+	supported in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> the UPDATE clause
+	provokes an informational error message.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DECLARE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DECLARE CURSOR
+       </TT
+></DT
+><DD
+><P
+>	The message returned if the SELECT is run successfully.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>WARNING:  Closing pre-existing portal "<TT
+CLASS="REPLACEABLE"
+><I
+>cursorname</I
+></TT
+>"
+       </TT
+></DT
+><DD
+><P
+>	This message is reported if the same cursor name was already declared
+	in the current transaction block.  The previous definition is
+	discarded.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  DECLARE CURSOR may only be used in begin/end transaction blocks
+       </TT
+></DT
+><DD
+><P
+>	This error occurs if the cursor is not declared within a transaction block.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DECLARE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DECLARE</TT
+> allows a user to create cursors, which
+   can be used to retrieve
+   a small number of rows at a time out of a larger query. Cursors can
+   return data either in text or in binary format using
+   <A
+HREF="sql-fetch.html"
+><I
+>FETCH</I
+></A
+>.
+  </P
+><P
+>   Normal cursors return data in text format, either ASCII or another
+   encoding scheme depending on how the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   backend was built. Since
+   data is stored natively in binary format, the system must
+   do a conversion to produce the text format. In addition,
+   text formats are often larger in size than the corresponding binary format.
+   Once the information comes back in text form,  the client
+   application may need to convert it to a binary format to
+   manipulate it.
+   BINARY cursors give you back the data in the native binary
+   representation.
+  </P
+><P
+>   As an example, if a query returns a value of one from an integer column,
+   you would get a string of <TT
+CLASS="LITERAL"
+>1</TT
+> with a default cursor
+   whereas with a binary cursor you would get
+   a 4-byte value equal to control-A (<TT
+CLASS="LITERAL"
+>^A</TT
+>).
+  </P
+><P
+>   BINARY cursors should be used carefully. User applications such
+   as <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> are not aware of binary cursors
+   and expect data to come back in a text format.
+  </P
+><P
+>   String representation is architecture-neutral whereas binary
+   representation can differ between different machine architectures.
+   <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> does not resolve
+    byte ordering or representation issues for binary cursors</I
+></SPAN
+>.
+   Therefore, if your client machine and server machine use different
+   representations (e.g., <SPAN
+CLASS="QUOTE"
+>"big-endian"</SPAN
+> versus <SPAN
+CLASS="QUOTE"
+>"little-endian"</SPAN
+>),
+   you will probably not want your data returned in
+   binary format.
+   However, binary cursors may be a
+   little more efficient since there is less conversion overhead in
+   the server to client data transfer.
+
+   <DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>     If you intend to display the data in
+     ASCII,  getting it back in ASCII will save you some
+     effort on the client side.
+    </P
+></BLOCKQUOTE
+></DIV
+>
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DECLARE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    Cursors are only available in transactions. Use to
+    <A
+HREF="sql-begin.html"
+><I
+>BEGIN</I
+></A
+>,
+    <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+>
+    and
+    <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
+>
+    to define a transaction block.
+   </P
+><P
+>    In <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> cursors are only available in
+    embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> (<SPAN
+CLASS="ACRONYM"
+>ESQL</SPAN
+>) applications. 
+    The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend
+    does not implement an explicit <TT
+CLASS="COMMAND"
+>OPEN cursor</TT
+>
+    statement; a cursor is considered to be open when it is declared.
+    However, <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+>, the
+    embedded SQL preprocessor for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>,
+    supports the <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> cursor conventions, including those
+    involving DECLARE and OPEN statements.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DECLARESTATEMENT-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To declare a cursor:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>DECLARE liahona CURSOR
+    FOR SELECT * FROM films;
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DECLARESTATEMENT-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DECLARESTATEMENT-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> allows cursors only in embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+    and in modules. <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> permits cursors to be used
+    interactively.
+    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> allows embedded or modular cursors to
+    update database information.
+    All <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> cursors are read only.
+    The BINARY keyword is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-deallocate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-delete.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DEALLOCATE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DELETE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,487 @@
+<HTML
+><HEAD
+><TITLE
+>pg_execute</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="pgtcl Command Reference Information"
+HREF="libpgtcl-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_select"
+HREF="pgtcl-pgselect.html"><LINK
+REL="NEXT"
+TITLE="pg_listen"
+HREF="pgtcl-pglisten.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="pgtcl-pgselect.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="pgtcl-pglisten.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="PGTCL-PGEXECUTE"
+>pg_execute</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN26712"
+></A
+><H2
+>Name</H2
+>pg_execute&nbsp;--&nbsp;send a query and optionally loop over the results<A
+NAME="IX-PGTCL-PGEXECUTE-1"
+></A
+><A
+NAME="IX-PGTCL-PGEXECUTE-2"
+></A
+></DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN26720"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>pg_execute [<SPAN
+CLASS="OPTIONAL"
+>-array <TT
+CLASS="REPLACEABLE"
+><I
+>arrayVar</I
+></TT
+></SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+>-oid <TT
+CLASS="REPLACEABLE"
+><I
+>oidVar</I
+></TT
+></SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>dbHandle</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>queryString</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>queryProcedure</I
+></TT
+></SPAN
+>]</PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PGTCL-PGEXECUTE-1"
+></A
+><H3
+>Inputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>[<SPAN
+CLASS="OPTIONAL"
+>-array <TT
+CLASS="REPLACEABLE"
+><I
+>arrayVar</I
+></TT
+></SPAN
+>]</DT
+><DD
+><P
+>Specifies the name of an array variable where result tuples are stored,
+indexed by the field names.
+This is ignored if <TT
+CLASS="REPLACEABLE"
+><I
+>queryString</I
+></TT
+> is not a SELECT statement. For SELECT
+statements, if this option is not used, result tuples values are stored
+in individual variables named according to the field names in the result.</P
+></DD
+><DT
+>[<SPAN
+CLASS="OPTIONAL"
+>-oid <TT
+CLASS="REPLACEABLE"
+><I
+>oidVar</I
+></TT
+></SPAN
+>]</DT
+><DD
+><P
+>Specifies the name of a variable into which the OID from an INSERT
+statement will be stored.</P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>dbHandle</I
+></TT
+></DT
+><DD
+><P
+>Specifies a valid database handle.</P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>queryString</I
+></TT
+></DT
+><DD
+><P
+>Specifies a valid SQL query.</P
+></DD
+><DT
+>[<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>queryProcedure</I
+></TT
+></SPAN
+>]</DT
+><DD
+><P
+>Optional command to execute for each result tuple of a SELECT statement.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-PGTCL-PGEXECUTE-2"
+></A
+><H3
+>Outputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>ntuples</I
+></TT
+></DT
+><DD
+><P
+>The number of tuples affected or returned by the query.</P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-PGTCL-PGEXECUTE-1"
+></A
+><H2
+>Description</H2
+><P
+><TT
+CLASS="FUNCTION"
+>pg_execute</TT
+> submits a query to the PostgreSQL backend.</P
+><P
+>If the query is not a SELECT statement, the query is executed and the
+number of tuples affected by the query is returned.  If the query is an
+INSERT and a single tuple is inserted, the OID of the inserted tuple is
+stored in the <TT
+CLASS="REPLACEABLE"
+><I
+>oidVar</I
+></TT
+> variable if the optional <TT
+CLASS="PARAMETER"
+><I
+>-oid</I
+></TT
+>
+argument is supplied.</P
+><P
+>If the query is a SELECT statement, the query is executed. For each tuple
+in the result, the tuple field values are stored in the
+<TT
+CLASS="PARAMETER"
+><I
+>arrayVar</I
+></TT
+> variable,
+if supplied, using the field names as the array indexes, else in variables
+named by the field names, and then the optional
+<TT
+CLASS="PARAMETER"
+><I
+>queryProcedure</I
+></TT
+> is executed if supplied.
+(Omitting the <TT
+CLASS="PARAMETER"
+><I
+>queryProcedure</I
+></TT
+> probably makes sense
+only if the query will return a single tuple.)
+The number of tuples selected is returned.</P
+><P
+>The <TT
+CLASS="PARAMETER"
+><I
+>queryProcedure</I
+></TT
+> can use the Tcl
+<TT
+CLASS="LITERAL"
+>break</TT
+>, <TT
+CLASS="LITERAL"
+>continue</TT
+>, and
+<TT
+CLASS="LITERAL"
+>return</TT
+> commands, with the expected behavior.
+Note that if the <TT
+CLASS="PARAMETER"
+><I
+>queryProcedure</I
+></TT
+> executes
+<TT
+CLASS="LITERAL"
+>return</TT
+>, <TT
+CLASS="FUNCTION"
+>pg_execute</TT
+> does
+not return <TT
+CLASS="PARAMETER"
+><I
+>ntuples</I
+></TT
+>.</P
+><P
+><TT
+CLASS="FUNCTION"
+>pg_execute</TT
+> is a newer function which provides a
+superset of the features of <TT
+CLASS="FUNCTION"
+>pg_select</TT
+>, and can
+replace <TT
+CLASS="FUNCTION"
+>pg_exec</TT
+> in many cases where access to
+the result handle is not needed.</P
+><P
+>For backend-handled errors, <TT
+CLASS="FUNCTION"
+>pg_execute</TT
+> will
+throw a Tcl error and return two element list. The first element
+is an error code such as <TT
+CLASS="LITERAL"
+>PGRES_FATAL_ERROR</TT
+>, and
+the second element is the backend error text. For more serious
+errors, such as failure to communicate with the backend,
+<TT
+CLASS="FUNCTION"
+>pg_execute</TT
+> will throw a Tcl error and return
+just the error message text.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-PGTCL-PGEXECUTE-2"
+></A
+><H2
+>Usage</H2
+><P
+>In the following examples, error checking with <TT
+CLASS="LITERAL"
+>catch</TT
+>
+has been omitted for clarity.</P
+><P
+>Insert a row and save the OID in <TT
+CLASS="VARNAME"
+>result_oid</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>    pg_execute -oid result_oid $pgconn "insert into mytable values (1)"</PRE
+><P></P
+><P
+>Print the item and value fields from each row:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>    pg_execute -array d $pgconn "select item, value from mytable" {
+       puts "Item=$d(item) Value=$d(value)"
+    }</PRE
+><P></P
+><P
+>Find the maximum and minimum values and store them in $s(max) and $s(min):
+</P><PRE
+CLASS="PROGRAMLISTING"
+>    pg_execute -array s $pgconn "select max(value) as max,\
+      min(value) as min from mytable"</PRE
+><P></P
+><P
+>Find the maximum and minimum values and store them in $max and $min:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>    pg_execute $pgconn "select max(value) as max, min(value) as min from mytable"</PRE
+><P></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pgtcl-pgselect.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pgtcl-pglisten.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_select</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpgtcl-ref.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>pg_listen</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

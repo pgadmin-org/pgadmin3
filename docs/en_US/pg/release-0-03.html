@@ -1,0 +1,285 @@
+<HTML
+><HEAD
+><TITLE
+>Postgres95 Release 0.03</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 1.0"
+HREF="release-1-0.html"><LINK
+REL="NEXT"
+TITLE="Postgres95 Release 0.02"
+HREF="release-0-02.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="release-1-0.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix A. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="release-0-02.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-0-03"
+>A.37. <SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> Release 0.03</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>1995-07-21</P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN24699"
+>A.37.1. Changes</A
+></H2
+><P
+></P><PRE
+CLASS="PROGRAMLISTING"
+>Incompatible changes:
+ * BETA-0.3 IS INCOMPATIBLE WITH DATABASES CREATED WITH PREVIOUS VERSIONS
+   (due to system catalog changes and indexing structure changes).
+ * double-quote (") is deprecated as a quoting character for string literals;
+   you need to convert them to single quotes ('). 
+ * name of aggregates (eg. int4sum) are renamed in accordance with the
+   SQL standard (eg. sum).
+ * CHANGE ACL syntax is replaced by GRANT/REVOKE syntax.
+ * float literals (eg. 3.14) are now of type float4 (instead of float8 in
+   previous releases); you might have to do typecasting if you depend on it
+   being of type float8.  If you neglect to do the typecasting and you assign
+   a float literal to a field of type float8, you may get incorrect values
+   stored!
+ * LIBPQ has been totally revamped so that frontend applications
+   can connect to multiple backends
+ * the usesysid field in pg_user has been changed from int2 to int4 to
+   allow wider range of Unix user ids.
+ * the netbsd/freebsd/bsd o/s ports have been consolidated into a
+   single BSD44_derived port.  (thanks to Alistair Crooks)
+
+SQL standard-compliance (the following details changes that makes postgres95
+more compliant to the SQL-92 standard):
+ * the following SQL types are now built-in: smallint, int(eger), float, real,
+   char(N), varchar(N), date and time.
+
+   The following are aliases to existing postgres types:
+		smallint -&#62; int2
+		integer, int -&#62; int4
+		float, real  -&#62; float4
+   char(N) and varchar(N) are implemented as truncated text types. In
+   addition, char(N) does blank-padding. 
+ * single-quote (') is used for quoting string literals; '' (in addition to
+   \') is supported as means of inserting a single quote in a string
+ * SQL standard aggregate names (MAX, MIN, AVG, SUM, COUNT) are used
+   (Also, aggregates can now be overloaded, i.e. you can define your
+   own MAX aggregate to take in a user-defined type.)
+ * CHANGE ACL removed. GRANT/REVOKE syntax added.  
+   - Privileges can be given to a group using the "GROUP" keyword.
+	For example:
+		GRANT SELECT ON foobar TO GROUP my_group;
+	The keyword 'PUBLIC' is also supported to mean all users.	
+
+	Privileges can only be granted or revoked to one user or group
+	at a time.  
+
+	"WITH GRANT OPTION" is not supported.  Only class owners can change
+	access control
+   - The default access control is to to grant users readonly access.
+     You must explicitly grant insert/update access to users.  To change
+     this, modify the line in 
+		src/backend/utils/acl.h 
+     that defines ACL_WORLD_DEFAULT 
+
+Bug fixes:
+ * the bug where aggregates of empty tables were not run has been fixed. Now,
+   aggregates run on empty tables will return the initial conditions of the
+   aggregates. Thus, COUNT of an empty	table will now properly return 0.
+   MAX/MIN of an empty table will return a tuple of value NULL. 
+ * allow the use of \; inside the monitor
+ * the LISTEN/NOTIFY asynchronous notification mechanism now work
+ * NOTIFY in rule action bodies now work
+ * hash indexes work, and access methods in general should perform better.
+   creation of large btree indexes should be much faster.  (thanks to Paul
+   Aoki)
+
+Other changes and enhancements:
+ * addition of an EXPLAIN statement used for explaining the query execution
+   plan (eg. "EXPLAIN SELECT * FROM EMP" prints out the execution plan for
+   the query).
+ * WARN and NOTICE messages no longer have timestamps on them. To turn on
+   timestamps of error messages, uncomment the line in
+   src/backend/utils/elog.h:
+	/* define ELOG_TIMESTAMPS */ 
+ * On an access control violation, the message
+	"Either no such class or insufficient privilege"
+   will be given.  This is the same message that is returned when
+   a class is not found.  This dissuades non-privileged users from
+   guessing the existence of privileged classes.
+ * some additional system catalog changes have been made that are not
+   visible to the user.
+
+libpgtcl changes:
+ * The -oid option has been added to the "pg_result" tcl command.
+   pg_result -oid returns oid of the last tuple inserted.   If the
+   last command was not an INSERT, then pg_result -oid returns "".
+ * the large object interface is available as pg_lo* tcl commands:
+   pg_lo_open, pg_lo_close, pg_lo_creat, etc.
+
+Portability enhancements and New Ports:
+ * flex/lex problems have been cleared up.  Now, you should be able to use
+   flex instead of lex on any platforms.  We no longer make assumptions of
+   what lexer you use based on the platform you use. 
+ * The Linux-ELF port is now supported.  Various configuration have been 
+   tested:  The following configuration is known to work:
+	kernel 1.2.10, gcc 2.6.3, libc 4.7.2, flex 2.5.2, bison 1.24
+   with everything in ELF format,
+
+New utilities:
+ * ipcclean added to the distribution
+   ipcclean usually does not need to be run, but if your backend crashes
+   and leaves shared memory segments hanging around, ipcclean will
+   clean them up for you.
+
+New documentation:
+ * the user manual has been revised and libpq documentation added.</PRE
+><P></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-1-0.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-0-02.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 1.0</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> Release 0.02</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

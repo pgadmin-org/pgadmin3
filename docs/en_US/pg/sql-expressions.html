@@ -1,0 +1,976 @@
+<HTML
+><HEAD
+><TITLE
+>Value Expressions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Syntax"
+HREF="sql-syntax.html"><LINK
+REL="PREVIOUS"
+TITLE="SQL Syntax"
+HREF="sql-syntax.html"><LINK
+REL="NEXT"
+TITLE="Data Definition"
+HREF="ddl.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-syntax.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. SQL Syntax</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ddl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SQL-EXPRESSIONS"
+>1.2. Value Expressions</A
+></H1
+><P
+>   Value expressions are used in a variety of contexts, such
+   as in the target list of the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> command, as
+   new column values in <TT
+CLASS="COMMAND"
+>INSERT</TT
+> or
+   <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or in search conditions in a number of
+   commands.  The result of a value expression is sometimes called a
+   <I
+CLASS="FIRSTTERM"
+>scalar</I
+>, to distinguish it from the result of
+   a table expression (which is a table).  Value expressions are
+   therefore also called <I
+CLASS="FIRSTTERM"
+>scalar expressions</I
+> (or
+   even simply <I
+CLASS="FIRSTTERM"
+>expressions</I
+>).  The expression
+   syntax allows the calculation of values from primitive parts using
+   arithmetic, logical, set, and other operations.
+  </P
+><P
+>   A value expression is one of the following:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      A constant or literal value; see <A
+HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
+>Section 1.1.2</A
+>.
+     </P
+></LI
+><LI
+><P
+>      A column reference.
+     </P
+></LI
+><LI
+><P
+>      A positional parameter reference, in the body of a function declaration.
+     </P
+></LI
+><LI
+><P
+>      An operator invocation.
+     </P
+></LI
+><LI
+><P
+>      A function call.
+     </P
+></LI
+><LI
+><P
+>      An aggregate expression.
+     </P
+></LI
+><LI
+><P
+>      A type cast.
+     </P
+></LI
+><LI
+><P
+>      A scalar subquery.
+     </P
+></LI
+><LI
+><P
+>      Another value expression in parentheses, useful to group subexpressions and override precedence.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   In addition to this list, there are a number of constructs that can
+   be classified as an expression but do not follow any general syntax
+   rules.  These generally have the semantics of a function or
+   operator and are explained in the appropriate location in <A
+HREF="functions.html"
+>Chapter 6</A
+>.  An example is the <TT
+CLASS="LITERAL"
+>IS NULL</TT
+>
+   clause.
+  </P
+><P
+>   We have already discussed constants in <A
+HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
+>Section 1.1.2</A
+>.  The following sections discuss
+   the remaining options.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1527"
+>1.2.1. Column References</A
+></H2
+><P
+>    A column can be referenced in the form
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>correlation</I
+></TT
+>.<TT
+CLASS="REPLACEABLE"
+><I
+>columnname</I
+></TT
+></PRE
+><P>
+    or
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>correlation</I
+></TT
+>.<TT
+CLASS="REPLACEABLE"
+><I
+>columnname</I
+></TT
+>[<TT
+CLASS="REPLACEABLE"
+><I
+>subscript</I
+></TT
+>]</PRE
+><P>
+    (Here, the brackets <TT
+CLASS="LITERAL"
+>[ ]</TT
+> are meant to appear literally.)
+   </P
+><P
+>    <TT
+CLASS="REPLACEABLE"
+><I
+>correlation</I
+></TT
+> is the name of a
+    table (possibly qualified), or an alias for a table defined by means of a
+    <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause, or 
+    the key words <TT
+CLASS="LITERAL"
+>NEW</TT
+> or <TT
+CLASS="LITERAL"
+>OLD</TT
+>.
+    (<TT
+CLASS="LITERAL"
+>NEW</TT
+> and <TT
+CLASS="LITERAL"
+>OLD</TT
+> can only appear in rewrite rules,
+    while other correlation names can be used in any SQL statement.)
+    The correlation name and separating dot may be omitted if the column name
+    is unique across all the tables being used in the current query.  (See also <A
+HREF="queries.html"
+>Chapter 4</A
+>.)
+   </P
+><P
+>    If <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> is of an array type, then the
+    optional <TT
+CLASS="REPLACEABLE"
+><I
+>subscript</I
+></TT
+> selects a specific
+    element or elements in the array.  If no subscript is provided, then the
+    whole array is selected.  (See <A
+HREF="arrays.html"
+>Section 5.12</A
+> for more about
+    arrays.)
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1550"
+>1.2.2. Positional Parameters</A
+></H2
+><P
+>    A positional parameter reference is used to indicate a parameter
+    that is supplied externally to an SQL statement.  Parameters are
+    used in SQL function definitions and in prepared queries.
+    The form of a parameter reference is:
+</P><PRE
+CLASS="SYNOPSIS"
+>$<TT
+CLASS="REPLACEABLE"
+><I
+>number</I
+></TT
+></PRE
+><P>
+   </P
+><P
+>    For example, consider the definition of a function,
+    <TT
+CLASS="FUNCTION"
+>dept</TT
+>, as
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION dept(text) RETURNS dept
+    AS 'SELECT * FROM dept WHERE name = $1'
+    LANGUAGE SQL;</PRE
+><P>
+
+    Here the <TT
+CLASS="LITERAL"
+>$1</TT
+> will be replaced by the first
+    function argument when the function is invoked.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1559"
+>1.2.3. Operator Invocations</A
+></H2
+><P
+>    There are three possible syntaxes for an operator invocation:
+    <P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> (binary infix operator)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> (unary prefix operator)</TD
+></TR
+><TR
+><TD
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> (unary postfix operator)</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+>
+    where the <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> token follows the syntax
+    rules of <A
+HREF="sql-syntax.html#SQL-SYNTAX-OPERATORS"
+>Section 1.1.3</A
+>, or is one of the
+    keywords <TT
+CLASS="TOKEN"
+>AND</TT
+>, <TT
+CLASS="TOKEN"
+>OR</TT
+>, and
+    <TT
+CLASS="TOKEN"
+>NOT</TT
+>, or is a qualified operator name
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="LITERAL"
+>OPERATOR(</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>schema</I
+></TT
+><TT
+CLASS="LITERAL"
+>.</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>operatorname</I
+></TT
+><TT
+CLASS="LITERAL"
+>)</TT
+></PRE
+><P>
+    Which particular operators exist and whether
+    they are unary or binary depends on what operators have been
+    defined by the system or the user.  <A
+HREF="functions.html"
+>Chapter 6</A
+>
+    describes the built-in operators.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1585"
+>1.2.4. Function Calls</A
+></H2
+><P
+>    The syntax for a function call is the name of a function
+    (possibly qualified with a schema name), followed by its argument list
+    enclosed in parentheses:
+
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>function</I
+></TT
+> ([<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> ... </SPAN
+>]</SPAN
+>] )</PRE
+><P>
+   </P
+><P
+>    For example, the following computes the square root of 2:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>sqrt(2)</PRE
+><P>
+   </P
+><P
+>    The list of built-in functions is in <A
+HREF="functions.html"
+>Chapter 6</A
+>.
+    Other functions may be added by the user.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SYNTAX-AGGREGATES"
+>1.2.5. Aggregate Expressions</A
+></H2
+><A
+NAME="AEN1600"
+></A
+><P
+>    An <I
+CLASS="FIRSTTERM"
+>aggregate expression</I
+> represents the
+    application of an aggregate function across the rows selected by a
+    query.  An aggregate function reduces multiple inputs to a single
+    output value, such as the sum or average of the inputs.  The
+    syntax of an aggregate expression is one of the following:
+
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)
+<TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> (ALL <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)
+<TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> (DISTINCT <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>)
+<TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> ( * )</PRE
+><P>
+
+    where <TT
+CLASS="REPLACEABLE"
+><I
+>aggregate_name</I
+></TT
+> is a previously
+    defined aggregate (possibly a qualified name), and
+    <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> is 
+    any value expression that does not itself contain an aggregate
+    expression.
+   </P
+><P
+>    The first form of aggregate expression invokes the aggregate
+    across all input rows for which the given expression yields a
+    non-null value.  (Actually, it is up to the aggregate function
+    whether to ignore null values or not --- but all the standard ones do.)
+    The second form is the same as the first, since
+    <TT
+CLASS="LITERAL"
+>ALL</TT
+> is the default.  The third form invokes the
+    aggregate for all distinct non-null values of the expression found
+    in the input rows.  The last form invokes the aggregate once for
+    each input row regardless of null or non-null values; since no
+    particular input value is specified, it is generally only useful
+    for the <TT
+CLASS="FUNCTION"
+>count()</TT
+> aggregate function.
+   </P
+><P
+>    For example, <TT
+CLASS="LITERAL"
+>count(*)</TT
+> yields the total number
+    of input rows; <TT
+CLASS="LITERAL"
+>count(f1)</TT
+> yields the number of
+    input rows in which <TT
+CLASS="LITERAL"
+>f1</TT
+> is non-null;
+    <TT
+CLASS="LITERAL"
+>count(distinct f1)</TT
+> yields the number of
+    distinct non-null values of <TT
+CLASS="LITERAL"
+>f1</TT
+>.
+   </P
+><P
+>    The predefined aggregate functions are described in <A
+HREF="functions-aggregate.html"
+>Section 6.14</A
+>.  Other aggregate functions may be added
+    by the user. 
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SQL-SYNTAX-TYPE-CASTS"
+>1.2.6. Type Casts</A
+></H2
+><A
+NAME="AEN1627"
+></A
+><P
+>    A type cast specifies a conversion from one data type to another.
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> accepts two equivalent syntaxes
+    for type casts:
+</P><PRE
+CLASS="SYNOPSIS"
+>CAST ( <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> AS <TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+> )
+<TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>::<TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+></PRE
+><P>
+    The <TT
+CLASS="LITERAL"
+>CAST</TT
+> syntax conforms to SQL; the syntax with
+    <TT
+CLASS="LITERAL"
+>::</TT
+> is historical <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    usage.
+   </P
+><P
+>    When a cast is applied to a value expression of a known type, it
+    represents a run-time type conversion.  The cast will succeed only
+    if a suitable type conversion function is available.  Notice that this
+    is subtly different from the use of casts with constants, as shown in
+    <A
+HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS-GENERIC"
+>Section 1.1.2.4</A
+>.  A cast applied to an
+    unadorned string literal represents the initial assignment of a type
+    to a literal constant value, and so it will succeed for any type
+    (if the contents of the string literal are acceptable input syntax for the
+    data type).
+   </P
+><P
+>    An explicit type cast may usually be omitted if there is no ambiguity as
+    to the type that a value expression must produce (for example, when it is
+    assigned to a table column); the system will automatically apply a
+    type cast in such cases.  However, automatic casting is only done for
+    casts that are marked <SPAN
+CLASS="QUOTE"
+>"OK to apply implicitly"</SPAN
+>
+    in the system catalogs.  Other casts must be invoked with
+    explicit casting syntax.  This restriction is intended to prevent
+    surprising conversions from being applied silently.
+   </P
+><P
+>    It is also possible to specify a type cast using a function-like
+    syntax:
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>typename</I
+></TT
+> ( <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> )</PRE
+><P>
+    However, this only works for types whose names are also valid as
+    function names.  For example, <TT
+CLASS="LITERAL"
+>double precision</TT
+>
+    can't be used this way, but the equivalent <TT
+CLASS="LITERAL"
+>float8</TT
+>
+    can.  Also, the names <TT
+CLASS="LITERAL"
+>interval</TT
+>, <TT
+CLASS="LITERAL"
+>time</TT
+>, and
+    <TT
+CLASS="LITERAL"
+>timestamp</TT
+> can only be used in this fashion if they are
+    double-quoted, because of syntactic conflicts.  Therefore, the use of
+    the function-like cast syntax leads to inconsistencies and should
+    probably be avoided in new applications.
+
+    (The function-like syntax is in fact just a function call.  When
+    one of the two standard cast syntaxes is used to do a run-time
+    conversion, it will internally invoke a registered function to
+    perform the conversion.  By convention, these conversion functions
+    have the same name as their output type, but this is not something
+    that a portable application should rely on.)
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1653"
+>1.2.7. Scalar Subqueries</A
+></H2
+><P
+>    A scalar subquery is an ordinary
+    <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query in parentheses that returns exactly one
+    row with one column.  (See <A
+HREF="queries.html"
+>Chapter 4</A
+> for information about writing queries.)
+    The <TT
+CLASS="COMMAND"
+>SELECT</TT
+> query is executed
+    and the single returned value is used in the surrounding value expression.
+    It is an error to use a query that
+    returns more than one row or more than one column as a scalar subquery.
+    (But if, during a particular execution, the subquery returns no rows,
+    there is no error; the scalar result is taken to be null.)
+    The subquery can refer to variables from the surrounding query,
+    which will act as constants during any one evaluation of the subquery.
+    See also <A
+HREF="functions-subquery.html"
+>Section 6.15</A
+>.
+   </P
+><P
+>    For example, the following finds the largest city population in each
+    state:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name, (SELECT max(pop) FROM cities WHERE cities.state = states.name)
+    FROM states;</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1662"
+>1.2.8. Expression Evaluation</A
+></H2
+><P
+>    The order of evaluation of subexpressions is not defined.  In
+    particular, the inputs of an operator or function are not necessarily
+    evaluated left-to-right or in any other fixed order.
+   </P
+><P
+>    Furthermore, if the result of an expression can be determined by
+    evaluating only some parts of it, then other subexpressions
+    might not be evaluated at all.  For instance, if one wrote
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT true OR somefunc();</PRE
+><P>
+    then <TT
+CLASS="LITERAL"
+>somefunc()</TT
+> would (probably) not be called
+    at all. The same would be the case if one wrote
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT somefunc() OR true;</PRE
+><P>
+    Note that this is not the same as the left-to-right
+    <SPAN
+CLASS="QUOTE"
+>"short-circuiting"</SPAN
+> of Boolean operators that is found
+    in some programming languages.
+   </P
+><P
+>    As a consequence, it is unwise to use functions with side effects
+    as part of complex expressions.  It is particularly dangerous to
+    rely on side effects or evaluation order in <TT
+CLASS="LITERAL"
+>WHERE</TT
+> and <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clauses,
+    since those clauses are extensively reprocessed as part of
+    developing an execution plan.  Boolean
+    expressions (<TT
+CLASS="LITERAL"
+>AND</TT
+>/<TT
+CLASS="LITERAL"
+>OR</TT
+>/<TT
+CLASS="LITERAL"
+>NOT</TT
+> combinations) in those clauses may be reorganized
+    in any manner allowed by the laws of Boolean algebra.
+   </P
+><P
+>    When it is essential to force evaluation order, a <TT
+CLASS="LITERAL"
+>CASE</TT
+>
+    construct (see <A
+HREF="functions-conditional.html"
+>Section 6.12</A
+>) may be
+    used.  For example, this is an untrustworthy way of trying to
+    avoid division by zero in a <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ... WHERE x &lt;&gt; 0 AND y/x &gt; 1.5;</PRE
+><P>
+    But this is safe:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ... WHERE CASE WHEN x &lt;&gt; 0 THEN y/x &gt; 1.5 ELSE false END;</PRE
+><P>
+    A <TT
+CLASS="LITERAL"
+>CASE</TT
+> construct used in this fashion will defeat optimization attempts,
+    so it should only be done when necessary.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SQL Syntax</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-syntax.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Data Definition</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,310 @@
+<HTML
+><HEAD
+><TITLE
+>SET CONSTRAINTS</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="SET"
+HREF="sql-set.html"><LINK
+REL="NEXT"
+TITLE="SET SESSION AUTHORIZATION"
+HREF="sql-set-session-authorization.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-set.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-set-session-authorization.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-SET-CONSTRAINTS"
+>SET CONSTRAINTS</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45861"
+></A
+><H2
+>Name</H2
+>SET CONSTRAINTS&nbsp;--&nbsp;set the constraint mode of the current transaction</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45864"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SET CONSTRAINTS { ALL | <TT
+CLASS="REPLACEABLE"
+><I
+>constraint</I
+></TT
+> [, ...] } { DEFERRED | IMMEDIATE }
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45869"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>SET CONSTRAINTS</TT
+> sets the behavior of constraint
+   evaluation in the current transaction. In <TT
+CLASS="OPTION"
+>IMMEDIATE
+   </TT
+> mode, constraints are checked at the end of each
+   statement. In <TT
+CLASS="OPTION"
+>DEFERRED</TT
+> mode, constraints are not
+   checked until transaction commit.
+  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>	This command only alters the behavior of constraints within the
+	current transaction. Thus, if you execute this command outside
+	of an explicit transaction block (such as one started with
+	<TT
+CLASS="COMMAND"
+>BEGIN</TT
+>), it will not appear to have any effect.
+	If you wish to change the behavior of a constraint without needing
+	to issue a <TT
+CLASS="COMMAND"
+>SET CONSTRAINTS</TT
+> command in every
+	transaction, specify <TT
+CLASS="OPTION"
+>INITIALLY DEFERRED</TT
+> or
+	<TT
+CLASS="OPTION"
+>INITIALLY IMMEDIATE</TT
+> when you create the constraint.
+   </P
+></BLOCKQUOTE
+></DIV
+><P
+>   When you change the mode of a constraint to be <TT
+CLASS="OPTION"
+>IMMEDIATE
+   </TT
+>, the new constraint mode takes effect retroactively:
+   any outstanding data modifications that would have been checked
+   at the end of the transaction (when using
+   <TT
+CLASS="OPTION"
+>DEFERRED</TT
+>) are instead checked during the
+   execution of the <TT
+CLASS="COMMAND"
+>SET CONSTRAINTS</TT
+> command.
+  </P
+><P
+>   Upon creation, a constraint is always give one of three
+   characteristics: <TT
+CLASS="OPTION"
+>INITIALLY DEFERRED</TT
+>,
+   <TT
+CLASS="OPTION"
+>INITIALLY IMMEDIATE DEFERRABLE</TT
+>, or
+   <TT
+CLASS="OPTION"
+>INITIALLY IMMEDIATE NOT DEFERRABLE</TT
+>. The third
+   class is not affected by the <TT
+CLASS="COMMAND"
+>SET CONSTRAINTS</TT
+>
+   command.
+  </P
+><P
+>   Currently, only foreign key constraints are affected by this
+   setting. Check and unique constraints are always effectively
+   initially immediate not deferrable.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SET-CONSTRAINT-3"
+></A
+><H2
+>Compatibility</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-SET-CONSTRAINT-4"
+></A
+><H3
+>SQL92, SQL99</H3
+><P
+>    <TT
+CLASS="COMMAND"
+>SET CONSTRAINTS</TT
+> is defined in
+    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> and <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>. The
+    implementation in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> complies
+    with the behavior defined in the standard, except for the
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> limitation that <TT
+CLASS="COMMAND"
+>SET
+    CONSTRAINTS</TT
+> cannot be applied to check or unique constraints.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-set.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-set-session-authorization.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SET</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SET SESSION AUTHORIZATION</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

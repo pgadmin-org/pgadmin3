@@ -1,0 +1,460 @@
+<HTML
+><HEAD
+><TITLE
+>CLUSTER</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CLOSE"
+HREF="sql-close.html"><LINK
+REL="NEXT"
+TITLE="COMMENT"
+HREF="sql-comment.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-close.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-comment.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CLUSTER"
+>CLUSTER</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38142"
+></A
+><H2
+>Name</H2
+>   CLUSTER
+  &nbsp;--&nbsp;   cluster a table according to an index
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38145"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CLUSTER <TT
+CLASS="REPLACEABLE"
+><I
+>indexname</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CLUSTER-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>   </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>indexname</I
+></TT
+></DT
+><DD
+><P
+>       The name of an index.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>       The name (possibly schema-qualified) of a table.
+      </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CLUSTER-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>CLUSTER
+       </TT
+></DT
+><DD
+><P
+>	The clustering was done successfully.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CLUSTER-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> instructs <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 
+   to cluster the table specified
+   by <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>
+   based on the index specified by
+   <TT
+CLASS="REPLACEABLE"
+><I
+>indexname</I
+></TT
+>. The index must
+   already have been defined on 
+   <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+>.
+  </P
+><P
+>   When a table is clustered, it is physically reordered
+   based on the index information. Clustering is a one-time operation:
+   when the table is subsequently updated, the changes are
+   not clustered.  That is, no attempt is made to store new or
+   updated tuples according to their index order.  If one wishes, one can
+   periodically re-cluster by issuing the command again.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CLUSTER-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    In cases where you are accessing single rows randomly
+    within a table, the actual order of the data in the heap
+    table is unimportant. However, if you tend to access some
+    data more than others, and there is an index that groups
+    them together, you will benefit from using <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+>.
+   </P
+><P
+> 
+    Another place where <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> is helpful is in
+    cases where you use an
+    index to pull out several rows from a table. If you are
+    requesting a range of indexed values from a table, or a
+    single indexed value that has multiple rows that match,
+    <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> will help because once the index identifies the
+    heap page for the first row that matches, all other rows
+    that match are probably already on the same heap page,
+    saving disk accesses and speeding up the query.
+   </P
+><P
+>    During the cluster operation, a temporary copy of the table is created
+    that contains the table data in the index order.  Temporary copies of
+    each index on the table are created as well.  Therefore, you need free
+    space on disk at least equal to the sum of the table size and the index
+    sizes.
+   </P
+><P
+>    CLUSTER preserves GRANT, inheritance, index, foreign key, and other
+    ancillary information about the table.
+   </P
+><P
+>    Because the optimizer records statistics about the ordering of tables, it
+    is advisable to run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> on the newly clustered
+    table.  Otherwise, the optimizer may make poor choices of query plans.
+   </P
+><P
+>    There is another way to cluster data. The
+    <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> command reorders the original table using
+    the ordering of the index you specify. This can be slow
+    on large tables because the rows are fetched from the heap
+    in index order, and if the heap table is unordered, the
+    entries are on random pages, so there is one disk page
+    retrieved for every row moved. (<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has a cache,
+    but the majority of a big table will not fit in the cache.)
+    The other way to cluster a table is to use
+
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT <TT
+CLASS="REPLACEABLE"
+><I
+>columnlist</I
+></TT
+> INTO TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>newtable</I
+></TT
+>
+     FROM <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> ORDER BY <TT
+CLASS="REPLACEABLE"
+><I
+>columnlist</I
+></TT
+>
+    </PRE
+><P>
+
+    which uses the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> sorting code in 
+    the ORDER BY clause to create the desired order; this is usually much
+    faster than an index scan for
+    unordered data. You then drop the old table, use
+    <TT
+CLASS="COMMAND"
+>ALTER TABLE...RENAME</TT
+>
+    to rename <TT
+CLASS="REPLACEABLE"
+><I
+>newtable</I
+></TT
+> to the old name, and
+    recreate the table's indexes. However, this approach does not preserve
+    OIDs, constraints, foreign key relationships, granted privileges, and
+    other ancillary properties of the table --- all such items must be
+    manually recreated.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CLUSTER-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Cluster the employees relation on the basis of its ID attribute:
+  </P
+><PRE
+CLASS="PROGRAMLISTING"
+>CLUSTER emp_ind ON emp;
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CLUSTER-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CLUSTER-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>CLUSTER</TT
+> statement in SQL92.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-close.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-comment.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CLOSE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>COMMENT</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,437 @@
+<HTML
+><HEAD
+><TITLE
+>SPI_execp</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Functions"
+HREF="spi.html#SPI-INTERFACE"><LINK
+REL="PREVIOUS"
+TITLE="SPI_prepare"
+HREF="spi-spiprepare.html"><LINK
+REL="NEXT"
+TITLE="SPI_cursor_open"
+HREF="spi-spicursor-open.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="spi-spiprepare.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="spi-spicursor-open.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPIEXECP"
+>SPI_execp</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN33972"
+></A
+><H2
+>Name</H2
+>SPI_execp&nbsp;--&nbsp;Executes a plan from <TT
+CLASS="FUNCTION"
+>SPI_prepare</TT
+><A
+NAME="IX-SPI-SPIEXECP-1"
+></A
+><A
+NAME="IX-SPI-SPIEXECP-2"
+></A
+></DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN33981"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SPI_execp(<TT
+CLASS="REPLACEABLE"
+><I
+>plan</I
+></TT
+>,
+<TT
+CLASS="REPLACEABLE"
+><I
+>values</I
+></TT
+>,
+<TT
+CLASS="REPLACEABLE"
+><I
+>nulls</I
+></TT
+>,
+<TT
+CLASS="REPLACEABLE"
+><I
+>tcount</I
+></TT
+>)</PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SPI-SPIEXECP-1"
+></A
+><H3
+>Inputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>void *<TT
+CLASS="REPLACEABLE"
+><I
+>plan</I
+></TT
+></DT
+><DD
+><P
+>Execution plan</P
+></DD
+><DT
+>Datum *<TT
+CLASS="REPLACEABLE"
+><I
+>values</I
+></TT
+></DT
+><DD
+><P
+>Actual parameter values</P
+></DD
+><DT
+>char *<TT
+CLASS="REPLACEABLE"
+><I
+>nulls</I
+></TT
+></DT
+><DD
+><P
+>Array describing which parameters are NULLs
+<P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+><TT
+CLASS="LITERAL"
+>n</TT
+> indicates NULL (values[] entry ignored)</TD
+></TR
+><TR
+><TD
+>space indicates not NULL (values[] entry is valid)</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></P
+></DD
+><DT
+>int <TT
+CLASS="REPLACEABLE"
+><I
+>tcount</I
+></TT
+></DT
+><DD
+><P
+>Number of tuples for which plan is to be executed</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SPI-SPIEXECP-2"
+></A
+><H3
+>Outputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>int</DT
+><DD
+><P
+>   Returns the same value as <TT
+CLASS="FUNCTION"
+>SPI_exec</TT
+> as well as
+<P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+> <SPAN
+CLASS="RETURNVALUE"
+>SPI_ERROR_ARGUMENT</SPAN
+>
+ if <TT
+CLASS="REPLACEABLE"
+><I
+>plan</I
+></TT
+>
+ is NULL or <TT
+CLASS="REPLACEABLE"
+><I
+>tcount</I
+></TT
+> &lt; 0</TD
+></TR
+><TR
+><TD
+>   <SPAN
+CLASS="RETURNVALUE"
+>SPI_ERROR_PARAM</SPAN
+>
+ if <TT
+CLASS="REPLACEABLE"
+><I
+>values</I
+></TT
+>
+ is NULL
+ and <TT
+CLASS="REPLACEABLE"
+><I
+>plan</I
+></TT
+>
+ was prepared with some parameters.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></P
+></DD
+><DT
+>SPI_tuptable</DT
+><DD
+><P
+>initialized as in
+   <TT
+CLASS="FUNCTION"
+>SPI_exec</TT
+> if successful</P
+></DD
+><DT
+>SPI_processed</DT
+><DD
+><P
+>initialized as in
+   <TT
+CLASS="FUNCTION"
+>SPI_exec</TT
+> if successful</P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SPI-SPIEXECP-1"
+></A
+><H2
+>Description</H2
+><P
+><TT
+CLASS="FUNCTION"
+>SPI_execp</TT
+> 
+   executes a plan prepared by <TT
+CLASS="FUNCTION"
+>SPI_prepare</TT
+>.
+   <TT
+CLASS="REPLACEABLE"
+><I
+>tcount</I
+></TT
+> has the same
+   interpretation as in <TT
+CLASS="FUNCTION"
+>SPI_exec</TT
+>.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SPI-SPIEXECP-2"
+></A
+><H2
+>Usage</H2
+><P
+>   If <TT
+CLASS="REPLACEABLE"
+><I
+>nulls</I
+></TT
+>
+is NULL then 
+   <TT
+CLASS="FUNCTION"
+>SPI_execp</TT
+> 
+assumes that all parameters (if any) are NOT NULL.
+
+</P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>   If one of the objects (a relation, function, etc.) referenced by the prepared
+   plan is dropped during your session (by your backend or another process) then the
+   results of <TT
+CLASS="FUNCTION"
+>SPI_execp</TT
+> for this plan will be unpredictable.</P
+></BLOCKQUOTE
+></DIV
+><P>&#13;</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spiprepare.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spicursor-open.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_prepare</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html#SPI-INTERFACE"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_cursor_open</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,244 @@
+<HTML
+><HEAD
+><TITLE
+>gcc Default Optimizations</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Developer's Guide"
+HREF="developer.html"><LINK
+REL="PREVIOUS"
+TITLE="Message Formats"
+HREF="protocol-message-formats.html"><LINK
+REL="NEXT"
+TITLE="BKI Backend Interface"
+HREF="bki.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="protocol-message-formats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="bki.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="COMPILER"
+>Chapter 5. <SPAN
+CLASS="APPLICATION"
+>gcc</SPAN
+> Default Optimizations</A
+></H1
+><P
+></P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>Contributed by Brian Gallew (<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:geek+@cmu.edu"
+>geek+@cmu.edu</A
+>&#62;</TT
+>)</P
+></BLOCKQUOTE
+></DIV
+><P></P
+><P
+>Configuring gcc to use certain flags by default is a simple matter of
+editing the 
+<TT
+CLASS="FILENAME"
+>/usr/local/lib/gcc-lib/<TT
+CLASS="REPLACEABLE"
+><I
+>platform</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>version</I
+></TT
+>/specs</TT
+>
+file.
+The format of this file pretty simple.  The file is broken into
+sections, each of which is three lines long.  The first line is
+"*<TT
+CLASS="REPLACEABLE"
+><I
+>section_name</I
+></TT
+>:" (e.g. "*asm:").
+The second line is a list of flags,
+and the third line is blank.</P
+><P
+>The easiest change to make is to append
+the desired default flags to the list in the appropriate section.  As
+an example, let's suppose that I have linux running on a '486 with gcc
+2.7.2 installed in the default location.  In the file
+/usr/local/lib/gcc-lib/i486-linux/2.7.2/specs, 13 lines down I find
+the following section:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>- ----------SECTION----------
+*cc1:
+
+
+- ----------SECTION----------</PRE
+><P>
+As you can see, there aren't any default flags.  If I always wanted
+compiles of C code to use "-m486 -fomit-frame-pointer", I would
+change it to look like:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>- ----------SECTION----------
+*cc1:
+- -m486 -fomit-frame-pointer
+
+- ----------SECTION----------</PRE
+><P>
+If I wanted to be able to generate 386 code for another, older linux
+box lying around, I'd have to make it look like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>- ----------SECTION----------
+*cc1:
+%{!m386:-m486} -fomit-frame-pointer
+
+- ----------SECTION----------</PRE
+><P>
+This will always omit frame pointers, any will build 486-optimized
+code unless -m386 is specified on the command line.</P
+><P
+>You can actually do quite a lot of customization with the specs file.
+Always remember, however, that these changes are global, and affect
+all users of the system.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol-message-formats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="bki.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Message Formats</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="developer.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> Backend Interface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,982 @@
+<HTML
+><HEAD
+><TITLE
+>Control Structures</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PL/pgSQL - SQL Procedural Language"
+HREF="plpgsql.html"><LINK
+REL="PREVIOUS"
+TITLE="Basic Statements"
+HREF="plpgsql-statements.html"><LINK
+REL="NEXT"
+TITLE="Cursors"
+HREF="plpgsql-cursors.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="plpgsql-statements.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 19. <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> - <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Procedural Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="plpgsql-cursors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PLPGSQL-CONTROL-STRUCTURES"
+>19.6. Control Structures</A
+></H1
+><P
+>    Control structures are probably the most useful (and
+    important) part of <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>. With
+    <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+>'s control structures,
+    you can manipulate <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> data in a very
+    flexible and powerful way. 
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-STATEMENTS-RETURNING"
+>19.6.1. Returning from a function</A
+></H2
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>RETURN <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>;</PRE
+><P>
+
+     RETURN with an expression is used to return from a
+     <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> function that does not return a set.
+     The function terminates and the value of
+     <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> is returned to the caller.
+    </P
+><P
+>     To return a composite (row) value, you must write a record or row
+     variable as the <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>.  When
+     returning a scalar type, any expression can be used.
+     The expression's result will be automatically cast into the
+     function's return type as described for assignments.
+     (If you have declared the function to return <TT
+CLASS="TYPE"
+>void</TT
+>,
+     then the expression can be omitted, and will be ignored in any case.)
+    </P
+><P
+>     The return value of a function cannot be left undefined. If control
+     reaches the end of the top-level block of 
+     the function without hitting a RETURN statement, a run-time error
+     will occur.
+    </P
+><P
+>     When a <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> function is declared to return
+     <TT
+CLASS="LITERAL"
+>SETOF</TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>sometype</I
+></TT
+>, the procedure
+     to follow is slightly different.  In that case, the individual
+     items to return are specified in RETURN NEXT commands, and then a
+     final RETURN command with no arguments is used to indicate that
+     the function has finished executing.  RETURN NEXT can be used with
+     both scalar and composite data types; in the later case, an
+     entire "table" of results will be returned.  Functions that use
+     RETURN NEXT should be called in the following fashion:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM some_func();</PRE
+><P>
+
+     That is, the function is used as a table source in a FROM clause.
+
+</P><PRE
+CLASS="SYNOPSIS"
+>RETURN NEXT <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+>;</PRE
+><P>
+
+     RETURN NEXT does not actually return from the function; it simply
+     saves away the value of the expression (or record or row variable,
+     as appropriate for the data type being returned).
+     Execution then continues with the next statement in the
+     <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> function.  As successive RETURN NEXT
+     commands are executed, the result set is built up.  A final
+     RETURN, which need have no argument, causes control to exit
+     the function.
+    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     The current implementation of RETURN NEXT for
+     <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> stores the entire result set before
+     returning from the function, as discussed above.  That means that
+     if a <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> function produces a very large result set,
+     performance may be poor: data will be written to disk to avoid
+     memory exhaustion, but the function itself will not return until
+     the entire result set has been generated.  A future version of
+     <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> may allow users to allow users to define set-returning
+     functions that do not have this limitation.  Currently, the point
+     at which data begins being written to disk is controlled by the
+     <TT
+CLASS="VARNAME"
+>SORT_MEM</TT
+> configuration variable.  Administrators who
+     have sufficient memory to store larger result sets in memory
+     should consider increasing this parameter.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-CONDITIONALS"
+>19.6.2. Conditionals</A
+></H2
+><P
+>     <TT
+CLASS="LITERAL"
+>IF</TT
+> statements let you execute commands based on
+     certain conditions.  <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> has four forms of
+     <TT
+CLASS="LITERAL"
+>IF</TT
+>:
+    <P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>IF ... THEN</TT
+></P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>IF ... THEN ... ELSE</TT
+></P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>IF ... THEN ... ELSE IF</TT
+> and</P
+></LI
+><LI
+><P
+><TT
+CLASS="LITERAL"
+>IF ... THEN ... ELSIF ... THEN ... ELSE</TT
+></P
+></LI
+></UL
+><P>
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN35977"
+>19.6.2.1. <TT
+CLASS="LITERAL"
+>IF-THEN</TT
+></A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>IF <TT
+CLASS="REPLACEABLE"
+><I
+>boolean-expression</I
+></TT
+> THEN
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+END IF;</PRE
+><P>
+
+        IF-THEN statements are the simplest form of IF. The
+        statements between THEN and END IF will be executed if
+        the condition is true. Otherwise, they are skipped.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>IF v_user_id &lt;&gt; 0 THEN
+    UPDATE users SET email = v_email WHERE user_id = v_user_id;
+END IF;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN35985"
+>19.6.2.2. <TT
+CLASS="LITERAL"
+>IF-THEN-ELSE</TT
+></A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>IF <TT
+CLASS="REPLACEABLE"
+><I
+>boolean-expression</I
+></TT
+> THEN
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+ELSE
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+END IF;</PRE
+><P>
+
+        IF-THEN-ELSE statements add to IF-THEN by letting you
+        specify an alternative set of statements that should be executed if
+	the condition evaluates to FALSE.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>IF parentid IS NULL or parentid = ''''
+THEN 
+    return fullname;
+ELSE
+    return hp_true_filename(parentid) || ''/'' || fullname;
+END IF;
+
+
+IF v_count &#62; 0 THEN 
+    INSERT INTO users_count(count) VALUES(v_count);
+    return ''t'';
+ELSE 
+    return ''f'';
+END IF;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN35994"
+>19.6.2.3. <TT
+CLASS="LITERAL"
+>IF-THEN-ELSE IF</TT
+></A
+></H3
+><P
+>        IF statements can be nested, as in the following example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>IF demo_row.sex = ''m'' THEN
+  pretty_sex := ''man'';
+ELSE
+  IF demo_row.sex = ''f'' THEN
+    pretty_sex := ''woman'';
+  END IF;
+END IF;</PRE
+><P>
+       </P
+><P
+>        When you use this form, you are actually
+        nesting an IF statement inside the ELSE part of an outer IF
+        statement. Thus you need one END IF statement for each
+        nested IF and one for the parent IF-ELSE.
+        This is workable but grows tedious when there are many
+	alternatives to be checked.
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36000"
+>19.6.2.4. <TT
+CLASS="LITERAL"
+>IF-THEN-ELSIF-ELSE</TT
+></A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>IF <TT
+CLASS="REPLACEABLE"
+><I
+>boolean-expression</I
+></TT
+> THEN
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+[<SPAN
+CLASS="OPTIONAL"
+> ELSIF <TT
+CLASS="REPLACEABLE"
+><I
+>boolean-expression</I
+></TT
+> THEN
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+[<SPAN
+CLASS="OPTIONAL"
+> ELSIF <TT
+CLASS="REPLACEABLE"
+><I
+>boolean-expression</I
+></TT
+> THEN
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+    ...</SPAN
+>]</SPAN
+>]
+[<SPAN
+CLASS="OPTIONAL"
+> ELSE
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+> </SPAN
+>]
+END IF;</PRE
+><P>
+
+        <TT
+CLASS="LITERAL"
+>IF-THEN-ELSIF-ELSE</TT
+> provides a more convenient
+        method of checking many alternatives in one statement.
+        Formally it is equivalent to nested
+        <TT
+CLASS="LITERAL"
+>IF-THEN-ELSE-IF-THEN</TT
+> commands, but only one
+        <TT
+CLASS="LITERAL"
+>END IF</TT
+> is needed.
+       </P
+><P
+>        Here is an example:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>IF number = 0 THEN
+    result := ''zero'';
+ELSIF number &gt; 0 THEN 
+    result := ''positive'';
+ELSIF number &lt; 0 THEN
+    result := ''negative'';
+ELSE
+    -- hmm, the only other possibility is that number IS NULL
+    result := ''NULL'';
+END IF;</PRE
+><P>
+       </P
+><P
+>        The final ELSE section is optional.
+       </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-CONTROL-STRUCTURES-LOOPS"
+>19.6.3. Simple Loops</A
+></H2
+><P
+>     With the LOOP, EXIT, WHILE and FOR statements, you can arrange
+     for your <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> function to repeat
+     a series of commands.
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36025"
+>19.6.3.1. LOOP</A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>[<SPAN
+CLASS="OPTIONAL"
+>&lt;&lt;label&gt;&gt;</SPAN
+>]
+LOOP
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+END LOOP;</PRE
+><P>
+
+        LOOP defines an unconditional loop that is repeated indefinitely
+	until terminated by an EXIT or RETURN statement.
+	The optional label can be used by
+        EXIT statements in nested loops to specify which level of
+        nesting should be terminated.
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36031"
+>19.6.3.2. EXIT</A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>EXIT [<SPAN
+CLASS="OPTIONAL"
+> <TT
+CLASS="REPLACEABLE"
+><I
+>label</I
+></TT
+> </SPAN
+>] [<SPAN
+CLASS="OPTIONAL"
+> WHEN <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> </SPAN
+>];</PRE
+><P>
+
+        If no <TT
+CLASS="REPLACEABLE"
+><I
+>label</I
+></TT
+> is given,
+        the innermost loop is terminated and the
+        statement following END LOOP is executed next.
+        If <TT
+CLASS="REPLACEABLE"
+><I
+>label</I
+></TT
+> is given, it
+        must be the label of the current or some outer level of nested loop
+        or block. Then the named loop or block is terminated and control
+        continues with the statement after the loop's/block's corresponding
+        END.
+       </P
+><P
+>        If WHEN is present, loop exit occurs only if the specified condition
+	is true, otherwise control passes to the statement after EXIT.
+       </P
+><P
+>        Examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>LOOP
+    -- some computations
+    IF count &#62; 0 THEN
+        EXIT;  -- exit loop
+    END IF;
+END LOOP;
+
+LOOP
+    -- some computations
+    EXIT WHEN count &#62; 0;
+END LOOP;
+
+BEGIN
+    -- some computations
+    IF stocks &#62; 100000 THEN
+        EXIT;  -- illegal. Can't use EXIT outside of a LOOP
+    END IF;
+END;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36044"
+>19.6.3.3. WHILE</A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>[<SPAN
+CLASS="OPTIONAL"
+>&lt;&lt;label&gt;&gt;</SPAN
+>]
+WHILE <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> LOOP
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+END LOOP;</PRE
+><P>
+
+        The WHILE statement repeats a
+        sequence of statements so long as the condition expression
+	evaluates to true.  The condition is checked just before
+	each entry to the loop body.
+       </P
+><P
+>        For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>WHILE amount_owed &#62; 0 AND gift_certificate_balance &#62; 0 LOOP
+    -- some computations here
+END LOOP;
+
+WHILE NOT boolean_expression LOOP
+    -- some computations here
+END LOOP;</PRE
+><P>
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN36053"
+>19.6.3.4. FOR (integer for-loop)</A
+></H3
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>[<SPAN
+CLASS="OPTIONAL"
+>&lt;&lt;label&gt;&gt;</SPAN
+>]
+FOR <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> IN [<SPAN
+CLASS="OPTIONAL"
+> REVERSE </SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> .. <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> LOOP
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+END LOOP;</PRE
+><P>
+
+        This form of FOR creates a loop that iterates over a range of integer
+	values. The variable 
+        <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> is automatically defined as type
+        integer and exists only inside the loop. The two expressions giving
+        the lower and upper bound of the range are evaluated once when entering
+        the loop. The iteration step is normally 1, but is -1 when REVERSE is
+	specified.
+       </P
+><P
+>        Some examples of integer FOR loops:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>FOR i IN 1..10 LOOP
+  -- some expressions here
+
+    RAISE NOTICE ''i is %'',i;
+END LOOP;
+
+FOR i IN REVERSE 10..1 LOOP
+    -- some expressions here
+END LOOP;</PRE
+><P>
+       </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="PLPGSQL-RECORDS-ITERATING"
+>19.6.4. Looping Through Query Results</A
+></H2
+><P
+>     Using a different type of FOR loop, you can iterate through
+     the results of a query and manipulate that data
+     accordingly. The syntax is:
+</P><PRE
+CLASS="SYNOPSIS"
+>[<SPAN
+CLASS="OPTIONAL"
+>&lt;&lt;label&gt;&gt;</SPAN
+>]
+FOR <TT
+CLASS="REPLACEABLE"
+><I
+>record | row</I
+></TT
+> IN <TT
+CLASS="REPLACEABLE"
+><I
+>select_query</I
+></TT
+> LOOP
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+END LOOP;</PRE
+><P>
+     The record or row variable is successively assigned all the rows 
+     resulting from the SELECT query and the loop body is executed 
+     for each row. Here is an example:
+    </P
+><P
+></P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION cs_refresh_mviews () RETURNS INTEGER AS '
+DECLARE
+     mviews RECORD;
+BEGIN
+     PERFORM cs_log(''Refreshing materialized views...'');
+
+     FOR mviews IN SELECT * FROM cs_materialized_views ORDER BY sort_key LOOP
+
+         -- Now "mviews" has one record from cs_materialized_views
+
+         PERFORM cs_log(''Refreshing materialized view '' || quote_ident(mviews.mv_name) || ''...'');
+         EXECUTE ''TRUNCATE TABLE  '' || quote_ident(mviews.mv_name);
+         EXECUTE ''INSERT INTO '' || quote_ident(mviews.mv_name) || '' '' || mviews.mv_query;
+     END LOOP;
+
+     PERFORM cs_log(''Done refreshing materialized views.'');
+     RETURN 1;
+end;
+' LANGUAGE 'plpgsql';</PRE
+><P>
+
+     If the loop is terminated by an EXIT statement, the last
+     assigned row value is still accessible after the loop.
+    </P
+><P
+>     The FOR-IN-EXECUTE statement is another way to iterate over
+     records:
+</P><PRE
+CLASS="SYNOPSIS"
+>[<SPAN
+CLASS="OPTIONAL"
+>&lt;&lt;label&gt;&gt;</SPAN
+>]
+FOR <TT
+CLASS="REPLACEABLE"
+><I
+>record | row</I
+></TT
+> IN EXECUTE <TT
+CLASS="REPLACEABLE"
+><I
+>text_expression</I
+></TT
+> LOOP 
+    <TT
+CLASS="REPLACEABLE"
+><I
+>statements</I
+></TT
+>
+END LOOP;</PRE
+><P>
+     This is like the previous form, except that the source SELECT
+     statement is specified as a string expression, which is evaluated
+     and re-planned on each entry to the FOR loop.  This allows the
+     programmer to choose the speed of a pre-planned query or the
+     flexibility of a dynamic query, just as with a plain EXECUTE
+     statement.
+    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     The <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> parser presently distinguishes the
+     two kinds of FOR loops (integer or record-returning) by checking
+     whether the target variable mentioned just after FOR has been
+     declared as a record/row variable.  If not, it's presumed to be
+     an integer FOR loop.  This can cause rather nonintuitive error
+     messages when the true problem is, say, that one has
+     misspelled the FOR variable name.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpgsql-statements.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="plpgsql-cursors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Basic Statements</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="plpgsql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Cursors</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

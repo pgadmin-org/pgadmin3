@@ -1,0 +1,329 @@
+<HTML
+><HEAD
+><TITLE
+>SPI_saveplan</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Functions"
+HREF="spi.html#SPI-INTERFACE"><LINK
+REL="PREVIOUS"
+TITLE="SPI_cursor_close"
+HREF="spi-spicursor-close.html"><LINK
+REL="NEXT"
+TITLE="Interface Support Functions"
+HREF="spi-interface-support.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="spi-spicursor-close.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="spi-interface-support.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPISAVEPLAN"
+>SPI_saveplan</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN34344"
+></A
+><H2
+>Name</H2
+>SPI_saveplan&nbsp;--&nbsp;   Saves a passed plan<A
+NAME="IX-SPI-SPISAVEPLAN-1"
+></A
+><A
+NAME="IX-SPI-SPISAVEPLAN-2"
+></A
+></DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN34352"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SPI_saveplan(<TT
+CLASS="REPLACEABLE"
+><I
+>plan</I
+></TT
+>)</PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SPI-SPISAVEPLAN-1"
+></A
+><H3
+>Inputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>void *<TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+></DT
+><DD
+><P
+>Passed plan</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SPI-SPISAVEPLAN-2"
+></A
+><H3
+>Outputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>void *</DT
+><DD
+><P
+>Execution plan location. NULL if unsuccessful.</P
+></DD
+><DT
+>SPI_result</DT
+><DD
+><P
+><P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+>   <SPAN
+CLASS="RETURNVALUE"
+>SPI_ERROR_ARGUMENT</SPAN
+> if plan is NULL</TD
+></TR
+><TR
+><TD
+>   <SPAN
+CLASS="RETURNVALUE"
+>SPI_ERROR_UNCONNECTED</SPAN
+> if procedure is un-connected</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SPI-SPISAVEPLAN-1"
+></A
+><H2
+>Description</H2
+><P
+><TT
+CLASS="FUNCTION"
+>SPI_saveplan</TT
+> 
+   stores a plan prepared by <TT
+CLASS="FUNCTION"
+>SPI_prepare</TT
+> in safe memory
+   protected from freeing by <TT
+CLASS="FUNCTION"
+>SPI_finish</TT
+> or the transaction manager.</P
+><P
+>   In the current version of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> there is no ability to
+ store prepared plans in the system
+   catalog and fetch them from there for execution. This will be implemented
+   in future versions.
+
+   As an alternative, there is the ability to reuse prepared plans in the
+   subsequent invocations of your procedure in the current session.
+   Use <TT
+CLASS="FUNCTION"
+>SPI_execp</TT
+> to execute this saved plan.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SPI-SPISAVEPLAN-2"
+></A
+><H2
+>Usage</H2
+><P
+>   <TT
+CLASS="FUNCTION"
+>SPI_saveplan</TT
+> saves a passed plan (prepared by <TT
+CLASS="FUNCTION"
+>SPI_prepare</TT
+>) in memory
+   protected from freeing by <TT
+CLASS="FUNCTION"
+>SPI_finish</TT
+> and by the transaction manager and
+   returns a pointer to the saved plan.  You may save the pointer returned in
+   a local variable.  Always check if this pointer is NULL or not either when
+   preparing a plan or using an already prepared plan in SPI_execp (see below).
+
+</P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>   If one of the objects (a relation, function, etc.) referenced by the prepared
+   plan is dropped during your session (by your backend or another process) then the
+   results of <TT
+CLASS="FUNCTION"
+>SPI_execp</TT
+> for this plan will be unpredictable.</P
+></BLOCKQUOTE
+></DIV
+><P>&#13;</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spicursor-close.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-interface-support.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_cursor_close</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html#SPI-INTERFACE"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Interface Support Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

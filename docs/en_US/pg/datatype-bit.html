@@ -1,0 +1,322 @@
+<HTML
+><HEAD
+><TITLE
+>Bit String Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Types"
+HREF="datatype.html"><LINK
+REL="PREVIOUS"
+TITLE="Network Address Data Types"
+HREF="datatype-net-types.html"><LINK
+REL="NEXT"
+TITLE="Object Identifier Types"
+HREF="datatype-oid.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="datatype-net-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Data Types</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="datatype-oid.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATATYPE-BIT"
+>5.9. Bit String Types</A
+></H1
+><A
+NAME="AEN4698"
+></A
+><P
+>    Bit strings are strings of 1's and 0's.  They can be used to store
+    or visualize bit masks.  There are two SQL bit types:
+    <TT
+CLASS="TYPE"
+>BIT(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+> and <TT
+CLASS="TYPE"
+>BIT
+    VARYING(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+>, where
+    <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> is a positive integer.
+   </P
+><P
+>    <TT
+CLASS="TYPE"
+>BIT</TT
+> type data must match the length
+    <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> exactly; it is an error to attempt to
+    store shorter or longer bit strings.  <TT
+CLASS="TYPE"
+>BIT VARYING</TT
+> data is
+    of variable length up to the maximum length
+    <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>; longer strings will be rejected.
+    Writing <TT
+CLASS="TYPE"
+>BIT</TT
+> without a length is equivalent to
+    <TT
+CLASS="LITERAL"
+>BIT(1)</TT
+>, while <TT
+CLASS="TYPE"
+>BIT VARYING</TT
+> without a length
+    specification means unlimited length.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     If one explicitly casts a bit-string value to
+     <TT
+CLASS="TYPE"
+>BIT(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+>, it will be truncated or
+     zero-padded on the right to be exactly <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> bits,
+     without raising an error.  Similarly,
+     if one explicitly casts a bit-string value to
+     <TT
+CLASS="TYPE"
+>BIT VARYING(<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>)</TT
+>, it will be truncated
+     on the right if it is more than <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> bits.
+    </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.2, <TT
+CLASS="TYPE"
+>BIT</TT
+> data
+     was always silently truncated or zero-padded on the right, with
+     or without an explicit cast. This was changed to comply with the
+     <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> standard.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    Refer to <A
+HREF="sql-syntax.html#SQL-SYNTAX-BIT-STRINGS"
+>Section 1.1.2.2</A
+> for information about the syntax
+    of bit string constants.  Bit-logical operators and string
+    manipulation functions are available; see <A
+HREF="functions.html"
+>Chapter 6</A
+>.
+   </P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN4731"
+></A
+><P
+><B
+>Example 5-3. Using the bit string types</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE test (a BIT(3), b BIT VARYING(5));
+INSERT INTO test VALUES (B'101', B'00');
+INSERT INTO test VALUES (B'10', B'101');
+<TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  Bit string length 2 does not match type BIT(3)</TT
+>
+INSERT INTO test VALUES (B'10'::bit(3), B'101');
+SELECT * FROM test;
+<TT
+CLASS="COMPUTEROUTPUT"
+>  a  |  b
+-----+-----
+ 101 | 00
+ 100 | 101</TT
+></PRE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype-net-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-oid.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Network Address Data Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Object Identifier Types</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

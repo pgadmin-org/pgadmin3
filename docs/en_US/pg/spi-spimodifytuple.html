@@ -1,0 +1,402 @@
+<HTML
+><HEAD
+><TITLE
+>SPI_modifytuple</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Memory Management"
+HREF="spi-memory.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI_copytupleintoslot"
+HREF="spi-spicopytupleintoslot.html"><LINK
+REL="NEXT"
+TITLE="SPI_palloc"
+HREF="spi-spipalloc.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="spi-spicopytupleintoslot.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="spi-spipalloc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPIMODIFYTUPLE"
+>SPI_modifytuple</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN35039"
+></A
+><H2
+>Name</H2
+>SPI_modifytuple&nbsp;--&nbsp;Creates a tuple by replacing selected fields of a given tuple<A
+NAME="IX-SPI-SPIMODIFYTUPLE-1"
+></A
+><A
+NAME="IX-SPI-SPIMODIFYTUPLE-2"
+></A
+></DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN35047"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SPI_modifytuple(<TT
+CLASS="REPLACEABLE"
+><I
+>rel</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>tuple</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>nattrs</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>attnum</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>Values</I
+></TT
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>Nulls</I
+></TT
+>)</PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SPI-SPIMODIFYTUPLE-1"
+></A
+><H3
+>Inputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Relation <TT
+CLASS="REPLACEABLE"
+><I
+>rel</I
+></TT
+></DT
+><DD
+><P
+>Used only as source of tuple descriptor for tuple.  (Passing a relation
+rather than a tuple descriptor is a misfeature.)</P
+></DD
+><DT
+>HeapTuple <TT
+CLASS="REPLACEABLE"
+><I
+>tuple</I
+></TT
+></DT
+><DD
+><P
+>Input tuple to be modified</P
+></DD
+><DT
+>int <TT
+CLASS="REPLACEABLE"
+><I
+>nattrs</I
+></TT
+></DT
+><DD
+><P
+>Number of attribute numbers in attnum array</P
+></DD
+><DT
+>int * <TT
+CLASS="REPLACEABLE"
+><I
+>attnum</I
+></TT
+></DT
+><DD
+><P
+>Array of numbers of the attributes that are to be changed</P
+></DD
+><DT
+>Datum * <TT
+CLASS="REPLACEABLE"
+><I
+>Values</I
+></TT
+></DT
+><DD
+><P
+>New values for the attributes specified</P
+></DD
+><DT
+>char * <TT
+CLASS="REPLACEABLE"
+><I
+>Nulls</I
+></TT
+></DT
+><DD
+><P
+>Which new values are NULL, if any</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SPI-SPIMODIFYTUPLE-2"
+></A
+><H3
+>Outputs</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>HeapTuple</DT
+><DD
+><P
+>New tuple with modifications
+<P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+> <SPAN
+CLASS="RETURNVALUE"
+>non-NULL</SPAN
+>
+ if <TT
+CLASS="REPLACEABLE"
+><I
+>tuple</I
+></TT
+>
+ is not NULL and the modify was successful</TD
+></TR
+><TR
+><TD
+>   <SPAN
+CLASS="RETURNVALUE"
+>NULL</SPAN
+>
+ only if <TT
+CLASS="REPLACEABLE"
+><I
+>tuple</I
+></TT
+>
+ is NULL</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></P
+></DD
+><DT
+>SPI_result</DT
+><DD
+><P
+><P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+>   <SPAN
+CLASS="RETURNVALUE"
+>SPI_ERROR_ARGUMENT</SPAN
+> if rel is NULL or tuple is NULL or natts &lt;= 0 or
+   attnum is NULL or Values is NULL.</TD
+></TR
+><TR
+><TD
+>   <SPAN
+CLASS="RETURNVALUE"
+>SPI_ERROR_NOATTRIBUTE</SPAN
+> if there is an invalid 
+   attribute number in attnum (attnum &lt;= 0 or &gt; number of
+   attributes in tuple)</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SPI-SPIMODIFYTUPLE-1"
+></A
+><H2
+>Description</H2
+><P
+><TT
+CLASS="FUNCTION"
+>SPI_modifytuple</TT
+> 
+creates a new tuple by substituting new values for selected attributes,
+copying the original tuple's attributes at other positions.  The input
+tuple is not modified.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SPI-SPIMODIFYTUPLE-2"
+></A
+><H2
+>Usage</H2
+><P
+>If successful, a pointer to the new tuple is returned. The new tuple is
+allocated in upper Executor context.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spicopytupleintoslot.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spipalloc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_copytupleintoslot</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi-memory.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_palloc</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

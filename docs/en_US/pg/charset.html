@@ -1,0 +1,864 @@
+<HTML
+><HEAD
+><TITLE
+>Localization</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Authentication problems"
+HREF="client-authentication-problems.html"><LINK
+REL="NEXT"
+TITLE="Multibyte Support"
+HREF="multibyte.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="client-authentication-problems.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="multibyte.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="CHARSET"
+>Chapter 7. Localization</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>7.1. <A
+HREF="charset.html#LOCALE"
+>Locale Support</A
+></DT
+><DD
+><DL
+><DT
+>7.1.1. <A
+HREF="charset.html#AEN21673"
+>Overview</A
+></DT
+><DT
+>7.1.2. <A
+HREF="charset.html#AEN21749"
+>Benefits</A
+></DT
+><DT
+>7.1.3. <A
+HREF="charset.html#AEN21769"
+>Problems</A
+></DT
+></DL
+></DD
+><DT
+>7.2. <A
+HREF="multibyte.html"
+>Multibyte Support</A
+></DT
+><DD
+><DL
+><DT
+>7.2.1. <A
+HREF="multibyte.html#AEN21828"
+>Supported character set encodings</A
+></DT
+><DT
+>7.2.2. <A
+HREF="multibyte.html#AEN21986"
+>Setting the Encoding</A
+></DT
+><DT
+>7.2.3. <A
+HREF="multibyte.html#AEN22011"
+>Automatic encoding conversion between server and
+     client</A
+></DT
+><DT
+>7.2.4. <A
+HREF="multibyte.html#AEN22302"
+>What happens if the translation is not possible?</A
+></DT
+><DT
+>7.2.5. <A
+HREF="multibyte.html#AEN22310"
+>References</A
+></DT
+><DT
+>7.2.6. <A
+HREF="multibyte.html#AEN22333"
+>History</A
+></DT
+><DT
+>7.2.7. <A
+HREF="multibyte.html#AEN22338"
+>WIN1250 on Windows/ODBC</A
+></DT
+></DL
+></DD
+><DT
+>7.3. <A
+HREF="recode.html"
+>Single-byte character set recoding</A
+></DT
+></DL
+></DIV
+><BLOCKQUOTE
+CLASS="ABSTRACT"
+><DIV
+CLASS="ABSTRACT"
+><A
+NAME="AEN21653"
+></A
+><P
+></P
+><P
+>   Describes the available localization features from the point of
+   view of the administrator.
+  </P
+><P
+></P
+></DIV
+></BLOCKQUOTE
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports localization with
+   three approaches:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      Using the locale features of the operating system to provide
+      locale-specific collation order, number formatting, translated
+      messages, and other aspects.
+     </P
+></LI
+><LI
+><P
+>      Using explicit multiple-byte character sets defined in the
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server to support languages
+      that require more characters than will fit into a single byte,
+      and to provide character set recoding between client and server.
+      The number of supported character sets is fixed at the time the
+      server is compiled, and internal operations such as string
+      comparisons require expansion of each character into a 32-bit
+      word.
+     </P
+></LI
+><LI
+><P
+>      Single byte character recoding provides a more light-weight
+      solution for users of multiple, yet single-byte character sets.
+     </P
+></LI
+></UL
+><P>
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LOCALE"
+>7.1. Locale Support</A
+></H1
+><A
+NAME="AEN21667"
+></A
+><P
+>   <I
+CLASS="FIRSTTERM"
+>Locale</I
+> support refers to an application respecting
+   cultural preferences regarding alphabets, sorting, number
+   formatting, etc.  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses the standard ISO
+   C and <SPAN
+CLASS="ACRONYM"
+>POSIX</SPAN
+>-like locale facilities provided by the server operating
+   system.  For additional information refer to the documentation of your
+   system.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21673"
+>7.1.1. Overview</A
+></H2
+><P
+>    Locale support is automatically initialized when a database
+    cluster is created using <TT
+CLASS="COMMAND"
+>initdb</TT
+>.
+    <TT
+CLASS="COMMAND"
+>initdb</TT
+> will initialize the database cluster
+    with the locale setting of its execution environment; so if your
+    system is already set to use the locale that you want in your
+    database cluster then there is nothing else you need to do.  If
+    you want to use a different locale (or you are not sure which
+    locale your system is set to), you can tell
+    <TT
+CLASS="COMMAND"
+>initdb</TT
+> exactly which locale you want with the
+    option <TT
+CLASS="OPTION"
+>--locale</TT
+>.  For example:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$ </TT
+><TT
+CLASS="USERINPUT"
+><B
+>initdb --locale=sv_SE</B
+></TT
+></PRE
+><P>
+   </P
+><P
+>    This example sets the locale to Swedish (<TT
+CLASS="LITERAL"
+>sv</TT
+>) as spoken in
+    Sweden (<TT
+CLASS="LITERAL"
+>SE</TT
+>).  Other possibilities might be
+    <TT
+CLASS="LITERAL"
+>en_US</TT
+> (U.S. English) and <TT
+CLASS="LITERAL"
+>fr_CA</TT
+> (Canada,
+    French).  If more than one character set can be useful for a locale
+    then the specifications look like this:
+    <TT
+CLASS="LITERAL"
+>cs_CZ.ISO8859-2</TT
+>. What locales are available under what
+    names on your system depends on what was provided by the operating
+    system vendor and what was installed.
+   </P
+><P
+>    Occasionally it is useful to mix rules from several locales, e.g.,
+    use U.S. collation rules but Spanish messages.  To support that, a
+    set of locale subcategories exist that control only a certain
+    aspect of the localization rules.
+
+    <DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN21690"
+></A
+><P
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="ENVAR"
+>LC_COLLATE</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>String sort order</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="ENVAR"
+>LC_CTYPE</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Character classification (What is a letter? The upper-case equivalent?)</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="ENVAR"
+>LC_MESSAGES</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Language of messages</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="ENVAR"
+>LC_MONETARY</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Formatting of currency amounts</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="ENVAR"
+>LC_NUMERIC</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Formatting of numbers</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="ENVAR"
+>LC_TIME</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Formatting of dates and times</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+>
+
+    The category names translate into names of
+    <TT
+CLASS="COMMAND"
+>initdb</TT
+> options to override the locale choice
+    for a specific category.  For instance, to set the locale to
+    French Canadian, but use U.S. rules for formatting currency, use
+    <TT
+CLASS="LITERAL"
+>initdb --locale=fr_CA --lc-monetary=en_US</TT
+>.
+   </P
+><P
+>    If you want the system to behave as if it had no locale support,
+    use the special locale <TT
+CLASS="LITERAL"
+>C</TT
+> or <TT
+CLASS="LITERAL"
+>POSIX</TT
+>.
+   </P
+><P
+>    The nature of some locale categories is that their value has to be
+    fixed for the lifetime of a database cluster.  That is, once
+    <TT
+CLASS="COMMAND"
+>initdb</TT
+> has run, you cannot change them anymore.
+    <TT
+CLASS="LITERAL"
+>LC_COLLATE</TT
+> and <TT
+CLASS="LITERAL"
+>LC_CTYPE</TT
+> are
+    those categories.  They affect the sort order of indexes, so they
+    must be kept fixed, or indexes on text columns will become corrupt.
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> enforces this by recording
+    the values of <TT
+CLASS="ENVAR"
+>LC_COLLATE</TT
+> and <TT
+CLASS="ENVAR"
+>LC_CTYPE</TT
+> that are
+    seen by <TT
+CLASS="COMMAND"
+>initdb</TT
+>.  The server automatically adopts
+    those two values when it is started.
+   </P
+><P
+>    The other locale categories can be changed as desired whenever the
+    server is started by setting the run-time configuration variables
+    that have the same name as the locale categories (see <A
+HREF="runtime-config.html"
+>Section 3.4</A
+> for details).  The defaults that are
+    chosen by <TT
+CLASS="COMMAND"
+>initdb</TT
+> are actually only written into
+    the configuration file <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> to
+    serve as defaults when the server is started.  If you delete the
+    assignments from <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+> then the
+    server will inherit the settings from the execution environment.
+   </P
+><P
+>    Note that the locale behavior of the server is determined by the
+    environment variables seen by the server, not by the environment
+    of any client.  Therefore, be careful to configure the correct locale settings
+    before starting the server.  A consequence of this is that if
+    client and server are set up to different locales, messages may
+    appear in different languages depending on where they originated.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     When we speak of inheriting the locale from the execution
+     environment, this means the following on most operating systems:
+     For a given locale category, say the collation, the following
+     environment variables are consulted in this order until one is
+     found to be set: <TT
+CLASS="ENVAR"
+>LC_ALL</TT
+>, <TT
+CLASS="ENVAR"
+>LC_COLLATE</TT
+>
+     (the variable corresponding to the respective category),
+     <TT
+CLASS="ENVAR"
+>LANG</TT
+>.  If none of these environment variables are
+     set then the locale defaults to <TT
+CLASS="LITERAL"
+>C</TT
+>.
+    </P
+><P
+>     Some message localization libraries also look at the environment
+     variable <TT
+CLASS="ENVAR"
+>LANGUAGE</TT
+> which overrides all other locale
+     settings for the purpose of setting the language of messages.  If
+     in doubt, please refer to the documentation of your operating
+     system, in particular the
+     <SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>gettext</SPAN
+></SPAN
+> manual
+     page, for more information.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    To enable messages translated to the user's preferred language,
+    the <TT
+CLASS="OPTION"
+>--enable-nls</TT
+> option must be used.  This
+    option is independent of the other locale support.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21749"
+>7.1.2. Benefits</A
+></H2
+><P
+>    Locale support influences in particular the following features:
+
+    <P
+></P
+></P><UL
+><LI
+><P
+>       Sort order in <TT
+CLASS="COMMAND"
+>ORDER BY</TT
+> queries.
+       <A
+NAME="AEN21756"
+></A
+>
+      </P
+></LI
+><LI
+><P
+>       The <TT
+CLASS="FUNCTION"
+>to_char</TT
+> family of functions
+      </P
+></LI
+><LI
+><P
+>       The <TT
+CLASS="LITERAL"
+>LIKE</TT
+> and <TT
+CLASS="LITERAL"
+>~</TT
+> operators for pattern
+       matching
+      </P
+></LI
+></UL
+><P>
+   </P
+><P
+>    The only severe drawback of using the locale support in
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is its speed.  So use locale only if you
+    actually need it.  It should be noted in particular that selecting
+    a non-C locale disables index optimizations for <TT
+CLASS="LITERAL"
+>LIKE</TT
+> and
+    <TT
+CLASS="LITERAL"
+>~</TT
+> operators, which can make a huge difference in the
+    speed of searches that use those operators.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN21769"
+>7.1.3. Problems</A
+></H2
+><P
+>    If locale support doesn't work in spite of the explanation above,
+    check that the locale support in your operating system is correctly configured.
+    To check whether a given locale is installed and functional you
+    can use <SPAN
+CLASS="APPLICATION"
+>Perl</SPAN
+>, for example.  Perl has also support
+    for locales and if a locale is broken <TT
+CLASS="COMMAND"
+>perl -v</TT
+> will
+    complain something like this:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>export LC_CTYPE='not_exist'</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>$</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>perl -v</B
+></TT
+>
+<TT
+CLASS="COMPUTEROUTPUT"
+>perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+LC_ALL = (unset),
+LC_CTYPE = "not_exist",
+LANG = (unset)
+are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").</TT
+></PRE
+><P>
+   </P
+><P
+>    Check that your locale files are in the right location.  Possible
+    locations include: <TT
+CLASS="FILENAME"
+>/usr/lib/locale</TT
+> (<SPAN
+CLASS="SYSTEMITEM"
+>Linux</SPAN
+>,
+    <SPAN
+CLASS="SYSTEMITEM"
+>Solaris</SPAN
+>), <TT
+CLASS="FILENAME"
+>/usr/share/locale</TT
+> (<SPAN
+CLASS="SYSTEMITEM"
+>Linux</SPAN
+>),
+    <TT
+CLASS="FILENAME"
+>/usr/lib/nls/loc</TT
+> (<SPAN
+CLASS="SYSTEMITEM"
+>DUX 4.0</SPAN
+>).  Check the locale
+    man page of your system if you are not sure.
+   </P
+><P
+>    Check that <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is actually using the locale that
+    you think it is.  <TT
+CLASS="ENVAR"
+>LC_COLLATE</TT
+> and <TT
+CLASS="ENVAR"
+>LC_CTYPE</TT
+> settings are
+    determined at <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+> time and cannot be changed without
+    repeating <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+>.  Other locale settings including
+    <TT
+CLASS="ENVAR"
+>LC_MESSAGES</TT
+> and <TT
+CLASS="ENVAR"
+>LC_MONETARY</TT
+> are determined by the 
+    environment the postmaster is started in, and can be changed with a simple
+    postmaster restart.  You can check the <TT
+CLASS="ENVAR"
+>LC_COLLATE</TT
+> and
+    <TT
+CLASS="ENVAR"
+>LC_CTYPE</TT
+> settings of
+    a database with the <TT
+CLASS="FILENAME"
+>contrib/pg_controldata</TT
+> utility program.
+   </P
+><P
+>    The directory <TT
+CLASS="FILENAME"
+>src/test/locale</TT
+> contains a test suite
+    for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s locale support.
+   </P
+><P
+>    Client applications that handle server-side errors by parsing the
+    text of the error message will obviously have problems when the
+    server's messages are in a different language.  If you create such
+    an application you need to devise a plan to cope with this
+    situation.  The embedded SQL interface (<SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+>) is
+    also affected by this problem.  It is currently recommended that
+    servers interfacing with <SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+> applications be
+    configured to send messages in English.
+   </P
+><P
+>    Maintaining catalogs of message translations requires the on-going
+    efforts of many volunteers that want to see
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> speak their preferred language well.
+    If messages in your language is currently not available or fully
+    translated, your assistance would be appreciated.  If you want to
+    help, refer to the <I
+CLASS="CITETITLE"
+>Developer's Guide</I
+> or write to the
+    developers' mailing list.
+   </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="client-authentication-problems.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="multibyte.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Authentication problems</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Multibyte Support</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

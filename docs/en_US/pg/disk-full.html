@@ -1,0 +1,195 @@
+<HTML
+><HEAD
+><TITLE
+>Disk Full Failure</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Monitoring Disk Usage"
+HREF="diskusage.html"><LINK
+REL="PREVIOUS"
+TITLE="Monitoring Disk Usage"
+HREF="diskusage.html"><LINK
+REL="NEXT"
+TITLE="Write-Ahead Logging (WAL)"
+HREF="wal.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="diskusage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 11. Monitoring Disk Usage</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="wal.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DISK-FULL"
+>11.2. Disk Full Failure</A
+></H1
+><P
+>   The most important disk monitoring task of a database administrator
+   is to make sure the disk doesn't grow full.  A filled data disk may
+   result in subsequent corruption of database indexes, but not of the
+   fundamental data tables. If the WAL files are on the same disk (as
+   is the case for a default configuration) then a filled disk during
+   database initialization may result in corrupted or incomplete WAL
+   files. This failure condition is detected and the database server
+   will refuse to start up.
+  </P
+><P
+>   If you cannot free up additional space on the disk by deleting
+   other things you can move some of the database files to other file
+   systems and create a symlink from the original location.  But
+   note that <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> cannot save the location layout
+   information of such a setup; a restore would put everything back in
+   one place.  To avoid running out of disk space, you can place the
+   WAL files or individual databases in other locations while creating
+   them.  See the <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+> documentation and <A
+HREF="manage-ag-alternate-locs.html"
+>Section 5.5</A
+> for more information.
+  </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>    Some file systems perform badly when they are almost full, so do
+    not wait until the disk is full to take action.
+   </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="diskusage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="wal.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Monitoring Disk Usage</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="diskusage.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Write-Ahead Logging (<SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

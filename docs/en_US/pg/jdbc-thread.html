@@ -1,0 +1,246 @@
+<HTML
+><HEAD
+><TITLE
+>Using the driver in a multithreaded or a servlet environment</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="JDBC Interface"
+HREF="jdbc.html"><LINK
+REL="PREVIOUS"
+TITLE="PostgreSQL Extensions to the
+    JDBC API"
+HREF="jdbc-ext.html"><LINK
+REL="NEXT"
+TITLE="Connection Pools And DataSources"
+HREF="jdbc-datasource.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="jdbc-ext.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Interface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="jdbc-datasource.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JDBC-THREAD"
+>5.8. Using the driver in a multithreaded or a servlet environment</A
+></H1
+><P
+>   A problem with many <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> drivers is that only
+   one thread can use a <TT
+CLASS="CLASSNAME"
+>Connection</TT
+> at any one
+   time -- otherwise a thread could send a query while another one is
+   receiving results, and this would be a bad thing for the database
+   engine.
+  </P
+><P
+>   The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Driver
+   is thread safe.
+   Consequently, if your application uses multiple threads then you do
+   not have to worry about complex algorithms to ensure that only one
+   uses the database at any time.
+  </P
+><P
+>   If a thread attempts to use the connection while another one is
+   using it, it will wait until the other thread has finished its
+   current operation.  If it is a regular <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+   statement, then the operation consists of sending the statement and
+   retrieving any <TT
+CLASS="CLASSNAME"
+>ResultSet</TT
+> (in full).  If it
+   is a <TT
+CLASS="CLASSNAME"
+>Fastpath</TT
+> call (e.g., reading a block
+   from a <TT
+CLASS="CLASSNAME"
+>LargeObject</TT
+>) then it is the time to
+   send and retrieve that block.
+  </P
+><P
+>   This is fine for applications and applets but can cause a
+   performance problem with servlets.  With servlets you can have a
+   heavy load on the connection. If you have several threads
+   performing queries then each but one will pause, which may not be what
+   you are after.
+  </P
+><P
+>   To solve this, you would be advised to create a pool of
+   connections.  When ever a thread needs to use the database, it asks
+   a manager class for a <TT
+CLASS="CLASSNAME"
+>Connection</TT
+>. The
+   manager hands a free connection to the thread and marks it as
+   busy. If a free connection is not available, it opens one.  Once
+   the thread has finished with it, it returns it to the manager who
+   can then either close it or add it to the pool. The manager would
+   also check that the connection is still alive and remove it from
+   the pool if it is dead.
+  </P
+><P
+>   So, with servlets, it is up to you to use either a single
+   connection, or a pool. The plus side for a pool is that threads
+   will not be hit by the bottle neck caused by a single network
+   connection. The down side is that it increases the load on the
+   server, as a backend process is created for each
+   <TT
+CLASS="CLASSNAME"
+>Connection</TT
+>.  It is up to you and your
+   applications requirements.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="jdbc-ext.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="jdbc-datasource.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> Extensions to the
+    <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="jdbc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Connection Pools And DataSources</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

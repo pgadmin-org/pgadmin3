@@ -1,0 +1,543 @@
+<HTML
+><HEAD
+><TITLE
+>INSERT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="GRANT"
+HREF="sql-grant.html"><LINK
+REL="NEXT"
+TITLE="LISTEN"
+HREF="sql-listen.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-grant.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-listen.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-INSERT"
+>INSERT</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44129"
+></A
+><H2
+>Name</H2
+>   INSERT
+  &nbsp;--&nbsp;   create new rows in a table
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44132"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>INSERT INTO <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ ( <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [, ...] ) ]
+    { DEFAULT VALUES | VALUES ( { <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> | DEFAULT } [, ...] ) | SELECT <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+> }
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-INSERT-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of an existing table.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+></DT
+><DD
+><P
+>	The name of a column in <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>.
+       </P
+></DD
+><DT
+>DEFAULT VALUES</DT
+><DD
+><P
+>	All columns will be filled by null values or by values specified
+	when the table was created using <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> clauses.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+></DT
+><DD
+><P
+>	A valid expression or value to assign to <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>DEFAULT</I
+></TT
+></DT
+><DD
+><P
+>	This column will be filled in by the column DEFAULT clause, or NULL if
+	a default is not available.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+></DT
+><DD
+><P
+>	A valid query. Refer to the SELECT statement for a further description
+	of valid arguments.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-INSERT-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>INSERT <TT
+CLASS="REPLACEABLE"
+><I
+>oid</I
+></TT
+> 1
+       </TT
+></DT
+><DD
+><P
+>	Message returned if only one row was inserted.
+	<SPAN
+CLASS="RETURNVALUE"
+><TT
+CLASS="REPLACEABLE"
+><I
+>oid</I
+></TT
+></SPAN
+>
+	is the numeric <SPAN
+CLASS="ACRONYM"
+>OID</SPAN
+> of the inserted row.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>INSERT 0 <TT
+CLASS="REPLACEABLE"
+><I
+>#</I
+></TT
+>
+       </TT
+></DT
+><DD
+><P
+>	Message returned if more than one rows were inserted.
+	<SPAN
+CLASS="RETURNVALUE"
+><TT
+CLASS="REPLACEABLE"
+><I
+>#</I
+></TT
+></SPAN
+>
+	is the number of rows inserted.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-INSERT-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>INSERT</TT
+> allows one to insert new rows into a
+   table. One can insert
+   a single row at a time or several rows as a result of a query.
+   The columns in the target list may be listed in any order.
+  </P
+><P
+>   Each column not present in the target list will be inserted
+   using a default value, either a declared DEFAULT value
+   or NULL. <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will reject the new
+   column if a NULL is inserted into a column declared NOT NULL.
+  </P
+><P
+>   If the expression for each column
+   is not of the correct data type, automatic type coercion will be
+   attempted.
+  </P
+><P
+>   You must have insert privilege to a table in order to append
+   to it, as well as select privilege on any table specified
+   in a WHERE clause.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-INSERT-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Insert a single row into table <TT
+CLASS="LITERAL"
+>films</TT
+>:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO films VALUES
+    ('UA502','Bananas',105,'1971-07-13','Comedy',INTERVAL '82 minute');
+   </PRE
+><P>
+  </P
+><P
+>   In this second example the last column <TT
+CLASS="LITERAL"
+>len</TT
+> is
+   omitted and therefore it will have the default value of NULL:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO films (code, title, did, date_prod, kind)
+    VALUES ('T_601', 'Yojimbo', 106, DATE '1961-06-16', 'Drama');
+   </PRE
+><P>
+  </P
+><P
+>   In the third example, we use the DEFAULT values for the date columns
+   rather than specifying an entry.
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO films VALUES
+    ('UA502','Bananas',105,DEFAULT,'Comedy',INTERVAL '82 minute');
+INSERT INTO films (code, title, did, date_prod, kind)
+    VALUES ('T_601', 'Yojimbo', 106, DEFAULT, 'Drama');
+   </PRE
+><P>
+  </P
+><P
+>   Insert a single row into table distributors; note that
+   only column <TT
+CLASS="LITERAL"
+>name</TT
+> is specified, so the omitted
+   column <TT
+CLASS="LITERAL"
+>did</TT
+> will be assigned its default value:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO distributors (name) VALUES ('British Lion');
+   </PRE
+><P>
+  </P
+><P
+>   Insert several rows into table films from table <TT
+CLASS="LITERAL"
+>tmp</TT
+>:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO films SELECT * FROM tmp;
+   </PRE
+><P>
+  </P
+><P
+>   Insert into arrays (refer to the
+   <I
+CLASS="CITETITLE"
+>PostgreSQL User's Guide</I
+> for further
+   information about arrays):
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>-- Create an empty 3x3 gameboard for noughts-and-crosses
+-- (all of these queries create the same board attribute)
+INSERT INTO tictactoe (game, board[1:3][1:3])
+    VALUES (1,'{{"","",""},{},{"",""}}');
+INSERT INTO tictactoe (game, board[3][3])
+    VALUES (2,'{}');
+INSERT INTO tictactoe (game, board)
+    VALUES (3,'{{,,},{,,},{,,}}');
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-INSERT-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-INSERT-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>INSERT</TT
+> is fully compatible with <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+    Possible limitations in features of the
+    <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+>
+    clause are documented for
+    <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-grant.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-listen.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>GRANT</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>LISTEN</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,305 @@
+<HTML
+><HEAD
+><TITLE
+>DROP CONVERSION</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP CAST"
+HREF="sql-dropcast.html"><LINK
+REL="NEXT"
+TITLE="DROP DATABASE"
+HREF="sql-dropdatabase.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-dropcast.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-dropdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPCONVERSION"
+>DROP CONVERSION</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42293"
+></A
+><H2
+>Name</H2
+>DROP CONVERSION&nbsp;--&nbsp;remove a user-defined conversion</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42296"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP CONVERSION <TT
+CLASS="REPLACEABLE"
+><I
+>conversion_name</I
+></TT
+>
+    [ CASCADE | RESTRICT ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPCONVERSION-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP CONVERSION</TT
+> removes a previously defined conversion.
+  </P
+><P
+>   To be able to drop a conversion, you must own the conversion.
+  </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>Parameters</B
+></P
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>conversion_name</I
+></TT
+></DT
+><DD
+><P
+>       The name of the conversion. The conversion name may be
+       schema-qualified.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CASCADE</TT
+><BR><TT
+CLASS="LITERAL"
+>RESTRICT</TT
+></DT
+><DD
+><P
+>       These key words do not have any effect, since there are no
+       dependencies on conversions.
+      </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPCONVERSION-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <TT
+CLASS="COMMAND"
+>CREATE CONVERSION</TT
+> to create user-defined conversions.
+  </P
+><P
+>   The privileges required to drop a conversion may be changed in a future
+   release.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPCONVERSION-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To drop the conversion named <TT
+CLASS="LITERAL"
+>myname</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>DROP CONVERSION myname;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPCONVERSION-COMPAT"
+></A
+><H2
+>Compatibility</H2
+><P
+>    <TT
+CLASS="COMMAND"
+>DROP CONVERSION</TT
+>
+    is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+    There is no <TT
+CLASS="COMMAND"
+>DROP CONVERSION</TT
+>
+    statement in <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-DROPCONVERSION-SEEALSO"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="sql-createconversion.html"
+><I
+>CREATE CONVERSION</I
+></A
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropcast.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-dropdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP CAST</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP DATABASE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

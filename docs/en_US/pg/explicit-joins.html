@@ -1,0 +1,313 @@
+<HTML
+><HEAD
+><TITLE
+>Controlling the Planner with Explicit JOIN Clauses</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Performance Tips"
+HREF="performance-tips.html"><LINK
+REL="PREVIOUS"
+TITLE="Statistics Used by the Planner"
+HREF="planner-stats.html"><LINK
+REL="NEXT"
+TITLE="Populating a Database"
+HREF="populate.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="planner-stats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Performance Tips</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="populate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="EXPLICIT-JOINS"
+>10.3. Controlling the Planner with Explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+> Clauses</A
+></H1
+><P
+>   Beginning with <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.1 it has been possible
+   to control the query planner to some extent by using the explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+>
+   syntax.  To see why this matters, we first need some background.
+  </P
+><P
+>   In a simple join query, such as
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;</PRE
+><P>
+   the planner is free to join the given tables in any order.  For
+   example, it could generate a query plan that joins A to B, using
+   the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> condition <TT
+CLASS="LITERAL"
+>a.id = b.id</TT
+>, and then
+   joins C to this joined table, using the other <TT
+CLASS="LITERAL"
+>WHERE</TT
+>
+   condition.  Or it could join B to C and then join A to that result.
+   Or it could join A to C and then join them with B --- but that
+   would be inefficient, since the full Cartesian product of A and C
+   would have to be formed, there being no applicable condition in the
+   <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause to allow optimization of the join.  (All
+   joins in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> executor happen
+   between two input tables, so it's necessary to build up the result
+   in one or another of these fashions.)  The important point is that
+   these different join possibilities give semantically equivalent
+   results but may have hugely different execution costs.  Therefore,
+   the planner will explore all of them to try to find the most
+   efficient query plan.
+  </P
+><P
+>   When a query only involves two or three tables, there aren't many join
+   orders to worry about.  But the number of possible join orders grows
+   exponentially as the number of tables expands.  Beyond ten or so input
+   tables it's no longer practical to do an exhaustive search of all the
+   possibilities, and even for six or seven tables planning may take an
+   annoyingly long time.  When there are too many input tables, the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> planner will switch from exhaustive
+   search to a <I
+CLASS="FIRSTTERM"
+>genetic</I
+> probabilistic search
+   through a limited number of possibilities.  (The switch-over threshold is
+   set by the <TT
+CLASS="VARNAME"
+>GEQO_THRESHOLD</TT
+> run-time
+   parameter described in the <A
+HREF="admin.html"
+><I
+>PostgreSQL 7.3.3 Administrator's Guide</I
+></A
+>.)
+   The genetic search takes less time, but it won't
+   necessarily find the best possible plan.
+  </P
+><P
+>   When the query involves outer joins, the planner has much less freedom
+   than it does for plain (inner) joins. For example, consider
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM a LEFT JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</PRE
+><P>
+   Although this query's restrictions are superficially similar to the
+   previous example, the semantics are different because a row must be
+   emitted for each row of A that has no matching row in the join of B and C.
+   Therefore the planner has no choice of join order here: it must join
+   B to C and then join A to that result.  Accordingly, this query takes
+   less time to plan than the previous query.
+  </P
+><P
+>   The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query planner treats all
+   explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+> syntaxes as constraining the join order, even though
+   it is not logically necessary to make such a constraint for inner
+   joins.  Therefore, although all of these queries give the same result:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;
+SELECT * FROM a CROSS JOIN b CROSS JOIN c WHERE a.id = b.id AND b.ref = c.id;
+SELECT * FROM a JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</PRE
+><P>
+   but the second and third take less time to plan than the first.  This effect
+   is not worth worrying about for only three tables, but it can be a
+   lifesaver with many tables.
+  </P
+><P
+>   You do not need to constrain the join order completely in order to
+   cut search time, because it's OK to use <TT
+CLASS="LITERAL"
+>JOIN</TT
+> operators in a plain
+   <TT
+CLASS="LITERAL"
+>FROM</TT
+> list.  For example,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM a CROSS JOIN b, c, d, e WHERE ...;</PRE
+><P>
+   forces the planner to join A to B before joining them to other tables,
+   but doesn't constrain its choices otherwise.  In this example, the
+   number of possible join orders is reduced by a factor of 5.
+  </P
+><P
+>   If you have a mix of outer and inner joins in a complex query, you
+   might not want to constrain the planner's search for a good ordering
+   of inner joins inside an outer join.  You can't do that directly in the
+   <TT
+CLASS="LITERAL"
+>JOIN</TT
+> syntax, but you can get around the syntactic limitation by using
+   subselects.  For example,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM d LEFT JOIN
+        (SELECT * FROM a, b, c WHERE ...) AS ss
+        ON (...);</PRE
+><P>
+   Here, joining D must be the last step in the query plan, but the
+   planner is free to consider various join orders for A, B, C.
+  </P
+><P
+>   Constraining the planner's search in this way is a useful technique
+   both for reducing planning time and for directing the planner to a
+   good query plan.  If the planner chooses a bad join order by default,
+   you can force it to choose a better order via <TT
+CLASS="LITERAL"
+>JOIN</TT
+> syntax --- assuming
+   that you know of a better order, that is.  Experimentation is recommended.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="planner-stats.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="populate.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Statistics Used by the Planner</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Populating a Database</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

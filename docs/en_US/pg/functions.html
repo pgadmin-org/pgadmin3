@@ -1,0 +1,724 @@
+<HTML
+><HEAD
+><TITLE
+>Functions and Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 User's Guide"
+HREF="user.html"><LINK
+REL="PREVIOUS"
+TITLE="Arrays"
+HREF="arrays.html"><LINK
+REL="NEXT"
+TITLE="Comparison Operators"
+HREF="functions-comparison.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="arrays.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="functions-comparison.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="FUNCTIONS"
+>Chapter 6. Functions and Operators</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>6.1. <A
+HREF="functions.html#FUNCTIONS-LOGICAL"
+>Logical Operators</A
+></DT
+><DT
+>6.2. <A
+HREF="functions-comparison.html"
+>Comparison Operators</A
+></DT
+><DT
+>6.3. <A
+HREF="functions-math.html"
+>Mathematical Functions and Operators</A
+></DT
+><DT
+>6.4. <A
+HREF="functions-string.html"
+>String Functions and Operators</A
+></DT
+><DT
+>6.5. <A
+HREF="functions-binarystring.html"
+>Binary String Functions and Operators</A
+></DT
+><DT
+>6.6. <A
+HREF="functions-matching.html"
+>Pattern Matching</A
+></DT
+><DD
+><DL
+><DT
+>6.6.1. <A
+HREF="functions-matching.html#FUNCTIONS-LIKE"
+><TT
+CLASS="FUNCTION"
+>LIKE</TT
+></A
+></DT
+><DT
+>6.6.2. <A
+HREF="functions-matching.html#FUNCTIONS-SQL99-REGEXP"
+><TT
+CLASS="FUNCTION"
+>SIMILAR TO</TT
+> and <SPAN
+CLASS="ACRONYM"
+>SQL99</SPAN
+>
+     Regular Expressions</A
+></DT
+><DT
+>6.6.3. <A
+HREF="functions-matching.html#FUNCTIONS-POSIX-REGEXP"
+><SPAN
+CLASS="ACRONYM"
+>POSIX</SPAN
+> Regular Expressions</A
+></DT
+></DL
+></DD
+><DT
+>6.7. <A
+HREF="functions-formatting.html"
+>Data Type Formatting Functions</A
+></DT
+><DT
+>6.8. <A
+HREF="functions-datetime.html"
+>Date/Time Functions and Operators</A
+></DT
+><DD
+><DL
+><DT
+>6.8.1. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"
+><TT
+CLASS="FUNCTION"
+>EXTRACT</TT
+>, <TT
+CLASS="FUNCTION"
+>date_part</TT
+></A
+></DT
+><DT
+>6.8.2. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-TRUNC"
+><TT
+CLASS="FUNCTION"
+>date_trunc</TT
+></A
+></DT
+><DT
+>6.8.3. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-ZONECONVERT"
+><TT
+CLASS="FUNCTION"
+>AT TIME ZONE</TT
+></A
+></DT
+><DT
+>6.8.4. <A
+HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
+>Current Date/Time</A
+></DT
+></DL
+></DD
+><DT
+>6.9. <A
+HREF="functions-geometry.html"
+>Geometric Functions and Operators</A
+></DT
+><DT
+>6.10. <A
+HREF="functions-net.html"
+>Network Address Type Functions</A
+></DT
+><DT
+>6.11. <A
+HREF="functions-sequence.html"
+>Sequence-Manipulation Functions</A
+></DT
+><DT
+>6.12. <A
+HREF="functions-conditional.html"
+>Conditional Expressions</A
+></DT
+><DD
+><DL
+><DT
+>6.12.1. <A
+HREF="functions-conditional.html#AEN9772"
+>CASE</A
+></DT
+><DT
+>6.12.2. <A
+HREF="functions-conditional.html#AEN9827"
+>COALESCE</A
+></DT
+><DT
+>6.12.3. <A
+HREF="functions-conditional.html#AEN9836"
+>NULLIF</A
+></DT
+></DL
+></DD
+><DT
+>6.13. <A
+HREF="functions-misc.html"
+>Miscellaneous Functions</A
+></DT
+><DT
+>6.14. <A
+HREF="functions-aggregate.html"
+>Aggregate Functions</A
+></DT
+><DT
+>6.15. <A
+HREF="functions-subquery.html"
+>Subquery Expressions</A
+></DT
+><DD
+><DL
+><DT
+>6.15.1. <A
+HREF="functions-subquery.html#AEN10482"
+>EXISTS</A
+></DT
+><DT
+>6.15.2. <A
+HREF="functions-subquery.html#AEN10505"
+>IN (scalar form)</A
+></DT
+><DT
+>6.15.3. <A
+HREF="functions-subquery.html#AEN10524"
+>IN (subquery form)</A
+></DT
+><DT
+>6.15.4. <A
+HREF="functions-subquery.html#AEN10550"
+>NOT IN (scalar form)</A
+></DT
+><DT
+>6.15.5. <A
+HREF="functions-subquery.html#AEN10571"
+>NOT IN (subquery form)</A
+></DT
+><DT
+>6.15.6. <A
+HREF="functions-subquery.html#AEN10597"
+>ANY/SOME</A
+></DT
+><DT
+>6.15.7. <A
+HREF="functions-subquery.html#AEN10643"
+>ALL</A
+></DT
+><DT
+>6.15.8. <A
+HREF="functions-subquery.html#AEN10679"
+>Row-wise Comparison</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+><A
+NAME="AEN5055"
+></A
+><A
+NAME="AEN5057"
+></A
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> provides a large number of
+   functions and operators for the built-in data types.  Users can also
+   define their own functions and operators, as described in the
+   <A
+HREF="programmer.html"
+><I
+>PostgreSQL 7.3.3 Programmer's Guide</I
+></A
+>.  The
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> commands <TT
+CLASS="COMMAND"
+>\df</TT
+> and
+   <TT
+CLASS="COMMAND"
+>\do</TT
+> can be used to show the list of all actually
+   available functions and operators, respectively.
+  </P
+><P
+>   If you are concerned about portability then take note that most of
+   the functions and operators described in this chapter, with the
+   exception of the most trivial arithmetic and comparison operators
+   and some explicitly marked functions, are not specified by the
+   <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+   standard. Some of this extended functionality is present in other
+   <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> implementations, and in many cases this
+   functionality is compatible and consistent between various products.
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-LOGICAL"
+>6.1. Logical Operators</A
+></H1
+><A
+NAME="AEN5070"
+></A
+><A
+NAME="AEN5073"
+></A
+><P
+>    The usual logical operators are available:
+
+    <A
+NAME="AEN5078"
+></A
+>
+
+    <A
+NAME="AEN5081"
+></A
+>
+
+    <A
+NAME="AEN5084"
+></A
+>
+
+    <P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+>AND</TD
+></TR
+><TR
+><TD
+>OR</TD
+></TR
+><TR
+><TD
+>NOT</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+>
+
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> uses a three-valued Boolean logic where the null value represents
+    <SPAN
+CLASS="QUOTE"
+>"unknown"</SPAN
+>.  Observe the following truth tables:
+
+    <DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5093"
+></A
+><P
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+></TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="REPLACEABLE"
+><I
+>b</I
+></TT
+></TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> AND <TT
+CLASS="REPLACEABLE"
+><I
+>b</I
+></TT
+></TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+> OR <TT
+CLASS="REPLACEABLE"
+><I
+>b</I
+></TT
+></TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+>
+
+    <DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5138"
+></A
+><P
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+></TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>NOT <TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+></TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>TRUE</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>NULL</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="arrays.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-comparison.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Arrays</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Comparison Operators</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

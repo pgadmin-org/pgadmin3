@@ -1,0 +1,476 @@
+<HTML
+><HEAD
+><TITLE
+>The CVS Repository</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Developer's Guide"
+HREF="developer.html"><LINK
+REL="PREVIOUS"
+TITLE="For the Programmer"
+HREF="nls-programmer.html"><LINK
+REL="NEXT"
+TITLE="CVS Tree Organization"
+HREF="cvs-tree.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="APPENDIX"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="nls-programmer.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="cvs-tree.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="CVS"
+>Appendix A. The <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> Repository</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>A.1. <A
+HREF="cvs.html#ANONCVS"
+>Getting The Source Via Anonymous <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+></A
+></DT
+><DT
+>A.2. <A
+HREF="cvs-tree.html"
+><SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> Tree Organization</A
+></DT
+><DT
+>A.3. <A
+HREF="cvsup.html"
+>Getting The Source Via <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+></A
+></DT
+></DL
+></DIV
+><P
+>  The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> source code is stored and managed using the
+  <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> code management system.
+ </P
+><P
+>  At least two methods,
+  anonymous CVS and <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+>,
+  are available to pull the <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> code tree from the
+  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server to your local machine.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ANONCVS"
+>A.1. Getting The Source Via Anonymous <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+></A
+></H1
+><P
+>   If you would like to keep up with the current sources on a regular
+   basis, you can fetch them from our <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> server
+   and then use <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> to
+   retrieve updates from time to time.
+  </P
+><DIV
+CLASS="PROCEDURE"
+><P
+><B
+>Anonymous CVS</B
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>     You will need a local copy of <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+>
+     (Concurrent Version Control System), which you can get from
+     <A
+HREF="http://www.cyclic.com/"
+TARGET="_top"
+>http://www.cyclic.com/</A
+> or
+     any GNU software archive site.
+     We currently recommend version 1.10 (the most recent at the time
+     of writing). Many systems have a recent version of
+     <SPAN
+CLASS="APPLICATION"
+>cvs</SPAN
+> installed by default.
+    </P
+></LI
+><LI
+><P
+>     Do an initial login to the <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> server:
+
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>$ cvs -d :pserver:anoncvs@anoncvs.postgresql.org:/projects/cvsroot login
+     </PRE
+><P>
+
+     You will be prompted for a password; just press <TT
+CLASS="LITERAL"
+>ENTER</TT
+>.
+     You should only need to do this once, since the password will be
+     saved in <TT
+CLASS="LITERAL"
+>.cvspass</TT
+> in your home directory.
+    </P
+></LI
+><LI
+><P
+>     Fetch the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> sources:
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>cvs -z3 -d :pserver:anoncvs@anoncvs.postgresql.org:/projects/cvsroot co -P pgsql
+     </PRE
+><P>
+
+     which installs the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> sources into a
+     subdirectory <TT
+CLASS="FILENAME"
+>pgsql</TT
+>
+     of the directory you are currently in.
+
+     </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>       If you have a fast link to the Internet, you may not need
+       <TT
+CLASS="OPTION"
+>-z3</TT
+>, which instructs
+       <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> to use gzip compression for transferred data.  But
+       on a modem-speed link, it's a very substantial win.
+      </P
+></BLOCKQUOTE
+></DIV
+><P>
+    </P
+><P
+>     This initial checkout is a little slower than simply downloading
+     a <TT
+CLASS="FILENAME"
+>tar.gz</TT
+> file; expect it to take 40 minutes or so if you
+     have a 28.8K modem.  The advantage of
+     <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+>
+     doesn't show up until you want to update the file set later on.
+    </P
+></LI
+><LI
+><P
+>     Whenever you want to update to the latest <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> sources,
+     <TT
+CLASS="COMMAND"
+>cd</TT
+> into
+     the <TT
+CLASS="FILENAME"
+>pgsql</TT
+> subdirectory, and issue
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>$ cvs -z3 update -d -P
+     </PRE
+><P>
+
+     This will fetch only the changes since the last time you updated.
+     You can update in just a couple of minutes, typically, even over
+     a modem-speed line.
+    </P
+></LI
+><LI
+><P
+>     You can save yourself some typing by making a file <TT
+CLASS="FILENAME"
+>.cvsrc</TT
+>
+     in your home directory that contains
+
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>cvs -z3
+update -d -P
+     </PRE
+><P>
+
+     This supplies the <TT
+CLASS="OPTION"
+>-z3</TT
+> option to all cvs commands, and the
+     <TT
+CLASS="OPTION"
+>-d</TT
+> and <TT
+CLASS="OPTION"
+>-P</TT
+> options to cvs update.  Then you just have
+     to say
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>$ cvs update
+     </PRE
+><P>
+
+     to update your files.
+    </P
+></LI
+></OL
+></DIV
+><DIV
+CLASS="CAUTION"
+><P
+></P
+><TABLE
+CLASS="CAUTION"
+BORDER="1"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="CENTER"
+><B
+>Caution</B
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+><P
+>    Some older versions of <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> have a bug that
+    causes all checked-out files to be stored world-writable in your
+    directory.  If you see that this has happened, you can do something like
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>$ chmod -R go-w pgsql
+    </PRE
+><P>
+    to set the permissions properly.
+    This bug is fixed as of
+    <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> version 1.9.28.
+   </P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> can do a lot of other things,
+   such as fetching prior revisions
+   of the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> sources
+   rather than the latest development version.
+   For more info consult the manual that comes with
+   <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+>, or see the online
+   documentation at
+   <A
+HREF="http://www.cyclic.com/"
+TARGET="_top"
+>http://www.cyclic.com/</A
+>.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="nls-programmer.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cvs-tree.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>For the Programmer</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="developer.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> Tree Organization</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

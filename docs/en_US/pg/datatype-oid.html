@@ -1,0 +1,632 @@
+<HTML
+><HEAD
+><TITLE
+>Object Identifier Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Types"
+HREF="datatype.html"><LINK
+REL="PREVIOUS"
+TITLE="Bit String Types"
+HREF="datatype-bit.html"><LINK
+REL="NEXT"
+TITLE="Pseudo-Types"
+HREF="datatype-pseudo.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="datatype-bit.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Data Types</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="datatype-pseudo.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATATYPE-OID"
+>5.10. Object Identifier Types</A
+></H1
+><A
+NAME="AEN4738"
+></A
+><A
+NAME="AEN4741"
+></A
+><A
+NAME="AEN4743"
+></A
+><A
+NAME="AEN4745"
+></A
+><A
+NAME="AEN4747"
+></A
+><A
+NAME="AEN4749"
+></A
+><A
+NAME="AEN4751"
+></A
+><A
+NAME="AEN4753"
+></A
+><A
+NAME="AEN4755"
+></A
+><A
+NAME="AEN4757"
+></A
+><A
+NAME="AEN4759"
+></A
+><P
+>    Object identifiers (OIDs) are used internally by
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> as primary keys for various system
+    tables.  Also, an OID system column is added to user-created tables
+    (unless <TT
+CLASS="LITERAL"
+>WITHOUT OIDS</TT
+> is specified at table creation time).
+    Type <TT
+CLASS="TYPE"
+>oid</TT
+> represents an object identifier.  There are also
+    several aliases for <TT
+CLASS="TYPE"
+>oid</TT
+>: <TT
+CLASS="TYPE"
+>regproc</TT
+>, <TT
+CLASS="TYPE"
+>regprocedure</TT
+>,
+    <TT
+CLASS="TYPE"
+>regoper</TT
+>, <TT
+CLASS="TYPE"
+>regoperator</TT
+>, <TT
+CLASS="TYPE"
+>regclass</TT
+>,
+    and <TT
+CLASS="TYPE"
+>regtype</TT
+>. <A
+HREF="datatype-oid.html#DATATYPE-OID-TABLE"
+>Table 5-20</A
+> shows an overview.
+   </P
+><P
+>    The <TT
+CLASS="TYPE"
+>oid</TT
+> type is currently implemented as an unsigned four-byte
+    integer.
+    Therefore, it is not large enough to provide database-wide uniqueness
+    in large databases, or even in large individual tables.  So, using a
+    user-created table's OID column as a primary key is discouraged.
+    OIDs are best used only for references to system tables.
+   </P
+><P
+>    The <TT
+CLASS="TYPE"
+>oid</TT
+> type itself has few operations beyond comparison
+    (which is implemented as unsigned comparison).  It can be cast to
+    integer, however, and then manipulated using the standard integer
+    operators.  (Beware of possible signed-versus-unsigned confusion
+    if you do this.)
+   </P
+><P
+>    The  <TT
+CLASS="TYPE"
+>oid</TT
+> alias types have no operations of their own except
+    for specialized input and output routines.  These routines are able
+    to accept and display symbolic names for system objects, rather than
+    the raw numeric value that type <TT
+CLASS="TYPE"
+>oid</TT
+> would use.  The alias
+    types allow simplified lookup of OID values for objects: for example,
+    one may write <TT
+CLASS="LITERAL"
+>'mytable'::regclass</TT
+> to get the OID of table
+    <TT
+CLASS="LITERAL"
+>mytable</TT
+>, rather than <TT
+CLASS="LITERAL"
+>SELECT oid FROM pg_class WHERE
+    relname = 'mytable'</TT
+>.  (In reality, a much more complicated <TT
+CLASS="COMMAND"
+>SELECT</TT
+> would
+    be needed to deal with selecting the right OID when there are multiple
+    tables named <TT
+CLASS="LITERAL"
+>mytable</TT
+> in different schemas.)
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-OID-TABLE"
+></A
+><P
+><B
+>Table 5-20. Object Identifier Types</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>References</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Value example</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>any</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>numeric object identifier</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>564182</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>function name</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>sum</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regprocedure</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>function with argument types</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>sum(int4)</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regoper</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>operator name</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>+</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regoperator</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_operator</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>operator with argument types</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>*(integer,integer)</TT
+> or <TT
+CLASS="LITERAL"
+>-(NONE,integer)</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regclass</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_class</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>relation name</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>pg_type</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regtype</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="STRUCTNAME"
+>pg_type</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>type name</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>integer</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    All of the OID alias types accept schema-qualified names, and will
+    display schema-qualified names on output if the object would not
+    be found in the current search path without being qualified.
+    The <TT
+CLASS="TYPE"
+>regproc</TT
+> and <TT
+CLASS="TYPE"
+>regoper</TT
+> alias types will only
+    accept input names that are unique (not overloaded), so they are
+    of limited use; for most uses <TT
+CLASS="TYPE"
+>regprocedure</TT
+> or
+    <TT
+CLASS="TYPE"
+>regoperator</TT
+> is more appropriate.  For <TT
+CLASS="TYPE"
+>regoperator</TT
+>,
+    unary operators are identified by writing <TT
+CLASS="LITERAL"
+>NONE</TT
+> for the unused
+    operand.
+   </P
+><P
+>    OIDs are 32-bit quantities and are assigned from a single cluster-wide
+    counter.  In a large or long-lived database, it is possible for the
+    counter to wrap around.  Hence, it is bad practice to assume that OIDs
+    are unique, unless you take steps to ensure that they are unique.
+    Recommended practice when using OIDs for row identification is to create
+    a unique constraint on the OID column of each table for which the OID will
+    be used.  Never assume that OIDs are unique across tables; use the
+    combination of <TT
+CLASS="STRUCTFIELD"
+>tableoid</TT
+> and row OID if you need a
+    database-wide identifier.  (Future releases of
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> are likely to use a separate
+    OID counter for each table, so that <TT
+CLASS="STRUCTFIELD"
+>tableoid</TT
+>
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+> be included to arrive at a globally unique identifier.)
+   </P
+><P
+>    Another identifier type used by the system is <TT
+CLASS="TYPE"
+>xid</TT
+>, or transaction
+    (abbreviated <SPAN
+CLASS="ABBREV"
+>xact</SPAN
+>) identifier.  This is the data type of the system columns
+    <TT
+CLASS="STRUCTFIELD"
+>xmin</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>xmax</TT
+>.
+    Transaction identifiers are 32-bit quantities.  In a long-lived
+    database it is possible for transaction IDs to wrap around.  This
+    is not a fatal problem given appropriate maintenance procedures;
+    see the <A
+HREF="admin.html"
+><I
+>PostgreSQL 7.3.3 Administrator's Guide</I
+></A
+> for details.  However, it is
+    unwise to depend on uniqueness of transaction IDs over the long term
+    (more than one billion transactions).
+   </P
+><P
+>    A third identifier type used by the system is <TT
+CLASS="TYPE"
+>cid</TT
+>, or
+    command identifier.  This is the data type of the system columns
+    <TT
+CLASS="STRUCTFIELD"
+>cmin</TT
+> and <TT
+CLASS="STRUCTFIELD"
+>cmax</TT
+>.  Command
+    identifiers are also 32-bit quantities.  This creates a hard limit
+    of 2<SUP
+>32</SUP
+> (4 billion) <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> commands
+    within a single transaction.  In practice this limit is not a
+    problem --- note that the limit is on number of
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> commands, not number of tuples processed.
+   </P
+><P
+>    A final identifier type used by the system is <TT
+CLASS="TYPE"
+>tid</TT
+>, or tuple
+    identifier.  This is the data type of the system column
+    <TT
+CLASS="STRUCTFIELD"
+>ctid</TT
+>.  A tuple ID is a pair
+    (block number, tuple index within block) that identifies the
+    physical location of the tuple within its table.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype-bit.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-pseudo.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Bit String Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Pseudo-Types</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

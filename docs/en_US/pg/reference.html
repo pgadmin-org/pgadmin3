@@ -1,0 +1,892 @@
+<HTML
+><HEAD
+><TITLE
+>PostgreSQL 7.3.3 Reference Manual</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Restricted Environment"
+HREF="plpython-trusted.html"><LINK
+REL="NEXT"
+TITLE="Preface"
+HREF="reference-preface.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="BOOK"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="BOOK"
+><A
+NAME="REFERENCE"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+><A
+NAME="REFERENCE"
+>PostgreSQL 7.3.3 Reference Manual</A
+></H1
+><H3
+CLASS="CORPAUTHOR"
+>The PostgreSQL Global Development Group</H3
+><P
+CLASS="COPYRIGHT"
+><A
+HREF="ln37171.html"
+>Copyright</A
+> &copy; 1996-2002 by The PostgreSQL Global Development Group</P
+><HR></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="reference-preface.html"
+>Preface</A
+></DT
+><DT
+>I. <A
+HREF="sql-commands.html"
+>SQL Commands</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="sql-abort.html"
+>ABORT</A
+>&nbsp;--&nbsp;   abort the current transaction
+  </DT
+><DT
+><A
+HREF="sql-alterdatabase.html"
+>ALTER DATABASE</A
+>&nbsp;--&nbsp;change a database</DT
+><DT
+><A
+HREF="sql-altergroup.html"
+>ALTER GROUP</A
+>&nbsp;--&nbsp;   add users to a group or remove users from a group
+  </DT
+><DT
+><A
+HREF="sql-altertable.html"
+>ALTER TABLE</A
+>&nbsp;--&nbsp;   change the definition of a table
+  </DT
+><DT
+><A
+HREF="sql-altertrigger.html"
+>ALTER TRIGGER</A
+>&nbsp;--&nbsp;   change the definition of a trigger
+  </DT
+><DT
+><A
+HREF="sql-alteruser.html"
+>ALTER USER</A
+>&nbsp;--&nbsp;change a database user account</DT
+><DT
+><A
+HREF="sql-analyze.html"
+>ANALYZE</A
+>&nbsp;--&nbsp;   collect statistics about a database
+  </DT
+><DT
+><A
+HREF="sql-begin.html"
+>BEGIN</A
+>&nbsp;--&nbsp;   start a transaction block
+  </DT
+><DT
+><A
+HREF="sql-checkpoint.html"
+>CHECKPOINT</A
+>&nbsp;--&nbsp;force a transaction log checkpoint</DT
+><DT
+><A
+HREF="sql-close.html"
+>CLOSE</A
+>&nbsp;--&nbsp;   close a cursor
+  </DT
+><DT
+><A
+HREF="sql-cluster.html"
+>CLUSTER</A
+>&nbsp;--&nbsp;   cluster a table according to an index
+  </DT
+><DT
+><A
+HREF="sql-comment.html"
+>COMMENT</A
+>&nbsp;--&nbsp;   define or change the comment of an object
+  </DT
+><DT
+><A
+HREF="sql-commit.html"
+>COMMIT</A
+>&nbsp;--&nbsp;   commit the current transaction
+  </DT
+><DT
+><A
+HREF="sql-copy.html"
+>COPY</A
+>&nbsp;--&nbsp;   copy data between files and tables
+  </DT
+><DT
+><A
+HREF="sql-createaggregate.html"
+>CREATE AGGREGATE</A
+>&nbsp;--&nbsp;   define a new aggregate function
+  </DT
+><DT
+><A
+HREF="sql-createcast.html"
+>CREATE CAST</A
+>&nbsp;--&nbsp;define a user-defined cast</DT
+><DT
+><A
+HREF="sql-createconstraint.html"
+>CREATE CONSTRAINT TRIGGER</A
+>&nbsp;--&nbsp;   define a new constraint trigger
+  </DT
+><DT
+><A
+HREF="sql-createconversion.html"
+>CREATE CONVERSION</A
+>&nbsp;--&nbsp;define a user-defined conversion</DT
+><DT
+><A
+HREF="sql-createdatabase.html"
+>CREATE DATABASE</A
+>&nbsp;--&nbsp;   create a new database
+  </DT
+><DT
+><A
+HREF="sql-createdomain.html"
+>CREATE DOMAIN</A
+>&nbsp;--&nbsp;   define a new domain
+  </DT
+><DT
+><A
+HREF="sql-createfunction.html"
+>CREATE FUNCTION</A
+>&nbsp;--&nbsp;define a new function</DT
+><DT
+><A
+HREF="sql-creategroup.html"
+>CREATE GROUP</A
+>&nbsp;--&nbsp;   define a new user group
+  </DT
+><DT
+><A
+HREF="sql-createindex.html"
+>CREATE INDEX</A
+>&nbsp;--&nbsp;   define a new index
+  </DT
+><DT
+><A
+HREF="sql-createlanguage.html"
+>CREATE LANGUAGE</A
+>&nbsp;--&nbsp;define a new procedural language</DT
+><DT
+><A
+HREF="sql-createoperator.html"
+>CREATE OPERATOR</A
+>&nbsp;--&nbsp;   define a new operator
+  </DT
+><DT
+><A
+HREF="sql-createopclass.html"
+>CREATE OPERATOR CLASS</A
+>&nbsp;--&nbsp;   define a new operator class for indexes
+  </DT
+><DT
+><A
+HREF="sql-createrule.html"
+>CREATE RULE</A
+>&nbsp;--&nbsp;   define a new rewrite rule
+  </DT
+><DT
+><A
+HREF="sql-createschema.html"
+>CREATE SCHEMA</A
+>&nbsp;--&nbsp;   define a new schema
+  </DT
+><DT
+><A
+HREF="sql-createsequence.html"
+>CREATE SEQUENCE</A
+>&nbsp;--&nbsp;   define a new sequence generator
+  </DT
+><DT
+><A
+HREF="sql-createtable.html"
+>CREATE TABLE</A
+>&nbsp;--&nbsp;define a new table</DT
+><DT
+><A
+HREF="sql-createtableas.html"
+>CREATE TABLE AS</A
+>&nbsp;--&nbsp;create a new table from the results of a query</DT
+><DT
+><A
+HREF="sql-createtrigger.html"
+>CREATE TRIGGER</A
+>&nbsp;--&nbsp;   define a new trigger
+  </DT
+><DT
+><A
+HREF="sql-createtype.html"
+>CREATE TYPE</A
+>&nbsp;--&nbsp;   define a new data type
+  </DT
+><DT
+><A
+HREF="sql-createuser.html"
+>CREATE USER</A
+>&nbsp;--&nbsp;define a new database user account</DT
+><DT
+><A
+HREF="sql-createview.html"
+>CREATE VIEW</A
+>&nbsp;--&nbsp;   define a new view
+  </DT
+><DT
+><A
+HREF="sql-deallocate.html"
+>DEALLOCATE</A
+>&nbsp;--&nbsp;   remove a prepared query
+  </DT
+><DT
+><A
+HREF="sql-declare.html"
+>DECLARE</A
+>&nbsp;--&nbsp;   define a cursor
+  </DT
+><DT
+><A
+HREF="sql-delete.html"
+>DELETE</A
+>&nbsp;--&nbsp;   delete rows of a table
+  </DT
+><DT
+><A
+HREF="sql-dropaggregate.html"
+>DROP AGGREGATE</A
+>&nbsp;--&nbsp;   remove a user-defined aggregate function
+  </DT
+><DT
+><A
+HREF="sql-dropcast.html"
+>DROP CAST</A
+>&nbsp;--&nbsp;remove a user-defined cast</DT
+><DT
+><A
+HREF="sql-dropconversion.html"
+>DROP CONVERSION</A
+>&nbsp;--&nbsp;remove a user-defined conversion</DT
+><DT
+><A
+HREF="sql-dropdatabase.html"
+>DROP DATABASE</A
+>&nbsp;--&nbsp;   remove a database
+  </DT
+><DT
+><A
+HREF="sql-dropdomain.html"
+>DROP DOMAIN</A
+>&nbsp;--&nbsp;   remove a user-defined domain
+  </DT
+><DT
+><A
+HREF="sql-dropfunction.html"
+>DROP FUNCTION</A
+>&nbsp;--&nbsp;   remove a user-defined function
+  </DT
+><DT
+><A
+HREF="sql-dropgroup.html"
+>DROP GROUP</A
+>&nbsp;--&nbsp;   remove a user group
+  </DT
+><DT
+><A
+HREF="sql-dropindex.html"
+>DROP INDEX</A
+>&nbsp;--&nbsp;   remove an index
+  </DT
+><DT
+><A
+HREF="sql-droplanguage.html"
+>DROP LANGUAGE</A
+>&nbsp;--&nbsp;   remove a user-defined procedural language
+  </DT
+><DT
+><A
+HREF="sql-dropoperator.html"
+>DROP OPERATOR</A
+>&nbsp;--&nbsp;   remove a user-defined operator
+  </DT
+><DT
+><A
+HREF="sql-dropopclass.html"
+>DROP OPERATOR CLASS</A
+>&nbsp;--&nbsp;   remove a user-defined operator class
+  </DT
+><DT
+><A
+HREF="sql-droprule.html"
+>DROP RULE</A
+>&nbsp;--&nbsp;   remove a rewrite rule
+  </DT
+><DT
+><A
+HREF="sql-dropschema.html"
+>DROP SCHEMA</A
+>&nbsp;--&nbsp;   remove a schema
+  </DT
+><DT
+><A
+HREF="sql-dropsequence.html"
+>DROP SEQUENCE</A
+>&nbsp;--&nbsp;   remove a sequence
+  </DT
+><DT
+><A
+HREF="sql-droptable.html"
+>DROP TABLE</A
+>&nbsp;--&nbsp;   remove a table
+  </DT
+><DT
+><A
+HREF="sql-droptrigger.html"
+>DROP TRIGGER</A
+>&nbsp;--&nbsp;   remove a trigger
+  </DT
+><DT
+><A
+HREF="sql-droptype.html"
+>DROP TYPE</A
+>&nbsp;--&nbsp;   remove a user-defined data type
+  </DT
+><DT
+><A
+HREF="sql-dropuser.html"
+>DROP USER</A
+>&nbsp;--&nbsp;remove a database user account</DT
+><DT
+><A
+HREF="sql-dropview.html"
+>DROP VIEW</A
+>&nbsp;--&nbsp;   remove a view
+  </DT
+><DT
+><A
+HREF="sql-end.html"
+>END</A
+>&nbsp;--&nbsp;   commit the current transaction
+  </DT
+><DT
+><A
+HREF="sql-execute.html"
+>EXECUTE</A
+>&nbsp;--&nbsp;   execute a prepared query
+  </DT
+><DT
+><A
+HREF="sql-explain.html"
+>EXPLAIN</A
+>&nbsp;--&nbsp;   show the execution plan of a statement
+  </DT
+><DT
+><A
+HREF="sql-fetch.html"
+>FETCH</A
+>&nbsp;--&nbsp;   retrieve rows from a table using a cursor
+  </DT
+><DT
+><A
+HREF="sql-grant.html"
+>GRANT</A
+>&nbsp;--&nbsp;define access privileges</DT
+><DT
+><A
+HREF="sql-insert.html"
+>INSERT</A
+>&nbsp;--&nbsp;   create new rows in a table
+  </DT
+><DT
+><A
+HREF="sql-listen.html"
+>LISTEN</A
+>&nbsp;--&nbsp;   listen for a notification
+  </DT
+><DT
+><A
+HREF="sql-load.html"
+>LOAD</A
+>&nbsp;--&nbsp;load or reload a shared library file</DT
+><DT
+><A
+HREF="sql-lock.html"
+>LOCK</A
+>&nbsp;--&nbsp;   explicitly lock a table
+  </DT
+><DT
+><A
+HREF="sql-move.html"
+>MOVE</A
+>&nbsp;--&nbsp;   position a cursor on a specified row of a table
+  </DT
+><DT
+><A
+HREF="sql-notify.html"
+>NOTIFY</A
+>&nbsp;--&nbsp;   generate a notification
+  </DT
+><DT
+><A
+HREF="sql-prepare.html"
+>PREPARE</A
+>&nbsp;--&nbsp;   create a prepared query
+  </DT
+><DT
+><A
+HREF="sql-reindex.html"
+>REINDEX</A
+>&nbsp;--&nbsp;   rebuild corrupted indexes
+  </DT
+><DT
+><A
+HREF="sql-reset.html"
+>RESET</A
+>&nbsp;--&nbsp;restore the value of a run-time parameter to a default value</DT
+><DT
+><A
+HREF="sql-revoke.html"
+>REVOKE</A
+>&nbsp;--&nbsp;remove access privileges</DT
+><DT
+><A
+HREF="sql-rollback.html"
+>ROLLBACK</A
+>&nbsp;--&nbsp;   abort the current transaction
+  </DT
+><DT
+><A
+HREF="sql-select.html"
+>SELECT</A
+>&nbsp;--&nbsp;   retrieve rows from a table or view
+  </DT
+><DT
+><A
+HREF="sql-selectinto.html"
+>SELECT INTO</A
+>&nbsp;--&nbsp;   create a new table from the results of a query
+  </DT
+><DT
+><A
+HREF="sql-set.html"
+>SET</A
+>&nbsp;--&nbsp;change a run-time parameter</DT
+><DT
+><A
+HREF="sql-set-constraints.html"
+>SET CONSTRAINTS</A
+>&nbsp;--&nbsp;set the constraint mode of the current transaction</DT
+><DT
+><A
+HREF="sql-set-session-authorization.html"
+>SET SESSION AUTHORIZATION</A
+>&nbsp;--&nbsp;set the session user identifier and the current user identifier of the current session</DT
+><DT
+><A
+HREF="sql-set-transaction.html"
+>SET TRANSACTION</A
+>&nbsp;--&nbsp;set the characteristics of the current transaction</DT
+><DT
+><A
+HREF="sql-show.html"
+>SHOW</A
+>&nbsp;--&nbsp;show the value of a run-time parameter</DT
+><DT
+><A
+HREF="sql-start-transaction.html"
+>START TRANSACTION</A
+>&nbsp;--&nbsp;start a transaction block</DT
+><DT
+><A
+HREF="sql-truncate.html"
+>TRUNCATE</A
+>&nbsp;--&nbsp;   empty a table
+  </DT
+><DT
+><A
+HREF="sql-unlisten.html"
+>UNLISTEN</A
+>&nbsp;--&nbsp;   stop listening for a notification
+  </DT
+><DT
+><A
+HREF="sql-update.html"
+>UPDATE</A
+>&nbsp;--&nbsp;   update rows of a table
+  </DT
+><DT
+><A
+HREF="sql-vacuum.html"
+>VACUUM</A
+>&nbsp;--&nbsp;   garbage-collect and optionally analyze a database
+  </DT
+></DL
+></DD
+><DT
+>II. <A
+HREF="reference-client.html"
+>PostgreSQL Client Applications</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="app-clusterdb.html"
+><SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+></A
+>&nbsp;--&nbsp;cluster a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+><DT
+><A
+HREF="app-createdb.html"
+><SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+></A
+>&nbsp;--&nbsp;create a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+><DT
+><A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+>&nbsp;--&nbsp;define a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language</DT
+><DT
+><A
+HREF="app-createuser.html"
+><SPAN
+CLASS="APPLICATION"
+>createuser</SPAN
+></A
+>&nbsp;--&nbsp;define a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account</DT
+><DT
+><A
+HREF="app-dropdb.html"
+><SPAN
+CLASS="APPLICATION"
+>dropdb</SPAN
+></A
+>&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+><DT
+><A
+HREF="app-droplang.html"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></A
+>&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language</DT
+><DT
+><A
+HREF="app-dropuser.html"
+><SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+></A
+>&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account</DT
+><DT
+><A
+HREF="app-ecpg.html"
+><SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+></A
+>&nbsp;--&nbsp;embedded SQL C preprocessor</DT
+><DT
+><A
+HREF="app-pgconfig.html"
+>pg_config</A
+>&nbsp;--&nbsp;retrieve information about the installed version of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></DT
+><DT
+><A
+HREF="app-pgdump.html"
+>pg_dump</A
+>&nbsp;--&nbsp;   extract a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database into a script file or other archive file 
+  </DT
+><DT
+><A
+HREF="app-pg-dumpall.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+></A
+>&nbsp;--&nbsp;extract a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster into a script file</DT
+><DT
+><A
+HREF="app-pgrestore.html"
+>pg_restore</A
+>&nbsp;--&nbsp;   restore a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database from an archive file created by pg_dump
+  </DT
+><DT
+><A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>&nbsp;--&nbsp;      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interactive terminal
+    </DT
+><DT
+><A
+HREF="app-pgtclsh.html"
+>pgtclsh</A
+>&nbsp;--&nbsp;   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <SPAN
+CLASS="APPLICATION"
+>Tcl</SPAN
+> shell client
+  </DT
+><DT
+><A
+HREF="app-pgtksh.html"
+>pgtksh</A
+>&nbsp;--&nbsp;   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <SPAN
+CLASS="APPLICATION"
+>Tcl/Tk</SPAN
+> shell client
+  </DT
+><DT
+><A
+HREF="app-vacuumdb.html"
+><SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+></A
+>&nbsp;--&nbsp;garbage-collect and analyze a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+></DL
+></DD
+><DT
+>III. <A
+HREF="reference-server.html"
+>PostgreSQL Server Applications</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="app-initdb.html"
+>initdb</A
+>&nbsp;--&nbsp;create a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster</DT
+><DT
+><A
+HREF="app-initlocation.html"
+><SPAN
+CLASS="APPLICATION"
+>initlocation</SPAN
+></A
+>&nbsp;--&nbsp;create a secondary <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database storage area</DT
+><DT
+><A
+HREF="app-ipcclean.html"
+><SPAN
+CLASS="APPLICATION"
+>ipcclean</SPAN
+></A
+>&nbsp;--&nbsp;remove shared memory and semaphores from an aborted <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server</DT
+><DT
+><A
+HREF="app-pg-ctl.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_ctl</SPAN
+></A
+>&nbsp;--&nbsp;start, stop, or restart a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server</DT
+><DT
+><A
+HREF="app-pgcontroldata.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_controldata</SPAN
+></A
+>&nbsp;--&nbsp;display server-wide control information</DT
+><DT
+><A
+HREF="app-pgresetxlog.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_resetxlog</SPAN
+></A
+>&nbsp;--&nbsp;reset write-ahead log and pg_control contents</DT
+><DT
+><A
+HREF="app-postgres.html"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></A
+>&nbsp;--&nbsp;run a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server in single-user mode</DT
+><DT
+><A
+HREF="app-postmaster.html"
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></A
+>&nbsp;--&nbsp;<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> multiuser database server</DT
+></DL
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="plpython-trusted.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="reference-preface.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Restricted Environment</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Preface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

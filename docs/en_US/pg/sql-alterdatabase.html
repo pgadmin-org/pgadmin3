@@ -1,0 +1,428 @@
+<HTML
+><HEAD
+><TITLE
+>ALTER DATABASE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ABORT"
+HREF="sql-abort.html"><LINK
+REL="NEXT"
+TITLE="ALTER GROUP"
+HREF="sql-altergroup.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-abort.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-altergroup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERDATABASE"
+>ALTER DATABASE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN37261"
+></A
+><H2
+>Name</H2
+>ALTER DATABASE&nbsp;--&nbsp;change a database</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN37264"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> SET <TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+> { TO | = } { <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> | DEFAULT }
+ALTER DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> RESET <TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37271"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER DATABASE</TT
+> is used to change the session
+   default of a run-time configuration variable for a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database. Whenever a new
+   session is subsequently started in that database, the specified
+   value becomes the session default value.
+   The database-specific default
+   overrides whatever setting is present in <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>
+   or has been received from the postmaster.
+  </P
+><P
+>   Only a superuser or the database owner can change the session defaults for a
+   database.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN37278"
+></A
+><H3
+>Parameters</H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name of the database whose session defaults are to be altered.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>variable</I
+></TT
+><BR><TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+></DT
+><DD
+><P
+>        Set the session default for this database of the specified
+        configuration variable to the given value.  If
+        <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> is <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+>
+        or, equivalently, <TT
+CLASS="LITERAL"
+>RESET</TT
+> is used, the
+        database-specific variable setting is removed and the system-wide
+	default
+        setting will be inherited in new sessions.  Use <TT
+CLASS="LITERAL"
+>RESET
+        ALL</TT
+> to clear all settings.
+       </P
+><P
+>        See <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+> and the
+        <I
+CLASS="CITETITLE"
+>Administrator's Guide</I
+> for more
+        information about allowed variable names and values.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37301"
+></A
+><H2
+>Diagnostics</H2
+><P
+>   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ALTER DATABASE</TT
+></DT
+><DD
+><P
+>       Message returned if the alteration was successful.
+      </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR:  database "dbname" does not exist</TT
+></DT
+><DD
+><P
+>       Error message returned if the specified database is not known
+       to the system.
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37315"
+></A
+><H2
+>Notes</H2
+><P
+>   Using <A
+HREF="sql-alteruser.html"
+><I
+>ALTER USER</I
+></A
+>,
+   it is also possible to tie a session default to a specific user
+   rather than a database.  User-specific settings override database-specific
+   ones if there is a conflict.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37319"
+></A
+><H2
+>Examples</H2
+><P
+>   To disable index scans by default in the database
+   <TT
+CLASS="LITERAL"
+>test</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER DATABASE test SET enable_indexscan TO off;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37324"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>ALTER DATABASE</TT
+> statement is a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN37329"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-alteruser.html"
+><I
+>ALTER USER</I
+></A
+>, <A
+HREF="sql-createdatabase.html"
+><I
+>CREATE DATABASE</I
+></A
+>, <A
+HREF="sql-dropdatabase.html"
+><I
+>DROP DATABASE</I
+></A
+>, <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-abort.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altergroup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ABORT</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER GROUP</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

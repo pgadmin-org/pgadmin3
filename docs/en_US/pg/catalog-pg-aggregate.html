@@ -1,0 +1,342 @@
+<HTML
+><HEAD
+><TITLE
+>pg_aggregate</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="PREVIOUS"
+TITLE="System Catalogs"
+HREF="catalogs.html"><LINK
+REL="NEXT"
+TITLE="pg_am"
+HREF="catalog-pg-am.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="catalogs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. System Catalogs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="catalog-pg-am.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CATALOG-PG-AGGREGATE"
+>3.2. pg_aggregate</A
+></H1
+><P
+>   <TT
+CLASS="STRUCTNAME"
+>pg_aggregate</TT
+> stores information about
+   aggregate functions.  An aggregate function is a function that
+   operates on a set of values (typically one column from each row
+   that matches a query condition) and returns a single value computed
+   from all these values.  Typical aggregate functions are
+   <TT
+CLASS="FUNCTION"
+>sum</TT
+>, <TT
+CLASS="FUNCTION"
+>count</TT
+>, and
+   <TT
+CLASS="FUNCTION"
+>max</TT
+>.  Each entry in
+   <TT
+CLASS="STRUCTNAME"
+>pg_aggregate</TT
+> is an extension of an entry
+   in <TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+>.  The <TT
+CLASS="STRUCTNAME"
+>pg_proc</TT
+>
+   entry carries the aggregate's name, input and output datatypes, and
+   other information that is similar to ordinary functions.
+  </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN52421"
+></A
+><P
+><B
+>Table 3-2. pg_aggregate Columns</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>References</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>aggfnoid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_proc.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_proc OID of the aggregate function</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>aggtransfn</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_proc.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Transition function</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>aggfinalfn</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>regproc</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_proc.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Final function (zero if none)</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>aggtranstype</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>oid</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pg_type.oid</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>The type of the aggregate function's internal transition (state) data</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>agginitval</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>text</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>       The initial value of the transition state.  This is a text
+       field containing the initial value in its external string
+       representation.  If the field is NULL, the transition state
+       value starts out NULL.
+      </TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>   New aggregate functions are registered with the <TT
+CLASS="COMMAND"
+>CREATE
+   AGGREGATE</TT
+> command.  See the <I
+CLASS="CITETITLE"
+>Programmer's
+   Guide</I
+> for more information about writing aggregate
+   functions and the meaning of the transition functions, etc.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="catalog-pg-am.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>System Catalogs</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="catalogs.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>pg_am</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

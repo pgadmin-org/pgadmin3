@@ -1,0 +1,352 @@
+<HTML
+><HEAD
+><TITLE
+>PostgreSQL Client Applications</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Reference Manual"
+HREF="reference.html"><LINK
+REL="PREVIOUS"
+TITLE="VACUUM"
+HREF="sql-vacuum.html"><LINK
+REL="NEXT"
+TITLE="clusterdb"
+HREF="app-clusterdb.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFERENCE"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-vacuum.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="app-clusterdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="REFERENCE"
+><A
+NAME="REFERENCE-CLIENT"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>II. PostgreSQL Client Applications</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN46499"
+></A
+><P
+>    This part contains reference information for
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> client applications and
+    utilities.  Not all of these commands are of general utility, some
+    may require special privileges.  The common feature of these
+    applications is that they can be run on any host, independent of
+    where the database server resides.
+   </P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="app-clusterdb.html"
+><SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+></A
+>&nbsp;--&nbsp;cluster a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+><DT
+><A
+HREF="app-createdb.html"
+><SPAN
+CLASS="APPLICATION"
+>createdb</SPAN
+></A
+>&nbsp;--&nbsp;create a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+><DT
+><A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+>&nbsp;--&nbsp;define a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language</DT
+><DT
+><A
+HREF="app-createuser.html"
+><SPAN
+CLASS="APPLICATION"
+>createuser</SPAN
+></A
+>&nbsp;--&nbsp;define a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account</DT
+><DT
+><A
+HREF="app-dropdb.html"
+><SPAN
+CLASS="APPLICATION"
+>dropdb</SPAN
+></A
+>&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+><DT
+><A
+HREF="app-droplang.html"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></A
+>&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language</DT
+><DT
+><A
+HREF="app-dropuser.html"
+><SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+></A
+>&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user account</DT
+><DT
+><A
+HREF="app-ecpg.html"
+><SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+></A
+>&nbsp;--&nbsp;embedded SQL C preprocessor</DT
+><DT
+><A
+HREF="app-pgconfig.html"
+>pg_config</A
+>&nbsp;--&nbsp;retrieve information about the installed version of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></DT
+><DT
+><A
+HREF="app-pgdump.html"
+>pg_dump</A
+>&nbsp;--&nbsp;   extract a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database into a script file or other archive file 
+  </DT
+><DT
+><A
+HREF="app-pg-dumpall.html"
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+></A
+>&nbsp;--&nbsp;extract a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster into a script file</DT
+><DT
+><A
+HREF="app-pgrestore.html"
+>pg_restore</A
+>&nbsp;--&nbsp;   restore a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database from an archive file created by pg_dump
+  </DT
+><DT
+><A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>&nbsp;--&nbsp;      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interactive terminal
+    </DT
+><DT
+><A
+HREF="app-pgtclsh.html"
+>pgtclsh</A
+>&nbsp;--&nbsp;   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <SPAN
+CLASS="APPLICATION"
+>Tcl</SPAN
+> shell client
+  </DT
+><DT
+><A
+HREF="app-pgtksh.html"
+>pgtksh</A
+>&nbsp;--&nbsp;   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> <SPAN
+CLASS="APPLICATION"
+>Tcl/Tk</SPAN
+> shell client
+  </DT
+><DT
+><A
+HREF="app-vacuumdb.html"
+><SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+></A
+>&nbsp;--&nbsp;garbage-collect and analyze a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DT
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-vacuum.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-clusterdb.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>VACUUM</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>clusterdb</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

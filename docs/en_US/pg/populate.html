@@ -1,0 +1,267 @@
+<HTML
+><HEAD
+><TITLE
+>Populating a Database</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Performance Tips"
+HREF="performance-tips.html"><LINK
+REL="PREVIOUS"
+TITLE="Controlling the Planner with Explicit JOIN Clauses"
+HREF="explicit-joins.html"><LINK
+REL="NEXT"
+TITLE="Date/Time Support"
+HREF="datetime-appendix.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="explicit-joins.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Performance Tips</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="datetime-appendix.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="POPULATE"
+>10.4. Populating a Database</A
+></H1
+><P
+>   One may need to do a large number of table insertions when first
+   populating a database. Here are some tips and techniques for making that as
+   efficient as possible.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="DISABLE-AUTOCOMMIT"
+>10.4.1. Disable Autocommit</A
+></H2
+><P
+>    Turn off autocommit and just do one commit at
+    the end.  (In plain SQL, this means issuing <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>
+    at the start and <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> at the end.  Some client
+    libraries may do this behind your back, in which case you need to
+    make sure the library does it when you want it done.)
+    If you allow each insertion to be committed separately,
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is doing a lot of work for each
+    record added.
+    An additional benefit of doing all insertions in one transaction
+    is that if the insertion of one record were to fail then the
+    insertion of all records inserted up to that point would be rolled
+    back, so you won't be stuck with partially loaded data.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="POPULATE-COPY-FROM"
+>10.4.2. Use COPY FROM</A
+></H2
+><P
+>    Use <TT
+CLASS="COMMAND"
+>COPY FROM STDIN</TT
+> to load all the records in one
+    command, instead of using
+    a series of <TT
+CLASS="COMMAND"
+>INSERT</TT
+> commands.  This reduces parsing,
+    planning, etc.
+    overhead a great deal. If you do this then it is not necessary to turn
+    off autocommit, since it is only one command anyway.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="POPULATE-RM-INDEXES"
+>10.4.3. Remove Indexes</A
+></H2
+><P
+>    If you are loading a freshly created table, the fastest way is to
+    create the table, bulk-load with <TT
+CLASS="COMMAND"
+>COPY</TT
+>, then create any
+    indexes needed 
+    for the table.  Creating an index on pre-existing data is quicker than
+    updating it incrementally as each record is loaded.
+   </P
+><P
+>    If you are augmenting an existing table, you can <TT
+CLASS="COMMAND"
+>DROP
+    INDEX</TT
+>, load the table, then recreate the index. Of
+    course, the database performance for other users may be adversely 
+    affected during the time that the index is missing.  One should also
+    think twice before dropping unique indexes, since the error checking
+    afforded by the unique constraint will be lost while the index is missing.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="POPULATE-ANALYZE"
+>10.4.4. Run ANALYZE Afterwards</A
+></H2
+><P
+>    It's a good idea to run <TT
+CLASS="COMMAND"
+>ANALYZE</TT
+> or <TT
+CLASS="COMMAND"
+>VACUUM
+    ANALYZE</TT
+> anytime you've added or updated a lot of data,
+    including just after initially populating a table.  This ensures that
+    the planner has up-to-date statistics about the table.  With no statistics
+    or obsolete statistics, the planner may make poor choices of query plans,
+    leading to bad performance on queries that use your table.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="explicit-joins.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datetime-appendix.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Controlling the Planner with Explicit <TT
+CLASS="LITERAL"
+>JOIN</TT
+> Clauses</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="performance-tips.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Date/Time Support</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,444 @@
+<HTML
+><HEAD
+><TITLE
+>Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Type Conversion"
+HREF="typeconv.html"><LINK
+REL="PREVIOUS"
+TITLE="Operators"
+HREF="typeconv-oper.html"><LINK
+REL="NEXT"
+TITLE="Query Targets"
+HREF="typeconv-query.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="typeconv-oper.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. Type Conversion</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="typeconv-query.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TYPECONV-FUNC"
+>7.3. Functions</A
+></H1
+><P
+>   The argument types of function calls are resolved according to the
+   following steps.
+  </P
+><DIV
+CLASS="PROCEDURE"
+><P
+><B
+>Function Argument Type Resolution</B
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Select the functions to be considered from the
+<TT
+CLASS="CLASSNAME"
+>pg_proc</TT
+> system catalog.  If an unqualified
+function name is used, the functions
+considered are those of the right name and argument count that are
+visible in the current search path (see <A
+HREF="ddl-schemas.html#DDL-SCHEMAS-PATH"
+>Section 2.8.3</A
+>).
+If a qualified function name was given, only functions in the specified
+schema are considered.</P
+><OL
+CLASS="SUBSTEPS"
+TYPE="a"
+><LI
+><P
+>If the search path finds multiple functions of identical argument types,
+only the one appearing earliest in the path is considered.  But functions of
+different argument types are considered on an equal footing regardless of
+search path position.</P
+></LI
+></OL
+></LI
+><LI
+><P
+>Check for a function accepting exactly the input argument types.
+If one exists (there can be only one exact match in the set of
+functions considered), use it.
+(Cases involving <TT
+CLASS="TYPE"
+>unknown</TT
+> will never find a match at
+this step.)</P
+></LI
+><LI
+><P
+>If no exact match is found, see whether the function call appears
+to be a trivial type coercion request.  This happens if the function call
+has just one argument and the function name is the same as the (internal)
+name of some data type.  Furthermore, the function argument must be either
+an unknown-type literal or a type that is binary-compatible with the named
+data type.  When these conditions are met, the function argument is coerced
+to the named data type without any explicit function call.</P
+></LI
+><LI
+><P
+>Look for the best match.</P
+><OL
+CLASS="SUBSTEPS"
+TYPE="a"
+><LI
+><P
+>Discard candidate functions for which the input types do not match
+and cannot be coerced (using an implicit coercion function) to match.
+<TT
+CLASS="TYPE"
+>unknown</TT
+> literals are
+assumed to be coercible to anything for this purpose.  If only one
+candidate remains, use it; else continue to the next step.</P
+></LI
+><LI
+><P
+>Run through all candidates and keep those with the most exact matches
+on input types.  Keep all candidates if none have any exact matches.
+If only one candidate remains, use it; else continue to the next step.</P
+></LI
+><LI
+><P
+>Run through all candidates and keep those with the most exact or
+binary-compatible matches on input types.  Keep all candidates if none have
+any exact or binary-compatible matches.
+If only one candidate remains, use it; else continue to the next step.</P
+></LI
+><LI
+><P
+>Run through all candidates and keep those that accept preferred types at
+the most positions where type coercion will be required.
+Keep all candidates if none accept preferred types.
+If only one candidate remains, use it; else continue to the next step.</P
+></LI
+><LI
+><P
+>If any input arguments are <TT
+CLASS="TYPE"
+>unknown</TT
+>, check the type categories accepted
+at those argument positions by the remaining candidates.  At each position,
+select the <TT
+CLASS="TYPE"
+>string</TT
+> category if any candidate accepts that category
+(this bias towards string
+is appropriate since an unknown-type literal does look like a string).
+Otherwise, if all the remaining candidates accept the same type category,
+select that category; otherwise fail because
+the correct choice cannot be deduced without more clues.  Also note whether
+any of the candidates accept a preferred data type within the selected category.
+Now discard candidates that do not accept the selected type category;
+furthermore, if any candidate accepts a preferred type at a given argument
+position, discard candidates that accept non-preferred types for that
+argument.</P
+></LI
+><LI
+><P
+>If only one candidate remains, use it.  If no candidate or more than one
+candidate remains,
+then fail.</P
+></LI
+></OL
+></LI
+></OL
+></DIV
+><H3
+CLASS="BRIDGEHEAD"
+><A
+NAME="AEN10907">Examples</H3
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN10908"
+></A
+><P
+><B
+>Example 7-4. Factorial Function Argument Type Resolution</B
+></P
+><P
+>There is only one <TT
+CLASS="FUNCTION"
+>int4fac</TT
+> function defined in the
+<TT
+CLASS="CLASSNAME"
+>pg_proc</TT
+> catalog.
+So the following query automatically converts the <TT
+CLASS="TYPE"
+>int2</TT
+> argument
+to <TT
+CLASS="TYPE"
+>int4</TT
+>:
+
+</P><PRE
+CLASS="SCREEN"
+>tgl=&#62; SELECT int4fac(int2 '4');
+ int4fac
+---------
+      24
+(1 row)</PRE
+><P>
+
+and is actually transformed by the parser to
+</P><PRE
+CLASS="SCREEN"
+>tgl=&#62; SELECT int4fac(int4(int2 '4'));
+ int4fac
+---------
+      24
+(1 row)</PRE
+><P></P
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN10917"
+></A
+><P
+><B
+>Example 7-5. Substring Function Type Resolution</B
+></P
+><P
+>There are two <TT
+CLASS="FUNCTION"
+>substr</TT
+> functions declared in <TT
+CLASS="CLASSNAME"
+>pg_proc</TT
+>. However,
+only one takes two arguments, of types <TT
+CLASS="TYPE"
+>text</TT
+> and <TT
+CLASS="TYPE"
+>int4</TT
+>.</P
+><P
+>If called with a string constant of unspecified type, the type is matched up
+directly with the only candidate function type:
+</P><PRE
+CLASS="SCREEN"
+>tgl=&#62; SELECT substr('1234', 3);
+ substr
+--------
+     34
+(1 row)</PRE
+><P></P
+><P
+>If the string is declared to be of type <TT
+CLASS="TYPE"
+>varchar</TT
+>, as might be the case
+if it comes from a table, then the parser will try to coerce it to become <TT
+CLASS="TYPE"
+>text</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+>tgl=&#62; SELECT substr(varchar '1234', 3);
+ substr
+--------
+     34
+(1 row)</PRE
+><P>
+which is transformed by the parser to become
+</P><PRE
+CLASS="SCREEN"
+>tgl=&#62; SELECT substr(text(varchar '1234'), 3);
+ substr
+--------
+     34
+(1 row)</PRE
+><P></P
+><P
+></P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>Actually, the parser is aware that <TT
+CLASS="TYPE"
+>text</TT
+> and <TT
+CLASS="TYPE"
+>varchar</TT
+>
+are <I
+CLASS="FIRSTTERM"
+>binary-compatible</I
+>, meaning that one can be passed to a function that
+accepts the other without doing any physical conversion.  Therefore, no
+explicit type conversion call is really inserted in this case.</P
+></BLOCKQUOTE
+></DIV
+><P></P
+><P
+>And, if the function is called with an <TT
+CLASS="TYPE"
+>int4</TT
+>, the parser will
+try to convert that to <TT
+CLASS="TYPE"
+>text</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+>tgl=&#62; SELECT substr(1234, 3);
+ substr
+--------
+     34
+(1 row)</PRE
+><P>
+which actually executes as
+</P><PRE
+CLASS="SCREEN"
+>tgl=&#62; SELECT substr(text(1234), 3);
+ substr
+--------
+     34
+(1 row)</PRE
+><P>
+This succeeds because there is a conversion function text(int4) in the
+system catalog.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="typeconv-oper.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="typeconv-query.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="typeconv.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Query Targets</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

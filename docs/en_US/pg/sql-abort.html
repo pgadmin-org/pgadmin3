@@ -1,0 +1,312 @@
+<HTML
+><HEAD
+><TITLE
+>ABORT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="NEXT"
+TITLE="ALTER DATABASE"
+HREF="sql-alterdatabase.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ABORT"
+>ABORT</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN37201"
+></A
+><H2
+>Name</H2
+>   ABORT
+  &nbsp;--&nbsp;   abort the current transaction
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN37204"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ABORT [ WORK | TRANSACTION ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ABORT-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    None.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ABORT-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ROLLBACK
+       </TT
+></DT
+><DD
+><P
+>	Message returned if successful.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>WARNING:  ROLLBACK: no transaction in progress
+       </TT
+></DT
+><DD
+><P
+>	If there is not any transaction currently in progress.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ABORT-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ABORT</TT
+> rolls back the current transaction and causes
+   all the updates made by the transaction to be discarded. 
+   This command is identical
+   in behavior to the <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> command <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+>,
+   and is present only for historical reasons.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ABORT-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    Use <TT
+CLASS="COMMAND"
+>COMMIT</TT
+> to successfully
+    terminate a transaction.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ABORT-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To abort all changes:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ABORT WORK;
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ABORT-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ABORT-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    This command is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension present
+    for historical reasons. <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+> is the <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>
+    equivalent command.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-alterdatabase.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SQL Commands</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER DATABASE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,387 @@
+<HTML
+><HEAD
+><TITLE
+>The PostgreSQL Rule System</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Overview of PostgreSQL Internals"
+HREF="overview.html"><LINK
+REL="PREVIOUS"
+TITLE="The Parser Stage"
+HREF="parser-stage.html"><LINK
+REL="NEXT"
+TITLE="Planner/Optimizer"
+HREF="planner-optimizer.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="parser-stage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Overview of PostgreSQL Internals</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="planner-optimizer.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RULE-SYSTEM"
+>2.4. The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> Rule System</A
+></H1
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports a powerful
+    <I
+CLASS="FIRSTTERM"
+>rule system</I
+> for the specification
+    of <I
+CLASS="FIRSTTERM"
+>views</I
+> and ambiguous <I
+CLASS="FIRSTTERM"
+>view updates</I
+>.
+    Originally the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    rule system consisted of two implementations:
+
+    <P
+></P
+></P><UL
+><LI
+><P
+>       The first one worked using <I
+CLASS="FIRSTTERM"
+>tuple level</I
+> processing and was
+       implemented deep in the <I
+CLASS="FIRSTTERM"
+>executor</I
+>. The rule system was
+       called whenever an individual tuple had been accessed. This
+       implementation was removed in 1995 when the last official release
+       of the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> project was transformed into 
+       <SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+>. 
+      </P
+></LI
+><LI
+><P
+>       The second implementation of the rule system is a technique
+       called <I
+CLASS="FIRSTTERM"
+>query rewriting</I
+>.
+       The <I
+CLASS="FIRSTTERM"
+>rewrite system</I
+>} is a module
+       that exists between the <I
+CLASS="FIRSTTERM"
+>parser stage</I
+> and the
+       <I
+CLASS="FIRSTTERM"
+>planner/optimizer</I
+>. This technique is still implemented.
+      </P
+></LI
+></UL
+><P>
+   </P
+><P
+>    For information on the syntax and creation of rules in the
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> system refer to
+    <I
+CLASS="CITETITLE"
+>The PostgreSQL User's Guide</I
+>.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN52142"
+>2.4.1. The Rewrite System</A
+></H2
+><P
+>     The <I
+CLASS="FIRSTTERM"
+>query rewrite system</I
+> is a module between
+     the parser stage and the planner/optimizer. It processes the tree handed
+     back by the parser stage (which represents a user query) and if
+     there is a rule present that has to be applied to the query it
+     rewrites the tree to an alternate form.
+    </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="VIEW-IMPL"
+>2.4.1.1. Techniques To Implement Views</A
+></H3
+><P
+>      Now we will sketch the algorithm of the query rewrite system. For
+      better illustration we show how to implement views using rules
+      as an example.
+     </P
+><P
+>      Let the following rule be given:
+
+      </P><PRE
+CLASS="PROGRAMLISTING"
+>  create rule view_rule
+  as on select 
+  to test_view
+  do instead
+     select s.sname, p.pname
+     from supplier s, sells se, part p
+     where s.sno = se.sno and
+           p.pno = se.pno;   
+      </PRE
+><P>
+     </P
+><P
+>      The given rule will be <I
+CLASS="FIRSTTERM"
+>fired</I
+> whenever a select
+      against the relation <TT
+CLASS="LITERAL"
+>test_view</TT
+> is detected. Instead of
+      selecting the tuples from <TT
+CLASS="LITERAL"
+>test_view</TT
+> the select statement
+      given in the <I
+CLASS="FIRSTTERM"
+>action part</I
+> of the rule is executed.
+     </P
+><P
+>      Let the following user-query against <TT
+CLASS="LITERAL"
+>test_view</TT
+> be given:
+
+      </P><PRE
+CLASS="PROGRAMLISTING"
+>  select sname 
+  from test_view
+  where sname &lt;&gt; 'Smith';
+      </PRE
+><P>
+     </P
+><P
+>      Here is a list of the steps performed by the query rewrite
+      system whenever a user-query against <TT
+CLASS="LITERAL"
+>test_view</TT
+> appears. (The
+      following listing is a very informal description of the algorithm just
+      intended for basic understanding. For a detailed description refer
+      to <A
+HREF="biblio.html#STON89"
+><I
+><A
+HREF="http://s2k-ftp.CS.Berkeley.EDU:8000/postgres/papers/ERL-M89-82.pdf"
+TARGET="_top"
+>A commentary on the <SPAN
+CLASS="PRODUCTNAME"
+>POSTGRES</SPAN
+> rules system</A
+></I
+></A
+>).
+     </P
+><DIV
+CLASS="PROCEDURE"
+><P
+><B
+><TT
+CLASS="LITERAL"
+>test_view</TT
+> Rewrite</B
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>	Take the query given in the action part of the rule.
+       </P
+></LI
+><LI
+><P
+>	Adapt the targetlist to meet the number and order of
+	attributes given in the user-query.
+       </P
+></LI
+><LI
+><P
+>	Add the qualification given in the where clause of the
+	user-query to the qualification of the query given in the
+	action part of the rule.
+       </P
+></LI
+></OL
+></DIV
+><P
+>      Given the rule definition above, the user-query will be
+      rewritten to the following form (Note that the rewriting is done on
+      the internal representation of the user-query handed back by the
+      parser stage but the derived new data structure will represent the following
+      query):
+
+      </P><PRE
+CLASS="PROGRAMLISTING"
+>  select s.sname
+  from supplier s, sells se, part p
+  where s.sno = se.sno and
+        p.pno = se.pno and
+        s.sname &lt;&gt; 'Smith';
+      </PRE
+><P>
+     </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="parser-stage.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="planner-optimizer.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The Parser Stage</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="overview.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Planner/Optimizer</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,250 @@
+<HTML
+><HEAD
+><TITLE
+>File system level backup</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Backup and Restore"
+HREF="backup.html"><LINK
+REL="PREVIOUS"
+TITLE="Backup and Restore"
+HREF="backup.html"><LINK
+REL="NEXT"
+TITLE="Migration between releases"
+HREF="migration.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="backup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Backup and Restore</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="migration.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="BACKUP-FILE"
+>9.2. File system level backup</A
+></H1
+><P
+>   An alternative backup strategy is to directly copy the files that
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> uses to store the data in the database. In
+   <A
+HREF="creating-cluster.html"
+>Section 3.2</A
+> it is explained where these files
+   are located, but you have probably found them already if you are
+   interested in this method. You can use whatever method you prefer
+   for doing usual file system backups, for example
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>tar -cf backup.tar /usr/local/pgsql/data</PRE
+><P>
+  </P
+><P
+>   There are two restrictions, however, which make this method
+   impractical, or at least inferior to the <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>
+   method:
+
+   <P
+></P
+></P><OL
+TYPE="1"
+><LI
+><P
+>      The database server <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+> be shut down in order to
+      get a usable backup. Half-way measures such as disallowing all
+      connections will not work as there is always some buffering
+      going on. For this reason it is also not advisable to trust file
+      systems that claim to support <SPAN
+CLASS="QUOTE"
+>"consistent
+      snapshots"</SPAN
+>. Information about stopping the server can be
+      found in <A
+HREF="postmaster-shutdown.html"
+>Section 3.6</A
+>.
+     </P
+><P
+>      Needless to say that you also need to shut down the server
+      before restoring the data.
+     </P
+></LI
+><LI
+><P
+>      If you have dug into the details of the file system layout you
+      may be tempted to try to back up or restore only certain
+      individual tables or databases from their respective files or
+      directories. This will <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> work because the
+      information contained in these files contains only half the
+      truth. The other half is in the commit log files
+      <TT
+CLASS="FILENAME"
+>pg_clog/*</TT
+>, which contain the commit status of
+      all transactions. A table file is only usable with this
+      information. Of course it is also impossible to restore only a
+      table and the associated <TT
+CLASS="FILENAME"
+>pg_clog</TT
+> data
+      because that will render all other tables in the database
+      cluster useless.
+     </P
+></LI
+></OL
+><P>
+  </P
+><P
+>   Also note that the file system backup will not necessarily be
+   smaller than an SQL dump. On the contrary, it will most likely be
+   larger. (<SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> does not need to dump
+   the contents of indexes for example, just the commands to recreate
+   them.)
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="backup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="migration.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Backup and Restore</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="backup.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Migration between releases</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

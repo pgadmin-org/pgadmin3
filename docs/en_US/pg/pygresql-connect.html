@@ -1,0 +1,463 @@
+<HTML
+><HEAD
+><TITLE
+>connect</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="pg Module Functions"
+HREF="pygresql-pg-functions.html"><LINK
+REL="PREVIOUS"
+TITLE="pg Module Functions"
+HREF="pygresql-pg-functions.html"><LINK
+REL="NEXT"
+TITLE="get_defhost"
+HREF="pygresql-get-defhost.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="pygresql-pg-functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="pygresql-get-defhost.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="PYGRESQL-CONNECT"
+>connect</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN29180"
+></A
+><H2
+>Name</H2
+>connect&nbsp;--&nbsp;open a connection to the database server</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN29183"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>connect([<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="PARAMETER"
+><I
+>dbname</I
+></TT
+></SPAN
+>], [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="PARAMETER"
+><I
+>host</I
+></TT
+></SPAN
+>], [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="PARAMETER"
+><I
+>port</I
+></TT
+></SPAN
+>], [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="PARAMETER"
+><I
+>opt</I
+></TT
+></SPAN
+>], [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="PARAMETER"
+><I
+>tty</I
+></TT
+></SPAN
+>], [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="PARAMETER"
+><I
+>user</I
+></TT
+></SPAN
+>], [<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="PARAMETER"
+><I
+>passwd</I
+></TT
+></SPAN
+>])</PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="PYGRESQL-CONNECT-PARAMETERS"
+></A
+><H3
+>Parameters</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>dbname</I
+></TT
+></DT
+><DD
+><P
+>Name of connected database (string/<TT
+CLASS="SYMBOL"
+>None</TT
+>).</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>host</I
+></TT
+></DT
+><DD
+><P
+>Name of the server host (string/<TT
+CLASS="SYMBOL"
+>None</TT
+>).</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>port</I
+></TT
+></DT
+><DD
+><P
+>Port used by the database server (integer/-1).</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>opt</I
+></TT
+></DT
+><DD
+><P
+>         Options for the server (string/<TT
+CLASS="SYMBOL"
+>None</TT
+>).
+        </P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>tty</I
+></TT
+></DT
+><DD
+><P
+>         File or tty for optional debug output from backend
+         (string/<TT
+CLASS="SYMBOL"
+>None</TT
+>).
+        </P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>user</I
+></TT
+></DT
+><DD
+><P
+>         <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user (string/<TT
+CLASS="SYMBOL"
+>None</TT
+>).
+        </P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>passwd</I
+></TT
+></DT
+><DD
+><P
+>Password for user (string/<TT
+CLASS="SYMBOL"
+>None</TT
+>).</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="PYGRESQL-CONNECT-RETURN"
+></A
+><H3
+>Return Type</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>pgobject</I
+></TT
+></DT
+><DD
+><P
+>         If successful, an object handling a database connection is returned.
+        </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="PYGRESQL-CONNECT-EXCEPTIONS"
+></A
+><H3
+>Exceptions</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="CLASSNAME"
+>TypeError</TT
+></DT
+><DD
+><P
+>         Bad argument type, or too many arguments.
+        </P
+></DD
+><DT
+><TT
+CLASS="CLASSNAME"
+>SyntaxError</TT
+></DT
+><DD
+><P
+>         Duplicate argument definition.
+        </P
+></DD
+><DT
+><TT
+CLASS="CLASSNAME"
+>pg.error</TT
+></DT
+><DD
+><P
+>         Some error occurred during <TT
+CLASS="LITERAL"
+>pg</TT
+> connection definition.
+        </P
+></DD
+></DL
+></DIV
+><P
+>      (plus all exceptions relative to object allocation)
+     </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PYGRESQL-CONNECT-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>     This method opens a connection to a specified database on a given
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server. You can use
+     key words here, as described in the
+     <SPAN
+CLASS="APPLICATION"
+>Python</SPAN
+> tutorial.  The names of the
+     key words are the name of the parameters given in the syntax
+     line. For a precise description of the parameters, please refer
+     to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> user manual.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="PYGRESQL-CONNECT-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+></P><PRE
+CLASS="PROGRAMLISTING"
+>import pg
+
+con1 = pg.connect('testdb', 'myhost', 5432, None, None, 'bob', None)
+con2 = pg.connect(dbname='testdb', host='localhost', user='bob')</PRE
+><P>
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pygresql-pg-functions.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pygresql-get-defhost.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>pg</TT
+> Module Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="pygresql-pg-functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>get_defhost</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

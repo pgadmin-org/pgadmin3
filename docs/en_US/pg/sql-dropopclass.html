@@ -1,0 +1,370 @@
+<HTML
+><HEAD
+><TITLE
+>DROP OPERATOR CLASS</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="DROP OPERATOR"
+HREF="sql-dropoperator.html"><LINK
+REL="NEXT"
+TITLE="DROP RULE"
+HREF="sql-droprule.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-dropoperator.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-droprule.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-DROPOPCLASS"
+>DROP OPERATOR CLASS</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN42893"
+></A
+><H2
+>Name</H2
+>   DROP OPERATOR CLASS
+  &nbsp;--&nbsp;   remove a user-defined operator class
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN42896"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>DROP OPERATOR CLASS <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> USING <TT
+CLASS="REPLACEABLE"
+><I
+>access_method</I
+></TT
+> [ CASCADE | RESTRICT ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPOPCLASS-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of an existing operator class.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>access_method</I
+></TT
+></DT
+><DD
+><P
+>	The name of the index access method the operator class is for.
+       </P
+></DD
+><DT
+>CASCADE</DT
+><DD
+><P
+>        Automatically drop objects that depend on the operator class.
+       </P
+></DD
+><DT
+>RESTRICT</DT
+><DD
+><P
+>        Refuse to drop the operator class if there are any dependent objects.
+	This is the default.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPOPCLASS-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>DROP OPERATOR CLASS
+       </TT
+></DT
+><DD
+><P
+>	The message returned if the command is successful.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPOPCLASS-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>DROP OPERATOR CLASS</TT
+> drops an existing operator class
+   from the database.
+   To execute this command you must be the owner of the operator class.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPOPCLASS-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    The <TT
+CLASS="COMMAND"
+>DROP OPERATOR CLASS</TT
+> statement is a 
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    language extension.
+   </P
+><P
+>    Refer to
+    <A
+HREF="sql-createopclass.html"
+><I
+>CREATE OPERATOR CLASS</I
+></A
+>
+    for information on how to create operator classes.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPOPCLASS-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Remove B-tree operator class <TT
+CLASS="LITERAL"
+>widget_ops</TT
+>:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>DROP OPERATOR CLASS widget_ops USING btree;
+   </PRE
+><P>
+
+   This command will not execute if there are any existing indexes
+   that use the operator class.  Add <TT
+CLASS="LITERAL"
+>CASCADE</TT
+> to drop
+   such indexes along with the operator class.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-DROPOPCLASS-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-DROPOPCLASS-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <TT
+CLASS="COMMAND"
+>DROP OPERATOR CLASS</TT
+> in
+    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-dropoperator.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-droprule.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DROP OPERATOR</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DROP RULE</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

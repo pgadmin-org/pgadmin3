@@ -1,0 +1,230 @@
+<HTML
+><HEAD
+><TITLE
+>PostgreSQL Source Code</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Developer's Guide"
+HREF="developer.html"><LINK
+REL="PREVIOUS"
+TITLE="PostgreSQL 7.3.3 Developer's Guide"
+HREF="developer.html"><LINK
+REL="NEXT"
+TITLE="Overview of PostgreSQL Internals"
+HREF="overview.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="developer.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="overview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="SOURCE"
+>Chapter 1. PostgreSQL Source Code</A
+></H1
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SOURCE-FORMAT"
+>1.1. Formatting</A
+></H1
+><P
+>    Source code formatting uses a 4 column tab spacing, currently with 
+    tabs preserved (i.e. tabs are not expanded to spaces).
+   </P
+><P
+>    For Emacs, add the following (or something similar)
+    to your <TT
+CLASS="FILENAME"
+>~/.emacs</TT
+> 
+    initialization file:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>;; check for files with a path containing "postgres" or "pgsql"
+(setq auto-mode-alist
+  (cons '("\\(postgres\\|pgsql\\).*\\.[ch]\\'" . pgsql-c-mode)
+        auto-mode-alist))
+(setq auto-mode-alist
+  (cons '("\\(postgres\\|pgsql\\).*\\.cc\\'" . pgsql-c-mode)
+        auto-mode-alist))
+
+(defun pgsql-c-mode ()
+  ;; sets up formatting for PostgreSQL C code
+  (interactive)
+  (c-mode)
+  (setq-default tab-width 4)
+  (c-set-style "bsd")             ; set c-basic-offset to 4, plus other stuff
+  (c-set-offset 'case-label '+)   ; tweak case indent to match PG custom
+  (setq indent-tabs-mode t))      ; make sure we keep tabs when indenting</PRE
+><P>
+   </P
+><P
+>    For <SPAN
+CLASS="APPLICATION"
+>vi</SPAN
+>, your
+    <TT
+CLASS="FILENAME"
+>~/.vimrc</TT
+> or equivalent file should contain
+    the following:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>set tabstop=4</PRE
+><P>
+
+    or equivalently from within vi, try
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>:set ts=4</PRE
+><P>
+   </P
+><P
+>    The text browsing tools <SPAN
+CLASS="APPLICATION"
+>more</SPAN
+> and
+    <SPAN
+CLASS="APPLICATION"
+>less</SPAN
+> can be invoked as
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>more -x4
+less -x4</PRE
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="developer.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="overview.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>PostgreSQL 7.3.3 Developer's Guide</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="developer.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Overview of PostgreSQL Internals</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,350 @@
+<HTML
+><HEAD
+><TITLE
+>Combining Queries</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Queries"
+HREF="queries.html"><LINK
+REL="PREVIOUS"
+TITLE="Select Lists"
+HREF="queries-select-lists.html"><LINK
+REL="NEXT"
+TITLE="Sorting Rows"
+HREF="queries-order.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="queries-select-lists.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Queries</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="queries-order.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="QUERIES-UNION"
+>4.4. Combining Queries</A
+></H1
+><A
+NAME="AEN2732"
+></A
+><A
+NAME="AEN2734"
+></A
+><A
+NAME="AEN2736"
+></A
+><P
+>   The results of two queries can be combined using the set operations
+   union, intersection, and difference.  The syntax is
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>query1</I
+></TT
+> UNION [<SPAN
+CLASS="OPTIONAL"
+>ALL</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>query2</I
+></TT
+>
+<TT
+CLASS="REPLACEABLE"
+><I
+>query1</I
+></TT
+> INTERSECT [<SPAN
+CLASS="OPTIONAL"
+>ALL</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>query2</I
+></TT
+>
+<TT
+CLASS="REPLACEABLE"
+><I
+>query1</I
+></TT
+> EXCEPT [<SPAN
+CLASS="OPTIONAL"
+>ALL</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>query2</I
+></TT
+></PRE
+><P>
+   <TT
+CLASS="REPLACEABLE"
+><I
+>query1</I
+></TT
+> and
+   <TT
+CLASS="REPLACEABLE"
+><I
+>query2</I
+></TT
+> are queries that can use any of
+   the features discussed up to this point.  Set operations can also
+   be nested and chained, for example
+</P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>query1</I
+></TT
+> UNION <TT
+CLASS="REPLACEABLE"
+><I
+>query2</I
+></TT
+> UNION <TT
+CLASS="REPLACEABLE"
+><I
+>query3</I
+></TT
+></PRE
+><P>
+   which really says
+</P><PRE
+CLASS="SYNOPSIS"
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>query1</I
+></TT
+> UNION <TT
+CLASS="REPLACEABLE"
+><I
+>query2</I
+></TT
+>) UNION <TT
+CLASS="REPLACEABLE"
+><I
+>query3</I
+></TT
+></PRE
+><P>
+  </P
+><P
+>   <TT
+CLASS="LITERAL"
+>UNION</TT
+> effectively appends the result of
+   <TT
+CLASS="REPLACEABLE"
+><I
+>query2</I
+></TT
+> to the result of
+   <TT
+CLASS="REPLACEABLE"
+><I
+>query1</I
+></TT
+> (although there is no guarantee
+   that this is the order in which the rows are actually returned).
+   Furthermore, it eliminates all duplicate rows, in the sense of
+   <TT
+CLASS="LITERAL"
+>DISTINCT</TT
+>, unless <TT
+CLASS="LITERAL"
+>UNION ALL</TT
+> is used.
+  </P
+><P
+>   <TT
+CLASS="LITERAL"
+>INTERSECT</TT
+> returns all rows that are both in the result
+   of <TT
+CLASS="REPLACEABLE"
+><I
+>query1</I
+></TT
+> and in the result of
+   <TT
+CLASS="REPLACEABLE"
+><I
+>query2</I
+></TT
+>.  Duplicate rows are eliminated
+   unless <TT
+CLASS="LITERAL"
+>INTERSECT ALL</TT
+> is used.
+  </P
+><P
+>   <TT
+CLASS="LITERAL"
+>EXCEPT</TT
+> returns all rows that are in the result of
+   <TT
+CLASS="REPLACEABLE"
+><I
+>query1</I
+></TT
+> but not in the result of
+   <TT
+CLASS="REPLACEABLE"
+><I
+>query2</I
+></TT
+>.  (This is sometimes called the
+   <I
+CLASS="FIRSTTERM"
+>difference</I
+> between two queries.)  Again, duplicates
+   are eliminated unless <TT
+CLASS="LITERAL"
+>EXCEPT ALL</TT
+> is used.
+  </P
+><P
+>   In order to calculate the union, intersection, or difference of two
+   queries, the two queries must be <SPAN
+CLASS="QUOTE"
+>"union compatible"</SPAN
+>,
+   which means that they both return the same number of columns, and
+   that the corresponding columns have compatible data types, as
+   described in <A
+HREF="typeconv-union-case.html"
+>Section 7.5</A
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries-select-lists.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries-order.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Select Lists</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="queries.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Sorting Rows</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

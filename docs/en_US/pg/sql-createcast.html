@@ -1,0 +1,612 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE CAST</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE AGGREGATE"
+HREF="sql-createaggregate.html"><LINK
+REL="NEXT"
+TITLE="CREATE CONSTRAINT TRIGGER"
+HREF="sql-createconstraint.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createaggregate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createconstraint.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATECAST"
+>CREATE CAST</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38863"
+></A
+><H2
+>Name</H2
+>CREATE CAST&nbsp;--&nbsp;define a user-defined cast</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38866"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE CAST (<TT
+CLASS="REPLACEABLE"
+><I
+>sourcetype</I
+></TT
+> AS <TT
+CLASS="REPLACEABLE"
+><I
+>targettype</I
+></TT
+>)
+    WITH FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+> (<TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+>)
+    [ AS ASSIGNMENT | AS IMPLICIT ]
+
+CREATE CAST (<TT
+CLASS="REPLACEABLE"
+><I
+>sourcetype</I
+></TT
+> AS <TT
+CLASS="REPLACEABLE"
+><I
+>targettype</I
+></TT
+>)
+    WITHOUT FUNCTION
+    [ AS ASSIGNMENT | AS IMPLICIT ]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE CAST</TT
+> defines a new cast.  A cast
+   specifies how to perform a conversion between
+   two data types.  For example,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT CAST(42 AS text);</PRE
+><P>
+   converts the integer constant 42 to type <TT
+CLASS="TYPE"
+>text</TT
+> by
+   invoking a previously specified function, in this case
+   <TT
+CLASS="LITERAL"
+>text(int4)</TT
+>. (If no suitable cast has been defined, the
+   conversion fails.)
+  </P
+><P
+>   Two types may be <I
+CLASS="FIRSTTERM"
+>binary compatible</I
+>, which
+   means that they can be converted into one another <SPAN
+CLASS="QUOTE"
+>"for
+   free"</SPAN
+> without invoking any function.  This requires that
+   corresponding values use the same internal representation.  For
+   instance, the types <TT
+CLASS="TYPE"
+>text</TT
+> and <TT
+CLASS="TYPE"
+>varchar</TT
+> are
+   binary compatible.
+  </P
+><P
+>   By default, a cast can be invoked only by an explicit cast request,
+   that is an explicit <TT
+CLASS="LITERAL"
+>CAST(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+> AS
+   <TT
+CLASS="REPLACEABLE"
+><I
+>typename</I
+></TT
+>)</TT
+>,
+   <TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+><TT
+CLASS="LITERAL"
+>::</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>typename</I
+></TT
+>, or
+   <TT
+CLASS="REPLACEABLE"
+><I
+>typename</I
+></TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>x</I
+></TT
+>) construct.
+  </P
+><P
+>   If the cast is marked <TT
+CLASS="LITERAL"
+>AS ASSIGNMENT</TT
+> then it can be invoked
+   implicitly when assigning to a column of the target data type.
+   For example, supposing that <TT
+CLASS="LITERAL"
+>foo.f1</TT
+> is a column of
+   type <TT
+CLASS="TYPE"
+>text</TT
+>, then
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO foo(f1) VALUES(42);</PRE
+><P>
+   will be allowed if the cast from type <TT
+CLASS="TYPE"
+>integer</TT
+> to type
+   <TT
+CLASS="TYPE"
+>text</TT
+> is marked <TT
+CLASS="LITERAL"
+>AS ASSIGNMENT</TT
+>, otherwise
+   not.
+   (We generally use the term <I
+CLASS="FIRSTTERM"
+>assignment
+   cast</I
+> to describe this kind of cast.)
+  </P
+><P
+>   If the cast is marked <TT
+CLASS="LITERAL"
+>AS IMPLICIT</TT
+> then it can be invoked
+   implicitly in any context, whether assignment or internally in an
+   expression.  For example, since <TT
+CLASS="LITERAL"
+>||</TT
+> takes <TT
+CLASS="TYPE"
+>text</TT
+>
+   arguments,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT 'The time is ' || now();</PRE
+><P>
+   will be allowed only if the cast from type <TT
+CLASS="TYPE"
+>timestamp</TT
+> to
+   <TT
+CLASS="TYPE"
+>text</TT
+> is marked <TT
+CLASS="LITERAL"
+>AS IMPLICIT</TT
+>.  Otherwise it
+   will be necessary to write the cast explicitly, for example
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT 'The time is ' || CAST(now() AS text);</PRE
+><P>
+   (We generally use the term <I
+CLASS="FIRSTTERM"
+>implicit
+   cast</I
+> to describe this kind of cast.)
+  </P
+><P
+>   It is wise to be conservative about marking casts as implicit.  An
+   overabundance of implicit casting paths can cause
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> to choose surprising
+   interpretations of commands, or to be unable to resolve commands at
+   all because there are multiple possible interpretations.  A good
+   rule of thumb is to make a cast implicitly invokable only for
+   information-preserving transformations between types in the same
+   general type category.  For example, the cast from <TT
+CLASS="TYPE"
+>int2</TT
+> to
+   <TT
+CLASS="TYPE"
+>int4</TT
+> can reasonably be implicit, but the cast from
+   <TT
+CLASS="TYPE"
+>float8</TT
+> to <TT
+CLASS="TYPE"
+>int4</TT
+> should probably be
+   assignment-only.  Cross-type-category casts, such as <TT
+CLASS="TYPE"
+>text</TT
+>
+   to <TT
+CLASS="TYPE"
+>int4</TT
+>, are best made explicit-only.
+  </P
+><P
+>   To be able to create a cast, you must own the source or the target
+   data type.  To create a binary-compatible cast, you must be superuser
+   (this restriction is made because an erroneous binary-compatible cast
+   conversion can easily crash the server).
+  </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>Parameters</B
+></P
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>sourcetype</I
+></TT
+></DT
+><DD
+><P
+>       The name of the source data type of the cast.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>targettype</I
+></TT
+></DT
+><DD
+><P
+>       The name of the target data type of the cast.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>argtype</I
+></TT
+>)</DT
+><DD
+><P
+>       The function used to perform the cast.  The function name may
+       be schema-qualified.  If it is not, the function will be looked
+       up in the path.  The argument type must be identical to the
+       source type, the result data type must match the target type of
+       the cast.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>WITHOUT FUNCTION</TT
+></DT
+><DD
+><P
+>       Indicates that the source type and the target type are binary
+       compatible, so no function is required to perform the cast.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>AS ASSIGNMENT</TT
+></DT
+><DD
+><P
+>       Indicates that the cast may be invoked implicitly in assignment
+       contexts.
+      </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>AS IMPLICIT</TT
+></DT
+><DD
+><P
+>       Indicates that the cast may be invoked implicitly in any context.
+      </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <TT
+CLASS="COMMAND"
+>DROP CAST</TT
+> to remove user-defined casts.
+  </P
+><P
+>   Remember that if you want to be able to convert types both ways you
+   need to declare casts both ways explicitly.
+  </P
+><P
+>   Prior to PostgreSQL 7.3, every function that had the same name as a
+   data type, returned that data type, and took one argument of a
+   different type was automatically a cast function.  This convention has
+   been abandoned in face of the introduction of schemas and to be
+   able to represent binary compatible casts in the catalogs.  (The built-in
+   cast functions
+   still follow this naming scheme, but they have to be shown as
+   casts in <TT
+CLASS="LITERAL"
+>pg_cast</TT
+> now.)
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   To create a cast from type <TT
+CLASS="TYPE"
+>text</TT
+> to type
+   <TT
+CLASS="TYPE"
+>int4</TT
+> using the function <TT
+CLASS="LITERAL"
+>int4(text)</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE CAST (text AS int4) WITH FUNCTION int4(text);</PRE
+><P>
+   (This cast is already predefined in the system.)
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-COMPAT"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The <TT
+CLASS="COMMAND"
+>CREATE CAST</TT
+> command conforms to SQL99,
+   except that SQL99 does not make provisions for binary compatible
+   types.  <TT
+CLASS="LITERAL"
+>AS IMPLICIT</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   extension, too.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATECAST-SEEALSO"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="sql-createfunction.html"
+><I
+>CREATE FUNCTION</I
+></A
+>,
+   <A
+HREF="sql-createtype.html"
+><I
+>CREATE TYPE</I
+></A
+>,
+   <A
+HREF="sql-dropcast.html"
+><I
+>DROP CAST</I
+></A
+>,
+   <I
+CLASS="CITETITLE"
+>PostgreSQL Programmer's Guide</I
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createaggregate.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createconstraint.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE AGGREGATE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE CONSTRAINT TRIGGER</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

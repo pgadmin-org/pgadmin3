@@ -1,0 +1,461 @@
+<HTML
+><HEAD
+><TITLE
+>PostgreSQL 7.3.3 Documentation</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="NEXT"
+TITLE="PostgreSQL 7.3.3 Tutorial"
+HREF="tutorial.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SET"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="SET"
+><A
+NAME="POSTGRES"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+><A
+NAME="POSTGRES"
+>PostgreSQL 7.3.3 Documentation</A
+></H1
+><H3
+CLASS="CORPAUTHOR"
+>The PostgreSQL Global Development Group</H3
+><P
+CLASS="COPYRIGHT"
+><A
+HREF="ln8.html"
+>Copyright</A
+> &copy; 1996-2002 by The PostgreSQL Global Development Group</P
+><HR></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="tutorial.html"
+>PostgreSQL 7.3.3 Tutorial</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="tutorial-preface.html"
+>Preface</A
+></DT
+><DT
+>1. <A
+HREF="tutorial-start.html"
+>Getting Started</A
+></DT
+><DT
+>2. <A
+HREF="tutorial-sql.html"
+>The <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Language</A
+></DT
+><DT
+>3. <A
+HREF="tutorial-advanced.html"
+>Advanced Features</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="user.html"
+>PostgreSQL 7.3.3 User's Guide</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="user-preface.html"
+>Preface</A
+></DT
+><DT
+>1. <A
+HREF="sql-syntax.html"
+>SQL Syntax</A
+></DT
+><DT
+>2. <A
+HREF="ddl.html"
+>Data Definition</A
+></DT
+><DT
+>3. <A
+HREF="dml.html"
+>Data Manipulation</A
+></DT
+><DT
+>4. <A
+HREF="queries.html"
+>Queries</A
+></DT
+><DT
+>5. <A
+HREF="datatype.html"
+>Data Types</A
+></DT
+><DT
+>6. <A
+HREF="functions.html"
+>Functions and Operators</A
+></DT
+><DT
+>7. <A
+HREF="typeconv.html"
+>Type Conversion</A
+></DT
+><DT
+>8. <A
+HREF="indexes.html"
+>Indexes</A
+></DT
+><DT
+>9. <A
+HREF="mvcc.html"
+>Concurrency Control</A
+></DT
+><DT
+>10. <A
+HREF="performance-tips.html"
+>Performance Tips</A
+></DT
+><DT
+>A. <A
+HREF="datetime-appendix.html"
+>Date/Time Support</A
+></DT
+><DT
+>B. <A
+HREF="sql-keywords-appendix.html"
+><SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Key Words</A
+></DT
+><DT
+>C. <A
+HREF="features.html"
+>SQL Conformance</A
+></DT
+><DT
+><A
+HREF="biblio.html"
+>Bibliography</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="admin.html"
+>PostgreSQL 7.3.3 Administrator's Guide</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="admin-preface.html"
+>Preface</A
+></DT
+><DT
+>1. <A
+HREF="installation.html"
+>Installation Instructions</A
+></DT
+><DT
+>2. <A
+HREF="install-win32.html"
+>Installation on <SPAN
+CLASS="PRODUCTNAME"
+>Windows</SPAN
+></A
+></DT
+><DT
+>3. <A
+HREF="runtime.html"
+>Server Run-time Environment</A
+></DT
+><DT
+>4. <A
+HREF="user-manag.html"
+>Database Users and Privileges</A
+></DT
+><DT
+>5. <A
+HREF="managing-databases.html"
+>Managing Databases</A
+></DT
+><DT
+>6. <A
+HREF="client-authentication.html"
+>Client Authentication</A
+></DT
+><DT
+>7. <A
+HREF="charset.html"
+>Localization</A
+></DT
+><DT
+>8. <A
+HREF="maintenance.html"
+>Routine Database Maintenance Tasks</A
+></DT
+><DT
+>9. <A
+HREF="backup.html"
+>Backup and Restore</A
+></DT
+><DT
+>10. <A
+HREF="monitoring.html"
+>Monitoring Database Activity</A
+></DT
+><DT
+>11. <A
+HREF="diskusage.html"
+>Monitoring Disk Usage</A
+></DT
+><DT
+>12. <A
+HREF="wal.html"
+>Write-Ahead Logging (<SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>)</A
+></DT
+><DT
+>13. <A
+HREF="regress.html"
+>Regression Tests</A
+></DT
+><DT
+>A. <A
+HREF="release.html"
+>Release Notes</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="programmer.html"
+>PostgreSQL 7.3.3 Programmer's Guide</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="programmer-preface.html"
+>Preface</A
+></DT
+><DT
+>I. <A
+HREF="programmer-client.html"
+>Client Interfaces</A
+></DT
+><DT
+>II. <A
+HREF="programmer-server.html"
+>Server Programming</A
+></DT
+><DT
+>III. <A
+HREF="programmer-pl.html"
+>Procedural Languages</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="reference.html"
+>PostgreSQL 7.3.3 Reference Manual</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="reference-preface.html"
+>Preface</A
+></DT
+><DT
+>I. <A
+HREF="sql-commands.html"
+>SQL Commands</A
+></DT
+><DT
+>II. <A
+HREF="reference-client.html"
+>PostgreSQL Client Applications</A
+></DT
+><DT
+>III. <A
+HREF="reference-server.html"
+>PostgreSQL Server Applications</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="developer.html"
+>PostgreSQL 7.3.3 Developer's Guide</A
+></DT
+><DD
+><DL
+><DT
+>1. <A
+HREF="source.html"
+>PostgreSQL Source Code</A
+></DT
+><DT
+>2. <A
+HREF="overview.html"
+>Overview of PostgreSQL Internals</A
+></DT
+><DT
+>3. <A
+HREF="catalogs.html"
+>System Catalogs</A
+></DT
+><DT
+>4. <A
+HREF="protocol.html"
+>Frontend/Backend Protocol</A
+></DT
+><DT
+>5. <A
+HREF="compiler.html"
+><SPAN
+CLASS="APPLICATION"
+>gcc</SPAN
+> Default Optimizations</A
+></DT
+><DT
+>6. <A
+HREF="bki.html"
+><SPAN
+CLASS="ACRONYM"
+>BKI</SPAN
+> Backend Interface</A
+></DT
+><DT
+>7. <A
+HREF="page.html"
+>Page Files</A
+></DT
+><DT
+>8. <A
+HREF="geqo.html"
+>Genetic Query Optimization</A
+></DT
+><DT
+>9. <A
+HREF="gist.html"
+>GiST Indexes</A
+></DT
+><DT
+>10. <A
+HREF="nls.html"
+>Native Language Support</A
+></DT
+><DT
+>A. <A
+HREF="cvs.html"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>CVS</SPAN
+> Repository</A
+></DT
+><DT
+>B. <A
+HREF="docguide.html"
+>Documentation</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="setindex.html"
+>Index</A
+></DT
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>PostgreSQL 7.3.3 Tutorial</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

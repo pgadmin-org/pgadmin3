@@ -1,0 +1,216 @@
+<HTML
+><HEAD
+><TITLE
+>Postgres95 Release 0.02</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Postgres95 Release 0.03"
+HREF="release-0-03.html"><LINK
+REL="NEXT"
+TITLE="Postgres95 Release 0.01"
+HREF="release-0-01.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="release-0-03.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix A. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="release-0-01.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-0-02"
+>A.38. <SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> Release 0.02</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>1995-05-25</P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN24709"
+>A.38.1. Changes</A
+></H2
+><P
+></P><PRE
+CLASS="PROGRAMLISTING"
+>Incompatible changes:
+ * The SQL statement for creating a database is 'CREATE DATABASE' instead
+   of 'CREATEDB'. Similarly, dropping a database is 'DROP DATABASE' instead
+   of 'DESTROYDB'. However, the names of the executables 'createdb' and 
+   'destroydb' remain the same.
+ 
+New tools:
+ * pgperl - a Perl (4.036) interface to Postgres95
+ * pg_dump - a utility for dumping out a postgres database into a
+	script file containing query commands. The script files are in a ASCII
+	format and can be used to reconstruct the database, even on other
+	machines and other architectures. (Also good for converting
+	a Postgres 4.2 database to Postgres95 database.)
+
+The following ports have been incorporated into postgres95-beta-0.02:
+ * the NetBSD port by Alistair Crooks
+ * the AIX port by Mike Tung
+ * the Windows NT port by Jon Forrest (more stuff but not done yet)
+ * the Linux ELF port by Brian Gallew
+
+The following bugs have been fixed in postgres95-beta-0.02:
+ * new lines not escaped in COPY OUT and problem with COPY OUT when first
+   attribute is a '.' 
+ * cannot type return to use the default user id in createuser
+ * SELECT DISTINCT on big tables crashes
+ * Linux installation problems
+ * monitor doesn't allow use of 'localhost' as PGHOST
+ * psql core dumps when doing \c or \l
+ * the "pgtclsh" target missing from src/bin/pgtclsh/Makefile
+ * libpgtcl has a hard-wired default port number
+ * SELECT DISTINCT INTO TABLE hangs
+ * CREATE TYPE doesn't accept 'variable' as the internallength
+ * wrong result using more than 1 aggregate in a SELECT</PRE
+><P></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-0-03.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-0-01.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> Release 0.03</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="PRODUCTNAME"
+>Postgres95</SPAN
+> Release 0.01</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,287 @@
+<HTML
+><HEAD
+><TITLE
+>Data Consistency Checks at the Application Level</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Concurrency Control"
+HREF="mvcc.html"><LINK
+REL="PREVIOUS"
+TITLE="Explicit Locking"
+HREF="explicit-locking.html"><LINK
+REL="NEXT"
+TITLE="Locking and Indexes"
+HREF="locking-indexes.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="explicit-locking.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Concurrency Control</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="locking-indexes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="APPLEVEL-CONSISTENCY"
+>9.4. Data Consistency Checks at the Application Level</A
+></H1
+><P
+>    Because readers in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    don't lock data, regardless of
+    transaction isolation level, data read by one transaction can be
+    overwritten by another concurrent transaction. In other words,
+    if a row is returned by <TT
+CLASS="COMMAND"
+>SELECT</TT
+> it doesn't mean that
+    the row is still current at the instant it is returned (i.e., sometime
+    after the current query began).  The row might have been modified or
+    deleted by an already-committed transaction that committed after this one
+    started.
+    Even if the row is still valid <SPAN
+CLASS="QUOTE"
+>"now"</SPAN
+>, it could be changed or
+    deleted
+    before the current transaction does a commit or rollback.
+   </P
+><P
+>    Another way to think about it is that each
+    transaction sees a snapshot of the database contents, and concurrently
+    executing transactions may very well see different snapshots.  So the
+    whole concept of <SPAN
+CLASS="QUOTE"
+>"now"</SPAN
+> is somewhat suspect anyway.
+    This is not normally
+    a big problem if the client applications are isolated from each other,
+    but if the clients can communicate via channels outside the database
+    then serious confusion may ensue.
+   </P
+><P
+>    To ensure the current validity of a row and protect it against
+    concurrent updates one must use <TT
+CLASS="COMMAND"
+>SELECT FOR UPDATE</TT
+> or
+    an appropriate <TT
+CLASS="COMMAND"
+>LOCK TABLE</TT
+> statement.
+    (<TT
+CLASS="COMMAND"
+>SELECT FOR UPDATE</TT
+> locks just the returned rows against
+    concurrent updates, while <TT
+CLASS="COMMAND"
+>LOCK TABLE</TT
+> locks the
+    whole table.)
+    This should be taken into account when porting applications to
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> from other environments.
+
+    </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      Before version 6.5 <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> used
+      read locks, and so the above consideration is also the case when
+      upgrading from <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> versions
+      prior to 6.5.
+     </P
+></BLOCKQUOTE
+></DIV
+><P>
+   </P
+><P
+>    Global validity checks require extra thought under MVCC.  For
+    example, a banking application might wish to check that the sum of
+    all credits in one table equals the sum of debits in another table,
+    when both tables are being actively updated.  Comparing the results of two
+    successive <TT
+CLASS="LITERAL"
+>SELECT SUM(...)</TT
+> commands will not work reliably under
+    Read Committed mode, since the second query will likely include the results
+    of transactions not counted by the first.  Doing the two sums in a
+    single serializable transaction will give an accurate picture of the
+    effects of transactions that committed before the serializable transaction
+    started --- but one might legitimately wonder whether the answer is still
+    relevant by the time it is delivered.  If the serializable transaction
+    itself applied some changes before trying to make the consistency check,
+    the usefulness of the check becomes even more debatable, since now it
+    includes some but not all post-transaction-start changes.  In such cases
+    a careful person might wish to lock all tables needed for the check,
+    in order to get an indisputable picture of current reality.  A
+    <TT
+CLASS="LITERAL"
+>SHARE</TT
+> mode (or higher) lock guarantees that there are no
+    uncommitted changes in the locked table, other than those of the current
+    transaction.
+   </P
+><P
+>    Note also that if one is
+    relying on explicit locks to prevent concurrent changes, one should use
+    Read Committed mode, or in Serializable mode be careful to obtain the
+    lock(s) before performing queries.  An explicit lock obtained in a
+    serializable transaction guarantees that no other transactions modifying
+    the table are still running --- but if the snapshot seen by the
+    transaction predates obtaining the lock, it may predate some now-committed
+    changes in the table.  A serializable transaction's snapshot is actually
+    frozen at the start of its first query (<TT
+CLASS="LITERAL"
+>SELECT</TT
+>, <TT
+CLASS="LITERAL"
+>INSERT</TT
+>,
+    <TT
+CLASS="LITERAL"
+>UPDATE</TT
+>, or <TT
+CLASS="LITERAL"
+>DELETE</TT
+>), so
+    it's possible to obtain explicit locks before the snapshot is
+    frozen.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="explicit-locking.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="locking-indexes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Explicit Locking</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="mvcc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Locking and Indexes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

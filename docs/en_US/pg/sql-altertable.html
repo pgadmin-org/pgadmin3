@@ -1,0 +1,946 @@
+<HTML
+><HEAD
+><TITLE
+>ALTER TABLE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER GROUP"
+HREF="sql-altergroup.html"><LINK
+REL="NEXT"
+TITLE="   ALTER TRIGGER
+  "
+HREF="sql-altertrigger.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-altergroup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-altertrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERTABLE"
+>ALTER TABLE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN37409"
+></A
+><H2
+>Name</H2
+>   ALTER TABLE
+  &nbsp;--&nbsp;   change the definition of a table
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN37412"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER TABLE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ * ]
+    ADD [ COLUMN ] <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+> [ <TT
+CLASS="REPLACEABLE"
+><I
+>column_constraint</I
+></TT
+> [ ... ] ]
+ALTER TABLE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ * ]
+    DROP [ COLUMN ] <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [ RESTRICT | CASCADE ]
+ALTER TABLE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ * ]
+    ALTER [ COLUMN ] <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> { SET DEFAULT <TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+> | DROP DEFAULT }
+ALTER TABLE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ * ]
+    ALTER [ COLUMN ] <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> { SET | DROP } NOT NULL
+ALTER TABLE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ * ]
+    ALTER [ COLUMN ] <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> SET STATISTICS <TT
+CLASS="REPLACEABLE"
+><I
+>integer</I
+></TT
+>
+ALTER TABLE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ * ]
+    ALTER [ COLUMN ] <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> SET STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN }
+ALTER TABLE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ * ]
+    RENAME [ COLUMN ] <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> TO <TT
+CLASS="REPLACEABLE"
+><I
+>new_column</I
+></TT
+>
+ALTER TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>
+    RENAME TO <TT
+CLASS="REPLACEABLE"
+><I
+>new_table</I
+></TT
+>
+ALTER TABLE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ * ]
+    ADD <TT
+CLASS="REPLACEABLE"
+><I
+>table_constraint</I
+></TT
+>
+ALTER TABLE [ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ * ]
+    DROP CONSTRAINT <TT
+CLASS="REPLACEABLE"
+><I
+>constraint_name</I
+></TT
+> [ RESTRICT | CASCADE ]
+ALTER TABLE <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>
+    OWNER TO <TT
+CLASS="REPLACEABLE"
+><I
+>new_owner</I
+></TT
+> 
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERTABLE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+> table </I
+></TT
+></DT
+><DD
+><P
+>	The name (possibly schema-qualified) of an existing table to
+	alter. If <TT
+CLASS="LITERAL"
+>ONLY</TT
+> is specified, only that table is
+	altered. If <TT
+CLASS="LITERAL"
+>ONLY</TT
+> is not specified, the table and all
+	its descendant tables (if any) are updated. <TT
+CLASS="LITERAL"
+>*</TT
+> can be
+	appended to the table name to indicate that descendant tables are
+	to be scanned, but in the current version, this is the default
+	behavior.  (In releases before 7.1, <TT
+CLASS="LITERAL"
+>ONLY</TT
+> was the
+	default behavior.)  The default can be altered by changing the
+	<TT
+CLASS="OPTION"
+>SQL_INHERITANCE</TT
+> configuration option.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+> column </I
+></TT
+></DT
+><DD
+><P
+>	Name of a new or existing column.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+> type </I
+></TT
+></DT
+><DD
+><P
+>	Type of the new column.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+> new_column </I
+></TT
+></DT
+><DD
+><P
+>	New name for an existing column.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+> new_table </I
+></TT
+></DT
+><DD
+><P
+>	New name for the table.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+> table_constraint </I
+></TT
+></DT
+><DD
+><P
+>	New table constraint for the table.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+> constraint_name </I
+></TT
+></DT
+><DD
+><P
+>	Name of an existing constraint to drop.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>new_owner </I
+></TT
+></DT
+><DD
+><P
+>	The user name of the new owner of the table.
+       </P
+></DD
+><DT
+>CASCADE</DT
+><DD
+><P
+>        Automatically drop objects that depend on the dropped column
+	or constraint (for example, views referencing the column).
+       </P
+></DD
+><DT
+>RESTRICT</DT
+><DD
+><P
+>        Refuse to drop the column or constraint if there are any dependent
+	objects. This is the default behavior.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERTABLE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ALTER TABLE</TT
+></DT
+><DD
+><P
+>	Message returned from column or table renaming.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>ERROR</TT
+></DT
+><DD
+><P
+>	Message returned if table or column is not available.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERTABLE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER TABLE</TT
+> changes the definition of an existing table.
+   There are several sub-forms:
+  </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>ADD COLUMN</DT
+><DD
+><P
+>      This form adds a new column to the table using the same syntax as
+      <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+>.
+     </P
+></DD
+><DT
+>DROP COLUMN</DT
+><DD
+><P
+>      This form drops a column from a table.  Note that indexes and
+      table constraints involving the column will be automatically
+      dropped as well.  You will need to say <TT
+CLASS="LITERAL"
+>CASCADE</TT
+> if
+      anything outside the table depends on the column --- for example,
+      foreign key references, views, etc.
+     </P
+></DD
+><DT
+>SET/DROP DEFAULT</DT
+><DD
+><P
+>      These forms set or remove the default value for a column. Note
+      that defaults only apply to subsequent <TT
+CLASS="COMMAND"
+>INSERT</TT
+>
+      commands; they do not cause rows already in the table to change.
+      Defaults may also be created for views, in which case they are
+      inserted into <TT
+CLASS="COMMAND"
+>INSERT</TT
+> statements on the view before
+      the view's ON INSERT rule is applied.
+     </P
+></DD
+><DT
+>SET/DROP NOT NULL</DT
+><DD
+><P
+>      These forms change whether a column is marked to allow NULL
+      values or to reject NULL values.  You may only <TT
+CLASS="LITERAL"
+>SET NOT NULL</TT
+>
+      when the table contains no null values in the column.
+     </P
+></DD
+><DT
+>SET STATISTICS</DT
+><DD
+><P
+>      This form
+      sets the per-column statistics-gathering target for subsequent
+      <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+> operations.
+      The target can be set in the range 0 to 1000; alternatively, set it
+      to -1 to revert to using the system default statistics target.
+     </P
+></DD
+><DT
+>SET STORAGE</DT
+><DD
+><P
+>      This form sets the storage mode for a column. This controls whether this
+      column is held inline or in a supplementary table, and whether the data
+      should be compressed or not. <TT
+CLASS="LITERAL"
+>PLAIN</TT
+> must be used
+      for fixed-length values such as <TT
+CLASS="LITERAL"
+>INTEGER</TT
+> and is
+      inline, uncompressed. <TT
+CLASS="LITERAL"
+>MAIN</TT
+> is for inline,
+      compressible data. <TT
+CLASS="LITERAL"
+>EXTERNAL</TT
+> is for external,
+      uncompressed data and <TT
+CLASS="LITERAL"
+>EXTENDED</TT
+> is for external,
+      compressed data.  <TT
+CLASS="LITERAL"
+>EXTENDED</TT
+> is the default for all
+      data types that support it.  The use of <TT
+CLASS="LITERAL"
+>EXTERNAL</TT
+> will
+      make substring operations on a TEXT column faster, at the penalty of
+      increased storage space.
+     </P
+></DD
+><DT
+>RENAME</DT
+><DD
+><P
+>      The <TT
+CLASS="LITERAL"
+>RENAME</TT
+> forms change the name of  a table
+      (or an index, sequence, or view) or the name of an individual column in
+      a table. There is no effect on the stored data.
+     </P
+></DD
+><DT
+>ADD <TT
+CLASS="REPLACEABLE"
+><I
+>table_constraint</I
+></TT
+></DT
+><DD
+><P
+>      This form adds a new constraint to a table using the same syntax as
+      <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+>. 
+     </P
+></DD
+><DT
+>DROP CONSTRAINT</DT
+><DD
+><P
+>      This form drops constraints on a table.
+      Currently, constraints on tables are not required to have unique
+      names, so there may be more than one constraint matching the specified
+      name.  All such constraints will be dropped.
+     </P
+></DD
+><DT
+>OWNER</DT
+><DD
+><P
+>      This form changes the owner of the table, index, sequence or view to the
+      specified user.
+     </P
+></DD
+></DL
+></DIV
+><P
+>   You must own the table to use <TT
+CLASS="COMMAND"
+>ALTER TABLE</TT
+>; except for
+   <TT
+CLASS="COMMAND"
+>ALTER TABLE OWNER</TT
+>, which may only be executed by a superuser.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERTABLE-3"
+></A
+><H3
+>    Notes</H3
+><P
+>    The keyword <TT
+CLASS="LITERAL"
+>COLUMN</TT
+> is noise and can be omitted.
+   </P
+><P
+>    In the current implementation of <TT
+CLASS="LITERAL"
+>ADD COLUMN</TT
+>,
+    default and NOT NULL clauses for the new column are not supported.
+    The new column always comes into being with all values NULL.
+    You can use the <TT
+CLASS="LITERAL"
+>SET DEFAULT</TT
+> form
+    of <TT
+CLASS="COMMAND"
+>ALTER TABLE</TT
+> to set the default afterwards.
+    (You may also want to update the already existing rows to the
+    new default value, using
+    <A
+HREF="sql-update.html"
+><I
+>UPDATE</I
+></A
+>.)
+    If you want to mark the column non-null, use the <TT
+CLASS="LITERAL"
+>SET NOT NULL</TT
+>
+    form after you've entered non-null values for the column in all rows.
+   </P
+><P
+>    The <TT
+CLASS="LITERAL"
+>DROP COLUMN</TT
+> command does not physically remove
+    the column, but simply makes it invisible to SQL operations.  Subsequent
+    inserts and updates of the table will store a NULL for the column.
+    Thus, dropping a column is quick but it will not immediately reduce the
+    on-disk size of your table, as the space occupied 
+    by the dropped column is not reclaimed.  The space will be
+    reclaimed over time as existing rows are updated.
+    To reclaim the space at once, do a dummy <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> of all rows
+    and then vacuum, as in:
+     </P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE table SET col = col;
+VACUUM FULL table;
+    </PRE
+><P>
+   </P
+><P
+>    If a table has any descendant tables, it is not permitted to ADD or
+    RENAME a column in the parent table without doing the same to the
+    descendants --- that is, ALTER TABLE ONLY will be rejected.  This
+    ensures that the descendants always have columns matching the parent.
+   </P
+><P
+>    A recursive DROP COLUMN operation will remove a descendant table's column
+    only if the descendant does not inherit that column from any other
+    parents and never had an independent definition of the column.
+    A nonrecursive DROP COLUMN (i.e., ALTER TABLE ONLY ... DROP COLUMN)
+    never removes any descendant columns, but instead marks them as
+    independently defined rather than inherited.
+   </P
+><P
+>    Changing any  part  of  the schema of a system
+    catalog is not permitted.
+   </P
+><P
+>    Refer to <TT
+CLASS="COMMAND"
+>CREATE TABLE</TT
+> for a further description
+    of valid arguments.
+    The <I
+CLASS="CITETITLE"
+>PostgreSQL User's Guide</I
+> has further
+    information on inheritance.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERTABLE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To add a column of type <TT
+CLASS="TYPE"
+>varchar</TT
+> to a table:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors ADD COLUMN address VARCHAR(30);
+   </PRE
+><P>
+  </P
+><P
+>   To drop a column from a table:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors DROP COLUMN address RESTRICT;
+   </PRE
+><P>
+  </P
+><P
+>   To rename an existing column:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors RENAME COLUMN address TO city;
+   </PRE
+><P>
+  </P
+><P
+>   To rename an existing table:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors RENAME TO suppliers;
+   </PRE
+><P>
+  </P
+><P
+>   To add a NOT NULL constraint to a column:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors ALTER COLUMN street SET NOT NULL;
+   </PRE
+><P>
+   To remove a NOT NULL constraint from a column:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors ALTER COLUMN street DROP NOT NULL;
+   </PRE
+><P>
+  </P
+><P
+> 
+   To add a check constraint to a table:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors ADD CONSTRAINT zipchk CHECK (char_length(zipcode) = 5);
+   </PRE
+><P>
+  </P
+><P
+> 
+   To remove a check constraint from a table and all its children:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors DROP CONSTRAINT zipchk;
+   </PRE
+><P>
+  </P
+><P
+> 
+   To add a foreign key constraint to a table:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors ADD CONSTRAINT distfk FOREIGN KEY (address) REFERENCES addresses(address) MATCH FULL;
+   </PRE
+><P>
+  </P
+><P
+> 
+   To add a (multicolumn) unique constraint to a table:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors ADD CONSTRAINT dist_id_zipcode_key UNIQUE (dist_id, zipcode);
+   </PRE
+><P>
+  </P
+><P
+> 
+   To add an automatically named primary key constraint to a table, noting
+   that a table can only ever have one primary key:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE distributors ADD PRIMARY KEY (dist_id);
+   </PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-ALTERTABLE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-ALTERTABLE-4"
+></A
+><H3
+>SQL92</H3
+><P
+>     The <TT
+CLASS="LITERAL"
+>ADD COLUMN</TT
+> form is compliant with the exception that
+     it does not support defaults and NOT NULL constraints, as explained above.
+     The <TT
+CLASS="LITERAL"
+>ALTER COLUMN</TT
+> form is in full compliance.
+    </P
+><P
+>    The clauses to rename tables, columns, indexes, and sequences are
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extensions from SQL92.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altergroup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER GROUP</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER TRIGGER</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

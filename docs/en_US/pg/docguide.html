@@ -1,0 +1,369 @@
+<HTML
+><HEAD
+><TITLE
+>Documentation</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Developer's Guide"
+HREF="developer.html"><LINK
+REL="PREVIOUS"
+TITLE="Getting The Source Via CVSup"
+HREF="cvsup.html"><LINK
+REL="NEXT"
+TITLE="Tool Sets"
+HREF="doc-toolsets.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="APPENDIX"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="cvsup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="doc-toolsets.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="DOCGUIDE"
+>Appendix B. Documentation</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>B.1. <A
+HREF="docguide.html#AEN56310"
+>DocBook</A
+></DT
+><DT
+>B.2. <A
+HREF="doc-toolsets.html"
+>Tool Sets</A
+></DT
+><DT
+>B.3. <A
+HREF="doc-build.html"
+>Building The Documentation</A
+></DT
+><DT
+>B.4. <A
+HREF="doc-sources.html"
+>Documentation Authoring</A
+></DT
+><DT
+>B.5. <A
+HREF="doc-style.html"
+>Style Guide</A
+></DT
+></DL
+></DIV
+><P
+>  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has four primary documentation
+  formats:
+
+  <P
+></P
+></P><UL
+><LI
+><P
+>     Plain text, for pre-installation information
+    </P
+></LI
+><LI
+><P
+>     <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+>, for on-line browsing and reference
+    </P
+></LI
+><LI
+><P
+>     Postscript, for printing
+    </P
+></LI
+><LI
+><P
+>     man pages, for quick reference.
+    </P
+></LI
+></UL
+><P>
+
+  Additionally, a number of plain-text README-type files can be found
+  throughout the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> source tree,
+  documenting various implementation issues.
+ </P
+><P
+>  The documentation is organized into several <SPAN
+CLASS="QUOTE"
+>"books"</SPAN
+>:
+
+  <P
+></P
+></P><UL
+><LI
+><P
+>     <I
+CLASS="CITETITLE"
+>Tutorial</I
+>:  introduction for new users
+    </P
+></LI
+><LI
+><P
+>     <I
+CLASS="CITETITLE"
+>User's Guide</I
+>: documents the SQL implementation
+    </P
+></LI
+><LI
+><P
+>     <I
+CLASS="CITETITLE"
+>Reference Manual</I
+>: reference pages for programs and SQL commands
+    </P
+></LI
+><LI
+><P
+>     <I
+CLASS="CITETITLE"
+>Administrator's Guide</I
+>: installation and server maintenance
+    </P
+></LI
+><LI
+><P
+>     <I
+CLASS="CITETITLE"
+>Programmer's Guide</I
+>: programming client
+     applications and server extensions
+    </P
+></LI
+><LI
+><P
+>     <I
+CLASS="CITETITLE"
+>Developer's Guide</I
+>: assorted information
+     for developers of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> proper
+    </P
+></LI
+></UL
+><P>
+
+  All books are available as HTML and Postscript.  The
+  <I
+CLASS="CITETITLE"
+>Reference Manual</I
+> contains reference entries which
+  are also shipped as man pages.
+ </P
+><P
+>  <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+> documentation and man pages are part of a
+  standard distribution and are installed by default.  Postscript
+  format documentation is available separately for download.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN56310"
+>B.1. DocBook</A
+></H1
+><P
+>   The documentation sources are written in
+   <I
+CLASS="FIRSTTERM"
+>DocBook</I
+>, which is a markup language
+   superficially similar to <SPAN
+CLASS="ACRONYM"
+>HTML</SPAN
+>.  Both of these
+   languages are applications of the <I
+CLASS="FIRSTTERM"
+>Standard Generalized
+   Markup Language</I
+>, <SPAN
+CLASS="ACRONYM"
+>SGML</SPAN
+>, which is
+   essentially a language for describing other languages.  In what
+   follows, the terms DocBook and SGML are both used, but technically
+   they are not interchangeable.
+  </P
+><P
+>  <SPAN
+CLASS="PRODUCTNAME"
+>DocBook</SPAN
+> allows an author to specify the
+   structure and content of a technical document without worrying
+   about presentation details.  A document style defines how that
+   content is rendered into one of several final forms.  DocBook is
+   maintained by the <A
+HREF="http://www.oasis-open.org"
+TARGET="_top"
+>OASIS</A
+> group.  The <A
+HREF="http://www.oasis-open.org/docbook"
+TARGET="_top"
+>official DocBook
+   site</A
+> has good introductory and reference documentation and
+   a complete O'Reilly book for your online reading pleasure.  The
+   <A
+HREF="http://www.freebsd.org/docproj/docproj.html"
+TARGET="_top"
+>FreeBSD
+   Documentation Project</A
+> also uses DocBook and has some good
+   information, including a number of style guidelines that might be
+   worth considering.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cvsup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="doc-toolsets.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Getting The Source Via <SPAN
+CLASS="PRODUCTNAME"
+>CVSup</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="developer.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Tool Sets</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,1601 @@
+<HTML
+><HEAD
+><TITLE
+>Table Expressions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Queries"
+HREF="queries.html"><LINK
+REL="PREVIOUS"
+TITLE="Queries"
+HREF="queries.html"><LINK
+REL="NEXT"
+TITLE="Select Lists"
+HREF="queries-select-lists.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="queries.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Queries</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="queries-select-lists.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="QUERIES-TABLE-EXPRESSIONS"
+>4.2. Table Expressions</A
+></H1
+><P
+>   A <I
+CLASS="FIRSTTERM"
+>table expression</I
+> computes a table.  The
+   table expression contains a <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause that is
+   optionally followed by <TT
+CLASS="LITERAL"
+>WHERE</TT
+>, <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+>, and
+   <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clauses.  Trivial table expressions simply refer
+   to a table on disk, a so-called base table, but more complex
+   expressions can be used to modify or combine base tables in various
+   ways.
+  </P
+><P
+>   The optional <TT
+CLASS="LITERAL"
+>WHERE</TT
+>, <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+>, and
+   <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clauses in the table expression specify a
+   pipeline of successive transformations performed on the table
+   derived in the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause.  All these transformations
+   produce a virtual table that provides the rows that are passed to
+   the select list to compute the output rows of the query.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="QUERIES-FROM"
+>4.2.1. The FROM Clause</A
+></H2
+><P
+>    The <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause derives a table from one or more other
+    tables given in a comma-separated table reference list.
+</P><PRE
+CLASS="SYNOPSIS"
+>FROM <TT
+CLASS="REPLACEABLE"
+><I
+>table_reference</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>table_reference</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>]</SPAN
+>]</PRE
+><P>
+
+    A table reference may be a table name (possibly schema-qualified),
+    or a derived table such as a subquery, a table join, or complex
+    combinations of these.  If more than one table reference is listed
+    in the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause they are cross-joined (see below)
+    to form the intermediate virtual table that may then be subject to
+    transformations by the <TT
+CLASS="LITERAL"
+>WHERE</TT
+>, <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+>,
+    and <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clauses and is finally the result of the
+    overall table expression.
+   </P
+><P
+>    When a table reference names a table that is the supertable of a
+    table inheritance hierarchy, the table reference produces rows of
+    not only that table but all of its subtable successors, unless the
+    keyword <TT
+CLASS="LITERAL"
+>ONLY</TT
+> precedes the table name.  However, the
+    reference produces only the columns that appear in the named table
+    --- any columns added in subtables are ignored.
+   </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="QUERIES-JOIN"
+>4.2.1.1. Joined Tables</A
+></H3
+><A
+NAME="AEN2355"
+></A
+><P
+>     A joined table is a table derived from two other (real or
+     derived) tables according to the rules of the particular join
+     type.  Inner, outer, and cross-joins are available.
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>Join Types</B
+></P
+><DL
+><DT
+>Cross join</DT
+><DD
+><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+> CROSS JOIN <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+></PRE
+><P
+>        For each combination of rows from
+        <TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+> and
+        <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+>, the derived table will contain a
+        row consisting of all columns in <TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+>
+        followed by all columns in <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+>.  If
+        the tables have N and M rows respectively, the joined
+        table will have N * M rows.  A cross join is equivalent to an
+        <TT
+CLASS="LITERAL"
+>INNER JOIN ON TRUE</TT
+>.
+       </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>         <TT
+CLASS="LITERAL"
+>FROM <TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+> CROSS JOIN
+         <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+></TT
+> is equivalent to
+         <TT
+CLASS="LITERAL"
+>FROM <TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+>,
+         <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+></TT
+>.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+>Qualified joins</DT
+><DD
+><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+> { [<SPAN
+CLASS="OPTIONAL"
+>INNER</SPAN
+>] | { LEFT | RIGHT | FULL } [<SPAN
+CLASS="OPTIONAL"
+>OUTER</SPAN
+>] } JOIN <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+> ON <TT
+CLASS="REPLACEABLE"
+><I
+>boolean_expression</I
+></TT
+>
+<TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+> { [<SPAN
+CLASS="OPTIONAL"
+>INNER</SPAN
+>] | { LEFT | RIGHT | FULL } [<SPAN
+CLASS="OPTIONAL"
+>OUTER</SPAN
+>] } JOIN <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+> USING ( <TT
+CLASS="REPLACEABLE"
+><I
+>join column list</I
+></TT
+> )
+<TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+> NATURAL { [<SPAN
+CLASS="OPTIONAL"
+>INNER</SPAN
+>] | { LEFT | RIGHT | FULL } [<SPAN
+CLASS="OPTIONAL"
+>OUTER</SPAN
+>] } JOIN <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+></PRE
+><P
+>        The words <TT
+CLASS="LITERAL"
+>INNER</TT
+> and
+        <TT
+CLASS="LITERAL"
+>OUTER</TT
+> are optional in all forms.
+        <TT
+CLASS="LITERAL"
+>INNER</TT
+> is the default;
+        <TT
+CLASS="LITERAL"
+>LEFT</TT
+>, <TT
+CLASS="LITERAL"
+>RIGHT</TT
+>, and
+        <TT
+CLASS="LITERAL"
+>FULL</TT
+> imply an outer join.
+       </P
+><P
+>        The <I
+CLASS="FIRSTTERM"
+>join condition</I
+> is specified in the
+        <TT
+CLASS="LITERAL"
+>ON</TT
+> or <TT
+CLASS="LITERAL"
+>USING</TT
+> clause, or implicitly by
+        the word <TT
+CLASS="LITERAL"
+>NATURAL</TT
+>.  The join condition determines
+        which rows from the two source tables are considered to
+        <SPAN
+CLASS="QUOTE"
+>"match"</SPAN
+>, as explained in detail below.
+       </P
+><P
+>        The <TT
+CLASS="LITERAL"
+>ON</TT
+> clause is the most general kind of join
+        condition: it takes a Boolean value expression of the same
+        kind as is used in a <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause.  A pair of rows
+        from <TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+> and <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+> match if the
+        <TT
+CLASS="LITERAL"
+>ON</TT
+> expression evaluates to true for them.
+       </P
+><P
+>        <TT
+CLASS="LITERAL"
+>USING</TT
+> is a shorthand notation: it takes a
+        comma-separated list of column names, which the joined tables
+        must have in common, and forms a join condition specifying
+        equality of each of these pairs of columns.  Furthermore, the
+        output of a <TT
+CLASS="LITERAL"
+>JOIN USING</TT
+> has one column for each of
+        the equated pairs of input columns, followed by all of the
+        other columns from each table.  Thus, <TT
+CLASS="LITERAL"
+>USING (a, b,
+        c)</TT
+> is equivalent to <TT
+CLASS="LITERAL"
+>ON (t1.a = t2.a AND
+        t1.b = t2.b AND t1.c = t2.c)</TT
+> with the exception that
+        if <TT
+CLASS="LITERAL"
+>ON</TT
+> is used there will be two columns
+        <TT
+CLASS="LITERAL"
+>a</TT
+>, <TT
+CLASS="LITERAL"
+>b</TT
+>, and <TT
+CLASS="LITERAL"
+>c</TT
+> in the result,
+        whereas with <TT
+CLASS="LITERAL"
+>USING</TT
+> there will be only one of each.
+       </P
+><P
+>        <A
+NAME="AEN2434"
+></A
+>
+        Finally, <TT
+CLASS="LITERAL"
+>NATURAL</TT
+> is a shorthand form of
+        <TT
+CLASS="LITERAL"
+>USING</TT
+>: it forms a <TT
+CLASS="LITERAL"
+>USING</TT
+> list
+        consisting of exactly those column names that appear in both
+        input tables.  As with <TT
+CLASS="LITERAL"
+>USING</TT
+>, these columns appear
+        only once in the output table.
+       </P
+><P
+>        The possible types of qualified join are:
+       </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>INNER JOIN</TT
+></DT
+><DD
+><P
+>           For each row R1 of T1, the joined table has a row for each
+           row in T2 that satisfies the join condition with R1.
+          </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>LEFT OUTER JOIN</TT
+></DT
+><DD
+><P
+>           First, an inner join is performed.  Then, for each row in
+           T1 that does not satisfy the join condition with any row in
+           T2, a joined row is added with null values in columns of
+           T2.  Thus, the joined table unconditionally has at least
+           one row for each row in T1.
+          </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>RIGHT OUTER JOIN</TT
+></DT
+><DD
+><P
+>           First, an inner join is performed.  Then, for each row in
+           T2 that does not satisfy the join condition with any row in
+           T1, a joined row is added with null values in columns of
+           T1.  This is the converse of a left join: the result table
+           will unconditionally have a row for each row in T2.
+          </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>FULL OUTER JOIN</TT
+></DT
+><DD
+><P
+>           First, an inner join is performed.  Then, for each row in
+           T1 that does not satisfy the join condition with any row in
+           T2, a joined row is added with null values in columns of
+           T2.  Also, for each row of T2 that does not satisfy the
+           join condition with any row in T1, a joined row with null
+           values in the columns of T1 is added.
+          </P
+></DD
+></DL
+></DIV
+></DD
+></DL
+></DIV
+><P
+>     Joins of all types can be chained together or nested: either or
+     both of <TT
+CLASS="REPLACEABLE"
+><I
+>T1</I
+></TT
+> and
+     <TT
+CLASS="REPLACEABLE"
+><I
+>T2</I
+></TT
+> may be joined tables.  Parentheses
+     may be used around <TT
+CLASS="LITERAL"
+>JOIN</TT
+> clauses to control the join
+     order.  In the absence of parentheses, <TT
+CLASS="LITERAL"
+>JOIN</TT
+> clauses
+     nest left-to-right.
+    </P
+><P
+>     To put this together, assume we have tables <TT
+CLASS="LITERAL"
+>t1</TT
+>
+</P><PRE
+CLASS="PROGRAMLISTING"
+> num | name
+-----+------
+   1 | a
+   2 | b
+   3 | c</PRE
+><P>
+     and <TT
+CLASS="LITERAL"
+>t2</TT
+>
+</P><PRE
+CLASS="PROGRAMLISTING"
+> num | value
+-----+-------
+   1 | xxx
+   3 | yyy
+   5 | zzz</PRE
+><P>
+     then we get the following results for the various joins:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM t1 CROSS JOIN t2;</B
+></TT
+>
+ num | name | num | value
+-----+------+-----+-------
+   1 | a    |   1 | xxx
+   1 | a    |   3 | yyy
+   1 | a    |   5 | zzz
+   2 | b    |   1 | xxx
+   2 | b    |   3 | yyy
+   2 | b    |   5 | zzz
+   3 | c    |   1 | xxx
+   3 | c    |   3 | yyy
+   3 | c    |   5 | zzz
+(9 rows)
+
+<TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM t1 INNER JOIN t2 ON t1.num = t2.num;</B
+></TT
+>
+ num | name | num | value
+-----+------+-----+-------
+   1 | a    |   1 | xxx
+   3 | c    |   3 | yyy
+(2 rows)
+
+<TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM t1 INNER JOIN t2 USING (num);</B
+></TT
+>
+ num | name | value
+-----+------+-------
+   1 | a    | xxx
+   3 | c    | yyy
+(2 rows)
+
+<TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM t1 NATURAL INNER JOIN t2;</B
+></TT
+>
+ num | name | value
+-----+------+-------
+   1 | a    | xxx
+   3 | c    | yyy
+(2 rows)
+
+<TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM t1 LEFT JOIN t2 ON t1.num = t2.num;</B
+></TT
+>
+ num | name | num | value
+-----+------+-----+-------
+   1 | a    |   1 | xxx
+   2 | b    |     |
+   3 | c    |   3 | yyy
+(3 rows)
+
+<TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM t1 LEFT JOIN t2 USING (num);</B
+></TT
+>
+ num | name | value
+-----+------+-------
+   1 | a    | xxx
+   2 | b    |
+   3 | c    | yyy
+(3 rows)
+
+<TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM t1 RIGHT JOIN t2 ON t1.num = t2.num;</B
+></TT
+>
+ num | name | num | value
+-----+------+-----+-------
+   1 | a    |   1 | xxx
+   3 | c    |   3 | yyy
+     |      |   5 | zzz
+(3 rows)
+
+<TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM t1 FULL JOIN t2 ON t1.num = t2.num;</B
+></TT
+>
+ num | name | num | value
+-----+------+-----+-------
+   1 | a    |   1 | xxx
+   2 | b    |     |
+   3 | c    |   3 | yyy
+     |      |   5 | zzz
+(4 rows)</PRE
+><P>
+    </P
+><P
+>     The join condition specified with <TT
+CLASS="LITERAL"
+>ON</TT
+> can also contain
+     conditions that do not relate directly to the join.  This can
+     prove useful for some queries but needs to be thought out
+     carefully.  For example:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM t1 LEFT JOIN t2 ON t1.num = t2.num AND t2.value = 'xxx';</B
+></TT
+>
+ num | name | num | value
+-----+------+-----+-------
+   1 | a    |   1 | xxx
+   2 | b    |     |
+   3 | c    |     |
+(3 rows)</PRE
+><P>
+    </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="QUERIES-TABLE-ALIASES"
+>4.2.1.2. Table and Column Aliases</A
+></H3
+><A
+NAME="AEN2500"
+></A
+><A
+NAME="AEN2503"
+></A
+><P
+>     A temporary name can be given to tables and complex table
+     references to be used for references to the derived table in
+     further processing.  This is called a <I
+CLASS="FIRSTTERM"
+>table
+     alias</I
+>.
+    </P
+><P
+>     To create a table alias, write
+</P><PRE
+CLASS="SYNOPSIS"
+>FROM <TT
+CLASS="REPLACEABLE"
+><I
+>table_reference</I
+></TT
+> AS <TT
+CLASS="REPLACEABLE"
+><I
+>alias</I
+></TT
+></PRE
+><P>
+     or
+</P><PRE
+CLASS="SYNOPSIS"
+>FROM <TT
+CLASS="REPLACEABLE"
+><I
+>table_reference</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>alias</I
+></TT
+></PRE
+><P>
+     The <TT
+CLASS="LITERAL"
+>AS</TT
+> key word is noise.
+     <TT
+CLASS="REPLACEABLE"
+><I
+>alias</I
+></TT
+> can be any identifier.
+    </P
+><P
+>     A typical application of table aliases is to assign short
+     identifiers to long table names to keep the join clauses
+     readable.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM some_very_long_table_name s JOIN another_fairly_long_name a ON s.id = a.num;</PRE
+><P>
+    </P
+><P
+>     The alias becomes the new name of the table reference for the
+     current query -- it is no longer possible to refer to the table
+     by the original name.  Thus
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM my_table AS m WHERE my_table.a &#62; 5;</PRE
+><P>
+     is not valid SQL syntax.  What will actually happen (this is a
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extension to the standard)
+     is that an implicit table reference is added to the
+     <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause, so the query is processed as if
+     it were written as
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM my_table AS m, my_table AS my_table WHERE my_table.a &#62; 5;</PRE
+><P>
+     which will result in a cross join, which is usually not what you
+     want.
+    </P
+><P
+>     Table aliases are mainly for notational convenience, but it is
+     necessary to use them when joining a table to itself, e.g.,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM my_table AS a CROSS JOIN my_table AS b ...</PRE
+><P>
+     Additionally, an alias is required if the table reference is a
+     subquery (see <A
+HREF="queries-table-expressions.html#QUERIES-SUBQUERIES"
+>Section 4.2.1.3</A
+>).
+    </P
+><P
+>     Parentheses are used to resolve ambiguities.  The following
+     statement will assign the alias <TT
+CLASS="LITERAL"
+>b</TT
+> to the
+     result of the join, unlike the previous example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM (my_table AS a CROSS JOIN my_table) AS b ...</PRE
+><P>
+    </P
+><P
+>     Another form of table aliasing also gives temporary names to the columns of the table:
+</P><PRE
+CLASS="SYNOPSIS"
+>FROM <TT
+CLASS="REPLACEABLE"
+><I
+>table_reference</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>AS</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>alias</I
+></TT
+> ( <TT
+CLASS="REPLACEABLE"
+><I
+>column1</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>column2</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, ...</SPAN
+>]</SPAN
+>] )</PRE
+><P>
+     If fewer column aliases are specified than the actual table has
+     columns, the remaining columns are not renamed.  This syntax is
+     especially useful for self-joins or subqueries.
+    </P
+><P
+>     When an alias is applied to the output of a <TT
+CLASS="LITERAL"
+>JOIN</TT
+>
+     clause, using any of these forms, the alias hides the original
+     names within the <TT
+CLASS="LITERAL"
+>JOIN</TT
+>.  For example,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT a.* FROM my_table AS a JOIN your_table AS b ON ...</PRE
+><P>
+     is valid SQL, but
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT a.* FROM (my_table AS a JOIN your_table AS b ON ...) AS c</PRE
+><P>
+     is not valid: the table alias <TT
+CLASS="LITERAL"
+>a</TT
+> is not visible
+     outside the alias <TT
+CLASS="LITERAL"
+>c</TT
+>.
+    </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="QUERIES-SUBQUERIES"
+>4.2.1.3. Subqueries</A
+></H3
+><A
+NAME="AEN2548"
+></A
+><P
+>     Subqueries specifying a derived table must be enclosed in
+     parentheses and <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+> be assigned a table
+     alias name.  (See <A
+HREF="queries-table-expressions.html#QUERIES-TABLE-ALIASES"
+>Section 4.2.1.2</A
+>.)  For
+     example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>FROM (SELECT * FROM table1) AS alias_name</PRE
+><P>
+    </P
+><P
+>     This example is equivalent to <TT
+CLASS="LITERAL"
+>FROM table1 AS
+     alias_name</TT
+>.  More interesting cases, which can't be
+     reduced to a plain join, arise when the subquery involves
+     grouping or aggregation.
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="QUERIES-WHERE"
+>4.2.2. The WHERE Clause</A
+></H2
+><A
+NAME="AEN2558"
+></A
+><P
+>    The syntax of the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause is
+</P><PRE
+CLASS="SYNOPSIS"
+>WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>search_condition</I
+></TT
+></PRE
+><P>
+    where <TT
+CLASS="REPLACEABLE"
+><I
+>search_condition</I
+></TT
+> is any value
+    expression as defined in <A
+HREF="sql-expressions.html"
+>Section 1.2</A
+> that
+    returns a value of type <TT
+CLASS="TYPE"
+>boolean</TT
+>.
+   </P
+><P
+>    After the processing of the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause is done, each
+    row of the derived virtual table is checked against the search
+    condition.  If the result of the condition is true, the row is
+    kept in the output table, otherwise (that is, if the result is
+    false or null) it is discarded.  The search condition typically
+    references at least some column in the table generated in the
+    <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause; this is not required, but otherwise the
+    <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause will be fairly useless.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Before the implementation of the <TT
+CLASS="LITERAL"
+>JOIN</TT
+> syntax, it was
+     necessary to put the join condition of an inner join in the
+     <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause.  For example, these table expressions
+     are equivalent:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>FROM a, b WHERE a.id = b.id AND b.val &gt; 5</PRE
+><P>
+     and
+</P><PRE
+CLASS="PROGRAMLISTING"
+>FROM a INNER JOIN b ON (a.id = b.id) WHERE b.val &gt; 5</PRE
+><P>
+     or perhaps even
+</P><PRE
+CLASS="PROGRAMLISTING"
+>FROM a NATURAL JOIN b WHERE b.val &gt; 5</PRE
+><P>
+     Which one of these you use is mainly a matter of style.  The
+     <TT
+CLASS="LITERAL"
+>JOIN</TT
+> syntax in the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause is
+     probably not as portable to other SQL database products.  For
+     outer joins there is no choice in any case: they must be done in
+     the <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause.  An <TT
+CLASS="LITERAL"
+>ON</TT
+>/<TT
+CLASS="LITERAL"
+>USING</TT
+>
+     clause of an outer join is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> equivalent to a
+     <TT
+CLASS="LITERAL"
+>WHERE</TT
+> condition, because it determines the addition
+     of rows (for unmatched input rows) as well as the removal of rows
+     from the final result.
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    Here are some examples of <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clauses:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT ... FROM fdt WHERE c1 &#62; 5
+
+SELECT ... FROM fdt WHERE c1 IN (1, 2, 3)
+
+SELECT ... FROM fdt WHERE c1 IN (SELECT c1 FROM t2)
+
+SELECT ... FROM fdt WHERE c1 IN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10)
+
+SELECT ... FROM fdt WHERE c1 BETWEEN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10) AND 100
+
+SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &#62; fdt.c1)</PRE
+><P>
+    <TT
+CLASS="LITERAL"
+>fdt</TT
+> is the table derived in the
+    <TT
+CLASS="LITERAL"
+>FROM</TT
+> clause. Rows that do not meet the search
+    condition of the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause are eliminated from
+    <TT
+CLASS="LITERAL"
+>fdt</TT
+>. Notice the use of scalar subqueries as
+    value expressions.  Just like any other query, the subqueries can
+    employ complex table expressions.  Notice how
+    <TT
+CLASS="LITERAL"
+>fdt</TT
+> is referenced in the subqueries.
+    Qualifying <TT
+CLASS="LITERAL"
+>c1</TT
+> as <TT
+CLASS="LITERAL"
+>fdt.c1</TT
+> is only necessary
+    if <TT
+CLASS="LITERAL"
+>c1</TT
+> is also the name of a column in the derived
+    input table of the subquery.  Qualifying the column name adds
+    clarity even when it is not needed.  This shows how the column
+    naming scope of an outer query extends into its inner queries.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="QUERIES-GROUP"
+>4.2.3. The GROUP BY and HAVING Clauses</A
+></H2
+><A
+NAME="AEN2598"
+></A
+><P
+>    After passing the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> filter, the derived input
+    table may be subject to grouping, using the <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+>
+    clause, and elimination of group rows using the <TT
+CLASS="LITERAL"
+>HAVING</TT
+>
+    clause.
+   </P
+><PRE
+CLASS="SYNOPSIS"
+>SELECT <TT
+CLASS="REPLACEABLE"
+><I
+>select_list</I
+></TT
+>
+    FROM ...
+    [<SPAN
+CLASS="OPTIONAL"
+>WHERE ...</SPAN
+>]
+    GROUP BY <TT
+CLASS="REPLACEABLE"
+><I
+>grouping_column_reference</I
+></TT
+> [<SPAN
+CLASS="OPTIONAL"
+>, <TT
+CLASS="REPLACEABLE"
+><I
+>grouping_column_reference</I
+></TT
+></SPAN
+>]...</PRE
+><P
+>    The <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+> clause is used to group together rows in
+    a table that share the same values in all the columns listed. The
+    order in which the columns are listed does not matter.  The
+    purpose is to reduce each group of rows sharing common values into
+    one group row that is representative of all rows in the group.
+    This is done to eliminate redundancy in the output and/or compute
+    aggregates that apply to these groups.  For instance:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT * FROM test1;</B
+></TT
+>
+ x | y
+---+---
+ a | 3
+ c | 2
+ b | 5
+ a | 1
+(4 rows)
+
+<TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT x FROM test1 GROUP BY x;</B
+></TT
+>
+ x
+---
+ a
+ b
+ c
+(3 rows)</PRE
+><P>
+   </P
+><P
+>    In the second query, we could not have written <TT
+CLASS="LITERAL"
+>SELECT *
+    FROM test1 GROUP BY x</TT
+>, because there is no single value
+    for the column <TT
+CLASS="LITERAL"
+>y</TT
+> that could be associated with each
+    group.  The grouped-by columns can be referenced in the select list since
+    they have a known constant value per group.
+   </P
+><P
+>    In general, if a table is grouped, columns that are not
+    used in the grouping cannot be referenced except in aggregate
+    expressions.  An example with aggregate expressions is:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT x, sum(y) FROM test1 GROUP BY x;</B
+></TT
+>
+ x | sum
+---+-----
+ a |   4
+ b |   5
+ c |   2
+(3 rows)</PRE
+><P>
+    Here <TT
+CLASS="LITERAL"
+>sum()</TT
+> is an aggregate function that
+    computes a single value over the entire group.  More information
+    about the available aggregate functions can be found in <A
+HREF="functions-aggregate.html"
+>Section 6.14</A
+>.
+   </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>     Grouping without aggregate expressions effectively calculates the
+     set of distinct values in a column.  This can also be achieved
+     using the <TT
+CLASS="LITERAL"
+>DISTINCT</TT
+> clause (see <A
+HREF="queries-select-lists.html#QUERIES-DISTINCT"
+>Section 4.3.3</A
+>).
+    </P
+></BLOCKQUOTE
+></DIV
+><P
+>    Here is another example:  <TT
+CLASS="FUNCTION"
+>sum(sales)</TT
+> on a
+    table grouped by product code gives the total sales for each
+    product, not the total sales on all products.
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT product_id, p.name, (sum(s.units) * p.price) AS sales
+    FROM products p LEFT JOIN sales s USING (product_id)
+    GROUP BY product_id, p.name, p.price;</PRE
+><P>
+    In this example, the columns <TT
+CLASS="LITERAL"
+>product_id</TT
+>,
+    <TT
+CLASS="LITERAL"
+>p.name</TT
+>, and <TT
+CLASS="LITERAL"
+>p.price</TT
+> must be
+    in the <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+> clause since they are referenced in
+    the query select list.  (Depending on how exactly the products
+    table is set up, name and price may be fully dependent on the
+    product ID, so the additional groupings could theoretically be
+    unnecessary, but this is not implemented yet.)  The column
+    <TT
+CLASS="LITERAL"
+>s.units</TT
+> does not have to be in the <TT
+CLASS="LITERAL"
+>GROUP
+    BY</TT
+> list since it is only used in an aggregate expression
+    (<TT
+CLASS="FUNCTION"
+>sum()</TT
+>), which represents the group of sales
+    of a product.  For each product, a summary row is returned about
+    all sales of the product.
+   </P
+><P
+>    In strict SQL, <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+> can only group by columns of
+    the source table but <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extends
+    this to also allow <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+> to group by columns in the
+    select list.  Grouping by value expressions instead of simple
+    column names is also allowed.
+   </P
+><P
+>    If a table has been grouped using a <TT
+CLASS="LITERAL"
+>GROUP BY</TT
+>
+    clause, but then only certain groups are of interest, the
+    <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clause can be used, much like a
+    <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause, to eliminate groups from a grouped
+    table.  The syntax is:
+</P><PRE
+CLASS="SYNOPSIS"
+>SELECT <TT
+CLASS="REPLACEABLE"
+><I
+>select_list</I
+></TT
+> FROM ... [<SPAN
+CLASS="OPTIONAL"
+>WHERE ...</SPAN
+>] GROUP BY ... HAVING <TT
+CLASS="REPLACEABLE"
+><I
+>boolean_expression</I
+></TT
+></PRE
+><P>
+    Expressions in the <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clause can refer both to
+    grouped expressions and to ungrouped expressions (which necessarily
+    involve an aggregate function).
+   </P
+><P
+>    Example:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT x, sum(y) FROM test1 GROUP BY x HAVING sum(y) &#62; 3;</B
+></TT
+>
+ x | sum
+---+-----
+ a |   4
+ b |   5
+(2 rows)
+
+<TT
+CLASS="PROMPT"
+>=&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>SELECT x, sum(y) FROM test1 GROUP BY x HAVING x &#60; 'c';</B
+></TT
+>
+ x | sum
+---+-----
+ a |   4
+ b |   5
+(2 rows)</PRE
+><P>
+   </P
+><P
+>    Again, a more realistic example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT product_id, p.name, (sum(s.units) * (p.price - p.cost)) AS profit
+    FROM products p LEFT JOIN sales s USING (product_id)
+    WHERE s.date &#62; CURRENT_DATE - INTERVAL '4 weeks'
+    GROUP BY product_id, p.name, p.price, p.cost
+    HAVING sum(p.price * s.units) &#62; 5000;</PRE
+><P>
+    In the example above, the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause is selecting
+    rows by a column that is not grouped, while the <TT
+CLASS="LITERAL"
+>HAVING</TT
+>
+    clause restricts the output to groups with total gross sales over
+    5000.  Note that the aggregate expressions do not necessarily need
+    to be the same everywhere.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="queries.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="queries-select-lists.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Queries</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="queries.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Select Lists</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

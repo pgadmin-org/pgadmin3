@@ -1,0 +1,287 @@
+<HTML
+><HEAD
+><TITLE
+>Privileges</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Database Users and Privileges"
+HREF="user-manag.html"><LINK
+REL="PREVIOUS"
+TITLE="Groups"
+HREF="groups.html"><LINK
+REL="NEXT"
+TITLE="Functions and Triggers"
+HREF="perm-functions.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="groups.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Database Users and Privileges</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="perm-functions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PRIVILEGES"
+>4.4. Privileges</A
+></H1
+><P
+>   When a database object is created, it is assigned an owner. The
+   owner is the user that executed the creation statement. To change
+   the owner of a table, index, sequence, or view, use the
+   <TT
+CLASS="COMMAND"
+>ALTER TABLE</TT
+> command. By default, only an owner
+   (or a superuser) can do anything with the object. In order to allow
+   other users to use it, <I
+CLASS="FIRSTTERM"
+>privileges</I
+> must be
+   granted.
+  </P
+><P
+>   There are several different privileges: <TT
+CLASS="LITERAL"
+>SELECT</TT
+>,
+   <TT
+CLASS="LITERAL"
+>INSERT</TT
+>, <TT
+CLASS="LITERAL"
+>UPDATE</TT
+>, <TT
+CLASS="LITERAL"
+>DELETE</TT
+>,
+   <TT
+CLASS="LITERAL"
+>RULE</TT
+>, <TT
+CLASS="LITERAL"
+>REFERENCES</TT
+>, <TT
+CLASS="LITERAL"
+>TRIGGER</TT
+>,
+   <TT
+CLASS="LITERAL"
+>CREATE</TT
+>, <TT
+CLASS="LITERAL"
+>TEMPORARY</TT
+>, <TT
+CLASS="LITERAL"
+>EXECUTE</TT
+>,
+   <TT
+CLASS="LITERAL"
+>USAGE</TT
+>, and <TT
+CLASS="LITERAL"
+>ALL PRIVILEGES</TT
+>. For more
+   information on the different types of privileges support by
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, refer to the
+   <TT
+CLASS="COMMAND"
+>GRANT</TT
+> page in the <A
+HREF="reference.html"
+><I
+>PostgreSQL 7.3.3 Reference Manual</I
+></A
+>. The right to modify or
+   destroy an object is always the privilege of the owner only. To
+   assign privileges, the <TT
+CLASS="COMMAND"
+>GRANT</TT
+> command is
+   used. So, if <TT
+CLASS="LITERAL"
+>joe</TT
+> is an existing user, and
+   <TT
+CLASS="LITERAL"
+>accounts</TT
+> is an existing table, the privilege to
+   update the table can be granted with
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT UPDATE ON accounts TO joe;</PRE
+><P>
+   The user executing this command must be the owner of the table. To
+   grant a privilege to a group, use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT SELECT ON accounts TO GROUP staff;</PRE
+><P>
+   The special <SPAN
+CLASS="QUOTE"
+>"user"</SPAN
+> name <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+> can
+   be used to grant a privilege to every user on the system. Writing
+   <TT
+CLASS="LITERAL"
+>ALL</TT
+> in place of a specific privilege specifies that all
+   privileges will be granted.
+  </P
+><P
+>   To revoke a privilege, use the fittingly named
+   <TT
+CLASS="COMMAND"
+>REVOKE</TT
+> command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>REVOKE ALL ON accounts FROM PUBLIC;</PRE
+><P>
+   The special privileges of the table owner (i.e., the right to do
+   <TT
+CLASS="COMMAND"
+>DROP</TT
+>, <TT
+CLASS="COMMAND"
+>GRANT</TT
+>, <TT
+CLASS="COMMAND"
+>REVOKE</TT
+>, etc)
+   are always implicit in being the owner,
+   and cannot be granted or revoked.  But the table owner can choose
+   to revoke his own ordinary privileges, for example to make a
+   table read-only for himself as well as others.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="groups.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="perm-functions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Groups</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="user-manag.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Functions and Triggers</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

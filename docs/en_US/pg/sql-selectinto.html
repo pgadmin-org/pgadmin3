@@ -1,0 +1,441 @@
+<HTML
+><HEAD
+><TITLE
+>SELECT INTO</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="SELECT"
+HREF="sql-select.html"><LINK
+REL="NEXT"
+TITLE="SET"
+HREF="sql-set.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-select.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-set.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-SELECTINTO"
+>SELECT INTO</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45518"
+></A
+><H2
+>Name</H2
+>   SELECT INTO
+  &nbsp;--&nbsp;   create a new table from the results of a query
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45521"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SELECT [ ALL | DISTINCT [ ON ( <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [, ...] ) ] ]
+    * | <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [ AS <TT
+CLASS="REPLACEABLE"
+><I
+>output_name</I
+></TT
+> ] [, ...]
+    INTO [ TEMPORARY | TEMP ] [ TABLE ] <TT
+CLASS="REPLACEABLE"
+><I
+>new_table</I
+></TT
+>
+    [ FROM <TT
+CLASS="REPLACEABLE"
+><I
+>from_item</I
+></TT
+> [, ...] ]
+    [ WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> ]
+    [ GROUP BY <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [, ...] ]
+    [ HAVING <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> [, ...] ]
+    [ { UNION | INTERSECT | EXCEPT } [ ALL ] <TT
+CLASS="REPLACEABLE"
+><I
+>select</I
+></TT
+> ]
+    [ ORDER BY <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [ ASC | DESC | USING <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> ] [, ...] ]
+    [ LIMIT { <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> | ALL } ]
+    [ OFFSET <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+> ]
+    [ FOR UPDATE [ OF <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+> [, ...] ] ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-SELECTINTO-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>TEMPORARY<BR>TEMP</DT
+><DD
+><P
+>       If specified, the table is created as a temporary table.
+       Refer to <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+> for details.
+      </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>new_table</I
+></TT
+></DT
+><DD
+><P
+>        The name (optionally schema-qualified) of the table to be created.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    All other inputs are described in detail for
+    <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-SELECTINTO-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>    Refer to
+    <A
+HREF="sql-createtable.html"
+><I
+>CREATE TABLE</I
+></A
+>
+    and
+    <A
+HREF="sql-select.html"
+><I
+>SELECT</I
+></A
+>
+    for a summary of possible output messages.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SELECTINTO-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> creates a new table and fills it
+   with data computed by a query.  The data is not returned to the
+   client, as it is with a normal <TT
+CLASS="COMMAND"
+>SELECT</TT
+>.  The new
+   table's columns have the names and data types associated with the
+   output columns of the <TT
+CLASS="COMMAND"
+>SELECT</TT
+>.
+
+   </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     <A
+HREF="sql-createtableas.html"
+><I
+>CREATE TABLE AS</I
+></A
+>
+     is functionally equivalent to <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+>.
+     <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> is the recommended syntax, since
+     <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> is not standard.  In fact, this form of
+     <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> is not available in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> or <A
+HREF="app-ecpg.html"
+><SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+></A
+>,
+     because they interpret the INTO clause differently.
+    </P
+></BLOCKQUOTE
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SELECTINTO-2"
+></A
+><H2
+>   Compatibility
+  </H2
+><P
+>    SQL92 uses <TT
+CLASS="COMMAND"
+>SELECT ... INTO</TT
+> to represent selecting
+    values into scalar variables of a host program, rather than creating
+    a new table.  This indeed is the usage found in <SPAN
+CLASS="APPLICATION"
+>PL/pgSQL</SPAN
+> and <A
+HREF="app-ecpg.html"
+><SPAN
+CLASS="APPLICATION"
+>ecpg</SPAN
+></A
+>.
+    The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> usage of <TT
+CLASS="COMMAND"
+>SELECT
+    INTO</TT
+> to represent table creation is historical.  It's best
+    to use <TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> for this purpose in new code.
+    (<TT
+CLASS="COMMAND"
+>CREATE TABLE AS</TT
+> isn't standard either, but it's
+    less likely to cause confusion.)
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-select.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-set.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SELECT</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SET</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

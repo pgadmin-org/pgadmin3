@@ -1,0 +1,274 @@
+<HTML
+><HEAD
+><TITLE
+>Genetic Query Optimization</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Developer's Guide"
+HREF="developer.html"><LINK
+REL="PREVIOUS"
+TITLE="Page Files"
+HREF="page.html"><LINK
+REL="NEXT"
+TITLE="Genetic Algorithms"
+HREF="geqo-intro2.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="page.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="geqo-intro2.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="GEQO"
+>Chapter 8. Genetic Query Optimization</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>8.1. <A
+HREF="geqo.html#GEQO-INTRO"
+>Query Handling as a Complex Optimization Problem</A
+></DT
+><DT
+>8.2. <A
+HREF="geqo-intro2.html"
+>Genetic Algorithms</A
+></DT
+><DT
+>8.3. <A
+HREF="geqo-pg-intro.html"
+>Genetic Query Optimization (<SPAN
+CLASS="ACRONYM"
+>GEQO</SPAN
+>) in PostgreSQL</A
+></DT
+><DT
+>8.4. <A
+HREF="geqo-biblio.html"
+>Further Readings</A
+></DT
+></DL
+></DIV
+><P
+>   </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Author: </B
+>     Written by Martin Utesch (<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:utesch@aut.tu-freiberg.de"
+>utesch@aut.tu-freiberg.de</A
+>&#62;</TT
+>)
+     for the Institute of Automatic Control at the University of Mining and Technology in Freiberg, Germany.
+    </P
+></BLOCKQUOTE
+></DIV
+><P>
+  </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GEQO-INTRO"
+>8.1. Query Handling as a Complex Optimization Problem</A
+></H1
+><P
+>    Among all relational operators the most difficult one to process and
+    optimize is the <I
+CLASS="FIRSTTERM"
+>join</I
+>. The number of alternative plans to answer a query
+    grows exponentially with the number of joins included in it. Further
+    optimization effort is caused by the support of a variety of
+    <I
+CLASS="FIRSTTERM"
+>join methods</I
+>
+    (e.g., nested loop, hash join, merge join in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>) to
+    process individual joins and a diversity of
+    <I
+CLASS="FIRSTTERM"
+>indexes</I
+> (e.g., R-tree,
+    B-tree, hash in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>) as access paths for relations.
+   </P
+><P
+>    The current <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> optimizer
+    implementation performs a <I
+CLASS="FIRSTTERM"
+>near-exhaustive search</I
+>
+    over the space of alternative strategies. This query 
+    optimization technique is inadequate to support database application
+    domains that involve the need for extensive queries, such as artificial
+    intelligence.
+   </P
+><P
+>    The Institute of Automatic Control at the University of Mining and
+    Technology, in Freiberg, Germany, encountered the described problems as its
+    folks wanted to take the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> DBMS as the backend for a decision
+    support knowledge based system for the maintenance of an electrical
+    power grid. The DBMS needed to handle large join queries for the
+    inference machine of the knowledge based system.
+   </P
+><P
+>    Performance difficulties in exploring the space of possible query
+    plans created the demand for a new optimization technique being developed.
+   </P
+><P
+>    In the following we propose the implementation of a <I
+CLASS="FIRSTTERM"
+>Genetic Algorithm</I
+>
+    as an option for the database query optimization problem.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="page.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="geqo-intro2.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Page Files</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="developer.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Genetic Algorithms</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

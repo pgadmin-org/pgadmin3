@@ -1,0 +1,340 @@
+<HTML
+><HEAD
+><TITLE
+>ECPG - Embedded SQL in C</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Client Interfaces"
+HREF="programmer-client.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_lo_export"
+HREF="pgtcl-pgloexport.html"><LINK
+REL="NEXT"
+TITLE="Connecting to the Database Server"
+HREF="ecpg-connect.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="pgtcl-pgloexport.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecpg-connect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="ECPG"
+>Chapter 4. <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> - Embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> in C</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>4.1. <A
+HREF="ecpg.html#ECPG-CONCEPT"
+>The Concept</A
+></DT
+><DT
+>4.2. <A
+HREF="ecpg-connect.html"
+>Connecting to the Database Server</A
+></DT
+><DT
+>4.3. <A
+HREF="ecpg-disconnect.html"
+>Closing a Connection</A
+></DT
+><DT
+>4.4. <A
+HREF="ecpg-commands.html"
+>Running SQL Commands</A
+></DT
+><DT
+>4.5. <A
+HREF="ecpg-variables.html"
+>Passing Data</A
+></DT
+><DT
+>4.6. <A
+HREF="ecpg-errors.html"
+>Error Handling</A
+></DT
+><DT
+>4.7. <A
+HREF="ecpg-include.html"
+>Including Files</A
+></DT
+><DT
+>4.8. <A
+HREF="ecpg-process.html"
+>Processing Embedded SQL Programs</A
+></DT
+><DT
+>4.9. <A
+HREF="ecpg-library.html"
+>Library Functions</A
+></DT
+><DT
+>4.10. <A
+HREF="ecpg-porting.html"
+>Porting From Other <SPAN
+CLASS="ACRONYM"
+>RDBMS</SPAN
+> Packages</A
+></DT
+><DT
+>4.11. <A
+HREF="ecpg-develop.html"
+>For the Developer</A
+></DT
+><DD
+><DL
+><DT
+>4.11.1. <A
+HREF="ecpg-develop.html#AEN27942"
+>The Preprocessor</A
+></DT
+><DT
+>4.11.2. <A
+HREF="ecpg-develop.html#AEN27987"
+>The Library</A
+></DT
+></DL
+></DD
+></DL
+></DIV
+><A
+NAME="AEN27508"
+></A
+><P
+>  This chapter describes the embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> package
+  for <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>. It works with
+  <SPAN
+CLASS="ACRONYM"
+>C</SPAN
+> and <SPAN
+CLASS="ACRONYM"
+>C++</SPAN
+>. It was written by
+  Linus Tolke (<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:linus@epact.se"
+>linus@epact.se</A
+>&#62;</TT
+>) and Michael Meskes
+  (<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:meskes@postgresql.org"
+>meskes@postgresql.org</A
+>&#62;</TT
+>).
+ </P
+><P
+>  Admittedly, this documentation is quite incomplete.  But since this
+  interface is standardized, additional information can be found in
+  many resources about SQL.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECPG-CONCEPT"
+>4.1. The Concept</A
+></H1
+><P
+>   An embedded SQL program consists of code written in an ordinary
+   programming language, in this case C, mixed with SQL commands in
+   specially marked sections.  To build the program, the source code
+   is first passed to the embedded SQL preprocessor, which converts it
+   to an ordinary C program, and afterwards it can be processed by a C
+   compilation tool chain.
+  </P
+><P
+>   Embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> has advantages over other methods
+   for handling <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> commands from C code. First, it
+   takes care of the tedious passing of information to and from
+   variables in your <SPAN
+CLASS="ACRONYM"
+>C</SPAN
+> program.  Secondly, embedded
+   SQL in C is defined in the SQL standard and supported by many other
+   SQL databases.  The PostgreSQL implementation is designed to match
+   this standard as much as possible, and it is usually possible to
+   port embedded <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> programs written for other
+   <SPAN
+CLASS="ACRONYM"
+>RDBMS</SPAN
+> to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   with relative ease.
+  </P
+><P
+>   As indicated, programs written for the embedded SQL interface are
+   normal C programs with special code inserted to perform
+   database-related actions.  This special code always has the form
+</P><PRE
+CLASS="PROGRAMLISTING"
+>EXEC SQL ...;</PRE
+><P>
+   These statements syntactically take the place of a C statement.
+   Depending on the particular statement, they may appear in the
+   global context or within a function.  Embedded SQL statements
+   follow the case-sensitivity rules of normal SQL code, and not those
+   of C.
+  </P
+><P
+>   The following sections explain all the embedded SQL statements.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pgtcl-pgloexport.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecpg-connect.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_lo_export</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Connecting to the Database Server</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

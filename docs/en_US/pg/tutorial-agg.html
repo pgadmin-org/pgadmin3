@@ -1,0 +1,457 @@
+<HTML
+><HEAD
+><TITLE
+>Aggregate Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The SQL Language"
+HREF="tutorial-sql.html"><LINK
+REL="PREVIOUS"
+TITLE="Joins Between Tables"
+HREF="tutorial-join.html"><LINK
+REL="NEXT"
+TITLE="Updates"
+HREF="tutorial-update.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="tutorial-join.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. The <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> Language</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tutorial-update.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUTORIAL-AGG"
+>2.7. Aggregate Functions</A
+></H1
+><A
+NAME="AEN434"
+></A
+><P
+>    <A
+NAME="AEN437"
+></A
+>
+    <A
+NAME="AEN439"
+></A
+>
+    <A
+NAME="AEN441"
+></A
+>
+    <A
+NAME="AEN443"
+></A
+>
+    <A
+NAME="AEN445"
+></A
+>
+
+    Like  most  other relational database products, 
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports
+    aggregate functions.
+    An aggregate function computes a single result from multiple input rows.
+    For example, there are aggregates to compute the
+    <TT
+CLASS="FUNCTION"
+>count</TT
+>, <TT
+CLASS="FUNCTION"
+>sum</TT
+>,
+    <TT
+CLASS="FUNCTION"
+>avg</TT
+> (average), <TT
+CLASS="FUNCTION"
+>max</TT
+> (maximum) and
+    <TT
+CLASS="FUNCTION"
+>min</TT
+> (minimum) over a set of rows.
+   </P
+><P
+>    As an example, we can find the highest low-temperature reading anywhere
+    with
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT max(temp_lo) FROM weather;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+> max
+-----
+  46
+(1 row)</PRE
+><P>
+   </P
+><P
+>    <A
+NAME="AEN457"
+></A
+>
+
+    If we wanted to know what city (or cities) that reading occurred in,
+    we might try
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT city FROM weather WHERE temp_lo = max(temp_lo);     <I
+CLASS="LINEANNOTATION"
+>WRONG</I
+></PRE
+><P>
+
+    but this will not work since the aggregate
+    <TT
+CLASS="FUNCTION"
+>max</TT
+> cannot be used in the
+    <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause.  (This restriction exists because
+    the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause determines the rows that will
+    go into the aggregation stage; so it has to be evaluated before
+    aggregate functions are computed.)
+    However, as is often the case
+    the query can be restated to accomplish the intended result, here
+    by using a <I
+CLASS="FIRSTTERM"
+>subquery</I
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT city FROM weather
+    WHERE temp_lo = (SELECT max(temp_lo) FROM weather);</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+>     city
+---------------
+ San Francisco
+(1 row)</PRE
+><P>
+
+    This is OK because the subquery is an independent computation
+    that computes its own aggregate separately from what is happening
+    in the outer query.
+   </P
+><P
+>    <A
+NAME="AEN468"
+></A
+>
+    <A
+NAME="AEN470"
+></A
+>
+
+    Aggregates are also very useful in combination with <TT
+CLASS="LITERAL"
+>GROUP
+    BY</TT
+> clauses.  For example, we can get the maximum low
+    temperature observed in each city with
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT city, max(temp_lo)
+    FROM weather
+    GROUP BY city;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+>     city      | max
+---------------+-----
+ Hayward       |  37
+ San Francisco |  46
+(2 rows)</PRE
+><P>
+
+    which gives us one output row per city.  Each aggregate result is
+    computed over the table rows matching that city.
+    We can filter these grouped
+    rows using <TT
+CLASS="LITERAL"
+>HAVING</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT city, max(temp_lo)
+    FROM weather
+    GROUP BY city
+    HAVING max(temp_lo) &#60; 40;</PRE
+><P>
+
+</P><PRE
+CLASS="SCREEN"
+>  city   | max
+---------+-----
+ Hayward |  37
+(1 row)</PRE
+><P>
+
+    which gives us the same results for only the cities that have all
+    <TT
+CLASS="LITERAL"
+>temp_lo</TT
+> values below 40.  Finally, if we only care about
+    cities whose
+    names begin with <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>S</TT
+>"</SPAN
+>, we might do
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT city, max(temp_lo)
+    FROM weather
+    WHERE city LIKE 'S%'<A
+NAME="CO.TUTORIAL-AGG-LIKE"
+><B
+>(1)</B
+></A
+>
+    GROUP BY city
+    HAVING max(temp_lo) &#60; 40;</PRE
+><P>
+   <DIV
+CLASS="CALLOUTLIST"
+><DL
+COMPACT="COMPACT"
+><DT
+><A
+HREF="tutorial-agg.html#CO.TUTORIAL-AGG-LIKE"
+><B
+>(1)</B
+></A
+></DT
+><DD
+>      The <TT
+CLASS="LITERAL"
+>LIKE</TT
+> operator does pattern matching and
+      is explained in the <A
+HREF="user.html"
+><I
+>PostgreSQL 7.3.3 User's Guide</I
+></A
+>.
+     </DD
+></DL
+></DIV
+>
+   </P
+><P
+>    It is important to understand the interaction between aggregates and
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>'s <TT
+CLASS="LITERAL"
+>WHERE</TT
+> and <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clauses.
+    The fundamental difference between <TT
+CLASS="LITERAL"
+>WHERE</TT
+> and
+    <TT
+CLASS="LITERAL"
+>HAVING</TT
+> is this: <TT
+CLASS="LITERAL"
+>WHERE</TT
+> selects
+    input rows before groups and aggregates are computed (thus, it controls
+    which rows go into the aggregate computation), whereas
+    <TT
+CLASS="LITERAL"
+>HAVING</TT
+> selects group rows after groups and
+    aggregates are computed.  Thus, the
+    <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clause must not contain aggregate functions;
+    it makes no sense to try to use an aggregate to determine which rows
+    will be inputs to the aggregates.  On the other hand,
+    <TT
+CLASS="LITERAL"
+>HAVING</TT
+> clauses always contain aggregate functions.
+    (Strictly speaking, you are allowed to write a <TT
+CLASS="LITERAL"
+>HAVING</TT
+>
+    clause that doesn't use aggregates, but it's wasteful: The same condition
+    could be used more efficiently at the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> stage.)
+   </P
+><P
+>    Observe that we can apply the city name restriction in
+    <TT
+CLASS="LITERAL"
+>WHERE</TT
+>, since it needs no aggregate.  This is
+    more efficient than adding the restriction to <TT
+CLASS="LITERAL"
+>HAVING</TT
+>,
+    because we avoid doing the grouping and aggregate calculations
+    for all rows that fail the <TT
+CLASS="LITERAL"
+>WHERE</TT
+> check.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial-join.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial-update.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Joins Between Tables</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial-sql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Updates</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

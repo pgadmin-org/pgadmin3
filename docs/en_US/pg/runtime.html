@@ -1,0 +1,320 @@
+<HTML
+><HEAD
+><TITLE
+>Server Run-time Environment</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Installation on Windows"
+HREF="install-win32.html"><LINK
+REL="NEXT"
+TITLE="Creating a Database Cluster"
+HREF="creating-cluster.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="install-win32.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="creating-cluster.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="RUNTIME"
+>Chapter 3. Server Run-time Environment</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>3.1. <A
+HREF="runtime.html#POSTGRES-USER"
+>The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> User Account</A
+></DT
+><DT
+>3.2. <A
+HREF="creating-cluster.html"
+>Creating a Database Cluster</A
+></DT
+><DT
+>3.3. <A
+HREF="postmaster-start.html"
+>Starting the Database Server</A
+></DT
+><DD
+><DL
+><DT
+>3.3.1. <A
+HREF="postmaster-start.html#POSTMASTER-START-FAILURES"
+>Server Start-up Failures</A
+></DT
+><DT
+>3.3.2. <A
+HREF="postmaster-start.html#CLIENT-CONNECTION-PROBLEMS"
+>Client Connection Problems</A
+></DT
+></DL
+></DD
+><DT
+>3.4. <A
+HREF="runtime-config.html"
+>Run-time Configuration</A
+></DT
+><DD
+><DL
+><DT
+>3.4.1. <A
+HREF="runtime-config.html#CATALOG-PG-SETTINGS"
+>pg_settings</A
+></DT
+><DT
+>3.4.2. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-OPTIMIZER"
+>Planner and Optimizer Tuning</A
+></DT
+><DT
+>3.4.3. <A
+HREF="runtime-config.html#LOGGING"
+>Logging and Debugging</A
+></DT
+><DT
+>3.4.4. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-GENERAL"
+>General Operation</A
+></DT
+><DT
+>3.4.5. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-WAL"
+>WAL</A
+></DT
+><DT
+>3.4.6. <A
+HREF="runtime-config.html#RUNTIME-CONFIG-SHORT"
+>Short Options</A
+></DT
+></DL
+></DD
+><DT
+>3.5. <A
+HREF="kernel-resources.html"
+>Managing Kernel Resources</A
+></DT
+><DD
+><DL
+><DT
+>3.5.1. <A
+HREF="kernel-resources.html#SYSVIPC"
+>Shared Memory and Semaphores</A
+></DT
+><DT
+>3.5.2. <A
+HREF="kernel-resources.html#AEN20792"
+>Resource Limits</A
+></DT
+></DL
+></DD
+><DT
+>3.6. <A
+HREF="postmaster-shutdown.html"
+>Shutting Down the Server</A
+></DT
+><DT
+>3.7. <A
+HREF="ssl-tcp.html"
+>Secure TCP/IP Connections with SSL</A
+></DT
+><DT
+>3.8. <A
+HREF="ssh-tunnels.html"
+>Secure TCP/IP Connections with <SPAN
+CLASS="APPLICATION"
+>SSH</SPAN
+> Tunnels</A
+></DT
+></DL
+></DIV
+><P
+>  This chapter discusses how to set up and run the database server
+  and the interactions with the operating system.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="POSTGRES-USER"
+>3.1. The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> User Account</A
+></H1
+><A
+NAME="AEN19179"
+></A
+><P
+>   As with any other server daemon that is connected to outside world,
+   it is advisable to run <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> under a
+   separate user account. This user account should only own the data
+   that is managed by the server, and should not be shared with other
+   daemons. (For example, using the user <SPAN
+CLASS="QUOTE"
+>"nobody"</SPAN
+> is a bad
+   idea.) It is not advisable to install executables owned by
+   this user because compromised systems could then modify their own 
+   binaries.
+  </P
+><P
+>   To add a Unix user account to your system, look for a command
+   <TT
+CLASS="COMMAND"
+>useradd</TT
+> or <TT
+CLASS="COMMAND"
+>adduser</TT
+>. The user
+   name <SPAN
+CLASS="SYSTEMITEM"
+>postgres</SPAN
+> is often used but is by no
+   means required.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install-win32.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="creating-cluster.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Installation on <SPAN
+CLASS="PRODUCTNAME"
+>Windows</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating a Database Cluster</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,369 @@
+<HTML
+><HEAD
+><TITLE
+>What is a Query Tree?</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Rule System"
+HREF="rules.html"><LINK
+REL="PREVIOUS"
+TITLE="The Rule System"
+HREF="rules.html"><LINK
+REL="NEXT"
+TITLE="Views and the Rule System"
+HREF="rules-views.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="rules.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 13. The Rule System</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="rules-views.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="QUERYTREE"
+>13.2. What is a Query Tree?</A
+></H1
+><P
+>    To understand how the rule system works it is necessary to know
+    when it is invoked and what its input and results are.</P
+><P
+>    The rule system is located between the query parser and the planner.
+    It takes the output of the parser, one query tree, and the rewrite
+    rules from the <TT
+CLASS="FILENAME"
+>pg_rewrite</TT
+> catalog, which are
+    query trees too with some extra information, and creates zero or many
+    query trees as result. So its input and output are always things
+    the parser itself could have produced and thus, anything it sees
+    is basically representable as an <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> statement.</P
+><P
+>    Now what is a query tree? It is an internal representation of an
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> statement where the single parts that built
+    it are stored separately. These query trees are visible when starting
+    the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend with debug level 4
+    and typing queries into the interactive backend interface. The rule
+    actions in the <TT
+CLASS="FILENAME"
+>pg_rewrite</TT
+> system catalog are
+    also stored as query trees. They are not formatted like the debug
+    output, but they contain exactly the same information.</P
+><P
+>    Reading a query tree requires some experience and it was a hard
+    time when I started to work on the rule system. I can remember
+    that I was standing at the coffee machine and I saw the cup
+    in a target list, water and coffee powder in a range table and all
+    the buttons in a qualification expression. Since 
+    <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> representations of query trees are
+    sufficient to understand the rule system, this document will
+    not teach how to read them. It might help to learn
+    it and the naming conventions are required in the later following
+    descriptions.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN32704"
+>13.2.1. The Parts of a Query tree</A
+></H2
+><P
+>    When reading the <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> representations of the 
+    query trees in this document it is necessary to be able to identify
+    the parts the statement is broken into when it is in the query tree
+    structure. The parts of a query tree are
+
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>the command type</DT
+><DD
+><P
+>        This is a simple value telling which command
+	(SELECT, INSERT, UPDATE, DELETE) produced the parse tree.
+    </P
+></DD
+><DT
+>the range table</DT
+><DD
+><P
+>        The range table is a list of relations that are used in the query.
+	In a SELECT statement these are the relations given after
+	the FROM keyword.
+    </P
+><P
+>        Every range table entry identifies a table or view and tells
+	by which name it is called in the other parts of the query.
+	In the query tree the range table entries are referenced by
+	index rather than by name, so here it doesn't matter if there
+	are duplicate names as it would in an <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>
+	statement. This can happen after the range tables of rules
+	have been merged in. The examples in this document will not have
+	this situation.
+    </P
+></DD
+><DT
+>the result relation</DT
+><DD
+><P
+>        This is an index into the range table that identifies the
+	relation where the results of the query go.
+    </P
+><P
+>	SELECT queries
+	normally don't have a result relation. The special case
+	of a SELECT INTO is mostly identical to a CREATE TABLE,
+	INSERT ... SELECT sequence and is not discussed separately
+	here.
+    </P
+><P
+>        On INSERT, UPDATE and DELETE queries the result relation
+	is the table (or view!) where the changes take effect.
+    </P
+></DD
+><DT
+>the target list</DT
+><DD
+><P
+>        The target list is a list of expressions that define the result
+	of the query. In the case of a SELECT, the expressions are what
+	builds the final output of the query. They are the expressions
+	between the SELECT and the FROM keywords.  (* is just an
+	abbreviation for all the attribute names of a relation.  It is
+	expanded by the parser into the individual attributes, so the
+	rule system never sees it.)
+    </P
+><P
+>        DELETE queries don't need a target list because they don't
+	produce any result. In fact the planner will add a special <SPAN
+CLASS="ACRONYM"
+>CTID</SPAN
+>
+	entry to the empty target list. But this is after the rule
+	system and will be discussed later. For the rule system the
+	target list is empty.
+    </P
+><P
+>        In INSERT queries the target list describes the new rows that
+	should go into the result relation. It is the expressions in the VALUES
+	clause or the ones from the SELECT clause in INSERT ... SELECT.
+	The first step of the rewrite process adds target list entries
+	for any columns that were not assigned to by the original query
+	and have defaults.  Any remaining columns (with neither a given
+	value nor a default) will be filled in by the
+	planner with a constant NULL expression.
+    </P
+><P
+>        In UPDATE queries, the target list describes the new rows that should
+	replace the old ones. In the rule system, it contains just the
+	expressions from the SET attribute = expression part of the query.
+	The planner will handle missing columns by inserting expressions that
+	copy the values from the old row into the new one. And it will add
+	the special <SPAN
+CLASS="ACRONYM"
+>CTID</SPAN
+> entry just as for DELETE too.
+    </P
+><P
+>        Every entry in the target list contains an expression that can
+	be a constant value, a variable pointing to an attribute of one
+	of the relations in the range table, a parameter, or an expression
+	tree made of function calls, constants, variables, operators etc.
+    </P
+></DD
+><DT
+>the qualification</DT
+><DD
+><P
+>        The query's qualification is an expression much like one of those
+	contained in the target list entries. The result value of this
+	expression is a Boolean that tells if the operation
+	(INSERT, UPDATE, DELETE or SELECT) for the final result row should be
+	executed or not. It is the WHERE clause of an
+	<SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> statement.
+    </P
+></DD
+><DT
+>the join tree</DT
+><DD
+><P
+>        The query's join tree shows the structure of the FROM clause.
+	For a simple query like SELECT FROM a, b, c the join tree is just
+	a list of the FROM items, because we are allowed to join them in
+	any order.  But when JOIN expressions --- particularly outer joins
+	--- are used, we have to join in the order shown by the joins.
+	The join tree shows the structure of the JOIN expressions.  The
+	restrictions associated with particular JOIN clauses (from ON or
+	USING expressions) are stored as qualification expressions attached
+	to those join tree nodes.  It turns out to be convenient to store
+	the top-level WHERE expression as a qualification attached to the
+	top-level join tree item, too.  So really the join tree represents
+	both the FROM and WHERE clauses of a SELECT.
+    </P
+></DD
+><DT
+>the others</DT
+><DD
+><P
+>        The other parts of the query tree like the ORDER BY 
+	clause aren't of interest here. The rule system
+	substitutes entries there while applying rules, but that
+	doesn't have much to do with the fundamentals of the rule
+	system.
+    </P
+></DD
+></DL
+></DIV
+><P></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules-views.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The Rule System</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="rules.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Views and the Rule System</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

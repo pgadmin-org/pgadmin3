@@ -1,0 +1,421 @@
+<HTML
+><HEAD
+><TITLE
+>PREPARE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="NOTIFY"
+HREF="sql-notify.html"><LINK
+REL="NEXT"
+TITLE="REINDEX"
+HREF="sql-reindex.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-notify.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-reindex.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-PREPARE"
+>PREPARE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44721"
+></A
+><H2
+>Name</H2
+>   PREPARE
+  &nbsp;--&nbsp;   create a prepared query
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44724"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>   PREPARE <TT
+CLASS="REPLACEABLE"
+><I
+>plan_name</I
+></TT
+> [ (<TT
+CLASS="REPLACEABLE"
+><I
+>datatype</I
+></TT
+> [, ...] ) ] AS <TT
+CLASS="REPLACEABLE"
+><I
+>query</I
+></TT
+>
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-PREPARE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>plan_name</I
+></TT
+></DT
+><DD
+><P
+>		An arbitrary name given to this particular prepared query. It
+		must be unique within a single session, and is used to execute
+		or remove a previously prepared query.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>datatype</I
+></TT
+></DT
+><DD
+><P
+>		The data-type of a parameter to the prepared query.
+		To refer to the parameters in the prepared query itself,
+		use <TT
+CLASS="LITERAL"
+>$1</TT
+>, <TT
+CLASS="LITERAL"
+>$2</TT
+>, etc.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-PREPARE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>		<SPAN
+CLASS="RETURNVALUE"
+>PREPARE</SPAN
+>
+       </TT
+></DT
+><DD
+><P
+>		The query has been prepared successfully.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-PREPARE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> creates a prepared query. A prepared
+   query is a server-side object that can be used to optimize
+   performance. When the <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statement is
+   executed, the specified query is parsed, rewritten, and
+   planned. When a subsequent <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement is
+   issued, the prepared query need only be executed. Thus, the
+   parsing, rewriting, and planning stages are only performed once,
+   instead of every time the query is executed.
+  </P
+><P
+>   Prepared queries can take parameters: values that are
+   substituted into the query when it is executed. To specify the
+   parameters to a prepared query, include a list of data-types with
+   the <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statement. In the query itself, you
+   can refer to the parameters by position using
+   <TT
+CLASS="LITERAL"
+>$1</TT
+>, <TT
+CLASS="LITERAL"
+>$2</TT
+>, etc. When executing
+   the query, specify the actual values for these parameters in the
+   <TT
+CLASS="COMMAND"
+>EXECUTE</TT
+> statement -- refer to <A
+HREF="sql-execute.html"
+><I
+>EXECUTE</I
+></A
+>
+   for more information.
+  </P
+><P
+>   Prepared queries are stored locally (in the current backend), and
+   only exist for the duration of the current database session. When
+   the client exits, the prepared query is forgotten, and so it must be
+   re-created before being used again. This also means that a single
+   prepared query cannot be used by multiple simultaneous database
+   clients; however, each client can create their own prepared query
+   to use.
+  </P
+><P
+>   Prepared queries have the largest performance advantage when a
+   single backend is being used to execute a large number of similar
+   queries. The performance difference will be particularly
+   significant if the queries are complex to plan or rewrite. For
+   example, if the query involves a join of many tables or requires
+   the application of several rules. If the query is relatively simple
+   to plan and rewrite but relatively expensive to execute, the
+   performance advantage of prepared queries will be less noticeable.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-PREPARE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>	In some situations, the query plan produced by
+	<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> for a prepared query may be
+	inferior to the plan produced if the query were submitted and
+	executed normally. This is because when the query is planned (and
+	the optimizer attempts to determine the optimal query plan), the
+	actual values of any parameters specified in the query are
+	unavailable. <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> collects
+	statistics on the distribution of data in the table, and can use
+	constant values in a query to make guesses about the likely
+	result of executing the query. Since this data is unavailable when
+	planning prepared queries with parameters, the chosen plan may be
+	sub-optimal.
+   </P
+><P
+>	For more information on query planning and the statistics
+	collected by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> for query
+	optimization purposes, see the <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+> documentation.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-PREPARE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-PREPARE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>	SQL92 includes a <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statement, but it is
+    only for use in embedded SQL clients. The
+    <TT
+CLASS="COMMAND"
+>PREPARE</TT
+> statement implemented by
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> also uses a somewhat
+    different syntax.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-notify.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-reindex.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>NOTIFY</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>REINDEX</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,271 @@
+<HTML
+><HEAD
+><TITLE
+>Query Targets</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Type Conversion"
+HREF="typeconv.html"><LINK
+REL="PREVIOUS"
+TITLE="Functions"
+HREF="typeconv-func.html"><LINK
+REL="NEXT"
+TITLE="UNION and CASE Constructs"
+HREF="typeconv-union-case.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="typeconv-func.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. Type Conversion</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="typeconv-union-case.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TYPECONV-QUERY"
+>7.4. Query Targets</A
+></H1
+><P
+>   Values to be inserted into a table are coerced to the destination
+   column's data type according to the
+   following steps.
+  </P
+><DIV
+CLASS="PROCEDURE"
+><P
+><B
+>Query Target Type Resolution</B
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Check for an exact match with the target.</P
+></LI
+><LI
+><P
+>Otherwise, try to coerce the expression to the target type.  This will succeed
+if the two types are known binary-compatible, or if there is a conversion
+function.  If the expression is an unknown-type literal, the contents of
+the literal string will be fed to the input conversion routine for the target
+type.</P
+></LI
+><LI
+><P
+>If the target is a fixed-length type (e.g. <TT
+CLASS="TYPE"
+>char</TT
+> or <TT
+CLASS="TYPE"
+>varchar</TT
+>
+declared with a length) then try to find a sizing function for the target
+type.  A sizing function is a function of the same name as the type,
+taking two arguments of which the first is that type and the second is an
+integer, and returning the same type.  If one is found, it is applied,
+passing the column's declared length as the second parameter.</P
+></LI
+></OL
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN10955"
+></A
+><P
+><B
+>Example 7-6. <TT
+CLASS="TYPE"
+>character</TT
+> Storage Type Conversion</B
+></P
+><P
+>For a target column declared as <TT
+CLASS="TYPE"
+>character(20)</TT
+> the following query
+ensures that the target is sized correctly:
+
+</P><PRE
+CLASS="SCREEN"
+>tgl=&#62; CREATE TABLE vv (v character(20));
+CREATE
+tgl=&#62; INSERT INTO vv SELECT 'abc' || 'def';
+INSERT 392905 1
+tgl=&#62; SELECT v, length(v) FROM vv;
+          v           | length
+----------------------+--------
+ abcdef               |     20
+(1 row)</PRE
+><P>
+
+What has really happened here is that the two unknown literals are resolved
+to <TT
+CLASS="TYPE"
+>text</TT
+> by default, allowing the <TT
+CLASS="LITERAL"
+>||</TT
+> operator
+to be resolved as <TT
+CLASS="TYPE"
+>text</TT
+> concatenation.  Then the <TT
+CLASS="TYPE"
+>text</TT
+>
+result of the operator is coerced to <TT
+CLASS="TYPE"
+>bpchar</TT
+> (<SPAN
+CLASS="QUOTE"
+>"blank-padded
+char"</SPAN
+>, the internal name of the character data type) to match the target
+column type.  (Since the parser knows that <TT
+CLASS="TYPE"
+>text</TT
+> and
+<TT
+CLASS="TYPE"
+>bpchar</TT
+> are binary-compatible, this coercion is implicit and does
+not insert any real function call.)  Finally, the sizing function
+<TT
+CLASS="LITERAL"
+>bpchar(bpchar, integer)</TT
+> is found in the system catalogs
+and applied to the operator's result and the stored column length.  This
+type-specific function performs the required length check and addition of
+padding spaces.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="typeconv-func.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="typeconv-union-case.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="typeconv.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="LITERAL"
+>UNION</TT
+> and <TT
+CLASS="LITERAL"
+>CASE</TT
+> Constructs</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,240 @@
+<HTML
+><HEAD
+><TITLE
+>Rules and Permissions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="The Rule System"
+HREF="rules.html"><LINK
+REL="PREVIOUS"
+TITLE="Rules on INSERT, UPDATE and DELETE"
+HREF="rules-insert.html"><LINK
+REL="NEXT"
+TITLE="Rules and Command Status"
+HREF="rules-status.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="rules-insert.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 13. The Rule System</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="rules-status.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RULES-PERMISSIONS"
+>13.5. Rules and Permissions</A
+></H1
+><P
+>    Due to rewriting of queries by the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    rule system, other tables/views than those used in the original
+    query get accessed. Using update rules, this can include write access
+    to tables.</P
+><P
+>    Rewrite rules don't have a separate owner. The owner of
+    a relation (table or view) is automatically the owner of the
+    rewrite rules that are defined for it.
+    The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> rule system changes the
+    behavior of the default access control system. Relations that
+    are used due to rules get checked against the
+    permissions of the rule owner, not the user invoking the rule.
+    This means, that a user does only need the required permissions
+    for the tables/views he names in his queries. </P
+><P
+>    For example: A user has a list of phone numbers where some of
+    them are private, the others are of interest for the secretary of the office.
+    He can construct the following:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE TABLE phone_data (person text, phone text, private bool);
+CREATE VIEW phone_number AS
+    SELECT person, phone FROM phone_data WHERE NOT private;
+GRANT SELECT ON phone_number TO secretary;</PRE
+><P>
+    
+    Nobody except him (and the database superusers) can access the
+    phone_data table. But due to the GRANT, the secretary can SELECT from the
+    phone_number view. The rule system will rewrite
+    the SELECT from phone_number into a SELECT from phone_data and add the qualification
+    that only entries where private is false are wanted. Since the
+    user is the owner of phone_number, the read access to phone_data
+    is now checked against his permissions and the query is considered
+    granted. The check for accessing phone_number is also performed,
+    but this is done against the invoking user, so nobody but the user and the
+    secretary can use it.</P
+><P
+>    The permissions are checked rule by rule. So the secretary is for now the
+    only one who can see the public phone numbers. But the secretary can setup
+    another view and grant access to that to public. Then, anyone
+    can see the phone_number data through the secretaries view.
+    What the secretary cannot do is to create a view that directly
+    accesses phone_data (actually he can, but it will not work since
+    every access aborts the transaction during the permission checks).
+    And as soon as the user will notice, that the secretary opened
+    his phone_number view, he can REVOKE his access. Immediately any
+    access to the secretaries view will fail.</P
+><P
+>    Someone might think that this rule by rule checking is a security
+    hole, but in fact it isn't. If this would not work, the secretary
+    could setup a table with the same columns as phone_number and
+    copy the data to there once per day. Then it's his own data and
+    he can grant access to everyone he wants. A GRANT means <SPAN
+CLASS="QUOTE"
+>"I trust you"</SPAN
+>.
+    If someone you trust does the thing above, it's time to
+    think it over and then REVOKE.</P
+><P
+>    This mechanism does also work for update rules. In the examples
+    of the previous section, the owner of the tables in Al's database
+    could GRANT SELECT, INSERT, UPDATE and DELETE on the shoelace view to al.
+    But only SELECT on shoelace_log. The rule action to write log entries
+    will still be executed successfully. And Al could see the log entries.
+    But he cannot create fake entries, nor could he manipulate or remove
+    existing ones.
+
+    </P><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Warning: </B
+>    GRANT ALL currently includes RULE permission. This means the granted
+    user could drop the rule, do the changes and reinstall it. I think
+    this should get changed quickly.
+    </P
+></BLOCKQUOTE
+></DIV
+><P></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="rules-insert.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="rules-status.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Rules on INSERT, UPDATE and DELETE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="rules.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Rules and Command Status</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

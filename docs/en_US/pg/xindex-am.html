@@ -1,0 +1,213 @@
+<HTML
+><HEAD
+><TITLE
+>Access Methods and Operator Classes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interfacing Extensions To Indexes"
+HREF="xindex.html"><LINK
+REL="PREVIOUS"
+TITLE="Interfacing Extensions To Indexes"
+HREF="xindex.html"><LINK
+REL="NEXT"
+TITLE="Access Method Strategies"
+HREF="xindex-strategies.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 14. Interfacing Extensions To Indexes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xindex-strategies.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XINDEX-AM"
+>14.2. Access Methods and Operator Classes</A
+></H1
+><P
+>   The <TT
+CLASS="CLASSNAME"
+>pg_am</TT
+> table contains one row for every
+   index access method.  Support for access to regular tables is
+   built into <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>, but all index access
+   methods are described in <TT
+CLASS="CLASSNAME"
+>pg_am</TT
+>.  It is possible
+   to add a new index access method by defining the required interface
+   routines and then creating a row in <TT
+CLASS="CLASSNAME"
+>pg_am</TT
+> ---
+   but that is far beyond the scope of this chapter.
+  </P
+><P
+>   The routines for an index access method do not directly know anything
+   about the data types the access method will operate on.  Instead, an
+   <I
+CLASS="FIRSTTERM"
+>operator class</I
+> identifies the set of operations that the
+   access method needs to be able to use to work with a particular data type.
+   Operator classes are so called because one thing they specify is the set
+   of WHERE-clause operators that can be used with an index (ie, can be
+   converted into an index scan qualification).  An operator class may also
+   specify some <I
+CLASS="FIRSTTERM"
+>support procedures</I
+> that are needed by the
+   internal operations of the index access method, but do not directly
+   correspond to any WHERE-clause operator that can be used with the index.
+  </P
+><P
+>   It is possible to define multiple operator classes for the same
+   input data type and index access method.  By doing this, multiple
+   sets of indexing semantics can be defined for a single data type.
+   For example, a B-tree index requires a sort ordering to be defined
+   for each data type it works on.
+   It might be useful for a complex-number data type
+   to have one B-tree operator class that sorts the data by complex
+   absolute value, another that sorts by real part, and so on.
+   Typically one of the operator classes will be deemed most commonly
+   useful and will be marked as the default operator class for that
+   data type and index access method.
+  </P
+><P
+>   The same operator class name
+   can be used for several different access methods (for example, both B-tree
+   and hash access methods have operator classes named
+   <TT
+CLASS="LITERAL"
+>oid_ops</TT
+>), but each such class is an independent
+   entity and must be defined separately.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xindex-strategies.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Interfacing Extensions To Indexes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="xindex.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Access Method Strategies</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

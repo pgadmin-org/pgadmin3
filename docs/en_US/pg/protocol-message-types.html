@@ -1,0 +1,285 @@
+<HTML
+><HEAD
+><TITLE
+>Message Data Types</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Frontend/Backend Protocol"
+HREF="protocol.html"><LINK
+REL="PREVIOUS"
+TITLE="Protocol"
+HREF="protocol-protocol.html"><LINK
+REL="NEXT"
+TITLE="Message Formats"
+HREF="protocol-message-formats.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="protocol-protocol.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Frontend/Backend Protocol</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="protocol-message-formats.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PROTOCOL-MESSAGE-TYPES"
+>4.3. Message Data Types</A
+></H1
+><P
+>This section describes the base data types used in messages.
+
+<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Int<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>i</I
+></TT
+>)</DT
+><DD
+><P
+>                An <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> bit integer in network byte order.
+                If <TT
+CLASS="REPLACEABLE"
+><I
+>i</I
+></TT
+> is specified it
+                is the literal value.  Eg. Int16, Int32(42).</P
+></DD
+><DT
+>LimString<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>s</I
+></TT
+>)</DT
+><DD
+><P
+>                A character array of exactly <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> bytes interpreted as a
+                null-terminated string.  The zero-byte is omitted if there is
+                insufficient room.  If <TT
+CLASS="REPLACEABLE"
+><I
+>s</I
+></TT
+> is specified it is the literal value.
+                Eg. LimString32, LimString64("user").</P
+></DD
+><DT
+>String(<TT
+CLASS="REPLACEABLE"
+><I
+>s</I
+></TT
+>)</DT
+><DD
+><P
+>                A conventional C null-terminated string with no length
+                limitation.
+                If <TT
+CLASS="REPLACEABLE"
+><I
+>s</I
+></TT
+> is specified it is the literal value.
+                Eg. String, String("user").</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>There is no predefined limit</I
+></SPAN
+> on the length of a string
+that can be returned by the backend.  Good coding strategy for a frontend
+is to use an expandable buffer so that anything that fits in memory can be
+accepted.  If that's not feasible, read the full string and discard trailing
+characters that don't fit into your fixed-size buffer.</P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+>Byte<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>(<TT
+CLASS="REPLACEABLE"
+><I
+>c</I
+></TT
+>)</DT
+><DD
+><P
+>                Exactly <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> bytes.  If <TT
+CLASS="REPLACEABLE"
+><I
+>c</I
+></TT
+> is specified it is the literal
+                value.  Eg. Byte, Byte1('\n').</P
+></DD
+></DL
+></DIV
+><P></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="protocol-protocol.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-message-formats.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Protocol</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="protocol.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Message Formats</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

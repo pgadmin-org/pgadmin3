@@ -1,0 +1,462 @@
+<HTML
+><HEAD
+><TITLE
+>   CREATE DOMAIN
+  </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="CREATE DATABASE"
+HREF="sql-createdatabase.html"><LINK
+REL="NEXT"
+TITLE="CREATE FUNCTION"
+HREF="sql-createfunction.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-createdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEDOMAIN"
+>CREATE DOMAIN</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN39294"
+></A
+><H2
+>Name</H2
+>   CREATE DOMAIN
+  &nbsp;--&nbsp;   define a new domain
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN39297"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE DOMAIN <TT
+CLASS="REPLACEABLE"
+><I
+>domainname</I
+></TT
+> [AS] <TT
+CLASS="REPLACEABLE"
+><I
+>data_type</I
+></TT
+>
+    [ DEFAULT <TT
+CLASS="REPLACEABLE"
+><I
+>default_expr</I
+></TT
+> ]
+    [ <TT
+CLASS="REPLACEABLE"
+><I
+>constraint</I
+></TT
+> [ ... ] ]
+
+where <TT
+CLASS="REPLACEABLE"
+><I
+>constraint</I
+></TT
+> is:
+
+[ CONSTRAINT <TT
+CLASS="REPLACEABLE"
+><I
+>constraint_name</I
+></TT
+> ]
+{ NOT NULL | NULL }
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEDOMAIN-1"
+></A
+><H3
+>    Parameters
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>domainname</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of a domain to be created.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>data_type</I
+></TT
+></DT
+><DD
+><P
+>        The underlying data type of the domain. This may include array
+	specifiers.
+        Refer to the <I
+CLASS="CITETITLE"
+>User's Guide</I
+> for further
+        information about data types and arrays.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DEFAULT
+      <TT
+CLASS="REPLACEABLE"
+><I
+>default_expr</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        The <TT
+CLASS="LITERAL"
+>DEFAULT</TT
+> clause specifies a default value for
+	columns of the domain data type.  The value
+        is any variable-free expression (but subselects are not allowed).
+	The
+        data type of the default expression must match the data type of the
+        domain.
+       </P
+><P
+>        The default expression will be used in any insert operation that
+        does not specify a value for the column.  If there is no default
+        for a domain, then the default is NULL.
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>         If a default value is specified for a particular column, it
+	 overrides any default associated with the domain.  In turn,
+	 the domain default overrides any default value associated with
+	 the underlying data type.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CONSTRAINT <TT
+CLASS="REPLACEABLE"
+><I
+>constraint_name</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        An optional name for a constraint.  If not specified,
+        the system generates a name.
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>NOT NULL</TT
+></DT
+><DD
+><P
+>        Values of this domain are not allowed to be NULL.  
+       </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>NULL</TT
+></DT
+><DD
+><P
+>        Values of this domain are allowed to be NULL.  This is the default.
+       </P
+><P
+>        This clause is only available for compatibility with
+        non-standard SQL databases.  Its use is discouraged in new
+        applications.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEDOMAIN-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>CREATE DOMAIN
+       </TT
+></DT
+><DD
+><P
+>	Message returned if the domain is successfully created.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEDOMAIN-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE DOMAIN</TT
+>  allows  the user to register a new
+   data domain with <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> for use in the
+   current data base.   The user  who  defines  a domain becomes its owner.
+  </P
+><P
+>   If a schema name is given (for example, <TT
+CLASS="LITERAL"
+>CREATE DOMAIN
+   myschema.mydomain ...</TT
+>) then the domain is created in the
+   specified schema.  Otherwise it is created in the current schema (the one
+   at the front of the search path; see <TT
+CLASS="LITERAL"
+>CURRENT_SCHEMA()</TT
+>).
+   The domain name must be unique among the types and domains existing
+   in its schema.
+  </P
+><P
+>   Domains are useful for abstracting common fields between tables into
+   a single location for maintenance.  An email address column may be used
+   in several tables, all with the same properties.  Define a domain and
+   use that rather than setting up each table's constraints individually.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN39373"
+></A
+><H2
+>Examples</H2
+><P
+>   This example creates the <TT
+CLASS="TYPE"
+>country_code</TT
+> data type and then uses the
+   type in a table definition:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE DOMAIN country_code char(2) NOT NULL;
+CREATE TABLE countrylist (id INT4, country country_code);</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATEDOMAIN-COMPATIBILITY"
+></A
+><H2
+>Compatibility</H2
+><P
+>   SQL99 defines CREATE DOMAIN, but says that the only allowed constraint
+   type is CHECK constraints.  CHECK constraints for domains are not yet
+   supported by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-CREATEDOMAIN-SEE-ALSO"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-dropdomain.html"
+><I
+>DROP DOMAIN</I
+></A
+>, <I
+CLASS="CITETITLE"
+>PostgreSQL Programmer's Guide</I
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-createdatabase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createfunction.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CREATE DATABASE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE FUNCTION</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

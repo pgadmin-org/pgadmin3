@@ -1,0 +1,2068 @@
+<HTML
+><HEAD
+><TITLE
+>SELECT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ROLLBACK"
+HREF="sql-rollback.html"><LINK
+REL="NEXT"
+TITLE="SELECT INTO"
+HREF="sql-selectinto.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-rollback.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-selectinto.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-SELECT"
+>SELECT</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN45095"
+></A
+><H2
+>Name</H2
+>   SELECT
+  &nbsp;--&nbsp;   retrieve rows from a table or view
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN45098"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>SELECT [ ALL | DISTINCT [ ON ( <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [, ...] ) ] ]
+    * | <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [ AS <TT
+CLASS="REPLACEABLE"
+><I
+>output_name</I
+></TT
+> ] [, ...]
+    [ FROM <TT
+CLASS="REPLACEABLE"
+><I
+>from_item</I
+></TT
+> [, ...] ]
+    [ WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> ]
+    [ GROUP BY <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [, ...] ]
+    [ HAVING <TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+> [, ...] ]
+    [ { UNION | INTERSECT | EXCEPT } [ ALL ] <TT
+CLASS="REPLACEABLE"
+><I
+>select</I
+></TT
+> ]
+    [ ORDER BY <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [ ASC | DESC | USING <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> ] [, ...] ]
+    [ LIMIT { <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> | ALL } ]
+    [ OFFSET <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+> ]
+    [ FOR UPDATE [ OF <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+> [, ...] ] ]
+
+where <TT
+CLASS="REPLACEABLE"
+><I
+>from_item</I
+></TT
+> can be:
+
+[ ONLY ] <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+> [ * ]
+    [ [ AS ] <TT
+CLASS="REPLACEABLE"
+><I
+>alias</I
+></TT
+> [ ( <TT
+CLASS="REPLACEABLE"
+><I
+>column_alias_list</I
+></TT
+> ) ] ]
+|
+( <TT
+CLASS="REPLACEABLE"
+><I
+>select</I
+></TT
+> )
+    [ AS ] <TT
+CLASS="REPLACEABLE"
+><I
+>alias</I
+></TT
+> [ ( <TT
+CLASS="REPLACEABLE"
+><I
+>column_alias_list</I
+></TT
+> ) ]
+|
+<TT
+CLASS="REPLACEABLE"
+><I
+>table_function_name</I
+></TT
+> ( [ <TT
+CLASS="REPLACEABLE"
+><I
+>argument</I
+></TT
+> [, ...] ] )
+    [ AS ] <TT
+CLASS="REPLACEABLE"
+><I
+>alias</I
+></TT
+> [ ( <TT
+CLASS="REPLACEABLE"
+><I
+>column_alias_list</I
+></TT
+> | <TT
+CLASS="REPLACEABLE"
+><I
+>column_definition_list</I
+></TT
+> ) ]
+|
+<TT
+CLASS="REPLACEABLE"
+><I
+>table_function_name</I
+></TT
+> ( [ <TT
+CLASS="REPLACEABLE"
+><I
+>argument</I
+></TT
+> [, ...] ] )
+    AS ( <TT
+CLASS="REPLACEABLE"
+><I
+>column_definition_list</I
+></TT
+> )
+|
+<TT
+CLASS="REPLACEABLE"
+><I
+>from_item</I
+></TT
+> [ NATURAL ] <TT
+CLASS="REPLACEABLE"
+><I
+>join_type</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>from_item</I
+></TT
+>
+    [ ON <TT
+CLASS="REPLACEABLE"
+><I
+>join_condition</I
+></TT
+> | USING ( <TT
+CLASS="REPLACEABLE"
+><I
+>join_column_list</I
+></TT
+> ) ]
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-SELECT-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+></DT
+><DD
+><P
+>	The name of a table's column or an expression.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>output_name</I
+></TT
+></DT
+><DD
+><P
+>	Specifies another name for an output column using
+	the AS clause.  This name is primarily used to label the column
+	for display.  It can also be used to refer to the column's value in
+	ORDER BY and GROUP BY clauses.  But the
+	<TT
+CLASS="REPLACEABLE"
+><I
+>output_name</I
+></TT
+>
+	cannot be used in the WHERE or HAVING clauses; write out the
+	expression instead.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>from_item</I
+></TT
+></DT
+><DD
+><P
+>        A table reference, sub-SELECT, table function, or JOIN clause.  See below for details.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>condition</I
+></TT
+></DT
+><DD
+><P
+>	A Boolean expression giving a result of true or false.
+	See the WHERE and HAVING clause descriptions below.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>select</I
+></TT
+></DT
+><DD
+><P
+>	A select statement with all features except the ORDER BY, 
+	LIMIT/OFFSET, and FOR UPDATE clauses (even those can be used when the 
+	select is parenthesized).
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    FROM items can contain:
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of an existing table or view.
+	If <TT
+CLASS="LITERAL"
+>ONLY</TT
+> is specified, only that table is scanned.  If
+	<TT
+CLASS="LITERAL"
+>ONLY</TT
+> is not specified, the table and all its descendant
+	tables (if any) are scanned.  <TT
+CLASS="LITERAL"
+>*</TT
+> can be appended to the
+	table name to indicate that descendant tables are to be scanned, but
+	in the current version, this is the default behavior.  (In releases
+	before 7.1, <TT
+CLASS="LITERAL"
+>ONLY</TT
+> was the default behavior.)  The
+	default behavior can be modified by changing the
+	<TT
+CLASS="OPTION"
+>SQL_INHERITANCE</TT
+> configuration option.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>alias</I
+></TT
+></DT
+><DD
+><P
+>	A substitute name for the FROM item containing the alias.
+	An alias is used for brevity or to eliminate ambiguity for self-joins
+	(where the same table is scanned multiple times).  When an alias
+	is provided, it completely hides the actual name of the table or
+	table function; for example given <TT
+CLASS="LITERAL"
+>FROM foo AS f</TT
+>, the
+	remainder of the SELECT must refer to this FROM item as <TT
+CLASS="LITERAL"
+>f</TT
+>
+	not <TT
+CLASS="LITERAL"
+>foo</TT
+>.
+	If an alias is
+	written, a column alias list can also be written to provide
+	substitute names for one or more columns of the table.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>select</I
+></TT
+></DT
+><DD
+><P
+>	A sub-SELECT can appear in the FROM clause.  This acts as though
+	its output were created as a temporary table for the duration of
+	this single SELECT command.  Note that the sub-SELECT must be
+	surrounded by parentheses, and an alias <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+>
+	be provided for it.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>table function</I
+></TT
+></DT
+><DD
+><P
+>	A table function can appear in the FROM clause.  This acts as though
+	its output were created as a temporary table for the duration of
+	this single SELECT command. An alias may also be used. If an alias is
+	written, a column alias list can also be written to provide substitute
+	names for one or more columns of the table function. If the table
+	function has been defined as returning the <TT
+CLASS="TYPE"
+>record</TT
+> data type,
+	an alias, or the keyword <TT
+CLASS="LITERAL"
+>AS</TT
+>, must be present, followed by
+	a column definition list in the form ( <TT
+CLASS="REPLACEABLE"
+><I
+>column_name</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>data_type</I
+></TT
+> [, ... ] ).
+	The column definition list must match the actual number and types
+	of columns returned by the function.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>join_type</I
+></TT
+></DT
+><DD
+><P
+>       One of
+       <TT
+CLASS="COMMAND"
+>[ INNER ] JOIN</TT
+>,
+       <TT
+CLASS="COMMAND"
+>LEFT [ OUTER ] JOIN</TT
+>,
+       <TT
+CLASS="COMMAND"
+>RIGHT [ OUTER ] JOIN</TT
+>,
+       <TT
+CLASS="COMMAND"
+>FULL [ OUTER ] JOIN</TT
+>, or
+       <TT
+CLASS="COMMAND"
+>CROSS JOIN</TT
+>.
+       For INNER and OUTER join types, exactly one of NATURAL,
+       ON <TT
+CLASS="REPLACEABLE"
+><I
+>join_condition</I
+></TT
+>, or
+       USING ( <TT
+CLASS="REPLACEABLE"
+><I
+>join_column_list</I
+></TT
+> )
+       must appear.  For CROSS JOIN, none of these items may appear.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>join_condition</I
+></TT
+></DT
+><DD
+><P
+>       A qualification condition.  This is similar to the WHERE condition
+       except that it only applies to the two from_items being joined in
+       this JOIN clause.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>join_column_list</I
+></TT
+></DT
+><DD
+><P
+>       A USING column list ( a, b, ... ) is shorthand for the ON condition
+       left_table.a = right_table.a AND left_table.b = right_table.b ...
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-SELECT-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Rows</DT
+><DD
+><P
+>	The complete set of rows resulting from the query specification.
+       </P
+></DD
+><DT
+><SPAN
+CLASS="RETURNVALUE"
+><TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+></SPAN
+></DT
+><DD
+><P
+>	The count of rows returned by the query.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SELECT-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>SELECT</TT
+> will return rows from one or more tables.
+   Candidates for selection are rows which satisfy the WHERE condition;
+   if WHERE is omitted, all rows are candidates.
+   (See <A
+HREF="sql-select.html#SQL-WHERE"
+><I
+>WHERE Clause</I
+></A
+>.)
+  </P
+><P
+>   Actually, the returned rows are not directly the rows produced by the
+   FROM/WHERE/GROUP BY/HAVING clauses; rather, the output rows are formed
+   by computing the SELECT output expressions for each selected row.
+   <TT
+CLASS="COMMAND"
+>*</TT
+> can be written in the output list as a shorthand
+   for all the columns of the selected rows.  Also, one can write
+   <TT
+CLASS="REPLACEABLE"
+><I
+>table_name</I
+></TT
+><TT
+CLASS="COMMAND"
+>.*</TT
+>
+   as a shorthand for the columns coming from just that table.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>DISTINCT</TT
+> will eliminate duplicate rows from the
+   result.
+   <TT
+CLASS="COMMAND"
+>ALL</TT
+> (the default) will return all candidate rows,
+   including duplicates.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>DISTINCT ON</TT
+> eliminates rows that match on all the
+   specified expressions, keeping only the first row of each set of
+   duplicates.  The DISTINCT ON expressions are interpreted using the
+   same rules as for ORDER BY items; see below.
+   Note that the <SPAN
+CLASS="QUOTE"
+>"first row"</SPAN
+> of each set is unpredictable
+   unless <TT
+CLASS="COMMAND"
+>ORDER BY</TT
+> is used to ensure that the desired
+   row appears first.  For example,
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>        SELECT DISTINCT ON (location) location, time, report
+        FROM weatherReports
+        ORDER BY location, time DESC;
+   </PRE
+><P>
+   retrieves the most recent weather report for each location.  But if
+   we had not used ORDER BY to force descending order of time values
+   for each location, we'd have gotten a report of unpredictable age
+   for each location.
+  </P
+><P
+>   The GROUP BY clause allows a user to divide a table
+   into groups of rows that match on one or more values.
+   (See <A
+HREF="sql-select.html#SQL-GROUPBY"
+><I
+>GROUP BY Clause</I
+></A
+>.)
+  </P
+><P
+>   The HAVING clause allows selection of only those groups of rows
+   meeting the specified condition.
+   (See <A
+HREF="sql-select.html#SQL-HAVING"
+><I
+>HAVING Clause</I
+></A
+>.)
+  </P
+><P
+>   The ORDER BY clause causes the returned rows to be sorted in a specified
+   order.  If ORDER BY is not given, the rows are returned in whatever order
+   the system finds cheapest to produce.
+   (See <A
+HREF="sql-select.html#SQL-ORDERBY"
+><I
+>ORDER BY Clause</I
+></A
+>.)
+  </P
+><P
+>   SELECT queries can be combined using UNION, INTERSECT, and EXCEPT
+   operators.  Use parentheses if necessary to determine the ordering
+   of these operators.
+  </P
+><P
+>   The UNION operator computes the collection of rows
+   returned by the queries involved.
+   Duplicate rows are eliminated unless ALL is specified.
+   (See <A
+HREF="sql-select.html#SQL-UNION"
+><I
+>UNION Clause</I
+></A
+>.)
+  </P
+><P
+>   The INTERSECT operator computes the rows that are common to both queries.
+   Duplicate rows are eliminated unless ALL is specified.
+   (See <A
+HREF="sql-select.html#SQL-INTERSECT"
+><I
+>INTERSECT Clause</I
+></A
+>.)
+  </P
+><P
+>   The EXCEPT operator computes the rows returned by the first query but
+   not the second query.
+   Duplicate rows are eliminated unless ALL is specified.
+   (See <A
+HREF="sql-select.html#SQL-EXCEPT"
+><I
+>EXCEPT Clause</I
+></A
+>.)
+  </P
+><P
+>   The LIMIT clause allows a subset of the rows produced by the query
+   to be returned to the user.
+   (See <A
+HREF="sql-select.html#SQL-LIMIT"
+><I
+>LIMIT Clause</I
+></A
+>.)
+  </P
+><P
+>   The FOR UPDATE clause causes the SELECT statement to lock the selected
+   rows against concurrent updates.
+  </P
+><P
+>   You must have SELECT privilege to a table to read its values
+   (See the <TT
+CLASS="COMMAND"
+>GRANT</TT
+>/<TT
+CLASS="COMMAND"
+>REVOKE</TT
+> statements).
+   Use of FOR UPDATE requires UPDATE privilege as well.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-FROM"
+></A
+><H3
+>    FROM Clause
+   </H3
+><P
+>    The FROM clause specifies one or more source tables for the SELECT.
+    If multiple sources are specified, the result is conceptually the
+    Cartesian product of all the rows in all the sources --- but usually
+    qualification conditions are added to restrict the returned rows to
+    a small subset of the Cartesian product.
+   </P
+><P
+>    When a FROM item is a simple table name, it implicitly includes rows
+    from sub-tables (inheritance children) of the table.
+    <TT
+CLASS="COMMAND"
+>ONLY</TT
+> will
+    suppress rows from sub-tables of the table.  Before
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.1,
+    this was the default result, and adding sub-tables was done
+    by appending <TT
+CLASS="COMMAND"
+>*</TT
+> to the table name.
+    This old behavior is available via the command 
+    <TT
+CLASS="COMMAND"
+>SET SQL_Inheritance TO OFF</TT
+>.
+   </P
+><P
+>    A FROM item can also be a parenthesized sub-SELECT (note that an
+    alias clause is required for a sub-SELECT!).  This is an extremely
+    handy feature since it's the only way to get multiple levels of
+    grouping, aggregation, or sorting in a single query.
+   </P
+><P
+>    A FROM item can be a table function (typically, a function that returns
+    multiple rows and/or columns, though actually any function can be used).
+    The function is invoked with the given argument value(s), and then its
+    output is scanned as though it were a table.
+   </P
+><P
+>    In some cases it is useful to define table functions that can return
+    different column sets depending on how they are invoked.  To support this,
+    the table function can be declared as returning the pseudo-type
+    <TT
+CLASS="TYPE"
+>record</TT
+>.  When such a function is used in FROM, it must be
+    followed by an alias, or the keyword <TT
+CLASS="LITERAL"
+>AS</TT
+> alone,
+    and then by a parenthesized list of column names and types. This provides
+    a query-time composite type definition. The composite type definition
+    must match the actual composite type returned from the function, or an
+    error will be reported at run-time.
+   </P
+><P
+>    Finally, a FROM item can be a JOIN clause, which combines two simpler
+    FROM items.  (Use parentheses if necessary to determine the order
+    of nesting.)
+   </P
+><P
+>    A CROSS JOIN or INNER JOIN is a simple Cartesian product,
+    the same as you get from listing the two items at the top level of FROM.
+    CROSS JOIN is equivalent to INNER JOIN ON (TRUE), that is, no rows are
+    removed by qualification.  These join types are just a notational
+    convenience, since they do nothing you couldn't do with plain FROM and
+    WHERE.
+   </P
+><P
+>    LEFT OUTER JOIN returns all rows in the qualified Cartesian product
+    (i.e., all combined rows that pass its ON condition), plus one copy of each
+    row in the left-hand table for which there was no right-hand row that
+    passed the ON condition.  This left-hand row is extended to the full
+    width of the joined table by inserting null values for the right-hand columns.
+    Note that only the <TT
+CLASS="LITERAL"
+>JOIN</TT
+>'s own ON or USING condition is considered while
+    deciding which rows have matches.  Outer ON or WHERE conditions are
+    applied afterwards.
+   </P
+><P
+>    Conversely, RIGHT OUTER JOIN returns all the joined rows, plus one row
+    for each unmatched right-hand row (extended with nulls on the left).
+    This is just a notational
+    convenience, since you could convert it to a LEFT OUTER JOIN by switching
+    the left and right inputs.
+   </P
+><P
+>    FULL OUTER JOIN returns all the joined rows, plus one row for each
+    unmatched left-hand row (extended with nulls on the right), plus one row
+    for each unmatched right-hand row (extended with nulls on the left).
+   </P
+><P
+>    For all the JOIN types except CROSS JOIN, you must write exactly one of
+    ON <TT
+CLASS="REPLACEABLE"
+><I
+>join_condition</I
+></TT
+>,
+    USING ( <TT
+CLASS="REPLACEABLE"
+><I
+>join_column_list</I
+></TT
+> ),
+    or NATURAL.  ON is the most general case: you can write any qualification
+    expression involving the two tables to be joined.
+    A USING column list ( a, b, ... ) is shorthand for the ON condition
+    left_table.a = right_table.a AND left_table.b = right_table.b ...
+    Also, USING implies that only one of each pair of equivalent columns will
+    be included in the JOIN output, not both.  NATURAL is shorthand for
+    a USING list that mentions all similarly-named columns in the tables.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-WHERE"
+></A
+><H3
+>    WHERE Clause
+   </H3
+><P
+>    The optional WHERE condition has the general form:
+    
+    </P><PRE
+CLASS="SYNOPSIS"
+>WHERE <TT
+CLASS="REPLACEABLE"
+><I
+>boolean_expr</I
+></TT
+>
+    </PRE
+><P>
+    
+    <TT
+CLASS="REPLACEABLE"
+><I
+>boolean_expr</I
+></TT
+>
+    can consist of any expression which evaluates to a Boolean value.
+    In many cases, this expression will be:
+
+    </P><PRE
+CLASS="SYNOPSIS"
+>     <TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>cond_op</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+>
+    </PRE
+><P>
+
+    or
+
+    </P><PRE
+CLASS="SYNOPSIS"
+>     <TT
+CLASS="REPLACEABLE"
+><I
+>log_op</I
+></TT
+> <TT
+CLASS="REPLACEABLE"
+><I
+>expr</I
+></TT
+>
+    </PRE
+><P>
+
+    where <TT
+CLASS="REPLACEABLE"
+><I
+>cond_op</I
+></TT
+>
+    can be one of: =, &lt;, &lt;=, &gt;, &gt;= or &lt;&gt;,
+    a conditional operator like ALL, ANY, IN, LIKE, or a
+    locally defined operator, 
+    and <TT
+CLASS="REPLACEABLE"
+><I
+>log_op</I
+></TT
+> can be one 
+    of: AND, OR, NOT.
+    SELECT will ignore all rows for which the WHERE condition does not return
+    TRUE.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-GROUPBY"
+></A
+><H3
+>    GROUP BY Clause
+   </H3
+><P
+>    GROUP BY specifies a grouped table derived by the application
+    of this clause:
+    </P><PRE
+CLASS="SYNOPSIS"
+>GROUP BY <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [, ...]
+    </PRE
+><P>
+   </P
+><P
+>    GROUP BY will condense into a single row all selected rows that share the
+    same values for the grouped columns.  Aggregate functions, if any,
+    are computed across all rows making up each group, producing a
+    separate value for each group (whereas without GROUP BY, an
+    aggregate produces a single value computed across all the selected
+    rows).  When GROUP BY is present, it is not valid for the SELECT
+    output expression(s) to refer to
+    ungrouped columns except within aggregate functions, since there
+    would be more than one possible value to return for an ungrouped column.
+   </P
+><P
+>    A GROUP BY item can be an input column name, or the name or ordinal
+    number of an output column (SELECT expression), or it can be an arbitrary
+    expression formed from input-column values.  In case of ambiguity, a GROUP
+    BY name will 
+    be interpreted as an input-column name rather than an output column name.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-HAVING"
+></A
+><H3
+>    HAVING Clause
+   </H3
+><P
+>    The optional HAVING condition has the general form:
+    
+    </P><PRE
+CLASS="SYNOPSIS"
+>HAVING <TT
+CLASS="REPLACEABLE"
+><I
+>boolean_expr</I
+></TT
+>
+    </PRE
+><P>
+    
+    where <TT
+CLASS="REPLACEABLE"
+><I
+>boolean_expr</I
+></TT
+> is the same
+    as specified for the WHERE clause.
+   </P
+><P
+>    HAVING specifies a grouped table derived by the elimination
+    of group rows that do not satisfy the
+    <TT
+CLASS="REPLACEABLE"
+><I
+>boolean_expr</I
+></TT
+>.
+    HAVING is different from WHERE:
+    WHERE filters individual rows before application of GROUP BY,
+    while HAVING filters group rows created by GROUP BY.
+   </P
+><P
+>    Each column referenced in 
+    <TT
+CLASS="REPLACEABLE"
+><I
+>boolean_expr</I
+></TT
+> shall unambiguously
+    reference a grouping column, unless the reference appears within an
+    aggregate function.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-ORDERBY"
+></A
+><H3
+>    ORDER BY Clause
+   </H3
+><P
+>    </P><PRE
+CLASS="SYNOPSIS"
+>ORDER BY <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [ ASC | DESC | USING <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> ] [, ...]
+    </PRE
+><P></P
+><P
+>    An ORDER BY item can be the name or ordinal
+    number of an output column (SELECT expression), or it can be an arbitrary
+    expression formed from input-column values.  In case of ambiguity, an
+    ORDER BY name will be interpreted as an output-column name.
+   </P
+><P
+>    The ordinal number refers to the ordinal (left-to-right) position
+    of the result column. This feature makes it possible to define an ordering
+    on the basis of a column that does not have a unique name.
+    This is never absolutely necessary because it is always possible
+    to assign a name to a result column using the AS clause, e.g.:
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT title, date_prod + 1 AS newlen FROM films ORDER BY newlen;
+    </PRE
+><P></P
+><P
+>    It is also possible to ORDER BY
+    arbitrary expressions (an extension to SQL92),
+    including fields that do not appear in the
+    SELECT result list.
+    Thus the following statement is legal:
+    </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT name FROM distributors ORDER BY code;
+    </PRE
+><P>
+    A limitation of this feature is that an ORDER BY clause applying to the
+    result of a UNION, INTERSECT, or EXCEPT query may only specify an output
+    column name or number, not an expression.
+   </P
+><P
+>    Note that if an ORDER BY item is a simple name that matches both
+    a result column name and an input column name, ORDER BY will interpret
+    it as the result column name.  This is the opposite of the choice that
+    GROUP BY will make in the same situation.  This inconsistency is
+    mandated by the SQL92 standard.
+   </P
+><P
+>    Optionally one may add the key word <TT
+CLASS="LITERAL"
+>DESC</TT
+> (descending)
+    or <TT
+CLASS="LITERAL"
+>ASC</TT
+> (ascending) after each column name in the
+    <TT
+CLASS="LITERAL"
+>ORDER BY</TT
+> clause.  If not specified, <TT
+CLASS="LITERAL"
+>ASC</TT
+> is
+    assumed by default.  Alternatively, a specific ordering operator
+    name may be specified.  <TT
+CLASS="LITERAL"
+>ASC</TT
+> is equivalent to
+    <TT
+CLASS="LITERAL"
+>USING &lt;</TT
+> and <TT
+CLASS="LITERAL"
+>DESC</TT
+> is equivalent to
+    <TT
+CLASS="LITERAL"
+>USING &gt;</TT
+>.
+   </P
+><P
+>   The null value sorts higher than any other value in a domain. In other
+   words, with ascending sort order nulls sort at the end and with
+   descending sort order nulls sort at the beginning.
+   </P
+><P
+>    Data of character types is sorted according to the locale-specific
+    collation order that was established when the database cluster
+    was initialized.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-UNION"
+></A
+><H3
+>    UNION Clause
+   </H3
+><P
+>    </P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+> UNION [ ALL ] <TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+>
+    [ ORDER BY <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [ ASC | DESC | USING <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> ] [, ...] ]
+    [ LIMIT { <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> | ALL } ]
+    [ OFFSET <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+> ]
+    </PRE
+><P>
+
+    where
+    <TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+>
+    specifies any select expression without an ORDER BY, LIMIT, or FOR UPDATE
+    clause.  (ORDER BY and LIMIT can be attached to a sub-expression
+    if it is enclosed in parentheses.  Without parentheses, these clauses
+    will be taken to apply to the result of the UNION, not to its right-hand
+    input expression.)
+   </P
+><P
+>    The UNION operator computes the collection (set union) of the rows
+    returned by the queries involved.
+    The two SELECT statements that represent the direct operands of the UNION must
+    produce the same number of columns, and corresponding columns must be
+    of compatible data types.
+   </P
+><P
+>    The result of UNION does not contain any duplicate rows
+    unless the ALL option is specified.  ALL prevents elimination of
+    duplicates.
+   </P
+><P
+>    Multiple UNION operators in the same SELECT statement are
+    evaluated left to right, unless otherwise indicated by parentheses.
+   </P
+><P
+>    Currently, FOR UPDATE may not be specified either for a UNION result
+    or for the inputs of a UNION.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-INTERSECT"
+></A
+><H3
+>    INTERSECT Clause
+   </H3
+><P
+>    </P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+> INTERSECT [ ALL ] <TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+>
+    [ ORDER BY <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [ ASC | DESC | USING <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> ] [, ...] ]
+    [ LIMIT { <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> | ALL } ]
+    [ OFFSET <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+> ]
+    </PRE
+><P>
+    
+    where
+    <TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+>
+    specifies any select expression without an ORDER BY, LIMIT, or 
+    FOR UPDATE clause.
+   </P
+><P
+>    INTERSECT is similar to UNION, except that it produces only rows that
+    appear in both query outputs, rather than rows that appear in either.
+   </P
+><P
+>    The result of INTERSECT does not contain any duplicate rows
+    unless the ALL option is specified.  With ALL, a row that has
+    m duplicates in L and n duplicates in R will appear min(m,n) times.
+   </P
+><P
+>    Multiple INTERSECT operators in the same SELECT statement are
+    evaluated left to right, unless parentheses dictate otherwise.
+    INTERSECT binds more tightly than UNION --- that is,
+    A UNION B INTERSECT C will be read as 
+    A UNION (B INTERSECT C) unless otherwise specified by parentheses.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-EXCEPT"
+></A
+><H3
+>    EXCEPT Clause
+   </H3
+><P
+>    </P><PRE
+CLASS="SYNOPSIS"
+><TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+> EXCEPT [ ALL ] <TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+>
+    [ ORDER BY <TT
+CLASS="REPLACEABLE"
+><I
+>expression</I
+></TT
+> [ ASC | DESC | USING <TT
+CLASS="REPLACEABLE"
+><I
+>operator</I
+></TT
+> ] [, ...] ]
+    [ LIMIT { <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> | ALL } ]
+    [ OFFSET <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+> ]
+    </PRE
+><P>
+    
+    where
+    <TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+>
+    specifies any select expression without an ORDER BY, LIMIT,
+    or FOR UPDATE clause.
+   </P
+><P
+>    EXCEPT is similar to UNION, except that it produces only rows that
+    appear in the left query's output but not in the right query's output.
+   </P
+><P
+>    The result of EXCEPT does not contain any duplicate rows
+    unless the ALL option is specified.  With ALL, a row that has
+    m duplicates in L and n duplicates in R will appear max(m-n,0) times.
+   </P
+><P
+>    Multiple EXCEPT operators in the same SELECT statement are
+    evaluated left to right, unless parentheses dictate otherwise.
+    EXCEPT binds at the same level as UNION.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-LIMIT"
+></A
+><H3
+>    LIMIT Clause
+   </H3
+><P
+>    </P><PRE
+CLASS="SYNOPSIS"
+>    LIMIT { <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> | ALL }
+    OFFSET <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+>
+    </PRE
+><P>
+    
+    where
+    <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> specifies the
+    maximum number of rows to return, and
+    <TT
+CLASS="REPLACEABLE"
+><I
+>start</I
+></TT
+> specifies the
+    number of rows to skip before starting to return rows.
+   </P
+><P
+>    LIMIT allows you to retrieve just a portion of the rows that are generated
+    by the rest of the query.  If a limit count is given, no more than that
+    many rows will be returned.  If an offset is given, that many rows will
+    be skipped before starting to return rows.
+   </P
+><P
+>    When using LIMIT, it is a good idea to use an ORDER BY clause that
+    constrains the result rows into a unique order.  Otherwise you will get
+    an unpredictable subset of the query's rows---you may be asking for
+    the tenth through twentieth rows, but tenth through twentieth in what
+    ordering?  You don't know what ordering unless you specify ORDER BY.
+   </P
+><P
+>    As of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.0, the
+    query optimizer takes LIMIT into account when generating a query plan,
+    so you are very likely to get different plans (yielding different row
+    orders) depending on what you use for LIMIT and OFFSET.  Thus, using
+    different LIMIT/OFFSET values to select different subsets of a query
+    result <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>will give inconsistent results</I
+></SPAN
+> unless
+    you enforce a predictable result ordering with ORDER BY.  This is not
+    a bug; it is an inherent consequence of the fact that SQL does not
+    promise to deliver the results of a query in any particular order
+    unless ORDER BY is used to constrain the order.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SQL-FOR-UPDATE"
+></A
+><H3
+>    FOR UPDATE Clause
+   </H3
+><P
+>    </P><PRE
+CLASS="SYNOPSIS"
+>    FOR UPDATE [ OF <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+> [, ...] ]
+    </PRE
+><P>
+   </P
+><P
+>    FOR UPDATE causes the rows retrieved by the query to be locked as though
+    for update.  This prevents them from being modified or deleted by other
+    transactions until the current transaction ends; that is, other
+    transactions that attempt UPDATE, DELETE, or SELECT FOR UPDATE of these
+    rows will be blocked until the current transaction ends.  Also, if an
+    UPDATE, DELETE, or SELECT FOR UPDATE from another transaction has already
+    locked a selected row or rows, SELECT FOR UPDATE will wait for the other
+    transaction to complete, and will then lock and return the updated row
+    (or no row, if the row was deleted).  For further discussion see the
+    concurrency chapter of the <I
+CLASS="CITETITLE"
+>User's Guide</I
+>.
+   </P
+><P
+>    If specific tables are named in FOR UPDATE, then only rows coming from
+    those tables are locked; any other tables used in the SELECT are simply
+    read as usual.
+   </P
+><P
+>    FOR UPDATE cannot be used in contexts where returned rows can't be clearly
+    identified with individual table rows; for example it can't be used with
+    aggregation.
+   </P
+><P
+>    FOR UPDATE may appear before LIMIT for compatibility with
+    pre-7.3 applications.  However, it effectively executes after LIMIT,
+    and so that is the recommended place to write it.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SELECT-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   To join the table <TT
+CLASS="LITERAL"
+>films</TT
+> with the table
+   <TT
+CLASS="LITERAL"
+>distributors</TT
+>:
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT f.title, f.did, d.name, f.date_prod, f.kind
+    FROM distributors d, films f
+    WHERE f.did = d.did
+
+           title           | did |   name           | date_prod  | kind
+---------------------------+-----+------------------+------------+----------
+ The Third Man             | 101 | British Lion     | 1949-12-23 | Drama
+ The African Queen         | 101 | British Lion     | 1951-08-11 | Romantic
+ Une Femme est une Femme   | 102 | Jean Luc Godard  | 1961-03-12 | Romantic
+ Vertigo                   | 103 | Paramount        | 1958-11-14 | Action
+ Becket                    | 103 | Paramount        | 1964-02-03 | Drama
+ 48 Hrs                    | 103 | Paramount        | 1982-10-22 | Action
+ War and Peace             | 104 | Mosfilm          | 1967-02-12 | Drama
+ West Side Story           | 105 | United Artists   | 1961-01-03 | Musical
+ Bananas                   | 105 | United Artists   | 1971-07-13 | Comedy
+ Yojimbo                   | 106 | Toho             | 1961-06-16 | Drama
+ There's a Girl in my Soup | 107 | Columbia         | 1970-06-11 | Comedy
+ Taxi Driver               | 107 | Columbia         | 1975-05-15 | Action
+ Absence of Malice         | 107 | Columbia         | 1981-11-15 | Action
+ Storia di una donna       | 108 | Westward         | 1970-08-15 | Romantic
+ The King and I            | 109 | 20th Century Fox | 1956-08-11 | Musical
+ Das Boot                  | 110 | Bavaria Atelier  | 1981-11-11 | Drama
+ Bed Knobs and Broomsticks | 111 | Walt Disney      |            | Musical
+(17 rows)</PRE
+><P>
+  </P
+><P
+>   To sum the column <TT
+CLASS="LITERAL"
+>len</TT
+> of all films and group
+   the results by <TT
+CLASS="LITERAL"
+>kind</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT kind, SUM(len) AS total FROM films GROUP BY kind;
+
+   kind   | total
+----------+-------
+ Action   | 07:34
+ Comedy   | 02:58
+ Drama    | 14:28
+ Musical  | 06:42
+ Romantic | 04:38
+(5 rows)</PRE
+><P>
+  </P
+><P
+>   To sum the column <TT
+CLASS="LITERAL"
+>len</TT
+> of all films, group
+   the results by <TT
+CLASS="LITERAL"
+>kind</TT
+> and show those group totals
+   that are less than 5 hours:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT kind, SUM(len) AS total
+    FROM films
+    GROUP BY kind
+    HAVING SUM(len) &#60; INTERVAL '5 hour';
+
+ kind     | total
+----------+-------
+ Comedy   | 02:58
+ Romantic | 04:38
+(2 rows)</PRE
+><P>
+  </P
+><P
+>   The following two examples are identical ways of sorting the individual
+   results according to the contents of the second column
+   (<TT
+CLASS="LITERAL"
+>name</TT
+>):
+
+   </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT * FROM distributors ORDER BY name;
+SELECT * FROM distributors ORDER BY 2;
+
+ did |       name
+-----+------------------
+ 109 | 20th Century Fox
+ 110 | Bavaria Atelier
+ 101 | British Lion
+ 107 | Columbia
+ 102 | Jean Luc Godard
+ 113 | Luso films
+ 104 | Mosfilm
+ 103 | Paramount
+ 106 | Toho
+ 105 | United Artists
+ 111 | Walt Disney
+ 112 | Warner Bros.
+ 108 | Westward
+(13 rows)</PRE
+><P>
+  </P
+><P
+>   This example shows how to obtain the union of the tables
+   <TT
+CLASS="LITERAL"
+>distributors</TT
+> and
+   <TT
+CLASS="LITERAL"
+>actors</TT
+>, restricting the results to those that begin
+   with letter W in each table.  Only distinct rows are wanted, so the
+   ALL keyword is omitted:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>distributors:               actors:
+ did |     name              id |     name
+-----+--------------        ----+----------------
+ 108 | Westward               1 | Woody Allen
+ 111 | Walt Disney            2 | Warren Beatty
+ 112 | Warner Bros.           3 | Walter Matthau
+ ...                         ...
+
+SELECT distributors.name
+    FROM   distributors
+    WHERE  distributors.name LIKE 'W%'
+UNION
+SELECT actors.name
+    FROM   actors
+    WHERE  actors.name LIKE 'W%';
+
+      name
+----------------
+ Walt Disney
+ Walter Matthau
+ Warner Bros.
+ Warren Beatty
+ Westward
+ Woody Allen</PRE
+><P>
+  </P
+><P
+>   This example shows how to use a table function, both with and without
+   a column definition list.
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>distributors:
+ did |     name
+-----+--------------
+ 108 | Westward
+ 111 | Walt Disney
+ 112 | Warner Bros.
+ ...
+
+CREATE FUNCTION distributors(int)
+  RETURNS SETOF distributors AS '
+  SELECT * FROM distributors WHERE did = $1;
+  ' LANGUAGE SQL;
+
+SELECT * FROM distributors(111);
+ did |    name
+-----+-------------
+ 111 | Walt Disney
+(1 row)
+
+CREATE FUNCTION distributors_2(int)
+  RETURNS SETOF RECORD AS '
+  SELECT * FROM distributors WHERE did = $1;
+  ' LANGUAGE SQL;
+
+SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
+ f1  |     f2
+-----+-------------
+ 111 | Walt Disney
+(1 row)</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-SELECT-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-SELECT-4"
+></A
+><H3
+>Extensions</H3
+><P
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows one to omit 
+the <TT
+CLASS="COMMAND"
+>FROM</TT
+> clause from a query. This feature
+was retained from the original PostQUEL query language.  It has
+a straightforward use to compute the results of simple expressions:
+
+  </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT 2+2;
+
+ ?column?
+----------
+        4
+  </PRE
+><P>
+
+Some other SQL databases cannot do this except by introducing a dummy one-row
+table to do the select from.  A less obvious use is to abbreviate a
+normal select from one or more tables:
+
+  </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT distributors.* WHERE distributors.name = 'Westward';
+
+ did | name
+-----+----------
+ 108 | Westward
+  </PRE
+><P>
+
+This works because an implicit FROM item is added for each table that is
+referenced in the query but not mentioned in FROM.  While this is a convenient
+shorthand, it's easy to misuse.  For example, the query
+  </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT distributors.* FROM distributors d;
+  </PRE
+><P>
+is probably a mistake; most likely the user meant
+  </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT d.* FROM distributors d;
+  </PRE
+><P>
+rather than the unconstrained join
+  </P><PRE
+CLASS="PROGRAMLISTING"
+>SELECT distributors.* FROM distributors d, distributors distributors;
+  </PRE
+><P>
+that he will actually get.  To help detect this sort of mistake,
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.1
+and later will warn if the implicit-FROM feature is used in a query that also
+contains an explicit FROM clause.
+
+   </P
+><P
+>    The table-function feature is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    extension.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-SELECT-5"
+></A
+><H3
+>    <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>
+   </H3
+><P
+>   </P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="R3-SQL-SELECT-1"
+></A
+><H4
+>     SELECT Clause
+    </H4
+><P
+>     In the <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> standard, the optional keyword <TT
+CLASS="LITERAL"
+>AS</TT
+>
+     is just noise and can be 
+     omitted without affecting the meaning.
+     The <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> parser requires this keyword when
+     renaming output columns because the type extensibility features lead to
+     parsing ambiguities
+     in this context.  <TT
+CLASS="LITERAL"
+>AS</TT
+> is optional in FROM items, however.</P
+><P
+>     The DISTINCT ON phrase is not part of <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>.
+     Nor are LIMIT and OFFSET.
+    </P
+><P
+>     In <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+>, an ORDER BY clause may only use result
+     column names or numbers, while a GROUP BY clause may only use input
+     column names.
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> extends each of these clauses to
+     allow the other choice as well (but it uses the standard's interpretation
+     if there is ambiguity).
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> also allows both clauses to specify
+     arbitrary expressions.  Note that names appearing in an expression will
+     always be taken as input-column names, not as result-column names.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="R3-SQL-UNION-1"
+></A
+><H4
+>     UNION/INTERSECT/EXCEPT Clause
+    </H4
+><P
+>     The <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> syntax for UNION/INTERSECT/EXCEPT allows an
+     additional CORRESPONDING BY option:
+     </P><PRE
+CLASS="SYNOPSIS"
+> 
+<TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+> UNION [ALL]
+    [CORRESPONDING [BY (<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [,...])]]
+    <TT
+CLASS="REPLACEABLE"
+><I
+>table_query</I
+></TT
+>
+     </PRE
+><P></P
+><P
+>     The CORRESPONDING BY clause is not supported by
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+    </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-rollback.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-selectinto.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ROLLBACK</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SELECT INTO</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

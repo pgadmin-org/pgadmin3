@@ -1,0 +1,577 @@
+<HTML
+><HEAD
+><TITLE
+>droplang</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="dropdb"
+HREF="app-dropdb.html"><LINK
+REL="NEXT"
+TITLE="dropuser"
+HREF="app-dropuser.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="app-dropdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="app-dropuser.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-DROPLANG"
+><SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+></A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN47433"
+></A
+><H2
+>Name</H2
+>droplang&nbsp;--&nbsp;remove a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> procedural language</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN47437"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>droplang</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>connection-options</I
+></TT
+>...]  <TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+>  [<TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+>]<BR><TT
+CLASS="COMMAND"
+>droplang</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>connection-options</I
+></TT
+>...]  --list | -l   <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-DROPLANG-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> is a utility for removing an 
+   existing programming language from a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.
+   <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> can drop any procedural language,
+   even those not supplied by the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> distribution.
+  </P
+><P
+>   Although backend programming languages can be removed directly using
+   several <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> commands, it is recommended to use
+   <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> because it performs a number
+   of checks and is much easier to use. See
+   <A
+HREF="sql-droplanguage.html"
+><I
+>DROP LANGUAGE</I
+></A
+>
+   for more.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47466"
+></A
+><H2
+>Options</H2
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> accepts the following command line arguments:
+    
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+></DT
+><DD
+><P
+>	Specifies the name of the backend programming language to be removed.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>-d</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>--dbname</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies from which database the language should be removed.
+        The default is to use the database with the same name as the
+        current system user.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-e</TT
+><BR><TT
+CLASS="OPTION"
+>--echo</TT
+></DT
+><DD
+><P
+>        Displays SQL commands as they are executed.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-l</TT
+><BR><TT
+CLASS="OPTION"
+>--list</TT
+></DT
+><DD
+><P
+>        Shows a list of already installed languages in the target database
+        (which must be specified).
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> also accepts 
+    the following command line arguments for connection parameters:
+    
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the host name of the machine on which the 
+	server
+	is running.  If host begins with a slash, it is used 
+	as the directory for the Unix domain socket.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the Internet TCP/IP port or local Unix domain socket file 
+	extension on which the server
+	is listening for connections.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        User name to connect as
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--password</TT
+></DT
+><DD
+><P
+>        Force password prompt.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47538"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+><BR><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47552"
+></A
+><H2
+>Diagnostics</H2
+><P
+>    Most error messages are self-explanatory. If not, run
+    <SPAN
+CLASS="APPLICATION"
+>droplang</SPAN
+> with the <TT
+CLASS="OPTION"
+>--echo</TT
+>
+    option and see under the respective <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> command
+    for details. Check also under <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>
+    for more possibilities.
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47559"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+> to add a language.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47563"
+></A
+><H2
+>Examples</H2
+><P
+>    To remove <TT
+CLASS="LITERAL"
+>pltcl</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$ </TT
+><TT
+CLASS="USERINPUT"
+><B
+>droplang pltcl dbname</B
+></TT
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN47570"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-createlang.html"
+><SPAN
+CLASS="APPLICATION"
+>createlang</SPAN
+></A
+>, <A
+HREF="sql-droplanguage.html"
+><I
+>DROP LANGUAGE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-dropdb.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-dropuser.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>dropdb</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>dropuser</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,698 @@
+<HTML
+><HEAD
+><TITLE
+>Requirements</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="  Installation Instructions"
+HREF="installation.html"><LINK
+REL="PREVIOUS"
+TITLE="  Installation Instructions"
+HREF="installation.html"><LINK
+REL="NEXT"
+TITLE="Getting The Source"
+HREF="install-getsource.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="installation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Installation Instructions</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="install-getsource.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INSTALL-REQUIREMENTS"
+>1.2. Requirements</A
+></H1
+><P
+>   In general, a modern Unix-compatible platform should be able to run
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+    The platforms that had received specific testing at the
+   time of release are listed in <A
+HREF="supported-platforms.html"
+>Section 1.7</A
+>
+   below. In the <TT
+CLASS="FILENAME"
+>doc</TT
+> subdirectory of the distribution
+   there are several platform-specific <SPAN
+CLASS="ACRONYM"
+>FAQ</SPAN
+> documents you
+   might wish to consult if you are having trouble.
+  </P
+><P
+>   The following software packages are required for building
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      <A
+NAME="AEN18021"
+></A
+>
+
+      <SPAN
+CLASS="ACRONYM"
+>GNU</SPAN
+> <SPAN
+CLASS="APPLICATION"
+>make</SPAN
+> is required; other
+      <SPAN
+CLASS="APPLICATION"
+>make</SPAN
+> programs will <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> work.
+      <SPAN
+CLASS="ACRONYM"
+>GNU</SPAN
+> <SPAN
+CLASS="APPLICATION"
+>make</SPAN
+> is often installed under
+      the name <TT
+CLASS="FILENAME"
+>gmake</TT
+>; this document will always
+      refer to it by that name. (On some systems
+      <SPAN
+CLASS="ACRONYM"
+>GNU</SPAN
+> make is the default tool with the name
+      <TT
+CLASS="FILENAME"
+>make</TT
+>.) To test for <SPAN
+CLASS="ACRONYM"
+>GNU</SPAN
+>
+      <SPAN
+CLASS="APPLICATION"
+>make</SPAN
+> enter
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="USERINPUT"
+><B
+>gmake --version</B
+></TT
+></PRE
+><P>
+      It is recommended to use version 3.76.1 or later.
+     </P
+></LI
+><LI
+><P
+>      You need an <SPAN
+CLASS="ACRONYM"
+>ISO</SPAN
+>/<SPAN
+CLASS="ACRONYM"
+>ANSI</SPAN
+> C compiler. Recent
+      versions of <SPAN
+CLASS="PRODUCTNAME"
+>GCC</SPAN
+> are recommendable, but
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is known to build with a wide variety
+      of compilers from different vendors.
+     </P
+></LI
+><LI
+><P
+>      <SPAN
+CLASS="APPLICATION"
+>gzip</SPAN
+> is needed to unpack the distribution in the
+      first place.  If you are reading this, you probably already got
+      past that hurdle.
+     </P
+></LI
+><LI
+><P
+>      <A
+NAME="AEN18047"
+></A
+>
+
+      The <SPAN
+CLASS="ACRONYM"
+>GNU</SPAN
+> <SPAN
+CLASS="PRODUCTNAME"
+>Readline</SPAN
+> library (for
+      comfortable line editing and command history retrieval) will be
+      used by default.  If you don't want to use it then you must
+      specify the <TT
+CLASS="OPTION"
+>--without-readline</TT
+> option for
+      <TT
+CLASS="FILENAME"
+>configure</TT
+>.  (On <SPAN
+CLASS="PRODUCTNAME"
+>NetBSD</SPAN
+>,
+      the <TT
+CLASS="FILENAME"
+>libedit</TT
+> library is
+      <SPAN
+CLASS="PRODUCTNAME"
+>readline</SPAN
+>-compatible and is used if
+      <TT
+CLASS="FILENAME"
+>libreadline</TT
+> is not found.)
+     </P
+></LI
+><LI
+><P
+>      <A
+NAME="AEN18059"
+></A
+>
+
+      To build on <SPAN
+CLASS="PRODUCTNAME"
+>Windows NT</SPAN
+> or <SPAN
+CLASS="PRODUCTNAME"
+>Windows
+      2000</SPAN
+> you need the <SPAN
+CLASS="PRODUCTNAME"
+>Cygwin</SPAN
+> and
+      <SPAN
+CLASS="PRODUCTNAME"
+>cygipc</SPAN
+> packages. See the file
+      <TT
+CLASS="FILENAME"
+>doc/FAQ_MSWIN</TT
+> for details.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   The following packages are optional.  They are not required in the
+   default configuration, but they are needed when certain build
+   options are enabled, as explained below.
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      To build the server programming language PL/Perl you need a full
+      <SPAN
+CLASS="PRODUCTNAME"
+>Perl</SPAN
+> installation, including the
+      <TT
+CLASS="FILENAME"
+>libperl</TT
+> library and the header files.
+      Since PL/Perl will be a shared library, the
+      <A
+NAME="AEN18073"
+></A
+>
+      <TT
+CLASS="FILENAME"
+>libperl</TT
+> library must be a shared library
+      also on most platforms.  This appears to be the default in
+      recent Perl versions, but it was not in earlier versions, and in
+      general it is the choice of whomever installed Perl at your
+      site.
+     </P
+><P
+>      If you don't have the shared library but you need one, a message
+      like this will appear during the build to point out this fact:
+</P><PRE
+CLASS="SCREEN"
+>*** Cannot build PL/Perl because libperl is not a shared library.
+*** You might have to rebuild your Perl installation.  Refer to
+*** the documentation for details.</PRE
+><P>
+      (If you don't follow the on-screen output you will merely notice
+      that the PL/Perl library object, <TT
+CLASS="FILENAME"
+>plperl.so</TT
+>
+      or similar, will not be installed.)  If you see this, you will
+      have to rebuild and install <SPAN
+CLASS="PRODUCTNAME"
+>Perl</SPAN
+>
+      manually to be able to build PL/Perl.  During the configuration
+      process for <SPAN
+CLASS="PRODUCTNAME"
+>Perl</SPAN
+>, request a shared
+      library.
+     </P
+></LI
+><LI
+><P
+>      To build the Python interface module or the PL/Python server
+      programming language, you need a Python installation, including
+      the header files.
+      Since PL/Python will be a shared library, the
+      <A
+NAME="AEN18083"
+></A
+>
+      <TT
+CLASS="FILENAME"
+>libpython</TT
+> library must be a shared library
+      also on most platforms.  This is not the case in a default
+      Python installation.
+     </P
+><P
+>      If after building and installing you have a file called
+      <TT
+CLASS="FILENAME"
+>plpython.so</TT
+> (possibly a different
+      extension), then everything went well.  Otherwise you should
+      have seen a notice like this flying by:
+</P><PRE
+CLASS="SCREEN"
+>*** Cannot build PL/Python because libpython is not a shared library.
+*** You might have to rebuild your Python installation.  Refer to
+*** the documentation for details.</PRE
+><P>
+      That means you have to rebuild (part of) your Python
+      installation to supply this shared library.
+     </P
+><P
+>      The catch is that the Python distribution or the Python
+      maintainers do not provide any direct way to do this.  The
+      closest thing we can offer you is the information in <A
+HREF="http://www.python.org/doc/FAQ.html#3.30"
+TARGET="_top"
+>Python FAQ
+      3.30</A
+>.  On some operating systems you don't really have
+      to build a shared library, but then you will have to convince
+      the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> build system of this.  Consult
+      the <TT
+CLASS="FILENAME"
+>Makefile</TT
+> in the
+      <TT
+CLASS="FILENAME"
+>src/pl/plpython</TT
+> directory for details.
+     </P
+></LI
+><LI
+><P
+>      If you want to build Tcl or Tk components (clients and the
+      PL/Tcl language) you of course need a Tcl installation.
+     </P
+></LI
+><LI
+><P
+>      To build the JDBC driver, you need
+      <SPAN
+CLASS="APPLICATION"
+>Ant</SPAN
+> 1.5 or higher and a
+      <SPAN
+CLASS="ACRONYM"
+>JDK</SPAN
+>.  <SPAN
+CLASS="APPLICATION"
+>Ant</SPAN
+> is a
+      special tool for building Java-based packages.  It can be
+      downloaded from the <A
+HREF="http://jakarta.apache.org/ant/index.html"
+TARGET="_top"
+><SPAN
+CLASS="APPLICATION"
+>Ant</SPAN
+>
+      web site</A
+>.
+     </P
+><P
+>      If you have several Java compilers installed, it depends on the
+      Ant configuration which one gets used.  Precompiled
+      <SPAN
+CLASS="APPLICATION"
+>Ant</SPAN
+> distributions are typically set
+      up to read a file <TT
+CLASS="FILENAME"
+>.antrc</TT
+> in the current
+      user's home directory for configuration.  For example, to use a
+      different <SPAN
+CLASS="ACRONYM"
+>JDK</SPAN
+> than the default, this may
+      work:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>JAVA_HOME=/usr/local/sun-jdk1.3
+JAVACMD=$JAVA_HOME/bin/java</PRE
+><P>
+     </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>       Do not try to build the driver by calling
+       <TT
+CLASS="COMMAND"
+>ant</TT
+> or even <TT
+CLASS="COMMAND"
+>javac</TT
+>
+       directly.  This will not work.  Run <TT
+CLASS="COMMAND"
+>gmake</TT
+>
+       normally as described below.
+      </P
+></BLOCKQUOTE
+></DIV
+></LI
+><LI
+><P
+>      To enable Native Language Support (<SPAN
+CLASS="ACRONYM"
+>NLS</SPAN
+>), that
+      is, the ability to display a program's messages in a language
+      other than English, you need an implementation of the
+      <SPAN
+CLASS="APPLICATION"
+>Gettext</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+>.  Some operating
+      systems have this built-in (e.g., <SPAN
+CLASS="SYSTEMITEM"
+>Linux</SPAN
+>, <SPAN
+CLASS="SYSTEMITEM"
+>NetBSD</SPAN
+>,
+      <SPAN
+CLASS="SYSTEMITEM"
+>Solaris</SPAN
+>), for other systems you
+      can download an add-on package from here: <A
+HREF="http://www.postgresql.org/~petere/gettext.html"
+TARGET="_top"
+>http://www.postgresql.org/~petere/gettext.html</A
+>.
+      If you are using the <SPAN
+CLASS="APPLICATION"
+>gettext</SPAN
+> implementation in
+      the <SPAN
+CLASS="ACRONYM"
+>GNU</SPAN
+> C library then you will additionally
+      need the <SPAN
+CLASS="PRODUCTNAME"
+>GNU Gettext</SPAN
+> package for some
+      utility programs.  For any of the other implementations you will
+      not need it.
+     </P
+></LI
+><LI
+><P
+>      <SPAN
+CLASS="APPLICATION"
+>Kerberos</SPAN
+>, <SPAN
+CLASS="APPLICATION"
+>OpenSSL</SPAN
+>, or <SPAN
+CLASS="APPLICATION"
+>PAM</SPAN
+>,
+      if you want to support
+      authentication using these services.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   If you are build from a <SPAN
+CLASS="ACRONYM"
+>CVS</SPAN
+> tree instead of
+   using a released source package, or if you want to do development,
+   you also need the following packages:
+
+   <P
+></P
+></P><UL
+><LI
+><P
+>      <A
+NAME="AEN18135"
+></A
+>
+      <A
+NAME="AEN18137"
+></A
+>
+      <A
+NAME="AEN18139"
+></A
+>
+
+      <SPAN
+CLASS="APPLICATION"
+>Flex</SPAN
+> and <SPAN
+CLASS="APPLICATION"
+>Bison</SPAN
+>
+      are needed to build a CVS checkout or if you changed the actual
+      scanner and parser definition files. If you need them, be sure
+      to get <SPAN
+CLASS="APPLICATION"
+>Flex</SPAN
+> 2.5.4 or later and
+      <SPAN
+CLASS="APPLICATION"
+>Bison</SPAN
+> 1.50 or later. Other <SPAN
+CLASS="APPLICATION"
+>yacc</SPAN
+>
+      programs can sometimes be used, but doing so requires extra
+      effort and is not recommended. Other <SPAN
+CLASS="APPLICATION"
+>lex</SPAN
+>
+      programs will definitely not work.
+     </P
+></LI
+></UL
+><P>
+  </P
+><P
+>   If you need to get a <SPAN
+CLASS="ACRONYM"
+>GNU</SPAN
+> package, you can find
+   it at your local <SPAN
+CLASS="ACRONYM"
+>GNU</SPAN
+> mirror site (see <A
+HREF="http://www.gnu.org/order/ftp.html"
+TARGET="_top"
+>http://www.gnu.org/order/ftp.html</A
+>
+   for a list) or at <A
+HREF="ftp://ftp.gnu.org/gnu/"
+TARGET="_top"
+>ftp://ftp.gnu.org/gnu/</A
+>.
+  </P
+><P
+>   Also check that you have sufficient disk space. You will need about
+   65 MB for the source tree during compilation and about 15 MB for
+   the installation directory. An empty database cluster takes about
+   25 MB, databases take about five times the amount of space that a
+   flat text file with the same data would take. If you are going to
+   run the regression tests you will temporarily need up to an extra
+   90 MB. Use the <TT
+CLASS="COMMAND"
+>df</TT
+> command to check for disk
+   space.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="installation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install-getsource.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Installation Instructions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="installation.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Getting The Source</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

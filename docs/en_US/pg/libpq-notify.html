@@ -1,0 +1,344 @@
+<HTML
+><HEAD
+><TITLE
+>Asynchronous Notification</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="libpq - C Library"
+HREF="libpq.html"><LINK
+REL="PREVIOUS"
+TITLE="The Fast-Path Interface"
+HREF="libpq-fastpath.html"><LINK
+REL="NEXT"
+TITLE="Functions Associated with the COPY Command"
+HREF="libpq-copy.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libpq-fastpath.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> - C Library</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libpq-copy.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBPQ-NOTIFY"
+>1.6. Asynchronous Notification</A
+></H1
+><A
+NAME="AEN25568"
+></A
+><P
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> supports asynchronous notification via the
+<TT
+CLASS="COMMAND"
+>LISTEN</TT
+> and <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> commands.  A backend registers its interest in a particular
+notification condition with the <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> command (and can stop listening
+with the <TT
+CLASS="COMMAND"
+>UNLISTEN</TT
+> command).  All backends listening on a
+particular condition will be notified asynchronously when a <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+> of that
+condition name is executed by any backend.  No additional information is
+passed from the notifier to the listener.  Thus, typically, any actual data
+that needs to be communicated is transferred through a database relation.
+Commonly the condition name is the same as the associated relation, but it is
+not necessary for there to be any associated relation.</P
+><P
+><TT
+CLASS="FILENAME"
+>libpq</TT
+> applications submit <TT
+CLASS="COMMAND"
+>LISTEN</TT
+> and <TT
+CLASS="COMMAND"
+>UNLISTEN</TT
+>
+commands as ordinary SQL command.  Subsequently, arrival of <TT
+CLASS="COMMAND"
+>NOTIFY</TT
+>
+messages can be detected by calling <TT
+CLASS="FUNCTION"
+>PQnotifies</TT
+>.
+
+<P
+></P
+></P><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>PQnotifies</TT
+>
+          Returns  the next notification from a list of unhandled
+          notification messages received from the backend.  Returns NULL if
+          there are no pending notifications.  Once a notification is
+	  returned from <TT
+CLASS="FUNCTION"
+>PQnotifies</TT
+>, it is considered handled and will be
+	  removed from the list of notifications.
+</P><PRE
+CLASS="SYNOPSIS"
+>PGnotify* PQnotifies(PGconn *conn);
+
+typedef struct pgNotify {
+    char *relname;              /* name of relation containing data */
+    int  be_pid;                /* process id of backend */
+} PGnotify;</PRE
+><P>
+After processing a <TT
+CLASS="STRUCTNAME"
+>PGnotify</TT
+> object returned by <TT
+CLASS="FUNCTION"
+>PQnotifies</TT
+>,
+be sure to free it with <TT
+CLASS="FUNCTION"
+>free()</TT
+> to avoid a memory leak.</P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+> In <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 6.4 and later,
+ the <TT
+CLASS="LITERAL"
+>be_pid</TT
+> is that of the notifying backend,
+ whereas in earlier versions it was always the <SPAN
+CLASS="ACRONYM"
+>PID</SPAN
+> of your own backend.</P
+></BLOCKQUOTE
+></DIV
+></LI
+></UL
+><P></P
+><P
+>The  second  sample program gives an example of the use
+of asynchronous notification.</P
+><P
+><TT
+CLASS="FUNCTION"
+>PQnotifies()</TT
+> does not actually read backend data; it just
+returns messages previously absorbed by another <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>
+function.  In prior releases of <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>, the only way
+to ensure timely receipt of NOTIFY messages was to constantly submit queries,
+even empty ones, and then check <TT
+CLASS="FUNCTION"
+>PQnotifies()</TT
+> after each
+<TT
+CLASS="FUNCTION"
+>PQexec()</TT
+>.  While this still works, it is
+deprecated as a waste of processing power.</P
+><P
+>A better way to check for NOTIFY
+messages when you have no useful queries to make is to call
+<TT
+CLASS="FUNCTION"
+>PQconsumeInput()</TT
+>, then check
+<TT
+CLASS="FUNCTION"
+>PQnotifies()</TT
+>.
+You can use <TT
+CLASS="FUNCTION"
+>select()</TT
+> to wait for backend data to
+arrive, thereby using no <SPAN
+CLASS="ACRONYM"
+>CPU</SPAN
+> power unless there is something
+to do.  (See <TT
+CLASS="FUNCTION"
+>PQsocket()</TT
+> to obtain the file descriptor
+number to use with <TT
+CLASS="FUNCTION"
+>select()</TT
+>.)
+Note that this will work OK whether you submit queries with
+<TT
+CLASS="FUNCTION"
+>PQsendQuery</TT
+>/<TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> or simply
+use <TT
+CLASS="FUNCTION"
+>PQexec</TT
+>.  You should, however, remember to
+check <TT
+CLASS="FUNCTION"
+>PQnotifies()</TT
+> after each
+<TT
+CLASS="FUNCTION"
+>PQgetResult</TT
+> or <TT
+CLASS="FUNCTION"
+>PQexec</TT
+>, to see
+if any notifications came in during the processing of the query.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libpq-fastpath.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libpq-copy.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The Fast-Path Interface</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libpq.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Functions Associated with the COPY Command</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

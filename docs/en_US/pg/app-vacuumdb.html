@@ -1,0 +1,766 @@
+<HTML
+><HEAD
+><TITLE
+>vacuumdb</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Client Applications"
+HREF="reference-client.html"><LINK
+REL="PREVIOUS"
+TITLE="pgtksh"
+HREF="app-pgtksh.html"><LINK
+REL="NEXT"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="app-pgtksh.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="reference-server.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-VACUUMDB"
+><SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+></A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN50455"
+></A
+><H2
+>Name</H2
+>vacuumdb&nbsp;--&nbsp;garbage-collect and analyze a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN50459"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>vacuumdb</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>connection-options</I
+></TT
+>...] [--full | -f] [--verbose | -v] [--analyze | -z] [--table | -t '<TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+>
+     [( <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [,...] )]'
+   ] [<TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+>]<BR><TT
+CLASS="COMMAND"
+>vacuumdb</TT
+> [<TT
+CLASS="REPLACEABLE"
+><I
+>connection-options</I
+></TT
+>...] [--all | -a] [--full | -f] [--verbose | -v] [--analyze | -z]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50495"
+></A
+><H2
+>Description</H2
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+> is a utility for cleaning a
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.
+   <SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+> will also generate internal statistics
+   used by the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> query optimizer.
+  </P
+><P
+>   <SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+> is a shell script wrapper around the
+   backend command
+   <A
+HREF="sql-vacuum.html"
+><I
+>VACUUM</I
+></A
+> via
+   the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> interactive terminal
+   <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>. There is no effective
+   difference between vacuuming databases via this or other methods.
+   <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> must be found by the script and
+   a database server must be running at the targeted host. Also, any default
+   settings and environment variables available to <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+>
+   and the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> front-end library do apply.
+  </P
+><P
+>  <SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+> might need to connect several
+  times to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server, asking for
+  a password each time. It is convenient to have a
+  <TT
+CLASS="FILENAME"
+>$HOME/.pgpass</TT
+> file in such cases.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50514"
+></A
+><H2
+>Options</H2
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+> accepts the following command-line arguments:
+    
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>-d</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>[<SPAN
+CLASS="OPTIONAL"
+>--dbname</SPAN
+>] <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the name of the database to be cleaned or analyzed.
+	If this is not specified and <TT
+CLASS="OPTION"
+>-a</TT
+> (or
+	<TT
+CLASS="OPTION"
+>--all</TT
+>) is not used, the database name is read
+	from the environment variable <TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+>.  If
+	that is not set, the user name specified for the connection is
+	used.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-a</TT
+><BR><TT
+CLASS="OPTION"
+>--all</TT
+></DT
+><DD
+><P
+>	Vacuum all databases.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-e</TT
+><BR><TT
+CLASS="OPTION"
+>--echo</TT
+></DT
+><DD
+><P
+>        Echo the commands that <SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+> generates
+	and sends to the server.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-f</TT
+><BR><TT
+CLASS="OPTION"
+>--full</TT
+></DT
+><DD
+><P
+>        Perform <SPAN
+CLASS="QUOTE"
+>"full"</SPAN
+> vacuuming.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-q</TT
+><BR><TT
+CLASS="OPTION"
+>--quiet</TT
+></DT
+><DD
+><P
+>        Do not display a response.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-t <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ (<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [,...]) ]</TT
+><BR><TT
+CLASS="OPTION"
+>--table <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> [ (<TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [,...]) ]</TT
+></DT
+><DD
+><P
+>	Clean or analyze <TT
+CLASS="REPLACEABLE"
+><I
+>table</I
+></TT
+> only.
+	Column names may be specified only in conjunction with
+	the <TT
+CLASS="OPTION"
+>--analyze</TT
+> option.
+       </P
+><DIV
+CLASS="TIP"
+><BLOCKQUOTE
+CLASS="TIP"
+><P
+><B
+>Tip: </B
+>         If you specify columns to vacuum, you probably have to escape the parentheses
+         from the shell.
+        </P
+></BLOCKQUOTE
+></DIV
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-v</TT
+><BR><TT
+CLASS="OPTION"
+>--verbose</TT
+></DT
+><DD
+><P
+>	Print detailed information during processing.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-z</TT
+><BR><TT
+CLASS="OPTION"
+>--analyze</TT
+></DT
+><DD
+><P
+>	Calculate statistics for use by the optimizer.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    <SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+> also accepts 
+    the following command-line arguments for connection parameters:
+    
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--host <TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the host name of the machine on which the 
+	server
+	is running.  If host begins with a slash, it is used 
+	as the directory for the Unix domain socket.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-p <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--port <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+></TT
+></DT
+><DD
+><P
+>	Specifies the Internet TCP/IP port or local Unix domain socket file 
+	extension on which the server
+	is listening for connections.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        User name to connect as
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--password</TT
+></DT
+><DD
+><P
+>        Force password prompt.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50629"
+></A
+><H2
+>Diagnostics</H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>VACUUM</TT
+></DT
+><DD
+><P
+>        Everything went well.
+       </P
+></DD
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>vacuumdb: Vacuum failed.</TT
+></DT
+><DD
+><P
+>        Something went wrong. <SPAN
+CLASS="APPLICATION"
+>vacuumdb</SPAN
+> is only a wrapper
+        script. See <A
+HREF="sql-vacuum.html"
+><I
+>VACUUM</I
+></A
+>
+        and <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+> for a detailed
+        discussion of error messages and potential problems.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50646"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATABASE</TT
+><BR><TT
+CLASS="ENVAR"
+>PGHOST</TT
+><BR><TT
+CLASS="ENVAR"
+>PGPORT</TT
+><BR><TT
+CLASS="ENVAR"
+>PGUSER</TT
+></DT
+><DD
+><P
+>      Default connection parameters.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50660"
+></A
+><H2
+>Examples</H2
+><P
+>    To clean the database <TT
+CLASS="LITERAL"
+>test</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$ </TT
+><TT
+CLASS="USERINPUT"
+><B
+>vacuumdb test</B
+></TT
+></PRE
+><P>
+   </P
+><P
+>    To clean and analyze for the optimizer a database named
+    <TT
+CLASS="LITERAL"
+>bigdb</TT
+>:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$ </TT
+><TT
+CLASS="USERINPUT"
+><B
+>vacuumdb --analyze bigdb</B
+></TT
+></PRE
+><P>
+   </P
+><P
+>    To clean a single table
+    <TT
+CLASS="LITERAL"
+>foo</TT
+> in a database named
+    <TT
+CLASS="LITERAL"
+>xyzzy</TT
+>, and analyze a single column
+    <TT
+CLASS="LITERAL"
+>bar</TT
+> of the table for the optimizer:
+</P><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>$ </TT
+><TT
+CLASS="USERINPUT"
+><B
+>vacuumdb --analyze --verbose --table 'foo(bar)' xyzzy</B
+></TT
+></PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50679"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-vacuum.html"
+><I
+>VACUUM</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="app-pgtksh.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pgtksh</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-client.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>PostgreSQL Server Applications</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

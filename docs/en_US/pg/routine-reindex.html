@@ -1,0 +1,182 @@
+<HTML
+><HEAD
+><TITLE
+>Routine Reindexing</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Routine Database Maintenance Tasks"
+HREF="maintenance.html"><LINK
+REL="PREVIOUS"
+TITLE="Routine Vacuuming"
+HREF="routine-vacuuming.html"><LINK
+REL="NEXT"
+TITLE="Log File Maintenance"
+HREF="logfile-maintenance.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="routine-vacuuming.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Routine Database Maintenance Tasks</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="logfile-maintenance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ROUTINE-REINDEX"
+>8.3. Routine Reindexing</A
+></H1
+><A
+NAME="AEN22565"
+></A
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is unable to reuse B-tree index
+   pages in certain cases. The problem is that if indexed rows are
+   deleted, those index pages can only be reused by rows with similar
+   values. For example, if indexed rows are deleted and newly
+   inserted/updated rows have much higher values, the new rows can't use
+   the index space made available by the deleted rows. Instead, such
+   new rows must be placed on new index pages. In such cases, disk
+   space used by the index will grow indefinitely, even if
+   <TT
+CLASS="COMMAND"
+>VACUUM</TT
+> is run frequently.
+  </P
+><P
+>   As a solution, you can use the <TT
+CLASS="COMMAND"
+>REINDEX</TT
+> command
+   periodically to discard pages used by deleted rows. There is also
+   <TT
+CLASS="FILENAME"
+>contrib/reindexdb</TT
+> which can reindex an entire database.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="routine-vacuuming.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="logfile-maintenance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Routine Vacuuming</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="maintenance.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Log File Maintenance</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

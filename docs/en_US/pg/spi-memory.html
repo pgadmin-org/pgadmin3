@@ -1,0 +1,351 @@
+<HTML
+><HEAD
+><TITLE
+>Memory Management</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming Interface"
+HREF="spi.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI_getrelname"
+HREF="spi-spigetrelname.html"><LINK
+REL="NEXT"
+TITLE="SPI_copytuple"
+HREF="spi-spicopytuple.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="spi-spigetrelname.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 17. Server Programming Interface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="spi-spicopytuple.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SPI-MEMORY"
+>17.3. Memory Management</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="spi-spicopytuple.html"
+>SPI_copytuple</A
+>&nbsp;--&nbsp;Makes copy of tuple in upper Executor context</DT
+><DT
+><A
+HREF="spi-spicopytupledesc.html"
+>SPI_copytupledesc</A
+>&nbsp;--&nbsp;Makes copy of tuple descriptor in upper Executor context</DT
+><DT
+><A
+HREF="spi-spicopytupleintoslot.html"
+>SPI_copytupleintoslot</A
+>&nbsp;--&nbsp;Makes copy of tuple and descriptor in upper Executor context</DT
+><DT
+><A
+HREF="spi-spimodifytuple.html"
+>SPI_modifytuple</A
+>&nbsp;--&nbsp;Creates a tuple by replacing selected fields of a given tuple</DT
+><DT
+><A
+HREF="spi-spipalloc.html"
+>SPI_palloc</A
+>&nbsp;--&nbsp;Allocates memory in upper Executor context</DT
+><DT
+><A
+HREF="spi-spirepalloc.html"
+>SPI_repalloc</A
+>&nbsp;--&nbsp;Re-allocates memory in upper Executor context</DT
+><DT
+><A
+HREF="spi-spipfree.html"
+>SPI_pfree</A
+>&nbsp;--&nbsp;Frees memory in upper Executor context</DT
+><DT
+><A
+HREF="spi-spifreetuple.html"
+>SPI_freetuple</A
+>&nbsp;--&nbsp;Frees a tuple allocated in upper Executor context</DT
+><DT
+><A
+HREF="spi-spifreetuptable.html"
+>SPI_freetuptable</A
+>&nbsp;--&nbsp;Frees a tuple set created by <TT
+CLASS="FUNCTION"
+>SPI_exec</TT
+> or similar function</DT
+><DT
+><A
+HREF="spi-spifreeplan.html"
+>SPI_freeplan</A
+>&nbsp;--&nbsp;   Releases a previously saved plan</DT
+></DL
+></DIV
+><P
+><SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allocates memory within memory
+<I
+CLASS="FIRSTTERM"
+>contexts</I
+>, which provide a convenient method of
+managing allocations made in many different places that need to live
+for differing amounts of time.  Destroying a context releases all the
+memory that was allocated in it.  Thus, it is not necessary to keep track
+of individual objects to avoid memory leaks --- only a relatively small number
+of contexts have to be managed.  <TT
+CLASS="FUNCTION"
+>palloc</TT
+> and related
+functions allocate memory from the <SPAN
+CLASS="QUOTE"
+>"current"</SPAN
+> context.</P
+><P
+><TT
+CLASS="FUNCTION"
+>SPI_connect</TT
+> creates a new memory context and makes
+it current.  <TT
+CLASS="FUNCTION"
+>SPI_finish</TT
+> restores the previous
+current memory context and destroys the context created by
+<TT
+CLASS="FUNCTION"
+>SPI_connect</TT
+>.  These actions ensure that transient
+memory allocations made inside your procedure are reclaimed at procedure
+exit, avoiding memory leakage.</P
+><P
+>However, if your procedure needs to return an allocated memory object
+(such as a value of a pass-by-reference data type), you can't allocate
+the return object using <TT
+CLASS="FUNCTION"
+>palloc</TT
+>, at least not while
+you are connected to SPI.  If you try, the object will be deallocated
+during <TT
+CLASS="FUNCTION"
+>SPI_finish</TT
+>, and your procedure will not
+work reliably!</P
+><P
+>To solve this problem, use <TT
+CLASS="FUNCTION"
+>SPI_palloc</TT
+> to allocate
+your return object.  <TT
+CLASS="FUNCTION"
+>SPI_palloc</TT
+> allocates space
+from <SPAN
+CLASS="QUOTE"
+>"upper Executor"</SPAN
+> memory --- that is, the memory context
+that was current when <TT
+CLASS="FUNCTION"
+>SPI_connect</TT
+> was called,
+which is precisely the right context for return values of your procedure.</P
+><P
+>If called while not connected to SPI, <TT
+CLASS="FUNCTION"
+>SPI_palloc</TT
+>
+acts the same as plain <TT
+CLASS="FUNCTION"
+>palloc</TT
+>.</P
+><P
+>   Before a procedure connects to the SPI manager, the current memory context
+is the upper Executor context, so all allocations made by the procedure via
+<TT
+CLASS="FUNCTION"
+>palloc</TT
+> or by SPI utility functions are
+made in this context.</P
+><P
+>   After <TT
+CLASS="FUNCTION"
+>SPI_connect</TT
+> is called, the current context is
+   the procedure's private context made by <TT
+CLASS="FUNCTION"
+>SPI_connect</TT
+>.
+   All allocations made via
+<TT
+CLASS="FUNCTION"
+>palloc</TT
+>/<TT
+CLASS="FUNCTION"
+>repalloc</TT
+> or by SPI utility
+functions (except for <TT
+CLASS="FUNCTION"
+>SPI_copytuple</TT
+>,
+<TT
+CLASS="FUNCTION"
+>SPI_copytupledesc</TT
+>,
+<TT
+CLASS="FUNCTION"
+>SPI_copytupleintoslot</TT
+>,
+<TT
+CLASS="FUNCTION"
+>SPI_modifytuple</TT
+>,
+and <TT
+CLASS="FUNCTION"
+>SPI_palloc</TT
+>) are
+made in this context.</P
+><P
+>When a procedure disconnects from the SPI manager (via
+<TT
+CLASS="FUNCTION"
+>SPI_finish</TT
+>) the
+current context is restored to the upper Executor context, and all allocations
+made in the procedure memory context are freed and can't be used any more!</P
+><P
+>All functions described in this section may be used by both connected and
+unconnected procedures.  In an unconnected procedure, they act the same
+as the underlying ordinary backend functions (<TT
+CLASS="FUNCTION"
+>palloc</TT
+> etc).</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spigetrelname.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spicopytuple.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_getrelname</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_copytuple</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

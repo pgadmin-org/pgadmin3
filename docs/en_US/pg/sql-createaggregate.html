@@ -1,0 +1,641 @@
+<HTML
+><HEAD
+><TITLE
+>CREATE AGGREGATE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="COPY"
+HREF="sql-copy.html"><LINK
+REL="NEXT"
+TITLE="CREATE CAST"
+HREF="sql-createcast.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-copy.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-createcast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-CREATEAGGREGATE"
+>CREATE AGGREGATE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN38733"
+></A
+><H2
+>Name</H2
+>   CREATE AGGREGATE
+  &nbsp;--&nbsp;   define a new aggregate function
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN38736"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>CREATE AGGREGATE <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ( BASETYPE = <TT
+CLASS="REPLACEABLE"
+><I
+>input_data_type</I
+></TT
+>,
+    SFUNC = <TT
+CLASS="REPLACEABLE"
+><I
+>sfunc</I
+></TT
+>, STYPE = <TT
+CLASS="REPLACEABLE"
+><I
+>state_type</I
+></TT
+>
+    [ , FINALFUNC = <TT
+CLASS="REPLACEABLE"
+><I
+>ffunc</I
+></TT
+> ]
+    [ , INITCOND = <TT
+CLASS="REPLACEABLE"
+><I
+>initial_condition</I
+></TT
+> ] )
+  </PRE
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEAGGREGATE-1"
+></A
+><H3
+>    Inputs
+   </H3
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+></DT
+><DD
+><P
+>	The name (optionally schema-qualified) of an aggregate function to
+	create.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>input_data_type</I
+></TT
+></DT
+><DD
+><P
+>	The input data type on which this aggregate function operates.
+	This can be specified as <TT
+CLASS="LITERAL"
+>"ANY"</TT
+> for an aggregate that does
+	not examine its input values
+	(an example is <TT
+CLASS="FUNCTION"
+>count(*)</TT
+>).
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>sfunc</I
+></TT
+></DT
+><DD
+><P
+>	The name of the state transition function
+	to be called for each input data value.
+	This is normally a function of two arguments, the first being of
+	type <TT
+CLASS="REPLACEABLE"
+><I
+>state_type</I
+></TT
+>
+	and the second of
+	type <TT
+CLASS="REPLACEABLE"
+><I
+>input_data_type</I
+></TT
+>.
+	Alternatively, for an aggregate that does not examine its input
+	values, the function takes just one argument of
+	type <TT
+CLASS="REPLACEABLE"
+><I
+>state_type</I
+></TT
+>.
+	In either case the function must return a value of
+	type <TT
+CLASS="REPLACEABLE"
+><I
+>state_type</I
+></TT
+>.
+	This function takes the current state value and the current
+	input data item, and returns the next state value.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>state_type</I
+></TT
+></DT
+><DD
+><P
+>	The data type for the aggregate's state value.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>ffunc</I
+></TT
+></DT
+><DD
+><P
+>	The name of the final function called to compute the aggregate's
+	result after all input data has been traversed.  The function
+	must take a single argument of type
+	<TT
+CLASS="REPLACEABLE"
+><I
+>state_type</I
+></TT
+>.
+	The output data type of the aggregate is defined as the return
+	type of this function.
+	If <TT
+CLASS="REPLACEABLE"
+><I
+>ffunc</I
+></TT
+>
+	is not specified, then the ending state value is used as the
+	aggregate's result, and the output type is
+	<TT
+CLASS="REPLACEABLE"
+><I
+>state_type</I
+></TT
+>.
+       </P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>initial_condition</I
+></TT
+></DT
+><DD
+><P
+>	The initial setting for the state value.  This must be a literal
+	constant in the form accepted for the data type
+	<TT
+CLASS="REPLACEABLE"
+><I
+>state_type</I
+></TT
+>.
+	If not specified, the state value starts out NULL.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEAGGREGATE-2"
+></A
+><H3
+>    Outputs
+   </H3
+><P
+>&#13;    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="COMPUTEROUTPUT"
+>CREATE AGGREGATE
+       </TT
+></DT
+><DD
+><P
+>	Message returned if the command completes successfully.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEAGGREGATE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>CREATE AGGREGATE</TT
+> 
+   allows a user or programmer to extend <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   functionality by defining new aggregate functions. Some aggregate functions
+   for base types such as <TT
+CLASS="FUNCTION"
+>min(integer)</TT
+>
+   and <TT
+CLASS="FUNCTION"
+>avg(double precision)</TT
+> are already provided in the base
+   distribution. If one defines new types or needs an aggregate function not
+   already provided, then <TT
+CLASS="COMMAND"
+>CREATE AGGREGATE</TT
+>
+   can be used to provide the desired features.
+  </P
+><P
+>   If a schema name is given (for example, <TT
+CLASS="LITERAL"
+>CREATE AGGREGATE
+   myschema.myagg ...</TT
+>) then the aggregate function is created in the
+   specified schema.  Otherwise it is created in the current schema (the one
+   at the front of the search path; see <TT
+CLASS="LITERAL"
+>CURRENT_SCHEMA()</TT
+>).
+  </P
+><P
+>   An  aggregate  function is identified by its name and input data type.
+   Two aggregates in the same schema can have the same name if they operate on
+   different input types.  The
+   name and input data type of an aggregate must also be distinct from
+   the name and input data type(s) of every ordinary function in the same
+   schema.
+  </P
+><P
+>   An  aggregate function is made from one or two ordinary
+   functions:
+   a state transition function
+   <TT
+CLASS="REPLACEABLE"
+><I
+>sfunc</I
+></TT
+>,
+   and an optional final calculation function
+   <TT
+CLASS="REPLACEABLE"
+><I
+>ffunc</I
+></TT
+>.
+   These are used as follows:
+   </P><PRE
+CLASS="PROGRAMLISTING"
+><TT
+CLASS="REPLACEABLE"
+><I
+>sfunc</I
+></TT
+>( internal-state, next-data-item ) ---&#62; next-internal-state
+<TT
+CLASS="REPLACEABLE"
+><I
+>ffunc</I
+></TT
+>( internal-state ) ---&#62; aggregate-value
+   </PRE
+><P>
+  </P
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> creates a temporary variable
+   of data type <TT
+CLASS="REPLACEABLE"
+><I
+>stype</I
+></TT
+>
+   to hold the current internal state of the aggregate.  At each input
+   data item,
+   the state transition function is invoked to calculate a new
+   internal state value.  After all the data has been processed,
+   the final function is invoked once to calculate the aggregate's output
+   value.  If there is no final function then the ending state value
+   is returned as-is.
+  </P
+><P
+>   An aggregate function may provide an initial condition,
+   that is, an initial value for the internal state value.
+   This is specified and stored in the database as a field of type
+   <TT
+CLASS="TYPE"
+>text</TT
+>, but it must be a valid external representation
+   of a constant of the state value data type.  If it is not supplied
+   then the state value starts out NULL.
+  </P
+><P
+>   If the state transition function is declared <SPAN
+CLASS="QUOTE"
+>"strict"</SPAN
+>,
+   then it cannot be called with NULL inputs.  With such a transition
+   function, aggregate execution behaves as follows.  NULL input values
+   are ignored (the function is not called and the previous state value
+   is retained).  If the initial state value is NULL, then the first
+   non-NULL input value replaces the state value, and the transition
+   function is invoked beginning with the second non-NULL input value.
+   This is handy for implementing aggregates like <TT
+CLASS="FUNCTION"
+>max</TT
+>.
+   Note that this behavior is only available when
+   <TT
+CLASS="REPLACEABLE"
+><I
+>state_type</I
+></TT
+>
+   is the same as
+   <TT
+CLASS="REPLACEABLE"
+><I
+>input_data_type</I
+></TT
+>.
+   When these types are different, you must supply a non-NULL initial
+   condition or use a non-strict transition function.
+  </P
+><P
+>   If the state transition function is not strict, then it will be called
+   unconditionally at each input value, and must deal with NULL inputs
+   and NULL transition values for itself.  This allows the aggregate
+   author to have full control over the aggregate's handling of null values.
+  </P
+><P
+>   If the final function is declared <SPAN
+CLASS="QUOTE"
+>"strict"</SPAN
+>, then it will not
+   be called when the ending state value is NULL; instead a NULL result
+   will be output automatically.  (Of course this is just the normal
+   behavior of strict functions.)  In any case the final function has
+   the option of returning NULL.  For example, the final function for
+   <TT
+CLASS="FUNCTION"
+>avg</TT
+> returns NULL when it sees there were zero
+   input tuples.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEAGGREGATE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    Use <TT
+CLASS="COMMAND"
+>DROP AGGREGATE</TT
+>
+    to drop aggregate functions.
+   </P
+><P
+>    The parameters of <TT
+CLASS="COMMAND"
+>CREATE AGGREGATE</TT
+> can be written
+    in any order, not just the order illustrated above.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEAGGREGATE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Refer to the chapter on aggregate functions
+   in the <I
+CLASS="CITETITLE"
+>PostgreSQL Programmer's Guide</I
+> for
+   complete examples of usage.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-CREATEAGGREGATE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-CREATEAGGREGATE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>CREATE AGGREGATE</TT
+> 
+    is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> language extension.
+    There is no <TT
+CLASS="COMMAND"
+>CREATE AGGREGATE</TT
+> in SQL92.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-copy.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-createcast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>COPY</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CREATE CAST</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

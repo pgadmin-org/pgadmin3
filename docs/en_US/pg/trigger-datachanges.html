@@ -1,0 +1,193 @@
+<HTML
+><HEAD
+><TITLE
+>Visibility of Data Changes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Triggers"
+HREF="triggers.html"><LINK
+REL="PREVIOUS"
+TITLE="Interaction with the Trigger Manager"
+HREF="trigger-manager.html"><LINK
+REL="NEXT"
+TITLE="Examples"
+HREF="trigger-examples.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="trigger-manager.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 16. Triggers</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="trigger-examples.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TRIGGER-DATACHANGES"
+>16.3. Visibility of Data Changes</A
+></H1
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> data changes visibility rule: during a query execution, data
+    changes made by the query itself (via SQL-function, SPI-function, triggers)
+    are invisible to the query scan.  For example, in query
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>INSERT INTO a SELECT * FROM a;</PRE
+><P>
+
+    tuples inserted are invisible for SELECT scan.  In effect, this
+    duplicates the database table within itself (subject to unique index
+    rules, of course) without recursing.
+   </P
+><P
+>    But keep in mind this notice about visibility in the SPI documentation:
+
+    <A
+NAME="AEN33598"
+></A
+><BLOCKQUOTE
+CLASS="BLOCKQUOTE"
+><P
+>Changes made by query Q are visible by queries that are started after
+query Q, no matter whether they are started inside Q (during the
+execution of Q) or after Q is done.
+     </P
+></BLOCKQUOTE
+>
+   </P
+><P
+>    This is true for triggers as well so, though a tuple being inserted
+    (<TT
+CLASS="STRUCTFIELD"
+>tg_trigtuple</TT
+>) is not visible to queries in a BEFORE trigger, this tuple
+    (just inserted) is visible to queries in an AFTER trigger, and to queries
+    in BEFORE/AFTER triggers fired after this!
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="trigger-manager.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="trigger-examples.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Interaction with the Trigger Manager</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="triggers.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Examples</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,416 @@
+<HTML
+><HEAD
+><TITLE
+>Write-Ahead Logging (WAL)</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Administrator's Guide"
+HREF="admin.html"><LINK
+REL="PREVIOUS"
+TITLE="Disk Full Failure"
+HREF="disk-full.html"><LINK
+REL="NEXT"
+TITLE="Implementation"
+HREF="wal-implementation.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="disk-full.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="wal-implementation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="WAL"
+>Chapter 12. Write-Ahead Logging (<SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>)</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>12.1. <A
+HREF="wal.html#WAL-GENERAL"
+>General Description</A
+></DT
+><DD
+><DL
+><DT
+>12.1.1. <A
+HREF="wal.html#WAL-BENEFITS-NOW"
+>Immediate Benefits of <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+></A
+></DT
+><DT
+>12.1.2. <A
+HREF="wal.html#WAL-BENEFITS-LATER"
+>Future Benefits</A
+></DT
+></DL
+></DD
+><DT
+>12.2. <A
+HREF="wal-implementation.html"
+>Implementation</A
+></DT
+><DT
+>12.3. <A
+HREF="wal-configuration.html"
+><SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> Configuration</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Author: </B
+>   Vadim Mikheev and Oliver Elphick
+  </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="WAL-GENERAL"
+>12.1. General Description</A
+></H1
+><P
+>   <I
+CLASS="FIRSTTERM"
+>Write Ahead Logging</I
+> (<SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>)
+   is a standard approach to transaction logging.  Its detailed
+   description may be found in most (if not all) books about
+   transaction processing. Briefly, <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>'s central
+   concept is that changes to data files (where tables and indexes
+   reside) must be written only after those changes have been logged -
+   that is, when log records have been flushed to permanent
+   storage. When we follow this procedure, we do not need to flush
+   data pages to disk on every transaction commit, because we know
+   that in the event of a crash we will be able to recover the
+   database using the log: any changes that have not been applied to
+   the data pages will first be redone from the log records (this is
+   roll-forward recovery, also known as REDO) and then changes made by
+   uncommitted transactions will be removed from the data pages
+   (roll-backward recovery - UNDO).
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="WAL-BENEFITS-NOW"
+>12.1.1. Immediate Benefits of <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+></A
+></H2
+><P
+>    The first obvious benefit of using <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> is a
+    significantly reduced number of disk writes, since only the log
+    file needs to be flushed to disk at the time of transaction
+    commit; in multiuser environments, commits of many transactions
+    may be accomplished with a single <TT
+CLASS="FUNCTION"
+>fsync()</TT
+> of
+    the log file. Furthermore, the log file is written sequentially,
+    and so the cost of syncing the log is much less than the cost of
+    flushing the data pages.
+   </P
+><P
+>    The next benefit is consistency of the data pages. The truth is
+    that, before <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>,
+    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> was never able to guarantee
+    consistency in the case of a crash.  Before
+    <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>, any crash during writing could result in:
+
+    <P
+></P
+></P><OL
+TYPE="1"
+><LI
+><P
+>index tuples pointing to nonexistent table rows</P
+></LI
+><LI
+><P
+>index tuples lost in split operations</P
+></LI
+><LI
+><P
+>totally corrupted table or index page content, because
+      of partially written data pages</P
+></LI
+></OL
+><P>
+
+    Problems with indexes (problems 1 and 2) could possibly have been
+    fixed by additional <TT
+CLASS="FUNCTION"
+>fsync()</TT
+> calls, but it is
+    not obvious how to handle the last case without
+    <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>; <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> saves the entire data
+    page content in the log if that is required to ensure page
+    consistency for after-crash recovery.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="WAL-BENEFITS-LATER"
+>12.1.2. Future Benefits</A
+></H2
+><P
+>    UNDO operation is not implemented. This means that changes
+    made by aborted transactions will still occupy disk space and that
+    we still need a permanent <TT
+CLASS="FILENAME"
+>pg_clog</TT
+> file to hold
+    the status of transactions, since we are not able to re-use
+    transaction identifiers. Once UNDO is implemented,
+    <TT
+CLASS="FILENAME"
+>pg_clog</TT
+> will no longer be required to be
+    permanent; it will be possible to remove
+    <TT
+CLASS="FILENAME"
+>pg_clog</TT
+> at shutdown. (However, the urgency of
+    this concern has decreased greatly with the adoption of a segmented
+    storage method for <TT
+CLASS="FILENAME"
+>pg_clog</TT
+> --- it is no longer
+    necessary to keep old <TT
+CLASS="FILENAME"
+>pg_clog</TT
+> entries around
+    forever.)
+   </P
+><P
+>    With UNDO, it will also be possible to implement
+    <I
+CLASS="FIRSTTERM"
+>savepoints</I
+> to allow partial rollback of
+    invalid transaction operations (parser errors caused by mistyping
+    commands, insertion of duplicate primary/unique keys and so on)
+    with the ability to continue or commit valid operations made by
+    the transaction before the error.  At present, any error will
+    invalidate the whole transaction and require a transaction abort.
+   </P
+><P
+>    <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> offers the opportunity for a new method for
+    database on-line backup and restore (<SPAN
+CLASS="ACRONYM"
+>BAR</SPAN
+>).  To
+    use this method, one would have to make periodic saves of data
+    files to another disk, a tape or another host and also archive the
+    <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> log files.  The database file copy and the
+    archived log files could be used to restore just as if one were
+    restoring after a crash. Each time a new database file copy was
+    made the old log files could be removed.  Implementing this
+    facility will require the logging of data file and index creation
+    and deletion; it will also require development of a method for
+    copying the data files (operating system copy commands are not
+    suitable).
+   </P
+><P
+>    A difficulty standing in the way of realizing these benefits is that
+    they require saving <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> entries for considerable
+    periods of time (eg, as long as the longest possible transaction if
+    transaction UNDO is wanted). The present <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+>
+    format is extremely bulky since it includes many disk page
+    snapshots. This is not a serious concern at present, since the
+    entries only need to be kept for one or two checkpoint intervals;
+    but to achieve these future benefits some sort of compressed
+    <SPAN
+CLASS="ACRONYM"
+>WAL</SPAN
+> format will be needed.
+   </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="disk-full.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="wal-implementation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Disk Full Failure</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Implementation</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

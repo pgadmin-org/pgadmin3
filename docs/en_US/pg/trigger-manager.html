@@ -1,0 +1,466 @@
+<HTML
+><HEAD
+><TITLE
+>Interaction with the Trigger Manager</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Triggers"
+HREF="triggers.html"><LINK
+REL="PREVIOUS"
+TITLE="Triggers"
+HREF="triggers.html"><LINK
+REL="NEXT"
+TITLE="Visibility of Data Changes"
+HREF="trigger-datachanges.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="triggers.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 16. Triggers</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="trigger-datachanges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TRIGGER-MANAGER"
+>16.2. Interaction with the Trigger Manager</A
+></H1
+><P
+>    This section describes the low-level details of the interface to a
+    trigger function.  This information is only needed when writing a
+    trigger function in C.  If you are using a higher-level function
+    language then these details are handled for you.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      The interface described here applies for
+      <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.1 and later.
+      Earlier versions passed the <TT
+CLASS="STRUCTNAME"
+>TriggerData</TT
+> pointer in a global
+      variable <TT
+CLASS="VARNAME"
+>CurrentTriggerData</TT
+>.
+     </P
+></BLOCKQUOTE
+></DIV
+><P
+>    When a function is called by the trigger manager, it is not passed any
+    normal parameters, but it is passed a <SPAN
+CLASS="QUOTE"
+>"context"</SPAN
+> pointer pointing to a
+    <TT
+CLASS="STRUCTNAME"
+>TriggerData</TT
+> structure.  C functions can check whether they were called
+    from the trigger manager or not by executing the macro
+    <TT
+CLASS="LITERAL"
+>CALLED_AS_TRIGGER(fcinfo)</TT
+>, which expands to
+</P><PRE
+CLASS="PROGRAMLISTING"
+>((fcinfo)-&#62;context != NULL &#38;&#38; IsA((fcinfo)-&#62;context, TriggerData))</PRE
+><P>
+    If this returns true, then it is safe to cast <TT
+CLASS="LITERAL"
+>fcinfo-&#62;context</TT
+> to type
+    <TT
+CLASS="LITERAL"
+>TriggerData *</TT
+> and make use of the pointed-to
+    <TT
+CLASS="STRUCTNAME"
+>TriggerData</TT
+> structure.
+    The function must <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> alter the <TT
+CLASS="STRUCTNAME"
+>TriggerData</TT
+>
+    structure or any of the data it points to.
+   </P
+><P
+>    <TT
+CLASS="STRUCTNAME"
+>struct TriggerData</TT
+> is defined in
+    <TT
+CLASS="FILENAME"
+>commands/trigger.h</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct TriggerData
+{
+    NodeTag       type;
+    TriggerEvent  tg_event;
+    Relation      tg_relation;
+    HeapTuple     tg_trigtuple;
+    HeapTuple     tg_newtuple;
+    Trigger      *tg_trigger;
+} TriggerData;</PRE
+><P>
+
+    where the members are defined as follows:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>type</TT
+></DT
+><DD
+><P
+>        Always <TT
+CLASS="LITERAL"
+>T_TriggerData</TT
+> if this is a trigger event.
+       </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>tg_event</TT
+></DT
+><DD
+><P
+>	describes the event for which the function is called. You may use the
+	following macros to examine <TT
+CLASS="LITERAL"
+>tg_event</TT
+>:
+
+	<P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>TRIGGER_FIRED_BEFORE(tg_event)</DT
+><DD
+><P
+>	    returns TRUE if trigger fired BEFORE.
+	   </P
+></DD
+><DT
+>TRIGGER_FIRED_AFTER(tg_event)</DT
+><DD
+><P
+>	    Returns TRUE if trigger fired AFTER.
+	   </P
+></DD
+><DT
+>TRIGGER_FIRED_FOR_ROW(event)</DT
+><DD
+><P
+>	    Returns TRUE if trigger fired for
+	    a ROW-level event.
+	   </P
+></DD
+><DT
+>TRIGGER_FIRED_FOR_STATEMENT(event)</DT
+><DD
+><P
+>	    Returns TRUE if trigger fired for
+	    STATEMENT-level event.
+	   </P
+></DD
+><DT
+>TRIGGER_FIRED_BY_INSERT(event)</DT
+><DD
+><P
+>	    Returns TRUE if trigger fired by INSERT.
+	   </P
+></DD
+><DT
+>TRIGGER_FIRED_BY_DELETE(event)</DT
+><DD
+><P
+>	    Returns TRUE if trigger fired by DELETE.
+	   </P
+></DD
+><DT
+>TRIGGER_FIRED_BY_UPDATE(event)</DT
+><DD
+><P
+>	    Returns TRUE if trigger fired by UPDATE.
+	   </P
+></DD
+></DL
+></DIV
+><P>
+       </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>tg_relation</TT
+></DT
+><DD
+><P
+>	is a pointer to structure describing the triggered
+	relation. Look at <TT
+CLASS="FILENAME"
+>utils/rel.h</TT
+> for details about
+	this structure.  The most interesting things are
+	<TT
+CLASS="LITERAL"
+>tg_relation-&#62;rd_att</TT
+> (descriptor of the relation
+	tuples) and <TT
+CLASS="LITERAL"
+>tg_relation-&#62;rd_rel-&#62;relname</TT
+>
+	(relation's name. This is not <TT
+CLASS="TYPE"
+>char*</TT
+>, but
+	<TT
+CLASS="TYPE"
+>NameData</TT
+>.  Use
+	<TT
+CLASS="LITERAL"
+>SPI_getrelname(tg_relation)</TT
+> to get <TT
+CLASS="TYPE"
+>char*</TT
+> if you
+	need a copy of the name).
+       </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>tg_trigtuple</TT
+></DT
+><DD
+><P
+>	is a pointer to the tuple for which the trigger is fired. This is the tuple
+	being inserted (if INSERT), deleted (if DELETE) or updated (if UPDATE).
+	If INSERT/DELETE then this is what you are to return to Executor if 
+	you don't want to replace tuple with another one (INSERT) or skip the
+	operation.
+       </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>tg_newtuple</TT
+></DT
+><DD
+><P
+>	is a pointer to the new version of tuple if UPDATE and <TT
+CLASS="SYMBOL"
+>NULL</TT
+> if this is
+	for an INSERT or a DELETE. This is what you are to return to Executor if
+	UPDATE and you don't want to replace this tuple with another one or skip
+	the operation.
+       </P
+></DD
+><DT
+><TT
+CLASS="STRUCTFIELD"
+>tg_trigger</TT
+></DT
+><DD
+><P
+>	is pointer to structure <TT
+CLASS="STRUCTNAME"
+>Trigger</TT
+> defined in <TT
+CLASS="FILENAME"
+>utils/rel.h</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct Trigger
+{
+    Oid         tgoid;
+    char       *tgname;
+    Oid         tgfoid;
+    int16       tgtype;
+    bool        tgenabled;
+    bool        tgisconstraint;
+    Oid         tgconstrrelid;
+    bool        tgdeferrable;
+    bool        tginitdeferred;
+    int16       tgnargs;
+    int16       tgattr[FUNC_MAX_ARGS];
+    char      **tgargs;
+} Trigger;</PRE
+><P>
+
+       where <TT
+CLASS="STRUCTFIELD"
+>tgname</TT
+> is the trigger's name,
+       <TT
+CLASS="STRUCTFIELD"
+>tgnargs</TT
+> is number of arguments in
+       <TT
+CLASS="STRUCTFIELD"
+>tgargs</TT
+>, <TT
+CLASS="STRUCTFIELD"
+>tgargs</TT
+> is an array of
+       pointers to the arguments specified in the CREATE TRIGGER
+       statement. Other members are for internal use only.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="triggers.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="trigger-datachanges.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Triggers</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="triggers.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Visibility of Data Changes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

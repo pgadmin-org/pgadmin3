@@ -1,0 +1,381 @@
+<HTML
+><HEAD
+><TITLE
+>Modifying Tables</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Definition"
+HREF="ddl.html"><LINK
+REL="PREVIOUS"
+TITLE="Inheritance"
+HREF="ddl-inherit.html"><LINK
+REL="NEXT"
+TITLE="Privileges"
+HREF="ddl-priv.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ddl-inherit.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Data Definition</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ddl-priv.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DDL-ALTER"
+>2.6. Modifying Tables</A
+></H1
+><P
+>   When you create a table and you realize that you made a mistake, or
+   the requirements of the application changed, then you can drop the
+   table and create it again.  But this is not a convenient option if
+   the table is already filled with data, or if the table is
+   referenced by other database objects (for instance a foreign key
+   constraint).  Therefore <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+   provides a family of commands to make modifications on existing
+   tables.
+  </P
+><P
+>   You can
+   <P
+></P
+></P><UL
+COMPACT="COMPACT"
+><LI
+><P
+>Add columns,</P
+></LI
+><LI
+><P
+>Remove columns,</P
+></LI
+><LI
+><P
+>Add constraints,</P
+></LI
+><LI
+><P
+>Remove constraints,</P
+></LI
+><LI
+><P
+>Change default values,</P
+></LI
+><LI
+><P
+>Rename columns,</P
+></LI
+><LI
+><P
+>Rename tables.</P
+></LI
+></UL
+><P>
+
+   All these actions are performed using the <TT
+CLASS="LITERAL"
+>ALTER
+   TABLE</TT
+> command.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1968"
+>2.6.1. Adding a Column</A
+></H2
+><P
+>    To add a column, use this command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ADD COLUMN description text;</PRE
+><P>
+    The new column will initially be filled with null values in the
+    existing rows of the table.
+   </P
+><P
+>    You can also define a constraint on the column at the same time,
+    using the usual syntax:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ADD COLUMN description text CHECK (description &lt;&gt; '');</PRE
+><P>
+    A new column cannot have a not-null constraint since the column
+    initially has to contain null values.  But you can add a not-null
+    constraint later.  Also, you cannot define a default value on a
+    new column.  According to the SQL standard, this would have to
+    fill the new columns in the existing rows with the default value,
+    which is not implemented yet.  But you can adjust the column
+    default later on.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1974"
+>2.6.2. Removing a Column</A
+></H2
+><P
+>    To remove a column, use this command:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products DROP COLUMN description;</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1978"
+>2.6.3. Adding a Constraint</A
+></H2
+><P
+>    To add a constraint, the table constraint syntax is used.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ADD CHECK (name &lt;&gt; '');
+ALTER TABLE products ADD CONSTRAINT some_name UNIQUE (product_no);
+ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_groups;</PRE
+><P>
+    To add a not-null constraint, which cannot be written as a table
+    constraint, use this syntax:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ALTER COLUMN product_no SET NOT NULL;</PRE
+><P>
+   </P
+><P
+>    The constraint will be checked immediately, so the table data must
+    satisfy the constraint before it can be added.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1984"
+>2.6.4. Removing a Constraint</A
+></H2
+><P
+>    To remove a constraint you need to know its name.  If you gave it
+    a name then that's easy.  Otherwise the system assigned a
+    generated name, which you need to find out.  The
+    <SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+> command <TT
+CLASS="LITERAL"
+>\d
+    <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+></TT
+> can be helpful
+    here; other interfaces might also provide a way to inspect table
+    details.  Then the command is:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products DROP CONSTRAINT some_name;</PRE
+><P>
+    This works the same for all constraint types except not-null
+    constraints. To drop a not null constraint use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ALTER COLUMN product_no DROP NOT NULL;</PRE
+><P>
+    (Recall that not-null constraints do not have names.)
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1992"
+>2.6.5. Changing the Default</A
+></H2
+><P
+>    To set a new default for a column, use a command like this:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ALTER COLUMN price SET DEFAULT 7.77;</PRE
+><P>
+    To remove any default value, use
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products ALTER COLUMN price DROP DEFAULT;</PRE
+><P>
+    This is equivalent to setting the default to null, at least in
+    PostgreSQL.  As a consequence, it is not an error to drop a
+    default where one hadn't been defined, because the default is
+    implicitly the null value.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1997"
+>2.6.6. Renaming a Column</A
+></H2
+><P
+>    To rename a column:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products RENAME COLUMN product_no TO product_number;</PRE
+><P>
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2001"
+>2.6.7. Renaming a Table</A
+></H2
+><P
+>    To rename a table:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLE products RENAME TO items;</PRE
+><P>
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ddl-inherit.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ddl-priv.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Inheritance</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ddl.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Privileges</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

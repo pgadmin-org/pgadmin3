@@ -1,0 +1,2335 @@
+<HTML
+><HEAD
+><TITLE
+>PostgreSQL Extensions to the
+    JDBC API</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="JDBC Interface"
+HREF="jdbc.html"><LINK
+REL="PREVIOUS"
+TITLE="Storing Binary Data"
+HREF="jdbc-binary-data.html"><LINK
+REL="NEXT"
+TITLE="Using the driver in a multithreaded or a servlet environment"
+HREF="jdbc-thread.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="jdbc-binary-data.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> Interface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="jdbc-thread.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JDBC-EXT"
+>5.7. <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> Extensions to the
+    <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+></A
+></H1
+><P
+>   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is an extensible database
+   system.  You can add your own functions to the backend, which can
+   then be called from queries, or even add your own data types.  As
+   these are facilities unique to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>,
+   we support them from Java, with a set of extension
+   <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+>'s. Some features within the core of the
+   standard driver actually use these extensions to implement Large
+   Objects, etc.
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN28363"
+>5.7.1. Accessing the Extensions</A
+></H2
+><P
+>    To access some of the extensions, you need to use some extra
+    methods in the <TT
+CLASS="CLASSNAME"
+>org.postgresql.PGConnection</TT
+>
+    class. In this case, you would need to case the return value of
+    <TT
+CLASS="FUNCTION"
+>Driver.getConnection()</TT
+>.  For example:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Connection db = Driver.getConnection(url, username, password);
+// ...
+// later on
+Fastpath fp = ((org.postgresql.PGConnection)db).getFastpathAPI();</PRE
+><P>
+   </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN28369"
+>5.7.1.1. Class <TT
+CLASS="CLASSNAME"
+>org.postgresql.PGConnection</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>public class PGConnection </PRE
+><P
+>     These are the extra methods used to gain access to
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s extensions. 
+    </P
+><DIV
+CLASS="SECT4"
+><H4
+CLASS="SECT4"
+><A
+NAME="AEN28375"
+>5.7.1.1.1. Methods</A
+></H4
+><P
+></P
+><UL
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public Fastpath getFastpathAPI() throws SQLException</PRE
+><P
+>        This returns the Fastpath <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+> for the
+        current connection.  It is primarily used by the Large Object
+        <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+>.
+       </P
+><P
+>        The best way to use this is as follows:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>import org.postgresql.fastpath.*;
+...
+Fastpath fp = ((org.postgresql.PGConnection)myconn).getFastpathAPI();</PRE
+><P>
+        where <TT
+CLASS="VARNAME"
+>myconn</TT
+> is an open <TT
+CLASS="CLASSNAME"
+>Connection</TT
+> to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Returns: </B
+>         Fastpath object allowing access to functions on the
+         <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend.
+        </P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Throws: </B
+>         <TT
+CLASS="CLASSNAME"
+>SQLException</TT
+> by Fastpath when initializing for first time
+        </P
+></DIV
+></LI
+><LI
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>public LargeObjectManager getLargeObjectAPI() throws SQLException</PRE
+><P>
+        This returns the Large Object <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+> for the
+        current connection.
+       </P
+><P
+>        The best way to use this is as follows:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>import org.postgresql.largeobject.*;
+...
+LargeObjectManager lo = ((org.postgresql.PGConnection)myconn).getLargeObjectAPI();</PRE
+><P>
+        where <TT
+CLASS="VARNAME"
+>myconn</TT
+> is an open <TT
+CLASS="CLASSNAME"
+>Connection</TT
+> to
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Returns: </B
+>         <TT
+CLASS="CLASSNAME"
+>LargeObject</TT
+> object that implements the <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+>
+        </P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Throws: </B
+>         <TT
+CLASS="CLASSNAME"
+>SQLException</TT
+> by <TT
+CLASS="CLASSNAME"
+>LargeObject</TT
+> when initializing for first time
+        </P
+></DIV
+></LI
+><LI
+><P
+></P><PRE
+CLASS="SYNOPSIS"
+>public void addDataType(String type, String name)</PRE
+><P>
+        This allows client code to add a handler for one of
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s more unique data types. Normally, a data type not
+        known by the driver is returned by <TT
+CLASS="LITERAL"
+>ResultSet.getObject()</TT
+> as a
+        <TT
+CLASS="CLASSNAME"
+>PGobject</TT
+> instance.  This method allows you to write a class
+        that extends <TT
+CLASS="CLASSNAME"
+>PGobject</TT
+>, and tell the driver the type name, and
+        class name to use. The down side to this, is that you must
+        call this method each time a connection is made.
+       </P
+><P
+>        The best way to use this is as follows:
+</P><PRE
+CLASS="PROGRAMLISTING"
+> ...
+((org.postgresql.PGConnection)myconn).addDataType("mytype","my.class.name");
+ ...</PRE
+><P>
+        where <TT
+CLASS="VARNAME"
+>myconn</TT
+> is an open <TT
+CLASS="CLASSNAME"
+>Connection</TT
+> to
+        <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  The handling class must
+        extend <TT
+CLASS="CLASSNAME"
+>org.postgresql.util.PGobject</TT
+>.
+       </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN28428"
+>5.7.1.2. Class <TT
+CLASS="CLASSNAME"
+>org.postgresql.Fastpath</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>public class Fastpath extends Object
+
+java.lang.Object
+   |
+   +----org.postgresql.fastpath.Fastpath</PRE
+><P
+>     <TT
+CLASS="CLASSNAME"
+>Fastpath</TT
+> is an <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+> that
+     exists within the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> C interface, and allows a client machine
+     to execute a function on the database backend.  Most client code
+     will not need to use this method, but it is provided because the
+     Large Object <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+> uses it.
+    </P
+><P
+>     To use, you need to import the
+     <TT
+CLASS="CLASSNAME"
+>org.postgresql.fastpath</TT
+> package, using the
+     line:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>import org.postgresql.fastpath.*;</PRE
+><P>
+     Then, in your code, you need to get a
+     <TT
+CLASS="CLASSNAME"
+>FastPath</TT
+> object:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>Fastpath fp = ((org.postgresql.PGConnection)conn).getFastpathAPI();</PRE
+><P>
+     This will return an instance associated with the database
+     connection that you can use to issue commands. The casing of
+     <TT
+CLASS="CLASSNAME"
+>Connection</TT
+> to
+     <TT
+CLASS="CLASSNAME"
+>org.postgresql.PGConnection</TT
+> is required, as
+     the <TT
+CLASS="FUNCTION"
+>getFastpathAPI()</TT
+> is an extension method,
+     not part of <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+>.  Once you have a
+     <TT
+CLASS="CLASSNAME"
+>Fastpath</TT
+> instance, you can use the
+     <TT
+CLASS="FUNCTION"
+>fastpath()</TT
+> methods to execute a backend
+     function.
+    </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>See Also: </B
+>      <TT
+CLASS="CLASSNAME"
+>FastpathFastpathArg</TT
+>, <TT
+CLASS="CLASSNAME"
+>LargeObject</TT
+>
+     </P
+></DIV
+><DIV
+CLASS="SECT4"
+><H4
+CLASS="SECT4"
+><A
+NAME="AEN28453"
+>5.7.1.2.1. Methods</A
+></H4
+><P
+></P
+><UL
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public Object fastpath(int fnid,
+                       boolean resulttype,
+                       FastpathArg args[]) throws SQLException</PRE
+><P
+>        Send a function call to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend.
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Parameters: </B
+>                <TT
+CLASS="PARAMETER"
+><I
+>fnid</I
+></TT
+> - Function id
+                <TT
+CLASS="PARAMETER"
+><I
+>resulttype</I
+></TT
+> - True if the result is an integer, false 
+for
+                other results
+                <TT
+CLASS="PARAMETER"
+><I
+>args</I
+></TT
+> - <TT
+CLASS="CLASSNAME"
+>FastpathArguments</TT
+> to pass to fastpath
+        </P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Returns: </B
+>         null if no data, Integer if an integer result, or byte[]
+         otherwise
+        </P
+></DIV
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public Object fastpath(String name,
+                       boolean resulttype,
+                       FastpathArg args[]) throws SQLException</PRE
+><P
+>        Send a function call to the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> backend by name.
+       </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>         The mapping for the procedure name to function id needs to
+         exist, usually to an earlier call to <TT
+CLASS="FUNCTION"
+>addfunction()</TT
+>. This is
+         the preferred method to call, as function id's can/may change
+         between versions of the backend. For an example of how this
+         works, refer to org.postgresql.LargeObject
+        </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Parameters: </B
+>                <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+> - Function name
+                <TT
+CLASS="PARAMETER"
+><I
+>resulttype</I
+></TT
+> - True if the result is an integer, false 
+for
+                other results
+                <TT
+CLASS="PARAMETER"
+><I
+>args</I
+></TT
+> - <TT
+CLASS="CLASSNAME"
+>FastpathArguments</TT
+> to pass to fastpath
+        </P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Returns: </B
+>         null if no data, Integer if an integer result, or byte[]
+         otherwise
+        </P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>See Also: </B
+><TT
+CLASS="CLASSNAME"
+>LargeObject</TT
+></P
+></DIV
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>          
+public int getInteger(String name,
+                      FastpathArg args[]) throws SQLException</PRE
+><P
+>        This convenience method assumes that the return value is an Integer
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Parameters: </B
+>                <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+> - Function name
+                <TT
+CLASS="PARAMETER"
+><I
+>args</I
+></TT
+> - Function arguments
+        </P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Returns: </B
+>integer result</P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Throws: </B
+>         <TT
+CLASS="CLASSNAME"
+>SQLException</TT
+> if a database-access error occurs or no result
+        </P
+></DIV
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public byte[] getData(String name,
+                      FastpathArg args[]) throws SQLException</PRE
+><P
+>        This convenience method assumes that the return value is binary
+        data.
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Parameters: </B
+>                <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+> - Function name
+                <TT
+CLASS="PARAMETER"
+><I
+>args</I
+></TT
+> - Function arguments
+        </P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Returns: </B
+>byte[] array containing result</P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Throws: </B
+>         <TT
+CLASS="CLASSNAME"
+>SQLException</TT
+> if a database-access error occurs or no result
+        </P
+></DIV
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public void addFunction(String name,
+                        int fnid)</PRE
+><P
+>        This adds a function to our look-up table.  User code should
+        use the <TT
+CLASS="FUNCTION"
+>addFunctions</TT
+> method, which is based upon a query,
+        rather than hard coding the OID. The OID for a function is not
+        guaranteed to remain static, even on different servers of the
+        same version.
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public void addFunctions(ResultSet rs) throws SQLException</PRE
+><P
+>        This takes a <TT
+CLASS="CLASSNAME"
+>ResultSet</TT
+> containing two columns. Column 1
+        contains the function name, Column 2 the OID.  It reads the
+        entire <TT
+CLASS="CLASSNAME"
+>ResultSet</TT
+>, loading the values into the function table.
+       </P
+><DIV
+CLASS="IMPORTANT"
+><BLOCKQUOTE
+CLASS="IMPORTANT"
+><P
+><B
+>Important: </B
+>         Remember to <TT
+CLASS="FUNCTION"
+>close()</TT
+> the
+         <TT
+CLASS="CLASSNAME"
+>ResultSet</TT
+> after calling this!
+        </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Implementation note about function name look-ups: </B
+>         <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> stores the function id's and their corresponding
+         names in the <TT
+CLASS="CLASSNAME"
+>pg_proc</TT
+> table. To speed things up locally,
+         instead of querying each function from that table when
+         required, a <TT
+CLASS="CLASSNAME"
+>Hashtable</TT
+> is used. Also, only the function's
+         required are entered into this table, keeping connection
+         times as fast as possible.
+        </P
+><P
+>         The <TT
+CLASS="CLASSNAME"
+>org.postgresql.LargeObject</TT
+> class
+         performs a query upon its start-up, and passes the returned
+         <TT
+CLASS="CLASSNAME"
+>ResultSet</TT
+> to the
+         <TT
+CLASS="FUNCTION"
+>addFunctions()</TT
+> method here.  Once this
+         has been done, the Large Object <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+> refers
+         to the functions by name.
+        </P
+><P
+>         Do not think that manually converting them to the OIDs will
+         work. OK, they will for now, but they can change during
+         development (there was some discussion about this for V7.0),
+         so this is implemented to prevent any unwarranted headaches
+         in the future.
+        </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>See Also: </B
+>         <TT
+CLASS="CLASSNAME"
+>LargeObjectManager</TT
+>
+        </P
+></DIV
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public int getID(String name) throws SQLException</PRE
+><P
+>        This returns the function id associated by its name If
+        <TT
+CLASS="FUNCTION"
+>addFunction()</TT
+> or <TT
+CLASS="FUNCTION"
+>addFunctions()</TT
+> have not been called for this
+        name, then an <TT
+CLASS="CLASSNAME"
+>SQLException</TT
+> is thrown.
+       </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN28556"
+>5.7.1.3. Class <TT
+CLASS="CLASSNAME"
+>org.postgresql.fastpath.FastpathArg</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>public class FastpathArg extends Object
+
+java.lang.Object
+   |
+   +----org.postgresql.fastpath.FastpathArg</PRE
+><P
+>     Each fastpath call requires an array of arguments, the number and
+     type dependent on the function being called.  This class
+     implements methods needed to provide this capability.
+    </P
+><P
+>     For an example on how to use this, refer to the
+     <TT
+CLASS="CLASSNAME"
+>org.postgresql.LargeObject</TT
+> package.
+    </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>See Also: </B
+>      <TT
+CLASS="CLASSNAME"
+>Fastpath</TT
+>, <TT
+CLASS="CLASSNAME"
+>LargeObjectManager</TT
+>, <TT
+CLASS="CLASSNAME"
+>LargeObject</TT
+>
+     </P
+></DIV
+><DIV
+CLASS="SECT4"
+><H4
+CLASS="SECT4"
+><A
+NAME="AEN28569"
+>5.7.1.3.1. Constructors</A
+></H4
+><P
+></P
+><UL
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public FastpathArg(int value)</PRE
+><P
+>        Constructs an argument that consists of an integer value
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Parameters: </B
+>         value - int value to set
+        </P
+></DIV
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public FastpathArg(byte bytes[])</PRE
+><P
+>        Constructs an argument that consists of an array of bytes
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Parameters: </B
+>         bytes - array to store
+        </P
+></DIV
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public FastpathArg(byte buf[],
+                   int off,
+                   int len)</PRE
+><P
+>        Constructs an argument that consists of part of a byte array
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Parameters: </B
+>         <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+></DT
+><DD
+><P
+>source array</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>off</I
+></TT
+></DT
+><DD
+><P
+>offset within array</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+></DT
+><DD
+><P
+>length of data to include</P
+></DD
+></DL
+></DIV
+><P>
+        </P
+></DIV
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public FastpathArg(String s)</PRE
+><P
+>        Constructs an argument that consists of a String.
+       </P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN28609"
+>5.7.2. Geometric Data Types</A
+></H2
+><P
+>    <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> has a set of data types that
+    can store geometric features into a table. These include single
+    points, lines, and polygons.  We support these types in Java with
+    the org.postgresql.geometric package.  It contains classes that
+    extend the org.postgresql.util.PGobject class.  Refer to that
+    class for details on how to implement your own data type handlers.
+   </P
+><PRE
+CLASS="PROGRAMLISTING"
+>Class org.postgresql.geometric.PGbox
+
+java.lang.Object
+   |
+   +----org.postgresql.util.PGobject
+           |
+           +----org.postgresql.geometric.PGbox
+
+   public class PGbox extends PGobject implements Serializable, 
+Cloneable
+
+   This represents the box data type within <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+
+Variables
+
+ public PGpoint point[]
+
+          These are the two corner points of the box.
+
+Constructors
+
+ public PGbox(double x1,
+              double y1,
+              double x2,
+              double y2)
+
+        Parameters:
+                x1 - first x coordinate
+                y1 - first y coordinate
+                x2 - second x coordinate
+                y2 - second y coordinate
+
+ public PGbox(PGpoint p1,
+              PGpoint p2)
+
+        Parameters:
+                p1 - first point
+                p2 - second point
+
+ public PGbox(String s) throws SQLException
+                            
+        Parameters:
+                s - Box definition in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> syntax
+
+        Throws: SQLException
+                if definition is invalid
+                
+ public PGbox()
+
+          Required constructor
+              
+Methods
+
+ public void setValue(String value) throws SQLException
+                
+          This method sets the value of this object. It should be 
+overridden, but still called by subclasses.
+                            
+        Parameters:
+                value - a string representation of the value of the 
+object
+        Throws: SQLException
+                thrown if value is invalid for this type
+
+        Overrides:
+                setValue in class PGobject
+
+ public boolean equals(Object obj)
+
+        Parameters:
+                obj - Object to compare with
+                
+        Returns:
+                true if the two boxes are identical
+          
+        Overrides:
+                equals in class PGobject
+
+ public Object clone()
+        
+          This must be overridden to allow the object to be cloned
+
+        Overrides:
+                clone in class PGobject
+   
+ public String getValue()
+        
+        Returns:
+                the PGbox in the syntax expected by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+
+        Overrides:
+                getValue in class PGobject
+
+Class org.postgresql.geometric.PGcircle
+
+java.lang.Object
+   |
+   +----org.postgresql.util.PGobject
+           |
+           +----org.postgresql.geometric.PGcircle
+        
+   public class PGcircle extends PGobject implements Serializable, 
+Cloneable
+               
+   This represents <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s circle data type, consisting of a point 
+and a radius
+
+Variables
+
+ public PGpoint center
+           
+          This is the center point
+ 
+ double radius
+           
+          This is the radius
+   
+Constructors   
+
+ public PGcircle(double x,
+                 double y,
+                 double r)
+          
+        Parameters:
+               x - coordinate of center
+                y - coordinate of center
+                r - radius of circle
+
+ public PGcircle(PGpoint c,
+                 double r)
+          
+        Parameters:
+                c - PGpoint describing the circle's center
+                r - radius of circle
+
+ public PGcircle(String s) throws SQLException
+
+        Parameters:
+                s - definition of the circle in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s syntax.
+
+        Throws: SQLException
+                on conversion failure
+
+ public PGcircle()
+
+          This constructor is used by the driver.
+            
+Methods   
+
+ public void setValue(String s) throws SQLException
+
+        Parameters:
+                s - definition of the circle in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s syntax.
+
+        Throws: SQLException
+                on conversion failure
+
+        Overrides:
+                setValue in class PGobject
+
+ public boolean equals(Object obj)
+
+        Parameters:
+                obj - Object to compare with
+            
+        Returns:
+                true if the two circles are identical
+
+        Overrides:
+                equals in class PGobject
+
+ public Object clone()
+
+          This must be overridden to allow the object to be cloned
+
+        Overrides:
+                clone in class PGobject
+
+ public String getValue()
+
+        Returns:
+                the PGcircle in the syntax expected by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+        
+        Overrides:
+                getValue in class PGobject
+
+Class org.postgresql.geometric.PGline
+
+java.lang.Object
+   |
+   +----org.postgresql.util.PGobject
+           |
+           +----org.postgresql.geometric.PGline
+
+   public class PGline extends PGobject implements Serializable, 
+Cloneable
+
+   This implements a line consisting of two points. Currently line is 
+not yet implemented in the backend, but this class ensures that when 
+it's done were ready for it.
+
+Variables
+   
+ public PGpoint point[]
+     
+          These are the two points.
+
+Constructors
+
+ public PGline(double x1,
+               double y1,
+               double x2,
+               double y2)
+
+        Parameters:
+                x1 - coordinate for first point
+                y1 - coordinate for first point
+                x2 - coordinate for second point
+                y2 - coordinate for second point
+
+ public PGline(PGpoint p1,
+               PGpoint p2)
+     
+        Parameters:
+                p1 - first point
+                p2 - second point
+
+ public PGline(String s) throws SQLException
+               
+        Parameters:
+                s - definition of the line in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s syntax.
+
+        Throws: SQLException
+                on conversion failure
+
+ public PGline()
+
+          required by the driver
+               
+Methods
+
+ public void setValue(String s) throws SQLException
+
+        Parameters:
+                s - Definition of the line segment in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s 
+syntax
+
+        Throws: SQLException
+                on conversion failure
+
+        Overrides:
+                setValue in class PGobject
+                
+ public boolean equals(Object obj)
+
+        Parameters:
+                obj - Object to compare with
+               
+        Returns:
+                true if the two lines are identical
+   
+        Overrides:
+                equals in class PGobject
+
+ public Object clone()
+        
+          This must be overridden to allow the object to be cloned
+
+        Overrides:
+                clone in class PGobject
+
+ public String getValue()
+   
+        Returns:
+                the PGline in the syntax expected by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+        
+        Overrides:
+                getValue in class PGobject
+
+Class org.postgresql.geometric.PGlseg
+             
+java.lang.Object
+   |
+   +----org.postgresql.util.PGobject
+           |
+           +----org.postgresql.geometric.PGlseg
+          
+   public class PGlseg extends PGobject implements Serializable, 
+Cloneable
+ 
+   This implements a lseg (line segment) consisting of two points
+
+Variables
+
+ public PGpoint point[]
+           
+          These are the two points.
+
+Constructors
+   
+ public PGlseg(double x1,
+               double y1,
+               double x2,
+               double y2)
+     
+        Parameters:
+
+                x1 - coordinate for first point
+                y1 - coordinate for first point
+                x2 - coordinate for second point
+                y2 - coordinate for second point
+
+ public PGlseg(PGpoint p1,
+               PGpoint p2)
+           
+        Parameters:
+                p1 - first point
+                p2 - second point
+   
+ public PGlseg(String s) throws SQLException
+
+        Parameters:
+                s - Definition of the line segment in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s syntax.
+
+        Throws: SQLException
+                on conversion failure
+
+ public PGlseg()
+
+          required by the driver
+               
+Methods    
+   
+ public void setValue(String s) throws SQLException
+   
+        Parameters:
+                s - Definition of the line segment in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s 
+syntax
+
+        Throws: SQLException
+                on conversion failure
+     
+        Overrides:
+                setValue in class PGobject
+                
+ public boolean equals(Object obj)
+
+        Parameters:
+                obj - Object to compare with
+               
+        Returns:
+                true if the two line segments are identical
+   
+        Overrides:
+                equals in class PGobject
+   
+ public Object clone()
+
+          This must be overridden to allow the object to be cloned
+
+        Overrides:
+               clone in class PGobject
+
+ public String getValue()
+
+        Returns:
+                the PGlseg in the syntax expected by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+        
+        Overrides:
+                getValue in class PGobject
+
+Class org.postgresql.geometric.PGpath
+                                
+java.lang.Object
+   |
+   +----org.postgresql.util.PGobject
+           |
+           +----org.postgresql.geometric.PGpath
+          
+   public class PGpath extends PGobject implements Serializable, 
+Cloneable
+               
+   This implements a path (a multiply segmented line, which may be 
+closed)
+           
+Variables
+
+ public boolean open
+               
+          True if the path is open, false if closed
+
+ public PGpoint points[]
+
+          The points defining this path
+
+Constructors   
+
+ public PGpath(PGpoint points[],
+               boolean open)
+          
+        Parameters:
+                points - the PGpoints that define the path
+                open - True if the path is open, false if closed
+
+ public PGpath()
+
+          Required by the driver
+
+ public PGpath(String s) throws SQLException
+
+        Parameters:
+                s - definition of the path in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s syntax.
+
+        Throws: SQLException
+                on conversion failure
+
+Methods
+
+ public void setValue(String s) throws SQLException
+   
+        Parameters:
+                s - Definition of the path in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s syntax
+           
+        Throws: SQLException
+                on conversion failure
+
+        Overrides:
+                setValue in class PGobject
+
+ public boolean equals(Object obj)
+
+        Parameters:
+                obj - Object to compare with
+
+        Returns:
+                true if the two pathes are identical
+
+        Overrides:
+                equals in class PGobject
+
+ public Object clone()
+
+          This must be overridden to allow the object to be cloned
+
+        Overrides:
+                clone in class PGobject
+
+ public String getValue()
+
+          This returns the path in the syntax expected by 
+<SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+
+        Overrides:
+                getValue in class PGobject
+
+ public boolean isOpen()
+
+     This returns true if the path is open
+
+ public boolean isClosed()
+
+     This returns true if the path is closed
+
+ public void closePath()
+
+     Marks the path as closed
+
+ public void openPath()
+
+     Marks the path as open
+
+Class org.postgresql.geometric.PGpoint
+                                
+java.lang.Object
+   |
+   +----org.postgresql.util.PGobject
+           |
+           +----org.postgresql.geometric.PGpoint
+          
+   public class PGpoint extends PGobject implements Serializable, 
+Cloneable
+
+   This implements a version of java.awt.Point, except it uses double 
+to represent the coordinates.
+
+   It maps to the point data type in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+
+Variables
+
+ public double x
+
+          The X coordinate of the point
+
+ public double y
+
+          The Y coordinate of the point
+
+Constructors
+
+ public PGpoint(double x,
+                double y)
+
+        Parameters:
+                x - coordinate
+                y - coordinate
+
+ public PGpoint(String value) throws SQLException
+     
+          This is called mainly from the other geometric types, when a 
+point is embedded within their definition.
+             
+        Parameters:
+                value - Definition of this point in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s 
+syntax
+   
+ public PGpoint()
+          
+          Required by the driver
+
+Methods
+
+ public void setValue(String s) throws SQLException
+
+        Parameters:
+                s - Definition of this point in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s syntax
+
+        Throws: SQLException
+                on conversion failure
+
+        Overrides:
+                setValue in class PGobject
+          
+ public boolean equals(Object obj)
+
+        Parameters:
+                obj - Object to compare with
+
+        Returns:
+                true if the two points are identical
+
+        Overrides:
+                equals in class PGobject
+
+ public Object clone()
+                
+          This must be overridden to allow the object to be cloned
+
+        Overrides:
+                clone in class PGobject
+          
+ public String getValue()       
+    
+        Returns:
+                the PGpoint in the syntax expected by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+
+        Overrides:
+                getValue in class PGobject
+          
+ public void translate(int x,
+                       int y)
+
+          Translate the point with the supplied amount.
+
+        Parameters:
+                x - integer amount to add on the x axis
+                y - integer amount to add on the y axis
+
+ public void translate(double x,
+                       double y)
+          
+          Translate the point with the supplied amount.
+ 
+        Parameters:
+                x - double amount to add on the x axis
+                y - double amount to add on the y axis
+
+ public void move(int x,
+                  int y)
+                
+          Moves the point to the supplied coordinates.
+
+        Parameters:
+                x - integer coordinate
+                y - integer coordinate
+
+public void move(double x,
+                  double y)
+          
+          Moves the point to the supplied coordinates.
+
+        Parameters:
+                x - double coordinate
+                y - double coordinate
+
+ public void setLocation(int x,
+                         int y)
+
+          Moves the point to the supplied coordinates. refer to
+          java.awt.Point for description of this
+
+        Parameters:
+                x - integer coordinate
+                y - integer coordinate
+
+        See Also:
+                Point
+
+ public void setLocation(Point p)
+
+          Moves the point to the supplied java.awt.Point refer to
+          java.awt.Point for description of this
+
+        Parameters:
+                p - Point to move to
+
+        See Also:
+                Point
+
+Class org.postgresql.geometric.PGpolygon
+                                
+java.lang.Object
+   |
+   +----org.postgresql.util.PGobject
+           |
+           +----org.postgresql.geometric.PGpolygon
+
+   public class PGpolygon extends PGobject implements Serializable, 
+Cloneable
+               
+   This implements the polygon data type within <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+
+Variables
+
+ public PGpoint points[]
+
+          The points defining the polygon
+                                
+Constructors
+
+ public PGpolygon(PGpoint points[])
+
+          Creates a polygon using an array of PGpoints
+
+        Parameters:
+                points - the points defining the polygon
+
+ public PGpolygon(String s) throws SQLException
+                 
+        Parameters:
+                s - definition of the polygon in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s syntax.
+
+        Throws: SQLException
+                on conversion failure
+
+ public PGpolygon()
+
+          Required by the driver
+
+Methods
+
+ public void setValue(String s) throws SQLException
+
+        Parameters:
+                s - Definition of the polygon in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>'s syntax
+
+        Throws: SQLException
+                on conversion failure
+
+        Overrides:
+                setValue in class PGobject
+
+ public boolean equals(Object obj)
+     
+        Parameters:
+                obj - Object to compare with
+                                
+        Returns:
+                true if the two polygons are identical
+
+        Overrides:
+                equals in class PGobject
+
+ public Object clone()
+        
+          This must be overridden to allow the object to be cloned
+
+        Overrides:
+                clone in class PGobject
+                 
+ public String getValue()
+
+        Returns:
+                the PGpolygon in the syntax expected by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+
+        Overrides:
+                getValue in class PGobject</PRE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN28638"
+>5.7.3. Large Objects</A
+></H2
+><P
+>    Large objects are supported in the standard
+    <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> specification.  However, that interface is
+    limited, and the <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+> provided by <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows for random
+    access to the objects contents, as if it was a local file.
+   </P
+><P
+>    The org.postgresql.largeobject package provides to Java the <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+>
+    C interface's large object <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+>. It consists of
+    two classes, <TT
+CLASS="CLASSNAME"
+>LargeObjectManager</TT
+>, which deals with creating,
+    opening and deleting large objects, and <TT
+CLASS="CLASSNAME"
+>LargeObject</TT
+> which deals
+    with an individual object.
+   </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN28649"
+>5.7.3.1. Class <TT
+CLASS="CLASSNAME"
+>org.postgresql.largeobject.LargeObject</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>public class LargeObject extends Object
+
+java.lang.Object
+   |
+   +----org.postgresql.largeobject.LargeObject</PRE
+><P
+>     This class implements the large object interface to
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.
+    </P
+><P
+>     It provides the basic methods required to run the interface, plus
+     a pair of methods that provide <TT
+CLASS="CLASSNAME"
+>InputStream</TT
+> and <TT
+CLASS="CLASSNAME"
+>OutputStream</TT
+>
+     classes for this object.
+    </P
+><P
+>     Normally, client code would use the methods in 
+     <TT
+CLASS="CLASSNAME"
+>BLOB</TT
+> to access large objects.
+    </P
+><P
+>     However, sometimes lower level access to Large Objects is
+     required, that is not supported by the <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+>
+     specification.
+    </P
+><P
+>     Refer to org.postgresql.largeobject.LargeObjectManager on how to
+     gain access to a Large Object, or how to create one.
+    </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>See Also: </B
+><TT
+CLASS="CLASSNAME"
+>LargeObjectManager</TT
+></P
+></DIV
+><DIV
+CLASS="SECT4"
+><H4
+CLASS="SECT4"
+><A
+NAME="AEN28667"
+>5.7.3.1.1. Variables</A
+></H4
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>public static final int SEEK_SET</DT
+><DD
+><P
+>Indicates a seek from the beginning of a file</P
+></DD
+><DT
+>public static final int SEEK_CUR</DT
+><DD
+><P
+>Indicates a seek from the current position</P
+></DD
+><DT
+>public static final int SEEK_END</DT
+><DD
+><P
+>Indicates a seek from the end of a file</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="SECT4"
+><H4
+CLASS="SECT4"
+><A
+NAME="AEN28682"
+>5.7.3.1.2. Methods</A
+></H4
+><P
+></P
+><UL
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public int getOID()</PRE
+><P
+>        Returns the OID of this <TT
+CLASS="CLASSNAME"
+>LargeObject</TT
+>
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public void close() throws SQLException</PRE
+><P
+>        This method closes the object. You must not call methods in
+        this object after this is called.
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public byte[] read(int len) throws SQLException</PRE
+><P
+>        Reads some data from the object, and return as a byte[] array
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public int read(byte buf[],
+                 int off,
+                 int len) throws SQLException</PRE
+><P
+>        Reads some data from the object into an existing array
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Parameters: </B
+>         <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+></DT
+><DD
+><P
+>destination array</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>off</I
+></TT
+></DT
+><DD
+><P
+>offset within array</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+></DT
+><DD
+><P
+>number of bytes to read</P
+></DD
+></DL
+></DIV
+><P>
+        </P
+></DIV
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public void write(byte buf[]) throws SQLException</PRE
+><P
+>        Writes an array to the object
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public void write(byte buf[],
+                  int off,
+                  int len) throws SQLException</PRE
+><P
+>        Writes some data from an array to the object
+       </P
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Parameters: </B
+>         <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+></DT
+><DD
+><P
+>destination array</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>off</I
+></TT
+></DT
+><DD
+><P
+>offset within array</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>len</I
+></TT
+></DT
+><DD
+><P
+>number of bytes to write</P
+></DD
+></DL
+></DIV
+><P>
+        </P
+></DIV
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN28742"
+>5.7.3.2. Class <TT
+CLASS="CLASSNAME"
+>org.postgresql.largeobject.LargeObjectManager</TT
+></A
+></H3
+><PRE
+CLASS="SYNOPSIS"
+>                                
+public class LargeObjectManager extends Object
+
+java.lang.Object
+   |
+   +----org.postgresql.largeobject.LargeObjectManager</PRE
+><P
+>     This class implements the large object interface to
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>.  It provides methods that
+     allow client code to create, open and delete large objects from
+     the database. When opening an object, an instance of
+     <TT
+CLASS="CLASSNAME"
+>org.postgresql.largeobject.LargeObject</TT
+> is
+     returned, and its methods then allow access to the object.
+    </P
+><P
+>     This class can only be created by org.postgresql.PGConnection.  To
+     get access to this class, use the following segment of code:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>import org.postgresql.largeobject.*;
+Connection  conn;
+LargeObjectManager lobj;
+// ... code that opens a connection ...
+lobj = ((org.postgresql.PGConnection)myconn).getLargeObjectAPI();</PRE
+><P>
+    </P
+><P
+>     Normally, client code would use the <TT
+CLASS="CLASSNAME"
+>BLOB</TT
+>
+     methods to access large objects.  However, sometimes
+     lower level access to Large Objects is required, that is not
+     supported by the <SPAN
+CLASS="ACRONYM"
+>JDBC</SPAN
+> specification.
+    </P
+><P
+>     Refer to org.postgresql.largeobject.LargeObject on how to
+     manipulate the contents of a Large Object.
+    </P
+><DIV
+CLASS="SECT4"
+><H4
+CLASS="SECT4"
+><A
+NAME="AEN28755"
+>5.7.3.2.1. Variables</A
+></H4
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>public static final int WRITE</TT
+></DT
+><DD
+><P
+>This mode indicates we want to write to an object.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>public static final int READ</TT
+></DT
+><DD
+><P
+>This mode indicates we want to read an object.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>public static final int READWRITE</TT
+></DT
+><DD
+><P
+>This mode is the default. It indicates we want read and write access to a large object.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="SECT4"
+><H4
+CLASS="SECT4"
+><A
+NAME="AEN28773"
+>5.7.3.2.2. Methods</A
+></H4
+><P
+></P
+><UL
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public LargeObject open(int oid) throws SQLException</PRE
+><P
+>        This opens an existing large object, based on its OID. This
+        method assumes that <TT
+CLASS="SYMBOL"
+>READ</TT
+> and
+        <TT
+CLASS="SYMBOL"
+>WRITE</TT
+> access is required (the default).
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public LargeObject open(int oid,
+                        int mode) throws SQLException</PRE
+><P
+>        This opens an existing large object, based on its OID, and
+        allows setting the access mode.
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public int create() throws SQLException</PRE
+><P
+>        This creates a large object, returning its OID.
+        It defaults to <TT
+CLASS="SYMBOL"
+>READWRITE</TT
+> for the new object's attributes.
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public int create(int mode) throws SQLException</PRE
+><P
+>        This creates a large object, returning its OID, and sets the
+        access mode.
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public void delete(int oid) throws SQLException</PRE
+><P
+>          
+        This deletes a large object.
+       </P
+></LI
+><LI
+><PRE
+CLASS="SYNOPSIS"
+>public void unlink(int oid) throws SQLException</PRE
+><P
+>        This deletes a large object.  It is identical to the delete
+        method, and is supplied as the C <SPAN
+CLASS="ACRONYM"
+>API</SPAN
+> uses
+        <SPAN
+CLASS="QUOTE"
+>"unlink"</SPAN
+>.
+       </P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="jdbc-binary-data.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="jdbc-thread.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Storing Binary Data</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="jdbc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Using the driver in a multithreaded or a servlet environment</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

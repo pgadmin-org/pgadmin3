@@ -1,0 +1,717 @@
+<HTML
+><HEAD
+><TITLE
+>Binary Strings</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Data Types"
+HREF="datatype.html"><LINK
+REL="PREVIOUS"
+TITLE="Character Types"
+HREF="datatype-character.html"><LINK
+REL="NEXT"
+TITLE="Date/Time Types"
+HREF="datatype-datetime.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="datatype-character.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Data Types</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="datatype-datetime.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DATATYPE-BINARY"
+>5.4. Binary Strings</A
+></H1
+><P
+>    The <TT
+CLASS="TYPE"
+>bytea</TT
+> data type allows storage of binary strings;
+    see <A
+HREF="datatype-binary.html#DATATYPE-BINARY-TABLE"
+>Table 5-6</A
+>.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-BINARY-TABLE"
+></A
+><P
+><B
+>Table 5-6. Binary String Types</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Type Name</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Storage</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="TYPE"
+>bytea</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>4 bytes plus the actual binary string</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>Variable (not specifically limited)
+              length binary string</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    A binary string is a sequence of octets (or bytes).  Binary
+    strings are distinguished from characters strings by two
+    characteristics: First, binary strings specifically allow storing
+    octets of zero value and other <SPAN
+CLASS="QUOTE"
+>"non-printable"</SPAN
+>
+    octets.  Second, operations on binary strings process the actual
+    bytes, whereas the encoding and processing of character strings
+    depends on locale settings.
+   </P
+><P
+>    When entering <TT
+CLASS="TYPE"
+>bytea</TT
+> values, octets of certain values
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>must</I
+></SPAN
+> be escaped (but all octet values
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>may</I
+></SPAN
+> be escaped) when used as part of a string
+    literal in an <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> statement. In general, to
+    escape an octet, it is converted into the three-digit octal number
+    equivalent of its decimal octet value, and preceded by two
+    backslashes. Some octet values have alternate escape sequences, as
+    shown in <A
+HREF="datatype-binary.html#DATATYPE-BINARY-SQLESC"
+>Table 5-7</A
+>.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-BINARY-SQLESC"
+></A
+><P
+><B
+>Table 5-7. <TT
+CLASS="TYPE"
+>bytea</TT
+> Literal Escaped Octets</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Decimal Octet Value</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Input Escaped Representation</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Example</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Printed Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>0</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>zero octet</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>'\\000'</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>SELECT '\\000'::bytea;</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>\000</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>39</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>single quote</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>'\''</TT
+> or <TT
+CLASS="LITERAL"
+>'\\047'</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>SELECT '\''::bytea;</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>'</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>92</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>backslash</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>'\\\\'</TT
+> or <TT
+CLASS="LITERAL"
+>'\\134'</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>SELECT '\\\\'::bytea;</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>\\</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    Note that the result in each of the examples in <A
+HREF="datatype-binary.html#DATATYPE-BINARY-SQLESC"
+>Table 5-7</A
+> was exactly one
+    octet in length, even though the output representation of the zero
+    octet and backslash are more than one character. <TT
+CLASS="TYPE"
+>Bytea</TT
+>
+    output octets are also escaped. In general, each
+    <SPAN
+CLASS="QUOTE"
+>"non-printable"</SPAN
+> octet decimal value is converted into
+    its equivalent three digit octal value, and preceded by one backslash.
+    Most <SPAN
+CLASS="QUOTE"
+>"printable"</SPAN
+> octets are represented by their standard
+    representation in the client character set. The octet with decimal
+    value 92 (backslash) has a special alternate output representation.
+    Details are in <A
+HREF="datatype-binary.html#DATATYPE-BINARY-RESESC"
+>Table 5-8</A
+>.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="DATATYPE-BINARY-RESESC"
+></A
+><P
+><B
+>Table 5-8. <TT
+CLASS="TYPE"
+>bytea</TT
+> Output Escaped Octets</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><THEAD
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Decimal Octet Value</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Description</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Output Escaped Representation</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Example</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>Printed Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>92</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>backslash</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>\\</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>SELECT '\\134'::bytea;</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>\\</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 to 31 and 127 to 255</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="QUOTE"
+>"non-printable"</SPAN
+> octets</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>\### (octal value)</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>SELECT '\\001'::bytea;</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>\001</TT
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>32 to 126</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><SPAN
+CLASS="QUOTE"
+>"printable"</SPAN
+> octets</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>ASCII representation</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>SELECT '\\176'::bytea;</TT
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>~</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    To use the <TT
+CLASS="TYPE"
+>bytea</TT
+> escaped octet notation, string
+    literals (input strings) must contain two backslashes because they
+    must pass through two parsers in the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    server. The first backslash is interpreted as an escape character
+    by the string-literal parser, and therefore is consumed, leaving
+    the characters that follow.  The remaining backslash is recognized
+    by the <TT
+CLASS="TYPE"
+>bytea</TT
+> input function as the prefix of a three
+    digit octal value. For example, a string literal passed to the
+    backend as <TT
+CLASS="LITERAL"
+>'\\001'</TT
+> becomes
+    <TT
+CLASS="LITERAL"
+>'\001'</TT
+> after passing through the string-literal
+    parser. The <TT
+CLASS="LITERAL"
+>'\001'</TT
+> is then sent to the
+    <TT
+CLASS="TYPE"
+>bytea</TT
+> input function, where it is converted to a
+    single octet with a decimal value of 1.
+   </P
+><P
+>    For a similar reason, a backslash must be input as
+    <TT
+CLASS="LITERAL"
+>'\\\\'</TT
+> (or <TT
+CLASS="LITERAL"
+>'\\134'</TT
+>). The first
+    and third backslashes are interpreted as escape characters by the
+    string-literal parser, and therefore are consumed, leaving two
+    backslashes in the string passed to the <TT
+CLASS="TYPE"
+>bytea</TT
+> input function,
+    which interprets them as representing a single backslash.
+    For example, a string literal passed to the
+    server as <TT
+CLASS="LITERAL"
+>'\\\\'</TT
+> becomes <TT
+CLASS="LITERAL"
+>'\\'</TT
+>
+    after passing through the string-literal parser. The
+    <TT
+CLASS="LITERAL"
+>'\\'</TT
+> is then sent to the <TT
+CLASS="TYPE"
+>bytea</TT
+> input
+    function, where it is converted to a single octet with a decimal
+    value of 92.
+   </P
+><P
+>    A single quote is a bit different in that it must be input as
+    <TT
+CLASS="LITERAL"
+>'\''</TT
+> (or <TT
+CLASS="LITERAL"
+>'\\047'</TT
+>),
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> as <TT
+CLASS="LITERAL"
+>'\\''</TT
+>. This is because,
+    while the literal parser interprets the single quote as a special
+    character, and will consume the single backslash, the
+    <TT
+CLASS="TYPE"
+>bytea</TT
+> input function does <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+>
+    recognize a single quote as a special octet. Therefore a string
+    literal passed to the backend as <TT
+CLASS="LITERAL"
+>'\''</TT
+> becomes
+    <TT
+CLASS="LITERAL"
+>'''</TT
+> after passing through the string-literal
+    parser. The <TT
+CLASS="LITERAL"
+>'''</TT
+> is then sent to the
+    <TT
+CLASS="TYPE"
+>bytea</TT
+> input function, where it is retains its single
+    octet decimal value of 39.
+   </P
+><P
+>    Depending on the front end to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> you use,
+    you may have additional work to do in terms of escaping and
+    unescaping <TT
+CLASS="TYPE"
+>bytea</TT
+> strings. For example, you may also
+    have to escape line feeds and carriage returns if your interface
+    automatically translates these. Or you may have to double up on
+    backslashes if the parser for your language or choice also treats
+    them as an escape character.
+   </P
+><P
+>	The <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+> standard defines a different binary
+	string type, called <TT
+CLASS="TYPE"
+>BLOB</TT
+> or <TT
+CLASS="TYPE"
+>BINARY LARGE
+	 OBJECT</TT
+>.  The input format is different compared to
+	<TT
+CLASS="TYPE"
+>bytea</TT
+>, but the provided functions and operators are
+	mostly the same.
+   </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="datatype-character.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datatype-datetime.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Character Types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="datatype.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Date/Time Types</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

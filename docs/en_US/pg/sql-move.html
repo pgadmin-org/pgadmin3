@@ -1,0 +1,352 @@
+<HTML
+><HEAD
+><TITLE
+>MOVE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="LOCK"
+HREF="sql-lock.html"><LINK
+REL="NEXT"
+TITLE="NOTIFY"
+HREF="sql-notify.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-lock.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-notify.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-MOVE"
+>MOVE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44562"
+></A
+><H2
+>Name</H2
+>   MOVE
+  &nbsp;--&nbsp;   position a cursor on a specified row of a table
+  </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44565"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>MOVE [ <TT
+CLASS="REPLACEABLE"
+><I
+>direction</I
+></TT
+> ] [ <TT
+CLASS="REPLACEABLE"
+><I
+>count</I
+></TT
+> ] 
+    { IN | FROM } <TT
+CLASS="REPLACEABLE"
+><I
+>cursor</I
+></TT
+>
+  </PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-MOVE-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>MOVE</TT
+> allows a user to move cursor position a specified
+   number of rows.
+   <TT
+CLASS="COMMAND"
+>MOVE</TT
+> works like the <TT
+CLASS="COMMAND"
+>FETCH</TT
+> command,
+   but only positions the cursor and does
+   not return rows.
+  </P
+><P
+>   Refer to 
+   <A
+HREF="sql-fetch.html"
+><I
+>FETCH</I
+></A
+>
+   for details on syntax and usage.
+  </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-MOVE-3"
+></A
+><H3
+>    Notes
+   </H3
+><P
+>    <TT
+CLASS="COMMAND"
+>MOVE</TT
+> is a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    language extension.
+   </P
+><P
+>    Refer to
+    <A
+HREF="sql-fetch.html"
+><I
+>FETCH</I
+></A
+>
+    for a description of valid arguments.
+    Refer to 
+    <A
+HREF="sql-declare.html"
+><I
+>DECLARE</I
+></A
+>
+    to define a cursor.
+    Refer to 
+    <A
+HREF="sql-begin.html"
+><I
+>BEGIN</I
+></A
+>, 
+    <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+>,
+    and
+    <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
+>
+    for further information about transactions.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-MOVE-2"
+></A
+><H2
+>   Usage
+  </H2
+><P
+>   Set up and use a cursor:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN WORK;
+DECLARE liahona CURSOR  FOR SELECT * FROM films;
+-- Skip first 5 rows:
+MOVE FORWARD 5 IN liahona;
+<TT
+CLASS="COMPUTEROUTPUT"
+>MOVE</TT
+>
+-- Fetch 6th row in the cursor liahona:
+FETCH 1 IN liahona;
+<TT
+CLASS="COMPUTEROUTPUT"
+>FETCH
+
+ code  | title  | did | date_prod | kind   | len
+-------+--------+-----+-----------+--------+-------
+ P_303 | 48 Hrs | 103 | 1982-10-22| Action | 01:37
+(1 row)</TT
+>
+-- close the cursor liahona and commit work:
+CLOSE liahona;
+COMMIT WORK;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-SQL-MOVE-3"
+></A
+><H2
+>   Compatibility
+  </H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="R2-SQL-MOVE-4"
+></A
+><H3
+>    SQL92
+   </H3
+><P
+>    There is no <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> <TT
+CLASS="COMMAND"
+>MOVE</TT
+> statement. 
+    Instead, <SPAN
+CLASS="ACRONYM"
+>SQL92</SPAN
+> allows
+    one to <TT
+CLASS="COMMAND"
+>FETCH</TT
+> rows from an absolute cursor position,
+    implicitly moving the cursor to the correct position.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-lock.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-notify.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>LOCK</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>NOTIFY</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

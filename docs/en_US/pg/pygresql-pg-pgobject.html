@@ -1,0 +1,352 @@
+<HTML
+><HEAD
+><TITLE
+>Connection Object: pgobject</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PyGreSQL - Python Interface"
+HREF="pygresql.html"><LINK
+REL="PREVIOUS"
+TITLE="set_defbase"
+HREF="pygresql-set-defbase.html"><LINK
+REL="NEXT"
+TITLE="query"
+HREF="pygresql-query.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="pygresql-set-defbase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. <SPAN
+CLASS="APPLICATION"
+>PyGreSQL</SPAN
+> - <SPAN
+CLASS="APPLICATION"
+>Python</SPAN
+> Interface</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="pygresql-query.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PYGRESQL-PG-PGOBJECT"
+>6.3. Connection Object: <TT
+CLASS="CLASSNAME"
+>pgobject</TT
+></A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="pygresql-query.html"
+>query</A
+>&nbsp;--&nbsp;execute a SQL command</DT
+><DT
+><A
+HREF="pygresql-reset.html"
+>reset</A
+>&nbsp;--&nbsp;reset the connection</DT
+><DT
+><A
+HREF="pygresql-close.html"
+>close</A
+>&nbsp;--&nbsp;close the database connection</DT
+><DT
+><A
+HREF="pygresql-fileno.html"
+>fileno</A
+>&nbsp;--&nbsp;return the socket used to connect to the database</DT
+><DT
+><A
+HREF="pygresql-getnotify.html"
+>getnotify</A
+>&nbsp;--&nbsp;get the last notify from the server</DT
+><DT
+><A
+HREF="pygresql-inserttable.html"
+>inserttable</A
+>&nbsp;--&nbsp;insert a list into a table</DT
+><DT
+><A
+HREF="pygresql-putline.html"
+>putline</A
+>&nbsp;--&nbsp;write a line to the server socket [DA]</DT
+><DT
+><A
+HREF="pygresql-getline.html"
+>getline</A
+>&nbsp;--&nbsp;get a line from server socket [DA]</DT
+><DT
+><A
+HREF="pygresql-endcopy.html"
+>endcopy</A
+>&nbsp;--&nbsp;synchronize client and server [DA]</DT
+><DT
+><A
+HREF="pygresql-locreate.html"
+>locreate</A
+>&nbsp;--&nbsp;create a large object in the database [LO]</DT
+><DT
+><A
+HREF="pygresql-getlo.html"
+>getlo</A
+>&nbsp;--&nbsp;build a large object from given OID [LO]</DT
+><DT
+><A
+HREF="pygresql-loimport.html"
+>loimport</A
+>&nbsp;--&nbsp;import a file to a <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> large object [LO]</DT
+></DL
+></DIV
+><P
+>   This object handles a connection to the
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database.  It embeds and
+   hides all the parameters that define this connection, leaving just
+   really significant parameters in function calls.
+  </P
+><P
+>   Some methods give direct access to the connection socket. They are
+   specified by the tag [DA].  <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Do not use them unless you
+   really know what you are doing.</I
+></SPAN
+> If you prefer disabling
+   them, set the <TT
+CLASS="OPTION"
+>-DNO_DIRECT</TT
+> option in the
+   <SPAN
+CLASS="APPLICATION"
+>Python</SPAN
+> <TT
+CLASS="FILENAME"
+>Setup</TT
+> file.
+  </P
+><P
+>   Some other methods give access to large objects.  if you want to
+   forbid access to these from the module, set the
+   <TT
+CLASS="OPTION"
+>-DNO_LARGE</TT
+> option in the
+   <SPAN
+CLASS="APPLICATION"
+>Python</SPAN
+> <TT
+CLASS="FILENAME"
+>Setup</TT
+> file.
+   These methods are specified by the tag [LO].
+  </P
+><P
+>   Every <TT
+CLASS="CLASSNAME"
+>pgobject</TT
+> defines a set of read-only
+   attributes that describe the connection and its status. These
+   attributes are:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>host</DT
+><DD
+><P
+>       the host name of the server (string)
+      </P
+></DD
+><DT
+>port</DT
+><DD
+><P
+>       the port of the server (integer)
+      </P
+></DD
+><DT
+>db</DT
+><DD
+><P
+>       the selected database (string)
+      </P
+></DD
+><DT
+>options</DT
+><DD
+><P
+>       the connection options (string)
+      </P
+></DD
+><DT
+>tty</DT
+><DD
+><P
+>       the connection debug terminal (string)
+      </P
+></DD
+><DT
+>user</DT
+><DD
+><P
+>       user name on the database system (string)
+      </P
+></DD
+><DT
+>status</DT
+><DD
+><P
+>       the status of the connection (integer: 1 - OK, 0 - bad)
+      </P
+></DD
+><DT
+>error</DT
+><DD
+><P
+>       the last warning/error message from the server (string)
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="pygresql-set-defbase.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="pygresql-query.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>set_defbase</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="pygresql.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>query</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

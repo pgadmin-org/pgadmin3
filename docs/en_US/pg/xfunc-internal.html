@@ -1,0 +1,227 @@
+<HTML
+><HEAD
+><TITLE
+>Internal Functions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Extending SQL: Functions"
+HREF="xfunc.html"><LINK
+REL="PREVIOUS"
+TITLE="Procedural Language Functions"
+HREF="xfunc-pl.html"><LINK
+REL="NEXT"
+TITLE="C Language Functions"
+HREF="xfunc-c.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xfunc-pl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Functions</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="xfunc-c.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="XFUNC-INTERNAL"
+>9.4. Internal Functions</A
+></H1
+><A
+NAME="AEN31504"
+></A
+><P
+>    Internal functions are functions written in C that have been statically
+    linked into the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> server.
+    The <SPAN
+CLASS="QUOTE"
+>"body"</SPAN
+> of the function definition
+    specifies the C-language name of the function, which need not be the
+    same as the name being declared for SQL use.
+    (For reasons of backwards compatibility, an empty body
+    is accepted as meaning that the C-language function name is the
+    same as the SQL name.)
+   </P
+><P
+>    Normally, all internal functions present in the
+    backend are declared during the initialization of the database cluster (<TT
+CLASS="COMMAND"
+>initdb</TT
+>),
+    but a user could use <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+>
+    to create additional alias names for an internal function.
+    Internal functions are declared in <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+>
+    with language name <TT
+CLASS="LITERAL"
+>internal</TT
+>.  For instance, to
+    create an alias for the <TT
+CLASS="FUNCTION"
+>sqrt</TT
+> function:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION square_root(double precision) RETURNS double precision
+    AS 'dsqrt'
+    LANGUAGE INTERNAL
+    WITH (isStrict);</PRE
+><P>
+    (Most internal functions expect to be declared <SPAN
+CLASS="QUOTE"
+>"strict"</SPAN
+>.)
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>     Not all <SPAN
+CLASS="QUOTE"
+>"predefined"</SPAN
+> functions are
+     <SPAN
+CLASS="QUOTE"
+>"internal"</SPAN
+> in the above sense.  Some predefined
+     functions are written in SQL.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xfunc-pl.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="xfunc-c.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Procedural Language Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="xfunc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>C Language Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,329 @@
+<HTML
+><HEAD
+><TITLE
+>The Rule System</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Server Programming"
+HREF="programmer-server.html"><LINK
+REL="PREVIOUS"
+TITLE="Extending SQL: Aggregates"
+HREF="xaggr.html"><LINK
+REL="NEXT"
+TITLE="What is a Query Tree?"
+HREF="querytree.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="xaggr.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="querytree.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="RULES"
+>Chapter 13. The Rule System</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>13.1. <A
+HREF="rules.html#RULES-INTRO"
+>Introduction</A
+></DT
+><DT
+>13.2. <A
+HREF="querytree.html"
+>What is a Query Tree?</A
+></DT
+><DT
+>13.3. <A
+HREF="rules-views.html"
+>Views and the Rule System</A
+></DT
+><DD
+><DL
+><DT
+>13.3.1. <A
+HREF="rules-views.html#AEN32755"
+>Implementation of Views in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></A
+></DT
+><DT
+>13.3.2. <A
+HREF="rules-views.html#AEN32764"
+>How SELECT Rules Work</A
+></DT
+><DT
+>13.3.3. <A
+HREF="rules-views.html#AEN32812"
+>View Rules in Non-SELECT Statements</A
+></DT
+><DT
+>13.3.4. <A
+HREF="rules-views.html#AEN32839"
+>The Power of Views in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+></A
+></DT
+><DT
+>13.3.5. <A
+HREF="rules-views.html#RULES-VIEWS-UPDATE"
+>What about updating a view?</A
+></DT
+></DL
+></DD
+><DT
+>13.4. <A
+HREF="rules-insert.html"
+>Rules on INSERT, UPDATE and DELETE</A
+></DT
+><DD
+><DL
+><DT
+>13.4.1. <A
+HREF="rules-insert.html#AEN32856"
+>Differences from View Rules</A
+></DT
+><DT
+>13.4.2. <A
+HREF="rules-insert.html#AEN32870"
+>How These Rules Work</A
+></DT
+><DT
+>13.4.3. <A
+HREF="rules-insert.html#AEN32945"
+>Cooperation with Views</A
+></DT
+></DL
+></DD
+><DT
+>13.5. <A
+HREF="rules-permissions.html"
+>Rules and Permissions</A
+></DT
+><DT
+>13.6. <A
+HREF="rules-status.html"
+>Rules and Command Status</A
+></DT
+><DT
+>13.7. <A
+HREF="rules-triggers.html"
+>Rules versus Triggers</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN32676"
+></A
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Author: </B
+>     Written by Jan Wieck.  Updates for 7.1 by Tom Lane.
+    </P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RULES-INTRO"
+>13.1. Introduction</A
+></H1
+><P
+>     Production rule systems are conceptually simple, but
+     there are many subtle points involved in actually using
+     them. Some of these points and
+     the theoretical foundations of the <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+     rule system can be found in
+<A
+HREF="biblio.html#STON90B"
+><I
+><A
+HREF="http://s2k-ftp.CS.Berkeley.EDU:8000/postgres/papers/ERL-M90-36.pdf"
+TARGET="_top"
+>On Rules, Procedures, Caching and Views in Database Systems</A
+></I
+></A
+>.</P
+><P
+>     Some other database systems define active database rules. These
+     are usually stored procedures and triggers and are implemented
+     in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> as functions and triggers.</P
+><P
+>     The query rewrite rule system (the <I
+CLASS="FIRSTTERM"
+>rule system</I
+> from now on) 
+     is totally different from stored procedures and triggers.
+     It modifies  queries  to
+     take rules into consideration, and then passes the modified 
+     query to the query planner for planning and execution.   It
+     is  very powerful, and can be used for many things such
+     as query language procedures, views, and versions.  The
+     power  of  this  rule system is discussed in 
+<A
+HREF="biblio.html#ONG90"
+><I
+>A Unified Framework for Version Modeling Using Production Rules in a Database System</I
+></A
+>
+ as well as
+<A
+HREF="biblio.html#STON90B"
+><I
+><A
+HREF="http://s2k-ftp.CS.Berkeley.EDU:8000/postgres/papers/ERL-M90-36.pdf"
+TARGET="_top"
+>On Rules, Procedures, Caching and Views in Database Systems</A
+></I
+></A
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="xaggr.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="querytree.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Extending <SPAN
+CLASS="ACRONYM"
+>SQL</SPAN
+>: Aggregates</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="programmer-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>What is a Query Tree?</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

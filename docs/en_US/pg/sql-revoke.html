@@ -1,0 +1,447 @@
+<HTML
+><HEAD
+><TITLE
+>REVOKE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="RESET"
+HREF="sql-reset.html"><LINK
+REL="NEXT"
+TITLE="ROLLBACK"
+HREF="sql-rollback.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sql-reset.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sql-rollback.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-REVOKE"
+>REVOKE</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN44969"
+></A
+><H2
+>Name</H2
+>REVOKE&nbsp;--&nbsp;remove access privileges</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN44972"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>REVOKE { { SELECT | INSERT | UPDATE | DELETE | RULE | REFERENCES | TRIGGER }
+    [,...] | ALL [ PRIVILEGES ] }
+    ON [ TABLE ] <TT
+CLASS="REPLACEABLE"
+><I
+>tablename</I
+></TT
+> [, ...]
+    FROM { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]
+
+REVOKE { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
+    ON DATABASE <TT
+CLASS="REPLACEABLE"
+><I
+>dbname</I
+></TT
+> [, ...]
+    FROM { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]
+
+REVOKE { EXECUTE | ALL [ PRIVILEGES ] }
+    ON FUNCTION <TT
+CLASS="REPLACEABLE"
+><I
+>funcname</I
+></TT
+> ([<TT
+CLASS="REPLACEABLE"
+><I
+>type</I
+></TT
+>, ...]) [, ...]
+    FROM { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]
+
+REVOKE { USAGE | ALL [ PRIVILEGES ] }
+    ON LANGUAGE <TT
+CLASS="REPLACEABLE"
+><I
+>langname</I
+></TT
+> [, ...]
+    FROM { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]
+
+REVOKE { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }
+    ON SCHEMA <TT
+CLASS="REPLACEABLE"
+><I
+>schemaname</I
+></TT
+> [, ...]
+    FROM { <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> | GROUP <TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> | PUBLIC } [, ...]</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-REVOKE-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>REVOKE</TT
+> allows the creator of an object to revoke
+   previously granted permissions from one or more users or groups of users.
+   The key word <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+> refers to the implicitly defined
+   group of all users.
+  </P
+><P
+>   Note that any particular user will have the sum
+   of privileges granted directly to him, privileges granted to any group he
+   is presently a member of, and privileges granted to
+   <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+>.  Thus, for example, revoking SELECT privilege
+   from <TT
+CLASS="LITERAL"
+>PUBLIC</TT
+> does not necessarily mean that all users
+   have lost SELECT privilege on the object: those who have it granted
+   directly or via a group will still have it.
+  </P
+><P
+>   See the description of the <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> command for
+   the meaning of the privilege types.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-REVOKE-NOTES"
+></A
+><H2
+>Notes</H2
+><P
+>   Use <A
+HREF="app-psql.html"
+><SPAN
+CLASS="APPLICATION"
+>psql</SPAN
+></A
+>'s <TT
+CLASS="COMMAND"
+>\z</TT
+> command to
+   display the privileges granted on existing objects.  See also <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> for information about the format.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-REVOKE-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>   Revoke insert privilege for the public on table
+   <TT
+CLASS="LITERAL"
+>films</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>REVOKE INSERT ON films FROM PUBLIC;</PRE
+><P>
+  </P
+><P
+>   Revoke all privileges from user <TT
+CLASS="LITERAL"
+>manuel</TT
+> on view <TT
+CLASS="LITERAL"
+>kinds</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>  
+REVOKE ALL PRIVILEGES ON kinds FROM manuel;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SQL-REVOKE-COMPATIBILITY"
+></A
+><H2
+>Compatibility</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN45017"
+></A
+><H3
+>SQL92</H3
+><P
+>    The compatibility notes of the <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> command
+    apply analogously to <TT
+CLASS="COMMAND"
+>REVOKE</TT
+>.  The syntax summary is:
+
+</P><PRE
+CLASS="SYNOPSIS"
+>REVOKE [ GRANT OPTION FOR ] { SELECT | INSERT | UPDATE | DELETE | REFERENCES }
+    ON <TT
+CLASS="REPLACEABLE"
+><I
+>object</I
+></TT
+> [ ( <TT
+CLASS="REPLACEABLE"
+><I
+>column</I
+></TT
+> [, ...] ) ]
+    FROM { PUBLIC | <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+> [, ...] }
+    { RESTRICT | CASCADE }</PRE
+><P>
+   </P
+><P
+> 
+    If user1 gives a privilege WITH GRANT OPTION to user2,
+    and user2 gives it to user3 then user1 can revoke
+    this privilege in cascade using the CASCADE keyword.
+    If user1 gives a privilege WITH GRANT OPTION to user2,
+    and user2 gives it to user3, then if user1 tries to revoke
+    this privilege it fails if he specifies the RESTRICT
+    keyword.
+   </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN45027"
+></A
+><H2
+>See Also</H2
+><P
+>   <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-reset.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-rollback.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>RESET</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ROLLBACK</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

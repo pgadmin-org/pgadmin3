@@ -1,0 +1,323 @@
+<HTML
+><HEAD
+><TITLE
+>Frontend/Backend Protocol</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL 7.3.3 Developer's Guide"
+HREF="developer.html"><LINK
+REL="PREVIOUS"
+TITLE="pg_type"
+HREF="catalog-pg-type.html"><LINK
+REL="NEXT"
+TITLE="Protocol"
+HREF="protocol-protocol.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="catalog-pg-type.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="protocol-protocol.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="PROTOCOL"
+>Chapter 4. Frontend/Backend Protocol</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>4.1. <A
+HREF="protocol.html#PROTOCOL-OVERVIEW"
+>Overview</A
+></DT
+><DT
+>4.2. <A
+HREF="protocol-protocol.html"
+>Protocol</A
+></DT
+><DD
+><DL
+><DT
+>4.2.1. <A
+HREF="protocol-protocol.html#AEN54623"
+>Start-up</A
+></DT
+><DT
+>4.2.2. <A
+HREF="protocol-protocol.html#AEN54680"
+>Query</A
+></DT
+><DT
+>4.2.3. <A
+HREF="protocol-protocol.html#AEN54747"
+>Function Call</A
+></DT
+><DT
+>4.2.4. <A
+HREF="protocol-protocol.html#AEN54774"
+>Notification Responses</A
+></DT
+><DT
+>4.2.5. <A
+HREF="protocol-protocol.html#AEN54788"
+>Cancelling Requests in Progress</A
+></DT
+><DT
+>4.2.6. <A
+HREF="protocol-protocol.html#AEN54796"
+>Termination</A
+></DT
+><DT
+>4.2.7. <A
+HREF="protocol-protocol.html#AEN54803"
+>SSL Session Encryption</A
+></DT
+></DL
+></DD
+><DT
+>4.3. <A
+HREF="protocol-message-types.html"
+>Message Data Types</A
+></DT
+><DT
+>4.4. <A
+HREF="protocol-message-formats.html"
+>Message Formats</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>   Written by Phil Thompson (<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:phil@river-bank.demon.co.uk"
+>phil@river-bank.demon.co.uk</A
+>&#62;</TT
+>).
+   Updates for protocol 2.0 by Tom Lane (<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:tgl@sss.pgh.pa.us"
+>tgl@sss.pgh.pa.us</A
+>&#62;</TT
+>).
+  </P
+></BLOCKQUOTE
+></DIV
+><P
+>  <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> uses a message-based protocol
+  for communication between frontends and backends.  The protocol is
+  implemented over <SPAN
+CLASS="ACRONYM"
+>TCP/IP</SPAN
+> and also on Unix domain
+  sockets.  <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 6.3 introduced
+  version numbers into the protocol.  This was done in such a way as
+  to still allow connections from earlier versions of frontends, but
+  this document does not cover the protocol used by those earlier
+  versions.
+ </P
+><P
+>  This document describes version 2.0 of the protocol, implemented in
+  <SPAN
+CLASS="APPLICATION"
+>PostgreSQL</SPAN
+> 6.4 and later.
+ </P
+><P
+>  Higher level features built on this protocol (for example, how
+  <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> passes certain environment
+  variables after the connection is established) are covered
+  elsewhere.
+ </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="PROTOCOL-OVERVIEW"
+>4.1. Overview</A
+></H1
+><P
+>   A frontend opens a connection to the server and sends a start-up
+   packet.  This includes the names of the user and of the database the
+   user wants to connect to.  The server then uses this, and the
+   information in the <TT
+CLASS="FILENAME"
+>pg_hba.conf</TT
+> file to
+   determine what further authentication information it requires the
+   frontend to send (if any) and responds to the frontend accordingly.
+  </P
+><P
+>   The frontend then sends any required authentication information.
+   Once the server validates this it responds to the frontend that it
+   is authenticated and sends a message indicating successful start-up
+   (normal case) or failure (for example, an invalid database name).
+  </P
+><P
+>   In order to serve multiple clients efficiently, the server launches
+   a new <SPAN
+CLASS="QUOTE"
+>"backend"</SPAN
+> process for each client.  This is transparent
+   to the protocol, however.  In the current implementation, a new child
+   process is created immediately after an incoming connection is detected.
+  </P
+><P
+>   When the frontend wishes to disconnect it sends an appropriate packet and
+   closes the connection without waiting for a response from the backend.
+  </P
+><P
+>   Packets are sent as a data stream.  The first byte determines what
+   should be expected in the rest of the packet.  The exceptions are
+   packets sent as part of the start-up and authentication exchange,
+   which comprise a packet length followed by the packet itself.  The
+   difference is historical.
+  </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="catalog-pg-type.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="protocol-protocol.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>pg_type</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="developer.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Protocol</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

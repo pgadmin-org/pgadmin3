@@ -1,0 +1,641 @@
+<HTML
+><HEAD
+><TITLE
+>initdb</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.73
+"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.3.3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="PREVIOUS"
+TITLE="PostgreSQL Server Applications"
+HREF="reference-server.html"><LINK
+REL="NEXT"
+TITLE="initlocation"
+HREF="app-initlocation.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-05-24T21:33:34"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PostgreSQL 7.3.3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="reference-server.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="app-initlocation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="APP-INITDB"
+>initdb</A
+></H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN50695"
+></A
+><H2
+>Name</H2
+>initdb&nbsp;--&nbsp;create a new <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN50699"
+></A
+><H2
+>Synopsis</H2
+><P
+><TT
+CLASS="COMMAND"
+>initdb</TT
+> [options...]  --pgdata  | -D <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+> </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="R1-APP-INITDB-1"
+></A
+><H2
+>   Description
+  </H2
+><P
+>   <TT
+CLASS="COMMAND"
+>initdb</TT
+> creates a new
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> database cluster (or database
+   system).  A database cluster is a collection of databases that are
+   managed by a single server instance.
+  </P
+><P
+>   Creating a database system consists of creating the directories in which
+   the database data will live, generating the shared catalog tables 
+   (tables that belong to the whole cluster rather than to any particular
+   database), and creating the <TT
+CLASS="LITERAL"
+>template1</TT
+>
+   database.  When you create a new database, everything in the
+   <TT
+CLASS="LITERAL"
+>template1</TT
+> database is copied.
+   It contains catalog tables filled in for things like the
+   built-in types.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>initdb</TT
+> initializes the database cluster's
+   default locale and character set encoding.  Some locale categories
+   are fixed for the lifetime of the cluster, so it is important to
+   make the right choice when running <TT
+CLASS="COMMAND"
+>initdb</TT
+>.
+   Other locale categories can be changed later when the server is
+   started.  <TT
+CLASS="COMMAND"
+>initdb</TT
+> will write those locale
+   settings into the <TT
+CLASS="FILENAME"
+>postgresql.conf</TT
+>
+   configuration file so they are the default, but they can be changed
+   by editing that file.  To set the locale that
+   <TT
+CLASS="COMMAND"
+>initdb</TT
+> uses, see the description of the
+   <TT
+CLASS="OPTION"
+>--locale</TT
+> option.  The character set encoding can
+   be set separately for each database as it is created.
+   <TT
+CLASS="COMMAND"
+>initdb</TT
+> determines the encoding for the
+   <TT
+CLASS="LITERAL"
+>template1</TT
+> database, which will serve as the
+   default for all other databases.  To alter the default encoding use
+   the <TT
+CLASS="OPTION"
+>--encoding</TT
+> option.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>initdb</TT
+> must be run as the user that will own the
+   server process, because the server needs to have access to the
+   files and directories that <TT
+CLASS="COMMAND"
+>initdb</TT
+> creates.
+   Since the server may not be run as root, you must not run
+   <TT
+CLASS="COMMAND"
+>initdb</TT
+> as root either.  (It will in fact refuse
+   to do so.)
+  </P
+><P
+>   Although <TT
+CLASS="COMMAND"
+>initdb</TT
+> will attempt to create the
+   specified data directory, often it won't have permission to do so,
+   since the parent of the desired data directory is often a root-owned
+   directory.  To set up an arrangement like this, create an empty data
+   directory as root, then use <TT
+CLASS="COMMAND"
+>chown</TT
+> to hand over
+   ownership of that directory to the database user account, then
+   <TT
+CLASS="COMMAND"
+>su</TT
+> to become the database user, and
+   finally run <TT
+CLASS="COMMAND"
+>initdb</TT
+> as the database user.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50734"
+></A
+><H2
+>Options</H2
+><P
+>    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-D <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--pgdata=<TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        This option specifies the directory where the database system
+        should be stored. This is the only information required by
+        <TT
+CLASS="COMMAND"
+>initdb</TT
+>, but you can avoid writing it by
+        setting the <TT
+CLASS="ENVAR"
+>PGDATA</TT
+> environment variable, which
+        can be convenient since the database server
+        (<TT
+CLASS="COMMAND"
+>postmaster</TT
+>) can find the database
+        directory later by the same variable.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-E <TT
+CLASS="REPLACEABLE"
+><I
+>encoding</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--encoding=<TT
+CLASS="REPLACEABLE"
+><I
+>encoding</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Selects the encoding of the template database. This will also
+        be the default encoding of any database you create later, unless you
+        override it there. To use the encoding feature, you must
+        have enabled it at build time, at which time you also select the default
+        for this option.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>--locale=<TT
+CLASS="REPLACEABLE"
+><I
+>locale</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Sets the default locale for the database cluster.  If this
+        option is not specified, the locale is inherited from the
+        environment that <TT
+CLASS="COMMAND"
+>initdb</TT
+> runs in.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>--lc-collate=<TT
+CLASS="REPLACEABLE"
+><I
+>locale</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--lc-ctype=<TT
+CLASS="REPLACEABLE"
+><I
+>locale</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--lc-messages=<TT
+CLASS="REPLACEABLE"
+><I
+>locale</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--lc-monetary=<TT
+CLASS="REPLACEABLE"
+><I
+>locale</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--lc-numeric=<TT
+CLASS="REPLACEABLE"
+><I
+>locale</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--lc-time=<TT
+CLASS="REPLACEABLE"
+><I
+>locale</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Like <TT
+CLASS="OPTION"
+>--locale</TT
+>, but only sets the locale in
+        the specified category.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-U <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+><BR><TT
+CLASS="OPTION"
+>--username=<TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Selects the user name of the database superuser. This defaults
+        to the name of the effective user running
+        <TT
+CLASS="COMMAND"
+>initdb</TT
+>. It is really not important what the
+        superuser's name is, but one might choose to keep the
+        customary name <SPAN
+CLASS="SYSTEMITEM"
+>postgres</SPAN
+>, even if the operating
+        system user's name is different.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-W</TT
+><BR><TT
+CLASS="OPTION"
+>--pwprompt</TT
+></DT
+><DD
+><P
+>        Makes <TT
+CLASS="COMMAND"
+>initdb</TT
+> prompt for a password
+        to give the database superuser. If you don't plan on using password
+        authentication, this is not important.  Otherwise you won't be
+        able to use password authentication until you have a password
+        set up.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+><P
+>    Other, less commonly used, parameters are also available:
+
+    <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="OPTION"
+>-d</TT
+><BR><TT
+CLASS="OPTION"
+>--debug</TT
+></DT
+><DD
+><P
+>	Print debugging output from the bootstrap backend and a few other
+        messages of lesser interest for the general public.
+	The bootstrap backend is the program <TT
+CLASS="COMMAND"
+>initdb</TT
+>
+	uses to create the catalog tables.  This option generates a tremendous
+	amount of extremely boring output.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-L <TT
+CLASS="REPLACEABLE"
+><I
+>directory</I
+></TT
+></TT
+></DT
+><DD
+><P
+>        Specifies where <TT
+CLASS="COMMAND"
+>initdb</TT
+> should find
+        its input files to initialize the database system.  This is
+        normally not necessary.  You will be told if you need to
+        specify their location explicitly.
+       </P
+></DD
+><DT
+><TT
+CLASS="OPTION"
+>-n</TT
+><BR><TT
+CLASS="OPTION"
+>--noclean</TT
+></DT
+><DD
+><P
+>	By default, when <TT
+CLASS="COMMAND"
+>initdb</TT
+>
+	determines that an error prevented it from completely creating the database
+	system, it removes any files it may have created before discovering
+	that it can't finish the job. This option inhibits tidying-up and is
+	thus useful for debugging.
+       </P
+></DD
+></DL
+></DIV
+><P>
+   </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50832"
+></A
+><H2
+>Environment</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>PGDATA</TT
+></DT
+><DD
+><P
+>      Specifies the directory where the database system is to be
+      stored; may be overridden using the <TT
+CLASS="OPTION"
+>-D</TT
+> option.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN50841"
+></A
+><H2
+>See Also</H2
+><A
+HREF="app-postgres.html"
+><SPAN
+CLASS="APPLICATION"
+>postgres</SPAN
+></A
+>, <A
+HREF="app-postmaster.html"
+><SPAN
+CLASS="APPLICATION"
+>postmaster</SPAN
+></A
+>, <I
+CLASS="CITETITLE"
+>PostgreSQL Administrator's Guide</I
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="app-initlocation.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>PostgreSQL Server Applications</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="reference-server.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="APPLICATION"
+>initlocation</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
