@@ -47,7 +47,7 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
     LoadResource(wxT("frmGrantWizard"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Privileges for %s %s"), object->GetTypeName().c_str(), object->GetFullIdentifier().c_str()));
+    SetTitle(wxString::Format(_("Privileges for %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
     // Icon
     SetIcon(wxIcon(index_xpm));
@@ -129,7 +129,7 @@ void frmGrantWizard::AddObjects(pgCollection *collection)
             else
             {
                 objectArray.Add(obj);
-                chkList->Append(obj->GetTypeName() + wxT(" ") + obj->GetFullIdentifier());
+                chkList->Append(obj->GetTypeName() + wxT(" ") + obj->GetFullIdentifier()); // no translation!
             }
         }
         item=mainForm->GetBrowser()->GetNextChild(collection->GetId(), cookie);

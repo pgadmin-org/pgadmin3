@@ -94,6 +94,7 @@ public:
     virtual pgDatabase *GetDatabase() const { return 0; }
     int GetType() const { return type; }
     wxString GetTypeName() const { return typesList[type].typName; }
+    wxString GetTranslatedTypeName() const { return wxString(wxGetTranslation(typesList[type].typName)); }
     void iSetName(const wxString& newVal) { name = newVal; }
     wxString GetName() const { return name; }
     OID GetOid() const { return oid; }

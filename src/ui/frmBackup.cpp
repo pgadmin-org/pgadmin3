@@ -64,7 +64,7 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     LoadResource(wxT("frmBackup"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Backup %s %s"), wxGetTranslation(object->GetTypeName()), object->GetFullIdentifier().c_str()));
+    SetTitle(wxString::Format(_("Backup %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
     canBlob = (obj->GetType() == PG_DATABASE);
     chkBlobs->SetValue(canBlob);

@@ -46,7 +46,7 @@ frmIndexcheck::frmIndexcheck(frmMain *form, pgObject *obj) : ExecutionDialog(for
     LoadResource(wxT("frmIndexCheck"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Check Foreign Key indexes on %s %s"), object->GetTypeName().c_str(), object->GetFullIdentifier().c_str()));
+    SetTitle(wxString::Format(_("Check Foreign Key indexes on %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
     nbNotebook = CTRL_NOTEBOOK("nbNotebook");
 

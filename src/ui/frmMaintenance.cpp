@@ -52,7 +52,7 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
     LoadResource(wxT("frmMaintenance"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Maintain %s %s"), object->GetTypeName().c_str(), object->GetFullIdentifier().c_str()));
+    SetTitle(wxString::Format(_("Maintain %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
     txtMessages = CTRL_TEXT("txtMessages");
 

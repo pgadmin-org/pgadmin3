@@ -405,7 +405,7 @@ frmMain::~frmMain()
 
 void frmMain::Refresh(pgObject *data)
 {
-    StartMsg(wxString::Format(_("Refreshing %s..."), data->GetTypeName().c_str()));
+    StartMsg(wxString::Format(_("Refreshing %s..."), data->GetTranslatedTypeName().c_str()));
     browser->Freeze();
 
     wxTreeItemId currentItem=data->GetId();

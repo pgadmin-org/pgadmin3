@@ -1021,7 +1021,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     if (data->GetSystemObject())
     {
         wxMessageDialog msg(this, wxString::Format(_("Cannot drop system %s %s."), 
-            wxGetTranslation(data->GetTypeName()), data->GetFullIdentifier().c_str()), 
+            data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str()), 
             _("Trying to drop system object"), wxICON_EXCLAMATION);
         msg.ShowModal();
         return;
@@ -1030,8 +1030,8 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     if (data->RequireDropConfirm() || settings->GetConfirmDelete())
     {
         wxMessageDialog msg(this, wxString::Format(_("Are you sure you wish to drop %s %s?"),
-                wxGetTranslation(data->GetTypeName()), data->GetFullIdentifier().c_str()),
-                wxString::Format(_("Drop %s?"), wxGetTranslation(data->GetTypeName())), wxYES_NO | wxICON_QUESTION);
+                data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str()),
+                wxString::Format(_("Drop %s?"), data->GetTranslatedTypeName().c_str()), wxYES_NO | wxICON_QUESTION);
         if (msg.ShowModal() != wxID_YES)
         {
             return;

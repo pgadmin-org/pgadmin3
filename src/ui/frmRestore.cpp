@@ -64,7 +64,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
     LoadResource(wxT("frmRestore"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Restore %s %s"), wxGetTranslation(object->GetTypeName()), object->GetFullIdentifier().c_str()));
+    SetTitle(wxString::Format(_("Restore %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
 
     // Icon

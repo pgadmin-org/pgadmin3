@@ -389,7 +389,7 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *propert
     wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
     if (form)
     {
-        form->StartMsg(wxString::Format(_("Retrieving %s details"), wxGetTranslation(GetTypeName())));
+        form->StartMsg(wxString::Format(_("Retrieving %s details"), GetTranslatedTypeName().c_str()));
 
         form->SetButtons(this);
         SetContextInfo(form);
