@@ -299,10 +299,12 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
     if (Connect() == PGCONN_OK)
     {
         // Set the icon if required
-        if (browser->GetItemImage(GetId(), wxTreeItemIcon_Normal) != 2)
+        if (browser->GetItemImage(GetId(), wxTreeItemIcon_Normal) != PGICON_DATABASE)
         {
             browser->SetItemImage(GetId(), PGICON_DATABASE, wxTreeItemIcon_Normal);
 		    browser->SetItemImage(GetId(), PGICON_DATABASE, wxTreeItemIcon_Selected);
+            if (form)
+                form->SetButtons(this);
         }
 
             // Add child nodes if necessary

@@ -58,6 +58,7 @@ pgObject *dlgRepListen::GetObject()
 int dlgRepListen::Go(bool modal)
 {
     txtReceiver->SetValue(IdAndName(node->GetSlId(), node->GetName()));
+    txtReceiver->Disable();
 
     if (listen)
     {

@@ -53,6 +53,7 @@ public:
     void Refresh(pgObject *data);
     void RemoveFrame(wxWindow *frame);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
+    void ShowStatistics(pgObject *data, int sel);
 
     wxImageList *GetImageList() { return images; }
     wxTreeCtrl *GetBrowser() { return browser; }

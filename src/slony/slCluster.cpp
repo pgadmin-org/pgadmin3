@@ -329,4 +329,3 @@ pgObject *slCluster::ReadObjects(pgCollection *coll, wxTreeCtrl *browser)
     // Get the clusters
     return ReadObjects(coll, browser, wxEmptyString);
 }
-

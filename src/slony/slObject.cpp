@@ -48,7 +48,6 @@ int slCollection::GetIcon()
 
 bool slCollection::CanCreate()
 {
-
     switch (GetType())
     {
         case SL_CLUSTERS:
@@ -60,6 +59,17 @@ bool slCollection::CanCreate()
         case SL_NODES:
         default:
             return false;
+    }
+}
+
+
+void slCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    switch (GetType())
+    {
+        case SL_NODES:
+            slNode::ShowStatistics(this, statistics);
+            break;
     }
 }
 

@@ -66,6 +66,73 @@ wxString slNode::GetSql(wxTreeCtrl *browser)
 }
 
 
+void slNode::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    CreateListColumns(statistics, _("Statistic"), _("Value"));
+
+    if (GetCluster()->GetLocalNodeID() == GetSlId())
+    {
+        pgSet *stats=GetDatabase()->ExecuteSet(
+            wxT("SELECT st_last_event,\n")
+            wxT("       MAX(st_last_received_ts - st_last_received_event_ts) AS roundtrip,\n")
+            wxT("       SUM(st_lag_num_events) AS sumlagevents, st_last_event - MAX(st_lag_num_events) as oldestlagevent,")
+            wxT("       MAX(st_last_event_ts - st_last_received_ts) AS maxeventlag")
+            wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_status\n")
+            wxT(" WHERE st_origin = ") + NumToStr(GetCluster()->GetLocalNodeID()) + wxT("\n")
+            wxT("  GROUP BY st_last_event"));
+        if (pgSet)
+
+        if (stats)
+        {
+            statistics->AppendItem(_("Last event"), stats->GetLong(wxT("st_last_event")));
+            statistics->AppendItem(_("Max response time"), stats->GetVal(wxT("roundtrip")));
+            long lags=stats->GetLong(wxT("sumlagevents"));
+             statistics->AppendItem(_("Acks outstanding"), lags);
+
+
+            if (lags > 0)
+            {
+                statistics->AppendItem(_("Oldest outstanding"), stats->GetLong(wxT("oldestlagevent")));
+                statistics->AppendItem(_("Outstanding for"), stats->GetVal(wxT("maxeventlag")));
+            }
+
+            delete stats;
+        }
+    }
+    else
+    {
+        pgSet *stats=GetDatabase()->ExecuteSet(
+            wxT("SELECT st_last_event, st_last_event_ts, st_last_received, st_last_received_ts,\n")
+            wxT("       st_last_received_ts - st_last_received_event_ts AS roundtrip,\n")
+            wxT("       st_last_event_ts - st_last_received_ts AS eventlag")
+            wxT("  FROM ") + GetCluster()->GetSchemaPrefix() + wxT("sl_status\n")
+            wxT(" WHERE st_origin = ") + NumToStr(GetCluster()->GetLocalNodeID()) + wxT("\n")
+            wxT("   AND st_received = ") + NumToStr(GetSlId()));
+        if (pgSet)
+
+        if (stats)
+        {
+            long evno=stats->GetLong(wxT("st_last_event"));
+            long ack = stats->GetLong(wxT("st_last_received"));
+
+            statistics->AppendItem(_("Last event"), evno);
+            statistics->AppendItem(_("Last event timestamp"), stats->GetDateTime(wxT("st_last_event_ts")));
+            statistics->AppendItem(_("Last acknowledged"), ack);
+            statistics->AppendItem(_("Last ack timestamp"), stats->GetDateTime(wxT("st_last_received_ts")));
+            statistics->AppendItem(_("Last response time"), stats->GetVal(wxT("roundtrip")));
+
+            if (evno > ack)
+            {
+                statistics->AppendItem(_("Outstanding acks"), evno - ack);
+                statistics->AppendItem(_("No ack for"), stats->GetVal(wxT("eventlag")));
+            }
+
+            delete stats;
+        }
+    }
+}
+
+
 void slNode::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     pgConn *conn = GetCluster()->GetNodeConn(form, GetSlId(), pid<0);
@@ -178,3 +245,38 @@ pgObject *slNode::ReadObjects(slCollection *coll, wxTreeCtrl *browser)
     return ReadObjects(coll, browser, wxEmptyString);
 }
 
+
+void slNode::ShowStatistics(slCollection *collection, ctlListView *statistics)
+{
+    wxLogInfo(wxT("Displaying statistics for nodes on Cluster ")+ collection->GetCluster()->GetIdentifier());
+
+    // Add the statistics view columns
+    statistics->ClearAll();
+    statistics->AddColumn(_("Node"), 50);
+    statistics->AddColumn(_("Roundtrip"), 50);
+    statistics->AddColumn(_("Acks outstanding"), 50);
+    statistics->AddColumn(_("Outstanding time"), 50);
+
+   pgSet *stats=collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT st_received, st_last_event, st_lag_num_events, st_last_event_ts, st_last_received, st_last_received_ts,\n")
+        wxT("       st_last_received_ts - st_last_received_event_ts AS roundtrip,\n")
+        wxT("       CASE WHEN st_lag_num_events > 0 THEN st_last_event_ts - st_last_received_ts END AS eventlag")
+        wxT("  FROM ") + collection->GetCluster()->GetSchemaPrefix() + wxT("sl_status\n")
+        wxT(" WHERE st_origin = ") + NumToStr(collection->GetCluster()->GetLocalNodeID()));
+
+    if (stats)
+    {
+        long pos=0;
+        while (!stats->Eof())
+        {
+            statistics->InsertItem(pos, NumToStr(stats->GetLong(wxT("st_received"))), SLICON_NODE);
+            statistics->SetItem(pos, 1, stats->GetVal(wxT("roundtrip")));
+            statistics->SetItem(pos, 2, NumToStr(stats->GetLong(wxT("st_lag_num_events"))));
+            statistics->SetItem(pos, 3, stats->GetVal(wxT("eventlag")));
+            stats->MoveNext();
+            pos++;
+        }
+
+	    delete stats;
+    }
+}

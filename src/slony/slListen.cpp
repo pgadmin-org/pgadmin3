@@ -115,7 +115,7 @@ pgObject *slListen::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, con
         wxT("SELECT li_origin, li_provider, li_receiver, no.no_comment as origin_name, np.no_comment as provider_name\n")
         wxT("  FROM ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_listen\n")
         wxT("  JOIN ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_node no ON no.no_id=li_origin\n")
-        wxT("  JOIN ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_node np ON no.no_id=li_provider\n")
+        wxT("  JOIN ") + coll->GetCluster()->GetSchemaPrefix() + wxT("sl_node np ON np.no_id=li_provider\n")
          + restriction +
         wxT(" ORDER BY li_origin, li_provider"));
 

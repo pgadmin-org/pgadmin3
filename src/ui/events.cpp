@@ -767,6 +767,7 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
         properties->ClearAll();
         properties->AddColumn(_("Properties"), 500);
         properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
+
         sqlPane->Clear();
 
         // Reset the toolbar & password menu options
@@ -785,10 +786,9 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
     if (currentNode)
     {
         properties->Freeze();
-        statistics->Freeze();
         setDisplay(currentObject, properties, sqlPane);
         properties->Thaw();
-        statistics->Thaw();
+        ShowStatistics(currentObject, listViews->GetSelection());
     }
     else
         setDisplay(currentObject, 0, 0);

@@ -387,9 +387,6 @@ frmMain::frmMain(const wxString& title)
 
 
     statistics->SetImageList(images, wxIMAGE_LIST_SMALL);
-    // Add the statistics view columns & set the colour
-    statistics->AddColumn(_("Statistics"), 500);
-    statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
 
     wxColour background;
     background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
@@ -466,6 +463,41 @@ void frmMain::Refresh(pgObject *data)
 }
 
 
+void frmMain::ShowStatistics(pgObject *data, int sel)
+{
+    switch (sel)
+    {
+        case NBP_STATISTICS:
+        {
+            statistics->Freeze();
+            statistics->ClearAll();
+            statistics->AddColumn(_("Statistics"), 500);
+            statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
+            data->ShowStatistics(this, statistics);
+            statistics->Thaw();
+            break;
+        }
+        case NBP_DEPENDSON:
+        {
+            dependsOn->Freeze();
+            dependsOn->DeleteAllItems();
+            data->ShowDependsOn(this, dependsOn);
+            dependsOn->Thaw();
+            break;
+        }
+        case NBP_REFERENCEDBY:
+        {
+            referencedBy->Freeze();
+            referencedBy->DeleteAllItems();
+            data->ShowReferencedBy(this, referencedBy);
+            referencedBy->Thaw();
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 
 void frmMain::OnPageChange(wxNotebookEvent& event)
 {
@@ -477,32 +509,7 @@ void frmMain::OnPageChange(wxNotebookEvent& event)
     if (!data)
         return;
 
-    switch (event.GetSelection())
-    {
-        case NBP_STATISTICS:
-        {
-            statistics->Freeze();
-            data->ShowStatistics(this, statistics);
-            statistics->Thaw();
-            break;
-        }
-        case NBP_DEPENDSON:
-        {
-            dependsOn->Freeze();
-            data->ShowDependsOn(this, dependsOn);
-            dependsOn->Thaw();
-            break;
-        }
-        case NBP_REFERENCEDBY:
-        {
-            referencedBy->Freeze();
-            data->ShowReferencedBy(this, referencedBy);
-            referencedBy->Thaw();
-            break;
-        }
-        default:
-            break;
-    }
+    ShowStatistics(data, event.GetSelection());
 }
 
 

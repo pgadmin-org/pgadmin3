@@ -38,6 +38,7 @@ public:
     static pgObject *ReadObjects(pgCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(pgCollection *coll, wxTreeCtrl *browser);
 
+
     void iSetSchemaPrefix(const wxString &s) { schemaPrefix = s; }
     wxString GetSchemaPrefix() const { return schemaPrefix; }
     void iSetLocalNodeID(long l) { localNodeID = l; }
@@ -51,7 +52,6 @@ public:
     void iSetClusterVersion(const wxString &s) { clusterVersion =s; }
     wxString GetClusterVersion() const { return clusterVersion; }
 
-//    bool CanBackup() { return true; }
     bool RequireDropConfirm() { return true; }
     bool WantDummyChild() { return true; }
 

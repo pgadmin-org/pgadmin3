@@ -31,6 +31,8 @@ public:
 
     int GetIcon() { return SLICON_NODE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+    static void ShowStatistics(slCollection *collection, ctlListView *statistics);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
     static pgObject *ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxString &restriction);
     static pgObject *ReadObjects(slCollection *coll, wxTreeCtrl *browser);
 

@@ -175,9 +175,6 @@ wxMenu *pgObject::GetNewMenu()
 
 void pgObject::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    statistics->ClearAll();
-    statistics->AddColumn(_("Statistics"), 500);
-    statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
 }
 
 
@@ -794,6 +791,31 @@ wxString pgDatabaseObject::GetQuotedSchemaPrefix(const wxString &schemaname) con
 }
 
 
+void pgDatabaseObject::DisplayStatistics(ctlListView *statistics, const wxString& query)
+{
+    if (statistics)
+    {
+        wxLogInfo(wxT("Displaying statistics for %s %s"), GetTypeName().c_str(), GetFullIdentifier().c_str());
+
+        // Add the statistics view columns
+        CreateListColumns(statistics, _("Statistic"), _("Value"));
+
+        pgSet *stats = database->ExecuteSet(query);
+    
+        if (stats)
+        {
+            int col;
+            for (col=0 ; col < stats->NumCols() ; col++)
+            {
+                if (!stats->ColName(col).IsEmpty())
+                    statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
+            }
+            delete stats;
+        }
+    }
+}
+
+
 ///////////////////////////////////////////////////////////////
 
 void pgSchemaObject::SetSchema(pgSchema *newSchema)
@@ -841,30 +863,6 @@ wxString pgSchemaObject::ExecuteScalar(const wxString& sql)
 bool pgSchemaObject::ExecuteVoid(const wxString& sql)
 {
     return schema->GetDatabase()->ExecuteVoid(sql);
-}
-
-void pgSchemaObject::DisplayStatistics(ctlListView *statistics, const wxString& query)
-{
-    if (statistics)
-    {
-        wxLogInfo(wxT("Displaying statistics for %s on %s"), GetTypeName().c_str(), GetSchema()->GetIdentifier().c_str());
-
-        // Add the statistics view columns
-        CreateListColumns(statistics, _("Statistic"), _("Value"));
-
-        pgSet *stats = ExecuteSet(query);
-    
-        if (stats)
-        {
-            int col;
-            for (col=0 ; col < stats->NumCols() ; col++)
-            {
-                if (!stats->ColName(col).IsEmpty())
-                    statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
-            }
-            delete stats;
-        }
-    }
 }
 
 

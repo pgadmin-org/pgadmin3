@@ -116,15 +116,20 @@ int dlgRepCluster::Go(bool modal)
         txtAdminNodeID->Hide();
         txtAdminNodeName->Hide();
 
-        pgSet *set=connection->ExecuteSet(
+        wxString sql=
             wxT("SELECT no_id, no_comment\n")
             wxT("  FROM ") + cluster->GetSchemaPrefix() + wxT("sl_node\n")
             wxT("  JOIN ") + cluster->GetSchemaPrefix() + wxT("sl_path ON no_id = pa_client\n")
             wxT(" WHERE pa_server = ") + NumToStr(cluster->GetLocalNodeID()) + 
             wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%host=") + cluster->GetServer()->GetName() + wxT("%")) +
-            wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + cluster->GetDatabase()->GetName() + wxT("%")) +
-            wxT(" ORDER BY no_id"));
+            wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + cluster->GetDatabase()->GetName() + wxT("%"));
 
+        if (cluster->GetServer()->GetPort() != 5432)
+            sql += wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%port=") + NumToStr((long)cluster->GetServer()->GetPort()) + wxT("%"));
+
+        sql += wxT(" ORDER BY no_id");
+
+        pgSet *set=connection->ExecuteSet(sql);
         if (set)
         {
             while (!set->Eof())
@@ -285,14 +290,18 @@ void dlgRepCluster::OnChangeCluster(wxCommandEvent &ev)
         wxString schemaPrefix = qtIdent(wxT("_") + cbClusterName->GetValue()) + wxT(".");
         long adminNodeID = settings->Read(wxT("Replication/") + cbClusterName->GetValue() + wxT("/AdminNode"), -1L);
 
+        wxString sql=
+            wxT("SELECT no_id, no_comment\n")
+            wxT("  FROM ") + schemaPrefix + wxT("sl_node\n")
+            wxT("  JOIN ") + schemaPrefix + wxT("sl_path ON no_id = pa_client\n")
+            wxT(" WHERE pa_server = (SELECT last_value FROM ") + schemaPrefix + wxT("sl_local_node_id)")
+            wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%host=") + remoteServer->GetName() + wxT("%")) +
+            wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + cbDatabase->GetValue() + wxT("%"));
 
-        pgSet *set = remoteConn->ExecuteSet(
-                        wxT("SELECT no_id, no_comment\n")
-                        wxT("  FROM ") + schemaPrefix + wxT("sl_node\n")
-                        wxT("  JOIN ") + schemaPrefix + wxT("sl_path ON no_id = pa_client\n")
-                        wxT(" WHERE pa_server = (SELECT last_value FROM ") + schemaPrefix + wxT("sl_local_node_id)")
-                        wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%host=") + remoteServer->GetName() + wxT("%")) +
-                        wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + cbDatabase->GetValue() + wxT("%")));
+        if (remoteServer->GetPort() != 5432)
+            sql += wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%port=") + NumToStr((long)remoteServer->GetPort()) + wxT("%"));
+
+        pgSet *set = remoteConn->ExecuteSet(sql);
         if (set)
         {
             if (!set->Eof())

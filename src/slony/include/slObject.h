@@ -34,6 +34,7 @@ public:
     slCollection(int newType, slCluster *_cluster);
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
     int GetIcon();
     bool CanCreate();
 

@@ -212,6 +212,8 @@ public:
     pgDatabase *GetDatabase() const { return database; }
     pgServer *GetServer() const;
 
+    void DisplayStatistics(ctlListView *statistics, const wxString& query);
+
     // compiles a prefix from the schema name with '.', if necessary
     wxString GetSchemaPrefix(const wxString &schemaname) const;
     wxString GetQuotedSchemaPrefix(const wxString &schemaname) const;
@@ -247,7 +249,6 @@ public:
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     bool ExecuteVoid(const wxString& sql);
-    void DisplayStatistics(ctlListView *statistics, const wxString& query);
     OID GetTableOid() const {return tableOid; }
     void iSetTableOid(const OID d) { tableOid=d; }
     wxString GetTableOidStr() const {return NumToStr(tableOid) + wxT("::oid"); }
