@@ -1355,6 +1355,7 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
 
 
 BEGIN_EVENT_TABLE(dlgOidProperty, dlgProperty)
+    EVT_BUTTON (XRCID("btnOK"),                     dlgOidProperty::OnOK)
 END_EVENT_TABLE();
 
 dlgOidProperty::dlgOidProperty(frmMain *frame, const wxString &resName)
@@ -1364,25 +1365,21 @@ dlgOidProperty::dlgOidProperty(frmMain *frame, const wxString &resName)
 }
 
 
-
 wxString dlgOidProperty::GetSql()
 {
-    return GetInsertSql() + wxT("\n\n") + GetUpdateSql();
+    wxString str=GetInsertSql();
+    if (!str.IsEmpty())
+        str += wxT("\n\n");
+    return str + GetUpdateSql();
 }
 
 
-void dlgOidProperty::OnOK(wxNotifyEvent &ev)
+
+bool dlgOidProperty::executeSql()
 {
-
-    if (IsModal())
-    {
-        EndModal(0);
-        return;
-    }
-
     wxString sql;
-    bool needShow=false;
-    
+    bool dataChanged=false;
+
     sql=GetInsertSql();
     if (!sql.IsEmpty())
     {
@@ -1394,25 +1391,51 @@ void dlgOidProperty::OnOK(wxNotifyEvent &ev)
         }
         if (!set || !oid)
         {
-            return;
+            return false;
         }
-        needShow=true;
+        dataChanged=true;
     }
 
     sql=GetUpdateSql();
     if (!sql.IsEmpty())
     {
+        int pos;
+        while ((pos=sql.Find(wxT("<Oid>"))) >= 0)
+            sql = sql.Left(pos) + NumToStr(oid) + wxT("::oid") + sql.Mid(pos+5);
+
         if (!connection->ExecuteVoid(sql))
         {
             // error message is displayed inside ExecuteVoid
-            return;
+            return false;
         }
-        needShow=true;
+        dataChanged=true;
     }
 
-    if (needShow)
+    return dataChanged;
+}
+
+
+void dlgOidProperty::OnOK(wxNotifyEvent &ev)
+{
+    if (IsModal())
+    {
+        EndModal(0);
+        return;
+    }
+
+    
+
+    connection->ExecuteVoid(wxT("BEGIN TRANSACTION"));
+
+    if (executeSql())
+    {
+        connection->ExecuteVoid(wxT("COMMIT TRANSACTION"));
         ShowObject();
+    }
+    else
+    {
+        connection->ExecuteVoid(wxT("ROLLBACK TRANSACTION"));
+    }
 
     Destroy();
-    dlgProperty::OnOK(ev);
 }

@@ -179,6 +179,7 @@ public:
 protected:
     dlgOidProperty(frmMain *frame, const wxString &resName);
     void OnOK(wxNotifyEvent &ev);
+    bool executeSql();
     virtual wxString GetInsertSql() =0;
     virtual wxString GetUpdateSql() =0;
     wxString GetSql();

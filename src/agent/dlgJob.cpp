@@ -169,7 +169,7 @@ pgObject *dlgJob::CreateObject(pgCollection *collection)
 
 void dlgJob::OnChange(wxNotifyEvent &ev)
 {
-    bool enable;
+    bool enable=true;
     wxString name=GetName();
     if (job)
     {
@@ -357,56 +357,57 @@ wxString dlgJob::GetUpdateSql()
             sql = wxT("UPDATE pga_job SET ") + vars + wxT("\n")
                   wxT(" WHERE oid=") + job->GetOidStr();
 
-        int pos, index;
-
-        wxArrayString tmpSteps = previousSteps;
-        for (pos=0 ; pos < lstSteps->GetItemCount() ; pos++)
-        {
-            wxString str=GetListText(lstSteps, pos, 3);
-            if (!str.IsEmpty())
-            {
-                index=tmpSteps.Index(str);
-                if (index >= 0)
-                    tmpSteps.RemoveAt(index);
-            }
-            str=GetListText(lstSteps, pos, 2);
-            if (!str.IsEmpty())
-                sql += str + wxT(";\n");
-        }
-
-        for (index = 0 ; index < (int)tmpSteps.GetCount() ; index++)
-        {
-            sql += wxT("DELETE FROM pga_jobstep WHERE oid=") 
-                + ((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetOidStr() + wxT(";\n");
-        }
-
-        wxArrayString tmpSchedules = previousSchedules;
-        for (pos=0 ; pos < lstSchedules->GetItemCount() ; pos++)
-        {
-            wxString str=GetListText(lstSchedules, pos, 3);
-            if (!str.IsEmpty())
-            {
-                index=tmpSchedules.Index(str);
-                if (index >= 0)
-                    tmpSchedules.RemoveAt(index);
-            }
-            str=GetListText(lstSchedules, pos, 2);
-            if (!str.IsEmpty())
-                sql += str + wxT(";\n");
-        }
-
-        for (index = 0 ; index < (int)tmpSchedules.GetCount() ; index++)
-        {
-            sql += wxT("DELETE FROM pga_jobschedule WHERE oid=") 
-                + ((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetOidStr() + wxT(";\n");
-        }
-
     }
     else
     {
         // create mode
         // done by GetInsertSql
     }
+
+    int pos, index;
+
+    wxArrayString tmpSteps = previousSteps;
+    for (pos=0 ; pos < lstSteps->GetItemCount() ; pos++)
+    {
+        wxString str=GetListText(lstSteps, pos, 3);
+        if (!str.IsEmpty())
+        {
+            index=tmpSteps.Index(str);
+            if (index >= 0)
+                tmpSteps.RemoveAt(index);
+        }
+        str=GetListText(lstSteps, pos, 2);
+        if (!str.IsEmpty())
+            sql += str + wxT(";\n");
+    }
+
+    for (index = 0 ; index < (int)tmpSteps.GetCount() ; index++)
+    {
+        sql += wxT("DELETE FROM pga_jobstep WHERE oid=") 
+            + ((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetOidStr() + wxT(";\n");
+    }
+
+    wxArrayString tmpSchedules = previousSchedules;
+    for (pos=0 ; pos < lstSchedules->GetItemCount() ; pos++)
+    {
+        wxString str=GetListText(lstSchedules, pos, 3);
+        if (!str.IsEmpty())
+        {
+            index=tmpSchedules.Index(str);
+            if (index >= 0)
+                tmpSchedules.RemoveAt(index);
+        }
+        str=GetListText(lstSchedules, pos, 2);
+        if (!str.IsEmpty())
+            sql += str + wxT(";\n");
+    }
+
+    for (index = 0 ; index < (int)tmpSchedules.GetCount() ; index++)
+    {
+        sql += wxT("DELETE FROM pga_jobschedule WHERE oid=") 
+            + ((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetOidStr() + wxT(";\n");
+    }
+
     return sql;
 }
 

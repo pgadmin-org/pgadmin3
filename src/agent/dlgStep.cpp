@@ -170,7 +170,7 @@ wxString dlgStep::GetInsertSql()
         if (jobOid)
             jstjoboid = NumToStr(jobOid);
         else
-            jstjoboid = wxT("<JobOid>");
+            jstjoboid = wxT("<Oid>");
 
         if (!cbDatabase->GetSelection())
             db = wxT("NULL");

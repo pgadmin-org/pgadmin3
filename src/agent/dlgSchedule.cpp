@@ -156,7 +156,7 @@ wxString dlgSchedule::GetInsertSql()
         if (jobOid)
             jstjoboid = NumToStr(jobOid);
         else
-            jstjoboid = wxT("<JobOid>");
+            jstjoboid = wxT("<Oid>");
 #if 0
 
         sql = wxT("INSERT INTO pgXXXXXXXXXXXa_jobschedule (jstjoboid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdboid)\n")
