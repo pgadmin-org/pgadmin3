@@ -45,29 +45,21 @@ bool pgOperator::DropObject(wxFrame *frame, wxTreeCtrl *browser)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
+
 wxString pgOperator::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Operator: ") + GetFullIdentifier() + wxT(" (") + GetLeftType() + wxT(", ") + GetRightType() + wxT(")\n\n")
-            + wxT("-- DROP OPERATOR ") + GetFullIdentifier();
-    
-        if (GetLeftType().Length() > 0)
-            sql += wxT(" (") + qtIdent(GetLeftType());
-        else
-            sql += wxT(") (NONE");
-
-        if (GetRightType().Length() > 0)
-            sql += wxT(", ") + qtIdent(GetLeftType()) + wxT(")");
-        else
-            sql += wxT(", NONE)");
-
-        sql += wxT(";\n\nCREATE OPERATOR ") + GetFullIdentifier()
+        sql = wxT("-- Operator: ") + GetFullIdentifier() + wxT("(") + GetOperands() + wxT(")\n\n")
+            + wxT("-- DROP OPERATOR ") + GetFullIdentifier()
+	    + wxT("(") + GetOperands() + wxT(");\n\n")
+              wxT("CREATE OPERATOR ") + GetFullIdentifier()
             + wxT("(\n  PROCEDURE = ") + qtIdent(GetOperatorFunction());
         AppendIfFilled(sql, wxT(",\n  LEFTARG = "), qtIdent(GetLeftType()));
         AppendIfFilled(sql, wxT(",\n  RIGHTARG = "), qtIdent(GetRightType()));
         AppendIfFilled(sql, wxT(",\n  COMMUTATOR = "), GetCommutator());
         AppendIfFilled(sql, wxT(",\n  RESTRICT = "), qtIdent(GetRestrictFunction()));
+        AppendIfFilled(sql, wxT(",\n  JOIN = "), qtIdent(GetJoinFunction()));
         if (GetHashJoins())  sql += wxT(",\n  HASHES");
         if (!leftSortOperator.IsNull() || !rightSortOperator.IsNull() ||
             !lessOperator.IsNull() || !greaterOperator.IsNull())
@@ -76,14 +68,34 @@ wxString pgOperator::GetSql(wxTreeCtrl *browser)
         AppendIfFilled(sql, wxT(",\n  SORT2 = "), GetRightSortOperator());
         AppendIfFilled(sql, wxT(",\n  LTCMP = "), GetLessOperator());
         AppendIfFilled(sql, wxT(",\n  GTCMP = "), GetGreaterOperator());
-        sql += wxT(");\n")
-            + GetCommentSql();
+        sql += wxT(");\n");
+
+	if (!GetComment().IsNull())
+	    sql += wxT("COMMENT ON OPERATOR ") + GetFullIdentifier()
+	    + wxT("(") + GetOperands() + wxT(") IS ")
+		+ qtString(GetComment()) + wxT(";\n");
     }
 
     return sql;
 }
 
 
+wxString pgOperator::GetOperands() const
+{
+    wxString sql;
+    if (GetLeftType().IsEmpty())
+	sql = wxT("NONE");
+    else
+	sql = qtIdent(GetLeftType());
+    sql += wxT(", ");
+
+    if (GetRightType().IsEmpty())
+	sql += wxT("NONE");
+    else
+	sql += qtIdent(GetRightType());
+
+    return sql;
+}
 wxString pgOperator::GetFullName() const
 {
     if (leftType.IsEmpty() || rightType.IsEmpty())
@@ -180,8 +192,12 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             oper->iSetRightTypeOid(operators->GetOid(wxT("oprright")));
             oper->iSetResultType(operators->GetVal(wxT("resulttype")));
             oper->iSetOperatorFunction(operators->GetVal(wxT("operproc")));
-            oper->iSetJoinFunction(operators->GetVal(wxT("joinproc")));
-            oper->iSetRestrictFunction(operators->GetVal(wxT("restrproc")));
+	    wxString tmp=operators->GetVal(wxT("joinproc"));
+	    if (tmp != wxT("-"))
+		oper->iSetJoinFunction(tmp);
+	    tmp = operators->GetVal(wxT("restrproc"));
+	    if (tmp != wxT("-"))
+		oper->iSetRestrictFunction(tmp);
             oper->iSetLeftSortOperator(operators->GetVal(wxT("leftsortop")));
             oper->iSetRightSortOperator(operators->GetVal(wxT("rightsortop")));
             oper->iSetLessOperator(operators->GetVal(wxT("lscmpop")));

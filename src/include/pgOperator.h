@@ -30,7 +30,9 @@ public:
     int GetIcon() { return PGICON_OPERATOR; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    virtual wxString GetQuotedIdentifier() const { return GetName(); }
     wxString GetFullName() const;
+    wxString GetOperands() const;
     wxString GetLeftType() const { return leftType; }
     void iSetLeftType(const wxString& s) { leftType=s; }
     wxString GetRightType() const { return rightType; }

@@ -119,7 +119,7 @@ public:
     virtual void SetDirty() { sql=wxT(""); expandedKids=false; needReread=true; }
     virtual void SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, const int index) { return; }
     virtual wxString GetFullIdentifier() const { return GetName(); }
-    virtual wxString GetQuotedFullIdentifier() const { return qtIdent(GetName()); }
+    virtual wxString GetQuotedFullIdentifier() const { return qtIdent(name); }
 
     virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0)
         =0;

@@ -104,6 +104,7 @@ int dlgOperator::Go(bool modal)
         AddType(wxT(" "), oper->GetLeftTypeOid());
         AddType(wxT(" "), oper->GetRightTypeOid());
 
+	txtComment->SetValue(oper->GetComment());
         txtName->Disable();
         cbProcedure->Disable();
         cbLeftType->Disable();
@@ -322,16 +323,31 @@ void dlgOperator::OnChangeJoin(wxNotifyEvent &ev)
 wxString dlgOperator::GetSql()
 {
     wxString sql, name;
-    name=GetName();
 
     if (oper)
     {
         // edit mode
+	name = oper->GetQuotedFullIdentifier()
+	    + wxT("(") + oper->GetOperands() + wxT(")");
     }
     else
     {
         // create mode
-        sql = wxT("CREATE OPERATOR ") + schema->GetQuotedFullIdentifier() + wxT(".") + name
+        name = schema->GetQuotedFullIdentifier() + wxT(".") 
+	    + GetName() + wxT("(");
+	if (cbLeftType->GetSelection() > 0)
+	    name += GetQuotedTypename(cbLeftType->GetSelection());
+	else
+	    name += wxT("NONE");
+	name += wxT(", ");
+	if (cbRightType->GetSelection() > 0)
+	    name += GetQuotedTypename(cbRightType->GetSelection());
+	else
+	    name += wxT("NONE");
+	name += wxT(")");
+
+
+        sql = wxT("CREATE OPERATOR ") + schema->GetQuotedFullIdentifier() + wxT(".") + GetName()
             + wxT("(\n   PROCEDURE=") + procedures.Item(cbProcedure->GetSelection());
         
         AppendIfFilled(sql, wxT(",\n   LEFTARG="), GetQuotedTypename(cbLeftType->GetSelection()));
@@ -367,7 +383,7 @@ wxString dlgOperator::GetSql()
         sql += wxT(");\n");
 
     }
-    AppendComment(sql, wxT("OPERATOR"), schema, oper);
+    AppendComment(sql, wxT("OPERATOR ") + name, oper);
 
     return sql;
 }

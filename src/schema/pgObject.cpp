@@ -523,7 +523,7 @@ wxString pgSchemaObject::GetFullIdentifier() const
 
 wxString pgSchemaObject::GetQuotedFullIdentifier() const
 {
-    return qtIdent(schema->GetName()) + wxT(".")+qtIdent(GetName());
+    return qtIdent(schema->GetName()) + wxT(".") + GetQuotedIdentifier();
 }
 
 
