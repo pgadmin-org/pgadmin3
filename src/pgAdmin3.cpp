@@ -37,6 +37,8 @@ frmMain *winMain;
 wxLog *logger;
 sysSettings *settings;
 wxString loadPath;
+wxArrayInt existingLangs;
+wxLocale locale;
 
 IMPLEMENT_APP(pgAdmin3)
 
@@ -76,41 +78,58 @@ bool pgAdmin3::OnInit()
 
 
     
+#ifdef __WIN32__
+    locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
+    locale.AddCatalogLookupPathPrefix(loadPath + wxT("/..") MO_PATH);
+#else
+    locale.AddCatalogLookupPathPrefix(DATA_DIR MO_PATH);
+    locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
+#endif
+
+    
+    long langCount=0;
+    const wxLanguageInfo *langInfo;
+    int langNo=2;       // skipping default, unknown
+
+    while (true)
+    {
+        langInfo=wxLocale::GetLanguageInfo(langNo);
+        if (!langInfo)
+            break;
+
+        if (!langInfo->CanonicalName.IsEmpty() && 
+#ifdef __WIN32__
+            (wxDir::Exists(loadPath + MO_PATH + wxT("/") + langInfo->CanonicalName) ||
+             wxDir::Exists(loadPath + wxT("/..") MO_PATH + wxT("/") + langInfo->CanonicalName)))
+#else
+            (wxDir::Exists(DATA_DIR MO_PATH wxT("/") + langInfo->CanonicalName) ||
+             wxDir::Exists(loadPath +  MO_PATH wxT("/") + langInfo->CanonicalName)))
+#endif
+        {
+            existingLangs.Add(langNo);
+            langCount++;
+        }
+        langNo++;
+    }
+
+
     wxLanguage langId = (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN);
 
     if (langId == wxLANGUAGE_UNKNOWN)
     {
-        wxArrayInt existingLangs;
-        const wxLanguageInfo *langInfo;
-
-        int langNo=2;       // skipping default, unknown
-        long langCount=0;
-
-        while (true)
+        locale.Init(wxLANGUAGE_DEFAULT);
+        locale.AddCatalog(wxT("pgadmin3"));
+#ifdef __LINUX__
         {
-            langInfo=wxLocale::GetLanguageInfo(langNo);
-            if (!langInfo)
-                break;
-
-            if (!langInfo->CanonicalName.IsEmpty() && 
-#ifdef __WIN32__
-                (wxDir::Exists(loadPath + MO_PATH + wxT("/") + langInfo->CanonicalName) ||
-                 wxDir::Exists(loadPath + wxT("/..") MO_PATH + wxT("/") + langInfo->CanonicalName)))
-#else
-                (wxDir::Exists(DATA_DIR MO_PATH wxT("/") + langInfo->CanonicalName) ||
-                 wxDir::Exists(loadPath +  MO_PATH wxT("/") + langInfo->CanonicalName)))
-#endif
-            {
-                existingLangs.Add(langNo);
-                langCount++;
-            }
-            langNo++;
+            wxLogNull noLog;
+            locale.AddCatalog(wxT("fileutils"));
         }
+#endif
 
         if (langCount)
         {
             wxString *langNames=new wxString[langCount+1];
-            langNames[0] = wxT("Default");
+            langNames[0] = _("Default");
 
             for (langNo = 0; langNo < langCount ; langNo++)
             {
@@ -119,14 +138,12 @@ bool pgAdmin3::OnInit()
                     + langInfo->CanonicalName + wxT(")");
             }
 
+
             langNo = wxGetSingleChoiceIndex(_("Please choose language:"), _("Language"), 
                 langCount+1, langNames);
-            if (langNo >= 0)
+            if (langNo > 0)
             {
-                if (langNo)
-                    langId = (wxLanguage)wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1))->Language;
-                else
-                    langId = wxLANGUAGE_DEFAULT;
+                langId = (wxLanguage)wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1))->Language;
                 settings->Write(wxT("LanguageId"), (long)langId);
             }
             delete[] langNames;
@@ -136,14 +153,6 @@ bool pgAdmin3::OnInit()
     if (langId != wxLANGUAGE_UNKNOWN)
     {
         locale.Init(langId);
-
-#ifdef __WIN32__
-        locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
-        locale.AddCatalogLookupPathPrefix(loadPath + wxT("/..") MO_PATH);
-#else
-        locale.AddCatalogLookupPathPrefix(DATA_DIR MO_PATH);
-        locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
-#endif
 
         locale.AddCatalog(wxT("pgadmin3"));
 #ifdef __LINUX__

@@ -54,7 +54,6 @@ public:
     virtual int OnExit();
 
 private:
-    wxLocale locale;
 
     bool LoadAllXrc(const wxString dir);
 };

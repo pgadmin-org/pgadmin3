@@ -24,6 +24,10 @@
 #include "images/pgAdmin3.xpm"
 
 
+extern wxLocale locale;
+extern wxArrayInt existingLangs;
+
+
 #define txtHelpSite                 CTRL("txtHelpSite", wxTextCtrl)
 #define txtLogfile                  CTRL("txtLogfile", wxTextCtrl)
 #define radLoglevel                 CTRL("radLoglevel", wxRadioBox)
@@ -35,6 +39,7 @@
 #define txtAutoRowCount             CTRL("txtAutoRowCount", wxTextCtrl)
 #define chkStickySql                CTRL("chkStickySql", wxCheckBox)
 #define chkDoubleClickProperties    CTRL("chkDoubleClickProperties", wxCheckBox)
+#define cbLanguage                  CTRL("cbLanguage", wxComboBox)
 
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
@@ -70,6 +75,27 @@ frmOptions::frmOptions(wxFrame *parent)
     chkStickySql->SetValue(settings->GetStickySql());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtHelpSite->SetValue(settings->GetHelpSite());
+
+
+    cbLanguage->Append(_("Default"));
+    int sel=0;
+    int langId=settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN);
+
+    int langCount=existingLangs.GetCount();
+    if (langCount)
+    {
+        int langNo;
+        const wxLanguageInfo *langInfo;
+        for (langNo = 0; langNo < langCount ; langNo++)
+        {
+            langInfo = wxLocale::GetLanguageInfo(existingLangs.Item(langNo));
+            cbLanguage->Append(wxString(wxGetTranslation(langInfo->Description)) + wxT(" (")
+                + langInfo->CanonicalName + wxT(")"));
+            if (langId == langInfo->Language)
+                sel=langNo+1;
+        }
+    }
+    cbLanguage->SetSelection(sel);
 }
 
 
@@ -122,6 +148,32 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetStickySql(chkStickySql->IsChecked());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->IsChecked());
     settings->SetHelpSite(txtHelpSite->GetValue());
+
+    int langNo=cbLanguage->GetSelection();
+    if (langNo >= 0)
+    {
+        wxLanguage langId;
+        if (langNo == 0)
+            langId = wxLANGUAGE_DEFAULT;
+        else
+        {
+            const wxLanguageInfo *langInfo=wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1));
+            langId = (wxLanguage) langInfo->Language;
+        }
+        if (langId != (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN))
+        {
+            locale.Init(langId);
+            locale.AddCatalog(wxT("pgadmin3"));
+#ifdef __LINUX__
+            {
+                wxLogNull noLog;
+                locale.AddCatalog(wxT("fileutils"));
+            }
+#endif
+            settings->Write(wxT("LanguageId"), (long)langId);
+        }
+
+    }
     Destroy();
 }
 
