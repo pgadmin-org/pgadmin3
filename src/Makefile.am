@@ -102,6 +102,7 @@ ui/ar_SA/pgadmin3.po \
 ui/ca_ES/pgadmin3.po \
 ui/da_DK/pgadmin3.po \
 ui/de_DE/pgadmin3.po \
+ui/el_GR/pgadmin3.po \
 ui/es_ES/pgadmin3.po \
 ui/fi_FI/pgadmin3.po \
 ui/fr_FR/pgadmin3.po \
@@ -137,6 +138,7 @@ ui/ar_SA/pgadmin3.mo \
 ui/ca_ES/pgadmin3.mo \
 ui/da_DK/pgadmin3.mo \
 ui/de_DE/pgadmin3.mo \
+ui/el_GR/pgadmin3.mo \
 ui/es_ES/pgadmin3.mo \
 ui/fi_FI/pgadmin3.mo \
 ui/fr_FR/pgadmin3.mo \
@@ -159,6 +161,7 @@ ui/af_ZA/wxstd.mo \
 ui/ca_ES/wxstd.mo \
 ui/da_DK/wxstd.mo \
 ui/de_DE/wxstd.mo \
+ui/el_GR/wxstd.mo \
 ui/es_ES/wxstd.mo \
 ui/fi_FI/wxstd.mo \
 ui/fr_FR/wxstd.mo \
