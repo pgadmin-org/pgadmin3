@@ -138,8 +138,6 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     // Open the connection
     wxLogInfo(wxT("Opening connection with connection string: %s"), connstr.c_str());
 
-    bool connectAscii=false;
-
 #if wxUSE_UNICODE
     conn = PQconnectdb(connstr.mb_str(wxConvUTF8));
     if (PQstatus(conn) != CONNECTION_OK)
