@@ -239,18 +239,35 @@ void dlgProperty::OnClose(wxCloseEvent &ev)
 
 bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 {
-    pgCollection *collection = (pgCollection*)mainForm->GetBrowser()->GetItemData(collectionItem);
+    wxTreeCtrl *browser=mainForm->GetBrowser();
+    pgCollection *collection = (pgCollection*)browser->GetItemData(collectionItem);
     if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
     {
         pgObject *data = CreateObject(collection);
         if (data)
         {
-            mainForm->GetBrowser()->AppendItem(collectionItem, data->GetFullName(), data->GetIcon(), -1, data);
+            wxString nodeName=data->GetFullName();
+            size_t pos=0;
+            wxTreeItemId item;
+            long cookie;
+            item=browser->GetFirstChild(collectionItem, cookie);
+            while (item)
+            {
+                if (browser->GetItemText(item) > nodeName)
+                    break;
+                pos++;
+                item=browser->GetNextChild(collectionItem, cookie);
+            }
 
-            if (mainForm->GetBrowser()->GetSelection() == collectionItem)
-                collection->ShowTreeDetail(mainForm->GetBrowser(), 0, properties);
+            if (item)
+                browser->InsertItem(collectionItem, pos, nodeName, data->GetIcon(), -1, data);
+            else    
+                browser->AppendItem(collectionItem, nodeName, data->GetIcon(), -1, data);
+
+            if (browser->GetSelection() == collectionItem)
+                collection->ShowTreeDetail(browser, 0, properties);
             else
-                collection->UpdateChildCount(mainForm->GetBrowser());
+                collection->UpdateChildCount(browser);
         }
         return true;
     }
