@@ -79,12 +79,17 @@ bool pgDatabase::GetSystemObject() const
 
 wxString pgDatabase::GetSql(wxTreeCtrl *browser)
 {
-    wxString sql;
-    sql = wxT("-- Database: ") + GetQuotedFullIdentifier() + wxT("\n")
-        + wxT("CREATE DATABASE ") + GetQuotedIdentifier()
-        + wxT("\n  WITH ENCODING = ") + qtString(this->GetEncoding()) + wxT(";\n")
-        + GetCommentSql();
-
+    if (sql.IsEmpty())
+    {
+        sql = wxT("-- Database: ") + GetQuotedFullIdentifier() + wxT("\n")
+            + wxT("CREATE DATABASE ") + GetQuotedIdentifier()
+            + wxT("\n  WITH ENCODING = ") + qtString(this->GetEncoding()) + wxT(";\n");
+        wxStringTokenizer vars(GetVariables());
+        while (vars.HasMoreTokens())
+            sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
+                +  wxT(" SET ") + vars.GetNextToken() + wxT(";\n");
+        sql += GetCommentSql();
+    }
     return sql;
 }
 
@@ -136,60 +141,95 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         InsertListItem(properties, pos++, wxT("OID"), NumToStr(GetOid()));
         InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
         InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
-        InsertListItem(properties, pos++, wxT("Path"), GetPath());
+        if (!GetPath().IsEmpty())
+            InsertListItem(properties, pos++, wxT("Path"), GetPath());
         InsertListItem(properties, pos++, wxT("Encoding"), GetEncoding());
-        InsertListItem(properties, pos++, wxT("Variables"), GetVariables());
-        InsertListItem(properties, pos++, wxT("Allow Connections?"), BoolToYesNo(GetAllowConnections()));
-        InsertListItem(properties, pos++, wxT("Connected?"), BoolToYesNo(GetConnected()));
-        InsertListItem(properties, pos++, wxT("System Database?"), BoolToYesNo(GetSystemObject()));
+        wxStringTokenizer vars(GetVariables());
+        while (vars.HasMoreTokens())
+        {
+            wxString str=vars.GetNextToken();
+            wxString name=str.BeforeFirst('=');
+            InsertListItem(properties, pos++, name, str.Mid(name.Length()+1));
+        }
+        InsertListItem(properties, pos++, wxT("Allow Connections?"), GetAllowConnections());
+        InsertListItem(properties, pos++, wxT("Connected?"), GetConnected());
+        InsertListItem(properties, pos++, wxT("System Database?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
 }
 
 
 
+pgObject *pgDatabase::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *database=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_DATABASES)
+            database = ReadObjects((pgCollection*)obj, 0, wxT(" WHERE db.oid=") + GetOidStr() + wxT("\n"));
+    }
+    return database;
+}
+
+
+pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgDatabase *database=0;
+
+    pgSet *databases = collection->GetServer()->ExecuteSet(wxT(
+       "SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, "
+              "pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner, description\n"
+       "  FROM pg_database db\n"
+       "  LEFT OUTER JOIN pg_description des ON des.objoid=db.oid\n"
+       + restriction +
+       " ORDER BY datname"));
+    
+    if (databases)
+    {
+        while (!databases->Eof())
+        {
+            database = new pgDatabase(databases->GetVal(wxT("datname")));
+            database->iSetServer(collection->GetServer());
+            database->iSetOid(databases->GetOid(wxT("oid")));
+            database->iSetOwner(databases->GetVal(wxT("datowner")));
+            database->iSetAcl(databases->GetVal(wxT("datacl")));
+            database->iSetPath(databases->GetVal(wxT("datpath")));
+            database->iSetEncoding(databases->GetVal(wxT("serverencoding")));
+            wxString str=databases->GetVal(wxT("datconfig"));
+            if (!str.IsEmpty())
+                database->iSetVariables(str.Mid(1, str.Length()-2));
+            database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));
+            database->iSetComment(databases->GetVal(wxT("description")));
+
+            // Add the treeview node if required
+            if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 
+            {
+                if (browser)
+                    browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_CLOSEDDATABASE, -1, database);   
+                else
+                    break;
+            }
+            else 
+				delete database;
+	
+			databases->MoveNext();
+        }
+		delete databases;
+    }
+    return database;
+}
+
+
 void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    pgDatabase *database;
-
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0) {
 
         // Log
         wxLogInfo(wxT("Adding databases to server ") + collection->GetServer()->GetIdentifier());
 
-        // Get the databases
-        pgSet *databases = collection->GetServer()->ExecuteSet(wxT(
-           "SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, "
-                  "pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner, description\n"
-           "  FROM pg_database db\n"
-           "  LEFT OUTER JOIN pg_description des ON des.objoid=db.oid\n"
-           " ORDER BY datname"));
-        
-        if (databases)
-        {
-            while (!databases->Eof())
-            {
-                database = new pgDatabase(databases->GetVal(wxT("datname")));
-                database->iSetServer(collection->GetServer());
-                database->iSetOid(databases->GetOid(wxT("oid")));
-                database->iSetOwner(databases->GetVal(wxT("datowner")));
-                database->iSetAcl(databases->GetVal(wxT("datacl")));
-                database->iSetPath(databases->GetVal(wxT("datpath")));
-                database->iSetEncoding(databases->GetVal(wxT("serverencoding")));
-                database->iSetVariables(databases->GetVal(wxT("datconfig")));
-                database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));
-                database->iSetComment(databases->GetVal(wxT("description")));
-
-                // Add the treeview node if required
-                if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 
-                    browser->AppendItem(collection->GetId(), database->GetIdentifier(), PGICON_CLOSEDDATABASE, -1, database);
-                else 
-				    delete database;
-	    
-			    databases->MoveNext();
-            }
-		    delete databases;
-        }
+        ReadObjects(collection, browser);
     }
 
     if (statistics)
@@ -208,7 +248,8 @@ void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
         pgSet *stats = collection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
         if (stats)
         {
-            while (!stats->Eof()) {
+            while (!stats->Eof())
+            {
                 statistics->InsertItem(stats->CurrentPos() - 1, stats->GetVal(wxT("datname")), 0);
                 statistics->SetItem(stats->CurrentPos() - 1, 1, stats->GetVal(wxT("numbackends")));
                 statistics->SetItem(stats->CurrentPos() - 1, 2, stats->GetVal(wxT("xact_commit")));
@@ -218,8 +259,6 @@ void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
                 stats->MoveNext();
             }
 
-	        // Keith 2003.03.05
-	        // Fixed memory leak
 	        delete stats;
         }
     }

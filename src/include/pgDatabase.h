@@ -49,10 +49,12 @@ public:
     bool GetSystemObject() const;
     
     bool CanVacuum() { return true; }
-    wxString GetSql(wxTreeCtrl *browser);
     pgConn *connection() { return conn; }
-
     int Connect();
+
+    wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
     pgConn *conn;
