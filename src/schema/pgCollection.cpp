@@ -80,7 +80,7 @@ void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, wxListCtr
         pgObject *data;
 
         // Setup listview
-        CreateListColumns(properties, name, _("Comment"));
+        CreateListColumns(properties, wxGetTranslation(name), _("Comment"));
 
         wxTreeItemId item = browser->GetFirstChild(GetId(), cookie);
         long pos=0;
