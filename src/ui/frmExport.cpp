@@ -230,7 +230,11 @@ bool frmExport::Export(ctlSQLResult *data, pgSet *set)
                 }
             }
             if (needQuote)
-                line += cbQuoteChar->GetValue() + text + cbQuoteChar->GetValue();
+            {
+                wxString qc = cbQuoteChar->GetValue();
+                text.Replace(qc, qc+qc);
+                line += qc + text + qc;
+            }
             else
                 line += text;
         }
