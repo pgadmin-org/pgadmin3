@@ -8,8 +8,26 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-// wxWindows Headers
+// wxWindows headers
 #include <wx/wx.h>
+#include <wx/treectrl.h>
+#include <wx/listctrl.h>
+#include <wx/textctrl.h>
+
+// fl framework headers
+#include <wx/fl/controlbar.h>
+#include <wx/fl/barhintspl.h>    // bevel for bars with "X"s and grooves
+#include <wx/fl/rowdragpl.h>     // NC-look with draggable rows
+#include <wx/fl/cbcustom.h>      // customization plugin
+#include <wx/fl/hintanimpl.h>
+#include <wx/fl/gcupdatesmgr.h>  // smooth d&d
+#include <wx/fl/antiflickpl.h>   // double-buffered repaint of decorations
+#include <wx/fl/dyntbar.h>       // auto-layout toolbar
+#include <wx/fl/dyntbarhnd.h>    // control-bar dimension handler for it
+#include <wx/fl/panedrawpl.h>
+#include <wx/fl/bardragpl.h>
+#include <wx/fl/cbcustom.h>
+
 
 // App headers
 #include "../pgAdmin3.h"
@@ -82,11 +100,78 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
   SetStatusText("Server: None", 5);
   
   // Toolbar bar
-  CreateToolBar(6);
+  // CreateToolBar(6);
   
   // Return objects
   stBar = GetStatusBar();
-  tlBar = GetToolBar();
+  // tlBar = GetToolBar();
+
+  int cbWidth  = 90;
+  int cbHeight = 60;
+
+  wxPanel* pArea = new wxPanel();  
+  pArea->Create( this, -1 );
+  wxFrameLayout* pLayout = new wxFrameLayout(this, pArea, TRUE);
+  pLayout->SetUpdatesManager(new cbGCUpdatesMgr());  
+  pLayout->PushDefaultPlugins();
+  pLayout->AddPlugin(CLASSINFO(cbSimpleCustomizationPlugin));
+  pLayout->AddPlugin(CLASSINFO(cbBarDragPlugin));
+  pLayout->AddPlugin(CLASSINFO(cbPaneDrawPlugin));
+  pLayout->AddPlugin(CLASSINFO(cbBarHintsPlugin));
+  pLayout->AddPlugin(CLASSINFO(cbHintAnimationPlugin));
+  pLayout->AddPlugin(CLASSINFO(cbRowDragPlugin ));
+  pLayout->AddPlugin(CLASSINFO(cbAntiflickerPlugin));
+  pLayout->AddPlugin(CLASSINFO(cbSimpleCustomizationPlugin));
+  
+  cbDimInfo dimTreeView(200,200, 300,300, 200,450, FALSE, 3, 3);
+  cbDimInfo dimListView(200,500, 300,300, 450,200, FALSE, 3, 3);
+  cbDimInfo dimSQLView(200,500, 300,300, 350,250, FALSE, 3, 3);
+
+  pLayout->AddBar(CreateTreeCtrl(), dimTreeView, FL_ALIGN_LEFT, 0, 0,   "TreeView");
+  pLayout->AddBar(CreateListCtrl(), dimListView, FL_ALIGN_RIGHT, 0, 0,   "ListView");
+  pLayout->AddBar(CreateTextCtrl(), dimSQLView, FL_ALIGN_RIGHT, 0, 1,   "SQL");
+
+  pLayout->RecalcLayout();
+}
+
+wxTreeCtrl* frmMain::CreateTreeCtrl()
+{
+  wxTreeCtrl* pTree = new wxTreeCtrl(this, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSUNKEN_BORDER);
+
+  // Add some items
+  wxTreeItemId pTreeItem = pTree->AddRoot("Root node");
+	pTree->AppendItem(pTreeItem, "Child Node #1");
+	pTree->AppendItem(pTreeItem, "Child Node #2");
+	pTree->Expand(pTreeItem);
+	pTreeItem = pTree->AppendItem(pTreeItem, "Child Node #3");
+	pTree->AppendItem(pTreeItem, "Child Node #4");
+	pTree->AppendItem(pTreeItem, "Child Node #5");
+
+  return pTree;
+}
+
+wxListCtrl* frmMain::CreateListCtrl()
+{
+  wxListCtrl* pList = new wxListCtrl(this, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSUNKEN_BORDER);
+
+  // Add some items
+	pList->InsertColumn(1, "This is Column #1", wxLIST_FORMAT_LEFT, 200);
+	pList->InsertColumn(2, "This is Column #2", wxLIST_FORMAT_LEFT, 200);
+	pList->InsertItem(1, "This is Listview item #1");
+	pList->InsertItem(1, "This is Listview item #2");
+	pList->InsertItem(1, "This is Listview item #3");
+
+  return pList;
+}
+
+wxTextCtrl* frmMain::CreateTextCtrl()
+{
+  wxTextCtrl* pText = new wxTextCtrl(this, -1, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxSUNKEN_BORDER);
+
+  // Add some text
+  pText->SetValue("SQL Pane");
+
+  return pText;
 }
 
 // Event handlers

@@ -8,7 +8,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-// wxWindows Headers
+// wxWindows headers
 #include <wx/wx.h>
 #include <wx/image.h>
 #include <wx/utils.h>
@@ -35,10 +35,12 @@ bool pgAdmin3::OnInit()
   SetTopWindow(winSplash);
   winSplash->Show(TRUE);
   
-  wxSleep(3);
+#ifndef _DEBUG
+  wxSleep(2);
+#endif
   
   // Create & show the main form
-  winMain = new frmMain("pgAdmin III", wxPoint(50, 50), wxSize(600, 440));
+  winMain = new frmMain("pgAdmin III", wxPoint(50, 50), wxSize(750, 550));
   winMain->Show(TRUE);
   
   winSplash->Close();
