@@ -41,6 +41,7 @@ ui/dlgIndexConstraint.cpp ui/dlgForeignKey.cpp \
 ui/dlgSequence.cpp ui/dlgTrigger.cpp ui/dlgType.cpp \
 ui/dlgCheck.cpp ui/frmStatus.cpp utils/misc.cpp \
 utils/sysLogger.cpp utils/sysSettings.cpp \
+utils/utffile.cpp \
 ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = include/copyright.h include/version.h include/ctlSQLBox.h \
@@ -75,7 +76,7 @@ include/pgOperatorClass.h include/pgOperator.h \
 include/pgRule.h include/pgSchema.h include/pgSequence.h \
 include/pgServer.h include/pgSet.h include/pgTable.h \
 include/pgTrigger.h include/pgType.h include/pgUser.h \
-include/pgView.h include/sysLogger.h \
+include/pgView.h include/sysLogger.h include/utffile.h \
 include/sysSettings.h include/wxgridsel.h include/menu.h\
 agent/include/pgaAgent.h agent/include/pgaInstance.h agent/include/pgaJob.h \
 agent/include/pgaStep.h agent/include/pgaSchedule.h
