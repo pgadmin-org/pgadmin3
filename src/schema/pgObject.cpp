@@ -116,6 +116,8 @@ wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
     else
         grantOnType = _grantOnType;
 
+    grantOnType.MakeUpper();
+
     if (!acl.IsNull())
     {
         queryTokenizer acls(acl.Mid(1, acl.Length()-2), ',');

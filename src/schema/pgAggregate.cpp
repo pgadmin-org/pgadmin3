@@ -33,13 +33,15 @@ wxString pgAggregate::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE AGGREGATE ") + GetQuotedFullIdentifier() 
-            + wxT("(\n    BASETYPE=") + GetFinalType()
-            + wxT(", SFUNC=") + GetStateFunction()
-            + wxT(", STYPE=") + GetStateType();
-        AppendIfFilled(sql, wxT(", FFUNC="), qtIdent(GetFinalFunction()));
-        AppendIfFilled(sql, wxT(", INITCOND="), GetInitialCondition());
-        sql += wxT(");\n");
+        sql = wxT("-- Aggregate: \"") + GetFullIdentifier() + wxT("\"\n")
+            + wxT("CREATE AGGREGATE ") + GetQuotedFullIdentifier() 
+            + wxT("(\n  BASETYPE=") + GetInputType()
+            + wxT(",\n  SFUNC=") + GetStateFunction()
+            + wxT(",\n  STYPE=") + GetStateType();
+        AppendIfFilled(sql, wxT(",\n  FFUNC="), qtIdent(GetFinalFunction()));
+        if (GetInitialCondition().length() > 0)
+          sql += wxT(",\n  INITCOND=") + GetInitialCondition() + wxT("'");
+        sql += wxT("\n);\n");
     }
 
     return sql;
@@ -92,8 +94,14 @@ void pgAggregate::ShowTreeCollection(pgCollection *collection, frmMain *form, wx
         // Get the Aggregates
         pgSet *aggregates= collection->GetDatabase()->ExecuteSet(wxT(
             "SELECT pr.oid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n"
-                    "aggfinalfn, proargtypes[0] AS aggbasetype, ti.typname as inputname, aggtranstype, "
-                    "tt.typname as transname, prorettype AS aggfinaltype, tf.typname as finalname, agginitval\n"
+                    "aggfinalfn, "
+                    "proargtypes[0] AS aggbasetype, "
+                    "CASE WHEN (ti.typlen = -1 AND ti.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = ti.typelem) || '[]' ELSE ti.typname END as inputname, "
+                    "aggtranstype, "
+                    "CASE WHEN (tt.typlen = -1 AND tt.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tt.typelem) || '[]' ELSE tt.typname END as transname, "
+                    "prorettype AS aggfinaltype, "
+                    "CASE WHEN (tf.typlen = -1 AND tf.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tf.typelem) || '[]' ELSE tf.typname END as finalname, "
+                    "agginitval\n"
             "  FROM pg_aggregate ag\n"
             "  JOIN pg_proc pr ON pr.oid = ag.aggfnoid\n"
             "  JOIN pg_type ti on ti.oid=proargtypes[0]\n"
@@ -127,4 +135,3 @@ void pgAggregate::ShowTreeCollection(pgCollection *collection, frmMain *form, wx
         }
     }
 }
-
