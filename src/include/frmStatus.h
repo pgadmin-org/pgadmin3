@@ -59,7 +59,6 @@ private:
 	void checkConnection();
     
     frmMain *mainForm;
-	wxStatusBar *statusBar;
     wxButton *btnCancelSt, *btnTerminateSt,*btnCancelLk, *btnTerminateLk;
 
     wxString logFormat;
