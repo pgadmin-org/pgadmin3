@@ -112,7 +112,6 @@ rm -rf %{buildroot}
 %files xrc
 %defattr(-, root, root)
 %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
-%{_libdir}/libwx_gtk2ud_xrc-%{version}.a
 /bin/wxrc
 
 %files stc
