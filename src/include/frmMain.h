@@ -25,7 +25,6 @@
 #include "pgCollection.h"
 #include "pgDatabase.h"
 #include "pgSchema.h"
-#include "frmQueryBuilder.h"
 
 class wxSplitterWindow;
 
@@ -59,7 +58,6 @@ private:
     wxMenu *fileMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu;
     wxToolBar *toolBar;
     wxTreeItemId servers;
-	frmQueryBuilder *qbform;
 	wxImageList *browserImages, *statisticsImages, *propertiesImages;
     wxSplitterWindow *horizontal, *vertical;
 
