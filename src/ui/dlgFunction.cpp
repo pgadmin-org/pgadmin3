@@ -39,9 +39,9 @@
 
 #define lstArguments        CTRL_LISTVIEW("lstArguments")
 #define txtArgName          CTRL_TEXT("txtArgName")
-#define btnAdd              CTRL_BUTTON("btnAdd")
-#define btnChange           CTRL_BUTTON("btnChange")
-#define btnRemove           CTRL_BUTTON("btnRemove")
+#define btnAdd              CTRL_BUTTON("wxID_ADD")
+#define btnChange           CTRL_BUTTON("wxID_CHANGE")
+#define btnRemove           CTRL_BUTTON("wxID_REMOVE")
 
 #define pnlParameter        CTRL_PANEL("pnlParameter")
 #define sbxDefinition       CTRL_STATICBOX("sbxDefinition")
@@ -67,9 +67,9 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
 
     EVT_LIST_ITEM_SELECTED(XRCID("lstArguments"),   dlgFunction::OnSelChangeArg)
     EVT_TEXT(XRCID("txtArgName"),                   dlgFunction::OnChangeArgName)
-    EVT_BUTTON(XRCID("btnAdd"),                     dlgFunction::OnAddArg)
-    EVT_BUTTON(XRCID("btnChange"),                  dlgFunction::OnChangeArg)
-    EVT_BUTTON(XRCID("btnRemove"),                  dlgFunction::OnRemoveArg)
+    EVT_BUTTON(XRCID("wxID_ADD"),                   dlgFunction::OnAddArg)
+    EVT_BUTTON(XRCID("wxID_CHANGE"),                dlgFunction::OnChangeArg)
+    EVT_BUTTON(XRCID("wxID_REMOVE"),                dlgFunction::OnRemoveArg)
 END_EVENT_TABLE();
 
 

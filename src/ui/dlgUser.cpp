@@ -37,8 +37,8 @@
 #define btnDelGroup     CTRL_BUTTON("btnDelGroup")
 
 #define lstVariables    CTRL_LISTVIEW("lstVariables")
-#define btnAdd          CTRL_BUTTON("btnAdd")
-#define btnRemove       CTRL_BUTTON("btnRemove")
+#define btnAdd          CTRL_BUTTON("wxID_ADD")
+#define btnRemove       CTRL_BUTTON("wxID_REMOVE")
 #define cbVarname       CTRL_COMBOBOX2("cbVarname")
 #define txtValue        CTRL_TEXT("txtValue")
 #define chkValue        CTRL_CHECKBOX("chkValue")
@@ -58,8 +58,8 @@ BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_BUTTON(XRCID("btnDelGroup"),                dlgUser::OnGroupRemove)
 
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgUser::OnVarSelChange)
-    EVT_BUTTON(XRCID("btnAdd"),                     dlgUser::OnVarAdd)
-    EVT_BUTTON(XRCID("btnRemove"),                  dlgUser::OnVarRemove)
+    EVT_BUTTON(XRCID("wxID_ADD"),                   dlgUser::OnVarAdd)
+    EVT_BUTTON(XRCID("wxID_REMOVE"),                dlgUser::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgUser::OnVarnameSelChange)
 END_EVENT_TABLE();
 

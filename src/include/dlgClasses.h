@@ -15,9 +15,9 @@
 #include <wx/wx.h>
 
 
-#define btnOK                   CTRL_BUTTON("btnOK")
-#define btnApply                CTRL_BUTTON("btnApply")
-#define btnCancel               CTRL_BUTTON("btnCancel")
+#define btnOK                   CTRL_BUTTON("wxID_OK")
+#define btnApply                CTRL_BUTTON("wxID_APPLY")
+#define btnCancel               CTRL_BUTTON("wxID_CANCEL")
 
 
 class frmMain;

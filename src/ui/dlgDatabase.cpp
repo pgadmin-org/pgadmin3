@@ -33,8 +33,8 @@
 #define cbVarname       CTRL_COMBOBOX2("cbVarname")
 #define txtValue        CTRL_TEXT("txtValue")
 #define chkValue        CTRL_CHECKBOX("chkValue")
-#define btnAdd          CTRL_BUTTON("btnAdd")
-#define btnRemove       CTRL_BUTTON("btnRemove")
+#define btnAdd          CTRL_BUTTON("wxID_ADD")
+#define btnRemove       CTRL_BUTTON("wxID_REMOVE")
 
 
 
@@ -43,8 +43,8 @@ BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbEncoding"),                   dlgProperty::OnChange)
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgDatabase::OnVarSelChange)
-    EVT_BUTTON(XRCID("btnAdd"),                     dlgDatabase::OnVarAdd)
-    EVT_BUTTON(XRCID("btnRemove"),                  dlgDatabase::OnVarRemove)
+    EVT_BUTTON(XRCID("wxID_ADD"),                   dlgDatabase::OnVarAdd)
+    EVT_BUTTON(XRCID("wxID_REMOVE"),                dlgDatabase::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgDatabase::OnVarnameSelChange)
 END_EVENT_TABLE();
 

@@ -27,8 +27,8 @@
 
 
 BEGIN_EVENT_TABLE(dlgConnect, DialogWithHelp)
-    EVT_BUTTON (XRCID("btnOK"),       dlgConnect::OnOK)
-    EVT_BUTTON (XRCID("btnCancel"),   dlgConnect::OnCancel)
+    EVT_BUTTON (XRCID("wxID_OK"),     dlgConnect::OnOK)
+    EVT_BUTTON (XRCID("wxID_CANCEL"), dlgConnect::OnCancel)
     EVT_CHECKBOX(XRCID("chkNeedPwd"), dlgConnect::OnTrustChange)
 END_EVENT_TABLE()
 

@@ -25,7 +25,7 @@
 
 
 BEGIN_EVENT_TABLE(pgDialog, wxDialog)
-    EVT_BUTTON (XRCID("btnCancel"),     pgDialog::OnCancel)
+    EVT_BUTTON (XRCID("wxID_CANCEL"),   pgDialog::OnCancel)
     EVT_CLOSE(                          pgDialog::OnClose)
 END_EVENT_TABLE()
 
@@ -110,7 +110,7 @@ void pgFrame::SavePosition()
 
 BEGIN_EVENT_TABLE(DialogWithHelp, pgDialog)
     EVT_MENU(MNU_HELP,                  DialogWithHelp::OnHelp)
-    EVT_BUTTON(XRCID("btnHelp"),        DialogWithHelp::OnHelp)
+    EVT_BUTTON(XRCID("wxID_HELP"),      DialogWithHelp::OnHelp)
 END_EVENT_TABLE();
 
 
@@ -143,8 +143,8 @@ void DialogWithHelp::OnHelp(wxCommandEvent& ev)
 
 
 BEGIN_EVENT_TABLE(ExecutionDialog, DialogWithHelp)
-    EVT_BUTTON (XRCID("btnOK"),         ExecutionDialog::OnOK)
-    EVT_BUTTON (XRCID("btnCancel"),     ExecutionDialog::OnCancel)
+    EVT_BUTTON (XRCID("wxID_OK"),       ExecutionDialog::OnOK)
+    EVT_BUTTON (XRCID("wxID_CANCEL"),   ExecutionDialog::OnCancel)
     EVT_CLOSE(                          ExecutionDialog::OnClose)
 END_EVENT_TABLE()
 
@@ -280,8 +280,8 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
 #define TIMER_ID 4442
 
 BEGIN_EVENT_TABLE(ExternProcessDialog, DialogWithHelp)
-    EVT_BUTTON(XRCID("btnOK"),              ExternProcessDialog::OnOK)
-    EVT_BUTTON(XRCID("btnCancel"),          ExternProcessDialog::OnCancel)
+    EVT_BUTTON(XRCID("wxID_OK"),            ExternProcessDialog::OnOK)
+    EVT_BUTTON(XRCID("wxID_CANCEL"),        ExternProcessDialog::OnCancel)
     EVT_CLOSE(                              ExternProcessDialog::OnClose)
     EVT_END_PROCESS(-1,                     ExternProcessDialog::OnEndProcess)
     EVT_TIMER(TIMER_ID,                     ExternProcessDialog::OnPollProcess)

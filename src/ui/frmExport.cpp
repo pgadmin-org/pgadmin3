@@ -24,7 +24,7 @@
 
 
 #define txtFilename     CTRL_TEXT("txtFilename")
-#define btnOK           CTRL_BUTTON("btnOK")
+#define btnOK           CTRL_BUTTON("wxID_OK")
 #define rbUnicode       CTRL_RADIOBUTTON("rbUnicode")
 #define rbLocal         CTRL_RADIOBUTTON("rbLocal")
 #define rbCRLF          CTRL_RADIOBUTTON("rbCRLF")
@@ -43,9 +43,9 @@ BEGIN_EVENT_TABLE(frmExport, pgDialog)
     EVT_RADIOBUTTON(XRCID("rbQuoteStrings"),frmExport::OnChange)
     EVT_RADIOBUTTON(XRCID("rbQuoteAll"),    frmExport::OnChange)
     EVT_BUTTON(XRCID("btnFilename"),        frmExport::OnBrowseFile)
-    EVT_BUTTON(XRCID("btnHelp"),            frmExport::OnHelp)
-    EVT_BUTTON(XRCID("btnOK"),              frmExport::OnOK)
-    EVT_BUTTON(XRCID("btnCancel"),          frmExport::OnCancel)
+    EVT_BUTTON(XRCID("wxID_HELP"),          frmExport::OnHelp)
+    EVT_BUTTON(XRCID("wxID_OK"),            frmExport::OnOK)
+    EVT_BUTTON(XRCID("wxID_CANCEL"),        frmExport::OnCancel)
 END_EVENT_TABLE()
 
 
