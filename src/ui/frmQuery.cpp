@@ -624,7 +624,11 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                     elapsed = wxGetLocalTimeMillis() - startTimeRetrieve;
 
                     if (!rowsReadTotal)
+		    {
                         wxYield();
+			if (rowsRead < maxRows)
+			    sqlResult->Freeze();
+		    }
                     rowsReadTotal += rowsRead;
 
                     if (elapsed > elapsedRetrieve +100)
@@ -633,9 +637,8 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                         SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
                         wxYield();
                     }
-                    sqlResult->Freeze();
                 }
-                sqlResult->Thaw();
+		sqlResult->Thaw();
 
                 elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
                 SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
@@ -658,203 +661,6 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                 SetStatusText(NumToStr(rowsReadTotal) + wxT(" of ") + NumToStr(rowsTotal) + wxT(" rows"), STATUSPOS_ROWS);
             }
     }
-
-
-#if 0
-    thread = new queryThread(conn->connection(), query);
-
-    nRows=0;
-
-    if (thread->Create() == wxTHREAD_NO_ERROR)
-    {
-        SetStatusText(wxT(""), STATUSPOS_SECS);
-        SetStatusText(wxT("Query is running."), STATUSPOS_MSGS);
-        SetStatusText(wxT(""), STATUSPOS_ROWS);
-        msgResult->Clear();
-        Update();
-        wxYield();
-        long row=0;
-
-        wxLongLong startTimeQuery=wxGetLocalTimeMillis();
-        thread->Run();
-        while (thread->IsRunning())
-        {
-            elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
-            SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
-            wxYield();
-            wxUsleep(10);
-            wxYield();
-        }
-        msgResult->AppendText(thread->messages);
-
-        elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
-        SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
-
-        int rc=PQresultStatus(thread->result);
-        if (rc != PGRES_TUPLES_OK)
-        {
-            if (rc == PGRES_COMMAND_OK)
-            {
-                showMessage(wxT("Query returned successfully with no result."), wxT("OK."));
-            }
-            else
-            {
-                wxString errMsg = PQerrorMessage(conn->connection());
-                showMessage(errMsg);
-
-                wxString atChar=wxT(" at character ");
-                int chp=errMsg.Find(atChar);
-
-                if (chp > 0)
-                {
-                    chp -= queryOffset;  // do not count EXPLAIN or similar
-                    int selStart=sqlQuery->GetSelectionStart(), selEnd=sqlQuery->GetSelectionEnd();
-                    long errPos=0;
-                    errMsg.Mid(chp+atChar.Length()).ToLong(&errPos);
-                    int line=0, maxLine = sqlQuery->GetLineCount();
-                    while (line < maxLine && sqlQuery->GetLineEndPosition(line) < errPos + selStart+1)
-                        line++;
-                    if (line < maxLine)
-                    {
-                        sqlQuery->MarkerAdd(line, 0);
-                        sqlQuery->EnsureVisible(line);
-                    }
-                }
-            }
-        }
-        else
-        {
-            pgSet *dataSet = new pgSet(thread->result, conn->connection());
-
-            nCols=dataSet->NumCols();
-            nRows=dataSet->NumRows();
-
-            if (!nCols)
-                showMessage(wxT("No Columns."));
-            else
-            {
-                dataSet->MoveFirst();
-                dataSet->GetVal(0);  // Dummy so we read the properties of the last result set
-
-                long col=0;
-                wxString colName, colType;
-
-                if (singleResult)
-                {
-                    int w, h;
-                    sqlResult->GetSize(&w, &h);
-                    colName = dataSet->ColName(0);
-                    sqlResult->InsertColumn(0, colName, wxLIST_FORMAT_LEFT, w);
-                }
-                else
-                {
-                    sqlResult->InsertColumn(0, wxT(""), wxLIST_FORMAT_RIGHT, 30);
-
-                    for (col=0 ; col < nCols ; col++)
-                    {
-                        colName = dataSet->ColName(col);
-                        colType = dataSet->ColType(col);
-                        sqlResult->InsertColumn(col+1, colName +wxT(" (")+ colType +wxT(")"), wxLIST_FORMAT_LEFT, -1);
-                    }
-                }
-                if (nRows)
-                {
-                    SetStatusText(wxT("Retrieving data: " + NumToStr(nRows) + " rows."), STATUSPOS_MSGS);
-                    wxYield();
-
-                    long maxRows=settings->GetMaxRows();
-
-                    if (!maxRows)
-                        maxRows = nRows;
-                    if (nRows > maxRows)
-                    {
-                        wxMessageDialog msg(this, wxT("The maximum of ") + NumToStr(maxRows) + wxT(
-                                    " Rows is exceeded (total ") +NumToStr(nRows) + wxT("). Retrieve all rows anyway?"), wxT("Limit exceeded"), 
-                                    wxYES_NO|wxCANCEL|wxNO_DEFAULT|wxICON_EXCLAMATION);
-                        switch (msg.ShowModal())
-                        {
-                            case wxID_YES:
-                                maxRows = nRows;
-                                break;
-                            case wxID_CANCEL:
-                                maxRows = 0;
-                                break;
-                        }
-                    }
-
-                    wxString value;
-                    wxLongLong elapsed;
-		    elapsedRetrieve=0;
-		    wxLongLong startTimeRetrieve=wxGetLocalTimeMillis();
-
-                    while (row < maxRows && !thread->running && !dataSet->Eof())
-                    {
-                        if (row == 20)
-                            sqlResult->Freeze();
-
-                        sqlResult->InsertItem(row, NumToStr(row+1L));
-
-                        if (singleResult)
-                            sqlResult->SetItem(row, 0, dataSet->GetVal(0));
-                        else
-                        {
-                            for (col=0 ; col < nCols ; col++)
-                            {
-                                value = dataSet->GetVal(col);
-                                sqlResult->SetItem(row, col+1, value);
-                            }
-                        }
-                        row++;
-                        
-                        dataSet->MoveNext();
-                        elapsed = wxGetLocalTimeMillis() - startTimeRetrieve;
-                        if (elapsed > elapsedRetrieve +100)
-                        {
-                            elapsedRetrieve=elapsed;
-                            SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
-                            wxYield();
-                        }
-                    }
-                    elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
-                    SetStatusText(elapsedQuery.ToString() + "+" + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
-                    msgResult->AppendText(wxT(
-                        "Total query runtime: ") + elapsedQuery.ToString() + " ms.\n"
-                        "Data retrieval runtime: " + elapsedRetrieve.ToString() + wxT(" ms.\n"));
-
-                    sqlResult->Thaw();
-                    if (!thread->running)
-                    {
-                        if (row == nRows)
-                            showMessage(NumToStr(row) + wxT(" rows retrieved."), wxT("OK."));
-                        else
-                            showMessage(wxT("Total ") + NumToStr(nRows) + wxT(" rows.\n")+
-                                NumToStr(nRows-row) + wxT(" rows not retrieved."),
-                                NumToStr(nRows-row) + wxT(" rows not retrieved."));
-                    }
-                    else
-                    {
-                        dataSet->MoveLast();
-                        dataSet->GetVal(0); // Dummy
-                        showMessage(wxT("Cancelled while retrieving data: " + 
-                            NumToStr(nRows-row) + " not retrieved."));
-                    }
-                }
-                else
-                    SetStatusText(wxT("OK."), STATUSPOS_MSGS);
-            }
-            delete dataSet;
-        }
-        if (row == nRows)
-            SetStatusText(NumToStr(nRows) + wxT(" rows"), STATUSPOS_ROWS);
-        else
-            SetStatusText(NumToStr(row) + wxT(" of ") + NumToStr(nRows) + wxT(" rows"), STATUSPOS_ROWS);
-        thread->Delete();
-
-        output->SetSelection(row ? 0 : 1);
-    }
-    delete thread;
-    thread=0;
-#endif
 
     setTools(false);
 }

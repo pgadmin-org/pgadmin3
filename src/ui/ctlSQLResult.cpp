@@ -95,6 +95,7 @@ int ctlSQLResult::Retrieve(long chunk)
 
     if (chunk<0)
         chunk=thread->dataSet->NumRows();
+    wxLogInfo("retrieve %d: did %d from %d", chunk, rowsRetrieved, NumRows());
 
     long col, nCols=thread->dataSet->NumCols();
     if (!rowsRetrieved)
@@ -126,6 +127,8 @@ int ctlSQLResult::Retrieve(long chunk)
         rowsRetrieved++;
         count++;
     }
+    wxLogInfo("retrieve done %d: did %d from %d", count, rowsRetrieved, NumRows());
+
     return (count);
 }
 
