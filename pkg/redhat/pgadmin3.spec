@@ -1,4 +1,4 @@
-%define major_version 0.9.3
+%define major_version 1.0
 %define minor_version %(date +%Y%m%d)
 %define wxGTK2_version 20030831
 %define withwxconfig wxgtk2ud-2.5-config
