@@ -11,7 +11,9 @@ LDFLAGS = `wx-config --libs` -lstc -lpq
 
 OBJECTS = $(PROGRAM).o \
           db/pg/pgConn.o \
+          schema/pg/pgServer.o \
           ui/forms/frmAbout.o \
+          ui/forms/frmConnect.o \
           ui/forms/frmMain.o \
           ui/forms/frmOptions.o \
           ui/forms/frmSplash.o \

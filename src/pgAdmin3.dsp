@@ -102,6 +102,10 @@ SOURCE=.\ui\forms\frmAbout.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\forms\frmConnect.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\forms\frmMain.cpp
 # End Source File
 # Begin Source File
@@ -135,6 +139,10 @@ SOURCE=.\db\pg\pgConn.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pg\pgServer.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils\sysLogger.cpp
 # End Source File
 # Begin Source File
@@ -152,6 +160,10 @@ SOURCE=.\ui\controls\ctlSQLBox.h
 # Begin Source File
 
 SOURCE=.\ui\forms\frmAbout.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\forms\frmConnect.h
 # End Source File
 # Begin Source File
 
@@ -179,6 +191,10 @@ SOURCE=.\db\pg\pgConn.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pg\pgServer.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils\sysLogger.h
 # End Source File
 # Begin Source File
@@ -191,7 +207,11 @@ SOURCE=.\utils\sysSettings.h
 # PROP Default_Filter "rc xrc"
 # Begin Source File
 
-SOURCE=.\ui\xrc\win32\frmOptions.xrc
+SOURCE=.\ui\win32\frmConnect.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\win32\frmOptions.xrc
 # End Source File
 # Begin Source File
 

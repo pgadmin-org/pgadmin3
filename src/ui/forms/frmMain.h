@@ -38,8 +38,9 @@ private:
     wxMenuBar *mnuBar;
     wxStatusBar *stBar;
     wxToolBar *tlBar;
+    wxTreeItemId itmServers;
     void OnAbout(wxCommandEvent& event);
-    void OnConnect(wxCommandEvent& event);
+    void OnAddServer(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnUpgradeWizard(wxCommandEvent& event);
     void OnOptions(wxCommandEvent& event);
@@ -49,7 +50,7 @@ private:
 // Menu options
 enum
 {
-    MNU_CONNECT = 101,
+    MNU_ADDSERVER = 101,
     MNU_PASSWORD = 102,
     MNU_SAVEDEFINITION = 103,
     MNU_SAVESCHEMA = 104,
@@ -65,7 +66,7 @@ enum
 // Toolbar buttons
 enum
 {
-    BTN_CONNECT = 201,
+    BTN_ADDSERVER = 201,
     BTN_REFRESH = 202,
     BTN_CREATE = 203,
     BTN_DROP = 204,

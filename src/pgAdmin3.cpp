@@ -54,23 +54,27 @@ bool pgAdmin3::OnInit()
     SetTopWindow(winSplash);
     winSplash->Show(TRUE);
 
-    // Setup the XML resources
-    wxString szXRC;
-    wxXmlResource::Get()->InitAllHandlers();
-    wxLogInfo(wxT("Loading frmOptions.xrc"));
-    szXRC.Printf("%s/frmOptions.xrc", XRC_PATH);
-    wxXmlResource::Get()->Load(szXRC);
-
-    
     // Startup the windows sockets if required
 #ifdef __WXMSW__
-
     WSADATA	wsaData;
     if (WSAStartup(MAKEWORD(1, 1), &wsaData) != 0) {
         wxLogFatalError("Cannot initialise the networking subsystem!");   
     }
-
 #endif
+
+    // Setup the XML resources
+    wxString szXRC;
+    wxXmlResource::Get()->InitAllHandlers();
+
+    // frmConnect
+    wxLogInfo(wxT("Loading frmConnect.xrc"));
+    szXRC.Printf("%s/frmConnect.xrc", XRC_PATH);
+    wxXmlResource::Get()->Load(szXRC);
+
+    // frmOptions
+    wxLogInfo(wxT("Loading frmOptions.xrc"));
+    szXRC.Printf("%s/frmOptions.xrc", XRC_PATH);
+    wxXmlResource::Get()->Load(szXRC);
 
     // Set some defaults
 #ifdef __WXMSW__

@@ -25,10 +25,12 @@
 #include "../../pgAdmin3.h"
 #include "frmMain.h"
 #include "frmAbout.h"
+#include "frmConnect.h"
 #include "frmOptions.h"
 #include "frmUpgradeWizard.h"
 #include "../controls/ctlSQLBox.h"
 #include "../../db/pg/pgConn.h"
+#include "../../schema/pg/pgServer.h"
 
 // Icons
 #include "../../images/aggregate.xpm"
@@ -73,9 +75,9 @@
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
-    EVT_MENU(BTN_CONNECT, frmMain::OnConnect)
+    EVT_MENU(BTN_ADDSERVER, frmMain::OnAddServer)
     EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
-    EVT_MENU(MNU_CONNECT, frmMain::OnConnect)
+    EVT_MENU(MNU_ADDSERVER, frmMain::OnAddServer)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
     EVT_MENU(MNU_OPTIONS, frmMain::OnOptions)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::OnTipOfTheDay)
@@ -93,33 +95,33 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // File Menu
     wxMenu *mnuFile = new wxMenu;
-    mnuFile->Append(MNU_CONNECT, wxT("&Connect..."), wxT("Connect to a PostgreSQL server"));
-    mnuFile->Append(MNU_PASSWORD, wxT("C&hange password..."), wxT("Change your password"));
+    mnuFile->Append(MNU_ADDSERVER, wxT("&Add Server..."), wxT("Add a connection to a server."));
+    mnuFile->Append(MNU_PASSWORD, wxT("C&hange password..."), wxT("Change your password."));
     mnuFile->AppendSeparator();
-    mnuFile->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object"));
-    mnuFile->Append(MNU_SAVESCHEMA, wxT("S&ave DB schema..."), wxT("Save the schema of the current database"));
+    mnuFile->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object."));
+    mnuFile->Append(MNU_SAVESCHEMA, wxT("S&ave DB schema..."), wxT("Save the schema of the current database."));
     mnuFile->AppendSeparator();
-    mnuFile->Append(MNU_EXIT, wxT("E&xit"), wxT("Quit this program"));
+    mnuFile->Append(MNU_EXIT, wxT("E&xit"), wxT("Quit this program."));
     mnuBar->Append(mnuFile, wxT("&File"));
 
     // Tools Menu
     wxMenu *mnuTools = new wxMenu;
-    mnuTools->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard"));
+    mnuTools->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard."));
     mnuTools->AppendSeparator();
-    mnuTools->Append(MNU_OPTIONS, wxT("&Options..."), wxT("Show options dialog"));
+    mnuTools->Append(MNU_OPTIONS, wxT("&Options..."), wxT("Show options dialog."));
     mnuBar->Append(mnuTools, wxT("&Tools"));
 
     // View Menu
     wxMenu *mnuView = new wxMenu;
-    mnuView->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects"));
+    mnuView->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects."));
     mnuBar->Append(mnuView, wxT("&View"));
 
     // Help Menu
     wxMenu *mnuHelp = new wxMenu;
-    mnuHelp->Append(MNU_CONTENTS, wxT("&Help..."), wxT("Open the helpfile"));
-    mnuHelp->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."), wxT("Show a tip of the day"));
+    mnuHelp->Append(MNU_CONTENTS, wxT("&Help..."), wxT("Open the helpfile."));
+    mnuHelp->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."), wxT("Show a tip of the day."));
     mnuHelp->AppendSeparator();
-    mnuHelp->Append(MNU_ABOUT, wxT("&About..."), wxT("Show about dialog"));
+    mnuHelp->Append(MNU_ABOUT, wxT("&About..."), wxT("Show about dialog."));
     mnuBar->Append(mnuHelp, wxT("&Help"));
 
     // Add the Menubar
@@ -158,19 +160,19 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     tlBarBitmaps[8] = wxBitmap(record_xpm);
     tlBarBitmaps[9] = wxBitmap(stop_xpm);
 
-    tlBar->AddTool(BTN_CONNECT, wxT("Connect"), tlBarBitmaps[0], wxT("Connect to a server"), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_REFRESH, wxT("Refresh"), tlBarBitmaps[1], wxT("Refrsh the data below the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_ADDSERVER, wxT("Add Server"), tlBarBitmaps[0], wxT("Add a connection to a server."), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_REFRESH, wxT("Refresh"), tlBarBitmaps[1], wxT("Refrsh the data below the selected object."), wxITEM_NORMAL);
     tlBar->AddSeparator();
-    tlBar->AddTool(BTN_CREATE, wxT("Create"), tlBarBitmaps[2], wxT("Create a new object of the same type as the selected object"), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_DROP, wxT("Drop"), tlBarBitmaps[3], wxT("Drop the currently selected object"), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_PROPERTIES, wxT("Properties"), tlBarBitmaps[4], wxT("Display/edit the properties of the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_CREATE, wxT("Create"), tlBarBitmaps[2], wxT("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_DROP, wxT("Drop"), tlBarBitmaps[3], wxT("Drop the currently selected object."), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_PROPERTIES, wxT("Properties"), tlBarBitmaps[4], wxT("Display/edit the properties of the selected object."), wxITEM_NORMAL);
     tlBar->AddSeparator();
-    tlBar->AddTool(BTN_SQL, wxT("SQL"), tlBarBitmaps[5], wxT("Execute arbitrary SQL queries"), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_VIEWDATA, wxT("View Data"), tlBarBitmaps[6], wxT("View the data in the selected object"), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_VACUUM, wxT("Vacuum"), tlBarBitmaps[7], wxT("Vacuum the current database or table"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_SQL, wxT("SQL"), tlBarBitmaps[5], wxT("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_VIEWDATA, wxT("View Data"), tlBarBitmaps[6], wxT("View the data in the selected object."), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_VACUUM, wxT("Vacuum"), tlBarBitmaps[7], wxT("Vacuum the current database or table."), wxITEM_NORMAL);
     tlBar->AddSeparator();
-    tlBar->AddTool(BTN_RECORD, wxT("Record"), tlBarBitmaps[8], wxT("Record a query log"), wxITEM_NORMAL);
-    tlBar->AddTool(BTN_STOP, wxT("Stop"), tlBarBitmaps[9], wxT("Stop recording the query log"), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_RECORD, wxT("Record"), tlBarBitmaps[8], wxT("Record a query log."), wxITEM_NORMAL);
+    tlBar->AddTool(BTN_STOP, wxT("Stop"), tlBarBitmaps[9], wxT("Stop recording the query log."), wxITEM_NORMAL);
 
     tlBar->Realize();
     
@@ -213,14 +215,8 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     ilBrowser->Add(wxIcon(baddatabase_xpm));
     ilBrowser->Add(wxIcon(closeddatabase_xpm));
 
-    // Add some treeview items
-    wxTreeItemId itmDummy = tvBrowser->AddRoot(wxT("Root node"),0);
-    tvBrowser->AppendItem(itmDummy, wxT("Child Node #1"));
-    tvBrowser->AppendItem(itmDummy, wxT("Child Node #2"));
-    tvBrowser->Expand(itmDummy);
-    itmDummy = tvBrowser->AppendItem(itmDummy, wxT("Child Node #3"));
-    tvBrowser->AppendItem(itmDummy, wxT("Child Node #4"));
-    tvBrowser->AppendItem(itmDummy, wxT("Child Node #5"));
+    // Add the root node
+    itmServers = tvBrowser->AddRoot(wxT("Servers"),0);
 
     //Setup a listview imagemap
     wxImageList *ilProperties = new wxImageList(16, 16);
@@ -305,12 +301,22 @@ void frmMain::OnOptions(wxCommandEvent& event)
     winOptions->Show(TRUE);
 }
 
-void frmMain::OnConnect(wxCommandEvent& event)
+void frmMain::OnAddServer(wxCommandEvent& event)
 {
-     pgConn *objConnection = new pgConn(wxString("postgresql"), wxString("template1"), wxString("postgres"), wxString(""), 5432);
-     if (objConnection->GetStatus() == PGCONN_OK) {
-         wxMessageBox("Connected OK!");
-     } else {
-         wxMessageBox(objConnection->GetLastError());
-     }
+    pgServer *objServer = new pgServer(this);
+    int iRes = objServer->Connect();
+    if (iRes == PGCONN_OK) {
+        wxLogInfo(wxT("pgServer object initialised as required."));
+        wxTreeItemId itmServer = tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 0);
+        objServer->SetId(itmServer);
+        tvBrowser->Expand(itmServers);
+    } else if (iRes == PGCONN_BAD)  {
+        wxString szMsg;
+        szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->cnMaster->GetLastError());
+        wxLogMessage(wxT(szMsg));
+        delete objServer;
+    } else {
+        wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
+        delete objServer;
+    }
 }

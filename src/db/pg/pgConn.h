@@ -45,7 +45,8 @@ private:
 enum
 {
     PGCONN_OK = CONNECTION_OK,
-    PGCONN_BAD = CONNECTION_BAD
+    PGCONN_BAD = CONNECTION_BAD,
+    PGCONN_ABORTED
 };
 
 #endif
