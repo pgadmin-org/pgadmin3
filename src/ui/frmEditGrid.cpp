@@ -411,7 +411,7 @@ void frmEditGrid::Go()
     qry += wxT("* FROM ") + tableName;
     if (!orderBy.IsEmpty())
     {
-        qry += wxT(" ORDER BY ") + orderBy;
+        qry += wxT(" ORDER BY ") + qtIdent(orderBy);
     }
 
     thread=new pgQueryThread(connection->connection(), qry);
