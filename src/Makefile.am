@@ -131,5 +131,5 @@ ui/id_ID/wxstd.mo ui/it_IT/wxstd.mo \
 ui/ja_JP/wxstd.mo ui/pl_PL/wxstd.mo \
 ui/tr_TR/wxstd.mo ui/zh_CN/wxstd.mo
 
-#AM_CPPFLAGS = -Wall -g -I./include/ -I$(WX_HOME) -DDATADIR=\"$(pkgdatadir)/\"
-AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I./include/ -I$(WX_HOME)
+AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\"
+AM_CPPFLAGS = -Wall -g -I$(top_srcdir)/src/include -I$(WX_HOME)
