@@ -245,38 +245,6 @@ SOURCE=.\utils\sysSettings.cpp
 # Begin Group "ui"
 
 # PROP Default_Filter ""
-# Begin Group "win32"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\ui\win32\frmConnect.xrc
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\win32\frmOptions.xrc
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\win32\frmPassword.xrc
-# End Source File
-# End Group
-# Begin Group "gtk"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\ui\gtk\frmConnect.xrc
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\gtk\frmOptions.xrc
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\gtk\frmPassword.xrc
-# End Source File
-# End Group
 # Begin Group "Query Builder"
 
 # PROP Default_Filter ""
@@ -351,6 +319,90 @@ SOURCE=.\ui\dlgTable.cpp
 # Begin Source File
 
 SOURCE=.\ui\dlgUser.cpp
+# End Source File
+# End Group
+# Begin Group "common"
+
+# PROP Default_Filter "xrc"
+# Begin Source File
+
+SOURCE=.\ui\common\dlgCheck.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgColumn.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgDatabase.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgDomain.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgForeignKey.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgGroup.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgIndex.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgIndexConstraint.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgLanguage.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgSchema.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgTable.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgUser.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\frmAddTableView.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\frmConnect.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\frmOptions.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\frmPassword.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\frmQBJoin.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\frmServer.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\frmStatus.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\frmVacuum.xrc
 # End Source File
 # End Group
 # Begin Source File

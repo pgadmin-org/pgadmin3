@@ -126,7 +126,15 @@ long StrToLong(const wxString& value)
 wxString NumToStr(double value)
 {
     wxString result;
+    static wxString decsep;
+    
+    if (decsep.Length() == 0) {
+        decsep.Printf("%lf", 1.2);
+        decsep = decsep[1];
+    }
+
     result.Printf("%lf", value);
+    result.Replace(decsep,".");
 
     // Get rid of excessive decimal places
     if (result.Contains(wxT(".")))
