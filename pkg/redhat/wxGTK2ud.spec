@@ -13,7 +13,7 @@ Packager: pgAdmin project <pgadmin-hackers@postgresql.org>
 BuildRoot: %{_tmppath}/%{name}-root
 
 Provides: libwx_gtk2ud-%{version}.a
-BuildRequires: libtiff-devel libpng-devel libjpeg-devel
+#BuildRequires: libtiff-devel libpng-devel libjpeg-devel
 
 %description
 wxWindows is a free C++ library for cross-platform GUI development.
