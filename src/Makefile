@@ -11,7 +11,7 @@ PROGRAM = pgAdmin3
 OBJECTS = $(PROGRAM).o \
           ui/frmAbout.o \
           ui/frmMain.o \
-		  ui/frmSplash.o
+		      ui/frmSplash.o
 
 .SUFFIXES:	.o .cpp
 
@@ -21,7 +21,7 @@ OBJECTS = $(PROGRAM).o \
 all:    $(PROGRAM)
 
 $(PROGRAM):	$(OBJECTS)
-	$(CC) -o $(PROGRAM) $(OBJECTS) `wx-config --libs`
+	$(CC) -o $(PROGRAM) $(OBJECTS) `wx-config --libs` -lstc
 
 clean:
 	rm -f *.o $(PROGRAM)

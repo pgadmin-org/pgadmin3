@@ -10,8 +10,8 @@
 
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
-#include <wx/textctrl.h>
 #include <wx/notebook.h>
+#include <wx/stc/stc.h>
 
 // Class declarations
 class frmMain : public wxFrame
@@ -28,8 +28,8 @@ private:
   wxTreeCtrl* tvBrowser;
   wxListCtrl* lvProperties;
   wxListCtrl* lvStatistics;
-  wxTextCtrl* txtSQLPane;
   wxNotebook* nbListViews;
+  wxStyledTextCtrl* txtSQLPane;
   DECLARE_EVENT_TABLE()
 };
 

@@ -12,9 +12,9 @@
 #include <wx/wx.h>
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
-#include <wx/textctrl.h>
 #include <wx/notebook.h>
 #include <wx/splitter.h>
+#include <wx/stc/stc.h>
 
 // App headers
 #include "../pgAdmin3.h"
@@ -106,7 +106,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
   lvStatistics = new wxListCtrl(nbListViews, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
   nbListViews->AddPage(lvProperties, "Properties");
   nbListViews->AddPage(lvStatistics, "Statistics");
-  txtSQLPane = new wxTextCtrl(splHorizontal, -1, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
+  txtSQLPane = new wxStyledTextCtrl(splHorizontal, -1, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
   txtSQLPane->SetBackgroundColour(*wxLIGHT_GREY);
   splHorizontal->SplitHorizontally(nbListViews, txtSQLPane, 300);
   splHorizontal->SetMinimumPaneSize(50);
@@ -132,8 +132,24 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 	lvStatistics->InsertItem(1, "Statistic #2");
 	lvStatistics->InsertItem(1, "Statistic #3");
 
-  // Add some text
-  txtSQLPane->SetValue("SQL Pane");
+  // Setup the SQL Pane
+  txtSQLPane->StyleClearAll();
+  txtSQLPane->StyleSetForeground(0,  wxColour(0x80, 0x80, 0x80));
+  txtSQLPane->StyleSetForeground(1,  wxColour(0x00, 0x7f, 0x00));
+  txtSQLPane->StyleSetForeground(2,  wxColour(0x00, 0x7f, 0x00));
+  txtSQLPane->StyleSetForeground(3,  wxColour(0x7f, 0x7f, 0x7f));
+  txtSQLPane->StyleSetForeground(4,  wxColour(0x00, 0x7f, 0x7f));
+  txtSQLPane->StyleSetForeground(5,  wxColour(0x00, 0x00, 0x7f));
+  txtSQLPane->StyleSetForeground(6,  wxColour(0x7f, 0x00, 0x7f));
+  txtSQLPane->StyleSetForeground(7,  wxColour(0x7f, 0x00, 0x7f));
+  txtSQLPane->StyleSetForeground(8,  wxColour(0x00, 0x7f, 0x7f));
+  txtSQLPane->StyleSetForeground(9,  wxColour(0x7f, 0x7f, 0x7f));
+  txtSQLPane->StyleSetForeground(10, wxColour(0x00, 0x00, 0x00));
+  txtSQLPane->StyleSetForeground(11, wxColour(0x00, 0x00, 0x00));
+  txtSQLPane->SetLexer(wxSTC_LEX_SQL);
+  txtSQLPane->SetKeyWords(0, SQL_KEYWORDS);
+
+  txtSQLPane->InsertText(0, "-- Select all records from pg_class\nSELECT\n  *\nFROM\n  pg_class\nWHERE\n relname LIKE 'pg_%'\nORDER BY\n  rename;");
 
 }
 
