@@ -6,7 +6,8 @@
 bin_PROGRAMS = pgadmin3
 
 pgadmin3_SOURCES = pgAdmin3.cpp \
-db/pgConn.cpp db/pgSet.cpp db/keywords.c \
+db/pgConn.cpp db/pgSet.cpp \
+#  db/keywords.c \
 schema/pgAggregate.cpp schema/pgCast.cpp \
 schema/pgCheck.cpp schema/pgCollection.cpp \
 schema/pgColumn.cpp schema/pgConstraints.cpp \
