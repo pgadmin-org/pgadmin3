@@ -225,11 +225,12 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
                     if (ctl)
                     {
                         wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
-                        if (txt && txt->IsMultiLine())
+//                        if (txt && txt->IsMultiLine())
+                        if (txt) // && txt->IsMultiLine())
                         {
                             long from, to;
                             txt->GetSelection(&from, &to);
-#if __WXMSW__
+#ifdef __WXMSW__
                             txt->Replace(from, to, wxT("\r\n"));
 #else
                             txt->Replace(from, to, wxT("\n"));
@@ -621,7 +622,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                 if (colSet->GetVal(wxT("adsrc")) ==  wxT("nextval('") 
                         + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname"))
                         + wxT("_") + columns[i].name + wxT("_seq'::text)"))
-                    columns[i].type = PGOID_TYPE_SERIAL;
+                    columns[i].type = (Oid)PGOID_TYPE_SERIAL;
             }
             columns[i].typlen=colSet->GetLong(wxT("typlen"));
             columns[i].typmod=colSet->GetLong(wxT("typmod"));
@@ -765,7 +766,7 @@ wxString sqlTable::GetColLabelValue(int col)
     if (columns[col].isPrimaryKey)
         label += wxT("[PK] ");
 
-    if (columns[col].type == PGOID_TYPE_SERIAL)
+    if (columns[col].type == (Oid)PGOID_TYPE_SERIAL)
         label += wxT("serial");
     else
         label += columns[col].typeName;
