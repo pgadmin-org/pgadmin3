@@ -53,7 +53,7 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 %setup -q
 
 %build
-./configure --enable-monolithic --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
+%configure --enable-monolithic --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
 make
 
 pushd contrib/src
