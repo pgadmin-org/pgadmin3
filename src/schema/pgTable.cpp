@@ -22,7 +22,7 @@
 #include "pgIndexConstraint.h"
 #include "pgForeignKey.h"
 #include "pgCheck.h"
-
+#include "sysSettings.h"
 
 pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, PG_TABLE, newName)
@@ -405,11 +405,11 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
             InsertListItem(properties, pos++, wxT("Primary Key"), GetPrimaryKey());
 
         // this might be on demand later, if too slow
-        UpdateRows();
+        if (settings->GetAutoRowCount()) UpdateRows();
 
         double rows=GetRows();
         if (rows < 0)
-            InsertListItem(properties, pos++, wxT("Rows"), wxT("?"));
+            InsertListItem(properties, pos++, wxT("Rows"), wxT("Automatic row counting is disabled"));
         else
             InsertListItem(properties, pos++, wxT("Rows"), rows);
 

@@ -69,6 +69,10 @@ public:
     bool GetShowSystemObjects() const { return showSystemObjects; }
     void SetShowSystemObjects(const bool newval);
 
+    // Auto Row Count
+    bool GetAutoRowCount() const { return autoRowCount; }
+    void SetAutoRowCount(const bool newval);
+
 private:
 
     // Tip Of The Day
@@ -93,6 +97,7 @@ private:
     bool askSaveConfirmation;
     bool confirmDelete;
     long maxRows, maxColSize;
+    bool autoRowCount;
 };
 
 #endif

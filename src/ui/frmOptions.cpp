@@ -32,6 +32,7 @@
 #define chkAskSaveConfirm           CTRL("chkAskSaveConfirm", wxCheckBox)
 #define chkAskDelete                CTRL("chkAskDelete", wxCheckBox)
 #define chkShowUsersForPrivileges   CTRL("chkShowUsersForPrivileges", wxCheckBox)
+#define chkAutoRowCount             CTRL("chkAutoRowCount", wxCheckBox)
 
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
@@ -61,6 +62,7 @@ frmOptions::frmOptions(wxFrame *parent)
     chkAskSaveConfirm->SetValue(!settings->GetAskSaveConfirmation());
     chkAskDelete->SetValue(settings->GetConfirmDelete());
     chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
+    chkAutoRowCount->SetValue(settings->GetAutoRowCount());
 
     txtHelpSite->SetValue(settings->GetHelpSite());
 }
@@ -111,6 +113,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetAskSaveConfirmation(!chkAskSaveConfirm->IsChecked());
     settings->SetConfirmDelete(chkAskDelete->IsChecked());
     settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->IsChecked());
+    settings->SetAutoRowCount(chkAutoRowCount->IsChecked());
 
     settings->SetHelpSite(txtHelpSite->GetValue());
     Destroy();

@@ -52,6 +52,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     askSaveConfirmation=StrToBool(Read(wxT("AskSaveConfirmation"), wxT("Yes")));
     confirmDelete=StrToBool(Read(wxT("ConfirmDelete"), wxT("Yes")));
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
+    Read(wxT("AutoRowCount"), &autoRowCount, TRUE);
 }
 
 
@@ -137,6 +138,16 @@ void sysSettings::SetShowSystemObjects(const bool newval)
 {
     showSystemObjects = newval;
     this->Write(wxT("ShowSystemObjects"), showSystemObjects);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Auto Row Count
+//////////////////////////////////////////////////////////////////////////
+
+void sysSettings::SetAutoRowCount(const bool newval)
+{
+    autoRowCount = newval;
+    this->Write(wxT("AutoRowCount"), autoRowCount);
 }
 
 //////////////////////////////////////////////////////////////////////////
