@@ -46,7 +46,8 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
             + wxT("-- DROP USER ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE USER ") + GetQuotedIdentifier()
             + wxT("\n  WITH SYSID ") + NumToStr(userId);
-        AppendIfFilled(sql, wxT("\n  PASSWORD ENCRYPTED "), GetPassword());
+        if (GetPassword() != wxT("********"))
+            AppendIfFilled(sql, wxT("\n  PASSWORD ENCRYPTED "), GetPassword());
         sql += wxT("\n ");
         if (GetCreateDatabase())    sql += wxT(" CREATEDB");
         else                        sql += wxT(" NOCREATEDB");
@@ -158,8 +159,15 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 {
     pgUser *user=0;
 
-    pgSet *users= collection->GetServer()->ExecuteSet(wxT(
-        "SELECT * FROM pg_shadow") + restriction);
+    wxString tabname;
+
+    if (collection->GetServer()->HasPrivilege(wxT("table"), wxT("pg_shadow"), wxT("SELECT")))
+        tabname=wxT("pg_shadow");
+    else
+        tabname=wxT("pg_user");
+
+    pgSet *users = collection->GetServer()->ExecuteSet(wxT(
+        "SELECT * FROM ") + tabname + restriction);
 
     if (users)
     {

@@ -60,7 +60,7 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         wxString ml=memberIds;
         ml.Replace(wxT(" "), wxT(","));
         pgSet *set=server->ExecuteSet(wxT(
-            "SELECT usename FROM pg_shadow WHERE usesysid IN (") + ml + wxT(")"));
+            "SELECT usename FROM pg_user WHERE usesysid IN (") + ml + wxT(")"));
         if (set)
         {
             while (!set->Eof())

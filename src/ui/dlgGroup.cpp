@@ -58,7 +58,7 @@ pgObject *dlgGroup::GetObject()
 
 int dlgGroup::Go(bool modal)
 {
-    pgSet *set=connection->ExecuteSet(wxT("SELECT usename FROM pg_shadow"));
+    pgSet *set=connection->ExecuteSet(wxT("SELECT usename FROM pg_user"));
     if (set)
     {
         while (!set->Eof())
