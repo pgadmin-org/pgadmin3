@@ -49,6 +49,9 @@ pgObject *dlgSchema::GetObject()
 
 int dlgSchema::Go(bool modal)
 {
+    if (!schema)
+        cbOwner->Append(wxT(""));
+
     AddGroups();
     AddUsers(cbOwner);
     if (schema)

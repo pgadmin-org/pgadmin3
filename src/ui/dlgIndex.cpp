@@ -210,6 +210,7 @@ int dlgIndex::Go(bool modal)
     else
     {
         // create mode
+        cbType->Append(wxT(""));
         pgSet *set=connection->ExecuteSet(wxT(
             "SELECT amname FROM pg_am"));
         if (set)

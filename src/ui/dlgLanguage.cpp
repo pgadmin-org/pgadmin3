@@ -78,6 +78,7 @@ int dlgLanguage::Go(bool modal)
     else
     {
         // create mode
+        cbValidator->Append(wxT(""));
         pgSet *set=connection->ExecuteSet(wxT(
             "SELECT nspname, proname, prorettype\n"
             "  FROM pg_proc p\n"

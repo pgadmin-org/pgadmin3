@@ -64,8 +64,12 @@ pgObject *dlgDatabase::GetObject()
 
 int dlgDatabase::Go(bool modal)
 {
+    if (!database)
+        cbOwner->Append(wxT(""));
+
     AddGroups();
     AddUsers(cbOwner);
+
     if (database)
     {
         // edit mode
@@ -87,6 +91,7 @@ int dlgDatabase::Go(bool modal)
         // create mode
 
         txtComment->Disable();
+        cbTemplate->Append(wxT(""));
 
         pgSet *set=connection->ExecuteSet(wxT(
             "SELECT datname FROM pg_database ORDER BY datname"));

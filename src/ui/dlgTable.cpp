@@ -84,6 +84,8 @@ pgObject *dlgTable::GetObject()
 
 int dlgTable::Go(bool modal)
 {
+    if (!table)
+        cbOwner->Append(wxT(""));
     AddGroups();
     AddUsers(cbOwner);
 
