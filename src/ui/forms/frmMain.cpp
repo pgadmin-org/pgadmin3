@@ -299,8 +299,10 @@ void frmMain::OnOptions(wxCommandEvent& event)
 
 void frmMain::OnAddServer()
 {
+    extern sysSettings *objSettings;
+
     // Create a server object and connec it.
-    pgServer *objServer = new pgServer(this);
+    pgServer *objServer = new pgServer(objSettings->GetLastServer(), objSettings->GetLastDatabase(), objSettings->GetLastUsername(), objSettings->GetLastPort());
     int iRes = objServer->Connect();
 
     // Check the result, and handle it as appropriate
@@ -308,6 +310,10 @@ void frmMain::OnAddServer()
         wxLogInfo(wxT("pgServer object initialised as required."));
         wxTreeItemId itmServer = tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 0, -1, objServer);
         tvBrowser->Expand(itmServers);
+
+    } else if (iRes == PGCONN_DNSERR)  {
+        delete objServer;
+        OnAddServer();
 
     } else if (iRes == PGCONN_BAD)  {
         wxString szMsg;

@@ -41,7 +41,14 @@ sysSettings::sysSettings() : sysConfig(APPNAME_S)
 
     // Log
     sysConfig.Read(wxT("LogFile"), &szLogFile, wxT("pgadmin.log")); 
-    sysConfig.Read(wxT("LogLevel"), &iLogLevel, LOG_INFO); 
+    sysConfig.Read(wxT("LogLevel"), &iLogLevel, LOG_INFO);
+
+    // Last Connection
+    sysConfig.Read(wxT("Last Server"), &szLastServer, wxT("localhost")); 
+    sysConfig.Read(wxT("Last Database"), &szLastDatabase, wxT("template1")); 
+    sysConfig.Read(wxT("Last Username"), &szLastUsername, wxT("postgres")); 
+    sysConfig.Read(wxT("Last Port"), &iLastPort, 5432);
+
 }
 
 
@@ -141,4 +148,48 @@ void sysSettings::SetLogLevel(int iNewVal)
 {
     iLogLevel = iNewVal;
     sysConfig.Write(wxT("LogLevel"), iLogLevel);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Last Connection
+//////////////////////////////////////////////////////////////////////////
+
+wxString sysSettings::GetLastServer() const
+{
+    return szLastServer;
+}
+void sysSettings::SetLastServer(const wxString& szNewVal)
+{
+    szLastServer = szNewVal;
+    sysConfig.Write(wxT("Last Server"), szLastServer);
+}
+
+wxString sysSettings::GetLastDatabase() const
+{
+    return szLastDatabase;
+}
+void sysSettings::SetLastDatabase(const wxString& szNewVal)
+{
+    szLastDatabase = szNewVal;
+    sysConfig.Write(wxT("Last Database"), szLastDatabase);
+}
+
+wxString sysSettings::GetLastUsername() const
+{
+    return szLastUsername;
+}
+void sysSettings::SetLastUsername(const wxString& szNewVal)
+{
+    szLastUsername = szNewVal;
+    sysConfig.Write(wxT("Last Username"), szLastUsername);
+}
+
+int sysSettings::GetLastPort()
+{
+    return iLastPort;
+}
+void sysSettings::SetLastPort(int iNewVal)
+{
+    iLastPort = iNewVal;
+    sysConfig.Write(wxT("Last Port"), iLastPort);
 }

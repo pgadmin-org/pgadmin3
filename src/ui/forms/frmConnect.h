@@ -17,13 +17,15 @@
 // App headers
 #include "../../pgAdmin3.h"
 #include "../../db/pg/pgConn.h"
+#include "../../schema/pg/pgServer.h"
 
 // Class declarations
 class frmConnect : public wxDialog
 {
 public:
-    frmConnect(wxFrame *parent);
+    frmConnect(pgServer *parent, const wxString& szServer = wxString(""), const wxString& szDatabase = wxString(""), const wxString& szUsername = wxString(""), int iPort = 5432);
     ~frmConnect();
+    void Init();
     wxString GetServer();
     wxString GetDatabase();
     wxString GetUsername();

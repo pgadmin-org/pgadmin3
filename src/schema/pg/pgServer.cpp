@@ -18,11 +18,14 @@
 #include "pgObject.h"
 
 
-pgServer::pgServer(wxFrame *parent)
+pgServer::pgServer(const wxString& szNewServer, const wxString& szNewDatabase, const wxString& szNewUsername, int iNewPort)
 : pgObject()
 {  
     wxLogInfo(wxT("Creating a pgServer object"));
-    winParent = parent;
+    szServer = szNewServer;
+    szDatabase = szNewDatabase;
+    szUsername = szNewUsername;
+    iPort = iNewPort;
 }
 
 pgServer::~pgServer()
@@ -43,10 +46,10 @@ wxString pgServer::GetTypeName() const
 int pgServer::Connect() {
 
     wxLogInfo(wxT("Getting connection details..."));
-    frmConnect *winConnect = new frmConnect(winParent);
+    frmConnect *winConnect = new frmConnect(this, szServer, szDatabase, szUsername, iPort);
     ;
 
-    if (winConnect->ShowModal() == 1) {
+    if (winConnect->ShowModal() != 0) {
         delete winConnect;
         return PGCONN_ABORTED;
     }

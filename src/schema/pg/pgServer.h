@@ -24,7 +24,7 @@
 class pgServer : public pgObject
 {
 public:
-    pgServer(wxFrame *parent);
+    pgServer(const wxString& szNewServer = wxString(""), const wxString& szNewDatabase = wxString(""), const wxString& szNewUsername = wxString(""), int iNewPort = 5432);
     ~pgServer();
     int GetType();
     wxString GetTypeName() const;

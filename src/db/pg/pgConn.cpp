@@ -49,18 +49,20 @@ pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxStr
 		heHost = gethostbyname(szServer.c_str());
 		if (heHost == NULL)
 		{
+            bResolvedIP = FALSE;
             szMsg.Printf("Could not resolve hostname: %s", szServer.c_str());
 			wxLogError(szMsg);
 			return;
 		}
 
         memcpy(&(saAddr),heHost->h_addr,heHost->h_length); 
-        //szHost.Printf("%s", inet_ntoa(saAddr));
-	szHost.Printf("%s", inet_ntoa(*((struct in_addr*) heHost->h_addr_list[0])));
+	    szHost.Printf("%s", inet_ntoa(*((struct in_addr*) heHost->h_addr_list[0])));
+
     } else {
         szHost = szServer;
     }
 
+    bResolvedIP = TRUE;
     szMsg.Printf(wxT("Server name: %s resolved to: %s"), szServer.c_str(), szHost.c_str());
     wxLogInfo(szMsg);
 
@@ -199,7 +201,11 @@ int pgConn::GetBackendPID()
 
 int pgConn::GetStatus()
 {
-	return PQstatus(objConn);
+    if(bResolvedIP) {
+	    return PQstatus(objConn);
+    } else {
+        return PGCONN_DNSERR;
+    }
 }
 
 wxString pgConn::GetLastError() const

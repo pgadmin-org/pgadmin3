@@ -49,6 +49,17 @@ public:
     void SetLogFile(const wxString& szNewVal);
     int GetLogLevel();
     void SetLogLevel(int iNewVal);
+
+    // Last connection
+    wxString GetLastServer() const;
+    void SetLastServer(const wxString& szNewVal);
+    wxString GetLastDatabase() const;
+    void SetLastDatabase(const wxString& szNewVal);
+    wxString GetLastUsername() const;
+    void SetLastUsername(const wxString& szNewVal);
+    int GetLastPort();
+    void SetLastPort(int iNewVal);
+
 private:
 
     // The main config object
@@ -67,6 +78,12 @@ private:
     // Log
     wxString szLogFile;
     int iLogLevel;
+
+    // Last connection
+    wxString szLastServer;
+    wxString szLastDatabase;
+    wxString szLastUsername;
+    int iLastPort;
 };
 
 #endif
