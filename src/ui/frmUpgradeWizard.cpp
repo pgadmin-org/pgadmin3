@@ -25,9 +25,9 @@
 #include "frmUpgradeWizard.h"
 
 // Icons
-#include "../../images/pgAdmin3.xpm"
-#include "../../images/unknown.xpm"
-#include "../../images/upgrade.xpm"
+#include "images/pgAdmin3.xpm"
+#include "images/unknown.xpm"
+#include "images/upgrade.xpm"
 
 BEGIN_EVENT_TABLE(frmUpgradeWizard, wxDialog)
 

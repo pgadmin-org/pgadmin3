@@ -494,17 +494,5 @@ SOURCE=.\pgAdmin3.cpp
 SOURCE=.\tips.txt
 # End Source File
 # End Group
-# Begin Source File
-
-SOURCE=..\LICENCE.txt
-# End Source File
-# Begin Source File
-
-SOURCE=..\README.txt
-# End Source File
-# Begin Source File
-
-SOURCE=..\TODO.txt
-# End Source File
 # End Target
 # End Project

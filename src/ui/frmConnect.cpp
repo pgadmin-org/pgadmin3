@@ -22,7 +22,7 @@
 #include "sysLogger.h"
 
 // Icons
-#include "../../images/pgAdmin3.xpm"
+#include "images/pgAdmin3.xpm"
 
 BEGIN_EVENT_TABLE(frmConnect, wxDialog)
     EVT_INIT_DIALOG(frmConnect::Init)
