@@ -55,7 +55,12 @@ wxString pgCheck::GetSql(wxTreeCtrl *browser)
             + wxT(";\n\nALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
             + wxT("\n  ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
-        sql += GetCommentSql();
+
+		if (!GetComment().IsNull())
+		{
+		    sql += wxT("COMMENT ON CONSTRAINT ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
+			    + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+		}
     }
 
     return sql;

@@ -68,8 +68,13 @@ wxString pgIndexConstraint::GetSql(wxTreeCtrl *browser)
             + wxT("\n\nALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
             + wxT("\n  ADD CONSTRAINT ")
             + GetCreate()
-            + wxT(";\n")
-            + GetCommentSql();
+            + wxT(";\n");
+
+		if (!GetComment().IsNull())
+		{
+		    sql += wxT("COMMENT ON CONSTRAINT ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
+			    + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+		}
     }
     return sql;
 }
