@@ -56,7 +56,7 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
         sql +=wxT(";\n");
         if (!configList.IsEmpty())
         {
-            wxStringTokenizer cfgTokens(configList.Mid(1, configList.Length()-2), ',');
+            wxStringTokenizer cfgTokens(configList, ',');
             while (cfgTokens.HasMoreTokens())
             {
                 sql += wxT("ALTER USER ") + GetQuotedIdentifier()
@@ -85,15 +85,12 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, wxT("Update Catalogs?"), BoolToYesNo(GetUpdateCatalog()));
 
         expandedKids=true;
-        if (!configList.IsEmpty())
+        wxStringTokenizer cfgTokens(configList, ',');
+        while (cfgTokens.HasMoreTokens())
         {
-            wxStringTokenizer cfgTokens(configList.Mid(1, configList.Length()-2), ',');
-            while (cfgTokens.HasMoreTokens())
-            {
-                wxString token=cfgTokens.GetNextToken();
-                wxString varName=token.BeforeFirst('=');
-                InsertListItem(properties, pos++, varName, token.Mid(varName.Length()+1));
-            }
+            wxString token=cfgTokens.GetNextToken();
+            wxString varName=token.BeforeFirst('=');
+            InsertListItem(properties, pos++, varName, token.Mid(varName.Length()+1));
         }
     }
 }
@@ -135,7 +132,8 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             user->iSetUpdateCatalog(users->GetBool(wxT("usecatupd")));
             user->iSetAccountExpires(users->GetVal(wxT("valuntil")));
             user->iSetPassword(users->GetVal(wxT("passwd")));
-            user->iSetConfigList(users->GetVal(wxT("useconfig")));
+            wxString str=users->GetVal(wxT("useconfig"));
+            user->iSetConfigList(str.Mid(1, str.Length()-2));
 
             if (browser)
             {

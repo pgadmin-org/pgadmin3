@@ -26,6 +26,9 @@ public:
 private:
     pgUser *user;
     void OnChange(wxNotifyEvent &ev);
+    void OnAdd(wxNotifyEvent &ev);
+    void OnRemove(wxNotifyEvent &ev);
+    void OnSelChange(wxListEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };
