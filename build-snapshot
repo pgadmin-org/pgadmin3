@@ -24,7 +24,7 @@ rm -rf ./src
 make dist
 if [ -e pgadmin3-0.1.1.tar.gz ]; then
 	mv pgadmin3-0.1.1.tar.gz /usr/local/apache/htdocs/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz
-	ln -s -f src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz /usr/local/apache/htdocs/pgadmin3-Alpha-src.tar.gz
+	ln -s -f src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz /usr/local/apache/htdocs/pgadmin3-latest-src.tar.gz
 fi
 
 # Now make the binary build
@@ -77,7 +77,7 @@ if [ -x src/pgadmin3 ]; then
 	/sbin/makepkg --chown y pgadmin3.tgz 
 	if [ -e pgadmin3.tgz ]; then
 		cp pgadmin3.tgz /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
-		ln -s -f linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz /usr/local/apache/htdocs/pgadmin3-Alpha-Slackware90.tgz
+		ln -s -f linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz /usr/local/apache/htdocs/pgadmin3-latest-Slackware90.tgz
 		cp ../slack-desc /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.txt
 	fi
 fi
