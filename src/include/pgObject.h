@@ -31,7 +31,7 @@ class pgSet;
 class pgServer;
 
 // This enum lists the type of objects that may be included in the treeview
-// as objects. If changing, update typeNameList[] as well.
+// as objects. If changing, update typesList[] as well.
 enum PG_OBJTYPE
 {
     PG_NONE,
@@ -63,7 +63,16 @@ enum PG_OBJTYPE
     PG_UNKNOWN
 };
 
-extern wxChar *typeNameList[];
+class pgTypes
+{
+public:
+    wxChar *typName;
+    wxChar *newString;
+    wxChar *newLongString;
+};
+
+
+extern pgTypes typesList[];
 
 // Class declarations
 class pgObject : public wxTreeItemData
@@ -77,7 +86,7 @@ public:
 
     virtual void ShowProperties() const {};
     int GetType() const { return type; }
-    wxString GetTypeName() const { return typeName; }
+    wxString GetTypeName() const { return typesList[type].typName; }
     void iSetName(const wxString& newVal) { name = newVal; }
     wxString GetName() const { return name; }
     OID GetOid() const { return oid; }
@@ -129,7 +138,7 @@ public:
     virtual bool RequireDropConfirm() { return false; }
 
 protected:
-    void CreateListColumns(wxListCtrl *properties, const wxString &left=wxT("Property"), const wxString &right=wxT("Value"));
+    void CreateListColumns(wxListCtrl *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));
     void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2);
     void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxChar *s)
         { InsertListItem(list, pos, str1, wxString(s)); }
@@ -151,7 +160,7 @@ protected:
 private:
     static wxString GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
 
-    wxString typeName, name, owner, comment, acl;
+    wxString name, owner, comment, acl;
     int type;
     OID oid;
 };

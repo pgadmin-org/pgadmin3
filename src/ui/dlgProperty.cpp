@@ -128,7 +128,7 @@ wxString dlgProperty::GetHelpPage() const
         page=obj->GetHelpPage(false);
     else
     {
-        page=wxT("sql-create") + wxString(typeNameList[objectType]).Lower() + wxT(".html");
+        page=wxT("sql-create") + wxString(typesList[objectType].typName).Lower() + wxT(".html");
     }
     return page;
 }
@@ -158,9 +158,9 @@ void dlgProperty::EnableOK(bool enable)
 int dlgProperty::Go(bool modal)
 {
     if (GetObject())
-        SetTitle(wxString(typeNameList[objectType]) + wxT(" ") + GetObject()->GetFullIdentifier());
+        SetTitle(wxString(typesList[objectType].typName) + wxT(" ") + GetObject()->GetFullIdentifier());
     else
-        SetTitle(wxT("Creating new ") + wxString(typeNameList[objectType]));
+        SetTitle(wxGetTranslation(typesList[objectType].newString));
 
     if (modal)
         return ShowModal();
@@ -513,13 +513,13 @@ void dlgProperty::CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgO
     {
         dlg->properties = properties;
 
-        dlg->SetTitle(wxT("Creating new ") + wxString(typeNameList[dlg->objectType]));
+        dlg->SetTitle(wxGetTranslation(typesList[dlg->objectType].newString));
 
         dlg->CreateAdditionalPages();
         dlg->Go();
     }
     else
-        wxMessageBox(wxT("Not implemented"));
+        wxMessageBox(_("Not implemented."));
 }
 
 
@@ -537,7 +537,7 @@ void dlgProperty::EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxLis
         dlg->statistics=statistics;
         dlg->sqlFormPane=sqlbox;
 
-        dlg->SetTitle(wxString(typeNameList[dlg->objectType]) + wxT(" ") + node->GetFullIdentifier());
+        dlg->SetTitle(wxString(wxGetTranslation(typesList[dlg->objectType].typName)) + wxT(" ") + node->GetFullIdentifier());
 
         dlg->CreateAdditionalPages();
         dlg->Go();

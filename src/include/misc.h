@@ -29,9 +29,6 @@ typedef unsigned long OID;
 #endif
 
 
-// Encoding of file data
-#define FILE_ENCODING wxConvLibc
-
 
 // Global Stuff
 void StartMsg(const wxString& msg);
@@ -90,6 +87,10 @@ private:
     char delimiter;
 };
 
+
+// File handling including encoding according to sysSettings
+wxString FileRead(const wxString &filename);
+bool FileWrite(const wxString &filename, const wxString &data);
 
 class frmMain;
 class DialogWithHelp : public wxDialog

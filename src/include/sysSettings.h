@@ -86,6 +86,9 @@ public:
     bool GetDoubleClickProperties() const { return doubleClickProperties; }
     void SetDoubleClickProperties(const bool newval);
 
+    bool GetUnicodeFile() const { return unicodeFile; }
+    void SetUnicodeFile(const bool b) {unicodeFile = b; }
+
 private:
 
     // Tip Of The Day
@@ -111,7 +114,7 @@ private:
     bool askSaveConfirmation;
     bool confirmDelete;
     long maxRows, maxColSize, autoRowCountThreshold;
-    bool stickySql;
+    bool stickySql, unicodeFile;
     bool doubleClickProperties;
 };
 

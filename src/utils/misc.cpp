@@ -13,6 +13,7 @@
 #include <wx/app.h>
 #include <wx/timer.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/file.h>
 
 // Standard headers
 #include <stdlib.h>
@@ -52,6 +53,7 @@ void StartMsg(const wxString& msg)
     stopwatch.Start(0);
     wxLogStatus(timermsg);
     winMain->statusBar->SetStatusText(timermsg, 1);
+    winMain->statusBar->SetStatusText(wxT(""), 2);
 }
 
 void EndMsg()
@@ -59,22 +61,20 @@ void EndMsg()
 
     extern frmMain *winMain;
 
-    if (timermsg.IsEmpty()) return;
+    if (!timermsg.IsEmpty())
+    {
+        // Get the execution time & display it
+        float timeval = stopwatch.Time();
+        wxString time;
+        time.Printf(wxT("%.2f secs"), (timeval/1000));
+        winMain->statusBar->SetStatusText(time, 2);
 
-    // Get the execution time & display it
-    float timeval = stopwatch.Time();
-    wxString time, msg;
-    time.Printf(wxT("%.2f secs"), (timeval/1000));
-    winMain->statusBar->SetStatusText(time, 2);
-
-    // Display the 'Done' message
-    timermsg.Append(wxT(" Done."));
-    msg.Printf(wxT("%s (%s)"), timermsg.c_str(), time.c_str());
-    wxLogStatus(msg);
-    winMain->statusBar->SetStatusText(timermsg, 1);
-    wxEndBusyCursor();
-    timermsg.Empty();
-    
+        // Display the 'Done' message
+        winMain->statusBar->SetStatusText(timermsg + _(" Done."), 1);
+        wxLogStatus(wxT("%s (%s)"), timermsg.c_str(), time.c_str());
+        timermsg.Empty();
+        wxEndBusyCursor();
+    }
 }
 
 // Conversions
@@ -338,6 +338,47 @@ wxString queryTokenizer::GetNextToken()
     return str;
 }
 
+
+wxString FileRead(const wxString &filename)
+{
+    wxString str;
+    wxFile file(filename);
+    if (file.IsOpened())
+    {
+        int len=file.Length();
+        char *buf=new char[len+1];
+        memset(buf, 0, len+1);
+        file.Read(buf, len);
+        file.Close();
+        if (settings->GetUnicodeFile())
+            str=wxString(buf, wxConvUTF8);
+        else
+            str=wxString(buf, wxConvLibc);
+        delete[] buf;
+        str.Replace(wxT("\r"), wxT(""));
+    }
+    return str;
+}
+
+
+bool FileWrite(const wxString &filename, const wxString &data)
+{
+    wxFile file(filename, wxFile::write);
+    if (file.IsOpened())
+    {
+        wxString buf=data;
+#ifdef __WIN32__
+        buf.Replace(wxT("\n"), wxT("\r\n"));
+#endif
+        if (settings->GetUnicodeFile())
+            file.Write(buf, wxConvUTF8);
+        else
+            file.Write(buf, wxConvLibc);
+        file.Close();
+        return true;
+    }
+    return false;
+}
 
 
 

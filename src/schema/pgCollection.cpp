@@ -36,7 +36,7 @@
 
 
 pgCollection::pgCollection(int newType, pgServer *sv)
-: pgObject(newType, typeNameList[newType])
+: pgObject(newType, typesList[newType].typName)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
     schema=0;
@@ -46,7 +46,7 @@ pgCollection::pgCollection(int newType, pgServer *sv)
 
 
 pgCollection::pgCollection(int newType, pgDatabase *db)
-: pgObject(newType, typeNameList[newType])
+: pgObject(newType, typesList[newType].typName)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
     schema=0;
@@ -56,7 +56,7 @@ pgCollection::pgCollection(int newType, pgDatabase *db)
 
 
 pgCollection::pgCollection(int newType, pgSchema *sch)
-: pgObject(newType, typeNameList[newType])
+: pgObject(newType, typesList[newType].typName)
 { 
     wxLogInfo(wxT("Creating a pgCollection object")); 
     schema = sch;
@@ -294,5 +294,5 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
 
     UpdateChildCount(browser);
     if (properties)
-        ShowList(typeNameList[GetType()+1], browser, properties);
+        ShowList(typesList[GetType()+1].typName, browser, properties);
 }

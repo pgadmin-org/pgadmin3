@@ -33,6 +33,7 @@ extern wxArrayInt existingLangs;
 #define radLoglevel                 CTRL("radLoglevel", wxRadioBox)
 #define txtMaxRows                  CTRL("txtMaxRows", wxTextCtrl)
 #define txtMaxColSize               CTRL("txtMaxColSize", wxTextCtrl)
+#define chkUnicodeFile              CTRL("chkUnicodeFile", wxCheckBox)
 #define chkAskSaveConfirm           CTRL("chkAskSaveConfirm", wxCheckBox)
 #define chkAskDelete                CTRL("chkAskDelete", wxCheckBox)
 #define chkShowUsersForPrivileges   CTRL("chkShowUsersForPrivileges", wxCheckBox)
@@ -76,6 +77,7 @@ frmOptions::frmOptions(wxFrame *parent)
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtPgAdminHelpSite->SetValue(settings->GetPgAdminHelpSite());
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
+    chkUnicodeFile->SetValue(settings->GetUnicodeFile());
 
 
     cbLanguage->Append(_("Default"));
@@ -149,6 +151,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetAutoRowCountThreshold(StrToLong(txtAutoRowCount->GetValue()));
     settings->SetStickySql(chkStickySql->IsChecked());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->IsChecked());
+    settings->SetUnicodeFile(chkUnicodeFile->IsChecked());
 
     // Make sure there's a slash on the end of the path
     if (txtPgAdminHelpSite->GetValue().Last() == '/' || txtPgAdminHelpSite->GetValue().Last() == '\\')

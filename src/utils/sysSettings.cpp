@@ -74,8 +74,9 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     confirmDelete=StrToBool(Read(wxT("ConfirmDelete"), wxT("Yes")));
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
     autoRowCountThreshold=Read(wxT("AutoRowCount"), 2000);
-    Read(wxT("StickySql"), &stickySql, TRUE);
-    Read(wxT("DoubleClickProperties"), &doubleClickProperties, TRUE);
+    Read(wxT("StickySql"), &stickySql, true);
+    Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
+    Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
 }
 
 
@@ -93,6 +94,7 @@ sysSettings::~sysSettings()
     Write(wxT("pgAdminHelpSite"), pgAdminHelpSite);
     Write(wxT("SqlHelpSite"), sqlHelpSite);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
+    Write(wxT("WriteUnicodeFile"), unicodeFile);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -117,7 +117,7 @@ void frmVacuum::OnOK(wxCommandEvent& ev)
 
         if (thread)
         {
-            btnOK->SetLabel(wxT("Done"));
+            btnOK->SetLabel(_("Done"));
         }
         btnOK->Enable();
     }

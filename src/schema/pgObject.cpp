@@ -21,36 +21,41 @@
 #include "frmMain.h"
 
 
-// Must match the PG_OBJTYPE enumeration in pgObject.h
-wxChar *typeNameList[] =
-{
-    __("None"),
-    __("Servers"),          __("Server"),
-    __("Databases"),        __("Database"),
-    __("Groups"),           __("Group"),
-    __("Users"),            __("User"),
-    __("Languages"),        __("Language"),
-    __("Schemas"),          __("Schema"),
-    __("Aggregates"),       __("Aggregate"),
-    __("Casts"),            __("Cast"),
-    __("Conversions"),      __("Conversion"),
-    __("Domains"),          __("Domain"),
-    __("Functions"),        __("Function"),
-    __("Trigger Functions"),__("Trigger Function"),
-    __("Operators"),        __("Operator"),
-    __("Operator Classes"), __("Operator Class"),
-    __("Sequences"),        __("Sequence"),
-    __("Tables"),           __("Table"),
-    __("Types"),            __("Type"),
-    __("Views"),            __("View"),
-    __("Columns"),          __("Column"),
-    __("Indexes"),          __("Index"),
-    __("Rules"),            __("Rule"),
-    __("Triggers"),         __("Trigger"),
-    __("Constraints"), __("Primary Key"), __("Unique"), __("Check"), __("Foreign Key"),
-    __("Unknown")
-};
+// Ordering must match the PG_OBJTYPE enumeration in pgObject.h
 
+
+pgTypes typesList[] =
+{
+    {__("None"), 0, 0},
+    {__("Servers"), 0, 0},          {__("Server"), __("New Server"), __("Create a new Server connection.") },
+    {__("Databases"), 0, 0},        {__("Database"), __("New Database"), __("Create a new Database.") },
+    {__("Groups"), 0, 0},           {__("Group"), __("New Group"), __("Create a new Group.") },
+    {__("Users"), 0, 0},            {__("User"), __("New User"), __("Create a new User.") },
+    {__("Languages"), 0, 0},        {__("Language"), __("New Language"), __("Create a new Language.") },
+    {__("Schemas"), 0, 0},          {__("Schema"), __("New Schema"), __("Create a new Schema.") },
+    {__("Aggregates"), 0, 0},       {__("Aggregate"), __("New Aggregate"), __("Create a new Aggregate.") },
+    {__("Casts"), 0, 0},            {__("Cast"), __("New Cast"), __("Create a new Cast.") },
+    {__("Conversions"), 0, 0},      {__("Conversion"), __("New Conversion"), __("Create a new Conversion.") },
+    {__("Domains"), 0, 0},          {__("Domain"), __("New Domain"), __("Create a new Domain.") },
+    {__("Functions"), 0, 0},        {__("Function"), __("New Function"), __("Create a new Function.") },
+    {__("Trigger Functions"), 0, 0},{__("Trigger Function"), __("New Trigger Function"), __("Create a new Trigger Function.") },
+    {__("Operators"), 0, 0},        {__("Operator"), __("New Operator"), __("Create a new Operator.") },
+    {__("Operator Classes"), 0, 0}, {__("Operator Class"), __("New Operator Class"), __("Create a new Operator Class.") },
+    {__("Sequences"), 0, 0},        {__("Sequence"), __("New Sequence"), __("Create a new Sequence.") },
+    {__("Tables"), 0, 0},           {__("Table"), __("New Table"), __("Create a new Table.") },
+    {__("Types"), 0, 0},            {__("Type"), __("New Type"), __("Create a new Type.") },
+    {__("Views"), 0, 0},            {__("View"), __("New View"), __("Create a new View.") },
+    {__("Columns"), 0, 0},          {__("Column"), __("New Column"), __("Add a new Column.") },
+    {__("Indexes"), 0, 0},          {__("Index"), __("New Index"), __("Add a new Index.") },
+    {__("Rules"), 0, 0},            {__("Rule"), __("New Rule"), __("Create a new Rule.") },
+    {__("Triggers"), 0, 0},         {__("Trigger"), __("New Trigger"), __("Add a new Trigger.") },
+    {__("Constraints"), 0, 0},      
+        {__("Primary Key"), __("New Primary Key"), __("Create a Primary Key.") },
+        {__("Unique"), __("New Unique Constraint"), __("Add a new Unique Constraint.") },
+        {__("Check"), __("New Check Constraint"), __("Add a new Check Constraint.") },
+        {__("Foreign Key"), __("New Foreign Key"), __("Add a new Foreign Key.") },
+    {__("Unknown"), 0, 0}
+};
 
 
 pgObject::pgObject(int newType, const wxString& newName)
@@ -61,7 +66,6 @@ pgObject::pgObject(int newType, const wxString& newName)
     if (newType >= PG_UNKNOWN)
         newType = PG_UNKNOWN;
     type = newType;
-    typeName = typeNameList[type];
 
     name = newName;
     expandedKids=false;
@@ -79,10 +83,9 @@ void pgObject::AppendMenu(wxMenu *menu, int type)
             if (IsCollection())
                 type++;
         }
-        wxString text, help;
-        text.Printf(_("New %s"), wxGetTranslation(typeNameList[type]));
-        help.Printf(_("Create a new %s."), wxGetTranslation(typeNameList[type]));
-        menu->Append(MNU_NEW+type, text, help);
+        menu->Append(MNU_NEW+type, 
+            wxGetTranslation(typesList[type].newString),
+            wxGetTranslation(typesList[type].newLongString));
     }
 }
 
@@ -132,9 +135,7 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
     }
 
     wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
-    wxString msg;
-    msg.Printf(_("Retrieving %s details"), wxGetTranslation(typeName));
-    StartMsg(msg);
+    StartMsg(wxString::Format(_("Retrieving %s details"), wxGetTranslation(GetTypeName())));
     ShowTreeDetail(browser, form, properties, statistics, sqlPane);
     EndMsg();
 }
@@ -190,7 +191,7 @@ wxString pgObject::GetCommentSql()
     wxString cmt;
     if (!comment.IsNull())
     {
-        cmt = wxT("COMMENT ON ") + typeName.Upper() + wxT(" ") + GetQuotedFullIdentifier() 
+        cmt = wxT("COMMENT ON ") + GetTypeName().Upper() + wxT(" ") + GetQuotedFullIdentifier() 
             + wxT(" IS ") + qtString(comment) + wxT(";\n");
     }
     return cmt;

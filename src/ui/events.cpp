@@ -426,21 +426,16 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
     filename.SetStyle(wxSAVE | wxOVERWRITE_PROMPT);
 
     // Show the dialogue
-    if (filename.ShowModal() == wxID_OK) {
-
+    if (filename.ShowModal() == wxID_OK)
+    {
         // Write the file
-        wxFile *file = new wxFile(filename.GetPath(), wxFile::write);
-        if (!file->Write(sqlPane->GetText()))
+        if (!FileWrite(filename.GetPath(), sqlPane->GetText()))
             wxLogError(__("Failed to write to the output file: %s"), filename.GetPath().c_str());
-
-        file->Close();
-        return;
-
-    } else {
-        wxLogInfo(wxT("User cancelled"));
-        return;
     }
-
+    else
+    {
+        wxLogInfo(wxT("User cancelled"));
+    }
 }
 
 void frmMain::OnShowSystemObjects(wxCommandEvent& event)
