@@ -48,6 +48,8 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 {
     form->SetDatabase(GetDatabase());
     form->SetButtons(true, true, true, true, true, false, true);
+
+    GetDatabase()->GetServer()->iSetLastDatabase(GetDatabase()->GetName());
     GetDatabase()->GetServer()->iSetLastSchema(GetName());
 
     if (!expandedKids)
@@ -71,6 +73,10 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
         // Functions
         collection = new pgCollection(PG_FUNCTIONS, wxString("Functions"));
+        collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
+        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_FUNCTION, -1, collection);
+
+        collection = new pgCollection(PG_TRIGGERFUNCTIONS, wxString("Trigger Functions"));
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_FUNCTION, -1, collection);
 
