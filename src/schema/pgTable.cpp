@@ -39,7 +39,8 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
     {
         // make sure all kids are appended
         ShowTreeDetail(browser);
-        sql = wxT("CREATE TABLE ") + GetQuotedFullIdentifier() + wxT("   (\n");
+        sql = wxT("-- Table: ") + GetQuotedFullIdentifier() + wxT("\n")
+            + wxT("CREATE TABLE ") + GetQuotedFullIdentifier() + wxT("   (\n");
 
         pgObject *data;
         long cookie;
@@ -75,12 +76,14 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                         if (colCount)
                             sql += wxT(",\n");
 
-                        sql += wxT("    ") + (column->GetQuotedIdentifier() + wxString(' ', 50)).Left(50)
-                            +  column->GetFullType();
+                        sql += wxT("  ") + column->GetQuotedIdentifier() + wxString(" ")
+                            + column->GetFullType();
+
+                        if (column->GetDefault() != wxT(" "))
+                            sql += wxT(" DEFAULT ") + column->GetDefault();
 
                         if (column->GetNotNull())
-                            sql += wxT(" NOT");
-                        sql += wxT(" NULL");
+                            sql += wxT(" NOT NULL");
                         colCount++;
                     }
                 }
@@ -92,7 +95,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         // add primary key
         if (!GetPrimaryKey().IsNull())
         {
-            sql += wxT(",\n   CONSTRAINT ") + GetPrimaryKeyName() + wxT(" PRIMARY KEY (");
+            sql += wxT(",\n  CONSTRAINT ") + GetPrimaryKeyName() + wxT(" PRIMARY KEY (");
             wxStringTokenizer collist(GetPrimaryKeyColNumbers(), ',');
             long cn;
             int pkcolcount=0;
@@ -151,7 +154,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
 
                     pgCheck *check=(pgCheck *)data;
                     check->ShowTreeDetail(browser);
-                    sql += wxT("    CONSTRAINT ") + check->GetConstraint();
+                    sql += wxT("  CONSTRAINT ") + check->GetConstraint();
                 }
                 
                 item=browser->GetNextChild(checkItem, cookie);
@@ -185,7 +188,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
 
                     pgForeignKey *foreignKey=(pgForeignKey *)data;
                     foreignKey->ShowTreeDetail(browser);
-                    sql += wxT("    CONSTRAINT ") + foreignKey->GetConstraint();
+                    sql += wxT("  CONSTRAINT ") + foreignKey->GetConstraint();
                 }                
                 item=browser->GetNextChild(fkItem, cookie);
             }
@@ -350,7 +353,7 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         InsertListItem(properties, pos++, wxT("Inherits Tables"), GetHasSubclass());
         InsertListItem(properties, pos++, wxT("Inherited Tables Count"), GetInheritedTableCount());
         InsertListItem(properties, pos++, wxT("Inherited Tables"), GetInheritedTables());
-        InsertListItem(properties, pos++, wxT("has OIDs?"), GetHasOids());
+        InsertListItem(properties, pos++, wxT("Has OIDs?"), GetHasOids());
         InsertListItem(properties, pos++, wxT("System Table?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }

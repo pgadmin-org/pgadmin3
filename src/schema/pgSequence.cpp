@@ -60,14 +60,15 @@ wxString pgSequence::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         UpdateValues();
-        sql = wxT("CREATE SEQUENCE ") + GetQuotedFullIdentifier()
-            + wxT("\n    INCREMENT ") + GetIncrement().ToString()
-            + wxT(" MINVALUE ") + GetMinValue().ToString()
-            + wxT(" MAXVALUE ") + GetMaxValue().ToString()
-            + wxT("\n    START ") + GetLastValue().ToString()
-            + wxT(" CACHE ") + GetCacheValue().ToString();
+        sql = wxT("-- Sequence: ") + GetQuotedFullIdentifier() + wxT("\n")
+            + wxT("CREATE SEQUENCE ") + GetQuotedFullIdentifier()
+            + wxT("\n  INCREMENT ") + GetIncrement().ToString()
+            + wxT("\n  MINVALUE ") + GetMinValue().ToString()
+            + wxT("\n  MAXVALUE ") + GetMaxValue().ToString()
+            + wxT("\n  START ") + GetLastValue().ToString()
+            + wxT("\n  CACHE ") + GetCacheValue().ToString();
         if (GetCycled())
-            sql += wxT(" CYCLE");
+            sql += wxT("\n  CYCLE");
         sql += wxT(";\n")
             + GetGrant()
             + GetCommentSql();
@@ -92,8 +93,9 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         InsertListItem(properties, pos++, wxT("Minimum"), GetMinValue().ToString());
         InsertListItem(properties, pos++, wxT("Maximum"), GetMaxValue().ToString());
         InsertListItem(properties, pos++, wxT("Increment"), GetIncrement().ToString());
-        InsertListItem(properties, pos++, wxT("Cached"), GetCacheValue().ToString());
+        InsertListItem(properties, pos++, wxT("Cache"), GetCacheValue().ToString());
         InsertListItem(properties, pos++, wxT("Cycled"), GetCycled());
+        InsertListItem(properties, pos++, wxT("System Sequence?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
 
