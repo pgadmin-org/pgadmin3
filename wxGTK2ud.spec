@@ -57,11 +57,15 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 
 %build
 %configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
-
 make %{?_smp_mflags}
+
 pushd contrib/src/xrc
   make %{?_smp_mflags}
 popd
+pushd contrib/utils/wxrc
+  make %{?_smp_mflags}
+popd
+
 pushd contrib/src/stc
   make %{?_smp_mflags}
 popd
@@ -69,9 +73,14 @@ popd
 %install
 rm -rf %{buildroot}
 %makeinstall
+
 pushd contrib/src/xrc
 %makeinstall
 popd
+pushd contrib/utils/wxrc
+%makeinstall
+popd
+
 pushd contrib/src/stc
 %makeinstall
 popd
@@ -103,6 +112,8 @@ rm -rf %{buildroot}
 %files xrc
 %defattr(-, root, root)
 %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
+%{_libdir}/libwx_gtk2ud_xrc-%{version}.a
+/bin/wxrc
 
 %files stc
 %defattr(-, root, root)
