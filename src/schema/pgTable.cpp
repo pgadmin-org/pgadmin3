@@ -389,6 +389,9 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
                 delete set;
             }
         }
+
+        if (settings->GetAutoRowCountThreshold() >= GetEstimatedRows())
+            UpdateRows();
     }
 
     if (properties)
@@ -405,16 +408,13 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         else
             InsertListItem(properties, pos++, wxT("Primary Key"), GetPrimaryKey());
 
-        // this might be on demand later, if too slow
-        if (settings->GetAutoRowCount()) UpdateRows();
+        InsertListItem(properties, pos++, wxT("Rows estimated"), GetEstimatedRows());
 
-        double rows=GetRows();
         if (rows < 0)
-            InsertListItem(properties, pos++, wxT("Rows"), wxT("Automatic row counting is disabled"));
+            InsertListItem(properties, pos++, wxT("Rows"), wxT("Refresh to count rows"));
         else
             InsertListItem(properties, pos++, wxT("Rows"), rows);
 
-        InsertListItem(properties, pos++, wxT("Rows estimated"), GetEstimatedRows());
         InsertListItem(properties, pos++, wxT("Inherits Tables"), GetHasSubclass());
         InsertListItem(properties, pos++, wxT("Inherited Tables Count"), GetInheritedTableCount());
         InsertListItem(properties, pos++, wxT("Inherited Tables"), GetInheritedTables());
@@ -441,13 +441,17 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
 pgObject *pgTable::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 {
-    pgObject *table=0;
+    pgTable *table=0;
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_TABLES)
-            table = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
+        {
+            table = (pgTable*)ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
+            if (table && table->GetRows() < 0)
+                table->UpdateRows();
+        }
     }
     return table;
 }

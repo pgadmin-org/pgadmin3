@@ -70,8 +70,8 @@ public:
     void SetShowSystemObjects(const bool newval);
 
     // Auto Row Count
-    bool GetAutoRowCount() const { return autoRowCount; }
-    void SetAutoRowCount(const bool newval);
+    long GetAutoRowCountThreshold() const { return autoRowCountThreshold; }
+    void SetAutoRowCountThreshold(const long l) { autoRowCountThreshold=l; }
 
 
     // Sticky SQL
@@ -100,8 +100,7 @@ private:
     bool showUsersForPrivileges;
     bool askSaveConfirmation;
     bool confirmDelete;
-    long maxRows, maxColSize;
-    bool autoRowCount;
+    long maxRows, maxColSize, autoRowCountThreshold;
     bool stickySql;
 };
 

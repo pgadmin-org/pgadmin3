@@ -32,7 +32,7 @@
 #define chkAskSaveConfirm           CTRL("chkAskSaveConfirm", wxCheckBox)
 #define chkAskDelete                CTRL("chkAskDelete", wxCheckBox)
 #define chkShowUsersForPrivileges   CTRL("chkShowUsersForPrivileges", wxCheckBox)
-#define chkAutoRowCount             CTRL("chkAutoRowCount", wxCheckBox)
+#define txtAutoRowCount             CTRL("txtAutoRowCount", wxTextCtrl)
 #define chkStickySql                CTRL("chkStickySql", wxCheckBox)
 
 
@@ -56,6 +56,8 @@ frmOptions::frmOptions(wxFrame *parent)
     wxTextValidator numval(wxFILTER_NUMERIC);
     txtMaxRows->SetValidator(numval);
     txtMaxColSize->SetValidator(numval);
+    txtAutoRowCount->SetValidator(numval);
+    
     txtLogfile->SetValue(settings->GetLogFile());
     radLoglevel->SetSelection(settings->GetLogLevel());
     txtMaxRows->SetValue(NumToStr(settings->GetMaxRows()));
@@ -63,7 +65,7 @@ frmOptions::frmOptions(wxFrame *parent)
     chkAskSaveConfirm->SetValue(!settings->GetAskSaveConfirmation());
     chkAskDelete->SetValue(settings->GetConfirmDelete());
     chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
-    chkAutoRowCount->SetValue(settings->GetAutoRowCount());
+    txtAutoRowCount->SetValue(NumToStr(settings->GetAutoRowCountThreshold()));
     chkStickySql->SetValue(settings->GetStickySql());
 
     txtHelpSite->SetValue(settings->GetHelpSite());
@@ -115,7 +117,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetAskSaveConfirmation(!chkAskSaveConfirm->IsChecked());
     settings->SetConfirmDelete(chkAskDelete->IsChecked());
     settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->IsChecked());
-    settings->SetAutoRowCount(chkAutoRowCount->IsChecked());
+    settings->SetAutoRowCountThreshold(StrToLong(txtAutoRowCount->GetValue()));
     settings->SetStickySql(chkStickySql->IsChecked());
 
     settings->SetHelpSite(txtHelpSite->GetValue());
