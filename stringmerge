@@ -22,9 +22,9 @@ if test -f pgadmin3.pot; then
     msgmerge --update pgadmin3.po ../../../pgadmin3.pot
     echo "Compiling pgadmin3.mo"
     msgfmt -o pgadmin3.mo pgadmin3.po
-    echo "Committing changes to CVS."
-    cvs commit -m "Automatic merge using stringmerge script." pgadmin3.po
-    cvs commit -m "Automatic merge using stringmerge script." pgadmin3.mo
     cd ../../..
   done
+  cd src/ui/
+  echo "Committing changes to CVS."
+  cvs commit -m "Automatic merge using stringmerge script." 
 fi
