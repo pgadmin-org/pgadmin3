@@ -29,7 +29,7 @@
 
 // Data path (defined by configure under Unix).
 #ifndef DATA_DIR
-#define DATA_DIR wxT(".")
+#define DATA_DIR wxT("./")
 #endif
 
 // Application Versions & Name
