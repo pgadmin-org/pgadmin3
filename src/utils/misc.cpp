@@ -171,9 +171,9 @@ wxString qtIdent(const wxString& value)
         return result;
     } else {
         while (pos < (int)result.length()) {
-            if (!((result[pos] >= '0') && (result[pos] <= '9')) && 
-                !((result[pos]  >= 'a') && (result[pos]  <= 'z')) && 
-                !(result[pos]  == '_')){
+            if (!((result.GetChar(pos) >= '0') && (result.GetChar(pos) <= '9')) && 
+                !((result.GetChar(pos)  >= 'a') && (result.GetChar(pos)  <= 'z')) && 
+                !(result.GetChar(pos)  == '_')){
             
                 result.Append(wxT("\""));
                 result.Prepend(wxT("\""));
