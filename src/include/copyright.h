@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// Copyright (C) 2002, The pgAdmin Development Team
-// This software is released under the pgAdmin Public Licence
+// Copyright (C) 2002 - 2003, The pgAdmin Development Team
+// This software is released under the Artistic Licence
 //
 // copyright.h - pgAdmin copyright messages
 //
@@ -11,8 +11,8 @@
 
 #define VERSION_WITH_DATE       wxT("Version ") VERSION wxT(" (") __DATE__ wxT(")")
 #define VERSION_WITHOUT_DATE    wxT("Version ") VERSION
-#define COPYRIGHT               wxT("Copyright 2002, 2003 The pgAdmin Development Team")
-#define LICENSE                 wxT("This software is released under the pgAdmin Public License.")
+#define COPYRIGHT               wxT("Copyright 2002 - 2003 The pgAdmin Development Team")
+#define LICENSE                 wxT("This software is released under the Artistic License.")
 
 
 #ifdef __WIN32__

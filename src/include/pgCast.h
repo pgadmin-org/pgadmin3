@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// Copyright (C) 2002, The pgAdmin Development Team
-// This software is released under the pgAdmin Public Licence
+// Copyright (C) 2002 - 2003, The pgAdmin Development Team
+// This software is released under the Artistic Licence
 //
 // pgCast.h PostgreSQL Cast
 //
