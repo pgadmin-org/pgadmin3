@@ -31,7 +31,6 @@ AC_CHECK_FUNCS([gethostbyname inet_ntoa memmove memset strchr])
 
 # Custom checks
 ENABLE_RELEASE
-ENABLE_WX25
 ENABLE_GTK2
 ENABLE_UNICODE
 CHECK_LIBPQ
