@@ -15,7 +15,7 @@
 #include <libpq-fe.h>
 
 // Windows headers
-#include "winsock.h"
+#include <winsock.h>
 
 // App headers
 #include "pgConn.h"
@@ -24,12 +24,38 @@
 pgConn::pgConn(wxString& szServer = wxString(""), wxString& szDatabase = wxString(""), wxString& szUsername = wxString(""), wxString& szPassword = wxString(""), int iPort = 5432) : objConn()
 {
     wxLogDebug(wxT("Creating pgConn object"));
+    wxString szMsg, szHost;
+
+    // Check the hostname/ipaddress
+    struct hostent *heHost;
+	unsigned long lIPAddr;
+    struct in_addr saAddr;
+
+    lIPAddr = inet_addr(szServer.c_str());
+	if (lIPAddr == INADDR_NONE) // szServer is not an IP address
+	{
+		heHost = gethostbyname(szServer.c_str());
+		if (heHost == NULL)
+		{
+            szMsg.Printf("Could not resolve hostname: %s", szServer);
+			wxLogError(szMsg);
+			return;
+		}
+
+        memcpy(&(saAddr),heHost->h_addr,heHost->h_length); 
+        szHost.Printf("%s", inet_ntoa(saAddr));
+    } else {
+        szHost = szServer;
+    }
+
+    szMsg.Printf(wxT("Server name: %s resolved to: %s"), szServer, szHost);
+    wxLogInfo(szMsg);
 
     // Create the connection string
     wxString szConn;
     if (!szServer.IsEmpty()) {
       szConn.Append(wxT(" hostaddr="));
-      szConn.Append(szServer);
+      szConn.Append(szHost);
     }
     if (!szDatabase.IsEmpty()) {
       szConn.Append(wxT(" dbname="));
@@ -50,18 +76,9 @@ pgConn::pgConn(wxString& szServer = wxString(""), wxString& szDatabase = wxStrin
     szConn.Trim(FALSE);
 
     // Open the connection
-    wxString szMsg;
+    szMsg.Clear();
     szMsg.Printf(wxT("Opening connection with connection string: %s"), szConn);
     wxLogInfo(szMsg);
-
-    // Startup the windows sockets of required
-#ifdef __WXMSW__
-
-    // TODO: Error Handling!!
-    WSADATA	wsaData;
-    WSAStartup(MAKEWORD(1, 1), &wsaData);
-
-#endif
 
     objConn = PQconnectdb(szConn.c_str());
 }

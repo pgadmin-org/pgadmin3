@@ -307,7 +307,7 @@ void frmMain::OnOptions(wxCommandEvent& event)
 
 void frmMain::OnConnect(wxCommandEvent& event)
 {
-     pgConn *objConnection = new pgConn(wxString("127.0.0.1"), wxString("template1"), wxString("postgres"), wxString(""), 5432);
+     pgConn *objConnection = new pgConn(wxString("postgresql"), wxString("template1"), wxString("postgres"), wxString(""), 5432);
      if (objConnection->GetStatus() == PGCONN_OK) {
          wxMessageBox("Connected OK!");
      } else {

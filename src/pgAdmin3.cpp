@@ -8,10 +8,15 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+
+
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/app.h>
 #include <wx/xrc/xmlres.h>
+
+// Windows headers
+#include <winsock.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -56,6 +61,17 @@ bool pgAdmin3::OnInit()
     szXRC.Printf("%s/frmOptions.xrc", XRC_PATH);
     wxXmlResource::Get()->Load(szXRC);
 
+    
+    // Startup the windows sockets if required
+#ifdef __WXMSW__
+
+    WSADATA	wsaData;
+    if (WSAStartup(MAKEWORD(1, 1), &wsaData) != 0) {
+        wxLogFatalError("Cannot initialise the networking subsystem!");   
+    }
+
+#endif
+
     // Set some defaults
 #ifdef __WXMSW__
     SetAuto3D(TRUE);
@@ -86,6 +102,7 @@ int pgAdmin3::OnExit()
 {
     // Delete the settings object to ensure settings are saved.
     delete objSettings;
+    WSACleanup();
     return 1;
 }
 
