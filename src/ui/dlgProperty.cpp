@@ -116,20 +116,29 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
 
     wxSize size=GetSize();
 
-    if (wxWindow::FindWindow(XRCID("txtStatus")))
-        statusBox=CTRL_TEXT("txtStatus");
+    if (XRCID("unkStatusBar"))
+    {
+        statusBox = 0;
+        statusBar = new wxStatusBar(this, -1);
+        wxXmlResource::Get()->AttachUnknownControl(wxT("unkStatusBar"), statusBar);
+    }
     else
     {
-        wxSize stdTxtSize=ConvertDialogToPixels(wxSize(0, 12));
-        size.SetHeight(size.GetHeight()+stdTxtSize.GetHeight());
-        SetSize(size);
-        size=GetClientSize();
-        wxPoint pos(0, size.GetHeight()-stdTxtSize.GetHeight());
-        size.SetHeight(stdTxtSize.GetHeight());
-        statusBox = new wxTextCtrl(this, 178, wxT(""), pos, size, wxTE_READONLY);
+        statusBar = 0;
+        if (XRCID("txtStatus"))
+            statusBox=CTRL_TEXT("txtStatus");
+        else
+        {
+            wxSize stdTxtSize=ConvertDialogToPixels(wxSize(0, 12));
+            size.SetHeight(size.GetHeight()+stdTxtSize.GetHeight());
+            SetSize(size);
+            size=GetClientSize();
+            wxPoint pos(0, size.GetHeight()-stdTxtSize.GetHeight());
+            size.SetHeight(stdTxtSize.GetHeight());
+            statusBox = new wxTextCtrl(this, 178, wxT(""), pos, size, wxTE_READONLY);
+        }
+        statusBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
     }
-
-    statusBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 }
 
 
@@ -164,7 +173,10 @@ void dlgProperty::CheckValid(bool &enable, const bool condition, const wxString 
     {
         if (!condition)
         {
-            statusBox->SetValue(msg);
+            if (statusBox)
+                statusBox->SetValue(msg);
+            if (statusBar)
+                statusBar->SetStatusText(msg);
             enable=false;
         }
     }
@@ -187,7 +199,12 @@ void dlgProperty::EnableOK(bool enable)
 
     btnOK->Enable(enable);
     if (enable)
-        statusBox->SetValue(wxT(""));
+    {
+        if (statusBox)
+            statusBox->SetValue(wxEmptyString);
+        if (statusBar)
+            statusBar->SetStatusText(wxEmptyString);
+    }
 }
 
 
@@ -527,7 +544,10 @@ void dlgProperty::OnApply(wxCommandEvent &ev)
         if (!apply(sql))
             return;
 
-    statusBox->SetValue(_("Changes applied."));
+    if (statusBox)
+        statusBox->SetValue(_("Changes applied."));
+    if (statusBar)
+        statusBar->SetStatusText(_("Changes applied."));
 }
 
 
@@ -750,11 +770,11 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 }
 
 
-void dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
+bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 {
     pgConn *conn=node->GetConnection();
-    if (!conn || conn->GetStatus() != PGCONN_OK)
-        return;
+    if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
+        return false;
 
     dlgProperty *dlg=CreateDlg(frame, node, true, type);
 
@@ -767,14 +787,16 @@ void dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
     }
     else
         wxMessageBox(_("Not implemented."));
+    
+    return true;
 }
 
 
-void dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node)
+bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node)
 {
     pgConn *conn=node->GetConnection();
-    if (!conn || conn->GetStatus() != PGCONN_OK)
-        return;
+    if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
+        return false;
 
     dlgProperty *dlg=CreateDlg(frame, node, false);
 
@@ -787,6 +809,8 @@ void dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
     }
     else
         wxMessageBox(_("Not implemented."));
+
+    return true;
 }
 
 

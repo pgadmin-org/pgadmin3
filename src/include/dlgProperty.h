@@ -30,8 +30,8 @@ class ctlSecurityPanel;
 class dlgProperty : public DialogWithHelp
 {
 public:
-    static void CreateObjectDialog(frmMain *frame, pgObject *node, int type);
-    static void EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node);
+    static bool CreateObjectDialog(frmMain *frame, pgObject *node, int type);
+    static bool EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node);
 
     wxString GetName();
 
@@ -83,6 +83,7 @@ protected:
     wxTextValidator numericValidator;
 
     wxTextCtrl *statusBox;
+    wxStatusBar *statusBar;
     wxNotebook *nbNotebook;
     wxTextCtrl *txtName, *txtOid, *txtComment;
     ctlComboBox *cbOwner;

@@ -1092,7 +1092,8 @@ void frmMain::OnCreate(wxCommandEvent &ev)
 
     if (data)
     {
-        dlgProperty::CreateObjectDialog(this, data, -1);
+        if (!dlgProperty::CreateObjectDialog(this, data, -1))
+            checkAlive();
     }
 }
 
@@ -1108,7 +1109,10 @@ void frmMain::OnNew(wxCommandEvent &ev)
     pgObject *data = GetSelectedObject();
 
     if (data)
-        dlgProperty::CreateObjectDialog(this, data, type);
+    {
+        if (!dlgProperty::CreateObjectDialog(this, data, type))
+            checkAlive();
+    }
 }
 
 
@@ -1117,7 +1121,10 @@ void frmMain::OnProperties(wxCommandEvent &ev)
     pgObject *data = GetSelectedObject();
 
     if (data)
-        dlgProperty::EditObjectDialog(this, sqlPane, data);
+    {
+        if (!dlgProperty::EditObjectDialog(this, sqlPane, data))
+            checkAlive();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
