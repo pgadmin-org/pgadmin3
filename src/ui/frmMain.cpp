@@ -485,6 +485,7 @@ int frmMain::ReconnectServer(pgServer *server)
     switch (res)
     {
         case PGCONN_OK:
+            StartMsg(_("Restoring previous environment"));
             wxLogInfo(wxT("pgServer object initialised as required."));
             browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Normal);
             browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Selected);
@@ -502,6 +503,7 @@ int frmMain::ReconnectServer(pgServer *server)
                 browser->Expand(item);
                 browser->EnsureVisible(item);
             }
+            EndMsg();
             break;
         case PGCONN_DNSERR:
             /*

@@ -42,12 +42,15 @@
 // Global Vars - yuch!
 wxStopWatch stopwatch;
 wxString timermsg;
+long msgLevel=0;
 
 void StartMsg(const wxString& msg)
 {
     extern frmMain *winMain;
 
-    if (!timermsg.IsEmpty()) return;
+    if (msgLevel++)
+        return;
+
     timermsg.Printf(wxT("%s..."), msg.c_str());
     wxBeginBusyCursor();
     stopwatch.Start(0);
@@ -58,10 +61,11 @@ void StartMsg(const wxString& msg)
 
 void EndMsg()
 {
-
     extern frmMain *winMain;
 
-    if (!timermsg.IsEmpty())
+    msgLevel--;
+
+    if (!msgLevel)
     {
         // Get the execution time & display it
         float timeval = stopwatch.Time();
@@ -72,7 +76,6 @@ void EndMsg()
         // Display the 'Done' message
         winMain->statusBar->SetStatusText(timermsg + _(" Done."), 1);
         wxLogStatus(wxT("%s (%s)"), timermsg.c_str(), time.c_str());
-        timermsg.Empty();
         wxEndBusyCursor();
     }
 }
