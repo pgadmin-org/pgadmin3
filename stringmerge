@@ -7,6 +7,8 @@
 # stringmerge - merge pgadmin3.pot template file into existing pgadmin3.po
 # translated files, compile and publish them on CVS.
 #
+# Same as 'Update from .pot' feature of poEdit.
+#
 #######################################################################
 
 if test -f pgadmin3.pot; then
@@ -21,7 +23,7 @@ if test -f pgadmin3.pot; then
     echo "Compiling pgadmin3.mo"
     msgfmt -o pgadmin3.mo pgadmin3.po
     if test -f merge.po; then
-      echo "Commiting changes to CVS."
+      echo "Committing changes to CVS."
       mv -f merge.po pgadmin3.po
       cvs commit -m "Automatic merge using stringmerge script." pgadmin3.*
     fi
