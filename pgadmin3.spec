@@ -35,6 +35,7 @@ pgAdmin3 is the graphical administration interface of PostgreSQL.
 #
 %package i18N-de_DE
 Summary: pgAdmin3 German localisation files.
+Group: Applications/Databases
 Requires: %{name} = %{version}-%{release}
 
 %description i18N-de_DE
@@ -45,6 +46,7 @@ pgAdmin3 German translation by Andreas Pflug <andreas.pflug@web.de>.
 #
 %package i18N-fr_FR
 Summary: pgAdmin3 French localisation files.
+Group: Applications/Databases
 Requires: %{name} = %{version}-%{release}
 
 %description i18N-fr_FR
@@ -55,6 +57,7 @@ pgAdmin3 French translation by Jean-Michel POURE <jm.poure@freesurf.fr>.
 #
 %package i18N-ja_JP
 Summary: pgAdmin3 French localisation files.
+Group: Applications/Databases
 Requires: %{name} = %{version}-%{release}
 
 %description i18N-ja_JP
