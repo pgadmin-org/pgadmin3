@@ -59,7 +59,9 @@ wxString pgTrigger::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull() && this->triggerFunction)
     {
-        sql = wxT("CREATE TRIGGER ") + GetName()
+        sql = wxT("-- DROP TRIGGER ") + GetName()
+            + wxT(" ON ") + GetQuotedFullTable() +wxT(";\n"
+                  "CREATE TRIGGER ") + GetName()
             + wxT(" ") + GetFireWhen() 
             + wxT(" ") + GetEvent()
             + wxT("\n    ON ") + GetQuotedFullTable()
@@ -185,7 +187,7 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
             trigger->iSetFunctionOid(triggers->GetOid(wxT("tgfoid")));
             trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
             trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
-            trigger->iSetQuotedFullTable(qtIdent(triggers->GetVal(wxT("nspname")))+wxT(".")+qtIdent(triggers->GetVal(wxT("nspname"))));
+            trigger->iSetQuotedFullTable(qtIdent(triggers->GetVal(wxT("nspname")))+wxT(".")+qtIdent(triggers->GetVal(wxT("relname"))));
 
             if (browser)
             {
