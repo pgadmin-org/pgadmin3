@@ -416,14 +416,13 @@ void dlgColumn::CheckChange()
         
         if (enable)
             enable = GetName() != column->GetName()
-//                    || txtDefault->GetValue() != column->GetDefault()
-//                    || txtComment->GetValue() != column->GetComment()
-//                    || chkNotNull->GetValue() != column->GetNotNull()
+                    || txtDefault->GetValue() != column->GetDefault()
+                    || txtComment->GetValue() != column->GetComment()
+                    || chkNotNull->GetValue() != column->GetNotNull()
                     || (cbDatatype->GetCount() > 1 && cbDatatype->GetGuessedStringSelection() != column->GetRawTypename())
-//                    || (isVarLen && varlen != column->GetLength())
-//                    || (isVarPrec && varprec != column->GetPrecision())
-//                    || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget());
-;
+                    || (isVarLen && varlen != column->GetLength())
+                    || (isVarPrec && varprec != column->GetPrecision())
+                    || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget());
         EnableOK(enable);
     }
     else
