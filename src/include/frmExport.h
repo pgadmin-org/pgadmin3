@@ -18,12 +18,17 @@
 #include "pgAdmin3.h"
 
 class ctlSQLResult;
+class pgSet;
+
 // Class declarations
 class frmExport : public wxDialog
 {
 public:
-    frmExport(ctlSQLResult *parent);
+    frmExport(wxWindow *parent);
     ~frmExport();
+
+    bool Export(ctlSQLResult *data) { return Export(data, 0); }
+    bool Export(pgSet *set) { return Export(0, set); }
     
 private:
     void OnChange(wxCommandEvent &ev);
@@ -31,8 +36,9 @@ private:
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);
     void OnBrowseFile(wxCommandEvent &ev);
+    bool Export(ctlSQLResult *data, pgSet *set);
 
-    ctlSQLResult *data;
+    wxWindow *parent;
 
     DECLARE_EVENT_TABLE()
 };

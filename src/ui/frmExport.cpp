@@ -52,9 +52,9 @@ END_EVENT_TABLE()
 
 
 
-frmExport::frmExport(ctlSQLResult *parent)
+frmExport::frmExport(wxWindow *p)
 {
-    data=parent;
+    parent=p;
     wxLogInfo(wxT("Creating the export dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -122,83 +122,6 @@ void frmExport::OnChange(wxCommandEvent &ev)
 
 void frmExport::OnOK(wxCommandEvent &ev)
 {
-    wxFile file(txtFilename->GetValue(), wxFile::write);
-    if (!file.IsOpened())
-    {
-        wxLogError(__("Failed to open file %s."), txtFilename->GetValue().c_str());
-        return;
-    }
-
-    wxString line;
-    wxListItem item;
-    item.m_mask=wxLIST_MASK_TEXT;
-    int startCol=0;
-
-    if (data->GetColumnCount() > 1) // first col contains row count
-        startCol=1;
-
-
-    if (chkColnames->GetValue())
-    {
-        for (item.m_col=startCol ; item.m_col < data->GetColumnCount() ; item.m_col++)
-        {
-            if (item.m_col == startCol)
-                line=wxEmptyString;
-            else
-                line += cbColSeparator->GetValue();
-            line += data->colNames.Item(item.m_col);
-        }
-        if (rbCRLF->GetValue())
-            line += wxT("\r\n");
-        else
-            line += wxT("\n");
-
-        if (rbUnicode->GetValue())
-            file.Write(line, wxConvUTF8);
-        else
-            file.Write(line, wxConvLibc);
-    }
-
-    for (item.m_itemId=0 ; item.m_itemId < data->GetItemCount() ; item.m_itemId++)
-    {
-        for (item.m_col=startCol ; item.m_col < data->GetColumnCount() ; item.m_col++)
-        {
-            if (item.m_col == startCol)
-                line=wxEmptyString;
-            else
-                line += cbColSeparator->GetValue();
-            data->GetItem(item);
-            bool needQuote=rbQuoteAll->GetValue();
-            if (!needQuote && rbQuoteStrings->GetValue())
-            {
-                // find out if string
-                switch (data->colTypClasses.Item(item.m_col))
-                {
-                    case PGTYPCLASS_NUMERIC:
-                    case PGTYPCLASS_BOOL:
-                        break;
-                    default:
-                        needQuote=true;
-                        break;
-                }
-            }
-            if (needQuote)
-                line += cbQuoteChar->GetValue() + item.GetText() + cbQuoteChar->GetValue();
-            else
-                line += item.GetText();
-        }
-        if (rbCRLF->GetValue())
-            line += wxT("\r\n");
-        else
-            line += wxT("\n");
-
-        if (rbUnicode->GetValue())
-            file.Write(line, wxConvUTF8);
-        else
-            file.Write(line, wxConvLibc);
-    }
-    file.Close();
-
     settings->Write(wxT("Export/Unicode"), BoolToStr(rbUnicode->GetValue()));
     settings->Write(wxT("Export/RowSeparator"), rbCRLF->GetValue() ? wxT("CR/LF") : wxT("LF"));
     if (rbQuoteAll->GetValue())
@@ -213,10 +136,128 @@ void frmExport::OnOK(wxCommandEvent &ev)
 
     settings->Write(wxT("Export/LastFile"), txtFilename->GetValue());
 
+
     if (IsModal())
         EndModal(1);
     else
         Destroy();
+}
+
+    
+
+bool frmExport::Export(ctlSQLResult *data, pgSet *set)
+{
+    wxFile file(txtFilename->GetValue(), wxFile::write);
+    if (!file.IsOpened())
+    {
+        wxLogError(__("Failed to open file %s."), txtFilename->GetValue().c_str());
+        return false;
+    }
+
+    wxString line;
+    wxListItem item;
+    item.m_mask=wxLIST_MASK_TEXT;
+    int startCol=0;
+    int colCount, rowCount;
+
+    if (set)
+    {
+        colCount = set->NumCols();
+        rowCount = set->NumRows();
+    }
+    else
+    {
+        colCount = data->GetColumnCount();
+        rowCount = data->GetItemCount();
+        if (colCount > 1) // first col contains row count
+            startCol=1;
+    }
+
+
+    if (chkColnames->GetValue())
+    {
+        for (item.m_col=startCol ; item.m_col < colCount ; item.m_col++)
+        {
+            if (item.m_col == startCol)
+                line=wxEmptyString;
+            else
+                line += cbColSeparator->GetValue();
+            if (set)
+                line += set->ColName(item.m_col);
+            else
+                line += data->colNames.Item(item.m_col);
+        }
+        if (rbCRLF->GetValue())
+            line += wxT("\r\n");
+        else
+            line += wxT("\n");
+
+        if (rbUnicode->GetValue())
+            file.Write(line, wxConvUTF8);
+        else
+            file.Write(line, wxConvLibc);
+    }
+
+
+    wxString text;
+    OID typOid;
+
+    for (item.m_itemId=0 ; item.m_itemId < rowCount ; item.m_itemId++)
+    {
+        for (item.m_col=startCol ; item.m_col < colCount ; item.m_col++)
+        {
+            if (item.m_col == startCol)
+                line=wxEmptyString;
+            else
+                line += cbColSeparator->GetValue();
+
+            bool needQuote=rbQuoteAll->GetValue();
+
+            if (set)
+            {
+                text = set->GetVal(item.m_col);
+                typOid = set->ColTypeOid(item.m_col);
+            }
+            else
+            {
+                data->GetItem(item);
+                text = item.GetText();
+                typOid = data->colTypClasses.Item(item.m_col);
+            }
+            if (!needQuote && rbQuoteStrings->GetValue())
+            {
+                // find out if string
+                switch (typOid)
+                {
+                    case PGTYPCLASS_NUMERIC:
+                    case PGTYPCLASS_BOOL:
+                        break;
+                    default:
+                        needQuote=true;
+                        break;
+                }
+            }
+            if (needQuote)
+                line += cbQuoteChar->GetValue() + text + cbQuoteChar->GetValue();
+            else
+                line += text;
+        }
+        if (rbCRLF->GetValue())
+            line += wxT("\r\n");
+        else
+            line += wxT("\n");
+
+        if (rbUnicode->GetValue())
+            file.Write(line, wxConvUTF8);
+        else
+            file.Write(line, wxConvLibc);
+
+        if (set)
+            set->MoveNext();
+    }
+    file.Close();
+
+    return true;
 }
 
 

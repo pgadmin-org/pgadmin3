@@ -35,6 +35,7 @@
 #include "images/edit_undo.xpm"
 #include "images/edit_redo.xpm"
 #include "images/query_execute.xpm"
+#include "images/query_execfile.xpm"
 #include "images/query_explain.xpm"
 #include "images/query_cancel.xpm"
 #include "images/help.xpm"
@@ -65,6 +66,7 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_UNDO,              frmQuery::OnUndo)
     EVT_MENU(MNU_REDO,              frmQuery::OnRedo)
     EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
+    EVT_MENU(MNU_EXECFILE,          frmQuery::OnExecFile)
     EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
     EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
     EVT_MENU(MNU_CONTENTS,          frmQuery::OnContents)
@@ -120,6 +122,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     queryMenu = new wxMenu();
     queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query"));
+    queryMenu->Append(MNU_EXECFILE, _("Execute to file"), _("Execute query, write result to file"));
     queryMenu->Append(MNU_EXPLAIN, _("E&xplain\tF7"), _("Explain query"));
 
     wxMenu *eo=new wxMenu();
@@ -184,6 +187,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find text"), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_EXECFILE, _("Execute to file"), wxBitmap(query_execfile_xpm), _("Execute query, write result to file"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
     toolBar->AddSeparator();
@@ -742,12 +746,28 @@ void frmQuery::OnExecute(wxCommandEvent& event)
     sqlQuery->SetFocus();
 }
 
+
+void frmQuery::OnExecFile(wxCommandEvent &event)
+{
+    wxString query=sqlQuery->GetSelectedText();
+    if (query.IsNull())
+        query = sqlQuery->GetText();
+
+    if (query.IsNull())
+        return;
+    execQuery(query, 0, false, 0, true);
+    sqlQuery->SetFocus();
+}
+
+
 void frmQuery::setTools(const bool running)
 {
     toolBar->EnableTool(MNU_EXECUTE, !running);
+    toolBar->EnableTool(MNU_EXECFILE, !running);
     toolBar->EnableTool(MNU_EXPLAIN, !running);
     toolBar->EnableTool(MNU_CANCEL, running);
     queryMenu->Enable(MNU_EXECUTE, !running);
+    queryMenu->Enable(MNU_EXECFILE, !running);
     queryMenu->Enable(MNU_EXPLAIN, !running);
     queryMenu->Enable(MNU_CANCEL, running);
     fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
@@ -767,7 +787,7 @@ void frmQuery::showMessage(const wxString& msg, const wxString &msgShort)
     SetStatusText(str, STATUSPOS_MSGS);
 }
 
-void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singleResult, const int queryOffset)
+void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singleResult, const int queryOffset, bool toFile)
 {
     long rowsReadTotal=0;
     setTools(true);
@@ -871,105 +891,129 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             output->SetSelection(0);
             long rowsTotal=sqlResult->NumRows();
 
-            if (singleResult)
+            if (toFile)
             {
-                rowsReadTotal=sqlResult->RetrieveOne();
-                showMessage(wxString::Format(_("%d rows retrieved."), rowsReadTotal), _("OK."));
+                SetStatusText(wxString::Format(_("%d rows."), rowsTotal), STATUSPOS_ROWS);
+
+                if (rowsTotal)
+                {
+                    SetStatusText(_("Writing data."), STATUSPOS_MSGS);
+
+                    toolBar->EnableTool(MNU_CANCEL, false);
+                    queryMenu->Enable(MNU_CANCEL, false);
+                    SetCursor(*wxHOURGLASS_CURSOR);
+
+                    if (sqlResult->Export())
+                        SetStatusText(_("Data written to file."), STATUSPOS_MSGS);
+                    else
+                        SetStatusText(_("Data export aborted."), STATUSPOS_MSGS);
+                    SetCursor(wxNullCursor);
+                }
+                else
+                    SetStatusText(_("No data to export."), STATUSPOS_MSGS);
             }
             else
             {
-                SetStatusText(wxString::Format(_("Retrieving data: %d rows."), rowsTotal), STATUSPOS_MSGS);
-                wxYield();
-
-                long maxRows=settings->GetMaxRows();
-
-                if (!maxRows)
-                    maxRows = rowsTotal;
-                if (rowsTotal > maxRows)
+                if (singleResult)
                 {
-                    wxMessageDialog msg(this, wxString::Format(
-                            _("The maximum of %ld rows is exceeded (total %ld)."), maxRows, rowsTotal) +
-                            _("\nRetrieve all rows anyway?"), _("Limit exceeded"), 
-                                wxYES_NO|wxCANCEL|wxNO_DEFAULT|wxICON_EXCLAMATION);
-                    switch (msg.ShowModal())
-                    {
-                        case wxID_YES:
-                            maxRows = rowsTotal;
-                            break;
-                        case wxID_CANCEL:
-                            maxRows = 0;
-                            break;
-                    }
+                    rowsReadTotal=sqlResult->RetrieveOne();
+                    showMessage(wxString::Format(_("%d rows retrieved."), rowsReadTotal), _("OK."));
                 }
-                wxLongLong startTimeRetrieve=wxGetLocalTimeMillis();
-                wxLongLong elapsed;
-                elapsedRetrieve=0;
-		bool resultFreezed=false;
-                
-                while (!aborted && rowsReadTotal < maxRows)
-                {
-                    // Rows will be retrieved in chunks, the first being smaller to have an early screen update
-                    // later, screen update is disabled to speed up retrieval
-                    long chunk;
-                    if (!rowsReadTotal) chunk=20;
-                    else                chunk=100;
-
-                    if (chunk > maxRows-rowsReadTotal)
-                        chunk = maxRows-rowsReadTotal;
-
-                    long rowsRead=sqlResult->Retrieve(chunk);
-                    if (!rowsRead)
-                        break;
-
-                    elapsed = wxGetLocalTimeMillis() - startTimeRetrieve;
-
-                    if (!rowsReadTotal)
-		            {
-                        wxYield();
-			            if (rowsRead < maxRows)
-				    {
-					resultFreezed=true;
-					sqlResult->Freeze();
-				    }
-		            }
-                    rowsReadTotal += rowsRead;
-
-                    if (elapsed > elapsedRetrieve +100)
-                    {
-                        elapsedRetrieve=elapsed;
-                        SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
-                        wxYield();
-                    }
-                }
-		if (resultFreezed)
-		    sqlResult->Thaw();
-
-                elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
-                SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
-
-                str= _("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n") +
-                     _("Data retrieval runtime: ") + elapsedRetrieve.ToString() + wxT(" ms.\n");
-                msgResult->AppendText(str);
-                msgHistory->AppendText(str);
-
-                if (rowsReadTotal == sqlResult->NumRows())
-                    showMessage(wxString::Format(_("%ld rows retrieved."), rowsReadTotal), _("OK."));
                 else
                 {
-                    wxString nr;
-                    nr.Printf(_("%ld  rows not retrieved."), rowsTotal - rowsReadTotal);
-                    showMessage(wxString::Format(_("Total %ld rows.\n"), rowsTotal) + nr, nr);
-                }
-                msgHistory->AppendText(wxT("\n"));
+                    SetStatusText(wxString::Format(_("Retrieving data: %d rows."), rowsTotal), STATUSPOS_MSGS);
+                    wxYield();
 
+                    long maxRows=settings->GetMaxRows();
+
+                    if (!maxRows)
+                        maxRows = rowsTotal;
+                    if (rowsTotal > maxRows)
+
+                    {
+                        wxMessageDialog msg(this, wxString::Format(
+                                _("The maximum of %ld rows is exceeded (total %ld)."), maxRows, rowsTotal) +
+                                _("\nRetrieve all rows anyway?"), _("Limit exceeded"), 
+                                    wxYES_NO|wxCANCEL|wxNO_DEFAULT|wxICON_EXCLAMATION);
+                        switch (msg.ShowModal())
+                        {
+                            case wxID_YES:
+                                maxRows = rowsTotal;
+                                break;
+                            case wxID_CANCEL:
+                                maxRows = 0;
+                                break;
+                        }
+                    }
+                    wxLongLong startTimeRetrieve=wxGetLocalTimeMillis();
+                    wxLongLong elapsed;
+                    elapsedRetrieve=0;
+                    bool resultFreezed=false;
+                
+                    while (!aborted && rowsReadTotal < maxRows)
+                    {
+                        // Rows will be retrieved in chunks, the first being smaller to have an early screen update
+                        // later, screen update is disabled to speed up retrieval
+                        long chunk;
+                        if (!rowsReadTotal) chunk=20;
+                        else                chunk=100;
+
+                        if (chunk > maxRows-rowsReadTotal)
+                            chunk = maxRows-rowsReadTotal;
+
+                        long rowsRead=sqlResult->Retrieve(chunk);
+                        if (!rowsRead)
+                            break;
+
+                        elapsed = wxGetLocalTimeMillis() - startTimeRetrieve;
+
+                        if (!rowsReadTotal)
+		                {
+                            wxYield();
+			                if (rowsRead < maxRows)
+    				        {
+        					    resultFreezed=true;
+	        				    sqlResult->Freeze();
+			    	        }
+		                }
+                        rowsReadTotal += rowsRead;
+
+                        if (elapsed > elapsedRetrieve +100)
+                        {
+                            elapsedRetrieve=elapsed;
+                            SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
+                            wxYield();
+                        }
+                    }
+                    if (resultFreezed)
+                        sqlResult->Thaw();
+
+                    elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
+                    SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
+
+                    str= _("Total query runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n") +
+                         _("Data retrieval runtime: ") + elapsedRetrieve.ToString() + wxT(" ms.\n");
+                    msgResult->AppendText(str);
+                    msgHistory->AppendText(str);
+
+                    if (rowsReadTotal == sqlResult->NumRows())
+                        showMessage(wxString::Format(_("%ld rows retrieved."), rowsReadTotal), _("OK."));
+                    else
+                    {
+                        wxString nr;
+                        nr.Printf(_("%ld  rows not retrieved."), rowsTotal - rowsReadTotal);
+                        showMessage(wxString::Format(_("Total %ld rows.\n"), rowsTotal) + nr, nr);
+                    }
+                    msgHistory->AppendText(wxT("\n"));
+
+                }
+                if (rowsTotal == rowsReadTotal)
+                    SetStatusText(wxString::Format(_("%d rows."), rowsTotal), STATUSPOS_ROWS);
+                else
+                    SetStatusText(wxString::Format(_("%ld of %ld rows"), rowsReadTotal, rowsTotal), STATUSPOS_ROWS);
             }
-            if (rowsTotal == rowsReadTotal)
-                SetStatusText(wxString::Format(_("%d rows."), rowsTotal), STATUSPOS_ROWS);
-            else
-                SetStatusText(wxString::Format(_("%ld of %ld rows"), rowsReadTotal, rowsTotal), STATUSPOS_ROWS);
         }
     }
-
     setTools(false);
     if (rowsReadTotal)
     {

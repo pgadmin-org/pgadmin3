@@ -33,11 +33,18 @@ ctlSQLResult::~ctlSQLResult()
 
 bool ctlSQLResult::Export()
 {
-    if (!CanExport())
-        return false;
-    
-    frmExport dlg(this);
-    return dlg.ShowModal() > 0;
+    if (rowsRetrieved>0 || (thread && thread->DataSet()->NumRows() > 0))
+    {
+        frmExport dlg(this);
+        if (dlg.ShowModal() > 0)
+        {
+            if (rowsRetrieved> 0)
+                return dlg.Export(this);
+            else
+                return dlg.Export(thread->DataSet());
+        }
+    }
+    return false;
 }
 
 

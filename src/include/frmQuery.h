@@ -43,6 +43,7 @@ private:
     void OnHelp(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
     void OnExecute(wxCommandEvent& event);
+    void OnExecFile(wxCommandEvent& event);
     void OnExplain(wxCommandEvent& event);
     void OnOpen(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
@@ -66,7 +67,7 @@ private:
     void updateRecentFiles();
     void openLastFile();
     void updateMenu();
-    void execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0);
+    void execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0, bool toFile=false);
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();
