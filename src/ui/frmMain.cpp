@@ -112,55 +112,55 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     fileMenu->Append(MNU_ADDSERVER, _("&Add Server..."),          _("Add a connection to a server."));
     fileMenu->Append(MNU_PASSWORD, _("C&hange password..."),      _("Change your password."));
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_OPTIONS, _("&Options..."),              _("Show options dialog."));
+    fileMenu->Append(MNU_OPTIONS, _("&Options..."),               _("Show options dialog."));
 #ifdef __WXMAC__
     wxApp::s_macPreferencesMenuItemId = MNU_OPTIONS;
 #endif
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_EXIT, _("E&xit"),                        _("Quit this program."));
+    fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
     menuBar->Append(fileMenu, _("&File"));
 
     // Edit Menu
     editMenu = new wxMenu();
     newMenu=new wxMenu();
-    editMenu->Append(MNU_NEWOBJECT, _("New &Object"), newMenu, _("Create a new object."));
+    editMenu->Append(MNU_NEWOBJECT, _("New &Object"), newMenu,    _("Create a new object."));
     editMenu->AppendSeparator();
     editMenu->Append(MNU_CREATE, _("&Create"),                    _("Create a new object of the same type as the selected object."));
-    editMenu->Append(MNU_DROP, _("&Delete/Drop"),         		_("Delete/Drop the selected object."));
-    editMenu->Append(MNU_PROPERTIES, _("&Properties"),    		_("Display/edit the properties of the selected object."));
+    editMenu->Append(MNU_DROP, _("&Delete/Drop\tDel"),            _("Delete/Drop the selected object."));
+    editMenu->Append(MNU_PROPERTIES, _("&Properties"),    		  _("Display/edit the properties of the selected object."));
     menuBar->Append(editMenu, _("&Edit"));
 
     // Tools Menu
     toolsMenu = new wxMenu();
     toolsMenu->Append(MNU_CONNECT, _("&Connect..."),              _("Connect to the selected server."));
-    toolsMenu->Append(MNU_DISCONNECT, _("&Disconnect"),           _("Disconnect from the selected server."));
+    toolsMenu->Append(MNU_DISCONNECT, _("Disconnec&t"),           _("Disconnect from the selected server."));
     toolsMenu->AppendSeparator();
-    toolsMenu->Append(MNU_SQL, _("SQL"),                          _("Execute arbitrary SQL queries."));
+    toolsMenu->Append(MNU_SQL, _("&Query tool"),                  _("Execute arbitrary SQL queries."));
 #ifdef __WXDEBUG__
-    toolsMenu->Append(MNU_QUERYBUILDER, _("&Query Builder"),      _("Start the query builder."));
+    toolsMenu->Append(MNU_QUERYBUILDER, _("Query &builder"),      _("Start the query builder."));
 #endif
-	toolsMenu->Append(MNU_VIEWDATA, _("View Data"),               _("View the data in the selected object."));
-    toolsMenu->Append(MNU_VACUUM, _("Vacuum"),                    _("Vacuum the current database or table."));
-    toolsMenu->Append(MNU_RELOAD, _("Reload module"),             _("Reload library module which implements this function."));
-    toolsMenu->Append(MNU_STATUS, _("Server Status"),             _("Displays the current database status."));
+	toolsMenu->Append(MNU_VIEWDATA, _("View &Data"),              _("View the data in the selected object."));
+    toolsMenu->Append(MNU_VACUUM, _("&Reorganize"),               _("Reorganize the current database or table."));
+    toolsMenu->Append(MNU_RELOAD, _("Re&load module"),            _("Reload library module which implements this function."));
+    toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
     menuBar->Append(toolsMenu, _("&Tools"));
 
     // View Menu
     viewMenu = new wxMenu();
     viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System objects"),     _("Show or hide system objects."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_REFRESH, _("&Refresh"),          		_("Refresh the selected object."));
+    viewMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),              _("Refresh the selected object."));
     menuBar->Append(viewMenu, _("&Display"));
 
     // Help Menu
     helpMenu = new wxMenu();
     helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
-    helpMenu->Append(MNU_FAQ, _("pgAdmin III FAQ"),               _("Frequently asked questions about pgAdmin III."));
-    helpMenu->Append(MNU_HELP, _("SQL Help"),                     _("Display help on SQL commands."));
-    helpMenu->Append(MNU_PGSQLHELP, _("PostgreSQL Help"),         _("Display help on PostgreSQL database system."));
+    helpMenu->Append(MNU_FAQ, _("pgAdmin III &FAQ"),              _("Frequently asked questions about pgAdmin III."));
+    helpMenu->Append(MNU_HELP, _("&SQL Help\tF1"),                _("Display help on SQL commands."));
+    helpMenu->Append(MNU_PGSQLHELP, _("&PostgreSQL Help"),        _("Display help on PostgreSQL database system."));
     helpMenu->Append(MNU_TIPOFTHEDAY, _("&Tip of the day..."),    _("Show a tip of the day."));
     helpMenu->AppendSeparator();
-    helpMenu->Append(MNU_BUGREPORT, _("Bugreport"),               _("How to send a bugreport to the pgAdmin Development Team."));
+    helpMenu->Append(MNU_BUGREPORT, _("&Bugreport"),              _("How to send a bugreport to the pgAdmin Development Team."));
     helpMenu->Append(MNU_ABOUT, _("&About..."),                   _("Show about dialog."));
 #ifdef __WXMAC__
     wxApp::s_macAboutMenuItemId = MNU_ABOUT;
@@ -170,17 +170,17 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     treeContextMenu = new wxMenu();
     // Tree Context Menu
     newContextMenu = new wxMenu();
-    treeContextMenu->Append(MNU_REFRESH, _("&Refresh"),   		_("Refresh the selected object."));
-    treeContextMenu->Append(MNU_RELOAD, _("Reload module"),       _("Reload library module which implements this function."));
+    treeContextMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),       _("Refresh the selected object."));
+    treeContextMenu->Append(MNU_RELOAD, _("Re&load module"),      _("Reload library module which implements this function."));
     treeContextMenu->Append(MNU_NEWOBJECT, _("New &Object"), newContextMenu, _("Create a new object."));
     treeContextMenu->AppendSeparator();
-	treeContextMenu->Append(MNU_VIEWDATA, _("View Data"),         _("View the data in the selected object."));
-    treeContextMenu->Append(MNU_VACUUM, _("Vacuum"),              _("Vacuum the current database or table."));
-    treeContextMenu->Append(MNU_CONNECT, _("&Connect..."),    	_("Connect to the selected server."));
+	treeContextMenu->Append(MNU_VIEWDATA, _("View &Data"),        _("View the data in the selected object."));
+    treeContextMenu->Append(MNU_VACUUM, _("&Reorganize"),         _("Vacuum the current database or table."));
+    treeContextMenu->Append(MNU_CONNECT, _("&Connect..."),        _("Connect to the selected server."));
     treeContextMenu->Append(MNU_DISCONNECT, _("&Disconnect"),     _("Disconnect from the selected server."));
     treeContextMenu->AppendSeparator();
     treeContextMenu->Append(MNU_CREATE, _("&Create"),             _("Create a new object of the same type as the selected object."));
-    treeContextMenu->Append(MNU_DROP, _("&Delete/Drop"),  		_("Delete/Drop the selected object."));
+    treeContextMenu->Append(MNU_DROP, _("&Delete/Drop"),  	      _("Delete/Drop the selected object."));
     treeContextMenu->Append(MNU_PROPERTIES, _("&Properties"),     _("Display/edit the properties of the selected object."));
 
 
@@ -218,9 +218,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolBar->AddTool(MNU_DROP, _("Drop"), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_PROPERTIES, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_SQL, _("SQL"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_SQL, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_VIEWDATA, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_VACUUM, _("Vacuum"), wxBitmap(vacuum_xpm), _("Vacuum the current database or table."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_VACUUM, _("Reorganize"), wxBitmap(vacuum_xpm), _("Reorganize the current database or table."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
 

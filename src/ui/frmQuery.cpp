@@ -88,44 +88,44 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     fileMenu = new wxMenu();
     recentFileMenu = new wxMenu();
-    fileMenu->Append(MNU_OPEN, _("&Open..."), _("Open a query file"));
-    fileMenu->Append(MNU_SAVE, _("&Save"), _("Save current file"));
-    fileMenu->Append(MNU_SAVEAS, _("Save &as..."), _("Save file under new name"));
+    fileMenu->Append(MNU_OPEN, _("&Open...\tCtrl-O"),   _("Open a query file"));
+    fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
+    fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_EXPORT, _("Export"), _("Export data to file"));
+    fileMenu->Append(MNU_EXPORT, _("&Export\tCtrl-X"),  _("Export data to file"));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_RECENT, _("&Recent files"), recentFileMenu);
-    fileMenu->Append(MNU_EXIT, _("Exit"), _("Exit query window"));
+    fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"), _("Exit query window"));
 
     menuBar->Append(fileMenu, _("&File"));
 
     editMenu = new wxMenu();
-    editMenu->Append(MNU_UNDO, _("&Undo"), _("Undo last action"), wxITEM_NORMAL);
-    editMenu->Append(MNU_REDO, _("&Redo"), _("Redo last action"), wxITEM_NORMAL);
+    editMenu->Append(MNU_UNDO, _("&Undo\tCtrl-Z"), _("Undo last action"), wxITEM_NORMAL);
+    editMenu->Append(MNU_REDO, _("&Redo\tCtrl-Y"), _("Redo last action"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
-    editMenu->Append(MNU_CUT, _("Cu&t"), _("Cut selected text to clipboard"), wxITEM_NORMAL);
-    editMenu->Append(MNU_COPY, _("&Copy"), _("Copy selected text to clipboard"), wxITEM_NORMAL);
-    editMenu->Append(MNU_PASTE, _("&Paste"), _("Paste selected text from clipboard"), wxITEM_NORMAL);
+    editMenu->Append(MNU_CUT, _("Cu&t\tCtrl-X"), _("Cut selected text to clipboard"), wxITEM_NORMAL);
+    editMenu->Append(MNU_COPY, _("&Copy\tCtrl-C"), _("Copy selected text to clipboard"), wxITEM_NORMAL);
+    editMenu->Append(MNU_PASTE, _("&Paste\tCtrl-V"), _("Paste selected text from clipboard"), wxITEM_NORMAL);
     editMenu->Append(MNU_CLEAR, _("C&lear window"), _("Clear edit window"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
-    editMenu->Append(MNU_FIND, _("&Find"), _("Find text"), wxITEM_NORMAL);
+    editMenu->Append(MNU_FIND, _("&Find\tCtrl-F"), _("Find text"), wxITEM_NORMAL);
     menuBar->Append(editMenu, _("&Edit"));
 
     queryMenu = new wxMenu();
-    queryMenu->Append(MNU_EXECUTE, _("&Execute"), _("Execute query"));
-    queryMenu->Append(MNU_EXPLAIN, _("E&xplain"), _("Explain query"));
+    queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query"));
+    queryMenu->Append(MNU_EXPLAIN, _("E&xplain\tF7"), _("Explain query"));
 
     wxMenu *eo=new wxMenu();
     eo->Append(MNU_VERBOSE, _("Verbose"), _("Explain verbose query"), wxITEM_CHECK);
     eo->Append(MNU_ANALYZE, _("Analyze"), _("Explain analyse query"), wxITEM_CHECK);
-    queryMenu->Append(MNU_EXPLAINOPTIONS, _("Explain options"), eo, _("Options modifying Explain output"));
+    queryMenu->Append(MNU_EXPLAINOPTIONS, _("Explain &options"), eo, _("Options modifying Explain output"));
     queryMenu->AppendSeparator();
-    queryMenu->Append(MNU_CANCEL, _("&Cancel"), _("Cancel query"));
+    queryMenu->Append(MNU_CANCEL, _("&Cancel\tAlt-Break"), _("Cancel query"));
     menuBar->Append(queryMenu, _("&Query"));
 
     wxMenu *helpMenu=new wxMenu();
     helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
-    helpMenu->Append(MNU_HELP, _("SQL Help"),                     _("Display help on SQL commands."));
+    helpMenu->Append(MNU_HELP, _("&SQL Help\tF1"),                _("Display help on SQL commands."));
     menuBar->Append(helpMenu, _("&Help"));
 
 
@@ -136,17 +136,18 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     updateRecentFiles();
 
-    wxAcceleratorEntry entries[7];
+    wxAcceleratorEntry entries[8];
 
-    entries[0].Set(wxACCEL_ALT,                 (int)'E',      MNU_EXECUTE);
-    entries[1].Set(wxACCEL_ALT,                 (int)'X',      MNU_EXPLAIN);
-    entries[2].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
-    entries[3].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
+    entries[0].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
+    entries[1].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
+    entries[2].Set(wxACCEL_CTRL,                (int)'X',      MNU_EXPORT);
+    entries[3].Set(wxACCEL_CTRL,                (int)'F',      MNU_FIND);
     entries[4].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
-    entries[5].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
-    entries[6].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+    entries[5].Set(wxACCEL_NORMAL,              WXK_F6,        MNU_EXPLAIN);
+    entries[6].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
+    entries[7].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 
-    wxAcceleratorTable accel(7, entries);
+    wxAcceleratorTable accel(8, entries);
     SetAcceleratorTable(accel);
 
     queryMenu->Enable(MNU_CANCEL, false);
@@ -262,18 +263,18 @@ void frmQuery::updateRecentFiles()
 
     for (i=1 ; i <= maxFiles ; i++)
     {
-        settings->Write(wxT("RecentFiles/") + wxString::Format(wxT("%d"), '0'+i), lastFiles[i]);
+        settings->Write(wxT("RecentFiles/") + wxString::Format(wxT("%d"), i), lastFiles[i]);
 
 
         if (!lastFiles[i].IsNull())
-            recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString::Format(wxT("%d"), '0'+i) + wxT("  ") + lastFiles[i]);
+            recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString::Format(wxT("%d"), i) + wxT("  ") + lastFiles[i]);
     }
 }
 
 void frmQuery::OnRecent(wxCommandEvent& event)
 {
     int fileNo=event.GetId() - MNU_RECENT;
-    lastPath = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("%d"), '0'+fileNo), wxT(""));
+    lastPath = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("%d"), fileNo), wxT(""));
 
     if (!lastPath.IsNull())
     {
