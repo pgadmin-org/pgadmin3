@@ -89,7 +89,7 @@ private:
 
     void StoreServers();
     void RetrieveServers();
-    void ReconnectServer(pgServer *server);
+    int ReconnectServer(pgServer *server);
     wxTreeItemId RestoreEnvironment(pgServer *server);
     wxTreeItemId denyCollapseItem;
 

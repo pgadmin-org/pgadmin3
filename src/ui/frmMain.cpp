@@ -423,49 +423,52 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     return (item ? item : lastItem);
 }
 
-void frmMain::ReconnectServer(pgServer *server)
+int frmMain::ReconnectServer(pgServer *server)
 {
     // Create a server object and connect it.
     int res = server->Connect(this, TRUE);
 
     // Check the result, and handle it as appropriate
-    if (res == PGCONN_OK) {
-        wxLogInfo(wxT("pgServer object initialised as required."));
-        browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Normal);
-        browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Selected);
+    wxTreeItemId item;
+    switch (res)
+    {
+        case PGCONN_OK:
+            wxLogInfo(wxT("pgServer object initialised as required."));
+            browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Normal);
+            browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Selected);
 
-//        browser->Collapse(servers);
-//        browser->Expand(servers);
+// is this needed for *nix?
+//            browser->Collapse(servers);
+//            browser->Expand(servers);
         
-//        browser->SelectItem(servers);
-//        browser->SelectItem(server->GetId());
-        server->ShowTreeDetail(browser);
-        wxTreeItemId item=RestoreEnvironment(server);
-        if (item)
-        {
-            browser->SelectItem(item);
+//            browser->SelectItem(servers);
+//            browser->SelectItem(server->GetId());
+            server->ShowTreeDetail(browser);
+            item=RestoreEnvironment(server);
+            if (item)
+            {
+                browser->SelectItem(item);
 
-            // the following doesn't work. Who knows why?
-            wxYield();
-            browser->Expand(item);
-            browser->EnsureVisible(item);
-        }
-    } else if (res == PGCONN_DNSERR)  {
-        delete server;
-        OnAddServer(wxCommandEvent());
-
-    } else if (res == PGCONN_BAD)  {
-        wxString msg;
-        msg.Printf(wxT("%s"), server->GetLastError().c_str());
-        wxLogError(wxT(msg));
-
-	// Keith 2003.03.31 
-	// Isn't this recursive?
-        // ReconnectServer(server);
-		
-    } else {
-        wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
+                wxYield();
+                browser->Expand(item);
+                browser->EnsureVisible(item);
+            }
+            break;
+        case PGCONN_DNSERR:
+            /*
+            // looks strange to me. Shouldn_t server be removed from the tree as well?
+            delete server;
+            OnAddServer(wxCommandEvent());
+            break;
+            */
+        case PGCONN_BAD:
+            wxLogError(server->GetLastError());
+            break;
+        default:
+            wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
+            break;
     }
+    return res;
 }
 
 void frmMain::StoreServers()
@@ -500,6 +503,10 @@ void frmMain::StoreServers()
             // Port
             key.Printf("Servers/Port%d", numServers);
             settings->Write(key, server->GetPort());
+
+            // Trusted
+            key.Printf("Servers/Trusted%d", numServers);
+            settings->Write(key, BoolToYesNo(server->GetTrusted()));
 
             // Database
             key.Printf("Servers/Database%d", numServers);
@@ -539,7 +546,7 @@ void frmMain::RetrieveServers()
     settings->Read(wxT("Servers/Count"), &numServers, 0);
 
     int loop, port;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, trusted;
     pgServer *server;
 
     for (loop = 1; loop <= numServers; ++loop) {
@@ -551,6 +558,10 @@ void frmMain::RetrieveServers()
         // Comment
         key.Printf("Servers/Description%d", loop);
         settings->Read(key, &description, wxT(""));
+
+        // Trusted
+        key.Printf("Servers/Trusted%d", loop);
+        settings->Read(key, &trusted, wxT(""));
 
         // Port
         key.Printf("Servers/Port%d", loop);
@@ -573,7 +584,7 @@ void frmMain::RetrieveServers()
         settings->Read(key, &lastSchema, wxT(""));
 
         // Add the Server node
-        server = new pgServer(servername, database, username, port);
+        server = new pgServer(servername, database, username, port, StrToBool(trusted));
         server->iSetDescription(description);
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);

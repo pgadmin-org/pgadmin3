@@ -19,25 +19,31 @@
 #include "pgConn.h"
 #include "pgServer.h"
 
+
 // Class declarations
 class frmConnect : public wxDialog
 {
 public:
     frmConnect(wxFrame *form, const wxString& server = wxT(""), const wxString& description=wxT(""),
-        const wxString& database = wxT(""), const wxString& username = wxT(""), int port = 5432);
+        const wxString& database = wxT(""), const wxString& username = wxT(""), int port = 5432, bool trusted=false);
     ~frmConnect();
+
 
     wxString GetDescription();
     wxString GetServer();
     wxString GetDatabase();
     wxString GetUsername();
     wxString GetPassword();
+    bool GetTrusted();
     long GetPort();
     void LockFields();
     int Go();
     
 private:
     bool TransferDataFromWindow();
+    void OnOK(wxCommandEvent& ev);
+    void OnCancel(wxCommandEvent& ev);
+    void OnTrustChange(wxNotifyEvent& ev);
     DECLARE_EVENT_TABLE()
 };
 

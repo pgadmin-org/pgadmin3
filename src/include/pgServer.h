@@ -32,7 +32,7 @@ public:
 class pgServer : public pgObject
 {
 public:
-    pgServer(const wxString& newServer = wxString(""), const wxString& newDatabase = wxString(""), const wxString& newUsername = wxString(""), int newPort = 5432);
+    pgServer(const wxString& newServer = wxString(""), const wxString& newDatabase = wxString(""), const wxString& newUsername = wxString(""), int newPort = 5432, bool trusted=false);
     ~pgServer();
     int GetType() const { return PG_SERVER; }
     wxString GetTypeName() const { return wxString("Server"); }
@@ -44,7 +44,9 @@ public:
     wxString GetDatabase() const { return database; }
     wxString GetUsername() const { return username; }
     wxString GetPassword() const { return password; }
+    bool GetTrusted() const { return trusted; }
     wxString GetLastError() const;
+
     wxString GetLastDatabase() const { return lastDatabase; }
     void iSetLastDatabase(const wxString& s) { lastDatabase=s; }
     wxString GetLastSchema() const { return lastSchema; }
@@ -58,7 +60,9 @@ public:
     void iSetDatabase(const wxString& newVal) { database = newVal; }
     void iSetUsername(const wxString& newVal) { username = newVal; }
     void iSetPassword(const wxString& newVal) { password = newVal; }
+    void iSetTrusted(const bool b) { trusted=b; }
     bool SetPassword(const wxString& newVal);
+
     void iSetPort(int newVal) { port = newVal; }
     int ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
@@ -72,6 +76,7 @@ private:
     wxString database, username, password, ver, error;
     wxString lastDatabase, lastSchema, description;
     int port;
+    bool trusted;
     double lastSystemOID;
     float versionNum;
     wxFrame *parentWin;

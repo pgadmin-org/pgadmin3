@@ -27,15 +27,16 @@
 
 
 BEGIN_EVENT_TABLE(frmConnect, wxDialog)
-EVT_BUTTON (XRCID("btnOK"),     wxDialog::OnOK)
-EVT_BUTTON (XRCID("btnCancel"), wxDialog::OnCancel)
+EVT_BUTTON (XRCID("btnOK"),     OnOK)
+EVT_BUTTON (XRCID("btnCancel"), OnCancel)
+EVT_CHECKBOX(XRCID("chkTrusted"), OnTrustChange)
 END_EVENT_TABLE()
 
 
 
 
 frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& description,
-                       const wxString& database, const wxString& username, int port)
+                       const wxString& database, const wxString& username, int port, bool trusted)
 {
     wxLogInfo(wxT("Creating a connect dialogue"));
 
@@ -50,9 +51,11 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
     XRCCTRL(*this, "txtServer", wxTextCtrl)->SetValue(server);
     XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetValue(database);
     XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetValue(username);
+    XRCCTRL(*this, "chkTrusted", wxCheckBox)->SetValue(trusted);
     wxString sport;
     sport.Printf("%d", port);
     XRCCTRL(*this, "txtPort", wxTextCtrl)->SetValue(sport);
+    XRCCTRL(*this, "txtPassword", wxTextCtrl)->Enable(!trusted);
 }
 
 frmConnect::~frmConnect()
@@ -60,6 +63,28 @@ frmConnect::~frmConnect()
     wxLogInfo(wxT("Destroying a connect dialogue"));
 }
 
+
+
+void frmConnect::OnTrustChange(wxNotifyEvent& ev)
+{
+    XRCCTRL(*this, "txtPassword", wxTextCtrl)->Enable(
+        ! XRCCTRL(*this, "chkTrusted", wxCheckBox)->GetValue());
+}
+
+
+void frmConnect::OnOK(wxCommandEvent& ev)
+{
+    TransferDataFromWindow();
+    EndModal(wxID_OK);
+    Destroy();
+}
+
+
+void frmConnect::OnCancel(wxCommandEvent& ev)
+{
+    EndModal(wxID_CANCEL);
+    Destroy();
+}
 
 int frmConnect::Go()
 {
@@ -104,6 +129,11 @@ wxString frmConnect::GetPassword()
     return XRCCTRL(*this, "txtPassword", wxTextCtrl)->GetValue();
 }
 
+bool frmConnect::GetTrusted()
+{
+    return XRCCTRL(*this, "chkTrusted", wxCheckBox)->GetValue();
+}
+
 long frmConnect::GetPort()
 {
     return atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue());
@@ -124,6 +154,6 @@ void frmConnect::LockFields()
     XRCCTRL(*this, "txtPort", wxTextCtrl)->SetBackgroundColour(colBack);
     XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetEditable(FALSE);
     XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetBackgroundColour(colBack);
-
+    XRCCTRL(*this, "chkTrusted", wxCheckBox)->Disable();
     this->Refresh();
 }

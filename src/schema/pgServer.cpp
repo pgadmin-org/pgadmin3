@@ -20,7 +20,7 @@
 #include "pgCollection.h"
 
 
-pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const wxString& newUsername, int newPort)
+pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _trusted)
 : pgObject(PG_SERVER, newName)
 {  
     wxLogInfo(wxT("Creating a pgServer object"));
@@ -36,6 +36,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const w
 	// Keith 2003.03.05
 	// Because we need to delete it later
 	conn = NULL;
+    trusted=_trusted;
 
 }
 
@@ -69,34 +70,36 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
 
     if (!conn)
     {
-	    // Keith 2003.03.05
-	    // It's simpler to use a reference for modal dialogs
-        frmConnect winConnect(form, GetName(), description, database, username, port);
-
-        if (lockFields) 
-		    winConnect.LockFields();
-
-	    switch (winConnect.Go())
+        if (!trusted)
         {
-		    case wxID_OK:
-			    break;
-		    case wxID_CANCEL:
-	            return PGCONN_ABORTED;
-		    default:
-	            wxLogError(wxT("Couldn't create a connection dialogue!"));
-		        return PGCONN_BAD;
-	    }
+            frmConnect winConnect(form, GetName(), description, database, username, port, trusted);
 
-        if (!lockFields)
-        {
-            iSetDescription(winConnect.GetDescription());
-            iSetName(winConnect.GetServer());
-            iSetDatabase(winConnect.GetDatabase());
-            iSetUsername(winConnect.GetUsername());
-            iSetPort(winConnect.GetPort());
+            if (lockFields) 
+		        winConnect.LockFields();
+
+	        switch (winConnect.Go())
+            {
+		        case wxID_OK:
+			        break;
+		        case wxID_CANCEL:
+	                return PGCONN_ABORTED;
+		        default:
+	                wxLogError(wxT("Couldn't create a connection dialogue!"));
+		            return PGCONN_BAD;
+	        }
+
+            if (!lockFields)
+            {
+                iSetDescription(winConnect.GetDescription());
+                iSetName(winConnect.GetServer());
+                iSetDatabase(winConnect.GetDatabase());
+                iSetUsername(winConnect.GetUsername());
+                iSetPort(winConnect.GetPort());
+                trusted=winConnect.GetTrusted();
+            }
+            if (!trusted)
+                iSetPassword(winConnect.GetPassword());
         }
-        iSetPassword(winConnect.GetPassword());
-
         StartMsg(wxT("Connecting to database"));
         conn = new pgConn(GetName(), database, username, password, port);   
 	    if (!conn) {
@@ -247,6 +250,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, wxT("Port"), (long)GetPort());
         InsertListItem(properties, pos++, wxT("Initial Database"), GetDatabase());
         InsertListItem(properties, pos++, wxT("Username"), GetUsername());
+        InsertListItem(properties, pos++, wxT("Trusted?"), GetTrusted());
         if (GetConnected())
         {
             InsertListItem(properties, pos++, wxT("Version String"), GetVersionString());

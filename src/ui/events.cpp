@@ -415,7 +415,7 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
             data->ShowTree(this, browser, properties, statistics, sqlPane);
             break;
         default:        
-			break;
+			return; 
     }
     sqlPane->SetText(data->GetSql(browser));
 }
@@ -454,9 +454,12 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
             server = (pgServer *)data;
             if (!server->GetConnected())
             {
-                ReconnectServer(server);
-                // prevent from being collapsed immediately
-                denyCollapseItem=item;
+                if (ReconnectServer(server) == PGCONN_OK)
+                {
+                    // prevent from being collapsed immediately
+
+                    denyCollapseItem=item;
+                }
             }
             break;
 
