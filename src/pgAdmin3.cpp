@@ -241,18 +241,45 @@ double StrToDouble(const wxString& szVal)
 
 wxString qtString(const wxString& szVal)
 {
-    wxString szRes;
+    wxString *szRes = new wxString(szVal);	
+	int iTemp;
 
-    szRes.Printf(wxT("'%s'"), szVal.c_str());
-
-    return szRes;
+	iTemp = szRes->Replace("\\", "\\\\");
+	iTemp = szRes->Replace("'", "\\'");
+	szRes->Append(wxT("'"));
+	szRes->Prepend(wxT("'"));
+	
+    return *szRes;
 }
 
 wxString qtIdent(const wxString& szVal)
 {
-    wxString szRes;
+    wxString szRes = szVal;	
+	wxString szTemp;
+	wxString szOutput;
+	
+	int iLength = 0;
 
-    szRes.Printf(wxT("\"%s\""), szVal.c_str());
-
+	//Replace Double Quotes
+	szRes.Replace("\"", "\"\"");
+	
+    //Is it a number
+    if (szRes.IsNumber()) {
+		szRes.Append(wxT("\""));
+		szRes.Prepend(wxT("\""));
+		return szRes;
+	} else {
+		while (iLength < szRes.Len()) {
+			if (!((szRes[iLength] >= '0') && (szRes[iLength] <= '9')) && 
+				!((szRes[iLength]  >= 'a') && (szRes[iLength]  <= 'z')) && 
+			    !(szRes[iLength]  == '_')){
+				szRes.Append(wxT("\""));
+				szRes.Prepend(wxT("\""));
+				return szRes;	
+			}
+			iLength++;
+		}
+	}
+	
     return szRes;
 }
