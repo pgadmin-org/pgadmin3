@@ -140,9 +140,14 @@ int dlgType::Go(bool modal)
 
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT proname, nspname\n")
-            wxT("  FROM pg_proc p\n")
-            wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-            wxT(" WHERE proargtypes[0] <> 0 AND proargtypes[1] = 0"));
+            wxT("  FROM (\n")
+            wxT("        SELECT proname, nspname, max(proargtypes[0]) AS arg0, max(proargtypes[1]) AS arg1\n")
+            wxT("          FROM pg_proc p\n")
+            wxT("          JOIN pg_namespace n ON n.oid=pronamespace\n")
+            wxT("         GROUP BY proname, nspname\n")
+            wxT("        HAVING count(proname) = 1   ) AS uniquefunc\n")
+            wxT(" WHERE arg0 <> 0 AND arg1 = 0"));
+        
         if (set)
         {
             while (!set->Eof())
