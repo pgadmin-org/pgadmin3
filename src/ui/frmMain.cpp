@@ -175,7 +175,7 @@ frmMain::frmMain(const wxString& title)
     toolsMenu = new wxMenu();
     toolsMenu->Append(MNU_STARTSERVICE, _("Start service"),       _("Start PostgreSQL Service"));
     toolsMenu->Append(MNU_STOPSERVICE, _("Stop service"),         _("Stop PostgreSQL Service"));
-    toolsMenu->Append(MNU_CONNECT, _("&Connect..."),              _("Connect to the selected server."));
+    toolsMenu->Append(MNU_CONNECT, _("&Connect"),                 _("Connect to the selected server."));
     toolsMenu->Append(MNU_DISCONNECT, _("Disconnec&t"),           _("Disconnect from the selected server."));
     toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_SQL, _("&Query tool"),                  _("Execute arbitrary SQL queries."));
@@ -203,7 +203,7 @@ frmMain::frmMain(const wxString& title)
     helpMenu->Append(MNU_FAQ, _("pgAdmin III &FAQ"),              _("Frequently asked questions about pgAdmin III."));
     helpMenu->Append(MNU_HELP, _("&SQL Help\tF1"),                _("Display help on SQL commands."));
     helpMenu->Append(MNU_PGSQLHELP, _("&PostgreSQL Help"),        _("Display help on PostgreSQL database system."));
-    helpMenu->Append(MNU_TIPOFTHEDAY, _("&Tip of the day..."),    _("Show a tip of the day."));
+    helpMenu->Append(MNU_TIPOFTHEDAY, _("&Tip of the day"),       _("Show a tip of the day."));
     helpMenu->AppendSeparator();
     helpMenu->Append(MNU_BUGREPORT, _("&Bugreport"),              _("How to send a bugreport to the pgAdmin Development Team."));
     helpMenu->Append(MNU_ABOUT, _("&About..."),                   _("Show about dialog."));
@@ -388,7 +388,7 @@ frmMain::~frmMain()
 
 void frmMain::Refresh(pgObject *data)
 {
-    StartMsg(wxString::Format(_("Refreshing %s..."), data->GetTranslatedTypeName().c_str()));
+    StartMsg(wxString::Format(_("Refreshing %s"), data->GetTranslatedTypeName().c_str()));
     browser->Freeze();
 
     wxTreeItemId currentItem=data->GetId();

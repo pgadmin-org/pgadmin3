@@ -980,8 +980,10 @@ void frmMain::doPopup(wxPoint point, pgObject *object)
     treeContextMenu = new wxMenu();
 
     if (object && (object->GetType() == PG_SERVER ||object->GetType() == PG_SERVERS))
+    {
         appendIfEnabled(MNU_ADDSERVER);
-
+        appendIfEnabled(MNU_PASSWORD);
+    }
     appendIfEnabled(MNU_REFRESH);
     appendIfEnabled(MNU_COUNT);
 
