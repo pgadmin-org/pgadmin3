@@ -37,10 +37,7 @@ public:
 #ifdef __WXMSW__
     wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
 #endif
-private:
-    // MS VC6 will call wxComboBox::GetSelection instead, so we can't overload these.
     int GetSelection() const;
-    wxString GetStringSelection() const;
 };
 
 #endif
