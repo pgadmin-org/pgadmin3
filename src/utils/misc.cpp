@@ -250,6 +250,21 @@ wxString qtStringDollar(const wxString &value)
 }
 
 
+void FillKeywords(wxString &str)
+{
+    // unfortunately, the keyword list is static. 
+    // If the first or the last word change, these both need to get updated.
+    const ScanKeyword *keyword=ScanKeywordLookup("abort");
+    const ScanKeyword *last=ScanKeywordLookup("zone");
+
+    wxASSERT(keyword && last);
+
+    str = wxString::FromAscii(keyword->name);
+
+    while (keyword++ < last)
+        str += wxT(" ") + wxString::FromAscii(keyword->name);
+}
+
 
 static bool needsQuoting(wxString& value, bool forTypes)
 {

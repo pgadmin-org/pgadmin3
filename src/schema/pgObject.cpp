@@ -206,7 +206,6 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
 
                 wxString typestr=set->GetVal(wxT("type"));
                 int id;
-                bool dontQuote=false;
 
                 switch (typestr.c_str()[0])
                 {

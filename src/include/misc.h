@@ -104,6 +104,8 @@ void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0=100, const int h0=70
 // string build helper
 void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &what);
 
+// Create keyword list from PostgreSQL list
+void FillKeywords(wxString &str);
 
 // Fill array, splitting the string separated by commas (maybe quoted elements)
 void FillArray(wxArrayString &array, const wxString &str);

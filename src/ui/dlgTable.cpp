@@ -303,13 +303,10 @@ wxString dlgTable::GetSql()
     if (table)
     {
         int pos;
-        int index;
+        int index=-1;
 
         wxString definition;
         wxArrayString tmpDef=previousColumns;
-
-        AppendNameChange(sql);
-        AppendOwnerChange(sql);
 
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
@@ -319,7 +316,7 @@ wxString dlgTable::GetSql()
                 definition=qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
                 index=tmpDef.Index(definition);
                 if (index < 0)
-                    sql += wxT("ALTER TABLE ") + tabname
+                    sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                         +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
             }
             else
@@ -327,12 +324,18 @@ wxString dlgTable::GetSql()
                 sql += definition;
 
                 pgColumn *column=(pgColumn*) StrToLong(lstColumns->GetText(pos, 4));
-                index=tmpDef.Index(column->GetQuotedIdentifier() 
-                            + wxT(" ") + column->GetDefinition());
+                if (column)
+                {
+                    index=tmpDef.Index(column->GetQuotedIdentifier() 
+                                + wxT(" ") + column->GetDefinition());
+                }
             }
             if (index >= 0)
                 tmpDef.RemoveAt(index);
         }
+
+        AppendNameChange(sql);
+        AppendOwnerChange(sql);
 
         for (index=0 ; index < (int)tmpDef.GetCount() ; index++)
         {
@@ -604,7 +607,11 @@ void dlgTable::OnAddCol(wxCommandEvent &ev)
     col.CenterOnParent();
     col.SetDatabase(database);
     if (col.Go(true) >= 0)
-        lstColumns->AppendItem(PGICON_COLUMN, col.GetName(), col.GetDefinition());
+    {
+        long pos = lstColumns->AppendItem(PGICON_COLUMN, col.GetName(), col.GetDefinition());
+        if (table && !connection->BackendMinimumVersion(8, 0))
+            lstColumns->SetItem(pos, 3, col.GetSql());
+    }
 
     CheckChange();
 }
