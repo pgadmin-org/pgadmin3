@@ -754,15 +754,19 @@ void frmMain::StoreServers()
     wxLogInfo(wxT("Storing listed servers for later..."));
 
     // Store the currently listed servers for later retrieval.
-
-    // Write the individual servers
-    // Iterate through all the child nodes of the Servers node
     wxCookieType cookie;
     wxString key;
     pgObject *data;
     pgServer *server;
     int numServers = 0;
 
+	// Get the hostname for later...
+	char buf[255];
+	gethostname(buf, 255); 
+    wxString hostname = wxString(buf, wxConvUTF8);
+
+    // Write the individual servers
+    // Iterate through all the child nodes of the Servers node
     wxTreeItemId item = browser->GetFirstChild(servers, cookie);
     while (item) {
 
@@ -781,6 +785,7 @@ void frmMain::StoreServers()
 			    key.Printf(wxT("Servers/Server%d"), numServers);
 		        settings->Write(key, server->GetName());
 	
+				// Comment
 		        key.Printf(wxT("Servers/Description%d"), numServers);
 	            settings->Write(key, server->GetDescription());
 
@@ -808,17 +813,47 @@ void frmMain::StoreServers()
 				key.Printf(wxT("Servers/LastSchema%d"), numServers);
 				settings->Write(key, server->GetLastSchema());
 	            
+				// SSL
 				key.Printf(wxT("Servers/SSL%d"), numServers);
 	            settings->Write(key, server->GetSSL());
 
 			} else {
 
-				// This is a discovered server, so just store the lastSchema/lastDatabase
-				key.Printf(wxT("Servers/LastDatabase-%s"), server->GetServiceID());
+				// This is a discovered server...
+				// Hostname
+				key.Printf(wxT("Servers/Server-%s-%s"), hostname, server->GetServiceID());
+		        settings->Write(key, server->GetName());
+
+				// Comment
+				key.Printf(wxT("Servers/Description-%s-%s"), hostname, server->GetServiceID());
+		        settings->Write(key, server->GetDescription());
+
+				// Port
+				key.Printf(wxT("Servers/Port-%s-%s"), hostname, server->GetServiceID());
+		        settings->Write(key, server->GetPort());
+
+				// Trusted
+				key.Printf(wxT("Servers/Trusted-%s-%s"), hostname, server->GetServiceID());
+		        settings->Write(key, BoolToStr(server->GetTrusted()));
+
+				// Database
+				key.Printf(wxT("Servers/Database-%s-%s"), hostname, server->GetServiceID());
+		        settings->Write(key, server->GetDatabaseName());
+
+				// Username
+				key.Printf(wxT("Servers/Username-%s-%s"), hostname, server->GetServiceID());
+		        settings->Write(key, server->GetUsername());
+
+				// SSL
+				key.Printf(wxT("Servers/SSL-%s-%s"), hostname, server->GetServiceID());
+		        settings->Write(key, server->GetSSL());
+
+				// Last Database
+				key.Printf(wxT("Servers/LastDatabase-%s-%s"), hostname, server->GetServiceID());
 				settings->Write(key, server->GetLastDatabase());
 	
-				// last Schema
-				key.Printf(wxT("Servers/LastSchema-%s"), server->GetServiceID());
+				// Last Schema
+				key.Printf(wxT("Servers/LastSchema-%s-%s"), hostname, server->GetServiceID());
 				settings->Write(key, server->GetLastSchema());
 			}
 		}
@@ -842,6 +877,11 @@ void frmMain::RetrieveServers()
     int loop, port, ssl=0;
     wxString key, servername, description, database, username, lastDatabase, lastSchema, trusted;
     pgServer *server;
+
+	// Get the hostname for later...
+	char buf[255];
+	gethostname(buf, 255); 
+    wxString hostname = wxString(buf, wxConvUTF8);
 
     for (loop = 1; loop <= numServers; ++loop) {
         
@@ -897,41 +937,71 @@ void frmMain::RetrieveServers()
 	// of the Win32 PostgreSQL installer.
 	wxRegKey *pgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services"));
 
-	wxString svcName;
-	long cookie = 0;
-	bool flag = false;
-
-	flag = pgKey->GetFirstKey(svcName, cookie);
-
-	while (flag != false)
+	if (pgKey->Exists())
 	{
-		key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
-		wxRegKey *svcKey = new wxRegKey(key);
 
-        // Comment
-		svcKey->QueryValue(wxT("Display Name"), description);
+		wxString svcName, temp;
+		long cookie = 0;
+		bool flag = false;
 
-        // Username
-		svcKey->QueryValue(wxT("Database Superuser"), username);
+		flag = pgKey->GetFirstKey(svcName, cookie);
 
-        // last Database
-        key.Printf(wxT("Servers/LastDatabase-%s"), svcName);
-        settings->Read(key, &lastDatabase, wxT(""));
+		while (flag != false)
+		{
+			key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
+			wxRegKey *svcKey = new wxRegKey(key);
 
-        // last Schema
-        key.Printf(wxT("Servers/LastSchema-%s"), svcName);
-        settings->Read(key, &lastSchema, wxT(""));
+			// Server
+			key.Printf(wxT("Servers/Server-%s-%s"), hostname, svcName);
+			settings->Read(key, &servername, wxT("127.0.0.1"));
 
-        // Add the Server node
-        server = new pgServer(wxT("127.0.0.1"), description, wxT("template1"), username, 5432, false, false);
-        server->iSetLastDatabase(lastDatabase);
-        server->iSetLastSchema(lastSchema);
-		server->iSetDiscovered(true);
-		server->iSetServiceID(svcName);
-        browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
+			// Comment
+			svcKey->QueryValue(wxT("Display Name"), temp);
+			key.Printf(wxT("Servers/Description-%s-%s"), hostname, svcName);
+			settings->Read(key, &description, temp);
 
-		// Get the next one...
-		flag = pgKey->GetNextKey(svcName, cookie);
+			// Database
+			key.Printf(wxT("Servers/Database-%s-%s"), hostname, svcName);
+			settings->Read(key, &database, wxT("template1"));
+
+			// Username
+			svcKey->QueryValue(wxT("Database Superuser"), temp);
+			key.Printf(wxT("Servers/Username-%s-%s"), hostname, svcName);
+			settings->Read(key, &username, temp);
+
+			// Port
+			key.Printf(wxT("Servers/Port-%s-%s"), hostname, svcName);
+			settings->Read(key, &port, 5432);
+
+			// Trusted
+			key.Printf(wxT("Servers/Trusted-%s-%s"), hostname, svcName);
+			settings->Read(key, &trusted, wxT("false"));
+
+#ifdef SSL
+			// SSL
+			key.Printf(wxT("Servers/SSL-%s-%s"), hostname, svcName);
+			settings->Read(key, &ssl, 0);
+#endif //SSL
+
+			// last Database
+			key.Printf(wxT("Servers/LastDatabase-%s-%s"), hostname, svcName);
+			settings->Read(key, &lastDatabase, wxT(""));
+
+			// last Schema
+			key.Printf(wxT("Servers/LastSchema-%s-%s"), hostname, svcName);
+			settings->Read(key, &lastSchema, wxT(""));
+
+			// Add the Server node
+			server = new pgServer(servername, description, database, username, port, StrToBool(trusted), ssl);
+			server->iSetLastDatabase(lastDatabase);
+			server->iSetLastSchema(lastSchema);
+			server->iSetDiscovered(true);
+			server->iSetServiceID(svcName);
+			browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
+
+			// Get the next one...
+			flag = pgKey->GetNextKey(svcName, cookie);
+		}
 	}
 
 
