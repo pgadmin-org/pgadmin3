@@ -75,7 +75,7 @@ fi], [
     then
         if test ! -f "${WX_HOME}/bin/wx-config"
         then
-            if test ! -f "{WX_HOME}/wx-config"
+            if test ! -f "${WX_HOME}/wx-config"
             then
                 AC_MSG_ERROR("Could not find wx-config in ${WX_HOME}")
             else
