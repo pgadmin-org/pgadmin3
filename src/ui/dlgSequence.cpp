@@ -90,7 +90,7 @@ int dlgSequence::Go(bool modal)
             txtCache->Disable();
             chkCycled->Disable();
         }
-        PrepareTablespace(cbTablespace, schema->GetTablespace());
+        PrepareTablespace(cbTablespace, sequence->GetTablespace());
     }
     else
     {

@@ -40,8 +40,6 @@ public:
     void iSetSchemaTyp(const long l) { schemaTyp=l; }
     bool GetCreatePrivilege() const { return createPrivilege; }
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
-    wxString GetTablespace() const { return tablespace; };
-    void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
     bool GetSystemObject() const { return schemaTyp < 1; }
 
     bool CanBackup() { return true; }
@@ -56,7 +54,6 @@ public:
 private:
     long schemaTyp; // 0: System 1: temporär 2: normal
     bool createPrivilege;
-    wxString tablespace;
 };
 
 #endif

@@ -70,8 +70,6 @@ wxString pgSchema::GetSql(wxTreeCtrl *browser)
             + wxT("\n\nCREATE SCHEMA ") + qtIdent(GetName()) 
             + wxT("\n  AUTHORIZATION ") + qtIdent(GetOwner());
 
-        AppendIfFilled(sql, wxT(" TABLESPACE "), qtIdent(tablespace));
-
         sql += wxT(";\n")
             + GetGrant(wxT("UC"), wxT("SCHEMA ") + GetQuotedFullIdentifier())
             + GetCommentSql();
@@ -152,8 +150,6 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
-        if (!tablespace.IsEmpty())
-            properties->AppendItem(_("Tablespace"), tablespace);
         properties->AppendItem(_("ACL"), GetAcl());
         properties->AppendItem(_("System schema?"), GetSystemObject());
         properties->AppendItem(_("Comment"), GetComment());
@@ -181,32 +177,17 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 {
     pgSchema *schema=0;
 
-    pgSet *schemas;
-    if (collection->GetConnection()->BackendMinimumVersion(7, 5))
-        schemas = collection->GetDatabase()->ExecuteSet(
-            wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
-            wxT("            WHEN nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) +
-                             wxT(" OR nspname like 'pg\\_%' THEN 0\n")
-            wxT("            ELSE 2 END AS nsptyp,\n")
-            wxT("       nsp.nspname, spcname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
-            wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
-            wxT("  FROM pg_namespace nsp\n")
-            wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=nsptablespace\n")
-            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
-             + restriction +
-            wxT(" ORDER BY 1, nspname"));
-else
-        schemas = collection->GetDatabase()->ExecuteSet(
-            wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
-            wxT("            WHEN nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) +
-                             wxT(" OR nspname like 'pg\\_%' THEN 0\n")
-            wxT("            ELSE 2 END AS nsptyp,\n")
-            wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
-            wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
-            wxT("  FROM pg_namespace nsp\n")
-            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
-             + restriction +
-            wxT(" ORDER BY 1, nspname"));
+    pgSet *schemas = collection->GetDatabase()->ExecuteSet(
+        wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
+        wxT("            WHEN nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) +
+                         wxT(" OR nspname like 'pg\\_%' THEN 0\n")
+        wxT("            ELSE 2 END AS nsptyp,\n")
+        wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
+        wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
+        wxT("  FROM pg_namespace nsp\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
+         + restriction +
+        wxT(" ORDER BY 1, nspname"));
 
     if (schemas)
     {
@@ -221,8 +202,6 @@ else
             schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
             schema->iSetSchemaTyp(schemas->GetLong(wxT("nsptyp")));
             schema->iSetCreatePrivilege(schemas->GetBool(wxT("cancreate")));
-            if (collection->GetConnection()->BackendMinimumVersion(7, 5))
-                schema->iSetTablespace(schemas->GetVal(wxT("spcname")));
 
             if (browser)
             {

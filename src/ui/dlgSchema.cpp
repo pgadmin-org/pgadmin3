@@ -23,11 +23,8 @@
 
 
 // pointer to controls
-#define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 
 BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)
-    EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
-    EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
@@ -55,17 +52,13 @@ int dlgSchema::Go(bool modal)
     if (schema)
     {
         // edit mode
-        PrepareTablespace(cbTablespace, schema->GetTablespace());
 
         if (!connection->BackendMinimumVersion(7, 5))
             cbOwner->Disable();
-        if (!connection->BackendMinimumVersion(7, 6))
-            cbTablespace->Disable();
     }
     else
     {
         // create mode
-        PrepareTablespace(cbTablespace);
     }
 
     return dlgSecurityProperty::Go(modal);
@@ -117,7 +110,6 @@ wxString dlgSchema::GetSql()
         // create mode
         sql = wxT("CREATE SCHEMA ") + qtIdent(name);
         AppendIfFilled(sql, wxT("\n       AUTHORIZATION "), qtIdent(cbOwner->GetValue()));
-        AppendIfFilled(sql, wxT("\n       TABLESPACE "), qtIdent(cbTablespace->GetValue()));
         sql += wxT(";\n");
 
     }
