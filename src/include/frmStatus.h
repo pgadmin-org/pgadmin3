@@ -45,7 +45,7 @@ private:
     void OnTerminateBtn(wxCommandEvent &event);
     void OnCancelBtn(wxCommandEvent &event);
 	void OnSelStatusItem(wxListEvent &event);
-
+	void OnSelLockItem(wxListEvent &event);
 
     void addLog(const wxString &str);
     

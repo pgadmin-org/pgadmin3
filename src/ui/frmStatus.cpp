@@ -37,6 +37,8 @@ BEGIN_EVENT_TABLE(frmStatus, pgDialog)
     EVT_TIMER(TIMER_ID,								frmStatus::OnRefreshTimer)
 	EVT_LIST_ITEM_SELECTED(XRCID("lstStatus"),		frmStatus::OnSelStatusItem)
 	EVT_LIST_ITEM_DESELECTED(XRCID("lstStatus"),	frmStatus::OnSelStatusItem)
+	EVT_LIST_ITEM_SELECTED(XRCID("lstLocks"),		frmStatus::OnSelLockItem)
+	EVT_LIST_ITEM_DESELECTED(XRCID("lstLocks"),		frmStatus::OnSelLockItem)
 END_EVENT_TABLE();
 
 
@@ -170,6 +172,10 @@ void frmStatus::OnNotebookPageChanged(wxNotebookEvent& event)
 	if (!loaded) return;
 	wxCommandEvent nullEvent;
 	OnRefresh(nullEvent);
+	
+    // Disable the buttons. They'll get re-enabled if a suitable item is selected.
+	btnCancel->Enable(false);
+	btnTerminate->Enable(false);
 }
 
 
@@ -468,22 +474,36 @@ void frmStatus::OnCancelBtn(wxCommandEvent &event)
 	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
 		return;
 
+    ctlListView *lv;
+	
+	if (nbStatus->GetSelection() == 0)
+		 lv = statusList;
+
+	else if (nbStatus->GetSelection() == 1)
+		 lv = lockList;
+
+	else 
+	{
+		wxLogError(_("Couldn't determine the source listview for a cancel backend operation!"));
+		return;
+	}
+
 	long item = -1;
 	wxString pid;
 
     for ( ;; )
     {
-        item = statusList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+        item = lv->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
         if ( item == -1 )
             break;
 
-		pid = statusList->GetItemText(item);
+		pid = lv->GetItemText(item);
 		wxString sql = wxT("SELECT pg_cancel_backend(") + pid + wxT(");");
 		connection->ExecuteScalar(sql);
 	}
 
-	OnRefresh(*(wxCommandEvent*)&event);
 	wxMessageBox(_("A cancel signal was sent to the selected server process(es)."), _("Cancel query"), wxOK | wxICON_INFORMATION);
+	OnRefresh(*(wxCommandEvent*)&event);
 }
 
 void frmStatus::OnTerminateBtn(wxCommandEvent &event)
@@ -491,23 +511,37 @@ void frmStatus::OnTerminateBtn(wxCommandEvent &event)
 	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
 		return;
 
+    ctlListView *lv;
+	
+	if (nbStatus->GetSelection() == 0)
+		 lv = statusList;
+
+	else if (nbStatus->GetSelection() == 1)
+		 lv = lockList;
+
+	else 
+	{
+		wxLogError(_("Couldn't determine the source listview for a terminate backend operation!"));
+		return;
+	}
+
 	long item = -1;
 	wxString pid;
 
     for ( ;; )
     {
-        item = statusList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+        item = lv->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
         if ( item == -1 )
             break;
 
-		pid = statusList->GetItemText(item);
+		pid = lv->GetItemText(item);
 		wxString sql = wxT("SELECT pg_terminate_backend(") + pid + wxT(");");
 		connection->ExecuteScalar(sql);
 
 	}
 
-	OnRefresh(*(wxCommandEvent*)&event);
 	wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
+	OnRefresh(*(wxCommandEvent*)&event);
 }
 
 void frmStatus::OnSelStatusItem(wxListEvent &event)
@@ -515,6 +549,23 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
 	if (connection->BackendMinimumVersion(7, 5))
 	{
 		if(statusList->GetSelectedItemCount() >= 0) 
+		{
+			btnCancel->Enable(true);
+			btnTerminate->Enable(true);
+		} 
+		else 
+		{
+			btnCancel->Enable(false);
+			btnTerminate->Enable(false);
+		}
+	}
+}
+
+void frmStatus::OnSelLockItem(wxListEvent &event)
+{
+	if (connection->BackendMinimumVersion(7, 5))
+	{
+		if(lockList->GetSelectedItemCount() >= 0) 
 		{
 			btnCancel->Enable(true);
 			btnTerminate->Enable(true);
