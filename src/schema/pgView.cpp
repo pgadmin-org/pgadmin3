@@ -74,12 +74,14 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
     {
         CreateListColumns(properties);
         int pos=0;
+        wxString def=GetDefinition().Left(250);
+        def.Replace(wxT("\n"), wxT(" "));
 
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("OID"), GetOid());
         InsertListItem(properties, pos++, _("Owner"), GetOwner());
         InsertListItem(properties, pos++, _("ACL"), GetAcl());
-        InsertListItem(properties, pos++, _("Definition"), GetDefinition().Left(250));
+        InsertListItem(properties, pos++, _("Definition"), def);
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }

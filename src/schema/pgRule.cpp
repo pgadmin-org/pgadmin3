@@ -68,6 +68,7 @@ void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
     {
         CreateListColumns(properties);
         int pos=0;
+        wxString def=GetDefinition().Left(250);
 
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("OID"), GetOid());
@@ -75,10 +76,13 @@ void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, _("Condition"), GetCondition());
         InsertListItem(properties, pos++, _("Do Instead?"), GetDoInstead());
         InsertListItem(properties, pos++, _("Action"), GetAction());
-        if (GetDefinition().IsEmpty())
+        if (def.IsEmpty())
             InsertListItem(properties, pos++, _("Definition"), wxT("NOTHING"));
         else
-            InsertListItem(properties, pos++, _("Definition"), GetDefinition().Left(250));
+        {
+            def.Replace(wxT("\n"), wxT(" "));
+            InsertListItem(properties, pos++, _("Definition"), def);
+        }
         InsertListItem(properties, pos++, _("System Rule?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
