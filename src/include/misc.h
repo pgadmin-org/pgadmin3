@@ -181,7 +181,6 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_UNIQUE,
     PGICON_PUBLIC,
 
-    PGAICON_AGENT,
     PGAICON_JOB,
     PGAICON_JOBDISABLED,
     PGAICON_STEP,

@@ -18,7 +18,6 @@
 #include "pgObject.h"
 #include "pgCollection.h"
 #include "pgDatabase.h"
-#include "pgaAgent.h"
 #include "pgaJob.h"
 #include "pgaStep.h"
 #include "pgaSchedule.h"
@@ -105,19 +104,19 @@ pgObject *pgaJob::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PGA_AGENT)
-            job = ReadObjects((pgaAgent*)obj, 0);
+        if (obj->GetType() == PGA_JOBS)
+            job = ReadObjects((pgCollection*)obj, 0);
     }
     return job;
 }
 
 
 
-pgObject *pgaJob::ReadObjects(pgaAgent *agent, wxTreeCtrl *browser, const wxString &restriction)
+pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgaJob *job=0;
 
-    pgSet *jobs= agent->GetDatabase()->ExecuteSet(
+    pgSet *jobs= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT *, ''::text AS joblastresult FROM pgadmin.pga_job j\n")
        wxT("  JOIN pgadmin.pga_jobclass cl ON cl.jclid=jobjclid\n")
        + restriction +
@@ -130,7 +129,7 @@ pgObject *pgaJob::ReadObjects(pgaAgent *agent, wxTreeCtrl *browser, const wxStri
 
             job = new pgaJob(jobs->GetVal(wxT("jobname")));
             job->iSetId(jobs->GetLong(wxT("jobid")));
-            job->iSetDatabase(agent->GetDatabase());
+            job->iSetDatabase(collection->GetDatabase());
             job->iSetComment(jobs->GetVal(wxT("jobdesc")));
 
             job->iSetEnabled(jobs->GetBool(wxT("jobenabled")));
@@ -144,7 +143,7 @@ pgObject *pgaJob::ReadObjects(pgaAgent *agent, wxTreeCtrl *browser, const wxStri
 
             if (browser)
             {
-                agent->AppendBrowserItem(browser, job);
+                collection->AppendBrowserItem(browser, job);
 				jobs->MoveNext();
             }
             else

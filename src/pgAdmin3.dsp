@@ -1442,10 +1442,6 @@ SOURCE=.\agent\include\dlgStep.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\agent\include\pgaAgent.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\agent\include\pgaJob.h
 # End Source File
 # Begin Source File
@@ -1676,10 +1672,6 @@ SOURCE=.\agent\dlgSchedule.cpp
 # Begin Source File
 
 SOURCE=.\agent\dlgStep.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\agent\pgaAgent.cpp
 # End Source File
 # Begin Source File
 

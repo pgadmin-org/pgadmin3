@@ -156,7 +156,7 @@ int dlgJob::Go(bool modal)
 
 pgObject *dlgJob::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgaJob::ReadObjects((pgaAgent*)collection, 0, wxT("   AND jobid=") + NumToStr(id) + wxT("\n"));
+    pgObject *obj=pgaJob::ReadObjects(collection, 0, wxT("   AND jobid=") + NumToStr(id) + wxT("\n"));
     return obj;
 }
 

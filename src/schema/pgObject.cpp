@@ -79,7 +79,7 @@ pgTypes typesList[] =
     {__("Check"), PGICON_CHECK, __("New Check Constraint"), __("Add a new Check Constraint.") },
     {__("Foreign Key"), PGICON_FOREIGNKEY, __("New Foreign Key"), __("Add a new Foreign Key.") },
 
-    {__("Agent"), PGAICON_AGENT, 0, 0},
+    {__("Jobs"), PGAICON_JOB, 0, 0},
     {__("Job"), PGAICON_JOB, __("New Job"), __("Create a new Job") },
 	{__("Schedules"), PGAICON_SCHEDULE, 0, 0},
     {__("Schedule"), PGAICON_SCHEDULE, __("New Schedule"), __("Create new Schedule") },
@@ -448,18 +448,22 @@ void pgObject::RemoveDummyChild(wxTreeCtrl *browser)
     }
 }
 
-void pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
+wxTreeItemId pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
 {
     wxString label;
+    wxTreeItemId item;
+
     if (object->IsCollection())
         label = object->GetTypeName();
     else
         label = object->GetFullName();
-    browser->AppendItem(GetId(), label, object->GetIcon(), -1, object);
+    item = browser->AppendItem(GetId(), label, object->GetIcon(), -1, object);
     if (object->IsCollection())
         object->ShowTreeDetail(browser);
     else if (object->WantDummyChild())
         browser->AppendItem(object->GetId(), wxT("Dummy"));
+
+	return item;
 }
 
 

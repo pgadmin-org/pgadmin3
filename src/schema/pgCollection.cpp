@@ -136,6 +136,7 @@ bool pgCollection::CanCreate()
         case PG_USERS:
         case PG_GROUPS:
         case PG_TABLESPACES:
+		case PGA_JOBS:
 		case PGA_STEPS:
 		case PGA_SCHEDULES:
             return GetServer()->GetSuperUser();
@@ -195,6 +196,7 @@ int pgCollection::GetIcon()
         case PG_INDEXES:            return PGICON_INDEX;
         case PG_RULES:              return PGICON_RULE;
         case PG_TRIGGERS:           return PGICON_TRIGGER;
+		case PGA_JOBS:				return PGAICON_JOB;
 		case PGA_STEPS:				return PGAICON_STEP;
 		case PGA_SCHEDULES:			return PGAICON_SCHEDULE;
         case SL_CLUSTERS:           return SLICON_CLUSTER;
@@ -299,6 +301,9 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
             case PG_TRIGGERS:
                 pgTrigger::ReadObjects(this, browser);
                 break;
+			case PGA_JOBS:
+				pgaJob::ReadObjects(this, browser);
+				break;
 			case PGA_STEPS:
 				pgaStep::ReadObjects(this, browser);
 				break;

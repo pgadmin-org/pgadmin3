@@ -19,7 +19,6 @@
 #include "pgAdmin3.h"
 #include "pgConn.h"
 #include "pgObject.h"
-#include "pgaAgent.h"
 // Class declarations
 
 
@@ -31,7 +30,7 @@ public:
 
     int GetIcon() { return enabled ? PGAICON_JOB : PGAICON_JOBDISABLED; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    static pgObject *ReadObjects(pgaAgent *agent, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxEmptyString);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
 

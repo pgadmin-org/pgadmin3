@@ -98,7 +98,6 @@ WX_DEFINE_LIST(windowList);
 #include "images/primarykey.xpm"
 #include "images/unique.xpm"
 #include "images/help2.xpm"
-#include "images/agent.xpm"
 #include "images/job.xpm"
 #include "images/jobdisabled.xpm"
 #include "images/step.xpm"
@@ -368,8 +367,7 @@ frmMain::frmMain(const wxString& title)
     images->Add(wxIcon(unique_xpm));
     images->Add(wxIcon(public_xpm));
 
-    // agent, job, jobdisabled, step, schedule
-    images->Add(wxIcon(agent_xpm));
+    // job, jobdisabled, step, schedule
     images->Add(wxIcon(job_xpm));
     images->Add(wxIcon(jobdisabled_xpm));
     images->Add(wxIcon(step_xpm));

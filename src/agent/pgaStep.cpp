@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2005, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// pgaStep.h - PostgreSQL Agent Step
+// pgaStep.cpp - PostgreSQL Agent Step
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -87,7 +87,7 @@ pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
     pgSet *steps= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT * FROM pgadmin.pga_jobstep\n")
-       wxT(" WHERE jstjobid=") + NumToStr(collection->GetId()) + wxT("\n")
+       wxT(" WHERE jstjobid=") + NumToStr(collection->GetJob()->GetId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jstid"));
 

@@ -20,7 +20,6 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgCollection.h"
-#include "pgaAgent.h"
 #include "menu.h"
 #include "frmMain.h"
 
@@ -325,8 +324,17 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
             collection = new pgCollection(PG_SCHEMAS, this);
             AppendBrowserItem(browser, collection);
 
-            // pgAgent
-            pgaAgent::ReadObjects(this, browser);
+            // Jobs
+			// We only add the Jobs node if the appropriate objects are in this DB.
+		    wxString exists = ExecuteScalar(
+				wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
+				wxT(" WHERE relname='pga_job' AND nspname='pgadmin'"));
+
+			if (!exists.IsNull())
+			{
+				collection = new pgCollection(PGA_JOBS, this);
+	            AppendBrowserItem(browser, collection);
+			}
 
             // Slony-I Clusters
             collection = new pgCollection(SL_CLUSTERS, this);

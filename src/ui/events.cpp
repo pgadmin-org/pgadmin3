@@ -906,9 +906,11 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PG_TRIGGERS:
         case PG_TRIGGER:
 
-        case PGA_AGENT:
+        case PGA_JOBS:
         case PGA_JOB:
+        case PGA_STEPS:
         case PGA_STEP:
+		case PGA_SCHEDULES:
         case PGA_SCHEDULE:
         case SL_CLUSTER:
         case SL_CLUSTERS:

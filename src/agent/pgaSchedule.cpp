@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2005, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// pgaSchedule.h - PostgreSQL Agent Schedule
+// pgaSchedule.cpp - PostgreSQL Agent Schedule
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -121,7 +121,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 
     pgSet *schedules= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT * FROM pgadmin.pga_schedule\n")
-       wxT(" WHERE jscjobid=") + NumToStr(collection->GetId()) + wxT("\n")
+       wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jscid"));
 

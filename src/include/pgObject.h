@@ -60,8 +60,7 @@ enum PG_OBJTYPE
     PG_TRIGGERS,        PG_TRIGGER,
     PG_CONSTRAINTS,     PG_PRIMARYKEY, PG_UNIQUE, PG_CHECK, PG_FOREIGNKEY,
 
-    PGA_AGENT,
-    PGA_JOB,
+    PGA_JOBS,			PGA_JOB,
 	PGA_SCHEDULES,		PGA_SCHEDULE,
     PGA_STEPS,			PGA_STEP,
 
@@ -122,7 +121,7 @@ public:
 
     void ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *properties, ctlSQLBox *sqlPane);
 
-    void AppendBrowserItem(wxTreeCtrl *browser, pgObject *object);
+    wxTreeItemId AppendBrowserItem(wxTreeCtrl *browser, pgObject *object);
     void RemoveDummyChild(wxTreeCtrl *browser);
     
     virtual wxString GetHelpPage(bool forCreate) const;
