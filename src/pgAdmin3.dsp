@@ -45,7 +45,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /I "include/" /I "c:/wxWindows_2.4.0/include" /I "c:/wxWindows_2.4.0/contrib/include" /I "c:/wxWindows_2.4.0/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FAcs /FR /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /I "include/" /I "c:/wxWindows_2.4.0/include" /I "c:/wxWindows_2.4.0/contrib/include" /I "c:/wxWindows_2.4.0/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D "EMBED_XRC" /FAcs /FR /FD /c
 # SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -131,7 +131,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "include/" /I "c:/wxWindows_2.5/include" /I "c:/wxWindows_2.5/contrib/include" /I "c:/wxWindows_2.5/lib/mswd" /I "c:/postgresql/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /FAcs /FR /FD /c
 # SUBTRACT BASE CPP /YX /Yc /Yu
-# ADD CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "include/" /I "c:/wxWindows_2.5/include" /I "c:/wxWindows_2.5/contrib/include" /I "c:/wxWindows_2.5/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /FAcs /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "include/" /I "c:/wxWindows_2.5/include" /I "c:/wxWindows_2.5/contrib/include" /I "c:/wxWindows_2.5/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /FAcs /FR /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /i "c:/wxWindows_2.5/include" /i "c:/wxWindows_2.5/contrib/include" /d "_DEBUG"
@@ -436,11 +436,23 @@ SOURCE=.\ui\dlgView.cpp
 # PROP Default_Filter "xrc"
 # Begin Source File
 
+SOURCE=.\ui\common\dlgAggregate.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgCast.xrc
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\common\dlgCheck.xrc
 # End Source File
 # Begin Source File
 
 SOURCE=.\ui\common\dlgColumn.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgConversion.xrc
 # End Source File
 # Begin Source File
 
@@ -453,6 +465,10 @@ SOURCE=.\ui\common\dlgDomain.xrc
 # Begin Source File
 
 SOURCE=.\ui\common\dlgForeignKey.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgFunction.xrc
 # End Source File
 # Begin Source File
 
@@ -472,7 +488,19 @@ SOURCE=.\ui\common\dlgLanguage.xrc
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\common\dlgOperator.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgRule.xrc
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\common\dlgSchema.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgSequence.xrc
 # End Source File
 # Begin Source File
 
@@ -480,7 +508,19 @@ SOURCE=.\ui\common\dlgTable.xrc
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\common\dlgTrigger.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgType.xrc
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\common\dlgUser.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgView.xrc
 # End Source File
 # Begin Source File
 
@@ -489,6 +529,10 @@ SOURCE=.\ui\common\frmAddTableView.xrc
 # Begin Source File
 
 SOURCE=.\ui\common\frmConnect.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\frmExport.xrc
 # End Source File
 # Begin Source File
 
@@ -513,6 +557,10 @@ SOURCE=.\ui\common\frmStatus.xrc
 # Begin Source File
 
 SOURCE=.\ui\common\frmVacuum.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\xrcDialogs.cpp
 # End Source File
 # End Group
 # Begin Source File

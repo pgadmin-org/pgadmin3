@@ -20,7 +20,6 @@
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
 #include <wx/fs_zip.h>
-#include <wx/fs_mem.h>
 
 // Windows headers
 #ifdef __WXMSW__
@@ -237,13 +236,35 @@ bool pgAdmin3::OnInit()
     wxImage::AddHandler(new wxGIFHandler());
 
     wxFileSystem::AddHandler(new wxZipFSHandler);
-    wxFileSystem::AddHandler(new wxMemoryFSHandler);
 
     // Setup the XML resources
     wxXmlResource::Get()->InitAllHandlers();
 
 
-    LoadAllXrc(uiPath + COMMON_DIR);
+
+#ifdef EMBED_XRC
+
+    // resources are loaded from memory
+    extern void InitXmlResource();
+    InitXmlResource();
+
+#else
+
+    // for debugging, dialog resources are read from file
+    wxArrayString files;
+    int count=wxDir::GetAllFiles(uiPath+COMMON_DIR, &files, wxT("*.xrc"), wxDIR_FILES);
+    if (!count)
+        return false;
+    int i;
+
+    for (i=0 ; i < count ; i++)
+    {
+        wxLogInfo(wxT("Loading %s"), files.Item(i).c_str());
+        wxXmlResource::Get()->Load(files.Item(i));
+    }
+
+#endif
+
 
     // Set some defaults
     SetAppName(APPNAME_L);
@@ -295,24 +316,3 @@ int pgAdmin3::OnExit()
 	// We must delete this after cleanup to prevent memory leaks
     delete logger;
 }
-
-
-bool pgAdmin3::LoadAllXrc(const wxString dir)
-{
-    if (!wxDir::Exists(dir))
-        return false;
-
-    wxArrayString files;
-    int count=wxDir::GetAllFiles(dir, &files, wxT("*.xrc"), wxDIR_FILES);
-    if (!count)
-        return false;
-    int i;
-
-    for (i=0 ; i < count ; i++)
-    {
-        wxLogInfo(wxT("Loading %s"), files.Item(i).c_str());
-        wxXmlResource::Get()->Load(files.Item(i));
-    }
-    return true;
-}
-
