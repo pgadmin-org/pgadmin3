@@ -490,14 +490,11 @@ int frmMain::ReconnectServer(pgServer *server)
             browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Normal);
             browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Selected);
 
-// is this needed for *nix?
-//            browser->Collapse(servers);
-//            browser->Expand(servers);
-        
-//            browser->SelectItem(servers);
-//            browser->SelectItem(server->GetId());
             server->ShowTreeDetail(browser);
+            browser->Freeze();
             item=RestoreEnvironment(server);
+            browser->Thaw();
+
             if (item)
             {
                 browser->SelectItem(item);

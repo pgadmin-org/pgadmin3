@@ -37,6 +37,7 @@
 #define PGOID_TYPE_BIT                      1560L
 #define PGOID_TYPE_NUMERIC                  1700L
 #define PGOID_TYPE_CSTRING                  2275L
+#define PGOID_TYPE_ANY                      2276L
 #define PGOID_TYPE_VOID                     2278L
 #define PGOID_TYPE_TRIGGER                  2279L
 #define PGOID_TYPE_LANGUAGE_HANDLER         2280L

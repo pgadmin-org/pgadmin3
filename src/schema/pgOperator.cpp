@@ -174,8 +174,8 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             oper->iSetComment(operators->GetVal(wxT("description")));
             oper->iSetLeftType(operators->GetVal(wxT("lefttype")));
             oper->iSetRightType(operators->GetVal(wxT("righttype")));
-            oper->iSetLeftTypeOidStr(operators->GetVal(wxT("oprleft")));
-            oper->iSetRightTypeOidStr(operators->GetVal(wxT("oprright")));
+            oper->iSetLeftTypeOid(operators->GetOid(wxT("oprleft")));
+            oper->iSetRightTypeOid(operators->GetOid(wxT("oprright")));
             oper->iSetResultType(operators->GetVal(wxT("resulttype")));
             oper->iSetOperatorFunction(operators->GetVal(wxT("operproc")));
             oper->iSetJoinFunction(operators->GetVal(wxT("joinproc")));

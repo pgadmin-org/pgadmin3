@@ -36,10 +36,10 @@ public:
     void iSetSourceType(const wxString& s) { sourceType=s; }
     wxString GetTargetType() const { return targetType; }
     void iSetTargetType(const wxString& s) { targetType=s; }
-    wxString GetSourceTypeOidStr() const { return sourceTypeOidStr; }
-    void iSetSourceTypeOidStr(const wxString& s) { sourceTypeOidStr=s; }
-    wxString GetTargetTypeOidStr() const { return targetTypeOidStr; }
-    void iSetTargetTypeOidStr(const wxString& s) { targetTypeOidStr=s; }
+    OID GetSourceTypeOid() const { return sourceTypeOid; }
+    void iSetSourceTypeOid(const OID o) { sourceTypeOid=o; }
+    OID GetTargetTypeOid() const { return targetTypeOid; }
+    void iSetTargetTypeOid(const OID o) { targetTypeOid=o; }
     wxString GetCastFunction() const { return castFunction; }
     void iSetCastFunction(const wxString& s) { castFunction=s; }
     wxString GetCastNamespace() const { return castNamespace; }
@@ -56,8 +56,8 @@ public:
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString sourceType, targetType, castFunction, castContext, castNamespace,
-        sourceTypeOidStr, targetTypeOidStr;
+    wxString sourceType, targetType, castFunction, castContext, castNamespace;
+    OID sourceTypeOid, targetTypeOid;
 };
 
 #endif

@@ -29,6 +29,7 @@
 #define cbTargetType        CTRL("cbTargetType", wxComboBox)
 #define cbFunction          CTRL("cbFunction", wxComboBox)
 #define chkImplicit         CTRL("chkImplicit", wxCheckBox)
+#define stComment           CTRL("stComment", wxStaticText)
 
 
 
@@ -47,7 +48,10 @@ dlgCast::dlgCast(frmMain *frame, pgCast *node)
 
     txtName->Disable();
     txtOID->Disable();
-    txtComment->Disable();
+
+    // at the moment, no Comment on casts
+    stComment->Hide();
+    txtComment->Hide();
 }
 
 
@@ -65,13 +69,14 @@ int dlgCast::Go(bool modal)
         txtName->SetValue(cast->GetName());
         txtOID->SetValue(NumToStr(cast->GetOid()));
         cbSourceType->Append(cast->GetSourceType());
-        types.Add(wxT(" ") + cast->GetSourceTypeOidStr());
         cbSourceType->SetSelection(0);
 
         cbTargetType->Append(cast->GetTargetType());
         cbTargetType->Append(cast->GetTargetType());
-        types.Add(wxT(" ") + cast->GetTargetTypeOidStr());
         cbTargetType->SetSelection(1);
+
+        AddType(wxT(" "), cast->GetSourceTypeOid());
+        AddType(wxT(" "), cast->GetTargetTypeOid());
 
         cbFunction->Append(cast->GetCastFunction());
         cbFunction->SetSelection(0);
@@ -92,8 +97,8 @@ int dlgCast::Go(bool modal)
 pgObject *dlgCast::CreateObject(pgCollection *collection)
 {
     pgObject *obj=pgCast::ReadObjects(collection, 0,
-         wxT(" WHERE castsource = ") + types.Item(cbSourceType->GetSelection()).Mid(1).BeforeFirst(':') +
-         wxT("\n   AND casttarget = ") + types.Item(cbTargetType->GetSelection()).Mid(1).BeforeFirst(':'));
+         wxT(" WHERE castsource = ") + GetTypeOid(cbSourceType->GetSelection()) +
+         wxT("\n   AND casttarget = ") + GetTypeOid(cbTargetType->GetSelection()));
 
     return obj;
 }
@@ -135,10 +140,10 @@ void dlgCast::OnChangeType(wxNotifyEvent &ev)
             wxT("  FROM pg_proc p\n")
             wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
             wxT(" WHERE proargtypes[0] = ")
-            +  types.Item(cbSourceType->GetSelection()).Mid(1).BeforeFirst(':') 
+            +  GetTypeOid(cbSourceType->GetSelection())
             +  wxT("\n   AND proargtypes[1] = 0")
                wxT("\n   AND prorettype = ")
-            +  types.Item(cbTargetType->GetSelection()).Mid(1).BeforeFirst(':');
+            +  GetTypeOid(cbTargetType->GetSelection());
 
         pgSet *set=connection->ExecuteSet(qry);
         if (set)

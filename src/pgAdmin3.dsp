@@ -307,6 +307,10 @@ SOURCE=.\ui\frmQueryBuilder.cpp
 # PROP Default_Filter "*.cpp"
 # Begin Source File
 
+SOURCE=.\ui\dlgAggregate.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgCast.cpp
 # End Source File
 # Begin Source File
@@ -316,6 +320,10 @@ SOURCE=.\ui\dlgCheck.cpp
 # Begin Source File
 
 SOURCE=.\ui\dlgColumn.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgConversion.cpp
 # End Source File
 # Begin Source File
 
@@ -739,6 +747,10 @@ SOURCE=.\include\pgView.h
 # PROP Default_Filter "*.h"
 # Begin Source File
 
+SOURCE=.\include\dlgAggregate.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\dlgCast.h
 # End Source File
 # Begin Source File
@@ -748,6 +760,10 @@ SOURCE=.\include\dlgCheck.h
 # Begin Source File
 
 SOURCE=.\include\dlgColumn.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgConversion.h
 # End Source File
 # Begin Source File
 

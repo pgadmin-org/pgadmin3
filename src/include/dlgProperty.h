@@ -94,7 +94,12 @@ private:
 class dlgTypeProperty : public dlgProperty
 {
 public:
-    wxString GetQuotedTypename();
+    wxString GetQuotedTypename(int sel);
+    wxString GetTypeOid(int sel);
+    wxString GetTypeInfo(int sel);
+    void AddType(const wxString &typ, const OID oid, const wxString quotedName=wxEmptyString);
+
+
     int Go(bool modal);
 
 protected:
@@ -105,6 +110,8 @@ protected:
 
     bool isVarLen, isVarPrec;
     wxTextCtrl *txtLength, *txtPrecision;
+
+private:
     wxArrayString types;
 };
 

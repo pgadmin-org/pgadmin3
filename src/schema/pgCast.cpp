@@ -109,9 +109,9 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             cast->iSetOid(casts->GetOid(wxT("oid")));
             cast->iSetDatabase(collection->GetDatabase());
             cast->iSetSourceType(casts->GetVal(wxT("srctyp")));
-            cast->iSetSourceTypeOidStr(casts->GetVal(wxT("castsource")));
+            cast->iSetSourceTypeOid(casts->GetOid(wxT("castsource")));
             cast->iSetTargetType(casts->GetVal(wxT("trgtyp")));
-            cast->iSetTargetTypeOidStr(casts->GetVal(wxT("casttarget")));
+            cast->iSetTargetTypeOid(casts->GetOid(wxT("casttarget")));
             cast->iSetCastFunction(casts->GetVal(wxT("proname")));
             cast->iSetCastNamespace(casts->GetVal(wxT("nspname")));
             wxString ct=casts->GetVal(wxT("castcontext"));

@@ -56,6 +56,7 @@ public:
     wxString GetSchemaPrefix() const;
     wxString GetQuotedSchemaPrefix() const;
     wxString GetOidStr() const;
+    OID GetOid() const;
 
 private:
     pgSet *set;

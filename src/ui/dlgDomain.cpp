@@ -70,7 +70,7 @@ int dlgDomain::Go(bool modal)
         txtOID->SetValue(NumToStr((long)domain->GetOid()));
         txtOwner->SetValue(domain->GetOwner());
         cbDatatype->Append(domain->GetBasetype());
-        types.Add(domain->GetBasetype());
+        AddType(wxT(" "), 0, domain->GetBasetype());
         cbDatatype->SetSelection(0);
         if (domain->GetLength() >= 0)
         {
@@ -156,7 +156,7 @@ wxString dlgDomain::GetSql()
     {
         // create mode
         sql = wxT("CREATE DOMAIN ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(name)
-            + wxT("\n   AS ") + GetQuotedTypename();
+            + wxT("\n   AS ") + GetQuotedTypename(cbDatatype->GetSelection());
         
         AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());
         sql += wxT(";\n");

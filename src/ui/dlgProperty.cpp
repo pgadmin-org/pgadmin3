@@ -34,6 +34,8 @@
 #include "dlgCast.h"
 #include "dlgLanguage.h"
 #include "dlgSchema.h"
+#include "dlgAggregate.h"
+#include "dlgConversion.h"
 #include "dlgDomain.h"
 #include "dlgFunction.h"
 #include "dlgOperator.h"
@@ -403,6 +405,14 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_LANGUAGES:
             dlg=new dlgLanguage(frame, (pgLanguage*)currentNode);
             break;
+        case PG_AGGREGATE:
+        case PG_AGGREGATES:
+            dlg=new dlgAggregate(frame, (pgAggregate*)currentNode, (pgSchema*)parentNode);
+            break;
+        case PG_CONVERSION:
+        case PG_CONVERSIONS:
+            dlg=new dlgConversion(frame, (pgConversion*)currentNode, (pgSchema*)parentNode);
+            break;
         case PG_DOMAIN:
         case PG_DOMAINS:
             dlg=new dlgDomain(frame, (pgDomain*)currentNode, (pgSchema*)parentNode);
@@ -459,13 +469,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_VIEWS:
             dlg=new dlgView(frame, (pgView*)currentNode, (pgSchema*)parentNode);
             break;
-#if 1
-//UNDER_CONSTRUCTION
         case PG_RULE:
         case PG_RULES:
             dlg=new dlgRule(frame, (pgRule*)currentNode, (pgTable*)parentNode);
             break;
-#endif
         default:
             break;
     }
@@ -614,10 +621,8 @@ void dlgTypeProperty::FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDom
             typinfo=wxT("L");
         else
             typinfo=wxT(" ");
-        typinfo += tr.GetOidStr();
 
-        types.Add(typinfo + wxT(":") + tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
-
+        AddType(typinfo, tr.GetOid(), tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
         cb->Append(tr.GetSchemaPrefix() + dt.FullName());
         if (cb2)
             cb2->Append(tr.GetSchemaPrefix() + dt.FullName());
@@ -639,12 +644,37 @@ int dlgTypeProperty::Go(bool modal)
 }
 
 
-wxString dlgTypeProperty::GetQuotedTypename()
+
+void dlgTypeProperty::AddType(const wxString &typ, const OID oid, const wxString quotedName)
+{
+    types.Add(typ + NumToStr(oid) + wxT(":") + quotedName);
+}
+
+    
+wxString dlgTypeProperty::GetTypeInfo(int sel)
+{
+    wxString str;
+    if (sel >= 0)
+        str = types.Item(sel);
+
+    return str;
+}
+
+
+wxString dlgTypeProperty::GetTypeOid(int sel)
+{
+    wxString str;
+    if (sel >= 0)
+        str = types.Item(sel).Mid(1).BeforeFirst(':');
+
+    return str;
+}
+
+
+wxString dlgTypeProperty::GetQuotedTypename(int sel)
 {
     wxString sql;
 
-    int sel=cbDatatype->GetSelection();
-    
     if (sel >= 0)
     {
         sql = types.Item(sel).AfterFirst(':');

@@ -69,7 +69,7 @@ int dlgColumn::Go(bool modal)
         txtName->SetValue(column->GetName());
         cbDatatype->Append(column->GetVarTypename());
         cbDatatype->SetValue(column->GetVarTypename());
-        types.Add(column->GetVarTypename());
+        AddType(wxT(" "), 0, column->GetVarTypename());
         if (column->GetLength() >= 0)
             txtLength->SetValue(NumToStr(column->GetLength()));
         if (column->GetPrecision() >= 0)
@@ -116,7 +116,7 @@ wxString dlgColumn::GetDefinition()
 {
     wxString sql;
 
-    sql = GetQuotedTypename();
+    sql = GetQuotedTypename(cbDatatype->GetSelection());
     if (chkNotNull->GetValue())
         sql += wxT(" NOT NULL");
 

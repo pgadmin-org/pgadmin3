@@ -4,22 +4,23 @@
 // Copyright (C) 2002 - 2003, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// dlgCast.h - Cast property 
+// dlgAggregate.h - Aggregate property 
 //
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __DLG_CASTPROP
-#define __DLG_CASTPROP
+#ifndef __DLG_AGGREGATEPROP
+#define __DLG_AGGREGATEPROP
 
 #include "dlgProperty.h"
 
-class pgCast;
+class pgSchema;
+class pgAggregate;
 
-class dlgCast : public dlgTypeProperty
+class dlgAggregate : public dlgTypeProperty
 {
 public:
-    dlgCast(frmMain *frame, pgCast *ca);
+    dlgAggregate(frmMain *frame, pgAggregate *agg, pgSchema *sch);
     int Go(bool modal);
 
     wxString GetSql();
@@ -27,11 +28,13 @@ public:
     pgObject *GetObject();
 
 private:
+    pgSchema *schema;
+    pgAggregate *aggregate;
+
     void OnChange(wxNotifyEvent &ev);
     void OnChangeType(wxNotifyEvent &ev);
-
-    pgCast *cast;
-    wxArrayString functions;
+    
+    wxArrayString procedures;
 
     DECLARE_EVENT_TABLE();
 };

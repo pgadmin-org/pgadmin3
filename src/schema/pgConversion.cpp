@@ -93,7 +93,8 @@ pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
     pgConversion *conversion=0;
 
         pgSet *conversions= collection->GetDatabase()->ExecuteSet(
-            wxT("SELECT co.oid, co.*, pg_encoding_to_char(conforencoding) as forencoding, pg_encoding_to_char(contoencoding) as toencoding, proname, nspname\n")
+            wxT("SELECT co.oid, co.*, pg_encoding_to_char(conforencoding) as forencoding, pg_get_userbyid(conowner) as owner,")
+            wxT("pg_encoding_to_char(contoencoding) as toencoding, proname, nspname\n")
             wxT("  FROM pg_conversion co\n")
             wxT("  JOIN pg_proc pr ON pr.oid=conproc\n")
             wxT("  JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
@@ -109,7 +110,7 @@ pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
                         conversions->GetVal(wxT("conname")));
 
             conversion->iSetOid(conversions->GetOid(wxT("oid")));
-            conversion->iSetOwner(conversions->GetVal(wxT("conowner")));
+            conversion->iSetOwner(conversions->GetVal(wxT("owner")));
             conversion->iSetForEncoding(conversions->GetVal(wxT("forencoding")));
             conversion->iSetToEncoding(conversions->GetVal(wxT("toencoding")));
             conversion->iSetProc(conversions->GetVal(wxT("proname")));

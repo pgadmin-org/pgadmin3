@@ -225,11 +225,11 @@ void dlgType::OnVarAdd(wxNotifyEvent &ev)
         {
             pos = lstMembers->GetItemCount();
             lstMembers->InsertItem(pos, name, 0);
-            memberTypes.Add(types.Item(cbDatatype->GetSelection()));
+            memberTypes.Add(GetTypeInfo(cbDatatype->GetSelection()));
         }
         else
         {
-            memberTypes.Insert(types.Item(cbDatatype->GetSelection()), pos);
+            memberTypes.Insert(GetTypeInfo(cbDatatype->GetSelection()), pos);
             memberTypes.RemoveAt(pos+1);
         }
         lstMembers->SetItem(pos, 1, type);

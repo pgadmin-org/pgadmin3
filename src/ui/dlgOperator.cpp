@@ -95,13 +95,14 @@ int dlgOperator::Go(bool modal)
         txtOID->SetValue(NumToStr(oper->GetOid()));
         txtOwner->SetValue(oper->GetOwner());
         cbLeftType->Append(oper->GetLeftType());
-        types.Add(wxT(" ") + oper->GetLeftTypeOidStr());
         cbLeftType->SetSelection(0);
 
         cbRightType->Append(oper->GetRightType());
         cbRightType->Append(oper->GetRightType());
-        types.Add(wxT(" ") + oper->GetRightTypeOidStr());
         cbRightType->SetSelection(1);
+
+        AddType(wxT(" "), oper->GetLeftTypeOid());
+        AddType(wxT(" "), oper->GetRightTypeOid());
 
         txtName->Disable();
         cbProcedure->Disable();
@@ -133,9 +134,9 @@ int dlgOperator::Go(bool modal)
 
         wxTextValidator validator(wxFILTER_INCLUDE_CHAR_LIST);
         validator.SetIncludeList(incl);
-
         txtName->SetValidator(validator);
-        types.Add(wxT(" 0"));
+
+        AddType(wxT(" "), 0);
         cbLeftType->Append(wxT(" "));
         cbRightType->Append(wxT(" "));
         FillDatatype(cbLeftType, cbRightType, false);
@@ -150,8 +151,8 @@ pgObject *dlgOperator::CreateObject(pgCollection *collection)
     pgObject *obj=pgOperator::ReadObjects(collection, 0,
          wxT("\n   AND op.oprname=") + GetName() +
          wxT("\n   AND op.oprnamespace=") + schema->GetOidStr() +
-         wxT("\n   AND op.oprleft = ") + types.Item(cbLeftType->GetSelection()).Mid(1).BeforeFirst(':') +
-         wxT("\n   AND op.oprright = ") + types.Item(cbRightType->GetSelection()).Mid(1).BeforeFirst(':'));
+         wxT("\n   AND op.oprleft = ") + GetTypeOid(cbLeftType->GetSelection()) +
+         wxT("\n   AND op.oprright = ") + GetTypeOid(cbRightType->GetSelection()));
 
     return obj;
 }
@@ -214,13 +215,13 @@ void dlgOperator::OnChangeType(wxNotifyEvent &ev)
             wxT(" WHERE proargtypes[0] = ");
 
         if (cbLeftType->GetSelection() > 0)
-            qry += types.Item(cbLeftType->GetSelection()).Mid(1).BeforeFirst(':');
+            qry += GetTypeOid(cbLeftType->GetSelection());
 
         if (binaryOp)
             qry += wxT("\n   AND proargtypes[1] = ");
 
         if (cbRightType->GetSelection() > 0)
-            qry += types.Item(cbRightType->GetSelection()).Mid(1).BeforeFirst(':');
+            qry += GetTypeOid(cbRightType->GetSelection());
 
         pgSet *set=connection->ExecuteSet(qry);
         if (set)
@@ -252,7 +253,7 @@ void dlgOperator::OnChangeType(wxNotifyEvent &ev)
              wxT("  JOIN pg_namespace n ON n.oid=oprnamespace\n");
 
         if (cbLeftType->GetSelection() > 0)
-            qry += wxT(" WHERE oprleft = ") + types.Item(cbLeftType->GetSelection()).Mid(1).BeforeFirst(':');
+            qry += wxT(" WHERE oprleft = ") + GetTypeOid(cbLeftType->GetSelection());
 
 
         if (cbRightType->GetSelection() > 0)
@@ -261,7 +262,7 @@ void dlgOperator::OnChangeType(wxNotifyEvent &ev)
                 qry += wxT("\n   AND oprright = ");
             else
                 qry += wxT(" WHERE oprright = ");
-            qry += types.Item(cbRightType->GetSelection()).Mid(1).BeforeFirst(':');
+            qry += GetTypeOid(cbRightType->GetSelection());
         }
 
         cbCommutator->Append(wxT(" "));
@@ -329,8 +330,8 @@ wxString dlgOperator::GetSql()
         sql = wxT("CREATE OPERATOR ") + schema->GetQuotedFullIdentifier() + wxT(".") + name
             + wxT("(\n   PROCEDURE=") + cbProcedure->GetValue();
         
-        AppendIfFilled(sql, wxT(",\n   LEFTARG="), cbLeftType->GetValue());
-        AppendIfFilled(sql, wxT(",\n   RIGHTARG="), cbRightType->GetValue());
+        AppendIfFilled(sql, wxT(",\n   LEFTARG="), GetQuotedTypename(cbLeftType->GetSelection()));
+        AppendIfFilled(sql, wxT(",\n   RIGHTARG="), GetQuotedTypename(cbRightType->GetSelection()));
         AppendIfFilled(sql, wxT(",\n   COMMUTATOR="), cbCommutator->GetValue().Trim());
         AppendIfFilled(sql, wxT(",\n   NEGATOR="), cbNegator->GetValue().Trim());
         

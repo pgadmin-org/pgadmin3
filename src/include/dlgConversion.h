@@ -4,22 +4,23 @@
 // Copyright (C) 2002 - 2003, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// dlgCast.h - Cast property 
+// dlgConversion.h - Conversion property 
 //
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __DLG_CASTPROP
-#define __DLG_CASTPROP
+#ifndef __DLG_CONVERSIONPROP
+#define __DLG_CONVERSIONPROP
 
 #include "dlgProperty.h"
 
-class pgCast;
+class pgSchema;
+class pgConversion;
 
-class dlgCast : public dlgTypeProperty
+class dlgConversion : public dlgProperty
 {
 public:
-    dlgCast(frmMain *frame, pgCast *ca);
+    dlgConversion(frmMain *frame, pgConversion *cc, pgSchema *sch);
     int Go(bool modal);
 
     wxString GetSql();
@@ -28,9 +29,9 @@ public:
 
 private:
     void OnChange(wxNotifyEvent &ev);
-    void OnChangeType(wxNotifyEvent &ev);
 
-    pgCast *cast;
+    pgConversion *conversion;
+    pgSchema *schema;
     wxArrayString functions;
 
     DECLARE_EVENT_TABLE();

@@ -174,3 +174,9 @@ wxString DatatypeReader::GetOidStr() const
 {
     return set->GetVal(wxT("oid"));
 }
+
+
+OID DatatypeReader::GetOid() const
+{
+    return set->GetOid(wxT("oid"));
+}

@@ -45,7 +45,7 @@ wxString pgAggregate::GetSql(wxTreeCtrl *browser)
             + wxT(",\n  STYPE=") + GetStateType();
         AppendIfFilled(sql, wxT(",\n  FFUNC="), qtIdent(GetFinalFunction()));
         if (GetInitialCondition().length() > 0)
-          sql += wxT(",\n  INITCOND=") + GetInitialCondition() + wxT("'");
+          sql += wxT(",\n  INITCOND=") + qtString(GetInitialCondition());
         sql += wxT("\n);\n")
             + GetCommentSql();
     }
