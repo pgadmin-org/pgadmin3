@@ -89,6 +89,7 @@ int dlgColumn::Go(bool modal)
         // create mode
         FillDatatype(cbDatatype);
         cbDatatype->Append(wxT("serial"));
+        AddType(wxT(" "), 0, wxT("serial"));
     }
     return dlgTypeProperty::Go(modal);
 }
