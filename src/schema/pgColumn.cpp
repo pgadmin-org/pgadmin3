@@ -69,7 +69,7 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
             if (!GetDefault().IsEmpty())
                 sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                     + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
-                    + wxT(" DEFAULT ") + GetDefault() + wxT(";\n");
+                    + wxT(" SET DEFAULT ") + GetDefault() + wxT(";\n");
             if (!GetComment().IsEmpty())
                 sql += wxT("COMMENT ON COLUMN ") + GetQuotedFullTable() + wxT(".") + GetQuotedIdentifier()
                     +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
