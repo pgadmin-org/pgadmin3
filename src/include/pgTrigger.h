@@ -53,6 +53,7 @@ public:
 
     void SetDirty();
 
+    bool CanDrop() { return true; }
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));

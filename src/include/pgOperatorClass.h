@@ -43,6 +43,7 @@ public:
     bool GetOpcDefault() const { return opcDefault; }
     void iSetOpcDefault(const bool b) { opcDefault=b; }
 
+    bool CanDrop() { return true; }
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 

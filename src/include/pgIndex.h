@@ -68,6 +68,7 @@ public:
     void iSetOperatorClassList(const wxString& s) { operatorClassList=s; }
     void iSetProcArgTypeList(const wxString& s) { procArgTypeList=s; }
 
+    bool CanDrop() { return true; }
     wxString GetCreate();
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

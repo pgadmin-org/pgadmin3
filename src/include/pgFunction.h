@@ -59,6 +59,7 @@ public:
     bool GetIsStrict() const { return isStrict; }
     void iSetIsStrict(bool b) { isStrict = b; }
 
+    bool CanDrop() { return true; }
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

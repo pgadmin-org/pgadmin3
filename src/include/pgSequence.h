@@ -40,6 +40,7 @@ public:
     wxULongLong GetIncrement() const { return increment; }
     bool GetCycled() const { return cycled; }
 
+    bool CanDrop() { return true; }
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

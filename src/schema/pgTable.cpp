@@ -33,6 +33,10 @@ pgTable::~pgTable()
 {
 }
 
+bool pgTable::DropObject(wxFrame *frame, wxTreeCtrl *browser)
+{
+    return GetDatabase()->ExecuteVoid(wxT("DROP TABLE ") + GetQuotedFullIdentifier());
+}
 
 wxString pgTable::GetSql(wxTreeCtrl *browser)
 {

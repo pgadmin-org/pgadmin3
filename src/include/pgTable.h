@@ -50,6 +50,8 @@ public:
     void iSetHasSubclass(bool b) { hasSubclass = b; }
     void UpdateRows();
 
+    bool CanDrop() { return true; }
+    bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool CanView() { return true; }
     bool CanVacuum() { return true; }
     bool Vacuum(frmMain *form);
