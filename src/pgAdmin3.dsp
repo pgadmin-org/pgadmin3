@@ -124,6 +124,14 @@ SOURCE=.\db\pg\pgSet.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\schema\pg\pgDatabase.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pg\pgDatabase.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pg\pgObject.cpp
 # End Source File
 # Begin Source File
@@ -137,6 +145,14 @@ SOURCE=.\schema\pg\pgServer.cpp
 # Begin Source File
 
 SOURCE=.\schema\pg\pgServer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pg\pgUser.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pg\pgUser.h
 # End Source File
 # End Group
 # End Group
@@ -463,6 +479,10 @@ SOURCE=.\images\view.xpm
 
 SOURCE=.\images\viewdata.xpm
 # End Source File
+# End Group
+# Begin Group "include"
+
+# PROP Default_Filter ""
 # End Group
 # Begin Source File
 

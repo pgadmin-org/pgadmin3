@@ -543,6 +543,27 @@ void frmMain::tvServer(pgServer *objServer)
     // properties in the main window.
 
     wxString szMsg;
+
+    // Add child nodes if necessary
+    if (objServer->GetConnected()) {
+        if (tvBrowser->GetChildrenCount(objServer->GetId(), FALSE) != 3) {
+
+            // Log
+            szMsg.Printf(wxT("Adding child object to server %s"), objServer->GetIdentifier());
+            wxLogInfo(szMsg);
+    
+            pgObject *objNewNode = new pgObject(PG_DATABASES, wxString("Databases"));
+            wxTreeItemId itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objNewNode->GetTypeName(), 1, -1, objNewNode);
+      
+            objNewNode = new pgObject(PG_GROUPS, wxString("Groups"));
+            itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objNewNode->GetTypeName(), 13, -1, objNewNode);
+    
+            objNewNode = new pgObject(PG_USERS, wxString("Users"));
+            itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objNewNode->GetTypeName(), 12, -1, objNewNode);
+        }
+    }
+
+
     szMsg.Printf(wxT("Displaying properties for server %s"), objServer->GetIdentifier());
     wxLogInfo(szMsg);
 

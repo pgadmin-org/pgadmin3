@@ -40,6 +40,42 @@ pgObject::pgObject(int iNewType, const wxString& szNewName)
             szTypeName = wxT("Server");
             break;
 
+        case PG_DATABASES:
+            szTypeName = wxT("Databases");
+            break;
+
+        case PG_ADD_DATABASE:
+            szTypeName = wxT("Add Database");
+            break;
+
+        case PG_DATABASE:
+            szTypeName = wxT("Database");
+            break;
+
+        case PG_GROUPS:
+            szTypeName = wxT("Groups");
+            break;
+
+        case PG_ADD_GROUP:
+            szTypeName = wxT("Add Group");
+            break;
+
+        case PG_GROUP:
+            szTypeName = wxT("Group");
+            break;
+
+        case PG_USERS:
+            szTypeName = wxT("Users");
+            break;
+
+        case PG_ADD_USER:
+            szTypeName = wxT("Add User");
+            break;
+
+        case PG_USER:
+            szTypeName = wxT("User");
+            break;
+
         default:
             szTypeName = wxT("None");
             break;
@@ -70,31 +106,6 @@ wxString pgObject::GetIdentifier() const
 wxString pgObject::GetName() const
 {
     return szName;
-}
-
-wxString pgObject::GetServer() const
-{
-    return szServer;
-}
-
-wxString pgObject::GetDatabase() const
-{
-    return szDatabase;
-}
-
-wxString pgObject::GetNamespace() const
-{
-    return szNamespace;
-}
-
-wxString pgObject::GetTable() const
-{
-    return szTable;
-}
-
-int pgObject::GetPort()
-{
-    return iPort;
 }
 
 unsigned long pgObject::GetOid()

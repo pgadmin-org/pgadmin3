@@ -24,8 +24,17 @@ enum PG_OBJTYPE
 {
     PG_NONE,
     PG_SERVERS,
+    PG_ADD_SERVER,
     PG_SERVER,
-    PG_ADD_SERVER
+    PG_DATABASES,
+    PG_ADD_DATABASE,
+    PG_DATABASE,
+    PG_GROUPS,
+    PG_ADD_GROUP,
+    PG_GROUP,
+    PG_USERS,
+    PG_ADD_USER,
+    PG_USER
 };
 
 // Class declarations
@@ -34,21 +43,21 @@ class pgObject : public wxTreeItemData
 public:
     pgObject(int iNewType = 0, const wxString& szNewName = wxString(""));
     ~pgObject();
+
+    // Everything should implement these
     virtual int GetType();
     virtual wxString GetTypeName() const;
     virtual wxString GetIdentifier() const;
     virtual wxString GetName() const;
-    virtual wxString GetServer() const;
-    virtual wxString GetDatabase() const;
-    virtual wxString GetNamespace() const;
-    virtual wxString GetTable() const;
-    virtual int GetPort();
+
+    // These are optional
     virtual unsigned long GetOid();
 
 private:
-    wxString szTypeName, szIdentifier, szName, szServer, szDatabase, szNamespace, szTable;
-    int iType, iPort;
+    wxString szTypeName, szIdentifier, szName;
+    int iType;
     unsigned long lOid;
+
 };
 
 #endif

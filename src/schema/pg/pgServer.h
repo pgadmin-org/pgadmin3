@@ -13,7 +13,6 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/treectrl.h>
 
 // App headers
 #include "../../pgAdmin3.h"
