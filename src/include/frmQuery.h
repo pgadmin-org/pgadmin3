@@ -74,56 +74,22 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
-/*
-enum
-{
-   BTN_OPEN = 231,
-   BTN_SAVE,
-   BTN_CUT,
-   BTN_COPY,
-   BTN_PASTE,
-   BTN_CLEAR,
-   BTN_FIND,
-   BTN_EXECUTE,
-   BTN_EXPLAIN,
-   BTN_CANCEL
-};
-*/
-
-
-enum
-{
-   MNU_OPEN = 131,
-   MNU_SAVE,
-   MNU_SAVEAS,
-   MNU_CUT,
-   MNU_COPY,
-   MNU_PASTE,
-   MNU_CLEAR,
-   MNU_FIND,
-   MNU_UNDO,
-   MNU_REDO,
-   MNU_CANCEL,
-   MNU_EXECUTE,
-   MNU_EXPLAIN,
-   MNU_RECENT   // must be last, because recent file numbers are added automatically
-};
 
 
 // Position of status line fields
 enum
 {
-   STATUSPOS_MSGS = 1,
-   STATUSPOS_ROWS,
-   STATUSPOS_SECS
+    STATUSPOS_MSGS = 1,
+    STATUSPOS_ROWS,
+    STATUSPOS_SECS
 };
 
 
 enum
 {
-   CTL_SQLQUERY=331,
-   CTL_SQLRESULT,
-   CTL_MSGRESULT
+    CTL_SQLQUERY=331,
+    CTL_SQLRESULT,
+    CTL_MSGRESULT
 };
 
 

@@ -104,34 +104,6 @@ private:
 
 
 
-// Menu options
-enum
-{
-    MNU_ADDSERVER = 101,
-    MNU_PASSWORD,
-    MNU_SAVEDEFINITION,
-    MNU_EXIT,
-    MNU_UPGRADEWIZARD,
-    MNU_OPTIONS,
-    MNU_SYSTEMOBJECTS,
-    MNU_CONTENTS,
-    MNU_TIPOFTHEDAY,
-    MNU_ABOUT,
-    MNU_REFRESH,
-    MNU_CONNECT,
-    MNU_DISCONNECT,
-    MNU_DROP,
-    MNU_PROPERTIES,
-    MNU_QUERYBUILDER,
-    MNU_SQL,
-    MNU_VIEWDATA,
-    MNU_VACUUM,
-    MNU_CREATE,
-    MNU_RECORD,
-    MNU_STOP,
-    MNU_STATUS
-};
-
 
 // Controls
 enum

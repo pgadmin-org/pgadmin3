@@ -284,8 +284,11 @@ void frmMain::OnViewData(wxCommandEvent& event)
         return;
 
     pgServer *server=db->GetServer();
+    if (!server)
+        return;
 
     pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
+
     if (conn->GetStatus() == PGCONN_OK)
     {
         wxString txt = wxT("pgAdmin III Edit Data - ")
@@ -603,7 +606,6 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     // This handler will primarily deal with dropping items
 
     // Get the item data, and feed it to the relevant handler,
-    // cast as required.
     wxTreeItemId item = browser->GetSelection();
     pgObject *data = (pgObject *)browser->GetItemData(item);
 
@@ -617,9 +619,9 @@ void frmMain::OnDrop(wxCommandEvent &ev)
 
     if (settings->GetConfirmDelete())
     {
-        wxMessageDialog msg(this, wxT("Are you sure you wish to remove the ") + data->GetTypeName() 
+        wxMessageDialog msg(this, wxT("Are you sure you wish to drop ") + data->GetTypeName() 
                         + wxT(" ") + data->GetFullIdentifier() + wxT("?"),
-            wxT("Remove ") + data->GetTypeName() + wxT("?"), wxYES_NO | wxICON_QUESTION);
+            wxT("Drop ") + data->GetTypeName() + wxT("?"), wxYES_NO | wxICON_QUESTION);
         if (msg.ShowModal() != wxID_YES)
         {
             return;
@@ -629,7 +631,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
 
     if (done)
     {
-        wxLogInfo(wxT("Removing %s %s"), data->GetTypeName().c_str(), data->GetIdentifier().c_str());
+        wxLogInfo(wxT("Dropping %s %s"), data->GetTypeName().c_str(), data->GetIdentifier().c_str());
 
         int collectionType=data->GetType() -1;
         wxTreeItemId parentItem=browser->GetItemParent(item);
@@ -662,9 +664,6 @@ void frmMain::OnDrop(wxCommandEvent &ev)
             }
             parentItem=browser->GetItemParent(parentItem);
         }
-    }
-    else
-    {
     }
 }
 

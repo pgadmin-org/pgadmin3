@@ -89,4 +89,52 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_TRIGGERFUNCTION,
 };
 
+
+
+// Menu options
+enum
+{
+    MNU_ADDSERVER = 101,
+    MNU_PASSWORD,
+    MNU_SAVEDEFINITION,
+    MNU_EXIT,
+    MNU_UPGRADEWIZARD,
+    MNU_OPTIONS,
+    MNU_SYSTEMOBJECTS,
+    MNU_CONTENTS,
+    MNU_TIPOFTHEDAY,
+    MNU_ABOUT,
+    MNU_REFRESH,
+    MNU_CONNECT,
+    MNU_DISCONNECT,
+    MNU_DROP,
+    MNU_PROPERTIES,
+    MNU_QUERYBUILDER,
+    MNU_SQL,
+    MNU_VIEWDATA,
+    MNU_VACUUM,
+    MNU_CREATE,
+    MNU_RECORD,
+    MNU_STOP,
+    MNU_STATUS,
+    MNU_APPEND,
+    MNU_DELETE,
+    MNU_OPEN,
+    MNU_SAVE,
+    MNU_SAVEAS,
+    MNU_CUT,
+    MNU_COPY,
+    MNU_PASTE,
+    MNU_CLEAR,
+    MNU_FIND,
+    MNU_UNDO,
+    MNU_REDO,
+    MNU_CANCEL,
+    MNU_EXECUTE,
+    MNU_EXPLAIN,
+    MNU_RECENT   // must be last, because recent file numbers are added automatically
+};
+
+
+
 #endif
