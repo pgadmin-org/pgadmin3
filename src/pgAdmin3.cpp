@@ -118,7 +118,9 @@ int pgAdmin3::OnExit()
 
 void StartMsg(const wxString& szNewMsg)
 {
+    if (!szTimer.IsEmpty()) return;
     szTimer.Printf("%s...", szNewMsg.c_str());
+    wxBeginBusyCursor();
     swTimer.Start(0);
     wxLogStatus(szTimer);
     winMain->stBar->SetStatusText(szTimer, 1);
@@ -126,6 +128,8 @@ void StartMsg(const wxString& szNewMsg)
 
 void EndMsg()
 {
+
+    if (szTimer.IsEmpty()) return;
 
     // Get the execution time & display it
     float fTime = swTimer.Time();
@@ -138,7 +142,7 @@ void EndMsg()
     szMsg.Printf("%s (%s)", szTimer.c_str(), szTime.c_str());
     wxLogStatus(szMsg);
     winMain->stBar->SetStatusText(szTimer, 1);
-
+    wxEndBusyCursor();
     szTimer.Empty();
     
 }
@@ -241,45 +245,43 @@ double StrToDouble(const wxString& szVal)
 
 wxString qtString(const wxString& szVal)
 {
-    wxString *szRes = new wxString(szVal);	
-	int iTemp;
+    wxString szRes = szVal;	
 
-	iTemp = szRes->Replace("\\", "\\\\");
-	iTemp = szRes->Replace("'", "\\'");
-	szRes->Append(wxT("'"));
-	szRes->Prepend(wxT("'"));
+    szRes.Replace("\\", "\\\\");
+    szRes.Replace("'", "\\'");
+    szRes.Append(wxT("'"));
+    szRes.Prepend(wxT("'"));
 	
-    return *szRes;
+    return szRes;
 }
 
 wxString qtIdent(const wxString& szVal)
 {
     wxString szRes = szVal;	
-	wxString szTemp;
-	wxString szOutput;
+    wxString szOutput;
 	
-	int iLength = 0;
+    int iPos = 0;
 
-	//Replace Double Quotes
-	szRes.Replace("\"", "\"\"");
+    // Replace Double Quotes
+    szRes.Replace("\"", "\"\"");
 	
-    //Is it a number
+    // Is it a number?
     if (szRes.IsNumber()) {
-		szRes.Append(wxT("\""));
-		szRes.Prepend(wxT("\""));
-		return szRes;
-	} else {
-		while (iLength < szRes.Len()) {
-			if (!((szRes[iLength] >= '0') && (szRes[iLength] <= '9')) && 
-				!((szRes[iLength]  >= 'a') && (szRes[iLength]  <= 'z')) && 
-			    !(szRes[iLength]  == '_')){
-				szRes.Append(wxT("\""));
-				szRes.Prepend(wxT("\""));
-				return szRes;	
-			}
-			iLength++;
-		}
-	}
-	
+        szRes.Append(wxT("\""));
+        szRes.Prepend(wxT("\""));
+        return szRes;
+    } else {
+        while (iPos < (int)szRes.length()) {
+            if (!((szRes[iPos] >= '0') && (szRes[iPos] <= '9')) && 
+                !((szRes[iPos]  >= 'a') && (szRes[iPos]  <= 'z')) && 
+                !(szRes[iPos]  == '_')){
+            
+                szRes.Append(wxT("\""));
+                szRes.Prepend(wxT("\""));
+                return szRes;	
+            }
+            iPos++;
+        }
+    }	
     return szRes;
 }
