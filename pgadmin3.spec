@@ -1,12 +1,12 @@
 %define major_version      0.1.1
 %define minor_version      %(date +%Y%m%d)
 %define wxGTK2_version     20030607
-%define with_wx_config     wxgtk2ud-2.5-config
-%define with_pgsql         /usr
-%define with_pgsql_include /usr/include
+%define withwxconfig       wxgtk2ud-2.5-config
+%define withpgsql          /usr
+%define withpgsqlinclude   /usr/include
 
 # Mandrake 91
-# %define with_pgsql_include --with-pgsql-include=/usr/include/pgsql
+# %define withpgsql_include --with-pgsql-include=/usr/include/pgsql
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
@@ -68,7 +68,7 @@ pgAdmin3 japanese translation by Hiroshi Saito <saito@inetrt.skcapi.co.jp>.
 %setup -q
 
 %build
-%configure --enable-debug --enable-static --with-wx-config=%{with_wx_config} --with-pgsql=%{with_pgsql} --with-pgsql-include=%{with_pgsql_include}
+%configure --enable-debug --enable-static --with-wx-config=%{withwxconfig} --with-pgsql=%{withpgsql} --with-pgsql-include=%{withpgsqlinclude}
 make all
 
 %install
@@ -80,22 +80,22 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%{with_pgsql}/bin
-%{with_pgsql}/share/pgadmin3/tips.txt
-%{with_pgsql}/share/pgadmin3/docs
-%{with_pgsql}/share/pgadmin3/ui/common
+%{withpgsql}/bin
+%{withpgsql}/share/pgadmin3/tips.txt
+%{withpgsql}/share/pgadmin3/docs
+%{withpgsql}/share/pgadmin3/ui/common
 
 %files i18N-de_DE
 %defattr(-, root, root)
-%{with_pgsql}/share/pgadmin3/ui/de_DE
+%{withpgsql}/share/pgadmin3/ui/de_DE
 
 %files i18N-fr_FR
 %defattr(-, root, root)
-%{with_pgsql}/share/pgadmin3/ui/fr_FR
+%{withpgsql}/share/pgadmin3/ui/fr_FR
 
 %files i18N-ja_JP
 %defattr(-, root, root)
-%{with_pgsql}/share/pgadmin3/ui/ja_JP
+%{withpgsql}/share/pgadmin3/ui/ja_JP
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <jm.poure@freesurf.fr>
