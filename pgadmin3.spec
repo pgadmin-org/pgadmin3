@@ -4,7 +4,6 @@
 %define with_wx_config     --with-wx-config=wxgtk2ud-2.5-config
 %define with_pgsql         --with-pgsql=/usr
 %define with_pgsql_include --with-pgsql-include=/usr/include
-%define prefix             /usr/local/pgadmin3
 
 # Mandrake 91
 # %define with_pgsql_include --with-pgsql-include=/usr/include/pgsql
@@ -47,7 +46,7 @@ Requires: %{name} = %{version}-%{release}
 %setup -q
 
 %build
-%configure --enable-debug --enable-static --prefix=%{prefix} %{with_wx_config} %{with_pgsql} %{with_pgsql_include}
+%configure --enable-debug --enable-static %{with_wx_config} %{with_pgsql} %{with_pgsql_include}
 make all
 
 %install
@@ -59,23 +58,23 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%{prefix}/bin
-%{prefix}/share/pgadmin3/tips.txt
-%{prefix}/share/pgadmin3/ui/
-%{prefix}/share/pgadmin3/docs
-%{prefix}/share/pgadmin3/ui/common
+%{with_pgsql}/bin
+%{with_pgsql}/share/pgadmin3/tips.txt
+%{with_pgsql}/share/pgadmin3/ui/
+%{with_pgsql}/share/pgadmin3/docs
+%{with_pgsql}/share/pgadmin3/ui/common
 
 %files i18N-de_DE
 %defattr(-, root, root)
-%{prefix}/share/pgadmin3/ui/de_DE
+%{with_pgsql}/share/pgadmin3/ui/de_DE
 
 %files i18N-fr_FR
 %defattr(-, root, root)
-%{prefix}/share/pgadmin3/ui/fr_FR
+%{with_pgsql}/share/pgadmin3/ui/fr_FR
 
 %files i18N-ja_JP
 %defattr(-, root, root)
-%{prefix}/share/pgadmin3/ui/ja_JP
+%{with_pgsql}/share/pgadmin3/ui/ja_JP
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <jm.poure@freesurf.fr>
