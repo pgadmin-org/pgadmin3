@@ -422,6 +422,10 @@ then
                 LIBS="$LIBS -lwx_gtk_stc-${WX_VERSION}"
                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                 ;;
+            *wx_gtk2_*)
+                LIBS="$LIBS -lwx_gtk2_stc-${WX_VERSION}"
+                LIBS="$LIBS $WX_NEW_LDFLAGS"
+                ;;
             *)
                 ;;
         esac
