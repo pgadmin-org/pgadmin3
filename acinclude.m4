@@ -209,7 +209,25 @@ then
     if test "$pg_static_build" == "yes"
     then
         case "${host}" in
-            *-*-linux*)
+            *-apple-darwin*)
+                case "${WX_NEW_LDFLAGS}" in
+                    *libwx_macud-*)
+                        LIBS="$LIBS ${WX_HOME}/lib/libwx_macud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macud_xrc-${WX_VERSION}.a"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS"
+                        ;;
+                    *libwx_macd-*)
+                        LIBS="$LIBS ${WX_HOME}/lib/libwx_macd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macd_xrc-${WX_VERSION}.a"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS"
+                        ;;
+                    *libwx_mac-*)
+                        LIBS="$LIBS ${WX_HOME}/lib/libwx_mac_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mac_xrc-${WX_VERSION}.a"
+                        LIBS="$LIBS $WX_NEW_LDFLAGS"
+                        ;;
+                    *)
+                        ;;
+                esac
+                ;;
+            *) # This used to be just for Linux, but let's make it the default now as it should be appropriate for any wxGTK build
                 case "${WX_NEW_LDFLAGS}" in
                     *libwx_gtk2ud-*)
                         LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2ud_xrc-${WX_VERSION}.a"
@@ -238,26 +256,6 @@ then
                     *)
                         ;;
                 esac
-                ;;
-            *-apple-darwin*)
-                case "${WX_NEW_LDFLAGS}" in
-                    *libwx_macud-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_macud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macud_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *libwx_macd-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_macd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macd_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *libwx_mac-*)
-                        LIBS="$LIBS ${WX_HOME}/lib/libwx_mac_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mac_xrc-${WX_VERSION}.a"
-                        LIBS="$LIBS $WX_NEW_LDFLAGS"
-                        ;;
-                    *)
-                        ;;
-                esac
-                ;;
-            *)
                 ;;
         esac
     else
