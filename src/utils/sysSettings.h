@@ -38,6 +38,11 @@ public:
     long GetFrmMainLeft();
     void SetFrmMainLeft(long lNewVal);
 
+    // Tip Of The Day
+    bool GetShowTipOfTheDay();
+    void SetShowTipOfTheDay(bool bNewVal);
+    long GetNextTipOfTheDay();
+    void SetNextTipOfTheDay(long lNewVal);
 private:
 
     // The main config object
@@ -48,6 +53,10 @@ private:
     long lFrmMainHeight;
     long lFrmMainTop;
     long lFrmMainLeft;
+
+    // Tip Of The Day
+    bool bShowTipOfTheDay;
+    long lNextTipOfTheDay;
 };
 
 #endif

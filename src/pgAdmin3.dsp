@@ -169,6 +169,10 @@ SOURCE=.\utils\sysSettings.h
 
 SOURCE=.\ui\pgAdmin3.rc
 # End Source File
+# Begin Source File
+
+SOURCE=.\Tips.txt
+# End Source File
 # End Group
 # Begin Group "Unix"
 

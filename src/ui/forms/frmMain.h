@@ -26,7 +26,7 @@ class frmMain : public wxFrame
 {
 public:
     frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
-
+    void TipOfTheDay();
     
 private:
     wxTreeCtrl* tvBrowser;

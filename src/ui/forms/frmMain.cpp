@@ -18,6 +18,7 @@
 #include <wx/toolbar.h>
 #include <wx/tbarsmpl.h>
 #include <wx/imaglist.h>
+#include <wx/tipdlg.h>
 #include <wx/stc/stc.h>
 
 // App headers
@@ -71,6 +72,7 @@
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
     EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
+    EVT_MENU(MNU_TIPOFTHEDAY, frmMain::TipOfTheDay)
     EVT_SIZE(frmMain::OnSize)
     EVT_MOVE(frmMain::OnMove) 
 END_EVENT_TABLE()
@@ -255,7 +257,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // Setup the SQL Pane
     txtSQLPane->InsertText(0, wxT("-- Select all records from pg_class\nSELECT\n  *\nFROM\n  pg_class\nWHERE\n relname LIKE 'pg_%'\nORDER BY\n  rename;"));
-
 }
 
 // Event handlers
@@ -284,4 +285,13 @@ void frmMain::OnMove(wxMoveEvent &posForm)
     extern sysSettings *objSettings;
     objSettings->SetFrmMainLeft(posForm.GetPosition().x);
     objSettings->SetFrmMainTop(posForm.GetPosition().y);
+}
+
+void frmMain::TipOfTheDay()
+{
+    extern sysSettings *objSettings;
+    wxTipProvider *tipProvider = wxCreateFileTipProvider(wxT("tips.txt"), objSettings->GetNextTipOfTheDay());
+    objSettings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
+    objSettings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
+    delete tipProvider;
 }

@@ -27,6 +27,10 @@ sysSettings::sysSettings() : sysConfig(APPNAME)
     lFrmMainHeight = sysConfig.Read(wxT("frmMain/Height"), 550);
     lFrmMainTop = sysConfig.Read(wxT("frmMain/Top"), 50);
     lFrmMainLeft = sysConfig.Read(wxT("frmMain/Left"), 50);
+
+    // Tip Of The Day
+    sysConfig.Read(wxT("ShowTipOfTheDay"), &bShowTipOfTheDay, TRUE); 
+    sysConfig.Read(wxT("NextTipOfTheDay"), &lNextTipOfTheDay, 0); 
 }
 
 
@@ -77,4 +81,28 @@ long sysSettings::GetFrmMainLeft()
 void sysSettings::SetFrmMainLeft(long lNewVal)
 {
     lFrmMainLeft = lNewVal;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Tip of the Day
+//////////////////////////////////////////////////////////////////////////
+
+bool sysSettings::GetShowTipOfTheDay()
+{
+    return bShowTipOfTheDay;
+}
+void sysSettings::SetShowTipOfTheDay(bool bNewVal)
+{
+    bShowTipOfTheDay = bNewVal;
+    sysConfig.Write(wxT("ShowTipOfTheDay"), bShowTipOfTheDay);
+}
+
+long sysSettings::GetNextTipOfTheDay()
+{
+    return lNextTipOfTheDay;
+}
+void sysSettings::SetNextTipOfTheDay(long lNewVal)
+{
+    lNextTipOfTheDay = lNewVal;
+    sysConfig.Write(wxT("NextTipOfTheDay"), lNextTipOfTheDay);
 }

@@ -60,6 +60,10 @@ bool pgAdmin3::OnInit()
 
     winSplash->Close();
 
+    // Display a Tip if required.
+    extern sysSettings *objSettings;
+    if (objSettings->GetShowTipOfTheDay()) winMain->TipOfTheDay();
+
     return TRUE;
 }
 
