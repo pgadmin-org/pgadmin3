@@ -70,13 +70,9 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
 
     sqlGrid = new ctlSQLGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
     sqlGrid->SetSizer(new wxBoxSizer(wxVERTICAL));
-#ifdef __WIN32__
-   // multi-byte problem (Hiroshi Saito [saito@inetrt.skcapi.co.jp])
+
     wxFont fntLabel(*wxNORMAL_FONT);
     fntLabel.SetWeight(wxBOLD);
-#else
-    wxFont fntLabel(12, wxDEFAULT, wxNORMAL, wxBOLD);
-#endif
     sqlGrid->SetLabelFont(fntLabel);
 
    

@@ -74,6 +74,13 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN));
     if (langInfo)
         canonicalLanguage=langInfo->CanonicalName;
+
+    wxFont defaultFont(9, wxMODERN, wxNORMAL, wxNORMAL);
+    Read(wxT("frmQuery/FontPointSize"), &fontPointSize, defaultFont.GetPointSize());
+    Read(wxT("frmQuery/FontFamily"), &fontFamily, defaultFont.GetFamily());
+    Read(wxT("frmQuery/FontStyle"), &fontStyle, defaultFont.GetStyle());
+    Read(wxT("frmQuery/FontWeight"), &fontWeight, defaultFont.GetWeight());
+    Read(wxT("frmQuery/FontFace"), &fontFace, defaultFont.GetFaceName());
 }
 
 
@@ -93,6 +100,11 @@ sysSettings::~sysSettings()
     Write(wxT("SqlHelpSite"), sqlHelpSite);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
+    Write(wxT("frmQuery/FontPointSize"), fontPointSize);
+    Write(wxT("frmQuery/FontFamily"), fontFamily);
+    Write(wxT("frmQuery/FontStyle"), fontStyle);
+    Write(wxT("frmQuery/FontWeight"), fontWeight);
+    Write(wxT("frmQuery/FontFace"), fontFace);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -220,4 +232,14 @@ void sysSettings::SetFrmQueryBuilderPos(wxPoint pos)
 {
     this->Write(wxT("frmQueryBuilder/Top"), pos.x);
     this->Write(wxT("frmQueryBuilder/Left"), pos.y);
+}
+
+
+void sysSettings::SetSQLFont(const wxFont &font)
+{
+    fontPointSize=font.GetPointSize();
+    fontFamily=font.GetFamily();
+    fontStyle=font.GetStyle();
+    fontWeight=font.GetWeight();
+    fontFace=font.GetFaceName();
 }

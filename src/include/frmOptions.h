@@ -28,11 +28,13 @@ public:
     
 private:
     frmMain *mainForm;
+    wxFont currentFont;
 
+    void OnBrowseLogFile(wxCommandEvent &ev);
+    void OnFontSelect(wxCommandEvent &ev);
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);
     void OnHelp(wxCommandEvent &ev);
-    void OnBrowseLogFile(wxCommandEvent &ev);
     DECLARE_EVENT_TABLE()
 };
 

@@ -17,7 +17,6 @@
 #include "ctlSQLBox.h"
 
 
-
 #include "menu.h"
 
 
@@ -306,12 +305,9 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const 
     StyleClearAll();
     
     // Font
-#ifdef __WIN32__
-   // multi-byte problem (Hiroshi Saito [saito@inetrt.skcapi.co.jp])
-   wxFont fntSQLBox = wxFont(*wxNORMAL_FONT);
-#else
-    wxFont fntSQLBox(12, wxMODERN, wxNORMAL, wxNORMAL);
-#endif
+    extern sysSettings *settings;
+    wxFont fntSQLBox = settings->GetSQLFont();
+
     StyleSetFont(wxSTC_STYLE_DEFAULT, fntSQLBox);
     StyleSetFont(0, fntSQLBox);
     StyleSetFont(1, fntSQLBox);

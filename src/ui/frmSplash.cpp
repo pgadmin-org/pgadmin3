@@ -56,7 +56,9 @@ frmSplash::~frmSplash()
 void frmSplash::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
     int y=SPLASH_Y0;
-    wxFont fnt(SPLASH_FONTSIZE, wxSWISS, wxNORMAL, wxNORMAL);
+    wxFont fnt(*wxNORMAL_FONT);
+    fnt.SetPointSize(SPLASH_FONTSIZE);
+
 
     wxPaintDC dc(this);
 	dc.DrawBitmap(splash, 0, 0);

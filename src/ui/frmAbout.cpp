@@ -57,7 +57,8 @@ frmAbout::~frmAbout()
 void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
     int y=SPLASH_Y0;
-    wxFont fnt(SPLASH_FONTSIZE, wxSWISS, wxNORMAL, wxNORMAL);
+    wxFont fnt(*wxNORMAL_FONT);
+    fnt.SetPointSize(SPLASH_FONTSIZE);
 
     wxPaintDC dc(this);
 	dc.DrawBitmap(about, 0, 0);

@@ -91,7 +91,10 @@ public:
     bool GetUnicodeFile() const { return unicodeFile; }
     void SetUnicodeFile(const bool b) {unicodeFile = b; }
 
+    wxFont GetSQLFont() const { return wxFont(fontPointSize, fontFamily, fontStyle, fontWeight, false, fontFace); }
+    void SetSQLFont(const wxFont &font);
     wxString GetCanonicalLanguage() const { return canonicalLanguage; }
+
 
 private:
 
@@ -122,6 +125,9 @@ private:
     long maxRows, maxColSize, autoRowCountThreshold;
     bool stickySql, unicodeFile;
     bool doubleClickProperties;
+
+    int fontPointSize, fontFamily, fontStyle, fontWeight;
+    wxString fontFace;
 };
 
 #endif

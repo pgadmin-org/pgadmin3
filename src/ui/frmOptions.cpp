@@ -11,7 +11,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
-
+#include <wx/fontdlg.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -42,14 +42,16 @@ extern wxArrayInt existingLangs;
 #define chkStickySql                CTRL("chkStickySql", wxCheckBox)
 #define chkDoubleClickProperties    CTRL("chkDoubleClickProperties", wxCheckBox)
 #define cbLanguage                  CTRL("cbLanguage", wxComboBox)
+#define txtFont                     CTRL("txtFont", wxTextCtrl)
 
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
     EVT_MENU(MNU_HELP,                        frmOptions::OnHelp)
+    EVT_BUTTON (XRCID("btnFont"),             frmOptions::OnFontSelect)
+    EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
     EVT_BUTTON (XRCID("btnOK"),               frmOptions::OnOK)
     EVT_BUTTON (XRCID("btnHelp"),             frmOptions::OnHelp)
     EVT_BUTTON (XRCID("btnCancel"),           frmOptions::OnCancel)
-    EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
 END_EVENT_TABLE()
 
 frmOptions::frmOptions(frmMain *parent)
@@ -110,6 +112,8 @@ frmOptions::frmOptions(frmMain *parent)
     }
     cbLanguage->SetSelection(sel);
 
+    currentFont=settings->GetSQLFont();
+    txtFont->SetValue(currentFont.GetFaceName() + wxT(".") + NumToStr((long)currentFont.GetPointSize()));
 }
 
 
@@ -168,6 +172,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetStickySql(chkStickySql->IsChecked());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->IsChecked());
     settings->SetUnicodeFile(chkUnicodeFile->IsChecked());
+    settings->SetSQLFont(currentFont);
 
     // Make sure there's a slash on the end of the path
 
@@ -209,6 +214,21 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     }
     
     Destroy();
+}
+
+
+
+void frmOptions::OnFontSelect(wxCommandEvent &ev)
+{
+    wxFontData fd;
+    fd.SetInitialFont(settings->GetSQLFont());
+    wxFontDialog dlg(this, fd);
+
+    if (dlg.ShowModal() == wxID_OK)
+    {
+        currentFont=dlg.GetFontData().GetChosenFont();
+        txtFont->SetValue(currentFont.GetFaceName() + wxT(".") + NumToStr((long)currentFont.GetPointSize()));
+    }
 }
 
 
