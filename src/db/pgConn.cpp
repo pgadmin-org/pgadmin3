@@ -225,6 +225,12 @@ bool pgConn::IsSSLconnected()
 {
     return (conn && PQstatus(conn) == CONNECTION_OK && PQgetssl(conn) != NULL);
 }
+#else
+
+bool pgConn::IsSSLconnected()
+{
+    return false ;
+}
 #endif
 
 

@@ -82,9 +82,7 @@ public:
 
     void LogError();
 
-#ifdef SSL
     bool IsSSLconnected();
-#endif
     PGconn *connection() { return conn; }
     void Notice(const char *msg);
 
