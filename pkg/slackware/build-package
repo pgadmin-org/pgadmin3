@@ -21,7 +21,8 @@ rm -rf ./src
 
 # Configure for the local OS
 ./configure --prefix=/usr/local/src/pgadmin3/slackpack/usr \
-	--with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-debug
+	--with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-debug \
+	--datadir=/usr/share
 
 # Now make the binary build
 make all
@@ -35,6 +36,8 @@ if [ -x src/pgadmin3 ]; then
 	
 	# And tweak for Slackware
 	mkdir -p ./slackpack/opt/kde/share/applnk/Development
+	mkdir -p ./slackpack/usr/share
+	mv /usr/share/pgadmin3 ./slackpack/usr/share/
 	cp ./pkg/pgadmin3.desktop ./slackpack/opt/kde/share/applnk/Development
 	cp ./src/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
 
