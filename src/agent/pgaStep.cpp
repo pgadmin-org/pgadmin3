@@ -37,7 +37,7 @@ pgaStep::~pgaStep()
 
 bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgadmin.pga_jobstep WHERE jstid=") + NumToStr(GetId()));
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobstep WHERE jstid=") + NumToStr(GetId()));
 }
 
 
@@ -86,7 +86,7 @@ pgObject *pgaStep::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     pgaStep *step=0;
 
     pgSet *steps= collection->GetDatabase()->ExecuteSet(
-       wxT("SELECT * FROM pgadmin.pga_jobstep\n")
+       wxT("SELECT * FROM pgagent.pga_jobstep\n")
        wxT(" WHERE jstjobid=") + NumToStr(collection->GetJob()->GetId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jstid"));

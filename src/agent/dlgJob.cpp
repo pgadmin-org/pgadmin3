@@ -96,7 +96,7 @@ pgObject *dlgJob::GetObject()
 
 int dlgJob::Go(bool modal)
 {
-    pgSet *jcl=connection->ExecuteSet(wxT("SELECT jclname FROM pgadmin.pga_jobclass"));
+    pgSet *jcl=connection->ExecuteSet(wxT("SELECT jclname FROM pgagent.pga_jobclass"));
     if (jcl)
     {
         while (!jcl->Eof())
@@ -303,10 +303,10 @@ wxString dlgJob::GetInsertSql()
 
     if (!job)
     {
-        sql = wxT("INSERT INTO pgadmin.pga_job (jobid, jobjclid, jobname, jobdesc, jobenabled)\n")
+        sql = wxT("INSERT INTO pgagent.pga_job (jobid, jobjclid, jobname, jobdesc, jobenabled)\n")
               wxT("SELECT <id>, jcl.jclid, ") + qtString(GetName()) + 
               wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ") + BoolToStr(chkEnabled->GetValue()) + wxT("\n")
-              wxT("  FROM pgadmin.pga_jobclass jcl WHERE jclname=") + qtString(cbJobclass->GetValue());
+              wxT("  FROM pgagent.pga_jobclass jcl WHERE jclname=") + qtString(cbJobclass->GetValue());
     }
     return sql;
 }
@@ -332,7 +332,7 @@ wxString dlgJob::GetUpdateSql()
         {
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jobjclid= (SELECT jclid FROM pgadmin.pga_jobclass WHERE jclname=") + qtString(cbJobclass->GetValue()) + wxT(")"));
+            vars.Append(wxT("jobjclid= (SELECT jclid FROM pgagent.pga_jobclass WHERE jclname=") + qtString(cbJobclass->GetValue()) + wxT(")"));
         }
         if (chkEnabled->GetValue() != job->GetEnabled())
         {
@@ -348,7 +348,7 @@ wxString dlgJob::GetUpdateSql()
         }
 
         if (!vars.IsEmpty())
-            sql = wxT("UPDATE pgadmin.pga_job SET ") + vars + wxT("\n")
+            sql = wxT("UPDATE pgagent.pga_job SET ") + vars + wxT("\n")
                   wxT(" WHERE jobid=") + NumToStr(job->GetId());
 
     }
@@ -377,7 +377,7 @@ wxString dlgJob::GetUpdateSql()
 
     for (index = 0 ; index < (int)tmpSteps.GetCount() ; index++)
     {
-        sql += wxT("DELETE FROM pgadmin.pga_jobstep WHERE jobid=") 
+        sql += wxT("DELETE FROM pgagent.pga_jobstep WHERE jobid=") 
             + NumToStr(((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetId()) + wxT(";\n");
     }
 
@@ -398,7 +398,7 @@ wxString dlgJob::GetUpdateSql()
 
     for (index = 0 ; index < (int)tmpSchedules.GetCount() ; index++)
     {
-        sql += wxT("DELETE FROM pgadmin.pga_jobschedule WHERE jobid=") 
+        sql += wxT("DELETE FROM pgagent.pga_jobschedule WHERE jobid=") 
             + NumToStr(((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetId()) + wxT(";\n");
     }
 

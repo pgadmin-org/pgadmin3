@@ -49,7 +49,7 @@ wxMenu *pgaJob::GetNewMenu()
 
 bool pgaJob::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgadmin.pga_job WHERE jobid=") + NumToStr(GetId()));
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_job WHERE jobid=") + NumToStr(GetId()));
 }
 
 
@@ -117,8 +117,8 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     pgaJob *job=0;
 
     pgSet *jobs= collection->GetDatabase()->ExecuteSet(
-       wxT("SELECT *, ''::text AS joblastresult FROM pgadmin.pga_job j\n")
-       wxT("  JOIN pgadmin.pga_jobclass cl ON cl.jclid=jobjclid\n")
+       wxT("SELECT *, ''::text AS joblastresult FROM pgagent.pga_job j\n")
+       wxT("  JOIN pgagent.pga_jobclass cl ON cl.jclid=jobjclid\n")
        + restriction +
        wxT(" ORDER BY jobname"));
 

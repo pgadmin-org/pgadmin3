@@ -62,7 +62,7 @@ void pgaSchedule::iSetIntervalList(const wxString &s)
 
 bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgadmin.pga_jobschedule WHERE jscid=") + NumToStr(GetId()));
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_jobschedule WHERE jscid=") + NumToStr(GetId()));
 }
 
 
@@ -120,7 +120,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
     pgaSchedule *schedule=0;
 
     pgSet *schedules= collection->GetDatabase()->ExecuteSet(
-       wxT("SELECT * FROM pgadmin.pga_schedule\n")
+       wxT("SELECT * FROM pgagent.pga_schedule\n")
        wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jscid"));

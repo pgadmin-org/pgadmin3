@@ -1304,10 +1304,10 @@ bool dlgAgentProperty::executeSql()
     if (!sql.IsEmpty())
     {
 		// We should only need to get an ID if inserting a new Job
-		if (sql.Contains(wxT("<id>")) && sql.StartsWith(wxT("INSERT INTO pgadmin.pga_job")))
+		if (sql.Contains(wxT("<id>")) && sql.StartsWith(wxT("INSERT INTO pgagent.pga_job")))
 		{
 
-		    id=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgadmin.pga_job_jobid_seq');")));
+		    id=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));
 
             int pos;
             while ((pos=sql.Find(wxT("<id>"))) >= 0)
