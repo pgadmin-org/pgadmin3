@@ -890,6 +890,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                 wxLongLong startTimeRetrieve=wxGetLocalTimeMillis();
                 wxLongLong elapsed;
                 elapsedRetrieve=0;
+		bool resultFreezed=false;
                 
                 while (!aborted && rowsReadTotal < maxRows)
                 {
@@ -912,7 +913,10 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 		            {
                         wxYield();
 			            if (rowsRead < maxRows)
-			            sqlResult->Freeze();
+				    {
+					resultFreezed=true;
+					sqlResult->Freeze();
+				    }
 		            }
                     rowsReadTotal += rowsRead;
 
@@ -923,7 +927,8 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                         wxYield();
                     }
                 }
-	        	sqlResult->Thaw();
+		if (resultFreezed)
+		    sqlResult->Thaw();
 
                 elapsedRetrieve=wxGetLocalTimeMillis() - startTimeRetrieve;
                 SetStatusText(elapsedQuery.ToString() + wxT("+") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
