@@ -205,6 +205,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 		pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT * FROM pg_stat_activity ORDER BY procpid"));
 		if (dataSet1)
 		{
+            statusList->Freeze();
 			while (!dataSet1->Eof())
 			{
 				pid=dataSet1->GetLong(wxT("procpid"));
@@ -248,7 +249,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				dataSet1->MoveNext();
 			}
             delete dataSet1;
-            lockList->Thaw();
+            statusList->Thaw();
 		}
         else
             connection->IsAlive();
@@ -361,7 +362,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 	}
     else
     {
-        long newlen = StrToLong(connection->ExecuteScalar(wxT("SELECT pg_logfile_length()")));
+        long newlen = StrToLong(connection->ExecuteScalar(wxT("SELECT pg_logfile_length(NULL)")));
         wxString line;
         bool skipFirst=false;
 
@@ -375,7 +376,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 
         while (newlen > logFileLength)
         {
-            pgSet *set=connection->ExecuteSet(wxT("SELECT pg_logfile(NULL, ") + NumToStr(logFileLength) + wxT(")"));
+            pgSet *set=connection->ExecuteSet(wxT("SELECT pg_logfile_get(NULL, ") + NumToStr(logFileLength) + wxT(", NULL)"));
             if (!set)
             {
                 connection->IsAlive();

@@ -38,11 +38,7 @@ pgDatabase::pgDatabase(const wxString& newName)
 pgDatabase::~pgDatabase()
 {
     wxLogInfo(wxT("Destroying a pgDatabase object"));
-    if (conn)
-    {
-        if (conn)
-            delete conn;
-    }
+    Disconnect();
 }
 
 
@@ -129,7 +125,7 @@ void pgDatabase::Disconnect()
 pgSet *pgDatabase::ExecuteSet(const wxString& sql)
 {
     pgSet *set=0;
-    if (conn)
+    if (connection())
     {
         set=connection()->ExecuteSet(sql);
         if (!set)
@@ -142,7 +138,7 @@ pgSet *pgDatabase::ExecuteSet(const wxString& sql)
 wxString pgDatabase::ExecuteScalar(const wxString& sql)
 {
     wxString str;
-    if (conn)
+    if (connection())
     {
         str = connection()->ExecuteScalar(sql);
         if (str.IsEmpty() && connection()->GetLastResultStatus() != PGRES_TUPLES_OK)
@@ -155,7 +151,7 @@ wxString pgDatabase::ExecuteScalar(const wxString& sql)
 bool pgDatabase::ExecuteVoid(const wxString& sql)
 {
     bool rc;
-    if (conn)
+    if (connection())
     {
         rc = connection()->ExecuteVoid(sql);
         if (!rc)
