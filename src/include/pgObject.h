@@ -120,6 +120,7 @@ public:
     virtual bool CanEdit() { return false; }
     virtual bool CanDrop() { return false; }
     virtual bool CanVacuum() { return false; }
+    virtual bool Vacuum(frmMain *form) { return false; }
 
 protected:
     static void CreateListColumns(wxListCtrl *properties, const wxString &left=wxT("Property"), const wxString &right=wxT("Value"));
@@ -191,6 +192,8 @@ public:
     void SetSchema(pgSchema *newSchema) { schema = newSchema; }
     pgSchema *GetSchema() const {return schema; }
     pgSet *ExecuteSet(const wxString& sql);
+    wxString ExecuteScalar(const wxString& sql);
+    bool ExecuteVoid(const wxString& sql);
     void DisplayStatistics(wxListCtrl *statistics, const wxString& query);
     double GetTableOid() const {return tableOid; }
     void iSetTableOid(const double d) { tableOid=d; }

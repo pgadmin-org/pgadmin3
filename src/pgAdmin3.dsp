@@ -349,6 +349,10 @@ SOURCE=.\ui\frmSplash.cpp
 
 SOURCE=.\ui\frmStatus.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmVacuum.cpp
+# End Source File
 # End Group
 # Begin Group "include"
 
@@ -643,6 +647,10 @@ SOURCE=.\include\frmSplash.h
 # Begin Source File
 
 SOURCE=.\include\frmStatus.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmVacuum.h
 # End Source File
 # End Group
 # Begin Group "schema includes"

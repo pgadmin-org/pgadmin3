@@ -201,33 +201,7 @@ void frmMain::OnVacuum(wxCommandEvent &ev)
     if (data->GetType() != PG_TABLE && data->GetType() != PG_DATABASE)
         return;
 
-    pgDatabase *db=data->GetDatabase();
-    if (!db)
-        return;
-
-    pgServer *server=db->GetServer();
-
-#if 0
-    pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
-    if (conn->GetStatus() == PGCONN_OK)
-    {
-        wxString txt = wxT("pgAdmin III Edit Data - ")
-            + server->GetDescription() 
-            + wxT(" (") + server->GetName() 
-            + wxT(":)") + NumToStr((long)server->GetPort()) 
-            + wxT(") - ") + db->GetName()
-            + wxT(" - ") + data->GetFullIdentifier();
-
-//        wxPoint pos(settings->Read(wxT("frmEditGrid/Left"), 100), settings->Read(wxT("frmEditGrid/Top"), 100));
-//        wxSize size(settings->Read(wxT("frmEditGrid/Width"), 600), settings->Read(wxT("frmEditGrid/Height"), 500));
-//        CheckOnScreen(pos, size, 200, 150);
-    }
-    else
-    {
-		wxLogError(conn->GetLastError());
-        delete conn;
-    }
-#endif
+    data->Vacuum(this);
 }
 
 void frmMain::OnSql(wxCommandEvent &ev)

@@ -34,8 +34,9 @@ public:
 	// Keith 2002.03.04 --
 	// pgServer::ExecuteSet executes on an arbitrary database on the server,
 	// so I added this because it works on the correct database connection
-    pgSet *ExecuteSet(const wxString& sql) { 
-		return conn->ExecuteSet(sql); }
+    pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
+    wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
+    bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
 
     wxString GetPath() const { return path; };
     void iSetPath(const wxString& newVal) { path = newVal; }
@@ -49,6 +50,7 @@ public:
     bool GetSystemObject() const;
     
     bool CanVacuum() { return true; }
+    bool Vacuum(frmMain *form);
     pgConn *connection() { return conn; }
     int Connect();
 

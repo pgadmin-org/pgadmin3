@@ -18,6 +18,7 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgCollection.h"
+#include "frmVacuum.h"
 
 
 
@@ -265,3 +266,49 @@ void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
     }
 }
 
+bool pgDatabase::Vacuum(frmMain *form)
+{
+    wxString opts;
+    frmVacuum winVacuum(form, wxT("Database: ") + GetIdentifier());
+
+    int optval = winVacuum.Go();
+
+    wxString msg;
+    msg.Printf(wxT("Vacuum options: %d"), optval);
+    wxLogInfo(msg);
+
+	switch (optval)
+    {
+		case -1:
+			return false;
+		case 0:
+	        opts = wxT("");
+            break;
+        case 1:
+            opts = wxT(" FULL");
+            break;
+        case 2:
+            opts = wxT(" FREEZE");
+            break;
+        case 3:
+            opts = wxT(" FULL FREEZE");
+            break;
+        case 4:
+            opts = wxT(" ANALYZE");
+            break;
+        case 5:
+            opts = wxT(" FULL ANALYZE");
+            break;
+        case 6:
+            opts = wxT(" FREEZE ANALYZE");
+            break;
+        case 7:
+            opts = wxT(" FULL FREEZE ANALYZE");
+            break;
+	}
+
+    StartMsg(wxT("Vacuuming database ") + GetName() + wxT("..."));
+    bool res = this->ExecuteVoid(wxT("VACUUM") + opts + wxT(";"));
+    EndMsg();
+    return res;
+}

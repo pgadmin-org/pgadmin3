@@ -52,6 +52,7 @@ public:
 
     bool CanView() { return true; }
     bool CanVacuum() { return true; }
+    bool Vacuum(frmMain *form);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));

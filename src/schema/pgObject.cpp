@@ -292,9 +292,6 @@ pgConn *pgObject::GetConnection()
     return conn;    
 }
 
-
-
-
 pgDatabase *pgObject::GetDatabase()
 {
     pgDatabase *db=0;
@@ -362,14 +359,20 @@ void pgSchemaObject::SetContextInfo(frmMain *form)
     form->SetDatabase(schema->GetDatabase());
 }
 
-
-
 pgSet *pgSchemaObject::ExecuteSet(const wxString& sql)
 {
     return schema->GetDatabase()->ExecuteSet(sql);
 }
 
+wxString pgSchemaObject::ExecuteScalar(const wxString& sql)
+{
+    return schema->GetDatabase()->ExecuteScalar(sql);
+}
 
+bool pgSchemaObject::ExecuteVoid(const wxString& sql)
+{
+    return schema->GetDatabase()->ExecuteVoid(sql);
+}
 
 void pgSchemaObject::DisplayStatistics(wxListCtrl *statistics, const wxString& query)
 {

@@ -20,6 +20,7 @@
 #include "pgColumn.h"
 #include "pgCheck.h"
 #include "pgForeignKey.h"
+#include "frmVacuum.h"
 
 
 pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
@@ -480,4 +481,51 @@ void pgTable::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTree
 	        delete stats;
         }
     }
+}
+
+bool pgTable::Vacuum(frmMain *form)
+{
+    wxString opts;
+    frmVacuum winVacuum(form, wxT("Table: ") + GetFullIdentifier());
+
+    int optval = winVacuum.Go();
+
+    wxString msg;
+    msg.Printf(wxT("Vacuum options: %d"), optval);
+    wxLogInfo(msg);
+
+	switch (optval)
+    {
+		case -1:
+			return false;
+		case 0:
+	        opts = wxT("");
+            break;
+        case 1:
+            opts = wxT(" FULL");
+            break;
+        case 2:
+            opts = wxT(" FREEZE");
+            break;
+        case 3:
+            opts = wxT(" FULL FREEZE");
+            break;
+        case 4:
+            opts = wxT(" ANALYZE");
+            break;
+        case 5:
+            opts = wxT(" FULL ANALYZE");
+            break;
+        case 6:
+            opts = wxT(" FREEZE ANALYZE");
+            break;
+        case 7:
+            opts = wxT(" FULL FREEZE ANALYZE");
+            break;
+	}
+
+    StartMsg(wxT("Vacuuming table ") + GetName() + wxT("..."));
+    bool res = this->ExecuteVoid(wxT("VACUUM") + opts + wxT(" ") + GetQuotedFullIdentifier() + wxT(";"));
+    EndMsg();
+    return res;
 }
