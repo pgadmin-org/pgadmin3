@@ -185,7 +185,10 @@ wxString qtString(const wxString& value)
 
 wxString qtIdent(const wxString& value)
 {
-    wxString result = value;	
+    wxString result = value;
+    
+    if (result.Length() == 0)
+        return result;
 
     int pos = 0;
 

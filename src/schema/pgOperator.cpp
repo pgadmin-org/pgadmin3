@@ -33,20 +33,21 @@ wxString pgOperator::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE OPERATOR ") + GetQuotedFullIdentifier()
-            + wxT("(\n    PROCEDURE=") + qtIdent(GetOperatorFunction());
-        AppendIfFilled(sql, wxT(", LEFTARG="), qtIdent(GetLeftType()));
-        AppendIfFilled(sql, wxT(", RIGHTARG="), qtIdent(GetRightType()));
-        AppendIfFilled(sql, wxT(", COMMUTATOR="), qtIdent(GetCommutator()));
-        AppendIfFilled(sql, wxT(", RESTRICT="), qtIdent(GetRestrictFunction()));
-        if (GetHashJoins())  sql += wxT(", HASHES");
+        sql = wxT("-- Operator: ") + GetFullIdentifier() + wxT(" (") + GetLeftType() + wxT(", ") + GetRightType() + wxT(")\n")
+            + wxT("CREATE OPERATOR ") + GetFullIdentifier()
+            + wxT("(\n  PROCEDURE = ") + qtIdent(GetOperatorFunction());
+        AppendIfFilled(sql, wxT(",\n  LEFTARG = "), qtIdent(GetLeftType()));
+        AppendIfFilled(sql, wxT(",\n  RIGHTARG = "), qtIdent(GetRightType()));
+        AppendIfFilled(sql, wxT(",\n  COMMUTATOR = "), GetCommutator());
+        AppendIfFilled(sql, wxT(",\n  RESTRICT = "), qtIdent(GetRestrictFunction()));
+        if (GetHashJoins())  sql += wxT(",\n  HASHES");
         if (!leftSortOperator.IsNull() || !rightSortOperator.IsNull() ||
             !lessOperator.IsNull() || !greaterOperator.IsNull())
-            sql += wxT(",\n    MERGES");
-        AppendIfFilled(sql, wxT(", SORT1="), qtIdent(GetLeftSortOperator()));
-        AppendIfFilled(sql, wxT(", SORT2="), qtIdent(GetRightSortOperator()));
-        AppendIfFilled(sql, wxT(", LTCMP="), qtIdent(GetLessOperator()));
-        AppendIfFilled(sql, wxT(", GTCMP="), qtIdent(GetGreaterOperator()));
+            sql += wxT(",\n  MERGES");
+        AppendIfFilled(sql, wxT(",\n  SORT1 = "), GetLeftSortOperator());
+        AppendIfFilled(sql, wxT(",\n  SORT2 = "), GetRightSortOperator());
+        AppendIfFilled(sql, wxT(",\n  LTCMP = "), GetLessOperator());
+        AppendIfFilled(sql, wxT(",\n  GTCMP = "), GetGreaterOperator());
         sql += wxT(";\n");
     }
 
@@ -139,8 +140,7 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
         {
             oper = new pgOperator(collection->GetSchema(), operators->GetVal(wxT("oprname")));
             oper->iSetOid(operators->GetOid(wxT("oid")));
-            oper->iSetLeftType(operators->GetVal(wxT("lefttype")));
-
+            oper->iSetOwner(operators->GetVal(wxT("opowner")));
             oper->iSetLeftType(operators->GetVal(wxT("lefttype")));
             oper->iSetRightType(operators->GetVal(wxT("righttype")));
             oper->iSetResultType(operators->GetVal(wxT("resulttype")));

@@ -53,7 +53,10 @@ pgServer::~pgServer()
 
 wxString pgServer::GetFullName() const
 {
-    return GetDescription() + wxT("  (") + GetIdentifier() + wxT(")");
+    if (GetDescription().Length() > 0)
+      return GetDescription() + wxT(" (") + GetIdentifier() + wxT(")");
+    else
+      return wxT("(") + GetIdentifier() + wxT(")");
 }
 
 
