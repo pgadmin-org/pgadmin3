@@ -263,7 +263,14 @@ dlgSecurityProperty::dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wx
 
         notebook->AddPage(page, wxT("Security"));
         int width, height;
+#ifdef __WIN32__
         page->GetClientSize(&width, &height);
+#else
+        notebook->GetClientSize(&width, &height);
+	height -= 35;   // sizes of tabs
+#endif
+
+	wxLogInfo("Client size %d %d ", width, height);
 
         lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount));
         lbPrivileges->InsertColumn(0, wxT("User/Group"), wxLIST_FORMAT_LEFT, width/2-10);
@@ -277,12 +284,12 @@ dlgSecurityProperty::dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wx
         new wxStaticBox(page, -1, wxT("Privileges"), wxPoint(10, y), wxSize(width-20, 65+20*privilegeCount));
         y += 15;
 
-        stGroup = new wxStaticText(page, CTL_STATICGROUP, wxT("Group"), wxPoint(20, y+3), wxSize(width/2-20, 20));
-        cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), wxPoint(width/2, y), wxSize(width/2-20, 100));
+        stGroup = new wxStaticText(page, CTL_STATICGROUP, wxT("Group"), wxPoint(20, y+3), wxSize(100, 20));
+        cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), wxPoint(130, y), wxSize(width-145, 100));
         y += 25;
 
-        allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), wxPoint(20, y), wxSize(width/2-20, 20));
-        allPrivilegesGrant = new wxCheckBox(page, CTL_ALLPRIVGRANT, wxT("WITH GRANT"), wxPoint(width/2, y), wxSize(width/2-20, 20));
+        allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), wxPoint(20, y), wxSize(100, 20));
+        allPrivilegesGrant = new wxCheckBox(page, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
         y += 20;
         allPrivilegesGrant->Disable();
 
@@ -293,9 +300,9 @@ dlgSecurityProperty::dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wx
         {
             wxString priv=privileges.GetNextToken();
             wxCheckBox *cb;
-            cb=new wxCheckBox(page, CTL_PRIVCB+i, priv, wxPoint(20, y), wxSize(width/2-20, 20));
+            cb=new wxCheckBox(page, CTL_PRIVCB+i, priv, wxPoint(20, y), wxSize(100, 20));
             privCheckboxes[i++] = cb;
-            cb=new wxCheckBox(page, CTL_PRIVCB+i, wxT("WITH GRANT"), wxPoint(width/2, y), wxSize(width/2-20, 20));
+            cb=new wxCheckBox(page, CTL_PRIVCB+i, wxT("WITH GRANT OPTION"), wxPoint(130, y), wxSize(width-145, 20));
             cb->Disable();
             privCheckboxes[i++] = cb;
 
@@ -313,7 +320,7 @@ dlgSecurityProperty::dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wx
                 while (tokens.HasMoreTokens())
                 {
                     wxString str=tokens.GetNextToken().BeforeLast('/');
-                    if (str[0]== '"')
+                    if (str[0U]== '"')
                         str = str.Mid(1);
 
                     wxString name=str.BeforeLast('=');

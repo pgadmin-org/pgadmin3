@@ -42,7 +42,7 @@ frmVacuum::frmVacuum(frmMain *form, pgObject *obj)
 {
     object=obj;
     thread=0;
-    wxLogInfo(wxT("Creating a vacuum dialogue for %s %s"), object->GetTypeName(), object->GetFullName());
+    wxLogInfo(wxT("Creating a vacuum dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxXmlResource::Get()->LoadDialog(this, form, "frmVacuum");
     SetTitle(wxT("VACUUM ") + object->GetTypeName() + wxT(" ") + object->GetFullName());
