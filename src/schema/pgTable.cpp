@@ -537,7 +537,9 @@ void pgTable::ShowStatistics(pgCollection *collection, ctlListView *statistics)
     if (hasSize)
         sql += wxT(", pg_size_pretty(pg_relation_size(relid)) AS size");
     
-    sql += wxT("\n  FROM pg_stat_all_tables ORDER BY relname");
+    sql += wxT("\n  FROM pg_stat_all_tables")
+	  wxT("\n WHERE schemaname = ") + qtString(collection->GetSchema()->GetName())
+	    +  wxT("\n ORDER BY relname");
 
     pgSet *stats = collection->GetDatabase()->ExecuteSet(sql);
 
