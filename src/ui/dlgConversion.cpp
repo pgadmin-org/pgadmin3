@@ -68,8 +68,10 @@ int dlgConversion::Go(bool modal)
         txtName->SetValue(conversion->GetName());
         txtOID->SetValue(NumToStr(conversion->GetOid()));
         txtOwner->SetValue(conversion->GetOwner());
-        cbSourceEncoding->SetValue(conversion->GetForEncoding());
-        cbTargetEncoding->SetValue(conversion->GetToEncoding());
+        cbSourceEncoding->Append(conversion->GetForEncoding());
+        cbSourceEncoding->SetSelection(0);
+        cbTargetEncoding->Append(conversion->GetToEncoding());
+        cbTargetEncoding->SetSelection(0);
 
         cbFunction->Append(conversion->GetProcNamespace()+wxT(".")+conversion->GetProc());
         cbFunction->SetSelection(0);
@@ -115,6 +117,21 @@ int dlgConversion::Go(bool modal)
             }
             delete set;
         }
+
+        long encNo=0;
+        wxString encStr;
+        do
+        {
+            encStr=connection->ExecuteScalar(
+                wxT("SELECT pg_encoding_to_char(") + NumToStr(encNo) + wxT(")"));
+            if (!encStr.IsEmpty())
+            {
+                cbSourceEncoding->Append(encStr);
+                cbTargetEncoding->Append(encStr);
+            }
+            encNo++;
+        }
+        while (!encStr.IsEmpty());
     }
 
     return dlgProperty::Go(modal);

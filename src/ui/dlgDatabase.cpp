@@ -88,7 +88,8 @@ int dlgDatabase::Go(bool modal)
         txtName->SetValue(database->GetName());
         txtOID->SetValue(NumToStr((long)database->GetOid()));
         txtPath->SetValue(database->GetPath());
-        cbEncoding->SetValue(database->GetEncoding());
+        cbEncoding->Append(database->GetEncoding());
+        cbEncoding->SetSelection(0);
         txtComment->SetValue(database->GetComment());
         cbOwner->SetValue(database->GetOwner());
 
@@ -147,13 +148,28 @@ int dlgDatabase::Go(bool modal)
             }
             delete set;
         }
-#if wxUSE_UNICODE
-        int unicodeSel=cbEncoding->FindString(wxT("UNICODE"));
-        if (unicodeSel >= 0)
-            cbEncoding->SetSelection(unicodeSel);
-#endif
-    }
+        long encNo=0;
+        wxString encStr;
+        do
+        {
+            encStr=connection->ExecuteScalar(
+                wxT("SELECT pg_encoding_to_char(") + NumToStr(encNo) + wxT(")"));
+            if (!encStr.IsEmpty())
+                cbEncoding->Append(encStr);
 
+            encNo++;
+        }
+        while (!encStr.IsEmpty());
+
+#if wxUSE_UNICODE
+        encNo=cbEncoding->FindString(wxT("UNICODE"));
+#else
+        encNo=cbEncoding->FindString(wxT("SQL_ASCII"));
+#endif
+        if (encNo >= 0)
+            cbEncoding->SetSelection(encNo);
+
+    }
     return dlgSecurityProperty::Go(modal);
 }
 
