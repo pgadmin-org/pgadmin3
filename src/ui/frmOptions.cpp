@@ -23,6 +23,16 @@
 // Icons
 #include "images/pgAdmin3.xpm"
 
+
+#define txtLogfile                  CTRL("txtLogfile", wxTextCtrl)
+#define radLoglevel                 CTRL("radLoglevel", wxRadioBox)
+#define txtMaxRows                  CTRL("txtMaxRows", wxTextCtrl)
+#define txtMaxColSize               CTRL("txtMaxColSize", wxTextCtrl)
+#define chkAskSaveConfirm           CTRL("chkAskSaveConfirm", wxCheckBox)
+#define chkAskDelete                CTRL("chkAskDelete", wxCheckBox)
+#define chkShowUsersForPrivileges   CTRL("chkShowUsersForPrivileges", wxCheckBox)
+
+
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
     EVT_BUTTON (XRCID("btnOK"),               frmOptions::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),           frmOptions::OnCancel)
@@ -40,12 +50,13 @@ frmOptions::frmOptions(wxFrame *parent)
     SetIcon(wxIcon(pgAdmin3_xpm));
     CenterOnParent();
 
-    CTRL("txtLogfile", wxTextCtrl)->SetValue(settings->GetLogFile());
-    CTRL("radLoglevel", wxRadioBox)->SetSelection(settings->GetLogLevel());
-    CTRL("txtMaxRows", wxTextCtrl)->SetValue(NumToStr(settings->GetMaxRows()));
-    CTRL("chkAskSaveConfirm", wxCheckBox)->SetValue(!settings->GetAskSaveConfirmation());
-    CTRL("chkAskDelete", wxCheckBox)->SetValue(settings->GetConfirmDelete());
-    CTRL("chkShowUsersForPrivileges", wxCheckBox)->SetValue(settings->GetShowUsersForPrivileges());
+    txtLogfile->SetValue(settings->GetLogFile());
+    radLoglevel->SetSelection(settings->GetLogLevel());
+    txtMaxRows->SetValue(NumToStr(settings->GetMaxRows()));
+    txtMaxColSize->SetValue(NumToStr(settings->GetMaxColSize()));
+    chkAskSaveConfirm->SetValue(!settings->GetAskSaveConfirmation());
+    chkAskDelete->SetValue(settings->GetConfirmDelete());
+    chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
 }
 
 
@@ -60,14 +71,14 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 {
 
     // Logfile
-    wxString logFile = CTRL("txtLogfile", wxTextCtrl)->GetValue();
+    wxString logFile = txtLogfile->GetValue();
     wxLogInfo(wxT("Setting logfile to: %s"), logFile.c_str());
     settings->SetLogFile(logFile);
 
     // Loglevel
-    wxString logInfo = CTRL("radLoglevel", wxRadioBox)->GetStringSelection();
+    wxString logInfo = radLoglevel->GetStringSelection();
     wxLogInfo(wxT("Setting loglevel to: %s"),logInfo.c_str());
-    int sel = CTRL("radLoglevel", wxRadioBox)->GetSelection();
+    int sel = radLoglevel->GetSelection();
 
     switch(sel) {
         case(0):
@@ -88,12 +99,12 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     }
 
     // Query parameter
-    wxString maxRows=CTRL("txtMaxRows", wxTextCtrl)->GetValue();
-    settings->SetMaxRows(StrToLong(maxRows));
+    settings->SetMaxRows(StrToLong(txtMaxRows->GetValue()));
+    settings->SetMaxColSize(StrToLong(txtMaxColSize->GetValue()));
 
-    settings->SetAskSaveConfirmation(!(CTRL("chkAskSaveConfirm", wxCheckBox)->IsChecked()));
-    settings->SetConfirmDelete((CTRL("chkAskDelete", wxCheckBox)->IsChecked()));
-    settings->SetShowUsersForPrivileges((CTRL("chkShowUsersForPrivileges", wxCheckBox)->IsChecked()));
+    settings->SetAskSaveConfirmation(!chkAskSaveConfirm->IsChecked());
+    settings->SetConfirmDelete(chkAskDelete->IsChecked());
+    settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->IsChecked());
     Destroy();
 }
 
@@ -107,5 +118,7 @@ void frmOptions::OnBrowseLogFile(wxCommandEvent &ev)
 {
     wxFileDialog logFile(this, wxT("Select log file"), wxT(""), wxT(""), wxT("Log files (*.log)|*.log|All files (*.*)|*.*"));
     logFile.SetDirectory(wxGetHomeDir());
-    if (logFile.ShowModal() == wxID_OK) CTRL("txtLogfile", wxTextCtrl)->SetValue(logFile.GetPath());
+
+    if (logFile.ShowModal() == wxID_OK)
+        txtLogfile->SetValue(logFile.GetPath());
 }

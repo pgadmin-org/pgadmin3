@@ -113,6 +113,8 @@ int ctlSQLResult::Retrieve(long chunk)
     }
 
     long count=0;
+    long maxColSize=settings->GetMaxColSize();
+
     while (chunk-- && !thread->DataSet()->Eof())
     {
         InsertItem(rowsRetrieved, NumToStr(rowsRetrieved+1L));
@@ -120,6 +122,11 @@ int ctlSQLResult::Retrieve(long chunk)
         for (col=0 ; col < nCols ; col++)
         {
             wxString value = thread->DataSet()->GetVal(col);
+            if (maxColSize > 0)
+            {
+                if ((int)value.Length() > maxColSize)
+                    value = value.Left(maxColSize) + wxT(" (..)");
+            }
             SetItem(rowsRetrieved, col+1, value);
         }
         

@@ -54,6 +54,8 @@ public:
     void SetLastPort(const int newval);
     long GetMaxRows() const { return maxRows; }
     void SetMaxRows(const long l) { maxRows=l; }
+    long GetMaxColSize() const { return maxColSize; }
+    void SetMaxColSize(const long l) { maxColSize=l; }
     bool GetAskSaveConfirmation() const { return askSaveConfirmation; }
     void SetAskSaveConfirmation(const bool b) { askSaveConfirmation=b; }
     bool GetConfirmDelete() const { return confirmDelete; }
@@ -88,7 +90,7 @@ private:
     bool showUsersForPrivileges;
     bool askSaveConfirmation;
     bool confirmDelete;
-    long maxRows;
+    long maxRows, maxColSize;
 };
 
 #endif

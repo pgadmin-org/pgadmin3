@@ -47,6 +47,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
 
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
+    maxColSize=Read(wxT("frmQuery/MaxColSize"), 256L);
     askSaveConfirmation=StrToBool(Read(wxT("AskSaveConfirmation"), wxT("Yes")));
     confirmDelete=StrToBool(Read(wxT("ConfirmDelete"), wxT("Yes")));
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
@@ -60,6 +61,7 @@ sysSettings::~sysSettings()
 
     Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
     Write(wxT("frmQuery/MaxRows"), maxRows);
+    Write(wxT("frmQuery/MaxColSize"), maxColSize);
     Write(wxT("AskSaveConfirmation"), BoolToYesNo(askSaveConfirmation));
     Write(wxT("ConfirmDelete"), BoolToYesNo(confirmDelete));
     Write(wxT("ShowUsersForPrivileges"), BoolToYesNo(showUsersForPrivileges));
