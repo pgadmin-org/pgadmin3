@@ -52,6 +52,8 @@ public:
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
+    bool GetSystemObject() const;
+
 private:
     wxString sourceType, targetType, castFunction, castContext, castNamespace;
     OID sourceTypeOid, targetTypeOid;

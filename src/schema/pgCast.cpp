@@ -119,6 +119,9 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
                 ct == wxT("i") ? wxT("IMPLICIT") :
                 ct == wxT("a") ? wxT("ASSIGNMENT") : wxT("EXPLICIT"));
 
+            if (settings->GetShowSystemObjects() || 
+                (cast->GetOid() > collection->GetServer()->GetLastSystemOID()))
+            {
             if (browser)
             {
                 collection->AppendBrowserItem(browser, cast);
@@ -127,8 +130,16 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             else
                 break;
         }
-
+            else
+                break;
+        }
 		delete casts;
     }
     return cast;
 }
+
+bool pgCast::GetSystemObject() const
+{
+        return (this->GetOid() <= ((pgServer*)this)->GetLastSystemOID());
+}
+
