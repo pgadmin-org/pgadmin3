@@ -242,6 +242,10 @@ SOURCE=.\utils\misc.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\utils\pgconfig.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils\precomp.cpp
 # ADD CPP /Yc"pgAdmin3.h"
 # End Source File
@@ -252,6 +256,10 @@ SOURCE=.\utils\sysLogger.cpp
 # Begin Source File
 
 SOURCE=.\utils\sysSettings.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\utils\update.cpp
 # End Source File
 # Begin Source File
 
@@ -415,6 +423,10 @@ SOURCE=.\ui\common\dlgGroup.xrc
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\common\dlgHbaConfig.xrc
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\common\dlgIndex.xrc
 # End Source File
 # Begin Source File
@@ -428,6 +440,10 @@ SOURCE=.\ui\common\dlgJob.xrc
 # Begin Source File
 
 SOURCE=.\ui\common\dlgLanguage.xrc
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\common\dlgMainConfig.xrc
 # End Source File
 # Begin Source File
 
@@ -528,6 +544,14 @@ SOURCE=.\ui\dlgEditGridOptions.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\dlgHbaConfig.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgMainConfig.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\events.cpp
 # End Source File
 # Begin Source File
@@ -537,6 +561,10 @@ SOURCE=.\ui\frmAbout.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmBackup.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmConfig.cpp
 # End Source File
 # Begin Source File
 
@@ -552,6 +580,10 @@ SOURCE=.\ui\frmGrantWizard.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\frmHbaConfig.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\frmHelp.cpp
 # End Source File
 # Begin Source File
@@ -561,6 +593,10 @@ SOURCE=.\ui\frmIndexcheck.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmMain.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmMainConfig.cpp
 # End Source File
 # Begin Source File
 
@@ -589,6 +625,10 @@ SOURCE=.\ui\frmSplash.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmStatus.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmUpdate.cpp
 # End Source File
 # Begin Source File
 
@@ -671,11 +711,23 @@ SOURCE=.\include\dlgEditGridOptions.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\dlgHbaConfig.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgMainConfig.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\frmAbout.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\include\frmBackup.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmConfig.h
 # End Source File
 # Begin Source File
 
@@ -691,6 +743,10 @@ SOURCE=.\include\frmGrantWizard.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\frmHbaConfig.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\frmHelp.h
 # End Source File
 # Begin Source File
@@ -700,6 +756,10 @@ SOURCE=.\include\frmIndexcheck.h
 # Begin Source File
 
 SOURCE=.\include\frmMain.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmMainConfig.h
 # End Source File
 # Begin Source File
 
@@ -728,6 +788,10 @@ SOURCE=.\include\frmSplash.h
 # Begin Source File
 
 SOURCE=.\include\frmStatus.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmUpdate.h
 # End Source File
 # End Group
 # Begin Group "schema includes"
@@ -987,6 +1051,10 @@ SOURCE=.\include\images\check.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\checked.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\clip_copy.xpm
 # End Source File
 # Begin Source File
@@ -1100,6 +1168,10 @@ SOURCE=.\include\images\help.xpm
 # Begin Source File
 
 SOURCE=.\include\images\help2.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\hint.xpm
 # End Source File
 # Begin Source File
 
@@ -1263,6 +1335,10 @@ SOURCE=.\include\images\type.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\unchecked.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\unique.xpm
 # End Source File
 # Begin Source File
@@ -1371,6 +1447,10 @@ SOURCE=.\include\pgAdmin3.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\pgconfig.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\pgDefs.h
 # End Source File
 # Begin Source File
@@ -1384,6 +1464,10 @@ SOURCE=.\include\sysLogger.h
 # Begin Source File
 
 SOURCE=.\include\sysSettings.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\update.h
 # End Source File
 # Begin Source File
 

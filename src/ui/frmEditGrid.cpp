@@ -85,7 +85,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     sqlGrid = new ctlSQLGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
     sqlGrid->SetSizer(new wxBoxSizer(wxVERTICAL));
 
-    wxFont fntLabel(*wxNORMAL_FONT);
+    wxFont fntLabel(settings->GetSystemFont());
     fntLabel.SetWeight(wxBOLD);
     sqlGrid->SetLabelFont(fntLabel);
 

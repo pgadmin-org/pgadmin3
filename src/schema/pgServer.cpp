@@ -323,6 +323,19 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
                     iSetUpSince(set->GetDateTime(wxT("upsince")));
                 delete set;
             }
+
+            wxString version, allVersions;
+            version.Printf(wxT("%d.%d"), conn->GetMajorVersion(), conn->GetMinorVersion());
+            allVersions = settings->Read(wxT("Updates/pgsql-Versions"), wxEmptyString);
+            if (allVersions.Find(version) < 0)
+            {
+                if (!allVersions.IsEmpty())
+                    allVersions += wxT(", ");
+                allVersions += version;
+                settings->Write(wxT("Updates/pgsql-Versions"), allVersions);
+            }
+            if (conn->IsSSLconnected())
+                settings->Write(wxT("Updates/UseSSL"), true);
         }
         else
         {

@@ -21,6 +21,7 @@
 #include <wx/imaglist.h>
 #include <wx/tipdlg.h>
 #include <wx/stc/stc.h>
+#include <wx/busyinfo.h>
 
 // App headers
 #include "misc.h"
@@ -49,6 +50,9 @@
 #include "frmRestore.h"
 #include "frmIndexcheck.h"
 #include "frmGrantWizard.h"
+#include "frmMainConfig.h"
+#include "frmHbaConfig.h"
+#include "frmUpdate.h"
 
 
 extern wxString loadPath;
@@ -61,10 +65,13 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_INDEXCHECK,                frmMain::OnIndexcheck)
     EVT_MENU(MNU_GRANTWIZARD,               frmMain::OnGrantWizard)
     EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
-    EVT_MENU(MNU_HELP,                      frmMain::OnHelp)
     EVT_MENU(MNU_FAQ,                       frmMain::OnFaq)
+    EVT_MENU(MNU_ONLINEUPDATE,              frmMain::OnOnlineUpdate)
+    EVT_MENU(MNU_ONLINEUPDATE_NEWDATA,      frmMain::OnOnlineUpdateNewData)
     EVT_MENU(MNU_PGSQLHELP,                 frmMain::OnPgsqlHelp)
     EVT_MENU(MNU_ADDSERVER,                 frmMain::OnAddServer)
+    EVT_MENU(MNU_MAINFILECONFIG,            frmMain::OnMainFileConfig)
+    EVT_MENU(MNU_HBAFILECONFIG,             frmMain::OnHbaFileConfig)
     EVT_MENU(MNU_REFRESH,                   frmMain::OnRefresh)
     EVT_MENU(MNU_CONNECT,                   frmMain::OnConnect)
     EVT_MENU(MNU_DISCONNECT,                frmMain::OnDisconnect)
@@ -116,7 +123,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_NEW+PGA_SCHEDULE,          frmMain::OnNew)
     EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
-    EVT_MENU(MNU_CONFIG,                    frmMain::OnConfig)
+    EVT_MENU(MNU_MAINCONFIG,                frmMain::OnMainConfig)
     EVT_MENU(MNU_HBACONFIG,                 frmMain::OnHbaConfig)
     EVT_NOTEBOOK_PAGE_CHANGED(CTL_NOTEBOOK, frmMain::OnPageChange)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
@@ -213,6 +220,20 @@ extern wxLocale *locale;
 }
 
 
+
+void frmMain::OnOnlineUpdate(wxCommandEvent &event)
+{
+    frmUpdate *upd=new frmUpdate(this);
+    upd->Show();
+}
+
+
+void frmMain::OnOnlineUpdateNewData(wxCommandEvent &event)
+{
+    wxLogError(__("Could not contact pgAdmin web site to check for updates.\nMaybe your proxy option setting need adjustment."));
+}
+
+
 void frmMain::OnStartService(wxCommandEvent& WXUNUSED(event))
 {
     if (currentObject && currentObject->GetType() == PG_SERVER)
@@ -232,7 +253,7 @@ void frmMain::OnStopService(wxCommandEvent& WXUNUSED(event))
     if (currentObject && currentObject->GetType() == PG_SERVER)
     {
         pgServer *server= (pgServer*)currentObject;
-		wxMessageDialog msg(this, _("Are you sure you wish shutdown this server?"),
+		wxMessageDialog msg(this, _("Are you sure you wish to shutdown this server?"),
                 _("Stop service"), wxYES_NO | wxICON_QUESTION);
         if (msg.ShowModal() != wxID_YES)
         {
@@ -273,7 +294,7 @@ void frmMain::OnFaq(wxCommandEvent& event)
 }
 
 
-void frmMain::OnHelp(wxCommandEvent& event)
+wxString frmMain::GetHelpPage() const
 {
     wxString page;
 
@@ -283,7 +304,7 @@ void frmMain::OnHelp(wxCommandEvent& event)
     if (page.IsEmpty())
         page = wxT("sql-commands");
 
-    DisplaySqlHelp(this, page);
+    return page;
 }
 
 
@@ -341,6 +362,52 @@ void frmMain::OnStatus(wxCommandEvent &event)
         frmStatus *status = new frmStatus(this, txt, conn);
         frames.Append(status);
         status->Go();
+    }
+}
+
+
+void frmMain::OnMainFileConfig(wxCommandEvent& event)
+{
+    frmConfig *dlg = new frmMainConfig(this);
+    dlg->Go();
+    dlg->DoOpen();
+}
+
+
+void frmMain::OnHbaFileConfig(wxCommandEvent& event)
+{
+    frmConfig *dlg = new frmHbaConfig(this);
+    dlg->Go();
+    dlg->DoOpen();
+}
+
+
+void frmMain::OnMainConfig(wxCommandEvent& event)
+{
+    if (!currentObject)
+        return;
+
+    pgServer *server=currentObject->GetServer();
+    if (server)
+    {
+        frmConfig *config = new frmMainConfig(this, server);
+        frames.Append(config);
+        config->Go();
+    }
+}
+
+
+void frmMain::OnHbaConfig(wxCommandEvent& event)
+{
+    if (!currentObject)
+        return;
+
+    pgServer *server=currentObject->GetServer();
+    if (server)
+    {
+        frmConfig *config = new frmHbaConfig(this, server);
+        frames.Append(config);
+        config->Go();
     }
 }
 
@@ -598,6 +665,8 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
 
         pgServer *server=(pgServer*)dlg.CreateObject(0);
 
+        wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
+            server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
         rc = server->Connect(this, false, dlg.GetPassword());
 
         switch (rc)
@@ -1082,16 +1151,6 @@ void frmMain::OnContextMenu(wxCommandEvent& event)
 }
 
 
-void frmMain::OnConfig(wxCommandEvent& event)
-{
-}
-
-
-void frmMain::OnHbaConfig(wxCommandEvent& event)
-{
-}
-
-    
 ////////////////////////////////////////////////////////////////////////////////
 // This handler will display a popup menu for the item at the mouse position
 ////////////////////////////////////////////////////////////////////////////////
@@ -1130,6 +1189,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
 
             if (index >= 0)
             {
+                long firstSelected = index;
                 pgObject *data=collection->FindChild(browser, index);
 
                 if (!data || !data->CanDrop())

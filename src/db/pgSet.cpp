@@ -385,7 +385,7 @@ int pgQueryThread::execute()
             if (insertedOid && insertedOid != (OID)-1)
                 appendMessage(wxString::Format(_("Query result with %d rows will be returned.\n"), PQntuples(result)));
             else
-                appendMessage(wxString::Format(_("Query inserted one rows with OID %d.\n"), insertedOid));
+                appendMessage(wxString::Format(_("Query inserted one row with OID %d.\n"), insertedOid));
             continue;
         }
         if (lastResult)

@@ -34,7 +34,7 @@
 
 #if wxCHECK_VERSION(2,5,1)
 #ifdef __WXGTK__
-  #include <wx/renderer.h>
+#include <wx/renderer.h>
 #endif
 #endif 
 
@@ -47,8 +47,11 @@
 #include "misc.h"
 #include "sysLogger.h"
 #include "sysSettings.h"
+#include "update.h"
 #include "frmMain.h"
+#include "frmConfig.h"
 #include "frmSplash.h"
+#include <wx/socket.h>
 #include <wx/dir.h>
 #include <wx/fs_zip.h>
 #include "xh_calb.h"
@@ -57,7 +60,9 @@
 #include "xh_ctlcombo.h"
 
 // Globals
-frmMain *winMain;
+frmMain *winMain=0;
+wxThread *updateThread=0;
+
 wxLog *logger;
 sysSettings *settings;
 wxArrayInt existingLangs;
@@ -71,6 +76,8 @@ wxString backupExecutable;      // complete filename of pg_dump and pg_restore, 
 wxString restoreExecutable;
 
 double libpqVersion=0.0;
+
+bool dialogTestMode=false;
 
 #define DOC_DIR     wxT("/docs")
 #define UI_DIR      wxT("/ui")
@@ -106,24 +113,50 @@ bool pgAdmin3::OnInit()
 	if (loadPath.IsEmpty())
 		loadPath = wxT(".");
 
+    frmConfig::tryMode configMode=frmConfig::NONE;
+
+    if (argc > 1 && *argv[1] == '-')
+    {
+        switch (argv[1][1])
+        {
+            case 'c':
+            {
+                // file configurator mode
+                if (argv[1][2]== 'm')
+                    configMode = frmConfig::MAINFILE;
+                else if (argv[1][2]== 'h')
+                    configMode = frmConfig::HBAFILE;
+                else
+                    configMode=frmConfig::ANYFILE;
+
+                break;
+            }
+            case 't':
+            {
+                dialogTestMode = true;
+                break;
+            }
+        }
+    }
+
+
     wxPathList path;
 
     path.Add(loadPath);
 
-#ifdef __WIN32__
+#ifdef __WXMSW__
 
 	// Look for a path 'hint' on Windows. This registry setting may
 	// be set by the Win32 PostgreSQL installer which will generally
 	// install pg_dump et al. in the PostgreSQL bindir rather than
 	// the pgAdmin directory.
-	wxString key;
-	key << wxT("HKEY_LOCAL_MACHINE\\Software\\") << APPNAME_L;
-	wxRegKey *hintKey = new wxRegKey(key);
 
-	if (hintKey->HasValue(wxT("Helper Path")))
+    wxRegKey hintKey(wxT("HKEY_LOCAL_MACHINE\\Software\\") APPNAME_L);
+
+	if (hintKey.HasValue(wxT("Helper Path")))
 	{
 		wxString hintPath;
-	    hintKey->QueryValue(wxT("Helper Path"), hintPath);
+	    hintKey.QueryValue(wxT("Helper Path"), hintPath);
 		path.Add(hintPath);
 	}
 
@@ -133,7 +166,7 @@ bool pgAdmin3::OnInit()
 
     // evaluate all working paths
 
-#ifdef __WIN32__
+#ifdef __WXMSW__
 
     backupExecutable  = path.FindValidPath(wxT("pg_dump.exe"));
     restoreExecutable = path.FindValidPath(wxT("pg_restore.exe"));
@@ -261,62 +294,6 @@ bool pgAdmin3::OnInit()
             }
         }
     }
-
-#if 0 // old language selection on first app start
-    wxLanguage langId = (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN);
-
-    if (langId == wxLANGUAGE_UNKNOWN)
-    {
-        locale->Init(wxLANGUAGE_DEFAULT);
-        locale->AddCatalog(wxT("pgadmin3"));
-#ifdef __LINUX__
-        {
-            wxLogNull noLog;
-            locale->AddCatalog(wxT("fileutils"));
-        }
-#endif
-
-        if (langCount)
-        {
-            wxString *langNames=new wxString[langCount+1];
-            langNames[0] = _("Default");
-
-            for (langNo = 0; langNo < langCount ; langNo++)
-            {
-                langInfo = wxLocale::GetLanguageInfo(existingLangs.Item(langNo));
-                langNames[langNo+1] = wxT("(") + langInfo->CanonicalName + wxT(") ")
-                        + existingLangNames.Item(langNo);
-            }
-
-
-            langNo = wxGetSingleChoiceIndex(_("Please choose user language:"), _("User language"), 
-                langCount+1, langNames);
-            if (langNo > 0)
-                langId = (wxLanguage)wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1))->Language;
-			else if (langNo == 0)
-				langId = wxLANGUAGE_DEFAULT;
-
-            delete[] langNames;
-        }
-    }
-
-    if (langId != wxLANGUAGE_UNKNOWN)
-    {
-        delete locale;
-        locale = new wxLocale();
-        if (locale->Init(langId))
-        {
-#ifdef __LINUX__
-            {
-                wxLogNull noLog;
-                locale->AddCatalog(wxT("fileutils"));
-            }
-#endif
-            locale->AddCatalog(wxT("pgadmin3"));
-            settings->Write(wxT("LanguageId"), (long)langId);
-        }
-    }
-#endif
 
 
     // Show the splash screen
@@ -486,25 +463,66 @@ bool pgAdmin3::OnInit()
     wxSleep(2);
 #endif
 
-    // Create & show the main form
-    winMain = new frmMain(APPNAME_L);
 
-    if (!winMain) 
-        wxLogFatalError(__("Couldn't create the main window!"));
+    if (configMode)
+    {
+        int i;
 
-    winMain->Show(TRUE);
-    SetTopWindow(winMain);
-    SetExitOnFrameDelete(TRUE);
+        for (i=2 ; i < argc ; i++)
+        {
+            wxString str;
+            if (*argv[i] == '"')
+            {
+                wxString str=argv[i]+1;
+                str=str.Mid(0, str.Length()-1);
+            }
+            else
+                str = argv[i];
 
-    if (winSplash) {
-        winSplash->Close();
-        delete winSplash;
+            if (configMode == frmConfig::ANYFILE && wxDir::Exists(str))
+            {
+                frmConfig::Create(APPNAME_L, str + wxT("/pg_hba.conf"), frmConfig::HBAFILE);
+                frmConfig::Create(APPNAME_L, str + wxT("/postgresql.conf"), frmConfig::MAINFILE);
+            }
+            else
+            {
+                frmConfig::Create(APPNAME_L, str, configMode);
+            }
+        }
+        if (winSplash)
+        {
+            winSplash->Close();
+            delete winSplash;
+        }
     }
 
-    // Display a Tip if required.
-    extern sysSettings *settings;
-    wxCommandEvent evt = wxCommandEvent();
-    if (settings->GetShowTipOfTheDay()) winMain->OnTipOfTheDay(evt);
+    else
+    {
+        wxSocketBase::Initialize();
+
+        // Create & show the main form
+        winMain = new frmMain(APPNAME_L);
+
+        if (!winMain) 
+            wxLogFatalError(__("Couldn't create the main window!"));
+
+        // updateThread = BackgroundCheckUpdates(winMain);
+
+        winMain->Show(TRUE);
+        SetTopWindow(winMain);
+        SetExitOnFrameDelete(TRUE);
+
+        if (winSplash)
+        {
+            winSplash->Close();
+            delete winSplash;
+        }
+
+        // Display a Tip if required.
+        extern sysSettings *settings;
+        wxCommandEvent evt = wxCommandEvent();
+        if (settings->GetShowTipOfTheDay()) winMain->OnTipOfTheDay(evt);
+    }
 
     return TRUE;
 }
@@ -512,6 +530,12 @@ bool pgAdmin3::OnInit()
 // Not the Application!
 int pgAdmin3::OnExit()
 {
+    if (updateThread)
+    {
+        updateThread->Delete();
+        delete updateThread;
+    }
+
     // Delete the settings object to ensure settings are saved.
     delete settings;
 

@@ -40,6 +40,7 @@ public:
     frmMain(const wxString& title);
     ~frmMain();
     void OnTipOfTheDay(wxCommandEvent& event);
+    wxString GetHelpPage() const;
 
     void StartMsg(const wxString& msg);
     void EndMsg();
@@ -83,7 +84,6 @@ private:
     pgDatabase *m_database;
 
     void OnContents(wxCommandEvent& event);
-    void OnHelp(wxCommandEvent& event);
     void OnPgsqlHelp(wxCommandEvent& event);
     void OnFaq(wxCommandEvent& event);
     void OnAddServer(wxCommandEvent &ev);
@@ -105,8 +105,10 @@ private:
     void OnCount(wxCommandEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
-    void OnConfig(wxCommandEvent& event);
+    void OnMainConfig(wxCommandEvent& event);
     void OnHbaConfig(wxCommandEvent& event);
+    void OnMainFileConfig(wxCommandEvent& event);
+    void OnHbaFileConfig(wxCommandEvent& event);
 
     void OnPageChange(wxNotebookEvent& event);
     void OnPropSelChanged(wxListEvent& event);
@@ -132,6 +134,8 @@ private:
     void OnDisconnect(wxCommandEvent &ev);
 
     void OnCheckAlive(wxCommandEvent& event);
+    void OnOnlineUpdate(wxCommandEvent& event);
+    void OnOnlineUpdateNewData(wxCommandEvent& event);
 
     bool dropSingleObject(pgObject *data, bool updateFinal);
     void doPopup(wxWindow *win, wxPoint point, pgObject *object);

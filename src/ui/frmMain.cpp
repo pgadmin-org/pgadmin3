@@ -28,10 +28,12 @@
 #include <wx/splitter.h>
 #include <wx/toolbar.h>
 #include <wx/imaglist.h>
+#include <wx/busyinfo.h>
 
 // App headers
 #include "misc.h"
 #include "menu.h"
+#include "pgfeatures.h"
 #include "frmMain.h"
 #include "ctlSQLBox.h"
 #include "pgConn.h"
@@ -163,6 +165,9 @@ frmMain::frmMain(const wxString& title)
     wxApp::s_macPreferencesMenuItemId = MNU_OPTIONS;
 #endif
     fileMenu->AppendSeparator();
+    fileMenu->Append(MNU_MAINFILECONFIG, _("Open postgresql.conf"),_("Open configuration editor with postgresql.conf."));
+    fileMenu->Append(MNU_HBAFILECONFIG, _("Open pg_hba.conf"),    _("Open configuration editor with pg_hba.conf."));
+    fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
     menuBar->Append(fileMenu, _("&File"));
 
@@ -191,7 +196,16 @@ frmMain::frmMain(const wxString& title)
     toolsMenu->Append(MNU_RESTORE, _("&Restore"),                 _("Restores a backup from a local file"));
 //    toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
     toolsMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),        _("Grants rights to multiple objects"));
+
+#ifdef __WXDEBUG__
+    wxMenu *cfgMenu=new wxMenu();
+    cfgMenu->Append(MNU_MAINCONFIG, wxT("postgresql.conf"),       _("Edit general server configuration file."));
+    cfgMenu->Append(MNU_HBACONFIG, wxT("pg_hba.conf"),            _("Edit server access configuration file."));
+
+    toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server configuration"), cfgMenu);
+#endif
     toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
+
     menuBar->Append(toolsMenu, _("&Tools"));
 
     // View Menu
@@ -210,6 +224,7 @@ frmMain::frmMain(const wxString& title)
     helpMenu->Append(MNU_PGSQLHELP, _("&PostgreSQL Help"),        _("Display help on PostgreSQL database system."));
     helpMenu->Append(MNU_TIPOFTHEDAY, _("&Tip of the day"),       _("Show a tip of the day."));
     helpMenu->AppendSeparator();
+    helpMenu->Append(MNU_ONLINEUPDATE, _("Online Update"),        _("Check online for updates"));
     helpMenu->Append(MNU_BUGREPORT, _("&Bugreport"),              _("How to send a bugreport to the pgAdmin Development Team."));
     helpMenu->Append(MNU_ABOUT, _("&About..."),                   _("Show about dialog."));
 #ifdef __WXMAC__
@@ -231,6 +246,7 @@ frmMain::frmMain(const wxString& title)
     statusBar = CreateStatusBar(3);
     int iWidths[3] = {0, -1, 100};
     SetStatusWidths(3, iWidths);
+    SetStatusBarPane(-1);
     statusBar->SetStatusText(wxT(""), 0);
     statusBar->SetStatusText(_("Ready."), 1);
     statusBar->SetStatusText(_("0 Secs"), 2);
@@ -378,7 +394,6 @@ frmMain::~frmMain()
 {
     StoreServers();
 
-    SavePosition();
     settings->Write(wxT("frmMain/SplitHorizontal"), horizontal->GetSashPosition());
     settings->Write(wxT("frmMain/SplitVertical"), vertical->GetSashPosition());
 
@@ -678,6 +693,9 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
 int frmMain::ReconnectServer(pgServer *server)
 {
     // Create a server object and connect it.
+    wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
+        server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
+
     int res = server->Connect(this, TRUE);
 
     // Check the result, and handle it as appropriate
@@ -947,19 +965,23 @@ void frmMain::SetButtons(pgObject *obj)
          maintenance=false,
          backup=false,
          restore=false,
-         status=false;
+         status=false,
+         config=false;
 
     if (obj)
     {
-        refresh=true;
-        create=obj->CanCreate();
-        drop=obj->CanDrop();
-        properties=obj->CanEdit();
-        viewData=obj->CanView();
-        maintenance=obj->CanMaintenance();
-        backup=obj->CanBackup();
-        restore=obj->CanRestore();
-        status=obj->GetServer() != 0;
+        pgConn *conn=obj->GetConnection();
+        pgServer *server=obj->GetServer();
+        refresh = true;
+        create = obj->CanCreate();
+        drop = obj->CanDrop();
+        properties = obj->CanEdit();
+        viewData = obj->CanView();
+        maintenance = obj->CanMaintenance();
+        backup = obj->CanBackup();
+        restore = obj->CanRestore();
+        status = server != 0 && server->GetSuperUser();
+        config = status && conn && conn->HasFeature(FEATURE_FILEREAD);
 
         switch (obj->GetType())
         {
@@ -1006,6 +1028,9 @@ void frmMain::SetButtons(pgObject *obj)
 	toolsMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
     toolsMenu->Enable(MNU_STARTSERVICE, false);
     toolsMenu->Enable(MNU_STOPSERVICE, false);
+#ifdef __WXDEBUG__
+    toolsMenu->Enable(MNU_CONFIGSUBMENU, config);
+#endif
 	viewMenu->Enable(MNU_REFRESH, refresh);
 	viewMenu->Enable(MNU_COUNT, false);
 }

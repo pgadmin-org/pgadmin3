@@ -77,6 +77,9 @@ public:
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
     wxString SystemNamespaceRestriction(const wxString &nsp);
 
+    int GetMajorVersion() const { return majorVersion; }
+    int GetMinorVersion() const { return minorVersion; }
+
     void LogError();
 
 #ifdef SSL
