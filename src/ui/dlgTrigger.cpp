@@ -94,7 +94,8 @@ int dlgTrigger::Go(bool modal)
         // create mode
         wxString sysRestr;
         if (!settings->GetShowSystemObjects())
-            sysRestr = wxT(" AND pronamespace >") + NumToStr(connection->GetLastSystemOID());
+            sysRestr = wxT(" AND (pronamespace=2200 OR pronamespace >") 
+				+ NumToStr(connection->GetLastSystemOID()) + wxT(")");
 
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT proname FROM pg_proc WHERE prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr);
