@@ -69,8 +69,10 @@
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
-EVT_MENU(mnuExit,  frmMain::OnExit)
-EVT_MENU(mnuAbout, frmMain::OnAbout)
+    EVT_MENU(mnuExit,  frmMain::OnExit)
+    EVT_MENU(mnuAbout, frmMain::OnAbout)
+    EVT_SIZE(frmMain::OnSize)
+    EVT_MOVE(frmMain::OnMove) 
 END_EVENT_TABLE()
 
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -267,4 +269,19 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     frmAbout *winAbout = new frmAbout(this);
     winAbout->Show(TRUE);
+}
+
+void frmMain::OnSize(wxSizeEvent &sizForm)
+{
+    extern sysSettings *objSettings;
+    objSettings->SetFrmMainWidth(sizForm.GetSize().x);
+    objSettings->SetFrmMainHeight(sizForm.GetSize().y);
+    sizForm.Skip();
+}
+
+void frmMain::OnMove(wxMoveEvent &posForm)
+{
+    extern sysSettings *objSettings;
+    objSettings->SetFrmMainLeft(posForm.GetPosition().x);
+    objSettings->SetFrmMainTop(posForm.GetPosition().y);
 }

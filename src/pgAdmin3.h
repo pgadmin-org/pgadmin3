@@ -14,14 +14,19 @@
 // wxWindows headers
 #include <wx/wx.h>
 
-// Application Version
+// App headers
+#include "utils/sysSettings.h"
+
+// Application Version & Name
 #define VERSION "1.0.0 Devel"
+#define APPNAME "pgAdmin III"
 
 // Class declarations
 class pgAdmin3 : public wxApp
 {
 public:
     virtual bool OnInit();
+    virtual int OnExit();
 };
 
 #endif

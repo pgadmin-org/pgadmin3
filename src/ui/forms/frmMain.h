@@ -26,11 +26,7 @@ class frmMain : public wxFrame
 {
 public:
     frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
-    void OnExit(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
-    wxMenuBar *mnuBar;
-    wxStatusBar *stBar;
-    wxToolBar *tlBar;
+
     
 private:
     wxTreeCtrl* tvBrowser;
@@ -38,6 +34,13 @@ private:
     wxListCtrl* lvStatistics;
     wxNotebook* nbListViews;
     ctlSQLBox* txtSQLPane;
+    wxMenuBar *mnuBar;
+    wxStatusBar *stBar;
+    wxToolBar *tlBar;
+    void OnExit(wxCommandEvent& event);
+    void OnAbout(wxCommandEvent& event);
+    void OnSize(wxSizeEvent &sizForm);
+    void OnMove(wxMoveEvent &posForm);
     DECLARE_EVENT_TABLE()
 };
 
