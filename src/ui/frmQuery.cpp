@@ -748,7 +748,11 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         SetStatusText(wxT(""), STATUSPOS_SECS);
         SetStatusText(_("Query is running."), STATUSPOS_MSGS);
         SetStatusText(wxT(""), STATUSPOS_ROWS);
-        msgResult->Clear();
+        msgResult->AppendText(_("Executing query:"));
+        msgResult->AppendText(wxT("\n\n"));
+        msgResult->AppendText(query);
+        msgResult->AppendText(wxT("\n"));
+
         Update();
         wxYield();
 
@@ -767,18 +771,20 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
         elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
         SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+        wxString qTime = elapsedQuery.ToString() + wxT(" ms.");
 
-    
         if (sqlResult->RunStatus() != PGRES_TUPLES_OK)
         {
             if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
-                showMessage(_("Query returned successfully with no result."), _("OK."));
+                showMessage(_("Query returned successfully with no result in ") + qTime, _("OK."));
+                wxMessageBox(_("Query returned successfully with no result in ") + qTime, _("Query Results"), wxICON_INFORMATION | wxOK);
             }
             else
             {
                 wxString errMsg = sqlResult->GetErrorMessage();
                 showMessage(errMsg);
+                wxLogError(errMsg);
 
                 wxString atChar=wxT(" at character ");
                 int chp=errMsg.Find(atChar);
@@ -896,6 +902,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                     nr.Printf(_("%ld  rows not retrieved."), rowsTotal - rowsReadTotal);
                     showMessage(wxString::Format(_("Total %ld rows.\n"), rowsTotal) + nr, nr);
                 }
+                msgResult->AppendText(wxT("\n"));
 
             }
             if (rowsTotal == rowsReadTotal)
