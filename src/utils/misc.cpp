@@ -171,8 +171,9 @@ long GetListSelected(wxListCtrl *lst)
 
 void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0, const int h0)
 {
-    int scrW=wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
-    int scrH=wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
+    wxSize screenSize = wxGetDisplaySize();
+    int scrW = screenSize.x;
+    int scrH = screenSize.y;
 
     if (pos.x < 0)
         pos.x = 0;
