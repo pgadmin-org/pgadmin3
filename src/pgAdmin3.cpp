@@ -172,7 +172,7 @@ bool pgAdmin3::OnInit()
     const wxLanguageInfo *langInfo;
     int langNo;
 
-    wxString langfile=FileRead(uiPath + wxT("/") LANG_FILE, 0, 1);
+    wxString langfile=FileRead(uiPath + wxT("/") LANG_FILE, 1);
 
     if (!langfile.IsEmpty())
     {

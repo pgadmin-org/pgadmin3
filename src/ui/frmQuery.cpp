@@ -618,7 +618,7 @@ void frmQuery::OnChange(wxNotifyEvent& event)
 
 void frmQuery::openLastFile()
 {
-    wxString str=FileRead(lastPath, this, lastFileFormat ? 1 : 0);
+    wxString str=FileRead(lastPath);
     if (!str.IsEmpty())
     {
         sqlQuery->SetText(str);
@@ -662,13 +662,14 @@ void frmQuery::OnSave(wxCommandEvent& event)
         return;
     }
 
-    if (FileWrite(lastPath, sqlQuery->GetText(), lastFileFormat ? 1 : 0))
+    if (FileWrite(lastPath, sqlQuery->GetText(), -1))
     {
         changed=false;
         setExtendedTitle();
         updateRecentFiles();
     }
 }
+
 
 void frmQuery::OnSaveAs(wxCommandEvent& event)
 {
@@ -692,7 +693,12 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
                 break;
         }
 
-        OnSave(event);
+        if (FileWrite(lastPath, sqlQuery->GetText(), lastFileFormat ? 1 : 0))
+        {
+            changed=false;
+            setExtendedTitle();
+            updateRecentFiles();
+        }
     }
     delete dlg;
 }

@@ -419,7 +419,7 @@ wxString queryTokenizer::GetNextToken()
 }
 
 
-wxString FileRead(const wxString &filename, wxWindow *errParent, int format)
+wxString FileRead(const wxString &filename, int format)
 {
     wxString str;
 
@@ -442,14 +442,18 @@ bool FileWrite(const wxString &filename, const wxString &data, int format)
 {
     wxFontEncoding encoding;
     if (format < 0)
-        format = settings->GetUnicodeFile() ? 1 : 0;
-
-    if (format > 0)
-        encoding = wxFONTENCODING_UTF8;
+        encoding = settings->GetUnicodeFile() ? wxFONTENCODING_UTF8 : wxFONTENCODING_SYSTEM;
     else
-        encoding=wxFONTENCODING_DEFAULT;
+        encoding = format ? wxFONTENCODING_UTF8 : wxFONTENCODING_SYSTEM;
 
-    wxUtfFile file(filename, wxFile::write, encoding);
+    wxUtfFile file;
+
+    if (format < 0) // first try using the old encoding
+        file.Open(filename, wxFile::read_write, encoding);
+
+    if (!file.IsOpened())
+        file.Open(filename, wxFile::write, encoding);
+
     if (file.IsOpened())
         return file.Write(wxTextBuffer::Translate(data));
 

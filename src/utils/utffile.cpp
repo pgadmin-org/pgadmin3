@@ -128,14 +128,14 @@ bool wxUtfFile::Open(const wxChar *szFileName, OpenMode mode, int access, wxFont
         return false;
 
 
-    m_encoding =wxFONTENCODING_SYSTEM;
-    m_conversion = 0;
     m_bomOffset = 0;
+    DetermineConversion(wxFONTENCODING_SYSTEM);
 
     if (mode != write && EvalBOM(encoding))
     {
         // File freshly created, need BOM
-        WriteBOM();
+        if (mode != read)
+            WriteBOM();
     }
     else if (mode != read && encoding != wxFONTENCODING_DEFAULT)
     {
