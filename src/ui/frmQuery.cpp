@@ -778,7 +778,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             {
                 showMessage(wxString::Format(_("Query returned successfully with no result in %s ms."),
                     elapsedQuery.ToString().c_str()), _("OK."));
-//                wxMessageBox(_("Query returned successfully with no result in ") + qTime, _("Query Results"), wxICON_INFORMATION | wxOK);
+//                wxMessageBox(illegal string for translation...("Query returned successfully with no result in ") + qTime, _("Query Results"), wxICON_INFORMATION | wxOK);
             }
             else
             {
