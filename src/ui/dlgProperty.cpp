@@ -1290,7 +1290,7 @@ END_EVENT_TABLE();
 dlgAgentProperty::dlgAgentProperty(frmMain *frame, const wxString &resName)
 : dlgProperty(frame, resName)
 {
-    jobId=0;
+    recId=0;
 }
 
 
@@ -1312,15 +1312,13 @@ bool dlgAgentProperty::executeSql()
     sql=GetInsertSql();
     if (!sql.IsEmpty())
     {
-		// We should only need to get an ID if inserting a new Job
 		if (sql.Contains(wxT("<id>")) && sql.StartsWith(wxT("INSERT INTO pgagent.pga_job")))
 		{
-
-		    jobId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));
+			recId=StrToLong(connection->ExecuteScalar(wxT("SELECT nextval('pgagent.pga_job_jobid_seq');")));
 
             int pos;
             while ((pos=sql.Find(wxT("<id>"))) >= 0)
-                sql = sql.Left(pos) + NumToStr(jobId) + sql.Mid(pos+4);
+                sql = sql.Left(pos) + NumToStr(recId) + sql.Mid(pos+4);
 		}
 
         pgSet *set=connection->ExecuteSet(sql);
@@ -1340,7 +1338,7 @@ bool dlgAgentProperty::executeSql()
     {
         int pos;
         while ((pos=sql.Find(wxT("<id>"))) >= 0)
-            sql = sql.Left(pos) + NumToStr(jobId) + sql.Mid(pos+4);
+            sql = sql.Left(pos) + NumToStr(recId) + sql.Mid(pos+4);
 
         if (!connection->ExecuteVoid(sql))
         {

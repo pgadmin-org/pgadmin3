@@ -192,11 +192,11 @@ protected:
     virtual wxString GetInsertSql() =0;
     virtual wxString GetUpdateSql() =0;
     wxString GetSql();
-    long GetJobId() { return jobId; }
+    long GetRecId() { return recId; }
 
     DECLARE_EVENT_TABLE();
 
-    long jobId;
+    long recId;
 };
 
 

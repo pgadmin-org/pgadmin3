@@ -39,7 +39,7 @@ pgaSchedule::~pgaSchedule()
 
 bool pgaSchedule::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetScheduleId()));
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetRecId()));
 }
 
 
@@ -55,7 +55,7 @@ void pgaSchedule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("ID"), GetScheduleId());
+        properties->AppendItem(_("ID"), GetRecId());
         properties->AppendItem(_("Enabled"), GetEnabled());
 
         properties->AppendItem(_("Start date"), GetStart());
@@ -94,7 +94,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 
     pgSet *schedules= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT * FROM pgagent.pga_schedule\n")
-       wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetJobId()) + wxT("\n")
+       wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetRecId()) + wxT("\n")
        + restriction +
        wxT(" ORDER BY jscid"));
 
@@ -104,7 +104,7 @@ pgObject *pgaSchedule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
         {
 
             schedule = new pgaSchedule(collection, schedules->GetVal(wxT("jscname")));
-            schedule->iSetScheduleId(schedules->GetLong(wxT("jscid")));
+            schedule->iSetRecId(schedules->GetLong(wxT("jscid")));
             schedule->iSetDatabase(collection->GetDatabase());
             schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
             schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));
@@ -297,7 +297,7 @@ wxString pgaSchedule::GetMonthdaysString()
 		{
 			if (x < 31)
 			{
-				tmp.Printf(wxT("%.2d, "), x);
+				tmp.Printf(wxT("%.2d, "), x + 1);
 				res += tmp;
 			}
 			else

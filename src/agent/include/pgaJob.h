@@ -48,10 +48,10 @@ public:
     void iSetLastrun(const wxDateTime &d) { lastrun=d; }
     wxString GetLastresult() const { return lastresult; }
     void iSetLastresult(const wxString &s) { lastresult = s; }
-    long GetAgentId() const { return agentId; }
-    void iSetAgentId(const long l) { agentId=l; }
-    long GetJobId() const { return jobId; }
-    void iSetJobId(const long l) { jobId=l; }
+    wxString GetAgent() const { return agent; }
+    void iSetAgent(const wxString &s) { agent=s; }
+    long GetRecId() const { return recId; }
+    void iSetRecId(const long l) { recId=l; }
 
     wxMenu *GetNewMenu();
     bool CanCreate() { return true; }
@@ -63,8 +63,8 @@ public:
 private:
     bool enabled;
     wxDateTime created, changed, nextrun, lastrun;
-    wxString lastresult, jobclass;
-    long agentId, jobId;
+    wxString lastresult, jobclass, agent;
+    long recId;
 };
 
 
@@ -72,7 +72,6 @@ class pgaJobObject : public pgDatabaseObject
 {
 public:
     pgaJobObject(pgaJob *job, int newType, const wxString& newName);
-    long GetJobId() const { return job->GetJobId(); }
     pgaJob *GetJob() { return job; }
 
     bool CanCreate() { return job->CanCreate(); }

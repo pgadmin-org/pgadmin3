@@ -42,8 +42,8 @@ public:
     void iSetStart(const wxDateTime &d) { start=d; }
     wxDateTime GetEnd() const { return end; }
     void iSetEnd(const wxDateTime &d) { end=d; }
-    long GetScheduleId() const { return scheduleId; }
-    void iSetScheduleId(const long l) { scheduleId=l; }
+    long GetRecId() const { return recId; }
+    void iSetRecId(const long l) { recId=l; }
 
 	wxString GetMinutes() const { return minutes; }
 	wxString GetMinutesString();
@@ -68,7 +68,7 @@ public:
 private:
     bool enabled;
     wxDateTime start, end;
-	long scheduleId;
+	long recId;
 	wxString minutes, hours, weekdays, monthdays, months;
 };
 

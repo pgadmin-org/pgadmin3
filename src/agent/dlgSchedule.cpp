@@ -30,8 +30,8 @@
 #define timStart            CTRL_TIME("timStart")
 #define calEnd              CTRL_CALENDAR("calEnd")
 #define timEnd              CTRL_TIME("timEnd")
-#define chkWeekDays			CTRL_CHECKLISTBOX("chkWeekDays")
-#define chkMonthDays		CTRL_CHECKLISTBOX("chkMonthDays")
+#define chkWeekdays			CTRL_CHECKLISTBOX("chkWeekDays")
+#define chkMonthdays		CTRL_CHECKLISTBOX("chkMonthDays")
 #define chkMonths			CTRL_CHECKLISTBOX("chkMonths")
 #define chkHours			CTRL_CHECKLISTBOX("chkHours")
 #define chkMinutes			CTRL_CHECKLISTBOX("chkMinutes")
@@ -64,14 +64,16 @@ dlgSchedule::dlgSchedule(frmMain *frame, pgaSchedule *node, pgaJob *j)
     schedule=node;
     job=j;
     if (job)
-        jobId=job->GetJobId();
+        jobId=job->GetRecId();
     else
         jobId=0;
+
+	txtID->Disable();
 
     btnChangeException->Disable();
     btnRemoveException->Disable();
 
-	txtID->Disable();
+
 }
 
 
@@ -83,10 +85,12 @@ pgObject *dlgSchedule::GetObject()
 
 int dlgSchedule::Go(bool modal)
 {
+
     if (schedule)
     {
         // edit mode
-		txtID->SetValue(NumToStr(schedule->GetScheduleId()));
+		recId = schedule->GetRecId();
+		txtID->SetValue(NumToStr(recId));
         chkEnabled->SetValue(schedule->GetEnabled());
         calStart->SetDate(schedule->GetStart());
         timStart->SetTime(schedule->GetStart());
@@ -97,6 +101,22 @@ int dlgSchedule::Go(bool modal)
         }
         else
             timEnd->Disable();
+
+		unsigned int x;
+		for (x=0; x<schedule->GetMonths().Length(); x++ )
+			if (schedule->GetMonths()[x] == 't') chkMonths->Check(x, true);
+
+		for (x=0; x<schedule->GetMonthdays().Length(); x++ )
+			if (schedule->GetMonthdays()[x] == 't') chkMonthdays->Check(x, true);
+
+		for (x=0; x<schedule->GetWeekdays().Length(); x++ )
+			if (schedule->GetWeekdays()[x] == 't') chkWeekdays->Check(x, true);
+
+		for (x=0; x<schedule->GetHours().Length(); x++ )
+			if (schedule->GetHours()[x] == 't') chkHours->Check(x, true);
+
+		for (x=0; x<schedule->GetMinutes().Length(); x++ )
+			if (schedule->GetMinutes()[x] == 't') chkMinutes->Check(x, true);
 
         wxNotifyEvent ev;
     }
@@ -111,9 +131,7 @@ int dlgSchedule::Go(bool modal)
 
 pgObject *dlgSchedule::CreateObject(pgCollection *collection)
 {
-    wxString name=GetName();
-
-    pgObject *obj=pgaSchedule::ReadObjects(collection, 0, wxT("   AND jscid=") + NumToStr(jobId) + wxT("\n"));
+    pgObject *obj=pgaSchedule::ReadObjects(collection, 0, wxT("   AND jscid=") + NumToStr(recId) + wxT("\n"));
     return obj;
 }
 
@@ -147,6 +165,7 @@ void dlgSchedule::CheckChange()
         enable=true;
     }
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+	CheckValid(enable, calStart->GetDate().IsValid(), _("Please specify start date."));
     EnableOK(enable);
 }
 
@@ -192,14 +211,26 @@ wxString dlgSchedule::GetInsertSql()
             jscjobid = NumToStr(jobId);
         else
             jscjobid = wxT("<id>");
-        sql = wxT("INSERT INTO pgagent.pga_jobschedule (jscjobid, jscname, jscdesc, jscenabled, jscstart, jscend)\n")
-              wxT("VALUES(") + jscjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
-                + BoolToStr(chkEnabled->GetValue()) 
-				+ DateToAnsiStr(calStart->GetDate() + timStart->GetValue()) + wxT(", ") 
-				+ DateToAnsiStr(calEnd->GetDate() + timEnd->GetValue())
-                + wxT(")");
 
+		// Build the various arrays of values
+        sql = wxT("INSERT INTO pgagent.pga_schedule (jscjobid, jscname, jscdesc, jscminutes, jschours, jscweekdays, jscmonthdays, jscmonths, jscenabled, jscstart, jscend)\n")
+              wxT("VALUES(") + jscjobid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
+				+ wxT("'") + ChkListBox2PgArray(chkMinutes) + wxT("', ")
+				+ wxT("'") + ChkListBox2PgArray(chkHours) + wxT("', ")
+				+ wxT("'") + ChkListBox2PgArray(chkWeekdays) + wxT("', ")
+				+ wxT("'") + ChkListBox2PgArray(chkMonthdays) + wxT("', ")
+				+ wxT("'") + ChkListBox2PgArray(chkMonths) + wxT("', ")
+                + BoolToStr(chkEnabled->GetValue()) + wxT(", ") 
+				+ wxT("'") + DateToAnsiStr(calStart->GetDate() + timStart->GetValue()) + wxT("'");
+		
+		if (calEnd->GetDate().IsValid())
+			sql += wxT(", '") + DateToAnsiStr(calEnd->GetDate() + timEnd->GetValue()) + wxT("'");
+		else
+			sql += wxT(", NULL");
+
+		sql += wxT(")");
     }
+
     return sql;
 }
 
@@ -212,11 +243,138 @@ wxString dlgSchedule::GetUpdateSql()
     if (schedule)
     {
         // edit mode
+        wxString vars;
+
+        if (name != schedule->GetName())
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jscname = ") + qtString(name));
+        }
+        if (txtComment->GetValue() != schedule->GetComment())
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jscdesc = ") + qtString(txtComment->GetValue()));
+        }
+
+        if ((!chkEnabled->IsChecked() && schedule->GetEnabled()) || (chkEnabled->IsChecked() && !schedule->GetEnabled()))
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jscenabled = ") + BoolToStr(chkEnabled->IsChecked()));
+        }
+
+        if (calStart->GetDate() + timStart->GetValue() != schedule->GetStart())
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jscstart = '") + DateToAnsiStr(calStart->GetDate() + timStart->GetValue()) + wxT("'"));
+        }
+
+
+		if (calEnd->GetDate().IsValid())
+		{
+			if (schedule->GetEnd().IsValid())
+			{
+				if (calEnd->GetDate() + timEnd->GetValue() != schedule->GetEnd())
+				{
+					if (!vars.IsEmpty())
+						vars.Append(wxT(", "));
+					vars.Append(wxT("jscend = '") + DateToAnsiStr(calEnd->GetDate() + timEnd->GetValue()) + wxT("'"));
+				}
+			}
+			else
+			{
+				if (!vars.IsEmpty())
+					vars.Append(wxT(", "));
+				vars.Append(wxT("jscend = '") + DateToAnsiStr(calEnd->GetDate() + wxTimeSpan()) + wxT("'"));
+			}
+		}
+		else
+		{
+			if (!vars.IsEmpty())
+					vars.Append(wxT(", "));
+			vars.Append(wxT("jscend = NULL"));
+		}
+
+        if (ChkListBox2StrArray(chkMinutes) != schedule->GetMinutes())
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jscminutes = '") + ChkListBox2PgArray(chkMinutes) + wxT("'"));
+        }
+
+        if (ChkListBox2StrArray(chkHours) != schedule->GetHours())
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jschours = '") + ChkListBox2PgArray(chkHours) + wxT("'"));
+        }
+
+        if (ChkListBox2StrArray(chkWeekdays) != schedule->GetWeekdays())
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jscweekdays = '") + ChkListBox2PgArray(chkWeekdays) + wxT("'"));
+        }
+
+        if (ChkListBox2StrArray(chkMonthdays) != schedule->GetMonthdays())
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jscmonthdays = '") + ChkListBox2PgArray(chkMonthdays) + wxT("'"));
+        }
+
+        if (ChkListBox2StrArray(chkMonths) != schedule->GetMonths())
+        {
+            if (!vars.IsEmpty())
+                vars.Append(wxT(", "));
+            vars.Append(wxT("jscmonths = '") + ChkListBox2PgArray(chkMonths) + wxT("'"));
+        }
+
+        if (!vars.IsEmpty())
+            sql = wxT("UPDATE pgagent.pga_schedule SET ") + vars + wxT("\n")
+                  wxT(" WHERE jscid=") + NumToStr(recId);
     }
     else
     {
         // create mode
-
+		// Handled by GetInsertSQL
     }
     return sql;
+}
+
+const wxString dlgSchedule::ChkListBox2PgArray(wxCheckListBox *lb)
+{
+	wxString res = wxT("{");
+
+	for (int x=0; x<lb->GetCount(); x++)
+	{
+		if (lb->IsChecked(x))
+			res += wxT("t,");
+		else
+			res += wxT("f,");
+	}
+	if (res.Length() > 1)
+		res.RemoveLast();
+
+	res += wxT("}");
+
+	return res;
+}
+
+const wxString dlgSchedule::ChkListBox2StrArray(wxCheckListBox *lb)
+{
+	wxString res;
+
+	for (int x=0; x<lb->GetCount(); x++)
+	{
+		if (lb->IsChecked(x))
+			res += wxT("t");
+		else
+			res += wxT("f");
+	}
+
+	return res;
 }

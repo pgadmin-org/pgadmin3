@@ -46,6 +46,8 @@ private:
     void OnAddException(wxCommandEvent &ev);
     void OnChangeException(wxCommandEvent &ev);
     void OnRemoveException(wxCommandEvent &ev);
+	const wxString ChkListBox2PgArray(wxCheckListBox *lb);
+	const wxString ChkListBox2StrArray(wxCheckListBox *lb);
 
     DECLARE_EVENT_TABLE();
 };

@@ -49,7 +49,7 @@ wxMenu *pgaJob::GetNewMenu()
 
 bool pgaJob::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_job WHERE jobid=") + NumToStr(GetJobId()));
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_job WHERE jobid=") + NumToStr(GetRecId()));
 }
 
 
@@ -80,7 +80,7 @@ void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("ID"), GetJobId());
+        properties->AppendItem(_("ID"), GetRecId());
         properties->AppendItem(_("Enabled"), GetEnabled());
         properties->AppendItem(_("Job class"), GetJobclass());
         properties->AppendItem(_("Created"), GetCreated());
@@ -88,8 +88,10 @@ void pgaJob::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
         properties->AppendItem(_("Next run"), GetNextrun());
         properties->AppendItem(_("Last run"), GetLastrun());
         properties->AppendItem(_("Last result"), GetLastresult());
-        if (GetAgentId())
-            properties->AppendItem(_("Running at"), GetAgentId());
+		if (!GetAgent().IsEmpty())
+			properties->AppendItem(_("Running at"), GetAgent());
+		else
+			properties->AppendItem(_("Running at"), _("Not currently running"));
 
         properties->AppendItem(_("Comment"), GetComment());
     }
@@ -119,6 +121,7 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     pgSet *jobs= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT *, ''::text AS joblastresult FROM pgagent.pga_job j\n")
        wxT("  JOIN pgagent.pga_jobclass cl ON cl.jclid=jobjclid\n")
+       wxT("  LEFT OUTER JOIN pgagent.pga_jobagent ag ON ag.jagpid=jobagentid\n")
        + restriction +
        wxT(" ORDER BY jobname"));
 
@@ -128,7 +131,7 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
         {
 
             job = new pgaJob(jobs->GetVal(wxT("jobname")));
-            job->iSetJobId(jobs->GetLong(wxT("jobid")));
+            job->iSetRecId(jobs->GetLong(wxT("jobid")));
             job->iSetDatabase(collection->GetDatabase());
             job->iSetComment(jobs->GetVal(wxT("jobdesc")));
 
@@ -139,7 +142,7 @@ pgObject *pgaJob::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             job->iSetNextrun(jobs->GetDateTime(wxT("jobnextrun")));
             job->iSetLastrun(jobs->GetDateTime(wxT("joblastrun")));
             job->iSetLastresult(jobs->GetVal(wxT("joblastresult")));
-            job->iSetAgentId(jobs->GetLong(wxT("jobagentid")));
+			job->iSetAgent(jobs->GetVal(wxT("jagstation")));
 
             if (browser)
             {

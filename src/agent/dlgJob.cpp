@@ -28,6 +28,7 @@
 
 
 // pointer to controls
+#define	txtID				CTRL_TEXT("txtID")
 #define chkEnabled          CTRL_CHECKBOX("chkEnabled")
 #define cbJobclass          CTRL_COMBOBOX("cbJobclass")
 #define txtCreated          CTRL_TEXT("txtCreated")
@@ -69,16 +70,17 @@ dlgJob::dlgJob(frmMain *frame, pgaJob *node)
     SetIcon(wxIcon(job_xpm));
     job=node;
 
+	txtID->Disable();
     txtCreated->Disable();
     txtChanged->Disable();
     txtNextrun->Disable();
     txtLastrun->Disable();
     txtLastresult->Disable();
-    lstSteps->CreateColumns(frame, _("Step"), _("Definition"), 90);
+    lstSteps->CreateColumns(frame, _("Step"), _("Comment"), 90);
     lstSteps->AddColumn(wxT("cmd"), 0);
     lstSteps->AddColumn(wxT("id"), 0);
 
-    lstSchedules->CreateColumns(frame, _("Schedule"), _("Definition"), 90);
+    lstSchedules->CreateColumns(frame, _("Schedule"), _("Comment"), 90);
     lstSchedules->AddColumn(wxT("cmd"), 0);
     lstSchedules->AddColumn(wxT("id"), 0);
     btnChangeStep->Disable();
@@ -110,6 +112,8 @@ int dlgJob::Go(bool modal)
     if (job)
     {
         // edit mode
+		recId = job->GetRecId();
+		txtID->SetValue(NumToStr(recId));
         cbJobclass->SetValue(job->GetJobclass());
         chkEnabled->SetValue(job->GetEnabled());
         txtCreated->SetValue(DateToStr(job->GetCreated()));
@@ -120,34 +124,76 @@ int dlgJob::Go(bool modal)
 
         wxCookieType cookie;
         pgObject *data=0;
-        wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(job->GetId(), cookie);
-        while (item)
-        {
-            data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
-            if (data->GetType() == PGA_STEP)
-            {
-                pgaStep *step=(pgaStep*)data;
-                int pos = lstSteps->AppendItem(PGAICON_STEP, step->GetName(), step->GetComment());
-                lstSteps->SetItem(pos, 3, NumToStr((long)step));
-                previousSteps.Add(NumToStr((long)step));
-            }
-            else if (data->GetType() == PGA_SCHEDULE)
-            {
-                pgaSchedule *schedule=(pgaSchedule*)data;
-                int pos = lstSchedules->AppendItem(PGAICON_SCHEDULE, schedule->GetName(), schedule->GetComment());
-                lstSchedules->SetItem(pos, 3, NumToStr((long)schedule));
-                previousSchedules.Add(NumToStr((long)schedule));
-            }
 
-            item=mainForm->GetBrowser()->GetNextChild(job->GetId(), cookie);
+        wxTreeItemId item, stepsItem, schedulesItem;
+		item=mainForm->GetBrowser()->GetFirstChild(job->GetId(), cookie);
+		while (item)
+		{
+			data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+            if (data->GetType() == PGA_STEPS) 
+				stepsItem = item;
 
-            CheckChange();
-        }
+			if (data->GetType() == PGA_SCHEDULES) 
+				schedulesItem = item;
+
+			item=mainForm->GetBrowser()->GetNextChild(job->GetId(), cookie);
+		}
+
+		if (stepsItem)
+		{
+            pgCollection *coll=(pgCollection*)data;
+            // make sure all columns are appended
+            coll->ShowTreeDetail(mainForm->GetBrowser());
+            // this is the columns collection
+            item=mainForm->GetBrowser()->GetFirstChild(stepsItem, cookie);
+
+            // add columns
+            while (item)
+            {
+				data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+				if (data->GetType() == PGA_STEP)
+				{
+					pgaStep *step=(pgaStep*)data;
+					int pos = lstSteps->AppendItem(PGAICON_STEP, step->GetName(), step->GetComment());
+					lstSteps->SetItem(pos, 3, NumToStr((long)step));
+					previousSteps.Add(NumToStr((long)step));
+				}
+				item=mainForm->GetBrowser()->GetNextChild(job->GetId(), cookie);
+			}
+		}
+
+		if (schedulesItem)
+		{
+            pgCollection *coll=(pgCollection*)data;
+            // make sure all columns are appended
+            coll->ShowTreeDetail(mainForm->GetBrowser());
+            // this is the columns collection
+            item=mainForm->GetBrowser()->GetFirstChild(schedulesItem, cookie);
+
+            // add columns
+            while (item)
+            {
+				data=(pgObject*)mainForm->GetBrowser()->GetItemData(item);
+				if (data->GetType() == PGA_SCHEDULE)
+				{
+					pgaSchedule *schedule=(pgaSchedule*)data;
+					int pos = lstSchedules->AppendItem(PGAICON_SCHEDULE, schedule->GetName(), schedule->GetComment());
+					lstSchedules->SetItem(pos, 3, NumToStr((long)schedule));
+					previousSchedules.Add(NumToStr((long)schedule));
+				}
+				item=mainForm->GetBrowser()->GetNextChild(job->GetId(), cookie);
+			}
+		}
+
+
+        CheckChange();
     }
     else
     {
         // create mode
         cbJobclass->SetSelection(0);
+		btnChangeStep->Hide();
+		btnChangeSchedule->Hide();
     }
 
     return dlgProperty::Go(modal);
@@ -156,7 +202,7 @@ int dlgJob::Go(bool modal)
 
 pgObject *dlgJob::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=pgaJob::ReadObjects(collection, 0, wxT("   AND jobid=") + NumToStr(jobId) + wxT("\n"));
+    pgObject *obj=pgaJob::ReadObjects(collection, 0, wxT("   AND jobid=") + NumToStr(recId) + wxT("\n"));
     return obj;
 }
 
@@ -349,7 +395,7 @@ wxString dlgJob::GetUpdateSql()
 
         if (!vars.IsEmpty())
             sql = wxT("UPDATE pgagent.pga_job SET ") + vars + wxT("\n")
-                  wxT(" WHERE jobid=") + NumToStr(job->GetJobId());
+                  wxT(" WHERE jobid=") + NumToStr(recId);
 
     }
     else
@@ -378,7 +424,7 @@ wxString dlgJob::GetUpdateSql()
     for (index = 0 ; index < (int)tmpSteps.GetCount() ; index++)
     {
         sql += wxT("DELETE FROM pgagent.pga_jobstep WHERE jobid=") 
-            + NumToStr(((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetJobId()) + wxT(";\n");
+            + NumToStr(((pgaStep*)StrToLong(tmpSteps.Item(index)))->GetRecId()) + wxT(";\n");
     }
 
     wxArrayString tmpSchedules = previousSchedules;
@@ -399,7 +445,7 @@ wxString dlgJob::GetUpdateSql()
     for (index = 0 ; index < (int)tmpSchedules.GetCount() ; index++)
     {
         sql += wxT("DELETE FROM pgagent.pga_jobschedule WHERE jobid=") 
-            + NumToStr(((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetJobId()) + wxT(";\n");
+            + NumToStr(((pgaStep*)StrToLong(tmpSchedules.Item(index)))->GetRecId()) + wxT(";\n");
     }
 
 	return sql;

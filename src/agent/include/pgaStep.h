@@ -51,14 +51,14 @@ public:
     void iSetOnError(const wxString &s) { onError=s; }
     wxChar GetOnErrorChar() const { return onErrorChar; }
     void iSetOnErrorChar(const wxChar c) { onErrorChar = c; }
-	long GetJobId() const { return jobId; }
-    void iSetJobId(const long l) { jobId=l; }
+	long GetRecId() const { return recId; }
+    void iSetRecId(const long l) { recId=l; }
 
 private:
     bool enabled;
     wxString kind, code, dbname, onError;
     wxChar kindChar, onErrorChar;
-	long jobId;
+	long recId;
 };
 
 #endif

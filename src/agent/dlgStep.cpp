@@ -23,6 +23,7 @@
 
 
 // pointer to controls
+#define	txtID				CTRL_TEXT("txtID")
 #define chkEnabled          CTRL_CHECKBOX("chkEnabled")
 #define cbDatabase          CTRL_COMBOBOX("cbDatabase")
 #define rbxKind             CTRL_RADIOBOX("rbxKind")
@@ -49,7 +50,7 @@ dlgStep::dlgStep(frmMain *frame, pgaStep *node, pgaJob *j)
     step=node;
     job=j;
     if (job)
-        jobId=job->GetJobId();
+        jobId=job->GetRecId();
     else
         jobId=0;
 
@@ -61,6 +62,8 @@ dlgStep::dlgStep(frmMain *frame, pgaStep *node, pgaJob *j)
     sizer->Remove(placeholder);
     delete placeholder;
     sizer->Layout();
+
+	txtID->Disable();
 }
 
 
@@ -89,6 +92,8 @@ int dlgStep::Go(bool modal)
     if (step)
     {
         // edit mode
+		recId = step->GetRecId();
+		txtID->SetValue(NumToStr(recId));
         if (step->GetDbname().IsEmpty())
             cbDatabase->SetSelection(0);
         else
@@ -112,7 +117,7 @@ pgObject *dlgStep::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=pgaStep::ReadObjects(collection, 0, wxT("   AND jstid=") + NumToStr(jobId) + wxT("\n"));
+    pgObject *obj=pgaStep::ReadObjects(collection, 0, wxT("   AND jstid=") + NumToStr(recId) + wxT("\n"));
     return obj;
 }
 
@@ -244,7 +249,7 @@ wxString dlgStep::GetUpdateSql()
         if (!vars.IsEmpty())
             sql = wxT("UPDATE pgagent.pga_jobstep\n")
                   wxT("   SET ") + vars + wxT("\n")
-                  wxT(" WHERE jstid=") + NumToStr(step->GetJobId());
+                  wxT(" WHERE jstid=") + NumToStr(step->GetRecId());
     }
     else
     {
