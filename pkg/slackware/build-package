@@ -1,5 +1,10 @@
 #! /bin/sh
 
+if [ "$#" -ne 1 ]; then
+	echo "Usage: $0 <version>"
+	exit
+fi
+
 # Setup the build environment
 PATH=$PATH:/usr/local/bin
 PGDIR=/usr/local/pgsql
@@ -21,7 +26,7 @@ rm -rf ./src
 
 # Configure for the local OS
 ./configure --prefix=/usr/local/src/pgadmin3/slackpack/usr \
-	--with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-debug \
+	--with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-release \
 	--datadir=/usr/share
 
 # Now make the binary build
@@ -41,24 +46,20 @@ if [ -x src/pgadmin3 ]; then
 	mv /usr/share/pgadmin3 ./slackpack/usr/share/
 	cp ./pkg/pgadmin3.desktop ./slackpack/opt/kde/share/applnk/Development
 	cp ./src/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: pgAdmin III - PostgreSQL Tools" >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: pgAdmin III is the most popular Open Source mamangement tool for" >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: the PostgreSQL Object Relational Database Management System." >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: http://www.pgadmin.org/" >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: http://www.postgresql.org/" >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
-	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: pgAdmin III - PostgreSQL Tools" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: pgAdmin III is the most popular Open Source mamangement tool for" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: the PostgreSQL Object Relational Database Management System." >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: http://www.pgadmin.org/" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: http://www.postgresql.org/" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$1: " >> ./slackpack/install/slack-desc
 
 	# Build the snapshot and file it.
 	cd slackpack
-	/sbin/makepkg --chown y pgadmin3.tgz 
-	if [ -e pgadmin3.tgz ]; then
-		cp pgadmin3.tgz /usr/local/apache/htdocs/snapshots/linux/slackware9/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
-		ln -s -f linux/slackware9/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz /usr/local/apache/htdocs/snapshots/pgadmin3-slackware9.tgz
-		cp ../pkg/slackware/slack-desc /usr/local/apache/htdocs/snapshots/linux/slackware9/pgadmin3-`/usr/bin/date +%Y%m%d`.txt
+	/sbin/makepkg --chown y pgadmin3-$1.tgz 
 	fi
 fi
