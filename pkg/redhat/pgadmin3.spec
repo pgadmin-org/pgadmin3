@@ -42,8 +42,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%{withpgsql}/bin
-%{withpgsql}/share
+/usr/bin
+/usr/share
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <jm.poure@freesurf.fr>
