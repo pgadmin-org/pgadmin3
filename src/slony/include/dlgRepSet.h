@@ -27,7 +27,7 @@ public:
     void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+    pgObject *GetObject() { return (pgObject*)set; }
 
 private:
     slSet *set;
@@ -36,4 +36,37 @@ private:
 };
 
 
+class dlgRepSetMerge : public dlgRepProperty
+{
+public:
+    dlgRepSetMerge(frmMain *frame, slSet *set);
+    int Go(bool modal);
+
+    void CheckChange();
+    wxString GetSql();
+    pgObject *GetObject() { return (pgObject*)set; }
+    pgObject *CreateObject(pgCollection *collection) { return 0; }
+
+private:
+    slSet *set;
+
+    DECLARE_EVENT_TABLE();
+};
+
+class dlgRepSetMove : public dlgRepProperty
+{
+public:
+    dlgRepSetMove(frmMain *frame, slSet *set);
+    int Go(bool modal);
+
+    void CheckChange();
+    wxString GetSql();
+    pgObject *GetObject() { return (pgObject*)set; }
+    pgObject *CreateObject(pgCollection *collection) { return 0; }
+
+private:
+    slSet *set;
+
+    DECLARE_EVENT_TABLE();
+};
 #endif

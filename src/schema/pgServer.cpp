@@ -495,6 +495,8 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
         properties->AppendItem(_("Hostname"), GetName());
         properties->AppendItem(_("Description"), GetDescription());
         properties->AppendItem(_("Port"), (long)GetPort());
+        if (!serviceId.IsEmpty())
+            properties->AppendItem(_("Service"), serviceId);
 
 #ifdef SSL
         if (GetConnected())

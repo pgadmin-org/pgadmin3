@@ -106,7 +106,7 @@ int dlgRepSequence::Go(bool modal)
 pgObject *dlgRepSequence::CreateObject(pgCollection *collection)
 {
     pgObject *obj=slSequence::ReadObjects((slSetCollection*)collection, 0,
-         wxT(" WHERE deq_reloid = ") + NumToStr((OID)cbSequence->GetClientData(cbSequence->GetGuessedSelection())));
+         wxT(" WHERE seq_reloid = ") + NumToStr((OID)cbSequence->GetClientData(cbSequence->GetGuessedSelection())));
 
     return obj;
 }

@@ -36,40 +36,23 @@ extern wxString slony1XxidScript;
 extern wxString backupExecutable;
 
 
-// pointer to controls
-#define chkJoinCluster      CTRL_CHECKBOX("chkJoinCluster")
-#define cbClusterName       CTRL_COMBOBOX("cbClusterName")
-#define txtClusterName      CTRL_TEXT("txtClusterName")
 #define cbServer            CTRL_COMBOBOX("cbServer")
 #define cbDatabase          CTRL_COMBOBOX("cbDatabase")
-#define txtNodeID           CTRL_TEXT("txtNodeID")
-#define txtNodeName         CTRL_TEXT("txtNodeName")
-#define txtAdminNodeID      CTRL_TEXT("txtAdminNodeID")
-#define txtAdminNodeName    CTRL_TEXT("txtAdminNodeName")
-#define cbAdminNode         CTRL_COMBOBOX("cbAdminNode")
+#define cbClusterName       CTRL_COMBOBOX("cbClusterName")
 
-BEGIN_EVENT_TABLE(dlgRepCluster, dlgProperty)
-    EVT_BUTTON(wxID_OK,                     dlgRepCluster::OnOK)
-    EVT_CHECKBOX(XRCID("chkJoinCluster"),   dlgRepCluster::OnChangeJoin)
-    EVT_COMBOBOX(XRCID("cbServer"),         dlgRepCluster::OnChangeServer)
-    EVT_COMBOBOX(XRCID("cbDatabase"),       dlgRepCluster::OnChangeDatabase)
-    EVT_COMBOBOX(XRCID("cbClusterName"),    dlgRepCluster::OnChangeCluster)
-    EVT_TEXT(XRCID("txtClusterName"),       dlgRepCluster::OnChange)
-    EVT_TEXT(XRCID("txtNodeID"),            dlgRepCluster::OnChange)
-    EVT_TEXT(XRCID("txtNodeName"),          dlgRepCluster::OnChange)
-    EVT_COMBOBOX(XRCID("cbAdminNode"),      dlgRepCluster::OnChange)
-    EVT_END_PROCESS(-1,                     dlgRepCluster::OnEndProcess)
+BEGIN_EVENT_TABLE(dlgRepClusterBase, dlgProperty)
+    EVT_COMBOBOX(XRCID("cbServer"),         dlgRepClusterBase::OnChangeServer)
+    EVT_COMBOBOX(XRCID("cbDatabase"),       dlgRepClusterBase::OnChangeDatabase)
 END_EVENT_TABLE();
 
 
-dlgRepCluster::dlgRepCluster(frmMain *frame, slCluster *node, pgDatabase *db)
-: dlgProperty(frame, wxT("dlgRepCluster"))
+dlgRepClusterBase::dlgRepClusterBase(frmMain *frame, const wxString &dlgName, slCluster *node, pgDatabase *db)
+: dlgProperty(frame, dlgName)
 {
     SetIcon(wxIcon(slcluster_xpm));
     cluster=node;
     remoteServer=0;
     remoteConn=0;
-    process = 0;
 
     pgObject *obj=db;
     servers = obj->GetId();
@@ -82,7 +65,7 @@ dlgRepCluster::dlgRepCluster(frmMain *frame, slCluster *node, pgDatabase *db)
 }
 
 
-dlgRepCluster::~dlgRepCluster()
+dlgRepClusterBase::~dlgRepClusterBase()
 {
    if (remoteConn)
     {
@@ -92,10 +75,143 @@ dlgRepCluster::~dlgRepCluster()
 }
 
 
-pgObject *dlgRepCluster::GetObject()
+pgObject *dlgRepClusterBase::GetObject()
 {
     return cluster;
 }
+
+int dlgRepClusterBase::Go(bool modal)
+{
+    if (cluster)
+    {
+        wxCookieType cookie;
+        wxTreeItemId serverItem=mainForm->GetBrowser()->GetFirstChild(servers, cookie);        
+        while (serverItem)
+        {
+            pgServer *s = (pgServer*)mainForm->GetBrowser()->GetItemData(serverItem);
+            if (s && s->GetType() == PG_SERVER)
+                cbServer->Append(mainForm->GetBrowser()->GetItemText(serverItem), (void*)s);
+
+            serverItem = mainForm->GetBrowser()->GetNextChild(servers, cookie);
+        }
+    }
+    return dlgProperty::Go(modal);
+}
+
+
+void dlgRepClusterBase::OnChangeServer(wxCommandEvent &ev)
+{
+    cbDatabase->Clear();
+    if (remoteConn)
+    {
+        delete remoteConn;
+        remoteConn=0;
+    }
+    int sel=cbServer->GetSelection();
+    if (sel >= 0)
+    {
+        remoteServer = (pgServer*)cbServer->GetClientData(sel);
+
+        if (!remoteServer->GetConnected())
+        {
+            remoteServer->Connect(mainForm, remoteServer->GetNeedPwd());
+            if (!remoteServer->GetConnected())
+            {
+                wxLogError(remoteServer->GetLastError());
+                return;
+            }
+        }
+        if (remoteServer->GetConnected())
+        {
+            pgSet *set=remoteServer->ExecuteSet(
+                wxT("SELECT DISTINCT datname\n")
+                wxT("  FROM pg_database db\n")
+                wxT(" WHERE datallowconn ORDER BY datname"));
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    cbDatabase->Append(set->GetVal(wxT("datname")));
+                    set->MoveNext();
+                }
+                delete set;
+
+                cbDatabase->SetSelection(0);
+            }
+        }
+
+    }
+    OnChangeDatabase(ev);
+}
+
+
+
+void dlgRepClusterBase::OnChangeDatabase(wxCommandEvent &ev)
+{
+    cbClusterName->Clear();
+
+    int sel=cbDatabase->GetSelection();
+    if (sel >= 0)
+    {
+        if (remoteConn)
+        {
+            delete remoteConn;
+            remoteConn=0;
+        }
+        remoteConn = remoteServer->CreateConn(cbDatabase->GetValue());
+        if (remoteConn)
+        {
+            pgSet *set=remoteConn->ExecuteSet(
+                wxT("SELECT substr(nspname, 2) as clustername\n")
+                wxT("  FROM pg_namespace nsp\n")
+                wxT("  JOIN pg_proc pro ON pronamespace=nsp.oid AND proname = 'slonyversion'\n")
+                wxT(" ORDER BY nspname"));
+
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    cbClusterName->Append(set->GetVal(wxT("clustername")));
+                    set->MoveNext();
+                }
+                delete set;
+            }
+            cbClusterName->SetSelection(0);
+        }
+    }
+    OnChangeCluster(ev);
+}
+
+////////////////////////////////////////////////////////////////////////////////7
+
+// pointer to controls
+#define chkJoinCluster      CTRL_CHECKBOX("chkJoinCluster")
+#define txtClusterName      CTRL_TEXT("txtClusterName")
+#define txtNodeID           CTRL_TEXT("txtNodeID")
+#define txtNodeName         CTRL_TEXT("txtNodeName")
+#define txtAdminNodeID      CTRL_TEXT("txtAdminNodeID")
+#define txtAdminNodeName    CTRL_TEXT("txtAdminNodeName")
+#define cbAdminNode         CTRL_COMBOBOX("cbAdminNode")
+
+
+BEGIN_EVENT_TABLE(dlgRepCluster, dlgRepClusterBase)
+    EVT_BUTTON(wxID_OK,                     dlgRepCluster::OnOK)
+    EVT_CHECKBOX(XRCID("chkJoinCluster"),   dlgRepCluster::OnChangeJoin)
+    EVT_COMBOBOX(XRCID("cbClusterName"),    dlgRepCluster::OnChangeCluster)
+    EVT_TEXT(XRCID("txtClusterName"),       dlgRepCluster::OnChange)
+    EVT_TEXT(XRCID("txtNodeID"),            dlgRepCluster::OnChange)
+    EVT_TEXT(XRCID("txtNodeName"),          dlgRepCluster::OnChange)
+    EVT_COMBOBOX(XRCID("cbAdminNode"),      dlgRepCluster::OnChange)
+    EVT_END_PROCESS(-1,                     dlgRepCluster::OnEndProcess)
+END_EVENT_TABLE();
+
+
+dlgRepCluster::dlgRepCluster(frmMain *frame, slCluster *node, pgDatabase *db)
+: dlgRepClusterBase(frame, wxT("dlgRepCluster"), node, db)
+{
+    process = 0;
+}
+
 
 
 int dlgRepCluster::Go(bool modal)
@@ -157,23 +273,12 @@ int dlgRepCluster::Go(bool modal)
         txtNodeID->SetValidator(numericValidator);
         txtAdminNodeID->SetValidator(numericValidator);
         txtClusterName->Hide();
-
-        wxCookieType cookie;
-        wxTreeItemId serverItem=mainForm->GetBrowser()->GetFirstChild(servers, cookie);        
-        while (serverItem)
-        {
-            pgServer *s = (pgServer*)mainForm->GetBrowser()->GetItemData(serverItem);
-            if (s && s->GetType() == PG_SERVER)
-                cbServer->Append(mainForm->GetBrowser()->GetItemText(serverItem), (void*)s);
-
-            serverItem = mainForm->GetBrowser()->GetNextChild(servers, cookie);
-        }
     }
 
     wxCommandEvent ev;
     OnChangeJoin(ev);
 
-    return dlgProperty::Go(modal);
+    return dlgRepClusterBase::Go(modal);
 }
 
 
@@ -191,89 +296,6 @@ void dlgRepCluster::OnChangeJoin(wxCommandEvent &ev)
     cbAdminNode->Show(joinCluster || cluster);
 
     OnChange(ev);
-}
-
-
-void dlgRepCluster::OnChangeServer(wxCommandEvent &ev)
-{
-    cbDatabase->Clear();
-    if (remoteConn)
-    {
-        delete remoteConn;
-        remoteConn=0;
-    }
-    int sel=cbServer->GetSelection();
-    if (sel >= 0)
-    {
-        remoteServer = (pgServer*)cbServer->GetClientData(sel);
-
-        if (!remoteServer->GetConnected())
-        {
-            remoteServer->Connect(mainForm, remoteServer->GetNeedPwd());
-            if (!remoteServer->GetConnected())
-            {
-                wxLogError(remoteServer->GetLastError());
-                return;
-            }
-        }
-        if (remoteServer->GetConnected())
-        {
-            pgSet *set=remoteServer->ExecuteSet(
-                wxT("SELECT DISTINCT datname\n")
-                wxT("  FROM pg_database db\n")
-                wxT(" WHERE datallowconn ORDER BY datname"));
-            if (set)
-            {
-                while (!set->Eof())
-                {
-                    cbDatabase->Append(set->GetVal(wxT("datname")));
-                    set->MoveNext();
-                }
-                delete set;
-
-                cbDatabase->SetSelection(0);
-            }
-        }
-
-    }
-    OnChangeDatabase(ev);
-}
-
-
-void dlgRepCluster::OnChangeDatabase(wxCommandEvent &ev)
-{
-    cbClusterName->Clear();
-
-    int sel=cbDatabase->GetSelection();
-    if (sel >= 0)
-    {
-        if (remoteConn)
-        {
-            delete remoteConn;
-            remoteConn=0;
-        }
-        remoteConn = remoteServer->CreateConn(cbDatabase->GetValue());
-        if (remoteConn)
-        {
-            pgSet *set=remoteConn->ExecuteSet(
-                wxT("SELECT substr(nspname, 2) as clustername\n")
-                wxT("  FROM pg_namespace nsp\n")
-                wxT("  JOIN pg_proc pro ON pronamespace=nsp.oid AND proname = 'slonyversion'\n")
-                wxT(" ORDER BY nspname"));
-
-            if (set)
-            {
-                while (!set->Eof())
-                {
-                    cbClusterName->Append(set->GetVal(wxT("clustername")));
-                    set->MoveNext();
-                }
-                delete set;
-            }
-            cbClusterName->SetSelection(0);
-        }
-    }
-    OnChangeCluster(ev);
 }
 
 
@@ -759,3 +781,162 @@ wxString dlgRepCluster::GetSql()
 
     return sql;
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////7
+
+
+#define txtCurrentVersion   CTRL_TEXT("txtCurrentVersion")
+#define txtVersion          CTRL_TEXT("txtVersion")
+
+BEGIN_EVENT_TABLE(dlgRepClusterUpgrade, dlgRepClusterBase)
+    EVT_COMBOBOX(XRCID("cbDatabase"),       dlgRepClusterUpgrade::OnChangeDatabase)
+END_EVENT_TABLE();
+
+
+
+dlgRepClusterUpgrade::dlgRepClusterUpgrade(frmMain *frame, slCluster *cl)
+: dlgRepClusterBase(frame, wxT("dlgRepClusterUpgrade"), cl, cl->GetDatabase())
+{
+}
+
+
+int dlgRepClusterUpgrade::Go(bool modal)
+{
+    txtCurrentVersion->SetValue(cluster->GetClusterVersion());
+    txtCurrentVersion->Disable();
+    txtVersion->Disable();
+    return dlgRepClusterBase::Go(modal);
+}
+
+
+void dlgRepClusterUpgrade::CheckChange()
+{
+    bool enable=true;
+    CheckValid(enable, cbDatabase->GetCount() > 0, _("Select server with Slony-I cluster installed."));
+    CheckValid(enable, cbClusterName->GetCount() > 0, _("Select database with Slony-I cluster installed."));
+    CheckValid(enable, cbClusterName->GetSelection() >= 0, _("Select Slony-I cluster."));
+    CheckValid(enable, version >= cluster->GetClusterVersion(), _("Selected cluster doesn't contain newer software."));
+    EnableOK(enable);
+}
+
+
+wxString dlgRepClusterUpgrade::GetSql()
+{
+    if (sql.IsEmpty() && !version.IsEmpty() && remoteConn)
+    {
+        sql = wxT("SET SEARCH_PATH = ") + qtIdent(wxT("_") + cluster->GetName()) + wxT(", pg_catalog;\n\n");
+
+        pgSet *set=remoteConn->ExecuteSet(
+            wxT("SELECT proname, proisagg, prosecdef, proisstrict, proretset, provolatile, pronargs, prosrc, probin,\n")
+            wxT("       lanname, tr.typname as rettype,\n")
+            wxT("       t0.typname AS arg0, t1.typname AS arg1, t2.typname AS arg2, t3.typname AS arg3, t4.typname AS arg4,\n")
+            wxT("       t5.typname AS arg5, t6.typname AS arg6, t7.typname AS arg7, t8.typname AS arg8, t9.typname AS arg9, \n")
+            wxT("       proargnames[0] AS an0, proargnames[1] AS an1, proargnames[2] AS an2, proargnames[3] AS an3, proargnames[4] AS an4,\n")
+            wxT("       proargnames[5] AS an5, proargnames[6] AS an6, proargnames[7] AS an7, proargnames[8] AS an8, proargnames[9] AS an9\n")
+            wxT("  FROM pg_proc\n")
+            wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
+            wxT("  JOIN pg_language l ON l.oid=prolang\n")
+            wxT("  JOIN pg_type tr ON tr.oid=prorettype\n")
+            wxT("  LEFT JOIN pg_type t0 ON t0.oid=proargtypes[0]\n")
+            wxT("  LEFT JOIN pg_type t1 ON t1.oid=proargtypes[1]\n")
+            wxT("  LEFT JOIN pg_type t2 ON t2.oid=proargtypes[2]\n")
+            wxT("  LEFT JOIN pg_type t3 ON t3.oid=proargtypes[3]\n")
+            wxT("  LEFT JOIN pg_type t4 ON t4.oid=proargtypes[4]\n")
+            wxT("  LEFT JOIN pg_type t5 ON t5.oid=proargtypes[5]\n")
+            wxT("  LEFT JOIN pg_type t6 ON t6.oid=proargtypes[6]\n")
+            wxT("  LEFT JOIN pg_type t7 ON t7.oid=proargtypes[7]\n")
+            wxT("  LEFT JOIN pg_type t8 ON t8.oid=proargtypes[8]\n")
+            wxT("  LEFT JOIN pg_type t9 ON t9.oid=proargtypes[9]\n")
+            wxT(" WHERE nspname = ") + qtString(wxT("_") + cluster->GetName())
+            );
+
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                sql += wxT("CREATE OR REPLACE FUNCTION " + qtIdent(set->GetVal(wxT("proname"))) + wxT("(");
+
+                wxString language = set->GetVal(wxT("lanname"));
+                wxString volat = set->GetVal(wxT("provolatile"));
+                long numArgs=set->GetLong(wxT("pronargs"));
+
+                long i;
+
+                for (i=0 ; i < numArgs ; i++)
+                {
+                    if (i)
+                        sql += wxT(", ");
+                    wxString argname=set->GetVal(wxT("an") + NumToStr(i));
+                    if (!argname.IsEmpty())
+                        sql += qtIdent(argname) + wxT(" ");
+
+                    sql += qtIdent(set->GetVal(wxT("arg") + NumToStr(i)));
+                }
+                sql += wxT(")\n")
+                       wxT("  RETURNS ");
+                if (set->GetBool(wxT("proretset")))
+                    sql += wxT("SETOF "));
+                sql += qtIdent(set->GetVal(wxT("rettype")));
+
+                if (language == wxT("c"))
+                    sql += wxT("\n")
+                           wxT("AS '" + set->GetVal(wxT("probin")) + wxT("', '") + 
+                                set->GetVal(wxT("prosrc")) + wxT("'");
+                else
+                    sql += wxT(" AS\n")
+                           wxT("$BODY$") + set->GetVal(wxT("prosrc")) + wxT("$BODY$");
+
+                sql += wxT(" LANGUAGE ") 
+                    +  language;
+
+                if (volat == wxT("v"))
+                    sql += wxT(" VOLATILE");
+                else if (volat == wxT("i"))
+                    sql += wxT(" IMMUTABLE"));
+                else
+                    sql += wxT(" STABLE");
+
+                if (set->GetBool(wxT("proisstrict")))
+                    sql += wxT(" STRICT");
+
+                if (set->GetBool(wxT("prosecdef")))
+                    sql += wxT(" SECURITY DEFINER");
+
+                sql += wxT(";\n\n");
+
+                set->MoveNext();
+            }
+            delete set;
+        }
+    }
+    return sql;
+}
+
+
+pgObject *dlgRepClusterUpgrade::CreateObject(pgCollection *collection)
+{
+    return 0;
+}
+
+
+void dlgRepClusterUpgrade::OnChangeCluster(wxCommandEvent &ev)
+{
+    version = wxEmptyString;
+    sql = wxEmptyString;
+
+    int sel=cbClusterName->GetSelection();
+    if (remoteConn && sel >= 0)
+    {
+        wxString schemaPrefix = qtIdent(wxT("_") + cbClusterName->GetValue()) + wxT(".");
+
+        version = remoteConn->ExecuteScalar(wxT("SELECT ") + schemaPrefix + wxT("slonyversion();"));
+    }
+    OnChange(ev);
+
+
+    txtVersion->SetValue(version);
+    OnChange(ev);
+}
+

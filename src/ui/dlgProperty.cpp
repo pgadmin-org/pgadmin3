@@ -95,6 +95,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     processing=false;
     mainForm=frame;
     database=0;
+    connection=0;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(frame, resName);
 
@@ -121,6 +122,8 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
 
     numericValidator.SetStyle(wxFILTER_NUMERIC);
     btnOK->Disable();
+
+    AddStatusBar();
 }
 
 
@@ -585,10 +588,35 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
 }
 
 
+
+void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
+{
+    CenterOnParent();
+    if (!connection)
+        connection=node->GetConnection();
+    database=node->GetDatabase();
+
+    if (objectType != node->GetType() && !node->IsCollection())
+    {
+        wxCookieType cookie;
+        wxTreeItemId collectionItem=frame->GetBrowser()->GetFirstChild(node->GetId(), cookie);
+        while (collectionItem)
+        {
+            pgCollection *collection=(pgCollection*)frame->GetBrowser()->GetItemData(collectionItem);
+            if (collection && collection->IsCollection() && collection->IsCollectionForType(objectType))
+                break;
+
+            collectionItem=frame->GetBrowser()->GetNextChild(node->GetId(), cookie);
+        }
+        item=collectionItem;
+    }
+    else
+        item=node->GetId();
+}
+
+
 dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type)
 {
-    pgConn *conn=node->GetConnection();
-
     if (type < 0)
     {
         type=node->GetType();
@@ -633,12 +661,12 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_DATABASE:
         case PG_DATABASES:
         {
-            if (asNew)
+            dlg=new dlgDatabase(frame, (pgDatabase*)currentNode);
+            if (dlg && asNew)
             {
                 // use the server's connection to avoid "template1 in use"
-                conn=parentNode->GetConnection();
+                dlg->connection=parentNode->GetConnection();
             }
-            dlg=new dlgDatabase(frame, (pgDatabase*)currentNode);
             break;
         }
         case PG_TABLESPACE:
@@ -767,28 +795,9 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 
     if (dlg)
     {
-        dlg->CenterOnParent();
         if (dlg->objectType < 0)
             dlg->objectType=type;
-        dlg->connection=conn;
-        dlg->database=node->GetDatabase();
-
-        if (type != node->GetType() && !node->IsCollection())
-        {
-            wxCookieType cookie;
-            wxTreeItemId collectionItem=frame->GetBrowser()->GetFirstChild(node->GetId(), cookie);
-            while (collectionItem)
-            {
-                pgCollection *collection=(pgCollection*)frame->GetBrowser()->GetItemData(collectionItem);
-                if (collection && collection->IsCollection() && collection->IsCollectionForType(type))
-                    break;
-
-                collectionItem=frame->GetBrowser()->GetNextChild(node->GetId(), cookie);
-            }
-            dlg->item=collectionItem;
-        }
-        else
-            dlg->item=node->GetId();
+        dlg->InitDialog(frame, node);
     }
     return dlg;
 }
@@ -810,6 +819,7 @@ bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 
         dlg->CreateAdditionalPages();
         dlg->Go();
+        dlg->CheckChange();
     }
     else
         wxMessageBox(_("Not implemented."));
@@ -834,6 +844,7 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
 
         dlg->CreateAdditionalPages();
         dlg->Go();
+        dlg->CheckChange();
     }
     else
         wxMessageBox(_("Not implemented."));

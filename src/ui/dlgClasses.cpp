@@ -23,6 +23,9 @@
 #include "sysProcess.h"
 #include "menu.h"
 
+#define STATUSBAR_XRCNAME   wxT("unkStatusBar")
+#define STATUSBAR_CONTAINER STATUSBAR_XRCNAME wxT("_container")
+
 
 BEGIN_EVENT_TABLE(pgDialog, wxDialog)
     EVT_BUTTON (wxID_CANCEL,            pgDialog::OnCancel)
@@ -31,15 +34,37 @@ END_EVENT_TABLE()
 
 
 
-void pgDialog::PostCreation()
+void pgDialog::AddStatusBar()
 {
-    wxWindow *statusBarContainer=FindWindow(wxT("unkStatusBar_container"));
+    long flags=0;
+    if (GetWindowStyle() & wxTHICK_FRAME)
+        flags = wxST_SIZEGRIP;
+    statusBar = new wxStatusBar(this, -1, flags);
+
+    wxWindow *statusBarContainer=FindWindow(STATUSBAR_CONTAINER);
 
     if (statusBarContainer)
     {
-        statusBar = new wxStatusBar(this, -1, wxST_SIZEGRIP);
-        wxXmlResource::Get()->AttachUnknownControl(wxT("unkStatusBar"), statusBar);
+        wxXmlResource::Get()->AttachUnknownControl(STATUSBAR_XRCNAME, statusBar);
     }
+    else
+    {
+        int sbHeight = statusBar->GetSize().y;
+        wxSize size = GetSize();
+        size.y += sbHeight;
+        SetSize(size);
+
+        size = GetClientSize();
+        statusBar->Move(0, size.y-sbHeight);
+    }
+}
+
+
+void pgDialog::PostCreation()
+{
+    if (!statusBar && FindWindow(STATUSBAR_CONTAINER))
+        AddStatusBar();
+
     if (GetWindowStyle() & wxTHICK_FRAME)   // is designed with sizers; don't change
         return;
 

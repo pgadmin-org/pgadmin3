@@ -18,29 +18,42 @@
 #include "slCluster.h"
 #include "slSet.h"
 #include "slFunctions.h"
+#include "dlgRepCluster.h"
+#include "dlgRepSet.h"
 
 
-bool slFunctions::MergeSet(wxFrame *frame, pgObject *obj)
+
+bool slFunctions::Show(dlgProperty *dlg, frmMain *frame, pgObject *obj)
+{
+    dlg->InitDialog(frame, obj);
+    dlg->CreateAdditionalPages();
+    dlg->Go(false);
+    dlg->CheckChange();
+    return true;
+}
+
+
+bool slFunctions::MergeSet(frmMain *frame, pgObject *obj)
+{
+    return Show(new dlgRepSetMerge(frame, (slSet*)obj), frame, obj);
+}
+
+
+bool slFunctions::MoveSet(frmMain *frame, pgObject *obj)
+{
+    return Show(new dlgRepSetMove(frame, (slSet*)obj), frame, obj);
+}
+
+
+bool slFunctions::Failover(frmMain *frame, pgObject *obj)
 {
     return true;
 }
 
 
-bool slFunctions::MoveSet(wxFrame *frame, pgObject *obj)
+bool slFunctions::UpgradeNode(frmMain *frame, pgObject *obj)
 {
-    return true;
-}
-
-
-bool slFunctions::Failover(wxFrame *frame, pgObject *obj)
-{
-    return true;
-}
-
-
-bool slFunctions::UpgradeNode(wxFrame *frame, pgObject *obj)
-{
-    return true;
+    return Show(new dlgRepClusterUpgrade(frame, (slCluster*)obj), frame, obj);
 }
 
 
@@ -48,12 +61,24 @@ bool slFunctions::RestartNode(wxFrame *frame, pgObject *obj)
 {
     slCluster *cluster=(slCluster*)obj;
 
-    wxMessageDialog dlg(frame, wxString::Format(_("Restart node %s?"), 
-        cluster->GetLocalNodeName()), _("Restart node"), wxICON_EXCLAMATION|wxYES_NO|wxNO_DEFAULT);
+    wxString notifyName=cluster->GetDatabase()->ExecuteScalar(
+        wxT("SELECT relname FROM pg_listener")
+        wxT(" WHERE relname=") + qtString(wxT("_") + cluster->GetName() + wxT("_Restart")));
+
+    if (notifyName.IsEmpty())
+    {
+        wxMessageDialog dlg(frame, wxString::Format(_("Node \"%s\" not running"), cluster->GetLocalNodeName().c_str()),
+              _("Can't restart node"), wxICON_EXCLAMATION|wxOK);
+        dlg.ShowModal();
+        return true;
+    }
+
+    wxMessageDialog dlg(frame, wxString::Format(_("Restart node \"%s\"?"), 
+        cluster->GetLocalNodeName().c_str()), _("Restart node"), wxICON_EXCLAMATION|wxYES_NO|wxNO_DEFAULT);
 
     if (dlg.ShowModal() != wxID_YES)
         return true;
 
     return cluster->GetDatabase()->ExecuteVoid(
-        wxT("NOTIFY ") + cluster->GetSchemaPrefix() + wxT("_Restart"));
+        wxT("NOTIFY ") + qtIdent(notifyName));
 }

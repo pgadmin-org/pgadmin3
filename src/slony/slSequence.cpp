@@ -114,7 +114,7 @@ pgObject *slSequence::ReadObjects(slSetCollection *coll, wxTreeCtrl *browser, co
     {
         while (!sequences->Eof())
         {
-            sequence = new slSequence(coll->GetSet(), sequences->GetVal(wxT("nspName")) + wxT(".") + sequences->GetVal(wxT("relname")));
+            sequence = new slSequence(coll->GetSet(), sequences->GetVal(wxT("nspname")) + wxT(".") + sequences->GetVal(wxT("relname")));
             sequence->iSetSlId(sequences->GetLong(wxT("seq_id")));
             sequence->iSetComment(sequences->GetVal(wxT("seq_comment")));
 

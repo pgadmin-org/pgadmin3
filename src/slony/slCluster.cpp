@@ -201,11 +201,12 @@ void slCluster::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *
         pgSet *set;
 
         set=GetDatabase()->ExecuteSet(
-            wxT("SELECT no_id, no_comment\n")
+            wxT("SELECT no_id, no_comment, ") + GetSchemaPrefix() + wxT("slonyversion() AS version\n")
             wxT("  FROM ") + GetSchemaPrefix() + wxT("sl_local_node_id\n")
             wxT("  JOIN ") + GetSchemaPrefix() + wxT("sl_node ON no_id = last_value"));
         if (set)
         {
+            iSetClusterVersion(set->GetVal(wxT("version")));
             iSetLocalNodeID(set->GetLong(wxT("no_id")));
             iSetLocalNodeName(set->GetVal(wxT("no_comment")).BeforeFirst('\n'));
             delete set;

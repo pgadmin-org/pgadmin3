@@ -10,12 +10,18 @@
 //////////////////////////////////////////////////////////////////////////
 
 
+class frmMain;
+class dlgProperty;
+
 class slFunctions
 {
 public:
-    static bool MergeSet(wxFrame *frame, pgObject *obj);
-    static bool MoveSet(wxFrame *frame, pgObject *obj);
-    static bool Failover(wxFrame *frame, pgObject *obj);
-    static bool UpgradeNode(wxFrame *frame, pgObject *obj);
+    static bool MergeSet(frmMain *frame, pgObject *obj);
+    static bool MoveSet(frmMain *frame, pgObject *obj);
+    static bool Failover(frmMain *frame, pgObject *obj);
+    static bool UpgradeNode(frmMain *frame, pgObject *obj);
     static bool RestartNode(wxFrame *frame, pgObject *obj);
+
+private:
+    static bool Show(dlgProperty *dlg, frmMain *frame, pgObject *obj);
 };

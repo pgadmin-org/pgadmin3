@@ -997,6 +997,7 @@ void frmMain::SetButtons(pgObject *obj)
          restore=false,
          status=false,
          config=false,
+         set=false,
          setissubscribed=false,
          cluster=false;
 
@@ -1021,6 +1022,7 @@ void frmMain::SetButtons(pgObject *obj)
                 cluster=true;
                 break;
             case SL_SET:
+                set=true;
                 if (((slSet*)obj)->GetSubscriptionCount() > 0)
                     setissubscribed = true;
                 break;
@@ -1069,12 +1071,12 @@ void frmMain::SetButtons(pgObject *obj)
     toolsMenu->Enable(MNU_STOPSERVICE, false);
     toolsMenu->Enable(MNU_CONFIGSUBMENU, config);
 
-    toolsMenu->Enable(MNU_SLONY_SUBMENU, cluster || setissubscribed);
+    toolsMenu->Enable(MNU_SLONY_SUBMENU, cluster || set);
     slonyMenu->Enable(MNU_SLONY_RESTART, cluster);
     slonyMenu->Enable(MNU_SLONY_UPGRADE, cluster);
     slonyMenu->Enable(MNU_SLONY_FAILOVER, cluster);
     slonyMenu->Enable(MNU_SLONY_MOVESET, setissubscribed);
-    slonyMenu->Enable(MNU_SLONY_MERGESET, setissubscribed);
+    slonyMenu->Enable(MNU_SLONY_MERGESET, set);
 
     viewMenu->Enable(MNU_REFRESH, refresh);
 	viewMenu->Enable(MNU_COUNT, false);

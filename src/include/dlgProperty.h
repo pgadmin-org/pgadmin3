@@ -32,6 +32,7 @@ class dlgProperty : public DialogWithHelp
 public:
     static bool CreateObjectDialog(frmMain *frame, pgObject *node, int type);
     static bool EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node);
+    void InitDialog(frmMain *frame, pgObject *node);
 
     wxString GetName();
 

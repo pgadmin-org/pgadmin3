@@ -35,6 +35,7 @@ public:
 protected:
     void OnCancel(wxCommandEvent& ev);
     void OnClose(wxCloseEvent& event);
+    void AddStatusBar();
 
     void PostCreation();
     wxString dlgName;
