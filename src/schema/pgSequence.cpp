@@ -45,6 +45,8 @@ void pgSequence::UpdateValues()
         cacheValue = atolonglong(sequence->GetVal(wxT("cache_value")));
         increment = atolonglong(sequence->GetVal(wxT("increment_by")));
         cycled = StrToBool(sequence->GetVal(wxT("is_cycled")));
+
+        delete sequence;
     }
 }
 
@@ -127,10 +129,6 @@ void pgSequence::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
         // Log
         msg.Printf(wxT("Adding Sequences to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
         wxLogInfo(msg);
-
-        // Add Sequence node
-//        pgObject *addSequenceObj = new pgObject(PG_ADD_SEQUENCE, wxString("Add Sequence"));
-//        browser->AppendItem(collection->GetId(), wxT("Add Sequence..."), 4, -1, addSequenceObj);
 
         // Get the Sequences
         pgSet *sequences= collection->GetDatabase()->ExecuteSet(wxT(

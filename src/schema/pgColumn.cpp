@@ -106,6 +106,7 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
                 set->MoveNext();
             }
+            delete set;
         }
     }
 
