@@ -236,9 +236,6 @@ bool pgAdmin3::OnInit()
 
 
     // Set some defaults
-#ifdef __WXMSW__
-    SetAuto3D(TRUE);
-#endif
     SetAppName(APPNAME_L);
 
 #ifndef __WXDEBUG__
