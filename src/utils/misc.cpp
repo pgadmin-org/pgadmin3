@@ -129,11 +129,11 @@ wxString NumToStr(double value)
     result.Printf("%lf", value);
 
     // Get rid of excessive decimal places
-    if (result.Contains(wxT("."))) {
-        while ((result.Right(1) == "0") || (result.Right(1) == ".")) {
+    if (result.Contains(wxT(".")))
+        while (result.Right(1) == "0")
             result.RemoveLast();
-        }
-    }
+    if (result.Right(1) == ".")
+        result.RemoveLast();
 
     return result;
 }

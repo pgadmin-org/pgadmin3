@@ -88,7 +88,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     }
     if (port > 0) {
       connstr.Append(wxT(" port="));
-      connstr.Append(NumToStr((double)port));
+      connstr.Append(NumToStr((long)port));
     }
     connstr.Trim(FALSE);
 
