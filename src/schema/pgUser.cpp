@@ -133,7 +133,8 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             user->iSetAccountExpires(users->GetVal(wxT("valuntil")));
             user->iSetPassword(users->GetVal(wxT("passwd")));
             wxString str=users->GetVal(wxT("useconfig"));
-            user->iSetConfigList(str.Mid(1, str.Length()-2));
+            if (!str.IsEmpty())
+                user->iSetConfigList(str.Mid(1, str.Length()-2));
 
             if (browser)
             {
