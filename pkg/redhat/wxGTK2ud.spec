@@ -66,8 +66,8 @@ rm -rf %{buildroot}
 make install
 
 pushd contrib/src/
-        %makeinstall -C xrc
-        %makeinstall -C stc
+  make install -C xrc
+  make install -C stc
 popd
 
 %clean
