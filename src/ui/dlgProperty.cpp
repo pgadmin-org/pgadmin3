@@ -89,6 +89,10 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(frame, resName);
 
+#ifdef __WXMSW__
+    SetWindowStyleFlag(GetWindowStyleFlag() & ~wxMAXIMIZE_BOX);
+#endif
+
     nbNotebook = CTRL_NOTEBOOK("nbNotebook");
     if (!nbNotebook)
     {
@@ -114,11 +118,9 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
 dlgProperty::~dlgProperty()
 {
     wxString prop = wxT("Properties/") + wxString(typesList[objectType].typName);
+	settings->Write(prop, GetPosition());
 
-	if (!IsMaximized() && !IsIconized())
-		settings->Write(prop, GetPosition());
-
-    if ((GetWindowStyle() & wxTHICK_FRAME) && !IsMaximized() && !IsIconized())
+    if (GetWindowStyle() & wxTHICK_FRAME)
         settings->Write(prop, GetSize());
 }
 
