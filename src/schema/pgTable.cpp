@@ -218,7 +218,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
 
 void pgTable::UpdateRows()
 {
-    pgSet *props = ExecuteSet(wxT("SELECT count(*) AS rows FROM ") + GetQuotedIdentifier());
+    pgSet *props = ExecuteSet(wxT("SELECT count(*) AS rows FROM ") + GetQuotedFullIdentifier());
     if (props)
     {
         rows = StrToDouble(props->GetVal(0));

@@ -64,8 +64,7 @@ wxString pgIndex::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- DROP INDEX ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetName())
-            + wxT(";\n")
+        sql = wxT("-- Index: ") + GetQuotedFullIdentifier() + wxT("\n")
             + GetCreate()
             + GetCommentSql();
     }

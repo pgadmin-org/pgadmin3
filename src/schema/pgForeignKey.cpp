@@ -38,7 +38,7 @@ wxString pgForeignKey::GetConstraint()
         +  wxT(" FOREIGN KEY (") + GetQuotedFkColumns()
         +  wxT(") REFERENCES ") + qtIdent(GetReferences()) 
         +  wxT(" (") + GetQuotedRefColumns()
-        +  wxT(")\n    ON UPDATE ") + GetOnUpdate()
+        +  wxT(") ON UPDATE ") + GetOnUpdate()
         +  wxT(" ON DELETE ") + GetOnDelete();
     if (GetDeferrable())
     {
@@ -57,10 +57,9 @@ wxString pgForeignKey::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
-            + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() 
-            + wxT(";\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
-            + wxT("\n    ADD CONSTRAINT ") + GetConstraint() 
+        sql = wxT("-- Foreign Key: ") + GetQuotedFullIdentifier() + wxT("\n")
+            + wxT("ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            + wxT("\n  ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
         if (!GetComment().IsEmpty())
             sql += wxT("COMMENT ON CONSTRAINT ") + GetQuotedIdentifier() + wxT(" ON ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)

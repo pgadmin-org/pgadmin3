@@ -65,7 +65,6 @@ WX_DEFINE_LIST(windowList);
 #include "images/properties.xpm"
 #include "images/property.xpm"
 #include "images/public.xpm"
-#include "images/record.xpm"
 #include "images/refresh.xpm"
 #include "images/relationship.xpm"
 #include "images/rule.xpm"
@@ -74,7 +73,6 @@ WX_DEFINE_LIST(windowList);
 #include "images/serverbad.xpm"
 #include "images/sql.xpm"
 #include "images/statistics.xpm"
-#include "images/stop.xpm"
 #include "images/table.xpm"
 #include "images/trigger.xpm"
 #include "images/type.xpm"
@@ -121,7 +119,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_SQL, wxT("SQL"),                          wxT("Execute arbitrary SQL queries."));
     toolsMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"),      wxT("Start the query builder."));
 	toolsMenu->Append(MNU_VIEWDATA, wxT("View Data"),               wxT("View the data in the selected object."));
-    toolsMenu->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard."));
     toolsMenu->Append(MNU_VACUUM, wxT("Vacuum"),                    wxT("Vacuum the current database or table."));
     toolsMenu->Append(MNU_STATUS, wxT("Server Status"),             wxT("Displays the current database status."));
     toolsMenu->AppendSeparator();
@@ -195,8 +192,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     barBitmaps[5] = wxBitmap(sql_xpm);
     barBitmaps[6] = wxBitmap(viewdata_xpm);
     barBitmaps[7] = wxBitmap(vacuum_xpm);
-    barBitmaps[8] = wxBitmap(record_xpm);
-    barBitmaps[9] = wxBitmap(stop_xpm);
 
     toolBar->AddTool(MNU_ADDSERVER, wxT("Add Server"), barBitmaps[0], wxT("Add a connection to a server."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_REFRESH, wxT("Refresh"), barBitmaps[1], wxT("Refresh the data below the selected object."), wxITEM_NORMAL);
@@ -208,9 +203,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolBar->AddTool(MNU_SQL, wxT("SQL"), barBitmaps[5], wxT("Execute arbitrary SQL queries."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_VIEWDATA, wxT("View Data"), barBitmaps[6], wxT("View the data in the selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_VACUUM, wxT("Vacuum"), barBitmaps[7], wxT("Vacuum the current database or table."), wxITEM_NORMAL);
-    toolBar->AddSeparator();
-    toolBar->AddTool(MNU_RECORD, wxT("Record"), barBitmaps[8], wxT("Record a query log."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_STOP, wxT("Stop"), barBitmaps[9], wxT("Stop recording the query log."), wxITEM_NORMAL);
 
     // Display the bar and configure buttons. 
     toolBar->Realize();

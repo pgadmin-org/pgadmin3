@@ -349,10 +349,6 @@ SOURCE=.\ui\frmSplash.cpp
 
 SOURCE=.\ui\frmStatus.cpp
 # End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmUpgradeWizard.cpp
-# End Source File
 # End Group
 # Begin Group "include"
 
@@ -514,10 +510,6 @@ SOURCE=.\include\images\query_explain.xpm
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\record.xpm
-# End Source File
-# Begin Source File
-
 SOURCE=.\images\refresh.xpm
 # End Source File
 # Begin Source File
@@ -554,10 +546,6 @@ SOURCE=.\images\statistics.xpm
 # End Source File
 # Begin Source File
 
-SOURCE=.\images\stop.xpm
-# End Source File
-# Begin Source File
-
 SOURCE=.\images\storage.xpm
 # End Source File
 # Begin Source File
@@ -575,10 +563,6 @@ SOURCE=.\images\type.xpm
 # Begin Source File
 
 SOURCE=.\images\unknown.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\upgrade.xpm
 # End Source File
 # Begin Source File
 
@@ -659,10 +643,6 @@ SOURCE=.\include\frmSplash.h
 # Begin Source File
 
 SOURCE=.\include\frmStatus.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\frmUpgradeWizard.h
 # End Source File
 # End Group
 # Begin Group "schema includes"

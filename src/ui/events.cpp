@@ -27,7 +27,6 @@
 #include "frmConnect.h"
 #include "frmOptions.h"
 #include "frmPassword.h"
-#include "frmUpgradeWizard.h"
 #include "frmQuery.h"
 #include "frmStatus.h"
 #include "ctlSQLBox.h"
@@ -62,7 +61,6 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_TIPOFTHEDAY,               frmMain::OnTipOfTheDay)
-    EVT_MENU(MNU_UPGRADEWIZARD,             frmMain::OnUpgradeWizard)
     EVT_MENU(MNU_QUERYBUILDER,              frmMain::OnQueryBuilder)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER,       frmMain::OnTreeSelChanged)
@@ -116,12 +114,6 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     frmAbout *winAbout = new frmAbout(this);
     winAbout->Show(TRUE);
-}
-
-void frmMain::OnUpgradeWizard(wxCommandEvent& WXUNUSED(event))
-{
-    frmUpgradeWizard *winUpgradeWizard = new frmUpgradeWizard(this);
-    winUpgradeWizard->Show(TRUE);
 }
 
 void frmMain::OnTipOfTheDay()
