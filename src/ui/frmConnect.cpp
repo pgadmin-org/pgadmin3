@@ -25,8 +25,6 @@
 #include "images/pgAdmin3.xpm"
 
 
-// For some unknown reasons, if compiled as Win32-Release, this event table will not 
-// accept any frmConnect-functions! A crash will result if you try.
 
 BEGIN_EVENT_TABLE(frmConnect, wxDialog)
 EVT_BUTTON (XRCID("btnOK"),     wxDialog::OnOK)
@@ -36,10 +34,10 @@ END_EVENT_TABLE()
 
 
 
-frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& database, const wxString& username, int port)
+frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& description,
+                       const wxString& database, const wxString& username, int port)
 {
     wxLogInfo(wxT("Creating a connect dialogue"));
-    extern sysSettings *settings;
 
     wxXmlResource::Get()->LoadDialog(this, form, "frmConnect"); 
 
@@ -48,6 +46,7 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& da
     CenterOnParent();
 
     // Setup the default values
+    XRCCTRL(*this, "txtDescription", wxTextCtrl)->SetValue(description);
     XRCCTRL(*this, "txtServer", wxTextCtrl)->SetValue(server);
     XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetValue(database);
     XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetValue(username);
@@ -80,6 +79,11 @@ bool frmConnect::TransferDataFromWindow()
     return true;
 }
 
+wxString frmConnect::GetDescription()
+{
+    return XRCCTRL(*this, "txtDescription", wxTextCtrl)->GetValue();
+}
+
 wxString frmConnect::GetServer()
 {
     return XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue();
@@ -110,6 +114,8 @@ void frmConnect::LockFields()
     wxColour colBack;
     colBack = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
 
+    XRCCTRL(*this, "txtDescription", wxTextCtrl)->SetEditable(FALSE);
+    XRCCTRL(*this, "txtDescription", wxTextCtrl)->SetBackgroundColour(colBack);
     XRCCTRL(*this, "txtServer", wxTextCtrl)->SetEditable(FALSE);
     XRCCTRL(*this, "txtServer", wxTextCtrl)->SetBackgroundColour(colBack);
     XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetEditable(FALSE);

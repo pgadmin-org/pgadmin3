@@ -50,6 +50,13 @@ pgServer::~pgServer()
 }
 
 
+wxString pgServer::GetFullName() const
+{
+    return GetDescription() + wxT("  (") + GetIdentifier() + wxT(")");
+}
+
+
+
 int pgServer::Connect(wxFrame *form, bool lockFields) 
 {
     wxLogInfo(wxT("Getting connection details..."));
@@ -64,7 +71,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
     {
 	    // Keith 2003.03.05
 	    // It's simpler to use a reference for modal dialogs
-        frmConnect winConnect(form, GetName(), database, username, port);
+        frmConnect winConnect(form, GetName(), description, database, username, port);
 
         if (lockFields) 
 		    winConnect.LockFields();
@@ -82,6 +89,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
 
         if (!lockFields)
         {
+            iSetDescription(winConnect.GetDescription());
             iSetName(winConnect.GetServer());
             iSetDatabase(winConnect.GetDatabase());
             iSetUsername(winConnect.GetUsername());
@@ -235,6 +243,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         // Display the Server properties
         int pos=0;
         InsertListItem(properties, pos++, wxT("Hostname"), GetName());
+        InsertListItem(properties, pos++, wxT("Description"), GetDescription());
         InsertListItem(properties, pos++, wxT("Port"), NumToStr((long)GetPort()));
         InsertListItem(properties, pos++, wxT("Initial Database"), GetDatabase());
         InsertListItem(properties, pos++, wxT("Username"), GetUsername());

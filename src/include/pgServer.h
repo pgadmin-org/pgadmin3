@@ -46,10 +46,13 @@ public:
     wxString GetPassword() const { return password; }
     wxString GetLastError() const;
     wxString GetLastDatabase() const { return lastDatabase; }
-    void SetLastDatabase(const wxString& s) { lastDatabase=s; }
+    void iSetLastDatabase(const wxString& s) { lastDatabase=s; }
     wxString GetLastSchema() const { return lastSchema; }
-    void SetLastSchema(const wxString& s) { lastSchema=s; }
+    void iSetLastSchema(const wxString& s) { lastSchema=s; }
+    wxString GetDescription() const { return description; }
+    void iSetDescription(const wxString& s) { description=s; }
 
+    wxString GetFullName() const;
     int GetPort() const { return port; }
     bool GetConnected() const { return connected; }
     void iSetDatabase(const wxString& newVal) { database = newVal; }
@@ -67,7 +70,7 @@ private:
     pgConn *conn;
     bool connected;
     wxString database, username, password, ver, error;
-    wxString lastDatabase, lastSchema;
+    wxString lastDatabase, lastSchema, description;
     int port;
     double lastSystemOID;
     float versionNum;

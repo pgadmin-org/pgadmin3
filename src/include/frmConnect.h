@@ -23,9 +23,11 @@
 class frmConnect : public wxDialog
 {
 public:
-    frmConnect(wxFrame *form, const wxString& server = wxString(""), const wxString& database = wxString(""), const wxString& username = wxString(""), int port = 5432);
+    frmConnect(wxFrame *form, const wxString& server = wxT(""), const wxString& description=wxT(""),
+        const wxString& database = wxT(""), const wxString& username = wxT(""), int port = 5432);
     ~frmConnect();
 
+    wxString GetDescription();
     wxString GetServer();
     wxString GetDatabase();
     wxString GetUsername();
