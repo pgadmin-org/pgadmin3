@@ -908,12 +908,14 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
             wxString str=obj->GetAcl();
             if (!str.IsEmpty())
             {
+wxMessageBox(str);
                 str = str.Mid(1, str.Length()-2);
+wxMessageBox(str);
                 wxStringTokenizer tokens(str, wxT(","));
 
                 while (tokens.HasMoreTokens())
                 {
-                    wxString str=tokens.GetNextToken().BeforeLast('/');
+                    wxString str=tokens.GetNextToken();
                     if (str[0U]== '"')
                         str = str.Mid(1);
 
