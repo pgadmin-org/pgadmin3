@@ -70,12 +70,12 @@ popd
 
 %install
 rm -rf %{buildroot}
-%makeinstall
+make install DESTDIR=%{buildroot}
 pushd contrib/src/xrc
-  %makeinstall
+  make install DESTDIR=%{buildroot}
 popd
 pushd contrib/src/stc
-  %makeinstall
+  make install DESTDIR=%{buildroot}
 popd
 
 %clean
