@@ -6,15 +6,15 @@
 
 
 
-CC = gcc
+CC = g++
 PGDIR = /usr/local/pgsql
 WXDIR = /usr/local/wx2
 
 # You shouldn't need to edit below here.
 
 PROGRAM = pgAdmin3
-CFLAGS  = -g `wx-config --cflags` -I$(WXDIR)/include -I$(WXDIR)/contrib/include -Iinclude -I$(PGDIR)/include 
-LDFLAGS = /usr/local/lib/libstc.a $(PGDIR)/lib/libpq.a /usr/local/lib/libwxxrc.a /usr/lib/libcrypt.a `wx-config --static --libs`
+CFLAGS  = `wx-config --cflags` -I$(WXDIR)/include -I$(WXDIR)/contrib/include -Iinclude -I$(PGDIR)/include 
+LDFLAGS = $(WXDIR)/lib/libstc.a $(PGDIR)/lib/libpq.a $(WXDIR)/lib/libwxxrc.a /usr/lib/libcrypt.a `wx-config --static --libs`
 
 OBJECTS = $(PROGRAM).o \
           db/pgConn.o \
