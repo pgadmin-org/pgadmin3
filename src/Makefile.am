@@ -113,10 +113,10 @@ include/images/trigger.xpm include/images/type.xpm \
 include/images/unique.xpm include/images/unknown.xpm \
 include/images/user.xpm include/images/vacuum.xpm \
 include/images/viewdata.xpm include/images/view.xpm \
-ui/de_DE/pgadmin3.po ui/fr_FR/pgadmin3.po
+ui/de_DE/pgadmin3.po ui/fr_FR/pgadmin3.po ui/ja_JP/pgadmin3.po
 
 nobase_dist_pkgdata_DATA = tips.txt ui/common/*.xrc \
-ui/de_DE/pgadmin3.mo ui/fr_FR/pgadmin3.mo
+ui/de_DE/pgadmin3.mo ui/fr_FR/pgadmin3.mo ui/ja_JP/pgadmin3.mo
 
 #AM_CPPFLAGS = -Wall -g -I./include/ -I$(WX_HOME) -DDATADIR=\"$(pkgdatadir)/\"
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I./include/ -I$(WX_HOME)
