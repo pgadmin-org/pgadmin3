@@ -1064,7 +1064,6 @@ void frmMain::doPopup(wxPoint point, pgObject *object)
 void frmMain::OnContextMenu(wxCommandEvent& event)
 {
     wxPoint point;
-    wxObject *object=0;
 
     if (FindFocus() == browser)
     {
