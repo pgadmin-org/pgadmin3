@@ -21,7 +21,7 @@ EVT_PAINT(frmSplash::OnPaint)
 END_EVENT_TABLE()
 
 frmSplash::frmSplash(wxFrame *parent)
-: wxFrame(parent, -1, "", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT)
+: wxFrame(parent, -1, "", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW)
 {
   imgSplash = wxBitmap("images/splash.jpg", wxBITMAP_TYPE_JPEG);
   SetClientSize(imgSplash.GetWidth(), imgSplash.GetHeight());
