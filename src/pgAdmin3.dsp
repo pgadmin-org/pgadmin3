@@ -358,6 +358,18 @@ SOURCE=.\images\check.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\clip_copy.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\clip_cut.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\clip_paste.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\closeddatabase.xpm
 # End Source File
 # Begin Source File
@@ -386,11 +398,35 @@ SOURCE=.\images\drop.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\edit_clear.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\edit_find.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\edit_redo.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\edit_undo.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\images\encoding.xpm
 # End Source File
 # Begin Source File
 
 SOURCE=.\images\event.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\file_open.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\file_save.xpm
 # End Source File
 # Begin Source File
 
@@ -443,6 +479,18 @@ SOURCE=.\images\property.xpm
 # Begin Source File
 
 SOURCE=.\images\public.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\query_cancel.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\query_execute.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\query_explain.xpm
 # End Source File
 # Begin Source File
 
@@ -529,6 +577,9 @@ SOURCE=.\images\view.xpm
 SOURCE=.\images\viewdata.xpm
 # End Source File
 # End Group
+# Begin Group "ui includes"
+
+# PROP Default_Filter "*.h"
 # Begin Source File
 
 SOURCE=.\include\ctlSQLBox.h
@@ -581,14 +632,10 @@ SOURCE=.\include\frmSplash.h
 
 SOURCE=.\include\frmUpgradeWizard.h
 # End Source File
-# Begin Source File
+# End Group
+# Begin Group "schema includes"
 
-SOURCE=.\include\misc.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\pgAdmin3.h
-# End Source File
+# PROP Default_Filter "*.h"
 # Begin Source File
 
 SOURCE=.\include\pgAggregate.h
@@ -697,6 +744,15 @@ SOURCE=.\include\pgUser.h
 
 SOURCE=.\include\pgView.h
 # End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\include\misc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgAdmin3.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\include\sysLogger.h
@@ -723,9 +779,21 @@ SOURCE=.\pgAdmin3.cpp
 !ENDIF 
 
 # End Source File
+# End Group
+# Begin Group "misc files"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\BUGS.txt
+# End Source File
 # Begin Source File
 
 SOURCE=.\tips.txt
+# End Source File
+# Begin Source File
+
+SOURCE=..\TODO.txt
 # End Source File
 # End Group
 # End Target
