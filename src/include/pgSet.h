@@ -79,6 +79,8 @@ public:
     pgSet *DataSet() { return dataSet; }
     int ReturnCode() const { return rc; }
     wxString GetMessages() const { return messages; }
+    bool IsRunning() const;
+
 private:
     int rc;
 

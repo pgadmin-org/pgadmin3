@@ -144,9 +144,12 @@ int pgQueryThread::execute()
     {
         if (TestDestroy())
         {
-            if (!PQrequestCancel(conn)) // could not abort; abort failed.
+            if (rc != -3)
             {
-                return(-1);
+                if (!PQrequestCancel(conn)) // could not abort; abort failed.
+                    return(-1);
+
+                rc = -3;
             }
         }
         if (!PQconsumeInput(conn))
@@ -186,8 +189,17 @@ int pgQueryThread::execute()
 }
 
 
+bool pgQueryThread::IsRunning() const
+{
+    if (rc <  0)
+        return wxThread::IsRunning();
+    return false;
+}
+
+
 void *pgQueryThread::Entry()
 {
+    rc=-2;
     wxLogInfo(wxT("Running query %s"), query.c_str());
 
     execute();
