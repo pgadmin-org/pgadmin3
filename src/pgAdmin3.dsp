@@ -347,7 +347,15 @@ SOURCE=.\ui\dlgLanguage.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\dlgOperator.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgProperty.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgRule.cpp
 # End Source File
 # Begin Source File
 
@@ -372,6 +380,10 @@ SOURCE=.\ui\dlgType.cpp
 # Begin Source File
 
 SOURCE=.\ui\dlgUser.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgView.cpp
 # End Source File
 # End Group
 # Begin Group "common"
@@ -763,7 +775,15 @@ SOURCE=.\include\dlgLanguage.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\dlgOperator.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\dlgProperty.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgRule.h
 # End Source File
 # Begin Source File
 
@@ -788,6 +808,10 @@ SOURCE=.\include\dlgType.h
 # Begin Source File
 
 SOURCE=.\include\dlgUser.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgView.h
 # End Source File
 # End Group
 # Begin Group "images"

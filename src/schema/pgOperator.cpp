@@ -76,7 +76,7 @@ wxString pgOperator::GetSql(wxTreeCtrl *browser)
         AppendIfFilled(sql, wxT(",\n  SORT2 = "), GetRightSortOperator());
         AppendIfFilled(sql, wxT(",\n  LTCMP = "), GetLessOperator());
         AppendIfFilled(sql, wxT(",\n  GTCMP = "), GetGreaterOperator());
-        sql += wxT(";\n")
+        sql += wxT(");\n")
             + GetCommentSql();
     }
 
@@ -106,10 +106,10 @@ void pgOperator::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
             InsertListItem(properties, pos++, _("Right Type"), GetRightType());
         InsertListItem(properties, pos++, _("Result Type"), GetResultType());
         InsertListItem(properties, pos++, _("Operator Function"), GetOperatorFunction());
-        InsertListItem(properties, pos++, _("Join Function"), GetJoinFunction());
-        InsertListItem(properties, pos++, _("Restrict Function"), GetRestrictFunction());
         InsertListItem(properties, pos++, _("Commutator"), GetCommutator());
         InsertListItem(properties, pos++, _("Negator"), GetNegator());
+        InsertListItem(properties, pos++, _("Join Function"), GetJoinFunction());
+        InsertListItem(properties, pos++, _("Restrict Function"), GetRestrictFunction());
         InsertListItem(properties, pos++, _("Left Sort Operator"), GetLeftSortOperator());
         InsertListItem(properties, pos++, _("Right Sort Operator"), GetRightSortOperator());
         InsertListItem(properties, pos++, _("Less Than Operator"), GetLessOperator());
@@ -142,7 +142,7 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 
     pgSet *operators= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT op.oid, op.oprname, pg_get_userbyid(op.oprowner) as opowner, op.oprkind, op.oprcanhash,\n")
-        wxT("       lt.typname as lefttype, rt.typname as righttype, et.typname as resulttype,\n")
+        wxT("       op.oprleft, op.oprright, lt.typname as lefttype, rt.typname as righttype, et.typname as resulttype,\n")
         wxT("       co.oprname as compop, ne.oprname as negop, lso.oprname as leftsortop, rso.oprname as rightsortop,\n")
         wxT("       lco.oprname as lscmpop, gco.oprname as gtcmpop,\n")
         wxT("       po.proname as operproc, pj.proname as joinproc, pr.proname as restrproc, description\n")
@@ -174,6 +174,8 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             oper->iSetComment(operators->GetVal(wxT("description")));
             oper->iSetLeftType(operators->GetVal(wxT("lefttype")));
             oper->iSetRightType(operators->GetVal(wxT("righttype")));
+            oper->iSetLeftTypeOidStr(operators->GetVal(wxT("oprleft")));
+            oper->iSetRightTypeOidStr(operators->GetVal(wxT("oprright")));
             oper->iSetResultType(operators->GetVal(wxT("resulttype")));
             oper->iSetOperatorFunction(operators->GetVal(wxT("operproc")));
             oper->iSetJoinFunction(operators->GetVal(wxT("joinproc")));

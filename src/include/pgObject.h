@@ -227,11 +227,11 @@ public:
     pgRuleObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) 
         : pgSchemaObject(newSchema, newType, newName) {}
 
-protected:
     wxString GetFormattedDefinition();
     wxString GetDefinition() const { return definition; }
     void iSetDefinition(const wxString& s) { definition=s; }
 
+protected:
     wxString definition;
 };
 #endif

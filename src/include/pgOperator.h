@@ -35,6 +35,10 @@ public:
     void iSetLeftType(const wxString& s) { leftType=s; }
     wxString GetRightType() const { return rightType; }
     void iSetRightType(const wxString& s) { rightType=s; }
+    wxString GetLeftTypeOidStr() const { return leftTypeOidStr; }
+    void iSetLeftTypeOidStr(const wxString& s) { leftTypeOidStr=s; }
+    wxString GetRightTypeOidStr() const { return rightTypeOidStr; }
+    void iSetRightTypeOidStr(const wxString& s) { rightTypeOidStr=s; }
     wxString GetResultType() { return resultType; }
     void iSetResultType(const wxString& s) { resultType=s; }
     wxString GetOperatorFunction() const { return operatorFunction; }
@@ -61,12 +65,14 @@ public:
     void iSetHashJoins(bool b) {  hashJoins=b; }
 
     bool CanDrop() { return true; }
+    bool CanEdit() { return true; }
+    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString leftType, rightType, resultType,
+    wxString leftType, rightType, resultType, leftTypeOidStr, rightTypeOidStr,
              operatorFunction, joinFunction, restrictFunction,
              commutator, negator, kind, 
              leftSortOperator, rightSortOperator, lessOperator, greaterOperator;

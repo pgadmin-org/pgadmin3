@@ -35,16 +35,18 @@
 #include "dlgSchema.h"
 #include "dlgDomain.h"
 #include "dlgFunction.h"
+#include "dlgOperator.h"
+#include "dlgSequence.h"
 #include "dlgTable.h"
 #include "dlgColumn.h"
 #include "dlgIndex.h"
 #include "dlgIndexConstraint.h"
 #include "dlgForeignKey.h"
 #include "dlgCheck.h"
-#include "dlgSequence.h"
+#include "dlgRule.h"
 #include "dlgTrigger.h"
 #include "dlgType.h"
-
+#include "dlgView.h"
 
 #include "pgTable.h"
 #include "pgColumn.h"
@@ -420,6 +422,21 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PG_TYPES:
             dlg=new dlgType(frame, (pgType*)currentNode, (pgSchema*)parentNode);
             break;
+        case PG_OPERATOR:
+        case PG_OPERATORS:
+            dlg=new dlgOperator(frame, (pgOperator*)currentNode, (pgSchema*)parentNode);
+            break;
+        case PG_VIEW:
+        case PG_VIEWS:
+            dlg=new dlgView(frame, (pgView*)currentNode, (pgSchema*)parentNode);
+            break;
+#if 0
+//UNDER_CONSTRUCTION
+        case PG_RULE:
+        case PG_RULES:
+            dlg=new dlgRule(frame, (pgRule*)currentNode, (pgTable*)parentNode);
+            break;
+#endif
         default:
             break;
     }
@@ -555,6 +572,9 @@ void dlgTypeProperty::FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDom
             typinfo=wxT("P");
         else if (tr.MaySpecifyLength())
             typinfo=wxT("L");
+        else
+            typinfo=wxT(" ");
+        typinfo += tr.GetOidStr();
 
         types.Add(typinfo + wxT(":") + tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
 

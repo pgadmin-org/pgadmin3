@@ -41,7 +41,7 @@ pgSet::pgSet(PGresult *newRes, PGconn *newConn)
     if (PQresultStatus(res) != PGRES_TUPLES_OK)
     {
         if (PQresultStatus(res) != PGRES_COMMAND_OK)
-            wxLogError(wxT("%s"), PQerrorMessage(conn));
+            wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)));
 
         nRows = 0;
         pos = 0;
