@@ -72,7 +72,7 @@ bool pgAdmin3::OnInit()
     else {
       SetTopWindow(winSplash);
       winSplash->Show(TRUE);
-	  winSplash->Refresh();
+	  winSplash->Update();
       wxYield();
     }
 	
