@@ -93,11 +93,28 @@ WX_DEFINE_LIST(windowList);
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
-	// Current database
     wxWindowBase::SetFont(settings->GetSystemFont());
 
-    wxLogInfo(wxT("Using fontmetrics %d %d"), GetCharWidth(), GetCharHeight());
-	m_database = NULL;
+    {
+        wxLogInfo(wxT("Using fontmetrics %d/%d, %d Point"), GetCharWidth(), GetCharHeight(), GetFont().GetPointSize());
+        wxLogInfo(wxT("Native Description '%s'"), GetFont().GetNativeFontInfoDesc().c_str());
+        wxWindowDC dc(this);
+        dc.SetFont(GetFont());
+
+        wxCoord w, h, d, e;
+
+        dc.GetTextExtent(wxT("M"), &w, &h, &d, &e);
+        wxLogInfo(wxT("Draw size of 'M': w=%d, h=%d, descent %d, external lead %d."), w, h, d, e);
+
+        dc.GetTextExtent(wxT("g"), &w, &h, &d, &e);
+        wxLogInfo(wxT("Draw size of 'g': w=%d, h=%d, descent %d, external lead %d."), w, h, d, e);
+
+        dc.GetTextExtent(wxT("Mg"), &w, &h, &d, &e);
+        wxLogInfo(wxT("Draw size of 'Mg': w=%d, h=%d, descent %d, external lead %d."), w, h, d, e);
+    }
+
+    // Current database
+    m_database = NULL;
     denyCollapseItem=wxTreeItemId();
 
     // Icon
