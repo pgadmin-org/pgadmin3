@@ -35,26 +35,39 @@
 
 struct
 {
-    int flags;
-    const wxChar *helpItem;
     const wxChar *hintPage;
     const wxChar *hintCaption;
-} hintArray[]=
+    const wxChar *helpItem;
+    int flags;
+} 
+hintArray[]=
 {
-    {   HINT_CANSUPPRESS, 
+    {   HINT_CONNECTSERVER,
+        __("Server not listening"),
         wxT("runtime-config#runtime-config-connection"),
-        wxT("conn-listen"), __("Server not listening")
+        HINT_CANSUPPRESS
     },
-    {   HINT_CANSUPPRESS, wxT("client-authentication#auth-pg-hba-conf"), 
-        wxT("conn-hba"), __("Server denies access")
+    {   HINT_MISSINGHBA,
+        __("Server denies access"),
+        wxT("client-authentication#auth-pg-hba-conf"), 
+        HINT_CANSUPPRESS
     },
-    {   HINT_CANSUPPRESS|HINT_CANABORT, 0, 
-        wxT("pk"), __("Primary key suggested")
+    {   HINT_MISSINGIDENT,
+        __("Ident authentication failed"),
+        wxT("auth-methods#auth-ident"), 
+        HINT_CANSUPPRESS
     },
-    {   HINT_CANSUPPRESS|HINT_CANABORT, 0, 
-        wxT("fki"),     __("Index in referenced table suggested")
+    {   HINT_PRIMARYKEY,
+        __("Creation of primary key suggested"),
+        wxT("ddl-constraints"),
+        HINT_CANSUPPRESS|HINT_CANABORT
     },
-    { 0, 0,0,0 }
+    {   HINT_FKINDEX,
+        __("Creation of index in referencing table suggested"),
+        wxT("ddl-constraints#ddl-constraints-fk"),
+        HINT_CANSUPPRESS|HINT_CANABORT
+    },
+    { 0,0,0,0 }
 };
 
 
@@ -67,7 +80,7 @@ END_EVENT_TABLE();
 #define chkSuppress     CTRL_CHECKBOX("chkSuppress")
 #define htmlHint        (XRCCTRL(*this, "htmlHint", wxHtmlWindow))
 
-frmHint::frmHint(wxWindow *fr, Hint hintno, const wxString &info) : DialogWithHelp(0)
+frmHint::frmHint(wxWindow *fr, int hintno, const wxString &info) : DialogWithHelp(0)
 {
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(fr, wxT("frmHint"));
@@ -110,7 +123,7 @@ frmHint::frmHint(wxWindow *fr, Hint hintno, const wxString &info) : DialogWithHe
 frmHint::~frmHint()
 {
     if (chkSuppress->GetValue())
-        settings->Write(wxString::Format(wxT("Hints/Suppress%d"), currentHint),wxT("Yes"));
+        settings->Write(wxString(wxT("Hints/")) + hintArray[currentHint].hintPage, wxT("Suppress"));
 }
 
 
@@ -124,28 +137,65 @@ wxString frmHint::GetHelpPage() const
 }
 
 
-
-bool frmHint::WantHint(Hint hintno)
+void frmHint::ResetHints()
 {
-    if (hintno < 0 || hintno >= HintLast)
+    int hintno=0;
+    while (hintArray[hintno].hintPage)
+    {
+        settings->Write(wxString(wxT("Hints/")) + hintArray[hintno].hintPage, wxEmptyString);
+        hintno++;
+    }
+}
+
+
+int frmHint::GetHintNo(const wxString &hint)
+{
+    int hintno=0;
+    while (hintArray[hintno].hintPage)
+    {
+        if (hintArray[hintno].hintPage == hint)
+            return hintno;
+        hintno++;
+    }
+    return -1;
+}
+
+
+bool frmHint::WantHint(const wxString &hint)
+{
+    int hintno = GetHintNo(hint);
+    if (hintno < 0)
         return false;
+
+    return WantHint(hintno);
+}
+
+
+bool frmHint::WantHint(int hintno)
+{
+    if (hintno < 0)
+        return false;
+
     if ((hintArray[hintno].flags & HINT_CANSUPPRESS) && settings->GetSuppressGuruHints())
         return false;
 
-    if (!StrToBool(settings->Read(wxString::Format(wxT("Hints/Suppress%d"), hintno),wxT("No"))))
+    if (settings->Read(wxString(wxT("Hints/")) + hintArray[hintno].hintPage, wxEmptyString) != wxT("Suppress"))
         return true;
 
     return false;
 }
 
-int frmHint::ShowHint(wxWindow *fr, Hint hintno, const wxString &info)
+
+int frmHint::ShowHint(wxWindow *fr, const wxString &hint, const wxString &info)
 {
     int rc=wxID_OK;
+    int hintno = GetHintNo(hint);
 
     if (WantHint(hintno))
     {
         frmHint *frm=new frmHint(fr, hintno, info);
 
+        frm->CenterOnParent();
         rc = frm->ShowModal();
         delete frm;
 

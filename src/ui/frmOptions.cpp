@@ -36,6 +36,7 @@ extern wxArrayString existingLangNames;
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
 #define txtSqlHelpSite              CTRL_TEXT("txtSqlHelpSite")
 #define txtProxy                    CTRL_TEXT("txtProxy")
+#define txtSystemSchemas            CTRL_TEXT("txtSystemSchemas")
 #define txtLogfile                  CTRL_TEXT("txtLogfile")
 #define radLoglevel                 CTRL_RADIOBOX("radLoglevel")
 #define txtMaxRows                  CTRL_TEXT("txtMaxRows")
@@ -102,6 +103,7 @@ frmOptions::frmOptions(frmMain *parent)
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
     txtProxy->SetValue(settings->GetProxy());
+    txtSystemSchemas->SetValue(settings->GetSystemSchemas());
     chkUnicodeFile->SetValue(settings->GetUnicodeFile());
     chkSuppressHints->SetValue(settings->GetSuppressGuruHints());
 
@@ -210,12 +212,8 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
 
     if (chkResetHints->GetValue())
-    {
-        int i;
-        for (i=0 ; i < HintLast ; i++)
-            settings->Write(wxString::Format(wxT("Hints/Suppress%d"), i),wxT("No"));
+        frmHint::ResetHints();
 
-    }
 
     // Make sure there's a slash on the end of the path
 
@@ -229,6 +227,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         settings->SetSqlHelpSite(wxT(""));
     
     settings->SetProxy(txtProxy->GetValue());
+    settings->SetSystemSchemas(txtSystemSchemas->GetValue());
 
     int langNo=cbLanguage->GetSelection();
     if (langNo >= 0)

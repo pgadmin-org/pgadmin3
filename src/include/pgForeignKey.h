@@ -57,6 +57,8 @@ public:
     void iSetDeferrable(const bool b) { deferrable=b; }
     bool GetDeferred() const { return deferred; }
     void iSetDeferred(const bool b) { deferred=b; }
+    wxString GetMatch() const { return match; }
+    void iSetMatch(const wxString &s) { match=s; }
     wxString GetRelTableOidStr() const { return NumToStr(relTableOid) + wxT("::oid"); }
     OID GetRelTableOid() const { return relTableOid; }
     void iSetRelTableOid(const OID d) { relTableOid = d; }
@@ -76,7 +78,7 @@ public:
 private:
     wxString onUpdate, onDelete, conkey, confkey,
              fkTable, fkSchema, references, refSchema;
-    wxString fkColumns, refColumns, quotedFkColumns, quotedRefColumns, coveringIndex;
+    wxString fkColumns, refColumns, quotedFkColumns, quotedRefColumns, coveringIndex, match;
     bool deferrable, deferred;
     OID relTableOid;
 };

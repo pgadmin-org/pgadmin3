@@ -20,6 +20,8 @@
 #include "pgCollection.h"
 #include "frmMain.h"
 
+#include "wx/regex.h"
+
 
 pgSchema::pgSchema(const wxString& newName)
 : pgDatabaseObject(PG_SCHEMA, newName)
@@ -184,7 +186,7 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
         wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
         wxT("            WHEN nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) +
                          wxT(" OR nspname like 'pg\\_%' THEN 0\n")
-        wxT("            ELSE 2 END AS nsptyp,\n")
+        wxT("            ELSE 3 END AS nsptyp,\n")
         wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
         wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
         wxT("  FROM pg_namespace nsp\n")
@@ -196,14 +198,33 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     {
         while (!schemas->Eof())
         {
-
-            schema = new pgSchema(schemas->GetVal(wxT("nspname")));
+            wxString name=schemas->GetVal(wxT("nspname"));
+            long nsptyp=schemas->GetLong(wxT("nsptyp"));
+            if (nsptyp == SCHEMATYP_NORMAL)
+            {
+                wxStringTokenizer tokens(settings->GetSystemSchemas(), wxT(","));
+                while (tokens.HasMoreTokens())
+                {
+                    wxRegEx regex(tokens.GetNextToken());
+                    if (regex.Matches(name))
+                    {
+                        nsptyp = SCHEMATYP_USERSYS;
+                        break;
+                    }
+                }
+                if (nsptyp == SCHEMATYP_USERSYS && !settings->GetShowSystemObjects())
+                {
+                    schemas->MoveNext();
+                    continue;
+                }
+            }
+            schema = new pgSchema(name);
+            schema->iSetSchemaTyp(nsptyp);
             schema->iSetDatabase(collection->GetDatabase());
             schema->iSetComment(schemas->GetVal(wxT("description")));
             schema->iSetOid(schemas->GetOid(wxT("oid")));
             schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
             schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
-            schema->iSetSchemaTyp(schemas->GetLong(wxT("nsptyp")));
             schema->iSetCreatePrivilege(schemas->GetBool(wxT("cancreate")));
 
             if (browser)

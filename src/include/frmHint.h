@@ -13,34 +13,31 @@
 #define __FRMHINT
 
 
-
-// must match frmHint.cpp hintArray!
-typedef enum
-{
-    HintConnectServer = 0,
-    HintMissingHba,
-    HintPrimaryKey,
-    HintCoveringIndex,
-    HintLast
-} Hint;
+#define HINT_CONNECTSERVER  wxT("conn-listen")
+#define HINT_MISSINGHBA     wxT("conn-hba")
+#define HINT_MISSINGIDENT   wxT("conn-ident")
+#define HINT_PRIMARYKEY     wxT("pk")
+#define HINT_FKINDEX        wxT("fki")
 
 class frmMain;
-class wxHtmlWindow;
 class frmHint : public DialogWithHelp
 {
 public:
-    static int ShowHint(wxWindow *fr, Hint hintno, const wxString &info=wxEmptyString);
-    static bool WantHint(Hint hintno);
+    static int ShowHint(wxWindow *fr,  const wxString &hint, const wxString &info=wxEmptyString);
+    static bool WantHint(const wxString &hint);
+    static void ResetHints();
 
 private:
-    frmHint(wxWindow *fr, Hint hintHo, const wxString &info=wxEmptyString);
+    frmHint(wxWindow *fr, int hint, const wxString &info=wxEmptyString);
     ~frmHint();
 
+    static int GetHintNo(const wxString &hint);
+    static bool WantHint(int hintno);
     wxString GetHelpPage() const;
 
     DECLARE_EVENT_TABLE();
 
-    Hint currentHint;
+    int currentHint;
 };
 
 

@@ -23,6 +23,16 @@
 
 class pgCollection;
 
+
+enum
+{
+    SCHEMATYP_SYSTEM=0,
+    SCHEMATYP_TEMP,
+    SCHEMATYP_USERSYS,
+    SCHEMATYP_NORMAL
+};
+
+
 class pgSchema : public pgDatabaseObject
 {
 public:
@@ -41,7 +51,7 @@ public:
     void iSetSchemaTyp(const long l) { schemaTyp=l; }
     bool GetCreatePrivilege() const { return createPrivilege; }
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
-    bool GetSystemObject() const { return schemaTyp < 1; }
+    bool GetSystemObject() const { return schemaTyp <= SCHEMATYP_TEMP; }
 
     bool CanBackup() { return true; }
     bool RequireDropConfirm() { return true; }
@@ -53,7 +63,7 @@ public:
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    long schemaTyp; // 0: System 1: temporär 2: normal
+    long schemaTyp;
     bool createPrivilege;
 };
 

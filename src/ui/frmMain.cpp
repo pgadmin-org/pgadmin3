@@ -778,17 +778,25 @@ void frmMain::reportConnError(pgServer *server)
     bool wantHint=false;
     if (error.Find(wxT("Is the server running on host")) >= 0)
     {
-        if (frmHint::WantHint(HintConnectServer))
+        if (frmHint::WantHint(HINT_CONNECTSERVER))
         {
-            frmHint::ShowHint(this, HintConnectServer, error);
+            frmHint::ShowHint(this, HINT_CONNECTSERVER, error);
             wantHint = true;
         }
     }
-    if (error.Find(wxT("no pg_hba.conf entry for")) >= 0)
+    else if (error.Find(wxT("no pg_hba.conf entry for")) >= 0)
     {
-        if (frmHint::WantHint(HintMissingHba))
+        if (frmHint::WantHint(HINT_MISSINGHBA))
         {
-            frmHint::ShowHint(this, HintMissingHba, error);
+            frmHint::ShowHint(this, HINT_MISSINGHBA, error);
+            wantHint = true;
+        }
+    }
+    else if (error.Find(wxT("Ident authentication failed")) >= 0)
+    {
+        if (frmHint::WantHint(HINT_MISSINGIDENT))
+        {
+            frmHint::ShowHint(this, HINT_MISSINGIDENT, error);
             wantHint = true;
         }
     }

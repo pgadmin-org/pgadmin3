@@ -72,7 +72,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
     Read(wxT("SuppressGuruHints"), &suppressGuruHints, false);
     Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
-    Read(wxT("SearchPath"), &searchPath, wxEmptyString);
+    Read(wxT("SystemSchemas"), &systemSchemas, wxEmptyString);
     Read(wxT("MaxServerLogSize"), &maxServerLogSize, 100000L);
     Read(wxT("Export/Unicode"), &exportUnicode, false);
 
@@ -150,7 +150,7 @@ void sysSettings::Save()
     Write(wxT("Proxy"), proxy);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
-    Write(wxT("SearchPath"), searchPath);
+    Write(wxT("SystemSchemas"), systemSchemas);
     Write(wxT("MaxServerLogSize"), maxServerLogSize);
     Write(wxT("SuppressGuruHints"), suppressGuruHints);
 

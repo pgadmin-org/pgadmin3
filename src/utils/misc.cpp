@@ -566,7 +566,7 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
     wxString page;
     int hashPos = helpTopic.Find('#');
     if (hashPos < 0)
-        page = helpTopic;
+        page = helpTopic + wxT(".html");
     else
         page = helpTopic.Left(hashPos) + wxT(".html") + helpTopic.Mid(hashPos);
 

@@ -531,7 +531,7 @@ void dlgTable::OnChangeTable(wxCommandEvent &ev)
 void dlgTable::OnOK(wxCommandEvent &ev)
 {
     if (lstColumns->GetItemCount() > 0 && !hasPK
-        && frmHint::ShowHint(this, HintPrimaryKey) == wxID_CANCEL)
+        && frmHint::ShowHint(this, HINT_PRIMARYKEY) == wxID_CANCEL)
         return;
 
     dlgProperty::OnOK(ev);

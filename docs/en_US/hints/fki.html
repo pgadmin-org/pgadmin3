@@ -7,14 +7,14 @@
 </head>
 
 <body>
-<h3">Foreign key covering indexes</h3>
+<h3>Foreign key covering indexes</h3>
 <p>
 A foreign key is used to couple two tables in a logical way, and restrict the changes that can be applied to them. 
 </p>
 <p>
 It all starts with a master table, which will be the referenced table. It needs to have a primary key (well, actually the 
 referenced columns only need to be not null and covered by a unique index, but it's really good advise to have it a 
-<a href="pk.html">primary key</a>). The slave table depends on the master table, in the sense that the columns on which 
+primary key. The slave table depends on the master table, in the sense that the columns on which 
 the foreign key is created must match the master table for any key inserted or updated. The slave table is the referencing
 table of the foreign key.
 </p>
@@ -22,8 +22,7 @@ table of the foreign key.
 The foreign key not only restricts the referencing table, but also the referenced table; the flavour of restriction can be 
 RESTRICT, CASCADE or SET NULL. This means, that if a row in the master/referenced table is changed (updated 
 or deleted), all referencing tables are checked if the operation is valid, and if there's some additional action to perform; 
-see the PostgreSQL documentation on <a href="../pg/ddl-constraints.html#ddl-constraints-fk">Foreign Keys</a>
-for further details.
+see the PostgreSQL documentation on foreign keys for further details.
 </p>
 <p>
 This means that on change access to a specific row in the referenced table, a corresponding read is performed on all

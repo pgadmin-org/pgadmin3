@@ -46,6 +46,7 @@ private:
     void OnSelChangeRefCol(wxCommandEvent &ev);
     void OnAddRef(wxCommandEvent &ev);
     void OnRemoveRef(wxCommandEvent &ev);
+    void OnOK(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

@@ -924,7 +924,11 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
             SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
             wxYield();
-            wxMilliSleep(10);
+            if (elapsedQuery < 200)
+                wxMilliSleep(10);
+            else
+                wxMilliSleep(100);
+
             str=sqlResult->GetMessagesAndClear();
             if (!str.IsEmpty())
             {
@@ -972,7 +976,6 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             {
                 wxString errMsg = sqlResult->GetErrorMessage();
                 showMessage(errMsg);
-//                wxLogError(errMsg);
 
                 wxString atChar=wxT(" at character ");
                 int chp=errMsg.Find(atChar);

@@ -139,7 +139,7 @@ void pgDialog::LoadResource(wxWindow *parent, const wxChar *name)
 void pgDialog::OnClose(wxCloseEvent& event)
 {
     if (IsModal())
-        EndModal(-1);
+        EndModal(wxID_CANCEL);
     else
         Destroy();
 }
@@ -148,7 +148,7 @@ void pgDialog::OnClose(wxCloseEvent& event)
 void pgDialog::OnCancel(wxCommandEvent& ev)
 {
     if (IsModal())
-        EndModal(-1);
+        EndModal(wxID_CANCEL);
     else
         Destroy();
 }

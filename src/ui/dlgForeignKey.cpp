@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "frmMain.h"
+#include "frmHint.h"
 #include "pgTable.h"
 #include "pgForeignKey.h"
 #include "dlgForeignKey.h"
@@ -25,6 +26,7 @@
 #define chkDeferred     CTRL_CHECKBOX("chkDeferred")
 #define stDeferred      CTRL_STATIC("stDeferred")
 #define cbReferences    CTRL_COMBOBOX("cbReferences")
+#define chkMatchFull    CTRL_CHECKBOX("chkMatchFull")
 
 #define stAutoIndex     CTRL_STATIC("stAutoIndex")
 #define chkAutoIndex    CTRL_CHECKBOX("chkAutoIndex")
@@ -53,6 +55,7 @@ BEGIN_EVENT_TABLE(dlgForeignKey, dlgProperty)
     EVT_COMBOBOX(XRCID("cbRefColumns"),         dlgForeignKey::OnSelChangeRefCol)
     EVT_BUTTON(XRCID("btnAddRef"),              dlgForeignKey::OnAddRef)
     EVT_BUTTON(XRCID("btnRemoveRef"),           dlgForeignKey::OnRemoveRef)
+    EVT_BUTTON(wxID_OK,                         dlgForeignKey::OnOK)
 END_EVENT_TABLE();
 
 
@@ -90,6 +93,16 @@ wxString dlgForeignKey::DefaultIndexName(const wxString &name)
         return wxT("FKI_") + name.Mid(3);
     else
         return wxT("fki_") + name;
+}
+
+
+void dlgForeignKey::OnOK(wxCommandEvent &ev)
+{
+    if (chkAutoIndex->IsEnabled() && !chkAutoIndex->GetValue()
+        && frmHint::ShowHint(this, HINT_FKINDEX) == wxID_CANCEL)
+        return;
+
+    dlgProperty::OnOK(ev);
 }
 
 
@@ -238,6 +251,7 @@ void dlgForeignKey::OnAddRef(wxCommandEvent &ev)
         cbColumns->SetSelection(0);
         cbRefColumns->SetSelection(0);
         OnSelChangeRefCol(ev);
+        CheckChange();
     }
 }
 
@@ -305,8 +319,10 @@ int dlgForeignKey::Go(bool modal)
 
         chkDeferrable->SetValue(foreignKey->GetDeferrable());
         chkDeferred->SetValue(foreignKey->GetDeferred());
+        chkMatchFull->SetValue(foreignKey->GetMatch() == wxT("FULL"));
         chkDeferrable->Disable();
         chkDeferred->Disable();
+        chkMatchFull->Disable();
 
         rbOnUpdate->SetStringSelection(foreignKey->GetOnUpdate());
         rbOnDelete->SetStringSelection(foreignKey->GetOnDelete());
@@ -438,9 +454,18 @@ wxString dlgForeignKey::GetDefinition()
         + wxT(") REFERENCES ");
     AppendQuoted(sql, cbReferences->GetValue());
     sql += wxT(" (") + refs
-        + wxT(")\n  ")
-          wxT(" ON UPDATE ") + rbOnUpdate->GetStringSelection()
-        + wxT(" ON DELETE ") + rbOnDelete->GetStringSelection();
+        + wxT(")");
 
+    if (chkMatchFull->GetValue())
+        sql += wxT(" MATCH FULL");
+
+    sql += wxT("\n  ")
+           wxT(" ON UPDATE ") + rbOnUpdate->GetStringSelection() +
+           wxT(" ON DELETE ") + rbOnDelete->GetStringSelection();
+
+    if (chkDeferrable->GetValue())
+        sql += wxT("\n   DEFERRABLE");
+    if (chkDeferred->GetValue())
+        sql += wxT(" INITIALLY DEFERRED");
     return sql;
 }

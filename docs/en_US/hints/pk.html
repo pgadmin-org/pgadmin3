@@ -14,8 +14,8 @@ When designing a table, you should always keep in mind how the table will be adr
 later. In most cases, you will need an identifier in order to uniquely address a specific 
 row; this identifier should be created as your primary key. A primary key isn't 
 necessarily consisting of a single column; it may contain as many rows as necessary 
-to uniquely identify a row. If you need many columns (rule of thumb: 3), it might be a good
-idea to invent an additional column which holds the primary key.
+to uniquely identify a row. If you need many columns (rule of thumb: more than 3), it might be a good
+idea to invent an additional column with a convenient data type, e.g. serial or bigserial, which holds the primary key.
 </p>
 <p>
 Only in rare cases it doesn't make sense to use a primary key. That means, a missing primary key is quite 
@@ -26,7 +26,7 @@ primary key.
 If you look at PostgreSQL's system tables, you will find that none of them has a primary key, so what's this about?
 Actually, All of these tables have one or two columns (usually OID only) which uniquely identifies the row, obeying the
 second rule for a primary key, not allowing zero, and being covered by an index for faster access. Usage of OIDs has 
-historic reasons, and isn't really first choice for designing user tables. PostgreSQL still uses this for historic reasons, 
+historic reasons, and isn't really first choice for designing user tables. PostgreSQL still uses this for backwards compatibility, 
 and while a newer approach would probably use explicit primary keys it won't be changed now any more.
 </p>
 <p>

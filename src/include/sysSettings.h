@@ -64,6 +64,8 @@ public:
     void SetSqlHelpSite(const wxString& s) { sqlHelpSite = s; }
     wxString GetProxy() const { return proxy; }
     void SetProxy(const wxString& s);
+    void SetSystemSchemas(const wxString &s) { systemSchemas = s; }
+    wxString GetSystemSchemas() const { return systemSchemas; }
 
     bool GetExplainVerbose() const { return explainVerbose; }
     void SetExplainVerbose(const bool b) { explainVerbose=b; }
@@ -92,9 +94,6 @@ public:
     // maximum size of server log to read
     long GetMaxServerLogSize() const { return maxServerLogSize; }
     void SetMaxServerLogSize(long l) { maxServerLogSize = l; }
-
-    wxString GetSearchPath() const { return searchPath; }
-    void SetSearchPath(const wxString &s) { searchPath=s; }
 
     bool GetUnicodeFile() const { return unicodeFile; }
     void SetUnicodeFile(const bool b) {unicodeFile = b; }
@@ -180,7 +179,7 @@ private:
     bool doubleClickProperties;
     long maxServerLogSize;
 
-    wxString searchPath;
+    wxString searchPath, systemSchemas;
 
     // export options
     wxString exportRowSeparator;

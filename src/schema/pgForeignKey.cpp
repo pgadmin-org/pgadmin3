@@ -45,9 +45,14 @@ wxString pgForeignKey::GetDefinition()
     // MATCH FULL/PARTIAL missing; where is this stored?!?
 
     sql = wxT("(") + GetQuotedFkColumns()
-        +  wxT(") REFERENCES ") + GetQuotedSchemaPrefix(GetRefSchema()) + qtIdent(GetReferences()) 
+        +  wxT(")\n      REFERENCES ") + GetQuotedSchemaPrefix(GetRefSchema()) + qtIdent(GetReferences()) 
         +  wxT(" (") + GetQuotedRefColumns()
-        +  wxT(") ON UPDATE ") + GetOnUpdate()
+        +  wxT(")");
+    
+    if (GetDatabase()->BackendMinimumVersion(7, 4))
+        sql += wxT(" MATCH ") + GetMatch();
+
+    sql += wxT("\n      ON UPDATE ") + GetOnUpdate()
         +  wxT(" ON DELETE ") + GetOnDelete();
     if (GetDeferrable())
     {
@@ -155,11 +160,13 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
             + wxT("(") +GetRefColumns() + wxT(")"));
 
         properties->AppendItem(_("Covering index"), GetCoveringIndex());
+        properties->AppendItem(_("Match type"), GetMatch());
         properties->AppendItem(_("On update"), GetOnUpdate());
         properties->AppendItem(_("On delete"), GetOnDelete());
         properties->AppendItem(_("Deferrable?"), BoolToYesNo(GetDeferrable()));
-        properties->AppendItem(_("Initially?"), 
-            GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
+        if (GetDeferrable())
+            properties->AppendItem(_("Initially?"), 
+                GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
         properties->AppendItem(_("System foreign key?"), BoolToYesNo(GetSystemObject()));
         properties->AppendItem(_("Comment"), GetComment());
     }
@@ -217,6 +224,7 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
             foreignKey->iSetReferences(foreignKeys->GetVal(wxT("reftab")));
             wxString onUpd=foreignKeys->GetVal(wxT("confupdtype"));
             wxString onDel=foreignKeys->GetVal(wxT("confdeltype"));
+            wxString match=foreignKeys->GetVal(wxT("confmatchtype"));
             foreignKey->iSetOnUpdate(
                 onUpd.IsSameAs('a') ? wxT("NO ACTION") :
                 onUpd.IsSameAs('r') ? wxT("RESTRICT") :
@@ -229,6 +237,10 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
                 onDel.IsSameAs('c') ? wxT("CASCADE") :
                 onDel.IsSameAs('d') ? wxT("SET DEFAULT") :
                 onDel.IsSameAs('n') ? wxT("SET NULL") : wxT("Unknown"));
+                foreignKey->iSetMatch(
+                        match.IsSameAs('f') ? wxT("FULL") :
+                        match.IsSameAs('u') ? wxT("SIMPLE") : wxT("Unknown"));
+
             wxString cn=foreignKeys->GetVal(wxT("conkey"));
             cn = cn.Mid(1, cn.Length()-2);
             foreignKey->iSetConkey(cn);
