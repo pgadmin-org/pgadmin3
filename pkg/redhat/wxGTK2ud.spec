@@ -100,6 +100,8 @@ ln -s /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
 %postun -p 
 /sbin/ldconfig
 rm -fr /usr/include/wx/setup.h
+sed -e "s/var\/tmp\/wxGTK2ud-root\/usr/usr/g" /usr/bin/wxgtk2ud-2.5-config > /var/tmp/tmpfoo
+mv -f /var/tmp/tmpfoo /usr/bin/wxgtk2ud-2.5-config
 
 %post xrc -p /sbin/ldconfig
 %postun xrc -p /sbin/ldconfig
