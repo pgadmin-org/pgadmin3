@@ -15,7 +15,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 # I am not sure of dependencies until we build wxGTK 2.5 cvs RPMs
 #
 
-Requires: gtk2 >= 2.2, glibc >= 2.3.2, libjpeg >= 6, libpng >= 1.2.2, pango >= 1.2.1, libstdc++ >= 3.2.2, openssl >= 0.9.6, libtiff >= 3.5.7, zlib >= 1.1.4
+Requires: gtk2 >= 2.2, glibc >= 2.3.2, libjpeg >= 6, libpng >= 1.2.2, pango >= 1.2.1, libstdc++ >= 3.2.2, openssl >= 0.9.6, libtiff >= 3.5.7, zlib >= 1.1.4, glib2 >= 2.2.1, postgresql-libs >= 7.3.2
   
 
 #
