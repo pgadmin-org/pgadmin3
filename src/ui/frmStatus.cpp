@@ -27,7 +27,7 @@
 #define TIMER_ID 333
 BEGIN_EVENT_TABLE(frmStatus, pgDialog)
     EVT_BUTTON(XRCID("btnRefresh"),         frmStatus::OnRefresh)
-    EVT_BUTTON (XRCID("btnClose"),          frmStatus::OnClose)
+    EVT_BUTTON (XRCID("btnClose"),          frmStatus::OnCloseBtn)
     EVT_CLOSE(                              frmStatus::OnClose)
     EVT_SPINCTRL(XRCID("spnRefreshRate"),   frmStatus::OnRateChangeSpin)
     EVT_TEXT(XRCID("spnRefreshRate"),       frmStatus::OnRateChange)
@@ -42,7 +42,12 @@ END_EVENT_TABLE();
 #define spnRefreshRate  CTRL_SPIN("spnRefreshRate")
 #define nbStatus		CTRL_NOTEBOOK("nbStatus")
 
-void frmStatus::OnClose(wxCommandEvent &event)
+void frmStatus::OnCloseBtn(wxCommandEvent &event)
+{
+    Destroy();
+}
+
+void frmStatus::OnClose(wxCloseEvent &event)
 {
     Destroy();
 }
@@ -425,7 +430,7 @@ void frmStatus::addLog(const wxString &str)
         if (logHasTimestamp)
         {
             wxString ts=str.Mid(logFmtPos);
-            int pos = ts.Mid(22).Find(logFormat[logFmtPos+2]);
+            int pos = ts.Mid(22).Find(logFormat.c_str()[logFmtPos+2]);
             logList->AppendItem(ts.Left(22+pos));
             rest = ts.Mid(22+pos + logFormat.Length() - logFmtPos-2);
             logList->SetItem(row, 1, rest.BeforeFirst(':'));

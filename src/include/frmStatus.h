@@ -35,7 +35,8 @@ public:
     
 private:
     void OnHelp(wxCommandEvent& ev);
-    void OnClose(wxCommandEvent &event);
+    void OnCloseBtn(wxCommandEvent &event);
+    void OnClose(wxCloseEvent &event);
     void OnRefresh(wxCommandEvent &event);
     void OnRefreshTimer(wxTimerEvent &event);
     void OnRateChange(wxCommandEvent &event);
