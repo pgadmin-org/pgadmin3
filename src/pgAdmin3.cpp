@@ -80,6 +80,7 @@ bool pgAdmin3::OnInit()
     LoadXrc(wxString("frmConnect.xrc"));
     LoadXrc(wxString("frmOptions.xrc"));
     LoadXrc(wxString("frmPassword.xrc"));
+    LoadXrc(wxString("frmQBJoin.xrc"));
 
     // Set some defaults
 #ifdef __WXMSW__
