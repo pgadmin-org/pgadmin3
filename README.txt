@@ -7,7 +7,7 @@ Introduction
 pgAdmin III aims to replicate and improve the design of pgAdmin II, and 
 support multiple platforms. After a long period of ongoing discussion, 
 research and arguing, it was decided that the preferred development language
-was C++, using the wxWindows (http://www.wxwindows.org) framework.
+was C++, using the wxWindows (http://www.wxwidgets.org) framework.
 
 Compilation
 -----------
