@@ -10,7 +10,14 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/grid.h>
+
+#ifdef __WX_FULLSOURCE
 #include "wx/generic/gridsel.h"
+#else
+#include "wxgridsel.h"
+#endif
+
 
 // App headers
 #include "pgAdmin3.h"
