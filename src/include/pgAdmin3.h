@@ -19,13 +19,17 @@
 #include "sysSettings.h"
 
 // XRC Path
-
 #ifdef __WXMSW__
 #define XRC_PATH wxT("/ui/win32")
 #else
 #include "config.h"
 #undef VERSION
 #define XRC_PATH wxT("/ui/gtk")
+#endif
+
+// Data path (defined by configure under Unix).
+#ifndef DATA_DIR
+#define DATA_DIR wxT(".")
 #endif
 
 // Application Versions & Name

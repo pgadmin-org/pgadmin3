@@ -1032,10 +1032,6 @@ SOURCE=.\include\wxgridsel.h
 # End Group
 # Begin Source File
 
-SOURCE=.\Makefile
-# End Source File
-# Begin Source File
-
 SOURCE=.\pgAdmin3.cpp
 
 !IF  "$(CFG)" == "pgAdmin3 - Win32 Release"
