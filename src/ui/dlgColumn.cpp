@@ -184,8 +184,19 @@ wxString dlgColumn::GetSql()
         {
             sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                 + wxT("\n   ADD COLUMN ") + qtIdent(GetName())
-                + wxT(" ") + GetDefinition()
+                + wxT(" ") + GetQuotedTypename(cbDatatype->GetSelection())
                 + wxT(";\n");
+
+            if (chkNotNull->GetValue())
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    + wxT("\n   ALTER COLUMN ") + qtIdent(GetName())
+                    + wxT(" SET NOT NULL;\n");
+            
+            if (!txtDefault->GetValue().IsEmpty())
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    + wxT("\n   ALTER COLUMN ") + qtIdent(GetName())
+                    + wxT(" SET DEFAULT ") + txtDefault->GetValue() 
+                    + wxT(";\n");
         }
 
 
