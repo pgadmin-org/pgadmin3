@@ -212,7 +212,7 @@ wxString dlgColumn::GetSql()
 
 wxString dlgColumn::GetDefinition()
 {
-    wxString sql;
+    wxString sql, col;
 
     sql = GetQuotedTypename(cbDatatype->GetSelection());
     if (chkNotNull->GetValue())

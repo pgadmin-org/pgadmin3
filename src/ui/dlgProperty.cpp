@@ -696,18 +696,27 @@ void dlgTypeProperty::AddType(const wxString &typ, const OID oid, const wxString
         switch ((long)oid)
         {
             case PGOID_TYPE_BIT:
+            case PGOID_TYPE_BIT_ARRAY:
             case PGOID_TYPE_CHAR:
+			case PGOID_TYPE_CHAR_ARRAY:
             case PGOID_TYPE_VARCHAR:
+			case PGOID_TYPE_VARCHAR_ARRAY:
                 vartyp=wxT("L");
                 break;
             case PGOID_TYPE_TIME:
+			case PGOID_TYPE_TIME_ARRAY:
             case PGOID_TYPE_TIMETZ:
+			case PGOID_TYPE_TIMETZ_ARRAY:
             case PGOID_TYPE_TIMESTAMP:
+			case PGOID_TYPE_TIMESTAMP_ARRAY:
             case PGOID_TYPE_TIMESTAMPTZ:
+			case PGOID_TYPE_TIMESTAMPTZ_ARRAY:
             case PGOID_TYPE_INTERVAL:
+			case PGOID_TYPE_INTERVAL_ARRAY:
                 vartyp=wxT("D");
                 break;
             case PGOID_TYPE_NUMERIC:
+			case PGOID_TYPE_NUMERIC_ARRAY:
                 vartyp=wxT("P");
                 break;
             default:
@@ -745,10 +754,15 @@ wxString dlgTypeProperty::GetTypeOid(int sel)
 wxString dlgTypeProperty::GetQuotedTypename(int sel)
 {
     wxString sql;
+	bool isArray = FALSE;
 
     if (sel >= 0)
     {
         sql = types.Item(sel).AfterFirst(':');
+		if (sql.Contains(wxT("[]"))) {
+			sql = sql.BeforeFirst('[');
+			isArray = TRUE;
+		}
 
         if (isVarLen && txtLength)
         {
@@ -766,6 +780,8 @@ wxString dlgTypeProperty::GetQuotedTypename(int sel)
             }
         }
     }
+
+	if (isArray) sql += wxT("[]");
     return sql;
 }
 
@@ -776,7 +792,6 @@ void dlgTypeProperty::CheckLenEnable()
     if (sel >= 0)
     {
         wxString info=types.Item(sel);
-        
         isVarPrec = info.StartsWith(wxT("P"));
         isVarLen =  isVarPrec || info.StartsWith(wxT("L")) || info.StartsWith(wxT("D"));
         minVarLen = (info.StartsWith(wxT("D")) ? 0 : 1);
