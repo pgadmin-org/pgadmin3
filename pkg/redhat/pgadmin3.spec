@@ -1,6 +1,6 @@
 %define major_version 0.9
-%define minor_version %(date +%Y%m%d)
-%define wxGTK2_version 20030707
+%define minor_version cvs%(date +%Y%m%d)
+%define wxGTK2_version 20030722
 %define withwxconfig wxgtk2ud-2.5-config
 %define withpgsql /usr
 %define withpgsqlinclude /usr/include
