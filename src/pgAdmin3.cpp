@@ -11,7 +11,6 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/image.h>
-#include <wx/utils.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -22,7 +21,6 @@ IMPLEMENT_APP(pgAdmin3)
 
 // Globals
 frmMain *winMain;
-frmSplash *winSplash;
 
 // The Application!
 bool pgAdmin3::OnInit()
@@ -31,7 +29,7 @@ bool pgAdmin3::OnInit()
   wxImage::AddHandler(new wxJPEGHandler);
   
   // Show the splash screen
-  winSplash = new frmSplash((wxFrame *)NULL);
+  frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
   SetTopWindow(winSplash);
   winSplash->Show(TRUE);
   

@@ -8,10 +8,18 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+// wxWindows headers
+#include <wx/wx.h>
+#include <wx/splitter.h>
+#include <wx/treectrl.h>
+#include <wx/listctrl.h>
+#include <wx/notebook.h>
+
 // App headers
 #include "../../pgAdmin3.h"
 #include "frmMain.h"
 #include "frmAbout.h"
+#include "../controls/ctlSQLBox.h"
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)

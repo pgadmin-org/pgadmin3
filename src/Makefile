@@ -12,7 +12,8 @@ LDFLAGS = `wx-config --libs` -lstc
 OBJECTS = $(PROGRAM).o \
           ui/forms/frmAbout.o \
           ui/forms/frmMain.o \
-          ui/forms/frmSplash.o
+          ui/forms/frmSplash.o \
+          ui/controls/ctlSQLBox.o
 
 
 .SUFFIXES:	.o .cpp

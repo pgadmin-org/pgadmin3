@@ -8,7 +8,15 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#ifndef CTLSQLBOX_H
+#define CTLSQLBOX_H
+
+// wxWindows headers
+#include <wx/wx.h>
 #include <wx/stc/stc.h>
+
+// App headers
+#include "../../pgAdmin3.h"
 
 #define SQL_KEYWORDS "ALTER COMMENT CREATE DELETE DROP EXPLAIN GRANT INSERT REVOKE \
                       SELECT UPDATE VACUUM AGGREGATE CONSTRAINT DATABASE FUNCTION GROUP INDEX \
@@ -25,3 +33,4 @@ public:
   ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
 };
 
+#endif

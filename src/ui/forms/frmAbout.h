@@ -8,6 +8,16 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#ifndef FRMABOUT_H
+#define FRMABOUT_H
+
+// wxWindows headers
+#include <wx/wx.h>
+#include <wx/image.h>
+
+// App headers
+#include "../../pgAdmin3.h"
+
 // Class declarations
 class frmAbout : public wxDialog
 {
@@ -20,3 +30,4 @@ private:
   DECLARE_EVENT_TABLE()
 };
 
+#endif

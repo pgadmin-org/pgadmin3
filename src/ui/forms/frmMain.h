@@ -8,14 +8,17 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#ifndef FRMMAIN_H
+#define FRMMAIN_H
+
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
-#include <wx/splitter.h>
 
 // App headers
+#include "../../pgAdmin3.h"
 #include "../controls/ctlSQLBox.h"
 
 // Class declarations
@@ -53,3 +56,5 @@ enum
     mnuTipOfTheDay,
     mnuAbout
 };
+
+#endif

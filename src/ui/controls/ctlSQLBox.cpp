@@ -11,6 +11,9 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/stc/stc.h>
+
+// App headers
+#include "../../pgAdmin3.h"
 #include "ctlSQLBox.h"
 
 ctlSQLBox::ctlSQLBox(wxWindow *parent = (wxWindow *) NULL, wxWindowID id = -1, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0)

@@ -8,6 +8,16 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#ifndef SPLASH_H
+#define SPLASH_H
+
+// wxWindows headers
+#include <wx/wx.h>
+#include <wx/image.h>
+
+// App headers
+#include "../../pgAdmin3.h"
+
 // Class declarations
 class frmSplash : public wxFrame
 {
@@ -20,3 +30,4 @@ private:
   DECLARE_EVENT_TABLE()
 };
 
+#endif
