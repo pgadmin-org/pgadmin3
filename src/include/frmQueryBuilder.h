@@ -53,40 +53,66 @@ public:
     wxStatusBar *statusBar;
 
    	// Data
-	wxList m_children;
+	wxArrayPtrVoid m_children;
 	wxArrayString m_names;
 	wxArrayString m_aliases;
-	pgDatabase *database;
+	pgDatabase *m_database;
 	pgServer *m_server;
 
 	// Methods
 	wxString GetTableViewAlias(wxString firstname, 
 		wxString newname = "", int postfix = 1);
 	void AddColumn(frmChildTableViewFrame *frame,int item);
+	void UpdateGridTables(frmChildTableViewFrame *frame);
 
 private:
 
+	// Data
+    bool m_changed;
+	wxString m_lastFilename;
+	wxString m_lastDir;
+	wxString m_lastPath;
+
 	// Controls
     wxMenuBar *menuBar;
-    wxMenu *fileMenu, *toolsMenu, *viewMenu, *helpMenu, *datagramContextMenu;
+    wxMenu *fileMenu, 
+		*toolsMenu, 
+		*viewMenu, 
+		*helpMenu, 
+		*datagramContextMenu,
+		*queryMenu;
+
     wxToolBar *toolBar;
-
-	wxSashLayoutWindow *sashwindow;
-
+	wxSashLayoutWindow *m_sashwindow;
 	wxNotebook *notebook;
 	wxGrid *design, *data;
-	wxTextCtrl *sql;
+	ctlSQLBox *sql;
+
+	// Dialogs
 	dlgAddTableView *addtableview;
 
 	// Methods
+    void setTools(const bool running);
 	void DrawTablesAndViews();
-	void UpdateGridTables(frmChildTableViewFrame *frame);
-	void UpdateGridColumns(frmChildTableViewFrame *frame, int item);
-	void UpdateGridExpressions();
+	void UpdateGridColumns(frmChildTableViewFrame *frame, int item,
+		bool _FORCE = FALSE, int _FORCEROW = 0);
 	void BuildQuery();
 	void RunQuery();
+	frmChildTableViewFrame *GetFrameFromAlias(wxString alias);
+	void VerifyExpression(int row);
+	wxString RebuildCondition(wxString condition, 
+		bool &errout);
 
 	// Events
+    void OnClose(wxCloseEvent& event);
+    void OnCancel(wxCommandEvent& event);
+    void OnExecute(wxCommandEvent& event);
+    void OnExplain(wxCommandEvent& event);
+    void OnOpen(wxCommandEvent& event);
+    void OnSave(wxCommandEvent& event);
+    void OnSaveAs(wxCommandEvent& event);
+    void OnChange(wxNotifyEvent& event);
+
 	void OnSize(wxSizeEvent& event);
 	void OnSashDrag(wxSashEvent& event);
 	void OnExit(wxCommandEvent& event);
@@ -101,29 +127,74 @@ private:
 #endif
 
 	void OnRightClick(wxPoint& point);
-
+	void OnCellSelect(wxGridEvent& event);
 	void OnNotebookPageChanged(wxNotebookEvent& event);
+	void OnCellChoice(wxCommandEvent& event);
+	void OnCellChange(wxGridEvent& event);
 
 	// Control Enumeration
 	enum
 	{
 		CTL_DESIGNPANEL = 1000,
-		CTL_SQLPANEL = 1001,
-		CTL_DATAPANEL = 1002,
-		ID_NOTEBOOK = 1003
+		CTL_SQLPANEL,
+		CTL_DATAPANEL,
+		ID_NOTEBOOK
 	};
 
 	// Menu options
 	enum
 	{
 		MNU_EXIT = 2000,
-		MNU_ADDTABLEVIEW = 2001,
+		MNU_ADDTABLEVIEW,
+		MNU_OPEN,
+		MNU_SAVE,
+		MNU_SAVEAS,
+		MNU_CANCEL,
+		MNU_EXECUTE,
+		MNU_EXPLAIN,
+		MNU_QUERYBUILDER,
+		MNU_QUERYANALYZER
+	};
+
+	// Button Enumeration
+	enum
+	{
+	   BTN_OPEN = 3000,
+	   BTN_SAVE,
+	   BTN_EXECUTE,
+	   BTN_EXPLAIN,
+	   BTN_CANCEL
 	};
 
 	// Sash Windows
 	enum
 	{
-		ID_SASH_WINDOW_BOTTOM = 3000
+		ID_SASH_WINDOW_BOTTOM = 4000
+	};
+
+	// Design Columns
+	enum
+	{
+		DESIGN_OUTPUT = 0,
+		DESIGN_TABLE = 1,
+		DESIGN_COLUMN = 2,
+		DESIGN_EXPRESSION = 3,
+		DESIGN_ALIAS = 4,
+		DESIGN_AGGREGATE = 5,
+		DESIGN_CONDITION = 6,
+		DESIGN_OR1 = 7,
+		DESIGN_OR2 = 8,
+		DESIGN_OR3 = 9,
+		DESIGN_OR4 = 10,
+		DESIGN_OR5 = 11
+	};
+
+	// Position of status line fields
+	enum
+	{
+	   STATUSPOS_MSGS = 1,
+	   STATUSPOS_ROWS,
+	   STATUSPOS_SECS
 	};
 
 	// Macros
