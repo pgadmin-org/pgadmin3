@@ -225,7 +225,7 @@ wxString dlgSequence::GetSql()
         AppendIfFilled(sql, wxT("\n   START "), txtStart->GetValue());
         AppendIfFilled(sql, wxT("\n   MINVALUE "), txtMin->GetValue());
         AppendIfFilled(sql, wxT("\n   MAXVALUE "), txtMax->GetValue());
-        AppendIfFilled(sql, wxT("\n   CACHE "), txtMax->GetValue());
+        AppendIfFilled(sql, wxT("\n   CACHE "), txtCache->GetValue());
 
         sql += wxT(";\n");
         if (cbOwner->GetSelection() > 0)

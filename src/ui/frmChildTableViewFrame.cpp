@@ -29,7 +29,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(frmChildTableViewFrame, wxMDIChildFrame)
 
-    EVT_LISTBOX_DCLICK(ID_TABLEVIEWLISTBOX, frmChildTableViewFrame::OnDoubleClick)
+    EVT_LIST_ITEM_ACTIVATED(ID_TABLEVIEWLISTBOX, frmChildTableViewFrame::OnDoubleClick)
 
     EVT_MENU(MNU_ADDCOLUMN, frmChildTableViewFrame::OnAddColumn)
     EVT_MENU(MNU_CLOSE, frmChildTableViewFrame::OnClose)
@@ -300,6 +300,7 @@ void frmChildTableViewFrame::OnAddColumn(wxCommandEvent& event)
 		return;
 
 	tmpparent->AddColumn(this, tmpitem);
+	event.Skip();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
