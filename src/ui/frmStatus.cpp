@@ -656,6 +656,9 @@ void frmStatus::addLogLine(const wxString &str, bool formatted)
 
 void frmStatus::emptyLogfileCombo()
 {
+    if (cbLogfiles->GetCount()) // first entry has no client data
+        cbLogfiles->Delete(0);
+
     while (cbLogfiles->GetCount())
     {
         wxDateTime *dt=(wxDateTime*)cbLogfiles->GetClientData(0);
@@ -675,8 +678,8 @@ int frmStatus::fillLogfileCombo()
         count--;
 
     pgSet *set=connection->ExecuteSet(
-        wxT("SELECT ts, pid, fn FROM pg_logfiles_ls() AS (ts timestamp, pid int4, fn text)\n")
-        wxT(" ORDER BY ts ASC"));
+        wxT("SELECT filename, pid, filetime FROM pg_logdir_ls\n")
+        wxT(" ORDER BY filetime ASC"));
     if (set)
     {
         if (set->NumRows() <= count)
@@ -688,9 +691,9 @@ int frmStatus::fillLogfileCombo()
         while (!set->Eof())
         {
             count++;
-            wxString fn= set->GetVal(wxT("fn"));
+            wxString fn= set->GetVal(wxT("filename"));
             long pid = set->GetLong(wxT("pid"));
-            wxDateTime ts=set->GetDateTime(wxT("ts"));
+            wxDateTime ts=set->GetDateTime(wxT("filetime"));
 
             cbLogfiles->Append(DateToStr(ts) + wxT(" (") + NumToStr(pid) + wxT(")"), new wxDateTime(ts));
 
