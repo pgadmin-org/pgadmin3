@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="previous" href="ddl-constraints.html" title="5.4. Constraints">
+<link rel="previous" href="ddl-system-columns.html" title="5.4. System Columns">
 <link rel="next" href="ddl-alter.html" title="5.6. Modifying Tables">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
@@ -16,7 +16,8 @@
 <a name="ddl-inherit"></a>5.5. Inheritance</h2></div></div>
 <div></div>
 </div>
-<p>   Let's create two tables. The capitals  table  contains
+<i><span class="remark">This section needs to be rethought.  Some of the
+  information should go into the following chapters.</span></i><p>   Let's create two tables. The capitals  table  contains
    state  capitals  which  are also cities. Naturally, the
    capitals table should inherit from cities.
 
@@ -93,7 +94,7 @@ CREATE TABLE capitals (
 <h3 class="title">Deprecated</h3>
 <p>     In previous versions of <span class="productname">PostgreSQL</span>, the
      default behavior was not to include child tables in queries. This was
-     found to be error prone and is also in violation of the SQL99
+     found to be error prone and is also in violation of the SQL:1999
      standard. Under the old syntax, to get the sub-tables you append
      <tt class="literal">*</tt> to the table name.
      For example
@@ -115,7 +116,7 @@ CREATE TABLE capitals (
 </div>
 <p>  In some cases you may wish to know which table a particular row
   originated from. There is a system column called
-  <tt class="structfield">TABLEOID</tt> in each table which can tell you the
+  <tt class="structfield">tableoid</tt> in each table which can tell you the
   originating table:
 
 </p>
@@ -155,6 +156,10 @@ WHERE c.altitude &gt; 500 and c.tableoid = p.oid;</pre>
 <p>
    
   </p>
+<p>   A table can inherit from more than one parent table, in which case it has
+   the union of the columns defined by the parent tables (plus any columns
+   declared specifically for the child table).
+  </p>
 <p>   A serious limitation of the inheritance feature is that indexes (including
    unique constraints) and foreign key constraints only apply to single
    tables, not to their inheritance children.  This is true on both the
@@ -167,7 +172,7 @@ WHERE c.altitude &gt; 500 and c.tableoid = p.oid;</pre>
       <tt class="literal">UNIQUE</tt> or a <tt class="literal">PRIMARY KEY</tt>, this would not stop the
       <tt class="structname">capitals</tt> table from having rows with names duplicating
       rows in <tt class="structname">cities</tt>.  And those duplicate rows would by
-      default show up in SELECTs from <tt class="structname">cities</tt>.  In fact, by
+      default show up in queries from <tt class="structname">cities</tt>.  In fact, by
       default <tt class="structname">capitals</tt> would have no unique constraint at all,
       and so could contain multiple rows with the same name.
       You could add a unique constraint to <tt class="structname">capitals</tt>, but this

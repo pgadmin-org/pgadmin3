@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
 <link rel="previous" href="catalog-pg-index.html" title="41.16. pg_index">
 <link rel="next" href="catalog-pg-language.html" title="41.18. pg_language">
@@ -16,11 +16,13 @@
 <a name="catalog-pg-inherits"></a>41.17. <tt class="structname">pg_inherits</tt></h2></div></div>
 <div></div>
 </div>
-<a name="id2725858"></a><p>   The catalog <tt class="structname">pg_inherits</tt> records information about
-   table inheritance hierarchies.
+<a name="id2730526"></a><p>   The catalog <tt class="structname">pg_inherits</tt> records information about
+   table inheritance hierarchies.  There is one entry for each direct
+   child table in the database.  (Indirect inheritance can be determined
+   by following chains of entries.)
   </p>
 <div class="table">
-<a name="id2725874"></a><p class="title"><b>Table 41.17. <tt class="structname">pg_inherits</tt> Columns</b></p>
+<a name="id2730544"></a><p class="title"><b>Table 41.17. <tt class="structname">pg_inherits</tt> Columns</b></p>
 <table summary="pg_inherits Columns" border="1">
 <colgroup>
 <col>
@@ -53,7 +55,7 @@
 <td><tt class="structfield">inhseqno</tt></td>
 <td><tt class="type">int4</tt></td>
 <td> </td>
-<td>       If there is more than one parent for a child table (multiple
+<td>       If there is more than one direct parent for a child table (multiple
        inheritance), this number tells the order in which the
        inherited columns are to be arranged.  The count starts at 1.
       </td>

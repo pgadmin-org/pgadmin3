@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="previous" href="runtime-config.html" title="16.4. Run-time Configuration">
 <link rel="next" href="postmaster-shutdown.html" title="16.6. Shutting Down the Server">
@@ -28,7 +28,7 @@
 <a name="sysvipc"></a>16.5.1. Shared Memory and Semaphores</h3></div></div>
 <div></div>
 </div>
-<a name="id2588067"></a><a name="id2588075"></a><p>    Shared memory and semaphores are collectively referred to as
+<a name="id2589730"></a><a name="id2589739"></a><p>    Shared memory and semaphores are collectively referred to as
     &#8220;<span class="quote"><span class="systemitem">System V</span>
     <span class="acronym">IPC</span></span>&#8221; (together with message queues, which are not
     relevant for <span class="productname">PostgreSQL</span>). Almost all modern
@@ -118,34 +118,36 @@
 <tr>
 <td><tt class="varname">SEMVMX</tt></td>
 <td>Maximum value of semaphore</td>
-<td>at least 1000 (The default is often 32767, don't change unless asked to.)</td>
+<td>at least 1000 (The default is often 32767, don't change unless forced to)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>    <a name="id2588355"></a> The most important
+<p>    <a name="id2590018"></a> The most important
     shared memory parameter is <tt class="varname">SHMMAX</tt>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <tt class="function">shmget</tt> like <span class="errorname">Invalid argument</span>, it is
-    possible that this limit has been exceeded. The size of the required
+    likely that this limit has been exceeded. The size of the required
     shared memory segment varies both with the number of requested
     buffers (<tt class="option">-B</tt> option) and the number of allowed connections
     (<tt class="option">-N</tt> option), although the former is the most significant.
     (You can, as a temporary solution, lower these settings to eliminate
     the failure.) As a rough approximation, you can estimate the
-    required segment size by multiplying the number of buffers and the
-    block size (8 kB by default) plus ample overhead (at least half a
-    megabyte). Any error message you might get will contain the size of
-    the failed allocation request.
+    required segment size as suggested in <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.2. System V IPC parameters">Table 16.2, &#8220;System V IPC parameters&#8221;</a>.  Any error message you might get will
+    contain the size of the failed allocation request.
+   </p>
+<p>    Some systems also have a limit on the total amount of shared memory in
+    the system (<tt class="varname">SHMALL</tt>).  Make sure this is large enough
+    for <span class="productname">PostgreSQL</span> plus any other applications that
+    are using shared memory segments.  (Caution: <tt class="varname">SHMALL</tt>
+    is measured in pages rather than bytes on many systems.)
    </p>
 <p>    Less likely to cause problems is the minimum size for shared
     memory segments (<tt class="varname">SHMMIN</tt>), which should be at most
     approximately 256 kB for <span class="productname">PostgreSQL</span> (it is
     usually just 1). The maximum number of segments system-wide
-    (<tt class="varname">SHMMNI</tt>) or per-process (<tt class="varname">SHMSEG</tt>) should
-    not cause a problem unless your system has them set to zero. Some
-    systems also have a limit on the total amount of shared memory in
-    the system; see the platform-specific instructions below.
+    (<tt class="varname">SHMMNI</tt>) or per-process (<tt class="varname">SHMSEG</tt>) are unlikely
+    to cause a problem unless your system has them set to zero.
    </p>
 <p>    <span class="productname">PostgreSQL</span> uses one semaphore per allowed connection
     (<tt class="option">-N</tt> option), in sets of 16.  Each such set will also
@@ -187,15 +189,16 @@
 <p><b>Shared Memory. </b>         By default, only 4 MB of shared memory is supported. Keep in
          mind that shared memory is not pageable; it is locked in RAM.
          To increase the amount of shared memory supported by your
-         system, add the following to your kernel configuration
-         file. A <tt class="varname">SHMALL</tt> value of 1024 represents 4 MB of
-         shared memory. The following increases the maximum shared
-         memory area to 32 MB:
+         system, add something like the following to your kernel configuration
+         file:
 </p>
 <pre class="programlisting">options "SHMALL=8192"
 options "SHMMAX=\(SHMALL*PAGE_SIZE\)"</pre>
 <p>
-         For those running 4.3 or later, you will probably need to increase
+         <tt class="varname">SHMALL</tt> is measured in 4KB pages, so a value of
+         1024 represents 4 MB of shared memory. Therefore the above increases
+         the maximum shared memory area to 32 MB.
+         For those running 4.3 or later, you will probably also need to increase
          <tt class="varname">KERNEL_VIRTUAL_MB</tt> above the default <tt class="literal">248</tt>.
          Once all changes have been made, recompile the kernel, and reboot.
         </p>
@@ -215,9 +218,9 @@ options "SHMMAX=\(SHMALL*PAGE_SIZE\)"</pre>
 <p>
         <tt class="varname">sysptsize</tt> cannot be changed by <tt class="command">sysctl</tt>.
        </p>
-<p><b>Semaphores. </b>         You may need to increase the number of semaphores. By
-         default, <span class="productname">PostgreSQL</span> allocates 34 semaphores,
-         which is over half the default system total of 60.  Set the
+<p><b>Semaphores. </b>         You will probably want to increase the number of semaphores
+         as well; the default system total of 60 will only allow about
+         50 <span class="productname">PostgreSQL</span> connections.  Set the
          values you want in your kernel configuration file, e.g.:
 </p>
 <pre class="programlisting">options "SEMMNI=40"
@@ -312,7 +315,12 @@ sysctl -w kern.sysv.shmseg
 sysctl -w kern.sysv.shmall</pre>
 <p>
         In OS X 10.3, these commands have been moved to <tt class="filename">/etc/rc</tt>
-        and must be edited there.
+        and must be edited there.  You'll need to reboot to make changes
+        take effect.  Note that <tt class="filename">/etc/rc</tt> is usually
+        overwritten by OS X updates (such as 10.3.6 to 10.3.7) so you
+        should expect to have to redo your editing after each update.
+       </p>
+<p>        <tt class="varname">SHMALL</tt> is measured in 4KB pages on this platform.
        </p>
 </dd>
 <dt><span class="term"><span class="systemitem">SCO OpenServer</span></span></dt>
@@ -348,7 +356,7 @@ sysctl -w kern.sysv.shmall</pre>
 <p> It may, however, be necessary to modify the global
        <tt class="command">ulimit</tt> information in
        <tt class="filename">/etc/security/limits</tt>, as the default hard
-       limits for filesizes (<tt class="varname">fsize</tt>) and numbers of
+       limits for file sizes (<tt class="varname">fsize</tt>) and numbers of
        files (<tt class="varname">nofiles</tt>) may be too low.
        </p>
 </dd>
@@ -405,7 +413,7 @@ set semsys:seminfo_semmsl=32</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2589294"></a>16.5.2. Resource Limits</h3></div></div>
+<a name="id2590995"></a>16.5.2. Resource Limits</h3></div></div>
 <div></div>
 </div>
 <p>    Unix-like operating systems enforce various kinds of resource limits
@@ -476,7 +484,7 @@ set semsys:seminfo_semmsl=32</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2589474"></a>16.5.3. Linux Memory Overcommit</h3></div></div>
+<a name="id2591176"></a>16.5.3. Linux Memory Overcommit</h3></div></div>
 <div></div>
 </div>
 <p>    In Linux 2.4 and later, the default virtual memory behavior is not
@@ -505,7 +513,7 @@ set semsys:seminfo_semmsl=32</pre>
    </p>
 <p>    On Linux 2.6 and later, a better solution is to modify the kernel's
     behavior so that it will not &#8220;<span class="quote">overcommit</span>&#8221; memory.  This is
-    done by selecting strict overcommit mode via sysctl:
+    done by selecting strict overcommit mode via <tt class="command">sysctl</tt>:
 </p>
 <pre class="programlisting">sysctl -w vm.overcommit_memory=2</pre>
 <p>
@@ -515,7 +523,7 @@ set semsys:seminfo_semmsl=32</pre>
     file <tt class="filename">Documentation/vm/overcommit-accounting</tt>.
    </p>
 <p>    Some vendors' Linux 2.4 kernels are reported to have early versions
-    of the 2.6 overcommit sysctl.  However, setting
+    of the 2.6 overcommit <tt class="command">sysctl</tt> parameter.  However, setting
     <tt class="literal">vm.overcommit_memory</tt> to 2
     on a kernel that does not have the relevant code will make
     things worse not better.  It is recommended that you inspect

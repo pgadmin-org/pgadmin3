@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-altertype.html" title="ALTER TYPE">
 <link rel="next" href="sql-analyze.html" title="ANALYZE">
@@ -19,15 +19,15 @@
 <h2>Name</h2>
 <p>ALTER USER &#8212; change a database user account</p>
 </div>
-<a name="id2665082"></a><div class="refsynopsisdiv">
+<a name="id2668613"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER USER <i class="replaceable"><tt>name</tt></i> [ [ WITH ] <i class="replaceable"><tt>option</tt></i> [ ... ] ]
 
 where <i class="replaceable"><tt>option</tt></i> can be:
 
-    [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<i class="replaceable"><tt>password</tt></i>' 
-    | CREATEDB | NOCREATEDB
+    CREATEDB | NOCREATEDB
     | CREATEUSER | NOCREATEUSER 
+    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<i class="replaceable"><tt>password</tt></i>' 
     | VALID UNTIL '<i class="replaceable"><tt>abstime</tt></i>'
 
 ALTER USER <i class="replaceable"><tt>name</tt></i> RENAME TO <i class="replaceable"><tt>newname</tt></i>
@@ -36,21 +36,20 @@ ALTER USER <i class="replaceable"><tt>name</tt></i> SET <i class="replaceable"><
 ALTER USER <i class="replaceable"><tt>name</tt></i> RESET <i class="replaceable"><tt>parameter</tt></i></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665162"></a><h2>Description</h2>
-<p>   <tt class="command">ALTER USER</tt> is used to change the attributes of a
+<a name="id2668692"></a><h2>Description</h2>
+<p>   <tt class="command">ALTER USER</tt> changes the attributes of a
    <span class="productname">PostgreSQL</span> user account.  Attributes not
    mentioned in the command retain their previous settings.
   </p>
-<p>   The first variant of this command in the synopsis changes certain
-   global user privileges and authentication settings.  (See below for
-   details.)  Only a database superuser can change these privileges and
-   the password expiration with this command.  Ordinary users can only
-   change their own password.
+<p>   The first variant of this command listed in the synopsis changes certain
+   per-user privileges and authentication settings.  (See below for
+   details.)  Database superusers can change any of these settings for any
+   user.  Ordinary users can only change their own password.
   </p>
 <p>   The second variant changes the name of the user.  Only a database
-   superuser can rename user accounts.  The session user cannot be
+   superuser can rename user accounts.  The current session user cannot be
    renamed.  (Connect as a different user if you need to do that.)
-   Because <tt class="literal">MD5</tt>-encrypted passwords use the username as
+   Because <tt class="literal">MD5</tt>-encrypted passwords use the user name as
    cryptographic salt, renaming a user clears their <tt class="literal">MD5</tt>
    password.
   </p>
@@ -61,48 +60,51 @@ ALTER USER <i class="replaceable"><tt>name</tt></i> RESET <i class="replaceable"
    or has been received from the <tt class="command">postmaster</tt> command line.
    Ordinary users can change their own session defaults.
    Superusers can change anyone's session defaults.
+   Certain variables cannot be set this way, or can only be
+   set by a superuser.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665229"></a><h2>Parameters</h2>
+<a name="id2668760"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>	The name of the user whose attributes are to be altered.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>password</tt></i></span></dt>
-<dd><p>	The new password to be used for this account.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">ENCRYPTED</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">UNENCRYPTED</tt></span>
-</dt>
-<dd><p>	These key words control whether the password is stored
-	encrypted in <tt class="literal">pg_shadow</tt>.  (See
-	<a href="sql-createuser.html">CREATE USER</a>
-	for more information about this choice.)
+<dd><p>        The name of the user whose attributes are to be altered.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CREATEDB</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NOCREATEDB</tt></span>
 </dt>
-<dd><p>	These clauses define a user's ability to create databases.  If
-	<tt class="literal">CREATEDB</tt> is specified, the user
-	will be allowed to create his own databases. Using
-	<tt class="literal">NOCREATEDB</tt> will deny a user the ability to
-	create databases.
+<dd><p>        These clauses define a user's ability to create databases.  If
+        <tt class="literal">CREATEDB</tt> is specified, the user
+        will be allowed to create his own databases. Using
+        <tt class="literal">NOCREATEDB</tt> will deny a user the ability to
+        create databases.  (If the user is also a superuser, then this
+        setting has no real effect.)
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CREATEUSER</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NOCREATEUSER</tt></span>
 </dt>
-<dd><p>	These clauses determine whether a user will be permitted to
-	create new users himself. This option will also make the user
-	a superuser who can override all access restrictions.
+<dd><p>        These clauses determine whether a user will be permitted to
+        create new users himself. <tt class="literal">CREATEUSER</tt> will also make
+        the user a superuser, who can override all access restrictions.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>password</tt></i></span></dt>
+<dd><p>        The new password to be used for this account.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">ENCRYPTED</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">UNENCRYPTED</tt></span>
+</dt>
+<dd><p>        These key words control whether the password is stored
+        encrypted in <tt class="literal">pg_shadow</tt>.  (See
+        <a href="sql-createuser.html">CREATE USER</a>
+        for more information about this choice.)
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>abstime</tt></i></span></dt>
-<dd><p>	The date (and, optionally, the time)
-	at which this user's password is to expire.  To set the password
-	never to expire, use <tt class="literal">'infinity'</tt>.
+<dd><p>        The date (and, optionally, the time)
+        at which this user's password is to expire.  To set the password
+        never to expire, use <tt class="literal">'infinity'</tt>.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>newname</tt></i></span></dt>
-<dd><p>	The new name of the user.
+<dd><p>        The new name of the user.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><i xmlns="" class="replaceable"><tt>parameter</tt></i></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><i class="replaceable"><tt>value</tt></i></span>
@@ -112,9 +114,9 @@ ALTER USER <i class="replaceable"><tt>name</tt></i> RESET <i class="replaceable"
         parameter to the given value.  If
         <i class="replaceable"><tt>value</tt></i> is <tt class="literal">DEFAULT</tt>
         or, equivalently, <tt class="literal">RESET</tt> is used, the
-        user-specific variable setting is removed and the user will
+        user-specific variable setting is removed, so the user will
         inherit the system-wide default setting in new sessions.  Use
-        <tt class="literal">RESET ALL</tt> to clear all settings.
+        <tt class="literal">RESET ALL</tt> to clear all user-specific settings.
        </p>
 <p>        See <a href="sql-set.html">SET</a> and <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for more information about allowed
         parameter names and values.
@@ -123,7 +125,7 @@ ALTER USER <i class="replaceable"><tt>name</tt></i> RESET <i class="replaceable"
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665423"></a><h2>Notes</h2>
+<a name="id2668964"></a><h2>Notes</h2>
 <p>   Use <a href="sql-createuser.html">CREATE USER</a>
    to add new users, and <a href="sql-dropuser.html">DROP USER</a> to remove a user.
   </p>
@@ -131,32 +133,40 @@ ALTER USER <i class="replaceable"><tt>name</tt></i> RESET <i class="replaceable"
    Use <a href="sql-altergroup.html">ALTER GROUP</a>
    to do that.
   </p>
-<p>   Using <a href="sql-alterdatabase.html">ALTER DATABASE</a>, it is also possible to tie a
-   session default to a specific database rather than a user.
+<p>   The <tt class="literal">VALID UNTIL</tt> clause defines an expiration time for a
+   password only, not for the user account <span class="foreignphrase"><i class="foreignphrase">per se</i></span>.  In
+   particular, the expiration time is not enforced when logging in using
+   a non-password-based authentication method.
+  </p>
+<p>   It is also possible to tie a
+   session default to a specific database rather than to a user; see
+   <a href="sql-alterdatabase.html">ALTER DATABASE</a>.
+   User-specific settings override database-specific
+   ones if there is a conflict.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665485"></a><h2>Examples</h2>
-<p>   Change a user password:
+<a name="id2669038"></a><h2>Examples</h2>
+<p>   Change a user's password:
 
 </p>
 <pre class="programlisting">ALTER USER davide WITH PASSWORD 'hu8jmn3';</pre>
 <p>
   </p>
-<p>   Change a user's valid until date:
+<p>   Change the expiration date of the user's password:
 
 </p>
 <pre class="programlisting">ALTER USER manuel VALID UNTIL 'Jan 31 2030';</pre>
 <p>
   </p>
-<p>   Change a user's valid until date, specifying that his
-   authorization should expire at midday on 4th May 2005 using
+<p>   Change a password expiration date, specifying that the password
+   should expire at midday on 4th May 2005 using
    the time zone which is one hour ahead of <span class="acronym">UTC</span>:
 </p>
 <pre class="programlisting">ALTER USER chris VALID UNTIL 'May 4 12:00:00 2005 +1';</pre>
 <p>
   </p>
-<p>   Make a user valid forever:
+<p>   Make a password valid forever:
 </p>
 <pre class="programlisting">ALTER USER fred VALID UNTIL 'infinity';</pre>
 <p>
@@ -169,14 +179,14 @@ ALTER USER <i class="replaceable"><tt>name</tt></i> RESET <i class="replaceable"
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665541"></a><h2>Compatibility</h2>
+<a name="id2669094"></a><h2>Compatibility</h2>
 <p>   The <tt class="command">ALTER USER</tt> statement is a
    <span class="productname">PostgreSQL</span> extension.  The SQL standard
    leaves the definition of users to the implementation.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2665560"></a><h2>See Also</h2>
+<a name="id2669114"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createuser.html">CREATE USER</a>, <a href="sql-dropuser.html">DROP USER</a>, <a href="sql-set.html">SET</a></span>
 </div>
 </div></body>

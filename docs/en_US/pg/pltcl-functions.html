@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="pltcl.html" title="Chapter 36. PL/Tcl - Tcl Procedural Language">
 <link rel="previous" href="pltcl.html" title="Chapter 36. PL/Tcl - Tcl Procedural Language">
 <link rel="next" href="pltcl-data.html" title="36.3. Data Values in PL/Tcl">
@@ -19,8 +19,7 @@
 <p>     To create a function in the <span class="application">PL/Tcl</span> language, use the standard syntax:
 
 </p>
-<pre class="programlisting">CREATE FUNCTION <i class="replaceable"><tt>funcname</tt></i>
-(<i class="replaceable"><tt>argument-types</tt></i>) RETURNS <i class="replaceable"><tt>return-type</tt></i> AS $$
+<pre class="programlisting">CREATE FUNCTION <i class="replaceable"><tt>funcname</tt></i> (<i class="replaceable"><tt>argument-types</tt></i>) RETURNS <i class="replaceable"><tt>return-type</tt></i> AS $$
     # PL/Tcl function body
 $$ LANGUAGE pltcl;</pre>
 <p>
@@ -99,7 +98,14 @@ $$ LANGUAGE pltcl;</pre>
 <p>
     </p>
 <p>     There is currently no support for returning a composite-type
-     result value.
+     result value, nor for returning sets.
+    </p>
+<p>     <span class="application">PL/Tcl</span> does not currently have full support for
+     domain types: it treats a domain the same as the underlying scalar
+     type.  This means that constraints associated with the domain will
+     not be enforced.  This is not an issue for function arguments, but
+     it is a hazard if you declare a <span class="application">PL/Tcl</span> function
+     as returning a domain type.
     </p>
 </div></body>
 </html>

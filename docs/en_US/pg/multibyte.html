@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="charset.html" title="Chapter 20. Localization">
 <link rel="previous" href="charset.html" title="Chapter 20. Localization">
 <link rel="next" href="maintenance.html" title="Chapter 21. Routine Database Maintenance Tasks">
@@ -16,7 +16,7 @@
 <a name="multibyte"></a>20.2. Character Set Support</h2></div></div>
 <div></div>
 </div>
-<a name="id2595108"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
+<a name="id2597089"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
    allows you to store text in a variety of character sets, including
    single-byte character sets such as the ISO 8859 series and
    multiple-byte character sets such as <span class="acronym">EUC</span> (Extended Unix
@@ -194,7 +194,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2595604"></a>20.2.2. Setting the Character Set</h3></div></div>
+<a name="id2597585"></a>20.2.2. Setting the Character Set</h3></div></div>
 <div></div>
 </div>
 <p>     <tt class="command">initdb</tt> defines the default character set
@@ -247,11 +247,31 @@
 (9 rows)</pre>
 <p>
     </p>
+<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Important</h3>
+<p>      Although you can specify any encoding you want for a database, it is
+      unwise to choose an encoding that is not what is expected by the locale
+      you have selected.  The <tt class="literal">LC_COLLATE</tt> and
+      <tt class="literal">LC_CTYPE</tt> settings imply a particular encoding,
+      and locale-dependent operations (such as sorting) are likely to
+      misinterpret data that is in an incompatible encoding.
+     </p>
+<p>      Since these locale settings are frozen by <tt class="command">initdb</tt>, the
+      apparent flexibility to use different encodings in different databases
+      of a cluster is more theoretical than real.  It is likely that these
+      mechanisms will be revisited in future versions of
+      <span class="productname">PostgreSQL</span>.
+     </p>
+<p>      One way to use multiple encodings safely is to set the locale to
+      <tt class="literal">C</tt> or <tt class="literal">POSIX</tt> during <tt class="command">initdb</tt>, thus
+      disabling any real locale awareness.
+     </p>
+</div>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2595731"></a>20.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div>
+<a name="id2597774"></a>20.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div>
 <div></div>
 </div>
 <p>     <span class="productname">PostgreSQL</span> supports automatic
@@ -284,7 +304,7 @@
 <td><tt class="literal">EUC_JP</tt></td>
 <td>
 <tt class="literal">EUC_JP</tt>, <tt class="literal">SJIS</tt>,
-	 <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
@@ -309,7 +329,7 @@
 <td><tt class="literal">EUC_TW</tt></td>
 <td>
 <tt class="literal">EUC_TW</tt>, <tt class="literal">BIG5</tt>,
-	 <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
@@ -322,22 +342,22 @@
 <td><tt class="literal">LATIN2</tt></td>
 <td>
 <tt class="literal">LATIN2</tt>, <tt class="literal">WIN1250</tt>,
-	 <tt class="literal">UNICODE</tt>,
-	 <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">UNICODE</tt>,
+         <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">LATIN3</tt></td>
 <td>
 <tt class="literal">LATIN3</tt>, <tt class="literal">UNICODE</tt>,
-	 <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">LATIN4</tt></td>
 <td>
 <tt class="literal">LATIN4</tt>, <tt class="literal">UNICODE</tt>,
-	 <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
@@ -350,121 +370,121 @@
 <td><tt class="literal">LATIN6</tt></td>
 <td>
 <tt class="literal">LATIN6</tt>, <tt class="literal">UNICODE</tt>,
-	 <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">LATIN7</tt></td>
 <td>
 <tt class="literal">LATIN7</tt>, <tt class="literal">UNICODE</tt>,
-	 <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">LATIN8</tt></td>
 <td>
 <tt class="literal">LATIN8</tt>, <tt class="literal">UNICODE</tt>,
-	 <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">LATIN9</tt></td>
 <td>
 <tt class="literal">LATIN9</tt>, <tt class="literal">UNICODE</tt>,
-	 <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">LATIN10</tt></td>
 <td>
 <tt class="literal">LATIN10</tt>, <tt class="literal">UNICODE</tt>,
-	 <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_5</tt></td>
 <td>
 <tt class="literal">ISO_8859_5</tt>,
-	 <tt class="literal">UNICODE</tt>,
-	 <tt class="literal">MULE_INTERNAL</tt>,
-	 <tt class="literal">WIN</tt>,
-	 <tt class="literal">ALT</tt>,
-	 <tt class="literal">KOI8</tt>
+         <tt class="literal">UNICODE</tt>,
+         <tt class="literal">MULE_INTERNAL</tt>,
+         <tt class="literal">WIN</tt>,
+         <tt class="literal">ALT</tt>,
+         <tt class="literal">KOI8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_6</tt></td>
 <td>
 <tt class="literal">ISO_8859_6</tt>,
-	 <tt class="literal">UNICODE</tt>
+         <tt class="literal">UNICODE</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_7</tt></td>
 <td>
 <tt class="literal">ISO_8859_7</tt>,
-	 <tt class="literal">UNICODE</tt>
+         <tt class="literal">UNICODE</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">ISO_8859_8</tt></td>
 <td>
 <tt class="literal">ISO_8859_8</tt>,
-	 <tt class="literal">UNICODE</tt>
+         <tt class="literal">UNICODE</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">UNICODE</tt></td>
 <td>
 <tt class="literal">EUC_JP</tt>, <tt class="literal">SJIS</tt>, 
-	 <tt class="literal">EUC_KR</tt>, <tt class="literal">UHC</tt>, <tt class="literal">JOHAB</tt>,
-	 <tt class="literal">EUC_CN</tt>, <tt class="literal">GBK</tt>,
-	 <tt class="literal">EUC_TW</tt>, <tt class="literal">BIG5</tt>, 
-	 <tt class="literal">LATIN1</tt> to <tt class="literal">LATIN10</tt>, 
-	 <tt class="literal">ISO_8859_5</tt>, 
-	 <tt class="literal">ISO_8859_6</tt>,
- 	 <tt class="literal">ISO_8859_7</tt>, 
-	 <tt class="literal">ISO_8859_8</tt>, 
-	 <tt class="literal">WIN</tt>, <tt class="literal">ALT</tt>, 
-	 <tt class="literal">KOI8</tt>, 
-	 <tt class="literal">WIN1256</tt>,
-	 <tt class="literal">TCVN</tt>,
-	 <tt class="literal">WIN874</tt>,
-	 <tt class="literal">GB18030</tt>,
-	 <tt class="literal">WIN1250</tt>
+         <tt class="literal">EUC_KR</tt>, <tt class="literal">UHC</tt>, <tt class="literal">JOHAB</tt>,
+         <tt class="literal">EUC_CN</tt>, <tt class="literal">GBK</tt>,
+         <tt class="literal">EUC_TW</tt>, <tt class="literal">BIG5</tt>, 
+         <tt class="literal">LATIN1</tt> to <tt class="literal">LATIN10</tt>, 
+         <tt class="literal">ISO_8859_5</tt>, 
+         <tt class="literal">ISO_8859_6</tt>,
+         <tt class="literal">ISO_8859_7</tt>, 
+         <tt class="literal">ISO_8859_8</tt>, 
+         <tt class="literal">WIN</tt>, <tt class="literal">ALT</tt>, 
+         <tt class="literal">KOI8</tt>, 
+         <tt class="literal">WIN1256</tt>,
+         <tt class="literal">TCVN</tt>,
+         <tt class="literal">WIN874</tt>,
+         <tt class="literal">GB18030</tt>,
+         <tt class="literal">WIN1250</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">MULE_INTERNAL</tt></td>
 <td>
 <tt class="literal">EUC_JP</tt>, <tt class="literal">SJIS</tt>, <tt class="literal">EUC_KR</tt>, <tt class="literal">EUC_CN</tt>, 
-	  <tt class="literal">EUC_TW</tt>, <tt class="literal">BIG5</tt>, <tt class="literal">LATIN1</tt> to <tt class="literal">LATIN5</tt>, 
-	  <tt class="literal">WIN</tt>, <tt class="literal">ALT</tt>,
-	 <tt class="literal">WIN1250</tt>,
-	  <tt class="literal">BIG5</tt>, <tt class="literal">ISO_8859_5</tt>, <tt class="literal">KOI8</tt>
+          <tt class="literal">EUC_TW</tt>, <tt class="literal">BIG5</tt>, <tt class="literal">LATIN1</tt> to <tt class="literal">LATIN5</tt>, 
+          <tt class="literal">WIN</tt>, <tt class="literal">ALT</tt>,
+         <tt class="literal">WIN1250</tt>,
+          <tt class="literal">BIG5</tt>, <tt class="literal">ISO_8859_5</tt>, <tt class="literal">KOI8</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">KOI8</tt></td>
 <td>
 <tt class="literal">ISO_8859_5</tt>, <tt class="literal">WIN</tt>, 
-	 <tt class="literal">ALT</tt>, <tt class="literal">KOI8</tt>,
-	 <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">ALT</tt>, <tt class="literal">KOI8</tt>,
+         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">ALT</tt></td>
 <td>
 <tt class="literal">ISO_8859_5</tt>, <tt class="literal">WIN</tt>, 
-	 <tt class="literal">ALT</tt>, <tt class="literal">KOI8</tt>,
-	 <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">ALT</tt>, <tt class="literal">KOI8</tt>,
+         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">WIN874</tt></td>
 <td>
 <tt class="literal">WIN874</tt>,
-	 <tt class="literal">UNICODE</tt>
+         <tt class="literal">UNICODE</tt>
 </td>
 </tr>
 <tr>
@@ -478,22 +498,22 @@
 <td><tt class="literal">WIN</tt></td>
 <td>
 <tt class="literal">ISO_8859_5</tt>, <tt class="literal">WIN</tt>, 
-	 <tt class="literal">ALT</tt>, <tt class="literal">KOI8</tt>,
-	 <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
+         <tt class="literal">ALT</tt>, <tt class="literal">KOI8</tt>,
+         <tt class="literal">UNICODE</tt>, <tt class="literal">MULE_INTERNAL</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">WIN1256</tt></td>
 <td>
 <tt class="literal">WIN1256</tt>,
-	 <tt class="literal">UNICODE</tt>
+         <tt class="literal">UNICODE</tt>
 </td>
 </tr>
 <tr>
 <td><tt class="literal">TCVN</tt></td>
 <td>
 <tt class="literal">TCVN</tt>,
-	 <tt class="literal">UNICODE</tt>
+         <tt class="literal">UNICODE</tt>
 </td>
 </tr>
 </tbody>
@@ -507,11 +527,11 @@
      </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>	Using the <tt class="command">\encoding</tt> command in
-	<span class="application">psql</span>.
-	<tt class="command">\encoding</tt> allows you to change client
-	encoding on the fly. For
-	example, to change the encoding to <tt class="literal">SJIS</tt>, type:
+<p>        Using the <tt class="command">\encoding</tt> command in
+        <span class="application">psql</span>.
+        <tt class="command">\encoding</tt> allows you to change client
+        encoding on the fly. For
+        example, to change the encoding to <tt class="literal">SJIS</tt>, type:
 
 </p>
 <pre class="programlisting">\encoding SJIS</pre>
@@ -519,27 +539,27 @@
        </p>
 </li>
 <li>
-<p>	Using <span class="application">libpq</span> functions.
-	<tt class="command">\encoding</tt> actually calls
-	<tt class="function">PQsetClientEncoding()</tt> for its purpose.
+<p>        Using <span class="application">libpq</span> functions.
+        <tt class="command">\encoding</tt> actually calls
+        <tt class="function">PQsetClientEncoding()</tt> for its purpose.
 
 </p>
 <pre class="synopsis">int PQsetClientEncoding(PGconn *<i class="replaceable"><tt>conn</tt></i>, const char *<i class="replaceable"><tt>encoding</tt></i>);</pre>
 <p>
 
-	where <i class="replaceable"><tt>conn</tt></i> is a connection to the server,
-	and <i class="replaceable"><tt>encoding</tt></i> is the encoding you
-	want to use. If the function successfully sets the encoding, it returns 0,
-	otherwise -1. The current encoding for this connection can be determined by
-	using:
+        where <i class="replaceable"><tt>conn</tt></i> is a connection to the server,
+        and <i class="replaceable"><tt>encoding</tt></i> is the encoding you
+        want to use. If the function successfully sets the encoding, it returns 0,
+        otherwise -1. The current encoding for this connection can be determined by
+        using:
 
 </p>
 <pre class="synopsis">int PQclientEncoding(const PGconn *<i class="replaceable"><tt>conn</tt></i>);</pre>
 <p>
 
-	Note that it returns the encoding ID, not a symbolic string
-	such as <tt class="literal">EUC_JP</tt>. To convert an encoding ID to an encoding name, you
-	can use:
+        Note that it returns the encoding ID, not a symbolic string
+        such as <tt class="literal">EUC_JP</tt>. To convert an encoding ID to an encoding name, you
+        can use:
 
 </p>
 <pre class="synopsis">char *pg_encoding_to_char(int <i class="replaceable"><tt>encoding_id</tt></i>);</pre>
@@ -547,34 +567,34 @@
        </p>
 </li>
 <li>
-<p>	Using <tt class="command">SET client_encoding TO</tt>.
+<p>        Using <tt class="command">SET client_encoding TO</tt>.
 
-	Setting the client encoding can be done with this SQL command:
+        Setting the client encoding can be done with this SQL command:
 
 </p>
 <pre class="programlisting">SET CLIENT_ENCODING TO '<i class="replaceable"><tt>value</tt></i>';</pre>
 <p>
 
-	Also you can use the more standard SQL syntax <tt class="literal">SET NAMES</tt> for this purpose:
+        Also you can use the more standard SQL syntax <tt class="literal">SET NAMES</tt> for this purpose:
 
 </p>
 <pre class="programlisting">SET NAMES '<i class="replaceable"><tt>value</tt></i>';</pre>
 <p>
 
-	To query the current client encoding:
+        To query the current client encoding:
 
 </p>
 <pre class="programlisting">SHOW client_encoding;</pre>
 <p>
 
-	To return to the default encoding:
+        To return to the default encoding:
 
 </p>
 <pre class="programlisting">RESET client_encoding;</pre>
 <p>
        </p>
 </li>
-<li><p>        Using <tt class="envar">PGCLIENTENCODING</tt>. If environment variable
+<li><p>        Using <tt class="envar">PGCLIENTENCODING</tt>. If the environment variable
         <tt class="envar">PGCLIENTENCODING</tt> is defined in the client's
         environment, that client encoding is automatically selected
         when a connection to the server is made.  (This can
@@ -602,7 +622,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2596994"></a>20.2.4. Further Reading</h3></div></div>
+<a name="id2599041"></a>20.2.4. Further Reading</h3></div></div>
 <div></div>
 </div>
 <p>     These are good sources to start learning about various kinds of encoding
@@ -619,7 +639,7 @@
 <dd><p>         The web site of the Unicode Consortium
         </p></dd>
 <dt><span class="term">RFC 2044</span></dt>
-<dd><p>	 <span class="acronym">UTF</span>-8 is defined here.
+<dd><p>         <span class="acronym">UTF</span>-8 is defined here.
         </p></dd>
 </dl></div>
 <p>

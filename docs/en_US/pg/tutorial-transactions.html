@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="tutorial-advanced.html" title="Chapter 3. Advanced Features">
 <link rel="previous" href="tutorial-fk.html" title="3.3. Foreign Keys">
 <link rel="next" href="tutorial-inheritance.html" title="3.5. Inheritance">
@@ -16,7 +16,7 @@
 <a name="tutorial-transactions"></a>3.4. Transactions</h2></div></div>
 <div></div>
 </div>
-<a name="id2519370"></a><p>    <i class="firstterm">Transactions</i> are a fundamental concept of all database
+<a name="id2519680"></a><p>    <i class="firstterm">Transactions</i> are a fundamental concept of all database
     systems.  The essential point of a transaction is that it bundles
     multiple steps into a single, all-or-nothing operation.  The intermediate
     states between the steps are not visible to other concurrent transactions,
@@ -59,7 +59,7 @@ UPDATE branches SET balance = balance + 100.00
     and won't be lost even if a crash ensues shortly thereafter.
     For example, if we are recording a cash withdrawal by Bob,
     we do not want any chance that the debit to his account will
-    disappear in a crash just as he walks out the bank door.
+    disappear in a crash just after he walks out the bank door.
     A transactional database guarantees that all the updates made by
     a transaction are logged in permanent storage (i.e., on disk) before
     the transaction is reported complete.

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="previous" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="next" href="postmaster-start.html" title="16.3. Starting the Database Server">
@@ -16,16 +16,16 @@
 <a name="creating-cluster"></a>16.2. Creating a Database Cluster</h2></div></div>
 <div></div>
 </div>
-<a name="id2577632"></a><a name="id2577637"></a><p>   Before you can do anything, you must initialize a database storage
+<a name="id2579204"></a><a name="id2579210"></a><p>   Before you can do anything, you must initialize a database storage
    area on disk. We call this a <i class="firstterm">database cluster</i>.
-   (<span class="acronym">SQL</span> uses the term catalog cluster instead.) A
-   database cluster is a collection of databases is accessible by a
+   (<span class="acronym">SQL</span> uses the term catalog cluster.) A
+   database cluster is a collection of databases that is managed by a
    single instance of a running database server. After initialization, a
    database cluster will contain a database named
    <tt class="literal">template1</tt>. As the name suggests, this will be used
    as a template for subsequently created databases; it should not be
-   used for actual work.  (See <a href="managing-databases.html" title="Chapter 18. Managing Databases">Chapter 18, <i>Managing Databases</i></a> for information
-   about creating databases.)
+   used for actual work.  (See <a href="managing-databases.html" title="Chapter 18. Managing Databases">Chapter 18, <i>Managing Databases</i></a> for
+   information about creating new databases within a cluster.)
   </p>
 <p>   In file system terms, a database cluster will be a single directory
    under which all data will be stored. We call this the <i class="firstterm">data
@@ -34,9 +34,9 @@
    default, although locations such as
    <tt class="filename">/usr/local/pgsql/data</tt> or
    <tt class="filename">/var/lib/pgsql/data</tt> are popular. To initialize a
-   database cluster, use the command <tt class="command">initdb</tt>,<a name="id2577710"></a> which is
+   database cluster, use the command <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,<a name="id2579284"></a> which is
    installed with <span class="productname">PostgreSQL</span>. The desired
-   file system location of your database system is indicated by the
+   file system location of your database cluster is indicated by the
    <tt class="option">-D</tt> option, for example
 </p>
 <pre class="screen"><tt class="prompt">$</tt> <b class="userinput"><tt>initdb -D /usr/local/pgsql/data</tt></b></pre>
@@ -49,7 +49,7 @@
 <h3 class="title">Tip</h3>
 <p>    As an alternative to the <tt class="option">-D</tt> option, you can set
     the environment variable <tt class="envar">PGDATA</tt>.
-    <a name="id2577764"></a>
+    <a name="id2579337"></a>
    </p>
 </div>
 <p>   <tt class="command">initdb</tt> will attempt to create the directory you
@@ -67,7 +67,7 @@ postgres$ <b class="userinput"><tt>initdb -D /usr/local/pgsql/data</tt></b></pre
 <p>
   </p>
 <p>   <tt class="command">initdb</tt> will refuse to run if the data directory
-   looks like it it has already been initialized.</p>
+   looks like it has already been initialized.</p>
 <p>   Because the data directory contains all the data stored in the
    database, it is essential that it be secured from unauthorized
    access. <tt class="command">initdb</tt> therefore revokes access
@@ -79,25 +79,31 @@ postgres$ <b class="userinput"><tt>initdb -D /usr/local/pgsql/data</tt></b></pre
    database and even become the database superuser. If you do not
    trust other local users, we recommend you use one of
    <tt class="command">initdb</tt>'s <tt class="option">-W</tt>, <tt class="option">--pwprompt</tt>
-   or <tt class="option">--pwfile</tt> option to assign a password to the
-   database superuser.<a name="id2577872"></a> After <tt class="command">initdb</tt>, modify
-   the <tt class="filename">pg_hba.conf</tt> file to use <tt class="literal">md5</tt> or
-   <tt class="literal">password</tt> instead of <tt class="literal">trust</tt> authentication
+   or <tt class="option">--pwfile</tt> options to assign a password to the
+   database superuser.<a name="id2579446"></a>  Also, specify <tt class="option">-A md5</tt> or
+   <tt class="option">-A password</tt> so that the default <tt class="literal">trust</tt> authentication
+   mode is not used; or modify the generated <tt class="filename">pg_hba.conf</tt>
+   file after running <tt class="command">initdb</tt>,
    <span class="emphasis"><em>before</em></span> you start the server for the first time. (Other
-   approaches include using <tt class="literal">ident</tt> authentication or
-   file system permissions to restrict connections. See <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a> for more information.)
+   reasonable approaches include using <tt class="literal">ident</tt> authentication
+   or file system permissions to restrict connections. See <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a> for more information.)
   </p>
 <p>   <tt class="command">initdb</tt> also initializes the default
-   locale<a name="id2577940"></a> for the database cluster.
+   locale<a name="id2579511"></a> for the database cluster.
    Normally, it will just take the locale settings in the environment
    and apply them to the initialized database.  It is possible to
    specify a different locale for the database; more information about
    that can be found in <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a>.  The sort order used
    within a particular database cluster is set by
    <tt class="command">initdb</tt> and cannot be changed later, short of
-   dumping all data, rerunning <tt class="command">initdb</tt>, and
-   reloading the data. So it's important to make this choice correctly
-   the first time.
+   dumping all data, rerunning <tt class="command">initdb</tt>, and reloading
+   the data. There is also a performance impact for using locales
+   other than <tt class="literal">C</tt> or <tt class="literal">POSIX</tt>. Therefore, it is
+   important to make this choice correctly the first time.
+  </p>
+<p>   <tt class="command">initdb</tt> also sets the default character set encoding
+   for the database cluster.  Normally this should be chosen to match the
+   locale setting.  For details see <a href="multibyte.html" title="20.2. Character Set Support">Section 20.2, &#8220;Character Set Support&#8221;</a>.
   </p>
 </div></body>
 </html>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
 <link rel="previous" href="plpgsql-declarations.html" title="35.4. Declarations">
 <link rel="next" href="plpgsql-statements.html" title="35.6. Basic Statements">
@@ -18,17 +18,11 @@
 </div>
 <p>     All expressions used in <span class="application">PL/pgSQL</span>
      statements are processed using the server's regular
-     <span class="acronym">SQL</span> executor. Expressions that appear to
-     contain constants may in fact require run-time evaluation
-     (e.g., <tt class="literal">'now'</tt> for the <tt class="type">timestamp</tt>
-     type) so it is impossible for the
-     <span class="application">PL/pgSQL</span> parser to identify real
-     constant values other than the key word <tt class="literal">NULL</tt>. All expressions are
-     evaluated internally by executing a query
+     <span class="acronym">SQL</span> executor.  In effect, a query like
 </p>
 <pre class="synopsis">SELECT <i class="replaceable"><tt>expression</tt></i></pre>
 <p>
-     using the <span class="acronym">SPI</span> manager. For evaluation,
+     is executed using the <span class="acronym">SPI</span> manager. Before evaluation,
      occurrences of <span class="application">PL/pgSQL</span> variable
      identifiers are replaced by parameters, and the actual values from
      the variables are passed to the executor in the parameter array.

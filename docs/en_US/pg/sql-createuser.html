@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-createtype.html" title="CREATE TYPE">
 <link rel="next" href="sql-createview.html" title="CREATE VIEW">
@@ -19,21 +19,21 @@
 <h2>Name</h2>
 <p>CREATE USER &#8212; define a new database user account</p>
 </div>
-<a name="id2681253"></a><div class="refsynopsisdiv">
+<a name="id2685004"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE USER <i class="replaceable"><tt>name</tt></i> [ [ WITH ] <i class="replaceable"><tt>option</tt></i> [ ... ] ]
 
 where <i class="replaceable"><tt>option</tt></i> can be:
     
       SYSID <i class="replaceable"><tt>uid</tt></i> 
-    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<i class="replaceable"><tt>password</tt></i>'
     | CREATEDB | NOCREATEDB
     | CREATEUSER | NOCREATEUSER
     | IN GROUP <i class="replaceable"><tt>groupname</tt></i> [, ...]
+    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD '<i class="replaceable"><tt>password</tt></i>'
     | VALID UNTIL '<i class="replaceable"><tt>abstime</tt></i>' </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681312"></a><h2>Description</h2>
+<a name="id2685063"></a><h2>Description</h2>
 <p>   <tt class="command">CREATE USER</tt> adds a new user to a
    <span class="productname">PostgreSQL</span> database cluster.  Refer to
    <a href="user-manag.html" title="Chapter 17. Database Users and Privileges">Chapter 17, <i>Database Users and Privileges</i></a> and <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a> for information about managing
@@ -42,23 +42,46 @@ where <i class="replaceable"><tt>option</tt></i> can be:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681345"></a><h2>Parameters</h2>
+<a name="id2685095"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>	The name of the user.
+<dd><p>        The name of the new user.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>uid</tt></i></span></dt>
 <dd>
 <p>        The <tt class="literal">SYSID</tt> clause can be used to choose the
-        <span class="productname">PostgreSQL</span> user ID of the user that
-        is being created. This is not normally not necessary, but may
+        <span class="productname">PostgreSQL</span> user ID of the new user.
+        This is normally not necessary, but may
         be useful if you need to recreate the owner of an orphaned
         object.
        </p>
 <p>        If this is not specified, the highest assigned user ID plus one
-	(with a minimum of 100) will be used as default.
+        (with a minimum of 100) will be used as default.
        </p>
 </dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CREATEDB</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NOCREATEDB</tt></span>
+</dt>
+<dd><p>        These clauses define a user's ability to create databases.  If
+        <tt class="literal">CREATEDB</tt> is specified, the user being
+        defined will be allowed to create his own databases. Using
+        <tt class="literal">NOCREATEDB</tt> will deny a user the ability to
+        create databases. If not specified,
+        <tt class="literal">NOCREATEDB</tt> is the default.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CREATEUSER</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NOCREATEUSER</tt></span>
+</dt>
+<dd><p>        These clauses determine whether a user will be permitted to
+        create new users himself. <tt class="literal">CREATEUSER</tt> will also make
+        the user a superuser, who can override all access restrictions.
+        If not specified,
+        <tt class="literal">NOCREATEUSER</tt> is the default.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>groupname</tt></i></span></dt>
+<dd><p>        A name of an existing group into which to insert the user as a new
+        member. Multiple group names may be listed.
+       </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>password</tt></i></span></dt>
 <dd><p>        Sets the user's password. If you do not plan to use password
         authentication you can omit this option, but then the user
@@ -70,54 +93,31 @@ where <i class="replaceable"><tt>option</tt></i> can be:
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">ENCRYPTED</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">UNENCRYPTED</tt></span>
 </dt>
 <dd>
-<p>	These key words control whether the password is stored
-	encrypted in the system catalogs.  (If neither is specified,
-	the default behavior is determined by the configuration
-	parameter <a href="runtime-config.html#guc-password-encryption">password_encryption</a>.)  If the
-	presented password string is already in MD5-encrypted format,
-	then it is stored encrypted as-is, regardless of whether
-	<tt class="literal">ENCRYPTED</tt> or <tt class="literal">UNENCRYPTED</tt> is specified
-	(since the system cannot decrypt the specified encrypted
-	password string).  This allows reloading of encrypted
-	passwords during dump/restore.
+<p>        These key words control whether the password is stored
+        encrypted in the system catalogs.  (If neither is specified,
+        the default behavior is determined by the configuration
+        parameter <a href="runtime-config.html#guc-password-encryption">password_encryption</a>.)  If the
+        presented password string is already in MD5-encrypted format,
+        then it is stored encrypted as-is, regardless of whether
+        <tt class="literal">ENCRYPTED</tt> or <tt class="literal">UNENCRYPTED</tt> is specified
+        (since the system cannot decrypt the specified encrypted
+        password string).  This allows reloading of encrypted
+        passwords during dump/restore.
        </p>
 <p>        Note that older clients may lack support for the MD5
         authentication mechanism that is needed to work with passwords
         that are stored encrypted.
        </p>
 </dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CREATEDB</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NOCREATEDB</tt></span>
-</dt>
-<dd><p>	These clauses define a user's ability to create databases.  If
-	<tt class="literal">CREATEDB</tt> is specified, the user being
-	defined will be allowed to create his own databases. Using
-	<tt class="literal">NOCREATEDB</tt> will deny a user the ability to
-	create databases. If this clause is omitted,
-	<tt class="literal">NOCREATEDB</tt> is used by default.
-       </p></dd>
-<dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CREATEUSER</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">NOCREATEUSER</tt></span>
-</dt>
-<dd><p>	These clauses determine whether a user will be permitted to
-	create new users himself. This option will also make the user
-	a superuser who can override all access restrictions.
-	Omitting this clause will set the user's value of this
-	attribute to be <tt class="literal">NOCREATEUSER</tt>.
-       </p></dd>
-<dt><span class="term"><i class="replaceable"><tt>groupname</tt></i></span></dt>
-<dd><p>	A name of a group into which to insert the user as a new member.
-	Multiple group names may be listed.
-       </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>abstime</tt></i></span></dt>
-<dd><p>	The <tt class="literal">VALID UNTIL</tt> clause sets an absolute
-	time after which the user's password is no longer valid.  If
-	this clause is omitted the login will be valid for all time.
+<dd><p>        The <tt class="literal">VALID UNTIL</tt> clause sets an absolute
+        time after which the user's password is no longer valid.  If
+        this clause is omitted the password will be valid for all time.
        </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681558"></a><h2>Notes</h2>
+<a name="id2685317"></a><h2>Notes</h2>
 <p>   Use <a href="sql-alteruser.html">ALTER USER</a> to
    change the attributes of a user, and <a href="sql-dropuser.html">DROP USER</a> to remove a user.  Use <a href="sql-altergroup.html">ALTER GROUP</a> to add the
    user to groups or remove the user from groups.
@@ -126,9 +126,14 @@ where <i class="replaceable"><tt>option</tt></i> can be:
    the same functionality as <tt class="command">CREATE USER</tt> (in fact, it calls this
    command) but can be run from the command shell.
   </p>
+<p>   The <tt class="literal">VALID UNTIL</tt> clause defines an expiration time for a
+   password only, not for the user account <span class="foreignphrase"><i class="foreignphrase">per se</i></span>.  In
+   particular, the expiration time is not enforced when logging in using
+   a non-password-based authentication method.
+  </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681622"></a><h2>Examples</h2>
+<a name="id2685395"></a><h2>Examples</h2>
 <p>   Create a user with no password:
 </p>
 <pre class="programlisting">CREATE USER jonathan;</pre>
@@ -155,14 +160,14 @@ where <i class="replaceable"><tt>option</tt></i> can be:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681665"></a><h2>Compatibility</h2>
+<a name="id2685438"></a><h2>Compatibility</h2>
 <p>   The <tt class="command">CREATE USER</tt> statement is a
    <span class="productname">PostgreSQL</span> extension.  The SQL standard
    leaves the definition of users to the implementation.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681684"></a><h2>See Also</h2>
+<a name="id2685457"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-alteruser.html">ALTER USER</a>, <a href="sql-dropuser.html">DROP USER</a>, <a href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a></span>
 </div>
 </div></body>

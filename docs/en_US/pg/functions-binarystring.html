@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="previous" href="functions-string.html" title="9.4. String Functions and Operators">
 <link rel="next" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
@@ -16,7 +16,7 @@
 <a name="functions-binarystring"></a>9.5. Binary String Functions and Operators</h2></div></div>
 <div></div>
 </div>
-<a name="id2546853"></a><p>    This section describes functions and operators for examining and
+<a name="id2547422"></a><p>    This section describes functions and operators for examining and
     manipulating values of type <tt class="type">bytea</tt>.
    </p>
 <p>    <span class="acronym">SQL</span> defines some string functions with a
@@ -51,7 +51,7 @@
         <i class="parameter"><tt>string</tt></i></tt></td>
 <td><tt class="type">bytea</tt></td>
 <td>        String concatenation
-        <a name="id2546958"></a>
+        <a name="id2547527"></a>
 </td>
 <td><tt class="literal">'\\\\Post'::bytea || '\\047gres\\000'::bytea</tt></td>
 <td><tt class="literal">\\Post'gres\000</tt></td>
@@ -74,7 +74,7 @@
 <td><tt class="literal"><tt class="function">substring</tt>(<i class="parameter"><tt>string</tt></i> [<span class="optional">from <tt class="type">integer</tt></span>] [<span class="optional">for <tt class="type">integer</tt></span>])</tt></td>
 <td><tt class="type">bytea</tt></td>
 <td>        Extract substring
-        <a name="id2547090"></a>
+        <a name="id2547659"></a>
 </td>
 <td><tt class="literal">substring('Th\\000omas'::bytea from 2 for 3)</tt></td>
 <td><tt class="literal">h\000o</tt></td>
@@ -96,7 +96,7 @@
 <tt class="function">get_byte</tt>(<i class="parameter"><tt>string</tt></i>, <i class="parameter"><tt>offset</tt></i>)</td>
 <td><tt class="type">integer</tt></td>
 <td>        Extract byte from string.
-        <a name="id2547194"></a>
+        <a name="id2547763"></a>
 </td>
 <td><tt class="literal">get_byte('Th\\000omas'::bytea, 4)</tt></td>
 <td><tt class="literal">109</tt></td>
@@ -107,7 +107,7 @@
        <i class="parameter"><tt>offset</tt></i>, <i class="parameter"><tt>newvalue</tt></i>)</td>
 <td><tt class="type">bytea</tt></td>
 <td>        Set byte in string.
-        <a name="id2547244"></a>
+        <a name="id2547813"></a>
 </td>
 <td><tt class="literal">set_byte('Th\\000omas'::bytea, 4, 64)</tt></td>
 <td><tt class="literal">Th\000o@as</tt></td>
@@ -117,7 +117,7 @@
 <tt class="function">get_bit</tt>(<i class="parameter"><tt>string</tt></i>, <i class="parameter"><tt>offset</tt></i>)</td>
 <td><tt class="type">integer</tt></td>
 <td>        Extract bit from string.
-        <a name="id2547289"></a>
+        <a name="id2547858"></a>
 </td>
 <td><tt class="literal">get_bit('Th\\000omas'::bytea, 45)</tt></td>
 <td><tt class="literal">1</tt></td>
@@ -128,7 +128,7 @@
        <i class="parameter"><tt>offset</tt></i>, <i class="parameter"><tt>newvalue</tt></i>)</td>
 <td><tt class="type">bytea</tt></td>
 <td>        Set bit in string.
-        <a name="id2547339"></a>
+        <a name="id2547908"></a>
 </td>
 <td><tt class="literal">set_bit('Th\\000omas'::bytea, 45, 0)</tt></td>
 <td><tt class="literal">Th\000omAs</tt></td>
@@ -174,7 +174,7 @@
 <td><tt class="literal"><tt class="function">length</tt>(<i class="parameter"><tt>string</tt></i>)</tt></td>
 <td><tt class="type">integer</tt></td>
 <td>       Length of binary string
-       <a name="id2547489"></a><a name="id2547498"></a>
+       <a name="id2548058"></a><a name="id2548068"></a>
 </td>
 <td><tt class="literal">length('jo\\000se'::bytea)</tt></td>
 <td><tt class="literal">5</tt></td>

@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>33.3. Writing Trigger Functions in C</title>
+<title>32.3. Writing Trigger Functions in C</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
-<link rel="up" href="triggers.html" title="Chapter 33. Triggers">
-<link rel="previous" href="trigger-datachanges.html" title="33.2. Visibility of Data Changes">
-<link rel="next" href="trigger-example.html" title="33.4. A Complete Example">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="up" href="triggers.html" title="Chapter 32. Triggers">
+<link rel="previous" href="trigger-datachanges.html" title="32.2. Visibility of Data Changes">
+<link rel="next" href="trigger-example.html" title="32.4. A Complete Example">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="trigger-interface"></a>33.3. Writing Trigger Functions in C</h2></div></div>
+<a name="trigger-interface"></a>32.3. Writing Trigger Functions in C</h2></div></div>
 <div></div>
 </div>
-<a name="id2642709"></a><p>    This section describes the low-level details of the interface to a
+<a name="id2641457"></a><p>    This section describes the low-level details of the interface to a
     trigger function.  This information is only needed when writing a
     trigger function in C.  If you are using a higher-level
     language then these details are handled for you.  The documentation
@@ -71,69 +71,69 @@
        </p></dd>
 <dt><span class="term"><tt class="structfield">tg_event</tt></span></dt>
 <dd>
-<p>	Describes the event for which the function is called. You may use the
-	following macros to examine <tt class="literal">tg_event</tt>:
+<p>        Describes the event for which the function is called. You may use the
+        following macros to examine <tt class="literal">tg_event</tt>:
 
-	</p>
+        </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">TRIGGER_FIRED_BEFORE(tg_event)</tt></span></dt>
-<dd><p>	    Returns true if the trigger fired before the operation.
-	   </p></dd>
+<dd><p>            Returns true if the trigger fired before the operation.
+           </p></dd>
 <dt><span class="term"><tt class="literal">TRIGGER_FIRED_AFTER(tg_event)</tt></span></dt>
-<dd><p>	    Returns true if the trigger fired after the operation.
-	   </p></dd>
+<dd><p>            Returns true if the trigger fired after the operation.
+           </p></dd>
 <dt><span class="term"><tt class="literal">TRIGGER_FIRED_FOR_ROW(tg_event)</tt></span></dt>
-<dd><p>	    Returns true if the trigger fired for a row-level event.
-	   </p></dd>
+<dd><p>            Returns true if the trigger fired for a row-level event.
+           </p></dd>
 <dt><span class="term"><tt class="literal">TRIGGER_FIRED_FOR_STATEMENT(tg_event)</tt></span></dt>
-<dd><p>	    Returns true if the trigger fired for a statement-level event.
-	   </p></dd>
+<dd><p>            Returns true if the trigger fired for a statement-level event.
+           </p></dd>
 <dt><span class="term"><tt class="literal">TRIGGER_FIRED_BY_INSERT(tg_event)</tt></span></dt>
-<dd><p>	    Returns true if the trigger was fired by an <tt class="command">INSERT</tt> command.
-	   </p></dd>
+<dd><p>            Returns true if the trigger was fired by an <tt class="command">INSERT</tt> command.
+           </p></dd>
 <dt><span class="term"><tt class="literal">TRIGGER_FIRED_BY_UPDATE(tg_event)</tt></span></dt>
-<dd><p>	    Returns true if the trigger was fired by an <tt class="command">UPDATE</tt> command.
-	   </p></dd>
+<dd><p>            Returns true if the trigger was fired by an <tt class="command">UPDATE</tt> command.
+           </p></dd>
 <dt><span class="term"><tt class="literal">TRIGGER_FIRED_BY_DELETE(tg_event)</tt></span></dt>
-<dd><p>	    Returns true if the trigger was fired by a <tt class="command">DELETE</tt> command.
-	   </p></dd>
+<dd><p>            Returns true if the trigger was fired by a <tt class="command">DELETE</tt> command.
+           </p></dd>
 </dl></div>
 <p>
        </p>
 </dd>
 <dt><span class="term"><tt class="structfield">tg_relation</tt></span></dt>
-<dd><p>	A pointer to a structure describing the relation that the trigger fired for.
-	Look at <tt class="filename">utils/rel.h</tt> for details about
-	this structure.  The most interesting things are
-	<tt class="literal">tg_relation-&gt;rd_att</tt> (descriptor of the relation
-	tuples) and <tt class="literal">tg_relation-&gt;rd_rel-&gt;relname</tt>
-	(relation name; the type is not <tt class="type">char*</tt> but
-	<tt class="type">NameData</tt>; use
-	<tt class="literal">SPI_getrelname(tg_relation)</tt> to get a <tt class="type">char*</tt> if you
-	need a copy of the name).
+<dd><p>        A pointer to a structure describing the relation that the trigger fired for.
+        Look at <tt class="filename">utils/rel.h</tt> for details about
+        this structure.  The most interesting things are
+        <tt class="literal">tg_relation-&gt;rd_att</tt> (descriptor of the relation
+        tuples) and <tt class="literal">tg_relation-&gt;rd_rel-&gt;relname</tt>
+        (relation name; the type is not <tt class="type">char*</tt> but
+        <tt class="type">NameData</tt>; use
+        <tt class="literal">SPI_getrelname(tg_relation)</tt> to get a <tt class="type">char*</tt> if you
+        need a copy of the name).
        </p></dd>
 <dt><span class="term"><tt class="structfield">tg_trigtuple</tt></span></dt>
-<dd><p>	A pointer to the row for which the trigger was fired. This is
-	the row being inserted, updated, or deleted.  If this trigger
-	was fired for an <tt class="command">INSERT</tt> or
-	<tt class="command">DELETE</tt> then this is what you should return
-	to from the function if you don't want to replace the row with
-	a different one (in the case of <tt class="command">INSERT</tt>) or
-	skip the operation.
+<dd><p>        A pointer to the row for which the trigger was fired. This is
+        the row being inserted, updated, or deleted.  If this trigger
+        was fired for an <tt class="command">INSERT</tt> or
+        <tt class="command">DELETE</tt> then this is what you should return
+        from the function if you don't want to replace the row with
+        a different one (in the case of <tt class="command">INSERT</tt>) or
+        skip the operation.
        </p></dd>
 <dt><span class="term"><tt class="structfield">tg_newtuple</tt></span></dt>
-<dd><p>	A pointer to the new version of the row, if the trigger was
-	fired for an <tt class="command">UPDATE</tt>, and <tt class="symbol">NULL</tt> if
-	it is for an <tt class="command">INSERT</tt> or a
-	<tt class="command">DELETE</tt>. This is what you have to return
-	from the function if the event is an <tt class="command">UPDATE</tt>
-	and you don't want to replace this row by a different one or
-	skip the operation.
+<dd><p>        A pointer to the new version of the row, if the trigger was
+        fired for an <tt class="command">UPDATE</tt>, and <tt class="symbol">NULL</tt> if
+        it is for an <tt class="command">INSERT</tt> or a
+        <tt class="command">DELETE</tt>. This is what you have to return
+        from the function if the event is an <tt class="command">UPDATE</tt>
+        and you don't want to replace this row by a different one or
+        skip the operation.
        </p></dd>
 <dt><span class="term"><tt class="structfield">tg_trigger</tt></span></dt>
 <dd>
-<p>	A pointer to a structure of type <tt class="structname">Trigger</tt>,
-	defined in <tt class="filename">utils/rel.h</tt>:
+<p>        A pointer to a structure of type <tt class="structname">Trigger</tt>,
+        defined in <tt class="filename">utils/rel.h</tt>:
 
 </p>
 <pre class="programlisting">typedef struct Trigger
@@ -162,11 +162,11 @@
        </p>
 </dd>
 <dt><span class="term"><tt class="structfield">tg_trigtuplebuf</tt></span></dt>
-<dd><p>        The buffer containing tg_trigtuple, or InvalidBuffer if there
+<dd><p>        The buffer containing <tt class="structfield">tg_trigtuple</tt>, or <tt class="symbol">InvalidBuffer</tt> if there
         is no such tuple or it is not stored in a disk buffer.
        </p></dd>
 <dt><span class="term"><tt class="structfield">tg_newtuplebuf</tt></span></dt>
-<dd><p>        The buffer containing tg_newtuple, or InvalidBuffer if there
+<dd><p>        The buffer containing <tt class="structfield">tg_newtuple</tt>, or <tt class="symbol">InvalidBuffer</tt> if there
         is no such tuple or it is not stored in a disk buffer.
        </p></dd>
 </dl></div>
@@ -174,7 +174,7 @@
    </p>
 <p>    A trigger function must return either a
     <tt class="structname">HeapTuple</tt> pointer or a <tt class="symbol">NULL</tt> pointer
-    (<span class="emphasis"><em>not</em></span> a SQL NULL, that is, do not set isNull true).
+    (<span class="emphasis"><em>not</em></span> an SQL null value, that is, do not set <i class="parameter"><tt>isNull</tt></i> true).
     Be careful to return either
     <tt class="structfield">tg_trigtuple</tt> or <tt class="structfield">tg_newtuple</tt>,
     as appropriate, if you don't want to modify the row being operated on.

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="previous" href="datatype-character.html" title="8.3. Character Types">
 <link rel="next" href="datatype-datetime.html" title="8.5. Date/Time Types">
@@ -16,7 +16,7 @@
 <a name="datatype-binary"></a>8.4. Binary Data Types</h2></div></div>
 <div></div>
 </div>
-<a name="id2533051"></a><a name="id2533062"></a><p>    The <tt class="type">bytea</tt> data type allows storage of binary strings;
+<a name="id2533515"></a><a name="id2533525"></a><p>    The <tt class="type">bytea</tt> data type allows storage of binary strings;
     see <a href="datatype-binary.html#datatype-binary-table" title="Table 8.6. Binary Data Types">Table 8.6, &#8220;Binary Data Types&#8221;</a>.
    </p>
 <div class="table">
@@ -40,13 +40,18 @@
 </table>
 </div>
 <p>    A binary string is a sequence of octets (or bytes).  Binary
-    strings are distinguished from characters strings by two
+    strings are distinguished from character strings by two
     characteristics: First, binary strings specifically allow storing
     octets of value zero and other &#8220;<span class="quote">non-printable</span>&#8221;
-    octets (defined as octets outside the range 32 to 126).
+    octets (usually, octets outside the range 32 to 126).
+    Character strings disallow zero octets, and also disallow any
+    other octet values and sequences of octet values that are invalid
+    according to the database's selected character set encoding.
     Second, operations on binary strings process the actual bytes,
-    whereas the encoding and processing of character strings depends
-    on locale settings.
+    whereas the processing of character strings depends on locale settings.
+    In short, binary strings are appropriate for storing data that the
+    programmer thinks of as &#8220;<span class="quote">raw bytes</span>&#8221;, whereas character
+    strings are appropriate for storing text.
    </p>
 <p>    When entering <tt class="type">bytea</tt> values, octets of certain values
     <span class="emphasis"><em>must</em></span> be escaped (but all octet values
@@ -54,8 +59,8 @@
     literal in an <span class="acronym">SQL</span> statement. In general, to
     escape an octet, it is converted into the three-digit octal number
     equivalent of its decimal octet value, and preceded by two
-    backslashes. <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;bytea Literal Escaped Octets&#8221;</a> contains the
-    characters which must be escaped, and gives the alternate escape
+    backslashes. <a href="datatype-binary.html#datatype-binary-sqlesc" title="Table 8.7. bytea Literal Escaped Octets">Table 8.7, &#8220;bytea Literal Escaped Octets&#8221;</a> shows the
+    characters that must be escaped, and gives the alternate escape
     sequences where applicable.
    </p>
 <div class="table">
@@ -196,7 +201,7 @@
    </p>
 <p>        The <span class="acronym">SQL</span> standard defines a different binary
         string type, called <tt class="type">BLOB</tt> or <tt class="type">BINARY LARGE
-         OBJECT</tt>.  The input format is different compared to
+        OBJECT</tt>.  The input format is different from
         <tt class="type">bytea</tt>, but the provided functions and operators are
         mostly the same.
    </p>

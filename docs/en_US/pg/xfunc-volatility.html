@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>31.9. Function Volatility Categories</title>
+<title>31.6. Function Volatility Categories</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
-<link rel="previous" href="xfunc-overload.html" title="31.8. Function Overloading">
-<link rel="next" href="xaggr.html" title="31.10. User-Defined Aggregates">
+<link rel="previous" href="xfunc-overload.html" title="31.5. Function Overloading">
+<link rel="next" href="xfunc-pl.html" title="31.7. Procedural Language Functions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="xfunc-volatility"></a>31.9. Function Volatility Categories</h2></div></div>
+<a name="xfunc-volatility"></a>31.6. Function Volatility Categories</h2></div></div>
 <div></div>
 </div>
-<a name="id2634776"></a><p>    Every function has a <i class="firstterm">volatility</i> classification, with
+<a name="id2633196"></a><a name="id2633209"></a><a name="id2633218"></a><a name="id2633227"></a><p>    Every function has a <i class="firstterm">volatility</i> classification, with
     the possibilities being <tt class="literal">VOLATILE</tt>, <tt class="literal">STABLE</tt>, or
     <tt class="literal">IMMUTABLE</tt>.  <tt class="literal">VOLATILE</tt> is the default if the
     <tt class="command">CREATE FUNCTION</tt> command does not specify a category.
@@ -36,10 +36,10 @@
       for all calls within a single surrounding query.  This category
       allows the optimizer to optimize away multiple calls of the function
       within a single query.  In particular, it is safe to use an expression
-      containing such a function in an indexscan condition.  (Since an
-      indexscan will evaluate the comparison value only once, not once at
+      containing such a function in an index scan condition.  (Since an
+      index scan will evaluate the comparison value only once, not once at
       each row, it is not valid to use a <tt class="literal">VOLATILE</tt> function in
-      an indexscan condition.)
+      an index scan condition.)
      </p></li>
 <li><p>      An <tt class="literal">IMMUTABLE</tt> function cannot modify the database and is
       guaranteed to return the same results given the same arguments forever.
@@ -105,6 +105,11 @@
      the database was not enforced by the system.  Release 8.0 enforces it
      by requiring SQL functions and procedural language functions of these
      categories to contain no SQL commands other than <tt class="command">SELECT</tt>.
+     (This is not a completely bulletproof test, since such functions could
+     still call <tt class="literal">VOLATILE</tt> functions that modify the database.
+     If you do that, you will find that the <tt class="literal">STABLE</tt> or
+     <tt class="literal">IMMUTABLE</tt> function does not notice the database changes
+     applied by the called function.)
     </p>
 </div>
 </div></body>

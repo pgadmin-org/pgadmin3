@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpython.html" title="Chapter 38. PL/Python - Python Procedural Language">
 <link rel="previous" href="plpython.html" title="Chapter 38. PL/Python - Python Procedural Language">
 <link rel="next" href="plpython-database.html" title="38.3. Database Access">
@@ -16,7 +16,7 @@
 <a name="plpython-trigger"></a>38.2. Trigger Functions</h2></div></div>
 <div></div>
 </div>
-<a name="id2654026"></a><p>   When a function is used in a trigger, the dictionary
+<a name="id2657453"></a><p>   When a function is used as a trigger, the dictionary
    <tt class="literal">TD</tt> contains trigger-related values.  The trigger
    rows are in <tt class="literal">TD["new"]</tt> and/or <tt class="literal">TD["old"]</tt>
    depending on the trigger event.  <tt class="literal">TD["event"]</tt> contains
@@ -28,9 +28,9 @@
    <tt class="literal">STATEMENT</tt>, and <tt class="literal">UNKNOWN</tt>.
    <tt class="literal">TD["name"]</tt> contains the trigger name, and
    <tt class="literal">TD["relid"]</tt> contains the OID of the table on
-   which the trigger occurred.  If the trigger was called with
-   arguments they are available in <tt class="literal">TD["args"][0]</tt> to
-   <tt class="literal">TD["args"][(n-1)]</tt>.
+   which the trigger occurred.  If the <tt class="command">CREATE TRIGGER</tt> command
+   included arguments, they are available in <tt class="literal">TD["args"][0]</tt> to
+   <tt class="literal">TD["args"][(<i class="replaceable"><tt>n</tt></i>-1)]</tt>.
   </p>
 <p>   If <tt class="literal">TD["when"]</tt> is <tt class="literal">BEFORE</tt>, you may
    return <tt class="literal">None</tt> or <tt class="literal">"OK"</tt> from the

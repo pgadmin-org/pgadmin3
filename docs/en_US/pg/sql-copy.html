@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-commit.html" title="COMMIT">
 <link rel="next" href="sql-createaggregate.html" title="CREATE AGGREGATE">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>COPY &#8212; copy data between a file and a table</p>
 </div>
-<a name="id2667700"></a><div class="refsynopsisdiv">
+<a name="id2671313"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><tt>column</tt></i> [, ...] ) ]
     FROM { '<i class="replaceable"><tt>filename</tt></i>' | STDIN }
@@ -44,7 +44,7 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
                 [ FORCE QUOTE <i class="replaceable"><tt>column</tt></i> [, ...] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2667818"></a><h2>Description</h2>
+<a name="id2671431"></a><h2>Description</h2>
 <p>   <tt class="command">COPY</tt> moves data between
    <span class="productname">PostgreSQL</span> tables and standard file-system
    files. <tt class="command">COPY TO</tt> copies the contents of a table
@@ -68,7 +68,7 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2667906"></a><h2>Parameters</h2>
+<a name="id2671519"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>tablename</tt></i></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing table.
@@ -88,8 +88,8 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
      </p></dd>
 <dt><span class="term"><tt class="literal">BINARY</tt></span></dt>
 <dd><p>      Causes all data to be stored or read in binary format rather
-      than as text. You cannot specify the <tt class="option">DELIMITER</tt>
-      or <tt class="option">NULL</tt> options in binary mode.
+      than as text. You cannot specify the <tt class="option">DELIMITER</tt>,
+      <tt class="option">NULL</tt>, or <tt class="option">CSV</tt> options in binary mode.
      </p></dd>
 <dt><span class="term"><tt class="literal">OIDS</tt></span></dt>
 <dd><p>      Specifies copying the OID for each row.  (An error is raised if
@@ -119,10 +119,7 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
 </div>
 </dd>
 <dt><span class="term"><tt class="literal">CSV</tt></span></dt>
-<dd><p>      Enables Comma Separated Variable (<tt class="literal">CSV</tt>) mode. (Also
-      called Comma Separated Value). It sets the default
-      <tt class="literal">DELIMITER</tt> to comma, and <tt class="literal">QUOTE</tt> and
-      <tt class="literal">ESCAPE</tt> values to double-quote.
+<dd><p>      Selects Comma Separated Value (<tt class="literal">CSV</tt>) mode.
      </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>quote</tt></i></span></dt>
 <dd><p>      Specifies the quotation character in <tt class="literal">CSV</tt> mode.
@@ -140,15 +137,15 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
      </p></dd>
 <dt><span class="term"><tt class="literal">FORCE NOT NULL</tt></span></dt>
 <dd><p>      In <tt class="literal">CSV</tt> <tt class="command">COPY FROM</tt> mode, process each
-      specified column as though it were quoted and hance not a
-      <tt class="literal">NULL</tt> value. For the default <tt class="literal">null string</tt> in
-      <tt class="literal">CSV</tt> mode (<tt class="literal">''</tt>), this causes a missing
-      values to be input as a zero-length strings.
+      specified column as though it were quoted and hence not a
+      <tt class="literal">NULL</tt> value. For the default null string in
+      <tt class="literal">CSV</tt> mode (<tt class="literal">''</tt>), this causes missing
+      values to be input as zero-length strings.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2668236"></a><h2>Notes</h2>
+<a name="id2671827"></a><h2>Notes</h2>
 <p>    <tt class="command">COPY</tt> can only be used with plain tables, not
     with views.
    </p>
@@ -193,13 +190,11 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
     constraints on the destination table. However, it will not invoke rules.
    </p>
 <p>    <tt class="command">COPY</tt> input and output is affected by
-    <tt class="varname">DateStyle </tt>. For portability with other
-    <span class="productname">PostgreSQL</span> installations which might use
+    <tt class="varname">DateStyle</tt>. To ensure portability to other
+    <span class="productname">PostgreSQL</span> installations that might use
     non-default <tt class="varname">DateStyle</tt> settings,
     <tt class="varname">DateStyle</tt> should be set to <tt class="literal">ISO</tt> before
-    using <tt class="command">COPY</tt>. In <tt class="literal">CSV</tt> mode, use <tt class="literal">ISO</tt>
-    or a <tt class="varname">DateStyle</tt> setting appropriate for the
-    external application.
+    using <tt class="command">COPY TO</tt>.
    </p>
 <p>    <tt class="command">COPY</tt> stops operation at the first error. This
     should not lead to problems in the event of a <tt class="command">COPY
@@ -212,12 +207,12 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2668490"></a><h2>File Formats</h2>
+<a name="id2672065"></a><h2>File Formats</h2>
 <div class="refsect2" lang="en">
-<a name="id2668494"></a><h3>Text Format</h3>
-<p>    When <tt class="command">COPY</tt> is used without the <tt class="literal">BINARY</tt> option,
-    the data read or written is a text file with one line per table row,
-    unless <tt class="literal">CSV</tt> mode is used.
+<a name="id2672069"></a><h3>Text Format</h3>
+<p>    When <tt class="command">COPY</tt> is used without the <tt class="literal">BINARY</tt>
+    or <tt class="literal">CSV</tt> options,
+    the data read or written is a text file with one line per table row.
     Columns in a row are separated by the delimiter character.
     The column values themselves are strings generated by the
     output function, or acceptable to the input function, of each
@@ -319,7 +314,7 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
     or vice versa).
    </p>
 <p>    <tt class="command">COPY TO</tt> will terminate each row with a Unix-style 
-    newline (&#8220;<span class="quote"><tt class="literal">\n</tt></span>&#8221;).  Servers running on MS Windows instead
+    newline (&#8220;<span class="quote"><tt class="literal">\n</tt></span>&#8221;).  Servers running on Microsoft Windows instead
     output carriage return/newline (&#8220;<span class="quote"><tt class="literal">\r\n</tt></span>&#8221;), but only for
     <tt class="command">COPY</tt> to a server file; for consistency across platforms,
     <tt class="command">COPY TO STDOUT</tt> always sends &#8220;<span class="quote"><tt class="literal">\n</tt></span>&#8221;
@@ -332,9 +327,9 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2668826"></a><h3>CSV Format</h3>
+<a name="id2672401"></a><h3>CSV Format</h3>
 <p>    This format is used for importing and exporting the Comma
-    Separated Variable (<tt class="literal">CSV</tt>) file format used by many other
+    Separated Value (<tt class="literal">CSV</tt>) file format used by many other
     programs, such as spreadsheets. Instead of the escaping used by
     <span class="productname">PostgreSQL</span>'s standard text mode, it
     produces and recognises the common CSV escaping mechanism.
@@ -350,7 +345,7 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
     non-<tt class="literal">NULL</tt> values in specific columns.
    </p>
 <p> 
-    In general, the <tt class="literal">CSV</tt> format has no way to distinguish a
+    The <tt class="literal">CSV</tt> format has no standard way to distinguish a
     <tt class="literal">NULL</tt> value from an empty string.
     <span class="productname">PostgreSQL</span>'s <tt class="command">COPY</tt> handles this by
     quoting. A <tt class="literal">NULL</tt> is output as the <tt class="literal">NULL</tt>
@@ -381,19 +376,19 @@ COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><t
      so the file format is more a convention than a standard. Thus you
      might encounter some files that cannot be imported using this
      mechanism, and <tt class="command">COPY</tt> might produce files that other
-     programs can not process.
+     programs cannot process.
     </p>
 </div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2669018"></a><h3>Binary Format</h3>
+<a name="id2672593"></a><h3>Binary Format</h3>
 <p>    The file format used for <tt class="command">COPY BINARY</tt> changed in
     <span class="productname">PostgreSQL</span> 7.4. The new format consists
     of a file header, zero or more tuples containing the row data, and
     a file trailer. Headers and data are now in network byte order.
    </p>
 <div class="refsect3" lang="en">
-<a name="id2669040"></a><h4>File Header</h4>
+<a name="id2672614"></a><h4>File Header</h4>
 <p>     The file header consists of 15 bytes of fixed fields, followed
      by a variable-length header extension area.  The fixed fields are:
 
@@ -448,7 +443,7 @@ is left for a later release.
     </p>
 </div>
 <div class="refsect3" lang="en">
-<a name="id2669129"></a><h4>Tuples</h4>
+<a name="id2672703"></a><h4>Tuples</h4>
 <p>Each tuple begins with a 16-bit integer count of the number of fields in the
 tuple.  (Presently, all tuples in a table will have the same count, but that
 might not always be true.)  Then, repeated for each field in the tuple, there
@@ -478,7 +473,7 @@ OIDs to be shown as null if that ever proves desirable.
     </p>
 </div>
 <div class="refsect3" lang="en">
-<a name="id2669203"></a><h4>File Trailer</h4>
+<a name="id2672770"></a><h4>File Trailer</h4>
 <p>     The file trailer consists of a 16-bit integer word containing -1.  This
      is easily distinguished from a tuple's field-count word.
     </p>
@@ -490,7 +485,7 @@ OIDs to be shown as null if that ever proves desirable.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2669217"></a><h2>Examples</h2>
+<a name="id2672784"></a><h2>Examples</h2>
 <p>   The following example copies a table to the client
    using the vertical bar (<tt class="literal">|</tt>) as the field delimiter:
 </p>
@@ -533,7 +528,7 @@ ZW      ZIMBABWE</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2669310"></a><h2>Compatibility</h2>
+<a name="id2672877"></a><h2>Compatibility</h2>
 <p>   There is no <tt class="command">COPY</tt> statement in the SQL standard.
   </p>
 <p>   The following syntax was used before <span class="productname">PostgreSQL</span>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="source.html" title="Chapter 43. PostgreSQL Coding Conventions">
 <link rel="previous" href="error-message-reporting.html" title="43.2. Reporting Errors Within the Server">
 <link rel="next" href="nls.html" title="Chapter 44. Native Language Support">
@@ -23,7 +23,7 @@
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736670"></a>What goes where</h3></div></div>
+<a name="id2741433"></a>What goes where</h3></div></div>
 <div></div>
 </div>
 <p>    The primary message should be short, factual, and avoid reference to
@@ -38,14 +38,14 @@
    </p>
 <p>    For example, instead of
 </p>
-<pre class="programlisting">        IpcMemoryCreate: shmget(key=%d, size=%u, 0%o) failed: %m
-        (plus a long addendum that is basically a hint)</pre>
+<pre class="programlisting">IpcMemoryCreate: shmget(key=%d, size=%u, 0%o) failed: %m
+(plus a long addendum that is basically a hint)</pre>
 <p>
-write
+    write
 </p>
-<pre class="programlisting">        Primary:    could not create shared memory segment: %m
-        Detail:     Failed syscall was shmget(key=%d, size=%u, 0%o).
-        Hint:       the addendum</pre>
+<pre class="programlisting">Primary:    could not create shared memory segment: %m
+Detail:     Failed syscall was shmget(key=%d, size=%u, 0%o).
+Hint:       the addendum</pre>
 <p>
    </p>
 <p>    Rationale: keeping the primary message short helps keep it to the point,
@@ -60,7 +60,7 @@ write
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736722"></a>Formatting</h3></div></div>
+<a name="id2741484"></a>Formatting</h3></div></div>
 <div></div>
 </div>
 <p>    Don't put any specific assumptions about formatting into the message
@@ -79,7 +79,7 @@ write
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736741"></a>Quotation marks</h3></div></div>
+<a name="id2741503"></a>Quotation marks</h3></div></div>
 <div></div>
 </div>
 <p>    English text should use double quotes when quoting is appropriate.
@@ -98,7 +98,7 @@ write
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736762"></a>Use of quotes</h3></div></div>
+<a name="id2741524"></a>Use of quotes</h3></div></div>
 <div></div>
 </div>
 <p>    Use quotes always to delimit file names, user-supplied identifiers, and
@@ -118,7 +118,7 @@ write
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736790"></a>Grammar and punctuation</h3></div></div>
+<a name="id2741551"></a>Grammar and punctuation</h3></div></div>
 <div></div>
 </div>
 <p>    The rules are different for primary error messages and for detail/hint
@@ -143,7 +143,7 @@ write
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736818"></a>Upper case vs. lower case</h3></div></div>
+<a name="id2741580"></a>Upper case vs. lower case</h3></div></div>
 <div></div>
 </div>
 <p>    Use lower case for message wording, including the first letter of a
@@ -157,7 +157,7 @@ write
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736832"></a>Avoid passive voice</h3></div></div>
+<a name="id2741593"></a>Avoid passive voice</h3></div></div>
 <div></div>
 </div>
 <p>    Use the active voice.  Use complete sentences when there is an acting
@@ -171,7 +171,7 @@ write
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736852"></a>Present vs past tense</h3></div></div>
+<a name="id2741613"></a>Present vs past tense</h3></div></div>
 <div></div>
 </div>
 <p>    Use past tense if an attempt to do something failed, but could perhaps
@@ -180,11 +180,11 @@ write
    </p>
 <p>    There is a nontrivial semantic difference between sentences of the form
 </p>
-<pre class="programlisting">        could not open file "%s": %m</pre>
+<pre class="programlisting">could not open file "%s": %m</pre>
 <p>
 and
 </p>
-<pre class="programlisting">        cannot open file "%s"</pre>
+<pre class="programlisting">cannot open file "%s"</pre>
 <p>
     The first one means that the attempt to open the file failed.  The
     message should give a reason, such as &#8220;<span class="quote">disk full</span>&#8221; or
@@ -205,7 +205,7 @@ and
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736902"></a>Type of the object</h3></div></div>
+<a name="id2741663"></a>Type of the object</h3></div></div>
 <div></div>
 </div>
 <p>    When citing the name of an object, state what kind of object it is.
@@ -217,7 +217,7 @@ and
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736916"></a>Brackets</h3></div></div>
+<a name="id2741677"></a>Brackets</h3></div></div>
 <div></div>
 </div>
 <p>    Square brackets are only to be used (1) in command synopses to denote
@@ -230,13 +230,13 @@ and
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736928"></a>Assembling error messages</h3></div></div>
+<a name="id2741689"></a>Assembling error messages</h3></div></div>
 <div></div>
 </div>
 <p>   When a message includes text that is generated elsewhere, embed it in
    this style:
 </p>
-<pre class="programlisting">        could not open file %s: %m</pre>
+<pre class="programlisting">could not open file %s: %m</pre>
 <p>
    </p>
 <p>    Rationale: It would be difficult to account for all possible error codes
@@ -249,14 +249,14 @@ and
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736950"></a>Reasons for errors</h3></div></div>
+<a name="id2741711"></a>Reasons for errors</h3></div></div>
 <div></div>
 </div>
 <p>    Messages should always state the reason why an error occurred.
     For example:
 </p>
-<pre class="programlisting">        BAD:    could not open file %s
-        BETTER: could not open file %s (I/O failure)</pre>
+<pre class="programlisting">BAD:    could not open file %s
+BETTER: could not open file %s (I/O failure)</pre>
 <p>
     If no reason is known you better fix the code.
    </p>
@@ -264,7 +264,7 @@ and
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2736966"></a>Function names</h3></div></div>
+<a name="id2741726"></a>Function names</h3></div></div>
 <div></div>
 </div>
 <p>    Don't include the name of the reporting routine in the error text. We have
@@ -272,15 +272,15 @@ and
     not helpful information.  If the error text doesn't make as much sense
     without the function name, reword it. 
 </p>
-<pre class="programlisting">        BAD:    pg_atoi: error in "z": can't parse "z"
-        BETTER: invalid input syntax for integer: "z"</pre>
+<pre class="programlisting">BAD:    pg_atoi: error in "z": can't parse "z"
+BETTER: invalid input syntax for integer: "z"</pre>
 <p>
    </p>
 <p>    Avoid mentioning called function names, either; instead say what the code
     was trying to do:
 </p>
-<pre class="programlisting">        BAD:    open() failed: %m
-        BETTER: could not open file %s: %m</pre>
+<pre class="programlisting">BAD:    open() failed: %m
+BETTER: could not open file %s: %m</pre>
 <p>
     If it really seems necessary, mention the system call in the detail
     message.  (In some cases, providing the actual values passed to the
@@ -292,7 +292,7 @@ and
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2737002"></a>Tricky words to avoid</h3></div></div>
+<a name="id2741762"></a>Tricky words to avoid</h3></div></div>
 <div></div>
 </div>
 <p><b>Unable. </b>    &#8220;<span class="quote">Unable</span>&#8221; is nearly the passive voice.  Better use
@@ -310,8 +310,8 @@ and
     it's erroneous? &#8220;<span class="quote">Unrecognized</span>&#8221; is often a better choice.
     Also, be sure to include the value being complained of. 
 </p>
-<pre class="programlisting">        BAD:    unknown node type
-        BETTER: unrecognized node type: 42</pre>
+<pre class="programlisting">BAD:    unknown node type
+BETTER: unrecognized node type: 42</pre>
 <p>
    </p>
 <p><b>Find vs. Exists. </b>    If the program uses a nontrivial algorithm to locate a resource (e.g., a
@@ -325,7 +325,7 @@ and
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2737108"></a>Proper spelling</h3></div></div>
+<a name="id2741868"></a>Proper spelling</h3></div></div>
 <div></div>
 </div>
 <p>    Spell out words in full.  For instance, avoid:
@@ -350,7 +350,7 @@ and
 <div class="simplesect" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2737138"></a>Localization</h3></div></div>
+<a name="id2741898"></a>Localization</h3></div></div>
 <div></div>
 </div>
 <p>    Keep in mind that error message texts need to be translated into other

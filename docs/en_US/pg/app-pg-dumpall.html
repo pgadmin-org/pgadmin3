@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="previous" href="app-pgdump.html" title="pg_dump">
 <link rel="next" href="app-pgrestore.html" title="pg_restore">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>pg_dumpall &#8212; extract a <span class="productname">PostgreSQL</span> database cluster into a script file</p>
 </div>
-<a name="id2706367"></a><div class="refsynopsisdiv">
+<a name="id2710673"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><tt class="command">pg_dumpall</tt> [<i class="replaceable"><tt>option</tt></i>...]</p></div>
 </div>
@@ -54,14 +54,15 @@
    operators should be used to redirect it into a file.
   </p>
 <p>  <span class="application">pg_dumpall</span> needs to connect several
-  times to the <span class="productname">PostgreSQL</span> server and might be asking for
+  times to the <span class="productname">PostgreSQL</span> server (once per
+  database).  If you use password authentication it is likely to ask for
   a password each time. It is convenient to have a
-  <tt class="filename">$HOME/.pgpass</tt> file in such cases.
+  <tt class="filename">~/.pgpass</tt> file in such cases. See <a href="libpq-pgpass.html" title="27.12. The Password File">Section 27.12, &#8220;The Password File&#8221;</a> for more information.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706519"></a><h2>Options</h2>
-<p>    The following command-line options are used to control the content and
+<a name="id2710833"></a><h2>Options</h2>
+<p>    The following command-line options control the content and
     format of the output.
 
     </p>
@@ -69,36 +70,39 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-a</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--data-only</tt></span>
 </dt>
-<dd><p>	Dump only the data, not the schema (data definitions).
+<dd><p>        Dump only the data, not the schema (data definitions).
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-c</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--clean</tt></span>
 </dt>
-<dd><p>	Include SQL commands to clean (drop) the databases before
-	recreating them.
+<dd><p>        Include SQL commands to clean (drop) the databases before
+        recreating them.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-d</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--inserts</tt></span>
 </dt>
-<dd><p>	Dump data as <tt class="command">INSERT</tt> commands (rather
-	than <tt class="command">COPY</tt>). This will make restoration very
-	slow, but it makes the output more portable to other SQL database
-	management systems.
+<dd><p>        Dump data as <tt class="command">INSERT</tt> commands (rather
+        than <tt class="command">COPY</tt>).  This will make restoration very slow;
+        it is mainly useful for making dumps that can be loaded into
+        non-<span class="productname">PostgreSQL</span> databases.  Note that
+        the restore may fail altogether if you have rearranged column order.
+        The <tt class="option">-D</tt> option is safer, though even slower.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-D</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--column-inserts</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--attribute-inserts</tt></span>
 </dt>
-<dd><p>	Dump data as <tt class="command">INSERT</tt> commands with explicit
-	column names (<tt class="literal">INSERT INTO
-	<i class="replaceable"><tt>table</tt></i>
-	(<i class="replaceable"><tt>column</tt></i>, ...) VALUES
-	...</tt>).  This will make restoration very slow,
-	but it is necessary if you desire to rearrange column ordering.
+<dd><p>        Dump data as <tt class="command">INSERT</tt> commands with explicit
+        column names (<tt class="literal">INSERT INTO
+        <i class="replaceable"><tt>table</tt></i>
+        (<i class="replaceable"><tt>column</tt></i>, ...) VALUES
+        ...</tt>).  This will make restoration very slow; it is mainly
+        useful for making dumps that can be loaded into
+        non-<span class="productname">PostgreSQL</span> databases.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-g</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--globals-only</tt></span>
 </dt>
-<dd><p>	Dump only global objects (users and groups), no databases.
+<dd><p>        Dump only global objects (users and groups), no databases.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-i</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--ignore-version</tt></span>
@@ -118,50 +122,52 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-o</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--oids</tt></span>
 </dt>
-<dd><p>	Dump object identifiers (<span class="acronym">OID</span>s) for every
-	table.  Use this option if your application references the OID
-	columns in some way (e.g., in a foreign key constraint).
-	Otherwise, this option should not be used.
+<dd><p>        Dump object identifiers (<span class="acronym">OID</span>s) as part of the
+        data for every table.  Use this option if your application references
+        the <span class="acronym">OID</span>
+        columns in some way (e.g., in a foreign key constraint).
+        Otherwise, this option should not be used.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-O</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-owner</tt></span>
 </dt>
 <dd><p>        Do not output commands to set
-	ownership of objects to match the original database.
-	By default, <span class="application">pg_dumpall</span> issues
-	<tt class="command">SET SESSION AUTHORIZATION</tt>
-	statements to set ownership of created schema elements.
-	These statements
-	will fail when the script is run unless it is started by a superuser
-	(or the same user that owns all of the objects in the script).
-	To make a script that can be restored by any user, but will give
-	that user ownership of all the objects, specify <tt class="option">-O</tt>.
+        ownership of objects to match the original database.
+        By default, <span class="application">pg_dumpall</span> issues
+        <tt class="command">ALTER OWNER</tt> or 
+        <tt class="command">SET SESSION AUTHORIZATION</tt>
+        statements to set ownership of created schema elements.
+        These statements
+        will fail when the script is run unless it is started by a superuser
+        (or the same user that owns all of the objects in the script).
+        To make a script that can be restored by any user, but will give
+        that user ownership of all the objects, specify <tt class="option">-O</tt>.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-s</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--schema-only</tt></span>
 </dt>
-<dd><p>	Dump only the schema (data definitions), no data.
+<dd><p>        Dump only the object definitions (schema), not data.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-S <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--superuser=<i class="replaceable"><tt>username</tt></i></tt></span>
 </dt>
 <dd><p>        Specify the superuser user name to use when disabling triggers.
-	This is only relevant if <tt class="option">--disable-triggers</tt> is used.
-	(Usually, it's better to leave this out, and instead start the
-	resulting script as superuser.)
+        This is only relevant if <tt class="option">--disable-triggers</tt> is used.
+        (Usually, it's better to leave this out, and instead start the
+        resulting script as superuser.)
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-v</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--verbose</tt></span>
 </dt>
-<dd><p>	Specifies verbose mode.  This will cause
-	<span class="application">pg_dumpall</span> to output start/stop
+<dd><p>        Specifies verbose mode.  This will cause
+        <span class="application">pg_dumpall</span> to output start/stop
         times to the dump file, and progress messages to standard error.
         It will also enable verbose output in <span class="application">pg_dump</span>.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-x</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--no-privileges</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-acl</tt></span>
 </dt>
-<dd><p>	Prevent dumping of access privileges (grant/revoke commands).
+<dd><p>        Prevent dumping of access privileges (grant/revoke commands).
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X disable-dollar-quoting</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--disable-dollar-quoting</tt></span>
@@ -189,10 +195,10 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X use-set-session-authorization</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--use-set-session-authorization</tt></span>
 </dt>
-<dd><p>	Output SQL standard SET SESSION AUTHORIZATION commands instead
-	of OWNER TO commands.  This makes the dump more standards compatible,
-	but depending on the history of the objects in the dump, may not
-	restore properly.
+<dd><p>        Output SQL standard SET SESSION AUTHORIZATION commands instead
+        of OWNER TO commands.  This makes the dump more standards compatible,
+        but depending on the history of the objects in the dump, may not
+        restore properly.
        </p></dd>
 </dl></div>
 <p>
@@ -202,17 +208,17 @@
    </p>
 <div class="variablelist"><dl>
 <dt><span class="term">-h <i class="replaceable"><tt>host</tt></i></span></dt>
-<dd><p>	Specifies the host name of the machine on which the database
-	server is running.  If the value begins with a slash, it is
-	used as the directory for the Unix domain socket.  The default
-	is taken from the <tt class="envar">PGHOST</tt> environment variable,
-	if set, else a Unix domain socket connection is attempted.
+<dd><p>        Specifies the host name of the machine on which the database
+        server is running.  If the value begins with a slash, it is
+        used as the directory for the Unix domain socket.  The default
+        is taken from the <tt class="envar">PGHOST</tt> environment variable,
+        if set, else a Unix domain socket connection is attempted.
        </p></dd>
 <dt><span class="term">-p <i class="replaceable"><tt>port</tt></i></span></dt>
-<dd><p>	Specifies the TCP port or local Unix domain socket file
-	extension on which the server is listening for connections.
-	Defaults to the <tt class="envar">PGPORT</tt> environment variable, if
-	set, or a compiled-in default.
+<dd><p>        Specifies the TCP port or local Unix domain socket file
+        extension on which the server is listening for connections.
+        Defaults to the <tt class="envar">PGPORT</tt> environment variable, if
+        set, or a compiled-in default.
        </p></dd>
 <dt><span class="term">-U <i class="replaceable"><tt>username</tt></i></span></dt>
 <dd><p>        Connect as the given user.
@@ -226,7 +232,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706929"></a><h2>Environment</h2>
+<a name="id2711276"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
@@ -236,7 +242,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706949"></a><h2>Notes</h2>
+<a name="id2711296"></a><h2>Notes</h2>
 <p>   Since <span class="application">pg_dumpall</span> calls
    <span class="application">pg_dump</span> internally, some diagnostic
    messages will refer to <span class="application">pg_dump</span>.
@@ -266,7 +272,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2707043"></a><h2>See Also</h2>
+<a name="id2711390"></a><h2>See Also</h2>
 <p>    <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a>.  Check there for details on possible
     error conditions.
   </p>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="largeobjects.html" title="Chapter 28. Large Objects">
 <link rel="previous" href="lo-interfaces.html" title="28.3. Client Interfaces">
 <link rel="next" href="lo-examplesect.html" title="28.5. Example Program">
@@ -16,28 +16,43 @@
 <a name="lo-funcs"></a>28.4. Server-Side Functions</h2></div></div>
 <div></div>
 </div>
-<p>     There are two built-in server-side functions,
-     <tt class="function">lo_import</tt><a name="id2615978"></a>
-     and
-     <tt class="function">lo_export</tt>,<a name="id2615991"></a>
-     for large object access, which are available for use in
-     <span class="acronym">SQL</span> commands.  Here is an example of their
-     use:
+<p>   There are server-side functions callable from SQL that correspond to
+   each of the client-side functions described above; indeed, for the
+   most part the client-side functions are simply interfaces to the
+   equivalent server-side functions.  The ones that are actually useful
+   to call via SQL commands are
+   <tt class="function">lo_creat</tt><a name="id2618223"></a>,
+   <tt class="function">lo_unlink</tt><a name="id2618234"></a>,
+   <tt class="function">lo_import</tt><a name="id2618246"></a>, and
+   <tt class="function">lo_export</tt><a name="id2618258"></a>.
+   Here are examples of their use:
+
 </p>
 <pre class="programlisting">CREATE TABLE image (
     name            text,
     raster          oid
 );
 
+SELECT lo_creat(-1);       -- returns OID of new, empty large object
+
+SELECT lo_unlink(173454);  -- deletes large object with OID 173454
+
 INSERT INTO image (name, raster)
     VALUES ('beautiful image', lo_import('/etc/motd'));
 
 SELECT lo_export(image.raster, '/tmp/motd') FROM image
     WHERE name = 'beautiful image';</pre>
-<p>These functions read and write files in the server's file system, using the
-permissions of the database's owning user.  Therefore, their use is restricted
-to superusers.  (In contrast, the client-side import and export functions
-read and write files in the client's file system, using the permissions of
-the client program.  Their use is not restricted.)</p>
+<p>
+  </p>
+<p>    The server-side <tt class="function">lo_import</tt> and
+    <tt class="function">lo_export</tt> functions behave considerably differently
+    from their client-side analogs.  These two functions read and write files
+    in the server's file system, using the permissions of the database's
+    owning user.  Therefore, their use is restricted to superusers.  In
+    contrast, the client-side import and export functions read and write files
+    in the client's file system, using the permissions of the client program.
+    The client-side functions can be used by any
+    <span class="productname">PostgreSQL</span> user.
+  </p>
 </div></body>
 </html>

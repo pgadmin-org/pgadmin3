@@ -1,38 +1,38 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>32.3. Rules on INSERT, UPDATE, and DELETE</title>
+<title>33.3. Rules on INSERT, UPDATE, and DELETE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
-<link rel="up" href="rules.html" title="Chapter 32. The Rule System">
-<link rel="previous" href="rules-views.html" title="32.2. Views and the Rule System">
-<link rel="next" href="rules-privileges.html" title="32.4. Rules and Privileges">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="up" href="rules.html" title="Chapter 33. The Rule System">
+<link rel="previous" href="rules-views.html" title="33.2. Views and the Rule System">
+<link rel="next" href="rules-privileges.html" title="33.4. Rules and Privileges">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="rules-update"></a>32.3. Rules on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, and <tt class="command">DELETE</tt></h2></div></div>
+<a name="rules-update"></a>33.3. Rules on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, and <tt class="command">DELETE</tt></h2></div></div>
 <div></div>
 </div>
-<a name="id2640182"></a><a name="id2640197"></a><a name="id2640211"></a><p>    Rules that are defined on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>,
+<a name="id2643884"></a><a name="id2643899"></a><a name="id2643913"></a><p>    Rules that are defined on <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>,
     and <tt class="command">DELETE</tt> are significantly different from the view rules
     described in the previous section. First, their <tt class="command">CREATE
     RULE</tt> command allows more:
 
     </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>	    They are allowed to have no action.
-	</p></li>
-<li><p>	    They can have multiple actions.
-	</p></li>
-<li><p>	    They can be <tt class="literal">INSTEAD</tt> or <tt class="literal">ALSO</tt> (default).
-	</p></li>
-<li><p>	    The pseudorelations <tt class="literal">NEW</tt> and <tt class="literal">OLD</tt> become useful.
-	</p></li>
-<li><p>	    They can have rule qualifications.
-	</p></li>
+<li><p>            They are allowed to have no action.
+        </p></li>
+<li><p>            They can have multiple actions.
+        </p></li>
+<li><p>            They can be <tt class="literal">INSTEAD</tt> or <tt class="literal">ALSO</tt> (default).
+        </p></li>
+<li><p>            The pseudorelations <tt class="literal">NEW</tt> and <tt class="literal">OLD</tt> become useful.
+        </p></li>
+<li><p>            They can have rule qualifications.
+        </p></li>
 </ul></div>
 <p>
 
@@ -42,7 +42,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2640301"></a>32.3.1. How Update Rules Work</h3></div></div>
+<a name="id2644004"></a>33.3.1. How Update Rules Work</h3></div></div>
 <div></div>
 </div>
 <p>    Keep the syntax
@@ -133,7 +133,7 @@
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2640611"></a>32.3.1.1. A First Rule Step by Step</h4></div></div>
+<a name="id2644305"></a>33.3.1.1. A First Rule Step by Step</h4></div></div>
 <div></div>
 </div>
 <p>    Say we want to trace changes to the <tt class="literal">sl_avail</tt> column in the
@@ -355,10 +355,10 @@ SELECT shoelace_data.sl_name, 0,
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="rules-update-views"></a>32.3.2. Cooperation with Views</h3></div></div>
+<a name="rules-update-views"></a>33.3.2. Cooperation with Views</h3></div></div>
 <div></div>
 </div>
-<a name="id2641074"></a><p>    A simple way to protect view relations from the mentioned
+<a name="id2644768"></a><p>    A simple way to protect view relations from the mentioned
     possibility that someone can try to run <tt class="command">INSERT</tt>,
     <tt class="command">UPDATE</tt>, or <tt class="command">DELETE</tt> on them is
     to let those query trees get thrown away.  So we create the rules

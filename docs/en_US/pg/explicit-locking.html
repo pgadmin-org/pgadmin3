@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
 <link rel="previous" href="transaction-iso.html" title="12.2. Transaction Isolation">
 <link rel="next" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
@@ -16,7 +16,7 @@
 <a name="explicit-locking"></a>12.3. Explicit Locking</h2></div></div>
 <div></div>
 </div>
-<a name="id2570209"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
+<a name="id2570966"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
     to control concurrent access to data in tables.  These modes can
     be used for application-controlled locking in situations where
     <span class="acronym">MVCC</span> does not give the desired behavior.  Also,
@@ -38,7 +38,7 @@
 <a name="locking-tables"></a>12.3.1. Table-Level Locks</h3></div></div>
 <div></div>
 </div>
-<a name="id2570278"></a><p>    The list below shows the available lock modes and the contexts in
+<a name="id2571034"></a><p>    The list below shows the available lock modes and the contexts in
     which they are used automatically by
     <span class="productname">PostgreSQL</span>.  You can also acquire any
     of these locks explicitly with the command <a href="sql-lock.html" title="LOCK"><span class="refentrytitle"><a name="sql-lock-title"></a>LOCK</span></a>.
@@ -223,7 +223,7 @@
 <a name="locking-deadlocks"></a>12.3.3. Deadlocks</h3></div></div>
 <div></div>
 </div>
-<a name="id2570934"></a><p>     The use of explicit locking can increase the likelihood of
+<a name="id2571691"></a><p>     The use of explicit locking can increase the likelihood of
      <i class="firstterm">deadlocks</i>, wherein two (or more) transactions each
      hold locks that the other wants.  For example, if transaction 1
      acquires an exclusive lock on table A and then tries to acquire

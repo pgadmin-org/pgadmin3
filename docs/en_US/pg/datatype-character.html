@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="previous" href="datatype-money.html" title="8.2. Monetary Types">
 <link rel="next" href="datatype-binary.html" title="8.4. Binary Data Types">
@@ -16,7 +16,7 @@
 <a name="datatype-character"></a>8.3. Character Types</h2></div></div>
 <div></div>
 </div>
-<a name="id2532472"></a><a name="id2532485"></a><a name="id2532493"></a><a name="id2532502"></a><a name="id2532511"></a><a name="id2532521"></a><a name="id2532530"></a><div class="table">
+<a name="id2532936"></a><a name="id2532948"></a><a name="id2532957"></a><a name="id2532966"></a><a name="id2532975"></a><a name="id2532985"></a><a name="id2532994"></a><div class="table">
 <a name="datatype-character-table"></a><p class="title"><b>Table 8.4. Character Types</b></p>
 <table summary="Character Types" border="1">
 <colgroup>
@@ -85,7 +85,7 @@
     varying(<i class="replaceable"><tt>n</tt></i>)</tt> and
     <tt class="type">character(<i class="replaceable"><tt>n</tt></i>)</tt>, respectively.
     <tt class="type">character</tt> without length specifier is equivalent to
-    <tt class="type">character(1)</tt>; if <tt class="type">character varying</tt> is used
+    <tt class="type">character(1)</tt>. If <tt class="type">character varying</tt> is used
     without length specifier, the type accepts strings of any size. The
     latter is a <span class="productname">PostgreSQL</span> extension.
    </p>
@@ -139,7 +139,7 @@
     refer to <a href="multibyte.html" title="20.2. Character Set Support">Section 20.2, &#8220;Character Set Support&#8221;</a>.
    </p>
 <div class="example">
-<a name="id2532893"></a><p class="title"><b>Example 8.1. Using the character types</b></p>
+<a name="id2533357"></a><p class="title"><b>Example 8.1. Using the character types</b></p>
 <pre class="programlisting">CREATE TABLE test1 (a character(4));
 INSERT INTO test1 VALUES ('ok');
 SELECT a, char_length(a) FROM test1; -- <a name="co.datatype-char"></a>(1)

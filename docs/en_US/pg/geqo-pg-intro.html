@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="geqo.html" title="Chapter 46. Genetic Query Optimizer">
 <link rel="previous" href="geqo-intro2.html" title="46.2. Genetic Algorithms">
-<link rel="next" href="geqo-biblio.html" title="46.4. Further Readings">
+<link rel="next" href="geqo-biblio.html" title="46.4. Further Reading">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
@@ -16,11 +16,12 @@
 <a name="geqo-pg-intro"></a>46.3. Genetic Query Optimization (<span class="acronym">GEQO</span>) in PostgreSQL</h2></div></div>
 <div></div>
 </div>
-<p>    The <span class="acronym">GEQO</span> module is intended for the solution of the query
-    optimization problem similar to a traveling salesman problem (<span class="acronym">TSP</span>).
+<p>    The <span class="acronym">GEQO</span> module approaches the query
+    optimization problem as though it were the well-known traveling salesman
+    problem (<span class="acronym">TSP</span>).
     Possible query plans are encoded as integer strings. Each string
     represents the join order from one relation of the query to the next.
-    E. g., the query tree
+    For example, the join tree
 </p>
 <pre class="literallayout">   /\
   /\ 2
@@ -71,18 +72,26 @@
 </div>
 <p>      Work is still needed to improve the genetic algorithm parameter
       settings.
-      In file <tt class="filename">backend/optimizer/geqo/geqo_params.c</tt>, routines
+      In file <tt class="filename">src/backend/optimizer/geqo/geqo_main.c</tt>,
+      routines
       <tt class="function">gimme_pool_size</tt> and <tt class="function">gimme_number_generations</tt>,
       we have to find a compromise for the parameter settings
       to satisfy two competing demands:
       </p>
 <div class="itemizedlist"><ul type="disc" compact>
-<li><p>	 Optimality of the query plan
-	</p></li>
-<li><p>	 Computing time
-	</p></li>
+<li><p>         Optimality of the query plan
+        </p></li>
+<li><p>         Computing time
+        </p></li>
 </ul></div>
 <p>
+     </p>
+<p>      At a more basic level, it is not clear that solving query optimization
+      with a GA algorithm designed for TSP is appropriate.  In the TSP case,
+      the cost associated with any substring (partial tour) is independent
+      of the rest of the tour, but this is certainly not true for query
+      optimization.  Thus it is questionable whether edge recombination
+      crossover is the most effective mutation procedure.
      </p>
 </div>
 </div></body>

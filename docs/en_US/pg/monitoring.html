@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="previous" href="migration.html" title="22.4. Migration Between Releases">
 <link rel="next" href="monitoring-stats.html" title="23.2. The Statistics Collector">
@@ -28,7 +28,7 @@
 <dt><span class="sect1"><a href="monitoring-locks.html">23.3. Viewing Locks</a></span></dt>
 </dl>
 </div>
-<a name="id2601230"></a><a name="id2601241"></a><p>  A database administrator frequently wonders, &#8220;<span class="quote">What is the system
+<a name="id2603348"></a><a name="id2603360"></a><p>  A database administrator frequently wonders, &#8220;<span class="quote">What is the system
   doing right now?</span>&#8221;
   This chapter discusses how to find that out.
  </p>
@@ -36,7 +36,8 @@
    analyzing performance.  Most of this chapter is devoted to describing
    <span class="productname">PostgreSQL</span>'s statistics collector,
    but one should not neglect regular Unix monitoring programs such as
-   <tt class="command">ps</tt> and <tt class="command">top</tt>.  Also, once one has identified a
+   <tt class="command">ps</tt>, <tt class="command">top</tt>, <tt class="command">iostat</tt>, and <tt class="command">vmstat</tt>.
+   Also, once one has identified a
    poorly-performing query, further investigation may be needed using
    <span class="productname">PostgreSQL</span>'s <a href="sql-explain.html">EXPLAIN</a> command.
    <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using EXPLAIN&#8221;</a> discusses <tt class="command">EXPLAIN</tt>
@@ -49,7 +50,7 @@
 <a name="monitoring-ps"></a>23.1. Standard Unix Tools</h2></div></div>
 <div></div>
 </div>
-<a name="id2601322"></a><p>   On most platforms, <span class="productname">PostgreSQL</span> modifies its
+<a name="id2603452"></a><p>   On most platforms, <span class="productname">PostgreSQL</span> modifies its
    command title as reported by <tt class="command">ps</tt>, so that individual server
    processes can readily be identified.  A sample display is
 

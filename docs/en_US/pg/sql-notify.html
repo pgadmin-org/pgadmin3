@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-move.html" title="MOVE">
 <link rel="next" href="sql-prepare.html" title="PREPARE">
@@ -19,16 +19,23 @@
 <h2>Name</h2>
 <p>NOTIFY &#8212; generate a notification</p>
 </div>
-<a name="id2690710"></a><div class="refsynopsisdiv">
+<a name="id2694785"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">NOTIFY <i class="replaceable"><tt>name</tt></i>        </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690730"></a><h2>Description</h2>
+<a name="id2694805"></a><h2>Description</h2>
 <p>   The <tt class="command">NOTIFY</tt> command sends a notification event to each
    client application that has previously executed
    <tt class="command">LISTEN <i class="replaceable"><tt>name</tt></i></tt>
    for the specified notification name in the current database.
+  </p>
+<p>   <tt class="command">NOTIFY</tt> provides a simple form of signal or
+   interprocess communication mechanism for a collection of processes
+   accessing the same <span class="productname">PostgreSQL</span> database.
+   Higher-level mechanisms can be built by using tables in the database to
+   pass additional data (beyond a mere notification name) from notifier to
+   listener(s).
   </p>
 <p>   The information passed to the client for a notification event includes the notification
    name and the notifying session's server process <span class="acronym">PID</span>.  It is up to the
@@ -41,13 +48,6 @@
    the <tt class="command">NOTIFY</tt> and <tt class="command">LISTEN</tt> commands.  For
    example, a database designer could use several different notification names
    to signal different sorts of changes to a single table.
-  </p>
-<p>   <tt class="command">NOTIFY</tt> provides a simple form of signal or
-   interprocess communication mechanism for a collection of processes
-   accessing the same <span class="productname">PostgreSQL</span> database.
-   Higher-level mechanisms can be built by using tables in the database to
-   pass additional data (beyond a mere notification name) from notifier to
-   listener(s).
   </p>
 <p>   When <tt class="command">NOTIFY</tt> is used to signal the occurrence of changes
    to a particular table, a useful programming technique is to put the
@@ -66,7 +66,8 @@
    the notification event will not be delivered to its connected client until just
    after the transaction is completed (either committed or aborted).  Again, the
    reasoning is that if a notification were delivered within a transaction that was
-   later aborted, one would want the notification to be undone somehow---but
+   later aborted, one would want the notification to be undone somehow [mdash ]
+   but
    the server cannot &#8220;<span class="quote">take back</span>&#8221; a notification once it has sent it to the client.
    So notification events are only delivered between transactions.  The upshot of this
    is that applications using <tt class="command">NOTIFY</tt> for real-time signaling
@@ -101,7 +102,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690946"></a><h2>Parameters</h2>
+<a name="id2695022"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
 <dd><p>      Name of the notification to be signaled (any identifier).
@@ -109,7 +110,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690962"></a><h2>Examples</h2>
+<a name="id2695037"></a><h2>Examples</h2>
 <p>   Configure and execute a listen/notify sequence from
    <span class="application">psql</span>:
 
@@ -121,13 +122,13 @@ Asynchronous notification "virtual" received from server process with PID 8448.<
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690982"></a><h2>Compatibility</h2>
+<a name="id2695057"></a><h2>Compatibility</h2>
 <p>   There is no <tt class="command">NOTIFY</tt> statement in the SQL
    standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2690994"></a><h2>See Also</h2>
+<a name="id2695070"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-listen.html">LISTEN</a>, <a href="sql-unlisten.html">UNLISTEN</a></span>
 </div>
 </div></body>

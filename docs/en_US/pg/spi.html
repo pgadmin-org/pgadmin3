@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="previous" href="plpython-database.html" title="38.3. Database Access">
 <link rel="next" href="spi-spi-connect.html" title="SPI_connect">
@@ -26,7 +26,7 @@
 <dt><span class="sect1"><a href="spi-examples.html">39.5. Examples</a></span></dt>
 </dl>
 </div>
-<a name="id2654568"></a><p>  The <i class="firstterm">Server Programming Interface</i>
+<a name="id2658011"></a><p>  The <i class="firstterm">Server Programming Interface</i>
   (<span class="acronym">SPI</span>) gives writers of user-defined
   <span class="acronym">C</span> functions the ability to run
   <span class="acronym">SQL</span> commands inside their functions.
@@ -38,8 +38,8 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>   The available procedural languages provide various means to
-   execute SQL commands from procedures.  Some of these are based on or
-   modelled after SPI, so this documentation might be of use for users
+   execute SQL commands from procedures.  Most of these facilities are
+   based on SPI, so this documentation might be of use for users
    of those languages as well.
   </p>
 </div>
@@ -48,15 +48,15 @@
   &#8220;<span class="quote">procedure</span>&#8221; for a user-defined C-function that is
   using <span class="acronym">SPI</span>.
  </p>
-<p>  Note that if during the execution of a procedure the transaction is
-  aborted because of an error in a command, then control will not be
-  returned to your procedure.  Rather, all work will be rolled back
-  and the server will wait for the next command from the client.  A
-  related restriction is the inability to execute
-  <tt class="command">BEGIN</tt>, <tt class="command">COMMIT</tt>, and
-  <tt class="command">ROLLBACK</tt> (transaction control statements) inside
-  a procedure.  Both of these restrictions will probably be changed in
-  the future.
+<p>  Note that if a command invoked via SPI fails, then control will not be
+  returned to your procedure.  Rather, the
+  transaction or subtransaction in which your procedure executes will be
+  rolled back.  (This may seem surprising given that the SPI functions mostly
+  have documented error-return conventions.  Those conventions only apply
+  for errors detected within the SPI functions themselves, however.)
+  It is possible to recover control after an error by establishing your own
+  subtransaction surrounding SPI calls that might fail.  This is not currently
+  documented because the mechanisms required are still in flux.
  </p>
 <p>  <span class="acronym">SPI</span> functions return a nonnegative result on
   success (either via a returned integer value or in the global

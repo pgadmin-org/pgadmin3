@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="previous" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="next" href="app-ipcclean.html" title="ipcclean">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>initdb &#8212; create a new <span class="productname">PostgreSQL</span> database cluster</p>
 </div>
-<a name="id2715030"></a><div class="refsynopsisdiv">
+<a name="id2719528"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><tt class="command">initdb</tt> [<i class="replaceable"><tt>option</tt></i>...]  [--pgdata ] |  [-D ]<i class="replaceable"><tt>directory</tt></i> </p></div>
 </div>
@@ -40,21 +40,22 @@
    It contains catalog tables filled in for things like the
    built-in types.
   </p>
-<p>   <tt class="command">initdb</tt> initializes the database cluster's
-   default locale and character set encoding.  Some locale categories
-   are fixed for the lifetime of the cluster, so it is important to
-   make the right choice when running <tt class="command">initdb</tt>.
-   Other locale categories can be changed later when the server is
-   started.  <tt class="command">initdb</tt> will write those locale
-   settings into the <tt class="filename">postgresql.conf</tt>
-   configuration file so they are the default, but they can be changed
-   by editing that file.  To set the locale that
-   <tt class="command">initdb</tt> uses, see the description of the
-   <tt class="option">--locale</tt> option.  The character set encoding can
+<p>   <tt class="command">initdb</tt> initializes the database cluster's default
+   locale and character set encoding. Some locale categories are fixed
+   for the lifetime of the cluster. There is also a performance impact
+   in using locales other than <tt class="literal">C</tt> or <tt class="literal">POSIX</tt>.
+   Therefore it is important to make the right choice when running
+   <tt class="command">initdb</tt>. Other locale categories can be changed
+   later when the server is started. <tt class="command">initdb</tt> will
+   write those locale settings into the
+   <tt class="filename">postgresql.conf</tt> configuration file so they are
+   the default, but they can be changed by editing that file. To set the
+   locale that <tt class="command">initdb</tt> uses, see the description of
+   the <tt class="option">--locale</tt> option. The character set encoding can
    be set separately for each database as it is created.
    <tt class="command">initdb</tt> determines the encoding for the
    <tt class="literal">template1</tt> database, which will serve as the
-   default for all other databases.  To alter the default encoding use
+   default for all other databases. To alter the default encoding use
    the <tt class="option">--encoding</tt> option.
   </p>
 <p>   <tt class="command">initdb</tt> must be run as the user that will own the
@@ -75,7 +76,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715243"></a><h2>Options</h2>
+<a name="id2719752"></a><h2>Options</h2>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt>
@@ -178,7 +179,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715597"></a><h2>Environment</h2>
+<a name="id2720106"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="envar">PGDATA</tt></span></dt>
 <dd><p>      Specifies the directory where the database cluster is to be
@@ -187,7 +188,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715614"></a><h2>See Also</h2>
+<a name="id2720124"></a><h2>See Also</h2>
 <span class="simplelist"><a href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a>, <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a></span>
 </div>
 </div></body>

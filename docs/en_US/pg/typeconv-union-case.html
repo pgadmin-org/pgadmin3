@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
 <link rel="previous" href="typeconv-query.html" title="10.4. Value Storage">
 <link rel="next" href="indexes.html" title="Chapter 11. Indexes">
@@ -16,7 +16,7 @@
 <a name="typeconv-union-case"></a>10.5. <tt class="literal">UNION</tt>, <tt class="literal">CASE</tt>, and <tt class="literal">ARRAY</tt> Constructs</h2></div></div>
 <div></div>
 </div>
-<a name="id2567538"></a><a name="id2567550"></a><a name="id2567562"></a><p>SQL <tt class="literal">UNION</tt> constructs must match up possibly dissimilar
+<a name="id2568235"></a><a name="id2568247"></a><a name="id2568259"></a><p>SQL <tt class="literal">UNION</tt> constructs must match up possibly dissimilar
 types to become a single result set.  The resolution algorithm is
 applied separately to each output column of a union query.  The
 <tt class="literal">INTERSECT</tt> and <tt class="literal">EXCEPT</tt> constructs resolve
@@ -40,7 +40,7 @@ converted to it.</p></li>
 </div>
 <p>Some examples follow.</p>
 <div class="example">
-<a name="id2567680"></a><p class="title"><b>Example 10.7. Type Resolution with Underspecified Types in a Union</b></p>
+<a name="id2568377"></a><p class="title"><b>Example 10.7. Type Resolution with Underspecified Types in a Union</b></p>
 <pre class="screen">SELECT text 'a' AS "text" UNION SELECT 'b';
 
  text
@@ -52,7 +52,7 @@ converted to it.</p></li>
 Here, the unknown-type literal <tt class="literal">'b'</tt> will be resolved as type <tt class="type">text</tt>.</p>
 </div>
 <div class="example">
-<a name="id2567703"></a><p class="title"><b>Example 10.8. Type Resolution in a Simple Union</b></p>
+<a name="id2568399"></a><p class="title"><b>Example 10.8. Type Resolution in a Simple Union</b></p>
 <pre class="screen">SELECT 1.2 AS "numeric" UNION SELECT 1;
 
  numeric
@@ -66,7 +66,7 @@ and the <tt class="type">integer</tt> value <tt class="literal">1</tt> can be ca
 <tt class="type">numeric</tt>, so that type is used.</p>
 </div>
 <div class="example">
-<a name="id2567739"></a><p class="title"><b>Example 10.9. Type Resolution in a Transposed Union</b></p>
+<a name="id2568436"></a><p class="title"><b>Example 10.9. Type Resolution in a Transposed Union</b></p>
 <pre class="screen">SELECT 1 AS "real" UNION SELECT CAST('2.2' AS REAL);
 
  real

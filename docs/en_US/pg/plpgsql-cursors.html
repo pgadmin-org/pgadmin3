@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
 <link rel="previous" href="plpgsql-control-structures.html" title="35.7. Control Structures">
 <link rel="next" href="plpgsql-errors-and-messages.html" title="35.9. Errors and Messages">
@@ -16,7 +16,7 @@
 <a name="plpgsql-cursors"></a>35.8. Cursors</h2></div></div>
 <div></div>
 </div>
-<a name="id2648388"></a><p>    Rather than executing a whole query at once, it is possible to set
+<a name="id2651318"></a><p>    Rather than executing a whole query at once, it is possible to set
     up a <i class="firstterm">cursor</i> that encapsulates the query, and then read
     the query result a few rows at a time. One reason for doing this is
     to avoid memory overrun when the result contains a large number of
@@ -83,10 +83,10 @@
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2648589"></a>35.8.2.1. <tt class="command">OPEN FOR SELECT</tt></h4></div></div>
+<a name="id2651519"></a>35.8.2.1. <tt class="command">OPEN FOR SELECT</tt></h4></div></div>
 <div></div>
 </div>
-<pre class="synopsis">OPEN <i class="replaceable"><tt>unbound-cursor</tt></i> FOR SELECT ...;</pre>
+<pre class="synopsis">OPEN <i class="replaceable"><tt>unbound_cursor</tt></i> FOR SELECT ...;</pre>
 <p>    The cursor variable is opened and given the specified query to
         execute.  The cursor cannot be open already, and it must have been
         declared as an unbound cursor (that is, as a simple
@@ -105,10 +105,10 @@
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2648650"></a>35.8.2.2. <tt class="command">OPEN FOR EXECUTE</tt></h4></div></div>
+<a name="id2651579"></a>35.8.2.2. <tt class="command">OPEN FOR EXECUTE</tt></h4></div></div>
 <div></div>
 </div>
-<pre class="synopsis">OPEN <i class="replaceable"><tt>unbound-cursor</tt></i> FOR EXECUTE <i class="replaceable"><tt>query-string</tt></i>;</pre>
+<pre class="synopsis">OPEN <i class="replaceable"><tt>unbound_cursor</tt></i> FOR EXECUTE <i class="replaceable"><tt>query_string</tt></i>;</pre>
 <p>          The cursor variable is opened and given the specified query to
           execute.  The cursor cannot be open already, and it must have been
           declared as an unbound cursor (that is, as a simple
@@ -126,10 +126,10 @@
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2648700"></a>35.8.2.3. Opening a Bound Cursor</h4></div></div>
+<a name="id2651629"></a>35.8.2.3. Opening a Bound Cursor</h4></div></div>
 <div></div>
 </div>
-<pre class="synopsis">OPEN <i class="replaceable"><tt>bound-cursor</tt></i> [<span class="optional"> ( <i class="replaceable"><tt>argument_values</tt></i> ) </span>];</pre>
+<pre class="synopsis">OPEN <i class="replaceable"><tt>bound_cursor</tt></i> [<span class="optional"> ( <i class="replaceable"><tt>argument_values</tt></i> ) </span>];</pre>
 <p>          This form of <tt class="command">OPEN</tt> is used to open a cursor
           variable whose query was bound to it when it was declared.  The
           cursor cannot be open already.  A list of actual argument value
@@ -170,7 +170,7 @@ OPEN curs3(42);</pre>
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2648791"></a>35.8.3.1. <tt class="literal">FETCH</tt></h4></div></div>
+<a name="id2651721"></a>35.8.3.1. <tt class="literal">FETCH</tt></h4></div></div>
 <div></div>
 </div>
 <pre class="synopsis">FETCH <i class="replaceable"><tt>cursor</tt></i> INTO <i class="replaceable"><tt>target</tt></i>;</pre>
@@ -191,7 +191,7 @@ FETCH curs2 INTO foo, bar, baz;</pre>
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2648850"></a>35.8.3.2. <tt class="literal">CLOSE</tt></h4></div></div>
+<a name="id2651780"></a>35.8.3.2. <tt class="literal">CLOSE</tt></h4></div></div>
 <div></div>
 </div>
 <pre class="synopsis">CLOSE <i class="replaceable"><tt>cursor</tt></i>;</pre>
@@ -208,7 +208,7 @@ FETCH curs2 INTO foo, bar, baz;</pre>
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2648885"></a>35.8.3.3. Returning Cursors</h4></div></div>
+<a name="id2651814"></a>35.8.3.3. Returning Cursors</h4></div></div>
 <div></div>
 </div>
 <p>        <span class="application">PL/pgSQL</span> functions can return cursors to the
@@ -281,6 +281,30 @@ SELECT reffunc2();
 (1 row)
 
 FETCH ALL IN "&lt;unnamed cursor 1&gt;";
+COMMIT;</pre>
+<p>
+       </p>
+<p>        The following example shows one way to return multiple cursors
+        from a single function:
+
+</p>
+<pre class="programlisting">CREATE FUNCTION myfunc(refcursor, refcursor) RETURNS SETOF refcursor AS $$
+BEGIN
+    OPEN $1 FOR SELECT * FROM table_1;
+    RETURN NEXT $1;
+    OPEN $2 FOR SELECT * FROM table_2;
+    RETURN NEXT $2;
+    RETURN;
+END;
+$$ LANGUAGE plpgsql;
+
+-- need to be in a transaction to use cursors.
+BEGIN;
+
+SELECT * FROM myfunc('a', 'b');
+
+FETCH ALL FROM a;
+FETCH ALL FROM b;
 COMMIT;</pre>
 <p>
        </p>

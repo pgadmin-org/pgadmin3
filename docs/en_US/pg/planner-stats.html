@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
 <link rel="previous" href="performance-tips.html" title="Chapter 13. Performance Tips">
 <link rel="next" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
@@ -16,7 +16,7 @@
 <a name="planner-stats"></a>13.2. Statistics Used by the Planner</h2></div></div>
 <div></div>
 </div>
-<a name="id2571996"></a><p>   As we saw in the previous section, the query planner needs to estimate
+<a name="id2572763"></a><p>   As we saw in the previous section, the query planner needs to estimate
    the number of rows retrieved by a query in order to make good choices
    of query plans.  This section provides a quick look at the statistics
    that the system uses for these estimates.
@@ -46,16 +46,17 @@
   </p>
 <p>   For efficiency reasons, <tt class="structfield">reltuples</tt> 
    and <tt class="structfield">relpages</tt> are not updated on-the-fly,
-   and so they usually contain only approximate values (which is good
-   enough for the planner's purposes).  They are initialized with dummy
-   values (presently 1000 and 10 respectively) when a table is created.
-   They are updated by certain commands, presently <tt class="command">VACUUM</tt>,
-   <tt class="command">ANALYZE</tt>, and <tt class="command">CREATE INDEX</tt>.  A stand-alone
+   and so they usually contain somewhat out-of-date values.
+   They are updated by <tt class="command">VACUUM</tt>, <tt class="command">ANALYZE</tt>, and a
+   few DDL commands such as <tt class="command">CREATE INDEX</tt>.  A stand-alone
    <tt class="command">ANALYZE</tt>, that is one not part of <tt class="command">VACUUM</tt>,
    generates an approximate <tt class="structfield">reltuples</tt> value
-   since it does not read every row of the table.
+   since it does not read every row of the table.  The planner
+   will scale the values it finds in <tt class="structname">pg_class</tt>
+   to match the current physical table size, thus obtaining a closer
+   approximation.
   </p>
-<a name="id2572102"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
+<a name="id2572872"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
    to having <tt class="literal">WHERE</tt> clauses that restrict the rows to be examined.
    The planner thus needs to make an estimate of the
    <i class="firstterm">selectivity</i> of <tt class="literal">WHERE</tt> clauses, that is, the fraction of
@@ -65,7 +66,7 @@
    updated by <tt class="command">ANALYZE</tt> and <tt class="command">VACUUM ANALYZE</tt> commands
    and are always approximate even when freshly updated.
   </p>
-<a name="id2572159"></a><p>   Rather than look at <tt class="structname">pg_statistic</tt> directly,
+<a name="id2572929"></a><p>   Rather than look at <tt class="structname">pg_statistic</tt> directly,
    it's better to look at its view <tt class="structname">pg_stats</tt>
    when examining the statistics manually.  <tt class="structname">pg_stats</tt>
    is designed to be more easily readable.  Furthermore,

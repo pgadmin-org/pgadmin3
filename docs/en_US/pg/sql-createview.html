@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-createuser.html" title="CREATE USER">
 <link rel="next" href="sql-deallocate.html" title="DEALLOCATE">
@@ -19,12 +19,12 @@
 <h2>Name</h2>
 <p>CREATE VIEW &#8212; define a new view</p>
 </div>
-<a name="id2681737"></a><div class="refsynopsisdiv">
+<a name="id2685510"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ OR REPLACE ] VIEW <i class="replaceable"><tt>name</tt></i> [ ( <i class="replaceable"><tt>column_name</tt></i> [, ...] ) ] AS <i class="replaceable"><tt>query</tt></i></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681770"></a><h2>Description</h2>
+<a name="id2685543"></a><h2>Description</h2>
 <p>   <tt class="command">CREATE VIEW</tt> defines a view of a query.  The view
    is not physically materialized. Instead, the query is run every time
    the view is referenced in a query.
@@ -42,7 +42,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681809"></a><h2>Parameters</h2>
+<a name="id2685582"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
 <dd><p>      The name (optionally schema-qualified) of a view to be created.
@@ -63,7 +63,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681868"></a><h2>Notes</h2>
+<a name="id2685641"></a><h2>Notes</h2>
 <p>    Currently, views are read only: the system will not allow an insert,
     update, or delete on a view.  You can get the effect of an updatable
     view by creating rules that rewrite inserts, etc. on the view into
@@ -92,7 +92,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681936"></a><h2>Examples</h2>
+<a name="id2685709"></a><h2>Examples</h2>
 <p>   Create a view consisting of all comedy films:
 
 </p>
@@ -104,7 +104,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681950"></a><h2>Compatibility</h2>
+<a name="id2685723"></a><h2>Compatibility</h2>
 <p>   The SQL standard specifies some additional capabilities for the
    <tt class="command">CREATE VIEW</tt> statement:
 </p>
@@ -118,7 +118,7 @@
    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">CHECK OPTION</tt></span></dt>
-<dd><p>        This option is to do with updatable views.  All
+<dd><p>        This option has to do with updatable views.  All
         <tt class="command">INSERT</tt> and <tt class="command">UPDATE</tt> commands on the view
         will be checked to ensure data satisfy the view-defining
         condition (that is, the new data would be visible through the
@@ -138,6 +138,10 @@
 <p>   <tt class="command">CREATE OR REPLACE VIEW</tt> is a
    <span class="productname">PostgreSQL</span> language extension.
   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685842"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-dropview.html">DROP VIEW</a></span>
 </div>
 </div></body>
 </html>

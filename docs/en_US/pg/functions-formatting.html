@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="previous" href="functions-matching.html" title="9.7. Pattern Matching">
 <link rel="next" href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">
@@ -16,7 +16,7 @@
 <a name="functions-formatting"></a>9.8. Data Type Formatting Functions</h2></div></div>
 <div></div>
 </div>
-<a name="id2552262"></a><a name="id2552272"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
+<a name="id2552967"></a><a name="id2552976"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
     provide a powerful set of tools for converting various data types
     (date/time, integer, floating point, numeric) to formatted strings
     and for converting from formatted strings to specific data types.
@@ -153,14 +153,14 @@
 <tr>
 <td>
 <tt class="literal">AM</tt> or <tt class="literal">A.M.</tt> or
-	<tt class="literal">PM</tt> or <tt class="literal">P.M.</tt>
+        <tt class="literal">PM</tt> or <tt class="literal">P.M.</tt>
 </td>
 <td>meridian indicator (uppercase)</td>
 </tr>
 <tr>
 <td>
 <tt class="literal">am</tt> or <tt class="literal">a.m.</tt> or
-	<tt class="literal">pm</tt> or <tt class="literal">p.m.</tt>
+        <tt class="literal">pm</tt> or <tt class="literal">p.m.</tt>
 </td>
 <td>meridian indicator (lowercase)</td>
 </tr>
@@ -203,14 +203,14 @@
 <tr>
 <td>
 <tt class="literal">BC</tt> or <tt class="literal">B.C.</tt> or
-	<tt class="literal">AD</tt> or <tt class="literal">A.D.</tt>
+        <tt class="literal">AD</tt> or <tt class="literal">A.D.</tt>
 </td>
 <td>era indicator (uppercase)</td>
 </tr>
 <tr>
 <td>
 <tt class="literal">bc</tt> or <tt class="literal">b.c.</tt> or
-	<tt class="literal">ad</tt> or <tt class="literal">a.d.</tt>
+        <tt class="literal">ad</tt> or <tt class="literal">a.d.</tt>
 </td>
 <td>era indicator (lowercase)</td>
 </tr>
@@ -375,7 +375,7 @@
 </tbody>
 </table>
 </div>
-<p>    Usage notes for the date/time formatting:
+<p>    Usage notes for date/time formatting:
 
     </p>
 <div class="itemizedlist"><ul type="disc">
@@ -435,6 +435,10 @@
        1230 microseconds = 2.021230 seconds. 
       </p>
 </li>
+<li><p><tt class="function">to_char</tt>'s day of the week numbering
+        (see the 'D' formatting pattern) is different from that of the 
+        <tt class="function">extract</tt> function.
+      </p></li>
 </ul></div>
 <p>
    </p>
@@ -524,7 +528,7 @@
 </tbody>
 </table>
 </div>
-<p>    Usage notes for the numeric formatting:
+<p>    Usage notes for numeric formatting:
 
     </p>
 <div class="itemizedlist"><ul type="disc">

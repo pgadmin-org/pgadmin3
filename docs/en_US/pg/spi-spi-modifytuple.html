@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi-memory.html" title="39.3. Memory Management">
 <link rel="previous" href="spi-spi-returntuple.html" title="SPI_returntuple">
 <link rel="next" href="spi-spi-freetuple.html" title="SPI_freetuple">
@@ -19,19 +19,19 @@
 <h2>Name</h2>
 <p>SPI_modifytuple &#8212; create a row by replacing selected fields of a given row</p>
 </div>
-<a name="id2659445"></a><div class="refsynopsisdiv">
+<a name="id2662897"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">HeapTuple SPI_modifytuple(Relation <i class="parameter"><tt>rel</tt></i>, HeapTuple <i class="parameter"><tt>row</tt></i>, <i class="parameter"><tt>ncols</tt></i>, <i class="parameter"><tt>colnum</tt></i>, Datum * <i class="parameter"><tt>values</tt></i>, const char * <i class="parameter"><tt>nulls</tt></i>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2659492"></a><h2>Description</h2>
+<a name="id2662944"></a><h2>Description</h2>
 <p>   <tt class="function">SPI_modifytuple</tt> creates a new row by
    substituting new values for selected columns, copying the original
    row's columns at other positions.  The input row is not modified.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2659506"></a><h2>Arguments</h2>
+<a name="id2662958"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">Relation <i class="parameter"><tt>rel</tt></i></tt></span></dt>
 <dd><p>      Used only as the source of the row descriptor for the row.
@@ -47,7 +47,7 @@
      </p></dd>
 <dt><span class="term"><tt class="literal">int * <i class="parameter"><tt>colnum</tt></i></tt></span></dt>
 <dd><p>      array of the numbers of the columns that are to be changed
-      (count starts at 1)
+      (column numbers start at 1)
      </p></dd>
 <dt><span class="term"><tt class="literal">Datum * <i class="parameter"><tt>values</tt></i></tt></span></dt>
 <dd><p>      new values for the specified columns
@@ -59,7 +59,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2659619"></a><h2>Return Value</h2>
+<a name="id2663071"></a><h2>Return Value</h2>
 <p>   new row with modifications, allocated in the upper executor
    context; <tt class="symbol">NULL</tt> only if <i class="parameter"><tt>row</tt></i>
    is <tt class="symbol">NULL</tt>

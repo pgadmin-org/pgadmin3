@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="previous" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
 <link rel="next" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
@@ -56,7 +56,7 @@
         <i class="parameter"><tt>string</tt></i></tt></td>
 <td><tt class="type">text</tt></td>
 <td>        String concatenation
-        <a name="id2542565"></a>
+        <a name="id2543125"></a>
 </td>
 <td><tt class="literal">'Post' || 'greSQL'</tt></td>
 <td><tt class="literal">PostgreSQL</tt></td>
@@ -74,7 +74,7 @@
 </td>
 <td><tt class="type">integer</tt></td>
 <td>        Number of characters in string
-        <a name="id2542660"></a><a name="id2542669"></a>
+        <a name="id2543220"></a><a name="id2543229"></a>
 </td>
 <td><tt class="literal">char_length('jose')</tt></td>
 <td><tt class="literal">4</tt></td>
@@ -110,7 +110,7 @@
 <td><tt class="literal"><tt class="function">overlay</tt>(<i class="parameter"><tt>string</tt></i> placing <i class="parameter"><tt>string</tt></i> from <tt class="type">integer</tt> [<span class="optional">for <tt class="type">integer</tt></span>])</tt></td>
 <td><tt class="type">text</tt></td>
 <td>        Replace substring
-        <a name="id2542862"></a>
+        <a name="id2543422"></a>
 </td>
 <td><tt class="literal">overlay('Txxxxas' placing 'hom' from 2 for 4)</tt></td>
 <td><tt class="literal">Thomas</tt></td>
@@ -126,7 +126,7 @@
 <td><tt class="literal"><tt class="function">substring</tt>(<i class="parameter"><tt>string</tt></i> [<span class="optional">from <tt class="type">integer</tt></span>] [<span class="optional">for <tt class="type">integer</tt></span>])</tt></td>
 <td><tt class="type">text</tt></td>
 <td>        Extract substring
-        <a name="id2542957"></a>
+        <a name="id2543517"></a>
 </td>
 <td><tt class="literal">substring('Thomas' from 2 for 3)</tt></td>
 <td><tt class="literal">hom</tt></td>
@@ -135,7 +135,7 @@
 <td><tt class="literal"><tt class="function">substring</tt>(<i class="parameter"><tt>string</tt></i> from <i class="replaceable"><tt>pattern</tt></i>)</tt></td>
 <td><tt class="type">text</tt></td>
 <td>        Extract substring matching POSIX regular expression
-        <a name="id2543003"></a>
+        <a name="id2543563"></a>
 </td>
 <td><tt class="literal">substring('Thomas' from '...$')</tt></td>
 <td><tt class="literal">mas</tt></td>
@@ -145,7 +145,7 @@
 <td><tt class="type">text</tt></td>
 <td>        Extract substring matching <span class="acronym">SQL</span> regular
         expression
-        <a name="id2543057"></a>
+        <a name="id2543617"></a>
 </td>
 <td><tt class="literal">substring('Thomas' from '%#"o_a#"_' for '#')</tt></td>
 <td><tt class="literal">oma</tt></td>
@@ -203,11 +203,12 @@
 <td><tt class="literal">120</tt></td>
 </tr>
 <tr>
-<td><tt class="literal"><tt class="function">btrim</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>, <i class="parameter"><tt>characters</tt></i> <tt class="type">text</tt>)</tt></td>
+<td><tt class="literal"><tt class="function">btrim</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>
+       [<span class="optional">, <i class="parameter"><tt>characters</tt></i> <tt class="type">text</tt></span>])</tt></td>
 <td><tt class="type">text</tt></td>
 <td>        Remove the longest string consisting only of characters
-        in <i class="parameter"><tt>characters</tt></i> from the start and end of
-        <i class="parameter"><tt>string</tt></i>.
+        in <i class="parameter"><tt>characters</tt></i> (a space by default)
+        from the start and end of <i class="parameter"><tt>string</tt></i>.
        </td>
 <td><tt class="literal">btrim('xyxtrimyyx', 'xy')</tt></td>
 <td><tt class="literal">trim</tt></td>
@@ -269,7 +270,7 @@
 <td><tt class="literal"><tt class="function">length</tt>(<i class="parameter"><tt>string</tt></i> <tt class="type">text</tt>)</tt></td>
 <td><tt class="type">integer</tt></td>
 <td>        Number of characters in <i class="parameter"><tt>string</tt></i>.
-        <a name="id2543643"></a><a name="id2543652"></a>
+        <a name="id2544205"></a><a name="id2544215"></a>
 </td>
 <td><tt class="literal">length('jose')</tt></td>
 <td><tt class="literal">4</tt></td>
@@ -319,26 +320,26 @@
 </tr>
 <tr>
 <td>
-<tt class="literal"><tt class="function">quote_ident</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2543928"></a>
+<tt class="literal"><tt class="function">quote_ident</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2544490"></a>
 </td>
 <td><tt class="type">text</tt></td>
 <td>        Return the given string suitably quoted to be used as an identifier
-	in an <span class="acronym">SQL</span> statement string.
-	Quotes are added only if necessary (i.e., if the string contains
-	non-identifier characters or would be case-folded).
-	Embedded quotes are properly doubled.
+        in an <span class="acronym">SQL</span> statement string.
+        Quotes are added only if necessary (i.e., if the string contains
+        non-identifier characters or would be case-folded).
+        Embedded quotes are properly doubled.
        </td>
 <td><tt class="literal">quote_ident('Foo bar')</tt></td>
 <td><tt class="literal">"Foo bar"</tt></td>
 </tr>
 <tr>
 <td>
-<tt class="literal"><tt class="function">quote_literal</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2543976"></a>
+<tt class="literal"><tt class="function">quote_literal</tt>(<i class="parameter"><tt>string</tt></i> text)</tt><a name="id2544539"></a>
 </td>
 <td><tt class="type">text</tt></td>
 <td>        Return the given string suitably quoted to be used as a string literal
-	in an <span class="acronym">SQL</span> statement string.
-	Embedded quotes and backslashes are properly doubled.
+        in an <span class="acronym">SQL</span> statement string.
+        Embedded quotes and backslashes are properly doubled.
        </td>
 <td><tt class="literal">quote_literal( 'O\'Reilly')</tt></td>
 <td><tt class="literal">'O''Reilly'</tt></td>
@@ -423,7 +424,7 @@
         [<span class="optional">, <i class="parameter"><tt>encoding</tt></i></span>])</tt></td>
 <td><tt class="type">text</tt></td>
 <td>       Convert <i class="parameter"><tt>text</tt></i> to <span class="acronym">ASCII</span> from another encoding
-       <sup>[<a name="id2544538" href="#ftn.id2544538">a</a>]</sup>
+       <sup>[<a name="id2545102" href="#ftn.id2545102">a</a>]</sup>
 </td>
 <td><tt class="literal">to_ascii('Karel')</tt></td>
 <td><tt class="literal">Karel</tt></td>
@@ -453,8 +454,9 @@
 <td><tt class="literal">a23x5</tt></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id2544538" href="#id2544538">a</a>] </sup>         The <tt class="function">to_ascii</tt> function supports conversion from
-         <tt class="literal">LATIN1</tt>, <tt class="literal">LATIN2</tt>, and <tt class="literal">WIN1250</tt> only.
+<tbody class="footnotes"><tr><td colspan="5"><div class="footnote"><p><sup>[<a name="ftn.id2545102" href="#id2545102">a</a>] </sup>         The <tt class="function">to_ascii</tt> function supports conversion from
+         <tt class="literal">LATIN1</tt>, <tt class="literal">LATIN2</tt>, <tt class="literal">LATIN9</tt>,
+         and <tt class="literal">WIN1250</tt> encodings only.
         </p></div></td></tr></tbody>
 </table>
 </div>
@@ -468,7 +470,7 @@
 </colgroup>
 <thead><tr>
 <th>Conversion Name
-        <sup>[<a name="id2544722" href="#ftn.id2544722">a</a>]</sup>
+        <sup>[<a name="id2545291" href="#ftn.id2545291">a</a>]</sup>
 </th>
 <th>Source Encoding</th>
 <th>Destination Encoding</th>
@@ -1045,7 +1047,7 @@
 <td><tt class="literal">UNICODE</tt></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2544722" href="#id2544722">a</a>] </sup>          The conversion names follow a standard naming scheme: The
+<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2545291" href="#id2545291">a</a>] </sup>          The conversion names follow a standard naming scheme: The
           official name of the source encoding with all
           non-alphanumeric characters replaced by underscores followed
           by <tt class="literal">_to_</tt> followed by the equally processed

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-savepoint.html" title="SAVEPOINT">
 <link rel="next" href="sql-selectinto.html" title="SELECT INTO">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>SELECT &#8212; retrieve rows from a table or view</p>
 </div>
-<a name="id2693514"></a><div class="refsynopsisdiv">
+<a name="id2697578"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <i class="replaceable"><tt>expression</tt></i> [, ...] ) ] ]
     * | <i class="replaceable"><tt>expression</tt></i> [ AS <i class="replaceable"><tt>output_name</tt></i> ] [, ...]
@@ -42,7 +42,7 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
     <i class="replaceable"><tt>from_item</tt></i> [ NATURAL ] <i class="replaceable"><tt>join_type</tt></i> <i class="replaceable"><tt>from_item</tt></i> [ ON <i class="replaceable"><tt>join_condition</tt></i> | USING ( <i class="replaceable"><tt>join_column</tt></i> [, ...] ) ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2693733"></a><h2>Description</h2>
+<a name="id2697797"></a><h2>Description</h2>
 <p>   <tt class="command">SELECT</tt> retrieves rows from one or more tables.
    The general processing of <tt class="command">SELECT</tt> is as follows:
 
@@ -65,6 +65,12 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
       <a href="sql-select.html#sql-groupby"><tt class="literal">GROUP BY</tt> Clause</a> and
       <a href="sql-select.html#sql-having"><tt class="literal">HAVING</tt> Clause</a> below.)
      </p></li>
+<li><p>      The actual output rows are computed using the
+      <tt class="command">SELECT</tt> output expressions for each selected
+      row.  (See
+      <a href="sql-select.html#sql-select-list"><tt class="command">SELECT</tt> List</a>
+      below.)
+     </p></li>
 <li><p>      Using the operators <tt class="literal">UNION</tt>,
       <tt class="literal">INTERSECT</tt>, and <tt class="literal">EXCEPT</tt>, the
       output of more than one <tt class="command">SELECT</tt> statement can
@@ -78,12 +84,6 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
       eliminated unless <tt class="literal">ALL</tt> is specified. (See
       <a href="sql-select.html#sql-union"><tt class="literal">UNION</tt> Clause</a>, <a href="sql-select.html#sql-intersect"><tt class="literal">INTERSECT</tt> Clause</a>, and
       <a href="sql-select.html#sql-except"><tt class="literal">EXCEPT</tt> Clause</a> below.)
-     </p></li>
-<li><p>      The actual output rows are computed using the
-      <tt class="command">SELECT</tt> output expressions for each selected
-      row.  (See
-      <a href="sql-select.html#sql-select-list"><tt class="command">SELECT</tt> List</a>
-      below.)
      </p></li>
 <li><p>      If the <tt class="literal">ORDER BY</tt> clause is specified, the
       returned rows are sorted in the specified order.  If
@@ -114,7 +114,7 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2694122"></a><h2>Parameters</h2>
+<a name="id2698186"></a><h2>Parameters</h2>
 <div class="refsect2" lang="en">
 <a name="sql-from"></a><h3>
 <tt class="literal">FROM</tt> Clause</h3>
@@ -326,6 +326,28 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
    </p>
 </div>
 <div class="refsect2" lang="en">
+<a name="sql-select-list"></a><h3>
+<tt class="command">SELECT</tt> List</h3>
+<p>    The <tt class="command">SELECT</tt> list (between the key words
+    <tt class="literal">SELECT</tt> and <tt class="literal">FROM</tt>) specifies expressions
+    that form the output rows of the <tt class="command">SELECT</tt>
+    statement.  The expressions can (and usually do) refer to columns
+    computed in the <tt class="literal">FROM</tt> clause.  Using the clause
+    <tt class="literal">AS <i class="replaceable"><tt>output_name</tt></i></tt>, another
+    name can be specified for an output column.  This name is
+    primarily used to label the column for display.  It can also be
+    used to refer to the column's value in <tt class="literal">ORDER BY</tt> and
+    <tt class="literal">GROUP BY</tt> clauses, but not in the <tt class="literal">WHERE</tt> or
+    <tt class="literal">HAVING</tt> clauses; there you must write out the
+    expression instead.
+   </p>
+<p>    Instead of an expression, <tt class="literal">*</tt> can be written in
+    the output list as a shorthand for all the columns of the selected
+    rows.  Also, one can write <tt class="literal"><i class="replaceable"><tt>table_name</tt></i>.*</tt> as a
+    shorthand for the columns coming from just that table.
+   </p>
+</div>
+<div class="refsect2" lang="en">
 <a name="sql-union"></a><h3>
 <tt class="literal">UNION</tt> Clause</h3>
 <p>    The <tt class="literal">UNION</tt> clause has this general form:
@@ -352,7 +374,9 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
    </p>
 <p>    The result of <tt class="literal">UNION</tt> does not contain any duplicate
     rows unless the <tt class="literal">ALL</tt> option is specified.
-    <tt class="literal">ALL</tt> prevents elimination of duplicates.
+    <tt class="literal">ALL</tt> prevents elimination of duplicates.  (Therefore,
+    <tt class="literal">UNION ALL</tt> is usually significantly quicker than
+    <tt class="literal">UNION</tt>; use <tt class="literal">ALL</tt> when you can.)
    </p>
 <p>    Multiple <tt class="literal">UNION</tt> operators in the same
     <tt class="command">SELECT</tt> statement are evaluated left to right,
@@ -380,9 +404,9 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
    </p>
 <p>    The result of <tt class="literal">INTERSECT</tt> does not contain any
     duplicate rows unless the <tt class="literal">ALL</tt> option is specified.
-    With <tt class="literal">ALL</tt>, a row that has m duplicates in the left
-    table and n duplicates in the right table will appear min(m,n)
-    times in the result set.
+    With <tt class="literal">ALL</tt>, a row that has <i class="replaceable"><tt>m</tt></i> duplicates in the
+    left table and <i class="replaceable"><tt>n</tt></i> duplicates in the right table will appear
+    min(<i class="replaceable"><tt>m</tt></i>,<i class="replaceable"><tt>n</tt></i>) times in the result set.
    </p>
 <p>    Multiple <tt class="literal">INTERSECT</tt> operators in the same
     <tt class="command">SELECT</tt> statement are evaluated left to right,
@@ -391,6 +415,9 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
     <tt class="literal">UNION</tt>.  That is, <tt class="literal">A UNION B INTERSECT
     C</tt> will be read as <tt class="literal">A UNION (B INTERSECT
     C)</tt>.
+   </p>
+<p>    Currently, <tt class="literal">FOR UPDATE</tt> may not be specified either for
+    an <tt class="literal">INTERSECT</tt> result or for any input of an <tt class="literal">INTERSECT</tt>.
    </p>
 </div>
 <div class="refsect2" lang="en">
@@ -410,36 +437,17 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
    </p>
 <p>    The result of <tt class="literal">EXCEPT</tt> does not contain any
     duplicate rows unless the <tt class="literal">ALL</tt> option is specified.
-    With <tt class="literal">ALL</tt>, a row that has m duplicates in the left
-    table and n duplicates in the right table will appear max(m-n,0)
-    times in the result set.
+    With <tt class="literal">ALL</tt>, a row that has <i class="replaceable"><tt>m</tt></i> duplicates in the
+    left table and <i class="replaceable"><tt>n</tt></i> duplicates in the right table will appear
+    max(<i class="replaceable"><tt>m</tt></i>-<i class="replaceable"><tt>n</tt></i>,0) times in the result set.
    </p>
 <p>    Multiple <tt class="literal">EXCEPT</tt> operators in the same
     <tt class="command">SELECT</tt> statement are evaluated left to right,
     unless parentheses dictate otherwise.  <tt class="literal">EXCEPT</tt> binds at
     the same level as <tt class="literal">UNION</tt>.
    </p>
-</div>
-<div class="refsect2" lang="en">
-<a name="sql-select-list"></a><h3>
-<tt class="command">SELECT</tt> List</h3>
-<p>    The <tt class="command">SELECT</tt> list (between the key words
-    <tt class="literal">SELECT</tt> and <tt class="literal">FROM</tt>) specifies expressions
-    that form the output rows of the <tt class="command">SELECT</tt>
-    statement.  The expressions can (and usually do) refer to columns
-    computed in the <tt class="literal">FROM</tt> clause.  Using the clause
-    <tt class="literal">AS <i class="replaceable"><tt>output_name</tt></i></tt>, another
-    name can be specified for an output column.  This name is
-    primarily used to label the column for display.  It can also be
-    used to refer to the column's value in <tt class="literal">ORDER BY</tt> and
-    <tt class="literal">GROUP BY</tt> clauses, but not in the <tt class="literal">WHERE</tt> or
-    <tt class="literal">HAVING</tt> clauses; there you must write out the
-    expression instead.
-   </p>
-<p>    Instead of an expression, <tt class="literal">*</tt> can be written in
-    the output list as a shorthand for all the columns of the selected
-    rows.  Also, one can write <tt class="literal"><i class="replaceable"><tt>table_name</tt></i>.*</tt> as a
-    shorthand for the columns coming from just that table.
+<p>    Currently, <tt class="literal">FOR UPDATE</tt> may not be specified either for
+    an <tt class="literal">EXCEPT</tt> result or for any input of an <tt class="literal">EXCEPT</tt>.
    </p>
 </div>
 <div class="refsect2" lang="en">
@@ -508,41 +516,6 @@ where <i class="replaceable"><tt>from_item</tt></i> can be one of:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="sql-limit"></a><h3>
-<tt class="literal">LIMIT</tt> Clause</h3>
-<p>    The <tt class="literal">LIMIT</tt> clause consists of two independent
-    sub-clauses:
-</p>
-<pre class="synopsis">LIMIT { <i class="replaceable"><tt>count</tt></i> | ALL }
-OFFSET <i class="replaceable"><tt>start</tt></i></pre>
-<p>
-    <i class="replaceable"><tt>count</tt></i> specifies the
-    maximum number of rows to return, while <i class="replaceable"><tt>start</tt></i> specifies the number of rows
-    to skip before starting to return rows.  When both are specified,
-    <i class="replaceable"><tt>start</tt></i> rows are skipped
-    before starting to count the <i class="replaceable"><tt>count</tt></i> rows to be returned.
-   </p>
-<p>    When using <tt class="literal">LIMIT</tt>, it is a good idea to use an
-    <tt class="literal">ORDER BY</tt> clause that constrains the result rows into a
-    unique order.  Otherwise you will get an unpredictable subset of
-    the query's rows---you may be asking for the tenth through
-    twentieth rows, but tenth through twentieth in what ordering?  You
-    don't know what ordering unless you specify <tt class="literal">ORDER BY</tt>.
-   </p>
-<p>    The query planner takes <tt class="literal">LIMIT</tt> into account when
-    generating a query plan, so you are very likely to get different
-    plans (yielding different row orders) depending on what you use
-    for <tt class="literal">LIMIT</tt> and <tt class="literal">OFFSET</tt>.  Thus, using
-    different <tt class="literal">LIMIT</tt>/<tt class="literal">OFFSET</tt> values to select
-    different subsets of a query result <span class="emphasis"><em>will give
-    inconsistent results</em></span> unless you enforce a predictable
-    result ordering with <tt class="literal">ORDER BY</tt>.  This is not a bug; it
-    is an inherent consequence of the fact that SQL does not promise
-    to deliver the results of a query in any particular order unless
-    <tt class="literal">ORDER BY</tt> is used to constrain the order.
-   </p>
-</div>
-<div class="refsect2" lang="en">
 <a name="sql-distinct"></a><h3>
 <tt class="literal">DISTINCT</tt> Clause</h3>
 <p>    If <tt class="literal">DISTINCT</tt> is specified, all duplicate rows are
@@ -572,6 +545,41 @@ OFFSET <i class="replaceable"><tt>start</tt></i></pre>
     <tt class="literal">ORDER BY</tt> expression(s).  The <tt class="literal">ORDER BY</tt> clause
     will normally contain additional expression(s) that determine the
     desired precedence of rows within each <tt class="literal">DISTINCT ON</tt> group.
+   </p>
+</div>
+<div class="refsect2" lang="en">
+<a name="sql-limit"></a><h3>
+<tt class="literal">LIMIT</tt> Clause</h3>
+<p>    The <tt class="literal">LIMIT</tt> clause consists of two independent
+    sub-clauses:
+</p>
+<pre class="synopsis">LIMIT { <i class="replaceable"><tt>count</tt></i> | ALL }
+OFFSET <i class="replaceable"><tt>start</tt></i></pre>
+<p>
+    <i class="replaceable"><tt>count</tt></i> specifies the
+    maximum number of rows to return, while <i class="replaceable"><tt>start</tt></i> specifies the number of rows
+    to skip before starting to return rows.  When both are specified,
+    <i class="replaceable"><tt>start</tt></i> rows are skipped
+    before starting to count the <i class="replaceable"><tt>count</tt></i> rows to be returned.
+   </p>
+<p>    When using <tt class="literal">LIMIT</tt>, it is a good idea to use an
+    <tt class="literal">ORDER BY</tt> clause that constrains the result rows into a
+    unique order.  Otherwise you will get an unpredictable subset of
+    the query's rows [mdash ] you may be asking for the tenth through
+    twentieth rows, but tenth through twentieth in what ordering?  You
+    don't know what ordering unless you specify <tt class="literal">ORDER BY</tt>.
+   </p>
+<p>    The query planner takes <tt class="literal">LIMIT</tt> into account when
+    generating a query plan, so you are very likely to get different
+    plans (yielding different row orders) depending on what you use
+    for <tt class="literal">LIMIT</tt> and <tt class="literal">OFFSET</tt>.  Thus, using
+    different <tt class="literal">LIMIT</tt>/<tt class="literal">OFFSET</tt> values to select
+    different subsets of a query result <span class="emphasis"><em>will give
+    inconsistent results</em></span> unless you enforce a predictable
+    result ordering with <tt class="literal">ORDER BY</tt>.  This is not a bug; it
+    is an inherent consequence of the fact that SQL does not promise
+    to deliver the results of a query in any particular order unless
+    <tt class="literal">ORDER BY</tt> is used to constrain the order.
    </p>
 </div>
 <div class="refsect2" lang="en">
@@ -614,7 +622,7 @@ OFFSET <i class="replaceable"><tt>start</tt></i></pre>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2696920"></a><h2>Examples</h2>
+<a name="id2701080"></a><h2>Examples</h2>
 <p>   To join the table <tt class="literal">films</tt> with the table
    <tt class="literal">distributors</tt>:
 
@@ -744,13 +752,13 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697077"></a><h2>Compatibility</h2>
+<a name="id2701246"></a><h2>Compatibility</h2>
 <p>   Of course, the <tt class="command">SELECT</tt> statement is compatible
    with the SQL standard.  But there are some extensions and some
    missing features.
   </p>
 <div class="refsect2" lang="en">
-<a name="id2697090"></a><h3>Omitted <tt class="literal">FROM</tt> Clauses</h3>
+<a name="id2701258"></a><h3>Omitted <tt class="literal">FROM</tt> Clauses</h3>
 <p>    <span class="productname">PostgreSQL</span> allows one to omit the
     <tt class="literal">FROM</tt> clause.  It has a straightforward use to
     compute the results of simple expressions:
@@ -802,7 +810,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2697222"></a><h3>The <tt class="literal">AS</tt> Key Word</h3>
+<a name="id2701391"></a><h3>The <tt class="literal">AS</tt> Key Word</h3>
 <p>    In the SQL standard, the optional key word <tt class="literal">AS</tt> is just
     noise and can be omitted without affecting the meaning.  The
     <span class="productname">PostgreSQL</span> parser requires this key
@@ -813,9 +821,9 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2697258"></a><h3>Namespace Available to <tt class="literal">GROUP BY</tt> and <tt class="literal">ORDER BY</tt>
+<a name="id2701427"></a><h3>Namespace Available to <tt class="literal">GROUP BY</tt> and <tt class="literal">ORDER BY</tt>
 </h3>
-<p>    In the SQL92 standard, an <tt class="literal">ORDER BY</tt> clause may
+<p>    In the SQL-92 standard, an <tt class="literal">ORDER BY</tt> clause may
     only use result column names or numbers, while a <tt class="literal">GROUP
     BY</tt> clause may only use expressions based on input column
     names.  <span class="productname">PostgreSQL</span> extends each of
@@ -826,15 +834,15 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
     expression will always be taken as input-column names, not as
     result-column names.
    </p>
-<p>    SQL99 uses a slightly different definition which is not entirely upward
+<p>    SQL:1999 uses a slightly different definition which is not entirely upward
     compatible 
-    with SQL92.  In most cases, however, <span class="productname">PostgreSQL</span>
+    with SQL-92.  In most cases, however, <span class="productname">PostgreSQL</span>
     will interpret an <tt class="literal">ORDER BY</tt> or <tt class="literal">GROUP
-    BY</tt> expression the same way SQL99 does.
+    BY</tt> expression the same way SQL:1999 does.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2697324"></a><h3>Nonstandard Clauses</h3>
+<a name="id2701493"></a><h3>Nonstandard Clauses</h3>
 <p>    The clauses <tt class="literal">DISTINCT ON</tt>,
     <tt class="literal">LIMIT</tt>, and <tt class="literal">OFFSET</tt> are not
     defined in the SQL standard.

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-createdomain.html" title="CREATE DOMAIN">
 <link rel="next" href="sql-creategroup.html" title="CREATE GROUP">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>CREATE FUNCTION &#8212; define a new function</p>
 </div>
-<a name="id2671799"></a><div class="refsynopsisdiv">
+<a name="id2675385"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ OR REPLACE ] FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ [ <i class="replaceable"><tt>argname</tt></i> ] <i class="replaceable"><tt>argtype</tt></i> [, ...] ] )
     RETURNS <i class="replaceable"><tt>rettype</tt></i>
@@ -54,8 +54,8 @@
    you must drop and recreate the function.
   </p>
 <p>   If you drop and then recreate a function, the new function is not
-   the same entity as the old; you will break existing rules, views,
-   triggers, etc. that referred to the old function.  Use
+   the same entity as the old; you will have to drop existing rules, views,
+   triggers, etc. that refer to the old function.  Use
    <tt class="command">CREATE OR REPLACE FUNCTION</tt> to change a function
    definition without breaking objects that refer to the function.
   </p>
@@ -63,7 +63,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2671945"></a><h2>Parameters</h2>
+<a name="id2675531"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
 <dd><p>       The name (optionally schema-qualified) of the function to create.
@@ -76,40 +76,41 @@
 <dt><span class="term"><i class="replaceable"><tt>argtype</tt></i></span></dt>
 <dd>
 <p>       The data type(s) of the function's arguments (optionally 
-       schema-qualified), if any. The argument types may be base, complex, or 
-       domains, or copy the type of an existing column.
-      </p>
-<p>       The type of a column is referenced by writing
-       <tt class="literal"><i class="replaceable"><tt>tablename</tt></i>.<i class="replaceable"><tt>columnname</tt></i>%TYPE</tt>;
-       using this can sometimes help make a function independent from
-       changes to the definition of a table.
+       schema-qualified), if any. The argument types may be base, composite,
+       or domain types, or may reference the type of a table column.
       </p>
 <p>       Depending on the implementation language it may also be allowed
        to specify &#8220;<span class="quote">pseudotypes</span>&#8221; such as <tt class="type">cstring</tt>.
        Pseudotypes indicate that the actual argument type is either
        incompletely specified, or outside the set of ordinary SQL data types.
       </p>
+<p>       The type of a column is referenced by writing
+       <tt class="literal"><i class="replaceable"><tt>tablename</tt></i>.<i class="replaceable"><tt>columnname</tt></i>%TYPE</tt>.
+       Using this feature can sometimes help make a function independent of
+       changes to the definition of a table.
+      </p>
 </dd>
 <dt><span class="term"><i class="replaceable"><tt>rettype</tt></i></span></dt>
 <dd>
 <p>       The return data type (optionally schema-qualified). The return type 
-       may be a base type, complex type, or a domain,
-       or may be specified to copy the type of an existing column. See the description
-       under <tt class="literal">argtype</tt> above on how to reference the type
-       of an existing column.
-      </p>
-<p>       Depending on the implementation language it may also be allowed
+       may be a base, composite, or domain type,
+       or may reference the type of a table column.
+       Depending on the implementation language it may also be allowed
        to specify &#8220;<span class="quote">pseudotypes</span>&#8221; such as <tt class="type">cstring</tt>.
-       The <tt class="literal">SETOF</tt>
+      </p>
+<p>       The <tt class="literal">SETOF</tt>
        modifier indicates that the function will return a set of
        items, rather than a single item.
+      </p>
+<p>       The type of a column is referenced by writing
+       <tt class="literal"><i class="replaceable"><tt>tablename</tt></i>.<i class="replaceable"><tt>columnname</tt></i>%TYPE</tt>.
       </p>
 </dd>
 <dt><span class="term"><i class="replaceable"><tt>langname</tt></i></span></dt>
 <dd><p>       The name of the language that the function is implemented in.
        May be <tt class="literal">SQL</tt>, <tt class="literal">C</tt>,
        <tt class="literal">internal</tt>, or the name of a user-defined
-       procedural language.  (See also <a href="app-createlang.html"><span class="application">createlang</span></a>.)  For backward compatibility,
+       procedural language.  For backward compatibility,
        the name may be enclosed by single quotes.
       </p></dd>
 <dt>
@@ -147,7 +148,7 @@
        to prevent calls from being optimized away; an example is
        <tt class="literal">setval()</tt>.
       </p>
-<p>       For additional details see <a href="xfunc-volatility.html" title="31.9. Function Volatility Categories">Section 31.9, &#8220;Function Volatility Categories&#8221;</a>.
+<p>       For additional details see <a href="xfunc-volatility.html" title="31.6. Function Volatility Categories">Section 31.6, &#8220;Function Volatility Categories&#8221;</a>.
       </p>
 </dd>
 <dt>
@@ -207,7 +208,7 @@
       </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">isStrict</tt></span></dt>
-<dd><p>          Equivalent to <tt class="literal">STRICT</tt> or <tt class="literal">RETURNS NULL ON NULL INPUT</tt>
+<dd><p>          Equivalent to <tt class="literal">STRICT</tt> or <tt class="literal">RETURNS NULL ON NULL INPUT</tt>.
          </p></dd>
 <dt><span class="term"><tt class="literal">isCachable</tt></span></dt>
 <dd><p>          <tt class="literal">isCachable</tt> is an obsolete equivalent of
@@ -265,7 +266,7 @@
    information and examples, see <a href="xfunc.html" title="31.3. User-Defined Functions">Section 31.3, &#8220;User-Defined Functions&#8221;</a>.
 </p>
 <pre class="programlisting">CREATE FUNCTION add(integer, integer) RETURNS integer
-    AS $$select $1 + $2;$$
+    AS 'select $1 + $2;'
     LANGUAGE SQL
     IMMUTABLE
     RETURNS NULL ON NULL INPUT;</pre>
@@ -275,30 +276,25 @@
    <span class="application">PL/pgSQL</span>:
 
 </p>
-<pre class="programlisting">CREATE OR REPLACE FUNCTION increment(i integer) RETURNS integer AS '
+<pre class="programlisting">CREATE OR REPLACE FUNCTION increment(i integer) RETURNS integer AS $$
         BEGIN
                 RETURN i + 1;
-        END;' LANGUAGE plpgsql;</pre>
+        END;
+$$ LANGUAGE plpgsql;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createfunction-compat"></a><h2>Compatibility</h2>
-<p>   A <tt class="command">CREATE FUNCTION</tt> command is defined in SQL99.
+<p>   A <tt class="command">CREATE FUNCTION</tt> command is defined in SQL:1999 and later.
    The <span class="productname">PostgreSQL</span> version is similar but
    not fully compatible.  The attributes are not portable, neither are the
    different available languages.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="sql-createfunction-seealso"></a><h2>See Also</h2>
-<p>   <a href="sql-alterfunction.html">ALTER FUNCTION</a>,
-   <a href="sql-dropfunction.html">DROP FUNCTION</a>,
-   <a href="sql-grant.html">GRANT</a>,
-   <a href="sql-load.html">LOAD</a>,
-   <a href="sql-revoke.html">REVOKE</a>,
-   <a href="app-createlang.html" title="createlang"><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a>
-  </p>
+<a name="id2676217"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alterfunction.html">ALTER FUNCTION</a>, <a href="sql-dropfunction.html">DROP FUNCTION</a>, <a href="sql-grant.html">GRANT</a>, <a href="sql-load.html">LOAD</a>, <a href="sql-revoke.html">REVOKE</a>, <a href="app-createlang.html"><span class="application">createlang</span></a></span>
 </div>
 </div></body>
 </html>

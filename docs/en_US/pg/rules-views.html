@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>32.2. Views and the Rule System</title>
+<title>33.2. Views and the Rule System</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
-<link rel="up" href="rules.html" title="Chapter 32. The Rule System">
-<link rel="previous" href="rules.html" title="Chapter 32. The Rule System">
-<link rel="next" href="rules-update.html" title="32.3. Rules on INSERT, UPDATE, and DELETE">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="up" href="rules.html" title="Chapter 33. The Rule System">
+<link rel="previous" href="rules.html" title="Chapter 33. The Rule System">
+<link rel="next" href="rules-update.html" title="33.3. Rules on INSERT, UPDATE, and DELETE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="rules-views"></a>32.2. Views and the Rule System</h2></div></div>
+<a name="rules-views"></a>33.2. Views and the Rule System</h2></div></div>
 <div></div>
 </div>
-<a name="id2639031"></a><a name="id2639044"></a><p>    Views in <span class="productname">PostgreSQL</span> are implemented
+<a name="id2642692"></a><a name="id2642705"></a><p>    Views in <span class="productname">PostgreSQL</span> are implemented
     using the rule system. In fact, there is essentially no difference
     between
 
@@ -42,10 +42,10 @@ CREATE RULE "_RETURN" AS ON SELECT TO myview DO INSTEAD
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="rules-select"></a>32.2.1. How <tt class="command">SELECT</tt> Rules Work</h3></div></div>
+<a name="rules-select"></a>33.2.1. How <tt class="command">SELECT</tt> Rules Work</h3></div></div>
 <div></div>
 </div>
-<a name="id2639116"></a><p>    Rules <tt class="literal">ON SELECT</tt> are applied to all queries as the last step, even
+<a name="id2642777"></a><p>    Rules <tt class="literal">ON SELECT</tt> are applied to all queries as the last step, even
     if the command given is an <tt class="command">INSERT</tt>,
     <tt class="command">UPDATE</tt> or <tt class="command">DELETE</tt>. And they
     have different semantics from rules on the other command types in that they modify the
@@ -54,7 +54,7 @@ CREATE RULE "_RETURN" AS ON SELECT TO myview DO INSTEAD
 <p>    Currently, there can be only one action in an <tt class="literal">ON SELECT</tt> rule, and it must
     be an unconditional <tt class="command">SELECT</tt> action that is <tt class="literal">INSTEAD</tt>. This restriction was
     required to make rules safe enough to open them for ordinary users, and
-    it restricts <tt class="literal">ON SELECT</tt> rules to real view rules.</p>
+    it restricts <tt class="literal">ON SELECT</tt> rules to act like views.</p>
 <p>    The examples for this chapter are two join views that do some
     calculations and some more views using them in turn.  One of the
     two first views is customized later by adding rules for
@@ -364,7 +364,7 @@ SELECT * FROM shoelace;
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2639776"></a>32.2.2. View Rules in Non-<tt class="command">SELECT</tt> Statements</h3></div></div>
+<a name="id2643476"></a>33.2.2. View Rules in Non-<tt class="command">SELECT</tt> Statements</h3></div></div>
 <div></div>
 </div>
 <p>    Two details of the query tree aren't touched in the description of
@@ -389,16 +389,16 @@ UPDATE t1 SET b = t2.b WHERE t1.a = t2.a;</pre>
 
     </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>	    The range tables contain entries for the tables <tt class="literal">t1</tt> and <tt class="literal">t2</tt>.
-	</p></li>
-<li><p>	    The target lists contain one variable that points to column
-	    <tt class="literal">b</tt> of the range table entry for table <tt class="literal">t2</tt>.
-	</p></li>
-<li><p>	    The qualification expressions compare the columns <tt class="literal">a</tt> of both
-	    range-table entries for equality.
-	</p></li>
-<li><p>	    The join trees show a simple join between <tt class="literal">t1</tt> and <tt class="literal">t2</tt>.
-	</p></li>
+<li><p>            The range tables contain entries for the tables <tt class="literal">t1</tt> and <tt class="literal">t2</tt>.
+        </p></li>
+<li><p>            The target lists contain one variable that points to column
+            <tt class="literal">b</tt> of the range table entry for table <tt class="literal">t2</tt>.
+        </p></li>
+<li><p>            The qualification expressions compare the columns <tt class="literal">a</tt> of both
+            range-table entries for equality.
+        </p></li>
+<li><p>            The join trees show a simple join between <tt class="literal">t1</tt> and <tt class="literal">t2</tt>.
+        </p></li>
 </ul></div>
 <p>
    </p>
@@ -432,7 +432,7 @@ UPDATE t1 SET b = t2.b WHERE t1.a = t2.a;</pre>
 <p>    To resolve this problem, another entry is added to the target list
     in <tt class="command">UPDATE</tt> (and also in
     <tt class="command">DELETE</tt>) statements: the current tuple ID
-    (<span class="acronym">CTID</span>).<a name="id2639993"></a>  This is a system column containing the
+    (<span class="acronym">CTID</span>).<a name="id2643695"></a>  This is a system column containing the
     file block number and position in the block for the row. Knowing
     the table, the <span class="acronym">CTID</span> can be used to retrieve the
     original row of <tt class="literal">t1</tt> to be updated.  After adding the <span class="acronym">CTID</span>
@@ -458,7 +458,7 @@ UPDATE t1 SET b = t2.b WHERE t1.a = t2.a;</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2640073"></a>32.2.3. The Power of Views in <span class="productname">PostgreSQL</span></h3></div></div>
+<a name="id2643775"></a>33.2.3. The Power of Views in <span class="productname">PostgreSQL</span></h3></div></div>
 <div></div>
 </div>
 <p>    The above demonstrates how the rule system incorporates view
@@ -484,7 +484,7 @@ UPDATE t1 SET b = t2.b WHERE t1.a = t2.a;</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="rules-views-update"></a>32.2.4. Updating a View</h3></div></div>
+<a name="rules-views-update"></a>33.2.4. Updating a View</h3></div></div>
 <div></div>
 </div>
 <p>    What happens if a view is named as the target relation for an

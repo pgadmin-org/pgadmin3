@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="spi.html" title="Chapter 39. Server Programming Interface">
 <link rel="previous" href="spi-spi-freeplan.html" title="SPI_freeplan">
 <link rel="next" href="spi-examples.html" title="39.5. Examples">
@@ -16,16 +16,15 @@
 <a name="spi-visibility"></a>39.4. Visibility of Data Changes</h2></div></div>
 <div></div>
 </div>
-<p>   The following two rules govern the visibility of data changes in
+<p>   The following rules govern the visibility of data changes in
    functions that use SPI (or any other C function):
 
    </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>      During the execution of an SQL command, any data changes made by
-      the command (or by function called by the command, including
-      trigger functions) are invisible to the command.  For
-      example, in command
+      the command are invisible to the command itself.  For
+      example, in
 </p>
 <pre class="programlisting">INSERT INTO a SELECT * FROM a;</pre>
 <p>
@@ -36,6 +35,21 @@
 <li><p>      Changes made by a command C are visible to all commands that are
       started after C, no matter whether they are started inside C
       (during the execution of C) or after C is done.
+     </p></li>
+<li><p>      Commands executed via SPI inside a function called by an SQL command
+      (either an ordinary function or a trigger) follow one or the
+      other of the above rules depending on the read/write flag passed
+      to SPI.  Commands executed in read-only mode follow the first
+      rule: they can't see changes of the calling command.  Commands executed
+      in read-write mode follow the second rule: they can see all changes made
+      so far.
+     </p></li>
+<li><p>      All standard procedural languages set the SPI read-write mode
+      depending on the volatility attribute of the function.  Commands of
+      <tt class="literal">STABLE</tt> and <tt class="literal">IMMUTABLE</tt> functions are done in
+      read-only mode, while commands of <tt class="literal">VOLATILE</tt> functions are
+      done in read-write mode.  While authors of C functions are able to
+      violate this convention, it's unlikely to be a good idea to do so.
      </p></li>
 </ul></div>
 <p>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="previous" href="wal-internals.html" title="25.3. Internals">
 <link rel="next" href="regress-evaluation.html" title="26.2. Test Evaluation">
@@ -22,22 +22,20 @@
 <dt><span class="sect1"><a href="regress.html#regress-run">26.1. Running the Tests</a></span></dt>
 <dt><span class="sect1"><a href="regress-evaluation.html">26.2. Test Evaluation</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2603978">26.2.1. Error message differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2604001">26.2.2. Locale differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2604079">26.2.3. Date and time differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2604133">26.2.4. Floating-point differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2604203">26.2.5. Row ordering differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2604269">26.2.6. The random test</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2606170">26.2.1. Error message differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2606192">26.2.2. Locale differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2606270">26.2.3. Date and time differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2606324">26.2.4. Floating-point differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2606395">26.2.5. Row ordering differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2606460">26.2.6. The random test</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="regress-platform.html">26.3. Platform-specific comparison files</a></span></dt>
 </dl>
 </div>
-<a name="id2603622"></a><a name="id2603631"></a><p>   The regression tests are a comprehensive set of tests for the SQL
+<a name="id2605769"></a><a name="id2605778"></a><p>   The regression tests are a comprehensive set of tests for the SQL
    implementation in <span class="productname">PostgreSQL</span>.  They test
    standard SQL operations as well as the extended capabilities of
-   <span class="productname">PostgreSQL</span>.  From
-   <span class="productname">PostgreSQL</span> 6.1 onward, the regression
-   tests are current for every official release.
+   <span class="productname">PostgreSQL</span>.
   </p>
 <div class="sect1" lang="en">
 <div class="titlepage">
@@ -45,7 +43,7 @@
 <a name="regress-run"></a>26.1. Running the Tests</h2></div></div>
 <div></div>
 </div>
-<p>   The regression test can be run against an already installed and
+<p>   The regression tests can be run against an already installed and
    running server, or using a temporary installation within the build
    tree.  Furthermore, there is a &#8220;<span class="quote">parallel</span>&#8221; and a
    &#8220;<span class="quote">sequential</span>&#8221; mode for running the tests.  The
@@ -65,15 +63,15 @@
    in the top-level directory.  (Or you can change to
    <tt class="filename">src/test/regress</tt> and run the command there.)
    This will first build several auxiliary files, such as
-   some sample
-   user-defined trigger functions, and then run the test driver
+   some sample user-defined trigger functions, and then run the test driver
    script.  At the end you should see something like
 </p>
 <pre class="screen"><tt class="computeroutput">======================
- All 93 tests passed.
+ All 96 tests passed.
 ======================</tt></pre>
 <p>
-   or otherwise a note about which tests failed.  See <a href="regress-evaluation.html" title="26.2. Test Evaluation">Section 26.2, &#8220;Test Evaluation&#8221;</a> below for more.
+   or otherwise a note about which tests failed.  See <a href="regress-evaluation.html" title="26.2. Test Evaluation">Section 26.2, &#8220;Test Evaluation&#8221;</a> below before assuming that a
+   &#8220;<span class="quote">failure</span>&#8221; represents a serious problem.
   </p>
 <p>    Because this test method runs a temporary server, it will not work
     when you are the root user (since the server will not start as root).
@@ -93,6 +91,17 @@
     your back.  Use common sense when managing user permissions.)
    </p>
 <p>    Alternatively, run the tests after installation.
+   </p>
+<p>    If you have configured <span class="productname">PostgreSQL</span> to install
+    into a location where an older <span class="productname">PostgreSQL</span>
+    installation already exists, and you perform <tt class="literal">gmake check</tt>
+    before installing the new version, you may find that the tests fail
+    because the new programs try to use the already-installed shared
+    libraries.  (Typical symptoms are complaints about undefined symbols.)
+    If you wish to run the tests before overwriting the old installation,
+    you'll need to build with <tt class="literal">configure --disable-rpath</tt>.
+    It is not recommended that you use this option for the final installation,
+    however.
    </p>
 <p>    The parallel regression test starts quite a few processes under your
     user ID.  Presently, the maximum concurrency is twenty parallel test
@@ -126,9 +135,13 @@
 </p>
 <pre class="screen">gmake installcheck</pre>
 <p>
+or for a parallel test
+</p>
+<pre class="screen">gmake installcheck-parallel</pre>
+<p>
    The tests will expect to contact the server at the local host and the
-   default port number, unless directed otherwise by <tt class="envar">PGHOST</tt> and <tt class="envar">PGPORT</tt>
-   environment variables.
+   default port number, unless directed otherwise by <tt class="envar">PGHOST</tt> and
+   <tt class="envar">PGPORT</tt> environment variables.
   </p>
 </div>
 </div></body>

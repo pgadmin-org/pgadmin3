@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
 <link rel="previous" href="functions-admin.html" title="9.20. System Administration Functions">
 <link rel="next" href="typeconv-oper.html" title="10.2. Operators">
@@ -26,7 +26,7 @@
 <dt><span class="sect1"><a href="typeconv-union-case.html">10.5. UNION, CASE, and ARRAY Constructs</a></span></dt>
 </dl>
 </div>
-<a name="id2566264"></a><p><span class="acronym">SQL</span> statements can, intentionally or not, require
+<a name="id2566944"></a><p><span class="acronym">SQL</span> statements can, intentionally or not, require
 mixing of different data types in the same expression. 
 <span class="productname">PostgreSQL</span> has extensive facilities for
 evaluating mixed-type expressions.</p>
@@ -34,8 +34,7 @@ evaluating mixed-type expressions.</p>
 to understand the details of the type conversion mechanism.
 However, the implicit conversions done by <span class="productname">PostgreSQL</span>
 can affect the results of a query.  When necessary, these results
-can be tailored by a user or programmer
-using <span class="emphasis"><em>explicit</em></span> type conversion.</p>
+can be tailored by using <span class="emphasis"><em>explicit</em></span> type conversion.</p>
 <p>This chapter introduces the <span class="productname">PostgreSQL</span>
 type conversion mechanisms and conventions.
 Refer to the relevant sections in <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a> and <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>
@@ -52,13 +51,14 @@ has an associated data type which determines its behavior and allowed usage.
 <span class="productname">PostgreSQL</span> has an extensible type system that is
 much more general and flexible than other <span class="acronym">SQL</span> implementations.
 Hence, most type conversion behavior in <span class="productname">PostgreSQL</span>
-should be governed by general rules rather than by <span class="foreignphrase"><i class="foreignphrase">ad hoc</i></span> heuristics, to allow
+is governed by general rules rather than by <span class="foreignphrase"><i class="foreignphrase">ad hoc</i></span>
+heuristics.  This allows
 mixed-type expressions to be meaningful even with user-defined types.</p>
-<p>The <span class="productname">PostgreSQL</span> scanner/parser decodes lexical
-elements into only five fundamental categories: integers, floating-point numbers, strings,
-names, and key words.  Constants of most non-numeric types are first classified as
-strings. The <span class="acronym">SQL</span> language definition allows specifying type
-names with strings, and this mechanism can be used in
+<p>The <span class="productname">PostgreSQL</span> scanner/parser divides lexical
+elements into only five fundamental categories: integers, non-integer numbers,
+strings, identifiers, and key words.  Constants of most non-numeric types are
+first classified as strings. The <span class="acronym">SQL</span> language definition
+allows specifying type names with strings, and this mechanism can be used in
 <span class="productname">PostgreSQL</span> to start the parser down the correct
 path. For example, the query
 
@@ -81,17 +81,19 @@ parser:
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term">Operators</span></dt>
-<dd><p><span class="productname">PostgreSQL</span> allows expressions with
-prefix and postfix unary (one-argument) operators,
-as well as binary (two-argument) operators.</p></dd>
 <dt><span class="term">Function calls</span></dt>
 <dd><p>Much of the <span class="productname">PostgreSQL</span> type system is built around a
-rich set of functions. Function calls can have one or more arguments.
+rich set of functions. Functions can have one or more arguments.
 Since <span class="productname">PostgreSQL</span> permits function
 overloading, the function name alone does not uniquely identify the function
 to be called; the parser must select the right function based on the data
 types of the supplied arguments.</p></dd>
+<dt><span class="term">Operators</span></dt>
+<dd><p><span class="productname">PostgreSQL</span> allows expressions with
+prefix and postfix unary (one-argument) operators,
+as well as binary (two-argument) operators.  Like functions, operators can
+be overloaded, and so the same problem of selecting the right operator
+exists.</p></dd>
 <dt><span class="term">Value Storage</span></dt>
 <dd><p><span class="acronym">SQL</span> <tt class="command">INSERT</tt> and <tt class="command">UPDATE</tt> statements place the results of
 expressions into a table. The expressions in the statement must be matched up
@@ -100,7 +102,7 @@ with, and perhaps converted to, the types of the target columns.</p></dd>
 <dd><p>Since all query results from a unionized <tt class="command">SELECT</tt> statement
 must appear in a single set of columns, the types of the results of each
 <tt class="command">SELECT</tt> clause must be matched up and converted to a uniform set.
-Similarly, the branch expressions of a <tt class="literal">CASE</tt> construct must be
+Similarly, the result expressions of a <tt class="literal">CASE</tt> construct must be
 converted to a common type so that the <tt class="literal">CASE</tt> expression as a whole
 has a known output type.  The same holds for <tt class="literal">ARRAY</tt> constructs.</p></dd>
 </dl></div>
@@ -111,7 +113,7 @@ with the <tt class="command">CREATE CAST</tt> command.  (This is usually
 done in conjunction with defining new data types.  The set of casts
 between the built-in types has been carefully crafted and is best not
 altered.)</p>
-<a name="id2566563"></a><p>An additional heuristic is provided in the parser to allow better guesses
+<a name="id2567245"></a><p>An additional heuristic is provided in the parser to allow better guesses
 at proper behavior for <span class="acronym">SQL</span> standard types. There are
 several basic <i class="firstterm">type categories</i> defined: <tt class="type">boolean</tt>,
 <tt class="type">numeric</tt>, <tt class="type">string</tt>, <tt class="type">bitstring</tt>, <tt class="type">datetime</tt>, <tt class="type">timespan</tt>, <tt class="type">geometric</tt>, <tt class="type">network</tt>,

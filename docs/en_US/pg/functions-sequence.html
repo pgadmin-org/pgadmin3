@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
-<link rel="previous" href="functions-net.html" title="9.11. Network Address Type Functions">
+<link rel="previous" href="functions-net.html" title="9.11. Network Address Functions and Operators">
 <link rel="next" href="functions-conditional.html" title="9.13. Conditional Expressions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
@@ -16,7 +16,7 @@
 <a name="functions-sequence"></a>9.12. Sequence Manipulation Functions</h2></div></div>
 <div></div>
 </div>
-<a name="id2559343"></a><a name="id2559349"></a><a name="id2559355"></a><a name="id2559360"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
+<a name="id2560090"></a><a name="id2560095"></a><a name="id2560101"></a><a name="id2560107"></a><p>   This section describes <span class="productname">PostgreSQL</span>'s functions
    for operating on <i class="firstterm">sequence objects</i>.
    Sequence objects (also called sequence generators or
    just sequences) are special single-row tables created with
@@ -89,30 +89,31 @@ nextval('foo')              <i class="lineannotation"><span class="lineannotatio
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="function">nextval</tt></span></dt>
 <dd><p>        Advance the sequence object to its next value and return that
-	value.  This is done atomically: even if multiple sessions
-	execute <tt class="function">nextval</tt> concurrently, each will safely receive
-	a distinct sequence value.
+        value.  This is done atomically: even if multiple sessions
+        execute <tt class="function">nextval</tt> concurrently, each will safely receive
+        a distinct sequence value.
        </p></dd>
 <dt><span class="term"><tt class="function">currval</tt></span></dt>
 <dd><p>        Return the value most recently obtained by <tt class="function">nextval</tt>
-	for this sequence in the current session.  (An error is
-	reported if <tt class="function">nextval</tt> has never been called for this
-	sequence in this session.)  Notice that because this is returning
-	a session-local value, it gives a predictable answer even if other
-	sessions are executing <tt class="function">nextval</tt> meanwhile.
+        for this sequence in the current session.  (An error is
+        reported if <tt class="function">nextval</tt> has never been called for this
+        sequence in this session.)  Notice that because this is returning
+        a session-local value, it gives a predictable answer whether or not
+        other sessions have executed <tt class="function">nextval</tt> since the
+        current session did.
        </p></dd>
 <dt><span class="term"><tt class="function">setval</tt></span></dt>
 <dd>
 <p>        Reset the sequence object's counter value.  The two-parameter
-	form sets the sequence's <tt class="literal">last_value</tt> field to the specified
-	value and sets its <tt class="literal">is_called</tt> field to <tt class="literal">true</tt>,
-	meaning that the next <tt class="function">nextval</tt> will advance the sequence
-	before returning a value.  In the three-parameter form,
-	<tt class="literal">is_called</tt> may be set either <tt class="literal">true</tt> or
-	<tt class="literal">false</tt>.  If it's set to <tt class="literal">false</tt>,
-	the next <tt class="function">nextval</tt> will return exactly the specified
-	value, and sequence advancement commences with the following
-	<tt class="function">nextval</tt>.  For example,
+        form sets the sequence's <tt class="literal">last_value</tt> field to the specified
+        value and sets its <tt class="literal">is_called</tt> field to <tt class="literal">true</tt>,
+        meaning that the next <tt class="function">nextval</tt> will advance the sequence
+        before returning a value.  In the three-parameter form,
+        <tt class="literal">is_called</tt> may be set either <tt class="literal">true</tt> or
+        <tt class="literal">false</tt>.  If it's set to <tt class="literal">false</tt>,
+        the next <tt class="function">nextval</tt> will return exactly the specified
+        value, and sequence advancement commences with the following
+        <tt class="function">nextval</tt>.  For example,
 
 </p>
 <pre class="screen">SELECT setval('foo', 42);           <i class="lineannotation"><span class="lineannotation">Next <tt class="function">nextval</tt> will return 43</span></i>
@@ -121,7 +122,7 @@ SELECT setval('foo', 42, false);    <i class="lineannotation"><span class="linea
 <p>
 
         The result returned by <tt class="function">setval</tt> is just the value of its
-	second argument.
+        second argument.
        </p>
 </dd>
 </dl></div>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
 <link rel="previous" href="tutorial-join.html" title="2.6. Joins Between Tables">
 <link rel="next" href="tutorial-update.html" title="2.8. Updates">
@@ -16,11 +16,11 @@
 <a name="tutorial-agg"></a>2.7. Aggregate Functions</h2></div></div>
 <div></div>
 </div>
-<a name="id2518608"></a><p>    <a name="id2518620"></a>
-    <a name="id2518627"></a>
-    <a name="id2518634"></a>
-    <a name="id2518640"></a>
-    <a name="id2518647"></a>
+<a name="id2518917"></a><p>    <a name="id2518930"></a>
+    <a name="id2518936"></a>
+    <a name="id2518943"></a>
+    <a name="id2518950"></a>
+    <a name="id2518957"></a>
 
     Like  most  other relational database products, 
     <span class="productname">PostgreSQL</span> supports
@@ -45,7 +45,7 @@
 (1 row)</pre>
 <p>
    </p>
-<p>    <a name="id2518712"></a>
+<p>    <a name="id2519021"></a>
 
     If we wanted to know what city (or cities) that reading occurred in,
     we might try
@@ -80,8 +80,8 @@
     that computes its own aggregate separately from what is happening
     in the outer query.
    </p>
-<p>    <a name="id2518775"></a>
-    <a name="id2518782"></a>
+<p>    <a name="id2519085"></a>
+    <a name="id2519092"></a>
 
     Aggregates are also very useful in combination with <tt class="literal">GROUP
     BY</tt> clauses.  For example, we can get the maximum low
@@ -152,13 +152,13 @@
     aggregates are computed.  Thus, the
     <tt class="literal">WHERE</tt> clause must not contain aggregate functions;
     it makes no sense to try to use an aggregate to determine which rows
-    will be inputs to the aggregates.  On the other hand,
+    will be inputs to the aggregates.  On the other hand, the
     <tt class="literal">HAVING</tt> clause always contains aggregate functions.
     (Strictly speaking, you are allowed to write a <tt class="literal">HAVING</tt>
-    clause that doesn't use aggregates, but it's wasteful: The same condition
+    clause that doesn't use aggregates, but it's wasteful. The same condition
     could be used more efficiently at the <tt class="literal">WHERE</tt> stage.)
    </p>
-<p>    Observe that we can apply the city name restriction in
+<p>    In the previous example, we can apply the city name restriction in
     <tt class="literal">WHERE</tt>, since it needs no aggregate.  This is
     more efficient than adding the restriction to <tt class="literal">HAVING</tt>,
     because we avoid doing the grouping and aggregate calculations

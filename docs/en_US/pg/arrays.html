@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="previous" href="datatype-bit.html" title="8.9. Bit String Types">
 <link rel="next" href="rowtypes.html" title="8.11. Composite Types">
@@ -16,7 +16,7 @@
 <a name="arrays"></a>8.10. Arrays</h2></div></div>
 <div></div>
 </div>
-<a name="id2537522"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
+<a name="id2538051"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
   defined as variable-length multidimensional arrays. Arrays of any
   built-in or user-defined base type can be created.  (Arrays of
   composite types or domains are not yet supported, however.)
@@ -24,7 +24,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2537539"></a>8.10.1. Declaration of Array Types</h3></div></div>
+<a name="id2538068"></a>8.10.1. Declaration of Array Types</h3></div></div>
 <div></div>
 </div>
 <p>  To illustrate the use of array types, we create this table:
@@ -66,8 +66,10 @@
   <tt class="command">CREATE TABLE</tt> is simply documentation, it does not
   affect runtime behavior.
  </p>
-<p>  An alternative, SQL99-standard syntax may be used for one-dimensional arrays.
-  <tt class="structfield">pay_by_quarter</tt> could have been defined as:
+<p>  An alternative syntax, which conforms to the SQL:1999 standard, may
+  be used for one-dimensional arrays.
+  <tt class="structfield">pay_by_quarter</tt> could have been defined
+  as:
 </p>
 <pre class="programlisting">    pay_by_quarter  integer ARRAY[4],</pre>
 <p>
@@ -79,10 +81,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2537647"></a>8.10.2. Array Value Input</h3></div></div>
+<a name="id2538176"></a>8.10.2. Array Value Input</h3></div></div>
 <div></div>
 </div>
-<a name="id2537650"></a><p>   To write an array value as a literal constant, enclose the element
+<a name="id2538180"></a><p>   To write an array value as a literal constant, enclose the element
    values within curly braces and separate them by commas.  (If you
    know C, this is not unlike the C syntax for initializing
    structures.)  You may put double quotes around any element value,
@@ -173,7 +175,7 @@ INSERT INTO sal_emp
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2537839"></a>8.10.3. Accessing Arrays</h3></div></div>
+<a name="id2538374"></a>8.10.3. Accessing Arrays</h3></div></div>
 <div></div>
 </div>
 <p>  Now, we can run some queries on the table.
@@ -275,7 +277,7 @@ INSERT INTO sal_emp
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2538000"></a>8.10.4. Modifying Arrays</h3></div></div>
+<a name="id2538535"></a>8.10.4. Modifying Arrays</h3></div></div>
 <div></div>
 </div>
 <p>  An array value can be replaced completely:
@@ -435,7 +437,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2538219"></a>8.10.5. Searching in Arrays</h3></div></div>
+<a name="id2538754"></a>8.10.5. Searching in Arrays</h3></div></div>
 <div></div>
 </div>
 <p>  To search for a value in an array, you must check each value of the
@@ -479,7 +481,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2538270"></a>8.10.6. Array Input and Output Syntax</h3></div></div>
+<a name="id2538805"></a>8.10.6. Array Input and Output Syntax</h3></div></div>
 <div></div>
 </div>
 <p>   The external text representation of an array value consists of items that
@@ -509,11 +511,11 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
    set to one. If any of an array's dimensions has a lower bound index not
    equal to one, an additional decoration that indicates the actual
    array dimensions will precede the array structure decoration.
-   The decoration consists of square braces (<tt class="literal">[</tt> and <tt class="literal">]</tt>)
-   around each array dimension's lower and upper bound indicies, plus
-   a colon (<tt class="literal">:</tt>) delimiter character inbetween. Delimiting the
-   array dimension decoration from the array structure decoration is a
-   single assignment operator (<tt class="literal">=</tt>). For example:
+   This decoration consists of square brackets (<tt class="literal">[]</tt>)
+   around each array dimension's lower and upper bounds, with
+   a colon (<tt class="literal">:</tt>) delimiter character in between. The
+   array dimension decoration is followed by an equal sign (<tt class="literal">=</tt>).
+   For example:
 </p>
 <pre class="programlisting">SELECT 1 || ARRAY[2,3] AS array;
 
@@ -530,8 +532,8 @@ SELECT ARRAY[1,2] || ARRAY[[3,4]] AS array;
 (1 row)</pre>
 <p>
   </p>
-<p>   In a similar fashion, an array with non-default indicies may be specified
-   using the same literal syntax. For example:
+<p>   This syntax can also be used to specify non-default array subscripts
+   in an array literal. For example:
 </p>
 <pre class="programlisting">SELECT f1[1][-2][3] AS e1, f1[1][-1][5] AS e2
  FROM (SELECT '[1:1][-2:-1][3:5]={{{1,2,3},{4,5,6}}}'::int[] AS f1) AS ss;
@@ -555,8 +557,8 @@ SELECT ARRAY[1,2] || ARRAY[[3,4]] AS array;
 <p>   You may write whitespace before a left brace or after a right
    brace. You may also write whitespace before or after any individual item
    string. In all of these cases the whitespace will be ignored. However,
-   whitespace within double quoted elements, or surrounded on both sides by
-   non-whitespace characters of an element, are not ignored.
+   whitespace within double-quoted elements, or surrounded on both sides by
+   non-whitespace characters of an element, is not ignored.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -574,6 +576,8 @@ SELECT ARRAY[1,2] || ARRAY[[3,4]] AS array;
    with a data type whose input routine also treated backslashes specially,
    <tt class="type">bytea</tt> for example, we might need as many as eight backslashes
    in the command to get one backslash into the stored array element.)
+   Dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) may be
+   used to avoid the need to double backslashes.
   </p>
 </div>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-createtablespace.html" title="CREATE TABLESPACE">
 <link rel="next" href="sql-createtype.html" title="CREATE TYPE">
@@ -19,14 +19,14 @@
 <h2>Name</h2>
 <p>CREATE TRIGGER &#8212; define a new trigger</p>
 </div>
-<a name="id2679474"></a><div class="refsynopsisdiv">
+<a name="id2683230"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE TRIGGER <i class="replaceable"><tt>name</tt></i> { BEFORE | AFTER } { <i class="replaceable"><tt>event</tt></i> [ OR ... ] }
     ON <i class="replaceable"><tt>table</tt></i> [ FOR [ EACH ] { ROW | STATEMENT } ]
     EXECUTE PROCEDURE <i class="replaceable"><tt>funcname</tt></i> ( <i class="replaceable"><tt>arguments</tt></i> )</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2679520"></a><h2>Description</h2>
+<a name="id2683276"></a><h2>Description</h2>
 <p>   <tt class="command">CREATE TRIGGER</tt> creates a new trigger.  The
    trigger will be associated with the specified table and will
    execute the specified function <i class="replaceable"><tt>funcname</tt></i> when certain events occur.
@@ -63,11 +63,11 @@
    create <tt class="command">SELECT</tt> triggers. Rules and views are more
    appropriate in such cases.
   </p>
-<p>   Refer to <a href="triggers.html" title="Chapter 33. Triggers">Chapter 33, <i>Triggers</i></a> for more information about triggers.
+<p>   Refer to <a href="triggers.html" title="Chapter 32. Triggers">Chapter 32, <i>Triggers</i></a> for more information about triggers.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2679672"></a><h2>Parameters</h2>
+<a name="id2683428"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
 <dd><p>      The name to give the new trigger.  This must be distinct from
@@ -131,22 +131,22 @@
 </div>
 <div class="refsect1" lang="en">
 <a name="r1-sql-createtrigger-2"></a><h2>Examples</h2>
-<p>   <a href="trigger-example.html" title="33.4. A Complete Example">Section 33.4, &#8220;A Complete Example&#8221;</a> contains a complete example.
+<p>   <a href="trigger-example.html" title="32.4. A Complete Example">Section 32.4, &#8220;A Complete Example&#8221;</a> contains a complete example.
   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtrigger-compatibility"></a><h2>Compatibility</h2>
 <p>   The <tt class="command">CREATE TRIGGER</tt> statement in
    <span class="productname">PostgreSQL</span> implements a subset of the
-   SQL99 standard.  (There are no provisions for triggers in SQL92.)
+   SQL:1999 standard.  (There are no provisions for triggers in SQL-92.)
    The following functionality is missing:
 
    </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>      SQL99 allows triggers to fire on updates to specific columns
+<li><p>      SQL:1999 allows triggers to fire on updates to specific columns
       (e.g., <tt class="literal">AFTER UPDATE OF col1, col2</tt>).
      </p></li>
-<li><p>      SQL99 allows you to define aliases for the &#8220;<span class="quote">old</span>&#8221;
+<li><p>      SQL:1999 allows you to define aliases for the &#8220;<span class="quote">old</span>&#8221;
       and &#8220;<span class="quote">new</span>&#8221; rows or tables for use in the definition
       of the triggered action (e.g., <tt class="literal">CREATE TRIGGER ... ON
       tablename REFERENCING OLD ROW AS somename NEW ROW AS othername
@@ -156,7 +156,7 @@
       language-specific way.
      </p></li>
 <li><p>      <span class="productname">PostgreSQL</span> only allows the execution
-      of a user-defined function for the triggered action.  SQL99
+      of a user-defined function for the triggered action.  SQL:1999
       allows the execution of a number of other SQL commands, such as
       <tt class="command">CREATE TABLE</tt> as triggered action.  This
       limitation is not hard to work around by creating a user-defined
@@ -165,7 +165,7 @@
 </ul></div>
 <p>
   </p>
-<p>   SQL99 specifies that multiple triggers should be fired in
+<p>   SQL:1999 specifies that multiple triggers should be fired in
    time-of-creation order.  <span class="productname">PostgreSQL</span> uses
    name order, which was judged more convenient to work with.
   </p>
@@ -175,7 +175,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2680014"></a><h2>See Also</h2>
+<a name="id2683770"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-altertrigger.html">ALTER TRIGGER</a>, <a href="sql-droptrigger.html">DROP TRIGGER</a></span>
 </div>
 </div></body>

@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>5.2. System Columns</title>
+<title>5.4. System Columns</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="previous" href="ddl.html" title="Chapter 5. Data Definition">
-<link rel="next" href="ddl-default.html" title="5.3. Default Values">
+<link rel="previous" href="ddl-constraints.html" title="5.3. Constraints">
+<link rel="next" href="ddl-inherit.html" title="5.5. Inheritance">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="ddl-system-columns"></a>5.2. System Columns</h2></div></div>
+<a name="ddl-system-columns"></a>5.4. System Columns</h2></div></div>
 <div></div>
 </div>
 <p>   Every table has several <i class="firstterm">system columns</i> that are
@@ -24,9 +24,9 @@
    restrictions.)  You do not really need to be concerned about these
    columns, just know they exist.
   </p>
-<a name="id2523852"></a><div class="variablelist"><dl>
+<a name="id2525032"></a><div class="variablelist"><dl>
 <dt><span class="term"><tt class="structfield">oid</tt></span></dt>
-<dd><p>      <a name="id2523868"></a>
+<dd><p>      <a name="id2525048"></a>
       The object identifier (object ID) of a row.  This is a serial
       number that is automatically added by
       <span class="productname">PostgreSQL</span> to all table rows (unless
@@ -36,7 +36,7 @@
      </p></dd>
 <dt><span class="term"><tt class="structfield">tableoid</tt></span></dt>
 <dd>
-<a name="id2523911"></a><p>      The OID of the table containing this row.  This column is
+<a name="id2525091"></a><p>      The OID of the table containing this row.  This column is
       particularly handy for queries that select from inheritance
       hierarchies, since without it, it's difficult to tell which
       individual table a row came from.  The
@@ -47,7 +47,7 @@
 </dd>
 <dt><span class="term"><tt class="structfield">xmin</tt></span></dt>
 <dd>
-<a name="id2523940"></a><p>      The identity (transaction ID) of the inserting transaction for
+<a name="id2525121"></a><p>      The identity (transaction ID) of the inserting transaction for
       this row version.  (A row version is an individual state of a
       row; each update of a row creates a new row version for the same
       logical row.)
@@ -55,27 +55,27 @@
 </dd>
 <dt><span class="term"><tt class="structfield">cmin</tt></span></dt>
 <dd>
-<a name="id2523958"></a><p>      The command identifier (starting at zero) within the inserting
+<a name="id2525138"></a><p>      The command identifier (starting at zero) within the inserting
       transaction.
      </p>
 </dd>
 <dt><span class="term"><tt class="structfield">xmax</tt></span></dt>
 <dd>
-<a name="id2523973"></a><p>      The identity (transaction ID) of the deleting transaction, or
+<a name="id2525153"></a><p>      The identity (transaction ID) of the deleting transaction, or
       zero for an undeleted row version.  It is possible for this column to
-      be nonzero in a visible row version: That usually indicates that the
+      be nonzero in a visible row version. That usually indicates that the
       deleting transaction hasn't committed yet, or that an attempted
       deletion was rolled back.
      </p>
 </dd>
 <dt><span class="term"><tt class="structfield">cmax</tt></span></dt>
 <dd>
-<a name="id2523992"></a><p>      The command identifier within the deleting transaction, or zero.
+<a name="id2525172"></a><p>      The command identifier within the deleting transaction, or zero.
      </p>
 </dd>
 <dt><span class="term"><tt class="structfield">ctid</tt></span></dt>
 <dd>
-<a name="id2524007"></a><p>      The physical location of the row version within its table.  Note that
+<a name="id2525187"></a><p>      The physical location of the row version within its table.  Note that
       although the <tt class="structfield">ctid</tt> can be used to
       locate the row version very quickly, a row's
       <tt class="structfield">ctid</tt> will change each time it is
@@ -106,8 +106,8 @@
       </p></li>
 <li><p>       The tables in question should be created using <tt class="literal">WITH
        OIDS</tt> to ensure forward compatibility with future
-       releases of <span class="productname">PostgreSQL</span> in which OIDs
-       are not included in all tables by default.
+       releases of <span class="productname">PostgreSQL</span>.  It is
+       planned that <tt class="literal">WITHOUT OIDS</tt> will become the default.
       </p></li>
 </ul></div>
 <p>

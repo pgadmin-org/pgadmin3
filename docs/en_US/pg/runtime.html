@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
-<link rel="previous" href="install-win32.html" title="Chapter 15. Installation on Windows">
+<link rel="previous" href="install-win32.html" title="Chapter 15. Client-Only Installation on Windows">
 <link rel="next" href="creating-cluster.html" title="16.2. Creating a Database Cluster">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="runtime">
@@ -46,8 +46,8 @@
 <dt><span class="sect1"><a href="kernel-resources.html">16.5. Managing Kernel Resources</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="kernel-resources.html#sysvipc">16.5.1. Shared Memory and Semaphores</a></span></dt>
-<dt><span class="sect2"><a href="kernel-resources.html#id2589294">16.5.2. Resource Limits</a></span></dt>
-<dt><span class="sect2"><a href="kernel-resources.html#id2589474">16.5.3. Linux Memory Overcommit</a></span></dt>
+<dt><span class="sect2"><a href="kernel-resources.html#id2590995">16.5.2. Resource Limits</a></span></dt>
+<dt><span class="sect2"><a href="kernel-resources.html#id2591176">16.5.3. Linux Memory Overcommit</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="postmaster-shutdown.html">16.6. Shutting Down the Server</a></span></dt>
 <dt><span class="sect1"><a href="ssl-tcp.html">16.7. Secure TCP/IP Connections with SSL</a></span></dt>
@@ -55,7 +55,7 @@
 </dl>
 </div>
 <p>  This chapter discusses how to set up and run the database server
-  and the interactions with the operating system.
+  and its interactions with the operating system.
  </p>
 <div class="sect1" lang="en">
 <div class="titlepage">
@@ -63,7 +63,7 @@
 <a name="postgres-user"></a>16.1. The <span class="productname">PostgreSQL</span> User Account</h2></div></div>
 <div></div>
 </div>
-<a name="id2577574"></a><p>   As with any other server daemon that is connected to outside world,
+<a name="id2579146"></a><p>   As with any other server daemon that is accessible to the outside world,
    it is advisable to run <span class="productname">PostgreSQL</span> under a
    separate user account. This user account should only own the data
    that is managed by the server, and should not be shared with other
@@ -74,8 +74,8 @@
   </p>
 <p>   To add a Unix user account to your system, look for a command
    <tt class="command">useradd</tt> or <tt class="command">adduser</tt>. The user
-   name <span class="systemitem">postgres</span> is often used but is by no
-   means required.
+   name <span class="systemitem">postgres</span> is often used, and is assumed
+   throughout this book, but you can use another name if you like.
   </p>
 </div>
 </div></body>

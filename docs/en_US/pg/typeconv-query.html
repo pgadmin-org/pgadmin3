@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
 <link rel="previous" href="typeconv-func.html" title="10.3. Functions">
 <link rel="next" href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">
@@ -29,16 +29,20 @@ if there is a registered cast between the two types.
 If the expression is an unknown-type literal, the contents of
 the literal string will be fed to the input conversion routine for the target
 type.</p></li>
-<li><p>If the target is a fixed-length type (e.g., <tt class="type">char</tt> or <tt class="type">varchar</tt>
-declared with a length) then try to find a sizing function for the target
-type.  A sizing function is a function of the same name as the type,
-taking two arguments of which the first is that type and the second is of type
-<tt class="type">integer</tt>, and returning the same type.  If one is found, it is applied,
-passing the column's declared length as the second parameter.</p></li>
+<li><p>Check to see if there is a sizing cast for the target type.  A sizing
+cast is a cast from that type to itself.  If one is found in the
+<tt class="structname">pg_cast</tt> catalog, apply it to the expression before storing
+into the destination column.  The implementation function for such a cast
+always takes an extra parameter of type <tt class="type">integer</tt>, which receives
+the destination column's declared length (actually, its
+<tt class="structfield">atttypmod</tt> value; the interpretation of
+<tt class="structfield">atttypmod</tt> varies for different datatypes).  The cast function
+is responsible for applying any length-dependent semantics such as size
+checking or truncation.</p></li>
 </ol>
 </div>
 <div class="example">
-<a name="id2567439"></a><p class="title"><b>Example 10.6. <tt class="type">character</tt> Storage Type Conversion</b></p>
+<a name="id2568135"></a><p class="title"><b>Example 10.6. <tt class="type">character</tt> Storage Type Conversion</b></p>
 <p>For a target column declared as <tt class="type">character(20)</tt> the following statement
 ensures that the stored value is sized correctly:
 

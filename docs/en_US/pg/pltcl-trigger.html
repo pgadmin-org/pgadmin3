@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="pltcl.html" title="Chapter 36. PL/Tcl - Tcl Procedural Language">
 <link rel="previous" href="pltcl-dbaccess.html" title="36.5. Database Access from PL/Tcl">
 <link rel="next" href="pltcl-unknown.html" title="36.7. Modules and the unknown command">
@@ -16,7 +16,7 @@
 <a name="pltcl-trigger"></a>36.6. Trigger Procedures in PL/Tcl</h2></div></div>
 <div></div>
 </div>
-<a name="id2652132"></a><p>     Trigger procedures can be written in PL/Tcl.
+<a name="id2655460"></a><p>     Trigger procedures can be written in PL/Tcl.
      <span class="productname">PostgreSQL</span> requires that a procedure that is to be called
      as a trigger must be declared as a function with no arguments
      and a return type of <tt class="literal">trigger</tt>.
@@ -27,51 +27,51 @@
      </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="varname">$TG_name</tt></span></dt>
-<dd><p>	 The name of the trigger from the <tt class="command">CREATE TRIGGER</tt> statement.
-	</p></dd>
+<dd><p>         The name of the trigger from the <tt class="command">CREATE TRIGGER</tt> statement.
+        </p></dd>
 <dt><span class="term"><tt class="varname">$TG_relid</tt></span></dt>
-<dd><p>	 The object ID of the table that caused the trigger procedure
-	 to be invoked.
-	</p></dd>
+<dd><p>         The object ID of the table that caused the trigger procedure
+         to be invoked.
+        </p></dd>
 <dt><span class="term"><tt class="varname">$TG_relatts</tt></span></dt>
-<dd><p>	 A Tcl list of the table column names, prefixed with an empty list
+<dd><p>         A Tcl list of the table column names, prefixed with an empty list
          element. So looking up a column name in the list with <span class="application">Tcl</span>'s
          <tt class="function">lsearch</tt> command returns the element's number starting
-	 with 1 for the first column, the same way the columns are customarily
-	 numbered in <span class="productname">PostgreSQL</span>.  (Empty list
-	 elements also appear in the positions of columns that have been
-	 dropped, so that the attribute numbering is correct for columns
-	 to their right.)
-	</p></dd>
+         with 1 for the first column, the same way the columns are customarily
+         numbered in <span class="productname">PostgreSQL</span>.  (Empty list
+         elements also appear in the positions of columns that have been
+         dropped, so that the attribute numbering is correct for columns
+         to their right.)
+        </p></dd>
 <dt><span class="term"><tt class="varname">$TG_when</tt></span></dt>
-<dd><p>	 The string <tt class="literal">BEFORE</tt> or <tt class="literal">AFTER</tt> depending on the
-	 type of trigger call.
-	</p></dd>
+<dd><p>         The string <tt class="literal">BEFORE</tt> or <tt class="literal">AFTER</tt> depending on the
+         type of trigger call.
+        </p></dd>
 <dt><span class="term"><tt class="varname">$TG_level</tt></span></dt>
-<dd><p>	 The string <tt class="literal">ROW</tt> or <tt class="literal">STATEMENT</tt> depending on the
-	 type of trigger call.
-	</p></dd>
+<dd><p>         The string <tt class="literal">ROW</tt> or <tt class="literal">STATEMENT</tt> depending on the
+         type of trigger call.
+        </p></dd>
 <dt><span class="term"><tt class="varname">$TG_op</tt></span></dt>
-<dd><p>	 The string <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, or
-	 <tt class="literal">DELETE</tt> depending on the type of trigger call.
-	</p></dd>
+<dd><p>         The string <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, or
+         <tt class="literal">DELETE</tt> depending on the type of trigger call.
+        </p></dd>
 <dt><span class="term"><tt class="varname">$NEW</tt></span></dt>
-<dd><p>	 An associative array containing the values of the new table
-	 row for <tt class="command">INSERT</tt> or <tt class="command">UPDATE</tt> actions, or
-	 empty for <tt class="command">DELETE</tt>.  The array is indexed by column
-	 name.  Columns that are null will not appear in the array.
-	</p></dd>
+<dd><p>         An associative array containing the values of the new table
+         row for <tt class="command">INSERT</tt> or <tt class="command">UPDATE</tt> actions, or
+         empty for <tt class="command">DELETE</tt>.  The array is indexed by column
+         name.  Columns that are null will not appear in the array.
+        </p></dd>
 <dt><span class="term"><tt class="varname">$OLD</tt></span></dt>
-<dd><p>	 An associative array containing the values of the old table
-	 row for <tt class="command">UPDATE</tt> or <tt class="command">DELETE</tt> actions, or
-	 empty for <tt class="command">INSERT</tt>.  The array is indexed by column
-	 name.  Columns that are null will not appear in the array.
-	</p></dd>
+<dd><p>         An associative array containing the values of the old table
+         row for <tt class="command">UPDATE</tt> or <tt class="command">DELETE</tt> actions, or
+         empty for <tt class="command">INSERT</tt>.  The array is indexed by column
+         name.  Columns that are null will not appear in the array.
+        </p></dd>
 <dt><span class="term"><tt class="varname">$args</tt></span></dt>
-<dd><p>	 A Tcl list of the arguments to the procedure as given in the
-	 <tt class="command">CREATE TRIGGER</tt> statement. These arguments are also accessible as
-	 <tt class="literal">$1</tt> ... <tt class="literal">$<i class="replaceable"><tt>n</tt></i></tt> in the procedure body.
-	</p></dd>
+<dd><p>         A Tcl list of the arguments to the procedure as given in the
+         <tt class="command">CREATE TRIGGER</tt> statement. These arguments are also accessible as
+         <tt class="literal">$1</tt> ... <tt class="literal">$<i class="replaceable"><tt>n</tt></i></tt> in the procedure body.
+        </p></dd>
 </dl></div>
 <p>
     </p>

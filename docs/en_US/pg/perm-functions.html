@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="user-manag.html" title="Chapter 17. Database Users and Privileges">
 <link rel="previous" href="privileges.html" title="17.4. Privileges">
 <link rel="next" href="managing-databases.html" title="Chapter 18. Managing Databases">
@@ -19,16 +19,19 @@
 <p>   Functions and triggers allow users to insert code into the backend
    server that other users may execute without knowing it. Hence, both
    mechanisms permit users to &#8220;<span class="quote">Trojan horse</span>&#8221;
-   others with relative impunity. The only real protection is tight
+   others with relative ease. The only real protection is tight
    control over who can define functions.
   </p>
-<p>   Functions written in any language except SQL run inside the backend
-   server process with the operating systems permissions of the
-   database server daemon process. It is possible to change the
-   server's internal data structures from inside of trusted functions.
+<p>   Functions run inside the backend
+   server process with the operating system permissions of the
+   database server daemon.  If the programmming language
+   used for the function allows unchecked memory accesses, it is
+   possible to change the server's internal data structures.
    Hence, among many other things, such functions can circumvent any
-   system access controls. This is an inherent problem with
-   user-defined C functions.
+   system access controls.  Function languages that allow such access
+   are considered &#8220;<span class="quote">untrusted</span>&#8221;, and
+   <span class="productname">PostgreSQL</span> allows only superusers to
+   create functions written in those languages.
   </p>
 </div></body>
 </html>

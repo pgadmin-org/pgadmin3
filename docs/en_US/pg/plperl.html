@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="previous" href="pltcl-procnames.html" title="36.8. Tcl Procedure Names">
 <link rel="next" href="plperl-database.html" title="37.2. Database Access from PL/Perl">
@@ -28,7 +28,7 @@
 <dt><span class="sect1"><a href="plperl-missing.html">37.7. Limitations and Missing Features</a></span></dt>
 </dl>
 </div>
-<a name="id2652663"></a><a name="id2652673"></a><p>   PL/Perl is a loadable procedural language that enables you to write
+<a name="id2655998"></a><a name="id2656006"></a><p>   PL/Perl is a loadable procedural language that enables you to write
    <span class="productname">PostgreSQL</span> functions in the <a href="http://www.perl.com" target="_top">Perl</a> programming language.
   </p>
 <p>   To install PL/Perl in a particular database, use
@@ -84,7 +84,7 @@ $$ LANGUAGE plperl;</pre>
 $$ LANGUAGE plperl;</pre>
 <p>
   </p>
-<p>   If an SQL null value<a name="id2652833"></a> is passed to a function,
+<p>   If an SQL null value<a name="id2656167"></a> is passed to a function,
    the argument value will appear as &#8220;<span class="quote">undefined</span>&#8221; in Perl.  The
    above function definition will not behave very nicely with null
    inputs (in fact, it will act as though they are zeroes).  We could
@@ -129,9 +129,60 @@ CREATE FUNCTION empcomp(employee) RETURNS integer AS $$
     return $emp-&gt;{basesalary} + $emp-&gt;{bonus};
 $$ LANGUAGE plperl;
 
-SELECT name, empcomp(employee) FROM employee;</pre>
+SELECT name, empcomp(employee.*) FROM employee;</pre>
 <p>
   </p>
+<p>   A PL/Perl function can return a composite-type result using the same
+   approach: return a reference to a hash that has the required attributes.
+   For example,
+
+</p>
+<pre class="programlisting">CREATE TYPE testrowperl AS (f1 integer, f2 text, f3 text);
+
+CREATE OR REPLACE FUNCTION perl_row() RETURNS testrowperl AS $$
+    return {f2 =&gt; 'hello', f1 =&gt; 1, f3 =&gt; 'world'};
+$$ LANGUAGE plperl;
+
+SELECT * FROM perl_row();</pre>
+<p>
+
+   Any columns in the declared result data type that are not present in the
+   hash will be returned as NULLs.
+  </p>
+<p>   PL/Perl functions can also return sets of either scalar or composite
+   types.  To do this, return a reference to an array that contains
+   either scalars or references to hashes, respectively.  Here are
+   some simple examples:
+
+</p>
+<pre class="programlisting">CREATE OR REPLACE FUNCTION perl_set_int(int) RETURNS SETOF INTEGER AS $$
+return [0..$_[0]];
+$$ LANGUAGE plperl;
+
+SELECT * FROM perl_set_int(5);
+
+
+CREATE OR REPLACE FUNCTION perl_set() RETURNS SETOF testrowperl AS $$
+    return [
+        { f1 =&gt; 1, f2 =&gt; 'Hello', f3 =&gt; 'World' },
+        { f1 =&gt; 2, f2 =&gt; 'Hello', f3 =&gt; 'PostgreSQL' },
+        { f1 =&gt; 3, f2 =&gt; 'Hello', f3 =&gt; 'PL/Perl' }
+    ];
+$$  LANGUAGE plperl;
+
+SELECT * FROM perl_set();</pre>
+<p>
+
+   Note that when you do this, Perl will have to build the entire array in
+   memory; therefore the technique does not scale to very large result sets.
+  </p>
+<p>     <span class="application">PL/Perl</span> does not currently have full support for
+     domain types: it treats a domain the same as the underlying scalar
+     type.  This means that constraints associated with the domain will
+     not be enforced.  This is not an issue for function arguments, but
+     it is a hazard if you declare a <span class="application">PL/Perl</span> function
+     as returning a domain type.
+    </p>
 </div>
 </div></body>
 </html>

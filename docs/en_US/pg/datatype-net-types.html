@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="previous" href="datatype-geometric.html" title="8.7. Geometric Types">
 <link rel="next" href="datatype-bit.html" title="8.9. Bit String Types">
@@ -16,11 +16,12 @@
 <a name="datatype-net-types"></a>8.8. Network Address Types</h2></div></div>
 <div></div>
 </div>
-<a name="id2536772"></a><p>    <span class="productname">PostgreSQL</span> offers data types to store IPv4, IPv6, and MAC
-    addresses, shown in <a href="datatype-net-types.html#datatype-net-types-table" title="Table 8.17. Network Address Types">Table 8.17, &#8220;Network Address Types&#8221;</a>.  It
-    is preferable to use these types over plain text types, because
+<a name="id2537294"></a><p>    <span class="productname">PostgreSQL</span> offers data types to store IPv4, IPv6, and MAC
+    addresses, as shown in <a href="datatype-net-types.html#datatype-net-types-table" title="Table 8.17. Network Address Types">Table 8.17, &#8220;Network Address Types&#8221;</a>.  It
+    is preferable to use these types instead of plain text types to store
+    network addresses, because
     these types offer input error checking and several specialized
-    operators and functions.
+    operators and functions (see <a href="functions-net.html" title="9.11. Network Address Functions and Operators">Section 9.11, &#8220;Network Address Functions and Operators&#8221;</a>).
    </p>
 <div class="table">
 <a name="datatype-net-types-table"></a><p class="title"><b>Table 8.17. Network Address Types</b></p>
@@ -39,7 +40,7 @@
 <tr>
 <td><tt class="type">cidr</tt></td>
 <td>12 or 24 bytes</td>
-<td>IPv4 or IPv6 networks</td>
+<td>IPv4 and IPv6 networks</td>
 </tr>
 <tr>
 <td><tt class="type">inet</tt></td>
@@ -65,13 +66,13 @@
 <a name="datatype-inet"></a>8.8.1. <tt class="type">inet</tt></h3></div></div>
 <div></div>
 </div>
-<a name="id2536879"></a><p>     The <tt class="type">inet</tt> type holds an IPv4 or IPv6 host address, and
+<a name="id2537408"></a><p>     The <tt class="type">inet</tt> type holds an IPv4 or IPv6 host address, and
      optionally the identity of the subnet it is in, all in one field.
      The subnet identity is represented by stating how many bits of
      the host address represent the network address (the
      &#8220;<span class="quote">netmask</span>&#8221;).  If the netmask is 32 and the address is IPv4,
      then the value does not indicate a subnet, only a single host.
-     In IPv6, the address length is 128 bits, so 128 bits will specify a
+     In IPv6, the address length is 128 bits, so 128 bits specify a
      unique host address.  Note that if you
      want to accept networks only, you should use the
      <tt class="type">cidr</tt> type rather than <tt class="type">inet</tt>.
@@ -85,7 +86,7 @@
       is the number of bits in the netmask.  If the
       <i class="replaceable"><tt>/y</tt></i>
       part is left off, then the
-      netmask is 32 for IPv4 and 128 for IPv6, and the value represents
+      netmask is 32 for IPv4 and 128 for IPv6, so the value represents
       just a single host.  On display, the
       <i class="replaceable"><tt>/y</tt></i>
       portion is suppressed if the netmask specifies a single host.
@@ -97,7 +98,7 @@
 <a name="datatype-cidr"></a>8.8.2. <tt class="type">cidr</tt></h3></div></div>
 <div></div>
 </div>
-<a name="id2536956"></a><p>     The <tt class="type">cidr</tt> type holds an IPv4 or IPv6 network specification.
+<a name="id2537485"></a><p>     The <tt class="type">cidr</tt> type holds an IPv4 or IPv6 network specification.
      Input and output formats follow Classless Internet Domain Routing
      conventions.
      The format for specifying networks is <i class="replaceable"><tt>address/y</tt></i> where <i class="replaceable"><tt>address</tt></i> is the network represented as an
@@ -234,7 +235,7 @@
 <a name="datatype-macaddr"></a>8.8.4. <tt class="type">macaddr</tt></h3></div></div>
 <div></div>
 </div>
-<a name="id2537258"></a><a name="id2537264"></a><p>     The <tt class="type">macaddr</tt> type stores MAC addresses, i.e., Ethernet
+<a name="id2537787"></a><a name="id2537792"></a><p>     The <tt class="type">macaddr</tt> type stores MAC addresses, i.e., Ethernet
      card hardware addresses (although MAC addresses are used for
      other purposes as well).  Input is accepted in various customary
      formats, including
@@ -252,7 +253,7 @@
      which would all specify the same
      address.  Upper and lower case is accepted for the digits
      <tt class="literal">a</tt> through <tt class="literal">f</tt>.  Output is always in the
-     last of the shown forms.
+     last of the forms shown.
     </p>
 <p>     The directory <tt class="filename">contrib/mac</tt>
      in the <span class="productname">PostgreSQL</span> source distribution

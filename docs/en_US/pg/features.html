@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
 <link rel="previous" href="sql-keywords-appendix.html" title="Appendix C. SQL Key Words">
-<link rel="next" href="unsupported-features-sql99.html" title="D.2. Unsupported Features">
+<link rel="next" href="unsupported-features-sql-standard.html" title="D.2. Unsupported Features">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="features">
 <div class="titlepage">
@@ -19,63 +19,89 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="features.html#features-sql99">D.1. Supported Features</a></span></dt>
-<dt><span class="sect1"><a href="unsupported-features-sql99.html">D.2. Unsupported Features</a></span></dt>
+<dt><span class="sect1"><a href="features.html#features-sql-standard">D.1. Supported Features</a></span></dt>
+<dt><span class="sect1"><a href="unsupported-features-sql-standard.html">D.2. Unsupported Features</a></span></dt>
 </dl>
 </div>
 <p>  This section attempts to outline to what extent
-  <span class="productname">PostgreSQL</span> conforms to the SQL standard.
-  Full compliance to the standard or a complete statement about the
-  compliance to the standard is complicated and not particularly
-  useful, so this section can only give an overview.
-  </p>
+  <span class="productname">PostgreSQL</span> conforms to the current SQL
+  standard.  The following information is not a full statement of
+  conformance, but it presents the main topics in as much detail as is
+  both reasonable and useful for users.
+ </p>
 <p>  The formal name of the SQL standard is ISO/IEC 9075 &#8220;<span class="quote">Database
   Language SQL</span>&#8221;.  A revised version of the standard is released
-  from time to time; the most recent one appearing in 1999.  That
-  version is referred to as ISO/IEC 9075:1999, or informally as SQL99.
-  The version prior to that was SQL92.
-  <span class="productname">PostgreSQL</span> development tends to aim for
+  from time to time; the most recent one appearing in late 2003.  That
+  version is referred to as ISO/IEC 9075:2003, or simply as SQL:2003.
+  The versions prior to that were SQL:1999 and SQL-92.  Each version
+  replaces the previous one, so claims of conformance to earlier
+  versions have no official merit.
+  <span class="productname">PostgreSQL</span> development aims for
   conformance with the latest official version of the standard where
   such conformance does not contradict traditional features or common
-  sense.  At the time of this writing, balloting is under way for a
-  new revision of the standard, which, if approved, will eventually
-  become the conformance target for future
-  <span class="productname">PostgreSQL</span> development.
+  sense.  The PostgreSQL project was not represented in the ISO/IEC
+  9075 Working Group during the preparation of SQL:2003.  Even so,
+  many of the features required by SQL:2003 are already supported,
+  though sometimes with slightly differing syntax or function.
+  Further moves towards conformance may be expected in later releases.
  </p>
-<p>  <span class="acronym">SQL92</span> defined three feature sets for conformance:
-  Entry, Intermediate, and Full. Most database management systems claiming
-  <span class="acronym">SQL</span> standard conformance were conforming at only
-  the Entry level, since the entire set of features in the
-  Intermediate and Full levels was either too voluminous or in
-  conflict with legacy behaviors.
+<p>  <span class="acronym">SQL-92</span> defined three feature sets for
+  conformance: Entry, Intermediate, and Full.  Most database
+  management systems claiming <span class="acronym">SQL</span> standard
+  conformance were conforming at only the Entry level, since the
+  entire set of features in the Intermediate and Full levels was
+  either too voluminous or in conflict with legacy behaviors.
  </p>
-<p>  <span class="acronym">SQL99</span> defines a large set of individual features
-  rather than the ineffectively broad three levels found in
-  <span class="acronym">SQL92</span>.  A large subset of these features
-  represents the &#8220;<span class="quote">core</span>&#8221; features, which every conforming
-  SQL implementation must supply.  The rest of the features are purely
-  optional.  Some optional features are grouped together to form
-  &#8220;<span class="quote">packages</span>&#8221;, which SQL implementations can claim
-  conformance to, thus claiming conformance to particular groups of
-  features.
+<p>  Starting with <span class="acronym">SQL:1999</span>, the SQL standard defines
+  a large set of individual features rather than the ineffectively
+  broad three levels found in <span class="acronym">SQL-92</span>.  A large
+  subset of these features represents the &#8220;<span class="quote">Core</span>&#8221;
+  features, which every conforming SQL implementation must supply.
+  The rest of the features are purely optional.  Some optional
+  features are grouped together to form &#8220;<span class="quote">packages</span>&#8221;, which
+  SQL implementations can claim conformance to, thus claiming
+  conformance to particular groups of features.
  </p>
-<p>  The <span class="acronym">SQL99</span> standard is also split into 5 parts:
-  Framework, Foundation, Call Level Interface, Persistent Stored
-  Modules, and Host Language Bindings.
-  <span class="productname">PostgreSQL</span> only covers parts 1, 2, and 5.
+<p>  The <span class="acronym">SQL:2003</span> standard is also split into a number
+  of parts.  Each is known by a shorthand name.  Note that these parts
+  are not consecutively numbered.
+
+  </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>ISO/IEC 9075-1 Framework (<span class="acronym">SQL/Framework</span>)</p></li>
+<li><p>ISO/IEC 9075-2 Foundation (<span class="acronym">SQL/Foundation</span>)</p></li>
+<li><p>ISO/IEC 9075-3 Call Level Interface (<span class="acronym">SQL/CLI</span>)</p></li>
+<li><p>ISO/IEC 9075-4 Persistent Stored Modules (<span class="acronym">SQL/PSM</span>)</p></li>
+<li><p>ISO/IEC 9075-9 Management of External Data (<span class="acronym">SQL/MED</span>)</p></li>
+<li><p>ISO/IEC 9075-10 Object Language Bindings (<span class="acronym">SQL/OLB</span>)</p></li>
+<li><p>ISO/IEC 9075-11 Information and Definition Schemas (<span class="acronym">SQL/Schemata</span>)</p></li>
+<li><p>ISO/IEC 9075-13 Routines and Types using the Java Language (<span class="acronym">SQL/JRT</span>)</p></li>
+<li><p>ISO/IEC 9075-14 XML-related specifications (<span class="acronym">SQL/XML</span>)</p></li>
+</ul></div>
+<p>
+ </p>
+<p>  <span class="productname">PostgreSQL</span> covers parts 1, 2, and 11.
   Part 3 is similar to the ODBC interface, and part 4 is similar to
   the <span class="application">PL/pgSQL</span> programming language, but
-  exact conformance is not specifically intended in either case.
+  exact conformance is not specifically intended or verified in either
+  case.
+ </p>
+<p>  PostgreSQL supports most of the major features of SQL:2003.  Out of
+  164 mandatory features required for full Core conformance,
+  PostgreSQL conforms to at least 150.  In addition, there is a long
+  list of supported optional features.  It may be worth noting that at
+  the time of writing, no current version of any database management
+  system claims full conformance to Core SQL:2003.
  </p>
 <p>  In the following two sections, we provide a list of those features
   that <span class="productname">PostgreSQL</span> supports, followed by a
-  list of the features defined in SQL99 which are not yet supported in
-  <span class="productname">PostgreSQL</span>.  Both of these lists are
-  approximate: There may be minor details that are nonconforming for a
-  feature that is listed as supported, and large parts of an
-  unsupported feature may in fact be implemented.  The main body of
-  the documentation always contains the most accurate information
-  about what does and does not work.
+  list of the features defined in <span class="acronym">SQL:2003</span> which
+  are not yet supported in <span class="productname">PostgreSQL</span>.
+  Both of these lists are approximate: There may be minor details that
+  are nonconforming for a feature that is listed as supported, and
+  large parts of an unsupported feature may in fact be implemented.
+  The main body of the documentation always contains the most accurate
+  information about what does and does not work.
  </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -87,7 +113,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="features-sql99"></a>D.1. Supported Features</h2></div></div>
+<a name="features-sql-standard"></a>D.1. Supported Features</h2></div></div>
 <div></div>
 </div>
 <p>    </p>
@@ -107,7 +133,7 @@
 <tbody>
 <tr>
 <td>B012</td>
-<td>Core</td>
+<td> </td>
 <td>Embedded C</td>
 <td> </td>
 </tr>
@@ -187,7 +213,7 @@
 <td>E021-04</td>
 <td>Core</td>
 <td>CHARACTER_LENGTH function</td>
-<td> </td>
+<td>trims trailing spaces from CHARACTER values before counting</td>
 </tr>
 <tr>
 <td>E021-05</td>
@@ -222,7 +248,7 @@
 <tr>
 <td>E021-10</td>
 <td>Core</td>
-<td>Implicit casting among the character data types</td>
+<td>Implicit casting among the character string types</td>
 <td> </td>
 </tr>
 <tr>
@@ -469,6 +495,12 @@
 <td>E081-08</td>
 <td>Core</td>
 <td>WITH GRANT OPTION</td>
+<td> </td>
+</tr>
+<tr>
+<td>E081-10</td>
+<td>Core</td>
+<td>EXECUTE privilege</td>
 <td> </td>
 </tr>
 <tr>
@@ -906,7 +938,7 @@
 <tr>
 <td>F051-05</td>
 <td>Core</td>
-<td>Explicit CAST between datetime types and character types</td>
+<td>Explicit CAST between datetime types and character string types</td>
 <td> </td>
 </tr>
 <tr>
@@ -934,6 +966,12 @@
 <td> </td>
 </tr>
 <tr>
+<td>F053</td>
+<td> </td>
+<td>OVERLAPS predicate</td>
+<td> </td>
+</tr>
+<tr>
 <td>F081</td>
 <td>Core</td>
 <td>UNION and EXCEPT in views</td>
@@ -949,7 +987,7 @@
 <td>F111-01</td>
 <td> </td>
 <td>READ UNCOMMITTED isolation level</td>
-<td>behaves like READ COMMITTED</td>
+<td> </td>
 </tr>
 <tr>
 <td>F111-02</td>
@@ -961,7 +999,7 @@
 <td>F111-03</td>
 <td> </td>
 <td>REPEATABLE READ isolation level</td>
-<td>behaves like SERIALIZABLE</td>
+<td> </td>
 </tr>
 <tr>
 <td>F131</td>
@@ -1032,7 +1070,7 @@
 <tr>
 <td>F231</td>
 <td> </td>
-<td>Privilege Tables</td>
+<td>Privilege tables</td>
 <td> </td>
 </tr>
 <tr>
@@ -1103,25 +1141,25 @@
 </tr>
 <tr>
 <td>F302</td>
-<td>OLAP facilities</td>
+<td> </td>
 <td>INTERSECT table operator</td>
 <td> </td>
 </tr>
 <tr>
 <td>F302-01</td>
-<td>OLAP facilities</td>
+<td> </td>
 <td>INTERSECT DISTINCT table operator</td>
 <td> </td>
 </tr>
 <tr>
 <td>F302-02</td>
-<td>OLAP facilities</td>
+<td> </td>
 <td>INTERSECT ALL table operator</td>
 <td> </td>
 </tr>
 <tr>
 <td>F304</td>
-<td>OLAP facilities</td>
+<td> </td>
 <td>EXCEPT ALL table operator</td>
 <td> </td>
 </tr>
@@ -1193,31 +1231,25 @@
 </tr>
 <tr>
 <td>F401</td>
-<td>OLAP facilities</td>
+<td> </td>
 <td>Extended joined table</td>
 <td> </td>
 </tr>
 <tr>
 <td>F401-01</td>
-<td>OLAP facilities</td>
+<td> </td>
 <td>NATURAL JOIN</td>
 <td> </td>
 </tr>
 <tr>
 <td>F401-02</td>
-<td>OLAP facilities</td>
+<td> </td>
 <td>FULL OUTER JOIN</td>
 <td> </td>
 </tr>
 <tr>
-<td>F401-03</td>
-<td>OLAP facilities</td>
-<td>UNION JOIN</td>
-<td> </td>
-</tr>
-<tr>
 <td>F401-04</td>
-<td>OLAP facilities</td>
+<td> </td>
 <td>CROSS JOIN</td>
 <td> </td>
 </tr>
@@ -1225,7 +1257,7 @@
 <td>F411</td>
 <td>Enhanced datetime facilities</td>
 <td>Time zone specification</td>
-<td> </td>
+<td>differences regarding literal interpretation</td>
 </tr>
 <tr>
 <td>F421</td>
@@ -1348,12 +1380,6 @@
 <td> </td>
 </tr>
 <tr>
-<td>F511</td>
-<td> </td>
-<td>BIT data type</td>
-<td> </td>
-</tr>
-<tr>
 <td>F531</td>
 <td> </td>
 <td>Temporary tables</td>
@@ -1379,7 +1405,7 @@
 </tr>
 <tr>
 <td>F591</td>
-<td>OLAP facilities</td>
+<td> </td>
 <td>Derived tables</td>
 <td> </td>
 </tr>
@@ -1393,6 +1419,12 @@
 <td>F651</td>
 <td> </td>
 <td>Catalog name qualifiers</td>
+<td> </td>
+</tr>
+<tr>
+<td>F672</td>
+<td> </td>
+<td>Retrospective check constraints</td>
 <td> </td>
 </tr>
 <tr>
@@ -1451,7 +1483,7 @@
 </tr>
 <tr>
 <td>S211</td>
-<td>Enhanced object support, SQL/MM support</td>
+<td>Enhanced object support</td>
 <td>User-defined cast functions</td>
 <td> </td>
 </tr>
@@ -1459,6 +1491,12 @@
 <td>T031</td>
 <td> </td>
 <td>BOOLEAN data type</td>
+<td> </td>
+</tr>
+<tr>
+<td>T071</td>
+<td> </td>
+<td>BIGINT data type</td>
 <td> </td>
 </tr>
 <tr>
@@ -1493,31 +1531,31 @@
 </tr>
 <tr>
 <td>T211-01</td>
-<td>Enhanced integrity management, Active database</td>
+<td>Active database, Enhanced integrity management</td>
 <td>Triggers activated on UPDATE, INSERT, or DELETE of one base table</td>
 <td> </td>
 </tr>
 <tr>
 <td>T211-02</td>
-<td>Enhanced integrity management, Active database</td>
+<td>Active database, Enhanced integrity management</td>
 <td>BEFORE triggers</td>
 <td> </td>
 </tr>
 <tr>
 <td>T211-03</td>
-<td>Enhanced integrity management, Active database</td>
+<td>Active database, Enhanced integrity management</td>
 <td>AFTER triggers</td>
 <td> </td>
 </tr>
 <tr>
 <td>T211-04</td>
-<td>Enhanced integrity management, Active database</td>
+<td>Active database, Enhanced integrity management</td>
 <td>FOR EACH ROW triggers</td>
 <td> </td>
 </tr>
 <tr>
 <td>T211-07</td>
-<td>Enhanced integrity management, Active database</td>
+<td>Active database, Enhanced integrity management</td>
 <td>TRIGGER privilege</td>
 <td> </td>
 </tr>
@@ -1530,7 +1568,7 @@
 <tr>
 <td>T231</td>
 <td> </td>
-<td>SENSITIVE cursors</td>
+<td>Sensitive cursors</td>
 <td> </td>
 </tr>
 <tr>
@@ -1577,7 +1615,7 @@
 </tr>
 <tr>
 <td>T322</td>
-<td>PSM, SQL/MM support</td>
+<td>PSM</td>
 <td>Overloading of SQL-invoked functions and procedures</td>
 <td> </td>
 </tr>

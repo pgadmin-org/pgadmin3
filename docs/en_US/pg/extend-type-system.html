@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="previous" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="next" href="xfunc.html" title="31.3. User-Defined Functions">
@@ -16,13 +16,13 @@
 <a name="extend-type-system"></a>31.2. The <span class="productname">PostgreSQL</span> Type System</h2></div></div>
 <div></div>
 </div>
-<a name="id2629303"></a><a name="id2629314"></a><a name="id2629326"></a><a name="id2629335"></a><p>    <span class="productname">PostgreSQL</span> data types are divided into base
+<a name="id2631615"></a><a name="id2631626"></a><a name="id2631637"></a><a name="id2631646"></a><p>    <span class="productname">PostgreSQL</span> data types are divided into base
     types, composite types, domains, and pseudo-types.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2629356"></a>31.2.1. Base Types</h3></div></div>
+<a name="id2631668"></a>31.2.1. Base Types</h3></div></div>
 <div></div>
 </div>
 <p>     Base types are those, like <tt class="type">int4</tt>, that are
@@ -41,7 +41,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2629385"></a>31.2.2. Composite Types</h3></div></div>
+<a name="id2631697"></a>31.2.2. Composite Types</h3></div></div>
 <div></div>
 </div>
 <p>     Composite types, or row types, are created whenever the user
@@ -56,7 +56,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2629404"></a>31.2.3. Domains</h3></div></div>
+<a name="id2631716"></a>31.2.3. Domains</h3></div></div>
 <div></div>
 </div>
 <p>     A domain is based on a particular base type and for many purposes
@@ -65,14 +65,14 @@
      what the underlying base type would allow.
     </p>
 <p>     Domains can be created using the <span class="acronym">SQL</span> command
-     <tt class="command">CREATE DOMAIN</tt>.  Their creation and use is not
-     discussed in this chapter.
+     <a href="sql-createdomain.html">CREATE DOMAIN</a>.
+     Their creation and use is not discussed in this chapter.
     </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2629428"></a>31.2.4. Pseudo-Types</h3></div></div>
+<a name="id2631746"></a>31.2.4. Pseudo-Types</h3></div></div>
 <div></div>
 </div>
 <p>     There are a few &#8220;<span class="quote">pseudo-types</span>&#8221; for special purposes.
@@ -89,7 +89,7 @@
 <a name="extend-types-polymorphic"></a>31.2.5. Polymorphic Types</h3></div></div>
 <div></div>
 </div>
-<a name="id2629458"></a><a name="id2629468"></a><a name="id2629477"></a><a name="id2629490"></a><p>     Two pseudo-types of special interest are <tt class="type">anyelement</tt> and
+<a name="id2631776"></a><a name="id2631786"></a><a name="id2631795"></a><a name="id2631807"></a><p>     Two pseudo-types of special interest are <tt class="type">anyelement</tt> and
      <tt class="type">anyarray</tt>, which are collectively called <i class="firstterm">polymorphic
      types</i>.  Any function declared using these types is said to be
      a <i class="firstterm">polymorphic function</i>.  A polymorphic function can
@@ -113,7 +113,7 @@
 <p>     Thus, when more than one argument position is declared with a polymorphic
      type, the net effect is that only certain combinations of actual argument
      types are allowed.  For example, a function declared as
-     <tt class="literal">foo(anyelement, anyelement)</tt> will take any two input values,
+     <tt class="literal">equal(anyelement, anyelement)</tt> will take any two input values,
      so long as they are of the same data type.
     </p>
 <p>     When the return value of a function is declared as a polymorphic type,

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="pltcl.html" title="Chapter 36. PL/Tcl - Tcl Procedural Language">
 <link rel="previous" href="pltcl-trigger.html" title="36.6. Trigger Procedures in PL/Tcl">
 <link rel="next" href="pltcl-procnames.html" title="36.8. Tcl Procedure Names">
@@ -16,36 +16,36 @@
 <a name="pltcl-unknown"></a>36.7. Modules and the <tt class="function">unknown</tt> command</h2></div></div>
 <div></div>
 </div>
-<p>	PL/Tcl has support for autoloading Tcl code when used.
-	It recognizes a special table, <tt class="literal">pltcl_modules</tt>, which
-	is presumed to contain modules of Tcl code.  If this table
-	exists, the module <tt class="literal">unknown</tt> is fetched from the table
-	and loaded into the Tcl interpreter immediately after creating
-	the interpreter.
+<p>        PL/Tcl has support for autoloading Tcl code when used.
+        It recognizes a special table, <tt class="literal">pltcl_modules</tt>, which
+        is presumed to contain modules of Tcl code.  If this table
+        exists, the module <tt class="literal">unknown</tt> is fetched from the table
+        and loaded into the Tcl interpreter immediately after creating
+        the interpreter.
        </p>
 <p>        While the <tt class="literal">unknown</tt> module could actually contain any
-	initialization script you need, it normally defines a Tcl
-	<tt class="function">unknown</tt> procedure that is invoked whenever Tcl does
-	not recognize an invoked procedure name.  <span class="application">PL/Tcl</span>'s standard version
-	of this procedure tries to find a module in <tt class="literal">pltcl_modules</tt>
-	that will define the required procedure.  If one is found, it is
-	loaded into the interpreter, and then execution is allowed to
-	proceed with the originally attempted procedure call.  A
-	secondary table <tt class="literal">pltcl_modfuncs</tt> provides an index of
-	which functions are defined by which modules, so that the lookup
-	is reasonably quick.
+        initialization script you need, it normally defines a Tcl
+        <tt class="function">unknown</tt> procedure that is invoked whenever Tcl does
+        not recognize an invoked procedure name.  <span class="application">PL/Tcl</span>'s standard version
+        of this procedure tries to find a module in <tt class="literal">pltcl_modules</tt>
+        that will define the required procedure.  If one is found, it is
+        loaded into the interpreter, and then execution is allowed to
+        proceed with the originally attempted procedure call.  A
+        secondary table <tt class="literal">pltcl_modfuncs</tt> provides an index of
+        which functions are defined by which modules, so that the lookup
+        is reasonably quick.
        </p>
 <p>        The <span class="productname">PostgreSQL</span> distribution includes
-	support scripts to maintain these tables:
-	<tt class="command">pltcl_loadmod</tt>, <tt class="command">pltcl_listmod</tt>,
-	<tt class="command">pltcl_delmod</tt>, as well as source for the standard
-	<tt class="literal">unknown</tt> module in <tt class="filename">share/unknown.pltcl</tt>.  This module
-	must be loaded
-	into each database initially to support the autoloading mechanism.
+        support scripts to maintain these tables:
+        <tt class="command">pltcl_loadmod</tt>, <tt class="command">pltcl_listmod</tt>,
+        <tt class="command">pltcl_delmod</tt>, as well as source for the standard
+        <tt class="literal">unknown</tt> module in <tt class="filename">share/unknown.pltcl</tt>.  This module
+        must be loaded
+        into each database initially to support the autoloading mechanism.
        </p>
 <p>        The tables <tt class="literal">pltcl_modules</tt> and <tt class="literal">pltcl_modfuncs</tt>
-	must be readable by all, but it is wise to make them owned and
-	writable only by the database administrator.
+        must be readable by all, but it is wise to make them owned and
+        writable only by the database administrator.
        </p>
 </div></body>
 </html>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 18. Managing Databases">
 <link rel="previous" href="manage-ag-dropdb.html" title="18.5. Destroying a Database">
 <link rel="next" href="client-authentication.html" title="Chapter 19. Client Authentication">
@@ -16,7 +16,7 @@
 <a name="manage-ag-tablespaces"></a>18.6. Tablespaces</h2></div></div>
 <div></div>
 </div>
-<a name="id2591872"></a><p>    Tablespaces in <span class="productname">PostgreSQL</span> allow database administrators to
+<a name="id2593812"></a><p>    Tablespaces in <span class="productname">PostgreSQL</span> allow database administrators to
     define locations in the file system where the files representing
     database objects can be stored. Once created, a tablespace can be referred
     to by name when creating database objects.
@@ -37,7 +37,7 @@
     expensive, slower disk system.
    </p>
 <p>    To define a tablespace, use the <a href="sql-createtablespace.html" title="CREATE TABLESPACE"><span class="refentrytitle"><a name="sql-createtablespace-title"></a>CREATE TABLESPACE</span></a>
-    command, for example:<a name="id2591929"></a>
+    command, for example:<a name="id2593869"></a>
 </p>
 <pre class="programlisting">CREATE TABLESPACE fastspace LOCATION '/mnt/sda1/postgresql/data';</pre>
 <p>
@@ -49,10 +49,10 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     There is usually not much point in making more than one
-     tablespace per logical filesystem, since you cannot control the location
-     of individual files within a logical filesystem.  However,
+     tablespace per logical file system, since you cannot control the location
+     of individual files within a logical file system.  However,
      <span class="productname">PostgreSQL</span> does not enforce any such limitation, and
-     indeed it is not directly aware of the filesystem boundaries on your
+     indeed it is not directly aware of the file system boundaries on your
      system.  It just stores files in the directories you tell it to use.
     </p>
 </div>
@@ -101,8 +101,19 @@ CREATE TABLE foo(i int);</pre>
     cannot be dropped until all objects in all databases using the tablespace
     have been removed.
    </p>
-<p>    To simplify the implementation of tablespaces, 
-    <span class="productname">PostgreSQL</span> makes extensive use of symbolic links. This
+<p>    To remove an empty tablespace, use the <a href="sql-droptablespace.html" title="DROP TABLESPACE"><span class="refentrytitle"><a name="sql-droptablespace-title"></a>DROP TABLESPACE</span></a>
+    command.  
+   </p>
+<p>    To determine the set of existing tablespaces, examine the
+    <tt class="structname">pg_tablespace</tt> system catalog, for example
+</p>
+<pre class="synopsis">SELECT spcname FROM pg_tablespace;</pre>
+<p>
+    The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <tt class="literal">\db</tt> meta-command
+    is also useful for listing the existing tablespaces.
+   </p>
+<p>    <span class="productname">PostgreSQL</span> makes extensive use of symbolic links
+    to simplify the implementation of tablespaces. This
     means that tablespaces can be used <span class="emphasis"><em>only</em></span> on systems
     that support symbolic links.
    </p>

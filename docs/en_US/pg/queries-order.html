@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="queries.html" title="Chapter 7. Queries">
 <link rel="previous" href="queries-union.html" title="7.4. Combining Queries">
 <link rel="next" href="queries-limit.html" title="7.6. LIMIT and OFFSET">
@@ -16,9 +16,9 @@
 <a name="queries-order"></a>7.5. Sorting Rows</h2></div></div>
 <div></div>
 </div>
-<a name="id2530285"></a><a name="id2530296"></a><p>   After a query has produced an output table (after the select list
+<a name="id2530710"></a><a name="id2530720"></a><p>   After a query has produced an output table (after the select list
    has been processed) it can optionally be sorted.  If sorting is not
-   chosen, the rows will be returned in random order.  The actual
+   chosen, the rows will be returned in an unspecified order.  The actual
    order in that case will depend on the scan and join plan types and
    the order on disk, but it must not be relied on.  A particular
    output ordering can only be guaranteed if the sort step is explicitly
@@ -45,10 +45,10 @@ SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</pre>
 </p>
 <pre class="programlisting">SELECT a, b FROM table1 ORDER BY a + b;</pre>
 <p>
-   References to column names in the <tt class="literal">FROM</tt> clause that are
-   renamed in the select list are also allowed:
+   References to column names of the <tt class="literal">FROM</tt> clause that are
+   not present in the select list are also allowed:
 </p>
-<pre class="programlisting">SELECT a AS b FROM table1 ORDER BY a;</pre>
+<pre class="programlisting">SELECT a FROM table1 ORDER BY b;</pre>
 <p>
    But these extensions do not work in queries involving
    <tt class="literal">UNION</tt>, <tt class="literal">INTERSECT</tt>, or <tt class="literal">EXCEPT</tt>,
@@ -61,7 +61,7 @@ SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</pre>
    &#8220;<span class="quote">smaller</span>&#8221; is defined in terms of the
    <tt class="literal">&lt;</tt> operator.  Similarly, descending order is
    determined with the <tt class="literal">&gt;</tt> operator.
-    <sup>[<a name="id2530463" href="#ftn.id2530463">3</a>]</sup>
+    <sup>[<a name="id2530888" href="#ftn.id2530888">4</a>]</sup>
   </p>
 <p>   If more than one sort column is specified, the later entries are
    used to sort rows that are equal under the order imposed by the
@@ -69,7 +69,7 @@ SELECT a, sum(b) FROM table1 GROUP BY a ORDER BY 1;</pre>
   </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2530463" href="#id2530463">3</a>] </sup>      Actually, <span class="productname">PostgreSQL</span> uses the <i class="firstterm">default B-tree
+<div class="footnote"><p><sup>[<a name="ftn.id2530888" href="#id2530888">4</a>] </sup>      Actually, <span class="productname">PostgreSQL</span> uses the <i class="firstterm">default B-tree
       operator class</i> for the column's data type to determine the sort
       ordering for <tt class="literal">ASC</tt> and <tt class="literal">DESC</tt>.  Conventionally,
       data types will be set up so that the <tt class="literal">&lt;</tt> and

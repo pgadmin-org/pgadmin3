@@ -1,43 +1,43 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 32. The Rule System</title>
+<title>Chapter 33. The Rule System</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
-<link rel="previous" href="xindex.html" title="31.14. Interfacing Extensions To Indexes">
-<link rel="next" href="rules-views.html" title="32.2. Views and the Rule System">
+<link rel="previous" href="trigger-example.html" title="32.4. A Complete Example">
+<link rel="next" href="rules-views.html" title="33.2. Views and the Rule System">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="rules">
 <div class="titlepage">
 <div><div><h2 class="title">
-<a name="rules"></a>Chapter 32. The Rule System</h2></div></div>
+<a name="rules"></a>Chapter 33. The Rule System</h2></div></div>
 <div></div>
 </div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="rules.html#querytree">32.1. The Query Tree</a></span></dt>
-<dt><span class="sect1"><a href="rules-views.html">32.2. Views and the Rule System</a></span></dt>
+<dt><span class="sect1"><a href="rules.html#querytree">33.1. The Query Tree</a></span></dt>
+<dt><span class="sect1"><a href="rules-views.html">33.2. Views and the Rule System</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="rules-views.html#rules-select">32.2.1. How SELECT Rules Work</a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#id2639776">32.2.2. View Rules in Non-SELECT Statements</a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#id2640073">32.2.3. The Power of Views in PostgreSQL</a></span></dt>
-<dt><span class="sect2"><a href="rules-views.html#rules-views-update">32.2.4. Updating a View</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#rules-select">33.2.1. How SELECT Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2643476">33.2.2. View Rules in Non-SELECT Statements</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2643775">33.2.3. The Power of Views in PostgreSQL</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#rules-views-update">33.2.4. Updating a View</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="rules-update.html">32.3. Rules on INSERT, UPDATE, and DELETE</a></span></dt>
+<dt><span class="sect1"><a href="rules-update.html">33.3. Rules on INSERT, UPDATE, and DELETE</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="rules-update.html#id2640301">32.3.1. How Update Rules Work</a></span></dt>
-<dt><span class="sect2"><a href="rules-update.html#rules-update-views">32.3.2. Cooperation with Views</a></span></dt>
+<dt><span class="sect2"><a href="rules-update.html#id2644004">33.3.1. How Update Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-update.html#rules-update-views">33.3.2. Cooperation with Views</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="rules-privileges.html">32.4. Rules and Privileges</a></span></dt>
-<dt><span class="sect1"><a href="rules-status.html">32.5. Rules and Command Status</a></span></dt>
-<dt><span class="sect1"><a href="rules-triggers.html">32.6. Rules versus Triggers</a></span></dt>
+<dt><span class="sect1"><a href="rules-privileges.html">33.4. Rules and Privileges</a></span></dt>
+<dt><span class="sect1"><a href="rules-status.html">33.5. Rules and Command Status</a></span></dt>
+<dt><span class="sect1"><a href="rules-triggers.html">33.6. Rules versus Triggers</a></span></dt>
 </dl>
 </div>
-<a name="id2638471"></a><p>     This chapter discusses the rule system in
+<a name="id2642126"></a><p>     This chapter discusses the rule system in
      <span class="productname">PostgreSQL</span>.  Production rule systems
      are conceptually simple, but there are many subtle points
      involved in actually using them.</p>
@@ -56,10 +56,10 @@
 <div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="querytree"></a>32.1. The Query Tree</h2></div></div>
+<a name="querytree"></a>33.1. The Query Tree</h2></div></div>
 <div></div>
 </div>
-<a name="id2638535"></a><p>    To understand how the rule system works it is necessary to know
+<a name="id2642189"></a><p>    To understand how the rule system works it is necessary to know
     when it is invoked and what its input and results are.</p>
 <p>    The rule system is located between the parser and the planner.
     It takes the output of the parser, one query tree, and the user-defined
@@ -100,34 +100,34 @@
     </span></dt>
 <dd>
 <p>        The range table is a list of relations that are used in the query.
-	In a <tt class="command">SELECT</tt> statement these are the relations given after
-	the <tt class="literal">FROM</tt> key word.
+        In a <tt class="command">SELECT</tt> statement these are the relations given after
+        the <tt class="literal">FROM</tt> key word.
     </p>
 <p>        Every range table entry identifies a table or view and tells
-	by which name it is called in the other parts of the query.
-	In the query tree, the range table entries are referenced by
-	number rather than by name, so here it doesn't matter if there
-	are duplicate names as it would in an <span class="acronym">SQL</span>
-	statement. This can happen after the range tables of rules
-	have been merged in. The examples in this chapter will not have
-	this situation.
+        by which name it is called in the other parts of the query.
+        In the query tree, the range table entries are referenced by
+        number rather than by name, so here it doesn't matter if there
+        are duplicate names as it would in an <span class="acronym">SQL</span>
+        statement. This can happen after the range tables of rules
+        have been merged in. The examples in this chapter will not have
+        this situation.
     </p>
 </dd>
 <dt><span class="term">        the result relation
     </span></dt>
 <dd>
 <p>        This is an index into the range table that identifies the
-	relation where the results of the query go.
+        relation where the results of the query go.
     </p>
-<p>	<tt class="command">SELECT</tt> queries normally don't have a result
-	relation. The special case of a <tt class="command">SELECT INTO</tt> is
-	mostly identical to a <tt class="command">CREATE TABLE</tt> followed by a
-	<tt class="literal">INSERT ... SELECT</tt> and is not discussed
-	separately here.
+<p>        <tt class="command">SELECT</tt> queries normally don't have a result
+        relation. The special case of a <tt class="command">SELECT INTO</tt> is
+        mostly identical to a <tt class="command">CREATE TABLE</tt> followed by a
+        <tt class="literal">INSERT ... SELECT</tt> and is not discussed
+        separately here.
     </p>
 <p>        For <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, and
-	<tt class="command">DELETE</tt> commands, the result relation is the table
-	(or view!) where the changes take effect.
+        <tt class="command">DELETE</tt> commands, the result relation is the table
+        (or view!) where the changes are to take effect.
     </p>
 </dd>
 <dt><span class="term">        the target list
@@ -144,67 +144,67 @@
         rule system never sees it.)
     </p>
 <p>        <tt class="command">DELETE</tt> commands don't need a target list
-	because they don't produce any result. In fact, the planner will
-	add a special <span class="acronym">CTID</span> entry to the empty target list, but
-	this is after the rule system and will be discussed later; for the
-	rule system, the target list is empty.
+        because they don't produce any result. In fact, the planner will
+        add a special <span class="acronym">CTID</span> entry to the empty target list, but
+        this is after the rule system and will be discussed later; for the
+        rule system, the target list is empty.
     </p>
 <p>        For <tt class="command">INSERT</tt> commands, the target list describes
-	the new rows that should go into the result relation. It consists of the
-	expressions in the <tt class="literal">VALUES</tt> clause or the ones from the
-	<tt class="command">SELECT</tt> clause in <tt class="literal">INSERT
-	... SELECT</tt>.  The first step of the rewrite process adds
-	target list entries for any columns that were not assigned to by
-	the original command but have defaults.  Any remaining columns (with
-	neither a given value nor a default) will be filled in by the
-	planner with a constant null expression.
+        the new rows that should go into the result relation. It consists of the
+        expressions in the <tt class="literal">VALUES</tt> clause or the ones from the
+        <tt class="command">SELECT</tt> clause in <tt class="literal">INSERT
+        ... SELECT</tt>.  The first step of the rewrite process adds
+        target list entries for any columns that were not assigned to by
+        the original command but have defaults.  Any remaining columns (with
+        neither a given value nor a default) will be filled in by the
+        planner with a constant null expression.
     </p>
 <p>        For <tt class="command">UPDATE</tt> commands, the target list
-	describes the new rows that should replace the old ones. In the
-	rule system, it contains just the expressions from the <tt class="literal">SET
-	column = expression</tt> part of the command.  The planner will handle
-	missing columns by inserting expressions that copy the values from
-	the old row into the new one. And it will add the special
-	<span class="acronym">CTID</span> entry just as for <tt class="command">DELETE</tt>, too.
+        describes the new rows that should replace the old ones. In the
+        rule system, it contains just the expressions from the <tt class="literal">SET
+        column = expression</tt> part of the command.  The planner will handle
+        missing columns by inserting expressions that copy the values from
+        the old row into the new one. And it will add the special
+        <span class="acronym">CTID</span> entry just as for <tt class="command">DELETE</tt>, too.
     </p>
 <p>        Every entry in the target list contains an expression that can
-	be a constant value, a variable pointing to a column of one
-	of the relations in the range table, a parameter, or an expression
-	tree made of function calls, constants, variables, operators, etc.
+        be a constant value, a variable pointing to a column of one
+        of the relations in the range table, a parameter, or an expression
+        tree made of function calls, constants, variables, operators, etc.
     </p>
 </dd>
 <dt><span class="term">        the qualification
     </span></dt>
 <dd><p>        The query's qualification is an expression much like one of
-	those contained in the target list entries. The result value of
-	this expression is a Boolean that tells whether the operation
-	(<tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>,
-	<tt class="command">DELETE</tt>, or <tt class="command">SELECT</tt>) for the
-	final result row should be executed or not. It corresponds to the <tt class="literal">WHERE</tt> clause
-	of an <span class="acronym">SQL</span> statement.
+        those contained in the target list entries. The result value of
+        this expression is a Boolean that tells whether the operation
+        (<tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>,
+        <tt class="command">DELETE</tt>, or <tt class="command">SELECT</tt>) for the
+        final result row should be executed or not. It corresponds to the <tt class="literal">WHERE</tt> clause
+        of an <span class="acronym">SQL</span> statement.
     </p></dd>
 <dt><span class="term">        the join tree
     </span></dt>
 <dd><p>        The query's join tree shows the structure of the <tt class="literal">FROM</tt> clause.
-	For a simple query like <tt class="literal">SELECT ... FROM a, b, c</tt>, the join tree is just
-	a list of the <tt class="literal">FROM</tt> items, because we are allowed to join them in
-	any order.  But when <tt class="literal">JOIN</tt> expressions, particularly outer joins,
-	are used, we have to join in the order shown by the joins.
-	In that case, the join tree shows the structure of the <tt class="literal">JOIN</tt> expressions.  The
-	restrictions associated with particular <tt class="literal">JOIN</tt> clauses (from <tt class="literal">ON</tt> or
-	<tt class="literal">USING</tt> expressions) are stored as qualification expressions attached
-	to those join-tree nodes.  It turns out to be convenient to store
-	the top-level <tt class="literal">WHERE</tt> expression as a qualification attached to the
-	top-level join-tree item, too.  So really the join tree represents
-	both the <tt class="literal">FROM</tt> and <tt class="literal">WHERE</tt> clauses of a <tt class="command">SELECT</tt>.
+        For a simple query like <tt class="literal">SELECT ... FROM a, b, c</tt>, the join tree is just
+        a list of the <tt class="literal">FROM</tt> items, because we are allowed to join them in
+        any order.  But when <tt class="literal">JOIN</tt> expressions, particularly outer joins,
+        are used, we have to join in the order shown by the joins.
+        In that case, the join tree shows the structure of the <tt class="literal">JOIN</tt> expressions.  The
+        restrictions associated with particular <tt class="literal">JOIN</tt> clauses (from <tt class="literal">ON</tt> or
+        <tt class="literal">USING</tt> expressions) are stored as qualification expressions attached
+        to those join-tree nodes.  It turns out to be convenient to store
+        the top-level <tt class="literal">WHERE</tt> expression as a qualification attached to the
+        top-level join-tree item, too.  So really the join tree represents
+        both the <tt class="literal">FROM</tt> and <tt class="literal">WHERE</tt> clauses of a <tt class="command">SELECT</tt>.
     </p></dd>
 <dt><span class="term">        the others
     </span></dt>
 <dd><p>        The other parts of the query tree like the <tt class="literal">ORDER BY</tt>
-	clause aren't of interest here. The rule system
-	substitutes some entries there while applying rules, but that
-	doesn't have much to do with the fundamentals of the rule
-	system.
+        clause aren't of interest here. The rule system
+        substitutes some entries there while applying rules, but that
+        doesn't have much to do with the fundamentals of the rule
+        system.
     </p></dd>
 </dl></div>
 </div>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
 <link rel="previous" href="rule-system.html" title="40.4. The PostgreSQL Rule System">
 <link rel="next" href="executor.html" title="40.6. Executor">
@@ -22,7 +22,7 @@
     different ways, each of which will produce the same set of
     results.  If it is computationally feasible, the query optimizer
     will examine each of these possible execution plans, ultimately
-    selecting the execution plan that will run the fastest.
+    selecting the execution plan that is expected to run the fastest.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -34,21 +34,27 @@
      time, <span class="productname">PostgreSQL</span> uses a <a href="geqo.html">Genetic Query Optimizer</a>.
     </p>
 </div>
-<p>    After the cheapest path is determined, a <i class="firstterm">plan tree</i>
-    is built to pass to the executor.  This represents the desired
-    execution plan in sufficient detail for the executor to run it.
+<p>    The planner's search procedure actually works with data structures
+    called <i class="firstterm">paths</i>, which are simply cut-down representations of
+    plans containing only as much information as the planner needs to make
+    its decisions. After the cheapest path is determined, a full-fledged
+    <i class="firstterm">plan tree</i> is built to pass to the executor.  This represents
+    the desired execution plan in sufficient detail for the executor to run it.
+    In the rest of this section we'll ignore the distinction between paths
+    and plans.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2721006"></a>40.5.1. Generating Possible Plans</h3></div></div>
+<a name="id2725576"></a>40.5.1. Generating Possible Plans</h3></div></div>
 <div></div>
 </div>
-<p>     The planner/optimizer decides which plans should be generated
-     based upon the types of indexes defined on the relations appearing in
-     a query. There is always the possibility of performing a
-     sequential scan on a relation, so a plan using only
-     sequential scans is always created. Assume an index is defined on a
+<p>     The planner/optimizer starts by generating plans for scanning each
+     individual relation (table) used in the query.  The possible plans
+     are determined by the available indexes on each relation.
+     There is always the possibility of performing a
+     sequential scan on a relation, so a sequential scan plan is always
+     created. Assume an index is defined on a
      relation (for example a B-tree index) and a query contains the
      restriction
      <tt class="literal">relation.attribute OPR constant</tt>. If
@@ -72,27 +78,35 @@
 
      </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>	<i class="firstterm">nested loop join</i>: The right relation is scanned
-	once for every row found in the left relation. This strategy
-	is easy to implement but can be very time consuming.  (However,
-	if the right relation can be scanned with an index scan, this can
-	be a good strategy.  It is possible to use values from the current
-	row of the left relation as keys for the index scan of the right.)
+<li><p>        <i class="firstterm">nested loop join</i>: The right relation is scanned
+        once for every row found in the left relation. This strategy
+        is easy to implement but can be very time consuming.  (However,
+        if the right relation can be scanned with an index scan, this can
+        be a good strategy.  It is possible to use values from the current
+        row of the left relation as keys for the index scan of the right.)
        </p></li>
-<li><p>	<i class="firstterm">merge sort join</i>: Each relation is sorted on the join
-	attributes before the join starts. Then the two relations are
-	merged together taking into account that both relations are
-	ordered on the join attributes. This kind of join is more
-	attractive because each relation has to be scanned only once.
+<li><p>        <i class="firstterm">merge sort join</i>: Each relation is sorted on the join
+        attributes before the join starts. Then the two relations are
+        scanned in parallel, and matching rows are combined to form
+        join rows. This kind of join is more
+        attractive because each relation has to be scanned only once.
+        The required sorting may be achieved either by an explicit sort
+        step, or by scanning the relation in the proper order using an
+        index on the join key.
        </p></li>
-<li><p>	<i class="firstterm">hash join</i>: the right relation is first scanned
-	and loaded into a hash table, using its join attributes as hash keys.
-	Next the left relation is scanned and the
-	appropriate values of every row found are used as hash keys to
-	locate the matching rows in the table.
+<li><p>        <i class="firstterm">hash join</i>: the right relation is first scanned
+        and loaded into a hash table, using its join attributes as hash keys.
+        Next the left relation is scanned and the
+        appropriate values of every row found are used as hash keys to
+        locate the matching rows in the table.
        </p></li>
 </ul></div>
 <p>
+    </p>
+<p>     When the query involves more than two relations, the final result
+     must be built up by a tree of join steps, each with two inputs.
+     The planner examines different possible join sequences to find the
+     cheapest one.
     </p>
 <p>     The finished plan tree consists of sequential or index scans of
      the base relations, plus nested-loop, merge, or hash join nodes as

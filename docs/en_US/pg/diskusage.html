@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="previous" href="monitoring-locks.html" title="23.3. Viewing Locks">
 <link rel="next" href="disk-full.html" title="24.2. Disk Full Failure">
@@ -24,11 +24,7 @@
 </dl>
 </div>
 <p>  This chapter discusses how to monitor the disk usage of a
-  <span class="productname">PostgreSQL</span> database system.  In the current
-  release, the database administrator does not have much control over
-  the on-disk storage layout, so this chapter is mostly informative
-  and can give you some ideas how to manage the disk usage with
-  operating system tools.
+  <span class="productname">PostgreSQL</span> database system.
  </p>
 <div class="sect1" lang="en">
 <div class="titlepage">
@@ -36,12 +32,15 @@
 <a name="disk-usage"></a>24.1. Determining Disk Usage</h2></div></div>
 <div></div>
 </div>
-<a name="id2602655"></a><p>   Each table has a primary heap disk file where most of the data is
-   stored. To store long column values, there is also a
-   <span class="acronym">TOAST</span> file associated with the table, named based on the
-   table's OID (actually <tt class="literal">pg_class.relfilenode</tt>), and an index on the
-   <span class="acronym">TOAST</span> table. There also may be indexes associated with
-   the base table.
+<a name="id2604788"></a><p>   Each table has a primary heap disk file where most of the data is
+   stored. If the table has any columns with potentially-wide values,
+   there is also a <span class="acronym">TOAST</span> file associated with the table,
+   which is used to store values too wide to fit comfortably in the main
+   table (see <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a>).  There will be one index on the
+   <span class="acronym">TOAST</span> table, if present. There may also be indexes associated
+   with the base table.  Each table and index is stored in a separate disk
+   file [mdash ] possibly more than one file, if the file would exceed one
+   gigabyte.  Naming conventions for these files are described in <a href="storage.html#storage-file-layout" title="49.1. Database File Layout">Section 49.1, &#8220;Database File Layout&#8221;</a>.
   </p>
 <p>   You can monitor disk space from three places: from
    <span class="application">psql</span> using <tt class="command">VACUUM</tt> information, from
@@ -57,16 +56,22 @@
        16806 |       60
 (1 row)</pre>
 <p>
-   Each page is typically 8 kilobytes. (Remember, <tt class="literal">relpages</tt>
-   is only updated by <tt class="command">VACUUM</tt> and <tt class="command">ANALYZE</tt>.)
+   Each page is typically 8 kilobytes. (Remember, <tt class="structfield">relpages</tt>
+   is only updated by <tt class="command">VACUUM</tt>, <tt class="command">ANALYZE</tt>, and
+   a few DDL commands such as <tt class="command">CREATE INDEX</tt>.)  The
+   <tt class="structfield">relfilenode</tt> value is of interest if you want to examine
+   the table's disk file directly.
   </p>
 <p>   To show the space used by <span class="acronym">TOAST</span> tables, use a query
-   like the following, substituting the <tt class="literal">relfilenode</tt>
-   number of the heap (determined by the query above):
+   like the following:
 </p>
 <pre class="programlisting">SELECT relname, relpages
-    FROM pg_class
-    WHERE relname = 'pg_toast_16806' OR relname = 'pg_toast_16806_index'
+    FROM pg_class,
+         (SELECT reltoastrelid FROM pg_class
+          WHERE relname = 'customer') ss
+    WHERE oid = ss.reltoastrelid
+       OR oid = (SELECT reltoastidxid FROM pg_class
+                 WHERE oid = ss.reltoastrelid)
     ORDER BY relname;
 
        relname        | relpages 
@@ -82,7 +87,7 @@
     WHERE c.relname = 'customer'
         AND c.oid = i.indrelid
         AND c2.oid = i.indexrelid
-        ORDER BY c2.relname;
+    ORDER BY c2.relname;
 
        relname        | relpages 
 ----------------------+----------

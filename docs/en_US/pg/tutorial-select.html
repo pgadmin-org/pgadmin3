@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
 <link rel="previous" href="tutorial-populate.html" title="2.4. Populating a Table With Rows">
 <link rel="next" href="tutorial-join.html" title="2.6. Joins Between Tables">
@@ -16,8 +16,8 @@
 <a name="tutorial-select"></a>2.5. Querying a Table</h2></div></div>
 <div></div>
 </div>
-<p>    <a name="id2518077"></a>
-    <a name="id2518084"></a>
+<p>    <a name="id2518290"></a>
+    <a name="id2518296"></a>
 
     To retrieve data from a table, the table is
     <i class="firstterm">queried</i>.  An <span class="acronym">SQL</span>
@@ -31,8 +31,13 @@
 </p>
 <pre class="programlisting">SELECT * FROM weather;</pre>
 <p>
-    (here <tt class="literal">*</tt> means &#8220;<span class="quote">all columns</span>&#8221;).
-     <sup>[<a name="id2518130" href="#ftn.id2518130">2</a>]</sup>
+    Here <tt class="literal">*</tt> is a shorthand for &#8220;<span class="quote">all columns</span>&#8221;.
+     <sup>[<a name="id2518343" href="#ftn.id2518343">2</a>]</sup>
+    So the same result would be had with:
+</p>
+<pre class="programlisting">SELECT city, temp_lo, temp_hi, prcp, date FROM weather;</pre>
+<p>
+
     The output should be:
 
 </p>
@@ -44,8 +49,8 @@
 (3 rows)</pre>
 <p>
    </p>
-<p>    You may specify any arbitrary expressions in the select list.  For 
-    example, you can do:
+<p>    You can write expressions, not just simple column references, in the
+    select list.  For example, you can do:
 </p>
 <pre class="programlisting">SELECT city, (temp_hi+temp_lo)/2 AS temp_avg, date FROM weather;</pre>
 <p>
@@ -61,15 +66,18 @@
     Notice how the <tt class="literal">AS</tt> clause is used to relabel the
     output column.  (The <tt class="literal">AS</tt> clause is optional.)
    </p>
-<p>    Arbitrary Boolean operators (<tt class="literal">AND</tt>,
+<p>    A query can be &#8220;<span class="quote">qualified</span>&#8221; by adding a <tt class="literal">WHERE</tt>
+    clause that specifies which rows are wanted.  The <tt class="literal">WHERE</tt>
+    clause contains a Boolean (truth value) expression, and only rows for
+    which the Boolean expression is true are returned.  The usual
+    Boolean operators (<tt class="literal">AND</tt>,
     <tt class="literal">OR</tt>, and <tt class="literal">NOT</tt>) are allowed in
-    the qualification of a query.  For example, the following
+    the qualification.  For example, the following
     retrieves the weather of San Francisco on rainy days:
 
 </p>
 <pre class="programlisting">SELECT * FROM weather
-    WHERE city = 'San Francisco'
-    AND prcp &gt; 0.0;</pre>
+    WHERE city = 'San Francisco' AND prcp &gt; 0.0;</pre>
 <p>
     Result:
 </p>
@@ -79,17 +87,42 @@
 (1 row)</pre>
 <p>
    </p>
-<p>    <a name="id2518230"></a>
-    <a name="id2518237"></a>
-    <a name="id2518243"></a>
+<p>    <a name="id2518469"></a>
 
-    As a final note, you can request that the results of a query can
-    be returned in sorted order or with duplicate rows removed:
+    You can request that the results of a query
+    be returned in sorted order:
+
+</p>
+<pre class="programlisting">SELECT * FROM weather
+    ORDER BY city;</pre>
+<p>
+
+</p>
+<pre class="screen">     city      | temp_lo | temp_hi | prcp |    date
+---------------+---------+---------+------+------------
+ Hayward       |      37 |      54 |      | 1994-11-29
+ San Francisco |      43 |      57 |    0 | 1994-11-29
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27</pre>
+<p>
+
+    In this example, the sort order isn't fully specified, and so you
+    might get the San Francisco rows in either order.  But you'd always
+    get the results shown above if you do
+
+</p>
+<pre class="programlisting">SELECT * FROM weather
+    ORDER BY city, temp_lo;</pre>
+<p>
+   </p>
+<p>    <a name="id2518506"></a>
+    <a name="id2518513"></a>
+
+    You can request that duplicate rows be removed from the result of
+    a query:
 
 </p>
 <pre class="programlisting">SELECT DISTINCT city
-    FROM weather
-    ORDER BY city;</pre>
+    FROM weather;</pre>
 <p>
 
 </p>
@@ -100,14 +133,30 @@
 (2 rows)</pre>
 <p>
 
-    <tt class="literal">DISTINCT</tt> and <tt class="literal">ORDER BY</tt> can be
-    used separately, of course.
+    Here again, the result row ordering might vary.
+    You can ensure consistent results by using <tt class="literal">DISTINCT</tt> and
+    <tt class="literal">ORDER BY</tt> together:
+     <sup>[<a name="id2518548" href="#ftn.id2518548">3</a>]</sup>
+
+</p>
+<pre class="programlisting">SELECT DISTINCT city
+    FROM weather
+    ORDER BY city;</pre>
+<p>
    </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2518130" href="#id2518130">2</a>] </sup>       While <tt class="literal">SELECT *</tt> is useful for off-the-cuff
-       queries, it is considered bad style in production code for
-       maintenance reasons: adding a column to the table changes the results.
+<div class="footnote"><p><sup>[<a name="ftn.id2518343" href="#id2518343">2</a>] </sup>       While <tt class="literal">SELECT *</tt> is useful for off-the-cuff
+       queries, it is widely considered bad style in production code,
+       since adding a column to the table would change the results.
+      </p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2518548" href="#id2518548">3</a>] </sup>       In some database systems, including older versions of
+       <span class="productname">PostgreSQL</span>, the implementation of
+       <tt class="literal">DISTINCT</tt> automatically orders the rows and
+       so <tt class="literal">ORDER BY</tt> is redundant.  But this is not
+       required by the SQL standard, and current
+       <span class="productname">PostgreSQL</span> doesn't guarantee that
+       <tt class="literal">DISTINCT</tt> causes the rows to be ordered.
       </p></div>
 </div>
 </div></body>

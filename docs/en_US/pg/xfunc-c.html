@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>31.7. C-Language Functions</title>
+<title>31.9. C-Language Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
-<link rel="previous" href="xfunc-internal.html" title="31.6. Internal Functions">
-<link rel="next" href="xfunc-overload.html" title="31.8. Function Overloading">
+<link rel="previous" href="xfunc-internal.html" title="31.8. Internal Functions">
+<link rel="next" href="xaggr.html" title="31.10. User-Defined Aggregates">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="xfunc-c"></a>31.7. C-Language Functions</h2></div></div>
+<a name="xfunc-c"></a>31.9. C-Language Functions</h2></div></div>
 <div></div>
 </div>
-<a name="id2630753"></a><p>    User-defined functions can be written in C (or a language that can
+<a name="id2633736"></a><p>    User-defined functions can be written in C (or a language that can
     be made compatible with C, such as C++).  Such functions are
     compiled into dynamically loadable objects (also called shared
     libraries) and are loaded by the server on demand.  The dynamic
@@ -38,10 +38,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="xfunc-c-dynload"></a>31.7.1. Dynamic Loading</h3></div></div>
+<a name="xfunc-c-dynload"></a>31.9.1. Dynamic Loading</h3></div></div>
 <div></div>
 </div>
-<a name="id2630828"></a><p>    The first time a user-defined function in a particular
+<a name="id2633812"></a><p>    The first time a user-defined function in a particular
     loadable object file is called in a session,
     the dynamic loader loads that object file into memory so that the
     function can be called.  The <tt class="command">CREATE FUNCTION</tt>
@@ -61,12 +61,12 @@
       </p></li>
 <li><p>       If the name starts with the string <tt class="literal">$libdir</tt>,
        that part is replaced by the <span class="productname">PostgreSQL</span> package
-	library directory
-       name, which is determined at build time.<a name="id2630894"></a>
+        library directory
+       name, which is determined at build time.<a name="id2633878"></a>
       </p></li>
 <li><p>       If the name does not contain a directory part, the file is
        searched for in the path specified by the configuration variable
-       <a href="runtime-config.html#guc-dynamic-library-path">dynamic_library_path</a>.<a name="id2630915"></a>
+       <a href="runtime-config.html#guc-dynamic-library-path">dynamic_library_path</a>.<a name="id2633899"></a>
       </p></li>
 <li><p>       Otherwise (the file was not found in the path, or it contains a
        non-absolute directory part), the dynamic loader will try to
@@ -97,7 +97,7 @@
 <p>     <span class="productname">PostgreSQL</span> will not compile a C function
      automatically.  The object file must be compiled before it is referenced
      in a <tt class="command">CREATE
-     FUNCTION</tt> command.  See <a href="xfunc-c.html#dfunc" title="31.7.6. Compiling and Linking Dynamically-Loaded Functions">Section 31.7.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for additional
+     FUNCTION</tt> command.  See <a href="xfunc-c.html#dfunc" title="31.9.6. Compiling and Linking Dynamically-Loaded Functions">Section 31.9.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for additional
      information.
     </p>
 </div>
@@ -127,10 +127,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="xfunc-c-basetype"></a>31.7.2. Base Types in C-Language Functions</h3></div></div>
+<a name="xfunc-c-basetype"></a>31.9.2. Base Types in C-Language Functions</h3></div></div>
 <div></div>
 </div>
-<a name="id2631063"></a><p>     To know how to write C-language functions, you need to know how
+<a name="id2634046"></a><p>     To know how to write C-language functions, you need to know how
      <span class="productname">PostgreSQL</span> internally represents base
      data types and how they can be passed to and from functions.
      Internally, <span class="productname">PostgreSQL</span> regards a base
@@ -145,11 +145,11 @@
 
      </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>	pass by value, fixed-length
+<li><p>        pass by value, fixed-length
        </p></li>
-<li><p>	pass by reference, fixed-length
+<li><p>        pass by reference, fixed-length
        </p></li>
-<li><p>	pass by reference, variable-length
+<li><p>        pass by reference, variable-length
        </p></li>
 </ul></div>
 <p>
@@ -260,12 +260,12 @@ memcpy(destination-&gt;data, buffer, 40);
 <col>
 </colgroup>
 <thead><tr>
-<th>	  SQL Type
-	 </th>
-<th>	  C Type
-	 </th>
-<th>	  Defined In
-	 </th>
+<th>          SQL Type
+         </th>
+<th>          C Type
+         </th>
+<th>          Defined In
+         </th>
 </tr></thead>
 <tbody>
 <tr>
@@ -437,7 +437,7 @@ memcpy(destination-&gt;data, buffer, 40);
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2631786"></a>31.7.3. Calling Conventions Version 0 for C-Language Functions</h3></div></div>
+<a name="id2634771"></a>31.9.3. Calling Conventions Version 0 for C-Language Functions</h3></div></div>
 <div></div>
 </div>
 <p>     We present the &#8220;<span class="quote">old style</span>&#8221; calling convention first [mdash ] although
@@ -576,7 +576,7 @@ CREATE FUNCTION concat_text(text, text) RETURNS text
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2631994"></a>31.7.4. Calling Conventions Version 1 for C-Language Functions</h3></div></div>
+<a name="id2634978"></a>31.9.4. Calling Conventions Version 1 for C-Language Functions</h3></div></div>
 <div></div>
 </div>
 <p>     The version-1 calling convention relies on macros to suppress most
@@ -748,8 +748,8 @@ concat_text(PG_FUNCTION_ARGS)
      or <tt class="literal">main</tt>.)
     </p>
 <p>     Finally, the version-1 function call conventions make it possible
-     to return set results (<a href="xfunc-c.html#xfunc-c-return-set" title="31.7.10. Returning Sets from C-Language Functions">Section 31.7.10, &#8220;Returning Sets from C-Language Functions&#8221;</a>) and
-     implement trigger functions (<a href="triggers.html" title="Chapter 33. Triggers">Chapter 33, <i>Triggers</i></a>) and
+     to return set results (<a href="xfunc-c.html#xfunc-c-return-set" title="31.9.10. Returning Sets from C-Language Functions">Section 31.9.10, &#8220;Returning Sets from C-Language Functions&#8221;</a>) and
+     implement trigger functions (<a href="triggers.html" title="Chapter 32. Triggers">Chapter 32, <i>Triggers</i></a>) and
      procedural-language call handlers (<a href="plhandler.html" title="Chapter 45. Writing A Procedural Language Handler">Chapter 45, <i>Writing A Procedural Language Handler</i></a>).  Version-1 code is also more
      portable than version-0, because it does not break restrictions
      on function call protocol in the C standard.  For more details
@@ -760,7 +760,7 @@ concat_text(PG_FUNCTION_ARGS)
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2632394"></a>31.7.5. Writing Code</h3></div></div>
+<a name="id2635389"></a>31.9.5. Writing Code</h3></div></div>
 <div></div>
 </div>
 <p>     Before we turn to the more advanced topics, we should discuss
@@ -780,7 +780,7 @@ concat_text(PG_FUNCTION_ARGS)
      </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Use <tt class="literal">pg_config
-        --includedir-server</tt><a name="id2632435"></a>
+        --includedir-server</tt><a name="id2635431"></a>
         to find out where the <span class="productname">PostgreSQL</span> server header
         files are installed on your system (or the system that your
         users will be running on).  This option is new with
@@ -795,7 +795,7 @@ concat_text(PG_FUNCTION_ARGS)
        </p></li>
 <li><p>        When allocating memory, use the
         <span class="productname">PostgreSQL</span> functions
-        <tt class="function">palloc</tt><a name="id2632496"></a> and <tt class="function">pfree</tt><a name="id2632508"></a>
+        <tt class="function">palloc</tt><a name="id2635492"></a> and <tt class="function">pfree</tt><a name="id2635503"></a>
         instead of the corresponding C library functions
         <tt class="function">malloc</tt> and <tt class="function">free</tt>.
         The memory allocated by <tt class="function">palloc</tt> will be
@@ -803,9 +803,9 @@ concat_text(PG_FUNCTION_ARGS)
         memory leaks.
        </p></li>
 <li><p>        Always zero the bytes of your structures using
-	<tt class="function">memset</tt>.  Without this, it's difficult to
-	support hash indexes or hash joins, as you must pick out only
-	the significant bits of your data structure to compute a hash.
+        <tt class="function">memset</tt>.  Without this, it's difficult to
+        support hash indexes or hash joins, as you must pick out only
+        the significant bits of your data structure to compute a hash.
         Even if you initialize all fields of your structure, there may be
         alignment padding (holes in the structure) that may contain
         garbage values.
@@ -830,7 +830,7 @@ concat_text(PG_FUNCTION_ARGS)
        </p></li>
 <li><p>        Compiling and linking your code so that it can be dynamically
         loaded into <span class="productname">PostgreSQL</span> always
-        requires special flags.  See <a href="xfunc-c.html#dfunc" title="31.7.6. Compiling and Linking Dynamically-Loaded Functions">Section 31.7.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for a
+        requires special flags.  See <a href="xfunc-c.html#dfunc" title="31.9.6. Compiling and Linking Dynamically-Loaded Functions">Section 31.9.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for a
         detailed explanation of how to do it for your particular
         operating system.
        </p></li>
@@ -841,7 +841,7 @@ concat_text(PG_FUNCTION_ARGS)
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="dfunc"></a>31.7.6. Compiling and Linking Dynamically-Loaded Functions</h3></div></div>
+<a name="dfunc"></a>31.9.6. Compiling and Linking Dynamically-Loaded Functions</h3></div></div>
 <div></div>
 </div>
 <p>  Before you are able to use your
@@ -849,7 +849,7 @@ concat_text(PG_FUNCTION_ARGS)
   C, they must be compiled and linked in a special way to produce a
   file that can be dynamically loaded by the server.  To be precise, a
   <i class="firstterm">shared library</i> needs to be
-  created.<a name="id2632671"></a>
+  created.<a name="id2635667"></a>
 
  </p>
 <p>  For information beyond what is contained in this section
@@ -862,12 +862,12 @@ concat_text(PG_FUNCTION_ARGS)
   examples you will make your modules dependent on the availability
   of the <span class="productname">PostgreSQL</span> source code, however.
  </p>
-<p>  <a name="id2632718"></a> Creating shared libraries is generally
+<p>  <a name="id2635714"></a> Creating shared libraries is generally
   analogous to linking executables: first the source files are
   compiled into object files, then the object files are linked
   together.  The object files need to be created as
   <i class="firstterm">position-independent code</i>
-  (<span class="acronym">PIC</span>),<a name="id2632736"></a> which
+  (<span class="acronym">PIC</span>),<a name="id2635732"></a> which
   conceptually means that they can be placed at an arbitrary location
   in memory when they are loaded by the executable.  (Object files
   intended for executables are usually not compiled that way.)  The
@@ -1058,17 +1058,17 @@ gcc -shared -o foo.so foo.o</pre>
   the <tt class="command">CREATE FUNCTION</tt> command, and normally should
   be omitted for best portability.
  </p>
-<p>  Refer back to <a href="xfunc-c.html#xfunc-c-dynload" title="31.7.1. Dynamic Loading">Section 31.7.1, &#8220;Dynamic Loading&#8221;</a> about where the
+<p>  Refer back to <a href="xfunc-c.html#xfunc-c-dynload" title="31.9.1. Dynamic Loading">Section 31.9.1, &#8220;Dynamic Loading&#8221;</a> about where the
   server expects to find the shared library files.
  </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="xfunc-c-pgxs"></a>31.7.7. Extension build infrastructure</h3></div></div>
+<a name="xfunc-c-pgxs"></a>31.9.7. Extension Building Infrastructure</h3></div></div>
 <div></div>
 </div>
-<a name="id2633404"></a><p>    If you are thinking about distributing your
+<a name="id2636401"></a><p>    If you are thinking about distributing your
     <span class="productname">PostgreSQL</span> extension modules, setting up a
     portable build system for them can be fairly difficult.  Therefore
     the <span class="productname">PostgreSQL</span> installation provides a build
@@ -1179,7 +1179,7 @@ include $(PGXS)</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2633711"></a>31.7.8. Composite-Type Arguments in C-Language Functions</h3></div></div>
+<a name="id2636707"></a>31.9.8. Composite-Type Arguments in C-Language Functions</h3></div></div>
 <div></div>
 </div>
 <p>     Composite types do not have a fixed layout like C structures.
@@ -1233,14 +1233,14 @@ c_overpaid(PG_FUNCTION_ARGS)
     HeapTupleHeader  t = PG_GETARG_HEAPTUPLEHEADER(0);
     int32            limit = PG_GETARG_INT32(1);
     bool isnull;
-    int32 salary;
+    Datum salary;
 
-    salary = DatumGetInt32(GetAttributeByName(t, "salary", &amp;isnull));
+    salary = GetAttributeByName(t, "salary", &amp;isnull);
     if (isnull)
         PG_RETURN_BOOL(false);
     /* Alternatively, we might prefer to do PG_RETURN_NULL() for null salary. */
 
-    PG_RETURN_BOOL(salary &gt; limit);
+    PG_RETURN_BOOL(DatumGetInt32(salary) &gt; limit);
 }</pre>
 <p>
     </p>
@@ -1253,7 +1253,10 @@ c_overpaid(PG_FUNCTION_ARGS)
      return parameter that tells whether  the  attribute
      is  null.   <tt class="function">GetAttributeByName</tt> returns a <tt class="type">Datum</tt>
      value that you can convert to the proper data type by using the
-     appropriate <tt class="function">DatumGet<i class="replaceable"><tt>XXX</tt></i>()</tt> macro.
+     appropriate <tt class="function">DatumGet<i class="replaceable"><tt>XXX</tt></i>()</tt>
+     macro.  Note that the return value is meaningless if the null flag is
+     set; always check the null flag before trying to do anything with the
+     result.
     </p>
 <p>     There is also <tt class="function">GetAttributeByNum</tt>, which selects
      the target attribute by column number instead of name.
@@ -1274,7 +1277,7 @@ c_overpaid(PG_FUNCTION_ARGS)
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2633862"></a>31.7.9. Returning Rows (Composite Types) from C-Language Functions</h3></div></div>
+<a name="id2636861"></a>31.9.9. Returning Rows (Composite Types) from C-Language Functions</h3></div></div>
 <div></div>
 </div>
 <p>     To return a row or composite-type value from a C-language
@@ -1288,7 +1291,7 @@ c_overpaid(PG_FUNCTION_ARGS)
 <p>     There are two ways you can build a composite data value (henceforth
      a &#8220;<span class="quote">tuple</span>&#8221;): you can build it from an array of Datum values,
      or from an array of C strings that can be passed to the input
-     conversion functions of the tuple's column datatypes.  In either
+     conversion functions of the tuple's column data types.  In either
      case, you first need to obtain or construct a <tt class="structname">TupleDesc</tt>
      descriptor for the tuple structure.  When working with Datums, you
      pass the <tt class="structname">TupleDesc</tt> to <tt class="function">BlessTupleDesc</tt>,
@@ -1364,7 +1367,7 @@ c_overpaid(PG_FUNCTION_ARGS)
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="xfunc-c-return-set"></a>31.7.10. Returning Sets from C-Language Functions</h3></div></div>
+<a name="xfunc-c-return-set"></a>31.9.10. Returning Sets from C-Language Functions</h3></div></div>
 <div></div>
 </div>
 <p>     There is also a special API that provides support for returning
@@ -1556,7 +1559,7 @@ testpassbyval(PG_FUNCTION_ARGS)
      /* stuff done only on the first call of the function */
      if (SRF_IS_FIRSTCALL())
      {
-        MemoryContext	oldcontext;
+        MemoryContext   oldcontext;
 
         /* create a function context for cross-call persistence */
         funcctx = SRF_FIRSTCALL_INIT();
@@ -1644,7 +1647,7 @@ CREATE OR REPLACE FUNCTION testpassbyval(integer, integer) RETURNS SETOF __testp
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2634494"></a>31.7.11. Polymorphic Arguments and Return Types</h3></div></div>
+<a name="id2637493"></a>31.9.11. Polymorphic Arguments and Return Types</h3></div></div>
 <div></div>
 </div>
 <p>     C-language functions may be declared to accept and

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpython.html" title="Chapter 38. PL/Python - Python Procedural Language">
 <link rel="previous" href="plpython-trigger.html" title="38.2. Trigger Functions">
 <link rel="next" href="spi.html" title="Chapter 39. Server Programming Interface">
@@ -21,24 +21,29 @@
    this module are available to you in the Python code as
    <tt class="literal">plpy.<i class="replaceable"><tt>foo</tt></i></tt>.  At present
    <tt class="literal">plpy</tt> implements the functions
-   <tt class="literal">plpy.debug("msg")</tt>,
-   <tt class="literal">plpy.log("msg")</tt>,
-   <tt class="literal">plpy.info("msg")</tt>,
-   <tt class="literal">plpy.notice("msg")</tt>,
-   <tt class="literal">plpy.warning("msg")</tt>,
-   <tt class="literal">plpy.error("msg")</tt>, and
-   <tt class="literal">plpy.fatal("msg")</tt>.  They are mostly equivalent
-   to calling <tt class="literal">elog(<i class="replaceable"><tt>LEVEL</tt></i>, "msg")</tt>
-   from C code.<a name="id2654294"></a>  <tt class="function">plpy.error</tt> and
+   <tt class="literal">plpy.debug(<i class="replaceable"><tt>msg</tt></i>)</tt>,
+   <tt class="literal">plpy.log(<i class="replaceable"><tt>msg</tt></i>)</tt>,
+   <tt class="literal">plpy.info(<i class="replaceable"><tt>msg</tt></i>)</tt>,
+   <tt class="literal">plpy.notice(<i class="replaceable"><tt>msg</tt></i>)</tt>,
+   <tt class="literal">plpy.warning(<i class="replaceable"><tt>msg</tt></i>)</tt>,
+   <tt class="literal">plpy.error(<i class="replaceable"><tt>msg</tt></i>)</tt>, and
+   <tt class="literal">plpy.fatal(<i class="replaceable"><tt>msg</tt></i>)</tt>.<a name="id2657742"></a>
+   <tt class="function">plpy.error</tt> and 
    <tt class="function">plpy.fatal</tt> actually raise a Python exception
-   which, if uncaught, causes the PL/Python module to call
-   <tt class="literal">elog(ERROR, msg)</tt> when the function handler
-   returns from the Python interpreter.  Long-jumping out of the
-   Python interpreter is probably not good.  <tt class="literal">raise
-   plpy.ERROR("msg")</tt> and <tt class="literal">raise
-   plpy.FATAL("msg")</tt> are equivalent to calling
+   which, if uncaught, propagates out to the calling query, causing
+   the current transaction or subtransaction to be aborted. 
+   <tt class="literal">raise plpy.ERROR(<i class="replaceable"><tt>msg</tt></i>)</tt> and
+   <tt class="literal">raise plpy.FATAL(<i class="replaceable"><tt>msg</tt></i>)</tt> are
+   equivalent to calling
    <tt class="function">plpy.error</tt> and
    <tt class="function">plpy.fatal</tt>, respectively.
+   The other functions only generate messages of different
+   priority levels.
+   Whether messages of a particular priority are reported to the client,
+   written to the server log, or both is controlled by the
+   <a href="runtime-config.html#guc-log-min-messages">log_min_messages</a> and
+   <a href="runtime-config.html#guc-client-min-messages">client_min_messages</a> configuration
+   variables. See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for more information.
   </p>
 <p>   Additionally, the <tt class="literal">plpy</tt> module provides two
    functions called <tt class="function">execute</tt> and
@@ -64,7 +69,7 @@
 <pre class="programlisting">foo = rv[i]["my_column"]</pre>
 <p>
   </p>
-<p>   <a name="id2654439"></a>
+<p>   <a name="id2657908"></a>
    The second function, <tt class="function">plpy.prepare</tt>, prepares
    the execution plan for a query.  It is called with a query string
    and a list of parameter types, if you have parameter references in
@@ -79,15 +84,6 @@
 <pre class="programlisting">rv = plpy.execute(plan, [ "name" ], 5)</pre>
 <p>
    The third argument is the limit and is optional.
-  </p>
-<p>   In the current version, any database error encountered while
-   running a <span class="application">PL/Python</span> function will result
-   in the immediate termination of that function by the server; it is
-   not possible to trap error conditions using Python <tt class="literal">try
-   ... catch</tt> constructs.  For example, a syntax error in an
-   SQL statement passed to the <tt class="literal">plpy.execute</tt> call
-   will terminate the function.  This behavior may be changed in a
-   future release.
   </p>
 <p>   When you prepare a plan using the PL/Python module it is
    automatically saved.  Read the SPI documentation (<a href="spi.html" title="Chapter 39. Server Programming Interface">Chapter 39, <i>Server Programming Interface</i></a>) for a description of what this means.

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-select.html" title="SELECT">
 <link rel="next" href="sql-set.html" title="SET">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>SELECT INTO &#8212; define a new table from the results of a query</p>
 </div>
-<a name="id2697362"></a><div class="refsynopsisdiv">
+<a name="id2701531"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <i class="replaceable"><tt>expression</tt></i> [, ...] ) ] ]
     * | <i class="replaceable"><tt>expression</tt></i> [ AS <i class="replaceable"><tt>output_name</tt></i> ] [, ...]
@@ -35,7 +35,7 @@
     [ FOR UPDATE [ OF <i class="replaceable"><tt>tablename</tt></i> [, ...] ] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697450"></a><h2>Description</h2>
+<a name="id2701619"></a><h2>Description</h2>
 <p>   <tt class="command">SELECT INTO</tt> creates a new table and fills it
    with data computed by a query.  The data is not returned to the
    client, as it is with a normal <tt class="command">SELECT</tt>.  The new
@@ -44,7 +44,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697475"></a><h2>Parameters</h2>
+<a name="id2701644"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">TEMPORARY</tt> or <tt class="literal">TEMP</tt></span></dt>
 <dd><p>     If specified, the table is created as a temporary table.  Refer
@@ -58,7 +58,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697522"></a><h2>Notes</h2>
+<a name="id2701691"></a><h2>Notes</h2>
 <p>   <a href="sql-createtableas.html">CREATE TABLE AS</a> is functionally similar to
    <tt class="command">SELECT INTO</tt>.  <tt class="command">CREATE TABLE AS</tt>
    is the recommended syntax, since this form of <tt class="command">SELECT
@@ -69,12 +69,8 @@
    functionality provided by <tt class="command">SELECT INTO</tt>.
   </p>
 <p>   Prior to <span class="productname">PostgreSQL</span> 8.0, the table created by
-   <tt class="command">SELECT INTO</tt> always included OIDs. Furthermore,
-   these OIDs were newly generated: they were distinct from the OIDs
-   of any of the rows in the source tables of the <tt class="command">SELECT
-   INTO</tt> statement. Therefore, if <tt class="command">SELECT
-   INTO</tt> was frequently executed, the OID counter would be
-   rapidly incremented. As of <span class="productname">PostgreSQL</span> 8.0, the
+   <tt class="command">SELECT INTO</tt> always included OIDs.
+   As of <span class="productname">PostgreSQL</span> 8.0, the
    inclusion of OIDs in the table created by <tt class="command">SELECT
    INTO</tt> is controlled by the
    <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a> configuration variable. This
@@ -83,7 +79,17 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2697630"></a><h2>Compatibility</h2>
+<a name="id2701785"></a><h2>Examples</h2>
+<p>   Create a new table <tt class="literal">films_recent</tt> consisting of only
+   recent entries from the table <tt class="literal">films</tt>:
+
+</p>
+<pre class="programlisting">SELECT * INTO films_recent FROM films WHERE date_prod &gt;= '2002-01-01';</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2701809"></a><h2>Compatibility</h2>
 <p>   The SQL standard uses <tt class="command">SELECT INTO</tt> to
    represent selecting values into scalar variables of a host program,
    rather than creating a new table.  This indeed is the usage found
@@ -94,6 +100,10 @@
    best to use <tt class="command">CREATE TABLE AS</tt> for this purpose in
    new code.
   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2701859"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createtableas.html">CREATE TABLE AS</a></span>
 </div>
 </div></body>
 </html>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="previous" href="manage-ag-tablespaces.html" title="18.6. Tablespaces">
 <link rel="next" href="auth-methods.html" title="19.2. Authentication methods">
@@ -26,12 +26,12 @@
 <dt><span class="sect2"><a href="auth-methods.html#auth-password">19.2.2. Password authentication</a></span></dt>
 <dt><span class="sect2"><a href="auth-methods.html#kerberos-auth">19.2.3. Kerberos authentication</a></span></dt>
 <dt><span class="sect2"><a href="auth-methods.html#auth-ident">19.2.4. Ident-based authentication</a></span></dt>
-<dt><span class="sect2"><a href="auth-methods.html#auth-pam">19.2.5. PAM Authentication</a></span></dt>
+<dt><span class="sect2"><a href="auth-methods.html#auth-pam">19.2.5. PAM authentication</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="client-authentication-problems.html">19.3. Authentication problems</a></span></dt>
 </dl>
 </div>
-<a name="id2592171"></a><p>  When a client application connects to the database server, it
+<a name="id2594148"></a><p>  When a client application connects to the database server, it
   specifies which <span class="productname">PostgreSQL</span> user name it
   wants to connect as, much the same way one logs into a Unix computer
   as a particular user. Within the SQL environment the active database
@@ -65,12 +65,15 @@
 <a name="auth-pg-hba-conf"></a>19.1. The <tt class="filename">pg_hba.conf</tt> file</h2></div></div>
 <div></div>
 </div>
-<a name="id2592254"></a><p>   Client authentication is controlled by the file
-   <tt class="filename">pg_hba.conf</tt> in the data directory, e.g.,
-   <tt class="filename">/usr/local/pgsql/data/pg_hba.conf</tt>.
+<a name="id2594239"></a><p>   Client authentication is controlled by a configuration file,
+   which traditionally is named
+   <tt class="filename">pg_hba.conf</tt> and is stored in the database
+   cluster's data directory.
    (<span class="acronym">HBA</span> stands for host-based authentication.) A default
    <tt class="filename">pg_hba.conf</tt> file is installed when the data
-   directory is initialized by <tt class="command">initdb</tt>.
+   directory is initialized by <tt class="command">initdb</tt>.  It is
+   possible to place the authentication configuration file elsewhere,
+   however; see the <a href="runtime-config.html#guc-hba-file">hba_file</a> configuration parameter.
   </p>
 <p>   The general format of the <tt class="filename">pg_hba.conf</tt> file is
    a set of records, one per line. Blank lines are ignored, as is any
@@ -139,8 +142,8 @@ hostnossl  <i class="replaceable"><tt>database</tt></i>  <i class="replaceable">
       </p>
 </dd>
 <dt><span class="term"><tt class="literal">hostnossl</tt></span></dt>
-<dd><p>       This record is similar to <tt class="literal">hostssl</tt> but with the
-       opposite logic: it only matches connection attempts made over
+<dd><p>       This record type has the opposite logic to <tt class="literal">hostssl</tt>:
+       it only matches connection attempts made over
        TCP/IP that do not use <span class="acronym">SSL</span>.
       </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>database</tt></i></span></dt>
@@ -149,13 +152,12 @@ hostnossl  <i class="replaceable"><tt>database</tt></i>  <i class="replaceable">
        The value <tt class="literal">sameuser</tt> specifies that the record
        matches if the requested database has the same name as the
        requested user.  The value <tt class="literal">samegroup</tt> specifies that
-       the requested user must a member of the group with the same
+       the requested user must be a member of the group with the same
        name as the requested database.  Otherwise, this is the name of
        a specific <span class="productname">PostgreSQL</span> database.
        Multiple database names can be supplied by separating them with
        commas.  A file containing database names can be specified by
-       preceding the file name with <tt class="literal">@</tt>. The file must be in
-       the same directory as <tt class="filename">pg_hba.conf</tt>.
+       preceding the file name with <tt class="literal">@</tt>.
       </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>user</tt></i></span></dt>
 <dd><p>       Specifies which <span class="productname">PostgreSQL</span> users this record
@@ -165,23 +167,25 @@ hostnossl  <i class="replaceable"><tt>database</tt></i>  <i class="replaceable">
        can be supplied by separating them with commas. Group names can
        be specified by preceding the group name with <tt class="literal">+</tt>. A
        file containing user names can be specified by preceding the
-       file name with <tt class="literal">@</tt>. The file must be in the same
-       directory as <tt class="filename">pg_hba.conf</tt>.
+       file name with <tt class="literal">@</tt>.
       </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>CIDR-address</tt></i></span></dt>
 <dd>
-<p>       Specifies the client machine IP addresses that this record
+<p>       Specifies the client machine IP address range that this record
        matches. It contains an IP address in standard dotted decimal
        notation and a CIDR mask length. (IP addresses can only be
-       specified numerically, not as domain or host names.) For example,
-       an IPv4 CIDR mask of 8 is equivalent to an IP mask of 255.0.0.0,
-       an IPv6 CIDR mask of 64 is equivalent to an IP mask of
-       ffff:ffff:ffff:ffff::. A IPv4 CIDR mask of 32 is used for single
-       hosts.
-      </p>
-<p>       A typical CIDR address is <tt class="literal">172.20.143.89/32</tt>.
-       There should be no white space between the IP address, the
+       specified numerically, not as domain or host names.)  The mask
+       length indicates the number of high-order bits of the client
+       IP address that must match.  Bits to the right of this must
+       be zero in the given IP address.
+       There must not be any white space between the IP address, the
        <tt class="literal">/</tt>, and the CIDR mask length.
+      </p>
+<p>       A typical <i class="replaceable"><tt>CIDR-address</tt></i> is
+       <tt class="literal">172.20.143.89/32</tt> for a single host, or
+       <tt class="literal">172.20.143.0/24</tt> for a network.
+       To specify a single host, use a CIDR mask of 32 for IPv4 or
+       128 for IPv6.
       </p>
 <p>       An IP address given in IPv4 format will match IPv6 connections that
        have the corresponding address, for example <tt class="literal">127.0.0.1</tt>
@@ -191,23 +195,22 @@ hostnossl  <i class="replaceable"><tt>database</tt></i>  <i class="replaceable">
        in IPv6 format will be rejected if the system's C library does not have
        support for IPv6 addresses.
       </p>
-<p>       These fields only apply to <tt class="literal">host</tt>,
+<p>       This field only applies to <tt class="literal">host</tt>,
        <tt class="literal">hostssl</tt>, and <tt class="literal">hostnossl</tt> records.
       </p>
 </dd>
 <dt>
-<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><i xmlns="" class="replaceable"><tt>IP-address</tt></i></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><i class="replaceable"><tt>IP-masklen</tt></i></span>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><i xmlns="" class="replaceable"><tt>IP-address</tt></i></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><i class="replaceable"><tt>IP-mask</tt></i></span>
 </dt>
 <dd>
-<p>       This may be used as an alternative to the
+<p>       These fields may be used as an alternative to the
        <i class="replaceable"><tt>CIDR-address</tt></i> notation. Instead of
        specifying the mask length, the actual mask is specified in a
-       separate column. For example, 255.0.0.0 represents a IPv4 CIDR
-       mask length of 8, and 255.255.255.255 represents a CIDR mask
-       length of 32. The same matching logic is used as for a dotted
-       notation <i class="replaceable"><tt>IP-mask</tt></i>.
+       separate column. For example, <tt class="literal">255.0.0.0</tt> represents an IPv4
+       CIDR mask length of 8, and <tt class="literal">255.255.255.255</tt> represents a
+       CIDR mask length of 32.
       </p>
-<p>       This field only applies to <tt class="literal">host</tt>,
+<p>       These fields only apply to <tt class="literal">host</tt>,
        <tt class="literal">hostssl</tt>, and <tt class="literal">hostnossl</tt> records.
       </p>
 </dd>
@@ -220,71 +223,55 @@ hostnossl  <i class="replaceable"><tt>database</tt></i>  <i class="replaceable">
        </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">trust</tt></span></dt>
-<dd><p>          The connection is allowed unconditionally. This method
+<dd><p>          Allow the connection unconditionally. This method
           allows anyone that can connect to the
           <span class="productname">PostgreSQL</span> database server to login as
           any <span class="productname">PostgreSQL</span> user they like,
           without the need for a password.  See <a href="auth-methods.html#auth-trust" title="19.2.1. Trust authentication">Section 19.2.1, &#8220;Trust authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><tt class="literal">reject</tt></span></dt>
-<dd><p>          The connection is rejected unconditionally. This is useful for
+<dd><p>          Reject the connection unconditionally. This is useful for
           &#8220;<span class="quote">filtering out</span>&#8221; certain hosts from a group.
          </p></dd>
 <dt><span class="term"><tt class="literal">md5</tt></span></dt>
-<dd><p>          Requires the client to supply an MD5 encrypted password for
-          authentication. This is the only method that allows encrypted
-          passwords to be stored in <tt class="structname">pg_shadow</tt>.
+<dd><p>          Require the client to supply an MD5-encrypted password for
+          authentication.
           See <a href="auth-methods.html#auth-password" title="19.2.2. Password authentication">Section 19.2.2, &#8220;Password authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><tt class="literal">crypt</tt></span></dt>
-<dd><p>          Like the <tt class="literal">md5</tt> method but uses older <tt class="function">crypt()</tt>
-          encryption, which is needed for pre-7.2 clients.
-          <tt class="literal">md5</tt> is preferred for 7.2 and later clients.
+<dd><p>          Require the client to supply a <tt class="function">crypt()</tt>-encrypted
+          password for authentication.
+          <tt class="literal">md5</tt> is preferred for 7.2 and later clients,
+          but pre-7.2 clients only support <tt class="literal">crypt</tt>.
           See <a href="auth-methods.html#auth-password" title="19.2.2. Password authentication">Section 19.2.2, &#8220;Password authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><tt class="literal">password</tt></span></dt>
-<dd><p>          Same as <tt class="literal">md5</tt>, but the password is sent in clear text over the
-          network. This should not be used on untrusted networks.
+<dd><p>          Require the client to supply an unencrypted password for
+          authentication.
+          Since the password is sent in clear text over the
+          network, this should not be used on untrusted networks.
           See <a href="auth-methods.html#auth-password" title="19.2.2. Password authentication">Section 19.2.2, &#8220;Password authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><tt class="literal">krb4</tt></span></dt>
-<dd><p>          Kerberos V4 is used to authenticate the user. This is only
+<dd><p>          Use Kerberos V4 to authenticate the user. This is only
           available for TCP/IP connections.  See <a href="auth-methods.html#kerberos-auth" title="19.2.3. Kerberos authentication">Section 19.2.3, &#8220;Kerberos authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><tt class="literal">krb5</tt></span></dt>
-<dd><p>          Kerberos V5 is used to authenticate the user. This is only
+<dd><p>          Use Kerberos V5 to authenticate the user. This is only
           available for TCP/IP connections.  See <a href="auth-methods.html#kerberos-auth" title="19.2.3. Kerberos authentication">Section 19.2.3, &#8220;Kerberos authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><tt class="literal">ident</tt></span></dt>
-<dd>
-<p>          Obtain the operating system user name of the client (for
+<dd><p>          Obtain the operating system user name of the client (for
           TCP/IP connections by contacting the ident server on the
           client, for local connections by getting it from the
           operating system) and check if the user is allowed to
           connect as the requested database user by consulting the map
           specified after the <tt class="literal">ident</tt> key word.
-         </p>
-<p>          If you use the map <tt class="literal">sameuser</tt>, the user
-          names are required to be identical. If not, the map name is
-          looked up in the file <tt class="filename">pg_ident.conf</tt>
-          in the same directory as <tt class="filename">pg_hba.conf</tt>.
-          The connection is accepted if that file contains an
-          entry for this map name with the operating-system user name
-          and the requested <span class="productname">PostgreSQL</span> user
-          name.
-         </p>
-<p>          For local connections, this only works on machines that
-          support Unix-domain socket credentials (currently
-          <span class="systemitem">Linux</span>, <span class="systemitem">FreeBSD</span>, <span class="systemitem">NetBSD</span>,
-          <span class="systemitem">OpenBSD</span>, and 
-          <span class="systemitem">BSD/OS</span>).
-         </p>
-<p>          See <a href="auth-methods.html#auth-ident" title="19.2.4. Ident-based authentication">Section 19.2.4, &#8220;Ident-based authentication&#8221;</a> below for details.
-         </p>
-</dd>
+          See <a href="auth-methods.html#auth-ident" title="19.2.4. Ident-based authentication">Section 19.2.4, &#8220;Ident-based authentication&#8221;</a> for details.
+         </p></dd>
 <dt><span class="term"><tt class="literal">pam</tt></span></dt>
 <dd><p>          Authenticate using the Pluggable Authentication Modules
-          (PAM) service provided by the operating system.  See <a href="auth-methods.html#auth-pam" title="19.2.5. PAM Authentication">Section 19.2.5, &#8220;PAM Authentication&#8221;</a> for details.
+          (PAM) service provided by the operating system.  See <a href="auth-methods.html#auth-pam" title="19.2.5. PAM authentication">Section 19.2.5, &#8220;PAM authentication&#8221;</a> for details.
          </p></dd>
 </dl></div>
 <p>
@@ -293,10 +280,18 @@ hostnossl  <i class="replaceable"><tt>database</tt></i>  <i class="replaceable">
 </dd>
 <dt><span class="term"><i class="replaceable"><tt>authentication-option</tt></i></span></dt>
 <dd><p>       The meaning of this optional field depends on the chosen
-       authentication method and is described in the next section.
+       authentication method.  Details appear below.
       </p></dd>
 </dl></div>
 <p>
+  </p>
+<p>   Files included by <tt class="literal">@</tt> constructs are read as lists of names,
+   which can be separated by either whitespace or commas.  Comments are
+   introduced by <tt class="literal">#</tt>, just as in
+   <tt class="filename">pg_hba.conf</tt>, and nested <tt class="literal">@</tt> constructs are
+   allowed.  Unless the file name following <tt class="literal">@</tt> is an absolute
+   path, it is taken to be relative to the directory containing the
+   referencing file.
   </p>
 <p>   Since the <tt class="filename">pg_hba.conf</tt> records are examined
    sequentially for each connection attempt, the order of the records is
@@ -310,26 +305,20 @@ hostnossl  <i class="replaceable"><tt>database</tt></i>  <i class="replaceable">
    appear before a record specifying password authentication for a wider
    range of allowed client IP addresses.
   </p>
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Important</h3>
-<p>    Do not prevent the superuser from accessing the <tt class="literal">template1</tt>
-    database.  Various utility commands need access to <tt class="literal">template1</tt>.
-   </p>
-</div>
 <p>   The <tt class="filename">pg_hba.conf</tt> file is read on start-up and when
    the main server process (<tt class="command">postmaster</tt>) receives a
-   <span class="systemitem">SIGHUP</span><a name="id2593243"></a>
+   <span class="systemitem">SIGHUP</span><a name="id2595155"></a>
    signal. If you edit the file on an
    active system, you will need to signal the <tt class="command">postmaster</tt>
    (using <tt class="literal">pg_ctl reload</tt> or <tt class="literal">kill -HUP</tt>) to make it
    re-read the file.
   </p>
-<p>   An example of a <tt class="filename">pg_hba.conf</tt> file is shown in
-   <a href="client-authentication.html#example-pg-hba.conf" title="Example 19.1. An example pg_hba.conf file">Example 19.1, &#8220;An example pg_hba.conf file&#8221;</a>. See the next section for details on the
+<p>   Some examples of <tt class="filename">pg_hba.conf</tt> entries are shown in
+   <a href="client-authentication.html#example-pg-hba.conf" title="Example 19.1. Example pg_hba.conf entries">Example 19.1, &#8220;Example pg_hba.conf entries&#8221;</a>. See the next section for details on the
    different authentication methods.
   </p>
 <div class="example">
-<a name="example-pg-hba.conf"></a><p class="title"><b>Example 19.1. An example <tt class="filename">pg_hba.conf</tt> file</b></p>
+<a name="example-pg-hba.conf"></a><p class="title"><b>Example 19.1. Example <tt class="filename">pg_hba.conf</tt> entries</b></p>
 <pre class="programlisting"># Allow any user on the local system to connect to any database under
 # any user name using Unix-domain sockets (the default for local
 # connections).
@@ -344,7 +333,7 @@ host    all         all         127.0.0.1/32          trust
 
 # The same as the last line but using a separate netmask column
 #
-# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+# TYPE  DATABASE    USER        IP-ADDRESS    IP-MASK             METHOD
 host    all         all         127.0.0.1     255.255.255.255     trust     
 
 # Allow any user from any host with IP address 192.168.93.x to connect
@@ -354,11 +343,6 @@ host    all         all         127.0.0.1     255.255.255.255     trust
 # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
 host    template1   all         192.168.93.0/24       ident sameuser
 
-# The same as the last line but using a separate netmask column
-#
-# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
-host    template1   all         192.168.93.0  255.255.255.0   ident sameuser
-
 # Allow a user from host 192.168.12.10 to connect to database
 # "template1" if the user's password is correctly supplied.
 # 
@@ -367,7 +351,7 @@ host    template1   all         192.168.12.10/32      md5
 
 # In the absence of preceding "host" lines, these two lines will
 # reject all connection from 192.168.54.1 (since that entry will be
-# matched first), but allow Kerberos V connections from anywhere else
+# matched first), but allow Kerberos 5 connections from anywhere else
 # on the Internet.  The zero mask means that no bits of the host IP
 # address are considered so it matches any host.
 # 

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-droptype.html" title="DROP TYPE">
 <link rel="next" href="sql-dropview.html" title="DROP VIEW">
@@ -19,19 +19,19 @@
 <h2>Name</h2>
 <p>DROP USER &#8212; remove a database user account</p>
 </div>
-<a name="id2686125"></a><div class="refsynopsisdiv">
+<a name="id2690036"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">DROP USER <i class="replaceable"><tt>name</tt></i></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2686144"></a><h2>Description</h2>
+<a name="id2690055"></a><h2>Description</h2>
 <p>   <tt class="command">DROP USER</tt> removes the specified user.
    It does not remove tables, views, or other objects owned by the user. If the
    user owns any database, an error is raised.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2686158"></a><h2>Parameters</h2>
+<a name="id2690069"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
 <dd><p>      The name of the user to remove.
@@ -39,7 +39,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2686173"></a><h2>Notes</h2>
+<a name="id2690084"></a><h2>Notes</h2>
 <p>   <span class="productname">PostgreSQL</span> includes a program <a href="app-dropuser.html"><span class="application">dropuser</span></a> that has the
    same functionality as this command (in fact, it calls this command)
    but can be run from the command shell.
@@ -47,9 +47,14 @@
 <p>   To drop a user who owns a database, first drop the database or change
    its ownership.
   </p>
+<p>   It is unwise to drop a user who either owns any database objects or has any
+   granted permissions on objects.  Currently, this is only enforced for
+   the case of owners of databases, but it is likely that future versions of
+   <span class="productname">PostgreSQL</span> will check other cases.
+  </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2686204"></a><h2>Examples</h2>
+<a name="id2690126"></a><h2>Examples</h2>
 <p>   To drop a user account:
 </p>
 <pre class="programlisting">DROP USER jonathan;</pre>
@@ -57,14 +62,14 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2686216"></a><h2>Compatibility</h2>
+<a name="id2690138"></a><h2>Compatibility</h2>
 <p>   The <tt class="command">DROP USER</tt> statement is a
    <span class="productname">PostgreSQL</span> extension.  The SQL standard
    leaves the definition of users to the implementation.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2686235"></a><h2>See Also</h2>
+<a name="id2690157"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-alteruser.html">ALTER USER</a>, <a href="sql-createuser.html">CREATE USER</a></span>
 </div>
 </div></body>

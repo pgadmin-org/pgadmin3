@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
 <link rel="previous" href="install-post.html" title="14.6. Post-Installation Setup">
-<link rel="next" href="install-win32.html" title="Chapter 15. Installation on Windows">
+<link rel="next" href="install-win32.html" title="Chapter 15. Client-Only Installation on Windows">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
@@ -20,7 +20,12 @@
    community to work on the platforms listed below. A supported
    platform generally means that <span class="productname">PostgreSQL</span> builds and
    installs according to these instructions and that the regression
-   tests pass.
+   tests pass.  &#8220;<span class="quote">Build farm</span>&#8221; entries refer to builds
+   reported by the <a href="http://www.pgbuildfarm.org/" target="_top">PostgreSQL
+   Build Farm</a>.  Platform entries that show an older version of
+   PostgreSQL are those that did not receive explicit testing at the
+   time of release of version 8.1 but that we still
+   expect to work.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -48,246 +53,386 @@
 <tbody>
 <tr>
 <td><span class="systemitem">AIX</span></td>
+<td><span class="systemitem">PowerPC</span></td>
+<td>8.0.0</td>
+<td>Travis P (<tt class="email">&lt;<a href="mailto:twp@castle.fastmail.fm">twp@castle.fastmail.fm</a>&gt;</tt>), 2004-12-12</td>
+<td>see also <tt class="filename">doc/FAQ_AIX</tt>
+</td>
+</tr>
+<tr>
+<td><span class="systemitem">AIX</span></td>
 <td><span class="systemitem">RS6000</span></td>
-<td>7.4</td>
-<td>2003-10-25,
-          Hans-Jürgen Schönig (<tt class="email">&lt;<a href="mailto:hs@cybertec.at">hs@cybertec.at</a>&gt;</tt>)</td>
+<td>8.0.0</td>
+<td>Hans-Jürgen Schönig (<tt class="email">&lt;<a href="mailto:hs@cybertec.at">hs@cybertec.at</a>&gt;</tt>), 2004-12-06</td>
 <td>see also <tt class="filename">doc/FAQ_AIX</tt>
 </td>
 </tr>
 <tr>
 <td><span class="systemitem">BSD/OS</span></td>
 <td><span class="systemitem">x86</span></td>
+<td>8.0.0</td>
+<td>Bruce Momjian (<tt class="email">&lt;<a href="mailto:pgman@candle.pha.pa.us">pgman@candle.pha.pa.us</a>&gt;</tt>), 2004-12-07</td>
+<td>4.3.1</td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">Alpha</span></td>
 <td>7.4</td>
-<td>2003-10-24,
-         Bruce Momjian (<tt class="email">&lt;<a href="mailto:pgman@candle.pha.pa.us">pgman@candle.pha.pa.us</a>&gt;</tt>)</td>
-<td>4.3</td>
+<td>Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>), 2003-10-25</td>
+<td> </td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">AMD64</span></td>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">panda</span>, snapshot 2004-12-06 01:20:02</td>
+<td>sid, kernel 2.6</td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">ARM</span></td>
+<td>8.0.0</td>
+<td>Jim Buttafuoco (<tt class="email">&lt;<a href="mailto:jim@contactbda.com">jim@contactbda.com</a>&gt;</tt>), 2005-01-06</td>
+<td> </td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">IA64</span></td>
+<td>7.4</td>
+<td>Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>), 2003-10-25</td>
+<td> </td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">m68k</span></td>
+<td>8.0.0</td>
+<td>Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>), 2004-12-09</td>
+<td>sid</td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">MIPS</span></td>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">lionfish</span>, snapshot 2004-12-06 11:00:08</td>
+<td>3.1 (sarge), kernel 2.4</td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">PA-RISC</span></td>
+<td>8.0.0</td>
+<td>Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>), 2004-12-07</td>
+<td>sid</td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">PowerPC</span></td>
+<td>8.0.0</td>
+<td>Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>), 2004-12-15</td>
+<td>sid</td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">S/390</span></td>
+<td>7.4</td>
+<td>Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>), 2003-10-25</td>
+<td> </td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">Sparc</span></td>
+<td>8.0.0</td>
+<td>Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>), 2004-12-09</td>
+<td>sid, 32-bit</td>
+</tr>
+<tr>
+<td><span class="systemitem">Debian GNU/Linux</span></td>
+<td><span class="systemitem">x86</span></td>
+<td>8.0.0</td>
+<td>Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>), 2004-12-06</td>
+<td>3.1 (sarge), kernel 2.6</td>
+</tr>
+<tr>
+<td><span class="systemitem">Fedora</span></td>
+<td><span class="systemitem">AMD64</span></td>
+<td>8.0.0</td>
+<td>John Gray (<tt class="email">&lt;<a href="mailto:jgray@azuli.co.uk">jgray@azuli.co.uk</a>&gt;</tt>), 2004-12-12</td>
+<td>FC3</td>
+</tr>
+<tr>
+<td><span class="systemitem">Fedora</span></td>
+<td><span class="systemitem">x86</span></td>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">dog</span>, snapshot 2004-12-06 02:06:01</td>
+<td>FC1</td>
 </tr>
 <tr>
 <td><span class="systemitem">FreeBSD</span></td>
 <td><span class="systemitem">Alpha</span></td>
 <td>7.4</td>
-<td>2003-10-25,
-         Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
+<td>Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>), 2003-10-25</td>
 <td>4.8</td>
 </tr>
 <tr>
 <td><span class="systemitem">FreeBSD</span></td>
 <td><span class="systemitem">x86</span></td>
-<td>7.4</td>
-<td>2003-10-24,
-         Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
-<td>4.9</td>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">cockatoo</span>, snapshot 2004-12-06 14:10:01 (4.10);
+         Marc Fournier (<tt class="email">&lt;<a href="mailto:scrappy@postgresql.org">scrappy@postgresql.org</a>&gt;</tt>), 2004-12-07 (5.3)</td>
+<td> </td>
+</tr>
+<tr>
+<td><span class="systemitem">Gentoo Linux</span></td>
+<td><span class="systemitem">AMD64</span></td>
+<td>8.0.0</td>
+<td>Jani Averbach (<tt class="email">&lt;<a href="mailto:jaa@jaa.iki.fi">jaa@jaa.iki.fi</a>&gt;</tt>), 2005-01-13</td>
+<td> </td>
+</tr>
+<tr>
+<td><span class="systemitem">Gentoo Linux</span></td>
+<td><span class="systemitem">x86</span></td>
+<td>8.0.0</td>
+<td>Paul Bort (<tt class="email">&lt;<a href="mailto:pbort@tmwsystems.com">pbort@tmwsystems.com</a>&gt;</tt>), 2004-12-07</td>
+<td> </td>
+</tr>
+<tr>
+<td><span class="systemitem">HP-UX</span></td>
+<td><span class="systemitem">IA64</span></td>
+<td>8.0.0</td>
+<td>Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>), 2005-01-06</td>
+<td>11.23, <tt class="command">gcc</tt> and <tt class="command">cc</tt>; see also <tt class="filename">doc/FAQ_HPUX</tt>
+</td>
 </tr>
 <tr>
 <td><span class="systemitem">HP-UX</span></td>
 <td><span class="systemitem">PA-RISC</span></td>
-<td>7.4</td>
-<td>         2003-10-31, 10.20, Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>);
-         2003-11-04, 11.00, Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)
-        </td>
-<td>
-<tt class="command">gcc</tt> and <tt class="command">cc</tt>; see also <tt class="filename">doc/FAQ_HPUX</tt>
+<td>8.0.0</td>
+<td>Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>), 2005-01-06</td>
+<td>10.20 and 11.11, <tt class="command">gcc</tt> and <tt class="command">cc</tt>; see also <tt class="filename">doc/FAQ_HPUX</tt>
 </td>
 </tr>
 <tr>
 <td><span class="systemitem">IRIX</span></td>
 <td><span class="systemitem">MIPS</span></td>
 <td>7.4</td>
-<td>2003-11-12,
-         Robert E. Bruccoleri (<tt class="email">&lt;<a href="mailto:bruc@stone.congenomics.com">bruc@stone.congenomics.com</a>&gt;</tt>)</td>
+<td>Robert E. Bruccoleri (<tt class="email">&lt;<a href="mailto:bruc@stone.congenomics.com">bruc@stone.congenomics.com</a>&gt;</tt>), 2003-11-12</td>
 <td>6.5.20, <tt class="command">cc</tt> only</td>
 </tr>
 <tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">Alpha</span></td>
-<td>7.4</td>
-<td>2003-10-25,
-         Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>)</td>
-<td>2.4</td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">arm41</span></td>
-<td>7.4</td>
-<td>2003-10-25,
-         Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>)</td>
-<td>2.4</td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">Itanium</span></td>
-<td>7.4</td>
-<td>2003-10-25,
-         Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>)</td>
-<td>2.4</td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">m68k</span></td>
-<td>7.4</td>
-<td>2003-10-25,
-         Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>)</td>
-<td>2.4</td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">MIPS</span></td>
-<td>7.4</td>
-<td>2003-10-25,
-         Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>)</td>
-<td>2.4</td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">Opteron</span></td>
-<td>7.4</td>
-<td>2003-11-01,
-         Jani Averbach (<tt class="email">&lt;<a href="mailto:jaa@cc.jyu.fi">jaa@cc.jyu.fi</a>&gt;</tt>)</td>
-<td>2.6</td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">PPC</span></td>
-<td>7.4</td>
-<td>2003-10-25,
-         Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>)</td>
-<td> </td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">S/390</span></td>
-<td>7.4</td>
-<td>2003-10-25,
-         Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>)</td>
-<td>2.4</td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">Sparc</span></td>
-<td>7.4</td>
-<td>2003-10-24, 
-         Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
-<td>2.4, 32-bit</td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">x86</span></td>
-<td>7.4</td>
-<td>2003-10-24,
-         Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
-<td>2.4</td>
-</tr>
-<tr>
 <td><span class="systemitem">Mac OS X</span></td>
-<td><span class="systemitem">PPC</span></td>
-<td>7.4</td>
-<td>2003-10-24,
-         10.2.8, Adam Witney (<tt class="email">&lt;<a href="mailto:awitney@sghms.ac.uk">awitney@sghms.ac.uk</a>&gt;</tt>),
-         10.3, Marko Karppinen (<tt class="email">&lt;<a href="mailto:marko@karppinen.fi">marko@karppinen.fi</a>&gt;</tt>)</td>
-<td> </td>
+<td><span class="systemitem">PowerPC</span></td>
+<td>8.0.0</td>
+<td>Andrew Rawnsley (<tt class="email">&lt;<a href="mailto:ronz@ravensfield.com">ronz@ravensfield.com</a>&gt;</tt>), 2004-12-07</td>
+<td>10.3.5</td>
+</tr>
+<tr>
+<td><span class="systemitem">Mandrakelinux</span></td>
+<td><span class="systemitem">x86</span></td>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">shrew</span>, snapshot 2004-12-06 02:02:01</td>
+<td>10.0</td>
 </tr>
 <tr>
 <td><span class="systemitem">NetBSD</span></td>
 <td><span class="systemitem">arm32</span></td>
 <td>7.4</td>
-<td>2003-11-12,
-         Patrick Welche (<tt class="email">&lt;<a href="mailto:prlw1@newn.cam.ac.uk">prlw1@newn.cam.ac.uk</a>&gt;</tt>)</td>
+<td>Patrick Welche (<tt class="email">&lt;<a href="mailto:prlw1@newn.cam.ac.uk">prlw1@newn.cam.ac.uk</a>&gt;</tt>), 2003-11-12</td>
 <td>1.6ZE/acorn32</td>
+</tr>
+<tr>
+<td><span class="systemitem">NetBSD</span></td>
+<td><span class="systemitem">m68k</span></td>
+<td>8.0.0</td>
+<td>R[eacute]mi Zara (<tt class="email">&lt;<a href="mailto:remi_zara@mac.com">remi_zara@mac.com</a>&gt;</tt>), 2004-12-14</td>
+<td>2.0</td>
 </tr>
 <tr>
 <td><span class="systemitem">NetBSD</span></td>
 <td><span class="systemitem">Sparc</span></td>
 <td>7.4.1</td>
-<td>2003-11-26,
-         Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
+<td>Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>), 2003-11-26</td>
 <td>1.6.1, 32-bit</td>
 </tr>
 <tr>
 <td><span class="systemitem">NetBSD</span></td>
 <td><span class="systemitem">x86</span></td>
-<td>7.4</td>
-<td>2003-10-24,
-         Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">canary</span>, snapshot 2004-12-06 03:30:00</td>
 <td>1.6</td>
 </tr>
 <tr>
 <td><span class="systemitem">OpenBSD</span></td>
 <td><span class="systemitem">Sparc</span></td>
-<td>7.4</td>
-<td>2003-11-01,
-         Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
-<td>3.4</td>
+<td>8.0.0</td>
+<td>Chris Mair (<tt class="email">&lt;<a href="mailto:list@1006.org">list@1006.org</a>&gt;</tt>), 2005-01-10</td>
+<td>3.3</td>
+</tr>
+<tr>
+<td><span class="systemitem">OpenBSD</span></td>
+<td><span class="systemitem">Sparc64</span></td>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">spoonbill</span>, snapshot 2005-01-06 00:50:05</td>
+<td>3.6</td>
 </tr>
 <tr>
 <td><span class="systemitem">OpenBSD</span></td>
 <td><span class="systemitem">x86</span></td>
-<td>7.4</td>
-<td>2003-10-24,
-         Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
-<td>3.2</td>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">emu</span>, snapshot 2004-12-06 11:35:03</td>
+<td>3.6</td>
+</tr>
+<tr>
+<td><span class="systemitem">Red Hat Linux</span></td>
+<td><span class="systemitem">AMD64</span></td>
+<td>8.0.0</td>
+<td>Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>), 2004-12-07</td>
+<td>RHEL 3AS</td>
+</tr>
+<tr>
+<td><span class="systemitem">Red Hat Linux</span></td>
+<td><span class="systemitem">IA64</span></td>
+<td>8.0.0</td>
+<td>Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>), 2004-12-07</td>
+<td>RHEL 3AS</td>
+</tr>
+<tr>
+<td><span class="systemitem">Red Hat Linux</span></td>
+<td><span class="systemitem">PowerPC</span></td>
+<td>8.0.0</td>
+<td>Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>), 2004-12-07</td>
+<td>RHEL 3AS</td>
+</tr>
+<tr>
+<td><span class="systemitem">Red Hat Linux</span></td>
+<td><span class="systemitem">PowerPC 64</span></td>
+<td>8.0.0</td>
+<td>Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>), 2004-12-07</td>
+<td>RHEL 3AS</td>
+</tr>
+<tr>
+<td><span class="systemitem">Red Hat Linux</span></td>
+<td><span class="systemitem">S/390</span></td>
+<td>8.0.0</td>
+<td>Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>), 2004-12-07</td>
+<td>RHEL 3AS</td>
+</tr>
+<tr>
+<td><span class="systemitem">Red Hat Linux</span></td>
+<td><span class="systemitem">S/390x</span></td>
+<td>8.0.0</td>
+<td>Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>), 2004-12-07</td>
+<td>RHEL 3AS</td>
+</tr>
+<tr>
+<td><span class="systemitem">Red Hat Linux</span></td>
+<td><span class="systemitem">x86</span></td>
+<td>8.0.0</td>
+<td>Tom Lane (<tt class="email">&lt;<a href="mailto:tgl@sss.pgh.pa.us">tgl@sss.pgh.pa.us</a>&gt;</tt>), 2004-12-07</td>
+<td>RHEL 3AS</td>
 </tr>
 <tr>
 <td><span class="systemitem">Solaris</span></td>
 <td><span class="systemitem">Sparc</span></td>
-<td>7.4</td>
-<td>2003-10-26,
-         Christopher Browne (<tt class="email">&lt;<a href="mailto:cbbrowne@libertyrms.info">cbbrowne@libertyrms.info</a>&gt;</tt>)</td>
-<td>2.8; see also <tt class="filename">doc/FAQ_Solaris</tt>
+<td>8.0.0</td>
+<td>Kenneth Marshall (<tt class="email">&lt;<a href="mailto:ktm@is.rice.edu">ktm@is.rice.edu</a>&gt;</tt>), 2004-12-07</td>
+<td>Solaris 8; see also <tt class="filename">doc/FAQ_Solaris</tt>
 </td>
 </tr>
 <tr>
 <td><span class="systemitem">Solaris</span></td>
 <td><span class="systemitem">x86</span></td>
-<td>7.4</td>
-<td>2003-10-26,
-         Kurt Roeckx (<tt class="email">&lt;<a href="mailto:Q@ping.be">Q@ping.be</a>&gt;</tt>)</td>
-<td>2.6; see also <tt class="filename">doc/FAQ_Solaris</tt>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">kudu</span>, snapshot 2004-12-10 02:30:04 (<tt class="command">cc</tt>);
+          <span class="systemitem">dragonfly</span>, snapshot 2004-12-09 04:30:00 (<tt class="command">gcc</tt>)</td>
+<td>Solaris 9; see also <tt class="filename">doc/FAQ_Solaris</tt>
 </td>
+</tr>
+<tr>
+<td><span class="systemitem">SUSE Linux</span></td>
+<td><span class="systemitem">AMD64</span></td>
+<td>8.0.0</td>
+<td>Reinhard Max (<tt class="email">&lt;<a href="mailto:max@suse.de">max@suse.de</a>&gt;</tt>), 2005-01-03</td>
+<td>9.0, 9.1, 9.2, SLES 9</td>
+</tr>
+<tr>
+<td><span class="systemitem">SUSE Linux</span></td>
+<td><span class="systemitem">IA64</span></td>
+<td>8.0.0</td>
+<td>Reinhard Max (<tt class="email">&lt;<a href="mailto:max@suse.de">max@suse.de</a>&gt;</tt>), 2005-01-03</td>
+<td>SLES 9</td>
+</tr>
+<tr>
+<td><span class="systemitem">SUSE Linux</span></td>
+<td><span class="systemitem">PowerPC</span></td>
+<td>8.0.0</td>
+<td>Reinhard Max (<tt class="email">&lt;<a href="mailto:max@suse.de">max@suse.de</a>&gt;</tt>), 2005-01-03</td>
+<td>SLES 9</td>
+</tr>
+<tr>
+<td><span class="systemitem">SUSE Linux</span></td>
+<td><span class="systemitem">PowerPC 64</span></td>
+<td>8.0.0</td>
+<td>Reinhard Max (<tt class="email">&lt;<a href="mailto:max@suse.de">max@suse.de</a>&gt;</tt>), 2005-01-03</td>
+<td>SLES 9</td>
+</tr>
+<tr>
+<td><span class="systemitem">SUSE Linux</span></td>
+<td><span class="systemitem">S/390</span></td>
+<td>8.0.0</td>
+<td>Reinhard Max (<tt class="email">&lt;<a href="mailto:max@suse.de">max@suse.de</a>&gt;</tt>), 2005-01-03</td>
+<td>SLES 9</td>
+</tr>
+<tr>
+<td><span class="systemitem">SUSE Linux</span></td>
+<td><span class="systemitem">S/390x</span></td>
+<td>8.0.0</td>
+<td>Reinhard Max (<tt class="email">&lt;<a href="mailto:max@suse.de">max@suse.de</a>&gt;</tt>), 2005-01-03</td>
+<td>SLES 9</td>
+</tr>
+<tr>
+<td><span class="systemitem">SUSE Linux</span></td>
+<td><span class="systemitem">x86</span></td>
+<td>8.0.0</td>
+<td>Reinhard Max (<tt class="email">&lt;<a href="mailto:max@suse.de">max@suse.de</a>&gt;</tt>), 2005-01-03</td>
+<td>9.0, 9.1, 9.2, SLES 9</td>
 </tr>
 <tr>
 <td><span class="systemitem">Tru64 UNIX</span></td>
 <td><span class="systemitem">Alpha</span></td>
-<td>7.4</td>
-<td>2003-10-25, 5.1b, Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>);
-         2003-10-29, 4.0g, Alessio Bragadini (<tt class="email">&lt;<a href="mailto:alessio@albourne.com">alessio@albourne.com</a>&gt;</tt>)</td>
-<td> </td>
+<td>8.0.0</td>
+<td>Honda Shigehiro (<tt class="email">&lt;<a href="mailto:fwif0083@mb.infoweb.ne.jp">fwif0083@mb.infoweb.ne.jp</a>&gt;</tt>), 2005-01-07</td>
+<td>5.0</td>
 </tr>
 <tr>
 <td><span class="systemitem">UnixWare</span></td>
 <td><span class="systemitem">x86</span></td>
-<td>7.4</td>
-<td>2003-11-03, Larry Rosenman (<tt class="email">&lt;<a href="mailto:ler@lerctr.org">ler@lerctr.org</a>&gt;</tt>)</td>
-<td>7.1.3; join test may fail, see also <tt class="filename">doc/FAQ_SCO</tt>
-</td>
-</tr>
-<tr>
-<td><span class="systemitem">Windows with <span class="application">Cygwin</span></span></td>
-<td><span class="systemitem">x86</span></td>
-<td>7.4</td>
-<td>2003-10-24,
-         Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
-<td>see <tt class="filename">doc/FAQ_MSWIN</tt>
+<td>8.0.0</td>
+<td>Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>), 2004-12-14</td>
+<td>
+<tt class="command">cc</tt>, 7.1.4; see also <tt class="filename">doc/FAQ_SCO</tt>
 </td>
 </tr>
 <tr>
 <td><span class="systemitem">Windows</span></td>
 <td><span class="systemitem">x86</span></td>
-<td>7.4</td>
-<td>2003-10-27, 
-         Dave Page (<tt class="email">&lt;<a href="mailto:dpage@vale-housing.co.uk">dpage@vale-housing.co.uk</a>&gt;</tt>)</td>
-<td>         native is client-side only,
-see <a href="install-win32.html" title="Chapter 15. Installation on Windows">Chapter 15, <i>Installation on Windows</i></a>
+<td>8.0.0</td>
+<td>Dave Page (<tt class="email">&lt;<a href="mailto:dpage@vale-housing.co.uk">dpage@vale-housing.co.uk</a>&gt;</tt>), 2004-12-07</td>
+<td>XP Pro; see <tt class="filename">doc/FAQ_MINGW</tt>
+</td>
+</tr>
+<tr>
+<td><span class="systemitem">Windows with <span class="application">Cygwin</span></span></td>
+<td><span class="systemitem">x86</span></td>
+<td>8.0.0</td>
+<td>Build farm <span class="systemitem">gibbon</span>, snapshot 2004-12-11 01:33:01</td>
+<td>see <tt class="filename">doc/FAQ_CYGWIN</tt>
 </td>
 </tr>
 </tbody>
 </table></div>
 <p><b>Unsupported Platforms: </b>    The following platforms are either known not to work, or they used
-    to work in a previous release and we did not receive explicit
-    confirmation of a successful test with version 8.0 at
-    the time this list was compiled.  We include these here to let you
-    know that these platforms <span class="emphasis"><em>could</em></span> be supported if given
-    some attention.
+    to work in a fairly distant previous release.  We include these
+    here to let you know that these platforms <span class="emphasis"><em>could</em></span> be
+    supported if given some attention.
    </p>
 <div class="informaltable"><table border="1">
 <colgroup>
@@ -309,66 +454,49 @@ see <a href="install-win32.html" title="Chapter 15. Installation on Windows">Cha
 <td><span class="systemitem">BeOS</span></td>
 <td><span class="systemitem">x86</span></td>
 <td>7.2</td>
-<td>2001-11-29,
-       Cyril Velter (<tt class="email">&lt;<a href="mailto:cyril.velter@libertysurf.fr">cyril.velter@libertysurf.fr</a>&gt;</tt>)</td>
+<td>Cyril Velter (<tt class="email">&lt;<a href="mailto:cyril.velter@libertysurf.fr">cyril.velter@libertysurf.fr</a>&gt;</tt>), 2001-11-29</td>
 <td>needs updates to semaphore code</td>
 </tr>
 <tr>
 <td><span class="systemitem">Linux</span></td>
 <td><span class="systemitem">PlayStation 2</span></td>
-<td>7.4</td>
-<td>2003-11-02,
-       Peter Eisentraut (<tt class="email">&lt;<a href="mailto:peter_e@gmx.net">peter_e@gmx.net</a>&gt;</tt>)</td>
-<td>       needs new <tt class="filename">config.guess</tt>,
-       <tt class="option">--disable-spinlocks</tt>
-</td>
-</tr>
-<tr>
-<td><span class="systemitem">Linux</span></td>
-<td><span class="systemitem">PA-RISC</span></td>
-<td>7.4</td>
-<td>2003-10-25,
-       Noèl Köthe (<tt class="email">&lt;<a href="mailto:noel@debian.org">noel@debian.org</a>&gt;</tt>)</td>
-<td>needs <tt class="option">--disable-spinlocks</tt>, otherwise OK</td>
+<td>8.0.0</td>
+<td>Chris Mair (<tt class="email">&lt;<a href="mailto:list@1006.org">list@1006.org</a>&gt;</tt>), 2005-01-09</td>
+<td>requires <tt class="option">--disable-spinlocks</tt> (works, but slow)</td>
 </tr>
 <tr>
 <td><span class="systemitem">NetBSD</span></td>
 <td><span class="systemitem">Alpha</span></td>
 <td>7.2</td>
-<td>2001-11-20,
-       Thomas Thai (<tt class="email">&lt;<a href="mailto:tom@minnesota.com">tom@minnesota.com</a>&gt;</tt>)</td>
+<td>Thomas Thai (<tt class="email">&lt;<a href="mailto:tom@minnesota.com">tom@minnesota.com</a>&gt;</tt>), 2001-11-20</td>
 <td>1.5W</td>
 </tr>
 <tr>
 <td><span class="systemitem">NetBSD</span></td>
 <td><span class="systemitem">MIPS</span></td>
 <td>7.2.1</td>
-<td>2002-06-13,
-       Warwick Hunter (<tt class="email">&lt;<a href="mailto:whunter@agile.tv">whunter@agile.tv</a>&gt;</tt>)</td>
+<td>Warwick Hunter (<tt class="email">&lt;<a href="mailto:whunter@agile.tv">whunter@agile.tv</a>&gt;</tt>), 2002-06-13</td>
 <td>1.5.3</td>
 </tr>
 <tr>
 <td><span class="systemitem">NetBSD</span></td>
-<td><span class="systemitem">PPC</span></td>
+<td><span class="systemitem">PowerPC</span></td>
 <td>7.2</td>
-<td>2001-11-28,
-       Bill Studenmund (<tt class="email">&lt;<a href="mailto:wrstuden@netbsd.org">wrstuden@netbsd.org</a>&gt;</tt>)</td>
+<td>Bill Studenmund (<tt class="email">&lt;<a href="mailto:wrstuden@netbsd.org">wrstuden@netbsd.org</a>&gt;</tt>), 2001-11-28</td>
 <td>1.5</td>
 </tr>
 <tr>
 <td><span class="systemitem">NetBSD</span></td>
 <td><span class="systemitem">VAX</span></td>
 <td>7.1</td>
-<td>2001-03-30,
-       Tom I. Helbekkmo (<tt class="email">&lt;<a href="mailto:tih@kpnQwest.no">tih@kpnQwest.no</a>&gt;</tt>)</td>
+<td>Tom I. Helbekkmo (<tt class="email">&lt;<a href="mailto:tih@kpnQwest.no">tih@kpnQwest.no</a>&gt;</tt>), 2001-03-30</td>
 <td>1.5</td>
 </tr>
 <tr>
 <td><span class="systemitem">QNX 4 RTOS</span></td>
 <td><span class="systemitem">x86</span></td>
 <td>7.2</td>
-<td>2001-12-10,
-       Bernd Tegge (<tt class="email">&lt;<a href="mailto:tegge@repas-aeg.de">tegge@repas-aeg.de</a>&gt;</tt>)
+<td>Bernd Tegge (<tt class="email">&lt;<a href="mailto:tegge@repas-aeg.de">tegge@repas-aeg.de</a>&gt;</tt>), 2001-12-10
       </td>
 <td>needs updates to semaphore code;
        see also <tt class="filename">doc/FAQ_QNX4</tt>
@@ -378,15 +506,14 @@ see <a href="install-win32.html" title="Chapter 15. Installation on Windows">Cha
 <td><span class="systemitem">QNX RTOS v6</span></td>
 <td><span class="systemitem">x86</span></td>
 <td>7.2</td>
-<td>2001-11-20, Igor Kovalenko (<tt class="email">&lt;<a href="mailto:Igor.Kovalenko@motorola.com">Igor.Kovalenko@motorola.com</a>&gt;</tt>)</td>
+<td>Igor Kovalenko (<tt class="email">&lt;<a href="mailto:Igor.Kovalenko@motorola.com">Igor.Kovalenko@motorola.com</a>&gt;</tt>), 2001-11-20</td>
 <td>patches available in archives, but too late for 7.2</td>
 </tr>
 <tr>
 <td><span class="systemitem">SCO OpenServer</span></td>
 <td><span class="systemitem">x86</span></td>
 <td>7.3.1</td>
-<td>2002-12-11, 
-       Shibashish Satpathy (<tt class="email">&lt;<a href="mailto:shib@postmark.net">shib@postmark.net</a>&gt;</tt>)</td>
+<td>Shibashish Satpathy (<tt class="email">&lt;<a href="mailto:shib@postmark.net">shib@postmark.net</a>&gt;</tt>), 2002-12-11</td>
 <td>5.0.4, <tt class="command">gcc</tt>;  see also <tt class="filename">doc/FAQ_SCO</tt>
 </td>
 </tr>
@@ -394,7 +521,7 @@ see <a href="install-win32.html" title="Chapter 15. Installation on Windows">Cha
 <td><span class="systemitem">SunOS 4</span></td>
 <td><span class="systemitem">Sparc</span></td>
 <td>7.2</td>
-<td>2001-12-04, Tatsuo Ishii (<tt class="email">&lt;<a href="mailto:t-ishii@sra.co.jp">t-ishii@sra.co.jp</a>&gt;</tt>)</td>
+<td>Tatsuo Ishii (<tt class="email">&lt;<a href="mailto:t-ishii@sra.co.jp">t-ishii@sra.co.jp</a>&gt;</tt>), 2001-12-04</td>
 <td> </td>
 </tr>
 </tbody>

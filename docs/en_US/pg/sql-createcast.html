@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-createaggregate.html" title="CREATE AGGREGATE">
 <link rel="next" href="sql-createconstraint.html" title="CREATE CONSTRAINT TRIGGER">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>CREATE CAST &#8212; define a new cast</p>
 </div>
-<a name="id2669881"></a><div class="refsynopsisdiv">
+<a name="id2673456"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replaceable"><tt>targettype</tt></i>)
     WITH FUNCTION <i class="replaceable"><tt>funcname</tt></i> (<i class="replaceable"><tt>argtypes</tt></i>)
@@ -104,7 +104,7 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2670155"></a><h2>Parameters</h2>
+<a name="id2673729"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>sourcetype</tt></i></span></dt>
 <dd><p>       The name of the source data type of the cast.
@@ -141,7 +141,7 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
    (Bizarrely, the SQL spec demands different behaviors for explicit and
    implicit casts in some cases.  This argument is supplied for functions
    that must implement such casts.  It is not recommended that you design
-   your own datatypes so that this matters.)
+   your own data types so that this matters.)
   </p>
 <p>   Ordinarily a cast must have different source and target data types.
    However, it is allowed to declare a cast with identical source and
@@ -158,7 +158,7 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
    represents converting from one type to another and applying a length
    coercion in a single step.  When no such entry is available, coercion
    to a type that uses a type modifier involves two steps, one to
-   convert between datatypes and a second to apply the modifier.
+   convert between data types and a second to apply the modifier.
   </p>
 </div>
 <div class="refsect1" lang="en">
@@ -179,7 +179,7 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
   </p>
 <p>   While not required, it is recommended that you continue to follow this old
    convention of naming cast implementation functions after the target data
-   type.  Many users are used to being able to cast datatypes using a
+   type.  Many users are used to being able to cast data types using a
    function-style notation, that is
    <i class="replaceable"><tt>typename</tt></i>(<i class="replaceable"><tt>x</tt></i>).  This notation is in fact
    nothing more nor less than a call of the cast implementation function; it
@@ -217,8 +217,8 @@ CREATE CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replace
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createcast-compat"></a><h2>Compatibility</h2>
-<p>   The <tt class="command">CREATE CAST</tt> command conforms to SQL99,
-   except that SQL99 does not make provisions for binary-compatible
+<p>   The <tt class="command">CREATE CAST</tt> command conforms to SQL:1999,
+   except that SQL:1999 does not make provisions for binary-compatible
    types or extra arguments to implementation functions.
    <tt class="literal">AS IMPLICIT</tt> is a <span class="productname">PostgreSQL</span> 
    extension, too.

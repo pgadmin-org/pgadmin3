@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="previous" href="xplang.html" title="Chapter 34. Procedural Languages">
 <link rel="next" href="plpgsql-development-tips.html" title="35.2. Tips for Developing in PL/pgSQL">
@@ -63,13 +63,13 @@
 <dt><span class="sect1"><a href="plpgsql-trigger.html">35.10. Trigger Procedures</a></span></dt>
 <dt><span class="sect1"><a href="plpgsql-porting.html">35.11. Porting from Oracle PL/SQL</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="plpgsql-porting.html#id2649774">35.11.1. Porting Examples</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-porting.html#id2653057">35.11.1. Porting Examples</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-other">35.11.2. Other Things to Watch For</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-appendix">35.11.3. Appendix</a></span></dt>
 </dl></dd>
 </dl>
 </div>
-<a name="id2643797"></a><p>  <span class="application">PL/pgSQL</span> is a loadable procedural
+<a name="id2646644"></a><p>  <span class="application">PL/pgSQL</span> is a loadable procedural
   language for the <span class="productname">PostgreSQL</span> database
   system.  The design goals of <span class="application">PL/pgSQL</span> were to create
   a loadable procedural language that
@@ -117,7 +117,7 @@
     creates a prepared execution plan (using the
     <span class="acronym">SPI</span> manager's <tt class="function">SPI_prepare</tt>
     and <tt class="function">SPI_saveplan</tt>
-    functions).<a name="id2643938"></a> Subsequent visits to that expression or command
+    functions).<a name="id2646784"></a> Subsequent visits to that expression or command
     reuse the prepared plan.  Thus, a function with conditional code
     that contains many statements for which execution plans might be
     required will only prepare and save those plans that are really
@@ -185,7 +185,7 @@ $$ LANGUAGE plpgsql;</pre>
 <div></div>
 </div>
 <p>     <span class="acronym">SQL</span> is the language <span class="productname">PostgreSQL</span>
-     (and most other relational databases) use as query language. It's
+     and most other relational databases use as query language. It's
      portable and easy to learn. But every <span class="acronym">SQL</span>
      statement must be executed individually by the database server.
     </p>
@@ -237,6 +237,13 @@ $$ LANGUAGE plpgsql;</pre>
     </p>
 <p>     Finally, a <span class="application">PL/pgSQL</span> function may be declared to return
      <tt class="type">void</tt> if it has no useful return value.
+    </p>
+<p>     <span class="application">PL/pgSQL</span> does not currently have full support for
+     domain types: it treats a domain the same as the underlying scalar
+     type.  This means that constraints associated with the domain will
+     not be enforced.  This is not an issue for function arguments, but
+     it is a hazard if you declare a <span class="application">PL/pgSQL</span> function
+     as returning a domain type.
     </p>
 </div>
 </div>

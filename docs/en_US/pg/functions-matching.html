@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="previous" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
 <link rel="next" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
@@ -16,16 +16,15 @@
 <a name="functions-matching"></a>9.7. Pattern Matching</h2></div></div>
 <div></div>
 </div>
-<a name="id2548039"></a><p>    There are three separate approaches to pattern matching provided by
-    <span class="productname">PostgreSQL</span>:  the traditional
-    <span class="acronym">SQL</span> 
-    <tt class="function">LIKE</tt> operator, the more recent
-    <span class="acronym">SQL99</span> 
-    <tt class="function">SIMILAR TO</tt> operator, and
-    <span class="acronym">POSIX</span>-style regular expressions.
+<a name="id2548609"></a><p>    There are three separate approaches to pattern matching provided
+    by <span class="productname">PostgreSQL</span>: the traditional
+    <span class="acronym">SQL</span> <tt class="function">LIKE</tt> operator, the
+    more recent <tt class="function">SIMILAR TO</tt> operator (added in
+    SQL:1999), and <span class="acronym">POSIX</span>-style regular expressions.
     Additionally, a pattern matching function,
     <tt class="function">substring</tt>, is available, using either
-    <span class="acronym">SQL99</span>-style or POSIX-style regular expressions.
+    <tt class="function">SIMILAR TO</tt>-style or POSIX-style regular
+    expressions.
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
@@ -39,7 +38,7 @@
 <a name="functions-like"></a>9.7.1. <tt class="function">LIKE</tt></h3></div></div>
 <div></div>
 </div>
-<a name="id2548110"></a><pre class="synopsis"><i class="replaceable"><tt>string</tt></i> LIKE <i class="replaceable"><tt>pattern</tt></i> [<span class="optional">ESCAPE <i class="replaceable"><tt>escape-character</tt></i></span>]
+<a name="id2548679"></a><pre class="synopsis"><i class="replaceable"><tt>string</tt></i> LIKE <i class="replaceable"><tt>pattern</tt></i> [<span class="optional">ESCAPE <i class="replaceable"><tt>escape-character</tt></i></span>]
 <i class="replaceable"><tt>string</tt></i> NOT LIKE <i class="replaceable"><tt>pattern</tt></i> [<span class="optional">ESCAPE <i class="replaceable"><tt>escape-character</tt></i></span>]</pre>
 <p>     Every <i class="replaceable"><tt>pattern</tt></i> defines a set of strings.
      The <tt class="function">LIKE</tt> expression returns true if the
@@ -68,7 +67,7 @@
 <p>
    </p>
 <p>    <tt class="function">LIKE</tt> pattern matches always cover the entire
-    string.  To match a pattern anywhere within a string, the
+    string.  To match a sequence anywhere within a string, the
     pattern must therefore start and end with a percent sign.
    </p>
 <p>    To match a literal underscore or percent sign without matching
@@ -94,7 +93,7 @@
     special meaning of underscore and percent signs in the pattern.
    </p>
 <p>    The key word <tt class="token">ILIKE</tt> can be used instead of
-    <tt class="token">LIKE</tt> to make the match case insensitive according
+    <tt class="token">LIKE</tt> to make the match case-insensitive according
     to the active locale.  This is not in the <span class="acronym">SQL</span> standard but is a
     <span class="productname">PostgreSQL</span> extension.
    </p>
@@ -110,20 +109,18 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="functions-sql99-regexp"></a>9.7.2. <tt class="function">SIMILAR TO</tt> and <span class="acronym">SQL99</span>
-     Regular Expressions</h3></div></div>
+<a name="functions-similarto-regexp"></a>9.7.2. <tt class="function">SIMILAR TO</tt> Regular Expressions</h3></div></div>
 <div></div>
 </div>
-<a name="id2548413"></a><a name="id2548425"></a><a name="id2548431"></a><pre class="synopsis"><i class="replaceable"><tt>string</tt></i> SIMILAR TO <i class="replaceable"><tt>pattern</tt></i> [<span class="optional">ESCAPE <i class="replaceable"><tt>escape-character</tt></i></span>]
+<a name="id2548977"></a><a name="id2548989"></a><a name="id2548994"></a><pre class="synopsis"><i class="replaceable"><tt>string</tt></i> SIMILAR TO <i class="replaceable"><tt>pattern</tt></i> [<span class="optional">ESCAPE <i class="replaceable"><tt>escape-character</tt></i></span>]
 <i class="replaceable"><tt>string</tt></i> NOT SIMILAR TO <i class="replaceable"><tt>pattern</tt></i> [<span class="optional">ESCAPE <i class="replaceable"><tt>escape-character</tt></i></span>]</pre>
-<p>     The <tt class="function">SIMILAR TO</tt> operator returns true or false
-     depending on whether its pattern matches the given string.  It is
-     much like <tt class="function">LIKE</tt>, except that it interprets the
-     pattern using <span class="acronym">SQL99</span>'s definition of a regular
-     expression.
-     <span class="acronym">SQL99</span>'s regular expressions are a curious cross
-     between <tt class="function">LIKE</tt> notation and common regular expression
-     notation.
+<p>     The <tt class="function">SIMILAR TO</tt> operator returns true or
+     false depending on whether its pattern matches the given string.
+     It is much like <tt class="function">LIKE</tt>, except that it
+     interprets the pattern using the SQL standard's definition of a
+     regular expression.  SQL regular expressions are a curious cross
+     between <tt class="function">LIKE</tt> notation and common regular
+     expression notation.
     </p>
 <p>     Like <tt class="function">LIKE</tt>, the  <tt class="function">SIMILAR TO</tt>
      operator succeeds only if its pattern matches the entire string;
@@ -179,7 +176,7 @@
      <tt class="function">substring(<i class="parameter"><tt>string</tt></i>,  from
      <i class="replaceable"><tt>pattern</tt></i>,  for
      <i class="replaceable"><tt>escape-character</tt></i>)</tt>, provides
-     extraction of a substring that matches a <span class="acronym">SQL99</span>
+     extraction of a substring that matches an SQL
      regular expression pattern.  As with <tt class="literal">SIMILAR TO</tt>, the
      specified pattern must match to the entire data string, else the
      function fails and returns null.  To indicate the part of the
@@ -201,7 +198,7 @@ substring('foobar' from '#"o_b#"%' for '#')    <i class="lineannotation"><span c
 <a name="functions-posix-regexp"></a>9.7.3. <span class="acronym">POSIX</span> Regular Expressions</h3></div></div>
 <div></div>
 </div>
-<a name="id2548760"></a><p>    <a href="functions-matching.html#functions-posix-table" title="Table 9.11. Regular Expression Match Operators">Table 9.11, &#8220;Regular Expression Match Operators&#8221;</a> lists the available
+<a name="id2549314"></a><p>    <a href="functions-matching.html#functions-posix-table" title="Table 9.11. Regular Expression Match Operators">Table 9.11, &#8220;Regular Expression Match Operators&#8221;</a> lists the available
     operators for pattern matching using POSIX regular expressions.
    </p>
 <div class="table">
@@ -278,9 +275,11 @@ substring('foobar' from '#"o_b#"%' for '#')    <i class="lineannotation"><span c
      pattern.  But if the pattern contains any parentheses, the portion
      of the text that matched the first parenthesized subexpression (the
      one whose left parenthesis comes first) is
-     returned.  You can always put parentheses around the whole expression
+     returned.  You can put parentheses around the whole expression
      if you want to use parentheses within it without triggering this
-     exception.  Also see the non-capturing parentheses described below.
+     exception.  If you need parentheses in the pattern before the
+     subexpression you want to extract, see the non-capturing parentheses
+     described below.
     </p>
 <p>    Some examples:
 </p>
@@ -519,7 +518,7 @@ substring('foobar' from 'o(.)b')   <i class="lineannotation"><span class="linean
 </table>
 </div>
 <p>    The forms using <tt class="literal">{</tt><i class="replaceable"><tt>...</tt></i><tt class="literal">}</tt>
-    are known as <i class="firstterm">bound</i>s.
+    are known as <i class="firstterm">bounds</i>.
     The numbers <i class="replaceable"><tt>m</tt></i> and <i class="replaceable"><tt>n</tt></i> within a bound are
     unsigned decimal integers with permissible values from 0 to 255 inclusive.
    </p>
@@ -1009,9 +1008,10 @@ substring('foobar' from 'o(.)b')   <i class="lineannotation"><span class="linean
 <p>    Normally the flavor of RE being used is determined by
     <tt class="varname">regex_flavor</tt>.
     However, this can be overridden by a <i class="firstterm">director</i> prefix.
-    If an RE of any flavor begins with <tt class="literal">***:</tt>,
-    the rest of the RE is taken as an ARE.
-    If an RE of any flavor begins with <tt class="literal">***=</tt>,
+    If an RE begins with <tt class="literal">***:</tt>,
+    the rest of the RE is taken as an ARE regardless of
+    <tt class="varname">regex_flavor</tt>.
+    If an RE begins with <tt class="literal">***=</tt>,
     the rest of the RE is taken to be a literal string,
     with all characters considered ordinary characters.
    </p>
@@ -1094,8 +1094,8 @@ substring('foobar' from 'o(.)b')   <i class="lineannotation"><span class="linean
 </table>
 </div>
 <p>    Embedded options take effect at the <tt class="literal">)</tt> terminating the sequence.
-    They are available only at the start of an ARE,
-    and may not be used later within it.
+    They may appear only at the start of an ARE (after the
+    <tt class="literal">***:</tt> director if any).
    </p>
 <p>    In addition to the usual (<i class="firstterm">tight</i>) RE syntax, in which all
     characters are significant, there is an <i class="firstterm">expanded</i> syntax,
@@ -1114,13 +1114,13 @@ substring('foobar' from 'o(.)b')   <i class="lineannotation"><span class="linean
       </p></li>
 <li><p>       white space or <tt class="literal">#</tt> within a bracket expression is retained
       </p></li>
-<li><p>       white space and comments are illegal within multi-character symbols,
-       like the ARE <tt class="literal">(?:</tt> or the BRE <tt class="literal">\(</tt>
+<li><p>       white space and comments cannot appear within multi-character symbols,
+       such as <tt class="literal">(?:</tt>
       </p></li>
 </ul></div>
 <p>
 
-    Expanded-syntax white-space characters are blank, tab, newline, and
+    For this purpose, white-space characters are blank, tab, newline, and
     any character that belongs to the <i class="replaceable"><tt>space</tt></i> character class.
    </p>
 <p>    Finally, in an ARE, outside bracket expressions, the sequence
@@ -1147,39 +1147,80 @@ substring('foobar' from 'o(.)b')   <i class="lineannotation"><span class="linean
 <p>    In the event that an RE could match more than one substring of a given
     string, the RE matches the one starting earliest in the string.
     If the RE could match more than one substring starting at that point,
-    its choice is determined by its <i class="firstterm">preference</i>:
-    either the longest substring, or the shortest.
+    either the longest possible match or the shortest possible match will
+    be taken, depending on whether the RE is <i class="firstterm">greedy</i> or
+    <i class="firstterm">non-greedy</i>.
    </p>
-<p>    Most atoms, and all constraints, have no preference.
-    A parenthesized RE has the same preference (possibly none) as the RE.
-    A quantified atom with quantifier
-    <tt class="literal">{</tt><i class="replaceable"><tt>m</tt></i><tt class="literal">}</tt>
-    or
-    <tt class="literal">{</tt><i class="replaceable"><tt>m</tt></i><tt class="literal">}?</tt>
-    has the same preference (possibly none) as the atom itself.
-    A quantified atom with other normal quantifiers (including
-    <tt class="literal">{</tt><i class="replaceable"><tt>m</tt></i><tt class="literal">,</tt><i class="replaceable"><tt>n</tt></i><tt class="literal">}</tt>
-    with <i class="replaceable"><tt>m</tt></i> equal to <i class="replaceable"><tt>n</tt></i>)
-    prefers longest match.
-    A quantified atom with other non-greedy quantifiers (including
-    <tt class="literal">{</tt><i class="replaceable"><tt>m</tt></i><tt class="literal">,</tt><i class="replaceable"><tt>n</tt></i><tt class="literal">}?</tt>
-    with <i class="replaceable"><tt>m</tt></i> equal to <i class="replaceable"><tt>n</tt></i>)
-    prefers shortest match.
-    A branch has the same preference as the first quantified atom in it
-    which has a preference.
-    An RE consisting of two or more branches connected by the
-    <tt class="literal">|</tt> operator prefers longest match.
+<p>    Whether an RE is greedy or not is determined by the following rules:
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       Most atoms, and all constraints, have no greediness attribute (because
+       they cannot match variable amounts of text anyway).
+      </p></li>
+<li><p>       Adding parentheses around an RE does not change its greediness.
+      </p></li>
+<li><p>       A quantified atom with a fixed-repetition quantifier
+       (<tt class="literal">{</tt><i class="replaceable"><tt>m</tt></i><tt class="literal">}</tt>
+       or
+       <tt class="literal">{</tt><i class="replaceable"><tt>m</tt></i><tt class="literal">}?</tt>)
+       has the same greediness (possibly none) as the atom itself.
+      </p></li>
+<li><p>       A quantified atom with other normal quantifiers (including
+       <tt class="literal">{</tt><i class="replaceable"><tt>m</tt></i><tt class="literal">,</tt><i class="replaceable"><tt>n</tt></i><tt class="literal">}</tt>
+       with <i class="replaceable"><tt>m</tt></i> equal to <i class="replaceable"><tt>n</tt></i>)
+       is greedy (prefers longest match).
+      </p></li>
+<li><p>       A quantified atom with a non-greedy quantifier (including
+       <tt class="literal">{</tt><i class="replaceable"><tt>m</tt></i><tt class="literal">,</tt><i class="replaceable"><tt>n</tt></i><tt class="literal">}?</tt>
+       with <i class="replaceable"><tt>m</tt></i> equal to <i class="replaceable"><tt>n</tt></i>)
+       is non-greedy (prefers shortest match).
+      </p></li>
+<li><p>       A branch [mdash ] that is, an RE that has no top-level
+       <tt class="literal">|</tt> operator [mdash ] has the same greediness as the first
+       quantified atom in it that has a greediness attribute.
+      </p></li>
+<li><p>       An RE consisting of two or more branches connected by the
+       <tt class="literal">|</tt> operator is always greedy.
+      </p></li>
+</ul></div>
+<p>
    </p>
-<p>    Subject to the constraints imposed by the rules for matching the whole RE,
-    subexpressions also match the longest or shortest possible substrings,
-    based on their preferences,
-    with subexpressions starting earlier in the RE taking priority over
-    ones starting later.
-    Note that outer subexpressions thus take priority over
-    their component subexpressions.
+<p>    The above rules associate greediness attributes not only with individual
+    quantified atoms, but with branches and entire REs that contain quantified
+    atoms.  What that means is that the matching is done in such a way that
+    the branch, or whole RE, matches the longest or shortest possible
+    substring <span class="emphasis"><em>as a whole</em></span>.  Once the length of the entire match
+    is determined, the part of it that matches any particular subexpression
+    is determined on the basis of the greediness attribute of that
+    subexpression, with subexpressions starting earlier in the RE taking
+    priority over ones starting later.
+   </p>
+<p>    An example of what this means:
+</p>
+<pre class="screen">SELECT SUBSTRING('XY1234Z', 'Y*([0-9]{1,3})');
+<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">123</tt>
+SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
+<i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">1</tt></pre>
+<p>
+    In the first case, the RE as a whole is greedy because <tt class="literal">Y*</tt>
+    is greedy.  It can match beginning at the <tt class="literal">Y</tt>, and it matches
+    the longest possible string starting there, i.e., <tt class="literal">Y123</tt>.
+    The output is the parenthesized part of that, or <tt class="literal">123</tt>.
+    In the second case, the RE as a whole is non-greedy because <tt class="literal">Y*?</tt>
+    is non-greedy.  It can match beginning at the <tt class="literal">Y</tt>, and it matches
+    the shortest possible string starting there, i.e., <tt class="literal">Y1</tt>.
+    The subexpression <tt class="literal">[0-9]{1,3}</tt> is greedy but it cannot change
+    the decision as to the overall match length; so it is forced to match
+    just <tt class="literal">1</tt>.
+   </p>
+<p>    In short, when an RE contains both greedy and non-greedy subexpressions,
+    the total match length is either as long as possible or as short as
+    possible, according to the attribute assigned to the whole RE.  The
+    attributes assigned to the subexpressions only affect how much of that
+    match they are allowed to &#8220;<span class="quote">eat</span>&#8221; relative to each other.
    </p>
 <p>    The quantifiers <tt class="literal">{1,1}</tt> and <tt class="literal">{1,1}?</tt>
-    can be used to force longest and shortest preference, respectively,
+    can be used to force greediness or non-greediness, respectively,
     on a subexpression or a whole RE.
    </p>
 <p>    Match lengths are measured in characters, not collating elements.
