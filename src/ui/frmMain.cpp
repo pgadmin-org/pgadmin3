@@ -83,6 +83,7 @@ WX_DEFINE_LIST(frameList);
 #include "images/vacuum.xpm"
 #include "images/view.xpm"
 #include "images/viewdata.xpm"
+#include "images/triggerfunction.xpm"
     
 
 
@@ -285,6 +286,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     browserImages->Add(wxIcon(public_xpm));
     browserImages->Add(wxIcon(public_xpm));
     browserImages->Add(wxIcon(public_xpm));
+    browserImages->Add(wxIcon(triggerfunction_xpm));
 
     // Add the root node
     pgObject *serversObj = new pgServers();

@@ -109,9 +109,9 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             switch (obj->GetType())
             {
                 case PG_FUNCTIONS:
-                case PG_TRIGGER:
                     function = new pgFunction(schema, functions->GetVal(wxT("proname")));
                     break;
+                case PG_TRIGGER:
                 case PG_TRIGGERFUNCTIONS:
                     function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
             }
@@ -154,7 +154,8 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
 
             if (browser)
             {
-                browser->AppendItem(obj->GetId(), function->GetFullName(), PGICON_FUNCTION, -1, function);
+                browser->AppendItem(obj->GetId(), function->GetFullName(), 
+                    function->IsTriggerFunction() ? PGICON_TRIGGERFUNCTION : PGICON_FUNCTION, -1, function);
 			    functions->MoveNext();
             }
             else

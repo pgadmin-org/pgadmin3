@@ -85,7 +85,7 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
         collection = new pgCollection(PG_TRIGGERFUNCTIONS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_FUNCTION, -1, collection);
+        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_TRIGGERFUNCTION, -1, collection);
 
         // Operators
         collection = new pgCollection(PG_OPERATORS);

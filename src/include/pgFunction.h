@@ -34,6 +34,8 @@ public:
 
     static pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction);
 
+    virtual bool IsTriggerFunction() const { return false; }
+
     wxString GetFullName() const {return GetName()+wxT("(")+GetArgTypes()+wxT(")"); }
     wxString GetArgTypes() const { return argTypes; }
     void iSetArgTypes(const wxString& s) { argTypes=s; }
@@ -72,6 +74,7 @@ class pgTriggerFunction : public pgFunction
 {
 public:
     pgTriggerFunction(pgSchema *newSchema, const wxString& newName = wxString(""));
+    virtual bool IsTriggerFunction() const { return true; }
 };
 
 #endif
