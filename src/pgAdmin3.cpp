@@ -113,13 +113,14 @@ bool pgAdmin3::OnInit()
         if (!langInfo)
             break;
 
-        if (!langInfo->CanonicalName.IsEmpty() && 
+        if (langInfo->CanonicalName == wxT("en_US") || 
+            (!langInfo->CanonicalName.IsEmpty() && 
 #ifdef __WIN32__
             (wxDir::Exists(loadPath + MO_PATH + wxT("/") + langInfo->CanonicalName) ||
-             wxDir::Exists(loadPath + wxT("/..") MO_PATH + wxT("/") + langInfo->CanonicalName)))
+             wxDir::Exists(loadPath + wxT("/..") MO_PATH + wxT("/") + langInfo->CanonicalName))))
 #else
             (wxDir::Exists(DATA_DIR MO_PATH wxT("/") + langInfo->CanonicalName) ||
-             wxDir::Exists(loadPath +  MO_PATH wxT("/") + langInfo->CanonicalName)))
+             wxDir::Exists(loadPath +  MO_PATH wxT("/") + langInfo->CanonicalName))))
 #endif
         {
             existingLangs.Add(langNo);
