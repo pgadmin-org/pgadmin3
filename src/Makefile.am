@@ -1,0 +1,120 @@
+# pgAdmin III - PostgreSQL Tools
+# Copyright (C) 2002, The pgAdmin Development Team
+# This software is released under the pgAdmin Public Licence
+#
+# Makefile - Makefile for *nix systems
+bin_PROGRAMS = pgAdmin3
+
+pgAdmin3_SOURCES = pgAdmin3.cpp db/pgConn.cpp db/pgSet.cpp \
+schema/pgAggregate.cpp schema/pgCast.cpp \
+schema/pgCheck.cpp schema/pgCollection.cpp \
+schema/pgColumn.cpp schema/pgConstraints.cpp \
+schema/pgConversion.cpp schema/pgDatabase.cpp \
+schema/pgDomain.cpp schema/pgForeignKey.cpp \
+schema/pgFunction.cpp schema/pgGroup.cpp \
+schema/pgIndex.cpp schema/pgIndexConstraint.cpp \
+schema/pgLanguage.cpp schema/pgObject.cpp \
+schema/pgOperator.cpp schema/pgOperatorClass.cpp \
+schema/pgRule.cpp schema/pgSchema.cpp \
+schema/pgSequence.cpp schema/pgServer.cpp \
+schema/pgTable.cpp schema/pgTrigger.cpp \
+schema/pgType.cpp schema/pgUser.cpp schema/pgView.cpp \
+ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp \
+ui/dlgAddTableView.cpp ui/events.cpp ui/frmAbout.cpp \
+ui/frmChildTableViewFrame.cpp ui/frmConnect.cpp \
+ui/frmMain.cpp ui/frmOptions.cpp ui/frmPassword.cpp \
+ui/frmQuery.cpp ui/frmQueryBuilder.cpp \
+ui/frmQBJoin.cpp ui/frmSplash.cpp ui/frmVacuum.cpp \
+ui/frmEditGrid.cpp ui/dlgProperty.cpp ui/dlgUser.cpp \
+ui/dlgGroup.cpp ui/dlgDatabase.cpp ui/dlgLanguage.cpp \
+ui/dlgSchema.cpp ui/dlgDomain.cpp ui/dlgTable.cpp \
+ui/dlgColumn.cpp ui/dlgIndex.cpp \
+ui/dlgIndexConstraint.cpp ui/dlgForeignKey.cpp \
+ui/dlgCheck.cpp ui/frmStatus.cpp utils/misc.cpp \
+utils/sysLogger.cpp utils/sysSettings.cpp
+
+noinst_HEADERS = include/copyright.h include/ctlSQLBox.h \
+include/ctlSQLResult.h include/dlgAddTableView.h \
+include/dlgCheck.h include/dlgColumn.h \
+include/dlgDatabase.h include/dlgDomain.h \
+include/dlgForeignKey.h include/dlgGroup.h \
+include/dlgIndexConstraint.h include/dlgIndex.h \
+include/dlgLanguage.h include/dlgProperty.h \
+include/dlgSchema.h include/dlgTable.h \
+include/dlgUser.h include/frmAbout.h \
+include/frmChildTableViewFrame.h include/frmConnect.h \
+include/frmEditGrid.h include/frmMain.h \
+include/frmOptions.h include/frmPassword.h \
+include/frmQBJoin.h include/frmQueryBuilder.h \
+include/frmQuery.h include/frmSplash.h \
+include/frmStatus.h include/frmVacuum.h \
+include/misc.h include/pgAdmin3.h include/pgAggregate.h \
+include/pgCast.h include/pgCheck.h include/pgCollection.h \
+include/pgColumn.h include/pgConn.h \
+include/pgConstraints.h include/pgConversion.h \
+include/pgDatabase.h include/pgDomain.h \
+include/pgForeignKey.h include/pgFunction.h \
+include/pgGroup.h include/pgIndexConstraint.h \
+include/pgIndex.h include/pgLanguage.h include/pgObject.h \
+include/pgOperatorClass.h include/pgOperator.h \
+include/pgRule.h include/pgSchema.h include/pgSequence.h \
+include/pgServer.h include/pgSet.h include/pgTable.h \
+include/pgTrigger.h include/pgType.h include/pgUser.h \
+include/pgView.h include/sysLogger.h \
+include/sysSettings.h include/wxgridsel.h
+  
+EXTRA_DIST = include/images/aggregate.xpm include/images/arguments.xpm \
+include/images/baddatabase.xpm include/images/cast.xpm \
+include/images/check.xpm include/images/clip_copy.xpm \
+include/images/clip_cut.xpm include/images/clip_paste.xpm \
+include/images/closeddatabase.xpm \
+include/images/closedown.xpm include/images/closeup.xpm \
+include/images/column.xpm include/images/connect.xpm \
+include/images/constraints.xpm \
+include/images/conversion.xpm include/images/create.xpm \
+include/images/database.xpm include/images/dnd_copy.xpm \
+include/images/dnd_move.xpm include/images/dnd_none.xpm \
+include/images/domain.xpm include/images/drop.xpm \
+include/images/edit_clear.xpm include/images/edit_find.xpm \
+include/images/edit_redo.xpm include/images/edit_undo.xpm \
+include/images/encoding.xpm include/images/event.xpm \
+include/images/file_open.xpm include/images/file_save.xpm \
+include/images/foreignkey.xpm include/images/function.xpm \
+include/images/group.xpm include/images/hiproperty.xpm \
+include/images/indexcolumn.xpm include/images/index.xpm \
+include/images/key.xpm include/images/language.xpm \
+include/images/namespace.xpm \
+include/images/operatorclass.xpm \
+include/images/operator.xpm include/images/pgAdmin3.ico \
+include/images/pgAdmin3.xpm include/images/primarykey.xpm \
+include/images/properties.xpm include/images/property.xpm \
+include/images/public.xpm include/images/query_cancel.xpm \
+include/images/query_execute.xpm \
+include/images/query_explain.xpm \
+include/images/refresh.xpm \
+include/images/relationship.xpm include/images/rule.xpm \
+include/images/sequence.xpm include/images/serverbad.xpm \
+include/images/servers.xpm include/images/server.xpm \
+include/images/splash.xpm include/images/sql.xpm \
+include/images/statistics.xpm include/images/storage.xpm \
+include/images/table.xpm \
+include/images/triggerfunction.xpm \
+include/images/trigger.xpm include/images/type.xpm \
+include/images/unique.xpm include/images/unknown.xpm \
+include/images/user.xpm include/images/vacuum.xpm \
+include/images/viewdata.xpm include/images/view.xpm
+
+nobase_dist_pkgdata_DATA = tips.txt ui/common/dlgCheck.xrc \
+ui/common/dlgColumn.xrc \
+ui/common/dlgDatabase.xrc ui/common/dlgDomain.xrc \
+ui/common/dlgForeignKey.xrc ui/common/dlgGroup.xrc \
+ui/common/dlgIndexConstraint.xrc ui/common/dlgIndex.xrc \
+ui/common/dlgLanguage.xrc ui/common/dlgSchema.xrc \
+ui/common/dlgTable.xrc ui/common/dlgUser.xrc \
+ui/common/frmAddTableView.xrc ui/common/frmConnect.xrc \
+ui/common/frmOptions.xrc ui/common/frmPassword.xrc \
+ui/common/frmQBJoin.xrc ui/common/frmServer.xrc \
+ui/common/frmStatus.xrc ui/common/frmVacuum.xrc
+
+#AM_CPPFLAGS = -Wall -g -I./include/ -I$(WX_HOME) -DDATADIR=\"$(pkgdatadir)/\"
+AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I./include/ -I$(WX_HOME)

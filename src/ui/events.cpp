@@ -145,7 +145,10 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
 
 void frmMain::OnTipOfTheDay()
 {
-    wxTipProvider *tipProvider = wxCreateFileTipProvider(wxT("tips.txt"), settings->GetNextTipOfTheDay());
+    wxString tipPath = DATA_DIR;
+    tipPath += "tips.txt";
+
+    wxTipProvider *tipProvider = wxCreateFileTipProvider(wxT(tipPath), settings->GetNextTipOfTheDay());
     settings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
     settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
     delete tipProvider;

@@ -88,7 +88,7 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->InitAllHandlers();
 
     bool done;
-    wxString loadPath=wxPathOnly(argv[0]);
+    wxString loadPath=DATA_DIR;
 
     done=LoadAllXrc(loadPath + wxT("/") + XRC_PATH);
     if (!done)
