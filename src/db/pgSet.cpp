@@ -116,7 +116,7 @@ int pgSet::ColScale(int col) const
 }
 wxString pgSet::ColName(int col) const
 {
-    return wxString(PQfname(res, col), wxConvUTF8);
+    return wxString(PQfname(res, col), conv);
 }
 
 
@@ -137,7 +137,7 @@ int pgSet::ColNumber(const wxString &colname) const
 
 wxString pgSet::GetVal(const int col) const
 {
-    return wxString(PQgetvalue(res, pos -1, col), wxConvUTF8);
+    return wxString(PQgetvalue(res, pos -1, col), conv);
 }
 
 
@@ -250,13 +250,13 @@ wxString pgSet::ExecuteScalar(const wxString& sql) const
 
     wxLogSql(wxT("Set sub-query: %s"), sql.c_str());
 
-    qryRes = PQexec(conn, sql.mb_str(wxConvUTF8));
+    qryRes = PQexec(conn, sql.mb_str(conv));
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
         return wxEmptyString;
     }
 
     // Retrieve the query result and return it.
-    wxString result=wxString(PQgetvalue(qryRes, 0, 0), wxConvUTF8);
+    wxString result=wxString(PQgetvalue(qryRes, 0, 0), conv);
     wxLogInfo(wxT("Query result: %s"), result.c_str());
 
     // Cleanup & exit
@@ -323,7 +323,7 @@ int pgQueryThread::execute()
     wxLogSql(wxT("Thread Query %s"), query.c_str());
 
 
-    if (!PQsendQuery(conn->conn, query.mb_str(wxConvUTF8)))
+    if (!PQsendQuery(conn->conn, query.mb_str(*conn->conv)))
         return(0);
 
     int resultsRetrieved=0;
