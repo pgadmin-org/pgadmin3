@@ -1,0 +1,35 @@
+pgAdmin3 will load all *.xrc files from the ui/common directory first, 
+then from the ui/win32 or ui/gtk directory. If a resource is present in 
+both directories, the platform specific version will win (that's how the 
+wxWindows implementation works now, to avoid future trouble a resource 
+should be present in one directory only).
+
+On Win32, the standard location for the ui directory is relative to the 
+pgAdmin3.exe binary (aka loadPath) e.g.
+c:\program files\pgAdmin3\pgAdmin3.exe
+c:\program files\pgAdmin3\ui\common\*.xrc
+c:\program files\pgAdmin3\ui\win32\*.xrc
+
+On Linux, the location is determined by configure values; usually they 
+go to /usr/local/pgadmin3 (currently, they go to 
+user/local/pgadmin3/shared/pgadmin3, we should fix this unnecessary long 
+paths), so standard is /usr/local/pgadmin3/ui/common and 
+/usr/local/pgadmin3/ui/gtk.
+
+To make developer's life easier (i.e. debugging without installing), for 
+both systems there are alternative directory locations.
+On Win32, if no resource is found under loadPath/ui/common, files are 
+loaded from loadPath/../ui/common; same is done for ui/win32. This is to 
+reflect the project directory layout that the VC IDE creates, which will 
+put the pgAdmin3.exe in the ./Debug or ./Release directory, so ./ui is 
+under ../ui relative to the pgAdmin3.exe.
+
+On Linux, similar things happen. If $(datadir)/ui/common contains no xrc 
+files loadPath/ui/common is used instead. Same is performed for ui/gtk. 
+Here, the freshly compiled pgAdmin3 will reside in the same directory as ui.
+
+If necessary, we might restrict the alternate load location with a 
+command line option.
+
+Note that on Windows the directory defined by configure is replaced with
+'./'. This is also prepended to the path to tips.txt.
