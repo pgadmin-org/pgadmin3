@@ -117,7 +117,9 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
         lockList->AddColumn(_("Query"), 500);
     }
 
-    if (connection->BackendMinimumVersion(7, 5) && connection->HasFeature(FEATURE_FILEREAD))
+    if (connection->BackendMinimumVersion(7, 5) && 
+		 connection->HasFeature(FEATURE_FILEREAD) && 
+		 connection->HasFeature(FEATURE_STANDARD_LOGNAME_FORMAT))
     {
         logFormat = connection->ExecuteScalar(wxT("SHOW log_line_prefix"));
         if (logFormat == wxT("unset"))
@@ -459,7 +461,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
             if (newlen > logfileLength)
             {
 			    statusBar->SetStatusText(_("Refreshing."));
-                addLogFile(logfileName, logfileTimestamp, logfilePid, newlen, logfileLength, false);
+                addLogFile(logfileName, logfileTimestamp, newlen, logfileLength, false);
 				statusBar->SetStatusText(_("Done."));
 
                 // as long as there was new data, the logfile is probably the current
@@ -519,24 +521,23 @@ void frmStatus::checkConnection()
 void frmStatus::addLogFile(wxDateTime *dt, bool skipFirst)
 {
     pgSet *set=connection->ExecuteSet(
-        wxT("SELECT filetime, pid, filename, pg_file_length(filename) AS len\n")
+        wxT("SELECT filetime, filename, pg_file_length(filename) AS len\n")
         wxT("  FROM pg_logdir_ls\n")
         wxT(" WHERE filetime = '") + DateToAnsiStr(*dt) + wxT("'::timestamp"));
     if (set)
     {
         logfileName = set->GetVal(wxT("filename"));
         logfileTimestamp = set->GetDateTime(wxT("filetime"));
-        logfilePid = set->GetLong(wxT("pid"));
         long len=set->GetLong(wxT("len"));
 
         logfileLength = 0;
-        addLogFile(logfileName, logfileTimestamp, logfilePid, len, logfileLength, skipFirst);
+        addLogFile(logfileName, logfileTimestamp, len, logfileLength, skipFirst);
 
         delete set;
     }
 }
 
-void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp, int pid, long len, long &read, bool skipFirst)
+void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp, long len, long &read, bool skipFirst)
 {
     wxString line;
 
@@ -684,7 +685,7 @@ int frmStatus::fillLogfileCombo()
         count--;
 
     pgSet *set=connection->ExecuteSet(
-        wxT("SELECT filename, pid, filetime FROM pg_logdir_ls\n")
+        wxT("SELECT filename, filetime FROM pg_logdir_ls\n")
         wxT(" ORDER BY filetime ASC"));
     if (set)
     {
@@ -698,10 +699,9 @@ int frmStatus::fillLogfileCombo()
         {
             count++;
             wxString fn= set->GetVal(wxT("filename"));
-            long pid = set->GetLong(wxT("pid"));
             wxDateTime ts=set->GetDateTime(wxT("filetime"));
 
-            cbLogfiles->Append(DateToStr(ts) + wxT(" (") + NumToStr(pid) + wxT(")"), new wxDateTime(ts));
+            cbLogfiles->Append(DateToAnsiStr(ts), new wxDateTime(ts));
 
             set->MoveNext();
         }

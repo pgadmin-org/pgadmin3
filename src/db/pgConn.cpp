@@ -468,6 +468,10 @@ bool pgConn::HasFeature(int featureNo)
                     wxT(" WHERE proname = 'pg_terminate_backend'")
                     wxT(  " AND pronargs = 1"))
                     .IsEmpty();
+		features[FEATURE_STANDARD_LOGNAME_FORMAT] = 
+			ExecuteScalar(
+					wxT("SHOW log_filename"))
+					== wxT("postgresql-%Y-%m-%d_%H%M%S.log");
     }
 
     if (featureNo < 1 ||featureNo >= FEATURE_LAST)

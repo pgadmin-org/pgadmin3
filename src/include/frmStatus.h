@@ -53,7 +53,7 @@ private:
     void emptyLogfileCombo();
 
     void addLogFile(wxDateTime *dt, bool skipFirst);
-    void addLogFile(const wxString &filename, const wxDateTime timestamp, int pid, long len, long &read, bool skipFirst);
+    void addLogFile(const wxString &filename, const wxDateTime timestamp, long len, long &read, bool skipFirst);
     void addLogLine(const wxString &str, bool formatted=true);
 
 	void checkConnection();
@@ -66,7 +66,6 @@ private:
 
     wxDateTime logfileTimestamp, latestTimestamp;
     wxString logDirectory, logfileName;
-    long logfilePid;
     bool showCurrent, isCurrent;
 
     pgConn *connection;
