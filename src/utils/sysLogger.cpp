@@ -149,7 +149,12 @@ void sysLogger::WriteLog(const wxString& msg)
     logfile.Printf(wxT("%s"), settings->GetLogFile().c_str());
     logfile.Replace(wxT("%ID"), pid);
 
+#if wxCHECK_VERSION(2,5,0)
     wxFFile file(logfile, wxT("a"));
+#else
+    wxFFile file(logfile, "a");
+#endif
+
     if (!file.IsOpened()) {
         wxMessageBox(_("Cannot open the logfile!"), _("FATAL"), wxOK | wxCENTRE | wxICON_ERROR);
         return;
