@@ -86,6 +86,7 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         InsertListItem(properties, pos++, wxT("Volatility"), GetVolatility());
         InsertListItem(properties, pos++, wxT("Secure Definer?"), GetSecureDefiner());
         InsertListItem(properties, pos++, wxT("Strict?"), GetIsStrict());
+        InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
         InsertListItem(properties, pos++, wxT("System Function?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
@@ -121,6 +122,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
 
             function->iSetOid(functions->GetOid(wxT("oid")));
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
+            function->iSetAcl(functions->GetVal(wxT("proacl")));
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
             function->iSetReturnType(functions->GetVal(wxT("typname")));
             function->iSetComment(functions->GetVal(wxT("description")));
