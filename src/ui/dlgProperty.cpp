@@ -97,7 +97,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     page->GetClientSize(&width, &height);
 #else
     nbNotebook->GetClientSize(&width, &height);
-	height -= 35;   // sizes of tabs
+	height -= ConvertDialogToPixels(wxPoint(0, 20)).y;   // sizes of tabs
 #endif
 
     numericValidator.SetStyle(wxFILTER_NUMERIC);

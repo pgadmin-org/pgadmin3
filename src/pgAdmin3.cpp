@@ -254,8 +254,8 @@ bool pgAdmin3::OnInit()
                 langCount+1, langNames);
             if (langNo > 0)
                 langId = (wxLanguage)wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1))->Language;
-            else if (langNo == 0)
-                langId = wxLANGUAGE_DEFAULT;
+			else if (langNo == 0)
+				langId = wxLANGUAGE_DEFAULT;
 
             delete[] langNames;
         }

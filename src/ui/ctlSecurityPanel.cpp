@@ -47,7 +47,7 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, cha
 : wxPanel(nb, -1, wxDefaultPosition, wxDefaultSize)
 {
     nbNotebook = nb;
-    nbNotebook->AddPage(this, _("Security"));
+    nbNotebook->AddPage(this, _("Privileges"));
 
     connection = 0;
     privilegeChars=privChars;
@@ -65,9 +65,14 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, cha
         privCheckboxes = new wxCheckBox*[privilegeCount*2];
         int i=0;
 
-        long chkFlags=0;
         int width, height;
-        GetClientSize(&width, &height);
+
+#ifdef __WIN32__
+		GetClientSize(&width, &height);
+#else
+		nbNotebook->GetClientSize(&width, &height);
+		height -= ConvertDialogToPixels(wxPoint(0, 20)).y;   // sizes of tabs
+#endif
 
         wxPoint zeroPos=ConvertDialogToPixels(wxPoint(5, 5));
         wxSize chkSize=ConvertDialogToPixels(wxSize(65,12));
