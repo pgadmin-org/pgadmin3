@@ -19,8 +19,8 @@
 #include "dlgTable.h"
 #include "dlgColumn.h"
 #include "dlgIndexConstraint.h"
-//#include "dlgForeignKey.h"
-//#include "dlgCheck.h"
+#include "dlgForeignKey.h"
+#include "dlgCheck.h"
 
 #include "pgTable.h"
 #include "pgColumn.h"
@@ -32,14 +32,11 @@
 // Images
 #include "images/table.xpm"
 
-#define txtName         CTRL("txtName",         wxTextCtrl)
-#define txtOID          CTRL("txtOID",          wxTextCtrl)
 #define cbSchema        CTRL("cbSchema",        wxComboBox)
 #define cbOwner         CTRL("cbOwner",         wxComboBox)
 #define stHasOids       CTRL("stHasOids",       wxStaticText)
 #define chkHasOids      CTRL("chkHasOids",      wxCheckBox)
 
-#define lstColumns      CTRL("lstColumns",      wxListCtrl)
 #define btnAddCol       CTRL("btnAddCol"        wxButton)
 #define btnChangeCol    CTRL("btnChangeCol",     wxButton)
 #define btnRemoveCol    CTRL("btnRemoveCol",    wxButton)
@@ -90,7 +87,6 @@ int dlgTable::Go(bool modal)
     AddUsers(cbOwner);
 
     hasPK=false;
-    btnChangeCol->Disable();
 
     if (table)
     {
@@ -236,6 +232,10 @@ int dlgTable::Go(bool modal)
 
     FillConstraint();
 
+    btnChangeCol->Disable();
+    btnRemoveCol->Disable();
+    btnRemoveConstr->Disable();
+
     return dlgSecurityProperty::Go();
 }
 
@@ -310,14 +310,15 @@ wxString dlgTable::GetSql()
         {
             wxListItem item;
             item.SetId(pos);
-            item.SetColumn(1);
-            item.SetMask(wxLIST_MASK_IMAGE|wxLIST_MASK_TEXT);
+            item.SetColumn(0);
+            item.SetMask(wxLIST_MASK_IMAGE);
             lstConstraints->GetItem(item);
 
-            wxString name=lstColumns->GetItemText(pos);
-            wxString definition = item.GetText();
+            wxString name=lstConstraints->GetItemText(pos);
+            wxString definition = GetListText(lstConstraints, pos, 1);
 
-            sql += wxT(",\n   CONSTRAINT ") + qtIdent(name);
+            sql += wxT(",\n   ");
+            AppendIfFilled(sql, wxT("CONSTRAINT "), qtIdent(name));
             switch (item.GetImage())
             {
                 case PGICON_PRIMARYKEY:
@@ -358,14 +359,24 @@ void dlgTable::FillConstraint()
 
 pgObject *dlgTable::CreateObject(pgCollection *collection)
 {
-    return 0;
+    wxString name=txtName->GetValue();
+    wxString schema=cbSchema->GetValue();
+    if (schema.IsEmpty())
+        schema = wxT("public");
+
+    pgObject *obj=pgTable::ReadObjects(collection, 0, wxT(
+        "\n   AND cls.relname") + qtString(name) + wxT(
+        "\n   AND cls.relnamespace=(SELECT oid FROM pg_namespace WHERE nspname=") + 
+        qtIdent(schema) + wxT(")"));
+
+    return obj;
 }
 
 
 
 void dlgTable::OnChange(wxNotifyEvent &ev)
 {
-    btnOK->Enable(!txtName->GetValue().IsEmpty());
+    btnOK->Enable(!txtName->GetValue().IsEmpty() && lstColumns->GetItemCount() > 0);
 }
 
 
@@ -376,17 +387,25 @@ void dlgTable::OnAddCol(wxNotifyEvent &ev)
     col.SetConnection(connection);
     if (col.Go(true) >= 0)
         AppendListItem(lstColumns, col.GetName(), col.GetDefinition(), PGICON_COLUMN);
+    wxNotifyEvent event;
+    OnChange(event);
 }
 
 
 void dlgTable::OnRemoveCol(wxNotifyEvent &ev)
 {
-    lstColumns->DeleteItem(lstColumns->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+    lstColumns->DeleteItem(GetListSelected(lstColumns));
+
+    btnRemoveCol->Disable();
+
+    if (!lstColumns->GetItemCount())
+        btnOK->Disable();
 }
 
 
 void dlgTable::OnSelChangeCol(wxListEvent &ev)
 {
+    btnRemoveCol->Enable();
 }
 
 
@@ -407,7 +426,6 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
                 AppendListItem(lstConstraints, pk.GetName(), pk.GetDefinition(), PGICON_PRIMARYKEY);
             break;
         }
-#if 0
         case 1: // Foreign Key
         {
             dlgForeignKey fk(mainForm, lstColumns);
@@ -417,7 +435,6 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
                 AppendListItem(lstConstraints, fk.GetName(), fk.GetDefinition(), PGICON_FOREIGNKEY);
             break;
         }
-#endif
         case 2: // Unique
         {
             dlgUnique unq(mainForm, lstColumns);
@@ -427,24 +444,22 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
                 AppendListItem(lstConstraints, unq.GetName(), unq.GetDefinition(), PGICON_UNIQUE);
             break;
         }
-#if 0
         case 3: // Check
         {
-            dlgCheck chk(mainForm, lstColumns);
+            dlgCheck chk(mainForm);
             chk.CenterOnParent();
             chk.SetConnection(connection);
             if (chk.Go(true) >= 0)
                 AppendListItem(lstConstraints, chk.GetName(), chk.GetDefinition(), PGICON_CHECK);
             break;
         }
-#endif
     }
 }
 
 
 void dlgTable::OnRemoveConstr(wxNotifyEvent &ev)
 {
-    int pos=lstConstraints->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    int pos=GetListSelected(lstConstraints);
     if (pos < 0)
         return;
 
@@ -460,8 +475,10 @@ void dlgTable::OnRemoveConstr(wxNotifyEvent &ev)
     }
     
     lstConstraints->DeleteItem(pos);
+    btnRemoveConstr->Disable();
 }
 
 void dlgTable::OnSelChangeConstr(wxListEvent &ev)
 {
+    btnRemoveConstr->Enable();
 }

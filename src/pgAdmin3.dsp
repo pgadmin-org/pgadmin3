@@ -302,11 +302,19 @@ SOURCE=.\ui\frmQueryBuilder.cpp
 # PROP Default_Filter "*.cpp"
 # Begin Source File
 
+SOURCE=.\ui\dlgCheck.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgColumn.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\ui\dlgDatabase.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgForeignKey.cpp
 # End Source File
 # Begin Source File
 
@@ -578,11 +586,19 @@ SOURCE=.\include\pgView.h
 # PROP Default_Filter "*.h"
 # Begin Source File
 
+SOURCE=.\include\dlgCheck.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\dlgColumn.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\include\dlgDatabase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgForeignKey.h
 # End Source File
 # Begin Source File
 

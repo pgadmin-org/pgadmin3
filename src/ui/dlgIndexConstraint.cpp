@@ -19,6 +19,8 @@
 #include "pgIndex.h"
 #include "pgColumn.h"
 #include "pgTable.h"
+#include "pgIndexConstraint.h"
+
 
 
 #define chkDeferrable   CTRL("chkDeferrable",   wxCheckBox)
@@ -36,37 +38,31 @@ END_EVENT_TABLE();
 dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, pgIndex *index, pgTable *parentNode)
 : dlgIndexBase(frame, resName, index, parentNode)
 {
-    stDeferred->Disable();
-    chkDeferred->Disable();
-    columns=0;
 }
 
 
 dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, wxListCtrl *colList)
-: dlgIndexBase(frame, resName, 0, 0)
+: dlgIndexBase(frame, resName, colList)
 {
-    stDeferred->Disable();
-    chkDeferred->Disable();
-    columns=colList;
 }
 
 
 int dlgIndexConstraint::Go(bool modal)
 {
-    if (columns)
+    wxNotifyEvent event;
+    OnCheckDeferrable(event);
+
+    if (index)
     {
-        int pos;
-        // iterate cols
-        for (pos=0 ; pos < columns->GetItemCount() ; pos++)
-            cbColumns->Append(columns->GetItemText(pos));
+        pgIndexConstraint *idc=(pgIndexConstraint*)index;
+
+        chkDeferrable->SetValue(idc->GetDeferrable());
+        chkDeferred->SetValue(idc->GetDeferred());
+        chkDeferrable->Disable();
+        chkDeferred->Disable();
     }
+
     return dlgIndexBase::Go(modal);
-}
-
-
-wxString dlgIndexConstraint::GetName()
-{
-    return txtName->GetValue();
 }
 
 
@@ -79,6 +75,7 @@ wxString dlgIndexConstraint::GetDefinition()
     return sql;
 }
 
+
 void dlgIndexConstraint::OnCheckDeferrable(wxNotifyEvent &ev)
 {
     bool canDef=chkDeferrable->GetValue();
@@ -87,6 +84,34 @@ void dlgIndexConstraint::OnCheckDeferrable(wxNotifyEvent &ev)
         chkDeferred->SetValue(false);
     chkDeferred->Enable(canDef);
 }
+
+
+wxString dlgIndexConstraint::GetSql()
+{
+    wxString sql;
+    wxString name=txtName->GetValue();
+
+    if (!index)
+    {
+        sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+            + wxT(" ADD");
+        AppendIfFilled(sql, wxT(" CONSTRAINT "), qtIdent(name));
+        sql +=wxT(" PRIMARY KEY ") + GetDefinition()
+            + wxT(";\n");
+    }
+    else
+    {
+        wxString cmt=txtComment->GetValue();
+        if (index->GetComment() != cmt)
+            sql += wxT("COMMENT ON CONSTRAINT ") + table->GetSchema()->GetQuotedIdentifier()
+                +  wxT(".") + qtIdent(name)
+                +  wxT(" IS ") + qtString(cmt)
+                + wxT(";\n");
+    }
+    return sql;
+}
+
+
 
 
 dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, pgIndex *index, pgTable *parentNode)
@@ -102,22 +127,17 @@ dlgPrimaryKey::dlgPrimaryKey(frmMain *frame, wxListCtrl *colList)
 }
 
 
-wxString dlgPrimaryKey::GetSql()
-{
-    wxString sql;
-
-    sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-        + wxT(" ADD CONSTRAINT ") + qtIdent(txtName->GetValue())
-        + wxT(" PRIMARY KEY ") + GetDefinition()
-        + wxT(";\n");
-
-    return sql;
-}
-
-
 pgObject *dlgPrimaryKey::CreateObject(pgCollection *collection)
 {
-    return 0;
+    wxString name=txtName->GetValue();
+    if (name.IsEmpty())
+        return 0;
+
+    pgObject *obj=pgPrimaryKey::ReadObjects(collection, 0, wxT(
+        "\n   AND cls.relname=") + qtString(name) + wxT(
+        "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
+
+    return obj;
 }
 
 
@@ -134,20 +154,12 @@ dlgUnique::dlgUnique(frmMain *frame, wxListCtrl *colList)
 }
 
 
-wxString dlgUnique::GetSql()
-{
-    wxString sql;
-
-    sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-        + wxT(" ADD CONSTRAINT ") + qtIdent(txtName->GetValue())
-        + wxT(" UNIQUE ") + GetDefinition()
-        + wxT(";\n");
-
-    return sql;
-}
-
-
 pgObject *dlgUnique::CreateObject(pgCollection *collection)
 {
-    return 0;
+    wxString name=txtName->GetValue();
+
+    pgObject *obj=pgUnique::ReadObjects(collection, 0, wxT(
+        "\n   AND cls.relname=") + qtString(name) + wxT(
+        "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
+    return obj;
 }

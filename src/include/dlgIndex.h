@@ -14,26 +14,20 @@
 
 #include "dlgProperty.h"
 
-// pointer to controls
-#define txtName         CTRL("txtName", wxTextCtrl)
-#define txtComment      CTRL("txtComment", wxTextCtrl)
-#define cbColumns       CTRL("cbColumns", wxComboBox)
-
 
 class pgIndex;
-class pgTable;
 
-class dlgIndexBase : public dlgProperty
+class dlgIndexBase : public dlgCollistProperty
 {
 public:
     dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *index, pgTable *parentNode);
+    dlgIndexBase(frmMain *frame, const wxString &resName, wxListCtrl *colList);
     pgObject *GetObject();
     wxString GetColumns();
     int Go(bool modal);
 
 protected:
     pgIndex *index;
-    pgTable *table;
     void OnChange(wxNotifyEvent &ev);
 
 private:
@@ -52,6 +46,10 @@ public:
     int Go(bool modal);
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
+
+private:
+    void OnChange(wxNotifyEvent &ev);
+    DECLARE_EVENT_TABLE();
 };
 
 

@@ -18,10 +18,16 @@
 #include "pgConn.h"
 #include <wx/xrc/xmlres.h>
 
+class pgTable;
 
-#define nbNotebook      CTRL("nbNotebook", wxNotebook)
-#define btnOK           CTRL("btnOK", wxButton)
-#define btnCancel       CTRL("btnCancel", wxButton)
+#define nbNotebook      CTRL("nbNotebook",      wxNotebook)
+#define txtName         CTRL("txtName",         wxTextCtrl)
+#define txtOID          CTRL("txtOID",          wxTextCtrl)
+#define txtComment      CTRL("txtComment",      wxTextCtrl)
+#define lstColumns      CTRL("lstColumns",      wxListCtrl)
+#define cbColumns       CTRL("cbColumns",       wxComboBox)
+#define btnOK           CTRL("btnOK",           wxButton)
+#define btnCancel       CTRL("btnCancel",       wxButton)
 
 
 class dlgProperty : public wxDialog
@@ -29,6 +35,8 @@ class dlgProperty : public wxDialog
 public:
     static void CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, pgConn *conn);
     static void EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node, pgConn *conn);
+
+    wxString GetName();
 
     virtual wxString GetSql() =0;
     virtual pgObject *CreateObject(pgCollection *collection) =0;
@@ -68,6 +76,20 @@ protected:
 
 private:
     DECLARE_EVENT_TABLE();
+};
+
+
+class dlgCollistProperty : public dlgProperty
+{
+public:
+    int Go(bool modal);
+
+protected:
+    dlgCollistProperty(frmMain *frame, const wxString &resName, pgTable *table);
+    dlgCollistProperty(frmMain *frame, const wxString &resName, wxListCtrl *colList);
+
+    wxListCtrl *columns;
+    pgTable *table;
 };
 
 

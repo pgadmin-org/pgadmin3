@@ -22,7 +22,6 @@
 
 
 // pointer to controls
-#define txtUser         CTRL("txtUser", wxTextCtrl)
 #define txtID           CTRL("txtID", wxTextCtrl)
 #define txtPasswd       CTRL("txtPasswd", wxTextCtrl)
 #define chkCreateDB     CTRL("chkCreateDB", wxCheckBox)
@@ -39,7 +38,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
-    EVT_TEXT(XRCID("txtUser"),                      dlgUser::OnChange)
+    EVT_TEXT(XRCID("txtName"),                      dlgUser::OnChange)
     
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsNotIn"),      dlgUser::OnGroupAdd)
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsIn"),         dlgUser::OnGroupRemove)
@@ -90,11 +89,11 @@ int dlgUser::Go(bool modal)
     if (user)
     {
         // Edit Mode
-        txtUser->SetValue(user->GetIdentifier());
+        txtName->SetValue(user->GetIdentifier());
         txtID->SetValue(NumToStr(user->GetUserId()));
         chkCreateDB->SetValue(user->GetCreateDatabase());
         chkCreateUser->SetValue(user->GetSuperuser());
-        txtUser->Disable();
+        txtName->Disable();
         txtID->Disable();
 
         wxStringTokenizer cfgTokens(user->GetConfigList(), ',');
@@ -119,7 +118,7 @@ void dlgUser::OnChange(wxNotifyEvent &ev)
 {
     if (!user)
     {
-        wxString name=txtUser->GetValue();
+        wxString name=txtName->GetValue();
 
         btnOK->Enable(!name.IsEmpty());
     }
@@ -150,7 +149,7 @@ void dlgUser::OnGroupRemove(wxNotifyEvent &ev)
 
 void dlgUser::OnVarSelChange(wxListEvent &ev)
 {
-    long pos=lstVariables->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    long pos=GetListSelected(lstVariables);
     if (pos >= 0)
     {
         txtName->SetValue(lstVariables->GetItemText(pos));
@@ -181,13 +180,13 @@ void dlgUser::OnVarAdd(wxNotifyEvent &ev)
 
 void dlgUser::OnVarRemove(wxNotifyEvent &ev)
 {
-    lstVariables->DeleteItem(lstVariables->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+    lstVariables->DeleteItem(GetListSelected(lstVariables));
 }
 
 
 pgObject *dlgUser::CreateObject(pgCollection *collection)
 {
-    wxString name=txtUser->GetValue();
+    wxString name=txtName->GetValue();
 
     pgObject *obj=pgUser::ReadObjects(collection, 0, wxT("\n WHERE usename=") + qtString(name));
     return obj;
@@ -302,7 +301,7 @@ wxString dlgUser::GetSql()
     else
     {
         // Create Mode
-        wxString name=txtUser->GetValue();
+        wxString name=txtName->GetValue();
 
         long id=atol(txtID->GetValue());
 

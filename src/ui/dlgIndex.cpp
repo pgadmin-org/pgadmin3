@@ -28,13 +28,12 @@
 #define chkUnique       CTRL("chkUnique", wxCheckBox)
 #define txtWhere        CTRL("txtWhere", wxTextCtrl)
 
-#define lstColumns      CTRL("lstColumns", wxListCtrl)
 #define btnAddCol       CTRL("btnAddCol", wxButton)
 #define btnRemoveCol    CTRL("btnRemoveCol", wxButton)
 
 
 
-BEGIN_EVENT_TABLE(dlgIndexBase, dlgProperty)
+BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgIndexBase::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgIndexBase::OnChange)
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexBase::OnAddCol)
@@ -43,13 +42,22 @@ END_EVENT_TABLE();
 
 
 dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, pgIndex *node, pgTable *parentNode)
-: dlgProperty(frame, resName)
+: dlgCollistProperty(frame, resName, parentNode)
 {
     SetIcon(wxIcon(index_xpm));
     index=node;
-    table=parentNode;
     wxASSERT(!table || table->GetType() == PG_TABLE);
 
+    CreateListColumns(lstColumns, wxT("Columns"), wxT(""), 0);
+}
+
+
+dlgIndexBase::dlgIndexBase(frmMain *frame, const wxString &resName, wxListCtrl *colList)
+: dlgCollistProperty(frame, resName, colList)
+{
+    SetIcon(wxIcon(index_xpm));
+    index=0;
+    
     CreateListColumns(lstColumns, wxT("Columns"), wxT(""), 0);
 }
 
@@ -62,41 +70,6 @@ pgObject *dlgIndexBase::GetObject()
 
 int dlgIndexBase::Go(bool modal)
 {
-    if (table)
-    {
-        long cookie;
-        pgObject *data;
-        wxTreeItemId columnsItem=mainForm->GetBrowser()->GetFirstChild(table->GetId(), cookie);
-        while (columnsItem)
-        {
-            data=(pgObject*)mainForm->GetBrowser()->GetItemData(columnsItem);
-            if (data->GetType() == PG_COLUMNS)
-                break;
-            item=mainForm->GetBrowser()->GetNextChild(table->GetId(), cookie);
-        }
-
-        if (columnsItem)
-        {
-            long cookie;
-            pgColumn *column;
-            wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(columnsItem, cookie);
-
-            // check columns
-            while (item)
-            {
-                column=(pgColumn*)mainForm->GetBrowser()->GetItemData(item);
-                if (column->GetType() == PG_COLUMN)
-                {
-                    if (column->GetColNumber() > 0)
-                    {
-                        cbColumns->Append(column->GetName());
-                    }
-                }
-        
-                item=mainForm->GetBrowser()->GetNextChild(columnsItem, cookie);
-            }
-        }
-    }
     if (index)
     {
         // edit mode: view only
@@ -125,7 +98,7 @@ int dlgIndexBase::Go(bool modal)
         btnOK->Disable();
     }
 
-    return dlgProperty::Go(modal);
+    return dlgCollistProperty::Go(modal);
 }
 
 
@@ -167,7 +140,7 @@ void dlgIndexBase::OnChange(wxNotifyEvent &ev)
         btnOK->Enable(txtComment->GetValue() != index->GetComment());
     }
     else
-        btnOK->Enable(!index && !txtName->GetValue().IsEmpty() && lstColumns->GetItemCount() > 0);
+        btnOK->Enable(!txtName->GetValue().IsEmpty() && lstColumns->GetItemCount() > 0);
 }
 
 
@@ -188,11 +161,29 @@ wxString dlgIndexBase::GetColumns()
 }
 
 
+BEGIN_EVENT_TABLE(dlgIndex, dlgIndexBase)
+    EVT_TEXT(XRCID("txtName"),                      dlgIndex::OnChange)
+END_EVENT_TABLE();
+
+        
 dlgIndex::dlgIndex(frmMain *frame, pgIndex *index, pgTable *parentNode)
 : dlgIndexBase(frame, wxT("dlgIndex"), index, parentNode)
 {
 }
 
+
+void dlgIndex::OnChange(wxNotifyEvent &ev)
+{
+    if (index)
+    {
+        btnOK->Enable(txtComment->GetValue() != index->GetComment());
+    }
+    else
+    {
+        txtComment->Enable(!txtName->GetValue().IsEmpty());
+        btnOK->Enable(lstColumns->GetItemCount() > 0);
+    }
+}
 
 
 int dlgIndex::Go(bool modal)
@@ -223,6 +214,7 @@ int dlgIndex::Go(bool modal)
             }
             delete set;
         }
+        txtComment->Disable();
     }
     return dlgIndexBase::Go(modal);
 }
@@ -250,7 +242,7 @@ wxString dlgIndex::GetSql()
             sql +=  wxT(";\n");
         }
         wxString cmt=txtComment->GetValue();
-        if (!index || index->GetComment() != cmt)
+        if (index && index->GetComment() != cmt)
         {
             if (!cmt.IsEmpty())
                 sql += wxT("COMMENT ON INDEX ") + qtIdent(txtName->GetValue())
@@ -264,6 +256,11 @@ wxString dlgIndex::GetSql()
 
 pgObject *dlgIndex::CreateObject(pgCollection *collection)
 {
-    return 0;
+    wxString name=txtName->GetValue();
+
+    pgObject *obj=pgIndex::ReadObjects(collection, 0, wxT(
+        "\n   AND cls.relname=") + qtString(name) + wxT(
+        "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
+    return obj;
 }
 

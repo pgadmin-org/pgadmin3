@@ -4,42 +4,36 @@
 // Copyright (C) 2002, The pgAdmin Development Team
 // This software is released under the pgAdmin Public Licence
 //
-// dlgColumn.h - Column property 
+// dlgCheck.h - Check property 
 //
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __DLG_COLUMNPROP
-#define __DLG_COLUMNPROP
+#ifndef __DLG_CHECKPROP
+#define __DLG_CHECKPROP
 
 #include "dlgProperty.h"
 
-class pgColumn;
+
+class pgCheck;
 class pgTable;
 
-class dlgColumn : public dlgProperty
+class dlgCheck : public dlgProperty
 {
 public:
-    dlgColumn(frmMain *frame, pgColumn *column, pgTable *parentNode);
-
+    dlgCheck(frmMain *frame, pgCheck *node=0, pgTable *parentNode=0);
     wxString GetSql();
+    wxString GetDefinition();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
-    wxString GetDefinition();
-    wxString GetFullType();
-    wxString GetPreviousDefinition() { return previousDefinition; }
 
     int Go(bool modal);
 
-
 private:
-    bool isVarLen, isVarPrec;
-    pgColumn *column;
+    pgCheck *check;
     pgTable *table;
     void OnChange(wxNotifyEvent &ev);
-    wxArrayString typmods;
-
-    wxString previousDefinition;
+    void OnCheckDeferrable(wxNotifyEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };

@@ -23,13 +23,11 @@
 
 
 // pointer to controls
-#define txtName         CTRL("txtName", wxTextCtrl)
 #define cbDatatype      CTRL("cbDatatype", wxComboBox)
 #define txtLength       CTRL("txtLength", wxTextCtrl)
 #define txtPrecision    CTRL("txtPrecision", wxTextCtrl)
 #define txtDefault      CTRL("txtDefault", wxTextCtrl)
 #define chkNotNull      CTRL("chkNotNull", wxCheckBox)
-#define txtComment      CTRL("txtComment", wxTextCtrl)
 
 
 
@@ -86,8 +84,9 @@ int dlgColumn::Go(bool modal)
         btnOK->Disable();
 
         pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT CASE WHEN COALESCE(t.typelem, 0) = 0 THEN t.typname ELSE b.typname || '[]' END AS typname, t.typlen, t.oid\n"
+            "SELECT CASE WHEN COALESCE(t.typelem, 0) = 0 THEN t.typname ELSE b.typname || '[]' END AS typname, t.typlen, t.oid, nspname\n"
             "  FROM pg_type t\n"
+            "  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n"
             "  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n"
             " WHERE t.typisdefined AND t.typtype IN ('b', 'd')\n"
             " ORDER BY t.typtype DESC, (t.typelem>0)::bool, COALESCE(b.typname, t.typname)"));
@@ -96,7 +95,13 @@ int dlgColumn::Go(bool modal)
         {
             while (!set->Eof())
             {
-                cbDatatype->Append(set->GetVal(0));
+                wxString nsp=set->GetVal(wxT("nspname"));
+                if (nsp == wxT("public") || nsp == wxT("pg_catalog"))
+                    nsp = wxT("");
+                else
+                    nsp += wxT(".");
+
+                cbDatatype->Append(nsp + set->GetVal(0));
                 typmods.Add(set->GetVal(1) + wxT(":") + set->GetVal(2));
                 set->MoveNext();
             }
@@ -131,16 +136,19 @@ wxString dlgColumn::GetSql()
 }
 
 
-wxString dlgColumn::GetName()
-{
-    return txtName->GetValue();
-}
-
-
 wxString dlgColumn::GetFullType()
 {
     wxString sql;
-    sql = cbDatatype->GetValue();
+    wxString type=cbDatatype->GetValue();
+    wxString nsp;
+    if (type.First('.') >= 0)
+    {
+        nsp = type.BeforeFirst('.');
+        type = type.Mid(nsp.Length()+1);
+        nsp = qtIdent(nsp) + wxT(".");
+    }
+
+    sql = nsp + qtIdent(type);
     if (isVarLen)
     {
         wxString len=txtLength->GetValue();

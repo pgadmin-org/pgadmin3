@@ -1,0 +1,48 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+// Copyright (C) 2002, The pgAdmin Development Team
+// This software is released under the pgAdmin Public Licence
+//
+// dlgForeignKey.h - ForeignKey property 
+//
+//////////////////////////////////////////////////////////////////////////
+
+
+#ifndef __DLG_FOREIGNKEYPROP
+#define __DLG_FOREIGNKEYPROP
+
+#include "dlgProperty.h"
+
+
+class pgForeignKey;
+class pgTable;
+
+class dlgForeignKey : public dlgCollistProperty
+{
+public:
+    dlgForeignKey(frmMain *frame, pgForeignKey *node, pgTable *parentNode);
+    dlgForeignKey(frmMain *frame, wxListCtrl *colList);
+    wxString GetSql();
+    wxString GetDefinition();
+    pgObject *CreateObject(pgCollection *collection);
+    pgObject *GetObject();
+
+    int Go(bool modal);
+
+private:
+    pgForeignKey *foreignKey;
+
+    void OnChange(wxNotifyEvent &ev);
+    void OnCheckDeferrable(wxNotifyEvent &ev);
+    void OnSelChangeCol(wxNotifyEvent &ev);
+    void OnSelChangeRef(wxNotifyEvent &ev);
+    void OnSelChangeRefCol(wxNotifyEvent &ev);
+    void OnAddRef(wxNotifyEvent &ev);
+    void OnRemoveRef(wxNotifyEvent &ev);
+
+    DECLARE_EVENT_TABLE();
+};
+
+
+#endif

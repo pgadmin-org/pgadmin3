@@ -23,12 +23,10 @@
 
 // pointer to controls
 #define txtName         CTRL("txtName", wxTextCtrl)
-#define txtOID          CTRL("txtOID", wxTextCtrl)
 #define cbOwner         CTRL("cbOwner", wxComboBox)
 #define cbEncoding      CTRL("cbEncoding", wxComboBox)
 #define cbTemplate      CTRL("cbTemplate", wxComboBox)
 #define txtPath         CTRL("txtPath", wxTextCtrl)
-#define txtComment      CTRL("txtComment", wxTextCtrl)
 
 #define lstVariables    CTRL("lstVariables", wxListCtrl)
 #define txtName         CTRL("txtName", wxTextCtrl)

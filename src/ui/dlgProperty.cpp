@@ -28,7 +28,10 @@
 #include "dlgColumn.h"
 #include "dlgIndex.h"
 #include "dlgIndexConstraint.h"
-
+#include "dlgForeignKey.h"
+#include "dlgCheck.h"
+#include "pgTable.h"
+#include "pgColumn.h"
 
 enum
 {
@@ -54,6 +57,7 @@ END_EVENT_TABLE();
 
 dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
 {
+    objectType=PG_NONE;
     sqlPane=0;
     sqlPageNo=-1;
     mainForm = frame;
@@ -97,6 +101,12 @@ void dlgProperty::CreateAdditionalPages()
     sqlPane = new ctlSQLBox(nbNotebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
     sqlPageNo=nbNotebook->GetPageCount();
     nbNotebook->AddPage(sqlPane, wxT("SQL"));
+}
+
+
+wxString dlgProperty::GetName()
+{
+    return txtName->GetValue();
 }
 
 
@@ -246,10 +256,16 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
         case PG_PRIMARYKEY:
             dlg=new dlgPrimaryKey(frame, (pgIndex*)currentNode, (pgTable*)parentNode);
             break;
+        case PG_FOREIGNKEY:
+            dlg=new dlgForeignKey(frame, (pgForeignKey*)currentNode, (pgTable*)parentNode);
+            break;
         case PG_UNIQUE:
             dlg=new dlgUnique(frame, (pgIndex*)currentNode, (pgTable*)parentNode);
             break;
-             
+        case PG_CHECK:
+            dlg=new dlgCheck(frame, (pgCheck*)currentNode, (pgTable*)parentNode);
+            break;
+            
         default:
             break;
     }
@@ -344,6 +360,70 @@ void dlgProperty::AppendListItem(wxListCtrl *list, const wxString& str1, const w
         list->SetItem(pos, 1, str2);
 }
 
+
+
+dlgCollistProperty::dlgCollistProperty(frmMain *frame, const wxString &resName, pgTable *parentNode)
+: dlgProperty(frame, resName)
+{
+    columns=0;
+    table=parentNode;
+}
+
+
+dlgCollistProperty::dlgCollistProperty(frmMain *frame, const wxString &resName, wxListCtrl *colList)
+: dlgProperty(frame, resName)
+{
+    columns=colList;
+    table=0;
+}
+
+
+int dlgCollistProperty::Go(bool modal)
+{
+    if (columns)
+    {
+        int pos;
+        // iterate cols
+        for (pos=0 ; pos < columns->GetItemCount() ; pos++)
+            cbColumns->Append(columns->GetItemText(pos));
+    }
+    if (table)
+    {
+        long cookie;
+        pgObject *data;
+        wxTreeItemId columnsItem=mainForm->GetBrowser()->GetFirstChild(table->GetId(), cookie);
+        while (columnsItem)
+        {
+            data=(pgObject*)mainForm->GetBrowser()->GetItemData(columnsItem);
+            if (data->GetType() == PG_COLUMNS)
+                break;
+            columnsItem=mainForm->GetBrowser()->GetNextChild(table->GetId(), cookie);
+        }
+
+        if (columnsItem)
+        {
+            long cookie;
+            pgColumn *column;
+            wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(columnsItem, cookie);
+
+            // check columns
+            while (item)
+            {
+                column=(pgColumn*)mainForm->GetBrowser()->GetItemData(item);
+                if (column->GetType() == PG_COLUMN)
+                {
+                    if (column->GetColNumber() > 0)
+                    {
+                        cbColumns->Append(column->GetName());
+                    }
+                }
+        
+                item=mainForm->GetBrowser()->GetNextChild(columnsItem, cookie);
+            }
+        }
+    }
+    return dlgProperty::Go(modal);
+}
 
 
 BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
@@ -634,7 +714,7 @@ void dlgSecurityProperty::OnAddPriv(wxNotifyEvent &ev)
 
 void dlgSecurityProperty::OnDelPriv(wxNotifyEvent &ev)
 {
-    lbPrivileges->DeleteItem(lbPrivileges->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+    lbPrivileges->DeleteItem(GetListSelected(lbPrivileges));
 }
 
 

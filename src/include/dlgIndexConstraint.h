@@ -28,7 +28,7 @@ public:
 
     int Go(bool modal);
     wxString GetDefinition();
-    wxString GetName();
+    wxString GetSql();
 
 private:
     void OnCheckDeferrable(wxNotifyEvent &ev);
@@ -42,7 +42,6 @@ public:
     dlgPrimaryKey(frmMain *frame, pgIndex *index, pgTable *parentNode);
     dlgPrimaryKey(frmMain *frame, wxListCtrl *colList);
 
-    wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
 };
 
@@ -53,7 +52,6 @@ public:
     dlgUnique(frmMain *frame, pgIndex *index, pgTable *parentNode);
     dlgUnique(frmMain *frame, wxListCtrl *colList);
 
-    wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
 };
 
