@@ -93,7 +93,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         if (!GetPrimaryKey().IsNull())
         {
             sql += wxT(",\n   CONSTRAINT ") + GetPrimaryKeyName() + wxT(" PRIMARY KEY (");
-            wxStringTokenizer collist(GetPrimaryKeyColNumbers());
+            wxStringTokenizer collist(GetPrimaryKeyColNumbers(), ',');
             long cn;
             int pkcolcount=0;
 
@@ -302,7 +302,7 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_TRIGGER, -1, collection);
 
         // convert list of columns numbers to column names
-        wxStringTokenizer collist(GetPrimaryKeyColNumbers());
+        wxStringTokenizer collist(GetPrimaryKeyColNumbers(), ',');
         wxString cn;
 
         while (collist.HasMoreTokens())
