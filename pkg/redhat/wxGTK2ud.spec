@@ -1,4 +1,4 @@
-%define minor_version 20030819
+%define minor_version 20030831
 %define major_version 2.5
 
 Summary: The GTK+ 2 port of the wxWindows library
@@ -56,34 +56,23 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 %setup -q
 
 %build
-./configure --prefix=%{buildroot}/usr --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
-make 
+./configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
+make clean
+make
 
-pushd contrib/src/xrc
-  make
-popd
-#pushd contrib/utils/wxrc
-#  make
-#popd
-
-pushd contrib/src/stc
-  make
+pushd contrib/src
+        make -C xrc
+        make -C stc
 popd
 
 %install
 rm -rf %{buildroot}
-make install
+%makeinstall
+%find_lang wxstd
 
-pushd contrib/src/xrc
-make install
-popd
-
-#pushd contrib/utils/wxrc
-#cp -r wxrc %{buildroot}%{_bindir}/
-#popd
-
-pushd contrib/src/stc
-make install
+pushd contrib/src/
+        %makeinstall -C xrc
+        %makeinstall -C stc
 popd
 
 # RedHat does it by default. Needed for SuSE and Mandrake.
@@ -95,12 +84,9 @@ strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_stc-%{version}.a
 rm -rf %{buildroot}
 
 %post -p /sbin/ldconfig
-ln -s /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
-#sed -e "s/var\/tmp\/wxGTK2ud-root\/usr/usr/g" /usr/bin/wxgtk2ud-2.5-config > %{buildroot}/tmpfoo
-#mv -f %{buildroot}/tmpfoo /usr/bin/wxgtk2ud-2.5-config
-
+#ln -s /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
 %postun -p /sbin/ldconfig
-rm -fr /usr/include/wx/setup.h
+#rm -fr /usr/include/wx/setup.h
 
 %post xrc -p /sbin/ldconfig
 %postun xrc -p /sbin/ldconfig
@@ -123,7 +109,6 @@ rm -fr /usr/include/wx/setup.h
 %files xrc
 %defattr(-, root, root)
 %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
-#%{_bindir}/wxrc
 
 %files stc
 %defattr(-, root, root)
