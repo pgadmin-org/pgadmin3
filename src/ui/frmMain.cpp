@@ -434,6 +434,8 @@ void frmMain::Refresh(pgObject *data)
 void frmMain::OnPageChange(wxNotebookEvent& event)
 {
     wxTreeItemId item=browser->GetSelection();
+	if (!item)
+		return;
     pgObject *data = (pgObject*)browser->GetItemData(item);
 
     if (!data)
