@@ -56,6 +56,7 @@ dlgServer::dlgServer(frmMain *frame, pgServer *node)
 {
     SetIcon(wxIcon(server_xpm));
     server=node;
+    objectType = PG_SERVER;
 
     cbDatabase->Append(settings->GetLastDatabase());
     cbDatabase->SetSelection(0);

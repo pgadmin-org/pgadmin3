@@ -619,6 +619,7 @@ void frmMain::OnAddServer(wxCommandEvent &ev)
     int rc = PGCONN_BAD;
     
     dlgServer dlg(this, 0);
+    dlg.CenterOnParent();
 
     while (rc != PGCONN_OK)
     {
