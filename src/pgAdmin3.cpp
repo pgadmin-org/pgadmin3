@@ -27,6 +27,11 @@
   #include <winsock.h>
 #endif
 
+// Linux headers
+#ifdef __LINUX__
+#include <signal.h>
+#endif
+
 #if wxCHECK_VERSION(2,5,1)
 #ifdef __WXGTK__
   #include <wx/renderer.h>
@@ -181,6 +186,10 @@ bool pgAdmin3::OnInit()
 	wxRendererNative::Get();
 	wxRendererNative::Set(renderer);
 #endif
+#endif
+
+#ifdef __LINUX__
+	signal(SIGPIPE, SIG_IGN);
 #endif
 
     locale = new wxLocale();
