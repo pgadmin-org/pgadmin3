@@ -883,10 +883,10 @@ void frmMain::OnDrop(wxCommandEvent &ev)
         {
             pgObject *nextData=(pgObject*)browser->GetItemData(nextItem);
             if (!nextData || nextData->GetType() != data->GetType())
-                nextItem=browser->GetPrevVisible(item);
+                nextItem=browser->GetPrevSibling(item);
         }
         else
-            nextItem=browser->GetPrevVisible(item);
+            nextItem=browser->GetPrevSibling(item);
 
         if (nextItem)
             browser->SelectItem(nextItem);
