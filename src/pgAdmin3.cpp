@@ -142,7 +142,24 @@ void pgAdmin3::LoadXrc(const wxString file)
 {
     wxLogInfo(wxT("Loading %s"), file.c_str());
 
+    wxString loadPath=wxPathOnly(argv[0]);
+#ifndef __WIN32__
+    wxExpandPath(loadPath, loadPath);
+#endif
+
     wxString xrc;
     xrc.Printf("%s/%s", XRC_PATH, file.c_str());
+    if (!wxFileExists(xrc))
+    {
+        xrc.Printf("%s/%s/%s", loadPath.c_str(), XRC_PATH, file.c_str());
+        if (!wxFileExists(xrc))
+        {
+            xrc.Printf("%s/../%s/%s", loadPath.c_str(), XRC_PATH, file.c_str());
+            if (!wxFileExists(xrc))
+            {
+                xrc.Printf("%s/pgadmin.ui/%s", loadPath.c_str(), file.c_str());
+            }
+        }
+    }
     wxXmlResource::Get()->Load(xrc);
 }
