@@ -240,9 +240,9 @@ wxString dlgIndex::GetSql()
             if (chkUnique->GetValue())
                 sql += wxT("UNIQUE ");
             sql += wxT("INDEX ") + qtIdent(GetName());
+            sql += wxT("\n   ON ") + table->GetFullIdentifier();
             AppendIfFilled(sql, wxT(" USING "), cbType->GetValue());
-            sql += wxT("\n   ON ") + table->GetFullIdentifier() 
-                + wxT("(") + GetColumns()
+            sql += wxT(" (") + GetColumns()
                 + wxT(")");
 
 

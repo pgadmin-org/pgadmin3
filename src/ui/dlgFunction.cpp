@@ -148,6 +148,7 @@ int dlgFunction::Go(bool modal)
 
         txtName->Disable();
         cbReturntype->Disable();
+        cbDatatype->Disable();
     }
     else
     {
@@ -330,7 +331,8 @@ wxString dlgFunction::GetSql()
     if (function)
     {
         // edit mode
-        name = function->GetQuotedFullIdentifier();
+        name = function->GetQuotedFullIdentifier()
+             + wxT("(") + function->GetArgTypes() + wxT(")");
         
         sql = wxT("CREATE OR REPLACE FUNCTION ") + name;
     }
