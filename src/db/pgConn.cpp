@@ -99,7 +99,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     dbHost = server;
 
     // Set client encoding to Unicode/Ascii
-    if (conn) 
+    if (PQstatus(conn) == CONNECTION_OK)
     {
 
 #if wxUSE_UNICODE
