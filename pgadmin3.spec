@@ -2,7 +2,7 @@
 %define minor_version %(date +%Y%m%d)
 %define wxGTK2_version 20030607
 %define wxGTK2_config --with-wx-config=wxgtk2ud-2.5-config
-%define pgsql_include 
+%define pgsql_include --with-pgsql-include=/usr/include
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
@@ -30,7 +30,7 @@ pgAdmin3 is the graphical administration interface of PostgreSQL.
 %setup -q
 
 %build
-sh configure --enable-debug --enable-static %{wxGTK2_config} %{pgsql_include}
+%configure --enable-debug --enable-static %{wxGTK2_config} %{pgsql_include}
 make all
 
 %install
