@@ -353,9 +353,9 @@ void dlgFunction::OnChangeArgName(wxCommandEvent &ev)
         argNameRow = lstArguments->FindItem(-1, txtArgName->GetValue());
 
     int pos=lstArguments->GetSelection();
-
-    btnAdd->Enable(argNameRow < 0);
-    btnChange->Enable(pos >= 0);
+    int typeno=cbDatatype->GetGuessedSelection();
+    btnAdd->Enable(argNameRow < 0 && typeno >= 0);
+    btnChange->Enable(pos >= 0 && typeno >= 0);
     btnRemove->Enable(pos >= 0);
 }
 

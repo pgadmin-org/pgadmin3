@@ -115,12 +115,12 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     btnOK->Disable();
 
     wxSize size=GetSize();
+    wxWindow *statusBarContainer=FindWindow(wxT("unkStatusBar_container"));
 
-    if (wxWindowBase::FindWindow(XRCID("unkStatusBar")))
+    if (statusBarContainer)
     {
         statusBox = 0;
-        statusBar = new wxStatusBar(this, -1, wxST_SIZEGRIP);
-        wxXmlResource::Get()->AttachUnknownControl(wxT("unkStatusBar"), statusBar);
+        statusBar = new wxStatusBar(statusBarContainer, -1, wxST_SIZEGRIP);
     }
     else
     {
