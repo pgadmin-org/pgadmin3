@@ -59,7 +59,7 @@ build-stamp:  config.status
 	dh_testdir
 
 	# Add here commands to compile the package.
-	$(MAKE)
+	$(MAKE) WX_HOME=/usr
 	#/usr/bin/docbook-to-man debian/pgadmin3.sgml > pgadmin3.1
 
 	touch build-stamp
@@ -90,7 +90,19 @@ install: build
 	# Add here commands to install the package into debian/pgadmin3.
 	$(MAKE) install prefix=$(CURDIR)/debian/pgadmin3/usr
 	cp $(CURDIR)/src/include/images/elephant48.xpm $(CURDIR)/debian/pgadmin3/usr/share/pixmaps/pgadmin3.xpm
+	cp $(CURDIR)/src/include/images/elephant48.xpm $(CURDIR)/debian/pgadmin3/usr/share/pgadmin3/pgadmin3.xpm
 	chmod 644 $(CURDIR)/debian/pgadmin3/usr/share/pixmaps/pgadmin3.xpm
+	chmod 644 $(CURDIR)/debian/pgadmin3/usr/share/pgadmin3/pgadmin3.xpm
+	#
+	# desktop files
+	# TODO:
+	# May be we should use desktop-file-install but it does not exist in woody...
+	# 
+	cp $(CURDIR)/pkg/pgadmin3.desktop $(CURDIR)/debian/pgadmin3/usr/share/applications/.
+	chmod 644 $(CURDIR)/debian/pgadmin3/usr/share/applications/pgadmin3.desktop
+	#
+	# Avoid dpkg-buildpackage errors
+	#
 	touch TODO.txt	# To avoid error while building package if this file does not exist
 
 
