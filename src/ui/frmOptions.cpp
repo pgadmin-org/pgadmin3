@@ -33,7 +33,6 @@ frmOptions::frmOptions(wxFrame *parent)
 {
 
     wxLogInfo(wxT("Creating an options dialogue"));
-    extern sysSettings *settings;
 
     wxXmlResource::Get()->LoadDialog(this, parent, "frmOptions"); 
 
@@ -58,7 +57,6 @@ frmOptions::~frmOptions()
 
 void frmOptions::OnOK(wxCommandEvent &ev)
 {
-    extern sysSettings *settings;
 
     // Logfile
     wxString logFile = XRCCTRL(*this, "txtLogfile", wxTextCtrl)->GetValue();
