@@ -30,33 +30,55 @@ pgView::~pgView()
 
 
 
+enum tokentype
+{
+    SQLTK_NORMAL=0,
+    SQLTK_JOINMOD,
+    SQLTK_JOIN,
+    SQLTK_ON,
+    SQLTK_UNION
+
+};
+
 typedef struct __tokenaction
 {
     char *keyword, *replaceKeyword;
     int actionBefore, actionAfter;
-    bool doBreak, isOuter, isJoin;
+    tokentype special;
+    bool doBreak;
 } tokenAction;
 
 
 tokenAction sqlTokens[] =
 {
-    { "WHERE",  "  WHERE"   -8, 8, true, false, false},
-    { "SELECT", " SELECT",   0, 8, true, false, false},
-    { "FROM",   "   FROM",  -8, 8, true, false, false},
-    { "LEFT",   "   LEFT",  -8, 8, true, true,  false},
-    { "JOIN",   "   JOIN",  -8, 8, true, false, true},
-    { "ORDER",  "  ORDER",  -8, 8, true, false, false},
-    { "GROUP",  "  GROUP",  -8, 8, true, false, false},
-    { "HAVING", " HAVING",  -8, 8, true, false, false},
-    { "LIMIT",  "  LIMIT",  -8, 8, true, false, false},
-    { "UNION",  "UNION  ",  -88888, 8, true, false, false},
-    { "CASE",   "CASE",      0, 4, true, false, false},
-    { "WHEN",   "WHEN",      0, 0, true, false, false},
-    { "ELSE",   "ELSE",      0, 0, true, false, false},
-    { "END",    "END ",     -4, 0, true, false, false},
-    {0, 0, 0, 0}
+#ifdef __WIN32__
+    { "WHERE"},     // initializing fails, so we're doing it in the code
+#else
+    { "WHERE",  "  WHERE"   -8, 8,      SQLTK_NORMAL,   true},
+#endif
+    { "SELECT", " SELECT",   0, 8,      SQLTK_NORMAL,   true},
+    { "FROM",   "   FROM",  -8, 8,      SQLTK_NORMAL,   true},
+    { "LEFT",   "   LEFT",  -8, 13,     SQLTK_JOINMOD,  true},
+    { "RIGHT",  "   RIGHT", -8, 13,     SQLTK_JOINMOD,  true},
+    { "NATURAL","   NATURAL", -8, 13,   SQLTK_JOINMOD,  true},
+    { "FULL",   "   FULL",  -8, 13,     SQLTK_JOINMOD,  true},
+    { "CROSS",  "   CROSS", -8, 13,     SQLTK_JOINMOD,  true},
+    { "UNION",  "   UNION", -8, 13,     SQLTK_UNION,    true},
+    { "JOIN",   "   JOIN",  -8, 13,     SQLTK_JOIN,     true},
+    { "ON",     "ON",        0, -5,     SQLTK_ON,       false},
+    { "ORDER",  "  ORDER",  -8, 8,      SQLTK_NORMAL,   true},
+    { "GROUP",  "  GROUP",  -8, 8,      SQLTK_NORMAL,   true},
+    { "HAVING", " HAVING",  -8, 8,      SQLTK_NORMAL,   true},
+    { "LIMIT",  "  LIMIT",  -8, 8,      SQLTK_NORMAL,   true},
+    { "CASE",   "CASE",      0, 4,      SQLTK_NORMAL,   true},
+    { "WHEN",   "WHEN",      0, 0,      SQLTK_NORMAL,   true},
+    { "ELSE",   "ELSE",      0, 0,      SQLTK_NORMAL,   true},
+    { "END",    "END ",     -4, 0,      SQLTK_NORMAL,   true},
+    {0, 0}
 };
 
+tokenAction secondOnToken= 
+    { "ON",     "ON",       -5, 0,      SQLTK_ON,       true};
 
 
 wxString pgView::GetSql(wxTreeCtrl *browser)
@@ -69,17 +91,20 @@ wxString pgView::GetSql(wxTreeCtrl *browser)
         sqlTokens[0].replaceKeyword="  WHERE";
         sqlTokens[0].actionBefore = -8;
         sqlTokens[0].actionAfter = 8;
+        sqlTokens[0].special = SQLTK_NORMAL;
         sqlTokens[0].doBreak = true;
 
         wxString fc, token;
         queryTokenizer tokenizer(GetDefinition());
         int indent=0;
         int position=0;  // col position. updated, but not used at the moment.
-        bool wasOuter=false;
+        bool wasOn=false;
 
         while (tokenizer.HasMoreTokens())
         {
             token=tokenizer.GetNextToken();
+
+gotToken:
             wxString trailingChars;
 
             // token may contain brackets
@@ -105,10 +130,10 @@ wxString pgView::GetSql(wxTreeCtrl *browser)
             {
                 if (!token.CmpNoCase(tp->keyword))
                 {
-                    if (tp->isJoin && wasOuter)
-                        tp=0;
+                    if (tp->special == SQLTK_ON && wasOn)
+                        tp=&secondOnToken;
                     else
-                        wasOuter = tp->isOuter;
+                        wasOn = (tp->special == SQLTK_ON);
                     break;
                 }
                 tp++;
@@ -117,8 +142,27 @@ wxString pgView::GetSql(wxTreeCtrl *browser)
             if (tp && tp->keyword)
             {
                 // we found a keyword.
-                indent += tp->actionBefore;
-                if (indent<0)   indent=0;
+                if (tp->special == SQLTK_UNION || tp->special == SQLTK_JOINMOD)
+                {
+                    token=tokenizer.GetNextToken();
+                    if (tp->special == SQLTK_UNION && token.CmpNoCase(wxT("JOIN")))
+                    {
+                        fc += wxT("\nUNION\n");
+                        indent=0;
+                        goto gotToken;
+                    }
+                    else
+                    {
+                        trailingChars = token + wxT(" ") + trailingChars;
+                        indent += tp->actionBefore;
+                        if (indent<0)   indent=0;
+                    }
+                }
+                else
+                {
+                    indent += tp->actionBefore;
+                    if (indent<0)   indent=0;
+                }
                 if (tp->doBreak)
                 {
                     fc += "\n" + wxString(' ', indent);
@@ -151,7 +195,7 @@ wxString pgView::GetSql(wxTreeCtrl *browser)
 
         sql = wxT("CREATE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n")
             + fc
-            + wxT(";\n\n") 
+            + wxT("\n\n") 
             + GetGrant()
             + GetCommentSql();
     }
