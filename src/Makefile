@@ -11,7 +11,8 @@ PROGRAM = pgAdmin3
 OBJECTS = $(PROGRAM).o \
           ui/frmAbout.o \
           ui/frmMain.o \
-		      ui/frmSplash.o
+          ui/frmSplash.o
+
 
 .SUFFIXES:	.o .cpp
 
