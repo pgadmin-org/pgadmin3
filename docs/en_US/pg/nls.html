@@ -1,291 +1,116 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Native Language Support</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Internals"
-HREF="internals.html"><LINK
-REL="PREVIOUS"
-TITLE="Error Message Style Guide"
-HREF="error-style-guide.html"><LINK
-REL="NEXT"
-TITLE="For the Programmer"
-HREF="nls-programmer.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="error-style-guide.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="source.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plhandler.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="nls-programmer.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="NLS"
-></A
->Chapter 44. Native Language Support</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->44.1. <A
-HREF="nls.html#NLS-TRANSLATOR"
->For the Translator</A
-></DT
-><DD
-><DL
-><DT
->44.1.1. <A
-HREF="nls.html#AEN55645"
->Requirements</A
-></DT
-><DT
->44.1.2. <A
-HREF="nls.html#AEN55657"
->Concepts</A
-></DT
-><DT
->44.1.3. <A
-HREF="nls.html#AEN55675"
->Creating and maintaining message catalogs</A
-></DT
-><DT
->44.1.4. <A
-HREF="nls.html#AEN55709"
->Editing the PO files</A
-></DT
-></DL
-></DD
-><DT
->44.2. <A
-HREF="nls-programmer.html"
->For the Programmer</A
-></DT
-><DD
-><DL
-><DT
->44.2.1. <A
-HREF="nls-programmer.html#NLS-MECHANICS"
->Mechanics</A
-></DT
-><DT
->44.2.2. <A
-HREF="nls-programmer.html#NLS-GUIDELINES"
->Message-writing guidelines</A
-></DT
-></DL
-></DD
-></DL
-></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="NLS-TRANSLATOR"
->44.1. For the Translator</A
-></H1
-><P
->   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 44. Native Language Support</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="previous" href="error-style-guide.html" title="43.3. Error Message Style Guide">
+<link rel="next" href="nls-programmer.html" title="44.2. For the Programmer">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="nls">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="nls"></a>Chapter 44. Native Language Support</h2></div>
+<div><div class="author"><h3 class="author">
+<span class="firstname">Peter</span> <span class="surname">Eisentraut</span>
+</h3></div></div>
+</div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="nls.html#nls-translator">44.1. For the Translator</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="nls.html#id2737196">44.1.1. Requirements</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2737264">44.1.2. Concepts</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2737390">44.1.3. Creating and maintaining message catalogs</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2737569">44.1.4. Editing the PO files</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="nls-programmer.html">44.2. For the Programmer</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="nls-programmer.html#nls-mechanics">44.2.1. Mechanics</a></span></dt>
+<dt><span class="sect2"><a href="nls-programmer.html#nls-guidelines">44.2.2. Message-writing guidelines</a></span></dt>
+</dl></dd>
+</dl>
+</div>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="nls-translator"></a>44.1. For the Translator</h2></div></div>
+<div></div>
+</div>
+<p>   <span class="productname">PostgreSQL</span>
    programs (server and client) can issue their messages in
-   your favorite language -- if the messages have been translated.
+   your favorite language [mdash ] if the messages have been translated.
    Creating and maintaining translated message sets needs the help of
    people who speak their own language well and want to contribute to
-   the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> effort.  You do not have to be a
+   the <span class="productname">PostgreSQL</span> effort.  You do not have to be a
    programmer at all
    to do this.  This section explains how to help.
-  </P
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN55645"
->44.1.1. Requirements</A
-></H2
-><P
->    We won't judge your language skills -- this section is about
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2737196"></a>44.1.1. Requirements</h3></div></div>
+<div></div>
+</div>
+<p>    We won't judge your language skills [mdash ] this section is about
     software tools.  Theoretically, you only need a text editor.  But
     this is only in the unlikely event that you do not want to try out
     your translated messages.  When you configure your source tree, be
-    sure to use the <TT
-CLASS="OPTION"
->--enable-nls</TT
-> option.  This will
-    also check for the <SPAN
-CLASS="APPLICATION"
->libintl</SPAN
-> library and the
-    <TT
-CLASS="FILENAME"
->msgfmt</TT
-> program, which all end users will need
+    sure to use the <tt class="option">--enable-nls</tt> option.  This will
+    also check for the <span class="application">libintl</span> library and the
+    <tt class="filename">msgfmt</tt> program, which all end users will need
     anyway.  To try out your work, follow the applicable portions of
     the installation instructions.
-   </P
-><P
->    If you want to start a new translation effort or want to do a
+   </p>
+<p>    If you want to start a new translation effort or want to do a
     message catalog merge (described later), you will need the
-    programs <TT
-CLASS="FILENAME"
->xgettext</TT
-> and
-    <TT
-CLASS="FILENAME"
->msgmerge</TT
->, respectively, in a GNU-compatible
+    programs <tt class="filename">xgettext</tt> and
+    <tt class="filename">msgmerge</tt>, respectively, in a GNU-compatible
     implementation.  Later, we will try to arrange it so that if you
     use a packaged source distribution, you won't need
-    <TT
-CLASS="FILENAME"
->xgettext</TT
->.  (From CVS, you will still need
-    it.)  <SPAN
-CLASS="APPLICATION"
->GNU Gettext 0.10.36</SPAN
-> or later is currently recommended.
-   </P
-><P
->    Your local gettext implementation should come with its own
+    <tt class="filename">xgettext</tt>.  (From CVS, you will still need
+    it.)  <span class="application">GNU Gettext 0.10.36</span> or later is currently recommended.
+   </p>
+<p>    Your local gettext implementation should come with its own
     documentation.  Some of that is probably duplicated in what
     follows, but for additional details you should look there.
-   </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN55657"
->44.1.2. Concepts</A
-></H2
-><P
->    The pairs of original (English) messages and their (possibly)
-    translated equivalents are kept in <I
-CLASS="FIRSTTERM"
->message
-    catalogs</I
->, one for each program (although related
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2737264"></a>44.1.2. Concepts</h3></div></div>
+<div></div>
+</div>
+<p>    The pairs of original (English) messages and their (possibly)
+    translated equivalents are kept in <i class="firstterm">message
+    catalogs</i>, one for each program (although related
     programs can share a message catalog) and for each target
     language.  There are two file formats for message catalogs:  The
-    first is the <SPAN
-CLASS="QUOTE"
->"PO"</SPAN
-> file (for Portable Object), which
+    first is the &#8220;<span class="quote">PO</span>&#8221; file (for Portable Object), which
     is a plain text file with special syntax that translators edit.
-    The second is the <SPAN
-CLASS="QUOTE"
->"MO"</SPAN
-> file (for Machine Object),
+    The second is the &#8220;<span class="quote">MO</span>&#8221; file (for Machine Object),
     which is a binary file generated from the respective PO file and
     is used while the internationalized program is run.  Translators
     do not deal with MO files; in fact hardly anyone does.
-   </P
-><P
->    The extension of the message catalog file is to no surprise either
-    <TT
-CLASS="FILENAME"
->.po</TT
-> or <TT
-CLASS="FILENAME"
->.mo</TT
->.  The base
+   </p>
+<p>    The extension of the message catalog file is to no surprise either
+    <tt class="filename">.po</tt> or <tt class="filename">.mo</tt>.  The base
     name is either the name of the program it accompanies, or the
     language the file is for, depending on the situation.  This is a
-    bit confusing.  Examples are <TT
-CLASS="FILENAME"
->psql.po</TT
-> (PO file
-    for psql) or <TT
-CLASS="FILENAME"
->fr.mo</TT
-> (MO file in French).
-   </P
-><P
->    The file format of the PO files is illustrated here:
-</P><PRE
-CLASS="PROGRAMLISTING"
-># comment
+    bit confusing.  Examples are <tt class="filename">psql.po</tt> (PO file
+    for psql) or <tt class="filename">fr.mo</tt> (MO file in French).
+   </p>
+<p>    The file format of the PO files is illustrated here:
+</p>
+<pre class="programlisting"># comment
 
 msgid "original string"
 msgstr "translated string"
@@ -294,28 +119,26 @@ msgid "more original"
 msgstr "another translated"
 "string can be broken up like this"
 
-...</PRE
-><P>
+...</pre>
+<p>
     The msgid's are extracted from the program source.  (They need not
     be, but this is the most common way.)  The msgstr lines are
     initially empty and are filled in with useful strings by the
     translator.  The strings can contain C-style escape characters and
     can be continued across lines as illustrated.  (The next line must
     start at the beginning of the line.)
-   </P
-><P
->    The # character introduces a comment.  If whitespace immediately
+   </p>
+<p>    The # character introduces a comment.  If whitespace immediately
     follows the # character, then this is a comment maintained by the
     translator.  There may also be automatic comments, which have a
     non-whitespace character immediately following the #.  These are
     maintained by the various tools that operate on the PO files and
     are intended to aid the translator.
-</P><PRE
-CLASS="PROGRAMLISTING"
->#. automatic comment
+</p>
+<pre class="programlisting">#. automatic comment
 #: filename.c:1023
-#, flags, flags</PRE
-><P>
+#, flags, flags</pre>
+<p>
     The #. style comments are extracted from the source file where the
     message is used.  Possibly the programmer has inserted information
     for the translator, such as about expected alignment.  The #:
@@ -324,190 +147,91 @@ CLASS="PROGRAMLISTING"
     source, but he can if there is doubt about the correct
     translation.  The #, comments contain flags that describe the
     message in some way.  There are currently two flags:
-    <TT
-CLASS="LITERAL"
->fuzzy</TT
-> is set if the message has possibly been
+    <tt class="literal">fuzzy</tt> is set if the message has possibly been
     outdated because of changes in the program source.  The translator
     can then verify this and possibly remove the fuzzy flag.  Note
     that fuzzy messages are not made available to the end user.  The
-    other flag is <TT
-CLASS="LITERAL"
->c-format</TT
->, which indicates that
-    the message is a <CODE
-CLASS="FUNCTION"
->printf</CODE
->-style format
+    other flag is <tt class="literal">c-format</tt>, which indicates that
+    the message is a <tt class="function">printf</tt>-style format
     template.  This means that the translation should also be a format
     string with the same number and type of placeholders.  There are
     tools that can verify this, which key off the c-format flag.
-   </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN55675"
->44.1.3. Creating and maintaining message catalogs</A
-></H2
-><P
->    OK, so how does one create a <SPAN
-CLASS="QUOTE"
->"blank"</SPAN
-> message
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2737390"></a>44.1.3. Creating and maintaining message catalogs</h3></div></div>
+<div></div>
+</div>
+<p>    OK, so how does one create a &#8220;<span class="quote">blank</span>&#8221; message
     catalog?  First, go into the directory that contains the program
     whose messages you want to translate.  If there is a file
-    <TT
-CLASS="FILENAME"
->nls.mk</TT
->, then this program has been prepared
+    <tt class="filename">nls.mk</tt>, then this program has been prepared
     for translation.
-   </P
-><P
->    If there are already some <TT
-CLASS="FILENAME"
->.po</TT
-> files, then
+   </p>
+<p>    If there are already some <tt class="filename">.po</tt> files, then
     someone has already done some translation work.  The files are
-    named <TT
-CLASS="FILENAME"
-><VAR
-CLASS="REPLACEABLE"
->language</VAR
->.po</TT
->,
-    where <VAR
-CLASS="REPLACEABLE"
->language</VAR
-> is the <A
-HREF="http://lcweb.loc.gov/standards/iso639-2/englangn.html"
-TARGET="_top"
->ISO
-    639-1</A
-> two-letter language code (in lower case), e.g.,
-    <TT
-CLASS="FILENAME"
->fr.po</TT
-> for French.  If there is really a need
+    named <tt class="filename"><i class="replaceable"><tt>language</tt></i>.po</tt>,
+    where <i class="replaceable"><tt>language</tt></i> is the <a href="http://lcweb.loc.gov/standards/iso639-2/englangn.html" target="_top">ISO
+    639-1</a> two-letter language code (in lower case), e.g.,
+    <tt class="filename">fr.po</tt> for French.  If there is really a need
     for more than one translation effort per language then the files
     may also be named
-    <TT
-CLASS="FILENAME"
-><VAR
-CLASS="REPLACEABLE"
->language</VAR
->_<VAR
-CLASS="REPLACEABLE"
->region</VAR
->.po</TT
->
-    where <VAR
-CLASS="REPLACEABLE"
->region</VAR
-> is the <A
-HREF="http://www.din.de/gremien/nas/nabd/iso3166ma/codlstp1/en_listp1.html"
-TARGET="_top"
->ISO
-    3166-1</A
-> two-letter country code (in upper case), e.g.,
-    <TT
-CLASS="FILENAME"
->pt_BR.po</TT
-> for Portuguese in Brazil.  If you
+    <tt class="filename"><i class="replaceable"><tt>language</tt></i>_<i class="replaceable"><tt>region</tt></i>.po</tt>
+    where <i class="replaceable"><tt>region</tt></i> is the <a href="http://www.din.de/gremien/nas/nabd/iso3166ma/codlstp1/en_listp1.html" target="_top">ISO
+    3166-1</a> two-letter country code (in upper case), e.g.,
+    <tt class="filename">pt_BR.po</tt> for Portuguese in Brazil.  If you
     find the language you wanted you can just start working on that
     file.
-   </P
-><P
->    If you need to start a new translation effort, then first run the
+   </p>
+<p>    If you need to start a new translation effort, then first run the
     command
-</P><PRE
-CLASS="PROGRAMLISTING"
->gmake init-po</PRE
-><P>
+</p>
+<pre class="programlisting">gmake init-po</pre>
+<p>
     This will create a file
-    <TT
-CLASS="FILENAME"
-><VAR
-CLASS="REPLACEABLE"
->progname</VAR
->.pot</TT
->.
-    (<TT
-CLASS="FILENAME"
->.pot</TT
-> to distinguish it from PO files that
-    are <SPAN
-CLASS="QUOTE"
->"in production"</SPAN
->. The <TT
-CLASS="LITERAL"
->T</TT
-> stands for
-    <SPAN
-CLASS="QUOTE"
->"template"</SPAN
->.)
+    <tt class="filename"><i class="replaceable"><tt>progname</tt></i>.pot</tt>.
+    (<tt class="filename">.pot</tt> to distinguish it from PO files that
+    are &#8220;<span class="quote">in production</span>&#8221;. The <tt class="literal">T</tt> stands for
+    &#8220;<span class="quote">template</span>&#8221;.)
     Copy this file to
-    <TT
-CLASS="FILENAME"
-><VAR
-CLASS="REPLACEABLE"
->language</VAR
->.po</TT
-> and
+    <tt class="filename"><i class="replaceable"><tt>language</tt></i>.po</tt> and
     edit it.  To make it known that the new language is available,
-    also edit the file <TT
-CLASS="FILENAME"
->nls.mk</TT
-> and add the
+    also edit the file <tt class="filename">nls.mk</tt> and add the
     language (or language and country) code to the line that looks like:
-</P><PRE
-CLASS="PROGRAMLISTING"
->AVAIL_LANGUAGES := de fr</PRE
-><P>
+</p>
+<pre class="programlisting">AVAIL_LANGUAGES := de fr</pre>
+<p>
     (Other languages may appear, of course.)
-   </P
-><P
->    As the underlying program or library changes, messages may be
+   </p>
+<p>    As the underlying program or library changes, messages may be
     changed or added by the programmers.  In this case you do not need
     to start from scratch.  Instead, run the command
-</P><PRE
-CLASS="PROGRAMLISTING"
->gmake update-po</PRE
-><P>
+</p>
+<pre class="programlisting">gmake update-po</pre>
+<p>
     which will create a new blank message catalog file (the pot file
     you started with) and will merge it with the existing PO files.
     If the merge algorithm is not sure about a particular message it
-    marks it <SPAN
-CLASS="QUOTE"
->"fuzzy"</SPAN
-> as explained above.  For the case
+    marks it &#8220;<span class="quote">fuzzy</span>&#8221; as explained above.  For the case
     where something went really wrong, the old PO file is saved with a
-    <TT
-CLASS="FILENAME"
->.po.old</TT
-> extension.
-   </P
-></DIV
-><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN55709"
->44.1.4. Editing the PO files</A
-></H2
-><P
->    The PO files can be edited with a regular text editor.  The
+    <tt class="filename">.po.old</tt> extension.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage">
+<div><div><h3 class="title">
+<a name="id2737569"></a>44.1.4. Editing the PO files</h3></div></div>
+<div></div>
+</div>
+<p>    The PO files can be edited with a regular text editor.  The
     translator should only change the area between the quotes after
     the msgstr directive, may add comments and alter the fuzzy flag.
     There is (unsurprisingly) a PO mode for Emacs, which I find quite
     useful.
-   </P
-><P
->    The PO files need not be completely filled in.  The software will
+   </p>
+<p>    The PO files need not be completely filled in.  The software will
     automatically fall back to the original string if no translation
     (or an empty translation) is available.  It is no problem to
     submit incomplete translations for inclusions in the source tree;
@@ -516,155 +240,57 @@ NAME="AEN55709"
     after doing a merge.  Remember that fuzzy entries will not be
     installed; they only serve as reference what might be the right
     translation.
-   </P
-><P
->    Here are some things to keep in mind while editing the
+   </p>
+<p>    Here are some things to keep in mind while editing the
     translations:
-    <P
-></P
-></P><UL
-><LI
-><P
->       Make sure that if the original ends with a newline, the
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       Make sure that if the original ends with a newline, the
        translation does, too.  Similarly for tabs, etc.
-      </P
-></LI
-><LI
-><P
->       If the original is a <CODE
-CLASS="FUNCTION"
->printf</CODE
-> format string, the translation
+      </p></li>
+<li>
+<p>       If the original is a <tt class="function">printf</tt> format string, the translation
        also needs to be.  The translation also needs to have the same
        format specifiers in the same order.  Sometimes the natural
        rules of the language make this impossible or at least awkward.
        In that case you can modify the format specifiers like this:
-</P><PRE
-CLASS="PROGRAMLISTING"
->msgstr "Die Datei %2$s hat %1$u Zeichen."</PRE
-><P>
+</p>
+<pre class="programlisting">msgstr "Die Datei %2$s hat %1$u Zeichen."</pre>
+<p>
        Then the first placeholder will actually use the second
        argument from the list.  The
-       <TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->digits</VAR
->$</TT
-> needs to
+       <tt class="literal"><i class="replaceable"><tt>digits</tt></i>$</tt> needs to
        follow the % immediately, before any other format manipulators.
-       (This feature really exists in the <CODE
-CLASS="FUNCTION"
->printf</CODE
->
+       (This feature really exists in the <tt class="function">printf</tt>
        family of functions.  You may not have heard of it before because
        there is little use for it outside of message
        internationalization.)
-      </P
-></LI
-><LI
-><P
->       If the original string contains a linguistic mistake, report
+      </p>
+</li>
+<li><p>       If the original string contains a linguistic mistake, report
        that (or fix it yourself in the program source) and translate
        normally.  The corrected string can be merged in when the
        program sources have been updated.  If the original string
        contains a factual mistake, report that (or fix it yourself)
        and do not translate it.  Instead, you may mark the string with
        a comment in the PO file.
-      </P
-></LI
-><LI
-><P
->       Maintain the style and tone of the original string.
-       Specifically, messages that are not sentences (<TT
-CLASS="LITERAL"
->cannot
-       open file %s</TT
->) should probably not start with a
+      </p></li>
+<li><p>       Maintain the style and tone of the original string.
+       Specifically, messages that are not sentences (<tt class="literal">cannot
+       open file %s</tt>) should probably not start with a
        capital letter (if your language distinguishes letter case) or
        end with a period (if your language uses punctuation marks).
-       It may help to read <A
-HREF="error-style-guide.html"
->Section 43.3</A
->.
-      </P
-></LI
-><LI
-><P
->       If you don't know what a message means, or if it is ambiguous,
+       It may help to read <a href="error-style-guide.html" title="43.3. Error Message Style Guide">Section 43.3, &#8220;Error Message Style Guide&#8221;</a>.
+      </p></li>
+<li><p>       If you don't know what a message means, or if it is ambiguous,
        ask on the developers' mailing list.  Chances are that English
        speaking end users might also not understand it or find it
        ambiguous, so it's best to improve the message.
-      </P
-></LI
-></UL
-><P>
-   </P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="error-style-guide.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="nls-programmer.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Error Message Style Guide</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="internals.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->For the Programmer</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </p></li>
+</ul></div>
+<p>
+   </p>
+</div>
+</div>
+</div></body>
+</html>

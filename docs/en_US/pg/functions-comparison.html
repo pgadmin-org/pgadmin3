@@ -1,515 +1,173 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Comparison Operators</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
-REL="PREVIOUS"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
-REL="NEXT"
-TITLE="Mathematical Functions and Operators"
-HREF="functions-math.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 9. Functions and Operators</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-math.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="FUNCTIONS-COMPARISON"
->9.2. Comparison Operators</A
-></H1
-><A
-NAME="AEN5876"
-></A
-><P
->    The usual comparison operators are available, shown in <A
-HREF="functions-comparison.html#FUNCTIONS-COMPARISON-TABLE"
->Table 9-1</A
->.
-   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-COMPARISON-TABLE"
-></A
-><P
-><B
->Table 9-1. Comparison Operators</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><THEAD
-><TR
-><TH
->Operator</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->&lt;</TT
-> </TD
-><TD
->less than</TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->&gt;</TT
-> </TD
-><TD
->greater than</TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->&lt;=</TT
-> </TD
-><TD
->less than or equal to</TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->&gt;=</TT
-> </TD
-><TD
->greater than or equal to</TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->=</TT
-> </TD
-><TD
->equal</TD
-></TR
-><TR
-><TD
-> <TT
-CLASS="LITERAL"
->&lt;&gt;</TT
-> or <TT
-CLASS="LITERAL"
->!=</TT
-> </TD
-><TD
->not equal</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     The <TT
-CLASS="LITERAL"
->!=</TT
-> operator is converted to
-     <TT
-CLASS="LITERAL"
->&lt;&gt;</TT
-> in the parser stage.  It is not
-     possible to implement <TT
-CLASS="LITERAL"
->!=</TT
-> and
-     <TT
-CLASS="LITERAL"
->&lt;&gt;</TT
-> operators that do different things.
-    </P
-></BLOCKQUOTE
-></DIV
-><P
->    Comparison operators are available for all data types where this
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.2. Comparison Operators</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="previous" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="next" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="functions-comparison"></a>9.2. Comparison Operators</h2></div></div>
+<div></div>
+</div>
+<a name="id2540208"></a><p>    The usual comparison operators are available, shown in <a href="functions-comparison.html#functions-comparison-table" title="Table 9.1. Comparison Operators">Table 9.1, &#8220;Comparison Operators&#8221;</a>.
+   </p>
+<div class="table">
+<a name="functions-comparison-table"></a><p class="title"><b>Table 9.1. Comparison Operators</b></p>
+<table summary="Comparison Operators" border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Operator</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal">&lt;</tt></td>
+<td>less than</td>
+</tr>
+<tr>
+<td><tt class="literal">&gt;</tt></td>
+<td>greater than</td>
+</tr>
+<tr>
+<td><tt class="literal">&lt;=</tt></td>
+<td>less than or equal to</td>
+</tr>
+<tr>
+<td><tt class="literal">&gt;=</tt></td>
+<td>greater than or equal to</td>
+</tr>
+<tr>
+<td><tt class="literal">=</tt></td>
+<td>equal</td>
+</tr>
+<tr>
+<td>
+<tt class="literal">&lt;&gt;</tt> or <tt class="literal">!=</tt>
+</td>
+<td>not equal</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     The <tt class="literal">!=</tt> operator is converted to
+     <tt class="literal">&lt;&gt;</tt> in the parser stage.  It is not
+     possible to implement <tt class="literal">!=</tt> and
+     <tt class="literal">&lt;&gt;</tt> operators that do different things.
+    </p>
+</div>
+<p>    Comparison operators are available for all data types where this
     makes sense.  All comparison operators are binary operators that
-    return values of type <TT
-CLASS="TYPE"
->boolean</TT
->; expressions like
-    <TT
-CLASS="LITERAL"
->1 &lt; 2 &lt; 3</TT
-> are not valid (because there is
-    no <TT
-CLASS="LITERAL"
->&lt;</TT
-> operator to compare a Boolean value with
-    <TT
-CLASS="LITERAL"
->3</TT
->).
-   </P
-><P
->    <A
-NAME="AEN5926"
-></A
->
+    return values of type <tt class="type">boolean</tt>; expressions like
+    <tt class="literal">1 &lt; 2 &lt; 3</tt> are not valid (because there is
+    no <tt class="literal">&lt;</tt> operator to compare a Boolean value with
+    <tt class="literal">3</tt>).
+   </p>
+<p>    <a name="id2540384"></a>
     In addition to the comparison operators, the special
-    <TT
-CLASS="TOKEN"
->BETWEEN</TT
-> construct is available.<A
-NAME="AEN5929"
-></A
->
-</P><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->a</VAR
-> BETWEEN <VAR
-CLASS="REPLACEABLE"
->x</VAR
-> AND <VAR
-CLASS="REPLACEABLE"
->y</VAR
-></PRE
-><P>
+    <tt class="token">BETWEEN</tt> construct is available.<a name="id2540396"></a>
+</p>
+<pre class="synopsis"><i class="replaceable"><tt>a</tt></i> BETWEEN <i class="replaceable"><tt>x</tt></i> AND <i class="replaceable"><tt>y</tt></i></pre>
+<p>
     is equivalent to
-</P><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->a</VAR
-> &gt;= <VAR
-CLASS="REPLACEABLE"
->x</VAR
-> AND <VAR
-CLASS="REPLACEABLE"
->a</VAR
-> &lt;= <VAR
-CLASS="REPLACEABLE"
->y</VAR
-></PRE
-><P>
+</p>
+<pre class="synopsis"><i class="replaceable"><tt>a</tt></i> &gt;= <i class="replaceable"><tt>x</tt></i> AND <i class="replaceable"><tt>a</tt></i> &lt;= <i class="replaceable"><tt>y</tt></i></pre>
+<p>
     Similarly,
-</P><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->a</VAR
-> NOT BETWEEN <VAR
-CLASS="REPLACEABLE"
->x</VAR
-> AND <VAR
-CLASS="REPLACEABLE"
->y</VAR
-></PRE
-><P>
+</p>
+<pre class="synopsis"><i class="replaceable"><tt>a</tt></i> NOT BETWEEN <i class="replaceable"><tt>x</tt></i> AND <i class="replaceable"><tt>y</tt></i></pre>
+<p>
     is equivalent to
-</P><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->a</VAR
-> &lt; <VAR
-CLASS="REPLACEABLE"
->x</VAR
-> OR <VAR
-CLASS="REPLACEABLE"
->a</VAR
-> &gt; <VAR
-CLASS="REPLACEABLE"
->y</VAR
-></PRE
-><P>
+</p>
+<pre class="synopsis"><i class="replaceable"><tt>a</tt></i> &lt; <i class="replaceable"><tt>x</tt></i> OR <i class="replaceable"><tt>a</tt></i> &gt; <i class="replaceable"><tt>y</tt></i></pre>
+<p>
     There is no difference between the two respective forms apart from
-    the <ACRONYM
-CLASS="ACRONYM"
->CPU</ACRONYM
-> cycles required to rewrite the first one
+    the <span class="acronym">CPU</span> cycles required to rewrite the first one
     into the second one internally.
-   </P
-><P
->    To check whether a value is or is not null, use the constructs
-</P><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> IS NULL
-<VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> IS NOT NULL</PRE
-><P>
+   </p>
+<p>    <a name="id2540474"></a>
+    <a name="id2540481"></a>
+    <a name="id2540488"></a>
+    <a name="id2540495"></a>
+    To check whether a value is or is not null, use the constructs
+</p>
+<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> IS NULL
+<i class="replaceable"><tt>expression</tt></i> IS NOT NULL</pre>
+<p>
     or the equivalent, but nonstandard, constructs
-</P><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> ISNULL
-<VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> NOTNULL</PRE
-><P>
-    <A
-NAME="AEN5957"
-></A
->
-   </P
-><P
->    Do <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> write
-    <TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> = NULL</TT
->
-    because <TT
-CLASS="LITERAL"
->NULL</TT
-> is not <SPAN
-CLASS="QUOTE"
->"equal to"</SPAN
->
-    <TT
-CLASS="LITERAL"
->NULL</TT
->.  (The null value represents an unknown value,
+</p>
+<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> ISNULL
+<i class="replaceable"><tt>expression</tt></i> NOTNULL</pre>
+<p>
+    <a name="id2540528"></a>
+   </p>
+<p>    Do <span class="emphasis"><em>not</em></span> write
+    <tt class="literal"><i class="replaceable"><tt>expression</tt></i> = NULL</tt>
+    because <tt class="literal">NULL</tt> is not &#8220;<span class="quote">equal to</span>&#8221;
+    <tt class="literal">NULL</tt>.  (The null value represents an unknown value,
     and it is not known whether two unknown values are equal.) This
     behavior conforms to the SQL standard.
-   </P
-><P
->    Some applications may expect that
-    <TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> = NULL</TT
->
-    returns true if <VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> evaluates to
+   </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>    Some applications may expect that
+    <tt class="literal"><i class="replaceable"><tt>expression</tt></i> = NULL</tt>
+    returns true if <i class="replaceable"><tt>expression</tt></i> evaluates to
     the null value.  It is highly recommended that these applications
     be modified to comply with the SQL standard. However, if that
-    cannot be done the <A
-HREF="runtime-config.html#GUC-TRANSFORM-NULL-EQUALS"
->transform_null_equals</A
->
+    cannot be done the <a href="runtime-config.html#guc-transform-null-equals">transform_null_equals</a>
     configuration variable is available. If it is enabled,
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> will convert <TT
-CLASS="LITERAL"
->x =
-    NULL</TT
-> clauses to <TT
-CLASS="LITERAL"
->x IS NULL</TT
->.  This was
-    the default behavior in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+    <span class="productname">PostgreSQL</span> will convert <tt class="literal">x =
+    NULL</tt> clauses to <tt class="literal">x IS NULL</tt>.  This was
+    the default behavior in <span class="productname">PostgreSQL</span>
     releases 6.5 through 7.1.
-   </P
-><P
->    Boolean values can also be tested using the constructs
-</P><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> IS TRUE
-<VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> IS NOT TRUE
-<VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> IS FALSE
-<VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> IS NOT FALSE
-<VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> IS UNKNOWN
-<VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> IS NOT UNKNOWN</PRE
-><P>
-    These are similar to <TT
-CLASS="LITERAL"
->IS NULL</TT
-> in that they will
-    always return true or false, never a null value, even when the operand is null.
-    A null input is treated as the logical value <SPAN
-CLASS="QUOTE"
->"unknown"</SPAN
->.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-math.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Functions and Operators</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Mathematical Functions and Operators</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+<p>    <a name="id2540625"></a>
+    The ordinary comparison operators yield null (signifying &#8220;<span class="quote">unknown</span>&#8221;)
+    when either input is null.  Another way to do comparisons is with the
+    <tt class="literal">IS DISTINCT FROM</tt> construct:
+</p>
+<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> IS DISTINCT FROM <i class="replaceable"><tt>expression</tt></i></pre>
+<p>
+    For non-null inputs this is the same as the <tt class="literal">&lt;&gt;</tt> operator.
+    However, when both inputs are null it will return false, and when just
+    one input is null it will return true.  Thus it effectively acts as though
+    null were a normal data value, rather than &#8220;<span class="quote">unknown</span>&#8221;.
+   </p>
+<p>    <a name="id2540672"></a>
+    <a name="id2540679"></a>
+    <a name="id2540685"></a>
+    <a name="id2540692"></a>
+    <a name="id2540699"></a>
+    <a name="id2540706"></a>
+    Boolean values can also be tested using the constructs
+</p>
+<pre class="synopsis"><i class="replaceable"><tt>expression</tt></i> IS TRUE
+<i class="replaceable"><tt>expression</tt></i> IS NOT TRUE
+<i class="replaceable"><tt>expression</tt></i> IS FALSE
+<i class="replaceable"><tt>expression</tt></i> IS NOT FALSE
+<i class="replaceable"><tt>expression</tt></i> IS UNKNOWN
+<i class="replaceable"><tt>expression</tt></i> IS NOT UNKNOWN</pre>
+<p>
+    These will always return true or false, never a null value, even when the
+    operand is null.
+    A null input is treated as the logical value &#8220;<span class="quote">unknown</span>&#8221;.
+    Notice that <tt class="literal">IS UNKNOWN</tt> and <tt class="literal">IS NOT UNKNOWN</tt> are
+    effectively the same as <tt class="literal">IS NULL</tt> and
+    <tt class="literal">IS NOT NULL</tt>, respectively, except that the input
+    expression must be of Boolean type.
+   </p>
+</div></body>
+</html>

@@ -1,299 +1,100 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Genetic Query Optimizer</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Internals"
-HREF="internals.html"><LINK
-REL="PREVIOUS"
-TITLE="Writing A Procedural Language Handler"
-HREF="plhandler.html"><LINK
-REL="NEXT"
-TITLE="Genetic Algorithms"
-HREF="geqo-intro2.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plhandler.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plhandler.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexcost.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="geqo-intro2.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="GEQO"
-></A
->Chapter 46. Genetic Query Optimizer</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->46.1. <A
-HREF="geqo.html#GEQO-INTRO"
->Query Handling as a Complex Optimization Problem</A
-></DT
-><DT
->46.2. <A
-HREF="geqo-intro2.html"
->Genetic Algorithms</A
-></DT
-><DT
->46.3. <A
-HREF="geqo-pg-intro.html"
->Genetic Query Optimization (<ACRONYM
-CLASS="ACRONYM"
->GEQO</ACRONYM
->) in PostgreSQL</A
-></DT
-><DT
->46.4. <A
-HREF="geqo-biblio.html"
->Further Readings</A
-></DT
-></DL
-></DIV
-><P
->   </P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Author: </B
->     Written by Martin Utesch (<CODE
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:utesch@aut.tu-freiberg.de"
->utesch@aut.tu-freiberg.de</A
->&#62;</CODE
->)
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 46. Genetic Query Optimizer</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="internals.html" title="Part VII. Internals">
+<link rel="previous" href="plhandler.html" title="Chapter 45. Writing A Procedural Language Handler">
+<link rel="next" href="geqo-intro2.html" title="46.2. Genetic Algorithms">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="geqo">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="geqo"></a>Chapter 46. Genetic Query Optimizer</h2></div>
+<div><div class="author">
+<h3 class="author">
+<span class="firstname">Martin</span> <span class="surname">Utesch</span>
+</h3>
+<div class="affiliation">
+<span class="orgname">      University of Mining and Technology
+     <br></span><span class="orgdiv">      Institute of Automatic Control
+     <br></span><div class="address"><p>      <span class="city">       Freiberg<br>
+      </span><br>
+      <span class="country">       Germany<br>
+      </span><br>
+     </p></div>
+</div>
+</div></div>
+</div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="geqo.html#geqo-intro">46.1. Query Handling as a Complex Optimization Problem</a></span></dt>
+<dt><span class="sect1"><a href="geqo-intro2.html">46.2. Genetic Algorithms</a></span></dt>
+<dt><span class="sect1"><a href="geqo-pg-intro.html">46.3. Genetic Query Optimization (GEQO) in PostgreSQL</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="geqo-pg-intro.html#geqo-future">46.3.1. Future Implementation Tasks for
+    PostgreSQL GEQO</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="geqo-biblio.html">46.4. Further Readings</a></span></dt>
+</dl>
+</div>
+<p>   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Author</h3>
+<p>     Written by Martin Utesch (<tt class="email">&lt;<a href="mailto:utesch@aut.tu-freiberg.de">utesch@aut.tu-freiberg.de</a>&gt;</tt>)
      for the Institute of Automatic Control at the University of Mining and Technology in Freiberg, Germany.
-    </P
-></BLOCKQUOTE
-></DIV
-><P>
-  </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="GEQO-INTRO"
->46.1. Query Handling as a Complex Optimization Problem</A
-></H1
-><P
->    Among all relational operators the most difficult one to process
-    and optimize is the <I
-CLASS="FIRSTTERM"
->join</I
->. The number of
+    </p>
+</div>
+<p>
+  </p>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="geqo-intro"></a>46.1. Query Handling as a Complex Optimization Problem</h2></div></div>
+<div></div>
+</div>
+<p>    Among all relational operators the most difficult one to process
+    and optimize is the <i class="firstterm">join</i>. The number of
     alternative plans to answer a query grows exponentially with the
     number of joins included in it. Further optimization effort is
-    caused by the support of a variety of <I
-CLASS="FIRSTTERM"
->join
-    methods</I
-> (e.g., nested loop, hash join, merge join in
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->) to process individual joins
-    and a diversity of <I
-CLASS="FIRSTTERM"
->indexes</I
-> (e.g., R-tree,
-    B-tree, hash in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->) as access
+    caused by the support of a variety of <i class="firstterm">join
+    methods</i> (e.g., nested loop, hash join, merge join in
+    <span class="productname">PostgreSQL</span>) to process individual joins
+    and a diversity of <i class="firstterm">indexes</i> (e.g., R-tree,
+    B-tree, hash in <span class="productname">PostgreSQL</span>) as access
     paths for relations.
-   </P
-><P
->    The current <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> optimizer
-    implementation performs a <I
-CLASS="FIRSTTERM"
->near-exhaustive
-    search</I
-> over the space of alternative strategies. This
-    algorithm, first introduced in the <SPAN
-CLASS="QUOTE"
->"System R"</SPAN
->
+   </p>
+<p>    The current <span class="productname">PostgreSQL</span> optimizer
+    implementation performs a <i class="firstterm">near-exhaustive
+    search</i> over the space of alternative strategies. This
+    algorithm, first introduced in the &#8220;<span class="quote">System R</span>&#8221;
     database, produces a near-optimal join order, but can take an
     enormous amount of time and memory space when the number of joins
     in the query grows large. This makes the ordinary
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> query optimizer
+    <span class="productname">PostgreSQL</span> query optimizer
     inappropriate for database application domains that involve the
     need for extensive queries, such as artificial intelligence.
-   </P
-><P
->    The Institute of Automatic Control at the University of Mining and
+   </p>
+<p>    The Institute of Automatic Control at the University of Mining and
     Technology, in Freiberg, Germany, encountered the described problems as its
-    folks wanted to take the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> DBMS as the backend for a decision
+    folks wanted to take the <span class="productname">PostgreSQL</span> DBMS as the backend for a decision
     support knowledge based system for the maintenance of an electrical
     power grid. The DBMS needed to handle large join queries for the
     inference machine of the knowledge based system.
-   </P
-><P
->    Performance difficulties in exploring the space of possible query
+   </p>
+<p>    Performance difficulties in exploring the space of possible query
     plans created the demand for a new optimization technique to be developed.
-   </P
-><P
->    In the following we describe the implementation of a
-    <I
-CLASS="FIRSTTERM"
->Genetic Algorithm</I
-> to solve the join
+   </p>
+<p>    In the following we describe the implementation of a
+    <i class="firstterm">Genetic Algorithm</i> to solve the join
     ordering problem in a manner that is efficient for queries
     involving large numbers of joins.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plhandler.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="geqo-intro2.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Writing A Procedural Language Handler</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="internals.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Genetic Algorithms</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div>
+</div></body>
+</html>

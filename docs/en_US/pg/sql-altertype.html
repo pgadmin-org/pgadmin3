@@ -1,284 +1,69 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->ALTER TYPE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="ALTER TRIGGER"
-HREF="sql-altertrigger.html"><LINK
-REL="NEXT"
-TITLE="ALTER USER"
-HREF="sql-alteruser.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertrigger.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertrigger.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alteruser.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alteruser.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ALTERTYPE"
-></A
->ALTER TYPE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN35966"
-></A
-><H2
->Name</H2
->   ALTER TYPE
-  &nbsp;--&nbsp;   change the definition of a type
-  </DIV
-><A
-NAME="AEN35969"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN35971"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ALTER TYPE <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> OWNER TO <VAR
-CLASS="REPLACEABLE"
->new_owner</VAR
-> 
-  </PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35975"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ALTER TYPE</TT
-> changes the definition of an existing type.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER TYPE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-altertrigger.html" title="ALTER TRIGGER">
+<link rel="next" href="sql-alteruser.html" title="ALTER USER">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-altertype"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>   ALTER TYPE
+   &#8212;    change the definition of a type
+  </p>
+</div>
+<a name="id2664950"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER TYPE <i class="replaceable"><tt>name</tt></i> OWNER TO <i class="replaceable"><tt>new_owner</tt></i> 
+  </pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2664978"></a><h2>Description</h2>
+<p>   <tt class="command">ALTER TYPE</tt> changes the definition of an existing type.
    The only currently available capability is changing the owner of a type.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35979"
-></A
-><H2
->Parameters</H2
-><P
->    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->name</VAR
-></DT
-><DD
-><P
->        The name (possibly schema-qualified) of an existing type to
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2664991"></a><h2>Parameters</h2>
+<p>    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dd><p>        The name (possibly schema-qualified) of an existing type to
         alter.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->new_owner</VAR
-></DT
-><DD
-><P
->        The user name of the new owner of the type.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>new_owner</tt></i></span></dt>
+<dd><p>        The user name of the new owner of the type.
         You must be a superuser to change a type's owner.
-       </P
-></DD
-></DL
-></DIV
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35993"
-></A
-><H2
->Examples</H2
-><P
-> 
-   To change the owner of the user-defined type <TT
-CLASS="LITERAL"
->email</TT
->
-   to <TT
-CLASS="LITERAL"
->joe</TT
->:
-   </P><PRE
-CLASS="PROGRAMLISTING"
->ALTER TYPE email OWNER TO joe;
-   </PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN35999"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->ALTER TYPE</TT
-> statement in the SQL
+       </p></dd>
+</dl></div>
+<p>
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2665023"></a><h2>Examples</h2>
+<p> 
+   To change the owner of the user-defined type <tt class="literal">email</tt>
+   to <tt class="literal">joe</tt>:
+   </p>
+<pre class="programlisting">ALTER TYPE email OWNER TO joe;
+   </pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2665047"></a><h2>Compatibility</h2>
+<p>   There is no <tt class="command">ALTER TYPE</tt> statement in the SQL
    standard.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-altertrigger.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alteruser.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->ALTER TRIGGER</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->ALTER USER</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

@@ -1,323 +1,76 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->DROP TRIGGER</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="DROP TABLESPACE"
-HREF="sql-droptablespace.html"><LINK
-REL="NEXT"
-TITLE="DROP TYPE"
-HREF="sql-droptype.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-droptablespace.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-droptablespace.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-droptype.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-droptype.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-DROPTRIGGER"
-></A
->DROP TRIGGER</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN41070"
-></A
-><H2
->Name</H2
->DROP TRIGGER&nbsp;--&nbsp;remove a trigger</DIV
-><A
-NAME="AEN41073"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN41075"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->DROP TRIGGER <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> ON <VAR
-CLASS="REPLACEABLE"
->table</VAR
-> [ CASCADE | RESTRICT ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41079"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->DROP TRIGGER</TT
-> will remove an existing
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP TRIGGER</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-droptablespace.html" title="DROP TABLESPACE">
+<link rel="next" href="sql-droptype.html" title="DROP TYPE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-droptrigger"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP TRIGGER &#8212; remove a trigger</p>
+</div>
+<a name="id2685760"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP TRIGGER <i class="replaceable"><tt>name</tt></i> ON <i class="replaceable"><tt>table</tt></i> [ CASCADE | RESTRICT ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685787"></a><h2>Description</h2>
+<p>   <tt class="command">DROP TRIGGER</tt> will remove an existing
    trigger definition. To execute this command, the current
    user must be the owner of the table for which the trigger is defined.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41083"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->name</VAR
-></DT
-><DD
-><P
->      The name of the trigger to remove.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->table</VAR
-></DT
-><DD
-><P
->      The name (optionally schema-qualified) of the table for which
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685802"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dd><p>      The name of the trigger to remove.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
+<dd><p>      The name (optionally schema-qualified) of the table for which
       the trigger is defined.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->CASCADE</TT
-></DT
-><DD
-><P
->      Automatically drop objects that depend on the trigger.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->RESTRICT</TT
-></DT
-><DD
-><P
->      Refuse to drop the trigger if any objects depend on it.  This is
+     </p></dd>
+<dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
+<dd><p>      Automatically drop objects that depend on the trigger.
+     </p></dd>
+<dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
+<dd><p>      Refuse to drop the trigger if any objects depend on it.  This is
       the default.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-DROPTRIGGER-EXAMPLES"
-></A
-><H2
->Examples</H2
-><P
->   Destroy the trigger <TT
-CLASS="LITERAL"
->if_dist_exists</TT
-> on the table
-   <TT
-CLASS="LITERAL"
->films</TT
->:
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-droptrigger-examples"></a><h2>Examples</h2>
+<p>   Destroy the trigger <tt class="literal">if_dist_exists</tt> on the table
+   <tt class="literal">films</tt>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DROP TRIGGER if_dist_exists ON films;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-DROPTRIGGER-COMPATIBILITY"
-></A
-><H2
->Compatibility</H2
-><P
->   The <TT
-CLASS="COMMAND"
->DROP TRIGGER</TT
-> statement in
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> is incompatible with the SQL
+</p>
+<pre class="programlisting">DROP TRIGGER if_dist_exists ON films;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-droptrigger-compatibility"></a><h2>Compatibility</h2>
+<p>   The <tt class="command">DROP TRIGGER</tt> statement in
+   <span class="productname">PostgreSQL</span> is incompatible with the SQL
    standard.  In the SQL standard, trigger names are not local to
-   tables, so the command is simply <TT
-CLASS="LITERAL"
->DROP TRIGGER
-   <VAR
-CLASS="REPLACEABLE"
->name</VAR
-></TT
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41119"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-createtrigger.html"
-><I
->CREATE TRIGGER</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-droptablespace.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-droptype.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->DROP TABLESPACE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->DROP TYPE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   tables, so the command is simply <tt class="literal">DROP TRIGGER
+   <i class="replaceable"><tt>name</tt></i></tt>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685916"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createtrigger.html">CREATE TRIGGER</a></span>
+</div>
+</div></body>
+</html>

@@ -1,362 +1,131 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->CVS Tree Organization</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The CVS Repository"
-HREF="cvs.html"><LINK
-REL="PREVIOUS"
-TITLE="The CVS Repository"
-HREF="cvs.html"><LINK
-REL="NEXT"
-TITLE="Getting The Source Via CVSup"
-HREF="cvsup.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="cvs.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="cvs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Appendix F. The <SPAN
-CLASS="PRODUCTNAME"
->CVS</SPAN
-> Repository</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="cvs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="cvsup.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CVS-TREE"
->F.2. <SPAN
-CLASS="PRODUCTNAME"
->CVS</SPAN
-> Tree Organization</A
-></H1
-><P
->   </P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Author: </B
->     Written by Marc G. Fournier (<CODE
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:scrappy@hub.org"
->scrappy@hub.org</A
->&#62;</CODE
->) on 1998-11-05
-    </P
-></BLOCKQUOTE
-></DIV
-><P>
-  </P
-><P
->   The command <TT
-CLASS="COMMAND"
->cvs checkout</TT
-> has a flag, <TT
-CLASS="OPTION"
->-r</TT
->,
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>F.2. CVS Tree Organization</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="cvs.html" title="Appendix F. The CVS Repository">
+<link rel="previous" href="cvs.html" title="Appendix F. The CVS Repository">
+<link rel="next" href="cvsup.html" title="F.3. Getting The Source Via CVSup">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="cvs-tree"></a>F.2. <span class="productname">CVS</span> Tree Organization</h2></div></div>
+<div></div>
+</div>
+<p>   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Author</h3>
+<p>     Written by Marc G. Fournier (<tt class="email">&lt;<a href="mailto:scrappy@hub.org">scrappy@hub.org</a>&gt;</tt>) on 1998-11-05
+    </p>
+</div>
+<p>
+  </p>
+<p>   The command <tt class="command">cvs checkout</tt> has a flag, <tt class="option">-r</tt>,
    that lets you check out a
    certain revision of a module.  This flag makes it easy to, for example,
    retrieve the
    sources that make up release 6_4 of the module `tc' at any time in the
    future:
 
-   </P><PRE
-CLASS="PROGRAMLISTING"
->$ cvs checkout -r REL6_4 tc
-   </PRE
-><P>
+   </p>
+<pre class="programlisting">$ cvs checkout -r REL6_4 tc
+   </pre>
+<p>
 
    This is useful, for instance, if someone claims that there is a bug in
    that release, but you cannot find the bug in the current working copy.
 
-   <DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->     You can also check out a module as it was at any given date using the
-     <TT
-CLASS="OPTION"
->-D</TT
-> option.
-    </P
-></BLOCKQUOTE
-></DIV
->
-  </P
-><P
->   When you tag more than one file with the same tag you can think
-   about the tag as <SPAN
-CLASS="QUOTE"
->"a curve drawn through a matrix of filename vs.
-   revision number"</SPAN
->.  Say we have 5 files with the following revisions:
+   </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>     You can also check out a module as it was at any given date using the
+     <tt class="option">-D</tt> option.
+    </p>
+</div>
+<p>
+  </p>
+<p>   When you tag more than one file with the same tag you can think
+   about the tag as &#8220;<span class="quote">a curve drawn through a matrix of filename vs.
+   revision number</span>&#8221;.  Say we have 5 files with the following revisions:
 
-   </P><PRE
-CLASS="PROGRAMLISTING"
->             file1   file2   file3   file4   file5
+   </p>
+<pre class="programlisting">             file1   file2   file3   file4   file5
 
-             1.1     1.1     1.1     1.1  /--1.1*      &#60;-*-  TAG
+             1.1     1.1     1.1     1.1  /--1.1*      &lt;-*-  TAG
              1.2*-   1.2     1.2    -1.2*-
              1.3  \- 1.3*-   1.3   / 1.3
              1.4          \  1.4  /  1.4
                            \-1.5*-   1.5
                              1.6
-   </PRE
-><P>
+   </pre>
+<p>
 
-   then the tag <TT
-CLASS="LITERAL"
->TAG</TT
-> will reference
+   then the tag <tt class="literal">TAG</tt> will reference
    file1-1.2, file2-1.3, etc.
 
-   </P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     For creating a release branch, other then a
-     -b option added to the command, it's the same thing.</P
-></BLOCKQUOTE
-></DIV
-><P>
-  </P
-><P
->   So, to create the 6.4 release
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     For creating a release branch, other then a
+     -b option added to the command, it's the same thing.</p>
+</div>
+<p>
+  </p>
+<p>   So, to create the 6.4 release
    I did the following:
 
-   </P><PRE
-CLASS="PROGRAMLISTING"
->$ cd pgsql
+   </p>
+<pre class="programlisting">$ cd pgsql
 $ cvs tag -b REL6_4
-   </PRE
-><P>
+   </pre>
+<p>
 
    which will create the tag and the branch for the RELEASE tree.
-  </P
-><P
->   For those with <SPAN
-CLASS="PRODUCTNAME"
->CVS</SPAN
-> access, it's simple to
+  </p>
+<p>   For those with <span class="productname">CVS</span> access, it's simple to
    create directories for different versions.
    First, create two subdirectories, RELEASE and CURRENT, so that you don't
    mix up the two.  Then do:
 
-   </P><PRE
-CLASS="PROGRAMLISTING"
->cd RELEASE
+   </p>
+<pre class="programlisting">cd RELEASE
 cvs checkout -P -r REL6_4 pgsql
 cd ../CURRENT
 cvs checkout -P pgsql
-   </PRE
-><P>
+   </pre>
+<p>
 
-   which results in two directory trees, <TT
-CLASS="FILENAME"
->RELEASE/pgsql</TT
-> and
-   <TT
-CLASS="FILENAME"
->CURRENT/pgsql</TT
->. From that point on,
-   <SPAN
-CLASS="PRODUCTNAME"
->CVS</SPAN
->
+   which results in two directory trees, <tt class="filename">RELEASE/pgsql</tt> and
+   <tt class="filename">CURRENT/pgsql</tt>. From that point on,
+   <span class="productname">CVS</span>
    will keep track of which repository branch is in which directory tree, and will
    allow independent updates of either tree.
-  </P
-><P
->   If you are <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->only</I
-></SPAN
-> working on the <TT
-CLASS="LITERAL"
->CURRENT</TT
->
+  </p>
+<p>   If you are <span class="emphasis"><em>only</em></span> working on the <tt class="literal">CURRENT</tt>
    source tree, you just do
    everything as before we started tagging release branches.
-  </P
-><P
->   After you've done the initial checkout on a branch
+  </p>
+<p>   After you've done the initial checkout on a branch
 
-   </P><PRE
-CLASS="PROGRAMLISTING"
->$ cvs checkout -r REL6_4
-   </PRE
-><P>
+   </p>
+<pre class="programlisting">$ cvs checkout -r REL6_4
+   </pre>
+<p>
 
    anything you do within that directory structure is restricted to that
    branch.  If you apply a patch to that directory structure and do a
 
-   </P><PRE
-CLASS="PROGRAMLISTING"
->cvs commit
-   </PRE
-><P>
+   </p>
+<pre class="programlisting">cvs commit
+   </pre>
+<p>
 
    while inside of it, the patch is applied to the branch and
-   <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->only</I
-></SPAN
-> the branch.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="cvs.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="cvsup.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->The <SPAN
-CLASS="PRODUCTNAME"
->CVS</SPAN
-> Repository</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="cvs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Getting The Source Via <SPAN
-CLASS="PRODUCTNAME"
->CVSup</SPAN
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   <span class="emphasis"><em>only</em></span> the branch.
+  </p>
+</div></body>
+</html>

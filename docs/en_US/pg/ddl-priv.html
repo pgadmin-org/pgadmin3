@@ -1,337 +1,86 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Privileges</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Data Definition"
-HREF="ddl.html"><LINK
-REL="PREVIOUS"
-TITLE="Modifying Tables"
-HREF="ddl-alter.html"><LINK
-REL="NEXT"
-TITLE="Schemas"
-HREF="ddl-schemas.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl-alter.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 5. Data Definition</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl-schemas.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="DDL-PRIV"
->5.7. Privileges</A
-></H1
-><A
-NAME="AEN2282"
-></A
-><A
-NAME="AEN2284"
-></A
-><P
->   When you create a database object, you become its owner.  By
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>5.7. Privileges</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
+<link rel="previous" href="ddl-alter.html" title="5.6. Modifying Tables">
+<link rel="next" href="ddl-schemas.html" title="5.8. Schemas">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="ddl-priv"></a>5.7. Privileges</h2></div></div>
+<div></div>
+</div>
+<a name="id2525682"></a><a name="id2525693"></a><p>   When you create a database object, you become its owner.  By
    default, only the owner of an object can do anything with the
    object. In order to allow other users to use it,
-   <I
-CLASS="FIRSTTERM"
->privileges</I
-> must be granted.  (However,
+   <i class="firstterm">privileges</i> must be granted.  (However,
    users that have the superuser attribute can always
    access any object.)
-  </P
-><P
->   There are several different privileges: <TT
-CLASS="LITERAL"
->SELECT</TT
->,
-   <TT
-CLASS="LITERAL"
->INSERT</TT
->, <TT
-CLASS="LITERAL"
->UPDATE</TT
->, <TT
-CLASS="LITERAL"
->DELETE</TT
->,
-   <TT
-CLASS="LITERAL"
->RULE</TT
->, <TT
-CLASS="LITERAL"
->REFERENCES</TT
->, <TT
-CLASS="LITERAL"
->TRIGGER</TT
->,
-   <TT
-CLASS="LITERAL"
->CREATE</TT
->, <TT
-CLASS="LITERAL"
->TEMPORARY</TT
->, <TT
-CLASS="LITERAL"
->EXECUTE</TT
->,
-   and <TT
-CLASS="LITERAL"
->USAGE</TT
->.  The privileges applicable to a particular
+  </p>
+<p>   There are several different privileges: <tt class="literal">SELECT</tt>,
+   <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, <tt class="literal">DELETE</tt>,
+   <tt class="literal">RULE</tt>, <tt class="literal">REFERENCES</tt>, <tt class="literal">TRIGGER</tt>,
+   <tt class="literal">CREATE</tt>, <tt class="literal">TEMPORARY</tt>, <tt class="literal">EXECUTE</tt>,
+   and <tt class="literal">USAGE</tt>.  The privileges applicable to a particular
    object vary depending on the object's type (table, function, etc).
    For complete
    information on the different types of privileges supported by
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, refer to the
-   <A
-HREF="sql-grant.html"
->GRANT</A
-> reference page.  The following sections
+   <span class="productname">PostgreSQL</span>, refer to the
+   <a href="sql-grant.html" title="GRANT"><span class="refentrytitle"><a name="sql-grant-title"></a>GRANT</span></a> reference page.  The following sections
    and chapters will also show you how those privileges are used.
-  </P
-><P
->   The right to modify or destroy an object is always the privilege of
+  </p>
+<p>   The right to modify or destroy an object is always the privilege of
    the owner only.
-  </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->    To change the owner of a table, index, sequence, or view, use the
-    <A
-HREF="sql-altertable.html"
->ALTER TABLE</A
-> command.  There are corresponding
-    <TT
-CLASS="LITERAL"
->ALTER</TT
-> commands for other object types.
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->   To assign privileges, the <TT
-CLASS="COMMAND"
->GRANT</TT
-> command is
-   used. For example, if <TT
-CLASS="LITERAL"
->joe</TT
-> is an existing user, and
-   <TT
-CLASS="LITERAL"
->accounts</TT
-> is an existing table, the privilege to
+  </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    To change the owner of a table, index, sequence, or view, use the
+    <a href="sql-altertable.html" title="ALTER TABLE"><span class="refentrytitle"><a name="sql-altertable-title"></a>ALTER TABLE</span></a> command.  There are corresponding
+    <tt class="literal">ALTER</tt> commands for other object types.
+   </p>
+</div>
+<p>   To assign privileges, the <tt class="command">GRANT</tt> command is
+   used. For example, if <tt class="literal">joe</tt> is an existing user, and
+   <tt class="literal">accounts</tt> is an existing table, the privilege to
    update the table can be granted with
-</P><PRE
-CLASS="PROGRAMLISTING"
->GRANT UPDATE ON accounts TO joe;</PRE
-><P>
+</p>
+<pre class="programlisting">GRANT UPDATE ON accounts TO joe;</pre>
+<p>
    To grant a privilege to a group, use this syntax:
-</P><PRE
-CLASS="PROGRAMLISTING"
->GRANT SELECT ON accounts TO GROUP staff;</PRE
-><P>
-   The special <SPAN
-CLASS="QUOTE"
->"user"</SPAN
-> name <TT
-CLASS="LITERAL"
->PUBLIC</TT
-> can
+</p>
+<pre class="programlisting">GRANT SELECT ON accounts TO GROUP staff;</pre>
+<p>
+   The special &#8220;<span class="quote">user</span>&#8221; name <tt class="literal">PUBLIC</tt> can
    be used to grant a privilege to every user on the system. Writing
-   <TT
-CLASS="LITERAL"
->ALL</TT
-> in place of a specific privilege grants all
+   <tt class="literal">ALL</tt> in place of a specific privilege grants all
    privileges that are relevant for the object type.
-  </P
-><P
->   To revoke a privilege, use the fittingly named
-   <TT
-CLASS="COMMAND"
->REVOKE</TT
-> command:
-</P><PRE
-CLASS="PROGRAMLISTING"
->REVOKE ALL ON accounts FROM PUBLIC;</PRE
-><P>
+  </p>
+<p>   To revoke a privilege, use the fittingly named
+   <tt class="command">REVOKE</tt> command:
+</p>
+<pre class="programlisting">REVOKE ALL ON accounts FROM PUBLIC;</pre>
+<p>
    The special privileges of the object owner (i.e., the right to do
-   <TT
-CLASS="COMMAND"
->DROP</TT
->, <TT
-CLASS="COMMAND"
->GRANT</TT
->, <TT
-CLASS="COMMAND"
->REVOKE</TT
->, etc.)
+   <tt class="command">DROP</tt>, <tt class="command">GRANT</tt>, <tt class="command">REVOKE</tt>, etc.)
    are always implicit in being the owner,
    and cannot be granted or revoked.  But the object owner can choose
    to revoke his own ordinary privileges, for example to make a
    table read-only for himself as well as others.
-  </P
-><P
->   Ordinarily, only the object's owner (or a superuser) can grant or revoke
+  </p>
+<p>   Ordinarily, only the object's owner (or a superuser) can grant or revoke
    privileges on an object.  However, it is possible to grant a privilege
-   <SPAN
-CLASS="QUOTE"
->"with grant option"</SPAN
->, which gives the recipient the right to
+   &#8220;<span class="quote">with grant option</span>&#8221;, which gives the recipient the right to
    grant it in turn to others.  If the grant option is subsequently revoked
    then all who received the privilege from that recipient (directly or
    through a chain of grants) will lose the privilege.  For details see
-   the <A
-HREF="sql-grant.html"
->GRANT</A
-> and <A
-HREF="sql-revoke.html"
->REVOKE</A
-> reference
+   the <a href="sql-grant.html" title="GRANT"><span class="refentrytitle"><a name="sql-grant-title"></a>GRANT</span></a> and <a href="sql-revoke.html" title="REVOKE"><span class="refentrytitle"><a name="sql-revoke-title"></a>REVOKE</span></a> reference
    pages.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ddl-alter.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ddl-schemas.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Modifying Tables</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="ddl.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Schemas</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

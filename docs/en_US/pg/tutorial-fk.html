@@ -1,154 +1,39 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Foreign Keys</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Advanced Features"
-HREF="tutorial-advanced.html"><LINK
-REL="PREVIOUS"
-TITLE="Views"
-HREF="tutorial-views.html"><LINK
-REL="NEXT"
-TITLE="Transactions"
-HREF="tutorial-transactions.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-views.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-advanced.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 3. Advanced Features</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-advanced.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-transactions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TUTORIAL-FK"
->3.3. Foreign Keys</A
-></H1
-><A
-NAME="AEN911"
-></A
-><A
-NAME="AEN913"
-></A
-><P
->    Recall the <CODE
-CLASS="CLASSNAME"
->weather</CODE
-> and
-    <CODE
-CLASS="CLASSNAME"
->cities</CODE
-> tables from <A
-HREF="tutorial-sql.html"
->Chapter 2</A
->.  Consider the following problem:  You
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>3.3. Foreign Keys</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="tutorial-advanced.html" title="Chapter 3. Advanced Features">
+<link rel="previous" href="tutorial-views.html" title="3.2. Views">
+<link rel="next" href="tutorial-transactions.html" title="3.4. Transactions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="tutorial-fk"></a>3.3. Foreign Keys</h2></div></div>
+<div></div>
+</div>
+<a name="id2519250"></a><a name="id2519260"></a><p>    Recall the <tt class="classname">weather</tt> and
+    <tt class="classname">cities</tt> tables from <a href="tutorial-sql.html" title="Chapter 2. The SQL Language">Chapter 2, <i>The SQL Language</i></a>.  Consider the following problem:  You
     want to make sure that no one can insert rows in the
-    <CODE
-CLASS="CLASSNAME"
->weather</CODE
-> table that do not have a matching
-    entry in the <CODE
-CLASS="CLASSNAME"
->cities</CODE
-> table.  This is called
-    maintaining the <I
-CLASS="FIRSTTERM"
->referential integrity</I
-> of
+    <tt class="classname">weather</tt> table that do not have a matching
+    entry in the <tt class="classname">cities</tt> table.  This is called
+    maintaining the <i class="firstterm">referential integrity</i> of
     your data.  In simplistic database systems this would be
     implemented (if at all) by first looking at the
-    <CODE
-CLASS="CLASSNAME"
->cities</CODE
-> table to check if a matching record
+    <tt class="classname">cities</tt> table to check if a matching record
     exists, and then inserting or rejecting the new
-    <CODE
-CLASS="CLASSNAME"
->weather</CODE
-> records.  This approach has a
+    <tt class="classname">weather</tt> records.  This approach has a
     number of problems and is very inconvenient, so
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> can do this for you.
-   </P
-><P
->    The new declaration of the tables would look like this:
+    <span class="productname">PostgreSQL</span> can do this for you.
+   </p>
+<p>    The new declaration of the tables would look like this:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE TABLE cities (
+</p>
+<pre class="programlisting">CREATE TABLE cities (
         city     varchar(80) primary key,
         location point
 );
@@ -159,96 +44,26 @@ CREATE TABLE weather (
         temp_hi   int,
         prcp      real,
         date      date
-);</PRE
-><P>
+);</pre>
+<p>
 
     Now try inserting an invalid record:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->INSERT INTO weather VALUES ('Berkeley', 45, 53, 0.0, '1994-11-28');</PRE
-><P>
+</p>
+<pre class="programlisting">INSERT INTO weather VALUES ('Berkeley', 45, 53, 0.0, '1994-11-28');</pre>
+<p>
 
-</P><PRE
-CLASS="SCREEN"
->ERROR:  insert or update on table "weather" violates foreign key constraint "weather_city_fkey"
-DETAIL:  Key (city)=(Berkeley) is not present in table "cities".</PRE
-><P>
-   </P
-><P
->    The behavior of foreign keys can be finely tuned to your
+</p>
+<pre class="screen">ERROR:  insert or update on table "weather" violates foreign key constraint "weather_city_fkey"
+DETAIL:  Key (city)=(Berkeley) is not present in table "cities".</pre>
+<p>
+   </p>
+<p>    The behavior of foreign keys can be finely tuned to your
     application.  We will not go beyond this simple example in this
-    tutorial, but just refer you to <A
-HREF="ddl.html"
->Chapter 5</A
->
+    tutorial, but just refer you to <a href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a>
     for more information.  Making correct use of
     foreign keys will definitely improve the quality of your database
     applications, so you are strongly encouraged to learn about them.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-views.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-transactions.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Views</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="tutorial-advanced.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Transactions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div></body>
+</html>

@@ -1,229 +1,38 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->The Password File</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="libpq - C Library"
-HREF="libpq.html"><LINK
-REL="PREVIOUS"
-TITLE="Environment Variables"
-HREF="libpq-envars.html"><LINK
-REL="NEXT"
-TITLE="SSL Support"
-HREF="libpq-ssl.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-envars.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 27. <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> - C Library</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-ssl.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="LIBPQ-PGPASS"
->27.11. The Password File</A
-></H1
-><A
-NAME="AEN23476"
-></A
-><A
-NAME="AEN23478"
-></A
-><P
->The file <TT
-CLASS="FILENAME"
->.pgpass</TT
-> in a user's home directory is a file
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>27.12. The Password File</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
+<link rel="previous" href="libpq-envars.html" title="27.11. Environment Variables">
+<link rel="next" href="libpq-ssl.html" title="27.13. SSL Support">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="libpq-pgpass"></a>27.12. The Password File</h2></div></div>
+<div></div>
+</div>
+<a name="id2613917"></a><a name="id2613926"></a><p>The file <tt class="filename">.pgpass</tt> in a user's home directory is a file
 that can contain passwords to be used if the connection requires a
 password (and no password has been specified otherwise).
 This file should have lines of the following format:
-</P><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->hostname</VAR
->:<VAR
-CLASS="REPLACEABLE"
->port</VAR
->:<VAR
-CLASS="REPLACEABLE"
->database</VAR
->:<VAR
-CLASS="REPLACEABLE"
->username</VAR
->:<VAR
-CLASS="REPLACEABLE"
->password</VAR
-></PRE
-><P>
-Each of the first four fields may be a literal value, or <TT
-CLASS="LITERAL"
->*</TT
->,
+</p>
+<pre class="synopsis"><i class="replaceable"><tt>hostname</tt></i>:<i class="replaceable"><tt>port</tt></i>:<i class="replaceable"><tt>database</tt></i>:<i class="replaceable"><tt>username</tt></i>:<i class="replaceable"><tt>password</tt></i></pre>
+<p>
+Each of the first four fields may be a literal value, or <tt class="literal">*</tt>,
 which
 matches anything.  The password field from the first line that matches the
 current connection parameters will be used.  (Therefore, put more-specific
 entries first when you are using wildcards.)
-If an entry needs to contain <TT
-CLASS="LITERAL"
->:</TT
-> or
-<TT
-CLASS="LITERAL"
->\</TT
->, escape this character with <TT
-CLASS="LITERAL"
->\</TT
->.</P
-><P
->The permissions on <TT
-CLASS="FILENAME"
->.pgpass</TT
-> must disallow any
+If an entry needs to contain <tt class="literal">:</tt> or
+<tt class="literal">\</tt>, escape this character with <tt class="literal">\</tt>.</p>
+<p>The permissions on <tt class="filename">.pgpass</tt> must disallow any
 access to world or group; achieve this by the command
-<TT
-CLASS="COMMAND"
->chmod 0600 ~/.pgpass</TT
->.
-If the permissions are less strict than this, the file will be ignored.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-envars.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="libpq-ssl.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Environment Variables</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libpq.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SSL Support</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<tt class="command">chmod 0600 ~/.pgpass</tt>.
+If the permissions are less strict than this, the file will be ignored.</p>
+</div></body>
+</html>

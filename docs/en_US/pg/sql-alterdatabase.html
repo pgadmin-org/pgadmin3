@@ -1,427 +1,114 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->ALTER DATABASE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="ALTER CONVERSION"
-HREF="sql-alterconversion.html"><LINK
-REL="NEXT"
-TITLE="ALTER DOMAIN"
-HREF="sql-alterdomain.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alterconversion.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alterconversion.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterdomain.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterdomain.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-ALTERDATABASE"
-></A
->ALTER DATABASE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN34844"
-></A
-><H2
->Name</H2
->ALTER DATABASE&nbsp;--&nbsp;change a database</DIV
-><A
-NAME="AEN34847"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN34849"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->ALTER DATABASE <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> SET <VAR
-CLASS="REPLACEABLE"
->parameter</VAR
-> { TO | = } { <VAR
-CLASS="REPLACEABLE"
->value</VAR
-> | DEFAULT }
-ALTER DATABASE <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> RESET <VAR
-CLASS="REPLACEABLE"
->parameter</VAR
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ALTER DATABASE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-alterconversion.html" title="ALTER CONVERSION">
+<link rel="next" href="sql-alterdomain.html" title="ALTER DOMAIN">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-alterdatabase"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>ALTER DATABASE &#8212; change a database</p>
+</div>
+<a name="id2660861"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">ALTER DATABASE <i class="replaceable"><tt>name</tt></i> SET <i class="replaceable"><tt>parameter</tt></i> { TO | = } { <i class="replaceable"><tt>value</tt></i> | DEFAULT }
+ALTER DATABASE <i class="replaceable"><tt>name</tt></i> RESET <i class="replaceable"><tt>parameter</tt></i>
 
-ALTER DATABASE <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> RENAME TO <VAR
-CLASS="REPLACEABLE"
->newname</VAR
->
+ALTER DATABASE <i class="replaceable"><tt>name</tt></i> RENAME TO <i class="replaceable"><tt>newname</tt></i>
 
-ALTER DATABASE <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> OWNER TO <VAR
-CLASS="REPLACEABLE"
->new_owner</VAR
-></PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34860"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->ALTER DATABASE</TT
-> is used to change the attributes
+ALTER DATABASE <i class="replaceable"><tt>name</tt></i> OWNER TO <i class="replaceable"><tt>new_owner</tt></i></pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2660918"></a><h2>Description</h2>
+<p>   <tt class="command">ALTER DATABASE</tt> is used to change the attributes
    of a database.
-  </P
-><P
->   The first two forms change the session default of a run-time
-   configuration variable for a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+  </p>
+<p>   The first two forms change the session default of a run-time
+   configuration variable for a <span class="productname">PostgreSQL</span>
    database. Whenever a new session is subsequently started in that
    database, the specified value becomes the session default value.
    The database-specific default overrides whatever setting is present
-   in <TT
-CLASS="FILENAME"
->postgresql.conf</TT
-> or has been received from the
-   <TT
-CLASS="COMMAND"
->postmaster</TT
-> command line.  Only the database
+   in <tt class="filename">postgresql.conf</tt> or has been received from the
+   <tt class="command">postmaster</tt> command line.  Only the database
    owner or a superuser can change the session defaults for a
    database.
-  </P
-><P
->   The third form changes the name of the database.  Only the database
+  </p>
+<p>   The third form changes the name of the database.  Only the database
    owner can rename a database, and only if he has the
-   <TT
-CLASS="LITERAL"
->CREATEDB</TT
-> privilege.  The current database cannot
+   <tt class="literal">CREATEDB</tt> privilege.  The current database cannot
    be renamed.  (Connect to a different database if you need to do
    that.)
-  </P
-><P
->   The fourth form changes the owner of the database.  Only a superuser
+  </p>
+<p>   The fourth form changes the owner of the database.  Only a superuser
    can change the database's owner.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34871"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->name</VAR
-></DT
-><DD
-><P
->	The name of the database whose session defaults are to be altered.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->parameter</VAR
-><BR><VAR
-CLASS="REPLACEABLE"
->value</VAR
-></DT
-><DD
-><P
->        Set the session default for this database of the specified
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2660975"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dd><p>	The name of the database whose session defaults are to be altered.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><i xmlns="" class="replaceable"><tt>parameter</tt></i></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><i class="replaceable"><tt>value</tt></i></span>
+</dt>
+<dd>
+<p>        Set the session default for this database of the specified
         configuration parameter to the given value.  If
-        <VAR
-CLASS="REPLACEABLE"
->value</VAR
-> is <TT
-CLASS="LITERAL"
->DEFAULT</TT
->
-        or, equivalently, <TT
-CLASS="LITERAL"
->RESET</TT
-> is used, the
+        <i class="replaceable"><tt>value</tt></i> is <tt class="literal">DEFAULT</tt>
+        or, equivalently, <tt class="literal">RESET</tt> is used, the
         database-specific variable setting is removed and the system-wide
 	default
-        setting will be inherited in new sessions.  Use <TT
-CLASS="LITERAL"
->RESET
-        ALL</TT
-> to clear all settings.
-       </P
-><P
->        See <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
-> and <A
-HREF="runtime-config.html"
->Section 16.4</A
->
+        setting will be inherited in new sessions.  Use <tt class="literal">RESET
+        ALL</tt> to clear all settings.
+       </p>
+<p>        See <a href="sql-set.html">SET</a> and <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>
         for more information about allowed parameter names
         and values.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->newname</VAR
-></DT
-><DD
-><P
->      The new name of the database.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34898"
-></A
-><H2
->Notes</H2
-><P
->   Using <A
-HREF="sql-alteruser.html"
-><I
->ALTER USER</I
-></A
->,
+       </p>
+</dd>
+<dt><span class="term"><i class="replaceable"><tt>newname</tt></i></span></dt>
+<dd><p>      The new name of the database.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2661057"></a><h2>Notes</h2>
+<p>   Using <a href="sql-alteruser.html">ALTER USER</a>,
    it is also possible to tie a session default to a specific user
    rather than a database.  User-specific settings override database-specific
    ones if there is a conflict.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34902"
-></A
-><H2
->Examples</H2
-><P
->   To disable index scans by default in the database
-   <TT
-CLASS="LITERAL"
->test</TT
->:
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2661075"></a><h2>Examples</h2>
+<p>   To disable index scans by default in the database
+   <tt class="literal">test</tt>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->ALTER DATABASE test SET enable_indexscan TO off;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34907"
-></A
-><H2
->Compatibility</H2
-><P
->   The <TT
-CLASS="COMMAND"
->ALTER DATABASE</TT
-> statement is a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34912"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-alteruser.html"
-><I
->ALTER USER</I
-></A
->, <A
-HREF="sql-createdatabase.html"
-><I
->CREATE DATABASE</I
-></A
->, <A
-HREF="sql-dropdatabase.html"
-><I
->DROP DATABASE</I
-></A
->, <A
-HREF="sql-set.html"
-><I
->SET</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-alterconversion.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-alterdomain.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->ALTER CONVERSION</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->ALTER DOMAIN</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="programlisting">ALTER DATABASE test SET enable_indexscan TO off;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2661094"></a><h2>Compatibility</h2>
+<p>   The <tt class="command">ALTER DATABASE</tt> statement is a
+   <span class="productname">PostgreSQL</span> extension.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2661112"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alteruser.html">ALTER USER</a>, <a href="sql-createdatabase.html">CREATE DATABASE</a>, <a href="sql-dropdatabase.html">DROP DATABASE</a>, <a href="sql-set.html">SET</a></span>
+</div>
+</div></body>
+</html>

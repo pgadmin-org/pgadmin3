@@ -1,377 +1,104 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->PL/Python - Python Procedural Language</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Programming"
-HREF="server-programming.html"><LINK
-REL="PREVIOUS"
-TITLE="Limitations and Missing Features"
-HREF="plperl-missing.html"><LINK
-REL="NEXT"
-TITLE="Trigger Functions"
-HREF="plpython-trigger.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plperl-missing.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plperl.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpython-trigger.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="PLPYTHON"
-></A
->Chapter 38. PL/Python - Python Procedural Language</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->38.1. <A
-HREF="plpython.html#PLPYTHON-FUNCS"
->PL/Python Functions</A
-></DT
-><DT
->38.2. <A
-HREF="plpython-trigger.html"
->Trigger Functions</A
-></DT
-><DT
->38.3. <A
-HREF="plpython-database.html"
->Database Access</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN32849"
-></A
-><A
-NAME="AEN32851"
-></A
-><P
->  The <SPAN
-CLASS="APPLICATION"
->PL/Python</SPAN
-> procedural language allows
-  <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> functions to be written in the
-  <A
-HREF="http://www.python.org"
-TARGET="_top"
->Python</A
-> language.
- </P
-><P
->  To install PL/Python in a particular database, use
-  <TT
-CLASS="LITERAL"
->createlang plpythonu <VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-></TT
->.
- </P
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
-><P
-><B
->Tip: </B
->    If a language is installed into <TT
-CLASS="LITERAL"
->template1</TT
->, all subsequently
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 38. PL/Python - Python Procedural Language</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="previous" href="plperl-missing.html" title="37.7. Limitations and Missing Features">
+<link rel="next" href="plpython-trigger.html" title="38.2. Trigger Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="plpython">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="plpython"></a>Chapter 38. PL/Python - Python Procedural Language</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="plpython.html#plpython-funcs">38.1. PL/Python Functions</a></span></dt>
+<dt><span class="sect1"><a href="plpython-trigger.html">38.2. Trigger Functions</a></span></dt>
+<dt><span class="sect1"><a href="plpython-database.html">38.3. Database Access</a></span></dt>
+</dl>
+</div>
+<a name="id2653780"></a><a name="id2653790"></a><p>  The <span class="application">PL/Python</span> procedural language allows
+  <span class="productname">PostgreSQL</span> functions to be written in the
+  <a href="http://www.python.org" target="_top">Python</a> language.
+ </p>
+<p>  To install PL/Python in a particular database, use
+  <tt class="literal">createlang plpythonu <i class="replaceable"><tt>dbname</tt></i></tt>.
+ </p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<p>    If a language is installed into <tt class="literal">template1</tt>, all subsequently
     created databases will have the language installed automatically.
-   </P
-></BLOCKQUOTE
-></DIV
-><P
->  As of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.4, PL/Python is only
-  available as an <SPAN
-CLASS="QUOTE"
->"untrusted"</SPAN
-> language (meaning it does not
+   </p>
+</div>
+<p>  As of <span class="productname">PostgreSQL</span> 7.4, PL/Python is only
+  available as an &#8220;<span class="quote">untrusted</span>&#8221; language (meaning it does not
   offer any way of restricting what users can do in it).  It has
-  therefore been renamed to <TT
-CLASS="LITERAL"
->plpythonu</TT
->.  The trusted
-  variant <TT
-CLASS="LITERAL"
->plpython</TT
-> may become available again in future,
+  therefore been renamed to <tt class="literal">plpythonu</tt>.  The trusted
+  variant <tt class="literal">plpython</tt> may become available again in future,
   if a new secure execution mechanism is developed in Python.
- </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->   Users of source packages must specially enable the build of
+ </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>   Users of source packages must specially enable the build of
    PL/Python during the installation process.  (Refer to the
    installation instructions for more information.)  Users of binary
    packages might find PL/Python in a separate subpackage.
-  </P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="PLPYTHON-FUNCS"
->38.1. PL/Python Functions</A
-></H1
-><P
->   The Python code you write gets transformed into a Python function.  E.g.,
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION myfunc(text) RETURNS text
+  </p>
+</div>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="plpython-funcs"></a>38.1. PL/Python Functions</h2></div></div>
+<div></div>
+</div>
+<p>   The Python code you write gets transformed into a Python function.  E.g.,
+</p>
+<pre class="programlisting">CREATE FUNCTION myfunc(text) RETURNS text
     AS 'return args[0]'
-    LANGUAGE plpythonu;</PRE
-><P>
+    LANGUAGE plpythonu;</pre>
+<p>
 
    gets transformed into
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->def __plpython_procedure_myfunc_23456():
-        return args[0]</PRE
-><P>
+</p>
+<pre class="programlisting">def __plpython_procedure_myfunc_23456():
+        return args[0]</pre>
+<p>
 
    assuming that 23456 is the OID of the function.
-  </P
-><P
->   If you do not provide a return value, Python returns the default
-   <TT
-CLASS="SYMBOL"
->None</TT
->. The language module translates Python's
-   <TT
-CLASS="SYMBOL"
->None</TT
-> into the SQL null
-   value.<A
-NAME="AEN32878"
-></A
->
-  </P
-><P
->   The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> function parameters are available in
-   the global <TT
-CLASS="VARNAME"
->args</TT
-> list.  In the
-   <CODE
-CLASS="FUNCTION"
->myfunc</CODE
-> example, <TT
-CLASS="VARNAME"
->args[0]</TT
-> contains
+  </p>
+<p>   If you do not provide a return value, Python returns the default
+   <tt class="symbol">None</tt>. The language module translates Python's
+   <tt class="symbol">None</tt> into the SQL null
+   value.<a name="id2653918"></a>
+  </p>
+<p>   The <span class="productname">PostgreSQL</span> function parameters are available in
+   the global <tt class="varname">args</tt> list.  In the
+   <tt class="function">myfunc</tt> example, <tt class="varname">args[0]</tt> contains
    whatever was passed in as the text argument.  For
-   <TT
-CLASS="LITERAL"
->myfunc2(text, integer)</TT
->, <TT
-CLASS="VARNAME"
->args[0]</TT
->
-   would contain the <TT
-CLASS="TYPE"
->text</TT
-> argument and
-   <TT
-CLASS="VARNAME"
->args[1]</TT
-> the <TT
-CLASS="TYPE"
->integer</TT
-> argument.
-  </P
-><P
->   The global dictionary <TT
-CLASS="VARNAME"
->SD</TT
-> is available to store
+   <tt class="literal">myfunc2(text, integer)</tt>, <tt class="varname">args[0]</tt>
+   would contain the <tt class="type">text</tt> argument and
+   <tt class="varname">args[1]</tt> the <tt class="type">integer</tt> argument.
+  </p>
+<p>   The global dictionary <tt class="varname">SD</tt> is available to store
    data between function calls.  This variable is private static data.
-   The global dictionary <TT
-CLASS="VARNAME"
->GD</TT
-> is public data,
+   The global dictionary <tt class="varname">GD</tt> is public data,
    available to all Python functions within a session.  Use with
-   care.<A
-NAME="AEN32894"
-></A
->
-  </P
-><P
->   Each function gets its own execution environment in the
+   care.<a name="id2653988"></a>
+  </p>
+<p>   Each function gets its own execution environment in the
    Python interpreter, so that global data and function arguments from
-   <CODE
-CLASS="FUNCTION"
->myfunc</CODE
-> are not available to
-   <CODE
-CLASS="FUNCTION"
->myfunc2</CODE
->.  The exception is the data in the
-   <TT
-CLASS="VARNAME"
->GD</TT
-> dictionary, as mentioned above.
-  </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plperl-missing.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpython-trigger.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Limitations and Missing Features</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="server-programming.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Trigger Functions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   <tt class="function">myfunc</tt> are not available to
+   <tt class="function">myfunc2</tt>.  The exception is the data in the
+   <tt class="varname">GD</tt> dictionary, as mentioned above.
+  </p>
+</div>
+</div></body>
+</html>

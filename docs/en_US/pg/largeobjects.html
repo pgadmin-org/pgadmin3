@@ -1,375 +1,95 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Large Objects</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Client Interfaces"
-HREF="client-interfaces.html"><LINK
-REL="PREVIOUS"
-TITLE="Example Programs"
-HREF="libpq-example.html"><LINK
-REL="NEXT"
-TITLE="Implementation Features"
-HREF="lo-implementation.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-example.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ecpg.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="lo-implementation.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="LARGEOBJECTS"
-></A
->Chapter 28. Large Objects</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->28.1. <A
-HREF="largeobjects.html#LO-HISTORY"
->History</A
-></DT
-><DT
->28.2. <A
-HREF="lo-implementation.html"
->Implementation Features</A
-></DT
-><DT
->28.3. <A
-HREF="lo-interfaces.html"
->Client Interfaces</A
-></DT
-><DD
-><DL
-><DT
->28.3.1. <A
-HREF="lo-interfaces.html#AEN23697"
->Creating a Large Object</A
-></DT
-><DT
->28.3.2. <A
-HREF="lo-interfaces.html#AEN23709"
->Importing a Large Object</A
-></DT
-><DT
->28.3.3. <A
-HREF="lo-interfaces.html#AEN23716"
->Exporting a Large Object</A
-></DT
-><DT
->28.3.4. <A
-HREF="lo-interfaces.html#AEN23724"
->Opening an Existing Large Object</A
-></DT
-><DT
->28.3.5. <A
-HREF="lo-interfaces.html#AEN23740"
->Writing Data to a Large Object</A
-></DT
-><DT
->28.3.6. <A
-HREF="lo-interfaces.html#AEN23751"
->Reading Data from a Large Object</A
-></DT
-><DT
->28.3.7. <A
-HREF="lo-interfaces.html#AEN23762"
->Seeking on a Large Object</A
-></DT
-><DT
->28.3.8. <A
-HREF="lo-interfaces.html#AEN23774"
->Obtaining the Seek Position of a Large Object</A
-></DT
-><DT
->28.3.9. <A
-HREF="lo-interfaces.html#AEN23780"
->Closing a Large Object Descriptor</A
-></DT
-><DT
->28.3.10. <A
-HREF="lo-interfaces.html#AEN23790"
->Removing a Large Object</A
-></DT
-></DL
-></DD
-><DT
->28.4. <A
-HREF="lo-funcs.html"
->Server-Side Functions</A
-></DT
-><DT
->28.5. <A
-HREF="lo-examplesect.html"
->Example Program</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN23643"
-></A
-><A
-NAME="AEN23645"
-></A
-><P
->    In <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> releases prior to 7.1,
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 28. Large Objects</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="client-interfaces.html" title="Part IV. Client Interfaces">
+<link rel="previous" href="libpq-example.html" title="27.16. Example Programs">
+<link rel="next" href="lo-implementation.html" title="28.2. Implementation Features">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="largeobjects">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="largeobjects"></a>Chapter 28. Large Objects</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="largeobjects.html#lo-history">28.1. History</a></span></dt>
+<dt><span class="sect1"><a href="lo-implementation.html">28.2. Implementation Features</a></span></dt>
+<dt><span class="sect1"><a href="lo-interfaces.html">28.3. Client Interfaces</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615506">28.3.1. Creating a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615564">28.3.2. Importing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615593">28.3.3. Exporting a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615628">28.3.4. Opening an Existing Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615709">28.3.5. Writing Data to a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615762">28.3.6. Reading Data from a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615814">28.3.7. Seeking on a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615868">28.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615890">28.3.9. Closing a Large Object Descriptor</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2615934">28.3.10. Removing a Large Object</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="lo-funcs.html">28.4. Server-Side Functions</a></span></dt>
+<dt><span class="sect1"><a href="lo-examplesect.html">28.5. Example Program</a></span></dt>
+</dl>
+</div>
+<a name="id2615221"></a><a name="id2615232"></a><p>    In <span class="productname">PostgreSQL</span> releases prior to 7.1,
     the size of any row in the database could not exceed the size of a
     data page.  Since the size of a data page is 8192 bytes (the
     default, which can be raised up to 32768), the upper limit on the
     size of a data value was relatively low. To support the storage of
-    larger atomic values, <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+    larger atomic values, <span class="productname">PostgreSQL</span>
     provided and continues to provide a large object interface.  This
     interface provides file-oriented access to user data that is stored in
     a special large-object structure.
-   </P
-><P
->    This chapter describes the implementation and the programming and
-    query language interfaces to <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-    large object data.  We use the <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> C
+   </p>
+<p>    This chapter describes the implementation and the programming and
+    query language interfaces to <span class="productname">PostgreSQL</span>
+    large object data.  We use the <span class="application">libpq</span> C
     library for the examples in this chapter, but most programming
-    interfaces native to <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> support
+    interfaces native to <span class="productname">PostgreSQL</span> support
     equivalent functionality.  Other interfaces may use the large
     object interface internally to provide generic support for large
     values.  This is not described here.
-   </P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="LO-HISTORY"
->28.1. History</A
-></H1
-><P
->    <SPAN
-CLASS="PRODUCTNAME"
->POSTGRES 4.2</SPAN
->, the indirect predecessor
-    of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, supported three standard
+   </p>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="lo-history"></a>28.1. History</h2></div></div>
+<div></div>
+</div>
+<p>    <span class="productname">POSTGRES 4.2</span>, the indirect predecessor
+    of <span class="productname">PostgreSQL</span>, supported three standard
     implementations of large objects: as files external to the
-    <SPAN
-CLASS="PRODUCTNAME"
->POSTGRES</SPAN
-> server, as external files
-    managed by the <SPAN
-CLASS="PRODUCTNAME"
->POSTGRES</SPAN
-> server, and as
-    data stored within the <SPAN
-CLASS="PRODUCTNAME"
->POSTGRES</SPAN
->
+    <span class="productname">POSTGRES</span> server, as external files
+    managed by the <span class="productname">POSTGRES</span> server, and as
+    data stored within the <span class="productname">POSTGRES</span>
     database. This caused considerable confusion among users. As a
     result, only support for large objects as data stored within the
-    database is retained in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.
+    database is retained in <span class="productname">PostgreSQL</span>.
     Even though this is slower to access, it provides stricter data
     integrity.  For historical reasons, this storage scheme is
-    referred to as <I
-CLASS="FIRSTTERM"
->Inversion large
-    objects</I
->. (You will see the term Inversion used
+    referred to as <i class="firstterm">Inversion large
+    objects</i>. (You will see the term Inversion used
     occasionally to mean the same thing as large object.)  Since
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL 7.1</SPAN
->, all large objects are
+    <span class="productname">PostgreSQL 7.1</span>, all large objects are
     placed in one system table called
-    <CODE
-CLASS="CLASSNAME"
->pg_largeobject</CODE
->.
-   </P
-><P
->    <A
-NAME="AEN23668"
-></A
->
-    <A
-NAME="AEN23670"
-></A
->
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL 7.1</SPAN
-> introduced a mechanism
-    (nicknamed <SPAN
-CLASS="QUOTE"
->"<ACRONYM
-CLASS="ACRONYM"
->TOAST</ACRONYM
->"</SPAN
->) that allows
+    <tt class="classname">pg_largeobject</tt>.
+   </p>
+<p>    <a name="id2615362"></a>
+    <a name="id2615369"></a>
+    <span class="productname">PostgreSQL 7.1</span> introduced a mechanism
+    (nicknamed &#8220;<span class="quote"><span class="acronym">TOAST</span></span>&#8221;) that allows
     data rows to be much larger than individual data pages.  This
     makes the large object interface partially obsolete.  One
     remaining advantage of the large object interface is that it allows values up
-    to 2 GB in size, whereas <ACRONYM
-CLASS="ACRONYM"
->TOAST</ACRONYM
-> can only handle 1 GB.
-   </P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="libpq-example.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="lo-implementation.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Example Programs</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="client-interfaces.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Implementation Features</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    to 2 GB in size, whereas <span class="acronym">TOAST</span> can only handle 1 GB.
+   </p>
+</div>
+</div></body>
+</html>

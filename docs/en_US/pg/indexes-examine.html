@@ -1,146 +1,39 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Examining Index Usage</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Indexes"
-HREF="indexes.html"><LINK
-REL="PREVIOUS"
-TITLE="Partial Indexes"
-HREF="indexes-partial.html"><LINK
-REL="NEXT"
-TITLE="Concurrency Control"
-HREF="mvcc.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-partial.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 11. Indexes</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="mvcc.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="INDEXES-EXAMINE"
->11.8. Examining Index Usage</A
-></H1
-><A
-NAME="AEN14062"
-></A
-><P
->   Although indexes in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> do not need
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>11.8. Examining Index Usage</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="indexes.html" title="Chapter 11. Indexes">
+<link rel="previous" href="indexes-partial.html" title="11.7. Partial Indexes">
+<link rel="next" href="mvcc.html" title="Chapter 12. Concurrency Control">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="indexes-examine"></a>11.8. Examining Index Usage</h2></div></div>
+<div></div>
+</div>
+<a name="id2569232"></a><p>   Although indexes in <span class="productname">PostgreSQL</span> do not need
    maintenance and tuning, it is still important to check
    which indexes are actually used by the real-life query workload.
    Examining index usage for an individual query is done with the
-   <A
-HREF="sql-explain.html"
-><I
->EXPLAIN</I
-></A
->
+   <a href="sql-explain.html">EXPLAIN</a>
    command; its application for this purpose is
-   illustrated in <A
-HREF="performance-tips.html#USING-EXPLAIN"
->Section 13.1</A
->.
+   illustrated in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using EXPLAIN&#8221;</a>.
    It is also possible to gather overall statistics about index usage
-   in a running server, as described in <A
-HREF="monitoring-stats.html"
->Section 23.2</A
->.
-  </P
-><P
->   It is difficult to formulate a general procedure for determining
+   in a running server, as described in <a href="monitoring-stats.html" title="23.2. The Statistics Collector">Section 23.2, &#8220;The Statistics Collector&#8221;</a>.
+  </p>
+<p>   It is difficult to formulate a general procedure for determining
    which indexes to set up.  There are a number of typical cases that
    have been shown in the examples throughout the previous sections.
    A good deal of experimentation will be necessary in most cases.
    The rest of this section gives some tips for that.
-  </P
-><P
-></P
-><UL
-><LI
-><P
->     Always run <A
-HREF="sql-analyze.html"
-><I
->ANALYZE</I
-></A
->
+  </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>     Always run <a href="sql-analyze.html">ANALYZE</a>
      first.  This command
      collects statistics about the distribution of the values in the
      table.  This information is required to guess the number of rows
@@ -148,166 +41,64 @@ HREF="sql-analyze.html"
      realistic costs to each possible query plan.  In absence of any
      real statistics, some default values are assumed, which are
      almost certain to be inaccurate.  Examining an application's
-     index usage without having run <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> is
+     index usage without having run <tt class="command">ANALYZE</tt> is
      therefore a lost cause.
-    </P
-></LI
-><LI
-><P
->     Use real data for experimentation.  Using test data for setting
+    </p></li>
+<li>
+<p>     Use real data for experimentation.  Using test data for setting
      up indexes will tell you what indexes you need for the test data,
      but that is all.
-    </P
-><P
->     It is especially fatal to use proportionally reduced data sets.
+    </p>
+<p>     It is especially fatal to use proportionally reduced data sets.
      While selecting 1000 out of 100000 rows could be a candidate for
      an index, selecting 1 out of 100 rows will hardly be, because the
      100 rows will probably fit within a single disk page, and there
      is no plan that can beat sequentially fetching 1 disk page.
-    </P
-><P
->     Also be careful when making up test data, which is often
+    </p>
+<p>     Also be careful when making up test data, which is often
      unavoidable when the application is not in production use yet.
      Values that are very similar, completely random, or inserted in
      sorted order will skew the statistics away from the distribution
      that real data would have.
-    </P
-></LI
-><LI
-><P
->     When indexes are not used, it can be useful for testing to force
+    </p>
+</li>
+<li><p>     When indexes are not used, it can be useful for testing to force
      their use.  There are run-time parameters that can turn off
-     various plan types (described in <A
-HREF="runtime-config.html"
->Section 16.4</A
->).
+     various plan types (described in <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>).
      For instance, turning off sequential scans
-     (<TT
-CLASS="VARNAME"
->enable_seqscan</TT
->) and nested-loop joins
-     (<TT
-CLASS="VARNAME"
->enable_nestloop</TT
->), which are the most basic plans,
+     (<tt class="varname">enable_seqscan</tt>) and nested-loop joins
+     (<tt class="varname">enable_nestloop</tt>), which are the most basic plans,
      will force the system to use a different plan.  If the system
      still chooses a sequential scan or nested-loop join then there is
      probably a more fundamental problem for why the index is not
      used, for example, the query condition does not match the index.
      (What kind of query can use what kind of index is explained in
      the previous sections.)
-    </P
-></LI
-><LI
-><P
->     If forcing index usage does use the index, then there are two
+    </p></li>
+<li><p>     If forcing index usage does use the index, then there are two
      possibilities: Either the system is right and using the index is
      indeed not appropriate, or the cost estimates of the query plans
      are not reflecting reality.  So you should time your query with
-     and without indexes.  The <TT
-CLASS="COMMAND"
->EXPLAIN ANALYZE</TT
->
+     and without indexes.  The <tt class="command">EXPLAIN ANALYZE</tt>
      command can be useful here.
-    </P
-></LI
-><LI
-><P
->     If it turns out that the cost estimates are wrong, there are,
+    </p></li>
+<li>
+<p>     If it turns out that the cost estimates are wrong, there are,
      again, two possibilities.  The total cost is computed from the
      per-row costs of each plan node times the selectivity estimate of
      the plan node.  The costs of the plan nodes can be tuned with
-     run-time parameters (described in <A
-HREF="runtime-config.html"
->Section 16.4</A
->).
+     run-time parameters (described in <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>).
      An inaccurate selectivity estimate is due to
      insufficient statistics.  It may be possible to help this by
      tuning the statistics-gathering parameters (see
-     <A
-HREF="sql-altertable.html"
-><I
->ALTER TABLE</I
-></A
->).
-    </P
-><P
->     If you do not succeed in adjusting the costs to be more
+     <a href="sql-altertable.html">ALTER TABLE</a>).
+    </p>
+<p>     If you do not succeed in adjusting the costs to be more
      appropriate, then you may have to resort to forcing index usage
      explicitly.  You may also want to contact the
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> developers to examine the issue.
-    </P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="indexes-partial.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="mvcc.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Partial Indexes</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="indexes.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Concurrency Control</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+     <span class="productname">PostgreSQL</span> developers to examine the issue.
+    </p>
+</li>
+</ul></div>
+</div></body>
+</html>

@@ -1,411 +1,101 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->pg_opclass</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_namespace"
-HREF="catalog-pg-namespace.html"><LINK
-REL="NEXT"
-TITLE="pg_operator"
-HREF="catalog-pg-operator.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-namespace.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-operator.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-OPCLASS"
->41.22. <TT
-CLASS="STRUCTNAME"
->pg_opclass</TT
-></A
-></H1
-><A
-NAME="AEN51989"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_opclass</TT
-> defines
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.22. pg_opclass</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="previous" href="catalog-pg-namespace.html" title="41.21. pg_namespace">
+<link rel="next" href="catalog-pg-operator.html" title="41.23. pg_operator">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-opclass"></a>41.22. <tt class="structname">pg_opclass</tt></h2></div></div>
+<div></div>
+</div>
+<a name="id2726507"></a><p>   The catalog <tt class="structname">pg_opclass</tt> defines
    index access method operator classes.  Each operator class defines
    semantics for index columns of a particular data type and a particular
    index access method.  Note that there can be multiple operator classes
    for a given data type/access method combination, thus supporting multiple
    behaviors.
-  </P
-><P
->   Operator classes are described at length in <A
-HREF="xindex.html"
->Section 31.14</A
->.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN51995"
-></A
-><P
-><B
->Table 41-22. <TT
-CLASS="STRUCTNAME"
->pg_opclass</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->opcamid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-am.html"
-><TT
-CLASS="STRUCTNAME"
->pg_am</TT
-></A
->.oid</TT
-></TD
-><TD
->Index access method operator class is for</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->opcname</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Name of this operator class</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->opcnamespace</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-namespace.html"
-><TT
-CLASS="STRUCTNAME"
->pg_namespace</TT
-></A
->.oid</TT
-></TD
-><TD
->Namespace of this operator class</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->opcowner</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-shadow.html"
-><TT
-CLASS="STRUCTNAME"
->pg_shadow</TT
-></A
->.usesysid</TT
-></TD
-><TD
->Operator class owner</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->opcintype</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-type.html"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></A
->.oid</TT
-></TD
-><TD
->Data type that the operator class indexes</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->opcdefault</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->True if this operator class is the default for <TT
-CLASS="STRUCTFIELD"
->opcintype</TT
-></TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->opckeytype</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-type.html"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></A
->.oid</TT
-></TD
-><TD
->Type of data stored in index, or zero if same as <TT
-CLASS="STRUCTFIELD"
->opcintype</TT
-></TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   The majority of the information defining an operator class is actually
-   not in its <TT
-CLASS="STRUCTNAME"
->pg_opclass</TT
-> row, but in the associated
-   rows in <TT
-CLASS="STRUCTNAME"
->pg_amop</TT
-> and
-   <TT
-CLASS="STRUCTNAME"
->pg_amproc</TT
->.  Those rows are considered to be
-   part of the operator class definition --- this is not unlike the way
-   that a relation is defined by a single <TT
-CLASS="STRUCTNAME"
->pg_class</TT
->
-   row plus associated rows in <TT
-CLASS="STRUCTNAME"
->pg_attribute</TT
-> and
+  </p>
+<p>   Operator classes are described at length in <a href="xindex.html" title="31.14. Interfacing Extensions To Indexes">Section 31.14, &#8220;Interfacing Extensions To Indexes&#8221;</a>.
+  </p>
+<div class="table">
+<a name="id2726536"></a><p class="title"><b>Table 41.22. <tt class="structname">pg_opclass</tt> Columns</b></p>
+<table summary="pg_opclass Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="structfield">opcamid</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-am.html" title="41.3. pg_am"><tt class="structname">pg_am</tt></a>.oid</tt></td>
+<td>Index access method operator class is for</td>
+</tr>
+<tr>
+<td><tt class="structfield">opcname</tt></td>
+<td><tt class="type">name</tt></td>
+<td> </td>
+<td>Name of this operator class</td>
+</tr>
+<tr>
+<td><tt class="structfield">opcnamespace</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><tt class="structname">pg_namespace</tt></a>.oid</tt></td>
+<td>Namespace of this operator class</td>
+</tr>
+<tr>
+<td><tt class="structfield">opcowner</tt></td>
+<td><tt class="type">int4</tt></td>
+<td><tt class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>.usesysid</tt></td>
+<td>Operator class owner</td>
+</tr>
+<tr>
+<td><tt class="structfield">opcintype</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
+<td>Data type that the operator class indexes</td>
+</tr>
+<tr>
+<td><tt class="structfield">opcdefault</tt></td>
+<td><tt class="type">bool</tt></td>
+<td> </td>
+<td>True if this operator class is the default for <tt class="structfield">opcintype</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="structfield">opckeytype</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
+<td>Type of data stored in index, or zero if same as <tt class="structfield">opcintype</tt>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   The majority of the information defining an operator class is actually
+   not in its <tt class="structname">pg_opclass</tt> row, but in the associated
+   rows in <tt class="structname">pg_amop</tt> and
+   <tt class="structname">pg_amproc</tt>.  Those rows are considered to be
+   part of the operator class definition [mdash ] this is not unlike the way
+   that a relation is defined by a single <tt class="structname">pg_class</tt>
+   row plus associated rows in <tt class="structname">pg_attribute</tt> and
    other tables.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-namespace.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-operator.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_namespace</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

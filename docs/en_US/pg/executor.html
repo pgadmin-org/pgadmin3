@@ -1,295 +1,78 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Executor</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Overview of PostgreSQL Internals"
-HREF="overview.html"><LINK
-REL="PREVIOUS"
-TITLE="Planner/Optimizer"
-HREF="planner-optimizer.html"><LINK
-REL="NEXT"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="planner-optimizer.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="overview.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 40. Overview of PostgreSQL Internals</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="overview.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="EXECUTOR"
->40.6. Executor</A
-></H1
-><P
->    The <I
-CLASS="FIRSTTERM"
->executor</I
-> takes the plan handed back by the
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>40.6. Executor</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
+<link rel="previous" href="planner-optimizer.html" title="40.5. Planner/Optimizer">
+<link rel="next" href="catalogs.html" title="Chapter 41. System Catalogs">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="executor"></a>40.6. Executor</h2></div></div>
+<div></div>
+</div>
+<p>    The <i class="firstterm">executor</i> takes the plan handed back by the
     planner/optimizer and recursively processes it to extract the required set
     of rows.  This is essentially a demand-pull pipeline mechanism.
     Each time a plan node is called, it must deliver one more row, or
     report that it is done delivering rows.
-   </P
-><P
->    To provide a concrete example, assume that the top
-    node is a <TT
-CLASS="LITERAL"
->MergeJoin</TT
-> node. 
+   </p>
+<p>    To provide a concrete example, assume that the top
+    node is a <tt class="literal">MergeJoin</tt> node. 
     Before any merge can be done two rows have to be fetched (one from
     each subplan). So the executor recursively calls itself to
     process the subplans (it starts with the subplan attached to
-    <TT
-CLASS="LITERAL"
->lefttree</TT
->). The new top node (the top node of the left
+    <tt class="literal">lefttree</tt>). The new top node (the top node of the left
     subplan) is, let's say, a
-    <TT
-CLASS="LITERAL"
->Sort</TT
-> node and again recursion is needed to obtain
-    an input row.  The child node of the <TT
-CLASS="LITERAL"
->Sort</TT
-> might
-    be a <TT
-CLASS="LITERAL"
->SeqScan</TT
-> node, representing actual reading of a table.
+    <tt class="literal">Sort</tt> node and again recursion is needed to obtain
+    an input row.  The child node of the <tt class="literal">Sort</tt> might
+    be a <tt class="literal">SeqScan</tt> node, representing actual reading of a table.
     Execution of this node causes the executor to fetch a row from the
-    table and return it up to the calling node.  The <TT
-CLASS="LITERAL"
->Sort</TT
->
+    table and return it up to the calling node.  The <tt class="literal">Sort</tt>
     node will repeatedly call its child to obtain all the rows to be sorted.
     When the input is exhausted (as indicated by the child node returning
-    a NULL instead of a row), the <TT
-CLASS="LITERAL"
->Sort</TT
-> code performs
+    a NULL instead of a row), the <tt class="literal">Sort</tt> code performs
     the sort, and finally is able to return its first output row, namely
     the first one in sorted order.  It keeps the remaining rows stored so
     that it can deliver them in sorted order in response to later demands.
-   </P
-><P
->    The <TT
-CLASS="LITERAL"
->MergeJoin</TT
-> node similarly demands the first row
+   </p>
+<p>    The <tt class="literal">MergeJoin</tt> node similarly demands the first row
     from its right subplan.  Then it compares the two rows to see if they
     can be joined; if so, it returns a join row to its caller.  On the next
     call, or immediately if it cannot join the current pair of inputs,
     it advances to the next row of one table
     or the other (depending on how the comparison came out), and again
     checks for a match.  Eventually, one subplan or the other is exhausted,
-    and the <TT
-CLASS="LITERAL"
->MergeJoin</TT
-> node returns NULL to indicate that
+    and the <tt class="literal">MergeJoin</tt> node returns NULL to indicate that
     no more join rows can be formed.
-   </P
-><P
->    Complex queries may involve many levels of plan nodes, but the general
+   </p>
+<p>    Complex queries may involve many levels of plan nodes, but the general
     approach is the same: each node computes and returns its next output
     row each time it is called.  Each node is also responsible for applying
     any selection or projection expressions that were assigned to it by
     the planner.
-   </P
-><P
->    The executor mechanism is used to evaluate all four basic SQL query types:
-    <TT
-CLASS="COMMAND"
->SELECT</TT
->, <TT
-CLASS="COMMAND"
->INSERT</TT
->, <TT
-CLASS="COMMAND"
->UPDATE</TT
->, and
-    <TT
-CLASS="COMMAND"
->DELETE</TT
->.  For <TT
-CLASS="COMMAND"
->SELECT</TT
->, the top-level executor
+   </p>
+<p>    The executor mechanism is used to evaluate all four basic SQL query types:
+    <tt class="command">SELECT</tt>, <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, and
+    <tt class="command">DELETE</tt>.  For <tt class="command">SELECT</tt>, the top-level executor
     code only needs to send each row returned by the query plan tree off
-    to the client.  For <TT
-CLASS="COMMAND"
->INSERT</TT
->, each returned row is inserted
-    into the target table specified for the <TT
-CLASS="COMMAND"
->INSERT</TT
->.  (A simple
-    <TT
-CLASS="COMMAND"
->INSERT ... VALUES</TT
-> command creates a trivial plan tree
-    consisting of a single <TT
-CLASS="LITERAL"
->Result</TT
-> node, which computes just one
-    result row.  But <TT
-CLASS="COMMAND"
->INSERT ... SELECT</TT
-> may demand the full power
-    of the executor mechanism.)  For <TT
-CLASS="COMMAND"
->UPDATE</TT
->, the planner arranges
+    to the client.  For <tt class="command">INSERT</tt>, each returned row is inserted
+    into the target table specified for the <tt class="command">INSERT</tt>.  (A simple
+    <tt class="command">INSERT ... VALUES</tt> command creates a trivial plan tree
+    consisting of a single <tt class="literal">Result</tt> node, which computes just one
+    result row.  But <tt class="command">INSERT ... SELECT</tt> may demand the full power
+    of the executor mechanism.)  For <tt class="command">UPDATE</tt>, the planner arranges
     that each computed row includes all the updated column values, plus
-    the <I
-CLASS="FIRSTTERM"
->TID</I
-> (tuple ID, or row ID) of the original target row;
+    the <i class="firstterm">TID</i> (tuple ID, or row ID) of the original target row;
     the executor top level uses this information to create a new updated row
-    and mark the old row deleted.  For <TT
-CLASS="COMMAND"
->DELETE</TT
->, the only column
+    and mark the old row deleted.  For <tt class="command">DELETE</tt>, the only column
     that is actually returned by the plan is the TID, and the executor top
     level simply uses the TID to visit the target rows and mark them deleted.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="planner-optimizer.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Planner/Optimizer</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="overview.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->System Catalogs</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+</div></body>
+</html>

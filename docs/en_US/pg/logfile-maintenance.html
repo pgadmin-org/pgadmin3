@@ -1,343 +1,84 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Log File Maintenance</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Routine Database Maintenance Tasks"
-HREF="maintenance.html"><LINK
-REL="PREVIOUS"
-TITLE="Routine Reindexing"
-HREF="routine-reindex.html"><LINK
-REL="NEXT"
-TITLE="Backup and Restore"
-HREF="backup.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="routine-reindex.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="maintenance.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 21. Routine Database Maintenance Tasks</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="maintenance.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="backup.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="LOGFILE-MAINTENANCE"
->21.3. Log File Maintenance</A
-></H1
-><A
-NAME="AEN20157"
-></A
-><P
->   It is a good idea to save the database server's log output
-   somewhere, rather than just routing it to <TT
-CLASS="FILENAME"
->/dev/null</TT
->.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>21.3. Log File Maintenance</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="maintenance.html" title="Chapter 21. Routine Database Maintenance Tasks">
+<link rel="previous" href="routine-reindex.html" title="21.2. Routine Reindexing">
+<link rel="next" href="backup.html" title="Chapter 22. Backup and Restore">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="logfile-maintenance"></a>21.3. Log File Maintenance</h2></div></div>
+<div></div>
+</div>
+<a name="id2598196"></a><p>   It is a good idea to save the database server's log output
+   somewhere, rather than just routing it to <tt class="filename">/dev/null</tt>.
    The log output is invaluable when it comes time to diagnose
    problems.  However, the log output tends to be voluminous
    (especially at higher debug levels) and you won't want to save it
-   indefinitely.  You need to <SPAN
-CLASS="QUOTE"
->"rotate"</SPAN
-> the log files so that
+   indefinitely.  You need to &#8220;<span class="quote">rotate</span>&#8221; the log files so that
    new log files are started and old ones removed after a reasonable
    period of time.
-  </P
-><P
->   If you simply direct the <SPAN
-CLASS="SYSTEMITEM"
->stderr</SPAN
-> of the
-   <TT
-CLASS="COMMAND"
->postmaster</TT
-> into a
+  </p>
+<p>   If you simply direct the <span class="systemitem">stderr</span> of the
+   <tt class="command">postmaster</tt> into a
    file, you will have log output, but
    the only way to truncate the log file is to stop and restart
-   the <TT
-CLASS="COMMAND"
->postmaster</TT
->. This may be OK if you are using
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> in a development environment,
+   the <tt class="command">postmaster</tt>. This may be OK if you are using
+   <span class="productname">PostgreSQL</span> in a development environment,
    but few production servers would find this behavior acceptable.
-  </P
-><P
->   A better approach is to send the <TT
-CLASS="COMMAND"
->postmaster</TT
->'s
-   <SPAN
-CLASS="SYSTEMITEM"
->stderr</SPAN
-> output to some type of log rotation program.
+  </p>
+<p>   A better approach is to send the <tt class="command">postmaster</tt>'s
+   <span class="systemitem">stderr</span> output to some type of log rotation program.
    There is a built-in log rotation program, which you can use by
-   setting the configuration parameter <TT
-CLASS="LITERAL"
->redirect_stderr</TT
-> to
-   <TT
-CLASS="LITERAL"
->true</TT
-> in <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->.  The control
-   parameters for this program are described in <A
-HREF="runtime-config.html#RUNTIME-CONFIG-LOGGING-WHERE"
->Section 16.4.6.1</A
->.
-  </P
-><P
->   Alternatively, you might prefer to use an external log rotation
+   setting the configuration parameter <tt class="literal">redirect_stderr</tt> to
+   <tt class="literal">true</tt> in <tt class="filename">postgresql.conf</tt>.  The control
+   parameters for this program are described in <a href="runtime-config.html#runtime-config-logging-where" title="16.4.6.1. Where to log">Section 16.4.6.1, &#8220;Where to log&#8221;</a>.
+  </p>
+<p>   Alternatively, you might prefer to use an external log rotation
    program, if you have one that you are already using with other
-   server software. For example, the <SPAN
-CLASS="APPLICATION"
->rotatelogs</SPAN
->
-   tool included in the <SPAN
-CLASS="PRODUCTNAME"
->Apache</SPAN
-> distribution
-   can be used with <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  To do this,
-   just pipe the <TT
-CLASS="COMMAND"
->postmaster</TT
->'s
-   <SPAN
-CLASS="SYSTEMITEM"
->stderr</SPAN
-> output to the desired program.
+   server software. For example, the <span class="application">rotatelogs</span>
+   tool included in the <span class="productname">Apache</span> distribution
+   can be used with <span class="productname">PostgreSQL</span>.  To do this,
+   just pipe the <tt class="command">postmaster</tt>'s
+   <span class="systemitem">stderr</span> output to the desired program.
    If you start the server with
-   <TT
-CLASS="COMMAND"
->pg_ctl</TT
->, then <SPAN
-CLASS="SYSTEMITEM"
->stderr</SPAN
->
-   is already redirected to <SPAN
-CLASS="SYSTEMITEM"
->stdout</SPAN
->, so you just need a
+   <tt class="command">pg_ctl</tt>, then <span class="systemitem">stderr</span>
+   is already redirected to <span class="systemitem">stdout</span>, so you just need a
    pipe command:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->pg_ctl start | rotatelogs /var/log/pgsql_log 86400</PRE
-><P>
-  </P
-><P
->   Another production-grade approach to managing log output is to
-   send it all to <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> and let
-   <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> deal with file rotation. To do this, set the
-   configuration parameter <TT
-CLASS="LITERAL"
->log_destination</TT
-> to <TT
-CLASS="LITERAL"
->syslog</TT
->
-   (to log to <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> only) in
-   <TT
-CLASS="FILENAME"
->postgresql.conf</TT
->. Then you can send a <TT
-CLASS="LITERAL"
->SIGHUP</TT
->
-   signal to the <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> daemon whenever you want to force it
+</p>
+<pre class="programlisting">pg_ctl start | rotatelogs /var/log/pgsql_log 86400</pre>
+<p>
+  </p>
+<p>   Another production-grade approach to managing log output is to
+   send it all to <span class="application">syslog</span> and let
+   <span class="application">syslog</span> deal with file rotation. To do this, set the
+   configuration parameter <tt class="literal">log_destination</tt> to <tt class="literal">syslog</tt>
+   (to log to <span class="application">syslog</span> only) in
+   <tt class="filename">postgresql.conf</tt>. Then you can send a <tt class="literal">SIGHUP</tt>
+   signal to the <span class="application">syslog</span> daemon whenever you want to force it
    to start writing a new log file.  If you want to automate log
-   rotation, the <SPAN
-CLASS="APPLICATION"
->logrotate</SPAN
-> program can be
+   rotation, the <span class="application">logrotate</span> program can be
    configured to work with log files from
-   <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
->.
-  </P
-><P
->   On many systems, however, <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> is not very reliable,
+   <span class="application">syslog</span>.
+  </p>
+<p>   On many systems, however, <span class="application">syslog</span> is not very reliable,
    particularly with large log messages; it may truncate or drop messages
-   just when you need them the most.  Also, on <SPAN
-CLASS="PRODUCTNAME"
->linux</SPAN
->,
-   <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> will sync each message to disk, yielding poor
-   performance.  (You can use a <TT
-CLASS="LITERAL"
->-</TT
-> at the start of the file name
-   in the <SPAN
-CLASS="APPLICATION"
->syslog</SPAN
-> config file to disable this behavior.)
-  </P
-><P
->   Note that all the solutions described above take care of starting new
+   just when you need them the most.  Also, on <span class="productname">linux</span>,
+   <span class="application">syslog</span> will sync each message to disk, yielding poor
+   performance.  (You can use a <tt class="literal">-</tt> at the start of the file name
+   in the <span class="application">syslog</span> config file to disable this behavior.)
+  </p>
+<p>   Note that all the solutions described above take care of starting new
    log files at configurable intervals, but they do not handle deletion
    of old, no-longer-interesting log files.  You will also want to set
    up a batch job to periodically delete old log files.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="routine-reindex.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="backup.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Routine Reindexing</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="maintenance.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Backup and Restore</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

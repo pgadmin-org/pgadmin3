@@ -1,505 +1,155 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->UPDATE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="UNLISTEN"
-HREF="sql-unlisten.html"><LINK
-REL="NEXT"
-TITLE="VACUUM"
-HREF="sql-vacuum.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-unlisten.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-unlisten.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-vacuum.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-vacuum.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-UPDATE"
-></A
->UPDATE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN44109"
-></A
-><H2
->Name</H2
->UPDATE&nbsp;--&nbsp;update rows of a table</DIV
-><A
-NAME="AEN44112"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN44114"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->UPDATE [ ONLY ] <VAR
-CLASS="REPLACEABLE"
->table</VAR
-> SET <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> = { <VAR
-CLASS="REPLACEABLE"
->expression</VAR
-> | DEFAULT } [, ...]
-    [ FROM <VAR
-CLASS="REPLACEABLE"
->fromlist</VAR
-> ]
-    [ WHERE <VAR
-CLASS="REPLACEABLE"
->condition</VAR
-> ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44121"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->UPDATE</TT
-> changes the values of the specified
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>UPDATE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-unlisten.html" title="UNLISTEN">
+<link rel="next" href="sql-vacuum.html" title="VACUUM">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-update"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>UPDATE &#8212; update rows of a table</p>
+</div>
+<a name="id2699961"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">UPDATE [ ONLY ] <i class="replaceable"><tt>table</tt></i> SET <i class="replaceable"><tt>column</tt></i> = { <i class="replaceable"><tt>expression</tt></i> | DEFAULT } [, ...]
+    [ FROM <i class="replaceable"><tt>fromlist</tt></i> ]
+    [ WHERE <i class="replaceable"><tt>condition</tt></i> ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2700005"></a><h2>Description</h2>
+<p>   <tt class="command">UPDATE</tt> changes the values of the specified
    columns in all rows that satisfy the condition. Only the columns to
-   be modified need be mentioned in the <TT
-CLASS="LITERAL"
->SET</TT
-> clause;
+   be modified need be mentioned in the <tt class="literal">SET</tt> clause;
    columns not explicitly modified retain their previous values.
-  </P
-><P
->   By default, <TT
-CLASS="COMMAND"
->UPDATE</TT
-> will update rows in the
+  </p>
+<p>   By default, <tt class="command">UPDATE</tt> will update rows in the
    specified table and all its subtables. If you wish to only update
-   the specific table mentioned, you must use the <TT
-CLASS="LITERAL"
->ONLY</TT
->
+   the specific table mentioned, you must use the <tt class="literal">ONLY</tt>
    clause.
-  </P
-><P
->   There are two ways to modify a table using information contained in
+  </p>
+<p>   There are two ways to modify a table using information contained in
    other tables in the database: using sub-selects, or specifying
-   additional tables in the <TT
-CLASS="LITERAL"
->FROM</TT
-> clause. Which
+   additional tables in the <tt class="literal">FROM</tt> clause. Which
    technique is more appropriate depends on the specific
    circumstances.
-  </P
-><P
->   You must have the <TT
-CLASS="LITERAL"
->UPDATE</TT
-> privilege on the table
-   to update it, as well as the <TT
-CLASS="LITERAL"
->SELECT</TT
->
+  </p>
+<p>   You must have the <tt class="literal">UPDATE</tt> privilege on the table
+   to update it, as well as the <tt class="literal">SELECT</tt>
    privilege to any table whose values are read in the
-   <VAR
-CLASS="REPLACEABLE"
->expression</VAR
->s or
-   <VAR
-CLASS="REPLACEABLE"
->condition</VAR
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44136"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->table</VAR
-></DT
-><DD
-><P
->      The name (optionally schema-qualified) of the table to update.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->column</VAR
-></DT
-><DD
-><P
->      The name of a column in <VAR
-CLASS="REPLACEABLE"
->table</VAR
->.
+   <i class="replaceable"><tt>expression</tt></i>s or
+   <i class="replaceable"><tt>condition</tt></i>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2700084"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
+<dd><p>      The name (optionally schema-qualified) of the table to update.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>column</tt></i></span></dt>
+<dd><p>      The name of a column in <i class="replaceable"><tt>table</tt></i>.
       The column name can be qualified with a subfield name or array
       subscript, if needed.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->expression</VAR
-></DT
-><DD
-><P
->      An expression to assign to the column.  The expression may use the
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>expression</tt></i></span></dt>
+<dd><p>      An expression to assign to the column.  The expression may use the
       old values of this and other columns in the table.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->DEFAULT</TT
-></DT
-><DD
-><P
->      Set the column to its default value (which will be NULL if no
+     </p></dd>
+<dt><span class="term"><tt class="literal">DEFAULT</tt></span></dt>
+<dd><p>      Set the column to its default value (which will be NULL if no
       specific default expression has been assigned to it).
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->fromlist</VAR
-></DT
-><DD
-><P
->      A list of table expressions, allowing columns from other tables
-      to appear in the <TT
-CLASS="LITERAL"
->WHERE</TT
-> condition and the update
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>fromlist</tt></i></span></dt>
+<dd><p>      A list of table expressions, allowing columns from other tables
+      to appear in the <tt class="literal">WHERE</tt> condition and the update
       expressions. This is similar to the list of tables that can be
-      specified in the <A
-HREF="sql-select.html#SQL-FROM"
-><I
-><I
->FROM</I
-> Clause</I
-></A
-> of a <TT
-CLASS="COMMAND"
->SELECT</TT
->
+      specified in the <a href="sql-select.html#sql-from"><tt class="literal">FROM</tt> Clause</a> of a <tt class="command">SELECT</tt>
       statement; for example, an alias for the table name can be
       specified.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->condition</VAR
-></DT
-><DD
-><P
->      An expression that returns a value of type <TT
-CLASS="TYPE"
->boolean</TT
->.
-      Only rows for which this expression returns <TT
-CLASS="LITERAL"
->true</TT
->
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>condition</tt></i></span></dt>
+<dd><p>      An expression that returns a value of type <tt class="type">boolean</tt>.
+      Only rows for which this expression returns <tt class="literal">true</tt>
       will be updated.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44175"
-></A
-><H2
->Outputs</H2
-><P
->   On successful completion, an <TT
-CLASS="COMMAND"
->UPDATE</TT
-> command returns a command
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2700201"></a><h2>Outputs</h2>
+<p>   On successful completion, an <tt class="command">UPDATE</tt> command returns a command
    tag of the form
-</P><PRE
-CLASS="SCREEN"
->UPDATE <VAR
-CLASS="REPLACEABLE"
->count</VAR
-></PRE
-><P>
-   The <VAR
-CLASS="REPLACEABLE"
->count</VAR
-> is the number
-   of rows updated.  If <VAR
-CLASS="REPLACEABLE"
->count</VAR
-> is
-   0, no rows matched the <VAR
-CLASS="REPLACEABLE"
->condition</VAR
-> (this is not considered
+</p>
+<pre class="screen">UPDATE <i class="replaceable"><tt>count</tt></i></pre>
+<p>
+   The <i class="replaceable"><tt>count</tt></i> is the number
+   of rows updated.  If <i class="replaceable"><tt>count</tt></i> is
+   0, no rows matched the <i class="replaceable"><tt>condition</tt></i> (this is not considered
    an error).
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44184"
-></A
-><H2
->Examples</H2
-><P
->   Change the word <TT
-CLASS="LITERAL"
->Drama</TT
-> to <TT
-CLASS="LITERAL"
->Dramatic</TT
-> in the
-   column <TT
-CLASS="STRUCTFIELD"
->kind</TT
-> of the table <TT
-CLASS="STRUCTNAME"
->films</TT
->:
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2700244"></a><h2>Examples</h2>
+<p>   Change the word <tt class="literal">Drama</tt> to <tt class="literal">Dramatic</tt> in the
+   column <tt class="structfield">kind</tt> of the table <tt class="structname">films</tt>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->UPDATE films SET kind = 'Dramatic' WHERE kind = 'Drama';</PRE
-><P>
-  </P
-><P
->   Adjust temperature entries and reset precipitation to its default
-   value in one row of the table <TT
-CLASS="STRUCTNAME"
->weather</TT
->:
+</p>
+<pre class="programlisting">UPDATE films SET kind = 'Dramatic' WHERE kind = 'Drama';</pre>
+<p>
+  </p>
+<p>   Adjust temperature entries and reset precipitation to its default
+   value in one row of the table <tt class="structname">weather</tt>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
-  WHERE city = 'San Francisco' AND date = '2003-07-03';</PRE
-><P>
-  </P
-><P
->   Increment the sales count of the salesperson who manages the
-   account for Acme Corporation, using the <TT
-CLASS="LITERAL"
->FROM</TT
->
+</p>
+<pre class="programlisting">UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
+  WHERE city = 'San Francisco' AND date = '2003-07-03';</pre>
+<p>
+  </p>
+<p>   Increment the sales count of the salesperson who manages the
+   account for Acme Corporation, using the <tt class="literal">FROM</tt>
    clause syntax:
-</P><PRE
-CLASS="PROGRAMLISTING"
->UPDATE employees SET sales_count = sales_count + 1 FROM accounts
+</p>
+<pre class="programlisting">UPDATE employees SET sales_count = sales_count + 1 FROM accounts
   WHERE accounts.name = 'Acme Corporation'
-  AND employees.id = accounts.sales_person;</PRE
-><P>
+  AND employees.id = accounts.sales_person;</pre>
+<p>
 
    Perform the same operation, using a sub-select in the
-   <TT
-CLASS="LITERAL"
->WHERE</TT
-> clause:
-</P><PRE
-CLASS="PROGRAMLISTING"
->UPDATE employees SET sales_count = sales_count + 1 WHERE id =
-  (SELECT sales_person FROM accounts WHERE name = 'Acme Corporation');</PRE
-><P>
+   <tt class="literal">WHERE</tt> clause:
+</p>
+<pre class="programlisting">UPDATE employees SET sales_count = sales_count + 1 WHERE id =
+  (SELECT sales_person FROM accounts WHERE name = 'Acme Corporation');</pre>
+<p>
 
    Attempt to insert a new stock item along with the quantity of stock. If
    the item exists, update the stock count of the existing item. To do this,
    use savepoints.
-</P><PRE
-CLASS="PROGRAMLISTING"
->BEGIN;
+</p>
+<pre class="programlisting">BEGIN;
 SAVEPOINT sp1;
 INSERT INTO wines VALUES('Chateau Lafite 2003', '24');
 -- Check for unique violation on name
 ROLLBACK TO sp1;
 UPDATE wines SET stock = stock + 24 WHERE winename='Chateau Lafite 2003';
-COMMIT;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN44201"
-></A
-><H2
->Compatibility</H2
-><P
->   This command conforms to the <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> standard.  The
-   <TT
-CLASS="LITERAL"
->FROM</TT
-> clause is a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-unlisten.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-vacuum.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->UNLISTEN</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->VACUUM</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+COMMIT;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2700338"></a><h2>Compatibility</h2>
+<p>   This command conforms to the <span class="acronym">SQL</span> standard.  The
+   <tt class="literal">FROM</tt> clause is a
+   <span class="productname">PostgreSQL</span> extension.
+  </p>
+</div>
+</div></body>
+</html>

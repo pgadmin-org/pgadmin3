@@ -1,303 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->DROP CAST</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="DROP AGGREGATE"
-HREF="sql-dropaggregate.html"><LINK
-REL="NEXT"
-TITLE="DROP CONVERSION"
-HREF="sql-dropconversion.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-dropaggregate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-dropaggregate.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-dropconversion.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-dropconversion.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-DROPCAST"
-></A
->DROP CAST</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN40305"
-></A
-><H2
->Name</H2
->DROP CAST&nbsp;--&nbsp;remove a cast</DIV
-><A
-NAME="AEN40308"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN40310"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->DROP CAST (<VAR
-CLASS="REPLACEABLE"
->sourcetype</VAR
-> AS <VAR
-CLASS="REPLACEABLE"
->targettype</VAR
->) [ CASCADE | RESTRICT ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-DROPCAST-DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->DROP CAST</TT
-> removes a previously defined cast.
-  </P
-><P
->   To be able to drop a cast, you must own the source or the target
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP CAST</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-dropaggregate.html" title="DROP AGGREGATE">
+<link rel="next" href="sql-dropconversion.html" title="DROP CONVERSION">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-dropcast"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP CAST &#8212; remove a cast</p>
+</div>
+<a name="id2683321"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP CAST (<i class="replaceable"><tt>sourcetype</tt></i> AS <i class="replaceable"><tt>targettype</tt></i>) [ CASCADE | RESTRICT ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-dropcast-description"></a><h2>Description</h2>
+<p>   <tt class="command">DROP CAST</tt> removes a previously defined cast.
+  </p>
+<p>   To be able to drop a cast, you must own the source or the target
    data type.  These are the same privileges that are required to
    create a cast.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN40319"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->sourcetype</VAR
-></DT
-><DD
-><P
->       The name of the source data type of the cast.
-      </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->targettype</VAR
-></DT
-><DD
-><P
->       The name of the target data type of the cast.
-      </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->CASCADE</TT
-><BR><TT
-CLASS="LITERAL"
->RESTRICT</TT
-></DT
-><DD
-><P
->       These key words do not have any effect, since there are no
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2683366"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>sourcetype</tt></i></span></dt>
+<dd><p>       The name of the source data type of the cast.
+      </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>targettype</tt></i></span></dt>
+<dd><p>       The name of the target data type of the cast.
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CASCADE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">RESTRICT</tt></span>
+</dt>
+<dd><p>       These key words do not have any effect, since there are no
        dependencies on casts.
-      </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-DROPCAST-EXAMPLES"
-></A
-><H2
->Examples</H2
-><P
->   To drop the cast from type <TT
-CLASS="TYPE"
->text</TT
-> to type <TT
-CLASS="TYPE"
->int</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->DROP CAST (text AS int);</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-DROPCAST-COMPAT"
-></A
-><H2
->Compatibility</H2
-><P
->   The <TT
-CLASS="COMMAND"
->DROP CAST</TT
-> command conforms to the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN40349"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-createcast.html"
-><I
->CREATE CAST</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-dropaggregate.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-dropconversion.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->DROP AGGREGATE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->DROP CONVERSION</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-dropcast-examples"></a><h2>Examples</h2>
+<p>   To drop the cast from type <tt class="type">text</tt> to type <tt class="type">int</tt>:
+</p>
+<pre class="programlisting">DROP CAST (text AS int);</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-dropcast-compat"></a><h2>Compatibility</h2>
+<p>   The <tt class="command">DROP CAST</tt> command conforms to the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2683446"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createcast.html">CREATE CAST</a></span>
+</div>
+</div></body>
+</html>

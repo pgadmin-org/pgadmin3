@@ -1,321 +1,68 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->START TRANSACTION</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="SHOW"
-HREF="sql-show.html"><LINK
-REL="NEXT"
-TITLE="TRUNCATE"
-HREF="sql-truncate.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-show.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-show.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-truncate.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-truncate.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-START-TRANSACTION"
-></A
->START TRANSACTION</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN43957"
-></A
-><H2
->Name</H2
->START TRANSACTION&nbsp;--&nbsp;start a transaction block</DIV
-><A
-NAME="AEN43960"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN43962"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->START TRANSACTION [ <VAR
-CLASS="REPLACEABLE"
->transaction_mode</VAR
-> [, ...] ]
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>START TRANSACTION</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-show.html" title="SHOW">
+<link rel="next" href="sql-truncate.html" title="TRUNCATE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-start-transaction"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>START TRANSACTION &#8212; start a transaction block</p>
+</div>
+<a name="id2699374"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">START TRANSACTION [ <i class="replaceable"><tt>transaction_mode</tt></i> [, ...] ]
 
-where <VAR
-CLASS="REPLACEABLE"
->transaction_mode</VAR
-> is one of:
+where <i class="replaceable"><tt>transaction_mode</tt></i> is one of:
 
     ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
-    READ WRITE | READ ONLY</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43966"
-></A
-><H2
->Description</H2
-><P
->   This command begins a new transaction block. If the isolation level or
+    READ WRITE | READ ONLY</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2699404"></a><h2>Description</h2>
+<p>   This command begins a new transaction block. If the isolation level or
    read/write mode is specified, the new transaction has those
-   characteristics, as if <A
-HREF="sql-set-transaction.html"
-><I
->SET TRANSACTION</I
-></A
-> was executed. This is the same
-   as the <A
-HREF="sql-begin.html"
-><I
->BEGIN</I
-></A
-> command.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43971"
-></A
-><H2
->Parameters</H2
-><P
->   Refer to <A
-HREF="sql-set-transaction.html"
-><I
->SET TRANSACTION</I
-></A
-> for information on the meaning
+   characteristics, as if <a href="sql-set-transaction.html">SET TRANSACTION</a> was executed. This is the same
+   as the <a href="sql-begin.html">BEGIN</a> command.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2699433"></a><h2>Parameters</h2>
+<p>   Refer to <a href="sql-set-transaction.html">SET TRANSACTION</a> for information on the meaning
    of the parameters to this statement.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43975"
-></A
-><H2
->Compatibility</H2
-><P
->   In the standard, it is not necessary to issue <TT
-CLASS="COMMAND"
->START TRANSACTION</TT
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2699449"></a><h2>Compatibility</h2>
+<p>   In the standard, it is not necessary to issue <tt class="command">START TRANSACTION</tt>
    to start a transaction block: any SQL command implicitly begins a block.
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->'s behavior can be seen as implicitly
-   issuing a <TT
-CLASS="COMMAND"
->COMMIT</TT
-> after each command that does not
-   follow <TT
-CLASS="COMMAND"
->START TRANSACTION</TT
-> (or <TT
-CLASS="COMMAND"
->BEGIN</TT
->),
-   and it is therefore often called <SPAN
-CLASS="QUOTE"
->"autocommit"</SPAN
->.
+   <span class="productname">PostgreSQL</span>'s behavior can be seen as implicitly
+   issuing a <tt class="command">COMMIT</tt> after each command that does not
+   follow <tt class="command">START TRANSACTION</tt> (or <tt class="command">BEGIN</tt>),
+   and it is therefore often called &#8220;<span class="quote">autocommit</span>&#8221;.
    Other relational database systems may offer an autocommit feature
    as a convenience.
-  </P
-><P
->   The SQL standard requires commas between successive <VAR
-CLASS="REPLACEABLE"
->transaction_modes</VAR
->, but for historical
-   reasons <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> allows the commas to be
+  </p>
+<p>   The SQL standard requires commas between successive <i class="replaceable"><tt>transaction_modes</tt></i>, but for historical
+   reasons <span class="productname">PostgreSQL</span> allows the commas to be
    omitted.
-  </P
-><P
->   See also the compatibility section of <A
-HREF="sql-set-transaction.html"
-><I
->SET TRANSACTION</I
-></A
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN43989"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-begin.html"
-><I
->BEGIN</I
-></A
->, <A
-HREF="sql-commit.html"
-><I
->COMMIT</I
-></A
->, <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
->, <A
-HREF="sql-savepoint.html"
-><I
->SAVEPOINT</I
-></A
->, <A
-HREF="sql-set-transaction.html"
-><I
->SET TRANSACTION</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-show.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-truncate.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SHOW</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->TRUNCATE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+<p>   See also the compatibility section of <a href="sql-set-transaction.html">SET TRANSACTION</a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2699523"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-savepoint.html">SAVEPOINT</a>, <a href="sql-set-transaction.html">SET TRANSACTION</a></span>
+</div>
+</div></body>
+</html>

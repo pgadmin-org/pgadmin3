@@ -1,365 +1,83 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->UNION, CASE, and ARRAY Constructs</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Type Conversion"
-HREF="typeconv.html"><LINK
-REL="PREVIOUS"
-TITLE="Value Storage"
-HREF="typeconv-query.html"><LINK
-REL="NEXT"
-TITLE="Indexes"
-HREF="indexes.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="typeconv-query.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="typeconv.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 10. Type Conversion</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TYPECONV-UNION-CASE"
->10.5. <TT
-CLASS="LITERAL"
->UNION</TT
->, <TT
-CLASS="LITERAL"
->CASE</TT
->, and <TT
-CLASS="LITERAL"
->ARRAY</TT
-> Constructs</A
-></H1
-><A
-NAME="AEN13727"
-></A
-><A
-NAME="AEN13730"
-></A
-><A
-NAME="AEN13733"
-></A
-><P
->SQL <TT
-CLASS="LITERAL"
->UNION</TT
-> constructs must match up possibly dissimilar
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>10.5. UNION, CASE, and ARRAY Constructs</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="typeconv.html" title="Chapter 10. Type Conversion">
+<link rel="previous" href="typeconv-query.html" title="10.4. Value Storage">
+<link rel="next" href="indexes.html" title="Chapter 11. Indexes">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="typeconv-union-case"></a>10.5. <tt class="literal">UNION</tt>, <tt class="literal">CASE</tt>, and <tt class="literal">ARRAY</tt> Constructs</h2></div></div>
+<div></div>
+</div>
+<a name="id2567538"></a><a name="id2567550"></a><a name="id2567562"></a><p>SQL <tt class="literal">UNION</tt> constructs must match up possibly dissimilar
 types to become a single result set.  The resolution algorithm is
 applied separately to each output column of a union query.  The
-<TT
-CLASS="LITERAL"
->INTERSECT</TT
-> and <TT
-CLASS="LITERAL"
->EXCEPT</TT
-> constructs resolve
-dissimilar types in the same way as <TT
-CLASS="LITERAL"
->UNION</TT
->.  The
-<TT
-CLASS="LITERAL"
->CASE</TT
-> and <TT
-CLASS="LITERAL"
->ARRAY</TT
-> constructs use the identical
+<tt class="literal">INTERSECT</tt> and <tt class="literal">EXCEPT</tt> constructs resolve
+dissimilar types in the same way as <tt class="literal">UNION</tt>.  The
+<tt class="literal">CASE</tt> and <tt class="literal">ARRAY</tt> constructs use the identical
 algorithm to match up their component expressions and select a result
-data type.</P
-><DIV
-CLASS="PROCEDURE"
-><P
-><B
-><TT
-CLASS="LITERAL"
->UNION</TT
->, <TT
-CLASS="LITERAL"
->CASE</TT
->, and
-<TT
-CLASS="LITERAL"
->ARRAY</TT
-> Type Resolution</B
-></P
-><OL
-TYPE="1"
-><LI
-><P
->If all inputs are of type <TT
-CLASS="TYPE"
->unknown</TT
->, resolve as type
-<TT
-CLASS="TYPE"
->text</TT
-> (the preferred type of the string category).
-Otherwise, ignore the <TT
-CLASS="TYPE"
->unknown</TT
-> inputs while choosing the result type.</P
-></LI
-><LI
-><P
->If the non-unknown inputs are not all of the same type category, fail.</P
-></LI
-><LI
-><P
->Choose the first non-unknown input type which is a preferred type in
+data type.</p>
+<div class="procedure">
+<p class="title"><b><tt class="literal">UNION</tt>, <tt class="literal">CASE</tt>, and
+<tt class="literal">ARRAY</tt> Type Resolution</b></p>
+<ol type="1">
+<li><p>If all inputs are of type <tt class="type">unknown</tt>, resolve as type
+<tt class="type">text</tt> (the preferred type of the string category).
+Otherwise, ignore the <tt class="type">unknown</tt> inputs while choosing the result type.</p></li>
+<li><p>If the non-unknown inputs are not all of the same type category, fail.</p></li>
+<li><p>Choose the first non-unknown input type which is a preferred type in
 that category or allows all the non-unknown inputs to be implicitly
-converted to it.</P
-></LI
-><LI
-><P
->Convert all inputs to the selected type.</P
-></LI
-></OL
-></DIV
-><P
->Some examples follow.</P
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN13760"
-></A
-><P
-><B
->Example 10-7. Type Resolution with Underspecified Types in a Union</B
-></P
-><P
-></P><PRE
-CLASS="SCREEN"
->SELECT text 'a' AS "text" UNION SELECT 'b';
+converted to it.</p></li>
+<li><p>Convert all inputs to the selected type.</p></li>
+</ol>
+</div>
+<p>Some examples follow.</p>
+<div class="example">
+<a name="id2567680"></a><p class="title"><b>Example 10.7. Type Resolution with Underspecified Types in a Union</b></p>
+<pre class="screen">SELECT text 'a' AS "text" UNION SELECT 'b';
 
  text
 ------
  a
  b
-(2 rows)</PRE
-><P>
-Here, the unknown-type literal <TT
-CLASS="LITERAL"
->'b'</TT
-> will be resolved as type <TT
-CLASS="TYPE"
->text</TT
->.</P
-></DIV
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN13766"
-></A
-><P
-><B
->Example 10-8. Type Resolution in a Simple Union</B
-></P
-><P
-></P><PRE
-CLASS="SCREEN"
->SELECT 1.2 AS "numeric" UNION SELECT 1;
+(2 rows)</pre>
+<p>
+Here, the unknown-type literal <tt class="literal">'b'</tt> will be resolved as type <tt class="type">text</tt>.</p>
+</div>
+<div class="example">
+<a name="id2567703"></a><p class="title"><b>Example 10.8. Type Resolution in a Simple Union</b></p>
+<pre class="screen">SELECT 1.2 AS "numeric" UNION SELECT 1;
 
  numeric
 ---------
        1
      1.2
-(2 rows)</PRE
-><P>
-The literal <TT
-CLASS="LITERAL"
->1.2</TT
-> is of type <TT
-CLASS="TYPE"
->numeric</TT
->,
-and the <TT
-CLASS="TYPE"
->integer</TT
-> value <TT
-CLASS="LITERAL"
->1</TT
-> can be cast implicitly to
-<TT
-CLASS="TYPE"
->numeric</TT
->, so that type is used.</P
-></DIV
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN13775"
-></A
-><P
-><B
->Example 10-9. Type Resolution in a Transposed Union</B
-></P
-><P
-></P><PRE
-CLASS="SCREEN"
->SELECT 1 AS "real" UNION SELECT CAST('2.2' AS REAL);
+(2 rows)</pre>
+<p>
+The literal <tt class="literal">1.2</tt> is of type <tt class="type">numeric</tt>,
+and the <tt class="type">integer</tt> value <tt class="literal">1</tt> can be cast implicitly to
+<tt class="type">numeric</tt>, so that type is used.</p>
+</div>
+<div class="example">
+<a name="id2567739"></a><p class="title"><b>Example 10.9. Type Resolution in a Transposed Union</b></p>
+<pre class="screen">SELECT 1 AS "real" UNION SELECT CAST('2.2' AS REAL);
 
  real
 ------
     1
   2.2
-(2 rows)</PRE
-><P>
-Here, since type <TT
-CLASS="TYPE"
->real</TT
-> cannot be implicitly cast to <TT
-CLASS="TYPE"
->integer</TT
->,
-but <TT
-CLASS="TYPE"
->integer</TT
-> can be implicitly cast to <TT
-CLASS="TYPE"
->real</TT
->, the union
-result type is resolved as <TT
-CLASS="TYPE"
->real</TT
->.</P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="typeconv-query.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="indexes.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Value Storage</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="typeconv.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Indexes</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+(2 rows)</pre>
+<p>
+Here, since type <tt class="type">real</tt> cannot be implicitly cast to <tt class="type">integer</tt>,
+but <tt class="type">integer</tt> can be implicitly cast to <tt class="type">real</tt>, the union
+result type is resolved as <tt class="type">real</tt>.</p>
+</div>
+</div></body>
+</html>

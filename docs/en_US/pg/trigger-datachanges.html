@@ -1,231 +1,55 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Visibility of Data Changes</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Triggers"
-HREF="triggers.html"><LINK
-REL="PREVIOUS"
-TITLE="Triggers"
-HREF="triggers.html"><LINK
-REL="NEXT"
-TITLE="Writing Trigger Functions in C"
-HREF="trigger-interface.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="triggers.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="triggers.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 33. Triggers</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="triggers.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="trigger-interface.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TRIGGER-DATACHANGES"
->33.2. Visibility of Data Changes</A
-></H1
-><P
->    If you execute SQL commands in your trigger function, and these
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>33.2. Visibility of Data Changes</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="triggers.html" title="Chapter 33. Triggers">
+<link rel="previous" href="triggers.html" title="Chapter 33. Triggers">
+<link rel="next" href="trigger-interface.html" title="33.3. Writing Trigger Functions in C">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="trigger-datachanges"></a>33.2. Visibility of Data Changes</h2></div></div>
+<div></div>
+</div>
+<p>    If you execute SQL commands in your trigger function, and these
     commands access the table that the trigger is for, then
     you need to be aware of the data visibility rules, because they determine
     whether these SQL commands will see the data change that the trigger
     is fired for.  Briefly:
 
-    <P
-></P
-></P><UL
-><LI
-><P
->       Statement-level triggers follow simple visibility rules: none of
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       Statement-level triggers follow simple visibility rules: none of
        the changes made by a statement are visible to statement-level
        triggers that are invoked before the statement, whereas all
        modifications are visible to statement-level after triggers.
-      </P
-></LI
-><LI
-><P
->       The data change (insertion, update, or deletion) causing the
-       trigger to fire is naturally <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->not</I
-></SPAN
-> visible
+      </p></li>
+<li><p>       The data change (insertion, update, or deletion) causing the
+       trigger to fire is naturally <span class="emphasis"><em>not</em></span> visible
        to SQL commands executed in a row-level before trigger, because
        it hasn't happened yet.
-      </P
-></LI
-><LI
-><P
->       However, SQL commands executed in a row-level before
-       trigger <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->will</I
-></SPAN
-> see the effects of data
+      </p></li>
+<li><p>       However, SQL commands executed in a row-level before
+       trigger <span class="emphasis"><em>will</em></span> see the effects of data
        changes for rows previously processed in the same outer
        command.  This requires caution, since the ordering of these
        change events is not in general predictable; a SQL command that
        affects multiple rows may visit the rows in any order.
-      </P
-></LI
-><LI
-><P
->       When a row-level after trigger is fired, all data changes made
+      </p></li>
+<li><p>       When a row-level after trigger is fired, all data changes made
        by the outer command are already complete, and are visible to
        the invoked trigger function.
-      </P
-></LI
-></UL
-><P>
-   </P
-><P
->    Further information about data visibility rules can be found in
-    <A
-HREF="spi-visibility.html"
->Section 39.4</A
->.  The example in <A
-HREF="trigger-example.html"
->Section 33.4</A
-> contains a demonstration of these rules.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="triggers.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="trigger-interface.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Triggers</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="triggers.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Writing Trigger Functions in C</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </p></li>
+</ul></div>
+<p>
+   </p>
+<p>    Further information about data visibility rules can be found in
+    <a href="spi-visibility.html" title="39.4. Visibility of Data Changes">Section 39.4, &#8220;Visibility of Data Changes&#8221;</a>.  The example in <a href="trigger-example.html" title="33.4. A Complete Example">Section 33.4, &#8220;A Complete Example&#8221;</a> contains a demonstration of these rules.
+   </p>
+</div></body>
+</html>

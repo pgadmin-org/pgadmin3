@@ -1,413 +1,86 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->SPI_modifytuple</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Memory Management"
-HREF="spi-memory.html"><LINK
-REL="PREVIOUS"
-TITLE="SPI_returntuple"
-HREF="spi-spi-returntuple.html"><LINK
-REL="NEXT"
-TITLE="SPI_freetuple"
-HREF="spi-spi-freetuple.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-returntuple.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-returntuple.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-freetuple.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-freetuple.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-MODIFYTUPLE"
-></A
->SPI_modifytuple</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN34449"
-></A
-><H2
->Name</H2
->SPI_modifytuple&nbsp;--&nbsp;create a row by replacing selected fields of a given row</DIV
-><A
-NAME="AEN34452"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN34454"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->HeapTuple SPI_modifytuple(Relation <TT
-CLASS="PARAMETER"
->rel</TT
->, HeapTuple <TT
-CLASS="PARAMETER"
->row</TT
->, <TT
-CLASS="PARAMETER"
->ncols</TT
->, <TT
-CLASS="PARAMETER"
->colnum</TT
->, Datum * <TT
-CLASS="PARAMETER"
->values</TT
->, const char * <TT
-CLASS="PARAMETER"
->nulls</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34462"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_modifytuple</CODE
-> creates a new row by
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_modifytuple</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="spi-memory.html" title="39.3. Memory Management">
+<link rel="previous" href="spi-spi-returntuple.html" title="SPI_returntuple">
+<link rel="next" href="spi-spi-freetuple.html" title="SPI_freetuple">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-modifytuple"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_modifytuple &#8212; create a row by replacing selected fields of a given row</p>
+</div>
+<a name="id2659445"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">HeapTuple SPI_modifytuple(Relation <i class="parameter"><tt>rel</tt></i>, HeapTuple <i class="parameter"><tt>row</tt></i>, <i class="parameter"><tt>ncols</tt></i>, <i class="parameter"><tt>colnum</tt></i>, Datum * <i class="parameter"><tt>values</tt></i>, const char * <i class="parameter"><tt>nulls</tt></i>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2659492"></a><h2>Description</h2>
+<p>   <tt class="function">SPI_modifytuple</tt> creates a new row by
    substituting new values for selected columns, copying the original
    row's columns at other positions.  The input row is not modified.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34466"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->Relation <TT
-CLASS="PARAMETER"
->rel</TT
-></TT
-></DT
-><DD
-><P
->      Used only as the source of the row descriptor for the row.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2659506"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">Relation <i class="parameter"><tt>rel</tt></i></tt></span></dt>
+<dd><p>      Used only as the source of the row descriptor for the row.
       (Passing a relation rather than a row descriptor is a
       misfeature.)
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->HeapTuple <TT
-CLASS="PARAMETER"
->row</TT
-></TT
-></DT
-><DD
-><P
->      row to be modified
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->int <TT
-CLASS="PARAMETER"
->ncols</TT
-></TT
-></DT
-><DD
-><P
->      number of column numbers in the array
-      <TT
-CLASS="PARAMETER"
->colnum</TT
->
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->int * <TT
-CLASS="PARAMETER"
->colnum</TT
-></TT
-></DT
-><DD
-><P
->      array of the numbers of the columns that are to be changed
+     </p></dd>
+<dt><span class="term"><tt class="literal">HeapTuple <i class="parameter"><tt>row</tt></i></tt></span></dt>
+<dd><p>      row to be modified
+     </p></dd>
+<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>ncols</tt></i></tt></span></dt>
+<dd><p>      number of column numbers in the array
+      <i class="parameter"><tt>colnum</tt></i>
+     </p></dd>
+<dt><span class="term"><tt class="literal">int * <i class="parameter"><tt>colnum</tt></i></tt></span></dt>
+<dd><p>      array of the numbers of the columns that are to be changed
       (count starts at 1)
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->Datum * <TT
-CLASS="PARAMETER"
->values</TT
-></TT
-></DT
-><DD
-><P
->      new values for the specified columns
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->const char * <TT
-CLASS="PARAMETER"
->Nulls</TT
-></TT
-></DT
-><DD
-><P
->      which new values are null, if any (see
-      <CODE
-CLASS="FUNCTION"
->SPI_execute_plan</CODE
-> for the format)
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34507"
-></A
-><H2
->Return Value</H2
-><P
->   new row with modifications, allocated in the upper executor
-   context; <TT
-CLASS="SYMBOL"
->NULL</TT
-> only if <TT
-CLASS="PARAMETER"
->row</TT
->
-   is <TT
-CLASS="SYMBOL"
->NULL</TT
->
-  </P
-><P
->   On error, <TT
-CLASS="VARNAME"
->SPI_result</TT
-> is set as follows:
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_ARGUMENT</TT
-></DT
-><DD
-><P
->       if <TT
-CLASS="PARAMETER"
->rel</TT
-> is <TT
-CLASS="SYMBOL"
->NULL</TT
->, or if
-       <TT
-CLASS="PARAMETER"
->row</TT
-> is <TT
-CLASS="SYMBOL"
->NULL</TT
->, or if <TT
-CLASS="PARAMETER"
->ncols</TT
->
-       is less than or equal to 0, or if <TT
-CLASS="PARAMETER"
->colnum</TT
-> is
-       <TT
-CLASS="SYMBOL"
->NULL</TT
->, or if <TT
-CLASS="PARAMETER"
->values</TT
-> is <TT
-CLASS="SYMBOL"
->NULL</TT
->.
-      </P
-></DD
-><DT
-><TT
-CLASS="SYMBOL"
->SPI_ERROR_NOATTRIBUTE</TT
-></DT
-><DD
-><P
->       if <TT
-CLASS="PARAMETER"
->colnum</TT
-> contains an invalid column number (less
+     </p></dd>
+<dt><span class="term"><tt class="literal">Datum * <i class="parameter"><tt>values</tt></i></tt></span></dt>
+<dd><p>      new values for the specified columns
+     </p></dd>
+<dt><span class="term"><tt class="literal">const char * <i class="parameter"><tt>Nulls</tt></i></tt></span></dt>
+<dd><p>      which new values are null, if any (see
+      <tt class="function">SPI_execute_plan</tt> for the format)
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2659619"></a><h2>Return Value</h2>
+<p>   new row with modifications, allocated in the upper executor
+   context; <tt class="symbol">NULL</tt> only if <i class="parameter"><tt>row</tt></i>
+   is <tt class="symbol">NULL</tt>
+  </p>
+<p>   On error, <tt class="varname">SPI_result</tt> is set as follows:
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="symbol">SPI_ERROR_ARGUMENT</tt></span></dt>
+<dd><p>       if <i class="parameter"><tt>rel</tt></i> is <tt class="symbol">NULL</tt>, or if
+       <i class="parameter"><tt>row</tt></i> is <tt class="symbol">NULL</tt>, or if <i class="parameter"><tt>ncols</tt></i>
+       is less than or equal to 0, or if <i class="parameter"><tt>colnum</tt></i> is
+       <tt class="symbol">NULL</tt>, or if <i class="parameter"><tt>values</tt></i> is <tt class="symbol">NULL</tt>.
+      </p></dd>
+<dt><span class="term"><tt class="symbol">SPI_ERROR_NOATTRIBUTE</tt></span></dt>
+<dd><p>       if <i class="parameter"><tt>colnum</tt></i> contains an invalid column number (less
        than or equal to 0 or greater than the number of column in
-       <TT
-CLASS="PARAMETER"
->row</TT
->)
-      </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-returntuple.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-freetuple.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_returntuple</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi-memory.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_freetuple</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+       <i class="parameter"><tt>row</tt></i>)
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+</div></body>
+</html>

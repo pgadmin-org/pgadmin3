@@ -1,524 +1,170 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->CREATE OPERATOR</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="CREATE LANGUAGE"
-HREF="sql-createlanguage.html"><LINK
-REL="NEXT"
-TITLE="CREATE OPERATOR CLASS"
-HREF="sql-createopclass.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createlanguage.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createlanguage.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createopclass.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createopclass.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-CREATEOPERATOR"
-></A
->CREATE OPERATOR</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN38094"
-></A
-><H2
->Name</H2
->CREATE OPERATOR&nbsp;--&nbsp;define a new operator</DIV
-><A
-NAME="AEN38097"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN38099"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->CREATE OPERATOR <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> (
-    PROCEDURE = <VAR
-CLASS="REPLACEABLE"
->funcname</VAR
->
-    [, LEFTARG = <VAR
-CLASS="REPLACEABLE"
->lefttype</VAR
-> ] [, RIGHTARG = <VAR
-CLASS="REPLACEABLE"
->righttype</VAR
-> ]
-    [, COMMUTATOR = <VAR
-CLASS="REPLACEABLE"
->com_op</VAR
-> ] [, NEGATOR = <VAR
-CLASS="REPLACEABLE"
->neg_op</VAR
-> ]
-    [, RESTRICT = <VAR
-CLASS="REPLACEABLE"
->res_proc</VAR
-> ] [, JOIN = <VAR
-CLASS="REPLACEABLE"
->join_proc</VAR
-> ]
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>CREATE OPERATOR</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-createlanguage.html" title="CREATE LANGUAGE">
+<link rel="next" href="sql-createopclass.html" title="CREATE OPERATOR CLASS">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-createoperator"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>CREATE OPERATOR &#8212; define a new operator</p>
+</div>
+<a name="id2673981"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">CREATE OPERATOR <i class="replaceable"><tt>name</tt></i> (
+    PROCEDURE = <i class="replaceable"><tt>funcname</tt></i>
+    [, LEFTARG = <i class="replaceable"><tt>lefttype</tt></i> ] [, RIGHTARG = <i class="replaceable"><tt>righttype</tt></i> ]
+    [, COMMUTATOR = <i class="replaceable"><tt>com_op</tt></i> ] [, NEGATOR = <i class="replaceable"><tt>neg_op</tt></i> ]
+    [, RESTRICT = <i class="replaceable"><tt>res_proc</tt></i> ] [, JOIN = <i class="replaceable"><tt>join_proc</tt></i> ]
     [, HASHES ] [, MERGES ]
-    [, SORT1 = <VAR
-CLASS="REPLACEABLE"
->left_sort_op</VAR
-> ] [, SORT2 = <VAR
-CLASS="REPLACEABLE"
->right_sort_op</VAR
-> ]
-    [, LTCMP = <VAR
-CLASS="REPLACEABLE"
->less_than_op</VAR
-> ] [, GTCMP = <VAR
-CLASS="REPLACEABLE"
->greater_than_op</VAR
-> ]
-)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38113"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->CREATE OPERATOR</TT
-> defines a new operator,
-   <VAR
-CLASS="REPLACEABLE"
->name</VAR
->.  The user who
+    [, SORT1 = <i class="replaceable"><tt>left_sort_op</tt></i> ] [, SORT2 = <i class="replaceable"><tt>right_sort_op</tt></i> ]
+    [, LTCMP = <i class="replaceable"><tt>less_than_op</tt></i> ] [, GTCMP = <i class="replaceable"><tt>greater_than_op</tt></i> ]
+)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2674069"></a><h2>Description</h2>
+<p>   <tt class="command">CREATE OPERATOR</tt> defines a new operator,
+   <i class="replaceable"><tt>name</tt></i>.  The user who
    defines an operator becomes its owner.  If a schema name is given
    then the operator is created in the specified schema.  Otherwise it
    is created in the current schema.
-  </P
-><P
->   The operator name is a sequence of up to <TT
-CLASS="SYMBOL"
->NAMEDATALEN</TT
->-1
+  </p>
+<p>   The operator name is a sequence of up to <tt class="symbol">NAMEDATALEN</tt>-1
    (63 by default) characters from the following list:
-<P
-CLASS="LITERALLAYOUT"
->+&nbsp;-&nbsp;*&nbsp;/&nbsp;&lt;&nbsp;&gt;&nbsp;=&nbsp;~&nbsp;!&nbsp;@&nbsp;#&nbsp;%&nbsp;^&nbsp;&amp;&nbsp;|&nbsp;`&nbsp;?</P
->
+</p>
+<div class="literallayout"><p>+ - * / &lt; &gt; = ~ ! @ # % ^ &amp; | ` ?</p></div>
+<p>
 
    There are a few restrictions on your choice of name:
-   <P
-></P
-></P><UL
-><LI
-><P
->     <TT
-CLASS="LITERAL"
->--</TT
-> and <TT
-CLASS="LITERAL"
->/*</TT
-> cannot appear anywhere in an operator name,
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p>     <tt class="literal">--</tt> and <tt class="literal">/*</tt> cannot appear anywhere in an operator name,
      since they will be taken as the start of a comment.
-     </P
-></LI
-><LI
-><P
->     A multicharacter operator name cannot end in <TT
-CLASS="LITERAL"
->+</TT
-> or
-     <TT
-CLASS="LITERAL"
->-</TT
->,
+     </p></li>
+<li>
+<p>     A multicharacter operator name cannot end in <tt class="literal">+</tt> or
+     <tt class="literal">-</tt>,
      unless the name also contains at least one of these characters:
-<P
-CLASS="LITERALLAYOUT"
->~&nbsp;!&nbsp;@&nbsp;#&nbsp;%&nbsp;^&nbsp;&amp;&nbsp;|&nbsp;`&nbsp;?</P
->
-     For example, <TT
-CLASS="LITERAL"
->@-</TT
-> is an allowed operator name,
-     but <TT
-CLASS="LITERAL"
->*-</TT
-> is not.
-     This restriction allows <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> to
+</p>
+<div class="literallayout"><p>~ ! @ # % ^ &amp; | ` ?</p></div>
+<p>
+     For example, <tt class="literal">@-</tt> is an allowed operator name,
+     but <tt class="literal">*-</tt> is not.
+     This restriction allows <span class="productname">PostgreSQL</span> to
      parse SQL-compliant commands without requiring spaces between tokens.
-     </P
-></LI
-></UL
-><P>
-  </P
-><P
->   The operator <TT
-CLASS="LITERAL"
->!=</TT
-> is mapped to
-   <TT
-CLASS="LITERAL"
->&lt;&gt;</TT
-> on input, so these two names are always
+     </p>
+</li>
+</ul></div>
+<p>
+  </p>
+<p>   The operator <tt class="literal">!=</tt> is mapped to
+   <tt class="literal">&lt;&gt;</tt> on input, so these two names are always
    equivalent.
-  </P
-><P
->   At least one of <TT
-CLASS="LITERAL"
->LEFTARG</TT
-> and <TT
-CLASS="LITERAL"
->RIGHTARG</TT
-> must be defined.  For
+  </p>
+<p>   At least one of <tt class="literal">LEFTARG</tt> and <tt class="literal">RIGHTARG</tt> must be defined.  For
    binary operators, both must be defined. For right  unary
-   operators, only <TT
-CLASS="LITERAL"
->LEFTARG</TT
-> should be defined, while for left
-   unary operators only <TT
-CLASS="LITERAL"
->RIGHTARG</TT
-> should be defined.
-  </P
-><P
->   The <VAR
-CLASS="REPLACEABLE"
->funcname</VAR
->
-   procedure must have been previously defined using <TT
-CLASS="COMMAND"
->CREATE
-   FUNCTION</TT
-> and must be defined to accept the correct number
+   operators, only <tt class="literal">LEFTARG</tt> should be defined, while for left
+   unary operators only <tt class="literal">RIGHTARG</tt> should be defined.
+  </p>
+<p>   The <i class="replaceable"><tt>funcname</tt></i>
+   procedure must have been previously defined using <tt class="command">CREATE
+   FUNCTION</tt> and must be defined to accept the correct number
    of arguments (either one or two) of the indicated types.
-  </P
-><P
->   The other clauses specify optional operator optimization clauses.
-   Their meaning is detailed in <A
-HREF="xoper.html"
->Section 31.12</A
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38147"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->name</VAR
-></DT
-><DD
-><P
->        The name of the operator to be defined. See above for allowable
+  </p>
+<p>   The other clauses specify optional operator optimization clauses.
+   Their meaning is detailed in <a href="xoper.html" title="31.12. User-Defined Operators">Section 31.12, &#8220;User-Defined Operators&#8221;</a>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2674243"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dd><p>        The name of the operator to be defined. See above for allowable
         characters.  The name may be schema-qualified, for example
-        <TT
-CLASS="LITERAL"
->CREATE OPERATOR myschema.+ (...)</TT
->.  If not, then
+        <tt class="literal">CREATE OPERATOR myschema.+ (...)</tt>.  If not, then
         the operator is created in the current schema.  Two operators
         in the same schema can have the same name if they operate on
         different data types.  This is called
-        <I
-CLASS="FIRSTTERM"
->overloading</I
->.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->funcname</VAR
-></DT
-><DD
-><P
->        The function used to implement this operator.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->lefttype</VAR
-></DT
-><DD
-><P
->        The data type of the operator's left operand, if any.
+        <i class="firstterm">overloading</i>.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>funcname</tt></i></span></dt>
+<dd><p>        The function used to implement this operator.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>lefttype</tt></i></span></dt>
+<dd><p>        The data type of the operator's left operand, if any.
         This option would be omitted for a left-unary operator.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->righttype</VAR
-></DT
-><DD
-><P
->        The data type of the operator's right operand, if any.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>righttype</tt></i></span></dt>
+<dd><p>        The data type of the operator's right operand, if any.
         This option would be omitted for a right-unary operator.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->com_op</VAR
-></DT
-><DD
-><P
->        The commutator of this operator.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->neg_op</VAR
-></DT
-><DD
-><P
->        The negator of this operator.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->res_proc</VAR
-></DT
-><DD
-><P
->        The restriction selectivity estimator function for this operator.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->join_proc</VAR
-></DT
-><DD
-><P
->        The join selectivity estimator function for this operator.
-       </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->HASHES</TT
-></DT
-><DD
-><P
->       Indicates this operator can support a hash join.
-       </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->MERGES</TT
-></DT
-><DD
-><P
->       Indicates this operator can support a merge join.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->left_sort_op</VAR
-></DT
-><DD
-><P
->        If this operator can support a merge join, the less-than
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>com_op</tt></i></span></dt>
+<dd><p>        The commutator of this operator.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>neg_op</tt></i></span></dt>
+<dd><p>        The negator of this operator.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>res_proc</tt></i></span></dt>
+<dd><p>        The restriction selectivity estimator function for this operator.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>join_proc</tt></i></span></dt>
+<dd><p>        The join selectivity estimator function for this operator.
+       </p></dd>
+<dt><span class="term"><tt class="literal">HASHES</tt></span></dt>
+<dd><p>       Indicates this operator can support a hash join.
+       </p></dd>
+<dt><span class="term"><tt class="literal">MERGES</tt></span></dt>
+<dd><p>       Indicates this operator can support a merge join.
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>left_sort_op</tt></i></span></dt>
+<dd><p>        If this operator can support a merge join, the less-than
         operator that sorts the left-hand data type of this operator.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->right_sort_op</VAR
-></DT
-><DD
-><P
->        If this operator can support a merge join, the less-than
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>right_sort_op</tt></i></span></dt>
+<dd><p>        If this operator can support a merge join, the less-than
         operator that sorts the right-hand data type of this operator.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->less_than_op</VAR
-></DT
-><DD
-><P
->        If this operator can support a merge join, the less-than
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>less_than_op</tt></i></span></dt>
+<dd><p>        If this operator can support a merge join, the less-than
         operator that compares the input data types of this operator.
-       </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->greater_than_op</VAR
-></DT
-><DD
-><P
->        If this operator can support a merge join, the greater-than
+       </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>greater_than_op</tt></i></span></dt>
+<dd><p>        If this operator can support a merge join, the greater-than
         operator that compares the input data types of this operator.
-       </P
-></DD
-></DL
-></DIV
-><P
->   To give a schema-qualified operator name in <VAR
-CLASS="REPLACEABLE"
->com_op</VAR
-> or the other optional
-   arguments, use the <TT
-CLASS="LITERAL"
->OPERATOR()</TT
-> syntax, for example
-</P><PRE
-CLASS="PROGRAMLISTING"
->COMMUTATOR = OPERATOR(myschema.===) ,</PRE
-><P>  
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38226"
-></A
-><H2
->Notes</H2
-><P
->   Refer to <A
-HREF="xoper.html"
->Section 31.12</A
-> for further information.
-  </P
-><P
->   Use <A
-HREF="sql-dropoperator.html"
-><I
->DROP OPERATOR</I
-></A
-> to delete user-defined operators
-   from a database.  Use <A
-HREF="sql-alteroperator.html"
-><I
->ALTER OPERATOR</I
-></A
-> to modify operators in a
+       </p></dd>
+</dl></div>
+<p>   To give a schema-qualified operator name in <i class="replaceable"><tt>com_op</tt></i> or the other optional
+   arguments, use the <tt class="literal">OPERATOR()</tt> syntax, for example
+</p>
+<pre class="programlisting">COMMUTATOR = OPERATOR(myschema.===) ,</pre>
+<p>  
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2674449"></a><h2>Notes</h2>
+<p>   Refer to <a href="xoper.html" title="31.12. User-Defined Operators">Section 31.12, &#8220;User-Defined Operators&#8221;</a> for further information.
+  </p>
+<p>   Use <a href="sql-dropoperator.html">DROP OPERATOR</a> to delete user-defined operators
+   from a database.  Use <a href="sql-alteroperator.html">ALTER OPERATOR</a> to modify operators in a
    database.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38233"
-></A
-><H2
->Examples</H2
-><P
->   The following command defines a new operator, area-equality, for
-   the data type <TT
-CLASS="TYPE"
->box</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE OPERATOR === (
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2674487"></a><h2>Examples</h2>
+<p>   The following command defines a new operator, area-equality, for
+   the data type <tt class="type">box</tt>:
+</p>
+<pre class="programlisting">CREATE OPERATOR === (
     LEFTARG = box,
     RIGHTARG = box,
     PROCEDURE = area_equal_procedure,
@@ -531,91 +177,16 @@ CLASS="PROGRAMLISTING"
     SORT2 = &lt;&lt;&lt;
     -- Since sort operators were given, MERGES is implied.
     -- LTCMP and GTCMP are assumed to be &lt; and &gt; respectively
-);</PRE
-><P>  
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN38238"
-></A
-><H2
->Compatibility</H2
-><P
->   <TT
-CLASS="COMMAND"
->CREATE OPERATOR</TT
-> is a
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> extension.  There are no
+);</pre>
+<p>  
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2674510"></a><h2>Compatibility</h2>
+<p>   <tt class="command">CREATE OPERATOR</tt> is a
+   <span class="productname">PostgreSQL</span> extension.  There are no
    provisions for user-defined operators in the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createlanguage.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createopclass.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->CREATE LANGUAGE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->CREATE OPERATOR CLASS</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

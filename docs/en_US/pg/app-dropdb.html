@@ -1,548 +1,147 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->dropdb</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PostgreSQL Client Applications"
-HREF="reference-client.html"><LINK
-REL="PREVIOUS"
-TITLE="createuser"
-HREF="app-createuser.html"><LINK
-REL="NEXT"
-TITLE="droplang"
-HREF="app-droplang.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-createuser.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-createuser.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-droplang.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-droplang.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="APP-DROPDB"
-></A
-><SPAN
-CLASS="APPLICATION"
->dropdb</SPAN
-></H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN45040"
-></A
-><H2
->Name</H2
->dropdb&nbsp;--&nbsp;remove a <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database</DIV
-><A
-NAME="AEN45044"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN45046"
-></A
-><H2
->Synopsis</H2
-><P
-><TT
-CLASS="COMMAND"
->dropdb</TT
-> [<VAR
-CLASS="REPLACEABLE"
->option</VAR
->...]  <VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-> </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45053"
-></A
-><H2
->Description</H2
-><P
->   <SPAN
-CLASS="APPLICATION"
->dropdb</SPAN
-> destroys an existing
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> database.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>dropdb</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
+<link rel="previous" href="app-createuser.html" title="createuser">
+<link rel="next" href="app-droplang.html" title="droplang">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="app-dropdb"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>dropdb &#8212; remove a <span class="productname">PostgreSQL</span> database</p>
+</div>
+<a name="id2703011"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<div class="cmdsynopsis"><p><tt class="command">dropdb</tt> [<i class="replaceable"><tt>option</tt></i>...]  <i class="replaceable"><tt>dbname</tt></i> </p></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2703044"></a><h2>Description</h2>
+<p>   <span class="application">dropdb</span> destroys an existing
+   <span class="productname">PostgreSQL</span> database.
    The user who executes this command must be a database
    superuser or the owner of the database.
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->dropdb</SPAN
-> is a wrapper around the
-   <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command <A
-HREF="sql-dropdatabase.html"
-><I
->DROP DATABASE</I
-></A
->.
+  </p>
+<p>   <span class="application">dropdb</span> is a wrapper around the
+   <span class="acronym">SQL</span> command <a href="sql-dropdatabase.html">DROP DATABASE</a>.
    There is no effective difference between dropping databases via
    this utility and via other methods for accessing the server.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45062"
-></A
-><H2
->Options</H2
-><P
->   <SPAN
-CLASS="APPLICATION"
->dropdb</SPAN
-> accepts the following command-line arguments:
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2703089"></a><h2>Options</h2>
+<p>   <span class="application">dropdb</span> accepts the following command-line arguments:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-></DT
-><DD
-><P
->	Specifies the name of the database to be removed.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-e</TT
-><BR><TT
-CLASS="OPTION"
->--echo</TT
-></DT
-><DD
-><P
->        Echo the commands that <SPAN
-CLASS="APPLICATION"
->dropdb</SPAN
-> generates
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>dbname</tt></i></span></dt>
+<dd><p>	Specifies the name of the database to be removed.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-e</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--echo</tt></span>
+</dt>
+<dd><p>        Echo the commands that <span class="application">dropdb</span> generates
 	and sends to the server.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-i</TT
-><BR><TT
-CLASS="OPTION"
->--interactive</TT
-></DT
-><DD
-><P
->       Issues a verification prompt before doing anything destructive.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-q</TT
-><BR><TT
-CLASS="OPTION"
->--quiet</TT
-></DT
-><DD
-><P
->        Do not display a response.
-       </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-><P
->   <SPAN
-CLASS="APPLICATION"
->dropdb</SPAN
-> also accepts the following
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-i</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--interactive</tt></span>
+</dt>
+<dd><p>       Issues a verification prompt before doing anything destructive.
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-q</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--quiet</tt></span>
+</dt>
+<dd><p>        Do not display a response.
+       </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>   <span class="application">dropdb</span> also accepts the following
    command-line arguments for connection parameters:
 
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="OPTION"
->-h <VAR
-CLASS="REPLACEABLE"
->host</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--host <VAR
-CLASS="REPLACEABLE"
->host</VAR
-></TT
-></DT
-><DD
-><P
->	Specifies the host name of the machine on which the 
+   </p>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host <i class="replaceable"><tt>host</tt></i></tt></span>
+</dt>
+<dd><p>	Specifies the host name of the machine on which the 
 	server
 	is running.  If the value begins with a slash, it is used 
 	as the directory for the Unix domain socket.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-p <VAR
-CLASS="REPLACEABLE"
->port</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--port <VAR
-CLASS="REPLACEABLE"
->port</VAR
-></TT
-></DT
-><DD
-><P
->	Specifies the TCP port or local Unix domain socket file 
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port <i class="replaceable"><tt>port</tt></i></tt></span>
+</dt>
+<dd><p>	Specifies the TCP port or local Unix domain socket file 
 	extension on which the server
 	is listening for connections.
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-U <VAR
-CLASS="REPLACEABLE"
->username</VAR
-></TT
-><BR><TT
-CLASS="OPTION"
->--username <VAR
-CLASS="REPLACEABLE"
->username</VAR
-></TT
-></DT
-><DD
-><P
->        User name to connect as
-       </P
-></DD
-><DT
-><TT
-CLASS="OPTION"
->-W</TT
-><BR><TT
-CLASS="OPTION"
->--password</TT
-></DT
-><DD
-><P
->        Force password prompt.
-       </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45131"
-></A
-><H2
->Environment</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="ENVAR"
->PGHOST</TT
-><BR><TT
-CLASS="ENVAR"
->PGPORT</TT
-><BR><TT
-CLASS="ENVAR"
->PGUSER</TT
-></DT
-><DD
-><P
->      Default connection parameters
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45143"
-></A
-><H2
->Diagnostics</H2
-><P
->   In case of difficulty, see <A
-HREF="sql-dropdatabase.html"
-><I
->DROP DATABASE</I
-></A
-> and <A
-HREF="app-psql.html"
-><SPAN
-CLASS="APPLICATION"
->psql</SPAN
-></A
-> for
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--username <i class="replaceable"><tt>username</tt></i></tt></span>
+</dt>
+<dd><p>        User name to connect as
+       </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-W</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--password</tt></span>
+</dt>
+<dd><p>        Force password prompt.
+       </p></dd>
+</dl></div>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2703247"></a><h2>Environment</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
+</dt>
+<dd><p>      Default connection parameters
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2703267"></a><h2>Diagnostics</h2>
+<p>   In case of difficulty, see <a href="sql-dropdatabase.html">DROP DATABASE</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment
-   variables used by the <SPAN
-CLASS="APPLICATION"
->libpq</SPAN
-> front-end
+   variables used by the <span class="application">libpq</span> front-end
    library will apply.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45149"
-></A
-><H2
->Examples</H2
-><P
->    To destroy the database <TT
-CLASS="LITERAL"
->demo</TT
-> on the default
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2703298"></a><h2>Examples</h2>
+<p>    To destroy the database <tt class="literal">demo</tt> on the default
     database server:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$ </SAMP
-><KBD
-CLASS="USERINPUT"
->dropdb demo</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->DROP DATABASE</SAMP
-></PRE
-><P>
-   </P
-><P
->    To destroy the database <TT
-CLASS="LITERAL"
->demo</TT
-> using the
-    server on host <TT
-CLASS="LITERAL"
->eden</TT
->, port 5000, with verification and a peek
+</p>
+<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>dropdb demo</tt></b>
+<tt class="computeroutput">DROP DATABASE</tt></pre>
+<p>
+   </p>
+<p>    To destroy the database <tt class="literal">demo</tt> using the
+    server on host <tt class="literal">eden</tt>, port 5000, with verification and a peek
     at the underlying command:
-</P><PRE
-CLASS="SCREEN"
-><SAMP
-CLASS="PROMPT"
->$ </SAMP
-><KBD
-CLASS="USERINPUT"
->dropdb -p 5000 -h eden -i -e demo</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->Database "demo" will be permanently deleted.
-Are you sure? (y/n) </SAMP
-><KBD
-CLASS="USERINPUT"
->y</KBD
->
-<SAMP
-CLASS="COMPUTEROUTPUT"
->DROP DATABASE "demo"
-DROP DATABASE</SAMP
-></PRE
-><P>
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN45166"
-></A
-><H2
->See Also</H2
-><A
-HREF="app-createdb.html"
-><SPAN
-CLASS="APPLICATION"
->createdb</SPAN
-></A
->, <A
-HREF="sql-dropdatabase.html"
-><I
->DROP DATABASE</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="app-createuser.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="app-droplang.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->createuser</SPAN
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="reference-client.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->droplang</SPAN
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="screen"><tt class="prompt">$ </tt><b class="userinput"><tt>dropdb -p 5000 -h eden -i -e demo</tt></b>
+<tt class="computeroutput">Database "demo" will be permanently deleted.
+Are you sure? (y/n) </tt><b class="userinput"><tt>y</tt></b>
+<tt class="computeroutput">DROP DATABASE "demo"
+DROP DATABASE</tt></pre>
+<p>
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2703378"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-createdb.html" title="createdb"><span class="refentrytitle"><a name="app-createdb-title"></a><span class="application">createdb</span></span></a>, <a href="sql-dropdatabase.html">DROP DATABASE</a></span>
+</div>
+</div></body>
+</html>

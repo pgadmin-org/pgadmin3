@@ -1,266 +1,77 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Populating a Table With Rows</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="The SQL Language"
-HREF="tutorial-sql.html"><LINK
-REL="PREVIOUS"
-TITLE="Creating a New Table"
-HREF="tutorial-table.html"><LINK
-REL="NEXT"
-TITLE="Querying a Table"
-HREF="tutorial-select.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-table.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 2. The <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Language</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-select.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="TUTORIAL-POPULATE"
->2.4. Populating a Table With Rows</A
-></H1
-><A
-NAME="AEN667"
-></A
-><P
->    The <TT
-CLASS="COMMAND"
->INSERT</TT
-> statement is used to populate a table  with
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>2.4. Populating a Table With Rows</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
+<link rel="previous" href="tutorial-table.html" title="2.3. Creating a New Table">
+<link rel="next" href="tutorial-select.html" title="2.5. Querying a Table">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="tutorial-populate"></a>2.4. Populating a Table With Rows</h2></div></div>
+<div></div>
+</div>
+<a name="id2517932"></a><p>    The <tt class="command">INSERT</tt> statement is used to populate a table  with
     rows:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');</PRE
-><P>
+</p>
+<pre class="programlisting">INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');</pre>
+<p>
 
     Note that all data types use rather obvious input formats.
     Constants that are not simple numeric values usually must be
-    surrounded by single quotes (<TT
-CLASS="LITERAL"
->'</TT
->), as in the example.
+    surrounded by single quotes (<tt class="literal">'</tt>), as in the example.
     The
-    <TT
-CLASS="TYPE"
->date</TT
-> type is actually quite flexible in what it
+    <tt class="type">date</tt> type is actually quite flexible in what it
     accepts, but for this tutorial we will stick to the unambiguous
     format shown here.
-   </P
-><P
->    The <TT
-CLASS="TYPE"
->point</TT
-> type requires a coordinate pair as input,
+   </p>
+<p>    The <tt class="type">point</tt> type requires a coordinate pair as input,
     as shown here:
-</P><PRE
-CLASS="PROGRAMLISTING"
->INSERT INTO cities VALUES ('San Francisco', '(-194.0, 53.0)');</PRE
-><P>
-   </P
-><P
->    The syntax used so far requires you to remember the order of the
+</p>
+<pre class="programlisting">INSERT INTO cities VALUES ('San Francisco', '(-194.0, 53.0)');</pre>
+<p>
+   </p>
+<p>    The syntax used so far requires you to remember the order of the
     columns.  An alternative syntax allows you to list the columns
     explicitly:
-</P><PRE
-CLASS="PROGRAMLISTING"
->INSERT INTO weather (city, temp_lo, temp_hi, prcp, date)
-    VALUES ('San Francisco', 43, 57, 0.0, '1994-11-29');</PRE
-><P>
+</p>
+<pre class="programlisting">INSERT INTO weather (city, temp_lo, temp_hi, prcp, date)
+    VALUES ('San Francisco', 43, 57, 0.0, '1994-11-29');</pre>
+<p>
     You can list the columns in a different order if you wish or
     even omit some columns, e.g., if the precipitation is unknown:
-</P><PRE
-CLASS="PROGRAMLISTING"
->INSERT INTO weather (date, city, temp_hi, temp_lo)
-    VALUES ('1994-11-29', 'Hayward', 54, 37);</PRE
-><P>
+</p>
+<pre class="programlisting">INSERT INTO weather (date, city, temp_hi, temp_lo)
+    VALUES ('1994-11-29', 'Hayward', 54, 37);</pre>
+<p>
     Many developers consider explicitly listing the columns better
     style than relying on the order implicitly.
-   </P
-><P
->    Please enter all the commands shown above so you have some data to
+   </p>
+<p>    Please enter all the commands shown above so you have some data to
     work with in the following sections.
-   </P
-><P
->    <A
-NAME="AEN682"
-></A
->
+   </p>
+<p>    <a name="id2518017"></a>
 
-    You could also have used <TT
-CLASS="COMMAND"
->COPY</TT
-> to load large
+    You could also have used <tt class="command">COPY</tt> to load large
     amounts of data from flat-text files.  This is usually faster
-    because the <TT
-CLASS="COMMAND"
->COPY</TT
-> command is optimized for this
+    because the <tt class="command">COPY</tt> command is optimized for this
     application while allowing less flexibility than
-    <TT
-CLASS="COMMAND"
->INSERT</TT
->.  An example would be:
+    <tt class="command">INSERT</tt>.  An example would be:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->COPY weather FROM '/home/user/weather.txt';</PRE
-><P>
+</p>
+<pre class="programlisting">COPY weather FROM '/home/user/weather.txt';</pre>
+<p>
 
     where the file name for the source file must be available to the
     backend server machine, not the client, since the backend server
     reads the file directly.  You can read more about the
-    <TT
-CLASS="COMMAND"
->COPY</TT
-> command in <A
-HREF="sql-copy.html"
->COPY</A
->.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="tutorial-table.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="tutorial-select.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Creating a New Table</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="tutorial-sql.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Querying a Table</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    <tt class="command">COPY</tt> command in <a href="sql-copy.html" title="COPY"><span class="refentrytitle"><a name="sql-copy-title"></a>COPY</span></a>.
+   </p>
+</div></body>
+</html>

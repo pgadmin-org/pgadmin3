@@ -1,356 +1,85 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->pg_conversion</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_constraint"
-HREF="catalog-pg-constraint.html"><LINK
-REL="NEXT"
-TITLE="pg_database"
-HREF="catalog-pg-database.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-constraint.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-database.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-CONVERSION"
->41.11. <TT
-CLASS="STRUCTNAME"
->pg_conversion</TT
-></A
-></H1
-><A
-NAME="AEN51206"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_conversion</TT
-> stores encoding conversion information. See
-   <TT
-CLASS="COMMAND"
->CREATE CONVERSION</TT
-> for more information.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN51211"
-></A
-><P
-><B
->Table 41-11. <TT
-CLASS="STRUCTNAME"
->pg_conversion</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->conname</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Conversion name (unique within a namespace)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->connamespace</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-namespace.html"
-><TT
-CLASS="STRUCTNAME"
->pg_namespace</TT
-></A
->.oid</TT
-></TD
-><TD
->       The OID of the namespace that contains this conversion
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->conowner</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-shadow.html"
-><TT
-CLASS="STRUCTNAME"
->pg_shadow</TT
-></A
->.usesysid</TT
-></TD
-><TD
->Owner of the conversion</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->conforencoding</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Source encoding ID</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->contoencoding</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Destination encoding ID</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->conproc</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->regproc</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-proc.html"
-><TT
-CLASS="STRUCTNAME"
->pg_proc</TT
-></A
->.oid</TT
-></TD
-><TD
->Conversion procedure</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->condefault</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->True if this is the default conversion</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-constraint.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-database.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_constraint</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_database</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.11. pg_conversion</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="previous" href="catalog-pg-constraint.html" title="41.10. pg_constraint">
+<link rel="next" href="catalog-pg-database.html" title="41.12. pg_database">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-conversion"></a>41.11. <tt class="structname">pg_conversion</tt></h2></div></div>
+<div></div>
+</div>
+<a name="id2724523"></a><p>   The catalog <tt class="structname">pg_conversion</tt> stores encoding conversion information. See
+   <tt class="command">CREATE CONVERSION</tt> for more information.
+  </p>
+<div class="table">
+<a name="id2724546"></a><p class="title"><b>Table 41.11. <tt class="structname">pg_conversion</tt> Columns</b></p>
+<table summary="pg_conversion Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="structfield">conname</tt></td>
+<td><tt class="type">name</tt></td>
+<td> </td>
+<td>Conversion name (unique within a namespace)</td>
+</tr>
+<tr>
+<td><tt class="structfield">connamespace</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><tt class="structname">pg_namespace</tt></a>.oid</tt></td>
+<td>       The OID of the namespace that contains this conversion
+      </td>
+</tr>
+<tr>
+<td><tt class="structfield">conowner</tt></td>
+<td><tt class="type">int4</tt></td>
+<td><tt class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>.usesysid</tt></td>
+<td>Owner of the conversion</td>
+</tr>
+<tr>
+<td><tt class="structfield">conforencoding</tt></td>
+<td><tt class="type">int4</tt></td>
+<td> </td>
+<td>Source encoding ID</td>
+</tr>
+<tr>
+<td><tt class="structfield">contoencoding</tt></td>
+<td><tt class="type">int4</tt></td>
+<td> </td>
+<td>Destination encoding ID</td>
+</tr>
+<tr>
+<td><tt class="structfield">conproc</tt></td>
+<td><tt class="type">regproc</tt></td>
+<td><tt class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><tt class="structname">pg_proc</tt></a>.oid</tt></td>
+<td>Conversion procedure</td>
+</tr>
+<tr>
+<td><tt class="structfield">condefault</tt></td>
+<td><tt class="type">bool</tt></td>
+<td> </td>
+<td>True if this is the default conversion</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

@@ -1,319 +1,76 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->DROP TABLE</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="DROP SEQUENCE"
-HREF="sql-dropsequence.html"><LINK
-REL="NEXT"
-TITLE="DROP TABLESPACE"
-HREF="sql-droptablespace.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-dropsequence.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-dropsequence.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-droptablespace.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-droptablespace.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-DROPTABLE"
-></A
->DROP TABLE</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN40973"
-></A
-><H2
->Name</H2
->DROP TABLE&nbsp;--&nbsp;remove a table</DIV
-><A
-NAME="AEN40976"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN40978"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->DROP TABLE <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> [, ...] [ CASCADE | RESTRICT ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN40981"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->DROP TABLE</TT
-> removes tables from the database.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>DROP TABLE</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-dropsequence.html" title="DROP SEQUENCE">
+<link rel="next" href="sql-droptablespace.html" title="DROP TABLESPACE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-droptable"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>DROP TABLE &#8212; remove a table</p>
+</div>
+<a name="id2685436"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">DROP TABLE <i class="replaceable"><tt>name</tt></i> [, ...] [ CASCADE | RESTRICT ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685457"></a><h2>Description</h2>
+<p>   <tt class="command">DROP TABLE</tt> removes tables from the database.
    Only its owner may destroy a table.  To empty a table of rows,
-   without destroying the table, use <TT
-CLASS="COMMAND"
->DELETE</TT
->.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->DROP TABLE</TT
-> always removes any indexes, rules,
+   without destroying the table, use <tt class="command">DELETE</tt>.
+  </p>
+<p>   <tt class="command">DROP TABLE</tt> always removes any indexes, rules,
    triggers, and constraints that exist for the target table.
    However, to drop a table that is referenced by a foreign-key
-   constraint of another table, <TT
-CLASS="LITERAL"
->CASCADE</TT
-> must be
-   specified. (<TT
-CLASS="LITERAL"
->CASCADE</TT
-> will remove the foreign-key
+   constraint of another table, <tt class="literal">CASCADE</tt> must be
+   specified. (<tt class="literal">CASCADE</tt> will remove the foreign-key
    constraint, not the other table entirely.)
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN40990"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->name</VAR
-></DT
-><DD
-><P
->      The name (optionally schema-qualified) of the table to drop.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->CASCADE</TT
-></DT
-><DD
-><P
->      Automatically drop objects that depend on the table (such as
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685502"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dd><p>      The name (optionally schema-qualified) of the table to drop.
+     </p></dd>
+<dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
+<dd><p>      Automatically drop objects that depend on the table (such as
       views).
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->RESTRICT</TT
-></DT
-><DD
-><P
->      Refuse to drop the table if any objects depend on it.  This is
+     </p></dd>
+<dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
+<dd><p>      Refuse to drop the table if any objects depend on it.  This is
       the default.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41008"
-></A
-><H2
->Examples</H2
-><P
->   To destroy two tables, <TT
-CLASS="LITERAL"
->films</TT
-> and 
-   <TT
-CLASS="LITERAL"
->distributors</TT
->:
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685541"></a><h2>Examples</h2>
+<p>   To destroy two tables, <tt class="literal">films</tt> and 
+   <tt class="literal">distributors</tt>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->DROP TABLE films, distributors;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41014"
-></A
-><H2
->Compatibility</H2
-><P
->   This command conforms to the SQL standard.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN41017"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-altertable.html"
-><I
->ALTER TABLE</I
-></A
->, <A
-HREF="sql-createtable.html"
-><I
->CREATE TABLE</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-dropsequence.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-droptablespace.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->DROP SEQUENCE</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->DROP TABLESPACE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+</p>
+<pre class="programlisting">DROP TABLE films, distributors;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685565"></a><h2>Compatibility</h2>
+<p>   This command conforms to the SQL standard.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2685572"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-altertable.html">ALTER TABLE</a>, <a href="sql-createtable.html">CREATE TABLE</a></span>
+</div>
+</div></body>
+</html>

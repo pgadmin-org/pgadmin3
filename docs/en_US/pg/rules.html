@@ -1,656 +1,212 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->The Rule System</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Server Programming"
-HREF="server-programming.html"><LINK
-REL="PREVIOUS"
-TITLE="Interfacing Extensions To Indexes"
-HREF="xindex.html"><LINK
-REL="NEXT"
-TITLE="Views and the Rule System"
-HREF="rules-views.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="CHAPTER"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xindex.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="extend.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="triggers.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="rules-views.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="RULES"
-></A
->Chapter 32. The Rule System</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
->32.1. <A
-HREF="rules.html#QUERYTREE"
->The Query Tree</A
-></DT
-><DT
->32.2. <A
-HREF="rules-views.html"
->Views and the Rule System</A
-></DT
-><DD
-><DL
-><DT
->32.2.1. <A
-HREF="rules-views.html#RULES-SELECT"
->How <TT
-CLASS="COMMAND"
->SELECT</TT
-> Rules Work</A
-></DT
-><DT
->32.2.2. <A
-HREF="rules-views.html#AEN30241"
->View Rules in Non-<TT
-CLASS="COMMAND"
->SELECT</TT
-> Statements</A
-></DT
-><DT
->32.2.3. <A
-HREF="rules-views.html#AEN30297"
->The Power of Views in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-></A
-></DT
-><DT
->32.2.4. <A
-HREF="rules-views.html#RULES-VIEWS-UPDATE"
->Updating a View</A
-></DT
-></DL
-></DD
-><DT
->32.3. <A
-HREF="rules-update.html"
->Rules on <TT
-CLASS="COMMAND"
->INSERT</TT
->, <TT
-CLASS="COMMAND"
->UPDATE</TT
->, and <TT
-CLASS="COMMAND"
->DELETE</TT
-></A
-></DT
-><DD
-><DL
-><DT
->32.3.1. <A
-HREF="rules-update.html#AEN30346"
->How Update Rules Work</A
-></DT
-><DT
->32.3.2. <A
-HREF="rules-update.html#RULES-UPDATE-VIEWS"
->Cooperation with Views</A
-></DT
-></DL
-></DD
-><DT
->32.4. <A
-HREF="rules-privileges.html"
->Rules and Privileges</A
-></DT
-><DT
->32.5. <A
-HREF="rules-status.html"
->Rules and Command Status</A
-></DT
-><DT
->32.6. <A
-HREF="rules-triggers.html"
->Rules versus Triggers</A
-></DT
-></DL
-></DIV
-><A
-NAME="AEN30027"
-></A
-><P
->     This chapter discusses the rule system in
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->.  Production rule systems
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chapter 32. The Rule System</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="server-programming.html" title="Part V. Server Programming">
+<link rel="previous" href="xindex.html" title="31.14. Interfacing Extensions To Indexes">
+<link rel="next" href="rules-views.html" title="32.2. Views and the Rule System">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="rules">
+<div class="titlepage">
+<div><div><h2 class="title">
+<a name="rules"></a>Chapter 32. The Rule System</h2></div></div>
+<div></div>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="rules.html#querytree">32.1. The Query Tree</a></span></dt>
+<dt><span class="sect1"><a href="rules-views.html">32.2. Views and the Rule System</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="rules-views.html#rules-select">32.2.1. How SELECT Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2639776">32.2.2. View Rules in Non-SELECT Statements</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#id2640073">32.2.3. The Power of Views in PostgreSQL</a></span></dt>
+<dt><span class="sect2"><a href="rules-views.html#rules-views-update">32.2.4. Updating a View</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="rules-update.html">32.3. Rules on INSERT, UPDATE, and DELETE</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="rules-update.html#id2640301">32.3.1. How Update Rules Work</a></span></dt>
+<dt><span class="sect2"><a href="rules-update.html#rules-update-views">32.3.2. Cooperation with Views</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="rules-privileges.html">32.4. Rules and Privileges</a></span></dt>
+<dt><span class="sect1"><a href="rules-status.html">32.5. Rules and Command Status</a></span></dt>
+<dt><span class="sect1"><a href="rules-triggers.html">32.6. Rules versus Triggers</a></span></dt>
+</dl>
+</div>
+<a name="id2638471"></a><p>     This chapter discusses the rule system in
+     <span class="productname">PostgreSQL</span>.  Production rule systems
      are conceptually simple, but there are many subtle points
-     involved in actually using them.</P
-><P
->     Some other database systems define active database rules, which
+     involved in actually using them.</p>
+<p>     Some other database systems define active database rules, which
      are usually stored procedures and triggers.  In
-     <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, these can be implemented
-     using functions and triggers as well.</P
-><P
->     The rule system (more precisely speaking, the query rewrite rule
+     <span class="productname">PostgreSQL</span>, these can be implemented
+     using functions and triggers as well.</p>
+<p>     The rule system (more precisely speaking, the query rewrite rule
      system) is totally different from stored procedures and triggers.
      It modifies queries to take rules into consideration, and then
      passes the modified query to the query planner for planning and
      execution.  It is very powerful, and can be used for many things
      such as query language procedures, views, and versions.  The
      theoretical foundations and the power of this rule system are
-     also discussed in <A
-HREF="biblio.html#STON90B"
-><I
-><A
-HREF="http://s2k-ftp.CS.Berkeley.EDU:8000/postgres/papers/ERL-M90-36.pdf"
-TARGET="_top"
->On Rules, Procedures, Caching and Views in Database Systems</A
-></I
-></A
-> and <A
-HREF="biblio.html#ONG90"
-><I
->A Unified Framework for Version Modeling Using Production Rules in a Database System</I
-></A
->.</P
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="QUERYTREE"
->32.1. The Query Tree</A
-></H1
-><A
-NAME="AEN30038"
-></A
-><P
->    To understand how the rule system works it is necessary to know
-    when it is invoked and what its input and results are.</P
-><P
->    The rule system is located between the parser and the planner.
+     also discussed in [<a href="biblio.html#ston90b" title="[ston90b]">ston90b</a>] and [<a href="biblio.html#ong90" title="[ong90]">ong90</a>].</p>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="querytree"></a>32.1. The Query Tree</h2></div></div>
+<div></div>
+</div>
+<a name="id2638535"></a><p>    To understand how the rule system works it is necessary to know
+    when it is invoked and what its input and results are.</p>
+<p>    The rule system is located between the parser and the planner.
     It takes the output of the parser, one query tree, and the user-defined
     rewrite rules, which are also
     query trees with some extra information, and creates zero or more
     query trees as result. So its input and output are always things
     the parser itself could have produced and thus, anything it sees
-    is basically representable as an <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> statement.</P
-><P
->    Now what is a query tree? It is an internal representation of an
-    <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> statement where the single parts that it is
+    is basically representable as an <span class="acronym">SQL</span> statement.</p>
+<p>    Now what is a query tree? It is an internal representation of an
+    <span class="acronym">SQL</span> statement where the single parts that it is
     built from are stored separately. These query trees can be shown
     in the server log if you set the configuration parameters
-    <TT
-CLASS="VARNAME"
->debug_print_parse</TT
->,
-    <TT
-CLASS="VARNAME"
->debug_print_rewritten</TT
->, or
-    <TT
-CLASS="VARNAME"
->debug_print_plan</TT
->.  The rule actions are also
+    <tt class="varname">debug_print_parse</tt>,
+    <tt class="varname">debug_print_rewritten</tt>, or
+    <tt class="varname">debug_print_plan</tt>.  The rule actions are also
     stored as query trees, in the system catalog
-    <TT
-CLASS="STRUCTNAME"
->pg_rewrite</TT
->.  They are not formatted like
-    the log output, but they contain exactly the same information.</P
-><P
->    Reading a raw query tree requires some experience.  But since
-    <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> representations of query trees are
+    <tt class="structname">pg_rewrite</tt>.  They are not formatted like
+    the log output, but they contain exactly the same information.</p>
+<p>    Reading a raw query tree requires some experience.  But since
+    <span class="acronym">SQL</span> representations of query trees are
     sufficient to understand the rule system, this chapter will not
-    teach how to read them.</P
-><P
->    When reading the <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> representations of the 
+    teach how to read them.</p>
+<p>    When reading the <span class="acronym">SQL</span> representations of the 
     query trees in this chapter it is necessary to be able to identify
     the parts the statement is broken into when it is in the query tree
     structure. The parts of a query tree are
 
-<P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->the command type</DT
-><DD
-><P
->        This is a simple value telling which command
-        (<TT
-CLASS="COMMAND"
->SELECT</TT
->, <TT
-CLASS="COMMAND"
->INSERT</TT
->,
-        <TT
-CLASS="COMMAND"
->UPDATE</TT
->, <TT
-CLASS="COMMAND"
->DELETE</TT
->) produced
+</p>
+<div class="variablelist"><dl>
+<dt><span class="term">        the command type
+    </span></dt>
+<dd><p>        This is a simple value telling which command
+        (<tt class="command">SELECT</tt>, <tt class="command">INSERT</tt>,
+        <tt class="command">UPDATE</tt>, <tt class="command">DELETE</tt>) produced
         the query tree.
-    </P
-></DD
-><DT
->the range table</DT
-><DD
-><P
->        The range table is a list of relations that are used in the query.
-	In a <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement these are the relations given after
-	the <TT
-CLASS="LITERAL"
->FROM</TT
-> key word.
-    </P
-><P
->        Every range table entry identifies a table or view and tells
+    </p></dd>
+<dt><span class="term">        the range table
+    </span></dt>
+<dd>
+<p>        The range table is a list of relations that are used in the query.
+	In a <tt class="command">SELECT</tt> statement these are the relations given after
+	the <tt class="literal">FROM</tt> key word.
+    </p>
+<p>        Every range table entry identifies a table or view and tells
 	by which name it is called in the other parts of the query.
 	In the query tree, the range table entries are referenced by
 	number rather than by name, so here it doesn't matter if there
-	are duplicate names as it would in an <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->
+	are duplicate names as it would in an <span class="acronym">SQL</span>
 	statement. This can happen after the range tables of rules
 	have been merged in. The examples in this chapter will not have
 	this situation.
-    </P
-></DD
-><DT
->the result relation</DT
-><DD
-><P
->        This is an index into the range table that identifies the
+    </p>
+</dd>
+<dt><span class="term">        the result relation
+    </span></dt>
+<dd>
+<p>        This is an index into the range table that identifies the
 	relation where the results of the query go.
-    </P
-><P
->	<TT
-CLASS="COMMAND"
->SELECT</TT
-> queries normally don't have a result
-	relation. The special case of a <TT
-CLASS="COMMAND"
->SELECT INTO</TT
-> is
-	mostly identical to a <TT
-CLASS="COMMAND"
->CREATE TABLE</TT
-> followed by a
-	<TT
-CLASS="LITERAL"
->INSERT ... SELECT</TT
-> and is not discussed
+    </p>
+<p>	<tt class="command">SELECT</tt> queries normally don't have a result
+	relation. The special case of a <tt class="command">SELECT INTO</tt> is
+	mostly identical to a <tt class="command">CREATE TABLE</tt> followed by a
+	<tt class="literal">INSERT ... SELECT</tt> and is not discussed
 	separately here.
-    </P
-><P
->        For <TT
-CLASS="COMMAND"
->INSERT</TT
->, <TT
-CLASS="COMMAND"
->UPDATE</TT
->, and
-	<TT
-CLASS="COMMAND"
->DELETE</TT
-> commands, the result relation is the table
+    </p>
+<p>        For <tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>, and
+	<tt class="command">DELETE</tt> commands, the result relation is the table
 	(or view!) where the changes take effect.
-    </P
-></DD
-><DT
->the target list</DT
-><DD
-><P
->        The target list is a list of expressions that define the
+    </p>
+</dd>
+<dt><span class="term">        the target list
+    </span></dt>
+<dd>
+<p>        The target list is a list of expressions that define the
         result of the query.  In the case of a
-        <TT
-CLASS="COMMAND"
->SELECT</TT
->, these expressions are the ones that
+        <tt class="command">SELECT</tt>, these expressions are the ones that
         build the final output of the query.  They correspond to the
-        expressions between the key words <TT
-CLASS="COMMAND"
->SELECT</TT
->
-        and <TT
-CLASS="COMMAND"
->FROM</TT
->.  (<TT
-CLASS="LITERAL"
->*</TT
-> is just an
+        expressions between the key words <tt class="command">SELECT</tt>
+        and <tt class="command">FROM</tt>.  (<tt class="literal">*</tt> is just an
         abbreviation for all the column names of a relation.  It is
         expanded by the parser into the individual columns, so the
         rule system never sees it.)
-    </P
-><P
->        <TT
-CLASS="COMMAND"
->DELETE</TT
-> commands don't need a target list
+    </p>
+<p>        <tt class="command">DELETE</tt> commands don't need a target list
 	because they don't produce any result. In fact, the planner will
-	add a special <ACRONYM
-CLASS="ACRONYM"
->CTID</ACRONYM
-> entry to the empty target list, but
+	add a special <span class="acronym">CTID</span> entry to the empty target list, but
 	this is after the rule system and will be discussed later; for the
 	rule system, the target list is empty.
-    </P
-><P
->        For <TT
-CLASS="COMMAND"
->INSERT</TT
-> commands, the target list describes
+    </p>
+<p>        For <tt class="command">INSERT</tt> commands, the target list describes
 	the new rows that should go into the result relation. It consists of the
-	expressions in the <TT
-CLASS="LITERAL"
->VALUES</TT
-> clause or the ones from the
-	<TT
-CLASS="COMMAND"
->SELECT</TT
-> clause in <TT
-CLASS="LITERAL"
->INSERT
-	... SELECT</TT
->.  The first step of the rewrite process adds
+	expressions in the <tt class="literal">VALUES</tt> clause or the ones from the
+	<tt class="command">SELECT</tt> clause in <tt class="literal">INSERT
+	... SELECT</tt>.  The first step of the rewrite process adds
 	target list entries for any columns that were not assigned to by
 	the original command but have defaults.  Any remaining columns (with
 	neither a given value nor a default) will be filled in by the
 	planner with a constant null expression.
-    </P
-><P
->        For <TT
-CLASS="COMMAND"
->UPDATE</TT
-> commands, the target list
+    </p>
+<p>        For <tt class="command">UPDATE</tt> commands, the target list
 	describes the new rows that should replace the old ones. In the
-	rule system, it contains just the expressions from the <TT
-CLASS="LITERAL"
->SET
-	column = expression</TT
-> part of the command.  The planner will handle
+	rule system, it contains just the expressions from the <tt class="literal">SET
+	column = expression</tt> part of the command.  The planner will handle
 	missing columns by inserting expressions that copy the values from
 	the old row into the new one. And it will add the special
-	<ACRONYM
-CLASS="ACRONYM"
->CTID</ACRONYM
-> entry just as for <TT
-CLASS="COMMAND"
->DELETE</TT
->, too.
-    </P
-><P
->        Every entry in the target list contains an expression that can
+	<span class="acronym">CTID</span> entry just as for <tt class="command">DELETE</tt>, too.
+    </p>
+<p>        Every entry in the target list contains an expression that can
 	be a constant value, a variable pointing to a column of one
 	of the relations in the range table, a parameter, or an expression
 	tree made of function calls, constants, variables, operators, etc.
-    </P
-></DD
-><DT
->the qualification</DT
-><DD
-><P
->        The query's qualification is an expression much like one of
+    </p>
+</dd>
+<dt><span class="term">        the qualification
+    </span></dt>
+<dd><p>        The query's qualification is an expression much like one of
 	those contained in the target list entries. The result value of
 	this expression is a Boolean that tells whether the operation
-	(<TT
-CLASS="COMMAND"
->INSERT</TT
->, <TT
-CLASS="COMMAND"
->UPDATE</TT
->,
-	<TT
-CLASS="COMMAND"
->DELETE</TT
->, or <TT
-CLASS="COMMAND"
->SELECT</TT
->) for the
-	final result row should be executed or not. It corresponds to the <TT
-CLASS="LITERAL"
->WHERE</TT
-> clause
-	of an <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> statement.
-    </P
-></DD
-><DT
->the join tree</DT
-><DD
-><P
->        The query's join tree shows the structure of the <TT
-CLASS="LITERAL"
->FROM</TT
-> clause.
-	For a simple query like <TT
-CLASS="LITERAL"
->SELECT ... FROM a, b, c</TT
->, the join tree is just
-	a list of the <TT
-CLASS="LITERAL"
->FROM</TT
-> items, because we are allowed to join them in
-	any order.  But when <TT
-CLASS="LITERAL"
->JOIN</TT
-> expressions, particularly outer joins,
+	(<tt class="command">INSERT</tt>, <tt class="command">UPDATE</tt>,
+	<tt class="command">DELETE</tt>, or <tt class="command">SELECT</tt>) for the
+	final result row should be executed or not. It corresponds to the <tt class="literal">WHERE</tt> clause
+	of an <span class="acronym">SQL</span> statement.
+    </p></dd>
+<dt><span class="term">        the join tree
+    </span></dt>
+<dd><p>        The query's join tree shows the structure of the <tt class="literal">FROM</tt> clause.
+	For a simple query like <tt class="literal">SELECT ... FROM a, b, c</tt>, the join tree is just
+	a list of the <tt class="literal">FROM</tt> items, because we are allowed to join them in
+	any order.  But when <tt class="literal">JOIN</tt> expressions, particularly outer joins,
 	are used, we have to join in the order shown by the joins.
-	In that case, the join tree shows the structure of the <TT
-CLASS="LITERAL"
->JOIN</TT
-> expressions.  The
-	restrictions associated with particular <TT
-CLASS="LITERAL"
->JOIN</TT
-> clauses (from <TT
-CLASS="LITERAL"
->ON</TT
-> or
-	<TT
-CLASS="LITERAL"
->USING</TT
-> expressions) are stored as qualification expressions attached
+	In that case, the join tree shows the structure of the <tt class="literal">JOIN</tt> expressions.  The
+	restrictions associated with particular <tt class="literal">JOIN</tt> clauses (from <tt class="literal">ON</tt> or
+	<tt class="literal">USING</tt> expressions) are stored as qualification expressions attached
 	to those join-tree nodes.  It turns out to be convenient to store
-	the top-level <TT
-CLASS="LITERAL"
->WHERE</TT
-> expression as a qualification attached to the
+	the top-level <tt class="literal">WHERE</tt> expression as a qualification attached to the
 	top-level join-tree item, too.  So really the join tree represents
-	both the <TT
-CLASS="LITERAL"
->FROM</TT
-> and <TT
-CLASS="LITERAL"
->WHERE</TT
-> clauses of a <TT
-CLASS="COMMAND"
->SELECT</TT
->.
-    </P
-></DD
-><DT
->the others</DT
-><DD
-><P
->        The other parts of the query tree like the <TT
-CLASS="LITERAL"
->ORDER BY</TT
->
+	both the <tt class="literal">FROM</tt> and <tt class="literal">WHERE</tt> clauses of a <tt class="command">SELECT</tt>.
+    </p></dd>
+<dt><span class="term">        the others
+    </span></dt>
+<dd><p>        The other parts of the query tree like the <tt class="literal">ORDER BY</tt>
 	clause aren't of interest here. The rule system
 	substitutes some entries there while applying rules, but that
 	doesn't have much to do with the fundamentals of the rule
 	system.
-    </P
-></DD
-></DL
-></DIV
-><P></P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="xindex.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="rules-views.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Interfacing Extensions To Indexes</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="server-programming.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Views and the Rule System</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    </p></dd>
+</dl></div>
+</div>
+</div></body>
+</html>

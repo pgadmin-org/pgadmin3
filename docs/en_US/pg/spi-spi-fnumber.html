@@ -1,276 +1,58 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->SPI_fnumber</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Support Functions"
-HREF="spi-interface-support.html"><LINK
-REL="PREVIOUS"
-TITLE="SPI_fname"
-HREF="spi-spi-fname.html"><LINK
-REL="NEXT"
-TITLE="SPI_getvalue"
-HREF="spi-spi-getvalue.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-fname.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-fname.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-getvalue.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-getvalue.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-FNUMBER"
-></A
->SPI_fnumber</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN33999"
-></A
-><H2
->Name</H2
->SPI_fnumber&nbsp;--&nbsp;determine the column number for the specified column name</DIV
-><A
-NAME="AEN34002"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN34004"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->int SPI_fnumber(TupleDesc <TT
-CLASS="PARAMETER"
->rowdesc</TT
->, const char * <TT
-CLASS="PARAMETER"
->colname</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34008"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_fnumber</CODE
-> returns the column number for the
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_fnumber</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="spi-interface-support.html" title="39.2. Interface Support Functions">
+<link rel="previous" href="spi-spi-fname.html" title="SPI_fname">
+<link rel="next" href="spi-spi-getvalue.html" title="SPI_getvalue">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-fnumber"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_fnumber &#8212; determine the column number for the specified column name</p>
+</div>
+<a name="id2657984"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">int SPI_fnumber(TupleDesc <i class="parameter"><tt>rowdesc</tt></i>, const char * <i class="parameter"><tt>colname</tt></i>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2658007"></a><h2>Description</h2>
+<p>   <tt class="function">SPI_fnumber</tt> returns the column number for the
    column with the specified name.
-  </P
-><P
->   If <TT
-CLASS="PARAMETER"
->colname</TT
-> refers to a system column (e.g.,
-   <TT
-CLASS="LITERAL"
->oid</TT
->) then the appropriate negative column number will
+  </p>
+<p>   If <i class="parameter"><tt>colname</tt></i> refers to a system column (e.g.,
+   <tt class="literal">oid</tt>) then the appropriate negative column number will
    be returned.  The caller should be careful to test the return value
-   for exact equality to <TT
-CLASS="SYMBOL"
->SPI_ERROR_NOATTRIBUTE</TT
-> to
+   for exact equality to <tt class="symbol">SPI_ERROR_NOATTRIBUTE</tt> to
    detect an error; testing the result for less than or equal to 0 is
    not correct unless system columns should be rejected.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34016"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->TupleDesc <TT
-CLASS="PARAMETER"
->rowdesc</TT
-></TT
-></DT
-><DD
-><P
->      input row description
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->const char * <TT
-CLASS="PARAMETER"
->colname</TT
-></TT
-></DT
-><DD
-><P
->      column name
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN34031"
-></A
-><H2
->Return Value</H2
-><P
->   Column number (count starts at 1), or
-   <TT
-CLASS="SYMBOL"
->SPI_ERROR_NOATTRIBUTE</TT
-> if the named column was not
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2658043"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">TupleDesc <i class="parameter"><tt>rowdesc</tt></i></tt></span></dt>
+<dd><p>      input row description
+     </p></dd>
+<dt><span class="term"><tt class="literal">const char * <i class="parameter"><tt>colname</tt></i></tt></span></dt>
+<dd><p>      column name
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2658078"></a><h2>Return Value</h2>
+<p>   Column number (count starts at 1), or
+   <tt class="symbol">SPI_ERROR_NOATTRIBUTE</tt> if the named column was not
    found.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-fname.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-getvalue.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_fname</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi-interface-support.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_getvalue</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+</div></body>
+</html>

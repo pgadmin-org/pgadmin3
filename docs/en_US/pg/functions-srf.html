@@ -1,263 +1,74 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Set Returning Functions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
-REL="PREVIOUS"
-TITLE="Row and Array Comparisons"
-HREF="functions-comparisons.html"><LINK
-REL="NEXT"
-TITLE="System Information Functions"
-HREF="functions-info.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-comparisons.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 9. Functions and Operators</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-info.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="FUNCTIONS-SRF"
->9.18. Set Returning Functions</A
-></H1
-><A
-NAME="AEN12609"
-></A
-><P
->   This section describes functions that possibly return more than one row.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.18. Set Returning Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="previous" href="functions-comparisons.html" title="9.17. Row and Array Comparisons">
+<link rel="next" href="functions-info.html" title="9.19. System Information Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="functions-srf"></a>9.18. Set Returning Functions</h2></div></div>
+<div></div>
+</div>
+<a name="id2563049"></a><p>   This section describes functions that possibly return more than one row.
    Currently the only functions in this class are series generating functions,
-   as detailed in <A
-HREF="functions-srf.html#FUNCTIONS-SRF-SERIES"
->Table 9-38</A
->.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-SRF-SERIES"
-></A
-><P
-><B
->Table 9-38. Series Generating Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Function</TH
-><TH
->Argument Type</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->generate_series</CODE
->(<TT
-CLASS="PARAMETER"
->start</TT
->, <TT
-CLASS="PARAMETER"
->stop</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int</TT
-> or <TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->setof int</TT
-> or <TT
-CLASS="TYPE"
->setof bigint</TT
-> (same as argument type)</TD
-><TD
->       Generate a series of values, from <TT
-CLASS="PARAMETER"
->start</TT
-> to <TT
-CLASS="PARAMETER"
->stop</TT
->
+   as detailed in <a href="functions-srf.html#functions-srf-series" title="Table 9.38. Series Generating Functions">Table 9.38, &#8220;Series Generating Functions&#8221;</a>.
+  </p>
+<div class="table">
+<a name="functions-srf-series"></a><p class="title"><b>Table 9.38. Series Generating Functions</b></p>
+<table summary="Series Generating Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Function</th>
+<th>Argument Type</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal"><tt class="function">generate_series</tt>(<i class="parameter"><tt>start</tt></i>, <i class="parameter"><tt>stop</tt></i>)</tt></td>
+<td>
+<tt class="type">int</tt> or <tt class="type">bigint</tt>
+</td>
+<td>
+<tt class="type">setof int</tt> or <tt class="type">setof bigint</tt> (same as argument type)</td>
+<td>       Generate a series of values, from <i class="parameter"><tt>start</tt></i> to <i class="parameter"><tt>stop</tt></i>
        with a step size of one.
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->generate_series</CODE
->(<TT
-CLASS="PARAMETER"
->start</TT
->, <TT
-CLASS="PARAMETER"
->stop</TT
->, <TT
-CLASS="PARAMETER"
->step</TT
->)</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int</TT
-> or <TT
-CLASS="TYPE"
->bigint</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->setof int</TT
-> or <TT
-CLASS="TYPE"
->setof bigint</TT
-> (same as argument type)</TD
-><TD
->       Generate a series of values, from <TT
-CLASS="PARAMETER"
->start</TT
-> to <TT
-CLASS="PARAMETER"
->stop</TT
->
-       with a step size of <TT
-CLASS="PARAMETER"
->step</TT
->.
-      </TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   When <TT
-CLASS="PARAMETER"
->step</TT
-> is positive, zero rows are returned if
-   <TT
-CLASS="PARAMETER"
->start</TT
-> is greater than <TT
-CLASS="PARAMETER"
->stop</TT
->.
-   Conversely, when <TT
-CLASS="PARAMETER"
->step</TT
-> is negative, zero rows are
-   returned if <TT
-CLASS="PARAMETER"
->start</TT
-> is less than <TT
-CLASS="PARAMETER"
->stop</TT
->.
-   Zero rows are also returned for <TT
-CLASS="LITERAL"
->NULL</TT
-> inputs. It is an error
-   for <TT
-CLASS="PARAMETER"
->step</TT
-> to be zero. Some examples follow:
-</P><PRE
-CLASS="PROGRAMLISTING"
->select * from generate_series(2,4);
+      </td>
+</tr>
+<tr>
+<td><tt class="literal"><tt class="function">generate_series</tt>(<i class="parameter"><tt>start</tt></i>, <i class="parameter"><tt>stop</tt></i>, <i class="parameter"><tt>step</tt></i>)</tt></td>
+<td>
+<tt class="type">int</tt> or <tt class="type">bigint</tt>
+</td>
+<td>
+<tt class="type">setof int</tt> or <tt class="type">setof bigint</tt> (same as argument type)</td>
+<td>       Generate a series of values, from <i class="parameter"><tt>start</tt></i> to <i class="parameter"><tt>stop</tt></i>
+       with a step size of <i class="parameter"><tt>step</tt></i>.
+      </td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>   When <i class="parameter"><tt>step</tt></i> is positive, zero rows are returned if
+   <i class="parameter"><tt>start</tt></i> is greater than <i class="parameter"><tt>stop</tt></i>.
+   Conversely, when <i class="parameter"><tt>step</tt></i> is negative, zero rows are
+   returned if <i class="parameter"><tt>start</tt></i> is less than <i class="parameter"><tt>stop</tt></i>.
+   Zero rows are also returned for <tt class="literal">NULL</tt> inputs. It is an error
+   for <i class="parameter"><tt>step</tt></i> to be zero. Some examples follow:
+</p>
+<pre class="programlisting">select * from generate_series(2,4);
  generate_series
 -----------------
                2
@@ -284,72 +95,8 @@ select current_date + s.a as dates from generate_series(0,14,7) as s(a);
  2004-02-05
  2004-02-12
  2004-02-19
-(3 rows)</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-comparisons.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions-info.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Row and Array Comparisons</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->System Information Functions</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+(3 rows)</pre>
+<p>
+  </p>
+</div></body>
+</html>

@@ -1,446 +1,147 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Database Access from PL/Tcl</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PL/Tcl - Tcl Procedural Language"
-HREF="pltcl.html"><LINK
-REL="PREVIOUS"
-TITLE="Global Data in PL/Tcl"
-HREF="pltcl-global.html"><LINK
-REL="NEXT"
-TITLE="Trigger Procedures in PL/Tcl"
-HREF="pltcl-trigger.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="pltcl-global.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="pltcl.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 36. PL/Tcl - Tcl Procedural Language</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="pltcl.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="pltcl-trigger.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="PLTCL-DBACCESS"
->36.5. Database Access from PL/Tcl</A
-></H1
-><P
->     The following commands are available to access the database from
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>36.5. Database Access from PL/Tcl</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="pltcl.html" title="Chapter 36. PL/Tcl - Tcl Procedural Language">
+<link rel="previous" href="pltcl-global.html" title="36.4. Global Data in PL/Tcl">
+<link rel="next" href="pltcl-trigger.html" title="36.6. Trigger Procedures in PL/Tcl">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="pltcl-dbaccess"></a>36.5. Database Access from PL/Tcl</h2></div></div>
+<div></div>
+</div>
+<p>     The following commands are available to access the database from
      the body of a PL/Tcl function:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->spi_exec</CODE
-> ?<SPAN
-CLASS="OPTIONAL"
->-count <VAR
-CLASS="REPLACEABLE"
->n</VAR
-></SPAN
->? ?<SPAN
-CLASS="OPTIONAL"
->-array <VAR
-CLASS="REPLACEABLE"
->name</VAR
-></SPAN
->? <VAR
-CLASS="REPLACEABLE"
->command</VAR
-> ?<SPAN
-CLASS="OPTIONAL"
-><VAR
-CLASS="REPLACEABLE"
->loop-body</VAR
-></SPAN
->?</TT
-></DT
-><DD
-><P
->	Executes an SQL command given as a string.  An error in the command
-	causes an error to be raised.  Otherwise, the return value of <CODE
-CLASS="FUNCTION"
->spi_exec</CODE
->
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal"><tt class="function">spi_exec</tt> 
+  ?<span class="optional">-count <i class="replaceable"><tt>n</tt></i></span>?
+ 
+  ?<span class="optional">-array <i class="replaceable"><tt>name</tt></i></span>?
+ <i class="replaceable"><tt>command</tt></i> 
+  ?<span class="optional"><i class="replaceable"><tt>loop-body</tt></i></span>?
+</tt></span></dt>
+<dd>
+<p>	Executes an SQL command given as a string.  An error in the command
+	causes an error to be raised.  Otherwise, the return value of <tt class="function">spi_exec</tt>
 	is the number of rows processed (selected, inserted, updated, or
 	deleted) by the command, or zero if the command is a utility
-	statement.  In addition, if the command is a <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement, the
+	statement.  In addition, if the command is a <tt class="command">SELECT</tt> statement, the
 	values of the selected columns are placed in Tcl variables as
 	described below.
-       </P
-><P
->	The optional <TT
-CLASS="LITERAL"
->-count</TT
-> value tells
-	<CODE
-CLASS="FUNCTION"
->spi_exec</CODE
-> the maximum number of rows
+       </p>
+<p>	The optional <tt class="literal">-count</tt> value tells
+	<tt class="function">spi_exec</tt> the maximum number of rows
 	to process in the command.  The effect of this is comparable to
-	setting up a query as a cursor and then saying <TT
-CLASS="LITERAL"
->FETCH <VAR
-CLASS="REPLACEABLE"
->n</VAR
-></TT
->.
-       </P
-><P
->	If the command is a <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement, the values of the
+	setting up a query as a cursor and then saying <tt class="literal">FETCH <i class="replaceable"><tt>n</tt></i></tt>.
+       </p>
+<p>	If the command is a <tt class="command">SELECT</tt> statement, the values of the
 	result columns are placed into Tcl variables named after the columns.
-        If the <TT
-CLASS="LITERAL"
->-array</TT
-> option is given, the column values are
+        If the <tt class="literal">-array</tt> option is given, the column values are
 	instead stored into the named associative array, with the
 	column names used as array indexes.
-       </P
-><P
->        If the command is a <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement and no <VAR
-CLASS="REPLACEABLE"
->loop-body</VAR
->
+       </p>
+<p>        If the command is a <tt class="command">SELECT</tt> statement and no <i class="replaceable"><tt>loop-body</tt></i>
 	script is given, then only the first row of results are stored into
 	Tcl variables; remaining rows, if any, are ignored.  No storing occurs
 	if the 
 	query returns no rows.  (This case can be detected by checking the
-	result of <CODE
-CLASS="FUNCTION"
->spi_exec</CODE
->.)  For example,
+	result of <tt class="function">spi_exec</tt>.)  For example,
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->spi_exec "SELECT count(*) AS cnt FROM pg_proc"</PRE
-><P>
+</p>
+<pre class="programlisting">spi_exec "SELECT count(*) AS cnt FROM pg_proc"</pre>
+<p>
 
-	will set the Tcl variable <TT
-CLASS="LITERAL"
->$cnt</TT
-> to the number of rows in
-	the <TT
-CLASS="STRUCTNAME"
->pg_proc</TT
-> system catalog.
-       </P
-><P
->        If the optional <VAR
-CLASS="REPLACEABLE"
->loop-body</VAR
-> argument is given, it is
+	will set the Tcl variable <tt class="literal">$cnt</tt> to the number of rows in
+	the <tt class="structname">pg_proc</tt> system catalog.
+       </p>
+<p>        If the optional <i class="replaceable"><tt>loop-body</tt></i> argument is given, it is
 	a piece of Tcl script that is executed once for each row in the
-	query result.  (<VAR
-CLASS="REPLACEABLE"
->loop-body</VAR
-> is ignored if the given
-	command is not a <TT
-CLASS="COMMAND"
->SELECT</TT
->.)  The values of the current row's columns
+	query result.  (<i class="replaceable"><tt>loop-body</tt></i> is ignored if the given
+	command is not a <tt class="command">SELECT</tt>.)  The values of the current row's columns
 	are stored into Tcl variables before each iteration.  For example,
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->spi_exec -array C "SELECT * FROM pg_class" {
+</p>
+<pre class="programlisting">spi_exec -array C "SELECT * FROM pg_class" {
     elog DEBUG "have table $C(relname)"
-}</PRE
-><P>
+}</pre>
+<p>
 
-	will print a log message for every row of <TT
-CLASS="LITERAL"
->pg_class</TT
->.  This
+	will print a log message for every row of <tt class="literal">pg_class</tt>.  This
 	feature works similarly to other Tcl looping constructs; in
-	particular <TT
-CLASS="LITERAL"
->continue</TT
-> and <TT
-CLASS="LITERAL"
->break</TT
-> work in the
+	particular <tt class="literal">continue</tt> and <tt class="literal">break</tt> work in the
 	usual way inside the loop body.
-       </P
-><P
->        If a column of a query result is null, the target
-	variable for it is <SPAN
-CLASS="QUOTE"
->"unset"</SPAN
-> rather than being set.
-       </P
-></DD
-><DT
-><CODE
-CLASS="FUNCTION"
->spi_prepare</CODE
-> <VAR
-CLASS="REPLACEABLE"
->query</VAR
-> <VAR
-CLASS="REPLACEABLE"
->typelist</VAR
-></DT
-><DD
-><P
->	Prepares and saves a query plan for later execution.  The
+       </p>
+<p>        If a column of a query result is null, the target
+	variable for it is &#8220;<span class="quote">unset</span>&#8221; rather than being set.
+       </p>
+</dd>
+<dt><span class="term"><tt class="function">spi_prepare</tt> <i class="replaceable"><tt>query</tt></i> <i class="replaceable"><tt>typelist</tt></i></span></dt>
+<dd>
+<p>	Prepares and saves a query plan for later execution.  The
 	saved plan will be retained for the life of the current
-	session.<A
-NAME="AEN32454"
-></A
->
-       </P
-><P
->        The query may use parameters, that is, placeholders for
+	session.<a name="id2651635"></a>
+       </p>
+<p>        The query may use parameters, that is, placeholders for
 	values to be supplied whenever the plan is actually executed.
 	In the query string, refer to parameters
-	by the symbols <TT
-CLASS="LITERAL"
->$1</TT
-> ... <TT
-CLASS="LITERAL"
->$<VAR
-CLASS="REPLACEABLE"
->n</VAR
-></TT
->.
+	by the symbols <tt class="literal">$1</tt> ... <tt class="literal">$<i class="replaceable"><tt>n</tt></i></tt>.
 	If the query uses parameters, the names of the parameter types
 	must be given as a Tcl list.  (Write an empty list for
-	<VAR
-CLASS="REPLACEABLE"
->typelist</VAR
-> if no parameters are used.)
+	<i class="replaceable"><tt>typelist</tt></i> if no parameters are used.)
 	Presently, the parameter types must be identified by the internal
-	type names shown in the system table <TT
-CLASS="LITERAL"
->pg_type</TT
->; for example <TT
-CLASS="LITERAL"
->int4</TT
-> not
-	<TT
-CLASS="LITERAL"
->integer</TT
->.
-       </P
-><P
->        The return value from <CODE
-CLASS="FUNCTION"
->spi_prepare</CODE
-> is a query ID
-	to be used in subsequent calls to <CODE
-CLASS="FUNCTION"
->spi_execp</CODE
->. See
-	<CODE
-CLASS="FUNCTION"
->spi_execp</CODE
-> for an example.
-       </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->spi_execp</CODE
-> ?<SPAN
-CLASS="OPTIONAL"
->-count <VAR
-CLASS="REPLACEABLE"
->n</VAR
-></SPAN
->? ?<SPAN
-CLASS="OPTIONAL"
->-array <VAR
-CLASS="REPLACEABLE"
->name</VAR
-></SPAN
->? ?<SPAN
-CLASS="OPTIONAL"
->-nulls <VAR
-CLASS="REPLACEABLE"
->string</VAR
-></SPAN
->? <VAR
-CLASS="REPLACEABLE"
->queryid</VAR
-> ?<SPAN
-CLASS="OPTIONAL"
-><VAR
-CLASS="REPLACEABLE"
->value-list</VAR
-></SPAN
->? ?<SPAN
-CLASS="OPTIONAL"
-><VAR
-CLASS="REPLACEABLE"
->loop-body</VAR
-></SPAN
->?</TT
-></DT
-><DD
-><P
->	Executes a query previously prepared with <CODE
-CLASS="FUNCTION"
->spi_prepare</CODE
->.
-	<VAR
-CLASS="REPLACEABLE"
->queryid</VAR
-> is the ID returned by
-	<CODE
-CLASS="FUNCTION"
->spi_prepare</CODE
->.  If the query references parameters,
-	a <VAR
-CLASS="REPLACEABLE"
->value-list</VAR
-> must be supplied.  This
+	type names shown in the system table <tt class="literal">pg_type</tt>; for example <tt class="literal">int4</tt> not
+	<tt class="literal">integer</tt>.
+       </p>
+<p>        The return value from <tt class="function">spi_prepare</tt> is a query ID
+	to be used in subsequent calls to <tt class="function">spi_execp</tt>. See
+	<tt class="function">spi_execp</tt> for an example.
+       </p>
+</dd>
+<dt><span class="term"><tt class="literal"><tt class="function">spi_execp</tt> 
+  ?<span class="optional">-count <i class="replaceable"><tt>n</tt></i></span>?
+ 
+  ?<span class="optional">-array <i class="replaceable"><tt>name</tt></i></span>?
+ 
+  ?<span class="optional">-nulls <i class="replaceable"><tt>string</tt></i></span>?
+ <i class="replaceable"><tt>queryid</tt></i> 
+  ?<span class="optional"><i class="replaceable"><tt>value-list</tt></i></span>?
+ 
+  ?<span class="optional"><i class="replaceable"><tt>loop-body</tt></i></span>?
+</tt></span></dt>
+<dd>
+<p>	Executes a query previously prepared with <tt class="function">spi_prepare</tt>.
+	<i class="replaceable"><tt>queryid</tt></i> is the ID returned by
+	<tt class="function">spi_prepare</tt>.  If the query references parameters,
+	a <i class="replaceable"><tt>value-list</tt></i> must be supplied.  This
 	is a Tcl list of actual values for the parameters.  The list must be
 	the same length as the parameter type list previously given to
-	<CODE
-CLASS="FUNCTION"
->spi_prepare</CODE
->.  Omit <VAR
-CLASS="REPLACEABLE"
->value-list</VAR
->
+	<tt class="function">spi_prepare</tt>.  Omit <i class="replaceable"><tt>value-list</tt></i>
 	if the query has no parameters.
-       </P
-><P
->	The optional value for <TT
-CLASS="LITERAL"
->-nulls</TT
-> is a string of spaces and
-	<TT
-CLASS="LITERAL"
->'n'</TT
-> characters telling <CODE
-CLASS="FUNCTION"
->spi_execp</CODE
->
+       </p>
+<p>	The optional value for <tt class="literal">-nulls</tt> is a string of spaces and
+	<tt class="literal">'n'</tt> characters telling <tt class="function">spi_execp</tt>
 	which of the parameters are null values. If given, it must have exactly the
-	same length as the <VAR
-CLASS="REPLACEABLE"
->value-list</VAR
->.  If it
+	same length as the <i class="replaceable"><tt>value-list</tt></i>.  If it
 	is not given, all the parameter values are nonnull.
-       </P
-><P
->        Except for the way in which the query and its parameters are specified,
-	<CODE
-CLASS="FUNCTION"
->spi_execp</CODE
-> works just like <CODE
-CLASS="FUNCTION"
->spi_exec</CODE
->.
-        The <TT
-CLASS="LITERAL"
->-count</TT
->, <TT
-CLASS="LITERAL"
->-array</TT
->, and
-	<VAR
-CLASS="REPLACEABLE"
->loop-body</VAR
-> options are the same,
+       </p>
+<p>        Except for the way in which the query and its parameters are specified,
+	<tt class="function">spi_execp</tt> works just like <tt class="function">spi_exec</tt>.
+        The <tt class="literal">-count</tt>, <tt class="literal">-array</tt>, and
+	<i class="replaceable"><tt>loop-body</tt></i> options are the same,
 	and so is the result value.
-       </P
-><P
->	Here's an example of a PL/Tcl function using a prepared plan:
+       </p>
+<p>	Here's an example of a PL/Tcl function using a prepared plan:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION t1_count(integer, integer) RETURNS integer AS $$
+</p>
+<pre class="programlisting">CREATE FUNCTION t1_count(integer, integer) RETURNS integer AS $$
     if {![ info exists GD(plan) ]} {
         # prepare the saved plan on the first call
         set GD(plan) [ spi_prepare \
@@ -449,247 +150,80 @@ CLASS="PROGRAMLISTING"
     }
     spi_execp -count 1 $GD(plan) [ list $1 $2 ]
     return $cnt
-$$ LANGUAGE pltcl;</PRE
-><P>
+$$ LANGUAGE pltcl;</pre>
+<p>
 
     We need backslashes inside the query string given to
-    <CODE
-CLASS="FUNCTION"
->spi_prepare</CODE
-> to ensure that the
-    <TT
-CLASS="LITERAL"
->$<VAR
-CLASS="REPLACEABLE"
->n</VAR
-></TT
-> markers will be passed
-    through to <CODE
-CLASS="FUNCTION"
->spi_prepare</CODE
-> as-is, and not replaced by Tcl
+    <tt class="function">spi_prepare</tt> to ensure that the
+    <tt class="literal">$<i class="replaceable"><tt>n</tt></i></tt> markers will be passed
+    through to <tt class="function">spi_prepare</tt> as-is, and not replaced by Tcl
     variable substitution.
 
-       </P
-></DD
-><DT
-><CODE
-CLASS="FUNCTION"
->spi_lastoid</CODE
-></DT
-><DD
-><P
->	Returns the OID of the row inserted by the last
-	<CODE
-CLASS="FUNCTION"
->spi_exec</CODE
-> or <CODE
-CLASS="FUNCTION"
->spi_execp</CODE
->,
-	if the command was a single-row <TT
-CLASS="COMMAND"
->INSERT</TT
->.  (If not, you get zero.)
-       </P
-></DD
-><DT
-><CODE
-CLASS="FUNCTION"
->quote</CODE
-> <VAR
-CLASS="REPLACEABLE"
->string</VAR
-></DT
-><DD
-><P
->	Doubles all occurrences of single quote and backslash characters
+       </p>
+</dd>
+<dt><span class="term"><tt class="function">spi_lastoid</tt></span></dt>
+<dd><p>	Returns the OID of the row inserted by the last
+	<tt class="function">spi_exec</tt> or <tt class="function">spi_execp</tt>,
+	if the command was a single-row <tt class="command">INSERT</tt>.  (If not, you get zero.)
+       </p></dd>
+<dt><span class="term"><tt class="function">quote</tt> <i class="replaceable"><tt>string</tt></i></span></dt>
+<dd>
+<p>	Doubles all occurrences of single quote and backslash characters
 	in the given string.  This may be used to safely quote strings
 	that are to be inserted into SQL commands given
-	to <CODE
-CLASS="FUNCTION"
->spi_exec</CODE
-> or
-	<CODE
-CLASS="FUNCTION"
->spi_prepare</CODE
->.
+	to <tt class="function">spi_exec</tt> or
+	<tt class="function">spi_prepare</tt>.
 	For example, think about an SQL command string like
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->"SELECT '$val' AS ret"</PRE
-><P>
+</p>
+<pre class="programlisting">"SELECT '$val' AS ret"</pre>
+<p>
 
-	where the Tcl variable <TT
-CLASS="LITERAL"
->val</TT
-> actually contains
-	<TT
-CLASS="LITERAL"
->doesn't</TT
->. This would result
+	where the Tcl variable <tt class="literal">val</tt> actually contains
+	<tt class="literal">doesn't</tt>. This would result
 	in the final command string
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT 'doesn't' AS ret</PRE
-><P>
+</p>
+<pre class="programlisting">SELECT 'doesn't' AS ret</pre>
+<p>
 
 	which would cause a parse error during
-	<CODE
-CLASS="FUNCTION"
->spi_exec</CODE
-> or
-	<CODE
-CLASS="FUNCTION"
->spi_prepare</CODE
->.
+	<tt class="function">spi_exec</tt> or
+	<tt class="function">spi_prepare</tt>.
 	To work properly, the submitted command should contain
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT 'doesn''t' AS ret</PRE
-><P>
+</p>
+<pre class="programlisting">SELECT 'doesn''t' AS ret</pre>
+<p>
 
 	which can be formed in PL/Tcl using
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->"SELECT '[ quote $val ]' AS ret"</PRE
-><P>
+</p>
+<pre class="programlisting">"SELECT '[ quote $val ]' AS ret"</pre>
+<p>
 
-        One advantage of <CODE
-CLASS="FUNCTION"
->spi_execp</CODE
-> is that you don't
+        One advantage of <tt class="function">spi_execp</tt> is that you don't
 	have to quote parameter values like this, since the parameters are never
 	parsed as part of an SQL command string.
-       </P
-></DD
-><DT
-><CODE
-CLASS="FUNCTION"
->elog</CODE
-> <VAR
-CLASS="REPLACEABLE"
->level</VAR
-> <VAR
-CLASS="REPLACEABLE"
->msg</VAR
-></DT
-><DD
-><P
->	Emits a log or error message. Possible levels are
-	<TT
-CLASS="LITERAL"
->DEBUG</TT
->, <TT
-CLASS="LITERAL"
->LOG</TT
->, <TT
-CLASS="LITERAL"
->INFO</TT
->,
-	<TT
-CLASS="LITERAL"
->NOTICE</TT
->, <TT
-CLASS="LITERAL"
->WARNING</TT
->, <TT
-CLASS="LITERAL"
->ERROR</TT
->, and
-	<TT
-CLASS="LITERAL"
->FATAL</TT
->. Most simply emit the given message just like
-	the <TT
-CLASS="LITERAL"
->elog</TT
-> C function. <TT
-CLASS="LITERAL"
->ERROR</TT
->
-	raises an error condition: further execution of the function is
-	abandoned, and the current transaction is aborted.
-	<TT
-CLASS="LITERAL"
->FATAL</TT
-> aborts the transaction and causes the current
-	session to shut down.  (There is probably no good reason to use
-	this error level in PL/Tcl functions, but it's provided for
-	completeness.)
-       </P
-></DD
-></DL
-></DIV
-><P>
-    </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="pltcl-global.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="pltcl-trigger.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Global Data in PL/Tcl</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="pltcl.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Trigger Procedures in PL/Tcl</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+       </p>
+</dd>
+<dt><span class="term"><tt class="function">elog</tt> <i class="replaceable"><tt>level</tt></i> <i class="replaceable"><tt>msg</tt></i></span></dt>
+<dd><p>        Emits a log or error message. Possible levels are
+        <tt class="literal">DEBUG</tt>, <tt class="literal">LOG</tt>, <tt class="literal">INFO</tt>,
+        <tt class="literal">NOTICE</tt>, <tt class="literal">WARNING</tt>, <tt class="literal">ERROR</tt>, and
+        <tt class="literal">FATAL</tt>. Most simply emit the given message just like
+        the <tt class="literal">elog</tt> C function. <tt class="literal">ERROR</tt>
+        raises an error condition; if this is not trapped by the surrounding
+        Tcl code, the error propagates out to the calling query, causing
+        the current transaction or subtransaction to be aborted.  This
+        is effectively the same as the Tcl <tt class="literal">error</tt> command.
+        <tt class="literal">FATAL</tt> aborts the transaction and causes the current
+        session to shut down.  (There is probably no good reason to use
+        this error level in PL/Tcl functions, but it's provided for
+        completeness.)
+       </p></dd>
+</dl></div>
+<p>
+    </p>
+</div></body>
+</html>

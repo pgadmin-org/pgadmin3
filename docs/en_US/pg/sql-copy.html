@@ -1,1184 +1,415 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->COPY</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="COMMIT"
-HREF="sql-commit.html"><LINK
-REL="NEXT"
-TITLE="CREATE AGGREGATE"
-HREF="sql-createaggregate.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-commit.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-commit.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createaggregate.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createaggregate.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-COPY"
-></A
->COPY</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN36629"
-></A
-><H2
->Name</H2
->COPY&nbsp;--&nbsp;copy data between a file and a table</DIV
-><A
-NAME="AEN36632"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN36634"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->COPY <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-> [ ( <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> [, ...] ) ]
-    FROM { '<VAR
-CLASS="REPLACEABLE"
->filename</VAR
->' | STDIN }
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>COPY</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-commit.html" title="COMMIT">
+<link rel="next" href="sql-createaggregate.html" title="CREATE AGGREGATE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-copy"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>COPY &#8212; copy data between a file and a table</p>
+</div>
+<a name="id2667700"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><tt>column</tt></i> [, ...] ) ]
+    FROM { '<i class="replaceable"><tt>filename</tt></i>' | STDIN }
     [ [ WITH ] 
           [ BINARY ] 
           [ OIDS ]
-          [ DELIMITER [ AS ] '<VAR
-CLASS="REPLACEABLE"
->delimiter</VAR
->' ]
-          [ NULL [ AS ] '<VAR
-CLASS="REPLACEABLE"
->null string</VAR
->' ]
-          [ CSV [ QUOTE [ AS ] '<VAR
-CLASS="REPLACEABLE"
->quote</VAR
->' ] 
-                [ ESCAPE [ AS ] '<VAR
-CLASS="REPLACEABLE"
->escape</VAR
->' ]
-                [ FORCE NOT NULL <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> [, ...] ]
+          [ DELIMITER [ AS ] '<i class="replaceable"><tt>delimiter</tt></i>' ]
+          [ NULL [ AS ] '<i class="replaceable"><tt>null string</tt></i>' ]
+          [ CSV [ QUOTE [ AS ] '<i class="replaceable"><tt>quote</tt></i>' ] 
+                [ ESCAPE [ AS ] '<i class="replaceable"><tt>escape</tt></i>' ]
+                [ FORCE NOT NULL <i class="replaceable"><tt>column</tt></i> [, ...] ]
 
-COPY <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-> [ ( <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> [, ...] ) ]
-    TO { '<VAR
-CLASS="REPLACEABLE"
->filename</VAR
->' | STDOUT }
+COPY <i class="replaceable"><tt>tablename</tt></i> [ ( <i class="replaceable"><tt>column</tt></i> [, ...] ) ]
+    TO { '<i class="replaceable"><tt>filename</tt></i>' | STDOUT }
     [ [ WITH ] 
           [ BINARY ]
           [ OIDS ]
-          [ DELIMITER [ AS ] '<VAR
-CLASS="REPLACEABLE"
->delimiter</VAR
->' ]
-          [ NULL [ AS ] '<VAR
-CLASS="REPLACEABLE"
->null string</VAR
->' ]
-          [ CSV [ QUOTE [ AS ] '<VAR
-CLASS="REPLACEABLE"
->quote</VAR
->' ] 
-                [ ESCAPE [ AS ] '<VAR
-CLASS="REPLACEABLE"
->escape</VAR
->' ]
-                [ FORCE QUOTE <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> [, ...] ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36652"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->COPY</TT
-> moves data between
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> tables and standard file-system
-   files. <TT
-CLASS="COMMAND"
->COPY TO</TT
-> copies the contents of a table
-   <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->to</I
-></SPAN
-> a file, while <TT
-CLASS="COMMAND"
->COPY FROM</TT
-> copies
-   data <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->from</I
-></SPAN
-> a file to a table (appending the data to
+          [ DELIMITER [ AS ] '<i class="replaceable"><tt>delimiter</tt></i>' ]
+          [ NULL [ AS ] '<i class="replaceable"><tt>null string</tt></i>' ]
+          [ CSV [ QUOTE [ AS ] '<i class="replaceable"><tt>quote</tt></i>' ] 
+                [ ESCAPE [ AS ] '<i class="replaceable"><tt>escape</tt></i>' ]
+                [ FORCE QUOTE <i class="replaceable"><tt>column</tt></i> [, ...] ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2667818"></a><h2>Description</h2>
+<p>   <tt class="command">COPY</tt> moves data between
+   <span class="productname">PostgreSQL</span> tables and standard file-system
+   files. <tt class="command">COPY TO</tt> copies the contents of a table
+   <span class="emphasis"><em>to</em></span> a file, while <tt class="command">COPY FROM</tt> copies
+   data <span class="emphasis"><em>from</em></span> a file to a table (appending the data to
    whatever is in the table already).
-  </P
-><P
->   If a list of columns is specified, <TT
-CLASS="COMMAND"
->COPY</TT
-> will
+  </p>
+<p>   If a list of columns is specified, <tt class="command">COPY</tt> will
    only copy the data in the specified columns to or from the file.
    If there are any columns in the table that are not in the column list,
-   <TT
-CLASS="COMMAND"
->COPY FROM</TT
-> will insert the default values for
+   <tt class="command">COPY FROM</tt> will insert the default values for
    those columns.
-  </P
-><P
->   <TT
-CLASS="COMMAND"
->COPY</TT
-> with a file name instructs the
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> server to directly read from
+  </p>
+<p>   <tt class="command">COPY</tt> with a file name instructs the
+   <span class="productname">PostgreSQL</span> server to directly read from
    or write to a file. The file must be accessible to the server and
    the name must be specified from the viewpoint of the server. When
-   <TT
-CLASS="LITERAL"
->STDIN</TT
-> or <TT
-CLASS="LITERAL"
->STDOUT</TT
-> is
+   <tt class="literal">STDIN</tt> or <tt class="literal">STDOUT</tt> is
    specified, data is transmitted via the connection between the
    client and the server.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36669"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-></DT
-><DD
-><P
->      The name (optionally schema-qualified) of an existing table.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->column</VAR
-></DT
-><DD
-><P
->      An optional list of columns to be copied.  If no column list is
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2667906"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>tablename</tt></i></span></dt>
+<dd><p>      The name (optionally schema-qualified) of an existing table.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>column</tt></i></span></dt>
+<dd><p>      An optional list of columns to be copied.  If no column list is
       specified, all columns will be used.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->filename</VAR
-></DT
-><DD
-><P
->      The absolute path name of the input or output file.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->STDIN</TT
-></DT
-><DD
-><P
->      Specifies that input comes from the client application.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->STDOUT</TT
-></DT
-><DD
-><P
->      Specifies that output goes to the client application.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->BINARY</TT
-></DT
-><DD
-><P
->      Causes all data to be stored or read in binary format rather
-      than as text. You cannot specify the <TT
-CLASS="OPTION"
->DELIMITER</TT
->
-      or <TT
-CLASS="OPTION"
->NULL</TT
-> options in binary mode.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->OIDS</TT
-></DT
-><DD
-><P
->      Specifies copying the OID for each row.  (An error is raised if
-      <TT
-CLASS="LITERAL"
->OIDS</TT
-> is specified for a table that does not
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>filename</tt></i></span></dt>
+<dd><p>      The absolute path name of the input or output file.
+     </p></dd>
+<dt><span class="term"><tt class="literal">STDIN</tt></span></dt>
+<dd><p>      Specifies that input comes from the client application.
+     </p></dd>
+<dt><span class="term"><tt class="literal">STDOUT</tt></span></dt>
+<dd><p>      Specifies that output goes to the client application.
+     </p></dd>
+<dt><span class="term"><tt class="literal">BINARY</tt></span></dt>
+<dd><p>      Causes all data to be stored or read in binary format rather
+      than as text. You cannot specify the <tt class="option">DELIMITER</tt>
+      or <tt class="option">NULL</tt> options in binary mode.
+     </p></dd>
+<dt><span class="term"><tt class="literal">OIDS</tt></span></dt>
+<dd><p>      Specifies copying the OID for each row.  (An error is raised if
+      <tt class="literal">OIDS</tt> is specified for a table that does not
       have OIDs.)
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->delimiter</VAR
-></DT
-><DD
-><P
->      The single character that separates columns within each row
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>delimiter</tt></i></span></dt>
+<dd><p>      The single character that separates columns within each row
       (line) of the file.  The default is a tab character in text mode,
-      a comma in <TT
-CLASS="LITERAL"
->CSV</TT
-> mode.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->null string</VAR
-></DT
-><DD
-><P
->      The string that represents a null value. The default is
-      <TT
-CLASS="LITERAL"
->\N</TT
-> (backslash-N) in text mode, and a empty
-      value with no quotes in <TT
-CLASS="LITERAL"
->CSV</TT
-> mode. You might prefer an
+      a comma in <tt class="literal">CSV</tt> mode.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>null string</tt></i></span></dt>
+<dd>
+<p>      The string that represents a null value. The default is
+      <tt class="literal">\N</tt> (backslash-N) in text mode, and a empty
+      value with no quotes in <tt class="literal">CSV</tt> mode. You might prefer an
       empty string even in text mode for cases where you don't want to
       distinguish nulls from empty strings.
-     </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->       When using <TT
-CLASS="COMMAND"
->COPY FROM</TT
->, any data item that matches
+     </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>       When using <tt class="command">COPY FROM</tt>, any data item that matches
        this string will be stored as a null value, so you should make
        sure that you use the same string as you used with
-       <TT
-CLASS="COMMAND"
->COPY TO</TT
->.
-      </P
-></BLOCKQUOTE
-></DIV
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->CSV</TT
-></DT
-><DD
-><P
->      Enables Comma Separated Variable (<TT
-CLASS="LITERAL"
->CSV</TT
->) mode. (Also
+       <tt class="command">COPY TO</tt>.
+      </p>
+</div>
+</dd>
+<dt><span class="term"><tt class="literal">CSV</tt></span></dt>
+<dd><p>      Enables Comma Separated Variable (<tt class="literal">CSV</tt>) mode. (Also
       called Comma Separated Value). It sets the default
-      <TT
-CLASS="LITERAL"
->DELIMITER</TT
-> to comma, and <TT
-CLASS="LITERAL"
->QUOTE</TT
-> and
-      <TT
-CLASS="LITERAL"
->ESCAPE</TT
-> values to double-quote.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->quote</VAR
-></DT
-><DD
-><P
->      Specifies the quotation character in <TT
-CLASS="LITERAL"
->CSV</TT
-> mode.
+      <tt class="literal">DELIMITER</tt> to comma, and <tt class="literal">QUOTE</tt> and
+      <tt class="literal">ESCAPE</tt> values to double-quote.
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>quote</tt></i></span></dt>
+<dd><p>      Specifies the quotation character in <tt class="literal">CSV</tt> mode.
       The default is double-quote.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->escape</VAR
-></DT
-><DD
-><P
->      Specifies the character that should appear before a
-      <TT
-CLASS="LITERAL"
->QUOTE</TT
-> data character value in <TT
-CLASS="LITERAL"
->CSV</TT
-> mode.
-      The default is the <TT
-CLASS="LITERAL"
->QUOTE</TT
-> value (usually double-quote).
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->FORCE QUOTE</TT
-></DT
-><DD
-><P
->      In <TT
-CLASS="LITERAL"
->CSV</TT
-> <TT
-CLASS="COMMAND"
->COPY TO</TT
-> mode, forces quoting to be
-      used for all non-<TT
-CLASS="LITERAL"
->NULL</TT
-> values in each specified column.
-      <TT
-CLASS="LITERAL"
->NULL</TT
-> output is never quoted.
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->FORCE NOT NULL</TT
-></DT
-><DD
-><P
->      In <TT
-CLASS="LITERAL"
->CSV</TT
-> <TT
-CLASS="COMMAND"
->COPY FROM</TT
-> mode, process each
+     </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>escape</tt></i></span></dt>
+<dd><p>      Specifies the character that should appear before a
+      <tt class="literal">QUOTE</tt> data character value in <tt class="literal">CSV</tt> mode.
+      The default is the <tt class="literal">QUOTE</tt> value (usually double-quote).
+     </p></dd>
+<dt><span class="term"><tt class="literal">FORCE QUOTE</tt></span></dt>
+<dd><p>      In <tt class="literal">CSV</tt> <tt class="command">COPY TO</tt> mode, forces quoting to be
+      used for all non-<tt class="literal">NULL</tt> values in each specified column.
+      <tt class="literal">NULL</tt> output is never quoted.
+     </p></dd>
+<dt><span class="term"><tt class="literal">FORCE NOT NULL</tt></span></dt>
+<dd><p>      In <tt class="literal">CSV</tt> <tt class="command">COPY FROM</tt> mode, process each
       specified column as though it were quoted and hance not a
-      <TT
-CLASS="LITERAL"
->NULL</TT
-> value. For the default <TT
-CLASS="LITERAL"
->null string</TT
-> in
-      <TT
-CLASS="LITERAL"
->CSV</TT
-> mode (<TT
-CLASS="LITERAL"
->''</TT
->), this causes a missing
+      <tt class="literal">NULL</tt> value. For the default <tt class="literal">null string</tt> in
+      <tt class="literal">CSV</tt> mode (<tt class="literal">''</tt>), this causes a missing
       values to be input as a zero-length strings.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36770"
-></A
-><H2
->Notes</H2
-><P
->    <TT
-CLASS="COMMAND"
->COPY</TT
-> can only be used with plain tables, not
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2668236"></a><h2>Notes</h2>
+<p>    <tt class="command">COPY</tt> can only be used with plain tables, not
     with views.
-   </P
-><P
->    The <TT
-CLASS="LITERAL"
->BINARY</TT
-> key word causes all data to be
+   </p>
+<p>    The <tt class="literal">BINARY</tt> key word causes all data to be
     stored/read as binary format rather than as text.  It is
     somewhat faster than the normal text mode, but a binary-format
     file is less portable across machine architectures and
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> versions.
-   </P
-><P
->    You must have select privilege on the table
-    whose values are read by <TT
-CLASS="COMMAND"
->COPY TO</TT
->, and
+    <span class="productname">PostgreSQL</span> versions.
+   </p>
+<p>    You must have select privilege on the table
+    whose values are read by <tt class="command">COPY TO</tt>, and
     insert privilege on the table into which values
-    are inserted by <TT
-CLASS="COMMAND"
->COPY FROM</TT
->.
-   </P
-><P
->    Files named in a <TT
-CLASS="COMMAND"
->COPY</TT
-> command are read or written
+    are inserted by <tt class="command">COPY FROM</tt>.
+   </p>
+<p>    Files named in a <tt class="command">COPY</tt> command are read or written
     directly by the server, not by the client application. Therefore,
     they must reside on or be accessible to the database server machine,
     not the client. They must be accessible to and readable or writable
-    by the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> user (the user ID the
-    server runs as), not the client. <TT
-CLASS="COMMAND"
->COPY</TT
-> naming a
+    by the <span class="productname">PostgreSQL</span> user (the user ID the
+    server runs as), not the client. <tt class="command">COPY</tt> naming a
     file is only allowed to database superusers, since it allows reading
     or writing any file that the server has privileges to access.
-   </P
-><P
->    Do not confuse <TT
-CLASS="COMMAND"
->COPY</TT
-> with the
-    <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> instruction
-    <TT
-CLASS="COMMAND"
->\copy</TT
->. <TT
-CLASS="COMMAND"
->\copy</TT
-> invokes
-    <TT
-CLASS="COMMAND"
->COPY FROM STDIN</TT
-> or <TT
-CLASS="COMMAND"
->COPY TO
-    STDOUT</TT
->, and then fetches/stores the data in a file
-    accessible to the <SPAN
-CLASS="APPLICATION"
->psql</SPAN
-> client. Thus,
+   </p>
+<p>    Do not confuse <tt class="command">COPY</tt> with the
+    <span class="application">psql</span> instruction
+    <tt class="command">\copy</tt>. <tt class="command">\copy</tt> invokes
+    <tt class="command">COPY FROM STDIN</tt> or <tt class="command">COPY TO
+    STDOUT</tt>, and then fetches/stores the data in a file
+    accessible to the <span class="application">psql</span> client. Thus,
     file accessibility and access rights depend on the client rather
-    than the server when <TT
-CLASS="COMMAND"
->\copy</TT
-> is used.
-   </P
-><P
->    It is recommended that the file name used in <TT
-CLASS="COMMAND"
->COPY</TT
->
+    than the server when <tt class="command">\copy</tt> is used.
+   </p>
+<p>    It is recommended that the file name used in <tt class="command">COPY</tt>
     always be specified as an absolute path. This is enforced by the
-    server in the case of <TT
-CLASS="COMMAND"
->COPY TO</TT
->, but for
-    <TT
-CLASS="COMMAND"
->COPY FROM</TT
-> you do have the option of reading from
+    server in the case of <tt class="command">COPY TO</tt>, but for
+    <tt class="command">COPY FROM</tt> you do have the option of reading from
     a file specified by a relative path. The path will be interpreted
     relative to the working directory of the server process (somewhere below
     the data directory), not the client's working directory.
-   </P
-><P
->    <TT
-CLASS="COMMAND"
->COPY FROM</TT
-> will invoke any triggers and check
+   </p>
+<p>    <tt class="command">COPY FROM</tt> will invoke any triggers and check
     constraints on the destination table. However, it will not invoke rules.
-   </P
-><P
->    <TT
-CLASS="COMMAND"
->COPY</TT
-> input and output is affected by
-    <TT
-CLASS="VARNAME"
->DateStyle </TT
->. For portability with other
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> installations which might use
-    non-default <TT
-CLASS="VARNAME"
->DateStyle</TT
-> settings,
-    <TT
-CLASS="VARNAME"
->DateStyle</TT
-> should be set to <TT
-CLASS="LITERAL"
->ISO</TT
-> before
-    using <TT
-CLASS="COMMAND"
->COPY</TT
->. In <TT
-CLASS="LITERAL"
->CSV</TT
-> mode, use <TT
-CLASS="LITERAL"
->ISO</TT
->
-    or a <TT
-CLASS="VARNAME"
->DateStyle</TT
-> setting appropriate for the
+   </p>
+<p>    <tt class="command">COPY</tt> input and output is affected by
+    <tt class="varname">DateStyle </tt>. For portability with other
+    <span class="productname">PostgreSQL</span> installations which might use
+    non-default <tt class="varname">DateStyle</tt> settings,
+    <tt class="varname">DateStyle</tt> should be set to <tt class="literal">ISO</tt> before
+    using <tt class="command">COPY</tt>. In <tt class="literal">CSV</tt> mode, use <tt class="literal">ISO</tt>
+    or a <tt class="varname">DateStyle</tt> setting appropriate for the
     external application.
-   </P
-><P
->    <TT
-CLASS="COMMAND"
->COPY</TT
-> stops operation at the first error. This
-    should not lead to problems in the event of a <TT
-CLASS="COMMAND"
->COPY
-    TO</TT
->, but the target table will already have received
-    earlier rows in a <TT
-CLASS="COMMAND"
->COPY FROM</TT
->. These rows will not
+   </p>
+<p>    <tt class="command">COPY</tt> stops operation at the first error. This
+    should not lead to problems in the event of a <tt class="command">COPY
+    TO</tt>, but the target table will already have received
+    earlier rows in a <tt class="command">COPY FROM</tt>. These rows will not
     be visible or accessible, but they still occupy disk space. This may
     amount to a considerable amount of wasted disk space if the failure
     happened well into a large copy operation. You may wish to invoke
-    <TT
-CLASS="COMMAND"
->VACUUM</TT
-> to recover the wasted space.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36815"
-></A
-><H2
->File Formats</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN36817"
-></A
-><H3
->Text Format</H3
-><P
->    When <TT
-CLASS="COMMAND"
->COPY</TT
-> is used without the <TT
-CLASS="LITERAL"
->BINARY</TT
-> option,
+    <tt class="command">VACUUM</tt> to recover the wasted space.
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2668490"></a><h2>File Formats</h2>
+<div class="refsect2" lang="en">
+<a name="id2668494"></a><h3>Text Format</h3>
+<p>    When <tt class="command">COPY</tt> is used without the <tt class="literal">BINARY</tt> option,
     the data read or written is a text file with one line per table row,
-    unless <TT
-CLASS="LITERAL"
->CSV</TT
-> mode is used.
+    unless <tt class="literal">CSV</tt> mode is used.
     Columns in a row are separated by the delimiter character.
     The column values themselves are strings generated by the
     output function, or acceptable to the input function, of each
     attribute's data type.  The specified null string is used in
     place of columns that are null.
-    <TT
-CLASS="COMMAND"
->COPY FROM</TT
-> will raise an error if any line of the
+    <tt class="command">COPY FROM</tt> will raise an error if any line of the
     input file contains more or fewer columns than are expected.
-    If <TT
-CLASS="LITERAL"
->OIDS</TT
-> is specified, the OID is read or written as the first column,
+    If <tt class="literal">OIDS</tt> is specified, the OID is read or written as the first column,
     preceding the user data columns.
-   </P
-><P
->    End of data can be represented by a single line containing just
-    backslash-period (<TT
-CLASS="LITERAL"
->\.</TT
->).  An end-of-data marker is
+   </p>
+<p>    End of data can be represented by a single line containing just
+    backslash-period (<tt class="literal">\.</tt>).  An end-of-data marker is
     not necessary when reading from a file, since the end of file
     serves perfectly well; it is needed only when copying data to or from
     client applications using pre-3.0 client protocol.
-   </P
-><P
->    Backslash characters (<TT
-CLASS="LITERAL"
->\</TT
->) may be used in the
-    <TT
-CLASS="COMMAND"
->COPY</TT
-> data to quote data characters that might
+   </p>
+<p>    Backslash characters (<tt class="literal">\</tt>) may be used in the
+    <tt class="command">COPY</tt> data to quote data characters that might
     otherwise be taken as row or column delimiters. In particular, the
-    following characters <SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->must</I
-></SPAN
-> be preceded by a backslash if
+    following characters <span class="emphasis"><em>must</em></span> be preceded by a backslash if
     they appear as part of a column value: backslash itself,
     newline, carriage return, and the current delimiter character.
-   </P
-><P
->    The specified null string is sent by <TT
-CLASS="COMMAND"
->COPY TO</TT
-> without
-    adding any backslashes; conversely, <TT
-CLASS="COMMAND"
->COPY FROM</TT
-> matches
+   </p>
+<p>    The specified null string is sent by <tt class="command">COPY TO</tt> without
+    adding any backslashes; conversely, <tt class="command">COPY FROM</tt> matches
     the input against the null string before removing backslashes.  Therefore,
-    a null string such as <TT
-CLASS="LITERAL"
->\N</TT
-> cannot be confused with
-    the actual data value <TT
-CLASS="LITERAL"
->\N</TT
-> (which would be represented
-    as <TT
-CLASS="LITERAL"
->\\N</TT
->).
-   </P
-><P
->    The following special backslash sequences are recognized by
-    <TT
-CLASS="COMMAND"
->COPY FROM</TT
->:
+    a null string such as <tt class="literal">\N</tt> cannot be confused with
+    the actual data value <tt class="literal">\N</tt> (which would be represented
+    as <tt class="literal">\\N</tt>).
+   </p>
+<p>    The following special backslash sequences are recognized by
+    <tt class="command">COPY FROM</tt>:
 
-   <DIV
-CLASS="INFORMALTABLE"
-><P
-></P
-><A
-NAME="AEN36839"
-></A
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><THEAD
-><TR
-><TH
->Sequence</TH
-><TH
->Represents</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->\b</TT
-></TD
-><TD
->Backspace (ASCII 8)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->\f</TT
-></TD
-><TD
->Form feed (ASCII 12)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->\n</TT
-></TD
-><TD
->Newline (ASCII 10)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->\r</TT
-></TD
-><TD
->Carriage return (ASCII 13)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->\t</TT
-></TD
-><TD
->Tab (ASCII 9)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->\v</TT
-></TD
-><TD
->Vertical tab (ASCII 11)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="LITERAL"
->\</TT
-><VAR
-CLASS="REPLACEABLE"
->digits</VAR
-></TD
-><TD
->Backslash followed by one to three octal digits specifies
-       the character with that numeric code</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
->
+   </p>
+<div class="informaltable"><table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Sequence</th>
+<th>Represents</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal">\b</tt></td>
+<td>Backspace (ASCII 8)</td>
+</tr>
+<tr>
+<td><tt class="literal">\f</tt></td>
+<td>Form feed (ASCII 12)</td>
+</tr>
+<tr>
+<td><tt class="literal">\n</tt></td>
+<td>Newline (ASCII 10)</td>
+</tr>
+<tr>
+<td><tt class="literal">\r</tt></td>
+<td>Carriage return (ASCII 13)</td>
+</tr>
+<tr>
+<td><tt class="literal">\t</tt></td>
+<td>Tab (ASCII 9)</td>
+</tr>
+<tr>
+<td><tt class="literal">\v</tt></td>
+<td>Vertical tab (ASCII 11)</td>
+</tr>
+<tr>
+<td>
+<tt class="literal">\</tt><i class="replaceable"><tt>digits</tt></i>
+</td>
+<td>Backslash followed by one to three octal digits specifies
+       the character with that numeric code</td>
+</tr>
+</tbody>
+</table></div>
+<p>
 
-    Presently, <TT
-CLASS="COMMAND"
->COPY TO</TT
-> will never emit an octal-digits
+    Presently, <tt class="command">COPY TO</tt> will never emit an octal-digits
     backslash sequence, but it does use the other sequences listed above
     for those control characters.
-   </P
-><P
->    Any other backslashed character that is not mentioned in the above table
+   </p>
+<p>    Any other backslashed character that is not mentioned in the above table
     will be taken to represent itself.  However, beware of adding backslashes
     unnecessarily, since that might accidentally produce a string matching the
-    end-of-data marker (<TT
-CLASS="LITERAL"
->\.</TT
->) or the null string (<TT
-CLASS="LITERAL"
->\N</TT
-> by
+    end-of-data marker (<tt class="literal">\.</tt>) or the null string (<tt class="literal">\N</tt> by
     default).  These strings will be recognized before any other backslash
     processing is done.
-   </P
-><P
->    It is strongly recommended that applications generating COPY data convert
-    data newlines and carriage returns to the <TT
-CLASS="LITERAL"
->\n</TT
-> and
-    <TT
-CLASS="LITERAL"
->\r</TT
-> sequences respectively.  At present it is
+   </p>
+<p>    It is strongly recommended that applications generating <tt class="command">COPY</tt> data convert
+    data newlines and carriage returns to the <tt class="literal">\n</tt> and
+    <tt class="literal">\r</tt> sequences respectively.  At present it is
     possible to represent a data carriage return by a backslash and carriage
     return, and to represent a data newline by a backslash and newline.  
     However, these representations might not be accepted in future releases.
-    They are also highly vulnerable to corruption if the COPY file is
+    They are also highly vulnerable to corruption if the <tt class="command">COPY</tt> file is
     transferred across different machines (for example, from Unix to Windows
     or vice versa).
-   </P
-><P
->    <TT
-CLASS="COMMAND"
->COPY TO</TT
-> will terminate each row with a Unix-style 
-    newline (<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->\n</TT
->"</SPAN
->).  Servers running on MS Windows instead
-    output carriage return/newline (<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->\r\n</TT
->"</SPAN
->), but only for
-    <TT
-CLASS="COMMAND"
->COPY</TT
-> to a server file; for consistency across platforms,
-    <TT
-CLASS="COMMAND"
->COPY TO STDOUT</TT
-> always sends <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->\n</TT
->"</SPAN
->
+   </p>
+<p>    <tt class="command">COPY TO</tt> will terminate each row with a Unix-style 
+    newline (&#8220;<span class="quote"><tt class="literal">\n</tt></span>&#8221;).  Servers running on MS Windows instead
+    output carriage return/newline (&#8220;<span class="quote"><tt class="literal">\r\n</tt></span>&#8221;), but only for
+    <tt class="command">COPY</tt> to a server file; for consistency across platforms,
+    <tt class="command">COPY TO STDOUT</tt> always sends &#8220;<span class="quote"><tt class="literal">\n</tt></span>&#8221;
     regardless of server platform.
-    <TT
-CLASS="COMMAND"
->COPY FROM</TT
-> can handle lines ending with newlines,
+    <tt class="command">COPY FROM</tt> can handle lines ending with newlines,
     carriage returns, or carriage return/newlines.  To reduce the risk of
     error due to un-backslashed newlines or carriage returns that were
-    meant as data, <TT
-CLASS="COMMAND"
->COPY FROM</TT
-> will complain if the line
+    meant as data, <tt class="command">COPY FROM</tt> will complain if the line
     endings in the input are not all alike.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN36894"
-></A
-><H3
->CSV Format</H3
-><P
->    This format is used for importing and exporting the Comma
-    Separated Variable (<TT
-CLASS="LITERAL"
->CSV</TT
->) file format used by many other
+   </p>
+</div>
+<div class="refsect2" lang="en">
+<a name="id2668826"></a><h3>CSV Format</h3>
+<p>    This format is used for importing and exporting the Comma
+    Separated Variable (<tt class="literal">CSV</tt>) file format used by many other
     programs, such as spreadsheets. Instead of the escaping used by
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->'s standard text mode, it
+    <span class="productname">PostgreSQL</span>'s standard text mode, it
     produces and recognises the common CSV escaping mechanism.
-   </P
-><P
->    The values in each record are separated by the <TT
-CLASS="LITERAL"
->DELIMITER</TT
->
+   </p>
+<p>    The values in each record are separated by the <tt class="literal">DELIMITER</tt>
     character. If the value contains the delimiter character, the
-    <TT
-CLASS="LITERAL"
->QUOTE</TT
-> character, the <TT
-CLASS="LITERAL"
->NULL</TT
-> string, a carriage
+    <tt class="literal">QUOTE</tt> character, the <tt class="literal">NULL</tt> string, a carriage
     return, or line feed character, then the whole value is prefixed and
-    suffixed by the <TT
-CLASS="LITERAL"
->QUOTE</TT
-> character, and any occurrence
-    within the value of a <TT
-CLASS="LITERAL"
->QUOTE</TT
-> character or the
-    <TT
-CLASS="LITERAL"
->ESCAPE</TT
-> character is preceded by the escape character.
-    You can also use <TT
-CLASS="LITERAL"
->FORCE QUOTE</TT
-> to force quotes when outputting
-    non-<TT
-CLASS="LITERAL"
->NULL</TT
-> values in specific columns.
-   </P
-><P
-> 
-    In general, the <TT
-CLASS="LITERAL"
->CSV</TT
-> format has no way to distinguish a
-    <TT
-CLASS="LITERAL"
->NULL</TT
-> from an empty string.
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->'s COPY handles this by
-    quoting. A <TT
-CLASS="LITERAL"
->NULL</TT
-> is output as the <TT
-CLASS="LITERAL"
->NULL</TT
-> string 
-    and is not quoted, while a data value matching the <TT
-CLASS="LITERAL"
->NULL</TT
-> string 
-    is quoted. Therefore, using the default settings, a <TT
-CLASS="LITERAL"
->NULL</TT
-> is
-    written as an unquoted empty string, while an empty string is
-    written with double quotes (<TT
-CLASS="LITERAL"
->""</TT
->). Reading values follows 
-    similar rules. You can use <TT
-CLASS="LITERAL"
->FORCE NOT NULL</TT
-> to prevent <TT
-CLASS="LITERAL"
->NULL</TT
->
-    input comparisons for specific columns.
-   </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     CSV mode will both recognize and produce CSV files with quoted
+    suffixed by the <tt class="literal">QUOTE</tt> character, and any occurrence
+    within the value of a <tt class="literal">QUOTE</tt> character or the
+    <tt class="literal">ESCAPE</tt> character is preceded by the escape character.
+    You can also use <tt class="literal">FORCE QUOTE</tt> to force quotes when outputting
+    non-<tt class="literal">NULL</tt> values in specific columns.
+   </p>
+<p> 
+    In general, the <tt class="literal">CSV</tt> format has no way to distinguish a
+    <tt class="literal">NULL</tt> value from an empty string.
+    <span class="productname">PostgreSQL</span>'s <tt class="command">COPY</tt> handles this by
+    quoting. A <tt class="literal">NULL</tt> is output as the <tt class="literal">NULL</tt>
+    string and is not quoted, while a data value matching the
+    <tt class="literal">NULL</tt> string is quoted. Therefore, using the default
+    settings, a <tt class="literal">NULL</tt> is written as an unquoted empty
+    string, while an empty string is written with double quotes
+    (<tt class="literal">""</tt>). Reading values follows similar rules. You can
+    use <tt class="literal">FORCE NOT NULL</tt> to prevent <tt class="literal">NULL</tt> input
+    comparisons for specific columns.
+   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     CSV mode will both recognize and produce CSV files with quoted
      values containing embedded carriage returns and line feeds. Thus
      the files are not strictly one line per table row like text-mode
-     files.
-    </P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->     Many programs produce strange and occasionally perverse CSV files,
+     files. However, <span class="productname">PostgreSQL</span> will reject
+     <tt class="command">COPY</tt> input if any fields contain embedded line
+     end character sequences that do not match the line ending
+     convention used in the CSV file itself. It is generally safer to
+     import data containing embedded line end characters using the
+     text or binary formats rather than CSV.
+    </p>
+</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>     Many programs produce strange and occasionally perverse CSV files,
      so the file format is more a convention than a standard. Thus you
      might encounter some files that cannot be imported using this
-     mechanism, and <TT
-CLASS="COMMAND"
->COPY</TT
-> might produce files that other
+     mechanism, and <tt class="command">COPY</tt> might produce files that other
      programs can not process.
-    </P
-></BLOCKQUOTE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN36924"
-></A
-><H3
->Binary Format</H3
-><P
->    The file format used for <TT
-CLASS="COMMAND"
->COPY BINARY</TT
-> changed in
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.4. The new format consists
+    </p>
+</div>
+</div>
+<div class="refsect2" lang="en">
+<a name="id2669018"></a><h3>Binary Format</h3>
+<p>    The file format used for <tt class="command">COPY BINARY</tt> changed in
+    <span class="productname">PostgreSQL</span> 7.4. The new format consists
     of a file header, zero or more tuples containing the row data, and
     a file trailer. Headers and data are now in network byte order.
-   </P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN36929"
-></A
-><H4
->File Header</H4
-><P
->     The file header consists of 15 bytes of fixed fields, followed
+   </p>
+<div class="refsect3" lang="en">
+<a name="id2669040"></a><h4>File Header</h4>
+<p>     The file header consists of 15 bytes of fixed fields, followed
      by a variable-length header extension area.  The fixed fields are:
 
-    <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->Signature</DT
-><DD
-><P
->11-byte sequence <TT
-CLASS="LITERAL"
->PGCOPY\n\377\r\n\0</TT
-> --- note that the zero byte
+    </p>
+<div class="variablelist"><dl>
+<dt><span class="term">Signature</span></dt>
+<dd><p>11-byte sequence <tt class="literal">PGCOPY\n\377\r\n\0</tt> [mdash ] note that the zero byte
 is a required part of the signature.  (The signature is designed to allow
 easy identification of files that have been munged by a non-8-bit-clean
 transfer.  This signature will be changed by end-of-line-translation
 filters, dropped zero bytes, dropped high bits, or parity changes.)
-       </P
-></DD
-><DT
->Flags field</DT
-><DD
-><P
->32-bit integer bit mask to denote important aspects of the file format. Bits
-are numbered from 0 (<ACRONYM
-CLASS="ACRONYM"
->LSB</ACRONYM
->) to 31 (<ACRONYM
-CLASS="ACRONYM"
->MSB</ACRONYM
->).  Note that
+       </p></dd>
+<dt><span class="term">Flags field</span></dt>
+<dd>
+<p>32-bit integer bit mask to denote important aspects of the file format. Bits
+are numbered from 0 (<span class="acronym">LSB</span>) to 31 (<span class="acronym">MSB</span>).  Note that
 this field is stored in network byte order (most significant byte first),
 as are all the integer fields used in the file format.  Bits
 16-31 are reserved to denote critical file format issues; a reader
@@ -1186,191 +417,110 @@ should abort if it finds an unexpected bit set in this range. Bits 0-15
 are reserved to signal backwards-compatible format issues; a reader
 should simply ignore any unexpected bits set in this range. Currently
 only one flag bit is defined, and the rest must be zero:
-        <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->Bit 16</DT
-><DD
-><P
->            if 1, OIDs are included in the data; if 0, not
-           </P
-></DD
-></DL
-></DIV
-><P>
-       </P
-></DD
-><DT
->Header extension area length</DT
-><DD
-><P
->32-bit integer, length in bytes of remainder of header, not including self.
+        </p>
+<div class="variablelist"><dl>
+<dt><span class="term">Bit 16</span></dt>
+<dd><p>            if 1, OIDs are included in the data; if 0, not
+           </p></dd>
+</dl></div>
+<p>
+       </p>
+</dd>
+<dt><span class="term">Header extension area length</span></dt>
+<dd><p>32-bit integer, length in bytes of remainder of header, not including self.
 Currently, this is zero, and the first tuple follows
 immediately.  Future changes to the format might allow additional data
 to be present in the header.  A reader should silently skip over any header
 extension data it does not know what to do with.
-       </P
-></DD
-></DL
-></DIV
-><P>
-    </P
-><P
->The header extension area is envisioned to contain a sequence of
+       </p></dd>
+</dl></div>
+<p>
+    </p>
+<p>The header extension area is envisioned to contain a sequence of
 self-identifying chunks.  The flags field is not intended to tell readers
 what is in the extension area.  Specific design of header extension contents
 is left for a later release.
-    </P
-><P
->     This design allows for both backwards-compatible header additions (add
+    </p>
+<p>     This design allows for both backwards-compatible header additions (add
      header extension chunks, or set low-order flag bits) and
      non-backwards-compatible changes (set high-order flag bits to signal such
      changes, and add supporting data to the extension area if needed).
-    </P
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN36955"
-></A
-><H4
->Tuples</H4
-><P
->Each tuple begins with a 16-bit integer count of the number of fields in the
+    </p>
+</div>
+<div class="refsect3" lang="en">
+<a name="id2669129"></a><h4>Tuples</h4>
+<p>Each tuple begins with a 16-bit integer count of the number of fields in the
 tuple.  (Presently, all tuples in a table will have the same count, but that
 might not always be true.)  Then, repeated for each field in the tuple, there
 is a 32-bit length word followed by that many bytes of field data.  (The
 length word does not include itself, and can be zero.)  As a special case,
 -1 indicates a NULL field value.  No value bytes follow in the NULL case.
-    </P
-><P
->There is no alignment padding or any other extra data between fields.
-    </P
-><P
->Presently, all data values in a <TT
-CLASS="COMMAND"
->COPY BINARY</TT
-> file are
+    </p>
+<p>There is no alignment padding or any other extra data between fields.
+    </p>
+<p>Presently, all data values in a <tt class="command">COPY BINARY</tt> file are
 assumed to be in binary format (format code one).  It is anticipated that a
 future extension may add a header field that allows per-column format codes
 to be specified.
-    </P
-><P
->To determine the appropriate binary format for the actual tuple data you
-should consult the <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> source, in
-particular the <CODE
-CLASS="FUNCTION"
->*send</CODE
-> and <CODE
-CLASS="FUNCTION"
->*recv</CODE
-> functions for
+    </p>
+<p>To determine the appropriate binary format for the actual tuple data you
+should consult the <span class="productname">PostgreSQL</span> source, in
+particular the <tt class="function">*send</tt> and <tt class="function">*recv</tt> functions for
 each column's data type (typically these functions are found in the
-<TT
-CLASS="FILENAME"
->src/backend/utils/adt/</TT
-> directory of the source
+<tt class="filename">src/backend/utils/adt/</tt> directory of the source
 distribution).
-    </P
-><P
->If OIDs are included in the file, the OID field immediately follows the
+    </p>
+<p>If OIDs are included in the file, the OID field immediately follows the
 field-count word.  It is a normal field except that it's not included
-in the field-count.  In particular it has a length word --- this will allow
+in the field-count.  In particular it has a length word [mdash ] this will allow
 handling of 4-byte vs. 8-byte OIDs without too much pain, and will allow
 OIDs to be shown as null if that ever proves desirable.
-    </P
-></DIV
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN36967"
-></A
-><H4
->File Trailer</H4
-><P
->     The file trailer consists of a 16-bit integer word containing -1.  This
+    </p>
+</div>
+<div class="refsect3" lang="en">
+<a name="id2669203"></a><h4>File Trailer</h4>
+<p>     The file trailer consists of a 16-bit integer word containing -1.  This
      is easily distinguished from a tuple's field-count word.
-    </P
-><P
->     A reader should report an error if a field-count word is neither -1
+    </p>
+<p>     A reader should report an error if a field-count word is neither -1
      nor the expected number of columns.  This provides an extra
      check against somehow getting out of sync with the data.
-    </P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36971"
-></A
-><H2
->Examples</H2
-><P
->   The following example copies a table to the client
-   using the vertical bar (<TT
-CLASS="LITERAL"
->|</TT
->) as the field delimiter:
-</P><PRE
-CLASS="PROGRAMLISTING"
->COPY country TO STDOUT WITH DELIMITER '|';</PRE
-><P>
-  </P
-><P
->   To copy data from a file into the <TT
-CLASS="LITERAL"
->country</TT
-> table:
-</P><PRE
-CLASS="PROGRAMLISTING"
->COPY country FROM '/usr1/proj/bray/sql/country_data';</PRE
-><P>
-  </P
-><P
->   Here is a sample of data suitable for copying into a table from
-   <TT
-CLASS="LITERAL"
->STDIN</TT
->:
-</P><PRE
-CLASS="PROGRAMLISTING"
->AF      AFGHANISTAN
+    </p>
+</div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2669217"></a><h2>Examples</h2>
+<p>   The following example copies a table to the client
+   using the vertical bar (<tt class="literal">|</tt>) as the field delimiter:
+</p>
+<pre class="programlisting">COPY country TO STDOUT WITH DELIMITER '|';</pre>
+<p>
+  </p>
+<p>   To copy data from a file into the <tt class="literal">country</tt> table:
+</p>
+<pre class="programlisting">COPY country FROM '/usr1/proj/bray/sql/country_data';</pre>
+<p>
+  </p>
+<p>   Here is a sample of data suitable for copying into a table from
+   <tt class="literal">STDIN</tt>:
+</p>
+<pre class="programlisting">AF      AFGHANISTAN
 AL      ALBANIA
 DZ      ALGERIA
 ZM      ZAMBIA
-ZW      ZIMBABWE</PRE
-><P>
+ZW      ZIMBABWE</pre>
+<p>
    Note that the white space on each line is actually a tab character.
-  </P
-><P
->   The following is the same data, output in binary format.
+  </p>
+<p>   The following is the same data, output in binary format.
    The data is shown after filtering through the
-   Unix utility <TT
-CLASS="COMMAND"
->od -c</TT
->. The table has three columns;
-   the first has type <TT
-CLASS="TYPE"
->char(2)</TT
->, the second has type <TT
-CLASS="TYPE"
->text</TT
->,
-   and the third has type <TT
-CLASS="TYPE"
->integer</TT
->. All the rows have a null value
+   Unix utility <tt class="command">od -c</tt>. The table has three columns;
+   the first has type <tt class="type">char(2)</tt>, the second has type <tt class="type">text</tt>,
+   and the third has type <tt class="type">integer</tt>. All the rows have a null value
    in the third column.
-</P><PRE
-CLASS="PROGRAMLISTING"
->0000000   P   G   C   O   P   Y  \n 377  \r  \n  \0  \0  \0  \0  \0  \0
+</p>
+<pre class="programlisting">0000000   P   G   C   O   P   Y  \n 377  \r  \n  \0  \0  \0  \0  \0  \0
 0000020  \0  \0  \0  \0 003  \0  \0  \0 002   A   F  \0  \0  \0 013   A
 0000040   F   G   H   A   N   I   S   T   A   N 377 377 377 377  \0 003
 0000060  \0  \0  \0 002   A   L  \0  \0  \0 007   A   L   B   A   N   I
@@ -1378,130 +528,29 @@ CLASS="PROGRAMLISTING"
 0000120 007   A   L   G   E   R   I   A 377 377 377 377  \0 003  \0  \0
 0000140  \0 002   Z   M  \0  \0  \0 006   Z   A   M   B   I   A 377 377
 0000160 377 377  \0 003  \0  \0  \0 002   Z   W  \0  \0  \0  \b   Z   I
-0000200   M   B   A   B   W   E 377 377 377 377 377 377</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36988"
-></A
-><H2
->Compatibility</H2
-><P
->   There is no <TT
-CLASS="COMMAND"
->COPY</TT
-> statement in the SQL standard.
-  </P
-><P
->   The following syntax was used before <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
+0000200   M   B   A   B   W   E 377 377 377 377 377 377</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2669310"></a><h2>Compatibility</h2>
+<p>   There is no <tt class="command">COPY</tt> statement in the SQL standard.
+  </p>
+<p>   The following syntax was used before <span class="productname">PostgreSQL</span>
    version 7.3 and is still supported:
 
-</P><PRE
-CLASS="SYNOPSIS"
->COPY [ BINARY ] <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-> [ WITH OIDS ]
-    FROM { '<VAR
-CLASS="REPLACEABLE"
->filename</VAR
->' | STDIN }
-    [ [USING] DELIMITERS '<VAR
-CLASS="REPLACEABLE"
->delimiter</VAR
->' ]
-    [ WITH NULL AS '<VAR
-CLASS="REPLACEABLE"
->null string</VAR
->' ]
+</p>
+<pre class="synopsis">COPY [ BINARY ] <i class="replaceable"><tt>tablename</tt></i> [ WITH OIDS ]
+    FROM { '<i class="replaceable"><tt>filename</tt></i>' | STDIN }
+    [ [USING] DELIMITERS '<i class="replaceable"><tt>delimiter</tt></i>' ]
+    [ WITH NULL AS '<i class="replaceable"><tt>null string</tt></i>' ]
 
-COPY [ BINARY ] <VAR
-CLASS="REPLACEABLE"
->tablename</VAR
-> [ WITH OIDS ]
-    TO { '<VAR
-CLASS="REPLACEABLE"
->filename</VAR
->' | STDOUT }
-    [ [USING] DELIMITERS '<VAR
-CLASS="REPLACEABLE"
->delimiter</VAR
->' ]
-    [ WITH NULL AS '<VAR
-CLASS="REPLACEABLE"
->null string</VAR
->' ]</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-commit.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-createaggregate.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->COMMIT</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->CREATE AGGREGATE</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+COPY [ BINARY ] <i class="replaceable"><tt>tablename</tt></i> [ WITH OIDS ]
+    TO { '<i class="replaceable"><tt>filename</tt></i>' | STDOUT }
+    [ [USING] DELIMITERS '<i class="replaceable"><tt>delimiter</tt></i>' ]
+    [ WITH NULL AS '<i class="replaceable"><tt>null string</tt></i>' ]</pre>
+<p>
+  </p>
+</div>
+</div></body>
+</html>

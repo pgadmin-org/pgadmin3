@@ -1,284 +1,54 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->SPI_cursor_fetch</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Interface Functions"
-HREF="spi.html#SPI-INTERFACE"><LINK
-REL="PREVIOUS"
-TITLE="SPI_cursor_find"
-HREF="spi-spi-cursor-find.html"><LINK
-REL="NEXT"
-TITLE="SPI_cursor_move"
-HREF="spi-spi-cursor-move.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-find.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-find.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-move.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-move.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SPI-SPI-CURSOR-FETCH"
-></A
->SPI_cursor_fetch</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN33795"
-></A
-><H2
->Name</H2
->SPI_cursor_fetch&nbsp;--&nbsp;fetch some rows from a cursor</DIV
-><A
-NAME="AEN33798"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN33800"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->void SPI_cursor_fetch(Portal <TT
-CLASS="PARAMETER"
->portal</TT
->, bool <TT
-CLASS="PARAMETER"
->forward</TT
->, int <TT
-CLASS="PARAMETER"
->count</TT
->)</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33805"
-></A
-><H2
->Description</H2
-><P
->   <CODE
-CLASS="FUNCTION"
->SPI_cursor_fetch</CODE
-> fetches some rows from a
-   cursor.  This is equivalent to the SQL command <TT
-CLASS="COMMAND"
->FETCH</TT
->.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33810"
-></A
-><H2
->Arguments</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->Portal <TT
-CLASS="PARAMETER"
->portal</TT
-></TT
-></DT
-><DD
-><P
->      portal containing the cursor
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->bool <TT
-CLASS="PARAMETER"
->forward</TT
-></TT
-></DT
-><DD
-><P
->      true for fetch forward, false for fetch backward
-     </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->int <TT
-CLASS="PARAMETER"
->count</TT
-></TT
-></DT
-><DD
-><P
->      maximum number of rows to fetch
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN33831"
-></A
-><H2
->Return Value</H2
-><P
->   <TT
-CLASS="VARNAME"
->SPI_processed</TT
-> and
-   <TT
-CLASS="VARNAME"
->SPI_tuptable</TT
-> are set as in
-   <CODE
-CLASS="FUNCTION"
->SPI_execute</CODE
-> if successful.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-find.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="spi-spi-cursor-move.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SPI_cursor_find</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="spi.html#SPI-INTERFACE"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->SPI_cursor_move</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>SPI_cursor_fetch</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="spi.html#spi-interface" title="39.1. Interface Functions">
+<link rel="previous" href="spi-spi-cursor-find.html" title="SPI_cursor_find">
+<link rel="next" href="spi-spi-cursor-move.html" title="SPI_cursor_move">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="spi-spi-cursor-fetch"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>SPI_cursor_fetch &#8212; fetch some rows from a cursor</p>
+</div>
+<a name="id2657364"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">void SPI_cursor_fetch(Portal <i class="parameter"><tt>portal</tt></i>, bool <i class="parameter"><tt>forward</tt></i>, int <i class="parameter"><tt>count</tt></i>)</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2657394"></a><h2>Description</h2>
+<p>   <tt class="function">SPI_cursor_fetch</tt> fetches some rows from a
+   cursor.  This is equivalent to the SQL command <tt class="command">FETCH</tt>.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2657413"></a><h2>Arguments</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">Portal <i class="parameter"><tt>portal</tt></i></tt></span></dt>
+<dd><p>      portal containing the cursor
+     </p></dd>
+<dt><span class="term"><tt class="literal">bool <i class="parameter"><tt>forward</tt></i></tt></span></dt>
+<dd><p>      true for fetch forward, false for fetch backward
+     </p></dd>
+<dt><span class="term"><tt class="literal">int <i class="parameter"><tt>count</tt></i></tt></span></dt>
+<dd><p>      maximum number of rows to fetch
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2657464"></a><h2>Return Value</h2>
+<p>   <tt class="varname">SPI_processed</tt> and
+   <tt class="varname">SPI_tuptable</tt> are set as in
+   <tt class="function">SPI_execute</tt> if successful.
+  </p>
+</div>
+</div></body>
+</html>

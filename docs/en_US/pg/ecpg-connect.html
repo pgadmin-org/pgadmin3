@@ -1,237 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Connecting to the Database Server</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="ECPG - Embedded SQL in C"
-HREF="ecpg.html"><LINK
-REL="PREVIOUS"
-TITLE="ECPG - Embedded SQL in C"
-HREF="ecpg.html"><LINK
-REL="NEXT"
-TITLE="Closing a Connection"
-HREF="ecpg-disconnect.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ecpg.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ecpg.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 29. <SPAN
-CLASS="APPLICATION"
->ECPG</SPAN
-> - Embedded <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> in C</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ecpg.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ecpg-disconnect.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="ECPG-CONNECT"
->29.2. Connecting to the Database Server</A
-></H1
-><P
->   One connects to a database using the following statement:
-</P><PRE
-CLASS="PROGRAMLISTING"
->EXEC SQL CONNECT TO <VAR
-CLASS="REPLACEABLE"
->target</VAR
-> [<SPAN
-CLASS="OPTIONAL"
->AS <VAR
-CLASS="REPLACEABLE"
->connection-name</VAR
-></SPAN
->] [<SPAN
-CLASS="OPTIONAL"
->USER <VAR
-CLASS="REPLACEABLE"
->user-name</VAR
-></SPAN
->];</PRE
-><P>
-   The <VAR
-CLASS="REPLACEABLE"
->target</VAR
-> can be specified in the
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>29.2. Connecting to the Database Server</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
+<link rel="previous" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
+<link rel="next" href="ecpg-disconnect.html" title="29.3. Closing a Connection">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="ecpg-connect"></a>29.2. Connecting to the Database Server</h2></div></div>
+<div></div>
+</div>
+<p>   One connects to a database using the following statement:
+</p>
+<pre class="programlisting">EXEC SQL CONNECT TO <i class="replaceable"><tt>target</tt></i> [<span class="optional">AS <i class="replaceable"><tt>connection-name</tt></i></span>] [<span class="optional">USER <i class="replaceable"><tt>user-name</tt></i></span>];</pre>
+<p>
+   The <i class="replaceable"><tt>target</tt></i> can be specified in the
    following ways:
 
-   <P
-></P
-></P><UL
-><LI
-><P
->      <TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->dbname</VAR
->[<SPAN
-CLASS="OPTIONAL"
->@<VAR
-CLASS="REPLACEABLE"
->hostname</VAR
-></SPAN
->][<SPAN
-CLASS="OPTIONAL"
->:<VAR
-CLASS="REPLACEABLE"
->port</VAR
-></SPAN
->]</TT
->
-     </P
-></LI
-><LI
-><P
->      <TT
-CLASS="LITERAL"
->tcp:postgresql://<VAR
-CLASS="REPLACEABLE"
->hostname</VAR
->[<SPAN
-CLASS="OPTIONAL"
->:<VAR
-CLASS="REPLACEABLE"
->port</VAR
-></SPAN
->][<SPAN
-CLASS="OPTIONAL"
->/<VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-></SPAN
->][<SPAN
-CLASS="OPTIONAL"
->?<VAR
-CLASS="REPLACEABLE"
->options</VAR
-></SPAN
->]</TT
->
-     </P
-></LI
-><LI
-><P
->      <TT
-CLASS="LITERAL"
->unix:postgresql://<VAR
-CLASS="REPLACEABLE"
->hostname</VAR
->[<SPAN
-CLASS="OPTIONAL"
->:<VAR
-CLASS="REPLACEABLE"
->port</VAR
-></SPAN
->][<SPAN
-CLASS="OPTIONAL"
->/<VAR
-CLASS="REPLACEABLE"
->dbname</VAR
-></SPAN
->][<SPAN
-CLASS="OPTIONAL"
->?<VAR
-CLASS="REPLACEABLE"
->options</VAR
-></SPAN
->]</TT
->
-     </P
-></LI
-><LI
-><P
->      an SQL string literal containing one of the above forms
-     </P
-></LI
-><LI
-><P
->      a reference to a character variable containing one of the above forms (see examples)
-     </P
-></LI
-><LI
-><P
->      <TT
-CLASS="LITERAL"
->DEFAULT</TT
->
-     </P
-></LI
-></UL
-><P>
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li>      <tt class="literal"><i class="replaceable"><tt>dbname</tt></i>[<span class="optional">@<i class="replaceable"><tt>hostname</tt></i></span>][<span class="optional">:<i class="replaceable"><tt>port</tt></i></span>]</tt>
+     </li>
+<li>      <tt class="literal">tcp:postgresql://<i class="replaceable"><tt>hostname</tt></i>[<span class="optional">:<i class="replaceable"><tt>port</tt></i></span>][<span class="optional">/<i class="replaceable"><tt>dbname</tt></i></span>][<span class="optional">?<i class="replaceable"><tt>options</tt></i></span>]</tt>
+     </li>
+<li>      <tt class="literal">unix:postgresql://<i class="replaceable"><tt>hostname</tt></i>[<span class="optional">:<i class="replaceable"><tt>port</tt></i></span>][<span class="optional">/<i class="replaceable"><tt>dbname</tt></i></span>][<span class="optional">?<i class="replaceable"><tt>options</tt></i></span>]</tt>
+     </li>
+<li>      an SQL string literal containing one of the above forms
+     </li>
+<li>      a reference to a character variable containing one of the above forms (see examples)
+     </li>
+<li>      <tt class="literal">DEFAULT</tt>
+     </li>
+</ul></div>
+<p>
 
    If you specify the connection target literally (that is, not
    through a variable reference) and you don't quote the value, then
@@ -239,104 +46,39 @@ CLASS="LITERAL"
    case you can also double-quote the individual parameters separately
    as needed.  In practice, it is probably less error-prone to use a
    (single-quoted) string literal or a variable reference.  The
-   connection target <TT
-CLASS="LITERAL"
->DEFAULT</TT
-> initiates a connection
+   connection target <tt class="literal">DEFAULT</tt> initiates a connection
    to the default database under the default user name.  No separate
    user name or connection name may be specified in that case.
-  </P
-><P
->   There are also different ways to specify the user name:
+  </p>
+<p>   There are also different ways to specify the user name:
 
-   <P
-></P
-></P><UL
-><LI
-><P
->      <TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->username</VAR
-></TT
->
-     </P
-></LI
-><LI
-><P
->      <TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->username</VAR
->/<VAR
-CLASS="REPLACEABLE"
->password</VAR
-></TT
->
-     </P
-></LI
-><LI
-><P
->      <TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->username</VAR
-> IDENTIFIED BY <VAR
-CLASS="REPLACEABLE"
->password</VAR
-></TT
->
-     </P
-></LI
-><LI
-><P
->      <TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->username</VAR
-> USING <VAR
-CLASS="REPLACEABLE"
->password</VAR
-></TT
->
-     </P
-></LI
-></UL
-><P>
+   </p>
+<div class="itemizedlist"><ul type="disc">
+<li>      <tt class="literal"><i class="replaceable"><tt>username</tt></i></tt>
+     </li>
+<li>      <tt class="literal"><i class="replaceable"><tt>username</tt></i>/<i class="replaceable"><tt>password</tt></i></tt>
+     </li>
+<li>      <tt class="literal"><i class="replaceable"><tt>username</tt></i> IDENTIFIED BY <i class="replaceable"><tt>password</tt></i></tt>
+     </li>
+<li>      <tt class="literal"><i class="replaceable"><tt>username</tt></i> USING <i class="replaceable"><tt>password</tt></i></tt>
+     </li>
+</ul></div>
+<p>
 
-   As above, the parameters <VAR
-CLASS="REPLACEABLE"
->username</VAR
-> and
-   <VAR
-CLASS="REPLACEABLE"
->password</VAR
-> may be an SQL identifier, an
+   As above, the parameters <i class="replaceable"><tt>username</tt></i> and
+   <i class="replaceable"><tt>password</tt></i> may be an SQL identifier, an
    SQL string literal, or a reference to a character variable.
-  </P
-><P
->   The <VAR
-CLASS="REPLACEABLE"
->connection-name</VAR
-> is used to handle
+  </p>
+<p>   The <i class="replaceable"><tt>connection-name</tt></i> is used to handle
    multiple connections in one program.  It can be omitted if a
    program uses only one connection.  The most recently opened
    connection becomes the current connection, which is used by default
    when an SQL statement is to be executed (see later in this
    chapter).
-  </P
-><P
->   Here are some examples of <TT
-CLASS="COMMAND"
->CONNECT</TT
-> statements:
-</P><PRE
-CLASS="PROGRAMLISTING"
->EXEC SQL CONNECT TO mydb@sql.mydomain.com;
+  </p>
+<p>   Here are some examples of <tt class="command">CONNECT</tt> statements:
+</p>
+<pre class="programlisting">EXEC SQL CONNECT TO mydb@sql.mydomain.com;
 
 EXEC SQL CONNECT TO 'unix:postgresql://sql.mydomain.com/mydb' AS myconnection USER john;
 
@@ -345,89 +87,18 @@ const char *target = "mydb@sql.mydomain.com";
 const char *user = "john";
 EXEC SQL END DECLARE SECTION;
  ...
-EXEC SQL CONNECT TO :target USER :user;</PRE
-><P>
+EXEC SQL CONNECT TO :target USER :user;</pre>
+<p>
    The last form makes use of the variant referred to above as
    character variable reference.  You will see in later sections how C
    variables can be used in SQL statements when you prefix them with a
    colon.
-  </P
-><P
->   Be advised that the format of the connection target is not
+  </p>
+<p>   Be advised that the format of the connection target is not
    specified in the SQL standard.  So if you want to develop portable
    applications, you might want to use something based on the last
    example above to encapsulate the connection target string
    somewhere.
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="ecpg.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="ecpg-disconnect.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->ECPG</SPAN
-> - Embedded <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> in C</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="ecpg.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Closing a Connection</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div></body>
+</html>

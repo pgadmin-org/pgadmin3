@@ -1,520 +1,161 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->System Administration Functions</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="Functions and Operators"
-HREF="functions.html"><LINK
-REL="PREVIOUS"
-TITLE="System Information Functions"
-HREF="functions-info.html"><LINK
-REL="NEXT"
-TITLE="Type Conversion"
-HREF="typeconv.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-info.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 9. Functions and Operators</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="functions.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="FUNCTIONS-ADMIN"
->9.20. System Administration Functions</A
-></H1
-><P
->   <A
-HREF="functions-admin.html#FUNCTIONS-ADMIN-SET-TABLE"
->Table 9-44</A
-> shows the functions
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>9.20. System Administration Functions</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
+<link rel="previous" href="functions-info.html" title="9.19. System Information Functions">
+<link rel="next" href="typeconv.html" title="Chapter 10. Type Conversion">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="functions-admin"></a>9.20. System Administration Functions</h2></div></div>
+<div></div>
+</div>
+<p>   <a href="functions-admin.html#functions-admin-set-table" title="Table 9.44. Configuration Settings Functions">Table 9.44, &#8220;Configuration Settings Functions&#8221;</a> shows the functions
    available to query and alter run-time configuration parameters.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-ADMIN-SET-TABLE"
-></A
-><P
-><B
->Table 9-44. Configuration Settings Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->current_setting</CODE
->(<TT
-CLASS="PARAMETER"
->setting_name</TT
->)</TT
->
-       </TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->current value of setting</TD
-></TR
-><TR
-><TD
->        <TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->set_config(<TT
-CLASS="PARAMETER"
->setting_name</TT
->,
-                             <TT
-CLASS="PARAMETER"
->new_value</TT
->,
-                             <TT
-CLASS="PARAMETER"
->is_local</TT
->)</CODE
-></TT
->
-       </TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->set parameter and return new value</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><A
-NAME="AEN13346"
-></A
-><A
-NAME="AEN13348"
-></A
-><A
-NAME="AEN13350"
-></A
-><P
->    The function <CODE
-CLASS="FUNCTION"
->current_setting</CODE
-> yields the
-    current value of the setting <TT
-CLASS="PARAMETER"
->setting_name</TT
->.
-    It corresponds to the <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command
-    <TT
-CLASS="COMMAND"
->SHOW</TT
->.  An example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT current_setting('datestyle');
+  </p>
+<div class="table">
+<a name="functions-admin-set-table"></a><p class="title"><b>Table 9.44. Configuration Settings Functions</b></p>
+<table summary="Configuration Settings Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal"><tt class="function">current_setting</tt>(<i class="parameter"><tt>setting_name</tt></i>)</tt></td>
+<td><tt class="type">text</tt></td>
+<td>current value of setting</td>
+</tr>
+<tr>
+<td><tt class="literal"><tt class="function">set_config(<i class="parameter"><tt>setting_name</tt></i>, ,
+                             <i class="parameter"><tt>new_value</tt></i>, ,
+                             <i class="parameter"><tt>is_local</tt></i>)</tt></tt></td>
+<td><tt class="type">text</tt></td>
+<td>set parameter and return new value</td>
+</tr>
+</tbody>
+</table>
+</div>
+<a name="id2565866"></a><a name="id2565876"></a><a name="id2565885"></a><p>    The function <tt class="function">current_setting</tt> yields the
+    current value of the setting <i class="parameter"><tt>setting_name</tt></i>.
+    It corresponds to the <span class="acronym">SQL</span> command
+    <tt class="command">SHOW</tt>.  An example:
+</p>
+<pre class="programlisting">SELECT current_setting('datestyle');
 
  current_setting
 -----------------
  ISO, MDY
-(1 row)</PRE
-><P>
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->set_config</CODE
-> sets the parameter
-    <TT
-CLASS="PARAMETER"
->setting_name</TT
-> to
-    <TT
-CLASS="PARAMETER"
->new_value</TT
->.  If
-    <TT
-CLASS="PARAMETER"
->is_local</TT
-> is <TT
-CLASS="LITERAL"
->true</TT
->, the
+(1 row)</pre>
+<p>
+   </p>
+<p>    <tt class="function">set_config</tt> sets the parameter
+    <i class="parameter"><tt>setting_name</tt></i> to
+    <i class="parameter"><tt>new_value</tt></i>.  If
+    <i class="parameter"><tt>is_local</tt></i> is <tt class="literal">true</tt>, the
     new value will only apply to the current transaction. If you want
     the new value to apply for the current session, use
-    <TT
-CLASS="LITERAL"
->false</TT
-> instead. The function corresponds to the
-    SQL command <TT
-CLASS="COMMAND"
->SET</TT
->. An example:
-</P><PRE
-CLASS="PROGRAMLISTING"
->SELECT set_config('log_statement_stats', 'off', false);
+    <tt class="literal">false</tt> instead. The function corresponds to the
+    SQL command <tt class="command">SET</tt>. An example:
+</p>
+<pre class="programlisting">SELECT set_config('log_statement_stats', 'off', false);
 
  set_config
 ------------
  off
-(1 row)</PRE
-><P>
-   </P
-><A
-NAME="AEN13369"
-></A
-><A
-NAME="AEN13371"
-></A
-><P
->    The function shown in <A
-HREF="functions-admin.html#FUNCTIONS-ADMIN-SIGNAL-TABLE"
->Table 9-45</A
-> sends control signals to
+(1 row)</pre>
+<p>
+   </p>
+<a name="id2565989"></a><a name="id2565998"></a><p>    The function shown in <a href="functions-admin.html#functions-admin-signal-table" title="Table 9.45. Backend Signalling Functions">Table 9.45, &#8220;Backend Signalling Functions&#8221;</a> sends control signals to
     other server processes.  Use of this function is restricted
     to superusers.
-   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-ADMIN-SIGNAL-TABLE"
-></A
-><P
-><B
->Table 9-45. Backend Signalling Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->	<TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_cancel_backend</CODE
->(<TT
-CLASS="PARAMETER"
->pid</TT
->)</TT
->
-	</TD
-><TD
-><TT
-CLASS="TYPE"
->int</TT
-></TD
-><TD
->Cancel a backend's current query</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->    This function returns 1 if successful, 0 if not successful.
-    The process ID (<TT
-CLASS="LITERAL"
->pid</TT
->) of an active backend can be found
-    from the <TT
-CLASS="STRUCTFIELD"
->procpid</TT
-> column in the
-    <TT
-CLASS="STRUCTNAME"
->pg_stat_activity</TT
-> view, or by listing the postgres
-    processes on the server with <SPAN
-CLASS="APPLICATION"
->ps</SPAN
->.
-   </P
-><A
-NAME="AEN13398"
-></A
-><A
-NAME="AEN13400"
-></A
-><A
-NAME="AEN13402"
-></A
-><P
->    The functions shown in <A
-HREF="functions-admin.html#FUNCTIONS-ADMIN-BACKUP-TABLE"
->Table 9-46</A
-> assist in making on-line backups.
+   </p>
+<div class="table">
+<a name="functions-admin-signal-table"></a><p class="title"><b>Table 9.45. Backend Signalling Functions</b></p>
+<table summary="Backend Signalling Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><tt class="literal"><tt class="function">pg_cancel_backend</tt>(<i class="parameter"><tt>pid</tt></i>)</tt></td>
+<td><tt class="type">int</tt></td>
+<td>Cancel a backend's current query</td>
+</tr></tbody>
+</table>
+</div>
+<p>    This function returns 1 if successful, 0 if not successful.
+    The process ID (<tt class="literal">pid</tt>) of an active backend can be found
+    from the <tt class="structfield">procpid</tt> column in the
+    <tt class="structname">pg_stat_activity</tt> view, or by listing the postgres
+    processes on the server with <span class="application">ps</span>.
+   </p>
+<a name="id2566096"></a><a name="id2566106"></a><a name="id2566115"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.46. Backup Control Functions">Table 9.46, &#8220;Backup Control Functions&#8221;</a> assist in making on-line backups.
     Use of these functions is restricted to superusers.
-   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="FUNCTIONS-ADMIN-BACKUP-TABLE"
-></A
-><P
-><B
->Table 9-46. Backup Control Functions</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Return Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
->	<TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_start_backup</CODE
->(<TT
-CLASS="PARAMETER"
->label_text</TT
->)</TT
->
-	</TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->Set up for performing on-line backup</TD
-></TR
-><TR
-><TD
->	<TT
-CLASS="LITERAL"
-><CODE
-CLASS="FUNCTION"
->pg_stop_backup</CODE
->()</TT
->
-	</TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->Finish performing on-line backup</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_start_backup</CODE
-> accepts a single parameter which is an
+   </p>
+<div class="table">
+<a name="functions-admin-backup-table"></a><p class="title"><b>Table 9.46. Backup Control Functions</b></p>
+<table summary="Backup Control Functions" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Return Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="literal"><tt class="function">pg_start_backup</tt>(<i class="parameter"><tt>label_text</tt></i>)</tt></td>
+<td><tt class="type">text</tt></td>
+<td>Set up for performing on-line backup</td>
+</tr>
+<tr>
+<td><tt class="literal"><tt class="function">pg_stop_backup</tt>()</tt></td>
+<td><tt class="type">text</tt></td>
+<td>Finish performing on-line backup</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>    <tt class="function">pg_start_backup</tt> accepts a single parameter which is an
     arbitrary user-defined label for the backup.  (Typically this would be
     the name under which the backup dump file will be stored.)  The function
     writes a backup label file into the database cluster's data directory,
     and then returns the backup's starting WAL offset as text.  (The user
     need not pay any attention to this result value, but it is provided in
     case it is of use.)
-   </P
-><P
->    <CODE
-CLASS="FUNCTION"
->pg_stop_backup</CODE
-> removes the label file created by
-    <CODE
-CLASS="FUNCTION"
->pg_start_backup</CODE
->, and instead creates a backup history file in
+   </p>
+<p>    <tt class="function">pg_stop_backup</tt> removes the label file created by
+    <tt class="function">pg_start_backup</tt>, and instead creates a backup history file in
     the WAL archive area.  The history file includes the label given to
-    <CODE
-CLASS="FUNCTION"
->pg_start_backup</CODE
->, the starting and ending WAL offsets for
+    <tt class="function">pg_start_backup</tt>, the starting and ending WAL offsets for
     the backup, and the starting and ending times of the backup.  The return
     value is the backup's ending WAL offset (which again may be of little
     interest).
-   </P
-><P
->    For details about proper usage of these functions, see
-    <A
-HREF="backup-online.html"
->Section 22.3</A
->.
-   </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="functions-info.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="typeconv.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->System Information Functions</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="functions.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Type Conversion</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+   </p>
+<p>    For details about proper usage of these functions, see
+    <a href="backup-online.html" title="22.3. On-line backup and point-in-time recovery (PITR)">Section 22.3, &#8220;On-line backup and point-in-time recovery (PITR)&#8221;</a>.
+   </p>
+</div></body>
+</html>

@@ -1,301 +1,72 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->COMMIT</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="COMMENT"
-HREF="sql-comment.html"><LINK
-REL="NEXT"
-TITLE="COPY"
-HREF="sql-copy.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-comment.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-comment.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-copy.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-copy.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-COMMIT"
-></A
->COMMIT</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN36582"
-></A
-><H2
->Name</H2
->COMMIT&nbsp;--&nbsp;commit the current transaction</DIV
-><A
-NAME="AEN36585"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN36587"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->COMMIT [ WORK | TRANSACTION ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36589"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->COMMIT</TT
-> commits the current transaction. All
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>COMMIT</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-comment.html" title="COMMENT">
+<link rel="next" href="sql-copy.html" title="COPY">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-commit"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>COMMIT &#8212; commit the current transaction</p>
+</div>
+<a name="id2667546"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">COMMIT [ WORK | TRANSACTION ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2667560"></a><h2>Description</h2>
+<p>   <tt class="command">COMMIT</tt> commits the current transaction. All
    changes made by the transaction become visible to others
    and are guaranteed to be durable if a crash occurs.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36593"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->WORK</TT
-><BR><TT
-CLASS="LITERAL"
->TRANSACTION</TT
-></DT
-><DD
-><P
->      Optional key words. They have no effect.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36603"
-></A
-><H2
->Notes</H2
-><P
->   Use <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
-> to
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2667574"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">WORK</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">TRANSACTION</tt></span>
+</dt>
+<dd><p>      Optional key words. They have no effect.
+     </p></dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2667596"></a><h2>Notes</h2>
+<p>   Use <a href="sql-rollback.html">ROLLBACK</a> to
    abort a transaction.
-  </P
-><P
->   Issuing <TT
-CLASS="COMMAND"
->COMMIT</TT
-> when not inside a transaction does
+  </p>
+<p>   Issuing <tt class="command">COMMIT</tt> when not inside a transaction does
    no harm, but it will provoke a warning message.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36609"
-></A
-><H2
->Examples</H2
-><P
->   To commit the current transaction and make all changes permanent:
-</P><PRE
-CLASS="PROGRAMLISTING"
->COMMIT;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36613"
-></A
-><H2
->Compatibility</H2
-><P
->   The SQL standard only specifies the two forms
-   <TT
-CLASS="LITERAL"
->COMMIT</TT
-> and <TT
-CLASS="LITERAL"
->COMMIT
-   WORK</TT
->. Otherwise, this command is fully conforming.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN36618"
-></A
-><H2
->See Also</H2
-><A
-HREF="sql-begin.html"
-><I
->BEGIN</I
-></A
->, <A
-HREF="sql-rollback.html"
-><I
->ROLLBACK</I
-></A
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-comment.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-copy.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->COMMENT</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->COPY</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2667621"></a><h2>Examples</h2>
+<p>   To commit the current transaction and make all changes permanent:
+</p>
+<pre class="programlisting">COMMIT;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2667634"></a><h2>Compatibility</h2>
+<p>   The SQL standard only specifies the two forms
+   <tt class="literal">COMMIT</tt> and <tt class="literal">COMMIT
+   WORK</tt>. Otherwise, this command is fully conforming.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2667653"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-rollback.html">ROLLBACK</a></span>
+</div>
+</div></body>
+</html>

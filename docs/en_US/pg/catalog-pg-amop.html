@@ -1,322 +1,74 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->pg_amop</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_am"
-HREF="catalog-pg-am.html"><LINK
-REL="NEXT"
-TITLE="pg_amproc"
-HREF="catalog-pg-amproc.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-am.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-amproc.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="CATALOG-PG-AMOP"
->41.4. <TT
-CLASS="STRUCTNAME"
->pg_amop</TT
-></A
-></H1
-><A
-NAME="AEN50402"
-></A
-><P
->   The catalog <TT
-CLASS="STRUCTNAME"
->pg_amop</TT
-> stores information about operators
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.4. pg_amop</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="previous" href="catalog-pg-am.html" title="41.3. pg_am">
+<link rel="next" href="catalog-pg-amproc.html" title="41.5. pg_amproc">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="catalog-pg-amop"></a>41.4. <tt class="structname">pg_amop</tt></h2></div></div>
+<div></div>
+</div>
+<a name="id2722528"></a><p>   The catalog <tt class="structname">pg_amop</tt> stores information about operators
    associated with index access method operator classes.  There is one
    row for each operator that is a member of an operator class.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN50406"
-></A
-><P
-><B
->Table 41-4. <TT
-CLASS="STRUCTNAME"
->pg_amop</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->amopclaid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-opclass.html"
-><TT
-CLASS="STRUCTNAME"
->pg_opclass</TT
-></A
->.oid</TT
-></TD
-><TD
->The index operator class this entry is for</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->amopsubtype</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-type.html"
-><TT
-CLASS="STRUCTNAME"
->pg_type</TT
-></A
->.oid</TT
-></TD
-><TD
->Subtype to distinguish multiple entries for one strategy;
-             zero for default</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->amopstrategy</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int2</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Operator strategy number</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->amopreqcheck</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Index hit must be rechecked</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->amopopr</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->oid</TT
-></TD
-><TD
-><TT
-CLASS="LITERAL"
-><A
-HREF="catalog-pg-operator.html"
-><TT
-CLASS="STRUCTNAME"
->pg_operator</TT
-></A
->.oid</TT
-></TD
-><TD
->OID of the operator</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalog-pg-am.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalog-pg-amproc.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_am</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_amproc</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+<div class="table">
+<a name="id2722546"></a><p class="title"><b>Table 41.4. <tt class="structname">pg_amop</tt> Columns</b></p>
+<table summary="pg_amop Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="structfield">amopclaid</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-opclass.html" title="41.22. pg_opclass"><tt class="structname">pg_opclass</tt></a>.oid</tt></td>
+<td>The index operator class this entry is for</td>
+</tr>
+<tr>
+<td><tt class="structfield">amopsubtype</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
+<td>Subtype to distinguish multiple entries for one strategy;
+             zero for default</td>
+</tr>
+<tr>
+<td><tt class="structfield">amopstrategy</tt></td>
+<td><tt class="type">int2</tt></td>
+<td> </td>
+<td>Operator strategy number</td>
+</tr>
+<tr>
+<td><tt class="structfield">amopreqcheck</tt></td>
+<td><tt class="type">bool</tt></td>
+<td> </td>
+<td>Index hit must be rechecked</td>
+</tr>
+<tr>
+<td><tt class="structfield">amopopr</tt></td>
+<td><tt class="type">oid</tt></td>
+<td><tt class="literal"><a href="catalog-pg-operator.html" title="41.23. pg_operator"><tt class="structname">pg_operator</tt></a>.oid</tt></td>
+<td>OID of the operator</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>

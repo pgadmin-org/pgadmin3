@@ -1,439 +1,120 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->Trigger Procedures</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="PL/pgSQL - SQL Procedural Language"
-HREF="plpgsql.html"><LINK
-REL="PREVIOUS"
-TITLE="Errors and Messages"
-HREF="plpgsql-errors-and-messages.html"><LINK
-REL="NEXT"
-TITLE="Porting from Oracle PL/SQL"
-HREF="plpgsql-porting.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql-errors-and-messages.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 35. <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> - <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> Procedural Language</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql-porting.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="PLPGSQL-TRIGGER"
->35.10. Trigger Procedures</A
-></H1
-><A
-NAME="AEN31993"
-></A
-><P
->        <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> can be used to define trigger
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>35.10. Trigger Procedures</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
+<link rel="previous" href="plpgsql-errors-and-messages.html" title="35.9. Errors and Messages">
+<link rel="next" href="plpgsql-porting.html" title="35.11. Porting from Oracle PL/SQL">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="plpgsql-trigger"></a>35.10. Trigger Procedures</h2></div></div>
+<div></div>
+</div>
+<a name="id2649184"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
         procedures. A trigger procedure is created with the
-        <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> command, declaring it as a function with
-        no arguments and a return type of <TT
-CLASS="TYPE"
->trigger</TT
->.  Note that
+        <tt class="command">CREATE FUNCTION</tt> command, declaring it as a function with
+        no arguments and a return type of <tt class="type">trigger</tt>.  Note that
         the function must be declared with no arguments even if it expects
-        to receive arguments specified in <TT
-CLASS="COMMAND"
->CREATE TRIGGER</TT
-> ---
-        trigger arguments are passed via <TT
-CLASS="VARNAME"
->TG_ARGV</TT
->, as described
+        to receive arguments specified in <tt class="command">CREATE TRIGGER</tt> [mdash ]
+        trigger arguments are passed via <tt class="varname">TG_ARGV</tt>, as described
         below.
-  </P
-><P
->   When a <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> function is called as a
+  </p>
+<p>   When a <span class="application">PL/pgSQL</span> function is called as a
    trigger, several special variables are created automatically in the 
    top-level block. They are:
 
-   <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="VARNAME"
->NEW</TT
-></DT
-><DD
-><P
->       Data type <TT
-CLASS="TYPE"
->RECORD</TT
->; variable holding the new
-       database row for <TT
-CLASS="COMMAND"
->INSERT</TT
->/<TT
-CLASS="COMMAND"
->UPDATE</TT
-> operations in row-level
-       triggers. This variable is <TT
-CLASS="SYMBOL"
->NULL</TT
-> in statement-level triggers.
-      </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->OLD</TT
-></DT
-><DD
-><P
->       Data type <TT
-CLASS="TYPE"
->RECORD</TT
->; variable holding the old
-       database row for <TT
-CLASS="COMMAND"
->UPDATE</TT
->/<TT
-CLASS="COMMAND"
->DELETE</TT
-> operations in row-level
-       triggers. This variable is <TT
-CLASS="SYMBOL"
->NULL</TT
-> in statement-level triggers.
-      </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->TG_NAME</TT
-></DT
-><DD
-><P
->       Data type <TT
-CLASS="TYPE"
->name</TT
->; variable that contains the name of the trigger actually
+   </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="varname">NEW</tt></span></dt>
+<dd><p>       Data type <tt class="type">RECORD</tt>; variable holding the new
+       database row for <tt class="command">INSERT</tt>/<tt class="command">UPDATE</tt> operations in row-level
+       triggers. This variable is <tt class="symbol">NULL</tt> in statement-level triggers.
+      </p></dd>
+<dt><span class="term"><tt class="varname">OLD</tt></span></dt>
+<dd><p>       Data type <tt class="type">RECORD</tt>; variable holding the old
+       database row for <tt class="command">UPDATE</tt>/<tt class="command">DELETE</tt> operations in row-level
+       triggers. This variable is <tt class="symbol">NULL</tt> in statement-level triggers.
+      </p></dd>
+<dt><span class="term"><tt class="varname">TG_NAME</tt></span></dt>
+<dd><p>       Data type <tt class="type">name</tt>; variable that contains the name of the trigger actually
        fired.
-      </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->TG_WHEN</TT
-></DT
-><DD
-><P
->       Data type <TT
-CLASS="TYPE"
->text</TT
->; a string of either 
-              <TT
-CLASS="LITERAL"
->BEFORE</TT
-> or <TT
-CLASS="LITERAL"
->AFTER</TT
->
+      </p></dd>
+<dt><span class="term"><tt class="varname">TG_WHEN</tt></span></dt>
+<dd><p>       Data type <tt class="type">text</tt>; a string of either 
+              <tt class="literal">BEFORE</tt> or <tt class="literal">AFTER</tt>
               depending on the trigger's definition.
-      </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->TG_LEVEL</TT
-></DT
-><DD
-><P
->       Data type <TT
-CLASS="TYPE"
->text</TT
->; a string of either
-       <TT
-CLASS="LITERAL"
->ROW</TT
-> or <TT
-CLASS="LITERAL"
->STATEMENT</TT
->
+      </p></dd>
+<dt><span class="term"><tt class="varname">TG_LEVEL</tt></span></dt>
+<dd><p>       Data type <tt class="type">text</tt>; a string of either
+       <tt class="literal">ROW</tt> or <tt class="literal">STATEMENT</tt>
        depending on the trigger's definition.
-      </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->TG_OP</TT
-></DT
-><DD
-><P
->       Data type <TT
-CLASS="TYPE"
->text</TT
->; a string of
-       <TT
-CLASS="LITERAL"
->INSERT</TT
->, <TT
-CLASS="LITERAL"
->UPDATE</TT
->, or
-       <TT
-CLASS="LITERAL"
->DELETE</TT
-> telling for which operation the
+      </p></dd>
+<dt><span class="term"><tt class="varname">TG_OP</tt></span></dt>
+<dd><p>       Data type <tt class="type">text</tt>; a string of
+       <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, or
+       <tt class="literal">DELETE</tt> telling for which operation the
        trigger was fired.
-      </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->TG_RELID</TT
-></DT
-><DD
-><P
->       Data type <TT
-CLASS="TYPE"
->oid</TT
->; the object ID of the table that caused the
+      </p></dd>
+<dt><span class="term"><tt class="varname">TG_RELID</tt></span></dt>
+<dd><p>       Data type <tt class="type">oid</tt>; the object ID of the table that caused the
        trigger invocation.
-      </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->TG_RELNAME</TT
-></DT
-><DD
-><P
->       Data type <TT
-CLASS="TYPE"
->name</TT
->; the name of the table that caused the trigger
+      </p></dd>
+<dt><span class="term"><tt class="varname">TG_RELNAME</tt></span></dt>
+<dd><p>       Data type <tt class="type">name</tt>; the name of the table that caused the trigger
        invocation.
-      </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->TG_NARGS</TT
-></DT
-><DD
-><P
->       Data type <TT
-CLASS="TYPE"
->integer</TT
->; the number of arguments given to the trigger
-       procedure in the <TT
-CLASS="COMMAND"
->CREATE TRIGGER</TT
-> statement.
-      </P
-></DD
-><DT
-><TT
-CLASS="VARNAME"
->TG_ARGV[]</TT
-></DT
-><DD
-><P
->       Data type array of <TT
-CLASS="TYPE"
->text</TT
->; the arguments from
-              the <TT
-CLASS="COMMAND"
->CREATE TRIGGER</TT
-> statement.
+      </p></dd>
+<dt><span class="term"><tt class="varname">TG_NARGS</tt></span></dt>
+<dd><p>       Data type <tt class="type">integer</tt>; the number of arguments given to the trigger
+       procedure in the <tt class="command">CREATE TRIGGER</tt> statement.
+      </p></dd>
+<dt><span class="term"><tt class="varname">TG_ARGV[]</tt></span></dt>
+<dd><p>       Data type array of <tt class="type">text</tt>; the arguments from
+              the <tt class="command">CREATE TRIGGER</tt> statement.
        The index counts from 0. Invalid
-       indices (less than 0 or greater than or equal to <TT
-CLASS="VARNAME"
->tg_nargs</TT
->) result in a null value.
-      </P
-></DD
-></DL
-></DIV
-><P>
-  </P
-><P
->    A trigger function must return either <TT
-CLASS="SYMBOL"
->NULL</TT
-> or a
+       indices (less than 0 or greater than or equal to <tt class="varname">tg_nargs</tt>) result in a null value.
+      </p></dd>
+</dl></div>
+<p>
+  </p>
+<p>    A trigger function must return either <tt class="symbol">NULL</tt> or a
     record/row value having exactly the structure of the table the
     trigger was fired for.
-   </P
-><P
->    Row-level triggers fired <TT
-CLASS="LITERAL"
->BEFORE</TT
-> may return null to signal the
+   </p>
+<p>    Row-level triggers fired <tt class="literal">BEFORE</tt> may return null to signal the
     trigger manager to skip the rest of the operation for this row
     (i.e., subsequent triggers are not fired, and the
-    <TT
-CLASS="COMMAND"
->INSERT</TT
->/<TT
-CLASS="COMMAND"
->UPDATE</TT
->/<TT
-CLASS="COMMAND"
->DELETE</TT
-> does not occur
+    <tt class="command">INSERT</tt>/<tt class="command">UPDATE</tt>/<tt class="command">DELETE</tt> does not occur
     for this row).  If a nonnull 
     value is returned then the operation proceeds with that row value.
     Returning a row value different from the original value
-    of <TT
-CLASS="VARNAME"
->NEW</TT
-> alters the row that will be inserted or updated
-    (but has no direct effect in the <TT
-CLASS="COMMAND"
->DELETE</TT
-> case).
+    of <tt class="varname">NEW</tt> alters the row that will be inserted or updated
+    (but has no direct effect in the <tt class="command">DELETE</tt> case).
     To alter the row to be stored, it is possible to replace single values
-    directly in <TT
-CLASS="VARNAME"
->NEW</TT
-> and return the modified <TT
-CLASS="VARNAME"
->NEW</TT
->,
+    directly in <tt class="varname">NEW</tt> and return the modified <tt class="varname">NEW</tt>,
     or to build a complete new record/row to return.
-   </P
-><P
->    The return value of a <TT
-CLASS="LITERAL"
->BEFORE</TT
-> or <TT
-CLASS="LITERAL"
->AFTER</TT
->
-    statement-level trigger or an <TT
-CLASS="LITERAL"
->AFTER</TT
-> row-level trigger is
+   </p>
+<p>    The return value of a <tt class="literal">BEFORE</tt> or <tt class="literal">AFTER</tt>
+    statement-level trigger or an <tt class="literal">AFTER</tt> row-level trigger is
     always ignored; it may as well be null. However, any of these types of
     triggers can still abort the entire operation by raising an error.
-   </P
-><P
->    <A
-HREF="plpgsql-trigger.html#PLPGSQL-TRIGGER-EXAMPLE"
->Example 35-1</A
-> shows an example of a
-    trigger procedure in <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->.
-   </P
-><DIV
-CLASS="EXAMPLE"
-><A
-NAME="PLPGSQL-TRIGGER-EXAMPLE"
-></A
-><P
-><B
->Example 35-1. A <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
-> Trigger Procedure</B
-></P
-><P
->     This example trigger ensures that any time a row is inserted or updated
+   </p>
+<p>    <a href="plpgsql-trigger.html#plpgsql-trigger-example" title="Example 35.1. A PL/pgSQL Trigger Procedure">Example 35.1, &#8220;A PL/pgSQL Trigger Procedure&#8221;</a> shows an example of a
+    trigger procedure in <span class="application">PL/pgSQL</span>.
+   </p>
+<div class="example">
+<a name="plpgsql-trigger-example"></a><p class="title"><b>Example 35.1. A <span class="application">PL/pgSQL</span> Trigger Procedure</b></p>
+<p>     This example trigger ensures that any time a row is inserted or updated
      in the table, the current user name and time are stamped into the
      row. And it checks that an employee's name is given and that the
      salary is a positive value.
-    </P
-><PRE
-CLASS="PROGRAMLISTING"
->CREATE TABLE emp (
+    </p>
+<pre class="programlisting">CREATE TABLE emp (
     empname text,
     salary integer,
     last_date timestamp,
@@ -463,74 +144,7 @@ CREATE FUNCTION emp_stamp() RETURNS trigger AS $emp_stamp$
 $emp_stamp$ LANGUAGE plpgsql;
 
 CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
-    FOR EACH ROW EXECUTE PROCEDURE emp_stamp();</PRE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="plpgsql-errors-and-messages.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="plpgsql-porting.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Errors and Messages</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="plpgsql.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Porting from <SPAN
-CLASS="PRODUCTNAME"
->Oracle</SPAN
-> PL/SQL</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    FOR EACH ROW EXECUTE PROCEDURE emp_stamp();</pre>
+</div>
+</div></body>
+</html>

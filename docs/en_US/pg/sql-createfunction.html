@@ -1,861 +1,304 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->CREATE FUNCTION</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="SQL Commands"
-HREF="sql-commands.html"><LINK
-REL="PREVIOUS"
-TITLE="CREATE DOMAIN"
-HREF="sql-createdomain.html"><LINK
-REL="NEXT"
-TITLE="CREATE GROUP"
-HREF="sql-creategroup.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="REFENTRY"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createdomain.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createdomain.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-creategroup.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-creategroup.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="SQL-CREATEFUNCTION"
-></A
->CREATE FUNCTION</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN37591"
-></A
-><H2
->Name</H2
->CREATE FUNCTION&nbsp;--&nbsp;define a new function</DIV
-><A
-NAME="AEN37594"
-></A
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN37596"
-></A
-><H2
->Synopsis</H2
-><PRE
-CLASS="SYNOPSIS"
->CREATE [ OR REPLACE ] FUNCTION <VAR
-CLASS="REPLACEABLE"
->name</VAR
-> ( [ [ <VAR
-CLASS="REPLACEABLE"
->argname</VAR
-> ] <VAR
-CLASS="REPLACEABLE"
->argtype</VAR
-> [, ...] ] )
-    RETURNS <VAR
-CLASS="REPLACEABLE"
->rettype</VAR
->
-  { LANGUAGE <VAR
-CLASS="REPLACEABLE"
->langname</VAR
->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>CREATE FUNCTION</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="sql-commands.html" title="SQL Commands">
+<link rel="previous" href="sql-createdomain.html" title="CREATE DOMAIN">
+<link rel="next" href="sql-creategroup.html" title="CREATE GROUP">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<a name="sql-createfunction"></a><div class="titlepage">
+<div></div>
+<div></div>
+</div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>CREATE FUNCTION &#8212; define a new function</p>
+</div>
+<a name="id2671799"></a><div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">CREATE [ OR REPLACE ] FUNCTION <i class="replaceable"><tt>name</tt></i> ( [ [ <i class="replaceable"><tt>argname</tt></i> ] <i class="replaceable"><tt>argtype</tt></i> [, ...] ] )
+    RETURNS <i class="replaceable"><tt>rettype</tt></i>
+  { LANGUAGE <i class="replaceable"><tt>langname</tt></i>
     | IMMUTABLE | STABLE | VOLATILE
     | CALLED ON NULL INPUT | RETURNS NULL ON NULL INPUT | STRICT
     | [ EXTERNAL ] SECURITY INVOKER | [ EXTERNAL ] SECURITY DEFINER
-    | AS '<VAR
-CLASS="REPLACEABLE"
->definition</VAR
->'
-    | AS '<VAR
-CLASS="REPLACEABLE"
->obj_file</VAR
->', '<VAR
-CLASS="REPLACEABLE"
->link_symbol</VAR
->'
+    | AS '<i class="replaceable"><tt>definition</tt></i>'
+    | AS '<i class="replaceable"><tt>obj_file</tt></i>', '<i class="replaceable"><tt>link_symbol</tt></i>'
   } ...
-    [ WITH ( <VAR
-CLASS="REPLACEABLE"
->attribute</VAR
-> [, ...] ) ]</PRE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATEFUNCTION-DESCRIPTION"
-></A
-><H2
->Description</H2
-><P
->   <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> defines a new function.
-   <TT
-CLASS="COMMAND"
->CREATE OR REPLACE FUNCTION</TT
-> will either create a
+    [ WITH ( <i class="replaceable"><tt>attribute</tt></i> [, ...] ) ]</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createfunction-description"></a><h2>Description</h2>
+<p>   <tt class="command">CREATE FUNCTION</tt> defines a new function.
+   <tt class="command">CREATE OR REPLACE FUNCTION</tt> will either create a
    new function, or replace an existing definition.
-  </P
-><P
->   If a schema name is included, then the function is created in the
+  </p>
+<p>   If a schema name is included, then the function is created in the
    specified schema.  Otherwise it is created in the current schema.
    The name of the new function must not match any existing function
    with the same argument types in the same schema.  However,
    functions of different argument types may share a name (this is
-   called <I
-CLASS="FIRSTTERM"
->overloading</I
->).
-  </P
-><P
->   To update the definition of an existing function, use
-   <TT
-CLASS="COMMAND"
->CREATE OR REPLACE FUNCTION</TT
->.  It is not possible
+   called <i class="firstterm">overloading</i>).
+  </p>
+<p>   To update the definition of an existing function, use
+   <tt class="command">CREATE OR REPLACE FUNCTION</tt>.  It is not possible
    to change the name or argument types of a function this way (if you
    tried, you would actually be creating a new, distinct function).
-   Also, <TT
-CLASS="COMMAND"
->CREATE OR REPLACE FUNCTION</TT
-> will not let
+   Also, <tt class="command">CREATE OR REPLACE FUNCTION</tt> will not let
    you change the return type of an existing function.  To do that,
    you must drop and recreate the function.
-  </P
-><P
->   If you drop and then recreate a function, the new function is not
+  </p>
+<p>   If you drop and then recreate a function, the new function is not
    the same entity as the old; you will break existing rules, views,
    triggers, etc. that referred to the old function.  Use
-   <TT
-CLASS="COMMAND"
->CREATE OR REPLACE FUNCTION</TT
-> to change a function
+   <tt class="command">CREATE OR REPLACE FUNCTION</tt> to change a function
    definition without breaking objects that refer to the function.
-  </P
-><P
->   The user that creates the function becomes the owner of the function.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN37620"
-></A
-><H2
->Parameters</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><VAR
-CLASS="REPLACEABLE"
->name</VAR
-></DT
-><DD
-><P
->       The name (optionally schema-qualified) of the function to create.
-      </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->argname</VAR
-></DT
-><DD
-><P
->       The name of an argument. Some languages (currently only PL/pgSQL) let
+  </p>
+<p>   The user that creates the function becomes the owner of the function.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2671945"></a><h2>Parameters</h2>
+<div class="variablelist"><dl>
+<dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
+<dd><p>       The name (optionally schema-qualified) of the function to create.
+      </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>argname</tt></i></span></dt>
+<dd><p>       The name of an argument. Some languages (currently only PL/pgSQL) let
        you use the name in the function body.  For other languages the
        argument name is just extra documentation.
-      </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->argtype</VAR
-></DT
-><DD
-><P
->       The data type(s) of the function's arguments (optionally 
+      </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>argtype</tt></i></span></dt>
+<dd>
+<p>       The data type(s) of the function's arguments (optionally 
        schema-qualified), if any. The argument types may be base, complex, or 
        domains, or copy the type of an existing column.
-      </P
-><P
->       The type of a column is referenced by writing
-       <TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->tablename</VAR
->.<VAR
-CLASS="REPLACEABLE"
->columnname</VAR
->%TYPE</TT
->;
+      </p>
+<p>       The type of a column is referenced by writing
+       <tt class="literal"><i class="replaceable"><tt>tablename</tt></i>.<i class="replaceable"><tt>columnname</tt></i>%TYPE</tt>;
        using this can sometimes help make a function independent from
        changes to the definition of a table.
-      </P
-><P
->       Depending on the implementation language it may also be allowed
-       to specify <SPAN
-CLASS="QUOTE"
->"pseudotypes"</SPAN
-> such as <TT
-CLASS="TYPE"
->cstring</TT
->.
+      </p>
+<p>       Depending on the implementation language it may also be allowed
+       to specify &#8220;<span class="quote">pseudotypes</span>&#8221; such as <tt class="type">cstring</tt>.
        Pseudotypes indicate that the actual argument type is either
        incompletely specified, or outside the set of ordinary SQL data types.
-      </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->rettype</VAR
-></DT
-><DD
-><P
->       The return data type (optionally schema-qualified). The return type 
+      </p>
+</dd>
+<dt><span class="term"><i class="replaceable"><tt>rettype</tt></i></span></dt>
+<dd>
+<p>       The return data type (optionally schema-qualified). The return type 
        may be a base type, complex type, or a domain,
        or may be specified to copy the type of an existing column. See the description
-       under <TT
-CLASS="LITERAL"
->argtype</TT
-> above on how to reference the type
+       under <tt class="literal">argtype</tt> above on how to reference the type
        of an existing column.
-      </P
-><P
->       Depending on the implementation language it may also be allowed
-       to specify <SPAN
-CLASS="QUOTE"
->"pseudotypes"</SPAN
-> such as <TT
-CLASS="TYPE"
->cstring</TT
->.
-       The <TT
-CLASS="LITERAL"
->SETOF</TT
->
+      </p>
+<p>       Depending on the implementation language it may also be allowed
+       to specify &#8220;<span class="quote">pseudotypes</span>&#8221; such as <tt class="type">cstring</tt>.
+       The <tt class="literal">SETOF</tt>
        modifier indicates that the function will return a set of
        items, rather than a single item.
-      </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->langname</VAR
-></DT
-><DD
-><P
->       The name of the language that the function is implemented in.
-       May be <TT
-CLASS="LITERAL"
->SQL</TT
->, <TT
-CLASS="LITERAL"
->C</TT
->,
-       <TT
-CLASS="LITERAL"
->internal</TT
->, or the name of a user-defined
-       procedural language.  (See also <A
-HREF="app-createlang.html"
-><I
-><I
->createlang</I
-></I
-></A
->.)  For backward compatibility,
+      </p>
+</dd>
+<dt><span class="term"><i class="replaceable"><tt>langname</tt></i></span></dt>
+<dd><p>       The name of the language that the function is implemented in.
+       May be <tt class="literal">SQL</tt>, <tt class="literal">C</tt>,
+       <tt class="literal">internal</tt>, or the name of a user-defined
+       procedural language.  (See also <a href="app-createlang.html"><span class="application">createlang</span></a>.)  For backward compatibility,
        the name may be enclosed by single quotes.
-      </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-><BR><TT
-CLASS="LITERAL"
->STABLE</TT
-><BR><TT
-CLASS="LITERAL"
->VOLATILE</TT
-></DT
-><DD
-><P
->       These attributes inform the system whether it is safe to
+      </p></dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">IMMUTABLE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">STABLE</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">VOLATILE</tt></span>
+</dt>
+<dd>
+<p>       These attributes inform the system whether it is safe to
        replace multiple evaluations of the function with a single
        evaluation, for run-time optimization.  At most one choice
        may be specified.  If none of these appear,
-       <TT
-CLASS="LITERAL"
->VOLATILE</TT
-> is the default assumption.
-      </P
-><P
->       <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
-> indicates that the function always
+       <tt class="literal">VOLATILE</tt> is the default assumption.
+      </p>
+<p>       <tt class="literal">IMMUTABLE</tt> indicates that the function always
        returns the same result when given the same argument values; that
        is, it does not do database lookups or otherwise use information not
        directly present in its argument list.  If this option is given,
        any call of the function with all-constant arguments can be
        immediately replaced with the function value.
-      </P
-><P
->       <TT
-CLASS="LITERAL"
->STABLE</TT
-> indicates that within a single table scan
+      </p>
+<p>       <tt class="literal">STABLE</tt> indicates that within a single table scan
        the function will consistently
        return the same result for the same argument values, but that its
        result could change across SQL statements.  This is the appropriate
        selection for functions whose results depend on database lookups,
        parameter variables (such as the current time zone), etc.  Also note
-       that the <CODE
-CLASS="FUNCTION"
->current_timestamp</CODE
-> family of functions qualify
+       that the <tt class="function">current_timestamp</tt> family of functions qualify
        as stable, since their values do not change within a transaction.
-      </P
-><P
->       <TT
-CLASS="LITERAL"
->VOLATILE</TT
-> indicates that the function value can
+      </p>
+<p>       <tt class="literal">VOLATILE</tt> indicates that the function value can
        change even within a single table scan, so no optimizations can be
        made.  Relatively few database functions are volatile in this sense;
-       some examples are <TT
-CLASS="LITERAL"
->random()</TT
->, <TT
-CLASS="LITERAL"
->currval()</TT
->,
-       <TT
-CLASS="LITERAL"
->timeofday()</TT
->.  Note that any function that has side-effects
+       some examples are <tt class="literal">random()</tt>, <tt class="literal">currval()</tt>,
+       <tt class="literal">timeofday()</tt>.  Note that any function that has side-effects
        must be classified volatile, even if its result is quite predictable,
        to prevent calls from being optimized away; an example is
-       <TT
-CLASS="LITERAL"
->setval()</TT
->.
-      </P
-><P
->       For additional details see <A
-HREF="xfunc-volatility.html"
->Section 31.9</A
->.
-      </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->CALLED ON NULL INPUT</TT
-><BR><TT
-CLASS="LITERAL"
->RETURNS NULL ON NULL INPUT</TT
-><BR><TT
-CLASS="LITERAL"
->STRICT</TT
-></DT
-><DD
-><P
->       <TT
-CLASS="LITERAL"
->CALLED ON NULL INPUT</TT
-> (the default) indicates
+       <tt class="literal">setval()</tt>.
+      </p>
+<p>       For additional details see <a href="xfunc-volatility.html" title="31.9. Function Volatility Categories">Section 31.9, &#8220;Function Volatility Categories&#8221;</a>.
+      </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">CALLED ON NULL INPUT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">RETURNS NULL ON NULL INPUT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">STRICT</tt></span>
+</dt>
+<dd>
+<p>       <tt class="literal">CALLED ON NULL INPUT</tt> (the default) indicates
        that the function will be called normally when some of its
        arguments are null.  It is then the function author's
        responsibility to check for null values if necessary and respond
        appropriately.
-      </P
-><P
->       <TT
-CLASS="LITERAL"
->RETURNS NULL ON NULL INPUT</TT
-> or
-       <TT
-CLASS="LITERAL"
->STRICT</TT
-> indicates that the function always
+      </p>
+<p>       <tt class="literal">RETURNS NULL ON NULL INPUT</tt> or
+       <tt class="literal">STRICT</tt> indicates that the function always
        returns null whenever any of its arguments are null.  If this
        parameter is specified, the function is not executed when there
        are null arguments; instead a null result is assumed
        automatically.
-      </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->[<SPAN
-CLASS="OPTIONAL"
->EXTERNAL</SPAN
->] SECURITY INVOKER</TT
-><BR><TT
-CLASS="LITERAL"
->[<SPAN
-CLASS="OPTIONAL"
->EXTERNAL</SPAN
->] SECURITY DEFINER</TT
-></DT
-><DD
-><P
->      <TT
-CLASS="LITERAL"
->SECURITY INVOKER</TT
-> indicates that the function
+      </p>
+</dd>
+<dt>
+<span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">[<span class="optional">EXTERNAL</span>] SECURITY INVOKER</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">[<span class="optional">EXTERNAL</span>] SECURITY DEFINER</tt></span>
+</dt>
+<dd>
+<p>      <tt class="literal">SECURITY INVOKER</tt> indicates that the function
       is to be executed with the privileges of the user that calls it.
-      That is the default.  <TT
-CLASS="LITERAL"
->SECURITY DEFINER</TT
->
+      That is the default.  <tt class="literal">SECURITY DEFINER</tt>
       specifies that the function is to be executed with the
       privileges of the user that created it.
-     </P
-><P
->      The key word <TT
-CLASS="LITERAL"
->EXTERNAL</TT
-> is present for SQL
+     </p>
+<p>      The key word <tt class="literal">EXTERNAL</tt> is present for SQL
       conformance but is optional since, unlike in SQL, this feature
       does not only apply to external functions.
-     </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->definition</VAR
-></DT
-><DD
-><P
->       A string constant defining the function; the meaning depends on the
+     </p>
+</dd>
+<dt><span class="term"><i class="replaceable"><tt>definition</tt></i></span></dt>
+<dd><p>       A string constant defining the function; the meaning depends on the
        language.  It may be an internal function name, the path to an
        object file, an SQL command, or text in a procedural language.
-      </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
-><VAR
-CLASS="REPLACEABLE"
->obj_file</VAR
->, <VAR
-CLASS="REPLACEABLE"
->link_symbol</VAR
-></TT
-></DT
-><DD
-><P
->       This form of the <TT
-CLASS="LITERAL"
->AS</TT
-> clause is used for
+      </p></dd>
+<dt><span class="term"><tt class="literal"><i class="replaceable"><tt>obj_file</tt></i>, <i class="replaceable"><tt>link_symbol</tt></i></tt></span></dt>
+<dd><p>       This form of the <tt class="literal">AS</tt> clause is used for
        dynamically loadable C language functions when the function name
        in the C language source code is not the same as the name of
-       the SQL function. The string <VAR
-CLASS="REPLACEABLE"
->obj_file</VAR
-> is the name of the
+       the SQL function. The string <i class="replaceable"><tt>obj_file</tt></i> is the name of the
        file containing the dynamically loadable object, and
-       <VAR
-CLASS="REPLACEABLE"
->link_symbol</VAR
-> is the
+       <i class="replaceable"><tt>link_symbol</tt></i> is the
        function's link symbol, that is, the name of the function in the C
        language source code.  If the link symbol is omitted, it is assumed
        to be the same as the name of the SQL function being defined.
-      </P
-></DD
-><DT
-><VAR
-CLASS="REPLACEABLE"
->attribute</VAR
-></DT
-><DD
-><P
->       The historical way to specify optional pieces of information
+      </p></dd>
+<dt><span class="term"><i class="replaceable"><tt>attribute</tt></i></span></dt>
+<dd>
+<p>       The historical way to specify optional pieces of information
        about the function.  The following attributes may appear here:
 
-      <P
-></P
-></P><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->isStrict</TT
-></DT
-><DD
-><P
->          Equivalent to <TT
-CLASS="LITERAL"
->STRICT</TT
-> or <TT
-CLASS="LITERAL"
->RETURNS NULL ON NULL INPUT</TT
->
-         </P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->isCachable</TT
-></DT
-><DD
-><P
->          <TT
-CLASS="LITERAL"
->isCachable</TT
-> is an obsolete equivalent of
-          <TT
-CLASS="LITERAL"
->IMMUTABLE</TT
->; it's still accepted for
+      </p>
+<div class="variablelist"><dl>
+<dt><span class="term"><tt class="literal">isStrict</tt></span></dt>
+<dd><p>          Equivalent to <tt class="literal">STRICT</tt> or <tt class="literal">RETURNS NULL ON NULL INPUT</tt>
+         </p></dd>
+<dt><span class="term"><tt class="literal">isCachable</tt></span></dt>
+<dd><p>          <tt class="literal">isCachable</tt> is an obsolete equivalent of
+          <tt class="literal">IMMUTABLE</tt>; it's still accepted for
           backwards-compatibility reasons.
-         </P
-></DD
-></DL
-></DIV
-><P>
+         </p></dd>
+</dl></div>
+<p>
 
       Attribute names are not case-sensitive.
-     </P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATEFUNCTION-NOTES"
-></A
-><H2
->Notes</H2
-><P
->    Refer to <A
-HREF="xfunc.html"
->Section 31.3</A
-> for further information on writing
+     </p>
+</dd>
+</dl></div>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createfunction-notes"></a><h2>Notes</h2>
+<p>    Refer to <a href="xfunc.html" title="31.3. User-Defined Functions">Section 31.3, &#8220;User-Defined Functions&#8221;</a> for further information on writing
     functions.
-   </P
-><P
->    The full <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> type syntax is allowed for
+   </p>
+<p>    The full <span class="acronym">SQL</span> type syntax is allowed for
     input arguments and return value. However, some details of the
     type specification (e.g., the precision field for
-    type <TT
-CLASS="TYPE"
->numeric</TT
->) are the responsibility of the
+    type <tt class="type">numeric</tt>) are the responsibility of the
     underlying function implementation and are silently swallowed
     (i.e., not recognized or
-    enforced) by the <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> command.
-   </P
-><P
->    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> allows function
-    <I
-CLASS="FIRSTTERM"
->overloading</I
->; that is, the same name can be
+    enforced) by the <tt class="command">CREATE FUNCTION</tt> command.
+   </p>
+<p>    <span class="productname">PostgreSQL</span> allows function
+    <i class="firstterm">overloading</i>; that is, the same name can be
     used for several different functions so long as they have distinct
     argument types.  However, the C names of all functions must be
     different, so you must give overloaded C functions different C
     names (for example, use the argument types as part of the C
     names).
-   </P
-><P
->    When repeated <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> calls refer to
+   </p>
+<p>    When repeated <tt class="command">CREATE FUNCTION</tt> calls refer to
     the same object file, the file is only loaded once.  To unload and
-    reload the file (perhaps during development), use the <A
-HREF="sql-load.html"
-><I
->LOAD</I
-></A
-> command.
-   </P
-><P
->    Use <A
-HREF="sql-dropfunction.html"
-><I
->DROP FUNCTION</I
-></A
-> to remove user-defined
+    reload the file (perhaps during development), use the <a href="sql-load.html">LOAD</a> command.
+   </p>
+<p>    Use <a href="sql-dropfunction.html">DROP FUNCTION</a> to remove user-defined
     functions.
-   </P
-><P
->    It is often helpful to use dollar quoting (see <A
-HREF="sql-syntax.html#SQL-SYNTAX-DOLLAR-QUOTING"
->Section 4.1.2.2</A
->) to write the function definition
+   </p>
+<p>    It is often helpful to use dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) to write the function definition
     string, rather than the normal single quote syntax.  Without dollar
     quoting, any single quotes or backslashes in the function definition must
     be escaped by doubling them.
-   </P
-><P
->    To be able to define a function, the user must have the
-    <TT
-CLASS="LITERAL"
->USAGE</TT
-> privilege on the language.
-   </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATEFUNCTION-EXAMPLES"
-></A
-><H2
->Examples</H2
-><P
->   Here is a trivial example to help you get started.  For more
-   information and examples, see <A
-HREF="xfunc.html"
->Section 31.3</A
->.
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE FUNCTION add(integer, integer) RETURNS integer
+   </p>
+<p>    To be able to define a function, the user must have the
+    <tt class="literal">USAGE</tt> privilege on the language.
+   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createfunction-examples"></a><h2>Examples</h2>
+<p>   Here is a trivial example to help you get started.  For more
+   information and examples, see <a href="xfunc.html" title="31.3. User-Defined Functions">Section 31.3, &#8220;User-Defined Functions&#8221;</a>.
+</p>
+<pre class="programlisting">CREATE FUNCTION add(integer, integer) RETURNS integer
     AS $$select $1 + $2;$$
     LANGUAGE SQL
     IMMUTABLE
-    RETURNS NULL ON NULL INPUT;</PRE
-><P>
-  </P
-><P
->   Increment an integer, making use of an argument name, in
-   <SPAN
-CLASS="APPLICATION"
->PL/pgSQL</SPAN
->:
+    RETURNS NULL ON NULL INPUT;</pre>
+<p>
+  </p>
+<p>   Increment an integer, making use of an argument name, in
+   <span class="application">PL/pgSQL</span>:
 
-</P><PRE
-CLASS="PROGRAMLISTING"
->CREATE OR REPLACE FUNCTION increment(i integer) RETURNS integer AS '
+</p>
+<pre class="programlisting">CREATE OR REPLACE FUNCTION increment(i integer) RETURNS integer AS '
         BEGIN
                 RETURN i + 1;
-        END;' LANGUAGE plpgsql;</PRE
-><P>
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATEFUNCTION-COMPAT"
-></A
-><H2
->Compatibility</H2
-><P
->   A <TT
-CLASS="COMMAND"
->CREATE FUNCTION</TT
-> command is defined in SQL99.
-   The <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> version is similar but
+        END;' LANGUAGE plpgsql;</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createfunction-compat"></a><h2>Compatibility</h2>
+<p>   A <tt class="command">CREATE FUNCTION</tt> command is defined in SQL99.
+   The <span class="productname">PostgreSQL</span> version is similar but
    not fully compatible.  The attributes are not portable, neither are the
    different available languages.
-  </P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="SQL-CREATEFUNCTION-SEEALSO"
-></A
-><H2
->See Also</H2
-><P
->   <A
-HREF="sql-alterfunction.html"
-><I
->ALTER FUNCTION</I
-></A
->,
-   <A
-HREF="sql-dropfunction.html"
-><I
->DROP FUNCTION</I
-></A
->,
-   <A
-HREF="sql-grant.html"
-><I
->GRANT</I
-></A
->,
-   <A
-HREF="sql-load.html"
-><I
->LOAD</I
-></A
->,
-   <A
-HREF="sql-revoke.html"
-><I
->REVOKE</I
-></A
->,
-   <A
-HREF="app-createlang.html"
-><SPAN
-CLASS="APPLICATION"
->createlang</SPAN
-></A
->
-  </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="sql-createdomain.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="sql-creategroup.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->CREATE DOMAIN</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="sql-commands.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->CREATE GROUP</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="sql-createfunction-seealso"></a><h2>See Also</h2>
+<p>   <a href="sql-alterfunction.html">ALTER FUNCTION</a>,
+   <a href="sql-dropfunction.html">DROP FUNCTION</a>,
+   <a href="sql-grant.html">GRANT</a>,
+   <a href="sql-load.html">LOAD</a>,
+   <a href="sql-revoke.html">REVOKE</a>,
+   <a href="app-createlang.html" title="createlang"><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a>
+  </p>
+</div>
+</div></body>
+</html>

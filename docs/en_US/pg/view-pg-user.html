@@ -1,355 +1,95 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML
-><HEAD
-><TITLE
->pg_user</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
-REV="MADE"
-HREF="mailto:pgsql-docs@postgresql.org"><LINK
-REL="HOME"
-TITLE="PostgreSQL 8.0.0beta4 Documentation"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="System Catalogs"
-HREF="catalogs.html"><LINK
-REL="PREVIOUS"
-TITLE="pg_tables"
-HREF="view-pg-tables.html"><LINK
-REL="NEXT"
-TITLE="pg_views"
-HREF="view-pg-views.html"><LINK
-REL="STYLESHEET"
-TYPE="text/css"
-HREF="stylesheet.css"><META
-NAME="creation"
-CONTENT="2004-10-25T00:24:33"></HEAD
-><BODY
-CLASS="SECT1"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="5"
-ALIGN="center"
-VALIGN="bottom"
->PostgreSQL 8.0.0beta4 Documentation</TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="view-pg-tables.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Backward</A
-></TD
-><TD
-WIDTH="60%"
-ALIGN="center"
-VALIGN="bottom"
->Chapter 41. System Catalogs</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="catalogs.html"
->Fast Forward</A
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="view-pg-views.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="VIEW-PG-USER"
->41.38. <TT
-CLASS="STRUCTNAME"
->pg_user</TT
-></A
-></H1
-><A
-NAME="AEN53782"
-></A
-><P
->   The view <TT
-CLASS="STRUCTNAME"
->pg_user</TT
-> provides access to
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>41.38. pg_user</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
+<link rel="previous" href="view-pg-tables.html" title="41.37. pg_tables">
+<link rel="next" href="view-pg-views.html" title="41.39. pg_views">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="view-pg-user"></a>41.38. <tt class="structname">pg_user</tt></h2></div></div>
+<div></div>
+</div>
+<a name="id2731099"></a><p>   The view <tt class="structname">pg_user</tt> provides access to
    information about database users.  This is simply a publicly
    readable view of 
-   <A
-HREF="catalog-pg-shadow.html"
-><TT
-CLASS="STRUCTNAME"
->pg_shadow</TT
-></A
->
+   <a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><tt class="structname">pg_shadow</tt></a>
    that blanks out the password field.
-  </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="AEN53788"
-></A
-><P
-><B
->Table 41-38. <TT
-CLASS="STRUCTNAME"
->pg_user</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Type</TH
-><TH
->References</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->usename</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->User name</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->usesysid</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->int4</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->User id (arbitrary number used to reference this user)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->usecreatedb</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->User may create databases</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->usesuper</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->User is a superuser</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->usecatupd</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->bool</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->       User may update system catalogs.  (Even a superuser may not do
+  </p>
+<div class="table">
+<a name="id2731125"></a><p class="title"><b>Table 41.38. <tt class="structname">pg_user</tt> Columns</b></p>
+<table summary="pg_user Columns" border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>Name</th>
+<th>Type</th>
+<th>References</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><tt class="structfield">usename</tt></td>
+<td><tt class="type">name</tt></td>
+<td> </td>
+<td>User name</td>
+</tr>
+<tr>
+<td><tt class="structfield">usesysid</tt></td>
+<td><tt class="type">int4</tt></td>
+<td> </td>
+<td>User id (arbitrary number used to reference this user)</td>
+</tr>
+<tr>
+<td><tt class="structfield">usecreatedb</tt></td>
+<td><tt class="type">bool</tt></td>
+<td> </td>
+<td>User may create databases</td>
+</tr>
+<tr>
+<td><tt class="structfield">usesuper</tt></td>
+<td><tt class="type">bool</tt></td>
+<td> </td>
+<td>User is a superuser</td>
+</tr>
+<tr>
+<td><tt class="structfield">usecatupd</tt></td>
+<td><tt class="type">bool</tt></td>
+<td> </td>
+<td>       User may update system catalogs.  (Even a superuser may not do
        this unless this column is true.)
-      </TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->passwd</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Not the password (always reads as <TT
-CLASS="LITERAL"
->********</TT
->)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->valuntil</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->abstime</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Account expiry time (only used for password authentication)</TD
-></TR
-><TR
-><TD
-><TT
-CLASS="STRUCTFIELD"
->useconfig</TT
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text[]</TT
-></TD
-><TD
->&nbsp;</TD
-><TD
->Session defaults for run-time configuration variables</TD
-></TR
-></TBODY
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="view-pg-tables.html"
-ACCESSKEY="P"
->Prev</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="index.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="view-pg-views.html"
-ACCESSKEY="N"
->Next</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_tables</TT
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="catalogs.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><TT
-CLASS="STRUCTNAME"
->pg_views</TT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+      </td>
+</tr>
+<tr>
+<td><tt class="structfield">passwd</tt></td>
+<td><tt class="type">text</tt></td>
+<td> </td>
+<td>Not the password (always reads as <tt class="literal">********</tt>)</td>
+</tr>
+<tr>
+<td><tt class="structfield">valuntil</tt></td>
+<td><tt class="type">abstime</tt></td>
+<td> </td>
+<td>Account expiry time (only used for password authentication)</td>
+</tr>
+<tr>
+<td><tt class="structfield">useconfig</tt></td>
+<td><tt class="type">text[]</tt></td>
+<td> </td>
+<td>Session defaults for run-time configuration variables</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></body>
+</html>
