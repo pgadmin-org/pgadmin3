@@ -2,7 +2,7 @@
 %define minor_version %(date +%Y%m%d)
 %define wxGTK2_version 20030607
 %define wxGTK2_config --with-wx-config=wxgtk2ud-2.5-config
-%define pgsql_include --with-pgsql-include=/usr/include
+%define pgsql_include --with-pgsql-include=/usr
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
