@@ -21,13 +21,13 @@
 #define VERSION wxT("1.0.0 Devel")
 #define APPNAME_L wxT("pgAdmin III")
 #define APPNAME_S wxT("pgadmin3")
-#define SERVER_MIN_VERSION 7.3
+const float SERVER_MIN_VERSION = 7.3f;
 
 // XRC Path
 #ifdef __WXMSW__
-  #define XRC_PATH "ui/win32"
+  #define XRC_PATH wxT("ui/win32")
 #else
-  #define XRC_PATH "ui/gtk"
+  #define XRC_PATH wxT("ui/gtk")
 #endif
 
 // Class declarations

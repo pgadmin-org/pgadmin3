@@ -34,13 +34,13 @@ public:
     wxStatusBar *statusBar;
     
 private:
-    wxTreeCtrl *browser;
+    wxTreeCtrl *browser;	
     wxListCtrl *properties;
     wxListCtrl *statistics;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenuBar *menuBar;
-    wxMenu *fileMenu, *toolsMenu, *viewMenu, *helpMenu;
+    wxMenu *fileMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu;
     wxToolBar *toolBar;
     wxTreeItemId servers;
     void OnAbout(wxCommandEvent& event);
@@ -53,8 +53,11 @@ private:
     void OnShowSystemObjects(wxCommandEvent& event);
     void OnSelChanged();
     void OnSelActivated();
+	void OnSelRightClick(wxTreeEvent& event);
     void OnDrop();
     void OnRefresh();
+	void OnDisconnect();
+	void OnProperties();
     void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum);
 
     // Treeview  handlers
@@ -84,7 +87,12 @@ enum
     MNU_SYSTEMOBJECTS = 107,
     MNU_CONTENTS = 108,
     MNU_TIPOFTHEDAY = 109,
-    MNU_ABOUT = 110
+    MNU_ABOUT = 110,
+	MNU_REFRESH = 111,
+	MNU_CONNECT = 112,
+	MNU_DISCONNECT = 113,
+	MNU_DROP = 114,
+	MNU_PROPERTIES = 115
 };
 
 // Toolbar buttons

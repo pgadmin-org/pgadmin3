@@ -41,8 +41,14 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(BTN_ADDSERVER, frmMain::OnAddServer)
     EVT_MENU(BTN_DROP, frmMain::OnDrop)
     EVT_MENU(BTN_REFRESH, frmMain::OnRefresh)
+    EVT_MENU(BTN_PROPERTIES, frmMain::OnProperties)
     EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
     EVT_MENU(MNU_ADDSERVER, frmMain::OnAddServer)
+	EVT_MENU(MNU_REFRESH, frmMain::OnRefresh)
+	EVT_MENU(MNU_CONNECT, frmMain::OnSelActivated)
+	EVT_MENU(MNU_DISCONNECT, frmMain::OnDisconnect)
+	EVT_MENU(MNU_DROP, frmMain::OnDrop)
+	EVT_MENU(MNU_PROPERTIES, frmMain::OnProperties)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
     EVT_MENU(MNU_OPTIONS, frmMain::OnOptions)
     EVT_MENU(MNU_PASSWORD, frmMain::OnPassword)
@@ -52,6 +58,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_UPGRADEWIZARD, frmMain::OnUpgradeWizard)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER, frmMain::OnSelChanged)
     EVT_TREE_ITEM_ACTIVATED(CTL_BROWSER, frmMain::OnSelActivated)
+	EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER, frmMain::OnSelRightClick) 
 END_EVENT_TABLE()
 
 // Event handlers
@@ -230,9 +237,9 @@ void frmMain::OnSelChanged()
     sqlPane->SetText(wxT(""));
     sqlPane->SetReadOnly(TRUE);
 
-    // Reset the toolbar & password menu option
+    // Reset the toolbar & password menu options
+	// Handle the menus associated with the buttons
     SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
-    fileMenu->Enable(MNU_PASSWORD, FALSE);
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
@@ -244,11 +251,24 @@ void frmMain::OnSelChanged()
     if (!data) return;
 
     int type = data->GetType();
+	pgServer *server;
 
     switch (type) {
         case PG_SERVER:
             StartMsg(wxT("Retrieving server properties"));
             SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
+
+			// Handle the the connect/disconnect menus
+            server = (pgServer *)data;
+            if (!server->GetConnected()) {
+				toolsMenu->Enable(MNU_CONNECT, TRUE);
+				treeContextMenu->Enable(MNU_CONNECT, TRUE);               
+            }
+			else {
+				toolsMenu->Enable(MNU_DISCONNECT, TRUE);
+				treeContextMenu->Enable(MNU_DISCONNECT, TRUE);               
+			}
+
             tvServer((pgServer *)data);
             svServer((pgServer *)data);
             EndMsg();
@@ -265,13 +285,13 @@ void frmMain::OnSelChanged()
         case PG_DATABASE:
             StartMsg(wxT("Retrieving database details"));
             SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
-            tvDatabase((pgDatabase *)data);
-            //svDatabases((pgCollection *)data);
+            tvDatabase((pgDatabase *)data);          
+			//svDatabases((pgCollection *)data);
             EndMsg();
             break;
 
-        default:
-            break;
+        default:        
+			break;
     }
 }
 
@@ -307,6 +327,23 @@ void frmMain::OnSelActivated()
 #ifndef __WXMSW__
     browser->Expand(item);
 #endif
+}
+
+void frmMain::OnSelRightClick(wxTreeEvent& event)
+{
+    // This handler will display a popup menu for the item
+
+	// Get mouse point data
+	wxPoint point = event.GetPoint();
+	wxPoint origin = GetClientAreaOrigin();
+
+	// Because this Tree is inside a vertical splitter, we
+	// must compensate for the size of the other elements
+	point.x += origin.x;
+	point.y += origin.y;
+
+	// popup the menu
+	PopupMenu(treeContextMenu, point);
 }
 
 void frmMain::OnDrop()
@@ -352,5 +389,20 @@ void frmMain::OnRefresh()
         browser->Delete(item2);
         item2 = browser->GetFirstChild(item1, cookie);
     }
+
+		// refresh information about the object
+	OnSelChanged();
+}
+
+void frmMain::OnDisconnect()
+{
+    // Disconnect -- does nothing yet
+	int res = wxMessageBox("This is not yet implemented" );
+}
+
+void frmMain::OnProperties()
+{
+    // Properties -- does nothing yet
+	int res = wxMessageBox("This is not yet implemented" );
 }
 

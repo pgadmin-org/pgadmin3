@@ -81,7 +81,6 @@
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
-
     extern sysSettings *settings;
 
     // Icon
@@ -96,12 +95,21 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     fileMenu->Append(MNU_PASSWORD, wxT("C&hange password..."), wxT("Change your password."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object."));
+    fileMenu->Append(MNU_DROP, wxT("&Delete/Drop"), 
+		wxT("Delete/Drop the selected object."));
+    fileMenu->Append(MNU_PROPERTIES, wxT("&Properties"), 
+		wxT("Display/edit the properties of the selected object."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, wxT("E&xit"), wxT("Quit this program."));
     menuBar->Append(fileMenu, wxT("&File"));
 
     // Tools Menu
     toolsMenu = new wxMenu();
+    toolsMenu->Append(MNU_CONNECT, wxT("&Connect..."), 
+		wxT("Connect to the selected server."));
+    toolsMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"), 
+		wxT("Disconnect from the selected server."));
+    toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard."));
     toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_OPTIONS, wxT("&Options..."), wxT("Show options dialog."));
@@ -110,6 +118,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     // View Menu
     viewMenu = new wxMenu();
     viewMenu->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects."), wxITEM_CHECK);
+    viewMenu->AppendSeparator();
+    viewMenu->Append(MNU_REFRESH, wxT("&Refresh"), 
+		wxT("Refresh the selected object."));
     menuBar->Append(viewMenu, wxT("&View"));
 
     // Help Menu
@@ -119,6 +130,20 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     helpMenu->AppendSeparator();
     helpMenu->Append(MNU_ABOUT, wxT("&About..."), wxT("Show about dialog."));
     menuBar->Append(helpMenu, wxT("&Help"));
+
+    // Tree Context Menu
+    treeContextMenu = new wxMenu();
+    treeContextMenu->Append(MNU_CONNECT, wxT("&Connect..."), 
+		wxT("Connect to the selected server."));
+    treeContextMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"), 
+		wxT("Disconnect from the selected server."));
+    treeContextMenu->AppendSeparator();
+    treeContextMenu->Append(MNU_DROP, wxT("&Delete/Drop"), 
+		wxT("Delete/Drop the selected object."));
+    treeContextMenu->Append(MNU_REFRESH, wxT("&Refresh"), 
+		wxT("Refresh the selected object."));
+    treeContextMenu->Append(MNU_PROPERTIES, wxT("&Properties"), 
+		wxT("Display/edit the properties of the selected object."));
 
     // Add the Menubar and set some options
     SetMenuBar(menuBar);
@@ -134,7 +159,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     SetStatusText(wxT("0 Secs"), 2);
 
     // Toolbar bar
-
     CreateToolBar();
 
     // Return objects
@@ -156,7 +180,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     barBitmaps[9] = wxBitmap(stop_xpm);
 
     toolBar->AddTool(BTN_ADDSERVER, wxT("Add Server"), barBitmaps[0], wxT("Add a connection to a server."), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_REFRESH, wxT("Refresh"), barBitmaps[1], wxT("Refrsh the data below the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(BTN_REFRESH, wxT("Refresh"), barBitmaps[1], wxT("Refresh the data below the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(BTN_CREATE, wxT("Create"), barBitmaps[2], wxT("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
     toolBar->AddTool(BTN_DROP, wxT("Drop"), barBitmaps[3], wxT("Drop the currently selected object."), wxITEM_NORMAL);
@@ -196,7 +220,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     //Setup a Browser imagelist
     wxImageList *browserImages = new wxImageList(16, 16);
     browser->SetImageList(browserImages);
-	
+
     //Stuff the Image List
     browserImages->Add(wxIcon(server_xpm));
     browserImages->Add(wxIcon(serverbad_xpm));
@@ -214,7 +238,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     browserImages->Add(wxIcon(group_xpm));
     browserImages->Add(wxIcon(baddatabase_xpm));
     browserImages->Add(wxIcon(closeddatabase_xpm));
-
 
     // Add the root node
     pgObject *serversObj = new pgObject(PG_SERVERS, wxString("Servers"));
@@ -243,7 +266,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     wxColour background;
     background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
     statistics->SetBackgroundColour(background);
-	
+
     // Load servers
     RetrieveServers();
 }
@@ -393,4 +416,17 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
     toolBar->EnableTool(BTN_SQL, sql);
     toolBar->EnableTool(BTN_VIEWDATA, viewData);
     toolBar->EnableTool(BTN_VACUUM, vacuum);
+
+	// Handle the menus associated with the buttons
+	fileMenu->Enable(MNU_DROP, drop);
+	fileMenu->Enable(MNU_PROPERTIES, properties);
+	toolsMenu->Enable(MNU_CONNECT, FALSE);
+	toolsMenu->Enable(MNU_DISCONNECT, FALSE);
+	viewMenu->Enable(MNU_REFRESH, refresh);
+	treeContextMenu->Enable(MNU_DROP, drop);
+	treeContextMenu->Enable(MNU_CONNECT, FALSE);
+	treeContextMenu->Enable(MNU_DISCONNECT, FALSE);
+	treeContextMenu->Enable(MNU_REFRESH, refresh);
+	treeContextMenu->Enable(MNU_PROPERTIES, properties);
+
 }
