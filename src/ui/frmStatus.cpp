@@ -619,18 +619,20 @@ void frmStatus::addLogLine(const wxString &str, bool formatted)
             {
                 if (formatted)
                 {
-                    wxString ts=str.Mid(logFmtPos);
-                    int pos = ts.Mid(22).Find(logFormat.c_str()[logFmtPos+2]);
-                    logList->InsertItem(row, ts.Left(22+pos), -1);
-                    rest = ts.Mid(22+pos + logFormat.Length() - logFmtPos-2);
+                    rest = str.Mid(logFmtPos + 22).AfterFirst(':');
+                    wxString ts=str.Mid(logFmtPos, str.Length()-rest.Length() - logFmtPos -1);
+
+                    int pos = ts.Find(logFormat.c_str()[logFmtPos+2], true);
+                    logList->InsertItem(row, ts.Left(pos), -1);
+                    logList->SetItem(row, 1, ts.Mid(pos + logFormat.Length() - logFmtPos -2));
+                    logList->SetItem(row, 2, rest.Mid(2));
                 }
                 else
                 {
-                    rest = str;
                     logList->InsertItem(row, wxEmptyString, -1);
+                    logList->SetItem(row, 1, str.BeforeFirst(':'));
+                    logList->SetItem(row, 2, str.AfterFirst(':').Mid(2));
                 }
-                logList->SetItem(row, 1, rest.BeforeFirst(':'));
-                logList->SetItem(row, 2, rest.AfterFirst(':'));
             }
             else
             {
@@ -646,7 +648,7 @@ void frmStatus::addLogLine(const wxString &str, bool formatted)
                 else
                 {
                     logList->InsertItem(row, rest.BeforeFirst(':'), -1);
-                    logList->SetItem(row, 1, rest.AfterFirst(':'));
+                    logList->SetItem(row, 1, rest.AfterFirst(':').Mid(2));
                 }
             }
         }
