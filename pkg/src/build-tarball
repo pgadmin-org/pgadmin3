@@ -30,6 +30,9 @@ rm -rf ./src
 touch Makefile.am
 touch src/Makefile.am
 
+# Fixup the line ends in the VC++ project files
+/usr/bin/perl -wlpi -e 's/$/\r/' src/pgAdmin3.ds{p,w}
+
 # Bootstrap
 /bin/sh bootstrap
 
