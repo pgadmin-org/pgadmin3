@@ -33,18 +33,22 @@ make all
 
 # Build a clean distro
 if [ -x src/pgAdmin3 ]; then
-	mkdir -p ./pgadmin3/bin
-	mkdir -p ./pgadmin3/share/pgadmin3/ui/common
-	mkdir -p ./pgadmin3/share/pgadmin3/docs/en_US/pg
+	mkdir -p ./slackpack/usr/local/pgadmin3/bin
+	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/common
+	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/pg
 
-	cp ./src/pgAdmin3 ./pgadmin3/bin/
-	cp ./src/tips.txt ./pgadmin3/share/pgadmin3/
-	cp ./src/ui/common/*.xrc ./pgadmin3/share/pgadmin3/ui/common/
-	cp ./docs/en_US/pg/*.html ./pgadmin3/share/pgadmin3/docs/en_US/pg/
-	cp ./docs/en_US/pg/*.gif ./pgadmin3/share/pgadmin3/docs/en_US/pg/
-	cp ./docs/en_US/pg/*.css ./pgadmin3/share/pgadmin3/docs/en_US/pg/
+	cp ./slack-desc ./slackpack/
+	cp ./src/pgAdmin3 ./slackpack/usr/local/pgadmin3/bin/
+	cp ./src/tips.txt ./slackpack/usr/local/pgadmin3/share/pgadmin3/
+	cp ./src/ui/common/*.xrc ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/common/
+	cp ./docs/en_US/pg/*.html ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/pg/
+	cp ./docs/en_US/pg/*.gif ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/pg/
+	cp ./docs/en_US/pg/*.css ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/pg/
 
 	# Build the snapshot and file it.
-	/bin/tar czf /usr/local/apache/htdocs/linux/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz pgadmin3
-  ln -s -f /usr/local/apache/htdocs/linux/pgadmin3-`/usr/bin/date +%Y%m%d`-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz /usr/local/apache/htdocs/pgadmin3-Alpha-`/usr/bin/uname -s`-`/usr/bin/uname -r`.tar.gz
+	cd slackpack
+	/sbin/makepkg --chown y pgadmin3.tgz 
+	if [ -e pgadmin3.tgz ]; then
+		mv pgadmin3.tgz /usr/local/apache/htdocs/linux/slackware90/pgadmin3-`/usr/bin/date +%Y%m%d`.tgz
+	fi
 fi
