@@ -1,5 +1,6 @@
 %define major_version 0.1.1
 %define minor_version %(date +%Y%m%d)
+%define wxGTK2_version 20030607
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
@@ -18,7 +19,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 # http://snake.pgadmin.org in the directory of your distribution.
 # 
 
-BuildRequires: autoconf >= 2.57, automake >= 1.7.2, wxGTK2ud-cvs >= 2.5-20030607, wxGTK2ud-cvs-devel >= 2.5-20030607, wxGTK2ud-cvs-stc >= 2.5-20030607, wxGTK2ud-cvs-xrc >= 2.5-20030607
+BuildRequires: autoconf >= 2.57, automake >= 1.7.2, wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
 
 %description
 pgAdmin3 is the graphical administration interface of PostgreSQL.
