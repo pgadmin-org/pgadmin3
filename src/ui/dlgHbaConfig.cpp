@@ -291,10 +291,11 @@ void dlgHbaConfig::OnChange(wxCommandEvent& ev)
     stOption->Enable(needOption);
     txtOption->Enable(needOption);
 
-    bool ipValid=chkEnabled->GetValue() || cbType->GetSelection() == pgHbaConfigLine::PGC_LOCAL;
+    bool ipValid=!chkEnabled->GetValue() || !needIp;
     if (!ipValid)
     {
-
+        // we should check for validity of txtIPaddress->GetValue() here
+        ipValid = true;
     }
     btnOK->Enable(cbType->GetSelection() >= 0 && !database.IsEmpty() && !user.IsEmpty() && 
             cbMethod->GetSelection() >= 0 && ipValid);
