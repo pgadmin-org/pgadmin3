@@ -53,6 +53,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     confirmDelete=StrToBool(Read(wxT("ConfirmDelete"), wxT("Yes")));
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
     Read(wxT("AutoRowCount"), &autoRowCount, TRUE);
+    Read(wxT("StickySql"), &stickySql, TRUE);
 }
 
 
@@ -148,6 +149,16 @@ void sysSettings::SetAutoRowCount(const bool newval)
 {
     autoRowCount = newval;
     this->Write(wxT("AutoRowCount"), autoRowCount);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Auto Row Count
+//////////////////////////////////////////////////////////////////////////
+
+void sysSettings::SetStickySql(const bool newval)
+{
+    stickySql = newval;
+    this->Write(wxT("StickySql"), stickySql);
 }
 
 //////////////////////////////////////////////////////////////////////////

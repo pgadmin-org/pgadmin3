@@ -73,6 +73,10 @@ public:
     bool GetAutoRowCount() const { return autoRowCount; }
     void SetAutoRowCount(const bool newval);
 
+
+    // Sticky SQL
+    bool GetStickySql() const { return stickySql; }
+    void SetStickySql(const bool newval);
 private:
 
     // Tip Of The Day
@@ -98,6 +102,7 @@ private:
     bool confirmDelete;
     long maxRows, maxColSize;
     bool autoRowCount;
+    bool stickySql;
 };
 
 #endif

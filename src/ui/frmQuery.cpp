@@ -176,8 +176,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     horizontal->SplitHorizontally(sqlQuery, output, splitpos);
 
 
-    sqlQuery->SetText(query);
-    changed = !query.IsNull();
+    if (settings->GetStickySql()) sqlQuery->SetText(query);
+    changed = !query.IsNull() && settings->GetStickySql();
     if (changed)
         setExtendedTitle();
     updateMenu();

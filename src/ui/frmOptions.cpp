@@ -33,6 +33,7 @@
 #define chkAskDelete                CTRL("chkAskDelete", wxCheckBox)
 #define chkShowUsersForPrivileges   CTRL("chkShowUsersForPrivileges", wxCheckBox)
 #define chkAutoRowCount             CTRL("chkAutoRowCount", wxCheckBox)
+#define chkStickySql                CTRL("chkStickySql", wxCheckBox)
 
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
@@ -63,6 +64,7 @@ frmOptions::frmOptions(wxFrame *parent)
     chkAskDelete->SetValue(settings->GetConfirmDelete());
     chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
     chkAutoRowCount->SetValue(settings->GetAutoRowCount());
+    chkStickySql->SetValue(settings->GetStickySql());
 
     txtHelpSite->SetValue(settings->GetHelpSite());
 }
@@ -114,6 +116,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetConfirmDelete(chkAskDelete->IsChecked());
     settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->IsChecked());
     settings->SetAutoRowCount(chkAutoRowCount->IsChecked());
+    settings->SetStickySql(chkStickySql->IsChecked());
 
     settings->SetHelpSite(txtHelpSite->GetValue());
     Destroy();
