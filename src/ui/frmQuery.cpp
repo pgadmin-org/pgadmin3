@@ -29,7 +29,7 @@
 #include "images/clip_copy.xpm"
 #include "images/clip_paste.xpm"
 #include "images/edit_clear.xpm"
-//#include "images/edit_find.xpm"
+#include "images/edit_find.xpm"
 #include "images/edit_undo.xpm"
 #include "images/edit_redo.xpm"
 #include "images/query_execute.xpm"
@@ -95,13 +95,16 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     menuBar->Append(fileMenu, _("&File"));
 
     editMenu = new wxMenu();
+    editMenu->Append(MNU_UNDO, _("&Undo"), _("Undo last action"), wxITEM_NORMAL);
+    editMenu->Append(MNU_REDO, _("&Redo"), _("Redo last action"), wxITEM_NORMAL);
+    editMenu->AppendSeparator();
     editMenu->Append(MNU_CUT, _("Cu&t"), _("Cut selected text to clipboard"), wxITEM_NORMAL);
     editMenu->Append(MNU_COPY, _("&Copy"), _("Copy selected text to clipboard"), wxITEM_NORMAL);
     editMenu->Append(MNU_PASTE, _("&Paste"), _("Paste selected text from clipboard"), wxITEM_NORMAL);
     editMenu->Append(MNU_CLEAR, _("C&lear window"), _("Clear edit window"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
-    editMenu->Append(MNU_UNDO, _("&Undo"), _("Undo last action"), wxITEM_NORMAL);
-    editMenu->Append(MNU_REDO, _("&Redo"), _("Redo last action"), wxITEM_NORMAL);
+    editMenu->Append(MNU_FIND, _("&Find"), _("Find text"), wxITEM_NORMAL);
+    menuBar->Append(editMenu, _("&Edit"));
 
     queryMenu = new wxMenu();
     queryMenu->Append(MNU_EXECUTE, _("&Execute"), _("Execute query"));
@@ -148,6 +151,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo last action"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_REDO, _("Redo"), wxBitmap(edit_redo_xpm), _("Redo last action"), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find text"), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
@@ -431,6 +436,7 @@ void frmQuery::OnClear(wxCommandEvent& ev)
 
 void frmQuery::OnFind(wxCommandEvent& ev)
 {
+      sqlQuery->OnFind(ev);
 }
 
 void frmQuery::OnUndo(wxCommandEvent& ev)

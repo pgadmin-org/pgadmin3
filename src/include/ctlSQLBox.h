@@ -14,6 +14,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/stc/stc.h>
+#include <wx/fdrepdlg.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -25,7 +26,14 @@ class ctlSQLBox : public wxStyledTextCtrl
 public:
     ctlSQLBox(wxWindow *parent, wxWindowID id = -1, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
     ~ctlSQLBox();
+
+    wxFindReplaceData m_findData;
+    wxFindReplaceDialog* m_dlgFind;
+
     void OnKeyDown(wxKeyEvent& event);
+    void OnFind(wxCommandEvent& event);
+    void OnFindDialog(wxFindDialogEvent& event);
+    
     DECLARE_EVENT_TABLE();
 };
 
