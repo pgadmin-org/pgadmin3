@@ -123,7 +123,7 @@ bool pgConn::ExecuteVoid(const wxString& sql)
     // Check for errors
     if (res != PGRES_TUPLES_OK &&
         res != PGRES_COMMAND_OK)
-        wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)));
+        wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
 
 
     // Cleanup & exit
@@ -141,7 +141,7 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
     // Check for errors
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK)
     {
-        wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)));
+        wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
         PQclear(qryRes);
         return wxEmptyString;
     }
