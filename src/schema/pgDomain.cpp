@@ -72,7 +72,7 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("OID"), GetOid());
         InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("Base Type"), GetBasetype());
+        InsertListItem(properties, pos++, _("Base type"), GetBasetype());
         if (GetDimensions())
             InsertListItem(properties, pos++, _("Dimensions"), GetDimensions());
         InsertListItem(properties, pos++, _("Default"), GetDefault());
