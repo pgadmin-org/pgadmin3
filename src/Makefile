@@ -28,4 +28,4 @@ $(PROGRAM):	$(OBJECTS)
 clean:
 	rm -f *.o $(PROGRAM)
 	rm -f ui/*.o
-        rm -f ui/forms/*.o
+	rm -f ui/forms/*.o
