@@ -45,7 +45,7 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
             sql += wxT(")\n  WITHOUT FUNCTION");
         else
             sql += wxT(")\n  WITH FUNCTION ") + GetQuotedSchemaPrefix(GetCastNamespace()) + qtIdent(GetCastFunction()) + wxT("(") + GetSourceType() + wxT(")");
-        if (GetCastContext() != wxT("Explicit"))
+        if (GetCastContext() != wxT("EXPLICIT"))
           sql += wxT("\n  AS ") + GetCastContext();
         sql += wxT(";\n");
     }
