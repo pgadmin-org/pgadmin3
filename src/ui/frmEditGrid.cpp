@@ -490,14 +490,31 @@ void frmEditGrid::OnOptions(wxCommandEvent& event)
 
 void frmEditGrid::OnDelete(wxCommandEvent& event)
 {
+	wxMessageDialog msg(this, _("Are you sure you wish to delete the selected row(s)?"), _("Delete rows?"), wxYES_NO | wxICON_QUESTION);
+    if (msg.ShowModal() != wxID_YES)
+        return;
+
     sqlGrid->BeginBatch();
     wxArrayInt delrows=sqlGrid->GetSelectedRows();
     int i=delrows.GetCount();
 
     // don't care a lot about optimizing here; doing it line by line
     // just as sqlTable::DeleteRows does
-    while (i--)
-        sqlGrid->DeleteRows(delrows.Item(i), 1);
+	if (delrows.Item(i-1) > delrows.Item(0))
+	{
+		while (i--)
+			sqlGrid->DeleteRows(delrows.Item(i), 1);
+	}
+	else
+	{
+		int j = 0;
+		while (j < i)
+		{
+			sqlGrid->DeleteRows(delrows.Item(j), 1);
+			++j;
+		}
+	}
+
     sqlGrid->EndBatch();
 
     SetStatusText(wxString::Format(_("%d rows."), sqlGrid->GetTable()->GetNumberStoredRows()), 0);
