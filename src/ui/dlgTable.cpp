@@ -62,7 +62,7 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
-: dlgSecurityProperty(frame, node, wxT("dlgTable"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCE,TRIGGER"), "arwdRxt")
+: dlgSecurityProperty(frame, node, wxT("dlgTable"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
 {
     SetIcon(wxIcon(table_xpm));
     schema=sch;

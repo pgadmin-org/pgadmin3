@@ -41,7 +41,7 @@ END_EVENT_TABLE();
 
 
 dlgSequence::dlgSequence(frmMain *frame, pgSequence *node, pgSchema *sch)
-: dlgSecurityProperty(frame, node, wxT("dlgSequence"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCE,TRIGGER"), "arwdRxt")
+: dlgSecurityProperty(frame, node, wxT("dlgSequence"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
 {
     SetIcon(wxIcon(sequence_xpm));
     schema=sch;
