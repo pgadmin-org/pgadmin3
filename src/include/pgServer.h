@@ -56,10 +56,10 @@ public:
     bool SetPassword(const wxString& newVal);
 
     void iSetPort(int newVal) { port = newVal; }
+    bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv) { return conn->HasPrivilege(objTyp, objName, priv); }
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
-    pgSet *ExecuteSet(const wxString& sql) { 
-		return conn->ExecuteSet(sql); }
+    pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     wxString GetHelpPage(bool forCreate) const { return wxT("managing-databases.html"); }
     int GetIcon() { return PGICON_SERVER; }

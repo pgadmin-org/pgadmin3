@@ -152,6 +152,18 @@ bool pgConn::ExecuteVoid(const wxString& sql)
     return res == PGRES_TUPLES_OK || res == PGRES_COMMAND_OK;
 }
 
+
+bool pgConn::HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv)
+{
+    wxString res=ExecuteScalar(
+        wxT("SELECT has_") + objTyp.Lower() 
+        + wxT("_privilege(") + qtString(objName)
+        + wxT(", ") + qtString(priv) + wxT(")"));
+
+    return StrToBool(res);
+}
+
+
 wxString pgConn::ExecuteScalar(const wxString& sql)
 {
     // Execute the query and get the status.

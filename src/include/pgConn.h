@@ -49,6 +49,7 @@ class pgConn
 public:
     pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432);
     ~pgConn();
+    bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
     bool ExecuteVoid(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
