@@ -116,38 +116,62 @@ include/images/trigger.xpm include/images/type.xpm \
 include/images/unique.xpm include/images/unknown.xpm \
 include/images/user.xpm include/images/vacuum.xpm \
 include/images/viewdata.xpm include/images/view.xpm \
+ui/af_ZA/pgadmin3.po \
+ui/ar/pgadmin3.po \
 ui/ar_SA/pgadmin3.po \
+ui/cs_CZ/pgadmin3.po \
 ui/da_DK/pgadmin3.po \
 ui/de_DE/pgadmin3.po \
+ui/es_ES/pgadmin3.po \
 ui/fa_IR/pgadmin3.po \
 ui/fr_FR/pgadmin3.po \
 ui/hr_HR/pgadmin3.po \
+ui/hu_HU/pgadmin3.po \
 ui/id_ID/pgadmin3.po \
+ui/is_IS/pgadmin3.po \
 ui/it_IT/pgadmin3.po \
 ui/ja_JP/pgadmin3.po \
+ui/nb_NO/pgadmin3.po \
 ui/pl_PL/pgadmin3.po \
+ui/pt_BR/pgadmin3.po \
 ui/ro_RO/pgadmin3.po \
 ui/ru_RU/pgadmin3.po \
+ui/sd_IN/pgadmin3.po \
+ui/sv_SE/pgadmin3.po \
+ui/tl_PH/pgadmin3.po \
 ui/tr_TR/pgadmin3.po \
+ui/ur_PK/pgadmin3.po \
 ui/zh_CN/pgadmin3.po \
 ui/zh_TW/pgadmin3.po
 
 nobase_dist_pkgdata_DATA = ui/common/*.xrc \
 ui/wxstd.mo \
 ui/pgadmin3.lng \
+ui/af_ZA/pgadmin3.mo \
+ui/ar/pgadmin3.mo \
 ui/ar_SA/pgadmin3.mo \
+ui/cs_CZ/pgadmin3.mo \
 ui/da_DK/pgadmin3.mo \
 ui/de_DE/pgadmin3.mo \
+ui/es_ES/pgadmin3.mo \
 ui/fa_IR/pgadmin3.mo \
 ui/fr_FR/pgadmin3.mo \
 ui/hr_HR/pgadmin3.mo \
+ui/hu_HU/pgadmin3.mo \
 ui/id_ID/pgadmin3.mo \
+ui/is_IS/pgadmin3.mo \
 ui/it_IT/pgadmin3.mo \
 ui/ja_JP/pgadmin3.mo \
+ui/nb_NO/pgadmin3.mo \
 ui/pl_PL/pgadmin3.mo \
+ui/pt_BR/pgadmin3.mo \
 ui/ro_RO/pgadmin3.mo \
 ui/ru_RU/pgadmin3.mo \
+ui/sd_IN/pgadmin3.mo \
+ui/sv_SE/pgadmin3.mo \
+ui/tl_PH/pgadmin3.mo \
 ui/tr_TR/pgadmin3.mo \
+ui/ur_PK/pgadmin3.mo \
 ui/zh_CN/pgadmin3.mo \
 ui/zh_TW/pgadmin3.mo \
 ui/de_DE/wxstd.mo \
