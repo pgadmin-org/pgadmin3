@@ -49,6 +49,9 @@ typedef unsigned long OID;
 class sysSettings;
 extern sysSettings *settings;
 
+#undef wxStaticCast
+#define wxStaticCast(obj, className) ((className *)(obj))
+
 // making life easier
 #define CTRL(id, typ)           (XRCCTRL(*this, id, typ))
 

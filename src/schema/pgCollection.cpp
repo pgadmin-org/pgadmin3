@@ -36,7 +36,7 @@
 #include "pgIndex.h"
 #include "pgRule.h"
 #include "pgTrigger.h"
-#include "../slony/slCluster.h"
+#include "slCluster.h"
 
 
 
