@@ -76,7 +76,7 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, cha
 
         wxPoint zeroPos=ConvertDialogToPixels(wxPoint(5, 5));
         wxSize chkSize=ConvertDialogToPixels(wxSize(65,12));
-        wxSize btnSize=ConvertDialogToPixels(wxSize(50,15));
+        wxSize btnSize=ConvertDialogToPixels(wxSize(50,-1)); // preliminary height; will be BestSize
         wxSize spcSize=ConvertDialogToPixels(wxSize(2, 2));
 
         {
@@ -93,6 +93,7 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, cha
 
             btnAddPriv = new wxButton(this, CTL_ADDPRIV, _("Add/Change"), 
                 wxPoint(zeroPos.x, y), btnSize);
+            btnSize = btnAddPriv->GetSize();
             btnDelPriv = new wxButton(this, CTL_DELPRIV, _("Remove"), 
                 wxPoint(zeroPos.x * 2 + btnSize.GetWidth(), y), btnSize);
             y += zeroPos.y + btnSize.GetHeight();
