@@ -335,7 +335,7 @@ wxString dlgTable::GetSql()
         }
 
         AppendNameChange(sql);
-        AppendOwnerChange(sql);
+        AppendOwnerChange(sql, wxT("TABLE ") + tabname);
 
         for (index=0 ; index < (int)tmpDef.GetCount() ; index++)
         {

@@ -185,11 +185,19 @@ wxString dlgColumn::GetSql()
                     +  wxT("  TO ") + qtIdent(name)
                     +  wxT(";\n");
 
+            wxString len;
+            if (txtLength->IsEnabled())
+                len = txtLength->GetValue();
+
+            wxString prec;
+            if (txtPrecision->IsEnabled())
+                prec = txtPrecision->GetValue();
+
             if (connection->BackendMinimumVersion(7, 5))
             {
                 if (cbDatatype->GetValue() != column->GetRawTypename() || 
-                    (isVarLen && StrToLong(txtLength->GetValue()) != column->GetLength()) ||
-                    (isVarPrec && StrToLong(txtPrecision->GetValue()) != column->GetPrecision()))
+                    (isVarLen && txtLength->IsEnabled() && StrToLong(len) != column->GetLength()) ||
+                    (isVarPrec && txtPrecision->IsEnabled() && StrToLong(prec) != column->GetPrecision()))
                 {
                     sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                         +  wxT(" ALTER ") + qtIdent(name) + wxT(" TYPE ")
@@ -205,10 +213,10 @@ wxString dlgColumn::GetSql()
 
 
                 if (!sqlPart.IsEmpty() || 
-                    (isVarLen && StrToLong(txtLength->GetValue()) != column->GetLength()) ||
-                    (isVarPrec && StrToLong(txtPrecision->GetValue()) != column->GetPrecision()))
+                    (isVarLen && txtLength->IsEnabled() && StrToLong(prec) != column->GetLength()) ||
+                    (isVarPrec && txtPrecision->IsEnabled() && StrToLong(prec) != column->GetPrecision()))
                 {
-                    long typmod = pgDatatype::GetTypmod(column->GetRawTypename(), txtLength->GetValue(), txtPrecision->GetValue());
+                    long typmod = pgDatatype::GetTypmod(column->GetRawTypename(), len, prec);
 
                     if (!sqlPart.IsEmpty())
                         sqlPart += wxT(", ");

@@ -181,7 +181,7 @@ wxString dlgDomain::GetSql()
             else
                 sql += wxT(" SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
         }
-        AppendOwnerChange(sql);
+        AppendOwnerChange(sql, wxT("DOMAIN ") + qtIdent(name));
     }
     else
     {

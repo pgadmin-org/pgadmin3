@@ -215,6 +215,7 @@ void dlgType::OnSelChangeTypOrLen(wxCommandEvent &ev)
         CheckLenEnable();
         txtLength->Enable(isVarLen);
         CheckChange();
+        OnChangeMember(ev);
     }
 }
 

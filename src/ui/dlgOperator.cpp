@@ -130,6 +130,8 @@ int dlgOperator::Go(bool modal)
         cbProcedure->Disable();
         cbLeftType->Disable();
         cbRightType->Disable();
+        if (!connection->BackendMinimumVersion(8, 0))
+            cbOwner->Disable();
     }
     else
     {
@@ -384,16 +386,16 @@ wxString dlgOperator::GetSql()
     {
         // create mode
         name = schema->GetQuotedPrefix() + GetName() + wxT("(");
-	if (cbLeftType->GetGuessedSelection() > 0)
-	    name += GetQuotedTypename(cbLeftType->GetGuessedSelection());
-	else
-	    name += wxT("NONE");
-	name += wxT(", ");
-	if (cbRightType->GetGuessedSelection() > 0)
-	    name += GetQuotedTypename(cbRightType->GetGuessedSelection());
-	else
-	    name += wxT("NONE");
-	name += wxT(")");
+	    if (cbLeftType->GetGuessedSelection() > 0)
+	        name += GetQuotedTypename(cbLeftType->GetGuessedSelection());
+	    else
+	        name += wxT("NONE");
+	    name += wxT(", ");
+	    if (cbRightType->GetGuessedSelection() > 0)
+	        name += GetQuotedTypename(cbRightType->GetGuessedSelection());
+	    else
+	        name += wxT("NONE");
+	    name += wxT(")");
 
 
         sql = wxT("CREATE OPERATOR ") + schema->GetQuotedPrefix() + GetName()

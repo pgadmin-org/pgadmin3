@@ -440,10 +440,18 @@ wxString dlgFunction::GetArgs(bool withNames, bool quoted)
                     args += lstArguments->GetText(i) + wxT(" ");
             }
         }
+        wxString typname=lstArguments->GetText(i, typeColNo);
+        wxString braces;
+        if (typname.Right(2) == wxT("[]"))
+        {
+            braces = wxT("[]");
+            typname = typname.Left(typname.Length()-2);
+        }
         if (quoted)
-            AppendQuoted(args, lstArguments->GetText(i, typeColNo));
+            AppendQuoted(args, typname);
         else
-            args += lstArguments->GetText(i, typeColNo);
+            args += typname;
+        args += braces;
     }
 
     return args;

@@ -172,7 +172,7 @@ wxString dlgConversion::GetSql()
         // edit mode
 
         AppendNameChange(sql);
-        AppendOwnerChange(sql);
+        AppendOwnerChange(sql, wxT("CONVERSION ") + schema->GetQuotedPrefix() + qtIdent(name));
     }
     else
     {

@@ -208,7 +208,7 @@ wxString dlgAggregate::GetSql()
     {
         // edit mode
         AppendNameChange(sql);
-        AppendOwnerChange(sql);
+        AppendOwnerChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name));
     }
     else
     {

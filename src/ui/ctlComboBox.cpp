@@ -27,7 +27,7 @@ ctlComboBox::ctlComboBox(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long at
 
 int ctlComboBox::GuessSelection()
 {
-    wxString str=GetValue();
+    wxString str=wxComboBox::GetValue();
     if (str.Length())
     {
         long pos=GetInsertionPoint();

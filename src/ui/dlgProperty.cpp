@@ -260,13 +260,14 @@ void dlgProperty::AppendNameChange(wxString &sql)
 }
 
 
-void dlgProperty::AppendOwnerChange(wxString &sql)
+void dlgProperty::AppendOwnerChange(wxString &sql, const wxString &objName)
 {
     if (GetObject()->GetOwner() != cbOwner->GetValue())
-        sql += wxT("ALTER ") + GetObject()->GetTypeName()
-            +  wxT(" ") + qtIdent(GetName())
+    {
+        sql += wxT("ALTER ") + objName
             +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) 
             +  wxT(";\n");
+    }
 }
 
 
