@@ -84,14 +84,24 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
     txtArguments->Disable();
     btnAdd->Disable();
     btnRemove->Disable();
-
+#if 0
     wxPoint position=sbxDefinition->GetPosition();
     position.x += 10;
     position.y += 20;
     wxSize size=sbxDefinition->GetSize();
     size.SetHeight(size.GetHeight()-30);
     size.SetWidth(size.GetWidth()-20);
-    sqlBox=new ctlSQLBox(pnlParameter, CTL_SQLBOX, position, size, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
+#endif
+    sqlBox=new ctlSQLBox(pnlParameter, CTL_SQLBOX, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
+
+    wxWindow *placeholder=CTRL("txtSqlBox", wxTextCtrl);
+    wxSizer *sizer=placeholder->GetContainingSizer();
+    sizer->Add(sqlBox, 1, wxRIGHT|wxGROW, 5);
+    sizer->Remove(placeholder);
+    delete placeholder;
+    sizer->Layout();
+
+    libSizer = stObjectFile->GetContainingSizer();
 }
 
 
@@ -240,6 +250,15 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
 }
 
 
+void dlgFunction::ReplaceSizer(wxWindow *w, bool isC, int border)
+{
+    if (isC && !w->GetContainingSizer())
+        libSizer->Add(w, 0, wxLEFT|wxTOP, border);
+    else
+        libSizer->Remove(w);
+}
+
+        
 void dlgFunction::OnSelChangeLanguage(wxNotifyEvent &ev)
 {
     bool isC=(cbLanguage->GetValue().IsSameAs(wxT("C"), false));
@@ -249,6 +268,15 @@ void dlgFunction::OnSelChangeLanguage(wxNotifyEvent &ev)
     stLinkSymbol->Show(isC);
     txtLinkSymbol->Show(isC);
     sqlBox->Show(!isC);
+
+    ReplaceSizer(stObjectFile, isC, 3);
+    ReplaceSizer(txtObjectFile, isC, 0);
+    ReplaceSizer(stLinkSymbol, isC, 3);
+    ReplaceSizer(txtLinkSymbol, isC, 0);
+
+    libSizer->Layout();
+    sqlBox->GetContainingSizer()->Layout();
+
     OnChange(ev);
 }
 

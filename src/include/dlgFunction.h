@@ -40,11 +40,14 @@ private:
     void OnRemoveArg(wxNotifyEvent &ev);
 
     wxString GetArgs(bool quoted=false);
+    void ReplaceSizer(wxWindow *w, bool isC, int border);
+    wxSizer *libSizer;
 
     ctlSQLBox *sqlBox;
     wxArrayString typOids;
     wxArrayString types;
     wxArrayString argOids;
+
 
     DECLARE_EVENT_TABLE();
 };
