@@ -111,12 +111,20 @@ then
     PGSQL_OLD_LDFLAGS="$LDFLAGS"
     PGSQL_OLD_CPPFLAGS="$CPPFLAGS"
     LDFLAGS="$LDFLAGS -L${LIBPQ_HOME}/lib"
+
+    AC_LANG_SAVE
+    AC_LANG_C
+    AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
+    AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=no])
+    AC_LANG_RESTORE
+
     if test "$pgsql_include" != ""
     then
         CPPFLAGS="$CPPFLAGS -I${pgsql_include}"
     else
         CPPFLAGS="$CPPFLAGS -I${LIBPQ_HOME}/include"
     fi
+
     if test "$pg_static_build" = "yes"
     then
         if test "$pgsql_ssl_libpq" = "yes"
@@ -133,12 +141,12 @@ then
             LIBS="$LIBS -lcrypto -lpq"
         fi
     fi
+
     AC_LANG_SAVE
     AC_LANG_C
-    AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
-    AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=no])
     AC_CHECK_HEADER(libpq-fe.h, [pgsql_cv_libpqfe_h=yes], [pgsql_cv_libpqfe_h=no])
     AC_LANG_RESTORE
+
     if test "$pgsql_cv_libpq" = "yes" -a "$pgsql_cv_libpqfe_h" = "yes"
     then
         AC_MSG_CHECKING(pgsql in ${LIBPQ_HOME})
