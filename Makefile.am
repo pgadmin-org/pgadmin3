@@ -5,7 +5,7 @@
 # Makefile - Makefile for *nix systems
 SUBDIRS = src
 EXTRA_DIST = 	README.txt BUGS.txt LICENCE.txt \
-		pkg/debian/rules pkg/debian/README.debian \
+		pkg/debian/rules pkg/debian/README.Debian \
 		pkg/debian/docs pkg/debian/dirs \
 		pkg/debian/copyright pkg/debian/control \
 		pkg/debian/changelog \
