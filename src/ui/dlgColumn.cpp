@@ -293,22 +293,16 @@ wxString dlgColumn::GetSql()
                     + wxT(" ") + typname + wxT(";\n")
                     + wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                     + wxT("\n   ALTER COLUMN ") + qtIdent(name)
-                    + wxT(" SET NOT NULL;\n")
-                    + wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    + wxT("\n   ALTER COLUMN ") + qtIdent(name)
-                    + wxT(" SET DEFAULT nextval('") + sequence + wxT("'::text);\n");
+                    + wxT(" SET DEFAULT nextval('") + sequence + wxT("'::text);\n")
 
-                if (newSequence)
-                {
-                    sql += wxT("INSERT INTO pg_depend(classid, objid, objsubid, refclassid, refobjid, refobjsubid, deptype)\n")
-                        wxT("SELECT cl.oid, seq.oid, 0, cl.oid, ") + table->GetOidStr() + wxT(", attnum, 'i'\n")
-                        wxT("  FROM pg_class cl, pg_attribute, pg_class seq\n")
-                        wxT("  JOIN pg_namespace sn ON sn.OID=seq.relnamespace\n")
-                        wxT(" WHERE cl.relname='pg_class'\n")
-                        wxT("  AND seq.relname=") + qtString(table->GetName() + wxT("_") + name + wxT("_seq")) + wxT("\n")
-                        wxT("  AND sn.nspname=") + qtString(table->GetSchema()->GetName()) + wxT("\n")
-                        wxT("  AND attrelid=") + table->GetOidStr() + wxT(" AND attname=") + qtString(name) + wxT(";\n");
-                }
+                      wxT("INSERT INTO pg_depend(classid, objid, objsubid, refclassid, refobjid, refobjsubid, deptype)\n")
+                      wxT("SELECT cl.oid, seq.oid, 0, cl.oid, ") + table->GetOidStr() + wxT(", attnum, 'i'\n")
+                      wxT("  FROM pg_class cl, pg_attribute, pg_class seq\n")
+                      wxT("  JOIN pg_namespace sn ON sn.OID=seq.relnamespace\n")
+                      wxT(" WHERE cl.relname='pg_class'\n")
+                      wxT("  AND seq.relname=") + qtString(table->GetName() + wxT("_") + name + wxT("_seq")) + wxT("\n")
+                      wxT("  AND sn.nspname=") + qtString(table->GetSchema()->GetName()) + wxT("\n")
+                      wxT("  AND attrelid=") + table->GetOidStr() + wxT(" AND attname=") + qtString(name) + wxT(";\n");
             }
             else
             {
