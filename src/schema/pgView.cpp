@@ -107,9 +107,10 @@ pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 {
     pgView *view=0;
 
+
     pgSet *views= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT c.oid, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
-             + collection->GetDatabase()->GetViewdefFunction() + wxT("(c.oid) AS definition\n")
+               wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition\n")
         wxT("  FROM pg_class c\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
         wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")

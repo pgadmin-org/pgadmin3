@@ -75,7 +75,7 @@ void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, _("Event"), GetEvent());
         InsertListItem(properties, pos++, _("Condition"), GetCondition());
         InsertListItem(properties, pos++, _("Do Instead?"), GetDoInstead());
-        InsertListItem(properties, pos++, _("Action"), GetAction());
+        InsertListItem(properties, pos++, _("Action"), GetAction().Left(250));
         if (def.IsEmpty())
             InsertListItem(properties, pos++, _("Definition"), wxT("NOTHING"));
         else
@@ -110,7 +110,7 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
     pgSet *rules= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT rw.oid, rw.ev_class, rulename, relname, nspname, description, is_instead, ev_type, ev_action, ev_qual,\n")
-        wxT("       ") + collection->GetDatabase()->GetRuledefFunction() + wxT("(rw.oid) as definition\n")
+        wxT("       pg_get_ruledef(rw.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition\n")
         wxT("  FROM pg_rewrite rw\n")
         wxT("  JOIN pg_class cl ON cl.oid=rw.ev_class\n")
         wxT("  JOIN pg_namespace nsp ON nsp.oid=cl.relnamespace\n")

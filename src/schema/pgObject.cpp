@@ -220,7 +220,7 @@ wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString&
         if (str.Find('x') >= 0)
         {
             if (!rights.IsNull()) rights.Append(wxT(", "));
-            rights.Append(wxT("REFERENCE"));
+            rights.Append(wxT("REFERENCES"));
         }
         if (str.Find('t') >= 0)
         {
@@ -578,7 +578,7 @@ tokenAction secondOnToken=
 wxString pgRuleObject::GetFormattedDefinition()
 {
     // pgsql 7.4 does formatting itself
-    if (GetConnection()->BackendMinimumVersion(7, 4))
+    if (!GetDatabase()->GetPrettyOption().IsEmpty())
         return GetDefinition();
 
     ////////////////////////////////

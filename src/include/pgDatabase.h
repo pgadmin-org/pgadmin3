@@ -36,9 +36,7 @@ public:
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
 
-    wxString GetViewdefFunction() const { return viewdefFunction; }
-    wxString GetRuledefFunction() const { return ruledefFunction; }
-    wxString GetExprFunction() const { return exprFunction; }
+    wxString GetPrettyOption() const { return prettyOption; }
 
     bool GetCreatePrivilege() const { return createPrivilege; }
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
@@ -66,7 +64,7 @@ public:
 private:
     pgConn *conn;
     wxString path, encoding, variables;
-    wxString viewdefFunction, ruledefFunction, exprFunction;
+    wxString prettyOption;
     bool allowConnections, connected, createPrivilege;
 };
 

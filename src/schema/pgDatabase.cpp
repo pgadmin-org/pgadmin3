@@ -67,26 +67,12 @@ int pgDatabase::Connect()
         {
             // Now we're connected.
             connected = TRUE;
-            pgSet *set=conn->ExecuteSet(
-                wxT("SELECT DEFS.*, description\n")
-                wxT("  FROM (SELECT \n")
-                wxT("  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_viewdef', 'pg_get_viewdef2')")
-                wxT(      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_viewdef,\n")
-                wxT("  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_ruledef', 'pg_get_ruledef2')")
-                wxT(      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_ruledef,\n")
-                wxT("  (SELECT proname FROM pg_proc WHERE proname IN ('pg_get_expr', 'pg_get_expr2')")
-                wxT(      " AND pronamespace=11 ORDER BY proname DESC LIMIT 1) AS get_expr,\n")
-                wxT(" 'nix' as get_ruledef, 'expr' as get_expr\n")
-                wxT("       ) AS DEFS\n")
-                wxT("  LEFT OUTER JOIN pg_description ON objoid=") + GetOidStr());
-            if (set)
-            {
-                viewdefFunction = set->GetVal(wxT("get_viewdef"));
-                ruledefFunction = set->GetVal(wxT("get_ruledef"));
-                exprFunction = set->GetVal(wxT("get_expr"));
-                iSetComment(set->GetVal(wxT("description")));
-                delete set;
-            }
+            iSetComment(conn->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
+
+            wxString exprname=conn->ExecuteScalar(wxT("SELECT proname FROM pg_proc WHERE proname='pg_get_viewdef' AND proargtypes[1]=23"));
+            if (!exprname.IsEmpty())
+                prettyOption = wxT(", 255");
+            
             return PGCONN_OK;
         }
         else
