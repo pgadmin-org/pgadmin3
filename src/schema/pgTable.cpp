@@ -506,3 +506,4 @@ void pgTable::ShowStatistics(pgCollection *collection, wxListCtrl *statistics)
 	    delete stats;
     }
 }
+

@@ -114,3 +114,4 @@ pgObject *pgUnique::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 {
     return pgIndex::ReadObjects(collection, browser, wxT("   AND contype='u'\n") + where);
 }
+

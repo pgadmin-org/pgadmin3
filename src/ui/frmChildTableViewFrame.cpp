@@ -542,3 +542,4 @@ void frmChildTableViewFrame::OnPaint(wxPaintEvent &event)
 	dc.SetFont(*wxNORMAL_FONT);
 	dc.DrawText(m_title, 1, 1);
 }
+

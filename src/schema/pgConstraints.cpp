@@ -60,3 +60,4 @@ void pgConstraints::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtr
     if (properties)
         ShowList(wxT("Constraints"), browser, properties);
 }
+
