@@ -231,31 +231,31 @@ wxString pgaSchedule::GetWeekdaysString()
 			switch (x)
 			{
 				case 0:
-					res += _("Monday");
+					res += _("Sunday");
 					res += wxT(", ");
 					break;
 				case 1:
-					res += _("Tuesday");
+					res += _("Monday");
 					res += wxT(", ");
 					break;
 				case 2:
-					res += _("Wednesday");
+					res += _("Tuesday");
 					res += wxT(", ");
 					break;
 				case 3:
-					res += _("Thursday");
+					res += _("Wednesday");
 					res += wxT(", ");
 					break;
 				case 4:
-					res += _("Friday");
+					res += _("Thursday");
 					res += wxT(", ");
 					break;
 				case 5:
-					res += _("Saturday");
+					res += _("Friday");
 					res += wxT(", ");
 					break;
 				case 6:
-					res += _("Sunday");
+					res += _("Saturday");
 					res += wxT(", ");
 					break;
 				default:
@@ -293,8 +293,8 @@ wxString pgaSchedule::GetMonthdaysString()
 	{
 		if (monthdays[x] == 't')
 		{
-			if (x < 32)
-				res.Printf(wxT("%s%d, "), res, x);
+			if (x < 31)
+				res.Printf(wxT("%s%d, "), res, x + 1);
 			else
 			{
 				res += _("Last day");
