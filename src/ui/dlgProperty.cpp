@@ -579,7 +579,8 @@ void dlgProperty::CreateListColumns(wxListCtrl *list, const wxString &left, cons
     int rightSize;
     if (leftSize < 0)
     {
-        leftSize = rightSize = width/2-10;
+        leftSize = rightSize = width/2-10
+            -2; // border
     }
     else
     {
@@ -908,9 +909,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
             wxString str=obj->GetAcl();
             if (!str.IsEmpty())
             {
-wxMessageBox(str);
                 str = str.Mid(1, str.Length()-2);
-wxMessageBox(str);
                 wxStringTokenizer tokens(str, wxT(","));
 
                 while (tokens.HasMoreTokens())
