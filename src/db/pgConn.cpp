@@ -48,7 +48,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
 }
 
 
-pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode)
+pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid)
 {
     wxLogInfo(wxT("Creating pgConn object"));
     wxString msg, hostip;
@@ -138,7 +138,19 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     // Open the connection
     wxLogInfo(wxT("Opening connection with connection string: %s"), connstr.c_str());
 
+    bool connectAscii=false;
+
+#if wxUSE_UNICODE
+    conn = PQconnectdb(connstr.mb_str(wxConvUTF8));
+    if (PQstatus(conn) != CONNECTION_OK)
+    {
+        PQfinish(conn);
+        conn = PQconnectdb(connstr.mb_str(wxConvLibc));
+    }
+#else
     conn = PQconnectdb(connstr.ToAscii());
+#endif
+
     dbHost = server;
 
     // Set client encoding to Unicode/Ascii
@@ -147,15 +159,24 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
         connStatus = PGCONN_OK;
         PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
 
-        pgSet *set=ExecuteSet(
-            wxT("SELECT pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
-            wxT("  FROM pg_database WHERE datname=") + qtString(database));
+
+        wxString sql=wxT("SELECT oid, pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
+                      wxT("  FROM pg_database WHERE ");
+        if (oid)
+            sql += wxT("oid = ") + NumToStr(oid);
+        else
+            sql += wxT("datname=") + qtString(database);
+
+        pgSet *set = ExecuteSet(sql);
+
+
         if (set)
         {
             if (set->ColNumber(wxT("\"datlastsysoid\"")) >= 0)
                 needColQuoting = true;
 
-            lastSystemOID = set->GetLong(wxT("datlastsysoid"));
+            lastSystemOID = set->GetOid(wxT("datlastsysoid"));
+            dbOid = set->GetOid(wxT("oid"));
             wxString encoding = set->GetVal(wxT("encoding"));
 
 #if wxUSE_UNICODE
@@ -164,6 +185,8 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
                 encoding = wxT("UNICODE");
                 conv = &wxConvUTF8;
             }
+            else
+                conv = &wxConvLibc;
 #endif
 
             wxLogInfo(wxT("Setting client_encoding to '%s'"), encoding.c_str());
@@ -440,7 +463,7 @@ bool pgConn::HasFeature(int featureNo)
             wxT("SELECT proname, pronargs, proargtypes[0] AS arg0, proargtypes[1] AS arg1, proargtypes[2] AS arg2\n")
             wxT("  FROM pg_proc\n")
             wxT(" WHERE proname IN ('pg_tablespace_size', 'pg_file_read', 'pg_rotate_log',")
-            wxT(                  " 'pg_postmaster_starttime', 'pg_terminate_backend')"));
+            wxT(                  " 'pg_postmaster_starttime', 'pg_terminate_backend', 'pg_reload_conf')"));
 
         if (set)
         {
@@ -460,6 +483,8 @@ bool pgConn::HasFeature(int featureNo)
                     features[FEATURE_POSTMASTER_STARTTIME] = true;
                 else if (proname == wxT("pg_terminate_backend") && pronargs == 1 && set->GetLong(wxT("arg0")) == 23)
                     features[FEATURE_TERMINATE_BACKEND] = true;
+                else if (proname == wxT("pg_reload_conf") && pronargs == 0)
+                    features[FEATURE_RELOAD_CONF] = true;
 
                 set->MoveNext();
             }

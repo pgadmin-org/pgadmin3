@@ -50,7 +50,7 @@ enum
 class pgConn
 {
 public:
-    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0);
+    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0, OID oid=0);
     ~pgConn();
 
     void Close();
@@ -72,6 +72,7 @@ public:
     wxString GetLastError() const;
     wxString GetVersionString();
     OID GetLastSystemOID() const { return lastSystemOID; }
+    OID GetDbOid() const { return dbOid; }
     bool BackendMinimumVersion(int major, int minor);
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
     wxString SystemNamespaceRestriction(const wxString &nsp);
@@ -95,6 +96,7 @@ private:
     bool needColQuoting;
     wxString dbHost;
     OID lastSystemOID;
+    OID dbOid;
 
     void *noticeArg;
     PQnoticeProcessor noticeProc;

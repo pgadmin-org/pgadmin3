@@ -62,7 +62,7 @@ public:
     bool GetSuperUser() const { return superUser; }
     void iSetSuperUser(const bool b) { superUser=b; }
 
-    pgConn *CreateConn(wxString dbName=wxEmptyString);
+    pgConn *CreateConn(wxString dbName=wxEmptyString, OID oid=0);
 
     wxString GetLastDatabase() const { return lastDatabase; }
     void iSetLastDatabase(const wxString& s) { lastDatabase=s; }
@@ -111,6 +111,7 @@ private:
     int port, ssl;
     bool trusted, discovered, createPrivilege, superUser;
     OID lastSystemOID;
+    OID dbOid;
     wxString versionNum;
 
 #ifdef WIN32

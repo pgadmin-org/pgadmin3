@@ -41,7 +41,7 @@ public:
     bool ExecuteVoid(const wxString& sql);
     void UpdateDefaultSchema();
 
-    pgConn *CreateConn() { return server->CreateConn(GetName()); }
+    pgConn *CreateConn() { return server->CreateConn(GetName(), GetOid()); }
 
     wxString GetPrettyOption() const { return prettyOption; }
 

@@ -87,15 +87,17 @@ pgServer *pgServer::GetServer() const
 }
 
 
-pgConn *pgServer::CreateConn(wxString dbName)
+pgConn *pgServer::CreateConn(wxString dbName, OID oid)
 {
     if (!connected)
         return 0;
 
     if (dbName.IsEmpty())
+    {
         dbName = GetDatabaseName();
-
-    pgConn *conn=new pgConn(GetName(), dbName, username, password, port, ssl);
+        oid = dbOid;
+    }
+    pgConn *conn=new pgConn(GetName(), dbName, username, password, port, ssl, oid);
 
     if (conn && conn->GetStatus() != PGCONN_OK)
     {
@@ -301,6 +303,8 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
     int status = conn->GetStatus();
     if (status == PGCONN_OK)
     {
+        dbOid = conn->GetDbOid();
+
         // Check the server version
         if (conn->BackendMinimumVersion(7, 3))
         {
