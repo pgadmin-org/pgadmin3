@@ -71,6 +71,7 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool GetSystemObject() const { return colNumber < 0; }
     wxString GetSql(wxTreeCtrl *browser);
+    wxString GetHelpPage(bool forCreate) const { return wxT("sql-createtable.html"); }
 
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 

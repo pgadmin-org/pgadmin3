@@ -81,6 +81,17 @@ void pgObject::AppendMenu(wxMenu *menu, int type)
 }
 
 
+wxString pgObject::GetHelpPage(bool forCreate) const
+{
+    wxString page;
+
+    if (!IsCollection())
+        page=wxT("sql-create") + GetTypeName().Lower() + wxT(".html");
+
+    return page;
+}
+
+
 wxMenu *pgObject::GetNewMenu()
 {
     wxMenu *menu=new wxMenu();

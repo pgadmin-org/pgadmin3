@@ -40,6 +40,7 @@
 #include "pgFunction.h"
 #include "frmQueryBuilder.h"
 #include "frmEditGrid.h"
+#include "frmSqlHelp.h"
 #include "dlgProperty.h"
 #include "frmVacuum.h"
 
@@ -48,6 +49,9 @@
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_SQL,                       frmMain::OnSql)
     EVT_MENU(MNU_VACUUM,                    frmMain::OnVacuum)
+    EVT_MENU(MNU_CONTENTS,                  frmMain::OnContents)
+    EVT_MENU(MNU_HELP,                      frmMain::OnHelp)
+    EVT_MENU(MNU_PGSQLHELP,                 frmMain::OnPgsqlHelp)
     EVT_MENU(MNU_ABOUT,                     frmMain::OnAbout)
     EVT_MENU(MNU_ADDSERVER,                 frmMain::OnAddServer)
     EVT_MENU(MNU_REFRESH,                   frmMain::OnRefresh)
@@ -170,6 +174,40 @@ void frmMain::OnReload(wxCommandEvent& WXUNUSED(event))
     }
 }
 
+void frmMain::OnContents(wxCommandEvent& event)
+{
+}
+
+
+
+void frmMain::OnPgsqlHelp(wxCommandEvent& event)
+{
+    wxString helpSite=settings->GetHelpSite();
+    frmSqlHelp *h=new frmSqlHelp(this);
+    h->Show(true);
+    if (!h->Load(helpSite + wxT("index.html")))
+        h->Destroy();
+}
+
+
+void frmMain::OnHelp(wxCommandEvent& event)
+{
+    wxString helpSite=settings->GetHelpSite();
+    wxString page;
+
+    wxTreeItemId item=browser->GetSelection();
+    pgObject *obj = (pgObject*)browser->GetItemData(item);
+    if (obj)
+        page=obj->GetHelpPage(true);
+
+    if (page.IsEmpty())
+        page = wxT("sql-commands.html");
+
+    frmSqlHelp *h=new frmSqlHelp(this);
+    h->Show(true);
+    if (!h->Load(helpSite + page))
+        h->Destroy();
+}
 
 
 void frmMain::OnOptions(wxCommandEvent& event)

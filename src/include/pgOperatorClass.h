@@ -44,6 +44,7 @@ public:
 
     bool CanDrop() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    wxString GetHelpPage(bool forCreate) const { return wxT("sql-createopclass.html"); }
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:

@@ -45,6 +45,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 
     // Show System Objects
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
+    Read(wxT("SqlHelpSite"), &helpSite, wxT("http://developer.postgresql.org/docs/postgres/"));
 
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
     maxColSize=Read(wxT("frmQuery/MaxColSize"), 256L);
@@ -65,6 +66,7 @@ sysSettings::~sysSettings()
     Write(wxT("AskSaveConfirmation"), BoolToYesNo(askSaveConfirmation));
     Write(wxT("ConfirmDelete"), BoolToYesNo(confirmDelete));
     Write(wxT("ShowUsersForPrivileges"), BoolToYesNo(showUsersForPrivileges));
+    Write(wxT("SqlHelpSite"), helpSite);
 }
 
 //////////////////////////////////////////////////////////////////////////

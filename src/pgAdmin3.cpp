@@ -15,6 +15,9 @@
 #include <wx/app.h>
 #include <wx/dir.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/imagjpeg.h>
+#include <wx/imaggif.h>
+#include <wx/imagpng.h>
 
 // Windows headers
 #ifdef __WXMSW__
@@ -83,6 +86,10 @@ bool pgAdmin3::OnInit()
         wxLogFatalError("Cannot initialise the networking subsystem!");   
     }
 #endif
+
+    wxImage::AddHandler(new wxJPEGHandler());
+    wxImage::AddHandler(new wxPNGHandler());
+    wxImage::AddHandler(new wxGIFHandler());
 
     // Setup the XML resources
     wxXmlResource::Get()->InitAllHandlers();

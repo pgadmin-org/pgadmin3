@@ -28,6 +28,7 @@ pgFunction::~pgFunction()
 {
 }
 
+
 bool pgFunction::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     return GetDatabase()->ExecuteVoid(wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(")"));

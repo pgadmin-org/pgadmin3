@@ -24,6 +24,7 @@
 #include "images/pgAdmin3.xpm"
 
 
+#define txtHelpSite                 CTRL("txtHelpSite", wxTextCtrl)
 #define txtLogfile                  CTRL("txtLogfile", wxTextCtrl)
 #define radLoglevel                 CTRL("radLoglevel", wxRadioBox)
 #define txtMaxRows                  CTRL("txtMaxRows", wxTextCtrl)
@@ -50,6 +51,9 @@ frmOptions::frmOptions(wxFrame *parent)
     SetIcon(wxIcon(pgAdmin3_xpm));
     CenterOnParent();
 
+    wxTextValidator numval(wxFILTER_NUMERIC);
+    txtMaxRows->SetValidator(numval);
+    txtMaxColSize->SetValidator(numval);
     txtLogfile->SetValue(settings->GetLogFile());
     radLoglevel->SetSelection(settings->GetLogLevel());
     txtMaxRows->SetValue(NumToStr(settings->GetMaxRows()));
@@ -57,6 +61,8 @@ frmOptions::frmOptions(wxFrame *parent)
     chkAskSaveConfirm->SetValue(!settings->GetAskSaveConfirmation());
     chkAskDelete->SetValue(settings->GetConfirmDelete());
     chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
+
+    txtHelpSite->SetValue(settings->GetHelpSite());
 }
 
 
@@ -105,6 +111,8 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetAskSaveConfirmation(!chkAskSaveConfirm->IsChecked());
     settings->SetConfirmDelete(chkAskDelete->IsChecked());
     settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->IsChecked());
+
+    settings->SetHelpSite(txtHelpSite->GetValue());
     Destroy();
 }
 

@@ -24,7 +24,7 @@ ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp \
 ui/dlgAddTableView.cpp ui/events.cpp ui/frmAbout.cpp \
 ui/frmChildTableViewFrame.cpp ui/frmConnect.cpp \
 ui/frmMain.cpp ui/frmOptions.cpp ui/frmPassword.cpp \
-ui/frmQuery.cpp ui/frmQueryBuilder.cpp \
+ui/frmQuery.cpp ui/frmQueryBuilder.cpp ui/frmSqlHelp.cpp \
 ui/frmQBJoin.cpp ui/frmSplash.cpp ui/frmVacuum.cpp \
 ui/frmEditGrid.cpp ui/dlgProperty.cpp ui/dlgUser.cpp \
 ui/dlgGroup.cpp ui/dlgDatabase.cpp ui/dlgLanguage.cpp \
@@ -37,7 +37,7 @@ utils/sysLogger.cpp utils/sysSettings.cpp
 
 noinst_HEADERS = include/copyright.h include/ctlSQLBox.h \
 include/ctlSQLResult.h include/dlgAddTableView.h \
-include/pgDefs.h \
+include/pgDefs.h include/pgDatatype.h \
 include/dlgCheck.h include/dlgColumn.h \
 include/dlgDatabase.h include/dlgDomain.h \
 include/dlgForeignKey.h include/dlgGroup.h \
@@ -48,7 +48,7 @@ include/dlgUser.h include/frmAbout.h \
 include/frmChildTableViewFrame.h include/frmConnect.h \
 include/frmEditGrid.h include/frmMain.h \
 include/frmOptions.h include/frmPassword.h \
-include/frmQBJoin.h include/frmQueryBuilder.h \
+include/frmQBJoin.h include/frmQueryBuilder.h include/frmSqlHelp.h \
 include/frmQuery.h include/frmSplash.h \
 include/frmStatus.h include/frmVacuum.h \
 include/misc.h include/pgAdmin3.h include/pgAggregate.h \

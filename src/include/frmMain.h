@@ -67,7 +67,11 @@ private:
     wxSplitterWindow *horizontal, *vertical;
 
     void OnKeyDown(wxKeyEvent& event);
+
     void OnAbout(wxCommandEvent& event);
+    void OnContents(wxCommandEvent& event);
+    void OnHelp(wxCommandEvent& event);
+    void OnPgsqlHelp(wxCommandEvent& event);
     void OnAddServer(wxCommandEvent &ev);
     void OnExit(wxCommandEvent& event);
     void OnViewData(wxCommandEvent& event);

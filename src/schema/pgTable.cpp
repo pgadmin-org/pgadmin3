@@ -51,6 +51,15 @@ wxMenu *pgTable::GetNewMenu()
 }
 
 
+wxString pgTable::GetHelpPage(bool forCreate) const
+{ 
+    if (forCreate)
+        return wxT("sql-createtable.html");
+    else
+        return wxT("sql-altertable.html");
+}
+
+
 bool pgTable::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     return GetDatabase()->ExecuteVoid(wxT("DROP TABLE ") + GetQuotedFullIdentifier());

@@ -171,7 +171,7 @@ pgObject *pgForeignKey::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
-    pgForeignKey *foreignKey;
+    pgForeignKey *foreignKey=0;
 
     pgSet *foreignKeys= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT ct.oid, conname, condeferrable, condeferred, confupdtype, confdeltype, confmatchtype, "

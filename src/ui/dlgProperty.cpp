@@ -17,11 +17,13 @@
 #include "ctlSQLBox.h"
 #include "pgCollection.h"
 #include "pgDatatype.h"
+#include "misc.h"
 
 // Images
 #include "images/properties.xpm"
 
 #include "frmMain.h"
+#include "frmSqlHelp.h"
 
 // Property dialogs
 #include "dlgProperty.h"
@@ -66,6 +68,7 @@ BEGIN_EVENT_TABLE(dlgProperty, wxDialog)
     EVT_BUTTON (XRCID("btnOK"),                     dlgProperty::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),                 dlgProperty::OnCancel)
     EVT_CLOSE(                                      dlgProperty::OnClose)
+    EVT_MENU(MNU_HELP,                              dlgProperty::OnHelp)
 END_EVENT_TABLE();
 
 
@@ -81,6 +84,12 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
         return;
     }
     SetIcon(wxIcon(properties_xpm));
+
+    wxAcceleratorEntry entries[1];
+    entries[0].Set(wxACCEL_NORMAL, WXK_F1, MNU_HELP);
+    wxAcceleratorTable accel(1, entries);
+
+    SetAcceleratorTable(accel);
 
 #ifdef __WIN32__
     wxNotebookPage *page=nbNotebook->GetPage(0);
@@ -105,6 +114,34 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
     statusBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 }
 
+
+void dlgProperty::OnHelp(wxCommandEvent& event)
+{
+    wxString helpSite=settings->GetHelpSite();
+    wxString page=GetHelpPage();
+
+    if (page.IsEmpty())
+        page = wxT("index.html");
+
+    frmSqlHelp *h=new frmSqlHelp(mainForm);
+    h->Show(true);
+    if (!h->Load(helpSite + page))
+        h->Destroy();
+}
+
+
+wxString dlgProperty::GetHelpPage() const
+{
+    wxString page;
+    pgObject *obj=0; //GetObject();
+    if (obj)
+        page=obj->GetHelpPage(false);
+    else
+    {
+        page=wxT("sql-create") + wxString(typeNameList[objectType]).Lower() + wxT(".html");
+    }
+    return page;
+}
 
 
 void dlgProperty::CheckValid(bool &enable, const bool condition, const wxString &msg)

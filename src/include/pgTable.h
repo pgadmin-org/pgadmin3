@@ -61,6 +61,7 @@ public:
 
     wxMenu *GetNewMenu();
     wxString GetSql(wxTreeCtrl *browser);
+    wxString GetHelpPage(bool forCreate) const;
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:

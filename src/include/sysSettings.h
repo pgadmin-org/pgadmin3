@@ -60,7 +60,8 @@ public:
     void SetAskSaveConfirmation(const bool b) { askSaveConfirmation=b; }
     bool GetConfirmDelete() const { return confirmDelete; }
     void SetConfirmDelete(const bool b) { confirmDelete=b; }
-
+    wxString GetHelpSite() const { return helpSite; }
+    void SetHelpSite(const wxString& s) { helpSite = s; }
     bool GetShowUsersForPrivileges() const { return showUsersForPrivileges; }
     void SetShowUsersForPrivileges(const bool b) { showUsersForPrivileges=b; }
 
@@ -87,6 +88,7 @@ private:
     // Show System Objects
     bool showSystemObjects;
 
+    wxString helpSite;
     bool showUsersForPrivileges;
     bool askSaveConfirmation;
     bool confirmDelete;

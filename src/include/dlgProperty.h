@@ -44,6 +44,7 @@ public:
     virtual pgObject *GetObject() =0;
 
     virtual void CreateAdditionalPages();
+    virtual wxString GetHelpPage() const;
     void SetConnection(pgConn *conn) { connection=conn; }
     virtual int Go(bool modal=false);
 
@@ -63,6 +64,7 @@ protected:
 
     void OnPageSelect(wxNotebookEvent& event);
     void OnOK(wxNotifyEvent &ev);
+    void OnHelp(wxCommandEvent& ev);
     void OnCancel(wxNotifyEvent &ev);
     void OnClose(wxCloseEvent &ev);
 

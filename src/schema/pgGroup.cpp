@@ -113,7 +113,7 @@ pgObject *pgGroup::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 pgObject *pgGroup::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
-    pgGroup *group;
+    pgGroup *group=0;
 
     pgSet *groups= collection->GetServer()->ExecuteSet(wxT(
         "SELECT * from pg_group") + restriction);

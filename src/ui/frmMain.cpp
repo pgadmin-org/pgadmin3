@@ -152,7 +152,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // Help Menu
     helpMenu = new wxMenu();
-    helpMenu->Append(MNU_CONTENTS, wxT("&Help..."),                 wxT("Open the helpfile."));
+    helpMenu->Append(MNU_CONTENTS, wxT("&Help..."),                 wxT("Open the pgAdmin III helpfile."));
+    helpMenu->Append(MNU_HELP, wxT("SQL Help"),                     wxT("Display help on SQL commands."));
+    helpMenu->Append(MNU_PGSQLHELP, wxT("PostgreSQL Help"),         wxT("Display help on PostgreSQL database system."));
     helpMenu->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."),    wxT("Show a tip of the day."));
     helpMenu->AppendSeparator();
     helpMenu->Append(MNU_ABOUT, wxT("&About..."),                   wxT("Show about dialog."));
@@ -188,10 +190,11 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     SetStatusText(wxT("Ready."), 1);
     SetStatusText(wxT("0 Secs"), 2);
 
-    wxAcceleratorEntry entries[2];
+    wxAcceleratorEntry entries[3];
     entries[0].Set(wxACCEL_NORMAL, WXK_F5, MNU_REFRESH);
     entries[1].Set(wxACCEL_NORMAL, WXK_DELETE, MNU_DELETE);
-    wxAcceleratorTable accel(2, entries);
+    entries[2].Set(wxACCEL_NORMAL, WXK_F1, MNU_HELP);
+    wxAcceleratorTable accel(3, entries);
 
     SetAcceleratorTable(accel);
 

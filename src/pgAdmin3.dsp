@@ -471,6 +471,10 @@ SOURCE=.\ui\frmSplash.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\frmSqlHelp.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\frmStatus.cpp
 # End Source File
 # Begin Source File
@@ -543,6 +547,10 @@ SOURCE=.\include\frmQueryBuilder.h
 # Begin Source File
 
 SOURCE=.\include\frmSplash.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmSqlHelp.h
 # End Source File
 # Begin Source File
 
