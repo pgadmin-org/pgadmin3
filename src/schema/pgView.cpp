@@ -113,7 +113,7 @@ pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
         wxT("SELECT c.oid, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
                wxT("pg_get_viewdef(c.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition\n")
         wxT("  FROM pg_class c\n")
-        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0)\n")
         wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")
         wxT("           SELECT r.rulename FROM pg_rewrite r\n")
         wxT("            WHERE ((r.ev_class = c.oid)\n")
