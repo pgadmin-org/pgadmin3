@@ -39,6 +39,8 @@ public:
     wxString GetFullName() const {return GetName()+wxT("(")+GetArgTypes()+wxT(")"); }
     wxString GetArgTypes() const { return argTypes; }
     void iSetArgTypes(const wxString& s) { argTypes=s; }
+    wxString GetQuotedArgTypes() const { return quotedArgTypes; }
+    void iSetQuotedArgTypes(const wxString& s) { quotedArgTypes=s; }
     wxString GetArgTypeOids() const { return argTypeOids; }
     void iSetArgTypeOids(const wxString& s) { argTypeOids = s; }
     wxString GetReturnType() const { return returnType; }
@@ -70,7 +72,7 @@ protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxT(""));
 
 private:
-    wxString argTypeOids, argTypes, returnType, language, volatility, source, bin;
+    wxString argTypeOids, argTypes, returnType, language, volatility, source, bin, quotedArgTypes;
     bool returnAsSet, secureDefiner, isStrict;
     long argCount;
 };

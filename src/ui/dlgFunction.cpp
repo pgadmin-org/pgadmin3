@@ -349,7 +349,7 @@ wxString dlgFunction::GetSql()
         // edit mode
 
         name = function->GetQuotedFullIdentifier() 
-                            + wxT("(") + GetArgs(true) + wxT(")");
+                            + wxT("(") + function->GetQuotedArgTypes() + wxT(")");
 
         if (didChange)
             sql += wxT("CREATE OR REPLACE FUNCTION ") + name;
@@ -402,7 +402,7 @@ wxString dlgFunction::GetSql()
 
     if (function && GetName() != function->GetName())
         sql += wxT("ALTER FUNCTION ") + name 
-             + wxT(" RENAME TO ") + GetName() + wxT(";\n");
+             + wxT(" RENAME TO ") + qtIdent(GetName()) + wxT(";\n");
 
     return sql;
 }

@@ -50,7 +50,7 @@ wxString pgAggregate::GetSql(wxTreeCtrl *browser)
 
         if (!GetComment().IsNull())
         {
-            sql = wxT("COMMENT ON AGGREGATE ") + GetQuotedFullIdentifier() 
+            sql += wxT("COMMENT ON AGGREGATE ") + GetQuotedFullIdentifier() 
                 + wxT("(") + qtIdent(GetInputType())
                 + wxT(") IS ") + qtString(GetComment()) + wxT(";\n");
         }

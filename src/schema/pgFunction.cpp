@@ -31,7 +31,7 @@ pgFunction::~pgFunction()
 
 bool pgFunction::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(");"));
+    return GetDatabase()->ExecuteVoid(wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(");"));
 }
 
 pgFunction::pgFunction(pgSchema *newSchema, int newType, const wxString& newName)
@@ -61,9 +61,9 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes() + wxT(")\n\n")
-            + wxT("-- DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(");")
-            + wxT("\n\nCREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes()
+        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypes() + wxT(")\n\n")
+            + wxT("-- DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(");")
+            + wxT("\n\nCREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypes()
             + wxT(")\n  RETURNS ");
         if (GetReturnAsSet())
             sql += wxT("SETOF ");
@@ -84,7 +84,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 
     if (!GetComment().IsNull())
     {
-        sql += wxT("COMMENT ON FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes() + wxT(")")
+        sql += wxT("COMMENT ON FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypes() + wxT(")")
             + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
     }
 }
@@ -162,7 +162,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             wxString oids=functions->GetVal(wxT("proargtypes"));
             function->iSetArgTypeOids(oids);
 
-            wxString str, argTypes;
+            wxString str, argTypes, quotedArgTypes;
             wxStringTokenizer args(oids);
             while (args.HasMoreTokens())
             {
@@ -175,14 +175,18 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
                         types->MoveNext();
 
                     if (!argTypes.IsNull())
+		    {
                         argTypes += wxT(", ");
-
+                        quotedArgTypes += wxT(", ");
+		    }
                     argTypes += types->GetVal(1);
+                    quotedArgTypes += qtIdent(types->GetVal(1));
 
                 }
             }
 
             function->iSetArgTypes(argTypes);
+            function->iSetQuotedArgTypes(quotedArgTypes);
 
             function->iSetLanguage(functions->GetVal(wxT("lanname")));
             function->iSetSecureDefiner(functions->GetBool(wxT("prosecdef")));
