@@ -554,10 +554,6 @@ SOURCE=.\include\frmSplash.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\include\frmSqlHelp.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\include\frmStatus.h
 # End Source File
 # Begin Source File
@@ -1036,6 +1032,10 @@ SOURCE=.\include\images\viewdata.xpm
 # Begin Source File
 
 SOURCE=.\include\copyright.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\menu.h
 # End Source File
 # Begin Source File
 

@@ -84,14 +84,7 @@ dlgFunction::dlgFunction(frmMain *frame, pgFunction *node, pgSchema *sch)
     txtArguments->Disable();
     btnAdd->Disable();
     btnRemove->Disable();
-#if 0
-    wxPoint position=sbxDefinition->GetPosition();
-    position.x += 10;
-    position.y += 20;
-    wxSize size=sbxDefinition->GetSize();
-    size.SetHeight(size.GetHeight()-30);
-    size.SetWidth(size.GetWidth()-20);
-#endif
+
     sqlBox=new ctlSQLBox(pnlParameter, CTL_SQLBOX, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
 
     wxWindow *placeholder=CTRL("txtSqlBox", wxTextCtrl);
