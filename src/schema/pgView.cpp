@@ -68,7 +68,7 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, wxT("OID"), GetOid());
         InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
         InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
-        InsertListItem(properties, pos++, wxT("Definition"), GetDefinition());
+        InsertListItem(properties, pos++, wxT("Definition"), GetDefinition().Left(250));
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
 }
