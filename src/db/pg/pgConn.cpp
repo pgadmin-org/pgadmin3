@@ -29,7 +29,7 @@
 
 pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxString& szUsername, const wxString& szPassword, int iPort)
 {
-    wxLogDebug(wxT("Creating pgConn object"));
+    wxLogInfo(wxT("Creating pgConn object"));
     wxString szMsg, szHost;
 
     // Check the hostname/ipaddress
@@ -98,7 +98,7 @@ pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxStr
 
 pgConn::~pgConn()
 {
-    wxLogDebug(wxT("Destroying pgConn object"));
+    wxLogInfo(wxT("Destroying pgConn object"));
     PQfinish(objConn);
 }
 

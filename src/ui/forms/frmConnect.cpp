@@ -30,7 +30,7 @@ END_EVENT_TABLE()
 frmConnect::frmConnect(wxFrame *parent)
 {
 
-    wxLogDebug(wxT("Creating a connect dialogue"));
+    wxLogInfo(wxT("Creating a connect dialogue"));
     extern sysSettings *objSettings;
 
     wxXmlResource::Get()->LoadDialog(this, parent, "frmConnect"); 
@@ -42,19 +42,19 @@ frmConnect::frmConnect(wxFrame *parent)
 
 frmConnect::~frmConnect()
 {
-    wxLogDebug(wxT("Destroying a connect dialogue"));
+    wxLogInfo(wxT("Destroying a connect dialogue"));
 }
 
 void frmConnect::OK()
 {
-	wxLogDebug("User clicked OK...");
+	wxLogInfo("User clicked OK...");
     bCancelled = FALSE;
     this->Show(FALSE);
 }
 
 void frmConnect::Cancel()
 {
-	wxLogDebug("User clicked Cancel...");
+	wxLogInfo("User clicked Cancel...");
     bCancelled = TRUE;
     this->Show(FALSE);
 }

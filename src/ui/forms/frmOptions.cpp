@@ -31,7 +31,7 @@ END_EVENT_TABLE()
 frmOptions::frmOptions(wxFrame *parent)
 {
 
-    wxLogDebug(wxT("Creating an options dialogue"));
+    wxLogInfo(wxT("Creating an options dialogue"));
     extern sysSettings *objSettings;
 
     wxXmlResource::Get()->LoadDialog(this, parent, "frmOptions"); 
@@ -46,7 +46,7 @@ frmOptions::frmOptions(wxFrame *parent)
 
 frmOptions::~frmOptions()
 {
-    wxLogDebug(wxT("Destroying an options dialogue"));
+    wxLogInfo(wxT("Destroying an options dialogue"));
 }
 
 void frmOptions::OK()

@@ -87,7 +87,6 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
             if ((level == wxLOG_FatalError) || \
                 (level == wxLOG_Error) || \
                 (level == wxLOG_Message) || \
-                (level == wxLOG_Info) || \
                 (level == wxLOG_Status)) WriteLog(szMsg);
             break;
 

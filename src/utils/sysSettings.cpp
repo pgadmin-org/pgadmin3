@@ -27,7 +27,7 @@ sysSettings::sysSettings() : sysConfig(APPNAME_L)
 sysSettings::sysSettings() : sysConfig(APPNAME_S)
 #endif
 {
-    wxLogDebug(wxT("Creating sSettings object and loading settings"));
+    wxLogInfo(wxT("Creating sSettings object and loading settings"));
 
     // frMain size/position
     iFrmMainWidth = sysConfig.Read(wxT("frmMain/Width"), 750);
@@ -47,7 +47,7 @@ sysSettings::sysSettings() : sysConfig(APPNAME_S)
 
 sysSettings::~sysSettings()
 {
-    wxLogDebug(wxT("Destroying sysSettings object and saving settings"));
+    wxLogInfo(wxT("Destroying sysSettings object and saving settings"));
     // frMain size/position
     sysConfig.Write(wxT("frmMain/Width"), iFrmMainWidth);
     sysConfig.Write(wxT("frmMain/Height"), iFrmMainHeight);

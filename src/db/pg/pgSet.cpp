@@ -29,7 +29,7 @@
 
 pgSet::pgSet(PGresult *objNewRes, PGconn *objNewConn)
 {
-    wxLogDebug(wxT("Creating pgSet object"));
+    wxLogInfo(wxT("Creating pgSet object"));
     objConn = objNewConn;
     objRes = objNewRes;
 
@@ -47,7 +47,7 @@ pgSet::pgSet(PGresult *objNewRes, PGconn *objNewConn)
 
 pgSet::~pgSet()
 {
-    wxLogDebug(wxT("Destroying pgSet object"));
+    wxLogInfo(wxT("Destroying pgSet object"));
     PQclear(objRes);
 }
 

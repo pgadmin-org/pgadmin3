@@ -30,7 +30,7 @@ frmAbout::frmAbout(wxFrame *parent)
 : wxDialog(parent, -1, APPNAME_L, wxDefaultPosition, wxDefaultSize, wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
 {
 
-    wxLogDebug(wxT("Creating an about box"));
+    wxLogInfo(wxT("Creating an about box"));
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
@@ -47,7 +47,7 @@ frmAbout::frmAbout(wxFrame *parent)
 
 frmAbout::~frmAbout()
 {
-    wxLogDebug(wxT("Destroying an about box"));
+    wxLogInfo(wxT("Destroying an about box"));
 }
 
 void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))

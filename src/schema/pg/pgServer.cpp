@@ -21,13 +21,13 @@
 pgServer::pgServer(wxFrame *parent)
 : pgObject()
 {  
-    wxLogDebug(wxT("Creating a pgServer object"));
+    wxLogInfo(wxT("Creating a pgServer object"));
     winParent = parent;
 }
 
 pgServer::~pgServer()
 {
-    wxLogDebug(wxT("Destroying a pgServer object"));
+    wxLogInfo(wxT("Destroying a pgServer object"));
 }
 
 int pgServer::GetType()
@@ -46,7 +46,7 @@ int pgServer::Connect() {
     frmConnect *winConnect = new frmConnect(winParent);
     winConnect->Show(TRUE);
 
-	wxLogDebug("If you can see this in the log, but no button has been pressed, then the dialogue wasn't modal!");
+	wxLogInfo("If you can see this in the log, but no button has been pressed, then the dialogue wasn't modal!");
 	
     if (winConnect->GetCancelled()) {
         delete winConnect;
@@ -59,7 +59,7 @@ int pgServer::Connect() {
     szPassword = winConnect->GetPassword();
     iPort = winConnect->GetPort();
 
-    wxLogDebug(wxT("Attempting to create a connection object..."));
+    wxLogInfo(wxT("Attempting to create a connection object..."));
     cnMaster = new pgConn(szServer, szDatabase, szUsername, szPassword, iPort);
 
     delete winConnect;

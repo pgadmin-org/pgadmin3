@@ -37,7 +37,7 @@ frmUpgradeWizard::frmUpgradeWizard(wxFrame *parent)
 : wxDialog(parent, -1, "Upgrade Wizard", wxDefaultPosition, wxSize(450,255), wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
 {
 
-    wxLogDebug(wxT("Creating new instance of the Upgrade Wizard"));
+    wxLogInfo(wxT("Creating new instance of the Upgrade Wizard"));
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
@@ -127,6 +127,6 @@ frmUpgradeWizard::frmUpgradeWizard(wxFrame *parent)
 
 frmUpgradeWizard::~frmUpgradeWizard()
 {
-    wxLogDebug(wxT("Destroying the Upgrade Wizard box"));
+    wxLogInfo(wxT("Destroying the Upgrade Wizard box"));
 }
 

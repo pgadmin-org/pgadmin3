@@ -366,7 +366,7 @@ void frmMain::OnSelActivated(wxTreeEvent& event)
 
 void frmMain::StoreServers()
 {
-    wxLogDebug(wxT("Storing listed servers for later..."));
+    wxLogInfo(wxT("Storing listed servers for later..."));
 
     // Store the currently listed servers for later retrieval.
 #ifdef __WXMSW__
