@@ -151,17 +151,18 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     updateRecentFiles();
 
-    wxAcceleratorEntry entries[7];
+    wxAcceleratorEntry entries[8];
 
-    entries[0].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
-    entries[1].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
-    entries[2].Set(wxACCEL_CTRL,                (int)'F',      MNU_FIND);
-    entries[3].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
-    entries[4].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
-    entries[5].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
-    entries[6].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
+    entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
+    entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
+    entries[2].Set(wxACCEL_CTRL,                (int)'S',      MNU_SAVE);
+    entries[3].Set(wxACCEL_CTRL,                (int)'F',      MNU_FIND);
+    entries[4].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
+    entries[5].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
+    entries[6].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
+    entries[7].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 
-    wxAcceleratorTable accel(7, entries);
+    wxAcceleratorTable accel(8, entries);
     SetAcceleratorTable(accel);
 
     queryMenu->Enable(MNU_CANCEL, false);
