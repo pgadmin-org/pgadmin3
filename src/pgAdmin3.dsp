@@ -143,10 +143,6 @@ SOURCE=.\pgAdmin3.h
 # PROP Default_Filter "rc,ico"
 # Begin Source File
 
-SOURCE=.\images\pgAdmin3.ico
-# End Source File
-# Begin Source File
-
 SOURCE=.\ui\pgAdmin3.rc
 # End Source File
 # End Group
@@ -156,6 +152,22 @@ SOURCE=.\ui\pgAdmin3.rc
 # Begin Source File
 
 SOURCE=.\Makefile
+# End Source File
+# End Group
+# Begin Group "Images"
+
+# PROP Default_Filter "ico,jpg,xpm"
+# Begin Source File
+
+SOURCE=.\images\pgAdmin3.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\pgAdmin3.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\images\splash.jpg
 # End Source File
 # End Group
 # End Target

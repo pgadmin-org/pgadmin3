@@ -17,22 +17,22 @@
 #include "frmSplash.h"
 
 BEGIN_EVENT_TABLE(frmSplash, wxFrame)
-    EVT_PAINT(frmSplash::OnPaint)
+EVT_PAINT(frmSplash::OnPaint)
 END_EVENT_TABLE()
 
 frmSplash::frmSplash()
-          : wxFrame((wxFrame *)NULL, -1, "Splash Screen!", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT),
-		    imgSplash("images/splash.jpg", wxBITMAP_TYPE_JPEG)
+: wxFrame((wxFrame *)NULL, -1, "Splash Screen!", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT)
 {
-	SetClientSize(imgSplash.GetWidth(), imgSplash.GetHeight());
-	wxString szVersion = "Version: ";
-	szVersion.Append(VERSION);
-	wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
-	Center();
+  imgSplash = wxBitmap("images/splash.jpg", wxBITMAP_TYPE_JPEG);
+  SetClientSize(imgSplash.GetWidth(), imgSplash.GetHeight());
+  wxString szVersion = "Version: ";
+  szVersion.Append(VERSION);
+  wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
+  Center();
 }
 
 void frmSplash::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-    wxPaintDC dc(this);
-    dc.DrawBitmap(imgSplash, 0, 0);
+  wxPaintDC dc(this);
+  dc.DrawBitmap(imgSplash, 0, 0);
 }

@@ -17,22 +17,22 @@
 #include "frmAbout.h"
 
 BEGIN_EVENT_TABLE(frmAbout, wxDialog)
-    EVT_PAINT(frmAbout::OnPaint)
+EVT_PAINT(frmAbout::OnPaint)
 END_EVENT_TABLE()
 
 frmAbout::frmAbout()
-          : wxDialog((wxFrame *)NULL, -1, "About pgAdmin III", wxDefaultPosition, wxDefaultSize, wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP),
-		    imgAbout("images/splash.jpg", wxBITMAP_TYPE_JPEG)
+: wxDialog((wxFrame *)NULL, -1, "About pgAdmin III", wxDefaultPosition, wxDefaultSize, wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
 {
-	SetClientSize(imgAbout.GetWidth(), imgAbout.GetHeight());
-	wxString szVersion = "Version: ";
-	szVersion.Append(VERSION);
-	wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
-	Center();
+  imgAbout = wxBitmap("images/splash.jpg", wxBITMAP_TYPE_JPEG);
+  SetClientSize(imgAbout.GetWidth(), imgAbout.GetHeight());
+  wxString szVersion = "Version: ";
+  szVersion.Append(VERSION);
+  wxStaticText *txtVersion = new wxStaticText(this, -1, szVersion, wxPoint(7,156), wxDefaultSize, wxTRANSPARENT_WINDOW);
+  Center();
 }
 
 void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-    wxPaintDC dc(this);
-    dc.DrawBitmap(imgAbout, 0, 0);
+  wxPaintDC dc(this);
+  dc.DrawBitmap(imgAbout, 0, 0);
 }

@@ -26,22 +26,22 @@ frmMain *winMain;
 // The Application!
 bool pgAdmin3::OnInit()
 {
-	// We need JPEG Support
-	wxImage::AddHandler(new wxJPEGHandler);
-
-	// Show the splash screen
-    frmSplash *winSplash = new frmSplash();
-	SetTopWindow(winSplash);
-	winSplash->Show(TRUE);
-
-	wxSleep(2);
-
-	// Create & show the main form
-    winMain = new frmMain("pgAdmin III", wxPoint(50, 50), wxSize(450, 340));
-    winMain->Show(TRUE);
-
-    
-	delete winSplash;
-
-    return TRUE;
+  // We need JPEG Support
+  wxImage::AddHandler(new wxJPEGHandler);
+  
+  // Show the splash screen
+  frmSplash *winSplash = new frmSplash();
+  SetTopWindow(winSplash);
+  winSplash->Show(TRUE);
+  
+  wxSleep(2);
+  
+  // Create & show the main form
+  winMain = new frmMain("pgAdmin III", wxPoint(50, 50), wxSize(450, 340));
+  winMain->Show(TRUE);
+  
+  
+  delete winSplash;
+  
+  return TRUE;
 }

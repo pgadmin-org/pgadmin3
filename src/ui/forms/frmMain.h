@@ -12,29 +12,29 @@
 class frmMain : public wxFrame
 {
 public:
-    frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
-    ~frmMain();
-    void OnExit(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
-	wxMenuBar *mnuBar;
-	wxStatusBar *stBar;
-    wxToolBar *tlBar;
+  frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
+  ~frmMain();
+  void OnExit(wxCommandEvent& event);
+  void OnAbout(wxCommandEvent& event);
+  wxMenuBar *mnuBar;
+  wxStatusBar *stBar;
+  wxToolBar *tlBar;
 private:
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 // Constants
 enum
 {
-	mnuConnect = 1,
-	mnuPassword,
-	mnuSaveDefinition,
-	mnuSaveSchema,
+  mnuConnect = 1,
+    mnuPassword,
+    mnuSaveDefinition,
+    mnuSaveSchema,
     mnuExit,
-	mnuUpgradeWizard,
-	mnuOptions,
-	mnuSystemObjects,
-	mnuContents,
-	mnuTipOfTheDay,
+    mnuUpgradeWizard,
+    mnuOptions,
+    mnuSystemObjects,
+    mnuContents,
+    mnuTipOfTheDay,
     mnuAbout
 };

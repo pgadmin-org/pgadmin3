@@ -12,11 +12,11 @@
 class frmSplash : public wxFrame
 {
 public:
-    frmSplash();
-	void OnPaint(wxPaintEvent&);
-	
+  frmSplash();
+  void OnPaint(wxPaintEvent&);
+  
 private:
-	wxBitmap imgSplash;
-    DECLARE_EVENT_TABLE()
+  wxBitmap imgSplash;
+  DECLARE_EVENT_TABLE()
 };
 

@@ -12,9 +12,9 @@
 class frmAbout : public wxDialog
 {
 public:
-    frmAbout();
-	void OnPaint(wxPaintEvent&);
-	
+  frmAbout();
+  void OnPaint(wxPaintEvent&);
+  
 private:
   wxBitmap imgAbout;
   DECLARE_EVENT_TABLE()
