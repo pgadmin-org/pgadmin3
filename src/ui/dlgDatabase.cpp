@@ -346,8 +346,6 @@ wxString dlgDatabase::GetSql()
                 + wxT(";\n");
         }
 
-
-        AppendOwnerChange(sql);
         AppendComment(sql, wxT("DATABASE"), 0, database);
     }
     else
