@@ -46,8 +46,14 @@ wxString pgAggregate::GetSql(wxTreeCtrl *browser)
         AppendIfFilled(sql, wxT(",\n  FFUNC="), qtIdent(GetFinalFunction()));
         if (GetInitialCondition().length() > 0)
           sql += wxT(",\n  INITCOND=") + qtString(GetInitialCondition());
-        sql += wxT("\n);\n")
-            + GetCommentSql();
+        sql += wxT("\n);\n");
+
+        if (!GetComment().IsNull())
+        {
+            sql = wxT("COMMENT ON AGGREGATE ") + GetQuotedFullIdentifier() 
+                + wxT("(") + qtIdent(GetInputType())
+                + wxT(") IS ") + qtString(GetComment()) + wxT(";\n");
+        }
     }
 
     return sql;
@@ -140,13 +146,13 @@ pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
             if (browser)
             {
                 collection->AppendBrowserItem(browser, aggregate);
-    			aggregates->MoveNext();
+                            aggregates->MoveNext();
             }
             else
                 break;
         }
 
-		delete aggregates;
+        delete aggregates;
     }
     return aggregate;
 }

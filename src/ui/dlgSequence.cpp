@@ -237,7 +237,7 @@ wxString dlgSequence::GetSql()
     }
 
     sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedFullIdentifier() + wxT(".") + qtIdent(GetName()));
-    AppendComment(sql, wxT("Sequence"), schema, sequence);
+    AppendComment(sql, wxT("SEQUENCE"), schema, sequence);
 
     return sql;
 }

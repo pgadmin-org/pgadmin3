@@ -392,8 +392,8 @@ wxString dlgType::GetSql()
                     + memberTypes.Item(i).AfterFirst(':');
             }
         }
+        sql += wxT(");\n");
     }
-    sql += wxT(");\n");
     AppendComment(sql, wxT("TYPE"), schema, type);
 
     return sql;
