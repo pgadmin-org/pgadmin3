@@ -221,13 +221,13 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
                 onUpd.IsSameAs('a') ? wxT("NO ACTION") :
                 onUpd.IsSameAs('r') ? wxT("RESTRICT") :
                 onUpd.IsSameAs('c') ? wxT("CASCADE") :
-                onUpd.IsSameAs('d') ? wxT("DEFAULT") :
+                onUpd.IsSameAs('d') ? wxT("SET DEFAULT") :
                 onUpd.IsSameAs('n') ? wxT("SET NULL") : wxT("Unknown"));
             foreignKey->iSetOnDelete(
                 onDel.IsSameAs('a') ? wxT("NO ACTION") :
                 onDel.IsSameAs('r') ? wxT("RESTRICT") :
                 onDel.IsSameAs('c') ? wxT("CASCADE") :
-                onDel.IsSameAs('d') ? wxT("DEFAULT") :
+                onDel.IsSameAs('d') ? wxT("SET DEFAULT") :
                 onDel.IsSameAs('n') ? wxT("SET NULL") : wxT("Unknown"));
             wxString cn=foreignKeys->GetVal(wxT("conkey"));
             cn = cn.Mid(1, cn.Length()-2);
