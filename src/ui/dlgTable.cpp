@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "frmMain.h"
+#include "frmHint.h"
 
 #include "dlgTable.h"
 #include "dlgColumn.h"
@@ -70,6 +71,7 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_BUTTON(XRCID("btnAddConstr"),               dlgTable::OnAddConstr)
     EVT_BUTTON(XRCID("btnRemoveConstr"),            dlgTable::OnRemoveConstr)
     EVT_LIST_ITEM_SELECTED(XRCID("lstConstraints"), dlgTable::OnSelChangeConstr)
+    EVT_BUTTON(wxID_OK,                             dlgTable::OnOK)
 END_EVENT_TABLE();
 
 dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
@@ -496,6 +498,16 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 void dlgTable::OnChangeTable(wxCommandEvent &ev)
 {
     cbTables->GuessSelection(ev);
+}
+
+
+void dlgTable::OnOK(wxCommandEvent &ev)
+{
+    if (lstColumns->GetItemCount() > 0 && !hasPK
+        && frmHint::ShowHint(this, HintPrimaryKey) == wxID_CANCEL)
+        return;
+
+    dlgProperty::OnOK(ev);
 }
 
 

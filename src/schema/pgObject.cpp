@@ -78,10 +78,29 @@ pgTypes typesList[] =
     {__("Unique"), PGICON_UNIQUE, __("New Unique Constraint"), __("Add a new Unique Constraint.") },
     {__("Check"), PGICON_CHECK, __("New Check Constraint"), __("Add a new Check Constraint.") },
     {__("Foreign Key"), PGICON_FOREIGNKEY, __("New Foreign Key"), __("Add a new Foreign Key.") },
+
     {__("Agent"), PGAICON_AGENT, 0, 0},
     {__("Job"), PGAICON_JOB, __("New Job"), __("Create a new Job") },
     {__("Step"), PGAICON_STEP, __("New Step"), __("Create new Step") }, 
     {__("Schedule"), PGAICON_SCHEDULE, __("New Schedule"), __("Create new Schedule") },
+    
+    {__("Replication"), SLICON_CLUSTER, __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster") },
+    {__("Slony-I Cluster"), SLICON_CLUSTER, __("New Slony-I Cluster"), __("Create new Slony-I Replication Cluster") },
+    {__("Nodes"), SLICON_NODE,  0, 0},
+    {__("Node"), SLICON_NODE, __("New Node"), __("Create new node") },
+    {__("Paths"), SLICON_PATH,  0, 0},
+    {__("Path"), SLICON_PATH, __("New Path"), __("Create new path to node") },
+    {__("Listens"), SLICON_LISTEN, 0, 0},
+    {__("Listen"), SLICON_LISTEN, __("New Listen"), __("Create new Listen between nodes")},
+    {__("Replication Sets"), SLICON_SET, 0, 0 },
+    {__("Replication Set"), SLICON_SET, __("New Replication Set"), __("Create new Replication Set") },
+    {__("Sequences"), PGICON_SEQUENCE, 0, 0},
+    {__("Sequence"), PGICON_SEQUENCE, __("Add Sequence"), __("Add Sequence to Set.") },
+    {__("Tables"), PGICON_TABLE, 0, 0},
+    {__("Table"), PGICON_TABLE, __("Add Table"), __("Add Table to Set.") },
+    {__("Subscriptions"), SLICON_SUBSCRIPTION, 0, 0 },
+    {__("Subscription"), SLICON_SUBSCRIPTION, __("New Subscription"), __("Create new Subscription") },
+
     {__("Unknown"), -1, 0, 0},
     {0,0,0,0}
 };

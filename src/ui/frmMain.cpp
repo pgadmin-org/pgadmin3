@@ -102,6 +102,12 @@ WX_DEFINE_LIST(windowList);
 #include "images/jobdisabled.xpm"
 #include "images/step.xpm"
 #include "images/schedule.xpm"
+#include "images/slcluster.xpm"
+#include "images/slnode.xpm"
+#include "images/slpath.xpm"
+#include "images/sllisten.xpm"
+#include "images/slset.xpm"
+#include "images/slsubscription.xpm"
 
 
 #if wxDIALOG_UNIT_COMPATIBILITY
@@ -360,6 +366,14 @@ frmMain::frmMain(const wxString& title)
     images->Add(wxIcon(step_xpm));
     images->Add(wxIcon(schedule_xpm));
 
+    // slony cluster, node, path, listen, set, subscription
+    images->Add(wxIcon(slcluster_xpm));
+    images->Add(wxIcon(slnode_xpm));
+    images->Add(wxIcon(slpath_xpm));
+    images->Add(wxIcon(sllisten_xpm));
+    images->Add(wxIcon(slset_xpm));
+    images->Add(wxIcon(slsubscription_xpm));
+
     browser->SetImageList(images);
 
     // Add the root node
@@ -600,9 +614,7 @@ bool frmMain::checkAlive()
                     {
 
                         browser->SelectItem(serverItem);
-                        browser->SetItemImage(serverItem, PGICON_SERVERBAD, wxTreeItemIcon_Normal);
-                        browser->SetItemImage(serverItem, PGICON_SERVERBAD, wxTreeItemIcon_Selected);
-                        server->Disconnect();
+                        server->Disconnect(this);
                         execSelChange(serverItem, true);
                         browser->DeleteChildren(serverItem);
                     }
@@ -706,8 +718,6 @@ int frmMain::ReconnectServer(pgServer *server)
         {
             StartMsg(_("Restoring previous environment"));
             wxLogInfo(wxT("pgServer object initialised as required."));
-            browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Normal);
-            browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Selected);
 
             server->ShowTreeDetail(browser);
             browser->Freeze();
@@ -740,7 +750,7 @@ int frmMain::ReconnectServer(pgServer *server)
             break;
     }
 
-    server->Disconnect();
+    server->Disconnect(this);
     return res;
 }
 

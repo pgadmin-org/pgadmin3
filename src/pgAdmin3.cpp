@@ -75,6 +75,10 @@ wxString uiPath;                // Where ui data is stored
 wxString backupExecutable;      // complete filename of pg_dump and pg_restore, if available
 wxString restoreExecutable;
 
+wxString slony1BaseScript;
+wxString slony1FunctionScript;
+wxString slony1XxidScript;
+
 double libpqVersion=0.0;
 
 bool dialogTestMode=false;
@@ -197,6 +201,10 @@ bool pgAdmin3::OnInit()
         docPath = loadPath + wxT("/..") DOC_DIR;
 #endif
 
+
+    slony1BaseScript=path.FindValidPath(wxT("slony1_base.sql"));
+    slony1FunctionScript=path.FindValidPath(wxT("slony1_funcs.sql"));
+    slony1XxidScript=path.FindValidPath(wxT("slony1_xxid.sql"));
 
 
     // Load the Settings

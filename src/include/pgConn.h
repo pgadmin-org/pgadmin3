@@ -100,6 +100,7 @@ private:
     wxString dbHost;
     OID lastSystemOID;
     OID dbOid;
+    wxString reservedNamespaces;
 
     void *noticeArg;
     PQnoticeProcessor noticeProc;

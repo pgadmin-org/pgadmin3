@@ -59,10 +59,20 @@ enum PG_OBJTYPE
     PG_RULES,           PG_RULE,
     PG_TRIGGERS,        PG_TRIGGER,
     PG_CONSTRAINTS,     PG_PRIMARYKEY, PG_UNIQUE, PG_CHECK, PG_FOREIGNKEY,
+
     PGA_AGENT,
     PGA_JOB,
     PGA_STEP,
     PGA_SCHEDULE,
+
+    SL_CLUSTERS,        SL_CLUSTER,
+    SL_NODES,           SL_NODE,
+    SL_PATHS,           SL_PATH,
+    SL_LISTENS,         SL_LISTEN,
+    SL_SETS,            SL_SET,
+    SL_SEQUENCES,       SL_SEQUENCE,
+    SL_TABLES,          SL_TABLE,
+    SL_SUBSCRIPTIONS,   SL_SUBSCRIPTION,
     
     PG_UNKNOWN
 };

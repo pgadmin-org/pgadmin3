@@ -428,7 +428,7 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
     if (GetConnection()->HasFeature(FEATURE_SIZE))
     {
         sql += wxT(", pg_size_pretty(pg_relation_size(stat.relid)) AS ") + qtIdent(_("Table Size"))
-            +  wxT(", CASE WHEN cl.reltoastrelid = 0 THEN ") + qtString(_("none")) + wxT(" ELSE pg_size_pretty(pg_relation_size(cl.reltoastrelid)) END AS ") + qtIdent(_("Toast Table Size"))
+            +  wxT(", CASE WHEN cl.reltoastrelid = 0 THEN ") + qtString(_("none")) + wxT(" ELSE pg_size_pretty(pg_relation_size(cl.reltoastrelid)+ COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0)) END AS ") + qtIdent(_("Toast Table Size"))
             +  wxT(", pg_size_pretty(COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=stat.relid)::int8, 0)) AS ") + qtIdent(_("Indexes Size"));
     }
     sql +=  wxT("\n")
@@ -540,7 +540,7 @@ void pgTable::ShowStatistics(pgCollection *collection, ctlListView *statistics)
     wxString sql=wxT("SELECT st.relname, n_tup_ins, n_tup_upd, n_tup_del");
     if (hasSize)
         sql += wxT(", pg_size_pretty(pg_relation_size(st.relid)")
-               wxT(" + CASE WHEN cl.reltoastrelid = 0 THEN 0 ELSE pg_relation_size(cl.reltoastrelid) END")
+               wxT(" + CASE WHEN cl.reltoastrelid = 0 THEN 0 ELSE pg_relation_size(cl.reltoastrelid) + COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0) END")
                wxT(" + COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=st.relid)::int8, 0)) AS size");
     
     sql += wxT("\n  FROM pg_stat_all_tables st")

@@ -588,6 +588,10 @@ SOURCE=.\ui\frmHelp.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\frmHint.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\frmIndexcheck.cpp
 # End Source File
 # Begin Source File
@@ -748,6 +752,10 @@ SOURCE=.\include\frmHbaConfig.h
 # Begin Source File
 
 SOURCE=.\include\frmHelp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmHint.h
 # End Source File
 # Begin Source File
 
@@ -1542,6 +1550,78 @@ SOURCE=.\include\xh_sqlbox.h
 SOURCE=.\include\xh_timespin.h
 # End Source File
 # End Group
+# Begin Group "slony includes"
+
+# PROP Default_Filter "*.h"
+# Begin Source File
+
+SOURCE=.\slony\dlgRepCluster.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepListen.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepPath.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepProperty.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepSequence.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepSet.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepSubscription.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepTable.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slCluster.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slListen.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slNode.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slObject.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slPath.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slSequence.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slSet.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slSubscription.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slTable.h
+# End Source File
+# End Group
 # End Group
 # Begin Group "unix build"
 
@@ -1601,6 +1681,74 @@ SOURCE=.\agent\pgaSchedule.cpp
 # Begin Source File
 
 SOURCE=.\agent\pgaStep.cpp
+# End Source File
+# End Group
+# Begin Group "slony"
+
+# PROP Default_Filter "*.cpp"
+# Begin Source File
+
+SOURCE=.\slony\dlgRepCluster.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepListen.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepSequence.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepSubscription.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepTable.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slCluster.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slListen.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slNode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slObject.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slSequence.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slSubscription.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\slTable.cpp
 # End Source File
 # End Group
 # Begin Source File

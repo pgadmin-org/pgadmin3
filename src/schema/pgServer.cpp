@@ -118,7 +118,7 @@ wxString pgServer::GetFullName() const
 }
 
 
-bool pgServer::Disconnect()
+bool pgServer::Disconnect(frmMain *form)
 {
     if (conn)
     {
@@ -127,6 +127,9 @@ bool pgServer::Disconnect()
         connected=false;
         expandedKids=false;
     }
+    form->GetBrowser()->SetItemImage(GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Normal);
+
+    form->GetBrowser()->SetItemImage(GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Selected);
     return true;
 }
 
@@ -336,6 +339,9 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
             }
             if (conn->IsSSLconnected())
                 settings->Write(wxT("Updates/UseSSL"), true);
+
+            form->GetBrowser()->SetItemImage(GetId(), PGICON_SERVER, wxTreeItemIcon_Normal);
+            form->GetBrowser()->SetItemImage(GetId(), PGICON_SERVER, wxTreeItemIcon_Selected);
         }
         else
         {

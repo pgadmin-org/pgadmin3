@@ -32,7 +32,7 @@ public:
     int GetType() const { return PG_SERVER; }
     wxString GetTypeName() const { return wxT("Server"); }
     int Connect(frmMain *form, bool askPassword=true, const wxString &pwd=wxEmptyString);
-    bool Disconnect();
+    bool Disconnect(frmMain *form);
 
     bool StartService();
     bool StopService();

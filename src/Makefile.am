@@ -53,6 +53,12 @@ ui/dlgHbaConfig.cpp ui/dlgMainConfig.cpp ui/frmUpdate.cpp \
 ui/frmConfig.cpp ui/frmHbaConfig.cpp ui/frmMainConfig.cpp \
 utils/sysLogger.cpp utils/sysSettings.cpp \
 utils/utffile.cpp utils/pgconfig.cpp utils/update.cpp \
+slony/slObject.cpp slony/slCluster.cpp slony/slNode.cpp \
+slony/slPath.cpp slony/slListen.cpp slony/slSet.cpp \
+slony/slSequence.cpp slony/slTable.cpp slony/slSubscription.cpp \
+slony/dlgRepCluster.cpp slony/dlgRepNode.cpp slony/dlgRepListen.cpp \
+slony/dlgRepPath.cpp slony/dlgRepSet.cpp slony/dlgRepSequence.cpp \
+slony/dlgRepSubscription.cpp \
 ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = include/copyright.h include/version.h include/ctlSQLBox.h \
@@ -97,7 +103,14 @@ include/dlgHbaConfig.h include/dlgMainConfig.h \
 include/frmConfig.h include/frmHbaConfig.h include/frmMainConfig.h \
 agent/include/pgaAgent.h agent/include/pgaJob.h \
 agent/include/pgaStep.h agent/include/pgaSchedule.h\
-agent/include/dlgJob.h agent/include/dlgStep.h agent/include/dlgSchedule.h
+agent/include/dlgJob.h agent/include/dlgStep.h agent/include/dlgSchedule.h \
+slony/slObject.h slony/slCluster.h slony/slNode.h \
+slony/slPath.h slony/slListen.h slony/slSet.h \
+slony/slSequence.h slony/slTable.h slony/slSubscription.h \
+slony/dlgRepCluster.h slony/dlgRepNode.h slony/dlgRepListen.h \
+slony/dlgRepPath.h slony/dlgRepSet.h slony/dlgRepSequence.h \
+slony/dlgRepSubscription.h \
+
   
 EXTRA_DIST = pgAdmin3.dsp pgAdmin3.dsw \
 include/images/*.xpm \

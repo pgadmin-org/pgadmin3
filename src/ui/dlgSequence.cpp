@@ -26,7 +26,6 @@
 
 #define txtIncrement        CTRL_TEXT("txtIncrement")
 #define cbOwner             CTRL_COMBOBOX2("cbOwner")
-#define cbTablespace        CTRL_COMBOBOX("cbTablespace")
 #define txtMin              CTRL_TEXT("txtMin")
 #define txtMax              CTRL_TEXT("txtMax")
 #define txtStart            CTRL_TEXT("txtStart")
@@ -37,8 +36,6 @@
 // pointer to controls
 
 BEGIN_EVENT_TABLE(dlgSequence, dlgSecurityProperty)
-    EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
-    EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtStart"),                     dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtMin"),                       dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtMax"),                       dlgProperty::OnChange)
@@ -90,12 +87,10 @@ int dlgSequence::Go(bool modal)
             txtCache->Disable();
             chkCycled->Disable();
         }
-        PrepareTablespace(cbTablespace, sequence->GetTablespace());
     }
     else
     {
         // create mode
-        PrepareTablespace(cbTablespace);
         txtIncrement->SetValidator(numericValidator);
         txtMin->SetValidator(numericValidator);
         txtMax->SetValidator(numericValidator);
@@ -131,8 +126,7 @@ void dlgSequence::CheckChange()
                || txtMax->GetValue() != sequence->GetMaxValue().ToString()
                || txtCache->GetValue() != sequence->GetCacheValue().ToString()
                || txtIncrement->GetValue() != sequence->GetIncrement().ToString()
-               || chkCycled->GetValue() != sequence->GetCycled()
-               || cbTablespace->GetValue() != sequence->GetTablespace());
+               || chkCycled->GetValue() != sequence->GetCycled());
     }
     else
     {
@@ -211,10 +205,6 @@ wxString dlgSequence::GetSql()
                     +  wxT("', ") + txtStart->GetValue()
                     +  wxT(", false);\n");
         }
-        if (cbTablespace->GetValue() != sequence->GetTablespace())
-            sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix()+ qtIdent(name)
-                +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
-                +  wxT(";\n");
     }
     else
     {
@@ -227,7 +217,6 @@ wxString dlgSequence::GetSql()
         AppendIfFilled(sql, wxT("\n   MINVALUE "), txtMin->GetValue());
         AppendIfFilled(sql, wxT("\n   MAXVALUE "), txtMax->GetValue());
         AppendIfFilled(sql, wxT("\n   CACHE "), txtCache->GetValue());
-        AppendIfFilled(sql, wxT("\n   TABLESPACE "), qtIdent(cbTablespace->GetValue()));
 
         sql += wxT(";\n");
         if (cbOwner->GetGuessedSelection() > 0)

@@ -192,6 +192,14 @@ wxDateTime StrToDateTime(const wxString &value)
 }
 
 
+wxString IdAndName(long id, const wxChar *name)
+{
+    wxString str;
+    str.Printf(wxT("%d - %s"), id, name);
+    return str;
+}
+
+
 void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0, const int h0)
 {
     wxSize screenSize = wxGetDisplaySize();

@@ -36,6 +36,7 @@
 #include "pgIndex.h"
 #include "pgRule.h"
 #include "pgTrigger.h"
+#include "../slony/slCluster.h"
 
 
 
@@ -126,6 +127,7 @@ bool pgCollection::CanCreate()
         case PG_CASTS:
         case PG_LANGUAGES:
         case PG_SCHEMAS:
+        case SL_CLUSTERS:
             return GetDatabase()->GetCreatePrivilege();
         case PG_AGGREGATES:
         case PG_CONVERSIONS:
@@ -176,6 +178,7 @@ int pgCollection::GetIcon()
         case PG_INDEXES:            return PGICON_INDEX;
         case PG_RULES:              return PGICON_RULE;
         case PG_TRIGGERS:           return PGICON_TRIGGER;
+        case SL_CLUSTERS:           return SLICON_CLUSTER;
         default:    return 0;
     }
 }
@@ -276,6 +279,9 @@ void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListVie
                 break;
             case PG_TRIGGERS:
                 pgTrigger::ReadObjects(this, browser);
+                break;
+            case SL_CLUSTERS:
+                slCluster::ReadObjects(this, browser);
                 break;
             default:
                 return;

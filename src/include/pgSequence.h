@@ -34,8 +34,6 @@ public:
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
-    wxString GetTablespace() const { return tablespace; };
-    void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
     void UpdateValues();
     wxULongLong GetLastValue() const { return lastValue; }
     wxULongLong GetMinValue() const { return minValue; }
@@ -51,7 +49,6 @@ public:
 private:
     wxULongLong lastValue, minValue, maxValue, cacheValue, increment;
     bool cycled;
-    wxString tablespace;
 };
 
 #endif

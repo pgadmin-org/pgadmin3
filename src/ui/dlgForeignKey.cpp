@@ -234,9 +234,10 @@ void dlgForeignKey::OnAddRef(wxCommandEvent &ev)
         cbColumns->Delete(cbColumns->GetSelection());
         cbRefColumns->Delete(cbRefColumns->GetSelection());
         cbReferences->Disable();
-        btnAddRef->Disable();
 
-        CheckChange();
+        cbColumns->SetSelection(0);
+        cbRefColumns->SetSelection(0);
+        OnSelChangeRefCol(ev);
     }
 }
 

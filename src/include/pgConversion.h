@@ -49,7 +49,7 @@ public:
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString conversionName, proc, procNamespace, forEncoding, toEncoding;
+    wxString proc, procNamespace, forEncoding, toEncoding;
     bool defaultConversion;
 };
 

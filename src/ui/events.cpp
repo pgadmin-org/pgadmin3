@@ -121,6 +121,14 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_NEW+PGA_JOB,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PGA_STEP,              frmMain::OnNew)
     EVT_MENU(MNU_NEW+PGA_SCHEDULE,          frmMain::OnNew)
+    EVT_MENU(MNU_NEW+SL_CLUSTER,            frmMain::OnNew)
+    EVT_MENU(MNU_NEW+SL_NODE,               frmMain::OnNew)
+    EVT_MENU(MNU_NEW+SL_PATH,               frmMain::OnNew)
+    EVT_MENU(MNU_NEW+SL_LISTEN,             frmMain::OnNew)
+    EVT_MENU(MNU_NEW+SL_SET,                frmMain::OnNew)
+    EVT_MENU(MNU_NEW+SL_SEQUENCE,           frmMain::OnNew)
+    EVT_MENU(MNU_NEW+SL_TABLE,              frmMain::OnNew)
+    EVT_MENU(MNU_NEW+SL_SUBSCRIPTION,       frmMain::OnNew)
     EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
     EVT_MENU(MNU_MAINCONFIG,                frmMain::OnMainConfig)
@@ -891,10 +899,27 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         case PG_RULE:
         case PG_TRIGGERS:
         case PG_TRIGGER:
+
         case PGA_AGENT:
         case PGA_JOB:
         case PGA_STEP:
         case PGA_SCHEDULE:
+        case SL_CLUSTER:
+        case SL_CLUSTERS:
+        case SL_NODE:
+        case SL_NODES:
+        case SL_PATH:
+        case SL_PATHS:
+        case SL_LISTEN:
+        case SL_LISTENS:
+        case SL_SET:
+        case SL_SETS:
+        case SL_SEQUENCE:
+        case SL_SEQUENCES:
+        case SL_TABLE:
+        case SL_TABLES:
+        case SL_SUBSCRIPTION:
+        case SL_SUBSCRIPTIONS:
             break;
         default:        
             showTree=false;
@@ -978,10 +1003,8 @@ void frmMain::OnConnect(wxCommandEvent &ev)
 void frmMain::OnDisconnect(wxCommandEvent &ev)
 {
     pgServer *server = (pgServer *)currentObject;
-    if (server && server->GetType() == PG_SERVER && server->Disconnect())
+    if (server && server->GetType() == PG_SERVER && server->Disconnect(this))
     {
-        browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Normal);
-        browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Selected);
         browser->DeleteChildren(server->GetId());
         execSelChange(server->GetId(), true);
     }

@@ -91,6 +91,10 @@ wxString NumToStr(OID value);
 wxString NumToStr(wxLongLong value);
 wxString DateToStr(const wxDateTime &datetime);
 
+
+// compile ID and Name into one string
+wxString IdAndName(long id, const wxChar *name);
+
 // Quoting
 wxString qtString(const wxString& value);   // add ' and escape if necessary
 wxString qtIdent(const wxString& value);    // add " if necessary
@@ -173,11 +177,19 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_PRIMARYKEY,
     PGICON_UNIQUE,
     PGICON_PUBLIC,
+
     PGAICON_AGENT,
     PGAICON_JOB,
     PGAICON_JOBDISABLED,
     PGAICON_STEP,
-    PGAICON_SCHEDULE
+    PGAICON_SCHEDULE,
+
+    SLICON_CLUSTER,
+    SLICON_NODE,
+    SLICON_PATH,
+    SLICON_LISTEN,
+    SLICON_SET,
+    SLICON_SUBSCRIPTION
 };
 
 

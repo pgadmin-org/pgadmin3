@@ -53,6 +53,12 @@ wxMenu *pgDatabase::GetNewMenu()
         AppendMenu(menu, PG_CAST);
         AppendMenu(menu, PG_LANGUAGE);
         AppendMenu(menu, PG_SCHEMA);
+
+        extern wxString slony1BaseScript;
+        extern wxString slony1FunctionScript;
+        extern wxString slony1XxidScript;
+        if (!slony1BaseScript.IsEmpty() && !slony1FunctionScript.IsEmpty() && !slony1XxidScript.IsEmpty())
+            AppendMenu(menu, SL_CLUSTER);
     }
     return menu;
 }
@@ -317,6 +323,10 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
             // pgAgent
             pgaAgent::ReadObjects(this, browser);
 
+            // Slony-I Clusters
+            collection = new pgCollection(SL_CLUSTERS, this);
+            AppendBrowserItem(browser, collection);
+            
             missingFKs = StrToLong(connection()->ExecuteScalar(
                 wxT("SELECT COUNT(*) FROM\n")
                 wxT("   (SELECT tgargs from pg_trigger tr\n")

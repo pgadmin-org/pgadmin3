@@ -59,6 +59,13 @@
 #include "dlgStep.h"
 #include "dlgSchedule.h"
 
+#include "../slony/dlgRepCluster.h"
+#include "../slony/dlgRepPath.h"
+#include "../slony/dlgRepListen.h"
+#include "../slony/dlgRepSet.h"
+#include "../slony/dlgRepSequence.h"
+#include "../slony/dlgRepTable.h"
+#include "../slony/dlgRepSubscription.h"
 #include "pgTable.h"
 #include "pgColumn.h"
 #include "pgTrigger.h"
@@ -547,11 +554,13 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
     wxString sql=GetSql();
 
     if (!sql.IsEmpty())
+    {
         if (!apply(sql))
         {
             EnableOK(true);
             return;
         }
+    }
     Destroy();
 }
 
@@ -718,12 +727,36 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
         case PGA_JOB:
             dlg=new dlgJob(frame, (pgaJob*)currentNode);
             break;
+
         case PGA_STEP:
             dlg=new dlgStep(frame, (pgaStep*)currentNode, (pgaJob*)parentNode);
             break;
         case PGA_SCHEDULE:
             dlg=new dlgSchedule(frame, (pgaSchedule*)currentNode, (pgaJob*)parentNode);
             break;
+
+        case SL_CLUSTER:
+            dlg=new dlgRepCluster(frame, (slCluster*)currentNode, parentNode);
+            break;
+        case SL_PATH:
+            dlg=new dlgRepPath(frame, (slPath*)currentNode, (slNode*)parentNode);
+            break;
+        case SL_LISTEN:
+            dlg=new dlgRepListen(frame, (slListen*)currentNode, (slNode*)parentNode);
+            break;
+        case SL_SET:
+            dlg=new dlgRepSet(frame, (slSet*)currentNode, (slCluster*)parentNode);
+            break;
+        case SL_SEQUENCE:
+            dlg=new dlgRepSequence(frame, (slSequence*)currentNode, (slSet*)parentNode);
+            break;
+        case SL_TABLE:
+            dlg=new dlgRepTable(frame, (slTable*)currentNode, (slSet*)parentNode);
+            break;
+        case SL_SUBSCRIPTION:
+            dlg=new dlgRepSubscription(frame, (slSubscription*)currentNode, (slSet*)parentNode);
+            break;
+
         default:
             break;
     }

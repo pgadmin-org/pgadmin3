@@ -34,6 +34,7 @@ private:
     pgSchema *schema;
     pgTable *table;
 
+    void OnOK(wxCommandEvent &ev);
     void OnChangeTable(wxCommandEvent &ev);
 
     void OnAddTable(wxCommandEvent &ev);
