@@ -342,6 +342,7 @@ wxString dlgTable::GetSql()
         }
 
 
+
         tmpDef=previousConstraints;
 
         for (pos=0; pos < lstConstraints->GetItemCount() ; pos++)
@@ -478,7 +479,7 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
     if (table)
     {
         bool changed=false;
-        if (lstColumns->GetItemCount() > 0)
+        if (connection->BackendMinimumVersion(7, 4) || lstColumns->GetItemCount() > 0)
         {
             if (GetName() != table->GetName() ||
                 txtComment->GetValue() != table->GetComment() ||
@@ -495,7 +496,7 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
         wxString name=GetName();
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, lstColumns->GetItemCount() > 0, 
+        CheckValid(enable, connection->BackendMinimumVersion(7, 4) || lstColumns->GetItemCount() > 0, 
             _("Please specify columns."));
         EnableOK(enable);
     }
