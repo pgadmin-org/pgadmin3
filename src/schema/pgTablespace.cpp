@@ -78,12 +78,6 @@ void pgTablespace::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, co
         wxT(" WHERE datname = current_database()\n")
         wxT("   AND (cl.reltablespace = ") + GetOidStr() + wxT("\n")
         wxT("        OR (cl.reltablespace=0 AND dattablespace = ") + GetOidStr() + wxT("))\n")
-        wxT("UNION ALL\n")
-        wxT("SELECT 'n', null, nspname, null\n")
-        wxT("  FROM pg_namespace, pg_database\n")
-        wxT(" WHERE datname = current_database()\n")
-        wxT("   AND (nsptablespace = ") + GetOidStr() + wxT("\n")
-        wxT("        OR (nsptablespace=0 AND dattablespace = ") + GetOidStr() + wxT("))\n")
         wxT(" ORDER BY 1,2,3"));
 
     form->EndMsg();
