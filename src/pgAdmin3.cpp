@@ -145,6 +145,8 @@ bool pgAdmin3::OnInit()
             {
                 langId = (wxLanguage)wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1))->Language;
                 settings->Write(wxT("LanguageId"), (long)langId);
+            } else {
+                settings->Write(wxT("LanguageId"), (long)0);
             }
             delete[] langNames;
         }

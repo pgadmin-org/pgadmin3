@@ -1245,19 +1245,7 @@ SOURCE=..\BUGS.txt
 # End Source File
 # Begin Source File
 
-SOURCE=..\notes\prepare_for_translation.txt
-# End Source File
-# Begin Source File
-
-SOURCE=..\notes\prop_page_design.txt
-# End Source File
-# Begin Source File
-
 SOURCE=.\tips.txt
-# End Source File
-# Begin Source File
-
-SOURCE=..\TODO.txt
 # End Source File
 # End Group
 # End Target
