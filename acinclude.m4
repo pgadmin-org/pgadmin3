@@ -209,7 +209,7 @@ then
     if test "$pg_static_build" == "yes"
     then
         case "${host}" in
-            *-*-linux-*)
+            *-*-linux*)
                 case "${WX_NEW_LDFLAGS}" in
                     *libwx_gtk2ud-*)
                         LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2ud_xrc-${WX_VERSION}.a"
@@ -262,7 +262,7 @@ then
         esac
     else
         case "${host}" in
-            *-*-linux-*)
+            *-*-linux*)
                 case "${WX_NEW_LDFLAGS}" in
                     *wx_gtk2ud-*)
                         LIBS="$LIBS -lwx_gtk2ud_stc-${WX_VERSION} -lwx_gtk2ud_xrc-${WX_VERSION}"
