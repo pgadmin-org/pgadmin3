@@ -49,6 +49,8 @@ ui/dlgAggregate.cpp ui/dlgCast.cpp ui/dlgConversion.cpp \
 ui/dlgIndexConstraint.cpp ui/dlgForeignKey.cpp \
 ui/dlgSequence.cpp ui/dlgTrigger.cpp ui/dlgType.cpp \
 ui/dlgCheck.cpp ui/frmStatus.cpp utils/misc.cpp \
+ui/dlgHbaConfig.cpp ui/dlgMainConfig.cpp ui/frmUpdate.cpp \
+ui/frmConfig.cpp ui/frmHbaConfig.cpp ui/frmMainConfig.cpp \
 utils/sysLogger.cpp utils/sysSettings.cpp \
 utils/utffile.cpp \
 ui/common/xrcDialogs.cpp
@@ -90,6 +92,9 @@ include/pgView.h include/sysLogger.h include/utffile.h \
 include/calbox.h include/timespin.h include/ctlComboBox.h \
 include/xh_timespin.h include/xh_calb.h include/xh_sqlbox.h include/xh_ctlcombo.h \
 include/sysSettings.h include/wxgridsel.h include/menu.h\
+include/pgconfig.h include/update.h include/frmUpdate.h \
+include/dlgHbaConfig.h include/dlgMainConfig.h \
+include/frmConfig.h include/frmHbaConfig.h include/frmMainConfig.h \
 agent/include/pgaAgent.h agent/include/pgaJob.h \
 agent/include/pgaStep.h agent/include/pgaSchedule.h\
 agent/include/dlgJob.h agent/include/dlgStep.h agent/include/dlgSchedule.h
@@ -131,6 +136,7 @@ ui/zh_TW/pgadmin3.po
 nobase_dist_pkgdata_DATA = ui/common/*.xrc \
 ui/wxstd.mo \
 ui/pgadmin3.lng \
+ui/pg_settings.csv \
 ui/af_ZA/pgadmin3.mo \
 ui/ca_ES/pgadmin3.mo \
 ui/da_DK/pgadmin3.mo \
