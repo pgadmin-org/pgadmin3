@@ -587,6 +587,9 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
     {
         wxLogInfo(wxT("Clearing treeview to toggle ShowSystemObjects"));
 
+		// Store the servers to prevent dropped ones reappearing in a minute.
+		StoreServers();
+
         // Clear the treeview
         browser->DeleteAllItems();
 
