@@ -45,7 +45,7 @@ OBJECTS = $(PROGRAM).o \
           schema/pgUser.o \
           schema/pgView.o \
           ui/ctlSQLBox.o \
-	  ui/ctlSQLResult.o \
+	      ui/ctlSQLResult.o \
           ui/dlgAddTableView.o \
           ui/events.o \
           ui/frmAbout.o \
@@ -59,6 +59,10 @@ OBJECTS = $(PROGRAM).o \
           ui/frmQBJoin.o \
           ui/frmSplash.o \
           ui/frmUpgradeWizard.o \
+		  ui/frmEditGrid.o \
+		  ui/dlgProperty.o \
+		  ui/dlgUser.o \
+		  ui/frmStatus.o \
           utils/misc.o \
           utils/sysLogger.o \
           utils/sysSettings.o

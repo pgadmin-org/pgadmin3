@@ -22,7 +22,6 @@
 #include <wx/toolbar.h>
 #include <wx/tbarsmpl.h>
 #include <wx/imaglist.h>
-#include <wx/stc/stc.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -39,7 +38,7 @@
 
 
 #include <wx/listimpl.cpp>
-WX_DEFINE_LIST(frameList);
+WX_DEFINE_LIST(windowList);
 
 // Icons
 #include "images/aggregate.xpm"
@@ -87,6 +86,7 @@ WX_DEFINE_LIST(frameList);
     
 
 
+
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
@@ -103,64 +103,58 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // File Menu
     fileMenu = new wxMenu();
-    fileMenu->Append(MNU_ADDSERVER, wxT("&Add Server..."), wxT("Add a connection to a server."));
-    fileMenu->Append(MNU_PASSWORD, wxT("C&hange password..."), wxT("Change your password."));
+    fileMenu->Append(MNU_ADDSERVER, wxT("&Add Server..."),          wxT("Add a connection to a server."));
+    fileMenu->Append(MNU_PASSWORD, wxT("C&hange password..."),      wxT("Change your password."));
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object."));
-    fileMenu->Append(MNU_DROP, wxT("&Delete/Drop"), 
-		wxT("Delete/Drop the selected object."));
-    fileMenu->Append(MNU_PROPERTIES, wxT("&Properties"), 
-		wxT("Display/edit the properties of the selected object."));
+    fileMenu->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."),wxT("Save the SQL definition of the selected object."));
+    fileMenu->Append(MNU_DROP, wxT("&Delete/Drop"),         		wxT("Delete/Drop the selected object."));
+    fileMenu->Append(MNU_PROPERTIES, wxT("&Properties"),    		wxT("Display/edit the properties of the selected object."));
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_EXIT, wxT("E&xit"), wxT("Quit this program."));
+    fileMenu->Append(MNU_EXIT, wxT("E&xit"),                        wxT("Quit this program."));
     menuBar->Append(fileMenu, wxT("&File"));
 
     // Tools Menu
     toolsMenu = new wxMenu();
-    toolsMenu->Append(MNU_CONNECT, wxT("&Connect..."), 
-		wxT("Connect to the selected server."));
-    toolsMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"), 
-		wxT("Disconnect from the selected server."));
+    toolsMenu->Append(MNU_CONNECT, wxT("&Connect..."),              wxT("Connect to the selected server."));
+    toolsMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"),           wxT("Disconnect from the selected server."));
     toolsMenu->AppendSeparator();
-	toolsMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"),
-		wxT("Start the query builder."));
+    toolsMenu->Append(MNU_SQL, wxT("SQL"),                          wxT("Execute arbitrary SQL queries."));
+    toolsMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"),      wxT("Start the query builder."));
+	toolsMenu->Append(MNU_VIEWDATA, wxT("View Data"),               wxT("View the data in the selected object."));
     toolsMenu->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard."));
+    toolsMenu->Append(MNU_VACUUM, wxT("Vacuum"),                    wxT("Vacuum the current database or table."));
+    toolsMenu->Append(MNU_STATUS, wxT("Server Status"),             wxT("Displays the current database status."));
     toolsMenu->AppendSeparator();
-    toolsMenu->Append(MNU_OPTIONS, wxT("&Options..."), wxT("Show options dialog."));
+    toolsMenu->Append(MNU_OPTIONS, wxT("&Options..."),              wxT("Show options dialog."));
     menuBar->Append(toolsMenu, wxT("&Tools"));
 
     // View Menu
     viewMenu = new wxMenu();
-    viewMenu->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects."), wxITEM_CHECK);
+    viewMenu->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"),     wxT("Show or hide system objects."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_REFRESH, wxT("&Refresh"), 
-		wxT("Refresh the selected object."));
+    viewMenu->Append(MNU_REFRESH, wxT("&Refresh"),          		wxT("Refresh the selected object."));
     menuBar->Append(viewMenu, wxT("&View"));
 
     // Help Menu
     helpMenu = new wxMenu();
-    helpMenu->Append(MNU_CONTENTS, wxT("&Help..."), wxT("Open the helpfile."));
-    helpMenu->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."), wxT("Show a tip of the day."));
+    helpMenu->Append(MNU_CONTENTS, wxT("&Help..."),                 wxT("Open the helpfile."));
+    helpMenu->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."),    wxT("Show a tip of the day."));
     helpMenu->AppendSeparator();
-    helpMenu->Append(MNU_ABOUT, wxT("&About..."), wxT("Show about dialog."));
+    helpMenu->Append(MNU_ABOUT, wxT("&About..."),                   wxT("Show about dialog."));
     menuBar->Append(helpMenu, wxT("&Help"));
 
     // Tree Context Menu
     treeContextMenu = new wxMenu();
-    treeContextMenu->Append(MNU_CONNECT, wxT("&Connect..."), 
-		wxT("Connect to the selected server."));
-    treeContextMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"), 
-		wxT("Disconnect from the selected server."));
+    treeContextMenu->Append(MNU_CONNECT, wxT("&Connect..."),    	wxT("Connect to the selected server."));
+    treeContextMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"),     wxT("Disconnect from the selected server."));
     treeContextMenu->AppendSeparator();
-	treeContextMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"),
-		wxT("Start the query builder."));
+	treeContextMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"),wxT("Start the query builder."));
+	treeContextMenu->Append(MNU_VIEWDATA, wxT("View Data"),         wxT("View the data in the selected object."));
+    treeContextMenu->Append(MNU_VACUUM, wxT("Vacuum"),              wxT("Vacuum the current database or table."));
     treeContextMenu->AppendSeparator();
-    treeContextMenu->Append(MNU_DROP, wxT("&Delete/Drop"), 
-		wxT("Delete/Drop the selected object."));
-    treeContextMenu->Append(MNU_REFRESH, wxT("&Refresh"), 
-		wxT("Refresh the selected object."));
-    treeContextMenu->Append(MNU_PROPERTIES, wxT("&Properties"), 
-		wxT("Display/edit the properties of the selected object."));
+    treeContextMenu->Append(MNU_DROP, wxT("&Delete/Drop"),  		wxT("Delete/Drop the selected object."));
+    treeContextMenu->Append(MNU_REFRESH, wxT("&Refresh"),   		wxT("Refresh the selected object."));
+    treeContextMenu->Append(MNU_PROPERTIES, wxT("&Properties"),     wxT("Display/edit the properties of the selected object."));
 
     // Add the Menubar and set some options
     SetMenuBar(menuBar);
@@ -177,7 +171,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_NORMAL, WXK_F5, MNU_REFRESH);
-    entries[1].Set(wxACCEL_ALT,    WXK_F5, MNU_REFRESH);
+    entries[1].Set(wxACCEL_NORMAL, WXK_DELETE, MNU_DROP);
     wxAcceleratorTable accel(2, entries);
 
     SetAcceleratorTable(accel);
@@ -204,24 +198,24 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     barBitmaps[8] = wxBitmap(record_xpm);
     barBitmaps[9] = wxBitmap(stop_xpm);
 
-    toolBar->AddTool(BTN_ADDSERVER, wxT("Add Server"), barBitmaps[0], wxT("Add a connection to a server."), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_REFRESH, wxT("Refresh"), barBitmaps[1], wxT("Refresh the data below the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_ADDSERVER, wxT("Add Server"), barBitmaps[0], wxT("Add a connection to a server."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REFRESH, wxT("Refresh"), barBitmaps[1], wxT("Refresh the data below the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(BTN_CREATE, wxT("Create"), barBitmaps[2], wxT("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_DROP, wxT("Drop"), barBitmaps[3], wxT("Drop the currently selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_PROPERTIES, wxT("Properties"), barBitmaps[4], wxT("Display/edit the properties of the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_CREATE, wxT("Create"), barBitmaps[2], wxT("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_DROP, wxT("Drop"), barBitmaps[3], wxT("Drop the currently selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_PROPERTIES, wxT("Properties"), barBitmaps[4], wxT("Display/edit the properties of the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(BTN_SQL, wxT("SQL"), barBitmaps[5], wxT("Execute arbitrary SQL queries."), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_VIEWDATA, wxT("View Data"), barBitmaps[6], wxT("View the data in the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_VACUUM, wxT("Vacuum"), barBitmaps[7], wxT("Vacuum the current database or table."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_SQL, wxT("SQL"), barBitmaps[5], wxT("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_VIEWDATA, wxT("View Data"), barBitmaps[6], wxT("View the data in the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_VACUUM, wxT("Vacuum"), barBitmaps[7], wxT("Vacuum the current database or table."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(BTN_RECORD, wxT("Record"), barBitmaps[8], wxT("Record a query log."), wxITEM_NORMAL);
-    toolBar->AddTool(BTN_STOP, wxT("Stop"), barBitmaps[9], wxT("Stop recording the query log."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_RECORD, wxT("Record"), barBitmaps[8], wxT("Record a query log."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_STOP, wxT("Stop"), barBitmaps[9], wxT("Stop recording the query log."), wxITEM_NORMAL);
 
     // Display the bar and configure buttons. 
     toolBar->Realize();
     SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
-    toolBar->EnableTool(BTN_STOP, FALSE);
+    toolBar->EnableTool(MNU_STOP, FALSE);
     
     // Setup the vertical splitter & treeview
     vertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
@@ -358,7 +352,7 @@ frmMain::~frmMain()
 
 
 
-void frmMain::RemoveFrame(wxFrame *frame)
+void frmMain::RemoveFrame(wxWindow *frame)
 {
     frames.DeleteObject(frame);
 }
@@ -612,27 +606,33 @@ void frmMain::RetrieveServers()
 
 void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum)
 {
-    toolBar->EnableTool(BTN_REFRESH, refresh);
-    toolBar->EnableTool(BTN_CREATE, create);
-    toolBar->EnableTool(BTN_DROP, drop);
-    toolBar->EnableTool(BTN_PROPERTIES, properties);
-    toolBar->EnableTool(BTN_SQL, sql);
-    toolBar->EnableTool(BTN_VIEWDATA, viewData);
-    toolBar->EnableTool(BTN_VACUUM, vacuum);
+    toolBar->EnableTool(MNU_REFRESH, refresh);
+    toolBar->EnableTool(MNU_CREATE, create);
+    toolBar->EnableTool(MNU_DROP, drop);
+    toolBar->EnableTool(MNU_PROPERTIES, properties);
+    toolBar->EnableTool(MNU_SQL, sql);
+    toolBar->EnableTool(MNU_VIEWDATA, viewData);
+    toolBar->EnableTool(MNU_VACUUM, vacuum);
 
 	// Handle the menus associated with the buttons
 	fileMenu->Enable(MNU_DROP, drop);
 	fileMenu->Enable(MNU_PROPERTIES, properties);
-	toolsMenu->Enable(MNU_CONNECT, FALSE);
-	toolsMenu->Enable(MNU_DISCONNECT, FALSE);
+	toolsMenu->Enable(MNU_CONNECT, false);
+	toolsMenu->Enable(MNU_DISCONNECT, false);
+	toolsMenu->Enable(MNU_SQL, sql);
 	toolsMenu->Enable(MNU_QUERYBUILDER, sql);
+	toolsMenu->Enable(MNU_VACUUM, vacuum);
+	toolsMenu->Enable(MNU_STATUS, sql);
+	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	viewMenu->Enable(MNU_REFRESH, refresh);
 	treeContextMenu->Enable(MNU_DROP, drop);
-	treeContextMenu->Enable(MNU_CONNECT, FALSE);
-	treeContextMenu->Enable(MNU_DISCONNECT, FALSE);
+	treeContextMenu->Enable(MNU_CONNECT, false);
+	treeContextMenu->Enable(MNU_DISCONNECT, false);
 	treeContextMenu->Enable(MNU_REFRESH, refresh);
 	treeContextMenu->Enable(MNU_PROPERTIES, properties);
 	treeContextMenu->Enable(MNU_QUERYBUILDER, sql);
+	treeContextMenu->Enable(MNU_VACUUM, vacuum);
+	treeContextMenu->Enable(MNU_VIEWDATA, viewData);
 
 }
 

@@ -77,11 +77,14 @@ bool pgAdmin3::OnInit()
 
     // Setup the XML resources
     wxXmlResource::Get()->InitAllHandlers();
-    LoadXrc(wxString("frmConnect.xrc"));
-    LoadXrc(wxString("frmOptions.xrc"));
-    LoadXrc(wxString("frmPassword.xrc"));
-    LoadXrc(wxString("frmQBJoin.xrc"));
-    LoadXrc(wxString("frmAddTableView.xrc"));
+    LoadXrc(wxT("frmConnect.xrc"));
+    LoadXrc(wxT("frmOptions.xrc"));
+    LoadXrc(wxT("frmPassword.xrc"));
+    LoadXrc(wxT("frmQBJoin.xrc"));
+    LoadXrc(wxT("frmAddTableView.xrc"));
+    LoadXrc(wxT("frmStatus.xrc"));
+
+    LoadXrc(wxT("dlgUser.xrc"));
 
     // Set some defaults
 #ifdef __WXMSW__
@@ -143,9 +146,7 @@ void pgAdmin3::LoadXrc(const wxString file)
     wxLogInfo(wxT("Loading %s"), file.c_str());
 
     wxString loadPath=wxPathOnly(argv[0]);
-#ifndef __WIN32__
-    wxExpandPath(loadPath, loadPath);
-#endif
+
 
     wxString xrc;
     xrc.Printf("%s/%s", XRC_PATH, file.c_str());
@@ -158,6 +159,11 @@ void pgAdmin3::LoadXrc(const wxString file)
             if (!wxFileExists(xrc))
             {
                 xrc.Printf("%s/pgadmin.ui/%s", loadPath.c_str(), file.c_str());
+                if (!wxFileExists(xrc))
+                {
+                    wxLogError(wxT("Resource ") + file + wxT(" could not be located!"));
+                    return;
+                }
             }
         }
     }

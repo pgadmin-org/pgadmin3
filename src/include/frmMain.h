@@ -29,7 +29,7 @@
 class wxSplitterWindow;
 
 
-WX_DECLARE_LIST(wxFrame, frameList);
+WX_DECLARE_LIST(wxWindow, windowList);
 
 
 // Class declarations
@@ -44,10 +44,10 @@ public:
     void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
 
-    void RemoveFrame(wxFrame *frame);
+    void RemoveFrame(wxWindow *frame);
 
 private:
-    frameList frames;
+    windowList frames;
 	pgDatabase *m_database;
     wxTreeCtrl *browser;
     wxListCtrl *properties;
@@ -65,12 +65,16 @@ private:
     void OnAbout(wxCommandEvent& event);
     void OnAddServer(wxCommandEvent &ev);
     void OnExit(wxCommandEvent& event);
+    void OnViewData(wxCommandEvent& event);
     void OnUpgradeWizard(wxCommandEvent& event);
     void OnOptions(wxCommandEvent& event);
     void OnPassword(wxCommandEvent& event);
     void OnSaveDefinition(wxCommandEvent& event);
     void OnShowSystemObjects(wxCommandEvent& event);
 	void OnSql(wxCommandEvent& event);
+	void OnVacuum(wxCommandEvent& event);
+	void OnStatus(wxCommandEvent& event);
+
     
     void OnPropSelChanged(wxListEvent& event);
     
@@ -80,10 +84,12 @@ private:
 	void OnSelRightClick(wxTreeEvent& event);
     void OnCollapse(wxTreeEvent& event);
     void OnClose(wxCloseEvent& event);
+
+    void OnCreate(wxCommandEvent &ev);
     void OnDrop(wxCommandEvent &ev);
+	void OnProperties(wxCommandEvent &ev);
     void OnRefresh(wxCommandEvent &ev);
 	void OnDisconnect(wxCommandEvent &ev);
-	void OnProperties(wxCommandEvent &ev);
 	void OnQueryBuilder(wxCommandEvent &ev);
 
     void StoreServers();
@@ -102,37 +108,30 @@ private:
 enum
 {
     MNU_ADDSERVER = 101,
-    MNU_PASSWORD = 102,
-    MNU_SAVEDEFINITION = 103,
-    MNU_EXIT = 104,
-    MNU_UPGRADEWIZARD = 105,
-    MNU_OPTIONS = 106,
-    MNU_SYSTEMOBJECTS = 107,
-    MNU_CONTENTS = 108,
-    MNU_TIPOFTHEDAY = 109,
-    MNU_ABOUT = 110,
-  	 MNU_REFRESH = 111,
-	 MNU_CONNECT = 112,
-	 MNU_DISCONNECT = 113,
-	 MNU_DROP = 114,
-	 MNU_PROPERTIES = 115,
-	 MNU_QUERYBUILDER = 116
+    MNU_PASSWORD,
+    MNU_SAVEDEFINITION,
+    MNU_EXIT,
+    MNU_UPGRADEWIZARD,
+    MNU_OPTIONS,
+    MNU_SYSTEMOBJECTS,
+    MNU_CONTENTS,
+    MNU_TIPOFTHEDAY,
+    MNU_ABOUT,
+    MNU_REFRESH,
+    MNU_CONNECT,
+    MNU_DISCONNECT,
+    MNU_DROP,
+    MNU_PROPERTIES,
+    MNU_QUERYBUILDER,
+    MNU_SQL,
+    MNU_VIEWDATA,
+    MNU_VACUUM,
+    MNU_CREATE,
+    MNU_RECORD,
+    MNU_STOP,
+    MNU_STATUS
 };
 
-// Toolbar buttons
-enum
-{
-    BTN_ADDSERVER = 201,
-    BTN_REFRESH = 202,
-    BTN_CREATE = 203,
-    BTN_DROP = 204,
-    BTN_PROPERTIES = 205,
-    BTN_SQL = 206,
-    BTN_VIEWDATA = 207,
-    BTN_VACUUM = 208,
-    BTN_RECORD = 209,
-    BTN_STOP = 210
-};
 
 // Controls
 enum

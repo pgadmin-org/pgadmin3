@@ -29,6 +29,7 @@
 #include "frmPassword.h"
 #include "frmUpgradeWizard.h"
 #include "frmQuery.h"
+#include "frmStatus.h"
 #include "ctlSQLBox.h"
 #include "pgConn.h"
 #include "pgLanguage.h"
@@ -38,23 +39,24 @@
 #include "pgObject.h"
 #include "pgCollection.h"
 #include "frmQueryBuilder.h"
-
+#include "frmEditGrid.h"
+#include "dlgProperty.h"
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
-    EVT_MENU(BTN_ADDSERVER,                 frmMain::OnAddServer)
-    EVT_MENU(BTN_DROP,                      frmMain::OnDrop)
-    EVT_MENU(BTN_REFRESH,                   frmMain::OnRefresh)
-    EVT_MENU(BTN_PROPERTIES,                frmMain::OnProperties)
-    EVT_MENU(BTN_SQL,                       frmMain::OnSql)
+    EVT_MENU(MNU_SQL,                       frmMain::OnSql)
+    EVT_MENU(MNU_VACUUM,                    frmMain::OnVacuum)
     EVT_MENU(MNU_ABOUT,                     frmMain::OnAbout)
     EVT_MENU(MNU_ADDSERVER,                 frmMain::OnAddServer)
     EVT_MENU(MNU_REFRESH,                   frmMain::OnRefresh)
     EVT_MENU(MNU_CONNECT,                   frmMain::OnConnect)
     EVT_MENU(MNU_DISCONNECT,                frmMain::OnDisconnect)
     EVT_MENU(MNU_DROP,                      frmMain::OnDrop)
+    EVT_MENU(MNU_CREATE,                    frmMain::OnCreate)
     EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
     EVT_MENU(MNU_EXIT,                      frmMain::OnExit)
+    EVT_MENU(MNU_STATUS,                    frmMain::OnStatus)
+    EVT_MENU(MNU_VIEWDATA,                  frmMain::OnViewData)
     EVT_MENU(MNU_OPTIONS,                   frmMain::OnOptions)
     EVT_MENU(MNU_PASSWORD,                  frmMain::OnPassword)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
@@ -90,8 +92,8 @@ void frmMain::OnExit(wxCommandEvent& WXUNUSED(event))
 
 void frmMain::OnClose(wxCloseEvent& event)
 {
-    wxFrame *fr;
-    frameList::Node *node;
+    wxWindow *fr;
+    windowList::Node *node;
     while ((node=frames.GetFirst()) != NULL)
     {
         fr=node->GetData();
@@ -149,6 +151,32 @@ void frmMain::OnCollapse(wxTreeEvent &event)
 }
 
 
+void frmMain::OnStatus(wxCommandEvent &event)
+{
+    wxTreeItemId item=browser->GetSelection();
+    pgObject *data = (pgObject *)browser->GetItemData(item);
+
+    pgDatabase *db=data->GetDatabase();
+    if (!db)
+        return;
+
+    pgServer *server=db->GetServer();
+
+    pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
+    if (conn->GetStatus() == PGCONN_OK)
+    {
+        wxString txt = "pgAdmin III Server Status - " + server->GetDescription() 
+            + wxT(" (") + server->GetName() + ":" + NumToStr((long)server->GetPort()) + wxT(")");
+
+        wxPoint pos(settings->Read(wxT("frmStatus/Left"), 100), settings->Read(wxT("frmStatus/Top"), 100));
+        wxSize size(settings->Read(wxT("frmStatus/Width"), 400), settings->Read(wxT("frmStatus/Height"), 240));
+        CheckOnScreen(pos, size, 200, 150);
+        frmStatus *status = new frmStatus(this, txt, conn, pos, size);
+        frames.Append(status);
+        status->Go();
+    }
+}
+
 void frmMain::OnPassword(wxCommandEvent& event)
 {
     frmPassword *winPassword = new frmPassword(this);
@@ -174,6 +202,41 @@ void frmMain::OnPassword(wxCommandEvent& event)
 }
 
 
+void frmMain::OnVacuum(wxCommandEvent &ev)
+{
+    wxTreeItemId item=browser->GetSelection();
+    pgObject *data = (pgObject *)browser->GetItemData(item);
+    if (data->GetType() != PG_TABLE && data->GetType() != PG_DATABASE)
+        return;
+
+    pgDatabase *db=data->GetDatabase();
+    if (!db)
+        return;
+
+    pgServer *server=db->GetServer();
+
+#if 0
+    pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
+    if (conn->GetStatus() == PGCONN_OK)
+    {
+        wxString txt = wxT("pgAdmin III Edit Data - ")
+            + server->GetDescription() 
+            + wxT(" (") + server->GetName() 
+            + wxT(":)") + NumToStr((long)server->GetPort()) 
+            + wxT(") - ") + db->GetName()
+            + wxT(" - ") + data->GetFullIdentifier();
+
+//        wxPoint pos(settings->Read(wxT("frmEditGrid/Left"), 100), settings->Read(wxT("frmEditGrid/Top"), 100));
+//        wxSize size(settings->Read(wxT("frmEditGrid/Width"), 600), settings->Read(wxT("frmEditGrid/Height"), 500));
+//        CheckOnScreen(pos, size, 200, 150);
+    }
+    else
+    {
+		wxLogError(conn->GetLastError());
+        delete conn;
+    }
+#endif
+}
 
 void frmMain::OnSql(wxCommandEvent &ev)
 {
@@ -195,7 +258,10 @@ void frmMain::OnSql(wxCommandEvent &ev)
         wxSize size(settings->Read(wxT("frmQuery/Width"), 600), settings->Read(wxT("frmQuery/Height"), 500));
         CheckOnScreen(pos, size, 200, 150);
 
-        frmQuery *fq= new frmQuery(this, txt, conn, pos, size, sqlPane->GetText());
+        wxString qry;
+        if (!data->GetSystemObject())
+            qry = sqlPane->GetText();
+        frmQuery *fq= new frmQuery(this, txt, conn, pos, size, qry);
         frames.Append(fq);
         fq->Go();
     }
@@ -206,6 +272,43 @@ void frmMain::OnSql(wxCommandEvent &ev)
     }
 }
 
+void frmMain::OnViewData(wxCommandEvent& event)
+{
+    wxTreeItemId item=browser->GetSelection();
+    pgSchemaObject *data = (pgSchemaObject *)browser->GetItemData(item);
+    if (data->GetType() != PG_TABLE && data->GetType() != PG_VIEW)
+        return;
+
+    pgDatabase *db=data->GetDatabase();
+    if (!db)
+        return;
+
+    pgServer *server=db->GetServer();
+
+    pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
+    if (conn->GetStatus() == PGCONN_OK)
+    {
+        wxString txt = wxT("pgAdmin III Edit Data - ")
+            + server->GetDescription() 
+            + wxT(" (") + server->GetName() 
+            + wxT(":") + NumToStr((long)server->GetPort()) 
+            + wxT(") - ") + db->GetName()
+            + wxT(" - ") + data->GetFullIdentifier();
+
+        wxPoint pos(settings->Read(wxT("frmEditGrid/Left"), 100), settings->Read(wxT("frmEditGrid/Top"), 100));
+        wxSize size(settings->Read(wxT("frmEditGrid/Width"), 600), settings->Read(wxT("frmEditGrid/Height"), 500));
+        CheckOnScreen(pos, size, 200, 150);
+
+        frmEditGrid *eg= new frmEditGrid(this, txt, conn, pos, size, data);
+        frames.Append(eg);
+        eg->Go();
+    }
+    else
+    {
+		wxLogError(conn->GetLastError());
+        delete conn;
+    }
+}
 
 void frmMain::OnSaveDefinition(wxCommandEvent& event)
 {
@@ -263,12 +366,12 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
     // Add the root node
     pgObject *serversObj = new pgServers();
     servers = browser->AddRoot(wxT("Servers"), PGICON_SERVER, -1, serversObj);
+    RetrieveServers();
     browser->Expand(servers);
     browser->SelectItem(servers);
 #ifdef __WIN32__
     denyCollapseItem = servers;
 #endif
-    RetrieveServers();
 }
 
 void frmMain::OnAddServer(wxCommandEvent &ev)
@@ -463,6 +566,12 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
             break;
 
         default:
+            if (data->CanEdit())
+            {
+                OnProperties(nullEvent);
+                event.Skip();
+                return;
+            }
             break;
     }
 
@@ -497,29 +606,64 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     // cast as required.
     wxTreeItemId item = browser->GetSelection();
     pgObject *data = (pgObject *)browser->GetItemData(item);
-    int type = data->GetType();
-    wxString msg, label;
 
-    switch (type) {
-        case PG_SERVER:
-            msg.Printf(wxT("Are you sure you wish to remove the server: %s?"), data->GetIdentifier().c_str());
-			if (wxMessageBox(msg, wxT("Remove Server?"), wxYES_NO | wxICON_QUESTION) == wxYES) {
+    if (data->GetSystemObject())
+    {
+        wxMessageBox(wxT("Cannot drop system objects."));
+        return;
+    }
 
-                wxLogInfo(wxT("Removing server: %s"), data->GetIdentifier().c_str());
+    wxMessageDialog msg(this, wxT("Are you sure you wish to remove the ") + data->GetTypeName() 
+                    + wxT(" ") + data->GetFullIdentifier() + wxT("?"),
+        wxT("Remove ") + data->GetTypeName() + wxT("?"), wxYES_NO | wxICON_QUESTION);
+    if (msg.ShowModal() != wxID_YES)
+    {
+        return;
+    }
 
-                browser->Delete(item);
+    bool done=data->DropObject(this, browser);
 
-                // Reset the Servers node text
-                label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
-                browser->SetItemText(servers, label);
-                StoreServers();
+    if (done)
+    {
+        wxLogInfo(wxT("Removing %s %s"), data->GetTypeName().c_str(), data->GetIdentifier().c_str());
+
+        int collectionType=data->GetType() -1;
+        wxTreeItemId parentItem=browser->GetItemParent(item);
+
+        wxTreeItemId nextItem=browser->GetNextVisible(item);
+        if (nextItem)
+        {
+            pgObject *nextData=(pgObject*)browser->GetItemData(nextItem);
+            if (nextData && nextData->GetType() == data->GetType())
+                browser->SelectItem(nextItem);
+            else
+            {
+                browser->SelectItem(browser->GetPrevVisible(item));
             }
-            break;
+        }
+        else
+            browser->SelectItem(browser->GetPrevVisible(item));
 
-        default:
-            break;
+        browser->Delete(item);
+
+        pgCollection *collection=0;
+
+        while (parentItem)
+        {
+            collection = (pgCollection*)browser->GetItemData(parentItem);
+            if (collection && collection->GetType() == collectionType)
+            {
+                collection->UpdateChildCount(browser);
+                break;
+            }
+            parentItem=browser->GetItemParent(parentItem);
+        }
+    }
+    else
+    {
     }
 }
+
 
 void frmMain::OnRefresh(wxCommandEvent &ev)
 {
@@ -580,10 +724,37 @@ void frmMain::OnDisconnect(wxCommandEvent &ev)
 }
 
 
+
+void frmMain::OnCreate(wxCommandEvent &ev)
+{
+    wxTreeItemId item = browser->GetSelection();
+    pgObject *data = (pgObject *)browser->GetItemData(item);
+
+    if (data)
+    {
+        pgConn *conn=data->GetConnection();
+        if (!conn)
+            return;
+
+        dlgProperty::CreateObjectDialog(this, browser, properties, data, conn);
+    }
+}
+
+
+
 void frmMain::OnProperties(wxCommandEvent &ev)
 {
-    // Properties -- does nothing yet
-	int res = wxMessageBox("This is not yet implemented" );
+    wxTreeItemId item = browser->GetSelection();
+    pgObject *data = (pgObject *)browser->GetItemData(item);
+
+    if (data)
+    {
+        pgConn *conn=data->GetConnection();
+        if (!conn)
+            return;
+
+        dlgProperty::EditObjectDialog(this, browser, properties, statistics, sqlPane, data, conn);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
