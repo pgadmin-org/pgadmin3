@@ -42,12 +42,11 @@ char *typeNameList[] =
     "Tables",           "Table",
     "Types",            "Type",
     "Views",            "View",
-    "Checks",           "Check",
     "Columns",          "Column",
-    "Foreign Keys",     "Foreign Key",
     "Indexes",          "Index",
     "Rules",            "Rule",
     "Triggers",         "Trigger",
+    "Constraints", "Primary Key", "Unique", "Check", "Foreign Keys",
     "Unknown"
 };
 
@@ -101,13 +100,24 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
 }
 
 
-void pgObject::CreateListColumns(wxListCtrl *properties, const wxString &left, const wxString &right)
+void pgObject::CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right)
 {
-    properties->ClearAll();
-    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 700);
+    list->ClearAll();
+    list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, 150);
+    list->InsertColumn(1, right, wxLIST_FORMAT_LEFT, 700);
 }
 
+
+
+void pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
+{
+    wxString label;
+    if (object->IsCollection())
+        label = object->GetTypeName();
+    else
+        label = object->GetFullName();
+    browser->AppendItem(GetId(), label, object->GetIcon(), -1, object);
+}
 
 
 void pgObject::InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2)
@@ -323,12 +333,11 @@ pgDatabase *pgObject::GetDatabase()
         case PG_TABLES:
         case PG_TYPES:
         case PG_VIEWS:
-        case PG_CHECKS:
         case PG_COLUMNS:
-        case PG_FOREIGNKEYS:
         case PG_INDEXES:
         case PG_RULES:
         case PG_TRIGGERS:
+        case PG_CONSTRAINTS:
             db=((pgCollection*)this)->GetDatabase();
             break;
         case PG_LANGUAGE:
@@ -349,6 +358,8 @@ pgDatabase *pgObject::GetDatabase()
         case PG_VIEW:
         case PG_CHECK:
         case PG_COLUMN:
+        case PG_UNIQUE:
+        case PG_PRIMARYKEY:
         case PG_FOREIGNKEY:
         case PG_INDEX:
         case PG_RULE:

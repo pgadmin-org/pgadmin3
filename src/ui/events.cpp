@@ -397,10 +397,10 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 	// Reset the listviews/SQL pane
     properties->ClearAll();
     properties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
-    properties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
+    properties->InsertItem(0, wxT("No properties are available for the current selection"), PGICON_PROPERTY);
     statistics->ClearAll();
     statistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
-    statistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
+    statistics->InsertItem(0, wxT("No statistics are available for the current selection"), PGICON_STATISTICS);
     sqlPane->Clear();
 
     // Reset the toolbar & password menu options
@@ -475,11 +475,12 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
         case PG_TYPE:
         case PG_VIEWS:
         case PG_VIEW:
-        case PG_CHECKS:
         case PG_CHECK:
         case PG_COLUMNS:
         case PG_COLUMN:
-        case PG_FOREIGNKEYS:
+        case PG_CONSTRAINTS:
+        case PG_PRIMARYKEY:
+        case PG_UNIQUE:
         case PG_FOREIGNKEY:
         case PG_INDEXES:
         case PG_INDEX:
@@ -608,7 +609,6 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     {
         wxLogInfo(wxT("Dropping %s %s"), data->GetTypeName().c_str(), data->GetIdentifier().c_str());
 
-        int collectionType=data->GetType() -1;
         wxTreeItemId parentItem=browser->GetItemParent(item);
 
         wxTreeItemId nextItem=browser->GetNextVisible(item);
@@ -632,7 +632,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
         while (parentItem)
         {
             collection = (pgCollection*)browser->GetItemData(parentItem);
-            if (collection && collection->GetType() == collectionType)
+            if (collection && collection->IsCollection() && collection->IsCollectionForType(data->GetType()))
             {
                 collection->UpdateChildCount(browser);
                 break;

@@ -28,12 +28,12 @@ pgForeignKey::~pgForeignKey()
 {
 }
 
+
 bool pgForeignKey::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    wxString sql = wxT("ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable);
-             sql += wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier();
-    
-    return GetDatabase()->ExecuteVoid(sql);
+    return GetDatabase()->ExecuteVoid(wxT(
+        "ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+        + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier());
 }
 
 
@@ -65,7 +65,9 @@ wxString pgForeignKey::GetSql(wxTreeCtrl *browser)
     if (sql.IsNull())
     {
         sql = wxT("-- Foreign Key: ") + GetQuotedFullIdentifier() + wxT("\n")
-            + wxT("ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            + wxT("\n-- ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
+            + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier()
+            + wxT("\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
             + wxT("\n  ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
         if (!GetComment().IsEmpty())
@@ -150,7 +152,7 @@ pgObject *pgForeignKey::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_FOREIGNKEYS)
+        if (obj->GetType() == PG_CONSTRAINTS)
             foreignKey = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND ct.oid=") + GetOidStr());
     }
     return foreignKey;
@@ -216,7 +218,7 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), foreignKey->GetFullName(), PGICON_KEY, -1, foreignKey);
+                collection->AppendBrowserItem(browser, foreignKey);
 	    		foreignKeys->MoveNext();
             }
             else
@@ -227,17 +229,3 @@ pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
     }
     return foreignKey;
 }
-
-    
-void pgForeignKey::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding ForeignKeys to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-
-        // Get the ForeignKeys
-        ReadObjects(collection, browser);
-    }
-}
-

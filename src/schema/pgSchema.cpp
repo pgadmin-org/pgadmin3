@@ -70,56 +70,56 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         // Aggregates
         collection = new pgCollection(PG_AGGREGATES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_AGGREGATE, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Conversions
         collection = new pgCollection(PG_CONVERSIONS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_CONVERSION, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Domains
         collection = new pgCollection(PG_DOMAINS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_DOMAIN, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Functions
         collection = new pgCollection(PG_FUNCTIONS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_FUNCTION, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         collection = new pgCollection(PG_TRIGGERFUNCTIONS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_TRIGGERFUNCTION, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Operators
         collection = new pgCollection(PG_OPERATORS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_OPERATOR, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Operator Classes
         collection = new pgCollection(PG_OPERATORCLASSES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_OPERATORCLASS, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Sequences
         collection = new pgCollection(PG_SEQUENCES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_SEQUENCE, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Tables
         collection = new pgCollection(PG_TABLES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_TABLE, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Types
         collection = new pgCollection(PG_TYPES);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_TYPE, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Views
         collection = new pgCollection(PG_VIEWS);
         collection->SetInfo(GetDatabase()->GetServer(), GetDatabase(), this);
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_VIEW, -1, collection);
+        AppendBrowserItem(browser, collection);
     }
 
 
@@ -197,22 +197,15 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
 
     
-void pgSchema::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
 {
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
+    wxString systemRestriction;
+    if (!settings->GetShowSystemObjects())
+        systemRestriction = wxT(
+            " WHERE nsp.oid >= 100\n"
+            "   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n");
 
-        // Log
-        wxLogInfo(wxT("Adding schemas to database %s"), collection->GetDatabase()->GetIdentifier().c_str());
-
-        wxString systemRestriction;
-        if (!settings->GetShowSystemObjects())
-            systemRestriction = wxT(
-                " WHERE nsp.oid >= 100\n"
-                "   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n");
-
-        // Get the schemas
-        ReadObjects(collection, browser, systemRestriction);
-    }
+    // Get the schemas
+    return ReadObjects(collection, browser, systemRestriction);
 }
 

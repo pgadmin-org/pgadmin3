@@ -29,9 +29,7 @@
 #include "pgTable.h"
 #include "pgType.h"
 #include "pgView.h"
-#include "pgCheck.h"
 #include "pgColumn.h"
-#include "pgForeignKey.h"
 #include "pgIndex.h"
 #include "pgRule.h"
 #include "pgTrigger.h"
@@ -66,9 +64,9 @@ void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, wxListCtr
         while (item)
         {
             data = (pgObject *)browser->GetItemData(item);
-            if (data->GetType() == GetType()+1)
+            if (IsCollectionForType(data->GetType()))
             {
-                properties->InsertItem(pos, data->GetFullName(), 0);
+                properties->InsertItem(pos, data->GetFullName(), data->GetIcon());
                 properties->SetItem(pos, 1, data->GetComment());
             }
             // Get the next item
@@ -108,9 +106,7 @@ bool pgCollection::CanCreate()
         case PG_TABLES:
         case PG_TYPES:
         case PG_VIEWS:
-        case PG_CHECKS:
         case PG_COLUMNS:
-        case PG_FOREIGNKEYS:
         case PG_INDEXES:
         case PG_RULES:
         case PG_TRIGGERS:
@@ -134,6 +130,7 @@ int pgCollection::GetIcon()
         case PG_SCHEMAS:            return PGICON_SCHEMA;
         case PG_AGGREGATES:         return PGICON_AGGREGATE;
         case PG_CONVERSIONS:        return PGICON_CONVERSION;
+        case PG_DOMAINS:            return PGICON_DOMAIN;
         case PG_FUNCTIONS:          return PGICON_FUNCTION;
         case PG_TRIGGERFUNCTIONS:   return PGICON_TRIGGERFUNCTION;
         case PG_OPERATORS:          return PGICON_OPERATOR;
@@ -142,13 +139,11 @@ int pgCollection::GetIcon()
         case PG_TABLES:             return PGICON_TABLE;
         case PG_TYPES:              return PGICON_TYPE;
         case PG_VIEWS:              return PGICON_VIEW;
-        case PG_CHECKS:             return PGICON_CHECK;
         case PG_COLUMNS:            return PGICON_COLUMN;
-        case PG_FOREIGNKEYS:        return PGICON_KEY;
         case PG_INDEXES:            return PGICON_INDEX;
         case PG_RULES:              return PGICON_RULE;
         case PG_TRIGGERS:           return PGICON_TRIGGER;
-        default:    return -1;
+        default:    return 0;
     }
 }
 
@@ -165,7 +160,7 @@ void pgCollection::SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, int index)
     while (item)
     {
         data = (pgObject *)browser->GetItemData(item);
-        if (data->GetType() == GetType()+1)
+        if (IsCollectionForType(data->GetType() == GetType()))
         {
             if (index == pos)
             {
@@ -182,78 +177,94 @@ void pgCollection::SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, int index)
 
 void pgCollection::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    switch (GetType())
+    if (browser->GetChildrenCount(GetId(), FALSE) == 0)
     {
-        case PG_DATABASES:
-            pgDatabase::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_GROUPS:
-            pgGroup::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_USERS:
-            pgUser::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_LANGUAGES:
-            pgLanguage::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_SCHEMAS:
-            pgSchema::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_AGGREGATES:
-            pgAggregate::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_CASTS:
-            pgCast::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_CONVERSIONS:
-            pgConversion::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_DOMAINS:
-            pgDomain::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_FUNCTIONS:
-        case PG_TRIGGERFUNCTIONS:
-            pgFunction::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_OPERATORS:
-            pgOperator::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_OPERATORCLASSES:
-            pgOperatorClass::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_SEQUENCES:
-            pgSequence::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_TABLES:
-            pgTable::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_TYPES:
-            pgType::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_VIEWS:
-            pgView::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_CHECKS:
-            pgCheck::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_COLUMNS:
-            pgColumn::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_FOREIGNKEYS:
-            pgForeignKey::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_INDEXES:
-            pgIndex::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_RULES:
-            pgRule::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        case PG_TRIGGERS:
-            pgTrigger::ShowTreeCollection(this, form, browser, properties, statistics, sqlPane);
-            break;
-        default:
-            return;
+        switch (GetType())
+        {
+            case PG_DATABASES:
+                pgDatabase::ReadObjects(this, browser);
+                break;
+            case PG_GROUPS:
+                pgGroup::ReadObjects(this, browser);
+                break;
+            case PG_USERS:
+                pgUser::ReadObjects(this, browser);
+                break;
+            case PG_LANGUAGES:
+                pgLanguage::ReadObjects(this, browser);
+                break;
+            case PG_SCHEMAS:
+                pgSchema::ReadObjects(this, browser);
+                break;
+            case PG_AGGREGATES:
+                pgAggregate::ReadObjects(this, browser);
+                break;
+            case PG_CASTS:
+                pgCast::ReadObjects(this, browser);
+                break;
+            case PG_CONVERSIONS:
+                pgConversion::ReadObjects(this, browser);
+                break;
+            case PG_DOMAINS:
+                pgDomain::ReadObjects(this, browser);
+                break;
+            case PG_FUNCTIONS:
+                pgFunction::ReadObjects(this, browser);
+                break;
+            case PG_TRIGGERFUNCTIONS:
+                pgTriggerFunction::ReadObjects(this, browser);
+                break;
+            case PG_OPERATORS:
+                pgOperator::ReadObjects(this, browser);
+                break;
+            case PG_OPERATORCLASSES:
+                pgOperatorClass::ReadObjects(this, browser);
+                break;
+            case PG_SEQUENCES:
+                pgSequence::ReadObjects(this, browser);
+                break;
+            case PG_TABLES:
+                pgTable::ReadObjects(this, browser);
+                break;
+            case PG_TYPES:
+                pgType::ReadObjects(this, browser);
+                break;
+            case PG_VIEWS:
+                pgView::ReadObjects(this, browser);
+                break;
+            case PG_COLUMNS:
+                pgColumn::ReadObjects(this, browser);
+                break;
+            case PG_INDEXES:
+                pgIndex::ReadObjects(this, browser);
+                break;
+            case PG_RULES:
+                pgRule::ReadObjects(this, browser);
+                break;
+            case PG_TRIGGERS:
+                pgTrigger::ReadObjects(this, browser);
+                break;
+            default:
+                return;
+        }
     }
+
+
+    if (statistics)
+    {
+        switch (GetType())
+        {
+            case PG_DATABASES:
+                pgDatabase::ShowStatistics(this, statistics);
+                break;
+            case PG_TABLES:
+                pgTable::ShowStatistics(this, statistics);
+                break;
+            default:
+                break;
+        }
+    }
+
     UpdateChildCount(browser);
     if (properties)
         ShowList(typeNameList[GetType()+1], browser, properties);

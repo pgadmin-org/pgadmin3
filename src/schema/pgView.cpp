@@ -57,7 +57,7 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         collection = new pgCollection(PG_RULES);
         collection->SetInfo(GetSchema());
         collection->iSetOid(GetOid());
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_RULE, -1, collection);
+        AppendBrowserItem(browser, collection);
     }
     if (properties)
     {
@@ -95,7 +95,8 @@ pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     pgView *view=0;
 
     pgSet *views= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT c.oid, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, pg_get_viewdef(c.oid) AS definition, description\n"
+        "SELECT c.oid, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description, ")
+                + collection->GetDatabase()->GetViewdefFunction() + wxT("(c.oid) AS definition\n"
         "  FROM pg_class c\n"
         "  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n"
         " WHERE ((c.relhasrules AND (EXISTS (\n"
@@ -120,7 +121,7 @@ pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), view->GetIdentifier(), PGICON_VIEW, -1, view);
+                collection->AppendBrowserItem(browser, view);
     			views->MoveNext();
             }
             else
@@ -130,20 +131,4 @@ pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 		delete views;
     }
     return view;
-}
-
-
-
-void pgView::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Views to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-
-
-        // Get the Views
-        ReadObjects(collection, browser);
-    }
 }

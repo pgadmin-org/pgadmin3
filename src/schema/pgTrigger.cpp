@@ -200,7 +200,7 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
 
             if (browser)
             {
-                wxTreeItemId item=browser->AppendItem(collection->GetId(), trigger->GetIdentifier(), PGICON_TRIGGER, -1, trigger);
+                collection->AppendBrowserItem(browser, trigger);
     			triggers->MoveNext();
             }
             else
@@ -211,18 +211,3 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
     }
     return trigger;
 }
-
-
-
-void pgTrigger::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Triggers to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-
-        // Get the Triggers
-        ReadObjects(collection, browser);
-    }
-}
-

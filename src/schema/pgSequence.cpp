@@ -115,9 +115,9 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
 
         if (stats)
         {
-            statistics->InsertItem(0, wxT("Blocks Read"), 0);
+            statistics->InsertItem(0, wxT("Blocks Read"), PGICON_STATISTICS);
             statistics->SetItem(0l, 1, stats->GetVal(wxT("blks_read")));
-            statistics->InsertItem(1, wxT("Blocks Hit"), 0);
+            statistics->InsertItem(1, wxT("Blocks Hit"), PGICON_STATISTICS);
             statistics->SetItem(1, 1, stats->GetVal(wxT("blks_hit")));
 
             delete stats;
@@ -168,7 +168,7 @@ pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), sequence->GetIdentifier(), PGICON_SEQUENCE, -1, sequence);
+                collection->AppendBrowserItem(browser, sequence);
 	  			sequences->MoveNext();
             }
             else
@@ -178,18 +178,3 @@ pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
     }
     return sequence;
 }
-
-
-
-void pgSequence::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Sequences to schema ") + collection->GetSchema()->GetIdentifier());
-
-        // Get the Sequences
-        ReadObjects(collection, browser);
-    }
-}
-

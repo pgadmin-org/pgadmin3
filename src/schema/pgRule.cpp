@@ -104,7 +104,7 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     pgRule *rule=0;
 
     pgSet *rules= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT rw.ev_class, rulename, pg_get_ruledef(oid) as definition, is_instead, ev_type, ev_action, ev_qual, description\n"
+        "SELECT rw.oid, rw.ev_class, rulename, pg_get_ruledef(rw.oid) as definition, is_instead, ev_type, ev_action, ev_qual, description\n"
         "  FROM pg_rewrite rw\n"
         "  JOIN pg_class cl ON cl.oid=rw.ev_class\n"
         "  JOIN pg_namespace nsp ON nsp.oid=cl.relnamespace\n"
@@ -136,7 +136,7 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), rule->GetFullName(), PGICON_RULE, -1, rule);
+                collection->AppendBrowserItem(browser, rule);
 				rules->MoveNext();
             }
             else
@@ -147,18 +147,3 @@ pgObject *pgRule::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     }
     return rule;
 }
-
-
-
-void pgRule::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Rules to schema ") + collection->GetSchema()->GetIdentifier());
-
-        // Get the Rules
-        ReadObjects(collection, browser);
-    }
-}
-

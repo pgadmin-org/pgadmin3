@@ -118,7 +118,7 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), cast->GetIdentifier(), PGICON_CAST, -1, cast);
+                collection->AppendBrowserItem(browser, cast);
 			    casts->MoveNext();
             }
             else
@@ -129,15 +129,3 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     }
     return cast;
 }
-void pgCast::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Casts to database ")+ collection->GetDatabase()->GetIdentifier());
-
-        // Get the Casts
-        ReadObjects(collection, browser);
-    }
-}
-

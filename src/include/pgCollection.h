@@ -28,6 +28,7 @@ public:
     pgCollection(int newType = PG_NONE);
     ~pgCollection();
     virtual bool IsCollection() const { return true; }
+    virtual bool IsCollectionForType(int objType) { return GetType() == objType-1; }
 
     pgServer *GetServer() const { return server; }
     void SetServer(pgServer *newServer) { server = newServer; }

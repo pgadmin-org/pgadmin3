@@ -114,15 +114,11 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
     {
         while (!functions->Eof())
         {
-            switch (obj->GetType())
-            {
-                case PG_FUNCTIONS:
-                    function = new pgFunction(schema, functions->GetVal(wxT("proname")));
-                    break;
-                case PG_TRIGGER:
-                case PG_TRIGGERFUNCTIONS:
-                    function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
-            }
+            if (functions->GetVal(wxT("typname")).IsSameAs(wxT("trigger")))
+                function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
+            else
+                function = new pgFunction(schema, functions->GetVal(wxT("proname")));
+
             function->iSetOid(functions->GetOid(wxT("oid")));
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
@@ -167,8 +163,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
 
             if (browser)
             {
-                browser->AppendItem(obj->GetId(), function->GetFullName(), 
-                    function->IsTriggerFunction() ? PGICON_TRIGGERFUNCTION : PGICON_FUNCTION, -1, function);
+                obj->AppendBrowserItem(browser, function);
 			    functions->MoveNext();
             }
             else
@@ -198,21 +193,23 @@ pgObject *pgFunction::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 
 
 
-void pgFunction::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+pgObject *pgFunction::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
 {
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Functions to schema ") + collection->GetSchema()->GetIdentifier());
-        wxString funcRestriction=wxT(
-            " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n");
-        if (collection->GetType() == PG_TRIGGERFUNCTIONS)
-            funcRestriction += "   AND typname = 'trigger'\n";
-        else
-            funcRestriction += "   AND typname <> 'trigger'\n";
+    wxString funcRestriction=wxT(
+        " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
+        + wxT("::oid\n   AND typname <> 'trigger'\n");
 
-        // Get the Functions
+    // Get the Functions
+    return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
+}
 
-        AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
-    }
+
+pgObject *pgTriggerFunction::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
+{
+    wxString funcRestriction=wxT(
+        " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
+        + wxT("::oid\n   AND typname = 'trigger'\n");
+
+    // Get the Functions
+    return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
 }

@@ -50,7 +50,7 @@ public:
     // Tree object creation
     int GetIcon() { return PGICON_USER; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
-    static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     
     // virtual methods
     wxString GetSql(wxTreeCtrl *browser);
@@ -59,7 +59,6 @@ public:
     bool CanCreate() { return true; }
     bool CanDrop() { return true; }
     bool CanEdit() { return true; }
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
     wxString accountExpires, password, configList;

@@ -53,12 +53,12 @@ enum PG_OBJTYPE
     PG_TABLES,          PG_TABLE,
     PG_TYPES,           PG_TYPE,
     PG_VIEWS,           PG_VIEW,
-    PG_CHECKS,          PG_CHECK,
     PG_COLUMNS,         PG_COLUMN,
-    PG_FOREIGNKEYS,     PG_FOREIGNKEY,
     PG_INDEXES,         PG_INDEX,
     PG_RULES,           PG_RULE,
     PG_TRIGGERS,        PG_TRIGGER,
+
+    PG_CONSTRAINTS,     PG_PRIMARYKEY, PG_UNIQUE, PG_CHECK, PG_FOREIGNKEY,
     
     PG_UNKNOWN
 };
@@ -94,7 +94,7 @@ public:
     virtual bool IsCollection() const { return false; }
 
     void ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
-
+    void AppendBrowserItem(wxTreeCtrl *browser, pgObject *object);
 
     virtual wxString GetFullName() const { return name; }
     virtual wxString GetIdentifier() const { return name; }
@@ -125,15 +125,15 @@ public:
     virtual bool RequireDropConfirm() { return false; }
 
 protected:
-    static void CreateListColumns(wxListCtrl *properties, const wxString &left=wxT("Property"), const wxString &right=wxT("Value"));
-    static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2);
-    static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const char *s)
+    void CreateListColumns(wxListCtrl *properties, const wxString &left=wxT("Property"), const wxString &right=wxT("Value"));
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2);
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const char *s)
         { InsertListItem(list, pos, str1, wxString(s)); }
-    static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const long l)
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const long l)
         { InsertListItem(list, pos, str1, NumToStr(l)); }
-    static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const bool b)
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const bool b)
         { InsertListItem(list, pos, str1, BoolToYesNo(b)); }
-    static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const double d)
+    void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const double d)
         { InsertListItem(list, pos, str1, NumToStr(d)); }
 
     virtual void SetContextInfo(frmMain *form) {}

@@ -180,7 +180,7 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), oper->GetFullName(), PGICON_OPERATOR, -1, oper);
+                collection->AppendBrowserItem(browser, oper);
 			    operators->MoveNext();
             }
             else
@@ -191,17 +191,3 @@ pgObject *pgOperator::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
     }
     return oper;
 }
-
-
-void pgOperator::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Operators to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-
-        // Get the Operators
-        ReadObjects(collection, browser);
-    }
-}
-

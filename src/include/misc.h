@@ -62,6 +62,9 @@ private:
 
 enum        // depends on frmMain browserImages->Add order!
 {
+    PGICON_PROPERTY,
+    PGICON_STATISTICS,
+    PGICON_SERVERS,
     PGICON_SERVER,
     PGICON_SERVERBAD,
     PGICON_DATABASE,
@@ -90,6 +93,9 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_CONVERSION,
     PGICON_OPERATORCLASS,
     PGICON_TRIGGERFUNCTION,
+    PGICON_CONSTRAINT,
+    PGICON_PRIMARYKEY,
+    PGICON_UNIQUE
 };
 
 

@@ -46,6 +46,8 @@ WX_DEFINE_LIST(windowList);
 #include "images/baddatabase.xpm"
 #include "images/check.xpm"
 #include "images/closeddatabase.xpm"
+#include "images/cast.xpm"
+#include "images/conversion.xpm"
 #include "images/column.xpm"
 #include "images/connect.xpm"
 #include "images/create.xpm"
@@ -58,9 +60,10 @@ WX_DEFINE_LIST(windowList);
 #include "images/index.xpm"
 #include "images/indexcolumn.xpm"
 #include "images/language.xpm"
-#include "images/key.xpm"
+#include "images/foreignkey.xpm"
 #include "images/namespace.xpm"
 #include "images/operator.xpm"
+#include "images/operatorclass.xpm"
 #include "images/pgAdmin3.xpm"
 #include "images/properties.xpm"
 #include "images/property.xpm"
@@ -70,6 +73,7 @@ WX_DEFINE_LIST(windowList);
 #include "images/rule.xpm"
 #include "images/sequence.xpm"
 #include "images/server.xpm"
+#include "images/servers.xpm"
 #include "images/serverbad.xpm"
 #include "images/sql.xpm"
 #include "images/statistics.xpm"
@@ -81,7 +85,9 @@ WX_DEFINE_LIST(windowList);
 #include "images/view.xpm"
 #include "images/viewdata.xpm"
 #include "images/triggerfunction.xpm"
-    
+#include "images/constraints.xpm"
+#include "images/primarykey.xpm"
+#include "images/unique.xpm"
 
 
 
@@ -238,67 +244,59 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     horizontal->SplitHorizontally(listViews, sqlPane, splitpos);
     horizontal->SetMinimumPaneSize(50);
 
-    //Setup a Browser imagelist
-	// Keith 2003.03.05
-	// Fixed memory leak
-	browserImages = new wxImageList(16, 16);
-    browser->SetImageList(browserImages);
+    //Setup the global imagelist
+	images = new wxImageList(16, 16, true, 35);
+    images->Add(wxIcon(property_xpm));
+    images->Add(wxIcon(statistics_xpm));
+    images->Add(wxIcon(servers_xpm));
+    images->Add(wxIcon(server_xpm));
+    images->Add(wxIcon(serverbad_xpm));
+    images->Add(wxIcon(database_xpm));
+    images->Add(wxIcon(language_xpm));
+    images->Add(wxIcon(namespace_xpm));
+    images->Add(wxIcon(aggregate_xpm));
+    images->Add(wxIcon(function_xpm));
+    images->Add(wxIcon(operator_xpm));
+    images->Add(wxIcon(sequence_xpm));
+    images->Add(wxIcon(table_xpm));
+    images->Add(wxIcon(type_xpm));
+    images->Add(wxIcon(view_xpm));
+    images->Add(wxIcon(user_xpm));
+    images->Add(wxIcon(group_xpm));
+    images->Add(wxIcon(baddatabase_xpm));
+    images->Add(wxIcon(closeddatabase_xpm));
+    images->Add(wxIcon(domain_xpm));
+    images->Add(wxIcon(check_xpm));
+    images->Add(wxIcon(column_xpm));
+    images->Add(wxIcon(relationship_xpm));
+    images->Add(wxIcon(index_xpm));
+    images->Add(wxIcon(rule_xpm));
+    images->Add(wxIcon(trigger_xpm));
+    images->Add(wxIcon(foreignkey_xpm));
+    images->Add(wxIcon(cast_xpm));
+    images->Add(wxIcon(conversion_xpm));
+    images->Add(wxIcon(operatorclass_xpm));
+    images->Add(wxIcon(triggerfunction_xpm));
+    images->Add(wxIcon(constraints_xpm));
+    images->Add(wxIcon(primarykey_xpm));
+    images->Add(wxIcon(unique_xpm));
 
-    //Stuff the Image List
-    browserImages->Add(wxIcon(server_xpm));
-    browserImages->Add(wxIcon(serverbad_xpm));
-    browserImages->Add(wxIcon(database_xpm));
-    browserImages->Add(wxIcon(language_xpm));
-    browserImages->Add(wxIcon(namespace_xpm));
-    browserImages->Add(wxIcon(aggregate_xpm));
-    browserImages->Add(wxIcon(function_xpm));
-    browserImages->Add(wxIcon(operator_xpm));
-    browserImages->Add(wxIcon(sequence_xpm));
-    browserImages->Add(wxIcon(table_xpm));
-    browserImages->Add(wxIcon(type_xpm));
-    browserImages->Add(wxIcon(view_xpm));
-    browserImages->Add(wxIcon(user_xpm));
-    browserImages->Add(wxIcon(group_xpm));
-    browserImages->Add(wxIcon(baddatabase_xpm));
-    browserImages->Add(wxIcon(closeddatabase_xpm));
-    browserImages->Add(wxIcon(domain_xpm));
-    browserImages->Add(wxIcon(check_xpm));
-    browserImages->Add(wxIcon(column_xpm));
-    browserImages->Add(wxIcon(relationship_xpm));
-    browserImages->Add(wxIcon(index_xpm));
-    browserImages->Add(wxIcon(rule_xpm));
-    browserImages->Add(wxIcon(trigger_xpm));
-    browserImages->Add(wxIcon(key_xpm));
-    browserImages->Add(wxIcon(public_xpm));
-    browserImages->Add(wxIcon(public_xpm));
-    browserImages->Add(wxIcon(public_xpm));
-    browserImages->Add(wxIcon(triggerfunction_xpm));
+    browser->SetImageList(images);
 
     // Add the root node
     pgObject *serversObj = new pgServers();
-    servers = browser->AddRoot(wxT("Servers"), PGICON_SERVER, -1, serversObj);
+    servers = browser->AddRoot(wxT("Servers"), PGICON_SERVERS, -1, serversObj);
 
-    // Setup the property imagelist
-	// Keith 2003.03.05
-	// Fixed memory leak
-    propertiesImages = new wxImageList(16, 16);
-    properties->SetImageList(propertiesImages, wxIMAGE_LIST_SMALL);
-    propertiesImages->Add(wxIcon(property_xpm));
-
+    properties->SetImageList(images, wxIMAGE_LIST_SMALL);
     // Add the property view columns
     properties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
-    properties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
+    properties->InsertItem(0, wxT("No properties are available for the current selection"), PGICON_PROPERTY);
 
-    // Setup a statistics view imagelist
-	// Keith 2003.03.05
-	// Fixed memory leak
-    statisticsImages = new wxImageList(16, 16);
-    statistics->SetImageList(statisticsImages, wxIMAGE_LIST_SMALL);
-    statisticsImages->Add(wxIcon(statistics_xpm));
 
+    statistics->SetImageList(images, wxIMAGE_LIST_SMALL);
     // Add the statistics view columns & set the colour
     statistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
-    statistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
+    statistics->InsertItem(0, wxT("No statistics are available for the current selection"), PGICON_STATISTICS);
     wxColour background;
     background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
     statistics->SetBackgroundColour(background);
@@ -322,24 +320,8 @@ frmMain::~frmMain()
     // Clear the treeview
     browser->DeleteAllItems();
 
-
-	// Keith 2003.03.05
-	// Fixed memory leak -- These are not destroyed automatically 
-        // Andreas 2003-04-08 yes they are, cascaded through the splitter! 
-        // GTK won't like explicit deletes.
-	// Keith 2003.04.16
-	// Incorrect, SEE DOCS for wxTreeCtrl
-	// treecontextmenu is a popup menu, must be explicitly deleted, SEE DOCS
-	// imagelists must be explicitly deleted, SEE DOCS
-	delete treeContextMenu;
-	delete browserImages;
-	delete statisticsImages;
-	delete propertiesImages;
-
-	// Keith 2003.04.16
-	// Probably does not need to be deleted
-	//delete statistics;
-
+    delete treeContextMenu;
+	delete images;
 }
 
 

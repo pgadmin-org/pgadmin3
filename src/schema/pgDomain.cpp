@@ -176,7 +176,7 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), domain->GetIdentifier(), PGICON_DOMAIN, -1, domain);
+                collection->AppendBrowserItem(browser, domain);
     			domains->MoveNext();
             }
             else
@@ -187,19 +187,3 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     }
     return domain;
 }
-
-
-
-void pgDomain::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Domains to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-
-        // Get the Domains
-        ReadObjects(collection, browser);
-    }
-}
-

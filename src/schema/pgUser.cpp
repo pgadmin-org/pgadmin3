@@ -180,7 +180,7 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), user->GetIdentifier(), PGICON_USER, -1, user);
+                collection->AppendBrowserItem(browser, user);
 				users->MoveNext();
             }
             else
@@ -191,20 +191,3 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
     }
     return user;
 }
-
-
-
-void pgUser::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-
-        // Log
-        wxLogInfo(wxT("Adding Users to database"));
-
-
-        // Get the Users
-        ReadObjects(collection, browser);
-    }
-}
-

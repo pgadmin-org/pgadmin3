@@ -25,12 +25,13 @@ class pgCollection;
 class pgIndex : public pgSchemaObject
 {
 public:
-    pgIndex(pgSchema *newSchema, const wxString& newName = wxString(""));
+    pgIndex(pgSchema *newSchema, const wxString& newName = wxString(""), int type=PG_INDEX);
     ~pgIndex();
 
     int GetIcon() { return PGICON_INDEX; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
-    static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
 
     wxString GetProcArgs() const { return procArgs; }
     wxString GetQuotedTypedColumns() const { return quotedTypedColumns; }
@@ -65,6 +66,11 @@ public:
     wxString GetProcNamespace() const { return procNamespace; }
     void iSetProcNamespace(const wxString& s) { procNamespace=s; }
 
+    bool GetDeferrable() const { return deferrable; }
+    void iSetDeferrable(const bool b) { deferrable=b; }
+    bool GetDeferred() const { return deferred; }
+    void iSetDeferred(const bool b) { deferred=b; }
+
     void iSetOperatorClassList(const wxString& s) { operatorClassList=s; }
     void iSetProcArgTypeList(const wxString& s) { procArgTypeList=s; }
 
@@ -73,14 +79,19 @@ public:
     wxString GetCreate();
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
+protected:
+    void ReadColumnDetails();
 
 private:
-    wxString columnNumbers, columns, quotedColumns, constraint, indexType, idxTable, idxSchema;
+    wxString columnNumbers, columns, quotedColumns, indexType, idxTable, idxSchema, constraint;
     wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
     long columnCount;
     bool isUnique, isPrimary, isClustered;
+    bool deferrable, deferred;
     double relTableOid;
 };
+
+
 
 #endif

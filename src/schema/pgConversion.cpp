@@ -117,7 +117,7 @@ pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), conversion->GetIdentifier(), PGICON_CONVERSION, -1, conversion);
+                collection->AppendBrowserItem(browser, conversion);
 			    conversions->MoveNext();
             }
             else
@@ -128,18 +128,3 @@ pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browse
     }
     return conversion;
 }
-
-
-void pgConversion::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Conversions to schema ") + collection->GetSchema()->GetIdentifier());
-
-        // Get the Conversions
-        ReadObjects(collection, browser);
-    }
-}
-

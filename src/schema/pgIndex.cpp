@@ -16,11 +16,12 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgIndex.h"
+#include "pgIndexConstraint.h"
 #include "pgCollection.h"
 
 
-pgIndex::pgIndex(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, PG_INDEX, newName)
+pgIndex::pgIndex(pgSchema *newSchema, const wxString& newName, int type)
+: pgSchemaObject(newSchema, type, newName)
 {
 }
 
@@ -55,7 +56,7 @@ wxString pgIndex::GetCreate()
     }
 
     str += wxT(")");
-    AppendIfFilled(str, wxT("\n    WHERE "), qtString(GetConstraint()));
+    AppendIfFilled(str, wxT("\n    WHERE "), GetConstraint());
 
     str += wxT(";\n");
     
@@ -76,7 +77,7 @@ wxString pgIndex::GetSql(wxTreeCtrl *browser)
 
 
 
-void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgIndex::ReadColumnDetails()
 {
     if (!expandedKids)
     {
@@ -148,7 +149,12 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
             }
         }
     }
+}
 
+
+void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+{
+    ReadColumnDetails();
     if (properties)
     {
         CreateListColumns(properties);
@@ -166,8 +172,8 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         InsertListItem(properties, pos++, wxT("Unique?"), GetIsUnique());
         InsertListItem(properties, pos++, wxT("Primary?"), GetIsPrimary());
         InsertListItem(properties, pos++, wxT("Clustered?"), GetIsClustered());
-        InsertListItem(properties, pos++, wxT("Constraint"), GetConstraint());
         InsertListItem(properties, pos++, wxT("Index Type"), GetIndexType());
+        InsertListItem(properties, pos++, wxT("Constraint"), GetConstraint());
         InsertListItem(properties, pos++, wxT("System index?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
@@ -181,9 +187,9 @@ pgObject *pgIndex::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     wxTreeItemId parentItem=browser->GetItemParent(item);
     if (parentItem)
     {
-        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_INDEXES)
-            index = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND cls.oid=") + GetOidStr());
+        pgCollection *collection=(pgCollection*)browser->GetItemData(parentItem);
+        if (collection->IsCollection() && collection->IsCollectionForType(PG_INDEX))
+            index = ReadObjects(collection, 0, wxT("\n   AND cls.oid=") + GetOidStr());
     }
     return index;
 }
@@ -196,24 +202,40 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
         pgSet *indexes= collection->GetDatabase()->ExecuteSet(wxT(
         "SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n"
-        "  proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass, description"
+        "       proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass, description,"
+        "       pg_get_expr(indpred, indrelid) as indconstraint, contype, condeferrable, condeferred, amname\n"
         "  FROM pg_index idx\n"
         "  JOIN pg_class cls ON cls.oid=indexrelid\n"
         "  JOIN pg_class tab ON tab.oid=indrelid\n"
         "  JOIN pg_namespace n ON n.oid=tab.relnamespace\n"
+        "  JOIN pg_am am ON am.oid=cls.relam\n"
         "  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n"
         "  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n"
         "  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n"
+        "  LEFT OUTER JOIN pg_constraint con ON con.conrelid=indrelid AND conname=cls.relname\n"
         " WHERE indrelid = ") + collection->GetOidStr() 
         + restriction + wxT("\n"
-        "   AND NOT indisprimary\n"
         " ORDER BY cls.relname"));
 
     if (indexes)
     {
         while (!indexes->Eof())
         {
-            index = new pgIndex(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+            switch (indexes->GetVal(wxT("contype"))[0U])
+            {
+                case 0:
+                    index = new pgIndex(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+                    break;
+                case 'p':
+                    index = new pgPrimaryKey(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+                    break;
+                case 'u':
+                    index = new pgUnique(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+                    break;
+                default:
+                    index=0;
+                    break;
+            }
             index->iSetOid(indexes->GetOid(wxT("oid")));
             index->iSetTableOid(collection->GetOid());
             index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
@@ -228,10 +250,14 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             index->iSetProcNamespace(indexes->GetVal(wxT("pronspname")));
             index->iSetProcName(indexes->GetVal(wxT("proname")));
             index->iSetOperatorClassList(indexes->GetVal(wxT("indclass")));
+            index->iSetDeferrable(indexes->GetBool(wxT("condeferrable")));
+            index->iSetDeferred(indexes->GetBool(wxT("condeferred")));
+            index->iSetConstraint(indexes->GetVal(wxT("indconstraint")));
+            index->iSetIndexType(indexes->GetVal(wxT("amname")));
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), index->GetIdentifier(), PGICON_INDEX, -1, index);
+                collection->AppendBrowserItem(browser, index);
         		indexes->MoveNext();
             }
             else
@@ -245,16 +271,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
 
 
-void pgIndex::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
 {
-
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Indexs to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-
-        // Get the Indexes
-        ReadObjects(collection, browser);
-    }
+    return ReadObjects(collection, browser, wxT("\n   AND conname IS NULL"));
 }
-

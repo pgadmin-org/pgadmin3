@@ -29,36 +29,48 @@ pgDatabase::pgDatabase(const wxString& newName)
 
     allowConnections = TRUE;
     connected = FALSE;
-
-	// Keith 2003.03.05
-	// Must set to null to see if we can delete it later
 	conn = NULL;
 }
+
 
 pgDatabase::~pgDatabase()
 {
     wxLogInfo(wxT("Destroying a pgDatabase object"));
-
-	// Keith 2003.03.05
-	// Fixing memory leak 
 	if (conn)
 		delete conn;
 }
 
-int pgDatabase::Connect() {
-    if (!allowConnections) {
-        return PGCONN_REFUSED;
-    }
-    if (connected) {
-        return conn->GetStatus();
-    } else {
 
+int pgDatabase::Connect()
+{
+    if (!allowConnections)
+        return PGCONN_REFUSED;
+
+    if (connected)
+        return conn->GetStatus();
+    else
+    {
 		conn = new pgConn(this->GetServer()->GetName(), this->GetName(), this->GetServer()->GetUsername(), this->GetServer()->GetPassword(), this->GetServer()->GetPort());       
 		if (conn->GetStatus() == PGCONN_OK)
         {
             // Now we're connected.
             connected = TRUE;
-            iSetComment(conn->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
+            pgSet *set=conn->ExecuteSet(wxT(
+                "SELECT proname, description\n"
+                "  FROM pg_proc\n"
+                "  LEFT OUTER JOIN pg_description ON objoid=") + GetOidStr() +wxT("\n"
+                " WHERE proname IN ('pg_get_viewdef', 'pg_get_viewdef_ext')\n"
+                "   AND pronamespace=11\n"
+                "   AND proargtypes[0] = 26 AND proargtypes[1] = 0\n"
+                " ORDER BY proname DESC"));
+            if (set)
+            {
+                viewdefFunction = set->GetVal(0);
+                iSetComment(set->GetVal(1));
+                delete set;
+            }
+            if (viewdefFunction.IsEmpty())
+                wxLogError("pg_get_viewdef(oid) function not found.");
             return PGCONN_OK;
         }
         else
@@ -127,25 +139,25 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         }
 
             // Add child nodes if necessary
-        if (browser->GetChildrenCount(GetId(), FALSE) != 3)
+        if (browser->GetChildrenCount(GetId(), FALSE) == 0)
         {
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
 
             // Casts
             pgCollection *collection = new pgCollection(PG_CASTS);
             collection->SetDatabase(this);
-            browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_CAST, -1, collection);
+            AppendBrowserItem(browser, collection);
 
             // Languages
             collection = new pgCollection(PG_LANGUAGES);
             collection->SetDatabase(this);
-            browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_LANGUAGE, -1, collection);
+            AppendBrowserItem(browser, collection);
 
             // Schemas
             collection = new pgCollection(PG_SCHEMAS);
             collection->SetServer(GetServer());
             collection->SetDatabase(this);
-            browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_SCHEMA, -1, collection);
+            AppendBrowserItem(browser, collection);
         }
     }
 
@@ -250,45 +262,34 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 }
 
 
-void pgDatabase::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgDatabase::ShowStatistics(pgCollection *collection, wxListCtrl *statistics)
 {
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0) {
+    wxLogInfo(wxT("Displaying statistics for databases on ") + collection->GetServer()->GetIdentifier());
 
-        // Log
-        wxLogInfo(wxT("Adding databases to server ") + collection->GetServer()->GetIdentifier());
+    // Add the statistics view columns
+    statistics->ClearAll();
+    statistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(1, wxT("Backends"), wxLIST_FORMAT_LEFT, 75);
+    statistics->InsertColumn(2, wxT("Xact Committed"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(3, wxT("Xact Rolled Back"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(4, wxT("Blocks Read"), wxLIST_FORMAT_LEFT, 100);
+    statistics->InsertColumn(5, wxT("Blocks Hit"), wxLIST_FORMAT_LEFT, 100);
 
-        ReadObjects(collection, browser);
-    }
-
-    if (statistics)
+    pgSet *stats = collection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
+    if (stats)
     {
-        wxLogInfo(wxT("Displaying statistics for databases on ") + collection->GetServer()->GetIdentifier());
-
-        // Add the statistics view columns
-        statistics->ClearAll();
-        statistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
-        statistics->InsertColumn(1, wxT("Backends"), wxLIST_FORMAT_LEFT, 75);
-        statistics->InsertColumn(2, wxT("Xact Committed"), wxLIST_FORMAT_LEFT, 100);
-        statistics->InsertColumn(3, wxT("Xact Rolled Back"), wxLIST_FORMAT_LEFT, 100);
-        statistics->InsertColumn(4, wxT("Blocks Read"), wxLIST_FORMAT_LEFT, 100);
-        statistics->InsertColumn(5, wxT("Blocks Hit"), wxLIST_FORMAT_LEFT, 100);
-
-        pgSet *stats = collection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
-        if (stats)
+        while (!stats->Eof())
         {
-            while (!stats->Eof())
-            {
-                statistics->InsertItem(stats->CurrentPos() - 1, stats->GetVal(wxT("datname")), 0);
-                statistics->SetItem(stats->CurrentPos() - 1, 1, stats->GetVal(wxT("numbackends")));
-                statistics->SetItem(stats->CurrentPos() - 1, 2, stats->GetVal(wxT("xact_commit")));
-                statistics->SetItem(stats->CurrentPos() - 1, 3, stats->GetVal(wxT("xact_rollback")));
-                statistics->SetItem(stats->CurrentPos() - 1, 4, stats->GetVal(wxT("blks_read")));
-                statistics->SetItem(stats->CurrentPos() - 1, 5, stats->GetVal(wxT("blks_hit")));
-                stats->MoveNext();
-            }
-
-	        delete stats;
+            statistics->InsertItem(stats->CurrentPos() - 1, stats->GetVal(wxT("datname")), PGICON_STATISTICS);
+            statistics->SetItem(stats->CurrentPos() - 1, 1, stats->GetVal(wxT("numbackends")));
+            statistics->SetItem(stats->CurrentPos() - 1, 2, stats->GetVal(wxT("xact_commit")));
+            statistics->SetItem(stats->CurrentPos() - 1, 3, stats->GetVal(wxT("xact_rollback")));
+            statistics->SetItem(stats->CurrentPos() - 1, 4, stats->GetVal(wxT("blks_read")));
+            statistics->SetItem(stats->CurrentPos() - 1, 5, stats->GetVal(wxT("blks_hit")));
+            stats->MoveNext();
         }
+
+	    delete stats;
     }
 }
 

@@ -129,7 +129,7 @@ pgObject *pgGroup::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), group->GetIdentifier(), PGICON_GROUP, -1, group);
+                collection->AppendBrowserItem(browser, group);
 	    		groups->MoveNext();
             }
             else
@@ -140,17 +140,3 @@ pgObject *pgGroup::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     }
     return group;
 }
-
-
-void pgGroup::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-
-        wxLogInfo(wxT("Adding Groups to database"));
-
-        // Get the Groups
-        ReadObjects(collection, browser);
-    }
-}
-

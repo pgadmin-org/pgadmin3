@@ -111,7 +111,7 @@ pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             language->iSetValidatorProc(languages->GetVal(wxT("lanval")));
             language->iSetTrusted(languages->GetBool(wxT("lanpltrusted")));
 
-            browser->AppendItem(collection->GetId(), language->GetIdentifier(), PGICON_LANGUAGE, -1, language);
+            collection->AppendBrowserItem(browser, language);
 	
 			languages->MoveNext();
         }
@@ -120,18 +120,3 @@ pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
     }
     return language;
 }
-
-
-void pgLanguage::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-
-        // Log
-        wxLogInfo(wxT("Adding Languages to database %s"), collection->GetDatabase()->GetIdentifier().c_str());
-
-        // Get the Languages
-        ReadObjects(collection, browser);
-    }
-}
-

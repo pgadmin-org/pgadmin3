@@ -30,7 +30,9 @@ public:
 
     int GetIcon() { return PGICON_SCHEMA; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
-    static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction);
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
+
     long GetSchemaTyp() const { return schemaTyp; }
     void iSetSchemaTyp(const long l) { schemaTyp=l; }
     bool GetSystemObject() const { return schemaTyp < 1; }
@@ -41,7 +43,6 @@ public:
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
     long schemaTyp; // 0: System 1: temporär 2: normal

@@ -29,12 +29,14 @@ public:
 
     int GetIcon() { return PGICON_DATABASE; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
-    static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
-
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    static void ShowStatistics(pgCollection *collection, wxListCtrl *statistics);
+    
     pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
 
+    wxString GetViewdefFunction() const { return viewdefFunction; }
     wxString GetPath() const { return path; };
     void iSetPath(const wxString& newVal) { path = newVal; }
     wxString GetEncoding() const { return encoding; }
@@ -57,11 +59,10 @@ public:
 
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
-    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
     pgConn *conn;
-    wxString path, encoding, variables;
+    wxString path, encoding, variables, viewdefFunction;
     bool allowConnections, connected;
 };
 

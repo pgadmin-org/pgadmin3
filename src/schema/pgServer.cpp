@@ -229,17 +229,17 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
             // Databases
             pgCollection *collection = new pgCollection(PG_DATABASES);
             collection->SetServer(this);
-            browser->AppendItem(GetId(), collection->GetTypeName(), 2, -1, collection);
+            AppendBrowserItem(browser, collection);
       
             // Groups
             collection = new pgCollection(PG_GROUPS);
             collection->SetServer(this);
-            browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_GROUP, -1, collection);
+            AppendBrowserItem(browser, collection);
     
             // Users
             collection = new pgCollection(PG_USERS);
             collection->SetServer(this);
-            browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_USER, -1, collection);
+            AppendBrowserItem(browser, collection);
         }
     }
 

@@ -140,7 +140,7 @@ pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), aggregate->GetFullName(), PGICON_AGGREGATE, -1, aggregate);
+                collection->AppendBrowserItem(browser, aggregate);
     			aggregates->MoveNext();
             }
             else
@@ -150,18 +150,4 @@ pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 		delete aggregates;
     }
     return aggregate;
-}
-
-
-void pgAggregate::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Aggregates to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-
-        // Get the Aggregates
-        ReadObjects(collection, browser);
-    }
 }

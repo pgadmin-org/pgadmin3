@@ -17,6 +17,7 @@
 #include "pgObject.h"
 #include "pgTable.h"
 #include "pgCollection.h"
+#include "pgConstraints.h"
 #include "pgColumn.h"
 #include "pgCheck.h"
 #include "pgForeignKey.h"
@@ -135,7 +136,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         while (checkItem)
         {
             data=(pgObject*)browser->GetItemData(checkItem);
-            if (data->GetType() == PG_CHECKS)
+            if (data->GetType() == PG_CONSTRAINTS)
                 break;
             checkItem=browser->GetNextChild(GetId(), cookie);
         }
@@ -170,7 +171,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         while (fkItem)
         {
             data=(pgObject*)browser->GetItemData(fkItem);
-            if (data->GetType() == PG_FOREIGNKEYS)
+            if (data->GetType() == PG_CONSTRAINTS)
                 break;
             fkItem=browser->GetNextChild(GetId(), cookie);
         }
@@ -243,7 +244,7 @@ void pgTable::UpdateInheritance()
         " ORDER BY inhseqno"));
     if (props)
     {
-        inheritedTableCount=props->NumRows();
+        inheritedTableCount=0;
         inheritedTables=wxT("");
         while (!props->Eof())
         {
@@ -253,6 +254,7 @@ void pgTable::UpdateInheritance()
             quotedInheritedTables += qtIdent(props->GetVal(wxT("nspname")))
                     +wxT(".")+qtIdent(props->GetVal(wxT("relname")));
             props->MoveNext();
+            inheritedTableCount++;
         }
         delete props;
     }
@@ -273,41 +275,35 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
         pgCollection *collection;
 
-        // Checks
-        collection = new pgCollection(PG_CHECKS);
-        collection->SetInfo(GetSchema());
-        collection->iSetOid(GetOid());
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_CHECK, -1, collection);
-
         // Columns
         collection = new pgCollection(PG_COLUMNS);
         collection->SetInfo(GetSchema());
         collection->iSetOid(GetOid());
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_COLUMN, -1, collection);
+        AppendBrowserItem(browser, collection);
 
-        // Foreign Keys
-        collection = new pgCollection(PG_FOREIGNKEYS);
+        // Constraints
+        collection = new pgConstraints();
         collection->SetInfo(GetSchema());
         collection->iSetOid(GetOid());
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_KEY, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Indexes
         collection = new pgCollection(PG_INDEXES);
         collection->SetInfo(GetSchema());
         collection->iSetOid(GetOid());
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_INDEX, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Rules
         collection = new pgCollection(PG_RULES);
         collection->SetInfo(GetSchema());
         collection->iSetOid(GetOid());
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_RULE, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // Triggers
         collection = new pgCollection(PG_TRIGGERS);
         collection->SetInfo(GetSchema());
         collection->iSetOid(GetOid());
-        browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_TRIGGER, -1, collection);
+        AppendBrowserItem(browser, collection);
 
         // convert list of columns numbers to column names
         wxStringTokenizer collist(GetPrimaryKeyColNumbers(), ',');
@@ -430,7 +426,7 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), table->GetIdentifier(), PGICON_TABLE, -1, table);
+                collection->AppendBrowserItem(browser, table);
                 tables->MoveNext();
             }
             else
@@ -443,46 +439,33 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 }
 
 
-void pgTable::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+void pgTable::ShowStatistics(pgCollection *collection, wxListCtrl *statistics)
 {
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
+    wxLogInfo(wxT("Displaying statistics for tables on ")+ collection->GetSchema()->GetIdentifier());
+
+    // Add the statistics view columns
+    statistics->ClearAll();
+    statistics->InsertColumn(0, wxT("Table"), wxLIST_FORMAT_LEFT, 150);
+    statistics->InsertColumn(1, wxT("Tuples inserted"), wxLIST_FORMAT_LEFT, 80);
+    statistics->InsertColumn(2, wxT("Tuples updated"), wxLIST_FORMAT_LEFT, 80);
+    statistics->InsertColumn(3, wxT("Tuples deleted"), wxLIST_FORMAT_LEFT, 80);
+
+    pgSet *stats = collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT relname, n_tup_ins, n_tup_upd, n_tup_del FROM pg_stat_all_tables ORDER BY relname"));
+
+    if (stats)
     {
-
-        // Log
-        wxLogInfo(wxT("Adding tables to schema ")+ collection->GetSchema()->GetIdentifier());
-
-        // Get the tables
-        ReadObjects(collection, browser);
-    }
-
-    if (statistics)
-    {
-        wxLogInfo(wxT("Displaying statistics for tables on ")+ collection->GetSchema()->GetIdentifier());
-
-        // Add the statistics view columns
-        statistics->ClearAll();
-        statistics->InsertColumn(0, wxT("Table"), wxLIST_FORMAT_LEFT, 150);
-        statistics->InsertColumn(1, wxT("Tuples inserted"), wxLIST_FORMAT_LEFT, 80);
-        statistics->InsertColumn(2, wxT("Tuples updated"), wxLIST_FORMAT_LEFT, 80);
-        statistics->InsertColumn(3, wxT("Tuples deleted"), wxLIST_FORMAT_LEFT, 80);
-
-        pgSet *stats = collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT relname, n_tup_ins, n_tup_upd, n_tup_del FROM pg_stat_all_tables ORDER BY relname"));
-
-        if (stats)
+        long pos=0;
+        while (!stats->Eof())
         {
-            long pos=0;
-            while (!stats->Eof())
-            {
-                statistics->InsertItem(pos, stats->GetVal(wxT("relname")), 0);
-                statistics->SetItem(pos, 1, stats->GetVal(wxT("n_tup_ins")));
-                statistics->SetItem(pos, 2, stats->GetVal(wxT("n_tup_upd")));
-                statistics->SetItem(pos, 3, stats->GetVal(wxT("n_tup_del")));
-                stats->MoveNext();
-                pos++;
-            }
-
-	        delete stats;
+            statistics->InsertItem(pos, stats->GetVal(wxT("relname")), PGICON_STATISTICS);
+            statistics->SetItem(pos, 1, stats->GetVal(wxT("n_tup_ins")));
+            statistics->SetItem(pos, 2, stats->GetVal(wxT("n_tup_upd")));
+            statistics->SetItem(pos, 3, stats->GetVal(wxT("n_tup_del")));
+            stats->MoveNext();
+            pos++;
         }
+
+	    delete stats;
     }
 }

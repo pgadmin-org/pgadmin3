@@ -207,7 +207,7 @@ pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *bro
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), operatorClass->GetIdentifier(), PGICON_OPERATORCLASS, -1, operatorClass);
+                collection->AppendBrowserItem(browser, operatorClass);
 				operatorClasses->MoveNext();
             }
             else
@@ -218,18 +218,3 @@ pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *bro
     }
     return operatorClass;
 }
-
-
-
-void pgOperatorClass::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding OperatorClasss to schema ") + collection->GetSchema()->GetIdentifier());
-
-        // Get the OperatorClasss
-        ReadObjects(collection, browser);
-    }
-}
-

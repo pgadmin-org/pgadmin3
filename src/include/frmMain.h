@@ -58,7 +58,7 @@ private:
     wxMenu *fileMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu;
     wxToolBar *toolBar;
     wxTreeItemId servers;
-	wxImageList *browserImages, *statisticsImages, *propertiesImages;
+	wxImageList *images;;
     wxSplitterWindow *horizontal, *vertical;
 
     void OnKeyDown(wxKeyEvent& event);

@@ -280,7 +280,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), column->GetIdentifier(), PGICON_COLUMN, -1, column);
+                collection->AppendBrowserItem(browser, column);
 				columns->MoveNext();
             }
             else
@@ -291,18 +291,3 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     }
     return column;
 }
-
-
-void pgColumn::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Columns to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-
-        // Get the Columns
-        ReadObjects(collection, browser);
-
-    }
-}
-

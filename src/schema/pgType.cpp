@@ -143,7 +143,7 @@ pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), type->GetIdentifier(), PGICON_TYPE, -1, type);
+                collection->AppendBrowserItem(browser, type);
     			types->MoveNext();
             }
             else
@@ -153,18 +153,4 @@ pgObject *pgType::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
 		delete types;
     }
     return type;
-}
-
-
-
-void pgType::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Types to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-
-        // Get the Types
-        ReadObjects(collection, browser);
-    }
 }

@@ -81,7 +81,7 @@ pgObject *pgCheck::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     if (parentItem)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
-        if (obj->GetType() == PG_CHECKS)
+        if (obj->GetType() == PG_CONSTRAINTS)
             check = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND c.oid=") + GetOidStr());
     }
     return check;
@@ -115,7 +115,7 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 
             if (browser)
             {
-                browser->AppendItem(collection->GetId(), check->GetFullName(), PGICON_CHECK, -1, check);
+                collection->AppendBrowserItem(browser, check);
     			checks->MoveNext();
             }
             else
@@ -126,17 +126,3 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     }
     return check;
 }
-
-
-void pgCheck::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
-{
-    if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
-    {
-        // Log
-        wxLogInfo(wxT("Adding Checks to schema ") + collection->GetSchema()->GetIdentifier());
-
-        // Get the Checks
-        ReadObjects(collection, browser);
-    }
-}
-
