@@ -35,7 +35,7 @@ bool pgAdmin3::OnInit()
   SetTopWindow(winSplash);
   winSplash->Show(TRUE);
   
-  wxSleep(2);
+  wxSleep(3);
   
   // Create & show the main form
   winMain = new frmMain("pgAdmin III", wxPoint(50, 50), wxSize(600, 440));
