@@ -103,6 +103,7 @@ public:
     pgSet *DataSet() { return dataSet; }
     int ReturnCode() const { return rc; }
     long RowsInserted() const { return rowsInserted; }
+    OID InsertedOid() const { return insertedOid; }
     wxString GetMessagesAndClear();
     bool IsRunning() const;
     void appendMessage(const wxString &str);
@@ -111,6 +112,7 @@ private:
     int rc;
     int resultToRetrieve;
     long rowsInserted;
+    OID insertedOid;
 
     wxString query;
     pgConn *conn;

@@ -235,7 +235,7 @@ wxString dlgSchedule::GetInsertSql()
             jscjoboid = NumToStr(jobOid);
         else
             jscjoboid = wxT("<Oid>");
-        sql = wxT("INSERT INTO pga_jobschedule (jscjoboid, jscname, jscdesc, jscenabled, jsckind, ")
+        sql = wxT("INSERT INTO pg_admin.pga_jobschedule (jscjoboid, jscname, jscdesc, jscenabled, jsckind, ")
               wxT("jscstart, jscend, jscschedule, jsclist)\n")
               wxT("VALUES(") + jscjoboid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
                 + BoolToStr(chkEnabled->GetValue()) + wxT(", ") + qtString(kind) + wxT(", ") 

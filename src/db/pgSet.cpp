@@ -292,6 +292,7 @@ pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &qry, int _resultToRe
     result=0;
     resultToRetrieve=_resultToRetrieve;
     rc=-1;
+    insertedOid = (OID)-1;
     conn->RegisterNoticeProcessor(pgNoticeProcessor, this);
     PQsetnonblocking(conn->conn, 1);
 }
@@ -373,7 +374,11 @@ int pgQueryThread::execute()
         if (resultsRetrieved == resultToRetrieve)
         {
             result=res;
-            appendMessage(wxString::Format(_("Query result with %d rows will be returned.\n"), PQntuples(result)));
+            insertedOid=PQoidValue(res);
+            if (insertedOid && insertedOid != (OID)-1)
+                appendMessage(wxString::Format(_("Query result with %d rows will be returned.\n"), PQntuples(result)));
+            else
+                appendMessage(wxString::Format(_("Query inserted one rows with OID %d.\n"), insertedOid));
             continue;
         }
         if (lastResult)
@@ -389,6 +394,9 @@ int pgQueryThread::execute()
 
     appendMessage(wxT("\n"));
     rc=PQresultStatus(result);
+    insertedOid=PQoidValue(result);
+    if (insertedOid == (OID)-1)
+        insertedOid=0;
 
     if (rc == PGRES_TUPLES_OK)
     {

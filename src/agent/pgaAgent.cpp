@@ -68,8 +68,8 @@ void pgaAgent::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 
         pgSet *props = GetDatabase()->ExecuteSet(
             wxT("SELECT station, jagpid, logintime, jobname\n")
-            wxT("  FROM pga_jobagent\n")
-            wxT("  JOIN pga_job ON jobagentid=jagpid\n")
+            wxT("  FROM pg_admin.pga_jobagent\n")
+            wxT("  JOIN pg_admin.pga_job ON jobagentid=jagpid\n")
             wxT(" ORDER BY jagpid"));
     
         if (props)
@@ -111,7 +111,8 @@ pgObject *pgaAgent::ReadObjects(pgDatabase *database, wxTreeCtrl *browser)
     pgaAgent *agent=0;
 
     wxString exists = database->ExecuteScalar(
-       wxT("SELECT oid FROM pg_class where relname='pga_job'"));
+       wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
+       wxT(" WHERE relname='pga_job' AND nspname='pg_admin'"));
 
     if (!exists.IsNull())
     {

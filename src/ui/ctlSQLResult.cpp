@@ -204,6 +204,14 @@ long ctlSQLResult::InsertedCount() const
 }
 
 
+OID ctlSQLResult::InsertedOid() const
+{
+    if (thread)
+        return thread->InsertedOid();
+    return (OID)-1;
+}
+
+
 int ctlSQLResult::RunStatus()
 {
     if (!thread)

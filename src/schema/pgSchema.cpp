@@ -175,8 +175,10 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
     pgSchema *schema=0;
 
     pgSet *schemas= collection->GetDatabase()->ExecuteSet(
-       wxT("SELECT CASE WHEN nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) 
-                + wxT(" THEN 0 WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1 ELSE 2 END AS nsptyp,\n")
+       wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
+       wxT("            WHEN nsp.oid<") + NumToStr(collection->GetServer()->GetLastSystemOID()) +
+                        wxT(" OR nspname like 'pg\\_%' THEN 0\n")
+       wxT("            ELSE 2 END AS nsptyp,\n")
        wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
        wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
        wxT("  FROM pg_namespace nsp\n")
@@ -220,7 +222,7 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser)
     if (!settings->GetShowSystemObjects())
         systemRestriction = 
             wxT(" WHERE (nsp.oid = 2200 OR nsp.oid > ") + NumToStr(collection->GetConnection()->GetLastSystemOID()) + wxT(")\n")
-            wxT("   AND nsp.nspname NOT LIKE 'pg\\_temp\\_%'\n");
+            wxT("   AND nsp.nspname NOT LIKE 'pg\\_%'\n");
 
     // Get the schemas
     return ReadObjects(collection, browser, systemRestriction);

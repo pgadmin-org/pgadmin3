@@ -37,7 +37,7 @@ pgaStep::~pgaStep()
 
 bool pgaStep::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pga_jobstep WHERE oid=") + GetOidStr());
+    return GetDatabase()->ExecuteVoid(wxT("DELETE FROM pg_admin.pga_jobstep WHERE oid=") + GetOidStr());
 }
 
 
@@ -86,7 +86,7 @@ pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString 
     pgaStep *step=0;
 
     pgSet *steps= job->GetDatabase()->ExecuteSet(
-       wxT("SELECT st.oid, st.*, datname from pga_jobstep st\n")
+       wxT("SELECT st.oid, st.*, datname FROM pg_admin.pga_jobstep st\n")
        wxT("  LEFT OUTER JOIN pg_database db ON db.oid=st.jstdboid")
        wxT(" WHERE st.jstjoboid=") + job->GetOidStr() + wxT("\n")
        + restriction +

@@ -177,7 +177,7 @@ wxString dlgStep::GetInsertSql()
         else
             db = wxT(" oid FROM pg_database WHERE datname=") + qtString(cbDatabase->GetValue());
 
-        sql = wxT("INSERT INTO pga_jobstep (jstjoboid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdboid)\n")
+        sql = wxT("INSERT INTO pg_admin.pga_jobstep (jstjoboid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdboid)\n")
               wxT("SELECT ") + jstjoboid + wxT(", ") + qtString(name) + wxT(", ") + qtString(txtComment->GetValue()) + wxT(", ")
                 + BoolToStr(chkEnabled->GetValue()) + wxT(", ") + qtString(kind) + wxT(", ") 
                 + qtString(onerror) + wxT(", ") + qtString(sqlBox->GetText()) + wxT(", ") + db;
@@ -249,7 +249,7 @@ wxString dlgStep::GetUpdateSql()
         }
 
         if (!vars.IsEmpty())
-            sql = wxT("UPDATE pga_jobstep\n")
+            sql = wxT("UPDATE pg_admin.pga_jobstep\n")
                   wxT("   SET ") + vars + wxT("\n")
                   wxT(" WHERE oid=") + step->GetOidStr();
     }

@@ -878,13 +878,24 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
                 int insertedCount = sqlResult->InsertedCount();
+                OID insertedOid = sqlResult->InsertedOid();
                 if (insertedCount < 0)
+                {
                     showMessage(wxString::Format(_("Query returned successfully with no result in %s ms."),
                         elapsedQuery.ToString().c_str()), _("OK."));
+                }
+                else if (insertedCount == 1 && insertedOid)
+                {
+                    showMessage(wxString::Format(_("Query returned successfully: one row with OID %d inserted, %s ms execution time."),
+                        insertedOid, elapsedQuery.ToString().c_str()), 
+                        wxString::Format(_("One Row with OID %d inserted."), insertedOid));
+                }
                 else
+                {
                     showMessage(wxString::Format(_("Query returned successfully: %d rows affected, %s ms execution time."),
                         insertedCount, elapsedQuery.ToString().c_str()), 
                         wxString::Format(_("%d rows affected."), insertedCount));
+                }
             }
             else
             {
