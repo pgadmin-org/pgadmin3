@@ -269,13 +269,29 @@ SOURCE=.\ui\gtk\frmOptions.xrc
 SOURCE=.\ui\gtk\frmPassword.xrc
 # End Source File
 # End Group
-# Begin Source File
+# Begin Group "Query Builder"
 
-SOURCE=.\ui\ctlSQLBox.cpp
-# End Source File
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\ui\dlgAddTableView.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmChildTableViewFrame.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmQBJoin.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmQueryBuilder.cpp
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\ui\ctlSQLBox.cpp
 # End Source File
 # Begin Source File
 
@@ -284,10 +300,6 @@ SOURCE=.\ui\events.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmAbout.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmChildTableViewFrame.cpp
 # End Source File
 # Begin Source File
 
@@ -308,10 +320,6 @@ SOURCE=.\ui\frmPassword.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmQuery.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmQueryBuilder.cpp
 # End Source File
 # Begin Source File
 
@@ -552,6 +560,10 @@ SOURCE=.\include\frmOptions.h
 # Begin Source File
 
 SOURCE=.\include\frmPassword.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmQBJoin.h
 # End Source File
 # Begin Source File
 
