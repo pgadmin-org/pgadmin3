@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgAdmin3\n"
 "POT-Creation-Date: 2003-06-05 02:33+0200\n"
-"PO-Revision-Date: 2003-08-15 21:00+0100\n"
+"PO-Revision-Date: 2003-08-17 23:20+0100\n"
 "Last-Translator: Andreas Pflug <Andreas.Pflug@web.de>\n"
 "Language-Team: pgAdmin Developers <pgadmin-hackers@postgresql.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ui/frmVacuum.cpp:167
+#: src/ui/frmMaintenance.cpp:221
 msgid ""
 "\n"
 "Cancelled.\n"
@@ -50,8 +50,8 @@ msgstr "%d Zeilen geholt."
 
 #: src/ui/frmEditGrid.cpp:341
 #: src/ui/frmEditGrid.cpp:439
+#: src/ui/frmMaintenance.cpp:212
 #: src/ui/frmQuery.cpp:960
-#: src/ui/frmVacuum.cpp:158
 #, c-format
 msgid "%d rows."
 msgstr "%d Zeilen."
@@ -75,7 +75,7 @@ msgstr "%ld Zeilen geholt."
 msgid "&About..."
 msgstr "&Über..."
 
-#: input:464
+#: input:482
 msgid "&Add"
 msgstr "Hinzufügen"
 
@@ -99,11 +99,11 @@ msgstr "&Bugmeldung"
 
 #: input:382
 #: input:406
-#: input:442
-#: input:450
-#: input:456
-#: input:487
-#: input:506
+#: input:424
+#: input:460
+#: input:468
+#: input:474
+#: input:505
 #: src/ui/frmQueryBuilder.cpp:117
 msgid "&Cancel"
 msgstr "Abbrechen"
@@ -134,11 +134,11 @@ msgstr "&Kopieren\tCtrl-C"
 msgid "&Create"
 msgstr "Erzeugen"
 
-#: input:436
+#: input:454
 msgid "&Debug (not recommended for normal use)"
 msgstr "&Debuggen (Nicht für Normalgebrauch)"
 
-#: input:466
+#: input:484
 msgid "&Delete"
 msgstr "&Löschen"
 
@@ -167,7 +167,7 @@ msgstr "Anzeige"
 msgid "&Edit"
 msgstr "&Editieren"
 
-#: input:433
+#: input:451
 msgid "&Errors only"
 msgstr "Nur &Fehler"
 
@@ -195,9 +195,9 @@ msgstr "&Suchen\tCtrl-F"
 
 #: input:380
 #: input:404
-#: input:438
-#: input:448
-#: input:504
+#: input:422
+#: input:456
+#: input:466
 #: src/ui/frmMain.cpp:168
 #: src/ui/frmQuery.cpp:135
 msgid "&Help"
@@ -217,18 +217,18 @@ msgstr "Joinen mit..."
 msgid "&Maintenance"
 msgstr "&Wartung"
 
-#: input:432
+#: input:450
 msgid "&No logging"
 msgstr "&Keine Protokollierung"
 
 #: input:359
 #: input:381
 #: input:405
-#: input:440
-#: input:449
-#: input:457
-#: input:485
-#: input:505
+#: input:423
+#: input:458
+#: input:467
+#: input:475
+#: input:503
 msgid "&OK"
 msgstr "&OK"
 
@@ -252,7 +252,7 @@ msgstr "&Einfügen\tCtrl-V"
 msgid "&PostgreSQL Help"
 msgstr "&PostgreSQL Hilfe"
 
-#: input:470
+#: input:488
 #: src/ui/frmMain.cpp:130
 #: src/ui/frmMain.cpp:184
 msgid "&Properties"
@@ -351,8 +351,8 @@ msgid "-- nothing to change"
 msgstr "-- Nichts zu ändern"
 
 #: input:403
-#: input:419
-#: input:429
+#: input:437
+#: input:447
 msgid "..."
 msgstr "..."
 
@@ -427,18 +427,18 @@ msgstr "AFTER"
 msgid "ALT"
 msgstr "ALT"
 
-#: input:497
-#: input:501
+#: input:411
+#: input:416
 msgid "ANALYZE"
 msgstr "ANALYZE"
 
-#: input:467
+#: input:485
 msgid "AND"
 msgstr "AND"
 
-#: input:439
-#: input:441
-#: input:486
+#: input:457
+#: input:459
+#: input:504
 msgid "Accept the current settings and close the dialogue."
 msgstr "Aktuelle Einstellungen übernehmen und Dialog schließen."
 
@@ -551,7 +551,7 @@ msgstr ""
 msgid "Analyze"
 msgstr "Analysieren"
 
-#: src/ui/events.cpp:826
+#: src/ui/events.cpp:823
 #, c-format
 msgid "Are you sure you wish to drop %s %s?"
 msgstr "Soll %s %s wirklich gelöscht werden?"
@@ -584,7 +584,7 @@ msgstr "Zurück zur vorigen Seite."
 msgid "Base type"
 msgstr "Basistyp"
 
-#: input:430
+#: input:448
 msgid "Browse for a logfile."
 msgstr "Logdatei suchen."
 
@@ -605,7 +605,7 @@ msgstr "CASCADE"
 msgid "CR/LF"
 msgstr "CR/LF"
 
-#: input:462
+#: input:480
 msgid "CROSS JOIN"
 msgstr "CROSS JOIN"
 
@@ -649,8 +649,8 @@ msgstr "Kann keine weitere Spalte zur Abfrage hinzufügen"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: input:443
-#: input:488
+#: input:461
+#: input:506
 msgid "Cancel any changes and close the dialogue."
 msgstr "Alle Änderungen verwerfen und Dialog schließen."
 
@@ -669,7 +669,7 @@ msgstr "Abgebrochen"
 msgid "Cancelling."
 msgstr "Bricht ab."
 
-#: src/ui/events.cpp:817
+#: src/ui/events.cpp:814
 #, c-format
 msgid "Cannot drop system %s %s."
 msgstr "Kann System-%s &s nicht löschen."
@@ -694,7 +694,7 @@ msgstr "Casts"
 msgid "Change"
 msgstr "Ändern"
 
-#: input:444
+#: input:462
 msgid "Change Password"
 msgstr "Passwort ändern"
 
@@ -702,7 +702,7 @@ msgstr "Passwort ändern"
 msgid "Change your password."
 msgstr "Ändert Ihr Passwort."
 
-#: src/ui/events.cpp:451
+#: src/ui/events.cpp:449
 msgid ""
 "Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n"
 "\n"
@@ -729,7 +729,7 @@ msgstr "Prüfung auf fehlende einfache Anführungszeichen in der Bedingung für 
 msgid "Child columns"
 msgstr "Tochterspalten"
 
-#: input:465
+#: input:483
 msgid "Choose the operator for comparison."
 msgstr "Bitte Vergleichsoperator wählen."
 
@@ -750,7 +750,7 @@ msgstr "Historienfenster leeren"
 msgid "Clear window"
 msgstr "Fenster leeren"
 
-#: input:492
+#: input:510
 msgid "Close"
 msgstr "Schließen"
 
@@ -851,11 +851,11 @@ msgstr "Zusammengesetzt"
 msgid "Condition"
 msgstr "Bedingung"
 
-#: input:447
+#: input:465
 msgid "Confirm Password"
 msgstr "Paswort bestätigen"
 
-#: input:414
+#: input:432
 msgid "Confirm object deletion?"
 msgstr "Löschen von Objekten bestätigen"
 
@@ -894,7 +894,7 @@ msgstr "Constraints"
 msgid "Context"
 msgstr "Kontext"
 
-#: src/ui/events.cpp:452
+#: src/ui/events.cpp:450
 msgid "Continue?"
 msgstr "Fortfahren?"
 
@@ -914,7 +914,7 @@ msgstr "Kopiert"
 msgid "Copy"
 msgstr "Kopieren"
 
-#: input:424
+#: input:442
 msgid "Copy SQL from main form to SQL dialogue"
 msgstr "SQL aus dem Hauptfenster in den SQL-Dialog kopieren"
 
@@ -953,7 +953,7 @@ msgid "Couldn't open a tips.txt file!"
 msgstr "Konnte die tips.txt Datei nicht öffnen!"
 
 # standard
-#: input:423
+#: input:441
 msgid "Count rows if estimated less than"
 msgstr "Zeilen zählen wenn Schätzung kleiner als"
 
@@ -1060,7 +1060,7 @@ msgstr "Datenbank erzeugen?"
 msgid "Cu&t\tCtrl-X"
 msgstr "&Ausschneiden\tCtrl-X"
 
-#: input:445
+#: input:463
 msgid "Current Password"
 msgstr "Aktuelles Passwort"
 
@@ -1112,7 +1112,7 @@ msgstr "Datentyp"
 msgid "Database"
 msgstr "Datenbank"
 
-#: input:489
+#: input:507
 msgid "Database Status"
 msgstr "Datenbank Status"
 
@@ -1241,7 +1241,7 @@ msgstr "Stattdessen ausführen"
 msgid "Do instead?"
 msgstr "Stattdessen ausführen"
 
-#: input:413
+#: input:431
 msgid "Do not prompt for unsaved files on exit"
 msgstr "Keine Sicherheitsabfrage bei ungespeicherten Dateien"
 
@@ -1257,7 +1257,7 @@ msgstr "Domäne"
 msgid "Domains"
 msgstr "Domänen"
 
-#: src/ui/frmVacuum.cpp:163
+#: src/ui/frmMaintenance.cpp:217
 msgid "Done"
 msgstr "Fertig"
 
@@ -1269,7 +1269,7 @@ msgstr "Doppelte rechte Joins sind nicht erlaubt.\n"
 msgid "Drop"
 msgstr "Droppen"
 
-#: src/ui/events.cpp:828
+#: src/ui/events.cpp:825
 #, c-format
 msgid "Drop %s?"
 msgstr "%s droppen?"
@@ -1338,7 +1338,7 @@ msgstr "Kodierung"
 msgid "Enter a description of this database connection."
 msgstr "Beschreibung für diese Datenbankverbindung eingeben."
 
-#: input:428
+#: input:446
 msgid "Enter a filename to write application logs to."
 msgstr "Dateiname für Applikationslogs eingeben."
 
@@ -1355,7 +1355,7 @@ msgid "Enter the password to use when connecting to the server."
 msgstr "Passwort zur Verbindung mit dem Server eingeben."
 
 # standard
-#: input:411
+#: input:429
 msgid "Enter the path or URL to the PostgreSQL documentation"
 msgstr "Pfad oder URL zur PostgreSQL Dokumentation eingeben"
 
@@ -1367,7 +1367,7 @@ msgstr "Portnummer, auf die der Server reagiert, eingeben."
 msgid "Enter the username to use when connecting to the server."
 msgstr "Benutzername zur Verbindung mit dem Server eingeben."
 
-#: src/ui/events.cpp:498
+#: src/ui/events.cpp:497
 #, c-format
 msgid "Error connecting to the server: %s"
 msgstr "Fehler beim Verbinden mit dem Server: %s"
@@ -1380,11 +1380,11 @@ msgstr "Fehler!"
 msgid "Error: No table or no column"
 msgstr "Fehler: Keine Tabelle oder keine Spalte"
 
-#: input:434
+#: input:452
 msgid "Errors and N&otices"
 msgstr "Fehler und &Anmerkungen"
 
-#: input:435
+#: input:453
 msgid "Errors, Notices, &SQL"
 msgstr "Fehler, Anmerkungen und &SQL"
 
@@ -1465,16 +1465,20 @@ msgstr "Extern"
 msgid "FATAL"
 msgstr "KATASTROPHE"
 
+#: input:418
+msgid "FORCE"
+msgstr "FORCE"
+
 # standard
-#: input:500
+#: input:415
 msgid "FREEZE"
 msgstr "FREEZE"
 
-#: input:499
+#: input:414
 msgid "FULL"
 msgstr "FULL"
 
-#: input:461
+#: input:479
 msgid "FULL JOIN"
 msgstr "FULL JOIN"
 
@@ -1483,7 +1487,7 @@ msgstr "FULL JOIN"
 msgid "Failed to open file %s."
 msgstr "Offnen der Datei %s fehlgeschlagen."
 
-#: src/ui/events.cpp:440
+#: src/ui/events.cpp:438
 #, c-format
 msgid "Failed to write to the output file: %s"
 msgstr "Schreiben der Ausgabedatei %s fehlgeschlagen."
@@ -1527,7 +1531,7 @@ msgid "Fires"
 msgstr "Feuert"
 
 # standard input:12
-#: input:418
+#: input:436
 msgid "Font"
 msgstr "Zeichensatz"
 
@@ -1577,7 +1581,7 @@ msgstr "Funktion"
 msgid "Functions"
 msgstr "Funktionen"
 
-#: input:408
+#: input:426
 msgid "General"
 msgstr "Allgemein"
 
@@ -1651,7 +1655,7 @@ msgstr "Historie"
 msgid "Hostname"
 msgstr "Hostname"
 
-#: input:471
+#: input:489
 msgid "Hostname/IP Address"
 msgstr "Hostname/IP-Addresse"
 
@@ -1667,7 +1671,7 @@ msgstr "Wat'n dat?"
 msgid "IMMUTABLE"
 msgstr "IMMUTABLE"
 
-#: input:458
+#: input:476
 msgid "INNER JOIN"
 msgstr "INNER JOIN"
 
@@ -1728,7 +1732,7 @@ msgstr "Vererbt von Tabellen"
 msgid "Inherits tables"
 msgstr "Vererbt Tabellen"
 
-#: input:477
+#: input:495
 msgid "Initial Database"
 msgstr "Anfängliche Datenbank"
 
@@ -1762,11 +1766,11 @@ msgstr "Eingabetyp"
 msgid "Internal length"
 msgstr "Interne Länge"
 
-#: input:451
+#: input:469
 msgid "Join"
 msgstr "Join"
 
-#: input:453
+#: input:471
 msgid "Join Type"
 msgstr "Join-Typ"
 
@@ -1803,7 +1807,7 @@ msgstr "LATIN4"
 msgid "LATIN5"
 msgstr "LATIN5"
 
-#: input:459
+#: input:477
 msgid "LEFT JOIN"
 msgstr "LEFT JOIN"
 
@@ -1823,7 +1827,7 @@ msgstr "Sprache"
 msgid "Languages"
 msgstr "Sprachen"
 
-#: input:479
+#: input:497
 #: src/schema/pgServer.cpp:301
 msgid "Last system OID"
 msgstr "Letzte SystemOID"
@@ -1832,7 +1836,7 @@ msgstr "Letzte SystemOID"
 msgid "Left Sort operator"
 msgstr "Linker Sortier-Operator"
 
-#: input:452
+#: input:470
 msgid "Left Table Columns"
 msgstr "Spalten der linken Tabelle"
 
@@ -1878,7 +1882,7 @@ msgstr "Lokaler Zeichensatz"
 msgid "Local column"
 msgstr "Lokale Spalte"
 
-#: input:431
+#: input:449
 msgid "Log Level"
 msgstr "Log-Level"
 
@@ -1887,11 +1891,11 @@ msgstr "Log-Level"
 msgid "Log files (*.log)|*.log|All files (*.*)|*.*"
 msgstr "Log-Dateien (*.log)|*.log|Alle Dateien (*.*)|*.*"
 
-#: input:426
+#: input:444
 msgid "Logfile (%ID will be replaced with the Process ID)"
 msgstr "Logfile (%ID wird durch die Prozess-ID ersetzt)"
 
-#: input:425
+#: input:443
 msgid "Logging"
 msgstr "Protokollierung"
 
@@ -1903,7 +1907,7 @@ msgstr "MAIN"
 msgid "MULE&INTERNAL"
 msgstr "MULE&INTERNAL"
 
-#: src/ui/frmVacuum.cpp:56
+#: src/ui/frmMaintenance.cpp:60
 #, c-format
 msgid "Maintain %s %s"
 msgstr "%s %s warten"
@@ -1914,11 +1918,16 @@ msgstr "%s %s warten"
 msgid "Maintain the current database or table."
 msgstr "Aktuelle Datenbank oder Tabelle warten."
 
+#: input:407
 #: src/ui/frmMain.cpp:223
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: input:422
+#: input:409
+msgid "Maintenance operation"
+msgstr "Wartungsfunktion"
+
+#: input:440
 msgid "Max. characters per column"
 msgstr "Maximale Zeichen pro Spalte"
 
@@ -1927,11 +1936,11 @@ msgstr "Maximale Zeichen pro Spalte"
 msgid "Maximum"
 msgstr "Maximum"
 
-#: input:420
+#: input:438
 msgid "Maximum rows to retrieve"
 msgstr "Maximale Anzahl zu holender Zeilen"
 
-#: input:421
+#: input:439
 msgid "Maximums rows to retrieve into output window; 0 = unlimited"
 msgstr "Maximale Anzahl der in das Anzeigefenster zu holender Zeilen, 0 = unbegrenzt"
 
@@ -1953,7 +1962,7 @@ msgstr "Mitgliedsname"
 msgid "Members"
 msgstr "Mitglieder"
 
-#: input:503
+#: input:421
 #: src/ui/frmQuery.cpp:200
 msgid "Messages"
 msgstr "Meldungen"
@@ -1967,7 +1976,7 @@ msgstr "Minimum"
 msgid "Moved"
 msgstr "Verschoben"
 
-#: input:463
+#: input:481
 msgid "Multiple Column Joins"
 msgstr "Mehrfach-Spalten Joins"
 
@@ -2083,7 +2092,7 @@ msgstr "Neuer Operator"
 msgid "New Operator Class"
 msgstr "Neue Operatorklasse"
 
-#: input:446
+#: input:464
 msgid "New Password"
 msgstr "Neues Passwort"
 
@@ -2156,12 +2165,12 @@ msgstr "Nein"
 msgid "No Table or view."
 msgstr "Keine Tabelle oder Sicht."
 
-#: src/ui/events.cpp:533
+#: src/ui/events.cpp:532
 #: src/ui/frmMain.cpp:307
 msgid "No properties are available for the current selection"
 msgstr "Für die aktuelle Auswahl sind keine Eigenschaften verfügbar."
 
-#: src/ui/events.cpp:536
+#: src/ui/events.cpp:535
 #: src/ui/frmMain.cpp:313
 msgid "No statistics are available for the current selection"
 msgstr "Für die aktuelle Auswahl sind keine Statistiken verfügbar."
@@ -2261,7 +2270,7 @@ msgstr "OK"
 msgid "OK."
 msgstr "OK."
 
-#: input:468
+#: input:486
 msgid "OR"
 msgstr "OR"
 
@@ -2311,7 +2320,7 @@ msgstr "Abfragedatei öffnen"
 msgid "Open the pgAdmin III helpfile."
 msgstr "pgAdmin III Hilfedatei öffnen."
 
-#: input:454
+#: input:472
 #: src/schema/pgObject.cpp:42
 msgid "Operator"
 msgstr "Operator"
@@ -2338,8 +2347,8 @@ msgstr "Operator-Funktion"
 msgid "Operators"
 msgstr "Operatoren"
 
-#: input:407
-#: input:494
+#: input:408
+#: input:425
 msgid "Options"
 msgstr "Optionen"
 
@@ -2581,7 +2590,7 @@ msgid "Please specify valid numeric precision (0.."
 msgstr "Bitte gültige Nachkommastellen eingeben (0.."
 
 #: input:369
-#: input:473
+#: input:491
 #: src/schema/pgServer.cpp:281
 msgid "Port"
 msgstr "Port"
@@ -2590,11 +2599,11 @@ msgstr "Port"
 msgid "Position"
 msgstr "Position"
 
-#: input:483
+#: input:501
 msgid "PostgreSQL Description"
 msgstr "PostgreSQL Beschreibung"
 
-#: input:481
+#: input:499
 msgid "PostgreSQL Version"
 msgstr "PostgreSQL Version"
 
@@ -2660,7 +2669,7 @@ msgstr "Prozedur "
 #: input:290
 #: input:328
 #: input:348
-#: src/ui/events.cpp:532
+#: src/ui/events.cpp:531
 #: src/ui/frmMain.cpp:219
 #: src/ui/frmMain.cpp:248
 #: src/ui/frmMain.cpp:306
@@ -2671,7 +2680,7 @@ msgstr "Eigenschaften"
 msgid "Property"
 msgstr "Eigenschaften"
 
-#: input:417
+#: input:435
 #: src/ui/frmQueryBuilder.cpp:1196
 #: src/ui/frmStatus.cpp:58
 msgid "Query"
@@ -2726,12 +2735,27 @@ msgstr "Anführungszeichen"
 msgid "Quoting"
 msgstr "Anführungszeichen"
 
+# standard
+#: input:419
+msgid "RECREATE"
+msgstr "RECREATE"
+
+# standard
+#: input:412
+msgid "REINDEX"
+msgstr "REINDEX"
+
+# standard
+#: input:417
+msgid "REINDEX options"
+msgstr "REINDEX Optionen"
+
 #: input:115
 #: input:120
 msgid "RESTRICT"
 msgstr "RESTRICT"
 
-#: input:460
+#: input:478
 msgid "RIGHT JOIN"
 msgstr "RIGHT JOIN"
 
@@ -2750,7 +2774,7 @@ msgid "Reached end of the document"
 msgstr "Ende des Dokumentes erreicht"
 
 # standard
-#: input:412
+#: input:430
 msgid "Read and write Unicode UTF-8 files"
 msgstr "Dateien im Unicode UTF-8 Format lesen und schreiben"
 
@@ -2785,13 +2809,13 @@ msgstr "Referenziert"
 msgid "Referencing"
 msgstr "Referenziert"
 
-#: input:491
+#: input:509
 #: src/ui/frmEditGrid.cpp:86
 #: src/ui/frmMain.cpp:215
 msgid "Refresh"
 msgstr "Auffrischen"
 
-#: input:490
+#: input:508
 msgid "Refresh rate (seconds)"
 msgstr "Auffrischrate (Sekunden)"
 
@@ -2843,14 +2867,6 @@ msgstr "Bibliotheksmodul neu laden, welches diese Funktion implementiert"
 msgid "Remove"
 msgstr "Entfernen"
 
-#: input:495
-msgid "Reorganization"
-msgstr "Reorganisation"
-
-#: input:493
-msgid "Reorganize an object"
-msgstr "Objekt reorganisieren"
-
 #: src/ui/frmMain.cpp:476
 msgid "Restoring previous environment"
 msgstr "Vorige Umgebung wiederherstellen"
@@ -2874,7 +2890,7 @@ msgstr "%s Details holen"
 msgid "Retrieving data: %d rows."
 msgstr "Daten geholt: %d Zeilen."
 
-#: src/ui/events.cpp:567
+#: src/ui/events.cpp:566
 msgid "Retrieving server properties"
 msgstr "Servereigenschaften holen"
 
@@ -2895,7 +2911,7 @@ msgstr "Liefert ein Set"
 msgid "Right Sort operator"
 msgstr "Rechter Sortieroperator"
 
-#: input:455
+#: input:473
 msgid "Right Table Columns"
 msgstr "Spalten der rechten Tabelle"
 
@@ -2959,11 +2975,11 @@ msgstr "SQL"
 msgid "SQL Help"
 msgstr "SQL Hilfe"
 
-#: src/ui/events.cpp:432
+#: src/ui/events.cpp:430
 msgid "SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr "SQL Scripte (*.sql)|*.sql|Alle Dateien (*.*)|*.*"
 
-#: input:410
+#: input:428
 msgid "SQL help site"
 msgstr "SQL Website"
 
@@ -3063,11 +3079,11 @@ msgstr "Bitte Exportdateinamen angeben"
 msgid "Select log file"
 msgstr "Logdatei auswählen"
 
-#: src/ui/events.cpp:432
+#: src/ui/events.cpp:430
 msgid "Select output file"
 msgstr "Ausgabedatei auswählen"
 
-#: input:437
+#: input:455
 msgid "Select the level of detail to record in the logfile."
 msgstr "Detaillierungsgrad der Protokollierung in der Logdatei auswählen"
 
@@ -3088,7 +3104,7 @@ msgid "Sequences"
 msgstr "Sequenzen"
 
 #: input:367
-#: input:469
+#: input:487
 #: src/schema/pgObject.cpp:30
 msgid "Server"
 msgstr "Server"
@@ -3098,7 +3114,7 @@ msgstr "Server"
 msgid "Servers"
 msgstr "Server"
 
-#: src/ui/events.cpp:510
+#: src/ui/events.cpp:509
 #: src/ui/frmMain.cpp:639
 #, c-format
 msgid "Servers (%d)"
@@ -3113,7 +3129,7 @@ msgid "Show about dialog."
 msgstr "About-Dialog anzeigen"
 
 # standard
-#: input:416
+#: input:434
 msgid "Show object properties on double click in treeview?"
 msgstr "Objekte beim Doppelclick im Baum anzeigen?"
 
@@ -3125,7 +3141,7 @@ msgstr "Optionen-Dialog anzeigen"
 msgid "Show or hide system objects."
 msgstr "Systemobjekte anzeigen oder ausblenden."
 
-#: input:415
+#: input:433
 msgid "Show users for privileges?"
 msgstr "Benutzer für Privilegien anzeigen?"
 
@@ -3166,7 +3182,7 @@ msgstr "Zwischentyp"
 msgid "Statistic"
 msgstr "Statistik"
 
-#: src/ui/events.cpp:535
+#: src/ui/events.cpp:534
 #: src/ui/frmMain.cpp:249
 #: src/ui/frmMain.cpp:312
 msgid "Statistics"
@@ -3312,23 +3328,23 @@ msgstr "Vorlage"
 msgid "The PostgreSQL server must be at least version %2.1f!"
 msgstr "Der PostgreSQL-Server muß mindestens Version %2.1f sein!"
 
-#: input:484
+#: input:502
 msgid "The PostgreSQL server's version string."
 msgstr "Versionsstring des PostgreSQL Servers."
 
-#: input:482
+#: input:500
 msgid "The PostgreSQL version number."
 msgstr "Versionsnummer des PostgreSQL Servers."
 
-#: input:472
+#: input:490
 msgid "The hostname or TCP/IP address of the server."
 msgstr "Hostname oder TCP/IP-Adresse des Servers."
 
-#: input:478
+#: input:496
 msgid "The initial database used when connecting to the server."
 msgstr "Anfängliche Datenbank beim Verbinden mit dem Server."
 
-#: input:480
+#: input:498
 msgid "The last OID used by the server."
 msgstr "Letzte vom Server verwendete OID."
 
@@ -3341,7 +3357,7 @@ msgstr "Maximum von %ld Zeilen ist überschritten (insgesamt %ld)."
 msgid "The password could not be changed!"
 msgstr "Passwort konnte nicht geändert werden!"
 
-#: input:474
+#: input:492
 msgid "The port number the server is listening on."
 msgstr "Portnummer auf der der Server empfängt."
 
@@ -3359,11 +3375,11 @@ msgstr ""
 "Der Text %s hat sich geändert.\n"
 "Sollen die Änderungen gespeichtert werden?"
 
-#: input:476
+#: input:494
 msgid "The username used when connecting to the server."
 msgstr "Der zur Verbindung mit dem Server verwendete Benutzername."
 
-#: src/ui/events.cpp:428
+#: src/ui/events.cpp:426
 msgid "There is nothing in the SQL pane to save!"
 msgstr "Da ist nix im SQL-Fenster zu sichern!"
 
@@ -3397,8 +3413,8 @@ msgstr "Nach"
 msgid "Total %ld rows.\n"
 msgstr "Insgesamg %ld Zeilen.\n"
 
+#: src/ui/frmMaintenance.cpp:214
 #: src/ui/frmQuery.cpp:943
-#: src/ui/frmVacuum.cpp:160
 msgid "Total query runtime: "
 msgstr "Gesamtlaufzeit der Abfrage: "
 
@@ -3441,7 +3457,7 @@ msgstr ""
 "Versuchen Sie, es in die linke Seite in einer\n"
 "oder mehreren Relationen einzusetzen."
 
-#: src/ui/events.cpp:819
+#: src/ui/events.cpp:816
 msgid "Trying to drop system object"
 msgstr "Versuch ein Systemobjekt zu droppen"
 
@@ -3537,7 +3553,7 @@ msgstr "Benutzer kann Datenbanken anlegen"
 msgid "User can create users"
 msgstr "Benutzer kann weitere Benutzer anlegen"
 
-#: input:409
+#: input:427
 #: src/pgAdmin3.cpp:191
 msgid "User language"
 msgstr "Benutzersprache"
@@ -3550,7 +3566,7 @@ msgstr "Benutzer/Gruppe"
 #: input:152
 #: input:329
 #: input:375
-#: input:475
+#: input:493
 #: src/schema/pgServer.cpp:295
 msgid "Username"
 msgstr "Benutzername"
@@ -3560,11 +3576,11 @@ msgid "Users"
 msgstr "Benutzer"
 
 # standard
-#: input:496
+#: input:410
 msgid "VACUUM"
 msgstr "VACUUM"
 
-#: input:498
+#: input:413
 msgid "VACUUM options"
 msgstr "VACUUM Optionen"
 
@@ -3610,7 +3626,7 @@ msgstr "Variablen"
 msgid "Verbose"
 msgstr "Ausführlich"
 
-#: input:502
+#: input:420
 msgid "Verbose messages"
 msgstr "Ausführliche Meldungen"
 
@@ -3770,11 +3786,11 @@ msgstr "pgAdmin III &FAQ"
 msgid "pgAdmin III Query"
 msgstr "pgAdmin III Abfrage"
 
-#: src/ui/events.cpp:504
+#: src/ui/events.cpp:503
 msgid "pgServer object didn't initialise because the user aborted."
 msgstr "pgServer object didn't initialise because the user aborted."
 
-#: input:427
+#: input:445
 msgid "pgadmin3&%ID.log"
 msgstr "pgadmin3&%ID.log"
 

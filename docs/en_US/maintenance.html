@@ -3,15 +3,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
-<title>Reorganize the database</title>
+<title>Maintain a database object</title>
 </head>
 
 <body>
 
-<H3>Maintain the database</H3>
+<H3>Maintain a database object</H3>
 <P>This tool allows to maintain the database in total, or only a
-selected table.</P>
-<P>Maintenance comes in two flavors:</P>
+selected table, or a selected index.</P>
+<P>Maintenance comes in three flavors:</P>
 <H3>VACUUM</H3>
 <P>VACUUM will scan the database or table for rows, that are not in
 use any more. If a row is updated or deleted, the previous content
@@ -34,6 +34,14 @@ database or table. This enables the query optimizer to select the
 fastest query plan, to give optimal performance. Every time your data
 is changing radically, you should perform this task. It can be
 included in a VACUUM run, using the appropriate option.</P>
-
+<H3>REINDEX</H3>
+<P>REINDEX rebuilds the indexes in case these have degenerated caused 
+by unusual data patterns inserted. This can happen for example if you insert
+many rows with increasing index values, and delete low index values.</P>
+<P>The RECREATE option doesn't call the REINDEX SQL command internally, 
+instead it drops the existing table and recreates it according to the current index 
+definition.This doesn't lock the table exclusively, as REINDEX does, but will lock 
+write access only. 
+</P>
 </BODY>
 </HTML>
