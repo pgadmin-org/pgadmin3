@@ -398,7 +398,7 @@ SqlTokenHelp sqlTokenHelp[] =
 
 void frmQuery::OnContents(wxCommandEvent& event)
 {
-    DisplayHelp(this, wxT("query"));
+    DisplayHelp(this, wxT("query"), sql_xpm);
 }
 
 

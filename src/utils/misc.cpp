@@ -418,29 +418,41 @@ bool FileWrite(const wxString &filename, const wxString &data, int format)
 
 
 
-void DisplayHelp(wxWindow *wnd, const wxString &helpTopic)
+void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
 {
-    while (wnd->GetParent())
-        wnd=wnd->GetParent();
-
-#if 0
-    // testing only
+    extern wxString docPath;
     static wxHtmlHelpController *helpCtl=0;
-    if (!helpCtl)
-    {
-        helpCtl=new wxHtmlHelpController();
-#ifdef __WXMSW__
-        helpCtl->Initialize(wxT("e:\\pg\\pgadmin2\\help\\pgadmin2"));
-#else
-        helpCtl->Initialize(wxT("/tmp/help/pgadmin2"));
-#endif
-    }
-    helpCtl->DisplayContents();
-    
-    return;
-#endif
+    static bool firstCall=true;
 
-    frmHelp::LoadLocalDoc(wnd, helpTopic + wxT(".html"));
+    if (firstCall)
+    {
+        firstCall=false;
+        wxString helpfile=docPath + wxT("/") + settings->GetCanonicalLanguage() + wxT("/pgadmin3");
+
+        if (!wxFile::Exists(helpfile + wxT(".hhp")) && !wxFile::Exists(helpfile + wxT(".zip")))
+            helpfile=docPath + wxT("/en_US/pgadmin3");
+
+        if (wxFile::Exists(helpfile + wxT(".hhp")) || wxFile::Exists(helpfile + wxT(".zip")))
+        {
+            helpCtl=new wxHtmlHelpController();
+            helpCtl->Initialize(helpfile);
+        }
+    }
+
+    if (helpCtl)
+    {
+        if (helpTopic == wxT("index"))
+            helpCtl->DisplayContents();
+        else
+            helpCtl->DisplaySection(helpTopic + wxT(".html"));
+    }
+    else
+    {
+        while (wnd->GetParent())
+            wnd=wnd->GetParent();
+    
+        frmHelp::LoadLocalDoc(wnd, helpTopic + wxT(".html"), icon);
+    }
 }
 
 

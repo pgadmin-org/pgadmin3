@@ -158,7 +158,7 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
 
 void frmEditGrid::OnHelp(wxCommandEvent &ev)
 {
-    DisplayHelp(this, wxT("editgrid"));
+    DisplayHelp(this, wxT("editgrid"), viewdata_xpm);
 }
 
 

@@ -27,6 +27,7 @@
 #include "images/reload.xpm"
 #include "images/forward.xpm"
 #include "images/back.xpm"
+#include "images/help.xpm"
 
 
 
@@ -85,13 +86,13 @@ frmHelp::~frmHelp()
 }
 
 
-bool frmHelp::LoadSqlDoc(wxWindow *wnd, const wxString &page)
+bool frmHelp::LoadSqlDoc(wxWindow *wnd, const wxString &page, char **icon)
 {
     wxString helpSite=settings->GetSqlHelpSite();
 
     frmHelp *h=new frmHelp(wnd);
     h->Show(true);
-    bool loaded=h->Load(helpSite + page);
+    bool loaded=h->Load(helpSite + page, icon);
     if (!loaded)
         h->Destroy();
 
@@ -99,7 +100,7 @@ bool frmHelp::LoadSqlDoc(wxWindow *wnd, const wxString &page)
 }
 
 
-bool frmHelp::LoadLocalDoc(wxWindow *wnd, const wxString &page)
+bool frmHelp::LoadLocalDoc(wxWindow *wnd, const wxString &page, char **icon)
 {
     extern wxString docPath;
     wxString cn=settings->GetCanonicalLanguage();
@@ -115,7 +116,7 @@ bool frmHelp::LoadLocalDoc(wxWindow *wnd, const wxString &page)
 
     frmHelp *h=new frmHelp(wnd);
     h->Show(true);
-    bool loaded=h->Load(wxT("file:") + file);
+    bool loaded=h->Load(wxT("file:") + file, icon);
     if (!loaded)
         h->Destroy();
 
@@ -123,10 +124,17 @@ bool frmHelp::LoadLocalDoc(wxWindow *wnd, const wxString &page)
 }
 
 
-bool frmHelp::Load(const wxString &page)
+bool frmHelp::Load(const wxString &page, char **icon)
 {
     if (currentPage.IsEmpty())
+    {
         htmlWindow->SetPage(wxString::Format(_("<html><body>Loading %s</body></html>"), page.c_str()));
+        if (icon)
+            SetIcon(wxIcon(icon));
+        else
+            SetIcon(wxIcon(help_xpm));
+    }
+
 
     currentPage=page;
     bool loaded=htmlWindow->LoadPage(page);

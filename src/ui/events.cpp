@@ -18,7 +18,6 @@
 #include <wx/imaglist.h>
 #include <wx/tipdlg.h>
 #include <wx/stc/stc.h>
-#include <wx/html/helpctrl.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -45,6 +44,9 @@
 #include "frmHelp.h"
 #include "dlgProperty.h"
 #include "frmVacuum.h"
+
+#include "images/pgAdmin3.xpm"
+
 
 extern wxString loadPath;
 
@@ -233,7 +235,7 @@ void frmMain::OnFaq(wxCommandEvent& event)
 
 void frmMain::OnBugreport(wxCommandEvent& event)
 {
-    frmHelp::LoadLocalDoc(this, wxT("bugreport.html"));
+    frmHelp::LoadLocalDoc(this, wxT("bugreport.html"), pgAdmin3_xpm);
 }
 
 

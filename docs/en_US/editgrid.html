@@ -1,18 +1,52 @@
-<html>
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
-<title>Edit Data</title>
-</head>
-
-<body>
-
-<h3>Edit Data</h3>
-<p>
-To be written.
-</p>
-
-</body>
-
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>Edit Data</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20030716;205">
+	<META NAME="CHANGEDBY" CONTENT="Andreas Pflug">
+	<META NAME="CHANGED" CONTENT="20030716;103535">
+	<STYLE>
+	<!--
+		P { color: #000000; font-family: "verdana", "helvetica", sans-serif; font-size: 9pt; font-style: normal }
+		H3 { color: #000000; font-style: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" BGCOLOR="#cdddeb" DIR="LTR" STYLE="border: none; padding: 0cm">
+<H3>Edit Data</H3>
+<P>The Edit Data tool allows you to view the data that's stored in a
+table or view, and to edit the content if technically possible.</P>
+<P>The header of the grid will show the name of each column, together
+with the data type. A column that's part of the primary key will
+additionally be marked with [PK].</P>
+<P>In order to edit the data, each row in the table must be uniquely
+identifyable. This can be done using the OID, or a primary key. If
+none of them exist, the table is read only. Note that views can't be
+edited and are read only by design; updatable views (using rules) are
+not supported at this time.</P>
+<P>To change the value of a field, you select that field and enter
+the new text. The Store toolbar button allows the data to be written
+back to the server. The row will be written automatically, if you
+select a different row.</P>
+<P>To enter a new row into the table, you enter the data into the
+last row that has a row number marked with an asterisk. As soon as
+you store the data, the row will get a row number, and a fresh empty
+asterisk line is created.</P>
+<P>If a SQL NULL is to be written to the table, you leave the field
+empty. If you store a new row, this will let the server fill in the
+default value for that column. If you store a change to an existing
+row, the value NULL will explicitely be written.</P>
+<P>If you want pgAdmin III to write an empty string to the table, you
+enter the special string '' (two single quotes) in the field. If you
+want to write a string containing solely two single quotes to the
+table, you need to escape these quotes, by typing \'\' 
+</P>
+<P>To delete a row, press the Delete toolbar button.</P>
+<P>The Refresh toolbar button allows to reread the contents of the
+table, refreshing the display.</P>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>
