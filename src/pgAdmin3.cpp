@@ -81,6 +81,7 @@ bool pgAdmin3::OnInit()
     LoadXrc(wxString("frmOptions.xrc"));
     LoadXrc(wxString("frmPassword.xrc"));
     LoadXrc(wxString("frmQBJoin.xrc"));
+    LoadXrc(wxString("frmAddTableView.xrc"));
 
     // Set some defaults
 #ifdef __WXMSW__
