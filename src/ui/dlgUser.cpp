@@ -145,7 +145,7 @@ int dlgUser::Go(bool modal)
             pgSet *set;
             if (connection->BackendMinimumVersion(7, 4))
                 set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
-                        wxT("  FROM pg_settings WHERE context='user'"));
+                        wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
             else
                 set=connection->ExecuteSet(wxT("SELECT name, 'string' as vartype, '' as min_val, '' as max_val FROM pg_settings"));
             if (set)
