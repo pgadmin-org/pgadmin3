@@ -29,7 +29,7 @@ if the server is seriously injured by a backend you can't control otherwise.
 </p>
 <BR><BR>
 <BR><BR>
-<center><img src="images/logfile.png"></center>
+<center><img src="images/locks.png"></center>
 <p>
 The Locks tab shows the current locks outstanding in the PostgreSQL Lock
 Manager. This information can be useful when attempting to debug or track
@@ -60,9 +60,9 @@ there could be some impact on database performance if this view is read often.
 <center><img src="images/logfile.png"></center>
 <p>
 The Logfile tab shows server log files, if configured in
-postgresql.conf (redirect_stderr = true, and
-log_destination='stderr'). pgAdmin will extract a 
-time stamp from the logfile in a separate column, if the
+postgresql.conf (redirect_stderr = true, 
+log_destination='stderr' and log_filename='postgresql-%Y-%m-%d_%H%M%S.log'). 
+pgAdmin will extract a time stamp from the logfile in a separate column, if the
 log_line_prefix is configured accordingly. We recommend using '%t:' as
 format, because more complicate formats might not be interpretable correctly.
 </p>
