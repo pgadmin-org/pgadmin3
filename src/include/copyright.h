@@ -18,8 +18,13 @@
 #ifdef __WIN32__
 #define SPLASH_FONTSIZE 8
 #else
-#define SPLASH_FONTSIZE 10
+#if wxCHECK_VERSION(2,5,0)
+#define SPLASH_FONTSIZE 9
+#else
+#define SPLASH_FONTSIZE 11
 #endif
+#endif
+
 #define SPLASH_X0       10
 #define SPLASH_Y0       100
 #define SPLASH_OFFS     15
