@@ -645,7 +645,7 @@ void dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
         dlg->Go();
     }
     else
-        wxMessageBox(wxT("Not implemented"));
+        wxMessageBox(_("Not implemented."));
 }
 
 
