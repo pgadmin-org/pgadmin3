@@ -23,7 +23,6 @@
 
 // Icons
 #include "images/pgAdmin3.xpm"
-#include "images/connect.xpm"
 #include "images/reload.xpm"
 #include "images/forward.xpm"
 #include "images/back.xpm"
