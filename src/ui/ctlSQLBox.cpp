@@ -26,7 +26,11 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const 
     StyleClearAll();
     
     // Font
+#ifdef __WIN32__
     wxFont fntSQLBox(9, wxMODERN, wxNORMAL, wxNORMAL);
+#else
+    wxFont fntSQLBox(12, wxMODERN, wxNORMAL, wxNORMAL);
+#endif
     StyleSetFont(wxSTC_STYLE_DEFAULT, fntSQLBox);
     StyleSetFont(0, fntSQLBox);
     StyleSetFont(1, fntSQLBox);

@@ -333,13 +333,17 @@ frmMain::~frmMain()
     // Clear the treeview
     browser->DeleteAllItems();
 
+/*
 	// Keith 2003.03.05
 	// Fixed memory leak -- These are not destroyed automatically 
+        // Andreas 2003-04-08 yes they are, cascaded through the splitter! 
+        // GTK won't like explicit deletes.
 	delete treeContextMenu;
 	delete browserImages;
 	delete statisticsImages;
 	delete propertiesImages;
 	delete statistics;
+*/
 }
 
 
