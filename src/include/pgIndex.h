@@ -31,6 +31,10 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
 
+    wxString GetProcArgs() const { return procArgs; }
+    wxString GetQuotedTypedColumns() const { return quotedTypedColumns; }
+    wxString GetTypedColumns() const { return typedColumns; }
+    wxString GetOperatorClasses() const { return operatorClasses; }
     wxString GetQuotedColumns() const { return quotedColumns; }
     wxString GetColumns() const { return columns; }
 
@@ -54,21 +58,21 @@ public:
     void iSetIdxSchema(const wxString& s) { idxSchema=s; }
     double GetRelTableOid() const { return relTableOid; }
     void iSetRelTableOid(const double d) { relTableOid=d; }
+
     wxString GetProcName() const { return procName; }
     void iSetProcName(const wxString& s) { procName=s; }
     wxString GetProcNamespace() const { return procNamespace; }
     void iSetProcNamespace(const wxString& s) { procNamespace=s; }
-    wxString GetProcArgs() const { return procArgs; }
-    void iSetProcArgs(const wxString& s) { procArgs=s; }
-    wxString GetOperatorClass() const { return operatorClass; }
-    void iSetOperatorClass(const wxString& s) { operatorClass=s; }
+
+    void iSetOperatorClassList(const wxString& s) { operatorClassList=s; }
+    void iSetProcArgTypeList(const wxString& s) { procArgTypeList=s; }
 
     wxString GetSql(wxTreeCtrl *browser);
     wxString GetCreate();
 
 private:
     wxString columnNumbers, columns, quotedColumns, constraint, indexType, idxTable, idxSchema;
-    wxString procName, procNamespace, procArgs, operatorClass;
+    wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
     long columnCount;
     bool isUnique, isPrimary, isClustered;
     double relTableOid;

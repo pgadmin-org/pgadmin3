@@ -46,9 +46,9 @@ wxString pgIndex::GetCreate()
         str += GetQuotedColumns();
     else
     {
-        str += qtIdent(GetProcNamespace()) + wxT(".")+qtIdent(GetProcName())+wxT("(")+GetProcArgs()+wxT(")");
-        if (!this->GetOperatorClass().IsNull())
-            str += wxT(" ") + GetOperatorClass();
+        str += qtIdent(GetProcNamespace()) + wxT(".")+qtIdent(GetProcName())+wxT("(")+GetQuotedTypedColumns()+wxT(")");
+        if (!this->GetOperatorClasses().IsNull())
+            str += wxT(" ") + GetOperatorClasses();
     }
 
     str += wxT(")");
@@ -81,27 +81,66 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
     {
         expandedKids = true;
         wxStringTokenizer collist(GetColumnNumbers());
-        wxString cn;
+        wxStringTokenizer args(procArgTypeList);
+        wxString cn, ct;
         columnCount=0;
 
         while (collist.HasMoreTokens())
         {
             cn=collist.GetNextToken();
-            pgSet *set=ExecuteSet(wxT(
+            ct=args.GetNextToken();
+
+            pgSet *colSet=ExecuteSet(wxT(
                 "SELECT attname as conattname\n"
                 "  FROM pg_attribute\n"
                 " WHERE attrelid=") + GetTableOidStr() + wxT(" AND attnum=") + cn);
-            if (set)
+            if (colSet)
             {
                 if (columnCount)
                 {
                     columns += wxT(", ");
                     quotedColumns += wxT(", ");
                 }
-                columns += set->GetVal(0);
-                quotedColumns += qtIdent(set->GetVal(0));
+                wxString colName=colSet->GetVal(0);
+                columns += colName;
+                quotedColumns += qtIdent(colName);
+
+                if (!ct.IsNull())
+                {
+                    pgSet *typeSet=ExecuteSet(wxT(
+                        "SELECT typname FROM pg_type where oid=") + ct);
+                    if (typeSet)
+                    {
+                        if (columnCount)
+                        {
+                            procArgs += wxT(", ");
+                            typedColumns += wxT(", ");
+                            quotedTypedColumns += wxT(", ");
+                        }
+                        wxString colType=typeSet->GetVal(0);
+                        procArgs += colType;
+                        typedColumns += colName + wxT("::") + colType;
+                        quotedTypedColumns += qtIdent(colName) + wxT("::") + colType;
+                        delete typeSet;
+                    }
+                }
                 columnCount++;
-                delete set;
+                delete colSet;
+            }
+            wxStringTokenizer ops(operatorClassList);
+            wxString op;
+            while (ops.HasMoreTokens())
+            {
+                op = ops.GetNextToken();
+                pgSet *set=ExecuteSet(wxT(
+                    "SELECT opcname FROM pg_opclass WHERE oid=") + op);
+                if (set)
+                {
+                    if (!operatorClasses.IsNull())
+                        operatorClasses += wxT(", ");
+                    operatorClasses += set->GetVal(0);
+                    delete set;
+                }
             }
         }
     }
@@ -120,8 +159,8 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
             InsertListItem(properties, pos++, wxT("Columns"), GetColumns());
         else
         {
-            InsertListItem(properties, pos++, wxT("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetProcArgs()+wxT(")"));
-            InsertListItem(properties, pos++, wxT("Operator Classes"), GetOperatorClass());
+            InsertListItem(properties, pos++, wxT("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
+            InsertListItem(properties, pos++, wxT("Operator Classes"), GetOperatorClasses());
         }
         InsertListItem(properties, pos++, wxT("Unique?"), BoolToYesNo(GetIsUnique()));
         InsertListItem(properties, pos++, wxT("Primary?"), BoolToYesNo(GetIsPrimary()));
@@ -175,43 +214,10 @@ void pgIndex::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTree
                 index->iSetIdxSchema(indexes->GetVal(wxT("nspname")));
                 index->iSetIdxTable(indexes->GetVal(wxT("tabname")));
                 index->iSetRelTableOid(StrToDouble(indexes->GetVal(wxT("indrelid"))));
-
-                wxString str, argTypes;
-                wxStringTokenizer args(indexes->GetVal(wxT("proargtypes")));
-                while (args.HasMoreTokens())
-                {
-                    str = args.GetNextToken();
-                    pgSet *set=collection->GetDatabase()->ExecuteSet(wxT(
-                        "SELECT typname FROM pg_type where oid=") + str);
-                    if (set)
-                    {
-                        if (!argTypes.IsNull())
-                            argTypes += wxT(", ");
-                        argTypes += set->GetVal(0);
-                        delete set;
-                    }
-                }
+                index->iSetProcArgTypeList(indexes->GetVal(wxT("proargtypes")));
                 index->iSetProcNamespace(indexes->GetVal(wxT("pronspname")));
                 index->iSetProcName(indexes->GetVal(wxT("proname")));
-                index->iSetProcArgs(argTypes);
-
-                wxString opClasses;
-                args.SetString(indexes->GetVal(wxT("indclass")));
-                while (args.HasMoreTokens())
-                {
-                    str = args.GetNextToken();
-                    pgSet *set=collection->GetDatabase()->ExecuteSet(wxT(
-                        "SELECT opcname FROM pg_opclass WHERE oid=") + str);
-                    if (set)
-                    {
-                        if (!opClasses.IsNull())
-                            opClasses += wxT(", ");
-                        opClasses += set->GetVal(0);
-                        delete set;
-                    }
-                }
-                index->iSetOperatorClass(opClasses);
-
+                index->iSetOperatorClassList(indexes->GetVal(wxT("indclass")));
 
                 browser->AppendItem(collection->GetId(), index->GetIdentifier(), PGICON_INDEX, -1, index);
 
