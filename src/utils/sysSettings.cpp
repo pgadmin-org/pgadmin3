@@ -66,9 +66,9 @@ sysSettings::~sysSettings()
     Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
     Write(wxT("frmQuery/MaxRows"), maxRows);
     Write(wxT("frmQuery/MaxColSize"), maxColSize);
-    Write(wxT("AskSaveConfirmation"), BoolToYesNo(askSaveConfirmation));
-    Write(wxT("ConfirmDelete"), BoolToYesNo(confirmDelete));
-    Write(wxT("ShowUsersForPrivileges"), BoolToYesNo(showUsersForPrivileges));
+    Write(wxT("AskSaveConfirmation"), BoolToStr(askSaveConfirmation));
+    Write(wxT("ConfirmDelete"), BoolToStr(confirmDelete));
+    Write(wxT("ShowUsersForPrivileges"), BoolToStr(showUsersForPrivileges));
     Write(wxT("SqlHelpSite"), helpSite);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
 }
