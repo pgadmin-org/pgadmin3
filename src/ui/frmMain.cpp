@@ -389,6 +389,10 @@ pgObject *frmMain::GetSelectedObject()
     wxTreeItemId item=browser->GetSelection();
     pgObject *data = (pgObject*)browser->GetItemData(item);
 
+    /* When it isn't connected. */
+    if (data == NULL)
+        return 0;
+	
     if (FindFocus() == browser)
     {
         return data;
