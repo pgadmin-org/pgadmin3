@@ -64,7 +64,7 @@ private:
     wxButton *m_btn;
     wxString m_format;
 
-    bool m_dropped;
+    bool m_dropped, m_ignoreDrop;
 
     void Init();
     void DropDown(bool down=true);
@@ -77,6 +77,7 @@ private:
     void OnActivate(wxActivateEvent &ev);
     void OnSetFocus(wxFocusEvent &ev);
     void OnKillFocus(wxFocusEvent &ev);
+    void OnButtonSetFocus(wxFocusEvent &ev);
 
     DECLARE_DYNAMIC_CLASS(wxCalendarBox)
     DECLARE_EVENT_TABLE()

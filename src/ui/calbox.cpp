@@ -21,6 +21,7 @@
 BEGIN_EVENT_TABLE(wxCalendarBox, wxControl)
     EVT_BUTTON(CTRLID_BTN, wxCalendarBox::OnClick)
     EVT_TEXT(CTRLID_TXT, wxCalendarBox::OnText)
+//    EVT_SET_FOCUS(wxCalendarBox::OnSetFocus)
 END_EVENT_TABLE()
 
 IMPLEMENT_DYNAMIC_CLASS(wxCalendarBox, wxControl)
@@ -88,6 +89,7 @@ bool wxCalendarBox::Create(wxWindow *parent,
     SetFormat(wxT("%x"));
 
     m_btn = new wxBitmapButton(this, CTRLID_BTN, bmp, wxPoint(cs.x - bs.x, 0), wxSize(bs.x, cs.y));
+    m_btn->Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)&wxCalendarBox::OnButtonSetFocus);
 
     m_dlg = new wxDialog(this, CTRLID_CAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     m_dlg->Connect(wxID_ANY, wxID_ANY, wxEVT_ACTIVATE, (wxObjectEventFunction)&wxCalendarBox::OnActivate, 0, this);
@@ -97,14 +99,14 @@ bool wxCalendarBox::Create(wxWindow *parent,
     m_cal = new wxCalendarCtrl(panel, CTRLID_CAL, wxDefaultDateTime, wxPoint(0,0), wxDefaultSize, wxSUNKEN_BORDER);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_SEL_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, (wxObjectEventFunction)&wxCalendarBox::OnCalKey, 0, this);
-
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DOUBLECLICKED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DAY_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_MONTH_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_YEAR_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
-    Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)&wxCalendarBox::OnSetFocus);
 
     wxWindow *yearControl = m_cal->GetYearControl();
+
+    Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)&wxCalendarBox::OnSetFocus);
 
     wxClientDC dc(yearControl);
     dc.SetFont(m_font);
@@ -155,6 +157,7 @@ void wxCalendarBox::Init()
     m_btn = NULL;
 
     m_dropped = false;
+    m_ignoreDrop = false;
 }
 
 
@@ -183,8 +186,7 @@ void wxCalendarBox::DoMoveWindow(int x, int y, int w, int h)
     wxControl::DoMoveWindow(x, y, w, h);
     if (m_dropped)
     {
-        wxMouseEvent ev;
-        OnClick(ev);
+        DropDown();
     }
 }
 
@@ -336,10 +338,35 @@ void wxCalendarBox::DropDown(bool down)
     }
 }
 
+
+void wxCalendarBox::OnButtonSetFocus(wxFocusEvent &ev)
+{
+    wxWindow *w=ev.GetWindow();
+    while (w)
+    {
+        if (w == m_dlg)
+        {
+            m_ignoreDrop = true;
+            break;
+        }
+        w = w->GetParent();
+    }
+    ev.Skip();
+}
+
     
 void wxCalendarBox::OnClick(wxMouseEvent& event)
 {
-    DropDown();
+    if (m_ignoreDrop)
+    {
+        m_ignoreDrop = false;
+        m_txt->SetFocus();
+    }
+    else
+    {
+        DropDown();
+        m_cal->SetFocus();
+    }
 }
 
 
