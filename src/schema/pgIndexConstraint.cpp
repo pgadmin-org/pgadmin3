@@ -24,7 +24,7 @@ bool pgIndexConstraint::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
     return GetDatabase()->ExecuteVoid(wxT(
         "ALTER TABLE ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
-            + wxT(" DROP CONSTRAINT ") + GetQuotedFullIdentifier() + wxT(";"));
+            + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() + wxT(";"));
 }
 
 
@@ -50,7 +50,7 @@ wxString pgIndexConstraint::GetCreate()
 {
     wxString sql;
 
-    sql = GetQuotedFullIdentifier() + wxT(" ") 
+    sql = GetQuotedIdentifier() + wxT(" ") 
         + GetTypeName().Upper() + GetDefinition();
 
     return sql;
@@ -63,9 +63,9 @@ wxString pgIndexConstraint::GetSql(wxTreeCtrl *browser)
     {
         sql = wxT("-- Constraint: ") + GetQuotedFullIdentifier() 
             + wxT("\n\n-- ALTER TABLE ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
-            + wxT(" DROP CONSTRAINT ") + GetQuotedFullIdentifier() 
+            + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() 
             + wxT("\n\nALTER TABLE ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
-            + wxT(" ADD CONSTRAINT ")
+            + wxT("\n  ADD CONSTRAINT ")
             + GetCreate()
             + wxT(";\n")
             + GetCommentSql();
