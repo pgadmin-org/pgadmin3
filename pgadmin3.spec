@@ -1,9 +1,9 @@
-%define major_version      0.1.1
-%define minor_version      %(date +%Y%m%d)
-%define wxGTK2_version     20030607
-%define withwxconfig       wxgtk2ud-2.5-config
-%define withpgsql          /usr
-%define withpgsqlinclude   /usr/include
+%define major_version 0.1.1
+%define minor_version %(date +%Y%m%d)
+%define wxGTK2_version 20030607
+%define withwxconfig wxgtk2ud-2.5-config
+%define withpgsql /usr
+%define withpgsqlinclude /usr/include
 
 # Mandrake 91 & SuSE 8.2
 # %define withpgsql_include --with-pgsql-include=/usr/include/pgsql
