@@ -1143,7 +1143,8 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                 }
             }
         }
-    }
+    }else
+	securityPage = NULL;
 }
 
 
@@ -1155,7 +1156,8 @@ dlgSecurityProperty::~dlgSecurityProperty()
 
 int dlgSecurityProperty::Go(bool modal)
 {
-    securityPage->SetConnection(connection);
+    if (securityPage)
+        securityPage->SetConnection(connection);
     
     return dlgProperty::Go(modal);
 }
@@ -1163,7 +1165,7 @@ int dlgSecurityProperty::Go(bool modal)
 
 void dlgSecurityProperty::AddGroups(ctlComboBox *comboBox)
 {
-    if ((!securityPage || !securityPage->cbGroups) && !comboBox)
+    if (!((securityPage && securityPage->cbGroups) || comboBox))
         return;
 
     pgSet *set=connection->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
@@ -1239,7 +1241,10 @@ void dlgSecurityProperty::EnableOK(bool enable)
 
 wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxString &grantObject)
 {
-    return securityPage->GetGrant(allPattern, grantObject, &currentAcl);
+    if (securityPage)
+        return securityPage->GetGrant(allPattern, grantObject, &currentAcl);
+    else
+	return wxString();
 }
 
 
