@@ -34,6 +34,7 @@ private:
     wxArrayString varInfo;
 
     void OnChange(wxCommandEvent &ev);
+    void OnChangeSuperuser(wxCommandEvent &ev);
     void OnChangeSpin(wxSpinEvent &ev);
     void OnChangeCal(wxCalendarEvent &ev);
     void OnGroupAdd(wxCommandEvent &ev);

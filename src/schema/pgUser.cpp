@@ -35,6 +35,15 @@ pgUser::~pgUser()
 
 bool pgUser::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
+    if (GetUpdateCatalog())
+    {
+        wxMessageDialog dlg(frame, 
+            _("Deleting a superuser might result in unwanted behaviour (e.g. when restoring the database).\nAre you sure?"),
+            _("Confirm superuser deletion"),
+                     wxICON_EXCLAMATION | wxYES_NO |wxNO_DEFAULT);
+        if (dlg.ShowModal() != wxID_YES)
+            return false;
+    }
     return server->ExecuteVoid(wxT("DROP USER ") + GetQuotedFullIdentifier() + wxT(";"));
 }
 

@@ -53,7 +53,7 @@ BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsIn"),         dlgUser::OnGroupRemove)
     EVT_TEXT(XRCID("txtPasswd"),                    dlgUser::OnChange)
     EVT_CHECKBOX(XRCID("chkCreateDB"),              dlgUser::OnChange)
-    EVT_CHECKBOX(XRCID("chkCreateUser"),            dlgUser::OnChange)
+    EVT_CHECKBOX(XRCID("chkCreateUser"),            dlgUser::OnChangeSuperuser)
 
     EVT_BUTTON(XRCID("btnAddGroup"),                dlgUser::OnGroupAdd)
     EVT_BUTTON(XRCID("btnDelGroup"),                dlgUser::OnGroupRemove)
@@ -181,6 +181,24 @@ void dlgUser::OnChangeCal(wxCalendarEvent &ev)
 void dlgUser::OnChangeSpin(wxSpinEvent &ev)
 {
 	OnChange(*(wxCommandEvent*)&ev);
+}
+
+
+void dlgUser::OnChangeSuperuser(wxCommandEvent &ev)
+{
+    if (user && user->GetSuperuser() && !chkCreateUser->GetValue())
+    {
+        wxMessageDialog dlg(this,
+            _("Deleting a superuser might result in unwanted behaviour (e.g. when restoring the database).\nAre you sure?"),
+            _("Confirm superuser deletion"),
+                     wxICON_EXCLAMATION | wxYES_NO |wxNO_DEFAULT);
+        if (dlg.ShowModal() != wxID_YES)
+        {
+            chkCreateUser->SetValue(true);
+            return;
+        }
+    }
+    OnChange(ev);
 }
 
 
