@@ -195,27 +195,26 @@ wxString dlgSequence::GetSql()
 
             if (!tmp.IsEmpty())
             {
-                sql += wxT("ALTER SEQUENCE ") + qtIdent(name)
+                sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
                     +  tmp + wxT(";\n");
             }
- 
-        }
+         }
         else
         {
             if (txtStart->GetValue() != sequence->GetLastValue().ToString())
-                sql += wxT("SELECT setval('") + qtString(name)
+                sql += wxT("SELECT setval('") + qtString(schema->GetName()) + wxT(".") + qtString(name)
                     +  wxT("', ") + txtStart->GetValue()
                     +  wxT(");\n");
         }
         if (cbTablespace->GetValue() != sequence->GetTablespace())
-            sql += wxT("ALTER TABLE ") + qtIdent(name)
+            sql += wxT("ALTER TABLE ") + schema->GetQuotedPrefix()+ qtIdent(name)
                 +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
                 +  wxT(";\n");
     }
     else
     {
         // create mode
-        sql = wxT("CREATE SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(GetName());
+        sql = wxT("CREATE SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name);
         if (chkCycled->GetValue())
             sql += wxT(" CYCLE");
         AppendIfFilled(sql, wxT("\n   INCREMENT "), txtIncrement->GetValue());
@@ -228,12 +227,12 @@ wxString dlgSequence::GetSql()
         sql += wxT(";\n");
         if (cbOwner->GetGuessedSelection() > 0)
         {
-            sql += wxT("ALTER TABLE ")  + schema->GetQuotedPrefix() + qtIdent(GetName())
+            sql += wxT("ALTER TABLE ")  + schema->GetQuotedPrefix() + qtIdent(name)
                 +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
         }
     }
 
-    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(GetName()));
+    sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
     AppendComment(sql, wxT("SEQUENCE"), schema, sequence);
 
     return sql;
