@@ -1042,11 +1042,11 @@ void frmQueryBuilder::BuildQuery()
 		if (found)
 		{
 			wxLogError(__("Double right-handed joins are not allowed.\n")
-				__("You must redraw your joins so that \"") + tmptable1 +  
-				__("\"\ndoes not appear on the righthand side \n")
+				__("You must redraw your joins so that \"%s\"\n")
+                __("does not appear on the righthand side \n")
 				__("more than once. \n\n")
 				__("Try switching it to the lefthand side in one\n")
-				__("or more relationships."));
+				__("or more relationships."), tmptable1.c_str());
 			return;
 		}
 		else
@@ -1122,11 +1122,10 @@ void frmQueryBuilder::BuildQuery()
 			expression += wxT(" AS ") + alias;
 
 		bool conderr;
-		condition = RebuildCondition(condition, conderr);
+		condition = RebuildCondition(condition, si+1, conderr);
 		if (conderr)
 		{
-			wxLogError(condition +  
-				wxString::Format(__("in the condition for row #%d."),si + 1));
+			wxLogError(condition);
 			return;
 		}
 
@@ -1287,7 +1286,8 @@ void frmQueryBuilder::VerifyExpression(int celly)
 
 	if (cellv.length() == 0 && tmpcolumn == wxT(" "))
 	{
-		wxMessageDialog dlg(this, _("You cannot leave both the column and expression blank.\n\nClick 'OK' to insert a default function into the expression."), 
+		wxMessageDialog dlg(this, 
+            _("You cannot leave both the column and expression blank.\n\nClick 'OK' to insert a default function into the expression."),
 			_("Expression Error"), 
 			wxICON_ERROR | wxOK);
 
@@ -1396,7 +1396,7 @@ frmChildTableViewFrame *frmQueryBuilder::GetFrameFromAlias(wxString alias)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
+wxString frmQueryBuilder::RebuildCondition(wxString condition, int row, bool &errout)
 {
 	// Assume no errors
 	errout = FALSE;
@@ -1405,7 +1405,7 @@ wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
 
 	wxString binarycomp = wxT("<|>|<=|>=|=|<>|!=|");
 	wxString binarypat = wxT("NOT LIKE"); //|LIKE|ILIKE|SIMILAR TO|!~*|~*|!~|~"
-	wxString errmsg = wxT("");
+	wxString errmsg;
 
 	wxString txt = tmpstr;
 
@@ -1444,7 +1444,7 @@ wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
 	re.Compile(wxT("'"));
 	if (re.Matches(txt))
 	{
-		errmsg = _("Check for unbalanced single quote marks ");
+		errmsg.Printf(_("Check for unbalanced single quote marks in the condition for row #%d."), row);
 	}
 
 	// Collapse multiple whitespace to a single space
@@ -1467,7 +1467,7 @@ wxString frmQueryBuilder::RebuildCondition(wxString condition, bool &errout)
 	{
 		tmpstr = errmsg;
 		errout = TRUE;
-	}
+    }
 
 	return tmpstr;
 }

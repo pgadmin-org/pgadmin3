@@ -94,8 +94,7 @@ private:
 	void BuildQuery();
 	void RunQuery();
 	void VerifyExpression(int row);
-	wxString RebuildCondition(wxString condition, 
-		bool &errout);
+	wxString RebuildCondition(wxString condition, int row, bool &errout);
 	int FindLeftmostTable();
 	bool IsTableLeftOnly(wxString tablename);
 	virtual wxMDIClientWindow* OnCreateClient();
