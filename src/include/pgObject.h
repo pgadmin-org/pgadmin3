@@ -106,6 +106,7 @@ public:
     virtual wxString GetQuotedFullIdentifier() const { return qtIdent(GetName()); }
 
 protected:
+    static void CreateListColumns(wxListCtrl *properties, const wxString &left=wxT("Property"), const wxString &right=wxT("Value"));
     static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2);
     static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const char *s)
         { InsertListItem(list, pos, str1, wxString(s)); }

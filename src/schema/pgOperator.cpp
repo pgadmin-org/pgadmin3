@@ -63,35 +63,33 @@ void pgOperator::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
 {
     SetButtons(form);
 
-    properties->ClearAll();
-    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
-  
+    if (properties)
+    {
+        CreateListColumns(properties);
+        int pos=0;
 
-    int pos=0;
-
-    InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), GetOid());
-    InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-    InsertListItem(properties, pos++, wxT("Kind"), GetKind());
-    if (!leftType.IsNull())
-        InsertListItem(properties, pos++, wxT("Left Type"), GetLeftType());
-    if (!rightType.IsNull())
-        InsertListItem(properties, pos++, wxT("Right Type"), GetRightType());
-    InsertListItem(properties, pos++, wxT("Result Type"), GetResultType());
-    InsertListItem(properties, pos++, wxT("Operator Function"), GetOperatorFunction());
-    InsertListItem(properties, pos++, wxT("Join Function"), GetJoinFunction());
-    InsertListItem(properties, pos++, wxT("Restrict Function"), GetRestrictFunction());
-    InsertListItem(properties, pos++, wxT("Commutator"), GetCommutator());
-    InsertListItem(properties, pos++, wxT("Negator"), GetNegator());
-    InsertListItem(properties, pos++, wxT("Left Sort Operator"), GetLeftSortOperator());
-    InsertListItem(properties, pos++, wxT("Right Sort Operator"), GetRightSortOperator());
-    InsertListItem(properties, pos++, wxT("Less Than Operator"), GetLessOperator());
-    InsertListItem(properties, pos++, wxT("Greater Than Operator"), GetGreaterOperator());
-    InsertListItem(properties, pos++, wxT("Hash Joins?"), GetHashJoins());
-    InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, wxT("Name"), GetName());
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
+        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
+        InsertListItem(properties, pos++, wxT("Kind"), GetKind());
+        if (!leftType.IsNull())
+            InsertListItem(properties, pos++, wxT("Left Type"), GetLeftType());
+        if (!rightType.IsNull())
+            InsertListItem(properties, pos++, wxT("Right Type"), GetRightType());
+        InsertListItem(properties, pos++, wxT("Result Type"), GetResultType());
+        InsertListItem(properties, pos++, wxT("Operator Function"), GetOperatorFunction());
+        InsertListItem(properties, pos++, wxT("Join Function"), GetJoinFunction());
+        InsertListItem(properties, pos++, wxT("Restrict Function"), GetRestrictFunction());
+        InsertListItem(properties, pos++, wxT("Commutator"), GetCommutator());
+        InsertListItem(properties, pos++, wxT("Negator"), GetNegator());
+        InsertListItem(properties, pos++, wxT("Left Sort Operator"), GetLeftSortOperator());
+        InsertListItem(properties, pos++, wxT("Right Sort Operator"), GetRightSortOperator());
+        InsertListItem(properties, pos++, wxT("Less Than Operator"), GetLessOperator());
+        InsertListItem(properties, pos++, wxT("Greater Than Operator"), GetGreaterOperator());
+        InsertListItem(properties, pos++, wxT("Hash Joins?"), GetHashJoins());
+        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+    }
 }
-
 
 
 void pgOperator::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)

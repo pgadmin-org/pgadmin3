@@ -238,10 +238,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         wxLogInfo(wxT("Displaying properties for server ") + GetIdentifier());
 
         // Add the properties view columns
-        properties->ClearAll();
-        properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-        properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
-
+        CreateListColumns(properties);
 
         // Display the Server properties
         int pos=0;

@@ -53,20 +53,19 @@ void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     if (form)
         form->SetButtons(true, true, true, true, false, false, false);
 
-    properties->ClearAll();
-    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
-  
+    if (properties)
+    {
+        CreateListColumns(properties);
+        int pos=0;
 
-    int pos=0;
-
-    InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), GetOid());
-    InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
-    InsertListItem(properties, pos++, wxT("Trusted?"), GetTrusted());
-    InsertListItem(properties, pos++, wxT("Handler"), GetHandlerProc());
-    InsertListItem(properties, pos++, wxT("Validator"), GetValidatorProc());
-    InsertListItem(properties, pos++, wxT("System Object?"), GetSystemObject());
+        InsertListItem(properties, pos++, wxT("Name"), GetName());
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
+        InsertListItem(properties, pos++, wxT("ACL"), GetAcl());
+        InsertListItem(properties, pos++, wxT("Trusted?"), GetTrusted());
+        InsertListItem(properties, pos++, wxT("Handler"), GetHandlerProc());
+        InsertListItem(properties, pos++, wxT("Validator"), GetValidatorProc());
+        InsertListItem(properties, pos++, wxT("System Object?"), GetSystemObject());
+    }
 }
 
 

@@ -57,24 +57,23 @@ void pgAggregate::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl 
 {
     SetButtons(form);
 
-    properties->ClearAll();
-    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
-  
+    if (properties)
+    {
+        CreateListColumns(properties);
+        int pos=0;
 
-    int pos=0;
-
-    InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("Input Type"), GetInputType());
-    InsertListItem(properties, pos++, wxT("OID"), GetOid());
-    InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-    InsertListItem(properties, pos++, wxT("State Type"), GetStateType());
-    InsertListItem(properties, pos++, wxT("State Function"), GetStateFunction());
-    InsertListItem(properties, pos++, wxT("Final Type"), GetFinalType());
-    InsertListItem(properties, pos++, wxT("Final Function"), GetFinalFunction());
-    InsertListItem(properties, pos++, wxT("Initial Condition"), GetInitialCondition());
-    InsertListItem(properties, pos++, wxT("System Aggregate?"), GetSystemObject());
-    InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, wxT("Name"), GetName());
+        InsertListItem(properties, pos++, wxT("Input Type"), GetInputType());
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
+        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
+        InsertListItem(properties, pos++, wxT("State Type"), GetStateType());
+        InsertListItem(properties, pos++, wxT("State Function"), GetStateFunction());
+        InsertListItem(properties, pos++, wxT("Final Type"), GetFinalType());
+        InsertListItem(properties, pos++, wxT("Final Function"), GetFinalFunction());
+        InsertListItem(properties, pos++, wxT("Initial Condition"), GetInitialCondition());
+        InsertListItem(properties, pos++, wxT("System Aggregate?"), GetSystemObject());
+        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+    }
 }
 
 

@@ -142,10 +142,7 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     if (properties)
     {
         // Setup listview
-        properties->ClearAll();
-        properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-        properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 350);
-
+        CreateListColumns(properties);
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());

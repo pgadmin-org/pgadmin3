@@ -77,6 +77,16 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properti
     EndMsg();
 }
 
+
+void pgObject::CreateListColumns(wxListCtrl *properties, const wxString &left, const wxString &right)
+{
+    properties->ClearAll();
+    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
+    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 700);
+}
+
+
+
 void pgObject::InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2)
 {
     list->InsertItem(pos, str1, 0);
@@ -270,29 +280,27 @@ void pgSchemaObject::SetButtons(frmMain *form, bool canVacuum)
 
 void pgSchemaObject::DisplayStatistics(wxListCtrl *statistics, const wxString& query)
 {
-    if (!statistics)
-        return;
-    wxString msg;
-    
-    msg.Printf(wxT("Displaying statistics for %s on %s"), GetTypeName().c_str(), GetSchema()->GetIdentifier().c_str());
-    wxLogInfo(msg);
-
-    // Add the statistics view columns
-    statistics->ClearAll();
-    statistics->InsertColumn(0, wxT("Statistic"), wxLIST_FORMAT_LEFT, 150);
-    statistics->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
-
-    pgSet *stats = ExecuteSet(query);
-    
-    if (stats)
+    if (statistics)
     {
-        int col=0;
-        while (col < stats->NumCols())
-            InsertListItem(statistics, col++, stats->ColName(col), stats->GetVal(col));
+        wxString msg;
+    
+        msg.Printf(wxT("Displaying statistics for %s on %s"), GetTypeName().c_str(), GetSchema()->GetIdentifier().c_str());
+        wxLogInfo(msg);
 
-        delete stats;
+        // Add the statistics view columns
+        CreateListColumns(statistics, wxT("Statistic"), wxT("Value"));
+
+        pgSet *stats = ExecuteSet(query);
+    
+        if (stats)
+        {
+            int col=0;
+            while (col < stats->NumCols())
+                InsertListItem(statistics, col++, stats->ColName(col), stats->GetVal(col));
+
+            delete stats;
+        }
     }
-
 }
 
 

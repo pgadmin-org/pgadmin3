@@ -44,22 +44,21 @@ void pgRule::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
 {
     SetButtons(form);
 
-    properties->ClearAll();
-    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
-  
+    if (properties)
+    {
+        CreateListColumns(properties);
+        int pos=0;
 
-    int pos=0;
-
-    InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), GetOid());
-    InsertListItem(properties, pos++, wxT("Event"), GetEvent());
-    InsertListItem(properties, pos++, wxT("Condition"), GetCondition());
-    InsertListItem(properties, pos++, wxT("Do Instead?"), GetDoInstead());
-    InsertListItem(properties, pos++, wxT("Action"), GetAction());
-    InsertListItem(properties, pos++, wxT("Definition"), GetDefinition());
-    InsertListItem(properties, pos++, wxT("System Rule?"), GetSystemObject());
-    InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, wxT("Name"), GetName());
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
+        InsertListItem(properties, pos++, wxT("Event"), GetEvent());
+        InsertListItem(properties, pos++, wxT("Condition"), GetCondition());
+        InsertListItem(properties, pos++, wxT("Do Instead?"), GetDoInstead());
+        InsertListItem(properties, pos++, wxT("Action"), GetAction());
+        InsertListItem(properties, pos++, wxT("Definition"), GetDefinition());
+        InsertListItem(properties, pos++, wxT("System Rule?"), GetSystemObject());
+        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+    }
 }
 
 

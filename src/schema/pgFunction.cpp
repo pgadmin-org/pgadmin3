@@ -66,28 +66,26 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
     SetButtons(form);
+    if (properties)
+    {
+        CreateListColumns(properties);
+        int pos=0;
 
-    properties->ClearAll();
-    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
-  
-
-    int pos=0;
-
-    InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), GetOid());
-    InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-    InsertListItem(properties, pos++, wxT("Argument Count"), GetArgCount());
-    InsertListItem(properties, pos++, wxT("Arguments"), GetArgTypes());
-    InsertListItem(properties, pos++, wxT("Returns"), GetReturnType());
-    InsertListItem(properties, pos++, wxT("Language"), GetLanguage());
-    InsertListItem(properties, pos++, wxT("Returns a Set?"), GetReturnAsSet());
-    InsertListItem(properties, pos++, wxT("Source"), GetSource());
-    InsertListItem(properties, pos++, wxT("Volatility"), GetVolatility());
-    InsertListItem(properties, pos++, wxT("Secure Definer?"), GetSecureDefiner());
-    InsertListItem(properties, pos++, wxT("Strict?"), GetIsStrict());
-    InsertListItem(properties, pos++, wxT("System Function?"), GetSystemObject());
-    InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, wxT("Name"), GetName());
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
+        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
+        InsertListItem(properties, pos++, wxT("Argument Count"), GetArgCount());
+        InsertListItem(properties, pos++, wxT("Arguments"), GetArgTypes());
+        InsertListItem(properties, pos++, wxT("Returns"), GetReturnType());
+        InsertListItem(properties, pos++, wxT("Language"), GetLanguage());
+        InsertListItem(properties, pos++, wxT("Returns a Set?"), GetReturnAsSet());
+        InsertListItem(properties, pos++, wxT("Source"), GetSource());
+        InsertListItem(properties, pos++, wxT("Volatility"), GetVolatility());
+        InsertListItem(properties, pos++, wxT("Secure Definer?"), GetSecureDefiner());
+        InsertListItem(properties, pos++, wxT("Strict?"), GetIsStrict());
+        InsertListItem(properties, pos++, wxT("System Function?"), GetSystemObject());
+        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+    }
 }
 
 

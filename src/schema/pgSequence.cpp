@@ -83,10 +83,7 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     UpdateValues();
     if (properties)
     {
-        properties->ClearAll();
-        properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-        properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
-
+        CreateListColumns(properties);
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
@@ -107,9 +104,7 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     if (statistics)
     {
         // Add the statistics view columns
-        statistics->ClearAll();
-        statistics->InsertColumn(0, wxT("Statistic"), wxLIST_FORMAT_LEFT, 100);
-        statistics->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
+        CreateListColumns(statistics, wxT("Statistic"), wxT("Value"));
 
         pgSet *stats = GetSchema()->GetDatabase()->ExecuteSet(wxT(
             "SELECT blks_read, blks_hit FROM pg_statio_all_sequences WHERE relid = ") + GetOidStr());

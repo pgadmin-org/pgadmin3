@@ -74,35 +74,34 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         expandedKids = true;
         // append type here
     }
-    properties->ClearAll();
-    properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
-  
-
-    int pos=0;
-
-    InsertListItem(properties, pos++, wxT("Name"), GetName());
-    InsertListItem(properties, pos++, wxT("OID"), GetOid());
-    InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
-    InsertListItem(properties, pos++, wxT("Base Type"), GetBasetype());
-    if (GetLength() == -2)
-        InsertListItem(properties, pos++, wxT("Length"), wxT("null-terminated"));
-    else
+    if (properties)
     {
-        if (GetDimensions() || GetLength() < 0)
-            InsertListItem(properties, pos++, wxT("Length"), wxT("variable"));
+        CreateListColumns(properties);
+        int pos=0;
+
+        InsertListItem(properties, pos++, wxT("Name"), GetName());
+        InsertListItem(properties, pos++, wxT("OID"), GetOid());
+        InsertListItem(properties, pos++, wxT("Owner"), GetOwner());
+        InsertListItem(properties, pos++, wxT("Base Type"), GetBasetype());
+        if (GetLength() == -2)
+            InsertListItem(properties, pos++, wxT("Length"), wxT("null-terminated"));
         else
-            InsertListItem(properties, pos++, wxT("Length"), GetLength());
+        {
+            if (GetDimensions() || GetLength() < 0)
+                InsertListItem(properties, pos++, wxT("Length"), wxT("variable"));
+            else
+                InsertListItem(properties, pos++, wxT("Length"), GetLength());
+        }
+        if (GetPrecision() >= 0)
+            InsertListItem(properties, pos++, wxT("Precision"), GetPrecision());
+        // dimensions, delimiter missing
+        if (GetDimensions())
+            InsertListItem(properties, pos++, wxT("Dimensions"), GetDimensions());
+        InsertListItem(properties, pos++, wxT("Default"), GetDefault());
+        InsertListItem(properties, pos++, wxT("Not Null?"), GetNotNull());
+        InsertListItem(properties, pos++, wxT("System Domain?"), GetSystemObject());
+        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
-    if (GetPrecision() >= 0)
-        InsertListItem(properties, pos++, wxT("Precision"), GetPrecision());
-    // dimensions, delimiter missing
-    if (GetDimensions())
-        InsertListItem(properties, pos++, wxT("Dimensions"), GetDimensions());
-    InsertListItem(properties, pos++, wxT("Default"), GetDefault());
-    InsertListItem(properties, pos++, wxT("Not Null?"), GetNotNull());
-    InsertListItem(properties, pos++, wxT("System Domain?"), GetSystemObject());
-    InsertListItem(properties, pos++, wxT("Comment"), GetComment());
 }
 
 
