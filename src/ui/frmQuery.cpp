@@ -51,10 +51,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     mainForm=form;
     conn=_conn;
     title = _title;
-    SetIcon(wxIcon(sql_xpm));
-
     thread=0;
 
+    SetIcon(wxIcon(sql_xpm));
     wxLogInfo(wxT("Creating SQL Query box"));
     menuBar = new wxMenuBar();
 
@@ -129,6 +128,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     changed = !query.IsNull();
     if (changed)
         setExtendedTitle();
+    sqlQuery->SelectAll();
 }
 
 
