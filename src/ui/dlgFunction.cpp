@@ -372,7 +372,7 @@ wxString dlgFunction::GetSql()
     if (chkStrict->GetValue())
         sql += wxT(" STRICT");
     if (chkSecureDefiner->GetValue())
-        sql += wxT(" SECURE DEFINER");
+        sql += wxT(" SECURITY DEFINER");
 
     sql += wxT(";\n");
 
