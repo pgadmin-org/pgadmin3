@@ -8,17 +8,17 @@
 
 CC = g++
 ifeq ($(PGDIR),)
-	PGDIR = /usr/local/pgsql-7.3
+	PGDIR = /usr/local/pgsql
 endif
 ifeq ($(WXDIR),)
-	WXDIR = /usr/local/wx2
+	WXDIR = /usr/local
 endif
 
 # You shouldn't need to edit below here.
 
 PROGRAM = pgAdmin3
 CFLAGS  = `wx-config --cflags` -I$(WXDIR)/include -I$(WXDIR)/contrib/include -Iinclude -I$(PGDIR)/include -g
-LDFLAGS = $(WXDIR)/lib/libstc.a $(PGDIR)/lib/libpq.a $(WXDIR)/lib/libwxxrc.a /usr/lib/libcrypt.a `wx-config --static --libs`
+LDFLAGS = --static --static-libgcc $(WXDIR)/lib/libstc.a $(PGDIR)/lib/libpq.a $(WXDIR)/lib/libwxxrc.a /usr/lib/libcrypt.a `wx-config --static --libs`
 
 OBJECTS = $(PROGRAM).o \
           db/pgConn.o \
