@@ -8,8 +8,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGForeignKey_H
-#define PGForeignKey_H
+#ifndef PGFOREIGNKEY_H
+#define PGFOREIGNKEY_H
 
 // wxWindows headers
 #include <wx/wx.h>
