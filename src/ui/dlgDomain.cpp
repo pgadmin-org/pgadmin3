@@ -102,6 +102,7 @@ int dlgDomain::Go(bool modal)
         txtName->Disable();
         cbDatatype->Disable();
         txtCheck->Disable();
+        txtComment->SetValue(domain->GetComment());
 
         if (!connection->BackendMinimumVersion(7, 4))
         {
