@@ -2,7 +2,7 @@
 %define major_version 2.5
 
 Summary: The GTK+ 2 port of the wxWindows library
-Name: wxGTK2ud-cvs
+Name: wxGTK2ud
 Version: %{major_version}
 Release: %{minor_version}
 Copyright: wxWindows Licence
@@ -17,7 +17,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 
 Provides: libwx_gtk2ud-%{version}.a
 
-BuildRequires: autoconf, automake, gtk2-devel >= 2.0, gtk+-devel >= 1.2, openssl-devel >= 0.9.6, pkgconfig >= 0.12, libpng-devel >= 1.2.2, gcc-c++ >= 3.2, atk-devel >= 1, pango-devel >= 1.1, freetype-devel >= 2.1, fontconfig-devel >= 2, XFree86-devel >= 4.2
+#BuildRequires: autoconf, automake, gtk2-devel >= 2.0, gtk+-devel >= 1.2, openssl-devel >= 0.9.6, pkgconfig >= 0.12, libpng-devel >= 1.2.2, gcc-c++ >= 3.2, atk-devel >= 1, pango-devel >= 1.1, freetype-devel >= 2.1, fontconfig-devel >= 2, XFree86-devel >= 4.2
 
 %description
 wxWindows is a free C++ library for cross-platform GUI development.
