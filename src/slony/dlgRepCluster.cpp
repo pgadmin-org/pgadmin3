@@ -94,6 +94,8 @@ int dlgRepClusterBase::Go(bool modal)
 
             serverItem = mainForm->GetBrowser()->GetNextChild(servers, cookie);
         }
+        if (cbServer->GetCount())
+            cbServer->SetSelection(0);
     }
     return dlgProperty::Go(modal);
 }
@@ -791,7 +793,6 @@ wxString dlgRepCluster::GetSql()
 #define txtVersion          CTRL_TEXT("txtVersion")
 
 BEGIN_EVENT_TABLE(dlgRepClusterUpgrade, dlgRepClusterBase)
-    EVT_COMBOBOX(XRCID("cbDatabase"),       dlgRepClusterUpgrade::OnChangeDatabase)
 END_EVENT_TABLE();
 
 
@@ -817,7 +818,7 @@ void dlgRepClusterUpgrade::CheckChange()
     CheckValid(enable, cbDatabase->GetCount() > 0, _("Select server with Slony-I cluster installed."));
     CheckValid(enable, cbClusterName->GetCount() > 0, _("Select database with Slony-I cluster installed."));
     CheckValid(enable, cbClusterName->GetSelection() >= 0, _("Select Slony-I cluster."));
-    CheckValid(enable, version >= cluster->GetClusterVersion(), _("Selected cluster doesn't contain newer software."));
+    CheckValid(enable, version > cluster->GetClusterVersion(), _("Selected cluster doesn't contain newer software."));
     EnableOK(enable);
 }
 

@@ -36,26 +36,29 @@ END_EVENT_TABLE()
 
 void pgDialog::AddStatusBar()
 {
-    long flags=0;
-    if (GetWindowStyle() & wxTHICK_FRAME)
-        flags = wxST_SIZEGRIP;
-    statusBar = new wxStatusBar(this, -1, flags);
-
-    wxWindow *statusBarContainer=FindWindow(STATUSBAR_CONTAINER);
-
-    if (statusBarContainer)
+    if (!statusBar)
     {
-        wxXmlResource::Get()->AttachUnknownControl(STATUSBAR_XRCNAME, statusBar);
-    }
-    else
-    {
-        int sbHeight = statusBar->GetSize().y;
-        wxSize size = GetSize();
-        size.y += sbHeight;
-        SetSize(size);
+        long flags=0;
+        if (GetWindowStyle() & wxTHICK_FRAME)
+            flags = wxST_SIZEGRIP;
+        statusBar = new wxStatusBar(this, -1, flags);
 
-        size = GetClientSize();
-        statusBar->Move(0, size.y-sbHeight);
+        wxWindow *statusBarContainer=FindWindow(STATUSBAR_CONTAINER);
+
+        if (statusBarContainer)
+        {
+            wxXmlResource::Get()->AttachUnknownControl(STATUSBAR_XRCNAME, statusBar);
+        }
+        else
+        {
+            int sbHeight = statusBar->GetSize().y;
+            wxSize size = GetSize();
+            size.y += sbHeight;
+            SetSize(size);
+
+            size = GetClientSize();
+            statusBar->Move(0, size.y-sbHeight);
+        }
     }
 }
 

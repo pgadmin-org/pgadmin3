@@ -19,7 +19,7 @@
 
 // to suppress much stuff in parse.h
 #define YYTOKENTYPE
-#define YYSTYPE
+#define YYSTYPE int
 
 
 #define NAMEDATALEN 32

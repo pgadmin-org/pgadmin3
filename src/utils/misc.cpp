@@ -195,7 +195,7 @@ wxDateTime StrToDateTime(const wxString &value)
 wxString IdAndName(long id, const wxString &name)
 {
     wxString str;
-    str.Printf(wxT("%d - %s"), id, name.BeforeFirst('\n'));
+    str.Printf(wxT("%d - %s"), id, name.BeforeFirst('\n').c_str());
     return str;
 }
 
