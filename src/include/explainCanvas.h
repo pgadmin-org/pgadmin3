@@ -17,7 +17,6 @@
 #error wxUSE_DEPRECATED should be 0!
 #endif
 
-#define EXPLAIN_VERTICAL    0
 
 class ExplainShape;
 class ExplainPopup;
@@ -43,13 +42,13 @@ private:
 class ExplainShape : public wxBitmapShape
 {
 public:
-    ExplainShape();
+    ExplainShape(char *bmp[], const wxString &description, long tokenNo=-1, long detailNo=-1);
     static ExplainShape *Create(long level, ExplainShape *last, const wxString &str); 
 
     void SetCondition(const wxString &str) { condition = str; }
     long GetLevel() { return level; }
-    wxRealPoint GetTopPoint();
-    wxRealPoint GetBottomPoint(int kidNo);
+    wxRealPoint GetStartPoint();
+    wxRealPoint GetEndPoint(int kidNo);
     int GetKidno() { return kidNo; }
 
     ExplainShape *GetUpper() { return upperShape; }
@@ -61,10 +60,10 @@ protected:
 
     ExplainShape *upperShape;
 
-    void SetLabel(const wxString &str, int tokenNo=-1);
+    void SetLabel(const wxString &str, int tokenNo=-1, int detailNo=-1);
 
     long level;
-    wxString detail, condition, label;
+    wxString description, detail, condition, label;
     wxString cost, actual;
     double costLow, costHigh;
     long rows, width;
@@ -83,6 +82,7 @@ public:
     ExplainLine(ExplainShape *from, ExplainShape *to, double weight=0);
 
 private:
+    int width;
     void OnDraw(wxDC& dc);
 };
 
@@ -95,9 +95,10 @@ public:
     void Popup();
 
 private:
-    void LeaveWindow(wxMouseEvent &ev);
+    void OnMouseMove(wxMouseEvent &ev);
 
     ExplainText *explainText;
+    wxPoint popupPoint;
     DECLARE_EVENT_TABLE()
 };
 

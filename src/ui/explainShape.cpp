@@ -21,132 +21,74 @@
 #include <explainCanvas.h>
 
 
+
+#include "images/ex_unknown.xpm"
 #include "images/ex_limit.xpm"
-class ExplainLimit : public ExplainShape
-{
-public:
-    ExplainLimit(const wxString &str) { SetBitmap(wxBitmap(ex_limit_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_unique.xpm"
-class ExplainUnique : public ExplainShape
-{
-public:
-    ExplainUnique(const wxString &str) { SetBitmap(wxBitmap(ex_unique_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_append.xpm"
-class ExplainAppend : public ExplainShape
-{
-public:
-    ExplainAppend(const wxString &str) { SetBitmap(wxBitmap(ex_append_xpm)); SetLabel(str); }
-};
-
-#include "images/table.xpm"
-class ExplainUnknown : public ExplainShape
-{
-public:
-    ExplainUnknown(const wxString &str) { SetBitmap(wxBitmap(table_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_hash.xpm"
-class ExplainHash : public ExplainShape
-{
-public:
-    ExplainHash(const wxString &str) { SetBitmap(wxBitmap(ex_hash_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_nested.xpm"
-class ExplainNestedLoop : public ExplainShape
-{
-public:
-    ExplainNestedLoop(const wxString &str) { SetBitmap(wxBitmap(ex_nested_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_merge.xpm"
-class ExplainMerge : public ExplainShape
-{
-public:
-    ExplainMerge(const wxString &str) { SetBitmap(wxBitmap(ex_merge_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_join.xpm"
-class ExplainHashJoin : public ExplainShape
-{
-public:
-    ExplainHashJoin(const wxString &str) { SetBitmap(wxBitmap(ex_join_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_aggregate.xpm"
-class ExplainAggregate : public ExplainShape
-{
-public:
-    ExplainAggregate(const wxString &str) { SetBitmap(wxBitmap(ex_aggregate_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_scan.xpm"
-class ExplainScan : public ExplainShape
-{
-public:
-    ExplainScan(const wxString &str) { SetBitmap(wxBitmap(ex_scan_xpm)); SetLabel(str, 3); }
-};
-
 #include "images/ex_sort.xpm"
-class ExplainSort : public ExplainShape
-{
-public:
-    ExplainSort(const wxString &str) { SetBitmap(wxBitmap(ex_sort_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_group.xpm"
-class ExplainGroup : public ExplainShape
-{
-public:
-    ExplainGroup(const wxString &str) { SetBitmap(wxBitmap(ex_group_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_subplan.xpm"
-class ExplainSubplan : public ExplainShape
-{
-public:
-    ExplainSubplan(const wxString &str) { SetBitmap(wxBitmap(ex_subplan_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_materialize.xpm"
-class ExplainMaterialize : public ExplainShape
-{
-public:
-    ExplainMaterialize(const wxString &str) { SetBitmap(wxBitmap(ex_materialize_xpm)); SetLabel(str); }
-};
-
 #include "images/ex_seek.xpm"
-class ExplainSeek : public ExplainShape
-{
-public:
-    ExplainSeek(const wxString &str) { SetBitmap(wxBitmap(ex_seek_xpm)); SetLabel(str, 3); }
-};
+#include "images/ex_setop.xpm"
+#include "images/ex_result.xpm"
 
 
 #define BMP_BORDER 3
 
-ExplainShape::ExplainShape()
+ExplainShape::ExplainShape(char *bmp[], const wxString &description, long tokenNo, long detailNo)
 {
+    SetBitmap(wxBitmap(bmp));
+    SetLabel(description, tokenNo, detailNo);
     kidCount=0;
     totalShapes=0;
     usedShapes=0;
 }
 
 
-void ExplainShape::SetLabel(const wxString &str, int tokenNo)
+void ExplainShape::SetLabel(const wxString &str, int tokenNo, int detailNo)
 {
     if (tokenNo < 0)
+    {
+        description = str;
         label = str;
+    }
     else
     {
         wxStringTokenizer tokens(str, wxT(" "));
-        while (tokenNo--)
-            tokens.GetNextToken();
-        label = tokens.GetNextToken();
+
+        while (tokenNo-- >= 0)
+        {
+            label = tokens.GetNextToken();
+
+            if (detailNo <= 0)
+            {
+                if (!description.IsEmpty())
+                    description.Append(wxT(" "));
+            
+                description.Append(label);
+            }
+        }
+        if (detailNo > 0)
+        {
+            tokens.SetString(str, wxT(" "));
+
+            while (detailNo--)
+            {
+                if (!description.IsEmpty())
+                    description.Append(wxT(" "));
+                
+                description.Append(tokens.GetNextToken());
+            }
+            detail = tokens.GetString();
+        }
     }
 }
 
@@ -180,26 +122,19 @@ void ExplainShape::OnLeftClick(double x, double y, int keys, int attachment)
 
 
 #define ARROWMARGIN 5
-wxRealPoint ExplainShape::GetTopPoint()
+wxRealPoint ExplainShape::GetStartPoint()
 {
-#if EXPLAIN_VERTICAL
-    wxRealPoint rp(GetX(), GetY() - GetHeight() / 2.0);
-#else
-    wxRealPoint rp(GetX() - GetBitmap().GetWidth() / 2.0 - ARROWMARGIN, GetY() - (GetHeight()-GetBitmap().GetHeight()) / 2.);
-#endif
+    wxRealPoint rp(GetX() + GetBitmap().GetWidth() / 2.0 + ARROWMARGIN, GetY() - (GetHeight()-GetBitmap().GetHeight()) / 2.);
     return rp;
 }
 
 
-wxRealPoint ExplainShape::GetBottomPoint(int kidNo)
+wxRealPoint ExplainShape::GetEndPoint(int kidNo)
 {
-#if EXPLAIN_VERTICAL
-    wxRealPoint rp(GetX() + (kidCount>1 ? GetBitmap().GetWidth() * 2. /3. * (kidNo-(kidCount-1)/2.) / (kidCount-1) : 0 ), GetY() + GetHeight()/2.);
-#else
-    wxRealPoint rp(GetX() + GetBitmap().GetWidth() / 2.0 + ARROWMARGIN, GetY() - (GetHeight()-GetBitmap().GetHeight()) / 2. + (kidCount>1 ? GetBitmap().GetHeight() * 2. /3. * kidNo / (2*kidCount-2) : 0 ));
-#endif
+    wxRealPoint rp(GetX() - GetBitmap().GetWidth() / 2.0 - ARROWMARGIN, GetY() - (GetHeight()-GetBitmap().GetHeight()) / 2. + (kidCount>1 ? GetBitmap().GetHeight() * 2. /3. * kidNo / (2*kidCount-2) : 0 ));
     return rp;
 }
+
 
 
 ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxString &str)
@@ -210,46 +145,52 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 
     wxStringTokenizer tokens(str, wxT(" "));
     wxString token = tokens.GetNextToken();
-    wxString label = costPos > 0 ? str.Left(costPos) : str;
+    wxString descr = costPos > 0 ? str.Left(costPos) : str;
 
 
-    if (token == wxT("Hash"))
+    if (token == wxT("Total"))              return 0;
+    else if (token == wxT("Result"))        s = new ExplainShape(ex_result_xpm, descr);
+    else if (token == wxT("Append"))        s = new ExplainShape(ex_append_xpm, descr);
+    else if (token == wxT("Nested"))        s = new ExplainShape(ex_nested_xpm, descr);
+    else if (token == wxT("Merge"))         s = new ExplainShape(ex_merge_xpm, descr);
+    else if (token == wxT("Hash"))
     {
         token=tokens.GetNextToken();
         if (token == wxT("Join"))
-            s = new ExplainHashJoin(label);
+            s = new ExplainShape(ex_join_xpm, descr);
         else
         {
             token=tokens.GetNextToken();
             if (token == wxT("Join"))
-                s = new ExplainHashJoin(label);
+                s = new ExplainShape(ex_join_xpm, descr);
             else
-                s = new ExplainHash(label);
+                s = new ExplainShape(ex_hash_xpm, descr);
         }
     }
-    else if (token == wxT("Total"))         return 0;
-    else if (token == wxT("Limit"))         s = new ExplainLimit(label);
-    else if (token == wxT("Unique"))        s = new ExplainUnique(label);
-    else if (token == wxT("Aggregate"))     s = new ExplainAggregate(label);
-    else if (token == wxT("Append"))        s = new ExplainAppend(label);
-    else if (token == wxT("Nested"))        s = new ExplainNestedLoop(label);
-    else if (token == wxT("Merge"))         s = new ExplainMerge(label);
-    else if (token == wxT("Materialize"))   s = new ExplainMaterialize(label);
-    else if (token == wxT("Sort"))          s = new ExplainSort(label);
-    else if (token == wxT("Group"))         s = new ExplainGroup(label);
-    else if (token == wxT("Subquery"))      s = new ExplainSubplan(label);
-    else if (token == wxT("Seq") || token == wxT("Index") || token == wxT("Tid") || token == wxT("Function"))
+    else if (token == wxT("Seq") || token == wxT("Index") || token == wxT("Tid"))
     {
         token = tokens.GetNextToken();
-        if (token == wxT("Scan"))           s = new ExplainScan(label);
-        else if (token == wxT("Seek"))      s = new ExplainSeek(label);
+        if (token == wxT("Scan"))           s = new ExplainShape(ex_scan_xpm, descr, 3, 2);
+        else if (token == wxT("Seek"))      s = new ExplainShape(ex_seek_xpm, descr, 3, 2);
     }
+    else if (token == wxT("Subquery"))      s = new ExplainShape(ex_subplan_xpm, descr, 0, 2);
+    else if (token == wxT("Function"))      s = new ExplainShape(ex_result_xpm, descr, 0, 2);
+    else if (token == wxT("Materialize"))   s = new ExplainShape(ex_materialize_xpm, descr);
+    else if (token == wxT("Sort"))          s = new ExplainShape(ex_sort_xpm, descr);
+    else if (token == wxT("Group"))         s = new ExplainShape(ex_group_xpm, descr);
+    else if (token == wxT("Aggregate") || token == wxT("GroupAggregate") || token == wxT("HashAggregate"))
+        s = new ExplainShape(ex_aggregate_xpm, descr);
+    else if (token == wxT("Unique"))        s = new ExplainShape(ex_unique_xpm, descr);
+    else if (token == wxT("SetOp"))         s = new ExplainShape(ex_setop_xpm, descr);
+
+    
+    else if (token == wxT("Limit"))         s = new ExplainShape(ex_limit_xpm, descr);
 
     if (!s)
-        s = new ExplainUnknown(label);
+        s = new ExplainShape(ex_unknown_xpm, descr);
     
     s->SetDraggable(false);
-    s->detail = str;
+
     s->level = level;
 
     if (costPos > 0)
@@ -324,69 +265,75 @@ ExplainLine::ExplainLine(ExplainShape *from, ExplainShape *to, double weight)
 {
     SetCanvas(from->GetCanvas());
     from->AddLine(this, to);
-#if EXPLAIN_VERTICAL
-    MakeLineControlPoints(2);
-#else
     MakeLineControlPoints(4);
-#endif
-    AddArrow(ARROW_ARROW);
 
-    double cost = log(from->GetAverageCost())*2;
-    if (cost < 1.)
-        cost=1.;
-    if (cost > 20.)
-        cost=20.;
-
-
-    SetPen(wxThePenList->FindOrCreatePen(*wxBLACK, int(cost+.5), wxSOLID));
+    width = (int) log(from->GetAverageCost());
+    if (width > 10)
+        width = 10;
 
     wxNode *first = GetLineControlPoints()->GetFirst();
     wxNode *last  = GetLineControlPoints()->GetLast();
-    *(wxRealPoint *)first->GetData() = from->GetTopPoint();
-    *(wxRealPoint *)last->GetData() = to->GetBottomPoint(from->GetKidno());
-#if EXPLAIN_VERTICAL
-#else
+    *(wxRealPoint *)first->GetData() = from->GetStartPoint();
+    *(wxRealPoint *)last->GetData() = to->GetEndPoint(from->GetKidno());
+
     wxRealPoint *p1=(wxRealPoint *)first->GetNext()->GetData();
     wxRealPoint *p2=(wxRealPoint *)last->GetPrevious()->GetData();
-    *p1 = from->GetTopPoint();
-    *p2 = to->GetBottomPoint(from->GetKidno());
-    p1->x -= (p1->x - p2->x)/3. -8;
-    p2->x += (p1->x - p2->x)/3. +8;
-#endif
+    *p1 = from->GetStartPoint();
+    *p2 = to->GetEndPoint(from->GetKidno());
+    p1->x -= (p1->x - p2->x)/3. +8;
+    p2->x += (p1->x - p2->x)/3. -8;
 
     Initialise();
 }
+
+
+#define ARROWWIDTH  4
 
 
 void ExplainLine::OnDraw(wxDC& dc)
 {
     if (m_lineControlPoints)
     {
-        dc.SetPen(*m_pen);
+        dc.SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxSOLID));
+        dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxLIGHT_GREY, wxSOLID));
 
-        int n = m_lineControlPoints->GetCount();
-        wxPoint *points = new wxPoint[n];
-        int i;
-        for (i = 0; i < n; i++)
-        {
-            wxRealPoint* point = (wxRealPoint*) m_lineControlPoints->Item(i)->GetData();
-            points[i].x = WXROUND(point->x);
-            points[i].y = WXROUND(point->y);
-        }
-        dc.DrawLines(n, points);
+        wxPoint *points = new wxPoint[11];
+        wxRealPoint *point0 = (wxRealPoint*) m_lineControlPoints->Item(0)->GetData();
+        wxRealPoint *point1 = (wxRealPoint*) m_lineControlPoints->Item(1)->GetData();
+        wxRealPoint *point2 = (wxRealPoint*) m_lineControlPoints->Item(2)->GetData();
+        wxRealPoint *point3 = (wxRealPoint*) m_lineControlPoints->Item(3)->GetData();
+    
+        double phi  = atan2(point2->y - point1->y, point2->x - point1->x);
+        double offs = width * tan(phi/2);
 
-#ifdef __WXMSW__
-    // For some reason, last point isn't drawn under Windows.
-        dc.DrawPoint(points[n-1]);
-#endif
+        points[0].x  = WXROUND(point0->x);
+        points[0].y  = WXROUND(point0->y) - width;
+        points[10].x = WXROUND(point0->x);
+        points[10].y = WXROUND(point0->y) + width;
 
-        delete[] points;
+        points[1].x  = WXROUND(point1->x + offs);
+        points[1].y  = WXROUND(point1->y) - width;
+        points[9].x  = WXROUND(point1->x - offs);
+        points[9].y  = WXROUND(point1->y) + width;
 
-        wxPen *linePen=m_pen;
-        SetPen(wxThePenList->FindOrCreatePen(m_pen->GetColour(), 1, wxSOLID));
+        points[2].x  = WXROUND(point2->x + offs);
+        points[2].y  = WXROUND(point2->y) - width;
+        points[8].x  = WXROUND(point2->x - offs);
+        points[8].y  = WXROUND(point2->y) + width;
 
-        DrawArrows(dc);
+        points[3].x  = WXROUND(point3->x) - width - ARROWWIDTH;
+        points[3].y  = WXROUND(point3->y) - width;
+        points[7].x  = WXROUND(point3->x) - width - ARROWWIDTH;
+        points[7].y  = WXROUND(point3->y) + width;
 
-        SetPen(linePen);
+        points[4].x  = points[3].x;
+        points[4].y  = points[3].y - ARROWWIDTH;
+        points[6].x  = points[7].x;
+        points[6].y  = points[7].y + ARROWWIDTH;
+
+        points[5].x  = WXROUND(point3->x);
+        points[5].y  = WXROUND(point3->y);
+
+        dc.DrawPolygon(11, points, 0, 0);
     }
 }

@@ -91,17 +91,10 @@ void ExplainCanvas::SetExplainString(const wxString &str)
     }
 
 
-#if EXPLAIN_VERTICAL
-    int x0 = rootShape->GetWidth()*3/2;
-    int y0 = rootShape->GetHeight()*3/2;
-    int xoffs = rootShape->GetWidth()*3/2;
-    int yoffs = rootShape->GetHeight()*3/2;
-#else
     int x0 = rootShape->GetWidth()*3;
     int y0 = rootShape->GetHeight()*3/2;
     int xoffs = rootShape->GetWidth()*3;
     int yoffs = rootShape->GetHeight()*3/2;
-#endif
 
     wxNode *current = GetDiagram()->GetShapeList()->GetFirst();
     while (current)
@@ -120,20 +113,12 @@ void ExplainCanvas::SetExplainString(const wxString &str)
     {
         ExplainShape *s = (ExplainShape*)current->GetData();
 
-#if EXPLAIN_VERTICAL
-        s->SetY(y0 + s->GetLevel() * yoffs);
-#else
-        s->SetX(y0 + s->GetLevel() * xoffs);
-#endif
+        s->SetX(y0 + (maxLevel - s->GetLevel()) * xoffs);
         ExplainShape *upper = s->GetUpper();
 
         if (upper)
         {
-#if EXPLAIN_VERTICAL
-            s->SetX(upper->GetX() - (upper->totalShapes-1)*xoffs/2 + upper->usedShapes * xoffs + (s->totalShapes-1) *xoffs/2);
-#else
             s->SetY(upper->GetY() + upper->usedShapes * yoffs);
-#endif
             upper->usedShapes += s->totalShapes;
 
             wxLineShape *l=new ExplainLine(s, upper);
@@ -142,24 +127,15 @@ void ExplainCanvas::SetExplainString(const wxString &str)
         }
         else
         {
-#if EXPLAIN_VERTICAL
-            s->SetX(x0 + s->totalShapes*xoffs/2);
-#else
             s->SetY(y0);
-#endif
         }
 
         current = current->GetPrevious();
     }
 
 #define PIXPERUNIT  20
-#if EXPLAIN_VERTICAL
-    int w=(rootShape->totalShapes * xoffs + x0*2 + PIXPERUNIT - 1) / PIXPERUNIT;
-    int h=(maxLevel * yoffs + y0*2 + PIXPERUNIT - 1) / PIXPERUNIT;
-#else
     int w=(maxLevel * xoffs + x0*2 + PIXPERUNIT - 1) / PIXPERUNIT;
     int h=(rootShape->totalShapes * yoffs + y0*2 + PIXPERUNIT - 1) / PIXPERUNIT;
-#endif
 
     SetScrollbars(PIXPERUNIT, PIXPERUNIT, w, h);
 }
@@ -177,8 +153,8 @@ void ExplainCanvas::ShowPopup(ExplainShape *s)
     sx -= popup->GetSize().x / 2;
     if (sx < 0) sx=0;
 
-    popup->Move(ClientToScreen(wxPoint(sx, sy)));
     popup->Popup();
+    popup->Move(ClientToScreen(wxPoint(sx, sy)));
 }
 
 
@@ -207,15 +183,22 @@ ExplainText::ExplainText(wxWindow *parent, ExplainShape *s) : wxWindow(parent, -
 
     wxWindowDC dc(this);
     dc.SetFont(settings->GetSystemFont());
-    int w1, w2, h;
 
-    dc.GetTextExtent(shape->condition, &w1, &h);
+    int w1, w2, h;
+    dc.GetTextExtent(shape->description, &w1, &h);
+
+    dc.GetTextExtent(shape->detail, &w2, &h);
+    if (w1 < w2)    w1=w2;
+    dc.GetTextExtent(shape->condition, &w2, &h);
+    if (w1 < w2)    w1=w2;
     dc.GetTextExtent(shape->cost, &w2, &h);
     if (w1 < w2)    w1=w2;
     dc.GetTextExtent(shape->actual, &w2, &h);
     if (w1 < w2)    w1=w2;
 
-    int n=1;
+    int n=2;
+    if (!shape->detail.IsEmpty())
+        n++;
     if (!shape->condition.IsEmpty())
         n++;
     if (!shape->cost.IsEmpty())
@@ -223,7 +206,10 @@ ExplainText::ExplainText(wxWindow *parent, ExplainShape *s) : wxWindow(parent, -
     if (!shape->actual.IsEmpty())
         n++;
 
-    SetSize(GetCharHeight() + w1, GetCharHeight() + h +  h * 5 / 4 * n);
+    if (!h)
+        h = GetCharHeight();
+
+    SetSize(GetCharHeight() + w1, GetCharHeight() + h * n + h/3);
 }
 
     
@@ -239,13 +225,19 @@ void ExplainText::OnPaint(wxPaintEvent &ev)
     int y = GetCharHeight() / 2;
     int w, yoffs;
     dc.GetTextExtent(wxT("Dummy"), &w, &yoffs);
-    yoffs *= 5;
-    yoffs /= 4;
 
     dc.SetFont(boldFont);
-    dc.DrawText(shape->label, x, y);
+    dc.DrawText(shape->description, x, y);
 
     dc.SetFont(stdFont);
+
+    if (!shape->detail.IsEmpty())
+    {
+        y += yoffs;
+        dc.DrawText(shape->detail, x, y);
+
+    }
+    y += yoffs/3;
 
     if (!shape->condition.IsEmpty())
     {
@@ -266,7 +258,7 @@ void ExplainText::OnPaint(wxPaintEvent &ev)
 
 
 BEGIN_EVENT_TABLE(ExplainPopup, wxDialog)
-EVT_MOTION(ExplainPopup::LeaveWindow)
+EVT_MOTION(ExplainPopup::OnMouseMove)
 END_EVENT_TABLE()
 
 ExplainPopup::ExplainPopup(wxWindow *w) : wxDialog(w, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER)
@@ -283,19 +275,33 @@ void ExplainPopup::SetShape(ExplainShape *s)
     SetSize(explainText->GetSize());
 }
 
+
 void ExplainPopup::Popup()
 {
     Show();
     wxYield();
 
+    popupPoint = wxDefaultPosition;
     CaptureMouse();
 }
 
 
-void ExplainPopup::LeaveWindow(wxMouseEvent &ev)
+#define POPUP_HISTERESIS 5
+
+void ExplainPopup::OnMouseMove(wxMouseEvent &ev)
 {
-    ReleaseMouse();
-    delete explainText;
-    explainText=0;
-    wxDialog::Hide();
+    if (popupPoint == wxDefaultPosition)
+    {
+        popupPoint = ev.GetPosition();
+    }
+    else
+    {
+        if (abs(popupPoint.x - ev.GetX()) > POPUP_HISTERESIS || abs(popupPoint.y - ev.GetY()) > POPUP_HISTERESIS)
+        {
+            ReleaseMouse();
+            delete explainText;
+            explainText=0;
+            wxDialog::Hide();
+        }
+    }
 }
