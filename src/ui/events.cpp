@@ -303,6 +303,10 @@ void frmMain::OnSelActivated()
         default:
             break;
     }
+
+#ifndef __WXMSW__
+    browser->expand(item);
+#endif
 }
 
 void frmMain::OnDrop()
