@@ -80,17 +80,15 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->InitAllHandlers();
 
     bool done;
-    
-    done=LoadAllXrc(XRC_PATH);
+    wxString loadPath=wxPathOnly(argv[0]);
+
+    done=LoadAllXrc(loadPath + wxT("/") + XRC_PATH);
     if (!done)
-    {
-        wxString loadPath=wxPathOnly(argv[0]);
-        done=LoadAllXrc(loadPath + wxT("/") + XRC_PATH);
-        if (!done)
-            done=LoadAllXrc(loadPath + wxT("/../") + XRC_PATH);
-        if (!done)
-            done=LoadAllXrc(loadPath + wxT("/pgAdmin.ui"));
-    }
+        done=LoadAllXrc(loadPath + wxT("/../") + XRC_PATH);
+
+    done=LoadAllXrc(loadPath + wxT("/ui/common"));
+    if (!done)
+        done=LoadAllXrc(loadPath + wxT("/../ui/common"));
 
 
     // Set some defaults
@@ -151,6 +149,9 @@ int pgAdmin3::OnExit()
 
 bool pgAdmin3::LoadAllXrc(const wxString dir)
 {
+    if (!wxDir::Exists(dir))
+        return false;
+
     wxArrayString files;
     int count=wxDir::GetAllFiles(dir, &files, wxT("*.xrc"), wxDIR_FILES);
     if (!count)
