@@ -12,7 +12,18 @@
 #
 # Raphael Enrici - <pgadmin-hackers@postgresql.org> - 20030720
 #
+#( Personal Changelog:
+#	20030807:
+#	  - Added better handling of package version to create
+#	  - Fixed debian package version scheme
+#)
 
+# These to environment variables can be set before
+# calling make-deb
+DCH_RELEASE=${DCH_RELEASE:-"0.0.1+makedeb"}
+DCH_COMMENT=${DCH_COMMENT:-"make-deb release"}
+
+#
 HERE=`pwd`
 TAR=tar
 usage() {
@@ -46,7 +57,10 @@ echo $1
 done
 
 (cd pkg; $TAR cf - debian ) | tar xpf -
+rm debian/make-deb
 chmod 755 debian/rules
+pgadmin3vers=`basename $HERE | awk -F- '{print $2}'`
 set -x
 touch TODO.txt
+dch --newversion $pgadmin3vers-$DCH_RELEASE $DCH_COMMENT || exit 1
 dpkg-buildpackage ${IGNOREDEP} -b -rfakeroot
