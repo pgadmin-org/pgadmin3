@@ -93,8 +93,13 @@ strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_stc-%{version}.a
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post -p 
+/sbin/ldconfig
+ln -s /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
+
+%postun -p 
+/sbin/ldconfig
+rm -fr /usr/include/wx/setup.h
 
 %post xrc -p /sbin/ldconfig
 %postun xrc -p /sbin/ldconfig
