@@ -408,7 +408,7 @@ void frmQueryBuilder::OnExit(wxCommandEvent& WXUNUSED(event))
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void frmQueryBuilder::OnAddTableView()
+void frmQueryBuilder::OnAddTableView(wxCommandEvent& event)
 {
 	// Setup the add table/view dialog
 	dlgAddTableView addtableview(this, m_database);
@@ -490,7 +490,7 @@ void frmQueryBuilder::OnSize(wxSizeEvent& event)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void frmQueryBuilder::OnRightClick(wxPoint& point)
+void frmQueryBuilder::ExecRightClick(wxPoint& point)
 {
 	// Get mouse point data
 	wxPoint origin = GetClientAreaOrigin();
