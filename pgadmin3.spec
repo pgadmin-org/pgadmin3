@@ -9,6 +9,7 @@ License: Artistic
 Group: Applications/Databases
 Source: pgadmin3-%{pgadmin_version}.tar.gz
 URL: http://www.pgadmin.org/
+Packager: pgAdmin project <pgadmin-hackers@postgresql.org>
 BuildRoot: %{_tmppath}/%{name}-root
 
 #
