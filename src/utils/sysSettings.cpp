@@ -197,6 +197,19 @@ void sysSettings::SetProxy(const wxString &s)
 }
 
 
+bool sysSettings::Read(const wxString& key, bool *val, bool defaultVal) const
+{
+    wxString str;
+    Read(key, &str, BoolToStr(defaultVal));
+	*val = StrToBool(str);
+	return true;
+}
+
+bool sysSettings::Write(const wxString &key, bool value)
+{
+    Write(key, BoolToStr(value));
+}
+
 bool sysSettings::Write(const wxString &key, const wxPoint &value)
 {
     bool rc=wxConfig::Write(key + wxT("/Left"), value.x);

@@ -855,7 +855,7 @@ void frmMain::StoreServers()
 
 			// Trusted
 			key.Printf(wxT("Servers/Trusted%d"), numServers);
-	        settings->Write(key, BoolToStr(server->GetTrusted()));
+	        settings->Write(key, server->GetTrusted());
 
 			// Database
 			key.Printf(wxT("Servers/Database%d"), numServers);

@@ -109,6 +109,8 @@ public:
 
     bool Write(const wxString &key, const wxString &value) { return wxConfig::Write(key, value); }
     bool Write(const wxString &key, long value) { return wxConfig::Write(key, value); }
+    bool Write(const wxString &key, int value) { return wxConfig::Write(key, value); }
+    bool Write(const wxString &key, bool value);
     bool Write(const wxString &key, const wxPoint &value);
     bool Write(const wxString &key, const wxSize &value);
     bool Write(const wxString &key, const wxSize &size, const wxPoint &point)
@@ -116,8 +118,7 @@ public:
 
     bool Read(const wxString& key, wxString* str, const wxString& defaultVal) const
         { return wxConfig::Read(key, str, defaultVal); }
-    bool Read(const wxString& key, bool* str, bool defaultVal) const
-        { return wxConfig::Read(key, str, defaultVal); }
+    bool Read(const wxString& key, bool* str, bool defaultVal) const;
     bool Read(const wxString& key, int* i, int defaultVal) const
         { return wxConfig::Read(key, i, defaultVal); }
     bool Read(const wxString& key, long* l, long defaultVal) const
