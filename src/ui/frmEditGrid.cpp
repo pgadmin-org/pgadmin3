@@ -1269,7 +1269,7 @@ wxString sqlTable::MakeKey(cacheLine *line)
             if (!where.IsEmpty())
                 where += wxT(" AND ");
             where += qtIdent(columns[cn-1].name) + wxT(" = ") 
-                  + colval + wxT("::") + columns[cn-1].typeName;
+                  + qtString(colval) + wxT("::") + qtIdent(columns[cn-1].typeName);
         }
     }
     return where;
