@@ -94,7 +94,7 @@ int dlgAggregate::Go(bool modal)
     else
     {
         // create mode
-        AddType(wxT(" "), PGOID_TYPE_ANY, wxT("any"));
+        AddType(wxT(" "), PGOID_TYPE_ANY, wxT("\"any\""));
         cbBaseType->Append(wxT("ANY"));
         FillDatatype(cbBaseType, cbStateType, false);
     }

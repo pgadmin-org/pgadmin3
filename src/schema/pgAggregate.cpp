@@ -134,6 +134,9 @@ pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 
             aggregate->iSetOid(aggregates->GetOid(wxT("aggfnoid")));
             aggregate->iSetOwner(aggregates->GetVal(wxT("aggowner")));
+            if (aggregates->GetVal(wxT("inputname")) == wxT("any"))
+                aggregate->iSetInputType(wxT("\"any\""));
+            else
             aggregate->iSetInputType(aggregates->GetVal(wxT("inputname")));
             aggregate->iSetStateType(aggregates->GetVal(wxT("transname")));
             aggregate->iSetStateFunction(aggregates->GetVal(wxT("aggtransfn")));
