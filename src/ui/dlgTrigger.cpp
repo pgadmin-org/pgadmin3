@@ -41,6 +41,7 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
     EVT_CHECKBOX(XRCID("chkUpdate"),                dlgTrigger::OnChange)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgTrigger::OnChange)
     EVT_COMBOBOX(XRCID("cbFunction"),               dlgTrigger::OnChange)
+    EVT_TEXT(XRCID("txtArguments"),                 dlgTrigger::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgTrigger::OnChange)
 END_EVENT_TABLE();
 
@@ -53,7 +54,6 @@ dlgTrigger::dlgTrigger(frmMain *frame, pgTrigger *node, pgTable *parentNode)
     table=parentNode;
     wxASSERT(!table || table->GetType() == PG_TABLE);
 
-    txtArguments->Disable();
     txtOID->Disable();
 }
 
@@ -76,11 +76,12 @@ int dlgTrigger::Go(bool modal)
         chkUpdate->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE) != 0);
         chkDelete->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_DELETE) != 0);
         rdbFires->SetSelection(trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1);
+        txtArguments->SetValue(trigger->GetArguments());
         txtName->Disable();
         chkRow->Disable();
         cbFunction->Append(trigger->GetFunction());
         cbFunction->SetSelection(0);
-        // txtArguments
+        txtArguments->Disable();
         cbFunction->Disable();
         rdbFires->Disable();
         chkInsert->Disable();
@@ -90,17 +91,17 @@ int dlgTrigger::Go(bool modal)
     else
     {
         // create mode
-        pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT proname, proargtypes FROM pg_proc WHERE prorettype=") + NumToStr(PGOID_TYPE_TRIGGER));
+        wxString sysRestr;
+        if (!settings->GetShowSystemObjects())
+            sysRestr = wxT(" AND pronamespace >= 100");
+
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT proname FROM pg_proc WHERE prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr);
         if (set)
         {
             while (!set->Eof())
             {
-                wxString proname=set->GetVal(0);
-                wxString argtype=set->GetVal(1);
-                argtype=argtype.Mid(1, argtype.Length()-2);
-                argtypes.Add(argtype);
-                cbFunction->Append(proname);
+                cbFunction->Append(set->GetVal(0));
                 set->MoveNext();
             }
             delete set;
@@ -176,7 +177,6 @@ pgObject *dlgTrigger::CreateObject(pgCollection *collection)
 }
 
 
-
 void dlgTrigger::OnChange(wxNotifyEvent &ev)
 {
     if (trigger)
@@ -192,36 +192,6 @@ void dlgTrigger::OnChange(wxNotifyEvent &ev)
         CheckValid(enable, chkInsert->GetValue() || chkUpdate->GetValue() ||chkDelete->GetValue(),
             _("Please specify at least one action."));
 
-        if (enable)
-        {
-            int argCount=0, varCount=0;
-            int parenPos=function.Find('(');
-            if (parenPos > 0 && function.GetChar(parenPos+1) != ')')
-            {
-                int commaPos=0;
-                while (commaPos >= 0)
-                {
-                    parenPos += commaPos;
-                    argCount++;
-                    commaPos = function.Mid(parenPos).Find(',');
-                }
-            }
-            txtArguments->Enable(argCount != 0);
-            if (argCount)
-            {
-                int pos=0;
-                int commaPos=0;
-                wxString str=txtArguments->GetValue();
-                while (commaPos >= 0)
-                {
-                    pos+= commaPos;
-                    varCount++;
-                    commaPos = str.Mid(pos).Find(',');
-                }
-            }
-            // we compare for less/equal, maybe a string arg contains ','
-            CheckValid(enable, argCount <= varCount, _("Please specify correct parameters."));
-        }
         EnableOK(enable);
     }
 }

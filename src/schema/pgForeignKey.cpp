@@ -99,8 +99,8 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
     {
         expandedKids=true;
 
-        wxStringTokenizer c1l=GetConkey();
-        wxStringTokenizer c2l=GetConfkey();
+        wxStringTokenizer c1l(GetConkey(), wxT(","));
+        wxStringTokenizer c2l(GetConfkey(), wxT(","));
         wxString c1, c2;
 
         while (c1l.HasMoreTokens())

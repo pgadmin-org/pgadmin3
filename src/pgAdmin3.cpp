@@ -194,20 +194,21 @@ bool pgAdmin3::OnInit()
 
 
 
+// at the moment, no platform specific xrcs using the XRC_PATH
 #ifdef __WIN32__
     bool done;
-    done=LoadAllXrc(loadPath + XRC_PATH);
-    if (!done)
-        done=LoadAllXrc(loadPath + wxT("/..") + XRC_PATH);
+//    done=LoadAllXrc(loadPath + XRC_PATH);
+//    if (!done)
+//        done=LoadAllXrc(loadPath + wxT("/..") + XRC_PATH);
 
     done=LoadAllXrc(loadPath + wxT("/ui/common"));
     if (!done)
         done=LoadAllXrc(loadPath + wxT("/../ui/common"));
 #else
     bool done;
-    done=LoadAllXrc(DATA_DIR XRC_PATH);
-    if (!done)
-        done=LoadAllXrc(loadPath + XRC_PATH);
+//    done=LoadAllXrc(DATA_DIR XRC_PATH);
+//    if (!done)
+//        done=LoadAllXrc(loadPath + XRC_PATH);
 
     done=LoadAllXrc(DATA_DIR wxT("/ui/common"));
     if (!done)

@@ -125,7 +125,7 @@ int dlgUser::Go(bool modal)
         }
         else
         {
-            pgSet *set=connection->ExecuteSet(wxT("SHOW ALL"));
+            pgSet *set=connection->ExecuteSet(wxT("SELECT name FROM pg_settings"));
             if (set)
             {
                 while (!set->Eof())

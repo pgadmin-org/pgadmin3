@@ -31,8 +31,6 @@ private:
     pgTable *table;
     pgTrigger *trigger;
 
-    wxArrayString argtypes;
-
     void OnChange(wxNotifyEvent &ev);
 
     DECLARE_EVENT_TABLE();

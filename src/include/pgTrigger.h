@@ -39,6 +39,8 @@ public:
     wxString GetForEach() const;
     wxString GetFunction() const { return function; }
     void iSetFunction(const wxString& s) { function=s; }
+    void iSetArguments(const wxString& s) { arguments=s; }
+    wxString GetArguments() const { return arguments; }
     long GetTriggerType() const {return triggerType; }
     void iSetTriggerType(const long l) { triggerType=l; }
     bool GetEnabled() const { return enabled; }
@@ -56,7 +58,7 @@ public:
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString function, quotedFullTable;
+    wxString function, quotedFullTable, arguments;
     OID functionOid;
     long triggerType;
     bool enabled;

@@ -64,7 +64,8 @@ wxString pgTrigger::GetSql(wxTreeCtrl *browser)
             + wxT(" ") + GetEvent()
             + wxT("\n  ON ") + GetQuotedFullTable()
             + wxT("\n  FOR EACH ") + GetForEach()
-            + wxT("\n  EXECUTE PROCEDURE ") + triggerFunction->GetFullName()
+            + wxT("\n  EXECUTE PROCEDURE ") + triggerFunction->GetQuotedFullIdentifier() 
+            + wxT("(") + GetArguments() + wxT(")")
             + wxT(";\n");
 
         if (!GetComment().IsEmpty())
@@ -140,7 +141,7 @@ void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *p
         InsertListItem(properties, pos++, _("Fires"), GetFireWhen());
         InsertListItem(properties, pos++, _("Event"), GetEvent());
         InsertListItem(properties, pos++, _("For Each"), GetForEach());
-        InsertListItem(properties, pos++, _("Function"), GetFunction());
+        InsertListItem(properties, pos++, _("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));
         InsertListItem(properties, pos++, _("Enabled?"), GetEnabled());
         InsertListItem(properties, pos++, _("System Trigger?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
@@ -190,6 +191,33 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
             trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
             trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
             trigger->iSetQuotedFullTable(qtIdent(triggers->GetVal(wxT("nspname")))+wxT(".")+qtIdent(triggers->GetVal(wxT("relname"))));
+            wxString arglist=triggers->GetVal(wxT("tgargs"));
+            wxString args;
+
+            while (!arglist.IsEmpty())
+            {
+                int pos=arglist.Find(wxT("\\000"));
+                if (pos != 0)
+                {
+                    wxString arg;
+                    if (pos > 0)
+                        arg=arglist.Left(pos);
+                    else
+                        arg=arglist;
+
+                    if (!args.IsEmpty())
+                        args += wxT(", ");
+                    if (NumToStr(StrToLong(arg)) == arg)
+                        args += arg;
+                    else
+                        args += qtString(arg);
+                }
+                if (pos >= 0)
+                    arglist = arglist.Mid(pos+4);
+                else
+                    break;
+            }
+            trigger->iSetArguments(args);
 
             if (browser)
             {

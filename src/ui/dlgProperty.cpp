@@ -839,13 +839,13 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
             // We can't create, so we won't be allowed to change privileges either
             // later, we can check individually too.
 
-            lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-20), wxSUNKEN_BORDER);
+            lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-20), wxSUNKEN_BORDER|wxLC_REPORT);
             CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
             cbGroups=0;
         }
         else
         {
-            lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount+ (needAll ? 0 : 20)), wxSUNKEN_BORDER);
+            lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount+ (needAll ? 0 : 20)), wxSUNKEN_BORDER|wxLC_REPORT);
 
             CreateListColumns(lbPrivileges, _("User/Group"), _("Privileges"), -1);
             int y=height-105-20*privilegeCount + (needAll ? 0 : 20);

@@ -174,6 +174,10 @@ int dlgFunction::Go(bool modal)
             cbReturntype->Append(wxT("trigger"));
             cbReturntype->SetSelection(0);
             cbReturntype->Disable();
+            lstArguments->Disable();
+            cbDatatype->Disable();
+            btnAdd->Disable();
+            btnRemove->Disable();
             sel=cbLanguage->FindString(wxT("c"));
         }
         else
@@ -279,13 +283,15 @@ void dlgFunction::OnSelChangeLanguage(wxNotifyEvent &ev)
 
 void dlgFunction::OnSelChangeArg(wxNotifyEvent &ev)
 {
-    btnRemove->Enable();
+    if (objectType != PG_TRIGGERFUNCTION)
+        btnRemove->Enable();
 }
 
 
 void dlgFunction::OnSelChangeType(wxNotifyEvent &ev)
 {
-    btnAdd->Enable();
+    if (objectType != PG_TRIGGERFUNCTION)
+        btnAdd->Enable();
 }
 
 
