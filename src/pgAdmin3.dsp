@@ -289,6 +289,18 @@ SOURCE=.\ui\frmQBJoin.cpp
 SOURCE=.\ui\frmQueryBuilder.cpp
 # End Source File
 # End Group
+# Begin Group "Properties"
+
+# PROP Default_Filter "*.cpp"
+# Begin Source File
+
+SOURCE=.\ui\dlgProperty.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\dlgUser.cpp
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\ui\ctlSQLBox.cpp
@@ -311,6 +323,10 @@ SOURCE=.\ui\frmConnect.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\frmEditGrid.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\frmMain.cpp
 # End Source File
 # Begin Source File
@@ -328,6 +344,10 @@ SOURCE=.\ui\frmQuery.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmSplash.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmStatus.cpp
 # End Source File
 # Begin Source File
 
@@ -606,6 +626,10 @@ SOURCE=.\include\frmConnect.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\frmEditGrid.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\frmMain.h
 # End Source File
 # Begin Source File
@@ -631,6 +655,10 @@ SOURCE=.\include\frmQueryBuilder.h
 # Begin Source File
 
 SOURCE=.\include\frmSplash.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\frmStatus.h
 # End Source File
 # Begin Source File
 
@@ -747,6 +775,18 @@ SOURCE=.\include\pgUser.h
 # Begin Source File
 
 SOURCE=.\include\pgView.h
+# End Source File
+# End Group
+# Begin Group "property includes"
+
+# PROP Default_Filter "*.h"
+# Begin Source File
+
+SOURCE=.\include\dlgProperty.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgUser.h
 # End Source File
 # End Group
 # Begin Source File
