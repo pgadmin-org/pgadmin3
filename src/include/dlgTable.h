@@ -31,7 +31,7 @@ public:
 private:
     pgSchema *schema;
     pgTable *table;
-    pgColumn *column;
+
     void OnChange(wxNotifyEvent &ev);
 
     void OnAddTable(wxNotifyEvent &ev);

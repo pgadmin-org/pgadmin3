@@ -75,6 +75,7 @@ int dlgColumn::Go(bool modal)
         chkNotNull->SetValue(column->GetNotNull());
         txtComment->SetValue(column->GetComment());
 
+
         cbDatatype->Append(column->GetRawTypename());
         AddType(wxT("?"), column->GetAttTypId(), column->GetRawTypename());
 
@@ -102,6 +103,14 @@ int dlgColumn::Go(bool modal)
         OnSelChangeTyp(ev);
 
         previousDefinition=GetDefinition();
+        if (column->GetColNumber() < 0)
+        {
+            txtName->Disable();
+            txtDefault->Disable();
+            chkNotNull->Disable();
+            txtLength->Disable();
+            cbDatatype->Disable();
+        }
     }
     else
     {

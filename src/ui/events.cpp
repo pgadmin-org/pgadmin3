@@ -772,9 +772,14 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
 // This handler will display a popup menu for the item
 ////////////////////////////////////////////////////////////////////////////////
 void frmMain::OnSelRightClick(wxTreeEvent& event)
-{   
+{
+    // Check if item is selected
+    wxTreeItemId item = event.GetItem();
+    if (item != browser->GetSelection())
+        browser->SelectItem(item);
+
 	// Get mouse point data
-	wxPoint point = event.GetPoint();
+    wxPoint point = event.GetPoint();
 	wxPoint origin = GetClientAreaOrigin();
 
 	// Because this Tree is inside a vertical splitter, we

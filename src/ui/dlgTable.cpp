@@ -76,14 +76,14 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
     SetIcon(wxIcon(table_xpm));
     schema=sch;
     table=node;
-    column=0;
 
     txtOID->Disable();
     btnRemoveTable->Disable();
-    btnChangeCol->Hide();
 
     CreateListColumns(lstColumns, _("Column name"), _("Definition"), 150);
     lstColumns->InsertColumn(2, wxT("Inherited from table"), wxLIST_FORMAT_LEFT, 0);
+    lstColumns->InsertColumn(3, wxT("Column definition"), wxLIST_FORMAT_LEFT, 0);
+    lstColumns->InsertColumn(4, wxT("Column"), wxLIST_FORMAT_LEFT, 0);
 
     CreateListColumns(lstConstraints, _("Constraint name"), _("Definition"), 150);
 }
@@ -168,6 +168,7 @@ int dlgTable::Go(bool modal)
                             (inherited ? PGICON_TABLE : column->GetIcon()));
                         previousColumns.Add(column->GetQuotedIdentifier() 
                             + wxT(" ") + column->GetDefinition());
+                        lstColumns->SetItem(pos, 4, NumToStr((long)column));
                         if (inherited)
                             lstColumns->SetItem(pos, 2, _("Inherited"));
                     }
@@ -229,6 +230,7 @@ int dlgTable::Go(bool modal)
     else
     {
         // create mode
+        btnChangeCol->Hide();
 
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
@@ -321,13 +323,25 @@ wxString dlgTable::GetSql()
 
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
-            definition=qtIdent(lstColumns->GetItemText(pos)) + wxT(" ") + GetListText(lstColumns, pos, 1);
-            index=tmpDef.Index(definition);
+            definition = GetListText(lstColumns, pos, 3);
+            if (definition.IsEmpty())
+            {
+                definition=qtIdent(lstColumns->GetItemText(pos)) + wxT(" ") + GetListText(lstColumns, pos, 1);
+                index=tmpDef.Index(definition);
+                if (index < 0)
+                    sql += wxT("ALTER TABLE ") + tabname
+                        +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
+            }
+            else
+            {
+                sql += definition;
+
+                pgColumn *column=(pgColumn*) StrToLong(GetListText(lstColumns, pos, 4));
+                index=tmpDef.Index(column->GetQuotedIdentifier() 
+                            + wxT(" ") + column->GetDefinition());
+            }
             if (index >= 0)
                 tmpDef.RemoveAt(index);
-            else
-                sql += wxT("ALTER TABLE ") + tabname
-                    +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
         }
 
         for (index=0 ; index < (int)tmpDef.GetCount() ; index++)
@@ -356,11 +370,14 @@ wxString dlgTable::GetSql()
             if (index >= 0)
                 tmpDef.RemoveAt(index);
             else
+            {
                 sql += wxT("ALTER TABLE ") + tabname
                     +  wxT(" ADD");
-            AppendIfFilled(sql, wxT(" CONSTRAINT "), conname);
+                if (!conname.IsEmpty())
+                    sql += wxT(" CONSTRAINT ") + conname;
 
-            sql += wxT(" ") + definition + wxT(";\n");
+                sql += definition + wxT(";\n");
+            }
         }
 
         for (index=0 ; index < (int)tmpDef.GetCount() ; index++)
@@ -567,7 +584,20 @@ void dlgTable::OnSelChangeTable(wxListEvent &ev)
 
 void dlgTable::OnChangeCol(wxNotifyEvent &ev)
 {
-    // not supported
+    long pos=GetListSelected(lstColumns);
+    pgColumn *column=(pgColumn*) StrToLong(GetListText(lstColumns, pos, 4));
+
+    dlgColumn col(mainForm, column, table);
+    col.CenterOnParent();
+    col.SetConnection(connection);
+    if (col.Go(true) >= 0)
+    {
+        lstColumns->SetItem(pos, 0, col.GetName());
+        lstColumns->SetItem(pos, 1, col.GetDefinition());
+        lstColumns->SetItem(pos, 3, col.GetSql());
+    }
+    wxNotifyEvent event;
+    OnChange(event);
 }
 
 
@@ -600,7 +630,7 @@ void dlgTable::OnSelChangeCol(wxListEvent &ev)
     wxString inheritedFromTable=GetListText(lstColumns, pos, 2);
     
     btnRemoveCol->Enable(inheritedFromTable.IsEmpty());
-//    btnChangeCol->Enable(column != 0 && table != 0);
+    btnChangeCol->Enable(table != 0 && !GetListText(lstColumns, pos, 4).IsEmpty());
 }
 
 
