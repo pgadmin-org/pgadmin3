@@ -98,7 +98,7 @@ wxString pgTable::GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collection
                     sql += ((pgForeignKey*)data)->GetDefinition();
                     break;
                 case PG_CHECK:
-                    sql += ((pgCheck*)data)->GetDefinition();
+				  sql += wxT("(") + ((pgCheck*)data)->GetDefinition() + wxT(")");
                     break;
             }
         }
