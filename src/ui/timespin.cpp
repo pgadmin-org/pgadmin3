@@ -49,6 +49,7 @@ bool wxTimeSpinCtrl::Create(wxWindow *parent,
                             const wxString& name)
 {
     wxControl::Create(parent, id, pos, size, style & ~(wxSP_WRAP|wxSP_ARROW_KEYS), wxDefaultValidator, name);
+    SetFont(parent->GetFont());
 
     m_spn=new wxSpinButton(this, CTRLID_SPN, wxDefaultPosition, wxDefaultSize, wxSP_WRAP | wxSP_VERTICAL | (style & wxSP_ARROW_KEYS));
 

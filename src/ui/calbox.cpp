@@ -60,6 +60,7 @@ bool wxCalendarBox::Create(wxWindow *parent,
     }
 
     SetWindowStyle(style | wxWANTS_CHARS);
+    SetFont(parent->GetFont());
 
     wxSize cs=GetClientSize();
     wxSize bs=ConvertDialogToPixels(wxSize(10, 0));
@@ -73,8 +74,8 @@ bool wxCalendarBox::Create(wxWindow *parent,
         dc.SetPen(wxPen(GetBackgroundColour()));
         dc.DrawRectangle(0,0, 8,4);
 
-        dc.SetBrush(*wxBLACK_BRUSH);
-        dc.SetPen(*wxBLACK_PEN);
+        dc.SetBrush(wxBrush(GetForegroundColour()));
+        dc.SetPen(wxPen(GetForegroundColour()));
         wxPoint pt[3] = { wxPoint(0,0), wxPoint(6,0), wxPoint(3,3) };
         dc.DrawPolygon(3, pt);
         dc.SelectObject(wxNullBitmap);
@@ -89,6 +90,7 @@ bool wxCalendarBox::Create(wxWindow *parent,
 
     m_dlg = new wxDialog(this, CTRLID_CAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     m_dlg->Connect(wxID_ANY, wxID_ANY, wxEVT_ACTIVATE, (wxObjectEventFunction)&wxCalendarBox::OnActivate, 0, this);
+    m_dlg->SetFont(GetFont());
 
     m_cal = new wxCalendarCtrl(m_dlg, CTRLID_CAL, wxDefaultDateTime, wxPoint(0,0), wxDefaultSize, wxSUNKEN_BORDER);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_SEL_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
@@ -98,7 +100,7 @@ bool wxCalendarBox::Create(wxWindow *parent,
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DAY_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_MONTH_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_YEAR_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
-    Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)wxCalendarBox::OnSetFocus);
+    Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)&wxCalendarBox::OnSetFocus);
 
 #if 1
     // GetBestSize doesn't work correctly
