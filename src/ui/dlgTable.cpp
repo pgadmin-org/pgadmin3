@@ -241,6 +241,34 @@ int dlgTable::Go(bool modal)
 }
 
 
+
+wxString dlgTable::GetItemConstraintType(wxListCtrl *list, long pos)
+{
+    wxString con;
+    wxListItem item;
+    item.SetId(pos);
+    item.SetColumn(0);
+    item.SetMask(wxLIST_MASK_IMAGE);
+    list->GetItem(item);
+    switch (item.GetImage())
+    {
+        case PGICON_PRIMARYKEY:
+            con = wxT("PRIMARY KEY");
+            break;
+        case PGICON_FOREIGNKEY:
+            con = wxT("FOREIGN KEY");
+            break;
+        case PGICON_UNIQUE:
+            con = wxT("UNIQUE");
+            break;
+        case PGICON_CHECK:
+            con = wxT("CHECK");
+            break;
+    }
+    return con;
+}
+
+
 wxString dlgTable::GetSql()
 {
     wxString sql;
@@ -252,57 +280,58 @@ wxString dlgTable::GetSql()
     if (table)
     {
         int pos;
-        unsigned index;
+        int index;
 
-        wxString coldef;
-        wxArrayString tmpCols=previousColumns;
+        wxString definition;
+        wxArrayString tmpDef=previousColumns;
 
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
-            coldef=lstColumns->GetItemText(pos) + wxT(" ") + GetListText(lstConstraints, pos, 1);
-            index=tmpCols.Index(coldef);
+            definition=lstColumns->GetItemText(pos) + wxT(" ") + GetListText(lstColumns, pos, 1);
+            index=tmpDef.Index(definition);
             if (index >= 0)
-                tmpCols.RemoveAt(index);
+                tmpDef.RemoveAt(index);
             else
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    +  wxT(" ADD COLUMN ") + coldef + wxT(";\n");
+                    +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
         }
 
-        for (index=0 ; index < tmpCols.GetCount() ; index++)
+        for (index=0 ; index < (int)tmpDef.GetCount() ; index++)
         {
-            coldef = tmpCols.Item(index);
-            if (coldef[0U] == '"')
-                coldef = coldef.Mid(1).BeforeFirst('"');
+            definition = tmpDef.Item(index);
+            if (definition[0U] == '"')
+                definition = definition.Mid(1).BeforeFirst('"');
             else
-                coldef = coldef.BeforeFirst(' ');
+                definition = definition.BeforeFirst(' ');
             sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                +  wxT(" DROP COLUMN ") + coldef + wxT(";\n");
+                +  wxT(" DROP COLUMN ") + qtIdent(definition) + wxT(";\n");
         }
 
 
-        wxString condef;
-        wxArrayString tmpCons=previousConstraints;
+        tmpDef=previousConstraints;
 
         for (pos=0; pos < lstConstraints->GetItemCount() ; pos++)
         {
-            condef=lstConstraints->GetItemText(pos) + wxT(" ") + GetListText(lstConstraints, pos, 1);
-            index=tmpCons.Index(coldef);
+            definition=lstConstraints->GetItemText(pos) 
+                        + wxT(" ") + GetItemConstraintType(lstConstraints, pos) 
+                        + wxT(" ") + GetListText(lstConstraints, pos, 1);
+            index=tmpDef.Index(definition);
             if (index >= 0)
-                tmpCons.RemoveAt(index);
+                tmpDef.RemoveAt(index);
             else
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    +  wxT(" ADD CONSTRAINT ") + coldef + wxT(";\n");
+                    +  wxT(" ADD CONSTRAINT ") + definition + wxT(";\n");
         }
 
-        for (index=0 ; index < tmpCons.GetCount() ; index++)
+        for (index=0 ; index < (int)tmpDef.GetCount() ; index++)
         {
-            condef = tmpCons.Item(index);
-            if (condef[0U] == '"')
-                condef = condef.Mid(1).BeforeFirst('"');
+            definition = tmpDef.Item(index);
+            if (definition[0U] == '"')
+                definition = definition.Mid(1).BeforeFirst('"');
             else
-                condef = condef.BeforeFirst(' ');
+                definition = definition.BeforeFirst(' ');
             sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                +  wxT(" DROP CONSTRAINT ") + qtIdent(condef) + wxT(";\n");
+                +  wxT(" DROP CONSTRAINT ") + qtIdent(definition) + wxT(";\n");
         }
 
         
@@ -334,33 +363,13 @@ wxString dlgTable::GetSql()
 
         for (pos=0 ; pos < lstConstraints->GetItemCount() ; pos++)
         {
-            wxListItem item;
-            item.SetId(pos);
-            item.SetColumn(0);
-            item.SetMask(wxLIST_MASK_IMAGE);
-            lstConstraints->GetItem(item);
-
             wxString name=lstConstraints->GetItemText(pos);
             wxString definition = GetListText(lstConstraints, pos, 1);
 
             sql += wxT(",\n   ");
             AppendIfFilled(sql, wxT("CONSTRAINT "), qtIdent(name));
-            switch (item.GetImage())
-            {
-                case PGICON_PRIMARYKEY:
-                    sql += wxT(" PRIMARY KEY ");
-                    break;
-                case PGICON_FOREIGNKEY:
-                    sql += wxT(" FOREIGN KEY ");
-                    break;
-                case PGICON_UNIQUE:
-                    sql += wxT(" UNIQUE ");
-                    break;
-                case PGICON_CHECK:
-                    sql += wxT(" CHECK ");
-                    break;
-            }
-            sql += definition;
+
+            sql += wxT(" ") + GetItemConstraintType(lstConstraints, pos) + wxT(" ") + definition;
         }
 
         sql += wxT("\n);\n");
@@ -399,19 +408,20 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 }
 
 
-
 void dlgTable::OnChange(wxNotifyEvent &ev)
 {
     if (table)
     {
         bool changed=false;
-        if (txtName->GetValue() != table->GetName() ||
-            txtComment->GetValue() != table->GetComment() ||
-            cbOwner->GetValue() != table->GetOwner())
-            changed=true;
-        else
-            changed = !GetSql().IsEmpty();
-
+        if (lstColumns->GetItemCount() > 0)
+        {
+            if (txtName->GetValue() != table->GetName() ||
+                txtComment->GetValue() != table->GetComment() ||
+                cbOwner->GetValue() != table->GetOwner())
+                changed=true;
+            else
+                changed = !GetSql().IsEmpty();
+        }
         btnOK->Enable(changed);
     }
     else
@@ -437,8 +447,8 @@ void dlgTable::OnRemoveCol(wxNotifyEvent &ev)
 
     btnRemoveCol->Disable();
 
-    if (!lstColumns->GetItemCount())
-        btnOK->Disable();
+    wxNotifyEvent event;
+    OnChange(event);
 }
 
 
@@ -493,6 +503,8 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
             break;
         }
     }
+    wxNotifyEvent event;
+    OnChange(event);
 }
 
 
@@ -515,7 +527,10 @@ void dlgTable::OnRemoveConstr(wxNotifyEvent &ev)
     
     lstConstraints->DeleteItem(pos);
     btnRemoveConstr->Disable();
+    wxNotifyEvent event;
+    OnChange(event);
 }
+
 
 void dlgTable::OnSelChangeConstr(wxListEvent &ev)
 {
