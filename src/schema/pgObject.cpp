@@ -206,9 +206,11 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
 
                 wxString typestr=set->GetVal(wxT("type"));
                 int id;
+                bool dontQuote=false;
 
                 switch (typestr.c_str()[0])
                 {
+                    case 'c':
                     case 's':   // we don't know these; internally handled
                     case 't':   set->MoveNext(); continue;
 
@@ -228,7 +230,7 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                         id=PG_RULE;
                         break;
                     }
-                    case 'c':
+                    case 'C':
                     {
                         switch (typestr.c_str()[1])
                         {
@@ -304,7 +306,7 @@ void pgObject::ShowDependsOn(frmMain *form, ctlListView *dependsOn, const wxStri
         wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
         wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
         wxT("            WHEN rw.oid IS NOT NULL THEN 'R'::text\n")
-        wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
+        wxT("            WHEN co.oid IS NOT NULL THEN 'C'::text || contype\n")
         wxT("            ELSE '' END AS type,\n")
         wxT("       COALESCE(coc.relname, clrw.relname) AS ownertable,\n")
         wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, rulename, ns.nspname) AS refname,\n")
@@ -346,7 +348,7 @@ void pgObject::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const 
         wxT("            WHEN pr.oid IS NOT NULL THEN 'p'::text\n")
         wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
         wxT("            WHEN rw.oid IS NOT NULL THEN 'R'::text\n")
-        wxT("            WHEN co.oid IS NOT NULL THEN 'c'::text || contype\n")
+        wxT("            WHEN co.oid IS NOT NULL THEN 'C'::text || contype\n")
         wxT("            ELSE '' END AS type,\n")
         wxT("       COALESCE(coc.relname, clrw.relname) AS ownertable,\n")
         wxT("       COALESCE(cl.relname, conname, proname, tgname, typname, lanname, rulename, ns.nspname) AS refname,\n")
@@ -617,6 +619,114 @@ bool pgServerObject::CanCreate()
         return server->GetSuperUser();
 }
 
+
+void pgServerObject::FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, const wxArrayString &dblist, const wxString &query)
+{
+    pgCollection *databases;
+
+    wxCookieType cookie;
+    wxTreeItemId item=browser->GetFirstChild(GetServer()->GetId(), cookie);
+    while (item)
+    {
+        databases = (pgCollection*)browser->GetItemData(item);
+        if (databases && databases->GetType() == PG_DATABASES)
+            break;
+        else
+            databases=0;
+
+        item=browser->GetNextChild(GetServer()->GetId(), cookie);
+    }
+    
+    size_t i;
+    for (i=0 ; i < dblist.GetCount() ; i++)
+    {
+        wxString dbname=dblist.Item(i);
+        pgConn *conn=0;
+        pgConn *tmpConn=0;
+
+        if (GetServer()->GetDatabaseName() == dbname)
+            conn = GetServer()->GetConnection();
+        else
+        {
+            item=browser->GetFirstChild(databases->GetId(), cookie);
+            while (item)
+            {
+                pgDatabase *db=(pgDatabase*)browser->GetItemData(item);
+                if (db->GetType() == PG_DATABASE && db->GetName() == dbname)
+                {
+                    if (db->GetConnected())
+                        conn = db->GetConnection();
+                    break;
+                }
+                item=browser->GetNextChild(databases->GetId(), cookie);
+            }
+        }
+        if (conn && conn->GetStatus() != PGCONN_OK)
+            conn=0;
+
+        if (!conn)
+        {
+		    tmpConn = new pgConn(GetServer()->GetName(), dbname, GetServer()->GetUsername(), 
+                              GetServer()->GetPassword(), GetServer()->GetPort(), GetServer()->GetSSL());
+            if (tmpConn->GetStatus() == PGCONN_OK)
+                conn=tmpConn;
+        }
+
+        if (conn)
+        {
+            pgSet *set=conn->ExecuteSet(query);
+            
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    int id=0;
+
+                    wxString relname = qtIdent(set->GetVal(wxT("nspname")));
+                    if (!relname.IsEmpty())
+                        relname += wxT(".");
+                    relname += qtIdent(set->GetVal(wxT("relname")));
+
+                    switch (set->GetVal(wxT("relkind")).c_str()[0])
+                    {
+                        case 'r':   id=PG_TABLE;            break;
+                        case 'i':   id=PG_INDEX;        
+                                    relname = qtIdent(set->GetVal(wxT("indname"))) + wxT(" ON ") + relname;
+                                    break;
+                        case 'S':   id=PG_SEQUENCE;         break;
+                        case 'v':   id=PG_VIEW;             break;
+                        case 'c':   // composite type handled in PG_TYPE
+                        case 's':   // special
+                        case 't':   // toast
+                                    break;
+                        case 'n':   id=PG_SCHEMA;           break;
+                        case 'y':   id=PG_TYPE;             break;
+                        case 'd':   id=PG_DOMAIN;           break;
+                        case 'C':   id=PG_CONVERSION;       break;
+                        case 'p':   id=PG_FUNCTION;         break;
+                        case 'T':   id=PG_TRIGGERFUNCTION;  break;
+                        case 'o':   id=PG_OPERATOR;
+                                    relname = set->GetVal(wxT("relname"));  // unquoted
+                                    break;
+                    }
+
+                    if (id)
+                    {
+                        wxString typname = typesList[id].typName;
+                        int icon = typesList[id].typeIcon;
+                        referencedBy->AppendItem(icon, typname, dbname, relname);
+                    }
+
+                    set->MoveNext();
+                }
+                delete set;
+            }
+        }
+
+        if (tmpConn)
+            delete tmpConn;
+    }
+}
 
 //////////////////////////////////////////////////////////////
 

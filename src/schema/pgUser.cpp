@@ -18,7 +18,8 @@
 #include "pgObject.h"
 #include "pgUser.h"
 #include "pgCollection.h"
-
+#include "frmMain.h"
+#include "pgDefs.h"
 
 pgUser::pgUser(const wxString& newName)
 : pgServerObject(PG_USER, newName)
@@ -79,6 +80,84 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
 
     }
     return sql;
+}
+
+
+
+void pgUser::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where)
+{
+    form->StartMsg(_(" Retrieving user owned objects"));
+
+    referencedBy->ClearAll();
+    referencedBy->AddColumn(_("Type"), 60);
+    referencedBy->AddColumn(_("Database"), 80);
+    referencedBy->AddColumn(_("Name"), 300);
+
+    wxString uid=NumToStr(GetUserId());
+    wxString sysoid = NumToStr(GetConnection()->GetLastSystemOID());
+
+    wxArrayString dblist;
+
+    pgSet *set=GetConnection()->ExecuteSet(
+        wxT("SELECT 'd' as type, datname, datallowconn, datdba\n")
+        wxT("  FROM pg_database db\n")
+        wxT("UNION\n")
+        wxT("SELECT 'M', spcname, null, null\n")
+        wxT("  FROM pg_tablespace where spcowner=") + uid + wxT("\n")
+        wxT(" ORDER BY 1, 2"));
+
+    if (set)
+    {
+        while (!set->Eof())
+        {
+            wxString name=set->GetVal(wxT("datname"));
+            if (set->GetVal(wxT("type")) == wxT("d"))
+            {
+                if (set->GetBool(wxT("datallowconn")))
+                    dblist.Add(name);
+                if (GetUserId() == set->GetLong(wxT("datdba")))
+                    referencedBy->AppendItem(PGICON_DATABASE, _("Database"), name);
+            }
+            else
+                referencedBy->AppendItem(PGICON_TABLESPACE, _("Tablespace"), wxEmptyString, name);
+
+            set->MoveNext();
+        }
+        delete set;
+    }
+
+    FillOwned(form->GetBrowser(), referencedBy, dblist, 
+        wxT("SELECT cl.relkind, COALESCE(cin.nspname, cln.nspname) as nspname, COALESCE(ci.relname, cl.relname) as relname, ci.relname as indname\n")
+        wxT("  FROM pg_class cl\n")
+        wxT("  JOIN pg_namespace cln ON cl.relnamespace=cln.oid\n")
+        wxT("  LEFT OUTER JOIN pg_index ind ON ind.indexrelid=cl.oid\n")
+        wxT("  LEFT OUTER JOIN pg_class ci ON ind.indrelid=ci.oid\n")
+        wxT("  JOIN pg_namespace cin ON ci.relnamespace=cin.oid\n")
+        wxT(" WHERE cl.relowner = ") + uid + wxT(" AND cl.oid > ") + sysoid + wxT("\n")
+        wxT("UNION ALL\n")
+        wxT("SELECT 'n', null, nspname, null\n")
+        wxT("  FROM pg_namespace nsp WHERE nspowner = ") + uid + wxT(" AND nsp.oid > ") + sysoid + wxT("\n")
+        wxT("UNION ALL\n")
+        wxT("SELECT CASE WHEN typtype='d' THEN 'd' ELSE 'y' END, null, typname, null\n")
+        wxT("  FROM pg_type ty WHERE typowner = ") + uid + wxT(" AND ty.oid > ") + sysoid + wxT("\n")
+        wxT("UNION ALL\n")
+        wxT("SELECT 'C', null, conname, null\n")
+        wxT("  FROM pg_conversion co WHERE conowner = ") + uid + wxT(" AND co.oid > ") + sysoid + wxT("\n")
+        wxT("UNION ALL\n")
+        wxT("SELECT CASE WHEN prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + wxT(" THEN 'T' ELSE 'p' END, null, proname, null\n")
+        wxT("  FROM pg_proc pr WHERE proowner = ") + uid + wxT(" AND pr.oid > ") + sysoid + wxT("\n")
+        wxT("UNION ALL\n")
+        wxT("SELECT 'o', null, oprname || '('::text || ")
+                    wxT("COALESCE(tl.typname, ''::text) || ")
+                    wxT("CASE WHEN tl.oid IS NOT NULL AND tr.oid IS NOT NULL THEN ','::text END || ")
+                    wxT("COALESCE(tr.typname, ''::text) || ')'::text, null\n")
+        wxT("  FROM pg_operator op\n")
+        wxT("  LEFT JOIN pg_type tl ON tl.oid=op.oprleft\n")
+        wxT("  LEFT JOIN pg_type tr ON tr.oid=op.oprright\n")
+        wxT(" WHERE oprowner = ") + uid + wxT(" AND op.oid > ") + sysoid + wxT("\n")
+        wxT(" ORDER BY 1,2,3"));
+            
+    form->EndMsg();
 }
 
 

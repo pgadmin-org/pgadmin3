@@ -177,6 +177,8 @@ public:
     void iSetServer(pgServer *s) { server=s; }
     pgServer *GetServer() { return server; }
 
+    void FillOwned(wxTreeCtrl *browser, ctlListView *referencedBy, const wxArrayString &dblist, const wxString &query);
+
     bool CanCreate();
     bool CanDrop();
     bool CanEdit() { return true; }

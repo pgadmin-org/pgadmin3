@@ -51,6 +51,7 @@ public:
     int GetIcon() { return PGICON_USER; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+    void ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wxString &where);
     
     // virtual methods
     wxString GetSql(wxTreeCtrl *browser);

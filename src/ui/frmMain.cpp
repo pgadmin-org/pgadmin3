@@ -460,14 +460,26 @@ void frmMain::OnPageChange(wxNotebookEvent& event)
     switch (event.GetSelection())
     {
         case NBP_STATISTICS:
+        {
+            statistics->Freeze();
             data->ShowStatistics(this, statistics);
+            statistics->Thaw();
             break;
+        }
         case NBP_DEPENDSON:
+        {
+            dependsOn->Freeze();
             data->ShowDependsOn(this, dependsOn);
+            dependsOn->Thaw();
             break;
+        }
         case NBP_REFERENCEDBY:
+        {
+            referencedBy->Freeze();
             data->ShowReferencedBy(this, referencedBy);
+            referencedBy->Thaw();
             break;
+        }
         default:
             break;
     }
