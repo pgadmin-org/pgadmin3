@@ -18,10 +18,17 @@
 #include "pgServer.h"
 
 
-pgDatabase::pgDatabase()
+pgDatabase::pgDatabase(const wxString& szNewName)
 : pgObject()
-{  
+{
+
     wxLogInfo(wxT("Creating a pgDatabase object"));
+
+    // Call the 'virtual' ctor
+    vCtor(PG_DATABASE, szNewName);
+
+    bAllowConnections = TRUE;
+    bConnected = FALSE;
 }
 
 pgDatabase::~pgDatabase()
@@ -29,21 +36,87 @@ pgDatabase::~pgDatabase()
     wxLogInfo(wxT("Destroying a pgDatabase object"));
 }
 
-int pgDatabase::GetType()
-{
-    return PG_DATABASE;
+int pgDatabase::Connect() {
+    if (!bAllowConnections) {
+        return PGCONN_REFUSED;
+    }
+    if (bConnected) {
+        return cnDatabase->GetStatus();
+    } else {
+
+        cnDatabase = new pgConn(this->GetServer()->GetName(), this->GetName(), this->GetServer()->GetUsername(), this->GetServer()->GetPassword(), this->GetServer()->GetPort());
+        if (cnDatabase->GetStatus() == PGCONN_OK) {
+
+            // As we connected, we should now get the comments
+            wxString szSQL, szComment;
+            szSQL.Printf(wxT("SELECT description FROM pg_description WHERE objoid = %f"), this->GetOid());
+            szComment = cnDatabase->ExecuteScalar(szSQL);
+            if (szComment != "(null)") {
+                this->iSetComment(szComment);
+            }
+
+            // Now we're connected.
+            bConnected = TRUE;
+            return PGCONN_OK;
+
+        } else {
+
+            wxString szMsg;
+            szMsg.Printf(wxT("%s"), cnDatabase->GetLastError);
+            wxLogError(szMsg);
+            return PGCONN_BAD;
+        }
+    }
 }
 
-wxString pgDatabase::GetTypeName() const
-{
-    return wxString("Database");
-}
-
-pgServer pgDatabase::GetServer()
-{
+// Parent objects
+pgServer *pgDatabase::GetServer() {
     return objServer;
 }
 
-int pgDatabase::Connect() {
-    return PGCONN_BAD;
+void pgDatabase::SetServer(pgServer *objNewServer) {
+    objServer = objNewServer;
 }
+
+wxString pgDatabase::GetPath() const
+{
+    return szPath;
+}
+void pgDatabase::iSetPath(const wxString& szNewVal)
+{
+    szPath = szNewVal;
+}
+
+wxString pgDatabase::GetEncoding() const
+{
+    return szEncoding;
+}
+void pgDatabase::iSetEncoding(const wxString& szNewVal)
+{
+    szEncoding = szNewVal;
+}
+
+wxString pgDatabase::GetVariables() const
+{
+    return szVariables;
+}
+void pgDatabase::iSetVariables(const wxString& szNewVal)
+{
+    szVariables = szNewVal;
+}
+
+bool pgDatabase::GetAllowConnections()
+{
+    return bAllowConnections;
+}
+void pgDatabase::iSetAllowConnections(bool bNewVal)
+{
+    bAllowConnections = bNewVal;
+}
+
+bool pgDatabase::GetConnected()
+{
+    return bConnected;
+}
+
+

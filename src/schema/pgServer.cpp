@@ -18,17 +18,19 @@
 #include "pgObject.h"
 
 
-pgServer::pgServer(const wxString& szNewServer, const wxString& szNewDatabase, const wxString& szNewUsername, int iNewPort)
+pgServer::pgServer(const wxString& szNewName, const wxString& szNewDatabase, const wxString& szNewUsername, int iNewPort)
 : pgObject()
 {  
     wxLogInfo(wxT("Creating a pgServer object"));
-    szServer = szNewServer;
+
+    vCtor(PG_SERVER, szNewName);
     szDatabase = szNewDatabase;
     szUsername = szNewUsername;
     iPort = iNewPort;
+
     bConnected = FALSE;
     fVer = 0.0;
-    lLastSystemOID = 0;
+    dLastSystemOID = 0;
 }
 
 pgServer::~pgServer()
@@ -49,7 +51,7 @@ wxString pgServer::GetTypeName() const
 int pgServer::Connect(bool bLockFields) {
 
     wxLogInfo(wxT("Getting connection details..."));
-    frmConnect *winConnect = new frmConnect(this, szServer, szDatabase, szUsername, iPort);
+    frmConnect *winConnect = new frmConnect(this, this->GetName(), szDatabase, szUsername, iPort);
     if (bLockFields) winConnect->LockFields();
 
     if (winConnect->ShowModal() != 0) {
@@ -59,13 +61,22 @@ int pgServer::Connect(bool bLockFields) {
 
     wxLogInfo(wxT("Attempting to create a connection object..."));
     StartMsg(wxT("Connecting to database"));
-    cnMaster = new pgConn(szServer, szDatabase, szUsername, szPassword, iPort);
+    cnMaster = new pgConn(this->GetName(), szDatabase, szUsername, szPassword, iPort);
 
     delete winConnect;
     EndMsg();
     int iStatus = cnMaster->GetStatus();
     if (iStatus == PGCONN_OK) {
-        bConnected = TRUE;
+
+        // Check the server version
+        if (cnMaster->GetVersionNumber() >= SERVER_MIN_VERSION) {
+            bConnected = TRUE;
+        } else {
+            szError.Printf(wxT("The PostgreSQL server must be at least version %1.1f!"), SERVER_MIN_VERSION);
+            bConnected = FALSE;
+            return PGCONN_BAD;
+        }
+
     } else {
         bConnected = FALSE;
     }
@@ -76,7 +87,7 @@ int pgServer::Connect(bool bLockFields) {
 wxString pgServer::GetIdentifier() const
 {
     wxString szID;
-    szID.Printf(wxT("%s:%d"), szServer.c_str(), iPort);
+    szID.Printf(wxT("%s:%d"), GetName().c_str(), iPort);
     return wxString(szID);
 }
 
@@ -104,25 +115,16 @@ float pgServer::GetVersionNumber()
     }
 }
 
-long pgServer::GetLastSystemOID()
+double pgServer::GetLastSystemOID()
 {
     if (bConnected) {
-      if (lLastSystemOID == 0) {
-          lLastSystemOID = cnMaster->GetLastSystemOID();
+      if (dLastSystemOID == 0) {
+          dLastSystemOID = cnMaster->GetLastSystemOID();
       }
-      return lLastSystemOID;
+      return dLastSystemOID;
     } else {
         return 0;
     }
-}
-
-wxString pgServer::GetServer() const
-{
-    return szServer;
-}
-void pgServer::iSetServer(const wxString& szNewVal)
-{
-    szServer = szNewVal;
 }
 
 wxString pgServer::GetDatabase() const
@@ -163,11 +165,17 @@ void pgServer::iSetPort(int iNewVal)
 
 wxString pgServer::GetLastError() const
 {
-    if (bConnected) {
-        return cnMaster->GetLastError();
+    wxString szMsg;
+    if (szError != wxT("")) {
+        if (cnMaster->GetLastError() != wxT("")) {
+            szMsg.Printf(wxT("%s\n%s"), szError, cnMaster->GetLastError());
+        } else {
+            szMsg.Printf(wxT("%s"), szError);
+        }
     } else {
-        return wxString("");
+        szMsg.Printf(wxT("%s"), cnMaster->GetLastError());
     }
+    return szMsg;
 }
 
 bool pgServer::GetConnected()

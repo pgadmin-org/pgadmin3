@@ -4,36 +4,31 @@
 // Copyright (C) 2002, The pgAdmin Development Team
 // This software is released under the pgAdmin Public Licence
 //
-// pgUser.h - PostgreSQL User
+// pgCollection.h - Simple object for use with 'collection' nodes
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGUSER_H
-#define PGUSER_H
+#ifndef PGCOLLECTION_H
+#define PGCOLLECTION_H
 
 // wxWindows headers
 #include <wx/wx.h>
 
 // App headers
 #include "pgAdmin3.h"
-#include "pgConn.h"
 #include "pgObject.h"
 #include "pgServer.h"
 
 // Class declarations
-class pgUser : public pgObject
+class pgCollection : public pgObject
 {
 public:
-    pgUser(const wxString& szNewName = wxString(""));
-    ~pgUser();
+    pgCollection(int iNewType = PG_NONE, const wxString& szNewName = wxString(""));
+    ~pgCollection();
     pgServer *GetServer();
     void SetServer(pgServer *objNewServer);
 
-    // User Specific
-    int GetUserID();
-
 private:
-    int iUserID;
     pgServer *objServer;
 };
 

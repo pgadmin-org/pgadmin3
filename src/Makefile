@@ -19,8 +19,11 @@ LDFLAGS = `wx-config --libs` -lstc -lpq -lwxxrc -L$(PGDIR)/lib -L$(WXDIR)/lib
 OBJECTS = $(PROGRAM).o \
           db/pgConn.o \
           db/pgSet.o \
+          schema/pgCollection.o \
+          schema/pgDatabase.o \
           schema/pgObject.o \
           schema/pgServer.o \
+          schema/pgUser.o \
           ui/frmAbout.o \
           ui/frmConnect.o \
           ui/frmMain.o \

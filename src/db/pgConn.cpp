@@ -86,12 +86,11 @@ pgConn::pgConn(const wxString& szServer, const wxString& szDatabase, const wxStr
     }
     if (iPort > 0) {
       szConn.Append(wxT(" port="));
-      szConn.Printf("%s%d", szConn.c_str(), iPort);
+      szConn.Append(NumToStr((double)iPort));
     }
     szConn.Trim(FALSE);
 
     // Open the connection
-    szMsg.Clear();
     szMsg.Printf(wxT("Opening connection with connection string: %s"), szConn.c_str());
     wxLogInfo(szMsg);
 
@@ -119,6 +118,13 @@ int pgConn::ExecuteVoid(const wxString& szSQL)
     qryRes = PQexec(objConn, szSQL.c_str());
     int iRes = PQresultStatus(qryRes);
 
+    // Check for errors
+    if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
+        wxString szMsg;
+        szMsg.Printf(wxT("%s"), PQerrorMessage(objConn));
+        wxLogError(szMsg);
+    }
+
     // Cleanup & exit
     PQclear(qryRes);
     return iRes;
@@ -133,7 +139,13 @@ wxString pgConn::ExecuteScalar(const wxString& szSQL) const
     szMsg.Printf(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), iPort, szSQL.c_str());
     wxLogInfo(szMsg);
     qryRes = PQexec(objConn, szSQL.c_str());
+
+    // Check for errors
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
+        wxString szMsg;
+        szMsg.Printf(wxT("%s"), PQerrorMessage(objConn));
+        wxLogError(szMsg);
+        PQclear(qryRes);
         return wxString("");
     }
 

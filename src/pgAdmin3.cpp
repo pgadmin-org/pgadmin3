@@ -16,10 +16,11 @@
 #include <wx/timer.h>
 #include <wx/xrc/xmlres.h>
 
+// Windows headers
 #ifdef __WXMSW__
-  // Windows headers
   #include <winsock.h>
 #endif
+#include <stdlib.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -150,4 +151,86 @@ void pgAdmin3::LoadXrc(const wxString szFile)
     wxLogInfo(szMsg);
     szXRC.Printf("%s/%s", XRC_PATH, szFile);
     wxXmlResource::Get()->Load(szXRC);
+}
+
+// Conversions
+
+wxString StrToYesNo(const wxString& szVal)
+{
+    wxString szResult;
+    if (szVal.StartsWith(wxT("t"))) {
+        szResult.Printf("Yes");
+    } else if (szVal.StartsWith(wxT("T"))) {
+        szResult.Printf("Yes");
+    } else if (szVal.StartsWith(wxT("1"))) {
+        szResult.Printf("Yes");
+    } else if (szVal.StartsWith(wxT("Y"))) {
+        szResult.Printf("Yes");
+    } else if (szVal.StartsWith(wxT("y"))) {
+        szResult.Printf("Yes");
+    } else {
+        szResult.Printf("No");
+    }
+
+    return szResult;
+}
+
+wxString BoolToYesNo(bool bVal)
+{
+    wxString szResult;
+    if (bVal) {
+        szResult.Printf("Yes");
+    } else {
+        szResult.Printf("No");
+    }
+    return szResult;
+}
+
+bool StrToBool(const wxString& szVal)
+{
+    if (szVal.StartsWith(wxT("t"))) {
+        return TRUE;
+    } else if (szVal.StartsWith(wxT("T"))) {
+        return TRUE;
+    } else if (szVal.StartsWith(wxT("1"))) {
+        return TRUE;
+    } else if (szVal.StartsWith(wxT("Y"))) {
+        return TRUE;
+    } else if (szVal.StartsWith(wxT("y"))) {
+        return TRUE;
+    } 
+
+    return FALSE;
+}
+
+wxString NumToStr(long nVal)
+{
+    wxString szResult;
+    szResult.Printf("%d", nVal);
+    return szResult;
+}
+
+long StrToLong(const wxString& szVal)
+{
+    return atol(szVal.c_str());
+}
+
+wxString NumToStr(double nVal)
+{
+    wxString szResult;
+    szResult.Printf("%lf", nVal);
+
+    // Get rid of excessive decimal places
+    if (szResult.Contains(wxT("."))) {
+        while ((szResult.Right(1) == "0") || (szResult.Right(1) == ".")) {
+            szResult.RemoveLast();
+        }
+    }
+
+    return szResult;
+}
+
+double StrToDouble(const wxString& szVal)
+{
+    return strtod(szVal.c_str(), 0);
 }

@@ -35,6 +35,9 @@ pgSet::pgSet(PGresult *objNewRes, PGconn *objNewConn)
 
     // Make sure we have tuples
     if (PQresultStatus(objRes) != PGCONN_TUPLES_OK) {
+        wxString szMsg;
+        szMsg.Printf(wxT("%s"), PQerrorMessage(objConn));
+        wxLogError(szMsg);
         bEof = TRUE;
         bBof = TRUE;
         lPos = 0;

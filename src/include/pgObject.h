@@ -34,30 +34,46 @@ enum PG_OBJTYPE
     PG_GROUP,
     PG_USERS,
     PG_ADD_USER,
-    PG_USER
+    PG_USER,
+    PG_LANGUAGES,
+    PG_ADD_LANGUAGE,
+    PG_LANGUAGE,
+    PG_SCHEMAS,
+    PG_ADD_SCHEMA,
+    PG_SCHEMA
 };
 
 // Class declarations
 class pgObject : public wxTreeItemData
 {
 public:
-    pgObject(int iNewType = 0, const wxString& szNewName = wxString(""));
+    pgObject(int iNewType = PG_NONE, const wxString& szNewName = wxString(""));
     ~pgObject();
 
-    // Everything should implement these
-    virtual int GetType();
-    virtual wxString GetTypeName() const;
+    int GetType();
+    wxString GetTypeName() const;
+    void iSetName(const wxString& szNewVal);
+    wxString GetName() const;
     virtual wxString GetIdentifier() const;
-    virtual wxString GetName() const;
+    double GetOid();
+    void iSetOid(double lNewVal);
+    wxString GetOwner() const;
+    void iSetOwner(const wxString& szNewVal);
+    wxString GetComment() const;
+    void iSetComment(const wxString& szNewVal);
+    wxString GetAcl() const;
+    void iSetAcl(const wxString& szNewVal);
+    bool GetSystemObject();
+    void iSetSystemObject(bool bNewVal);
 
-    // These are optional
-    virtual unsigned long GetOid();
+protected:
+    void vCtor(int iNewType = PG_NONE, const wxString& szNewName = wxString(""));
 
 private:
-    wxString szTypeName, szIdentifier, szName;
+    wxString szTypeName, szName, szOwner, szComment, szAcl;
     int iType;
-    unsigned long lOid;
-
+    double dOid;
+    bool bSystemObject;
 };
 
 #endif

@@ -4,7 +4,7 @@
 // Copyright (C) 2002, The pgAdmin Development Team
 // This software is released under the pgAdmin Public Licence
 //
-// pgUser.cpp - PostgreSQL User
+// pgCollection.cpp - Simple object for use with 'collection' nodes
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -13,33 +13,30 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "pgUser.h"
-#include "pgObject.h"
+#include "pgCollection.h"
+#include "pgServer.h"
 
-pgUser::pgUser(const wxString& szNewName)
+
+pgCollection::pgCollection(int iNewType, const wxString& szNewName)
 : pgObject()
 {
 
-    wxLogInfo(wxT("Creating a pgUser object"));
+    wxLogInfo(wxT("Creating a pgCollection object"));
 
     // Call the 'virtual' ctor
-    vCtor(PG_USER, szNewName);
+    vCtor(iNewType, szNewName);
 }
 
-pgUser::~pgUser()
+pgCollection::~pgCollection()
 {
-    wxLogInfo(wxT("Destroying a pgUser object"));
-}
-
-int pgUser::GetUserID() {
-    return iUserID;
+    wxLogInfo(wxT("Destroying a pgCollection object"));
 }
 
 // Parent objects
-pgServer *pgUser::GetServer() {
+pgServer *pgCollection::GetServer() {
     return objServer;
 }
 
-void pgUser::SetServer(pgServer *objNewServer) {
+void pgCollection::SetServer(pgServer *objNewServer) {
     objServer = objNewServer;
 }

@@ -16,24 +16,35 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "pgConn.h"
 #include "pgObject.h"
 #include "pgServer.h"
+#include "pgConn.h"
 
 // Class declarations
 class pgDatabase : public pgObject
 {
 public:
-    pgDatabase();
+    pgDatabase(const wxString& szNewName = wxString(""));
     ~pgDatabase();
-    int GetType();
-    wxString GetTypeName() const;
-    pgServer GetServer();
+    pgServer *GetServer();
+    void SetServer(pgServer *objNewServer);
+    wxString GetPath() const;
+    void iSetPath(const wxString& szNewVal);
+    wxString GetEncoding() const;
+    void iSetEncoding(const wxString& szNewVal);
+    wxString GetVariables() const;
+    void iSetVariables(const wxString& szNewVal);
+    bool GetAllowConnections();
+    void iSetAllowConnections(bool bNewVal);
+    bool GetConnected();
+
     int Connect();
 
 private:
-    pgServer objServer;
-
+    pgServer *objServer;
+    pgConn *cnDatabase;
+    wxString szPath, szEncoding, szVariables;
+    bool bAllowConnections, bConnected;
 };
 
 #endif

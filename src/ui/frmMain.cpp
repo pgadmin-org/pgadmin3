@@ -32,9 +32,11 @@
 #include "frmUpgradeWizard.h"
 #include "ctlSQLBox.h"
 #include "pgConn.h"
+#include "pgDatabase.h"
 #include "pgSet.h"
 #include "pgServer.h"
 #include "pgObject.h"
+#include "pgCollection.h"
 
 // Icons
 #include "images/aggregate.xpm"
@@ -226,6 +228,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     ilBrowser->Add(wxIcon(baddatabase_xpm));
     ilBrowser->Add(wxIcon(closeddatabase_xpm));
 
+
     // Add the root node
     pgObject *objServers = new pgObject(PG_SERVERS, wxString("Servers"));
     itmServers = tvBrowser->AddRoot(wxT("Servers"), 0, -1, objServers);
@@ -363,7 +366,7 @@ void frmMain::ReconnectServer(pgServer *objServer)
 
     } else if (iRes == PGCONN_BAD)  {
         wxString szMsg;
-        szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->GetLastError().c_str());
+        szMsg.Printf(wxT("%s"), objServer->GetLastError().c_str());
         wxLogError(wxT(szMsg));
         ReconnectServer(objServer);
 
@@ -397,6 +400,22 @@ void frmMain::OnSelChanged()
             SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
             tvServer((pgServer *)itmData);
             svServer((pgServer *)itmData);
+            EndMsg();
+            break;
+
+        case PG_DATABASES:
+            StartMsg(wxT("Retrieving database details"));
+            SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
+            tvDatabases((pgCollection *)itmData);
+            svDatabases((pgCollection *)itmData);
+            EndMsg();
+            break;
+
+        case PG_DATABASE:
+            StartMsg(wxT("Retrieving database details"));
+            SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
+            tvDatabase((pgDatabase *)itmData);
+            //svDatabases((pgCollection *)itmData);
             EndMsg();
             break;
 
@@ -463,7 +482,7 @@ void frmMain::StoreServers()
 
             // Hostname
             szKey.Printf("Servers/Server %d", iServers);
-            sysConfig->Write(szKey, objServer->GetServer());
+            sysConfig->Write(szKey, objServer->GetName());
 
             // Port
             szKey.Printf("Servers/Port %d", iServers);
@@ -537,104 +556,6 @@ void frmMain::RetrieveServers()
     tvBrowser->SetItemText(itmServers, szLabel);
 }
 
-void frmMain::tvServer(pgServer *objServer)
-{
-    // This handler will primarily deal with displaying item
-    // properties in the main window.
-
-    wxString szMsg;
-
-    // Add child nodes if necessary
-    if (objServer->GetConnected()) {
-        if (tvBrowser->GetChildrenCount(objServer->GetId(), FALSE) != 3) {
-
-            // Log
-            szMsg.Printf(wxT("Adding child object to server %s"), objServer->GetIdentifier());
-            wxLogInfo(szMsg);
-    
-            pgObject *objNewNode = new pgObject(PG_DATABASES, wxString("Databases"));
-            wxTreeItemId itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objNewNode->GetTypeName(), 1, -1, objNewNode);
-      
-            objNewNode = new pgObject(PG_GROUPS, wxString("Groups"));
-            itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objNewNode->GetTypeName(), 13, -1, objNewNode);
-    
-            objNewNode = new pgObject(PG_USERS, wxString("Users"));
-            itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objNewNode->GetTypeName(), 12, -1, objNewNode);
-        }
-    }
-
-
-    szMsg.Printf(wxT("Displaying properties for server %s"), objServer->GetIdentifier());
-    wxLogInfo(szMsg);
-
-    // Add the properties view columns
-    lvProperties->ClearAll();
-    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
-    lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
-
-    // Display the Server properties
-    wxString szTemp;
-
-    lvProperties->InsertItem(0, wxT("Hostname"), 0);
-    lvProperties->SetItem(0, 1, objServer->GetServer());
-
-    lvProperties->InsertItem(1, wxT("Port"), 0);
-    szTemp.Printf("%d", objServer->GetPort());
-    lvProperties->SetItem(1, 1, szTemp);
-
-    lvProperties->InsertItem(2, wxT("Initial Database"), 0);
-    lvProperties->SetItem(2, 1, objServer->GetDatabase());
-
-    lvProperties->InsertItem(3, wxT("Username"), 0);
-    lvProperties->SetItem(3, 1, objServer->GetUsername());
-
-    lvProperties->InsertItem(4, wxT("Version String"), 0);
-    lvProperties->SetItem(4, 1, objServer->GetVersionString());
-
-    lvProperties->InsertItem(5, wxT("Version Number"), 0);
-    szTemp.Printf("%1.1f", objServer->GetVersionNumber());
-    lvProperties->SetItem(5, 1, szTemp);
-
-    lvProperties->InsertItem(6, wxT("Last System OID"), 0);
-    szTemp.Printf("%d", objServer->GetLastSystemOID());
-    lvProperties->SetItem(6, 1, szTemp);
-
-    lvProperties->InsertItem(7, wxT("Connected?"), 0);
-    if (objServer->GetConnected()) {
-        lvProperties->SetItem(7, 1, wxT("Yes"));
-    } else {
-        lvProperties->SetItem(7, 1, wxT("No"));
-    }
-}
-
-void frmMain::svServer(pgServer *objServer)
-{
-    if(!objServer->GetConnected()) return;
-    
-    wxString szMsg;
-    szMsg.Printf(wxT("Displaying statistics for server %s"), objServer->GetIdentifier());
-    wxLogInfo(szMsg);
-
-    // Add the statistics view columns
-    lvStatistics->ClearAll();
-    lvStatistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(1, wxT("PID"), wxLIST_FORMAT_LEFT, 50);
-    lvStatistics->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(3, wxT("Current Query"), wxLIST_FORMAT_LEFT, 400);
-
-    pgSet rsStat = objServer->ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
-
-    while (!rsStat.Eof()) {
-        lvStatistics->InsertItem(rsStat.CurrentPos() - 1, rsStat.GetVal(wxT("datname")), 0);
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 1, rsStat.GetVal(wxT("procpid")));
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 2, rsStat.GetVal(wxT("usename")));
-        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 3, rsStat.GetVal(wxT("current_query")));
-        rsStat.MoveNext();
-    }
-
-
-}
-
 void frmMain::OnDrop()
 {
     // This handler will primarily deal with dropping items
@@ -689,4 +610,267 @@ void frmMain::SetButtons(bool bRefresh, bool bCreate, bool bDrop, bool bProperti
     tlBar->EnableTool(BTN_SQL, bSQL);
     tlBar->EnableTool(BTN_VIEWDATA, bViewData);
     tlBar->EnableTool(BTN_VACUUM, bVacuum);
+}
+
+void frmMain::tvServer(pgServer *objServer)
+{
+    // This handler will primarily deal with displaying item
+    // properties in the main window.
+
+    wxString szMsg;
+
+    // Add child nodes if necessary
+    if (objServer->GetConnected()) {
+        if (tvBrowser->GetChildrenCount(objServer->GetId(), FALSE) != 3) {
+
+            // Log
+            szMsg.Printf(wxT("Adding child object to server %s"), objServer->GetIdentifier());
+            wxLogInfo(szMsg);
+    
+            // Databases
+            pgCollection *objCollection = new pgCollection(PG_DATABASES, wxString("Databases"));
+            objCollection->SetServer(objServer);
+            wxTreeItemId itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objCollection->GetTypeName(), 2, -1, objCollection);
+      
+            // Groups
+            objCollection = new pgCollection(PG_GROUPS, wxString("Groups"));
+            objCollection->SetServer(objServer);
+            itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objCollection->GetTypeName(), 13, -1, objCollection);
+    
+            // Users
+            objCollection = new pgCollection(PG_USERS, wxString("Users"));
+            objCollection->SetServer(objServer);
+            itmNewNode = tvBrowser->AppendItem(objServer->GetId(), objCollection->GetTypeName(), 12, -1, objCollection);
+        }
+    }
+
+
+    szMsg.Printf(wxT("Displaying properties for server %s"), objServer->GetIdentifier());
+    wxLogInfo(szMsg);
+
+    // Add the properties view columns
+    lvProperties->ClearAll();
+    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
+    lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
+
+    // Display the Server properties
+    lvProperties->InsertItem(0, wxT("Hostname"), 0);
+    lvProperties->SetItem(0, 1, objServer->GetName());
+
+    lvProperties->InsertItem(1, wxT("Port"), 0);
+    lvProperties->SetItem(1, 1, NumToStr((double)objServer->GetPort()));
+
+    lvProperties->InsertItem(2, wxT("Initial Database"), 0);
+    lvProperties->SetItem(2, 1, objServer->GetDatabase());
+
+    lvProperties->InsertItem(3, wxT("Username"), 0);
+    lvProperties->SetItem(3, 1, objServer->GetUsername());
+
+    lvProperties->InsertItem(4, wxT("Version String"), 0);
+    lvProperties->SetItem(4, 1, objServer->GetVersionString());
+
+    lvProperties->InsertItem(5, wxT("Version Number"), 0);
+    lvProperties->SetItem(5, 1, NumToStr(objServer->GetVersionNumber()));
+
+    lvProperties->InsertItem(6, wxT("Last System OID"), 0);
+    lvProperties->SetItem(6, 1, NumToStr(objServer->GetLastSystemOID()));
+
+    lvProperties->InsertItem(7, wxT("Connected?"), 0);
+    lvProperties->SetItem(7, 1, BoolToYesNo(objServer->GetConnected()));
+}
+
+void frmMain::svServer(pgServer *objServer)
+{
+    if(!objServer->GetConnected()) return;
+    
+    wxString szMsg;
+    szMsg.Printf(wxT("Displaying statistics for server %s"), objServer->GetIdentifier());
+    wxLogInfo(szMsg);
+
+    // Add the statistics view columns
+    lvStatistics->ClearAll();
+    lvStatistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(1, wxT("PID"), wxLIST_FORMAT_LEFT, 50);
+    lvStatistics->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(3, wxT("Current Query"), wxLIST_FORMAT_LEFT, 400);
+
+    pgSet rsStat = objServer->ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
+
+    while (!rsStat.Eof()) {
+        lvStatistics->InsertItem(rsStat.CurrentPos() - 1, rsStat.GetVal(wxT("datname")), 0);
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 1, rsStat.GetVal(wxT("procpid")));
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 2, rsStat.GetVal(wxT("usename")));
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 3, rsStat.GetVal(wxT("current_query")));
+        rsStat.MoveNext();
+    }
+
+
+}
+
+
+void frmMain::tvDatabases(pgCollection *objCollection)
+{
+    wxString szMsg;
+    pgDatabase *objDatabase;
+
+    if (tvBrowser->GetChildrenCount(objCollection->GetId(), FALSE) == 0) {
+
+        // Log
+        szMsg.Printf(wxT("Adding databases to server %s"), objCollection->GetServer()->GetIdentifier());
+        wxLogInfo(szMsg);
+
+        // Add Database node
+        pgObject *objAddDatabase = new pgObject(PG_ADD_DATABASE, wxString("Add Database"));
+        wxTreeItemId itmAddDatabase = tvBrowser->AppendItem(objCollection->GetId(), wxT("Add Database..."), 2, -1, objAddDatabase);
+
+        // Get the databases
+        pgSet rsDatabases = objCollection->GetServer()->ExecuteSet(wxT("SELECT oid, datname, datpath, datallowconn, datconfig, datacl, pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner FROM pg_database"));
+
+        wxTreeItemId itmNewNode;
+
+        while (!rsDatabases.Eof()) {
+
+            objDatabase = new pgDatabase(rsDatabases.GetVal(wxT("datname")));
+            objDatabase->SetServer(objCollection->GetServer());
+            objDatabase->iSetOid(StrToDouble(rsDatabases.GetVal(wxT("oid"))));
+            objDatabase->iSetOwner(rsDatabases.GetVal(wxT("datowner")));
+            objDatabase->iSetAcl(rsDatabases.GetVal(wxT("datacl")));
+            objDatabase->iSetPath(rsDatabases.GetVal(wxT("datpath")));
+            objDatabase->iSetEncoding(rsDatabases.GetVal(wxT("serverencoding")));
+            objDatabase->iSetVariables(rsDatabases.GetVal(wxT("datconfig")));
+            objDatabase->iSetAllowConnections(StrToBool(rsDatabases.GetVal(wxT("datallowconn"))));
+
+            // Add the treeview node
+            itmNewNode = tvBrowser->AppendItem(objCollection->GetId(), objDatabase->GetIdentifier(), 15, -1, objDatabase);
+
+            rsDatabases.MoveNext();
+        }
+
+        // Reset the Databases node text
+        wxString szLabel;
+        szLabel.Printf(wxT("Databases (%d)"), tvBrowser->GetChildrenCount(objCollection->GetId(), FALSE) - 1);
+        tvBrowser->SetItemText(objCollection->GetId(), szLabel);
+
+    }
+
+    // Display the properties.
+
+    long lCookie;
+    int iCount = 0;
+    wxString szKey;
+    pgObject *itmData;
+
+    // Setup listview
+    lvProperties->ClearAll();
+    lvProperties->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
+    lvProperties->InsertColumn(1, wxT("Comment"), wxLIST_FORMAT_LEFT, 400);
+
+    wxTreeItemId itmCollection = objCollection->GetId();
+    wxTreeItemId itmX = tvBrowser->GetFirstChild(itmCollection, lCookie);
+    while (itmX) {
+        itmData = (pgObject *)tvBrowser->GetItemData(itmX);
+        if (itmData->GetType() == PG_DATABASE) {
+
+            objDatabase = (pgDatabase *)itmData;
+
+            lvProperties->InsertItem(0, objDatabase->GetName(), 0);
+            lvProperties->SetItem(0, 1, objDatabase->GetComment());
+        }
+
+        // Get the next item
+        itmX = tvBrowser->GetNextChild(itmServers, lCookie);
+    }
+}
+
+void frmMain::svDatabases(pgCollection *objCollection)
+{
+    
+    wxString szMsg;
+    szMsg.Printf(wxT("Displaying statistics for databases on "), objCollection->GetServer()->GetIdentifier());
+    wxLogInfo(szMsg);
+
+    // Add the statistics view columns
+    lvStatistics->ClearAll();
+    lvStatistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(1, wxT("Backends"), wxLIST_FORMAT_LEFT, 75);
+    lvStatistics->InsertColumn(2, wxT("Xact Committed"), wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(3, wxT("Xact Rolled Back"), wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(4, wxT("Blocks Read"), wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(5, wxT("Blocks Hit"), wxLIST_FORMAT_LEFT, 100);
+
+    pgSet rsStat = objCollection->GetServer()->ExecuteSet(wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit FROM pg_stat_database ORDER BY datname"));
+
+    while (!rsStat.Eof()) {
+        lvStatistics->InsertItem(rsStat.CurrentPos() - 1, rsStat.GetVal(wxT("datname")), 0);
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 1, rsStat.GetVal(wxT("numbackends")));
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 2, rsStat.GetVal(wxT("xact_commit")));
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 3, rsStat.GetVal(wxT("xact_rollback")));
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 4, rsStat.GetVal(wxT("blks_read")));
+        lvStatistics->SetItem(rsStat.CurrentPos() - 1, 5, rsStat.GetVal(wxT("blks_hit")));
+        rsStat.MoveNext();
+    }
+}
+
+void frmMain::tvDatabase(pgDatabase *objDatabase)
+{
+
+    wxString szMsg;
+
+    if (objDatabase->Connect() == PGCONN_OK) {
+
+        // Set the icon if required
+        if (tvBrowser->GetItemImage(objDatabase->GetId(), wxTreeItemIcon_Normal) != 2) {
+            tvBrowser->SetItemImage(objDatabase->GetId(), 2, wxTreeItemIcon_Normal);
+            tvBrowser->SetItemImage(objDatabase->GetId(), 2, wxTreeItemIcon_Selected);
+            wxTreeItemId itmDatabases = tvBrowser->GetParent(objDatabase->GetId());
+            tvBrowser->Collapse(itmDatabases);
+            tvBrowser->Expand(itmDatabases);
+            tvBrowser->SelectItem(objDatabase->GetId());
+        }
+
+        // Add child nodes if necessary
+        if (tvBrowser->GetChildrenCount(objDatabase->GetId(), FALSE) != 2) {
+
+            // Log
+            szMsg.Printf(wxT("Adding child object to database %s"), objDatabase->GetIdentifier());
+            wxLogInfo(szMsg);
+
+            // Languages
+            pgCollection *objCollection = new pgCollection(PG_LANGUAGES, wxString("Languages"));
+            objCollection->SetServer(objDatabase->GetServer());
+            wxTreeItemId itmNewNode = tvBrowser->AppendItem(objDatabase->GetId(), objCollection->GetTypeName(), 3, -1, objCollection);
+  
+            // Schemas
+            objCollection = new pgCollection(PG_SCHEMAS, wxString("Schemas"));
+            objCollection->SetServer(objDatabase->GetServer());
+            itmNewNode = tvBrowser->AppendItem(objDatabase->GetId(), objCollection->GetTypeName(), 4, -1, objCollection);
+        }
+    }
+    // Setup listview
+    lvProperties->ClearAll();
+    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
+    lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 350);
+
+    lvProperties->InsertItem(0, wxT("Name"), 0);
+    lvProperties->SetItem(0, 1, objDatabase->GetName());
+    lvProperties->InsertItem(1, wxT("OID"), 0);
+    lvProperties->SetItem(1, 1, NumToStr(objDatabase->GetOid()));
+    lvProperties->InsertItem(2, wxT("Owner"), 0);
+    lvProperties->SetItem(2, 1, objDatabase->GetOwner());
+    lvProperties->InsertItem(3, wxT("ACL"), 0);
+    lvProperties->SetItem(3, 1, objDatabase->GetAcl());
+    lvProperties->InsertItem(4, wxT("Path"), 0);
+    lvProperties->SetItem(4, 1, objDatabase->GetPath());
+    lvProperties->InsertItem(5, wxT("Encoding"), 0);
+    lvProperties->SetItem(5, 1, objDatabase->GetEncoding());
+    lvProperties->InsertItem(6, wxT("Variables"), 0);
+    lvProperties->SetItem(6, 1, objDatabase->GetVariables());
+    lvProperties->InsertItem(7, wxT("Allow Connections?"), 0);
+    lvProperties->SetItem(7, 1, BoolToYesNo(objDatabase->GetAllowConnections()));
+    lvProperties->InsertItem(8, wxT("Connected?"), 0);
+    lvProperties->SetItem(8, 1, BoolToYesNo(objDatabase->GetConnected()));
+    lvProperties->InsertItem(9, wxT("System Database?"), 0);
+    lvProperties->SetItem(9, 1, BoolToYesNo(objDatabase->GetSystemObject()));
+    lvProperties->InsertItem(10, wxT("Comment?"), 0);
+    lvProperties->SetItem(10, 1, objDatabase->GetComment());
 }

@@ -15,10 +15,19 @@
 // App headers
 #include "pgAdmin3.h"
 #include "pgObject.h"
+#include "pgServer.h"
 
 
 pgObject::pgObject(int iNewType, const wxString& szNewName)
 : wxTreeItemData()
+{
+    wxLogInfo(wxT("Creating a pgObject object"));
+
+    // Call the 'virtual' ctor
+    vCtor(iNewType, szNewName);
+}
+
+void pgObject::vCtor(int iNewType, const wxString& szNewName)
 {
 
     // Set the typename and type
@@ -76,9 +85,35 @@ pgObject::pgObject(int iNewType, const wxString& szNewName)
             szTypeName = wxT("User");
             break;
 
+        case PG_LANGUAGES:
+            szTypeName = wxT("Languages");
+            break;
+
+        case PG_ADD_LANGUAGE:
+            szTypeName = wxT("Add Language");
+            break;
+
+        case PG_LANGUAGE:
+            szTypeName = wxT("Language");
+            break;
+
+        case PG_SCHEMAS:
+            szTypeName = wxT("Schemas");
+            break;
+
+        case PG_ADD_SCHEMA:
+            szTypeName = wxT("Add Schema");
+            break;
+
+        case PG_SCHEMA:
+            szTypeName = wxT("Schema");
+            break;
+
         default:
             szTypeName = wxT("None");
             break;
+
+
     }
 
     szName = szNewName;
@@ -86,6 +121,7 @@ pgObject::pgObject(int iNewType, const wxString& szNewName)
 
 pgObject::~pgObject()
 {
+    wxLogInfo(wxT("Destroying a pgDatabase object"));
 }
 
 int pgObject::GetType()
@@ -98,17 +134,62 @@ wxString pgObject::GetTypeName() const
     return szTypeName;
 }
 
-wxString pgObject::GetIdentifier() const
-{
-    return szIdentifier;
-}
-
 wxString pgObject::GetName() const
 {
     return szName;
 }
-
-unsigned long pgObject::GetOid()
+void pgObject::iSetName(const wxString& szNewVal)
 {
-    return lOid;
+    szName = szNewVal;
+}
+
+
+wxString pgObject::GetIdentifier() const
+{
+    return szName;
+}
+
+double pgObject::GetOid()
+{
+    return dOid;
+}
+void pgObject::iSetOid(double dNewVal)
+{
+    dOid = dNewVal;
+}
+
+wxString pgObject::GetOwner() const
+{
+    return szOwner;
+}
+void pgObject::iSetOwner(const wxString& szNewVal)
+{
+    szOwner = szNewVal;
+}
+
+wxString pgObject::GetComment() const
+{
+    return szComment;
+}
+void pgObject::iSetComment(const wxString& szNewVal)
+{
+    szComment = szNewVal;
+}
+
+wxString pgObject::GetAcl() const
+{
+    return szAcl;
+}
+void pgObject::iSetAcl(const wxString& szNewVal)
+{
+    szAcl = szNewVal;
+}
+
+bool pgObject::GetSystemObject()
+{
+    return bSystemObject;
+}
+void pgObject::iSetSystemObject(bool bNewVal)
+{
+    bSystemObject = bNewVal;
 }

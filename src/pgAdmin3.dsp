@@ -109,6 +109,10 @@ SOURCE=.\db\pgSet.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\schema\pgCollection.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgDatabase.cpp
 # End Source File
 # Begin Source File
@@ -438,6 +442,10 @@ SOURCE=.\include\frmUpgradeWizard.h
 # Begin Source File
 
 SOURCE=.\include\pgAdmin3.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgCollection.h
 # End Source File
 # Begin Source File
 

@@ -77,7 +77,7 @@ void frmConnect::OnOK()
     objSettings->SetLastPort(atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue().c_str()));
 
     // Pass the settings back to the pgServer that called me
-    objParent->iSetServer(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());
+    objParent->iSetName(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());
     objParent->iSetDatabase(XRCCTRL(*this, "txtDatabase", wxTextCtrl)->GetValue());
     objParent->iSetUsername(XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue());
     objParent->iSetPassword(XRCCTRL(*this, "txtPassword", wxTextCtrl)->GetValue());

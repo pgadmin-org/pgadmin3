@@ -21,6 +21,8 @@
 #include "pgAdmin3.h"
 #include "ctlSQLBox.h"
 #include "pgServer.h"
+#include "pgCollection.h"
+#include "pgDatabase.h"
 
 // Class declarations
 class frmMain : public wxFrame
@@ -54,9 +56,12 @@ private:
 
     // Treeview  handlers
     void tvServer(pgServer *objServer);
+    void tvDatabases(pgCollection *objCollection);
+    void tvDatabase(pgDatabase *objDatabase);
 
     // Statistics Handlers
     void svServer(pgServer *objServer);
+    void svDatabases(pgCollection *objCollection);
 
     void StoreServers();
     void RetrieveServers();
