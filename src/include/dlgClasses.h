@@ -34,6 +34,7 @@ public:
 protected:
     void OnCancel(wxCommandEvent& ev);
     void OnClose(wxCloseEvent& event);
+
     wxString dlgName;
 
     DECLARE_EVENT_TABLE();
@@ -111,11 +112,15 @@ protected:
     int pid;
     bool done, final;
 
+#if __GNUC__ >= 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
+public:
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
     void OnClose(wxCloseEvent& event);
-    void OnEndProcess(wxProcessEvent& event);
+protected:
+#endif
 
+    void OnEndProcess(wxProcessEvent& event);
     void OnPollProcess(wxTimerEvent& event);
     void checkStreams();
     void readStream(wxInputStream *input);
