@@ -489,11 +489,13 @@ void frmQuery::OnClearHistory(wxCommandEvent& event)
 void frmQuery::OnCut(wxCommandEvent& ev)
 {
     sqlQuery->Cut();
+    updateMenu();
 }
 
 void frmQuery::OnCopy(wxCommandEvent& ev)
 {
     sqlQuery->Copy();
+    updateMenu();
 }
 
 void frmQuery::OnPaste(wxCommandEvent& ev)
