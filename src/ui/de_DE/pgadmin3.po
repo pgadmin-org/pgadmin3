@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgAdmin3\n"
 "POT-Creation-Date: 2003-06-05 02:33+0200\n"
-"PO-Revision-Date: 2003-06-05 13:15+0100\n"
+"PO-Revision-Date: 2003-06-05 15:01+0100\n"
 "Last-Translator: Andreas Pflug <Andreas.Pflug@web.de>\n"
 "Language-Team: pgAdmin Developers <pgadmin-hackers@postgresql.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,21 +26,24 @@ msgstr ""
 msgid " rows"
 msgstr " Zeilen"
 
-#: src/ui/frmEditGrid.cpp:133
-#: src/ui/frmEditGrid.cpp:198
-msgid " rows."
-msgstr "Zeilen."
-
 #: src/ui/frmQueryBuilder.cpp:1044
 msgid ""
 "\"\n"
 "does not appear on the righthand side \n"
 msgstr ""
+"\"\n"
+"erscheint nicht auf der rechten Seite\n"
 
 #: src/ui/frmQuery.cpp:743
 #, c-format
 msgid "%d rows retrieved."
 msgstr "%d Zeilen geholt."
+
+#: src/ui/frmEditGrid.cpp:133
+#: src/ui/frmEditGrid.cpp:198
+#, c-format
+msgid "%d rows."
+msgstr "%s Zeilen."
 
 #: src/ui/frmQuery.cpp:828
 msgid "%l of %l rows"
@@ -276,6 +279,14 @@ msgstr "Anzeigen"
 #, c-format
 msgid "'%s' is not a valid identifier. It must start with A-Z or a-z or _ and can contain A-Z and a-z and 0-9 and _."
 msgstr "'%s' ist kein gültiger Bezeichner. Ein Bezeichner muß mit A-Z, a-z oder _ beginnen und kann A-Z, a-z, 0-9 und _ enthalten."
+
+#: src/ui/dlgProperty.cpp:342
+msgid "-- definition incomplete"
+msgstr "-- Definition nicht komplett"
+
+#: src/ui/dlgProperty.cpp:340
+msgid "-- nothing to change"
+msgstr "-- Nichts zu ändern"
 
 #: input:369
 msgid "..."
@@ -571,8 +582,9 @@ msgstr ""
 
 #: input:27
 #: src/schema/pgObject.cpp:50
+#: src/ui/dlgTable.cpp:360
 msgid "Check"
-msgstr "Prüfen"
+msgstr "Einschränkung"
 
 #: src/ui/frmQueryBuilder.cpp:1445
 msgid "Check for unbalanced single quote marks "
@@ -737,7 +749,7 @@ msgstr "Fortfahren?"
 
 #: src/schema/pgObject.cpp:36
 msgid "Conversion"
-msgstr "System-Konversion?"
+msgstr "Konversion"
 
 #: src/schema/pgObject.cpp:36
 msgid "Conversions"
@@ -859,6 +871,7 @@ msgid "Data type"
 msgstr "Datentyp"
 
 #: src/schema/pgObject.cpp:29
+#: src/ui/frmStatus.cpp:54
 msgid "Database"
 msgstr "Datenbank"
 
@@ -1212,6 +1225,7 @@ msgid "For Type"
 msgstr "Für Typ"
 
 #: src/schema/pgObject.cpp:50
+#: src/ui/dlgTable.cpp:358
 msgid "Foreign Key"
 msgstr "Fremdschlüssel"
 
@@ -1360,7 +1374,7 @@ msgstr "Vererbt"
 
 #: src/schema/pgAggregate.cpp:79
 msgid "Initial Condition"
-msgstr "Anfängliche Bedingung"
+msgstr "Anfangswerte"
 
 #: input:413
 #: src/schema/pgServer.cpp:260
@@ -1885,6 +1899,10 @@ msgstr "Ausgabefunktion"
 msgid "Owner"
 msgstr "Eigentümer"
 
+#: src/ui/frmStatus.cpp:53
+msgid "PID"
+msgstr "PID"
+
 #: input:288
 msgid "PLAIN"
 msgstr "PLAIN"
@@ -2104,6 +2122,7 @@ msgstr "Genauigkeit"
 #: src/schema/pgObject.cpp:50
 #: src/schema/pgTable.cpp:322
 #: src/schema/pgTable.cpp:324
+#: src/ui/dlgTable.cpp:357
 msgid "Primary Key"
 msgstr "Primärschlüssel"
 
@@ -2117,6 +2136,7 @@ msgid "Primary?"
 msgstr "Primär?"
 
 #: src/ui/dlgProperty.cpp:813
+#: src/ui/dlgProperty.cpp:820
 msgid "Privileges"
 msgstr "Privilegien"
 
@@ -2167,6 +2187,7 @@ msgid "Properties 2"
 msgstr "Eigenschaften 2"
 
 #: src/ui/frmQueryBuilder.cpp:1196
+#: src/ui/frmStatus.cpp:56
 msgid "Query"
 msgstr "Abfrage"
 
@@ -2296,7 +2317,7 @@ msgstr "Entfernen"
 
 #: src/schema/pgOperator.cpp:112
 msgid "Restrict Function"
-msgstr "Beschränkungsfunktion"
+msgstr "Beschränkungsfkt."
 
 #: input:190
 msgid "Restrict proc"
@@ -2362,12 +2383,12 @@ msgstr "Zeilentrigger"
 
 #: src/schema/pgTable.cpp:329
 #: src/schema/pgTable.cpp:331
-msgid "Rows"
-msgstr "Zeilen"
+msgid "Rows (counted)"
+msgstr "Zeilen (gezählt)"
 
 #: src/schema/pgTable.cpp:326
-msgid "Rows estimated"
-msgstr "geschätzte Zeilen"
+msgid "Rows (estimated)"
+msgstr "Zeilen (geschätzt)"
 
 #: src/schema/pgObject.cpp:48
 msgid "Rule"
@@ -2407,7 +2428,7 @@ msgstr "SQL Scripte (*.sql)|*.sql|Alle Dateien (*.*)|*.*"
 
 #: input:354
 msgid "SQL help site"
-msgstr "Website für SQL-Hilfe"
+msgstr "SQL Website"
 
 #: input:57
 msgid "SQL&ASCII"
@@ -2467,6 +2488,10 @@ msgstr "Schemata"
 msgid "Secure definer"
 msgstr "Sicherheit des Definierers"
 
+#: src/ui/dlgProperty.cpp:810
+msgid "Security"
+msgstr "Sicherheit"
+
 #: src/schema/pgFunction.cpp:115
 msgid "Security Definer?"
 msgstr "Sicherheit des Definierers="
@@ -2511,6 +2536,7 @@ msgid "Servers"
 msgstr "Server"
 
 #: src/ui/events.cpp:503
+#: src/ui/frmMain.cpp:644
 #, c-format
 msgid "Servers (%d)"
 msgstr "Server (%d)"
@@ -2872,13 +2898,14 @@ msgstr "Unexpected empty cache line: dataSet already closed."
 
 #: input:154
 #: src/schema/pgObject.cpp:50
+#: src/ui/dlgTable.cpp:359
 msgid "Unique"
-msgstr "Einzigartig"
+msgstr "Eindeutig"
 
 #: src/schema/pgIndex.cpp:174
 #: src/schema/pgIndexConstraint.cpp:95
 msgid "Unique?"
-msgstr "Einzigartig?"
+msgstr "Eindeutig?"
 
 #: src/schema/pgObject.cpp:51
 msgid "Unknown"
@@ -2893,6 +2920,7 @@ msgid "Update Catalogs?"
 msgstr "Katalog ändern?"
 
 #: src/schema/pgObject.cpp:31
+#: src/ui/frmStatus.cpp:55
 msgid "User"
 msgstr "Benutzer"
 
@@ -2947,6 +2975,10 @@ msgstr "VOLATILE"
 #: src/ui/frmMain.cpp:238
 msgid "Vacuum"
 msgstr "Schrumpfen"
+
+#: src/ui/frmVacuum.cpp:48
+msgid "Vacuum "
+msgstr "Schrumpfen "
 
 #: src/ui/frmMain.cpp:142
 #: src/ui/frmMain.cpp:176
