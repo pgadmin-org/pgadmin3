@@ -38,26 +38,27 @@ div.Section1
   <p>
   Presently, daily snapshots are compiled for the following platforms:
     <ul>
-    	<li><a href="#redhat">GNU/Linux RedHat 9</a>
-      <li><a href="#suse">GNU/Linux SuSE 8.0</a>
-      <li><a href="#mandrake">GNU/Linux Mandrake 9.1</a>
+    	<li><a href="#rpm">GNU/Linux RedHat 9, SuSE 8.0, Mandrake 9.1</a>
       <li><a href="#slackware">GNU/Linux Slackware 9.0</a>
       <li><a href="#win">Microsoft Windows 2000 & XP</a>
       </li>
 		</ul>
 	</p>
 
-<a name="#redhat">
-	<h3>GNU/Linux RedHat 9</h3>
+<a name="#rpm">
+	<h3>GNU/Linux Mandrake 9.1, RedHat 9, SuSE 8.0</h3>
   Packager: Jean-Michel POURE
   <p>
   	<ul>
       <li>Binary RPM packages
       	<p>
-        	pgAdmin3 binary RPM packages are compiled statically against <a href="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">wxGTK 2.5</a>. Therefore there is not need to install <a href="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">wxGTK 2.5</a> libraries. pgAdmin3 binaries are compiled with Unicode and debugging mode and linked against GTK2. The binaries are localised in several languages and include the latest PostgreSQL documentation. The required steps for installation are:
+        	pgAdmin3 binary RPM packages are compiled statically against <a href="http://wxwindows.sourceforge.net/snapshots/">wxGTK 2.5</a>. Therefore there is not need to install <a href="http://wxwindows.sourceforge.net/snapshots">wxGTK 2.5</a> libraries. pgAdmin3 binaries are compiled with Unicode and debugging mode and linked against GTK2. The binaries are localised in several languages and include the latest PostgreSQL documentation. The required steps for installation are:
         </p>
       	<ol>
-      		<li>Download the latest pgAdmin3 RPM package from <a href="http://www.pgadmin.org/snapshots/linux/redhat9/RPMS">http://www.pgadmin.org/snapshots/linux/redhat9/RPMS</a>.
+      		<li>Download the latest pgAdmin3 RPM package from:<br>
+          <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/RPMS">http://www.pgadmin.org/snapshots/linux/mandrake91/RPMS</a><br>
+          <a href="http://www.pgadmin.org/snapshots/linux/redhat9/RPMS">http://www.pgadmin.org/snapshots/linux/redhat9/RPMS</a>.<br>
+          <a href="http://www.pgadmin.org/snapshots/linux/suse82/RPMS">http://www.pgadmin.org/snapshots/linux/suse82/RPMS</a>.<br>
           <li>Install the downloaded RPM using the following command:
             <br>
             # rpm -Uvh pgadmin3*.rpm
@@ -67,10 +68,13 @@ div.Section1
       <br>
       <li>wxGTK 2.5 libraries
       	<p>
-        If you want to contribute pgAdmin3 projects or simply compile from source, you need a recent GNU/Linux distribution with <a href="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">wxGTK 2.5</a> libraries, header files and contributed libraries. For your convenience and to avoid long compilation times (sometimes hours), we provide the latest <a href="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">wxGTK 2.5</a> needed environment in RPM format.
+        If you want to contribute pgAdmin3 projects or simply compile from source, you need a recent GNU/Linux distribution with <a href="http://wxwindows.sourceforge.net">wxGTK 2.5</a> libraries, header files and contributed libraries. For your convenience and to avoid long compilation times (sometimes hours), we provide <a href="http://wxwindows.sourceforge.net/snapshots">wxGTK 2.5 CVS snapshots</a> in RPM format.
 				</p>
         	<ol>
-            <li>Download the four latest <a href="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">wxGTK 2.5</a> RPM packages from <a href="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2</a>.
+            <li>Download the four latest wxGTK 2.5 RPM packages from:<br>
+            <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2</a><br>
+            <a href="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2</a><br>
+            <a href="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2</a><br>
             <br>
             The packages are numbered:
             <br>
@@ -82,91 +86,12 @@ div.Section1
             <br>
             # rpm -Uvh wxGTK2ud*.rpm
             <br>
-            <li>wxGTK2ud RPMs will check for the needed dependencies and warn you if some packages are not installed. All needed dependencies are included in the stock GNU/Linux RedHat 9 distribution.
-						<li>Until pgAdmin3 configuration script is able to detect wxgtk2ud-2.5-config, you need to create a symlink /usr/bin/wx-config -> wxgtk2ud-2.5-config entering this command:
-            <br>
-            # ln -s /usr/bin/wxgtk2ud-2.5-config /usr/bin/wx-config
+            <li>wxGTK2ud RPMs will check for the needed dependencies and warn you if some packages are not installed.
             </li>
 				</ol>
       </li>
     </ul>
 	</p><br>
-
-  <a name="#suse">
-  <h3>GNU/Linux SuSE 8.2</h3>
-  Packager: Jean-Michel POURE
-  <p>
-  	<ul>
-      <li>Binary RPM packages
-        <p>
-          pgAdmin3 does not yet compile under GNU/Linux SuSE82 due to a problem with the configure script which cannot find PostgreSQL header files. A patch is in preparation. Stay tuned... Alternatively, if you think you can help, install <a href="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">wxGTK 2.5</a> packages and try to compile pgAdmin3 from CVS source.
-        </p>
-
-      <br>
-      <li>wxGTK 2.5 libraries
-      	<p>
-        If you want to contribute pgAdmin3 projects or simply compile from source, you need a recent GNU/Linux distribution with <a href="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">wxGTK 2.5</a> libraries, header files and contributed libraries. For your convenience and to avoid long compilation times (sometimes hours), we provide the latest <a href="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">wxGTK 2.5</a> needed environment in RPM format.
-				</p>
-        	<ol>
-            <li>Download the four latest wxGTK2ud RPM packages from <a href="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2</a>.
-            <br>
-            The packages are numbered:
-            <br>
-              &nbsp; - wxGTK2ud-$version-.i386.rpm<br>
-              &nbsp; - wxGTK2ud-devel-$version.i386.rpm<br>
-              &nbsp; - wxGTK2ud-xtc-$version.i386.rpm<br>
-              &nbsp; - wxGTK2ud-stc-$version.i386.rpm<br>
-            <li>Install the downloaded RPM using the following command:
-            <br>
-            # rpm -Uvh wxGTK2ud*.rpm
-            <br>
-            <li>wxGTK2ud RPMs will check for the needed dependencies and warn you if some packages are not installed. All needed dependencies can be found using YAST, SuSE upgrading tool.
-						<li>Until pgAdmin3 configuration script is able to detect wxgtk2ud-2.5-config, you need to create a symlink /usr/bin/wx-config -> wxgtk2ud-2.5-config entering this command:
-            <br>
-            # ln -s /usr/bin/wxgtk2ud-2.5-config /usr/bin/wx-config
-            </li>
-				</ol>
-      </li>
-    </ul>
-  </p><br>
-
-  <a name="#mandrake">
-  <h3>GNU/Linux Mandrake 9.1</h3>
-  Packager: Jean-Michel POURE
-  <p>
-  	<ul>
-      <li>Binary RPM packages
-        <p>
-        pgAdmin3 does not yet compile under GNU/Linux Mandrake 9.1 due old versions of autoconf (2.13-16mdk) and automake (1.4-21.p6.mdk). Stay tuned... Alternatively, if you think you can help, install <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">wxGTK2</a> packages and try to compile pgAdmin3 from CVS source.
-        </p>
-
-      <br>
-      <li>wxGTK 2.5 libraries
-      	<p>
-        If you want to contribute pgAdmin3 projects or simply compile from source, you need a recent GNU/Linux distribution with <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">wxGTK2</a> libraries, header files and contributed libraries. For your convenience and to avoid long compilation times (sometimes hours), we provide the latest <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">wxGTK2</a> needed environment in RPM format.
-				</p>
-        	<ol>
-            <li>Download the four latest wxGTK2ud RPM packages from <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2</a>.
-            <br>
-            The packages are numbered:
-            <br>
-              &nbsp; - wxGTK2ud-$version-.i386.rpm<br>
-              &nbsp; - wxGTK2ud-devel-$version.i386.rpm<br>
-              &nbsp; - wxGTK2ud-xtc-$version.i386.rpm<br>
-              &nbsp; - wxGTK2ud-stc-$version.i386.rpm<br>
-            <li>Install the downloaded RPM using the following command:
-            <br>
-            # rpm -Uvh wxGTK2ud*.rpm
-            <br>
-            <li>wxGTK2ud RPMs will check for the needed dependencies and warn you if some packages are not installed. All needed dependencies can be found on Mandrake Cooker.
-						<li>Until pgAdmin3 configuration script is able to detect wxgtk2ud-2.5-config, you need to create a symlink /usr/bin/wx-config -> wxgtk2ud-2.5-config entering this command:
-            <br>
-            # ln -s /usr/bin/wxgtk2ud-2.5-config /usr/bin/wx-config
-            </li>
-				</ol>
-      </li>
-    </ul>
-  </p><br>
 
   <a name="#slackware">
   <h3>GNU/Slackware 9.0</h3>
