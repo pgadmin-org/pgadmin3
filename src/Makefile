@@ -7,8 +7,12 @@
 
 
 CC = g++
-PGDIR = /usr/local/pgsql-7.3
-WXDIR = /usr/local/wx2
+ifeq ($(PGDIR),)
+	PGDIR = /usr/local/pgsql-7.3
+endif
+ifeq ($(WXDIR),)
+	WXDIR = /usr/local/wx2
+endif
 
 # You shouldn't need to edit below here.
 
