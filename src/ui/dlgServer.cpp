@@ -95,6 +95,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 
     if (server)
     {
+        server->iSetName(GetName());
         server->iSetDescription(txtDescription->GetValue());
         if (txtService->GetValue() != server->GetServiceID())
         {
@@ -138,7 +139,10 @@ int dlgServer::GoNew()
     if (cbSSL->IsEmpty())
         return Go(true);
     else
+    {
+        CheckChange();
         return ShowModal();
+    }
 }
 
 
@@ -160,9 +164,6 @@ int dlgServer::Go(bool modal)
     if (server)
     {
         cbDatabase->Append(server->GetDatabaseName());
-        if (connection)
-            cbDatabase->Disable();
-
         txtDescription->SetValue(server->GetDescription());
         txtService->SetValue(server->GetServiceID());
         txtPort->SetValue(NumToStr((long)server->GetPort()));
@@ -172,6 +173,15 @@ int dlgServer::Go(bool modal)
         chkNeedPwd->SetValue(server->GetNeedPwd());
         stPassword->Disable();
         txtPassword->Disable();
+        if (connection)
+        {
+            txtName->Disable();
+            cbDatabase->Disable();
+            txtPort->Disable();
+            cbSSL->Disable();
+            txtUsername->Disable();
+            chkNeedPwd->Disable();
+        }
     }
     else
     {
