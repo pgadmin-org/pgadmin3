@@ -227,7 +227,6 @@ void dlgFunction::OnChange(wxCommandEvent &ev)
               || name != function->GetName()
               || cbVolatility->GetValue() != function->GetVolatility()
               || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
-              || chkSetof->GetValue() != function->GetReturnAsSet()
               || chkStrict->GetValue() != function->GetIsStrict()
               || cbLanguage->GetValue() != function->GetLanguage()
               || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
@@ -354,6 +353,10 @@ wxString dlgFunction::GetSql()
 
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
     bool didChange = !function 
+        || cbVolatility->GetValue() != function->GetVolatility()
+        || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
+        || chkStrict->GetValue() != function->GetIsStrict()
+        || cbLanguage->GetValue() != function->GetLanguage()
         || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
         || (!isC && txtSqlBox->GetText() != function->GetSource());
 
