@@ -703,6 +703,7 @@ int frmMain::ReconnectServer(pgServer *server)
     switch (res)
     {
         case PGCONN_OK:
+        {
             StartMsg(_("Restoring previous environment"));
             wxLogInfo(wxT("pgServer object initialised as required."));
             browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Normal);
@@ -722,7 +723,8 @@ int frmMain::ReconnectServer(pgServer *server)
                 browser->EnsureVisible(item);
             }
             EndMsg();
-            break;
+            return res;
+        }
         case PGCONN_DNSERR:
             /*
             // looks strange to me. Shouldn_t server be removed from the tree as well?
@@ -737,6 +739,8 @@ int frmMain::ReconnectServer(pgServer *server)
             wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
             break;
     }
+
+    server->Disconnect();
     return res;
 }
 
