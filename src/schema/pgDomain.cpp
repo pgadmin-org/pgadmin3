@@ -125,13 +125,16 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 {
     pgDomain *domain=0;
 
+    pgDatabase *db=collection->GetDatabase();
 
-    pgSet *domains= collection->GetDatabase()->ExecuteSet(
+    pgSet *domains= db->ExecuteSet(
         wxT("SELECT d.oid, d.typname as domname, d.typbasetype, b.typname as basetype, pg_get_userbyid(d.typowner) as domainowner, \n")
-        wxT("       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim,\n")
-        wxT("       description\n")
+        wxT("       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim, bn.nspname as basensp,\n")
+        wxT("       description, (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname=d.typname) > 1 AS domisdup,\n")
+        wxT("       (SELECT COUNT(1) FROM pg_type t3 WHERE t3.typname=b.typname) > 1 AS baseisdup\n")
         wxT("  FROM pg_type d\n")
         wxT("  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n")
+        wxT("  JOIN pg_namespace bn ON bn.oid=b.typnamespace\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n")
         wxT(" WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
         + restriction +
@@ -150,18 +153,20 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             domain->iSetComment(domains->GetVal(wxT("description")));
             long typmod=domains->GetLong(wxT("typtypmod"));
 
-            pgDatatype dt(domains->GetVal(wxT("basetype")), domains->GetLong(wxT("typndims")), typmod);
+            pgDatatype dt(domains->GetVal(wxT("basensp")), domains->GetVal(wxT("basetype")), 
+                domains->GetBool(wxT("baseisdup")), domains->GetLong(wxT("typndims")), typmod);
 
             domain->iSetTyplen(domains->GetLong(wxT("typlen")));
             domain->iSetTypmod(typmod);
             domain->iSetLength(dt.Length());
             domain->iSetPrecision(dt.Precision());
-            domain->iSetBasetype(dt.FullName());
-            domain->iSetQuotedBasetype(dt.QuotedFullName());
+            domain->iSetBasetype(dt.GetSchemaPrefix(db) + dt.FullName());
+            domain->iSetQuotedBasetype(dt.GetQuotedSchemaPrefix(db) + dt.QuotedFullName());
             domain->iSetDefault(domains->GetVal(wxT("typdefault")));
             domain->iSetNotNull(domains->GetBool(wxT("typnotnull")));
             domain->iSetDimensions(domains->GetLong(wxT("typndims")));
             domain->iSetDelimiter(domains->GetVal(wxT("typdelim")));
+            domain->iSetIsDup(domains->GetBool(wxT("domisdup")));
 
             if (browser)
             {

@@ -190,7 +190,7 @@ void dlgForeignKey::OnSelChangeRef(wxCommandEvent &ev)
     cbRefColumns->Clear();
 
     wxString tab=cbReferences->GetValue();
-    wxString nsp=wxT("public");
+    wxString nsp;
     if (tab.Find('.') >= 0)
     {
         nsp=tab.BeforeFirst('.');

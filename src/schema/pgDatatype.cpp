@@ -20,8 +20,11 @@
 #include "pgDefs.h"
 
 
-pgDatatype::pgDatatype(const wxString &typname, long numdims, long typmod)
+pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup, long numdims, long typmod)
 {
+    needSchema = isDup;
+    schema = nsp;
+
     if (typname.StartsWith(wxT("_")))
     {
         if (!numdims)
@@ -69,6 +72,28 @@ pgDatatype::pgDatatype(const wxString &typname, long numdims, long typmod)
 }
 
 
+
+wxString pgDatatype::GetSchemaPrefix(pgDatabase *db) const
+{
+    if (schema.IsEmpty())
+        return schema;
+
+    if (needSchema)
+        return schema + wxT(".");
+
+    return db->GetSchemaPrefix(schema);
+}
+
+
+wxString pgDatatype::GetQuotedSchemaPrefix(pgDatabase *db) const
+{
+    wxString str=GetSchemaPrefix(db);
+    if (!str.IsEmpty())
+        return qtIdent(str.Left(str.Length()-1)) + wxT(".");
+    return str;
+}
+
+
 long pgDatatype::GetTypmod(const wxString &name, const wxString &len, const wxString &prec)
 {
     if (len.IsEmpty())
@@ -112,7 +137,8 @@ void DatatypeReader::init(pgDatabase *db, const wxString &condition)
 {
     database=db;
     set=db->GetConnection()->ExecuteSet(
-        wxT("SELECT typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname\n")
+        wxT("SELECT typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname,\n")
+        wxT("       (SELECT COUNT(1) FROM pg_type t2 WHERE t2.typname = t.typname) > 1 AS isdup\n")
         wxT("  FROM pg_type t\n")
         wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
         wxT(" WHERE ") + condition + wxT("\n")
@@ -167,7 +193,7 @@ bool DatatypeReader::MaySpecifyPrecision() const
 
 pgDatatype DatatypeReader::GetDatatype() const
 {
-    return pgDatatype(set->GetVal(wxT("typname")));
+    return pgDatatype(set->GetVal(wxT("nspname")), set->GetVal(wxT("typname")), set->GetBool(wxT("isdup")));
 }
 
 
@@ -185,13 +211,19 @@ wxString DatatypeReader::GetSchema() const
 
 wxString DatatypeReader::GetSchemaPrefix() const
 {
-    return database->GetSchemaPrefix(set->GetVal(wxT("nspname")));
+    if (set->GetBool(wxT("isdup")))
+        return set->GetVal(wxT("nspname")) + wxT(".");
+    else
+        return database->GetSchemaPrefix(set->GetVal(wxT("nspname")));
 }
 
 
 wxString DatatypeReader::GetQuotedSchemaPrefix() const
 {
-    return database->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname")));
+    if (set->GetBool(wxT("isdup")))
+        return qtIdent(set->GetVal(wxT("nspname"))) + wxT(".");
+    else
+        return database->GetQuotedSchemaPrefix(set->GetVal(wxT("nspname")));
 }
 
 

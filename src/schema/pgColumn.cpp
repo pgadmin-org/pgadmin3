@@ -129,7 +129,8 @@ wxString pgColumn::GetDefinition()
 {
     wxString sql = GetQuotedTypename();
 
-    if ((sql == wxT("int4") || sql == wxT("int8"))
+    if ((sql == wxT("int4") || sql == wxT("int8") || 
+         sql == wxT("pg_catalog.int4") || sql == wxT("pg_catalog.int8"))
         && GetDefault() == wxT("nextval('") 
                         + schema->GetName() + wxT(".") + GetTableName() 
                         + wxT("_") + GetName() + wxT("_seq'::text)"))
@@ -278,7 +279,8 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
         
     pgSet *columns= database->ExecuteSet(
         wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, CASE WHEN ty.typname = 'bpchar' THEN 'char' WHEN ty.typname = '_bpchar' THEN '_char' ELSE ty.typname END AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
-        wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema\n")
+        wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
+        wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup\n")
         wxT("  FROM pg_attribute att\n")
         wxT("  JOIN pg_type ty ON ty.oid=atttypid\n")
         wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
@@ -322,7 +324,9 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             column->iSetTyplen(columns->GetLong(wxT("attlen")));
 
             long typmod=columns->GetLong(wxT("atttypmod"));
-            pgDatatype dt(columns->GetVal(wxT("typname")), columns->GetBool(wxT("isarray"))? 1 : 0, typmod);
+            pgDatatype dt(columns->GetVal(wxT("typnspname")), columns->GetVal(wxT("typname")), 
+                columns->GetBool(wxT("isdup")),
+                columns->GetBool(wxT("isarray"))? 1 : 0, typmod);
 
 
             column->iSetTypmod(typmod);
@@ -330,17 +334,8 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             column->iSetPrecision(dt.Precision());
             column->iSetRawTypename(dt.Name());
 
-            wxString nsp=columns->GetVal(wxT("typnspname"));
-            if (nsp == wxT("pg_catalog"))
-            {
-                column->iSetVarTypename(dt.FullName());
-                column->iSetQuotedTypename(dt.QuotedFullName());
-            }
-            else
-            {
-                column->iSetVarTypename(database->GetSchemaPrefix(nsp) + dt.FullName());
-                column->iSetQuotedTypename(database->GetQuotedSchemaPrefix(nsp) + dt.QuotedFullName());
-            }
+            column->iSetVarTypename(dt.GetSchemaPrefix(database) + dt.FullName());
+            column->iSetQuotedTypename(dt.GetQuotedSchemaPrefix(database) + dt.QuotedFullName());
 
             column->iSetNotNull(columns->GetBool(wxT("attnotnull")));
             column->iSetQuotedFullTable(database->GetQuotedSchemaPrefix(columns->GetVal(wxT("nspname")))

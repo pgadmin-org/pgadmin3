@@ -37,6 +37,7 @@ public:
     void iSetBasetype(const wxString& s) { basetype = s; }
     wxString GetQuotedBasetype() const { return quotedBasetype; }
     void iSetQuotedBasetype(const wxString& s) { quotedBasetype = s; }
+    void iSetIsDup(bool b) { isDup = b; }
     long GetLength() const { return length; }
     void iSetLength(long l) { length=l; }
     long GetPrecision() const { return precision; }
@@ -66,7 +67,7 @@ private:
     wxString basetype, quotedBasetype, defaultVal, delimiter, check;
     long length, precision, dimensions;
     long typlen, typmod;
-    bool notNull;
+    bool notNull, isDup;
     OID basetypeOid;
 };
 

@@ -90,7 +90,8 @@ int pgDatabase::Connect()
         if (!exprname.IsEmpty())
             prettyOption = wxT(", true");
     
-        searchPath = connection()->ExecuteScalar(wxT("SHOW search_path"));
+        UpdateDefaultSchema();
+
         connected = true;
     }
 
@@ -160,30 +161,51 @@ bool pgDatabase::ExecuteVoid(const wxString& sql)
 }
 
 
+void pgDatabase::UpdateDefaultSchema()
+{
+    searchPath = connection()->ExecuteScalar(wxT("SHOW search_path"));
+
+    if (!searchPath.IsEmpty())
+    {
+        wxStringTokenizer tk(searchPath, wxT(","));
+        pgSet *set=ExecuteSet(wxT("SELECT nspname, session_user=nspname AS isuser FROM pg_namespace"));
+        if (set)
+        {
+            while (tk.HasMoreTokens())
+            {
+                wxString str=tk.GetNextToken();
+                str.Strip(wxString::both);
+
+                if (str.IsEmpty())
+                    continue;
+                long row;
+                for (row=1 ; row <= set->NumRows() ; row++)
+                {
+                    set->Locate(row);
+                    defaultSchema = set->GetVal(wxT("nspname"));
+                    if (str == defaultSchema || 
+                            (str == wxT("$user") && set->GetBool(wxT("isuser"))))
+                    {
+                        delete set;
+                        return;
+                    }
+                }
+            }
+            delete set;
+        }
+    }
+    defaultSchema = wxEmptyString;
+}
+
+
 wxString pgDatabase::GetSchemaPrefix(const wxString &name) const
 {
     if (name.IsEmpty())
         return name;
 
-    wxString sp=wxT("public,pg_catalog");
+    if (name == wxT("pg_catalog") || name == defaultSchema)
+        return wxEmptyString;
 
-#if 0
-    // this wasn't really a good idea for object creation/modification.
-    wxString sp=settings->GetSearchPath();
-    if (sp.IsEmpty())
-        sp = GetSearchPath();
-    sp += wxT(",pg_catalog");
-#endif
-    wxStringTokenizer spt(sp, wxT(","));
-    while (spt.HasMoreTokens())
-    {
-        wxString tk=spt.GetNextToken().Strip(wxString::both);
-        if (tk == wxT("$user"))
-            continue;
-
-        if (tk == name)
-            return wxEmptyString;
-    }
     return name + wxT(".");
 }
 
@@ -318,6 +340,9 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView 
             properties->AppendItem(_("Tablespace"), GetTablespace());
         properties->AppendItem(_("Encoding"), GetEncoding());
 
+        if (!defaultSchema.IsEmpty())
+            properties->AppendItem(_("Default schema"), defaultSchema);
+
         size_t i;
         for (i=0 ; i < variables.GetCount() ; i++)
         {
@@ -358,6 +383,9 @@ pgObject *pgDatabase::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
             }
         }
     }
+
+    UpdateDefaultSchema();
+
     return this;
 }
 

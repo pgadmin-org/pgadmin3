@@ -78,7 +78,8 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
         if (isComposite)
         {
             pgSet *set=ExecuteSet(
-                wxT("SELECT attname, t.typname, attndims, atttypmod, nspname\n")
+                wxT("SELECT attname, t.typname, attndims, atttypmod, nspname,\n")
+                wxT("       (SELECT COUNT(1) from pg_type t2 WHERE t2.typname=t.typname) > 1 AS isdup\n")
                 wxT("  FROM pg_attribute att\n")
                 wxT("  JOIN pg_type t ON t.oid=atttypid\n")
                 wxT("  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n")
@@ -98,12 +99,13 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
                     typesList += set->GetVal(wxT("attname")) + wxT(" ");
                     quotedTypesList += qtIdent(set->GetVal(wxT("attname"))) + wxT(" ");
 
-                    pgDatatype dt(set->GetVal(wxT("typname")), set->GetLong(wxT("attndims")) > 0, set->GetLong(wxT("atttypmod")));
+                    pgDatatype dt(set->GetVal(wxT("nspname")), set->GetVal(wxT("typname")),
+                        set->GetBool(wxT("isdup")), set->GetLong(wxT("attndims")) > 0, set->GetLong(wxT("atttypmod")));
 
                     wxString nspname=set->GetVal(wxT("nspname"));
 
-                    typesList += GetSchemaPrefix(nspname) + dt.FullName();
-                    quotedTypesList += GetQuotedSchemaPrefix(nspname) + dt.QuotedFullName();
+                    typesList += dt.GetSchemaPrefix(GetDatabase()) + dt.FullName();
+                    quotedTypesList += dt.GetQuotedSchemaPrefix(GetDatabase()) + dt.QuotedFullName();
 
                     set->MoveNext();
                 }

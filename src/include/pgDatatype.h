@@ -24,21 +24,25 @@ class pgDatabase;
 class pgDatatype
 {
 public:
-    pgDatatype(const wxString &typname, long numdims=0, long typmod=-1);
+    pgDatatype(const wxString &nsp, const wxString &typname, bool isduplicate, long numdims=0, long typmod=-1);
     wxString Name() const { return name; };
     wxString LengthString() const { return length; }
     wxString Array() const { return array; }
     wxString FullName() const { return name + length + array; }
     wxString QuotedFullName() const { return qtIdent(name) + length + array; }
+    wxString GetSchemaPrefix(pgDatabase *db) const;
+    wxString GetQuotedSchemaPrefix(pgDatabase *db) const;
     long Length() const { return len; }
     long Precision() const { return prec; }
     static long GetTypmod(const wxString &name, const wxString &len, const wxString &prec);
 
 private:
+    wxString schema;
     wxString name;
     wxString length;
     wxString array;
     long len, prec;
+    bool needSchema;
 };
 
 

@@ -483,12 +483,12 @@ wxString dlgFunction::GetSql()
     name = schema->GetQuotedPrefix() + qtIdent(name) 
          + wxT("(") + GetArgs(false, true) + wxT(")");
 
-    sql  += schema->GetQuotedPrefix() + qtIdent(GetName()) 
-         + wxT("(") + GetArgs(true, true) + wxT(")");
 
     if (didChange)
     {
-        sql += wxT(" RETURNS ");
+        sql  += schema->GetQuotedPrefix() + qtIdent(GetName()) 
+             + wxT("(") + GetArgs(true, true) + wxT(")")
+               wxT(" RETURNS ");
         if (chkSetof->GetValue())
             sql += wxT("SETOF ");
         sql += cbReturntype->GetValue()

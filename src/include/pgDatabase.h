@@ -39,6 +39,7 @@ public:
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     bool ExecuteVoid(const wxString& sql);
+    void UpdateDefaultSchema();
 
     pgConn *CreateConn() { return server->CreateConn(GetName()); }
 
@@ -84,7 +85,7 @@ private:
     bool connected;
     bool useServerConnection;
     wxString searchPath, path, tablespace, encoding;
-    wxString prettyOption;
+    wxString prettyOption, defaultSchema;
     bool allowConnections, createPrivilege;
     long missingFKs;
     wxArrayString variables;
