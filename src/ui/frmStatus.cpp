@@ -521,7 +521,7 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
 		} 
 		else 
 		{
-			btnCancel->Enablcd sre(false);
+			btnCancel->Enable(false);
 			btnTerminate->Enable(false);
 		}
 	}
