@@ -148,7 +148,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System objects"),     _("Show or hide system objects."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_REFRESH, _("&Refresh"),          		_("Refresh the selected object."));
-    menuBar->Append(viewMenu, _("&View"));
+    menuBar->Append(viewMenu, _("&Display"));
 
     // Help Menu
     helpMenu = new wxMenu();

@@ -155,7 +155,7 @@ bool pgAdmin3::OnInit()
             }
 
 
-            langNo = wxGetSingleChoiceIndex(_("Please choose language:"), _("Language"), 
+            langNo = wxGetSingleChoiceIndex(_("Please choose user language:"), _("User Language"), 
                 langCount+1, langNames);
             if (langNo > 0)
             {
