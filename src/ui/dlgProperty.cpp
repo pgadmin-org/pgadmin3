@@ -741,11 +741,14 @@ void dlgSecurityProperty::OnDelPriv(wxNotifyEvent &ev)
 
 void dlgSecurityProperty::EnableOK(bool enable)
 {
-    if (!enable && securityChanged)
+    if (securityChanged)
     {
         wxString sql=GetSql();
         if (sql.IsEmpty())
+        {
+            enable=false;
             securityChanged=false;
+        }
         else
             enable=true;
     }

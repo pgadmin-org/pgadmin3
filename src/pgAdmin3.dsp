@@ -330,6 +330,10 @@ SOURCE=.\ui\dlgProperty.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\dlgSchema.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgTable.cpp
 # End Source File
 # Begin Source File
@@ -611,6 +615,10 @@ SOURCE=.\include\dlgIndexConstraint.h
 # Begin Source File
 
 SOURCE=.\include\dlgProperty.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgSchema.h
 # End Source File
 # Begin Source File
 

@@ -38,6 +38,8 @@ public:
     bool GetSystemObject() const { return schemaTyp < 1; }
 
     bool CanDrop() { return true; }
+    bool CanEdit() { return true; }
+    bool CanCreate() { return true; }
     bool RequireDropConfirm() { return true; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
