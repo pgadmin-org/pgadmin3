@@ -114,17 +114,7 @@ include/images/unique.xpm include/images/unknown.xpm \
 include/images/user.xpm include/images/vacuum.xpm \
 include/images/viewdata.xpm include/images/view.xpm
 
-nobase_dist_pkgdata_DATA = tips.txt ui/common/dlgCheck.xrc \
-ui/common/dlgColumn.xrc \
-ui/common/dlgDatabase.xrc ui/common/dlgDomain.xrc \
-ui/common/dlgForeignKey.xrc ui/common/dlgGroup.xrc \
-ui/common/dlgIndexConstraint.xrc ui/common/dlgIndex.xrc \
-ui/common/dlgLanguage.xrc ui/common/dlgSchema.xrc \
-ui/common/dlgTable.xrc ui/common/dlgUser.xrc \
-ui/common/frmAddTableView.xrc ui/common/frmConnect.xrc \
-ui/common/frmOptions.xrc ui/common/frmPassword.xrc \
-ui/common/frmQBJoin.xrc ui/common/frmServer.xrc \
-ui/common/frmStatus.xrc ui/common/frmVacuum.xrc
+nobase_dist_pkgdata_DATA = tips.txt ui/common/*.xrc
 
 #AM_CPPFLAGS = -Wall -g -I./include/ -I$(WX_HOME) -DDATADIR=\"$(pkgdatadir)/\"
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -g -I./include/ -I$(WX_HOME)
