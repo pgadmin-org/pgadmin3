@@ -60,6 +60,7 @@ public:
     bool GetIsRecordType() const { return isRecordType; }
     void iSetIsRecordType(const bool b) { isRecordType=b; }
     void iSetRelOid(const OID d) { relOid=d; }
+    const wxArrayString &GetTypesArray() { return typesArray; }
     wxString GetTypesList() const { return typesList; }
     wxString GetQuotedTypesList() const {return quotedTypesList; }
     bool GetSystemObject() const { return pgSchemaObject::GetSystemObject() || isRecordType; }
@@ -71,6 +72,7 @@ public:
 private:
     wxString inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,
         typesList, quotedTypesList, sendFunction, receiveFunction;
+	wxArrayString typesArray;
     long internalLength;
     bool passedByValue, isComposite, isRecordType;
     OID relOid;

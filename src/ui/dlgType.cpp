@@ -137,12 +137,10 @@ int dlgType::Go(bool modal)
         btnAdd->Disable();
         btnRemove->Disable();
 
-        wxStringTokenizer members(type->GetTypesList(), wxT(","));
-        while (members.HasMoreTokens())
-        {
-            wxString str=members.GetNextToken().Strip(wxString::both);
-            lstMembers->AppendItem(0, str.BeforeFirst(' '), str.AfterFirst(' '));
-        }
+        wxArrayString elements=type->GetTypesArray();
+        size_t i;
+		for (i=0 ; i < elements.GetCount() ; i+=2)
+            lstMembers->AppendItem(0, elements.Item(i), elements.Item(i+1));
 
         cbDatatype->Disable();
         txtLength->Disable();

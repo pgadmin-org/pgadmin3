@@ -91,12 +91,14 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
                 int anzvar=0;
                 while (!set->Eof())
                 {
+                    wxString element;
                     if (anzvar++)
                     {
                         typesList += wxT(", ");
                         quotedTypesList += wxT(",\n    ");
                     }
                     typesList += set->GetVal(wxT("attname")) + wxT(" ");
+                    typesArray.Add(set->GetVal(wxT("attname")));
                     quotedTypesList += qtIdent(set->GetVal(wxT("attname"))) + wxT(" ");
 
                     pgDatatype dt(set->GetVal(wxT("nspname")), set->GetVal(wxT("typname")),
@@ -105,6 +107,7 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
                     wxString nspname=set->GetVal(wxT("nspname"));
 
                     typesList += dt.GetSchemaPrefix(GetDatabase()) + dt.FullName();
+                    typesArray.Add(dt.GetSchemaPrefix(GetDatabase()) + dt.FullName());
                     quotedTypesList += dt.GetQuotedSchemaPrefix(GetDatabase()) + dt.QuotedFullName();
 
                     set->MoveNext();
