@@ -129,6 +129,96 @@ void pgDialog::OnCancel(wxCommandEvent& ev)
 ///////////////////////////////////////////////////////////////////////////////////////
 
 
+BEGIN_EVENT_TABLE(pgFrame, wxFrame)
+    EVT_MENU(MNU_EXIT,                  pgFrame::OnExit)
+    EVT_MENU(MNU_RECENT+1,              pgFrame::OnRecent)
+    EVT_MENU(MNU_RECENT+2,              pgFrame::OnRecent)
+    EVT_MENU(MNU_RECENT+3,              pgFrame::OnRecent)
+    EVT_MENU(MNU_RECENT+4,              pgFrame::OnRecent)
+    EVT_MENU(MNU_RECENT+5,              pgFrame::OnRecent)
+    EVT_MENU(MNU_RECENT+6,              pgFrame::OnRecent)
+    EVT_MENU(MNU_RECENT+7,              pgFrame::OnRecent)
+    EVT_MENU(MNU_RECENT+8,              pgFrame::OnRecent)
+    EVT_MENU(MNU_RECENT+9,              pgFrame::OnRecent)
+#ifdef __WXGTK__
+    EVT_KEY_DOWN(                       pgFrame::OnKeyDown)
+#endif
+END_EVENT_TABLE()
+
+
+// Event handlers
+void pgFrame::OnKeyDown(wxKeyEvent& event)
+{
+    event.m_metaDown=false;
+    event.Skip();
+}
+
+
+void pgFrame::OnExit(wxCommandEvent& event)
+{
+    Close();
+}
+
+
+void pgFrame::OnRecent(wxCommandEvent& event)
+{
+    int fileNo=event.GetId() - MNU_RECENT;
+    lastPath = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("/%d"), fileNo), wxT(""));
+
+    if (!lastPath.IsNull())
+    {
+        int dirsep;
+        dirsep = lastPath.Find(wxFILE_SEP_PATH, true);
+        lastDir = lastPath.Mid(0, dirsep);
+        lastFilename = lastPath.Mid(dirsep+1);
+        OpenLastFile();
+    }
+}
+
+
+
+void pgFrame::UpdateRecentFiles()
+{
+    wxString lastFiles[10]; // 0 will be unused for convenience
+    int i, maxFiles=9;
+    int recentIndex=maxFiles;
+
+    for (i=1 ; i <= maxFiles ; i++)
+    {
+        lastFiles[i] = settings->Read(recentKey + wxString::Format(wxT("/%d"), i), wxT(""));
+        if (!lastPath.IsNull() && lastPath.IsSameAs(lastFiles[i], wxARE_FILENAMES_CASE_SENSITIVE))
+            recentIndex=i;
+    }
+    while (i <= maxFiles)
+        lastFiles[i++] = wxT("");
+
+    if (recentIndex > 1 && !lastPath.IsNull())
+    {
+        for (i=recentIndex ; i > 1 ; i--)
+            lastFiles[i] = lastFiles[i-1];
+        lastFiles[1] = lastPath;
+    }
+
+    i=recentFileMenu->GetMenuItemCount();
+    while (i)
+    {
+        wxMenuItem *item = recentFileMenu->Remove(MNU_RECENT+i);
+        if (item)
+            delete item;
+        i--;
+    }
+
+    for (i=1 ; i <= maxFiles ; i++)
+    {
+        settings->Write(wxT("RecentFiles/") + wxString::Format(wxT("%d"), i), lastFiles[i]);
+
+
+        if (!lastFiles[i].IsNull())
+            recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString::Format(wxT("%d"), i) + wxT("  ") + lastFiles[i]);
+    }
+}
+
+
 void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defaultH, int minW, int minH)
 {
     wxPoint pos(settings->Read(dlgName, wxPoint(defaultX, defaultY)));

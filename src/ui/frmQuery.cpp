@@ -49,16 +49,6 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
     EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
     EVT_MENU(MNU_EXPORT,            frmQuery::OnExport)
-    EVT_MENU(MNU_RECENT+1,          frmQuery::OnRecent)
-    EVT_MENU(MNU_RECENT+2,          frmQuery::OnRecent)
-    EVT_MENU(MNU_RECENT+3,          frmQuery::OnRecent)
-    EVT_MENU(MNU_RECENT+4,          frmQuery::OnRecent)
-    EVT_MENU(MNU_RECENT+5,          frmQuery::OnRecent)
-    EVT_MENU(MNU_RECENT+6,          frmQuery::OnRecent)
-    EVT_MENU(MNU_RECENT+7,          frmQuery::OnRecent)
-    EVT_MENU(MNU_RECENT+8,          frmQuery::OnRecent)
-    EVT_MENU(MNU_RECENT+9,          frmQuery::OnRecent)
-    EVT_MENU(MNU_EXIT,              frmQuery::OnExit)
     EVT_MENU(MNU_CUT,               frmQuery::OnCut)
     EVT_MENU(MNU_COPY,              frmQuery::OnCopy)
     EVT_MENU(MNU_PASTE,             frmQuery::OnPaste)
@@ -75,9 +65,6 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
-#ifdef __WXGTK__
-    EVT_KEY_DOWN(                   frmQuery::OnKeyDown)
-#endif
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
 END_EVENT_TABLE()
 
@@ -92,6 +79,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     conn=_conn;
 
     dlgName = wxT("frmQuery");
+    recentKey = wxT("RecentFiles");
     RestorePosition(100, 100, 600, 500, 200, 150);
 
     SetIcon(wxIcon(sql_xpm));
@@ -151,7 +139,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     queryMenu->Check(MNU_VERBOSE, settings->GetExplainVerbose());
     queryMenu->Check(MNU_ANALYZE, settings->GetExplainAnalyze());
 
-    updateRecentFiles();
+    UpdateRecentFiles();
 
     wxAcceleratorEntry entries[8];
 
@@ -262,77 +250,11 @@ frmQuery::~frmQuery()
 }
 
 
-
-void frmQuery::updateRecentFiles()
-{
-    wxString lastFiles[10]; // 0 will be unused for convenience
-    int i, maxFiles=9;
-    int recentIndex=maxFiles;
-
-    for (i=1 ; i <= maxFiles ; i++)
-    {
-        lastFiles[i] = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("%d"), i), wxT(""));
-        if (!lastPath.IsNull() && lastPath.IsSameAs(lastFiles[i], wxARE_FILENAMES_CASE_SENSITIVE))
-            recentIndex=i;
-    }
-    while (i <= maxFiles)
-        lastFiles[i++] = wxT("");
-
-    if (recentIndex > 1 && !lastPath.IsNull())
-    {
-        for (i=recentIndex ; i > 1 ; i--)
-            lastFiles[i] = lastFiles[i-1];
-        lastFiles[1] = lastPath;
-    }
-
-    i=recentFileMenu->GetMenuItemCount();
-    while (i)
-    {
-        wxMenuItem *item = recentFileMenu->Remove(MNU_RECENT+i);
-        if (item)
-            delete item;
-        i--;
-    }
-
-    for (i=1 ; i <= maxFiles ; i++)
-    {
-        settings->Write(wxT("RecentFiles/") + wxString::Format(wxT("%d"), i), lastFiles[i]);
-
-
-        if (!lastFiles[i].IsNull())
-            recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString::Format(wxT("%d"), i) + wxT("  ") + lastFiles[i]);
-    }
-}
-
-
 void frmQuery::OnActivate(wxActivateEvent& event)
 {
     if (event.GetActive())
         updateMenu();
 	event.Skip();
-}
-
-
-void frmQuery::OnRecent(wxCommandEvent& event)
-{
-    int fileNo=event.GetId() - MNU_RECENT;
-    lastPath = settings->Read(wxT("RecentFiles/") + wxString::Format(wxT("%d"), fileNo), wxT(""));
-
-    if (!lastPath.IsNull())
-    {
-        int dirsep;
-        dirsep = lastPath.Find(wxFILE_SEP_PATH, true);
-        lastDir = lastPath.Mid(0, dirsep);
-        lastFilename = lastPath.Mid(dirsep+1);
-        openLastFile();
-    }
-}
-
-
-void frmQuery::OnKeyDown(wxKeyEvent& event)
-{
-    event.m_metaDown=false;
-    event.Skip();
 }
 
 
@@ -346,12 +268,6 @@ void frmQuery::Go()
 {
     Show(TRUE);
     sqlQuery->SetFocus();
-}
-
-
-void frmQuery::OnExit(wxCommandEvent& event)
-{
-    Close();
 }
 
 
@@ -689,7 +605,8 @@ void frmQuery::updateMenu(wxObject *obj)
 }
 
 
-void frmQuery::OnClose(wxCloseEvent& event)
+
+bool frmQuery::CheckChanged(bool canVeto)
 {
     if (changed && settings->GetAskSaveConfirmation())
     {
@@ -698,26 +615,35 @@ void frmQuery::OnClose(wxCloseEvent& event)
             fn = wxT(" in file ") + lastPath;
         wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\nDo you want to save changes?"), fn.c_str()), _("pgAdmin III Query"), 
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|
-                    (event.CanVeto() ? wxCANCEL : 0));
+                    (canVeto ? wxCANCEL : 0));
 
     	wxCommandEvent noEvent;
         switch (msg.ShowModal())
         {
             case wxID_YES:
                 if (lastPath.IsNull())
-                {
                     OnSaveAs(noEvent);
-                    if (changed && event.CanVeto())
-                        event.Veto();
-                }
                 else
                     OnSave(noEvent);
-                break;
+
+                return changed;
+
             case wxID_CANCEL:
-                event.Veto();
-                return;
+                return true;
         }
     }
+    return false;
+}
+
+
+void frmQuery::OnClose(wxCloseEvent& event)
+{
+    if (CheckChanged(event.CanVeto()) && event.CanVeto())
+    {
+        event.Veto();
+        return;
+    }
+
     Hide();
 
     if (queryMenu->IsEnabled(MNU_CANCEL))
@@ -746,7 +672,7 @@ void frmQuery::OnChangeStc(wxStyledTextEvent& event)
 }
 
 
-void frmQuery::openLastFile()
+void frmQuery::OpenLastFile()
 {
     wxString str=FileRead(lastPath);
     if (!str.IsEmpty())
@@ -755,37 +681,14 @@ void frmQuery::openLastFile()
         wxYield();  // needed to process sqlQuery modify event
         changed = false;
         setExtendedTitle();
-        updateRecentFiles();
+        UpdateRecentFiles();
     }
 }
         
 void frmQuery::OnOpen(wxCommandEvent& event)
 {
-    if (changed && settings->GetAskSaveConfirmation())
-    {
-        wxString fn;
-        if (!lastPath.IsNull())
-            fn = wxT(" in file ") + lastPath;
-        wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\nDo you want to save changes?"), fn.c_str()), _("pgAdmin III Query"), 
-                    wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION|wxCANCEL);
-
-    	wxCommandEvent noEvent;
-        switch (msg.ShowModal())
-        {
-            case wxID_YES:
-                if (lastPath.IsNull())
-                {
-                    OnSaveAs(noEvent);
-                    if (changed)
-						return;
-                }
-                else
-                    OnSave(noEvent);
-                break;
-            case wxID_CANCEL:
-                return;
-        }
-    }
+    if (CheckChanged(false))
+        return;
 
     wxFileDialog dlg(this, _("Open query file"), lastDir, wxT(""), 
         _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxOPEN);
@@ -794,7 +697,7 @@ void frmQuery::OnOpen(wxCommandEvent& event)
         lastFilename=dlg.GetFilename();
         lastDir = dlg.GetDirectory();
         lastPath = dlg.GetPath();
-        openLastFile();
+        OpenLastFile();
     }
 }
 
@@ -810,7 +713,7 @@ void frmQuery::OnSave(wxCommandEvent& event)
     {
         changed=false;
         setExtendedTitle();
-        updateRecentFiles();
+        UpdateRecentFiles();
     }
 }
 
@@ -841,7 +744,7 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
         {
             changed=false;
             setExtendedTitle();
-            updateRecentFiles();
+            UpdateRecentFiles();
         }
     }
     delete dlg;

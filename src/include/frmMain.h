@@ -69,14 +69,11 @@ private:
     ctlListView *referencedBy, *dependsOn;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
-    wxMenuBar *menuBar;
-    wxMenu *fileMenu, *editMenu, *newMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu, *newContextMenu;
-    wxToolBar *toolBar;
+    wxMenu *editMenu, *newMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu;
     wxTreeItemId servers;
 	wxImageList *images;
     wxSplitterWindow *horizontal, *vertical;
 
-    wxStatusBar *statusBar;
     wxStopWatch stopwatch;
     wxString timermsg;
     long msgLevel;
@@ -85,7 +82,6 @@ private:
     pgObject *currentObject;
     pgDatabase *m_database;
 
-    void OnKeyDown(wxKeyEvent& event);
     void OnAbout(wxCommandEvent& event);
     void OnContents(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
@@ -111,7 +107,9 @@ private:
     void OnCount(wxCommandEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
-    
+    void OnConfig(wxCommandEvent& event);
+    void OnHbaConfig(wxCommandEvent& event);
+
     void OnPageChange(wxNotebookEvent& event);
     void OnPropSelChanged(wxListEvent& event);
     void OnPropSelActivated(wxListEvent& event);

@@ -75,7 +75,6 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_DROP,                      frmMain::OnDrop)
     EVT_MENU(MNU_CREATE,                    frmMain::OnCreate)
     EVT_MENU(MNU_PROPERTIES,                frmMain::OnProperties)
-    EVT_MENU(MNU_EXIT,                      frmMain::OnExit)
     EVT_MENU(MNU_STATUS,                    frmMain::OnStatus)
     EVT_MENU(MNU_BACKUP,                    frmMain::OnBackup)
     EVT_MENU(MNU_RESTORE,                   frmMain::OnRestore)
@@ -131,19 +130,11 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER,  frmMain::OnSelRightClick) 
     EVT_CLOSE(                              frmMain::OnClose)
 #ifdef __WXGTK__
-    EVT_KEY_DOWN(                           frmMain::OnKeyDown)
     EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
 #endif
 END_EVENT_TABLE()
 
 
-
-// Event handlers
-void frmMain::OnKeyDown(wxKeyEvent& event)
-{
-    event.m_metaDown=false;
-    event.Skip();
-}
 
 
 // unfortunately, under GTK we won't get the original wxKeyEvent
@@ -168,9 +159,10 @@ void frmMain::OnTreeKeyDown(wxTreeEvent& event)
 }
 
 
-void frmMain::OnExit(wxCommandEvent& WXUNUSED(event))
+void frmMain::OnExit(wxCommandEvent& event)
 {
     Close(FALSE);   // Allow sub windows to stop us
+    event.Skip();
 }
 
 
