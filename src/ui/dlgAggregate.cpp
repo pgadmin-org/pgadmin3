@@ -37,9 +37,9 @@
 
 BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgAggregate::OnChange)
-    EVT_COMBOBOX(XRCID("cbBaseType"),               dlgAggregate::OnChangeType)
-    EVT_COMBOBOX(XRCID("cbStateType"),              dlgAggregate::OnChangeType)
-    EVT_COMBOBOX(XRCID("cbStateFunc"),              dlgAggregate::OnChange)
+    EVT_TEXT(XRCID("cbBaseType"),                   dlgAggregate::OnChangeType)
+    EVT_TEXT(XRCID("cbStateType"),                  dlgAggregate::OnChangeType)
+    EVT_TEXT(XRCID("cbStateFunc"),                  dlgAggregate::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgAggregate::OnChange)
 END_EVENT_TABLE();
 

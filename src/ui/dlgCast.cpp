@@ -34,8 +34,8 @@
 
 
 BEGIN_EVENT_TABLE(dlgCast, dlgTypeProperty)
-    EVT_COMBOBOX(XRCID("cbSourceType"),             dlgCast::OnChangeType)
-    EVT_COMBOBOX(XRCID("cbTargetType"),             dlgCast::OnChangeType)
+    EVT_TEXT(XRCID("cbSourceType"),                 dlgCast::OnChangeType)
+    EVT_TEXT(XRCID("cbTargetType"),                 dlgCast::OnChangeType)
     EVT_TEXT(XRCID("txtComment"),                   dlgCast::OnChange)
 END_EVENT_TABLE();
 

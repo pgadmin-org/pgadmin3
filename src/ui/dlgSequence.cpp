@@ -36,7 +36,7 @@
 
 BEGIN_EVENT_TABLE(dlgSequence, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgSequence::OnChange)
-    EVT_COMBOBOX(XRCID("cbOwner"),                  dlgSequence::OnChange)
+    EVT_TEXT(XRCID("cbOwner"),                      dlgSequence::OnChange)
     EVT_TEXT(XRCID("txtStart"),                     dlgSequence::OnChange)
     EVT_TEXT(XRCID("txtMin"),                       dlgSequence::OnChange)
     EVT_TEXT(XRCID("txtMax"),                       dlgSequence::OnChange)

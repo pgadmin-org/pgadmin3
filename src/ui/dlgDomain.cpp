@@ -33,7 +33,7 @@
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgDomain::OnChange)
-    EVT_COMBOBOX(XRCID("cbOwner"),                  dlgDomain::OnChange)
+    EVT_TEXT(XRCID("cbOwner"),                      dlgDomain::OnChange)
     EVT_TEXT(XRCID("txtLength"),                    dlgDomain::OnChange)
     EVT_TEXT(XRCID("txtPrecision"),                 dlgDomain::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgDomain::OnSelChangeTyp)

@@ -39,7 +39,7 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
     EVT_TEXT(XRCID("txtDefault"),                   dlgColumn::OnChange)
     EVT_CHECKBOX(XRCID("chkNotNull"),               dlgColumn::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgColumn::OnChange)
-    EVT_COMBOBOX(XRCID("cbDatatype"),               dlgColumn::OnSelChangeTyp)
+    EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
 END_EVENT_TABLE();
 
 

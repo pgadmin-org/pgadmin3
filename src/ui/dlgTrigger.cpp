@@ -40,7 +40,7 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
     EVT_CHECKBOX(XRCID("chkInsert"),                dlgTrigger::OnChange)
     EVT_CHECKBOX(XRCID("chkUpdate"),                dlgTrigger::OnChange)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgTrigger::OnChange)
-    EVT_COMBOBOX(XRCID("cbFunction"),               dlgTrigger::OnChange)
+    EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChange)
     EVT_TEXT(XRCID("txtArguments"),                 dlgTrigger::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgTrigger::OnChange)
 END_EVENT_TABLE();

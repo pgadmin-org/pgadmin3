@@ -43,7 +43,7 @@ BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgDatabase::OnVarSelChange)
     EVT_BUTTON(XRCID("btnAdd"),                     dlgDatabase::OnVarAdd)
     EVT_BUTTON(XRCID("btnRemove"),                  dlgDatabase::OnVarRemove)
-    EVT_COMBOBOX(XRCID("cbVarname"),                dlgDatabase::OnVarnameSelChange)
+    EVT_TEXT(XRCID("cbVarname"),                    dlgDatabase::OnVarnameSelChange)
 END_EVENT_TABLE();
 
 

@@ -37,7 +37,7 @@ BEGIN_EVENT_TABLE(dlgConversion, dlgProperty)
     EVT_TEXT(XRCID("txtName"),              dlgConversion::OnChange)
     EVT_TEXT(XRCID("cbSourceEncoding"),     dlgConversion::OnChange)
     EVT_TEXT(XRCID("cbTargetEncoding"),     dlgConversion::OnChange)
-    EVT_COMBOBOX(XRCID("cbFunction"),       dlgConversion::OnChange)
+    EVT_TEXT(XRCID("cbFunction"),           dlgConversion::OnChange)
     EVT_TEXT(XRCID("txtComment"),           dlgConversion::OnChange)
 END_EVENT_TABLE();
 

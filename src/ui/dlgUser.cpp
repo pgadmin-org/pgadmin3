@@ -55,7 +55,7 @@ BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgUser::OnVarSelChange)
     EVT_BUTTON(XRCID("btnAdd"),                     dlgUser::OnVarAdd)
     EVT_BUTTON(XRCID("btnRemove"),                  dlgUser::OnVarRemove)
-    EVT_COMBOBOX(XRCID("cbVarname"),                dlgUser::OnVarnameSelChange)
+    EVT_TEXT(XRCID("cbVarname"),                    dlgUser::OnVarnameSelChange)
 END_EVENT_TABLE();
 
 

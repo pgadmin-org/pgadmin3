@@ -31,7 +31,7 @@
 
 BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgLanguage::OnChange)
-    EVT_COMBOBOX(XRCID("cbHandler"),                dlgLanguage::OnChange)
+    EVT_TEXT(XRCID("cbHandler"),                    dlgLanguage::OnChange)
 END_EVENT_TABLE();
 
 

@@ -45,15 +45,15 @@
 
 
 BEGIN_EVENT_TABLE(dlgOperator, dlgTypeProperty)
-    EVT_TEXT(XRCID("txtName"),                      dlgOperator::OnChange)
-    EVT_COMBOBOX(XRCID("cbLeftType"),               dlgOperator::OnChangeType)
-    EVT_COMBOBOX(XRCID("cbRightType"),              dlgOperator::OnChangeType)
-    EVT_COMBOBOX(XRCID("cbProcedure"),              dlgOperator::OnChange)
-    EVT_COMBOBOX(XRCID("cbLeftSort") ,              dlgOperator::OnChangeJoin)
-    EVT_COMBOBOX(XRCID("cbRightSort") ,             dlgOperator::OnChangeJoin)
-    EVT_COMBOBOX(XRCID("cbLess") ,                  dlgOperator::OnChangeJoin)
-    EVT_COMBOBOX(XRCID("cbGreater") ,               dlgOperator::OnChangeJoin)
-    EVT_TEXT(XRCID("txtComment"),                   dlgOperator::OnChange)
+    EVT_TEXT(XRCID("txtName"),                  dlgOperator::OnChange)
+    EVT_TEXT(XRCID("cbLeftType"),               dlgOperator::OnChangeType)
+    EVT_TEXT(XRCID("cbRightType"),              dlgOperator::OnChangeType)
+    EVT_TEXT(XRCID("cbProcedure"),              dlgOperator::OnChange)
+    EVT_TEXT(XRCID("cbLeftSort") ,              dlgOperator::OnChangeJoin)
+    EVT_TEXT(XRCID("cbRightSort") ,             dlgOperator::OnChangeJoin)
+    EVT_TEXT(XRCID("cbLess") ,                  dlgOperator::OnChangeJoin)
+    EVT_TEXT(XRCID("cbGreater") ,               dlgOperator::OnChangeJoin)
+    EVT_TEXT(XRCID("txtComment"),               dlgOperator::OnChange)
 END_EVENT_TABLE();
 
 
