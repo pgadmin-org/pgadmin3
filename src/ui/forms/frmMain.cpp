@@ -38,6 +38,21 @@
 #include "../../images/vacuum.xpm"
 #include "../../images/record.xpm"
 #include "../../images/stop.xpm"
+#include "../../images/server.xpm"
+#include "../../images/database.xpm"
+#include "../../images/language.xpm"
+#include "../../images/namespace.xpm"
+#include "../../images/aggregate.xpm"
+#include "../../images/function.xpm"
+#include "../../images/operator.xpm"
+#include "../../images/sequence.xpm"
+#include "../../images/table.xpm"
+#include "../../images/type.xpm"
+#include "../../images/view.xpm"
+#include "../../images/user.xpm"
+#include "../../images/group.xpm"
+#include "../../images/baddatabase.xpm"
+#include "../../images/closeddatabase.xpm"
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
@@ -140,7 +155,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     tvBrowser = new wxTreeCtrl(splVertical, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
     splVertical->SplitVertically(tvBrowser, splHorizontal, 200);
     splVertical->SetMinimumPaneSize(50);
-    
+
     // Setup the horizontal splitter for the listview & sql pane
     wxNotebook* nbListViews = new wxNotebook(splHorizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
     lvProperties = new wxListCtrl(nbListViews, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
@@ -152,8 +167,29 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     splHorizontal->SplitHorizontally(nbListViews, txtSQLPane, 300);
     splHorizontal->SetMinimumPaneSize(50);
 
+    //Setup a Browser imagemap
+    wxImageList *ilBrowser = new wxImageList(16, 16);
+    //Associate the Browser imagemap to the Browser
+    tvBrowser->SetImageList(ilBrowser);
+    //Stuff the Image List
+    ilBrowser->Add(wxIcon(server_xpm));
+    ilBrowser->Add(wxIcon(database_xpm));
+    ilBrowser->Add(wxIcon(language_xpm));
+    ilBrowser->Add(wxIcon(namespace_xpm));
+    ilBrowser->Add(wxIcon(aggregate_xpm));
+    ilBrowser->Add(wxIcon(function_xpm));
+    ilBrowser->Add(wxIcon(operator_xpm));
+    ilBrowser->Add(wxIcon(sequence_xpm));
+    ilBrowser->Add(wxIcon(table_xpm));
+    ilBrowser->Add(wxIcon(type_xpm));
+    ilBrowser->Add(wxIcon(view_xpm));
+    ilBrowser->Add(wxIcon(user_xpm));
+    ilBrowser->Add(wxIcon(group_xpm));
+    ilBrowser->Add(wxIcon(baddatabase_xpm));
+    ilBrowser->Add(wxIcon(closeddatabase_xpm));
+
     // Add some treeview items
-    wxTreeItemId itmDummy = tvBrowser->AddRoot("Root node");
+    wxTreeItemId itmDummy = tvBrowser->AddRoot("Root node",0);
     tvBrowser->AppendItem(itmDummy, "Child Node #1");
     tvBrowser->AppendItem(itmDummy, "Child Node #2");
     tvBrowser->Expand(itmDummy);
@@ -165,21 +201,25 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     wxImageList *ilProperties = new wxImageList(16, 16);
     //Associate the listview imagemap to the listview
     lvProperties->SetImageList(ilProperties, wxIMAGE_LIST_SMALL);
-    //Stuff the Image List
+    //Stuff the BrowserImage Listu:
     ilProperties->Add(wxIcon(pgAdmin3_xpm));
 
-
     // Add some listview items
-    lvProperties->InsertColumn(1, "Property", wxLIST_FORMAT_LEFT, 100);
-    lvProperties->InsertColumn(2, "Value", wxLIST_FORMAT_LEFT, 400);
-    lvProperties->InsertItem(0, "Property #1",0);
-    lvProperties->InsertItem(1, "Property #2",0);
-    lvProperties->InsertItem(2, "Property #3",0);
-    lvStatistics->InsertColumn(1, "Statistic", wxLIST_FORMAT_LEFT, 100);
-    lvStatistics->InsertColumn(2, "Value", wxLIST_FORMAT_LEFT, 400);
+    lvProperties->InsertColumn(0, "Property", wxLIST_FORMAT_LEFT, 100);
+    lvProperties->InsertColumn(1, "Value", wxLIST_FORMAT_LEFT, 400);
+
+    // This is the bit that puts it all on one line over 2 colums
+    lvProperties->InsertItem(0, "Property #1", 0);
+    lvProperties->SetItem(0, 1, "Property #1a");
+
+    lvProperties->InsertItem(1, "Property #2", 0);
+    lvProperties->SetItem(1, 1, "Property #2a");
+
+    lvStatistics->InsertColumn(0, "Statistic", wxLIST_FORMAT_LEFT, 100);
+    lvStatistics->InsertColumn(1, "Value", wxLIST_FORMAT_LEFT, 400);
     lvStatistics->InsertItem(0, "Statistic #1");
-    lvStatistics->InsertItem(1, "Statistic #2");
-    lvStatistics->InsertItem(2, "Statistic #3");
+    lvStatistics->InsertItem(0, "Statistic #2");
+    lvStatistics->InsertItem(0, "Statistic #3");
 
     // Setup the SQL Pane
     txtSQLPane->InsertText(0, "-- Select all records from pg_class\nSELECT\n  *\nFROM\n  pg_class\nWHERE\n relname LIKE 'pg_%'\nORDER BY\n  rename;");
