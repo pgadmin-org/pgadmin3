@@ -26,8 +26,8 @@
 
 #define TIMER_ID 333
 BEGIN_EVENT_TABLE(frmStatus, pgDialog)
-    EVT_BUTTON(XRCID("btnRefresh"),					frmStatus::OnRefresh)
-    EVT_BUTTON(XRCID("btnClose"),					frmStatus::OnCloseBtn)
+    EVT_BUTTON(wxID_REFRESH,	     				frmStatus::OnRefresh)
+    EVT_BUTTON(wxID_CLOSE,	  				        frmStatus::OnCloseBtn)
     EVT_BUTTON(XRCID("btnCancelSt"),				frmStatus::OnCancelBtn)
     EVT_BUTTON(XRCID("btnTerminateSt"),				frmStatus::OnTerminateBtn)
     EVT_BUTTON(XRCID("btnCancelLk"),				frmStatus::OnCancelBtn)
@@ -192,7 +192,7 @@ void frmStatus::Go()
 void frmStatus::OnNotebookPageChanged(wxNotebookEvent& event)
 {
 	if (!loaded) return;
-	wxCommandEvent buttonEvent(wxEVT_COMMAND_BUTTON_CLICKED, XRCID("btnRefresh"));
+	wxCommandEvent buttonEvent(wxEVT_COMMAND_BUTTON_CLICKED, wxID_REFRESH);
     AddPendingEvent(buttonEvent);
 	
     // Disable the buttons. They'll get re-enabled if a suitable item is selected.
