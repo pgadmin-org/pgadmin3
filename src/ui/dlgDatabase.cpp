@@ -30,6 +30,7 @@
 #define lstVariables    CTRL("lstVariables", wxListCtrl)
 #define cbVarname       CTRL("cbVarname", wxComboBox)
 #define txtValue        CTRL("txtValue", wxTextCtrl)
+#define chkValue        CTRL("chkValue", wxCheckBox)
 #define btnAdd          CTRL("btnAdd", wxButton)
 #define btnRemove       CTRL("btnRemove", wxButton)
 
@@ -39,9 +40,10 @@ BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgDatabase::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgDatabase::OnChange)
 
+    EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgDatabase::OnVarSelChange)
     EVT_BUTTON(XRCID("btnAdd"),                     dlgDatabase::OnVarAdd)
     EVT_BUTTON(XRCID("btnRemove"),                  dlgDatabase::OnVarRemove)
-    EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgDatabase::OnVarSelChange)
+    EVT_COMBOBOX(XRCID("cbVarname"),                dlgDatabase::OnVarnameSelChange)
 END_EVENT_TABLE();
 
 
@@ -53,7 +55,7 @@ dlgDatabase::dlgDatabase(frmMain *frame, pgDatabase *node)
     CreateListColumns(lstVariables, _("Variable"), _("Value"));
 
     txtOID->Disable();
-
+    chkValue->Hide();
 }
 
 
@@ -105,15 +107,25 @@ int dlgDatabase::Go(bool modal)
         }
         else
         {
-            pgSet *set=connection->ExecuteSet(wxT("SELECT name from pg_settings"));
+            pgSet *set;
+            if (connection->BackendMinimumVersion(7, 4))
+                set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
+                        wxT("  FROM pg_settings WHERE context='user'"));
+            else
+                set=connection->ExecuteSet(wxT("SELECT name, 'string' as vartype, '' as min_val, '' as max_val FROM pg_settings"));
             if (set)
             {
                 while (!set->Eof())
                 {
                     cbVarname->Append(set->GetVal(0));
+                    varInfo.Add(set->GetVal(wxT("vartype")) + wxT(" ") + 
+                                set->GetVal(wxT("min_val")) + wxT(" ") +
+                                set->GetVal(wxT("max_val")));
                     set->MoveNext();
                 }
                 delete set;
+
+                cbVarname->SetSelection(0);
             }
         }
     }
@@ -170,13 +182,44 @@ void dlgDatabase::OnChange(wxNotifyEvent &ev)
 }
 
 
+void dlgDatabase::OnVarnameSelChange(wxNotifyEvent &ev)
+{
+    int sel=cbVarname->GetSelection();
+    if (sel >= 0)
+    {
+        wxStringTokenizer vals(varInfo.Item(sel));
+        wxString typ=vals.GetNextToken();
+
+        if (typ == wxT("bool"))
+        {
+            txtValue->Hide();
+            chkValue->Show();
+        }
+        else
+        {
+            chkValue->Hide();
+            txtValue->Show();
+            if (typ == wxT("string"))
+                txtValue->SetValidator(wxTextValidator());
+            else
+                txtValue->SetValidator(numericValidator);
+        }
+    }
+}
+
+
 void dlgDatabase::OnVarSelChange(wxListEvent &ev)
 {
-    long pos=lstVariables->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    long pos=GetListSelected(lstVariables);
     if (pos >= 0)
     {
+        wxString value=GetListText(lstVariables, pos, 1);
         cbVarname->SetValue(lstVariables->GetItemText(pos));
-        txtValue->SetValue(GetListText(lstVariables, pos, 1));
+        wxNotifyEvent nullev;
+        OnVarnameSelChange(nullev);
+
+        txtValue->SetValue(value);
+        chkValue->SetValue(value == wxT("on"));
     }
 }
 
@@ -184,7 +227,12 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
 void dlgDatabase::OnVarAdd(wxNotifyEvent &ev)
 {
     wxString name=cbVarname->GetValue();
-    wxString value=txtValue->GetValue().Strip(wxString::both);
+    wxString value;
+    if (chkValue->IsShown())
+        value = chkValue->GetValue() ? wxT("on") : wxT("off");
+    else
+        value = txtValue->GetValue().Strip(wxString::both);
+
     if (value.IsEmpty())
         value = wxT("DEFAULT");
 

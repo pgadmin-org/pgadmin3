@@ -28,6 +28,8 @@ public:
 
 private:
     pgDatabase *database;
+    wxArrayString varInfo;
+
     void OnChange(wxNotifyEvent &ev);
     void OnGroupAdd(wxNotifyEvent &ev);
     void OnGroupRemove(wxNotifyEvent &ev);
@@ -35,6 +37,8 @@ private:
     void OnVarAdd(wxNotifyEvent &ev);
     void OnVarRemove(wxNotifyEvent &ev);
     void OnVarSelChange(wxListEvent &ev);
+
+    void OnVarnameSelChange(wxNotifyEvent &ev);
 
     DECLARE_EVENT_TABLE();
 };
