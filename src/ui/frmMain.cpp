@@ -14,6 +14,10 @@
 
 #include "pgAdmin3.h"
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/splitter.h>
@@ -821,39 +825,39 @@ void frmMain::StoreServers()
 
 				// This is a discovered server...
 				// Hostname
-				key.Printf(wxT("Servers/Server-%s-%s"), hostname, server->GetServiceID());
+				key.Printf(wxT("Servers/Server-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
 		        settings->Write(key, server->GetName());
 
 				// Comment
-				key.Printf(wxT("Servers/Description-%s-%s"), hostname, server->GetServiceID());
+				key.Printf(wxT("Servers/Description-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
 		        settings->Write(key, server->GetDescription());
 
 				// Port
-				key.Printf(wxT("Servers/Port-%s-%s"), hostname, server->GetServiceID());
+				key.Printf(wxT("Servers/Port-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
 		        settings->Write(key, server->GetPort());
 
 				// Trusted
-				key.Printf(wxT("Servers/Trusted-%s-%s"), hostname, server->GetServiceID());
+				key.Printf(wxT("Servers/Trusted-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
 		        settings->Write(key, BoolToStr(server->GetTrusted()));
 
 				// Database
-				key.Printf(wxT("Servers/Database-%s-%s"), hostname, server->GetServiceID());
+				key.Printf(wxT("Servers/Database-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
 		        settings->Write(key, server->GetDatabaseName());
 
 				// Username
-				key.Printf(wxT("Servers/Username-%s-%s"), hostname, server->GetServiceID());
+				key.Printf(wxT("Servers/Username-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
 		        settings->Write(key, server->GetUsername());
 
 				// SSL
-				key.Printf(wxT("Servers/SSL-%s-%s"), hostname, server->GetServiceID());
+				key.Printf(wxT("Servers/SSL-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
 		        settings->Write(key, server->GetSSL());
 
 				// Last Database
-				key.Printf(wxT("Servers/LastDatabase-%s-%s"), hostname, server->GetServiceID());
+				key.Printf(wxT("Servers/LastDatabase-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
 				settings->Write(key, server->GetLastDatabase());
 	
 				// Last Schema
-				key.Printf(wxT("Servers/LastSchema-%s-%s"), hostname, server->GetServiceID());
+				key.Printf(wxT("Servers/LastSchema-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
 				settings->Write(key, server->GetLastSchema());
 			}
 		}
