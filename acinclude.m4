@@ -93,8 +93,6 @@ fi], [
     fi
 ])
 
-CPPFLAGS="$CPPFLAGS -DSSL"
-
 #
 # Check for libpq libraries and headers
 #
@@ -118,6 +116,7 @@ then
     AC_LANG_SAVE
     AC_LANG_C
     AC_CHECK_LIB(pq, PQexec, [pgsql_cv_libpq=yes], [pgsql_cv_libpq=no])
+    AC_CHECK_LIB(pq, SSL_connect, [pgsql_ssl_libpq=yes], [pgsql_ssl_libpq=np])
     AC_CHECK_HEADER(libpq-fe.h, [pgsql_cv_libpqfe_h=yes], [pgsql_cv_libpqfe_h=no])
     AC_LANG_RESTORE
     if test "$pgsql_cv_libpq" = "yes" -a "$pgsql_cv_libpqfe_h" = "yes"
@@ -130,6 +129,11 @@ then
         LDFLAGS="$PGSQL_OLD_LDFLAGS"
         CPPFLAGS="$PGSQL_OLD_CPPFLAGS"
         AC_MSG_ERROR([you must specify a valid pgsql installation with --with-pgsql=DIR])
+    fi
+
+    if test "$pgsql_ssl_libpq" = "yes"
+    then
+        CPPFLAGS="$CPPFLAGS -DSSL"
     fi
 fi
 ])
