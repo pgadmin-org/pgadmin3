@@ -74,7 +74,8 @@ int dlgConversion::Go(bool modal)
         cbFunction->Append(conversion->GetProcNamespace()+wxT(".")+conversion->GetProc());
         cbFunction->SetSelection(0);
 
-        txtName->Disable();
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtName->Disable();
         chkDefault->SetValue(conversion->GetDefaultConversion());
         cbSourceEncoding->Disable();
         cbTargetEncoding->Disable();
@@ -134,7 +135,8 @@ void dlgConversion::OnChange(wxNotifyEvent &ev)
 {
     if (conversion)
     {
-        btnOK->Enable(txtComment->GetValue() != conversion->GetComment());
+        btnOK->Enable(txtName->GetValue() != conversion->GetName() 
+            || txtComment->GetValue() != conversion->GetComment());
     }
     else
     {
@@ -154,10 +156,17 @@ void dlgConversion::OnChange(wxNotifyEvent &ev)
 wxString dlgConversion::GetSql()
 {
     wxString sql;
+    wxString name=GetName();
 
     if (conversion)
     {
         // edit mode
+        if (txtName->GetValue() != conversion->GetName())
+        {
+            sql += wxT("ALTER CONVERSION ") + conversion->GetQuotedFullIdentifier()
+                +  wxT(" RENAME TO ") + qtIdent(name)
+                +  wxT(";\n");
+        }
     }
     else
     {
@@ -166,7 +175,7 @@ wxString dlgConversion::GetSql()
         if (chkDefault->GetValue())
             sql += wxT("DEFAULT ");
         sql += wxT("CONVERSION ") + schema->GetQuotedIdentifier() 
-            + wxT(".") + qtIdent(GetName())
+            + wxT(".") + qtIdent(name)
             + wxT("\n   FOR ") + qtString(cbSourceEncoding->GetValue())
             + wxT(" TO ") + qtString(cbTargetEncoding->GetValue())
             + wxT("\n   FROM ") + functions.Item(cbFunction->GetSelection())
