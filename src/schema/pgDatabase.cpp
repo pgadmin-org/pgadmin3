@@ -182,9 +182,9 @@ void pgDatabase::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
             wxString str=vars.GetNextToken();
             InsertListItem(properties, pos++, str.BeforeFirst('='), str.AfterFirst('='));
         }
-        InsertListItem(properties, pos++, _("Allow Connections?"), GetAllowConnections());
+        InsertListItem(properties, pos++, _("Allow connections?"), GetAllowConnections());
         InsertListItem(properties, pos++, _("Connected?"), GetConnected());
-        InsertListItem(properties, pos++, _("System Database?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System database?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }

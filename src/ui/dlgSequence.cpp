@@ -75,7 +75,7 @@ int dlgSequence::Go(bool modal)
         txtCache->SetValue(sequence->GetCacheValue().ToString());
         chkCycled->SetValue(sequence->GetCycled());
 
-        stStart->SetLabel(wxT("Current value"));
+        stStart->SetLabel(_("Current value"));
 
         txtIncrement->Disable();
         txtMin->Disable();

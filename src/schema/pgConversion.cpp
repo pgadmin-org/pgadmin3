@@ -65,7 +65,7 @@ void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
         InsertListItem(properties, pos++, _("To"), GetToEncoding());
         InsertListItem(properties, pos++, _("Function"), GetProcNamespace() + wxT(".") + GetProc());
         InsertListItem(properties, pos++, _("Default?"), GetDefaultConversion());
-        InsertListItem(properties, pos++, _("System Conversion?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System conversion?"), GetSystemObject());
 
     }
 }

@@ -90,7 +90,7 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("Group ID"), GetGroupId());
-        InsertListItem(properties, pos++, _("Member Count"), GetMemberCount());
+        InsertListItem(properties, pos++, _("Member count"), GetMemberCount());
         InsertListItem(properties, pos++, _("Members"), GetMembers());
     }
 }

@@ -325,9 +325,9 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         InsertListItem(properties, pos++, _("Owner"), GetOwner());
         InsertListItem(properties, pos++, _("ACL"), GetAcl());
         if (GetPrimaryKey().IsNull())
-            InsertListItem(properties, pos++, _("Primary Key"), _("<none>"));
+            InsertListItem(properties, pos++, _("Primary key"), _("<none>"));
         else
-            InsertListItem(properties, pos++, _("Primary Key"), GetPrimaryKey());
+            InsertListItem(properties, pos++, _("Primary key"), GetPrimaryKey());
 
         InsertListItem(properties, pos++, _("Rows (estimated)"), GetEstimatedRows());
 
@@ -336,12 +336,12 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         else
             InsertListItem(properties, pos++, _("Rows (counted)"), rows);
 
-        InsertListItem(properties, pos++, _("Inherits Tables"), GetHasSubclass());
-        InsertListItem(properties, pos++, _("Inherited Tables Count"), GetInheritedTableCount());
+        InsertListItem(properties, pos++, _("Inherits tables"), GetHasSubclass());
+        InsertListItem(properties, pos++, _("Inherited tables count"), GetInheritedTableCount());
         if (GetInheritedTableCount())
-            InsertListItem(properties, pos++, _("Inherited Tables"), GetInheritedTables());
+            InsertListItem(properties, pos++, _("Inherited tables"), GetInheritedTables());
         InsertListItem(properties, pos++, _("Has OIDs?"), GetHasOids());
-        InsertListItem(properties, pos++, _("System Table?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System table?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 

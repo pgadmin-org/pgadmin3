@@ -88,13 +88,13 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         InsertListItem(properties, pos++, _("OID"), GetOid());
         InsertListItem(properties, pos++, _("Owner"), GetOwner());
         InsertListItem(properties, pos++, _("ACL"), GetAcl());
-        InsertListItem(properties, pos++, _("Last Value"), GetLastValue().ToString());
+        InsertListItem(properties, pos++, _("Current value"), GetLastValue().ToString());
         InsertListItem(properties, pos++, _("Minimum"), GetMinValue().ToString());
         InsertListItem(properties, pos++, _("Maximum"), GetMaxValue().ToString());
         InsertListItem(properties, pos++, _("Increment"), GetIncrement().ToString());
         InsertListItem(properties, pos++, _("Cache"), GetCacheValue().ToString());
         InsertListItem(properties, pos++, _("Cycled"), GetCycled());
-        InsertListItem(properties, pos++, _("System Sequence?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System sequence?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 

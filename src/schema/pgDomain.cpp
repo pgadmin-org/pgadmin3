@@ -76,8 +76,8 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         if (GetDimensions())
             InsertListItem(properties, pos++, _("Dimensions"), GetDimensions());
         InsertListItem(properties, pos++, _("Default"), GetDefault());
-        InsertListItem(properties, pos++, _("Not Null?"), GetNotNull());
-        InsertListItem(properties, pos++, _("System Domain?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("Not NULL?"), GetNotNull());
+        InsertListItem(properties, pos++, _("System domain?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }

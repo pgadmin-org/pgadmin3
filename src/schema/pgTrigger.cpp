@@ -140,10 +140,10 @@ void pgTrigger::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *p
         InsertListItem(properties, pos++, _("OID"), GetOid());
         InsertListItem(properties, pos++, _("Fires"), GetFireWhen());
         InsertListItem(properties, pos++, _("Event"), GetEvent());
-        InsertListItem(properties, pos++, _("For Each"), GetForEach());
+        InsertListItem(properties, pos++, _("For each"), GetForEach());
         InsertListItem(properties, pos++, _("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));
         InsertListItem(properties, pos++, _("Enabled?"), GetEnabled());
-        InsertListItem(properties, pos++, _("System Trigger?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System trigger?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }

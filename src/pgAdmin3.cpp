@@ -20,6 +20,7 @@
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
 #include <wx/fs_zip.h>
+#include <wx/fs_mem.h>
 
 // Windows headers
 #ifdef __WXMSW__
@@ -236,6 +237,7 @@ bool pgAdmin3::OnInit()
     wxImage::AddHandler(new wxGIFHandler());
 
     wxFileSystem::AddHandler(new wxZipFSHandler);
+    wxFileSystem::AddHandler(new wxMemoryFSHandler);
 
     // Setup the XML resources
     wxXmlResource::Get()->InitAllHandlers();

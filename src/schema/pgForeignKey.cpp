@@ -137,16 +137,16 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
 
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("OID"), NumToStr(GetOid()));
-        InsertListItem(properties, pos++, _("Child Columns"), GetFkColumns());
+        InsertListItem(properties, pos++, _("Child columns"), GetFkColumns());
         InsertListItem(properties, pos++, _("References"), GetReferences() 
             + wxT("(") +GetRefColumns() + wxT(")"));
 
-        InsertListItem(properties, pos++, _("On Update"), GetOnUpdate());
-        InsertListItem(properties, pos++, _("On Delete"), GetOnDelete());
+        InsertListItem(properties, pos++, _("On update"), GetOnUpdate());
+        InsertListItem(properties, pos++, _("On delete"), GetOnDelete());
         InsertListItem(properties, pos++, _("Deferrable?"), BoolToYesNo(GetDeferrable()));
         InsertListItem(properties, pos++, _("Initially?"), 
             GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
-        InsertListItem(properties, pos++, _("System Foreign Key?"), BoolToYesNo(GetSystemObject()));
+        InsertListItem(properties, pos++, _("System foreign key?"), BoolToYesNo(GetSystemObject()));
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }

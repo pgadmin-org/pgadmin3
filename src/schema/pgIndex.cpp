@@ -192,11 +192,11 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         else
             InsertListItem(properties, pos++, _("Columns"), GetColumns());
 
-        InsertListItem(properties, pos++, _("Operator Classes"), GetOperatorClasses());
+        InsertListItem(properties, pos++, _("Operator classes"), GetOperatorClasses());
         InsertListItem(properties, pos++, _("Unique?"), GetIsUnique());
         InsertListItem(properties, pos++, _("Primary?"), GetIsPrimary());
         InsertListItem(properties, pos++, _("Clustered?"), GetIsClustered());
-        InsertListItem(properties, pos++, _("Index Type"), GetIndexType());
+        InsertListItem(properties, pos++, _("Access method"), GetIndexType());
         InsertListItem(properties, pos++, _("Constraint"), GetConstraint());
         InsertListItem(properties, pos++, _("System index?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());

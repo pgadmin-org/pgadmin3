@@ -158,8 +158,8 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
         InsertListItem(properties, pos++, _("OID"), GetOid());
         InsertListItem(properties, pos++, _("Owner"), GetOwner());
         InsertListItem(properties, pos++, _("Default?"), GetOpcDefault());
-        InsertListItem(properties, pos++, _("For Type"), GetInType());
-        InsertListItem(properties, pos++, _("Access Method"), GetAccessMethod());
+        InsertListItem(properties, pos++, _("For type"), GetInType());
+        InsertListItem(properties, pos++, _("Access method"), GetAccessMethod());
         if (!GetKeyType().IsEmpty())
             InsertListItem(properties, pos++, _("Storage"), GetKeyType());  
         unsigned int i;
@@ -167,6 +167,7 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
             InsertListItem(properties, pos++, wxT("OPERATOR"), operators.Item(i));
         for (i=0 ; i < functions.Count() ; i++)
             InsertListItem(properties, pos++, wxT("FUNCTION"), functions.Item(i));
+        InsertListItem(properties, pos++, _("System operator class?"), GetSystemObject());
     }
 }
 

@@ -147,7 +147,7 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, _("OID"), GetOid());
         InsertListItem(properties, pos++, _("Owner"), GetOwner());
         InsertListItem(properties, pos++, _("ACL"), GetAcl());
-        InsertListItem(properties, pos++, _("System Object?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System schema?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }

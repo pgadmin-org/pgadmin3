@@ -279,14 +279,14 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, _("Hostname"), GetName());
         InsertListItem(properties, pos++, _("Description"), GetDescription());
         InsertListItem(properties, pos++, _("Port"), (long)GetPort());
-        InsertListItem(properties, pos++, _("Initial Database"), GetDatabase());
+        InsertListItem(properties, pos++, _("Initial database"), GetDatabase());
         InsertListItem(properties, pos++, _("Username"), GetUsername());
         InsertListItem(properties, pos++, _("Trusted?"), GetTrusted());
         if (GetConnected())
         {
-            InsertListItem(properties, pos++, _("Version String"), GetVersionString());
-            InsertListItem(properties, pos++, _("Version Number"), GetVersionNumber());
-            InsertListItem(properties, pos++, _("Last System OID"), GetLastSystemOID());
+            InsertListItem(properties, pos++, _("Version string"), GetVersionString());
+            InsertListItem(properties, pos++, _("Version number"), GetVersionNumber());
+            InsertListItem(properties, pos++, _("Last system OID"), GetLastSystemOID());
         }
         InsertListItem(properties, pos++, _("Connected?"), BoolToYesNo(GetConnected()));
     }

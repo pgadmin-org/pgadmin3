@@ -82,6 +82,7 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, _("Owner"), GetOwner());
         InsertListItem(properties, pos++, _("ACL"), GetAcl());
         InsertListItem(properties, pos++, _("Definition"), def);
+        InsertListItem(properties, pos++, _("System view?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }

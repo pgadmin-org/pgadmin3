@@ -65,7 +65,7 @@ void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         InsertListItem(properties, pos++, _("Trusted?"), GetTrusted());
         InsertListItem(properties, pos++, _("Handler"), GetHandlerProc());
         InsertListItem(properties, pos++, _("Validator"), GetValidatorProc());
-        InsertListItem(properties, pos++, _("System Object?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System language?"), GetSystemObject());
     }
 }
 

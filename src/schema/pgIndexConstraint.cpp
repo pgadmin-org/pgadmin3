@@ -90,12 +90,12 @@ void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxLis
         else
         {
             InsertListItem(properties, pos++, _("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
-            InsertListItem(properties, pos++, _("Operator Classes"), GetOperatorClasses());
+            InsertListItem(properties, pos++, _("Operator classes"), GetOperatorClasses());
         }
         InsertListItem(properties, pos++, _("Unique?"), GetIsUnique());
         InsertListItem(properties, pos++, _("Primary?"), GetIsPrimary());
         InsertListItem(properties, pos++, _("Clustered?"), GetIsClustered());
-        InsertListItem(properties, pos++, _("Index Type"), GetIndexType());
+        InsertListItem(properties, pos++, _("Access method"), GetIndexType());
         InsertListItem(properties, pos++, _("Constraint"), GetConstraint());
         InsertListItem(properties, pos++, _("System index?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());

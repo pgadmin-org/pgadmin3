@@ -103,24 +103,24 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("OID"), GetOid());
         InsertListItem(properties, pos++, _("Owner"), GetOwner());
-        InsertListItem(properties, pos++, _("Argument Count"), GetArgCount());
+        InsertListItem(properties, pos++, _("Argument count"), GetArgCount());
         InsertListItem(properties, pos++, _("Arguments"), GetArgTypes());
-        InsertListItem(properties, pos++, _("Returns"), GetReturnType());
+        InsertListItem(properties, pos++, _("Return type"), GetReturnType());
         InsertListItem(properties, pos++, _("Language"), GetLanguage());
-        InsertListItem(properties, pos++, _("Returns a Set?"), GetReturnAsSet());
+        InsertListItem(properties, pos++, _("Returns a set?"), GetReturnAsSet());
         if (GetLanguage().IsSameAs(wxT("C"), false))
         {
-            InsertListItem(properties, pos++, _("Object File"), GetBin());
-            InsertListItem(properties, pos++, _("Link Symbol"), GetSource());
+            InsertListItem(properties, pos++, _("Object file"), GetBin());
+            InsertListItem(properties, pos++, _("Link symbol"), GetSource());
         }
         else
             InsertListItem(properties, pos++, _("Source"), GetSource());
 
         InsertListItem(properties, pos++, _("Volatility"), GetVolatility());
-        InsertListItem(properties, pos++, _("Security Definer?"), GetSecureDefiner());
+        InsertListItem(properties, pos++, _("Security of definer?"), GetSecureDefiner());
         InsertListItem(properties, pos++, _("Strict?"), GetIsStrict());
         InsertListItem(properties, pos++, _("ACL"), GetAcl());
-        InsertListItem(properties, pos++, _("System Function?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System function?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }

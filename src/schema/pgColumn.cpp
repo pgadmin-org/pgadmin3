@@ -174,15 +174,15 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("Position"), GetColNumber());
-        InsertListItem(properties, pos++, _("Data Type"), GetVarTypename());
+        InsertListItem(properties, pos++, _("Data type"), GetVarTypename());
         InsertListItem(properties, pos++, _("Default"), GetDefault());
-        InsertListItem(properties, pos++, _("Not Null?"), GetNotNull());
-        InsertListItem(properties, pos++, _("Primary Key?"), GetIsPK());
-        InsertListItem(properties, pos++, _("Foreign Key?"), GetIsFK());
+        InsertListItem(properties, pos++, _("Not NULL?"), GetNotNull());
+        InsertListItem(properties, pos++, _("Primary key?"), GetIsPK());
+        InsertListItem(properties, pos++, _("Foreign key?"), GetIsFK());
         InsertListItem(properties, pos++, _("Storage"), GetStorage());
         InsertListItem(properties, pos++, _("Inherited"), GetInheritedCount() != 0);
 
-        InsertListItem(properties, pos++, _("System Column?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System column?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 

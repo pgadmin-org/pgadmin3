@@ -113,10 +113,10 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
 
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("User ID"), GetUserId());
-        InsertListItem(properties, pos++, _("Account Expires"), GetAccountExpires());
+        InsertListItem(properties, pos++, _("Account expires"), GetAccountExpires());
         InsertListItem(properties, pos++, _("Superuser?"), BoolToYesNo(GetSuperuser()));
-        InsertListItem(properties, pos++, _("Create Databases?"), BoolToYesNo(GetCreateDatabase()));
-        InsertListItem(properties, pos++, _("Update Catalogs?"), BoolToYesNo(GetUpdateCatalog()));
+        InsertListItem(properties, pos++, _("Create databases?"), BoolToYesNo(GetCreateDatabase()));
+        InsertListItem(properties, pos++, _("Update catalogs?"), BoolToYesNo(GetUpdateCatalog()));
 
         wxString groupList;
 

@@ -131,7 +131,7 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         else
         {
             InsertListItem(properties, pos++, _("Alignment"), GetAlignment());
-            InsertListItem(properties, pos++, _("Internal Length"), GetInternalLength());
+            InsertListItem(properties, pos++, _("Internal length"), GetInternalLength());
             InsertListItem(properties, pos++, _("Default"), GetDefault());
             InsertListItem(properties, pos++, _("Passed by Value?"), BoolToYesNo(GetPassedByValue()));
             if (!GetElement().IsEmpty())
@@ -139,16 +139,16 @@ void pgType::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
                 InsertListItem(properties, pos++, _("Element"), GetElement());
                 InsertListItem(properties, pos++, _("Delimiter"), GetDelimiter());
             }
-            InsertListItem(properties, pos++, _("Input Function"), GetInputFunction());
-            InsertListItem(properties, pos++, _("Output Function"), GetOutputFunction());
+            InsertListItem(properties, pos++, _("Input function"), GetInputFunction());
+            InsertListItem(properties, pos++, _("Output function"), GetOutputFunction());
             if (GetConnection()->BackendMinimumVersion(7, 4))
             {
-            InsertListItem(properties, pos++, _("Receive Function"), GetReceiveFunction());
-            InsertListItem(properties, pos++, _("Send Function"), GetSendFunction());
+            InsertListItem(properties, pos++, _("Receive function"), GetReceiveFunction());
+            InsertListItem(properties, pos++, _("Send function"), GetSendFunction());
             }
             InsertListItem(properties, pos++, _("Storage"), GetStorage());
         }
-        InsertListItem(properties, pos++, _("System Type?"), GetSystemObject());
+        InsertListItem(properties, pos++, _("System type?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
     }
 }
