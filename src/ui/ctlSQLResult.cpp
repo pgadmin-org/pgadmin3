@@ -121,7 +121,7 @@ int ctlSQLResult::Retrieve(long chunk)
         colTypes.Add(wxT(""));
         colTypClasses.Add(0L);
 
-        InsertColumn(0, wxT("Row"), wxLIST_FORMAT_RIGHT, 30);
+        InsertColumn(0, _("Row"), wxLIST_FORMAT_RIGHT, 30);
         colNames.Add(wxT("Row"));
 
         for (col=0 ; col < nCols ; col++)
