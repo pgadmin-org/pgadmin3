@@ -344,6 +344,7 @@ void frmRestore::OnView(wxCommandEvent &ev)
     btnView->Disable();
     btnOK->Disable();
     viewRunning = true;
+    lstContents->DeleteAllItems();
     Execute(1, false);
     btnOK->SetLabel(_("OK"));
     done=0;
