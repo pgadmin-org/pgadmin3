@@ -491,7 +491,7 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
             data->ShowTree(this, browser, properties, statistics, sqlPane);
             break;
         default:        
-			break;;
+			break;
     }
     properties->Thaw();
     statistics->Thaw();
@@ -649,7 +649,11 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 
     long cookie;
     wxTreeItemId currentItem = browser->GetSelection();
-    pgObject *data;
+    pgObject *data = (pgObject *)browser->GetItemData(currentItem);
+    if (!data)
+        return;
+
+    StartMsg(wxT("Refreshing ") + data->GetTypeName() + wxT("..."));
 
     wxTreeItemId item;
     
@@ -666,7 +670,6 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 
 	// refresh information about the object
 
-    data = (pgObject *)browser->GetItemData(currentItem);
     data->SetDirty();
     
     pgObject *newData = data->Refresh(browser, currentItem);
@@ -676,26 +679,25 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
         wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 
             + data->GetQuotedFullIdentifier() + wxT(" for Refresh"));
 
-        browser->SetItemData(currentItem, 0);
-        delete data;
-
         if (newData)
         {
             wxLogInfo(wxT("Replacing with new Node ") + newData->GetTypeName() + wxT(" ") 
                 + newData->GetQuotedFullIdentifier() + wxT(" for Refresh"));
             newData->SetId(currentItem);    // not done automatically
             browser->SetItemData(currentItem, newData);
+            delete data;
         }
         else
         {
             wxLogInfo(wxT("No object to replace: vanished after refresh."));
+            browser->SelectItem(browser->GetItemParent(currentItem));
             browser->Delete(currentItem);
-            return;
         }
     }
     wxTreeEvent event;
 	OnTreeSelChanged(event);
     browser->Thaw();
+    EndMsg();
 }
 
 void frmMain::OnDisconnect(wxCommandEvent &ev)
