@@ -22,6 +22,10 @@ rm -rf ./src
 # CVS update
 /usr/bin/cvs update -d -C
 
+# Touch the makefiles to ensure make dist doesn't get confused.
+touch Makefile.am
+touch src/Makefile.am
+
 # Bootstrap
 /bin/sh bootstrap
 
