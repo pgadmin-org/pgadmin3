@@ -69,16 +69,13 @@ public:
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
 
     PGconn *connection() { return conn; }
-
-private:
     void Notice(const char *msg);
 
+private:
     PGconn *conn;
     int minorVersion, majorVersion;
     bool resolvedIP;
     wxString dbHost;
-
-    friend void pgNoticeProcessor(void *arg, const char *message);
 
     void *noticeArg;
     PQnoticeProcessor noticeProc;

@@ -95,6 +95,7 @@ public:
     int ReturnCode() const { return rc; }
     wxString GetMessagesAndClear();
     bool IsRunning() const;
+    void appendMessage(const wxString &str);
 
 private:
     int rc;
@@ -107,9 +108,7 @@ private:
     pgSet *dataSet;
     wxCriticalSection criticalSection;
 
-    void appendMessage(const wxString &str);
     int execute();
-    friend void pgNoticeProcessor(void *arg, const char *message);
 };
 
 #endif

@@ -143,7 +143,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     entries[2].Set(wxACCEL_CTRL,                (int)'X',      MNU_EXPORT);
     entries[3].Set(wxACCEL_CTRL,                (int)'F',      MNU_FIND);
     entries[4].Set(wxACCEL_NORMAL,              WXK_F5,        MNU_EXECUTE);
-    entries[5].Set(wxACCEL_NORMAL,              WXK_F6,        MNU_EXPLAIN);
+    entries[5].Set(wxACCEL_NORMAL,              WXK_F7,        MNU_EXPLAIN);
     entries[6].Set(wxACCEL_ALT,                 WXK_PAUSE,     MNU_CANCEL);
     entries[7].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
 

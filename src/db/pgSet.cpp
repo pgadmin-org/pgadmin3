@@ -243,7 +243,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
 {
     wxString str(message, wxConvUTF8);
     
-    wxLogNotice(wxT("%s"), str);
+    wxLogNotice(wxT("%s"), str.c_str());
     ((pgQueryThread*)arg)->appendMessage(str);
 }
 
