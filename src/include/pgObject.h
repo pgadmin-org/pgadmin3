@@ -90,8 +90,6 @@ public:
 
     virtual wxString GetFullName() const { return name; }
     virtual wxString GetIdentifier() const { return name; }
-    virtual wxString GetFullIdentifier() const {return GetName() + wxT(".")+GetFullName(); }
-    virtual wxString GetQuotedFullIdentifier() const {return qtIdent(GetOwner()) + wxT(".")+qtIdent(GetFullName()); }
     virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
 
     virtual wxString GetSql(wxTreeCtrl *browser) { return wxT(""); }
@@ -101,6 +99,8 @@ public:
 
     virtual void SetDirty() { sql=wxT(""); expandedKids=0; }
     virtual void SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, const int index) { return; }
+    virtual wxString GetFullIdentifier() const { return GetName(); }
+    virtual wxString GetQuotedFullIdentifier() const { return qtIdent(GetName()); }
 
 protected:
     static void InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2);
@@ -134,6 +134,8 @@ public:
     double GetTableOid() const {return tableOid; }
     void iSetTableOid(const double d) { tableOid=d; }
     wxString GetTableOidStr() const {return NumToStr(tableOid) + wxT("::oid"); }
+    virtual wxString GetFullIdentifier() const;
+    virtual wxString GetQuotedFullIdentifier() const;
 
 protected:
     pgSchema *schema;

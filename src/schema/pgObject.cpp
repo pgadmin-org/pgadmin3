@@ -285,3 +285,15 @@ void pgSchemaObject::DisplayStatistics(wxListCtrl *statistics, const wxString& q
     }
 
 }
+
+
+wxString pgSchemaObject::GetFullIdentifier() const 
+{
+    return schema->GetName() + wxT(".")+GetName();
+}
+
+
+wxString pgSchemaObject::GetQuotedFullIdentifier() const
+{
+    return qtIdent(schema->GetName()) + wxT(".")+qtIdent(GetName());
+}
