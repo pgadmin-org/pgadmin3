@@ -396,6 +396,7 @@ wxString FileRead(const wxString &filename, wxWindow *errParent, int format)
         file.Read(buf, len);
         file.Close();
 
+#if wxUSE_UNICODE
         if (format < 0)
             format = (settings->GetUnicodeFile() ? 1 : 0);
  
@@ -419,9 +420,12 @@ wxString FileRead(const wxString &filename, wxWindow *errParent, int format)
                 wxConvUTF8.MB2WC((wxChar*)str.c_str(), buf, nLen);
             else
                 wxConvLibc.MB2WC((wxChar*)str.c_str(), buf, nLen);
-
             str.Replace(wxT("\r"), wxT(""));
         }
+#else
+        str=buf;
+        str.Replace(wxT("\r"), wxT(""));
+#endif
         delete[] buf;
     }
     return str;

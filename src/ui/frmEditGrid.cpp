@@ -138,6 +138,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
 
 void frmEditGrid::OnLabelDoubleClick(wxGridEvent& event)
 {
+#if wxCHECK_VERSION(2, 5, 0)
+    // at the moment, not implemented for 2.4
     int maxHeight, maxWidth;
     sqlGrid->GetClientSize(&maxWidth, &maxHeight);
     int row=event.GetRow();
@@ -219,6 +221,7 @@ void frmEditGrid::OnLabelDoubleClick(wxGridEvent& event)
             sqlGrid->EndBatch();
         }
     }
+#endif
 }
 
 
