@@ -505,7 +505,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
             properties->AppendItem(_("Last system OID"), GetLastSystemOID());
         }
         properties->AppendItem(_("Connected?"), GetConnected());
-        if (GetUpSince().IsValid())
+        if (GetConnected() && GetUpSince().IsValid())
             properties->AppendItem(_("Up since"), GetUpSince());
         if (GetServerControllable())
             properties->AppendItem(_("Running?"), GetServerRunning());

@@ -528,7 +528,7 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
 #if defined(__WXMSW__) || wxUSE_LIBMSPACK
             !wxFile::Exists(helpdir + wxT("/pgadmin3.chm")) &&
 #endif
-            !wxFile::Exists(helpdir + wxT("pgadmin3.zip")))
+            !wxFile::Exists(helpdir + wxT("/pgadmin3.zip")))
             helpdir=docPath + wxT("/en_US");
 
 #ifdef __WXMSW__
@@ -536,7 +536,7 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
        if (wxFile::Exists(helpdir + wxT("/pgadmin3.chm")))
         {
             helpCtl=new wxCHMHelpController();
-            helpCtl->Initialize(helpdir);
+            helpCtl->Initialize(helpdir + wxT("/pgadmin3"));
         }
         else
 #endif
