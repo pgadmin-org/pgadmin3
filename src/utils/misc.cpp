@@ -363,7 +363,7 @@ DialogWithHelp::DialogWithHelp(frmMain *frame) : wxDialog()
 
 void DialogWithHelp::OnHelp(wxCommandEvent& ev)
 {
-    wxString helpSite=settings->GetHelpSite();
+    wxString helpSite=settings->GetSqlHelpSite();
     wxString page=GetHelpPage();
 
     if (!page.IsEmpty())

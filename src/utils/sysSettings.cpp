@@ -49,9 +49,23 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
 
 #ifdef __WIN32__
-    Read(wxT("SqlHelpSite"), &helpSite, loadPath + wxT("/docs/en_US/"));
+    Read(wxT("pgAdminHelpSite"), &pgAdminHelpSite, loadPath + wxT("\\docs\\en_US\\"));
+    if (pgAdminHelpSite.Last() != '/' && pgAdminHelpSite.Last() != '\\')
+        pgAdminHelpSite += wxT("\\");
 #else
-    Read(wxT("SqlHelpSite"), &helpSite, loadPath + wxT("../share/pgadmin3/docs/en_US/"));
+    Read(wxT("pgAdminHelpSite"), &pgAdminHelpSite, loadPath + wxT("../share/pgadmin3/docs/en_US/"));
+    if (pgAdminHelpSite.Last() != '/' && pgAdminHelpSite.Last() != '\\')
+        pgAdminHelpSite += wxT("/");
+#endif
+
+#ifdef __WIN32__
+    Read(wxT("SqlHelpSite"), &sqlHelpSite, loadPath + wxT("\\docs\\en_US\\pg\\"));
+    if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
+        sqlHelpSite += wxT("\\");
+#else
+    Read(wxT("SqlHelpSite"), &sqlHelpSite, loadPath + wxT("../share/pgadmin3/docs/en_US/pg/"));
+    if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
+        sqlHelpSite += wxT("/");
 #endif
 
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
@@ -76,7 +90,8 @@ sysSettings::~sysSettings()
     Write(wxT("AskSaveConfirmation"), BoolToStr(askSaveConfirmation));
     Write(wxT("ConfirmDelete"), BoolToStr(confirmDelete));
     Write(wxT("ShowUsersForPrivileges"), BoolToStr(showUsersForPrivileges));
-    Write(wxT("SqlHelpSite"), helpSite);
+    Write(wxT("pgAdminHelpSite"), pgAdminHelpSite);
+    Write(wxT("SqlHelpSite"), sqlHelpSite);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
 }
 

@@ -358,7 +358,7 @@ SqlTokenHelp sqlTokenHelp[] =
 
 void frmQuery::OnHelp(wxCommandEvent& event)
 {
-    wxString helpSite=settings->GetHelpSite();
+    wxString helpSite=settings->GetSqlHelpSite();
     wxString page;
     wxString query=sqlQuery->GetSelectedText();
     if (query.IsNull())

@@ -43,7 +43,6 @@ WX_DEFINE_LIST(windowList);
 
 // Icons
 #include "images/aggregate.xpm"
-// #include "images/arguments.xpm"
 #include "images/baddatabase.xpm"
 #include "images/check.xpm"
 #include "images/closeddatabase.xpm"
@@ -57,9 +56,7 @@ WX_DEFINE_LIST(windowList);
 #include "images/drop.xpm"
 #include "images/function.xpm"
 #include "images/group.xpm"
-// #include "images/hiproperty.xpm"
 #include "images/index.xpm"
-// #include "images/indexcolumn.xpm"
 #include "images/language.xpm"
 #include "images/foreignkey.xpm"
 #include "images/namespace.xpm"

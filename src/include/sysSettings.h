@@ -60,8 +60,13 @@ public:
     void SetAskSaveConfirmation(const bool b) { askSaveConfirmation=b; }
     bool GetConfirmDelete() const { return confirmDelete; }
     void SetConfirmDelete(const bool b) { confirmDelete=b; }
-    wxString GetHelpSite() const { return helpSite; }
-    void SetHelpSite(const wxString& s) { helpSite = s; }
+
+    wxString GetPgAdminHelpSite() const { return pgAdminHelpSite; }
+    void SetPgAdminHelpSite(const wxString& s) { pgAdminHelpSite = s; }
+
+    wxString GetSqlHelpSite() const { return sqlHelpSite; }
+    void SetSqlHelpSite(const wxString& s) { sqlHelpSite = s; }
+
     bool GetShowUsersForPrivileges() const { return showUsersForPrivileges; }
     void SetShowUsersForPrivileges(const bool b) { showUsersForPrivileges=b; }
 
@@ -100,7 +105,8 @@ private:
     // Show System Objects
     bool showSystemObjects;
 
-    wxString helpSite;
+    wxString pgAdminHelpSite;
+    wxString sqlHelpSite;
     bool showUsersForPrivileges;
     bool askSaveConfirmation;
     bool confirmDelete;

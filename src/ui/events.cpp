@@ -207,13 +207,18 @@ void frmMain::OnReload(wxCommandEvent& WXUNUSED(event))
 
 void frmMain::OnContents(wxCommandEvent& event)
 {
+    wxString helpSite=settings->GetPgAdminHelpSite();
+    frmHelp *h=new frmHelp(this);
+    h->Show(true);
+    if (!h->Load(helpSite + wxT("index.html")))
+        h->Destroy();
 }
 
 
 
 void frmMain::OnPgsqlHelp(wxCommandEvent& event)
 {
-    wxString helpSite=settings->GetHelpSite();
+    wxString helpSite=settings->GetSqlHelpSite();
     frmHelp *h=new frmHelp(this);
     h->Show(true);
     if (!h->Load(helpSite + wxT("index.html")))
@@ -232,7 +237,7 @@ void frmMain::OnFaq(wxCommandEvent& event)
 
 void frmMain::OnHelp(wxCommandEvent& event)
 {
-    wxString helpSite=settings->GetHelpSite();
+    wxString helpSite=settings->GetSqlHelpSite();
     wxString page;
 
     wxTreeItemId item=browser->GetSelection();

@@ -27,7 +27,8 @@ extern wxLocale locale;
 extern wxArrayInt existingLangs;
 
 
-#define txtHelpSite                 CTRL("txtHelpSite", wxTextCtrl)
+#define txtPgAdminHelpSite          CTRL("txtPgAdminHelpSite", wxTextCtrl)
+#define txtSqlHelpSite              CTRL("txtSqlHelpSite", wxTextCtrl)
 #define txtLogfile                  CTRL("txtLogfile", wxTextCtrl)
 #define radLoglevel                 CTRL("radLoglevel", wxRadioBox)
 #define txtMaxRows                  CTRL("txtMaxRows", wxTextCtrl)
@@ -73,7 +74,8 @@ frmOptions::frmOptions(wxFrame *parent)
     txtAutoRowCount->SetValue(NumToStr(settings->GetAutoRowCountThreshold()));
     chkStickySql->SetValue(settings->GetStickySql());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
-    txtHelpSite->SetValue(settings->GetHelpSite());
+    txtPgAdminHelpSite->SetValue(settings->GetPgAdminHelpSite());
+    txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
 
 
     cbLanguage->Append(_("Default"));
@@ -147,7 +149,25 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetAutoRowCountThreshold(StrToLong(txtAutoRowCount->GetValue()));
     settings->SetStickySql(chkStickySql->IsChecked());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->IsChecked());
-    settings->SetHelpSite(txtHelpSite->GetValue());
+
+    // Make sure there's a slash on the end of the path
+    if (txtPgAdminHelpSite->GetValue().Last() == '/' || txtPgAdminHelpSite->GetValue().Last() == '\\')
+        settings->SetPgAdminHelpSite(txtPgAdminHelpSite->GetValue());
+    else
+#ifdef __WIN32__
+        settings->SetPgAdminHelpSite(txtPgAdminHelpSite->GetValue() + wxT("\\"));
+#else
+        settings->SetPgAdminHelpSite(txtPgAdminHelpSite->GetValue() + wxT("/"));
+#endif
+
+    if (txtSqlHelpSite->GetValue().Last() == '/' || txtSqlHelpSite->GetValue().Last() == '\\')
+        settings->SetSqlHelpSite(txtSqlHelpSite->GetValue());
+    else
+#ifdef __WIN32__
+        settings->SetSqlHelpSite(txtSqlHelpSite->GetValue() + wxT("\\"));
+#else
+        settings->SetSqlHelpSite(txtSqlHelpSite->GetValue() + wxT("/"));
+#endif
 
     int langNo=cbLanguage->GetSelection();
     if (langNo >= 0)
