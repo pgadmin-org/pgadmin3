@@ -110,6 +110,7 @@ protected:
     void FillDatatype(wxComboBox *cb, wxComboBox *cb2, bool withDomains=true);
 
     bool isVarLen, isVarPrec;
+    long minVarLen, maxVarLen;
     wxTextCtrl *txtLength, *txtPrecision;
 
 private:

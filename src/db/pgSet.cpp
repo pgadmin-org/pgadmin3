@@ -87,7 +87,9 @@ pgTypClass pgSet::ColTypClass(int col) const
         case PGOID_TYPE_VARCHAR:
             return PGTYPCLASS_STRING;
         case PGOID_TYPE_TIMESTAMP:
+        case PGOID_TYPE_TIMESTAMPTZ:
         case PGOID_TYPE_TIME:
+        case PGOID_TYPE_TIMETZ:
         case PGOID_TYPE_INTERVAL:
             return PGTYPCLASS_DATE;
         default:

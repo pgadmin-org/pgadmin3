@@ -46,6 +46,14 @@ pgDatatype::pgDatatype(const wxString &typname, long numdims, long typmod)
             if (prec)
                 length += wxT(",") + NumToStr(prec);
         }
+        else if (name == wxT("time") || name == wxT("timetz")
+              || name == wxT("timestamp") || name == wxT("timestamptz")
+              || name == wxT("interval"))
+        {
+            prec=0;
+            len=typmod;
+            length += NumToStr(len);
+        }
         else
         {
             prec=0;

@@ -626,6 +626,7 @@ dlgTypeProperty::dlgTypeProperty(frmMain *frame, const wxString &resName)
     if (wxWindow::FindWindow(XRCID("txtLength")))
     {
         txtLength = CTRL("txtLength", wxTextCtrl);
+        txtLength->SetValidator(numericValidator);
         txtLength->Disable();
     }
     else
@@ -633,6 +634,7 @@ dlgTypeProperty::dlgTypeProperty(frmMain *frame, const wxString &resName)
     if (wxWindow::FindWindow(XRCID("txtPrecision")))
     {
         txtPrecision= CTRL("txtPrecision", wxTextCtrl);
+        txtPrecision->SetValidator(numericValidator);
         txtPrecision->Disable();
     }
     else
@@ -688,6 +690,13 @@ void dlgTypeProperty::AddType(const wxString &typ, const OID oid, const wxString
             case PGOID_TYPE_VARCHAR:
                 vartyp=wxT("L");
                 break;
+            case PGOID_TYPE_TIME:
+            case PGOID_TYPE_TIMETZ:
+            case PGOID_TYPE_TIMESTAMP:
+            case PGOID_TYPE_TIMESTAMPTZ:
+            case PGOID_TYPE_INTERVAL:
+                vartyp=wxT("D");
+                break;
             case PGOID_TYPE_NUMERIC:
                 vartyp=wxT("P");
                 break;
@@ -731,16 +740,20 @@ wxString dlgTypeProperty::GetQuotedTypename(int sel)
     {
         sql = types.Item(sel).AfterFirst(':');
 
-        if (isVarLen && txtLength && StrToLong(txtLength->GetValue()) > 0)
+        if (isVarLen && txtLength)
         {
-            sql += wxT("(") + txtLength->GetValue();
-            if (isVarPrec && txtPrecision)
+            wxString varlen=txtLength->GetValue();
+            if (!varlen.IsEmpty() && NumToStr(StrToLong(varlen))==varlen && StrToLong(varlen) >= minVarLen)
             {
-                wxString varprec=txtPrecision->GetValue();
-                if (!varprec.IsEmpty())
-                    sql += wxT(", ") + varprec;
+                sql += wxT("(") + varlen;
+                if (isVarPrec && txtPrecision)
+                {
+                    wxString varprec=txtPrecision->GetValue();
+                    if (!varprec.IsEmpty())
+                        sql += wxT(", ") + varprec;
+                }
+                sql += wxT(")");
             }
-            sql += wxT(")");
         }
     }
     return sql;
@@ -753,9 +766,12 @@ void dlgTypeProperty::CheckLenEnable()
     if (sel >= 0)
     {
         wxString info=types.Item(sel);
-
+        
         isVarPrec = info.StartsWith(wxT("P"));
-        isVarLen =  isVarPrec || info.StartsWith(wxT("L"));
+        isVarLen =  isVarPrec || info.StartsWith(wxT("L")) || info.StartsWith(wxT("D"));
+        minVarLen = (info.StartsWith(wxT("D")) ? 0 : 1);
+        maxVarLen = isVarPrec ? 1000 : 
+                    minVarLen ? 0x7fffffff : 10;
     }
 }
 
