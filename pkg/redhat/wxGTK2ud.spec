@@ -10,10 +10,6 @@ Group: X11/Libraries
 Source: %{name}-%{version}.tar.bz2
 URL: http://www.wxwindows.org
 Packager: pgAdmin project <pgadmin-hackers@postgresql.org>
-BuildRoot: %{_tmppath}/%{name}-root
-
-# The package advertises only for libwx_gtk-%{ver2}.a
-# Therefore, there is no incompatibility with wxGTK 2.4
 
 Provides: libwx_gtk2ud-%{version}.a
 
@@ -56,8 +52,7 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 %setup -q
 
 %build
-./configure --enable-monolithic --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared --prefix=/usr
-make clean
+./configure --enable-monolithic --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
 make
 
 pushd contrib/src
@@ -74,19 +69,8 @@ pushd contrib/src/
         %makeinstall -C stc
 popd
 
-# RedHat does it by default. Needed for SuSE and Mandrake.
-#strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud-%{version}.a
-#strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_xrc-%{version}.a
-#strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_stc-%{version}.a
-
 %clean
 rm -rf %{buildroot}
-
-%post
-#ln -fs /usr/lib/wx/include/gtk2ud-2.5/wx/setup.h  /usr/include/wx/setup.h
-
-%postun
-#rm -fr /usr/include/wx/setup.h
 
 %files
 %defattr(-,root,root)
