@@ -122,8 +122,10 @@ void frmHelp::OnLinkClicked(const wxHtmlLinkInfo& link)
         // relative to root
         if (dp < 0)
             currentPage=newPage;
-        else
-            currentPage=currentPage.Mid(dp+2).AfterFirst('/') + newPage;
+        else {
+            long sp = currentPage.Mid(dp+3).Find(wxT("/"));
+            currentPage=currentPage.Left(sp+7) + newPage;
+        }
     }
     else if (dp < 0)
     {
