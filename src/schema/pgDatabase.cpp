@@ -101,6 +101,7 @@ bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser)
     {
         delete conn;
         conn=0;
+	connected = FALSE;
     }
     bool done=server->ExecuteVoid(wxT("DROP DATABASE ") + GetQuotedIdentifier() + wxT(";"));
     if (!done)
