@@ -42,7 +42,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgServer::OnPageSelect)  
     EVT_TEXT(XRCID("txtDescription"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtService"),                   dlgProperty::OnChange)
-    EVT_TEXT(XRCID("txtDatabase"),                  dlgProperty::OnChange)
+    EVT_TEXT(XRCID("cbDatabase"),                   dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtPort")  ,                    dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtUsername"),                  dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbSSL"),                    dlgProperty::OnChange)
@@ -95,13 +95,19 @@ void dlgServer::OnOK(wxCommandEvent &ev)
     if (server)
     {
         server->iSetDescription(txtDescription->GetValue());
-        server->iSetServiceID(txtService->GetValue());
+        if (txtService->GetValue() != server->GetServiceID())
+        {
+            mainForm->StartMsg(_("Checking server status"));
+            server->iSetServiceID(txtService->GetValue());
+            mainForm->EndMsg();
+        }
         server->iSetPort(StrToLong(txtPort->GetValue()));
         server->iSetSSL(cbSSL->GetSelection());
         server->iSetLastDatabase(cbDatabase->GetValue());
         server->iSetUsername(txtUsername->GetValue());
         server->iSetNeedPwd(chkNeedPwd->GetValue());
         mainForm->execSelChange(server->GetId(), true);
+        mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
     }
 
     if (IsModal())
@@ -239,6 +245,7 @@ void dlgServer::CheckChange()
                || txtDescription->GetValue() != server->GetDescription()
                || txtService->GetValue() != server->GetServiceID()
                || StrToLong(txtPort->GetValue()) != server->GetPort()
+               || cbDatabase->GetValue() != server->GetDatabaseName()
                || txtUsername->GetValue() != server->GetUsername()
                || chkNeedPwd->GetValue() != server->GetNeedPwd();
     }

@@ -347,6 +347,7 @@ wxString dlgDatabase::GetSql()
         }
 
 
+        AppendOwnerChange(sql);
         AppendComment(sql, wxT("DATABASE"), 0, database);
     }
     else
@@ -361,8 +362,6 @@ wxString dlgDatabase::GetSql()
         AppendIfFilled(sql, wxT("\n       TABLESPACE="), qtIdent(cbTablespace->GetValue()));
 
         sql += wxT(";\n");
-
-        AppendOwnerNew(sql, wxT("DATABASE ") + qtIdent(name));
     }
     sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
 
