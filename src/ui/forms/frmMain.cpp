@@ -14,6 +14,10 @@
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
+#include <wx/splitter.h>
+#include <wx/toolbar.h>
+#include <wx/tbarsmpl.h>
+#include <wx/stc/stc.h>
 
 // App headers
 #include "../../pgAdmin3.h"
@@ -30,17 +34,17 @@ END_EVENT_TABLE()
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
-  
+
   // Icon
 #ifdef __WXMSW__
   SetIcon(wxIcon("images/pgAdmin3.xpm"));
 #else
   SetIcon(wxIcon("images/pgAdmin3.xpm", wxBITMAP_TYPE_XPM));
 #endif
-  
+
   // Build menus
   mnuBar = new wxMenuBar();
-  
+
   // File Menu
   wxMenu *mnuFile = new wxMenu;
   mnuFile->Append(mnuConnect, "&Connect...", "Connect to a PostgreSQL server");
@@ -51,19 +55,19 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
   mnuFile->AppendSeparator();
   mnuFile->Append(mnuExit, "E&xit", "Quit this program");
   mnuBar->Append(mnuFile, "&File");
-  
+
   // Tools Menu
   wxMenu *mnuTools = new wxMenu;
   mnuTools->Append(mnuUpgradeWizard, "&Upgrade Wizard...", "Run the upgrade wizard");
   mnuTools->AppendSeparator();
   mnuTools->Append(mnuOptions, "&Options...", "Show options dialog");
   mnuBar->Append(mnuTools, "&Tools");
-  
+
   // View Menu
   wxMenu *mnuView = new wxMenu;
   mnuView->Append(mnuSystemObjects, "&System objects", "Show or hide system objects");
   mnuBar->Append(mnuView, "&View");
-  
+
   // Help Menu
   wxMenu *mnuHelp = new wxMenu;
   mnuHelp->Append(mnuContents, "&Help...", "Open the helpfile");
@@ -71,10 +75,10 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
   mnuHelp->AppendSeparator();
   mnuHelp->Append(mnuAbout, "&About...", "Show about dialog");
   mnuBar->Append(mnuHelp, "&Help");
-  
+
   // Add the Menubar
   SetMenuBar(mnuBar);
-  
+
   // Status bar
   CreateStatusBar(6);
   static const int iWidths[6] = {-1, 50, 100, 100, 100, 100};
@@ -85,15 +89,42 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
   SetStatusText("Schema: None", 3);
   SetStatusText("Database: None", 4);
   SetStatusText("Server: None", 5);
-  
+
   // Toolbar bar
-  // CreateToolBar(6);
-  
+
+  CreateToolBar();
+
   // Return objects
   stBar = GetStatusBar();
-  // tlBar = GetToolBar();
+  tlBar = GetToolBar();
 
-  // Setup the vertical splitter & treeview
+     // Set up toolbar
+    wxBitmap tlBarBitmaps[10];
+
+    tlBarBitmaps[0] = wxBitmap("images/connect.xpm");
+    tlBarBitmaps[1] = wxBitmap("images/refresh.xpm");
+    tlBarBitmaps[2] = wxBitmap("images/create.xpm");
+    tlBarBitmaps[3] = wxBitmap("images/drop.xpm");
+    tlBarBitmaps[4] = wxBitmap("images/properties.xpm");
+    tlBarBitmaps[5] = wxBitmap("images/sql.xpm");
+    tlBarBitmaps[6] = wxBitmap("images/viewdata.xpm");
+    tlBarBitmaps[7] = wxBitmap("images/vacuum.xpm");
+    tlBarBitmaps[8] = wxBitmap("images/record.xpm");
+    tlBarBitmaps[9] = wxBitmap("images/stop.xpm");
+    tlBar->AddTool(100, _T("Save"), tlBarBitmaps[0], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(101, _T("Save"), tlBarBitmaps[1], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(102, _T("Save"), tlBarBitmaps[2], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(103, _T("Save"), tlBarBitmaps[3], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(104, _T("Save"), tlBarBitmaps[4], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(105, _T("Save"), tlBarBitmaps[5], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(106, _T("Save"), tlBarBitmaps[6], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(107, _T("Save"), tlBarBitmaps[7], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(108, _T("Save"), tlBarBitmaps[8], _T("Toggle button 1"), wxITEM_CHECK);
+    tlBar->AddTool(109, _T("Save"), tlBarBitmaps[9], _T("Toggle button 1"), wxITEM_CHECK);
+
+
+
+    // Setup the vertical splitter & treeview
   wxSplitterWindow* splVertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
   wxSplitterWindow* splHorizontal = new wxSplitterWindow(splVertical, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
   tvBrowser = new wxTreeCtrl(splVertical, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
