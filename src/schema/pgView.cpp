@@ -34,24 +34,26 @@ typedef struct __tokenaction
 {
     char *keyword, *replaceKeyword;
     int actionBefore, actionAfter;
-    bool doBreak;
+    bool doBreak, isOuter, isJoin;
 } tokenAction;
 
 
 tokenAction sqlTokens[] =
 {
-    { "WHERE",  "  WHERE"   -8, 8, true},
-    { "SELECT", " SELECT",   0, 8, true},
-    { "FROM",   "   FROM",  -8, 8, true},
-    { "ORDER",  "  ORDER",  -8, 8, true},
-    { "GROUP",  "  GROUP",  -8, 8, true},
-    { "HAVING", " HAVING",  -8, 8, true},
-    { "LIMIT",  "  LIMIT",  -8, 8, true},
-    { "UNION",  "UNION  ",  -88888, 8, true},
-    { "CASE",   "CASE",      0, 4, true},
-    { "WHEN",   "WHEN",      0, 0, true},
-    { "ELSE",   "ELSE",      0, 0, true},
-    { "END",    "END ",     -4, 0, true},
+    { "WHERE",  "  WHERE"   -8, 8, true, false, false},
+    { "SELECT", " SELECT",   0, 8, true, false, false},
+    { "FROM",   "   FROM",  -8, 8, true, false, false},
+    { "LEFT",   "   LEFT",  -8, 8, true, true,  false},
+    { "JOIN",   "   JOIN",  -8, 8, true, false, true},
+    { "ORDER",  "  ORDER",  -8, 8, true, false, false},
+    { "GROUP",  "  GROUP",  -8, 8, true, false, false},
+    { "HAVING", " HAVING",  -8, 8, true, false, false},
+    { "LIMIT",  "  LIMIT",  -8, 8, true, false, false},
+    { "UNION",  "UNION  ",  -88888, 8, true, false, false},
+    { "CASE",   "CASE",      0, 4, true, false, false},
+    { "WHEN",   "WHEN",      0, 0, true, false, false},
+    { "ELSE",   "ELSE",      0, 0, true, false, false},
+    { "END",    "END ",     -4, 0, true, false, false},
     {0, 0, 0, 0}
 };
 
@@ -73,35 +75,46 @@ wxString pgView::GetSql(wxTreeCtrl *browser)
         queryTokenizer tokenizer(GetDefinition());
         int indent=0;
         int position=0;  // col position. updated, but not used at the moment.
+        bool wasOuter=false;
 
         while (tokenizer.HasMoreTokens())
         {
             token=tokenizer.GetNextToken();
+            wxString trailingChars;
 
             // token may contain brackets
-            int bracketPos=token.Find('(', true);
-            if (bracketPos >= 0)
+            int bracketPos;
+            bracketPos=token.Find('(', true);
+            while (bracketPos >= 0)
             {
                 fc += token.Left(bracketPos+1);
                 token = token.Mid(bracketPos+1);
+                bracketPos=token.Find('(', true);
             }
 
             bracketPos=token.Find(')', true);
-            if (bracketPos >= 0)
+            while (bracketPos >= 0)
             {
-                fc += token.Left(bracketPos+1);
-                token = token.Mid(bracketPos+1);
+                trailingChars = token.Mid(bracketPos) + trailingChars;
+                token = token.Left(bracketPos);
+                bracketPos=token.Find(')', true);
             }
             // identify token
             tokenAction *tp=sqlTokens;
             while (tp->keyword)
             {
                 if (!token.CmpNoCase(tp->keyword))
+                {
+                    if (tp->isJoin && wasOuter)
+                        tp=0;
+                    else
+                        wasOuter = tp->isOuter;
                     break;
+                }
                 tp++;
             }
             
-            if (tp->keyword)
+            if (tp && tp->keyword)
             {
                 // we found a keyword.
                 indent += tp->actionBefore;
@@ -124,8 +137,15 @@ wxString pgView::GetSql(wxTreeCtrl *browser)
             }
             else
             {
-                fc += wxT(" ") + token;
-                position += token.Length()+1;
+                fc += token;
+                position += token.Length();
+            }
+            fc += wxT(" ");
+            position++;
+            if (!trailingChars.IsNull())
+            {
+                fc += trailingChars + wxT(" ");;
+                position += trailingChars.Length() + 1;
             }
         }
 
