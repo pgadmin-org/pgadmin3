@@ -48,6 +48,7 @@ include/dlgLanguage.h include/dlgProperty.h include/dlgType.h \
 include/dlgView.h include/dlgRule.h include/dlgOperator.h \
 include/dlgAggregate.h include/dlgCast.h include/dlgConversion.h \
 include/dlgSequence.h include/dlgSchema.h include/dlgTable.h \
+include/dlgOperator.h include/dlgView.h include/dlgRule.h \
 include/dlgTrigger.h include/dlgUser.h include/frmAbout.h \
 include/frmChildTableViewFrame.h include/frmConnect.h \
 include/frmEditGrid.h include/frmMain.h \
