@@ -91,7 +91,7 @@ bool pgAdmin3::OnInit()
     else
         docPath = loadPath + wxT("/../..") DOC_PATH;
 #else
-    if (wxDir::Exists((DATA_DIR MO_PATH))
+    if (wxDir::Exists(DATA_DIR MO_PATH))
         locale.AddCatalogLookupPathPrefix(DATA_DIR MO_PATH);
     else
         locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
