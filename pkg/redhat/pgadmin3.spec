@@ -3,6 +3,7 @@
 %define wxGTK2_version 20031010.4
 %define withwxconfig wxgtk2ud-2.5-config
 %define desktop_vendor pgadmin
+%define __strip /bin/true
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
@@ -36,7 +37,7 @@ make all
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
-strip --strip-debug %{buildroot}/%{_bindir}/%{name}
+#strip --strip-debug %{buildroot}/%{_bindir}/%{name}
 
 cp -f ./src/include/images/elephant48.xpm %{buildroot}/%{_datadir}/%{name}/%{name}.xpm
 cp -f ./pkg/%{name}.desktop %{buildroot}/%{_datadir}/%{name}/%{name}.desktop
