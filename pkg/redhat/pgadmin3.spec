@@ -39,7 +39,7 @@ make install DESTDIR=%{buildroot}
 strip --strip-debug %{buildroot}/%{_bindir}/%{name}
 
 cp ./src/include/images/elephant48.xpm %{buildroot}/%{_datadir}/%{name}/%{name}.xpm
-cp ./pkg/redhat/%{name}.desktop        %{buildroot}/%{_datadir}/%{name}/%{name}.desktop
+cp ./pkg/%{name}.desktop        %{buildroot}/%{_datadir}/%{name}/%{name}.desktop
 
 mkdir -p %{buildroot}/%{_datadir}/applications
 
