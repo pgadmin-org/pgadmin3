@@ -592,7 +592,7 @@ void sqlGridTextEditor::SetSize(const wxRect& rectOrig)
     {
         rect.x += 1;
         rect.y += 1;
-        rect.width -= 1;wx
+        rect.width -= 1;
         rect.height -= 1;
     }
 #else // !GTK
