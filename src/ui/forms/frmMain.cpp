@@ -125,7 +125,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // Set up toolbar
     wxBitmap tlBarBitmaps[10];
-
+    tlBar->SetToolBitmapSize(wxSize(32, 32));
     tlBarBitmaps[0] = wxBitmap(connect_xpm);
     tlBarBitmaps[1] = wxBitmap(refresh_xpm);
     tlBarBitmaps[2] = wxBitmap(create_xpm);
@@ -137,17 +137,21 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     tlBarBitmaps[8] = wxBitmap(record_xpm);
     tlBarBitmaps[9] = wxBitmap(stop_xpm);
 
-    tlBar->AddTool(100, _T("Save"), tlBarBitmaps[0], _T("Toggle button 1"), wxITEM_NORMAL);
-    tlBar->AddTool(101, _T("Save"), tlBarBitmaps[1], _T("Toggle button 1"), wxITEM_NORMAL);
-    tlBar->AddTool(102, _T("Save"), tlBarBitmaps[2], _T("Toggle button 1"), wxITEM_NORMAL);
-    tlBar->AddTool(103, _T("Save"), tlBarBitmaps[3], _T("Toggle button 1"), wxITEM_NORMAL);
-    tlBar->AddTool(104, _T("Save"), tlBarBitmaps[4], _T("Toggle button 1"), wxITEM_NORMAL);
-    tlBar->AddTool(105, _T("Save"), tlBarBitmaps[5], _T("Toggle button 1"), wxITEM_NORMAL);
-    tlBar->AddTool(107, _T("Save"), tlBarBitmaps[7], _T("Toggle button 1"), wxITEM_NORMAL);
-    tlBar->AddTool(108, _T("Save"), tlBarBitmaps[8], _T("Toggle button 1"), wxITEM_NORMAL);
-    tlBar->AddTool(109, _T("Save"), tlBarBitmaps[9], _T("Toggle button 1"), wxITEM_NORMAL);
-    
-    
+    tlBar->AddTool(100, _T("Connect"), tlBarBitmaps[0], _T("Connect to a server"), wxITEM_NORMAL);
+    tlBar->AddTool(101, _T("Refresh"), tlBarBitmaps[1], _T("Refrsh the data below the selected object"), wxITEM_NORMAL);
+    tlBar->AddSeparator();
+    tlBar->AddTool(102, _T("Create"), tlBarBitmaps[2], _T("Create a new object of the same type as the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(103, _T("Drop"), tlBarBitmaps[3], _T("Drop the currently selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(104, _T("Properties"), tlBarBitmaps[4], _T("Display/edit the properties of the selected object"), wxITEM_NORMAL);
+    tlBar->AddSeparator();
+    tlBar->AddTool(105, _T("SQL"), tlBarBitmaps[5], _T("Execute arbitrary SQL queries"), wxITEM_NORMAL);
+    tlBar->AddTool(106, _T("View Data"), tlBarBitmaps[6], _T("View the data in the selected object"), wxITEM_NORMAL);
+    tlBar->AddTool(107, _T("Vacuum"), tlBarBitmaps[7], _T("Vacuum the current database or table"), wxITEM_NORMAL);
+    tlBar->AddSeparator();
+    tlBar->AddTool(108, _T("Record"), tlBarBitmaps[8], _T("Record a query log"), wxITEM_NORMAL);
+    tlBar->AddTool(109, _T("Stop"), tlBarBitmaps[9], _T("Stop recording the query log"), wxITEM_NORMAL);
+
+    tlBar->Realize();
     
     // Setup the vertical splitter & treeview
     wxSplitterWindow* splVertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
