@@ -40,6 +40,10 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     trusted=_trusted;
     superUser=false;
     createPrivilege=false;
+#ifdef WIN32
+    scmHandle = 0;
+    serviceHandle = 0;
+#endif
 }
 
 pgServer::~pgServer()
@@ -49,6 +53,12 @@ pgServer::~pgServer()
 	if (conn)
 		delete conn;
 
+#ifdef WIN32
+    if (serviceHandle)
+        CloseServiceHandle(serviceHandle);
+    if (scmHandle)
+        CloseServiceHandle(scmHandle);
+#endif
     wxLogInfo(wxT("Destroying a pgServer object"));
 }
 
@@ -118,6 +128,105 @@ bool pgServer::Disconnect()
 }
 
 
+bool pgServer::StartService()
+{
+    bool done=false;
+#ifdef WIN32
+    if (serviceHandle)
+    {
+        done = (::StartService(serviceHandle, 0, 0) != 0);
+        if (!done)
+        {
+            DWORD rc = ::GetLastError();
+            if (rc == ERROR_SERVICE_ALREADY_RUNNING)
+                return true;
+
+            // report error
+        }
+        else
+            GetServerRunning();     // ignore result, just to wait for startup
+    }
+#endif
+    return done;
+}
+
+
+bool pgServer::StopService()
+{
+    bool done=false;
+#ifdef WIN32
+    if (serviceHandle)
+    {
+        SERVICE_STATUS st;
+        done = (::ControlService(serviceHandle, SERVICE_CONTROL_STOP, &st) != 0);
+        if (!done)
+        {
+            DWORD rc = ::GetLastError();
+            // report error
+        }
+    }
+#endif
+    return done;
+}
+
+bool pgServer::GetServerRunning()
+{
+    bool done=false;
+#ifdef WIN32
+    if (serviceHandle)
+    {
+        SERVICE_STATUS st;
+        int loops;
+
+        for (loops=0 ; loops < 20 ; loops++)
+        {
+            if (::QueryServiceStatus(serviceHandle, &st) == 0)
+            {
+                DWORD rc = ::GetLastError();
+                CloseServiceHandle(serviceHandle);
+                CloseServiceHandle(scmHandle);
+                serviceHandle=0;
+                scmHandle=0;
+
+                return false;
+            }
+            done = (st.dwCurrentState == SERVICE_RUNNING);
+            if (st.dwCurrentState == SERVICE_START_PENDING)
+                Sleep(100);
+            else
+                break;
+        }
+    }
+#endif
+    return done;
+}
+
+
+void pgServer::iSetServiceID(const wxString& s)
+{
+    serviceId = s;
+#ifdef WIN32
+    if (serviceId.Find('\\') < 0)
+        scmHandle = OpenSCManager(0, SERVICES_ACTIVE_DATABASE, GENERIC_EXECUTE);
+    else
+        scmHandle = OpenSCManager(serviceId.BeforeFirst('\\'), SERVICES_ACTIVE_DATABASE, GENERIC_EXECUTE|GENERIC_READ);
+
+    if (scmHandle)
+        serviceHandle=OpenService(scmHandle, serviceId.AfterLast('\\'), GENERIC_EXECUTE|GENERIC_READ);
+#endif
+}
+
+
+bool pgServer::GetServerControllable()
+{
+#ifdef WIN32
+    return serviceHandle != 0;
+#else
+    return false;
+#endif
+}
+
+    
 int pgServer::Connect(frmMain *form, bool lockFields) 
 {
     wxLogInfo(wxT("Attempting to create a connection object..."));
@@ -370,7 +479,9 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
             properties->AppendItem(_("Version number"), GetVersionNumber());
             properties->AppendItem(_("Last system OID"), GetLastSystemOID());
         }
-        properties->AppendItem(_("Connected?"), BoolToYesNo(GetConnected()));
+        properties->AppendItem(_("Connected?"), GetConnected());
+        if (GetServerControllable())
+            properties->AppendItem(_("Running?"), GetServerRunning());
     }
 
     if(!GetConnected())

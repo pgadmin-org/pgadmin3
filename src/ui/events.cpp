@@ -88,7 +88,8 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_TIPOFTHEDAY,               frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_QUERYBUILDER,              frmMain::OnQueryBuilder)
-    EVT_MENU(MNU_RELOAD,                    frmMain::OnReload)
+    EVT_MENU(MNU_STARTSERVICE,              frmMain::OnStartService)
+    EVT_MENU(MNU_STOPSERVICE,               frmMain::OnStopService)
     EVT_MENU(MNU_NEW+PG_DATABASE,           frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_USER,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_GROUP,              frmMain::OnNew)
@@ -227,13 +228,29 @@ extern wxLocale *locale;
 }
 
 
-void frmMain::OnReload(wxCommandEvent& WXUNUSED(event))
+void frmMain::OnStartService(wxCommandEvent& WXUNUSED(event))
 {
-    pgFunction *func = (pgFunction*)GetSelectedObject();
-    if (func)
+    pgServer *server= (pgServer*)GetSelectedObject();
+    if (server && server->GetType() == PG_SERVER)
     {
-        StartMsg(wxT("Reloading library ") + func->GetBin());
-        func->ReloadLibrary();
+        StartMsg(_("Starting service"));
+        bool rc = server->StartService();
+        if (rc)
+            execSelChange(server->GetId(), true);
+        EndMsg();
+    }
+}
+
+
+void frmMain::OnStopService(wxCommandEvent& WXUNUSED(event))
+{
+    pgServer *server= (pgServer*)GetSelectedObject();
+    if (server && server->GetType() == PG_SERVER)
+    {
+        StartMsg(_("Stopping service"));
+        bool rc = server->StopService();
+        if (rc)
+            execSelChange(server->GetId(), true);
         EndMsg();
     }
 }
@@ -702,13 +719,14 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     pgServer *server=0;
 
 
-    bool canReload=false;
-    bool canConnect=false;
-    bool canDisconnect=false;
-    bool canReindex=false;
-    bool canIndexCheck=false;
-    bool canGrantWizard=false;
-    bool canCount=false;
+    bool canStart=false,
+         canStop=false,
+         canConnect=false,
+         canDisconnect=false,
+         canReindex=false,
+         canIndexCheck=false,
+         canGrantWizard=false,
+         canCount=false;
 
     bool showTree=true;
 
@@ -718,6 +736,14 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
             StartMsg(_("Retrieving server properties"));
 
             server = (pgServer *)data;
+
+            if (server->GetServerControllable())
+            {
+                if (server->GetServerRunning())
+                    canStop = true;
+                else
+                    canStart = true;
+            }
             if (!server->GetConnected())
             {
                 canConnect=true;
@@ -732,12 +758,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
             EndMsg();
             break;
 
-        case PG_FUNCTION:
-        case PG_TRIGGERFUNCTION:
-        {
-            canReload=((pgFunction*)data)->CanReload();
-            break;
-        }
         case PG_DATABASE:
         case PG_SCHEMAS:
         case PG_SCHEMA:
@@ -838,7 +858,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     }
 
     editMenu->Enable(MNU_NEWOBJECT, false);
-    treeContextMenu->Enable(MNU_NEWOBJECT, false);
 
     wxMenu *indivMenu=data->GetNewMenu();
     if (indivMenu)
@@ -846,7 +865,6 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
         if (indivMenu->GetMenuItemCount())
         {
             editMenu->Enable(MNU_NEWOBJECT, true);
-            treeContextMenu->Enable(MNU_NEWOBJECT, true);
 
             for (i=0 ; i < indivMenu->GetMenuItemCount() ; i++)
             {
@@ -860,19 +878,14 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     else
     {
     }
-    toolsMenu->Enable(MNU_RELOAD, canReload);
-    treeContextMenu->Enable(MNU_RELOAD, canReload);
     toolsMenu->Enable(MNU_CONNECT, canConnect);
-    treeContextMenu->Enable(MNU_CONNECT, canConnect);               
     toolsMenu->Enable(MNU_DISCONNECT, canDisconnect);
-//    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
-//    treeContextMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
     toolsMenu->Enable(MNU_GRANTWIZARD, canGrantWizard);
-    treeContextMenu->Enable(MNU_GRANTWIZARD, canGrantWizard);
-    treeContextMenu->Enable(MNU_DISCONNECT, canDisconnect);
+    toolsMenu->Enable(MNU_STARTSERVICE, canStart);
+    toolsMenu->Enable(MNU_STOPSERVICE, canStop);
     fileMenu->Enable(MNU_PASSWORD, canDisconnect);
     viewMenu->Enable(MNU_COUNT, canCount);
-    treeContextMenu->Enable(MNU_COUNT, canCount);
+//    toolsMenu->Enable(MNU_INDEXCHECK, canIndexCheck);
 }
 
 
@@ -947,16 +960,94 @@ void frmMain::OnSelActivated(wxTreeEvent &event)
 }
 
 
+void frmMain::doPopup(wxPoint point, pgObject *object)
+{
+    if (treeContextMenu)
+        delete treeContextMenu;
+
+    treeContextMenu = new wxMenu();
+    if (object)
+        treeContextMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),		  _("Refresh the selected object."));
+
+    if (viewMenu->IsEnabled(MNU_COUNT))
+        treeContextMenu->Append(MNU_COUNT, _("&Count"),               _("Count rows in the selected object."));
+
+    if (object)
+    {
+        wxMenu *indivMenu=object->GetNewMenu();
+        if (indivMenu)
+        {
+            if (indivMenu->GetMenuItemCount())
+                treeContextMenu->Append(MNU_NEWOBJECT, _("New &Object"), indivMenu, _("Create a new object."));
+            else
+                delete indivMenu;
+        }
+    }
+
+    bool canView = toolsMenu->IsEnabled(MNU_VIEWDATA),
+         canViewFiltered = toolsMenu->IsEnabled(MNU_VIEWFILTEREDDATA),
+         canMaint = toolsMenu->IsEnabled(MNU_MAINTENANCE),
+         canIndex = toolsMenu->IsEnabled(MNU_INDEXCHECK),
+         canGrant = toolsMenu->IsEnabled(MNU_GRANTWIZARD),
+         canConnect = toolsMenu->IsEnabled(MNU_CONNECT),
+         canDisconnect = toolsMenu->IsEnabled(MNU_DISCONNECT),
+         canStart = toolsMenu->IsEnabled(MNU_STARTSERVICE),
+         canStop = toolsMenu->IsEnabled(MNU_STOPSERVICE);
+
+    if (canView || canViewFiltered || canMaint || canIndex || canGrant || canConnect || canDisconnect || canStart || canStop)
+    {
+        treeContextMenu->AppendSeparator();
+        if (canView)
+	        treeContextMenu->Append(MNU_VIEWDATA, _("View &Data"),        _("View the data in the selected object."));
+        if (canViewFiltered)
+	        treeContextMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"),  _("Apply a filter and view the data in the selected object."));
+        if (canMaint)
+            treeContextMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),   _("Maintain the current database or table."));
+        if (canIndex)
+            treeContextMenu->Append(MNU_INDEXCHECK, _("&FK Index check"), _("Checks existence of foreign key indexes"));
+        if (canGrant)
+            treeContextMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),  _("Grants rights to multiple objects"));
+        if (canStart)
+            treeContextMenu->Append(MNU_STARTSERVICE, _("Start service"), _("Start PostgreSQL Service"));
+        if (canStop)
+            treeContextMenu->Append(MNU_STOPSERVICE, _("Stop service"),   _("Stop PostgreSQL Service"));
+        if (canConnect)
+            treeContextMenu->Append(MNU_CONNECT, _("&Connect..."),        _("Connect to the selected server."));
+        if (canDisconnect)
+            treeContextMenu->Append(MNU_DISCONNECT, _("&Disconnect"),     _("Disconnect from the selected server."));
+    }
+
+
+    bool canDrop = editMenu->IsEnabled(MNU_DROP),
+         canEdit = editMenu->IsEnabled(MNU_PROPERTIES);
+    
+    if (canDrop || canEdit)
+    {
+        treeContextMenu->AppendSeparator();
+        if (canDrop)
+            treeContextMenu->Append(MNU_DROP, _("&Delete/Drop"),  	      _("Delete/Drop the selected object."));
+        if (canEdit)
+            treeContextMenu->Append(MNU_PROPERTIES, _("&Properties"),     _("Display/edit the properties of the selected object."));
+    }
+
+    PopupMenu(treeContextMenu, point);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // This handler will display a popup menu for the currently selected item
 ////////////////////////////////////////////////////////////////////////////////
 void frmMain::OnContextMenu(wxCommandEvent& event)
 {
+    wxPoint point;
+    wxObject *object=0;
+
     if (FindFocus() == browser)
     {
         wxRect rect;
-        browser->GetBoundingRect(browser->GetSelection(), rect);
-        wxPoint point = rect.GetPosition();
+        wxTreeItemId item=browser->GetSelection();
+
+        browser->GetBoundingRect(item, rect);
+        point = rect.GetPosition();
 	    wxPoint origin = GetClientAreaOrigin();
 
 	    // Because this Tree is inside a vertical splitter, we
@@ -964,9 +1055,9 @@ void frmMain::OnContextMenu(wxCommandEvent& event)
 	    point.x += origin.x;
 	    point.y += origin.y;
 
-	    // popup the menu
-	    PopupMenu(treeContextMenu, point);
+        doPopup(point, (pgObject*)browser->GetItemData(item));
     }
+
 }
 
     
@@ -990,8 +1081,9 @@ void frmMain::OnSelRightClick(wxTreeEvent& event)
 	point.y += origin.y;
 
 	// popup the menu
-	PopupMenu(treeContextMenu, point);
+    doPopup(point, (pgObject*)browser->GetItemData(item));
 }
+
 
 
 void frmMain::OnDelete(wxCommandEvent &ev)

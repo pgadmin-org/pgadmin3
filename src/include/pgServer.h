@@ -34,6 +34,11 @@ public:
     int Connect(frmMain *form, bool lockFields = FALSE);
     bool Disconnect();
 
+    bool StartService();
+    bool StopService();
+    bool GetServerRunning();
+    bool GetServerControllable();
+
     pgServer *GetServer() const;
 
     wxString GetIdentifier() const;
@@ -49,7 +54,7 @@ public:
     bool GetDiscovered() const { return discovered; }
     void iSetDiscovered(const bool b) { discovered=b; }
     wxString GetServiceID() const { return serviceId; }
-    void iSetServiceID(const wxString& s) { serviceId=s; }
+    void iSetServiceID(const wxString& s);
 
     bool GetCreatePrivilege() const { return createPrivilege; }
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
@@ -104,6 +109,11 @@ private:
     OID lastSystemOID;
     wxString versionNum;
     frmMain *parentWin;
+
+#ifdef WIN32
+    SC_HANDLE scmHandle;
+    SC_HANDLE serviceHandle;
+#endif
 };
 
 #endif

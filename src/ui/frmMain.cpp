@@ -175,6 +175,8 @@ frmMain::frmMain(const wxString& title)
 
     // Tools Menu
     toolsMenu = new wxMenu();
+    toolsMenu->Append(MNU_STARTSERVICE, _("Start service"),       _("Start PostgreSQL Service"));
+    toolsMenu->Append(MNU_STOPSERVICE, _("Stop service"),         _("Stop PostgreSQL Service"));
     toolsMenu->Append(MNU_CONNECT, _("&Connect..."),              _("Connect to the selected server."));
     toolsMenu->Append(MNU_DISCONNECT, _("Disconnec&t"),           _("Disconnect from the selected server."));
     toolsMenu->AppendSeparator();
@@ -187,7 +189,6 @@ frmMain::frmMain(const wxString& title)
     toolsMenu->Append(MNU_RESTORE, _("&Restore"),                 _("Restores a backup from a local file"));
     toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
     toolsMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),        _("Grants rights to multiple objects"));
-    toolsMenu->Append(MNU_RELOAD, _("Re&load module"),            _("Reload library module which implements this function."));
     toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
     menuBar->Append(toolsMenu, _("&Tools"));
 
@@ -214,32 +215,13 @@ frmMain::frmMain(const wxString& title)
 #endif 
     menuBar->Append(helpMenu, _("&Help"));
 
-    treeContextMenu = new wxMenu();
-    // Tree Context Menu
     newContextMenu = new wxMenu();
-    treeContextMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),		  _("Refresh the selected object."));
-    treeContextMenu->Append(MNU_COUNT, _("&Count"),               _("Count rows in the selected object."));
-    treeContextMenu->Append(MNU_RELOAD, _("Re&load module"),	  _("Reload library module which implements this function."));
-    treeContextMenu->Append(MNU_NEWOBJECT, _("New &Object"), newContextMenu, _("Create a new object."));
-    treeContextMenu->AppendSeparator();
-	treeContextMenu->Append(MNU_VIEWDATA, _("View &Data"),        _("View the data in the selected object."));
-	treeContextMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"),  _("Apply a filter and view the data in the selected object."));
-    treeContextMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),   _("Maintain the current database or table."));
-    treeContextMenu->Append(MNU_INDEXCHECK, _("&FK Index check"), _("Checks existence of foreign key indexes"));
-    treeContextMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),  _("Grants rights to multiple objects"));
-    treeContextMenu->Append(MNU_CONNECT, _("&Connect..."),        _("Connect to the selected server."));
-    treeContextMenu->Append(MNU_DISCONNECT, _("&Disconnect"),     _("Disconnect from the selected server."));
-    treeContextMenu->AppendSeparator();
-    treeContextMenu->Append(MNU_CREATE, _("&Create"),             _("Create a new object of the same type as the selected object."));
-    treeContextMenu->Append(MNU_DROP, _("&Delete/Drop"),  	      _("Delete/Drop the selected object."));
-    treeContextMenu->Append(MNU_PROPERTIES, _("&Properties"),     _("Display/edit the properties of the selected object."));
-
+    treeContextMenu = 0;
 
     // Add the Menubar and set some options
     SetMenuBar(menuBar);
 
     editMenu->Enable(MNU_NEWOBJECT, false);
-    treeContextMenu->Enable(MNU_NEWOBJECT, false);
     fileMenu->Enable(MNU_PASSWORD, false);
     viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
 
@@ -402,7 +384,8 @@ frmMain::~frmMain()
     // Clear the treeview
     browser->DeleteAllItems();
 
-    delete treeContextMenu;
+    if (treeContextMenu)
+        delete treeContextMenu;
 	delete images;
 }
 
@@ -793,6 +776,10 @@ void frmMain::StoreServers()
 		        key.Printf(wxT("Servers/Description%d"), numServers);
 	            settings->Write(key, server->GetDescription());
 
+				// Service ID
+		        key.Printf(wxT("Servers/ServiceID%d"), numServers);
+	            settings->Write(key, server->GetServiceID());
+
 				// Port
 				key.Printf(wxT("Servers/Port%d"), numServers);
 		        settings->Write(key, server->GetPort());
@@ -879,8 +866,10 @@ void frmMain::RetrieveServers()
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
     int loop, port, ssl=0;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema, trusted;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, trusted, serviceID;
     pgServer *server;
+
+    wxArrayString servicedServers;
 
 	// Get the hostname for later...
 	char buf[255];
@@ -892,6 +881,10 @@ void frmMain::RetrieveServers()
         // Server
         key.Printf(wxT("Servers/Server%d"), loop);
         settings->Read(key, &servername, wxT(""));
+
+        // service location
+        key.Printf(wxT("Servers/ServiceID%d"), loop);
+        settings->Read(key, &serviceID, wxT(""));
 
         // Comment
         key.Printf(wxT("Servers/Description%d"), loop);
@@ -931,8 +924,22 @@ void frmMain::RetrieveServers()
         server = new pgServer(servername, description, database, username, port, StrToBool(trusted), ssl);
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
+        server->iSetServiceID(serviceID);
 		server->iSetDiscovered(false);
         browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
+
+
+#ifdef WIN32
+        int bspos = serviceID.Find('\\');
+        if (bspos >= 0)
+        {
+            if (serviceID.Left(2) != wxT(".\\") && !serviceID.Matches(wxGetHostName() + wxT("\\*")))
+                serviceID = wxEmptyString;
+        }
+        if (!serviceID.IsEmpty())
+            servicedServers.Add(serviceID);
+#endif
+
     }
 
 #ifdef WIN32
@@ -952,57 +959,59 @@ void frmMain::RetrieveServers()
 
 		while (flag != false)
 		{
-			key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
-			wxRegKey *svcKey = new wxRegKey(key);
+            if (servicedServers.Index(svcName, false) < 0)
+            {
+			    key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
+			    wxRegKey *svcKey = new wxRegKey(key);
 
-			// Server
-			key.Printf(wxT("Servers/Server-%s-%s"), hostname, svcName);
-			settings->Read(key, &servername, wxT("127.0.0.1"));
+			    // Server
+			    key.Printf(wxT("Servers/Server-%s-%s"), hostname, svcName);
+			    settings->Read(key, &servername, wxT("127.0.0.1"));
 
-			// Comment
-			svcKey->QueryValue(wxT("Display Name"), temp);
-			key.Printf(wxT("Servers/Description-%s-%s"), hostname, svcName);
-			settings->Read(key, &description, temp);
+			    // Comment
+			    svcKey->QueryValue(wxT("Display Name"), temp);
+			    key.Printf(wxT("Servers/Description-%s-%s"), hostname, svcName);
+			    settings->Read(key, &description, temp);
 
-			// Database
-			key.Printf(wxT("Servers/Database-%s-%s"), hostname, svcName);
-			settings->Read(key, &database, wxT("template1"));
+			    // Database
+			    key.Printf(wxT("Servers/Database-%s-%s"), hostname, svcName);
+			    settings->Read(key, &database, wxT("template1"));
 
-			// Username
-			svcKey->QueryValue(wxT("Database Superuser"), temp);
-			key.Printf(wxT("Servers/Username-%s-%s"), hostname, svcName);
-			settings->Read(key, &username, temp);
+			    // Username
+			    svcKey->QueryValue(wxT("Database Superuser"), temp);
+			    key.Printf(wxT("Servers/Username-%s-%s"), hostname, svcName);
+			    settings->Read(key, &username, temp);
 
-			// Port
-			key.Printf(wxT("Servers/Port-%s-%s"), hostname, svcName);
-			settings->Read(key, &port, 5432);
+			    // Port
+			    key.Printf(wxT("Servers/Port-%s-%s"), hostname, svcName);
+			    settings->Read(key, &port, 5432);
 
-			// Trusted
-			key.Printf(wxT("Servers/Trusted-%s-%s"), hostname, svcName);
-			settings->Read(key, &trusted, wxT("false"));
+			    // Trusted
+			    key.Printf(wxT("Servers/Trusted-%s-%s"), hostname, svcName);
+			    settings->Read(key, &trusted, wxT("false"));
 
-#ifdef SSL
-			// SSL
-			key.Printf(wxT("Servers/SSL-%s-%s"), hostname, svcName);
-			settings->Read(key, &ssl, 0);
-#endif //SSL
+    #ifdef SSL
+			    // SSL
+			    key.Printf(wxT("Servers/SSL-%s-%s"), hostname, svcName);
+			    settings->Read(key, &ssl, 0);
+    #endif //SSL
 
-			// last Database
-			key.Printf(wxT("Servers/LastDatabase-%s-%s"), hostname, svcName);
-			settings->Read(key, &lastDatabase, wxT(""));
+			    // last Database
+			    key.Printf(wxT("Servers/LastDatabase-%s-%s"), hostname, svcName);
+			    settings->Read(key, &lastDatabase, wxT(""));
 
-			// last Schema
-			key.Printf(wxT("Servers/LastSchema-%s-%s"), hostname, svcName);
-			settings->Read(key, &lastSchema, wxT(""));
+			    // last Schema
+			    key.Printf(wxT("Servers/LastSchema-%s-%s"), hostname, svcName);
+			    settings->Read(key, &lastSchema, wxT(""));
 
-			// Add the Server node
-			server = new pgServer(servername, description, database, username, port, StrToBool(trusted), ssl);
-			server->iSetLastDatabase(lastDatabase);
-			server->iSetLastSchema(lastSchema);
-			server->iSetDiscovered(true);
-			server->iSetServiceID(svcName);
-			browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
-
+			    // Add the Server node
+			    server = new pgServer(servername, description, database, username, port, StrToBool(trusted), ssl);
+			    server->iSetLastDatabase(lastDatabase);
+			    server->iSetLastSchema(lastSchema);
+			    server->iSetDiscovered(true);
+			    server->iSetServiceID(svcName);
+			    browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
+            }
 			// Get the next one...
 			flag = pgKey->GetNextKey(svcName, cookie);
 		}
@@ -1089,23 +1098,10 @@ void frmMain::SetButtons(pgObject *obj)
 	toolsMenu->Enable(MNU_STATUS, status);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	toolsMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
+    toolsMenu->Enable(MNU_STARTSERVICE, false);
+    toolsMenu->Enable(MNU_STOPSERVICE, false);
 	viewMenu->Enable(MNU_REFRESH, refresh);
 	viewMenu->Enable(MNU_COUNT, false);
-    toolsMenu->Enable(MNU_RELOAD, false);
-
-	treeContextMenu->Enable(MNU_CREATE, create);
-	treeContextMenu->Enable(MNU_DROP, drop);
-	treeContextMenu->Enable(MNU_CONNECT, false);
-	treeContextMenu->Enable(MNU_DISCONNECT, false);
-	treeContextMenu->Enable(MNU_REFRESH, refresh);
-	treeContextMenu->Enable(MNU_PROPERTIES, properties);
-	treeContextMenu->Enable(MNU_MAINTENANCE, maintenance);
-	treeContextMenu->Enable(MNU_INDEXCHECK, false);
-	treeContextMenu->Enable(MNU_GRANTWIZARD, false);
-	treeContextMenu->Enable(MNU_VIEWDATA, viewData);
-	treeContextMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
-    treeContextMenu->Enable(MNU_RELOAD, false);
-    treeContextMenu->Enable(MNU_COUNT, false);
 }
 
 

@@ -46,18 +46,6 @@ pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newNam
 }
 
 
-bool pgFunction::CanReload()
-{
-    return GetLanguage().IsSameAs(wxT("C"), false);
-}
-
-
-bool pgFunction::ReloadLibrary()
-{
-    return ExecuteVoid(wxT("LOAD ") + qtString(GetBin()));
-}
-
-
 wxString pgFunction::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())

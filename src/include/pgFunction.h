@@ -35,8 +35,6 @@ public:
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
     static pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction);
 
-    bool ReloadLibrary();
-
     wxString GetFullName() const {return GetName()+wxT("(")+GetArgTypes()+wxT(")"); }
     wxString GetArgTypeNames() const { return argTypeNames; }
     void iSetArgTypeNames(const wxString& s) { argTypeNames=s; }
@@ -69,7 +67,6 @@ public:
     bool GetIsStrict() const { return isStrict; }
     void iSetIsStrict(bool b) { isStrict = b; }
 
-    bool CanReload();
     bool CanRestore() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);

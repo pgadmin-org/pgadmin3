@@ -123,13 +123,15 @@ private:
     void OnDrop(wxCommandEvent &ev);
     void OnDelete(wxCommandEvent &ev);
     void OnProperties(wxCommandEvent &ev);
-    void OnReload(wxCommandEvent &ev);
+    void OnStartService(wxCommandEvent &ev);
+    void OnStopService(wxCommandEvent &ev);
     void OnRefresh(wxCommandEvent &ev);
     void OnDisconnect(wxCommandEvent &ev);
     void OnQueryBuilder(wxCommandEvent &ev);
 
     void OnCheckAlive(wxCommandEvent& event);
 
+    void doPopup(wxPoint point, pgObject *object);
     void execSelChange(wxTreeItemId item, bool currentNode);
     bool checkAlive();
     void setDisplay(pgObject *data, ctlListView *props=0, ctlSQLBox *sqlbox=0);
