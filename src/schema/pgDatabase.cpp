@@ -137,11 +137,11 @@ wxString pgDatabase::GetSql() const
 {
     wxString szSQL;
     szSQL.Printf(wxT("CREATE DATABASE %s WITH ENCODING = %s;"),
-                 this->GetQuotedIdentifier(), qtString(szEncoding));
+                 this->GetQuotedIdentifier().c_str(), qtString(szEncoding).c_str());
 
     if (!this->GetComment().IsEmpty())
         szSQL.Printf(wxT("%s\nCOMMENT ON DATABASE %s IS %s;"),
-                     szSQL.c_str(), this->GetQuotedIdentifier(), qtString(this->GetComment()));
+                     szSQL.c_str(), this->GetQuotedIdentifier().c_str(), qtString(this->GetComment()).c_str());
 
     return szSQL;
 }
