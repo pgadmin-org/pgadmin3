@@ -744,11 +744,14 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         SetStatusText(wxT(""), STATUSPOS_SECS);
         SetStatusText(_("Query is running."), STATUSPOS_MSGS);
         SetStatusText(wxT(""), STATUSPOS_ROWS);
+        msgResult->Clear();
+
+/*
         msgResult->AppendText(_("Executing query:"));
         msgResult->AppendText(wxT("\n\n"));
         msgResult->AppendText(query);
         msgResult->AppendText(wxT("\n"));
-
+*/
         Update();
         wxYield();
 
@@ -774,13 +777,13 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
                 showMessage(_("Query returned successfully with no result in ") + qTime, _("OK."));
-                wxMessageBox(_("Query returned successfully with no result in ") + qTime, _("Query Results"), wxICON_INFORMATION | wxOK);
+//                wxMessageBox(_("Query returned successfully with no result in ") + qTime, _("Query Results"), wxICON_INFORMATION | wxOK);
             }
             else
             {
                 wxString errMsg = sqlResult->GetErrorMessage();
                 showMessage(errMsg);
-                wxLogError(errMsg);
+//                wxLogError(errMsg);
 
                 wxString atChar=wxT(" at character ");
                 int chp=errMsg.Find(atChar);
