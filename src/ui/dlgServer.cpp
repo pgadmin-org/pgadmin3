@@ -121,7 +121,7 @@ void dlgServer::OnPageSelect(wxNotebookEvent &event)
 
 wxString dlgServer::GetHelpPage() const
 {
-    return wxT("server-connect");
+    return wxT("pgadmin/connect");
 }
 
 

@@ -21,6 +21,7 @@ class dlgServer : public dlgProperty
 {
 public:
     dlgServer(frmMain *frame, pgServer *s);
+    ~dlgServer();
     int Go(bool modal);
     int GoNew();
 

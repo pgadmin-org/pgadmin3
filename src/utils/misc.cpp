@@ -523,7 +523,9 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
 
 void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
 {
-    if (settings->GetSqlHelpSite().length() != 0) 
+    if (helpTopic.Left(8) == wxT("pgadmin/"))
+        DisplayHelp(wnd, helpTopic.Mid(8), icon);
+    else if (settings->GetSqlHelpSite().length() != 0) 
         frmHelp::LoadSqlDoc(wnd, helpTopic  + wxT(".html"));
     else
         DisplayHelp(wnd, wxT("pg/") + helpTopic, icon);
