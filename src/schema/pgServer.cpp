@@ -168,12 +168,12 @@ wxString pgServer::GetLastError() const
     wxString szMsg;
     if (szError != wxT("")) {
         if (cnMaster->GetLastError() != wxT("")) {
-            szMsg.Printf(wxT("%s\n%s"), szError, cnMaster->GetLastError());
+            szMsg.Printf(wxT("%s\n%s"), szError.c_str(), cnMaster->GetLastError().c_str());
         } else {
-            szMsg.Printf(wxT("%s"), szError);
+            szMsg.Printf(wxT("%s"), szError.c_str());
         }
     } else {
-        szMsg.Printf(wxT("%s"), cnMaster->GetLastError());
+        szMsg.Printf(wxT("%s"), cnMaster->GetLastError().c_str());
     }
     return szMsg;
 }

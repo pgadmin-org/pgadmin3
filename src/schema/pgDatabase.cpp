@@ -62,8 +62,12 @@ int pgDatabase::Connect() {
         } else {
 
             wxString szMsg;
-            szMsg.Printf(wxT("%s"), cnDatabase->GetLastError);
-            wxLogError(szMsg);
+			#ifdef __WXMSW__
+                szMsg.Printf(wxT("%s"), cnDatabase->GetLastError);
+            #else
+			    szMsg.Printf(wxT("%s"), cnDatabase->GetLastError().c_str());
+            #endif
+			wxLogError(szMsg);
             return PGCONN_BAD;
         }
     }

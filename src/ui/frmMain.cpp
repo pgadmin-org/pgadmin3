@@ -569,10 +569,10 @@ void frmMain::OnDrop()
 
     switch (iType) {
         case PG_SERVER:
-            szMsg.Printf(wxT("Are you sure you wish to remove the server: %s?"), itmData->GetIdentifier());
+            szMsg.Printf(wxT("Are you sure you wish to remove the server: %s?"), itmData->GetIdentifier().c_str());
             if (wxMessageBox(szMsg, wxT("Remove Server?"), wxYES_NO | wxICON_QUESTION) == wxYES) {
 
-                szMsg.Printf(wxT("Removing server: %s"), itmData->GetIdentifier());
+                szMsg.Printf(wxT("Removing server: %s"), itmData->GetIdentifier().c_str());
                 wxLogInfo(szMsg);
                 tvBrowser->Delete(itmX);
 
@@ -624,7 +624,7 @@ void frmMain::tvServer(pgServer *objServer)
         if (tvBrowser->GetChildrenCount(objServer->GetId(), FALSE) != 3) {
 
             // Log
-            szMsg.Printf(wxT("Adding child object to server %s"), objServer->GetIdentifier());
+            szMsg.Printf(wxT("Adding child object to server %s"), objServer->GetIdentifier().c_str());
             wxLogInfo(szMsg);
     
             // Databases
@@ -645,7 +645,7 @@ void frmMain::tvServer(pgServer *objServer)
     }
 
 
-    szMsg.Printf(wxT("Displaying properties for server %s"), objServer->GetIdentifier());
+    szMsg.Printf(wxT("Displaying properties for server %s"), objServer->GetIdentifier().c_str());
     wxLogInfo(szMsg);
 
     // Add the properties view columns
@@ -684,7 +684,7 @@ void frmMain::svServer(pgServer *objServer)
     if(!objServer->GetConnected()) return;
     
     wxString szMsg;
-    szMsg.Printf(wxT("Displaying statistics for server %s"), objServer->GetIdentifier());
+    szMsg.Printf(wxT("Displaying statistics for server %s"), objServer->GetIdentifier().c_str());
     wxLogInfo(szMsg);
 
     // Add the statistics view columns
@@ -716,7 +716,7 @@ void frmMain::tvDatabases(pgCollection *objCollection)
     if (tvBrowser->GetChildrenCount(objCollection->GetId(), FALSE) == 0) {
 
         // Log
-        szMsg.Printf(wxT("Adding databases to server %s"), objCollection->GetServer()->GetIdentifier());
+        szMsg.Printf(wxT("Adding databases to server %s"), objCollection->GetServer()->GetIdentifier().c_str());
         wxLogInfo(szMsg);
 
         // Add Database node
@@ -786,7 +786,7 @@ void frmMain::svDatabases(pgCollection *objCollection)
 {
     
     wxString szMsg;
-    szMsg.Printf(wxT("Displaying statistics for databases on "), objCollection->GetServer()->GetIdentifier());
+    szMsg.Printf(wxT("Displaying statistics for databases on %s"), objCollection->GetServer()->GetIdentifier().c_str());
     wxLogInfo(szMsg);
 
     // Add the statistics view columns
@@ -832,7 +832,7 @@ void frmMain::tvDatabase(pgDatabase *objDatabase)
         if (tvBrowser->GetChildrenCount(objDatabase->GetId(), FALSE) != 2) {
 
             // Log
-            szMsg.Printf(wxT("Adding child object to database %s"), objDatabase->GetIdentifier());
+            szMsg.Printf(wxT("Adding child object to database %s"), objDatabase->GetIdentifier().c_str());
             wxLogInfo(szMsg);
 
             // Languages

@@ -14,7 +14,8 @@ WXDIR = /usr/local/wx2
 
 PROGRAM = pgAdmin3
 CFLAGS  = `wx-config --cflags` -Iinclude -I$(PGDIR)/include 
-LDFLAGS = `wx-config --libs` -lstc -lpq -lwxxrc -L$(PGDIR)/lib -L$(WXDIR)/lib 
+#LDFLAGS = `wx-config --libs` -lstc -lpq -lwxxrc -L$(PGDIR)/lib -L$(WXDIR)/lib 
+LDFLAGS = /usr/local/lib/libstc.a $(PGDIR)/lib/libpq.a /usr/local/lib/libwxxrc.a /usr/lib/libcrypt.a `wx-config --static --libs`
 
 OBJECTS = $(PROGRAM).o \
           db/pgConn.o \

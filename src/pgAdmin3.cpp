@@ -114,7 +114,7 @@ int pgAdmin3::OnExit()
 
 void StartMsg(const wxString& szNewMsg)
 {
-    szTimer.Printf("%s...", szNewMsg);
+    szTimer.Printf("%s...", szNewMsg.c_str());
     swTimer.Start(0);
     wxLogStatus(szTimer);
     winMain->stBar->SetStatusText(szTimer, 1);
@@ -131,7 +131,7 @@ void EndMsg()
 
     // Display the 'Done' message
     szTimer.Append(" Done.");
-    szMsg.Printf("%s (%s)", szTimer, szTime);
+    szMsg.Printf("%s (%s)", szTimer.c_str(), szTime.c_str());
     wxLogStatus(szMsg);
     winMain->stBar->SetStatusText(szTimer, 1);
 
@@ -147,9 +147,9 @@ int wxCALLBACK ListSort(long itm1, long itm2, long sortData)
 void pgAdmin3::LoadXrc(const wxString szFile)
 {
     wxString szMsg, szXRC;
-    szMsg.Printf(wxT("Loading %s"), szFile);
+    szMsg.Printf(wxT("Loading %s"), szFile.c_str());
     wxLogInfo(szMsg);
-    szXRC.Printf("%s/%s", XRC_PATH, szFile);
+    szXRC.Printf("%s/%s", XRC_PATH, szFile.c_str());
     wxXmlResource::Get()->Load(szXRC);
 }
 
