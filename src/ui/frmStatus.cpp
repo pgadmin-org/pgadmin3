@@ -137,6 +137,9 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
             logList->AddColumn(_("Level"), 35);
 
         logList->AddColumn(_("Log entry"), 800);
+
+        if (!connection->HasFeature(FEATURE_ROTATELOG))
+            btnRotateLog->Disable();
     }
     else
         nbStatus->DeletePage(2);
@@ -167,7 +170,8 @@ frmStatus::~frmStatus()
     if (connection)
         delete connection;
 
-    emptyLogfileCombo();
+    if (nbStatus->GetPageCount() > 2)
+        emptyLogfileCombo();
 }
 
 

@@ -450,6 +450,12 @@ bool pgConn::HasFeature(int featureNo)
                     wxT(  " AND proargtypes[1] = 20")
                     wxT(  " AND proargtypes[2] = 20"))
                     .IsEmpty();
+        features[FEATURE_ROTATELOG] =
+            !ExecuteScalar(
+                    wxT("SELECT proname FROM pg_proc\n")
+                    wxT(" WHERE proname = 'pg_rotate_log'")
+                    wxT(  " AND pronargs = 0"))
+                    .IsEmpty();
     }
 
     if (featureNo < 1 ||featureNo >= FEATURE_LAST)
