@@ -86,6 +86,7 @@ void pgSchema::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
     {
         expandedKids=true;
 
+        RemoveDummyChild(browser);
         // Log
         wxLogInfo(wxT("Adding child object to schema ") + GetIdentifier());
 

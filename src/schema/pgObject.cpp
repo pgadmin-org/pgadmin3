@@ -149,6 +149,17 @@ void pgObject::CreateListColumns(wxListCtrl *list, const wxString &left, const w
 
 
 
+void pgObject::RemoveDummyChild(wxTreeCtrl *browser)
+{
+    wxCookieType cookie;
+    wxTreeItemId childItem=browser->GetFirstChild(GetId(), cookie);
+    if (childItem && !browser->GetItemData(childItem))
+    {
+        // The child was a dummy item, which will be replaced by the following ShowTreeDetail by true items
+        browser->Delete(childItem);
+    }
+}
+
 void pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
 {
     wxString label;

@@ -175,31 +175,26 @@ int pgCollection::GetIcon()
 }
 
 
-void pgCollection::SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, int index)
+pgObject *pgCollection::FindChild(wxTreeCtrl *browser, int index)
 {
-    sqlPane->Clear();
-
     wxCookieType cookie;
     pgObject *data;
 
     wxTreeItemId item = browser->GetFirstChild(GetId(), cookie);
     long pos=0;
-    while (item)
+    while (item && index >= 0)
     {
         data = (pgObject *)browser->GetItemData(item);
-        if (IsCollectionForType(data->GetType()))
+        if (data && IsCollectionForType(data->GetType()))
         {
             if (index == pos)
-            {
-                sqlPane->SetReadOnly(false);
-                sqlPane->SetText(data->GetSql(browser));
-                sqlPane->SetReadOnly(true);
-                return;
-            }
+                return data;
+
             pos++;
         }
         item = browser->GetNextChild(GetId(), cookie);
     }
+    return 0;
 }
 
 

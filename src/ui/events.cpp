@@ -210,8 +210,7 @@ extern wxLocale locale;
 
 void frmMain::OnReload(wxCommandEvent& WXUNUSED(event))
 {
-    wxTreeItemId item=browser->GetSelection();
-    pgFunction *func = (pgFunction*)browser->GetItemData(item);
+    pgFunction *func = (pgFunction*)GetSelectedObject();
     if (func)
     {
         StartMsg(wxT("Reloading library ") + func->GetBin());
@@ -252,8 +251,7 @@ void frmMain::OnHelp(wxCommandEvent& event)
 {
     wxString page;
 
-    wxTreeItemId item=browser->GetSelection();
-    pgObject *obj = (pgObject*)browser->GetItemData(item);
+    pgObject *obj = GetSelectedObject();
     if (obj)
         page=obj->GetHelpPage(true);
 
@@ -302,8 +300,9 @@ void frmMain::OnExpand(wxTreeEvent &event)
 
 void frmMain::OnStatus(wxCommandEvent &event)
 {
-    wxTreeItemId item=browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
+    pgObject *data = GetSelectedObject();
+    if (!data)
+        return;
 
     pgDatabase *db=data->GetDatabase();
     if (!db)
@@ -333,38 +332,43 @@ void frmMain::OnPassword(wxCommandEvent& event)
     // We need to pass the server to the password form
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
-    wxTreeItemId item = browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
-    int type = data->GetType();
+    pgObject *data = GetSelectedObject();
+    if (data)
+    {
+        int type = data->GetType();
 
-    switch (type) {
-        case PG_SERVER:
-            winPassword->SetServer((pgServer *)data);
-            winPassword->Show(TRUE);
-            break;
+        switch (type) {
+            case PG_SERVER:
+                winPassword->SetServer((pgServer *)data);
+                winPassword->Show(TRUE);
+                break;
 
-        default:
-            // Should never see this
-            wxLogError(__("You must select a server before changing your password!"));
-            break;
+            default:
+                // Should never see this
+                wxLogError(__("You must select a server before changing your password!"));
+                break;
+        }
     }
 }
 
 
 void frmMain::OnMaintenance(wxCommandEvent &ev)
 {
-    wxTreeItemId item=browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
+    pgObject *data = GetSelectedObject();
 
-    frmMaintenance *frm=new frmMaintenance(this, data);
-    frm->Go();
+    if (data)
+    {
+        frmMaintenance *frm=new frmMaintenance(this, data);
+        frm->Go();
+    }
 }
 
 
 void frmMain::OnSql(wxCommandEvent &ev)
 {
-    wxTreeItemId item=browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
+    pgObject *data = GetSelectedObject();
+    if (!data)
+        return;
 
     pgDatabase *db=data->GetDatabase();
     if (!db)
@@ -397,8 +401,9 @@ void frmMain::OnSql(wxCommandEvent &ev)
 
 void frmMain::OnViewData(wxCommandEvent& event)
 {
-    wxTreeItemId item=browser->GetSelection();
-    pgSchemaObject *data = (pgSchemaObject *)browser->GetItemData(item);
+    pgSchemaObject *data = (pgSchemaObject *)GetSelectedObject();
+    if (!data)
+        return;
     if (data->GetType() != PG_TABLE && data->GetType() != PG_VIEW)
         return;
 
@@ -537,7 +542,14 @@ void frmMain::OnPropSelChanged(wxListEvent& event)
     pgObject *data=(pgObject*)browser->GetItemData(item);
     if (data && data->IsCollection())
     {
-        data->SetSql(browser, sqlPane, event.GetIndex());
+        data=((pgCollection*)data)->FindChild(browser, event.GetIndex());
+        if (data)
+        {
+            setDisplay(data);
+            sqlPane->SetReadOnly(false);
+            sqlPane->SetText(data->GetSql(browser));
+            sqlPane->SetReadOnly(true);
+        }
     }
 }
 
@@ -573,19 +585,21 @@ void frmMain::execSelChange(wxTreeItemId item)
     // invalid click, so ignore.
     if (!data) return;
 
-    wxCookieType cookie;
-    wxTreeItemId childItem=browser->GetFirstChild(item, cookie);
-    if (childItem && !browser->GetItemData(childItem))
-    {
-        // The child was a dummy item, which will be replaced by the following ShowTreeDetail by true items
-        browser->Delete(childItem);
-    }
+    properties->Freeze();
+    statistics->Freeze();
+    setDisplay(data, properties, statistics, sqlPane);
+    properties->Thaw();
+    statistics->Thaw();
+}
+
+
+void frmMain::setDisplay(pgObject *data, wxListCtrl *props, wxListCtrl *stats, ctlSQLBox *sqlbox)
+{
+    data->RemoveDummyChild(browser);
 
     int type = data->GetType();
     pgServer *server=0;
 
-    properties->Freeze();
-    statistics->Freeze();
 
     bool canReload=false;
     bool canConnect=false;
@@ -607,7 +621,7 @@ void frmMain::execSelChange(wxTreeItemId item)
                 canDisconnect=true;
                 canReindex=true;
             }
-            data->ShowTree(this, browser, properties, statistics, sqlPane);
+            data->ShowTree(this, browser, props, stats, sqlbox);
             EndMsg();
             break;
 
@@ -615,7 +629,7 @@ void frmMain::execSelChange(wxTreeItemId item)
         case PG_TRIGGERFUNCTION:
         {
             canReload=((pgFunction*)data)->CanReload();
-            data->ShowTree(this, browser, properties, statistics, sqlPane);
+            data->ShowTree(this, browser, props, stats, sqlbox);
             break;
         }
         case PG_DATABASES:
@@ -663,16 +677,17 @@ void frmMain::execSelChange(wxTreeItemId item)
         case PG_RULE:
         case PG_TRIGGERS:
         case PG_TRIGGER:
-            data->ShowTree(this, browser, properties, statistics, sqlPane);
+            data->ShowTree(this, browser, props, stats, sqlbox);
             break;
         default:        
 			break;
     }
-    properties->Thaw();
-    statistics->Thaw();
-    sqlPane->SetReadOnly(false);
-    sqlPane->SetText(data->GetSql(browser));
-    sqlPane->SetReadOnly(true);
+    if (sqlbox)
+    {
+        sqlbox->SetReadOnly(false);
+        sqlbox->SetText(data->GetSql(browser));
+        sqlbox->SetReadOnly(true);
+    }
 
     unsigned int i;
     wxMenuItem *menuItem;
@@ -727,25 +742,21 @@ void frmMain::execSelChange(wxTreeItemId item)
 
 void frmMain::OnConnect(wxCommandEvent &ev)
 {
-    wxTreeItemId item = browser->GetSelection();
-
-    pgServer *server = (pgServer *)browser->GetItemData(item);
-    if (server->GetType() == PG_SERVER && !server->GetConnected())
+    pgServer *server = (pgServer *)GetSelectedObject();
+    if (server && server->GetType() == PG_SERVER && !server->GetConnected())
         ReconnectServer(server);
 }
 
 
 void frmMain::OnDisconnect(wxCommandEvent &ev)
 {
-    wxTreeItemId item = browser->GetSelection();
-    pgServer *server = (pgServer *)browser->GetItemData(item);
-    if (server&& server->GetType() == PG_SERVER && server->Disconnect())
+    pgServer *server = (pgServer *)GetSelectedObject();
+    if (server && server->GetType() == PG_SERVER && server->Disconnect())
     {
-        browser->SetItemImage(item, PGICON_SERVERBAD, wxTreeItemIcon_Normal);
-        browser->SetItemImage(item, PGICON_SERVERBAD, wxTreeItemIcon_Selected);
-        browser->DeleteChildren(item);
-        wxTreeEvent tev;
-        execSelChange(item);
+        browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Normal);
+        browser->SetItemImage(server->GetId(), PGICON_SERVERBAD, wxTreeItemIcon_Selected);
+        browser->DeleteChildren(server->GetId());
+        execSelChange(server->GetId());
     }
 }
 
@@ -858,11 +869,10 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     // This handler will primarily deal with dropping items
 
     // Get the item data, and feed it to the relevant handler,
-    wxTreeItemId item = browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
+    pgObject *data = GetSelectedObject();
 
     // accelerator can bypass disabled menu, so we need to check
-    if (!data->CanDrop())
+    if (!data || !data->CanDrop())
         return;
 
     if (data->GetSystemObject())
@@ -890,23 +900,23 @@ void frmMain::OnDrop(wxCommandEvent &ev)
     {
         wxLogInfo(wxT("Dropping %s %s"), data->GetTypeName().c_str(), data->GetIdentifier().c_str());
 
-        wxTreeItemId parentItem=browser->GetItemParent(item);
+        wxTreeItemId parentItem=browser->GetItemParent(data->GetId());
 
-        wxTreeItemId nextItem=browser->GetNextVisible(item);
+        wxTreeItemId nextItem=browser->GetNextVisible(data->GetId());
         if (nextItem)
         {
             pgObject *nextData=(pgObject*)browser->GetItemData(nextItem);
             if (!nextData || nextData->GetType() != data->GetType())
-                nextItem=browser->GetPrevSibling(item);
+                nextItem=browser->GetPrevSibling(data->GetId());
         }
         else
-            nextItem=browser->GetPrevSibling(item);
+            nextItem=browser->GetPrevSibling(data->GetId());
 
         if (nextItem)
             browser->SelectItem(nextItem);
 
         int droppedType = data->GetType();
-        browser->Delete(item);
+        browser->Delete(data->GetId());
         // data is invalid now
 
 
@@ -930,8 +940,7 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 {
     // Refresh - Clear the treeview below the current selection
 
-    wxTreeItemId currentItem = browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(currentItem);
+    pgObject *data = GetSelectedObject();
     if (!data)
         return;
 
@@ -941,8 +950,7 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 
 void frmMain::OnCreate(wxCommandEvent &ev)
 {
-    wxTreeItemId item = browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
+    pgObject *data = GetSelectedObject();
 
     if (data)
     {
@@ -959,8 +967,7 @@ void frmMain::OnNew(wxCommandEvent &ev)
         OnConnect(ev);
         return;
     }
-    wxTreeItemId item = browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
+    pgObject *data = GetSelectedObject();
 
     if (data)
         dlgProperty::CreateObjectDialog(this, properties, data, type);
@@ -969,8 +976,7 @@ void frmMain::OnNew(wxCommandEvent &ev)
 
 void frmMain::OnProperties(wxCommandEvent &ev)
 {
-    wxTreeItemId item = browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
+    pgObject *data = GetSelectedObject();
 
     if (data)
         dlgProperty::EditObjectDialog(this, properties, statistics, sqlPane, data);
@@ -980,9 +986,7 @@ void frmMain::OnProperties(wxCommandEvent &ev)
 ////////////////////////////////////////////////////////////////////////////////
 void frmMain::OnQueryBuilder(wxCommandEvent &ev)
 {
-
-    wxTreeItemId item=browser->GetSelection();
-    pgObject *data = (pgObject *)browser->GetItemData(item);
+    pgObject *data = GetSelectedObject();
 
     pgDatabase *db=data->GetDatabase();
     if (!db)

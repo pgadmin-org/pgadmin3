@@ -107,11 +107,13 @@ private:
     void OnQueryBuilder(wxCommandEvent &ev);
 
     void execSelChange(wxTreeItemId item);
+    void setDisplay(pgObject *data, wxListCtrl *props=0, wxListCtrl *stats=0, ctlSQLBox *sqlbox=0);
     void StoreServers();
     void RetrieveServers();
     int ReconnectServer(pgServer *server);
     wxTreeItemId RestoreEnvironment(pgServer *server);
     wxTreeItemId denyCollapseItem;
+    pgObject *GetSelectedObject();
 
     DECLARE_EVENT_TABLE()
 };

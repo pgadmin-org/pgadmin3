@@ -41,7 +41,7 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     void ShowList(const wxString& name, wxTreeCtrl *browser, wxListCtrl *properties);
     void UpdateChildCount(wxTreeCtrl *browser, int substract=0);
-    void SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, const int index);
+    pgObject *FindChild(wxTreeCtrl *browser, const int index);
     bool CanCreate();
 
 private:

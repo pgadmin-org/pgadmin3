@@ -257,6 +257,8 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
     {
         expandedKids=true;
 
+        RemoveDummyChild(browser);
+
         // Log
         wxLogInfo(wxT("Adding child object to table ") + GetIdentifier());
 

@@ -102,7 +102,7 @@ public:
 
     void ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
     void AppendBrowserItem(wxTreeCtrl *browser, pgObject *object);
-
+    void RemoveDummyChild(wxTreeCtrl *browser);
     virtual wxString GetHelpPage(bool forCreate) const;
     virtual wxString GetFullName() const { return name; }
     virtual wxString GetIdentifier() const { return name; }
@@ -116,7 +116,6 @@ public:
     pgConn *GetConnection() const;
 
     virtual void SetDirty() { sql=wxT(""); expandedKids=false; needReread=true; }
-    virtual void SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, const int index) { return; }
     virtual wxString GetFullIdentifier() const { return GetName(); }
     virtual wxString GetQuotedFullIdentifier() const { return qtIdent(name); }
 

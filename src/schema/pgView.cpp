@@ -65,6 +65,8 @@ void pgView::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
     {
         expandedKids = true;
 
+        RemoveDummyChild(browser);
+
         pgCollection *collection;
         collection = new pgCollection(PG_RULES, GetSchema());
         collection->iSetOid(GetOid());
