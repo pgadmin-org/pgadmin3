@@ -45,6 +45,8 @@
 #include "dlgProperty.h"
 #include "frmVacuum.h"
 
+extern wxString loadPath;
+
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
@@ -181,7 +183,6 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
 void frmMain::OnTipOfTheDay()
 {
 #ifdef __WIN32__
-    extern wxString loadPath;
     wxString tipPath = loadPath + wxT("/tips.txt");
 #else
     wxString tipPath = DATA_DIR wxT("tips.txt");
@@ -242,7 +243,6 @@ void frmMain::OnBugreport(wxCommandEvent& event)
     h->Show(true);
 
 #ifdef __WIN32__
-    extern wxString loadPath;
     wxString bugfile = loadPath + wxT("/bugreport.html");
 #else
     wxString bugfile = DATA_DIR wxT("bugreport.html");
@@ -251,7 +251,7 @@ void frmMain::OnBugreport(wxCommandEvent& event)
 #ifdef __WIN32__
         bugfile = loadPath + wxT("/../bugreport.html");
 #else
-    wxString bugfile = loadPath + wxT("/bugreport.html");
+        bugfile = loadPath + wxT("/bugreport.html");
 #endif
 
     if (!h->Load(wxT("file:") + bugfile))

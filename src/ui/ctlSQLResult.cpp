@@ -36,8 +36,8 @@ bool ctlSQLResult::Export()
     if (!CanExport())
         return false;
     
-    frmExport export(this);
-    return export.ShowModal() > 0;
+    frmExport dlg(this);
+    return dlg.ShowModal() > 0;
 }
 
 
