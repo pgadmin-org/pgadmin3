@@ -142,7 +142,6 @@ bool pgAdmin3::OnInit()
         locale.AddCatalog(wxT("pgadmin3"));
     }
     
-#if 0 // old language selection on first app start
     long langCount=0;
     const wxLanguageInfo *langInfo;
     int langNo;
@@ -184,6 +183,7 @@ bool pgAdmin3::OnInit()
         }
     }
 
+#if 0 // old language selection on first app start
     wxLanguage langId = (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN);
 
     if (langId == wxLANGUAGE_UNKNOWN)
