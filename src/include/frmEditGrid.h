@@ -44,12 +44,16 @@ private:
 
 
 
-class sqlCellAttr : public wxGridCellAttr
+// we cannot derive from wxGridCellAttr because destructor is private but not virtual 
+class sqlCellAttr
 {
 public:
+    sqlCellAttr()  { attr = new wxGridCellAttr; }
+    ~sqlCellAttr() { attr->DecRef(); }
     int size();
     int precision();
 
+    wxGridCellAttr *attr;
     wxString Quote(const wxString &value);
     Oid type;
     long typlen, typmod;
@@ -107,7 +111,7 @@ private:
     int rowsAdded;      // rows added (never been in dataSet)
     int rowsStored;     // rows added and stored to db
     int rowsDeleted;    // rows deleted from initial dataSet
-    sqlCellAttr **cells;
+    sqlCellAttr *columns;
 
     friend class ctlSQLGrid;
 };

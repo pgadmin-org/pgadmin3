@@ -43,7 +43,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
     mainForm=form;
     thread=0;
     relkind=0;
-    relid=obj->GetOid();
+    relid=(Oid)obj->GetOid();
 
     contextGridMenu=new wxMenu();
     contextGridMenu->Append(MNU_REFRESH, wxT("&Refresh"),   wxT("Refresh data"));
@@ -56,6 +56,12 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
 
     sqlGrid = new ctlSQLGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
     sqlGrid->SetSizer(new wxBoxSizer(wxVERTICAL));
+#ifdef __WIN32__
+    wxFont fntLabel(9, wxMODERN, wxNORMAL, wxNORMAL);
+#else
+    wxFont fntLabel(12, wxMODERN, wxNORMAL, wxNORMAL);
+#endif
+    sqlGrid->SetLabelFont(fntLabel);
 
     if (obj->GetType() == PG_TABLE)
     {
@@ -279,6 +285,7 @@ bool ctlSQLGrid::DeleteCols(int pos, int numCols, bool updateLabels)
 
 bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
 {
+    bool done=false;
     if (m_created)
     {
         m_created = false;
@@ -294,8 +301,20 @@ bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
         m_numCols=0;
     }
     if (table)
-        return wxGrid::SetTable(table, takeOwnership);
-    return false;
+    {
+        done= wxGrid::SetTable(table, takeOwnership);
+
+	int i;
+	wxCoord w, h;
+	wxClientDC dc(this);
+	dc.SetFont(GetLabelFont());
+	for (i=0 ; i < m_numCols ; i++)
+	{
+	    dc.GetTextExtent(GetColLabelValue(i), &w, &h);
+	    SetColSize(i, w);
+	}
+    }
+    return done;
 }
 
 
@@ -306,7 +325,6 @@ void ctlSQLGrid::OnCellChange(wxGridEvent& event)
         table->StoreLine();
     event.Skip();
 }
-
 
 
 sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName, const Oid _relid, bool _hasOid, const wxString& _pkCols, char _relkind)
@@ -332,8 +350,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
     nRows = thread->DataSet()->NumRows();
     nCols=thread->DataSet()->NumCols();
 
-    // array of sqlCellAttr will not work because delete is done using DecRef()
-    cells = new sqlCellAttr*[nCols];
+    columns = new sqlCellAttr[nCols];
     savedLine.cols = new wxString[nCols];
 
 
@@ -353,29 +370,27 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
     {
         if (hasOids)
         {
-            cells[0] = new sqlCellAttr;
-            cells[0]->name = wxT("oid");
-            cells[0]->SetReadOnly(true);
-            cells[0]->numeric = true;
+            columns[0].name = wxT("oid");
+            columns[0].numeric = true;
+            columns[0].attr->SetReadOnly(true);
         }
 
         for (i=(hasOids ? 1 : 0) ; i < nCols ; i++)
         {
-            cells[i] = new sqlCellAttr;
-            cells[i]->name = colSet->GetVal(wxT("attname"));
-            cells[i]->typeName = colSet->GetVal(wxT("typname"));
+            columns[i].name = colSet->GetVal(wxT("attname"));
+            columns[i].typeName = colSet->GetVal(wxT("typname"));
 
-            cells[i]->type = colSet->GetOid(wxT("basetype"));
-            cells[i]->typlen=colSet->GetLong(wxT("typlen"));
-            cells[i]->typmod=colSet->GetLong(wxT("typmod"));
+            columns[i].type = (Oid)colSet->GetOid(wxT("basetype"));
+            columns[i].typlen=colSet->GetLong(wxT("typlen"));
+            columns[i].typmod=colSet->GetLong(wxT("typmod"));
 
             int len=0;
-            switch (cells[i]->type)
+            switch (columns[i].type)
             {
                 case 16:    // bool
-                    cells[i]->numeric = true;
-                    cells[i]->SetReadOnly(false);
-                    cells[i]->SetEditor(new wxGridCellBoolEditor());
+                    columns[i].numeric = true;
+                    columns[i].attr->SetReadOnly(false);
+                    columns[i].attr->SetEditor(new wxGridCellBoolEditor());
                     break;
                 case 20:    // int8
                     SetNumberEditor(i, 20);
@@ -394,23 +409,23 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     break;
                 case 700:   // float4
                 case 701:   // float8
-                    cells[i]->numeric = true;
-                    cells[i]->SetReadOnly(false);
-                    cells[i]->SetEditor(new wxGridCellFloatEditor());
+                    columns[i].numeric = true;
+                    columns[i].attr->SetReadOnly(false);
+                    columns[i].attr->SetEditor(new wxGridCellFloatEditor());
                     break;
                 case 790:   // money
                 case 1700:  // numeric
-                    cells[i]->numeric = true;
-                    cells[i]->SetReadOnly(false);
-                    cells[i]->SetEditor(new wxGridCellFloatEditor(cells[i]->size(), cells[i]->precision()));
+                    columns[i].numeric = true;
+                    columns[i].attr->SetReadOnly(false);
+                    columns[i].attr->SetEditor(new wxGridCellFloatEditor(columns[i].size(), columns[i].precision()));
                     break;
                 case 2:     // bytea
                 case 3:     // char
                 case 4:     // name
                 case 10:    // test
                 default:
-                    cells[i]->numeric = false;
-                    cells[i]->SetReadOnly(false);
+                    columns[i].numeric = false;
+                    columns[i].attr->SetReadOnly(false);
                     break;
             }
 
@@ -418,9 +433,9 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             {
                 // for security reasons, we need oid or pk to enable updates. If none is available,
                 // the table definition can be considered faulty.
-                cells[i]->SetReadOnly(true);
+                columns[i].attr->SetReadOnly(true);
             }
-            if (!cells[i]->IsReadOnly())
+            if (!columns[i].attr->IsReadOnly())
                 canInsert=true;
 
             colSet->MoveNext();
@@ -431,9 +446,8 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
     {
         for (i=0 ; i < nCols ; i++)
         {
-            cells[i] = new sqlCellAttr;
-            cells[i]->typeName = thread->DataSet()->ColType(i);
-            cells[i]->name = thread->DataSet()->ColName(i);
+            columns[i].typeName = thread->DataSet()->ColType(i);
+            columns[i].name = thread->DataSet()->ColName(i);
         }
     }
 
@@ -462,10 +476,7 @@ sqlTable::~sqlTable()
 
     delete addPool;
 
-    for (int i=0 ; i < nCols ; i++)
-        cells[i]->DecRef();
-
-    delete[] cells;
+    delete[] columns;
 }
 
 
@@ -489,7 +500,7 @@ int sqlTable::GetNumberStoredRows()
 
 wxString sqlTable::GetColLabelValue(int col)
 {
-    return cells[col]->name + wxT("\n") + cells[col]->typeName;
+    return columns[col].name + wxT("\n") + columns[col].typeName;
 }
 
 
@@ -508,9 +519,9 @@ wxString sqlTable::GetRowLabelValue(int row)
 void sqlTable::SetNumberEditor(int col, int len)
 {
     wxGridCellNumberEditor *editor=new wxGridCellNumberEditor();
-    cells[col]->numeric = true;
-    cells[col]->SetReadOnly(false);
-    cells[col]->SetEditor(editor);
+    columns[col].numeric = true;
+    columns[col].attr->SetReadOnly(false);
+    columns[col].attr->SetEditor(editor);
 }
 
 
@@ -542,8 +553,8 @@ wxString sqlTable::MakeKey(cacheLine *line)
             cn=StrToLong(collist.GetNextToken());
             if (!where.IsEmpty())
                 where += wxT(" AND ");
-            where += qtIdent(cells[cn-1]->name) + wxT(" = ") 
-                  + line->cols[cn-1] + wxT("::") + cells[cn-1]->typeName;
+            where += qtIdent(columns[cn-1].name) + wxT(" = ") 
+                  + line->cols[cn-1] + wxT("::") + columns[cn-1].typeName;
         }
     }
     return where;
@@ -572,7 +583,7 @@ void sqlTable::StoreLine()
                 {
                     if (!valList.IsNull())
                         valList += wxT(", ");
-                    valList += qtIdent(cells[i]->name) + wxT("=") + cells[i]->Quote(line->cols[i]);
+                    valList += qtIdent(columns[i].name) + wxT("=") + columns[i].Quote(line->cols[i]);
                 }
             }
 
@@ -590,15 +601,15 @@ void sqlTable::StoreLine()
 
             for (i=0 ; i<nCols ; i++)
             {
-                if (!cells[i]->IsReadOnly())
+                if (!columns[i].attr->IsReadOnly())
                 {
                     if (!colList.IsNull())
                     {
                         valList += wxT(", ");
                         colList += wxT(", ");
                     }
-                    colList += qtIdent(cells[i]->name);
-                    valList += cells[i]->Quote(line->cols[i]);
+                    colList += qtIdent(columns[i].name);
+                    valList += columns[i].Quote(line->cols[i]);
                 }
             }
             
@@ -765,8 +776,8 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
 
 wxGridCellAttr* sqlTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind  kind)
 {
-    cells[col]->IncRef();
-    return cells[col];
+    columns[col].attr->IncRef();
+    return columns[col].attr;
 }
 
 
