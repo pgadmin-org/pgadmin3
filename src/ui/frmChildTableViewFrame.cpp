@@ -561,8 +561,8 @@ void frmChildTableViewFrame::OnRemoveJoin(wxCommandEvent& event)
 	int n = event.GetId() - MNU_REMOVEJOIN;
     JoinStruct *js = (JoinStruct *)tmpparent->m_joins[n];
 
-    wxMessageDialog msg(this, wxString::Format(_("Are you sure you wish to remove the join %s ?"),
-        js->left + wxT(" -> ") + js->right),
+    wxMessageDialog msg(this, wxString::Format(_("Are you sure you wish to remove the join %s %s %s ?"),
+        js->left, wxT(" -> "), js->right),
         wxString::Format(_("Remove join?")), wxYES_NO | wxICON_QUESTION);
 
     if (msg.ShowModal() != wxID_YES) 
