@@ -88,9 +88,12 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
     }
     SetIcon(wxIcon(properties_xpm));
 
-    wxAcceleratorEntry entries[1];
+    wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_NORMAL, WXK_F1, MNU_HELP);
-    wxAcceleratorTable accel(1, entries);
+// this is for GTK because Meta (usually Nnumlock) is interpreted like Alt
+// there are too many controls to reset m_Meta in all of them
+    entries[1].Set(wxACCEL_ALT, WXK_F1, MNU_HELP);
+    wxAcceleratorTable accel(2, entries);
 
     SetAcceleratorTable(accel);
 
