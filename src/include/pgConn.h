@@ -52,15 +52,15 @@ public:
     bool ExecuteVoid(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
-    wxString GetUser() const { return wxString::FromAscii(PQuser(conn)); }
-    wxString GetPassword() const { return wxString::FromAscii(PQpass(conn)); }
+    wxString GetUser() const { return wxString(PQuser(conn), wxConvUTF8); }
+    wxString GetPassword() const { return wxString(PQpass(conn), wxConvUTF8); }
     wxString GetHost() const { return dbHost; }
     int GetPort() const { return atoi(PQport(conn)); };
-    wxString GetTTY() const { return wxString::FromAscii(PQtty(conn)); }
-    wxString GetOptions() const { return wxString::FromAscii(PQoptions(conn)); }
+    wxString GetTTY() const { return wxString(PQtty(conn), wxConvUTF8); }
+    wxString GetOptions() const { return wxString(PQoptions(conn), wxConvUTF8); }
     int GetBackendPID() const { return PQbackendPID(conn); }
     int GetStatus() const;
-    wxString GetLastError() const { return wxString::FromAscii(PQerrorMessage(conn)); }
+    wxString GetLastError() const { return wxString(PQerrorMessage(conn), wxConvUTF8); }
     wxString GetVersionString();
     float GetVersionNumber();
     long GetLastSystemOID();

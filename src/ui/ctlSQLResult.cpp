@@ -150,7 +150,7 @@ wxString ctlSQLResult::GetMessages()
 
 wxString ctlSQLResult::GetErrorMessage()
 {
-    wxString errmsg=wxString::FromAscii(PQerrorMessage(conn->connection()));
+    wxString errmsg=wxString(PQerrorMessage(conn->connection()), wxConvUTF8);
     return errmsg;
 }
 

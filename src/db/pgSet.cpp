@@ -41,7 +41,7 @@ pgSet::pgSet(PGresult *newRes, PGconn *newConn)
     if (PQresultStatus(res) != PGRES_TUPLES_OK)
     {
         if (PQresultStatus(res) != PGRES_COMMAND_OK)
-            wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
+            wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), wxConvUTF8).c_str());
 
         nRows = 0;
         pos = 0;
@@ -81,14 +81,109 @@ int pgSet::ColScale(int col) const
     // TODO
     return 0;
 }
+wxString pgSet::ColName(int col) const
+{
+    return wxString(PQfname(res, col), wxConvUTF8);
+}
 
-wxString pgSet::GetVal(const wxString& colname) const
+
+int pgSet::ColNumber(const wxString &colname) const
 {
     int col = PQfnumber(res, colname.ToAscii());
     if (col < 0)
         wxLogError(__("Column not found in pgSet: ") + colname);
-    return GetVal(col);
+    return col;
 }
+
+
+wxString pgSet::GetVal(int col) const
+{
+    return wxString(PQgetvalue(res, pos -1, col), wxConvUTF8);
+}
+
+
+wxString pgSet::GetVal(const wxString& colname) const
+{
+    return GetVal(ColNumber(colname));
+}
+
+
+long pgSet::GetLong(int col) const
+{
+    char *c=PQgetvalue(res, pos-1, col);
+    if (c)
+        return atol(c);
+    else
+        return 0;
+}
+
+
+long pgSet::GetLong(const wxString &col)
+{
+    return GetLong(ColNumber(col));
+}
+
+
+bool pgSet::GetBool(int col) const
+{
+    char *c=PQgetvalue(res, pos-1, col);
+    if (c)
+    {
+        if (*c == 't' || *c == '1')
+            return true;
+    }
+    return false;
+}
+
+
+bool pgSet::GetBool(const wxString &col) const
+{
+    return GetBool(ColNumber(col));
+}
+
+
+double pgSet::GetDouble(int col) const
+{
+    char *c=PQgetvalue(res, pos-1, col);
+    if (c)
+        return strtod(c, 0);
+    else
+        return 0;
+}
+
+
+double pgSet::GetDouble(const wxString &col) const
+{
+    return GetDouble(ColNumber(col));
+}
+
+
+wxULongLong pgSet::GetLongLong(int col) const
+{
+    char *c=PQgetvalue(res, pos-1, col);
+    if (c)
+        return atolonglong(c);
+    else
+        return 0;
+}
+
+wxULongLong pgSet::GetLongLong(const wxString &col) const
+{
+    return GetLongLong(ColNumber(col));
+}
+
+
+OID pgSet::GetOid(int col) const
+{
+    return (OID)GetLong(col);
+}
+
+
+OID pgSet::GetOid(const wxString &col) const
+{
+    return GetOid(ColNumber(col));
+}
+
 
 wxString pgSet::ExecuteScalar(const wxString& sql) const
 {
@@ -97,14 +192,13 @@ wxString pgSet::ExecuteScalar(const wxString& sql) const
 
     wxLogSql(wxT("Set sub-query: %s"), sql.c_str());
 
-    qryRes = PQexec(conn, sql.ToAscii());
+    qryRes = PQexec(conn, sql.mb_str(wxConvUTF8));
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
         return wxEmptyString;
     }
 
     // Retrieve the query result and return it.
-    wxString result=wxString::FromAscii(PQgetvalue(qryRes, 0, 0));
-    
+    wxString result=wxString(PQgetvalue(qryRes, 0, 0), wxConvUTF8);
     wxLogInfo(wxT("Query result: %s"), result.c_str());
 
     // Cleanup & exit
@@ -139,7 +233,7 @@ int pgQueryThread::execute()
 
     wxLogSql(wxT("Thread Query %s"), query.c_str());
 
-    if (!PQsendQuery(conn, query.ToAscii()))
+    if (!PQsendQuery(conn, query.mb_str(wxConvUTF8)))
         return(0);
 
     while (true)

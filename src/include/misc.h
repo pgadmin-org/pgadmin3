@@ -17,6 +17,22 @@
 
 typedef unsigned long OID;
 
+// we dont have an appropriate wxLongLong method
+#ifdef __WIN32__
+#define atolonglong _atoi64
+#else
+#ifdef __WXMAC__
+#define atolonglong(str) strtoll(str, (char **)NULL, 10) 
+#else
+#define atolonglong atoll
+#endif
+#endif
+
+
+// Encoding of file data
+#define FILE_ENCODING wxConvLibc
+
+
 // Global Stuff
 void StartMsg(const wxString& msg);
 void EndMsg();

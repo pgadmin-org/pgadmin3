@@ -38,24 +38,27 @@ public:
     long CurrentPos() const { return pos; }
     bool Bof() const { return (!nRows || pos < 1); }
     bool Eof() const { return (!nRows || pos > nRows); }
-    wxString ColName(int col) const { return wxString::FromAscii(PQfname(res, col)); }
+    wxString ColName(int col) const;
     Oid ColTypeOid(int col) const;
     wxString ColType(int col) const;
+
     Oid GetInsertedOid() const { return PQoidValue(res); }
     int ColSize(int col) const { return PQfsize(res, col); }
     int ColScale(int col) const;
-    wxString GetVal(int col) const { return wxString::FromAscii(PQgetvalue(res, pos -1, col)); }
+    int ColNumber(const wxString &colName) const;
+
+    wxString GetVal(int col) const;
     wxString GetVal(const wxString& col) const;
-    long GetLong(int col) const { return StrToLong(GetVal(col)); }
-    long GetLong(const wxString &col) { return StrToLong(GetVal(col)); }
-    bool GetBool(int col) const { return StrToBool(GetVal(col)); }
-    bool GetBool(const wxString &col) const { return StrToBool(GetVal(col)); }
-    double GetDouble(int col) const { return StrToDouble(GetVal(col)); }
-    double GetDouble(const wxString &col) const { return StrToDouble(GetVal(col)); }
-    wxULongLong GetLongLong(int col) const { return StrToLongLong(GetVal(col)); }
-    wxULongLong GetLongLong(const wxString &col) const { return StrToLongLong(GetVal(col)); }
-    OID GetOid(int col) const { return StrToOid(GetVal(col)); }
-    OID GetOid(const wxString &col) const { return StrToOid(GetVal(col)); }
+    long GetLong(int col) const;
+    long GetLong(const wxString &col);
+    bool GetBool(int col) const;
+    bool GetBool(const wxString &col) const;
+    double GetDouble(int col) const;
+    double GetDouble(const wxString &col) const;
+    wxULongLong GetLongLong(int col) const;
+    wxULongLong GetLongLong(const wxString &col) const;
+    OID GetOid(int col) const;
+    OID GetOid(const wxString &col) const;
 
 
 private:

@@ -102,17 +102,17 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     if (conn) 
     {
 
-#ifdef wxUSE_UNICODE
+#if wxUSE_UNICODE
 
        wxLogInfo(wxT("Setting client_encoding to 'UNICODE'"));
-       if (PQsetClientEncoding(conn, wxString::Format(wxT("UNICODE")).ToAscii()))
-           wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
+       if (PQsetClientEncoding(conn, "UNICODE"))
+           wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), wxConvUTF8).c_str());
 
 #else
 
        wxLogInfo(wxT("Setting client_encoding to 'SQL_ASCII'"));
-       if (PQsetClientEncoding(conn, wxString::Format(wxT("SQL_ASCII")).ToAscii()))
-           wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
+       if (PQsetClientEncoding(conn, "SQL_ASCII"))
+           wxLogError(wxT("%s"), PQerrorMessage(conn));
 
 #endif
 
@@ -137,14 +137,15 @@ bool pgConn::ExecuteVoid(const wxString& sql)
     PGresult *qryRes;
 
     wxLogSql(wxT("Void query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.ToAscii());
+    qryRes = PQexec(conn, sql.mb_str(wxConvUTF8));
     int res = PQresultStatus(qryRes);
 
     // Check for errors
     if (res != PGRES_TUPLES_OK &&
         res != PGRES_COMMAND_OK)
-        wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
-
+    {
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), wxConvUTF8).c_str());
+    }
 
     // Cleanup & exit
     PQclear(qryRes);
@@ -161,7 +162,7 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
     // Check for errors
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK)
     {
-        wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), wxConvUTF8).c_str());
         PQclear(qryRes);
         return wxEmptyString;
     }
@@ -175,7 +176,8 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
 	}
 	
 	// Retrieve the query result and return it.
-    wxString result=wxString::FromAscii(PQgetvalue(qryRes, 0, 0));
+    wxString result;
+    result=wxString(PQgetvalue(qryRes, 0, 0), wxConvUTF8);
 
     wxLogSql(wxT("Query result: %s"), result.c_str());
 
@@ -189,7 +191,7 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxLogSql(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.ToAscii());
+    qryRes = PQexec(conn, sql.mb_str(wxConvUTF8));
     pgSet *set = new pgSet(qryRes, conn);
     if (!set) {
         wxLogError(__("Couldn't create a pgSet object!"));
