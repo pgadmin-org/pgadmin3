@@ -17,5 +17,5 @@ xgettext -k_ -k__ -j -s -o pgadmin3.pot src/db/*.cpp
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/schema/*.cpp
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/ui/*.cpp
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/utils/*.cpp
-FOR %%f IN (src/ui/common/*.xrc) DO wxrc -g src/ui/common/%%f | xgettext -k_ -k__ -L C -j -s -o pgadmin3.pot -
+wxrc -g src/ui/common/*.xrc | xgettext -k_ -k__ -L C -j -s -o pgadmin3.pot -
 

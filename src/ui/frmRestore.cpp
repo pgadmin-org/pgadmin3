@@ -239,8 +239,20 @@ void frmRestore::OnOK(wxCommandEvent &ev)
 {
     viewRunning = false;
     btnView->Disable();
-    wxMessageBox(wxT("Expecting too much..."));
-//    ExternProcessDialog::OnOK(ev);
+
+#if 0
+    ExternProcessDialog::OnOK(ev);
+#else   // demo mode
+    if (!done)
+    {
+        done=true;
+        btnOK->SetLabel(_("Done"));
+    }
+    else
+    {
+        pgDialog::OnCancel(ev);
+    }
+#endif
 }
 
 
