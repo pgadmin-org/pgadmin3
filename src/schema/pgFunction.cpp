@@ -51,9 +51,9 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
         sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes() + wxT(")\n")
             + wxT("CREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes()
             + wxT(")\n  RETURNS ") + GetReturnType() 
-            + wxT(" AS '")
-            + GetSource()
-            + wxT("'\n  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
+            + wxT(" AS ")
+            + qtString(GetSource())
+            + wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
 
         if (GetIsStrict())
             sql += wxT(" STRICT");
