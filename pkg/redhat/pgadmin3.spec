@@ -51,7 +51,7 @@ rm -rf %{buildroot}
 %defattr(-, root, root)
 %{_bindir}/%{name}
 %{_datadir}/%{name}
-%{_datadir}/applications/%{name}.desktop
+%{_datadir}/applications
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <pgadmin-hackers@postgresql.org>
