@@ -24,4 +24,4 @@ ui/dlgDomain.cpp ui/dlgTable.cpp ui/dlgColumn.cpp ui/dlgIndex.cpp \
 ui/dlgSequence.cpp ui/dlgFunction.cpp ui/dlgTrigger.cpp \
 ui/dlgIndexConstraint.cpp ui/dlgForeignKey.cpp ui/dlgCheck.cpp \
 ui/frmStatus.cpp utils/misc.cpp utils/sysLogger.cpp utils/sysSettings.cpp
-AM_CXXFLAGS = -I./include/ -I$(WX_HOME)
+AM_CXXFLAGS = -I./include/

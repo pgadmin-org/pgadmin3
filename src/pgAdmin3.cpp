@@ -36,6 +36,14 @@ sysSettings *settings;
 
 IMPLEMENT_APP(pgAdmin3)
 
+
+// This is for an unresolved external from libpq 7.4
+extern "C"
+int is_absolute_path()
+{ 
+    return 0;
+}
+
 // The Application!
 bool pgAdmin3::OnInit()
 {
