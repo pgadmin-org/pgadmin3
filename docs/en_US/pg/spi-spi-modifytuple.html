@@ -1,0 +1,412 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SPI_modifytuple</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Memory Management"
+HREF="spi-memory.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI_copytupleintoslot"
+HREF="spi-spi-copytupleintoslot.html"><LINK
+REL="NEXT"
+TITLE="SPI_freetuple"
+HREF="spi-spi-freetuple.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-09-15T14:41:50"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-copytupleintoslot.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-copytupleintoslot.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-freetuple.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-freetuple.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-MODIFYTUPLE"
+></A
+>SPI_modifytuple</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN32537"
+></A
+><H2
+>Name</H2
+>SPI_modifytuple&nbsp;--&nbsp;create a row by replacing selected fields of a given row</DIV
+><A
+NAME="AEN32540"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN32542"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>HeapTuple SPI_modifytuple(Relation <VAR
+CLASS="PARAMETER"
+>rel</VAR
+>, HeapTuple <VAR
+CLASS="PARAMETER"
+>row</VAR
+>, <VAR
+CLASS="PARAMETER"
+>ncols</VAR
+>, <VAR
+CLASS="PARAMETER"
+>colnum</VAR
+>, Datum * <VAR
+CLASS="PARAMETER"
+>values</VAR
+>, const char * <VAR
+CLASS="PARAMETER"
+>nulls</VAR
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32550"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_modifytuple</CODE
+> creates a new row by
+   substituting new values for selected columns, copying the original
+   row's columns at other positions.  The input row is not modified.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32554"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>Relation <VAR
+CLASS="PARAMETER"
+>rel</VAR
+></VAR
+></DT
+><DD
+><P
+>      Used only as the source of the row descriptor for the row.
+      (Passing a relation rather than a row descriptor is a
+      misfeature.)
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>HeapTuple <VAR
+CLASS="PARAMETER"
+>row</VAR
+></VAR
+></DT
+><DD
+><P
+>      row to be modified
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>int <VAR
+CLASS="PARAMETER"
+>ncols</VAR
+></VAR
+></DT
+><DD
+><P
+>      number of column numbers in the array
+      <VAR
+CLASS="PARAMETER"
+>colnum</VAR
+>
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>int * <VAR
+CLASS="PARAMETER"
+>colnum</VAR
+></VAR
+></DT
+><DD
+><P
+>      array of the numbers of the columns that are to be changed
+      (count starts at 1)
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>Datum * <VAR
+CLASS="PARAMETER"
+>values</VAR
+></VAR
+></DT
+><DD
+><P
+>      new values for the specified columns
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>const char * <VAR
+CLASS="PARAMETER"
+>Nulls</VAR
+></VAR
+></DT
+><DD
+><P
+>      which new values are null, if any (see <CODE
+CLASS="FUNCTION"
+>SPI_execp</CODE
+> for the format)
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32595"
+></A
+><H2
+>Return Value</H2
+><P
+>   new row with modifications, allocated in the upper executor
+   context; <TT
+CLASS="SYMBOL"
+>NULL</TT
+> only if <VAR
+CLASS="PARAMETER"
+>row</VAR
+>
+   is <TT
+CLASS="SYMBOL"
+>NULL</TT
+>
+  </P
+><P
+>   On error, <VAR
+CLASS="VARNAME"
+>SPI_result</VAR
+> is set as follows:
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_ERROR_ARGUMENT</TT
+></DT
+><DD
+><P
+>       if <VAR
+CLASS="PARAMETER"
+>rel</VAR
+> is <TT
+CLASS="SYMBOL"
+>NULL</TT
+>, or if
+       <VAR
+CLASS="PARAMETER"
+>row</VAR
+> is <TT
+CLASS="SYMBOL"
+>NULL</TT
+>, or if <VAR
+CLASS="PARAMETER"
+>ncols</VAR
+>
+       is less than or equal to 0, or if <VAR
+CLASS="PARAMETER"
+>colnum</VAR
+> is
+       <TT
+CLASS="SYMBOL"
+>NULL</TT
+>, or if <VAR
+CLASS="PARAMETER"
+>values</VAR
+> is <TT
+CLASS="SYMBOL"
+>NULL</TT
+>.
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_ERROR_NOATTRIBUTE</TT
+></DT
+><DD
+><P
+>       if <VAR
+CLASS="PARAMETER"
+>colnum</VAR
+> contains an invalid column number (less
+       than or equal to 0 or greater than the number of column in
+       <VAR
+CLASS="PARAMETER"
+>row</VAR
+>)
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-copytupleintoslot.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-freetuple.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_copytupleintoslot</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi-memory.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_freetuple</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SPI_fname</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Support Functions"
+HREF="spi-interface-support.html"><LINK
+REL="PREVIOUS"
+TITLE="Interface Support Functions"
+HREF="spi-interface-support.html"><LINK
+REL="NEXT"
+TITLE="SPI_fnumber"
+HREF="spi-spi-fnumber.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-09-15T14:41:50"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-interface-support.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-interface-support.html#AEN32015"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-fnumber.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-fnumber.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-FNAME"
+></A
+>SPI_fname</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN32019"
+></A
+><H2
+>Name</H2
+>SPI_fname&nbsp;--&nbsp;determine the column name for the specified column number</DIV
+><A
+NAME="AEN32022"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN32024"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>char * SPI_fname(TupleDesc <VAR
+CLASS="PARAMETER"
+>rowdesc</VAR
+>, int <VAR
+CLASS="PARAMETER"
+>colnumber</VAR
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32028"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_fname</CODE
+> returns the column name of the
+   specified column.  (You can use <CODE
+CLASS="FUNCTION"
+>pfree</CODE
+> to
+   release the copy of the name when you don't need it anymore.)
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32033"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>TupleDesc <VAR
+CLASS="PARAMETER"
+>rowdesc</VAR
+></VAR
+></DT
+><DD
+><P
+>      input row description
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>int <VAR
+CLASS="PARAMETER"
+>colnumber</VAR
+></VAR
+></DT
+><DD
+><P
+>      column number (count starts at 1)
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32048"
+></A
+><H2
+>Return Value</H2
+><P
+>   The column name; <TT
+CLASS="SYMBOL"
+>NULL</TT
+> if
+   <VAR
+CLASS="PARAMETER"
+>colnumber</VAR
+> is out of range.
+   <VAR
+CLASS="VARNAME"
+>SPI_result</VAR
+> set to
+   <TT
+CLASS="SYMBOL"
+>SPI_ERROR_NOATTRIBUTE</TT
+> on error.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-interface-support.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-fnumber.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Interface Support Functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi-interface-support.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_fnumber</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

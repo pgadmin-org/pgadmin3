@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SPI_gettypeid</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Support Functions"
+HREF="spi-interface-support.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI_gettype"
+HREF="spi-spi-gettype.html"><LINK
+REL="NEXT"
+TITLE="SPI_getrelname"
+HREF="spi-spi-getrelname.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-09-15T14:41:50"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-gettype.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-gettype.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-getrelname.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-getrelname.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-GETTYPEID"
+></A
+>SPI_gettypeid</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN32239"
+></A
+><H2
+>Name</H2
+>SPI_gettypeid&nbsp;--&nbsp;return the data type <ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+> of the specified column</DIV
+><A
+NAME="AEN32243"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN32245"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>Oid SPI_gettypeid(TupleDesc <VAR
+CLASS="PARAMETER"
+>rowdesc</VAR
+>, int <VAR
+CLASS="PARAMETER"
+>colnumber</VAR
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32249"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_gettypeid</CODE
+> returns the
+   <ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+> of the data type of the specified column.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32254"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>TupleDesc <VAR
+CLASS="PARAMETER"
+>rowdesc</VAR
+></VAR
+></DT
+><DD
+><P
+>      input row description
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>int <VAR
+CLASS="PARAMETER"
+>colnumber</VAR
+></VAR
+></DT
+><DD
+><P
+>      column number (count starts at 1)
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32269"
+></A
+><H2
+>Return Value</H2
+><P
+>   The <ACRONYM
+CLASS="ACRONYM"
+>OID</ACRONYM
+> of the data type of the specified column
+   or <TT
+CLASS="SYMBOL"
+>InvalidOid</TT
+> on error.  On error,
+   <VAR
+CLASS="VARNAME"
+>SPI_result</VAR
+> is set to
+   <TT
+CLASS="SYMBOL"
+>SPI_ERROR_NOATTRIBUTE</TT
+>.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-gettype.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-getrelname.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_gettype</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi-interface-support.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_getrelname</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

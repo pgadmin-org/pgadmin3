@@ -1,0 +1,607 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SPI_exec</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Interface Functions"
+HREF="spi.html#SPI-INTERFACE"><LINK
+REL="PREVIOUS"
+TITLE="SPI_finish"
+HREF="spi-spi-finish.html"><LINK
+REL="NEXT"
+TITLE="SPI_prepare"
+HREF="spi-spi-prepare.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-09-15T14:41:50"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-finish.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-finish.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-prepare.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-prepare.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-EXEC"
+></A
+>SPI_exec</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN31460"
+></A
+><H2
+>Name</H2
+>SPI_exec&nbsp;--&nbsp;execute a command</DIV
+><A
+NAME="AEN31463"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN31465"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>int SPI_exec(const char * <VAR
+CLASS="PARAMETER"
+>command</VAR
+>, int <VAR
+CLASS="PARAMETER"
+>count</VAR
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN31469"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_exec</CODE
+> executes the specified SQL command
+   for <VAR
+CLASS="PARAMETER"
+>count</VAR
+> rows.
+  </P
+><P
+>   This function should only be called from a connected procedure.  If
+   <VAR
+CLASS="PARAMETER"
+>count</VAR
+> is zero then it executes the command
+   for all rows that it applies to.  If <VAR
+CLASS="PARAMETER"
+>count</VAR
+>
+   is greater than 0, then the number of rows for which the command
+   will be executed is restricted (much like a
+   <VAR
+CLASS="LITERAL"
+>LIMIT</VAR
+> clause). For example,
+</P><PRE
+CLASS="PROGRAMLISTING"
+>SPI_exec("INSERT INTO tab SELECT * FROM tab", 5);</PRE
+><P>
+   will allow at most 5 rows to be inserted into the table.
+  </P
+><P
+>   You may pass multiple commands in one string, and the command may
+   be rewritten by rules. <CODE
+CLASS="FUNCTION"
+>SPI_exec</CODE
+> returns the
+   result for the command executed last.
+  </P
+><P
+>   The actual number of rows for which the (last) command was executed
+   is returned in the global variable <VAR
+CLASS="VARNAME"
+>SPI_processed</VAR
+>
+   (unless the return value of the function is
+   <TT
+CLASS="SYMBOL"
+>SPI_OK_UTILITY</TT
+>).  If the return value of the
+   function is <TT
+CLASS="SYMBOL"
+>SPI_OK_SELECT</TT
+> then you may the use
+   global pointer <VAR
+CLASS="LITERAL"
+>SPITupleTable *SPI_tuptable</VAR
+> to
+   access the result rows.
+  </P
+><P
+>   The structure <TT
+CLASS="STRUCTNAME"
+>SPITupleTable</TT
+> is defined
+   thus:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct
+{
+    MemoryContext tuptabcxt;    /* memory context of result table */
+    uint32      alloced;        /* number of alloced vals */
+    uint32      free;           /* number of free vals */
+    TupleDesc   tupdesc;        /* row descriptor */
+    HeapTuple  *vals;           /* rows */
+} SPITupleTable;</PRE
+><P>
+   <TT
+CLASS="STRUCTFIELD"
+>vals</TT
+> is an array of pointers to rows.  (The number
+   of valid entries is given by <VAR
+CLASS="VARNAME"
+>SPI_processed</VAR
+>).
+   <TT
+CLASS="STRUCTFIELD"
+>tupdesc</TT
+> is a row descriptor which you may pass to
+   SPI functions dealing with rows.  <TT
+CLASS="STRUCTFIELD"
+>tuptabcxt</TT
+>,
+   <TT
+CLASS="STRUCTFIELD"
+>alloced</TT
+>, and <TT
+CLASS="STRUCTFIELD"
+>free</TT
+> are internal
+   fields not intended for use by SPI callers.
+  </P
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_finish</CODE
+> frees all
+   <TT
+CLASS="STRUCTNAME"
+>SPITupleTable</TT
+>s allocated during the current
+   procedure.  You can free a particular result table earlier, if you
+   are done with it, by calling <CODE
+CLASS="FUNCTION"
+>SPI_freetuptable</CODE
+>.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN31499"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>const char * <VAR
+CLASS="PARAMETER"
+>command</VAR
+></VAR
+></DT
+><DD
+><P
+>      string containing command to execute
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>int <VAR
+CLASS="PARAMETER"
+>count</VAR
+></VAR
+></DT
+><DD
+><P
+>      maximum number of rows to process or return
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN31514"
+></A
+><H2
+>Return Value</H2
+><P
+>   If the execution of the command was successful then one of the
+   following (nonnegative) values will be returned:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_OK_SELECT</TT
+></DT
+><DD
+><P
+>       if a <TT
+CLASS="COMMAND"
+>SELECT</TT
+> (but not <TT
+CLASS="COMMAND"
+>SELECT
+       ... INTO</TT
+>) was executed
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_OK_SELINTO</TT
+></DT
+><DD
+><P
+>       if a <TT
+CLASS="COMMAND"
+>SELECT ... INTO</TT
+> was executed
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_OK_DELETE</TT
+></DT
+><DD
+><P
+>       if a <TT
+CLASS="COMMAND"
+>DELETE</TT
+> was executed
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_OK_INSERT</TT
+></DT
+><DD
+><P
+>       if an <TT
+CLASS="COMMAND"
+>INSERT</TT
+> was executed
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_OK_UPDATE</TT
+></DT
+><DD
+><P
+>       if an <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> was executed
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_OK_UTILITY</TT
+></DT
+><DD
+><P
+>       if a utility command (e.g., <TT
+CLASS="COMMAND"
+>CREATE TABLE</TT
+>)
+       was executed
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+><P
+>   On error, one of the following negative values is returned:
+
+   <P
+></P
+></P><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_ERROR_ARGUMENT</TT
+></DT
+><DD
+><P
+>       if <VAR
+CLASS="PARAMETER"
+>command</VAR
+> is <TT
+CLASS="SYMBOL"
+>NULL</TT
+> or
+       <VAR
+CLASS="PARAMETER"
+>count</VAR
+> is less than 0
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_ERROR_COPY</TT
+></DT
+><DD
+><P
+>       if <TT
+CLASS="COMMAND"
+>COPY TO stdout</TT
+> or <TT
+CLASS="COMMAND"
+>COPY FROM stdin</TT
+>
+       was attempted
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_ERROR_CURSOR</TT
+></DT
+><DD
+><P
+>       if <TT
+CLASS="COMMAND"
+>DECLARE</TT
+>, <TT
+CLASS="COMMAND"
+>CLOSE</TT
+>, or <TT
+CLASS="COMMAND"
+>FETCH</TT
+>
+       was attempted
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_ERROR_TRANSACTION</TT
+></DT
+><DD
+><P
+>       if <TT
+CLASS="COMMAND"
+>BEGIN</TT
+>, <TT
+CLASS="COMMAND"
+>COMMIT</TT
+>, or
+       <TT
+CLASS="COMMAND"
+>ROLLBACK</TT
+> was attempted
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_ERROR_OPUNKNOWN</TT
+></DT
+><DD
+><P
+>       if the command type is unknown (shouldn't happen)
+      </P
+></DD
+><DT
+><TT
+CLASS="SYMBOL"
+>SPI_ERROR_UNCONNECTED</TT
+></DT
+><DD
+><P
+>       if called from an unconnected procedure
+      </P
+></DD
+></DL
+></DIV
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN31598"
+></A
+><H2
+>Notes</H2
+><P
+>   The functions <CODE
+CLASS="FUNCTION"
+>SPI_exec</CODE
+>,
+   <CODE
+CLASS="FUNCTION"
+>SPI_execp</CODE
+>, and
+   <CODE
+CLASS="FUNCTION"
+>SPI_prepare</CODE
+> change both
+   <VAR
+CLASS="VARNAME"
+>SPI_processed</VAR
+> and
+   <VAR
+CLASS="VARNAME"
+>SPI_tuptable</VAR
+> (just the pointer, not the contents
+   of the structure).  Save these two global variables into local
+   procedure variables if you need to access the result of
+   <CODE
+CLASS="FUNCTION"
+>SPI_exec</CODE
+> or <CODE
+CLASS="FUNCTION"
+>SPI_execp</CODE
+>
+   across later calls.
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-finish.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-prepare.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_finish</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi.html#SPI-INTERFACE"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_prepare</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

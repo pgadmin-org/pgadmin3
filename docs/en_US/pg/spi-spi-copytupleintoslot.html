@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SPI_copytupleintoslot</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 7.4beta3 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Memory Management"
+HREF="spi-memory.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI_copytupledesc"
+HREF="spi-spi-copytupledesc.html"><LINK
+REL="NEXT"
+TITLE="SPI_modifytuple"
+HREF="spi-spi-modifytuple.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2003-09-15T14:41:50"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 7.4beta3 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-copytupledesc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-copytupledesc.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-modifytuple.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-modifytuple.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-SPI-COPYTUPLEINTOSLOT"
+></A
+>SPI_copytupleintoslot</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN32497"
+></A
+><H2
+>Name</H2
+>SPI_copytupleintoslot&nbsp;--&nbsp;make a copy of a row and descriptor in the upper executor context</DIV
+><A
+NAME="AEN32500"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN32502"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>TupleTableSlot * SPI_copytupleintoslot(HeapTuple <VAR
+CLASS="PARAMETER"
+>row</VAR
+>, TupleDesc <VAR
+CLASS="PARAMETER"
+>rowdesc</VAR
+>)</PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32506"
+></A
+><H2
+>Description</H2
+><P
+>   <CODE
+CLASS="FUNCTION"
+>SPI_copytupleintoslot</CODE
+> makes a copy of a row in
+   the upper executor context, returning it in the form of a filled-in
+   <TT
+CLASS="TYPE"
+>TupleTableSlot</TT
+> structure.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32511"
+></A
+><H2
+>Arguments</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="LITERAL"
+>HeapTuple <VAR
+CLASS="PARAMETER"
+>row</VAR
+></VAR
+></DT
+><DD
+><P
+>      row to be copied
+     </P
+></DD
+><DT
+><VAR
+CLASS="LITERAL"
+>TupleDesc <VAR
+CLASS="PARAMETER"
+>rowdesc</VAR
+></VAR
+></DT
+><DD
+><P
+>      row descriptor to be copied
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN32526"
+></A
+><H2
+>Return Value</H2
+><P
+>   <TT
+CLASS="TYPE"
+>TupleTableSlot</TT
+> containing the copied row and
+   descriptor; <TT
+CLASS="SYMBOL"
+>NULL</TT
+> only if
+   <VAR
+CLASS="PARAMETER"
+>row</VAR
+> or <VAR
+CLASS="PARAMETER"
+>rowdesc</VAR
+> are
+   <TT
+CLASS="SYMBOL"
+>NULL</TT
+>
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-spi-copytupledesc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-spi-modifytuple.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI_copytupledesc</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="spi-memory.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI_modifytuple</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
