@@ -256,7 +256,8 @@ int dlgProperty::Go(bool modal)
         wxButton *btn=btnApply;
         if (btn)
             btn->Hide();
-        SetTitle(wxGetTranslation(typesList[objectType].newString));
+        if (objectType >= 0)
+            SetTitle(wxGetTranslation(typesList[objectType].newString));
     }
     if (modal)
         return ShowModal();

@@ -16,7 +16,7 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "frmMain.h"
-#include "frmConnect.h"
+#include "dlgConnect.h"
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
@@ -231,10 +231,9 @@ bool pgServer::GetServerControllable()
 }
 
     
-int pgServer::Connect(frmMain *form, bool lockFields) 
+int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
 {
     wxLogInfo(wxT("Attempting to create a connection object..."));
-
     parentWin = form;
     if (!conn || conn->GetStatus() != PGCONN_OK)
     {
@@ -243,37 +242,35 @@ int pgServer::Connect(frmMain *form, bool lockFields)
             delete conn;
             conn=0;
         }
-        if (!trusted || !lockFields)
+        if (askPassword)
         {
-            frmConnect winConnect(form, GetName(), description, database, username, port, trusted, ssl);
-
-            if (lockFields) 
-		        winConnect.LockFields();
-
-	        switch (winConnect.Go())
+            if (GetNeedPwd())
             {
-		        case wxID_OK:
-			        break;
-		        case wxID_CANCEL:
-	                return PGCONN_ABORTED;
-		        default:
-	                wxLogError(__("Couldn't create a connection dialogue!"));
-		            return PGCONN_BAD;
-	        }
+                wxString txt;
+                txt.Printf(_("Please enter password for user %s\non server %s (%s)"), username.c_str(), description.c_str(), GetName().c_str());
+                dlgConnect dlg(form, txt, GetNeedPwd());
 
-            if (!lockFields)
-            {
-                iSetDescription(winConnect.GetDescription());
-                iSetName(winConnect.GetServer());
-                iSetDatabase(winConnect.GetDatabase());
-                iSetUsername(winConnect.GetUsername());
-                iSetPort(winConnect.GetPort());
-                trusted=winConnect.GetTrusted();
-                ssl=winConnect.GetSSL();
+	            switch (dlg.Go())
+                {
+		            case wxID_OK:
+			            break;
+		            case wxID_CANCEL:
+                    case -1:
+	                    return PGCONN_ABORTED;
+		            default:
+	                    wxLogError(__("Couldn't create a connection dialogue!"));
+		                return PGCONN_BAD;
+	            }
+
+                iSetNeedPwd(dlg.GetNeedPwd());
+
+                if (GetNeedPwd())
+                    iSetPassword(dlg.GetPassword());
             }
-            if (!trusted)
-                iSetPassword(winConnect.GetPassword());
         }
+        else
+            iSetPassword(pwd);
+
         if (password.IsNull())
             form->StartMsg(_("Connecting to database without password"));
         else
@@ -384,19 +381,23 @@ bool pgServer::SetPassword(const wxString& newVal)
 wxString pgServer::GetLastError() const
 {
     wxString msg;
-    if (error != wxT("")) {
-        if (conn->GetLastError() != wxT(""))
+    if (conn)
+    {
+        if (error != wxT(""))
         {
-            msg.Printf(wxT("%s\n%s"), error.c_str(), conn->GetLastError().c_str());
+            if (conn->GetLastError() != wxT(""))
+            {
+                msg.Printf(wxT("%s\n%s"), error.c_str(), conn->GetLastError().c_str());
+            }
+            else
+            {
+                msg=error;
+            }
         }
         else
         {
-            msg=error;
+            msg=conn->GetLastError();
         }
-    }
-    else
-    {
-        msg=conn->GetLastError();
     }
     return msg;
 }

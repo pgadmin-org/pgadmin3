@@ -36,7 +36,7 @@ ui/ctlSecurityPanel.cpp ui/dlgClasses.cpp ui/ctlComboBox.cpp \
 ui/calbox.cpp ui/timespin.cpp ui/ctlListView.cpp \
 ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp ui/frmExport.cpp \
 ui/dlgEditGridOptions.cpp ui/events.cpp ui/frmAbout.cpp \
-ui/frmIndexcheck.cpp ui/frmConnect.cpp ui/frmMain.cpp \
+ui/frmIndexcheck.cpp ui/dlgConnect.cpp ui/frmMain.cpp \
 ui/frmOptions.cpp ui/frmPassword.cpp ui/frmQuery.cpp \
 ui/frmHelp.cpp ui/frmSplash.cpp ui/frmMaintenance.cpp \
 ui/frmBackup.cpp ui/frmRestore.cpp ui/frmGrantWizard.cpp \
@@ -68,7 +68,7 @@ include/dlgAggregate.h include/dlgCast.h include/dlgConversion.h \
 include/dlgSequence.h include/dlgSchema.h include/dlgTable.h include/dlgTablespace.h \
 include/dlgOperator.h include/dlgView.h include/dlgRule.h \
 include/dlgTrigger.h include/dlgUser.h include/frmAbout.h \
-include/frmConnect.h include/frmHelp.h \
+include/dlgConnect.h include/frmHelp.h \
 include/frmEditGrid.h include/dlgEditGridOptions.h include/frmMain.h \
 include/frmOptions.h include/frmPassword.h include/frmIndexcheck.h \
 include/frmQuery.h include/frmSplash.h \

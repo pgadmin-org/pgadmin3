@@ -519,6 +519,10 @@ SOURCE=.\ui\common\xrcDialogs.cpp
 # PROP Default_Filter "*.cpp"
 # Begin Source File
 
+SOURCE=.\ui\dlgConnect.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgEditGridOptions.cpp
 # End Source File
 # Begin Source File
@@ -532,10 +536,6 @@ SOURCE=.\ui\frmAbout.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmBackup.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ui\frmConnect.cpp
 # End Source File
 # Begin Source File
 
@@ -657,6 +657,10 @@ SOURCE=.\ui\xh_timespin.cpp
 # PROP Default_Filter "*.h"
 # Begin Source File
 
+SOURCE=.\include\dlgConnect.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\dlgEditGridOptions.h
 # End Source File
 # Begin Source File
@@ -666,10 +670,6 @@ SOURCE=.\include\frmAbout.h
 # Begin Source File
 
 SOURCE=.\include\frmBackup.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\frmConnect.h
 # End Source File
 # Begin Source File
 

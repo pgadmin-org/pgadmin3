@@ -15,6 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "frmMain.h"
 #include "dlgServer.h"
 #include "pgDatabase.h"
 
@@ -31,19 +32,20 @@
 #define txtUsername     CTRL_TEXT("txtUsername")
 #define chkNeedPwd      CTRL_CHECKBOX("chkNeedPwd")
 #define stPassword      CTRL_STATIC("stPassword")
-#define txtPassword     CTRL_CHECKBOX("txtPassword")
+#define txtPassword     CTRL_TEXT("txtPassword")
 
 
 extern double libpqVersion;
 
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
+    EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgServer::OnPageSelect)  
     EVT_TEXT(XRCID("txtDescription"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtService"),                   dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtDatabase"),                  dlgProperty::OnChange)
-    EVT_TEXT(XRCID("txtServer"),                    dlgProperty::OnChange)
-    EVT_TEXT(XRCID("txtServer"),                    dlgProperty::OnChange)
-    EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgServer::OnPageSelect)  
+    EVT_TEXT(XRCID("txtPort")  ,                    dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtUsername"),                  dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkNeedPwd"),               dlgServer::OnChangeNeedPwd)
     EVT_BUTTON(XRCID("btnOK"),                      dlgServer::OnOK)
 END_EVENT_TABLE();
 
@@ -66,6 +68,9 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 {
     // notice: changes active after reconnect
 
+    EnableOK(false);
+
+
     if (server)
     {
         server->iSetDescription(txtDescription->GetValue());
@@ -75,11 +80,16 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         server->iSetLastDatabase(cbDatabase->GetValue());
         server->iSetUsername(txtUsername->GetValue());
         server->iSetNeedPwd(chkNeedPwd->GetValue());
-        stPassword->Disable();
-        txtPassword->Disable();
+        mainForm->execSelChange(server->GetId(), true);
     }
 
-    dlgProperty::OnOK(ev);
+    if (IsModal())
+    {
+        EndModal(wxID_OK);
+        return;
+    }
+    else
+        Destroy();
 }
 
 
@@ -91,8 +101,15 @@ void dlgServer::OnPageSelect(wxNotebookEvent &event)
 
 wxString dlgServer::GetHelpPage() const
 {
-    return dlgProperty::GetHelpPage();
+    return wxT("server-connect");
 }
+
+
+int dlgServer::GoNew()
+{
+    return Go(true);
+}
+
 
 int dlgServer::Go(bool modal)
 {
@@ -135,19 +152,38 @@ int dlgServer::Go(bool modal)
         cbDatabase->SetValue(server->GetDatabaseName());
         txtUsername->SetValue(server->GetUsername());
         chkNeedPwd->SetValue(server->GetNeedPwd());
+        stPassword->Disable();
+        txtPassword->Disable();
     }
     else
     {
-        cbDatabase->Append(wxT("template1"));
+        SetTitle(_("Add server"));
+        cbDatabase->Append(settings->GetLastDatabase());
 
-        txtPort->SetValue(wxT("5432"));    
-        cbSSL->SetSelection(0);
+        txtName->SetValue(settings->GetLastServer());
+        txtDescription->SetValue(settings->GetLastDescription());
+        txtPort->SetValue(NumToStr((long)settings->GetLastPort()));    
+        cbSSL->SetSelection(settings->GetLastSSL());
         cbDatabase->SetSelection(0);
-        txtUsername->SetValue(wxT("postgres"));
+        txtUsername->SetValue(settings->GetLastUsername());
         chkNeedPwd->SetValue(true);
+
     }
 
-    return dlgProperty::Go(modal);
+    int rc=dlgProperty::Go(modal);
+
+    if (!server)
+        CheckChange();
+
+    return rc;
+}
+
+
+wxString dlgServer::GetPassword()
+{
+    if (chkNeedPwd->GetValue())
+        return txtPassword->GetValue();
+    return wxEmptyString;
 }
 
 
@@ -155,8 +191,18 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=0; //pgDatabase::ReadObjects(collection, 0, wxT(" WHERE datname=") + qtString(name) + wxT("\n"));
+    pgObject *obj=new pgServer(GetName(), txtDescription->GetValue(), cbDatabase->GetValue(), 
+        txtUsername->GetValue(), StrToLong(txtPort->GetValue()), !chkNeedPwd->GetValue(), cbSSL->GetSelection());
+
     return obj;
+}
+
+
+void dlgServer::OnChangeNeedPwd(wxCommandEvent &ev)
+{
+    if (!server)
+        txtPassword->Enable(chkNeedPwd->GetValue());
+    OnChange(ev);
 }
 
 

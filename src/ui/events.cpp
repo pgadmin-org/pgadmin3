@@ -27,7 +27,7 @@
 #include "menu.h"
 #include "frmMain.h"
 #include "frmAbout.h"
-#include "frmConnect.h"
+#include "dlgServer.h"
 #include "frmOptions.h"
 #include "frmPassword.h"
 #include "frmQuery.h"
@@ -50,6 +50,7 @@
 #include "frmRestore.h"
 #include "frmIndexcheck.h"
 #include "frmGrantWizard.h"
+
 
 extern wxString loadPath;
 
@@ -601,51 +602,54 @@ void frmMain::OnShowSystemObjects(wxCommandEvent& event)
     }
 }
 
+
 void frmMain::OnAddServer(wxCommandEvent &ev)
 {
-    // Create a server object and connect it.
-    pgServer *server = new pgServer(settings->GetLastServer(), settings->GetLastDescription(), settings->GetLastDatabase(), 
-        settings->GetLastUsername(), settings->GetLastPort(), false, settings->GetLastSSL());
-    int res = server->Connect(this);
-
-    // Check the result, and handle it as appropriate
-    switch (res)
+    int rc = PGCONN_BAD;
+    
+    while (rc != PGCONN_OK)
     {
-        case PGCONN_OK:
-        {
-            wxLogInfo(wxT("pgServer object initialised as required."));
-            browser->AppendItem(servers, server->GetFullName(), PGICON_SERVER, -1, server);
-            browser->Expand(servers);
-            break;
-        }
-        case PGCONN_DNSERR:
-        {
-            delete server;
-            OnAddServer(ev);
-            break;
-        }
-        case PGCONN_BAD:
-        case PGCONN_BROKEN:
-        {
-            wxLogError(__("Error connecting to the server: %s"), server->GetLastError().c_str());
+        dlgServer dlg(this, 0);
+        if (dlg.GoNew() != wxID_OK)
+            return;
 
-            delete server;
-            OnAddServer(ev);
-            break;
-        }
-        default:
+        pgServer *server=(pgServer*)dlg.CreateObject(0);
+        rc = server->Connect(this, false, dlg.GetPassword());
+
+        switch (rc)
         {
-            wxLogInfo(__("pgServer object didn't initialise because the user aborted."));
-            delete server;
-            break;
+            case PGCONN_OK:
+            {
+                wxLogInfo(wxT("pgServer object initialised as required."));
+                browser->AppendItem(servers, server->GetFullName(), PGICON_SERVER, -1, server);
+                browser->Expand(servers);
+                wxString label;
+                label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
+                browser->SetItemText(servers, label);
+                StoreServers();
+                return;
+            }
+            case PGCONN_DNSERR:
+            {
+                delete server;
+                break;
+            }
+            case PGCONN_BAD:
+            case PGCONN_BROKEN:
+            {
+                wxLogError(__("Error connecting to the server: %s"), server->GetLastError().c_str());
+
+                delete server;
+                break;
+            }
+            default:
+            {
+                wxLogInfo(__("pgServer object didn't initialise because the user aborted."));
+                delete server;
+                return;
+            }
         }
     }
-
-    // Reset the Servers node text
-    wxString label;
-    label.Printf(_("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
-    browser->SetItemText(servers, label);
-    StoreServers();
 }
 
 
@@ -974,6 +978,9 @@ void frmMain::doPopup(wxPoint point, pgObject *object)
         delete treeContextMenu;
 
     treeContextMenu = new wxMenu();
+
+    if (object && (object->GetType() == PG_SERVER ||object->GetType() == PG_SERVERS))
+        appendIfEnabled(MNU_ADDSERVER);
 
     appendIfEnabled(MNU_REFRESH);
     appendIfEnabled(MNU_COUNT);

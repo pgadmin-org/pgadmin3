@@ -22,6 +22,7 @@ class dlgServer : public dlgProperty
 public:
     dlgServer(frmMain *frame, pgServer *s);
     int Go(bool modal);
+    int GoNew();
 
     void CheckChange();
     wxString GetSql();
@@ -29,10 +30,13 @@ public:
     pgObject *GetObject();
     wxString GetHelpPage() const;
 
+    wxString GetPassword();
+
 private:
     pgServer *server;
 
     void OnOK(wxCommandEvent &ev);
+    void OnChangeNeedPwd(wxCommandEvent &ev);
     void OnPageSelect(wxNotebookEvent &event);
 
     DECLARE_EVENT_TABLE();

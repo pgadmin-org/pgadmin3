@@ -48,6 +48,7 @@ public:
     void SetButtons(pgObject *obj=0);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
 
+    void execSelChange(wxTreeItemId item, bool currentNode);
     void Refresh(pgObject *data);
     void RemoveFrame(wxWindow *frame);
 
@@ -132,7 +133,6 @@ private:
 
     void doPopup(wxPoint point, pgObject *object);
     void appendIfEnabled(int id);
-    void execSelChange(wxTreeItemId item, bool currentNode);
     bool checkAlive();
     void setDisplay(pgObject *data, ctlListView *props=0, ctlSQLBox *sqlbox=0);
     void StoreServers();
