@@ -62,6 +62,7 @@ public:
     void iSetInheritedCount(const long l) { inheritedCount=l; }
 
 
+    bool GetSystemObject() const { return colNumber < 0; }
     wxString GetFullType();
     wxString GetSql(wxTreeCtrl *browser);
 

@@ -33,7 +33,7 @@ pgColumn::~pgColumn()
 
 wxString pgColumn::GetSql(wxTreeCtrl *browser)
 {
-    if (sql.IsNull())
+    if (sql.IsNull() && !GetSystemObject())
     {
         if (GetInheritedCount())
             sql = wxT("-- Column inherited; cannot be changed");
@@ -166,7 +166,7 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, wxT("Storage"), GetStorage());
         InsertListItem(properties, pos++, wxT("Inherits Count"), GetInheritedCount());
 
-        InsertListItem(properties, pos++, wxT("System Domain?"), GetSystemObject());
+        InsertListItem(properties, pos++, wxT("System Column?"), GetSystemObject());
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
 
@@ -233,7 +233,8 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
                 column->iSetVarTypename(columns->GetVal(wxT("elemtypname")));
             else
                 column->iSetVarTypename(columns->GetVal(wxT("typname")));
-            column->iSetDefault(columns->GetVal(wxT("adsrc")));
+            if (columns->GetBool(wxT("atthasdef")))
+                column->iSetDefault(columns->GetVal(wxT("adsrc")));
             column->iSetStatistics(columns->GetLong(wxT("attstattarget")));
 
             wxString storage=columns->GetVal(wxT("attstorage"));
