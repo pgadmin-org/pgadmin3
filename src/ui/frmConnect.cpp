@@ -110,14 +110,12 @@ void frmConnect::OnOK(wxCommandEvent& ev)
 {
     TransferDataFromWindow();
     EndModal(wxID_OK);
-    Destroy();
 }
 
 
 void frmConnect::OnCancel(wxCommandEvent& ev)
 {
     EndModal(wxID_CANCEL);
-    Destroy();
 }
 
 int frmConnect::Go()
