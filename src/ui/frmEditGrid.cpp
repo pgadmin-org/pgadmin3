@@ -127,7 +127,8 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
         orderBy = table->GetQuotedPrimaryKey();
         if (orderBy.IsEmpty() && hasOids)
             orderBy=wxT("oid");
-		orderBy += wxT(" ASC");
+        if (!orderBy.IsEmpty())
+            orderBy += wxT(" ASC");
     }
     else if (obj->GetType() == PG_VIEW)
     {
