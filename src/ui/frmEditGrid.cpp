@@ -523,7 +523,7 @@ void frmEditGrid::Go()
 
     wxString qry=wxT("SELECT ");
     if (hasOids)
-        qry += wxT("Oid, ");
+        qry += wxT("oid, ");
     qry += wxT("* FROM ") + tableName;
     if (!orderBy.IsEmpty())
     {

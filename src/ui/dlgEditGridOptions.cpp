@@ -80,8 +80,11 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, ctlSQLGrid *grid)
     OnLstSortColsChange(nullEvent);
 
 	// Setup the list box
-	lstSortCols->InsertColumn(0, __("Column name"), wxLIST_FORMAT_LEFT, 175);
-	lstSortCols->InsertColumn(1, __("Sort order"), wxLIST_FORMAT_LEFT, 100);
+    int leftSize = 140, rightSize;
+    leftSize = ConvertDialogToPixels(wxPoint(leftSize, 0)).x;
+    rightSize = lstSortCols->GetClientSize().GetWidth()-leftSize;
+	lstSortCols->InsertColumn(0, _("Column name"), wxLIST_FORMAT_LEFT, leftSize);
+	lstSortCols->InsertColumn(1, _("Sort order"), wxLIST_FORMAT_LEFT, rightSize);
 
 	// Get the current sort columns, and populate the listbox.
 	// The current columns will be parsed char by char to allow us
@@ -105,10 +108,10 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, ctlSQLGrid *grid)
 			    inColumn = true;
 			    lstSortCols->InsertItem(itm, col);
 				if (dir.GetChar(0) == 'A') {
-	                lstSortCols->SetItem(itm, 1, wxT("Ascending"));
+	                lstSortCols->SetItem(itm, 1, _("Ascending"));
 	                lstSortCols->SetItemData(itm, 0); 
 				} else {
-	                lstSortCols->SetItem(itm, 1, wxT("Descending"));
+	                lstSortCols->SetItem(itm, 1, _("Descending"));
 	                lstSortCols->SetItemData(itm, 1); 
 				}
 				col = wxT("");
@@ -125,10 +128,10 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, ctlSQLGrid *grid)
 	if (col.Length() > 0) {
 		lstSortCols->InsertItem(itm, col);
 		if (dir.GetChar(0) == 'A') {
-		    lstSortCols->SetItem(itm, 1, wxT("Ascending"));
+		    lstSortCols->SetItem(itm, 1, _("Ascending"));
 			lstSortCols->SetItemData(itm, 0); 
 		} else {
-		    lstSortCols->SetItem(itm, 1, wxT("Descending"));
+		    lstSortCols->SetItem(itm, 1, _("Descending"));
 			lstSortCols->SetItemData(itm, 1); 
 		}
 	}
@@ -152,7 +155,7 @@ void dlgEditGridOptions::OnAsc(wxCommandEvent &ev)
 {
 	long itm = lstSortCols->GetItemCount();
 	lstSortCols->InsertItem(itm, cboColumns->GetValue());
-	lstSortCols->SetItem(itm, 1, wxT("Ascending"));
+	lstSortCols->SetItem(itm, 1, _("Ascending"));
 	lstSortCols->SetItemData(itm, 0);
 	cboColumns->Delete(cboColumns->GetSelection());
 
@@ -166,7 +169,7 @@ void dlgEditGridOptions::OnDesc(wxCommandEvent &ev)
 {
 	long itm = lstSortCols->GetItemCount();
 	lstSortCols->InsertItem(itm, cboColumns->GetValue());
-	lstSortCols->SetItem(itm, 1, wxT("Descending"));
+	lstSortCols->SetItem(itm, 1, _("Descending"));
 	lstSortCols->SetItemData(itm, 1);
 	cboColumns->Delete(cboColumns->GetSelection());
 
