@@ -127,7 +127,8 @@ ui/pl_PL/pgadmin3.po \
 ui/ro_RO/pgadmin3.po \
 ui/ru_RU/pgadmin3.po \
 ui/tr_TR/pgadmin3.po \
-ui/zh_CN/pgadmin3.po
+ui/zh_CN/pgadmin3.po \
+ui/zh_TW/pgadmin3.po
 
 nobase_dist_pkgdata_DATA = tips.txt ui/common/*.xrc \
 ui/wxstd.mo \
@@ -144,6 +145,7 @@ ui/ro_RO/pgadmin3.mo \
 ui/ru_RU/pgadmin3.mo \
 ui/tr_TR/pgadmin3.mo \
 ui/zh_CN/pgadmin3.mo \
+ui/zh_TW/pgadmin3.mo \
 ui/de_DE/wxstd.mo \
 ui/fr_FR/wxstd.mo \
 ui/id_ID/wxstd.mo \
