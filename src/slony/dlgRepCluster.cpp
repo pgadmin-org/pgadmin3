@@ -14,7 +14,6 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "misc.h"
 #include "pgDefs.h"
 #include <wx/textbuf.h>
 #include <wx/file.h>
@@ -25,20 +24,29 @@
 #include "slSet.h"
 #include "slCluster.h"
 #include "pgDatatype.h"
+#include "sysProcess.h"
 
 
 // Images
 #include "images/slcluster.xpm"
 
+extern wxString slony1BaseScript;
+extern wxString slony1FunctionScript;
+extern wxString slony1XxidScript;
+extern wxString backupExecutable;
+
 
 // pointer to controls
-#define chkJoinCluster  CTRL_CHECKBOX("chkJoinCluster")
-#define cbClusterName   CTRL_COMBOBOX("cbClusterName")
-#define txtClusterName  CTRL_TEXT("txtClusterName")
-#define cbServer        CTRL_COMBOBOX("cbServer")
-#define cbDatabase      CTRL_COMBOBOX("cbDatabase")
-#define txtNodeID       CTRL_TEXT("txtNodeID")
-#define txtNodeName     CTRL_TEXT("txtNodeName")
+#define chkJoinCluster      CTRL_CHECKBOX("chkJoinCluster")
+#define cbClusterName       CTRL_COMBOBOX("cbClusterName")
+#define txtClusterName      CTRL_TEXT("txtClusterName")
+#define cbServer            CTRL_COMBOBOX("cbServer")
+#define cbDatabase          CTRL_COMBOBOX("cbDatabase")
+#define txtNodeID           CTRL_TEXT("txtNodeID")
+#define txtNodeName         CTRL_TEXT("txtNodeName")
+#define txtAdminNodeID      CTRL_TEXT("txtAdminNodeID")
+#define txtAdminNodeName    CTRL_TEXT("txtAdminNodeName")
+#define cbAdminNode         CTRL_COMBOBOX("cbAdminNode")
 
 BEGIN_EVENT_TABLE(dlgRepCluster, dlgProperty)
     EVT_BUTTON(wxID_OK,                     dlgRepCluster::OnOK)
@@ -49,17 +57,21 @@ BEGIN_EVENT_TABLE(dlgRepCluster, dlgProperty)
     EVT_TEXT(XRCID("txtClusterName"),       dlgRepCluster::OnChange)
     EVT_TEXT(XRCID("txtNodeID"),            dlgRepCluster::OnChange)
     EVT_TEXT(XRCID("txtNodeName"),          dlgRepCluster::OnChange)
+    EVT_COMBOBOX(XRCID("cbAdminNode"),      dlgRepCluster::OnChange)
+    EVT_END_PROCESS(-1,                     dlgRepCluster::OnEndProcess)
 END_EVENT_TABLE();
 
 
-dlgRepCluster::dlgRepCluster(frmMain *frame, slCluster *node, pgObject *obj)
+dlgRepCluster::dlgRepCluster(frmMain *frame, slCluster *node, pgDatabase *db)
 : dlgProperty(frame, wxT("dlgRepCluster"))
 {
     SetIcon(wxIcon(slcluster_xpm));
     cluster=node;
-    server=0;
+    remoteServer=0;
     remoteConn=0;
+    process = 0;
 
+    pgObject *obj=db;
     servers = obj->GetId();
     while (obj && obj->GetType() != PG_SERVERS)
     {
@@ -88,7 +100,6 @@ pgObject *dlgRepCluster::GetObject()
 
 int dlgRepCluster::Go(bool modal)
 {
-    txtNodeID->SetValidator(numericValidator);
     chkJoinCluster->SetValue(false);
 
     if (cluster)
@@ -96,23 +107,59 @@ int dlgRepCluster::Go(bool modal)
         // edit mode
         txtClusterName->SetValue(cluster->GetName());
         txtNodeID->SetValue(NumToStr(cluster->GetLocalNodeID()));
+        txtClusterName->Disable();
         txtNodeID->Disable();
         txtNodeName->SetValue(cluster->GetLocalNodeName());
         txtNodeName->Disable();
         chkJoinCluster->Disable();
+
+        txtAdminNodeID->Hide();
+        txtAdminNodeName->Hide();
+
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT no_id, no_comment\n")
+            wxT("  FROM ") + cluster->GetSchemaPrefix() + wxT("sl_node\n")
+            wxT("  JOIN ") + cluster->GetSchemaPrefix() + wxT("sl_path ON no_id = pa_client\n")
+            wxT(" WHERE pa_server = ") + NumToStr(cluster->GetLocalNodeID()) + 
+            wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%host=") + cluster->GetServer()->GetName() + wxT("%")) +
+            wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + cluster->GetDatabase()->GetName() + wxT("%")) +
+            wxT(" ORDER BY no_id"));
+
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                long id=set->GetLong(wxT("no_id"));
+                cbAdminNode->Append(IdAndName(id, set->GetVal(wxT("no_comment"))), (void*)id);
+                if (id == cluster->GetAdminNodeID())
+                    cbAdminNode->SetSelection(cbAdminNode->GetCount()-1);
+
+                set->MoveNext();
+            }
+            delete set;
+        }
+        if (!cbAdminNode->GetCount())
+        {
+            cbAdminNode->Append(_("<none>"), (void*)-1);
+            cbAdminNode->SetSelection(0);
+        }
     }
     else
     {
         // create mode
+        cbAdminNode->Hide();
+
+        txtNodeID->SetValidator(numericValidator);
+        txtAdminNodeID->SetValidator(numericValidator);
         txtClusterName->Hide();
 
         wxCookieType cookie;
         wxTreeItemId serverItem=mainForm->GetBrowser()->GetFirstChild(servers, cookie);        
         while (serverItem)
         {
-            pgServer *server = (pgServer*)mainForm->GetBrowser()->GetItemData(serverItem);
-            if (server && server->GetType() == PG_SERVER)
-                cbServer->Append(mainForm->GetBrowser()->GetItemText(serverItem), (void*)server);
+            pgServer *s = (pgServer*)mainForm->GetBrowser()->GetItemData(serverItem);
+            if (s && s->GetType() == PG_SERVER)
+                cbServer->Append(mainForm->GetBrowser()->GetItemText(serverItem), (void*)s);
 
             serverItem = mainForm->GetBrowser()->GetNextChild(servers, cookie);
         }
@@ -134,6 +181,10 @@ void dlgRepCluster::OnChangeJoin(wxCommandEvent &ev)
     cbServer->Enable(joinCluster);
     cbDatabase->Enable(joinCluster);
 
+    txtAdminNodeID->Show(!joinCluster && !cluster);
+    txtAdminNodeName->Show(!joinCluster && !cluster);
+    cbAdminNode->Show(joinCluster || cluster);
+
     OnChange(ev);
 }
 
@@ -149,20 +200,20 @@ void dlgRepCluster::OnChangeServer(wxCommandEvent &ev)
     int sel=cbServer->GetSelection();
     if (sel >= 0)
     {
-        server = (pgServer*)cbServer->GetClientData(sel);
+        remoteServer = (pgServer*)cbServer->GetClientData(sel);
 
-        if (!server->GetConnected())
+        if (!remoteServer->GetConnected())
         {
-            server->Connect(mainForm, server->GetNeedPwd());
-            if (!server->GetConnected())
+            remoteServer->Connect(mainForm, remoteServer->GetNeedPwd());
+            if (!remoteServer->GetConnected())
             {
-                wxLogError(server->GetLastError());
+                wxLogError(remoteServer->GetLastError());
                 return;
             }
         }
-        if (server->GetConnected())
+        if (remoteServer->GetConnected())
         {
-            pgSet *set=server->ExecuteSet(
+            pgSet *set=remoteServer->ExecuteSet(
                 wxT("SELECT DISTINCT datname\n")
                 wxT("  FROM pg_database db\n")
                 wxT(" WHERE datallowconn ORDER BY datname"));
@@ -196,7 +247,7 @@ void dlgRepCluster::OnChangeDatabase(wxCommandEvent &ev)
             delete remoteConn;
             remoteConn=0;
         }
-        remoteConn = server->CreateConn(cbDatabase->GetValue());
+        remoteConn = remoteServer->CreateConn(cbDatabase->GetValue());
         if (remoteConn)
         {
             pgSet *set=remoteConn->ExecuteSet(
@@ -223,12 +274,41 @@ void dlgRepCluster::OnChangeDatabase(wxCommandEvent &ev)
 
 void dlgRepCluster::OnChangeCluster(wxCommandEvent &ev)
 {
+    clusterBackup = wxEmptyString;
+
+    cbAdminNode->Clear();
+    cbAdminNode->Append(_("<none>"), (void*)-1);
+
     int sel=cbClusterName->GetSelection();
     if (remoteConn && sel >= 0)
     {
+        wxString schemaPrefix = qtIdent(wxT("_") + cbClusterName->GetValue()) + wxT(".");
+        long adminNodeID = settings->Read(wxT("Replication/") + cbClusterName->GetValue() + wxT("/AdminNode"), -1L);
+
+
+        pgSet *set = remoteConn->ExecuteSet(
+                        wxT("SELECT no_id, no_comment\n")
+                        wxT("  FROM ") + schemaPrefix + wxT("sl_node\n")
+                        wxT("  JOIN ") + schemaPrefix + wxT("sl_path ON no_id = pa_client\n")
+                        wxT(" WHERE pa_server = (SELECT last_value FROM ") + schemaPrefix + wxT("sl_local_node_id)")
+                        wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%host=") + remoteServer->GetName() + wxT("%")) +
+                        wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + cbDatabase->GetValue() + wxT("%")));
+        if (set)
+        {
+            if (!set->Eof())
+            {
+                long id = set->GetLong(wxT("no_id"));
+                cbAdminNode->Append(IdAndName(id, set->GetVal(wxT("no_comment"))), (void*)id);
+                if (adminNodeID == id)
+                    cbAdminNode->SetSelection(cbAdminNode->GetCount()-1);
+            }
+            delete set;
+        }
+
+
         usedNodes.Clear();
-        pgSet *set=remoteConn->ExecuteSet(
-            wxT("SELECT no_id FROM ") + qtIdent(wxT("_") + cbClusterName->GetValue()) + wxT(".sl_node"));
+        set=remoteConn->ExecuteSet(
+            wxT("SELECT no_id FROM ") + schemaPrefix + wxT("sl_node"));
 
         if (set)
         {
@@ -311,7 +391,10 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
     EnableOK(false);
 
     bool done=true;
-    connection->ExecuteVoid(wxT("BEGIN TRANSACTION;"));
+    done = connection->ExecuteVoid(wxT("BEGIN TRANSACTION;"));
+
+    if (remoteConn)
+        done = remoteConn->ExecuteVoid(wxT("BEGIN TRANSACTION;"));
 
     // initialize cluster on local node
     done = connection->ExecuteVoid(GetSql());
@@ -349,6 +432,59 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
         if (done)
             done = CopyTable(remoteConn, connection, schemaPrefix + wxT("sl_subscribe"));
 
+
+        // make sure event seqno starts correctly after node reusage
+        if (done)
+        {
+            pgSet *set=connection->ExecuteSet(
+                wxT("SELECT ev_origin, MAX(ev_seqno) as seqno\n")
+                wxT("  FROM ") + schemaPrefix + wxT("sl_event\n")
+                wxT(" GROUP BY ev_origin"));
+            if (set)
+            {
+                while (done && !set->Eof())
+                {
+                    if (set->GetVal(wxT("ev_origin")) == txtNodeID->GetValue())
+                    {
+                        done = connection->ExecuteVoid(
+                            wxT("SELECT pg_catalog.setval(") + 
+                                qtString(wxT("_") + cbClusterName->GetValue() + wxT(".sl_event_seq")) + 
+                            wxT(", ") + set->GetVal(wxT("seqno")) + wxT("::int8 +1)"));
+                    }
+                    else
+                    {
+                        done = connection->ExecuteVoid(
+                            wxT("INSERT INTO ") + schemaPrefix + wxT("sl_confirm(con_origin, con_received, con_seqno, con_timestamp\n")
+                            wxT(" VALUES (") + set->GetVal(wxT("ev_origin")) +
+                            wxT(", ") + txtNodeID->GetValue() +
+                            wxT(", ") + set->GetVal(wxT("seqno")) +
+                            wxT(", current_timestamp")); 
+
+                    }
+                    set->MoveNext();
+                }
+                delete set;
+            }
+        }
+
+
+        // make sure rowid seq starts correctly
+        if (done)
+        {
+            wxString seqno = connection->ExecuteScalar(
+                wxT("SELECT MAX(seql_last_value)\n")
+                wxT("  FROM ") + schemaPrefix + wxT("sl_seqlog\n")
+                wxT(" WHERE seql_seqid = 0 AND seql_origin = ") + txtNodeID->GetValue());
+
+            if (!seqno.IsEmpty())
+            {
+                done = connection->ExecuteVoid(
+                    wxT("SELECT pg_catalog.setval(") + 
+                    qtString(wxT("_") + cbClusterName->GetValue() + wxT(".sl_rowid_seq")) + 
+                    wxT(", ") + seqno + wxT(")"));
+            }
+        }
+
         // create new node on existing cluster
         if (done)
             done = remoteConn->ExecuteVoid(
@@ -357,16 +493,56 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
                     + qtString(txtNodeName->GetValue()) + wxT(");\n")
                 wxT("SELECT ") + schemaPrefix + wxT("enablenode(") 
                     + txtNodeID->GetValue() + wxT(");\n"));
+
+        // add admin info to cluster
+
+        if (done && cbAdminNode->GetSelection() > 0)
+        {
+            done = remoteConn->ExecuteVoid(
+                wxT("SELECT ") + schemaPrefix + wxT("storepath(") +
+                txtNodeID->GetValue() + wxT(", ") +
+                    NumToStr((long)cbAdminNode->GetClientData(cbAdminNode->GetSelection())) + wxT(", ") +
+                    qtString(wxT("host=") + database->GetServer()->GetName() + 
+                            wxT(" port=") + NumToStr((long)database->GetServer()->GetPort()) +
+                            wxT(" dbname=") + database->GetName()) + wxT(", ")
+                    wxT("0);\n"));
+        }
+    }
+
+    if (done && !cluster && !chkJoinCluster->GetValue())
+    {
+        wxString schemaPrefix = qtIdent(wxT("_") + txtClusterName->GetValue()) + wxT(".");
+        long adminNode = StrToLong(txtAdminNodeID->GetValue());
+        if (adminNode > 0 && adminNode != StrToLong(txtNodeID->GetValue()))
+        {
+            done = connection->ExecuteVoid(
+                wxT("SELECT ") + schemaPrefix + wxT("storeNode(") +
+                    NumToStr(adminNode) + wxT(", ") +
+                    qtString(txtAdminNodeName->GetValue()) + wxT(");\n")
+                wxT("SELECT ") + schemaPrefix + wxT("storepath(") +
+                    NumToStr(adminNode) + wxT(", ") +
+                    txtNodeID->GetValue() + wxT(", ") +
+                    qtString(wxT("host=") + database->GetServer()->GetName() + 
+                            wxT(" port=") + NumToStr((long)database->GetServer()->GetPort()) +
+                            wxT(" dbname=") + database->GetName()) + wxT(", ")
+                    wxT("0);\n"));
+            
+        }
     }
 
     if (!done)
     {
+        if (remoteConn)
+            done = remoteConn->ExecuteVoid(wxT("ROLLBACK TRANSACTION;"));
         done = connection->ExecuteVoid(wxT("ROLLBACK TRANSACTION;"));
         EnableOK(true);
         return;
     }
 
+    if (remoteConn)
+        done = remoteConn->ExecuteVoid(wxT("COMMIT TRANSACTION;"));
     done = connection->ExecuteVoid(wxT("COMMIT TRANSACTION;"));
+    
     ShowObject();
     Destroy();
 }
@@ -385,20 +561,30 @@ void dlgRepCluster::CheckChange()
 {
     if (cluster)
     {
-        EnableOK(txtComment->GetValue() != cluster->GetComment());
+        int sel=cbAdminNode->GetSelection();
+        bool changed = (sel >= 0 && (long)cbAdminNode->GetClientData() != cluster->GetAdminNodeID());
+
+        EnableOK(changed || txtComment->GetValue() != cluster->GetComment());
     }
     else
     {
-        bool enable=true;
-        long nodeId = StrToLong(txtNodeID->GetValue());
-        CheckValid(enable, !cbClusterName->GetValue().IsEmpty(), _("Please specify name."));
-        CheckValid(enable, nodeId > 0, _("Please specify local node ID."));
         size_t i;
+        bool enable=true;
+
+        CheckValid(enable, chkJoinCluster->GetValue() || 
+            (!slony1BaseScript.IsEmpty() && !slony1FunctionScript.IsEmpty() && !slony1XxidScript.IsEmpty()),
+            _("Slony-I creation scripts not available; only joining possible."));
+
+        CheckValid(enable, !cbClusterName->GetValue().IsEmpty(), _("Please specify name."));
+
+        long nodeId = StrToLong(txtNodeID->GetValue());
+        CheckValid(enable, nodeId > 0, _("Please specify local node ID."));
         for (i=0 ; i < usedNodes.GetCount() && enable; i++)
-        {
             CheckValid(enable, nodeId != usedNodes[i], _("Node ID is already in use."));
-        }
+
         CheckValid(enable, !txtNodeName->GetValue().IsEmpty(), _("Please specify local node name."));
+
+        txtAdminNodeName->Enable(nodeId != StrToLong(txtAdminNodeID->GetValue()));
 
         EnableOK(enable);
     }
@@ -406,73 +592,156 @@ void dlgRepCluster::CheckChange()
 
 
 
+void dlgRepCluster::OnEndProcess(wxProcessEvent &ev)
+{
+    if (process)
+    {
+        wxString error = process->ReadErrorStream();
+        clusterBackup += process->ReadInputStream();
+        delete process;
+        process=0;
+    }
+}
+
+
 wxString dlgRepCluster::GetSql()
 {
     wxString sql;
     wxString name;
     if (chkJoinCluster->GetValue())
-        name = qtIdent(wxT("_") + cbClusterName->GetValue());
+        name = wxT("_") + cbClusterName->GetValue();
     else
-        name = qtIdent(wxT("_") + txtClusterName->GetValue());
+        name = wxT("_") + txtClusterName->GetValue();
 
-    extern wxString slony1BaseScript;
-    extern wxString slony1FunctionScript;
-    extern wxString slony1XxidScript;
+    wxString quotedName=qtIdent(name);
+
 
     if (cluster)
     {
         // edit mode
+        int sel=cbAdminNode->GetSelection();
+        if (sel >= 0)
+        {
+            long id=(long)cbAdminNode->GetClientData(sel);
+            if (id != cluster->GetAdminNodeID())
+                settings->Write(wxT("Replication/") + cluster->GetName() + wxT("/AdminNode"), id);
+        }
     }
     else
     {
         // create mode
-        wxFile base(slony1BaseScript, wxFile::read);
-        if (!base.IsOpened())
-            return sql;
 
-        wxFile func(slony1FunctionScript, wxFile::read);
-        if (!func.IsOpened())
-            return sql;
+        if (clusterBackup.IsEmpty() && !backupExecutable.IsEmpty())
+        {
+            wxArrayString environment;
+            environment.Add(wxT("PGPASSWORD=") + remoteServer->GetPassword());
 
-        wxFile xxid(slony1XxidScript, wxFile::read);
-        if (!xxid.IsOpened())
-            return sql;
+            process=sysProcess::Create(backupExecutable + 
+                                    wxT(" -i -F p -h ") + remoteServer->GetName() +
+                                    wxT(" -p ") + NumToStr((long)remoteServer->GetPort()) +
+                                    wxT(" -U ") + remoteServer->GetUsername() +
+                                    wxT(" -s -O -n ") + name +
+                                    wxT(" ") + cbDatabase->GetValue(), 
+                                    this, &environment);
 
-        sql = wxT("CREATE SCHEMA ") + name + wxT(";\n\n");
+            wxBusyCursor wait;
+            while (process)
+            {
+                wxSafeYield();
+                clusterBackup += process->ReadInputStream();
+                wxSafeYield();
+                wxMilliSleep(10);
+            }
+        }
 
-        char *buffer;
-        size_t done;
+        if (!clusterBackup.IsEmpty())
+        {
+            int opclassPos = clusterBackup.Find(wxT("CREATE OPERATOR CLASS"));
+            sql = wxT("-- Extracted schema from existing cluster\n\n") +
+                clusterBackup.Left(opclassPos > 0 ? opclassPos : 99999999);
+            if (opclassPos > 0)
+            {
+                sql +=  wxT("----------- inserted by pgadmin: add public operators\n")
+                        wxT("CREATE OPERATOR public.< (PROCEDURE = xxidlt,")
+                        wxT("    LEFTARG = xxid, RIGHTARG = xxid,")
+                        wxT("    COMMUTATOR = public.\">\", NEGATOR = public.\">=\",")
+                        wxT("    RESTRICT = scalarltsel, JOIN = scalarltjoinsel);\n")
+                        wxT("CREATE OPERATOR public.= (PROCEDURE = xxideq,")
+                        wxT("    LEFTARG = xxid, RIGHTARG = xxid,")
+                        wxT("    COMMUTATOR = public.\"=\", NEGATOR = public.\"<>\",")
+                        wxT("    RESTRICT = eqsel, JOIN = eqjoinsel,")
+                        wxT("    SORT1 = public.\"<\", SORT2 = public.\"<\", HASHES);\n")
+                        wxT("CREATE OPERATOR public.<> (PROCEDURE = xxidne,")
+                        wxT("    LEFTARG = xxid, RIGHTARG = xxid,")
+                        wxT("    COMMUTATOR = public.\"<>\", NEGATOR = public.\"=\",")
+                        wxT("    RESTRICT = neqsel, JOIN = neqjoinsel);\n")
+                        wxT("CREATE OPERATOR public.> (PROCEDURE = xxidgt,")
+                        wxT("    LEFTARG = xxid, RIGHTARG = xxid,")
+                        wxT("    COMMUTATOR = public.\"<\", NEGATOR = public.\"<=\",")
+                        wxT("    RESTRICT = scalargtsel, JOIN = scalargtjoinsel);\n")
+                        wxT("CREATE OPERATOR public.<= (PROCEDURE = xxidle,")
+                        wxT("    LEFTARG = xxid, RIGHTARG = xxid,")
+                        wxT("    COMMUTATOR = public.\">=\", NEGATOR = public.\">\",")
+                        wxT("    RESTRICT = scalarltsel, JOIN = scalarltjoinsel);\n")
+                        wxT("CREATE OPERATOR public.>= (PROCEDURE = xxidge,")
+                        wxT("    LEFTARG = xxid, RIGHTARG = xxid,")
+                        wxT("    COMMUTATOR = public.\"<=\", NEGATOR = public.\"<\",")
+                        wxT("    RESTRICT = scalargtsel, JOIN = scalargtjoinsel);\n")
+                        wxT("------------- continue with backup script\n")
+                    + clusterBackup.Mid(opclassPos);
+            }
+        }
+        else
+        {
+            wxFile base(slony1BaseScript, wxFile::read);
+            if (!base.IsOpened())
+                return sql;
 
-        buffer = new char[xxid.Length()+1];
-        done=xxid.Read(buffer, xxid.Length());
-        buffer[done] = 0;
-        sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
-        delete[] buffer;
+            wxFile func(slony1FunctionScript, wxFile::read);
+            if (!func.IsOpened())
+                return sql;
 
-        buffer = new char[base.Length()+1];
-        done=base.Read(buffer, base.Length());
-        buffer[done] = 0;
-        sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
-        delete[] buffer;
+            wxFile xxid(slony1XxidScript, wxFile::read);
+            if (!xxid.IsOpened())
+                return sql;
 
-        buffer = new char[func.Length()+1];
-        done=func.Read(buffer, func.Length());
-        buffer[done] = 0;
-        sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
-        delete[] buffer;
+            sql = wxT("CREATE SCHEMA ") + quotedName + wxT(";\n\n");
 
-        sql.Replace(wxT("@NAMESPACE@"), name);
-        sql.Replace(wxT("@CLUSTERNAME@"), GetName());
+            char *buffer;
+            size_t done;
+
+            buffer = new char[xxid.Length()+1];
+            done=xxid.Read(buffer, xxid.Length());
+            buffer[done] = 0;
+            sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
+            delete[] buffer;
+
+            buffer = new char[base.Length()+1];
+            done=base.Read(buffer, base.Length());
+            buffer[done] = 0;
+            sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
+            delete[] buffer;
+
+            buffer = new char[func.Length()+1];
+            done=func.Read(buffer, func.Length());
+            buffer[done] = 0;
+            sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
+            delete[] buffer;
+
+            sql.Replace(wxT("@NAMESPACE@"), quotedName);
+            sql.Replace(wxT("@CLUSTERNAME@"), GetName());
+        }
 
         sql += wxT("\n")
-               wxT("SELECT ") + name + wxT(".initializelocalnode(") +
-                txtNodeID->GetValue() + wxT(", ") + qtString(txtNodeName->GetValue())
-                + wxT(");\n");
+               wxT("SELECT ") + quotedName + wxT(".initializelocalnode(") +
+               txtNodeID->GetValue() + wxT(", ") + qtString(txtNodeName->GetValue()) +
+               wxT(");\n");
+
     }
 
     if (!txtComment->GetValue().IsEmpty())
         sql += wxT("\n")
-               wxT("COMMENT ON SCHEMA ") + name + wxT(" IS ") 
+               wxT("COMMENT ON SCHEMA ") + quotedName + wxT(" IS ") 
                + qtString(txtComment->GetValue()) + wxT(";\n");
     
 

@@ -123,10 +123,10 @@ pgObject *slListen::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, con
     {
         while (!listens->Eof())
         {
-            listen = new slListen(coll->GetNode(), listens->GetVal(wxT("provider_name")));
+            listen = new slListen(coll->GetNode(), listens->GetVal(wxT("provider_name")).BeforeFirst('\n'));
             listen->iSetSlId(listens->GetLong(wxT("li_provider")));
             listen->iSetOriginId(listens->GetLong(wxT("li_origin")));
-            listen->iSetOriginName(listens->GetVal(wxT("origin_name")));
+            listen->iSetOriginName(listens->GetVal(wxT("origin_name")).BeforeFirst('\n'));
 
             if (browser)
             {

@@ -255,6 +255,10 @@ SOURCE=.\utils\sysLogger.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\utils\sysProcess.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\utils\sysSettings.cpp
 # End Source File
 # Begin Source File
@@ -1468,6 +1472,10 @@ SOURCE=.\include\pgfeatures.h
 # Begin Source File
 
 SOURCE=.\include\sysLogger.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\sysProcess.h
 # End Source File
 # Begin Source File
 

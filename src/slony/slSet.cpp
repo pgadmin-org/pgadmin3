@@ -171,6 +171,7 @@ void slSet::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *prop
         properties->AppendItem(_("Origin ID"), GetOriginId());
         properties->AppendItem(_("Origin Node"), GetOriginNode());
         properties->AppendItem(_("Subscriptions"), GetSubscriptionCount());
+        properties->AppendItem(_("Comment"), GetComment());
     }
 }
 
@@ -208,11 +209,12 @@ pgObject *slSet::ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxSt
     {
         while (!sets->Eof())
         {
-            set = new slSet(coll->GetCluster(), sets->GetVal(wxT("set_comment")));
+            set = new slSet(coll->GetCluster(), sets->GetVal(wxT("set_comment")).BeforeFirst('\n'));
             set->iSetSlId(sets->GetLong(wxT("set_id")));
             set->iSetOriginId(sets->GetLong(wxT("set_origin")));
             set->iSetOriginNode(sets->GetVal(wxT("no_comment")));
             set->iSetSubscriptionCount(sets->GetLong(wxT("subcount")));
+            set->iSetComment(sets->GetVal(wxT("set_comment")));
 
             if (browser)
             {

@@ -96,7 +96,7 @@ wxString DateToStr(const wxDateTime &datetime);
 
 
 // compile ID and Name into one string
-wxString IdAndName(long id, const wxChar *name);
+wxString IdAndName(long id, const wxString &name);
 
 // Quoting
 wxString qtString(const wxString& value);   // add ' and escape if necessary

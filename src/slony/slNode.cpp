@@ -57,13 +57,10 @@ wxString slNode::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        if (GetCluster()->GetLocalNodeID() == GetSlId())
-            sql = wxT("-- Local node; created when initializing cluster.\n");
-        else
-            sql = wxT("-- Create replication node ") + GetName() + wxT(".\n\n")
-                  wxT("SELECT ") + GetCluster()->GetSchemaPrefix() + wxT("storenode(") 
-                        + NumToStr(GetSlId()) + wxT(", ")
-                        + qtString(GetName()) + wxT(");\n");
+        sql = wxT("-- Create replication node ") + GetName() + wxT(".\n\n")
+              wxT("SELECT ") + GetCluster()->GetSchemaPrefix() + wxT("storenode(") 
+                    + NumToStr(GetSlId()) + wxT(", ")
+                    + qtString(GetName()) + wxT(");\n");
     }
     return sql;
 }
@@ -102,10 +99,8 @@ void slNode::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
         if (GetCluster()->GetLocalNodeID() == GetSlId())
             properties->AppendItem(_("Local node"), true);
         properties->AppendItem(_("Active"), GetActive());
-        if (GetCluster()->GetHasConnInfo())
-            properties->AppendItem(_("Connect info"), GetConnInfo());
-
         properties->AppendItem(_("Connected"), conn != NULL);
+        properties->AppendItem(_("Comment"), GetComment());
 
         if (conn && pid < 0)
             pid=StrToLong(conn->ExecuteScalar(
@@ -119,7 +114,10 @@ void slNode::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
                 properties->AppendItem(_("Running PID"), _("not running"));
         }
         else
-            properties->AppendItem(_("Running PID"), _("no connection to server"));
+        {
+            if (GetSlId() != GetCluster()->GetAdminNodeID())
+                properties->AppendItem(_("Running PID"), _("administrative node"));
+        }
     }
 }
 
@@ -153,11 +151,10 @@ pgObject *slNode::ReadObjects(slCollection *coll, wxTreeCtrl *browser, const wxS
     {
         while (!nodes->Eof())
         {
-            node = new slNode(coll->GetCluster(), nodes->GetVal(wxT("no_comment")));
+            node = new slNode(coll->GetCluster(), nodes->GetVal(wxT("no_comment")).BeforeFirst('\n'));
             node->iSetSlId(nodes->GetLong(wxT("no_id")));
             node->iSetActive(nodes->GetBool(wxT("no_active")));
-            if (coll->GetCluster()->GetHasConnInfo())
-                node->iSetConnInfo(nodes->GetVal(wxT("no_conninfo")));
+            node->iSetComment(nodes->GetVal(wxT("no_comment")));
 
             if (browser)
             {

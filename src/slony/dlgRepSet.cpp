@@ -14,8 +14,6 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "misc.h"
-#include "pgDefs.h"
 
 #include "dlgRepSet.h"
 #include "slCluster.h"
@@ -59,7 +57,6 @@ int dlgRepSet::Go(bool modal)
         // edit mode
         txtID->SetValue(NumToStr(set->GetSlId()));
         txtID->Disable();
-        txtComment->Disable();
         txtOrigin->SetValue(IdAndName(set->GetOriginId(), set->GetOriginNode()));
     }
     else
@@ -110,30 +107,17 @@ wxString dlgRepSet::GetSql()
 {
     wxString sql;
 
-    if (set)
-    {
-        // edit mode
-        sql = wxT("UPDATE ") + cluster->GetSchemaPrefix() + wxT("sl_set\n")
-              wxT("   SET set_comment = ") + qtString(txtComment->GetValue()) + wxT("\n")
-              wxT(" WHERE set_id = ") + NumToStr(set->GetSlId());
-    }
+    sql = wxT("-- Create replication set\n\n")
+          wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("storeset(");
+
+    if (StrToLong(txtID->GetValue()) > 0)
+        sql += txtID->GetValue();
     else
-    {
-        // create mode
+        sql += wxT("(SELECT COALESCE(MAX(set_id), 0) + 1 FROM ") 
+            +  cluster->GetSchemaPrefix() + wxT("sl_set)");
 
-
-        sql = wxT("-- Create replication set\n\n")
-              wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("storeset(");
-
-        if (StrToLong(txtID->GetValue()) > 0)
-            sql += txtID->GetValue();
-        else
-            sql += wxT("(SELECT COALESCE(MAX(set_id), 0) + 1 FROM ") 
-                +  cluster->GetSchemaPrefix() + wxT("sl_set)");
-
-        sql += wxT(", ") + qtString(txtComment->GetValue())
-            +  wxT(");\n");
-    }
+    sql += wxT(", ") + qtString(txtComment->GetValue())
+        +  wxT(");\n");
 
     return sql;
 }

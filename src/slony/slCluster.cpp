@@ -74,7 +74,7 @@ wxString slCluster::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = _("-- Use the installation wizard to generate the Slony-I replication cluster.\n");
+        sql = _("-- Use the installation wizard\n-- to generate the Slony-I replication cluster.\n");
     }
     return sql;
 }
@@ -93,11 +93,13 @@ pgConn *slCluster::GetNodeConn(frmMain *form, long nodeId, bool create)
             return remoteConns[i].conn;
     }
 
-    if (create && GetHasConnInfo())
+    if (create && adminNodeID >= 0)
     {
         wxString connstr=GetDatabase()->ExecuteScalar(
-            wxT("SELECT no_conninfo FROM ") + GetSchemaPrefix() + wxT("sl_node\n")
-            wxT(" WHERE no_id = ") + NumToStr(nodeId));
+            wxT("SELECT pa_conninfo FROM ") + GetSchemaPrefix() + wxT("sl_path\n")
+            wxT(" WHERE pa_server = ") + NumToStr(nodeId) +
+            wxT("   AND pa_client = ") + NumToStr(adminNodeID));
+
         if (!connstr.IsEmpty())
         {
             // check for server registration
@@ -196,20 +198,48 @@ void slCluster::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *
         expandedKids=true;
 
         RemoveDummyChild(browser);
-        // Log
-        wxLogInfo(wxT("Adding child object to cluster ") + GetIdentifier());
+        pgSet *set;
 
-        pgSet *set=GetDatabase()->ExecuteSet(
-            wxT("SELECT last_value, no_comment\n")
+        set=GetDatabase()->ExecuteSet(
+            wxT("SELECT no_id, no_comment\n")
             wxT("  FROM ") + GetSchemaPrefix() + wxT("sl_local_node_id\n")
             wxT("  JOIN ") + GetSchemaPrefix() + wxT("sl_node ON no_id = last_value"));
         if (set)
         {
-            iSetLocalNodeID(set->GetLong(wxT("last_value")));
-            iSetLocalNodeName(set->GetVal(wxT("no_comment")));
+            iSetLocalNodeID(set->GetLong(wxT("no_id")));
+            iSetLocalNodeName(set->GetVal(wxT("no_comment")).BeforeFirst('\n'));
             delete set;
         }
 
+        adminNodeID = settings->Read(wxT("Replication/") + GetName() + wxT("/AdminNode"), -1L);
+
+        wxString sql =  wxT("SELECT no_id, no_comment\n")
+                        wxT("  FROM ") + GetSchemaPrefix() + wxT("sl_node\n");
+
+        if (adminNodeID == -1L)
+        {
+            sql +=  wxT("  JOIN ") + GetSchemaPrefix() + wxT("sl_path ON no_id = pa_client\n")
+                    wxT(" WHERE pa_server = ") + NumToStr(localNodeID) + 
+                    wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%host=") + GetServer()->GetName() + wxT("%")) +
+                    wxT("   AND pa_conninfo LIKE ") + qtString(wxT("%dbname=") + GetDatabase()->GetName() + wxT("%"));
+        }
+        else
+            sql += wxT(" WHERE no_id = ") + NumToStr(adminNodeID); 
+
+
+        set = GetDatabase()->ExecuteSet(sql);
+        if (set)
+        {
+            if (!set->Eof())
+            {
+                adminNodeID = set->GetLong(wxT("no_id"));
+                adminNodeName = set->GetVal(wxT("no_comment"));
+                settings->Write(wxT("Replication/") + GetName() + wxT("/AdminNode"), adminNodeID);
+            }
+            delete set;
+        }
+
+        wxLogInfo(wxT("Adding child object to cluster ") + GetIdentifier());
         pgCollection *collection;
 
         // Nodes
@@ -231,6 +261,8 @@ void slCluster::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("Local node ID"), GetLocalNodeID());
         properties->AppendItem(_("Local node"), GetLocalNodeName());
+        properties->AppendItem(_("Admin node ID"), GetAdminNodeID());
+        properties->AppendItem(_("Admin node"), GetAdminNodeName());
         properties->AppendItem(_("Version"), GetClusterVersion());
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("Comment"), GetComment());
@@ -259,12 +291,10 @@ pgObject *slCluster::ReadObjects(pgCollection *coll, wxTreeCtrl *browser, const 
     slCluster *cluster=0;
 
     pgSet *clusters = coll->GetDatabase()->ExecuteSet(
-        wxT("SELECT substr(nspname, 2) as clustername, nspname, pg_get_userbyid(nspowner) AS namespaceowner, description, attname\n")
+        wxT("SELECT substr(nspname, 2) as clustername, nspname, pg_get_userbyid(nspowner) AS namespaceowner, description\n")
         wxT("  FROM pg_namespace nsp\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
         wxT("  JOIN pg_proc pro ON pronamespace=nsp.oid AND proname = 'slonyversion'\n")
-        wxT("  JOIN pg_class cl ON relnamespace=nsp.oid AND relname = 'sl_node'\n")
-        wxT("  LEFT JOIN pg_attribute att ON attrelid = cl.oid AND attname = 'no_conninfo'\n")
          + restriction +
         wxT(" ORDER BY nspname"));
 
@@ -277,7 +307,6 @@ pgObject *slCluster::ReadObjects(pgCollection *coll, wxTreeCtrl *browser, const 
             cluster->iSetSchemaPrefix(qtIdent(clusters->GetVal(wxT("nspname"))) + wxT("."));
             cluster->iSetOwner(clusters->GetVal(wxT("namespaceowner")));
             cluster->iSetComment(clusters->GetVal(wxT("description")));
-            cluster->iSetHasConnInfo(clusters->GetVal(wxT("attname")) == wxT("no_conninfo"));
 
             if (browser)
             {

@@ -44,8 +44,10 @@ public:
     long GetLocalNodeID() { return localNodeID; }
     void iSetLocalNodeName(const wxString &s) { localNodeName = s; }
     wxString GetLocalNodeName() const { return localNodeName; }
-    void iSetHasConnInfo(bool b) { hasConnInfo = b; }
-    bool GetHasConnInfo() {return hasConnInfo; }
+    void iSetAdminNodeID(long l) { adminNodeID = l; }
+    long GetAdminNodeID() { return adminNodeID; }
+    void iSetAdminNodeName(const wxString &s) { adminNodeName = s; }
+    wxString GetAdminNodeName() const { return adminNodeName; }
     void iSetClusterVersion(const wxString &s) { clusterVersion =s; }
     wxString GetClusterVersion() const { return clusterVersion; }
 
@@ -62,10 +64,9 @@ public:
 
 private:
     wxString schemaPrefix;
-    wxString localNodeName;
+    wxString localNodeName, adminNodeName;
     wxString clusterVersion;
-    long localNodeID;
-    bool hasConnInfo;
+    long localNodeID, adminNodeID;
 
     RemoteConnArray remoteConns;
 };

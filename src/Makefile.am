@@ -51,7 +51,7 @@ ui/dlgSequence.cpp ui/dlgTrigger.cpp ui/dlgType.cpp \
 ui/dlgCheck.cpp ui/frmStatus.cpp utils/misc.cpp \
 ui/dlgHbaConfig.cpp ui/dlgMainConfig.cpp ui/frmUpdate.cpp \
 ui/frmConfig.cpp ui/frmHbaConfig.cpp ui/frmMainConfig.cpp ui/frmHint.cpp \
-utils/sysLogger.cpp utils/sysSettings.cpp \
+utils/sysLogger.cpp utils/sysSettings.cpp utils/sysProcess.cpp \
 utils/utffile.cpp utils/pgconfig.cpp utils/update.cpp \
 slony/slObject.cpp slony/slCluster.cpp slony/slNode.cpp \
 slony/slPath.cpp slony/slListen.cpp slony/slSet.cpp \
@@ -97,7 +97,7 @@ include/pgTrigger.h include/pgType.h include/pgUser.h \
 include/pgView.h include/sysLogger.h include/utffile.h \
 include/calbox.h include/timespin.h include/ctlComboBox.h \
 include/xh_timespin.h include/xh_calb.h include/xh_sqlbox.h include/xh_ctlcombo.h \
-include/sysSettings.h include/wxgridsel.h include/menu.h\
+include/sysSettings.h include/sysProcess.h include/wxgridsel.h include/menu.h\
 include/pgconfig.h include/update.h include/frmUpdate.h \
 include/dlgHbaConfig.h include/dlgMainConfig.h include/frmHint.h \
 include/frmConfig.h include/frmHbaConfig.h include/frmMainConfig.h \

@@ -77,7 +77,7 @@ void slPath::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *pro
 
         CreateListColumns(properties);
 
-        properties->AppendItem(_("Server name"), GetName());
+        properties->AppendItem(_("Server name"), GetName().BeforeFirst('\n'));
         properties->AppendItem(_("Server ID"), GetSlId());
         properties->AppendItem(_("Connect info"), GetConnInfo());
         properties->AppendItem(_("Retry"), GetConnRetry());
@@ -119,7 +119,7 @@ pgObject *slPath::ReadObjects(slNodeCollection *coll, wxTreeCtrl *browser, const
     {
         while (!paths->Eof())
         {
-            path = new slPath(coll->GetNode(), paths->GetVal(wxT("no_comment")));
+            path = new slPath(coll->GetNode(), paths->GetVal(wxT("no_comment")).BeforeFirst('\n'));
             path->iSetSlId(paths->GetLong(wxT("pa_server")));
             path->iSetConnInfo(paths->GetVal(wxT("pa_conninfo")));
             path->iSetConnRetry(paths->GetLong(wxT("pa_connretry")));

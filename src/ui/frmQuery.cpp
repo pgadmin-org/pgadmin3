@@ -682,7 +682,7 @@ void frmQuery::OpenLastFile()
     {
         sqlQuery->SetText(str);
         sqlQuery->Colourise(0, str.Length());
-        wxYield();  // needed to process sqlQuery modify event
+        wxSafeYield();  // needed to process sqlQuery modify event
         changed = false;
         setExtendedTitle();
         UpdateRecentFiles();

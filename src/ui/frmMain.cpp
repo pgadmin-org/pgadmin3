@@ -728,7 +728,7 @@ int frmMain::ReconnectServer(pgServer *server)
             {
                 browser->SelectItem(item);
 
-                wxYield();
+                wxSafeYield();
                 browser->Expand(item);
                 browser->EnsureVisible(item);
             }

@@ -117,7 +117,7 @@ private:
 
 
 
-class wxProcess;
+class sysProcess;
 class wxProcessEvent;
 class wxTimer;
 class wxTimerEvent;
@@ -133,8 +133,7 @@ public:
 
 protected:
     wxTextCtrl *txtMessages;
-    wxProcess *process;
-    int pid;
+    sysProcess *process;
     bool done, final;
     wxArrayString environment;
 
@@ -149,7 +148,6 @@ protected:
     void OnEndProcess(wxProcessEvent& event);
     void OnPollProcess(wxTimerEvent& event);
     void checkStreams();
-    void readStream(wxInputStream *input);
 
     wxTimer *timer;
     DECLARE_EVENT_TABLE();

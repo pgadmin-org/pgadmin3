@@ -14,8 +14,6 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "misc.h"
-#include "pgDefs.h"
 
 #include "dlgRepPath.h"
 #include "slCluster.h"
@@ -28,7 +26,7 @@
 
 
 // pointer to controls
-#define cbProvider      CTRL_COMBOBOX("cbProvider")
+#define cbServer      CTRL_COMBOBOX("cbServer")
 #define txtConnInfo     CTRL_TEXT("txtConnInfo")
 #define txtConnRetry    CTRL_TEXT("txtConnRetry")
 
@@ -36,7 +34,7 @@
 
 BEGIN_EVENT_TABLE(dlgRepPath, dlgProperty)
     EVT_TEXT(XRCID("txtConnInfo"),          dlgRepPath::OnChange)
-    EVT_COMBOBOX(XRCID("cbProvider"),       dlgRepPath::OnChange)
+    EVT_COMBOBOX(XRCID("cbServer"),       dlgRepPath::OnChange)
 END_EVENT_TABLE();
 
 
@@ -61,9 +59,9 @@ int dlgRepPath::Go(bool modal)
     if (path)
     {
         // edit mode
-        cbProvider->Append(IdAndName(path->GetSlId(), path->GetName()), (void*)path->GetSlId());
-        cbProvider->SetSelection(0);
-        cbProvider->Disable();
+        cbServer->Append(IdAndName(path->GetSlId(), path->GetName()), (void*)path->GetSlId());
+        cbServer->SetSelection(0);
+        cbServer->Disable();
 
         txtConnInfo->SetValue(path->GetConnInfo());
         txtConnRetry->SetValue(NumToStr(path->GetConnRetry()));
@@ -71,6 +69,8 @@ int dlgRepPath::Go(bool modal)
     else
     {
         // create mode
+
+        txtConnRetry->SetValue(wxT("10"));
 
         pgSet *nodes=connection->ExecuteSet(
             wxT("SELECT no_id, no_comment\n")
@@ -85,7 +85,7 @@ int dlgRepPath::Go(bool modal)
         {
             while (!nodes->Eof())
             {
-                cbProvider->Append(IdAndName(nodes->GetLong(wxT("no_id")),nodes->GetVal(wxT("no_comment"))),
+                cbServer->Append(IdAndName(nodes->GetLong(wxT("no_id")),nodes->GetVal(wxT("no_comment"))),
                     (void*)nodes->GetLong(wxT("no_id")));
                 nodes->MoveNext();
             }
@@ -100,7 +100,7 @@ int dlgRepPath::Go(bool modal)
 pgObject *dlgRepPath::CreateObject(pgCollection *collection)
 {
     pgObject *obj=slPath::ReadObjects((slNodeCollection*)collection, 0,
-         wxT(" WHERE pa_server = ") + NumToStr((OID)cbProvider->GetClientData(cbProvider->GetSelection())) +
+         wxT(" WHERE pa_server = ") + NumToStr((OID)cbServer->GetClientData(cbServer->GetSelection())) +
          wxT("   AND pa_client = ") + NumToStr(node->GetSlId()));
 
     return obj;
@@ -119,8 +119,8 @@ void dlgRepPath::CheckChange()
     else
     {
         bool enable=true;
-        CheckValid(enable, cbProvider->GetCount() > 0, _("No provider node without path definition left."));
-        CheckValid(enable, cbProvider->GetSelection() >= 0, _("Please select provider node."));
+        CheckValid(enable, cbServer->GetCount() > 0, _("No provider node without path definition left."));
+        CheckValid(enable, cbServer->GetSelection() >= 0, _("Please select provider node."));
 
         wxString connInfo=txtConnInfo->GetValue();
         CheckValid(enable, connInfo.Find(wxT("host=")) >= 0, _("Please provide host info."));
@@ -137,12 +137,12 @@ wxString dlgRepPath::GetSql()
 {
     wxString sql;
 
-    int sel=cbProvider->GetSelection();
+    int sel=cbServer->GetSelection();
 
     if (sel >= 0)
     {
         sql = wxT("SELECT ") + cluster->GetSchemaPrefix() + wxT("storepath(")
-                + NumToStr((OID)cbProvider->GetClientData(sel)) + wxT(", ")
+                + NumToStr((OID)cbServer->GetClientData(sel)) + wxT(", ")
                 + NumToStr(node->GetSlId()) + wxT(", ")
                 + qtString(txtConnInfo->GetValue()) + wxT(", ")
                 + NumToStr(StrToLong(txtConnRetry->GetValue())) + wxT(");");

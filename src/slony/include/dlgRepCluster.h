@@ -17,11 +17,13 @@
 
 
 class slCluster;
+class sysProcess;
+class wxProcessEvent;
 
 class dlgRepCluster : public dlgProperty
 {
 public:
-    dlgRepCluster(frmMain *frame, slCluster *cl, pgObject *obj);
+    dlgRepCluster(frmMain *frame, slCluster *cl, pgDatabase *obj);
     ~dlgRepCluster();
     int Go(bool modal);
 
@@ -36,14 +38,17 @@ private:
     void OnChangeServer(wxCommandEvent &ev);
     void OnChangeDatabase(wxCommandEvent &ev);
     void OnChangeCluster(wxCommandEvent &ev);
+    void OnEndProcess(wxProcessEvent& event);
 
     bool CopyTable(pgConn *from, pgConn *to, const wxString &table);
     slCluster *cluster;
+    sysProcess *process;
 
     wxArrayLong usedNodes;
     wxTreeItemId servers;
+    wxString clusterBackup;
 
-    pgServer *server;
+    pgServer *remoteServer;
     pgConn *remoteConn;
 
     DECLARE_EVENT_TABLE();

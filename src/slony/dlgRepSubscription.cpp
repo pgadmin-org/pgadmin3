@@ -14,8 +14,6 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "misc.h"
-#include "pgDefs.h"
 
 #include "dlgRepSubscription.h"
 #include "slCluster.h"

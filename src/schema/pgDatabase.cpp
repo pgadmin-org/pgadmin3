@@ -57,7 +57,10 @@ wxMenu *pgDatabase::GetNewMenu()
         extern wxString slony1BaseScript;
         extern wxString slony1FunctionScript;
         extern wxString slony1XxidScript;
-        if (!slony1BaseScript.IsEmpty() && !slony1FunctionScript.IsEmpty() && !slony1XxidScript.IsEmpty())
+        extern wxString backupExecutable;
+
+        if ((!slony1BaseScript.IsEmpty() && !slony1FunctionScript.IsEmpty() && !slony1XxidScript.IsEmpty())
+            || !backupExecutable.IsEmpty())
             AppendMenu(menu, SL_CLUSTER);
     }
     return menu;

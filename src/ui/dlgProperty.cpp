@@ -60,6 +60,7 @@
 #include "dlgSchedule.h"
 
 #include "dlgRepCluster.h"
+#include "dlgRepNode.h"
 #include "dlgRepPath.h"
 #include "dlgRepListen.h"
 #include "dlgRepSet.h"
@@ -736,7 +737,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
             break;
 
         case SL_CLUSTER:
-            dlg=new dlgRepCluster(frame, (slCluster*)currentNode, parentNode);
+            dlg=new dlgRepCluster(frame, (slCluster*)currentNode, (pgDatabase*)parentNode);
+            break;
+        case SL_NODE:
+            dlg=new dlgRepNode(frame, (slNode*)currentNode, (slCluster*)parentNode);
             break;
         case SL_PATH:
             dlg=new dlgRepPath(frame, (slPath*)currentNode, (slNode*)parentNode);

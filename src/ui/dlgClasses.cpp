@@ -17,11 +17,10 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "wx/process.h"
 #include "frmMain.h"
 #include "pgConn.h"
 #include "frmAbout.h"
-
+#include "sysProcess.h"
 #include "menu.h"
 
 
@@ -403,7 +402,7 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
             // here could be the animation
             if (txtMessages)
                 txtMessages->AppendText(thread->GetMessagesAndClear());
-            wxYield();
+            wxSafeYield();
         }
 
         if (thread)
@@ -503,16 +502,10 @@ bool ExternProcessDialog::Execute(int step, bool finalStep)
     if (process)
         delete process;
 
-    process = new wxProcess(this);
-    size_t i;
-    for (i=0 ; i < environment.GetCount() ; i++)
-    {
-        wxString str=environment.Item(i);
-        wxSetEnv(str.BeforeFirst('='), str.AfterFirst('='));
-    }
-    process->Redirect();
-    pid = wxExecute(GetCmd(step), wxEXEC_ASYNC, process);
-    if (pid)
+    process = new sysProcess(this);
+    process->SetEnvironment(environment);
+
+    if (wxExecute(GetCmd(step), wxEXEC_ASYNC, process))
     {
         wxNotebook *nb=CTRL_NOTEBOOK("nbNotebook");
         if (nb)
@@ -562,30 +555,8 @@ void ExternProcessDialog::checkStreams()
 {
     if (txtMessages && process)
     {
-        if (process->IsErrorAvailable())
-            readStream(process->GetErrorStream());
-        if (process->IsInputAvailable())
-            readStream(process->GetInputStream());
-    }
-}
-
-
-void ExternProcessDialog::readStream(wxInputStream *input)
-{
-    if (input)
-    {
-        char buffer[1000+1];
-        size_t size=1;
-        while (size && !input->Eof())
-        {
-            input->Read(buffer, sizeof(buffer)-1);
-            size=input->LastRead();
-            if (size)
-            {
-                buffer[size]=0;
-                txtMessages->AppendText(wxString::FromAscii(buffer));
-            }
-        }
+        txtMessages->AppendText(process->ReadErrorStream());
+        txtMessages->AppendText(process->ReadInputStream());
     }
 }
 
@@ -610,10 +581,8 @@ void ExternProcessDialog::OnEndProcess(wxProcessEvent &ev)
 
     if (process)
     {
-        wxKill(ev.GetPid(), wxSIGTERM);
         delete process;
         process=0;
-        pid=0;
     }
     btnOK->Enable();
     btnCancel->Enable();
@@ -626,10 +595,9 @@ void ExternProcessDialog::Abort()
     if (process)
     {
         done=false;
-        wxProcess *tmpProcess=process;
+        sysProcess *tmpProcess=process;
         process=0;
-        wxKill(pid, wxSIGTERM);
-        pid=0;
+        tmpProcess->Abort();
         delete tmpProcess;
     }
 }
