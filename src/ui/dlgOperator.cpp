@@ -94,17 +94,46 @@ int dlgOperator::Go(bool modal)
         txtName->SetValue(oper->GetName());
         txtOID->SetValue(NumToStr(oper->GetOid()));
         txtOwner->SetValue(oper->GetOwner());
+
         cbLeftType->Append(oper->GetLeftType());
         cbLeftType->SetSelection(0);
 
         cbRightType->Append(oper->GetRightType());
-        cbRightType->Append(oper->GetRightType());
-        cbRightType->SetSelection(1);
+        cbRightType->SetSelection(0);
+
+        cbProcedure->Append(oper->GetOperatorFunction());
+        cbProcedure->SetSelection(0);
 
         AddType(wxT(" "), oper->GetLeftTypeOid());
         AddType(wxT(" "), oper->GetRightTypeOid());
 
-	txtComment->SetValue(oper->GetComment());
+        cbRestrict->Append(oper->GetRestrictFunction());
+        cbRestrict->SetSelection(0);
+
+        cbJoin->Append(oper->GetJoinFunction());
+        cbJoin->SetSelection(0);
+
+        cbCommutator->Append(oper->GetCommutator());
+        cbCommutator->SetSelection(0);
+
+        cbNegator->Append(oper->GetNegator());
+        cbNegator->SetSelection(0);
+
+        cbLeftSort->Append(oper->GetLeftSortOperator());
+        cbLeftSort->SetSelection(0);
+
+        cbRightSort->Append(oper->GetRightSortOperator());
+        cbRightSort->SetSelection(0);
+
+        cbLess->Append(oper->GetLessOperator());
+        cbLess->SetSelection(0);
+
+        cbGreater->Append(oper->GetGreaterOperator());
+        cbGreater->SetSelection(0);
+
+        chkCanHash->SetValue(oper->GetHashJoins());
+
+	    txtComment->SetValue(oper->GetComment());
         txtName->Disable();
         cbProcedure->Disable();
         cbLeftType->Disable();
@@ -150,7 +179,7 @@ int dlgOperator::Go(bool modal)
 pgObject *dlgOperator::CreateObject(pgCollection *collection)
 {
     pgObject *obj=pgOperator::ReadObjects(collection, 0,
-         wxT("\n   AND op.oprname=") + GetName() +
+         wxT("\n   AND op.oprname=") + qtString(GetName()) +
          wxT("\n   AND op.oprnamespace=") + schema->GetOidStr() +
          wxT("\n   AND op.oprleft = ") + GetTypeOid(cbLeftType->GetSelection()) +
          wxT("\n   AND op.oprright = ") + GetTypeOid(cbRightType->GetSelection()));
@@ -361,10 +390,10 @@ wxString dlgOperator::GetSql()
                 sql += wxT(",\n   RESTRICT=") + procedures.Item(cbRestrict->GetSelection()-1);
             if (cbJoin->GetSelection() > 0)
                 sql += wxT(",\n   JOIN=") + procedures.Item(cbJoin->GetSelection()-1);
-            AppendIfFilled(sql, wxT(",\n   SORT1="), cbLeftSort->GetValue().Trim());
-            AppendIfFilled(sql, wxT(",\n   SORT2="), cbRightSort->GetValue().Trim());
-            AppendIfFilled(sql, wxT(",\n   LTCMP="), cbLess->GetValue().Trim());
-            AppendIfFilled(sql, wxT(",\n   GTCMP="), cbGreater->GetValue().Trim());
+            AppendIfFilled(sql, wxT(",\n   SORT1="), qtString(cbLeftSort->GetValue().Trim()));
+            AppendIfFilled(sql, wxT(",\n   SORT2="), qtString(cbRightSort->GetValue().Trim()));
+            AppendIfFilled(sql, wxT(",\n   LTCMP="), qtString(cbLess->GetValue().Trim()));
+            AppendIfFilled(sql, wxT(",\n   GTCMP="), qtString(cbGreater->GetValue().Trim()));
 
             if (chkCanMerge->GetValue() || chkCanHash->GetValue())
             {
