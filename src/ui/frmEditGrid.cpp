@@ -555,6 +555,7 @@ public:
     sqlGridTextEditor(int len=0) { textlen=len; }
     virtual wxGridCellEditor *Clone() const { return new sqlGridTextEditor(textlen); }
     void Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler);
+    void SetSize(const wxRect& rectOrig);
 
 protected:
     int textlen;
@@ -566,22 +567,57 @@ protected:
 void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler)
 {
     m_control = new wxTextCtrl(parent, id, wxEmptyString,
-                               wxDefaultPosition, wxDefaultSize
-#if defined(__WXMSW__)
-                               , wxTE_PROCESS_TAB | wxTE_MULTILINE | wxTE_DONTWRAP |
-                                 wxTE_AUTO_SCROLL
-#endif
+                               wxDefaultPosition, wxDefaultSize,
+                               wxTE_PROCESS_TAB | wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_AUTO_SCROLL
                               );
 
-    // set max length allowed in the textctrl, if the parameter was set
     if (textlen > 0)
-    {
         Text()->SetMaxLength(textlen);
-    }
 
     wxGridCellEditor::Create(parent, id, evtHandler);
 }
 
+
+
+void sqlGridTextEditor::SetSize(const wxRect& rectOrig)
+{
+    wxRect rect(rectOrig);
+
+
+    // currently, this is just a copy of wx' code.
+    // We should make the control bigger if scrollbars appear
+
+#if defined(__WXGTK__)
+    if (rect.x != 0)
+    {
+        rect.x += 1;
+        rect.y += 1;
+        rect.width -= 1;wx
+        rect.height -= 1;
+    }
+#else // !GTK
+    int extra_x = ( rect.x > 2 )? 2 : 1;
+
+// MB: treat MSW separately here otherwise the caret doesn't show
+// when the editor is in the first row.
+#if defined(__WXMSW__)
+    int extra_y = 2;
+#else
+    int extra_y = ( rect.y > 2 )? 2 : 1;
+#endif // MSW
+
+#if defined(__WXMOTIF__)
+    extra_x *= 2;
+    extra_y *= 2;
+#endif
+    rect.SetLeft( wxMax(0, rect.x - extra_x) );
+    rect.SetTop( wxMax(0, rect.y - extra_y) );
+    rect.SetRight( rect.GetRight() + 2*extra_x );
+    rect.SetBottom( rect.GetBottom() + 2*extra_y );
+#endif // GTK/!GTK
+
+    wxGridCellEditor::SetSize(rect);
+}
 
 
 class sqlGridNumericEditor : public wxGridCellTextEditor
