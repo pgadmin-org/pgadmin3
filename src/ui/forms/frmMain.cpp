@@ -81,6 +81,7 @@
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(BTN_ADDSERVER, frmMain::OnAddServer)
     EVT_MENU(BTN_DROP, frmMain::OnDrop)
+    EVT_MENU(BTN_REFRESH, frmMain::OnRefresh)
     EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
     EVT_MENU(MNU_ADDSERVER, frmMain::OnAddServer)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
@@ -178,7 +179,10 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     tlBar->AddTool(BTN_RECORD, wxT("Record"), tlBarBitmaps[8], wxT("Record a query log."), wxITEM_NORMAL);
     tlBar->AddTool(BTN_STOP, wxT("Stop"), tlBarBitmaps[9], wxT("Stop recording the query log."), wxITEM_NORMAL);
 
+    // Display the bar and configure buttons. 
     tlBar->Realize();
+    SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
+    tlBar->EnableTool(BTN_STOP, FALSE);
     
     // Setup the vertical splitter & treeview
     wxSplitterWindow* splVertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
@@ -198,10 +202,10 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     splHorizontal->SplitHorizontally(nbListViews, txtSQLPane, 300);
     splHorizontal->SetMinimumPaneSize(50);
 
-    //Setup a Browser imagemap
+    //Setup a Browser imagelist
     wxImageList *ilBrowser = new wxImageList(16, 16);
-    //Associate the Browser imagemap to the Browser
     tvBrowser->SetImageList(ilBrowser);
+
     //Stuff the Image List
     ilBrowser->Add(wxIcon(server_xpm));
     ilBrowser->Add(wxIcon(serverbad_xpm));
@@ -227,22 +231,18 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     wxTreeItemId itmAddServer = tvBrowser->AppendItem(itmServers, wxT("Add Server..."), 0, -1, objAddServer);
     tvBrowser->Expand(itmServers);
 
-    //Setup a listview imagemap
+    // Setup the property imagelist
     wxImageList *ilProperties = new wxImageList(16, 16);
-    //Associate the listview imagemap to the listview
     lvProperties->SetImageList(ilProperties, wxIMAGE_LIST_SMALL);
-    //Stuff the BrowserImage Listu:
     ilProperties->Add(wxIcon(property_xpm));
 
     // Add the property view columns
     lvProperties->InsertColumn(0, wxT("Properties"), wxLIST_FORMAT_LEFT, 500);
     lvProperties->InsertItem(0, wxT("No properties are available for the current selection"), 0);
 
-    //Setup a listview imagemap
+    // Setup a statistics view imagelist
     wxImageList *ilStatistics = new wxImageList(16, 16);
-    //Associate the listview imagemap to the listview
     lvStatistics->SetImageList(ilStatistics, wxIMAGE_LIST_SMALL);
-    //Stuff the BrowserImage Listu:
     ilStatistics->Add(wxIcon(statistics_xpm));
 
     // Add the statistics view columns & set the colour
@@ -374,6 +374,9 @@ void frmMain::OnSelChanged()
     lvStatistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
     lvStatistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
 
+    // Reset the toolbar
+    SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
+
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
     wxTreeItemId itmX = tvBrowser->GetSelection();
@@ -383,6 +386,7 @@ void frmMain::OnSelChanged()
     switch (iType) {
         case PG_SERVER:
             StartMsg(wxT("Retrieving server properties"));
+            SetButtons(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE);
             tvServer((pgServer *)itmData);
             svServer((pgServer *)itmData);
             EndMsg();
@@ -540,11 +544,12 @@ void frmMain::tvServer(pgServer *objServer)
     lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
 
     // Display the Server properties
+    wxString szTemp;
+
     lvProperties->InsertItem(0, wxT("Hostname"), 0);
     lvProperties->SetItem(0, 1, objServer->GetServer());
 
     lvProperties->InsertItem(1, wxT("Port"), 0);
-    wxString szTemp;
     szTemp.Printf("%d", objServer->GetPort());
     lvProperties->SetItem(1, 1, szTemp);
 
@@ -554,17 +559,22 @@ void frmMain::tvServer(pgServer *objServer)
     lvProperties->InsertItem(3, wxT("Username"), 0);
     lvProperties->SetItem(3, 1, objServer->GetUsername());
 
-    lvProperties->InsertItem(4, wxT("Server Version"), 0);
-    lvProperties->SetItem(4, 1, objServer->GetServerVersion());
+    lvProperties->InsertItem(4, wxT("Version String"), 0);
+    lvProperties->SetItem(4, 1, objServer->GetVersionString());
 
-    lvProperties->InsertItem(5, wxT("Last System OID"), 0);
-    lvProperties->SetItem(5, 1, objServer->GetLastSystemOID());
+    lvProperties->InsertItem(5, wxT("Version Number"), 0);
+    szTemp.Printf("%1.1f", objServer->GetVersionNumber());
+    lvProperties->SetItem(5, 1, szTemp);
 
-    lvProperties->InsertItem(6, wxT("Connected?"), 0);
+    lvProperties->InsertItem(6, wxT("Last System OID"), 0);
+    szTemp.Printf("%d", objServer->GetLastSystemOID());
+    lvProperties->SetItem(6, 1, szTemp);
+
+    lvProperties->InsertItem(7, wxT("Connected?"), 0);
     if (objServer->GetConnected()) {
-        lvProperties->SetItem(6, 1, wxT("Yes"));
+        lvProperties->SetItem(7, 1, wxT("Yes"));
     } else {
-        lvProperties->SetItem(6, 1, wxT("No"));
+        lvProperties->SetItem(7, 1, wxT("No"));
     }
 }
 
@@ -626,4 +636,28 @@ void frmMain::OnDrop()
         default:
             break;
     }
+}
+
+void frmMain::OnRefresh()
+{
+    // Refresh - Clear the treeview below the current selection
+
+    long lCookie;
+    wxTreeItemId itmY = tvBrowser->GetSelection();
+    wxTreeItemId itmX = tvBrowser->GetFirstChild(itmY, lCookie);
+    while (itmX) {
+        tvBrowser->Delete(itmX);
+        itmX = tvBrowser->GetFirstChild(itmY, lCookie);
+    }
+}
+
+void frmMain::SetButtons(bool bRefresh, bool bCreate, bool bDrop, bool bProperties, bool bSQL, bool bViewData, bool bVacuum)
+{
+    tlBar->EnableTool(BTN_REFRESH, bRefresh);
+    tlBar->EnableTool(BTN_CREATE, bCreate);
+    tlBar->EnableTool(BTN_DROP, bDrop);
+    tlBar->EnableTool(BTN_PROPERTIES, bProperties);
+    tlBar->EnableTool(BTN_SQL, bSQL);
+    tlBar->EnableTool(BTN_VIEWDATA, bViewData);
+    tlBar->EnableTool(BTN_VACUUM, bVacuum);
 }

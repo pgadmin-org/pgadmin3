@@ -48,6 +48,8 @@ private:
     void OnSelChanged();
     void OnSelActivated();
     void OnDrop();
+    void OnRefresh();
+    void SetButtons(bool bRefresh, bool bCreate, bool bDrop, bool bProperties, bool bSQL, bool bViewData, bool bVacuum);
 
     // Treeview  handlers
     void tvServer(pgServer *objServer);

@@ -27,6 +27,8 @@ pgServer::pgServer(const wxString& szNewServer, const wxString& szNewDatabase, c
     szUsername = szNewUsername;
     iPort = iNewPort;
     bConnected = FALSE;
+    fVer = 0.0;
+    lLastSystemOID = 0;
 }
 
 pgServer::~pgServer()
@@ -78,11 +80,11 @@ wxString pgServer::GetIdentifier() const
     return wxString(szID);
 }
 
-wxString pgServer::GetServerVersion()
+wxString pgServer::GetVersionString()
 {
     if (bConnected) {
       if (szVer.IsEmpty()) {
-          szVer = wxString(cnMaster->GetServerVersion());
+          szVer = wxString(cnMaster->GetVersionString());
       }
       return szVer;
     } else {
@@ -90,15 +92,27 @@ wxString pgServer::GetServerVersion()
     }
 }
 
-wxString pgServer::GetLastSystemOID()
+float pgServer::GetVersionNumber()
 {
     if (bConnected) {
-      if (szLastSystemOID.IsEmpty()) {
-          szLastSystemOID = wxString(cnMaster->GetLastSystemOID());
+      if (fVer == 0) {
+          fVer = cnMaster->GetVersionNumber();
       }
-      return szLastSystemOID;
+      return fVer;
     } else {
-        return wxString("");
+        return 0.0;
+    }
+}
+
+long pgServer::GetLastSystemOID()
+{
+    if (bConnected) {
+      if (lLastSystemOID == 0) {
+          lLastSystemOID = cnMaster->GetLastSystemOID();
+      }
+      return lLastSystemOID;
+    } else {
+        return 0;
     }
 }
 

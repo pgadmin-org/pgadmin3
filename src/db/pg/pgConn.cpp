@@ -215,16 +215,29 @@ wxString pgConn::GetLastError() const
 	return wxString(PQerrorMessage(objConn));
 }
 
-wxString pgConn::GetServerVersion() const
+wxString pgConn::GetVersionString() const
 {
 	wxString szSQL;
     szSQL.Printf("SELECT version();");
 	return ExecuteScalar(szSQL);
 }
 
-wxString pgConn::GetLastSystemOID() const
+float pgConn::GetVersionNumber()
+{
+    int iMajor, iMinor;
+    wxString szVersion;
+
+	if (sscanf(GetVersionString(), "%*s %d.%d", &iMajor, &iMinor) >= 2)
+	{
+		szVersion.Printf("%d.%d", iMajor, iMinor);
+	}
+	return (float) atof(szVersion.c_str());
+}
+
+
+long pgConn::GetLastSystemOID()
 {
 	wxString szSQL;
     szSQL.Printf("SELECT datlastsysoid FROM pg_database LIMIT 1;");
-	return ExecuteScalar(szSQL);
+	return atol(ExecuteScalar(szSQL));
 }

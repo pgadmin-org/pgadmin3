@@ -30,8 +30,9 @@ public:
     wxString GetTypeName() const;
     int Connect(bool bLockFields = FALSE);
     wxString GetIdentifier() const;
-    wxString GetServerVersion();
-    wxString GetLastSystemOID();
+    wxString GetVersionString();
+    float GetVersionNumber();
+    long GetLastSystemOID();
     wxString GetServer() const;
     wxString GetDatabase() const;
     wxString GetUsername() const;
@@ -51,8 +52,10 @@ public:
 private:
     pgConn *cnMaster;
     bool bConnected;
-    wxString szServer, szDatabase, szUsername, szPassword, szVer, szLastSystemOID;
+    wxString szServer, szDatabase, szUsername, szPassword, szVer;
     int iPort;
+    long lLastSystemOID;
+    float fVer;
     wxFrame *winParent;
 };
 

@@ -60,8 +60,9 @@ public:
     int GetBackendPID();
     int GetStatus();
     wxString GetLastError() const;
-    wxString GetServerVersion() const;
-    wxString GetLastSystemOID() const;
+    wxString GetVersionString() const;
+    float GetVersionNumber();
+    long GetLastSystemOID();
 
 private:
     PGconn *objConn;
