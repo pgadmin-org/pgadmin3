@@ -71,7 +71,7 @@ include/pgTrigger.h include/pgType.h include/pgUser.h \
 include/pgView.h include/sysLogger.h \
 include/sysSettings.h include/wxgridsel.h include/menu.h
   
-EXTRA_DIST = include/images/aggregate.xpm include/images/arguments.xpm \
+EXTRA_DIST = include/images/aggregate.xpm \
 include/images/back.xpm \
 include/images/baddatabase.xpm include/images/cast.xpm \
 include/images/check.xpm include/images/clip_copy.xpm \
