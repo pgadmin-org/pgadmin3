@@ -131,6 +131,7 @@ private:
 
     void OnCheckAlive(wxCommandEvent& event);
 
+    bool dropSingleObject(pgObject *data, bool updateFinal);
     void doPopup(wxPoint point, pgObject *object);
     void appendIfEnabled(int id);
     bool checkAlive();

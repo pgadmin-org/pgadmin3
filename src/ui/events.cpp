@@ -1112,43 +1112,111 @@ void frmMain::OnSelRightClick(wxTreeEvent& event)
 }
 
 
-
 void frmMain::OnDelete(wxCommandEvent &ev)
 {
     wxWindow *current=wxWindow::FindFocus();
-    if (current == browser)
+
+    if (current == browser || current == properties)
         OnDrop(ev);
 }
 
 
 void frmMain::OnDrop(wxCommandEvent &ev)
 {
-    // This handler will primarily deal with dropping items
+    wxWindow *current=wxWindow::FindFocus();
+    wxTreeItemId item=browser->GetSelection();
+    pgCollection *collection = (pgCollection*)browser->GetItemData(item);
 
-    // Get the item data, and feed it to the relevant handler,
-    pgObject *data = GetSelectedObject();
-
-    // accelerator can bypass disabled menu, so we need to check
-    if (!data || !data->CanDrop())
-        return;
-
-    if (data->GetSystemObject())
+    if (current == browser)
+        dropSingleObject(collection, true);
+    else if (current == properties)
     {
-        wxMessageDialog msg(this, wxString::Format(_("Cannot drop system %s %s."), 
-            data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str()), 
-            _("Trying to drop system object"), wxICON_EXCLAMATION);
-        msg.ShowModal();
-        return;
-    }
-
-    if (data->RequireDropConfirm() || settings->GetConfirmDelete())
-    {
-        wxMessageDialog msg(this, wxString::Format(_("Are you sure you wish to drop %s %s?"),
-                data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str()),
-                wxString::Format(_("Drop %s?"), data->GetTranslatedTypeName().c_str()), wxYES_NO | wxICON_QUESTION);
-        if (msg.ShowModal() != wxID_YES)
+        if (collection && collection->IsCollection())
         {
-            return;
+            long index=properties->GetFirstSelected();
+
+            if (index >= 0)
+            {
+                pgObject *data=collection->FindChild(browser, index);
+
+                if (!data || !data->CanDrop())
+                    return;
+
+                if (properties->GetSelectedItemCount() == 1)
+                {
+                    dropSingleObject(data, false);
+                    return;
+                }
+
+                if (data->GetSystemObject())
+                {
+                    wxMessageDialog msg(this, wxString::Format(_("Cannot drop system %s"), 
+                        data->GetTranslatedTypeName().c_str(), ""), 
+                        _("Trying to drop system object"), wxICON_EXCLAMATION);
+                    msg.ShowModal();
+                    return;
+                }
+
+                if (data->RequireDropConfirm() || settings->GetConfirmDelete())
+                {
+                    wxMessageDialog msg(this, _("Are you sure you wish to drop multiple objects?"),
+                            _("Drop multiple objects?"), wxYES_NO | wxICON_QUESTION);
+                    if (msg.ShowModal() != wxID_YES)
+                    {
+                        return;
+                    }
+                }
+
+                bool done=true;
+                long count=0;
+                while (done && data)
+                {
+                    done = dropSingleObject(data, false);
+
+                    if (done)
+                    {
+                        count++;
+                        index = properties->GetNextSelected(index);
+
+                        if (index >= 0)
+                            data=collection->FindChild(browser, index-count);
+                        else
+                            break;
+                    }
+                }
+                Refresh(collection);
+            }
+        }
+    }
+}
+
+
+bool frmMain::dropSingleObject(pgObject *data, bool updateFinal)
+{
+    if (updateFinal)
+    {
+        // accelerator can bypass disabled menu, so we need to check
+        if (!data || !data->CanDrop())
+            return false;
+
+        if (data->GetSystemObject())
+        {
+            wxMessageDialog msg(this, wxString::Format(_("Cannot drop system %s %s."), 
+                data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str()), 
+                _("Trying to drop system object"), wxICON_EXCLAMATION);
+            msg.ShowModal();
+            return false;
+        }
+
+        if (data->RequireDropConfirm() || settings->GetConfirmDelete())
+        {
+            wxMessageDialog msg(this, wxString::Format(_("Are you sure you wish to drop %s %s?"),
+                    data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str()),
+                    wxString::Format(_("Drop %s?"), data->GetTranslatedTypeName().c_str()), wxYES_NO | wxICON_QUESTION);
+            if (msg.ShowModal() != wxID_YES)
+            {
+                return false;
+            }
         }
     }
     bool done=data->DropObject(this, browser);
@@ -1159,37 +1227,43 @@ void frmMain::OnDrop(wxCommandEvent &ev)
 
         wxTreeItemId parentItem=browser->GetItemParent(data->GetId());
 
-        wxTreeItemId nextItem=browser->GetNextVisible(data->GetId());
-        if (nextItem)
+        if (updateFinal)
         {
-            pgObject *nextData=(pgObject*)browser->GetItemData(nextItem);
-            if (!nextData || nextData->GetType() != data->GetType())
+            wxTreeItemId nextItem=browser->GetNextVisible(data->GetId());
+            if (nextItem)
+            {
+                pgObject *nextData=(pgObject*)browser->GetItemData(nextItem);
+                if (!nextData || nextData->GetType() != data->GetType())
+                    nextItem=browser->GetPrevSibling(data->GetId());
+            }
+            else
                 nextItem=browser->GetPrevSibling(data->GetId());
+
+            if (nextItem)
+                browser->SelectItem(nextItem);
         }
-        else
-            nextItem=browser->GetPrevSibling(data->GetId());
-
-        if (nextItem)
-            browser->SelectItem(nextItem);
-
         int droppedType = data->GetType();
         browser->Delete(data->GetId());
         // data is invalid now
 
 
-        pgCollection *collection=0;
-
-        while (parentItem)
+        if (updateFinal)
         {
-            collection = (pgCollection*)browser->GetItemData(parentItem);
-            if (collection && collection->IsCollection() && collection->IsCollectionForType(droppedType))
+            pgCollection *collection=0;
+
+            while (parentItem)
             {
-                collection->UpdateChildCount(browser);
-                break;
+                collection = (pgCollection*)browser->GetItemData(parentItem);
+                if (collection && collection->IsCollection() && collection->IsCollectionForType(droppedType))
+                {
+                    collection->UpdateChildCount(browser);
+                    break;
+                }
+                parentItem=browser->GetItemParent(parentItem);
             }
-            parentItem=browser->GetItemParent(parentItem);
         }
     }
+    return done;
 }
 
 
@@ -1197,7 +1271,8 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 {
     // Refresh - Clear the treeview below the current selection
 
-    pgObject *data = GetSelectedObject();
+    wxTreeItemId item=browser->GetSelection();
+    pgObject *data = (pgObject*)browser->GetItemData(item);
     if (!data)
         return;
 

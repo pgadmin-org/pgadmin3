@@ -20,7 +20,7 @@
 
 
 ctlListView::ctlListView(wxWindow *p, int id, wxPoint pos, wxSize siz, long attr)
-: wxListCtrl(p, id, pos, siz, attr | wxLC_REPORT)
+: wxListView(p, id, pos, siz, attr | wxLC_REPORT)
 {
 }
 

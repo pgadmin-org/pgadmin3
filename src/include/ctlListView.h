@@ -20,7 +20,7 @@
 
 class frmMain;
 
-class ctlListView : public wxListCtrl
+class ctlListView : public wxListView
 {
 public:
     ctlListView(wxWindow *p, int id, wxPoint pos, wxSize siz, long attr=0);
