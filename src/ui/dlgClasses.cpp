@@ -226,7 +226,7 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
 
         while (thread && thread->IsRunning())
         {
-            wxUsleep(10);
+            wxMilliSleep(10);
             // here could be the animation
             if (txtMessages)
                 txtMessages->AppendText(thread->GetMessagesAndClear());

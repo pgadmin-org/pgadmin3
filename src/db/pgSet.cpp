@@ -360,7 +360,7 @@ int pgQueryThread::execute()
         if (PQisBusy(conn->conn))
         {
             Yield();
-            wxUsleep(10);
+            wxMilliSleep(10);
             continue;
         }
 

@@ -612,7 +612,7 @@ void frmEditGrid::Go()
     while (thread && thread->IsRunning())
     {
         wxYield();
-        wxUsleep(10);
+        wxMilliSleep(10);
     }
     if (!thread)
         return;
