@@ -131,7 +131,7 @@ pgObject *pgView::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             view = new pgView(collection->GetSchema(), views->GetVal(wxT("relname")));
 
             view->iSetOid(views->GetOid(wxT("oid")));
-            view->iSetOwner(views->GetVal(wxT("Viewowner")));
+            view->iSetOwner(views->GetVal(wxT("viewowner")));
             view->iSetComment(views->GetVal(wxT("description")));
             view->iSetAcl(views->GetVal(wxT("relacl")));
             view->iSetDefinition(views->GetVal(wxT("definition")));

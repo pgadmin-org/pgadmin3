@@ -119,7 +119,7 @@ wxString pgSet::ColName(int col) const
 
 int pgSet::ColNumber(const wxString &colname) const
 {
-    int col = PQfnumber(res, colname.ToAscii());
+    int col = PQfnumber(res, qtIdent(colname).ToAscii());
     if (col < 0)
         wxLogError(__("Column not found in pgSet: ") + colname);
     return col;
