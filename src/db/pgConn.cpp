@@ -237,7 +237,24 @@ void pgConn::RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg)
 
 wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
 {
-    return wxT("(") + nsp + wxT(" NOT LIKE 'pg\\_%' AND ") + nsp + wxT(" NOT LIKE 'information_schema')");
+    if (reservedNamespaces.IsEmpty())
+    {
+        reservedNamespaces = wxT("'information_schema'");
+        pgSet *set=ExecuteSet(
+                wxT("SELECT nspname FROM pg_namespace nsp\n")
+                wxT("  JOIN pg_proc pr ON pronamespace=nsp.oid\n")
+                wxT(" WHERE proname IN ('slonyversion')"));
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                reservedNamespaces += wxT(", ") + qtString(set->GetVal(wxT("nspname")));
+                set->MoveNext();
+            }
+            delete set;
+        }
+    }
+    return wxT("(") + nsp + wxT(" NOT LIKE 'pg\\_%' AND ") + nsp + wxT(" NOT in (") + reservedNamespaces + wxT("))");
 }
 
 
@@ -412,6 +429,12 @@ bool pgConn::IsAlive()
 
     PGresult *qryRes = PQexec(conn, "SELECT 1;");
     lastResultStatus = PQresultStatus(qryRes);
+    if (lastResultStatus != PGRES_TUPLES_OK)
+    {
+        PQclear(qryRes);
+        qryRes = PQexec(conn, "ROLLBACK TRANSACTION; SELECT 1;");
+        lastResultStatus = PQresultStatus(qryRes);
+    }
     PQclear(qryRes);
 
     // Check for errors
