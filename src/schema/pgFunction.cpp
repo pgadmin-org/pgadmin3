@@ -44,6 +44,18 @@ pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newNam
 }
 
 
+bool pgFunction::CanReload()
+{
+    return GetLanguage().IsSameAs(wxT("C"), false);
+}
+
+
+bool pgFunction::ReloadLibrary()
+{
+    return ExecuteVoid(wxT("LOAD ") + qtString(GetBin()));
+}
+
+
 wxString pgFunction::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
@@ -54,8 +66,12 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
         if (GetReturnAsSet())
             sql += wxT("SETOF ");
         sql +=GetReturnType() 
-            + wxT(" AS\n")
-            + qtString(GetSource())
+            + wxT(" AS\n");
+        
+        if (GetLanguage().IsSameAs(wxT("C"), false))
+            sql += qtString(GetBin()) + wxT(", ");
+
+        sql += qtString(GetSource())
             + wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
 
         if (GetIsStrict())

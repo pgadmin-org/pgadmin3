@@ -14,11 +14,14 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "pgDefs.h"
+
 #include "ctlSQLBox.h"
 #include "dlgFunction.h"
 #include "pgFunction.h"
 #include "pgCollection.h"
 #include "pgDatatype.h"
+
 
 // Images
 #include "images/function.xpm"
@@ -46,6 +49,7 @@
 #define txtLinkSymbol       CTRL("txtLinkSymbol", wxTextCtrl)
 
 
+#define TXTOBJ_LIB  wxT("$libdir/")
 #define CTL_SQLBOX  188
 
 BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
@@ -145,10 +149,11 @@ int dlgFunction::Go(bool modal)
     else
     {
         // create mode
-        DatatypeReader tr(connection);
+        DatatypeReader tr(connection, wxString("(typtype IN ('b', 'd') OR typname IN ('void', 'cstring'))"));
         while (tr.HasMore())
         {
             pgDatatype dt=tr.GetDatatype();
+
             typOids.Add(tr.GetOidStr());
             types.Add(tr.GetSchemaPrefix() + dt.QuotedFullName());
 
@@ -171,6 +176,7 @@ int dlgFunction::Go(bool modal)
 
         if (sel >= 0)
             cbLanguage->SetSelection(sel);
+        txtObjectFile->SetValue(TXTOBJ_LIB);
     }
 
     wxNotifyEvent event;
@@ -187,7 +193,7 @@ pgObject *dlgFunction::CreateObject(pgCollection *collection)
 
     long argCount;
     for (argCount=0 ; argCount < (int)argOids.GetCount() ; argCount++)
-        sql += wxT("\n   AND proargtypes[") + argOids.Item(argCount) + wxT("] = 0");
+        sql += wxT("\n   AND proargtypes[") + NumToStr(argCount) + wxT("] = ") + argOids.Item(argCount);
 
     sql += wxT("\n   AND proargtypes[") + NumToStr(argCount) + wxT("] = 0\n");
 
@@ -198,9 +204,9 @@ pgObject *dlgFunction::CreateObject(pgCollection *collection)
 
 void dlgFunction::OnChange(wxNotifyEvent &ev)
 {
+    bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
     if (function)
     {
-        bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
 
         EnableOK(txtComment->GetValue() != function->GetComment()
               || cbVolatility->GetValue() != function->GetVolatility()
@@ -219,6 +225,15 @@ void dlgFunction::OnChange(wxNotifyEvent &ev)
         CheckValid(enable, !name.IsEmpty(), wxT("Please specify name."));
         CheckValid(enable, cbReturntype->GetSelection() >= 0, wxT("Please select return type."));
         CheckValid(enable, cbLanguage->GetSelection() >= 0, wxT("Please select language."));
+        if (isC)
+        {
+            wxString objfile=txtObjectFile->GetValue();
+            CheckValid(enable, !objfile.IsEmpty() && objfile != TXTOBJ_LIB, wxT("Please specify object library."));
+        }
+        else
+        {
+            CheckValid(enable, !sqlBox->GetText().IsEmpty(), wxT("Please enter function source code."));
+        }
 
         EnableOK(enable);
     }

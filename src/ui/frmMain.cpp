@@ -134,6 +134,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_QUERYBUILDER, wxT("&Query Builder"),      wxT("Start the query builder."));
 	toolsMenu->Append(MNU_VIEWDATA, wxT("View Data"),               wxT("View the data in the selected object."));
     toolsMenu->Append(MNU_VACUUM, wxT("Vacuum"),                    wxT("Vacuum the current database or table."));
+    toolsMenu->Append(MNU_RELOAD, wxT("Reload module"),             wxT("Reload library module which implements this function."));
     toolsMenu->Append(MNU_STATUS, wxT("Server Status"),             wxT("Displays the current database status."));
     toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_OPTIONS, wxT("&Options..."),              wxT("Show options dialog."));
@@ -162,6 +163,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // Tree Context Menu
     treeContextMenu = new wxMenu();
+    treeContextMenu->Append(MNU_RELOAD, wxT("Reload module"),       wxT("Reload library module which implements this function."));
     treeContextMenu->Append(MNU_REFRESH, wxT("&Refresh"),   		wxT("Refresh the selected object."));
     treeContextMenu->AppendSeparator();
 	treeContextMenu->Append(MNU_VIEWDATA, wxT("View Data"),         wxT("View the data in the selected object."));
@@ -169,7 +171,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     treeContextMenu->Append(MNU_CONNECT, wxT("&Connect..."),    	wxT("Connect to the selected server."));
     treeContextMenu->Append(MNU_DISCONNECT, wxT("&Disconnect"),     wxT("Disconnect from the selected server."));
     treeContextMenu->AppendSeparator();
-    treeContextMenu->Append(MNU_CREATE, wxT("&Create"),                    wxT("Create a new object of the same type as the selected object."));
+    treeContextMenu->Append(MNU_CREATE, wxT("&Create"),             wxT("Create a new object of the same type as the selected object."));
     treeContextMenu->Append(MNU_DROP, wxT("&Delete/Drop"),  		wxT("Delete/Drop the selected object."));
     treeContextMenu->Append(MNU_PROPERTIES, wxT("&Properties"),     wxT("Display/edit the properties of the selected object."));
 
@@ -674,6 +676,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	toolsMenu->Enable(MNU_STATUS, sql);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
 	viewMenu->Enable(MNU_REFRESH, refresh);
+    toolsMenu->Enable(MNU_RELOAD, false);
 
 	treeContextMenu->Enable(MNU_CREATE, create);
 	treeContextMenu->Enable(MNU_DROP, drop);
@@ -683,5 +686,6 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	treeContextMenu->Enable(MNU_PROPERTIES, properties);
 	treeContextMenu->Enable(MNU_VACUUM, vacuum);
 	treeContextMenu->Enable(MNU_VIEWDATA, viewData);
+    treeContextMenu->Enable(MNU_RELOAD, false);
 }
 

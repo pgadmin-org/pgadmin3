@@ -94,6 +94,7 @@ private:
     void OnDrop(wxCommandEvent &ev);
     void OnDelete(wxCommandEvent &ev);
 	void OnProperties(wxCommandEvent &ev);
+    void OnReload(wxCommandEvent &ev);
     void OnRefresh(wxCommandEvent &ev);
 	void OnDisconnect(wxCommandEvent &ev);
 	void OnQueryBuilder(wxCommandEvent &ev);

@@ -11,6 +11,10 @@
 #ifndef PGDEFS_H
 #define PGDEFS_H
 
+#define PGOID_SCHEMA_CATALOG                11L
+#define PGOID_SCHEMA_TOAST                  99L
+#define PGOID_SCHEMA_PUBLIC                 2200L
+
 #define PGOID_TYPE_BOOL                     16L
 #define PGOID_TYPE_BYTEA                    17L
 #define PGOID_TYPE_CHAR                     18L
@@ -32,6 +36,7 @@
 #define PGOID_TYPE_INTERVAL                 1186L
 #define PGOID_TYPE_BIT                      1560L
 #define PGOID_TYPE_NUMERIC                  1700L
+#define PGOID_TYPE_CSTRING                  2275L
 #define PGOID_TYPE_VOID                     2278L
 #define PGOID_TYPE_TRIGGER                  2279L
 #define PGOID_TYPE_LANGUAGE_HANDLER         2280L

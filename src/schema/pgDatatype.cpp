@@ -58,21 +58,30 @@ pgDatatype::pgDatatype(const wxString &typname, long numdims, long typmod)
         len=prec=0;
 }
 
+DatatypeReader::DatatypeReader(pgConn *conn, const wxString &condition)
+{
+    init(conn, condition);
+}
+
 
 DatatypeReader::DatatypeReader(pgConn *conn, bool withDomains)
 {
-    wxString condition;
+    wxString condition=wxT("typisdefined AND typtype ");
     if (withDomains)
-        condition=wxT("IN ('b', 'd')");
+        condition += wxT("IN ('b', 'd')");
     else
-        condition=wxT("= 'b'");
+        condition += wxT("= 'b'");
+    init(conn, condition);
+}
 
+void DatatypeReader::init(pgConn *conn, const wxString &condition)
+{
     set=conn->ExecuteSet(wxT(
-        "SELECT t.typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, t.typlen, t.typtype, t.oid, nspname\n"
+        "SELECT typname, CASE WHEN typelem > 0 THEN typelem ELSE t.oid END as elemoid, typlen, typtype, t.oid, nspname\n"
         "  FROM pg_type t\n"
-        "  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n"
-        " WHERE t.typisdefined AND t.typtype ") + condition + wxT("\n"
-        " ORDER BY t.typtype DESC, (t.typelem>0)::bool, t.typname"));
+        "  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n"
+        " WHERE ") + condition + wxT("\n"
+        " ORDER BY CASE WHEN typtype='d' THEN 0 ELSE 1 END, (t.typelem>0)::bool, t.typname"));
 }
 
 

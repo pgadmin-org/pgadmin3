@@ -34,6 +34,8 @@ public:
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
     static pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeCtrl *browser, const wxString &restriction);
 
+    bool ReloadLibrary();
+
     wxString GetFullName() const {return GetName()+wxT("(")+GetArgTypes()+wxT(")"); }
     wxString GetArgTypes() const { return argTypes; }
     void iSetArgTypes(const wxString& s) { argTypes=s; }
@@ -61,8 +63,10 @@ public:
     bool CanDrop() { return true; }
     bool CanEdit() { return true; }
     bool CanCreate() { return true; }
+    bool CanReload();
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
+
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 protected:

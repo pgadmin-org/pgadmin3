@@ -41,6 +41,7 @@ class DatatypeReader
 {
 public:
     DatatypeReader(pgConn *conn, bool withDomains=true);
+    DatatypeReader(pgConn *conn, const wxString &condition);
     ~DatatypeReader() { if (set) delete set; }
     bool HasMore() const { return set && !set->Eof(); }
     void MoveNext() { if (set)  set->MoveNext(); }
@@ -58,6 +59,7 @@ public:
 
 private:
     pgSet *set;
+    void init(pgConn *conn, const wxString &condition);
 };
 
 #endif

@@ -37,6 +37,7 @@
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
+#include "pgFunction.h"
 #include "frmQueryBuilder.h"
 #include "frmEditGrid.h"
 #include "dlgProperty.h"
@@ -65,6 +66,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_TIPOFTHEDAY,               frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_QUERYBUILDER,              frmMain::OnQueryBuilder)
+    EVT_MENU(MNU_RELOAD,                    frmMain::OnReload)
     EVT_MENU(MNU_NEW+PG_DATABASE,           frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_USER,               frmMain::OnNew)
     EVT_MENU(MNU_NEW+PG_GROUP,              frmMain::OnNew)
@@ -154,6 +156,21 @@ void frmMain::OnTipOfTheDay()
     settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
     delete tipProvider;
 }
+
+
+void frmMain::OnReload(wxCommandEvent& WXUNUSED(event))
+{
+    wxTreeItemId item=browser->GetSelection();
+    pgFunction *func = (pgFunction*)browser->GetItemData(item);
+    if (func)
+    {
+        StartMsg(wxT("Reloading library ") + func->GetBin());
+        bool rc=func->ReloadLibrary();
+        EndMsg();
+    }
+}
+
+
 
 void frmMain::OnOptions(wxCommandEvent& event)
 {
@@ -451,6 +468,9 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
 
     properties->Freeze();
     statistics->Freeze();
+
+    bool canReload=false;
+
     switch (type)
     {
         case PG_SERVER:
@@ -471,6 +491,13 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
             EndMsg();
             break;
 
+        case PG_FUNCTION:
+        case PG_TRIGGERFUNCTION:
+        {
+            canReload=((pgFunction*)data)->CanReload();
+            data->ShowTree(this, browser, properties, statistics, sqlPane);
+            break;
+        }
         case PG_DATABASES:
         case PG_GROUPS:
         case PG_USERS:
@@ -490,9 +517,7 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
         case PG_DOMAINS:
         case PG_DOMAIN:
         case PG_FUNCTIONS:
-        case PG_FUNCTION:
         case PG_TRIGGERFUNCTIONS:
-        case PG_TRIGGERFUNCTION:
         case PG_OPERATORS:
         case PG_OPERATOR:
         case PG_OPERATORCLASSES:
@@ -545,6 +570,8 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
             treeContextMenu->Enable(MNU_NEWOBJECT, false);
         }
     }
+    toolsMenu->Enable(MNU_RELOAD, canReload);
+    treeContextMenu->Enable(MNU_RELOAD, canReload);
 }
 
 
