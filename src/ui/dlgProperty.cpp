@@ -116,7 +116,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
 
     wxSize size=GetSize();
 
-    if (XRCID("unkStatusBar"))
+    if (wxWindowBase::FindWindow(XRCID("unkStatusBar")))
     {
         statusBox = 0;
         statusBar = new wxStatusBar(this, -1, wxST_SIZEGRIP);
@@ -125,7 +125,7 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     else
     {
         statusBar = 0;
-        if (XRCID("txtStatus"))
+        if (wxWindowBase::FindWindow(XRCID("txtStatus")))
             statusBox=CTRL_TEXT("txtStatus");
         else
         {
