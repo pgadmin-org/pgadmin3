@@ -215,20 +215,20 @@ fi], [
                 *-*-linux-*) 
                     if test "$wxwindows_gtk2" == "yes" -a "$wxwindows_unicode" == "yes"
                     then
-                        LIBS="$LIBS ${WX_HOME}/lib/wx_gtk2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/wx_gtk2ud_xrc-${WX_VERSION}.a"
+                        LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2ud_xrc-${WX_VERSION}.a"
                         LIBS="$LIBS $WX_NEW_LDFLAGS"
                     else
                         if test "$wxwindows_gtk2" == "yes"
                         then
-                            LIBS="$LIBS ${WX_HOME}/lib/wx_gtk2d_stc-${WX_VERSION}.a ${WX_HOME}/lib/wx_gtk2d_xrc-${WX_VERSION}.a"
+                            LIBS="$LIBS ${WX_HOME}/lib/libwx_gtk2d_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtk2d_xrc-${WX_VERSION}.a"
                             LIBS="$LIBS $WX_NEW_LDFLAGS"
                         else
                             if test "$wxwindows_unicode" == "yes"
                             then
-                                LIBS="$LIBS ${WX_HOME}/lib/wx_gtkud_stc-${WX_VERSION}.a ${WX_HOME}/lib/wx_gtkud_xrc-${WX_VERSION}.a"
+                                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkud_xrc-${WX_VERSION}.a"
                                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                             else
-                                LIBS="$LIBS ${WX_HOME}/lib/wx_gtkd_stc-${WX_VERSION}.a ${WX_HOME}/lib/wx_gtkd_xrc-${WX_VERSION}.a"
+                                LIBS="$LIBS ${WX_HOME}/lib/libwx_gtkd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_gtkd_xrc-${WX_VERSION}.a"
                                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                             fi
                         fi
@@ -237,23 +237,23 @@ fi], [
                 *-apple-darwin*)
                     if test "$wxwindows_gtk2" == "yes" -a "$wxwindows_unicode" == "yes"
                     then
-                        LIBS="$LIBS ${WX_HOME}/lib/wx_mac2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/wx_mac2ud_xrc-${WX_VERSION}.a"
+                        LIBS="$LIBS ${WX_HOME}/lib/libwx_mac2ud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mac2ud_xrc-${WX_VERSION}.a"
                         LIBS="$LIBS $WX_NEW_LDFLAGS"
                         LDFLAGS="$LDFLAGS -flat_namespace"
                     else
                         if test "$wxwindows_gtk2" == "yes"
                         then
-                            LIBS="$LIBS ${WX_HOME}/lib/wx_mac2d_stc-${WX_VERSION}.a ${WX_HOME}/lib/wx_mac2d_xrc-${WX_VERSION}.a"
+                            LIBS="$LIBS ${WX_HOME}/lib/libwx_mac2d_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_mac2d_xrc-${WX_VERSION}.a"
                             LIBS="$LIBS $WX_NEW_LDFLAGS"
                             LDFLAGS="$LDFLAGS -flat_namespace"
                         else
                             if test "$wxwindows_unicode" == "yes"
                             then
-                                LIBS="$LIBS ${WX_HOME}/lib/wx_macud_stc-${WX_VERSION}.a wx_macud_xrc-${WX_VERSION}.a"
+                                LIBS="$LIBS ${WX_HOME}/lib/libwx_macud_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macud_xrc-${WX_VERSION}.a"
                                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                                 LDFLAGS="$LDFLAGS -flat_namespace"
                             else
-                                LIBS="$LIBS ${WX_HOME}/lib/wx_macd_stc-${WX_VERSION}.a ${WX_HOME}/lib/wx_macd_xrc-${WX_VERSION}.a"
+                                LIBS="$LIBS ${WX_HOME}/lib/libwx_macd_stc-${WX_VERSION}.a ${WX_HOME}/lib/libwx_macd_xrc-${WX_VERSION}.a"
                                 LIBS="$LIBS $WX_NEW_LDFLAGS"
                                 LDFLAGS="$LDFLAGS -flat_namespace"
                             fi
