@@ -275,6 +275,9 @@ frmMain::~frmMain()
     objSettings->SetFrmMainHeight(GetSize().y);
     objSettings->SetFrmMainLeft(GetPosition().x);
     objSettings->SetFrmMainTop(GetPosition().y);
+
+    // Clear the treeview
+    tvBrowser->DeleteAllItems();
 }
 
 // Event handlers
@@ -489,6 +492,11 @@ void frmMain::OnSelChanged()
     // cast as required.
     wxTreeItemId itmX = tvBrowser->GetSelection();
     pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
+
+    // If we didn't get an object, then we may have a right click, or 
+    // invalid click, so ignore.
+    if (!itmData) return;
+
     int iType(itmData->GetType());
 
     switch (iType) {
