@@ -50,9 +50,6 @@ wxString pgLanguage::GetSql(wxTreeCtrl *browser)
 
 void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    if (form)
-        form->SetButtons(true, true, true, true, false, false, false);
-
     if (properties)
     {
         CreateListColumns(properties);
@@ -70,47 +67,68 @@ void pgLanguage::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
 
 
 
+pgObject *pgLanguage::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *language=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_LANGUAGES)
+            language = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND lan.oid=") + GetOidStr());
+    }
+    return language;
+}
+
+
+
+pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgLanguage *language=0;
+
+        pgSet *languages= collection->GetDatabase()->ExecuteSet(wxT(
+       "SELECT lan.oid, lan.lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval\n"
+       "  FROM pg_language lan\n"
+       "  JOIN pg_proc hp on hp.oid=lanplcallfoid\n"
+       "  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n"
+       " WHERE lanispl IS TRUE")
+       + restriction + wxT("\n"
+       " ORDER BY lanname"));
+
+    if (languages)
+    {
+        while (!languages->Eof())
+        {
+
+            language = new pgLanguage(languages->GetVal(wxT("lanname")));
+            language->SetDatabase(collection->GetDatabase());
+            language->iSetOid(languages->GetOid(wxT("oid")));
+            language->iSetAcl(languages->GetVal(wxT("lanacl")));
+            language->iSetHandlerProc(languages->GetVal(wxT("lanproc")));
+            language->iSetValidatorProc(languages->GetVal(wxT("lanval")));
+            language->iSetTrusted(languages->GetBool(wxT("lanpltrusted")));
+
+            browser->AppendItem(collection->GetId(), language->GetIdentifier(), PGICON_LANGUAGE, -1, language);
+	
+			languages->MoveNext();
+        }
+
+		delete languages;
+    }
+    return language;
+}
+
+
 void pgLanguage::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    wxString msg;
-    pgLanguage *language;
-
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
 
         // Log
-        msg.Printf(wxT("Adding Languages to database %s"), collection->GetDatabase()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Adding Languages to database %s"), collection->GetDatabase()->GetIdentifier().c_str());
 
         // Get the Languages
-        pgSet *languages= collection->GetDatabase()->ExecuteSet(wxT(
-           "SELECT lan.oid, lan.lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval\n"
-           "  FROM pg_language lan\n"
-           "  JOIN pg_proc hp on hp.oid=lanplcallfoid\n"
-           "  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n"
-           " WHERE lanispl IS TRUE"
-           " ORDER BY lanname"));
-
-        if (languages)
-        {
-            while (!languages->Eof())
-            {
-
-                language = new pgLanguage(languages->GetVal(wxT("lanname")));
-                language->SetDatabase(collection->GetDatabase());
-                language->iSetOid(languages->GetOid(wxT("oid")));
-                language->iSetAcl(languages->GetVal(wxT("lanacl")));
-                language->iSetHandlerProc(languages->GetVal(wxT("lanproc")));
-                language->iSetValidatorProc(languages->GetVal(wxT("lanval")));
-                language->iSetTrusted(languages->GetBool(wxT("lanpltrusted")));
-
-                browser->AppendItem(collection->GetId(), language->GetIdentifier(), PGICON_LANGUAGE, -1, language);
-	    
-			    languages->MoveNext();
-            }
-
-		    delete languages;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

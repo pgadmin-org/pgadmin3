@@ -38,9 +38,13 @@ public:
     wxULongLong GetCacheValue() const { return cacheValue; }
     wxULongLong GetIncrement() const { return increment; }
     bool GetCycled() const { return cycled; }
+
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxULongLong lastValue, minValue, maxValue, cacheValue, increment;
     bool cycled;
 };

@@ -54,8 +54,6 @@ wxString pgCheck::GetSql(wxTreeCtrl *browser)
 
 void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
-
     if (properties)
     {
         CreateListColumns(properties);
@@ -69,44 +67,69 @@ void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 }
 
 
+pgObject *pgCheck::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *check=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_CHECKS)
+            check = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND c.oid=") + GetOidStr());
+    }
+    return check;
+}
+
+
+
+pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgCheck *check=0;
+    pgSet *checks= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT c.oid, conname, consrc, relname, nspname\n"
+        "  FROM pg_constraint c\n"
+        "  JOIN pg_class cl ON cl.oid=conrelid\n"
+        "  JOIN pg_namespace nl ON nl.oid=relnamespace\n"
+        " WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid()) 
+        + restriction + wxT("::oid\n"
+        " ORDER BY conname"));
+
+    if (checks)
+    {
+        while (!checks->Eof())
+        {
+            check = new pgCheck(collection->GetSchema(), checks->GetVal(wxT("conname")));
+
+            check->iSetOid(checks->GetOid(wxT("oid")));
+            check->iSetTableOid(collection->GetOid());
+            check->iSetDefinition(checks->GetVal(wxT("consrc")));
+            check->iSetFkTable(checks->GetVal(wxT("relname")));
+            check->iSetFkSchema(checks->GetVal(wxT("nspname")));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), check->GetFullName(), PGICON_CHECK, -1, check);
+    			checks->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete checks;
+    }
+    return check;
+}
+
 
 void pgCheck::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    pgCheck *check;
-
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
         wxLogInfo(wxT("Adding Checks to schema ") + collection->GetSchema()->GetIdentifier());
 
         // Get the Checks
-        pgSet *checks= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT c.oid, conname, consrc, relname, nspname\n"
-            "  FROM pg_constraint c\n"
-            "  JOIN pg_class cl ON cl.oid=conrelid\n"
-            "  JOIN pg_namespace nl ON nl.oid=relnamespace\n"
-            " WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid()) + wxT("::oid\n"
-            " ORDER BY conname"));
-
-        if (checks)
-        {
-            while (!checks->Eof())
-            {
-                check = new pgCheck(collection->GetSchema(), checks->GetVal(wxT("conname")));
-
-                check->iSetOid(checks->GetOid(wxT("oid")));
-                check->iSetTableOid(collection->GetOid());
-                check->iSetDefinition(checks->GetVal(wxT("consrc")));
-                check->iSetFkTable(checks->GetVal(wxT("relname")));
-                check->iSetFkSchema(checks->GetVal(wxT("nspname")));
-
-                browser->AppendItem(collection->GetId(), check->GetFullName(), PGICON_CHECK, -1, check);
-	    
-			    checks->MoveNext();
-            }
-
-		    delete checks;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

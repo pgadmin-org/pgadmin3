@@ -32,12 +32,15 @@ public:
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
-    wxString GetSql(wxTreeCtrl *browser);
     long GetSchemaTyp() const { return schemaTyp; }
     void iSetSchemaTyp(const long l) { schemaTyp=l; }
     bool GetSystemObject() const { return schemaTyp < 1; }
 
+    wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     pgDatabase *database;
     long schemaTyp; // 0: System 1: temporär 2: normal
 };

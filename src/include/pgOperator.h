@@ -60,8 +60,10 @@ public:
     void iSetHashJoins(bool b) {  hashJoins=b; }
 
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     wxString leftType, rightType, resultType,
              operatorFunction, joinFunction, restrictFunction,
              commutator, negator, kind, 

@@ -75,8 +75,6 @@ wxString pgIndex::GetSql(wxTreeCtrl *browser)
 
 void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
-
     if (!expandedKids)
     {
         expandedKids = true;
@@ -174,58 +172,84 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
 
 
+pgObject *pgIndex::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *index=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_INDEXES)
+            index = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND cls.oid=") + GetOidStr());
+    }
+    return index;
+}
+
+
+
+pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgIndex *index=0;
+
+        pgSet *indexes= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n"
+        "  proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass"
+        "  FROM pg_index idx\n"
+        "  JOIN pg_class cls ON cls.oid=indexrelid\n"
+        "  JOIN pg_class tab ON tab.oid=indrelid\n"
+        "  JOIN pg_namespace n ON n.oid=tab.relnamespace\n"
+        "  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n"
+        "  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n"
+        " WHERE indrelid = ") + collection->GetOidStr() 
+        + restriction + wxT("\n"
+        "   AND NOT indisprimary\n"
+        " ORDER BY cls.relname"));
+
+    if (indexes)
+    {
+        while (!indexes->Eof())
+        {
+            index = new pgIndex(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
+            index->iSetOid(indexes->GetOid(wxT("oid")));
+            index->iSetTableOid(collection->GetOid());
+            index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
+            index->iSetIsUnique(indexes->GetBool(wxT("indisunique")));
+            index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));
+            index->iSetColumnNumbers(indexes->GetVal(wxT("indkey")));
+            index->iSetIdxSchema(indexes->GetVal(wxT("nspname")));
+            index->iSetIdxTable(indexes->GetVal(wxT("tabname")));
+            index->iSetRelTableOid(indexes->GetOid(wxT("indrelid")));
+            index->iSetProcArgTypeList(indexes->GetVal(wxT("proargtypes")));
+            index->iSetProcNamespace(indexes->GetVal(wxT("pronspname")));
+            index->iSetProcName(indexes->GetVal(wxT("proname")));
+            index->iSetOperatorClassList(indexes->GetVal(wxT("indclass")));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), index->GetIdentifier(), PGICON_INDEX, -1, index);
+        		indexes->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete indexes;
+    }
+    return index;
+}
+
+
+
 void pgIndex::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    wxString msg;
-    pgIndex *index;
 
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        msg.Printf(wxT("Adding Indexs to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Adding Indexs to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
 
         // Get the Indexes
-
-        pgSet *indexes= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n"
-            "  proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass"
-            "  FROM pg_index idx\n"
-            "  JOIN pg_class cls ON cls.oid=indexrelid\n"
-            "  JOIN pg_class tab ON tab.oid=indrelid\n"
-            "  JOIN pg_namespace n ON n.oid=tab.relnamespace\n"
-            "  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n"
-            "  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n"
-            " WHERE indrelid = ") + collection->GetOidStr() + wxT("\n"
-            "   AND NOT indisprimary\n"
-            " ORDER BY cls.relname"));
-
-        if (indexes)
-        {
-            while (!indexes->Eof())
-            {
-                index = new pgIndex(collection->GetSchema(), indexes->GetVal(wxT("idxname")));
-                index->iSetOid(indexes->GetOid(wxT("oid")));
-                index->iSetTableOid(collection->GetOid());
-                index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
-                index->iSetIsUnique(indexes->GetBool(wxT("indisunique")));
-                index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));
-                index->iSetColumnNumbers(indexes->GetVal(wxT("indkey")));
-                index->iSetIdxSchema(indexes->GetVal(wxT("nspname")));
-                index->iSetIdxTable(indexes->GetVal(wxT("tabname")));
-                index->iSetRelTableOid(indexes->GetOid(wxT("indrelid")));
-                index->iSetProcArgTypeList(indexes->GetVal(wxT("proargtypes")));
-                index->iSetProcNamespace(indexes->GetVal(wxT("pronspname")));
-                index->iSetProcName(indexes->GetVal(wxT("proname")));
-                index->iSetOperatorClassList(indexes->GetVal(wxT("indclass")));
-
-                browser->AppendItem(collection->GetId(), index->GetIdentifier(), PGICON_INDEX, -1, index);
-
-			    indexes->MoveNext();
-            }
-
-		    delete indexes;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

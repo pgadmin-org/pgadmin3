@@ -43,8 +43,11 @@ public:
     void iSetDoInstead(const bool b) { doInstead=b; }
 
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxString event, condition, action, definition;
     bool doInstead;
 };

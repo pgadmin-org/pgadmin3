@@ -76,10 +76,60 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
 
 
 
-void pgUser::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+pgObject *pgUser::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *user=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_USERS)
+            user = ReadObjects((pgCollection*)obj, 0, wxT("\n WHERE usesysid=") + NumToStr(GetUserId()));
+    }
+    return user;
+}
+
+
+
+pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgUser *user;
 
+    pgSet *users= collection->GetServer()->ExecuteSet(wxT(
+        "SELECT * FROM pg_shadow") + restriction);
+
+    if (users)
+    {
+        while (!users->Eof())
+        {
+
+            user = new pgUser(users->GetVal(wxT("usename")));
+            user->iSetServer(collection->GetServer());
+            user->iSetUserId(users->GetLong(wxT("usesysid")));
+            user->iSetCreateDatabase(StrToBool(users->GetVal(wxT("usecreatedb"))));
+            user->iSetSuperuser(users->GetBool(wxT("usesuper")));
+            user->iSetUpdateCatalog(users->GetBool(wxT("usecatupd")));
+            user->iSetAccountExpires(users->GetVal(wxT("valuntil")));
+            user->iSetPassword(users->GetVal(wxT("passwd")));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), user->GetIdentifier(), PGICON_USER, -1, user);
+				users->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete users;
+    }
+    return user;
+}
+
+
+
+void pgUser::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+{
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
 
@@ -88,29 +138,7 @@ void pgUser::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
 
 
         // Get the Users
-        pgSet *users= collection->GetServer()->ExecuteSet(wxT("SELECT * FROM pg_shadow"));
-
-        if (users)
-        {
-            while (!users->Eof())
-            {
-
-                user = new pgUser(users->GetVal(wxT("usename")));
-                user->iSetServer(collection->GetServer());
-                user->iSetUserId(users->GetLong(wxT("usesysid")));
-                user->iSetCreateDatabase(StrToBool(users->GetVal(wxT("usecreatedb"))));
-                user->iSetSuperuser(users->GetBool(wxT("usesuper")));
-                user->iSetUpdateCatalog(users->GetBool(wxT("usecatupd")));
-                user->iSetAccountExpires(users->GetVal(wxT("valuntil")));
-                user->iSetPassword(users->GetVal(wxT("passwd")));
-
-                browser->AppendItem(collection->GetId(), user->GetIdentifier(), PGICON_USER, -1, user);
-	    
-			    users->MoveNext();
-            }
-
-		    delete users;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

@@ -42,8 +42,10 @@ public:
 
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     wxString definition, fkTable, fkSchema;
 };
 

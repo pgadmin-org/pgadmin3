@@ -52,8 +52,10 @@ public:
     void iSetTypmod(const long l) { typmod=l; }
 
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     wxString basetype, defaultVal, delimiter;
     long length, precision, dimensions;
     long typlen, typmod;

@@ -50,9 +50,6 @@ wxString pgCast::GetSql(wxTreeCtrl *browser)
 
 void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    if (form)
-        form->SetButtons(true, true, true, true, false, false, false);
-
     if (properties)
     {
         CreateListColumns(properties);
@@ -70,6 +67,64 @@ void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
 
 
 
+pgObject *pgCast::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *cast=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_CASTS)
+            cast = ReadObjects((pgCollection*)obj, 0, wxT(" WHERE ca.oid=") + GetOidStr());
+    }
+    return cast;
+}
+
+
+
+pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgCast *cast=0;
+    pgSet *casts= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp, proname, nspname\n"
+        "  FROM pg_cast ca\n"
+        "  JOIN pg_type st ON st.oid=castsource\n"
+        "  JOIN pg_type tt ON tt.oid=casttarget\n"
+        "  JOIN pg_proc pr ON pr.oid=castfunc\n"
+        "  JOIN pg_namespace na ON na.oid=pr.pronamespace\n"
+        + restriction +
+        " ORDER BY st.typname, tt.typname"));
+
+    if (casts)
+    {
+        while (!casts->Eof())
+        {
+            wxString name=casts->GetVal(wxT("srctyp"))+wxT("->")+casts->GetVal(wxT("trgtyp"));
+            cast = new pgCast(name);
+
+            cast->iSetOid(casts->GetOid(wxT("oid")));
+            cast->iSetSourceType(casts->GetVal(wxT("srctyp")));
+            cast->iSetTargetType(casts->GetVal(wxT("trgtyp")));
+            cast->iSetCastFunction(casts->GetVal(wxT("proname")));
+            cast->iSetCastNamespace(casts->GetVal(wxT("nspname")));
+            wxString ct=casts->GetVal(wxT("castcontext"));
+            cast->iSetCastContext(
+                ct == wxT("i") ? wxT("IMPLICIT") :
+                ct == wxT("a") ? wxT("ASSIGNMENT") : wxT("EXPLICIT"));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), cast->GetIdentifier(), PGICON_CAST, -1, cast);
+			    casts->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete casts;
+    }
+    return cast;
+}
 void pgCast::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
@@ -78,39 +133,7 @@ void pgCast::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
         wxLogInfo(wxT("Adding Casts to database ")+ collection->GetDatabase()->GetIdentifier());
 
         // Get the Casts
-        pgSet *casts= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT ca.oid, ca.*, st.typname AS srctyp, tt.typname AS trgtyp, proname, nspname\n"
-            "  FROM pg_cast ca\n"
-            "  JOIN pg_type st ON st.oid=castsource\n"
-            "  JOIN pg_type tt ON tt.oid=casttarget\n"
-            "  JOIN pg_proc pr ON pr.oid=castfunc\n"
-            "  JOIN pg_namespace na ON na.oid=pr.pronamespace\n"
-            " ORDER BY st.typname, tt.typname"));
-
-        if (casts)
-        {
-            while (!casts->Eof())
-            {
-                wxString name=casts->GetVal(wxT("srctyp"))+wxT("->")+casts->GetVal(wxT("trgtyp"));
-                pgCast *cast = new pgCast(name);
-
-                cast->iSetOid(casts->GetOid(wxT("oid")));
-                cast->iSetSourceType(casts->GetVal(wxT("srctyp")));
-                cast->iSetTargetType(casts->GetVal(wxT("trgtyp")));
-                cast->iSetCastFunction(casts->GetVal(wxT("proname")));
-                cast->iSetCastNamespace(casts->GetVal(wxT("nspname")));
-                wxString ct=casts->GetVal(wxT("castcontext"));
-                cast->iSetCastContext(
-                    ct == wxT("i") ? wxT("IMPLICIT") :
-                    ct == wxT("a") ? wxT("ASSIGNMENT") : wxT("EXPLICIT"));
-
-                browser->AppendItem(collection->GetId(), cast->GetIdentifier(), PGICON_CAST, -1, cast);
-	    
-			    casts->MoveNext();
-            }
-
-		    delete casts;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

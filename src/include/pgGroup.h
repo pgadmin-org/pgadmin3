@@ -27,12 +27,8 @@ public:
     pgGroup(const wxString& newName = wxString(""));
     ~pgGroup();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
-    static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
-    wxString GetSql(wxTreeCtrl *browser);
 
     // Group Specific
-
     void iSetServer(pgServer *s) { server=s; }
     long GetGroupId() const { return groupId; }
     void iSetGroupId(const long l) { groupId=l; }
@@ -43,7 +39,15 @@ public:
     wxString GetMembers() const { return members; }
     void iSetMembers(const wxString& s) { members=s; }
 
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
+    static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+
+    wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     long groupId, memberCount;
     wxString memberIds, members, quotedMembers;
 

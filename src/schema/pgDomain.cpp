@@ -66,10 +66,10 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
     return sql;
 }
 
+
+
 void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
-
     if (!expandedKids)
     {
         expandedKids = true;
@@ -107,67 +107,93 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
 
 
 
+pgObject *pgDomain::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *domain=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_DOMAINS)
+            domain = ReadObjects((pgCollection*)obj, 0, wxT("   AND d.oid=") + GetOidStr() + wxT("\n"));
+    }
+    return domain;
+}
+
+
+
+pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgDomain *domain=0;
+    pgSet *domains= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT d.oid, d.typname as domname, d.typbasetype, b.typname as basetype, pg_get_userbyid(d.typowner) as domainowner, \n"
+        "       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim,\n"
+        "       CASE WHEN d.oid=1700 OR d.typbasetype=1700 THEN 1 ELSE 0 END AS isnumeric\n"
+        "  FROM pg_type d\n"
+        "  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n"
+        " WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n"
+        + restriction +
+        " ORDER BY d.typname"));
+
+    if (domains)
+    {
+        while (!domains->Eof())
+        {
+            domain = new pgDomain(collection->GetSchema(), domains->GetVal(wxT("domname")));
+
+            domain->iSetOid(domains->GetOid(wxT("oid")));
+            domain->iSetOwner(domains->GetVal(wxT("domainowner")));
+            domain->iSetBasetype(domains->GetVal(wxT("basetype")));
+            domain->iSetBasetypeOid(domains->GetBool(wxT("typbasetype")));
+            long typlen=domains->GetLong(wxT("typlen"));
+            long typmod=domains->GetLong(wxT("typtypmod"));
+            bool isnum=domains->GetBool(wxT("isnumeric"));
+            long length=typlen, precision=-1;
+            if (typlen == -1 && typmod > 0)
+            {
+                    if (isnum)
+                    {
+                        length=(typmod-4) >> 16;
+                        precision=(typmod-4) & 0xffff;
+                    }
+                    else
+                        length = typmod-4;
+            }
+            domain->iSetTyplen(typlen);
+            domain->iSetTypmod(typmod);
+            domain->iSetLength(length);
+            domain->iSetPrecision(precision);
+            domain->iSetDefault(domains->GetVal(wxT("typdefault")));
+            domain->iSetNotNull(domains->GetBool(wxT("typnotnull")));
+            domain->iSetDimensions(domains->GetLong(wxT("typndims")));
+            domain->iSetDelimiter(domains->GetVal(wxT("typdelim")));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), domain->GetIdentifier(), PGICON_DOMAIN, -1, domain);
+    			domains->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete domains;
+    }
+    return domain;
+}
+
+
+
 void pgDomain::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    wxString msg;
-    pgDomain *domain;
 
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        msg.Printf(wxT("Adding Domains to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Adding Domains to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
 
         // Get the Domains
-        pgSet *domains= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT d.oid, d.typname as domname, d.typbasetype, b.typname as basetype, pg_get_userbyid(d.typowner) as domainowner, \n"
-            "       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim,\n"
-            "       CASE WHEN d.oid=1700 OR d.typbasetype=1700 THEN 1 ELSE 0 END AS isnumeric\n"
-            "  FROM pg_type d\n"
-            "  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n"
-            " WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n"
-            " ORDER BY d.typname"));
-
-        if (domains)
-        {
-            while (!domains->Eof())
-            {
-                domain = new pgDomain(collection->GetSchema(), domains->GetVal(wxT("domname")));
-
-                domain->iSetOid(domains->GetOid(wxT("oid")));
-                domain->iSetOwner(domains->GetVal(wxT("domainowner")));
-                domain->iSetBasetype(domains->GetVal(wxT("basetype")));
-                domain->iSetBasetypeOid(domains->GetBool(wxT("typbasetype")));
-                long typlen=domains->GetLong(wxT("typlen"));
-                long typmod=domains->GetLong(wxT("typtypmod"));
-                bool isnum=domains->GetBool(wxT("isnumeric"));
-                long length=typlen, precision=-1;
-                if (typlen == -1 && typmod > 0)
-                {
-                        if (isnum)
-                        {
-                            length=(typmod-4) >> 16;
-                            precision=(typmod-4) & 0xffff;
-                        }
-                        else
-                            length = typmod-4;
-                }
-                domain->iSetTyplen(typlen);
-                domain->iSetTypmod(typmod);
-                domain->iSetLength(length);
-                domain->iSetPrecision(precision);
-                domain->iSetDefault(domains->GetVal(wxT("typdefault")));
-                domain->iSetNotNull(domains->GetBool(wxT("typnotnull")));
-                domain->iSetDimensions(domains->GetLong(wxT("typndims")));
-                domain->iSetDelimiter(domains->GetVal(wxT("typdelim")));
-
-                browser->AppendItem(collection->GetId(), domain->GetIdentifier(), PGICON_DOMAIN, -1, domain);
-	    
-			    domains->MoveNext();
-            }
-
-		    delete domains;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

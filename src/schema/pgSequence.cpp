@@ -78,8 +78,6 @@ wxString pgSequence::GetSql(wxTreeCtrl *browser)
 
 void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
-
     UpdateValues();
     if (properties)
     {
@@ -123,6 +121,57 @@ void pgSequence::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
 
 
 
+pgObject *pgSequence::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *sequence=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_SEQUENCES)
+            sequence = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND oid=") + GetOidStr());
+    }
+    return sequence;
+}
+
+
+
+pgObject *pgSequence::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgSequence *sequence=0;
+
+    pgSet *sequences= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl\n"
+        "  FROM pg_class WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr() 
+        + restriction + wxT("\n"
+        " ORDER BY relname"));
+
+    if (sequences)
+    {
+        while (!sequences->Eof())
+        {
+            sequence = new pgSequence(collection->GetSchema(), 
+                                            sequences->GetVal(wxT("relname")));
+
+            sequence->iSetOid(sequences->GetOid(wxT("oid")));
+            sequence->iSetOwner(sequences->GetVal(wxT("seqowner")));
+            sequence->iSetAcl(sequences->GetVal(wxT("relacl")));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), sequence->GetIdentifier(), PGICON_SEQUENCE, -1, sequence);
+	  			sequences->MoveNext();
+            }
+            else
+                break;
+        }
+		delete sequences;
+    }
+    return sequence;
+}
+
+
+
 void pgSequence::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
@@ -131,29 +180,7 @@ void pgSequence::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
         wxLogInfo(wxT("Adding Sequences to schema ") + collection->GetSchema()->GetIdentifier());
 
         // Get the Sequences
-        pgSet *sequences= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT oid, relname, pg_get_userbyid(relowner) AS seqowner, relacl\n"
-            "  FROM pg_class WHERE relkind = 'S' AND relnamespace  = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
-            " ORDER BY relname"));
-
-        if (sequences)
-        {
-            while (!sequences->Eof())
-            {
-                pgSequence *sequence = new pgSequence(collection->GetSchema(), 
-                                                sequences->GetVal(wxT("relname")));
-
-                sequence->iSetOid(sequences->GetOid(wxT("oid")));
-                sequence->iSetOwner(sequences->GetVal(wxT("seqowner")));
-                sequence->iSetAcl(sequences->GetVal(wxT("relacl")));
-
-                browser->AppendItem(collection->GetId(), sequence->GetIdentifier(), PGICON_SEQUENCE, -1, sequence);
-	    
-			    sequences->MoveNext();
-            }
-
-		    delete sequences;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

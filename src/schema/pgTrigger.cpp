@@ -155,7 +155,7 @@ pgObject *pgTrigger::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_TRIGGERS)
-            trigger = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
+            trigger = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND t.oid=") + GetOidStr());
     }
     return trigger;
 }

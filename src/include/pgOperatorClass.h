@@ -40,7 +40,11 @@ public:
     bool GetOpcDefault() const { return opcDefault; }
     void iSetOpcDefault(const bool b) { opcDefault=b; }
 
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxString inType, keyType;
     bool opcDefault;
 };

@@ -27,9 +27,6 @@ public:
     pgUser(const wxString& newName = wxString(""));
     ~pgUser();
 
-    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
-    static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
-    wxString GetSql(wxTreeCtrl *browser);
 
     // User Specific
     void iSetServer(pgServer *s) { server=s; }
@@ -46,7 +43,14 @@ public:
     bool GetUpdateCatalog() const { return updateCatalog; }
     void iSetUpdateCatalog(const bool b) { updateCatalog=b; }
 
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
+    static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+
+    wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
+
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     wxString accountExpires, password;
     bool createDatabase, superuser, updateCatalog;
     long userId;

@@ -69,9 +69,7 @@ int pgDatabase::Connect() {
 
         } else {
 
-            wxString msg;
-			msg.Printf(wxT("%s"), database->GetLastError().c_str());
-			wxLogError(msg);
+			wxLogError(wxT("%s"), database->GetLastError().c_str());
             return PGCONN_BAD;
         }
     }

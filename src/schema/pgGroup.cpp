@@ -91,36 +91,63 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
 
 
-void pgGroup::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+pgObject *pgGroup::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *group=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_GROUPS)
+            group = ReadObjects((pgCollection*)obj, 0, wxT("\n WHERE grosysid=") + NumToStr(GetGroupId()));
+    }
+    return group;
+}
+
+
+
+pgObject *pgGroup::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgGroup *group;
 
+    pgSet *groups= collection->GetServer()->ExecuteSet(wxT(
+        "SELECT * from pg_group") + restriction);
+
+    if (groups)
+    {
+        while (!groups->Eof())
+        {
+            group = new pgGroup(groups->GetVal(wxT("groname")));
+            group->iSetGroupId(groups->GetLong(wxT("grosysid")));
+            group->iSetServer(collection->GetServer());
+            wxString mids=groups->GetVal(wxT("grolist"));
+            mids = mids.Mid(1, mids.Length()-2);
+            group->iSetMemberIds(mids);
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), group->GetIdentifier(), PGICON_GROUP, -1, group);
+	    		groups->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete groups;
+    }
+    return group;
+}
+
+
+void pgGroup::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+{
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
 
         wxLogInfo(wxT("Adding Groups to database"));
 
         // Get the Groups
-        pgSet *groups= collection->GetServer()->ExecuteSet(wxT("SELECT * from pg_group"));
-
-        if (groups)
-        {
-            while (!groups->Eof())
-            {
-                group = new pgGroup(groups->GetVal(wxT("groname")));
-                group->iSetGroupId(groups->GetLong(wxT("grosysid")));
-                group->iSetServer(collection->GetServer());
-                wxString mids=groups->GetVal(wxT("grolist"));
-                mids = mids.Mid(1, mids.Length()-2);
-                group->iSetMemberIds(mids);
-
-                browser->AppendItem(collection->GetId(), group->GetIdentifier(), PGICON_GROUP, -1, group);
-	    
-			    groups->MoveNext();
-            }
-
-		    delete groups;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

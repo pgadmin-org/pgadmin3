@@ -65,9 +65,11 @@ public:
 
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);
-
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxString onUpdate, onDelete, conkey, confkey,
              fkTable, fkSchema, references, refSchema;
     wxString fkColumns, refColumns, quotedFkColumns, quotedRefColumns;

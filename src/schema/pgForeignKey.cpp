@@ -76,9 +76,6 @@ wxString pgForeignKey::GetFullName() const
 
 void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
-
-
     if (!expandedKids)
     {
         expandedKids=true;
@@ -136,74 +133,101 @@ void pgForeignKey::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
 }
 
 
-void pgForeignKey::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+
+
+pgObject *pgForeignKey::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 {
-    wxString msg;
+    pgObject *foreignKey=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_FOREIGNKEYS)
+            foreignKey = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND ct.oid=") + GetOidStr());
+    }
+    return foreignKey;
+}
+
+
+
+pgObject *pgForeignKey::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
     pgForeignKey *foreignKey;
 
+    pgSet *foreignKeys= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT ct.oid, conname, condeferrable, condeferred, confupdtype, confdeltype, confmatchtype, "
+               "conkey, confkey, confrelid, nl.nspname as fknsp, cl.relname as fktab, "
+               "nr.nspname as refnsp, cr.relname as reftab\n"
+        "  FROM pg_constraint ct\n"
+        "  JOIN pg_class cl ON cl.oid=conrelid\n"
+        "  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n"
+        "  JOIN pg_class cr ON cr.oid=confrelid\n"
+        "  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n"
+        " WHERE contype='f' AND conrelid = ") + collection->GetOidStr() 
+        + restriction + wxT("\n"
+        " ORDER BY conname"));
+
+    if (foreignKeys)
+    {
+        while (!foreignKeys->Eof())
+        {
+            foreignKey = new pgForeignKey(collection->GetSchema(), foreignKeys->GetVal(wxT("conname")));
+
+            foreignKey->iSetOid(foreignKeys->GetOid(wxT("oid")));
+            foreignKey->iSetTableOid(collection->GetOid());
+            foreignKey->iSetRelTableOid(foreignKeys->GetOid(wxT("confrelid")));
+            foreignKey->iSetFkSchema(foreignKeys->GetVal(wxT("fknsp")));
+            foreignKey->iSetFkTable(foreignKeys->GetVal(wxT("fktab")));
+            foreignKey->iSetRefSchema(foreignKeys->GetVal(wxT("refnsp")));
+            foreignKey->iSetReferences(foreignKeys->GetVal(wxT("reftab")));
+            wxString onUpd=foreignKeys->GetVal(wxT("confupdtype"));
+            wxString onDel=foreignKeys->GetVal(wxT("confdeltype"));
+            foreignKey->iSetOnUpdate(
+                onUpd.IsSameAs('a') ? wxT("NO ACTION") :
+                onUpd.IsSameAs('r') ? wxT("RESTRICT") :
+                onUpd.IsSameAs('c') ? wxT("CASCADE") :
+                onUpd.IsSameAs('d') ? wxT("DEFAULT") :
+                onUpd.IsSameAs('n') ? wxT("SET NULL") : wxT("Unknown"));
+            foreignKey->iSetOnDelete(
+                onDel.IsSameAs('a') ? wxT("NO ACTION") :
+                onDel.IsSameAs('r') ? wxT("RESTRICT") :
+                onDel.IsSameAs('c') ? wxT("CASCADE") :
+                onDel.IsSameAs('d') ? wxT("DEFAULT") :
+                onDel.IsSameAs('n') ? wxT("SET NULL") : wxT("Unknown"));
+            wxString cn=foreignKeys->GetVal(wxT("conkey"));
+            cn = cn.Mid(1, cn.Length()-2);
+            foreignKey->iSetConkey(cn);
+            cn=foreignKeys->GetVal(wxT("confkey"));
+            cn = cn.Mid(1, cn.Length()-2);
+            foreignKey->iSetConfkey(cn);
+
+            foreignKey->iSetDeferrable(foreignKeys->GetBool(wxT("condeferrable")));
+            foreignKey->iSetDeferred(foreignKeys->GetBool(wxT("condeferred")));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), foreignKey->GetFullName(), PGICON_KEY, -1, foreignKey);
+	    		foreignKeys->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete foreignKeys;
+    }
+    return foreignKey;
+}
+
+    
+void pgForeignKey::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+{
     if (browser->GetChildrenCount(collection->GetId(), FALSE) == 0)
     {
         // Log
-        msg.Printf(wxT("Adding ForeignKeys to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
-        wxLogInfo(msg);
+        wxLogInfo(wxT("Adding ForeignKeys to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
 
         // Get the ForeignKeys
-        pgSet *foreignKeys= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT ct.oid, conname, condeferrable, condeferred, confupdtype, confdeltype, confmatchtype, "
-                   "conkey, confkey, confrelid, nl.nspname as fknsp, cl.relname as fktab, "
-                   "nr.nspname as refnsp, cr.relname as reftab\n"
-            "  FROM pg_constraint ct\n"
-            "  JOIN pg_class cl ON cl.oid=conrelid\n"
-            "  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n"
-            "  JOIN pg_class cr ON cr.oid=confrelid\n"
-            "  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n"
-            " WHERE contype='f' AND conrelid = ") + collection->GetOidStr() + wxT("\n"
-            " ORDER BY conname"));
-
-        if (foreignKeys)
-        {
-            while (!foreignKeys->Eof())
-            {
-                foreignKey = new pgForeignKey(collection->GetSchema(), foreignKeys->GetVal(wxT("conname")));
-
-                foreignKey->iSetOid(foreignKeys->GetOid(wxT("oid")));
-                foreignKey->iSetTableOid(collection->GetOid());
-                foreignKey->iSetRelTableOid(foreignKeys->GetOid(wxT("confrelid")));
-                foreignKey->iSetFkSchema(foreignKeys->GetVal(wxT("fknsp")));
-                foreignKey->iSetFkTable(foreignKeys->GetVal(wxT("fktab")));
-                foreignKey->iSetRefSchema(foreignKeys->GetVal(wxT("refnsp")));
-                foreignKey->iSetReferences(foreignKeys->GetVal(wxT("reftab")));
-                wxString onUpd=foreignKeys->GetVal(wxT("confupdtype"));
-                wxString onDel=foreignKeys->GetVal(wxT("confdeltype"));
-                foreignKey->iSetOnUpdate(
-                    onUpd.IsSameAs('a') ? wxT("NO ACTION") :
-                    onUpd.IsSameAs('r') ? wxT("RESTRICT") :
-                    onUpd.IsSameAs('c') ? wxT("CASCADE") :
-                    onUpd.IsSameAs('d') ? wxT("DEFAULT") :
-                    onUpd.IsSameAs('n') ? wxT("SET NULL") : wxT("Unknown"));
-                foreignKey->iSetOnDelete(
-                    onDel.IsSameAs('a') ? wxT("NO ACTION") :
-                    onDel.IsSameAs('r') ? wxT("RESTRICT") :
-                    onDel.IsSameAs('c') ? wxT("CASCADE") :
-                    onDel.IsSameAs('d') ? wxT("DEFAULT") :
-                    onDel.IsSameAs('n') ? wxT("SET NULL") : wxT("Unknown"));
-                wxString cn=foreignKeys->GetVal(wxT("conkey"));
-                cn = cn.Mid(1, cn.Length()-2);
-                foreignKey->iSetConkey(cn);
-                cn=foreignKeys->GetVal(wxT("confkey"));
-                cn = cn.Mid(1, cn.Length()-2);
-                foreignKey->iSetConfkey(cn);
-
-                foreignKey->iSetDeferrable(foreignKeys->GetBool(wxT("condeferrable")));
-                foreignKey->iSetDeferred(foreignKeys->GetBool(wxT("condeferred")));
-
-                browser->AppendItem(collection->GetId(), foreignKey->GetFullName(), PGICON_KEY, -1, foreignKey);
-	    
-			    foreignKeys->MoveNext();
-            }
-
-		    delete foreignKeys;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

@@ -85,7 +85,7 @@ pgObject *pgAggregate::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_AGGREGATES)
-            aggregate = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND aggfnoid=") + GetOidStr());
+            aggregate = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND aggfnoid::oid=") + GetOidStr());
     }
     return aggregate;
 }
@@ -96,7 +96,7 @@ pgObject *pgAggregate::ReadObjects(pgCollection *collection, wxTreeCtrl *browser
 {
     pgAggregate *aggregate=0;
     pgSet *aggregates= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT aggfnoid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n"
+        "SELECT aggfnoid::oid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n"
                 "aggfinalfn, "
                 "proargtypes[0] AS aggbasetype, "
                 "CASE WHEN (ti.typlen = -1 AND ti.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = ti.typelem) || '[]' ELSE ti.typname END as inputname, "

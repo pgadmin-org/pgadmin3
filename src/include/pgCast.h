@@ -44,8 +44,10 @@ public:
     void iSetCastContext(const wxString& s) { castContext=s; }
 
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     wxString sourceType, targetType, castFunction, castContext, castNamespace;
 };
 

@@ -41,9 +41,13 @@ public:
     void iSetToEncoding(const wxString &s) { toEncoding=s; }
     bool GetDefaultConversion() const { return defaultConversion; }
     void iSetDefaultConversion(const bool b) { defaultConversion=b; }
+
     wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxString conversionName, proc, procNamespace, forEncoding, toEncoding;
     bool defaultConversion;
 };

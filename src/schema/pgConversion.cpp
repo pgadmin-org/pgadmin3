@@ -47,8 +47,6 @@ wxString pgConversion::GetSql(wxTreeCtrl *browser)
 
 void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
-    SetButtons(form);
-
     if (properties)
     {
         CreateListColumns(properties);
@@ -68,6 +66,65 @@ void pgConversion::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl
 
 
 
+
+pgObject *pgConversion::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
+{
+    pgObject *conversion=0;
+    wxTreeItemId parentItem=browser->GetItemParent(item);
+    if (parentItem)
+    {
+        pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
+        if (obj->GetType() == PG_CONVERSIONS)
+            conversion = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND co.oid=") + GetOidStr());
+    }
+    return conversion;
+}
+
+
+
+pgObject *pgConversion::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
+{
+    pgConversion *conversion=0;
+
+        pgSet *conversions= collection->GetDatabase()->ExecuteSet(wxT(
+        "SELECT co.oid, co.*, pg_encoding_to_char(conforencoding) as forencoding, pg_encoding_to_char(contoencoding) as toencoding, proname, nspname\n"
+        "  FROM pg_conversion co\n"
+        "  JOIN pg_proc pr ON pr.oid=conproc\n"
+        "  JOIN pg_namespace na ON na.oid=pr.pronamespace\n"
+        " WHERE connamespace = ") + collection->GetSchema()->GetOidStr() 
+        + restriction + wxT("\n"
+        " ORDER BY conname"));
+
+    if (conversions)
+    {
+        while (!conversions->Eof())
+        {
+            conversion = new pgConversion(collection->GetSchema(), 
+                        conversions->GetVal(wxT("conname")));
+
+            conversion->iSetOid(conversions->GetOid(wxT("oid")));
+            conversion->iSetOwner(conversions->GetVal(wxT("conowner")));
+            conversion->iSetForEncoding(conversions->GetVal(wxT("forencoding")));
+            conversion->iSetToEncoding(conversions->GetVal(wxT("toencoding")));
+            conversion->iSetProc(conversions->GetVal(wxT("proname")));
+            conversion->iSetProcNamespace(conversions->GetVal(wxT("nspname")));
+            conversion->iSetDefaultConversion(conversions->GetBool(wxT("condefault")));
+
+            if (browser)
+            {
+                browser->AppendItem(collection->GetId(), conversion->GetIdentifier(), PGICON_CONVERSION, -1, conversion);
+			    conversions->MoveNext();
+            }
+            else
+                break;
+        }
+
+		delete conversions;
+    }
+    return conversion;
+}
+
+
 void pgConversion::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
 
@@ -77,36 +134,7 @@ void pgConversion::ShowTreeCollection(pgCollection *collection, frmMain *form, w
         wxLogInfo(wxT("Adding Conversions to schema ") + collection->GetSchema()->GetIdentifier());
 
         // Get the Conversions
-        pgSet *conversions= collection->GetDatabase()->ExecuteSet(wxT(
-            "SELECT co.oid, co.*, pg_encoding_to_char(conforencoding) as forencoding, pg_encoding_to_char(contoencoding) as toencoding, proname, nspname\n"
-            "  FROM pg_conversion co\n"
-            "  JOIN pg_proc pr ON pr.oid=conproc\n"
-            "  JOIN pg_namespace na ON na.oid=pr.pronamespace\n"
-            " WHERE connamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n"
-            " ORDER BY conname"));
-
-        if (conversions)
-        {
-            while (!conversions->Eof())
-            {
-                pgConversion *conversion = new pgConversion(collection->GetSchema(), 
-                            conversions->GetVal(wxT("conname")));
-
-                conversion->iSetOid(conversions->GetOid(wxT("oid")));
-                conversion->iSetOwner(conversions->GetVal(wxT("conowner")));
-                conversion->iSetForEncoding(conversions->GetVal(wxT("forencoding")));
-                conversion->iSetToEncoding(conversions->GetVal(wxT("toencoding")));
-                conversion->iSetProc(conversions->GetVal(wxT("proname")));
-                conversion->iSetProcNamespace(conversions->GetVal(wxT("nspname")));
-                conversion->iSetDefaultConversion(conversions->GetBool(wxT("condefault")));
-
-                browser->AppendItem(collection->GetId(), conversion->GetIdentifier(), PGICON_CONVERSION, -1, conversion);
-	    
-			    conversions->MoveNext();
-            }
-
-		    delete conversions;
-        }
+        ReadObjects(collection, browser);
     }
 }
 

@@ -91,7 +91,7 @@ pgObject *pgType::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PG_TYPES)
-            type = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND rel.oid=") + GetOidStr());
+            type = ReadObjects((pgCollection*)obj, 0, wxT("\n   AND t.oid=") + GetOidStr());
     }
     return type;
 }

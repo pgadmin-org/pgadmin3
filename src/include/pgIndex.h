@@ -67,10 +67,13 @@ public:
     void iSetOperatorClassList(const wxString& s) { operatorClassList=s; }
     void iSetProcArgTypeList(const wxString& s) { procArgTypeList=s; }
 
-    wxString GetSql(wxTreeCtrl *browser);
     wxString GetCreate();
+    wxString GetSql(wxTreeCtrl *browser);
+    pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
+    static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
+
     wxString columnNumbers, columns, quotedColumns, constraint, indexType, idxTable, idxSchema;
     wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
     long columnCount;
