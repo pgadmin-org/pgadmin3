@@ -609,18 +609,22 @@ void frmMain::OnDrop(wxCommandEvent &ev)
 
     if (data->GetSystemObject())
     {
-        wxMessageBox(wxT("Cannot drop system objects."));
+        wxMessageDialog msg(this, wxT("Cannot drop system ") + data->GetTypeName() 
+            + wxT(" ") + data->GetFullIdentifier(), wxT("Trying to drop system object"), wxICON_EXCLAMATION);
+        msg.ShowModal();
         return;
     }
 
-    wxMessageDialog msg(this, wxT("Are you sure you wish to remove the ") + data->GetTypeName() 
-                    + wxT(" ") + data->GetFullIdentifier() + wxT("?"),
-        wxT("Remove ") + data->GetTypeName() + wxT("?"), wxYES_NO | wxICON_QUESTION);
-    if (msg.ShowModal() != wxID_YES)
+    if (settings->GetConfirmDelete())
     {
-        return;
+        wxMessageDialog msg(this, wxT("Are you sure you wish to remove the ") + data->GetTypeName() 
+                        + wxT(" ") + data->GetFullIdentifier() + wxT("?"),
+            wxT("Remove ") + data->GetTypeName() + wxT("?"), wxYES_NO | wxICON_QUESTION);
+        if (msg.ShowModal() != wxID_YES)
+        {
+            return;
+        }
     }
-
     bool done=data->DropObject(this, browser);
 
     if (done)

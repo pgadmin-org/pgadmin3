@@ -25,7 +25,6 @@ public:
     sysSettings(const wxString& name);
     ~sysSettings();
 
-    // frmMain size/position
     // frmQueryBuilder size/position
     wxSize GetFrmQueryBuilderSize();
     wxPoint GetFrmQueryBuilderPos();
@@ -57,6 +56,8 @@ public:
     void SetMaxRows(const long l) { maxRows=l; }
     bool GetAskSaveConfirmation() const { return askSaveConfirmation; }
     void SetAskSaveConfirmation(const bool b) { askSaveConfirmation=b; }
+    bool GetConfirmDelete() const { return confirmDelete; }
+    void SetConfirmDelete(const bool b) { confirmDelete=b; }
 
     // Show System Objects
     bool GetShowSystemObjects() const { return showSystemObjects; }
@@ -81,6 +82,7 @@ private:
     // Show System Objects
     bool showSystemObjects;
     bool askSaveConfirmation;
+    bool confirmDelete;
     long maxRows;
 };
 

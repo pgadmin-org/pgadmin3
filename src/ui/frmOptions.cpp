@@ -44,7 +44,7 @@ frmOptions::frmOptions(wxFrame *parent)
     XRCCTRL(*this, "radLoglevel", wxRadioBox)->SetSelection(settings->GetLogLevel());
     XRCCTRL(*this, "txtMaxRows", wxTextCtrl)->SetValue(NumToStr(settings->GetMaxRows()));
     XRCCTRL(*this, "chkAskSaveConfirm", wxCheckBox)->SetValue(!settings->GetAskSaveConfirmation());
-
+    XRCCTRL(*this, "chkAskDelete", wxCheckBox)->SetValue(settings->GetConfirmDelete());
 }
 
 
@@ -91,6 +91,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetMaxRows(StrToLong(maxRows));
 
     settings->SetAskSaveConfirmation(!(XRCCTRL(*this, "chkAskSaveConfirm", wxCheckBox)->IsChecked()));
+    settings->SetConfirmDelete((XRCCTRL(*this, "chkAskDelete", wxCheckBox)->IsChecked()));
 
     Destroy();
 }
