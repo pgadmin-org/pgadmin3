@@ -137,19 +137,19 @@ wxString dlgTrigger::GetSql()
         if (chkInsert->GetValue())
         {
             if (actionCount++)
-                sql += wxT(", ");
+                sql += wxT(" OR");
             sql += wxT(" INSERT");
         }
         if (chkUpdate->GetValue())
         {
             if (actionCount++)
-                sql += wxT(", ");
+                sql += wxT(" OR");
             sql += wxT(" UPDATE");
         }
         if (chkDelete->GetValue())
         {
             if (actionCount++)
-                sql += wxT(", ");
+                sql += wxT(" OR");
             sql += wxT(" DELETE");
         }
         sql += wxT("\n   ON ") + table->GetQuotedFullIdentifier()
