@@ -32,8 +32,13 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
-    wxString GetAccessMethod() const {return accessMethod; }
+    wxString GetFullName() const { return GetName() + wxT("(") + GetAccessMethod() + wxT(")"); }
+        wxString GetAccessMethod() const { return accessMethod; }
     void iSetAccessMethod(const wxString&s) { accessMethod=s; }
+
+    wxArrayString GetOperators() { return operators; }
+    wxArrayString GetFunctions() { return functions; }
+    wxArrayString GetQuotedFunctions() { return quotedFunctions; }
     wxString GetInType() const {return inType; }
     void iSetInType(const wxString&s) { inType=s; }
     wxString GetKeyType() const {return keyType; }

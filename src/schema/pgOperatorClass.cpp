@@ -65,6 +65,7 @@ wxString pgOperatorClass::GetSql(wxTreeCtrl *browser)
             sql += wxT("\n   FUNCTION ") + quotedFunctions.Item(i);
             needComma=true;
         }
+        AppendIfFilled(sql, wxT("\n   STORAGE "), GetKeyType());
         sql += wxT(";\n");
     }
 
@@ -94,6 +95,11 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
                 wxString str=set->GetVal(wxT("amopstrategy")) + wxT("  ") + set->GetVal(wxT("oprname"));
                 wxString lt=set->GetVal(wxT("lefttype"));
                 wxString rt=set->GetVal(wxT("righttype"));
+                if (lt == GetInType() && (rt.IsEmpty() || rt == GetInType()))
+                    lt=wxEmptyString;
+                if (rt == GetInType() && lt.IsEmpty())
+                    rt = wxEmptyString;
+
                 if (!lt.IsEmpty() || !rt.IsEmpty())
                 {
                     str += wxT("(");
@@ -129,11 +135,12 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
 
                 // We won't build a PG_FUNCTIONS collection under OperatorClass, so we create
                 // temporary function items
-                pgFunction *function=pgFunction::AppendFunctions(this, GetSchema(), 0, wxT("   AND pr.oid=") + amproc);
+                pgFunction *function=pgFunction::AppendFunctions(this, GetSchema(), 0, wxT(" WHERE pr.oid=") + amproc);
                 if (function)
                 {
-                    functions.Add(set->GetVal(wxT("amprocnum")) + wxT("  ") + function->GetFullIdentifier());
-                    quotedFunctions.Add(set->GetVal(wxT("amprocnum")) + wxT("  ") + function->GetQuotedFullIdentifier());
+                    functions.Add(set->GetVal(wxT("amprocnum")) + wxT("  ") + function->GetFullName());
+                    quotedFunctions.Add(set->GetVal(wxT("amprocnum")) + wxT("  ") 
+                        + function->GetQuotedFullIdentifier() + wxT("(") + function->GetArgTypes() + wxT(")"));
                     delete function;
                 }
 
@@ -148,11 +155,13 @@ void pgOperatorClass::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListC
         int pos=0;
 
         InsertListItem(properties, pos++, _("Name"), GetName());
+        InsertListItem(properties, pos++, _("OID"), GetOid());
+        InsertListItem(properties, pos++, _("Owner"), GetOwner());
         InsertListItem(properties, pos++, _("Default?"), GetOpcDefault());
         InsertListItem(properties, pos++, _("For Type"), GetInType());
         InsertListItem(properties, pos++, _("Access Method"), GetAccessMethod());
-// do we need this?
-//        InsertListItem(properties, pos++, _("Key Type"), GetKeyType());  
+        if (!GetKeyType().IsEmpty())
+            InsertListItem(properties, pos++, _("Storage"), GetKeyType());  
         unsigned int i;
         for (i=0 ; i < operators.Count() ; i++)
             InsertListItem(properties, pos++, wxT("OPERATOR"), operators.Item(i));

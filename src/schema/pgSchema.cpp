@@ -44,7 +44,7 @@ wxMenu *pgSchema::GetNewMenu()
         AppendMenu(menu, PG_FUNCTION);
         AppendMenu(menu, PG_TRIGGERFUNCTION);
         AppendMenu(menu, PG_OPERATOR);
-        AppendMenu(menu, PG_OPERATORCLASS);
+//        AppendMenu(menu, PG_OPERATORCLASS);
         AppendMenu(menu, PG_SEQUENCE);
         AppendMenu(menu, PG_TABLE);
         AppendMenu(menu, PG_TYPE);
