@@ -2,11 +2,6 @@
 %define minor_version %(date +%Y%m%d)
 %define wxGTK2_version 20030831
 %define withwxconfig wxgtk2ud-2.5-config
-%define withpgsql /usr
-%define withpgsqlinclude /usr/include
-
-# Mandrake 91 & SuSE 8.2
-# %define withpgsql_include --with-pgsql-include=/usr/include/pgsql
 
 Summary: Graphical client for PostgreSQL.
 Name: pgadmin3
@@ -20,10 +15,10 @@ Packager: pgAdmin project <pgadmin-hackers@postgresql.org>
 BuildRoot: %{_tmppath}/%{name}-root
 
 #
-# When rebuilding, wxWindows 2.5 CVS version > 20030607 is needed.
+# When rebuilding, wxWindows 2.5 CVS version is needed.
 # wxWindows 2.5 CVS (RPM and SRPMs) snapshots can be downloaded from
-# http://www.pgadmin.org/snapshots in the directory of your distribution.
-# 
+# http://www.pgadmin.org/pgadmin3/development.php page in the Snapshots section
+#
 
 BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
 
@@ -34,7 +29,7 @@ PostgreSQL Tools.
 %setup -q
 
 %build
-%configure --enable-debug --enable-static --with-wx-config=%{withwxconfig} --with-pgsql=%{withpgsql} --with-pgsql-include=%{withpgsqlinclude}
+%configure --enable-debug --enable-static --with-wx-config=%{withwxconfig}
 make all
 
 %install
