@@ -1,6 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
+// RCS-ID:      $Id$
 // Copyright (C) 2002 - 2003, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
@@ -12,13 +13,15 @@
 //       or in the dtor for reguarly changed settings such as form sizes.
 //////////////////////////////////////////////////////////////////////////
 
+#include "pgAdmin3.h"
+
+
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/config.h>
 #include <wx/url.h>
 
 // App headers
-#include "pgAdmin3.h"
 #include "sysSettings.h"
 #include "sysLogger.h"
 #include "misc.h"

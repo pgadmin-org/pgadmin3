@@ -1,12 +1,15 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
+// RCS-ID:      $Id$
 // Copyright (C) 2002 - 2003, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // dlgGroup.cpp - PostgreSQL Group Property
 //
 //////////////////////////////////////////////////////////////////////////
+
+#include "pgAdmin3.h"
 
 // wxWindows headers
 #include <wx/wx.h>
@@ -15,7 +18,6 @@
 #include "images/group.xpm"
 
 // App headers
-#include "pgAdmin3.h"
 #include "misc.h"
 #include "dlgGroup.h"
 #include "pgGroup.h"

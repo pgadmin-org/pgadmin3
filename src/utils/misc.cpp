@@ -1,12 +1,15 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
+// RCS-ID:      $Id$
 // Copyright (C) 2002 - 2003, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // misc.cpp - Miscellaneous Utilities
 //
 //////////////////////////////////////////////////////////////////////////
+
+#include "pgAdmin3.h"
 
 // wxWindows headers
 #include <wx/wx.h>
@@ -30,7 +33,6 @@
 // App headers
 #include "misc.h"
 #include "menu.h"
-#include "pgAdmin3.h"
 #include "frmMain.h"
 #include "frmHelp.h"
 

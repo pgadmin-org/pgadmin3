@@ -1,12 +1,15 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
+// RCS-ID:      $Id$
 // Copyright (C) 2002 - 2003, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // dlgAddTableView.h - The query builder dialog to add tables/views
 //
 //////////////////////////////////////////////////////////////////////////
+
+#include "pgAdmin3.h"
 
 // wxWindows headers
 #include <wx/notebook.h>
