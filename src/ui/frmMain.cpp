@@ -152,6 +152,9 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     helpMenu->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."),    wxT("Show a tip of the day."));
     helpMenu->AppendSeparator();
     helpMenu->Append(MNU_ABOUT, wxT("&About..."),                   wxT("Show about dialog."));
+#ifdef __WXMAC__
+    wxApp::s_macAboutMenuItemId = MNU_ABOUT;
+#endif 
     menuBar->Append(helpMenu, wxT("&Help"));
 
     // Tree Context Menu
