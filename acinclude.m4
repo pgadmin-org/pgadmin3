@@ -166,10 +166,10 @@ else
 fi], [
     AC_MSG_RESULT(yes)
     WX_HOME=/usr/local/wx2
-    if test ! -f "${WX_HOME}/include/wx/wx-2.5/wx.h"
+    if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h"
     then
         WX_HOME=/usr/local
-        if test ! -f "${WX_HOME}/include/wx/wx-2.5/wx.h"
+        if test ! -f "${WX_HOME}/include/wx-2.5/wx/wx.h"
         then
             WX_HOME=/usr
         fi
