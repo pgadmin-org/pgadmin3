@@ -132,7 +132,7 @@ void dlgSequence::OnChange(wxNotifyEvent &ev)
                || cbOwner->GetValue() != sequence->GetOwner()
                || txtStart->GetValue() != sequence->GetLastValue().ToString()
                || txtMin->GetValue() != sequence->GetMinValue().ToString()
-               || txtMax->GetValue() != sequence->GetMinValue().ToString()
+               || txtMax->GetValue() != sequence->GetMaxValue().ToString()
                || txtCache->GetValue() != sequence->GetCacheValue().ToString()
                || txtIncrement->GetValue() != sequence->GetIncrement().ToString()
                || chkCycled->GetValue() != sequence->GetCycled());
