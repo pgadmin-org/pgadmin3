@@ -23,16 +23,6 @@
 // Icons
 #include "images/pgAdmin3.xpm"
 
-// clientencoding
-wxString pg_clientencoding_tb[] =
-{
-	wxT("SQL_ASCII"), wxT("ALT"), wxT("BIG5"), wxT("EUC_CN"), wxT("EUC_JP"), wxT("EUC_KR"), wxT("EUC_TW"), wxT("GB18030"),
-	wxT("GBK"), wxT("ISO_8859_5"), wxT("ISO_8859_6"), wxT("ISO_8859_7"), wxT("ISO_8859_8"), wxT("JOHAB"), wxT("KOI8R"),
-	wxT("LATIN1"), wxT("LATIN2"), wxT("LATIN3"), wxT("LATIN4"), wxT("LATIN5"), wxT("LATIN6"), wxT("LATIN7"), wxT("LATIN8"),
-	wxT("LATIN9"), wxT("LATIN10"), wxT("MULE_INTERNAL"), wxT("SJIS"), wxT("TCVN"), wxT("UHC"), wxT("UTF8"), wxT("WIN1250"),
-	wxT("WIN1251"), wxT("WIN1256"), wxT("WIN874"), wxT("") 
-};
-
 extern wxLocale locale;
 extern wxArrayInt existingLangs;
 
@@ -49,7 +39,6 @@ extern wxArrayInt existingLangs;
 #define chkStickySql                CTRL("chkStickySql", wxCheckBox)
 #define chkDoubleClickProperties    CTRL("chkDoubleClickProperties", wxCheckBox)
 #define cbLanguage                  CTRL("cbLanguage", wxComboBox)
-#define cbClientEncoding            CTRL("cbClientEncoding", wxComboBox)
 
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
@@ -106,14 +95,6 @@ frmOptions::frmOptions(wxFrame *parent)
         }
     }
     cbLanguage->SetSelection(sel);
-
-    /* ClientEncoding */
-    int x;
-    for (x=0;pg_clientencoding_tb[x].Length() > 0;x++) {
-        cbClientEncoding->Append(pg_clientencoding_tb[x]);
-    }
-    int encodeNo = settings->Read(wxT("ClientEncoding"), (long)0);
-    cbClientEncoding->SetSelection(encodeNo);
 
 }
 
@@ -193,11 +174,6 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         }
 
     }
-       /*
-        * env is seen, and ibpq will send  clientencoding to the server.
-        */
-    int encodeNo = cbClientEncoding->GetSelection();
-    settings->Write(wxT("ClientEncoding"), (long)encodeNo);
     
     Destroy();
 }

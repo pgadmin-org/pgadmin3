@@ -30,14 +30,6 @@
 #include "pgSet.h"
 #include "sysLogger.h"
 
-// clientencoding
-typedef struct pg_clientencoding
-{
-	char *encoding;
-} pg_clientencoding;
-
-extern wxString pg_clientencoding_tb[];
-
 pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port)
 {
     wxLogInfo(wxT("Creating pgConn object"));
@@ -106,13 +98,24 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     conn = PQconnectdb(connstr.ToAscii());
     dbHost = server;
 
-    // clientencoding to .
+    // Set client encoding to Unicode/Ascii
     if (conn) 
     {
-       int encodeNo = settings->Read(wxT("ClientEncoding"), (long)0);
-       wxLogInfo(wxT("Setting client_encoding to '%s'"), pg_clientencoding_tb[encodeNo].c_str());
-       if (PQsetClientEncoding(conn, pg_clientencoding_tb[encodeNo].ToAscii()))
+
+#ifdef wxUSE_UNICODE
+
+       wxLogInfo(wxT("Setting client_encoding to 'UNICODE'"));
+       if (PQsetClientEncoding(conn, wxString::Format(wxT("UNICODE")).ToAscii()))
            wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
+
+#else
+
+       wxLogInfo(wxT("Setting client_encoding to 'SQL_ASCII'"));
+       if (PQsetClientEncoding(conn, wxString::Format(wxT("SQL_ASCII")).ToAscii()))
+           wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
+
+#endif
+
     }
 
 }
