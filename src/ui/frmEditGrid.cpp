@@ -271,54 +271,6 @@ void ctlSQLGrid::OnCellChange(wxGridEvent& event)
     // problems are fixed
 #else
 
-bool ctlSQLGrid::InsertRows(int pos, int numRows, bool updateLabels)
-{
-    bool done=wxGrid::InsertRows(pos, numRows, updateLabels);
-    m_numRows=m_table->GetNumberRows();
-    return done;
-}
-
-
-bool ctlSQLGrid::AppendRows(int numRows, bool updateLabels)
-{
-    bool done=wxGrid::AppendRows(numRows, updateLabels);
-    m_numRows=m_table->GetNumberRows();
-    return done;
-}
-
-
-bool ctlSQLGrid::DeleteRows(int pos, int numRows, bool updateLabels)
-{
-    bool done=wxGrid::DeleteRows(pos, numRows, updateLabels);
-    m_numRows=m_table->GetNumberRows();
-    return done;
-}
-
-
-bool ctlSQLGrid::InsertCols(int pos, int numCols, bool updateLabels)
-{
-    bool done=wxGrid::InsertCols(pos, numCols, updateLabels);
-    m_numCols=m_table->GetNumberCols();
-    return done;
-}
-
-
-bool ctlSQLGrid::AppendCols(int numCols, bool updateLabels)
-{
-    bool done=wxGrid::AppendCols(numCols, updateLabels);
-    m_numCols=m_table->GetNumberCols();
-    return done;
-}
-
-
-bool ctlSQLGrid::DeleteCols(int pos, int numCols, bool updateLabels)
-{
-    bool done=wxGrid::DeleteCols(pos, numCols, updateLabels);
-    m_numCols=m_table->GetNumberCols();
-    return done;
-}
-
-
 
 bool ctlSQLGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
 {
@@ -862,27 +814,31 @@ bool sqlTable::AppendRows(size_t rows)
 {
     rowsAdded += rows;
     GetLine(nRows + rowsAdded - rowsDeleted -1);
+
+    wxGridTableMessage msg(this, wxGRIDTABLE_NOTIFY_ROWS_APPENDED, rows);
+    GetView()->ProcessTableMessage(msg);
+
     return true;
 }
 
 
 bool sqlTable::DeleteRows(size_t pos, size_t rows)
 {
-    size_t i;
-    bool didSome=false;
+    size_t i=pos;
+    size_t rowsDone=0;
 
-    for (i=pos ; i < pos+rows ; i++)
+    while (i < pos+rows)
     {
         cacheLine *line=GetLine(pos);
         if (!line)
-            return didSome;
+            break;
 
         if (line->stored)
         {
             bool done=connection->ExecuteVoid(wxT(
                 "DELETE FROM ") + tableName + wxT(" WHERE ") + MakeKey(line));
             if (!done)
-                return didSome;
+                break;
 
             if ((int)pos < nRows - rowsDeleted)
             {
@@ -897,7 +853,7 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
                     rowsStored--;
                 addPool->Delete(pos - (nRows-rowsDeleted));
             }
-            didSome=true;
+            rowsDone++;
         }
         else
         {
@@ -906,9 +862,15 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
             for (j=0 ; j < nCols ; j++)
                 line->cols[j] = wxT("");
         }
+        i++;
     }
 
-    return didSome;
+    if (rowsDone > 0 && GetView())
+    {
+        wxGridTableMessage msg(this, wxGRIDTABLE_NOTIFY_ROWS_DELETED, pos, rowsDone);
+        GetView()->ProcessTableMessage(msg);
+    }
+    return (rowsDone != 0);
 }
 
 
@@ -977,13 +939,15 @@ cacheLinePool::cacheLinePool(int initialLines)
 
 cacheLinePool::~cacheLinePool()
 {
-    while (anzLines--)
-    {
-        if (ptr[anzLines])
-            delete ptr[anzLines];
-    }
     if (ptr)
+    {
+        while (anzLines--)
+        {
+            if (ptr[anzLines])
+                delete ptr[anzLines];
+        }
         delete[] ptr;
+    }
 }
 
 
@@ -992,14 +956,22 @@ void cacheLinePool::Delete(int lineNo)
 {
     if (ptr && lineNo >= 0 && lineNo < anzLines)
     {
+#if 1
         if (ptr[lineNo])
             delete ptr[lineNo];
+
         if (lineNo < anzLines-1)
         {
             // beware: overlapping copy
             memmove(ptr+lineNo, ptr+lineNo+1, sizeof(cacheLine*) * (anzLines-lineNo-1));
         }
-        ptr[anzLines]=0;
+#else
+        cacheLine *c;
+        c=ptr[0];
+        ptr[0]=ptr[1];
+        ptr[1]=c;
+#endif
+        ptr[anzLines-1]=0;
     }
 }
 
