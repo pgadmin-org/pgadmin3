@@ -20,6 +20,7 @@
 #include "pgAdmin3.h"
 #include "sysSettings.h"
 #include "sysLogger.h"
+#include "misc.h"
 
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
@@ -28,29 +29,25 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 	// so nothing will be logged, and it causes a memory leak
     // wxLogInfo(wxT("Creating sSettings object and loading settings"));
 
-    // frMain size/position
-    frmMainWidth = this->Read(wxT("frmMain/Width"), 750);
-    frmMainHeight = this->Read(wxT("frmMain/Height"), 550);
-    frmMainTop = this->Read(wxT("frmMain/Top"), 50);
-    frmMainLeft = this->Read(wxT("frmMain/Left"), 50);
-
     // Tip Of The Day
-    this->Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, TRUE); 
-    this->Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
+    Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, TRUE); 
+    Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
 
     // Log
-    this->Read(wxT("LogFile"), &logFile, wxT("pgadmin.log")); 
-    this->Read(wxT("LogLevel"), &logLevel, LOG_ERRORS);
+    Read(wxT("LogFile"), &logFile, wxT("pgadmin.log")); 
+    Read(wxT("LogLevel"), &logLevel, LOG_ERRORS);
 
     // Last Connection
-    this->Read(wxT("LastServer"), &lastServer, wxT("localhost")); 
-    this->Read(wxT("LastDatabase"), &lastDatabase, wxT("template1")); 
-    this->Read(wxT("LastUsername"), &lastUsername, wxT("postgres")); 
-    this->Read(wxT("LastPort"), &lastPort, 5432);
+    Read(wxT("LastServer"), &lastServer, wxT("localhost")); 
+    Read(wxT("LastDatabase"), &lastDatabase, wxT("template1")); 
+    Read(wxT("LastUsername"), &lastUsername, wxT("postgres")); 
+    Read(wxT("LastPort"), &lastPort, 5432);
 
     // Show System Objects
-    this->Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
+    Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
 
+    maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
+    askSaveConfirmation=StrToBool(Read(wxT("AskSaveConfirmation"), wxT("Yes")));
 }
 
 
@@ -58,10 +55,10 @@ sysSettings::~sysSettings()
 {
     wxLogInfo(wxT("Destroying sysSettings object and saving settings"));
     // frMain size/position
-    this->Write(wxT("frmMain/Width"), frmMainWidth);
-    this->Write(wxT("frmMain/Height"), frmMainHeight);
-    this->Write(wxT("frmMain/Top"), frmMainTop);
-    this->Write(wxT("frmMain/Left"), frmMainLeft);
+
+    Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
+    Write(wxT("frmQuery/MaxRows"), maxRows);
+    Write(wxT("AskSaveConfirmation"), BoolToYesNo(askSaveConfirmation));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,7 +68,7 @@ sysSettings::~sysSettings()
 void sysSettings::SetShowTipOfTheDay(const bool newval)
 {
     showTipOfTheDay = newval;
-    this->Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
+    
 }
 
 void sysSettings::SetNextTipOfTheDay(const int newval)

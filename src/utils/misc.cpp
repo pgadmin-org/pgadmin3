@@ -143,6 +143,34 @@ double StrToDouble(const wxString& value)
     return strtod(value.c_str(), 0);
 }
 
+
+void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0, const int h0)
+{
+    int scrW=wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
+    int scrH=wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
+
+    if (pos.x < 0)
+        pos.x = 0;
+    if (pos.y < 0)
+        pos.y = 0;
+
+    if (pos.x > scrW-w0)
+        pos.x = scrW-w0;
+    if (pos.y > scrH-h0)
+        pos.y = scrH-h0;
+    
+    if (size.GetWidth() < w0)
+        size.SetWidth(w0);
+    if (size.GetHeight() < h0)
+        size.SetHeight(h0);
+
+    if (size.GetWidth() > scrW)
+        size.SetWidth(scrW);
+    if (size.GetHeight() > scrH)
+        size.SetHeight(scrH);
+}
+
+
 wxString qtString(const wxString& value)
 {
     wxString result = value;	
@@ -208,4 +236,45 @@ bool IsValidIdentifier(wxString ident)
 	}
 
 	return TRUE;
+}
+
+
+queryTokenizer::queryTokenizer(const wxString& str, const char delim)
+: wxStringTokenizer()
+{
+    if (delim == ' ')
+        SetString(str, wxT(" \n\r\t"), wxTOKEN_RET_EMPTY_ALL);
+    else
+        SetString(str, delim, wxTOKEN_RET_EMPTY_ALL);
+    delimiter=delim;
+}
+
+wxString queryTokenizer::GetNextToken()
+{
+    // we need to override wxStringTokenizer, because we have to handle quotes
+    wxString str;
+
+    bool foundQuote=false;
+    do
+    {
+        wxString s=wxStringTokenizer::GetNextToken();
+        str.Append(s);
+        int quotePos;
+        do
+        {
+            quotePos = s.Find('"');
+            if (quotePos >= 0)
+            {
+                foundQuote = !foundQuote;
+                s = s.Mid(quotePos+1);
+            }
+        }
+        while (quotePos >= 0);
+
+        if (foundQuote)
+            str.Append(delimiter);
+    }
+    while (foundQuote & HasMoreTokens());
+ 
+    return str;
 }

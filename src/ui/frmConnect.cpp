@@ -24,23 +24,28 @@
 // Icons
 #include "images/pgAdmin3.xpm"
 
+
+// For some unknown reasons, if compiled as Win32-Release, this event table will not 
+// accept any frmConnect-functions! A crash will result if you try.
+
 BEGIN_EVENT_TABLE(frmConnect, wxDialog)
-    EVT_INIT_DIALOG(frmConnect::Init)
-    EVT_BUTTON (XRCID("btnOK"), frmConnect::OnOK)
-    EVT_BUTTON (XRCID("btnCancel"), frmConnect::OnCancel)
+EVT_BUTTON (XRCID("btnOK"),     wxDialog::OnOK)
+EVT_BUTTON (XRCID("btnCancel"), wxDialog::OnCancel)
 END_EVENT_TABLE()
 
-frmConnect::frmConnect(pgServer *parent, const wxString& server, const wxString& database, const wxString& username, int port)
-{
 
+
+
+frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& database, const wxString& username, int port)
+{
     wxLogInfo(wxT("Creating a connect dialogue"));
     extern sysSettings *settings;
 
-    wxXmlResource::Get()->LoadDialog(this, (wxFrame *) NULL, "frmConnect"); 
+    wxXmlResource::Get()->LoadDialog(this, form, "frmConnect"); 
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
-    Center();
+    CenterOnParent();
 
     // Setup the default values
     XRCCTRL(*this, "txtServer", wxTextCtrl)->SetValue(server);
@@ -49,8 +54,6 @@ frmConnect::frmConnect(pgServer *parent, const wxString& server, const wxString&
     wxString sport;
     sport.Printf("%d", port);
     XRCCTRL(*this, "txtPort", wxTextCtrl)->SetValue(sport);
-
-    objParent = parent;
 }
 
 frmConnect::~frmConnect()
@@ -59,37 +62,22 @@ frmConnect::~frmConnect()
 }
 
 
-void frmConnect::Init()
+int frmConnect::Go()
 {
-
-    // Set focus on the Password texbox.
+    // Set focus on the Password textbox and show modal
     XRCCTRL(*this, "txtPassword", wxTextCtrl)->SetFocus();
+    return ShowModal();
 }
 
-void frmConnect::OnOK()
+bool frmConnect::TransferDataFromWindow()
 {
-
     // Store the connection settings
     extern sysSettings *settings;
     settings->SetLastServer(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());
     settings->SetLastDatabase(XRCCTRL(*this, "txtDatabase", wxTextCtrl)->GetValue());
     settings->SetLastUsername(XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue());
     settings->SetLastPort(atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue().c_str()));
-
-    // Pass the settings back to the pgServer that called me
-    objParent->iSetName(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());
-    objParent->iSetDatabase(XRCCTRL(*this, "txtDatabase", wxTextCtrl)->GetValue());
-    objParent->iSetUsername(XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue());
-    objParent->iSetPassword(XRCCTRL(*this, "txtPassword", wxTextCtrl)->GetValue());
-    objParent->iSetPort(atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue().c_str()));
-
-    // Close the dialogue
-    this->EndModal(wxID_OK);
-}
-
-void frmConnect::OnCancel()
-{
-    this->EndModal(wxID_CANCEL);
+    return true;
 }
 
 wxString frmConnect::GetServer()

@@ -23,20 +23,19 @@
 class frmConnect : public wxDialog
 {
 public:
-    frmConnect(pgServer *parent, const wxString& server = wxString(""), const wxString& database = wxString(""), const wxString& username = wxString(""), int port = 5432);
+    frmConnect(wxFrame *form, const wxString& server = wxString(""), const wxString& database = wxString(""), const wxString& username = wxString(""), int port = 5432);
     ~frmConnect();
-    void Init();
+
     wxString GetServer();
     wxString GetDatabase();
     wxString GetUsername();
     wxString GetPassword();
     long GetPort();
     void LockFields();
+    int Go();
     
 private:
-    pgServer *objParent;
-    void OnOK();
-    void OnCancel();
+    bool TransferDataFromWindow();
     DECLARE_EVENT_TABLE()
 };
 

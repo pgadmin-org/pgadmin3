@@ -26,18 +26,6 @@ public:
     ~sysSettings();
 
     // frmMain size/position
-    int GetFrmMainWidth() const { return frmMainWidth; }
-    void SetFrmMainWidth(const int newval) { frmMainWidth = newval; }
-
-    int GetFrmMainHeight() const { return frmMainHeight; }
-    void SetFrmMainHeight(const int newval) { frmMainHeight = newval; }
-
-    int GetFrmMainTop() const { return frmMainTop; }
-    void SetFrmMainTop(const int newval) { frmMainTop = newval; }
-
-    int GetFrmMainLeft() const { return frmMainLeft; }
-    void SetFrmMainLeft(const int newval) { frmMainLeft = newval; }
-
     // frmQueryBuilder size/position
     wxSize GetFrmQueryBuilderSize();
     wxPoint GetFrmQueryBuilderPos();
@@ -65,18 +53,16 @@ public:
     void SetLastUsername(const wxString& newval);
     int GetLastPort() const { return lastPort; }
     void SetLastPort(const int newval);
+    long GetMaxRows() const { return maxRows; }
+    void SetMaxRows(const long l) { maxRows=l; }
+    bool GetAskSaveConfirmation() const { return askSaveConfirmation; }
+    void SetAskSaveConfirmation(const bool b) { askSaveConfirmation=b; }
 
     // Show System Objects
     bool GetShowSystemObjects() const { return showSystemObjects; }
     void SetShowSystemObjects(const bool newval);
 
 private:
-
-    // frmMain size/position
-    int frmMainWidth;
-    int frmMainHeight;
-    int frmMainTop;
-    int frmMainLeft;
 
     // Tip Of The Day
     bool showTipOfTheDay;
@@ -94,6 +80,8 @@ private:
 
     // Show System Objects
     bool showSystemObjects;
+    bool askSaveConfirmation;
+    long maxRows;
 };
 
 #endif

@@ -29,6 +29,9 @@ public:
     pgServer *GetServer() const { return server; }
     void SetServer(pgServer *newServer) { server = newServer; }
 
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
+    static void ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
+
 	// Keith 2002.03.04 --
 	// pgServer::ExecuteSet executes on an arbitrary database on the server,
 	// so I added this because it works on the correct database connection
@@ -45,7 +48,7 @@ public:
     void iSetAllowConnections(bool newVal) { allowConnections = newVal; }
     bool GetConnected() const { return connected; }
     bool GetSystemObject() const;
-    wxString GetSql() const;
+    wxString GetSql(wxTreeCtrl *browser);
 
     int Connect();
 

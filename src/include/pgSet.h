@@ -26,7 +26,7 @@ class pgSet
 public:
     pgSet(PGresult *newRes, PGconn *newConn);
     ~pgSet();
-    long NumRows() const { return PQntuples(res); }
+    long NumRows() const { return nRows; }
     long NumCols() const { return PQnfields(res); }
     void MoveNext();
     void MovePrevious();
@@ -49,7 +49,7 @@ public:
 private:
     PGconn *conn;
     PGresult *res;
-    long pos;
+    long pos, nRows;
     bool eof, bof;
     wxString ExecuteScalar(const wxString& sql) const;
 };

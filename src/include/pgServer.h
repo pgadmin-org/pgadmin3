@@ -20,6 +20,15 @@
 #include "pgObject.h"
 
 // Class declarations
+
+class pgServers: public pgObject
+{
+public:
+    pgServers() : pgObject(PG_SERVERS, wxString("Servers")) {}
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0) {};
+};
+
+
 class pgServer : public pgObject
 {
 public:
@@ -27,7 +36,7 @@ public:
     ~pgServer();
     int GetType() const { return PG_SERVER; }
     wxString GetTypeName() const { return wxString("Server"); }
-    int Connect(bool lockFields = FALSE);
+    int Connect(wxFrame *form, bool lockFields = FALSE);
     wxString GetIdentifier() const;
     wxString GetVersionString();
     float GetVersionNumber();
@@ -36,6 +45,11 @@ public:
     wxString GetUsername() const { return username; }
     wxString GetPassword() const { return password; }
     wxString GetLastError() const;
+    wxString GetLastDatabase() const { return lastDatabase; }
+    void SetLastDatabase(const wxString& s) { lastDatabase=s; }
+    wxString GetLastSchema() const { return lastSchema; }
+    void SetLastSchema(const wxString& s) { lastSchema=s; }
+
     int GetPort() const { return port; }
     bool GetConnected() const { return connected; }
     void iSetDatabase(const wxString& newVal) { database = newVal; }
@@ -47,11 +61,13 @@ public:
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
     pgSet *ExecuteSet(const wxString& sql) { 
 		return conn->ExecuteSet(sql); }
-
+    void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
+    
 private:
     pgConn *conn;
     bool connected;
     wxString database, username, password, ver, error;
+    wxString lastDatabase, lastSchema;
     int port;
     double lastSystemOID;
     float versionNum;

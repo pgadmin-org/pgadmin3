@@ -17,6 +17,36 @@
 #include "misc.h"
 #include "pgObject.h"
 #include "pgServer.h"
+#include "frmMain.h"
+
+
+// Must match the PG_OBJTYPE enumeration in pgObject.h
+char *typeNameList[] =
+{
+    "None",
+    "Servers",      "Server",       "Add Server",
+    "Databases",    "Databases",    "Add Database",
+    "Groups",       "Groups",       "Add Group",
+    "Users",        "Users",        "Add User",
+    "Languages",    "Language",     "Add Language",
+    "Schemas",      "Schema",       "Add Schema",
+    "Aggregates",   "Aggregate",
+    "Domains",      "Domain",
+    "Functions",    "Function",
+    "Operators",    "Operator",
+    "Sequences",    "Sequence",
+    "Tables",       "Table",
+    "Types",        "Type",
+    "Views",        "View",
+    "Checks",       "Check",
+    "Columns",      "Column",
+    "Foreign Keys", "Foreign Key",
+    "Indexes",      "Index",
+    "Rules",        "Rule",
+    "Triggers",     "Trigger",
+    "Unknown"
+};
+
 
 
 pgObject::pgObject(int newType, const wxString& newName)
@@ -25,90 +55,175 @@ pgObject::pgObject(int newType, const wxString& newName)
     wxLogInfo(wxT("Creating a pgObject object"));
 
     // Set the typename and type
+    if (newType >= PG_UNKNOWN)
+        newType = PG_UNKNOWN;
     type = newType;
-    switch(type){
-        case PG_NONE:
-            typeName = wxT("None");
-            break;
-
-        case PG_SERVERS:
-            typeName = wxT("Servers");
-            break;
-
-        case PG_ADD_SERVER:
-            typeName = wxT("Add Server");
-            break;
-
-        case PG_SERVER:
-            typeName = wxT("Server");
-            break;
-
-        case PG_DATABASES:
-            typeName = wxT("Databases");
-            break;
-
-        case PG_ADD_DATABASE:
-            typeName = wxT("Add Database");
-            break;
-
-        case PG_DATABASE:
-            typeName = wxT("Database");
-            break;
-
-        case PG_GROUPS:
-            typeName = wxT("Groups");
-            break;
-
-        case PG_ADD_GROUP:
-            typeName = wxT("Add Group");
-            break;
-
-        case PG_GROUP:
-            typeName = wxT("Group");
-            break;
-
-        case PG_USERS:
-            typeName = wxT("Users");
-            break;
-
-        case PG_ADD_USER:
-            typeName = wxT("Add User");
-            break;
-
-        case PG_USER:
-            typeName = wxT("User");
-            break;
-
-        case PG_LANGUAGES:
-            typeName = wxT("Languages");
-            break;
-
-        case PG_ADD_LANGUAGE:
-            typeName = wxT("Add Language");
-            break;
-
-        case PG_LANGUAGE:
-            typeName = wxT("Language");
-            break;
-
-        case PG_SCHEMAS:
-            typeName = wxT("Schemas");
-            break;
-
-        case PG_ADD_SCHEMA:
-            typeName = wxT("Add Schema");
-            break;
-
-        case PG_SCHEMA:
-            typeName = wxT("Schema");
-            break;
-
-        default:
-            typeName = wxT("None");
-            break;
-
-
-    }
+    typeName = typeNameList[type];
 
     name = newName;
+    expandedKids=false;
+}
+
+
+void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+{
+    StartMsg(wxT("Retrieving ") + typeName + wxT(" details"));
+    ShowTreeDetail(browser, form, properties, statistics, sqlPane);
+    EndMsg();
+}
+
+void pgObject::InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2)
+{
+    list->InsertItem(pos, str1, 0);
+    if (str2 != wxT(""))
+        list->SetItem(pos, 1, str2);
+}
+
+
+wxString pgObject::GetCommentSql()
+{
+    wxString cmt;
+    if (!comment.IsNull())
+    {
+        cmt = wxT("COMMENT ON ") + typeName + wxT(" ") + GetQuotedFullIdentifier() 
+            + wxT(" IS ") + qtString(comment) + wxT("\n");
+    }
+    return cmt;
+}
+
+
+
+wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
+{
+    wxString grant, str, user, grantOnType;
+    if (_grantOnType.IsNull())
+        grantOnType=GetTypeName();
+    else
+        grantOnType = _grantOnType;
+
+    if (!acl.IsNull())
+    {
+        queryTokenizer acls(acl.Mid(1, acl.Length()-2), ',');
+        while (acls.HasMoreTokens())
+        {
+            str=acls.GetNextToken();
+            if (str.Left(1) == '"')
+                str = str.Mid(1, str.Length()-2);
+            user=str.BeforeFirst('=');
+            str=str.Mid(user.Length()+1);
+            if (user == wxT(""))
+                user=wxT("public");
+            else
+            {
+                if (user.Left(6) == wxT("group "))
+                    user = wxT("GROUP ") + qtIdent(user.Mid(6));
+                else
+                    user = qtIdent(user);
+            }
+            wxString rights;
+            if (str == wxT("arwdRxt"))
+                rights = wxT("ALL");
+            else
+            {
+                if (str.Find('a') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("INSERT"));
+                }
+                if (str.Find('r') >= 0) 
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("SELECT"));
+                }
+                if (str.Find('w') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("UPDATE"));
+                }
+                if (str.Find('d') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("DELETE"));
+                }
+                if (str.Find('R') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("RULE"));
+                }
+                if (str.Find('x') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("REFERENCES"));
+                }
+                if (str.Find('t') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("TRIGGER"));
+                }
+                if (str.Find('U') >= 0)
+                {
+                    if (!rights.IsNull()) rights.Append(wxT(", "));
+                    rights.Append(wxT("USAGE"));
+                }
+            }
+            if (rights.IsNull())    grant += wxT("REVOKE ALL");
+            else                    grant += wxT("GRANT ") + rights;
+            
+            grant += wxT(" ON ") + grantOnType + wxT(" ");
+
+            if (noOwner)            grant += GetQuotedIdentifier();
+            else                    grant += GetQuotedFullIdentifier();
+
+            if (rights.IsNull())    grant += wxT(" FROM ");
+            else                    grant += wxT(" TO "); 
+                      
+            grant += user + wxT(";\n");
+        }
+    }
+    return grant;
+}
+
+pgSet *pgSchemaObject::ExecuteSet(const wxString& sql)
+{
+    return schema->GetDatabase()->ExecuteSet(sql);
+}
+
+
+
+void pgSchemaObject::SetButtons(frmMain *form, bool canVacuum)
+{
+    if (form)
+    {
+        wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier().c_str());
+        form->SetButtons(TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, canVacuum);
+        form->SetDatabase(schema->GetDatabase());
+    }
+}
+
+
+void pgSchemaObject::DisplayStatistics(wxListCtrl *statistics, const wxString& query)
+{
+    if (!statistics)
+        return;
+    wxString msg;
+    
+    msg.Printf(wxT("Displaying statistics for %s on %s"), GetTypeName().c_str(), GetSchema()->GetIdentifier().c_str());
+    wxLogInfo(msg);
+
+    // Add the statistics view columns
+    statistics->ClearAll();
+    statistics->InsertColumn(0, wxT("Statistic"), wxLIST_FORMAT_LEFT, 150);
+    statistics->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
+
+    pgSet *stats = ExecuteSet(query);
+    
+    if (stats)
+    {
+        int col=0;
+        while (col < stats->NumCols())
+            InsertListItem(statistics, col++, stats->ColName(col), stats->GetVal(col));
+
+        delete stats;
+    }
+
 }

@@ -11,6 +11,7 @@
 #ifndef PGADMIN3_H
 #define PGADMIN3_H
 
+
 // wxWindows headers
 #include <wx/wx.h>
 
@@ -18,7 +19,7 @@
 #include "sysSettings.h"
 
 // Application Versions & Name
-#define VERSION wxT("1.0.0 Devel")
+#define VERSION wxT("0.1.0 Devel")
 #define APPNAME_L wxT("pgAdmin III")
 #define APPNAME_S wxT("pgadmin3")
 const float SERVER_MIN_VERSION = 7.3f;
@@ -41,4 +42,5 @@ private:
     void LoadXrc(const wxString file);
 };
 
-#endif
+
+#endif // PGADMIN3_H

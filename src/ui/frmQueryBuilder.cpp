@@ -78,21 +78,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(frmQueryBuilder, wxMDIParentFrame)
 
-	EVT_SIZE(frmQueryBuilder::OnSize)
-	EVT_MENU(frmQueryBuilder::MNU_EXIT, frmQueryBuilder::OnExit)
-	EVT_MENU(frmQueryBuilder::MNU_ADDTABLEVIEW, 
-		frmQueryBuilder::OnAddTableView)
-    EVT_SASH_DRAGGED_RANGE(ID_SASH_WINDOW_BOTTOM, ID_SASH_WINDOW_BOTTOM, 
-		frmQueryBuilder::OnSashDrag)
-
+	EVT_SIZE(OnSize)
+	EVT_MENU(frmQueryBuilder::MNU_EXIT,         OnExit)
+	EVT_MENU(frmQueryBuilder::MNU_ADDTABLEVIEW, OnAddTableView)
 #ifdef __WXMSW__
-    EVT_CONTEXT_MENU(frmQueryBuilder::OnContextMenu)
+    EVT_CONTEXT_MENU(                           OnContextMenu)
 #else
-    EVT_RIGHT_UP(frmQueryBuilder::OnRightUp)
+    EVT_RIGHT_UP(                               OnRightUp)
 #endif
-
-	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK,OnNotebookPageChanged)
-	
+	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK,      OnNotebookPageChanged)
+    EVT_SASH_DRAGGED_RANGE(ID_SASH_WINDOW_BOTTOM, ID_SASH_WINDOW_BOTTOM, OnSashDrag)
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////

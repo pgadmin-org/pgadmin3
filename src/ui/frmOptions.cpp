@@ -18,14 +18,15 @@
 #include "frmOptions.h"
 #include "sysSettings.h"
 #include "sysLogger.h"
+#include "misc.h"
 
 // Icons
 #include "images/pgAdmin3.xpm"
 
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
-  EVT_BUTTON (XRCID("btnOK"), frmOptions::OnOK)
-  EVT_BUTTON (XRCID("btnCancel"), frmOptions::OnCancel)
-  EVT_BUTTON (XRCID("btnBrowseLogfile"), frmOptions::OnBrowseLogFile)
+  EVT_BUTTON (XRCID("btnOK"),               OnOK)
+  EVT_BUTTON (XRCID("btnCancel"),           OnCancel)
+  EVT_BUTTON (XRCID("btnBrowseLogfile"),    OnBrowseLogFile)
 END_EVENT_TABLE()
 
 frmOptions::frmOptions(wxFrame *parent)
@@ -38,18 +39,24 @@ frmOptions::frmOptions(wxFrame *parent)
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
-    Center();
+    CenterOnParent();
 
     XRCCTRL(*this, "txtLogfile", wxTextCtrl)->SetValue(settings->GetLogFile());
     XRCCTRL(*this, "radLoglevel", wxRadioBox)->SetSelection(settings->GetLogLevel());
+    XRCCTRL(*this, "txtMaxRows", wxTextCtrl)->SetValue(NumToStr(settings->GetMaxRows()));
+    XRCCTRL(*this, "chkAskSaveConfirm", wxCheckBox)->SetValue(!settings->GetAskSaveConfirmation());
+
 }
+
 
 frmOptions::~frmOptions()
 {
     wxLogInfo(wxT("Destroying an options dialogue"));
 }
 
-void frmOptions::OnOK()
+
+
+void frmOptions::OnOK(wxCommandEvent &ev)
 {
     extern sysSettings *settings;
 
@@ -80,15 +87,22 @@ void frmOptions::OnOK()
           settings->SetLogLevel(LOG_ERRORS);
           break;
     }
-    this->Destroy();
+
+    // Query parameter
+    wxString maxRows=XRCCTRL(*this, "txtMaxRows", wxTextCtrl)->GetValue();
+    settings->SetMaxRows(StrToLong(maxRows));
+
+    settings->SetAskSaveConfirmation(!(XRCCTRL(*this, "chkAskSaveConfirm", wxCheckBox)->IsChecked()));
+
+    Destroy();
 }
 
-void frmOptions::OnCancel()
+void frmOptions::OnCancel(wxCommandEvent &ev)
 {
-    this->Destroy();
+    Destroy();
 }
 
-void frmOptions::OnBrowseLogFile()
+void frmOptions::OnBrowseLogFile(wxCommandEvent &ev)
 {
     wxFileDialog logFile(this, wxT("Select log file"), wxT(""), wxT(""), wxT("Log files (*.log)|*.log|All files (*.*)|*.*"));
     logFile.SetDirectory(wxGetHomeDir());

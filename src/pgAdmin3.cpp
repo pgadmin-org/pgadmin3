@@ -64,6 +64,7 @@ bool pgAdmin3::OnInit()
       SetTopWindow(winSplash);
       winSplash->Show(TRUE);
 	  winSplash->Refresh();
+      wxYield();
     }
 	
     // Startup the windows sockets if required
@@ -94,7 +95,12 @@ bool pgAdmin3::OnInit()
 #endif
 
     // Create & show the main form
-    winMain = new frmMain(APPNAME_L, wxPoint(settings->GetFrmMainLeft(), settings->GetFrmMainTop()), wxSize(settings->GetFrmMainWidth(), settings->GetFrmMainHeight()));
+    wxPoint pos(settings->Read(wxT("frmMain/Left"), 50), settings->Read(wxT("frmMain/Top"), 50));
+    wxSize size(settings->Read(wxT("frmMain/Width"), 750), settings->Read(wxT("frmMain/Height"), 550));
+    CheckOnScreen(pos, size, 300, 200);
+
+    winMain = new frmMain(APPNAME_L, pos, size);
+
     if (!winMain) 
         wxLogFatalError(wxT("Couldn't create the main window!"));
 

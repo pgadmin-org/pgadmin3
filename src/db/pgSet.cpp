@@ -34,16 +34,20 @@ pgSet::pgSet(PGresult *newRes, PGconn *newConn)
     res = newRes;
 
     // Make sure we have tuples
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+    if (PQresultStatus(res) != PGRES_TUPLES_OK)
+    {
         wxString msg;
         msg.Printf(wxT("%s"), PQerrorMessage(conn));
         wxLogError(msg);
         eof = TRUE;
         bof = TRUE;
         pos = 0;
-    } else {
-        eof = FALSE;
-        bof = FALSE;
+    }
+    else
+    {
+        nRows = PQntuples(res);
+        eof = (nRows <= 0);
+        bof = true;
         pos = 1;
     }
 }
@@ -58,9 +62,8 @@ void pgSet::MoveNext()
 {
     // If pos = 0 then there aren't any tuples
     if (pos) {
-        long lRows = PQntuples(res);
-        if (pos >= lRows) { // Attempt to move past the last row
-            pos = lRows;
+        if (pos >= nRows) { // Attempt to move past the last row
+            pos = nRows;
             eof = TRUE;
             return;
         } else {
@@ -99,7 +102,7 @@ void pgSet::MoveFirst()
 void pgSet::MoveLast()
 {
     if(pos) {
-        pos = PQntuples(res);
+        pos = nRows;
         eof = FALSE;
         bof = FALSE;
     }
@@ -108,7 +111,7 @@ void pgSet::MoveLast()
 wxString pgSet::ColType(int col) const
 {
     wxString szSQL, szResult;
-    szSQL.Printf("SELECT typname FROM pg_type WHERE oid = %d", PQftype(res, col -1));
+    szSQL.Printf("SELECT typname FROM pg_type WHERE oid = %d", PQftype(res, col));
     szResult = ExecuteScalar(szSQL);
     return szResult;
 }
@@ -122,6 +125,8 @@ int pgSet::ColScale(int col) const
 wxString pgSet::GetVal(const wxString& colname) const
 {
     int col = PQfnumber(res, colname.c_str());
+    if (col < 0)
+        wxLogError(wxT("Column not found in pgSet: ") + colname);
     return GetVal(col);
 }
 

@@ -28,8 +28,8 @@ public:
     
 private:
     pgServer *server;
-    void OnOK();
-    void OnCancel();
+    void OnOK(wxCommandEvent& event);
+    void OnCancel(wxCommandEvent& event);
     DECLARE_EVENT_TABLE()
 };
 

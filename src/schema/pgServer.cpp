@@ -17,6 +17,7 @@
 #include "frmConnect.h"
 #include "pgServer.h"
 #include "pgObject.h"
+#include "pgCollection.h"
 
 
 pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const wxString& newUsername, int newPort)
@@ -48,35 +49,53 @@ pgServer::~pgServer()
     wxLogInfo(wxT("Destroying a pgServer object"));
 }
 
-int pgServer::Connect(bool lockFields) 
+
+int pgServer::Connect(wxFrame *form, bool lockFields) 
 {
     wxLogInfo(wxT("Getting connection details..."));
 
-	// Keith 2003.03.05
-	// It's simpler to use a reference for modal dialogs
-    frmConnect winConnect(this, this->GetName(), database, username, port);
-
-    if (lockFields) 
-		winConnect.LockFields();
-
-	switch (winConnect.ShowModal()) {
-		case wxID_OK:
-			break;
-		case wxID_CANCEL:
-	        return PGCONN_ABORTED;
-		default:
-	        wxLogError(wxT("Couldn't create a connection dialogue!"));
-		    return PGCONN_BAD;
-	}
-
     wxLogInfo(wxT("Attempting to create a connection object..."));
-	StartMsg(wxT("Connecting to database"));
-    conn = new pgConn(this->GetName(), database, username, password, port);   
-	if (!conn) {
-        wxLogError(wxT("Couldn't create a connection object!"));
-        return PGCONN_BAD;
-    }
+    StartMsg(wxT("Connecting to database without password"));
 
+//    if (lockFields && !database.IsNull() && !username.IsNull() && port)
+//        conn= new pgConn(GetName(), database, username, password, port);   
+
+    if (!conn)
+    {
+	    // Keith 2003.03.05
+	    // It's simpler to use a reference for modal dialogs
+        frmConnect winConnect(form, GetName(), database, username, port);
+
+        if (lockFields) 
+		    winConnect.LockFields();
+
+	    switch (winConnect.Go())
+        {
+		    case wxID_OK:
+			    break;
+		    case wxID_CANCEL:
+	            return PGCONN_ABORTED;
+		    default:
+	            wxLogError(wxT("Couldn't create a connection dialogue!"));
+		        return PGCONN_BAD;
+	    }
+
+        if (!lockFields)
+        {
+            iSetName(winConnect.GetServer());
+            iSetDatabase(winConnect.GetDatabase());
+            iSetUsername(winConnect.GetUsername());
+            iSetPort(winConnect.GetPort());
+        }
+        iSetPassword(winConnect.GetPassword());
+
+        StartMsg(wxT("Connecting to database"));
+        conn = new pgConn(GetName(), database, username, password, port);   
+	    if (!conn) {
+            wxLogError(wxT("Couldn't create a connection object!"));
+            return PGCONN_BAD;
+        }
+    }
     EndMsg();
     int status = conn->GetStatus();
     if (status == PGCONN_OK) {
@@ -166,4 +185,99 @@ wxString pgServer::GetLastError() const
         msg.Printf(wxT("%s"), conn->GetLastError().c_str());
     }
     return msg;
+}
+
+
+
+void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
+{
+    // Add child nodes if necessary
+    if (GetConnected()) {
+
+        // Reset password menu option
+//        form->fileMenu->Enable(MNU_PASSWORD, TRUE);
+
+        if (!expandedKids)
+        {
+            expandedKids=true;
+            // Log
+            
+            wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
+    
+            // Databases
+            pgCollection *collection = new pgCollection(PG_DATABASES, wxString("Databases"));
+            collection->SetServer(this);
+            browser->AppendItem(GetId(), collection->GetTypeName(), 2, -1, collection);
+      
+            // Groups
+            collection = new pgCollection(PG_GROUPS, wxString("Groups"));
+            collection->SetServer(this);
+            browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_GROUP, -1, collection);
+    
+            // Users
+            collection = new pgCollection(PG_USERS, wxString("Users"));
+            collection->SetServer(this);
+            browser->AppendItem(GetId(), collection->GetTypeName(), PGICON_USER, -1, collection);
+        }
+    }
+
+
+    if (properties)
+    {
+        wxLogInfo(wxT("Displaying properties for server ") + GetIdentifier());
+
+        // Add the properties view columns
+        properties->ClearAll();
+        properties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
+        properties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
+
+
+        // Display the Server properties
+        int pos=0;
+        InsertListItem(properties, pos++, wxT("Hostname"), GetName());
+        InsertListItem(properties, pos++, wxT("Port"), NumToStr((long)GetPort()));
+        InsertListItem(properties, pos++, wxT("Initial Database"), GetDatabase());
+        InsertListItem(properties, pos++, wxT("Username"), GetUsername());
+        if (GetConnected())
+        {
+            InsertListItem(properties, pos++, wxT("Version String"), GetVersionString());
+            InsertListItem(properties, pos++, wxT("Version Number"), NumToStr(GetVersionNumber()));
+            InsertListItem(properties, pos++, wxT("Last System OID"), NumToStr(GetLastSystemOID()));
+        }
+        InsertListItem(properties, pos++, wxT("Connected?"), BoolToYesNo(GetConnected()));
+    }
+
+    if(!GetConnected())
+        return;
+    
+    if (statistics)
+    {
+        wxLogInfo(wxT("Displaying statistics for server ") + GetIdentifier());
+
+        // Add the statistics view columns
+        statistics->ClearAll();
+        statistics->InsertColumn(0, wxT("Database"), wxLIST_FORMAT_LEFT, 100);
+        statistics->InsertColumn(1, wxT("PID"), wxLIST_FORMAT_LEFT, 50);
+        statistics->InsertColumn(2, wxT("User"), wxLIST_FORMAT_LEFT, 100);
+        statistics->InsertColumn(3, wxT("Current Query"), wxLIST_FORMAT_LEFT, 400);
+
+        pgSet *stats = ExecuteSet(wxT("SELECT datname, procpid, usename, current_query FROM pg_stat_activity"));
+        if (stats)
+        {
+            int pos=0;
+            while (!stats->Eof())
+            {
+                statistics->InsertItem(pos, stats->GetVal(wxT("datname")), 0);
+                statistics->SetItem(pos, 1, stats->GetVal(wxT("procpid")));
+                statistics->SetItem(pos, 2, stats->GetVal(wxT("usename")));
+                statistics->SetItem(pos, 3, stats->GetVal(wxT("current_query")));
+                stats->MoveNext();
+                pos++;
+            }
+
+	        // Keith 2003.03.05
+	        // Fixed memory leak
+	        delete stats;
+        }
+    }
 }

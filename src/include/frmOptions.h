@@ -25,9 +25,9 @@ public:
     ~frmOptions();
     
 private:
-    void OnOK();
-    void OnCancel();
-    void OnBrowseLogFile();
+    void OnOK(wxCommandEvent &ev);
+    void OnCancel(wxCommandEvent &ev);
+    void OnBrowseLogFile(wxCommandEvent &ev);
     DECLARE_EVENT_TABLE()
 };
 

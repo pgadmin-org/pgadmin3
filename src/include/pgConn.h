@@ -65,7 +65,9 @@ public:
     float GetVersionNumber();
     long GetLastSystemOID();
 
+    PGconn *connection() { return conn; }
 private:
+
     PGconn *conn;
     bool resolvedIP;
     wxString dbHost;

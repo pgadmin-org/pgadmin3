@@ -175,7 +175,6 @@ void dlgAddTableView::InitLists()
         wxString tName;
 		while (!tables->Eof()) {
             tName = tables->GetVal(wxT("relname"));
-            wxMessageBox(tName);
 			m_tablelist->Append(tName);
 			tables->MoveNext();
 		}

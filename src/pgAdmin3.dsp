@@ -110,11 +110,43 @@ SOURCE=.\db\pgSet.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\schema\pgAggregate.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgCheck.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgCollection.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pgColumn.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgDatabase.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgDomain.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgForeignKey.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgFunction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgIndex.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgLanguage.cpp
 # End Source File
 # Begin Source File
 
@@ -131,11 +163,43 @@ SOURCE=.\schema\pgObject.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pgOperator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgRule.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgSchema.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgSequence.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgServer.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pgTable.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgTrigger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgType.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgUser.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgView.cpp
 # End Source File
 # End Group
 # Begin Group "utils"
@@ -228,6 +292,10 @@ SOURCE=.\ui\frmOptions.cpp
 # Begin Source File
 
 SOURCE=.\ui\frmPassword.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ui\frmQuery.cpp
 # End Source File
 # Begin Source File
 
@@ -479,6 +547,10 @@ SOURCE=.\include\frmPassword.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\frmQuery.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\frmQueryBuilder.h
 # End Source File
 # Begin Source File
@@ -499,7 +571,19 @@ SOURCE=.\include\pgAdmin3.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\pgAggregate.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgCheck.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\pgCollection.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgColumn.h
 # End Source File
 # Begin Source File
 
@@ -511,7 +595,43 @@ SOURCE=.\include\pgDatabase.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\pgDomain.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgForeignKey.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgFunction.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgIndex.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgLanguage.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\pgObject.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgOperator.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgRule.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgSchema.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgSequence.h
 # End Source File
 # Begin Source File
 
@@ -523,7 +643,23 @@ SOURCE=.\include\pgSet.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\pgTable.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgTrigger.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgType.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\pgUser.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgView.h
 # End Source File
 # Begin Source File
 

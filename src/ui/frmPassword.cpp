@@ -22,8 +22,8 @@
 #include "images/pgAdmin3.xpm"
 
 BEGIN_EVENT_TABLE(frmPassword, wxDialog)
-  EVT_BUTTON (XRCID("btnOK"), frmPassword::OnOK)
-  EVT_BUTTON (XRCID("btnCancel"), frmPassword::OnCancel)
+  EVT_BUTTON (XRCID("btnOK"),       OnOK)
+  EVT_BUTTON (XRCID("btnCancel"),   OnCancel)
 END_EVENT_TABLE()
 
 frmPassword::frmPassword(wxFrame *parent)
@@ -35,7 +35,7 @@ frmPassword::frmPassword(wxFrame *parent)
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
-    Center();
+    CenterOnParent();
 }
 
 frmPassword::~frmPassword()
@@ -43,7 +43,7 @@ frmPassword::~frmPassword()
     wxLogInfo(wxT("Destroying a change password dialogue"));
 }
 
-void frmPassword::OnOK()
+void frmPassword::OnOK(wxCommandEvent& event)
 {
 
     // Is the old password right?
@@ -71,7 +71,7 @@ void frmPassword::OnOK()
     this->Destroy();
 }
 
-void frmPassword::OnCancel()
+void frmPassword::OnCancel(wxCommandEvent& event)
 {
     this->Destroy();
 }

@@ -23,7 +23,7 @@
 #include "images/splash.xpm"
 
 BEGIN_EVENT_TABLE(frmSplash, wxFrame)
-EVT_PAINT(frmSplash::OnPaint)
+EVT_PAINT(OnPaint)
 END_EVENT_TABLE()
 
 frmSplash::frmSplash(wxFrame *parent)
@@ -39,11 +39,11 @@ frmSplash::frmSplash(wxFrame *parent)
     splash = wxBitmap(splash_xpm);
     
     SetClientSize(splash.GetWidth(), splash.GetHeight());
-    wxString version = wxT("Version: ");
-    version.Append(VERSION);
-	(void)new wxPanel(this, -1, wxPoint(10,155), wxSize(0,0));
+    wxString version = wxT(" Version: " VERSION " ");
+
+    (void)new wxPanel(this, -1, wxPoint(10,155), wxSize(0,0));
 	(void)new wxStaticText(this, -1, version, wxPoint(10,155));
-    this->Center();
+    Center();
 }
 
 frmSplash::~frmSplash()

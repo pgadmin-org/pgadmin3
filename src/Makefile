@@ -19,19 +19,39 @@ LDFLAGS = $(WXDIR)/lib/libstc.a $(PGDIR)/lib/libpq.a $(WXDIR)/lib/libwxxrc.a /us
 OBJECTS = $(PROGRAM).o \
           db/pgConn.o \
           db/pgSet.o \
+          schema/pgAggregate.o \
+          schema/pgCheck.o \
           schema/pgCollection.o \
+          schema/pgColumn.o \
           schema/pgDatabase.o \
+          schema/pgDomain.o \
+          schema/pgForeignKey.o \
+          schema/pgFunction.o \
+          schema/pgIndex.o \
+          schema/pgLanguage.o \
           schema/pgObject.o \
+          schema/pgOperator.o \
+          schema/pgRule.o \
+          schema/pgSchema.o \
+          schema/pgSequence.o \
           schema/pgServer.o \
+          schema/pgTable.o \
+          schema/pgTrigger.o \
+          schema/pgType.o \
           schema/pgUser.o \
+          schema/pgView.o \
           ui/browser.o \
           ui/ctlSQLBox.o \
+          ui/dlgAddTableView.cpp \
           ui/events.o \
           ui/frmAbout.o \
+          ui/frmChildTableViewFrame.cpp \
           ui/frmConnect.o \
           ui/frmMain.o \
           ui/frmOptions.o \
           ui/frmPassword.o \
+          ui/frmQuery.o \
+          ui/frmQueryBuilder.o \
           ui/frmSplash.o \
           ui/frmUpgradeWizard.o \
           ui/statistics.o \

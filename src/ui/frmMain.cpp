@@ -37,6 +37,10 @@
 #include "pgCollection.h"
 #include "frmQueryBuilder.h"
 
+
+#include <wx/listimpl.cpp>
+WX_DEFINE_LIST(frameList);
+
 // Icons
 #include "images/aggregate.xpm"
 #include "images/arguments.xpm"
@@ -55,6 +59,7 @@
 #include "images/index.xpm"
 #include "images/indexcolumn.xpm"
 #include "images/language.xpm"
+#include "images/key.xpm"
 #include "images/namespace.xpm"
 #include "images/operator.xpm"
 #include "images/pgAdmin3.xpm"
@@ -78,14 +83,16 @@
 #include "images/vacuum.xpm"
 #include "images/view.xpm"
 #include "images/viewdata.xpm"
+    
+
 
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
-    extern sysSettings *settings;
 
 	// Current database
 	m_database = NULL;
+    denyCollapseItem=wxTreeItemId();
 
     // Icon
     SetIcon(wxIcon(pgAdmin3_xpm));
@@ -167,6 +174,13 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     SetStatusText(wxT("Ready."), 1);
     SetStatusText(wxT("0 Secs"), 2);
 
+
+    wxAcceleratorEntry entries[1];
+    entries[0].Set(wxACCEL_NORMAL, WXK_F5, MNU_REFRESH);
+    wxAcceleratorTable accel(1, entries);
+    SetAcceleratorTable(accel);
+
+
     // Toolbar bar
     CreateToolBar();
 
@@ -208,10 +222,15 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolBar->EnableTool(BTN_STOP, FALSE);
     
     // Setup the vertical splitter & treeview
-    wxSplitterWindow* vertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
-    wxSplitterWindow* horizontal = new wxSplitterWindow(vertical, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
+    vertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
+    horizontal = new wxSplitterWindow(vertical, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
     browser = new wxTreeCtrl(vertical, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
-    vertical->SplitVertically(browser, horizontal, 200);
+    int splitpos=settings->Read(wxT("frmMain/SplitVertical"), 200);
+    if (splitpos < 50)
+        splitpos = 50;
+    if (splitpos > GetSize().x-50)
+        splitpos = GetSize().x-50;
+    vertical->SplitVertically(browser, horizontal, splitpos);
     vertical->SetMinimumPaneSize(50);
 
     // Setup the horizontal splitter for the listview & sql pane
@@ -222,8 +241,13 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     listViews->AddPage(statistics, wxT("Statistics"));
     sqlPane = new ctlSQLBox(horizontal, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
     sqlPane->SetBackgroundColour(*wxLIGHT_GREY);
-    sqlPane->SetReadOnly(TRUE);
-    horizontal->SplitHorizontally(listViews, sqlPane, 300);
+
+    splitpos=settings->Read(wxT("frmMain/SplitHorizontal"), 300);
+    if (splitpos < 50)
+        splitpos = 50;
+    if (splitpos > GetSize().y-50)
+        splitpos = GetSize().y-50;
+    horizontal->SplitHorizontally(listViews, sqlPane, splitpos);
     horizontal->SetMinimumPaneSize(50);
 
     //Setup a Browser imagelist
@@ -249,13 +273,18 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     browserImages->Add(wxIcon(group_xpm));
     browserImages->Add(wxIcon(baddatabase_xpm));
     browserImages->Add(wxIcon(closeddatabase_xpm));
+    browserImages->Add(wxIcon(domain_xpm));
+    browserImages->Add(wxIcon(check_xpm));
+    browserImages->Add(wxIcon(column_xpm));
+    browserImages->Add(wxIcon(relationship_xpm));
+    browserImages->Add(wxIcon(index_xpm));
+    browserImages->Add(wxIcon(rule_xpm));
+    browserImages->Add(wxIcon(trigger_xpm));
+    browserImages->Add(wxIcon(key_xpm));
 
     // Add the root node
-    pgObject *serversObj = new pgObject(PG_SERVERS, wxString("Servers"));
-    servers = browser->AddRoot(wxT("Servers"), 0, -1, serversObj);
-    pgObject *addServerObj = new pgObject(PG_ADD_SERVER, wxString("Add Server"));
-    browser->AppendItem(servers, wxT("Add Server..."), 0, -1, addServerObj);
-    browser->Expand(servers);
+    pgObject *serversObj = new pgServers();
+    servers = browser->AddRoot(wxT("Servers"), PGICON_SERVER, -1, serversObj);
 
     // Setup the property imagelist
 	// Keith 2003.03.05
@@ -284,15 +313,19 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     // Load servers
     RetrieveServers();
+    browser->Expand(servers);
 }
 
 frmMain::~frmMain()
 {
-    extern sysSettings *settings;
-    settings->SetFrmMainWidth(GetSize().x);
-    settings->SetFrmMainHeight(GetSize().y);
-    settings->SetFrmMainLeft(GetPosition().x);
-    settings->SetFrmMainTop(GetPosition().y);
+    StoreServers();
+
+    settings->Write(wxT("frmMain/Width"), GetSize().x);
+    settings->Write(wxT("frmMain/Height"), GetSize().y);
+    settings->Write(wxT("frmMain/Left"), GetPosition().x);
+    settings->Write(wxT("frmMain/Top"), GetPosition().y);
+    settings->Write(wxT("frmMain/SplitHorizontal"), horizontal->GetSashPosition());
+    settings->Write(wxT("frmMain/SplitVertical"), vertical->GetSashPosition());
 
     // Clear the treeview
     browser->DeleteAllItems();
@@ -306,23 +339,117 @@ frmMain::~frmMain()
 	delete statistics;
 }
 
+
+
+void frmMain::RemoveFrame(wxFrame *frame)
+{
+    frames.DeleteObject(frame);
+}
+
+wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
+{
+    wxTreeItemId item, lastItem;
+    wxString lastDatabase=server->GetLastDatabase();
+    if (lastDatabase.IsNull())
+        return item;
+
+   long cookie;
+    pgObject *data;
+    item = browser->GetFirstChild(server->GetId(), cookie);
+    while (item)
+    {
+        data = (pgObject *)browser->GetItemData(item);
+        if (data->GetType() == PG_DATABASES)
+            break;
+        // Get the next item
+        item = browser->GetNextChild(item, cookie);
+    }
+    if (!item)
+        return item;
+
+    // found DATABASES item
+    data->ShowTree(this, browser, 0, 0, 0);
+    lastItem=item;
+
+    item = browser->GetFirstChild(item, cookie);
+    while (item)
+    {
+        data = (pgObject *)browser->GetItemData(item);
+        if (data->GetType() == PG_DATABASE && data->GetName() == lastDatabase)
+            break;
+        // Get the next item
+        item = browser->GetNextChild(item, cookie);
+    }
+    if (!item)
+        return lastItem;
+
+    // found last DATABASE 
+    data->ShowTree(this, browser, 0, 0, 0);
+    lastItem = item;
+
+    wxString lastSchema=server->GetLastSchema();
+    if (lastSchema.IsNull())
+        return lastItem;
+
+    item = browser->GetFirstChild(item, cookie);
+    while (item)
+    {
+        data = (pgObject *)browser->GetItemData(item);
+        if (data->GetType() == PG_SCHEMAS)
+            break;
+        // Get the next item
+        item = browser->GetNextChild(item, cookie);
+    }
+    if (!item)
+        return lastItem;
+
+    // found SCHEMAS item
+    data->ShowTree(this, browser, 0, 0, 0);
+    lastItem=item;
+
+    item = browser->GetFirstChild(item, cookie);
+    while (item)
+    {
+        data = (pgObject *)browser->GetItemData(item);
+        if (data->GetType() == PG_SCHEMA && data->GetName() == lastSchema)
+            break;
+        // Get the next item
+        item = browser->GetNextChild(item, cookie);
+    }
+
+    return (item ? item : lastItem);
+}
+
 void frmMain::ReconnectServer(pgServer *server)
 {
     // Create a server object and connect it.
-    int res = server->Connect(TRUE);
+    int res = server->Connect(this, TRUE);
+
     // Check the result, and handle it as appropriate
     if (res == PGCONN_OK) {
         wxLogInfo(wxT("pgServer object initialised as required."));
-        browser->SetItemImage(server->GetId(), 0, wxTreeItemIcon_Normal);
-        browser->SetItemImage(server->GetId(), 0, wxTreeItemIcon_Selected);
-		browser->Collapse(servers);
-        browser->Expand(servers);
-		browser->SelectItem(servers);
-		browser->SelectItem(server->GetId());
-		
+        browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Normal);
+        browser->SetItemImage(server->GetId(), PGICON_SERVER, wxTreeItemIcon_Selected);
+
+//        browser->Collapse(servers);
+//        browser->Expand(servers);
+        
+//        browser->SelectItem(servers);
+//        browser->SelectItem(server->GetId());
+        server->ShowTreeDetail(browser);
+        wxTreeItemId item=RestoreEnvironment(server);
+        if (item)
+        {
+            browser->SelectItem(item);
+
+            // the following doesn't work. Who knows why?
+            wxYield();
+            browser->Expand(item);
+            browser->EnsureVisible(item);
+        }
     } else if (res == PGCONN_DNSERR)  {
         delete server;
-        OnAddServer();
+        OnAddServer(wxCommandEvent());
 
     } else if (res == PGCONN_BAD)  {
         wxString msg;
@@ -373,6 +500,14 @@ void frmMain::StoreServers()
             // Username
             key.Printf("Servers/Username%d", numServers);
             settings->Write(key, server->GetUsername());
+
+            // last Database
+            key.Printf("Servers/LastDatabase%d", numServers);
+            settings->Write(key, server->GetLastDatabase());
+
+            // last Schema
+            key.Printf("Servers/LastSchema%d", numServers);
+            settings->Write(key, server->GetLastSchema());
         }
 
         // Get the next item
@@ -398,7 +533,7 @@ void frmMain::RetrieveServers()
     settings->Read(wxT("Servers/Count"), &numServers, 0);
 
     int loop, port;
-    wxString key, servername, database, username;
+    wxString key, servername, database, username, lastDatabase, lastSchema;
     pgServer *server;
 
     for (loop = 1; loop <= numServers; ++loop) {
@@ -419,14 +554,24 @@ void frmMain::RetrieveServers()
         key.Printf("Servers/Username%d", loop);
         settings->Read(key, &username, wxT(""));
 
+        // last Database
+        key.Printf("Servers/LastDatabase%d", loop);
+        settings->Read(key, &lastDatabase, wxT(""));
+
+        // last Schema
+        key.Printf("Servers/LastSchema%d", loop);
+        settings->Read(key, &lastSchema, wxT(""));
+
         // Add the Server node
         server = new pgServer(servername, database, username, port);
-        browser->AppendItem(servers, server->GetIdentifier(), 1, -1, server);
+        server->SetLastDatabase(lastDatabase);
+        server->SetLastSchema(lastSchema);
+        browser->AppendItem(servers, server->GetIdentifier(), PGICON_SERVERBAD, -1, server);
     }
 
     // Reset the Servers node text
     wxString label;
-    label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE) - 1);
+    label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
     browser->SetItemText(servers, label);
 }
 
@@ -445,13 +590,14 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	fileMenu->Enable(MNU_PROPERTIES, properties);
 	toolsMenu->Enable(MNU_CONNECT, FALSE);
 	toolsMenu->Enable(MNU_DISCONNECT, FALSE);
-	toolsMenu->Enable(MNU_QUERYBUILDER, FALSE);
+	toolsMenu->Enable(MNU_QUERYBUILDER, sql);
 	viewMenu->Enable(MNU_REFRESH, refresh);
 	treeContextMenu->Enable(MNU_DROP, drop);
 	treeContextMenu->Enable(MNU_CONNECT, FALSE);
 	treeContextMenu->Enable(MNU_DISCONNECT, FALSE);
 	treeContextMenu->Enable(MNU_REFRESH, refresh);
 	treeContextMenu->Enable(MNU_PROPERTIES, properties);
-	treeContextMenu->Enable(MNU_QUERYBUILDER, FALSE);
+	treeContextMenu->Enable(MNU_QUERYBUILDER, sql);
 
 }
+

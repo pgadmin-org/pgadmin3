@@ -2,25 +2,51 @@
 <resource>
   <object class="wxDialog" name="frmOptions">
     <title>Options</title>
-    <size>370, 470</size>
+    <size>370, 270</size>
     <style>wxSTAY_ON_TOP|wxDIALOG_MODAL|wxCAPTION|wxSYSTEM_MENU</style>
     <object class="wxNotebook" name="nbOptions">
+      <object class="notebookpage">
+        <label>&amp;General</label>
+        <selected>1</selected>
+        <object class="wxPanel" name="pnlGeneral">
+          <object class="wxCheckBox" name="chkAskSaveConfirm">
+            <label>Do not prompt for unsaved files on exit</label>
+            <pos>10, 20</pos>
+            <size>200, 23</size>
+          </object>
+	</object>
+      </object>
+      <object class="notebookpage">
+        <label>&amp;Query</label>
+        <object class="wxPanel" name="pnlQuery">
+          <object class="wxStaticText" name="lblMaxRows">
+            <label>Maximum rows to retrieve</label>
+            <pos>10,20</pos>
+          </object>
+          <object class="wxTextCtrl" name="txtMaxRows">
+            <value>100</value>
+            <pos>150, 16</pos>
+            <size>50, 23</size>
+            <tooltip>Maximums rows to retrieve into output window; 0 = unlimited</tooltip>
+	  </object>
+	</object>
+      </object>
       <object class="notebookpage">
         <label>&amp;Logging</label>
         <object class="wxPanel" name="pnlLogging">
           <object class="wxStaticText" name="lblLogfile">
             <label>Logfile (%ID will be replaced with the Process ID)</label>
-            <pos>10,60</pos>
+            <pos>10,20</pos>
           </object>
           <object class="wxTextCtrl" name="txtLogfile">
             <value>pgadmin3_%ID.log</value>
-            <pos>10, 75</pos>
+            <pos>10, 35</pos>
             <size>295, 23</size>
             <tooltip>Enter a filename to write application logs to.</tooltip>
           </object>
           <object class="wxButton" name="btnBrowseLogfile">
             <label>...</label>
-            <pos>305, 75</pos>
+            <pos>305, 35</pos>
             <size>30, 23</size>
             <tooltip>Browse for a logfile.</tooltip>
           </object>
@@ -33,30 +59,29 @@
               <item>&amp;Debug (not recommended for normal use)</item>
             </content>
             <selection>1</selection>
-            <pos>65, 180</pos>
+            <pos>65, 80</pos>
             <tooltip>Select the level of detail to record in the logfile.</tooltip>
           </object>
         </object>
-        <selected>1</selected>
       </object>
       <pos>5, 5</pos>
-      <size>360, 430</size>
+      <size>360, 230</size>
     </object>
     <object class="wxButton" name="btnOK">
       <label>&amp;OK</label>
       <default>1</default>
-      <pos>200, 440</pos>
+      <pos>200, 240</pos>
       <size>80, 25</size>
       <tooltip>Accept the current settings and close the dialogue.</tooltip>
     </object>
     <object class="wxButton" name="btnCancel">
       <label>&amp;Cancel</label>
       <default>0</default>
-      <pos>285, 440</pos>
+      <pos>285, 240</pos>
       <size>80, 25</size>
       <tooltip>Cancel any changes and close the dialogue.</tooltip>
     </object>
     <pos>0, 0</pos>
-    <size>370, 470</size>
+    <size>370, 270</size>
   </object>
 </resource>
