@@ -112,9 +112,14 @@ pgObject *pgLanguage::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             language->iSetValidatorProc(languages->GetVal(wxT("lanval")));
             language->iSetTrusted(languages->GetBool(wxT("lanpltrusted")));
 
-            collection->AppendBrowserItem(browser, language);
+            if (browser)
+            {
+                collection->AppendBrowserItem(browser, language);
 	
-			languages->MoveNext();
+			    languages->MoveNext();
+            }
+            else
+                break;
         }
 
 		delete languages;
