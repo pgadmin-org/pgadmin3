@@ -10,16 +10,16 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/treectrl.h>
 
 // App headers
 #include "../../pgAdmin3.h"
 #include "../../ui/forms/frmConnect.h"
 #include "pgServer.h"
+#include "pgObject.h"
 
 
 pgServer::pgServer(wxFrame *parent)
-: wxTreeItemData()
+: pgObject()
 {  
     wxLogDebug(wxT("Creating a pgServer object"));
     winParent = parent;
@@ -28,6 +28,11 @@ pgServer::pgServer(wxFrame *parent)
 pgServer::~pgServer()
 {
     wxLogDebug(wxT("Destroying a pgServer object"));
+}
+
+wxString pgServer::GetType()
+{
+    return wxString("Server");
 }
 
 int pgServer::Connect() {
@@ -59,6 +64,15 @@ wxString pgServer::GetIdentifier()
     wxString szID;
     szID.Printf(wxT("%s:%d"), szServer, lPort);
     return wxString(szID);
+}
+
+wxString pgServer::GetServerVersion()
+{
+    static wxString szVer;
+    if (szVer.IsEmpty()) {
+      szVer = cnMaster->GetServerVersion();
+    }
+    return szVer;
 }
 
 wxString pgServer::GetServer()
@@ -97,7 +111,7 @@ void pgServer::SetPassword(wxString& szNewVal)
     szPassword = szNewVal;
 }
 
-long pgServer::GetPort()
+unsigned long pgServer::GetPort()
 {
     return lPort;
 }

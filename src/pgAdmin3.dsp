@@ -139,6 +139,10 @@ SOURCE=.\db\pg\pgConn.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pg\pgObject.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pg\pgServer.cpp
 # End Source File
 # Begin Source File
@@ -188,6 +192,10 @@ SOURCE=.\pgAdmin3.h
 # Begin Source File
 
 SOURCE=.\db\pg\pgConn.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pg\pgObject.h
 # End Source File
 # Begin Source File
 

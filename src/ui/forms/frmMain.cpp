@@ -31,6 +31,7 @@
 #include "../controls/ctlSQLBox.h"
 #include "../../db/pg/pgConn.h"
 #include "../../schema/pg/pgServer.h"
+#include "../../schema/pg/pgObject.h"
 
 // Icons
 #include "../../images/aggregate.xpm"
@@ -82,6 +83,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_OPTIONS, frmMain::OnOptions)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_UPGRADEWIZARD, frmMain::OnUpgradeWizard)
+    EVT_TREE_SEL_CHANGED(CTL_BROWSER, frmMain::OnSelChanged)
 END_EVENT_TABLE()
 
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -128,15 +130,11 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     SetMenuBar(mnuBar);
 
     // Status bar
-    CreateStatusBar(6);
-    static const int iWidths[6] = {-1, 50, 100, 100, 100, 100};
-    SetStatusWidths(6, iWidths);
+    CreateStatusBar(2);
+    static const int iWidths[6] = {-1, 100};
+    SetStatusWidths(2, iWidths);
     SetStatusText(wxT("Ready."), 0);
     SetStatusText(wxT("0 Secs"), 1);
-    SetStatusText(wxT("Object: None"), 2);
-    SetStatusText(wxT("Schema: None"), 3);
-    SetStatusText(wxT("Database: None"), 4);
-    SetStatusText(wxT("Server: None"), 5);
 
     // Toolbar bar
 
@@ -179,17 +177,17 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     // Setup the vertical splitter & treeview
     wxSplitterWindow* splVertical = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
     wxSplitterWindow* splHorizontal = new wxSplitterWindow(splVertical, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
-    tvBrowser = new wxTreeCtrl(splVertical, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
+    tvBrowser = new wxTreeCtrl(splVertical, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
     splVertical->SplitVertically(tvBrowser, splHorizontal, 200);
     splVertical->SetMinimumPaneSize(50);
 
     // Setup the horizontal splitter for the listview & sql pane
     wxNotebook* nbListViews = new wxNotebook(splHorizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
-    lvProperties = new wxListCtrl(nbListViews, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
-    lvStatistics = new wxListCtrl(nbListViews, -1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
+    lvProperties = new wxListCtrl(nbListViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
+    lvStatistics = new wxListCtrl(nbListViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
     nbListViews->AddPage(lvProperties, wxT("Properties"));
     nbListViews->AddPage(lvStatistics, wxT("Statistics"));
-    txtSQLPane = new ctlSQLBox(splHorizontal, -1, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
+    txtSQLPane = new ctlSQLBox(splHorizontal, CTL_SQLPANE, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
     txtSQLPane->SetBackgroundColour(*wxLIGHT_GREY);
     splHorizontal->SplitHorizontally(nbListViews, txtSQLPane, 300);
     splHorizontal->SetMinimumPaneSize(50);
@@ -226,15 +224,8 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     ilProperties->Add(wxIcon(property_xpm));
 
     // Add some listview items
-    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 100);
+    lvProperties->InsertColumn(0, wxT("Property"), wxLIST_FORMAT_LEFT, 150);
     lvProperties->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 400);
-
-    // This is the bit that puts it all on one line over 2 colums
-    lvProperties->InsertItem(0, wxT("Property #1"), 0);
-    lvProperties->SetItem(0, 1, wxT("Property #1a"));
-
-    lvProperties->InsertItem(1, wxT("Property #2"), 0);
-    lvProperties->SetItem(1, 1, wxT("Property #2a"));
 
     //Setup a listview imagemap
     wxImageList *ilStatistics = new wxImageList(16, 16);
@@ -307,16 +298,54 @@ void frmMain::OnAddServer(wxCommandEvent& event)
     int iRes = objServer->Connect();
     if (iRes == PGCONN_OK) {
         wxLogInfo(wxT("pgServer object initialised as required."));
-        wxTreeItemId itmServer = tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 0);
-        objServer->SetId(itmServer);
+        wxTreeItemId itmServer = tvBrowser->AppendItem(itmServers, objServer->GetIdentifier(), 0, -1, objServer);
         tvBrowser->Expand(itmServers);
     } else if (iRes == PGCONN_BAD)  {
         wxString szMsg;
         szMsg.Printf(wxT("Error connecting to the server: %s"), objServer->cnMaster->GetLastError());
-        wxLogMessage(wxT(szMsg));
+        wxLogError(wxT(szMsg));
         delete objServer;
     } else {
         wxLogInfo(wxT("pgServer object didn't initialise because the user aborted."));
         delete objServer;
     }
+}
+
+void frmMain::OnSelChanged(wxTreeEvent& event)
+{
+    lvProperties->DeleteAllItems();
+    lvStatistics->DeleteAllItems();
+
+    // If this is the root node, exit.
+    wxTreeItemId itmX = event.GetItem();
+    if (tvBrowser->GetItemText(itmX) == wxT("Servers")) {
+        return;
+    }
+
+    // Get the item data (the database object).
+    pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
+    wxString szType(itmData->GetType());
+
+    if (szType == wxT("Server")) {
+        tvServer((pgServer *)itmData);
+    }
+
+}
+
+void frmMain::tvServer(pgServer *objServer)
+{
+    // Display the Server properties
+    // This is the bit that puts it all on one line over 2 colums
+    lvProperties->InsertItem(0, wxT("Hostname"), 0);
+    lvProperties->SetItem(0, 1, objServer->GetServer());
+    lvProperties->InsertItem(0, wxT("Port"), 0);
+    wxString szTemp;
+    szTemp.Printf("%d", objServer->GetPort());
+    lvProperties->SetItem(0, 1, szTemp);
+    lvProperties->InsertItem(0, wxT("Initial Database"), 0);
+    lvProperties->SetItem(0, 1, objServer->GetDatabase());
+    lvProperties->InsertItem(0, wxT("Username"), 0);
+    lvProperties->SetItem(0, 1, objServer->GetUsername());
+    lvProperties->InsertItem(0, wxT("Server Version"), 0);
+    lvProperties->SetItem(0, 1, objServer->GetServerVersion());
 }

@@ -41,7 +41,7 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
             break;
         case wxLOG_Message:
             szType = wxT("MESSAGE");
-            szPreamble = wxT("Message:\n\n");
+            szPreamble = wxT("");
             iIcon = wxICON_INFORMATION;
             break;
         case wxLOG_Info:

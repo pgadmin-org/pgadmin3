@@ -11,6 +11,7 @@ LDFLAGS = `wx-config --libs` -lstc -lpq
 
 OBJECTS = $(PROGRAM).o \
           db/pg/pgConn.o \
+          schema/pg/pgObject.o \
           schema/pg/pgServer.o \
           ui/forms/frmAbout.o \
           ui/forms/frmConnect.o \
@@ -34,6 +35,8 @@ $(PROGRAM):	$(OBJECTS)
 
 clean:
 	rm -f *.o $(PROGRAM)
-	rm -f ui/*.o
+  rm -f db/pg/*.o
+  rm -f schema/pg/*.o
 	rm -f ui/forms/*.o
+  rm -f ui/controls/*.o
 	rm -f utils/*.o

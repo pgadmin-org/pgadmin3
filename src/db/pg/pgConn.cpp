@@ -89,6 +89,52 @@ pgConn::~pgConn()
     PQfinish(objConn);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Execute SQL
+//////////////////////////////////////////////////////////////////////////
+
+int pgConn::ExecuteVoid(wxString& szSQL)
+{
+    // Execute the query and get the status.
+    PGresult *qryRes;
+    wxString szMsg;
+    szMsg.Printf(wxT("Executing void query: %s"), szSQL);
+    wxLogInfo(szMsg);
+    qryRes = PQexec(objConn, szSQL.c_str());
+    int iRes = PQresultStatus(qryRes);
+
+    // Cleanup & exit
+    PQclear(qryRes);
+    return iRes;
+}
+
+wxString pgConn::ExecuteScalar(wxString& szSQL)
+{
+    // Execute the query and get the status.
+    PGresult *qryRes;
+    wxString szMsg;
+    szMsg.Printf(wxT("Executing scalar query: %s"), szSQL);
+    wxLogInfo(szMsg);
+    qryRes = PQexec(objConn, szSQL.c_str());
+    if (PQresultStatus(qryRes) != PGCONN_TUPLES_OK) {
+        return wxString("");
+    }
+
+    // Retrieve the query result and return it.
+    wxString szResult;
+    szResult.Printf("%s", PQgetvalue(qryRes, 0, 0));
+    szMsg.Printf(wxT("Query result: %s"), szResult);
+    wxLogInfo(szMsg);
+
+    // Cleanup & exit
+    PQclear(qryRes);
+    return szResult;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Info
+//////////////////////////////////////////////////////////////////////////
+
 wxString pgConn::GetUser()
 {
   return wxString(PQuser(objConn));
@@ -134,3 +180,7 @@ wxString pgConn::GetLastError()
   return wxString(PQerrorMessage(objConn));
 }
 
+wxString pgConn::GetServerVersion()
+{
+  return ExecuteScalar(wxString("SELECT version();"));
+}

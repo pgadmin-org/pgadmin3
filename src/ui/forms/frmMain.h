@@ -20,6 +20,7 @@
 // App headers
 #include "../../pgAdmin3.h"
 #include "../controls/ctlSQLBox.h"
+#include "../../schema/pg/pgServer.h"
 
 // Class declarations
 class frmMain : public wxFrame
@@ -44,6 +45,8 @@ private:
     void OnExit(wxCommandEvent& event);
     void OnUpgradeWizard(wxCommandEvent& event);
     void OnOptions(wxCommandEvent& event);
+    void OnSelChanged(wxTreeEvent& event);
+    void tvServer(pgServer *objServer);
     DECLARE_EVENT_TABLE()
 };
 
@@ -76,6 +79,15 @@ enum
     BTN_VACUUM = 208,
     BTN_RECORD = 209,
     BTN_STOP = 210
+};
+
+// Controls
+enum
+{
+    CTL_BROWSER = 301,
+    CTL_PROPVIEW = 302,
+    CTL_STATVIEW = 303,
+    CTL_SQLPANE = 304
 };
 
 #endif

@@ -18,16 +18,19 @@
 // App headers
 #include "../../pgAdmin3.h"
 #include "../../db/pg/pgConn.h"
+#include "pgObject.h"
 
 // Class declarations
-class pgServer : public wxTreeItemData
+class pgServer : public pgObject
 {
 public:
     pgServer(wxFrame *parent);
     ~pgServer();
+    virtual wxString GetType();
     pgConn *cnMaster;
     int Connect();
     wxString GetIdentifier();
+    wxString GetServerVersion();
     wxString GetServer();
     void SetServer(wxString& szNewVal);
     wxString GetDatabase();
@@ -36,12 +39,12 @@ public:
     void SetUsername(wxString& szNewVal);
     wxString GetPassword();
     void SetPassword(wxString& szNewVal);
-    long GetPort();
+    unsigned long GetPort();
     void SetPort(long lNewVal);
 
 private:
     wxString szServer, szDatabase, szUsername, szPassword;
-    long lPort;
+    unsigned long lPort;
     wxFrame *winParent;
 };
 
