@@ -551,18 +551,20 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
     {
         wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 
             + data->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+
+        browser->SetItemData(currentItem, 0);
         delete data;
 
         if (newData)
         {
             wxLogInfo(wxT("Replacing with new Node ") + newData->GetTypeName() + wxT(" ") 
                 + newData->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+            newData->SetId(currentItem);    // not done automatically
             browser->SetItemData(currentItem, newData);
         }
         else
         {
             wxLogInfo(wxT("No object to replace: vanished after refresh."));
-            browser->SetItemData(currentItem, 0);
             browser->Delete(currentItem);
             return;
         }
