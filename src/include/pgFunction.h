@@ -41,6 +41,8 @@ public:
     void iSetLanguage(const wxString& s) { language = s; }
     wxString GetVolatility() const { return volatility; }
     void iSetVolatility(const wxString& s) { volatility = s; }
+    wxString GetSource() const { return source; }
+    void iSetSource(const wxString& s) { source=s; }
     long GetArgCount() const { return argCount; }
     void iSetArgCount(long ac) { argCount = ac; }
     bool GetReturnAsSet() const { return returnAsSet; }
@@ -50,11 +52,13 @@ public:
     bool GetIsStrict() const { return isStrict; }
     void iSetIsStrict(bool b) { isStrict = b; }
 
+    wxString GetSql(wxTreeCtrl *browser);
+
 protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxString(""));
 
 private:
-    wxString argTypeOids, argTypes, returnType, language, volatility;
+    wxString argTypeOids, argTypes, returnType, language, volatility, source;
     bool returnAsSet, secureDefiner, isStrict;
     long argCount;
 };

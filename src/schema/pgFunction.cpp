@@ -40,6 +40,29 @@ pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newNam
 }
 
 
+wxString pgFunction::GetSql(wxTreeCtrl *browser)
+{
+    if (sql.IsNull())
+    {
+        sql = wxT("CREATE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(")+GetArgTypes()
+            + wxT(") RETURNS ") + GetReturnType() 
+            + wxT(" AS  '\n")
+            + GetSource()
+            + wxT("\n'  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
+
+        if (GetIsStrict())
+            sql += wxT(" STRICT");
+        if (GetSecureDefiner())
+            sql += wxT(" SECURE DEFINER");
+        sql += wxT(";\n");
+
+        // GetSecureDefiner()
+    }
+
+    return sql;
+}
+
+
 void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {
     SetButtons(form);
@@ -58,12 +81,12 @@ void pgFunction::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *
     InsertListItem(properties, pos++, wxT("Arguments"), GetArgTypes());
     InsertListItem(properties, pos++, wxT("Returns"), GetReturnType());
     InsertListItem(properties, pos++, wxT("Language"), GetLanguage());
-    // Source
-    InsertListItem(properties, pos++, wxT("Return a Set?"), BoolToYesNo(GetReturnAsSet()));
+    InsertListItem(properties, pos++, wxT("Returns a Set?"), BoolToYesNo(GetReturnAsSet()));
+    InsertListItem(properties, pos++, wxT("Source"), GetSource());
     InsertListItem(properties, pos++, wxT("Volatility"), GetVolatility());
     InsertListItem(properties, pos++, wxT("Secure Definer?"), BoolToYesNo(GetSecureDefiner()));
-    InsertListItem(properties, pos++, wxT("Strict"), BoolToYesNo(GetIsStrict()));
-    InsertListItem(properties, pos++, wxT("System Function"), BoolToYesNo(GetSystemObject()));
+    InsertListItem(properties, pos++, wxT("Strict?"), BoolToYesNo(GetIsStrict()));
+    InsertListItem(properties, pos++, wxT("System Function?"), BoolToYesNo(GetSystemObject()));
     InsertListItem(properties, pos++, wxT("Comment"), GetComment());
 }
 
@@ -131,11 +154,12 @@ void pgFunction::ShowTreeCollection(pgCollection *collection, frmMain *form, wxT
                 function->iSetSecureDefiner(StrToBool(functions->GetVal(wxT("prosecdef"))));
                 function->iSetReturnAsSet(StrToBool(functions->GetVal(wxT("proretset"))));
                 function->iSetIsStrict(StrToBool(functions->GetVal(wxT("proisstrict"))));
+                function->iSetSource(functions->GetVal(wxT("prosrc")));
                 wxString vol=functions->GetVal(wxT("provolatile"));
                 function->iSetVolatility(
-                    vol.IsSameAs("i") ? wxT("immutable") : 
-                    vol.IsSameAs("s") ? wxT("stable") :
-                    vol.IsSameAs("v") ? wxT("volatile") : wxT("unknown"));
+                    vol.IsSameAs("i") ? wxT("IMMUTABLE") : 
+                    vol.IsSameAs("s") ? wxT("STABLE") :
+                    vol.IsSameAs("v") ? wxT("VOLATILE") : wxT("unknown"));
 
                 browser->AppendItem(collection->GetId(), function->GetFullName(), PGICON_FUNCTION, -1, function);
 	    
