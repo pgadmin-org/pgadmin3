@@ -118,6 +118,7 @@ include/images/trigger.xpm include/images/type.xpm \
 include/images/unique.xpm include/images/unknown.xpm \
 include/images/user.xpm include/images/vacuum.xpm \
 include/images/viewdata.xpm include/images/view.xpm \
+ui/common/*.xrc \
 ui/af_ZA/pgadmin3.po \
 ui/ar/pgadmin3.po \
 ui/ar_SA/pgadmin3.po \
@@ -146,7 +147,7 @@ ui/ur_PK/pgadmin3.po \
 ui/zh_CN/pgadmin3.po \
 ui/zh_TW/pgadmin3.po
 
-nobase_dist_pkgdata_DATA = ui/common/*.xrc \
+nobase_dist_pkgdata_DATA = \
 ui/wxstd.mo \
 ui/pgadmin3.lng \
 ui/af_ZA/pgadmin3.mo \
