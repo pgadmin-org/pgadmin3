@@ -16,6 +16,7 @@
 #define CTRLID_TXT  101
 #define CTRLID_CAL  102
 #define CTRLID_BTN  103
+#define CTRLID_PAN  104
 
 BEGIN_EVENT_TABLE(wxCalendarBox, wxControl)
     EVT_BUTTON(CTRLID_BTN, wxCalendarBox::OnClick)
@@ -92,7 +93,8 @@ bool wxCalendarBox::Create(wxWindow *parent,
     m_dlg->Connect(wxID_ANY, wxID_ANY, wxEVT_ACTIVATE, (wxObjectEventFunction)&wxCalendarBox::OnActivate, 0, this);
     m_dlg->SetFont(GetFont());
 
-    m_cal = new wxCalendarCtrl(m_dlg, CTRLID_CAL, wxDefaultDateTime, wxPoint(0,0), wxDefaultSize, wxSUNKEN_BORDER);
+    wxPanel *panel=new wxPanel(m_dlg, CTRLID_PAN, wxPoint(0, 0), wxDefaultSize, wxSUNKEN_BORDER|wxCLIP_CHILDREN);
+    m_cal = new wxCalendarCtrl(panel, CTRLID_CAL, wxDefaultDateTime, wxPoint(0,0), wxDefaultSize, wxSUNKEN_BORDER);
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_SEL_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     m_cal->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, (wxObjectEventFunction)&wxCalendarBox::OnCalKey, 0, this);
 
@@ -102,37 +104,37 @@ bool wxCalendarBox::Create(wxWindow *parent,
     m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_YEAR_CHANGED, (wxObjectEventFunction)&wxCalendarBox::OnSelChange, 0, this);
     Connect(wxID_ANY, wxID_ANY, wxEVT_SET_FOCUS, (wxObjectEventFunction)&wxCalendarBox::OnSetFocus);
 
-#if 1
-    // GetBestSize doesn't work correctly
-    // until corrected, we calculate it ourselves
-    wxSize siz=m_cal->GetBestSize();
-    wxClientDC dc(this);
+    wxWindow *yearControl = m_cal->GetYearControl();
+
+    wxClientDC dc(yearControl);
     dc.SetFont(m_font);
-
-    wxCoord width, dummy, width2=0;
-
+    wxCoord width, dummy;
     dc.GetTextExtent(wxT("2000"), &width, &dummy);
+    width += ConvertDialogToPixels(wxSize(18,0)).x;
 
-    wxDateTime::Month month;
-    for ( month = wxDateTime::Jan; month <= wxDateTime::Dec; wxNextMonth(month) )
+    wxSize calSize = m_cal->GetSize();
+    wxSize yearSize = yearControl->GetSize();
+    if (yearSize.x < width)
+        yearSize.x = width;
+
+    wxPoint yearPosition = yearControl->GetPosition();
+    if (yearPosition.x + yearSize.x < calSize.x)
     {
-        wxCoord tmpwidth;
-        dc.GetTextExtent(wxDateTime::GetMonthName(month), &tmpwidth, &dummy);
-        if (tmpwidth > width2)
-            width2 = tmpwidth;
+        width = calSize.x;
+        yearControl->Move(calSize.x - yearSize.x, yearPosition.y);
     }
+    else if (yearPosition.x + yearSize.x > calSize.x)
+    {
+        width = yearPosition.x + yearSize.x;
+        m_cal->Move((width - calSize.x) / 2, 0);
+        m_cal->GetMonthControl()->Move(0, 0);
+        yearControl->Move(width - yearSize.x, yearPosition.y);
+    }
+    yearControl->SetSize(yearSize);
 
 
-    width += width2 + 15 + 2*ConvertDialogToPixels(wxSize(18,0)).x;
-
-    if (width > siz.x)
-        siz.x = width;
-
-    m_cal->SetSize(siz);
-#endif
-
-
-    m_dlg->SetClientSize(m_cal->GetSize());
+    panel->SetClientSize(width, calSize.y);
+    m_dlg->SetClientSize(panel->GetSize() + wxSize(0,0));
 
     return TRUE;
 }
