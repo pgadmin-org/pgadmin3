@@ -119,9 +119,6 @@ wxString dlgView::GetSql()
             sql += wxT("ALTER TABLE ") + view->GetQuotedFullIdentifier()
                 +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
         }
-        if (cbOwner->GetValue() != view->GetOwner())
-            sql += wxT("ALTER TABLE ") + qtIdent(name)
-                +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
     }
 
     if (!view || txtSqlBox->GetText() != oldDefinition)
@@ -130,6 +127,12 @@ wxString dlgView::GetSql()
             + txtSqlBox->GetText()
             + wxT(";\n");
     }
+
+	if (view)
+		AppendOwnerChange(sql, wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
+	else
+		AppendOwnerNew(sql, wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
+
 
     sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + schema->GetQuotedPrefix() + qtIdent(name));
 
