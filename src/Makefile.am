@@ -96,7 +96,7 @@ include/images/properties.xpm include/images/property.xpm \
 include/images/public.xpm include/images/query_cancel.xpm \
 include/images/query_execute.xpm \
 include/images/query_explain.xpm \
-include/images/refresh.xpm \ include/images/relationship.xpm \
+include/images/refresh.xpm include/images/relationship.xpm \
 include/images/reload.xpm include/images/rule.xpm \
 include/images/sequence.xpm include/images/serverbad.xpm \
 include/images/servers.xpm include/images/server.xpm \
