@@ -130,6 +130,10 @@ SOURCE=.\schema\pgColumn.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\schema\pgConstraints.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\schema\pgConversion.cpp
 # End Source File
 # Begin Source File
@@ -155,6 +159,10 @@ SOURCE=.\schema\pgGroup.cpp
 # Begin Source File
 
 SOURCE=.\schema\pgIndex.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\schema\pgIndexConstraint.cpp
 # End Source File
 # Begin Source File
 
@@ -361,234 +369,6 @@ SOURCE=.\ui\frmVacuum.cpp
 # Begin Group "include"
 
 # PROP Default_Filter ""
-# Begin Group "images"
-
-# PROP Default_Filter "xpm"
-# Begin Source File
-
-SOURCE=.\images\aggregate.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\arguments.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\baddatabase.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\check.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\clip_copy.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\clip_cut.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\clip_paste.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\closeddatabase.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\column.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\connect.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\create.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\database.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\domain.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\drop.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\edit_clear.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\edit_find.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\edit_redo.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\edit_undo.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\encoding.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\event.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\file_open.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\file_save.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\function.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\group.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\hiproperty.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\index.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\indexcolumn.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\language.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\namespace.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\operator.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\pgAdmin3.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\pgAdmin3.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\properties.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\property.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\public.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\query_cancel.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\query_execute.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\include\images\query_explain.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\refresh.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\relationship.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\rule.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\sequence.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\server.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\serverbad.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\splash.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\sql.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\statistics.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\storage.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\table.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\trigger.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\type.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\unknown.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\user.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\vacuum.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\view.xpm
-# End Source File
-# Begin Source File
-
-SOURCE=.\images\viewdata.xpm
-# End Source File
-# End Group
 # Begin Group "ui includes"
 
 # PROP Default_Filter "*.h"
@@ -686,6 +466,10 @@ SOURCE=.\include\pgConn.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\pgConstraints.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\pgConversion.h
 # End Source File
 # Begin Source File
@@ -711,6 +495,10 @@ SOURCE=.\include\pgGroup.h
 # Begin Source File
 
 SOURCE=.\include\pgIndex.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\pgIndexConstraint.h
 # End Source File
 # Begin Source File
 
@@ -783,6 +571,278 @@ SOURCE=.\include\dlgProperty.h
 # Begin Source File
 
 SOURCE=.\include\dlgUser.h
+# End Source File
+# End Group
+# Begin Group "images"
+
+# PROP Default_Filter "*.xpm"
+# Begin Source File
+
+SOURCE=.\include\images\aggregate.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\arguments.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\baddatabase.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\cast.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\check.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\clip_copy.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\clip_cut.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\clip_paste.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\closeddatabase.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\closedown.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\closeup.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\column.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\connect.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\constraints.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\conversion.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\create.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\database.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\dnd_copy.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\dnd_move.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\dnd_none.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\domain.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\drop.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\edit_clear.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\edit_find.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\edit_redo.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\edit_undo.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\file_open.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\file_save.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\foreignkey.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\function.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\group.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\index.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\indexcolumn.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\key.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\language.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\namespace.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\operator.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\operatorclass.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\pgAdmin3.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\primarykey.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\properties.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\property.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\public.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\query_cancel.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\query_execute.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\query_explain.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\refresh.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\relationship.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\rule.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\sequence.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\server.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\serverbad.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\servers.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\splash.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\sql.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\statistics.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\storage.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\table.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\trigger.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\triggerfunction.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\type.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\unique.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\unknown.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\user.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\vacuum.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\view.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\viewdata.xpm
 # End Source File
 # End Group
 # Begin Source File
