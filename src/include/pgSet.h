@@ -29,20 +29,20 @@ public:
     ~pgSet();
     long NumRows() const { return nRows; }
     long NumCols() const { return PQnfields(res); }
-    void MoveNext();
-    void MovePrevious();
-    void MoveFirst();
-    void MoveLast();
+
+    void MoveNext() { if (pos <= nRows) pos++; }
+    void MovePrevious() { if (pos > 0) pos--; }
+    void MoveFirst() { if (nRows) pos=1; else pos=0; }
+    void MoveLast() { pos=nRows; }
+    void Locate(long l) { pos=l; }
     long CurrentPos() const { return pos; }
-    bool Eof() const { return eof; }
-    bool Bof() const { return bof; }
+    bool Bof() const { return (!nRows || pos < 1); }
+    bool Eof() const { return (!nRows || pos > nRows); }
 	
-	// Keith 2003.03.04 --
-	// pglib column names are zero based, so I replaced col+1 with col
     wxString ColName(int col) const { return wxString(PQfname(res, col)); }
 
     wxString ColType(int col) const;
-    int ColSize(int col) const { return PQfsize(res, col + 1); }
+    int ColSize(int col) const { return PQfsize(res, col); }
     int ColScale(int col) const;
     wxString GetVal(int col) const { return wxString(PQgetvalue(res, pos -1, col)); }
     wxString GetVal(const wxString& col) const;
@@ -61,7 +61,6 @@ private:
     PGconn *conn;
     PGresult *res;
     long pos, nRows;
-    bool eof, bof;
     wxString ExecuteScalar(const wxString& sql) const;
 };
 

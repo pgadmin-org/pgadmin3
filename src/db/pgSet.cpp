@@ -15,11 +15,14 @@
 #include <libpq-fe.h>
 
 // Network headers
+
+#if 0
 #ifdef __WXMSW__
     #include <winsock.h>
 #else
     #include <arpa/inet.h>
     #include <netdb.h>
+#endif
 #endif
 
 // App headers
@@ -39,18 +42,16 @@ pgSet::pgSet(PGresult *newRes, PGconn *newConn)
     {
         wxLogError(wxT("%s"), PQerrorMessage(conn));
 
-        eof = TRUE;
-        bof = TRUE;
+        nRows = 0;
         pos = 0;
     }
     else
     {
         nRows = PQntuples(res);
-        eof = (nRows <= 0);
-        bof = true;
-        pos = 1;
+        MoveFirst();
     }
 }
+
 
 pgSet::~pgSet()
 {
@@ -58,55 +59,6 @@ pgSet::~pgSet()
     PQclear(res);
 }
 
-void pgSet::MoveNext()
-{
-    // If pos = 0 then there aren't any tuples
-    if (pos) {
-        if (pos >= nRows) { // Attempt to move past the last row
-            pos = nRows;
-            eof = TRUE;
-            return;
-        } else {
-            ++pos;
-            eof = FALSE;
-            return;
-        }
-    }
-}
-
-void pgSet::MovePrevious()
-{
-    // If pos = 0 then there aren't any tuples
-    if (pos) {
-        if (pos <= 1) { // Attempt to move past the first row
-            pos = 1;
-            bof = TRUE;
-            return;
-        } else {
-            --pos;
-            eof = FALSE;
-            return;
-        }
-    }
-}
-
-void pgSet::MoveFirst()
-{
-    if(pos) {
-        pos = 1;
-        eof = FALSE;
-        bof = FALSE;
-    }
-}
-
-void pgSet::MoveLast()
-{
-    if(pos) {
-        pos = nRows;
-        eof = FALSE;
-        bof = FALSE;
-    }
-}
 
 wxString pgSet::ColType(int col) const
 {
