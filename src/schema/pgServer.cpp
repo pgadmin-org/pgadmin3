@@ -271,11 +271,14 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
 	            switch (dlg.Go())
                 {
 		            case wxID_OK:
+						wxTheApp->Yield();
 			            break;
 		            case wxID_CANCEL:
                     case -1:
+						wxTheApp->Yield();
 	                    return PGCONN_ABORTED;
 		            default:
+						wxTheApp->Yield();
 	                    wxLogError(__("Couldn't create a connection dialogue!"));
 		                return PGCONN_BAD;
 	            }
