@@ -45,7 +45,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "include/" /I "c:/wxWidgets-2.5.3/include" /I "c:/wxWidgets-2.5.3/contrib/include" /I "c:/wxWidgets-2.5.3/lib/mswd" /I "c:/postgresql/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /FAcs /FR /FD /c
 # SUBTRACT BASE CPP /YX /Yc /Yu
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "c:/wxWidgets-2.5.3/include" /I "c:/wxWidgets-2.5.3/contrib/include" /I "c:/postgresql/include" /I "include/" /I "agent/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /Yu"pgadmin3.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "c:/wxWidgets-2.5.3/include" /I "c:/wxWidgets-2.5.3/contrib/include" /I "c:/postgresql/include" /I "include/" /I "agent/include" /I "slony/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "SSL" /FAcs /Yu"pgadmin3.h" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "include/" /I "c:/wxWidgets-2.5.3/include" /I "c:/wxWidgets-2.5.3/contrib/include" /I "c:/wxWidgets-2.5.3/lib/mswd" /I "c:/postgresql/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /FAcs /FR /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "c:/wxWidgets-2.5.3/include" /I "c:/wxWidgets-2.5.3/contrib/include" /I "c:/postgresql/include" /I "include/" /I "agent/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgadmin3.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /O2 /Ob2 /I "c:/wxWidgets-2.5.3/include" /I "c:/wxWidgets-2.5.3/contrib/include" /I "c:/postgresql/include" /I "include/" /I "agent/include" /I "slony/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D wxUSE_UNICODE=1 /D "_UNICODE" /D "UNICODE" /D "EMBED_XRC" /D "SSL" /FAcs /FR /Yu"pgadmin3.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /i "c:/wxWidgets-2.5.3/include" /i "c:/wxWidgets-2.5.3/contrib/include" /d "NDEBUG"
@@ -1555,101 +1555,77 @@ SOURCE=.\include\xh_timespin.h
 # PROP Default_Filter "*.h"
 # Begin Source File
 
-SOURCE=.\slony\dlgRepCluster.h
+SOURCE=.\slony\include\dlgRepCluster.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\dlgRepListen.h
+SOURCE=.\slony\include\dlgRepListen.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\dlgRepPath.h
+SOURCE=.\slony\include\dlgRepNode.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\dlgRepProperty.h
+SOURCE=.\slony\include\dlgRepPath.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\dlgRepSequence.h
+SOURCE=.\slony\include\dlgRepProperty.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\dlgRepSet.h
+SOURCE=.\slony\include\dlgRepSequence.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\dlgRepSubscription.h
+SOURCE=.\slony\include\dlgRepSet.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\dlgRepTable.h
+SOURCE=.\slony\include\dlgRepSubscription.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slCluster.h
+SOURCE=.\slony\include\dlgRepTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slListen.h
+SOURCE=.\slony\include\slCluster.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slNode.h
+SOURCE=.\slony\include\slListen.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slObject.h
+SOURCE=.\slony\include\slNode.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slPath.h
+SOURCE=.\slony\include\slObject.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slSequence.h
+SOURCE=.\slony\include\slPath.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slSet.h
+SOURCE=.\slony\include\slSequence.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slSubscription.h
+SOURCE=.\slony\include\slSet.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\slony\slTable.h
+SOURCE=.\slony\include\slSubscription.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\include\slTable.h
 # End Source File
 # End Group
-# End Group
-# Begin Group "unix build"
-
-# PROP Default_Filter ""
-# Begin Group "top level"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\acinclude.m4
-# End Source File
-# Begin Source File
-
-SOURCE=..\bootstrap
-# End Source File
-# Begin Source File
-
-SOURCE=..\configure.ac
-# End Source File
-# Begin Source File
-
-SOURCE=..\Makefile.am
-# End Source File
-# End Group
-# Begin Source File
-
-SOURCE=.\Makefile.am
-# End Source File
 # End Group
 # Begin Group "agent"
 
@@ -1693,6 +1669,10 @@ SOURCE=.\slony\dlgRepCluster.cpp
 # Begin Source File
 
 SOURCE=.\slony\dlgRepListen.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\slony\dlgRepNode.cpp
 # End Source File
 # Begin Source File
 
@@ -1749,6 +1729,34 @@ SOURCE=.\slony\slSubscription.cpp
 # Begin Source File
 
 SOURCE=.\slony\slTable.cpp
+# End Source File
+# End Group
+# Begin Group "unix build"
+
+# PROP Default_Filter ""
+# Begin Group "top level"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\acinclude.m4
+# End Source File
+# Begin Source File
+
+SOURCE=..\bootstrap
+# End Source File
+# Begin Source File
+
+SOURCE=..\configure.ac
+# End Source File
+# Begin Source File
+
+SOURCE=..\Makefile.am
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\Makefile.am
 # End Source File
 # End Group
 # Begin Source File
