@@ -1,4 +1,4 @@
-%define minor_version 20031010v2
+%define minor_version 20031010.1
 %define major_version 2.5
 
 Summary: The GTK+ 2 port of the wxWindows library
@@ -10,6 +10,7 @@ Group: X11/Libraries
 Source: %{name}-%{version}.tar.bz2
 URL: http://www.wxwindows.org
 Packager: pgAdmin project <pgadmin-hackers@postgresql.org>
+BuildRoot: %{_tmppath}/%{name}-root
 
 Provides: libwx_gtk2ud-%{version}.a
 
@@ -62,7 +63,7 @@ popd
 
 %install
 rm -rf %{buildroot}
-%makeinstall
+makeinstall
 
 pushd contrib/src/
         %makeinstall -C xrc
