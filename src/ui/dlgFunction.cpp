@@ -139,12 +139,12 @@ int dlgFunction::Go(bool modal)
 
         if (objectType != PG_TRIGGERFUNCTION)
         {
-            wxStringTokenizer types(function->GetArgTypes(), wxT(", "));
+            wxStringTokenizer argtypes(function->GetArgTypes(), wxT(", "));
             size_t cnt=0;
 
-            while (types.HasMoreTokens())
+            while (argtypes.HasMoreTokens())
             {
-                wxString str=types.GetNextToken();
+                wxString str=argtypes.GetNextToken();
                 if (str.IsEmpty())
                     continue;
                 if (typeColNo)
@@ -198,7 +198,7 @@ int dlgFunction::Go(bool modal)
             pgDatatype dt=tr.GetDatatype();
 
             typOids.Add(tr.GetOidStr());
-            types.Add(tr.GetSchemaPrefix() + dt.QuotedFullName());
+            types.Add(tr.GetQuotedSchemaPrefix() + dt.QuotedFullName());
 
             cbDatatype->Append(tr.GetSchemaPrefix() + dt.FullName());
             if (objectType != PG_TRIGGERFUNCTION)
@@ -493,8 +493,9 @@ wxString dlgFunction::GetSql()
                wxT(" RETURNS ");
         if (chkSetof->GetValue())
             sql += wxT("SETOF ");
-        sql += cbReturntype->GetValue()
-            + wxT(" AS\n");
+
+        AppendQuoted(sql, cbReturntype->GetValue());
+        sql += wxT(" AS\n");
 
         if (cbLanguage->GetValue().IsSameAs(wxT("C"), false))
         {
