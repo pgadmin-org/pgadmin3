@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgadmin3\n"
 "POT-Creation-Date: 2003-08-25 02:50+0200\n"
-"PO-Revision-Date: 2003-09-14 15:12+0100\n"
+"PO-Revision-Date: 2003-09-25 09:46+0100\n"
 "Last-Translator: Jean-Michel POURE <jm.poure@freesurf.fr>\n"
 "Language-Team: Turkish <devrim@gunduz.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,7 @@ msgstr ""
 "İptal edildi.\n"
 
 #: src/ui/frmQuery.cpp:885
+#: src/ui/frmQuery.cpp:887
 msgid ""
 "\n"
 "Retrieve all rows anyway?"
@@ -34,6 +35,7 @@ msgstr ""
 "Tüm satırlar yine de alınsın mı?"
 
 #: src/utils/misc.cpp:86
+#: src/utils/misc.cpp:91
 msgid " Done."
 msgstr "Tamam. "
 
@@ -44,11 +46,13 @@ msgid "\""
 msgstr "\""
 
 #: src/utils/misc.cpp:82
+#: src/utils/misc.cpp:87
 #, c-format
 msgid "%.2f secs"
 msgstr "%.2f saniye "
 
 #: src/ui/frmQuery.cpp:870
+#: src/ui/frmQuery.cpp:872
 #, c-format
 msgid "%d rows retrieved."
 msgstr "%d satır döndü."
@@ -57,21 +61,27 @@ msgstr "%d satır döndü."
 #: src/ui/frmEditGrid.cpp:439
 #: src/ui/frmMaintenance.cpp:212
 #: src/ui/frmQuery.cpp:960
+#: src/ui/frmEditGrid.cpp:433
+#: src/ui/frmEditGrid.cpp:532
+#: src/ui/frmQuery.cpp:962
 #, c-format
 msgid "%d rows."
 msgstr "%d satır."
 
 #: src/ui/frmQuery.cpp:953
+#: src/ui/frmQuery.cpp:955
 #, c-format
 msgid "%ld  rows not retrieved."
 msgstr "%ld satır alınamadı."
 
 #: src/ui/frmQuery.cpp:962
+#: src/ui/frmQuery.cpp:964
 #, c-format
 msgid "%ld of %ld rows"
 msgstr "%ld satır - %ld satır içinde"
 
 #: src/ui/frmQuery.cpp:949
+#: src/ui/frmQuery.cpp:951
 #, c-format
 msgid "%ld rows retrieved."
 msgstr "%ld satır alındı."
@@ -440,6 +450,10 @@ msgstr "."
 msgid "'%s' is not a valid identifier. It must start with A-Z or a-z or _ and can contain A-Z and a-z and 0-9 and _."
 msgstr "%s geçerli bir tanımlayıcı (identifier) değil. A-Z, a-z ya da _ ile başlamalıdır ve A-Z, a-z ve _ içermelidir."
 
+#: src/schema/pgCast.cpp:67
+msgid "(binary compatible)"
+msgstr ""
+
 # standard
 #: standard
 #: input:374
@@ -447,6 +461,7 @@ msgid ","
 msgstr ","
 
 #: src/ui/frmQuery.cpp:788
+#: src/ui/frmQuery.cpp:790
 msgid "-- Executing query:\n"
 msgstr "--Sorgu �ltrlyor:\n"
 
@@ -517,6 +532,8 @@ msgid "<html><body>Loading %s</body></html>"
 msgstr "<html><body>%s yükleniyor</body></html>"
 
 #: src/schema/pgTable.cpp:328
+#: src/schema/pgTable.cpp:329
+#: src/schema/pgTable.cpp:332
 msgid "<none>"
 msgstr "<none>"
 
@@ -557,6 +574,10 @@ msgstr ""
 #: src/schema/pgSequence.cpp:90
 #: src/schema/pgTable.cpp:326
 #: src/schema/pgView.cpp:83
+#: src/schema/pgSchema.cpp:150
+#: src/schema/pgTable.cpp:327
+#: src/schema/pgView.cpp:85
+#: src/schema/pgTable.cpp:330
 msgid "ACL"
 msgstr "ACL (Erişim Kontrol Listesi)"
 
@@ -674,26 +695,32 @@ msgid "Add a connection to a server."
 msgstr "Sunucuya bir bağlantı ekle"
 
 #: src/schema/pgObject.cpp:55
+#: src/schema/pgObject.cpp:54
 msgid "Add a new Check Constraint."
 msgstr "Yeni Check Constraint ekle."
 
 #: src/schema/pgObject.cpp:48
+#: src/schema/pgObject.cpp:47
 msgid "Add a new Column."
 msgstr "Yeni kolon ekle."
 
 #: src/schema/pgObject.cpp:56
+#: src/schema/pgObject.cpp:55
 msgid "Add a new Foreign Key."
 msgstr "Yeni ikincil anahtar ekle."
 
 #: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:48
 msgid "Add a new Index."
 msgstr "Yeni index ekle."
 
 #: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:50
 msgid "Add a new Trigger."
 msgstr "Yeni tetikleyici (trigger) ekle."
 
 #: src/schema/pgObject.cpp:54
+#: src/schema/pgObject.cpp:53
 msgid "Add a new Unique Constraint."
 msgstr "Yeni tekil Constraint ekle."
 
@@ -723,10 +750,12 @@ msgstr "Ekle/Değiştir"
 
 #: src/schema/pgObject.cpp:36
 #: src/ui/frmQueryBuilder.cpp:215
+#: src/schema/pgObject.cpp:35
 msgid "Aggregate"
 msgstr "Aggregate"
 
 #: src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:35
 msgid "Aggregates"
 msgstr "Aggregatess"
 
@@ -764,6 +793,7 @@ msgstr "Analiz yap"
 
 #: src/ui/events.cpp:823
 #: src/ui/events.cpp:879
+#: src/ui/events.cpp:889
 #, c-format
 msgid "Are you sure you wish to drop %s %s?"
 msgstr "Bunları kaldırmak istediğinize emin misiniz %s %s?"
@@ -1001,17 +1031,20 @@ msgid "Cancelled"
 msgstr "İptal edildi."
 
 #: src/ui/frmQuery.cpp:685
+#: src/ui/frmQuery.cpp:687
 msgid "Cancelling."
 msgstr "İptal ediliyor."
 
 #: src/ui/events.cpp:814
 #: src/ui/events.cpp:870
+#: src/ui/events.cpp:880
 #, c-format
 msgid "Cannot drop system %s %s."
 msgstr "%s sistemi kaldırılamadı %s "
 
 #: src/pgAdmin3.cpp:232
 #: src/pgAdmin3.cpp:239
+#: src/pgAdmin3.cpp:242
 msgid "Cannot initialise the networking subsystem!"
 msgstr "Ağ altsistemi initialize edilemedi."
 
@@ -1020,10 +1053,12 @@ msgid "Cannot open the logfile!"
 msgstr "Günlük dosyası açılamadı!"
 
 #: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:36
 msgid "Cast"
 msgstr "Cast"
 
 #: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:36
 msgid "Casts"
 msgstr "Casts"
 
@@ -1052,6 +1087,7 @@ msgstr "Şifrenizi değiştirin."
 
 #: src/ui/events.cpp:449
 #: src/ui/events.cpp:468
+#: src/ui/events.cpp:473
 msgid ""
 "Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n"
 "\n"
@@ -1071,6 +1107,7 @@ msgstr ""
 #: standard
 #: input:29
 #: input:79
+#: src/schema/pgObject.cpp:54
 msgid "Check"
 msgstr "Kontrol et"
 
@@ -1131,6 +1168,7 @@ msgstr "Clustered?"
 
 #: src/schema/pgObject.cpp:48
 #: src/ui/frmQueryBuilder.cpp:209
+#: src/schema/pgObject.cpp:47
 msgid "Column"
 msgstr "Kolon"
 
@@ -1189,6 +1227,7 @@ msgstr "Kolon ayırıcısı"
 #: input:153
 #: input:164
 #: input:248
+#: src/schema/pgObject.cpp:47
 msgid "Columns"
 msgstr "Kolonlar"
 
@@ -1289,6 +1328,11 @@ msgstr "Kolonlar"
 #: input:281
 #: input:336
 #: src/schema/pgAggregate.cpp:87
+#: src/schema/pgOperator.cpp:135
+#: src/schema/pgSchema.cpp:152
+#: src/schema/pgTable.cpp:346
+#: src/schema/pgView.cpp:88
+#: src/schema/pgTable.cpp:349
 msgid "Comment"
 msgstr "Yorum"
 
@@ -1299,6 +1343,7 @@ msgstr "Yorum"
 #: src/schema/pgOperator.cpp:113
 #: standard
 #: input:191
+#: src/schema/pgOperator.cpp:125
 msgid "Commutator"
 msgstr "Commutator"
 
@@ -1386,23 +1431,28 @@ msgstr "Kısıtlama (Constraint) adı"
 #: src/schema/pgObject.cpp:52
 #: standard
 #: input:252
+#: src/schema/pgObject.cpp:51
 msgid "Constraints"
 msgstr "Kısıtlamalar (Constraints)"
 
 #: src/schema/pgCast.cpp:67
+#: src/schema/pgCast.cpp:70
 msgid "Context"
 msgstr "Context"
 
 #: src/ui/events.cpp:450
 #: src/ui/events.cpp:469
+#: src/ui/events.cpp:474
 msgid "Continue?"
 msgstr "Devam?"
 
 #: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:37
 msgid "Conversion"
 msgstr "Dönüşüm"
 
 #: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:37
 msgid "Conversions"
 msgstr "Dönüşümler"
 
@@ -1444,16 +1494,19 @@ msgstr "Bağlantı nesnesi yaratılamadı!"
 
 #: src/db/pgConn.cpp:265
 #: src/db/pgConn.cpp:276
+#: src/db/pgConn.cpp:279
 msgid "Couldn't create a pgSet object!"
 msgstr "PgSet nesnesi yaratılamadı!"
 
 #: src/pgAdmin3.cpp:306
 #: src/pgAdmin3.cpp:313
+#: src/pgAdmin3.cpp:316
 msgid "Couldn't create the main window!"
 msgstr "Ana pencere yaratılamadı!"
 
 #: src/pgAdmin3.cpp:218
 #: src/pgAdmin3.cpp:225
+#: src/pgAdmin3.cpp:228
 msgid "Couldn't create the splash screen!"
 msgstr "Splash ekranı yaratılamadı!"
 
@@ -1476,82 +1529,102 @@ msgid "Create"
 msgstr "Yarat"
 
 #: src/schema/pgObject.cpp:53
+#: src/schema/pgObject.cpp:52
 msgid "Create a Primary Key."
 msgstr "Birincil anahtar (Primary Key) yarat."
 
 #: src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:35
 msgid "Create a new Aggregate."
 msgstr "Yeni Aggregate yarat."
 
 #: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:36
 msgid "Create a new Cast."
 msgstr "Yeni Cast yarat."
 
 #: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:37
 msgid "Create a new Conversion."
 msgstr "Yeni dönüşüm (conversion) yarat."
 
 #: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:30
 msgid "Create a new Database."
 msgstr "Yeni bir veritabanı yarat."
 
 #: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:38
 msgid "Create a new Domain."
 msgstr "Yeni bir Domain yarat."
 
 #: src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:39
 msgid "Create a new Function."
 msgstr "Yeni bir fonksiyon yarat."
 
 #: src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:31
 msgid "Create a new Group."
 msgstr "Yeni bir grup yarat."
 
 #: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:33
 msgid "Create a new Language."
 msgstr "Yeni bir dil yarat."
 
 #: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:42
 msgid "Create a new Operator Class."
 msgstr "Yeni bir operatör sınıfı (Operator Class) yarat."
 
 #: src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:41
 msgid "Create a new Operator."
 msgstr "Yeni bir operatör yarat."
 
 #: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:49
 msgid "Create a new Rule."
 msgstr "Yeni bir kural (Rule) yarat."
 
 #: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:34
 msgid "Create a new Schema."
 msgstr "Yeni bir şema (Schema) yarat."
 
 #: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:43
 msgid "Create a new Sequence."
 msgstr "Yeni bir sequence yarat."
 
 #: src/schema/pgObject.cpp:30
+#: src/schema/pgObject.cpp:29
 msgid "Create a new Server connection."
 msgstr "Yeni bir sunucu bağlantısı yarat."
 
 #: src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:44
 msgid "Create a new Table."
 msgstr "Yeni bir tablo yarat."
 
 #: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:40
 msgid "Create a new Trigger Function."
 msgstr "Yeni bir tetikleyici foknsiyon (Trigger Function) yarat."
 
 #: src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:45
 msgid "Create a new Type."
 msgstr "Yeni bir tip (Type) yarat."
 
 #: src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:32
 msgid "Create a new User."
 msgstr "Yeni bir kullanıcı yarat."
 
 #: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:46
 msgid "Create a new View."
 msgstr "Yeni bir View yarat."
 
@@ -1634,6 +1707,7 @@ msgid "Data Output"
 msgstr "Veri çıktısı"
 
 #: src/ui/frmQuery.cpp:944
+#: src/ui/frmQuery.cpp:946
 msgid "Data retrieval runtime: "
 msgstr "Verinin veritabanından alınma süresi: "
 
@@ -1654,6 +1728,7 @@ msgstr "Veri tipi"
 
 #: src/schema/pgObject.cpp:31
 #: src/ui/frmStatus.cpp:56
+#: src/schema/pgObject.cpp:30
 msgid "Database"
 msgstr "Veritabanı"
 
@@ -1668,6 +1743,7 @@ msgid "Database Status"
 msgstr "Veritabanı Durumu"
 
 #: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:30
 msgid "Databases"
 msgstr "Veritabanları"
 
@@ -1692,6 +1768,7 @@ msgstr "Veritabanları"
 #: input:289
 #: src/ui/frmOptions.cpp:98
 #: src/pgAdmin3.cpp:188
+#: src/pgAdmin3.cpp:191
 msgid "Default"
 msgstr "Varsayılan"
 
@@ -1773,6 +1850,7 @@ msgstr "Ertelendi"
 #: input:282
 #: input:303
 #: input:337
+#: src/schema/pgView.cpp:86
 msgid "Definition"
 msgstr "Tanım"
 
@@ -1780,10 +1858,12 @@ msgstr "Tanım"
 # src/ui/frmEditGrid.cpp:63 standard input:16
 # src/ui/frmEditGrid.cpp:63 standard input:16
 #: src/ui/frmEditGrid.cpp:89
+#: src/ui/frmEditGrid.cpp:91
 msgid "Delete"
 msgstr "Sil"
 
 #: src/ui/frmEditGrid.cpp:89
+#: src/ui/frmEditGrid.cpp:91
 msgid "Delete selected lines."
 msgstr "Seçili satırları sil."
 
@@ -1839,6 +1919,7 @@ msgstr "PostgreSQL Veritabanı Sistemi ile ilgili yardım göster."
 #: src/ui/frmQuery.cpp:134
 #: src/ui/frmQuery.cpp:186
 #: src/ui/frmMain.cpp:226
+#: src/ui/frmEditGrid.cpp:93
 msgid "Display help on SQL commands."
 msgstr "SQL komutları ile ilgili yardım göster."
 
@@ -1884,10 +1965,12 @@ msgid "Do you want to save changes?"
 msgstr "Değişiklikleri kaydetmek istiyor musunuz?"
 
 #: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:38
 msgid "Domain"
 msgstr "Domain"
 
 #: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:38
 msgid "Domains"
 msgstr "Domains"
 
@@ -1906,6 +1989,7 @@ msgstr "Kaldır"
 
 #: src/ui/events.cpp:825
 #: src/ui/events.cpp:881
+#: src/ui/events.cpp:891
 #, c-format
 msgid "Drop %s?"
 msgstr "%s kaldırılsın mı?"
@@ -2058,6 +2142,7 @@ msgstr "Sunucuya bağlanırken kullandığınız kullanıcı adını yazınız."
 
 #: src/ui/events.cpp:497
 #: src/ui/events.cpp:516
+#: src/ui/events.cpp:521
 #, c-format
 msgid "Error connecting to the server: %s"
 msgstr "%s sunucusuna bağlanırken hata oluştu."
@@ -2182,6 +2267,7 @@ msgstr "Harici"
 
 #: src/utils/misc.cpp:381
 #: src/utils/sysLogger.cpp:194
+#: src/utils/misc.cpp:394
 msgid "FATAL"
 msgstr "FATAL"
 
@@ -2226,11 +2312,13 @@ msgstr "%s dosyası açılamadı."
 
 #: src/ui/events.cpp:438
 #: src/ui/events.cpp:457
+#: src/ui/events.cpp:462
 #, c-format
 msgid "Failed to write to the output file: %s"
 msgstr "%s adlı çıktı dosyasına yazılamadı."
 
 #: src/utils/misc.cpp:380
+#: src/utils/misc.cpp:393
 msgid ""
 "File cannot be opened with this format.\n"
 "Please chose another format."
@@ -2269,6 +2357,9 @@ msgstr "Bul"
 #: src/ui/ctlSQLBox.cpp:416
 #: src/ui/frmQuery.cpp:114
 #: src/ui/frmQuery.cpp:180
+#: src/ui/ctlSQLBox.cpp:364
+#: src/ui/ctlSQLBox.cpp:409
+#: src/ui/ctlSQLBox.cpp:415
 msgid "Find text"
 msgstr "Metni bul"
 
@@ -2299,6 +2390,7 @@ msgstr "For Type"
 
 #: src/schema/pgObject.cpp:56
 #: src/ui/dlgTable.cpp:475
+#: src/schema/pgObject.cpp:55
 msgid "Foreign Key"
 msgstr "İkincil Anahtar"
 
@@ -2336,10 +2428,14 @@ msgstr "Kimden"
 #: standard
 #: input:19
 #: input:52
+#: src/schema/pgObject.cpp:39
+#: src/schema/pgCast.cpp:67
+#: src/schema/pgCast.cpp:69
 msgid "Function"
 msgstr "Fonksiyon"
 
 #: src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:39
 msgid "Functions"
 msgstr "Fonksiyonlar"
 
@@ -2353,12 +2449,14 @@ msgid "General"
 msgstr "Genel"
 
 #: src/schema/pgOperator.cpp:120
+#: src/schema/pgOperator.cpp:132
 msgid "Greater than operator"
 msgstr "Büyüktür operatörü"
 
 #: src/schema/pgObject.cpp:32
 #: src/ui/dlgProperty.cpp:911
 #: src/ui/dlgProperty.cpp:914
+#: src/schema/pgObject.cpp:31
 msgid "Group"
 msgstr "Grup"
 
@@ -2381,6 +2479,7 @@ msgstr "Grup/Kullanıcı"
 #: src/schema/pgObject.cpp:32
 #: standard
 #: input:320
+#: src/schema/pgObject.cpp:31
 msgid "Groups"
 msgstr "Gruplar"
 
@@ -2409,6 +2508,8 @@ msgid "Has OIDs"
 msgstr "Has OIDs"
 
 #: src/schema/pgTable.cpp:343
+#: src/schema/pgTable.cpp:344
+#: src/schema/pgTable.cpp:347
 msgid "Has OIDs?"
 msgstr "Has OIDs?"
 
@@ -2438,6 +2539,7 @@ msgstr "Has OIDs?"
 #: input:310
 #: input:330
 #: input:338
+#: src/ui/frmEditGrid.cpp:93
 msgid "Help"
 msgstr "Yardım"
 
@@ -2529,10 +2631,12 @@ msgid "Increment"
 msgstr "Increment"
 
 #: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:48
 msgid "Index"
 msgstr "Indeks"
 
 #: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:48
 msgid "Indexes"
 msgstr "Indeksler"
 
@@ -2547,10 +2651,14 @@ msgid "Inherited from table %s"
 msgstr "%s tablosundan miras alınmış(inherited)"
 
 #: src/schema/pgTable.cpp:342
+#: src/schema/pgTable.cpp:343
+#: src/schema/pgTable.cpp:346
 msgid "Inherited tables"
 msgstr "Miras alınmış (inherited) tablolar"
 
 #: src/schema/pgTable.cpp:340
+#: src/schema/pgTable.cpp:341
+#: src/schema/pgTable.cpp:344
 msgid "Inherited tables count"
 msgstr "Miras alınmış (inherited) tabloların sayısı"
 
@@ -2561,6 +2669,8 @@ msgid "Inherits from tables"
 msgstr "Inherits from tables"
 
 #: src/schema/pgTable.cpp:339
+#: src/schema/pgTable.cpp:340
+#: src/schema/pgTable.cpp:343
 msgid "Inherits tables"
 msgstr "Inherits tables"
 
@@ -2653,10 +2763,12 @@ msgstr "Join Type"
 #: src/schema/pgOperator.cpp:115
 #: standard
 #: input:190
+#: src/schema/pgOperator.cpp:127
 msgid "Join function"
 msgstr "Join Function"
 
 #: src/schema/pgOperator.cpp:106
+#: src/schema/pgOperator.cpp:118
 msgid "Kind"
 msgstr "Kind"
 
@@ -2687,10 +2799,12 @@ msgstr "LF"
 #: src/schema/pgObject.cpp:34
 #: standard
 #: input:117
+#: src/schema/pgObject.cpp:33
 msgid "Language"
 msgstr "Dil"
 
 #: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:33
 msgid "Languages"
 msgstr "Diller"
 
@@ -2707,6 +2821,7 @@ msgid "Last system OID"
 msgstr "Son sistem OIDi"
 
 #: src/schema/pgOperator.cpp:117
+#: src/schema/pgOperator.cpp:129
 msgid "Left Sort operator"
 msgstr "Sol sıralama operatörü (Left Sort Operator)"
 
@@ -2736,6 +2851,7 @@ msgstr "Left sort op"
 #: src/schema/pgOperator.cpp:108
 #: standard
 #: input:184
+#: src/schema/pgOperator.cpp:120
 msgid "Left type"
 msgstr "Left type"
 
@@ -2757,10 +2873,12 @@ msgid "Length"
 msgstr "Uzunluk"
 
 #: src/schema/pgOperator.cpp:119
+#: src/schema/pgOperator.cpp:131
 msgid "Less Than operator"
 msgstr "Küçüktür operatörü"
 
 #: src/ui/frmQuery.cpp:885
+#: src/ui/frmQuery.cpp:887
 msgid "Limit exceeded"
 msgstr "Sınır aşıldı"
 
@@ -3068,8 +3186,17 @@ msgstr "Çoklu kolon Joinleri"
 #: input:276
 #: input:334
 #: src/schema/pgAggregate.cpp:77
+#: src/schema/pgOperator.cpp:115
+#: src/schema/pgSchema.cpp:147
+#: src/schema/pgTable.cpp:324
+#: src/schema/pgView.cpp:82
+#: src/schema/pgTable.cpp:327
 msgid "Name"
 msgstr "Ad"
+
+#: src/ui/dlgType.cpp:246
+msgid "Name may not start with '_'."
+msgstr ""
 
 # src/schema/pgOperator.cpp:110 standard input:13
 # src/schema/pgOperator.cpp:110 standard input:13
@@ -3078,6 +3205,7 @@ msgstr "Ad"
 #: src/schema/pgOperator.cpp:114
 #: standard
 #: input:192
+#: src/schema/pgOperator.cpp:126
 msgid "Negator"
 msgstr "Negator"
 
@@ -3087,58 +3215,72 @@ msgid "New &Object"
 msgstr "Yeni &Nesne"
 
 #: src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:35
 msgid "New Aggregate"
 msgstr "Yeni Aggregate"
 
 #: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:36
 msgid "New Cast"
 msgstr "Yeni Cast"
 
 #: src/schema/pgObject.cpp:55
+#: src/schema/pgObject.cpp:54
 msgid "New Check Constraint"
 msgstr "Yeni kontrol kısıtlaması (check constraint)"
 
 #: src/schema/pgObject.cpp:48
+#: src/schema/pgObject.cpp:47
 msgid "New Column"
 msgstr "Yeni Kolon"
 
 #: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:37
 msgid "New Conversion"
 msgstr "Yeni Dönüşüm (Conversion)"
 
 #: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:30
 msgid "New Database"
 msgstr "Yeni Veritabanı"
 
 #: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:38
 msgid "New Domain"
 msgstr "Yeni Domain"
 
 #: src/schema/pgObject.cpp:56
+#: src/schema/pgObject.cpp:55
 msgid "New Foreign Key"
 msgstr "Yeni İkincil Anahtar (FK)"
 
 #: src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:39
 msgid "New Function"
 msgstr "Yeni Fonksiyon"
 
 #: src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:31
 msgid "New Group"
 msgstr "Yeni Grup"
 
 #: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:48
 msgid "New Index"
 msgstr "Yeni İndeks"
 
 #: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:33
 msgid "New Language"
 msgstr "Yeni Dil"
 
 #: src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:41
 msgid "New Operator"
 msgstr "Yeni Operatör"
 
 #: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:42
 msgid "New Operator Class"
 msgstr "Yeni Operatör Sınıfı"
 
@@ -3153,50 +3295,62 @@ msgid "New Password"
 msgstr "Yeni Şifre"
 
 #: src/schema/pgObject.cpp:53
+#: src/schema/pgObject.cpp:52
 msgid "New Primary Key"
 msgstr "Yeni Birincil Anahtar"
 
 #: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:49
 msgid "New Rule"
 msgstr "Yeni Kural (Rule)"
 
 #: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:34
 msgid "New Schema"
 msgstr "Yeni Şema"
 
 #: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:43
 msgid "New Sequence"
 msgstr "Yeni Sequence"
 
 #: src/schema/pgObject.cpp:30
+#: src/schema/pgObject.cpp:29
 msgid "New Server"
 msgstr "Yeni Sunucu"
 
 #: src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:44
 msgid "New Table"
 msgstr "Yeni Tablo"
 
 #: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:50
 msgid "New Trigger"
 msgstr "Yeni Tetikleyici (Trigger)"
 
 #: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:40
 msgid "New Trigger Function"
 msgstr "Yeni Tetikleyici Fonksiyonu (Trigger Function)"
 
 #: src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:45
 msgid "New Type"
 msgstr "Yeni Tip"
 
 #: src/schema/pgObject.cpp:54
+#: src/schema/pgObject.cpp:53
 msgid "New Unique Constraint"
 msgstr "Yeni Tekil Kısıtlama (Unique Constraint)"
 
 #: src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:32
 msgid "New User"
 msgstr "Yeni Kullanıcı"
 
 #: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:46
 msgid "New View"
 msgstr "Yeni View"
 
@@ -3214,10 +3368,12 @@ msgstr "Yeni toplam rakam sayısı eskisinden az olamaz."
 
 #: src/ui/frmQueryBuilder.cpp:597
 #: src/utils/misc.cpp:97
+#: src/utils/misc.cpp:102
 msgid "No"
 msgstr "Hayır"
 
 #: src/ui/frmEditGrid.cpp:402
+#: src/ui/frmEditGrid.cpp:495
 msgid "No Table or view."
 msgstr "Tablo ya da view bulunamadı."
 
@@ -3225,6 +3381,7 @@ msgstr "Tablo ya da view bulunamadı."
 #: src/ui/frmMain.cpp:307
 #: src/ui/events.cpp:557
 #: src/ui/frmMain.cpp:308
+#: src/ui/events.cpp:569
 msgid "No properties are available for the current selection"
 msgstr "Seçili nesne için özellik bilgisi bulunamadı."
 
@@ -3232,10 +3389,12 @@ msgstr "Seçili nesne için özellik bilgisi bulunamadı."
 #: src/ui/frmMain.cpp:313
 #: src/ui/events.cpp:560
 #: src/ui/frmMain.cpp:314
+#: src/ui/events.cpp:572
 msgid "No statistics are available for the current selection"
 msgstr "Seçili nesne için istatistik bilgisi bulunamadı."
 
 #: src/schema/pgObject.cpp:29
+#: src/schema/pgObject.cpp:28
 msgid "None"
 msgstr "Hiçbiri"
 
@@ -3264,6 +3423,7 @@ msgid "Not NULL?"
 msgstr "Not NULL?"
 
 #: src/ui/ctlSQLBox.cpp:416
+#: src/ui/ctlSQLBox.cpp:415
 msgid "Not implemented"
 msgstr "Bu kod henüz tamamlanmadı."
 
@@ -3359,6 +3519,11 @@ msgstr "Hiçbir şey"
 #: input:277
 #: input:335
 #: src/schema/pgAggregate.cpp:79
+#: src/schema/pgOperator.cpp:116
+#: src/schema/pgSchema.cpp:148
+#: src/schema/pgTable.cpp:325
+#: src/schema/pgView.cpp:83
+#: src/schema/pgTable.cpp:328
 msgid "OID"
 msgstr "OID"
 
@@ -3458,6 +3623,9 @@ msgstr "TAMAM"
 #: src/ui/frmQuery.cpp:824
 #: src/ui/frmQuery.cpp:870
 #: src/ui/frmQuery.cpp:949
+#: src/ui/frmQuery.cpp:826
+#: src/ui/frmQuery.cpp:872
+#: src/ui/frmQuery.cpp:951
 msgid "OK."
 msgstr "TAMAM."
 
@@ -3530,6 +3698,7 @@ msgstr "Dosya aç"
 
 #: src/ui/frmQuery.cpp:614
 #: src/ui/frmQueryBuilder.cpp:1524
+#: src/ui/frmQuery.cpp:616
 msgid "Open query file"
 msgstr "Sorgu dosyasını aç"
 
@@ -3546,14 +3715,17 @@ msgstr "pgAdminIII yardım dosyasını aç."
 #: standard
 #: input:457
 #: input:458
+#: src/schema/pgObject.cpp:41
 msgid "Operator"
 msgstr "Operatör"
 
 #: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:42
 msgid "Operator Class"
 msgstr "Operatör Sınıfı"
 
 #: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:42
 msgid "Operator Classes"
 msgstr "Operatör Sınıfları"
 
@@ -3566,10 +3738,12 @@ msgstr "Operatör Sınıfları"
 #: src/schema/pgOperator.cpp:112
 #: standard
 #: input:186
+#: src/schema/pgOperator.cpp:124
 msgid "Operator function"
 msgstr "Operatör Fonksiyonu"
 
 #: src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:41
 msgid "Operators"
 msgstr "Operatörler"
 
@@ -3597,6 +3771,8 @@ msgstr "Ya da "
 
 #: src/ui/frmEditGrid.cpp:1255
 #: src/ui/frmEditGrid.cpp:1313
+#: src/ui/frmEditGrid.cpp:1690
+#: src/ui/frmEditGrid.cpp:1748
 msgid "Out of Memory for cacheLinePool"
 msgstr "CacheLinePool için yetersiz bellek"
 
@@ -3658,6 +3834,11 @@ msgstr "Çıktı fonksiyonu (Output function)"
 #: input:228
 #: input:242
 #: src/schema/pgAggregate.cpp:80
+#: src/schema/pgOperator.cpp:117
+#: src/schema/pgSchema.cpp:149
+#: src/schema/pgTable.cpp:326
+#: src/schema/pgView.cpp:84
+#: src/schema/pgTable.cpp:329
 msgid "Owner"
 msgstr "Sahibi"
 
@@ -3738,6 +3919,7 @@ msgstr "Yol(Path)"
 
 #: src/pgAdmin3.cpp:191
 #: src/pgAdmin3.cpp:198
+#: src/pgAdmin3.cpp:201
 msgid "Please choose user language:"
 msgstr "Lütfen kullanıcı dilini seçiniz."
 
@@ -3769,6 +3951,7 @@ msgid "Please select language."
 msgstr "Lütfen dili seçiniz."
 
 #: src/ui/dlgOperator.cpp:172
+#: src/ui/dlgOperator.cpp:173
 msgid "Please select left or right datatype."
 msgstr "Lütfen sağ ya da sol veri tipini seçiniz."
 
@@ -3786,10 +3969,12 @@ msgid "Please select target datatype."
 msgstr "Lütfen hedef veri tipini seçiniz."
 
 #: src/ui/dlgOperator.cpp:173
+#: src/ui/dlgOperator.cpp:174
 msgid "Please specify a procedure."
 msgstr "Lütfen bir yordam (procedure) belirtiniz."
 
 #: src/ui/dlgTrigger.cpp:193
+#: src/ui/dlgTrigger.cpp:195
 msgid "Please specify at least one action."
 msgstr "Lütfen en az bir işlem belirtiniz."
 
@@ -3799,6 +3984,8 @@ msgstr "Lütfen en az iki üye (member) belirtiniz."
 
 #: src/ui/dlgIndex.cpp:144
 #: src/ui/dlgTable.cpp:517
+#: src/ui/dlgForeignKey.cpp:84
+#: src/ui/dlgIndex.cpp:190
 msgid "Please specify columns."
 msgstr "Lütfen kolonları belirtiniz."
 
@@ -3807,6 +3994,7 @@ msgid "Please specify condition."
 msgstr "Please specify condition."
 
 #: src/ui/dlgConversion.cpp:164
+#: src/ui/dlgConversion.cpp:163
 msgid "Please specify conversion function."
 msgstr "Please specify conversion function."
 
@@ -3840,6 +4028,10 @@ msgstr "Lütfen \"language handler.\"'i belirtiniz."
 #: src/ui/dlgUser.cpp:169
 #: src/ui/dlgView.cpp:115
 #: src/ui/dlgAggregate.cpp:126
+#: src/ui/dlgOperator.cpp:172
+#: src/ui/dlgTrigger.cpp:192
+#: src/ui/dlgType.cpp:245
+#: src/ui/dlgConversion.cpp:160
 msgid "Please specify name."
 msgstr "Lütfen adı belirtiniz."
 
@@ -3856,6 +4048,7 @@ msgid "Please specify source datatype."
 msgstr "Lütfen kaynak veri tipini belirtiniz."
 
 #: src/ui/dlgConversion.cpp:162
+#: src/ui/dlgConversion.cpp:161
 msgid "Please specify source encoding."
 msgstr "Lütfen kaynak dil kodlamasını seçiniz."
 
@@ -3865,10 +4058,12 @@ msgid "Please specify state function."
 msgstr "Please specify state function."
 
 #: src/ui/dlgConversion.cpp:163
+#: src/ui/dlgConversion.cpp:162
 msgid "Please specify target encoding."
 msgstr "Hedef dil kodlamasını seçiniz."
 
 #: src/ui/dlgTrigger.cpp:191
+#: src/ui/dlgTrigger.cpp:193
 msgid "Please specify trigger function."
 msgstr "Lütfen tetikleyici fonksiyonu (trigger function) belirtiniz."
 
@@ -3940,11 +4135,16 @@ msgstr "Precision"
 
 #: src/schema/pgObject.cpp:53
 #: src/ui/dlgTable.cpp:472
+#: src/schema/pgObject.cpp:52
 msgid "Primary Key"
 msgstr "Birincil Anahtar"
 
 #: src/schema/pgTable.cpp:328
 #: src/schema/pgTable.cpp:330
+#: src/schema/pgTable.cpp:329
+#: src/schema/pgTable.cpp:331
+#: src/schema/pgTable.cpp:332
+#: src/schema/pgTable.cpp:334
 msgid "Primary key"
 msgstr "Birincil Anahtar"
 
@@ -4073,11 +4273,13 @@ msgstr "Yordam (procedure)"
 #: src/ui/frmMain.cpp:220
 #: src/ui/frmMain.cpp:249
 #: src/ui/frmMain.cpp:307
+#: src/ui/events.cpp:568
 msgid "Properties"
 msgstr "Özellikler"
 
 #: src/include/pgObject.h:140
 #: src/include/pgObject.h:141
+#: src/include/pgObject.h:139
 msgid "Property"
 msgstr "Özellik"
 
@@ -4104,10 +4306,13 @@ msgstr "Sorgu files (*.sql)|*.sql|Tüm dosyalar (*.*)|*.*"
 
 #: src/ui/frmQuery.cpp:615
 #: src/ui/frmQuery.cpp:656
+#: src/ui/frmQuery.cpp:617
+#: src/ui/frmQuery.cpp:658
 msgid "Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"
 msgstr "Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"
 
 #: src/ui/frmQuery.cpp:784
+#: src/ui/frmQuery.cpp:786
 msgid "Query is running."
 msgstr "Sorgu çalışıyor."
 
@@ -4122,6 +4327,7 @@ msgid "Query result with %d rows will be returned.\n"
 msgstr " %d satırlı sorgu sonucu döndürülecek.\n"
 
 #: src/ui/frmQuery.cpp:823
+#: src/ui/frmQuery.cpp:825
 #, c-format
 msgid "Query returned successfully with no result in %s ms."
 msgstr "Sorgu 0 sonuç ile %s ms içinde başarılı olarak çalıştı."
@@ -4202,6 +4408,7 @@ msgid "Re&load module"
 msgstr "Modü&lü yeniden yükle"
 
 #: src/ui/ctlSQLBox.cpp:410
+#: src/ui/ctlSQLBox.cpp:409
 msgid "Reached end of the document"
 msgstr "Belgenin sonuna ulaşıldı."
 
@@ -4271,6 +4478,7 @@ msgstr "Referencing"
 #: input:494
 #: src/ui/frmMain.cpp:216
 #: input:495
+#: src/ui/frmEditGrid.cpp:88
 msgid "Refresh"
 msgstr "Yenile"
 
@@ -4294,6 +4502,8 @@ msgid "Refresh the selected object."
 msgstr "Seçili nesneyi güncelle."
 
 #: src/schema/pgTable.cpp:335
+#: src/schema/pgTable.cpp:336
+#: src/schema/pgTable.cpp:339
 msgid "Refresh to count rows"
 msgstr "Refresh to count rows"
 
@@ -4304,6 +4514,7 @@ msgid "Refreshing %s..."
 msgstr "%s güncelleniyor."
 
 #: src/ui/frmEditGrid.cpp:406
+#: src/ui/frmEditGrid.cpp:499
 msgid "Refreshing data, please wait."
 msgstr "Veri güncelleniyor, lütfen bekleyiniz."
 
@@ -4363,6 +4574,7 @@ msgid "Remove"
 msgstr "Kaldır"
 
 #: src/ui/frmMain.cpp:476
+#: src/ui/frmMain.cpp:494
 msgid "Restoring previous environment"
 msgstr "Önceki ortam geri yükleniyor."
 
@@ -4370,25 +4582,30 @@ msgstr "Önceki ortam geri yükleniyor."
 #: src/schema/pgOperator.cpp:116
 #: standard
 #: input:189
+#: src/schema/pgOperator.cpp:128
 msgid "Restrict function"
 msgstr "Restrict Function"
 
 #: src/schema/pgOperator.cpp:111
+#: src/schema/pgOperator.cpp:123
 msgid "Result type"
 msgstr "Sonuç tipi"
 
 #: src/schema/pgObject.cpp:138
+#: src/schema/pgObject.cpp:137
 #, c-format
 msgid "Retrieving %s details"
 msgstr "%s ayrıntıları alınıyor."
 
 #: src/ui/frmQuery.cpp:874
+#: src/ui/frmQuery.cpp:876
 #, c-format
 msgid "Retrieving data: %d rows."
 msgstr "Veri alınıyor: %d satır."
 
 #: src/ui/events.cpp:566
 #: src/ui/events.cpp:598
+#: src/ui/events.cpp:612
 msgid "Retrieving server properties"
 msgstr "Sunucu özellikleri bilgisi alınıyor."
 
@@ -4416,6 +4633,7 @@ msgid "Returns set"
 msgstr "küme döndürür"
 
 #: src/schema/pgOperator.cpp:118
+#: src/schema/pgOperator.cpp:130
 msgid "Right Sort operator"
 msgstr "Sağ sıralama operatörü (Right Sort Operator)"
 
@@ -4445,6 +4663,7 @@ msgstr "Right sort op"
 #: src/schema/pgOperator.cpp:110
 #: standard
 #: input:185
+#: src/schema/pgOperator.cpp:122
 msgid "Right type"
 msgstr "Right type"
 
@@ -4469,18 +4688,26 @@ msgstr "Satır tetikleyici (Row trigger)"
 
 #: src/schema/pgTable.cpp:335
 #: src/schema/pgTable.cpp:337
+#: src/schema/pgTable.cpp:336
+#: src/schema/pgTable.cpp:338
+#: src/schema/pgTable.cpp:339
+#: src/schema/pgTable.cpp:341
 msgid "Rows (counted)"
 msgstr "Satır (sayılan)"
 
 #: src/schema/pgTable.cpp:332
+#: src/schema/pgTable.cpp:333
+#: src/schema/pgTable.cpp:336
 msgid "Rows (estimated)"
 msgstr "Satır (tahmin edilen)"
 
 #: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:49
 msgid "Rule"
 msgstr "Rule"
 
 #: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:49
 msgid "Rules"
 msgstr "Rules"
 
@@ -4524,6 +4751,7 @@ msgstr "SQL Yardımı"
 
 #: src/ui/events.cpp:430
 #: src/ui/events.cpp:449
+#: src/ui/events.cpp:454
 msgid "SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr "SQL betikleri(*.sql)|*.sql|Tüm dosyalar (*.*)|*.*"
 
@@ -4562,6 +4790,7 @@ msgstr "KARARLI"
 #: src/ui/frmEditGrid.cpp:84
 #: src/ui/frmQuery.cpp:170
 #: src/ui/frmQueryBuilder.cpp:168
+#: src/ui/frmEditGrid.cpp:86
 msgid "Save"
 msgstr "Kaydet"
 
@@ -4596,6 +4825,7 @@ msgstr "Çalıştırılmış komutları kaydet"
 
 #: src/ui/frmQuery.cpp:655
 #: src/ui/frmQueryBuilder.cpp:1567
+#: src/ui/frmQuery.cpp:657
 msgid "Save query file as"
 msgstr "Sorgu dosyasını farklı kaydet"
 
@@ -4604,14 +4834,17 @@ msgid "Save the SQL definition of the selected object."
 msgstr "Seçili nesnenin SQL tanımını kaydet."
 
 #: src/ui/frmEditGrid.cpp:84
+#: src/ui/frmEditGrid.cpp:86
 msgid "Saved the changed row."
 msgstr "Değiştirilmiş satırı kaydet."
 
 #: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:34
 msgid "Schema"
 msgstr "Şema"
 
 #: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:34
 msgid "Schemas"
 msgstr "Şemalar"
 
@@ -4650,6 +4883,7 @@ msgstr "Kayıt dosyasını seçin."
 
 #: src/ui/events.cpp:430
 #: src/ui/events.cpp:449
+#: src/ui/events.cpp:454
 msgid "Select output file"
 msgstr "Çıktı dosyasını seçin."
 
@@ -4677,10 +4911,12 @@ msgid "Send function"
 msgstr "Gönderme Fonksiyonu (Send function)"
 
 #: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:43
 msgid "Sequence"
 msgstr "Sequence"
 
 #: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:43
 msgid "Sequences"
 msgstr "Sequences"
 
@@ -4696,12 +4932,14 @@ msgstr "Sequences"
 #: input:352
 #: input:472
 #: input:473
+#: src/schema/pgObject.cpp:29
 msgid "Server"
 msgstr "Sunucu"
 
 #: src/schema/pgObject.cpp:30
 #: src/ui/frmMain.cpp:302
 #: src/ui/frmMain.cpp:303
+#: src/schema/pgObject.cpp:29
 msgid "Servers"
 msgstr "Sunucular"
 
@@ -4709,6 +4947,8 @@ msgstr "Sunucular"
 #: src/ui/frmMain.cpp:639
 #: src/ui/events.cpp:528
 #: src/ui/frmMain.cpp:642
+#: src/ui/events.cpp:533
+#: src/ui/frmMain.cpp:660
 #, c-format
 msgid "Servers (%d)"
 msgstr "Sunucular (%d)"
@@ -4811,6 +5051,7 @@ msgstr "Durum Tipi (State type)"
 #: src/schema/pgObject.cpp:500
 #: src/schema/pgSequence.cpp:106
 #: src/schema/pgObject.cpp:502
+#: src/schema/pgObject.cpp:512
 msgid "Statistic"
 msgstr "İstatistik"
 
@@ -4820,6 +5061,7 @@ msgstr "İstatistik"
 #: src/ui/events.cpp:559
 #: src/ui/frmMain.cpp:250
 #: src/ui/frmMain.cpp:313
+#: src/ui/events.cpp:571
 msgid "Statistics"
 msgstr "İstatistikler"
 
@@ -4865,6 +5107,7 @@ msgstr "hash destekler"
 # standard input:18
 # standard input:18
 #: src/schema/pgOperator.cpp:121
+#: src/schema/pgOperator.cpp:133
 msgid "Supports hash?"
 msgstr "hash destekler mi?"
 
@@ -4883,6 +5126,7 @@ msgid "System aggregate?"
 msgstr "System Aggregate mi?"
 
 #: src/schema/pgCast.cpp:68
+#: src/schema/pgCast.cpp:71
 msgid "System cast?"
 msgstr "System cast?"
 
@@ -4924,6 +5168,7 @@ msgid "System operator class?"
 msgstr "Sistem Operatörü Sınıfı mı?"
 
 #: src/schema/pgOperator.cpp:122
+#: src/schema/pgOperator.cpp:134
 msgid "System operator?"
 msgstr "System operatörü mü?"
 
@@ -4932,6 +5177,7 @@ msgid "System rule?"
 msgstr "Sistem Kuralı (rule) mı?"
 
 #: src/schema/pgSchema.cpp:150
+#: src/schema/pgSchema.cpp:151
 msgid "System schema?"
 msgstr "Sistem şeması mı (Schema)?"
 
@@ -4940,6 +5186,8 @@ msgid "System sequence?"
 msgstr "Sistem Sequence'i mi?"
 
 #: src/schema/pgTable.cpp:344
+#: src/schema/pgTable.cpp:345
+#: src/schema/pgTable.cpp:348
 msgid "System table?"
 msgstr "Sistem Tablosu mu?"
 
@@ -4952,11 +5200,13 @@ msgid "System type?"
 msgstr "Sistem tipi mi?"
 
 #: src/schema/pgView.cpp:85
+#: src/schema/pgView.cpp:87
 msgid "System view?"
 msgstr "Sistem görüntüsü mü?"
 
 #: src/schema/pgObject.cpp:45
 #: src/ui/frmQueryBuilder.cpp:207
+#: src/schema/pgObject.cpp:44
 msgid "Table"
 msgstr "Tablo"
 
@@ -4967,6 +5217,7 @@ msgstr "Tablo"
 #: src/schema/pgObject.cpp:45
 #: standard
 #: input:345
+#: src/schema/pgObject.cpp:44
 msgid "Tables"
 msgstr "Tablolar"
 
@@ -5063,6 +5314,7 @@ msgid "The last OID used by the server."
 msgstr "Sunucu tarafından kullanılan son OID."
 
 #: src/ui/frmQuery.cpp:884
+#: src/ui/frmQuery.cpp:886
 #, c-format
 msgid "The maximum of %ld rows is exceeded (total %ld)."
 msgstr "İzin verilen en fazla satır sayısı olan %ld aşıldı (toplam %ld)."
@@ -5087,6 +5339,7 @@ msgid "The text %s has changed.\n"
 msgstr "%s metin değişti.\n"
 
 #: src/ui/frmQuery.cpp:562
+#: src/ui/frmQuery.cpp:564
 #, c-format
 msgid ""
 "The text %s has changed.\n"
@@ -5107,10 +5360,12 @@ msgstr "Sunucuya bağlanırken kullanılacak kullanıcı adı."
 
 #: src/ui/events.cpp:426
 #: src/ui/events.cpp:445
+#: src/ui/events.cpp:450
 msgid "There is nothing in the SQL pane to save!"
 msgstr "SQL kısmında kaydedilecek bir veri yok!"
 
 #: src/ui/frmEditGrid.cpp:281
+#: src/ui/frmEditGrid.cpp:373
 msgid ""
 "There is unsaved data in a row.\n"
 "Do you want to store to the database?"
@@ -5136,24 +5391,29 @@ msgid "To"
 msgstr "To"
 
 #: src/ui/frmQuery.cpp:954
+#: src/ui/frmQuery.cpp:956
 #, c-format
 msgid "Total %ld rows.\n"
 msgstr "Toplam: %ld satır.\n"
 
 #: src/ui/frmMaintenance.cpp:214
 #: src/ui/frmQuery.cpp:943
+#: src/ui/frmQuery.cpp:945
 msgid "Total query runtime: "
 msgstr "Sorgunun toplam çalışma süresi"
 
 #: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:50
 msgid "Trigger"
 msgstr "Tetikleyici (Trigger)"
 
 #: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:40
 msgid "Trigger Function"
 msgstr "Tetikleyici Fonksiyonu (Trigger Function)"
 
 #: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:40
 msgid "Trigger Functions"
 msgstr "Tetikleyici Fonksiyonları (Trigger Functions)"
 
@@ -5167,6 +5427,7 @@ msgid "Trigger function"
 msgstr "Tetikleyici fonksiyonu (Trigger function)"
 
 #: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:50
 msgid "Triggers"
 msgstr "Tetikleyiciler (triggers)"
 
@@ -5200,6 +5461,7 @@ msgstr ""
 
 #: src/ui/events.cpp:816
 #: src/ui/events.cpp:872
+#: src/ui/events.cpp:882
 msgid "Trying to drop system object"
 msgstr "Sistem nesnesi kaldırılmaya çalışılıyor."
 
@@ -5210,10 +5472,12 @@ msgstr "Sistem nesnesi kaldırılmaya çalışılıyor."
 #: src/schema/pgObject.cpp:46
 #: standard
 #: input:278
+#: src/schema/pgObject.cpp:45
 msgid "Type"
 msgstr "Veri tipi"
 
 #: src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:45
 msgid "Types"
 msgstr "Veri tipleri"
 
@@ -5232,10 +5496,12 @@ msgstr "UPDATE"
 
 #: src/ui/frmEditGrid.cpp:87
 #: src/ui/frmQuery.cpp:177
+#: src/ui/frmEditGrid.cpp:89
 msgid "Undo"
 msgstr "Geri al"
 
 #: src/ui/frmEditGrid.cpp:87
+#: src/ui/frmEditGrid.cpp:89
 msgid "Undo change of data."
 msgstr "Veri değişimini geri al."
 
@@ -5245,6 +5511,7 @@ msgid "Undo last action"
 msgstr "Son işlemi geri al"
 
 #: src/ui/frmEditGrid.cpp:1044
+#: src/ui/frmEditGrid.cpp:1479
 msgid "Unexpected empty cache line: dataSet already closed."
 msgstr "Beklenmeyen boş cache satırı: dataSet zaten kapalı."
 
@@ -5262,6 +5529,7 @@ msgstr "Unicode UTF-8"
 #: src/ui/dlgTable.cpp:476
 #: standard
 #: input:150
+#: src/schema/pgObject.cpp:53
 msgid "Unique"
 msgstr "Tekil (Unique)"
 
@@ -5271,14 +5539,17 @@ msgid "Unique?"
 msgstr "Tekil mi(Unique)?"
 
 #: src/schema/pgObject.cpp:57
+#: src/schema/pgObject.cpp:56
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
 #: src/ui/ctlSQLBox.cpp:427
+#: src/ui/ctlSQLBox.cpp:426
 msgid "Unknown find dialog event!"
 msgstr "Bilinmeyen bulma diyaloğu olayı!"
 
 #: src/ui/frmEditGrid.cpp:281
+#: src/ui/frmEditGrid.cpp:373
 msgid "Unsaved data"
 msgstr "Kaydedilmemiş veri"
 
@@ -5288,6 +5559,7 @@ msgstr "Kataloglar Güncellensin mi?"
 
 #: src/schema/pgObject.cpp:33
 #: src/ui/frmStatus.cpp:57
+#: src/schema/pgObject.cpp:32
 msgid "User"
 msgstr "Kullanıcı"
 
@@ -5337,6 +5609,7 @@ msgstr "Kullanıcı başka kullanıcılar yaratabilir."
 #: standard
 #: input:412
 #: src/pgAdmin3.cpp:198
+#: src/pgAdmin3.cpp:201
 msgid "User language"
 msgstr "Kullanıcı Dili"
 
@@ -5372,6 +5645,7 @@ msgid "Username"
 msgstr "Kullanıcı Adı"
 
 #: src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:32
 msgid "Users"
 msgstr "Kullanıcılar"
 
@@ -5415,6 +5689,8 @@ msgstr "Validator"
 #: src/ui/dlgUser.cpp:68
 #: src/include/pgObject.h:141
 #: src/schema/pgObject.cpp:502
+#: src/include/pgObject.h:139
+#: src/schema/pgObject.cpp:512
 msgid "Value"
 msgstr "Değer"
 
@@ -5489,6 +5765,7 @@ msgid "Version string"
 msgstr " Sürüm katarı"
 
 #: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:46
 msgid "View"
 msgstr "View"
 
@@ -5516,6 +5793,7 @@ msgstr "Seçili nesnenin içindeki veriyi görüntüle."
 #: src/schema/pgObject.cpp:47
 #: standard
 #: input:346
+#: src/schema/pgObject.cpp:46
 msgid "Views"
 msgstr "Viewlar"
 
@@ -5539,6 +5817,7 @@ msgstr ""
 
 #: src/ui/frmQueryBuilder.cpp:596
 #: src/utils/misc.cpp:97
+#: src/utils/misc.cpp:102
 msgid "Yes"
 msgstr "Evet"
 
@@ -5583,6 +5862,7 @@ msgid "You must select one column from the left table and one column from the ri
 msgstr "Soldaki tablodan ve sağdaki tablodan birer tane kolon seçmelisiniz."
 
 #: src/ui/frmEditGrid.cpp:479
+#: src/ui/frmEditGrid.cpp:573
 msgid "aborting."
 msgstr "iptal ediliyor."
 
@@ -5696,11 +5976,13 @@ msgstr "pgAdmin III &SSS"
 
 #: src/ui/frmQuery.cpp:562
 #: src/ui/frmQueryBuilder.cpp:1485
+#: src/ui/frmQuery.cpp:564
 msgid "pgAdmin III Query"
 msgstr "pgAdmin III Sorgusu"
 
 #: src/ui/events.cpp:503
 #: src/ui/events.cpp:522
+#: src/ui/events.cpp:527
 msgid "pgServer object didn't initialise because the user aborted."
 msgstr "PgServer nesnesi kullanıcının iptal etmesi nedeniyle başlayamadı."
 
@@ -5746,5 +6028,5 @@ msgstr "template1"
 #: standard
 #: input:375
 msgid "|"
-msgstr " "
+msgstr "|"
 

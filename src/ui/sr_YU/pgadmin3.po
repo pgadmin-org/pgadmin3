@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgAdmin3\n"
 "POT-Creation-Date: 2003-08-25 02:50+0200\n"
-"PO-Revision-Date: 2003-09-13 20:00+0100\n"
+"PO-Revision-Date: 2003-09-25 09:44+0100\n"
 "Last-Translator: Jean-Michel POURE <jm.poure@freesurf.fr>\n"
 "Language-Team: pgAdmin Developers <pgadmin-hackers@postgresql.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,6 +22,7 @@ msgstr ""
 "Отказан.\n"
 
 #: src/ui/frmQuery.cpp:885
+#: src/ui/frmQuery.cpp:887
 msgid ""
 "\n"
 "Retrieve all rows anyway?"
@@ -30,6 +31,7 @@ msgstr ""
 "Добави све редове?"
 
 #: src/utils/misc.cpp:86
+#: src/utils/misc.cpp:91
 msgid " Done."
 msgstr "Завршено."
 
@@ -39,11 +41,13 @@ msgid "\""
 msgstr "\""
 
 #: src/utils/misc.cpp:82
+#: src/utils/misc.cpp:87
 #, c-format
 msgid "%.2f secs"
 msgstr "%.2f секунди"
 
 #: src/ui/frmQuery.cpp:870
+#: src/ui/frmQuery.cpp:872
 #, c-format
 msgid "%d rows retrieved."
 msgstr "%d редова добављено."
@@ -52,21 +56,27 @@ msgstr "%d редова добављено."
 #: src/ui/frmEditGrid.cpp:439
 #: src/ui/frmMaintenance.cpp:212
 #: src/ui/frmQuery.cpp:960
+#: src/ui/frmEditGrid.cpp:433
+#: src/ui/frmEditGrid.cpp:532
+#: src/ui/frmQuery.cpp:962
 #, c-format
 msgid "%d rows."
 msgstr "%d редова."
 
 #: src/ui/frmQuery.cpp:953
+#: src/ui/frmQuery.cpp:955
 #, c-format
 msgid "%ld  rows not retrieved."
 msgstr "%ld редова није добављено."
 
 #: src/ui/frmQuery.cpp:962
+#: src/ui/frmQuery.cpp:964
 #, c-format
 msgid "%ld of %ld rows"
 msgstr "%ld од %ld редова"
 
 #: src/ui/frmQuery.cpp:949
+#: src/ui/frmQuery.cpp:951
 #, c-format
 msgid "%ld rows retrieved."
 msgstr "%ld редова добављено."
@@ -362,12 +372,17 @@ msgstr "'"
 msgid "'%s' is not a valid identifier. It must start with A-Z or a-z or _ and can contain A-Z and a-z and 0-9 and _."
 msgstr "'%s' није исправан идентификатор. Мора почети са A-Z или a-z или _ и може садржати A-Z и a-z и 0-9 и _."
 
+#: src/schema/pgCast.cpp:67
+msgid "(binary compatible)"
+msgstr ""
+
 #: standard
 #: input:374
 msgid ","
 msgstr ","
 
 #: src/ui/frmQuery.cpp:788
+#: src/ui/frmQuery.cpp:790
 msgid "-- Executing query:\n"
 msgstr "-- Извршавам упит:\n"
 
@@ -424,6 +439,8 @@ msgid "<html><body>Loading %s</body></html>"
 msgstr "<html><body>Учитавам %s</body></html>"
 
 #: src/schema/pgTable.cpp:328
+#: src/schema/pgTable.cpp:329
+#: src/schema/pgTable.cpp:332
 msgid "<none>"
 msgstr "<none>"
 
@@ -453,6 +470,10 @@ msgstr ""
 #: src/schema/pgSequence.cpp:90
 #: src/schema/pgTable.cpp:326
 #: src/schema/pgView.cpp:83
+#: src/schema/pgSchema.cpp:150
+#: src/schema/pgTable.cpp:327
+#: src/schema/pgView.cpp:85
+#: src/schema/pgTable.cpp:330
 msgid "ACL"
 msgstr "ACL"
 
@@ -529,26 +550,32 @@ msgid "Add a connection to a server."
 msgstr "Додај везу са сервером."
 
 #: src/schema/pgObject.cpp:55
+#: src/schema/pgObject.cpp:54
 msgid "Add a new Check Constraint."
 msgstr "Додај ново Ограничење вредности."
 
 #: src/schema/pgObject.cpp:48
+#: src/schema/pgObject.cpp:47
 msgid "Add a new Column."
 msgstr "Додај нову колону."
 
 #: src/schema/pgObject.cpp:56
+#: src/schema/pgObject.cpp:55
 msgid "Add a new Foreign Key."
 msgstr "Додај нови Показивач."
 
 #: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:48
 msgid "Add a new Index."
 msgstr "Додај нови индекс."
 
 #: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:50
 msgid "Add a new Trigger."
 msgstr "Додај нови Окидач."
 
 #: src/schema/pgObject.cpp:54
+#: src/schema/pgObject.cpp:53
 msgid "Add a new Unique Constraint."
 msgstr "Додај ново Ограничење јединствености."
 
@@ -568,10 +595,12 @@ msgstr "Додај/Промени"
 
 #: src/schema/pgObject.cpp:36
 #: src/ui/frmQueryBuilder.cpp:215
+#: src/schema/pgObject.cpp:35
 msgid "Aggregate"
 msgstr "Скуп"
 
 #: src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:35
 msgid "Aggregates"
 msgstr "Скупови"
 
@@ -603,6 +632,7 @@ msgstr "Анализирај"
 
 #: src/ui/events.cpp:823
 #: src/ui/events.cpp:879
+#: src/ui/events.cpp:889
 #, c-format
 msgid "Are you sure you wish to drop %s %s?"
 msgstr "Да ли сте сигурни да желите да уклоните %s %s?"
@@ -731,17 +761,20 @@ msgid "Cancelled"
 msgstr "Отказано"
 
 #: src/ui/frmQuery.cpp:685
+#: src/ui/frmQuery.cpp:687
 msgid "Cancelling."
 msgstr "Отказујем."
 
 #: src/ui/events.cpp:814
 #: src/ui/events.cpp:870
+#: src/ui/events.cpp:880
 #, c-format
 msgid "Cannot drop system %s %s."
 msgstr "Не могу уклонити системски %s %s."
 
 #: src/pgAdmin3.cpp:232
 #: src/pgAdmin3.cpp:239
+#: src/pgAdmin3.cpp:242
 msgid "Cannot initialise the networking subsystem!"
 msgstr "Не могу иницијализовати мрежни подсистем."
 
@@ -750,10 +783,12 @@ msgid "Cannot open the logfile!"
 msgstr "Не могу отворити лог датотеку!"
 
 #: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:36
 msgid "Cast"
 msgstr "Додели тип"
 
 #: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:36
 msgid "Casts"
 msgstr "Доделе типова"
 
@@ -774,6 +809,7 @@ msgstr "Промените своју лозинку."
 
 #: src/ui/events.cpp:449
 #: src/ui/events.cpp:468
+#: src/ui/events.cpp:473
 msgid ""
 "Changing the 'Show System Objects' option will cause all connections to be closed, and the treeview to be rebuilt.\n"
 "\n"
@@ -789,6 +825,7 @@ msgstr ""
 #: standard
 #: input:29
 #: input:79
+#: src/schema/pgObject.cpp:54
 msgid "Check"
 msgstr "Потврди"
 
@@ -841,6 +878,7 @@ msgstr "Кластерован?"
 
 #: src/schema/pgObject.cpp:48
 #: src/ui/frmQueryBuilder.cpp:209
+#: src/schema/pgObject.cpp:47
 msgid "Column"
 msgstr "Колона"
 
@@ -872,6 +910,7 @@ msgstr "Раздвојник колона"
 #: input:153
 #: input:164
 #: input:248
+#: src/schema/pgObject.cpp:47
 msgid "Columns"
 msgstr "Колоне"
 
@@ -914,12 +953,18 @@ msgstr "Колоне"
 #: input:281
 #: input:336
 #: src/schema/pgAggregate.cpp:87
+#: src/schema/pgOperator.cpp:135
+#: src/schema/pgSchema.cpp:152
+#: src/schema/pgTable.cpp:346
+#: src/schema/pgView.cpp:88
+#: src/schema/pgTable.cpp:349
 msgid "Comment"
 msgstr "Напомена"
 
 #: src/schema/pgOperator.cpp:113
 #: standard
 #: input:191
+#: src/schema/pgOperator.cpp:125
 msgid "Commutator"
 msgstr "Комутатор"
 
@@ -979,23 +1024,28 @@ msgstr "Назив ограничења"
 #: src/schema/pgObject.cpp:52
 #: standard
 #: input:252
+#: src/schema/pgObject.cpp:51
 msgid "Constraints"
 msgstr "Ограничења"
 
 #: src/schema/pgCast.cpp:67
+#: src/schema/pgCast.cpp:70
 msgid "Context"
 msgstr "Контекст"
 
 #: src/ui/events.cpp:450
 #: src/ui/events.cpp:469
+#: src/ui/events.cpp:474
 msgid "Continue?"
 msgstr "Настави?"
 
 #: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:37
 msgid "Conversion"
 msgstr "Конверзија"
 
 #: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:37
 msgid "Conversions"
 msgstr "Конверзије"
 
@@ -1033,16 +1083,19 @@ msgstr "Не могу направити објекат за везу!"
 
 #: src/db/pgConn.cpp:265
 #: src/db/pgConn.cpp:276
+#: src/db/pgConn.cpp:279
 msgid "Couldn't create a pgSet object!"
 msgstr "Не могу направити pgSet објекат!"
 
 #: src/pgAdmin3.cpp:306
 #: src/pgAdmin3.cpp:313
+#: src/pgAdmin3.cpp:316
 msgid "Couldn't create the main window!"
 msgstr "Не могу направити главни прозор!"
 
 #: src/pgAdmin3.cpp:218
 #: src/pgAdmin3.cpp:225
+#: src/pgAdmin3.cpp:228
 msgid "Couldn't create the splash screen!"
 msgstr "Не могу направити уводни прозор!"
 
@@ -1063,82 +1116,102 @@ msgid "Create"
 msgstr "Направи"
 
 #: src/schema/pgObject.cpp:53
+#: src/schema/pgObject.cpp:52
 msgid "Create a Primary Key."
 msgstr "Направи Примарни Кључ."
 
 #: src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:35
 msgid "Create a new Aggregate."
 msgstr "Направи нову Целину."
 
 #: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:36
 msgid "Create a new Cast."
 msgstr "Направи нови Калуп."
 
 #: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:37
 msgid "Create a new Conversion."
 msgstr "Направи нову Конверзију."
 
 #: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:30
 msgid "Create a new Database."
 msgstr "Направи нову Базу Података."
 
 #: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:38
 msgid "Create a new Domain."
 msgstr "Направи нови Домен."
 
 #: src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:39
 msgid "Create a new Function."
 msgstr "Направи нову Функцију."
 
 #: src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:31
 msgid "Create a new Group."
 msgstr "Направи нову Групу."
 
 #: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:33
 msgid "Create a new Language."
 msgstr "Направи нови Језик."
 
 #: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:42
 msgid "Create a new Operator Class."
 msgstr "Направи нову Операторску Класу."
 
 #: src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:41
 msgid "Create a new Operator."
 msgstr "Направи нови Оператор."
 
 #: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:49
 msgid "Create a new Rule."
 msgstr "Направи ново Правило."
 
 #: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:34
 msgid "Create a new Schema."
 msgstr "Направи нову Шему."
 
 #: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:43
 msgid "Create a new Sequence."
 msgstr "Направи нову Секвенцу."
 
 #: src/schema/pgObject.cpp:30
+#: src/schema/pgObject.cpp:29
 msgid "Create a new Server connection."
 msgstr "Направи нову Везу са Сервером."
 
 #: src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:44
 msgid "Create a new Table."
 msgstr "Направи нову Табелу."
 
 #: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:40
 msgid "Create a new Trigger Function."
 msgstr "Направи нову Окидачку Функцију."
 
 #: src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:45
 msgid "Create a new Type."
 msgstr "Направи нови Тип."
 
 #: src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:32
 msgid "Create a new User."
 msgstr "Направи новог Корисника."
 
 #: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:46
 msgid "Create a new View."
 msgstr "Направи нови Поглед."
 
@@ -1203,6 +1276,7 @@ msgid "Data Output"
 msgstr "Излазни Подаци"
 
 #: src/ui/frmQuery.cpp:944
+#: src/ui/frmQuery.cpp:946
 msgid "Data retrieval runtime: "
 msgstr "Време добављања података:"
 
@@ -1216,6 +1290,7 @@ msgstr "Тип податка"
 
 #: src/schema/pgObject.cpp:31
 #: src/ui/frmStatus.cpp:56
+#: src/schema/pgObject.cpp:30
 msgid "Database"
 msgstr "База Података"
 
@@ -1226,6 +1301,7 @@ msgid "Database Status"
 msgstr "Статус Базе Података"
 
 #: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:30
 msgid "Databases"
 msgstr "Базе Података"
 
@@ -1240,6 +1316,7 @@ msgstr "Базе Података"
 #: input:289
 #: src/ui/frmOptions.cpp:98
 #: src/pgAdmin3.cpp:188
+#: src/pgAdmin3.cpp:191
 msgid "Default"
 msgstr "Подразумеван"
 
@@ -1284,14 +1361,17 @@ msgstr "Одложен"
 #: input:282
 #: input:303
 #: input:337
+#: src/schema/pgView.cpp:86
 msgid "Definition"
 msgstr "Дефиниција"
 
 #: src/ui/frmEditGrid.cpp:89
+#: src/ui/frmEditGrid.cpp:91
 msgid "Delete"
 msgstr "Обриши"
 
 #: src/ui/frmEditGrid.cpp:89
+#: src/ui/frmEditGrid.cpp:91
 msgid "Delete selected lines."
 msgstr "Обриши изабране линије."
 
@@ -1339,6 +1419,7 @@ msgstr "Прикажи помоћ за PostgreSQL."
 #: src/ui/frmQuery.cpp:134
 #: src/ui/frmQuery.cpp:186
 #: src/ui/frmMain.cpp:226
+#: src/ui/frmEditGrid.cpp:93
 msgid "Display help on SQL commands."
 msgstr "Прикажи помоћ за SQL команде."
 
@@ -1373,10 +1454,12 @@ msgid "Do you want to save changes?"
 msgstr "Да ли желиш да сачуваш промене?"
 
 #: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:38
 msgid "Domain"
 msgstr "Домен"
 
 #: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:38
 msgid "Domains"
 msgstr "Домени"
 
@@ -1395,6 +1478,7 @@ msgstr "Уклони"
 
 #: src/ui/events.cpp:825
 #: src/ui/events.cpp:881
+#: src/ui/events.cpp:891
 #, c-format
 msgid "Drop %s?"
 msgstr "Уклони %s?"
@@ -1495,6 +1579,7 @@ msgstr "Унеси име корисника за везу са сервером
 
 #: src/ui/events.cpp:497
 #: src/ui/events.cpp:516
+#: src/ui/events.cpp:521
 #, c-format
 msgid "Error connecting to the server: %s"
 msgstr "Грешка при успостављању везе са сервером: %s"
@@ -1598,6 +1683,7 @@ msgstr "Екстерни"
 
 #: src/utils/misc.cpp:381
 #: src/utils/sysLogger.cpp:194
+#: src/utils/misc.cpp:394
 msgid "FATAL"
 msgstr "FATAL"
 
@@ -1629,11 +1715,13 @@ msgstr "Неуспело отварање датотеке %s."
 
 #: src/ui/events.cpp:438
 #: src/ui/events.cpp:457
+#: src/ui/events.cpp:462
 #, c-format
 msgid "Failed to write to the output file: %s"
 msgstr "Неуспео запис у датотеку: %s"
 
 #: src/utils/misc.cpp:380
+#: src/utils/misc.cpp:393
 msgid ""
 "File cannot be opened with this format.\n"
 "Please chose another format."
@@ -1667,6 +1755,9 @@ msgstr "Нађи"
 #: src/ui/ctlSQLBox.cpp:416
 #: src/ui/frmQuery.cpp:114
 #: src/ui/frmQuery.cpp:180
+#: src/ui/ctlSQLBox.cpp:364
+#: src/ui/ctlSQLBox.cpp:409
+#: src/ui/ctlSQLBox.cpp:415
 msgid "Find text"
 msgstr "Нађи текст"
 
@@ -1692,6 +1783,7 @@ msgstr "За тип"
 
 #: src/schema/pgObject.cpp:56
 #: src/ui/dlgTable.cpp:475
+#: src/schema/pgObject.cpp:55
 msgid "Foreign Key"
 msgstr "Показивач"
 
@@ -1722,10 +1814,14 @@ msgstr "Од"
 #: standard
 #: input:19
 #: input:52
+#: src/schema/pgObject.cpp:39
+#: src/schema/pgCast.cpp:67
+#: src/schema/pgCast.cpp:69
 msgid "Function"
 msgstr "Функција"
 
 #: src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:39
 msgid "Functions"
 msgstr "Функције"
 
@@ -1735,12 +1831,14 @@ msgid "General"
 msgstr "Уопштено"
 
 #: src/schema/pgOperator.cpp:120
+#: src/schema/pgOperator.cpp:132
 msgid "Greater than operator"
 msgstr "Веће од оператор"
 
 #: src/schema/pgObject.cpp:32
 #: src/ui/dlgProperty.cpp:911
 #: src/ui/dlgProperty.cpp:914
+#: src/schema/pgObject.cpp:31
 msgid "Group"
 msgstr "Група"
 
@@ -1756,6 +1854,7 @@ msgstr "Група/Корисник"
 #: src/schema/pgObject.cpp:32
 #: standard
 #: input:320
+#: src/schema/pgObject.cpp:31
 msgid "Groups"
 msgstr "Групе"
 
@@ -1776,6 +1875,8 @@ msgid "Has OIDs"
 msgstr "Има OIDе"
 
 #: src/schema/pgTable.cpp:343
+#: src/schema/pgTable.cpp:344
+#: src/schema/pgTable.cpp:347
 msgid "Has OIDs?"
 msgstr "Има OIDе?"
 
@@ -1804,6 +1905,7 @@ msgstr "Има OIDе?"
 #: input:310
 #: input:330
 #: input:338
+#: src/ui/frmEditGrid.cpp:93
 msgid "Help"
 msgstr "Помоћ"
 
@@ -1867,10 +1969,12 @@ msgid "Increment"
 msgstr "Увећај"
 
 #: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:48
 msgid "Index"
 msgstr "Индекс"
 
 #: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:48
 msgid "Indexes"
 msgstr "Индекси"
 
@@ -1885,10 +1989,14 @@ msgid "Inherited from table %s"
 msgstr "Наслеђен од табеле %s"
 
 #: src/schema/pgTable.cpp:342
+#: src/schema/pgTable.cpp:343
+#: src/schema/pgTable.cpp:346
 msgid "Inherited tables"
 msgstr "Наслеђене табеле"
 
 #: src/schema/pgTable.cpp:340
+#: src/schema/pgTable.cpp:341
+#: src/schema/pgTable.cpp:344
 msgid "Inherited tables count"
 msgstr "Број наслеђених табела"
 
@@ -1898,6 +2006,8 @@ msgid "Inherits from tables"
 msgstr "Наслеђује од табела"
 
 #: src/schema/pgTable.cpp:339
+#: src/schema/pgTable.cpp:340
+#: src/schema/pgTable.cpp:343
 msgid "Inherits tables"
 msgstr "Наслеђује табеле"
 
@@ -1960,10 +2070,12 @@ msgstr "Тип везе"
 #: src/schema/pgOperator.cpp:115
 #: standard
 #: input:190
+#: src/schema/pgOperator.cpp:127
 msgid "Join function"
 msgstr "Везна функција"
 
 #: src/schema/pgOperator.cpp:106
+#: src/schema/pgOperator.cpp:118
 msgid "Kind"
 msgstr "Врста"
 
@@ -1982,10 +2094,12 @@ msgstr "LF"
 #: src/schema/pgObject.cpp:34
 #: standard
 #: input:117
+#: src/schema/pgObject.cpp:33
 msgid "Language"
 msgstr "Језик"
 
 #: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:33
 msgid "Languages"
 msgstr "Језици"
 
@@ -1998,6 +2112,7 @@ msgid "Last system OID"
 msgstr "Последњи системски OID"
 
 #: src/schema/pgOperator.cpp:117
+#: src/schema/pgOperator.cpp:129
 msgid "Left Sort operator"
 msgstr "Леви поредак оператор"
 
@@ -2015,6 +2130,7 @@ msgstr "Леви поредак оператор"
 #: src/schema/pgOperator.cpp:108
 #: standard
 #: input:184
+#: src/schema/pgOperator.cpp:120
 msgid "Left type"
 msgstr "Леви тип"
 
@@ -2026,10 +2142,12 @@ msgid "Length"
 msgstr "Дужина"
 
 #: src/schema/pgOperator.cpp:119
+#: src/schema/pgOperator.cpp:131
 msgid "Less Than operator"
 msgstr "Мање од оператор"
 
 #: src/ui/frmQuery.cpp:885
+#: src/ui/frmQuery.cpp:887
 msgid "Limit exceeded"
 msgstr "Прекорачено ограничење"
 
@@ -2217,12 +2335,22 @@ msgstr "Везе више колона"
 #: input:276
 #: input:334
 #: src/schema/pgAggregate.cpp:77
+#: src/schema/pgOperator.cpp:115
+#: src/schema/pgSchema.cpp:147
+#: src/schema/pgTable.cpp:324
+#: src/schema/pgView.cpp:82
+#: src/schema/pgTable.cpp:327
 msgid "Name"
 msgstr "Име"
+
+#: src/ui/dlgType.cpp:246
+msgid "Name may not start with '_'."
+msgstr ""
 
 #: src/schema/pgOperator.cpp:114
 #: standard
 #: input:192
+#: src/schema/pgOperator.cpp:126
 msgid "Negator"
 msgstr "Негатор"
 
@@ -2232,58 +2360,72 @@ msgid "New &Object"
 msgstr "Ноби &Објекат"
 
 #: src/schema/pgObject.cpp:36
+#: src/schema/pgObject.cpp:35
 msgid "New Aggregate"
 msgstr "Нови Скуп"
 
 #: src/schema/pgObject.cpp:37
+#: src/schema/pgObject.cpp:36
 msgid "New Cast"
 msgstr "Нови Калуп типа"
 
 #: src/schema/pgObject.cpp:55
+#: src/schema/pgObject.cpp:54
 msgid "New Check Constraint"
 msgstr "Ново Ограничење Вредности"
 
 #: src/schema/pgObject.cpp:48
+#: src/schema/pgObject.cpp:47
 msgid "New Column"
 msgstr "Нова Колона"
 
 #: src/schema/pgObject.cpp:38
+#: src/schema/pgObject.cpp:37
 msgid "New Conversion"
 msgstr "Нова Конверзија"
 
 #: src/schema/pgObject.cpp:31
+#: src/schema/pgObject.cpp:30
 msgid "New Database"
 msgstr "Нова База Података"
 
 #: src/schema/pgObject.cpp:39
+#: src/schema/pgObject.cpp:38
 msgid "New Domain"
 msgstr "Нови Домен"
 
 #: src/schema/pgObject.cpp:56
+#: src/schema/pgObject.cpp:55
 msgid "New Foreign Key"
 msgstr "Нови Показивач"
 
 #: src/schema/pgObject.cpp:40
+#: src/schema/pgObject.cpp:39
 msgid "New Function"
 msgstr "Нова Функција"
 
 #: src/schema/pgObject.cpp:32
+#: src/schema/pgObject.cpp:31
 msgid "New Group"
 msgstr "Нова Група"
 
 #: src/schema/pgObject.cpp:49
+#: src/schema/pgObject.cpp:48
 msgid "New Index"
 msgstr "Нови Индекс"
 
 #: src/schema/pgObject.cpp:34
+#: src/schema/pgObject.cpp:33
 msgid "New Language"
 msgstr "Нови Језик"
 
 #: src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:41
 msgid "New Operator"
 msgstr "Нови Оператор"
 
 #: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:42
 msgid "New Operator Class"
 msgstr "Нова Операторска Класа"
 
@@ -2294,50 +2436,62 @@ msgid "New Password"
 msgstr "Нова Лозинка"
 
 #: src/schema/pgObject.cpp:53
+#: src/schema/pgObject.cpp:52
 msgid "New Primary Key"
 msgstr "Нови Примарни Кључ"
 
 #: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:49
 msgid "New Rule"
 msgstr "Ново Правило"
 
 #: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:34
 msgid "New Schema"
 msgstr "Нова Шема"
 
 #: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:43
 msgid "New Sequence"
 msgstr "Нова Секвенца"
 
 #: src/schema/pgObject.cpp:30
+#: src/schema/pgObject.cpp:29
 msgid "New Server"
 msgstr "Нови Сервер"
 
 #: src/schema/pgObject.cpp:45
+#: src/schema/pgObject.cpp:44
 msgid "New Table"
 msgstr "Нова Табела"
 
 #: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:50
 msgid "New Trigger"
 msgstr "Нови Окидач"
 
 #: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:40
 msgid "New Trigger Function"
 msgstr "Нова Окидачка Функција"
 
 #: src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:45
 msgid "New Type"
 msgstr "Нови Тип"
 
 #: src/schema/pgObject.cpp:54
+#: src/schema/pgObject.cpp:53
 msgid "New Unique Constraint"
 msgstr "Ново Ограничење Јединствености"
 
 #: src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:32
 msgid "New User"
 msgstr "Нови Корисник"
 
 #: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:46
 msgid "New View"
 msgstr "Нови Поглед"
 
@@ -2355,10 +2509,12 @@ msgstr "Укупан нови број цифара не сме бити мањ�
 
 #: src/ui/frmQueryBuilder.cpp:597
 #: src/utils/misc.cpp:97
+#: src/utils/misc.cpp:102
 msgid "No"
 msgstr "Не"
 
 #: src/ui/frmEditGrid.cpp:402
+#: src/ui/frmEditGrid.cpp:495
 msgid "No Table or view."
 msgstr "Нема табеле ни погледа."
 
@@ -2366,6 +2522,7 @@ msgstr "Нема табеле ни погледа."
 #: src/ui/frmMain.cpp:307
 #: src/ui/events.cpp:557
 #: src/ui/frmMain.cpp:308
+#: src/ui/events.cpp:569
 msgid "No properties are available for the current selection"
 msgstr "Нема расположивих особина за текуће објекте"
 
@@ -2373,10 +2530,12 @@ msgstr "Нема расположивих особина за текуће об�
 #: src/ui/frmMain.cpp:313
 #: src/ui/events.cpp:560
 #: src/ui/frmMain.cpp:314
+#: src/ui/events.cpp:572
 msgid "No statistics are available for the current selection"
 msgstr "Нема расположивих статистика за текуће објекте"
 
 #: src/schema/pgObject.cpp:29
+#: src/schema/pgObject.cpp:28
 msgid "None"
 msgstr "Ниједан"
 
@@ -2392,6 +2551,7 @@ msgid "Not NULL?"
 msgstr "Није NULL?"
 
 #: src/ui/ctlSQLBox.cpp:416
+#: src/ui/ctlSQLBox.cpp:415
 msgid "Not implemented"
 msgstr "Није остварено"
 
@@ -2441,6 +2601,11 @@ msgstr "Ништа"
 #: input:277
 #: input:335
 #: src/schema/pgAggregate.cpp:79
+#: src/schema/pgOperator.cpp:116
+#: src/schema/pgSchema.cpp:148
+#: src/schema/pgTable.cpp:325
+#: src/schema/pgView.cpp:83
+#: src/schema/pgTable.cpp:328
 msgid "OID"
 msgstr "OID"
 
@@ -2473,6 +2638,9 @@ msgstr "У реду"
 #: src/ui/frmQuery.cpp:824
 #: src/ui/frmQuery.cpp:870
 #: src/ui/frmQuery.cpp:949
+#: src/ui/frmQuery.cpp:826
+#: src/ui/frmQuery.cpp:872
+#: src/ui/frmQuery.cpp:951
 msgid "OK."
 msgstr "У реду."
 
@@ -2523,6 +2691,7 @@ msgstr "Отвори датотеку"
 
 #: src/ui/frmQuery.cpp:614
 #: src/ui/frmQueryBuilder.cpp:1524
+#: src/ui/frmQuery.cpp:616
 msgid "Open query file"
 msgstr "Отвори датотеку са упитом"
 
@@ -2535,14 +2704,17 @@ msgstr "Отвори pgAdmin III датотеку помоћи"
 #: standard
 #: input:457
 #: input:458
+#: src/schema/pgObject.cpp:41
 msgid "Operator"
 msgstr "Оператор"
 
 #: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:42
 msgid "Operator Class"
 msgstr "Операторска Класа"
 
 #: src/schema/pgObject.cpp:43
+#: src/schema/pgObject.cpp:42
 msgid "Operator Classes"
 msgstr "Операторске Класе"
 
@@ -2554,10 +2726,12 @@ msgstr "Операторске класе"
 #: src/schema/pgOperator.cpp:112
 #: standard
 #: input:186
+#: src/schema/pgOperator.cpp:124
 msgid "Operator function"
 msgstr "Операторска функција"
 
 #: src/schema/pgObject.cpp:42
+#: src/schema/pgObject.cpp:41
 msgid "Operators"
 msgstr "Оператори"
 
@@ -2581,6 +2755,8 @@ msgstr "Или"
 
 #: src/ui/frmEditGrid.cpp:1255
 #: src/ui/frmEditGrid.cpp:1313
+#: src/ui/frmEditGrid.cpp:1690
+#: src/ui/frmEditGrid.cpp:1748
 msgid "Out of Memory for cacheLinePool"
 msgstr "Нема довољно меморије за cacheLinePool"
 
@@ -2616,6 +2792,11 @@ msgstr "Излазна функција"
 #: input:228
 #: input:242
 #: src/schema/pgAggregate.cpp:80
+#: src/schema/pgOperator.cpp:117
+#: src/schema/pgSchema.cpp:149
+#: src/schema/pgTable.cpp:326
+#: src/schema/pgView.cpp:84
+#: src/schema/pgTable.cpp:329
 msgid "Owner"
 msgstr "Власник"
 
@@ -2673,6 +2854,7 @@ msgstr "Пут"
 
 #: src/pgAdmin3.cpp:191
 #: src/pgAdmin3.cpp:198
+#: src/pgAdmin3.cpp:201
 msgid "Please choose user language:"
 msgstr "Изаберите кориснички језик:"
 
@@ -2704,6 +2886,7 @@ msgid "Please select language."
 msgstr "Изаберите језик."
 
 #: src/ui/dlgOperator.cpp:172
+#: src/ui/dlgOperator.cpp:173
 msgid "Please select left or right datatype."
 msgstr "Изаберите леви или десни тип податка."
 
@@ -2721,10 +2904,12 @@ msgid "Please select target datatype."
 msgstr "Изаберите тип податка за одредиште."
 
 #: src/ui/dlgOperator.cpp:173
+#: src/ui/dlgOperator.cpp:174
 msgid "Please specify a procedure."
 msgstr "Наведите процедуру."
 
 #: src/ui/dlgTrigger.cpp:193
+#: src/ui/dlgTrigger.cpp:195
 msgid "Please specify at least one action."
 msgstr "Наведите бар једну акцију."
 
@@ -2734,6 +2919,8 @@ msgstr "Наведите бар два члана."
 
 #: src/ui/dlgIndex.cpp:144
 #: src/ui/dlgTable.cpp:517
+#: src/ui/dlgForeignKey.cpp:84
+#: src/ui/dlgIndex.cpp:190
 msgid "Please specify columns."
 msgstr "Наведите колоне."
 
@@ -2742,6 +2929,7 @@ msgid "Please specify condition."
 msgstr "Наведите услов."
 
 #: src/ui/dlgConversion.cpp:164
+#: src/ui/dlgConversion.cpp:163
 msgid "Please specify conversion function."
 msgstr "Наведите функцију за претварање."
 
@@ -2775,6 +2963,10 @@ msgstr "Наведите руковаоца језика."
 #: src/ui/dlgUser.cpp:169
 #: src/ui/dlgView.cpp:115
 #: src/ui/dlgAggregate.cpp:126
+#: src/ui/dlgOperator.cpp:172
+#: src/ui/dlgTrigger.cpp:192
+#: src/ui/dlgType.cpp:245
+#: src/ui/dlgConversion.cpp:160
 msgid "Please specify name."
 msgstr "Наведите име."
 
@@ -2791,6 +2983,7 @@ msgid "Please specify source datatype."
 msgstr "Наведите тип податка за извор."
 
 #: src/ui/dlgConversion.cpp:162
+#: src/ui/dlgConversion.cpp:161
 msgid "Please specify source encoding."
 msgstr "Наведите начин записа за извор."
 
@@ -2800,10 +2993,12 @@ msgid "Please specify state function."
 msgstr "Наведите функцију за стање."
 
 #: src/ui/dlgConversion.cpp:163
+#: src/ui/dlgConversion.cpp:162
 msgid "Please specify target encoding."
 msgstr "Наведите начин записа за одредиште."
 
 #: src/ui/dlgTrigger.cpp:191
+#: src/ui/dlgTrigger.cpp:193
 msgid "Please specify trigger function."
 msgstr "Наведите функцију за окидач."
 
@@ -2850,11 +3045,16 @@ msgstr "Прецизност"
 
 #: src/schema/pgObject.cpp:53
 #: src/ui/dlgTable.cpp:472
+#: src/schema/pgObject.cpp:52
 msgid "Primary Key"
 msgstr "Примарни Кључ"
 
 #: src/schema/pgTable.cpp:328
 #: src/schema/pgTable.cpp:330
+#: src/schema/pgTable.cpp:329
+#: src/schema/pgTable.cpp:331
+#: src/schema/pgTable.cpp:332
+#: src/schema/pgTable.cpp:334
 msgid "Primary key"
 msgstr "Примарни кључ"
 
@@ -2916,11 +3116,13 @@ msgstr "Процедура"
 #: src/ui/frmMain.cpp:220
 #: src/ui/frmMain.cpp:249
 #: src/ui/frmMain.cpp:307
+#: src/ui/events.cpp:568
 msgid "Properties"
 msgstr "Својства"
 
 #: src/include/pgObject.h:140
 #: src/include/pgObject.h:141
+#: src/include/pgObject.h:139
 msgid "Property"
 msgstr "Својство"
 
@@ -2943,10 +3145,13 @@ msgstr "Датотеке упита (*.sql)|*.sql|Све датотеке (*.*)|
 
 #: src/ui/frmQuery.cpp:615
 #: src/ui/frmQuery.cpp:656
+#: src/ui/frmQuery.cpp:617
+#: src/ui/frmQuery.cpp:658
 msgid "Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"
 msgstr "Датотеке упита (*.sql)|*.sql|UTF-8 датотеке упита (*.usql)|*.usql|Све датотеке (*.*)|*.*"
 
 #: src/ui/frmQuery.cpp:784
+#: src/ui/frmQuery.cpp:786
 msgid "Query is running."
 msgstr "Упит је покренут."
 
@@ -2961,6 +3166,7 @@ msgid "Query result with %d rows will be returned.\n"
 msgstr "Резултат упита са %d враћених редова.\n"
 
 #: src/ui/frmQuery.cpp:823
+#: src/ui/frmQuery.cpp:825
 #, c-format
 msgid "Query returned successfully with no result in %s ms."
 msgstr "Упит успешно извршен без резултата за %s ms."
@@ -3022,6 +3228,7 @@ msgid "Re&load module"
 msgstr "&Поново учитај модул"
 
 #: src/ui/ctlSQLBox.cpp:410
+#: src/ui/ctlSQLBox.cpp:409
 msgid "Reached end of the document"
 msgstr "Досегнут крај документа"
 
@@ -3071,6 +3278,7 @@ msgstr "Референцирање"
 #: input:494
 #: src/ui/frmMain.cpp:216
 #: input:495
+#: src/ui/frmEditGrid.cpp:88
 msgid "Refresh"
 msgstr "Освежи"
 
@@ -3090,6 +3298,8 @@ msgid "Refresh the selected object."
 msgstr "Освежи изабрани објекат."
 
 #: src/schema/pgTable.cpp:335
+#: src/schema/pgTable.cpp:336
+#: src/schema/pgTable.cpp:339
 msgid "Refresh to count rows"
 msgstr "Освежи број редова"
 
@@ -3100,6 +3310,7 @@ msgid "Refreshing %s..."
 msgstr "Освежујем %s..."
 
 #: src/ui/frmEditGrid.cpp:406
+#: src/ui/frmEditGrid.cpp:499
 msgid "Refreshing data, please wait."
 msgstr "Освежавам податеке, сачекајте."
 
@@ -3133,31 +3344,37 @@ msgid "Remove"
 msgstr "Уклони"
 
 #: src/ui/frmMain.cpp:476
+#: src/ui/frmMain.cpp:494
 msgid "Restoring previous environment"
 msgstr "Успостави претходно окружење"
 
 #: src/schema/pgOperator.cpp:116
 #: standard
 #: input:189
+#: src/schema/pgOperator.cpp:128
 msgid "Restrict function"
 msgstr "Функција за ограничење"
 
 #: src/schema/pgOperator.cpp:111
+#: src/schema/pgOperator.cpp:123
 msgid "Result type"
 msgstr "Тип резултата"
 
 #: src/schema/pgObject.cpp:138
+#: src/schema/pgObject.cpp:137
 #, c-format
 msgid "Retrieving %s details"
 msgstr "Добављам детаље за %s"
 
 #: src/ui/frmQuery.cpp:874
+#: src/ui/frmQuery.cpp:876
 #, c-format
 msgid "Retrieving data: %d rows."
 msgstr "Добављам податке: %d редова."
 
 #: src/ui/events.cpp:566
 #: src/ui/events.cpp:598
+#: src/ui/events.cpp:612
 msgid "Retrieving server properties"
 msgstr "Добављам својства сервера"
 
@@ -3177,6 +3394,7 @@ msgid "Returns set"
 msgstr "Добавља скуп"
 
 #: src/schema/pgOperator.cpp:118
+#: src/schema/pgOperator.cpp:130
 msgid "Right Sort operator"
 msgstr "Десни Поредак оператор"
 
@@ -3194,6 +3412,7 @@ msgstr "Десни поредак оператор"
 #: src/schema/pgOperator.cpp:110
 #: standard
 #: input:185
+#: src/schema/pgOperator.cpp:122
 msgid "Right type"
 msgstr "Десни тип"
 
@@ -3213,18 +3432,26 @@ msgstr "Окидач редова"
 
 #: src/schema/pgTable.cpp:335
 #: src/schema/pgTable.cpp:337
+#: src/schema/pgTable.cpp:336
+#: src/schema/pgTable.cpp:338
+#: src/schema/pgTable.cpp:339
+#: src/schema/pgTable.cpp:341
 msgid "Rows (counted)"
 msgstr "Редови (избројани)"
 
 #: src/schema/pgTable.cpp:332
+#: src/schema/pgTable.cpp:333
+#: src/schema/pgTable.cpp:336
 msgid "Rows (estimated)"
 msgstr "Редови (процењени)"
 
 #: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:49
 msgid "Rule"
 msgstr "Правило"
 
 #: src/schema/pgObject.cpp:50
+#: src/schema/pgObject.cpp:49
 msgid "Rules"
 msgstr "Правила"
 
@@ -3256,6 +3483,7 @@ msgstr "SQL помоћ"
 
 #: src/ui/events.cpp:430
 #: src/ui/events.cpp:449
+#: src/ui/events.cpp:454
 msgid "SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"
 msgstr "SQL скрипте (*.sql)|*.sql|Све датотеке (*.*)|*.*"
 
@@ -3286,6 +3514,7 @@ msgstr "STABLE"
 #: src/ui/frmEditGrid.cpp:84
 #: src/ui/frmQuery.cpp:170
 #: src/ui/frmQueryBuilder.cpp:168
+#: src/ui/frmEditGrid.cpp:86
 msgid "Save"
 msgstr "Сачувај"
 
@@ -3320,6 +3549,7 @@ msgstr "Сачувај историјат извршених команди."
 
 #: src/ui/frmQuery.cpp:655
 #: src/ui/frmQueryBuilder.cpp:1567
+#: src/ui/frmQuery.cpp:657
 msgid "Save query file as"
 msgstr "Сачувај датотеку са упитом као"
 
@@ -3328,14 +3558,17 @@ msgid "Save the SQL definition of the selected object."
 msgstr "Сачувај SQL дефиницију изабраног објекта."
 
 #: src/ui/frmEditGrid.cpp:84
+#: src/ui/frmEditGrid.cpp:86
 msgid "Saved the changed row."
 msgstr "Сачувај промењени ред."
 
 #: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:34
 msgid "Schema"
 msgstr "Шема"
 
 #: src/schema/pgObject.cpp:35
+#: src/schema/pgObject.cpp:34
 msgid "Schemas"
 msgstr "Шеме"
 
@@ -3369,6 +3602,7 @@ msgstr "Изабери лог датотеку"
 
 #: src/ui/events.cpp:430
 #: src/ui/events.cpp:449
+#: src/ui/events.cpp:454
 msgid "Select output file"
 msgstr "Изабери датотеку за извоз"
 
@@ -3388,10 +3622,12 @@ msgid "Send function"
 msgstr "Функција за слање"
 
 #: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:43
 msgid "Sequence"
 msgstr "Секвенца"
 
 #: src/schema/pgObject.cpp:44
+#: src/schema/pgObject.cpp:43
 msgid "Sequences"
 msgstr "Секвенце"
 
@@ -3400,12 +3636,14 @@ msgstr "Секвенце"
 #: input:352
 #: input:472
 #: input:473
+#: src/schema/pgObject.cpp:29
 msgid "Server"
 msgstr "Сервер"
 
 #: src/schema/pgObject.cpp:30
 #: src/ui/frmMain.cpp:302
 #: src/ui/frmMain.cpp:303
+#: src/schema/pgObject.cpp:29
 msgid "Servers"
 msgstr "Сервери"
 
@@ -3413,6 +3651,8 @@ msgstr "Сервери"
 #: src/ui/frmMain.cpp:639
 #: src/ui/events.cpp:528
 #: src/ui/frmMain.cpp:642
+#: src/ui/events.cpp:533
+#: src/ui/frmMain.cpp:660
 #, c-format
 msgid "Servers (%d)"
 msgstr "Сервери (%d)"
@@ -3487,6 +3727,7 @@ msgstr "Тип стања"
 #: src/schema/pgObject.cpp:500
 #: src/schema/pgSequence.cpp:106
 #: src/schema/pgObject.cpp:502
+#: src/schema/pgObject.cpp:512
 msgid "Statistic"
 msgstr "Статистика"
 
@@ -3496,6 +3737,7 @@ msgstr "Статистика"
 #: src/ui/events.cpp:559
 #: src/ui/frmMain.cpp:250
 #: src/ui/frmMain.cpp:313
+#: src/ui/events.cpp:571
 msgid "Statistics"
 msgstr "Статистике"
 
@@ -3526,6 +3768,7 @@ msgid "Supports hash"
 msgstr "Подржава hash"
 
 #: src/schema/pgOperator.cpp:121
+#: src/schema/pgOperator.cpp:133
 msgid "Supports hash?"
 msgstr "Подржава hash?"
 
@@ -3540,6 +3783,7 @@ msgid "System aggregate?"
 msgstr "Системски скуп?"
 
 #: src/schema/pgCast.cpp:68
+#: src/schema/pgCast.cpp:71
 msgid "System cast?"
 msgstr "Системска додела типа?"
 
@@ -3581,6 +3825,7 @@ msgid "System operator class?"
 msgstr "Системска операторска класа?"
 
 #: src/schema/pgOperator.cpp:122
+#: src/schema/pgOperator.cpp:134
 msgid "System operator?"
 msgstr "Системски оператор?"
 
@@ -3589,6 +3834,7 @@ msgid "System rule?"
 msgstr "Системско правило?"
 
 #: src/schema/pgSchema.cpp:150
+#: src/schema/pgSchema.cpp:151
 msgid "System schema?"
 msgstr "Системска шема?"
 
@@ -3597,6 +3843,8 @@ msgid "System sequence?"
 msgstr "Системска секвенца?"
 
 #: src/schema/pgTable.cpp:344
+#: src/schema/pgTable.cpp:345
+#: src/schema/pgTable.cpp:348
 msgid "System table?"
 msgstr "Системска табела?"
 
@@ -3609,17 +3857,20 @@ msgid "System type?"
 msgstr "Системски тип?"
 
 #: src/schema/pgView.cpp:85
+#: src/schema/pgView.cpp:87
 msgid "System view?"
 msgstr "Системски поглед?"
 
 #: src/schema/pgObject.cpp:45
 #: src/ui/frmQueryBuilder.cpp:207
+#: src/schema/pgObject.cpp:44
 msgid "Table"
 msgstr "Табела"
 
 #: src/schema/pgObject.cpp:45
 #: standard
 #: input:345
+#: src/schema/pgObject.cpp:44
 msgid "Tables"
 msgstr "Табеле"
 
@@ -3680,6 +3931,7 @@ msgid "The last OID used by the server."
 msgstr "Последњи OID који је сервер користио."
 
 #: src/ui/frmQuery.cpp:884
+#: src/ui/frmQuery.cpp:886
 #, c-format
 msgid "The maximum of %ld rows is exceeded (total %ld)."
 msgstr "Максимум од %ld редова је прекорачен (тотал %ld)."
@@ -3700,6 +3952,7 @@ msgid "The text %s has changed.\n"
 msgstr "Текст %s је промењен.\n"
 
 #: src/ui/frmQuery.cpp:562
+#: src/ui/frmQuery.cpp:564
 #, c-format
 msgid ""
 "The text %s has changed.\n"
@@ -3716,10 +3969,12 @@ msgstr "Име корисника за повезивање са серверо�
 
 #: src/ui/events.cpp:426
 #: src/ui/events.cpp:445
+#: src/ui/events.cpp:450
 msgid "There is nothing in the SQL pane to save!"
 msgstr "Ништа није промењено у SQL погледу!"
 
 #: src/ui/frmEditGrid.cpp:281
+#: src/ui/frmEditGrid.cpp:373
 msgid ""
 "There is unsaved data in a row.\n"
 "Do you want to store to the database?"
@@ -3745,24 +4000,29 @@ msgid "To"
 msgstr "До"
 
 #: src/ui/frmQuery.cpp:954
+#: src/ui/frmQuery.cpp:956
 #, c-format
 msgid "Total %ld rows.\n"
 msgstr "Укупно %ld редова.\n"
 
 #: src/ui/frmMaintenance.cpp:214
 #: src/ui/frmQuery.cpp:943
+#: src/ui/frmQuery.cpp:945
 msgid "Total query runtime: "
 msgstr "Укупно време извршавања упита:"
 
 #: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:50
 msgid "Trigger"
 msgstr "Окидач"
 
 #: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:40
 msgid "Trigger Function"
 msgstr "Функција Окидача"
 
 #: src/schema/pgObject.cpp:41
+#: src/schema/pgObject.cpp:40
 msgid "Trigger Functions"
 msgstr "Функције Окидача"
 
@@ -3772,6 +4032,7 @@ msgid "Trigger function"
 msgstr "Функција окидача"
 
 #: src/schema/pgObject.cpp:51
+#: src/schema/pgObject.cpp:50
 msgid "Triggers"
 msgstr "Окидачи"
 
@@ -3796,16 +4057,19 @@ msgstr "Покушај пребацити на леву страну у једн
 
 #: src/ui/events.cpp:816
 #: src/ui/events.cpp:872
+#: src/ui/events.cpp:882
 msgid "Trying to drop system object"
 msgstr "Покушавам да уклоним системски објекат."
 
 #: src/schema/pgObject.cpp:46
 #: standard
 #: input:278
+#: src/schema/pgObject.cpp:45
 msgid "Type"
 msgstr "Тип"
 
 #: src/schema/pgObject.cpp:46
+#: src/schema/pgObject.cpp:45
 msgid "Types"
 msgstr "Типови"
 
@@ -3817,10 +4081,12 @@ msgstr "UPDATE"
 
 #: src/ui/frmEditGrid.cpp:87
 #: src/ui/frmQuery.cpp:177
+#: src/ui/frmEditGrid.cpp:89
 msgid "Undo"
 msgstr "Поништи"
 
 #: src/ui/frmEditGrid.cpp:87
+#: src/ui/frmEditGrid.cpp:89
 msgid "Undo change of data."
 msgstr "Поништи промену података."
 
@@ -3830,6 +4096,7 @@ msgid "Undo last action"
 msgstr "Поништи последњу акцију."
 
 #: src/ui/frmEditGrid.cpp:1044
+#: src/ui/frmEditGrid.cpp:1479
 msgid "Unexpected empty cache line: dataSet already closed."
 msgstr "Привремени смештај неочекивано празан: dataSet већ затворен."
 
@@ -3842,6 +4109,7 @@ msgstr "Unicode UTF-8"
 #: src/ui/dlgTable.cpp:476
 #: standard
 #: input:150
+#: src/schema/pgObject.cpp:53
 msgid "Unique"
 msgstr "Уникатан"
 
@@ -3851,14 +4119,17 @@ msgid "Unique?"
 msgstr "Уникатан?"
 
 #: src/schema/pgObject.cpp:57
+#: src/schema/pgObject.cpp:56
 msgid "Unknown"
 msgstr "Непознат"
 
 #: src/ui/ctlSQLBox.cpp:427
+#: src/ui/ctlSQLBox.cpp:426
 msgid "Unknown find dialog event!"
 msgstr "Непознат догађај на дијалогу за проналажење!"
 
 #: src/ui/frmEditGrid.cpp:281
+#: src/ui/frmEditGrid.cpp:373
 msgid "Unsaved data"
 msgstr "Несачувани подаци"
 
@@ -3868,6 +4139,7 @@ msgstr "Ажурирај каталоге?"
 
 #: src/schema/pgObject.cpp:33
 #: src/ui/frmStatus.cpp:57
+#: src/schema/pgObject.cpp:32
 msgid "User"
 msgstr "Корисник"
 
@@ -3897,6 +4169,7 @@ msgstr "Корисник може да креира кориснике"
 #: standard
 #: input:412
 #: src/pgAdmin3.cpp:198
+#: src/pgAdmin3.cpp:201
 msgid "User language"
 msgstr "Кориснички језик"
 
@@ -3919,6 +4192,7 @@ msgid "Username"
 msgstr "Име корисника"
 
 #: src/schema/pgObject.cpp:33
+#: src/schema/pgObject.cpp:32
 msgid "Users"
 msgstr "Корисници"
 
@@ -3950,6 +4224,8 @@ msgstr "Валидатор"
 #: src/ui/dlgUser.cpp:68
 #: src/include/pgObject.h:141
 #: src/schema/pgObject.cpp:502
+#: src/include/pgObject.h:139
+#: src/schema/pgObject.cpp:512
 msgid "Value"
 msgstr "Вредност"
 
@@ -3998,6 +4274,7 @@ msgid "Version string"
 msgstr "Верзија"
 
 #: src/schema/pgObject.cpp:47
+#: src/schema/pgObject.cpp:46
 msgid "View"
 msgstr "Поглед"
 
@@ -4021,6 +4298,7 @@ msgstr "Погледај податке у изабраном објекту."
 #: src/schema/pgObject.cpp:47
 #: standard
 #: input:346
+#: src/schema/pgObject.cpp:46
 msgid "Views"
 msgstr "Погледи"
 
@@ -4040,6 +4318,7 @@ msgstr ""
 
 #: src/ui/frmQueryBuilder.cpp:596
 #: src/utils/misc.cpp:97
+#: src/utils/misc.cpp:102
 msgid "Yes"
 msgstr "Да"
 
@@ -4083,6 +4362,7 @@ msgid "You must select one column from the left table and one column from the ri
 msgstr "Морате изабрати једну колону из леве и једну колону из десне табеле."
 
 #: src/ui/frmEditGrid.cpp:479
+#: src/ui/frmEditGrid.cpp:573
 msgid "aborting."
 msgstr "прекидам."
 
@@ -4157,11 +4437,13 @@ msgstr "pgAdmin III &FAQ"
 
 #: src/ui/frmQuery.cpp:562
 #: src/ui/frmQueryBuilder.cpp:1485
+#: src/ui/frmQuery.cpp:564
 msgid "pgAdmin III Query"
 msgstr "pgAdmin III Query"
 
 #: src/ui/events.cpp:503
 #: src/ui/events.cpp:522
+#: src/ui/events.cpp:527
 msgid "pgServer object didn't initialise because the user aborted."
 msgstr "Корисник је прекинуо иницијализацију pgServer објеката."
 
