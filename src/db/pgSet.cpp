@@ -120,7 +120,11 @@ long pgSet::GetLong(const int col) const
 
 long pgSet::GetLong(const wxString &col)
 {
-    return GetLong(ColNumber(col));
+    char *c=PQgetvalue(res, pos-1, ColNumber(col));
+    if (c)
+        return atol(c);
+    else
+        return 0;
 }
 
 
