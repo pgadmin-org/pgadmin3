@@ -192,15 +192,17 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         }
         if (langId != (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN))
         {
-            locale.Init(langId);
-            locale.AddCatalog(wxT("pgadmin3"));
-#ifdef __LINUX__
+            if (locale.Init(langId))
             {
-                wxLogNull noLog;
-                locale.AddCatalog(wxT("fileutils"));
-            }
+#ifdef __LINUX__
+                {
+                    wxLogNull noLog;
+                    locale.AddCatalog(wxT("fileutils"));
+                }
 #endif
-            settings->Write(wxT("LanguageId"), (long)langId);
+                locale.AddCatalog(wxT("pgadmin3"));
+                settings->Write(wxT("LanguageId"), (long)langId);
+            }
         }
 
     }

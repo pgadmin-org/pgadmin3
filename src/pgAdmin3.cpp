@@ -159,27 +159,25 @@ bool pgAdmin3::OnInit()
             langNo = wxGetSingleChoiceIndex(_("Please choose user language:"), _("User language"), 
                 langCount+1, langNames);
             if (langNo > 0)
-            {
                 langId = (wxLanguage)wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1))->Language;
-                settings->Write(wxT("LanguageId"), (long)langId);
-            } else {
-                settings->Write(wxT("LanguageId"), (long)0);
-            }
+
             delete[] langNames;
         }
     }
 
     if (langId != wxLANGUAGE_UNKNOWN)
     {
-        locale.Init(langId);
-
-        locale.AddCatalog(wxT("pgadmin3"));
-#ifdef __LINUX__
+        if (locale.Init(langId))
         {
-            wxLogNull noLog;
-            locale.AddCatalog(wxT("fileutils"));
-        }
+#ifdef __LINUX__
+            {
+                wxLogNull noLog;
+                locale.AddCatalog(wxT("fileutils"));
+            }
 #endif
+            locale.AddCatalog(wxT("pgadmin3"));
+            settings->Write(wxT("LanguageId"), (long)langId);
+        }
     }
 
     // Show the splash screen
