@@ -25,12 +25,12 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 
     switch (level) {
         case wxLOG_FatalError:
-            szType = wxT("FATAL");
+            szType = wxT("FATAL  ");
             szPreamble = wxT("A fatal error has occured:\n\n");
             iIcon = wxICON_ERROR;
             break;
         case wxLOG_Error:
-            szType = wxT("ERROR");
+            szType = wxT("ERROR  ");
             szPreamble = wxT("An error has occured:\n\n");
             iIcon = wxICON_ERROR;
             break;
@@ -45,19 +45,19 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
             iIcon = wxICON_INFORMATION;
             break;
         case wxLOG_Info:
-            szType = wxT("INFO");
+            szType = wxT("INFO   ");
             iIcon = 0;
             break;
         case wxLOG_Status:
-            szType = wxT("STATUS");
+            szType = wxT("STATUS ");
             iIcon = 0;
             break;
         case wxLOG_Trace:
-            szType = wxT("TRACE");
+            szType = wxT("TRACE   ");
             iIcon = 0;
             break;
         case wxLOG_Debug:
-            szType = wxT("DEBUG");
+            szType = wxT("DEBUG  ");
             iIcon = 0;
             break;
         default:
@@ -100,10 +100,14 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     if (iIcon != 0) wxMessageBox(szPreamble + msg, szType, wxOK | wxCENTRE | iIcon);
 }
 
-void sysLogger::WriteLog(wxString szMsg)
+void sysLogger::WriteLog(wxString& szMsg)
 {
     extern sysSettings *objSettings;
-    wxFFile fpLog(objSettings->GetLogFile(), "a");
+    wxString szPID, szLogFile;
+    szPID.Printf("%d", wxGetProcessId());
+    szLogFile.Printf("%s", objSettings->GetLogFile());
+    szLogFile.Replace("%ID", szPID);
+    wxFFile fpLog(szLogFile, "a");
     if (!fpLog.IsOpened()) {
         wxMessageBox(wxT("Cannot open the logfile!"), wxT("FATAL"), wxOK | wxCENTRE | wxICON_ERROR);
         return;

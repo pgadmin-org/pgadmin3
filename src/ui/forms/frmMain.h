@@ -40,6 +40,7 @@ private:
     wxToolBar *tlBar;
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
+    void Options();
     DECLARE_EVENT_TABLE()
 };
 
@@ -71,7 +72,7 @@ enum
     BTN_VIEWDATA = 207,
     BTN_VACUUM = 208,
     BTN_RECORD = 209,
-    BTN_STOP = 210,
+    BTN_STOP = 210
 };
 
 #endif

@@ -12,6 +12,7 @@ LDFLAGS = `wx-config --libs` -lstc
 OBJECTS = $(PROGRAM).o \
           ui/forms/frmAbout.o \
           ui/forms/frmMain.o \
+          ui/forms/frmOptions.o \
           ui/forms/frmSplash.o \
           ui/controls/ctlSQLBox.o \
           utils/sysLogger.o \

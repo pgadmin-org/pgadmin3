@@ -25,6 +25,7 @@
 #include "../../pgAdmin3.h"
 #include "frmMain.h"
 #include "frmAbout.h"
+#include "frmOptions.h"
 #include "../controls/ctlSQLBox.h"
 
 // Icons
@@ -70,8 +71,9 @@
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
-    EVT_MENU(MNU_EXIT, frmMain::OnExit)
     EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
+    EVT_MENU(MNU_EXIT, frmMain::OnExit)
+    EVT_MENU(MNU_OPTIONS, frmMain::Options)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::TipOfTheDay)
 END_EVENT_TABLE()
 
@@ -285,4 +287,10 @@ void frmMain::TipOfTheDay()
     objSettings->SetShowTipOfTheDay(wxShowTip(this, tipProvider));
     objSettings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
     delete tipProvider;
+}
+
+void frmMain::Options()
+{
+    frmOptions *winOptions = new frmOptions(this);
+    winOptions->Show(TRUE);
 }

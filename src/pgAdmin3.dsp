@@ -106,6 +106,10 @@ SOURCE=.\ui\forms\frmMain.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\forms\frmOptions.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\forms\frmSplash.cpp
 # End Source File
 # Begin Source File
@@ -147,6 +151,10 @@ SOURCE=.\ui\forms\frmMain.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\forms\frmOptions.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\forms\frmSplash.h
 # End Source File
 # Begin Source File
@@ -168,10 +176,6 @@ SOURCE=.\utils\sysSettings.h
 # Begin Source File
 
 SOURCE=.\ui\pgAdmin3.rc
-# End Source File
-# Begin Source File
-
-SOURCE=.\Tips.txt
 # End Source File
 # End Group
 # Begin Group "Unix"
@@ -368,6 +372,26 @@ SOURCE=.\images\view.xpm
 # Begin Source File
 
 SOURCE=.\images\viewdata.xpm
+# End Source File
+# End Group
+# Begin Group "Misc"
+
+# PROP Default_Filter "txt"
+# Begin Source File
+
+SOURCE=..\LICENCE.txt
+# End Source File
+# Begin Source File
+
+SOURCE=..\README.txt
+# End Source File
+# Begin Source File
+
+SOURCE=.\tips.txt
+# End Source File
+# Begin Source File
+
+SOURCE=..\TODO.txt
 # End Source File
 # End Group
 # End Target

@@ -38,7 +38,7 @@ bool pgAdmin3::OnInit()
     wxLog::SetActiveTarget(objLogger);
 
     wxString szMsg;
-    szMsg << "# " << APPNAME_L << " Version " << VERSION << " Startup";
+    szMsg << wxT("# ") << APPNAME_L << wxT(" Version ") << VERSION << wxT(" Startup");
     wxLogInfo(wxT("##############################################################"));
     wxLogInfo(szMsg);
     wxLogInfo(wxT("##############################################################"));
@@ -49,7 +49,7 @@ bool pgAdmin3::OnInit()
     winSplash->Show(TRUE);
 
     // Set some defaults
-#ifdef _WXMSW_
+#ifdef __WXMSW__
     SetAuto3D(TRUE);
 #endif
     SetAppName(APPNAME_L);

@@ -21,7 +21,7 @@
 #include "sysSettings.h"
 #include "sysLogger.h"
 
-#ifdef _MSW_
+#ifdef __WXMSW__
 sysSettings::sysSettings() : sysConfig(APPNAME_L)
 #else
 sysSettings::sysSettings() : sysConfig(APPNAME_S)
@@ -125,11 +125,11 @@ void sysSettings::SetNextTipOfTheDay(long lNewVal)
 
 wxString sysSettings::GetLogFile()
 {
-    return wxString(szLogFile);
+    return szLogFile;
 }
-void sysSettings::SetLogFile(wxString szNewVal)
+void sysSettings::SetLogFile(wxString& szNewVal)
 {
-    szLogFile = wxString(szNewVal);
+    szLogFile = szNewVal;
     sysConfig.Write(wxT("LogFile"), szLogFile);
 }
 
