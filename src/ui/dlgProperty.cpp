@@ -956,7 +956,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                         str = str.Mid(1, str.Length()-2);
 
                     wxString name=str.BeforeLast('=');
-                    wxString value=;
+                    wxString value;
 
                     if (connection->BackendMinimumVersion(7, 4))
                         value=str.Mid(name.Length()+1).BeforeLast('/');
