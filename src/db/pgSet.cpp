@@ -137,6 +137,8 @@ int pgQueryThread::execute()
 {
     wxLongLong startTime=wxGetLocalTimeMillis();
 
+    wxLogSql("Thread Query %s", query.c_str());
+
     if (!PQsendQuery(conn, query.c_str()))
         return(0);
 
