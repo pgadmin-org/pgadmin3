@@ -28,8 +28,9 @@ ui/frmQBJoin.cpp ui/frmSplash.cpp ui/frmVacuum.cpp \
 ui/frmEditGrid.cpp ui/dlgProperty.cpp ui/dlgUser.cpp \
 ui/dlgGroup.cpp ui/dlgDatabase.cpp ui/dlgLanguage.cpp \
 ui/dlgSchema.cpp ui/dlgDomain.cpp ui/dlgTable.cpp \
-ui/dlgColumn.cpp ui/dlgIndex.cpp \
+ui/dlgColumn.cpp ui/dlgIndex.cpp ui/dlgFunction.cpp \
 ui/dlgIndexConstraint.cpp ui/dlgForeignKey.cpp \
+ui/dlgSequence.cpp dlgTrigger.cpp \
 ui/dlgCheck.cpp ui/frmStatus.cpp utils/misc.cpp \
 utils/sysLogger.cpp utils/sysSettings.cpp
 
