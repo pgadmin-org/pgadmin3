@@ -506,12 +506,21 @@ pgObject *frmMain::GetSelectedObject()
     if (data == NULL)
         return 0;
 	
-    if (FindFocus() == properties && data->IsCollection())
+    if (data->IsCollection())
     {
-        return ((pgCollection*)data)->FindChild(browser, properties->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+	    wxWindow *win=wxWindow::FindFocus();
+		if (win == listViews)
+		{
+		    if (listViews->GetSelection())
+			    win = properties;
+		}
+	    if (win == properties || win->GetParent() == properties)
+		    return ((pgCollection*)data)->FindChild(browser, properties->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
     }
     else
         return data;
+
+	return 0;
 }
 
 
