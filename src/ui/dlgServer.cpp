@@ -222,6 +222,7 @@ void dlgServer::CheckChange()
                || StrToLong(txtPort->GetValue()) != server->GetPort()
                || cbDatabase->GetValue() != server->GetDatabaseName()
                || txtUsername->GetValue() != server->GetUsername()
+               || cbSSL->GetSelection() != server->GetSSL()
                || chkNeedPwd->GetValue() != server->GetNeedPwd();
     }
 
