@@ -542,7 +542,7 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
     
         if (sqlResult->RunStatus() != PGRES_TUPLES_OK)
         {
-            if (sqlResult->Retrieve() == PGRES_COMMAND_OK)
+            if (sqlResult->RunStatus() == PGRES_COMMAND_OK)
             {
                 showMessage(wxT("Query returned successfully with no result."), wxT("OK."));
             }
