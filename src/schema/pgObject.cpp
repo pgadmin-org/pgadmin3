@@ -533,15 +533,17 @@ wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str
 }
 
 
-wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantOnType, bool noOwner)
+wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFor, bool noOwner)
 {
-    wxString grant, str, user, grantOnType;
-    if (_grantOnType.IsNull())
-        grantOnType=GetTypeName();
+    wxString grant, str, user, grantFor;
+    if (_grantFor.IsNull())
+    {
+        grantFor = GetTypeName();
+        grantFor.MakeUpper();
+        grantFor += wxT(" ") + GetQuotedFullIdentifier();
+    }
     else
-        grantOnType = _grantOnType;
-
-    grantOnType.MakeUpper();
+        grantFor = _grantFor;
 
     if (!acl.IsNull())
     {
@@ -564,7 +566,7 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantOn
                     user = qtIdent(user);
             }
 
-            grant += GetPrivileges(allPattern, str, grantOnType + wxT(" ") + GetQuotedFullIdentifier(), user);
+            grant += GetPrivileges(allPattern, str, grantFor, user);
         }
     }
     return grant;

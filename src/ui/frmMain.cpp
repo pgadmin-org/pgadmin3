@@ -410,6 +410,9 @@ void frmMain::Refresh(pgObject *data)
         wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 
             + data->GetQuotedFullIdentifier() + wxT(" for Refresh"));
 
+        if (data == currentObject)
+            currentObject = newData;
+
         if (newData)
         {
             wxLogInfo(wxT("Replacing with new Node ") + newData->GetTypeName() + wxT(" ") 

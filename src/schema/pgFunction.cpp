@@ -50,10 +50,12 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")\n\n")
-            + wxT("-- DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(");")
-            + wxT("\n\nCREATE OR REPLACE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypeNames()
-            + wxT(")\n  RETURNS ");
+        wxString qtName = wxT("FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetQuotedArgTypes() + wxT(")");
+
+        sql = wxT("-- Function: ") + GetFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")\n\n")
+            + wxT("-- DROP ") + qtName + wxT(";")
+            + wxT("\n\nCREATE OR REPLACE ") + qtName
+            + wxT("\n  RETURNS ");
         if (GetReturnAsSet())
             sql += wxT("SETOF ");
         sql +=GetQuotedReturnType() 
@@ -76,14 +78,15 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
             sql += wxT(" STRICT");
         if (GetSecureDefiner())
             sql += wxT(" SECURITY DEFINER");
-        sql += wxT(";\n");
+        sql += wxT(";\n")
+            +  GetGrant(wxT("X"), qtName);
 
-    if (!GetComment().IsNull())
-    {
-        sql += wxT("COMMENT ON FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetQuotedArgTypes() + wxT(")")
-            + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+        if (!GetComment().IsNull())
+        {
+            sql += wxT("COMMENT ON ") + qtName
+                + wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
+        }
     }
-}
 
     return sql;
 }

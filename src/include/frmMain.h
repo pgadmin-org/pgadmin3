@@ -44,6 +44,7 @@ public:
     void StartMsg(const wxString& msg);
     void EndMsg();
     void SetStatusText(const wxString &msg);
+    void SetCurrentObject(pgObject *data) { currentObject = data; }
 
     void SetButtons(pgObject *obj=0);
 

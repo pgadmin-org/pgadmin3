@@ -81,8 +81,6 @@ int dlgDatabase::Go(bool modal)
     AddGroups();
     AddUsers(cbOwner);
 
-    if (!connection->BackendMinimumVersion(7, 4))
-        txtName->Disable();
 
     if (connection->BackendMinimumVersion(7, 5))
     {
@@ -91,13 +89,18 @@ int dlgDatabase::Go(bool modal)
     }
     else
     {
-        cbOwner->Disable();
         cbTablespace->Hide();
     }
 
     if (database)
     {
         // edit mode
+
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtName->Disable();
+
+        if (!connection->BackendMinimumVersion(7, 5))
+            cbOwner->Disable();
 
         readOnly = !database->GetServer()->GetCreatePrivilege();
 

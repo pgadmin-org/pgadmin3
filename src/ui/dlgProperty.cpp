@@ -480,6 +480,7 @@ void dlgProperty::ShowObject()
         pgObject *newData=data->Refresh(mainForm->GetBrowser(), item);
         if (newData && newData != data)
         {
+            mainForm->SetCurrentObject(newData);
             mainForm->GetBrowser()->SetItemData(item, newData);
             mainForm->GetBrowser()->SetItemImage(item, newData->GetIcon(), wxTreeItemIcon_Normal);
             mainForm->GetBrowser()->SetItemImage(item, newData->GetIcon(), wxTreeItemIcon_Selected);
