@@ -14,6 +14,7 @@
 #include <wx/wx.h>
 #include <wx/app.h>
 #include <wx/dir.h>
+#include <wx/file.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/imagjpeg.h>
 #include <wx/imaggif.h>
@@ -38,6 +39,7 @@ frmMain *winMain;
 wxLog *logger;
 sysSettings *settings;
 wxArrayInt existingLangs;
+wxArrayString existingLangNames;
 wxLocale locale;
 
 wxString loadPath;      // Where the program is loaded from
@@ -48,6 +50,7 @@ wxString uiPath;        // Where ui data is stored
 #define DOC_DIR     wxT("/docs")
 #define UI_DIR      wxT("/ui")
 #define COMMON_DIR  wxT("/common")
+#define LANG_FILE   wxT("pgadmin3.lng")
 
 
 
@@ -118,24 +121,44 @@ bool pgAdmin3::OnInit()
     
     long langCount=0;
     const wxLanguageInfo *langInfo;
-    int langNo=2;       // skipping default, unknown
+    int langNo;
 
-    while (true)
+    wxString langfile=FileRead(uiPath + wxT("/") LANG_FILE, 0, 1);
+
+    if (!langfile.IsEmpty())
     {
-        langInfo=wxLocale::GetLanguageInfo(langNo);
-        if (!langInfo)
-            break;
+        wxStringTokenizer tk(langfile, wxT("\n\r"));
 
-        if (langInfo->CanonicalName == wxT("en_US") || 
-            (!langInfo->CanonicalName.IsEmpty() && 
-             wxDir::Exists(uiPath + wxT("/") + langInfo->CanonicalName)))
+        while (tk.HasMoreTokens())
         {
-            existingLangs.Add(langNo);
-            langCount++;
-        }
-        langNo++;
-    }
+            wxString line=tk.GetNextToken().Strip(wxString::both);
+            if (line.IsEmpty() || line.StartsWith(wxT("#")))
+                continue;
 
+            wxString englishName=line.BeforeFirst(',').Trim(true);
+            wxString translatedName=line.AfterFirst(',').Trim(false);
+
+            langNo=2;       // skipping default, unknown
+
+            while (true)
+            {
+                langInfo=wxLocale::GetLanguageInfo(langNo);
+                if (!langInfo)
+                    break;
+
+                if (englishName == langInfo->Description && 
+                    (langInfo->CanonicalName == wxT("en_US") || 
+                    (!langInfo->CanonicalName.IsEmpty() && 
+                     wxDir::Exists(uiPath + wxT("/") + langInfo->CanonicalName))))
+                {
+                    existingLangs.Add(langNo);
+                    existingLangNames.Add(translatedName);
+                    langCount++;
+                }
+                langNo++;
+            }
+        }
+    }
 
     wxLanguage langId = (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN);
 
@@ -158,8 +181,8 @@ bool pgAdmin3::OnInit()
             for (langNo = 0; langNo < langCount ; langNo++)
             {
                 langInfo = wxLocale::GetLanguageInfo(existingLangs.Item(langNo));
-                langNames[langNo+1] = wxString(wxGetTranslation(langInfo->Description)) + wxT(" (")
-                    + langInfo->CanonicalName + wxT(")");
+                langNames[langNo+1] = existingLangNames.Item(langNo)
+                    + wxT(" (") + langInfo->CanonicalName + wxT(")");
             }
 
 

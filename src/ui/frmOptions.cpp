@@ -27,6 +27,7 @@
 
 extern wxLocale locale;
 extern wxArrayInt existingLangs;
+extern wxArrayString existingLangNames;
 
 #define nbOptions                   CTRL("nbOptions", wxNotebook)
 #define txtSqlHelpSite              CTRL("txtSqlHelpSite", wxTextCtrl)
@@ -104,8 +105,8 @@ frmOptions::frmOptions(frmMain *parent)
         for (langNo = 0; langNo < langCount ; langNo++)
         {
             langInfo = wxLocale::GetLanguageInfo(existingLangs.Item(langNo));
-            cbLanguage->Append(wxString(wxGetTranslation(langInfo->Description)) + wxT(" (")
-                + langInfo->CanonicalName + wxT(")"));
+            cbLanguage->Append(existingLangNames.Item(langNo) 
+                + wxT(" (") + langInfo->CanonicalName + wxT(")"));
             if (langId == langInfo->Language)
                 sel=langNo+1;
         }

@@ -132,6 +132,7 @@ ui/zh_TW/pgadmin3.po
 
 nobase_dist_pkgdata_DATA = tips.txt ui/common/*.xrc \
 ui/wxstd.mo \
+ui/pgadmin3.lng \
 ui/da_DK/pgadmin3.mo \
 ui/de_DE/pgadmin3.mo \
 ui/fa_IR/pgadmin3.mo \
