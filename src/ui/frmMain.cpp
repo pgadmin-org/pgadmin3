@@ -657,7 +657,7 @@ void frmMain::StoreServers()
 
             // Database
             key.Printf(wxT("Servers/Database%d"), numServers);
-            settings->Write(key, server->GetDatabase());
+            settings->Write(key, server->GetDatabaseName());
 
             // Username
             key.Printf(wxT("Servers/Username%d"), numServers);

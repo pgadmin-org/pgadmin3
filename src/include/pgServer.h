@@ -36,7 +36,7 @@ public:
     wxString GetVersionString();
     wxString GetVersionNumber();
     OID GetLastSystemOID();
-    wxString GetDatabase() const { return database; }
+    wxString GetDatabaseName() const { return database; }
     wxString GetUsername() const { return username; }
     wxString GetPassword() const { return password; }
     bool GetTrusted() const { return trusted; }

@@ -304,7 +304,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
             }
         }
 #endif
-        properties->AppendItem(_("Initial database"), GetDatabase());
+        properties->AppendItem(_("Initial database"), GetDatabaseName());
         properties->AppendItem(_("Username"), GetUsername());
         properties->AppendItem(_("Trusted?"), GetTrusted());
         if (GetConnected())

@@ -89,6 +89,7 @@ public:
     static wxString GetPrivileges(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
 
     virtual void ShowProperties() const {};
+    virtual pgDatabase *GetDatabase() const { return 0; }
     int GetType() const { return type; }
     wxString GetTypeName() const { return typesList[type].typName; }
     void iSetName(const wxString& newVal) { name = newVal; }
@@ -119,7 +120,6 @@ public:
     virtual wxString GetSql(wxTreeCtrl *browser) { return wxT(""); }
     wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""), bool noOwner=false);
     wxString GetCommentSql();
-    pgDatabase *GetDatabase() const;
     pgConn *GetConnection() const;
 
     virtual void SetDirty() { sql=wxT(""); expandedKids=false; needReread=true; }
@@ -188,7 +188,7 @@ class pgDatabaseObject : public pgObject
 public:
     pgDatabaseObject(int newType, const wxString& newName) : pgObject(newType, newName) {}
 
-    pgDatabase *GetDatabase() const {return database; }
+    pgDatabase *GetDatabase() const { return database; }
     void iSetDatabase(pgDatabase *newDatabase) { database = newDatabase; }
 
     // compiles a prefix from the schema name with '.', if necessary
@@ -210,7 +210,7 @@ class pgSchemaObject : public pgDatabaseObject
 {
 public:
     pgSchemaObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) : pgDatabaseObject(newType, newName)
-        { tableOid=0; schema = newSchema; wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
+        { tableOid=0; SetSchema(newSchema); wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
 
     pgSchemaObject::~pgSchemaObject()
         { wxLogInfo(wxT("Destroying a pg") + GetTypeName() + wxT(" object")); }
@@ -221,7 +221,7 @@ public:
     bool CanEdit() { return true; }
     bool CanCreate();
 
-    void SetSchema(pgSchema *newSchema) { schema = newSchema; }
+    void SetSchema(pgSchema *newSchema);
     pgSchema *GetSchema() const {return schema; }
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);

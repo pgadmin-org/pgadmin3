@@ -569,71 +569,6 @@ pgConn *pgObject::GetConnection() const
     return conn;    
 }
 
-pgDatabase *pgObject::GetDatabase() const
-{
-    pgDatabase *db=0;
-    switch (GetType())
-    {
-        case PG_USERS:
-        case PG_GROUPS:
-        case PG_LANGUAGES:
-        case PG_SCHEMAS:
-        case PG_AGGREGATES:
-        case PG_CASTS:
-        case PG_CONVERSIONS:
-        case PG_DOMAINS:
-        case PG_FUNCTIONS:
-        case PG_TRIGGERFUNCTIONS:
-        case PG_OPERATORS:
-        case PG_OPERATORCLASSES:
-        case PG_SEQUENCES:
-        case PG_TABLES:
-        case PG_TYPES:
-        case PG_VIEWS:
-        case PG_COLUMNS:
-        case PG_INDEXES:
-        case PG_RULES:
-        case PG_TRIGGERS:
-        case PG_CONSTRAINTS:
-            db=((pgCollection*)this)->GetDatabase();
-            break;
-        case PG_DATABASE:
-            db=(pgDatabase*)this;
-            break;
-        case PG_LANGUAGE:
-        case PG_SCHEMA:
-        case PG_CAST:
-        case PGA_AGENT:
-        case PGA_JOB:
-        case PGA_STEP:
-        case PGA_SCHEDULE:
-            db=((pgDatabaseObject*)this)->GetDatabase();
-            break;
-        case PG_AGGREGATE:
-        case PG_CONVERSION:
-        case PG_DOMAIN:
-        case PG_FUNCTION:
-        case PG_TRIGGERFUNCTION:
-        case PG_OPERATOR:
-        case PG_OPERATORCLASS:
-        case PG_SEQUENCE:
-        case PG_TABLE:
-        case PG_TYPE:
-        case PG_VIEW:
-        case PG_CHECK:
-        case PG_COLUMN:
-        case PG_UNIQUE:
-        case PG_PRIMARYKEY:
-        case PG_FOREIGNKEY:
-        case PG_INDEX:
-        case PG_RULE:
-        case PG_TRIGGER:
-            db=((pgSchemaObject*)this)->GetSchema()->GetDatabase();
-            break;
-    }
-    return db;
-}
-
 
 //////////////////////////////////////////////////////////////
 
@@ -682,6 +617,13 @@ wxString pgDatabaseObject::GetQuotedSchemaPrefix(const wxString &schemaname) con
 
 
 ///////////////////////////////////////////////////////////////
+
+void pgSchemaObject::SetSchema(pgSchema *newSchema)
+{
+    schema = newSchema;
+    database = schema->GetDatabase();
+}
+
 
 bool pgSchemaObject::GetSystemObject() const
 {
