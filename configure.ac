@@ -29,8 +29,8 @@ AC_HEADER_TIME
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([gethostbyname inet_ntoa memmove memset strchr])
 
-CHECK_WXWINDOWS
 CHECK_LIBPQ
+CHECK_WXWINDOWS
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile])
