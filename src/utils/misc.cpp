@@ -144,6 +144,17 @@ double StrToDouble(const wxString& value)
 }
 
 
+wxString GetListText(wxListCtrl *lst, long row, long col)
+{
+    wxListItem item;
+    item.SetId(row);
+    item.SetColumn(col);
+    item.SetMask(wxLIST_MASK_TEXT);
+    lst->GetItem(item);
+    return item.GetText();
+}
+
+
 void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0, const int h0)
 {
     int scrW=wxSystemSettings::GetMetric(wxSYS_SCREEN_X);

@@ -75,6 +75,8 @@ public:
     void iSetProcArgTypeList(const wxString& s) { procArgTypeList=s; }
 
     bool CanDrop() { return true; }
+    bool CanCreate() { return true; }
+    bool CanEdit() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetCreate();
     wxString GetSql(wxTreeCtrl *browser);

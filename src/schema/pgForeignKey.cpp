@@ -37,26 +37,35 @@ bool pgForeignKey::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 }
 
 
-wxString pgForeignKey::GetConstraint()
+wxString pgForeignKey::GetDefinition()
 {
-    wxString con;
+    wxString sql;
     // MATCH FULL/PARTIAL missing; where is this stored?!?
-    con = GetQuotedIdentifier() 
-        +  wxT(" FOREIGN KEY (") + GetQuotedFkColumns()
+
+    sql = wxT("(") + GetQuotedFkColumns()
         +  wxT(") REFERENCES ") + qtIdent(GetReferences()) 
         +  wxT(" (") + GetQuotedRefColumns()
         +  wxT(") ON UPDATE ") + GetOnUpdate()
         +  wxT(" ON DELETE ") + GetOnDelete();
     if (GetDeferrable())
     {
-        con += wxT(" DEFERRABLE INITIALLY ");
+        sql += wxT(" DEFERRABLE INITIALLY ");
         if (GetDeferred())
-            con += wxT("DEFERRED");
+            sql += wxT("DEFERRED");
         else
-            con += wxT("IMMEDIATE");
+            sql += wxT("IMMEDIATE");
     }
+    return sql;
+}
 
-    return con;
+
+wxString pgForeignKey::GetConstraint()
+{
+    wxString sql;
+    sql = GetQuotedIdentifier() 
+        +  wxT(" FOREIGN KEY ") + GetDefinition();
+
+    return sql;
 }
 
 

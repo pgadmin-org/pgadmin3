@@ -38,6 +38,7 @@ bool pgColumn::DropObject(wxFrame *frame, wxTreeCtrl *browser)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
+
 wxString pgColumn::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull() && !GetSystemObject())
@@ -63,6 +64,10 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
                 sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                     + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                     + wxT(" SET NOT NULL;\n");
+            if (!GetDefault().IsEmpty())
+                sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
+                    + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                    + wxT(" DEFAULT ") + GetDefault() + wxT(";\n");
             if (!GetComment().IsEmpty())
                 sql += wxT("COMMENT ON COLUMN ") + GetQuotedFullTable() + wxT(".") + GetQuotedIdentifier()
                     +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
@@ -71,6 +76,19 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
 
     return sql;
 }
+
+
+wxString pgColumn::GetDefinition()
+{
+    wxString sql;
+    sql = GetFullType();
+    if (GetNotNull())
+        sql += wxT(" NOT NULL");
+    AppendIfFilled(sql, wxT(" DEFAULT "), GetDefault());
+
+    return sql;
+}
+
 
 wxString pgColumn::GetFullType()
 {

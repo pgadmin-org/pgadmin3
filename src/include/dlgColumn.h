@@ -4,39 +4,43 @@
 // Copyright (C) 2002, The pgAdmin Development Team
 // This software is released under the pgAdmin Public Licence
 //
-// dlgUser.h - User property 
+// dlgColumn.h - Column property 
 //
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __DLG_USERPROP
-#define __DLG_USERPROP
+#ifndef __DLG_COLUMNPROP
+#define __DLG_COLUMNPROP
 
 #include "dlgProperty.h"
 
-class pgUser;
+class pgColumn;
+class pgTable;
 
-class dlgUser : public dlgProperty
+class dlgColumn : public dlgProperty
 {
 public:
-    dlgUser(frmMain *frame, pgUser *node=0);
+    dlgColumn(frmMain *frame, pgColumn *column, pgTable *parentNode);
+
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    wxString GetName();
+    wxString GetDefinition();
+    wxString GetFullType();
+    wxString GetPreviousDefinition() { return previousDefinition; }
 
     int Go(bool modal);
 
+
 private:
-    pgUser *user;
+    bool isVarLen, isVarPrec;
+    pgColumn *column;
+    pgTable *table;
     void OnChange(wxNotifyEvent &ev);
-    void OnGroupAdd(wxNotifyEvent &ev);
-    void OnGroupRemove(wxNotifyEvent &ev);
+    wxArrayString typmods;
 
-    void OnVarAdd(wxNotifyEvent &ev);
-    void OnVarRemove(wxNotifyEvent &ev);
-    void OnVarSelChange(wxListEvent &ev);
-
-    wxArrayString groupsIn;
+    wxString previousDefinition;
 
     DECLARE_EVENT_TABLE();
 };

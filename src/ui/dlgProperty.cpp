@@ -24,6 +24,11 @@
 #include "dlgProperty.h"
 #include "dlgUser.h"
 #include "dlgDatabase.h"
+#include "dlgTable.h"
+#include "dlgColumn.h"
+#include "dlgIndex.h"
+#include "dlgIndexConstraint.h"
+
 
 enum
 {
@@ -43,34 +48,76 @@ BEGIN_EVENT_TABLE(dlgProperty, wxDialog)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgProperty::OnPageSelect)  
     EVT_BUTTON (XRCID("btnOK"),                     dlgProperty::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),                 dlgProperty::OnCancel)
+    EVT_CLOSE(                                      dlgProperty::OnClose)
 END_EVENT_TABLE();
 
 
-dlgProperty::dlgProperty(wxFrame *frame, const wxString &resName) : wxDialog()
+dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : wxDialog()
 {
-    notebook=0;
-
+    sqlPane=0;
+    sqlPageNo=-1;
+    mainForm = frame;
     wxXmlResource::Get()->LoadDialog(this, frame, resName);
-    notebook=CTRL("nbNotebook", wxNotebook);
-    if (!notebook)
+    if (!nbNotebook)
     {
         wxMessageBox(wxT("Problem with resource ") + resName + wxT(": Notebook not found.\nPrepare to crash!"));
         return;
     }
     SetIcon(wxIcon(properties_xpm));
+
+#ifdef __WIN32__
+    wxNotebookPage *page=nbNotebook->GetPage(0);
+    wxASSERT(page != NULL);
+    page->GetClientSize(&width, &height);
+#else
+    nbNotebook->GetClientSize(&width, &height);
+	height -= 35;   // sizes of tabs
+#endif
+
+    numericValidator.SetStyle(wxFILTER_NUMERIC);
 }
 
 
+int dlgProperty::Go(bool modal)
+{
+    if (GetObject())
+        SetTitle(wxString("") + typeNameList[objectType] + wxT(" ") + GetObject()->GetFullIdentifier());
+    else
+        SetTitle(wxString("Creating new ") + typeNameList[objectType]);
+
+    if (modal)
+        return ShowModal();
+    else
+        Show();
+    return 0;
+}
+
 void dlgProperty::CreateAdditionalPages()
 {
-    sqlPane = new ctlSQLBox(notebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
-    sqlPageNo=notebook->GetPageCount();
-    notebook->AddPage(sqlPane, wxT("SQL"));
+    sqlPane = new ctlSQLBox(nbNotebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_READONLY | wxTE_RICH2);
+    sqlPageNo=nbNotebook->GetPageCount();
+    nbNotebook->AddPage(sqlPane, wxT("SQL"));
+}
+
+
+void dlgProperty::OnClose(wxCloseEvent &ev)
+{
+    if (IsModal())
+        EndModal(-1);
+    else
+        Destroy();
 }
 
 
 void dlgProperty::OnOK(wxNotifyEvent &ev)
 {
+
+    if (IsModal())
+    {
+        EndModal(0);
+        return;
+    }
+
     wxString sql=GetSql();
     if (!sql.IsEmpty())
     {
@@ -83,17 +130,17 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
         pgObject *data=GetObject();
         if (data)
         {
-            pgObject *newData=data->Refresh(browser, item);
+            pgObject *newData=data->Refresh(mainForm->GetBrowser(), item);
             if (newData && newData != data)
             {
-                browser->SetItemData(item, newData);
+                mainForm->GetBrowser()->SetItemData(item, newData);
                 newData->SetId(item);
                 delete data;
             }
             if (newData)
             {
-                newData->ShowTree(mainForm, browser, properties, statistics, 0);
-                mainForm->sqlPane->SetText(newData->GetSql(browser));
+                newData->ShowTree(mainForm, mainForm->GetBrowser(), properties, statistics, 0);
+                mainForm->GetSqlPane()->SetText(newData->GetSql(mainForm->GetBrowser()));
             }
         }
         else
@@ -104,54 +151,76 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
 
             while (item)
             {
-                collection = (pgCollection*)browser->GetItemData(item);
+                collection = (pgCollection*)mainForm->GetBrowser()->GetItemData(item);
                 if (collection && collection->GetType() == collectionType)
                 {
                     data = CreateObject(collection);
                     if (data)
                     {
-                        browser->AppendItem(item, data->GetFullIdentifier(), data->GetIcon(), -1, data);
+                        mainForm->GetBrowser()->AppendItem(item, data->GetFullIdentifier(), data->GetIcon(), -1, data);
 
-                        if (browser->GetSelection() == item)
-                            collection->ShowTreeDetail(browser, 0, properties);
+                        if (mainForm->GetBrowser()->GetSelection() == item)
+                            collection->ShowTreeDetail(mainForm->GetBrowser(), 0, properties);
                         else
-                            collection->UpdateChildCount(browser);
+                            collection->UpdateChildCount(mainForm->GetBrowser());
                     }
                     break;
                 }
-                item=browser->GetItemParent(item);
+                item=mainForm->GetBrowser()->GetItemParent(item);
             }
         }
     }
+
     Destroy();
 }
 
 
 void dlgProperty::OnCancel(wxNotifyEvent &ev)
 {
-    Destroy();
+    if (IsModal())
+        EndModal(-1);
+    else
+        Destroy();
 }
 
 
 
 void dlgProperty::OnPageSelect(wxNotebookEvent& event)
 {
-    if (notebook && event.GetSelection() == sqlPageNo)
+    if (sqlPane && event.GetSelection() == sqlPageNo)
     {
-        sqlPane->SetText(GetSql());
+        if (btnOK->IsEnabled())
+            sqlPane->SetText(GetSql());
+        else
+        {
+            if (GetObject())
+                sqlPane->SetText(wxT("-- nothing to change"));
+            else
+                sqlPane->SetText(wxT("-- definition incomplete"));
+        }
     }
 }
 
 
 
-dlgProperty *dlgProperty::CreateDlg(wxFrame *frame, pgObject *node, bool asNew)
+dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew)
 {
     dlgProperty *dlg=0;
-    pgObject *currentNode;
+    pgObject *currentNode, *parentNode=0;
     if (asNew)
         currentNode=NULL;
     else
         currentNode=node;
+    parentNode = (pgObject*)frame->GetBrowser()->GetItemData(
+                            frame->GetBrowser()->GetItemParent(
+                                node->GetId()));
+
+    if (parentNode && parentNode->IsCollection())
+        parentNode = (pgObject*)frame->GetBrowser()->GetItemData(
+                                frame->GetBrowser()->GetItemParent(
+                                    parentNode->GetId()));
+
+
     switch (node->GetType())
     {
         case PG_USER:
@@ -162,6 +231,25 @@ dlgProperty *dlgProperty::CreateDlg(wxFrame *frame, pgObject *node, bool asNew)
         case PG_DATABASES:
             dlg=new dlgDatabase(frame, (pgDatabase*)currentNode);
             break;
+        case PG_TABLE:
+        case PG_TABLES:
+            dlg=new dlgTable(frame, (pgTable*)currentNode);
+            break;
+        case PG_COLUMN:
+        case PG_COLUMNS:
+            dlg=new dlgColumn(frame, (pgColumn*)currentNode, (pgTable*)parentNode);
+            break;
+        case PG_INDEX:
+        case PG_INDEXES:
+            dlg=new dlgIndex(frame, (pgIndex*)currentNode, (pgTable*)parentNode);
+            break;
+        case PG_PRIMARYKEY:
+            dlg=new dlgPrimaryKey(frame, (pgIndex*)currentNode, (pgTable*)parentNode);
+            break;
+        case PG_UNIQUE:
+            dlg=new dlgUnique(frame, (pgIndex*)currentNode, (pgTable*)parentNode);
+            break;
+             
         default:
             break;
     }
@@ -174,42 +262,38 @@ dlgProperty *dlgProperty::CreateDlg(wxFrame *frame, pgObject *node, bool asNew)
 }
 
 
-void dlgProperty::CreateObjectDialog(frmMain *frame, wxTreeCtrl *browser, wxListCtrl *properties, pgObject *node, pgConn *conn)
+void dlgProperty::CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, pgConn *conn)
 {
-    dlgProperty *dlg=CreateDlg((wxFrame*)frame, node, true);
+    dlgProperty *dlg=CreateDlg(frame, node, true);
     pgObject *obj=0;
 
     if (dlg)
     {
         dlg->connection=conn;
-        dlg->browser=browser;
         dlg->properties = properties;
         dlg->item=node->GetId();
         dlg->objectType=node->GetType();
         if (node->IsCollection())
             dlg->objectType++;
 
-        dlg->SetTitle(wxString("pgAdmin III - Creating new ") + typeNameList[dlg->objectType]);
+        dlg->SetTitle(wxString("Creating new ") + typeNameList[dlg->objectType]);
 
         dlg->CreateAdditionalPages();
         dlg->Go();
-        dlg->Show();
     }
     else
         wxMessageBox("Not implemented");
 }
 
 
-void dlgProperty::EditObjectDialog(frmMain *frame, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node, pgConn *conn)
+void dlgProperty::EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node, pgConn *conn)
 {
-    dlgProperty *dlg=CreateDlg((wxFrame*)frame, node, false);
+    dlgProperty *dlg=CreateDlg(frame, node, false);
     pgObject *obj=0;
 
     if (dlg)
     {
-        dlg->mainForm=frame;
         dlg->connection=conn;
-        dlg->browser=browser;
         dlg->properties = properties;
         dlg->statistics=statistics;
         dlg->sqlFormPane=sqlbox;
@@ -218,15 +302,48 @@ void dlgProperty::EditObjectDialog(frmMain *frame, wxTreeCtrl *browser, wxListCt
         if (node->IsCollection())
             dlg->objectType++;
 
-        dlg->SetTitle(wxString("pgAdmin III - Properties of ") + typeNameList[dlg->objectType] + wxT(" ") + node->GetFullIdentifier());
+        dlg->SetTitle(wxString("") + typeNameList[dlg->objectType] + wxT(" ") + node->GetFullIdentifier());
 
         dlg->CreateAdditionalPages();
         dlg->Go();
-        dlg->Show();
     }
     else
         wxMessageBox("Not implemented");
 }
+
+
+void dlgProperty::CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right, int leftSize)
+{
+    int rightSize;
+    if (leftSize < 0)
+    {
+        leftSize = rightSize = width/2-10;
+    }
+    else
+    {
+        rightSize = width-leftSize-20;
+    }
+    if (!leftSize)
+    {
+        list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, width);
+    }
+    else
+    {
+        list->InsertColumn(0, left, wxLIST_FORMAT_LEFT, leftSize);
+        list->InsertColumn(1, right, wxLIST_FORMAT_LEFT, rightSize);
+    }
+    list->SetImageList(mainForm->GetImageList(), wxIMAGE_LIST_SMALL);
+}
+
+
+void dlgProperty::AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon)
+{
+    int pos=list->GetItemCount();
+    list->InsertItem(pos, str1, icon);
+    if (str2 != wxT(""))
+        list->SetItem(pos, 1, str2);
+}
+
 
 
 BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
@@ -246,7 +363,7 @@ END_EVENT_TABLE();
 
 
 
-dlgSecurityProperty::dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *_privChar)
+dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *_privChar)
         : dlgProperty(frame, resName)
 {
     privCheckboxes=0;
@@ -257,24 +374,14 @@ dlgSecurityProperty::dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wx
 
     if (privilegeCount)
     {
-        wxWindow *page = new wxWindow(notebook, -1, wxDefaultPosition, wxDefaultSize);
+        wxWindow *page = new wxWindow(nbNotebook, -1, wxDefaultPosition, wxDefaultSize);
         privCheckboxes = new wxCheckBox*[privilegeCount*2];
         int i=0;
 
-        notebook->AddPage(page, wxT("Security"));
-        int width, height;
-#ifdef __WIN32__
-        page->GetClientSize(&width, &height);
-#else
-        notebook->GetClientSize(&width, &height);
-	height -= 35;   // sizes of tabs
-#endif
-
-	wxLogInfo("Client size %d %d ", width, height);
+        nbNotebook->AddPage(page, wxT("Security"));
 
         lbPrivileges = new wxListView(page, CTL_LBPRIV, wxPoint(10,10), wxSize(width-20, height-120-20*privilegeCount));
-        lbPrivileges->InsertColumn(0, wxT("User/Group"), wxLIST_FORMAT_LEFT, width/2-10);
-        lbPrivileges->InsertColumn(1, wxT("Privileges"), wxLIST_FORMAT_LEFT, width/2-10);
+        CreateListColumns(lbPrivileges, wxT("User/Group"), wxT("Privileges"), -1);
         int y=height-105-20*privilegeCount;
 
         btnAddPriv = new wxButton(page, CTL_ADDPRIV, wxT("Add/Change"), wxPoint(10, y), wxSize(75, 25));
@@ -285,7 +392,7 @@ dlgSecurityProperty::dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wx
         y += 15;
 
         stGroup = new wxStaticText(page, CTL_STATICGROUP, wxT("Group"), wxPoint(20, y+3), wxSize(100, 20));
-        cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), wxPoint(130, y), wxSize(width-145, 100));
+        cbGroups = new wxComboBox(page, CTL_CBGROUP, wxT(""), wxPoint(130, y), wxSize(width-145, 100), 0, 0, wxCB_DROPDOWN|wxCB_READONLY);
         y += 25;
 
         allPrivileges = new wxCheckBox(page, CTL_ALLPRIV, wxT("ALL"), wxPoint(20, y), wxSize(100, 20));
@@ -316,7 +423,7 @@ dlgSecurityProperty::dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wx
             {
                 str = str.Mid(1, str.Length()-2);
                 wxStringTokenizer tokens(str, ',');
-                int pos=0;
+
                 while (tokens.HasMoreTokens())
                 {
                     wxString str=tokens.GetNextToken().BeforeLast('/');
@@ -326,15 +433,21 @@ dlgSecurityProperty::dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wx
                     wxString name=str.BeforeLast('=');
                     wxString value=str.Mid(name.Length()+1);
 
-                    if (name.Left(6).IsSameAs(wxT("group "), false))
-                        name = wxT("group ") + name.Mid(6);
-                    else if (name.IsEmpty())
-                        name=wxT("public");
+                    int icon=PGICON_USER;
 
-                    lbPrivileges->InsertItem(pos, name, 0);
-                    lbPrivileges->SetItem(pos, 1, value);
+                    if (name.Left(6).IsSameAs(wxT("group "), false))
+                    {
+                        icon = PGICON_GROUP;
+                        name = wxT("group ") + name.Mid(6);
+                    }
+                    else if (name.IsEmpty())
+                    {
+                        icon = PGICON_PUBLIC;
+                        name=wxT("public");
+                    }
+
+                    AppendListItem(lbPrivileges, name, value, icon);
                     currentAcl.Add(name + wxT("=") + value);
-                    pos++;
                 }
             }
         }
@@ -430,14 +543,7 @@ void dlgSecurityProperty::OnPrivSelChange(wxListEvent &ev)
     if (pos >= 0)
     {
         wxString name=lbPrivileges->GetItemText(pos);
-
-
-        wxListItem item;
-        item.SetId(pos);
-        item.SetColumn(1);
-        item.SetMask(wxLIST_MASK_TEXT);
-        lbPrivileges->GetItem(item);
-        
+        wxString value=GetListText(lbPrivileges, pos, 1);
 
         pos=cbGroups->FindString(name);
         if (pos < 0)
@@ -451,11 +557,11 @@ void dlgSecurityProperty::OnPrivSelChange(wxListEvent &ev)
         for (i=0 ; i < privilegeCount ; i++)
         {
             privCheckboxes[i*2]->Enable();
-            int index=item.GetText().Find(privilegeChars[i]);
+            int index=value.Find(privilegeChars[i]);
             if (index >= 0)
             {
                 privCheckboxes[i*2]->SetValue(true);
-                privCheckboxes[i*2+1]->SetValue(item.GetText().Mid(index+1, 1) == wxT("*"));
+                privCheckboxes[i*2+1]->SetValue(value.Mid(index+1, 1) == wxT("*"));
             }
             else
                 privCheckboxes[i*2]->SetValue(false);
@@ -502,6 +608,13 @@ void dlgSecurityProperty::OnAddPriv(wxNotifyEvent &ev)
     if (pos < 0)
     {
         pos = lbPrivileges->GetItemCount();
+        int icon=PGICON_USER;
+
+        if (name.Left(6).IsSameAs(wxT("group "), false))
+            icon = PGICON_GROUP;
+        else if (name.IsSameAs(wxT("public"), false))
+            icon = PGICON_PUBLIC;
+
         lbPrivileges->InsertItem(pos, name, 0);
     }
     wxString value;
@@ -552,20 +665,16 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
     for (pos=0 ; pos < cnt ; pos++)
     {
         wxString name=lbPrivileges->GetItemText(pos);
-        int nameLen=name.Length();
+        wxString value=GetListText(lbPrivileges, pos, 1);
 
-        wxListItem item;
-        item.SetId(pos);
-        item.SetColumn(1);
-        item.SetMask(wxLIST_MASK_TEXT);
-        lbPrivileges->GetItem(item);
+        int nameLen=name.Length();
 
         bool privWasAssigned=false;
         for (i=0 ; i < tmpAcl.GetCount() ; i++)
         {
             if (tmpAcl.Item(i).Left(nameLen) == name)
             {
-                if (tmpAcl.Item(i).Mid(nameLen+1) == item.GetText())
+                if (tmpAcl.Item(i).Mid(nameLen+1) == value)
                     privWasAssigned=true;
                 tmpAcl.RemoveAt(i);
                 break;
@@ -577,7 +686,7 @@ wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxStrin
                 name = wxT("GROUP ") + qtIdent(name.Mid(6));
             else
                 name=qtIdent(name);
-            sql += pgObject::GetPrivileges(allPattern, item.GetText(), grantObject, name);
+            sql += pgObject::GetPrivileges(allPattern, value, grantObject, name);
         }
     }
 

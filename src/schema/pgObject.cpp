@@ -46,7 +46,7 @@ char *typeNameList[] =
     "Indexes",          "Index",
     "Rules",            "Rule",
     "Triggers",         "Trigger",
-    "Constraints", "Primary Key", "Unique", "Check", "Foreign Keys",
+    "Constraints", "Primary Key", "Unique", "Check", "Foreign Key",
     "Unknown"
 };
 
@@ -122,7 +122,7 @@ void pgObject::AppendBrowserItem(wxTreeCtrl *browser, pgObject *object)
 
 void pgObject::InsertListItem(wxListCtrl *list, const int pos, const wxString& str1, const wxString& str2)
 {
-    list->InsertItem(pos, str1, 0);
+    list->InsertItem(pos, str1, PGICON_PROPERTY);
     if (str2 != wxT(""))
         list->SetItem(pos, 1, str2);
 }

@@ -11,11 +11,14 @@
 // wxWindows headers
 #include <wx/wx.h>
 
+// Images
+#include "images/user.xpm"
+
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
-#include "pgUser.h"
 #include "dlgUser.h"
+#include "pgUser.h"
 
 
 // pointer to controls
@@ -34,8 +37,6 @@
 #define txtName         CTRL("txtName", wxTextCtrl)
 #define txtValue        CTRL("txtValue", wxTextCtrl)
 
-#define btnOK           CTRL("btnOK", wxButton)
-
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_TEXT(XRCID("txtUser"),                      dlgUser::OnChange)
@@ -52,44 +53,23 @@ END_EVENT_TABLE();
 
 
 
-dlgUser::dlgUser(wxFrame *frame, pgUser *node)
+dlgUser::dlgUser(frmMain *frame, pgUser *node)
 : dlgProperty(frame, wxT("dlgUser"))
 {
     user=node;
-    lstVariables->InsertColumn(0, wxT("Variable"), wxLIST_FORMAT_LEFT, 100);
-    lstVariables->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
+    SetIcon(wxIcon(user_xpm));
+    CreateListColumns(lstVariables, wxT("Variable"), wxT("Value"), -1);
 
-    if (user)
-    {
-        // Edit Mode
-        txtUser->SetValue(user->GetIdentifier());
-        txtID->SetValue(NumToStr(user->GetUserId()));
-        chkCreateDB->SetValue(user->GetCreateDatabase());
-        chkCreateUser->SetValue(user->GetSuperuser());
-        txtUser->Disable();
-        txtID->Disable();
-
-        int pos=0;
-        wxStringTokenizer cfgTokens(user->GetConfigList(), ',');
-        while (cfgTokens.HasMoreTokens())
-        {
-            wxString token=cfgTokens.GetNextToken();
-            wxString name=token.BeforeFirst('=');
-            lstVariables->InsertItem(pos, name, 0);
-            lstVariables->SetItem(pos, 1, token.Mid(name.Length()+1));
-            pos++;
-        }
-    }
-    else
-    {
-        wxTextValidator numval(wxFILTER_NUMERIC);
-        txtID->SetValidator(numval);
-        btnOK->Disable();
-    }
 }
 
 
-void dlgUser::Go()
+pgObject *dlgUser::GetObject()
+{
+    return user;
+}
+
+
+int dlgUser::Go(bool modal)
 {
     pgSet *set=connection->ExecuteSet(wxT("SELECT groname FROM pg_group"));
     if (set)
@@ -106,8 +86,34 @@ void dlgUser::Go()
         }
         delete set;
     }
-    Show();
+
+    if (user)
+    {
+        // Edit Mode
+        txtUser->SetValue(user->GetIdentifier());
+        txtID->SetValue(NumToStr(user->GetUserId()));
+        chkCreateDB->SetValue(user->GetCreateDatabase());
+        chkCreateUser->SetValue(user->GetSuperuser());
+        txtUser->Disable();
+        txtID->Disable();
+
+        wxStringTokenizer cfgTokens(user->GetConfigList(), ',');
+        while (cfgTokens.HasMoreTokens())
+        {
+            wxString token=cfgTokens.GetNextToken();
+            wxString name=token.BeforeFirst('=');
+            AppendListItem(lstVariables, name, token.Mid(name.Length()+1), 0);
+        }
+    }
+    else
+    {
+        txtID->SetValidator(numericValidator);
+        btnOK->Disable();
+    }
+
+    return dlgProperty::Go(modal);
 }
+
 
 void dlgUser::OnChange(wxNotifyEvent &ev)
 {
@@ -148,12 +154,7 @@ void dlgUser::OnVarSelChange(wxListEvent &ev)
     if (pos >= 0)
     {
         txtName->SetValue(lstVariables->GetItemText(pos));
-        wxListItem item;
-        item.SetId(pos);
-        item.SetColumn(1);
-        item.SetMask(wxLIST_MASK_TEXT);
-        lstVariables->GetItem(item);
-        txtValue->SetValue(item.GetText());
+        txtValue->SetValue(GetListText(lstVariables, pos, 1));
     }
 }
 
@@ -242,13 +243,7 @@ wxString dlgUser::GetSql()
         for (pos=0 ; pos < cnt ; pos++)
         {
             wxString newVar=lstVariables->GetItemText(pos);
-
-            wxListItem item;
-            item.SetId(pos);
-            item.SetColumn(1);
-            item.SetMask(wxLIST_MASK_TEXT);
-            lstVariables->GetItem(item);
-            
+            wxString newVal=GetListText(lstVariables, pos, 1);
 
             wxString oldVal;
 
@@ -263,11 +258,11 @@ wxString dlgUser::GetSql()
                     break;
                 }
             }
-            if (oldVal != item.GetText())
+            if (oldVal != newVal)
             {
                 sql += wxT("ALTER USER ") + user->GetQuotedFullIdentifier()
                     +  wxT(" SET ") + newVar
-                    +  wxT("=") + item.GetText()
+                    +  wxT("=") + newVal
                     +  wxT(";\n");
             }
         }
@@ -308,46 +303,38 @@ wxString dlgUser::GetSql()
     {
         // Create Mode
         wxString name=txtUser->GetValue();
-        if (!name.IsEmpty())
+
+        long id=atol(txtID->GetValue());
+
+        sql = wxT(
+            "CREATE USER ") + qtIdent(name);
+        if (id)
+            sql += wxT("\n  WITH SYSID ") + NumToStr(id);
+        if (!passwd.IsEmpty())
+            sql += wxT(" PASSWORD ") + qtString(passwd);
+
+        if (createDB || createUser)
+            sql += wxT("\n ");
+        if (createDB)
+            sql += wxT(" CREATEDB");
+        if (createUser)
+            sql += wxT(" CREATEUSER");
+        sql += wxT(";\n");
+
+        int cnt=lstVariables->GetItemCount();
+        int pos;
+        for (pos=0 ; pos < cnt ; pos++)
         {
-            long id=atol(txtID->GetValue());
-
-            sql = wxT(
-                "CREATE USER ") + qtIdent(name);
-            if (id)
-                sql += wxT("\n  WITH SYSID ") + NumToStr(id);
-            if (!passwd.IsEmpty())
-                sql += wxT(" PASSWORD ") + qtString(passwd);
-
-            if (createDB || createUser)
-                sql += wxT("\n ");
-            if (createDB)
-                sql += wxT(" CREATEDB");
-            if (createUser)
-                sql += wxT(" CREATEUSER");
-            sql += wxT(";\n");
-
-            int cnt=lstVariables->GetItemCount();
-            int pos;
-            for (pos=0 ; pos < cnt ; pos++)
-            {
-                wxListItem item;
-                item.SetId(pos);
-                item.SetColumn(1);
-                item.SetMask(wxLIST_MASK_TEXT);
-                lstVariables->GetItem(item);
-
-                sql += wxT("ALTER USER ") + qtIdent(name) 
-                    +  wxT(" SET ") + lstVariables->GetItemText(pos)
-                    +  wxT("=") + item.GetText()
-                    +  wxT(";\n");
-            }
-
-            cnt = lbGroupsIn->GetCount();
-            for (pos=0 ; pos < cnt ; pos++)
-                sql += wxT("ALTER GROUP ") + qtIdent(lbGroupsIn->GetString(pos))
-                    +  wxT(" ADD USER ") + qtIdent(name) + wxT(";\n");
+            sql += wxT("ALTER USER ") + qtIdent(name) 
+                +  wxT(" SET ") + lstVariables->GetItemText(pos)
+                +  wxT("=") + GetListText(lstVariables, pos, 1)
+                +  wxT(";\n");
         }
+
+        cnt = lbGroupsIn->GetCount();
+        for (pos=0 ; pos < cnt ; pos++)
+            sql += wxT("ALTER GROUP ") + qtIdent(lbGroupsIn->GetString(pos))
+                +  wxT(" ADD USER ") + qtIdent(name) + wxT(";\n");
     }
     return sql;
 }

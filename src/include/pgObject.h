@@ -111,6 +111,8 @@ public:
     virtual wxString GetFullIdentifier() const { return GetName(); }
     virtual wxString GetQuotedFullIdentifier() const { return qtIdent(GetName()); }
 
+    virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0)
+        =0;
     virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
     virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
     virtual bool EditObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
@@ -137,8 +139,6 @@ protected:
         { InsertListItem(list, pos, str1, NumToStr(d)); }
 
     virtual void SetContextInfo(frmMain *form) {}
-    virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0)
-        =0;
 
     bool expandedKids, needReread;
     wxString sql;

@@ -13,17 +13,18 @@
 #define __DLG_DATABASEPROP
 
 #include "dlgProperty.h"
-#include "pgDatabase.h"
+
+class pgDatabase;
 
 class dlgDatabase : public dlgSecurityProperty
 {
 public:
-    dlgDatabase(wxFrame *frame, pgDatabase *db);
-    void Go();
+    dlgDatabase(frmMain *frame, pgDatabase *db);
+    int Go(bool modal);
 
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject() { return database; }
+    pgObject *GetObject();
 
 private:
     pgDatabase *database;

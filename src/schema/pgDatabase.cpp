@@ -18,8 +18,6 @@
 #include "pgObject.h"
 #include "pgServer.h"
 #include "pgCollection.h"
-#include "frmVacuum.h"
-
 
 
 pgDatabase::pgDatabase(const wxString& newName)

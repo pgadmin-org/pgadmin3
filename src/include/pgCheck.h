@@ -42,6 +42,7 @@ public:
     void iSetDefinition(const wxString& s) { definition=s; }
 
     bool CanDrop() { return true; }
+    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);

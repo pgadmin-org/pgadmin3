@@ -28,9 +28,10 @@ public:
     pgForeignKey(pgSchema *newSchema, const wxString& newName = wxString(""));
     ~pgForeignKey();
     
+    wxString GetDefinition();
     wxString GetFullName() const;
 
-    int GetIcon() { return PGICON_KEY; }
+    int GetIcon() { return PGICON_FOREIGNKEY; }
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
@@ -65,6 +66,7 @@ public:
     wxString GetQuotedRefColumns() const { return quotedRefColumns; }
 
     bool CanDrop() { return true; }
+    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);

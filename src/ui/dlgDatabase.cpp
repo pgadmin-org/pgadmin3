@@ -15,6 +15,10 @@
 #include "pgAdmin3.h"
 #include "misc.h"
 #include "dlgDatabase.h"
+#include "pgDatabase.h"
+
+// Images
+#include "images/database.xpm"
 
 
 // pointer to controls
@@ -42,16 +46,28 @@ BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
 END_EVENT_TABLE();
 
 
-
-dlgDatabase::dlgDatabase(wxFrame *frame, pgDatabase *node)
+dlgDatabase::dlgDatabase(frmMain *frame, pgDatabase *node)
 : dlgSecurityProperty(frame, node, wxT("dlgDatabase"), wxT("CREATE,TEMP"), "CT")
 {
+    SetIcon(wxIcon(database_xpm));
     database=node;
-    lstVariables->InsertColumn(0, wxT("Variable"), wxLIST_FORMAT_LEFT, 100);
-    lstVariables->InsertColumn(1, wxT("Value"), wxLIST_FORMAT_LEFT, 200);
+    CreateListColumns(lstVariables, wxT("Variable"), wxT("Value"));
 
     txtOID->Disable();
 
+}
+
+
+pgObject *dlgDatabase::GetObject()
+{
+    return database;
+}
+
+
+int dlgDatabase::Go(bool modal)
+{
+    AddGroups();
+    AddUsers(cbOwner);
     if (database)
     {
         // edit mode
@@ -60,6 +76,7 @@ dlgDatabase::dlgDatabase(wxFrame *frame, pgDatabase *node)
         txtPath->SetValue(database->GetPath());
         cbEncoding->SetValue(database->GetEncoding());
         txtComment->SetValue(database->GetComment());
+        cbOwner->SetValue(database->GetOwner());
 
         txtName->Disable();
         cbOwner->Disable();
@@ -70,18 +87,10 @@ dlgDatabase::dlgDatabase(wxFrame *frame, pgDatabase *node)
     else
     {
         // create mode
-    }
-}
 
+        txtComment->Disable();
+        btnOK->Disable();
 
-void dlgDatabase::Go()
-{
-    AddGroups();
-    AddUsers(cbOwner);
-    if (database)
-        cbOwner->SetValue(database->GetOwner());
-    else
-    {
         pgSet *set=connection->ExecuteSet(wxT(
             "SELECT datname FROM pg_database ORDER BY datname"));
         if (set)
@@ -95,7 +104,7 @@ void dlgDatabase::Go()
         }
     }
 
-    dlgSecurityProperty::Go();
+    return dlgSecurityProperty::Go(modal);
 }
 
 
@@ -106,7 +115,6 @@ pgObject *dlgDatabase::CreateObject(pgCollection *collection)
     pgObject *obj=pgDatabase::ReadObjects(collection, 0, wxT(" WHERE datname=") + qtString(name) + wxT("\n"));
     return obj;
 }
-
 
 
 void dlgDatabase::OnChange(wxNotifyEvent &ev)
@@ -126,12 +134,7 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
     if (pos >= 0)
     {
         txtName->SetValue(lstVariables->GetItemText(pos));
-        wxListItem item;
-        item.SetId(pos);
-        item.SetColumn(1);
-        item.SetMask(wxLIST_MASK_TEXT);
-        lstVariables->GetItem(item);
-        txtValue->SetValue(item.GetText());
+        txtValue->SetValue(GetListText(lstVariables, pos, 1));
     }
 }
 
@@ -162,38 +165,34 @@ void dlgDatabase::OnVarRemove(wxNotifyEvent &ev)
 }
 
 
-
-
 wxString dlgDatabase::GetSql()
 {
     wxString sql, name;
     name=txtName->GetValue();
-    if (!name.IsEmpty())
+
+    if (database)
     {
-        if (database)
-        {
-            // edit mode
-        }
-        else
-        {
-            // create mode
-            sql = wxT("CREATE DATABASE ") + qtIdent(name) 
-                + wxT("\n  WITH ENCODING=") + qtString(cbEncoding->GetValue());
-
-            AppendIfFilled(sql, wxT("\n       OWNER="), qtIdent(cbOwner->GetValue()));
-            AppendIfFilled(sql, wxT("\n       TEMPLATE="), cbTemplate->GetValue());
-            AppendIfFilled(sql, wxT("\n       LOCATION="), txtPath->GetValue());
-
-            sql += wxT(";\n");
-            
-        }
-        sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
+        // edit mode
         wxString comment=txtComment->GetValue();
-        if (!database || database->GetComment() != comment)
+        if (database->GetComment() != comment)
             sql += wxT("COMMENT ON DATABASE ") + qtIdent(name)
                 +  wxT(" IS '") + comment + wxT("';\n");
+    }
+    else
+    {
+        // create mode
+        sql = wxT("CREATE DATABASE ") + qtIdent(name) 
+            + wxT("\n  WITH ENCODING=") + qtString(cbEncoding->GetValue());
+
+        AppendIfFilled(sql, wxT("\n       OWNER="), qtIdent(cbOwner->GetValue()));
+        AppendIfFilled(sql, wxT("\n       TEMPLATE="), cbTemplate->GetValue());
+        AppendIfFilled(sql, wxT("\n       LOCATION="), txtPath->GetValue());
+
+        sql += wxT(";\n");
 
     }
+    sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
+
     return sql;
 }
 

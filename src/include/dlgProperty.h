@@ -19,40 +19,54 @@
 #include <wx/xrc/xmlres.h>
 
 
+#define nbNotebook      CTRL("nbNotebook", wxNotebook)
+#define btnOK           CTRL("btnOK", wxButton)
+#define btnCancel       CTRL("btnCancel", wxButton)
+
+
 class dlgProperty : public wxDialog
 {
 public:
-    static void CreateObjectDialog(frmMain *frame, wxTreeCtrl *browser, wxListCtrl *properties, pgObject *node, pgConn *conn);
-    static void EditObjectDialog(frmMain *frame, wxTreeCtrl *browser, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node, pgConn *conn);
+    static void CreateObjectDialog(frmMain *frame, wxListCtrl *properties, pgObject *node, pgConn *conn);
+    static void EditObjectDialog(frmMain *frame, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlbox, pgObject *node, pgConn *conn);
 
     virtual wxString GetSql() =0;
     virtual pgObject *CreateObject(pgCollection *collection) =0;
     virtual pgObject *GetObject() =0;
 
     virtual void CreateAdditionalPages();
-    virtual void Go() {}
+    void SetConnection(pgConn *conn) { connection=conn; }
+    virtual int Go(bool modal=false);
 
 protected:
-    static dlgProperty *CreateDlg(wxFrame *frame, pgObject *node, bool asNew);
-    dlgProperty(wxFrame *frame, const wxString &resName);
+    dlgProperty(frmMain *frame, const wxString &resName);
+
+    void CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right, int leftSize=100);
+    void AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon);
+
+    static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew);
+
     void OnPageSelect(wxNotebookEvent& event);
     void OnOK(wxNotifyEvent &ev);
     void OnCancel(wxNotifyEvent &ev);
+    void OnClose(wxCloseEvent &ev);
+
 
     pgConn *connection;
-    ctlSQLBox *sqlPane;
-    wxNotebook *notebook;
-
     frmMain *mainForm;
+
+    ctlSQLBox *sqlPane;
     wxListCtrl *properties, *statistics;
     ctlSQLBox *sqlFormPane;
+
+    wxTextValidator numericValidator;
+
+    int width, height;
     int sqlPageNo;
-    wxTreeCtrl *browser;
     wxTreeItemId item;
     int objectType;
 
 private:
-
     DECLARE_EVENT_TABLE();
 };
 
@@ -60,7 +74,7 @@ private:
 class dlgSecurityProperty : public dlgProperty
 {
 protected:
-    dlgSecurityProperty(wxFrame *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *privilegeChar);
+    dlgSecurityProperty(frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *privilegeChar);
     ~dlgSecurityProperty();
     void AddGroups(wxComboBox *comboBox=0);
     void AddUsers(wxComboBox *comboBox=0);

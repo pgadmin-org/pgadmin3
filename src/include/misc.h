@@ -50,6 +50,11 @@ bool IsValidIdentifier(wxString ident);
 // string build helper
 void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &what);
 
+// easier getting of text
+class wxListCtrl;
+wxString GetListText(wxListCtrl *lst, long row, long col);
+
+
 // splitting of strings, obeying quotes
 class queryTokenizer : public wxStringTokenizer
 {
@@ -88,14 +93,15 @@ enum        // depends on frmMain browserImages->Add order!
     PGICON_INDEX,
     PGICON_RULE,
     PGICON_TRIGGER,
-    PGICON_KEY,
+    PGICON_FOREIGNKEY,
     PGICON_CAST,
     PGICON_CONVERSION,
     PGICON_OPERATORCLASS,
     PGICON_TRIGGERFUNCTION,
     PGICON_CONSTRAINT,
     PGICON_PRIMARYKEY,
-    PGICON_UNIQUE
+    PGICON_UNIQUE,
+    PGICON_PUBLIC
 };
 
 

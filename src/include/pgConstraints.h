@@ -21,7 +21,7 @@ public:
     ~pgConstraints();
     int GetIcon() { return PGICON_CONSTRAINT; }
     bool IsCollectionForType(int objType);
-    bool CanCreate() { return true; };
+    bool CanCreate() { return false; };
 
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane);
 };

@@ -44,7 +44,12 @@ public:
     void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
 
+    void Refresh(pgObject *data);
     void RemoveFrame(wxWindow *frame);
+
+    wxImageList *GetImageList() { return images; }
+    wxTreeCtrl *GetBrowser() { return browser; }
+    ctlSQLBox *GetSqlPane() { return sqlPane; }
 
 private:
     windowList frames;
@@ -58,7 +63,7 @@ private:
     wxMenu *fileMenu, *toolsMenu, *viewMenu, *helpMenu, *treeContextMenu;
     wxToolBar *toolBar;
     wxTreeItemId servers;
-	wxImageList *images;;
+	wxImageList *images;
     wxSplitterWindow *horizontal, *vertical;
 
     void OnKeyDown(wxKeyEvent& event);
@@ -96,8 +101,6 @@ private:
     int ReconnectServer(pgServer *server);
     wxTreeItemId RestoreEnvironment(pgServer *server);
     wxTreeItemId denyCollapseItem;
-
-    friend class dlgProperty;
 
     DECLARE_EVENT_TABLE()
 };

@@ -19,6 +19,7 @@ class pgIndexConstraint : public pgIndex
 public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
+    wxString GetDefinition();
     wxString GetCreate();
     wxString GetSql(wxTreeCtrl *browser);
 
@@ -34,6 +35,7 @@ public:
     pgPrimaryKey(pgSchema *newSchema, const wxString& newName = wxString(""))
         : pgIndexConstraint(newSchema, newName, PG_PRIMARYKEY) {}
 
+    bool CanCreate() { return false; }
     int GetIcon() { return PGICON_PRIMARYKEY; }
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser);
 };

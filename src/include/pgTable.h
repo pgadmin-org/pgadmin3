@@ -29,6 +29,7 @@ public:
     ~pgTable();
 
     int GetIcon() { return PGICON_TABLE; }
+    wxString GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collectionId, int type);
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     static void ShowStatistics(pgCollection *collection, wxListCtrl *statistics);
@@ -51,6 +52,8 @@ public:
     void iSetHasSubclass(bool b) { hasSubclass = b; }
     void UpdateRows();
 
+    bool CanCreate() { return true; }
+    bool CanEdit() { return true; }
     bool CanDrop() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool CanView() { return true; }

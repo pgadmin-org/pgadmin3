@@ -280,6 +280,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     images->Add(wxIcon(constraints_xpm));
     images->Add(wxIcon(primarykey_xpm));
     images->Add(wxIcon(unique_xpm));
+    images->Add(wxIcon(public_xpm));
 
     browser->SetImageList(images);
 
@@ -324,6 +325,56 @@ frmMain::~frmMain()
 	delete images;
 }
 
+
+
+void frmMain::Refresh(pgObject *data)
+{
+    StartMsg(wxT("Refreshing ") + data->GetTypeName() + wxT("..."));
+    browser->Freeze();
+
+    wxTreeItemId item, currentItem=data->GetId();
+    long cookie;
+
+    while ((item=browser->GetFirstChild(currentItem, cookie)) != 0)
+    {
+        pgObject *tmpData = (pgObject *)browser->GetItemData(item);
+        wxLogInfo(wxT("Deleting ") + tmpData->GetTypeName() + wxT(" ") 
+            + tmpData->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+        // delete data will be performed by browser->Delete
+        browser->Delete(item);
+    }
+
+	// refresh information about the object
+
+    data->SetDirty();
+    
+    pgObject *newData = data->Refresh(browser, currentItem);
+
+    if (newData != data)
+    {
+        wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 
+            + data->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+
+        if (newData)
+        {
+            wxLogInfo(wxT("Replacing with new Node ") + newData->GetTypeName() + wxT(" ") 
+                + newData->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+            newData->SetId(currentItem);    // not done automatically
+            browser->SetItemData(currentItem, newData);
+            delete data;
+        }
+        else
+        {
+            wxLogInfo(wxT("No object to replace: vanished after refresh."));
+            browser->SelectItem(browser->GetItemParent(currentItem));
+            browser->Delete(currentItem);
+        }
+    }
+    wxTreeEvent event;
+	OnTreeSelChanged(event);
+    browser->Thaw();
+    EndMsg();
+}
 
 
 void frmMain::RemoveFrame(wxWindow *frame)

@@ -28,12 +28,11 @@ bool pgIndexConstraint::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 }
 
 
-wxString pgIndexConstraint::GetCreate()
+wxString pgIndexConstraint::GetDefinition()
 {
     wxString sql;
 
-    sql = GetQuotedFullIdentifier() + wxT(" ") 
-        + GetTypeName().Upper() + wxT("(") + GetQuotedColumns() + wxT(")");
+    sql = wxT("(") + GetQuotedColumns() + wxT(")");
 
     if (GetDeferrable())
     {
@@ -43,6 +42,17 @@ wxString pgIndexConstraint::GetCreate()
         else
             sql += wxT("IMMEDIATE");
     }
+    return sql;
+}
+
+
+wxString pgIndexConstraint::GetCreate()
+{
+    wxString sql;
+
+    sql = GetQuotedFullIdentifier() + wxT(" ") 
+        + GetTypeName().Upper() + GetDefinition();
+
     return sql;
 };
 
@@ -62,6 +72,8 @@ wxString pgIndexConstraint::GetSql(wxTreeCtrl *browser)
     }
     return sql;
 }
+
+
 
 void pgIndexConstraint::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *properties, wxListCtrl *statistics, ctlSQLBox *sqlPane)
 {

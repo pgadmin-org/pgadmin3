@@ -19,9 +19,9 @@
 #include "pgCollection.h"
 #include "pgConstraints.h"
 #include "pgColumn.h"
-#include "pgCheck.h"
+#include "pgIndexConstraint.h"
 #include "pgForeignKey.h"
-#include "frmVacuum.h"
+#include "pgCheck.h"
 
 
 pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
@@ -39,6 +39,47 @@ bool pgTable::DropObject(wxFrame *frame, wxTreeCtrl *browser)
     return GetDatabase()->ExecuteVoid(wxT("DROP TABLE ") + GetQuotedFullIdentifier());
 }
 
+
+wxString pgTable::GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collectionId, int type)
+{
+    wxString sql;
+
+    long cookie;
+    pgObject *data;
+    wxTreeItemId item=browser->GetFirstChild(collectionId, cookie);
+            
+    while (item)
+    {
+        data=(pgObject*)browser->GetItemData(item);
+        if (type < 0 || type == data->GetType())
+        {
+            sql += wxT(",\n  CONSTRAINT ") + data->GetQuotedIdentifier() 
+                + wxT(" ") + data->GetTypeName().Upper() 
+                + wxT(" ") ;
+            data->ShowTreeDetail(browser);
+            
+            switch (data->GetType())
+            {
+                case PG_PRIMARYKEY:
+                case PG_UNIQUE:
+                    sql += ((pgIndexConstraint*)data)->GetDefinition();
+                    break;
+                case PG_FOREIGNKEY:
+                    sql += ((pgForeignKey*)data)->GetDefinition();
+                    break;
+                case PG_CHECK:
+                    sql += ((pgCheck*)data)->GetDefinition();
+                    break;
+            }
+        }
+        
+        item=browser->GetNextChild(collectionId, cookie);
+    }
+
+    return sql;
+}
+
+
 wxString pgTable::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
@@ -50,17 +91,24 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
 
         pgObject *data;
         long cookie;
-        wxTreeItemId columnsItem=browser->GetFirstChild(GetId(), cookie);
-        while (columnsItem)
+        wxTreeItemId item=browser->GetFirstChild(GetId(), cookie);
+        wxTreeItemId columnsItem, constraintsItem;
+        while (item)
         {
-            data=(pgObject*)browser->GetItemData(columnsItem);
+            data=(pgObject*)browser->GetItemData(item);
             if (data->GetType() == PG_COLUMNS)
+                columnsItem = item;
+            else if (data->GetType() == PG_CONSTRAINTS)
+                constraintsItem = item;
+
+            if (columnsItem && constraintsItem)
                 break;
-            columnsItem=browser->GetNextChild(GetId(), cookie);
+
+            item=browser->GetNextChild(GetId(), cookie);
         }
         if (columnsItem)
         {
-            pgCollection *coll=(pgCollection*)data;
+            pgCollection *coll=(pgCollection*)browser->GetItemData(columnsItem);
             // make sure all columns are appended
             coll->ShowTreeDetail(browser);
             // this is the columns collection
@@ -83,12 +131,8 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                             sql += wxT(",\n");
 
                         sql += wxT("  ") + column->GetQuotedIdentifier() + wxString(" ")
-                            + column->GetFullType();
+                            + column->GetDefinition();
 
-                        AppendIfFilled(sql,  wxT(" DEFAULT "), column->GetDefault());
-
-                        if (column->GetNotNull())
-                            sql += wxT(" NOT NULL");
                         colCount++;
                     }
                 }
@@ -97,6 +141,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
             }
         }
 
+        /*
         // add primary key
         if (!GetPrimaryKey().IsNull())
         {
@@ -132,22 +177,14 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
         }
 
         // add checks
-        wxTreeItemId checkItem=browser->GetFirstChild(GetId(), cookie);
-        while (checkItem)
-        {
-            data=(pgObject*)browser->GetItemData(checkItem);
-            if (data->GetType() == PG_CONSTRAINTS)
-                break;
-            checkItem=browser->GetNextChild(GetId(), cookie);
-        }
-        if (checkItem)
+        if (constraintsItem)
         {
             // this is the checks collection
             pgCollection *coll=(pgCollection*)data;
             // make sure all kids are read
             coll->ShowTreeDetail(browser);
 
-            wxTreeItemId item=browser->GetFirstChild(checkItem, cookie);
+            wxTreeItemId item=browser->GetFirstChild(constraintsItem, cookie);
             
             while (item)
             {
@@ -162,26 +199,18 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                     sql += wxT("  CONSTRAINT ") + check->GetConstraint();
                 }
                 
-                item=browser->GetNextChild(checkItem, cookie);
+                item=browser->GetNextChild(constraintsItem, cookie);
             }
         }
 
         // add foreign keys
-        wxTreeItemId fkItem=browser->GetFirstChild(GetId(), cookie);
-        while (fkItem)
-        {
-            data=(pgObject*)browser->GetItemData(fkItem);
-            if (data->GetType() == PG_CONSTRAINTS)
-                break;
-            fkItem=browser->GetNextChild(GetId(), cookie);
-        }
-        if (fkItem)
+        if (constraintsItem)
         {
             // this is the foreign keys collection
             pgCollection *coll=(pgCollection*)data;
             coll->ShowTreeDetail(browser);
 
-            wxTreeItemId item=browser->GetFirstChild(fkItem, cookie);
+            wxTreeItemId item=browser->GetFirstChild(constraintsItem, cookie);
             
             while (item)
             {
@@ -195,8 +224,21 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                     foreignKey->ShowTreeDetail(browser);
                     sql += wxT("  CONSTRAINT ") + foreignKey->GetConstraint();
                 }                
-                item=browser->GetNextChild(fkItem, cookie);
+                item=browser->GetNextChild(constraintsItem, cookie);
             }
+        }
+        */
+
+        if (constraintsItem)
+        {
+            pgCollection *coll=(pgCollection*)browser->GetItemData(constraintsItem);
+            // make sure all kids are read
+            coll->ShowTreeDetail(browser);
+
+            sql += GetAllConstraints(browser, constraintsItem, PG_PRIMARYKEY);
+            sql += GetAllConstraints(browser, constraintsItem, PG_FOREIGNKEY);
+            sql += GetAllConstraints(browser, constraintsItem, PG_UNIQUE);
+            sql += GetAllConstraints(browser, constraintsItem, PG_CHECK);
         }
         sql += wxT("\n) ");
         if (GetInheritedTableCount())
