@@ -114,7 +114,7 @@ wxString dlgTablespace::GetSql()
         // Edit Mode
 
         AppendNameChange(sql);
-        AppendOwnerChange(sql);
+        AppendOwnerChange(sql, wxT("TABLESPACE ") + qtIdent(name));
     }
     else
     {

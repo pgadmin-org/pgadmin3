@@ -323,7 +323,7 @@ wxString dlgType::GetSql()
     if (type)
     {
         // Edit Mode
-        AppendOwnerChange(sql);
+        AppendOwnerChange(sql, wxT("TYPE ") + type->GetQuotedFullIdentifier());
     }
     else
     {

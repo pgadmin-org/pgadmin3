@@ -790,7 +790,7 @@ void frmMain::StoreServers()
 	        
 			// SSL
 			key.Printf(wxT("Servers/SSL%d"), numServers);
-
+			settings->Write(key, server->GetSSL());
 		}
 
         // Get the next item

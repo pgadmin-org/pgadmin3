@@ -110,7 +110,7 @@ wxString dlgSchema::GetSql()
     {
         // edit mode
         AppendNameChange(sql);
-        AppendOwnerChange(sql);
+        AppendOwnerChange(sql, wxT("SCHEMA ") + qtIdent(name));
     }
     else
     {

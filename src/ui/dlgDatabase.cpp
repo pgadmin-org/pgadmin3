@@ -304,7 +304,7 @@ wxString dlgDatabase::GetSql()
         // edit mode
 
         AppendNameChange(sql);
-        AppendOwnerChange(sql);
+        AppendOwnerChange(sql, wxT("DATABASE ") + qtIdent(name));
 
         wxArrayString vars;
 
