@@ -130,7 +130,19 @@ bool pgAdmin3::OnInit()
 #endif
 
     locale.AddCatalogLookupPathPrefix(uiPath);
+    wxLanguage langId = (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_DEFAULT);
+    if (locale.Init(langId))
+    {
+#ifdef __LINUX__
+        {
+            wxLogNull noLog;
+            locale.AddCatalog(wxT("fileutils"));
+        }
+#endif
+        locale.AddCatalog(wxT("pgadmin3"));
+    }
     
+#if 0 // old language selection on first app start
     long langCount=0;
     const wxLanguageInfo *langInfo;
     int langNo;
@@ -223,7 +235,9 @@ bool pgAdmin3::OnInit()
             settings->Write(wxT("LanguageId"), (long)langId);
         }
     }
-
+#endif
+    
+    
     // Show the splash screen
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     if (!winSplash) 
