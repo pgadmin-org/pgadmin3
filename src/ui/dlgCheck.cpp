@@ -141,7 +141,7 @@ wxString dlgCheck::GetDefinition()
 {
     wxString sql;
 
-    sql = txtWhere->GetValue();
+    sql = wxT("(") + txtWhere->GetValue() + wxT(")");
 
     return sql;
 }
