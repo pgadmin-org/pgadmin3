@@ -46,6 +46,6 @@ rm -rf %{buildroot}
 /usr/share
 
 %changelog
-* Mon Jun 10 2003 Jean-Michel POURE <jm.poure@freesurf.fr>
+* Mon Jun 10 2003 Jean-Michel POURE <pgadmin-hackers@postgresql.org>
 - Initial build
 

@@ -114,5 +114,5 @@ rm -rf %{buildroot}
 %{_libdir}/libwx_gtk2ud_stc-%{version}.a
 
 %changelog
-* Mon Jun 10 2003 Jean-Michel POURE <jm.poure@freesurf.fr>
+* Mon Jun 10 2003 Jean-Michel POURE <pgadmin-hackers@postgresql.org>
 - Initial build.
