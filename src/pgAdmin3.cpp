@@ -26,6 +26,10 @@
   #include <winsock.h>
 #endif
 
+#ifdef __WXGTK__
+  #include <wx/renderer.h>
+#endif
+
 // App headers
 #include "pgAdmin3.h"
 #include "copyright.h"
@@ -65,6 +69,21 @@ extern const char *SSL_version_str;
 
 IMPLEMENT_APP(pgAdmin3)
 
+
+#if wxCHECK_VERSION(2,5,1)
+#ifdef __WXGTK__
+
+class pgRendererNative : public wxDelegateRendererNative
+{
+public:
+	void DrawTreeItemButton(wxWindow* win,wxDC& dc, const wxRect& rect, int flags)
+	{
+		GetGeneric().DrawTreeItemButton(win, dc, rect, flags);
+	}
+};
+
+#endif
+#endif
 
 
 
@@ -127,6 +146,14 @@ bool pgAdmin3::OnInit()
 
 #ifdef SSL
     wxLogInfo(wxT("Compiled with ") + wxString::FromAscii(SSL_version_str));
+#endif
+
+#if wxCHECK_VERSION(2,5,1)
+#ifdef __WXGTK__
+	static pgRendererNative *renderer=new pgRendererNative();
+	wxRendererNative::Get();
+	wxRendererNative::Set(renderer);
+#endif
 #endif
 
     locale.AddCatalogLookupPathPrefix(uiPath);
