@@ -69,9 +69,10 @@ int pgDatabase::Connect()
             connected = TRUE;
             iSetComment(conn->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
 
-            wxString exprname=conn->ExecuteScalar(wxT("SELECT proname FROM pg_proc WHERE proname='pg_get_viewdef' AND proargtypes[1]=23"));
+            // check for extended ruleutils with pretty-print option
+            wxString exprname=conn->ExecuteScalar(wxT("SELECT proname FROM pg_proc WHERE proname='pg_get_viewdef' AND proargtypes[1]=16"));
             if (!exprname.IsEmpty())
-                prettyOption = wxT(", 255");
+                prettyOption = wxT(", true");
             
             return PGCONN_OK;
         }
