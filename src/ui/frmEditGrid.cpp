@@ -274,11 +274,11 @@ void frmEditGrid::OnClose(wxCloseEvent& event)
 {
     if (toolBar->GetToolEnabled(MNU_SAVE))
     {
-        int flag=wxYES_NO;
+        int flag=wxYES_NO | wxICON_QUESTION;
         if (event.CanVeto())
             flag |= wxCANCEL;
 
-        wxMessageDialog msg(this, _("There's unsaved data.\nStore to database?"), _("Unsaved data"),
+        wxMessageDialog msg(this, _("There is unsaved data in a row.\nDo you want to store to the database?"), _("Unsaved data"),
             flag);
         switch (msg.ShowModal())
         {
@@ -399,7 +399,7 @@ void frmEditGrid::Go()
         Show(true);
     else
     {
-        wxMessageBox(_("No Table or view."));
+        wxLogError(_("No Table or view."));
         Close();
         Destroy();
     }
