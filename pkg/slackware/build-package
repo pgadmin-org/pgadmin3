@@ -20,7 +20,7 @@ rm -rf ./src
 /bin/sh bootstrap
 
 # Configure for the local OS
-./configure --prefix=/usr/local/src/pgadmin3/slackpack/usr/local/pgadmin3 \
+./configure --prefix=/usr/local/src/pgadmin3/slackpack/usr \
 	--with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-debug
 
 # Now make the binary build
@@ -36,7 +36,7 @@ if [ -x src/pgadmin3 ]; then
 	# And tweak for Slackware
 	mkdir -p ./slackpack/opt/kde/share/applnk/Development
 	cp ./pkg/slackware/pgadmin3.desktop ./slackpack/opt/kde/share/applnk/Development
-	cp ./src/include/images/elephant48.xpm ./slackpack/usr/local/pgadmin3/share/pgadmin3/pgadmin3.xpm
+	cp ./src/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
 
 	# Build the snapshot and file it.
 	cd slackpack
