@@ -100,7 +100,7 @@ wxString dlgIndexConstraint::GetSql()
         sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
             + wxT(" ADD");
         AppendIfFilled(sql, wxT(" CONSTRAINT "), qtIdent(name));
-        sql +=wxT(" PRIMARY KEY ") + GetDefinition()
+        sql +=wxT(" ") + wxString(typesList[objectType].typName).Upper() + wxT(" ") + GetDefinition()
             + wxT(";\n");
     }
 
