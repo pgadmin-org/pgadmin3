@@ -155,19 +155,20 @@ void frmStatus::OnRefreshTimer(wxTimerEvent &event)
 void frmStatus::OnRefresh(wxCommandEvent &event)
 {
 
+    long pid=0;
 	// To avoid hammering the lock manager (and the network for that matter),
 	// only query for the required tab.
 
-	if (nbStatus->GetSelection() == 0) {
-
-		// Status
+	if (nbStatus->GetSelection() == 0)
+    {
+        // Status
+		long row=0;
 		pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT * FROM pg_stat_activity ORDER BY procpid"));
 		if (dataSet1)
 		{
-			long row=0;
 			while (!dataSet1->Eof())
 			{
-				long pid=dataSet1->GetLong(wxT("procpid"));
+				pid=dataSet1->GetLong(wxT("procpid"));
 
 				if (pid != backend_pid)
 				{
@@ -193,8 +194,8 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 					if (connection->BackendMinimumVersion(7, 4))
 					{
 						if (qry.IsEmpty()) {
-							statusList->SetItem(row, 3, wxT(""));
-							statusList->SetItem(row, 4, wxT(""));
+							statusList->SetItem(row, 3, wxEmptyString);
+							statusList->SetItem(row, 4, wxEmptyString);
 						} else {
 							statusList->SetItem(row, 3, dataSet1->GetVal(wxT("query_start")));
 							statusList->SetItem(row, 4, qry.Left(250));
@@ -207,11 +208,22 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				}
 				dataSet1->MoveNext();
 			}
+
 		}
-
-	} else {
-
+        row=0;
+		while (row < statusList->GetItemCount())
+		{
+			long itempid=StrToLong(statusList->GetItemText(row));
+			if (itempid && itempid > pid)
+				statusList->DeleteItem(row);
+            else
+                row++;
+		}
+	}
+    else
+    {
 		// Locks
+		long row=0;
 		wxString sql;
 		if (connection->BackendMinimumVersion(7, 4)) {
 			sql = wxT("SELECT ")
@@ -235,10 +247,9 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 		pgSet *dataSet2=connection->ExecuteSet(sql);
 		if (dataSet2)
 		{
-			long row=0;
 			while (!dataSet2->Eof())
 			{
-				long pid=dataSet2->GetLong(wxT("pid"));
+				pid=dataSet2->GetLong(wxT("pid"));
 
 				if (pid != backend_pid)
 				{
@@ -272,8 +283,8 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 					if (connection->BackendMinimumVersion(7, 4))
 					{
 						if (qry.IsEmpty()) {
-							lockList->SetItem(row, 7, wxT(""));
-							lockList->SetItem(row, 8, wxT(""));
+							lockList->SetItem(row, 7, wxEmptyString);
+							lockList->SetItem(row, 8, wxEmptyString);
 						} else {
 							lockList->SetItem(row, 7, dataSet2->GetVal(wxT("query_start")));
 							lockList->SetItem(row, 8, qry.Left(250));
@@ -286,6 +297,15 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				}
 				dataSet2->MoveNext();
 			}
+		}
+        row=0;
+		while (row < lockList->GetItemCount())
+		{
+			long itempid=StrToLong(lockList->GetItemText(row));
+			if (itempid && itempid > pid)
+				lockList->DeleteItem(row);
+            else
+                row++;
 		}
 	}
 }
