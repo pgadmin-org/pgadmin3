@@ -40,11 +40,11 @@ include/ctlSQLResult.h include/dlgAddTableView.h \
 include/pgDefs.h include/pgDatatype.h \
 include/dlgCheck.h include/dlgColumn.h \
 include/dlgDatabase.h include/dlgDomain.h \
-include/dlgForeignKey.h include/dlgGroup.h \
+include/dlgForeignKey.h include/dlgFunction.h include/dlgGroup.h \
 include/dlgIndexConstraint.h include/dlgIndex.h \
 include/dlgLanguage.h include/dlgProperty.h include/dlgType.h \
-include/dlgSchema.h include/dlgTable.h include/dlgTrigger.h \
-include/dlgUser.h include/frmAbout.h \
+include/dlgSequence.h include/dlgSchema.h include/dlgTable.h \
+include/dlgTrigger.h include/dlgUser.h include/frmAbout.h \
 include/frmChildTableViewFrame.h include/frmConnect.h \
 include/frmEditGrid.h include/frmMain.h \
 include/frmOptions.h include/frmPassword.h \
@@ -64,9 +64,10 @@ include/pgRule.h include/pgSchema.h include/pgSequence.h \
 include/pgServer.h include/pgSet.h include/pgTable.h \
 include/pgTrigger.h include/pgType.h include/pgUser.h \
 include/pgView.h include/sysLogger.h \
-include/sysSettings.h include/wxgridsel.h
+include/sysSettings.h include/wxgridsel.h include/menu.h
   
 EXTRA_DIST = include/images/aggregate.xpm include/images/arguments.xpm \
+include/images/back.xpm \
 include/images/baddatabase.xpm include/images/cast.xpm \
 include/images/check.xpm include/images/clip_copy.xpm \
 include/images/clip_cut.xpm include/images/clip_paste.xpm \
@@ -82,7 +83,8 @@ include/images/edit_clear.xpm include/images/edit_find.xpm \
 include/images/edit_redo.xpm include/images/edit_undo.xpm \
 include/images/encoding.xpm include/images/event.xpm \
 include/images/file_open.xpm include/images/file_save.xpm \
-include/images/foreignkey.xpm include/images/function.xpm \
+include/images/foreignkey.xpm include/images/forward.xpm \
+include/images/function.xpm \
 include/images/group.xpm include/images/hiproperty.xpm \
 include/images/indexcolumn.xpm include/images/index.xpm \
 include/images/key.xpm include/images/language.xpm \
@@ -94,8 +96,8 @@ include/images/properties.xpm include/images/property.xpm \
 include/images/public.xpm include/images/query_cancel.xpm \
 include/images/query_execute.xpm \
 include/images/query_explain.xpm \
-include/images/refresh.xpm \
-include/images/relationship.xpm include/images/rule.xpm \
+include/images/refresh.xpm \ include/images/relationship.xpm \
+include/images/reload.xpm include/images/rule.xpm \
 include/images/sequence.xpm include/images/serverbad.xpm \
 include/images/servers.xpm include/images/server.xpm \
 include/images/splash.xpm include/images/sql.xpm \
