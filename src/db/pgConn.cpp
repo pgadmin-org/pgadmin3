@@ -149,7 +149,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
             wxString encoding = set->GetVal(wxT("encoding"));
 
 #if wxUSE_UNICODE
-            if (encoding != wxT("SQL_ASCII"))
+            if (encoding != wxT("SQL_ASCII") && encoding != wxT("MULE_INTERNAL"))
             {
                 encoding = wxT("UNICODE");
                 conv = &wxConvUTF8;
