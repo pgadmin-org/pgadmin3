@@ -163,9 +163,7 @@ wxTimeSpan wxTimeSpinCtrl::GetValue()
 
 int wxTimeSpinCtrl::GetTimePart()
 {
-    long from, to;
-    m_txt->GetSelection(&from, &to);
-    wxString strAfter=m_txt->GetRange(to, 9999);
+    wxString strAfter=m_txt->GetRange(m_txt->GetInsertionPoint(), 9999);
     int cnt=0;
     wxChar *p=(wxChar*)strAfter.c_str();
     while (*p)
@@ -196,13 +194,17 @@ void wxTimeSpinCtrl::Highlight(int tp)
         
 void wxTimeSpinCtrl::OnSpinUp(wxSpinEvent &ev)
 {
+#ifdef __WXMSW__
     m_txt->SetFocus();
+#endif
     DoSpin(1);
 }
 
 void wxTimeSpinCtrl::OnSpinDown(wxSpinEvent &ev)
 {
+#ifdef __WXMSW__
     m_txt->SetFocus();
+#endif
     DoSpin(-1);
 }
 
@@ -396,8 +398,12 @@ void wxTimeSpinCtrl::OnKillFocus(wxFocusEvent &ev)
         spinValue = 0;
         m_spn->SetValue(0);
     }
-
-    SetValue(wxTimeSpan(0,0,time));
+	else
+	{
+		int tp=GetTimePart();
+		SetValue(wxTimeSpan(0,0,time));
+		Highlight(tp);
+	}
 }
 
 
