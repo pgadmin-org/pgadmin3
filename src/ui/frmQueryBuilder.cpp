@@ -794,7 +794,7 @@ void frmQueryBuilder::UpdateGridColumns(frmChildTableViewFrame *frame,
 
 		// Only do this if we're on the same table
 		// Or if we're forcing the row to update
-		if (tmptable.Lower() == tablename.Lower())
+		if (tmptable == tablename)
 		{
 			// We MUST hide the edit control to replace it
 			design->HideCellEditControl();
