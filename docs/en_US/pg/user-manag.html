@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="previous" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
 <link rel="next" href="user-attributes.html" title="17.2. User Attributes">
@@ -42,31 +42,38 @@
 <a name="database-users"></a>17.1. Database Users</h2></div></div>
 <div></div>
 </div>
-<a name="id2590218"></a><a name="id2590228"></a><a name="id2590234"></a><p>   Database users are conceptually completely separate from
+<a name="id2591977"></a><a name="id2591988"></a><a name="id2591994"></a><p>   Database users are conceptually completely separate from
    operating system users. In practice it might be convenient to
    maintain a correspondence, but this is not required. Database user
    names are global across a database cluster installation (and not
-   per individual database). To create a user use the <tt class="command">CREATE
-   USER</tt> SQL command:
+   per individual database). To create a user use the <a href="sql-createuser.html">CREATE USER</a> SQL command:
 </p>
 <pre class="synopsis">CREATE USER <i class="replaceable"><tt>name</tt></i>;</pre>
 <p>
    <i class="replaceable"><tt>name</tt></i> follows the rules for SQL
    identifiers: either unadorned without special characters, or
    double-quoted. To remove an existing user, use the analogous
-   <tt class="command">DROP USER</tt> command:
+   <a href="sql-dropuser.html">DROP USER</a> command:
 </p>
 <pre class="synopsis">DROP USER <i class="replaceable"><tt>name</tt></i>;</pre>
 <p>
   </p>
-<a name="id2590284"></a><a name="id2590290"></a><p>   For convenience, the programs <tt class="command">createuser</tt>
-   and <tt class="command">dropuser</tt> are provided as wrappers
+<a name="id2592054"></a><a name="id2592059"></a><p>   For convenience, the programs <a href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a>
+   and <a href="app-dropuser.html" title="dropuser"><span class="refentrytitle"><a name="app-dropuser-title"></a><span class="application">dropuser</span></span></a> are provided as wrappers
    around these SQL commands that can be called from the shell command
    line:
 </p>
 <pre class="synopsis">createuser <i class="replaceable"><tt>name</tt></i>
 dropuser <i class="replaceable"><tt>name</tt></i></pre>
 <p>
+  </p>
+<p>   To determine the set of existing users, examine the <tt class="structname">pg_user</tt>
+   system catalog, for example
+</p>
+<pre class="synopsis">SELECT usename FROM pg_user;</pre>
+<p>
+   The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <tt class="literal">\du</tt> meta-command
+   is also useful for listing the existing users.
   </p>
 <p>   In order to bootstrap the database system, a freshly initialized
    system always contains one predefined user. This user will have the
@@ -93,8 +100,8 @@ dropuser <i class="replaceable"><tt>name</tt></i></pre>
    is determined by the client authentication setup, as explained in
    <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>. (Thus, a client is not
    necessarily limited to connect as the user with the same name as
-   its operating system user, in the same way a person is not
-   constrained in its login name by her real name.)  Since the user
+   its operating system user, just as a person's login name 
+   need not match her real name.)  Since the user
    identity determines the set of privileges available to a connected
    client, it is important to carefully configure this when setting up
    a multiuser environment.

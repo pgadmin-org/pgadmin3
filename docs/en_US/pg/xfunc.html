@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="previous" href="extend-type-system.html" title="31.2. The PostgreSQL Type System">
 <link rel="next" href="xfunc-sql.html" title="31.4. Query Language (SQL) Functions">
@@ -16,7 +16,7 @@
 <a name="xfunc"></a>31.3. User-Defined Functions</h2></div></div>
 <div></div>
 </div>
-<a name="id2629603"></a><p>   <span class="productname">PostgreSQL</span> provides four kinds of
+<a name="id2631920"></a><p>   <span class="productname">PostgreSQL</span> provides four kinds of
    functions:
 
    </p>
@@ -25,21 +25,22 @@
       <span class="acronym">SQL</span>) (<a href="xfunc-sql.html" title="31.4. Query Language (SQL) Functions">Section 31.4, &#8220;Query Language (SQL) Functions&#8221;</a>)
      </p></li>
 <li><p>      procedural language functions (functions written in, for
-      example, <span class="application">PL/Tcl</span> or <span class="application">PL/pgSQL</span>)
-      (<a href="xfunc-pl.html" title="31.5. Procedural Language Functions">Section 31.5, &#8220;Procedural Language Functions&#8221;</a>)
+      example, <span class="application">PL/pgSQL</span> or <span class="application">PL/Tcl</span>)
+      (<a href="xfunc-pl.html" title="31.7. Procedural Language Functions">Section 31.7, &#8220;Procedural Language Functions&#8221;</a>)
      </p></li>
-<li><p>      internal functions (<a href="xfunc-internal.html" title="31.6. Internal Functions">Section 31.6, &#8220;Internal Functions&#8221;</a>)
+<li><p>      internal functions (<a href="xfunc-internal.html" title="31.8. Internal Functions">Section 31.8, &#8220;Internal Functions&#8221;</a>)
      </p></li>
-<li><p>      C-language functions (<a href="xfunc-c.html" title="31.7. C-Language Functions">Section 31.7, &#8220;C-Language Functions&#8221;</a>)
+<li><p>      C-language functions (<a href="xfunc-c.html" title="31.9. C-Language Functions">Section 31.9, &#8220;C-Language Functions&#8221;</a>)
      </p></li>
 </ul></div>
 <p>
   </p>
 <p>   Every kind
    of  function  can take base types, composite types, or
-   combinations of these as arguments (parameters).   In  addition, 
+   combinations of these as arguments (parameters). In addition,
    every kind of function can return a base type or
-   a composite type.
+   a composite type.  Functions may also be defined to return
+   sets of base or composite values.
   </p>
 <p>   Many kinds of functions can take or return certain pseudo-types
    (such as polymorphic types), but the available facilities vary.
@@ -51,7 +52,7 @@
    will carry over to the other types of functions.
   </p>
 <p>   Throughout this chapter, it can be useful to look at the reference
-   page of the <a href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle"><a name="sql-createfunction-title"></a>CREATE FUNCTION</span></a> command to
+   page of the <a href="sql-createfunction.html">CREATE FUNCTION</a> command to
    understand the examples better.  Some examples from this chapter
    can be found in <tt class="filename">funcs.sql</tt> and
    <tt class="filename">funcs.c</tt> in the <tt class="filename">src/tutorial</tt>

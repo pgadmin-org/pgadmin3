@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-unlisten.html" title="UNLISTEN">
 <link rel="next" href="sql-vacuum.html" title="VACUUM">
@@ -19,14 +19,14 @@
 <h2>Name</h2>
 <p>UPDATE &#8212; update rows of a table</p>
 </div>
-<a name="id2699961"></a><div class="refsynopsisdiv">
+<a name="id2704146"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">UPDATE [ ONLY ] <i class="replaceable"><tt>table</tt></i> SET <i class="replaceable"><tt>column</tt></i> = { <i class="replaceable"><tt>expression</tt></i> | DEFAULT } [, ...]
     [ FROM <i class="replaceable"><tt>fromlist</tt></i> ]
     [ WHERE <i class="replaceable"><tt>condition</tt></i> ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2700005"></a><h2>Description</h2>
+<a name="id2704191"></a><h2>Description</h2>
 <p>   <tt class="command">UPDATE</tt> changes the values of the specified
    columns in all rows that satisfy the condition. Only the columns to
    be modified need be mentioned in the <tt class="literal">SET</tt> clause;
@@ -51,7 +51,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2700084"></a><h2>Parameters</h2>
+<a name="id2704270"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table to update.
@@ -74,8 +74,9 @@
       to appear in the <tt class="literal">WHERE</tt> condition and the update
       expressions. This is similar to the list of tables that can be
       specified in the <a href="sql-select.html#sql-from"><tt class="literal">FROM</tt> Clause</a> of a <tt class="command">SELECT</tt>
-      statement; for example, an alias for the table name can be
-      specified.
+      statement.  Note that the target table must not appear in the
+      <i class="replaceable"><tt>fromlist</tt></i>, unless you intend a self-join (in which
+      case it must appear with an alias in the <i class="replaceable"><tt>fromlist</tt></i>).
      </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>condition</tt></i></span></dt>
 <dd><p>      An expression that returns a value of type <tt class="type">boolean</tt>.
@@ -85,7 +86,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2700201"></a><h2>Outputs</h2>
+<a name="id2704395"></a><h2>Outputs</h2>
 <p>   On successful completion, an <tt class="command">UPDATE</tt> command returns a command
    tag of the form
 </p>
@@ -98,7 +99,25 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2700244"></a><h2>Examples</h2>
+<a name="id2704438"></a><h2>Notes</h2>
+<p>   When a <tt class="literal">FROM</tt> clause is present, what essentially happens
+   is that the target table is joined to the tables mentioned in the
+   <i class="replaceable"><tt>fromlist</tt></i>, and each output row of the join
+   represents an update operation for the target table.  When using
+   <tt class="literal">FROM</tt> you should ensure that the join
+   produces at most one output row for each row to be modified.  In
+   other words, a target row shouldn't join to more than one row from
+   the other table(s).  If it does, then only one of the join rows
+   will be used to update the target row, but which one will be used
+   is not readily predictable.
+  </p>
+<p>   Because of this indeterminancy, referencing other tables only within
+   sub-selects is safer, though often harder to read and slower than
+   using a join.
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2704474"></a><h2>Examples</h2>
 <p>   Change the word <tt class="literal">Drama</tt> to <tt class="literal">Dramatic</tt> in the
    column <tt class="structfield">kind</tt> of the table <tt class="structname">films</tt>:
 
@@ -131,24 +150,33 @@
 <p>
 
    Attempt to insert a new stock item along with the quantity of stock. If
-   the item exists, update the stock count of the existing item. To do this,
-   use savepoints.
+   the item already exists, instead update the stock count of the existing
+   item. To do this without failing the entire transaction, use savepoints.
 </p>
 <pre class="programlisting">BEGIN;
+-- other operations
 SAVEPOINT sp1;
 INSERT INTO wines VALUES('Chateau Lafite 2003', '24');
--- Check for unique violation on name
+-- Assume the above fails because of a unique key violation,
+-- so now we issue these commands:
 ROLLBACK TO sp1;
-UPDATE wines SET stock = stock + 24 WHERE winename='Chateau Lafite 2003';
+UPDATE wines SET stock = stock + 24 WHERE winename = 'Chateau Lafite 2003';
+-- continue with other operations, and eventually
 COMMIT;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2700338"></a><h2>Compatibility</h2>
-<p>   This command conforms to the <span class="acronym">SQL</span> standard.  The
-   <tt class="literal">FROM</tt> clause is a
+<a name="id2704570"></a><h2>Compatibility</h2>
+<p>   This command conforms to the <span class="acronym">SQL</span> standard, except
+   that the <tt class="literal">FROM</tt> clause is a
    <span class="productname">PostgreSQL</span> extension.
+  </p>
+<p>   Some other database systems offer a <tt class="literal">FROM</tt> option in which
+   the target table is supposed to be listed again within <tt class="literal">FROM</tt>.
+   That is not how <span class="productname">PostgreSQL</span> interprets
+   <tt class="literal">FROM</tt>.  Be careful when porting applications that use this
+   extension.
   </p>
 </div>
 </div></body>

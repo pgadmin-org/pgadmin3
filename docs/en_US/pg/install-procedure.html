@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
 <link rel="previous" href="install-upgrading.html" title="14.4. If You Are Upgrading">
 <link rel="next" href="install-post.html" title="14.6. Post-Installation Setup">
@@ -19,7 +19,7 @@
 <div class="procedure"><ol type="1">
 <li>
 <a name="configure"></a><p class="title"><b>Configuration</b></p>
-<a name="id2574189"></a><p>    The first step of the installation procedure is to configure the
+<a name="id2575076"></a><p>    The first step of the installation procedure is to configure the
     source tree for your system and choose the options you would like.
     This is done by running the <tt class="filename">configure</tt> script. For a
     default installation simply enter
@@ -179,7 +179,7 @@
 <p>         Enables Native Language Support (<span class="acronym">NLS</span>),
          that is, the ability to display a program's messages in a
          language other than English.
-         <i class="replaceable"><tt>LANGUAGES</tt></i> is a space separated
+         <i class="replaceable"><tt>LANGUAGES</tt></i> is a space-separated
          list of codes of the languages that you want supported, for
          example <tt class="literal">--enable-nls='de fr'</tt>.  (The intersection
          between your list and the set of actually provided
@@ -244,16 +244,17 @@
          before proceeding.
         </p></dd>
 <dt><span class="term"><tt class="option">--with-pam</tt></span></dt>
-<dd><p>         Build with <span class="acronym">PAM</span><a name="id2574963"></a>
+<dd><p>         Build with <span class="acronym">PAM</span><a name="id2575850"></a>
          (Pluggable Authentication Modules) support.
         </p></dd>
 <dt><span class="term"><tt class="option">--without-readline</tt></span></dt>
-<dd><p>         Prevents the use of the <span class="application">Readline</span> library.  This disables
+<dd><p>         Prevents use of the <span class="application">Readline</span> library.  This disables
          command-line editing and history in
          <span class="application">psql</span>, so it is not recommended.
         </p></dd>
 <dt><span class="term"><tt class="option">--with-rendezvous</tt></span></dt>
-<dd><p>         Build with Rendezvous support.
+<dd><p>         Build with Rendezvous support.  This requires Rendezvous support
+         in your operating system.  Recommended on Mac OS X.
         </p></dd>
 <dt><span class="term"><tt class="option">--disable-spinlocks</tt></span></dt>
 <dd><p>         Allow the build to succeed even if <span class="productname">PostgreSQL</span>
@@ -269,11 +270,14 @@
 <dd><p>         Make the client libraries thread-safe.  This allows
          concurrent threads in <span class="application">libpq</span> and
          <span class="application">ECPG</span> programs to safely control
-         their private connection handles.
+         their private connection handles.  This option requires adequate
+         threading support in your operating system.
         </p></dd>
 <dt><span class="term"><tt class="option">--without-zlib</tt></span></dt>
-<dd><p>         Prevents the use of the <span class="application">Zlib</span> library.  This disables
-         compression support in <span class="application">pg_dump</span>.
+<dd><p>         <a name="id2575955"></a>
+         Prevents use of the <span class="application">Zlib</span> library.  This disables
+         support for compressed archives in <span class="application">pg_dump</span>
+         and <span class="application">pg_restore</span>.
          This option is only intended for those rare systems where this
          library is not available.
         </p></dd>
@@ -313,12 +317,12 @@
 <p>
     </p>
 <p>     If you prefer a C compiler different from the one
-     <tt class="filename">configure</tt> picks then you can set the
+     <tt class="filename">configure</tt> picks, you can set the
      environment variable <tt class="envar">CC</tt> to the program of your choice.
      By default, <tt class="filename">configure</tt> will pick
-     <tt class="filename">gcc</tt> unless this is inappropriate for the
-     platform.  Similarly, you can override the default compiler flags
-     with the <tt class="envar">CFLAGS</tt> variable.
+     <tt class="filename">gcc</tt> if available, else the platform's
+     default (usually <tt class="filename">cc</tt>).  Similarly, you can override the
+     default compiler flags if needed with the <tt class="envar">CFLAGS</tt> variable.
     </p>
 <p>     You can specify environment variables on the
      <tt class="filename">configure</tt> command line, for example:
@@ -343,7 +347,7 @@
 </li>
 <li>
 <p class="title"><b>Regression Tests</b></p>
-<a name="id2575236"></a><p>    If you want to test the newly built server before you install it,
+<a name="id2576156"></a><p>    If you want to test the newly built server before you install it,
     you can run the regression tests at this point. The regression
     tests are a test suite to verify that <span class="productname">PostgreSQL</span>
     runs on your machine in the way the developers expected it
@@ -363,8 +367,8 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     If you are upgrading an existing system and are going to install
-     the new files over the old ones, then you should have backed up
-     your data and shut down the old server by now, as explained in
+     the new files over the old ones, be sure to back up
+     your data and shut down the old server before proceeding, as explained in
      <a href="install-upgrading.html" title="14.4. If You Are Upgrading">Section 14.4, &#8220;If You Are Upgrading&#8221;</a> above.
     </p>
 </div>
@@ -391,8 +395,11 @@
     possibly can, you will have to do manual work.
    </p>
 <p>    The standard installation provides all the header files needed for client
-    application development as well as for any server-side program
-    development (such as custom functions or data types written in C).
+    application development as well as for server-side program
+    development, such as custom functions or data types written in C.
+    (Prior to <span class="productname">PostgreSQL</span> 8.0, a separate <tt class="literal">gmake
+    install-all-headers</tt> command was needed for the latter, but this
+    step has been folded into the standard install.)
    </p>
 <p><b>Client-only installation: </b>     If you want to install only the client applications and
      interface libraries, then you can use these commands:
@@ -421,8 +428,10 @@
     program, so that you can rebuild everything with <tt class="command">gmake</tt>
     later on. To reset the source tree to the state in which it was
     distributed, use <tt class="command">gmake distclean</tt>. If you are going to
-    build for several platforms from the same source tree you must do
-    this and re-configure for each build.
+    build for several platforms within the same source tree you must do
+    this and re-configure for each build.  (Alternatively, use
+    a separate build tree for each platform, so that the source tree
+    remains unmodified.)
    </p>
 <p>   If you perform a build and then discover that your <tt class="command">configure</tt>
    options were wrong, or if you change anything that <tt class="command">configure</tt>

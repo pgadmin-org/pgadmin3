@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
 <link rel="previous" href="libpq-envars.html" title="27.11. Environment Variables">
 <link rel="next" href="libpq-ssl.html" title="27.13. SSL Support">
@@ -16,10 +16,13 @@
 <a name="libpq-pgpass"></a>27.12. The Password File</h2></div></div>
 <div></div>
 </div>
-<a name="id2613917"></a><a name="id2613926"></a><p>The file <tt class="filename">.pgpass</tt> in a user's home directory is a file
+<a name="id2616238"></a><a name="id2616247"></a><p>The file <tt class="filename">.pgpass</tt> in a user's home directory is a file
 that can contain passwords to be used if the connection requires a
 password (and no password has been specified otherwise).
-This file should have lines of the following format:
+On Microsoft Windows the file is named
+<tt class="filename">%APPDATA%\postgresql\pgpass.conf</tt> (where <tt class="filename">%APPDATA%</tt>
+refers to the Application Data subdirectory in the user's profile).</p>
+<p>This file should contain lines of the following format:
 </p>
 <pre class="synopsis"><i class="replaceable"><tt>hostname</tt></i>:<i class="replaceable"><tt>port</tt></i>:<i class="replaceable"><tt>database</tt></i>:<i class="replaceable"><tt>username</tt></i>:<i class="replaceable"><tt>password</tt></i></pre>
 <p>
@@ -33,6 +36,8 @@ If an entry needs to contain <tt class="literal">:</tt> or
 <p>The permissions on <tt class="filename">.pgpass</tt> must disallow any
 access to world or group; achieve this by the command
 <tt class="command">chmod 0600 ~/.pgpass</tt>.
-If the permissions are less strict than this, the file will be ignored.</p>
+If the permissions are less strict than this, the file will be ignored.
+(The file permissions are not currently checked on Microsoft Windows,
+however.)</p>
 </div></body>
 </html>

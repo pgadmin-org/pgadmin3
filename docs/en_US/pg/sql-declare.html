@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-deallocate.html" title="DEALLOCATE">
 <link rel="next" href="sql-delete.html" title="DELETE">
@@ -19,14 +19,14 @@
 <h2>Name</h2>
 <p>DECLARE &#8212; define a cursor</p>
 </div>
-<a name="id2682237"></a><a name="id2682247"></a><div class="refsynopsisdiv">
+<a name="id2686029"></a><a name="id2686038"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">DECLARE <i class="replaceable"><tt>name</tt></i> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]
     CURSOR [ { WITH | WITHOUT } HOLD ] FOR <i class="replaceable"><tt>query</tt></i>
     [ FOR { READ ONLY | UPDATE [ OF <i class="replaceable"><tt>column</tt></i> [, ...] ] } ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682284"></a><h2>Description</h2>
+<a name="id2686075"></a><h2>Description</h2>
 <p>   <tt class="command">DECLARE</tt> allows a user to create cursors, which
    can be used to retrieve
    a small number of rows at a time out of a larger query. Cursors can
@@ -68,7 +68,7 @@
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682373"></a><h2>Parameters</h2>
+<a name="id2686161"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
 <dd><p>      The name of the cursor to be created.
@@ -134,7 +134,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682635"></a><h2>Notes</h2>
+<a name="id2686423"></a><h2>Notes</h2>
 <p>    Unless <tt class="literal">WITH HOLD</tt> is specified, the cursor
     created by this command can only be used within the current
     transaction.  Thus, <tt class="command">DECLARE</tt> without <tt class="literal">WITH
@@ -182,7 +182,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682815"></a><h2>Examples</h2>
+<a name="id2686603"></a><h2>Examples</h2>
 <p>   To declare a cursor:
 </p>
 <pre class="programlisting">DECLARE liahona CURSOR FOR SELECT * FROM films;</pre>
@@ -192,7 +192,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2682837"></a><h2>Compatibility</h2>
+<a name="id2686625"></a><h2>Compatibility</h2>
 <p>   The SQL standard allows cursors only in embedded
    <span class="acronym">SQL</span> and in modules. <span class="productname">PostgreSQL</span>
    permits cursors to be used interactively.
@@ -203,6 +203,10 @@
 <p>   Binary cursors are a <span class="productname">PostgreSQL</span>
    extension.
   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2686661"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-fetch.html">FETCH</a>, <a href="sql-move.html">MOVE</a></span>
 </div>
 </div></body>
 </html>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-grant.html" title="GRANT">
 <link rel="next" href="sql-listen.html" title="LISTEN">
@@ -19,23 +19,30 @@
 <h2>Name</h2>
 <p>INSERT &#8212; create new rows in a table</p>
 </div>
-<a name="id2689193"></a><div class="refsynopsisdiv">
+<a name="id2693154"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">INSERT INTO <i class="replaceable"><tt>table</tt></i> [ ( <i class="replaceable"><tt>column</tt></i> [, ...] ) ]
     { DEFAULT VALUES | VALUES ( { <i class="replaceable"><tt>expression</tt></i> | DEFAULT } [, ...] ) | <i class="replaceable"><tt>query</tt></i> }</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2689232"></a><h2>Description</h2>
-<p>   <tt class="command">INSERT</tt> allows one to insert new rows into a
-   table. One can insert
-   a single row at a time or several rows as a result of a query.
+<a name="id2693194"></a><h2>Description</h2>
+<p>   <tt class="command">INSERT</tt> inserts new rows into a table.
+   One can insert a single row specified by value expressions,
+   or several rows as a result of a query.
   </p>
-<p>   The columns in the target list may be listed in any order.
-   Each column not present in the target list will be inserted
-   using a default value, either its declared default value
-   or null.
+<p>   The target column names may be listed in any order.  If no list of
+   column names is given at all, the default is all the columns of the
+   table in their declared order; or the first <i class="replaceable"><tt>N</tt></i> column
+   names, if there are only <i class="replaceable"><tt>N</tt></i> columns supplied by the
+   <tt class="literal">VALUES</tt> clause or <i class="replaceable"><tt>query</tt></i>.  The values
+   supplied by the <tt class="literal">VALUES</tt> clause or <i class="replaceable"><tt>query</tt></i> are
+   associated with the explicit or implicit column list left-to-right.
   </p>
-<p>   If the expression for each column is not of the correct data type,
+<p>   Each column not present in the explicit or implicit column list will be
+   filled with a default value, either its declared default value
+   or null if there is none.
+  </p>
+<p>   If the expression for any column is not of the correct data type,
    automatic type conversion will be attempted.
   </p>
 <p>   You must have <tt class="literal">INSERT</tt> privilege to a table in
@@ -45,7 +52,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2689279"></a><h2>Parameters</h2>
+<a name="id2693275"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>table</tt></i></span></dt>
 <dd><p>      The name (optionally schema-qualified) of an existing table.
@@ -60,10 +67,11 @@
 <dd><p>      All columns will be filled with their default values.
      </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>expression</tt></i></span></dt>
-<dd><p>      An expression or value to assign to <i class="replaceable"><tt>column</tt></i>.
+<dd><p>      An expression or value to assign to the corresponding <i class="replaceable"><tt>column</tt></i>.
      </p></dd>
 <dt><span class="term"><tt class="literal">DEFAULT</tt></span></dt>
-<dd><p>      This column will be filled with its default value.
+<dd><p>      The corresponding <i class="replaceable"><tt>column</tt></i> will be filled with
+      its default value.
      </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>query</tt></i></span></dt>
 <dd><p>      A query (<tt class="command">SELECT</tt> statement) that supplies the
@@ -73,7 +81,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2689378"></a><h2>Outputs</h2>
+<a name="id2693378"></a><h2>Outputs</h2>
 <p>   On successful completion, an <tt class="command">INSERT</tt> command returns a command
    tag of the form
 </p>
@@ -88,7 +96,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2689434"></a><h2>Examples</h2>
+<a name="id2693434"></a><h2>Examples</h2>
 <p>   Insert a single row into table <tt class="literal">films</tt>:
 
 </p>
@@ -96,15 +104,15 @@
     ('UA502', 'Bananas', 105, '1971-07-13', 'Comedy', '82 minutes');</pre>
 <p>
   </p>
-<p>   In this second example, the last column <tt class="literal">len</tt> is
-   omitted and therefore it will have the default value of null:
+<p>   In this example, the <tt class="literal">len</tt> column is
+   omitted and therefore it will have the default value:
 
 </p>
 <pre class="programlisting">INSERT INTO films (code, title, did, date_prod, kind)
     VALUES ('T_601', 'Yojimbo', 106, '1961-06-16', 'Drama');</pre>
 <p>
   </p>
-<p>   The third example uses the <tt class="literal">DEFAULT</tt> clause for
+<p>   This example uses the <tt class="literal">DEFAULT</tt> clause for
    the date columns rather than specifying a value:
 
 </p>
@@ -114,11 +122,18 @@ INSERT INTO films (code, title, did, date_prod, kind)
     VALUES ('T_601', 'Yojimbo', 106, DEFAULT, 'Drama');</pre>
 <p>
   </p>
-<p>   This examples inserts several rows into table
-   <tt class="literal">films</tt> from table <tt class="literal">tmp</tt>:
+<p>   To insert a row consisting entirely of default values:
 
 </p>
-<pre class="programlisting">INSERT INTO films SELECT * FROM tmp;</pre>
+<pre class="programlisting">INSERT INTO films DEFAULT VALUES;</pre>
+<p>
+  </p>
+<p>   This example inserts some rows into table
+   <tt class="literal">films</tt> from a table <tt class="literal">tmp_films</tt>
+   with the same column layout as <tt class="literal">films</tt>:
+
+</p>
+<pre class="programlisting">INSERT INTO films SELECT * FROM tmp_films WHERE date_prod &lt; '2004-05-07';</pre>
 <p>
   </p>
 <p>   This example inserts into array columns:
@@ -134,9 +149,13 @@ INSERT INTO tictactoe (game, board)
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2689525"></a><h2>Compatibility</h2>
-<p>   <tt class="command">INSERT</tt> conforms fully to the SQL standard.
-   Possible limitations of the <i class="replaceable"><tt>query</tt></i> clause are documented under
+<a name="id2693541"></a><h2>Compatibility</h2>
+<p>   <tt class="command">INSERT</tt> conforms to the SQL standard.  The case in
+   which a column name list is omitted, but not all the columns are
+   filled from the <tt class="literal">VALUES</tt> clause or <i class="replaceable"><tt>query</tt></i>,
+   is disallowed by the standard.
+  </p>
+<p>   Possible limitations of the <i class="replaceable"><tt>query</tt></i> clause are documented under
    <a href="sql-select.html">SELECT</a>.
   </p>
 </div>

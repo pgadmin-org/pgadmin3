@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
 <link rel="previous" href="tutorial-select.html" title="2.5. Querying a Table">
 <link rel="next" href="tutorial-agg.html" title="2.7. Aggregate Functions">
@@ -16,7 +16,7 @@
 <a name="tutorial-join"></a>2.6. Joins Between Tables</h2></div></div>
 <div></div>
 </div>
-<a name="id2518286"></a><p>    Thus far, our queries have only accessed one table at a time.
+<a name="id2518602"></a><p>    Thus far, our queries have only accessed one table at a time.
     Queries can access multiple tables at once, or access the same
     table in such a way that multiple rows of the table are being
     processed at the same time.  A query that accesses multiple rows
@@ -29,9 +29,9 @@
     </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>      This  is only a conceptual model.  The actual join may
-      be performed in a more efficient manner, but this is invisible
-      to the user.
+<p>      This  is only a conceptual model.  The join is usually performed
+      in a more efficient manner than actually comparing each possible
+      pair of rows, but this is invisible to the user.
      </p>
 </div>
 <p>
@@ -104,7 +104,7 @@
     This syntax is not as commonly used as the one above, but we show
     it here to help you understand the following topics.
    </p>
-<p>    <a name="id2518426"></a>
+<p>    <a name="id2518743"></a>
 
     Now we will figure out how we can get the Hayward records back in.
     What we want the query to do is to scan the
@@ -139,8 +139,8 @@
 <p><b>Exercise: </b>     There are also right outer joins and full outer joins.  Try to
      find out what those do.
     </p>
-<p>    <a name="id2518502"></a>
-    <a name="id2518511"></a>
+<p>    <a name="id2518811"></a>
+    <a name="id2518820"></a>
 
     We can also join a table against itself.  This is called a
     <i class="firstterm">self join</i>.  As an example, suppose we wish

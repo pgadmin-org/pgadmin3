@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="previous" href="rowtypes.html" title="8.11. Composite Types">
 <link rel="next" href="datatype-pseudo.html" title="8.13. Pseudo-Types">
@@ -16,7 +16,7 @@
 <a name="datatype-oid"></a>8.12. Object Identifier Types</h2></div></div>
 <div></div>
 </div>
-<a name="id2539038"></a><a name="id2539049"></a><a name="id2539059"></a><a name="id2539068"></a><a name="id2539077"></a><a name="id2539086"></a><a name="id2539096"></a><a name="id2539105"></a><a name="id2539114"></a><a name="id2539123"></a><a name="id2539132"></a><p>    Object identifiers (OIDs) are used internally by
+<a name="id2539583"></a><a name="id2539594"></a><a name="id2539603"></a><a name="id2539612"></a><a name="id2539621"></a><a name="id2539631"></a><a name="id2539640"></a><a name="id2539649"></a><a name="id2539659"></a><a name="id2539668"></a><a name="id2539677"></a><p>    Object identifiers (OIDs) are used internally by
     <span class="productname">PostgreSQL</span> as primary keys for various
     system tables.  An OID system column is also added to user-created
     tables, unless <tt class="literal">WITHOUT OIDS</tt> is specified when
@@ -38,7 +38,7 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     OIDs are included by default in user-created tables in
-     <span class="productname">PostgreSQL</span> 8.0.0beta5. However, this
+     <span class="productname">PostgreSQL</span> 8.0. However, this
      behavior is likely to change in a future version of
      <span class="productname">PostgreSQL</span>. Eventually, user-created
      tables will not include an OID system column unless <tt class="literal">WITH
@@ -60,12 +60,25 @@
     for specialized input and output routines.  These routines are able
     to accept and display symbolic names for system objects, rather than
     the raw numeric value that type <tt class="type">oid</tt> would use.  The alias
-    types allow simplified lookup of OID values for objects: for example,
-    one may write <tt class="literal">'mytable'::regclass</tt> to get the OID of table
-    <tt class="literal">mytable</tt>, rather than <tt class="literal">SELECT oid FROM pg_class WHERE
-    relname = 'mytable'</tt>.  (In reality, a much more complicated <tt class="command">SELECT</tt> would
-    be needed to deal with selecting the right OID when there are multiple
-    tables named <tt class="literal">mytable</tt> in different schemas.)
+    types allow simplified lookup of OID values for objects.  For example,
+    to examine the <tt class="structname">pg_attribute</tt> rows related to a table
+    <tt class="literal">mytable</tt>, one could write
+</p>
+<pre class="programlisting">SELECT * FROM pg_attribute WHERE attrelid = 'mytable'::regclass;</pre>
+<p>
+    rather than
+</p>
+<pre class="programlisting">SELECT * FROM pg_attribute
+  WHERE attrelid = (SELECT oid FROM pg_class WHERE relname = 'mytable');</pre>
+<p>
+    While that doesn't look all that bad by itself, it's still oversimplified.
+    A far more complicated sub-select would be needed to
+    select the right OID if there are multiple tables named
+    <tt class="literal">mytable</tt> in different schemas.
+    The <tt class="type">regclass</tt> input converter handles the table lookup according
+    to the schema path setting, and so it does the &#8220;<span class="quote">right thing</span>&#8221;
+    automatically.  Similarly, casting a table's OID to
+    <tt class="type">regclass</tt> is handy for symbolic display of a numeric OID.
    </p>
 <div class="table">
 <a name="datatype-oid-table"></a><p class="title"><b>Table 8.19. Object Identifier Types</b></p>
@@ -154,7 +167,7 @@
     (block number, tuple index within block) that identifies the
     physical location of the row within its table.
    </p>
-<p>    (The system columns are further explained in <a href="ddl-system-columns.html" title="5.2. System Columns">Section 5.2, &#8220;System Columns&#8221;</a>.)
+<p>    (The system columns are further explained in <a href="ddl-system-columns.html" title="5.4. System Columns">Section 5.4, &#8220;System Columns&#8221;</a>.)
    </p>
 </div></body>
 </html>

@@ -1,31 +1,31 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 33. Triggers</title>
+<title>Chapter 32. Triggers</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
-<link rel="previous" href="rules-triggers.html" title="32.6. Rules versus Triggers">
-<link rel="next" href="trigger-datachanges.html" title="33.2. Visibility of Data Changes">
+<link rel="previous" href="xindex.html" title="31.14. Interfacing Extensions To Indexes">
+<link rel="next" href="trigger-datachanges.html" title="32.2. Visibility of Data Changes">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="triggers">
 <div class="titlepage">
 <div><div><h2 class="title">
-<a name="triggers"></a>Chapter 33. Triggers</h2></div></div>
+<a name="triggers"></a>Chapter 32. Triggers</h2></div></div>
 <div></div>
 </div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="triggers.html#trigger-definition">33.1. Overview of Trigger Behavior</a></span></dt>
-<dt><span class="sect1"><a href="trigger-datachanges.html">33.2. Visibility of Data Changes</a></span></dt>
-<dt><span class="sect1"><a href="trigger-interface.html">33.3. Writing Trigger Functions in C</a></span></dt>
-<dt><span class="sect1"><a href="trigger-example.html">33.4. A Complete Example</a></span></dt>
+<dt><span class="sect1"><a href="triggers.html#trigger-definition">32.1. Overview of Trigger Behavior</a></span></dt>
+<dt><span class="sect1"><a href="trigger-datachanges.html">32.2. Visibility of Data Changes</a></span></dt>
+<dt><span class="sect1"><a href="trigger-interface.html">32.3. Writing Trigger Functions in C</a></span></dt>
+<dt><span class="sect1"><a href="trigger-example.html">32.4. A Complete Example</a></span></dt>
 </dl>
 </div>
-<a name="id2642364"></a><p>   This chapter describes how to write trigger functions.  Trigger
+<a name="id2641002"></a><p>   This chapter describes how to write trigger functions.  Trigger
    functions can be written in C or in some of the available procedural
    languages.  It is not currently possible to write a SQL-language
    trigger function.
@@ -33,7 +33,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="trigger-definition"></a>33.1. Overview of Trigger Behavior</h2></div></div>
+<a name="trigger-definition"></a>32.1. Overview of Trigger Behavior</h2></div></div>
 <div></div>
 </div>
 <p>    A trigger can be defined to execute before or after an
@@ -66,6 +66,13 @@
     two types of triggers are sometimes called &#8220;<span class="quote">row-level
     triggers</span>&#8221; and &#8220;<span class="quote">statement-level triggers</span>&#8221;,
     respectively.
+   </p>
+<p>    Statement-level &#8220;<span class="quote">before</span>&#8221; triggers naturally fire before the
+    statement starts to do anything, while statement-level &#8220;<span class="quote">after</span>&#8221;
+    triggers fire at the very end of the statement.  Row-level &#8220;<span class="quote">before</span>&#8221;
+    triggers fire immediately before a particular row is operated on,
+    while row-level &#8220;<span class="quote">after</span>&#8221; triggers fire at the end of the statement
+    (but before any statement-level &#8220;<span class="quote">after</span>&#8221; triggers).
    </p>
 <p>    Trigger functions invoked by per-statement triggers should always
     return <tt class="symbol">NULL</tt>. Trigger functions invoked by per-row
@@ -108,6 +115,19 @@
     <tt class="symbol">NULL</tt>, the operation is abandoned and subsequent
     triggers are not fired.
    </p>
+<p>    Typically, row before triggers are used for checking or
+    modifying the data that will be inserted or updated.  For example,
+    a before trigger might be used to insert the current time into a
+    timestamp column, or to check that two elements of the row are
+    consistent. Row after triggers are most sensibly
+    used to propagate the updates to other tables, or make consistency
+    checks against other tables.  The reason for this division of labor is
+    that an after trigger can be certain it is seeing the final value of the
+    row, while a before trigger cannot; there might be other before triggers
+    firing after it.  If you have no specific reason to make a trigger before
+    or after, the before case is more efficient, since the information about
+    the operation doesn't have to be saved until end of statement.
+   </p>
 <p>    If a trigger function executes SQL commands then these
     commands may fire triggers again. This is known as cascading
     triggers.  There is no direct limitation on the number of cascade
@@ -119,7 +139,7 @@
     to avoid infinite recursion in such scenarios.
    </p>
 <p>    When a trigger is being defined, arguments can be specified for
-    it.<a name="id2642592"></a> The purpose of including arguments in the
+    it.<a name="id2641273"></a> The purpose of including arguments in the
     trigger definition is to allow different triggers with similar
     requirements to call the same function.  As an example, there
     could be a generalized trigger function that takes as its
@@ -132,6 +152,18 @@
     transaction table for example. It could also be used to track
     last-update events if defined as an <tt class="command">UPDATE</tt>
     trigger.
+   </p>
+<p>    Each programming language that supports triggers has its own method
+    for making the trigger input data available to the trigger function.
+    This input data includes the type of trigger event (e.g.,
+    <tt class="command">INSERT</tt> or <tt class="command">UPDATE</tt>) as well as any
+    arguments that were listed in <tt class="command">CREATE TRIGGER</tt>.
+    For a row-level trigger, the input data also includes the
+    <tt class="varname">NEW</tt> row for <tt class="command">INSERT</tt> and
+    <tt class="command">UPDATE</tt> triggers, and/or the <tt class="varname">OLD</tt> row
+    for <tt class="command">UPDATE</tt> and <tt class="command">DELETE</tt> triggers.
+    Statement-level triggers do not currently have any way to examine the
+    individual row(s) modified by the statement.
    </p>
 </div>
 </div></body>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
 <link rel="previous" href="ecpg-descriptors.html" title="29.8. Using SQL Descriptor Areas">
 <link rel="next" href="ecpg-include.html" title="29.10. Including Files">
@@ -23,7 +23,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2617642"></a>29.9.1. Setting Callbacks</h3></div></div>
+<a name="id2619927"></a>29.9.1. Setting Callbacks</h3></div></div>
 <div></div>
 </div>
 <p>    One simple method to catch errors and warnings is to set a
@@ -148,10 +148,10 @@ static void set_error_handler(void)
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2617913"></a>29.9.2. sqlca</h3></div></div>
+<a name="id2620198"></a>29.9.2. sqlca</h3></div></div>
 <div></div>
 </div>
-<p>    For a more powerful error handling, the embedded SQL interface
+<p>    For more powerful error handling, the embedded SQL interface
     provides a global variable with the name <tt class="varname">sqlca</tt>
     that has the following structure:
 </p>
@@ -172,7 +172,7 @@ static void set_error_handler(void)
 } sqlca;</pre>
 <p>
     (In a multithreaded program, every thread automatically gets its
-    own copy of <tt class="varname">sqlca</tt>.  This works similar to the
+    own copy of <tt class="varname">sqlca</tt>.  This works similarly to the
     handling of the standard C global variable
     <tt class="varname">errno</tt>.)
    </p>
@@ -206,7 +206,8 @@ static void set_error_handler(void)
     the error message that is stored in
     <tt class="literal">sqlca.sqlerrm.sqlerrmc</tt> (the result of
     <tt class="function">strlen()</tt>, not really interesting for a C
-    programmer).
+    programmer).  Note that some messages are too long to fit in the
+    fixed-size <tt class="literal">sqlerrmc</tt> array; they will be truncated.
    </p>
 <p>    In case of a warning, <tt class="literal">sqlca.sqlwarn[2]</tt> is set
     to <tt class="literal">W</tt>.  (In all other cases, it is set to
@@ -226,7 +227,7 @@ static void set_error_handler(void)
    </p>
 <p>    The structure <tt class="varname">sqlca</tt> is not defined in the SQL
     standard, but is implemented in several other SQL database
-    systems.  The definitions are similar in the core, but if you want
+    systems.  The definitions are similar at the core, but if you want
     to write portable applications, then you should investigate the
     different implementations carefully.
    </p>
@@ -234,7 +235,7 @@ static void set_error_handler(void)
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2618152"></a>29.9.3. <tt class="literal">SQLSTATE</tt> vs <tt class="literal">SQLCODE</tt></h3></div></div>
+<a name="id2620444"></a>29.9.3. <tt class="literal">SQLSTATE</tt> vs <tt class="literal">SQLCODE</tt></h3></div></div>
 <div></div>
 </div>
 <p>    The fields <tt class="literal">sqlca.sqlstate</tt> and

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-altersequence.html" title="ALTER SEQUENCE">
 <link rel="next" href="sql-altertablespace.html" title="ALTER TABLESPACE">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>ALTER TABLE &#8212; change the definition of a table</p>
 </div>
-<a name="id2663321"></a><div class="refsynopsisdiv">
+<a name="id2666796"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER TABLE [ ONLY ] <i class="replaceable"><tt>name</tt></i> [ * ]
     <i class="replaceable"><tt>action</tt></i> [, ... ]
@@ -47,7 +47,7 @@ where <i class="replaceable"><tt>action</tt></i> is one of:
     SET TABLESPACE <i class="replaceable"><tt>tablespace_name</tt></i></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2663504"></a><h2>Description</h2>
+<a name="id2666980"></a><h2>Description</h2>
 <p>   <tt class="command">ALTER TABLE</tt> changes the definition of an existing table.
    There are several subforms:
 
@@ -94,7 +94,8 @@ where <i class="replaceable"><tt>action</tt></i> is one of:
       <a href="sql-analyze.html">ANALYZE</a> operations.
       The target can be set in the range 0 to 1000; alternatively, set it
       to -1 to revert to using the system default statistics
-      target. For more information on the use of statistics by the
+      target (<a href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a>).
+      For more information on the use of statistics by the
       <span class="productname">PostgreSQL</span> query planner, refer to
       <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
      </p></dd>
@@ -106,10 +107,14 @@ where <i class="replaceable"><tt>action</tt></i> is one of:
       inline, uncompressed. <tt class="literal">MAIN</tt> is for inline,
       compressible data. <tt class="literal">EXTERNAL</tt> is for external,
       uncompressed data, and <tt class="literal">EXTENDED</tt> is for external,
-      compressed data.  <tt class="literal">EXTENDED</tt> is the default for all
-      data types that support it.  The use of <tt class="literal">EXTERNAL</tt> will, for example,
-      make substring operations on a <tt class="type">text</tt> column faster, at the penalty of
-      increased storage space.
+      compressed data.  <tt class="literal">EXTENDED</tt> is the default for most
+      data types that support non-<tt class="literal">PLAIN</tt> storage.
+      Use of <tt class="literal">EXTERNAL</tt> will
+      make substring operations on <tt class="type">text</tt> and <tt class="type">bytea</tt>
+      columns faster, at the penalty of increased storage space.  Note that
+      <tt class="literal">SET STORAGE</tt> doesn't itself change anything in the table,
+      it just sets the strategy to be pursued during future table updates.
+      See <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a> for more information.
      </p></dd>
 <dt><span class="term"><tt class="literal">ADD <i class="replaceable"><tt>table_constraint</tt></i></tt></span></dt>
 <dd><p>      This form adds a new constraint to a table using the same syntax as
@@ -176,59 +181,59 @@ where <i class="replaceable"><tt>action</tt></i> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2663982"></a><h2>Parameters</h2>
+<a name="id2667488"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
-<dd><p>	The name (possibly schema-qualified) of an existing table to
-	alter. If <tt class="literal">ONLY</tt> is specified, only that table is
-	altered. If <tt class="literal">ONLY</tt> is not specified, the table and all
-	its descendant tables (if any) are updated. <tt class="literal">*</tt> can be
-	appended to the table name to indicate that descendant tables are
-	to be altered, but in the current version, this is the default
-	behavior.  (In releases before 7.1, <tt class="literal">ONLY</tt> was the
-	default behavior.  The default can be altered by changing the
-	configuration parameter <a href="runtime-config.html#guc-sql-inheritance">sql_inheritance</a>.)
+<dd><p>        The name (possibly schema-qualified) of an existing table to
+        alter. If <tt class="literal">ONLY</tt> is specified, only that table is
+        altered. If <tt class="literal">ONLY</tt> is not specified, the table and all
+        its descendant tables (if any) are updated. <tt class="literal">*</tt> can be
+        appended to the table name to indicate that descendant tables are
+        to be altered, but in the current version, this is the default
+        behavior.  (In releases before 7.1, <tt class="literal">ONLY</tt> was the
+        default behavior.  The default can be altered by changing the
+        configuration parameter <a href="runtime-config.html#guc-sql-inheritance">sql_inheritance</a>.)
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>column</tt></i></span></dt>
-<dd><p>	Name of a new or existing column.
+<dd><p>        Name of a new or existing column.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>new_column</tt></i></span></dt>
-<dd><p>	New name for an existing column.
+<dd><p>        New name for an existing column.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>new_name</tt></i></span></dt>
-<dd><p>	New name for the table.
+<dd><p>        New name for the table.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>type</tt></i></span></dt>
-<dd><p>	Data type of the new column, or new data type for an existing
-	column.
+<dd><p>        Data type of the new column, or new data type for an existing
+        column.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>table_constraint</tt></i></span></dt>
-<dd><p>	New table constraint for the table.
+<dd><p>        New table constraint for the table.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>constraint_name</tt></i></span></dt>
-<dd><p>	Name of an existing constraint to drop.
+<dd><p>        Name of an existing constraint to drop.
        </p></dd>
 <dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
 <dd><p>        Automatically drop objects that depend on the dropped column
-	or constraint (for example, views referencing the column).
+        or constraint (for example, views referencing the column).
        </p></dd>
 <dt><span class="term"><tt class="literal">RESTRICT</tt></span></dt>
 <dd><p>        Refuse to drop the column or constraint if there are any dependent
-	objects. This is the default behavior.
+        objects. This is the default behavior.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>index_name</tt></i></span></dt>
-<dd><p>	The index name on which the table should be marked for clustering.
+<dd><p>        The index name on which the table should be marked for clustering.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>new_owner</tt></i></span></dt>
-<dd><p>	The user name of the new owner of the table.
+<dd><p>        The user name of the new owner of the table.
        </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>tablespace_name</tt></i></span></dt>
-<dd><p>	The tablespace name to which the table will be moved.
+<dd><p>        The tablespace name to which the table will be moved.
        </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664159"></a><h2>Notes</h2>
+<a name="id2667668"></a><h2>Notes</h2>
 <p>    The key word <tt class="literal">COLUMN</tt> is noise and can be omitted.
    </p>
 <p>    When a column is added with <tt class="literal">ADD COLUMN</tt>, all existing
@@ -280,7 +285,8 @@ where <i class="replaceable"><tt>action</tt></i> is one of:
     though a <tt class="literal">USING</tt> clause is supplied.  In such cases,
     drop the default with <tt class="literal">DROP DEFAULT</tt>, perform the <tt class="literal">ALTER
     TYPE</tt>, and then use <tt class="literal">SET DEFAULT</tt> to add a suitable new
-    default.
+    default.  Similar considerations apply to indexes and constraints involving
+    the column.
    </p>
 <p>    If a table has any descendant tables, it is not permitted to add,
     rename, or change the type of a column in the parent table without doing
@@ -304,7 +310,7 @@ where <i class="replaceable"><tt>action</tt></i> is one of:
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664403"></a><h2>Examples</h2>
+<a name="id2667912"></a><h2>Examples</h2>
 <p>   To add a column of type <tt class="type">varchar</tt> to a table:
 </p>
 <pre class="programlisting">ALTER TABLE distributors ADD COLUMN address varchar(30);</pre>
@@ -320,6 +326,15 @@ where <i class="replaceable"><tt>action</tt></i> is one of:
 <pre class="programlisting">ALTER TABLE distributors
     ALTER COLUMN address TYPE varchar(80),
     ALTER COLUMN name TYPE varchar(100);</pre>
+<p>
+  </p>
+<p>   To change an integer column containing UNIX timestamps to <tt class="type">timestamp
+   with time zone</tt> via a <tt class="literal">USING</tt> clause:
+</p>
+<pre class="programlisting">ALTER TABLE foo
+    ALTER COLUMN foo_timestamp TYPE timestamp with time zone
+    USING
+        timestamp with time zone 'epoch' + foo_timestamp * interval '1 second';</pre>
 <p>
   </p>
 <p>   To rename an existing column:
@@ -373,14 +388,14 @@ where <i class="replaceable"><tt>action</tt></i> is one of:
 <p>
   </p>
 <p> 
-	To move a table to a different tablespace:
+        To move a table to a different tablespace:
 </p>
 <pre class="programlisting">ALTER TABLE distributors SET TABLESPACE fasttablespace;</pre>
 <p>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2664537"></a><h2>Compatibility</h2>
+<a name="id2668069"></a><h2>Compatibility</h2>
 <p>   The <tt class="literal">ADD</tt>, <tt class="literal">DROP</tt>, and <tt class="literal">SET DEFAULT</tt>
    forms conform with the SQL standard.  The other forms are
    <span class="productname">PostgreSQL</span> extensions of the SQL standard.

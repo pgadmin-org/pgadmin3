@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="source.html" title="Chapter 43. PostgreSQL Coding Conventions">
 <link rel="previous" href="source.html" title="Chapter 43. PostgreSQL Coding Conventions">
 <link rel="next" href="error-style-guide.html" title="43.3. Error Message Style Guide">
@@ -16,7 +16,7 @@
 <a name="error-message-reporting"></a>43.2. Reporting Errors Within the Server</h2></div></div>
 <div></div>
 </div>
-<a name="id2736112"></a><a name="id2736117"></a><p>    Error, warning, and log messages generated within the server code
+<a name="id2740875"></a><a name="id2740881"></a><p>    Error, warning, and log messages generated within the server code
     should be created using <tt class="function">ereport</tt>, or its older cousin
     <tt class="function">elog</tt>.  The use of this function is complex enough to
     require some explanation.
@@ -36,9 +36,9 @@
    </p>
 <p>    A typical call to <tt class="function">ereport</tt> might look like this:
 </p>
-<pre class="programlisting">    ereport(ERROR,
-            (errcode(ERRCODE_DIVISION_BY_ZERO),
-             errmsg("division by zero")));</pre>
+<pre class="programlisting">ereport(ERROR,
+        (errcode(ERRCODE_DIVISION_BY_ZERO),
+         errmsg("division by zero")));</pre>
 <p>
     This specifies error severity level <tt class="literal">ERROR</tt> (a run-of-the-mill
     error).  The <tt class="function">errcode</tt> call specifies the SQLSTATE error code
@@ -49,13 +49,13 @@
    </p>
 <p>    Here is a more complex example:
 </p>
-<pre class="programlisting">    ereport(ERROR,
-            (errcode(ERRCODE_AMBIGUOUS_FUNCTION),
-             errmsg("function %s is not unique",
-                    func_signature_string(funcname, nargs,
-                                          actual_arg_types)),
-             errhint("Unable to choose a best candidate function. "
-                     "You may need to add explicit typecasts.")));</pre>
+<pre class="programlisting">ereport(ERROR,
+        (errcode(ERRCODE_AMBIGUOUS_FUNCTION),
+         errmsg("function %s is not unique",
+                func_signature_string(funcname, nargs,
+                                      actual_arg_types)),
+         errhint("Unable to choose a best candidate function. "
+                 "You may need to add explicit typecasts.")));</pre>
 <p>
     This illustrates the use of format codes to embed run-time values into
     a message text.  Also, an optional &#8220;<span class="quote">hint</span>&#8221; message is provided.
@@ -63,7 +63,7 @@
 <p>    The available auxiliary routines for <tt class="function">ereport</tt> are:
   </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>     <tt class="function">errcode</tt>(sqlerrcode) specifies the SQLSTATE error identifier
+<li><p>     <tt class="function">errcode(sqlerrcode)</tt> specifies the SQLSTATE error identifier
      code for the condition.  If this routine is not called, the error
      identifier defaults to
      <tt class="literal">ERRCODE_INTERNAL_ERROR</tt> when the error severity level is
@@ -71,40 +71,40 @@
      error level is <tt class="literal">WARNING</tt>, otherwise (for <tt class="literal">NOTICE</tt>
      and below) <tt class="literal">ERRCODE_SUCCESSFUL_COMPLETION</tt>.
      While these defaults are often convenient, always think whether they
-     are appropriate before omitting the <tt class="function">errcode</tt>() call.
+     are appropriate before omitting the <tt class="function">errcode()</tt> call.
     </p></li>
-<li><p>     <tt class="function">errmsg</tt>(const char *msg, ...) specifies the primary error
+<li><p>     <tt class="function">errmsg(const char *msg, ...)</tt> specifies the primary error
      message text, and possibly run-time values to insert into it.  Insertions
      are specified by <tt class="function">sprintf</tt>-style format codes.  In addition to
      the standard format codes accepted by <tt class="function">sprintf</tt>, the format
      code <tt class="literal">%m</tt> can be used to insert the error message returned
      by <tt class="function">strerror</tt> for the current value of <tt class="literal">errno</tt>.
-     <sup>[<a name="id2736368" href="#ftn.id2736368">6</a>]</sup>
+     <sup>[<a name="id2741130" href="#ftn.id2741130">7</a>]</sup>
      <tt class="literal">%m</tt> does not require any
      corresponding entry in the parameter list for <tt class="function">errmsg</tt>.
      Note that the message string will be run through <tt class="function">gettext</tt>
      for possible localization before format codes are processed.
     </p></li>
-<li><p>     <tt class="function">errmsg_internal</tt>(const char *msg, ...) is the same as
+<li><p>     <tt class="function">errmsg_internal(const char *msg, ...)</tt> is the same as
      <tt class="function">errmsg</tt>, except that the message string will not be
      included in the internationalization message dictionary.
      This should be used for &#8220;<span class="quote">can't happen</span>&#8221; cases that are probably
      not worth expending translation effort on.
     </p></li>
-<li><p>     <tt class="function">errdetail</tt>(const char *msg, ...) supplies an optional
+<li><p>     <tt class="function">errdetail(const char *msg, ...)</tt> supplies an optional
      &#8220;<span class="quote">detail</span>&#8221; message; this is to be used when there is additional
      information that seems inappropriate to put in the primary message.
      The message string is processed in just the same way as for
      <tt class="function">errmsg</tt>.
     </p></li>
-<li><p>     <tt class="function">errhint</tt>(const char *msg, ...) supplies an optional
+<li><p>     <tt class="function">errhint(const char *msg, ...)</tt> supplies an optional
      &#8220;<span class="quote">hint</span>&#8221; message; this is to be used when offering suggestions
      about how to fix the problem, as opposed to factual details about
      what went wrong.
      The message string is processed in just the same way as for
      <tt class="function">errmsg</tt>.
     </p></li>
-<li><p>     <tt class="function">errcontext</tt>(const char *msg, ...) is not normally called
+<li><p>     <tt class="function">errcontext(const char *msg, ...)</tt> is not normally called
      directly from an <tt class="function">ereport</tt> message site; rather it is used
      in <tt class="literal">error_context_stack</tt> callback functions to provide
      information about the context in which an error occurred, such as the
@@ -114,19 +114,19 @@
      be called more than once per <tt class="function">ereport</tt> call; the successive
      strings thus supplied are concatenated with separating newlines.
     </p></li>
-<li><p>     <tt class="function">errposition</tt>(int cursorpos) specifies the textual location
+<li><p>     <tt class="function">errposition(int cursorpos)</tt> specifies the textual location
      of an error within a query string.  Currently it is only useful for
      errors detected in the lexical and syntactic analysis phases of
      query processing.
     </p></li>
-<li><p>     <tt class="function">errcode_for_file_access</tt>() is a convenience function that
+<li><p>     <tt class="function">errcode_for_file_access()</tt> is a convenience function that
      selects an appropriate SQLSTATE error identifier for a failure in a
      file-access-related system call.  It uses the saved
      <tt class="literal">errno</tt> to determine which error code to generate.
      Usually this should be used in combination with <tt class="literal">%m</tt> in the
      primary error message text.
     </p></li>
-<li><p>     <tt class="function">errcode_for_socket_access</tt>() is a convenience function that
+<li><p>     <tt class="function">errcode_for_socket_access()</tt> is a convenience function that
      selects an appropriate SQLSTATE error identifier for a failure in a
      socket-related system call.
     </p></li>
@@ -136,11 +136,11 @@
 <p>    There is an older function <tt class="function">elog</tt> that is still heavily used.
     An <tt class="function">elog</tt> call
 </p>
-<pre class="programlisting">    elog(level, "format string", ...);</pre>
+<pre class="programlisting">elog(level, "format string", ...);</pre>
 <p>
     is exactly equivalent to
 </p>
-<pre class="programlisting">    ereport(level, (errmsg_internal("format string", ...)));</pre>
+<pre class="programlisting">ereport(level, (errmsg_internal("format string", ...)));</pre>
 <p>
     Notice that the SQLSTATE errcode is always defaulted, and the message
     string is not included in the internationalization message dictionary.
@@ -156,7 +156,7 @@
    </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2736368" href="#id2736368">6</a>] </sup>       That is, the value that was current when the <tt class="function">ereport</tt> call
+<div class="footnote"><p><sup>[<a name="ftn.id2741130" href="#id2741130">7</a>] </sup>       That is, the value that was current when the <tt class="function">ereport</tt> call
        was reached; changes of <tt class="literal">errno</tt> within the auxiliary reporting
        routines will not affect it.  That would not be true if you were to
        write <tt class="literal">strerror(errno)</tt> explicitly in <tt class="function">errmsg</tt>'s

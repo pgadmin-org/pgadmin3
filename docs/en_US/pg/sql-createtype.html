@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-createtrigger.html" title="CREATE TRIGGER">
 <link rel="next" href="sql-createuser.html" title="CREATE USER">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>CREATE TYPE &#8212; define a new data type</p>
 </div>
-<a name="id2680073"></a><div class="refsynopsisdiv">
+<a name="id2683829"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE TYPE <i class="replaceable"><tt>name</tt></i> AS
     ( <i class="replaceable"><tt>attribute_name</tt></i> <i class="replaceable"><tt>data_type</tt></i> [, ... ] )
@@ -40,9 +40,9 @@ CREATE TYPE <i class="replaceable"><tt>name</tt></i> (
 )</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2680181"></a><h2>Description</h2>
+<a name="id2683938"></a><h2>Description</h2>
 <p>   <tt class="command">CREATE TYPE</tt> registers a new data type for use in
-   the current data base.  The user who defines a type becomes its
+   the current database.  The user who defines a type becomes its
    owner.
   </p>
 <p>   If a schema name is given then the type is created in the specified
@@ -53,18 +53,19 @@ CREATE TYPE <i class="replaceable"><tt>name</tt></i> (
    table in the same schema.)
   </p>
 <div class="refsect2" lang="en">
-<a name="id2680210"></a><h3>Composite Types</h3>
+<a name="id2683960"></a><h3>Composite Types</h3>
 <p>   The first form of <tt class="command">CREATE TYPE</tt>
    creates a composite type.
    The composite type is specified by a list of attribute names and data types.
    This is essentially the same as the row type
    of a table, but using <tt class="command">CREATE TYPE</tt> avoids the need to
    create an actual table when all that is wanted is to define a type.
-   A stand-alone composite type is useful as the return type of a function.
+   A stand-alone composite type is useful as the argument or return type of a
+   function.
   </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2680233"></a><h3>Base Types</h3>
+<a name="id2683984"></a><h3>Base Types</h3>
 <p>   The second form of <tt class="command">CREATE TYPE</tt> creates a new base type
    (scalar type).  The parameters may appear in any order, not only that
    illustrated above, and most are optional.  You must register
@@ -91,7 +92,8 @@ CREATE TYPE <i class="replaceable"><tt>name</tt></i> (
    The first argument is the input text as a C string, the second
    argument is the element type's OID in case this is an array type
    (or the type's own OID for a composite type),
-   and the third is the <tt class="literal">typmod</tt> of the destination column, if known.
+   and the third is the <tt class="literal">typmod</tt> of the destination column, if known
+   (-1 will be passed if not).
    The input function should return a value of the data type itself.
    The output function may be
    declared as taking one argument of the new data type,  or as taking
@@ -215,7 +217,7 @@ CREATE TYPE <i class="replaceable"><tt>name</tt></i> (
   </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2680683"></a><h3>Array Types</h3>
+<a name="id2684434"></a><h3>Array Types</h3>
 <p>    Whenever a user-defined base data type is created, 
     <span class="productname">PostgreSQL</span> automatically creates an
     associated array type, whose name consists of the base type's
@@ -248,7 +250,7 @@ CREATE TYPE <i class="replaceable"><tt>name</tt></i> (
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2680788"></a><h2>Parameters</h2>
+<a name="id2684538"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>name</tt></i></span></dt>
 <dd><p>      The name (optionally schema-qualified) of a type to be created.
@@ -332,11 +334,12 @@ CREATE TYPE <i class="replaceable"><tt>name</tt></i> (
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2681083"></a><h2>Examples</h2>
+<a name="id2684834"></a><h2>Examples</h2>
 <p>   This example creates a composite type and uses it in
    a function definition:
 </p>
 <pre class="programlisting">CREATE TYPE compfoo AS (f1 int, f2 text);
+
 CREATE FUNCTION getfoo() RETURNS SETOF compfoo AS $$
     SELECT fooid, fooname FROM foo
 $$ LANGUAGE SQL;</pre>
@@ -384,14 +387,14 @@ CREATE TABLE big_objs (
 <p>
   </p>
 <p>   More examples, including suitable input and output functions, are
-   in <a href="extend.html" title="Chapter 31. Extending SQL">Chapter 31, <i>Extending SQL</i></a>.
+   in <a href="xtypes.html" title="31.11. User-Defined Types">Section 31.11, &#8220;User-Defined Types&#8221;</a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtype-compatibility"></a><h2>Compatibility</h2>
 <p>   This <tt class="command">CREATE TYPE</tt> command is a
    <span class="productname">PostgreSQL</span> extension.  There is a
-   <tt class="command">CREATE TYPE</tt> statement in SQL99 that is rather
+   <tt class="command">CREATE TYPE</tt> statement in SQL:1999 and later that is rather
    different in detail.
   </p>
 </div>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-explain.html" title="EXPLAIN">
 <link rel="next" href="sql-grant.html" title="GRANT">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>FETCH &#8212; retrieve rows from a query using a cursor</p>
 </div>
-<a name="id2687337"></a><a name="id2687346"></a><div class="refsynopsisdiv">
+<a name="id2691269"></a><a name="id2691278"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">FETCH [ <i class="replaceable"><tt>direction</tt></i> { FROM | IN } ] <i class="replaceable"><tt>cursorname</tt></i>
 
@@ -41,7 +41,7 @@ where <i class="replaceable"><tt>direction</tt></i> can be empty or one of:
     BACKWARD ALL</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2687413"></a><h2>Description</h2>
+<a name="id2691345"></a><h2>Description</h2>
 <p>   <tt class="command">FETCH</tt> retrieves rows using a previously-created cursor.
   </p>
 <p>   A cursor has an associated position, which is used by
@@ -76,7 +76,7 @@ where <i class="replaceable"><tt>direction</tt></i> can be empty or one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2687551"></a><h2>Parameters</h2>
+<a name="id2691483"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><i class="replaceable"><tt>direction</tt></i></span></dt>
 <dd>
@@ -158,7 +158,7 @@ where <i class="replaceable"><tt>direction</tt></i> can be empty or one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2687955"></a><h2>Outputs</h2>
+<a name="id2691888"></a><h2>Outputs</h2>
 <p>   On successful completion, a <tt class="command">FETCH</tt> command returns a command
    tag of the form
 </p>
@@ -172,7 +172,7 @@ where <i class="replaceable"><tt>direction</tt></i> can be empty or one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2687999"></a><h2>Notes</h2>
+<a name="id2691932"></a><h2>Notes</h2>
 <p>   The cursor should be declared with the <tt class="literal">SCROLL</tt>
    option if one intends to use any variants of <tt class="command">FETCH</tt>
    other than <tt class="command">FETCH NEXT</tt> or <tt class="command">FETCH FORWARD</tt> with
@@ -200,7 +200,7 @@ where <i class="replaceable"><tt>direction</tt></i> can be empty or one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2688108"></a><h2>Examples</h2>
+<a name="id2692036"></a><h2>Examples</h2>
 <p>   The following example traverses a table using a cursor.
 
 </p>
@@ -234,7 +234,7 @@ COMMIT WORK;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2688136"></a><h2>Compatibility</h2>
+<a name="id2692064"></a><h2>Compatibility</h2>
 <p>   The SQL standard defines <tt class="command">FETCH</tt> for use in
    embedded SQL only.  The variant of <tt class="command">FETCH</tt>
    described here returns the data as if it were a
@@ -251,6 +251,10 @@ COMMIT WORK;</pre>
 <p>   The SQL standard allows only <tt class="literal">FROM</tt> preceding the cursor
    name; the option to use <tt class="literal">IN</tt> is an extension.
   </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2692164"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-declare.html">DECLARE</a>, <a href="sql-move.html">MOVE</a></span>
 </div>
 </div></body>
 </html>

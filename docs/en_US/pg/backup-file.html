@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="backup.html" title="Chapter 22. Backup and Restore">
 <link rel="previous" href="backup.html" title="Chapter 22. Backup and Restore">
 <link rel="next" href="backup-online.html" title="22.3. On-line backup and point-in-time recovery (PITR)">
@@ -37,7 +37,7 @@
       get a usable backup. Half-way measures such as disallowing all
       connections will <span class="emphasis"><em>not</em></span> work
       (mainly because <tt class="command">tar</tt> and similar tools do not take an
-      atomic snapshot of the state of the filesystem at a point in
+      atomic snapshot of the state of the file system at a point in
       time). Information about stopping the server can be found in
       <a href="postmaster-shutdown.html" title="16.6. Shutting Down the Server">Section 16.6, &#8220;Shutting Down the Server&#8221;</a>.  Needless to say that you
       also need to shut down the server before restoring the data.
@@ -77,8 +77,10 @@
 <p>   If your database is spread across multiple volumes (for example,
    data files and WAL log on different disks) there may not be any way
    to obtain exactly-simultaneous frozen snapshots of all the volumes.
-   Read your filesystem documentation very carefully before trusting
-   to the consistent-snapshot technique in such situations.
+   Read your file system documentation very carefully before trusting
+   to the consistent-snapshot technique in such situations.  The safest
+   approach is to shut down the database server for long enough to
+   establish all the frozen snapshots.
   </p>
 <p>   Note that a file system backup will not necessarily be
    smaller than an SQL dump. On the contrary, it will most likely be

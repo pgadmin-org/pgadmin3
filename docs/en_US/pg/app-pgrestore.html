@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="previous" href="app-pg-dumpall.html" title="pg_dumpall">
 <link rel="next" href="app-psql.html" title="psql">
@@ -20,7 +20,7 @@
 <p>pg_restore &#8212;    restore a <span class="productname">PostgreSQL</span> database from an archive file created by pg_dump
   </p>
 </div>
-<a name="id2707081"></a><div class="refsynopsisdiv">
+<a name="id2711428"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><tt class="command">pg_restore</tt> [<i class="replaceable"><tt>option</tt></i>...] [<i class="replaceable"><tt>filename</tt></i>]</p></div>
 </div>
@@ -68,12 +68,12 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-a</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--data-only</tt></span>
 </dt>
-<dd><p>	Restore only the data, not the schema (data definitions).
+<dd><p>        Restore only the data, not the schema (data definitions).
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-c</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--clean</tt></span>
 </dt>
-<dd><p>	Clean (drop) database objects before recreating them.
+<dd><p>        Clean (drop) database objects before recreating them.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-C</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--create</tt></span>
@@ -108,10 +108,10 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-F <i class="replaceable"><tt>format</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--format=<i class="replaceable"><tt>format</tt></i></tt></span>
 </dt>
 <dd>
-<p>	Specify format of the archive.  It is not necessary to specify
-	the format, since <span class="application">pg_restore</span> will
-	determine the format automatically. If specified, it can be
-	one of the following:
+<p>        Specify format of the archive.  It is not necessary to specify
+        the format, since <span class="application">pg_restore</span> will
+        determine the format automatically. If specified, it can be
+        one of the following:
 
        </p>
 <div class="variablelist"><dl>
@@ -135,12 +135,12 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-i</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--ignore-version</tt></span>
 </dt>
-<dd><p>	Ignore database version checks.
+<dd><p>        Ignore database version checks.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-I <i class="replaceable"><tt>index</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--index=<i class="replaceable"><tt>index</tt></i></tt></span>
 </dt>
-<dd><p>	Restore definition of named index only.
+<dd><p>        Restore definition of named index only.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-l</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--list</tt></span>
@@ -161,28 +161,29 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-O</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-owner</tt></span>
 </dt>
 <dd><p>        Do not output commands to set
-	ownership of objects to match the original database.
-	By default, <span class="application">pg_restore</span> issues
-	<tt class="command">SET SESSION AUTHORIZATION</tt>
-	statements to set ownership of created schema elements.
-	These statements will fail unless the initial connection to the
-	database is made by a superuser
-	(or the same user that owns all of the objects in the script).
-	With <tt class="option">-O</tt>, any user name can be used for the
-	initial connection, and this user will own all the created objects.
+        ownership of objects to match the original database.
+        By default, <span class="application">pg_restore</span> issues
+        <tt class="command">ALTER OWNER</tt> or 
+        <tt class="command">SET SESSION AUTHORIZATION</tt>
+        statements to set ownership of created schema elements.
+        These statements will fail unless the initial connection to the
+        database is made by a superuser
+        (or the same user that owns all of the objects in the script).
+        With <tt class="option">-O</tt>, any user name can be used for the
+        initial connection, and this user will own all the created objects.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-P <i class="replaceable"><tt>function-name(argtype [, ...])</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--function=<i class="replaceable"><tt>function-name(argtype [, ...])</tt></i></tt></span>
 </dt>
 <dd><p>        Restore the named function only.  Be careful to spell the function
-	name and arguments exactly as they appear in the dump file's table
-	of contents.
+        name and arguments exactly as they appear in the dump file's table
+        of contents.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-R</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-reconnect</tt></span>
 </dt>
 <dd><p>        This option is obsolete but still accepted for backwards
-	compatibility.
+        compatibility.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-s</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--schema-only</tt></span>
@@ -194,7 +195,7 @@
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-S <i class="replaceable"><tt>username</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--superuser=<i class="replaceable"><tt>username</tt></i></tt></span>
 </dt>
 <dd><p>        Specify the superuser user name to use when disabling triggers.
-	This is only relevant if <tt class="option">--disable-triggers</tt> is used.
+        This is only relevant if <tt class="option">--disable-triggers</tt> is used.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-t <i class="replaceable"><tt>table</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--table=<i class="replaceable"><tt>table</tt></i></tt></span>
@@ -209,37 +210,37 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-v</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--verbose</tt></span>
 </dt>
-<dd><p>	Specifies verbose mode.
+<dd><p>        Specifies verbose mode.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-x</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">--no-privileges</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--no-acl</tt></span>
 </dt>
-<dd><p>	Prevent restoration of access privileges (grant/revoke commands).
+<dd><p>        Prevent restoration of access privileges (grant/revoke commands).
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X use-set-session-authorization</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--use-set-session-authorization</tt></span>
 </dt>
-<dd><p>	Output SQL standard SET SESSION AUTHORIZATION commands instead
-	of OWNER TO commands.  This makes the dump more standards compatible,
-	but depending on the history of the objects in the dump, may not
-	restore properly.
+<dd><p>        Output SQL standard SET SESSION AUTHORIZATION commands instead
+        of OWNER TO commands.  This makes the dump more standards compatible,
+        but depending on the history of the objects in the dump, may not
+        restore properly.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-X disable-triggers</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--disable-triggers</tt></span>
 </dt>
 <dd>
 <p>        This option is only relevant when performing a data-only restore.
-	It instructs <span class="application">pg_restore</span> to execute commands
-	to temporarily disable triggers on the target tables while
-	the data is reloaded.  Use this if you have referential
-	integrity checks or other triggers on the tables that you
-	do not want to invoke during data reload.
+        It instructs <span class="application">pg_restore</span> to execute commands
+        to temporarily disable triggers on the target tables while
+        the data is reloaded.  Use this if you have referential
+        integrity checks or other triggers on the tables that you
+        do not want to invoke during data reload.
        </p>
 <p>        Presently, the commands emitted for
-	<tt class="option">--disable-triggers</tt> must be done as superuser.  So, you
-	should also specify a superuser name with <tt class="option">-S</tt>, or
-	preferably run <span class="application">pg_restore</span> as a
-	<span class="productname">PostgreSQL</span> superuser.
+        <tt class="option">--disable-triggers</tt> must be done as superuser.  So, you
+        should also specify a superuser name with <tt class="option">-S</tt>, or
+        preferably run <span class="application">pg_restore</span> as a
+        <span class="productname">PostgreSQL</span> superuser.
        </p>
 </dd>
 </dl></div>
@@ -253,19 +254,19 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-h <i class="replaceable"><tt>host</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--host=<i class="replaceable"><tt>host</tt></i></tt></span>
 </dt>
-<dd><p>	Specifies the host name of the machine on which the server is
-	running.  If the value begins with a slash, it is used as the
-	directory for the Unix domain socket. The default is taken
-	from the <tt class="envar">PGHOST</tt> environment variable, if set,
-	else a Unix domain socket connection is attempted.
+<dd><p>        Specifies the host name of the machine on which the server is
+        running.  If the value begins with a slash, it is used as the
+        directory for the Unix domain socket. The default is taken
+        from the <tt class="envar">PGHOST</tt> environment variable, if set,
+        else a Unix domain socket connection is attempted.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="option">-p <i class="replaceable"><tt>port</tt></i></tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="option">--port=<i class="replaceable"><tt>port</tt></i></tt></span>
 </dt>
-<dd><p>	Specifies the TCP port or local Unix domain socket file
-	extension on which the server is listening for connections.
-	Defaults to the <tt class="envar">PGPORT</tt> environment variable, if
-	set, or a compiled-in default.
+<dd><p>        Specifies the TCP port or local Unix domain socket file
+        extension on which the server is listening for connections.
+        Defaults to the <tt class="envar">PGPORT</tt> environment variable, if
+        set, or a compiled-in default.
         </p></dd>
 <dt><span class="term"><tt class="option">-U <i class="replaceable"><tt>username</tt></i></tt></span></dt>
 <dd><p>        Connect as the given user
@@ -279,7 +280,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2707848"></a><h2>Environment</h2>
+<a name="id2712207"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGHOST</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="envar">PGPORT</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="envar">PGUSER</tt></span>
@@ -400,13 +401,13 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2708153"></a><h2>History</h2>
+<a name="id2712512"></a><h2>History</h2>
 <p>   The <span class="application">pg_restore</span> utility first appeared in
    <span class="productname">PostgreSQL</span> 7.1.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2708171"></a><h2>See Also</h2>
+<a name="id2712530"></a><h2>See Also</h2>
 <span class="simplelist"><a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a>, <a href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a>, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a></span>
 </div>
 </div></body>

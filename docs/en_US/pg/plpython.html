@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="previous" href="plperl-missing.html" title="37.7. Limitations and Missing Features">
 <link rel="next" href="plpython-trigger.html" title="38.2. Trigger Functions">
@@ -24,7 +24,7 @@
 <dt><span class="sect1"><a href="plpython-database.html">38.3. Database Access</a></span></dt>
 </dl>
 </div>
-<a name="id2653780"></a><a name="id2653790"></a><p>  The <span class="application">PL/Python</span> procedural language allows
+<a name="id2657195"></a><a name="id2657203"></a><p>  The <span class="application">PL/Python</span> procedural language allows
   <span class="productname">PostgreSQL</span> functions to be written in the
   <a href="http://www.python.org" target="_top">Python</a> language.
  </p>
@@ -58,26 +58,29 @@
 <a name="plpython-funcs"></a>38.1. PL/Python Functions</h2></div></div>
 <div></div>
 </div>
-<p>   The Python code you write gets transformed into a Python function.  E.g.,
+<p>   Functions in PL/Python are declared in the usual way, for example
 </p>
 <pre class="programlisting">CREATE FUNCTION myfunc(text) RETURNS text
     AS 'return args[0]'
     LANGUAGE plpythonu;</pre>
 <p>
 
-   gets transformed into
+   The Python code that is given as the body of the function definition
+   gets transformed into a Python function.
+   For example, the above results in
 
 </p>
 <pre class="programlisting">def __plpython_procedure_myfunc_23456():
         return args[0]</pre>
 <p>
 
-   assuming that 23456 is the OID of the function.
+   assuming that 23456 is the OID assigned to the function by
+   <span class="productname">PostgreSQL</span>.
   </p>
 <p>   If you do not provide a return value, Python returns the default
-   <tt class="symbol">None</tt>. The language module translates Python's
-   <tt class="symbol">None</tt> into the SQL null
-   value.<a name="id2653918"></a>
+   <tt class="symbol">None</tt>. <span class="application">PL/Python</span> translates
+   Python's <tt class="symbol">None</tt> into the SQL null
+   value.<a name="id2657345"></a>
   </p>
 <p>   The <span class="productname">PostgreSQL</span> function parameters are available in
    the global <tt class="varname">args</tt> list.  In the
@@ -91,7 +94,7 @@
    data between function calls.  This variable is private static data.
    The global dictionary <tt class="varname">GD</tt> is public data,
    available to all Python functions within a session.  Use with
-   care.<a name="id2653988"></a>
+   care.<a name="id2657415"></a>
   </p>
 <p>   Each function gets its own execution environment in the
    Python interpreter, so that global data and function arguments from

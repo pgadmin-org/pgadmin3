@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-createindex.html" title="CREATE INDEX">
 <link rel="next" href="sql-createoperator.html" title="CREATE OPERATOR">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>CREATE LANGUAGE &#8212; define a new procedural language</p>
 </div>
-<a name="id2673449"></a><div class="refsynopsisdiv">
+<a name="id2677106"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ TRUSTED ] [ PROCEDURAL ] LANGUAGE <i class="replaceable"><tt>name</tt></i>
     HANDLER <i class="replaceable"><tt>call_handler</tt></i> [ VALIDATOR <i class="replaceable"><tt>valfunction</tt></i> ]</pre>
@@ -36,7 +36,7 @@
   </p>
 <p>   <tt class="command">CREATE LANGUAGE</tt> effectively associates the
    language name with a call handler that is responsible for executing
-   functions written in the language.  Refer to <a href="xfunc.html" title="31.3. User-Defined Functions">Section 31.3, &#8220;User-Defined Functions&#8221;</a>
+   functions written in the language.  Refer to <a href="xplang.html" title="Chapter 34. Procedural Languages">Chapter 34, <i>Procedural Languages</i></a>
    for more information about language call handlers.
   </p>
 <p>   Note that procedural languages are local to individual databases.
@@ -128,9 +128,6 @@
    currently installed languages.  Also <tt class="command">createlang</tt>
    has an option to list the installed languages.
   </p>
-<p>   The definition of a procedural language cannot be changed once it
-   has been created, with the exception of the privileges.
-  </p>
 <p>   To be able to use a procedural language, a user must be granted the
    <tt class="literal">USAGE</tt> privilege.  The
    <tt class="command">createlang</tt> program automatically grants
@@ -157,8 +154,8 @@ CREATE LANGUAGE plsample
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2673894"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alterlanguage.html">ALTER LANGUAGE</a>, <a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-droplanguage.html">DROP LANGUAGE</a>, <a href="sql-grant.html">GRANT</a>, <a href="sql-revoke.html">REVOKE</a>, <a href="app-createlang.html" title="createlang"><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a>, <a href="app-droplang.html" title="droplang"><span class="refentrytitle"><a name="app-droplang-title"></a><span class="application">droplang</span></span></a></span>
+<a name="id2677547"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-alterlanguage.html">ALTER LANGUAGE</a>, <a href="sql-createfunction.html">CREATE FUNCTION</a>, <a href="sql-droplanguage.html">DROP LANGUAGE</a>, <a href="sql-grant.html">GRANT</a>, <a href="sql-revoke.html">REVOKE</a>, <a href="app-createlang.html"><span class="application">createlang</span></a>, <a href="app-droplang.html"><span class="application">droplang</span></a></span>
 </div>
 </div></body>
 </html>

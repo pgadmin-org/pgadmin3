@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
 <link rel="previous" href="plpgsql-errors-and-messages.html" title="35.9. Errors and Messages">
 <link rel="next" href="plpgsql-porting.html" title="35.11. Porting from Oracle PL/SQL">
@@ -16,7 +16,7 @@
 <a name="plpgsql-trigger"></a>35.10. Trigger Procedures</h2></div></div>
 <div></div>
 </div>
-<a name="id2649184"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
+<a name="id2652134"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
         procedures. A trigger procedure is created with the
         <tt class="command">CREATE FUNCTION</tt> command, declaring it as a function with
         no arguments and a return type of <tt class="type">trigger</tt>.  Note that
@@ -145,6 +145,194 @@ $emp_stamp$ LANGUAGE plpgsql;
 
 CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
     FOR EACH ROW EXECUTE PROCEDURE emp_stamp();</pre>
+</div>
+<p>    Another way to log changes to a table involves creating a new table that
+    holds a row for each insert, update, or delete that occurs. This approach
+    can be thought of as auditing changes to a table.
+    <a href="plpgsql-trigger.html#plpgsql-trigger-audit-example" title="Example 35.2. A PL/pgSQL Trigger Procedure For Auditing">Example 35.2, &#8220;A PL/pgSQL Trigger Procedure For Auditing&#8221;</a> shows an example of an
+    audit trigger procedure in <span class="application">PL/pgSQL</span>.
+   </p>
+<div class="example">
+<a name="plpgsql-trigger-audit-example"></a><p class="title"><b>Example 35.2. A <span class="application">PL/pgSQL</span> Trigger Procedure For Auditing</b></p>
+<p>     This example trigger ensures that any insert, update or delete of a row
+     in the <tt class="literal">emp</tt> table is recorded (i.e., audited) in the <tt class="literal">emp_audit</tt> table. 
+     The current time and user name are stamped into the row, together with 
+     the type of operation performed on it.
+    </p>
+<pre class="programlisting">CREATE TABLE emp (
+    empname           text NOT NULL,
+    salary            integer
+);
+
+CREATE TABLE emp_audit( 
+    operation         char(1)   NOT NULL,
+    stamp             timestamp NOT NULL,
+    userid            text      NOT NULL,
+    empname           text      NOT NULL,
+    salary integer
+);
+
+CREATE OR REPLACE FUNCTION process_emp_audit() RETURNS TRIGGER AS $emp_audit$
+    BEGIN
+        --
+        -- Create a row in emp_audit to reflect the operation performed on emp,
+        -- make use of the special variable TG_OP to work out the operation.
+        --
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO emp_audit SELECT 'D', now(), user, OLD.*;
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+            INSERT INTO emp_audit SELECT 'U', now(), user, NEW.*;
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            INSERT INTO emp_audit SELECT 'I', now(), user, NEW.*;
+            RETURN NEW;
+        END IF;
+        RETURN NULL; -- result is ignored since this is an AFTER trigger
+    END;
+$emp_audit$ language plpgsql;
+
+CREATE TRIGGER emp_audit
+AFTER INSERT OR UPDATE OR DELETE ON emp
+    FOR EACH ROW EXECUTE PROCEDURE process_emp_audit();</pre>
+</div>
+<p>    One use of triggers is to maintain a summary table
+    of another table. The resulting summary can be used in place of the 
+    original table for certain queries [mdash ] often with vastly reduced run 
+    times.
+    This technique is commonly used in Data Warehousing, where the tables
+    of measured or observed data (called fact tables) can be extremely large.
+    <a href="plpgsql-trigger.html#plpgsql-trigger-summary-example" title="Example 35.3. A PL/pgSQL Trigger Procedure For Maintaining A Summary Table">Example 35.3, &#8220;A PL/pgSQL Trigger Procedure For Maintaining A Summary Table&#8221;</a> shows an example of a
+    trigger procedure in <span class="application">PL/pgSQL</span> that maintains
+    a summary table for a fact table in a data warehouse.
+   </p>
+<div class="example">
+<a name="plpgsql-trigger-summary-example"></a><p class="title"><b>Example 35.3. A <span class="application">PL/pgSQL</span> Trigger Procedure For Maintaining A Summary Table</b></p>
+<p>     The schema detailed here is partly based on the <span class="emphasis"><em>Grocery Store
+     </em></span> example from <span class="emphasis"><em>The Data Warehouse Toolkit</em></span> 
+     by Ralph Kimball.
+    </p>
+<pre class="programlisting">--
+-- Main tables - time dimension and sales fact.
+--
+CREATE TABLE time_dimension (
+    time_key                    integer NOT NULL,
+    day_of_week                 integer NOT NULL,
+    day_of_month                integer NOT NULL,
+    month                       integer NOT NULL,
+    quarter                     integer NOT NULL,
+    year                        integer NOT NULL
+);
+CREATE UNIQUE INDEX time_dimension_key ON time_dimension(time_key);
+
+CREATE TABLE sales_fact (
+    time_key                    integer NOT NULL,
+    product_key                 integer NOT NULL,
+    store_key                   integer NOT NULL,
+    amount_sold                 numeric(12,2) NOT NULL,
+    units_sold                  integer NOT NULL,
+    amount_cost                 numeric(12,2) NOT NULL
+);
+CREATE INDEX sales_fact_time ON sales_fact(time_key);
+
+--
+-- Summary table - sales by time.
+--
+CREATE TABLE sales_summary_bytime (
+    time_key                    integer NOT NULL,
+    amount_sold                 numeric(15,2) NOT NULL,
+    units_sold                  numeric(12) NOT NULL,
+    amount_cost                 numeric(15,2) NOT NULL
+);
+CREATE UNIQUE INDEX sales_summary_bytime_key ON sales_summary_bytime(time_key);
+
+--
+-- Function and trigger to amend summarized column(s) on UPDATE, INSERT, DELETE.
+--
+CREATE OR REPLACE FUNCTION maint_sales_summary_bytime() RETURNS TRIGGER AS $maint_sales_summary_bytime$
+    DECLARE
+        delta_time_key          integer;
+        delta_amount_sold       numeric(15,2);
+        delta_units_sold        numeric(12);
+        delta_amount_cost       numeric(15,2);
+    BEGIN
+
+        -- Work out the increment/decrement amount(s).
+        IF (TG_OP = 'DELETE') THEN
+
+            delta_time_key = OLD.time_key;
+            delta_amount_sold = -1 * OLD.amount_sold;
+            delta_units_sold = -1 * OLD.units_sold;
+            delta_amount_cost = -1 * OLD.amount_cost;
+
+        ELSIF (TG_OP = 'UPDATE') THEN
+
+            -- forbid updates that change the time_key -
+            -- (probably not too onerous, as DELETE + INSERT is how most 
+            -- changes will be made).
+            IF ( OLD.time_key != NEW.time_key) THEN
+                RAISE EXCEPTION 'Update of time_key : % -&gt; % not allowed', OLD.time_key, NEW.time_key;
+            END IF;
+
+            delta_time_key = OLD.time_key;
+            delta_amount_sold = NEW.amount_sold - OLD.amount_sold;
+            delta_units_sold = NEW.units_sold - OLD.units_sold;
+            delta_amount_cost = NEW.amount_cost - OLD.amount_cost;
+
+        ELSIF (TG_OP = 'INSERT') THEN
+
+            delta_time_key = NEW.time_key;
+            delta_amount_sold = NEW.amount_sold;
+            delta_units_sold = NEW.units_sold;
+            delta_amount_cost = NEW.amount_cost;
+
+        END IF;
+
+
+        -- Update the summary row with the new values.
+        UPDATE sales_summary_bytime
+            SET amount_sold = amount_sold + delta_amount_sold,
+                units_sold = units_sold + delta_units_sold,
+                amount_cost = amount_cost + delta_amount_cost
+            WHERE time_key = delta_time_key;
+
+
+        -- There might have been no row with this time_key (e.g new data!).
+        IF (NOT FOUND) THEN
+            BEGIN
+                INSERT INTO sales_summary_bytime (
+                            time_key, 
+                            amount_sold, 
+                            units_sold, 
+                            amount_cost)
+                    VALUES ( 
+                            delta_time_key,
+                            delta_amount_sold,
+                            delta_units_sold,
+                            delta_amount_cost
+                           );
+            EXCEPTION
+                --
+                -- Catch race condition when two transactions are adding data
+                -- for a new time_key.
+                --
+                WHEN UNIQUE_VIOLATION THEN
+                    UPDATE sales_summary_bytime
+                        SET amount_sold = amount_sold + delta_amount_sold,
+                            units_sold = units_sold + delta_units_sold,
+                            amount_cost = amount_cost + delta_amount_cost
+                        WHERE time_key = delta_time_key;
+
+            END;
+        END IF;
+        RETURN NULL;
+
+    END;
+$maint_sales_summary_bytime$ LANGUAGE plpgsql;
+
+CREATE TRIGGER maint_sales_summary_bytime
+AFTER INSERT OR UPDATE OR DELETE ON sales_fact
+    FOR EACH ROW EXECUTE PROCEDURE maint_sales_summary_bytime();</pre>
 </div>
 </div></body>
 </html>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="previous" href="app-initdb.html" title="initdb">
 <link rel="next" href="app-pgcontroldata.html" title="pg_controldata">
@@ -17,9 +17,9 @@
 </div>
 <div class="refnamediv">
 <h2>Name</h2>
-<p>ipcclean &#8212; remove shared memory and semaphores from an aborted <span class="productname">PostgreSQL</span> server</p>
+<p>ipcclean &#8212; remove shared memory and semaphores from a failed <span class="productname">PostgreSQL</span> server</p>
 </div>
-<a name="id2715667"></a><div class="refsynopsisdiv">
+<a name="id2720175"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><tt class="command">ipcclean</tt></p></div>
 </div>
@@ -41,17 +41,18 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715727"></a><h2>Notes</h2>
+<a name="id2720235"></a><h2>Notes</h2>
 <p>   This script is a hack, but in the many years since it was written,
    no one has come up with an equally effective and portable solution.
    Since the <tt class="command">postmaster</tt> can now clean up by
    itself, it is unlikely that <tt class="command">ipcclean</tt> will be
    improved upon in the future.
   </p>
-<p>   The script makes assumption about the format of output of the
+<p>   The script makes assumptions about the output format of the
    <tt class="command">ipcs</tt>
    utility which may not be true across different operating systems.
-   Therefore, it may not work on your particular OS.
+   Therefore, it may not work on your particular OS.  It's wise to
+   look at the script before trying it.
   </p>
 </div>
 </div></body>

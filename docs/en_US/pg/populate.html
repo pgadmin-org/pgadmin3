@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
 <link rel="previous" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
 <link rel="next" href="admin.html" title="Part III. Server Administration">
@@ -26,7 +26,7 @@
 <a name="disable-autocommit"></a>13.4.1. Disable Autocommit</h3></div></div>
 <div></div>
 </div>
-<a name="id2572665"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
+<a name="id2573436"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
     SQL, this means issuing <tt class="command">BEGIN</tt> at the start and
     <tt class="command">COMMIT</tt> at the end.  Some client libraries may
     do this behind your back, in which case you need to make sure the
@@ -38,13 +38,6 @@
     were to fail then the insertion of all rows inserted up to that
     point would be rolled back, so you won't be stuck with partially
     loaded data.
-   </p>
-<p>    If you are issuing a large sequence of <tt class="command">INSERT</tt>
-    commands to bulk load some data, also consider using <a href="sql-prepare.html">PREPARE</a> to create a
-    prepared <tt class="command">INSERT</tt> statement. Since you are
-    executing the same command multiple times, it is more efficient to
-    prepare the command once and then use <tt class="command">EXECUTE</tt>
-    as many times as required.
    </p>
 </div>
 <div class="sect2" lang="en">
@@ -62,11 +55,16 @@
     is a single command, there is no need to disable autocommit if you
     use this method to populate a table.
    </p>
+<p>    If you cannot use <tt class="command">COPY</tt>, it may help to use <a href="sql-prepare.html">PREPARE</a> to create a
+    prepared <tt class="command">INSERT</tt> statement, and then use
+    <tt class="command">EXECUTE</tt> as many times as required.  This avoids
+    some of the overhead of repeatedly parsing and planning
+    <tt class="command">INSERT</tt>.
+   </p>
 <p>    Note that loading a large number of rows using
     <tt class="command">COPY</tt> is almost always faster than using
-    <tt class="command">INSERT</tt>, even if multiple
-    <tt class="command">INSERT</tt> commands are batched into a single
-    transaction.
+    <tt class="command">INSERT</tt>, even if <tt class="command">PREPARE</tt> is used and
+    multiple insertions are batched into a single transaction.
    </p>
 </div>
 <div class="sect2" lang="en">
@@ -97,10 +95,10 @@
 <div></div>
 </div>
 <p>    Temporarily increasing the <a href="runtime-config.html#guc-maintenance-work-mem">maintenance_work_mem</a>
-    configuration variable when restoring large amounts of data can
+    configuration variable when loading large amounts of data can
     lead to improved performance. This is because when a B-tree index
     is created from scratch, the existing content of the table needs
-    to be sorted. Allowing the external merge sort to use more memory
+    to be sorted. Allowing the merge sort to use more memory
     means that fewer merge passes will be required.  A larger setting for
     <tt class="varname">maintenance_work_mem</tt> may also speed up validation
     of foreign-key constraints.
@@ -132,8 +130,7 @@
 </div>
 <p>    Whenever you have significantly altered the distribution of data
     within a table, running <a href="sql-analyze.html">ANALYZE</a> is strongly recommended. This
-    includes when bulk loading large amounts of data into
-    <span class="productname">PostgreSQL</span>.  Running
+    includes bulk loading large amounts of data into the table.  Running
     <tt class="command">ANALYZE</tt> (or <tt class="command">VACUUM ANALYZE</tt>)
     ensures that the planner has up-to-date statistics about the
     table.  With no statistics or obsolete statistics, the planner may

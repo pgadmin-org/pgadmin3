@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="previous" href="functions-conditional.html" title="9.13. Conditional Expressions">
 <link rel="next" href="functions-aggregate.html" title="9.15. Aggregate Functions">
@@ -103,7 +103,7 @@
   </p>
 <p>   <a href="functions-array.html#array-functions-table" title="Table 9.36. array Functions">Table 9.36, &#8220;array Functions&#8221;</a> shows the functions
    available for use with array types. See <a href="arrays.html" title="8.10. Arrays">Section 8.10, &#8220;Arrays&#8221;</a>
-   for more discussion and examples for the use of these functions.
+   for more discussion and examples of the use of these functions.
   </p>
 <div class="table">
 <a name="array-functions-table"></a><p class="title"><b>Table 9.36. <tt class="type">array</tt> Functions</b></p>
@@ -128,9 +128,7 @@
       (<tt class="type">anyarray</tt>, <tt class="type">anyarray</tt>)
      </tt></td>
 <td><tt class="type">anyarray</tt></td>
-<td>     concatenate two arrays, returning <tt class="literal">NULL</tt>
-     for <tt class="literal">NULL</tt> inputs
-    </td>
+<td>concatenate two arrays</td>
 <td><tt class="literal">array_cat(ARRAY[1,2,3], ARRAY[4,5])</tt></td>
 <td><tt class="literal">{1,2,3,4,5}</tt></td>
 </tr>
@@ -139,9 +137,7 @@
       (<tt class="type">anyarray</tt>, <tt class="type">anyelement</tt>)
      </tt></td>
 <td><tt class="type">anyarray</tt></td>
-<td>     append an element to the end of an array, returning
-     <tt class="literal">NULL</tt> for <tt class="literal">NULL</tt> inputs
-    </td>
+<td>append an element to the end of an array</td>
 <td><tt class="literal">array_append(ARRAY[1,2], 3)</tt></td>
 <td><tt class="literal">{1,2,3}</tt></td>
 </tr>
@@ -150,9 +146,7 @@
       (<tt class="type">anyelement</tt>, <tt class="type">anyarray</tt>)
      </tt></td>
 <td><tt class="type">anyarray</tt></td>
-<td>     append an element to the beginning of an array, returning
-     <tt class="literal">NULL</tt> for <tt class="literal">NULL</tt> inputs
-    </td>
+<td>append an element to the beginning of an array</td>
 <td><tt class="literal">array_prepend(1, ARRAY[2,3])</tt></td>
 <td><tt class="literal">{1,2,3}</tt></td>
 </tr>
@@ -161,9 +155,7 @@
       (<tt class="type">anyarray</tt>)
      </tt></td>
 <td><tt class="type">text</tt></td>
-<td>     returns a text representation of array dimension lower and upper bounds,
-     generating an ERROR for <tt class="literal">NULL</tt> inputs
-    </td>
+<td>returns a text representation of array's dimensions</td>
 <td><tt class="literal">array_dims(array[[1,2,3], [4,5,6]])</tt></td>
 <td><tt class="literal">[1:2][1:3]</tt></td>
 </tr>
@@ -172,9 +164,7 @@
       (<tt class="type">anyarray</tt>, <tt class="type">integer</tt>)
      </tt></td>
 <td><tt class="type">integer</tt></td>
-<td>     returns lower bound of the requested array dimension, returning
-     <tt class="literal">NULL</tt> for <tt class="literal">NULL</tt> inputs
-    </td>
+<td>returns lower bound of the requested array dimension</td>
 <td><tt class="literal">array_lower(array_prepend(0, ARRAY[1,2,3]), 1)</tt></td>
 <td><tt class="literal">0</tt></td>
 </tr>
@@ -183,9 +173,7 @@
       (<tt class="type">anyarray</tt>, <tt class="type">integer</tt>)
      </tt></td>
 <td><tt class="type">integer</tt></td>
-<td>     returns upper bound of the requested array dimension, returning
-     <tt class="literal">NULL</tt> for <tt class="literal">NULL</tt> inputs
-    </td>
+<td>returns upper bound of the requested array dimension</td>
 <td><tt class="literal">array_upper(ARRAY[1,2,3,4], 1)</tt></td>
 <td><tt class="literal">4</tt></td>
 </tr>
@@ -194,9 +182,7 @@
       (<tt class="type">anyarray</tt>, <tt class="type">text</tt>)
      </tt></td>
 <td><tt class="type">text</tt></td>
-<td>     concatenates array elements using provided delimiter, returning
-     <tt class="literal">NULL</tt> for <tt class="literal">NULL</tt> inputs
-    </td>
+<td>concatenates array elements using provided delimiter</td>
 <td><tt class="literal">array_to_string(array[1, 2, 3], '~^~')</tt></td>
 <td><tt class="literal">1~^~2~^~3</tt></td>
 </tr>
@@ -205,9 +191,7 @@
       (<tt class="type">text</tt>, <tt class="type">text</tt>)
      </tt></td>
 <td><tt class="type">text[]</tt></td>
-<td>     splits string into array elements using provided delimiter, returning
-     <tt class="literal">NULL</tt> for <tt class="literal">NULL</tt> inputs
-    </td>
+<td>splits string into array elements using provided delimiter</td>
 <td><tt class="literal">string_to_array( 'xx~^~yy~^~zz', '~^~')</tt></td>
 <td><tt class="literal">{xx,yy,zz}</tt></td>
 </tr>

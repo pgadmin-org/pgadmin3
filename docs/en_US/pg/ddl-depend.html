@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="previous" href="ddl-others.html" title="5.9. Other Database Objects">
 <link rel="next" href="dml.html" title="Chapter 6. Data Manipulation">
@@ -16,7 +16,7 @@
 <a name="ddl-depend"></a>5.10. Dependency Tracking</h2></div></div>
 <div></div>
 </div>
-<a name="id2526835"></a><a name="id2526849"></a><p>   When you create complex database structures involving many tables
+<a name="id2527258"></a><a name="id2527272"></a><p>   When you create complex database structures involving many tables
    with foreign key constraints, views, triggers, functions, etc. you
    will implicitly create a net of dependencies between the objects.
    For instance, a table with a foreign key constraint depends on the
@@ -25,7 +25,7 @@
 <p>   To ensure the integrity of the entire database structure,
    <span class="productname">PostgreSQL</span> makes sure that you cannot
    drop objects that other objects still depend on.  For example,
-   attempting to drop the products table we had considered in <a href="ddl-constraints.html#ddl-constraints-fk" title="5.4.5. Foreign Keys">Section 5.4.5, &#8220;Foreign Keys&#8221;</a>, with the orders table depending on
+   attempting to drop the products table we had considered in <a href="ddl-constraints.html#ddl-constraints-fk" title="5.3.5. Foreign Keys">Section 5.3.5, &#8220;Foreign Keys&#8221;</a>, with the orders table depending on
    it, would result in an error message such as this:
 </p>
 <pre class="screen">DROP TABLE products;
@@ -55,7 +55,7 @@ HINT:  Use DROP ... CASCADE to drop the dependent objects too.</pre>
 <h3 class="title">Note</h3>
 <p>    According to the SQL standard, specifying either
     <tt class="literal">RESTRICT</tt> or <tt class="literal">CASCADE</tt> is
-    required.  No database system actually implements it that way, but
+    required.  No database system actually enforces that rule, but
     whether the default behavior is <tt class="literal">RESTRICT</tt> or
     <tt class="literal">CASCADE</tt> varies across systems.
    </p>
@@ -66,7 +66,7 @@ HINT:  Use DROP ... CASCADE to drop the dependent objects too.</pre>
     from <span class="productname">PostgreSQL</span> versions prior to 7.3
     are <span class="emphasis"><em>not</em></span> maintained or created during the
     upgrade process.  All other dependency types will be properly
-    created during an upgrade.
+    created during an upgrade from a pre-7.3 database.
    </p>
 </div>
 </div></body>

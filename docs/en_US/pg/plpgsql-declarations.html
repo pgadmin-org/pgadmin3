@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
 <link rel="previous" href="plpgsql-structure.html" title="35.3. Structure of PL/pgSQL">
 <link rel="next" href="plpgsql-expressions.html" title="35.5. Expressions">
@@ -52,7 +52,7 @@ arow RECORD;</pre>
       must have a nonnull default value specified.
      </p>
 <p>      The default value is evaluated every time the block is entered. So,
-      for example, assigning <tt class="literal">'now'</tt> to a variable of type
+      for example, assigning <tt class="literal">now()</tt> to a variable of type
       <tt class="type">timestamp</tt> causes the variable to have the
       time of the current function call, not the time when the function was
       precompiled.
@@ -76,7 +76,8 @@ user_id CONSTANT integer := 10;</pre>
       <tt class="literal">$<i class="replaceable"><tt>n</tt></i></tt>
       parameter names for increased readability.  Either the alias or the
       numeric identifier can then be used to refer to the parameter value.
-      There are two ways to create an alias.  The preferred way is to give a
+     </p>
+<p>      There are two ways to create an alias.  The preferred way is to give a
       name to the parameter in the <tt class="command">CREATE FUNCTION</tt> command,
       for example:
 </p>

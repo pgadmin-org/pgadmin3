@@ -1,34 +1,46 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 49. Database File Layout</title>
+<title>Chapter 49. Database Physical Storage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="previous" href="examples.html" title="48.5. Examples">
-<link rel="next" href="page.html" title="Chapter 50. Database Page Layout">
+<link rel="next" href="storage-toast.html" title="49.2. TOAST">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="file-layout">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="storage">
 <div class="titlepage">
 <div><div><h2 class="title">
-<a name="file-layout"></a>Chapter 49. Database File Layout</h2></div></div>
+<a name="storage"></a>Chapter 49. Database Physical Storage</h2></div></div>
 <div></div>
 </div>
-<div class="abstract">
-<p class="title"><b>Abstract</b></p>
-<p>A description of the database physical storage layout.</p>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="storage.html#storage-file-layout">49.1. Database File Layout</a></span></dt>
+<dt><span class="sect1"><a href="storage-toast.html">49.2. TOAST</a></span></dt>
+<dt><span class="sect1"><a href="storage-page-layout.html">49.3. Database Page Layout</a></span></dt>
+</dl>
 </div>
-<p>This section provides an overview of the physical format used by
+<p>This chapter provides an overview of the physical storage format used by
 <span class="productname">PostgreSQL</span> databases.</p>
+<div class="sect1" lang="en">
+<div class="titlepage">
+<div><div><h2 class="title" style="clear: both">
+<a name="storage-file-layout"></a>49.1. Database File Layout</h2></div></div>
+<div></div>
+</div>
+<p>This section describes the storage format at the level of files and
+directories.</p>
 <p>All the data needed for a database cluster is stored within the cluster's data
 directory, commonly referred to as <tt class="varname">PGDATA</tt> (after the name of the
 environment variable that can be used to define it).  A common location for
 <tt class="varname">PGDATA</tt> is <tt class="filename">/var/lib/pgsql/data</tt>.  Multiple clusters,
 managed by different postmasters, can exist on the same machine.</p>
 <p>The <tt class="varname">PGDATA</tt> directory contains several subdirectories and control
-files, as shown in <a href="file-layout.html#pgdata-contents-table" title="Table 49.1. Contents of PGDATA">Table 49.1, &#8220;Contents of PGDATA&#8221;</a>.  In addition to
+files, as shown in <a href="storage.html#pgdata-contents-table" title="Table 49.1. Contents of PGDATA">Table 49.1, &#8220;Contents of PGDATA&#8221;</a>.  In addition to
 these required items, the cluster configuration files
 <tt class="filename">postgresql.conf</tt>, <tt class="filename">pg_hba.conf</tt>, and
 <tt class="filename">pg_ident.conf</tt> are traditionally stored in
@@ -112,12 +124,13 @@ Avoid assuming that filenode and table OID are the same.</p>
 filenode; subsequent segments are named filenode.1, filenode.2, etc.
 This arrangement avoids problems on platforms that have file size limitations.
 The contents of tables and indexes are discussed further in
-<a href="page.html" title="Chapter 50. Database Page Layout">Chapter 50, <i>Database Page Layout</i></a>.</p>
+<a href="storage-page-layout.html" title="49.3. Database Page Layout">Section 49.3, &#8220;Database Page Layout&#8221;</a>.</p>
 <p>A table that has columns with potentially large entries will have an
 associated <i class="firstterm">TOAST</i> table, which is used for out-of-line storage of
 field values that are too large to keep in the table rows proper.
 <tt class="structname">pg_class</tt>.<tt class="structfield">reltoastrelid</tt> links from a table to
-its TOAST table, if any.</p>
+its <span class="acronym">TOAST</span> table, if any.
+See <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a> for more information.</p>
 <p>Tablespaces make the scenario more complicated.  Each user-defined tablespace
 has a symbolic link inside the <tt class="varname">PGDATA</tt><tt class="filename">/pg_tblspc</tt>
 directory, which points to the physical tablespace directory (as specified in
@@ -130,5 +143,6 @@ naming scheme.  The <tt class="literal">pg_default</tt> tablespace is not access
 <tt class="varname">PGDATA</tt><tt class="filename">/base</tt>.  Similarly, the <tt class="literal">pg_global</tt>
 tablespace is not accessed through <tt class="filename">pg_tblspc</tt>, but corresponds to
 <tt class="varname">PGDATA</tt><tt class="filename">/global</tt>.</p>
+</div>
 </div></body>
 </html>

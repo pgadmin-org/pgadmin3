@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="backup.html" title="Chapter 22. Backup and Restore">
 <link rel="previous" href="backup-file.html" title="22.2. File system level backup">
 <link rel="next" href="migration.html" title="22.4. Migration Between Releases">
@@ -16,7 +16,7 @@
 <a name="backup-online"></a>22.3. On-line backup and point-in-time recovery (PITR)</h2></div></div>
 <div></div>
 </div>
-<a name="id2599508"></a><a name="id2599517"></a><a name="id2599526"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id2601623"></a><a name="id2601632"></a><a name="id2601641"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <i class="firstterm">write ahead log</i> (WAL) in the <tt class="filename">pg_xlog/</tt>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -24,7 +24,7 @@
    database can be restored to consistency by &#8220;<span class="quote">replaying</span>&#8221; the
    log entries made since the last checkpoint.  However, the existence
    of the log makes it possible to use a third strategy for backing up
-   databases: we can combine a filesystem-level backup with backup of
+   databases: we can combine a file-system-level backup with backup of
    the WAL files.  If recovery is needed, we restore the backup and
    then replay from the backed-up WAL files to bring the backup up to
    current time.  This approach is more complex to administer than
@@ -35,7 +35,7 @@
 <li><p>     We do not need a perfectly consistent backup as the starting point.
      Any internal inconsistency in the backup will be corrected by log
      replay (this is not significantly different from what happens during
-     crash recovery).  So we don't need filesystem snapshot capability,
+     crash recovery).  So we don't need file system snapshot capability,
      just <span class="application">tar</span> or a similar archiving tool.
     </p></li>
 <li><p>     Since we can string together an indefinitely long sequence of WAL files
@@ -59,7 +59,7 @@
 </ul></div>
 <p>
   </p>
-<p>   As with the plain filesystem-backup technique, this method can only
+<p>   As with the plain file-system-backup technique, this method can only
    support restoration of an entire database cluster, not a subset.
    Also, it requires a lot of archival storage: the base backup may be bulky,
    and a busy system will generate many megabytes of WAL traffic that
@@ -204,9 +204,12 @@
     modifications made to the data in your <span class="productname">PostgreSQL</span> database
     it will not restore changes made to configuration files (that is,
     <tt class="filename">postgresql.conf</tt>, <tt class="filename">pg_hba.conf</tt> and
-    <tt class="filename">pg_ident.conf</tt>) after the initial base backup.
+    <tt class="filename">pg_ident.conf</tt>), since those are edited manually rather
+    than through SQL operations.
     You may wish to keep the configuration files in a location that will
-    be backed up by your regular filesystem backup procedures.
+    be backed up by your regular file system backup procedures.  See
+    <a href="runtime-config.html#runtime-config-file-locations" title="16.4.1. File Locations">Section 16.4.1, &#8220;File Locations&#8221;</a> for how to relocate the
+    configuration files.
    </p>
 </div>
 <div class="sect2" lang="en">
@@ -237,7 +240,7 @@
      but if it reports an error, deal with that before proceeding.
     </p>
 </li>
-<li><p>     Perform the backup, using any convenient filesystem-backup tool
+<li><p>     Perform the backup, using any convenient file-system-backup tool
      such as <span class="application">tar</span> or <span class="application">cpio</span>.  It is neither
      necessary nor desirable to stop normal operation of the database
      while you do this.
@@ -406,7 +409,7 @@
 <p>    It is important that the command return nonzero exit status on failure.
     The command <span class="emphasis"><em>will</em></span> be asked for log files that are not present
     in the archive; it must return nonzero when so asked.  This is not an
-    error condition.  Be aware also that the basename of the <tt class="literal">%p</tt>
+    error condition.  Be aware also that the base name of the <tt class="literal">%p</tt>
     path will be different from <tt class="literal">%f</tt>; do not expect them to be
     interchangeable.
    </p>
@@ -462,8 +465,8 @@
         Write <tt class="literal">%%</tt> to embed an actual <tt class="literal">%</tt> character
         in the command. 
        </p>
-<p>        It is important for the command to return a zero exit status only
-        if it succeeds.  The command <span class="emphasis"><em>will</em></span> be asked for file
+<p>        It is important for the command to return a zero exit status if and
+        only if it succeeds.  The command <span class="emphasis"><em>will</em></span> be asked for file
         names that are not present in the archive; it must return nonzero
         when so asked.  Examples:
 </p>
@@ -477,7 +480,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
            (<tt class="type">timestamp</tt>)
       </span>
 </dt>
-<dd><p>        This parameter specifies the timestamp up to which recovery
+<dd><p>        This parameter specifies the time stamp up to which recovery
         will proceed.
         At most one of <tt class="varname">recovery_target_time</tt> and
         <a href="backup-online.html#recovery-target-xid">recovery_target_xid</a> can be specified.
@@ -535,7 +538,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <a name="backup-timelines"></a>22.3.4. Timelines</h3></div></div>
 <div></div>
 </div>
-<a name="id2600876"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id2602988"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.
@@ -584,7 +587,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
     that was current when the base backup was taken.  If you want to recover
     into some child timeline (that is, you want to return to some state that
     was itself generated after a recovery attempt), you need to specify the
-    target timeline in <tt class="filename">recovery.conf</tt>.  You cannot recover into
+    target timeline ID in <tt class="filename">recovery.conf</tt>.  You cannot recover into
     timelines that branched off earlier than the base backup.
    </p>
 </div>
@@ -598,7 +601,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
     technique.  These will probably be fixed in future releases:
 
   </p>
-<div class="itemizedlist"><ul type="disc"><li><p>     Operations on non-btree indexes (hash, R-tree, and GiST indexes) are
+<div class="itemizedlist"><ul type="disc"><li><p>     Operations on non-B-tree indexes (hash, R-tree, and GiST indexes) are
      not presently WAL-logged, so replay will not update these index types.
      The recommended workaround is to manually <tt class="command">REINDEX</tt> each
      such index after completing a recovery operation.

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.0 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="previous" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
@@ -16,23 +16,24 @@
 <a name="runtime-config"></a>16.4. Run-time Configuration</h2></div></div>
 <div></div>
 </div>
-<a name="id2578712"></a><p>    There are a lot of configuration parameters that affect the
+<a name="id2580320"></a><p>    There are a lot of configuration parameters that affect the
     behavior of the database system. In this subsection, we describe
     how to set configuration parameters; the following subsections
     discuss each parameter in detail.
    </p>
 <p>    All parameter names are case-insensitive. Every parameter takes a
-    value of one of the four types: boolean, integer, floating point,
-    and string. Boolean values are <tt class="literal">ON</tt>,
+    value of one of four types: boolean, integer, floating point,
+    or string. Boolean values may be written as <tt class="literal">ON</tt>,
     <tt class="literal">OFF</tt>, <tt class="literal">TRUE</tt>,
     <tt class="literal">FALSE</tt>, <tt class="literal">YES</tt>,
     <tt class="literal">NO</tt>, <tt class="literal">1</tt>, <tt class="literal">0</tt>
-    (case-insensitive) or any non-ambiguous prefix of these.
+    (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <tt class="filename">postgresql.conf</tt><a name="id2578786"></a>
-    in the data directory. (A default file is installed there.) An
-    example of what this file might look like is:
+    <tt class="filename">postgresql.conf</tt><a name="id2580394"></a>,
+    which is normally kept in the data directory. (<tt class="command">initdb</tt>
+    installs a default copy there.) An example of what this file might look
+    like is:
 </p>
 <pre class="programlisting"># This is a comment
 log_connections = yes
@@ -43,9 +44,9 @@ search_path = '$user, public'</pre>
     value is optional. Whitespace is insignificant and blank lines are
     ignored. Hash marks (<tt class="literal">#</tt>) introduce comments
     anywhere.  Parameter values that are not simple identifiers or
-    numbers should be single-quoted.
+    numbers must be single-quoted.
    </p>
-<p>    <a name="id2578815"></a>
+<p>    <a name="id2580430"></a>
     The configuration file is reread whenever the
     <tt class="command">postmaster</tt> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
@@ -63,9 +64,12 @@ search_path = '$user, public'</pre>
 <pre class="programlisting">postmaster -c log_connections=yes -c log_destination='syslog'</pre>
 <p>
     Command-line options override any conflicting settings in
-    <tt class="filename">postgresql.conf</tt>.
+    <tt class="filename">postgresql.conf</tt>.  Note that this means you won't
+    be able to change the value on-the-fly by editing
+    <tt class="filename">postgresql.conf</tt>, so while the command-line
+    method may be convenient, it can cost you flexibility later.
    </p>
-<p>    Occasionally it is also useful to give a command line option to
+<p>    Occasionally it is useful to give a command line option to
     one particular session only. The environment variable
     <tt class="envar">PGOPTIONS</tt> can be used for this purpose on the
     client side:
@@ -74,14 +78,14 @@ search_path = '$user, public'</pre>
 <p>
     (This works for any <span class="application">libpq</span>-based client application, not
     just <span class="application">psql</span>.) Note that this won't work for
-    parameters that are fixed when the server is started, nor for
-    parameters that require superuser permissions to change (not even
-    if you are logging in as superuser).
+    parameters that are fixed when the server is started or that must be
+    specified in <tt class="filename">postgresql.conf</tt>.
    </p>
 <p>    Furthermore, it is possible to assign a set of option settings to
     a user or a database.  Whenever a session is started, the default
     settings for the user and database involved are loaded.  The
-    commands <a href="sql-alterdatabase.html">ALTER DATABASE</a> and <a href="sql-alteruser.html">ALTER USER</a>,
+    commands <a href="sql-alteruser.html">ALTER USER</a>
+    and <a href="sql-alterdatabase.html">ALTER DATABASE</a>,
     respectively, are used to configure these settings.  Per-database
     settings override anything received from the
     <tt class="command">postmaster</tt> command-line or the configuration
@@ -99,8 +103,8 @@ search_path = '$user, public'</pre>
     <tt class="command">SET</tt>: for example, if they control behavior that
     cannot reasonably be changed without restarting
     <span class="productname">PostgreSQL</span>.  Also, some parameters can
-    be modified via <tt class="command">SET</tt> by superusers, but not by
-    ordinary users.
+    be modified via <tt class="command">SET</tt> or <tt class="command">ALTER</tt> by superusers,
+    but not by ordinary users.
    </p>
 <p>    The <a href="sql-show.html">SHOW</a>
     command allows inspection of the current values of all parameters.
@@ -118,6 +122,17 @@ search_path = '$user, public'</pre>
 <a name="runtime-config-file-locations"></a>16.4.1. File Locations</h3></div></div>
 <div></div>
 </div>
+<p>      In addition to the <tt class="filename">postgresql.conf</tt> file
+      already mentioned, <span class="productname">PostgreSQL</span> uses
+      two other manually-edited configuration files, which control
+      client authentication (their use is discussed in <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>).
+      By default, all three configuration files are stored
+      in the database cluster's data directory.  The options described
+      in this subsection allow the configuration files to be placed elsewhere.
+      (Doing so can ease administration.  In particular it is often
+      easier to ensure that the configuration files are properly backed-up
+      when they are kept separate.)
+     </p>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-data-directory"></a><span class="term"><tt class="varname">data_directory</tt> (<tt class="type">string</tt>)</span>
@@ -135,41 +150,42 @@ search_path = '$user, public'</pre>
 <dt>
 <a name="guc-hba-file"></a><span class="term"><tt class="varname">hba_file</tt> (<tt class="type">string</tt>)</span>
 </dt>
-<dd><p>         Specifies the configuration file for host-based authentication.
+<dd><p>         Specifies the configuration file for host-based authentication
+         (customarily called <tt class="filename">pg_hba.conf</tt>).
          This option can only be set at server start.
        </p></dd>
 <dt>
 <a name="guc-ident-file"></a><span class="term"><tt class="varname">ident_file</tt> (<tt class="type">string</tt>)</span>
 </dt>
 <dd><p>         Specifies the configuration file for
-         <span class="application">ident</span> authentication.
+         <span class="application">ident</span> authentication
+         (customarily called <tt class="filename">pg_ident.conf</tt>).
          This option can only be set at server start.
        </p></dd>
 <dt>
-<a name="external-pid-file"></a><span class="term"><tt class="varname">external_pid_file</tt> (<tt class="type">string</tt>)</span>
+<a name="guc-external-pid-file"></a><span class="term"><tt class="varname">external_pid_file</tt> (<tt class="type">string</tt>)</span>
 </dt>
-<dd><p>         Specifies that the <span class="application">postmaster</span> should create an
-         additional process-id (PID) file for use by server administration
-         programs.
-         This option can only be set at server start.
+<dd><p>        Specifies the name of an additional process-id (PID) file that the
+        <span class="application">postmaster</span> should create for use by server
+        administration programs.
+        This option can only be set at server start.
        </p></dd>
 </dl></div>
-<p>      In a default installation, none of the above options is set explicitly
-      in the <tt class="filename">postgresql.conf</tt> file.  Instead, the
+<p>      In a default installation, none of the above options are set explicitly.
+      Instead, the
       data directory is specified by the <tt class="option">-D</tt> command-line
       option or the <tt class="envar">PGDATA</tt> environment variable, and the
-      configuration files are all placed within the data directory.
+      configuration files are all found within the data directory.
      </p>
-<p>      It is also possible to separate the configuration files from the data
-      directory, which can ease administration.  (In particular it is often
-      easier to ensure that the configuration files are properly backed-up
-      when they are kept separate.)  To do this, the <tt class="option">-D</tt>
+<p>      If you wish to keep the configuration files elsewhere than the
+      data directory, the postmaster's <tt class="option">-D</tt>
       command-line option or <tt class="envar">PGDATA</tt> environment variable
       must point to the directory containing the configuration files,
-      and the <tt class="varname">data_directory</tt> option is set in
+      and the <tt class="varname">data_directory</tt> option must be set in
       <tt class="filename">postgresql.conf</tt> (or on the command line) to show
       where the data directory is actually located.  Notice that
-      <tt class="varname">data_directory</tt> overrides <tt class="option">-D</tt> for the location
+      <tt class="varname">data_directory</tt> overrides <tt class="option">-D</tt> and
+      <tt class="envar">PGDATA</tt> for the location
       of the data directory, but not for the location of the configuration
       files.
      </p>
@@ -244,7 +260,7 @@ search_path = '$user, public'</pre>
       (<tt class="type">integer</tt>)</span>
 </dt>
 <dd>
-<p>        Determines the number of &#8220;<span class="quote">connection slots</span>&#8221; that
+<p>        Determines the number of connection &#8220;<span class="quote">slots</span>&#8221; that
         are reserved for connections by <span class="productname">PostgreSQL</span>
         superusers.  At most <a href="runtime-config.html#guc-max-connections">max_connections</a>
         connections can ever be active simultaneously.  Whenever the
@@ -283,8 +299,8 @@ search_path = '$user, public'</pre>
 <a name="guc-unix-socket-permissions"></a><span class="term"><tt class="varname">unix_socket_permissions</tt> (<tt class="type">integer</tt>)</span>
 </dt>
 <dd>
-<p>        Sets the access permissions of the Unix-domain socket.  Unix
-        domain sockets use the usual Unix file system permission set.
+<p>        Sets the access permissions of the Unix-domain socket.  Unix-domain
+        sockets use the usual Unix file system permission set.
         The option value is expected to be a numeric mode
         specification in the form accepted by the
         <tt class="function">chmod</tt> and <tt class="function">umask</tt>
@@ -295,8 +311,8 @@ search_path = '$user, public'</pre>
         anyone can connect. Reasonable alternatives are
         <tt class="literal">0770</tt> (only user and group, see also
         <tt class="varname">unix_socket_group</tt>) and <tt class="literal">0700</tt>
-        (only user). (Note that actually for a Unix domain socket, only write
-        permission matters and there is no point in setting or revoking
+        (only user). (Note that for a Unix-domain socket, only write
+        permission matters and so there is no point in setting or revoking
         read or execute permissions.)
        </p>
 <p>        This access control mechanism is independent of the one
@@ -310,8 +326,8 @@ search_path = '$user, public'</pre>
 </dt>
 <dd><p>        Specifies the <span class="productname">Rendezvous</span> broadcast
         name.  By default, the computer name is used, specified as an
-        empty string ''.  This option is only meaningful on platforms
-        that support <span class="productname">Rendezvous</span>.  This
+        empty string ''.  This option is ignored if the server was not
+        compiled with <span class="productname">Rendezvous</span> support.  This
         option can only be set at server start.
        </p></dd>
 </dl></div>
@@ -533,8 +549,8 @@ search_path = '$user, public'</pre>
         to be executed. If more than one library is to be loaded,
         separate their names with commas.
        </p>
-<p>        If <tt class="literal">mylib</tt> or <tt class="literal">mylib_init</tt> are not found, the
-        server will fail to start.
+<p>        If a specified library or initialization function is not found,
+        the server will fail to start.
        </p>
 <p>        <span class="productname">PostgreSQL</span> procedural language
         libraries may be preloaded in this way, typically by using the
@@ -545,8 +561,9 @@ search_path = '$user, public'</pre>
 <p>        By preloading a shared library (and initializing it if
         applicable), the library startup time is avoided when the
         library is first used.  However, the time to start each new
-        server process may increase, even if that process never
-        uses the library.
+        server process may increase slightly, even if that process never
+        uses the library.  So this option is recommended only for
+        libraries that will be used in most sessions.
        </p>
 </dd>
 </dl></div>
@@ -837,7 +854,7 @@ search_path = '$user, public'</pre>
 <dt>
 <a name="guc-checkpoint-warning"></a><span class="term"><tt class="varname">checkpoint_warning</tt> (<tt class="type">integer</tt>)</span>
 </dt>
-<dd><p>        Write a message to the server logs if checkpoints caused by
+<dd><p>        Write a message to the server log if checkpoints caused by
         the filling of checkpoint segment files happen closer together
         than this many seconds.  The default is 30 seconds.
         Zero turns off the warning.
@@ -865,11 +882,11 @@ search_path = '$user, public'</pre>
         server start or in the <tt class="filename">postgresql.conf</tt>
         file.
        </p>
-<p>        It is important for the command to return a zero exit status only if
-        it succeeds.  Examples:
+<p>        It is important for the command to return a zero exit status if
+        and only if it succeeds.  Examples:
 </p>
 <pre class="programlisting">archive_command = 'cp "%p" /mnt/server/archivedir/"%f"'
-archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
+archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <p>
        </p>
 </dd>
@@ -888,17 +905,19 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <a name="runtime-config-query-enable"></a>16.4.5.1. Planner Method Configuration</h4></div></div>
 <div></div>
 </div>
-<p>       These configuration parameters provide a crude method for
+<p>       These configuration parameters provide a crude method of
        influencing the query plans chosen by the query optimizer. If
        the default plan chosen by the optimizer for a particular query
        is not optimal, a temporary solution may be found by using one
        of these configuration parameters to force the optimizer to
-       choose a better plan. Other ways to improve the quality of the
-       plans chosen by the optimizer include configuring the <a href="runtime-config.html#runtime-config-query-constants">      Planner Cost Constants
+       choose a different plan.  Turning one of these settings off
+       permanently is seldom a good idea, however.
+       Better ways to improve the quality of the
+       plans chosen by the optimizer include adjusting the <a href="runtime-config.html#runtime-config-query-constants">      Planner Cost Constants
      </a>, running <a href="sql-analyze.html">ANALYZE</a> more
        frequently, increasing the value of the <a href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a> configuration parameter,
-       and increasing the amount of statistics collected for a
-       particular column using <tt class="command">ALTER TABLE SET
+       and increasing the amount of statistics collected for
+       specific columns using <tt class="command">ALTER TABLE SET
        STATISTICS</tt>.
       </p>
 <div class="variablelist"><dl>
@@ -906,29 +925,25 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <a name="guc-enable-hashagg"></a><span class="term"><tt class="varname">enable_hashagg</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of hashed
-        aggregation plan types. The default is on. This is used for
-        debugging the query planner.
+        aggregation plan types. The default is on.
        </p></dd>
 <dt>
 <a name="guc-enable-hashjoin"></a><span class="term"><tt class="varname">enable_hashjoin</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of hash-join plan
-        types. The default is on. This is used for debugging the query
-        planner.
+        types. The default is on.
        </p></dd>
 <dt>
 <a name="guc-enable-indexscan"></a><span class="term"><tt class="varname">enable_indexscan</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of index-scan plan
-        types. The default is on. This is used for debugging the query
-        planner.
+        types. The default is on.
        </p></dd>
 <dt>
 <a name="guc-enable-mergejoin"></a><span class="term"><tt class="varname">enable_mergejoin</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of merge-join plan
-        types. The default is on. This is used for debugging the query
-        planner.
+        types. The default is on.
        </p></dd>
 <dt>
 <a name="guc-enable-nestloop"></a><span class="term"><tt class="varname">enable_nestloop</tt> (<tt class="type">boolean</tt>)</span>
@@ -937,7 +952,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
         plans. It's not possible to suppress nested-loop joins entirely,
         but turning this variable off discourages the planner from using
         one if there are other methods available. The default is
-        on. This is used for debugging the query planner.
+        on.
        </p></dd>
 <dt>
 <a name="guc-enable-seqscan"></a><span class="term"><tt class="varname">enable_seqscan</tt> (<tt class="type">boolean</tt>)</span>
@@ -946,7 +961,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
         plan types. It's not possible to suppress sequential scans
         entirely, but turning this variable off discourages the planner
         from using one if there are other methods available. The
-        default is on. This is used for debugging the query planner.
+        default is on.
        </p></dd>
 <dt>
 <a name="guc-enable-sort"></a><span class="term"><tt class="varname">enable_sort</tt> (<tt class="type">boolean</tt>)</span>
@@ -955,14 +970,13 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
         steps. It's not possible to suppress explicit sorts entirely,
         but turning this variable off discourages the planner from
         using one if there are other methods available. The default
-        is on. This is used for debugging the query planner.
+        is on.
        </p></dd>
 <dt>
 <a name="guc-enable-tidscan"></a><span class="term"><tt class="varname">enable_tidscan</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
 <dd><p>        Enables or disables the query planner's use of <span class="acronym">TID</span>
-        scan plan types. The default is on. This is used for debugging
-        the query planner.
+        scan plan types. The default is on.
        </p></dd>
 </dl></div>
 </div>
@@ -1067,11 +1081,11 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
       (<tt class="type">integer</tt>)</span>
 </dt>
 <dd>
-<p>        Controls the tradeoff between planning time and query plan
+<p>        Controls the trade off between planning time and query plan
         efficiency in GEQO. This variable must be an integer in the
         range from 1 to 10. The default value is 5. Larger values
         increase the time spent doing query planning, but also
-        increase the likelyhood that an efficient query plan will be
+        increase the likelihood that an efficient query plan will be
         chosen.
        </p>
 <p>        <tt class="varname">geqo_effort</tt> doesn't actually do anything
@@ -1192,13 +1206,13 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <a name="runtime-config-logging"></a>16.4.6. Error Reporting and Logging</h3></div></div>
 <div></div>
 </div>
-<a name="id2582717"></a><div class="sect3" lang="en">
+<a name="id2584350"></a><div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
 <a name="runtime-config-logging-where"></a>16.4.6.1. Where to log</h4></div></div>
 <div></div>
 </div>
-<a name="id2582738"></a><div class="variablelist"><dl>
+<a name="id2584370"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><tt class="varname">log_destination</tt> (<tt class="type">string</tt>)</span>
 </dt>
@@ -1377,6 +1391,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
         message that is logged.  Valid values are <tt class="literal">TERSE</tt>,
         <tt class="literal">DEFAULT</tt>, and <tt class="literal">VERBOSE</tt>, each adding more
         fields to displayed messages.
+        Only superusers can change this setting.
        </p></dd>
 <dt>
 <a name="guc-log-min-error-statement"></a><span class="term"><tt class="varname">log_min_error_statement</tt> (<tt class="type">string</tt>)</span>
@@ -1447,7 +1462,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
             outside a transaction block.
            </p></dd>
 <dt><span class="term"><tt class="literal">ERROR</tt></span></dt>
-<dd><p>            Reports an error that caused the current transaction to abort.
+<dd><p>            Reports an error that caused the current command to abort.
            </p></dd>
 <dt><span class="term"><tt class="literal">LOG</tt></span></dt>
 <dd><p>            Reports information of interest to administrators, e.g.,
@@ -1473,20 +1488,21 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">debug_print_parse</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">debug_print_rewritten</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="varname">debug_print_plan</tt> (<tt xmlns="" class="type">boolean</tt>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="varname">debug_pretty_print</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
-<dd><p>        These options enable various debugging output to be sent to
-        the client or server log. For each executed query, they print
+<dd><p>        These options enable various debugging output to be emitted.
+        For each executed query, they print
         the resulting parse tree, the query rewriter output, or the
         execution plan.  <tt class="varname">debug_pretty_print</tt> indents
         these displays to produce a more readable but much longer
         output format.  <tt class="varname">client_min_messages</tt> or
         <tt class="varname">log_min_messages</tt> must be
-        <tt class="literal">DEBUG1</tt> or lower to send the output to the
-        client or server logs. These options are off by default.
+        <tt class="literal">DEBUG1</tt> or lower to actually send this output
+        to the client or the server log, respectively.
+        These options are off by default.
        </p></dd>
 <dt>
 <a name="guc-log-connections"></a><span class="term"><tt class="varname">log_connections</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
-<dd><p>        This outputs a line to the server logs detailing each successful
+<dd><p>        This outputs a line to the server log detailing each successful
         connection. This is off by default, although it is probably very
         useful. This option can only be set at server start or in the
         <tt class="filename">postgresql.conf</tt> configuration file.
@@ -1494,7 +1510,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <dt>
 <a name="guc-log-disconnections"></a><span class="term"><tt class="varname">log_disconnections</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
-<dd><p>        This outputs a line in the server logs similar to
+<dd><p>        This outputs a line in the server log similar to
         <tt class="varname">log_connections</tt> but at session termination,
         and includes the duration of the session.  This is off by
         default. This option can only be set at server start or in the
@@ -1523,7 +1539,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
          only recognised by session processes, and do not apply to
          background processes such as the postmaster. <span class="application">Syslog</span>
          produces its own 
-         timestamp and process ID information, so you probably do not want to
+         time stamp and process ID information, so you probably do not want to
          use those escapes if you are using <span class="application">syslog</span>.
          This option can only be set at server start or in the
          <tt class="filename">postgresql.conf</tt> configuration file.
@@ -1543,72 +1559,70 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <tbody>
 <tr>
 <td><tt class="literal">%u</tt></td>
-<td>User Name</td>
-<td>Yes</td>
+<td>User name</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><tt class="literal">%d</tt></td>
-<td>Database Name</td>
-<td>Yes</td>
+<td>Database name</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><tt class="literal">%r</tt></td>
-<td>Remote Hostname or IP address, and Remote Port</td>
-<td>Yes</td>
+<td>Remote host name or IP address, and remote port</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><tt class="literal">%p</tt></td>
 <td>Process ID</td>
-<td>No</td>
+<td>no</td>
 </tr>
 <tr>
 <td><tt class="literal">%t</tt></td>
-<td>Timestamp</td>
-<td>No</td>
+<td>Time stamp</td>
+<td>no</td>
 </tr>
 <tr>
 <td><tt class="literal">%i</tt></td>
-<td>Command Tag. This is the command which generated the log
-              line.</td>
-<td>Yes</td>
+<td>Command tag: This is the command that generated the log line.</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><tt class="literal">%c</tt></td>
-<td>Session ID. A unique identifier for each session.
+<td>Session ID: A unique identifier for each session.
              It is 2 4-byte hexadecimal numbers (without leading zeros) 
              separated by a dot. The numbers
-             are the Session Start Time and the Process ID, so this can also
+             are the session start time and the process ID, so this can also
              be used as a space saving way of printing these items.</td>
-<td>Yes</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><tt class="literal">%l</tt></td>
-<td>Number of the log line for each process,
-              starting at 1</td>
-<td>No</td>
+<td>Number of the log line for each process, starting at 1</td>
+<td>no</td>
 </tr>
 <tr>
 <td><tt class="literal">%s</tt></td>
-<td>Session Start Timestamp</td>
-<td>Yes</td>
+<td>Session start time stamp</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><tt class="literal">%x</tt></td>
 <td>Transaction ID</td>
-<td>Yes</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><tt class="literal">%q</tt></td>
 <td>Does not produce any output, but tells non-session
              processes to stop at this point in the string. Ignored by
              session processes.</td>
-<td>No</td>
+<td>no</td>
 </tr>
 <tr>
 <td><tt class="literal">%%</tt></td>
 <td>Literal <tt class="literal">%</tt>
 </td>
-<td>No</td>
+<td>no</td>
 </tr>
 </tbody>
 </table></div>
@@ -1652,11 +1666,12 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <dt>
 <a name="guc-log-hostname"></a><span class="term"><tt class="varname">log_hostname</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
-<dd><p>        By default, connection logs only show the IP address of the
-        connecting host. If you want it to show the host name you can
-        turn this on, but depending on your host name resolution setup
-        it might impose a non-negligible performance penalty. This
-        option can only be set at server start.
+<dd><p>        By default, connection log messages only show the IP address of the
+        connecting host. Turning on this option causes logging of the
+        host name as well.  Note that depending on your host name resolution
+        setup this might impose a non-negligible performance penalty. This
+        option can only be set at server start or in the
+        <tt class="filename">postgresql.conf</tt> file.
        </p></dd>
 </dl></div>
 </div>
@@ -1833,7 +1848,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <a name="guc-check-function-bodies"></a><span class="term"><tt class="varname">check_function_bodies</tt> (<tt class="type">boolean</tt>)</span>
 </dt>
 <dd><p>        This parameter is normally true.  When set to false, it disables
-        validation of the function body string in <a href="sql-createfunction.html">CREATE FUNCTION</a>.  Disabling validation is
+        validation of the function body string during <a href="sql-createfunction.html">CREATE FUNCTION</a>.  Disabling validation is
         occasionally useful to avoid problems such as forward
         references when restoring function definitions from a dump.
        </p></dd>
@@ -1866,7 +1881,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <dt>
 <a name="guc-statement-timeout"></a><span class="term"><tt class="varname">statement_timeout</tt> (<tt class="type">integer</tt>)</span>
 </dt>
-<dd><p>        Aborts any statement that takes over the specified number of
+<dd><p>        Abort any statement that takes over the specified number of
         milliseconds.  A value of zero (the default) turns off the limitation.
        </p></dd>
 </dl></div>
@@ -1899,8 +1914,8 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <a name="guc-timezone"></a><span class="term"><tt class="varname">timezone</tt> (<tt class="type">string</tt>)</span>
 </dt>
 <dd><p>        Sets the time zone for displaying and interpreting time
-        stamps.  The default is to use whatever the system environment
-        specifies as the time zone.  See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
+        stamps.  The default is 'unknown', which means to use whatever 
+        the system environment specifies as the time zone.  See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
        </p></dd>
 <dt>
 <a name="guc-australian-timezones"></a><span class="term"><tt class="varname">australian_timezones</tt> (<tt class="type">boolean</tt>)</span>
@@ -2067,7 +2082,10 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <dd><p>        The shared lock table is sized on the assumption that at most
         <tt class="varname">max_locks_per_transaction</tt> *
         <tt class="varname">max_connections</tt> distinct objects will need to
-        be locked at any one time. The default, 64, has historically
+        be locked at any one time. (Thus, this parameter's name may be
+        confusing: it is not a hard limit on the number of locks taken
+        by any one transaction, but rather a maximum average value.)
+        The default, 64, has historically
         proven sufficient, but you might need to raise this value if you
         have clients that touch many different tables in a single
         transaction. This option can only be set at server start.
@@ -2095,7 +2113,8 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
         present.  The default is <tt class="literal">true</tt> for compatibility with
         previous releases of <span class="productname">PostgreSQL</span>.  However, this
         behavior is not SQL-standard, and many people dislike it because it
-        can mask mistakes.  Set to <tt class="literal">false</tt> for the SQL-standard
+        can mask mistakes (such as referencing a table where you should have
+        referenced its alias).  Set to <tt class="literal">false</tt> for the SQL-standard
         behavior of rejecting references to tables that are not listed in
         <tt class="literal">FROM</tt>.
        </p></dd>
@@ -2106,7 +2125,8 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
         <tt class="literal">advanced</tt>, <tt class="literal">extended</tt>, or <tt class="literal">basic</tt>.
         The default is <tt class="literal">advanced</tt>.  The <tt class="literal">extended</tt>
         setting may be useful for exact backwards compatibility with
-        pre-7.4 releases of <span class="productname">PostgreSQL</span>.
+        pre-7.4 releases of <span class="productname">PostgreSQL</span>.  See
+        <a href="functions-matching.html#posix-syntax-details" title="9.7.3.1. Regular Expression Details">Section 9.7.3.1, &#8220;Regular Expression Details&#8221;</a> for details.
        </p></dd>
 <dt>
 <a name="guc-sql-inheritance"></a><span class="term"><tt class="varname">sql_inheritance</tt> (<tt class="type">boolean</tt>)</span>
@@ -2124,12 +2144,12 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 </dt>
 <dd>
 <p>        This controls whether <tt class="command">CREATE TABLE</tt> and
-        <tt class="command">CREATE TABLE AS</tt> will include OIDs in
+        <tt class="command">CREATE TABLE AS</tt> include an OID column in
         newly-created tables, if neither <tt class="literal">WITH OIDS</tt>
         nor <tt class="literal">WITHOUT OIDS</tt> is specified. It also
         determines whether OIDs will be included in tables created by
         <tt class="command">SELECT INTO</tt>. In
-        <span class="productname">PostgreSQL</span> 8.0.0beta5
+        <span class="productname">PostgreSQL</span> 8.0
         <tt class="varname">default_with_oids</tt> defaults to true. This is
         also the behavior of previous versions of
         <span class="productname">PostgreSQL</span>. However, assuming that
@@ -2200,7 +2220,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Win32</pre>
 <p>     The following &#8220;<span class="quote">parameters</span>&#8221; are read-only, and are determined
      when <span class="productname">PostgreSQL</span> is compiled or when it is
      installed. As such, they have been excluded from the sample
-     <tt class="filename">postgresql.conf</tt> file.  These options determine
+     <tt class="filename">postgresql.conf</tt> file.  These options report
      various aspects of <span class="productname">PostgreSQL</span> behavior
      that may be of interest to certain applications, particularly
      administrative front-ends.
@@ -2401,7 +2421,7 @@ plruby.bar = true        # generates error, unknown class name</pre>
 </dt>
 <dd><p>        Detection of a damaged page header normally causes
         <span class="productname">PostgreSQL</span> to report an error, aborting the current
-        transaction.  Setting <tt class="varname">zero_damaged_pages</tt> to true causes
+        command.  Setting <tt class="varname">zero_damaged_pages</tt> to true causes
         the system to instead report a warning, zero out the damaged page,
         and continue processing.  This behavior <span class="emphasis"><em>will destroy data</em></span>,
         namely all the rows on the damaged page.  But it allows you to get

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="previous" href="datatype-boolean.html" title="8.6. Boolean Type">
 <link rel="next" href="datatype-net-types.html" title="8.8. Network Address Types">
@@ -96,10 +96,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2536192"></a>8.7.1. Points</h3></div></div>
+<a name="id2536752"></a>8.7.1. Points</h3></div></div>
 <div></div>
 </div>
-<a name="id2536196"></a><p>     Points are the fundamental two-dimensional building block for geometric types.
+<a name="id2536755"></a><p>     Points are the fundamental two-dimensional building block for geometric types.
      Values of type <tt class="type">point</tt> are specified using the following syntax:
 
 </p>
@@ -114,10 +114,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2536236"></a>8.7.2. Line Segments</h3></div></div>
+<a name="id2536795"></a>8.7.2. Line Segments</h3></div></div>
 <div></div>
 </div>
-<a name="id2536240"></a><a name="id2536245"></a><p>     Line segments (<tt class="type">lseg</tt>) are represented by pairs of points.
+<a name="id2536799"></a><a name="id2536805"></a><p>     Line segments (<tt class="type">lseg</tt>) are represented by pairs of points.
      Values of type <tt class="type">lseg</tt> are specified using the following syntax:
 
 </p>
@@ -136,12 +136,12 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2536334"></a>8.7.3. Boxes</h3></div></div>
+<a name="id2536893"></a>8.7.3. Boxes</h3></div></div>
 <div></div>
 </div>
-<a name="id2536337"></a><a name="id2536343"></a><p>     Boxes are represented by pairs of points that are opposite
+<a name="id2536897"></a><a name="id2536903"></a><p>     Boxes are represented by pairs of points that are opposite
      corners of the box.
-     Values of type <tt class="type">box</tt> is specified using the following syntax:
+     Values of type <tt class="type">box</tt> are specified using the following syntax:
 
 </p>
 <pre class="synopsis">( ( <i class="replaceable"><tt>x1</tt></i> , <i class="replaceable"><tt>y1</tt></i> ) , ( <i class="replaceable"><tt>x2</tt></i> , <i class="replaceable"><tt>y2</tt></i> ) )
@@ -153,33 +153,26 @@
      <tt class="literal">(<i class="replaceable"><tt>x1</tt></i>,<i class="replaceable"><tt>y1</tt></i>)</tt>
      and
      <tt class="literal">(<i class="replaceable"><tt>x2</tt></i>,<i class="replaceable"><tt>y2</tt></i>)</tt>
-     are the opposite corners of the box.
+     are any two opposite corners of the box.
     </p>
 <p>     Boxes are output using the first syntax.
      The corners are reordered on input to store
      the upper right corner, then the lower left corner.
      Other corners of the box can be entered, but the lower
-     left and upper right corners are determined from the input and stored corners.
+     left and upper right corners are determined from the input and stored.
     </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2536434"></a>8.7.4. Paths</h3></div></div>
+<a name="id2536994"></a>8.7.4. Paths</h3></div></div>
 <div></div>
 </div>
-<a name="id2536438"></a><p>     Paths are represented by connected sets of points. Paths can be
+<a name="id2536997"></a><p>     Paths are represented by lists of connected points. Paths can be
      <i class="firstterm">open</i>, where
-     the first and last points in the set are not connected, and <i class="firstterm">closed</i>,
-     where the first and last point are connected. The functions
-     <tt class="function">popen(<i class="replaceable"><tt>p</tt></i>)</tt>
-     and
-     <tt class="function">pclose(<i class="replaceable"><tt>p</tt></i>)</tt>
-     are supplied to force a path to be open or closed, and the functions
-     <tt class="function">isopen(<i class="replaceable"><tt>p</tt></i>)</tt>
-     and
-     <tt class="function">isclosed(<i class="replaceable"><tt>p</tt></i>)</tt>
-     are supplied to test for either type in an expression.
+     the first and last points in the list are not considered connected, or
+     <i class="firstterm">closed</i>,
+     where the first and last points are considered connected.
     </p>
 <p>     Values of type <tt class="type">path</tt> are specified using the following syntax:
 
@@ -202,10 +195,11 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2536594"></a>8.7.5. Polygons</h3></div></div>
+<a name="id2537115"></a>8.7.5. Polygons</h3></div></div>
 <div></div>
 </div>
-<a name="id2536598"></a><p>     Polygons are represented by sets of points. Polygons should probably be
+<a name="id2537118"></a><p>     Polygons are represented by lists of points (the vertexes of the
+     polygon). Polygons should probably be
      considered equivalent to closed paths, but are stored differently 
      and have their own set of support routines.
     </p>
@@ -227,10 +221,10 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="id2536681"></a>8.7.6. Circles</h3></div></div>
+<a name="id2537202"></a>8.7.6. Circles</h3></div></div>
 <div></div>
 </div>
-<a name="id2536684"></a><p>     Circles are represented by a center point and a radius.
+<a name="id2537206"></a><p>     Circles are represented by a center point and a radius.
      Values of type <tt class="type">circle</tt> are specified using the following syntax:
 
 </p>

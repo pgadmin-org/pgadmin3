@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
 <link rel="previous" href="datatype-pseudo.html" title="8.13. Pseudo-Types">
 <link rel="next" href="functions-comparison.html" title="9.2. Comparison Operators">
@@ -28,8 +28,7 @@
 <dt><span class="sect1"><a href="functions-matching.html">9.7. Pattern Matching</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="functions-matching.html#functions-like">9.7.1. LIKE</a></span></dt>
-<dt><span class="sect2"><a href="functions-matching.html#functions-sql99-regexp">9.7.2. SIMILAR TO and SQL99
-     Regular Expressions</a></span></dt>
+<dt><span class="sect2"><a href="functions-matching.html#functions-similarto-regexp">9.7.2. SIMILAR TO Regular Expressions</a></span></dt>
 <dt><span class="sect2"><a href="functions-matching.html#functions-posix-regexp">9.7.3. POSIX Regular Expressions</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="functions-formatting.html">9.8. Data Type Formatting Functions</a></span></dt>
@@ -41,39 +40,39 @@
 <dt><span class="sect2"><a href="functions-datetime.html#functions-datetime-current">9.9.4. Current Date/Time</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="functions-geometry.html">9.10. Geometric Functions and Operators</a></span></dt>
-<dt><span class="sect1"><a href="functions-net.html">9.11. Network Address Type Functions</a></span></dt>
+<dt><span class="sect1"><a href="functions-net.html">9.11. Network Address Functions and Operators</a></span></dt>
 <dt><span class="sect1"><a href="functions-sequence.html">9.12. Sequence Manipulation Functions</a></span></dt>
 <dt><span class="sect1"><a href="functions-conditional.html">9.13. Conditional Expressions</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="functions-conditional.html#id2559858">9.13.1. CASE</a></span></dt>
-<dt><span class="sect2"><a href="functions-conditional.html#id2560069">9.13.2. COALESCE</a></span></dt>
-<dt><span class="sect2"><a href="functions-conditional.html#id2560131">9.13.3. NULLIF</a></span></dt>
+<dt><span class="sect2"><a href="functions-conditional.html#id2560607">9.13.1. CASE</a></span></dt>
+<dt><span class="sect2"><a href="functions-conditional.html#id2560818">9.13.2. COALESCE</a></span></dt>
+<dt><span class="sect2"><a href="functions-conditional.html#id2560880">9.13.3. NULLIF</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="functions-array.html">9.14. Array Functions and Operators</a></span></dt>
 <dt><span class="sect1"><a href="functions-aggregate.html">9.15. Aggregate Functions</a></span></dt>
 <dt><span class="sect1"><a href="functions-subquery.html">9.16. Subquery Expressions</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="functions-subquery.html#id2561865">9.16.1. EXISTS</a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2561979">9.16.2. IN</a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2562088">9.16.3. NOT IN</a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2562198">9.16.4. ANY/SOME</a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2562384">9.16.5. ALL</a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2562536">9.16.6. Row-wise Comparison</a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2562520">9.16.1. EXISTS</a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2562634">9.16.2. IN</a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2562743">9.16.3. NOT IN</a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2562853">9.16.4. ANY/SOME</a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2563039">9.16.5. ALL</a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2563191">9.16.6. Row-wise Comparison</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="functions-comparisons.html">9.17. Row and Array Comparisons</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562687">9.17.1. IN</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562746">9.17.2. NOT IN</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562832">9.17.3. ANY/SOME (array)</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562903">9.17.4. ALL (array)</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2562948">9.17.5. Row-wise Comparison</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2563342">9.17.1. IN</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2563401">9.17.2. NOT IN</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2563487">9.17.3. ANY/SOME (array)</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2563558">9.17.4. ALL (array)</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2563603">9.17.5. Row-wise Comparison</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="functions-srf.html">9.18. Set Returning Functions</a></span></dt>
 <dt><span class="sect1"><a href="functions-info.html">9.19. System Information Functions</a></span></dt>
 <dt><span class="sect1"><a href="functions-admin.html">9.20. System Administration Functions</a></span></dt>
 </dl>
 </div>
-<a name="id2539872"></a><a name="id2539881"></a><p>   <span class="productname">PostgreSQL</span> provides a large number of
+<a name="id2540433"></a><a name="id2540441"></a><p>   <span class="productname">PostgreSQL</span> provides a large number of
    functions and operators for the built-in data types.  Users can also
    define their own functions and operators, as described in
    <a href="server-programming.html" title="Part V. Server Programming">Part V, &#8220;Server Programming&#8221;</a>.  The
@@ -96,19 +95,19 @@
 <a name="functions-logical"></a>9.1. Logical Operators</h2></div></div>
 <div></div>
 </div>
-<a name="id2539951"></a><a name="id2539964"></a><p>    The usual logical operators are available:
+<a name="id2540511"></a><a name="id2540524"></a><p>    The usual logical operators are available:
 
-    <a name="id2539978"></a>
+    <a name="id2540538"></a>
 
-    <a name="id2539984"></a>
+    <a name="id2540545"></a>
 
-    <a name="id2539991"></a>
+    <a name="id2540552"></a>
 
-    <a name="id2539998"></a>
+    <a name="id2540558"></a>
 
-    <a name="id2540005"></a>
+    <a name="id2540565"></a>
 
-    <a name="id2540012"></a>
+    <a name="id2540572"></a>
 
     </p>
 <table class="simplelist" border="0" summary="Simple list">

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="maintenance.html" title="Chapter 21. Routine Database Maintenance Tasks">
 <link rel="previous" href="routine-reindex.html" title="21.2. Routine Reindexing">
 <link rel="next" href="backup.html" title="Chapter 22. Backup and Restore">
@@ -16,7 +16,7 @@
 <a name="logfile-maintenance"></a>21.3. Log File Maintenance</h2></div></div>
 <div></div>
 </div>
-<a name="id2598196"></a><p>   It is a good idea to save the database server's log output
+<a name="id2600290"></a><p>   It is a good idea to save the database server's log output
    somewhere, rather than just routing it to <tt class="filename">/dev/null</tt>.
    The log output is invaluable when it comes time to diagnose
    problems.  However, the log output tends to be voluminous
@@ -50,7 +50,7 @@
    If you start the server with
    <tt class="command">pg_ctl</tt>, then <span class="systemitem">stderr</span>
    is already redirected to <span class="systemitem">stdout</span>, so you just need a
-   pipe command:
+   pipe command, for example:
 
 </p>
 <pre class="programlisting">pg_ctl start | rotatelogs /var/log/pgsql_log 86400</pre>
@@ -70,15 +70,17 @@
   </p>
 <p>   On many systems, however, <span class="application">syslog</span> is not very reliable,
    particularly with large log messages; it may truncate or drop messages
-   just when you need them the most.  Also, on <span class="productname">linux</span>,
+   just when you need them the most.  Also, on <span class="productname">Linux</span>,
    <span class="application">syslog</span> will sync each message to disk, yielding poor
    performance.  (You can use a <tt class="literal">-</tt> at the start of the file name
-   in the <span class="application">syslog</span> config file to disable this behavior.)
+   in the <span class="application">syslog</span> configuration file to disable this behavior.)
   </p>
 <p>   Note that all the solutions described above take care of starting new
    log files at configurable intervals, but they do not handle deletion
-   of old, no-longer-interesting log files.  You will also want to set
-   up a batch job to periodically delete old log files.
+   of old, no-longer-interesting log files.  You will probably want to set
+   up a batch job to periodically delete old log files.  Another possibility
+   is to configure the rotation program so that old log files are overwritten
+   cyclically.
   </p>
 </div></body>
 </html>

@@ -1,22 +1,63 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>51.2. BKI Commands</title>
+<title>50.2. BKI Commands</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
-<link rel="up" href="bki.html" title="Chapter 51. BKI Backend Interface">
-<link rel="previous" href="bki.html" title="Chapter 51. BKI Backend Interface">
-<link rel="next" href="bki-example.html" title="51.3. Example">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="up" href="bki.html" title="Chapter 50. BKI Backend Interface">
+<link rel="previous" href="bki.html" title="Chapter 50. BKI Backend Interface">
+<link rel="next" href="bki-example.html" title="50.3. Example">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="bki-commands"></a>51.2. <span class="acronym">BKI</span> Commands</h2></div></div>
+<a name="bki-commands"></a>50.2. <span class="acronym">BKI</span> Commands</h2></div></div>
 <div></div>
 </div>
 <div class="variablelist"><dl>
+<dt><span class="term">     create 
+     [<span class="optional">bootstrap</span>]
+     [<span class="optional">shared_relation</span>]
+     [<span class="optional">without_oids</span>]
+     <i class="replaceable"><tt>tablename</tt></i>
+     (<i class="replaceable"><tt>name1</tt></i> =
+     <i class="replaceable"><tt>type1</tt></i> [<span class="optional">,
+     <i class="replaceable"><tt>name2</tt></i> = <i class="replaceable"><tt>type2</tt></i>, ...</span>])
+    </span></dt>
+<dd>
+<p>      Create a table named <i class="replaceable"><tt>tablename</tt></i> with the columns given
+      in parentheses.
+     </p>
+<p>      The following column types are supported directly by
+      <tt class="filename">bootstrap.c</tt>: <tt class="type">bool</tt>,
+      <tt class="type">bytea</tt>, <tt class="type">char</tt> (1 byte),
+      <tt class="type">name</tt>, <tt class="type">int2</tt>,
+      <tt class="type">int4</tt>, <tt class="type">regproc</tt>, <tt class="type">regclass</tt>,
+      <tt class="type">regtype</tt>, <tt class="type">text</tt>,
+      <tt class="type">oid</tt>, <tt class="type">tid</tt>, <tt class="type">xid</tt>,
+      <tt class="type">cid</tt>, <tt class="type">int2vector</tt>, <tt class="type">oidvector</tt>,
+      <tt class="type">_int4</tt> (array), <tt class="type">_text</tt> (array),
+      <tt class="type">_aclitem</tt> (array).  Although it is possible to create
+      tables containing columns of other types, this cannot be done until
+      after <tt class="structname">pg_type</tt> has been created and filled with
+      appropriate entries.
+     </p>
+<p>      When <tt class="literal">bootstrap</tt> is specified,
+      the table will only be created on disk; nothing is entered into
+      <tt class="structname">pg_class</tt>,
+      <tt class="structname">pg_attribute</tt>, etc, for it.  Thus the
+      table will not be accessible by ordinary SQL operations until
+      such entries are made the hard way (with <tt class="literal">insert</tt>
+      commands).  This option is used for creating
+      <tt class="structname">pg_class</tt> etc themselves.
+     </p>
+<p>      The table is created as shared if <tt class="literal">shared_relation</tt> is
+      specified.
+      It will have OIDs unless <tt class="literal">without_oids</tt> is specified.
+     </p>
+</dd>
 <dt><span class="term">     open <i class="replaceable"><tt>tablename</tt></i>
     </span></dt>
 <dd><p>      Open the table called
@@ -30,40 +71,6 @@
       already opened.  If no <i class="replaceable"><tt>tablename</tt></i> is given, then the
       currently open table is closed.
      </p></dd>
-<dt><span class="term">     create <i class="replaceable"><tt>tablename</tt></i>
-     (<i class="replaceable"><tt>name1</tt></i> =
-     <i class="replaceable"><tt>type1</tt></i> [<span class="optional">,
-     <i class="replaceable"><tt>name2</tt></i> = <i class="replaceable"><tt>type2</tt></i>, ...</span>])
-    </span></dt>
-<dd>
-<p>      Create a table named <i class="replaceable"><tt>tablename</tt></i> with the columns given
-      in parentheses.
-     </p>
-<p>      The <i class="replaceable"><tt>type</tt></i> is not necessarily the data
-      type that the column will have in the SQL environment; that is
-      determined by the <tt class="structname">pg_attribute</tt> system
-      catalog.  The type here is essentially only used to allocate
-      storage.  The following types are allowed: <tt class="type">bool</tt>,
-      <tt class="type">bytea</tt>, <tt class="type">char</tt> (1 byte),
-      <tt class="type">name</tt>, <tt class="type">int2</tt>, <tt class="type">int2vector</tt>,
-      <tt class="type">int4</tt>, <tt class="type">regproc</tt>, <tt class="type">regclass</tt>,
-      <tt class="type">regtype</tt>, <tt class="type">text</tt>,
-      <tt class="type">oid</tt>, <tt class="type">tid</tt>, <tt class="type">xid</tt>,
-      <tt class="type">cid</tt>, <tt class="type">oidvector</tt>, <tt class="type">smgr</tt>,
-      <tt class="type">_int4</tt> (array), <tt class="type">_aclitem</tt> (array).
-      Array types can also be indicated by writing
-      <tt class="literal">[]</tt> after the name of the element type.
-     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>       The table will only be created on disk, it will not
-       automatically be registered in the system catalogs and will
-       therefore not be accessible unless appropriate rows are
-       inserted in <tt class="structname">pg_class</tt>,
-       <tt class="structname">pg_attribute</tt>, etc.
-      </p>
-</div>
-</dd>
 <dt><span class="term">     insert [<span class="optional">OID = <i class="replaceable"><tt>oid_value</tt></i></span>] (<i class="replaceable"><tt>value1</tt></i> <i class="replaceable"><tt>value2</tt></i> ...)
     </span></dt>
 <dd>
@@ -85,9 +92,11 @@
       <i class="replaceable"><tt>amname</tt></i> access
       method.  The fields to index are called <i class="replaceable"><tt>name1</tt></i>, <i class="replaceable"><tt>name2</tt></i> etc., and the operator
       classes to use are <i class="replaceable"><tt>opclass1</tt></i>, <i class="replaceable"><tt>opclass2</tt></i> etc., respectively.
+      The index file is created and appropriate catalog entries are
+      made for it, but the index contents are not initialized by this command.
      </p></dd>
 <dt><span class="term">build indices</span></dt>
-<dd><p>      Build the indices that have previously been declared.
+<dd><p>      Fill in the indices that have previously been declared.
      </p></dd>
 </dl></div>
 </div></body>

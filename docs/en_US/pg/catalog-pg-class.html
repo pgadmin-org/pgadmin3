@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
 <link rel="previous" href="catalog-pg-cast.html" title="41.8. pg_cast">
 <link rel="next" href="catalog-pg-constraint.html" title="41.10. pg_constraint">
@@ -16,7 +16,7 @@
 <a name="catalog-pg-class"></a>41.9. <tt class="structname">pg_class</tt></h2></div></div>
 <div></div>
 </div>
-<a name="id2723546"></a><p>   The catalog <tt class="structname">pg_class</tt> catalogs tables and most
+<a name="id2728179"></a><p>   The catalog <tt class="structname">pg_class</tt> catalogs tables and most
    everything else that has columns or is otherwise similar to a
    table.  This includes indexes (but see also
    <tt class="structname">pg_index</tt>), sequences, views, composite types,
@@ -26,7 +26,7 @@
    columns are meaningful for all relation types.
   </p>
 <div class="table">
-<a name="id2723578"></a><p class="title"><b>Table 41.9. <tt class="structname">pg_class</tt> Columns</b></p>
+<a name="id2728211"></a><p class="title"><b>Table 41.9. <tt class="structname">pg_class</tt> Columns</b></p>
 <table summary="pg_class Columns" border="1">
 <colgroup>
 <col>
@@ -58,7 +58,7 @@
 <td><tt class="structfield">reltype</tt></td>
 <td><tt class="type">oid</tt></td>
 <td><tt class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><tt class="structname">pg_type</tt></a>.oid</tt></td>
-<td>       The OID of the data type that corresponds to this table's rowtype,
+<td>       The OID of the data type that corresponds to this table's row type,
        if any (zero for indexes, which have no <tt class="structname">pg_type</tt> entry)
       </td>
 </tr>
@@ -93,11 +93,12 @@
 <td><tt class="structfield">relpages</tt></td>
 <td><tt class="type">int4</tt></td>
 <td> </td>
-<td>       Size of the on-disk representation of this table in pages (size
+<td>       Size of the on-disk representation of this table in pages (of size
        <tt class="symbol">BLCKSZ</tt>).
        This is only an estimate used by the planner.
        It is updated by <tt class="command">VACUUM</tt>,
-       <tt class="command">ANALYZE</tt>, and <tt class="command">CREATE INDEX</tt>.
+       <tt class="command">ANALYZE</tt>, and a few DDL commands
+       such as <tt class="command">CREATE INDEX</tt>.
       </td>
 </tr>
 <tr>
@@ -107,7 +108,8 @@
 <td>       Number of rows in the table.
        This is only an estimate used by the planner.
        It is updated by <tt class="command">VACUUM</tt>,
-       <tt class="command">ANALYZE</tt>, and <tt class="command">CREATE INDEX</tt>.
+       <tt class="command">ANALYZE</tt>, and a few DDL commands
+       such as <tt class="command">CREATE INDEX</tt>.
       </td>
 </tr>
 <tr>
@@ -218,23 +220,24 @@
 <td><tt class="structfield">relhasrules</tt></td>
 <td><tt class="type">bool</tt></td>
 <td> </td>
-<td>Table has rules; see
-       <tt class="structname">pg_rewrite</tt> catalog
+<td>True if table has rules; see
+       <tt class="structname">pg_rewrite</tt> catalog.
       </td>
 </tr>
 <tr>
 <td><tt class="structfield">relhassubclass</tt></td>
 <td><tt class="type">bool</tt></td>
 <td> </td>
-<td>At least one table inherits from this one</td>
+<td>True if table has (or once had) any inheritance children.</td>
 </tr>
 <tr>
 <td><tt class="structfield">relacl</tt></td>
 <td><tt class="type">aclitem[]</tt></td>
 <td> </td>
-<td>       Access privileges; see the descriptions of
-       <tt class="command">GRANT</tt> and <tt class="command">REVOKE</tt> for
-       details.
+<td>       Access privileges; see
+       <a href="sql-grant.html">GRANT</a> and
+       <a href="sql-revoke.html">REVOKE</a>
+       for details.
       </td>
 </tr>
 </tbody>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="previous" href="logfile-maintenance.html" title="21.3. Log File Maintenance">
 <link rel="next" href="backup-file.html" title="22.2. File system level backup">
@@ -23,7 +23,7 @@
 <dd><dl>
 <dt><span class="sect2"><a href="backup.html#backup-dump-restore">22.1.1. Restoring the dump</a></span></dt>
 <dt><span class="sect2"><a href="backup.html#backup-dump-all">22.1.2. Using pg_dumpall</a></span></dt>
-<dt><span class="sect2"><a href="backup.html#backup-dump-large">22.1.3. Large Databases</a></span></dt>
+<dt><span class="sect2"><a href="backup.html#backup-dump-large">22.1.3. Handling large databases</a></span></dt>
 <dt><span class="sect2"><a href="backup.html#backup-dump-caveats">22.1.4. Caveats</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="backup-file.html">22.2. File system level backup</a></span></dt>
@@ -38,7 +38,7 @@
 <dt><span class="sect1"><a href="migration.html">22.4. Migration Between Releases</a></span></dt>
 </dl>
 </div>
-<a name="id2598484"></a><p>  As everything that contains valuable data, <span class="productname">PostgreSQL</span>
+<a name="id2600580"></a><p>  As with everything that contains valuable data, <span class="productname">PostgreSQL</span>
   databases should be backed up regularly. While the procedure is
   essentially simple, it is important to have a basic understanding of
   the underlying techniques and assumptions.
@@ -76,9 +76,9 @@
    client application (albeit a particularly clever one). This means
    that you can do this backup procedure from any remote host that has
    access to the database. But remember that <span class="application">pg_dump</span>
-   does not operate with special permissions. In particular, you must
+   does not operate with special permissions. In particular, it must
    have read access to all tables that you want to back up, so in
-   practice you almost always have to be a database superuser.
+   practice you almost always have to run it as a database superuser.
   </p>
 <p>   To specify which database server <span class="application">pg_dump</span> should
    contact, use the command line options <tt class="option">-h
@@ -133,21 +133,20 @@
     command, you must create it yourself from <tt class="literal">template0</tt> before executing
     <span class="application">psql</span> (e.g., with <tt class="literal">createdb -T template0
     <i class="replaceable"><tt>dbname</tt></i></tt>).
-    <span class="application">psql</span> supports similar options to <span class="application">pg_dump</span> 
+    <span class="application">psql</span> supports options similar to <span class="application">pg_dump</span> 
     for controlling the database server location and the user name. See
-    its reference page for more information.
+    <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s reference page for more information.
    </p>
-<p>    If the objects in the original database were owned by different
-    users, then the dump will instruct <span class="application">psql</span> to connect
-    as each affected user in turn and then create the relevant
-    objects. This way the original ownership is preserved. This also
-    means, however, that all these users must already exist, and
-    furthermore that you must be allowed to connect as each of them.
-    It might therefore be necessary to temporarily relax the client
-    authentication settings.
+<p>    Not only must the target database already exist before starting to
+    run the restore, but so must all the users who own objects in the
+    dumped database or were granted permissions on the objects.  If they
+    do not, then the restore will fail to recreate the objects with the
+    original ownership and/or permissions.  (Sometimes this is what you want,
+    but usually it is not.)
    </p>
 <p>    Once restored, it is wise to run <a href="sql-analyze.html">ANALYZE</a> on each database so the optimizer has
-    useful statistics. You can also run <tt class="command">vacuumdb -a -z</tt> to
+    useful statistics. An easy way to do this is to run
+    <tt class="command">vacuumdb -a -z</tt> to
     <tt class="command">VACUUM ANALYZE</tt> all databases; this is equivalent to
     running <tt class="command">VACUUM ANALYZE</tt> manually.
    </p>
@@ -201,7 +200,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="backup-dump-large"></a>22.1.3. Large Databases</h3></div></div>
+<a name="backup-dump-large"></a>22.1.3. Handling large databases</h3></div></div>
 <div></div>
 </div>
 <p>    Since <span class="productname">PostgreSQL</span> allows tables larger
@@ -247,17 +246,19 @@ gunzip -c <i class="replaceable"><tt>filename</tt></i>.gz | psql <i class="repla
 cat <i class="replaceable"><tt>filename</tt></i>* | psql <i class="replaceable"><tt>dbname</tt></i></pre>
 <p>
     </p>
-<p><b>Use the custom dump format. </b>     If <span class="productname">PostgreSQL</span> was built on a system with the <span class="application">zlib</span> compression library
-     installed, the custom dump format will compress data as it writes it
-     to the output file. For large databases, this will produce similar dump
-     sizes to using <tt class="command">gzip</tt>, but has the added advantage that the tables can be
-     restored selectively. The following command dumps a database using the
-     custom dump format:
+<p><b>Use the custom dump format. </b>     If <span class="productname">PostgreSQL</span> was built on a system with the
+     <span class="application">zlib</span> compression library installed, the custom dump
+     format will compress data as it writes it to the output file. This will
+     produce dump file sizes similar to using <tt class="command">gzip</tt>, but it
+     has the added advantage that tables can be restored selectively. The
+     following command dumps a database using the custom dump format:
 
 </p>
 <pre class="programlisting">pg_dump -Fc <i class="replaceable"><tt>dbname</tt></i> &gt; <i class="replaceable"><tt>filename</tt></i></pre>
 <p>
 
+     A custom-format dump is not a script for <span class="application">psql</span>, but
+     instead must be restored with <span class="application">pg_restore</span>.
      See the <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> and <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a> reference pages for details.
     </p>
 </div>
@@ -268,10 +269,11 @@ cat <i class="replaceable"><tt>filename</tt></i>* | psql <i class="replaceable">
 <div></div>
 </div>
 <p>    For reasons of backward compatibility, <span class="application">pg_dump</span>
-    does not dump large objects by default.<a name="id2599300"></a> To dump
+    does not dump large objects by default.<a name="id2601408"></a> To dump
     large objects you must use either the custom or the tar output
     format, and use the <tt class="option">-b</tt> option in
-    <span class="application">pg_dump</span>. See the reference pages for details.  The
+    <span class="application">pg_dump</span>. See the <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> reference
+    page for details.  The
     directory <tt class="filename">contrib/pg_dumplo</tt> of the
     <span class="productname">PostgreSQL</span> source tree also contains a program
     that can dump large objects.

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 18. Managing Databases">
 <link rel="previous" href="manage-ag-createdb.html" title="18.2. Creating a Database">
 <link rel="next" href="manage-ag-config.html" title="18.4. Database Configuration">
@@ -18,7 +18,7 @@
 </div>
 <p>   <tt class="command">CREATE DATABASE</tt> actually works by copying an existing
    database.  By default, it copies the standard system database named
-   <tt class="literal">template1</tt>.<a name="id2591320"></a> Thus that
+   <tt class="literal">template1</tt>.<a name="id2593260"></a> Thus that
    database is the &#8220;<span class="quote">template</span>&#8221; from which new databases are
    made.  If you add objects to <tt class="literal">template1</tt>, these objects
    will be copied into subsequently created user databases.  This
@@ -29,7 +29,7 @@
    action being taken when those databases are made.
   </p>
 <p>   There is a second standard system database named
-   <tt class="literal">template0</tt>.<a name="id2591365"></a> This
+   <tt class="literal">template0</tt>.<a name="id2593305"></a> This
    database contains the same data as the initial contents of
    <tt class="literal">template1</tt>, that is, only the standard objects
    predefined by your version of
@@ -69,7 +69,7 @@
    would result in an inconsistent copied database.  Therefore,
    we recommend that databases used as templates be treated as read-only.
   </p>
-<p>   Two useful flags exist in <tt class="literal">pg_database</tt><a name="id2591514"></a> for each
+<p>   Two useful flags exist in <tt class="literal">pg_database</tt><a name="id2593455"></a> for each
    database: the columns <tt class="literal">datistemplate</tt> and
    <tt class="literal">datallowconn</tt>.  <tt class="literal">datistemplate</tt>
    may be set to indicate that a database is intended as a template for
@@ -85,8 +85,7 @@
    should always be marked with <tt class="literal">datistemplate = true</tt>.
   </p>
 <p>   After preparing a template database, or making any changes to one,
-   it is a good idea to perform
-   <tt class="command">VACUUM FREEZE</tt> or <tt class="command">VACUUM FULL FREEZE</tt> in that
+   it is a good idea to perform <tt class="command">VACUUM FREEZE</tt> in that
    database.  If this is done when there are no other open transactions
    in the same database, then it is guaranteed that all rows in the
    database are &#8220;<span class="quote">frozen</span>&#8221; and will not be subject to transaction

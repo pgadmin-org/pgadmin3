@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
 <link rel="previous" href="ecpg-process.html" title="29.11. Processing Embedded SQL Programs">
 <link rel="next" href="ecpg-develop.html" title="29.13. Internals">
@@ -33,8 +33,11 @@
      useful when searching for errors in your <span class="acronym">SQL</span>
      statements.
     </p></li>
-<li><p>     <tt class="function">ECPGstatus()</tt> returns true if you
-     are connected to a database and false if not.
+<li><p>     <tt class="function">ECPGstatus(int <i class="replaceable"><tt>lineno</tt></i>, ,
+     const char* <i class="replaceable"><tt>connection_name</tt></i>)</tt>
+     returns true if you are connected to a database and false if not.
+     <i class="replaceable"><tt>connection_name</tt></i> can be <tt class="literal">NULL</tt> 
+     if a single connection is being used.
     </p></li>
 </ul></div>
 </div></body>

@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="previous" href="xoper-optimization.html" title="31.13. Operator Optimization Information">
-<link rel="next" href="rules.html" title="Chapter 32. The Rule System">
+<link rel="next" href="triggers.html" title="Chapter 32. Triggers">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
@@ -16,7 +16,7 @@
 <a name="xindex"></a>31.14. Interfacing Extensions To Indexes</h2></div></div>
 <div></div>
 </div>
-<a name="id2637116"></a><p>   The procedures described thus far let you define new types, new
+<a name="id2639647"></a><p>   The procedures described thus far let you define new types, new
    functions, and new operators. However, we cannot yet define an
    index on a column of a new data type.  To do this, we must define an
    <i class="firstterm">operator class</i> for the new data type.  Later in this
@@ -53,7 +53,7 @@
 <p>   The routines for an index method do not directly know anything
    about the data types that the index method will operate on.
    Instead, an <i class="firstterm">operator
-   class</i><a name="id2637213"></a>
+   class</i><a name="id2639744"></a>
    identifies the set of operations that the index method needs to use
    to work with a particular data type.  Operator classes are so
    called because one thing they specify is the set of
@@ -608,7 +608,7 @@ DEFAULT FOR TYPE int8 USING btree AS
 <a name="xindex-opclass-dependencies"></a>31.14.6. System Dependencies on Operator Classes</h3></div></div>
 <div></div>
 </div>
-<a name="id2638208"></a><p>   <span class="productname">PostgreSQL</span> uses operator classes to infer the
+<a name="id2640739"></a><p>   <span class="productname">PostgreSQL</span> uses operator classes to infer the
    properties of operators in more ways than just whether they can be used
    with indexes.  Therefore, you might want to create operator classes
    even if you have no intention of indexing any columns of your data type.

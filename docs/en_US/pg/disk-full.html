@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="diskusage.html" title="Chapter 24. Monitoring Disk Usage">
 <link rel="previous" href="diskusage.html" title="Chapter 24. Monitoring Disk Usage">
 <link rel="next" href="wal.html" title="Chapter 25. Write-Ahead Logging (WAL)">
@@ -17,13 +17,10 @@
 <div></div>
 </div>
 <p>   The most important disk monitoring task of a database administrator
-   is to make sure the disk doesn't grow full.  A filled data disk may
-   result in subsequent corruption of database indexes, but not of the
-   tables themselves. If the WAL files are on the same disk (as
-   is the case for a default configuration) then a filled disk during
-   database initialization may result in corrupted or incomplete WAL
-   files. This failure condition is detected and the database server
-   will refuse to start up.
+   is to make sure the disk doesn't grow full.  A filled data disk will
+   not result in data corruption, but it may well prevent useful activity
+   from occurring. If the disk holding the WAL files grows full, database
+   server panic and consequent shutdown may occur.
   </p>
 <p>   If you cannot free up additional space on the disk by deleting
    other things, you can move some of the database files to other file
@@ -35,5 +32,10 @@
     not wait until the disk is completely full to take action.
    </p>
 </div>
+<p>   If your system supports per-user disk quotas, then the database
+   will naturally be subject to whatever quota is placed on the user
+   the server runs as.  Exceeding the quota will have the same bad
+   effects as running out of space entirely.
+  </p>
 </div></body>
 </html>

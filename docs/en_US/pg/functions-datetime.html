@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="previous" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
 <link rel="next" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">
@@ -153,18 +153,20 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><tt class="literal"><tt class="function">age</tt>(<tt class="type">timestamp</tt>)</tt></td>
-<td><tt class="type">interval</tt></td>
-<td>Subtract from today</td>
-<td><tt class="literal">age(timestamp '1957-06-13')</tt></td>
-<td><tt class="literal">43 years 8 mons 3 days</tt></td>
-</tr>
-<tr>
 <td><tt class="literal"><tt class="function">age</tt>(<tt class="type">timestamp</tt>, <tt class="type">timestamp</tt>)</tt></td>
 <td><tt class="type">interval</tt></td>
-<td>Subtract arguments</td>
-<td><tt class="literal">age('2001-04-10', timestamp '1957-06-13')</tt></td>
+<td>Subtract arguments, producing a &#8220;<span class="quote">symbolic</span>&#8221; result that
+        uses years and months</td>
+<td><tt class="literal">age(timestamp '2001-04-10', timestamp '1957-06-13')</tt></td>
 <td><tt class="literal">43 years 9 mons 27 days</tt></td>
+</tr>
+<tr>
+<td><tt class="literal"><tt class="function">age</tt>(<tt class="type">timestamp</tt>)</tt></td>
+<td><tt class="type">interval</tt></td>
+<td>Subtract from <tt class="function">current_date</tt>
+</td>
+<td><tt class="literal">age(timestamp '1957-06-13')</tt></td>
+<td><tt class="literal">43 years 8 mons 3 days</tt></td>
 </tr>
 <tr>
 <td><tt class="literal"><tt class="function">current_date</tt></tt></td>
@@ -194,7 +196,7 @@
 <td><tt class="literal"><tt class="function">date_part</tt>(<tt class="type">text</tt>, <tt class="type">timestamp</tt>)</tt></td>
 <td><tt class="type">double precision</tt></td>
 <td>Get subfield (equivalent to
-	 <tt class="function">extract</tt>); see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;EXTRACT, date_part&#8221;</a>
+         <tt class="function">extract</tt>); see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;EXTRACT, date_part&#8221;</a>
 </td>
 <td><tt class="literal">date_part('hour', timestamp '2001-02-16 20:38:40')</tt></td>
 <td><tt class="literal">20</tt></td>
@@ -203,7 +205,7 @@
 <td><tt class="literal"><tt class="function">date_part</tt>(<tt class="type">text</tt>, <tt class="type">interval</tt>)</tt></td>
 <td><tt class="type">double precision</tt></td>
 <td>Get subfield (equivalent to
-	 <tt class="function">extract</tt>); see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;EXTRACT, date_part&#8221;</a>
+         <tt class="function">extract</tt>); see <a href="functions-datetime.html#functions-datetime-extract" title="9.9.1. EXTRACT, date_part">Section 9.9.1, &#8220;EXTRACT, date_part&#8221;</a>
 </td>
 <td><tt class="literal">date_part('month', interval '2 years 3 months')</tt></td>
 <td><tt class="literal">3</tt></td>
@@ -268,7 +270,7 @@
 <td><tt class="literal"><tt class="function">now</tt>()</tt></td>
 <td><tt class="type">timestamp with time zone</tt></td>
 <td>Current date and time (equivalent to
-	 <tt class="function">current_timestamp</tt>); see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
+         <tt class="function">current_timestamp</tt>); see <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>
 </td>
 <td> </td>
 <td> </td>
@@ -309,10 +311,10 @@ SELECT (DATE '2001-02-16', INTERVAL '100 days') OVERLAPS
 </div>
 <pre class="synopsis">EXTRACT (<i class="replaceable"><tt>field</tt></i> FROM <i class="replaceable"><tt>source</tt></i>)</pre>
 <p>    The <tt class="function">extract</tt> function retrieves subfields
-    from date/time values, such as year or hour.
-    <i class="replaceable"><tt>source</tt></i> is a value expression that
-    evaluates to type <tt class="type">timestamp</tt> or <tt class="type">interval</tt>.
-    (Expressions of type <tt class="type">date</tt> or <tt class="type">time</tt> will
+    such as year or hour from date/time values.
+    <i class="replaceable"><tt>source</tt></i> must be a value expression of
+    type <tt class="type">timestamp</tt>, <tt class="type">time</tt>, or <tt class="type">interval</tt>.
+    (Expressions of type <tt class="type">date</tt> will
     be cast to <tt class="type">timestamp</tt> and can therefore be used as
     well.)  <i class="replaceable"><tt>field</tt></i> is an identifier or
     string that selects what field to extract from the source value.
@@ -365,6 +367,9 @@ SELECT EXTRACT(CENTURY FROM TIMESTAMP '2001-02-16 20:38:40');
        </p>
 <pre class="screen">SELECT EXTRACT(DOW FROM TIMESTAMP '2001-02-16 20:38:40');
 <i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">5</tt></pre>
+<p>        Note that <tt class="function">extract</tt>'s day of the week numbering is 
+        different from that of the <tt class="function">to_char</tt> function.
+       </p>
 </dd>
 <dt><span class="term"><tt class="literal">doy</tt></span></dt>
 <dd>
@@ -377,7 +382,7 @@ SELECT EXTRACT(CENTURY FROM TIMESTAMP '2001-02-16 20:38:40');
 <dd>
 <p>        For <tt class="type">date</tt> and <tt class="type">timestamp</tt> values, the
         number of seconds since 1970-01-01 00:00:00-00 (can be negative);
-	for <tt class="type">interval</tt> values, the total number
+        for <tt class="type">interval</tt> values, the total number
         of seconds in the interval
        </p>
 <pre class="screen">SELECT EXTRACT(EPOCH FROM TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-08');
@@ -388,7 +393,7 @@ SELECT EXTRACT(EPOCH FROM INTERVAL '5 days 3 hours');
 <p>        Here is how you can convert an epoch value back to a time
         stamp:
        </p>
-<pre class="screen">SELECT TIMESTAMP WITH TIME ZONE 'epoch' + 982384720 * interval '1 second';</pre>
+<pre class="screen">SELECT TIMESTAMP WITH TIME ZONE 'epoch' + 982384720 * INTERVAL '1 second';</pre>
 </dd>
 <dt><span class="term"><tt class="literal">hour</tt></span></dt>
 <dd>
@@ -460,7 +465,7 @@ SELECT EXTRACT(MONTH FROM INTERVAL '2 years 13 months');
 <dt><span class="term"><tt class="literal">second</tt></span></dt>
 <dd>
 <p>        The seconds field, including fractional parts (0 -
-        59<sup>[<a name="id2556043" href="#ftn.id2556043">4</a>]</sup>)
+        59<sup>[<a name="id2556789" href="#ftn.id2556789">5</a>]</sup>)
        </p>
 <pre class="screen">SELECT EXTRACT(SECOND FROM TIMESTAMP '2001-02-16 20:38:40');
 <i class="lineannotation"><span class="lineannotation">Result: </span></i><tt class="computeroutput">40</tt>
@@ -470,8 +475,8 @@ SELECT EXTRACT(SECOND FROM TIME '17:12:28.5');
 </dd>
 <dt><span class="term"><tt class="literal">timezone</tt></span></dt>
 <dd><p>        The time zone offset from UTC, measured in seconds.  Positive values
-	correspond to time zones east of UTC, negative values to
-	zones west of UTC.
+        correspond to time zones east of UTC, negative values to
+        zones west of UTC.
        </p></dd>
 <dt><span class="term"><tt class="literal">timezone_hour</tt></span></dt>
 <dd><p>        The hour component of the time zone offset
@@ -579,7 +584,7 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 <a name="functions-datetime-zoneconvert"></a>9.9.3. <tt class="literal">AT TIME ZONE</tt></h3></div></div>
 <div></div>
 </div>
-<a name="id2556480"></a><p>    The <tt class="literal">AT TIME ZONE</tt> construct allows conversions
+<a name="id2557226"></a><p>    The <tt class="literal">AT TIME ZONE</tt> construct allows conversions
     of time stamps to different time zones.  <a href="functions-datetime.html#functions-datetime-zoneconvert-table" title="Table 9.27. AT TIME ZONE Variants">Table 9.27, &#8220;AT TIME ZONE Variants&#8221;</a> shows its
     variants.
    </p>
@@ -649,7 +654,7 @@ SELECT TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-05' AT TIME ZONE 'MST';
 <a name="functions-datetime-current"></a>9.9.4. Current Date/Time</h3></div></div>
 <div></div>
 </div>
-<a name="id2556714"></a><a name="id2556722"></a><p>    The following functions are available to obtain the current date and/or
+<a name="id2557460"></a><a name="id2557468"></a><p>    The following functions are available to obtain the current date and/or
     time:
 </p>
 <pre class="synopsis">CURRENT_DATE
@@ -738,8 +743,8 @@ SELECT now();
 SELECT TIMESTAMP 'now';</pre>
 <p>
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
 <p>      You do not want to use the third form when specifying a <tt class="literal">DEFAULT</tt>
       clause while creating a table.  The system will convert <tt class="literal">now</tt>
       to a <tt class="type">timestamp</tt> as soon as the constant is parsed, so that when
@@ -753,7 +758,7 @@ SELECT TIMESTAMP 'now';</pre>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2556043" href="#id2556043">4</a>] </sup>60 if leap seconds are
+<div class="footnote"><p><sup>[<a name="ftn.id2556789" href="#id2556789">5</a>] </sup>60 if leap seconds are
         implemented by the operating system</p></div>
 </div>
 </div></body>

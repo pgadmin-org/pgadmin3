@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>32.6. Rules versus Triggers</title>
+<title>33.6. Rules versus Triggers</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
-<link rel="up" href="rules.html" title="Chapter 32. The Rule System">
-<link rel="previous" href="rules-status.html" title="32.5. Rules and Command Status">
-<link rel="next" href="triggers.html" title="Chapter 33. Triggers">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
+<link rel="up" href="rules.html" title="Chapter 33. The Rule System">
+<link rel="previous" href="rules-status.html" title="33.5. Rules and Command Status">
+<link rel="next" href="xplang.html" title="Chapter 34. Procedural Languages">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage">
 <div><div><h2 class="title" style="clear: both">
-<a name="rules-triggers"></a>32.6. Rules versus Triggers</h2></div></div>
+<a name="rules-triggers"></a>33.6. Rules versus Triggers</h2></div></div>
 <div></div>
 </div>
-<a name="id2642003"></a><a name="id2642019"></a><p>    Many things that can be done using triggers can also be
+<a name="id2645697"></a><a name="id2645713"></a><p>    Many things that can be done using triggers can also be
     implemented using the <span class="productname">PostgreSQL</span>
     rule system.  One of the things that cannot be implemented by
     rules are some kinds of constraints, especially foreign keys. It is possible
@@ -33,14 +33,15 @@
     <tt class="command">DELETE</tt>, because there is no real data in the
     view relation that could be scanned, and thus the trigger would
     never get called. Only a rule will help.</p>
-<p>    For the things that can be implemented by both,
-    it depends on the usage of the database, which is the best.
+<p>    For the things that can be implemented by both, which is best
+    depends on the usage of the database.
     A trigger is fired for any affected row once. A rule manipulates
-    the query tree or generates an additional one. So if many
+    the query or generates an additional query. So if many
     rows are affected in one statement, a rule issuing one extra
-    command would usually do a better job than a trigger that is
+    command is likely to be faster than a trigger that is
     called for every single row and must execute its operations
-    many times.</p>
+    many times.  However, the trigger approach is conceptually far
+    simpler than the rule approach, and is easier for novices to get right.</p>
 <p>    Here we show an example of how the choice of rules versus triggers
     plays out in one situation.  There are two tables:
 

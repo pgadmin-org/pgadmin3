@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="plperl.html" title="Chapter 37. PL/Perl - Perl Procedural Language">
 <link rel="previous" href="plperl-trusted.html" title="37.5. Trusted and Untrusted PL/Perl">
 <link rel="next" href="plperl-missing.html" title="37.7. Limitations and Missing Features">
@@ -29,29 +29,29 @@
 <dt><span class="term"><tt class="literal">$_TD-&gt;{old}{foo}</tt></span></dt>
 <dd><p>       <tt class="literal">OLD</tt> value of column <tt class="literal">foo</tt>
       </p></dd>
-<dt><span class="term"><tt class="literal">$_TD{name}</tt></span></dt>
+<dt><span class="term"><tt class="literal">$_TD-&gt;{name}</tt></span></dt>
 <dd><p>       Name of the trigger being called
       </p></dd>
-<dt><span class="term"><tt class="literal">$_TD{event}</tt></span></dt>
+<dt><span class="term"><tt class="literal">$_TD-&gt;{event}</tt></span></dt>
 <dd><p>       Trigger event: <tt class="literal">INSERT</tt>, <tt class="literal">UPDATE</tt>, <tt class="literal">DELETE</tt>, or <tt class="literal">UNKNOWN</tt>
       </p></dd>
-<dt><span class="term"><tt class="literal">$_TD{when}</tt></span></dt>
+<dt><span class="term"><tt class="literal">$_TD-&gt;{when}</tt></span></dt>
 <dd><p>       When the trigger was called: <tt class="literal">BEFORE</tt>, <tt class="literal">AFTER</tt>, or <tt class="literal">UNKNOWN</tt>
       </p></dd>
-<dt><span class="term"><tt class="literal">$_TD{level}</tt></span></dt>
+<dt><span class="term"><tt class="literal">$_TD-&gt;{level}</tt></span></dt>
 <dd><p>       The trigger level: <tt class="literal">ROW</tt>, <tt class="literal">STATEMENT</tt>, or <tt class="literal">UNKNOWN</tt>
       </p></dd>
-<dt><span class="term"><tt class="literal">$_TD{relid}</tt></span></dt>
+<dt><span class="term"><tt class="literal">$_TD-&gt;{relid}</tt></span></dt>
 <dd><p>       OID of the table on which the trigger fired
       </p></dd>
-<dt><span class="term"><tt class="literal">$_TD{relname}</tt></span></dt>
+<dt><span class="term"><tt class="literal">$_TD-&gt;{relname}</tt></span></dt>
 <dd><p>       Name of the table on which the trigger fired
       </p></dd>
-<dt><span class="term"><tt class="literal">@{$_TD{argv}}</tt></span></dt>
-<dd><p>       Arguments of the trigger function
-      </p></dd>
-<dt><span class="term"><tt class="literal">$_TD{argc}</tt></span></dt>
+<dt><span class="term"><tt class="literal">$_TD-&gt;{argc}</tt></span></dt>
 <dd><p>       Number of arguments of the trigger function
+      </p></dd>
+<dt><span class="term"><tt class="literal">@{$_TD-&gt;{args}}</tt></span></dt>
+<dd><p>       Arguments of the trigger function.  Does not exist if $_TD-&gt;{argc} is 0.
       </p></dd>
 </dl></div>
 <p>

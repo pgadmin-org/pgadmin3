@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-createsequence.html" title="CREATE SEQUENCE">
 <link rel="next" href="sql-createtableas.html" title="CREATE TABLE AS">
@@ -19,7 +19,7 @@
 <h2>Name</h2>
 <p>CREATE TABLE &#8212; define a new table</p>
 </div>
-<a name="id2676711"></a><div class="refsynopsisdiv">
+<a name="id2680452"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <i class="replaceable"><tt>table_name</tt></i> (
   { <i class="replaceable"><tt>column_name</tt></i> <i class="replaceable"><tt>data_type</tt></i> [ DEFAULT <i class="replaceable"><tt>default_expr</tt></i> ] [ <i class="replaceable"><tt>column_constraint</tt></i> [ ... ] ]
@@ -72,10 +72,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
    to one row of the table.  Therefore, tables cannot have the same
    name as any existing data type in the same schema.
   </p>
-<p>   A table cannot have more than 1600 columns.  (In practice, the
-   effective limit is lower because of tuple-length constraints).
-  </p>
-<p>   The optional constraint clauses specify constraints (or tests) that
+<p>   The optional constraint clauses specify constraints (tests) that
    new or updated rows must satisfy for an insert or update operation
    to succeed.  A constraint is an SQL object that helps define the
    set of valid values in the table in various ways.
@@ -85,12 +82,12 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
    column definition.  A table constraint definition is not tied to a
    particular column, and it can encompass more than one column.
    Every column constraint can also be written as a table constraint;
-   a column constraint is only a notational convenience if the
+   a column constraint is only a notational convenience for use when the
    constraint only affects one column.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676978"></a><h2>Parameters</h2>
+<a name="id2680714"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">TEMPORARY</tt> or <tt class="literal">TEMP</tt></span></dt>
 <dd>
@@ -117,7 +114,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
      </p></dd>
 <dt><span class="term"><i class="replaceable"><tt>data_type</tt></i></span></dt>
 <dd><p>      The data type of the column. This may include array
-      specifiers. For more information on the data types included with
+      specifiers. For more information on the data types supported by
       <span class="productname">PostgreSQL</span>, refer to <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a>.
      </p></dd>
 <dt><span class="term"><tt class="literal">DEFAULT
@@ -133,23 +130,6 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <p>      The default expression will be used in any insert operation that
       does not specify a value for the column.  If there is no default
       for a column, then the default is null.
-     </p>
-</dd>
-<dt><span class="term"><tt class="literal">LIKE <i class="replaceable"><tt>parent_table</tt></i> [ { INCLUDING | EXCLUDING } DEFAULTS ]</tt></span></dt>
-<dd>
-<p>      The <tt class="literal">LIKE</tt> clause specifies a table from which
-      the new table automatically copies all column names, their data types,
-      and their not-null constraints.
-     </p>
-<p>      Unlike <tt class="literal">INHERITS</tt>, the new table and original table
-      are completely decoupled after creation is complete.  Changes to the
-      original table will not be applied to the new table, and it is not
-      possible to include data of the new table in scans of the original
-      table.
-     </p>
-<p>      Default expressions for the copied column definitions will only be
-      included if <tt class="literal">INCLUDING DEFAULTS</tt> is specified.  The
-      default is to exclude default expressions.
      </p>
 </dd>
 <dt><span class="term"><tt class="literal">INHERITS ( <i class="replaceable"><tt>parent_table</tt></i> [, ... ] )</tt></span></dt>
@@ -182,6 +162,24 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
       error will be reported.
      </p>
 </dd>
+<dt><span class="term"><tt class="literal">LIKE <i class="replaceable"><tt>parent_table</tt></i> [ { INCLUDING | EXCLUDING } DEFAULTS ]</tt></span></dt>
+<dd>
+<p>      The <tt class="literal">LIKE</tt> clause specifies a table from which
+      the new table automatically copies all column names, their data types,
+      and their not-null constraints.
+     </p>
+<p>      Unlike <tt class="literal">INHERITS</tt>, the new table and original table
+      are completely decoupled after creation is complete.  Changes to the
+      original table will not be applied to the new table, and it is not
+      possible to include data of the new table in scans of the original
+      table.
+     </p>
+<p>      Default expressions for the copied column definitions will only be
+      copied if <tt class="literal">INCLUDING DEFAULTS</tt> is specified.  The
+      default behavior is to exclude default expressions, resulting in
+      all columns of the new table having null defaults.
+     </p>
+</dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">WITH OIDS</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">WITHOUT OIDS</tt></span>
 </dt>
@@ -195,15 +193,15 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
       <tt class="literal">WITH OIDS</tt> is forced even if the command says
       <tt class="literal">WITHOUT OIDS</tt>.)
      </p>
-<p>      If <tt class="literal">WITHOUT OIDS</tt> is specified or implied, this
-      means that the generation of OIDs for this table will be
-      supressed. This is generally considered worthwhile, since it
+<p>      If <tt class="literal">WITHOUT OIDS</tt> is specified or implied, the new
+      table does not store OIDs and no OID will be assigned for a row inserted
+      into it. This is generally considered worthwhile, since it
       will reduce OID consumption and thereby postpone the wraparound
       of the 32-bit OID counter. Once the counter wraps around, OIDs
       can no longer be assumed to be unique, which makes them
       considerably less useful. In addition, excluding OIDs from a
-      table reduces the space required on disk to storage the table by
-      4 bytes per row, leading to increased performance.
+      table reduces the space required to store the table on disk by
+      4 bytes per row (on most machines), slightly improving performance.
      </p>
 <p>      To remove OIDs from a table after it has been created, use <a href="sql-altertable.html">ALTER TABLE</a>.
      </p>
@@ -219,7 +217,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <dd>
 <p>      The column is allowed to contain null values. This is the default.
      </p>
-<p>      This clause is only available for compatibility with
+<p>      This clause is only provided for compatibility with
       non-standard SQL databases.  Its use is discouraged in new
       applications.
      </p>
@@ -229,7 +227,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 </dt>
 <dd>
 <p>      The <tt class="literal">UNIQUE</tt> constraint specifies that a
-      group of one or more distinct columns of a table may contain
+      group of one or more columns of a table may contain
       only unique values. The behavior of the unique table constraint
       is the same as that for column constraints, with the additional
       capability to span multiple columns.
@@ -317,9 +315,9 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
       clause specifies the action to perform when a referenced column
       in the referenced table is being updated to a new value. If the
       row is updated, but the referenced column is not actually
-      changed, no action is done. Referential actions apart from the
-      check of <tt class="literal">NO ACTION</tt> can not be deferred even if
-      the constraint is deferrable. There are the following possible
+      changed, no action is done. Referential actions other than the
+      <tt class="literal">NO ACTION</tt> check cannot be deferred, even if
+      the constraint is declared deferrable. There are the following possible
       actions for each clause:
 
       </p>
@@ -335,7 +333,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <dd><p>          Produce an error indicating that the deletion or update
           would create a foreign key constraint violation.
           This is the same as <tt class="literal">NO ACTION</tt> except that
-	  the check is not deferrable.
+          the check is not deferrable.
          </p></dd>
 <dt><span class="term"><tt class="literal">CASCADE</tt></span></dt>
 <dd><p>          Delete any rows referencing the deleted row, or update the
@@ -426,12 +424,10 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtable-notes"></a><h2>Notes</h2>
-<div class="itemizedlist"><ul type="disc">
-<li>
 <p>     Using OIDs in new applications is not recommended: where
      possible, using a <tt class="literal">SERIAL</tt> or other sequence
      generator as the table's primary key is preferred. However, if
-     your application does make use of OIDs to identify specific rows
+     your application does make use of OIDs to identify specific
      rows of a table, it is recommended to create a unique constraint
      on the <tt class="structfield">oid</tt> column of that table, to ensure that
      OIDs in the table will indeed uniquely identify rows even after
@@ -447,17 +443,18 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
       unique data key, it is difficult to identify specific rows.
      </p>
 </div>
-</li>
-<li><p>     <span class="productname">PostgreSQL</span> automatically creates an
+<p>     <span class="productname">PostgreSQL</span> automatically creates an
      index for each unique constraint and primary key constraint to
-     enforce the uniqueness.  Thus, it is not necessary to create an
-     explicit index for primary key columns.  (See <a href="sql-createindex.html">CREATE INDEX</a> for more information.)
-    </p></li>
-<li><p>     Unique constraints and primary keys are not inherited in the
+     enforce uniqueness.  Thus, it is not necessary to create an
+     index explicitly for primary key columns.  (See <a href="sql-createindex.html">CREATE INDEX</a> for more information.)
+    </p>
+<p>     Unique constraints and primary keys are not inherited in the
      current implementation.  This makes the combination of
      inheritance and unique constraints rather dysfunctional.
-    </p></li>
-</ul></div>
+    </p>
+<p>   A table cannot have more than 1600 columns.  (In practice, the
+   effective limit is lower because of tuple-length constraints.)
+  </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtable-examples"></a><h2>Examples</h2>
@@ -485,7 +482,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <p>   Create a table with a 2-dimensional array:
 
 </p>
-<pre class="programlisting">CREATE TABLE array (
+<pre class="programlisting">CREATE TABLE array_int (
     vector  int[][]
 );</pre>
 <p>
@@ -544,7 +541,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 <p>   Define a primary key constraint for table
    <tt class="structname">distributors</tt>.  The following two examples are
    equivalent, the first using the table constraint syntax, the second
-   the column constraint notation.
+   the column constraint syntax.
 
 </p>
 <pre class="programlisting">CREATE TABLE distributors (
@@ -619,11 +616,11 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
 </div>
 <div class="refsect1" lang="en">
 <a name="sql-createtable-compatibility"></a><h2>Compatibility</h2>
-<p>   The <tt class="command">CREATE TABLE</tt> command conforms to SQL92
-   and to a subset of SQL99, with exceptions listed below.
+<p>   The <tt class="command">CREATE TABLE</tt> command conforms to SQL-92 and
+   to a subset of SQL:1999, with exceptions listed below.
   </p>
 <div class="refsect2" lang="en">
-<a name="id2678330"></a><h3>Temporary Tables</h3>
+<a name="id2682069"></a><h3>Temporary Tables</h3>
 <p>    Although the syntax of <tt class="literal">CREATE TEMPORARY TABLE</tt>
     resembles that of the SQL standard, the effect is not the same.  In the
     standard,
@@ -658,7 +655,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2678454"></a><h3>Column Check Constraints</h3>
+<a name="id2682193"></a><h3>Column Check Constraints</h3>
 <p>    The SQL standard says that <tt class="literal">CHECK</tt> column constraints
     may only refer to the column they apply to; only <tt class="literal">CHECK</tt>
     table constraints may refer to multiple columns.
@@ -667,7 +664,7 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2678482"></a><h3>
+<a name="id2682221"></a><h3>
 <tt class="literal">NULL</tt> &#8220;<span class="quote">Constraint</span>&#8221;</h3>
 <p>    The <tt class="literal">NULL</tt> &#8220;<span class="quote">constraint</span>&#8221; (actually a
     non-constraint) is a <span class="productname">PostgreSQL</span>
@@ -678,22 +675,23 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2678520"></a><h3>Inheritance</h3>
+<a name="id2682259"></a><h3>Inheritance</h3>
 <p>    Multiple inheritance via the <tt class="literal">INHERITS</tt> clause is
-    a <span class="productname">PostgreSQL</span> language extension.  SQL99
-    (but not SQL92) defines single inheritance using a different
-    syntax and different semantics.  SQL99-style inheritance is not
-    yet supported by <span class="productname">PostgreSQL</span>.
+    a <span class="productname">PostgreSQL</span> language extension.
+    SQL:1999 (but not SQL-92) defines single inheritance using a
+    different syntax and different semantics.  SQL:1999-style
+    inheritance is not yet supported by
+    <span class="productname">PostgreSQL</span>.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2678548"></a><h3>Object IDs</h3>
+<a name="id2682287"></a><h3>Object IDs</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of OIDs is not
     standard.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2678560"></a><h3>Zero-column tables</h3>
+<a name="id2682299"></a><h3>Zero-column tables</h3>
 <p>    <span class="productname">PostgreSQL</span> allows a table of no columns
     to be created (for example, <tt class="literal">CREATE TABLE foo();</tt>).  This
     is an extension from the SQL standard, which does not allow zero-column
@@ -703,14 +701,15 @@ and <i class="replaceable"><tt>table_constraint</tt></i> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2678589"></a><h3>TABLESPACE and USING INDEX TABLESPACE</h3>
+<a name="id2682328"></a><h3>Tablespaces</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of tablespaces is not
-    standard.
+    part of the standard.  Hence, the clauses <tt class="literal">TABLESPACE</tt>
+    and <tt class="literal">USING INDEX TABLESPACE</tt> are extensions.
    </p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678602"></a><h2>See Also</h2>
+<a name="id2682354"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-altertable.html">ALTER TABLE</a>, <a href="sql-droptable.html">DROP TABLE</a>, <a href="sql-createtablespace.html">CREATE TABLESPACE</a></span>
 </div>
 </div></body>

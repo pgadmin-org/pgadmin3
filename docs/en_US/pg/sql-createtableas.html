@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="previous" href="sql-createtable.html" title="CREATE TABLE">
 <link rel="next" href="sql-createtablespace.html" title="CREATE TABLESPACE">
@@ -19,13 +19,13 @@
 <h2>Name</h2>
 <p>CREATE TABLE AS &#8212; define a new table from the results of a query</p>
 </div>
-<a name="id2678663"></a><div class="refsynopsisdiv">
+<a name="id2682415"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <i class="replaceable"><tt>table_name</tt></i> [ (<i class="replaceable"><tt>column_name</tt></i> [, ...] ) ] [ [ WITH | WITHOUT ] OIDS ]
     AS <i class="replaceable"><tt>query</tt></i></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678691"></a><h2>Description</h2>
+<a name="id2682443"></a><h2>Description</h2>
 <p>   <tt class="command">CREATE TABLE AS</tt> creates a table and fills it
    with data computed by a <tt class="command">SELECT</tt> command or an
    <tt class="command">EXECUTE</tt> that runs a prepared
@@ -44,7 +44,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678751"></a><h2>Parameters</h2>
+<a name="id2682503"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><tt class="literal">GLOBAL</tt> or <tt class="literal">LOCAL</tt></span></dt>
 <dd><p>      Ignored for compatibility. Refer to <a href="sql-createtable.html">CREATE TABLE</a> for
@@ -62,16 +62,16 @@
 <dt><span class="term"><i class="replaceable"><tt>column_name</tt></i></span></dt>
 <dd><p>      The name of a column in the new table.  If column names are not
       provided, they are taken from the output column names of the
-      query.  If the table is created out of an
-      <tt class="command">EXECUTE</tt> command, a column name list can
-      currently not be specified.
+      query.  If the table is created from an
+      <tt class="command">EXECUTE</tt> command, a column name list cannot be
+      specified.
      </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><tt xmlns="" class="literal">WITH OIDS</tt></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><tt class="literal">WITHOUT OIDS</tt></span>
 </dt>
 <dd><p>       This optional clause specifies whether the table created by
        <tt class="command">CREATE TABLE AS</tt> should include OIDs. If
-       neither form of this clause if specified, the value of the
+       neither form of this clause is specified, the value of the
        <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a> configuration parameter is
        used.
       </p></dd>
@@ -84,38 +84,44 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678919"></a><h2>Notes</h2>
+<a name="id2682670"></a><h2>Notes</h2>
 <p>   This command is functionally similar to <a href="sql-selectinto.html">SELECT INTO</a>, but it is
    preferred since it is less likely to be confused with other uses of
    the <tt class="command">SELECT INTO</tt> syntax. Furthermore, <tt class="command">CREATE
-   TABLE AS</tt> offers a superset of the functionality offerred
+   TABLE AS</tt> offers a superset of the functionality offered
    by <tt class="command">SELECT INTO</tt>.
   </p>
 <p>   Prior to <span class="productname">PostgreSQL</span> 8.0, <tt class="command">CREATE
    TABLE AS</tt> always included OIDs in the table it
-   produced. Furthermore, these OIDs were newly generated: they were
-   distinct from the OIDs of any of the rows in the source tables of
-   the <tt class="command">SELECT</tt> or <tt class="command">EXECUTE</tt>
-   statement. Therefore, if <tt class="command">CREATE TABLE AS</tt> was
-   frequently executed, the OID counter would be rapidly
-   incremented. As of <span class="productname">PostgresSQL</span> 8.0,
+   produced.  As of <span class="productname">PostgresSQL</span> 8.0,
    the <tt class="command">CREATE TABLE AS</tt> command allows the user to
-   explicitely specify whether OIDs should be included. If the
-   presence of OIDs is not explicitely specified,
+   explicitly specify whether OIDs should be included. If the
+   presence of OIDs is not explicitly specified,
    the <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a> configuration variable is
    used. While this variable currently defaults to true, the default
    value may be changed in the future. Therefore, applications that
    require OIDs in the table created by <tt class="command">CREATE TABLE
-   AS</tt> should explicitely specify <tt class="literal">WITH
+   AS</tt> should explicitly specify <tt class="literal">WITH
    OIDS</tt> to ensure compatibility with future versions
    of <span class="productname">PostgreSQL</span>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2679040"></a><h2>Compatibility</h2>
-<p>   <tt class="command">CREATE TABLE AS</tt> is specified by the SQL2003
+<a name="id2682768"></a><h2>Examples</h2>
+<p>   Create a new table <tt class="literal">films_recent</tt> consisting of only
+   recent entries from the table <tt class="literal">films</tt>:
+
+</p>
+<pre class="programlisting">CREATE TABLE films_recent AS
+  SELECT * FROM films WHERE date_prod &gt;= '2002-01-01';</pre>
+<p>
+  </p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2682795"></a><h2>Compatibility</h2>
+<p>   <tt class="command">CREATE TABLE AS</tt> is specified by the SQL:2003
    standard. There are some small differences between the definition
-   of the command in SQL2003 and its implementation in
+   of the command in SQL:2003 and its implementation in
    <span class="productname">PostgreSQL</span>:
 
    </p>
@@ -135,7 +141,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2679109"></a><h2>See Also</h2>
+<a name="id2682865"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-createtable.html">CREATE TABLE</a>, <a href="sql-execute.html">EXECUTE</a>, <a href="sql-select.html">SELECT</a>, <a href="sql-selectinto.html">SELECT INTO</a></span>
 </div>
 </div></body>

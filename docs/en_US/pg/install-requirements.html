@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.   Installation Instructions">
 <link rel="previous" href="installation.html" title="Chapter 14.   Installation Instructions">
 <link rel="next" href="install-getsource.html" title="14.3. Getting The Source">
@@ -30,7 +30,7 @@
    </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>      <a name="id2573143"></a>
+<p>      <a name="id2573914"></a>
 
       <span class="acronym">GNU</span> <span class="application">make</span> is required; other
       <span class="application">make</span> programs will <span class="emphasis"><em>not</em></span> work.
@@ -54,7 +54,7 @@
 <li><p>      <span class="application">gzip</span> is needed to unpack the distribution in the
       first place.
      </p></li>
-<li><p>      <a name="id2573259"></a>
+<li><p>      <a name="id2574031"></a>
 
       The <span class="acronym">GNU</span> <span class="productname">Readline</span> library (for
       comfortable line editing and command history retrieval) will be
@@ -63,14 +63,30 @@
       <tt class="filename">configure</tt>.  (On <span class="productname">NetBSD</span>,
       the <tt class="filename">libedit</tt> library is
       <span class="productname">Readline</span>-compatible and is used if
-      <tt class="filename">libreadline</tt> is not found.)
+      <tt class="filename">libreadline</tt> is not found.)  If you are using
+      a package-based Linux distribution, be aware that you need both
+      the <tt class="literal">readline</tt> and <tt class="literal">readline-devel</tt> packages,
+      if those are separate in your distribution.
      </p></li>
-<li><p>      <a name="id2573317"></a>
+<li><p>      <a name="id2574103"></a>
 
-      To build on <span class="productname">Windows NT</span> or <span class="productname">Windows
-      2000</span> you need the <span class="productname">Cygwin</span> and
-      <span class="productname">cygipc</span> packages. See the file
-      <tt class="filename">doc/FAQ_MSWIN</tt> for details.
+      Additional software is needed to build
+      <span class="productname">PostgreSQL</span> on <span class="productname">Windows</span>.
+      You can build <span class="productname">PostgreSQL</span> for
+      <span class="productname">NT</span>-based versions of <span class="productname">Windows</span>
+      (like Windows XP and 2003) using <span class="productname">MinGW</span>;
+      see <tt class="filename">doc/FAQ_MINGW</tt> for details.  You can also build
+      <span class="productname">PostgreSQL</span> using
+      <span class="productname">Cygwin</span>; see <tt class="filename">doc/FAQ_CYGWIN</tt>.
+      A <span class="productname">Cygwin</span>-based build will work on older
+      versions of <span class="productname">Windows</span>, but if you have a choice,
+      we recommend the <span class="productname">MinGW</span> approach.
+      While these are the only tool sets recommended for a complete build,
+      it is possible to build just the C client library
+      (<span class="application">libpq</span>) and the interactive terminal
+      (<span class="application">psql</span>) using other <span class="productname">Windows</span>
+      tool sets.  For details of that see
+       <a href="install-win32.html" title="Chapter 15. Client-Only Installation on Windows">Chapter 15, <i>Client-Only Installation on Windows</i></a>.
      </p></li>
 </ul></div>
 <p>
@@ -87,11 +103,11 @@
       <span class="productname">Perl</span> installation, including the
       <tt class="filename">libperl</tt> library and the header files.
       Since <span class="application">PL/Perl</span> will be a shared
-      library, the <a name="id2573395"></a>
+      library, the <a name="id2574261"></a>
       <tt class="filename">libperl</tt> library must be a shared library
       also on most platforms.  This appears to be the default in
       recent <span class="productname">Perl</span> versions, but it was not
-      in earlier versions, and in general it is the choice of whomever
+      in earlier versions, and in any case it is the choice of whomever
       installed Perl at your site.
      </p>
 <p>      If you don't have the shared library but you need one, a message
@@ -114,14 +130,14 @@
 <li>
 <p>      To build the <span class="application">PL/Python</span> server programming
       language, you need a <span class="productname">Python</span>
-      installation with the header files and the distutils module.
-      The distutils module is included by default with
+      installation with the header files and the <span class="application">distutils</span> module.
+      The <span class="application">distutils</span> module is included by default with
       <span class="productname">Python</span> 1.6 and later; users of
       earlier versions of <span class="productname">Python</span> will need
       to install it.
      </p>
 <p>      Since <span class="application">PL/Python</span> will be a shared
-      library, the <a name="id2573506"></a>
+      library, the <a name="id2574384"></a>
       <tt class="filename">libpython</tt> library must be a shared library
       also on most platforms.  This is not the case in a default
       <span class="productname">Python</span> installation.  If after
@@ -162,8 +178,9 @@
       utility programs.  For any of the other implementations you will
       not need it.
      </p></li>
-<li><p>      <span class="application">Kerberos</span>, <span class="productname">OpenSSL</span>, or <span class="application">PAM</span>,
-      if you want to support authentication using these services.
+<li><p>      <span class="application">Kerberos</span>, <span class="productname">OpenSSL</span>, and/or
+      <span class="application">PAM</span>, if you want to support authentication or
+      encryption using these services.
      </p></li>
 </ul></div>
 <p>
@@ -173,11 +190,11 @@
    you also need the following packages:
 
    </p>
-<div class="itemizedlist"><ul type="disc"><li><p>      <a name="id2573706"></a>
-      <a name="id2573712"></a>
-      <a name="id2573719"></a>
+<div class="itemizedlist"><ul type="disc"><li><p>      <a name="id2574583"></a>
+      <a name="id2574590"></a>
+      <a name="id2574597"></a>
 
-      <span class="application">Flex</span> and <span class="application">Bison</span>
+      GNU <span class="application">Flex</span> and <span class="application">Bison</span>
       are needed to build a CVS checkout or if you changed the actual
       scanner and parser definition files. If you need them, be sure
       to get <span class="application">Flex</span> 2.5.4 or later and
@@ -198,7 +215,7 @@
    25 MB, databases take about five times the amount of space that a
    flat text file with the same data would take. If you are going to
    run the regression tests you will temporarily need up to an extra
-   90 MB. Use the <tt class="command">df</tt> command to check for disk
+   90 MB. Use the <tt class="command">df</tt> command to check free disk
    space.
   </p>
 </div></body>

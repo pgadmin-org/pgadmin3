@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 18. Managing Databases">
 <link rel="previous" href="manage-ag-templatedbs.html" title="18.3. Template Databases">
 <link rel="next" href="manage-ag-dropdb.html" title="18.5. Destroying a Database">
@@ -30,10 +30,11 @@
 </p>
 <pre class="programlisting">ALTER DATABASE mydb SET geqo TO off;</pre>
 <p>
-   This will save the setting (but not set it immediately) and in
-   subsequent connections it will appear as though <tt class="literal">SET geqo
-   TO off;</tt> had been called right before the session started.
-   Note that users can still alter this setting during the session; it
+   This will save the setting (but not set it immediately).  In
+   subsequent connections to this database it will appear as though
+   <tt class="literal">SET geqo TO off;</tt> had been executed just before the
+   session started.
+   Note that users can still alter this setting during their sessions; it
    will only be the default.  To undo any such setting, use
    <tt class="literal">ALTER DATABASE <i class="replaceable"><tt>dbname</tt></i> RESET
    <i class="replaceable"><tt>varname</tt></i>;</tt>.

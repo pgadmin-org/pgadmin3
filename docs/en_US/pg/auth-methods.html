@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="client-authentication.html" title="Chapter 19. Client Authentication">
 <link rel="previous" href="client-authentication.html" title="Chapter 19. Client Authentication">
 <link rel="next" href="client-authentication-problems.html" title="19.3. Authentication problems">
@@ -16,7 +16,7 @@
 <a name="auth-methods"></a>19.2. Authentication methods</h2></div></div>
 <div></div>
 </div>
-<p>   The following describes the authentication methods in more detail.
+<p>   The following subsections describe the authentication methods in more detail.
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage">
@@ -28,9 +28,10 @@
     <span class="productname">PostgreSQL</span> assumes that anyone who can
     connect to the server is authorized to access the database with
     whatever database user they specify (including the database superuser).
-    Of course, restrictions placed in the <tt class="literal">user</tt> column still apply.
-    This method should only be used when there is adequate operating system-level
-    protection on connections to the server.
+    Of course, restrictions made in the <tt class="literal">database</tt> and
+    <tt class="literal">user</tt> columns still apply.
+    This method should only be used when there is adequate
+    operating-system-level protection on connections to the server.
    </p>
 <p>    <tt class="literal">trust</tt> authentication is appropriate and very
     convenient for local connections on a single-user workstation.  It
@@ -64,10 +65,14 @@
 <a name="auth-password"></a>19.2.2. Password authentication</h3></div></div>
 <div></div>
 </div>
-<a name="id2593520"></a><a name="id2593526"></a><a name="id2593531"></a><p>    The password-based authentication methods are <tt class="literal">md5</tt>,
+<a name="id2595435"></a><a name="id2595440"></a><a name="id2595446"></a><p>    The password-based authentication methods are <tt class="literal">md5</tt>,
     <tt class="literal">crypt</tt>, and <tt class="literal">password</tt>. These methods operate
     similarly except for the way that the password is sent across the
-    connection. If you are at all concerned about password
+    connection.  But only <tt class="literal">md5</tt> supports encrypted
+    passwords stored in <tt class="structname">pg_shadow</tt>;
+    the other two require unencrypted passwords to be stored there.
+   </p>
+<p>    If you are at all concerned about password
     &#8220;<span class="quote">sniffing</span>&#8221; attacks then <tt class="literal">md5</tt> is preferred, with
     <tt class="literal">crypt</tt> a second choice if you must support pre-7.2
     clients. Plain <tt class="literal">password</tt> should especially be avoided for
@@ -77,17 +82,12 @@
 <p>    <span class="productname">PostgreSQL</span> database passwords are
     separate from operating system user passwords. The password for
     each database user is stored in the <tt class="literal">pg_shadow</tt> system
-    catalog table. Passwords can be managed with the SQL
-    commands <tt class="command">CREATE USER</tt> and <tt class="command">ALTER
-    USER</tt>, e.g., <b class="userinput"><tt>CREATE USER foo WITH PASSWORD
-    'secret';</tt></b>. By default, that is, if no password has
-    been set up, the stored password is null and
-    password authentication will always fail for that user.
-   </p>
-<p>    To restrict the set of users that are allowed to connect to
-    certain databases, list the users in the <i class="replaceable"><tt>user</tt></i>
-    column of <tt class="filename">pg_hba.conf</tt>, as explained in the
-    previous section.
+    catalog table. Passwords can be managed with the SQL commands
+    <a href="sql-createuser.html">CREATE USER</a> and
+    <a href="sql-alteruser.html">ALTER USER</a>,
+    e.g., <b class="userinput"><tt>CREATE USER foo WITH PASSWORD 'secret';</tt></b>.
+    By default, that is, if no password has been set up, the stored password
+    is null and password authentication will always fail for that user.
    </p>
 </div>
 <div class="sect2" lang="en">
@@ -96,10 +96,10 @@
 <a name="kerberos-auth"></a>19.2.3. Kerberos authentication</h3></div></div>
 <div></div>
 </div>
-<a name="id2593653"></a><p>    <span class="productname">Kerberos</span> is an industry-standard secure
+<a name="id2595573"></a><p>    <span class="productname">Kerberos</span> is an industry-standard secure
     authentication system suitable for distributed computing over a public
     network. A description of the <span class="productname">Kerberos</span> system
-    is far beyond the scope of this document; in all generality it can be
+    is far beyond the scope of this document; in full generality it can be
     quite complex (yet powerful). The <a href="http://www.nrl.navy.mil/CCS/people/kenh/kerberos-faq.html" target="_top">Kerberos
     <span class="acronym">FAQ</span></a> or <a href="ftp://athena-dist.mit.edu" target="_top">MIT
     Project Athena</a> can be a good starting point for exploration.
@@ -134,8 +134,8 @@
    </p>
 <p>    Make sure that your server key file is readable (and preferably
     only readable) by the <span class="productname">PostgreSQL</span> server
-    account.  (See also <a href="runtime.html#postgres-user" title="16.1. The PostgreSQL User Account">Section 16.1, &#8220;The PostgreSQL User Account&#8221;</a>). The location
-    of the key file is specified by the <a href="runtime-config.html#guc-krb-server-keyfile">krb_server_keyfile</a> run-time configuration
+    account.  (See also <a href="runtime.html#postgres-user" title="16.1. The PostgreSQL User Account">Section 16.1, &#8220;The PostgreSQL User Account&#8221;</a>.) The location
+    of the key file is specified by the <a href="runtime-config.html#guc-krb-server-keyfile">krb_server_keyfile</a> configuration
     parameter. (See also <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>.) The default
     is <tt class="filename">/etc/srvtab</tt> if you are using Kerberos 4 and
     <tt class="filename">/usr/local/pgsql/etc/krb5.keytab</tt> (or whichever
@@ -171,17 +171,17 @@
 <a name="auth-ident"></a>19.2.4. Ident-based authentication</h3></div></div>
 <div></div>
 </div>
-<a name="id2593964"></a><p>    The ident authentication method works by inspecting the client's
+<a name="id2595884"></a><p>    The ident authentication method works by obtaining the client's
     operating system user name and determining the allowed database
-    user names by using a map file that lists the permitted
-    corresponding user name pairs.  The determination of the client's
+    user names using a map file that lists the permitted
+    corresponding pairs of names.  The determination of the client's
     user name is the security-critical point, and it works differently
     depending on the connection type.
    </p>
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2593978"></a>19.2.4.1. Ident Authentication over TCP/IP</h4></div></div>
+<a name="id2595898"></a>19.2.4.1. Ident Authentication over TCP/IP</h4></div></div>
 <div></div>
 </div>
 <p>    The &#8220;<span class="quote">Identification Protocol</span>&#8221; is described in
@@ -227,7 +227,7 @@
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2594044"></a>19.2.4.2. Ident Authentication over Local Sockets</h4></div></div>
+<a name="id2595965"></a>19.2.4.2. Ident Authentication over Local Sockets</h4></div></div>
 <div></div>
 </div>
 <p>    On systems supporting <tt class="symbol">SO_PEERCRED</tt> requests for
@@ -240,14 +240,15 @@
    </p>
 <p>     On systems without <tt class="symbol">SO_PEERCRED</tt> requests, ident
      authentication is only available for TCP/IP connections. As a
-     work around, it is possible to specify the <span class="systemitem">localhost</span> address <span class="systemitem">127.0.0.1</span> and make connections to this
-     address.
+     work-around, it is possible to specify the <span class="systemitem">localhost</span> address <span class="systemitem">127.0.0.1</span> and make connections to this
+     address.  This method is trustworthy to the extent that you trust
+     the local ident server.
     </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage">
 <div><div><h4 class="title">
-<a name="id2594126"></a>19.2.4.3. Ident Maps</h4></div></div>
+<a name="auth-ident-maps"></a>19.2.4.3. Ident Maps</h4></div></div>
 <div></div>
 </div>
 <p>    When using ident-based authentication, after having determined the
@@ -261,32 +262,37 @@
     user of the same name (if the latter exists). Other maps must be
     created manually.
    </p>
-<p>    Ident maps
-    other than <tt class="literal">sameuser</tt> are defined in the file
-    <tt class="filename">pg_ident.conf</tt><a name="id2594178"></a>
-    in the data directory, which contains lines of the general form:
+<p>    Ident maps other than <tt class="literal">sameuser</tt> are defined in the
+    ident map file, which by default is named
+    <tt class="filename">pg_ident.conf</tt><a name="id2596104"></a>
+    and is stored in the
+    cluster's data directory.  (It is possible to place the map file
+    elsewhere, however; see the <a href="runtime-config.html#guc-ident-file">ident_file</a>
+    configuration parameter.)
+    The ident map file contains lines of the general form:
 </p>
 <pre class="synopsis"><i class="replaceable"><tt>map-name</tt></i> <i class="replaceable"><tt>ident-username</tt></i> <i class="replaceable"><tt>database-username</tt></i></pre>
 <p>
-    Comments and whitespace are handled in the usual way. The
+    Comments and whitespace are handled in the same way as in
+    <tt class="filename">pg_hba.conf</tt>.  The
     <i class="replaceable"><tt>map-name</tt></i> is an arbitrary name that will be used to
     refer to this mapping in <tt class="filename">pg_hba.conf</tt>. The other
     two fields specify which operating system user is allowed to connect
     as which database user. The same <i class="replaceable"><tt>map-name</tt></i> can be
     used repeatedly to specify more user-mappings within a single map.
     There is no restriction regarding how many database users a given
-    operating system user may correspond to and vice versa.
+    operating system user may correspond to, nor vice versa.
    </p>
 <p>   The <tt class="filename">pg_ident.conf</tt> file is read on start-up and
    when the main server process (<tt class="command">postmaster</tt>) receives a
-   <span class="systemitem">SIGHUP</span><a name="id2594242"></a>
+   <span class="systemitem">SIGHUP</span><a name="id2596184"></a>
    signal. If you edit the file on an
    active system, you will need to signal the <tt class="command">postmaster</tt>
    (using <tt class="literal">pg_ctl reload</tt> or <tt class="literal">kill -HUP</tt>) to make it
    re-read the file.
   </p>
 <p>    A <tt class="filename">pg_ident.conf</tt> file that could be used in
-    conjunction with the <tt class="filename">pg_hba.conf</tt> file in <a href="client-authentication.html#example-pg-hba.conf" title="Example 19.1. An example pg_hba.conf file">Example 19.1, &#8220;An example pg_hba.conf file&#8221;</a> is shown in <a href="auth-methods.html#example-pg-ident.conf" title="Example 19.2. An example pg_ident.conf file">Example 19.2, &#8220;An example pg_ident.conf file&#8221;</a>. In this example setup, anyone
+    conjunction with the <tt class="filename">pg_hba.conf</tt> file in <a href="client-authentication.html#example-pg-hba.conf" title="Example 19.1. Example pg_hba.conf entries">Example 19.1, &#8220;Example pg_hba.conf entries&#8221;</a> is shown in <a href="auth-methods.html#example-pg-ident.conf" title="Example 19.2. An example pg_ident.conf file">Example 19.2, &#8220;An example pg_ident.conf file&#8221;</a>. In this example setup, anyone
     logged in to a machine on the 192.168 network that does not have the
     Unix user name <tt class="literal">bryanh</tt>, <tt class="literal">ann</tt>, or
     <tt class="literal">robert</tt> would not be granted access. Unix user
@@ -313,16 +319,16 @@ omicron       bryanh            guest1</pre>
 <div class="sect2" lang="en">
 <div class="titlepage">
 <div><div><h3 class="title">
-<a name="auth-pam"></a>19.2.5. PAM Authentication</h3></div></div>
+<a name="auth-pam"></a>19.2.5. PAM authentication</h3></div></div>
 <div></div>
 </div>
-<a name="id2594405"></a><p>    This authentication method operates similarly to
+<a name="id2596347"></a><p>    This authentication method operates similarly to
     <tt class="literal">password</tt> except that it uses PAM (Pluggable
     Authentication Modules) as the authentication mechanism. The
     default PAM service name is <tt class="literal">postgresql</tt>. You can
-    optionally supply you own service name after the <tt class="literal">pam</tt>
-    key word in the file <tt class="filename">pg_hba.conf</tt>. For more information about PAM, please read
-    the <a href="http://www.kernel.org/pub/linux/libs/pam/" target="_top"><span class="productname">Linux-PAM</span>
+    optionally supply your own service name after the <tt class="literal">pam</tt>
+    key word in the file <tt class="filename">pg_hba.conf</tt>.
+    For more information about PAM, please read the <a href="http://www.kernel.org/pub/linux/libs/pam/" target="_top"><span class="productname">Linux-PAM</span>
     Page</a> and the <a href="http://www.sun.com/software/solaris/pam/" target="_top"><span class="systemitem">Solaris</span> PAM Page</a>.
    </p>
 </div>

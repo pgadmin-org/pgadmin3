@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.64.1">
-<link rel="home" href="index.html" title="PostgreSQL 8.0.0beta5 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.1devel Documentation">
 <link rel="up" href="datetime-appendix.html" title="Appendix B. Date/Time Support">
 <link rel="previous" href="datetime-appendix.html" title="Appendix B. Date/Time Support">
 <link rel="next" href="datetime-units-history.html" title="B.3. History of Units">
@@ -16,12 +16,12 @@
 <a name="datetime-keywords"></a>B.2. Date/Time Key Words</h2></div></div>
 <div></div>
 </div>
-<p>    <a href="datetime-keywords.html#datetime-month-table" title="Table B.1. Month Abbreviations">Table B.1, &#8220;Month Abbreviations&#8221;</a> shows the tokens that are
-    permissible as abbreviations for the names of the month.
+<p>    <a href="datetime-keywords.html#datetime-month-table" title="Table B.1. Month Names">Table B.1, &#8220;Month Names&#8221;</a> shows the tokens that are
+    recognized as names of months.
    </p>
 <div class="table">
-<a name="datetime-month-table"></a><p class="title"><b>Table B.1. Month Abbreviations</b></p>
-<table summary="Month Abbreviations" border="1">
+<a name="datetime-month-table"></a><p class="title"><b>Table B.1. Month Names</b></p>
+<table summary="Month Names" border="1">
 <colgroup>
 <col>
 <col>
@@ -32,71 +32,69 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>April</td>
-<td>Apr</td>
-</tr>
-<tr>
-<td>August</td>
-<td>Aug</td>
-</tr>
-<tr>
-<td>December</td>
-<td>Dec</td>
+<td>January</td>
+<td>Jan</td>
 </tr>
 <tr>
 <td>February</td>
 <td>Feb</td>
 </tr>
 <tr>
-<td>January</td>
-<td>Jan</td>
+<td>March</td>
+<td>Mar</td>
 </tr>
 <tr>
-<td>July</td>
-<td>Jul</td>
+<td>April</td>
+<td>Apr</td>
+</tr>
+<tr>
+<td>May</td>
+<td> </td>
 </tr>
 <tr>
 <td>June</td>
 <td>Jun</td>
 </tr>
 <tr>
-<td>March</td>
-<td>Mar</td>
+<td>July</td>
+<td>Jul</td>
 </tr>
 <tr>
-<td>November</td>
-<td>Nov</td>
+<td>August</td>
+<td>Aug</td>
+</tr>
+<tr>
+<td>September</td>
+<td>Sep, Sept</td>
 </tr>
 <tr>
 <td>October</td>
 <td>Oct</td>
 </tr>
 <tr>
-<td>September</td>
-<td>Sep, Sept</td>
+<td>November</td>
+<td>Nov</td>
+</tr>
+<tr>
+<td>December</td>
+<td>Dec</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>
-<p>      The month May has no explicit abbreviation, for obvious reasons.
-     </p>
-</div>
-<p>     <a href="datetime-keywords.html#datetime-dow-table" title="Table B.2. Day of the Week Abbreviations">Table B.2, &#8220;Day of the Week Abbreviations&#8221;</a> shows the tokens that are
-     permissible as abbreviations for the names of the days of the
-     week.
+<p>     <a href="datetime-keywords.html#datetime-dow-table" title="Table B.2. Day of the Week Names">Table B.2, &#8220;Day of the Week Names&#8221;</a> shows the tokens that are
+     recognized as names of days of the week.
     </p>
 <div class="table">
-<a name="datetime-dow-table"></a><p class="title"><b>Table B.2. Day of the Week Abbreviations</b></p>
-<table summary="Day of the Week Abbreviations" border="1">
+<a name="datetime-dow-table"></a><p class="title"><b>Table B.2. Day of the Week Names</b></p>
+<table summary="Day of the Week Names" border="1">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <thead><tr>
 <th>Day</th>
-<th>Abbreviation</th>
+<th>Abbreviations</th>
 </tr></thead>
 <tbody>
 <tr>
@@ -147,7 +145,7 @@
 <tbody>
 <tr>
 <td><tt class="literal">ABSTIME</tt></td>
-<td>Key word ignored</td>
+<td>Ignored</td>
 </tr>
 <tr>
 <td><tt class="literal">AM</tt></td>
@@ -155,7 +153,7 @@
 </tr>
 <tr>
 <td><tt class="literal">AT</tt></td>
-<td>Key word ignored</td>
+<td>Ignored</td>
 </tr>
 <tr>
 <td>
@@ -165,7 +163,7 @@
 </tr>
 <tr>
 <td><tt class="literal">ON</tt></td>
-<td>Key word ignored</td>
+<td>Ignored</td>
 </tr>
 <tr>
 <td><tt class="literal">PM</tt></td>
@@ -185,11 +183,12 @@
     longer the case however and this key word will likely be dropped in
     a future release.
    </p>
-<a name="id2743855"></a><p>    <a href="datetime-keywords.html#datetime-timezone-input-table" title="Table B.4. Time Zone Abbreviations for Input">Table B.4, &#8220;Time Zone Abbreviations for Input&#8221;</a> shows the time zone
+<a name="id2749144"></a><p>    <a href="datetime-keywords.html#datetime-timezone-input-table" title="Table B.4. Time Zone Abbreviations for Input">Table B.4, &#8220;Time Zone Abbreviations for Input&#8221;</a> shows the time zone
     abbreviations recognized by <span class="productname">PostgreSQL</span>
     in date/time input values.  Note that these names are <span class="emphasis"><em>not</em></span>
-    used for date/time output [mdash ] display is driven by the currently
-    selected <a href="runtime-config.html#guc-timezone">timezone</a> parameter setting.  (It is
+    necessarily used for date/time output [mdash ] output is driven by the
+    official timezone abbreviation(s) associated with the currently selected
+    <a href="runtime-config.html#guc-timezone">timezone</a> parameter setting.  (It is
     likely that future releases will make some use of <tt class="varname">timezone</tt>
     for input as well.)
    </p>
@@ -435,7 +434,7 @@
 <tr>
 <td>BDST</td>
 <td>+02:00</td>
-<td>British Double Standard Time</td>
+<td>British Double Summer Time</td>
 </tr>
 <tr>
 <td>CEST</td>
@@ -775,7 +774,7 @@
 </tbody>
 </table>
 </div>
-<a name="id2744937"></a><p>    <a href="datetime-keywords.html#datetime-timezone-set-table" title="Table B.6. Time Zone Names for Setting timezone">Table B.6, &#8220;Time Zone Names for Setting timezone&#8221;</a> shows the time zone
+<a name="id2750227"></a><p>    <a href="datetime-keywords.html#datetime-timezone-set-table" title="Table B.6. Time Zone Names for Setting timezone">Table B.6, &#8220;Time Zone Names for Setting timezone&#8221;</a> shows the time zone
     names recognized by <span class="productname">PostgreSQL</span> as valid
     settings for the <a href="runtime-config.html#guc-timezone">timezone</a> parameter.  Note that
     these names are conceptually as well as practically different from
