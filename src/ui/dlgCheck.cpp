@@ -101,6 +101,8 @@ int dlgCheck::Go(bool modal)
         txtWhere->SetValue(check->GetDefinition());
         txtWhere->Disable();
 
+        txtComment->SetValue(check->GetComment());
+
         chkDeferrable->SetValue(check->GetDeferrable());
         chkDeferred->SetValue(check->GetDeferred());
         chkDeferrable->Disable();

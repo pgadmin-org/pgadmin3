@@ -54,6 +54,7 @@ wxString pgCheck::GetSql(wxTreeCtrl *browser)
             + wxT(";\n\nALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
             + wxT("\n  ADD CONSTRAINT ") + GetConstraint() 
             + wxT(";\n");
+        sql += GetCommentSql();
     }
 
     return sql;
@@ -97,11 +98,12 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 {
     pgCheck *check=0;
     pgSet *checks= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT c.oid, conname, condeferrable, condeferred, relname, nspname,\n")
+        wxT("SELECT c.oid, conname, condeferrable, condeferred, relname, nspname, description,\n")
         wxT("       pg_get_expr(conbin, conrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as consrc\n")
         wxT("  FROM pg_constraint c\n")
         wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
         wxT("  JOIN pg_namespace nl ON nl.oid=relnamespace\n")
+        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
         wxT(" WHERE contype = 'c' AND conrelid =  ") + NumToStr(collection->GetOid())
         + restriction + wxT("::oid\n")
         wxT(" ORDER BY conname"));
@@ -119,6 +121,7 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             check->iSetFkSchema(checks->GetVal(wxT("nspname")));
             check->iSetDeferrable(checks->GetBool(wxT("condeferrable")));
             check->iSetDeferred(checks->GetBool(wxT("condeferred")));
+            check->iSetComment(checks->GetVal(wxT("description")));
 
             if (browser)
             {
