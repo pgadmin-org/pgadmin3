@@ -360,7 +360,7 @@ then
         AC_MSG_ERROR([you need to install the stc package from wxWindows/contrib/src/stc])
         wx_wx_h="no"
     fi
-    if test ! -f "${WX_HOME}/include/wx/xrc/xml.h"
+    if test ! -f "${WX_HOME}/include/wx/xrc/xmlres.h"
     then
         AC_MSG_ERROR([you need to install the xrc package from wxWindows/contrib/src/xrc])
         wx_wx_h="no"
