@@ -30,6 +30,7 @@
 #include "pgIndexConstraint.h"
 
 
+
 // Images
 #include "images/table.xpm"
 
@@ -362,8 +363,7 @@ wxString dlgTable::GetSql()
         for (pos=0; pos < lstConstraints->GetItemCount() ; pos++)
         {
             wxString conname= qtIdent(lstConstraints->GetItemText(pos));
-            if (!conname.IsEmpty())
-                definition = conname;
+            definition = conname;
             definition += wxT(" ") + GetItemConstraintType(lstConstraints, pos) 
                         + wxT(" ") + GetListText(lstConstraints, pos, 1);
             index=tmpDef.Index(definition);

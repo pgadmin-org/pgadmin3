@@ -1280,10 +1280,6 @@ SOURCE=..\bootstrap
 # End Source File
 # Begin Source File
 
-SOURCE="..\build-snapshot"
-# End Source File
-# Begin Source File
-
 SOURCE=..\configure.ac
 # End Source File
 # Begin Source File

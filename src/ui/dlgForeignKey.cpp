@@ -306,8 +306,8 @@ wxString dlgForeignKey::GetDefinition()
             cols += wxT(", ");
             refs += wxT(", ");
         }
-        cols += lstColumns->GetItemText(pos);
-        refs += GetListText(lstColumns, pos, 1);
+        cols += qtIdent(lstColumns->GetItemText(pos));
+        refs += qtIdent(GetListText(lstColumns, pos, 1));
     }
 
     sql = wxT("(") + cols 
