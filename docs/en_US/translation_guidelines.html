@@ -11,7 +11,7 @@
 <h3>Translation guidelines</h3>
 
 <p>
-	Traditionally, it is hard to translate strings dealing with database technologies. We will first try to outline the difficulties of translation, before proposing writing and translating guidelines.
+	Traditionally, it is hard to translate strings dealing with database technologies. We will first try to outline the difficulties of translation, before proposing writing and translating guidelines. If you are translating pgAdmin3, skip directly to <b>Translating guidelines<b> at the bottom of the page.
 </p>
 
 <h3>Translation problems</h3>
@@ -66,9 +66,9 @@
 <h3>Translating guidelines</h3>
 
 <p>
-Never translate SQL keywords written in upper-case letters for the
-reasons explained before. In some cases you might even break pgAdmin3 if
-you do!
+  Never translate SQL keywords written in upper-case letters for the
+  reasons explained before. In some cases you might even break pgAdmin3 if
+  you do!
 </p>
 
 <p>
@@ -82,6 +82,13 @@ you do!
   nobody will recognize.
 </p>
 
-</body>
+<p>
+  On rare occasions, it might be necessary to reorder placeholders. In the following (fictive) example, both parameter positions are exchanged: "Server %s user %s is logged in." could be  translated by "L'utilisateur %2$s est connecté au serveur %1$s.". At the moment, pgAdmin3 does not require any reorder placehorders, but it might change in the future. Just be aware of it!
+</p>
 
+<p>
+  Keyboard shortcuts are denoted by a leading "&". For example "&Add", which is translated into French by "&Ajouter", can be triggered from keyboard using Alt + A. Do not change the shortcut letter when translating, because the new entry might conflict with other existing hotkeys. Also, pgAdmin3 users might have problems to remember shortcuts in both the English and the translated version. Therefore, do not create any shortcut if you cannot choose the same letter. Example: "&Close" is translated into French by "Fermer", not "&Fermer".
+</p>
+
+</body>
 </html>
