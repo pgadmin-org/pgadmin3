@@ -952,6 +952,10 @@ SOURCE=.\include\images\database.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\delete.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\dnd_copy.xpm
 # End Source File
 # Begin Source File
@@ -1068,6 +1072,10 @@ SOURCE=.\include\images\query_explain.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\readdata.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\refresh.xpm
 # End Source File
 # Begin Source File
@@ -1109,6 +1117,10 @@ SOURCE=.\include\images\statistics.xpm
 # Begin Source File
 
 SOURCE=.\include\images\storage.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\storedata.xpm
 # End Source File
 # Begin Source File
 

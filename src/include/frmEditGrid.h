@@ -66,17 +66,13 @@ public:
 class ctlSQLGrid : public wxGrid
 {
 public:
-    ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
+    ctlSQLGrid(wxFrame *parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
 
 #if wxCHECK_VERSION(2,5,0)
     // problems are fixed
 #else
     bool SetTable(wxGridTableBase *table, bool takeOwnership=FALSE);
 #endif
-
-private:
-    void OnCellChange(wxGridEvent& event);
-    DECLARE_EVENT_TABLE();
 };
 
 
@@ -86,6 +82,7 @@ public:
     sqlTable(pgConn *conn, pgQueryThread *thread, const wxString& tabName, const Oid relid, bool _hasOid, const wxString& _pkCols, char _relkind);
     ~sqlTable();
     void StoreLine();
+    void UndoLine(int row);
 
     int GetNumberRows();
     int GetNumberStoredRows();
@@ -102,9 +99,10 @@ public:
     bool GetValueAsBool(int row, int col);
     void SetValueAsBool(int row, int col, bool b);
 
-    bool IsEmptyCell(int rows, int col) { return false; }
+    bool IsEmptyCell(int row, int col) { return false; }
     bool AppendRows(size_t rows);
     bool DeleteRows(size_t pos, size_t rows);
+    int  LastRow() { return lastRow; }
 
 
 private:
@@ -152,8 +150,11 @@ private:
     void OnRefresh(wxCommandEvent& event);
     void OnDelete(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
-    void OnGridRightClick(wxGridEvent& event);
-    void OnGridLabelRightClick(wxGridEvent& event);
+    void OnUndo(wxCommandEvent& event);
+    void OnCellChange(wxGridEvent& event);
+    void OnGridSelectCells(wxGridRangeSelectEvent& event);
+    void OnEditorShown(wxGridEvent& event);
+    void OnKey(wxKeyEvent& event);
 
     void Abort();
 
@@ -162,7 +163,7 @@ private:
     frmMain *mainForm;
     pgConn *connection;
     pgQueryThread *thread;
-    wxMenu *contextGridMenu, *contextLabelMenu;
+    wxToolBar *toolBar;
 
     char relkind;
     Oid relid;
