@@ -53,6 +53,7 @@ private:
     frmMain *mainForm;
     wxSplitterWindow* horizontal;
     ctlSQLBox *sqlQuery;
+    wxNotebook *output;
     wxListView *sqlResult;
     wxTextCtrl *msgResult;
     wxStatusBar *statusBar;

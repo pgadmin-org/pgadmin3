@@ -27,8 +27,6 @@
 #include "images/query_explain.xpm"
 #include "images/query_cancel.xpm"
 
-extern sysSettings *settings;
-
 
 BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_CLOSE(                      OnClose)
@@ -113,7 +111,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     sqlQuery = new ctlSQLBox(horizontal, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
 
-    wxNotebook* output = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
+    output = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
     sqlResult = new wxListView(output, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxSIMPLE_BORDER);
     msgResult = new wxTextCtrl(output, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
 
@@ -226,7 +224,7 @@ void frmQuery::OnOpen(wxCommandEvent& event)
         lastDir = dlg.GetDirectory();
         lastPath = dlg.GetPath();
 
-        FILE *f=fopen(lastPath.c_str(), "rt");
+        FILE *f=fopen(lastPath.c_str(), "rb");
         if (f)
         {
             fseek(f, 0, SEEK_END);
@@ -528,6 +526,8 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
         else
             SetStatusText(NumToStr(row) + wxT(" of ") + NumToStr(nRows) + wxT(" rows"), STATUSPOS_ROWS);
         thread->Delete();
+
+        output->SetSelection(row ? 0 : 1);
     }
     delete thread;
     thread=0;
@@ -590,9 +590,9 @@ int queryThread::execute()
                 "Query result with ") + NumToStr((long)PQntuples(result)) + wxT(" rows discarded.\n");
             PQclear(result);
         }
-        messages += wxT("Subquery runtime: ") + elapsed.ToString() + wxT(" ms.\n\n");
         result=res;
     }
+    messages += wxT("\n");
     running=0;
     return(1);
 }
