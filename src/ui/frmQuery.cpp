@@ -794,6 +794,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
         wxYield();
 
         wxString str;
+        wxLongLong elapsedQuery;
         wxLongLong startTimeQuery=wxGetLocalTimeMillis();
         while (sqlResult->RunStatus() == CTLSQL_RUNNING)
         {

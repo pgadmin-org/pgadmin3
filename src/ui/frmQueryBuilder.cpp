@@ -14,7 +14,9 @@
 
 // App headers
 #include "frmQueryBuilder.h"
+#include "frmQuery.h"
 #include "dlgAddTableView.h"
+#include "ctlSQLResult.h"
 
 // Icons
 #include "images/sql.xpm"
@@ -116,6 +118,7 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
     queryMenu->Append(MNU_EXPLAIN, _("E&xplain"), _("Explain query"));
     queryMenu->Append(MNU_CANCEL, _("&Cancel"), _("Cancel query"));
     menuBar->Append(queryMenu, _("&Query"));
+    queryMenu->Enable(MNU_CANCEL, FALSE);
 
     // Tools Menu
     toolsMenu = new wxMenu();
@@ -173,6 +176,7 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
     toolBar->Realize();
     setTools(false);
     toolBar->EnableTool(BTN_SAVE, false);
+    toolBar->EnableTool(BTN_CANCEL, false);
 
     // Datagram Context Menu
     datagramContextMenu = new wxMenu();
@@ -234,14 +238,7 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 		wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
 
     // Setup the data tab
-    data = new wxGrid(notebook, 0, 0, 400, 400);
-    data->CreateGrid(64, 64);
-
-	// We don't want our cells overflowing (default = TRUE)
-	data->SetDefaultCellOverflow(FALSE);
-	
-	// Update the design
-	data->UpdateDimensions();
+    data = new ctlSQLResult(notebook, database->connection(), CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
     
 	notebook->AddPage(design, _("Design"));
 	//notebook->AddPage(design, _("Union"));
@@ -840,7 +837,6 @@ void frmQueryBuilder::OnNotebookPageChanged(wxNotebookEvent& event)
 		case 2:
 			// We need a valid query, and we need to run it
 			BuildQuery();
-			RunQuery();
 			break;
 
 		default:
@@ -1195,81 +1191,77 @@ void frmQueryBuilder::RunQuery()
 		wxMessageDialog *messagebox = 
 			new wxMessageDialog(this, tmpstr, _("Query"), wxYES_NO );
 
-		if (messagebox->ShowModal() == wxID_NO)
+        if (messagebox->ShowModal() == wxID_NO) {
+            toolBar->EnableTool(BTN_CANCEL, FALSE);
+            queryMenu->Enable(MNU_CANCEL, FALSE);
+            toolBar->EnableTool(BTN_EXECUTE, TRUE);
+            queryMenu->Enable(MNU_EXECUTE, TRUE);
 			return;
+        }
 	}
 
-	pgSet *querydata = m_database->ExecuteSet(query);
-	if (querydata->Eof())
-		return;
+    // Execute the query
+    aborted = false;
+    data->Freeze();
+    if (data->Execute(query, count)) {
 
-	// Get the number of rows
-	int rows = data->GetNumberRows();
-	int cols = data->GetNumberCols();
+        SetStatusText(wxT(""), STATUSPOS_SECS);
+        SetStatusText(_("Query is running."), STATUSPOS_MSGS);
+        SetStatusText(wxT(""), STATUSPOS_ROWS);
 
-	// Turn off grid updating to prevent redraw
-	data->Hide();
+        wxLongLong startTimeQuery=wxGetLocalTimeMillis();
+        wxLongLong elapsedQuery;
+        while (!aborted && data->RunStatus() == CTLSQL_RUNNING) {
+            elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
+            SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+            wxYield();
+            wxUsleep(10);
+        }
+    
+        elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
+        SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+        wxLongLong startTimeRetrieve=wxGetLocalTimeMillis();
+        wxLongLong elapsedRetrieve = 0, elapsed = 0;
 
-	if ( rows > 0 )
-		data->DeleteRows(0, rows);
-	if ( cols > 0 )
-	data->DeleteCols(0, cols);
+        long rowsReadTotal = 0;
+        while (!aborted && rowsReadTotal < count) {
+            if (data->RunStatus() == PGRES_TUPLES_OK) {
+                long chunk;
+                if (!rowsReadTotal) chunk=20;
+                else                chunk=100;
+        
+                long rowsRead = data->Retrieve(chunk);
+                if (!rowsRead)
+                    break;
+    
+                if (!rowsReadTotal) {
+                    wxYield();
+					data->Freeze();
+                }
 
-	// If it's a bad query, these need to be 0
-	int rowct = 0;
-	int colct = 0;
+                elapsed = wxGetLocalTimeMillis() - startTimeRetrieve;
+                if (elapsed > elapsedRetrieve +100) {
+                    elapsedRetrieve=elapsed;
+                    wxYield();
+                    elapsedRetrieve=wxGetLocalTimeMillis() - (startTimeQuery + elapsedQuery);
+                    SetStatusText(elapsedQuery.ToString() + wxT(" ms + ") + elapsedRetrieve.ToString() + wxT(" ms"), STATUSPOS_SECS);
+                }
+        
+                rowsReadTotal += rowsRead;
 
-	// Get row and column counts from the query
-	rowct = querydata->NumRows();
-	colct = querydata->NumCols();
+            }
+        }
+    }
 
-	int si, sj;
+    data->Thaw();
 
-	// Get the column names from the query and set them in the grid
-	for (si = 0; si < colct; si++ )
-	{
-		wxString tmpcolname = querydata->ColName(si);
-		data->SetColLabelValue(si, tmpcolname);
-	}
-
-    data->UpdateDimensions();
-	
-	// Only append if we need to
-	if (rowct > 0 )
-		data->AppendRows(rowct);
-	if (colct > 0 )
-		data->AppendCols(colct);
-
-	// Iterate through all the rows
-	for ( si = 0; si < rowct; si++ )
-	{
-		// Iterate through all the columns
-		for ( sj = 0; sj < colct; sj++ )
-		{
-			// Set the value for the cell to our query data
-			data->SetCellValue(si, sj, querydata->GetVal(sj));
-
-			// Data view should be read only until the update is written
-			data->SetReadOnly(si, sj);
-		}
-
-		// Move to the next row
-		querydata->MoveNext();
-	}
-
-	// We're done with the data
-	delete querydata;
-
-	// Show the grid again
-	data->Show();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnCellSelect(wxGridEvent& event)
 {
-	design->SelectBlock(event.GetRow(), event.GetCol(), 
-		event.GetRow(), event.GetCol());
+	design->SelectBlock(event.GetRow(), event.GetCol(), event.GetRow(), event.GetCol());
 	design->SetGridCursor(event.GetRow(), event.GetCol());
 	design->EnableCellEditControl();
 	design->ShowCellEditControl();
@@ -1583,8 +1575,10 @@ void frmQueryBuilder::OnCancel(wxCommandEvent& event)
 {
     toolBar->EnableTool(BTN_CANCEL, FALSE);
     queryMenu->Enable(MNU_CANCEL, FALSE);
-    SetStatusText(wxT("Cancelling."), STATUSPOS_MSGS);
-
+    toolBar->EnableTool(BTN_EXECUTE, TRUE);
+    queryMenu->Enable(MNU_EXECUTE, TRUE);
+    SetStatusText(wxT("Canceled query."), STATUSPOS_MSGS);
+    aborted = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1598,7 +1592,12 @@ void frmQueryBuilder::OnExplain(wxCommandEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnExecute(wxCommandEvent& event)
 {
-//
+    toolBar->EnableTool(BTN_CANCEL, TRUE);
+    queryMenu->Enable(MNU_CANCEL, TRUE);
+    toolBar->EnableTool(BTN_EXECUTE, FALSE);
+    queryMenu->Enable(MNU_EXECUTE, FALSE);
+    BuildQuery();
+    RunQuery();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
