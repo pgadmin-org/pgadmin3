@@ -11,6 +11,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/app.h>
+#include <wx/xrc/xmlres.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -47,6 +48,13 @@ bool pgAdmin3::OnInit()
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     SetTopWindow(winSplash);
     winSplash->Show(TRUE);
+
+    // Setup the XML resources
+    wxString szXRC;
+    wxXmlResource::Get()->InitAllHandlers();
+    wxLogInfo(wxT("Loading frmOptions.xrc"));
+    szXRC.Printf("%s/frmOptions.xrc", XRC_PATH);
+    wxXmlResource::Get()->Load(szXRC);
 
     // Set some defaults
 #ifdef __WXMSW__

@@ -22,6 +22,13 @@
 #define APPNAME_L wxT("pgAdmin III")
 #define APPNAME_S wxT("pgadmin3")
 
+// XRC Path
+#ifdef __WXMSW__
+  #define XRC_PATH "ui/win32"
+#else
+  #define XRC_PATH "ui/gtk"
+#endif
+
 // Class declarations
 class pgAdmin3 : public wxApp
 {

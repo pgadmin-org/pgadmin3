@@ -13,9 +13,6 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/image.h>
-#include <wx/textctrl.h>
-#include <wx/radiobut.h>
 
 // App headers
 #include "../../pgAdmin3.h"
@@ -31,17 +28,7 @@ private:
     void OK();
     void Cancel();
     void BrowseLogFile();
-    wxTextCtrl *txtLogFile;
-    wxRadioBox *radLogLevel;
     DECLARE_EVENT_TABLE()
-};
-
-// Buttons
-enum
-{
-    BTN_OK = 101,
-    BTN_CANCEL = 102,
-    BTN_BROWSELOGFILE = 103
 };
 
 #endif
