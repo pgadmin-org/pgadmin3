@@ -45,7 +45,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 
     // Show System Objects
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
-    Read(wxT("SqlHelpSite"), &helpSite, wxT("http://developer.postgresql.org/docs/postgres/"));
+    Read(wxT("SqlHelpSite"), &helpSite, wxT("http://www.pgadmin.org/pgadmin3/doc.php?version=current&file="));
 
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
     maxColSize=Read(wxT("frmQuery/MaxColSize"), 256L);
