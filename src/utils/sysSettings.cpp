@@ -22,6 +22,8 @@
 #include "sysLogger.h"
 #include "misc.h"
 
+extern wxString loadPath;
+
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
 	// Keith 2003.03.05
@@ -45,7 +47,12 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 
     // Show System Objects
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
-    Read(wxT("SqlHelpSite"), &helpSite, wxT("http://www.pgadmin.org/pgadmin3/doc.php?version=current&file="));
+
+#ifdef __WIN32__
+    Read(wxT("SqlHelpSite"), &helpSite, loadPath + wxT("\docs\en_US\"));
+#else
+    Read(wxT("SqlHelpSite"), &helpSite, loadPath + wxT("../share/pgadmin3/docs/en_US/"));
+#endif
 
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
     maxColSize=Read(wxT("frmQuery/MaxColSize"), 256L);
