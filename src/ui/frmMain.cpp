@@ -393,16 +393,12 @@ pgObject *frmMain::GetSelectedObject()
     if (data == NULL)
         return 0;
 	
-    if (FindFocus() == browser)
-    {
-        return data;
-    }
-    else if (FindFocus() == properties && data->IsCollection())
+    if (FindFocus() == properties && data->IsCollection())
     {
         return ((pgCollection*)data)->FindChild(browser, properties->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
     }
     else
-        return 0;
+        return data;
 }
 
 
