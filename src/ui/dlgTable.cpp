@@ -127,7 +127,7 @@ int dlgTable::Go(bool modal)
 
         txtOID->Disable();
 
-        long cookie;
+        wxCookieType cookie;
         pgObject *data=0;
         wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(table->GetId(), cookie);
         while (item)

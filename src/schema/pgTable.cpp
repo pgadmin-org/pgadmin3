@@ -73,8 +73,7 @@ bool pgTable::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 wxString pgTable::GetAllConstraints(wxTreeCtrl *browser, wxTreeItemId collectionId, int type)
 {
     wxString sql;
-
-    long cookie;
+    wxCookieType cookie;
     pgObject *data;
     wxTreeItemId item=browser->GetFirstChild(collectionId, cookie);
             
@@ -121,7 +120,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
             + wxT("\n\nCREATE TABLE ") + GetQuotedFullIdentifier() + wxT("\n(\n");
 
         pgObject *data;
-        long cookie;
+        wxCookieType cookie;
         wxTreeItemId item=browser->GetFirstChild(GetId(), cookie);
         wxTreeItemId columnsItem, constraintsItem;
         while (item)

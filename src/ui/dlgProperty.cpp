@@ -255,7 +255,7 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
             {
                 // columns should be appended, not inserted alphabetically
 
-                long cookie;
+                wxCookieType cookie;
                 item=browser->GetFirstChild(collectionItem, cookie);
                 while (item)
                 {
@@ -528,7 +528,7 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 
         if (type != node->GetType() && !node->IsCollection())
         {
-            long cookie;
+            wxCookieType cookie;
             wxTreeItemId collectionItem=frame->GetBrowser()->GetFirstChild(node->GetId(), cookie);
             while (collectionItem)
             {
@@ -813,7 +813,7 @@ int dlgCollistProperty::Go(bool modal)
     }
     if (table)
     {
-        long cookie;
+        wxCookieType cookie;
         pgObject *data;
         wxTreeItemId columnsItem=mainForm->GetBrowser()->GetFirstChild(table->GetId(), cookie);
         while (columnsItem)
@@ -826,7 +826,7 @@ int dlgCollistProperty::Go(bool modal)
 
         if (columnsItem)
         {
-            long cookie;
+            wxCookieType cookie;
             pgColumn *column;
             wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(columnsItem, cookie);
 

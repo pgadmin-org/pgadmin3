@@ -13,6 +13,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "misc.h"
 #include "pgCollection.h"
 #include "pgServer.h"
 #include "pgGroup.h"
@@ -33,7 +34,6 @@
 #include "pgIndex.h"
 #include "pgRule.h"
 #include "pgTrigger.h"
-
 
 pgCollection::pgCollection(int newType, pgServer *sv)
 : pgObject(newType, typesList[newType].typName)
@@ -76,7 +76,7 @@ void pgCollection::ShowList(const wxString& name, wxTreeCtrl *browser, wxListCtr
     if (properties)
     {
         // Display the properties.
-        long cookie;
+        wxCookieType cookie;
         pgObject *data;
 
         // Setup listview
@@ -179,7 +179,7 @@ void pgCollection::SetSql(wxTreeCtrl *browser, ctlSQLBox *sqlPane, int index)
 {
     sqlPane->Clear();
 
-    long cookie;
+    wxCookieType cookie;
     pgObject *data;
 
     wxTreeItemId item = browser->GetFirstChild(GetId(), cookie);

@@ -32,7 +32,11 @@ typedef unsigned long OID;
 #endif
 #endif
 
-
+#if wxCHECK_VERSION(2, 5, 1)
+#define wxCookieType wxTreeItemIdValue
+#else
+#define wxCookieType long
+#endif
 
 // Global Stuff
 void StartMsg(const wxString& msg);

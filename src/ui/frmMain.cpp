@@ -396,7 +396,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     if (lastDatabase.IsNull())
         return item;
 
-    long cookie;
+    wxCookieType cookie;
     pgObject *data;
     item = browser->GetFirstChild(server->GetId(), cookie);
     while (item)
@@ -518,7 +518,7 @@ void frmMain::StoreServers()
 
     // Write the individual servers
     // Iterate through all the child nodes of the Servers node
-    long cookie;
+    wxCookieType cookie;
     wxString key;
     pgObject *data;
     pgServer *server;

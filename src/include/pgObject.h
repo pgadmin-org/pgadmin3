@@ -14,7 +14,6 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/treectrl.h>
-#include <wx/listctrl.h>
 #include "ctlSQLBox.h"
 
 // App headers
@@ -29,7 +28,7 @@ class pgCollection;
 class pgConn;
 class pgSet;
 class pgServer;
-
+class wxListCtrl;
 // This enum lists the type of objects that may be included in the treeview
 // as objects. If changing, update typesList[] as well.
 enum PG_OBJTYPE

@@ -285,7 +285,7 @@ void frmMain::OnCollapse(wxTreeEvent &event)
 
 void frmMain::OnExpand(wxTreeEvent &event)
 {
-    long cookie;
+    wxCookieType cookie;
     wxTreeItemId item=browser->GetFirstChild(event.GetItem(), cookie);
     if (item && !browser->GetItemData(item))
     {
@@ -573,7 +573,7 @@ void frmMain::execSelChange(wxTreeItemId item)
     // invalid click, so ignore.
     if (!data) return;
 
-    long cookie;
+    wxCookieType cookie;
     wxTreeItemId childItem=browser->GetFirstChild(item, cookie);
     if (childItem && !browser->GetItemData(childItem))
     {
