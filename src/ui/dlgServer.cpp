@@ -155,22 +155,9 @@ int dlgServer::Go(bool modal)
 
     if (server)
     {
+        cbDatabase->Append(server->GetDatabaseName());
         if (connection)
-        {
-            pgSet *set=connection->ExecuteSet(
-                wxT("SELECT datname FROM pg_database WHERE datallowconn ORDER BY datname"));
-            if (set)
-            {
-                while (!set->Eof())
-                {
-                    cbDatabase->Append(set->GetVal(0));
-                    set->MoveNext();
-                }
-                delete set;
-            }
-        }
-        else
-            cbDatabase->Append(server->GetDatabaseName());
+            cbDatabase->Disable();
 
         txtDescription->SetValue(server->GetDescription());
         txtService->SetValue(server->GetServiceID());
@@ -185,18 +172,6 @@ int dlgServer::Go(bool modal)
     else
     {
         SetTitle(_("Add server"));
-
-#if 0
-        cbDatabase->Append(settings->GetLastDatabase());
-
-        txtName->SetValue(settings->GetLastServer());
-        txtDescription->SetValue(settings->GetLastDescription());
-        txtPort->SetValue(NumToStr((long)settings->GetLastPort()));    
-        cbSSL->SetSelection(settings->GetLastSSL());
-        cbDatabase->SetSelection(0);
-        txtUsername->SetValue(settings->GetLastUsername());
-        chkNeedPwd->SetValue(true);
-#endif
     }
 
     int rc=dlgProperty::Go(modal);
