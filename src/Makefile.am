@@ -35,7 +35,8 @@ ui/dlgAggregate.cpp ui/dlgCast.cpp ui/dlgConversion.cpp \
 ui/dlgIndexConstraint.cpp ui/dlgForeignKey.cpp \
 ui/dlgSequence.cpp ui/dlgTrigger.cpp ui/dlgType.cpp \
 ui/dlgCheck.cpp ui/frmStatus.cpp utils/misc.cpp \
-utils/sysLogger.cpp utils/sysSettings.cpp
+utils/sysLogger.cpp utils/sysSettings.cpp \
+ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = include/copyright.h include/ctlSQLBox.h \
 include/ctlSQLResult.h include/dlgAddTableView.h \
