@@ -44,10 +44,10 @@ sysSettings::sysSettings() : sysConfig(APPNAME_S)
     sysConfig.Read(wxT("LogLevel"), &iLogLevel, LOG_ERRORS);
 
     // Last Connection
-    sysConfig.Read(wxT("Last Server"), &szLastServer, wxT("localhost")); 
-    sysConfig.Read(wxT("Last Database"), &szLastDatabase, wxT("template1")); 
-    sysConfig.Read(wxT("Last Username"), &szLastUsername, wxT("postgres")); 
-    sysConfig.Read(wxT("Last Port"), &iLastPort, 5432);
+    sysConfig.Read(wxT("LastServer"), &szLastServer, wxT("localhost")); 
+    sysConfig.Read(wxT("LastDatabase"), &szLastDatabase, wxT("template1")); 
+    sysConfig.Read(wxT("LastUsername"), &szLastUsername, wxT("postgres")); 
+    sysConfig.Read(wxT("LastPort"), &iLastPort, 5432);
 
 }
 
@@ -161,7 +161,7 @@ wxString sysSettings::GetLastServer() const
 void sysSettings::SetLastServer(const wxString& szNewVal)
 {
     szLastServer = szNewVal;
-    sysConfig.Write(wxT("Last Server"), szLastServer);
+    sysConfig.Write(wxT("LastServer"), szLastServer);
 }
 
 wxString sysSettings::GetLastDatabase() const
@@ -171,7 +171,7 @@ wxString sysSettings::GetLastDatabase() const
 void sysSettings::SetLastDatabase(const wxString& szNewVal)
 {
     szLastDatabase = szNewVal;
-    sysConfig.Write(wxT("Last Database"), szLastDatabase);
+    sysConfig.Write(wxT("LastDatabase"), szLastDatabase);
 }
 
 wxString sysSettings::GetLastUsername() const
@@ -181,7 +181,7 @@ wxString sysSettings::GetLastUsername() const
 void sysSettings::SetLastUsername(const wxString& szNewVal)
 {
     szLastUsername = szNewVal;
-    sysConfig.Write(wxT("Last Username"), szLastUsername);
+    sysConfig.Write(wxT("LastUsername"), szLastUsername);
 }
 
 int sysSettings::GetLastPort()
@@ -191,5 +191,5 @@ int sysSettings::GetLastPort()
 void sysSettings::SetLastPort(int iNewVal)
 {
     iLastPort = iNewVal;
-    sysConfig.Write(wxT("Last Port"), iLastPort);
+    sysConfig.Write(wxT("LastPort"), iLastPort);
 }

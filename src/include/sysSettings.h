@@ -60,10 +60,9 @@ public:
     int GetLastPort();
     void SetLastPort(int iNewVal);
 
-private:
-
     // The main config object
     wxConfig sysConfig;
+private:
 
     // frmMain size/position
     int iFrmMainWidth;

@@ -458,11 +458,8 @@ void frmMain::StoreServers()
     wxLogInfo(wxT("Storing listed servers for later..."));
 
     // Store the currently listed servers for later retrieval.
-#ifdef __WXMSW__
-    wxConfig *sysConfig = new wxConfig(APPNAME_L);
-#else 
-    wxConfig *sysConfig = new wxConfig(APPNAME_S);
-#endif
+    extern sysSettings *objSettings;
+    wxConfig *sysConfig = &objSettings->sysConfig;
 
     // Write the individual servers
     // Iterate through all the child nodes of the Servers node
@@ -481,19 +478,19 @@ void frmMain::StoreServers()
             objServer = (pgServer *)itmData;
 
             // Hostname
-            szKey.Printf("Servers/Server %d", iServers);
+            szKey.Printf("Servers/Server%d", iServers);
             sysConfig->Write(szKey, objServer->GetName());
 
             // Port
-            szKey.Printf("Servers/Port %d", iServers);
+            szKey.Printf("Servers/Port%d", iServers);
             sysConfig->Write(szKey, objServer->GetPort());
 
             // Database
-            szKey.Printf("Servers/Database %d", iServers);
+            szKey.Printf("Servers/Database%d", iServers);
             sysConfig->Write(szKey, objServer->GetDatabase());
 
             // Username
-            szKey.Printf("Servers/Username %d", iServers);
+            szKey.Printf("Servers/Username%d", iServers);
             sysConfig->Write(szKey, objServer->GetUsername());
         }
 
@@ -514,11 +511,8 @@ void frmMain::RetrieveServers()
     // Retrieve previously stored servers
     wxLogInfo(wxT("Reloading servers..."));
 
-#ifdef __WXMSW__
-    wxConfig *sysConfig = new wxConfig(APPNAME_L);
-#else 
-    wxConfig *sysConfig = new wxConfig(APPNAME_S);
-#endif
+    extern sysSettings *objSettings;
+    wxConfig *sysConfig = &objSettings->sysConfig;
 
     int iServers;
     sysConfig->Read(wxT("Servers/Count"), &iServers, 0);
@@ -530,19 +524,19 @@ void frmMain::RetrieveServers()
     for (iLoop = 1; iLoop <= iServers; ++iLoop) {
         
         // Server
-        szKey.Printf("Servers/Server %d", iLoop);
+        szKey.Printf("Servers/Server%d", iLoop);
         sysConfig->Read(szKey, &szServer, wxT(""));
 
         // Port
-        szKey.Printf("Servers/Port %d", iLoop);
+        szKey.Printf("Servers/Port%d", iLoop);
         sysConfig->Read(szKey, &iPort, 0);
 
         // Database
-        szKey.Printf("Servers/Database %d", iLoop);
+        szKey.Printf("Servers/Database%d", iLoop);
         sysConfig->Read(szKey, &szDatabase, wxT(""));
 
         // Username
-        szKey.Printf("Servers/Username %d", iLoop);
+        szKey.Printf("Servers/Username%d", iLoop);
         sysConfig->Read(szKey, &szUsername, wxT(""));
 
         // Add the Server node
