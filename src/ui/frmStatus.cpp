@@ -48,6 +48,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const 
     SetIcon(wxIcon(pgAdmin3_xpm));
 
     mainForm=form;
+    timer=0;
     connection=conn;
     backend_pid=conn->GetBackendPID();
 
@@ -55,11 +56,14 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const 
     statusList->InsertColumn(1, _("Database"), wxLIST_FORMAT_LEFT, 100);
     statusList->InsertColumn(2, _("User"), wxLIST_FORMAT_LEFT, 100);
     statusList->InsertColumn(3, _("Query"), wxLIST_FORMAT_LEFT, 850);
-    if (connection->GetVersionNumber() >= 7.4)
+    if (connection->BackendMinimumVersion(7, 4))
         statusList->InsertColumn(4, _("Start"), wxLIST_FORMAT_LEFT, 70);
 
+
+    long rate;
+    settings->Read(wxT("frmStatus/Refreshrate"), &rate, 1);
+    spnRefreshRate->SetValue(rate);
     timer=new wxTimer(this, TIMER_ID);
-    timer->Start(1000);
 }
 
 
@@ -72,6 +76,7 @@ frmStatus::~frmStatus()
     settings->Write(wxT("frmStatus/Height"), GetSize().y);
     settings->Write(wxT("frmStatus/Left"), GetPosition().x);
     settings->Write(wxT("frmStatus/Top"), GetPosition().y);
+    settings->Write(wxT("frmStatus/Refreshrate"), spnRefreshRate->GetValue());
 
     delete timer;
     if (connection)
@@ -83,19 +88,26 @@ void frmStatus::Go()
 {
     Show(true);
     wxCommandEvent nullEvent;
+
+    long rate=spnRefreshRate->GetValue();
+    if (rate)
+        timer->Start(rate*1000L);
+
     OnRefresh(nullEvent);
 }
 
 
 void frmStatus::OnRateChange(wxCommandEvent &event)
 {
-    timer->Stop();
-    long rate=spnRefreshRate->GetValue();
-    if (rate)
+    if (timer)
     {
-        timer->Start(rate*1000L);
-        wxCommandEvent nullEvent;
-        OnRefresh(nullEvent);
+        timer->Stop();
+        long rate=spnRefreshRate->GetValue();
+        if (rate)
+        {
+            timer->Start(rate*1000L);
+            OnRefresh(event);
+        }
     }
 }
 
@@ -133,7 +145,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                 wxString qry=dataSet->GetVal(wxT("current_query"));
                 statusList->SetItem(row, 3, qry.Left(250));
 
-                if (connection->GetVersionNumber() >= 7.4)
+                if (connection->BackendMinimumVersion(7, 4))
                 {
                     if (qry.IsEmpty())
                         statusList->SetItem(row, 4, wxT(""));
