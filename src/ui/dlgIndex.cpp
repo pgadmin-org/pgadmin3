@@ -80,14 +80,14 @@ int dlgIndexBase::Go(bool modal)
         btnAddCol->Disable();
         btnRemoveCol->Disable();
         cbColumns->Disable();
-	txtComment->SetValue(index->GetComment());
+		txtComment->SetValue(index->GetComment());
 
-        int pos=0;
+	    int pos = 0;
         wxStringTokenizer cols(index->GetColumns(), wxT(","));
         while (cols.HasMoreTokens())
         {
             wxString str=cols.GetNextToken();
-            if (pos)
+            if (str.Strip() == wxT(""))
                 str.RemoveLast();       // there's a space
             lstColumns->InsertItem(pos++, str, PGICON_COLUMN);
         }
