@@ -40,7 +40,7 @@ bool pgCheck::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 
 wxString pgCheck::GetConstraint()
 {
-    return GetQuotedIdentifier() +  wxT(" CHECK ") + GetDefinition();
+    return GetQuotedIdentifier() +  wxT(" CHECK (") + GetDefinition() + wxT(")");
 }
 
 
@@ -97,7 +97,8 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 {
     pgCheck *check=0;
     pgSet *checks= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT c.oid, conname, consrc, condeferrable, condeferred, relname, nspname\n")
+        wxT("SELECT c.oid, conname, condeferrable, condeferred, relname, nspname,\n")
+        wxT("       pg_get_expr(conbin, conrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as consrc\n")
         wxT("  FROM pg_constraint c\n")
         wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
         wxT("  JOIN pg_namespace nl ON nl.oid=relnamespace\n")
