@@ -20,7 +20,8 @@ rm -rf ./src
 /bin/sh bootstrap
 
 # Configure for the local OS
-./configure --with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-debug
+./configure --prefix=/usr/local/src/pgadmin3/slackpack/usr/local/pgadmin3 \
+	--with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-debug
 
 # Now make the binary build
 make all
@@ -28,74 +29,13 @@ make all
 
 # Build a clean distro
 if [ -x src/pgadmin3 ]; then
-	mkdir -p ./slackpack/usr/local/pgadmin3/bin
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/af_ZA
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ar
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ar_SA
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/da_DK
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/de_DE
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/es_ES
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/fa_IR
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/fr_FR
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/hr_HR
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/hu_HU
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/id_ID
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/is_IS
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/it_IT
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ja_JP
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/nb_NO
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/pl_PL
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/pt_BR
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ro_RO
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ru_RU
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/sd_IN
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/sv_SE
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/tl_PH
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/tr_TR
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ur_PK
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/zh_CN
-        mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/zh_TW
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/common
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/images
-	mkdir -p ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/pg
 
-	cp ./src/pgadmin3 ./slackpack/usr/local/pgadmin3/bin/
-	cp ./src/ui/wxstd.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/
-	cp ./src/ui/pgadmin3.lng ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/
-        cp ./src/ui/af_ZA/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/af_ZA/
-        cp ./src/ui/ar/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ar/
-        cp ./src/ui/ar_SA/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ar_SA/
-        cp ./src/ui/da_DK/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/da_DK/
-	cp ./src/ui/de_DE/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/de_DE/
-	cp ./src/ui/es_ES/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/es_ES/
-	cp ./src/ui/fa_IR/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/fa_IR/
-	cp ./src/ui/fr_FR/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/fr_FR/
-	cp ./src/ui/hr_HR/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/hr_HR/
-	cp ./src/ui/hu_HU/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/hu_HU/
-	cp ./src/ui/id_ID/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/id_ID/
-	cp ./src/ui/is_IS/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/is_IS/
-	cp ./src/ui/it_IT/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/it_IT/
-	cp ./src/ui/ja_JP/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ja_JP/
-	cp ./src/ui/nb_NO/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/nb_NO/
-	cp ./src/ui/pl_PL/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/pl_PL/
-	cp ./src/ui/pt_BR/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/pt_BR/
-	cp ./src/ui/ro_RO/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ro_RO/
-        cp ./src/ui/ru_RU/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ru_RU/
-	cp ./src/ui/sd_IN/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/sd_IN/
-	cp ./src/ui/sv_SE/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/sv_SE/
-	cp ./src/ui/tl_PH/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/tl_PH/
-	cp ./src/ui/tr_TR/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/tr_TR/
-	cp ./src/ui/ur_PK/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/ur_PK/
-	cp ./src/ui/zh_CN/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/zh_CN/
-	cp ./src/ui/zh_TW/*.mo ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/zh_TW/
-        cp ./src/ui/common/*.xrc ./slackpack/usr/local/pgadmin3/share/pgadmin3/ui/common/
-	cp ./docs/en_US/tips.txt ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/
-        cp ./docs/en_US/*.html ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/
-        cp ./docs/en_US/*.css ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/
-        cp ./docs/en_US/pgadmin3.hh* ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/
-	cp ./docs/en_US/images/*.jpg ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/images/
-	cp ./docs/en_US/pg/*.html ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/pg/
-	cp ./docs/en_US/pg/*.css ./slackpack/usr/local/pgadmin3/share/pgadmin3/docs/en_US/pg/
+	# Use the build system
+	make install
+	
+	# And tweak for Slackware
+	cp ./pkg/slackware/pgadmin3.desktop ./slackpack/opt/kde/share/applnk/Development
+	cp ./src/include/images/elephant48.xpm ./slackpack/usr/local/pgadmin3/share/pgadmin3/pgadmin3.xpm
 
 	# Build the snapshot and file it.
 	cd slackpack
