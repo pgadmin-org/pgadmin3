@@ -588,10 +588,7 @@ frmEditGrid::~frmEditGrid()
 {
     wxLogInfo(wxT("Destroying SQL EditGrid"));
     mainForm->RemoveFrame(this);
-    settings->Write(wxT("frmEditGrid/Width"), GetSize().x);
-    settings->Write(wxT("frmEditGrid/Height"), GetSize().y);
-    settings->Write(wxT("frmEditGrid/Left"), GetPosition().x);
-    settings->Write(wxT("frmEditGrid/Top"), GetPosition().y);
+    settings->Write(wxT("frmEditGrid"), GetSize(), GetPosition());
     if (connection)
         delete connection;
 }

@@ -96,10 +96,7 @@ frmStatus::~frmStatus()
     wxLogInfo(wxT("Destroying server status box"));
     mainForm->RemoveFrame(this);
 
-    settings->Write(wxT("frmStatus/Width"), GetSize().x);
-    settings->Write(wxT("frmStatus/Height"), GetSize().y);
-    settings->Write(wxT("frmStatus/Left"), GetPosition().x);
-    settings->Write(wxT("frmStatus/Top"), GetPosition().y);
+    settings->Write(wxT("frmStatus"), GetSize(), GetPosition());
     settings->Write(wxT("frmStatus/Refreshrate"), spnRefreshRate->GetValue());
 
     delete timer;

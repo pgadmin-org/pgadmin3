@@ -129,6 +129,38 @@ void sysSettings::SetProxy(const wxString &s)
     wxURL::SetDefaultProxy(proxy);
 }
 
+
+bool sysSettings::Write(const wxString &key, const wxPoint &value)
+{
+    bool rc=wxConfig::Write(key + wxT("/Left"), value.x);
+    if (rc)
+        rc=wxConfig::Write(key + wxT("/Top"), value.y);
+    return rc;
+}
+
+
+bool sysSettings::Write(const wxString &key, const wxSize &value)
+{
+    bool rc=wxConfig::Write(key + wxT("/Width"), value.x);
+    if (rc)
+        rc=wxConfig::Write(key + wxT("/Height"), value.y);
+    return rc;
+}
+
+
+wxPoint sysSettings::Read(const wxString& key, const wxPoint &defaultVal) const
+{
+    return wxPoint(wxConfig::Read(key + wxT("/Left"), defaultVal.x), 
+                   wxConfig::Read(key + wxT("/Top"), defaultVal.y));
+}
+
+
+wxSize sysSettings::Read(const wxString& key, const wxSize &defaultVal) const
+{
+    return wxSize(wxConfig::Read(key + wxT("/Width"), defaultVal.x), 
+                  wxConfig::Read(key + wxT("/Height"), defaultVal.y));
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Tip of the Day
 //////////////////////////////////////////////////////////////////////////

@@ -50,6 +50,7 @@ public:
 
 protected:
     dlgProperty(frmMain *frame, const wxString &resName);
+    ~dlgProperty();
 
     void EnableOK(bool enable);
     void ShowObject();

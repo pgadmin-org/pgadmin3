@@ -371,10 +371,7 @@ frmMain::~frmMain()
 {
     StoreServers();
 
-    settings->Write(wxT("frmMain/Width"), GetSize().x);
-    settings->Write(wxT("frmMain/Height"), GetSize().y);
-    settings->Write(wxT("frmMain/Left"), GetPosition().x);
-    settings->Write(wxT("frmMain/Top"), GetPosition().y);
+    settings->Write(wxT("frmMain"), GetSize(), GetPosition());
     settings->Write(wxT("frmMain/SplitHorizontal"), horizontal->GetSashPosition());
     settings->Write(wxT("frmMain/SplitVertical"), vertical->GetSashPosition());
 
@@ -643,8 +640,7 @@ void frmMain::RetrieveServers()
     // Retrieve previously stored servers
     wxLogInfo(wxT("Reloading servers..."));
 
-    int numServers;
-    settings->Read(wxT("Servers/Count"), &numServers, 0);
+    long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
     int loop, port, ssl=0;
     wxString key, servername, description, database, username, lastDatabase, lastSchema, trusted;

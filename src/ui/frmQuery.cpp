@@ -237,10 +237,7 @@ frmQuery::~frmQuery()
 {
     wxLogInfo(wxT("Destroying SQL Query box"));
     mainForm->RemoveFrame(this);
-    settings->Write(wxT("frmQuery/Width"), GetSize().x);
-    settings->Write(wxT("frmQuery/Height"), GetSize().y);
-    settings->Write(wxT("frmQuery/Left"), GetPosition().x);
-    settings->Write(wxT("frmQuery/Top"), GetPosition().y);
+    settings->Write(wxT("frmQuery"), GetSize(), GetPosition());
     settings->Write(wxT("frmQuery/Split"), horizontal->GetSashPosition());
     settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
     settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));

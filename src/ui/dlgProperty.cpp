@@ -112,12 +112,13 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
     numericValidator.SetStyle(wxFILTER_NUMERIC);
     btnOK->Disable();
 
+    wxSize size=GetSize();
+
     if (wxWindow::FindWindow(XRCID("txtStatus")))
         statusBox=CTRL_TEXT("txtStatus");
     else
     {
         wxSize stdTxtSize=ConvertDialogToPixels(wxSize(0, 12));
-        wxSize size=GetSize();
         size.SetHeight(size.GetHeight()+stdTxtSize.GetHeight());
         SetSize(size);
         size=GetClientSize();
@@ -125,7 +126,18 @@ dlgProperty::dlgProperty(frmMain *frame, const wxString &resName) : DialogWithHe
         size.SetHeight(stdTxtSize.GetHeight());
         statusBox = new wxTextCtrl(this, 178, wxT(""), pos, size, wxTE_READONLY);
     }
+
     statusBox->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+}
+
+
+dlgProperty::~dlgProperty()
+{
+    wxString prop = wxT("Properties/") + wxString(typesList[objectType].typName);
+    settings->Write(prop, GetPosition());
+
+    if (GetWindowStyle() & wxTHICK_FRAME)
+        settings->Write(prop, GetSize());
 }
 
 
@@ -167,6 +179,16 @@ void dlgProperty::EnableOK(bool enable)
 
 int dlgProperty::Go(bool modal)
 {
+    // restore previous position and size, if applicable
+    wxString prop = wxT("Properties/") + wxString(typesList[objectType].typName);
+
+    if (GetWindowStyle() & wxTHICK_FRAME)
+        SetSize(settings->Read(prop, GetSize()));
+
+    wxPoint pos=settings->Read(prop, GetPosition());
+    if (pos.x >= 0 && pos.y >= 0)
+        Move(pos);
+
     if (GetObject())
     {
         if (!readOnly && !GetObject()->CanCreate())

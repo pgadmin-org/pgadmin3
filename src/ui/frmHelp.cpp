@@ -69,8 +69,8 @@ frmHelp::frmHelp(wxWindow *fr)
     htmlWindow->SetRelatedFrame(this, APPNAME_L wxT(" - %s"));
     htmlWindow->SetRelatedStatusBar(0);
 
-    wxPoint pos(settings->Read(wxT("frmHelp/Left"), 100), settings->Read(wxT("frmHelp/Top"), 100));
-    wxSize size(settings->Read(wxT("frmHelp/Width"), 400), settings->Read(wxT("frmHelp/Height"), 500));
+    wxPoint pos(settings->Read(wxT("frmHelp"), wxPoint(100, 100)));
+    wxSize size(settings->Read(wxT("frmHelp"), wxSize(400, 500)));
     CheckOnScreen(pos, size, 200, 150);
     Move(pos);
     SetSize(size);
@@ -81,10 +81,7 @@ frmHelp::frmHelp(wxWindow *fr)
 
 frmHelp::~frmHelp()
 {
-    settings->Write(wxT("frmHelp/Width"), GetSize().x);
-    settings->Write(wxT("frmHelp/Height"), GetSize().y);
-    settings->Write(wxT("frmHelp/Left"), GetPosition().x);
-    settings->Write(wxT("frmHelp/Top"), GetPosition().y);
+    settings->Write(wxT("frmHelp"), GetSize(), GetPosition());
 }
 
 

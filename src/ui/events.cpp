@@ -323,8 +323,8 @@ void frmMain::OnStatus(wxCommandEvent &event)
         wxString txt = wxT("pgAdmin III Server Status - ") + server->GetDescription() 
             + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(")");
 
-        wxPoint pos(settings->Read(wxT("frmStatus/Left"), 100), settings->Read(wxT("frmStatus/Top"), 100));
-        wxSize size(settings->Read(wxT("frmStatus/Width"), 400), settings->Read(wxT("frmStatus/Height"), 240));
+        wxPoint pos(settings->Read(wxT("frmStatus"), wxPoint(100, 100)));
+        wxSize size(settings->Read(wxT("frmStatus"), wxSize(400, 240)));
         CheckOnScreen(pos, size, 200, 150);
         frmStatus *status = new frmStatus(this, txt, conn, pos, size);
         frames.Append(status);
@@ -400,8 +400,8 @@ void frmMain::OnSql(wxCommandEvent &ev)
     {
         wxString txt = wxT("pgAdmin III Query - ") + server->GetDescription() + wxT(" (") + server->GetName() + wxT(":") + NumToStr((long)server->GetPort()) + wxT(") - ") + db->GetName();
 
-        wxPoint pos(settings->Read(wxT("frmQuery/Left"), 100), settings->Read(wxT("frmQuery/Top"), 100));
-        wxSize size(settings->Read(wxT("frmQuery/Width"), 600), settings->Read(wxT("frmQuery/Height"), 500));
+        wxPoint pos(settings->Read(wxT("frmQuery"), wxPoint(100, 100)));
+        wxSize size(settings->Read(wxT("frmQuery"), wxSize(600, 500)));
         CheckOnScreen(pos, size, 200, 150);
 
         wxString qry;
@@ -445,8 +445,8 @@ void frmMain::OnViewData(wxCommandEvent& event)
             + wxT(") - ") + db->GetName()
             + wxT(" - ") + data->GetFullIdentifier();
 
-        wxPoint pos(settings->Read(wxT("frmEditGrid/Left"), 100), settings->Read(wxT("frmEditGrid/Top"), 100));
-        wxSize size(settings->Read(wxT("frmEditGrid/Width"), 600), settings->Read(wxT("frmEditGrid/Height"), 500));
+        wxPoint pos(settings->Read(wxT("frmEditGrid"), wxPoint(100, 100)));
+        wxSize size(settings->Read(wxT("frmEditGrid"), wxSize(600, 500)));
         CheckOnScreen(pos, size, 200, 150);
 
         frmEditGrid *eg= new frmEditGrid(this, txt, conn, pos, size, data);
