@@ -18,6 +18,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "copyright.h"
 #include "frmHelp.h"
 #include "frmMain.h"
 #include "menu.h"

@@ -13,6 +13,7 @@
 #include <wx/ffile.h>
 #include <wx/datetime.h>
 #include <wx/log.h>
+#include "copyright.h"
 
 // App headers
 #include "pgAdmin3.h"

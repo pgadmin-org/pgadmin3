@@ -1257,6 +1257,10 @@ SOURCE=.\include\sysSettings.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\version.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\wxgridsel.h
 # End Source File
 # End Group

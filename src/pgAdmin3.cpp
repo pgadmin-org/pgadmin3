@@ -28,6 +28,8 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "copyright.h"
+#include "version.h"
 #include "misc.h"
 #include "sysLogger.h"
 #include "sysSettings.h"
@@ -113,7 +115,7 @@ bool pgAdmin3::OnInit()
     wxLog::SetActiveTarget(logger);
 
     wxString msg;
-    msg << wxT("# ") << APPNAME_L << wxT(" Version ") << VERSION << wxT(" Startup");
+    msg << wxT("# ") << APPNAME_L << wxT(" Version ") << VERSION_STR << wxT(" Startup");
     wxLogInfo(wxT("##############################################################"));
     wxLogInfo(msg);
     wxLogInfo(wxT("##############################################################"));

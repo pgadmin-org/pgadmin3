@@ -24,6 +24,7 @@
 
 // Copyright text
 #include "copyright.h"
+#include "version.h"
 
 BEGIN_EVENT_TABLE(frmSplash, wxFrame)
     EVT_PAINT(frmSplash::OnPaint)

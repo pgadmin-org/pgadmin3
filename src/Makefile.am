@@ -38,7 +38,7 @@ ui/dlgCheck.cpp ui/frmStatus.cpp utils/misc.cpp \
 utils/sysLogger.cpp utils/sysSettings.cpp \
 ui/common/xrcDialogs.cpp
 
-noinst_HEADERS = include/copyright.h include/ctlSQLBox.h \
+noinst_HEADERS = include/copyright.h include/version.h include/ctlSQLBox.h \
 include/ctlSQLResult.h include/dlgAddTableView.h \
 include/pgDefs.h include/pgDatatype.h \
 include/dlgCheck.h include/dlgColumn.h \
