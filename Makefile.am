@@ -4,7 +4,7 @@
 #
 # Makefile - Makefile for *nix systems
 SUBDIRS = src
-EXTRA_DIST = 	README.txt TODO.txt BUGS.txt LICENCE.txt \
+EXTRA_DIST = 	README.txt BUGS.txt LICENCE.txt \
 
 nobase_dist_pkgdata_DATA = \
 		docs/en_US/pg/*.gif docs/en_US/pg/*.html docs/en_US/pg/*.css \

@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pg/stylesheet.css">
+<title>Compilation on unix platforms</title>
+</head>
+
+<body>
+
+<h3>Compilation on unix platforms</h3>
+
+<p>
+If you plan to contribute code, pgAdmin3 requires wxWindows from CVS version &gt;
+20030607. Use a recent GNU/Linux distro because GTK2.2 is needed. You will also need
+a copy of PostgreSQL on your development system. 
+
+<ol>
+<li>Install wxWindows from source as follows:<br><blockquote><pre>	
+# cd &lt;wx source directory&gt;
+# ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug
+# make
+# make install
+# ldconfig
+</pre></blockquote>&nbsp;</li>
+
+<li>Install the wxWindows Styled Text Control as follows:<br><blockquote><pre>	
+# cd contrib/src/stc
+# make
+# make install
+# ldconfig
+</pre></blockquote>&nbsp;</li>
+
+<li>Install the wxWindows XML Recources as follows:<br><blockquote><pre># cd ../xrc
+# make
+# make install
+# ldconfig
+</pre></blockquote>&nbsp;</li>
+
+<li>Download and unpack the pgAdmin source code.<br><blockquote><pre>If you wish to use CVS code:
+
+# CVSROOT=:pserver:anonymous@cvs.pgadmin.org:/disk1/cvsroot export CVSROOT
+# cvs login
+# cvs -z9 checkout pgadmin3
+# cd pgadmin3
+# sh bootstrap
+
+or, if you wish to use the latest source tarball:
+
+# wget http://www.pgadmin.org/snapshots/pgadmin3-Alpha-src.tar.gz
+# tar -zxvf pgadmin3-Alpha-src.tar.gz
+# cd pgadmin3
+
+Now the source is downloaded:
+
+# ./configure --enable-unicode --enable-gtk2 --enable-debug
+# make all
+# make install
+</pre></blockquote>&nbsp;</li>
+<ol>
+
+</p>
+
+</body>
+
+</html>
