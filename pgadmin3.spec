@@ -40,6 +40,7 @@ make all
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
+strip --strip-debug %{buildroot}/bin/pgAdmin3
 
 %clean
 rm -rf %{buildroot}
