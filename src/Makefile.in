@@ -3,22 +3,13 @@
 # This software is released under the pgAdmin Public Licence
 #
 # Makefile - Makefile for *nix systems
-
-
-
 CC = g++
-ifeq ($(PGDIR),)
-	PGDIR = /usr/local/pgsql
-endif
-ifeq ($(WXDIR),)
-	WXDIR = /usr/local
-endif
+LDFLAGS = --static --static-libgcc @LDFLAGS@ -lpq -lcrypt
+CPPFLAGS = @CPPFLAGS@ -g -Iinclude
+INSTALLDIR = @prefix@
 
 # You shouldn't need to edit below here.
-
 PROGRAM = pgAdmin3
-CFLAGS  = `wx-config --cflags` -I$(WXDIR)/include -I$(WXDIR)/contrib/include -Iinclude -I$(PGDIR)/include -g
-LDFLAGS = --static --static-libgcc $(WXDIR)/lib/libstc.a $(PGDIR)/lib/libpq.a $(WXDIR)/lib/libwxxrc.a /usr/lib/libcrypt.a `wx-config --static --libs`
 
 OBJECTS = $(PROGRAM).o \
           db/pgConn.o \
@@ -83,7 +74,7 @@ OBJECTS = $(PROGRAM).o \
 .SUFFIXES:	.o .cpp
 
 .cpp.o :
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CPPFLAGS) -o $@ $<
 
 all:    $(PROGRAM)
 
@@ -96,3 +87,12 @@ clean:
 	rm -f schema/*.o
 	rm -f ui/*.o
 	rm -f utils/*.o
+
+install:
+	mkdir -p $(INSTALLDIR)
+	cp pgAdmin3 $(INSTALLDIR)/
+	mkdir -p $(INSTALLDIR)/ui/common/
+	cp ui/common/*.xrc $(INSTALLDIR)/ui/common
+# ui/gtk still unused
+#	mkdir -p $(INSTALLDIR)/ui/gtk
+#	cp ui/gtk/*.xrc $(INSTALLDIR)/ui/gtk
