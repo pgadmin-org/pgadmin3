@@ -101,10 +101,10 @@ public:
     bool GetUnicodeFile() const { return unicodeFile; }
     void SetUnicodeFile(const bool b) {unicodeFile = b; }
 
-    wxFont GetSQLFont() const { return wxFont(sqlFontPointSize, sqlFontFamily, sqlFontStyle, sqlFontWeight, false, sqlFontFace); }
+    wxFont GetSQLFont() const { return sqlFont; }
     wxFont GetSystemFont() const { return systemFont; }
-    void SetFont(const wxFont &font);
-    void SetSQLFont(const wxFont &font);
+    void SetFont(const wxFont &font) { systemFont = font; }
+    void SetSQLFont(const wxFont &font) { sqlFont = font; }
     wxString GetCanonicalLanguage() const { return canonicalLanguage; }
 
     bool Write(const wxString &key, const wxString &value) { return wxConfig::Write(key, value); }
@@ -129,12 +129,13 @@ public:
     wxPoint Read(const wxString& key, const wxPoint &defaultVal) const;
     wxSize Read(const wxString& key, const wxSize &defaultVal) const;
 
+	void Save();
 
 
 
 private:
 
-    wxFont systemFont; 
+    wxFont systemFont, sqlFont; 
 
     // Tip Of The Day
     bool showTipOfTheDay;
@@ -166,11 +167,6 @@ private:
     bool doubleClickProperties;
 
     wxString searchPath;
-
-    int fontPointSize, fontFamily, fontStyle, fontWeight;
-    wxString fontFace;
-    int sqlFontPointSize, sqlFontFamily, sqlFontStyle, sqlFontWeight;
-    wxString sqlFontFace;
 };
 
 #endif

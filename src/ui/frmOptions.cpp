@@ -15,6 +15,7 @@
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/fontdlg.h>
+#include <wx/fontutil.h>
 
 // App headers
 #include "frmOptions.h"
@@ -122,9 +123,9 @@ frmOptions::frmOptions(frmMain *parent)
     cbLanguage->SetSelection(sel);
 
     currentFont=settings->GetSystemFont();
-    txtFont->SetValue(currentFont.GetFaceName() + wxT(".") + NumToStr((long)currentFont.GetPointSize()));
+    txtFont->SetValue(currentFont.GetNativeFontInfoUserDesc());
     currentSqlFont=settings->GetSQLFont();
-    txtSqlFont->SetValue(currentSqlFont.GetFaceName() + wxT(".") + NumToStr((long)currentSqlFont.GetPointSize()));
+    txtSqlFont->SetValue(currentSqlFont.GetNativeFontInfoUserDesc());
 }
 
 
@@ -232,7 +233,8 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         }
 
     }
-    
+
+    settings->Save();
     Destroy();
 }
 
@@ -247,7 +249,7 @@ void frmOptions::OnSqlFontSelect(wxCommandEvent &ev)
     if (dlg.ShowModal() == wxID_OK)
     {
         currentSqlFont=dlg.GetFontData().GetChosenFont();
-        txtSqlFont->SetValue(currentSqlFont.GetFaceName() + wxT(".") + NumToStr((long)currentSqlFont.GetPointSize()));
+        txtSqlFont->SetValue(currentSqlFont.GetNativeFontInfoUserDesc());
     }
 }
 
@@ -261,7 +263,7 @@ void frmOptions::OnFontSelect(wxCommandEvent &ev)
     if (dlg.ShowModal() == wxID_OK)
     {
         currentFont=dlg.GetFontData().GetChosenFont();
-        txtFont->SetValue(currentFont.GetFaceName() + wxT(".") + NumToStr((long)currentFont.GetPointSize()));
+        txtFont->SetValue(currentFont.GetNativeFontInfoUserDesc());
     }
 }
 void frmOptions::OnCancel(wxCommandEvent &ev)

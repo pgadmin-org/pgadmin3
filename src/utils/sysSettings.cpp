@@ -83,28 +83,20 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     if (langInfo)
         canonicalLanguage=langInfo->CanonicalName;
 
-    Read(wxT("FontPointSize"), &fontPointSize, 0);
-    Read(wxT("FontFace"), &fontFace, wxEmptyString);
-    Read(wxT("FontFamily"), &fontFamily, 0);
-    Read(wxT("FontStyle"), &fontStyle, 0);
-    Read(wxT("FontWeight"), &fontWeight, 0);
+	wxString fontName;
+    Read(wxT("Font"), &fontName, wxEmptyString);
 
-    if (fontFace.IsEmpty())
+    if (fontName.IsEmpty())
         systemFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
     else
-        systemFont = wxFont(fontPointSize, fontFamily, fontStyle, fontWeight, false, fontFace);
+        systemFont = wxFont(fontName);
 
 #ifdef __WXMSW__
-    Read(wxT("frmQuery/FontPointSize"), &sqlFontPointSize, 9);
-    Read(wxT("frmQuery/FontFace"), &sqlFontFace, wxT("Courier New"));
+    Read(wxT("frmQuery/FontFace"), &fontName, wxT("Courier New.9"));
 #else
-    Read(wxT("frmQuery/FontPointSize"), &sqlFontPointSize, 12);
-    Read(wxT("frmQuery/FontFace"), &sqlFontFace, wxT("monospace"));
+    Read(wxT("frmQuery/Font"), &fontName, wxT("monospace 12"));
 #endif
-    Read(wxT("frmQuery/FontFamily"), &sqlFontFamily, wxTELETYPE);
-    Read(wxT("frmQuery/FontStyle"), &sqlFontStyle, wxNORMAL);
-    Read(wxT("frmQuery/FontWeight"), &sqlFontWeight, wxNORMAL);
-
+	sqlFont = wxFont(fontName);
 }
 
 
@@ -112,12 +104,19 @@ sysSettings::~sysSettings()
 {
     wxLogInfo(wxT("Destroying sysSettings object and saving settings"));
     // frMain size/position
+	Save();
+}
 
-    Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
+void sysSettings::Save()
+{
+    Write(wxT("LogFile"), logFile);
+    Write(wxT("LogLevel"), logLevel);
+
     Write(wxT("frmQuery/MaxRows"), maxRows);
     Write(wxT("frmQuery/MaxColSize"), maxColSize);
     Write(wxT("frmQuery/ExplainVerbose"), explainVerbose);
     Write(wxT("frmQuery/ExplainAnalyze"), explainAnalyze);
+	Write(wxT("frmQuery/Font"), sqlFont.GetNativeFontInfoDesc());
     Write(wxT("AskSaveConfirmation"), BoolToStr(askSaveConfirmation));
     Write(wxT("ConfirmDelete"), BoolToStr(confirmDelete));
     Write(wxT("ShowUsersForPrivileges"), BoolToStr(showUsersForPrivileges));
@@ -126,30 +125,12 @@ sysSettings::~sysSettings()
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
     Write(wxT("SearchPath"), searchPath);
-    Write(wxT("FontPointSize"), fontPointSize);
-    Write(wxT("FontFamily"), fontFamily);
-    Write(wxT("FontStyle"), fontStyle);
-    Write(wxT("FontWeight"), fontWeight);
+	wxString fontName = systemFont.GetNativeFontInfoDesc();
 
-    wxFont stdFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
-    if (fontPointSize == stdFont.GetPointSize() &&
-        fontFamily == stdFont.GetFamily() &&
-        fontStyle == stdFont.GetStyle() &&
-        fontWeight == stdFont.GetWeight() &&
-        fontFace == stdFont.GetFaceName())
-    {
-        Write(wxT("FontFace"), wxEmptyString);
-    }
+	if (fontName == wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT).GetNativeFontInfoDesc())
+        Write(wxT("Font"), wxEmptyString);
     else
-    {
-        Write(wxT("FontFace"), fontFace);
-    }
-
-    Write(wxT("frmQuery/FontPointSize"), sqlFontPointSize);
-    Write(wxT("frmQuery/FontFamily"), sqlFontFamily);
-    Write(wxT("frmQuery/FontStyle"), sqlFontStyle);
-    Write(wxT("frmQuery/FontWeight"), sqlFontWeight);
-    Write(wxT("frmQuery/FontFace"), sqlFontFace);
+        Write(wxT("Font"), fontName);
 }
 
 
@@ -200,13 +181,13 @@ wxSize sysSettings::Read(const wxString& key, const wxSize &defaultVal) const
 void sysSettings::SetShowTipOfTheDay(const bool newval)
 {
     showTipOfTheDay = newval;
-    
+    Write(wxT("NextTipOfTheDay"), nextTipOfTheDay);
 }
 
 void sysSettings::SetNextTipOfTheDay(const int newval)
 {
     nextTipOfTheDay = newval;
-    this->Write(wxT("NextTipOfTheDay"), nextTipOfTheDay);
+    Write(wxT("NextTipOfTheDay"), nextTipOfTheDay);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -216,13 +197,11 @@ void sysSettings::SetNextTipOfTheDay(const int newval)
 void sysSettings::SetLogFile(const wxString& newval)
 {
     logFile = newval;
-    this->Write(wxT("LogFile"), logFile);
 }
 
 void sysSettings::SetLogLevel(const int newval)
 {
     logLevel = newval;
-    this->Write(wxT("LogLevel"), logLevel);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -272,7 +251,7 @@ void sysSettings::SetLastSSL(const int newval)
 void sysSettings::SetShowSystemObjects(const bool newval)
 {
     showSystemObjects = newval;
-    this->Write(wxT("ShowSystemObjects"), showSystemObjects);
+    Write(wxT("ShowSystemObjects"), showSystemObjects);
 }
 
 
@@ -283,7 +262,7 @@ void sysSettings::SetShowSystemObjects(const bool newval)
 void sysSettings::SetStickySql(const bool newval)
 {
     stickySql = newval;
-    this->Write(wxT("StickySql"), stickySql);
+    Write(wxT("StickySql"), stickySql);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -293,7 +272,7 @@ void sysSettings::SetStickySql(const bool newval)
 void sysSettings::SetDoubleClickProperties(const bool newval)
 {
     doubleClickProperties = newval;
-    this->Write(wxT("DoubleClickProperties"), doubleClickProperties);
+    Write(wxT("DoubleClickProperties"), doubleClickProperties);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -302,16 +281,16 @@ void sysSettings::SetDoubleClickProperties(const bool newval)
 
 wxSize sysSettings::GetFrmQueryBuilderSize()
 {
-    int width = this->Read(wxT("frmQueryBuilder/Width"), 750);
-    int height = this->Read(wxT("frmQueryBuilder/Height"), 550);
+    int width = Read(wxT("frmQueryBuilder/Width"), 750);
+    int height = Read(wxT("frmQueryBuilder/Height"), 550);
 
 	return wxSize(width, height);
 }
 
 void sysSettings::SetFrmQueryBuilderSize(wxSize size)
 {
-    this->Write(wxT("frmQueryBuilder/Width"), size.GetWidth());
-    this->Write(wxT("frmQueryBuilder/Height"), size.GetHeight());
+    Write(wxT("frmQueryBuilder/Width"), size.GetWidth());
+    Write(wxT("frmQueryBuilder/Height"), size.GetHeight());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -320,38 +299,14 @@ void sysSettings::SetFrmQueryBuilderSize(wxSize size)
 
 wxPoint sysSettings::GetFrmQueryBuilderPos()
 {
-    int top = this->Read(wxT("frmQueryBuilder/Top"), 50);
-    int left = this->Read(wxT("frmQueryBuilder/Left"), 50);
+    int top = Read(wxT("frmQueryBuilder/Top"), 50);
+    int left = Read(wxT("frmQueryBuilder/Left"), 50);
 
 	return wxPoint(top, left);
 }
 
 void sysSettings::SetFrmQueryBuilderPos(wxPoint pos)
 {
-    this->Write(wxT("frmQueryBuilder/Top"), pos.x);
-    this->Write(wxT("frmQueryBuilder/Left"), pos.y);
-}
-
-
-void sysSettings::SetFont(const wxFont &font)
-{
-    fontPointSize=font.GetPointSize();
-    fontFamily=font.GetFamily();
-    fontStyle=font.GetStyle();
-    fontWeight=font.GetWeight();
-    fontFace=font.GetFaceName();
-    if (fontFace.IsEmpty())
-        systemFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
-    else
-        systemFont = wxFont(fontPointSize, fontFamily, fontStyle, fontWeight, false, fontFace);
-}
-
-
-void sysSettings::SetSQLFont(const wxFont &font)
-{
-    sqlFontPointSize=font.GetPointSize();
-    sqlFontFamily=font.GetFamily();
-    sqlFontStyle=font.GetStyle();
-    sqlFontWeight=font.GetWeight();
-    sqlFontFace=font.GetFaceName();
+    Write(wxT("frmQueryBuilder/Top"), pos.x);
+    Write(wxT("frmQueryBuilder/Left"), pos.y);
 }
