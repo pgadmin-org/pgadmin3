@@ -305,7 +305,7 @@ void frmMain::OnSelActivated()
     }
 
 #ifndef __WXMSW__
-    browser->expand(item);
+    browser->Expand(item);
 #endif
 }
 
