@@ -78,7 +78,7 @@ pushd contrib/src/xrc
 %makeinstall
 popd
 pushd contrib/utils/wxrc
-%makeinstall
+cp -r wxrc %{_bindir}/
 popd
 
 pushd contrib/src/stc
@@ -87,7 +87,6 @@ popd
 
 # Mandrake and RedHat do it by default. Needed for SuSE.
 strip --strip-debug %{_libdir}/libwx_gtk2ud-%{version}.a
-strip --strip-debug %{_bindir}/wxgtk2ud-%{version}-config
 strip --strip-debug %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
 strip --strip-debug %{_libdir}/libwx_gtk2ud_stc-%{version}.a
 
