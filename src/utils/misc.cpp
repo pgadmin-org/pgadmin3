@@ -282,7 +282,7 @@ static bool needsQuoting(wxString& value, bool forTypes)
         while (pos < (int)value.length())
         {
             wxChar c=value.GetChar(pos);
-            if (!(c >= '0' && c <= '9') && 
+            if (!((pos > 0) && (c >= '0' && c <= '9')) && 
                 !(c >= 'a' && c  <= 'z') && 
                 !(c == '_'))
             {
