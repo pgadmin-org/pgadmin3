@@ -28,6 +28,7 @@
 #include "frmOptions.h"
 #include "frmUpgradeWizard.h"
 #include "../controls/ctlSQLBox.h"
+#include "../../db/pg/pgConn.h"
 
 // Icons
 #include "../../images/aggregate.xpm"
@@ -73,9 +74,10 @@
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
+    EVT_MENU(MNU_CONNECT, frmMain::OnConnect)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
-    EVT_MENU(MNU_OPTIONS, frmMain::Options)
-    EVT_MENU(MNU_TIPOFTHEDAY, frmMain::TipOfTheDay)
+    EVT_MENU(MNU_OPTIONS, frmMain::OnOptions)
+    EVT_MENU(MNU_TIPOFTHEDAY, frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_UPGRADEWIZARD, frmMain::OnUpgradeWizard)
 END_EVENT_TABLE()
 
@@ -287,7 +289,7 @@ void frmMain::OnUpgradeWizard(wxCommandEvent& WXUNUSED(event))
     frmUpgradeWizard *winUpgradeWizard = new frmUpgradeWizard(this);
     winUpgradeWizard->Show(TRUE);
 }
-void frmMain::TipOfTheDay()
+void frmMain::OnTipOfTheDay()
 {
     extern sysSettings *objSettings;
     wxTipProvider *tipProvider = wxCreateFileTipProvider(wxT("tips.txt"), objSettings->GetNextTipOfTheDay());
@@ -296,8 +298,13 @@ void frmMain::TipOfTheDay()
     delete tipProvider;
 }
 
-void frmMain::Options()
+void frmMain::OnOptions(wxCommandEvent& event)
 {
     frmOptions *winOptions = new frmOptions(this);
     winOptions->Show(TRUE);
+}
+
+void frmMain::OnConnect(wxCommandEvent& event)
+{
+     pgConn *objConnection = new pgConn(wxString("127.0.0.1"), wxString("template1"), wxString("postgres"));
 }

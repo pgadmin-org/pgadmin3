@@ -18,7 +18,6 @@
 #include <wx/combobox.h>
 #include <wx/imaglist.h>
 #include <wx/url.h>
-#include <wx/msgdlg.h>    //This is my way of debugging. You can remove this
 #include <wx/stream.h>
 
 // App headers
@@ -30,14 +29,12 @@
 #include "../../images/unknown.xpm"
 #include "../../images/upgrade.xpm"
 
-// Splash
-#include "../../images/splash.xpm"
 BEGIN_EVENT_TABLE(frmUpgradeWizard, wxDialog)
-EVT_PAINT(frmUpgradeWizard::OnPaint)
+
 END_EVENT_TABLE()
 
 frmUpgradeWizard::frmUpgradeWizard(wxFrame *parent)
-: wxDialog(parent, -1, "Upgrade Wizard", wxDefaultPosition, wxSize(450,255), wxCAPTION | wxDIALOG_MODAL | wxSTAY_ON_TOP)
+: wxDialog(parent, -1, "Upgrade Wizard", wxDefaultPosition, wxSize(450,255), wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
 {
 
     wxLogDebug(wxT("Creating new instance of the Upgrade Wizard"));
@@ -133,8 +130,3 @@ frmUpgradeWizard::~frmUpgradeWizard()
     wxLogDebug(wxT("Destroying the Upgrade Wizard box"));
 }
 
-void frmUpgradeWizard::OnPaint(wxPaintEvent& WXUNUSED(event))
-{
-    wxPaintDC dc(this);
-    dc.DrawBitmap(imgAbout, 0, 0);
-}

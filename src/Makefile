@@ -7,14 +7,15 @@
 CC = gcc
 PROGRAM = pgAdmin3
 CFLAGS  = `wx-config --cflags`
-LDFLAGS = `wx-config --libs` -lstc
+LDFLAGS = `wx-config --libs` -lstc -lpq
 
 OBJECTS = $(PROGRAM).o \
+          db/pg/pgConn.o \
           ui/forms/frmAbout.o \
           ui/forms/frmMain.o \
           ui/forms/frmOptions.o \
           ui/forms/frmSplash.o \
-	  ui/forms/frmUpgradeWizard.o \
+	        ui/forms/frmUpgradeWizard.o \
           ui/controls/ctlSQLBox.o \
           utils/sysLogger.o \
           utils/sysSettings.o

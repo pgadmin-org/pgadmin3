@@ -27,7 +27,7 @@ class frmMain : public wxFrame
 public:
     frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
     ~frmMain();
-    void TipOfTheDay();
+    void OnTipOfTheDay();
     
 private:
     wxTreeCtrl* tvBrowser;
@@ -38,10 +38,11 @@ private:
     wxMenuBar *mnuBar;
     wxStatusBar *stBar;
     wxToolBar *tlBar;
-    void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
+    void OnConnect(wxCommandEvent& event);
+    void OnExit(wxCommandEvent& event);
     void OnUpgradeWizard(wxCommandEvent& event);
-    void Options();
+    void OnOptions(wxCommandEvent& event);
     DECLARE_EVENT_TABLE()
 };
 
