@@ -9,22 +9,22 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="Server Programming"
-HREF="server-programming.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="Interfacing Extensions To Indexes"
-HREF="xindex.html"><LINK
+TITLE="Further Readings"
+HREF="geqo-biblio.html"><LINK
 REL="NEXT"
-TITLE="The Rule System"
-HREF="rules.html"><LINK
+TITLE="GiST Indexes"
+HREF="gist.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xindex.html"
+HREF="geqo-biblio.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="extend.html"
+HREF="geqo.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="rules.html"
+HREF="gist.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="rules.html"
+HREF="gist.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="INDEXCOST"
 ></A
->Chapter 34. Index Cost Estimation Functions</H1
+>Chapter 49. Index Cost Estimation Functions</H1
 ><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
@@ -157,7 +157,7 @@ CLASS="PRODUCTNAME"
 >   The amcostestimate function is given a list of WHERE clauses that have
    been determined to be usable with the index.  It must return estimates
    of the cost of accessing the index and the selectivity of the WHERE
-   clauses (that is, the fraction of main-table tuples that will be
+   clauses (that is, the fraction of main-table rows that will be
    retrieved during the index scan).  For simple cases, nearly all the
    work of the cost estimator can be done by calling standard routines
    in the optimizer; the point of having an amcostestimate function is
@@ -274,7 +274,7 @@ CLASS="FILENAME"
 >src/backend/optimizer/path/costsize.c</TT
 >: a sequential disk block fetch
    has cost 1.0, a nonsequential fetch has cost random_page_cost, and
-   the cost of processing one index tuple should usually be taken as
+   the cost of processing one index row should usually be taken as
    cpu_index_tuple_cost (which is a user-adjustable optimizer parameter).
    In addition, an appropriate multiple of cpu_operator_cost should be charged
    for any comparison operators invoked during index processing (especially
@@ -283,27 +283,27 @@ CLASS="FILENAME"
 ><P
 >   The access costs should include all disk and CPU costs associated with
    scanning the index itself, but NOT the costs of retrieving or processing
-   the main-table tuples that are identified by the index.
+   the main-table rows that are identified by the index.
   </P
 ><P
 >   The <SPAN
 CLASS="QUOTE"
 >"start-up cost"</SPAN
 > is the part of the total scan cost that must be expended
-   before we can begin to fetch the first tuple.  For most indexes this can
+   before we can begin to fetch the first row.  For most indexes this can
    be taken as zero, but an index type with a high start-up cost might want
    to set it nonzero.
   </P
 ><P
 >   The indexSelectivity should be set to the estimated fraction of the main
-   table tuples that will be retrieved during the index scan.  In the case
+   table rows that will be retrieved during the index scan.  In the case
    of a lossy index, this will typically be higher than the fraction of
-   tuples that actually pass the given qual conditions.
+   rows that actually pass the given qual conditions.
   </P
 ><P
 >   The indexCorrelation should be set to the correlation (ranging between
    -1.0 and 1.0) between the index order and the table order.  This is used
-   to adjust the estimate for the cost of fetching tuples from the main
+   to adjust the estimate for the cost of fetching rows from the main
    table.
   </P
 ><DIV
@@ -319,7 +319,7 @@ CLASS="PROCEDURE"
 TYPE="1"
 ><LI
 ><P
->     Estimate and return the fraction of main-table tuples that will be visited
+>     Estimate and return the fraction of main-table rows that will be visited
      based on the given qual conditions.  In the absence of any index-type-specific
      knowledge, use the standard optimizer function <CODE
 CLASS="FUNCTION"
@@ -336,10 +336,10 @@ CLASS="PROGRAMLISTING"
 ></LI
 ><LI
 ><P
->     Estimate the number of index tuples that will be visited during the
+>     Estimate the number of index rows that will be visited during the
      scan.  For many index types this is the same as indexSelectivity times
-     the number of tuples in the index, but it might be more.  (Note that the
-     index's size in pages and tuples is available from the IndexOptInfo struct.)
+     the number of rows in the index, but it might be more.  (Note that the
+     index's size in pages and rows is available from the IndexOptInfo struct.)
     </P
 ></LI
 ><LI
@@ -357,7 +357,7 @@ CLASS="PROGRAMLISTING"
 >    /*
      * Our generic assumption is that the index pages will be read
      * sequentially, so they have cost 1.0 each, not random_page_cost.
-     * Also, we charge for evaluation of the indexquals at each index tuple.
+     * Also, we charge for evaluation of the indexquals at each index row.
      * All the costs are assumed to be paid incrementally during the scan.
      */
     cost_qual_eval(&amp;index_qual_cost, indexQuals);
@@ -419,7 +419,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xindex.html"
+HREF="geqo-biblio.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -437,7 +437,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="rules.html"
+HREF="gist.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -447,13 +447,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Interfacing Extensions To Indexes</TD
+>Further Readings</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="server-programming.html"
+HREF="internals.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -461,7 +461,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->The Rule System</TD
+>GiST Indexes</TD
 ></TR
 ></TABLE
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Performance Tips"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -109,7 +109,7 @@ NAME="DISABLE-AUTOCOMMIT"
 >13.4.1. Disable Autocommit</A
 ></H2
 ><A
-NAME="AEN13946"
+NAME="AEN13942"
 ></A
 ><P
 >    Turn off autocommit and just do one commit at
@@ -151,14 +151,13 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >COPY FROM STDIN</TT
 > to load all the rows in one
-    command, instead of using
-    a series of <TT
+    command, instead of using a series of <TT
 CLASS="COMMAND"
 >INSERT</TT
-> commands.  This reduces parsing,
-    planning, etc.
-    overhead a great deal. If you do this then it is not necessary to turn
-    off autocommit, since it is only one command anyway.
+>
+    commands.  This reduces parsing, planning, etc.  overhead a great
+    deal. If you do this then it is not necessary to turn off
+    autocommit, since it is only one command anyway.
    </P
 ></DIV
 ><DIV
@@ -171,12 +170,12 @@ NAME="POPULATE-RM-INDEXES"
 ></H2
 ><P
 >    If you are loading a freshly created table, the fastest way is to
-    create the table, bulk-load with <TT
+    create the table, bulk load the table's data using
+    <TT
 CLASS="COMMAND"
 >COPY</TT
->, then create any
-    indexes needed 
-    for the table.  Creating an index on pre-existing data is quicker than
+>, then create any indexes needed for the
+    table.  Creating an index on pre-existing data is quicker than
     updating it incrementally as each row is loaded.
    </P
 ><P
@@ -193,8 +192,31 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
+NAME="POPULATE-SORT-MEM"
+>13.4.4. Increase <VAR
+CLASS="VARNAME"
+>sort_mem</VAR
+></A
+></H2
+><P
+>    Temporarily increasing the <VAR
+CLASS="VARNAME"
+>sort_mem</VAR
+>
+    configuration variable when restoring large amounts of data can
+    lead to improved performance. This is because when a B-tree index
+    is created from scratch, the existing content of the table needs
+    to be sorted. Allowing the merge sort to use more buffer pages
+    means that fewer merge passes will be required.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
 NAME="POPULATE-ANALYZE"
->13.4.4. Run <TT
+>13.4.5. Run <TT
 CLASS="COMMAND"
 >ANALYZE</TT
 > Afterwards</A

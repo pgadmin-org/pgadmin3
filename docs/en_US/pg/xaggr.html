@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
 HREF="extend.html"><LINK
 REL="PREVIOUS"
-TITLE="Procedural Language Handlers"
-HREF="xfunc-plhandler.html"><LINK
+TITLE="Function Overloading"
+HREF="xfunc-overload.html"><LINK
 REL="NEXT"
 TITLE="User-Defined Types"
 HREF="xtypes.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xfunc-plhandler.html"
+HREF="xfunc-overload.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -96,10 +96,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XAGGR"
->33.10. User-Defined Aggregates</A
+>33.9. User-Defined Aggregates</A
 ></H1
 ><A
-NAME="AEN29852"
+NAME="AEN29717"
 ></A
 ><P
 >   Aggregate functions  in <SPAN
@@ -270,7 +270,7 @@ CLASS="PROGRAMLISTING"
    can be used to implement multiple aggregates.
    See <A
 HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 33.2.1</A
+>Section 33.2.5</A
 >
    for an explanation of polymorphic functions.
    Going a step further, the aggregate function itself may be specified
@@ -297,16 +297,20 @@ CLASS="PROGRAMLISTING"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT attrelid::regclass, array_accum(attname)
-FROM pg_attribute WHERE attnum &#62; 0
-AND attrelid = 'pg_user'::regclass GROUP BY attrelid;
+    FROM pg_attribute
+    WHERE attnum &#62; 0 AND attrelid = 'pg_user'::regclass
+    GROUP BY attrelid;
+
  attrelid |                                 array_accum
 ----------+-----------------------------------------------------------------------------
  pg_user  | {usename,usesysid,usecreatedb,usesuper,usecatupd,passwd,valuntil,useconfig}
 (1 row)
 
 SELECT attrelid::regclass, array_accum(atttypid)
-FROM pg_attribute WHERE attnum &#62; 0
-AND attrelid = 'pg_user'::regclass GROUP BY attrelid;
+    FROM pg_attribute
+    WHERE attnum &#62; 0 AND attrelid = 'pg_user'::regclass
+    GROUP BY attrelid;
+
  attrelid |         array_accum
 ----------+------------------------------
  pg_user  | {19,23,16,16,16,25,702,1009}
@@ -340,7 +344,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xfunc-plhandler.html"
+HREF="xfunc-overload.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -368,7 +372,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Procedural Language Handlers</TD
+>Function Overloading</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

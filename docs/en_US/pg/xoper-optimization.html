@@ -9,13 +9,13 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
 HREF="extend.html"><LINK
 REL="PREVIOUS"
-TITLE="User-defined Operators"
+TITLE="User-Defined Operators"
 HREF="xoper.html"><LINK
 REL="NEXT"
 TITLE="Interfacing Extensions To Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XOPER-OPTIMIZATION"
->33.13. Operator Optimization Information</A
+>33.12. Operator Optimization Information</A
 ></H1
 ><P
 >    A <SPAN
@@ -119,15 +119,15 @@ CLASS="PRODUCTNAME"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >.  The ones described here are all
-    the ones that release 7.4beta4 understands.
+    the ones that release 7.4 understands.
    </P
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29979"
->33.13.1. <VAR
+NAME="AEN29855"
+>33.12.1. <VAR
 CLASS="LITERAL"
 >COMMUTATOR</VAR
 ></A
@@ -157,7 +157,7 @@ CLASS="LITERAL"
 > is usually not commutative with anything.
     </P
 ><P
->     The left operand type of a commuted operator is the same as the
+>     The left operand type of a commutable operator is the same as the
      right operand type of its commutator, and vice versa.  So the name of
      the commutator operator is all that <SPAN
 CLASS="PRODUCTNAME"
@@ -168,6 +168,52 @@ CLASS="PRODUCTNAME"
 CLASS="LITERAL"
 >COMMUTATOR</VAR
 > clause.
+    </P
+><P
+>     It's critical to provide commutator information for operators that
+     will be used in indexes and join clauses, because this allows the
+     query optimizer to <SPAN
+CLASS="QUOTE"
+>"flip around"</SPAN
+> such a clause to the forms
+     needed for different plan types.  For example, consider a query with
+     a WHERE clause like <VAR
+CLASS="LITERAL"
+>tab1.x = tab2.y</VAR
+>, where <VAR
+CLASS="LITERAL"
+>tab1.x</VAR
+>
+     and <VAR
+CLASS="LITERAL"
+>tab2.y</VAR
+> are of a user-defined type, and suppose that
+     <VAR
+CLASS="LITERAL"
+>tab2.y</VAR
+> is indexed.  The optimizer cannot generate an
+     index scan unless it can determine how to flip the clause around to
+     <VAR
+CLASS="LITERAL"
+>tab2.y = tab1.x</VAR
+>, because the index-scan machinery expects
+     to see the indexed column on the left of the operator it is given.
+     <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> will <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> simply
+     assume that this is a valid transformation --- the creator of the
+     <VAR
+CLASS="LITERAL"
+>=</VAR
+> operator must specify that it is valid, by marking the
+     operator with commutator information.
     </P
 ><P
 >     When you are defining a self-commutative operator, you just do it.
@@ -235,8 +281,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30004"
->33.13.2. <VAR
+NAME="AEN29890"
+>33.12.2. <VAR
 CLASS="LITERAL"
 >NEGATOR</VAR
 ></A
@@ -300,8 +346,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30020"
->33.13.3. <VAR
+NAME="AEN29906"
+>33.12.3. <VAR
 CLASS="LITERAL"
 >RESTRICT</VAR
 ></A
@@ -504,8 +550,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30070"
->33.13.4. <VAR
+NAME="AEN29956"
+>33.12.4. <VAR
 CLASS="LITERAL"
 >JOIN</VAR
 ></A
@@ -628,8 +674,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30102"
->33.13.5. <VAR
+NAME="AEN29988"
+>33.12.5. <VAR
 CLASS="LITERAL"
 >HASHES</VAR
 ></A
@@ -671,8 +717,8 @@ CLASS="LITERAL"
      the operator, since of course the referencing operator class couldn't
      exist yet.  But attempts to use the operator in hash joins will fail
      at runtime if no such operator class exists.  The system needs the
-     operator class to find the datatype-specific hash function for the
-     operator's input datatype.  Of course, you must also supply a suitable
+     operator class to find the data-type-specific hash function for the
+     operator's input data type.  Of course, you must also supply a suitable
      hash function before you can create the operator class.
     </P
 ><P
@@ -702,7 +748,7 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     The function underlying a hashjoinable operator must be marked
+>     The function underlying a hash-joinable operator must be marked
      immutable or stable.  If it is volatile, the system will never
      attempt to use the operator for a hash join.
     </P
@@ -715,10 +761,10 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     If a hashjoinable operator has an underlying function that is marked
+>     If a hash-joinable operator has an underlying function that is marked
      strict, the
-     function must also be complete: that is, it should return TRUE or
-     FALSE, never NULL, for any two non-NULL inputs.  If this rule is
+     function must also be complete: that is, it should return true or
+     false, never null, for any two nonnull inputs.  If this rule is
      not followed, hash-optimization of <VAR
 CLASS="LITERAL"
 >IN</VAR
@@ -727,8 +773,8 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >IN</VAR
 > might return
-     FALSE where the correct answer per spec would be NULL; or it might
-     yield an error complaining that it wasn't prepared for a NULL result.)
+     false where the correct answer according to the standard would be null; or it might
+     yield an error complaining that it wasn't prepared for a null result.)
     </P
 ></BLOCKQUOTE
 ></DIV
@@ -738,8 +784,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN30122"
->33.13.6. <VAR
+NAME="AEN30008"
+>33.12.6. <VAR
 CLASS="LITERAL"
 >MERGES</VAR
 > (<VAR
@@ -914,7 +960,7 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->     The function underlying a mergejoinable operator must be marked
+>     The function underlying a merge-joinable operator must be marked
      immutable or stable.  If it is volatile, the system will never
      attempt to use the operator for a merge join.
     </P
@@ -1007,7 +1053,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->User-defined Operators</TD
+>User-Defined Operators</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

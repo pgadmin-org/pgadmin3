@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 39. <SPAN
+>Chapter 37. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-DECLARATIONS"
->39.4. Declarations</A
+>37.4. Declarations</A
 ></H1
 ><P
 >     All variables used in a block must be declared in the
@@ -221,7 +221,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-ALIASES"
->39.4.1. Aliases for Function Parameters</A
+>37.4.1. Aliases for Function Parameters</A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
@@ -298,26 +298,26 @@ CLASS="TYPE"
 CLASS="LITERAL"
 >$0</VAR
 >
-      is created.  Its datatype is the actual return type of the function,
+      is created.  Its data type is the actual return type of the function,
       as deduced from the actual input types (see <A
 HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 33.2.1</A
+>Section 33.2.5</A
 >).
       This allows the function to access its actual return type
       as shown in <A
 HREF="plpgsql-declarations.html#PLPGSQL-DECLARATION-TYPE"
->Section 39.4.2</A
+>Section 37.4.2</A
 >.
       <VAR
 CLASS="LITERAL"
 >$0</VAR
-> is initialized to NULL and can be modified by
+> is initialized to null and can be modified by
       the function, so it can be used to hold the return value if desired,
       though that is not required.  <VAR
 CLASS="LITERAL"
 >$0</VAR
 > can also be
-      given an alias.  For example, this function works on any datatype
+      given an alias.  For example, this function works on any data type
       that has a <VAR
 CLASS="LITERAL"
 >+</VAR
@@ -345,7 +345,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-TYPE"
->39.4.2. Copying Types</A
+>37.4.2. Copying Types</A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
@@ -417,7 +417,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-ROWTYPES"
->39.4.3. Row Types</A
+>37.4.3. Row Types</A
 ></H2
 ><PRE
 CLASS="SYNOPSIS"
@@ -538,17 +538,14 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-RECORDS"
->39.4.4. Record Types</A
+>37.4.4. Record Types</A
 ></H2
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
 ><VAR
 CLASS="REPLACEABLE"
 >name</VAR
 > RECORD;</PRE
-><P>
-    </P
 ><P
 >    Record variables are similar to row-type variables, but they have no
     predefined structure.  They take on the actual row structure of the
@@ -594,13 +591,12 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-DECLARATION-RENAMING-VARS"
->39.4.5. <VAR
+>37.4.5. <VAR
 CLASS="LITERAL"
 >RENAME</VAR
 ></A
 ></H2
-><P
-></P><PRE
+><PRE
 CLASS="SYNOPSIS"
 >RENAME <VAR
 CLASS="REPLACEABLE"
@@ -609,20 +605,33 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >newname</VAR
 >;</PRE
-><P>
-
-      Using the RENAME declaration you can change the name of a variable,
-      record or row. This is primarily useful if NEW or OLD should be
-      referenced by another name inside a trigger procedure.  See also ALIAS.
-     </P
 ><P
->      Examples:
+>    Using the <VAR
+CLASS="LITERAL"
+>RENAME</VAR
+> declaration you can change the
+    name of a variable, record or row. This is primarily useful if
+    <VAR
+CLASS="LITERAL"
+>NEW</VAR
+> or <VAR
+CLASS="LITERAL"
+>OLD</VAR
+> should be
+    referenced by another name inside a trigger procedure.  See also
+    <VAR
+CLASS="LITERAL"
+>ALIAS</VAR
+>.
+   </P
+><P
+>    Examples:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >RENAME id TO user_id;
 RENAME this_var TO that_var;</PRE
 ><P>
-     </P
+   </P
 ><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
@@ -630,13 +639,23 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->	  RENAME appears to be broken as of <SPAN
+>      <VAR
+CLASS="LITERAL"
+>RENAME</VAR
+> appears to be broken as of
+      <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->
-	  7.3.  Fixing this is of low priority, since ALIAS covers most of
-	  the practical uses of RENAME.
-    </P
+> 7.3.  Fixing this is of low priority,
+      since <VAR
+CLASS="LITERAL"
+>ALIAS</VAR
+> covers most of the practical uses
+      of <VAR
+CLASS="LITERAL"
+>RENAME</VAR
+>.
+     </P
 ></BLOCKQUOTE
 ></DIV
 ></DIV

@@ -2,14 +2,14 @@
 <HTML
 ><HEAD
 ><TITLE
->Migration between releases</TITLE
+>Migration Between Releases</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Backup and Restore"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -93,28 +93,27 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="MIGRATION"
->22.3. Migration between releases</A
+>22.3. Migration Between Releases</A
 ></H1
 ><A
-NAME="AEN19152"
+NAME="AEN19071"
 ></A
 ><A
-NAME="AEN19154"
+NAME="AEN19073"
 ></A
 ><P
 >   As a general rule, the internal data storage format is subject to
-   change between releases of <SPAN
+   change between major releases of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->. This does not
-   apply to different <SPAN
-CLASS="QUOTE"
->"patch levels"</SPAN
->, these always have
-   compatible storage formats. For example, releases 7.0.1, 7.1.2, and
-   7.2 are not compatible, whereas 7.1.1 and 7.1.2 are. When you
-   update between compatible versions, then you can simply reuse the
-   data area in disk by the new executables. Otherwise you need to
+> (where
+   the number after the first dot changes). This does not apply to
+   different minor releases under the same major release (where the
+   number of the second dot changes); these always have compatible
+   storage formats. For example, releases 7.0.1, 7.1.2, and 7.2 are
+   not compatible, whereas 7.1.1 and 7.1.2 are. When you update
+   between compatible versions, then you can simply reuse the data
+   area in disk by the new executables. Otherwise you need to
    <SPAN
 CLASS="QUOTE"
 >"back up"</SPAN
@@ -168,7 +167,7 @@ CLASS="PROGRAMLISTING"
 >pg_dumpall &#62; backup
 pg_ctl stop
 mv /usr/local/pgsql /usr/local/pgsql.old
-cd ~/postgresql-7.4beta4
+cd ~/postgresql-7.4
 gmake install
 initdb -D /usr/local/pgsql/data
 postmaster -D /usr/local/pgsql/data

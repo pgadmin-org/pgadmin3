@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -151,7 +151,7 @@ HREF="client-authentication-problems.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN17626"
+NAME="AEN17545"
 ></A
 ><P
 >  When a client application connects to the database server, it
@@ -212,7 +212,7 @@ CLASS="FILENAME"
 > file</A
 ></H1
 ><A
-NAME="AEN17640"
+NAME="AEN17559"
 ></A
 ><P
 >   Client authentication is controlled by the file
@@ -272,7 +272,7 @@ CLASS="QUOTE"
 >   A record may have one of the seven formats
 </P><PRE
 CLASS="SYNOPSIS"
->local   <VAR
+>local      <VAR
 CLASS="REPLACEABLE"
 >database</VAR
 >  <VAR
@@ -288,7 +288,7 @@ CLASS="REPLACEABLE"
 >authentication-option</VAR
 ></SPAN
 >]
-host    <VAR
+host       <VAR
 CLASS="REPLACEABLE"
 >database</VAR
 >  <VAR
@@ -310,7 +310,7 @@ CLASS="REPLACEABLE"
 >authentication-option</VAR
 ></SPAN
 >]
-hostssl  <VAR
+hostssl    <VAR
 CLASS="REPLACEABLE"
 >database</VAR
 >  <VAR
@@ -354,7 +354,7 @@ CLASS="REPLACEABLE"
 >authentication-option</VAR
 ></SPAN
 >]
-host    <VAR
+host       <VAR
 CLASS="REPLACEABLE"
 >database</VAR
 >  <VAR
@@ -365,7 +365,7 @@ CLASS="REPLACEABLE"
 >IP-address</VAR
 >/<VAR
 CLASS="REPLACEABLE"
->CIDR-mask</VAR
+>IP-masklen</VAR
 >  <VAR
 CLASS="REPLACEABLE"
 >authentication-method</VAR
@@ -376,7 +376,7 @@ CLASS="REPLACEABLE"
 >authentication-option</VAR
 ></SPAN
 >]
-hostssl  <VAR
+hostssl    <VAR
 CLASS="REPLACEABLE"
 >database</VAR
 >  <VAR
@@ -387,7 +387,7 @@ CLASS="REPLACEABLE"
 >IP-address</VAR
 >/<VAR
 CLASS="REPLACEABLE"
->CIDR-mask</VAR
+>IP-masklen</VAR
 >  <VAR
 CLASS="REPLACEABLE"
 >authentication-method</VAR
@@ -409,7 +409,7 @@ CLASS="REPLACEABLE"
 >IP-address</VAR
 >/<VAR
 CLASS="REPLACEABLE"
->CIDR-mask</VAR
+>IP-masklen</VAR
 >  <VAR
 CLASS="REPLACEABLE"
 >authentication-method</VAR
@@ -642,43 +642,44 @@ CLASS="LITERAL"
 ><DT
 ><VAR
 CLASS="REPLACEABLE"
->CIDR-mask</VAR
+>IP-masklen</VAR
 ></DT
 ><DD
 ><P
->        This field may be used as an alternative to the 
-        <VAR
+>       This field may be used as an alternative to the
+       <VAR
 CLASS="REPLACEABLE"
 >IP-mask</VAR
-> notation.  It is an
-	integer specifying the number of high-order bits 
-        to set in the mask.  The number must
-        be between 0 and 32 (in the case of an IPv4 address) or 128
-        (in the case of an IPv6 address) inclusive. 0 will match any
-        address, while 32/128 will match only the exact host specified.
-        The same matching logic is used as for a dotted notation
-        <VAR
+> notation.  It is an integer
+       specifying the number of high-order bits to set in the mask.
+       The number must be between 0 and 32 (in the case of an IPv4
+       address) or 128 (in the case of an IPv6 address) inclusive. 0
+       will match any address, while 32 (or 128, respectively) will
+       match only the exact host specified.  The same matching logic
+       is used as for a dotted notation
+       <VAR
 CLASS="REPLACEABLE"
->IP-Mask</VAR
+>IP-mask</VAR
 >.
       </P
 ><P
->        There must be no white space between the <VAR
+>       There must be no white space between the
+       <VAR
 CLASS="REPLACEABLE"
 >IP-address</VAR
->
-        and the <VAR
+> and the
+       <VAR
 CLASS="LITERAL"
 >/</VAR
 > or the <VAR
 CLASS="LITERAL"
 >/</VAR
 > and the
-        <VAR
+       <VAR
 CLASS="REPLACEABLE"
->CIDR-mask</VAR
->, or the file will not be parsed 
-        correctly.
+>IP-masklen</VAR
+>, or the file will not be
+       parsed correctly.
       </P
 ><P
 >       This field only applies to <VAR
@@ -996,7 +997,7 @@ CLASS="COMMAND"
 CLASS="SYSTEMITEM"
 >SIGHUP</SPAN
 ><A
-NAME="AEN17886"
+NAME="AEN17805"
 ></A
 >
    signal. If you edit the file on an

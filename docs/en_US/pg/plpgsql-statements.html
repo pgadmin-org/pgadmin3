@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 39. <SPAN
+>Chapter 37. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-STATEMENTS"
->39.6. Basic Statements</A
+>37.6. Basic Statements</A
 ></H1
 ><P
 >    In this section and the following ones, we describe all the statement
@@ -138,7 +138,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-ASSIGNMENT"
->39.6.1. Assignment</A
+>37.6.1. Assignment</A
 ></H2
 ><P
 >     An assignment of a value to a variable or row/record field is
@@ -191,13 +191,13 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-SELECT-INTO"
->39.6.2. <TT
+>37.6.2. <TT
 CLASS="COMMAND"
 >SELECT INTO</TT
 ></A
 ></H2
 ><A
-NAME="AEN33219"
+NAME="AEN31660"
 ></A
 ><P
 >     The result of a <TT
@@ -361,7 +361,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-PERFORM"
->39.6.3. Executing an Expression or Query With No Result</A
+>37.6.3. Executing an Expression or Query With No Result</A
 ></H2
 ><P
 >     Sometimes one wishes to evaluate an expression or query but
@@ -440,7 +440,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-EXECUTING-DYN"
->39.6.4. Executing Dynamic Commands</A
+>37.6.4. Executing Dynamic Commands</A
 ></H2
 ><P
 >     Oftentimes you will want to generate dynamic commands inside your
@@ -495,7 +495,7 @@ CLASS="APPLICATION"
 >. Please refer to the
     overview in <A
 HREF="plpgsql-development-tips.html#PLPGSQL-QUOTE-TIPS"
->Section 39.2.1</A
+>Section 37.2.1</A
 >,
     which can save you some effort.
     </P
@@ -539,7 +539,7 @@ CLASS="COMMAND"
 >
      loop form described in <A
 HREF="plpgsql-control-structures.html#PLPGSQL-RECORDS-ITERATING"
->Section 39.7.4</A
+>Section 37.7.4</A
 >,
      and the other is to use a cursor with <TT
 CLASS="COMMAND"
@@ -547,7 +547,7 @@ CLASS="COMMAND"
 >, as
      described in <A
 HREF="plpgsql-cursors.html#PLPGSQL-CURSOR-OPENING"
->Section 39.8.2</A
+>Section 37.8.2</A
 >.
     </P
 ><P
@@ -577,10 +577,10 @@ CLASS="TYPE"
 >text</TT
 >)</CODE
 >.<A
-NAME="AEN33310"
+NAME="AEN31751"
 ></A
 ><A
-NAME="AEN33313"
+NAME="AEN31754"
 ></A
 > For safety, variables containing column and
      table identifiers should be passed to function
@@ -641,15 +641,15 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-STATEMENTS-DIAGNOSTICS"
->39.6.5. Obtaining the Result Status</A
+>37.6.5. Obtaining the Result Status</A
 ></H2
 ><P
->	 There are several ways to determine the effect of a command. The
-	 first method is to use the <TT
+>         There are several ways to determine the effect of a command. The
+         first method is to use the <TT
 CLASS="COMMAND"
 >GET DIAGNOSTICS</TT
 >
-	 command, which has the form:
+         command, which has the form:
 
 </P><PRE
 CLASS="SYNOPSIS"
@@ -725,38 +725,38 @@ CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > function call.
      It is set by each of the following types of statements:
-	 <P
+         <P
 ></P
 ></P><UL
 ><LI
 ><P
->		A <TT
+>                A <TT
 CLASS="COMMAND"
 >SELECT INTO</TT
 > statement sets
-		<VAR
+                <VAR
 CLASS="LITERAL"
 >FOUND</VAR
 > true if it returns a row, false if no
-		row is returned.
-	   </P
+                row is returned.
+           </P
 ></LI
 ><LI
 ><P
->		A <TT
+>                A <TT
 CLASS="COMMAND"
 >PERFORM</TT
 > statement sets <VAR
 CLASS="LITERAL"
 >FOUND</VAR
 >
-		true if it produces (and discards) a row, false if no row is
-		produced.
-	   </P
+                true if it produces (and discards) a row, false if no row is
+                produced.
+           </P
 ></LI
 ><LI
 ><P
->		<TT
+>                <TT
 CLASS="COMMAND"
 >UPDATE</TT
 >, <TT
@@ -766,68 +766,68 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >DELETE</TT
 >
-		statements set <VAR
+                statements set <VAR
 CLASS="LITERAL"
 >FOUND</VAR
 > true if at least one
-		row is affected, false if no row is affected.
-	   </P
+                row is affected, false if no row is affected.
+           </P
 ></LI
 ><LI
 ><P
->		A <TT
+>                A <TT
 CLASS="COMMAND"
 >FETCH</TT
 > statement sets <VAR
 CLASS="LITERAL"
 >FOUND</VAR
 >
-		true if it returns a row, false if no row is returned.
-	   </P
+                true if it returns a row, false if no row is returned.
+           </P
 ></LI
 ><LI
 ><P
->		A <TT
+>                A <TT
 CLASS="COMMAND"
 >FOR</TT
 > statement sets <VAR
 CLASS="LITERAL"
 >FOUND</VAR
 > true
-		if it iterates one or more times, else false.  This applies to
-		all three variants of the <TT
+                if it iterates one or more times, else false.  This applies to
+                all three variants of the <TT
 CLASS="COMMAND"
 >FOR</TT
 > statement (integer
-		<TT
+                <TT
 CLASS="COMMAND"
 >FOR</TT
 > loops, record-set <TT
 CLASS="COMMAND"
 >FOR</TT
 > loops, and
-		dynamic record-set <TT
+                dynamic record-set <TT
 CLASS="COMMAND"
 >FOR</TT
 >
-		loops). <VAR
+                loops). <VAR
 CLASS="LITERAL"
 >FOUND</VAR
 > is only set when the
-		<TT
+                <TT
 CLASS="COMMAND"
 >FOR</TT
 > loop exits: inside the execution of the loop,
-		<VAR
+                <VAR
 CLASS="LITERAL"
 >FOUND</VAR
 > is not modified by the
-		<TT
+                <TT
 CLASS="COMMAND"
 >FOR</TT
 > statement, although it may be changed by the
-		execution of other statements within the loop body.
-	   </P
+                execution of other statements within the loop body.
+           </P
 ></LI
 ></UL
 ><P>

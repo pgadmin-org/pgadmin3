@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -115,32 +115,32 @@ HREF="regress-evaluation.html"
 ><DL
 ><DT
 >26.2.1. <A
-HREF="regress-evaluation.html#AEN19874"
+HREF="regress-evaluation.html#AEN19730"
 >Error message differences</A
 ></DT
 ><DT
 >26.2.2. <A
-HREF="regress-evaluation.html#AEN19879"
+HREF="regress-evaluation.html#AEN19735"
 >Locale differences</A
 ></DT
 ><DT
 >26.2.3. <A
-HREF="regress-evaluation.html#AEN19892"
+HREF="regress-evaluation.html#AEN19748"
 >Date and time differences</A
 ></DT
 ><DT
 >26.2.4. <A
-HREF="regress-evaluation.html#AEN19913"
+HREF="regress-evaluation.html#AEN19769"
 >Floating-point differences</A
 ></DT
 ><DT
 >26.2.5. <A
-HREF="regress-evaluation.html#AEN19927"
+HREF="regress-evaluation.html#AEN19783"
 >Row ordering differences</A
 ></DT
 ><DT
 >26.2.6. <A
-HREF="regress-evaluation.html#AEN19938"
+HREF="regress-evaluation.html#AEN19794"
 >The <SPAN
 CLASS="QUOTE"
 >"random"</SPAN
@@ -156,10 +156,10 @@ HREF="regress-platform.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN19811"
+NAME="AEN19669"
 ></A
 ><A
-NAME="AEN19813"
+NAME="AEN19671"
 ></A
 ><P
 >   The regression tests are a comprehensive set of tests for the SQL
@@ -226,24 +226,18 @@ CLASS="SCREEN"
 ><SAMP
 CLASS="COMPUTEROUTPUT"
 >======================
- All 77 tests passed.
+ All 93 tests passed.
 ======================</SAMP
 ></PRE
 ><P>
-   or otherwise a note about what tests failed.  See <A
+   or otherwise a note about which tests failed.  See <A
 HREF="regress-evaluation.html"
 >Section 26.2</A
 > below for more.
   </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Note: </B
 >    Because this test method runs a temporary server, it will not work
-    when you are the root user (the server will not start as root).
+    when you are the root user (since the server will not start as root).
     If you already did the build as root, you do not have to start all
     over.  Instead, make the regression test directory writable by
     some other user, log in as that user, and restart the tests.
@@ -299,44 +293,33 @@ CLASS="QUOTE"
 ><P
 >    Alternatively, run the tests after installation.
    </P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
 ><P
-><B
->Tip: </B
 >    The parallel regression test starts quite a few processes under your
     user ID.  Presently, the maximum concurrency is twenty parallel test
-    scripts, which means sixty processes: there's a server process, a <SPAN
+    scripts, which means sixty processes: there's a server process, a
+    <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
->,
-    and usually a shell parent process for the <SPAN
+>, and usually a shell parent process for the
+    <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 > for each test script.
     So if your system enforces a per-user limit on the number of processes,
     make sure this limit is at least seventy-five or so, else you may get
     random-seeming failures in the parallel test.  If you are not in
-    a position to raise the limit, you can edit the file
-    <TT
-CLASS="FILENAME"
->src/test/regress/parallel_schedule</TT
-> to split the
-    larger concurrent test sets into more manageable groups.
+    a position to raise the limit, you can cut down the degree of parallelism
+    by setting the <VAR
+CLASS="LITERAL"
+>MAX_CONNECTIONS</VAR
+> parameter.  For example,
+</P><PRE
+CLASS="SCREEN"
+>gmake MAX_CONNECTIONS=10 check</PRE
+><P>
+    runs no more than ten tests concurrently.
    </P
-></BLOCKQUOTE
-></DIV
-><DIV
-CLASS="TIP"
-><BLOCKQUOTE
-CLASS="TIP"
 ><P
-><B
->Tip: </B
 >    On some systems, the default Bourne-compatible shell
     (<TT
 CLASS="FILENAME"
@@ -349,11 +332,9 @@ CLASS="FILENAME"
 CLASS="SCREEN"
 >gmake SHELL=/bin/ksh check</PRE
 ><P>
-    If no non-broken shell is available, you can alter the parallel test
-    schedule as suggested above.
+    If no non-broken shell is available, you may be able to work around the
+    problem by limiting the number of connections, as shown above.
    </P
-></BLOCKQUOTE
-></DIV
 ><P
 >   To run the tests after installation (see <A
 HREF="installation.html"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -114,7 +114,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQsetErrorVerbosity</CODE
 ><A
-NAME="AEN21748"
+NAME="AEN21643"
 ></A
 ></DT
 ><DD
@@ -130,7 +130,9 @@ CLASS="FUNCTION"
 </P><PRE
 CLASS="SYNOPSIS"
 >typedef enum {
-    PQERRORS_TERSE, PQERRORS_DEFAULT, PQERRORS_VERBOSE
+    PQERRORS_TERSE,
+    PQERRORS_DEFAULT,
+    PQERRORS_VERBOSE
 } PGVerbosity;
 
 PGVerbosity PQsetErrorVerbosity(PGconn *conn, PGVerbosity verbosity);</PRE
@@ -140,10 +142,16 @@ CLASS="FUNCTION"
 >PQsetErrorVerbosity</CODE
 > sets the verbosity mode, returning the
 connection's previous setting.
-In TERSE mode, returned messages include severity, primary text, and position
-only; this will normally fit on a single line.  The DEFAULT mode produces
+In <I
+CLASS="FIRSTTERM"
+>terse</I
+> mode, returned messages include severity, primary text, and position
+only; this will normally fit on a single line.  The default mode produces
 messages that include the above plus any detail, hint, or context fields
-(these may span multiple lines).  The VERBOSE mode includes all available
+(these may span multiple lines).  The <I
+CLASS="FIRSTTERM"
+>VERBOSE</I
+> mode includes all available
 fields.  Changing the verbosity does not affect the messages available from
 already-existing <TT
 CLASS="STRUCTNAME"
@@ -156,7 +164,7 @@ ones.</P
 CLASS="FUNCTION"
 >PQtrace</CODE
 ><A
-NAME="AEN21760"
+NAME="AEN21657"
 ></A
 ></DT
 ><DD
@@ -172,7 +180,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQuntrace</CODE
 ><A
-NAME="AEN21768"
+NAME="AEN21665"
 ></A
 ></DT
 ><DD

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="pgtcl Command Reference"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,7 +95,7 @@ NAME="PGTCL-PGLOWRITE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN23139"
+NAME="AEN23036"
 ></A
 ><H2
 >Name</H2
@@ -106,7 +106,7 @@ NAME="IX-PGTCL-PGLOWRITE-2"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN23144"
+NAME="AEN23041"
 ></A
 ><H2
 >Synopsis</H2
@@ -129,7 +129,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN23150"
+NAME="AEN23047"
 ></A
 ><H2
 >Description</H2
@@ -151,7 +151,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN23156"
+NAME="AEN23053"
 ></A
 ><H2
 >Arguments</H2
@@ -167,7 +167,7 @@ CLASS="PARAMETER"
 ></DT
 ><DD
 ><P
->      The handle of a database connection in which the large object
+>      The handle of a connection to the database in which the large object
       exists.
      </P
 ></DD
@@ -192,7 +192,8 @@ CLASS="PARAMETER"
 ></DT
 ><DD
 ><P
->      The string to write to the large object (not a variable name).
+>      The string to write to the large object (not a variable name,
+      but the value itself).
      </P
 ></DD
 ><DT
@@ -202,7 +203,8 @@ CLASS="PARAMETER"
 ></DT
 ><DD
 ><P
->      The maximum number of bytes to write.
+>      The maximum number of bytes to write.  The number written will
+      be the smaller of this value and the length of the string.
      </P
 ></DD
 ></DL
@@ -211,12 +213,14 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN23180"
+NAME="AEN23077"
 ></A
 ><H2
 >Return Value</H2
 ><P
->   None
+>   The number of bytes actually written is returned; this will ordinarily
+   be the same as the number requested.
+   In event of an error, the return value is negative.
   </P
 ></DIV
 ><DIV

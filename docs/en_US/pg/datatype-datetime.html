@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,31 +96,31 @@ NAME="DATATYPE-DATETIME"
 >8.5. Date/Time Types</A
 ></H1
 ><A
-NAME="AEN3940"
+NAME="AEN3958"
 ></A
 ><A
-NAME="AEN3942"
+NAME="AEN3960"
 ></A
 ><A
-NAME="AEN3944"
+NAME="AEN3962"
 ></A
 ><A
-NAME="AEN3946"
+NAME="AEN3964"
 ></A
 ><A
-NAME="AEN3948"
+NAME="AEN3966"
 ></A
 ><A
-NAME="AEN3950"
+NAME="AEN3968"
 ></A
 ><A
-NAME="AEN3952"
+NAME="AEN3970"
 ></A
 ><A
-NAME="AEN3954"
+NAME="AEN3972"
 ></A
 ><A
-NAME="AEN3956"
+NAME="AEN3974"
 ></A
 ><P
 >    <SPAN
@@ -326,10 +326,16 @@ CLASS="TYPE"
 >timestamp</TT
 > values are stored as double precision floating-point
     numbers (currently the default), the effective limit of precision
-    may be less than 6. Timestamp values are stored as seconds
+    may be less than 6. <TT
+CLASS="TYPE"
+>timestamp</TT
+> values are stored as seconds
     since 2000-01-01, and microsecond precision is achieved for dates within
     a few years of 2000-01-01, but the precision degrades for dates further
-    away.  When timestamps are stored as eight-byte integers (a compile-time
+    away.  When <TT
+CLASS="TYPE"
+>timestamp</TT
+> values are stored as eight-byte integers (a compile-time
     option), microsecond precision is available over the full range of
     values. However eight-byte integer timestamps have a reduced range of
     dates from 4713 BC up to 294276 AD.
@@ -456,7 +462,7 @@ CLASS="ACRONYM"
 > standard requires.
      See <A
 HREF="datetime-appendix.html"
->Appendix A</A
+>Appendix B</A
 >
      for the exact parsing rules of date/time input and for the
      recognized text fields including months, days of the week, and
@@ -512,11 +518,11 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN4079"
+NAME="AEN4099"
 >8.5.1.1. Dates</A
 ></H3
 ><A
-NAME="AEN4081"
+NAME="AEN4101"
 ></A
 ><P
 >     <A
@@ -553,14 +559,17 @@ CLASS="CALSTABLE"
 ><TD
 >January 8, 1999</TD
 ><TD
->unambiguous in any datestyle input mode</TD
+>unambiguous in any <VAR
+CLASS="VARNAME"
+>datestyle</VAR
+> input mode</TD
 ></TR
 ><TR
 ><TD
 >1999-01-08</TD
 ><TD
->ISO-8601, January 8 in any mode
-	 (recommended format)</TD
+>ISO 8601; January 8 in any mode
+         (recommended format)</TD
 ></TR
 ><TR
 ><TD
@@ -570,7 +579,7 @@ CLASS="CALSTABLE"
 CLASS="LITERAL"
 >MDY</VAR
 > mode;
-	  August 1 in <VAR
+          August 1 in <VAR
 CLASS="LITERAL"
 >DMY</VAR
 > mode</TD
@@ -583,7 +592,7 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >MDY</VAR
 > mode;
-	  rejected in other modes</TD
+          rejected in other modes</TD
 ></TR
 ><TR
 ><TD
@@ -593,27 +602,72 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >MDY</VAR
 > mode;
-	  February 1, 2003 in <VAR
+          February 1, 2003 in <VAR
 CLASS="LITERAL"
 >DMY</VAR
 > mode;
-	  February 3, 2001 in <VAR
+          February 3, 2001 in <VAR
 CLASS="LITERAL"
 >YMD</VAR
 > mode
-	 </TD
+         </TD
+></TR
+><TR
+><TD
+>1999-Jan-08</TD
+><TD
+>January 8 in any mode</TD
+></TR
+><TR
+><TD
+>Jan-08-1999</TD
+><TD
+>January 8 in any mode</TD
+></TR
+><TR
+><TD
+>08-Jan-1999</TD
+><TD
+>January 8 in any mode</TD
+></TR
+><TR
+><TD
+>99-Jan-08</TD
+><TD
+>January 8 in <VAR
+CLASS="LITERAL"
+>YMD</VAR
+> mode, else error</TD
+></TR
+><TR
+><TD
+>08-Jan-99</TD
+><TD
+>January 8, except error in <VAR
+CLASS="LITERAL"
+>YMD</VAR
+> mode</TD
+></TR
+><TR
+><TD
+>Jan-08-99</TD
+><TD
+>January 8, except error in <VAR
+CLASS="LITERAL"
+>YMD</VAR
+> mode</TD
 ></TR
 ><TR
 ><TD
 >19990108</TD
 ><TD
->ISO-8601; January 8, 1999 in any mode</TD
+>ISO 8601; January 8, 1999 in any mode</TD
 ></TR
 ><TR
 ><TD
 >990108</TD
 ><TD
->ISO-8601; January 8, 1999 in any mode</TD
+>ISO 8601; January 8, 1999 in any mode</TD
 ></TR
 ><TR
 ><TD
@@ -642,17 +696,17 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN4130"
+NAME="AEN4172"
 >8.5.1.2. Times</A
 ></H3
 ><A
-NAME="AEN4132"
+NAME="AEN4174"
 ></A
 ><A
-NAME="AEN4134"
+NAME="AEN4176"
 ></A
 ><A
-NAME="AEN4136"
+NAME="AEN4178"
 ></A
 ><P
 >      The time-of-day types are <TT
@@ -774,40 +828,46 @@ CLASS="LITERAL"
 ><TD
 ><VAR
 CLASS="LITERAL"
->allballs</VAR
+>04:05:06.789-8</VAR
 ></TD
 ><TD
->same as 00:00:00</TD
+>ISO 8601</TD
 ></TR
 ><TR
 ><TD
->04:05:06.789-8</TD
+><VAR
+CLASS="LITERAL"
+>04:05:06-08:00</VAR
+></TD
 ><TD
 >ISO 8601</TD
 ></TR
 ><TR
 ><TD
->04:05:06-08:00</TD
+><VAR
+CLASS="LITERAL"
+>04:05-08:00</VAR
+></TD
 ><TD
 >ISO 8601</TD
 ></TR
 ><TR
 ><TD
->04:05-08:00</TD
+><VAR
+CLASS="LITERAL"
+>040506-08</VAR
+></TD
 ><TD
 >ISO 8601</TD
 ></TR
 ><TR
 ><TD
->040506-08</TD
+><VAR
+CLASS="LITERAL"
+>04:05:06 PST</VAR
+></TD
 ><TD
->ISO 8601</TD
-></TR
-><TR
-><TD
->04:05:06 PST</TD
-><TD
->timezone specified by name</TD
+>time zone specified by name</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -835,27 +895,60 @@ CLASS="CALSTABLE"
 ><TBODY
 ><TR
 ><TD
->PST</TD
+><VAR
+CLASS="LITERAL"
+>PST</VAR
+></TD
 ><TD
 >Pacific Standard Time</TD
 ></TR
 ><TR
 ><TD
->-8:00</TD
+><VAR
+CLASS="LITERAL"
+>-8:00</VAR
+></TD
 ><TD
 >ISO-8601 offset for PST</TD
 ></TR
 ><TR
 ><TD
->-800</TD
+><VAR
+CLASS="LITERAL"
+>-800</VAR
+></TD
 ><TD
 >ISO-8601 offset for PST</TD
 ></TR
 ><TR
 ><TD
->-8</TD
+><VAR
+CLASS="LITERAL"
+>-8</VAR
+></TD
 ><TD
 >ISO-8601 offset for PST</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>zulu</VAR
+></TD
+><TD
+>Military abbreviation for UTC</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>z</VAR
+></TD
+><TD
+>Short form of <VAR
+CLASS="LITERAL"
+>zulu</VAR
+></TD
 ></TR
 ></TBODY
 ></TABLE
@@ -866,17 +959,17 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN4220"
+NAME="AEN4276"
 >8.5.1.3. Time Stamps</A
 ></H3
 ><A
-NAME="AEN4222"
+NAME="AEN4278"
 ></A
 ><A
-NAME="AEN4224"
+NAME="AEN4280"
 ></A
 ><A
-NAME="AEN4226"
+NAME="AEN4282"
 ></A
 ><P
 >      Valid input for the time stamp types consists of a concatenation
@@ -995,11 +1088,11 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN4254"
+NAME="AEN4310"
 >8.5.1.4. Intervals</A
 ></H3
 ><A
-NAME="AEN4256"
+NAME="AEN4312"
 ></A
 ><P
 >       <TT
@@ -1117,33 +1210,39 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN4289"
+NAME="AEN4345"
 >8.5.1.5. Special Values</A
 ></H3
 ><A
-NAME="AEN4291"
+NAME="AEN4347"
 ></A
 ><A
-NAME="AEN4294"
+NAME="AEN4350"
 ></A
 ><P
 >      The following <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 >-compatible functions can be
-      used as date or time
-      values for the corresponding data type: <VAR
-CLASS="LITERAL"
->CURRENT_DATE</VAR
->,
+      used as date or time values for the corresponding data type: 
       <VAR
 CLASS="LITERAL"
+>CURRENT_DATE</VAR
+>, <VAR
+CLASS="LITERAL"
 >CURRENT_TIME</VAR
->,
+>, 
       <VAR
 CLASS="LITERAL"
 >CURRENT_TIMESTAMP</VAR
->. The latter two accept an
+>, <VAR
+CLASS="LITERAL"
+>LOCALTIME</VAR
+>, 
+      <VAR
+CLASS="LITERAL"
+>LOCALTIMESTAMP</VAR
+>.  The latter four accept an 
       optional precision specification.  (See also <A
 HREF="functions-datetime.html#FUNCTIONS-DATETIME-CURRENT"
 >Section 9.8.4</A
@@ -1314,13 +1413,7 @@ CLASS="TYPE"
 ><TD
 ><VAR
 CLASS="LITERAL"
->zulu</VAR
->, <VAR
-CLASS="LITERAL"
 >allballs</VAR
->, <VAR
-CLASS="LITERAL"
->z</VAR
 ></TD
 ><TD
 ><TT
@@ -1344,10 +1437,10 @@ NAME="DATATYPE-DATETIME-OUTPUT"
 >8.5.2. Date/Time Output</A
 ></H2
 ><A
-NAME="AEN4375"
+NAME="AEN4431"
 ></A
 ><A
-NAME="AEN4379"
+NAME="AEN4435"
 ></A
 ><P
 >     The output format of the date/time types can be set to one of the four
@@ -1477,7 +1570,10 @@ CLASS="CALSTABLE"
 ><COL><COL><COL><THEAD
 ><TR
 ><TH
->DateStyle setting</TH
+><VAR
+CLASS="VARNAME"
+>datestyle</VAR
+> Setting</TH
 ><TH
 >Input Ordering</TH
 ><TH
@@ -1640,7 +1736,7 @@ NAME="DATATYPE-TIMEZONES"
 >8.5.3. Time Zones</A
 ></H2
 ><A
-NAME="AEN4479"
+NAME="AEN4536"
 ></A
 ><P
 >    Time zones, and time-zone conventions, are influenced by
@@ -1692,30 +1788,30 @@ CLASS="ACRONYM"
 ></P><UL
 ><LI
 ><P
->	Although the <TT
+>        Although the <TT
 CLASS="TYPE"
 >date</TT
 > type 
-	does not have an associated time zone, the
-	<TT
+        does not have an associated time zone, the
+        <TT
 CLASS="TYPE"
 >time</TT
 > type can.
-	Time zones in the real world can have no meaning unless 
-	associated with a date as well as a time
-	since the offset may vary through the year with daylight-saving
-	time boundaries.
+        Time zones in the real world can have no meaning unless 
+        associated with a date as well as a time
+        since the offset may vary through the year with daylight-saving
+        time boundaries.
        </P
 ></LI
 ><LI
 ><P
->	The default time zone is specified as a constant numeric offset 
-	from <ACRONYM
+>        The default time zone is specified as a constant numeric offset 
+        from <ACRONYM
 CLASS="ACRONYM"
 >UTC</ACRONYM
 >. It is not possible to adapt to daylight-saving
-	time when doing date/time arithmetic across
-	<ACRONYM
+        time when doing date/time arithmetic across
+        <ACRONYM
 CLASS="ACRONYM"
 >DST</ACRONYM
 > boundaries.
@@ -1769,21 +1865,21 @@ CLASS="ACRONYM"
 ></P><UL
 ><LI
 ><P
->	The <TT
+>        The <TT
 CLASS="ENVAR"
 >TZ</TT
 > environment variable on the server host
-	is used by the server as the default time zone, if no other is
-	specified.
+        is used by the server as the default time zone, if no other is
+        specified.
        </P
 ></LI
 ><LI
 ><P
->	The <VAR
+>        The <VAR
 CLASS="VARNAME"
 >timezone</VAR
 > configuration parameter can be
-	set in the file <TT
+        set in the file <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
 >.
@@ -1791,31 +1887,31 @@ CLASS="FILENAME"
 ></LI
 ><LI
 ><P
->	The <TT
+>        The <TT
 CLASS="ENVAR"
 >PGTZ</TT
 > environment variable, if set at the
-	client, is used by <SPAN
+        client, is used by <SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
 >
-	applications to send a <TT
+        applications to send a <TT
 CLASS="COMMAND"
 >SET TIME ZONE</TT
 >
-	command to the server upon connection.
+        command to the server upon connection.
        </P
 ></LI
 ><LI
 ><P
->	The <ACRONYM
+>        The <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > command <TT
 CLASS="COMMAND"
 >SET TIME ZONE</TT
 >
-	sets the time zone for the session.
+        sets the time zone for the session.
        </P
 ></LI
 ></UL
@@ -1839,7 +1935,7 @@ CLASS="ACRONYM"
 ><P
 >    Refer to <A
 HREF="datetime-appendix.html"
->Appendix A</A
+>Appendix B</A
 > for a list of
     available time zones.
    </P

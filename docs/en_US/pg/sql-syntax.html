@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="sql.html#AEN993"
+HREF="sql.html#AEN997"
 >Fast Backward</A
 ></TD
 ><TD
@@ -125,7 +125,7 @@ HREF="sql-syntax.html#SQL-SYNTAX-OPERATORS"
 ></DT
 ><DT
 >4.1.4. <A
-HREF="sql-syntax.html#AEN1286"
+HREF="sql-syntax.html#AEN1269"
 >Special Characters</A
 ></DT
 ><DT
@@ -149,46 +149,56 @@ HREF="sql-expressions.html"
 ><DL
 ><DT
 >4.2.1. <A
-HREF="sql-expressions.html#AEN1524"
+HREF="sql-expressions.html#AEN1510"
 >Column References</A
 ></DT
 ><DT
 >4.2.2. <A
-HREF="sql-expressions.html#AEN1549"
+HREF="sql-expressions.html#AEN1526"
 >Positional Parameters</A
 ></DT
 ><DT
 >4.2.3. <A
-HREF="sql-expressions.html#AEN1563"
->Operator Invocations</A
+HREF="sql-expressions.html#AEN1540"
+>Subscripts</A
 ></DT
 ><DT
 >4.2.4. <A
-HREF="sql-expressions.html#AEN1592"
->Function Calls</A
+HREF="sql-expressions.html#AEN1559"
+>Field Selection</A
 ></DT
 ><DT
 >4.2.5. <A
+HREF="sql-expressions.html#AEN1570"
+>Operator Invocations</A
+></DT
+><DT
+>4.2.6. <A
+HREF="sql-expressions.html#AEN1599"
+>Function Calls</A
+></DT
+><DT
+>4.2.7. <A
 HREF="sql-expressions.html#SYNTAX-AGGREGATES"
 >Aggregate Expressions</A
 ></DT
 ><DT
->4.2.6. <A
+>4.2.8. <A
 HREF="sql-expressions.html#SQL-SYNTAX-TYPE-CASTS"
 >Type Casts</A
 ></DT
 ><DT
->4.2.7. <A
+>4.2.9. <A
 HREF="sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES"
 >Scalar Subqueries</A
 ></DT
 ><DT
->4.2.8. <A
+>4.2.10. <A
 HREF="sql-expressions.html#SQL-SYNTAX-ARRAY-CONSTRUCTORS"
 >Array Constructors</A
 ></DT
 ><DT
->4.2.9. <A
+>4.2.11. <A
 HREF="sql-expressions.html#SYNTAX-EXPRESS-EVAL"
 >Expression Evaluation Rules</A
 ></DT
@@ -197,7 +207,7 @@ HREF="sql-expressions.html#SYNTAX-EXPRESS-EVAL"
 ></DL
 ></DIV
 ><A
-NAME="AEN1010"
+NAME="AEN1014"
 ></A
 ><P
 >  This chapter describes the syntax of SQL.  It forms the foundation
@@ -222,7 +232,7 @@ NAME="SQL-SYNTAX-LEXICAL"
 >4.1. Lexical Structure</A
 ></H1
 ><A
-NAME="AEN1018"
+NAME="AEN1022"
 ></A
 ><P
 >   SQL input consists of a sequence of
@@ -327,13 +337,13 @@ NAME="SQL-SYNTAX-IDENTIFIERS"
 >4.1.1. Identifiers and Key Words</A
 ></H2
 ><A
-NAME="AEN1044"
+NAME="AEN1048"
 ></A
 ><A
-NAME="AEN1047"
+NAME="AEN1051"
 ></A
 ><A
-NAME="AEN1050"
+NAME="AEN1054"
 ></A
 ><P
 >    Tokens such as <TT
@@ -373,7 +383,7 @@ CLASS="QUOTE"
     token is an identifier or a key word without knowing the language.
     A complete list of key words can be found in <A
 HREF="sql-keywords-appendix.html"
->Appendix B</A
+>Appendix C</A
 >.
    </P
 ><P
@@ -411,7 +421,7 @@ CLASS="LITERAL"
    </P
 ><P
 >    <A
-NAME="AEN1071"
+NAME="AEN1075"
 ></A
 >
     The system uses no more than <TT
@@ -436,7 +446,7 @@ CLASS="FILENAME"
    </P
 ><P
 >    <A
-NAME="AEN1079"
+NAME="AEN1083"
 ></A
 >
     Identifier and key word names are case insensitive.  Therefore
@@ -458,7 +468,7 @@ CLASS="PROGRAMLISTING"
    </P
 ><P
 >    <A
-NAME="AEN1086"
+NAME="AEN1090"
 ></A
 >
     There is a second kind of identifier:  the <I
@@ -498,7 +508,7 @@ CLASS="PROGRAMLISTING"
    </P
 ><P
 >    Quoted identifiers can contain any character other than a double
-    quote itself.  To include a double quote, write two double quotes.
+    quote itself.  (To include a double quote, write two double quotes.)
     This allows constructing table or column names that would
     otherwise not be possible, such as ones containing spaces or
     ampersands.  The length limitation still applies.
@@ -520,23 +530,34 @@ CLASS="LITERAL"
     <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->, but <VAR
+>, but
+    <VAR
 CLASS="LITERAL"
 >"Foo"</VAR
->
-    and <VAR
+> and <VAR
 CLASS="LITERAL"
 >"FOO"</VAR
-> are different from these three and
-    each other.
-    <A
-NAME="AEN1104"
-HREF="#FTN.AEN1104"
-><SPAN
-CLASS="footnote"
->[1]</SPAN
-></A
+> are
+    different from these three and each other.  (The folding of
+    unquoted names to lower case in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is
+    incompatible with the SQL standard, which says that unquoted names
+    should be folded to upper case.  Thus, <VAR
+CLASS="LITERAL"
+>foo</VAR
 >
+    should be equivalent to <VAR
+CLASS="LITERAL"
+>"FOO"</VAR
+> not
+    <VAR
+CLASS="LITERAL"
+>"foo"</VAR
+> according to the standard.  If you want
+    to write portable applications you are advised to always quote a
+    particular name or never quote it.)
    </P
 ></DIV
 ><DIV
@@ -548,7 +569,7 @@ NAME="SQL-SYNTAX-CONSTANTS"
 >4.1.2. Constants</A
 ></H2
 ><A
-NAME="AEN1112"
+NAME="AEN1114"
 ></A
 ><P
 >    There are three kinds of <I
@@ -574,39 +595,39 @@ NAME="SQL-SYNTAX-STRINGS"
 >4.1.2.1. String Constants</A
 ></H3
 ><A
-NAME="AEN1119"
+NAME="AEN1121"
 ></A
 ><P
 >     <A
-NAME="AEN1123"
+NAME="AEN1125"
 ></A
 >
      A string constant in SQL is an arbitrary sequence of characters
-     bounded by single quotes (<SPAN
-CLASS="QUOTE"
->"'"</SPAN
+     bounded by single quotes (<VAR
+CLASS="LITERAL"
+>'</VAR
 >), e.g., <VAR
 CLASS="LITERAL"
 >'This
      is a string'</VAR
 >.  SQL allows single quotes to be embedded
-     in strings by typing two adjacent single quotes (e.g.,
+     in strings by typing two adjacent single quotes, e.g.,
      <VAR
 CLASS="LITERAL"
 >'Dianne''s horse'</VAR
->).  In
+>.  In
      <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > single quotes may
-     alternatively be escaped with a backslash (<SPAN
-CLASS="QUOTE"
->"\"</SPAN
->,
+     alternatively be escaped with a backslash (<VAR
+CLASS="LITERAL"
+>\</VAR
+>),
      e.g., <VAR
 CLASS="LITERAL"
 >'Dianne\'s horse'</VAR
->).
+>.
     </P
 ><P
 >     C-style backslash escapes are also available:
@@ -638,10 +659,12 @@ CLASS="REPLACEABLE"
      where <VAR
 CLASS="REPLACEABLE"
 >xxx</VAR
-> is an octal number, is the
-     character with the corresponding ASCII code.  Any other character
-     following a backslash is taken literally.  Thus, to include a
-     backslash in a string constant, type two backslashes.
+> is an octal number, is a
+     byte with the corresponding code.  (It is your responsibility
+     that the byte sequences you create are valid characters in the
+     server character set encoding.)  Any other character following a
+     backslash is taken literally.  Thus, to include a backslash in a
+     string constant, type two backslashes.
     </P
 ><P
 >     The character with the code zero cannot be in a string constant.
@@ -692,7 +715,7 @@ NAME="SQL-SYNTAX-BIT-STRINGS"
 >4.1.2.2. Bit-String Constants</A
 ></H3
 ><A
-NAME="AEN1151"
+NAME="AEN1153"
 ></A
 ><P
 >     Bit-string constants look like string constants with a
@@ -736,11 +759,11 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN1163"
+NAME="AEN1165"
 >4.1.2.3. Numeric Constants</A
 ></H3
 ><A
-NAME="AEN1165"
+NAME="AEN1167"
 ></A
 ><P
 >     Numeric constants are accepted in these general forms:
@@ -828,15 +851,15 @@ CLASS="LITERALLAYOUT"
     </P
 ><P
 >     <A
-NAME="AEN1191"
-></A
->
-     <A
 NAME="AEN1193"
 ></A
 >
      <A
 NAME="AEN1195"
+></A
+>
+     <A
+NAME="AEN1197"
 ></A
 >
      A numeric constant that contains neither a decimal point nor an
@@ -873,7 +896,7 @@ CLASS="TYPE"
      appropriate type depending on context.  When necessary, you can
      force a numeric value to be interpreted as a specific data type
      by casting it.<A
-NAME="AEN1204"
+NAME="AEN1206"
 ></A
 >
      For example, you can force a numeric value to be treated as type
@@ -901,7 +924,7 @@ NAME="SQL-SYNTAX-CONSTANTS-GENERIC"
 >4.1.2.4. Constants of Other Types</A
 ></H3
 ><A
-NAME="AEN1211"
+NAME="AEN1213"
 ></A
 ><P
 >     A constant of an <SPAN
@@ -962,7 +985,7 @@ CLASS="REPLACEABLE"
 ><P>
      but not all type names may be used in this way; see <A
 HREF="sql-expressions.html#SQL-SYNTAX-TYPE-CASTS"
->Section 4.2.6</A
+>Section 4.2.8</A
 > for details.
     </P
 ><P
@@ -976,7 +999,7 @@ CLASS="LITERAL"
      function-call syntaxes can also be used to specify run-time type
      conversions of arbitrary expressions, as discussed in <A
 HREF="sql-expressions.html#SQL-SYNTAX-TYPE-CASTS"
->Section 4.2.6</A
+>Section 4.2.8</A
 >.  But the form
      <VAR
 CLASS="LITERAL"
@@ -1010,74 +1033,6 @@ CLASS="LITERAL"
 > to specify the type of an array constant.
     </P
 ></DIV
-><DIV
-CLASS="SECT3"
-><H3
-CLASS="SECT3"
-><A
-NAME="AEN1241"
->4.1.2.5. Array constants</A
-></H3
-><A
-NAME="AEN1243"
-></A
-><P
->     The general format of an array constant is the following:
-</P><PRE
-CLASS="SYNOPSIS"
->'{ <VAR
-CLASS="REPLACEABLE"
->val1</VAR
-> <VAR
-CLASS="REPLACEABLE"
->delim</VAR
-> <VAR
-CLASS="REPLACEABLE"
->val2</VAR
-> <VAR
-CLASS="REPLACEABLE"
->delim</VAR
-> ... }'</PRE
-><P>
-     where <VAR
-CLASS="REPLACEABLE"
->delim</VAR
-> is the delimiter character
-     for the type, as recorded in its <VAR
-CLASS="LITERAL"
->pg_type</VAR
->
-     entry.  (For all built-in types, this is the comma character
-     <SPAN
-CLASS="QUOTE"
->"<VAR
-CLASS="LITERAL"
->,</VAR
->"</SPAN
->.)  Each <VAR
-CLASS="REPLACEABLE"
->val</VAR
-> is either a constant
-     of the array element type, or a subarray.  An example of an
-     array constant is
-</P><PRE
-CLASS="PROGRAMLISTING"
->'{{1,2,3},{4,5,6},{7,8,9}}'</PRE
-><P>
-     This constant is a two-dimensional, 3-by-3 array consisting of three
-     subarrays of integers.  For more information see <A
-HREF="arrays.html"
->Section 8.10</A
->.
-    </P
-><P
->     (Array constants are actually only a special case of the generic
-     type constants discussed in the previous section.  The constant
-     is initially treated as a string and passed to the array input
-     conversion routine.  An explicit type specification might be
-     necessary.)
-    </P
-></DIV
 ></DIV
 ><DIV
 CLASS="SECT2"
@@ -1088,10 +1043,10 @@ NAME="SQL-SYNTAX-OPERATORS"
 >4.1.3. Operators</A
 ></H2
 ><A
-NAME="AEN1262"
+NAME="AEN1245"
 ></A
 ><P
->    An operator is a sequence of up to <TT
+>    An operator name is a sequence of up to <TT
 CLASS="SYMBOL"
 >NAMEDATALEN</TT
 >-1
@@ -1177,7 +1132,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1286"
+NAME="AEN1269"
 >4.1.4. Special Characters</A
 ></H2
 ><P
@@ -1299,14 +1254,14 @@ NAME="SQL-SYNTAX-COMMENTS"
 >4.1.5. Comments</A
 ></H2
 ><A
-NAME="AEN1321"
+NAME="AEN1304"
 ></A
 ><P
 >    A comment is an arbitrary sequence of characters beginning with
     double dashes and extending to the end of the line, e.g.:
 </P><PRE
 CLASS="PROGRAMLISTING"
->-- This is a standard SQL92 comment</PRE
+>-- This is a standard SQL comment</PRE
 ><P>
    </P
 ><P
@@ -1325,7 +1280,7 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >*/</VAR
 >. These block
-    comments nest, as specified in SQL99 but unlike C, so that one can
+    comments nest, as specified in the SQL standard but unlike C, so that one can
     comment out larger blocks of code that may contain existing block
     comments.
    </P
@@ -1343,7 +1298,7 @@ NAME="SQL-PRECEDENCE"
 >4.1.6. Lexical Precedence</A
 ></H2
 ><A
-NAME="AEN1333"
+NAME="AEN1316"
 ></A
 ><P
 >    <A
@@ -1717,54 +1672,6 @@ CLASS="LITERAL"
 ></DIV
 ></DIV
 ></DIV
-><H3
-CLASS="FOOTNOTES"
->Notes</H3
-><TABLE
-BORDER="0"
-CLASS="FOOTNOTES"
-WIDTH="100%"
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-WIDTH="5%"
-><A
-NAME="FTN.AEN1104"
-HREF="sql-syntax.html#AEN1104"
-><SPAN
-CLASS="footnote"
->[1]</SPAN
-></A
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-WIDTH="95%"
-><P
->      The folding of unquoted names to lower case in <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->
-      is incompatible with the SQL standard, which says that unquoted
-      names should be folded to upper case.  Thus, <VAR
-CLASS="LITERAL"
->foo</VAR
->
-      should be equivalent to <VAR
-CLASS="LITERAL"
->"FOO"</VAR
-> not
-      <VAR
-CLASS="LITERAL"
->"foo"</VAR
-> according to the standard.  If you want to
-      write portable applications you are advised to always quote a particular
-      name or never quote it.
-     </P
-></TD
-></TR
-></TABLE
 ><DIV
 CLASS="NAVFOOTER"
 ><HR

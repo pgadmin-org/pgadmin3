@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="release.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix D. Release Notes</TD
+>Appendix E. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-3-3"
->D.3. Release 7.3.3</A
+>E.3. Release 7.3.3</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -113,8 +113,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN60049"
->D.3.1. Migration to version 7.3.3</A
+NAME="AEN62702"
+>E.3.1. Migration to version 7.3.3</A
 ></H2
 ><P
 >    A dump/restore is <SPAN
@@ -132,8 +132,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN60053"
->D.3.2. Changes</A
+NAME="AEN62706"
+>E.3.2. Changes</A
 ></H2
 ><P
 ></P
@@ -148,11 +148,20 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Don't lock referenced row when UPDATE doesn't change foreign key's value (Jan)</P
+>Don't lock referenced row when <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> doesn't change foreign key's value (Jan)</P
 ></LI
 ><LI
 ><P
->Use -fPIC not -fpic on Sparc (Tom Callaway)</P
+>Use <TT
+CLASS="COMMAND"
+>-fPIC</TT
+> not <TT
+CLASS="COMMAND"
+>-fpic</TT
+> on Sparc (Tom Callaway)</P
 ></LI
 ><LI
 ><P
@@ -172,7 +181,10 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->CHECKPOINT does not cause database panic on failure in noncritical steps</P
+><TT
+CLASS="COMMAND"
+>CHECKPOINT</TT
+> does not cause database panic on failure in noncritical steps</P
 ></LI
 ><LI
 ><P
@@ -180,47 +192,105 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Issue notice, not error, if TIMESTAMP, TIME, or INTERVAL precision too large</P
+>Issue notice, not error, if <TT
+CLASS="TYPE"
+>TIMESTAMP</TT
+>,
+<TT
+CLASS="TYPE"
+> TIME</TT
+>, or <TT
+CLASS="TYPE"
+>INTERVAL</TT
+> precision too large</P
 ></LI
 ><LI
 ><P
->Fix abstime-to-time cast function (fix is not applied unless you initdb)</P
+>Fix <CODE
+CLASS="FUNCTION"
+>abstime-to-time</CODE
+> cast function (fix is
+       not applied unless you <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+>)</P
 ></LI
 ><LI
 ><P
->Fix pg_proc entry for timestamptz_izone (fix is not applied unless you initdb)</P
+>Fix <SPAN
+CLASS="APPLICATION"
+>pg_proc</SPAN
+> entry for
+      <TT
+CLASS="TYPE"
+>timestampt_izone</TT
+> (fix is not applied unless you
+        <SPAN
+CLASS="APPLICATION"
+>initdb</SPAN
+>)</P
 ></LI
 ><LI
 ><P
->Make EXTRACT(EPOCH FROM timestamp without time zone) treat input as local time</P
+>Make <CODE
+CLASS="FUNCTION"
+>EXTRACT(EPOCH FROM timestamp without time zone)</CODE
+> treat input as local time</P
 ></LI
 ><LI
 ><P
->'now'::timestamptz gave wrong answer if timezone changed earlier in transaction</P
+><TT
+CLASS="COMMAND"
+>'now'::timestamptz</TT
+> gave wrong answer if timezone changed earlier in transaction</P
 ></LI
 ><LI
 ><P
->HAVE_INT64_TIMESTAMP code for time with timezone overwrote its input</P
+><TT
+CLASS="ENVAR"
+>HAVE_INT64_TIMESTAMP</TT
+> code for time with timezone overwrote its input</P
 ></LI
 ><LI
 ><P
->Accept GLOBAL TEMP/TEMPORARY as a synonym for TEMPORARY</P
+>Accept <TT
+CLASS="COMMAND"
+>GLOBAL TEMP/TEMPORARY</TT
+> as a
+       synonym for <TT
+CLASS="COMMAND"
+>TEMPORARY</TT
+></P
 ></LI
 ><LI
 ><P
->Avoid improper schema-permissions-check failure in foreign-key triggers</P
+>Avoid improper schema-privilege-check failure in foreign-key triggers</P
 ></LI
 ><LI
 ><P
->Fix bugs in foreign-key triggers for SET DEFAULT action</P
+>Fix bugs in foreign-key triggers for <TT
+CLASS="COMMAND"
+>SET DEFAULT</TT
+> action</P
 ></LI
 ><LI
 ><P
->Fix incorrect time-qual check in row fetch for UPDATE and DELETE triggers</P
+>Fix incorrect time-qual check in row fetch for
+       <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> and <TT
+CLASS="COMMAND"
+>DELETE</TT
+> triggers</P
 ></LI
 ><LI
 ><P
->Foreign-key clauses were parsed but ignored in ALTER TABLE ADD COLUMN</P
+>Foreign-key clauses were parsed but ignored in
+       <TT
+CLASS="COMMAND"
+>ALTER TABLE ADD COLUMN</TT
+></P
 ></LI
 ><LI
 ><P
@@ -228,15 +298,24 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Fix misbehavior on zero-column tables in pg_dump, COPY, ANALYZE, other places</P
+>Fix misbehavior on zero-column tables in <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+>, COPY, ANALYZE, other places</P
 ></LI
 ><LI
 ><P
->Fix misbehavior of func_error() on type names containing '%'</P
+>Fix misbehavior of <CODE
+CLASS="FUNCTION"
+>func_error()</CODE
+> on type names containing '%'</P
 ></LI
 ><LI
 ><P
->Fix misbehavior of replace() on strings containing '%'</P
+>Fix misbehavior of <CODE
+CLASS="FUNCTION"
+>replace()</CODE
+> on strings containing '%'</P
 ></LI
 ><LI
 ><P
@@ -244,11 +323,17 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Account correctly for NULLs in more cases in join size estimation</P
+>Account correctly for <TT
+CLASS="COMMAND"
+>NULL</TT
+>s in more cases in join size estimation</P
 ></LI
 ><LI
 ><P
->Avoid conflict with system definition of isblank() function or macro</P
+>Avoid conflict with system definition of <CODE
+CLASS="FUNCTION"
+>isblank()</CODE
+> function or macro</P
 ></LI
 ><LI
 ><P
@@ -256,7 +341,13 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Fix error recovery for SSL_read/SSL_write calls</P
+>Fix error recovery for <CODE
+CLASS="FUNCTION"
+>SSL_read</CODE
+>/<CODE
+CLASS="FUNCTION"
+>SSL_write</CODE
+> calls</P
 ></LI
 ><LI
 ><P
@@ -272,7 +363,10 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Fix buffer overrun in to_ascii (Guido Notari)</P
+>Fix buffer overrun in <CODE
+CLASS="FUNCTION"
+>to_ascii</CODE
+> (Guido Notari)</P
 ></LI
 ><LI
 ><P
@@ -292,19 +386,34 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Fix dbmirror memory-allocation bug (Steven Singer)</P
+>Fix <SPAN
+CLASS="APPLICATION"
+>dbmirror</SPAN
+> memory-allocation bug (Steven Singer)</P
 ></LI
 ><LI
 ><P
->Prevent infinite loop in ln(numeric) due to roundoff error</P
+>Prevent infinite loop in <CODE
+CLASS="FUNCTION"
+>ln(numeric)</CODE
+> due to roundoff error</P
 ></LI
 ><LI
 ><P
->GROUP BY got confused if there were multiple equal GROUP BY items</P
+><TT
+CLASS="COMMAND"
+>GROUP BY</TT
+> got confused if there were multiple equal GROUP BY items</P
 ></LI
 ><LI
 ><P
->Fix bad plan when inherited UPDATE/DELETE references another inherited table</P
+>Fix bad plan when inherited <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>/<TT
+CLASS="COMMAND"
+>DELETE</TT
+> references another inherited table</P
 ></LI
 ><LI
 ><P
@@ -324,7 +433,10 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Fix failure to respond to 'pg_ctl stop -m fast' after Async_NotifyHandler runs</P
+>Fix failure to respond to <TT
+CLASS="COMMAND"
+>pg_ctl stop -m fast</TT
+> after Async_NotifyHandler runs</P
 ></LI
 ><LI
 ><P
@@ -332,11 +444,17 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Fix problem with checking for wrong type of access permission in rule query</P
+>Fix problem with checking for wrong type of access privilege in rule query</P
 ></LI
 ><LI
 ><P
->Fix problem with EXCEPT in CREATE RULE</P
+>Fix problem with <TT
+CLASS="COMMAND"
+>EXCEPT</TT
+> in <TT
+CLASS="COMMAND"
+>CREATE RULE</TT
+></P
 ></LI
 ><LI
 ><P
@@ -352,31 +470,64 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Allow qualified type names in CREATE CAST and DROP CAST</P
+>Allow qualified type names in <TT
+CLASS="COMMAND"
+>CREATE CAST</TT
+>
+       and <TT
+CLASS="COMMAND"
+> DROP CAST</TT
+></P
 ></LI
 ><LI
 ><P
->Accept 'SETOF type[]', which formerly had to be written 'SETOF _type'</P
+>Accept <CODE
+CLASS="FUNCTION"
+>SETOF type[]</CODE
+>, which formerly had to
+       be written <CODE
+CLASS="FUNCTION"
+>SETOF _type</CODE
+></P
 ></LI
 ><LI
 ><P
->Fix pg_dump core dump in some cases with procedural languages</P
+>Fix <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> core dump in some cases with procedural languages</P
 ></LI
 ><LI
 ><P
->Force ISO datestyle in pg_dump output, for portability (Oliver)</P
+>Force ISO datestyle in <SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> output, for portability (Oliver)</P
 ></LI
 ><LI
 ><P
->pg_dump failed to handle error return from lo_read (Oleg Drokin)</P
+><SPAN
+CLASS="APPLICATION"
+>pg_dump</SPAN
+> failed to handle error return
+       from <CODE
+CLASS="FUNCTION"
+>lo_read</CODE
+> (Oleg Drokin)</P
 ></LI
 ><LI
 ><P
->pg_dumpall failed with groups having no members (Nick Eskelinen)</P
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> failed with groups having no members (Nick Eskelinen)</P
 ></LI
 ><LI
 ><P
->pg_dumpall failed to recognize --globals-only switch</P
+><SPAN
+CLASS="APPLICATION"
+>pg_dumpall</SPAN
+> failed to recognize --globals-only switch</P
 ></LI
 ><LI
 ><P
@@ -388,11 +539,17 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->pltcl's elog command dumped core if given wrong parameters (Ian Harding)</P
+>pltcl's <TT
+CLASS="COMMAND"
+>elog</TT
+> command dumped core if given wrong parameters (Ian Harding)</P
 ></LI
 ><LI
 ><P
->plpython used wrong value of atttypmod (Brad McLean)</P
+>plpython used wrong value of <TT
+CLASS="ENVAR"
+>atttypmod</TT
+> (Brad McLean)</P
 ></LI
 ><LI
 ><P
@@ -400,7 +557,10 @@ NAME="AEN60053"
 ></LI
 ><LI
 ><P
->Added addDataType() method to PGConnection interface for JDBC</P
+>Added <CODE
+CLASS="FUNCTION"
+>addDataType()</CODE
+> method to PGConnection interface for JDBC</P
 ></LI
 ><LI
 ><P

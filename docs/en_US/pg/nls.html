@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Internals"
 HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="gcc Default Optimizations"
-HREF="compiler.html"><LINK
+TITLE="Error Message Style Guide"
+HREF="error-style-guide.html"><LINK
 REL="NEXT"
 TITLE="For the Programmer"
 HREF="nls-programmer.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="compiler.html"
+HREF="error-style-guide.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="compiler.html"
+HREF="source.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="appendixes.html"
+HREF="plhandler.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="NLS"
 ></A
->Chapter 52. Native Language Support</H1
+>Chapter 46. Native Language Support</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,48 +102,48 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->52.1. <A
+>46.1. <A
 HREF="nls.html#NLS-TRANSLATOR"
 >For the Translator</A
 ></DT
 ><DD
 ><DL
 ><DT
->52.1.1. <A
-HREF="nls.html#AEN54080"
+>46.1.1. <A
+HREF="nls.html#AEN54144"
 >Requirements</A
 ></DT
 ><DT
->52.1.2. <A
-HREF="nls.html#AEN54090"
+>46.1.2. <A
+HREF="nls.html#AEN54156"
 >Concepts</A
 ></DT
 ><DT
->52.1.3. <A
-HREF="nls.html#AEN54108"
+>46.1.3. <A
+HREF="nls.html#AEN54174"
 >Creating and maintaining message catalogs</A
 ></DT
 ><DT
->52.1.4. <A
-HREF="nls.html#AEN54142"
+>46.1.4. <A
+HREF="nls.html#AEN54208"
 >Editing the PO files</A
 ></DT
 ></DL
 ></DD
 ><DT
->52.2. <A
+>46.2. <A
 HREF="nls-programmer.html"
 >For the Programmer</A
 ></DT
 ><DD
 ><DL
 ><DT
->52.2.1. <A
+>46.2.1. <A
 HREF="nls-programmer.html#NLS-MECHANICS"
 >Mechanics</A
 ></DT
 ><DT
->52.2.2. <A
+>46.2.2. <A
 HREF="nls-programmer.html#NLS-GUIDELINES"
 >Message-writing guidelines</A
 ></DT
@@ -157,7 +157,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="NLS-TRANSLATOR"
->52.1. For the Translator</A
+>46.1. For the Translator</A
 ></H1
 ><P
 >   <SPAN
@@ -180,8 +180,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN54080"
->52.1.1. Requirements</A
+NAME="AEN54144"
+>46.1.1. Requirements</A
 ></H2
 ><P
 >    We won't judge your language skills -- this section is about
@@ -192,7 +192,10 @@ NAME="AEN54080"
 CLASS="OPTION"
 >--enable-nls</VAR
 > option.  This will
-    also check for the libintl library and the
+    also check for the <SPAN
+CLASS="APPLICATION"
+>libintl</SPAN
+> library and the
     <TT
 CLASS="FILENAME"
 >msgfmt</TT
@@ -217,7 +220,10 @@ CLASS="FILENAME"
 CLASS="FILENAME"
 >xgettext</TT
 >.  (From CVS, you will still need
-    it.)  GNU gettext 0.10.36 or later is currently recommended.
+    it.)  <SPAN
+CLASS="APPLICATION"
+>GNU Gettext 0.10.36</SPAN
+> or later is currently recommended.
    </P
 ><P
 >    Your local gettext implementation should come with its own
@@ -230,8 +236,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN54090"
->52.1.2. Concepts</A
+NAME="AEN54156"
+>46.1.2. Concepts</A
 ></H2
 ><P
 >    The pairs of original (English) messages and their (possibly)
@@ -343,8 +349,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN54108"
->52.1.3. Creating and maintaining message catalogs</A
+NAME="AEN54174"
+>46.1.3. Creating and maintaining message catalogs</A
 ></H2
 ><P
 >    OK, so how does one create a <SPAN
@@ -490,8 +496,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN54142"
->52.1.4. Editing the PO files</A
+NAME="AEN54208"
+>46.1.4. Editing the PO files</A
 ></H2
 ><P
 >    The PO files can be edited with a regular text editor.  The
@@ -579,7 +585,7 @@ CLASS="LITERAL"
        end with a period (if your language uses punctuation marks).
        It may help to read <A
 HREF="error-style-guide.html"
->Section 50.3</A
+>Section 45.3</A
 >.
       </P
 ></LI
@@ -613,7 +619,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="compiler.html"
+HREF="error-style-guide.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -641,10 +647,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
-><SPAN
-CLASS="APPLICATION"
->gcc</SPAN
-> Default Optimizations</TD
+>Error Message Style Guide</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

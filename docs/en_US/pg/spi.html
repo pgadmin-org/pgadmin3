@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
 HREF="server-programming.html"><LINK
 REL="PREVIOUS"
-TITLE="A Complete Example"
-HREF="trigger-example.html"><LINK
+TITLE="Database Access"
+HREF="plpython-database.html"><LINK
 REL="NEXT"
 TITLE="SPI_connect"
 HREF="spi-spi-connect.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="trigger-example.html"
+HREF="plpython-database.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="triggers.html"
+HREF="plpython.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="xplang.html"
+HREF="reference.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="SPI"
 ></A
->Chapter 37. Server Programming Interface</H1
+>Chapter 41. Server Programming Interface</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,7 +102,7 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->37.1. <A
+>41.1. <A
 HREF="spi.html#SPI-INTERFACE"
 >Interface Functions</A
 ></DT
@@ -172,7 +172,7 @@ HREF="spi-spi-saveplan.html"
 ></DL
 ></DD
 ><DT
->37.2. <A
+>41.2. <A
 HREF="spi-interface-support.html"
 >Interface Support Functions</A
 ></DT
@@ -219,7 +219,7 @@ HREF="spi-spi-getrelname.html"
 ></DL
 ></DD
 ><DT
->37.3. <A
+>41.3. <A
 HREF="spi-memory.html"
 >Memory Management</A
 ></DT
@@ -281,19 +281,19 @@ HREF="spi-spi-freeplan.html"
 ></DL
 ></DD
 ><DT
->37.4. <A
+>41.4. <A
 HREF="spi-visibility.html"
 >Visibility of Data Changes</A
 ></DT
 ><DT
->37.5. <A
+>41.5. <A
 HREF="spi-examples.html"
 >Examples</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN31386"
+NAME="AEN33142"
 ></A
 ><P
 >  The <I
@@ -303,15 +303,16 @@ CLASS="FIRSTTERM"
   (<ACRONYM
 CLASS="ACRONYM"
 >SPI</ACRONYM
->) gives users the ability to run
-  <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> commands inside user-defined
+>) gives writers of user-defined
   <ACRONYM
 CLASS="ACRONYM"
 >C</ACRONYM
-> functions.  <ACRONYM
+> functions the ability to run
+  <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> commands inside their functions.
+  <ACRONYM
 CLASS="ACRONYM"
 >SPI</ACRONYM
 > is a set of
@@ -322,6 +323,20 @@ CLASS="ACRONYM"
 > also does some
   memory management.
  </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>   The available procedural languages provide various means to
+   execute SQL commands from procedures.  Some of these are based on or
+   modelled after SPI, so this documentation might be of use for users
+   of those languages as well.
+  </P
+></BLOCKQUOTE
+></DIV
 ><P
 >  To avoid misunderstanding we'll use the term <SPAN
 CLASS="QUOTE"
@@ -334,7 +349,7 @@ CLASS="ACRONYM"
   <SPAN
 CLASS="QUOTE"
 >"procedure"</SPAN
-> for user-defined C-functions, which may be
+> for a user-defined C-function that is
   using <ACRONYM
 CLASS="ACRONYM"
 >SPI</ACRONYM
@@ -383,26 +398,12 @@ CLASS="FILENAME"
 >.
  </P
 ><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->   The available procedural languages provide different means to
-   execute SQL commands from procedures.  Some of these are modelled
-   after SPI, so this documentation might be of use for those users as
-   well.
-  </P
-></BLOCKQUOTE
-></DIV
-><DIV
 CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
 NAME="SPI-INTERFACE"
->37.1. Interface Functions</A
+>41.1. Interface Functions</A
 ></H1
 ><DIV
 CLASS="TOC"
@@ -492,7 +493,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="trigger-example.html"
+HREF="plpython-database.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -520,7 +521,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->A Complete Example</TD
+>Database Access</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="DDL-SCHEMAS"
 >5.8. Schemas</A
 ></H1
 ><A
-NAME="AEN2214"
+NAME="AEN2221"
 ></A
 ><P
 >   A <SPAN
@@ -192,7 +192,7 @@ NAME="DDL-SCHEMAS-CREATE"
 >5.8.1. Creating a Schema</A
 ></H2
 ><A
-NAME="AEN2237"
+NAME="AEN2244"
 ></A
 ><P
 >    To create a separate schema, use the command <VAR
@@ -207,10 +207,10 @@ CLASS="PROGRAMLISTING"
 ><P>
    </P
 ><A
-NAME="AEN2243"
+NAME="AEN2250"
 ></A
 ><A
-NAME="AEN2245"
+NAME="AEN2252"
 ></A
 ><P
 >    To create or access objects in a schema, write a
@@ -269,7 +269,7 @@ CLASS="PROGRAMLISTING"
     the following chapters.
    </P
 ><A
-NAME="AEN2262"
+NAME="AEN2269"
 ></A
 ><P
 >    To drop a schema if it's empty (all objects in it have been
@@ -326,7 +326,7 @@ NAME="DDL-SCHEMAS-PUBLIC"
 >5.8.2. The Public Schema</A
 ></H2
 ><A
-NAME="AEN2278"
+NAME="AEN2285"
 ></A
 ><P
 >    In the previous sections we created tables without specifying any
@@ -356,13 +356,13 @@ NAME="DDL-SCHEMAS-PATH"
 >5.8.3. The Schema Search Path</A
 ></H2
 ><A
-NAME="AEN2287"
+NAME="AEN2294"
 ></A
 ><A
-NAME="AEN2289"
+NAME="AEN2296"
 ></A
 ><A
-NAME="AEN2291"
+NAME="AEN2298"
 ></A
 ><P
 >    Qualified names are tedious to write, and it's often best not to
@@ -382,7 +382,7 @@ CLASS="FIRSTTERM"
     in other schemas in the database.
    </P
 ><A
-NAME="AEN2297"
+NAME="AEN2304"
 ></A
 ><P
 >    The first schema named in the search path is called the current schema.
@@ -394,7 +394,7 @@ CLASS="COMMAND"
     command does not specify a schema name.
    </P
 ><A
-NAME="AEN2302"
+NAME="AEN2309"
 ></A
 ><P
 >    To show the current search path, use the following command:
@@ -506,10 +506,10 @@ NAME="DDL-SCHEMAS-PRIV"
 >5.8.4. Schemas and Privileges</A
 ></H2
 ><A
-NAME="AEN2327"
+NAME="AEN2334"
 ></A
 ><P
->    By default, users cannot see the objects in schemas they do not
+>    By default, users cannot access any objects in schemas they do not
     own.  To allow that, the owner of the schema needs to grant the
     <VAR
 CLASS="LITERAL"
@@ -525,15 +525,23 @@ CLASS="LITERAL"
 >CREATE</VAR
 > privilege on
     the schema needs to be granted.  Note that by default, everyone
-    has the <VAR
+    has <VAR
 CLASS="LITERAL"
 >CREATE</VAR
-> privilege on the schema
+> and <VAR
+CLASS="LITERAL"
+>USAGE</VAR
+> privileges on
+    the schema 
     <VAR
 CLASS="LITERAL"
 >public</VAR
->.  This allows all users that manage to
-    connect to a given database to create objects there.  If you do
+>.  This allows all users that are able to
+    connect to a given database to create objects in its
+    <VAR
+CLASS="LITERAL"
+>public</VAR
+> schema.  If you do
     not want to allow that, you can revoke that privilege:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -567,7 +575,7 @@ NAME="DDL-SCHEMAS-CATALOG"
 >5.8.5. The System Catalog Schema</A
 ></H2
 ><A
-NAME="AEN2343"
+NAME="AEN2352"
 ></A
 ><P
 >    In addition to <VAR

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="release.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix D. Release Notes</TD
+>Appendix E. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-6-4"
->D.26. Release 6.4</A
+>E.26. Release 6.4</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -214,8 +214,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62225"
->D.26.1. Migration to version 6.4</A
+NAME="AEN64939"
+>E.26.1. Migration to version 6.4</A
 ></H2
 ><P
 >A dump/restore using <SPAN
@@ -237,8 +237,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62231"
->D.26.2. Changes</A
+NAME="AEN64945"
+>E.26.2. Changes</A
 ></H2
 ><P
 >     </P><PRE
@@ -318,8 +318,8 @@ Fix for pg_dump so CONSTRAINT and CHECK syntax is correct(ccb)
 New contrib/lo code for large object orphan removal(Peter)
 New psql command "SET CLIENT_ENCODING TO 'encoding'" for multibytes
 feature, see /doc/README.mb(Tatsuo)
-/contrib/noupdate code to revoke update permission on a column
-libpq can now be compiled on win32(Magnus)
+contrib/noupdate code to revoke update permission on a column
+libpq can now be compiled on Windows(Magnus)
 Add PQsetdbLogin() in libpq
 New 8-byte integer type, checked by configure for OS support(Thomas)
 Better support for quoted table/column names(Thomas)
@@ -355,22 +355,22 @@ Indexes for restriction clauses containing a constant(Thomas)
 New ISBN/ISSN code in /contrib/isbn_issn
 Allow NOT LIKE, IN, NOT IN, BETWEEN, and NOT BETWEEN constraint(Thomas)
 New rewrite system fixes many problems with rules and views(Jan)
-	* Rules on relations work
-	* Event qualifications on insert/update/delete work
-	* New OLD variable to reference CURRENT, CURRENT will be remove in future
-	* Update rules can reference NEW and OLD in rule qualifications/actions
-	* Insert/update/delete rules on views work
-	* Multiple rule actions are now supported, surrounded by parentheses
-	* Regular users can create views/rules on tables they have RULE permits
-	* Rules and views inherit the permissions on the creator
-	* No rules at the column level
-	* No UPDATE NEW/OLD rules
-	* New pg_tables, pg_indexes, pg_rules and pg_views system views
-	* Only a single action on SELECT rules
-	* Total rewrite overhaul, perhaps for 6.5
-	* handle subselects
-	* handle aggregates on views
-	* handle insert into select from view works
+        * Rules on relations work
+        * Event qualifications on insert/update/delete work
+        * New OLD variable to reference CURRENT, CURRENT will be remove in future
+        * Update rules can reference NEW and OLD in rule qualifications/actions
+        * Insert/update/delete rules on views work
+        * Multiple rule actions are now supported, surrounded by parentheses
+        * Regular users can create views/rules on tables they have RULE permits
+        * Rules and views inherit the privileges of the creator
+        * No rules at the column level
+        * No UPDATE NEW/OLD rules
+        * New pg_tables, pg_indexes, pg_rules and pg_views system views
+        * Only a single action on SELECT rules
+        * Total rewrite overhaul, perhaps for 6.5
+        * handle subselects
+        * handle aggregates on views
+        * handle insert into select from view works
 System indexes are now multikey(Bruce)
 Oidint2, oidint4, and oidname types are removed(Bruce)
 Use system cache for more system table lookups(Bruce)
@@ -382,7 +382,7 @@ New setval() command to set sequence value(Massimo)
 Auto-remove unix socket file on start-up if no postmaster running(Massimo)
 Conditional trace package(Massimo)
 New UNLISTEN command(Massimo)
-psql and libpq now compile under win32 using win32.mak(Magnus)
+psql and libpq now compile under Windows using win32.mak(Magnus)
 Lo_read no longer stores trailing NULL(Bruce)
 Identifiers are now truncated to 31 characters internally(Bruce)
 Createuser options now availble on the command line
@@ -395,7 +395,7 @@ New INSERT INTO TABLE DEFAULT VALUES statement available(Thomas)
 New DECLARE and FETCH feature(Thomas)
 libpq's internal structures now not exported(Tom)
 Allow up to 8 key indexes(Bruce)
-Remove ARCHIVE keyword, that is no longer used(Thomas)
+Remove ARCHIVE key word, that is no longer used(Thomas)
 pg_dump -n flag to supress quotes around indentifiers
 disable system columns for views(Jan)
 new INET and CIDR types for network addresses(TomH, Paul)

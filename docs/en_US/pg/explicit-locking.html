@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Concurrency Control"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="EXPLICIT-LOCKING"
 >12.3. Explicit Locking</A
 ></H1
 ><A
-NAME="AEN13452"
+NAME="AEN13522"
 ></A
 ><P
 >    <SPAN
@@ -121,6 +121,22 @@ CLASS="COMMAND"
 > cannot be
     executed concurrently with other operations on the same table.)
    </P
+><P
+>    To examine a list of the currently outstanding locks in a database
+    server, use the <TT
+CLASS="STRUCTNAME"
+>pg_locks</TT
+> system view
+    (<A
+HREF="view-pg-locks.html"
+>Section 43.32</A
+>). For more
+    information on monitoring the status of the lock manager
+    subsystem, refer to <A
+HREF="monitoring.html"
+>Chapter 23</A
+>.
+   </P
 ><DIV
 CLASS="SECT2"
 ><H2
@@ -130,7 +146,7 @@ NAME="LOCKING-TABLES"
 >12.3.1. Table-Level Locks</A
 ></H2
 ><A
-NAME="AEN13461"
+NAME="AEN13535"
 ></A
 ><P
 >    The list below shows the available lock modes and the contexts in
@@ -171,18 +187,6 @@ CLASS="LITERAL"
 >ACCESS SHARE</VAR
 > lock can be held by multiple transactions).
     Once acquired, a lock is held till end of transaction.
-   </P
-><P
->    To examine a list of the currently outstanding locks in a database
-    server, use the <VAR
-CLASS="LITERAL"
->pg_locks</VAR
-> system view. For more
-    information on monitoring the status of the lock manager
-    subsystem, refer to <A
-HREF="monitoring.html"
->Chapter 23</A
->.
    </P
 ><P
 ></P
@@ -611,7 +615,7 @@ NAME="LOCKING-DEADLOCKS"
 >12.3.3. Deadlocks</A
 ></H2
 ><A
-NAME="AEN13599"
+NAME="AEN13670"
 ></A
 ><P
 >     The use of explicit locking can increase the likelihood of

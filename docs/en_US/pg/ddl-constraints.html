@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="DDL-CONSTRAINTS"
 >5.4. Constraints</A
 ></H1
 ><A
-NAME="AEN1886"
+NAME="AEN1891"
 ></A
 ><P
 >   Data types are a way to limit the kind of data that can be stored
@@ -120,14 +120,14 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1890"
+NAME="AEN1895"
 >5.4.1. Check Constraints</A
 ></H2
 ><A
-NAME="AEN1892"
+NAME="AEN1897"
 ></A
 ><A
-NAME="AEN1894"
+NAME="AEN1899"
 ></A
 ><P
 >    A check constraint is the most generic constraint type.  It allows
@@ -159,7 +159,7 @@ CLASS="LITERAL"
     would not make too much sense.
    </P
 ><A
-NAME="AEN1902"
+NAME="AEN1907"
 ></A
 ><P
 >    You can also give the constraint a separate name.  This clarifies
@@ -237,12 +237,12 @@ CLASS="PROGRAMLISTING"
     It's a matter of taste.
    </P
 ><A
-NAME="AEN1915"
+NAME="AEN1920"
 ></A
 ><P
 >    It should be noted that a check constraint is satisfied if the
     check expression evaluates to true or the null value.  Since most
-    expressions will evaluate to the null value if one operand is null
+    expressions will evaluate to the null value if one operand is null,
     they will not prevent null values in the constrained columns.  To
     ensure that a column does not contain null values, the not-null
     constraint described in the next section should be used.
@@ -253,14 +253,14 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1919"
+NAME="AEN1924"
 >5.4.2. Not-Null Constraints</A
 ></H2
 ><A
-NAME="AEN1921"
+NAME="AEN1926"
 ></A
 ><A
-NAME="AEN1923"
+NAME="AEN1928"
 ></A
 ><P
 >    A not-null constraint simply specifies that a column must not
@@ -333,7 +333,7 @@ CLASS="LITERAL"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > to be
-    compatible with other database systems.)  Some users, however,
+    compatible with some other database systems.)  Some users, however,
     like it because it makes it easy to toggle the constraint in a
     script file.  For example, you could start with
 </P><PRE
@@ -367,14 +367,14 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1945"
+NAME="AEN1950"
 >5.4.3. Unique Constraints</A
 ></H2
 ><A
-NAME="AEN1947"
+NAME="AEN1952"
 ></A
 ><A
-NAME="AEN1949"
+NAME="AEN1954"
 ></A
 ><P
 >    Unique constraints ensure that the data contained in a column or a
@@ -437,7 +437,7 @@ CLASS="EMPHASIS"
 ><P>
    </P
 ><A
-NAME="AEN1963"
+NAME="AEN1968"
 ></A
 ><P
 >    In general, a unique constraint is violated when there are (at
@@ -458,14 +458,14 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1967"
+NAME="AEN1972"
 >5.4.4. Primary Keys</A
 ></H2
 ><A
-NAME="AEN1969"
+NAME="AEN1974"
 ></A
 ><A
-NAME="AEN1971"
+NAME="AEN1976"
 ></A
 ><P
 >    Technically, a primary key constraint is simply a combination of a
@@ -539,13 +539,13 @@ NAME="DDL-CONSTRAINTS-FK"
 >5.4.5. Foreign Keys</A
 ></H2
 ><A
-NAME="AEN1986"
-></A
-><A
-NAME="AEN1988"
-></A
-><A
 NAME="AEN1991"
+></A
+><A
+NAME="AEN1993"
+></A
+><A
+NAME="AEN1996"
 ></A
 ><P
 >    A foreign key constraint specifies that the values in a column (or
@@ -613,7 +613,7 @@ CLASS="PROGRAMLISTING"
 );</PRE
 ><P>
     because in absence of a column list the primary key of the
-    referenced table is used as referenced column.
+    referenced table is used as the referenced column.
    </P
 ><P
 >    A foreign key can also constrain and reference a group of columns.
@@ -665,10 +665,10 @@ CREATE TABLE order_items (
     the last table.
    </P
 ><A
-NAME="AEN2010"
+NAME="AEN2015"
 ></A
 ><A
-NAME="AEN2013"
+NAME="AEN2018"
 ></A
 ><P
 >    We know that the foreign keys disallow creation of orders that

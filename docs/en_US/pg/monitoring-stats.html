@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Monitoring Database Activity"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="MONITORING-STATS"
 >23.2. The Statistics Collector</A
 ></H1
 ><A
-NAME="AEN19225"
+NAME="AEN19143"
 ></A
 ><P
 >   <SPAN
@@ -318,8 +318,8 @@ CLASS="STRUCTNAME"
 ></TD
 ><TD
 >For each table in the current database, total numbers of
-      sequential and index scans, total numbers of tuples returned by
-      each type of scan, and totals of tuple insertions, updates,
+      sequential and index scans, total numbers of rows returned by
+      each type of scan, and totals of row insertions, updates,
       and deletions.</TD
 ></TR
 ><TR
@@ -356,9 +356,9 @@ CLASS="STRUCTNAME"
 ></TD
 ><TD
 >For each index in the current database, the total number
-      of index scans that have used that index, the number of index tuples
-      read, and the number of successfully fetched heap tuples. (This may
-      be less when there are index entries pointing to expired heap tuples.)
+      of index scans that have used that index, the number of index rows
+      read, and the number of successfully fetched heap rows. (This may
+      be less when there are index entries pointing to expired heap rows.)
       </TD
 ></TR
 ><TR
@@ -548,12 +548,13 @@ CLASS="PRODUCTNAME"
 HREF="monitoring-stats.html#MONITORING-STATS-FUNCS-TABLE"
 >Table 23-2</A
 >.  The per-database access
-   functions take a database OID as argument to identify which database to
-   report on.  The per-table and per-index functions take a table or
-   index OID.  (Note that only tables and indexes in the current
-   database can be seen with these functions.)  The per-backend access
-   functions take a backend ID number, which ranges from one to the
-   number of currently active backend processes.
+   functions take a database OID as argument to identify which
+   database to report on.  The per-table and per-index functions take
+   a table or index OID.  (Note that only tables and indexes in the
+   current database can be seen with these functions.)  The
+   per-backend process access functions take a backend process ID
+   number, which ranges from one to the number of currently active
+   backend processes.
   </P
 ><DIV
 CLASS="TABLE"
@@ -723,8 +724,8 @@ CLASS="TYPE"
 >bigint</TT
 ></TD
 ><TD
->       Number of tuples read by sequential scans when argument is a table,
-       or number of index tuples read when argument is an index
+>       Number of rows read by sequential scans when argument is a table,
+       or number of index rows read when argument is an index
       </TD
 ></TR
 ><TR
@@ -745,7 +746,7 @@ CLASS="TYPE"
 >bigint</TT
 ></TD
 ><TD
->       Number of valid (unexpired) table tuples fetched by sequential scans
+>       Number of valid (unexpired) table rows fetched by sequential scans
        when argument is a table, or fetched by index scans using this index
        when argument is an index
       </TD
@@ -768,7 +769,7 @@ CLASS="TYPE"
 >bigint</TT
 ></TD
 ><TD
->       Number of tuples inserted into table
+>       Number of rows inserted into table
       </TD
 ></TR
 ><TR
@@ -789,7 +790,7 @@ CLASS="TYPE"
 >bigint</TT
 ></TD
 ><TD
->       Number of tuples updated in table
+>       Number of rows updated in table
       </TD
 ></TR
 ><TR
@@ -810,7 +811,7 @@ CLASS="TYPE"
 >bigint</TT
 ></TD
 ><TD
->       Number of tuples deleted from table
+>       Number of rows deleted from table
       </TD
 ></TR
 ><TR

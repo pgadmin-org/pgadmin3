@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="release.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix D. Release Notes</TD
+>Appendix E. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-0-03"
->D.39. <SPAN
+>E.39. <SPAN
 CLASS="PRODUCTNAME"
 >Postgres95</SPAN
 > Release 0.03</A
@@ -113,8 +113,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62576"
->D.39.1. Changes</A
+NAME="AEN65290"
+>E.39.1. Changes</A
 ></H2
 ><P
 ></P><PRE
@@ -145,9 +145,9 @@ more compliant to the SQL-92 standard):
    char(N), varchar(N), date and time.
 
    The following are aliases to existing postgres types:
-		smallint -&#62; int2
-		integer, int -&#62; int4
-		float, real  -&#62; float4
+                smallint -&#62; int2
+                integer, int -&#62; int4
+                float, real  -&#62; float4
    char(N) and varchar(N) are implemented as truncated text types. In
    addition, char(N) does blank-padding. 
  * single-quote (') is used for quoting string literals; '' (in addition to
@@ -156,27 +156,27 @@ more compliant to the SQL-92 standard):
    (Also, aggregates can now be overloaded, i.e. you can define your
    own MAX aggregate to take in a user-defined type.)
  * CHANGE ACL removed. GRANT/REVOKE syntax added.  
-   - Privileges can be given to a group using the "GROUP" keyword.
-	For example:
-		GRANT SELECT ON foobar TO GROUP my_group;
-	The keyword 'PUBLIC' is also supported to mean all users.	
+   - Privileges can be given to a group using the "GROUP" key word.
+        For example:
+                GRANT SELECT ON foobar TO GROUP my_group;
+        The key word 'PUBLIC' is also supported to mean all users.      
 
-	Privileges can only be granted or revoked to one user or group
-	at a time.  
+        Privileges can only be granted or revoked to one user or group
+        at a time.  
 
-	"WITH GRANT OPTION" is not supported.  Only class owners can change
-	access control
+        "WITH GRANT OPTION" is not supported.  Only class owners can change
+        access control
    - The default access control is to to grant users readonly access.
      You must explicitly grant insert/update access to users.  To change
      this, modify the line in 
-		src/backend/utils/acl.h 
+                src/backend/utils/acl.h 
      that defines ACL_WORLD_DEFAULT 
 
 Bug fixes:
  * the bug where aggregates of empty tables were not run has been fixed. Now,
    aggregates run on empty tables will return the initial conditions of the
-   aggregates. Thus, COUNT of an empty	table will now properly return 0.
-   MAX/MIN of an empty table will return a tuple of value NULL. 
+   aggregates. Thus, COUNT of an empty  table will now properly return 0.
+   MAX/MIN of an empty table will return a row of value NULL. 
  * allow the use of \; inside the monitor
  * the LISTEN/NOTIFY asynchronous notification mechanism now work
  * NOTIFY in rule action bodies now work
@@ -191,9 +191,9 @@ Other changes and enhancements:
  * WARN and NOTICE messages no longer have timestamps on them. To turn on
    timestamps of error messages, uncomment the line in
    src/backend/utils/elog.h:
-	/* define ELOG_TIMESTAMPS */ 
+        /* define ELOG_TIMESTAMPS */ 
  * On an access control violation, the message
-	"Either no such class or insufficient privilege"
+        "Either no such class or insufficient privilege"
    will be given.  This is the same message that is returned when
    a class is not found.  This dissuades non-privileged users from
    guessing the existence of privileged classes.
@@ -202,7 +202,7 @@ Other changes and enhancements:
 
 libpgtcl changes:
  * The -oid option has been added to the "pg_result" tcl command.
-   pg_result -oid returns oid of the last tuple inserted.   If the
+   pg_result -oid returns oid of the last row inserted.   If the
    last command was not an INSERT, then pg_result -oid returns "".
  * the large object interface is available as pg_lo* tcl commands:
    pg_lo_open, pg_lo_close, pg_lo_creat, etc.
@@ -213,7 +213,7 @@ Portability enhancements and New Ports:
    what lexer you use based on the platform you use. 
  * The Linux-ELF port is now supported.  Various configuration have been 
    tested:  The following configuration is known to work:
-	kernel 1.2.10, gcc 2.6.3, libc 4.7.2, flex 2.5.2, bison 1.24
+        kernel 1.2.10, gcc 2.6.3, libc 4.7.2, flex 2.5.2, bison 1.24
    with everything in ELF format,
 
 New utilities:

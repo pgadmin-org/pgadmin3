@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Large Objects"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Implementation Features"
 HREF="lo-implementation.html"><LINK
 REL="NEXT"
-TITLE="Server-side Functions"
+TITLE="Server-Side Functions"
 HREF="lo-funcs.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -160,7 +160,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22150"
+NAME="AEN22047"
 >28.3.1. Creating a Large Object</A
 ></H2
 ><P
@@ -170,7 +170,7 @@ CLASS="SYNOPSIS"
 >Oid lo_creat(PGconn *conn, int mode);</PRE
 ><P>
      <A
-NAME="AEN22154"
+NAME="AEN22051"
 ></A
 >
      creates a new large  object.  
@@ -211,7 +211,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22162"
+NAME="AEN22059"
 >28.3.2. Importing a Large Object</A
 ></H2
 ><P
@@ -221,7 +221,7 @@ CLASS="SYNOPSIS"
 >Oid lo_import(PGconn *conn, const char *filename);</PRE
 ><P>
      <A
-NAME="AEN22166"
+NAME="AEN22063"
 ></A
 >
      <VAR
@@ -238,7 +238,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22169"
+NAME="AEN22066"
 >28.3.3. Exporting a Large Object</A
 ></H2
 ><P
@@ -249,7 +249,7 @@ CLASS="SYNOPSIS"
 >int lo_export(PGconn *conn, Oid lobjId, const char *filename);</PRE
 ><P>
      <A
-NAME="AEN22173"
+NAME="AEN22070"
 ></A
 >
      The <VAR
@@ -268,7 +268,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22177"
+NAME="AEN22074"
 >28.3.4. Opening an Existing Large Object</A
 ></H2
 ><P
@@ -278,7 +278,7 @@ CLASS="SYNOPSIS"
 >int lo_open(PGconn *conn, Oid lobjId, int mode);</PRE
 ><P>
      <A
-NAME="AEN22181"
+NAME="AEN22078"
 ></A
 >
      The <VAR
@@ -327,7 +327,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22193"
+NAME="AEN22090"
 >28.3.5. Writing Data to a Large Object</A
 ></H2
 ><P
@@ -337,7 +337,7 @@ CLASS="SYNOPSIS"
 >int lo_write(PGconn *conn, int fd, const char *buf, size_t len);</PRE
 ><P>
      <A
-NAME="AEN22197"
+NAME="AEN22094"
 ></A
 > writes
      <VAR
@@ -367,7 +367,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22204"
+NAME="AEN22101"
 >28.3.6. Reading Data from a Large Object</A
 ></H2
 ><P
@@ -377,7 +377,7 @@ CLASS="SYNOPSIS"
 >int lo_read(PGconn *conn, int fd, char *buf, size_t len);</PRE
 ><P>
      <A
-NAME="AEN22208"
+NAME="AEN22105"
 ></A
 > reads
      <VAR
@@ -407,7 +407,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22215"
+NAME="AEN22112"
 >28.3.7. Seeking on a Large Object</A
 ></H2
 ><P
@@ -418,7 +418,7 @@ CLASS="SYNOPSIS"
 >int lo_lseek(PGconn *conn, int fd, int offset, int whence);</PRE
 ><P>
      <A
-NAME="AEN22219"
+NAME="AEN22116"
 ></A
 > This function moves the
      current location pointer for the large object described by
@@ -452,7 +452,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22227"
+NAME="AEN22124"
 >28.3.8. Obtaining the Seek Position of a Large Object</A
 ></H2
 ><P
@@ -463,7 +463,7 @@ CLASS="SYNOPSIS"
 >int lo_tell(PGconn *conn, int fd);</PRE
 ><P>
      <A
-NAME="AEN22231"
+NAME="AEN22128"
 ></A
 > If there is an error, the
      return value is negative.</P
@@ -473,7 +473,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22233"
+NAME="AEN22130"
 >28.3.9. Closing a Large Object Descriptor</A
 ></H2
 ><P
@@ -483,7 +483,7 @@ CLASS="SYNOPSIS"
 >int lo_close(PGconn *conn, int fd);</PRE
 ><P>
      <A
-NAME="AEN22237"
+NAME="AEN22134"
 ></A
 > where <VAR
 CLASS="PARAMETER"
@@ -507,7 +507,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN22243"
+NAME="AEN22140"
 >28.3.10. Removing a Large Object</A
 ></H2
 ><P
@@ -517,7 +517,7 @@ CLASS="SYNOPSIS"
 >int lo_unlink(PGconn *conn, Oid lobjId);</PRE
 ><P>
      <A
-NAME="AEN22247"
+NAME="AEN22144"
 ></A
 > The
      <VAR
@@ -587,7 +587,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Server-side Functions</TD
+>Server-Side Functions</TD
 ></TR
 ></TABLE
 ></DIV

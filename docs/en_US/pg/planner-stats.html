@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Performance Tips"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="PLANNER-STATS"
 >13.2. Statistics Used by the Planner</A
 ></H1
 ><A
-NAME="AEN13764"
+NAME="AEN13833"
 ></A
 ><P
 >   As we saw in the previous section, the query planner needs to estimate
@@ -178,7 +178,7 @@ CLASS="STRUCTFIELD"
    since it does not read every row of the table.
   </P
 ><A
-NAME="AEN13783"
+NAME="AEN13852"
 ></A
 ><P
 >   Most queries retrieve only a fraction of the rows in a table, due
@@ -216,7 +216,7 @@ CLASS="COMMAND"
    and are always approximate even when freshly updated.
   </P
 ><A
-NAME="AEN13794"
+NAME="AEN13863"
 ></A
 ><P
 >   Rather than look at <TT
@@ -261,236 +261,39 @@ CLASS="SCREEN"
 ><P>
   </P
 ><P
->   <A
-HREF="planner-stats.html#PLANNER-PG-STATS-TABLE"
->Table 13-1</A
-> shows the columns that
-   exist in <TT
+>   <TT
 CLASS="STRUCTNAME"
 >pg_stats</TT
+> is described in detail in
+   <A
+HREF="view-pg-stats.html"
+>Section 43.35</A
 >.
   </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="PLANNER-PG-STATS-TABLE"
-></A
 ><P
-><B
->Table 13-1. <TT
+>   The amount of information stored in <TT
 CLASS="STRUCTNAME"
->pg_stats</TT
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Data Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->schemaname</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->Name of the schema containing the table.</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->tablename</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->Name of the table containing the column.</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->attname</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->name</TT
-></TD
-><TD
->Name of the column described by this row.</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->null_frac</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->real</TT
-></TD
-><TD
->Fraction of column entries that are null.</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->avg_width</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->integer</TT
-></TD
-><TD
->Average width in bytes of the column entries.</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->n_distinct</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->real</TT
-></TD
-><TD
->If greater than zero, the estimated number of distinct values
-      in the column.  If less than zero, the negative of the number of
-      distinct values divided by the number of rows.  (The negated form
-      is used when <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> believes that the number of distinct values
-      is likely to increase as the table grows; the positive form is used
-      when the column seems to have a fixed number of possible values.)
-      For example, -1 indicates a unique column in which the number of
-      distinct values is the same as the number of rows.
-      </TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->most_common_vals</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text[]</TT
-></TD
-><TD
->A list of the most common values in the column. (Omitted if
-      no values seem to be more common than any others.)</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->most_common_freqs</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->real[]</TT
-></TD
-><TD
->A list of the frequencies of the most common values,
-      i.e., number of occurrences of each divided by total number of rows.
-     </TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->histogram_bounds</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text[]</TT
-></TD
-><TD
->A list of values that divide the column's values into
-      groups of approximately equal population.  The values in
-      <TT
+>pg_statistic</TT
+>,
+   in particular the maximum number of entries in the
+   <TT
 CLASS="STRUCTFIELD"
 >most_common_vals</TT
->, if present, are omitted from this
-      histogram calculation.  (This columns is not filled if the column data type does not have a
-      <VAR
-CLASS="LITERAL"
->&lt;</VAR
-> operator or if the <TT
-CLASS="STRUCTFIELD"
->most_common_vals</TT
->
-      list accounts for the entire population.)
-      </TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->correlation</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->real</TT
-></TD
-><TD
->Statistical correlation between physical row ordering and
-      logical ordering of the column values.  This ranges from -1 to +1.
-      When the value is near -1 or +1, an index scan on the column will
-      be estimated to be cheaper than when it is near zero, due to reduction
-      of random access to the disk.  (This column is not filled if the column data type does
-      not have a <VAR
-CLASS="LITERAL"
->&lt;</VAR
-> operator.)
-      </TD
-></TR
-></TBODY
-></TABLE
-></DIV
-><P
->   The maximum number of entries in the <TT
-CLASS="STRUCTFIELD"
->most_common_vals</TT
->
-   and <TT
+> and <TT
 CLASS="STRUCTFIELD"
 >histogram_bounds</TT
-> arrays can be set on a
+>
+   arrays for each column, can be set on a
    column-by-column basis using the <TT
 CLASS="COMMAND"
 >ALTER TABLE SET STATISTICS</TT
 >
-   command.  The default limit is presently 10 entries.  Raising the limit
+   command, or globally by setting the
+   <VAR
+CLASS="VARNAME"
+>default_statistics_target</VAR
+> runtime parameter.
+   The default limit is presently 10 entries.  Raising the limit
    may allow more accurate planner estimates to be made, particularly for
    columns with irregular data distributions, at the price of consuming
    more space in <TT

@@ -2,31 +2,31 @@
 <HTML
 ><HEAD
 ><TITLE
->Procedural Language Handlers</TITLE
+>Writing A Procedural Language Handler</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
-TITLE="Extending SQL"
-HREF="extend.html"><LINK
+TITLE="Internals"
+HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="Function Overloading"
-HREF="xfunc-overload.html"><LINK
+TITLE="For the Programmer"
+HREF="nls-programmer.html"><LINK
 REL="NEXT"
-TITLE="User-Defined Aggregates"
-HREF="xaggr.html"><LINK
+TITLE="Genetic Query Optimizer"
+HREF="geqo.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
-CLASS="SECT1"
+CLASS="CHAPTER"
 ><DIV
 CLASS="NAVHEADER"
 ><TABLE
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xfunc-overload.html"
+HREF="nls-programmer.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,23 +57,20 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="extend.html"
+HREF="nls.html"
 >Fast Backward</A
 ></TD
 ><TD
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 33. Extending <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
 ></TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="extend.html"
+HREF="geqo.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -81,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="xaggr.html"
+HREF="geqo.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -91,15 +88,14 @@ ACCESSKEY="N"
 ALIGN="LEFT"
 WIDTH="100%"></DIV
 ><DIV
-CLASS="SECT1"
+CLASS="CHAPTER"
 ><H1
-CLASS="SECT1"
 ><A
-NAME="XFUNC-PLHANDLER"
->33.9. Procedural Language Handlers</A
-></H1
+NAME="PLHANDLER"
+></A
+>Chapter 47. Writing A Procedural Language Handler</H1
 ><A
-NAME="AEN29804"
+NAME="AEN54305"
 ></A
 ><P
 >    All calls to functions that are written in a language other than
@@ -115,19 +111,8 @@ CLASS="FIRSTTERM"
 >
     function for the specific language.  It is the responsibility of
     the call handler to execute the function in a meaningful way, such
-    as by interpreting the supplied source text.  This section
-    describes how a language call handler can be written.  This is not
-    a common task, in fact, it has only been done a handful of times
-    in the history of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
->, but the
-    topic naturally belongs in this chapter, and the material might
-    give some insight into the extensible nature of the
-    <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> system.
+    as by interpreting the supplied source text.  This chapter outlines
+    how a new procedural language's call handler can be written.
    </P
 ><P
 >    The call handler for a procedural language is a
@@ -187,7 +172,8 @@ CLASS="STRUCTNAME"
     not of the call handler.
    </P
 ><P
->    It's up to the call handler to fetch the entry of the function from the system table
+>    It's up to the call handler to fetch the entry of the function from the
+    system table
     <CODE
 CLASS="CLASSNAME"
 >pg_proc</CODE
@@ -359,7 +345,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="xfunc-overload.html"
+HREF="nls-programmer.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -377,7 +363,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="xaggr.html"
+HREF="geqo.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -387,13 +373,13 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Function Overloading</TD
+>For the Programmer</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="extend.html"
+HREF="internals.html"
 ACCESSKEY="U"
 >Up</A
 ></TD
@@ -401,7 +387,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->User-Defined Aggregates</TD
+>Genetic Query Optimizer</TD
 ></TR
 ></TABLE
 ></DIV

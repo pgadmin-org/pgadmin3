@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="The SQL Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -149,6 +149,14 @@ HREF="populate.html#POPULATE-RM-INDEXES"
 ></DT
 ><DT
 >13.4.4. <A
+HREF="populate.html#POPULATE-SORT-MEM"
+>Increase <VAR
+CLASS="VARNAME"
+>sort_mem</VAR
+></A
+></DT
+><DT
+>13.4.5. <A
 HREF="populate.html#POPULATE-ANALYZE"
 >Run <TT
 CLASS="COMMAND"
@@ -180,10 +188,10 @@ CLASS="COMMAND"
 ></A
 ></H1
 ><A
-NAME="AEN13670"
+NAME="AEN13739"
 ></A
 ><A
-NAME="AEN13672"
+NAME="AEN13741"
 ></A
 ><P
 >    <SPAN
@@ -568,16 +576,16 @@ CLASS="SCREEN"
                                    QUERY PLAN
 -------------------------------------------------------------------------------
  Nested Loop  (cost=0.00..327.02 rows=49 width=296)
-                                 (actual time=1.18..29.82 rows=50 loops=1)
+                                 (actual time=1.181..29.822 rows=50 loops=1)
    -&gt;  Index Scan using tenk1_unique1 on tenk1 t1
                   (cost=0.00..179.33 rows=49 width=148)
-                                 (actual time=0.63..8.91 rows=50 loops=1)
+                                 (actual time=0.630..8.917 rows=50 loops=1)
          Index Cond: (unique1 &lt; 50)
    -&gt;  Index Scan using tenk2_unique2 on tenk2 t2
                   (cost=0.00..3.01 rows=1 width=148)
-                                 (actual time=0.29..0.32 rows=1 loops=50)
+                                 (actual time=0.295..0.324 rows=1 loops=50)
          Index Cond: ("outer".unique2 = t2.unique2)
- Total runtime: 31.60 msec</PRE
+ Total runtime: 31.604 ms</PRE
 ><P>
 
     Note that the <SPAN

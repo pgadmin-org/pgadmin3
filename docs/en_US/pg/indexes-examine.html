@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="INDEXES-EXAMINE"
 >11.8. Examining Index Usage</A
 ></H1
 ><A
-NAME="AEN13289"
+NAME="AEN13359"
 ></A
 ><P
 >   Although indexes in <SPAN
@@ -106,10 +106,13 @@ CLASS="PRODUCTNAME"
    maintenance and tuning, it is still important to check
    which indexes are actually used by the real-life query workload.
    Examining index usage for an individual query is done with the
-   <TT
-CLASS="COMMAND"
->EXPLAIN</TT
-> command; its application for this purpose is
+   <A
+HREF="sql-explain.html"
+><I
+>EXPLAIN</I
+></A
+>
+   command; its application for this purpose is
    illustrated in <A
 HREF="performance-tips.html#USING-EXPLAIN"
 >Section 13.1</A
@@ -132,10 +135,13 @@ HREF="monitoring-stats.html"
 ><UL
 ><LI
 ><P
->     Always run <TT
-CLASS="COMMAND"
->ANALYZE</TT
-> first.  This command
+>     Always run <A
+HREF="sql-analyze.html"
+><I
+>ANALYZE</I
+></A
+>
+     first.  This command
      collects statistics about the distribution of the values in the
      table.  This information is required to guess the number of rows
      returned by a query, which is needed by the planner to assign
@@ -220,11 +226,13 @@ HREF="runtime-config.html"
 >).
      An inaccurate selectivity estimate is due to
      insufficient statistics.  It may be possible to help this by
-     tuning the statistics-gathering parameters (see <TT
-CLASS="COMMAND"
->ALTER
-     TABLE</TT
-> reference).
+     tuning the statistics-gathering parameters (see
+     <A
+HREF="sql-altertable.html"
+><I
+>ALTER TABLE</I
+></A
+>).
     </P
 ><P
 >     If you do not succeed in adjusting the costs to be more

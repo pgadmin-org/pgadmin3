@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Syntax"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,13 +96,13 @@ NAME="SQL-EXPRESSIONS"
 >4.2. Value Expressions</A
 ></H1
 ><A
-NAME="AEN1479"
+NAME="AEN1462"
 ></A
 ><A
-NAME="AEN1482"
+NAME="AEN1465"
 ></A
 ><A
-NAME="AEN1484"
+NAME="AEN1467"
 ></A
 ><P
 >   Value expressions are used in a variety of contexts, such
@@ -143,10 +143,7 @@ CLASS="FIRSTTERM"
 ></P><UL
 ><LI
 ><P
->      A constant or literal value; see <A
-HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
->Section 4.1.2</A
->.
+>      A constant or literal value.
      </P
 ></LI
 ><LI
@@ -158,6 +155,16 @@ HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
 ><P
 >      A positional parameter reference, in the body of a function definition
       or prepared statement.
+     </P
+></LI
+><LI
+><P
+>      A subscripted expression.
+     </P
+></LI
+><LI
+><P
+>      A field selection expression.
      </P
 ></LI
 ><LI
@@ -195,7 +202,7 @@ HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS"
 >      Another value expression in parentheses, useful to group
       subexpressions and override
       precedence.<A
-NAME="AEN1517"
+NAME="AEN1503"
 ></A
 >
      </P
@@ -228,11 +235,11 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1524"
+NAME="AEN1510"
 >4.2.1. Column References</A
 ></H2
 ><A
-NAME="AEN1526"
+NAME="AEN1512"
 ></A
 ><P
 >    A column can be referenced in the form
@@ -246,35 +253,17 @@ CLASS="REPLACEABLE"
 >columnname</VAR
 ></PRE
 ><P>
-    or
-</P><PRE
-CLASS="SYNOPSIS"
-><VAR
-CLASS="REPLACEABLE"
->correlation</VAR
->.<VAR
-CLASS="REPLACEABLE"
->columnname</VAR
->[<VAR
-CLASS="REPLACEABLE"
->subscript</VAR
->]</PRE
-><P>
-    (Here, the brackets <VAR
-CLASS="LITERAL"
->[ ]</VAR
-> are meant to appear literally.)
    </P
 ><P
 >    <VAR
 CLASS="REPLACEABLE"
 >correlation</VAR
 > is the name of a
-    table (possibly qualified), or an alias for a table defined by means of a
-    <VAR
+    table (possibly qualified with a schema name), or an alias for a table
+    defined by means of a <VAR
 CLASS="LITERAL"
 >FROM</VAR
-> clause, or 
+> clause, or one of
     the key words <VAR
 CLASS="LITERAL"
 >NEW</VAR
@@ -296,36 +285,20 @@ HREF="queries.html"
 >Chapter 7</A
 >.)
    </P
-><P
->    If <VAR
-CLASS="REPLACEABLE"
->column</VAR
-> is of an array type, then the
-    optional <VAR
-CLASS="REPLACEABLE"
->subscript</VAR
-> selects a specific
-    element or elements in the array.  If no subscript is provided, then the
-    whole array is selected.  (See <A
-HREF="arrays.html"
->Section 8.10</A
-> for more about
-    arrays.)
-   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1549"
+NAME="AEN1526"
 >4.2.2. Positional Parameters</A
 ></H2
 ><A
-NAME="AEN1551"
+NAME="AEN1528"
 ></A
 ><A
-NAME="AEN1554"
+NAME="AEN1531"
 ></A
 ><P
 >    A positional parameter reference is used to indicate a value
@@ -369,11 +342,134 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1563"
->4.2.3. Operator Invocations</A
+NAME="AEN1540"
+>4.2.3. Subscripts</A
 ></H2
 ><A
-NAME="AEN1565"
+NAME="AEN1542"
+></A
+><P
+>    If an expression yields a value of an array type, then a specific
+    element of the array value can be extracted by writing
+</P><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>[<VAR
+CLASS="REPLACEABLE"
+>subscript</VAR
+>]</PRE
+><P>
+    or multiple adjacent elements (an <SPAN
+CLASS="QUOTE"
+>"array slice"</SPAN
+>) can be extracted
+    by writing
+</P><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>[<VAR
+CLASS="REPLACEABLE"
+>lower_subscript</VAR
+>:<VAR
+CLASS="REPLACEABLE"
+>upper_subscript</VAR
+>]</PRE
+><P>
+    (Here, the brackets <VAR
+CLASS="LITERAL"
+>[ ]</VAR
+> are meant to appear literally.)
+    Each <VAR
+CLASS="REPLACEABLE"
+>subscript</VAR
+> is itself an expression,
+    which must yield an integer value.
+   </P
+><P
+>    In general the array <VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> must be
+    parenthesized, but the parentheses may be omitted when the expression
+    to be subscripted is just a column reference or positional parameter.
+    Also, multiple subscripts can be concatenated when the original array
+    is multi-dimensional.
+    For example,
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>mytable.arraycolumn[4]
+mytable.two_d_column[17][34]
+$1[10:42]
+(arrayfunction(a,b))[42]</PRE
+><P>
+
+    The parentheses in the last example are required.
+    See <A
+HREF="arrays.html"
+>Section 8.10</A
+> for more about arrays.
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1559"
+>4.2.4. Field Selection</A
+></H2
+><A
+NAME="AEN1561"
+></A
+><P
+>    If an expression yields a value of a composite type (row type), then a
+    specific field of the row can be extracted by writing
+</P><PRE
+CLASS="SYNOPSIS"
+><VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+>.<VAR
+CLASS="REPLACEABLE"
+>fieldname</VAR
+></PRE
+><P>
+   </P
+><P
+>    In general the row <VAR
+CLASS="REPLACEABLE"
+>expression</VAR
+> must be
+    parenthesized, but the parentheses may be omitted when the expression
+    to be selected from is just a table reference or positional parameter.
+    For example,
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>mytable.mycolumn
+$1.somecolumn
+(rowfunction(a,b)).col3</PRE
+><P>
+
+    (Thus, a qualified column reference is actually just a special case
+    of the field selection syntax.)
+   </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1570"
+>4.2.5. Operator Invocations</A
+></H2
+><A
+NAME="AEN1572"
 ></A
 ><P
 >    There are three possible syntaxes for an operator invocation:
@@ -428,7 +524,7 @@ CLASS="REPLACEABLE"
 HREF="sql-syntax.html#SQL-SYNTAX-OPERATORS"
 >Section 4.1.3</A
 >, or is one of the
-    keywords <TT
+    key words <TT
 CLASS="TOKEN"
 >AND</TT
 >, <TT
@@ -438,7 +534,7 @@ CLASS="TOKEN"
     <TT
 CLASS="TOKEN"
 >NOT</TT
->, or is a qualified operator name
+>, or is a qualified operator name in the form
 </P><PRE
 CLASS="SYNOPSIS"
 ><VAR
@@ -472,11 +568,11 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN1592"
->4.2.4. Function Calls</A
+NAME="AEN1599"
+>4.2.6. Function Calls</A
 ></H2
 ><A
-NAME="AEN1594"
+NAME="AEN1601"
 ></A
 ><P
 >    The syntax for a function call is the name of a function
@@ -524,10 +620,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SYNTAX-AGGREGATES"
->4.2.5. Aggregate Expressions</A
+>4.2.7. Aggregate Expressions</A
 ></H2
 ><A
-NAME="AEN1610"
+NAME="AEN1617"
 ></A
 ><P
 >    An <I
@@ -572,7 +668,7 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >aggregate_name</VAR
 > is a previously
-    defined aggregate (possibly a qualified name), and
+    defined aggregate (possibly qualified with a schema name), and
     <VAR
 CLASS="REPLACEABLE"
 >expression</VAR
@@ -648,7 +744,7 @@ CLASS="LITERAL"
 >    When an aggregate expression appears in a subquery (see
     <A
 HREF="sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES"
->Section 4.2.7</A
+>Section 4.2.9</A
 > and
     <A
 HREF="functions-subquery.html"
@@ -674,13 +770,13 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SQL-SYNTAX-TYPE-CASTS"
->4.2.6. Type Casts</A
+>4.2.8. Type Casts</A
 ></H2
 ><A
-NAME="AEN1646"
+NAME="AEN1653"
 ></A
 ><A
-NAME="AEN1649"
+NAME="AEN1656"
 ></A
 ><P
 >    A type cast specifies a conversion from one data type to another.
@@ -802,10 +898,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SQL-SYNTAX-SCALAR-SUBQUERIES"
->4.2.7. Scalar Subqueries</A
+>4.2.9. Scalar Subqueries</A
 ></H2
 ><A
-NAME="AEN1677"
+NAME="AEN1684"
 ></A
 ><P
 >    A scalar subquery is an ordinary
@@ -831,7 +927,7 @@ CLASS="COMMAND"
     See also <A
 HREF="functions-subquery.html"
 >Section 9.16</A
->.
+> for other expressions involving subqueries.
    </P
 ><P
 >    For example, the following finds the largest city population in each
@@ -849,19 +945,16 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SQL-SYNTAX-ARRAY-CONSTRUCTORS"
->4.2.8. Array Constructors</A
+>4.2.10. Array Constructors</A
 ></H2
 ><A
-NAME="AEN1688"
+NAME="AEN1695"
 ></A
 ><P
->    An <I
-CLASS="FIRSTTERM"
->array constructor</I
-> is an expression that builds an
+>    An array constructor is an expression that builds an
     array value from values for its member elements.  A simple array
     constructor 
-    consists of the keyword <VAR
+    consists of the key word <VAR
 CLASS="LITERAL"
 >ARRAY</VAR
 >, a left square bracket
@@ -898,7 +991,7 @@ HREF="typeconv-union-case.html"
 ><P
 >    Multidimensional array values can be built by nesting array
     constructors.
-    In the inner constructors, the keyword <VAR
+    In the inner constructors, the key word <VAR
 CLASS="LITERAL"
 >ARRAY</VAR
 > may
@@ -931,11 +1024,11 @@ CLASS="LITERAL"
     For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
->create table arr(f1 int[], f2 int[]);
-CREATE TABLE
-insert into arr values (ARRAY[[1,2],[3,4]],ARRAY[[5,6],[7,8]]);
-INSERT 2635544 1
-select ARRAY[f1, f2, '{{9,10},{11,12}}'::int[]] from arr;
+>CREATE TABLE arr(f1 int[], f2 int[]);
+
+INSERT INTO arr VALUES (ARRAY[[1,2],[3,4]], ARRAY[[5,6],[7,8]]);
+
+SELECT ARRAY[f1, f2, '{{9,10},{11,12}}'::int[]] FROM arr;
                      array
 ------------------------------------------------
  {{{1,2},{3,4}},{{5,6},{7,8}},{{9,10},{11,12}}}
@@ -945,7 +1038,7 @@ select ARRAY[f1, f2, '{{9,10},{11,12}}'::int[]] from arr;
 ><P
 >   It is also possible to construct an array from the results of a
    subquery.  In this form, the array constructor is written with the
-   keyword <VAR
+   key word <VAR
 CLASS="LITERAL"
 >ARRAY</VAR
 > followed by a parenthesized (not
@@ -958,10 +1051,10 @@ CLASS="PROGRAMLISTING"
  {2011,1954,1948,1952,1951,1244,1950,2005,1949,1953,2006,31}
 (1 row)</PRE
 ><P>
-  The sub-select must return a single column. The
-  resulting one-dimensional array will have an element for each row in the
-  sub-select result, with an element type matching that of the sub-select's
-  output column.
+   The subquery must return a single column. The resulting
+   one-dimensional array will have an element for each row in the
+   subquery result, with an element type matching that of the
+   subquery's output column.
   </P
 ><P
 >   The subscripts of an array value built with <VAR
@@ -981,10 +1074,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="SYNTAX-EXPRESS-EVAL"
->4.2.9. Expression Evaluation Rules</A
+>4.2.11. Expression Evaluation Rules</A
 ></H2
 ><A
-NAME="AEN1714"
+NAME="AEN1720"
 ></A
 ><P
 >    The order of evaluation of subexpressions is not defined.  In

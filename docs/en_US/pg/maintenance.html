@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -138,7 +138,7 @@ HREF="logfile-maintenance.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN18760"
+NAME="AEN18677"
 ></A
 ><P
 >   There are a few routine maintenance chores that must be performed on
@@ -191,10 +191,10 @@ HREF="logfile-maintenance.html"
 >   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> is low-maintenance compared to
-   some other database products.  Nonetheless, appropriate attention to
-   these tasks will go far towards ensuring a pleasant and productive
-   experience with the system.
+> is low-maintenance compared
+   to some other database management systems.  Nonetheless,
+   appropriate attention to these tasks will go far towards ensuring a
+   pleasant and productive experience with the system.
   </P
 ><DIV
 CLASS="SECT1"
@@ -205,7 +205,7 @@ NAME="ROUTINE-VACUUMING"
 >21.1. Routine Vacuuming</A
 ></H1
 ><A
-NAME="AEN18777"
+NAME="AEN18694"
 ></A
 ><P
 >   <SPAN
@@ -281,7 +281,7 @@ NAME="VACUUM-FOR-SPACE-RECOVERY"
 >21.1.1. Recovering disk space</A
 ></H2
 ><A
-NAME="AEN18798"
+NAME="AEN18715"
 ></A
 ><P
 >    In normal <SPAN
@@ -295,19 +295,16 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >DELETE</TT
 > of a row does not
-    immediately remove the old <I
-CLASS="FIRSTTERM"
->tuple</I
-> (version of the row).
+    immediately remove the old version of the row.
     This approach is necessary to gain the benefits of multiversion
     concurrency control (see <A
 HREF="mvcc.html"
 >Chapter 12</A
->): the tuple
+>): the row version
     must not be deleted while it is still potentially visible to other
-    transactions. But eventually, an outdated or deleted tuple is no
+    transactions. But eventually, an outdated or deleted row version is no
     longer of interest to any transaction. The space it occupies must be
-    reclaimed for reuse by new tuples, to avoid infinite growth of disk
+    reclaimed for reuse by new rows, to avoid infinite growth of disk
     space requirements. This is done by running <TT
 CLASS="COMMAND"
 >VACUUM</TT
@@ -332,7 +329,7 @@ CLASS="COMMAND"
 >VACUUM</TT
 > is best used with the goal of
     maintaining a fairly level steady-state usage of disk space.  The standard
-    form finds old tuples and makes their space available for re-use within
+    form finds old row versions and makes their space available for re-use within
     the table, but it does not try very hard to shorten the table file and
     return disk space to the operating system.  If you need to return disk
     space to the operating system you can use <TT
@@ -376,7 +373,7 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >VACUUM FULL</TT
 > is recommended for cases where you know you have
-    deleted the majority of tuples in a table, so that the steady-state size
+    deleted the majority of rows in a table, so that the steady-state size
     of the table can be shrunk substantially with <TT
 CLASS="COMMAND"
 >VACUUM FULL</TT
@@ -407,10 +404,10 @@ NAME="VACUUM-FOR-STATISTICS"
 >21.1.2. Updating planner statistics</A
 ></H2
 ><A
-NAME="AEN18828"
+NAME="AEN18744"
 ></A
 ><A
-NAME="AEN18831"
+NAME="AEN18747"
 ></A
 ><P
 >    The <SPAN
@@ -524,7 +521,7 @@ NAME="VACUUM-FOR-WRAPAROUND"
 >21.1.3. Preventing transaction ID wraparound failures</A
 ></H2
 ><A
-NAME="AEN18855"
+NAME="AEN18771"
 ></A
 ><P
 >    <SPAN
@@ -535,7 +532,7 @@ CLASS="PRODUCTNAME"
 CLASS="ACRONYM"
 >XID</ACRONYM
 >)
-    numbers: a tuple with an insertion XID greater than the current
+    numbers: a row version with an insertion XID greater than the current
     transaction's XID is <SPAN
 CLASS="QUOTE"
 >"in the future"</SPAN
@@ -611,15 +608,15 @@ CLASS="QUOTE"
 >"newer"</SPAN
 >; another
     way to say it is that the normal XID space is circular with no
-    endpoint. Therefore, once a tuple has been created with a particular
-    normal XID, the tuple will appear to be <SPAN
+    endpoint. Therefore, once a row version has been created with a particular
+    normal XID, the row version will appear to be <SPAN
 CLASS="QUOTE"
 >"in the past"</SPAN
 > for
     the next two billion transactions, no matter which normal XID we are
-    talking about. If the tuple still exists after more than two billion
+    talking about. If the row version still exists after more than two billion
     transactions, it will suddenly appear to be in the future. To
-    prevent data loss, old tuples must be reassigned the XID
+    prevent data loss, old row versions must be reassigned the XID
     <VAR
 CLASS="LITERAL"
 >FrozenXID</VAR
@@ -630,7 +627,7 @@ CLASS="QUOTE"
 >"in the past"</SPAN
 > to all
     normal transactions regardless of wraparound issues, and so such
-    tuples will be good until deleted, no matter how long that is. This
+    row versions will be good until deleted, no matter how long that is. This
     reassignment of XID is handled by <TT
 CLASS="COMMAND"
 >VACUUM</TT
@@ -644,9 +641,9 @@ CLASS="COMMAND"
 CLASS="LITERAL"
 >FrozenXID</VAR
 >
-    to any tuple with a normal XID more than one billion transactions in the
+    to any row version with a normal XID more than one billion transactions in the
     past.  This policy preserves the original insertion XID until it is not
-    likely to be of interest anymore.  (In fact, most tuples will probably
+    likely to be of interest anymore.  (In fact, most row versions will probably
     live and die without ever being <SPAN
 CLASS="QUOTE"
 >"frozen"</SPAN
@@ -656,7 +653,7 @@ CLASS="COMMAND"
 >VACUUM</TT
 > runs on any table
     is exactly one billion transactions: if you wait longer, it's possible
-    that a tuple that was not quite old enough to be reassigned last time
+    that a row version that was not quite old enough to be reassigned last time
     is now more than two billion transactions old and has wrapped around
     into the future --- i.e., is lost to you.  (Of course, it'll reappear
     after another two billion transactions, but that's no help.)
@@ -753,7 +750,7 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >FREEZE</TT
 > option uses a more
-    aggressive freezing policy: tuples are frozen if they are old enough
+    aggressive freezing policy: row versions are frozen if they are old enough
     to be considered good by all open transactions. In particular, if a
     <TT
 CLASS="COMMAND"
@@ -765,7 +762,7 @@ CLASS="emphasis"
 CLASS="EMPHASIS"
 >all</I
 ></SPAN
-> tuples in that
+> row versions in that
     database will be frozen. Hence, as long as the database is not
     modified in any way, it will not need subsequent vacuuming to avoid
     transaction ID wraparound problems. This technique is used by

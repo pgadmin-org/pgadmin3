@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Administration"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -110,17 +110,17 @@ HREF="charset.html#LOCALE"
 ><DL
 ><DT
 >20.1.1. <A
-HREF="charset.html#AEN18134"
+HREF="charset.html#AEN18053"
 >Overview</A
 ></DT
 ><DT
 >20.1.2. <A
-HREF="charset.html#AEN18206"
+HREF="charset.html#AEN18125"
 >Benefits</A
 ></DT
 ><DT
 >20.1.3. <A
-HREF="charset.html#AEN18221"
+HREF="charset.html#AEN18140"
 >Problems</A
 ></DT
 ></DL
@@ -134,22 +134,22 @@ HREF="multibyte.html"
 ><DL
 ><DT
 >20.2.1. <A
-HREF="multibyte.html#AEN18256"
+HREF="multibyte.html#AEN18173"
 >Supported Character Sets</A
 ></DT
 ><DT
 >20.2.2. <A
-HREF="multibyte.html#AEN18413"
+HREF="multibyte.html#AEN18330"
 >Setting the Character Set</A
 ></DT
 ><DT
 >20.2.3. <A
-HREF="multibyte.html#AEN18436"
+HREF="multibyte.html#AEN18353"
 >Automatic Character Set Conversion Between Server and Client</A
 ></DT
 ><DT
 >20.2.4. <A
-HREF="multibyte.html#AEN18735"
+HREF="multibyte.html#AEN18652"
 >Further Reading</A
 ></DT
 ></DL
@@ -199,7 +199,7 @@ NAME="LOCALE"
 >20.1. Locale Support</A
 ></H1
 ><A
-NAME="AEN18128"
+NAME="AEN18047"
 ></A
 ><P
 >   <I
@@ -223,7 +223,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN18134"
+NAME="AEN18053"
 >20.1.1. Overview</A
 ></H2
 ><P
@@ -290,7 +290,7 @@ CLASS="INFORMALTABLE"
 ><P
 ></P
 ><A
-NAME="AEN18149"
+NAME="AEN18068"
 ></A
 ><TABLE
 BORDER="1"
@@ -500,7 +500,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN18206"
+NAME="AEN18125"
 >20.1.2. Benefits</A
 ></H2
 ><P
@@ -516,7 +516,7 @@ CLASS="COMMAND"
 >ORDER BY</TT
 >
        <A
-NAME="AEN18213"
+NAME="AEN18132"
 ></A
 >
       </P
@@ -546,7 +546,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN18221"
+NAME="AEN18140"
 >20.1.3. Problems</A
 ></H2
 ><P
@@ -614,18 +614,9 @@ CLASS="PRODUCTNAME"
 ><P
 >    Client applications that handle server-side errors by parsing the
     text of the error message will obviously have problems when the
-    server's messages are in a different language.  If you create such
-    an application you need to devise a plan to cope with this
-    situation.  The embedded SQL interface (<SPAN
-CLASS="APPLICATION"
->ECPG</SPAN
->) is
-    also affected by this problem.  It is currently recommended that
-    servers interfacing with <SPAN
-CLASS="APPLICATION"
->ECPG</SPAN
-> applications be
-    configured to send messages in English.
+    server's messages are in a different language.  Authors of such
+    applications are advised to make use of the error code scheme
+    instead.
    </P
 ><P
 >    Maintaining catalogs of message translations requires the on-going
@@ -638,7 +629,7 @@ CLASS="PRODUCTNAME"
     translated, your assistance would be appreciated.  If you want to
     help, refer to the <A
 HREF="nls.html"
->Chapter 52</A
+>Chapter 46</A
 > or write to the developers'
     mailing list.
    </P

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-SELECT"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41815"
+NAME="AEN41651"
 ></A
 ><H2
 >Name</H2
 >SELECT&nbsp;--&nbsp;retrieve rows from a table or view</DIV
 ><A
-NAME="AEN41818"
+NAME="AEN41654"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41820"
+NAME="AEN41656"
 ></A
 ><H2
 >Synopsis</H2
@@ -234,7 +234,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41856"
+NAME="AEN41691"
 ></A
 ><H2
 >Description</H2
@@ -388,7 +388,7 @@ HREF="sql-select.html#SQL-EXCEPT"
 ></LI
 ><LI
 ><P
->      The actual output rows are computed the
+>      The actual output rows are computed using the
       <TT
 CLASS="COMMAND"
 >SELECT</TT
@@ -429,29 +429,6 @@ HREF="sql-select.html#SQL-ORDERBY"
 ></LI
 ><LI
 ><P
->      If the <VAR
-CLASS="LITERAL"
->LIMIT</VAR
-> or <VAR
-CLASS="LITERAL"
->OFFSET</VAR
->
-      clause is specified, the <TT
-CLASS="COMMAND"
->SELECT</TT
-> statement
-      only returns a subset of the result rows. (See <A
-HREF="sql-select.html#SQL-LIMIT"
-><I
-><I
->LIMIT</I
-> Clause</I
-></A
-> below.)
-     </P
-></LI
-><LI
-><P
 >      <VAR
 CLASS="LITERAL"
 >DISTINCT</VAR
@@ -470,6 +447,29 @@ HREF="sql-select.html#SQL-DISTINCT"
 ><I
 ><I
 >DISTINCT</I
+> Clause</I
+></A
+> below.)
+     </P
+></LI
+><LI
+><P
+>      If the <VAR
+CLASS="LITERAL"
+>LIMIT</VAR
+> or <VAR
+CLASS="LITERAL"
+>OFFSET</VAR
+>
+      clause is specified, the <TT
+CLASS="COMMAND"
+>SELECT</TT
+> statement
+      only returns a subset of the result rows. (See <A
+HREF="sql-select.html#SQL-LIMIT"
+><I
+><I
+>LIMIT</I
 > Clause</I
 ></A
 > below.)
@@ -516,7 +516,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41921"
+NAME="AEN41756"
 ></A
 ><H2
 >Parameters</H2
@@ -791,12 +791,24 @@ CLASS="LITERAL"
 >        A <VAR
 CLASS="LITERAL"
 >JOIN</VAR
-> clause, combines two
+> clause combines two
         <VAR
 CLASS="LITERAL"
 >FROM</VAR
-> items.  (Use parentheses if necessary to
-        determine the order of nesting.)
+> items.  Use parentheses if necessary to
+        determine the order of nesting.  In the absence of parentheses,
+	<VAR
+CLASS="LITERAL"
+>JOIN</VAR
+>s nest left-to-right.  In any case
+	<VAR
+CLASS="LITERAL"
+>JOIN</VAR
+> binds more tightly than the commas
+	separating <VAR
+CLASS="LITERAL"
+>FROM</VAR
+> items.
        </P
 ><P
 >        <VAR
@@ -806,18 +818,19 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >INNER JOIN</VAR
 >
-        produce a simple Cartesian product, the same as you get from
+        produce a simple Cartesian product, the same result as you get from
         listing the two items at the top level of <VAR
 CLASS="LITERAL"
 >FROM</VAR
->.
+>,
+	but restricted by the join condition (if any).
         <VAR
 CLASS="LITERAL"
 >CROSS JOIN</VAR
 > is equivalent to <VAR
 CLASS="LITERAL"
 >INNER JOIN ON
-        (true)</VAR
+        (TRUE)</VAR
 >, that is, no rows are removed by qualification.
         These join types are just a notational convenience, since they
         do nothing you couldn't do with plain <VAR
@@ -843,7 +856,7 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >JOIN</VAR
 >
-        clauses own condition is considered while deciding which rows
+        clause's own condition is considered while deciding which rows
         have matches.  Outer conditions are applied afterwards.
        </P
 ><P
@@ -1018,7 +1031,7 @@ CLASS="REPLACEABLE"
     (<TT
 CLASS="COMMAND"
 >SELECT</TT
-> list), or it can be an arbitrary
+> list item), or an arbitrary
     expression formed from input-column values.  In case of ambiguity,
     a <VAR
 CLASS="LITERAL"
@@ -1227,7 +1240,7 @@ CLASS="LITERAL"
     a <VAR
 CLASS="LITERAL"
 >UNION</VAR
-> result or for the inputs of <VAR
+> result or for any input of a <VAR
 CLASS="LITERAL"
 >UNION</VAR
 >.
@@ -1529,7 +1542,7 @@ CLASS="REPLACEABLE"
     (<TT
 CLASS="COMMAND"
 >SELECT</TT
-> list), or it can be an arbitrary
+> list item), or it can be an arbitrary
     expression formed from input-column values.
    </P
 ><P
@@ -1541,7 +1554,7 @@ CLASS="LITERAL"
     equal according to the leftmost expression, the are compared
     according to the next expression and so on.  If they are equal
     according to all specified expressions, they are returned in
-    random order.
+    an implementation-dependent order.
    </P
 ><P
 >    The ordinal number refers to the ordinal (left-to-right) position
@@ -1611,7 +1624,7 @@ CLASS="LITERAL"
     <VAR
 CLASS="LITERAL"
 >DESC</VAR
-> (descending) after each expression in the
+> (descending) after any expression in the
     <VAR
 CLASS="LITERAL"
 >ORDER BY</VAR
@@ -1638,7 +1651,7 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >USING &gt;</VAR
 >.
-    (But the creator of a user-defined datatype can define exactly what the
+    (But the creator of a user-defined data type can define exactly what the
     default sort ordering is, and it might correspond to operators with other
     names.)
    </P
@@ -1668,7 +1681,7 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >LIMIT</VAR
 > clause consists of two independent
-    clauses:
+    sub-clauses:
 </P><PRE
 CLASS="SYNOPSIS"
 >LIMIT { <VAR
@@ -1684,11 +1697,19 @@ CLASS="REPLACEABLE"
 CLASS="REPLACEABLE"
 >count</VAR
 > specifies the
-    maximum number of rows to return, and <VAR
+    maximum number of rows to return, while <VAR
 CLASS="REPLACEABLE"
 >start</VAR
 > specifies the number of rows
-    to skip before starting to return rows.
+    to skip before starting to return rows.  When both are specified,
+    <VAR
+CLASS="REPLACEABLE"
+>start</VAR
+> rows are skipped
+    before starting to count the <VAR
+CLASS="REPLACEABLE"
+>count</VAR
+> rows to be returned.
    </P
 ><P
 >    When using <VAR
@@ -1811,6 +1832,24 @@ CLASS="LITERAL"
     of time values for each location, we'd have gotten a report from
     an unpredictable time for each location.
    </P
+><P
+>    The <VAR
+CLASS="LITERAL"
+>DISTINCT ON</VAR
+> expression(s) must match the leftmost
+    <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> expression(s).  The <VAR
+CLASS="LITERAL"
+>ORDER BY</VAR
+> clause
+    will normally contain additional expression(s) that determine the
+    desired precedence of rows within each <VAR
+CLASS="LITERAL"
+>DISTINCT ON</VAR
+> group.
+   </P
 ></DIV
 ><DIV
 CLASS="REFSECT2"
@@ -1924,7 +1963,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42299"
+NAME="AEN42144"
 ></A
 ><H2
 >Examples</H2
@@ -2029,7 +2068,7 @@ SELECT * FROM distributors ORDER BY 2;
 ><P>
   </P
 ><P
->   This example shows how to obtain the union of the tables
+>   The next example shows how to obtain the union of the tables
    <VAR
 CLASS="LITERAL"
 >distributors</VAR
@@ -2038,7 +2077,7 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >actors</VAR
 >, restricting the results to those that begin
-   with letter W in each table.  Only distinct rows are wanted, so the
+   with the letter W in each table.  Only distinct rows are wanted, so the
    key word <VAR
 CLASS="LITERAL"
 >ALL</VAR
@@ -2077,7 +2116,7 @@ SELECT actors.name
 CLASS="LITERAL"
 >FROM</VAR
 >
-   clause, both with and without a column definition list.
+   clause, both with and without a column definition list:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -2104,7 +2143,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN42324"
+NAME="AEN42169"
 ></A
 ><H2
 >Compatibility</H2
@@ -2119,7 +2158,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN42328"
+NAME="AEN42173"
 ></A
 ><H3
 >Omitted <VAR
@@ -2229,7 +2268,7 @@ CLASS="VARNAME"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN42353"
+NAME="AEN42198"
 ></A
 ><H3
 >The <VAR
@@ -2261,7 +2300,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN42361"
+NAME="AEN42206"
 ></A
 ><H3
 >Namespace Available to <VAR
@@ -2296,7 +2335,8 @@ CLASS="PRODUCTNAME"
     result-column names.
    </P
 ><P
->    SQL99 uses a slightly different definition which is not upward compatible
+>    SQL99 uses a slightly different definition which is not entirely upward
+    compatible 
     with SQL92.  In most cases, however, <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -2314,7 +2354,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN42374"
+NAME="AEN42219"
 ></A
 ><H3
 >Nonstandard Clauses</H3

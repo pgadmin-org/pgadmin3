@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Client Interfaces"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="client-interfaces.html#AEN19972"
+HREF="client-interfaces.html#AEN19828"
 >Fast Backward</A
 ></TD
 ><TD
@@ -222,7 +222,7 @@ HREF="libpq-pgpass.html"
 ><DT
 >27.12. <A
 HREF="libpq-threading.html"
->Threading Behavior</A
+>Behavior in Threaded Programs</A
 ></DT
 ><DT
 >27.13. <A
@@ -240,10 +240,10 @@ HREF="libpq-example.html"
 ></DL
 ></DIV
 ><A
-NAME="AEN19980"
+NAME="AEN19836"
 ></A
 ><A
-NAME="AEN19982"
+NAME="AEN19838"
 ></A
 ><P
 >   <SPAN
@@ -322,7 +322,7 @@ CLASS="APPLICATION"
 CLASS="FILENAME"
 >libpq-fe.h</TT
 ><A
-NAME="AEN20005"
+NAME="AEN19861"
 ></A
 >
    and must link with the <SPAN
@@ -351,7 +351,7 @@ CLASS="PRODUCTNAME"
 CLASS="STRUCTNAME"
 >PGconn</TT
 ><A
-NAME="AEN20013"
+NAME="AEN19869"
 ></A
 > object which
    is obtained from the function <CODE
@@ -384,7 +384,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQconnectdb</CODE
 ><A
-NAME="AEN20023"
+NAME="AEN19879"
 ></A
 ></DT
 ><DD
@@ -438,7 +438,7 @@ CLASS="LITERAL"
    Spaces around the equal sign are optional.
    </P
 ><P
->   The currently recognized parameter keywords are:
+>   The currently recognized parameter key words are:
 
    <P
 ></P
@@ -453,7 +453,7 @@ CLASS="LITERAL"
 ><DD
 ><P
 >      Name of host to connect to.<A
-NAME="AEN20045"
+NAME="AEN19901"
 ></A
 >
       If this begins with a slash, it specifies Unix-domain
@@ -464,7 +464,7 @@ NAME="AEN20045"
 CLASS="FILENAME"
 >/tmp</TT
 >.<A
-NAME="AEN20048"
+NAME="AEN19904"
 ></A
 >
      </P
@@ -571,7 +571,7 @@ CLASS="LITERAL"
 >      Port number to connect to at the server host, or socket file
       name extension for Unix-domain
       connections.<A
-NAME="AEN20080"
+NAME="AEN19936"
 ></A
 >
      </P
@@ -718,7 +718,7 @@ CLASS="ACRONYM"
 >SSL</ACRONYM
 >
        connection.<A
-NAME="AEN20136"
+NAME="AEN19992"
 ></A
 >
       </P
@@ -817,7 +817,7 @@ HREF="libpq-envars.html"
 CLASS="FUNCTION"
 >PQsetdbLogin</CODE
 ><A
-NAME="AEN20167"
+NAME="AEN20023"
 ></A
 ></DT
 ><DD
@@ -839,7 +839,10 @@ CLASS="FUNCTION"
 >PQconnectdb</CODE
 > with a fixed
    set of parameters.  It has the same functionality except that the
-   missing parameters will always take on default values.  Write NULL or an
+   missing parameters will always take on default values.  Write <TT
+CLASS="SYMBOL"
+>NULL</TT
+> or an
    empty string for any one of the fixed parameters that is to be defaulted.
    </P
 ></DD
@@ -848,7 +851,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQsetdb</CODE
 ><A
-NAME="AEN20177"
+NAME="AEN20034"
 ></A
 ></DT
 ><DD
@@ -882,19 +885,19 @@ CLASS="PARAMETER"
 CLASS="FUNCTION"
 >PQconnectStart</CODE
 ><A
-NAME="AEN20189"
+NAME="AEN20046"
 ></A
 ><BR><CODE
 CLASS="FUNCTION"
 >PQconnectPoll</CODE
 ><A
-NAME="AEN20193"
+NAME="AEN20050"
 ></A
 ></DT
 ><DD
 ><P
 >   <A
-NAME="AEN20197"
+NAME="AEN20054"
 ></A
 >
    Make a connection to the database server in a nonblocking manner.
@@ -914,7 +917,7 @@ CLASS="SYNOPSIS"
    in the application's main loop, rather than down inside
    <CODE
 CLASS="FUNCTION"
->PQconnectdb()</CODE
+>PQconnectdb</CODE
 >, and so the application can manage this
    operation in parallel with other activities.
   </P
@@ -1250,7 +1253,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQconndefaults</CODE
 ><A
-NAME="AEN20301"
+NAME="AEN20158"
 ></A
 ></DT
 ><DD
@@ -1314,7 +1317,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQfinish</CODE
 ><A
-NAME="AEN20317"
+NAME="AEN20174"
 ></A
 ></DT
 ><DD
@@ -1356,7 +1359,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQreset</CODE
 ><A
-NAME="AEN20332"
+NAME="AEN20189"
 ></A
 ></DT
 ><DD
@@ -1379,13 +1382,13 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQresetStart</CODE
 ><A
-NAME="AEN20341"
+NAME="AEN20198"
 ></A
 ><BR><CODE
 CLASS="FUNCTION"
 >PQresetPoll</CODE
 ><A
-NAME="AEN20345"
+NAME="AEN20202"
 ></A
 ></DT
 ><DD

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Run-time Environment"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="RUNTIME-CONFIG"
 >16.4. Run-time Configuration</A
 ></H1
 ><A
-NAME="AEN15419"
+NAME="AEN15374"
 ></A
 ><P
 >    There are a lot of configuration parameters that affect the
@@ -138,12 +138,12 @@ CLASS="LITERAL"
     (case-insensitive) or any non-ambiguous prefix of these.
    </P
 ><P
->    One way to set these options is to edit the file
+>    One way to set these parameters is to edit the file
     <TT
 CLASS="FILENAME"
 >postgresql.conf</TT
 ><A
-NAME="AEN15434"
+NAME="AEN15389"
 ></A
 >
     in the data directory. (A default file is installed there.) An
@@ -155,7 +155,7 @@ log_connections = yes
 syslog = 2
 search_path = '$user, public'</PRE
 ><P>
-    One option is specified per line. The equal sign between name and
+    One parameter is specified per line. The equal sign between name and
     value is optional. Whitespace is insignificant and blank lines are
     ignored. Hash marks (<VAR
 CLASS="LITERAL"
@@ -166,7 +166,7 @@ CLASS="LITERAL"
    </P
 ><P
 >    <A
-NAME="AEN15439"
+NAME="AEN15394"
 ></A
 >
     The configuration file is reread whenever the
@@ -226,27 +226,8 @@ CLASS="APPLICATION"
 CLASS="APPLICATION"
 >psql</SPAN
 >.) Note that this won't work for
-    options that are fixed when the server is started, such as the port
+    parameters that are fixed when the server is started, such as the port
     number.
-   </P
-><P
->    Some options can be changed in individual <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
->
-    sessions with the <TT
-CLASS="COMMAND"
->SET</TT
-> command, for example:
-</P><PRE
-CLASS="SCREEN"
->SET ENABLE_SEQSCAN TO OFF;</PRE
-><P>
-    See the <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> command language reference for
-    details on the syntax.
    </P
 ><P
 >    Furthermore, it is possible to assign a set of option settings to
@@ -260,186 +241,69 @@ CLASS="COMMAND"
 >ALTER
     USER</TT
 >, respectively, are used to configure these
-    settings.  Such per-database settings override anything received
+    settings.  Per-database settings override anything received
     from the <TT
 CLASS="COMMAND"
 >postmaster</TT
 > command-line or the
     configuration file, and in turn are overridden by per-user
-    settings.
+    settings; both are overridden by per-session options.
+   </P
+><P
+>    Some parameters can be changed in individual <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>
+    sessions with the <A
+HREF="sql-set.html"
+><I
+>SET</I
+></A
+>
+    command, for example:
+</P><PRE
+CLASS="SCREEN"
+>SET ENABLE_SEQSCAN TO OFF;</PRE
+><P>
+    If <TT
+CLASS="COMMAND"
+>SET</TT
+> is allowed, it overrides all other sources of
+    values for the parameter.  Superusers are allowed to <TT
+CLASS="COMMAND"
+>SET</TT
+>
+    more values than ordinary users.
+   </P
+><P
+>    The <A
+HREF="sql-show.html"
+><I
+>SHOW</I
+></A
+>
+    command allows inspection of the current values of all parameters.
    </P
 ><P
 >    The virtual table <TT
 CLASS="STRUCTNAME"
 >pg_settings</TT
-> allows
-    displaying and updating session run-time parameters. It contains one
-    row for each configuration parameter; the columns are shown in
-    <A
-HREF="runtime-config.html#RUNTIME-PGSETTINGS-TABLE"
->Table 16-1</A
->.  This table allows the
-    configuration data to be joined with other tables and have a
-    selection criteria applied.
-   </P
-><P
->     An <TT
-CLASS="COMMAND"
->UPDATE</TT
-> performed on <TT
-CLASS="STRUCTNAME"
->pg_settings</TT
 >
-     is equivalent to executing the <TT
+    (described in <A
+HREF="view-pg-settings.html"
+>Section 43.34</A
+>) also allows
+    displaying and updating session run-time parameters.  It is equivalent
+    to <TT
+CLASS="COMMAND"
+>SHOW</TT
+> and <TT
 CLASS="COMMAND"
 >SET</TT
-> command on that named
-     parameter. The change only affects the value used by the current session. If
-     an <TT
-CLASS="COMMAND"
->UPDATE</TT
-> is issued within a transaction that is later
-     aborted, the effects of the <TT
-CLASS="COMMAND"
->UPDATE</TT
-> command disappear when
-     the transaction is rolled back. Once the surrounding transaction is
-     committed, the effects will persist until the end of the session, unless
-     overridden by another <TT
-CLASS="COMMAND"
->UPDATE</TT
-> or <TT
-CLASS="COMMAND"
->SET</TT
->.
-    </P
-><DIV
-CLASS="TABLE"
-><A
-NAME="RUNTIME-PGSETTINGS-TABLE"
-></A
-><P
-><B
->Table 16-1. <VAR
-CLASS="LITERAL"
->pg_settings</VAR
-> Columns</B
-></P
-><TABLE
-BORDER="1"
-CLASS="CALSTABLE"
-><COL><COL><COL><THEAD
-><TR
-><TH
->Name</TH
-><TH
->Data Type</TH
-><TH
->Description</TH
-></TR
-></THEAD
-><TBODY
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->name</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->run-time configuration parameter name</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->setting</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->current value of the parameter</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->context</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->context required to set the parameter's value</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->vartype</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->parameter type</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->source</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->source of the current parameter value</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->min_val</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->minimum allowed value of the parameter</TD
-></TR
-><TR
-><TD
-><VAR
-CLASS="LITERAL"
->max_val</VAR
-></TD
-><TD
-><TT
-CLASS="TYPE"
->text</TT
-></TD
-><TD
->maximum allowed value of the parameter</TD
-></TR
-></TBODY
-></TABLE
-></DIV
+>, but can be more convenient
+    to use because it can be joined with other tables, or selected from using
+    any desired selection condition.
+   </P
 ><DIV
 CLASS="SECT2"
 ><H2
@@ -472,7 +336,7 @@ CLASS="TYPE"
 ><DD
 ><P
 >        If this is true, then the server will accept TCP/IP connections.<A
-NAME="AEN15537"
+NAME="AEN15437"
 ></A
 >
         Otherwise only local Unix domain socket connections are
@@ -979,8 +843,12 @@ CLASS="LITERAL"
         <TT
 CLASS="COMMAND"
 >CREATE INDEX</TT
-> is used when restoring a database, it might
-        be good to temporarily increase this value during a restore.
+> is used when restoring a database,
+        increasing <VAR
+CLASS="VARNAME"
+>sort_mem</VAR
+> before doing a large
+        restore operation can improve performance.
        </P
 ></DD
 ><DT
@@ -998,9 +866,9 @@ CLASS="TYPE"
 CLASS="COMMAND"
 >VACUUM</TT
 > to keep track of to-be-reclaimed
-        tuples. The value is specified in kilobytes, and defaults to
-        8192 kilobytes. Larger settings may improve the speed of
-        vacuuming large tables that have many deleted tuples.
+        rows. The value is specified in kilobytes, and defaults to
+        8192 kB. Larger settings may improve the speed of
+        vacuuming large tables that have many deleted rows.
        </P
 ></DD
 ></DL
@@ -1702,7 +1570,7 @@ CLASS="NOTE"
 CLASS="QUOTE"
 >"cost"</SPAN
 > variables that
-     below. You are encouraged to experiment and share
+     appear below. You are encouraged to experiment and share
      your findings.
     </P
 ></BLOCKQUOTE
@@ -1761,7 +1629,7 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Sets the query planner's estimate of the cost of processing
-        each tuple during a query. This is measured as a fraction of
+        each row during a query. This is measured as a fraction of
         the cost of a sequential page fetch. The default is 0.01.
        </P
 ></DD
@@ -1776,7 +1644,7 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Sets the query planner's estimate of the cost of processing
-        each index tuple during an index scan. This is measured as a
+        each index row during an index scan. This is measured as a
         fraction of the cost of a sequential page fetch. The default
         is 0.001.
        </P
@@ -2018,7 +1886,7 @@ NAME="RUNTIME-CONFIG-LOGGING"
 >16.4.5. Error Reporting and Logging</A
 ></H2
 ><A
-NAME="AEN16027"
+NAME="AEN15928"
 ></A
 ><DIV
 CLASS="SECT3"
@@ -2029,7 +1897,7 @@ NAME="RUNTIME-CONFIG-LOGGING-SYSLOG"
 >16.4.5.1. Syslog</A
 ></H3
 ><A
-NAME="AEN16031"
+NAME="AEN15932"
 ></A
 ><P
 ></P
@@ -2244,7 +2112,7 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Controls which message levels are written to the server log.
-	Valid values are <VAR
+        Valid values are <VAR
 CLASS="LITERAL"
 >DEBUG5</VAR
 >, <VAR
@@ -2312,18 +2180,18 @@ CLASS="TYPE"
 ><DD
 ><P
 >        Controls the amount of detail written in the server log for each
-	message that is logged.  Valid values are <VAR
+        message that is logged.  Valid values are <VAR
 CLASS="LITERAL"
 >TERSE</VAR
 >,
-	<VAR
+        <VAR
 CLASS="LITERAL"
 >DEFAULT</VAR
 >, and <VAR
 CLASS="LITERAL"
 >VERBOSE</VAR
 >, each adding more
-	fields to displayed messages.
+        fields to displayed messages.
        </P
 ></DD
 ><DT
@@ -2404,19 +2272,19 @@ CLASS="TYPE"
 ><DD
 ><P
 >         Sets a minimum statement execution time (in milliseconds)
-         above which a statement will be logged.  All SQL statements
-         that run longer than the time specified will be logged together
-         with their actual duration.  Setting this to zero (the default)
-	 disables time-based logging.  For example, if you set it
-         to <VAR
+         for statement to be logged.  All SQL statements
+         that run in the time specified or longer will be logged with
+         their duration.  Setting this to zero will print
+         all queries and their durations.  Minus-one (the default)
+         disables this.  For example, if you set it to 
+         <VAR
 CLASS="LITERAL"
 >250</VAR
-> then all SQL statements that run longer
-         than 250ms will be logged.  Enabling this
-         option can be useful in tracking down unoptimized queries in
-         your applications.
-         Only superusers can increase this or set it to zero if this option
-         is set to non-zero by the administrator.
+> then all SQL statements that run 250ms 
+         or longer will be logged.  Enabling this option can be
+         useful in tracking down unoptimized queries in your applications.
+         Only superusers can increase this or set it to minus-one if this 
+         option is set by the administrator.
         </P
 ></DD
 ><DT
@@ -2451,7 +2319,7 @@ CLASS="APPLICATION"
 ></DIV
 ><P
 >        Here is a list of the various message severity levels used in
-	these settings:
+        these settings:
         <P
 ></P
 ></P><DIV
@@ -2676,8 +2544,8 @@ CLASS="TYPE"
         does not affect messages logged via <SPAN
 CLASS="APPLICATION"
 >syslog</SPAN
->, which always contain
-        the process ID.
+>, which 
+        always contain the process ID.
        </P
 ></DD
 ><DT
@@ -3060,6 +2928,25 @@ HREF="ddl-schemas.html"
 ><DT
 ><VAR
 CLASS="VARNAME"
+>check_function_bodies</VAR
+> (<TT
+CLASS="TYPE"
+>boolean</TT
+>)</DT
+><DD
+><P
+>        This parameter is normally true.  When set false, it disables
+        validation of the function body string in <TT
+CLASS="COMMAND"
+>CREATE FUNCTION</TT
+>.
+        Disabling validation is occasionally useful to avoid problems such as
+        forward references when restoring function definitions from a dump.
+       </P
+></DD
+><DT
+><VAR
+CLASS="VARNAME"
 >default_transaction_isolation</VAR
 > (<TT
 CLASS="TYPE"
@@ -3156,12 +3043,12 @@ CLASS="TYPE"
 ><P
 >        Sets the display format for date and time values, as well as
         the rules for interpreting ambiguous date input values.
-	For historical reasons, this variable contains two independent
-	components: the output format specification (<VAR
+        For historical reasons, this variable contains two independent
+        components: the output format specification (<VAR
 CLASS="LITERAL"
 >ISO</VAR
 >,
-	<VAR
+        <VAR
 CLASS="LITERAL"
 >Postgres</VAR
 >, <VAR
@@ -3171,25 +3058,25 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >German</VAR
 >) and
-	the date field order specification (<VAR
+        the date field order specification (<VAR
 CLASS="LITERAL"
 >DMY</VAR
 >, <VAR
 CLASS="LITERAL"
 >MDY</VAR
 >,
-	or <VAR
+        or <VAR
 CLASS="LITERAL"
 >YMD</VAR
 >).  These can be set separately or together.
-	The keywords <VAR
+        The keywords <VAR
 CLASS="LITERAL"
 >Euro</VAR
 > and <VAR
 CLASS="LITERAL"
 >European</VAR
 > are synonyms
-	for <VAR
+        for <VAR
 CLASS="LITERAL"
 >DMY</VAR
 >; the keywords <VAR
@@ -3199,14 +3086,14 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >NonEuro</VAR
 >,
-	and <VAR
+        and <VAR
 CLASS="LITERAL"
 >NonEuropean</VAR
 > are synonyms for <VAR
 CLASS="LITERAL"
 >MDY</VAR
 >.
-	See <A
+        See <A
 HREF="datatype-datetime.html"
 >Section 8.5</A
 > for more information.  The
@@ -3634,25 +3521,25 @@ CLASS="TYPE"
 CLASS="LITERAL"
 >true</VAR
 >, tables that are referenced by a query will be
-	automatically added to the <VAR
+        automatically added to the <VAR
 CLASS="LITERAL"
 >FROM</VAR
 > clause if not already
-	present.  The default is <VAR
+        present.  The default is <VAR
 CLASS="LITERAL"
 >true</VAR
 > for compatibility with
-	previous releases of <SPAN
+        previous releases of <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >.  However, this
-	behavior is not SQL-standard, and many people dislike it because it
-	can mask mistakes.  Set to <VAR
+        behavior is not SQL-standard, and many people dislike it because it
+        can mask mistakes.  Set to <VAR
 CLASS="LITERAL"
 >false</VAR
 > for the SQL-standard
-	behavior of rejecting references to tables that are not listed in
-	<VAR
+        behavior of rejecting references to tables that are not listed in
+        <VAR
 CLASS="LITERAL"
 >FROM</VAR
 >.
@@ -3914,10 +3801,10 @@ CLASS="TYPE"
 ><DD
 ><P
 >        If nonzero, a delay of this many seconds occurs just after a new
-	server process is forked, before it conducts the authentication
-	process.  This is intended to give an opportunity to attach to the
-	server process with a debugger to trace down misbehavior in
-	authentication.
+        server process is forked, before it conducts the authentication
+        process.  This is intended to give an opportunity to attach to the
+        server process with a debugger to trace down misbehavior in
+        authentication.
        </P
 ></DD
 ><DT
@@ -4066,7 +3953,7 @@ NAME="RUNTIME-CONFIG-SHORT"
 >    For convenience there are also single letter command-line option switches
     available for some parameters. They are described in <A
 HREF="runtime-config.html#RUNTIME-CONFIG-SHORT-TABLE"
->Table 16-2</A
+>Table 16-1</A
 >.
    </P
 ><DIV
@@ -4076,7 +3963,7 @@ NAME="RUNTIME-CONFIG-SHORT-TABLE"
 ></A
 ><P
 ><B
->Table 16-2. Short option key</B
+>Table 16-1. Short option key</B
 ></P
 ><TABLE
 BORDER="1"

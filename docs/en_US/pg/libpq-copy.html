@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -102,7 +102,7 @@ CLASS="COMMAND"
 > Command</A
 ></H1
 ><A
-NAME="AEN21491"
+NAME="AEN21368"
 ></A
 ><P
 > The <TT
@@ -185,7 +185,10 @@ CLASS="COMMAND"
  sequence.  Only when <CODE
 CLASS="FUNCTION"
 >PQgetResult</CODE
-> returns NULL is it certain
+> returns <TT
+CLASS="SYMBOL"
+>NULL</TT
+> is it certain
  that the <CODE
 CLASS="FUNCTION"
 >PQexec</CODE
@@ -230,7 +233,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQnfields</CODE
 ><A
-NAME="AEN21528"
+NAME="AEN21406"
 ></A
 ></DT
 ><DD
@@ -242,7 +245,7 @@ NAME="AEN21528"
 CLASS="FUNCTION"
 >PQbinaryTuples</CODE
 ><A
-NAME="AEN21536"
+NAME="AEN21414"
 ></A
 ></DT
 ><DD
@@ -264,7 +267,7 @@ HREF="sql-copy.html"
 CLASS="FUNCTION"
 >PQfformat</CODE
 ><A
-NAME="AEN21545"
+NAME="AEN21423"
 ></A
 ></DT
 ><DD
@@ -325,7 +328,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQputCopyData</CODE
 ><A
-NAME="AEN21563"
+NAME="AEN21441"
 ></A
 ></DT
 ><DD
@@ -341,7 +344,10 @@ CLASS="SYNOPSIS"
                   int nbytes);</PRE
 ><P></P
 ><P
->Transmits the COPY data in the specified <VAR
+>Transmits the <TT
+CLASS="COMMAND"
+>COPY</TT
+> data in the specified <VAR
 CLASS="PARAMETER"
 >buffer</VAR
 >, of length
@@ -350,16 +356,19 @@ CLASS="PARAMETER"
 >nbytes</VAR
 >, to the server.  The result is 1 if the data was sent,
 zero if it was not sent because the attempt would block (this case is only
-possible if the connection is in nonblock mode), or -1 if an error occurred.
+possible if the connection is in nonblocking mode), or -1 if an error occurred.
 (Use <CODE
 CLASS="FUNCTION"
 >PQerrorMessage</CODE
 > to retrieve details if the return
 value is -1.  If the value is zero, wait for write-ready and try again.)</P
 ><P
->The application may divide the COPY datastream into bufferloads of any
-convenient size.  Bufferload boundaries have no semantic significance when
-sending.  The contents of the datastream must match the data format expected
+>The application may divide the <TT
+CLASS="COMMAND"
+>COPY</TT
+> data stream into buffer loads of any
+convenient size.  Buffer-load boundaries have no semantic significance when
+sending.  The contents of the data stream must match the data format expected
 by the <TT
 CLASS="COMMAND"
 >COPY</TT
@@ -376,7 +385,7 @@ HREF="sql-copy.html"
 CLASS="FUNCTION"
 >PQputCopyEnd</CODE
 ><A
-NAME="AEN21579"
+NAME="AEN21459"
 ></A
 ></DT
 ><DD
@@ -398,10 +407,16 @@ CLASS="LITERAL"
 CLASS="PARAMETER"
 >errormsg</VAR
 >
-is NULL.  If <VAR
+is <TT
+CLASS="SYMBOL"
+>NULL</TT
+>.  If <VAR
 CLASS="PARAMETER"
 >errormsg</VAR
-> is not NULL then the <TT
+> is not <TT
+CLASS="SYMBOL"
+>NULL</TT
+> then the <TT
 CLASS="COMMAND"
 >COPY</TT
 >
@@ -419,7 +434,7 @@ option to force failure does not work when using pre-3.0-protocol connections.)<
 ><P
 >The result is 1 if the termination data was sent,
 zero if it was not sent because the attempt would block (this case is only
-possible if the connection is in nonblock mode), or -1 if an error occurred.
+possible if the connection is in nonblocking mode), or -1 if an error occurred.
 (Use <CODE
 CLASS="FUNCTION"
 >PQerrorMessage</CODE
@@ -475,7 +490,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQgetCopyData</CODE
 ><A
-NAME="AEN21608"
+NAME="AEN21490"
 ></A
 ></DT
 ><DD
@@ -491,19 +506,31 @@ CLASS="SYNOPSIS"
                   int async);</PRE
 ><P></P
 ><P
->Attempts to obtain another row of data from the server during a COPY.
+>Attempts to obtain another row of data from the server during a <TT
+CLASS="COMMAND"
+>COPY</TT
+>.
 Data is always returned one data row at a time; if only a partial row
 is available, it is not returned.  Successful return of a data row
 involves allocating a chunk of memory to hold the data.  The
 <VAR
 CLASS="PARAMETER"
 >buffer</VAR
-> parameter must be non-NULL.  <VAR
+> parameter must be non-<TT
+CLASS="SYMBOL"
+>NULL</TT
+>.  <VAR
 CLASS="PARAMETER"
 >*buffer</VAR
 >
-is set to point to the allocated memory, or to NULL in cases where no
-buffer is returned.  A non-NULL result buffer must be freed using
+is set to point to the allocated memory, or to <TT
+CLASS="SYMBOL"
+>NULL</TT
+> in cases where no
+buffer is returned.  A non-<TT
+CLASS="SYMBOL"
+>NULL</TT
+> result buffer must be freed using
 <CODE
 CLASS="FUNCTION"
 >PQfreemem</CODE
@@ -512,13 +539,22 @@ CLASS="FUNCTION"
 >When a row is successfully returned, the return value is the number of
 data bytes in the row (this will always be greater than zero).  The
 returned string is always null-terminated, though this is probably only
-useful for textual COPY.  A result of zero indicates that the COPY is
+useful for textual <TT
+CLASS="COMMAND"
+>COPY</TT
+>.  A result of zero indicates that the <TT
+CLASS="COMMAND"
+>COPY</TT
+> is
 still in progress, but no row is yet available (this is only possible
 when <VAR
 CLASS="PARAMETER"
 >async</VAR
 > is true).  A
-result of -1 indicates that the COPY is done.
+result of -1 indicates that the <TT
+CLASS="COMMAND"
+>COPY</TT
+> is done.
 A result of -2 indicates that an error occurred (consult
 <CODE
 CLASS="FUNCTION"
@@ -532,7 +568,10 @@ CLASS="PARAMETER"
 CLASS="FUNCTION"
 >PQgetCopyData</CODE
 >
-will not block waiting for input; it will return zero if the COPY is still
+will not block waiting for input; it will return zero if the <TT
+CLASS="COMMAND"
+>COPY</TT
+> is still
 in progress but no complete row is available.  (In this case wait for
 read-ready before trying again; it does not matter whether you call
 <CODE
@@ -595,7 +634,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQgetline</CODE
 ><A
-NAME="AEN21640"
+NAME="AEN21530"
 ></A
 ></DT
 ><DD
@@ -656,12 +695,15 @@ for a terminator line).</P
 CLASS="FUNCTION"
 >PQgetlineAsync</CODE
 ><A
-NAME="AEN21658"
+NAME="AEN21548"
 ></A
 ></DT
 ><DD
 ><P
->          Reads a row of COPY data
+>          Reads a row of <TT
+CLASS="COMMAND"
+>COPY</TT
+> data
           (transmitted  by the server) into a buffer
           without blocking.
 </P><PRE
@@ -729,7 +771,13 @@ whether the last returned byte is <VAR
 CLASS="LITERAL"
 >\n</VAR
 > or not.  (In a binary
-COPY, actual parsing of the COPY data format will be needed to make the
+<TT
+CLASS="COMMAND"
+>COPY</TT
+>, actual parsing of the <TT
+CLASS="COMMAND"
+>COPY</TT
+> data format will be needed to make the
 equivalent determination.)
 The returned string is not null-terminated.  (If you want to add a
 terminating null, be sure to pass a <VAR
@@ -743,7 +791,7 @@ than the room actually available.)</P
 CLASS="FUNCTION"
 >PQputline</CODE
 ><A
-NAME="AEN21682"
+NAME="AEN21575"
 ></A
 ></DT
 ><DD
@@ -759,7 +807,10 @@ CLASS="SYNOPSIS"
               const char *string);</PRE
 ><P></P
 ><P
->The COPY datastream sent by a series of calls to
+>The <TT
+CLASS="COMMAND"
+>COPY</TT
+> data stream sent by a series of calls to
 <CODE
 CLASS="FUNCTION"
 >PQputline</CODE
@@ -789,7 +840,10 @@ for the application to explicitly send the two characters
 CLASS="LITERAL"
 >\.</VAR
 > as a final line to indicate to the server that it had
-finished sending COPY data.  While this still works, it is deprecated and the
+finished sending <TT
+CLASS="COMMAND"
+>COPY</TT
+> data.  While this still works, it is deprecated and the
 special meaning of <VAR
 CLASS="LITERAL"
 >\.</VAR
@@ -807,7 +861,7 @@ having sent the actual data.</P
 CLASS="FUNCTION"
 >PQputnbytes</CODE
 ><A
-NAME="AEN21701"
+NAME="AEN21596"
 ></A
 ></DT
 ><DD
@@ -836,7 +890,7 @@ specified directly.  Use this procedure when sending binary data.</P
 CLASS="FUNCTION"
 >PQendcopy</CODE
 ><A
-NAME="AEN21712"
+NAME="AEN21607"
 ></A
 ></DT
 ><DD

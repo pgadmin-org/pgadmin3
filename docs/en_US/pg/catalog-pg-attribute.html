@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="catalogs.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 44. System Catalogs</TD
+>Chapter 43. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-ATTRIBUTE"
->44.7. <TT
+>43.7. <TT
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 ></A
 ></H1
 ><A
-NAME="AEN49388"
+NAME="AEN49265"
 ></A
 ><P
 >   The catalog <TT
@@ -124,11 +124,11 @@ CLASS="STRUCTNAME"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN49395"
+NAME="AEN49272"
 ></A
 ><P
 ><B
->Table 44-7. <TT
+>Table 43-7. <TT
 CLASS="STRUCTNAME"
 >pg_attribute</TT
 > Columns</B
@@ -331,9 +331,9 @@ CLASS="TYPE"
 ><TD
 >&nbsp;</TD
 ><TD
->       Always -1 in storage, but when loaded into a tuple descriptor
+>       Always -1 in storage, but when loaded into a row descriptor
        in memory this may be updated to cache the offset of the attribute
-       within the tuple.
+       within the row.
       </TD
 ></TR
 ><TR
@@ -423,7 +423,7 @@ CLASS="TYPE"
 >&nbsp;</TD
 ><TD
 >       If true, this attribute is a set.  In that case, what is really
-       stored in the attribute is the OID of a tuple in the
+       stored in the attribute is the OID of a row in the
        <TT
 CLASS="STRUCTNAME"
 >pg_proc</TT
@@ -431,7 +431,7 @@ CLASS="STRUCTNAME"
        <TT
 CLASS="STRUCTNAME"
 >pg_proc</TT
-> tuple contains the query
+> row contains the query
        string that defines this set, i.e., the query to run to get
        the set.  So the <TT
 CLASS="STRUCTFIELD"

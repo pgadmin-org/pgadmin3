@@ -2,29 +2,29 @@
 <HTML
 ><HEAD
 ><TITLE
->Interaction with the Trigger Manager</TITLE
+>Writing Trigger Functions in C</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Triggers"
 HREF="triggers.html"><LINK
 REL="PREVIOUS"
-TITLE="Triggers"
-HREF="triggers.html"><LINK
-REL="NEXT"
 TITLE="Visibility of Data Changes"
 HREF="trigger-datachanges.html"><LINK
+REL="NEXT"
+TITLE="A Complete Example"
+HREF="trigger-example.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="triggers.html"
+HREF="trigger-datachanges.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -64,7 +64,7 @@ HREF="triggers.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 36. Triggers</TD
+>Chapter 35. Triggers</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="trigger-datachanges.html"
+HREF="trigger-example.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -92,17 +92,26 @@ CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
-NAME="TRIGGER-MANAGER"
->36.2. Interaction with the Trigger Manager</A
+NAME="TRIGGER-INTERFACE"
+>35.3. Writing Trigger Functions in C</A
 ></H1
 ><A
-NAME="AEN31237"
+NAME="AEN31058"
 ></A
 ><P
 >    This section describes the low-level details of the interface to a
     trigger function.  This information is only needed when writing a
     trigger function in C.  If you are using a higher-level
-    language then these details are handled for you.
+    language then these details are handled for you.  The documentation
+    of each procedural language explains how to write a trigger in that
+    language.
+   </P
+><P
+>    Trigger functions must use the <SPAN
+CLASS="QUOTE"
+>"version 1"</SPAN
+> function manager
+    interface.
    </P
 ><P
 >    When a function is called by the trigger manager, it is not passed
@@ -452,6 +461,24 @@ CLASS="COMMAND"
 ></DIV
 ><P>
    </P
+><P
+>    A trigger function must return either <TT
+CLASS="SYMBOL"
+>NULL</TT
+> or a
+    <TT
+CLASS="STRUCTNAME"
+>HeapTuple</TT
+> pointer.  Be careful to return either
+    <TT
+CLASS="STRUCTFIELD"
+>tg_trigtuple</TT
+> or <TT
+CLASS="STRUCTFIELD"
+>tg_newtuple</TT
+>,
+    as appropriate, if you don't want to modify the row being operated on.
+   </P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -469,7 +496,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="triggers.html"
+HREF="trigger-datachanges.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -487,7 +514,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="trigger-datachanges.html"
+HREF="trigger-example.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -497,7 +524,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Triggers</TD
+>Visibility of Data Changes</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -511,7 +538,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Visibility of Data Changes</TD
+>A Complete Example</TD
 ></TR
 ></TABLE
 ></DIV

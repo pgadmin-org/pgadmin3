@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="  Installation Instructions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -108,7 +108,7 @@ NAME="CONFIGURE"
 >Configuration</B
 ></P
 ><A
-NAME="AEN14211"
+NAME="AEN14212"
 ></A
 ><P
 >    The first step of the installation procedure is to configure the
@@ -393,7 +393,7 @@ CLASS="NOTE"
 ><B
 >Note: </B
 >       Care has been taken to make it possible to install
-	<SPAN
+        <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > 
@@ -501,7 +501,7 @@ CLASS="REPLACEABLE"
 CLASS="APPLICATION"
 >Readline</SPAN
 >) installed in a non-standard
-	 location,
+         location,
          you have to use this option and probably also the corresponding
          <VAR
 CLASS="OPTION"
@@ -603,8 +603,8 @@ CLASS="REPLACEABLE"
          be changed later on, but if you specify it here then both
          server and clients will have the same default compiled in,
          which can be very convenient.  Usually the only good reason
-	 to select a non-default value is if you intend to run multiple
-	 <SPAN
+         to select a non-default value is if you intend to run multiple
+         <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > servers on the same machine.
@@ -856,14 +856,14 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->	 Build with <ACRONYM
+>         Build with <ACRONYM
 CLASS="ACRONYM"
 >PAM</ACRONYM
 ><A
-NAME="AEN14461"
+NAME="AEN14462"
 ></A
 >
-	 (Pluggable Authentication Modules) support.
+         (Pluggable Authentication Modules) support.
         </P
 ></DD
 ><DT
@@ -891,7 +891,7 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->	 Build with Rendezvous support.
+>         Build with Rendezvous support.
         </P
 ></DD
 ><DT
@@ -901,10 +901,11 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->         Allows source builds to succeed without CPU spinlock support.
-         Lack of spinlock support will produce poor performance.
-         This option is to be used only by platforms lacking
-         spinlock support.
+>         Allow the builds to succeed even if PostgreSQL has no CPU
+         spinlock support for the platform.  The lack of spinlock
+         support will result in poor performance; therefore, this
+         option should only be used if the build aborts and informs
+         you that the platform lacks spinlock support.
         </P
 ></DD
 ><DT
@@ -914,8 +915,16 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->	 Allow separate libpq and ecpg threads to safely control their
-         private connection handles.
+>         Make the client libraries thread-safe.  This allows
+         concurrent threads in <SPAN
+CLASS="APPLICATION"
+>libpq</SPAN
+> and
+         <SPAN
+CLASS="APPLICATION"
+>ECPG</SPAN
+> programs to safely control
+         their private connection handles.
         </P
 ></DD
 ><DT
@@ -947,13 +956,13 @@ CLASS="OPTION"
 >         Compiles all programs and libraries with debugging symbols.
          This means that you can run the programs through a debugger
          to analyze problems. This enlarges the size of the installed
-	 executables considerably, and on non-GCC compilers it usually
-	 also disables compiler optimization, causing slowdowns. However,
-	 having the symbols available is extremely helpful for dealing
-	 with any problems that may arise.  Currently, this option is
-	 recommended for production installations only if you use GCC.
-	 But you should always have it on if you are doing development work
-	 or running a beta version.
+         executables considerably, and on non-GCC compilers it usually
+         also disables compiler optimization, causing slowdowns. However,
+         having the symbols available is extremely helpful for dealing
+         with any problems that may arise.  Currently, this option is
+         recommended for production installations only if you use GCC.
+         But you should always have it on if you are doing development work
+         or running a beta version.
         </P
 ></DD
 ><DT
@@ -963,22 +972,22 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->	 Enables <I
+>         Enables <I
 CLASS="FIRSTTERM"
 >assertion</I
 > checks in the server, which test for
-	 many <SPAN
+         many <SPAN
 CLASS="QUOTE"
 >"can't happen"</SPAN
 > conditions.  This is invaluable for
-	 code development purposes, but the tests slow things down a little.
-	 Also, having the tests turned on won't necessarily enhance the
-	 stability of your server!  The assertion checks are not categorized
-	 for severity, and so what might be a relatively harmless bug will
-	 still lead to server restarts if it triggers an assertion
-	 failure.  Currently, this option is not recommended for
+         code development purposes, but the tests slow things down a little.
+         Also, having the tests turned on won't necessarily enhance the
+         stability of your server!  The assertion checks are not categorized
+         for severity, and so what might be a relatively harmless bug will
+         still lead to server restarts if it triggers an assertion
+         failure.  Currently, this option is not recommended for
          production use, but you should have it on for development work
-	 or when running a beta version.
+         or when running a beta version.
         </P
 ></DD
 ><DT
@@ -988,12 +997,12 @@ CLASS="OPTION"
 ></DT
 ><DD
 ><P
->	 Enables automatic dependency tracking.  With this option, the
-	 makefiles are set up so that all affected object files will
-	 be rebuilt when any header file is changed.  This is useful
-	 if you are doing development work, but is just wasted overhead
-	 if you intend only to compile once and install.  At present,
-	 this option will work only if you use GCC.
+>         Enables automatic dependency tracking.  With this option, the
+         makefiles are set up so that all affected object files will
+         be rebuilt when any header file is changed.  This is useful
+         if you are doing development work, but is just wasted overhead
+         if you intend only to compile once and install.  At present,
+         this option will work only if you use GCC.
         </P
 ></DD
 ></DL
@@ -1074,7 +1083,7 @@ CLASS="SCREEN"
 >Regression Tests</B
 ></P
 ><A
-NAME="AEN14529"
+NAME="AEN14532"
 ></A
 ><P
 >    If you want to test the newly built server before you install it,
@@ -1093,8 +1102,6 @@ CLASS="USERINPUT"
 ></PRE
 ><P>
     (This won't work as root; do it as an unprivileged user.)
-    It is possible that some tests fail, due to differences in error
-    message wording or floating point results.
     
     <A
 HREF="regress.html"

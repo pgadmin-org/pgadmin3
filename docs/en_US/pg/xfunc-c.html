@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -99,7 +99,7 @@ NAME="XFUNC-C"
 >33.7. C-Language Functions</A
 ></H1
 ><A
-NAME="AEN28983"
+NAME="AEN28898"
 ></A
 ><P
 >    User-defined functions can be written in C (or a language that can
@@ -152,7 +152,7 @@ NAME="XFUNC-C-DYNLOAD"
 >33.7.1. Dynamic Loading</A
 ></H2
 ><A
-NAME="AEN28998"
+NAME="AEN28913"
 ></A
 ><P
 >    The first time a user-defined function in a particular
@@ -197,7 +197,7 @@ CLASS="PRODUCTNAME"
 > package
 	library directory
        name, which is determined at build time.<A
-NAME="AEN29011"
+NAME="AEN28926"
 ></A
 >
       </P
@@ -210,7 +210,7 @@ NAME="AEN29011"
 CLASS="VARNAME"
 >dynamic_library_path</VAR
 >.<A
-NAME="AEN29016"
+NAME="AEN28931"
 ></A
 >
       </P
@@ -234,27 +234,19 @@ CLASS="FILENAME"
     appended to the given name and this sequence is tried again.  If
     that fails as well, the load will fail.
    </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Note: </B
->     The user ID the <SPAN
+>    The user ID the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > server runs
-     as must be able to traverse the path to the file you intend to
-     load.  Making the file or a higher-level directory not readable
-     and/or not executable by the <SPAN
+    as must be able to traverse the path to the file you intend to
+    load.  Making the file or a higher-level directory not readable
+    and/or not executable by the <SPAN
 CLASS="SYSTEMITEM"
 >postgres</SPAN
-> user is a
-     common mistake.
-    </P
-></BLOCKQUOTE
-></DIV
+>
+    user is a common mistake.
+   </P
 ><P
 >    In any case, the file name that is given in the
     <TT
@@ -288,25 +280,17 @@ HREF="xfunc-c.html#DFUNC"
     </P
 ></BLOCKQUOTE
 ></DIV
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Note: </B
->     After it is used for the first time, a dynamically loaded object
-     file is retained in memory.  Future calls in the same session to the
-     function(s) in that file will only incur the small overhead of a symbol
-     table lookup.  If you need to force a reload of an object file, for
-     example after recompiling it, use the <TT
+>    After it is used for the first time, a dynamically loaded object
+    file is retained in memory.  Future calls in the same session to
+    the function(s) in that file will only incur the small overhead of
+    a symbol table lookup.  If you need to force a reload of an object
+    file, for example after recompiling it, use the <TT
 CLASS="COMMAND"
 >LOAD</TT
-> command or
-     begin a fresh session.
-    </P
-></BLOCKQUOTE
-></DIV
+>
+    command or begin a fresh session.
+   </P
 ><P
 >    It is recommended to locate shared libraries either relative to
     <VAR
@@ -324,28 +308,21 @@ CLASS="LITERAL"
 >pg_config --pkglibdir</VAR
 >.
    </P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
 ><P
-><B
->Note: </B
->     Before <SPAN
+>    Before <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> release 7.2, only exact
-     absolute paths to object files could be specified in <TT
+> release 7.2, only
+    exact absolute paths to object files could be specified in
+    <TT
 CLASS="COMMAND"
->CREATE
-     FUNCTION</TT
->.  This approach is now deprecated since it makes the
-     function definition unnecessarily unportable.  It's best to specify
-     just the shared library name with no path nor extension, and let
-     the search mechanism provide that information instead.
-    </P
-></BLOCKQUOTE
-></DIV
+>CREATE FUNCTION</TT
+>.  This approach is now deprecated
+    since it makes the function definition unnecessarily unportable.
+    It's best to specify just the shared library name with no path nor
+    extension, and let the search mechanism provide that information
+    instead.
+   </P
 ></DIV
 ><DIV
 CLASS="SECT2"
@@ -356,7 +333,7 @@ NAME="XFUNC-C-BASETYPE"
 >33.7.2. Base Types in C-Language Functions</A
 ></H2
 ><A
-NAME="AEN29045"
+NAME="AEN28957"
 ></A
 ><P
 >     To know how to write C-language functions, you need to know how
@@ -1140,7 +1117,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29316"
+NAME="AEN29228"
 >33.7.3. Calling Conventions Version 0 for C-Language Functions</A
 ></H2
 ><P
@@ -1340,7 +1317,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29343"
+NAME="AEN29255"
 >33.7.4. Calling Conventions Version 1 for C-Language Functions</A
 ></H2
 ><P
@@ -1652,11 +1629,11 @@ HREF="xfunc-c.html#XFUNC-C-RETURN-SET"
 >) and
      implement trigger functions (<A
 HREF="triggers.html"
->Chapter 36</A
+>Chapter 35</A
 >) and
      procedural-language call handlers (<A
-HREF="xfunc-plhandler.html"
->Section 33.9</A
+HREF="plhandler.html"
+>Chapter 47</A
 >).  Version-1 code is also more
      portable than version-0, because it does not break restrictions
      on function call protocol in the C standard.  For more details
@@ -1672,7 +1649,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29401"
+NAME="AEN29313"
 >33.7.5. Writing Code</A
 ></H2
 ><P
@@ -1707,7 +1684,7 @@ CLASS="LITERAL"
 >pg_config
         --includedir-server</VAR
 ><A
-NAME="AEN29411"
+NAME="AEN29323"
 ></A
 >
         to find out where the <SPAN
@@ -1749,13 +1726,13 @@ CLASS="PRODUCTNAME"
 CLASS="FUNCTION"
 >palloc</CODE
 ><A
-NAME="AEN29423"
+NAME="AEN29335"
 ></A
 > and <CODE
 CLASS="FUNCTION"
 >pfree</CODE
 ><A
-NAME="AEN29426"
+NAME="AEN29338"
 ></A
 >
         instead of the corresponding C library functions
@@ -1885,7 +1862,7 @@ CLASS="FIRSTTERM"
 >shared library</I
 > needs to be
   created.<A
-NAME="AEN29457"
+NAME="AEN29369"
 ></A
 >
 
@@ -1918,7 +1895,7 @@ CLASS="PRODUCTNAME"
  </P
 ><P
 >  <A
-NAME="AEN29466"
+NAME="AEN29378"
 ></A
 > Creating shared libraries is generally
   analogous to linking executables: first the source files are
@@ -1932,7 +1909,7 @@ CLASS="FIRSTTERM"
 CLASS="ACRONYM"
 >PIC</ACRONYM
 >),<A
-NAME="AEN29470"
+NAME="AEN29382"
 ></A
 > which
   conceptually means that they can be placed at an arbitrary location
@@ -2390,7 +2367,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29641"
+NAME="AEN29553"
 >33.7.7. Composite-Type Arguments in C-Language Functions</A
 ></H2
 ><P
@@ -2508,8 +2485,7 @@ CLASS="FUNCTION"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION c_overpaid(emp, integer) 
-    RETURNS boolean
+>CREATE FUNCTION c_overpaid(emp, integer) RETURNS boolean
     AS '<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
@@ -2523,7 +2499,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29662"
+NAME="AEN29574"
 >33.7.8. Returning Rows (Composite Types) from C-Language Functions</A
 ></H2
 ><P
@@ -3138,15 +3114,12 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN29763"
+NAME="AEN29675"
 >33.7.10. Polymorphic Arguments and Return Types</A
 ></H2
 ><P
 >     C-language functions may be declared to accept and
-     return the <SPAN
-CLASS="QUOTE"
->"polymorphic"</SPAN
-> types
+     return the polymorphic types
      <TT
 CLASS="TYPE"
 >anyelement</TT
@@ -3156,7 +3129,7 @@ CLASS="TYPE"
 >.
      See <A
 HREF="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC"
->Section 33.2.1</A
+>Section 33.2.5</A
 > for a more detailed explanation
      of polymorphic functions. When function arguments or return types
      are defined as polymorphic types, the function author cannot know
@@ -3175,7 +3148,10 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >get_fn_expr_argtype(FmgrInfo *flinfo, int argnum)</VAR
 >.
-     They return the result or argument type OID, or InvalidOid if the
+     They return the result or argument type OID, or <TT
+CLASS="SYMBOL"
+>InvalidOid</TT
+> if the
      information is not available.
      The structure <VAR
 CLASS="LITERAL"
@@ -3243,17 +3219,19 @@ CLASS="FUNCTION"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION make_array(anyelement) 
-    RETURNS anyarray
+>CREATE FUNCTION make_array(anyelement) RETURNS anyarray
     AS '<VAR
 CLASS="REPLACEABLE"
 >DIRECTORY</VAR
 >/funcs', 'make_array'
-    LANGUAGE 'C' STRICT;</PRE
+    LANGUAGE C STRICT;</PRE
 ><P>
 
-     Note the use of STRICT; this is essential since the code is not
-     bothering to test for a NULL input.
+     Note the use of <VAR
+CLASS="LITERAL"
+>STRICT</VAR
+>; this is essential
+     since the code is not bothering to test for a null input.
     </P
 ></DIV
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="release.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix D. Release Notes</TD
+>Appendix E. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-7-0"
->D.19. Release 7.0</A
+>E.19. Release 7.0</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -129,18 +129,18 @@ CLASS="VARIABLELIST"
 >Foreign Keys</DT
 ><DD
 ><P
->	Foreign keys are now implemented, with the exception of PARTIAL MATCH
-	foreign keys. Many users have been asking for this feature, and we are
-	pleased to offer it.
+>        Foreign keys are now implemented, with the exception of PARTIAL MATCH
+        foreign keys. Many users have been asking for this feature, and we are
+        pleased to offer it.
        </P
 ></DD
 ><DT
 >Optimizer Overhaul</DT
 ><DD
 ><P
->	Continuing on work started a year ago, the optimizer has been
-	improved, allowing better query plan selection and faster performance
-	with less memory usage.
+>        Continuing on work started a year ago, the optimizer has been
+        improved, allowing better query plan selection and faster performance
+        with less memory usage.
        </P
 ></DD
 ><DT
@@ -150,11 +150,11 @@ CLASS="APPLICATION"
 ></DT
 ><DD
 ><P
->	<SPAN
+>        <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 >, our interactive terminal monitor, has been
-	updated with a variety of new features. See the <SPAN
+        updated with a variety of new features. See the <SPAN
 CLASS="APPLICATION"
 >psql</SPAN
 > manual page for details.
@@ -164,15 +164,15 @@ CLASS="APPLICATION"
 >Join Syntax</DT
 ><DD
 ><P
->	SQL92 join syntax is now supported, though only as
-	<VAR
+>        SQL92 join syntax is now supported, though only as
+        <VAR
 CLASS="LITERAL"
 >INNER JOIN</VAR
 > for this release. <VAR
 CLASS="LITERAL"
 >JOIN</VAR
 >,
-	<VAR
+        <VAR
 CLASS="LITERAL"
 >NATURAL JOIN</VAR
 >, <VAR
@@ -182,14 +182,14 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >USING</VAR
 >,
-	and <VAR
+        and <VAR
 CLASS="LITERAL"
 >JOIN</VAR
 >/<VAR
 CLASS="LITERAL"
 >ON</VAR
 > are available, as are
-	column correlation names.
+        column correlation names.
        </P
 ></DD
 ></DL
@@ -201,8 +201,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN61992"
->D.19.1. Migration to version 7.0</A
+NAME="AEN64706"
+>E.19.1. Migration to version 7.0</A
 ></H2
 ><P
 >     A dump/restore using <SPAN
@@ -231,69 +231,69 @@ CLASS="APPLICATION"
 ></P><UL
 ><LI
 ><P
->	The date/time types <TT
+>        The date/time types <TT
 CLASS="TYPE"
 >datetime</TT
 > and
-	<TT
+        <TT
 CLASS="TYPE"
 >timespan</TT
 > have been superseded by the
-	SQL92-defined types <TT
+        SQL92-defined types <TT
 CLASS="TYPE"
 >timestamp</TT
 > and
-	<TT
+        <TT
 CLASS="TYPE"
 >interval</TT
 >. Although there has been some effort to
-	ease the transition by allowing
-	<SPAN
+        ease the transition by allowing
+        <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > to recognize
-	the deprecated type names and translate them to the new type
-	names, this mechanism may not be completely transparent to
-	your existing application.
+        the deprecated type names and translate them to the new type
+        names, this mechanism may not be completely transparent to
+        your existing application.
        </P
 ></LI
 ><LI
 ><P
->	The optimizer has been substantially improved in the area of
-	query cost estimation. In some cases, this will result in
-	decreased query times as the optimizer makes a better choice
-	for the preferred plan. However, in a small number of cases,
-	usually involving pathological distributions of data, your
-	query times may go up. If you are dealing with large amounts
-	of data, you may want to check your queries to verify
-	performance.
+>        The optimizer has been substantially improved in the area of
+        query cost estimation. In some cases, this will result in
+        decreased query times as the optimizer makes a better choice
+        for the preferred plan. However, in a small number of cases,
+        usually involving pathological distributions of data, your
+        query times may go up. If you are dealing with large amounts
+        of data, you may want to check your queries to verify
+        performance.
        </P
 ></LI
 ><LI
 ><P
->	The <ACRONYM
+>        The <ACRONYM
 CLASS="ACRONYM"
 >JDBC</ACRONYM
 > and <ACRONYM
 CLASS="ACRONYM"
 >ODBC</ACRONYM
 >
-	interfaces have been upgraded and extended.
+        interfaces have been upgraded and extended.
        </P
 ></LI
 ><LI
 ><P
->	The string function <CODE
+>        The string function <CODE
 CLASS="FUNCTION"
 >CHAR_LENGTH</CODE
 > is now a
-	native function. Previous versions translated this into a call
-	to <CODE
+        native function. Previous versions translated this into a call
+        to <CODE
 CLASS="FUNCTION"
 >LENGTH</CODE
 >, which could result in
-	ambiguity with other types implementing
-	<CODE
+        ambiguity with other types implementing
+        <CODE
 CLASS="FUNCTION"
 >LENGTH</CODE
 > such as the geometric types.
@@ -308,8 +308,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62018"
->D.19.2. Changes</A
+NAME="AEN64732"
+>E.19.2. Changes</A
 ></H2
 ><P
 >     </P><PRE
@@ -364,12 +364,12 @@ Fix for SELECT null::text, SELECT int4fac(null) and SELECT 2 + (null) (Tom)
 Y2K timestamp fix (Massimo)
 Fix for VACUUM 'HEAP_MOVED_IN was not expected' errors (Tom)
 Fix for views with tables/columns containing spaces  (Tom)
-Prevent permissions on indexes (Peter E)
+Prevent privileges on indexes (Peter E)
 Fix for spinlock stuck problem when error is generated (Hiroshi)
 Fix ipcclean on Linux
 Fix handling of NULL constraint conditions (Tom)
 Fix memory leak in odbc driver (Nick Gorham)
-Fix for permission check on UNION tables (Tom)
+Fix for privilege check on UNION tables (Tom)
 Fix to allow SELECT 'a' LIKE 'a' (Tom)
 Fix for SELECT 1 + NULL (Tom)
 Fixes to CHAR
@@ -439,7 +439,7 @@ Change backend-side COPY to write files with permissions 644 not 666 (Tom)
 Force permissions on PGDATA directory to be secure, even if it exists (Tom)
 Added psql LASTOID variable to return last inserted oid (Peter E)
 Allow concurrent vacuum and remove pg_vlock vacuum lock file (Tom)
-Add permissions check for vacuum (Peter E)
+Add privilege check for vacuum (Peter E)
 New libpq functions to allow asynchronous connections: PQconnectStart(), 
    PQconnectPoll(), PQresetStart(), PQresetPoll(), PQsetenvStart(), 
    PQsetenvPoll(), PQsetenvAbort (Ewan Mellor)
@@ -460,7 +460,7 @@ All administration scripts now support --long options (Peter E, Karel)
 Vacuumdb script now supports --all option (Peter E)
 ecpg new portable FETCH syntax
 Add ecpg EXEC SQL IFDEF, EXEC SQL IFNDEF, EXEC SQL ELSE, EXEC SQL ELIF 
-	and EXEC SQL ENDIF directives
+        and EXEC SQL ENDIF directives
 Add pg_ctl script to control backend start-up (Tatsuo)
 Add postmaster.opts.default file to store start-up flags (Tatsuo)
 Allow --with-mb=SQL_ASCII
@@ -482,7 +482,7 @@ Allow COPY IN to read file that do not end with a newline (Tom)
 Indicate when long identifiers are truncated (Tom)
 Allow aggregates to use type equivalency (Peter E)
 Add Oracle's to_char(), to_date(), to_datetime(), to_timestamp(), to_number()
-	conversion functions (Karel Zak &lt;zakkr@zf.jcu.cz&gt;)
+        conversion functions (Karel Zak &lt;zakkr@zf.jcu.cz&gt;)
 Add SELECT DISTINCT ON (expr [, expr ...]) targetlist ... (Tom)
 Check to be sure ORDER BY is compatible with the DISTINCT operation (Tom)
 Add NUMERIC and int8 types to ODBC
@@ -494,7 +494,7 @@ Add btree indexing of boolean values, &gt;= and &lt;= (Don Baccus)
 Print current line number when COPY FROM fails (Massimo)
 Recognize POSIX time zone e.g. "PST+8" and "GMT-8" (Thomas)
 Add DEC as synonym for DECIMAL (Thomas)
-Add SESSION_USER as SQL92 keyword, same as CURRENT_USER (Thomas)
+Add SESSION_USER as SQL92 key word, same as CURRENT_USER (Thomas)
 Implement SQL92 column aliases (aka correlation names) (Thomas)
 Implement SQL92 join syntax (Thomas)
 Make INTERVAL reserved word allowed as a column identifier (Thomas)
@@ -621,7 +621,7 @@ Clean up #include in /include directory (Bruce)
 Add scripts for checking includes (Bruce)
 Remove un-needed #include's from *.c files (Bruce)
 Change #include's to use &lt;&gt; and "" as appropriate (Bruce)
-Enable WIN32 compilation of libpq
+Enable Windows compilation of libpq
 Alpha spinlock fix from Uncle George <CODE
 CLASS="EMAIL"
 >&#60;<A
@@ -640,7 +640,7 @@ New platform-specific regression handling (Tom)
 Rename oid8 -&gt; oidvector and int28 -&gt; int2vector (Bruce)
 Included all yacc and lex files into the distribution (Peter E.)
 Remove lextest, no longer needed (Peter E)
-Fix for libpq and psql on Win32 (Magnus)
+Fix for libpq and psql on Windows (Magnus)
 Internally change datetime and timespan into timestamp and interval (Thomas)
 Fix for plpgsql on BSD/OS
 Add SQL_ASCII test case to the regression test (Tatsuo)

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Overview of PostgreSQL Internals"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="overview.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. Overview of PostgreSQL Internals</TD
+>Chapter 42. Overview of PostgreSQL Internals</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="EXECUTOR"
->43.6. Executor</A
+>42.6. Executor</A
 ></H1
 ><P
 >    The <I
@@ -102,8 +102,8 @@ CLASS="FIRSTTERM"
 > takes the plan handed back by the
     planner/optimizer and recursively processes it to extract the required set
     of rows.  This is essentially a demand-pull pipeline mechanism.
-    Each time a plan node is called, it must deliver one more tuple, or
-    report that it is done delivering tuples.
+    Each time a plan node is called, it must deliver one more row, or
+    report that it is done delivering rows.
    </P
 ><P
 >    To provide a concrete example, assume that the top
@@ -111,7 +111,7 @@ CLASS="FIRSTTERM"
 CLASS="LITERAL"
 >MergeJoin</VAR
 > node. 
-    Before any merge can be done two tuples have to be fetched (one from
+    Before any merge can be done two rows have to be fetched (one from
     each subplan). So the executor recursively calls itself to
     process the subplans (it starts with the subplan attached to
     <VAR
@@ -123,7 +123,7 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >Sort</VAR
 > node and again recursion is needed to obtain
-    an input tuple.  The child node of the <VAR
+    an input row.  The child node of the <VAR
 CLASS="LITERAL"
 >Sort</VAR
 > might
@@ -138,7 +138,7 @@ CLASS="LITERAL"
 >
     node will repeatedly call its child to obtain all the rows to be sorted.
     When the input is exhausted (as indicated by the child node returning
-    a NULL instead of a tuple), the <VAR
+    a NULL instead of a row), the <VAR
 CLASS="LITERAL"
 >Sort</VAR
 > code performs
@@ -218,7 +218,7 @@ CLASS="COMMAND"
     the <I
 CLASS="FIRSTTERM"
 >TID</I
-> (tuple ID, or location) of the original target row;
+> (tuple ID, or row ID) of the original target row;
     the executor top level uses this information to create a new updated row
     and mark the old row deleted.  For <TT
 CLASS="COMMAND"

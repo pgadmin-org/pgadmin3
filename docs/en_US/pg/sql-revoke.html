@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-REVOKE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN41691"
+NAME="AEN41521"
 ></A
 ><H2
 >Name</H2
 >REVOKE&nbsp;--&nbsp;remove access privileges</DIV
 ><A
-NAME="AEN41694"
+NAME="AEN41524"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN41696"
+NAME="AEN41526"
 ></A
 ><H2
 >Synopsis</H2
@@ -211,6 +211,15 @@ CLASS="LITERAL"
    all users.
   </P
 ><P
+>   See the description of the <A
+HREF="sql-grant.html"
+><I
+>GRANT</I
+></A
+> command for
+   the meaning of the privilege types.
+  </P
+><P
 >   Note that any particular user will have the sum
    of privileges granted directly to him, privileges granted to any group he
    is presently a member of, and privileges granted to
@@ -230,15 +239,6 @@ CLASS="LITERAL"
 >SELECT</VAR
 > privilege on the object: those who have it granted
    directly or via a group will still have it.
-  </P
-><P
->   See the description of the <A
-HREF="sql-grant.html"
-><I
->GRANT</I
-></A
-> command for
-   the meaning of the privilege types.
   </P
 ><P
 >   If <VAR
@@ -304,6 +304,23 @@ CLASS="LITERAL"
 > option so that the privilege is
    automatically revoked from user C.
   </P
+><P
+>    If a superuser chooses to issue a <TT
+CLASS="COMMAND"
+>GRANT</TT
+> or <TT
+CLASS="COMMAND"
+>REVOKE</TT
+>
+    command, the command is performed as though it were issued by the
+    owner of the affected object.  Since all privileges ultimately come
+    from the object owner (possibly indirectly via chains of grant options),
+    it is possible for a superuser to revoke all privileges, but this may
+    require use of <VAR
+CLASS="LITERAL"
+>CASCADE</VAR
+> as stated above.
+   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
@@ -385,13 +402,20 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >CASCADE</VAR
 >
-    is required.
+    is required according to the standard, but <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+>
+    assumes <VAR
+CLASS="LITERAL"
+>RESTRICT</VAR
+> by default.
    </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41760"
+NAME="AEN41596"
 ></A
 ><H2
 >See Also</H2

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Operator Optimization Information"
 HREF="xoper-optimization.html"><LINK
 REL="NEXT"
-TITLE="Index Cost Estimation Functions"
-HREF="indexcost.html"><LINK
+TITLE="The Rule System"
+HREF="rules.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -81,7 +81,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="indexcost.html"
+HREF="rules.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -96,10 +96,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XINDEX"
->33.14. Interfacing Extensions To Indexes</A
+>33.13. Interfacing Extensions To Indexes</A
 ></H1
 ><A
-NAME="AEN30176"
+NAME="AEN30062"
 ></A
 ><P
 >   The procedures described thus far let you define new types, new
@@ -151,7 +151,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-IM"
->33.14.1. Index Methods and Operator Classes</A
+>33.13.1. Index Methods and Operator Classes</A
 ></H2
 ><P
 >   The <CODE
@@ -183,7 +183,7 @@ CLASS="FIRSTTERM"
 >operator
    class</I
 ><A
-NAME="AEN30197"
+NAME="AEN30083"
 ></A
 >
    identifies the set of operations that the index method needs to use
@@ -235,7 +235,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-STRATEGIES"
->33.14.2. Index Method Strategies</A
+>33.13.2. Index Method Strategies</A
 ></H2
 ><P
 >   The operators associated with an operator class are identified by
@@ -506,7 +506,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-SUPPORT"
->33.14.3. Index Method Support Routines</A
+>33.13.3. Index Method Support Routines</A
 ></H2
 ><P
 >   Strategies aren't usually enough information for the system to figure
@@ -739,11 +739,22 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-EXAMPLE"
->33.14.4. An Example</A
+>33.13.4. An Example</A
 ></H2
 ><P
 >   Now that we have seen the ideas, here is the promised example of
-   creating a new operator class.  The operator class encapsulates
+   creating a new operator class.
+   (You can find a working copy of this example in
+   <TT
+CLASS="FILENAME"
+>src/tutorial/complex.c</TT
+> and
+   <TT
+CLASS="FILENAME"
+>src/tutorial/complex.sql</TT
+> in the source
+   distribution.)
+   The operator class encapsulates
    operators that sort complex numbers in absolute value order, so we
    choose the name <VAR
 CLASS="LITERAL"
@@ -752,7 +763,7 @@ CLASS="LITERAL"
    a set of operators.  The procedure for defining operators was
    discussed in <A
 HREF="xoper.html"
->Section 33.12</A
+>Section 33.11</A
 >.  For an operator class on
    B-trees, the operators we require are:
 
@@ -784,50 +795,70 @@ COMPACT="COMPACT"
 ><P>
   </P
 ><P
->   The C code for the equality operator look like this:
+>   The least error-prone way to define a related set of comparison operators
+   is to write the B-tree comparison support function first, and then write the
+   other functions as one-line wrappers around the support function.  This
+   reduces the odds of getting inconsistent results for corner cases.
+   Following this approach, we first write
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->#define Mag(c) ((c)-&gt;x*(c)-&gt;x + (c)-&gt;y*(c)-&gt;y)
+>#define Mag(c)  ((c)-&gt;x*(c)-&gt;x + (c)-&gt;y*(c)-&gt;y)
 
-bool
-complex_abs_eq(Complex *a, Complex *b)
+static int
+complex_abs_cmp_internal(Complex *a, Complex *b)
 {
-    double amag = Mag(a), bmag = Mag(b);
-    return (amag == bmag);
+    double      amag = Mag(a),
+                bmag = Mag(b);
+
+    if (amag &lt; bmag)
+        return -1;
+    if (amag &gt; bmag)
+        return 1;
+    return 0;
 }</PRE
 ><P>
-   The other four operators are very similar.  You can find their code
-   in <TT
-CLASS="FILENAME"
->src/tutorial/complex.c</TT
-> and
-   <TT
-CLASS="FILENAME"
->src/tutorial/complex.sql</TT
-> in the source
-   distribution.
-  </P
-><P
->   Now declare the functions and the operators based on the functions:
+
+   Now the less-than function looks like
+
 </P><PRE
 CLASS="PROGRAMLISTING"
->CREATE FUNCTION complex_abs_eq(complex, complex) RETURNS boolean
+>PG_FUNCTION_INFO_V1(complex_abs_lt);
+
+Datum
+complex_abs_lt(PG_FUNCTION_ARGS)
+{
+    Complex    *a = (Complex *) PG_GETARG_POINTER(0);
+    Complex    *b = (Complex *) PG_GETARG_POINTER(1);
+
+    PG_RETURN_BOOL(complex_abs_cmp_internal(a, b) &lt; 0);
+}</PRE
+><P>
+
+   The other four functions differ only in how they compare the internal
+   function's result to zero.
+  </P
+><P
+>   Next we declare the functions and the operators based on the functions
+   to SQL:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>CREATE FUNCTION complex_abs_lt(complex, complex) RETURNS bool
     AS '<VAR
 CLASS="REPLACEABLE"
 >filename</VAR
->', 'complex_abs_eq'
-    LANGUAGE C;
+>', 'complex_abs_lt'
+    LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OPERATOR = (
-    leftarg = complex,
-    rightarg = complex,
-    procedure = complex_abs_eq,
-    restrict = eqsel,
-    join = eqjoinsel
+CREATE OPERATOR &lt; (
+   leftarg = complex, rightarg = complex, procedure = complex_abs_lt,
+   commutator = &gt; , negator = &gt;= ,
+   restrict = scalarltsel, join = scalarltjoinsel
 );</PRE
 ><P>
-   It is important to specify the restriction and join selectivity
+   It is important to specify the correct commutator and negator operators,
+   as well as suitable restriction and join selectivity
    functions, otherwise the optimizer will be unable to make effective
    use of the index.  Note that the less-than, equal, and
    greater-than cases should use different selectivity functions.
@@ -929,7 +960,7 @@ CLASS="PROGRAMLISTING"
 CLASS="REPLACEABLE"
 >filename</VAR
 >'
-    LANGUAGE C;</PRE
+    LANGUAGE C IMMUTABLE STRICT;</PRE
 ><P>
   </P
 ><P
@@ -982,10 +1013,10 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-OPCLASS-DEPENDENCIES"
->33.14.5. System Dependencies on Operator Classes</A
+>33.13.5. System Dependencies on Operator Classes</A
 ></H2
 ><A
-NAME="AEN30439"
+NAME="AEN30326"
 ></A
 ><P
 >   <SPAN
@@ -994,7 +1025,7 @@ CLASS="PRODUCTNAME"
 > uses operator classes to infer the
    properties of operators in more ways than just whether they can be used
    with indexes.  Therefore, you might want to create operator classes
-   even if you have no intention of indexing any columns of your datatype.
+   even if you have no intention of indexing any columns of your data type.
   </P
 ><P
 >   In particular, there are SQL features such as <VAR
@@ -1005,12 +1036,12 @@ CLASS="LITERAL"
 CLASS="LITERAL"
 >DISTINCT</VAR
 > that require comparison and sorting of values.
-   To implement these features on a user-defined datatype,
+   To implement these features on a user-defined data type,
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > looks for the default B-tree operator
-   class for the datatype.  The <SPAN
+   class for the data type.  The <SPAN
 CLASS="QUOTE"
 >"equals"</SPAN
 > member of this operator
@@ -1033,18 +1064,18 @@ CLASS="LITERAL"
    defined by the default B-tree operator class.
   </P
 ><P
->   If there is no default B-tree operator class for a datatype, the system
+>   If there is no default B-tree operator class for a data type, the system
    will look for a default hash operator class.  But since that kind of
    operator class only provides equality, in practice it is only enough
    to support array equality.
   </P
 ><P
->   When there is no default operator class for a datatype, you will get
+>   When there is no default operator class for a data type, you will get
    errors like <SPAN
 CLASS="QUOTE"
 >"could not identify an ordering operator"</SPAN
 > if you
-   try to use these SQL features with the datatype.
+   try to use these SQL features with the data type.
   </P
 ><DIV
 CLASS="NOTE"
@@ -1080,7 +1111,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="XINDEX-OPCLASS-FEATURES"
->33.14.6. Special Features of Operator Classes</A
+>33.13.6. Special Features of Operator Classes</A
 ></H2
 ><P
 >   There are two special features of operator classes that we have
@@ -1210,7 +1241,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="indexcost.html"
+HREF="rules.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -1234,7 +1265,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Index Cost Estimation Functions</TD
+>The Rule System</TD
 ></TR
 ></TABLE
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Backup and Restore"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Backup and Restore"
 HREF="backup.html"><LINK
 REL="NEXT"
-TITLE="Migration between releases"
+TITLE="Migration Between Releases"
 HREF="migration.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -146,11 +146,9 @@ CLASS="QUOTE"
       found in <A
 HREF="postmaster-shutdown.html"
 >Section 16.6</A
->.
-     </P
-><P
->      Needless to say that you also need to shut down the server
-      before restoring the data.
+>.  Needless to say
+      that you also need to shut down the server before restoring the
+      data.
      </P
 ></LI
 ><LI
@@ -185,7 +183,20 @@ CLASS="FILENAME"
 ><P>
   </P
 ><P
->   Also note that the file system backup will not necessarily be
+>   An alternative file-system backup approach is to make a
+   <SPAN
+CLASS="QUOTE"
+>"consistent snapshot"</SPAN
+> of the data directory, if the
+   file system supports that functionality.  Such a snapshot will save
+   the database files in a state where the database server was not
+   properly shut down; therefore, when you start the database server
+   on this backed up directory, it will think the server had crashed
+   and replay the WAL log.  This is not a problem, just be aware of
+   it.
+  </P
+><P
+>   Note that the file system backup will not necessarily be
    smaller than an SQL dump. On the contrary, it will most likely be
    larger. (<SPAN
 CLASS="APPLICATION"
@@ -253,7 +264,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Migration between releases</TD
+>Migration Between Releases</TD
 ></TR
 ></TABLE
 ></DIV

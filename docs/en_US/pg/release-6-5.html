@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="release.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix D. Release Notes</TD
+>Appendix E. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-6-5"
->D.23. Release 6.5</A
+>E.23. Release 6.5</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -123,17 +123,17 @@ CLASS="VARIABLELIST"
 >Multiversion concurrency control(MVCC)</DT
 ><DD
 ><P
->	This removes our old
-	table-level locking, and replaces it with a locking system that is
-	superior to most commercial database systems.  In a traditional system,
-	each row that is modified is locked until committed, preventing reads by
-	other users.  MVCC uses the natural multiversion nature of PostgreSQL
-	to allow readers to continue reading consistent data during writer
-	activity.  Writers continue to use the compact pg_log transaction
-	system.  This is all performed without having to allocate a lock for
-	every row like traditional database systems.  So, basically, we no
-	longer are restricted by simple table-level locking;
-	we have something better than row-level locking.
+>        This removes our old
+        table-level locking, and replaces it with a locking system that is
+        superior to most commercial database systems.  In a traditional system,
+        each row that is modified is locked until committed, preventing reads by
+        other users.  MVCC uses the natural multiversion nature of PostgreSQL
+        to allow readers to continue reading consistent data during writer
+        activity.  Writers continue to use the compact pg_log transaction
+        system.  This is all performed without having to allocate a lock for
+        every row like traditional database systems.  So, basically, we no
+        longer are restricted by simple table-level locking;
+        we have something better than row-level locking.
        </P
 ></DD
 ><DT
@@ -143,54 +143,54 @@ CLASS="APPLICATION"
 ></DT
 ><DD
 ><P
->	<SPAN
+>        <SPAN
 CLASS="APPLICATION"
 >pg_dump</SPAN
 > takes advantage of the new
-	MVCC features to give a consistent database dump/backup while
-	the database stays online and available for queries.
+        MVCC features to give a consistent database dump/backup while
+        the database stays online and available for queries.
        </P
 ></DD
 ><DT
 >Numeric data type</DT
 ><DD
 ><P
->	We now have a true numeric data type, with
-	user-specified precision.
+>        We now have a true numeric data type, with
+        user-specified precision.
        </P
 ></DD
 ><DT
 >Temporary tables</DT
 ><DD
 ><P
->	Temporary tables are guaranteed to have unique names
-	within a database session, and are destroyed on session exit.
+>        Temporary tables are guaranteed to have unique names
+        within a database session, and are destroyed on session exit.
        </P
 ></DD
 ><DT
 >New SQL features</DT
 ><DD
 ><P
->	We now have CASE, INTERSECT, and EXCEPT statement
-	support.  We have new LIMIT/OFFSET, SET TRANSACTION ISOLATION LEVEL,
-	SELECT ... FOR UPDATE, and an improved LOCK TABLE command.
+>        We now have CASE, INTERSECT, and EXCEPT statement
+        support.  We have new LIMIT/OFFSET, SET TRANSACTION ISOLATION LEVEL,
+        SELECT ... FOR UPDATE, and an improved LOCK TABLE command.
        </P
 ></DD
 ><DT
 >Speedups</DT
 ><DD
 ><P
->	We continue to speed up PostgreSQL, thanks to the variety of
-	talents within our team.  We have sped up memory allocation,
-	optimization, table joins, and row transfer routines.
+>        We continue to speed up PostgreSQL, thanks to the variety of
+        talents within our team.  We have sped up memory allocation,
+        optimization, table joins, and row transfer routines.
        </P
 ></DD
 ><DT
 >Ports</DT
 ><DD
 ><P
->	We continue to expand our port list, this time including
-	<SPAN
+>        We continue to expand our port list, this time including
+        <SPAN
 CLASS="SYSTEMITEM"
 >Windows NT</SPAN
 >/<SPAN
@@ -209,60 +209,60 @@ CLASS="SYSTEMITEM"
 >Interfaces</DT
 ><DD
 ><P
->	Most interfaces have new versions, and existing functionality
-	has been improved.
+>        Most interfaces have new versions, and existing functionality
+        has been improved.
        </P
 ></DD
 ><DT
 >Documentation</DT
 ><DD
 ><P
->	New and updated material is present throughout the
-	documentation. New <ACRONYM
+>        New and updated material is present throughout the
+        documentation. New <ACRONYM
 CLASS="ACRONYM"
 >FAQ</ACRONYM
 >s have been
-	contributed for <SPAN
+        contributed for <SPAN
 CLASS="SYSTEMITEM"
 >SGI</SPAN
 > and <SPAN
 CLASS="SYSTEMITEM"
 >AIX</SPAN
 > platforms.
-	The <I
+        The <I
 CLASS="CITETITLE"
 >Tutorial</I
 > has introductory information
-	on <ACRONYM
+        on <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
 > from Stefan Simkovics.
-	For the <I
+        For the <I
 CLASS="CITETITLE"
 >User's Guide</I
 >, there are
-	reference pages covering the postmaster and more utility
-	programs, and a new appendix
-	contains details on date/time behavior.
-	The <I
+        reference pages covering the postmaster and more utility
+        programs, and a new appendix
+        contains details on date/time behavior.
+        The <I
 CLASS="CITETITLE"
 >Administrator's Guide</I
 > has a new
-	chapter on troubleshooting from Tom Lane.
-	And the <I
+        chapter on troubleshooting from Tom Lane.
+        And the <I
 CLASS="CITETITLE"
 >Programmer's Guide</I
 > has a
-	description of query processing, also from Stefan, and details 
-	on obtaining the <SPAN
+        description of query processing, also from Stefan, and details 
+        on obtaining the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > source
-	tree via anonymous <SPAN
+        tree via anonymous <SPAN
 CLASS="PRODUCTNAME"
 >CVS</SPAN
 > and
-	<SPAN
+        <SPAN
 CLASS="PRODUCTNAME"
 >CVSup</SPAN
 >. 
@@ -277,8 +277,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62130"
->D.23.1. Migration to version 6.5</A
+NAME="AEN64844"
+>E.23.1. Migration to version 6.5</A
 ></H2
 ><P
 >     A dump/restore using <SPAN
@@ -321,8 +321,8 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN62139"
->D.23.1.1. Multiversion Concurrency Control</A
+NAME="AEN64853"
+>E.23.1.1. Multiversion Concurrency Control</A
 ></H3
 ><P
 >      Because readers in 6.5 don't lock data, regardless of transaction
@@ -378,20 +378,20 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->	Note that if you run a transaction in SERIALIZABLE mode then you must
-	execute the <TT
+>        Note that if you run a transaction in SERIALIZABLE mode then you must
+        execute the <TT
 CLASS="COMMAND"
 >LOCK</TT
 > commands above before execution of any
-	<ACRONYM
+        <ACRONYM
 CLASS="ACRONYM"
 >DML</ACRONYM
 > statement
-	(<TT
+        (<TT
 CLASS="COMMAND"
 >SELECT/INSERT/DELETE/UPDATE/FETCH/COPY_TO</TT
 >) in the
-	transaction.
+        transaction.
        </P
 ></BLOCKQUOTE
 ></DIV
@@ -410,8 +410,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62157"
->D.23.2. Changes</A
+NAME="AEN64871"
+>E.23.2. Changes</A
 ></H2
 ><P
 >     </P><PRE
@@ -451,7 +451,7 @@ Allow sequence nextval actions to be case-sensitive(Bruce)
 Fix optimizer indexing not working for negative numbers(Bruce)
 Fix for memory leak in executor with fjIsNull
 Fix for aggregate memory leaks(Erik Riedel)
-Allow username containing a dash GRANT permissions
+Allow user name containing a dash to grant privileges
 Cleanup of NULL in inet types
 Clean up system table bugs(Tom)
 Fix problems of PAGER and \? command(Masaaki Sakaida)
@@ -469,7 +469,7 @@ Fix for memory leak in failed queries(Tom)
 DEFAULT now supports mixed-case identifiers(Tom)
 Fix for multisegment uses of DROP/RENAME table, indexes(Ole Gjerde)
 Disable use of pg_dump with both -o and -d options(Bruce)
-Allow pg_dump to properly dump GROUP permissions(Bruce)
+Allow pg_dump to properly dump group privileges(Bruce)
 Fix GROUP BY in INSERT INTO table SELECT * FROM table2(Jan)
 Fix for computations in views(Jan)
 Fix for aggregates on array indexes(Tom)
@@ -565,13 +565,13 @@ Source Tree Changes
 -------------------
 Improve port matching(Tom)
 Portability fixes for SunOS
-Add NT/Win32 backend port and enable dynamic loading(Magnus and Daniel Horak)
+Add Windows NT backend port and enable dynamic loading(Magnus and Daniel Horak)
 New port to Cobalt Qube(Mips) running Linux(Tatsuo)
 Port to NetBSD/m68k(Mr. Mutsuki Nakajima)
 Port to NetBSD/sun3(Mr. Mutsuki Nakajima)
 Port to NetBSD/macppc(Toshimi Aoki)
 Fix for tcl/tk configuration(Vince)
-Removed CURRENT keyword for rule queries(Jan)
+Removed CURRENT key word for rule queries(Jan)
 NT dynamic loading now works(Daniel Horak)
 Add ARM32 support(Andrew McMurry)
 Better support for HP-UX 11 and UnixWare

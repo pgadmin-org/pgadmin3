@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="System Catalogs"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="pg_trigger"
 HREF="catalog-pg-trigger.html"><LINK
 REL="NEXT"
-TITLE="Frontend/Backend Protocol"
-HREF="protocol.html"><LINK
+TITLE="System Views"
+HREF="views-overview.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="catalogs.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 44. System Catalogs</TD
+>Chapter 43. System Catalogs</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="protocol.html"
+HREF="views-overview.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,13 +93,13 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="CATALOG-PG-TYPE"
->44.29. <TT
+>43.29. <TT
 CLASS="STRUCTNAME"
 >pg_type</TT
 ></A
 ></H1
 ><A
-NAME="AEN51617"
+NAME="AEN51499"
 ></A
 ><P
 >   The catalog <TT
@@ -116,7 +116,7 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >CREATE TYPE AS</TT
 > and
-   derived types with <TT
+   domains with <TT
 CLASS="COMMAND"
 >CREATE DOMAIN</TT
 >.
@@ -124,11 +124,11 @@ CLASS="COMMAND"
 ><DIV
 CLASS="TABLE"
 ><A
-NAME="AEN51624"
+NAME="AEN51506"
 ></A
 ><P
 ><B
->Table 44-29. <TT
+>Table 43-29. <TT
 CLASS="STRUCTNAME"
 >pg_type</TT
 > Columns</B
@@ -310,20 +310,20 @@ CLASS="LITERAL"
        a base type, <VAR
 CLASS="LITERAL"
 >c</VAR
-> for a composite type (i.e.,
-       a table's row type), <VAR
+> for a composite type (i.e., a
+       table's row type), <VAR
 CLASS="LITERAL"
 >d</VAR
-> for a derived type (i.e.,
-       a domain), or <VAR
+> for a domain, or
+       <VAR
 CLASS="LITERAL"
 >p</VAR
 > for a pseudo-type.  See also
        <TT
 CLASS="STRUCTFIELD"
 >typrelid</TT
->
-       and <TT
+> and
+       <TT
 CLASS="STRUCTFIELD"
 >typbasetype</TT
 >.
@@ -679,7 +679,7 @@ CLASS="STRUCTNAME"
 >pg_type</TT
 >
         agree with the way that the compiler will lay out the column in
-        a struct representing a table row.
+        a structure representing a table row.
        </P
 ></BLOCKQUOTE
 ></DIV
@@ -818,7 +818,7 @@ CLASS="STRUCTNAME"
 ></TD
 ><TD
 ><P
->       If this is a derived type (see <TT
+>       If this is a domain (see <TT
 CLASS="STRUCTFIELD"
 >typtype</TT
 >),
@@ -826,7 +826,7 @@ CLASS="STRUCTFIELD"
 CLASS="STRUCTFIELD"
 >typbasetype</TT
 > identifies
-       the type that this one is based on.  Zero if not a derived type.
+       the type that this one is based on.  Zero if not a domain.
       </P
 ></TD
 ></TR
@@ -879,8 +879,17 @@ CLASS="TYPE"
 CLASS="STRUCTFIELD"
 >typndims</TT
 > is the number of array dimensions
-       for a domain that is an array (that is, typbasetype is an array type;
-       the domain's typelem will match the base type's typelem).
+       for a domain that is an array (that is, <TT
+CLASS="STRUCTFIELD"
+>typbasetype</TT
+> is an array type;
+       the domain's <TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+> will match the base type's <TT
+CLASS="STRUCTFIELD"
+>typelem</TT
+>).
        Zero for types other than array domains.
        </P
 ></TD
@@ -997,7 +1006,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="protocol.html"
+HREF="views-overview.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -1024,7 +1033,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Frontend/Backend Protocol</TD
+>System Views</TD
 ></TR
 ></TABLE
 ></DIV

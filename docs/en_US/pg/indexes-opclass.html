@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="INDEXES-OPCLASS"
 >11.6. Operator Classes</A
 ></H1
 ><A
-NAME="AEN13187"
+NAME="AEN13264"
 ></A
 ><P
 >   An index definition may specify an <I
@@ -139,7 +139,7 @@ CLASS="TYPE"
    In practice the default operator class for the column's data type is
    usually sufficient.  The main point of having operator classes is
    that for some data types, there could be more than one meaningful
-   ordering.  For example, we might want to sort a complex-number data
+   index behavior.  For example, we might want to sort a complex-number data
    type either by absolute value or by real part.  We could do this by
    defining two operator classes for the data type and then selecting
    the proper class when making an index.
@@ -150,34 +150,6 @@ CLASS="TYPE"
    <P
 ></P
 ></P><UL
-><LI
-><P
->      The operator classes <VAR
-CLASS="LITERAL"
->box_ops</VAR
-> and
-      <VAR
-CLASS="LITERAL"
->bigbox_ops</VAR
-> both support R-tree indexes on the
-      <TT
-CLASS="TYPE"
->box</TT
-> data type.  The difference between them is
-      that <VAR
-CLASS="LITERAL"
->bigbox_ops</VAR
-> scales box coordinates down,
-      to avoid floating-point exceptions from doing multiplication,
-      addition, and subtraction on very large floating-point
-      coordinates.  If the field on which your rectangles lie is about
-      20 000 square units or larger, you should use
-      <VAR
-CLASS="LITERAL"
->bigbox_ops</VAR
->.
-     </P
-></LI
 ><LI
 ><P
 >      The operator classes <VAR
