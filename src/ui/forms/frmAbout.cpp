@@ -20,8 +20,8 @@ BEGIN_EVENT_TABLE(frmAbout, wxDialog)
 EVT_PAINT(frmAbout::OnPaint)
 END_EVENT_TABLE()
 
-frmAbout::frmAbout()
-: wxDialog((wxFrame *)NULL, -1, "About pgAdmin III", wxDefaultPosition, wxDefaultSize, wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
+frmAbout::frmAbout(wxFrame *parent)
+: wxDialog(parent, -1, "About pgAdmin III", wxDefaultPosition, wxDefaultSize, wxCAPTION | wxDIALOG_MODAL | wxSYSTEM_MENU | wxSTAY_ON_TOP)
 {
   imgAbout = wxBitmap("images/splash.jpg", wxBITMAP_TYPE_JPEG);
   SetClientSize(imgAbout.GetWidth(), imgAbout.GetHeight());

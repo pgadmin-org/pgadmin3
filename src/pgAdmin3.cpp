@@ -22,6 +22,7 @@ IMPLEMENT_APP(pgAdmin3)
 
 // Globals
 frmMain *winMain;
+frmSplash *winSplash;
 
 // The Application!
 bool pgAdmin3::OnInit()
@@ -30,18 +31,17 @@ bool pgAdmin3::OnInit()
   wxImage::AddHandler(new wxJPEGHandler);
   
   // Show the splash screen
-  frmSplash *winSplash = new frmSplash();
+  winSplash = new frmSplash((wxFrame *)NULL);
   SetTopWindow(winSplash);
   winSplash->Show(TRUE);
   
   wxSleep(2);
   
   // Create & show the main form
-  winMain = new frmMain("pgAdmin III", wxPoint(50, 50), wxSize(450, 340));
+  winMain = new frmMain("pgAdmin III", wxPoint(50, 50), wxSize(600, 440));
   winMain->Show(TRUE);
   
-  
-  delete winSplash;
+  winSplash->Close();
   
   return TRUE;
 }

@@ -20,8 +20,8 @@ BEGIN_EVENT_TABLE(frmSplash, wxFrame)
 EVT_PAINT(frmSplash::OnPaint)
 END_EVENT_TABLE()
 
-frmSplash::frmSplash()
-: wxFrame((wxFrame *)NULL, -1, "Splash Screen!", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT)
+frmSplash::frmSplash(wxFrame *parent)
+: wxFrame(parent, -1, "", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT)
 {
   imgSplash = wxBitmap("images/splash.jpg", wxBITMAP_TYPE_JPEG);
   SetClientSize(imgSplash.GetWidth(), imgSplash.GetHeight());

@@ -12,7 +12,7 @@
 class frmAbout : public wxDialog
 {
 public:
-  frmAbout();
+  frmAbout(wxFrame *parent);
   void OnPaint(wxPaintEvent&);
   
 private:

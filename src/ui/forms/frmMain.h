@@ -13,7 +13,6 @@ class frmMain : public wxFrame
 {
 public:
   frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
-  ~frmMain();
   void OnExit(wxCommandEvent& event);
   void OnAbout(wxCommandEvent& event);
   wxMenuBar *mnuBar;

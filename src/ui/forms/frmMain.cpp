@@ -27,7 +27,11 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 {
   
   // Icon
+#ifdef __WXMSW__
+  SetIcon(wxIcon("images/pgAdmin3.xpm"));
+#else
   SetIcon(wxIcon("images/pgAdmin3.xpm", wxBITMAP_TYPE_XPM));
+#endif
   
   // Build menus
   mnuBar = new wxMenuBar();
@@ -68,12 +72,14 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
   
   // Status bar
   CreateStatusBar(6);
+  static const int iWidths[6] = {-1, 50, 100, 100, 100, 100};
+  SetStatusWidths(6, iWidths);
   SetStatusText("Ready.", 0);
   SetStatusText("0 Secs", 1);
-  SetStatusText("Object: Not connected.", 2);
-  SetStatusText("Schema: Not connected.", 3);
-  SetStatusText("Database: Not connected.", 4);
-  SetStatusText("Server: Not connected.", 5);
+  SetStatusText("Object: None", 2);
+  SetStatusText("Schema: None", 3);
+  SetStatusText("Database: None", 4);
+  SetStatusText("Server: None", 5);
   
   // Toolbar bar
   CreateToolBar(6);
@@ -81,11 +87,6 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
   // Return objects
   stBar = GetStatusBar();
   tlBar = GetToolBar();
-}
-
-frmMain::~frmMain()
-{
-  
 }
 
 // Event handlers
@@ -97,6 +98,6 @@ void frmMain::OnExit(wxCommandEvent& WXUNUSED(event))
 
 void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
-  frmAbout *winAbout = new frmAbout();
+  frmAbout *winAbout = new frmAbout(this);
   winAbout->Show(TRUE);
 }

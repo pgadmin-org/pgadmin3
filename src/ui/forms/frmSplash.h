@@ -12,7 +12,7 @@
 class frmSplash : public wxFrame
 {
 public:
-  frmSplash();
+  frmSplash(wxFrame *parent);
   void OnPaint(wxPaintEvent&);
   
 private:
