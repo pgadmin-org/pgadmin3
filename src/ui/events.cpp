@@ -230,7 +230,7 @@ void frmMain::OnContents(wxCommandEvent& event)
 
 void frmMain::OnPgsqlHelp(wxCommandEvent& event)
 {
-    frmHelp::LoadSqlDoc(this, wxT("index.html"));
+    DisplayPgSqlHelp(this, wxT("index"));
 }
 
 

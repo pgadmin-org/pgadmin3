@@ -453,6 +453,43 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
 }
 
 
+void DisplayPgSqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon){
+    extern wxString docPath;
+    static wxHtmlHelpController *helpCtl=0;
+    static bool firstCall=true;
+
+    if (firstCall)
+    {
+        firstCall=false;
+        wxString helpfile=docPath + wxT("/") + settings->GetCanonicalLanguage() + wxT("/pg/postgresql");
+
+        if (!wxFile::Exists(helpfile + wxT(".hhp")) && !wxFile::Exists(helpfile + wxT(".zip")))
+            helpfile=docPath + wxT("/en_US/pg/postgresql");
+
+        if (wxFile::Exists(helpfile + wxT(".hhp")) || wxFile::Exists(helpfile + wxT(".zip")))
+        {
+            helpCtl=new wxHtmlHelpController();
+            helpCtl->Initialize(helpfile);
+        }
+    }
+
+    if (helpCtl)
+    {
+        if (helpTopic == wxT("index"))
+            helpCtl->DisplayContents();
+        else
+            helpCtl->DisplaySection(helpTopic + wxT(".html"));
+    }
+    else
+    {
+        while (wnd->GetParent())
+            wnd=wnd->GetParent();
+
+        frmHelp::LoadLocalDoc(wnd, helpTopic + wxT(".html"));
+    }
+}
+
+
 BEGIN_EVENT_TABLE(DialogWithHelp, wxDialog)
     EVT_MENU(MNU_HELP,                  DialogWithHelp::OnHelp)
     EVT_BUTTON(XRCID("btnHelp"),        DialogWithHelp::OnHelp)
