@@ -55,6 +55,7 @@ public:
     void iSetName(const wxString& szNewVal);
     wxString GetName() const;
     virtual wxString GetIdentifier() const;
+    virtual wxString GetQuotedIdentifier() const;
     double GetOid();
     void iSetOid(double lNewVal);
     wxString GetOwner() const;

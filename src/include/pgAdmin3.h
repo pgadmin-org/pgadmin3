@@ -55,4 +55,8 @@ long StrToLong(const wxString& szVal);
 wxString NumToStr(double nVal);
 double StrToDouble(const wxString& szVal);
 
+// Quoting
+wxString qtString(const wxString& szVal);
+wxString qtIdent(const wxString& szVal);
+
 #endif

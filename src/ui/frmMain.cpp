@@ -106,30 +106,29 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     mnuBar = new wxMenuBar();
 
     // File Menu
-    wxMenu *mnuFile = new wxMenu;
+    mnuFile = new wxMenu();
     mnuFile->Append(MNU_ADDSERVER, wxT("&Add Server..."), wxT("Add a connection to a server."));
     mnuFile->Append(MNU_PASSWORD, wxT("C&hange password..."), wxT("Change your password."));
     mnuFile->AppendSeparator();
     mnuFile->Append(MNU_SAVEDEFINITION, wxT("&Save definition..."), wxT("Save the SQL definition of the selected object."));
-    mnuFile->Append(MNU_SAVESCHEMA, wxT("S&ave DB schema..."), wxT("Save the schema of the current database."));
     mnuFile->AppendSeparator();
     mnuFile->Append(MNU_EXIT, wxT("E&xit"), wxT("Quit this program."));
     mnuBar->Append(mnuFile, wxT("&File"));
 
     // Tools Menu
-    wxMenu *mnuTools = new wxMenu;
+    mnuTools = new wxMenu();
     mnuTools->Append(MNU_UPGRADEWIZARD, wxT("&Upgrade Wizard..."), wxT("Run the upgrade wizard."));
     mnuTools->AppendSeparator();
     mnuTools->Append(MNU_OPTIONS, wxT("&Options..."), wxT("Show options dialog."));
     mnuBar->Append(mnuTools, wxT("&Tools"));
 
     // View Menu
-    wxMenu *mnuView = new wxMenu;
+    mnuView = new wxMenu();
     mnuView->Append(MNU_SYSTEMOBJECTS, wxT("&System objects"), wxT("Show or hide system objects."));
     mnuBar->Append(mnuView, wxT("&View"));
 
     // Help Menu
-    wxMenu *mnuHelp = new wxMenu;
+    mnuHelp = new wxMenu();
     mnuHelp->Append(MNU_CONTENTS, wxT("&Help..."), wxT("Open the helpfile."));
     mnuHelp->Append(MNU_TIPOFTHEDAY, wxT("&Tip of the day..."), wxT("Show a tip of the day."));
     mnuHelp->AppendSeparator();
@@ -306,7 +305,27 @@ void frmMain::OnOptions(wxCommandEvent& event)
 void frmMain::OnPassword(wxCommandEvent& event)
 {
     frmPassword *winPassword = new frmPassword(this);
-    winPassword->Show(TRUE);
+
+    // We need to pass the server to the password form
+    // Get the item data, and feed it to the relevant handler,
+    // cast as required.
+    wxTreeItemId itmX = tvBrowser->GetSelection();
+    pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
+    int iType(itmData->GetType());
+
+    switch (iType) {
+        case PG_SERVER:
+            winPassword->SetServer((pgServer *)itmData);
+            winPassword->Show(TRUE);
+            break;
+
+        default:
+            // Should never see this
+            wxLogError(wxT("You must select a server before changing your password!"));
+            break;
+    }
+
+
 }
 
 void frmMain::OnAddServer()
@@ -385,8 +404,9 @@ void frmMain::OnSelChanged()
     lvStatistics->InsertColumn(0, wxT("Statistics"), wxLIST_FORMAT_LEFT, 500);
     lvStatistics->InsertItem(0, wxT("No statistics are available for the current selection"), 0);
 
-    // Reset the toolbar
+    // Reset the toolbar & password menu option
     SetButtons(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
+    mnuFile->Enable(MNU_PASSWORD, FALSE);
 
     // Get the item data, and feed it to the relevant handler,
     // cast as required.
@@ -615,6 +635,10 @@ void frmMain::tvServer(pgServer *objServer)
 
     // Add child nodes if necessary
     if (objServer->GetConnected()) {
+
+        // Reset password menu option
+        mnuFile->Enable(MNU_PASSWORD, TRUE);
+
         if (tvBrowser->GetChildrenCount(objServer->GetId(), FALSE) != 3) {
 
             // Log

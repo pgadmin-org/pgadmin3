@@ -96,7 +96,7 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     }
 
     // Display a messagebox if required.
-    if (iIcon != 0) wxMessageBox(szPreamble + msg, szType, wxOK | wxCENTRE | iIcon);
+    if (iIcon != 0) wxMessageBox(szPreamble + msg, APPNAME_L, wxOK | wxCENTRE | iIcon);
 }
 
 void sysLogger::WriteLog(const wxString& szMsg)

@@ -153,6 +153,18 @@ void pgServer::iSetPassword(const wxString& szNewVal)
 {
     szPassword = szNewVal;
 }
+bool pgServer::SetPassword(const wxString& szNewVal)
+{
+    wxString szSQL;
+    szSQL.Printf(wxT("ALTER USER %s WITH PASSWORD %s;"), qtIdent(szUsername).c_str(), qtString(szNewVal).c_str());
+    int x = cnMaster->ExecuteVoid(szSQL);
+    if (x == PGCONN_COMMAND_OK) {
+        szPassword = szNewVal;
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
 
 int pgServer::GetPort()
 {

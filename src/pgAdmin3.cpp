@@ -234,3 +234,21 @@ double StrToDouble(const wxString& szVal)
 {
     return strtod(szVal.c_str(), 0);
 }
+
+wxString qtString(const wxString& szVal)
+{
+    wxString szRes;
+
+    szRes.Printf(wxT("'%s'"), szVal.c_str());
+
+    return szRes;
+}
+
+wxString qtIdent(const wxString& szVal)
+{
+    wxString szRes;
+
+    szRes.Printf(wxT("\"%s\""), szVal.c_str());
+
+    return szRes;
+}

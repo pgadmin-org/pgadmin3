@@ -41,6 +41,7 @@ public:
     void iSetDatabase(const wxString& szNewVal);
     void iSetUsername(const wxString& szNewVal);
     void iSetPassword(const wxString& szNewVal);
+    bool SetPassword(const wxString& szNewVal);
     void iSetPort(int iNewVal);
     int ExecuteVoid(const wxString& szSQL);
     wxString ExecuteScalar(const wxString& szSQL) const;

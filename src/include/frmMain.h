@@ -34,12 +34,13 @@ public:
     wxStatusBar *stBar;
     
 private:
-    wxTreeCtrl* tvBrowser;
-    wxListCtrl* lvProperties;
-    wxListCtrl* lvStatistics;
-    wxNotebook* nbListViews;
-    ctlSQLBox* txtSQLPane;
+    wxTreeCtrl *tvBrowser;
+    wxListCtrl *lvProperties;
+    wxListCtrl *lvStatistics;
+    wxNotebook *nbListViews;
+    ctlSQLBox *txtSQLPane;
     wxMenuBar *mnuBar;
+    wxMenu *mnuFile, *mnuTools, *mnuView, *mnuHelp;
     wxToolBar *tlBar;
     wxTreeItemId itmServers;
     void OnAbout(wxCommandEvent& event);
@@ -75,14 +76,13 @@ enum
     MNU_ADDSERVER = 101,
     MNU_PASSWORD = 102,
     MNU_SAVEDEFINITION = 103,
-    MNU_SAVESCHEMA = 104,
-    MNU_EXIT = 105,
-    MNU_UPGRADEWIZARD = 106,
-    MNU_OPTIONS = 107,
-    MNU_SYSTEMOBJECTS = 108,
-    MNU_CONTENTS = 109,
-    MNU_TIPOFTHEDAY = 110,
-    MNU_ABOUT = 111
+    MNU_EXIT = 104,
+    MNU_UPGRADEWIZARD = 105,
+    MNU_OPTIONS = 106,
+    MNU_SYSTEMOBJECTS = 107,
+    MNU_CONTENTS = 108,
+    MNU_TIPOFTHEDAY = 109,
+    MNU_ABOUT = 110
 };
 
 // Toolbar buttons

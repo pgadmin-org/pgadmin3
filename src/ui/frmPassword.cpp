@@ -16,6 +16,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frmPassword.h"
+#include "pgServer.h"
 
 // Icons
 #include "images/pgAdmin3.xpm"
@@ -44,10 +45,38 @@ frmPassword::~frmPassword()
 
 void frmPassword::OnOK()
 {
+
+    // Is the old password right?
+    if (XRCCTRL(*this, "txtCurrent", wxTextCtrl)->GetValue() != objServer->GetPassword()) {
+        wxLogError(wxT("Incorrect password!"));
+        return;
+    }
+
+    // Did we confirm the password OK?
+    if (XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue() != XRCCTRL(*this, "txtConfirm", wxTextCtrl)->GetValue()) {
+        wxLogError(wxT("Passwords do not match!"));
+        return;
+    }
+
+    // Set the new password
+    if (!objServer->SetPassword(XRCCTRL(*this, "txtNew", wxTextCtrl)->GetValue())) {
+        wxString szMsg;
+        szMsg.Printf(wxT("The password could not be changed!"));
+        wxLogError(szMsg);
+        return;
+    }
+
+    // All must have gone well!
+    wxLogMessage(wxT("Password successfully changed!"));
     this->Destroy();
 }
 
 void frmPassword::OnCancel()
 {
     this->Destroy();
+}
+
+void frmPassword::SetServer(pgServer *objNewServer)
+{
+    objServer = objNewServer;
 }

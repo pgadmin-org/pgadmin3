@@ -119,7 +119,8 @@ int pgConn::ExecuteVoid(const wxString& szSQL)
     int iRes = PQresultStatus(qryRes);
 
     // Check for errors
-    if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
+    if (PQresultStatus(qryRes) != PGRES_TUPLES_OK &&
+        PQresultStatus(qryRes) != PGRES_COMMAND_OK) {
         wxString szMsg;
         szMsg.Printf(wxT("%s"), PQerrorMessage(objConn));
         wxLogError(szMsg);

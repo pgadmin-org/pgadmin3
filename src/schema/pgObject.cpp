@@ -149,6 +149,11 @@ wxString pgObject::GetIdentifier() const
     return szName;
 }
 
+wxString pgObject::GetQuotedIdentifier() const
+{
+    return qtIdent(szName);
+}
+
 double pgObject::GetOid()
 {
     return dOid;

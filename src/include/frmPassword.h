@@ -16,6 +16,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "pgServer.h"
 
 // Class declarations
 class frmPassword : public wxDialog
@@ -23,8 +24,10 @@ class frmPassword : public wxDialog
 public:
     frmPassword(wxFrame *parent);
     ~frmPassword();
+    void SetServer(pgServer *objNewServer);
     
 private:
+    pgServer *objServer;
     void OnOK();
     void OnCancel();
     DECLARE_EVENT_TABLE()
