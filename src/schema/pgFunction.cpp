@@ -44,19 +44,18 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(")+GetArgTypes()
-            + wxT(")\n    RETURNS ") + GetReturnType() 
-            + wxT(" AS  '\n")
+        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes() + wxT(")\n")
+            + wxT("CREATE FUNCTION ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypes()
+            + wxT(") RETURNS ") + GetReturnType() 
+            + wxT(" AS '\n")
             + GetSource()
-            + wxT("\n'  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
+            + wxT("\n' LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
 
         if (GetIsStrict())
             sql += wxT(" STRICT");
         if (GetSecureDefiner())
             sql += wxT(" SECURE DEFINER");
         sql += wxT(";\n");
-
-        // GetSecureDefiner()
     }
 
     return sql;
@@ -94,13 +93,16 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
 {
     pgFunction *function=0;
 
-    pgSet *functions= obj->GetDatabase()->ExecuteSet(wxT(
+    pgSet *functions = obj->GetDatabase()->ExecuteSet(wxT(
             "SELECT pr.oid, pr.*, TYP.typname, lanname, pg_get_userbyid(proowner) as funcowner\n"
             "  FROM pg_proc pr\n"
             "  JOIN pg_type TYP ON TYP.oid=prorettype\n"
             "  JOIN pg_language LNG ON LNG.oid=prolang\n"
             + restriction +
             " ORDER BY proname"));
+
+    pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
+                    "SELECT oid, typname FROM pg_type"));
 
     if (functions)
     {
@@ -127,14 +129,18 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             while (args.HasMoreTokens())
             {
                 str = args.GetNextToken();
-                pgSet *set=obj->GetDatabase()->ExecuteSet(wxT(
-                    "SELECT typname FROM pg_type where oid=") + str);
-                if (set)
+
+                if (types)
                 {
+                    types->MoveFirst();
+                    while (types->GetVal(0) != str)
+                        types->MoveNext();
+
                     if (!argTypes.IsNull())
                         argTypes += wxT(", ");
-                    argTypes += set->GetVal(0);
-                    delete set;
+
+                    argTypes += types->GetVal(1);
+
                 }
             }
 
@@ -163,6 +169,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
         }
 
 		delete functions;
+        delete types;
     }
     return function;
 }
