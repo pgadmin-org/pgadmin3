@@ -90,64 +90,70 @@ void pgIndex::ReadColumnDetails()
         wxStringTokenizer collist(GetColumnNumbers());
         wxStringTokenizer args(procArgTypeList);
         wxString cn, ct;
-        columnCount=0;
+        long i;
 
-        while (collist.HasMoreTokens())
+        for (i=0 ; i < columnCount ; i++)
         {
             cn=collist.GetNextToken();
             ct=args.GetNextToken();
 
-            pgSet *colSet=ExecuteSet(
-                wxT("SELECT attname as conattname\n")
-                wxT("  FROM pg_attribute\n")
-                wxT(" WHERE attrelid=") + GetTableOidStr() + wxT(" AND attnum=") + cn);
-            if (colSet)
+            if (StrToLong(cn) > 0)
             {
-                if (columnCount)
+                pgSet *colSet=ExecuteSet(
+                    wxT("SELECT attname as conattname\n")
+                    wxT("  FROM pg_attribute\n")
+                    wxT(" WHERE attrelid=") + GetTableOidStr() + wxT(" AND attnum=") + cn);
+                if (colSet)
                 {
-                    columns += wxT(", ");
-                    quotedColumns += wxT(", ");
-                }
-                wxString colName=colSet->GetVal(0);
-                columns += colName;
-                quotedColumns += qtIdent(colName);
-
-                if (!ct.IsNull())
-                {
-                    pgSet *typeSet=ExecuteSet(wxT(
-                        "SELECT typname FROM pg_type where oid=") + ct);
-                    if (typeSet)
+                    if (i)
                     {
-                        if (columnCount)
-                        {
-                            procArgs += wxT(", ");
-                            typedColumns += wxT(", ");
-                            quotedTypedColumns += wxT(", ");
-                        }
-                        wxString colType=typeSet->GetVal(0);
-                        procArgs += colType;
-                        typedColumns += colName + wxT("::") + colType;
-                        quotedTypedColumns += qtIdent(colName) + wxT("::") + colType;
-                        delete typeSet;
+                        columns += wxT(", ");
+                        quotedColumns += wxT(", ");
                     }
+                    wxString colName=colSet->GetVal(0);
+                    columns += colName;
+                    quotedColumns += qtIdent(colName);
+
+                    if (!ct.IsNull())
+                    {
+                        pgSet *typeSet=ExecuteSet(wxT(
+                            "SELECT typname FROM pg_type where oid=") + ct);
+                        if (typeSet)
+                        {
+                            if (columnCount)
+                            {
+                                procArgs += wxT(", ");
+                                typedColumns += wxT(", ");
+                                quotedTypedColumns += wxT(", ");
+                            }
+                            wxString colType=typeSet->GetVal(0);
+                            procArgs += colType;
+                            typedColumns += colName + wxT("::") + colType;
+                            quotedTypedColumns += qtIdent(colName) + wxT("::") + colType;
+                            delete typeSet;
+                        }
+                    }
+                    delete colSet;
                 }
-                columnCount++;
-                delete colSet;
             }
-            wxStringTokenizer ops(operatorClassList);
-            wxString op;
-            while (ops.HasMoreTokens())
+            else
             {
-                op = ops.GetNextToken();
-                pgSet *set=ExecuteSet(wxT(
-                    "SELECT opcname FROM pg_opclass WHERE oid=") + op);
-                if (set)
-                {
-                    if (!operatorClasses.IsNull())
-                        operatorClasses += wxT(", ");
-                    operatorClasses += set->GetVal(0);
-                    delete set;
-                }
+                // expression
+            }
+        }
+        wxStringTokenizer ops(operatorClassList);
+        wxString op;
+        while (ops.HasMoreTokens())
+        {
+            op = ops.GetNextToken();
+            pgSet *set=ExecuteSet(wxT(
+                "SELECT opcname FROM pg_opclass WHERE oid=") + op);
+            if (set)
+            {
+                if (!operatorClasses.IsNull())
+                    operatorClasses += wxT(", ");
+                operatorClasses += set->GetVal(0);
+                delete set;
             }
         }
     }
@@ -164,13 +170,12 @@ void pgIndex::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
         InsertListItem(properties, pos++, _("Name"), GetName());
         InsertListItem(properties, pos++, _("OID"), GetOid());
-        if (GetProcName().IsNull())
-            InsertListItem(properties, pos++, _("Columns"), GetColumns());
-        else
-        {
+        if (!GetProcName().IsNull())
             InsertListItem(properties, pos++, _("Procedure "), GetProcNamespace() + wxT(".")+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
-            InsertListItem(properties, pos++, _("Operator Classes"), GetOperatorClasses());
-        }
+        else
+            InsertListItem(properties, pos++, _("Columns"), GetColumns());
+
+        InsertListItem(properties, pos++, _("Operator Classes"), GetOperatorClasses());
         InsertListItem(properties, pos++, _("Unique?"), GetIsUnique());
         InsertListItem(properties, pos++, _("Primary?"), GetIsPrimary());
         InsertListItem(properties, pos++, _("Clustered?"), GetIsClustered());
@@ -202,17 +207,29 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 {
     pgIndex *index=0;
 
-        pgSet *indexes= collection->GetDatabase()->ExecuteSet(
+    wxString proname, projoin;
+    if (collection->GetConnection()->BackendMinimumVersion(7, 4))
+    {
+        proname = wxT("indexprs, ");
+//        proname=wxT("pg_get_expr(indexprs, indrelid") 
+//            + collection->GetDatabase()->GetPrettyOption() + wxT(") AS idxexpr, ");
+    }
+    else
+    {
+        proname=wxT("proname, pn.nspname as pronspname, proargtypes, ");
+        projoin =   wxT("  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n")
+                    wxT("  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n");
+    }
+    pgSet *indexes= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
-        wxT("       proname, tab.relname as tabname, pn.nspname as pronspname, proargtypes, indclass, description,\n")
+        wxT("       ") + proname + wxT("tab.relname as tabname, indnatts, indclass, description,\n")
         wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n")
         wxT("  FROM pg_index idx\n")
         wxT("  JOIN pg_class cls ON cls.oid=indexrelid\n")
         wxT("  JOIN pg_class tab ON tab.oid=indrelid\n")
+        + projoin + 
         wxT("  JOIN pg_namespace n ON n.oid=tab.relnamespace\n")
         wxT("  JOIN pg_am am ON am.oid=cls.relam\n")
-        wxT("  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n")
-        wxT("  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n")
         wxT("  LEFT OUTER JOIN pg_constraint con ON con.conrelid=indrelid AND conname=cls.relname\n")
         wxT(" WHERE indrelid = ") + collection->GetOidStr()
@@ -248,9 +265,17 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             index->iSetComment(indexes->GetVal(wxT("description")));
             index->iSetIdxTable(indexes->GetVal(wxT("tabname")));
             index->iSetRelTableOid(indexes->GetOid(wxT("indrelid")));
-            index->iSetProcArgTypeList(indexes->GetVal(wxT("proargtypes")));
-            index->iSetProcNamespace(indexes->GetVal(wxT("pronspname")));
-            index->iSetProcName(indexes->GetVal(wxT("proname")));
+            index->iSetColumnCount(indexes->GetLong(wxT("indnatts")));
+            if (collection->GetConnection()->BackendMinimumVersion(7, 4))
+            {
+                index->iSetExpression(indexes->GetVal(wxT("indexprs")));
+            }
+            else
+            {
+                index->iSetProcNamespace(indexes->GetVal(wxT("pronspname")));
+                index->iSetProcName(indexes->GetVal(wxT("proname")));
+                index->iSetProcArgTypeList(indexes->GetVal(wxT("proargtypes")));
+            }
             index->iSetOperatorClassList(indexes->GetVal(wxT("indclass")));
             index->iSetDeferrable(indexes->GetBool(wxT("condeferrable")));
             index->iSetDeferred(indexes->GetBool(wxT("condeferred")));
