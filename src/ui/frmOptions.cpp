@@ -24,18 +24,14 @@
 #include "images/pgAdmin3.xpm"
 
 // clientencoding
-typedef struct pg_clientencoding
+wxString pg_clientencoding_tb[] =
 {
-	char *encoding;
-} pg_clientencoding;
-
-pg_clientencoding pg_clientencoding_tb[] =
-{
-	"SQL_ASCII","ALT","BIG5","EUC_CN","EUC_JP","EUC_KR","EUC_TW","GB18030",
-	"GBK","ISO_8859_5","ISO_8859_6","ISO_8859_7","ISO_8859_8","JOHAB","KOI8R",
-	"LATIN1","LATIN2","LATIN3","LATIN4","LATIN5","LATIN6","LATIN7","LATIN8",
-	"LATIN9","LATIN10","MULE_INTERNAL","SJIS","TCVN","UHC","UTF8","WIN1250",
-	"WIN1251","WIN1256","WIN874",NULL };
+	wxT("SQL_ASCII"), wxT("ALT"), wxT("BIG5"), wxT("EUC_CN"), wxT("EUC_JP"), wxT("EUC_KR"), wxT("EUC_TW"), wxT("GB18030"),
+	wxT("GBK"), wxT("ISO_8859_5"), wxT("ISO_8859_6"), wxT("ISO_8859_7"), wxT("ISO_8859_8"), wxT("JOHAB"), wxT("KOI8R"),
+	wxT("LATIN1"), wxT("LATIN2"), wxT("LATIN3"), wxT("LATIN4"), wxT("LATIN5"), wxT("LATIN6"), wxT("LATIN7"), wxT("LATIN8"),
+	wxT("LATIN9"), wxT("LATIN10"), wxT("MULE_INTERNAL"), wxT("SJIS"), wxT("TCVN"), wxT("UHC"), wxT("UTF8"), wxT("WIN1250"),
+	wxT("WIN1251"), wxT("WIN1256"), wxT("WIN874"), wxT("") 
+};
 
 extern wxLocale locale;
 extern wxArrayInt existingLangs;
@@ -112,10 +108,10 @@ frmOptions::frmOptions(wxFrame *parent)
     cbLanguage->SetSelection(sel);
 
     /* ClientEncoding */
-    pg_clientencoding  *clencode_p = (struct pg_clientencoding *)&pg_clientencoding_tb;
-    for (;clencode_p->encoding;*clencode_p++)
-        cbClientEncoding->Append(clencode_p->encoding);
-
+    int x;
+    for (x=0;pg_clientencoding_tb[x].Length() > 0;x++) {
+        cbClientEncoding->Append(pg_clientencoding_tb[x]);
+    }
     int encodeNo = settings->Read(wxT("ClientEncoding"), (long)0);
     cbClientEncoding->SetSelection(encodeNo);
 

@@ -56,7 +56,6 @@ wxChar *typeNameList[] =
 pgObject::pgObject(int newType, const wxString& newName)
 : wxTreeItemData()
 {
-    wxLogInfo(wxT("Creating a pgObject object"));
 
     // Set the typename and type
     if (newType >= PG_UNKNOWN)

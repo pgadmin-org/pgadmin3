@@ -36,7 +36,7 @@ typedef struct pg_clientencoding
 	char *encoding;
 } pg_clientencoding;
 
-extern pg_clientencoding pg_clientencoding_tb[];
+extern wxString pg_clientencoding_tb[];
 
 pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port)
 {
@@ -106,14 +106,13 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     conn = PQconnectdb(connstr.ToAscii());
     dbHost = server;
 
-    // clientencoding to ..
+    // clientencoding to .
     if (conn) 
     {
        int encodeNo = settings->Read(wxT("ClientEncoding"), (long)0);
-       if (PQsetClientEncoding(conn,wxString::Format("%s",pg_clientencoding_tb[encodeNo]).c_str()))
+       wxLogInfo(wxT("Setting client_encoding to '%s'"), pg_clientencoding_tb[encodeNo]);
+       if (PQsetClientEncoding(conn, pg_clientencoding_tb[encodeNo].ToAscii()))
            wxLogError(wxT("%s"), wxString::FromAscii(PQerrorMessage(conn)).c_str());
-       else
-           wxLogInfo(wxT("Set client_encoding to '%s'"), pg_clientencoding_tb[encodeNo]);
     }
 
 }

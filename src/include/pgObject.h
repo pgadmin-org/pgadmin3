@@ -72,7 +72,6 @@ protected:
     pgObject(int newType, const wxString& newName);
 
 public:
-    ~pgObject() { wxLogInfo(wxT("Destroying a pgDatabase object")); }
 
     static wxString GetPrivileges(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
 
