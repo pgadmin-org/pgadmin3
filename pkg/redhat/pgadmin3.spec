@@ -1,6 +1,6 @@
 %define major_version 1.1.0
 %define minor_version %(date +%Y%m%d)
-%define wxGTK2_version 20031010.3
+%define wxGTK2_version 20031010.4
 %define withwxconfig wxgtk2ud-2.5-config
 %define desktop_vendor pgadmin
 
