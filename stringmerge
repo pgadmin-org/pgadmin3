@@ -19,7 +19,7 @@ if test -f pgadmin3.pot; then
     echo "Updating from CVS."
     cvs update -C -P -d
     echo "Merging pgadmin3.pot into pgadmin3.po"
-    msgmerge -o merge.po pgadmin3.po ../../../pgadmin3.pot
+    msgmerge -U -o merge.po pgadmin3.po ../../../pgadmin3.pot
     echo "Compiling pgadmin3.mo"
     msgfmt -o pgadmin3.mo pgadmin3.po
     if test -f merge.po; then
