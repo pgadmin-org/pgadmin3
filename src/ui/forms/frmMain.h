@@ -40,6 +40,7 @@ private:
     wxToolBar *tlBar;
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
+    void OnUpgradeWizard(wxCommandEvent& event);
     void Options();
     DECLARE_EVENT_TABLE()
 };

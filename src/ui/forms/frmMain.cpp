@@ -26,6 +26,7 @@
 #include "frmMain.h"
 #include "frmAbout.h"
 #include "frmOptions.h"
+#include "frmUpgradeWizard.h"
 #include "../controls/ctlSQLBox.h"
 
 // Icons
@@ -75,6 +76,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
     EVT_MENU(MNU_OPTIONS, frmMain::Options)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::TipOfTheDay)
+    EVT_MENU(MNU_UPGRADEWIZARD, frmMain::OnUpgradeWizard)
 END_EVENT_TABLE()
 
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -280,6 +282,11 @@ void frmMain::OnAbout(wxCommandEvent& WXUNUSED(event))
     winAbout->Show(TRUE);
 }
 
+void frmMain::OnUpgradeWizard(wxCommandEvent& WXUNUSED(event))
+{
+    frmUpgradeWizard *winUpgradeWizard = new frmUpgradeWizard(this);
+    winUpgradeWizard->Show(TRUE);
+}
 void frmMain::TipOfTheDay()
 {
     extern sysSettings *objSettings;
