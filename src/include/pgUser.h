@@ -56,9 +56,6 @@ public:
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
-    bool CanCreate() { return true; }
-    bool CanDrop() { return true; }
-    bool CanEdit() { return true; }
 
 private:
     wxString accountExpires, password, configList;

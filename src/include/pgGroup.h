@@ -43,9 +43,6 @@ public:
     void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
-    bool CanDrop() { return true; }
-    bool CanEdit() { return true; }
-    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

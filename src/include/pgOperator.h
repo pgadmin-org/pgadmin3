@@ -64,9 +64,6 @@ public:
     bool GetHashJoins() const { return hashJoins; }
     void iSetHashJoins(bool b) {  hashJoins=b; }
 
-    bool CanDrop() { return true; }
-    bool CanEdit() { return true; }
-    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

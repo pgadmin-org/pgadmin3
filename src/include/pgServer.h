@@ -39,6 +39,12 @@ public:
     bool GetTrusted() const { return trusted; }
     wxString GetLastError() const;
 
+    bool GetCreatePrivilege() const { return createPrivilege; }
+    void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
+    bool GetSuperUser() const { return superUser; }
+    void iSetSuperUser(const bool b) { superUser=b; }
+
+
     wxString GetLastDatabase() const { return lastDatabase; }
     void iSetLastDatabase(const wxString& s) { lastDatabase=s; }
     wxString GetLastSchema() const { return lastSchema; }
@@ -75,7 +81,7 @@ private:
     wxString database, username, password, ver, error;
     wxString lastDatabase, lastSchema, description;
     int port;
-    bool trusted;
+    bool trusted, createPrivilege, superUser;
     OID lastSystemOID;
     float versionNum;
     wxFrame *parentWin;

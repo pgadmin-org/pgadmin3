@@ -51,10 +51,6 @@ public:
     bool GetHasSubclass() const { return hasSubclass; }
     void iSetHasSubclass(bool b) { hasSubclass = b; }
     void UpdateRows();
-
-    bool CanCreate() { return true; }
-    bool CanEdit() { return true; }
-    bool CanDrop() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool CanView() { return true; }
     bool CanVacuum() { return true; }

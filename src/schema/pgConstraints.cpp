@@ -35,6 +35,9 @@ pgConstraints::~pgConstraints()
 
 wxMenu *pgConstraints::GetNewMenu()
 {
+    if (!GetSchema()->GetCreatePrivilege())
+        return 0;
+
     wxMenu *menu=new wxMenu();
     if (table->GetPrimaryKey().IsEmpty())
         AppendMenu(menu, PG_PRIMARYKEY);

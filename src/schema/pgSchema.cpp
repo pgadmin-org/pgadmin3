@@ -35,17 +35,21 @@ pgSchema::~pgSchema()
 wxMenu *pgSchema::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
-    AppendMenu(menu, PG_AGGREGATE);
-    AppendMenu(menu, PG_CONVERSION);
-    AppendMenu(menu, PG_DOMAIN);
-    AppendMenu(menu, PG_FUNCTION);
-    AppendMenu(menu, PG_TRIGGERFUNCTION);
-    AppendMenu(menu, PG_OPERATOR);
-    AppendMenu(menu, PG_OPERATORCLASS);
-    AppendMenu(menu, PG_SEQUENCE);
-    AppendMenu(menu, PG_TABLE);
-    AppendMenu(menu, PG_TYPE);
-    AppendMenu(menu, PG_VIEW);
+
+    if (GetCreatePrivilege())
+    {
+        AppendMenu(menu, PG_AGGREGATE);
+        AppendMenu(menu, PG_CONVERSION);
+        AppendMenu(menu, PG_DOMAIN);
+        AppendMenu(menu, PG_FUNCTION);
+        AppendMenu(menu, PG_TRIGGERFUNCTION);
+        AppendMenu(menu, PG_OPERATOR);
+        AppendMenu(menu, PG_OPERATORCLASS);
+        AppendMenu(menu, PG_SEQUENCE);
+        AppendMenu(menu, PG_TABLE);
+        AppendMenu(menu, PG_TYPE);
+        AppendMenu(menu, PG_VIEW);
+    }
     return menu;
 }
 
@@ -171,7 +175,8 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
     pgSet *schemas= collection->GetDatabase()->ExecuteSet(
        wxT("SELECT CASE WHEN nsp.oid<100 THEN 0 WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1 ELSE 2 END AS nsptyp,\n")
-       wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description\n")
+       wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
+       wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
        wxT("  FROM pg_namespace nsp\n")
        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
         + restriction +
@@ -189,6 +194,7 @@ pgObject *pgSchema::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
             schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
             schema->iSetSchemaTyp(schemas->GetLong(wxT("nsptyp")));
+            schema->iSetCreatePrivilege(schemas->GetBool(wxT("cancreate")));
 
             if (browser)
             {

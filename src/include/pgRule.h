@@ -44,9 +44,7 @@ public:
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
 
     bool GetSystemObject() const { return GetName() == wxT("_RETURN"); }
-    bool CanDrop() { return !GetSystemObject(); }
-    bool CanEdit() { return true; }
-    bool CanCreate() { return true; }
+    bool CanDrop() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

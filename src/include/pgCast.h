@@ -48,9 +48,6 @@ public:
     wxString GetCastContext() const { return castContext; }
     void iSetCastContext(const wxString& s) { castContext=s; }
 
-    bool CanDrop() { return true; }
-    bool CanEdit() { return true; }
-    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

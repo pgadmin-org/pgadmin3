@@ -59,9 +59,6 @@ public:
     wxString GetQuotedTypesList() const {return quotedTypesList; }
     bool GetSystemObject() const { return pgSchemaObject::GetSystemObject() || isRecordType; }
 
-    bool CanDrop() { return true; }
-    bool CanEdit() { return true; }
-    bool CanCreate() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

@@ -71,16 +71,19 @@ pgObject::pgObject(int newType, const wxString& newName)
 
 void pgObject::AppendMenu(wxMenu *menu, int type)
 {
-    if (type < 0)
+    if (menu)
     {
-        type=GetType();
-        if (IsCollection())
-            type++;
+        if (type < 0)
+        {
+            type=GetType();
+            if (IsCollection())
+                type++;
+        }
+        wxString text, help;
+        text.Printf(_("New %s"), wxGetTranslation(typeNameList[type]));
+        help.Printf(_("Create a new %s."), wxGetTranslation(typeNameList[type]));
+        menu->Append(MNU_NEW+type, text, help);
     }
-    wxString text, help;
-    text.Printf(_("New %s"), wxGetTranslation(typeNameList[type]));
-    help.Printf(_("Create a new %s."), wxGetTranslation(typeNameList[type]));
-    menu->Append(MNU_NEW+type, text, help);
 }
 
 
@@ -426,13 +429,58 @@ pgDatabase *pgObject::GetDatabase()
 }
 
 
+//////////////////////////////////////////////////////////////
 
+bool pgServerObject::CanDrop()
+{
+    if (GetType() == PG_DATABASE)
+        return server->GetCreatePrivilege();
+    else
+        return server->GetSuperUser();
+}
+
+
+bool pgServerObject::CanCreate()
+{
+    if (GetType() == PG_DATABASE)
+        return server->GetCreatePrivilege();
+    else
+        return server->GetSuperUser();
+}
+
+
+//////////////////////////////////////////////////////////////
+
+bool pgDatabaseObject::CanDrop()
+{
+    return database->GetCreatePrivilege();
+}
+
+
+bool pgDatabaseObject::CanCreate()
+{
+    return database->GetCreatePrivilege();
+}
+
+///////////////////////////////////////////////////////////////
 
 bool pgSchemaObject::GetSystemObject() const
 {
     if (!schema)
         return false;
     return schema->GetOid() < 100;
+}
+
+
+bool pgSchemaObject::CanDrop()
+{
+    return schema->GetCreatePrivilege();
+}
+
+
+bool pgSchemaObject::CanCreate()
+{
+    return schema->GetCreatePrivilege();
 }
 
 

@@ -60,9 +60,6 @@ public:
     bool GetIsStrict() const { return isStrict; }
     void iSetIsStrict(bool b) { isStrict = b; }
 
-    bool CanDrop() { return true; }
-    bool CanEdit() { return true; }
-    bool CanCreate() { return true; }
     bool CanReload();
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetSql(wxTreeCtrl *browser);

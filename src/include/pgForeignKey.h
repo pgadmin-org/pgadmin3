@@ -65,9 +65,6 @@ public:
     wxString GetQuotedFkColumns() const { return quotedFkColumns; }
     wxString GetQuotedRefColumns() const { return quotedRefColumns; }
 
-    bool CanDrop() { return true; }
-    bool CanCreate() { return true; }
-    bool CanEdit() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);

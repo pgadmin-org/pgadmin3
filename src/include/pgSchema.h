@@ -35,11 +35,10 @@ public:
 
     long GetSchemaTyp() const { return schemaTyp; }
     void iSetSchemaTyp(const long l) { schemaTyp=l; }
+    bool GetCreatePrivilege() const { return createPrivilege; }
+    void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
     bool GetSystemObject() const { return schemaTyp < 1; }
 
-    bool CanDrop() { return true; }
-    bool CanEdit() { return true; }
-    bool CanCreate() { return true; }
     bool RequireDropConfirm() { return true; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
@@ -49,6 +48,7 @@ public:
 
 private:
     long schemaTyp; // 0: System 1: temporär 2: normal
+    bool createPrivilege;
 };
 
 #endif

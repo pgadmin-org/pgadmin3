@@ -39,15 +39,18 @@ pgTable::~pgTable()
 wxMenu *pgTable::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
-    AppendMenu(menu, PG_COLUMN);
-    if (GetPrimaryKey().IsEmpty())      // Will not notice if pk has been added after last refresh
-        AppendMenu(menu, PG_PRIMARYKEY);
-    AppendMenu(menu, PG_FOREIGNKEY);
-    AppendMenu(menu, PG_UNIQUE);
-    AppendMenu(menu, PG_CHECK);
-    AppendMenu(menu, PG_INDEX);
-    AppendMenu(menu, PG_RULE);
-    AppendMenu(menu, PG_TRIGGER);
+    if (schema->GetCreatePrivilege())
+    {
+        AppendMenu(menu, PG_COLUMN);
+        if (GetPrimaryKey().IsEmpty())      // Will not notice if pk has been added after last refresh
+            AppendMenu(menu, PG_PRIMARYKEY);
+        AppendMenu(menu, PG_FOREIGNKEY);
+        AppendMenu(menu, PG_UNIQUE);
+        AppendMenu(menu, PG_CHECK);
+        AppendMenu(menu, PG_INDEX);
+        AppendMenu(menu, PG_RULE);
+        AppendMenu(menu, PG_TRIGGER);
+    }
     return menu;
 }
 

@@ -45,9 +45,6 @@ public:
     bool GetDeferred() const { return deferred; }
     void iSetDeferred(const bool b) { deferred=b; }
 
-    bool CanDrop() { return true; }
-    bool CanCreate() { return true; }
-    bool CanEdit() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);

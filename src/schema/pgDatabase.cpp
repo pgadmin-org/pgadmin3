@@ -42,11 +42,17 @@ pgDatabase::~pgDatabase()
 wxMenu *pgDatabase::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
-    AppendMenu(menu, PG_CAST);
-    AppendMenu(menu, PG_LANGUAGE);
-    AppendMenu(menu, PG_SCHEMA);
+
+    if (GetCreatePrivilege())
+    {
+        AppendMenu(menu, PG_CAST);
+        AppendMenu(menu, PG_LANGUAGE);
+        AppendMenu(menu, PG_SCHEMA);
+    }
     return menu;
 }
+
+
 int pgDatabase::Connect()
 {
     if (!allowConnections)
@@ -229,7 +235,8 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
 
     pgSet *databases = collection->GetServer()->ExecuteSet(
        wxT("SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, ")
-              wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner\n")
+              wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
+              wxT("has_database_privilege(db.oid, 'CREATE') as cancreate\n")
        wxT("  FROM pg_database db\n")
        + restriction +
        wxT(" ORDER BY datname"));
@@ -245,6 +252,7 @@ pgObject *pgDatabase::ReadObjects(pgCollection *collection, wxTreeCtrl *browser,
             database->iSetAcl(databases->GetVal(wxT("datacl")));
             database->iSetPath(databases->GetVal(wxT("datpath")));
             database->iSetEncoding(databases->GetVal(wxT("serverencoding")));
+            database->iSetCreatePrivilege(databases->GetBool(wxT("cancreate")));
             wxString str=databases->GetVal(wxT("datconfig"));
             if (!str.IsEmpty())
                 database->iSetVariables(str.Mid(1, str.Length()-2));

@@ -40,6 +40,8 @@ public:
     wxString GetRuledefFunction() const { return ruledefFunction; }
     wxString GetExprFunction() const { return exprFunction; }
 
+    bool GetCreatePrivilege() const { return createPrivilege; }
+    void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
     wxString GetPath() const { return path; };
     void iSetPath(const wxString& newVal) { path = newVal; }
     wxString GetEncoding() const { return encoding; }
@@ -51,10 +53,7 @@ public:
     bool GetConnected() const { return connected; }
     bool GetSystemObject() const;
     
-    bool CanCreate() { return true; }
-    bool CanDrop() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
-    bool CanEdit() { return true; }
     bool CanVacuum() { return true; }
     bool RequireDropConfirm() { return true; }
     pgConn *connection() { return conn; }
@@ -68,7 +67,7 @@ private:
     pgConn *conn;
     wxString path, encoding, variables;
     wxString viewdefFunction, ruledefFunction, exprFunction;
-    bool allowConnections, connected;
+    bool allowConnections, connected, createPrivilege;
 };
 
 #endif

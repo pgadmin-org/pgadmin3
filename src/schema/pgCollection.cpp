@@ -115,17 +115,19 @@ bool pgCollection::CanCreate()
     {
         case PG_USERS:
         case PG_GROUPS:
+            return GetServer()->GetSuperUser();
         case PG_DATABASES:
+            return GetServer()->GetCreatePrivilege();
         case PG_CASTS:
         case PG_LANGUAGES:
         case PG_SCHEMAS:
+            return GetDatabase()->GetCreatePrivilege();
         case PG_AGGREGATES:
         case PG_CONVERSIONS:
         case PG_DOMAINS:
         case PG_FUNCTIONS:
         case PG_TRIGGERFUNCTIONS:
         case PG_OPERATORS:
-        case PG_OPERATORCLASSES:
         case PG_SEQUENCES:
         case PG_TABLES:
         case PG_TYPES:
@@ -134,7 +136,8 @@ bool pgCollection::CanCreate()
         case PG_INDEXES:
         case PG_RULES:
         case PG_TRIGGERS:
-            return true;
+            return GetSchema()->GetCreatePrivilege();
+        case PG_OPERATORCLASSES:
         default:
             return false;
     }

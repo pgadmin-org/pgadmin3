@@ -42,7 +42,8 @@ public:
     bool GetOpcDefault() const { return opcDefault; }
     void iSetOpcDefault(const bool b) { opcDefault=b; }
 
-    bool CanDrop() { return true; }
+    bool CanCreate() { return false; }
+    bool CanEdit() { return false; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("sql-createopclass.html"); }
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);

@@ -32,7 +32,8 @@ pgView::~pgView()
 wxMenu *pgView::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
-    AppendMenu(menu, PG_RULE);
+    if (schema->GetCreatePrivilege())
+        AppendMenu(menu, PG_RULE);
     return menu;
 }
 

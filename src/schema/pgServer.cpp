@@ -37,7 +37,8 @@ pgServer::pgServer(const wxString& newName, const wxString& newDatabase, const w
 	// Because we need to delete it later
 	conn = NULL;
     trusted=_trusted;
-
+    superUser=false;
+    createPrivilege=false;
 }
 
 pgServer::~pgServer()
@@ -122,6 +123,13 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
         if (conn->GetVersionNumber() >= SERVER_MIN_VERSION)
         {
             connected = TRUE;
+            pgSet *set=ExecuteSet(wxT("SELECT usecreatedb, usesuper from pg_user where usename=current_user"));
+            if (set)
+            {
+                iSetCreatePrivilege(set->GetBool(wxT("usecreatedb")));
+                iSetSuperUser(set->GetBool(wxT("usesuper")));
+                delete set;
+            }
         }
         else
         {

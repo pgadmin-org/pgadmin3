@@ -65,9 +65,6 @@ public:
     long GetInheritedCount() const { return inheritedCount; }
     void iSetInheritedCount(const long l) { inheritedCount=l; }
 
-    bool CanCreate() { return true; }
-    bool CanEdit() { return true; }
-    bool CanDrop() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool GetSystemObject() const { return colNumber < 0; }
     wxString GetSql(wxTreeCtrl *browser);

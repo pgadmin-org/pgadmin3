@@ -166,6 +166,10 @@ public:
     void iSetServer(pgServer *s) { server=s; }
     pgServer *GetServer() { return server; }
 
+    bool CanCreate();
+    bool CanDrop();
+    bool CanEdit() { return true; }
+
 protected:
     pgServer *server;
 };
@@ -180,6 +184,10 @@ public:
 
     pgDatabase *GetDatabase() const {return database; }
     void iSetDatabase(pgDatabase *newDatabase) { database = newDatabase; }
+
+    bool CanDrop();
+    bool CanEdit() { return true; }
+    bool CanCreate();
 
 protected:
     pgDatabase *database;
@@ -198,6 +206,10 @@ public:
         { wxLogInfo(wxT("Destroying a pg") + GetTypeName() + wxT(" object")); }
 
     bool GetSystemObject() const;
+
+    bool CanDrop();
+    bool CanEdit() { return true; }
+    bool CanCreate();
 
     void SetSchema(pgSchema *newSchema) { schema = newSchema; }
     pgSchema *GetSchema() const {return schema; }
