@@ -193,7 +193,7 @@ pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *bro
     pgOperatorClass *operatorClass=0;
 
     pgSet *operatorClasses= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT op.oid, op.*, it.typname as intypename, dt.typname as keytypename, amname\n")
+        wxT("SELECT op.oid, op.*, pg_get_userbyid(op.opcowner) as opowner, it.typname as intypename, dt.typname as keytypename, amname\n")
         wxT("  FROM pg_opclass op\n")
         wxT("  JOIN pg_am am ON am.oid=opcamid\n")
         wxT("  JOIN pg_type it ON it.oid=opcintype\n")
@@ -210,7 +210,7 @@ pgObject *pgOperatorClass::ReadObjects(pgCollection *collection, wxTreeCtrl *bro
                         collection->GetSchema(), operatorClasses->GetVal(wxT("opcname")));
 
             operatorClass->iSetOid(operatorClasses->GetOid(wxT("oid")));
-            operatorClass->iSetOwner(operatorClasses->GetVal(wxT("opcowner")));
+            operatorClass->iSetOwner(operatorClasses->GetVal(wxT("opowner")));
             operatorClass->iSetAccessMethod(operatorClasses->GetVal(wxT("amname")));
             operatorClass->iSetInType(operatorClasses->GetVal(wxT("intypename")));
             operatorClass->iSetKeyType(operatorClasses->GetVal(wxT("keytypename")));
