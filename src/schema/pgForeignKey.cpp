@@ -42,14 +42,13 @@ bool pgForeignKey::DropObject(wxFrame *frame, wxTreeCtrl *browser, bool cascaded
 wxString pgForeignKey::GetDefinition()
 {
     wxString sql;
-    // MATCH FULL/PARTIAL missing; where is this stored?!?
 
     sql = wxT("(") + GetQuotedFkColumns()
         +  wxT(")\n      REFERENCES ") + GetQuotedSchemaPrefix(GetRefSchema()) + qtIdent(GetReferences()) 
         +  wxT(" (") + GetQuotedRefColumns()
         +  wxT(")");
     
-    if (GetDatabase()->BackendMinimumVersion(7, 4))
+    if (GetDatabase()->BackendMinimumVersion(7, 4) || GetMatch() == wxT("FULL"))
         sql += wxT(" MATCH ") + GetMatch();
 
     sql += wxT("\n      ON UPDATE ") + GetOnUpdate()

@@ -107,7 +107,7 @@ public:
     void SetSQLFont(const wxFont &font) { sqlFont = font; }
     wxString GetCanonicalLanguage() const { return canonicalLanguage; }
 
-    bool Write(const wxString &key, const wxString &value) { return wxConfig::Write(key, value); }
+    bool Write(const wxString &key, const wxChar *value) { return wxConfig::Write(key, value); }
     bool Write(const wxString &key, long value) { return wxConfig::Write(key, value); }
     bool Write(const wxString &key, int value) { return wxConfig::Write(key, value); }
     bool Write(const wxString &key, bool value);

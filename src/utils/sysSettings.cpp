@@ -207,7 +207,7 @@ bool sysSettings::Read(const wxString& key, bool *val, bool defaultVal) const
 
 bool sysSettings::Write(const wxString &key, bool value)
 {
-    Write(key, BoolToStr(value));
+    return Write(key, BoolToStr(value));
 }
 
 bool sysSettings::Write(const wxString &key, const wxPoint &value)
