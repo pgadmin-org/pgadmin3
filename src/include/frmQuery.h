@@ -78,7 +78,7 @@ private:
     wxString title;
     wxString lastFilename, lastDir, lastPath;
 
-    bool changed, aborted;
+    bool changed, loaded, aborted;
     bool lastFileFormat;
 
     DECLARE_EVENT_TABLE()

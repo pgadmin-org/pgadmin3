@@ -140,9 +140,10 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
     pgFunction *function=0;
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
-            wxT("SELECT pr.oid, pr.*, TYP.typname, lanname, pg_get_userbyid(proowner) as funcowner, description\n")
+            wxT("SELECT pr.oid, pr.*, TYP.typname, TYPNS.nspname AS typnsp, lanname, pg_get_userbyid(proowner) as funcowner, description\n")
             wxT("  FROM pg_proc pr\n")
             wxT("  JOIN pg_type TYP ON TYP.oid=prorettype\n")
+            wxT("  JOIN pg_namespace TYPNS ON TYPNS.oid=TYP.typnamespace\n")
             wxT("  JOIN pg_language LNG ON LNG.oid=prolang\n")
             wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=pr.oid\n")
             + restriction +
@@ -164,7 +165,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
             function->iSetAcl(functions->GetVal(wxT("proacl")));
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
-            function->iSetReturnType(functions->GetVal(wxT("typname")));
+            function->iSetReturnType(obj->GetDatabase()->GetSchemaPrefix(functions->GetVal(wxT("typnsp"))) + functions->GetVal(wxT("typname")));
             function->iSetComment(functions->GetVal(wxT("description")));
             wxString oids=functions->GetVal(wxT("proargtypes"));
             function->iSetArgTypeOids(oids);
