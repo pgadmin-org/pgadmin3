@@ -22,7 +22,7 @@ div.Section1
 <h3>Translation guidelines</h3>
 
 <p>
-	Traditionaly, it is hard to translate strings dealing with database technologies. We will first try to outline the difficulties of translation, before proposing writer and translator guidelines.
+	Traditionally, it is hard to translate strings dealing with database technologies. We will first try to outline the difficulties of translation, before proposing writer and translator guidelines.
 </p>
 
 <h3>Translation problems</h3>
@@ -34,11 +34,11 @@ div.Section1
 	Sometimes, the border between the SQL language and the English language is not obvious, because SQL was designed to be close as possible to natural language. For example, there are three possible translations for "Create View" into French, depending on the context: "Créer vue" or "Create View" or "Créer Vue".
 </p>
 
-<p>The difficulty for the user is to keep in mind the correspondance between English and translated words. In our example "View" is translated into "Vue", which is an easy correspondance (called "translation pair" afterwards). But with dozens of translation pairs like "Trigger/Déclancheur", "Row/Ligne", "Column/Colonne", you need to keep in mind many informations and turn yourself into a translator, which was not the aim of the translation.
+<p>The difficulty for the user is to keep in mind the correspondence between English and translated words. In our example "View" is translated into "Vue", which is an easy correspondence (called "translation pair" afterwards). But with dozens of translation pairs like "Trigger/Déclancheur", "Row/Ligne", "Column/Colonne", you need to keep in mind many informations and turn yourself into a translator, which was not the aim of the translation.
 </p>
 
 <p>
-  In some languages, translations of SQL keywords and database objects do not exist yet, because the community of users is not large enought to define a language consensus. In such cases, translators try to innovate, creating translated words which enrich vocabulary but do not clarify the software interface. The problem is that other translators may not be aware of the new vocabulary, trying to impose their own translation choices.
+  In some languages, translations of SQL keywords and database objects do not exist yet, because the community of users is not large enough to define a language consensus. In such cases, translators try to innovate, creating translated words which enrich vocabulary but do not clarify the software interface. The problem is that other translators may not be aware of the new vocabulary, trying to impose their own translation choices.
 </p>
 
 <p>
@@ -46,11 +46,11 @@ div.Section1
 </p>
 
 <p>
-	Also, we should keep in mind that English has very few grammar rules compared to other European languages, which have complex cases (feminin/neutral/masculin) and derivation (nominative, accusative, dative, etc...). Non-european languages sometimes do not have verbs, adjectives and others aggregate nouns. This causes many translations problems when programmers try to build sentences like "Create new %s" to handle cases like "Create a new View", "Create a new Table", etc... Let's study this example in more details:
+	Also, we should keep in mind that English has very few grammar rules compared to other European languages, which have complex cases (feminine/neutral/masculine) and derivation (nominative, accusative, dative, etc...). Non-European languages sometimes do not have verbs, adjectives and others aggregate nouns. This causes many translations problems when programmers try to build sentences like "Create new %s" to handle cases like "Create a new View", "Create a new Table", etc... Let's study this example in more details:
 </p>
 
 <ul>
-	<li>"Create a new %s" is translated into French by "Créer nouveau/nouvelle %s" to handle feminin/masculin cases, which is not very obvious. In German, "%s" will not be replaced safely by a noun, because it must be derivated in accusative case. In several European languages, the replacement of "%s" by a noun may fail.
+	<li>"Create a new %s" is translated into French by "Créer nouveau/nouvelle %s" to handle feminine/masculine cases, which is not very obvious. In German, "%s" will not be replaced safely by a noun, because it must be derivated in accusative case. In several European languages, the replacement of "%s" by a noun may fail.
   <li>Some aggregative languages will not express the two words "new %s" separately but will join them, either writing "%snew" or "new%s" in a single noun, with derivation and cases. Hungarian is an example where "%s" constructions will sometimes fail.
  <li>Also, in non-European languages, adjectives like "new" or verbs like "create" may not exist and be expressed by a suffix or a prefix. In such cases, translating "Create a new %s" is simply impossible.
  </li>
