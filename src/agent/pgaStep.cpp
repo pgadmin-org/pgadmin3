@@ -74,7 +74,7 @@ pgObject *pgaStep::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgCollection *obj=(pgCollection*)browser->GetItemData(parentItem);
         if (obj->GetType() == PGA_STEPS)
-            Step = ReadObjects(obj, 0);
+            Step = ReadObjects(obj, 0, wxT("\n   AND jstid=") + NumToStr(GetRecId()));
     }
     return Step;
 }

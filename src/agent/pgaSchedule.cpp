@@ -80,7 +80,7 @@ pgObject *pgaSchedule::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgCollection *obj=(pgCollection*)browser->GetItemData(parentItem);
         if (obj->GetType() == PGA_SCHEDULES)
-            schedule = ReadObjects(obj, 0);
+            schedule = ReadObjects(obj, 0, wxT("\n   AND jscid=") + NumToStr(GetRecId()));
     }
     return schedule;
 }

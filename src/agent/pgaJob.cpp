@@ -107,7 +107,7 @@ pgObject *pgaJob::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
     {
         pgObject *obj=(pgObject*)browser->GetItemData(parentItem);
         if (obj->GetType() == PGA_JOBS)
-            job = ReadObjects((pgCollection*)obj, 0);
+            job = ReadObjects((pgCollection*)obj, 0, wxT("\n   WHERE j.jobid=") + NumToStr(GetRecId()));
     }
     return job;
 }
