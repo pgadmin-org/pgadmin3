@@ -467,7 +467,6 @@ void frmMain::StoreServers()
     wxLogInfo(wxT("Storing listed servers for later..."));
 
     // Store the currently listed servers for later retrieval.
-    extern sysSettings *settings;
 
     // Write the individual servers
     // Iterate through all the child nodes of the Servers node
@@ -488,6 +487,9 @@ void frmMain::StoreServers()
             // Hostname
             key.Printf("Servers/Server%d", numServers);
             settings->Write(key, server->GetName());
+
+            key.Printf("Servers/Description%d", numServers);
+            settings->Write(key, server->GetDescription());
 
             // Port
             key.Printf("Servers/Port%d", numServers);
@@ -527,13 +529,11 @@ void frmMain::RetrieveServers()
     // Retrieve previously stored servers
     wxLogInfo(wxT("Reloading servers..."));
 
-    extern sysSettings *settings;
-
     int numServers;
     settings->Read(wxT("Servers/Count"), &numServers, 0);
 
     int loop, port;
-    wxString key, servername, database, username, lastDatabase, lastSchema;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema;
     pgServer *server;
 
     for (loop = 1; loop <= numServers; ++loop) {
@@ -541,6 +541,10 @@ void frmMain::RetrieveServers()
         // Server
         key.Printf("Servers/Server%d", loop);
         settings->Read(key, &servername, wxT(""));
+
+        // Comment
+        key.Printf("Servers/Description%d", loop);
+        settings->Read(key, &description, wxT(""));
 
         // Port
         key.Printf("Servers/Port%d", loop);
@@ -564,9 +568,10 @@ void frmMain::RetrieveServers()
 
         // Add the Server node
         server = new pgServer(servername, database, username, port);
-        server->SetLastDatabase(lastDatabase);
-        server->SetLastSchema(lastSchema);
-        browser->AppendItem(servers, server->GetIdentifier(), PGICON_SERVERBAD, -1, server);
+        server->iSetDescription(description);
+        server->iSetLastDatabase(lastDatabase);
+        server->iSetLastSchema(lastSchema);
+        browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
     }
 
     // Reset the Servers node text
@@ -574,6 +579,7 @@ void frmMain::RetrieveServers()
     label.Printf(wxT("Servers (%d)"), browser->GetChildrenCount(servers, FALSE));
     browser->SetItemText(servers, label);
 }
+
 
 void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool vacuum)
 {
