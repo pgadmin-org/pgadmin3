@@ -1090,7 +1090,6 @@ BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
 END_EVENT_TABLE();
 
 
-
 dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privList, char *privChar)
         : dlgProperty(frame, resName)
 {
@@ -1129,13 +1128,15 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                     if (name.Left(6).IsSameAs(wxT("group "), false))
                     {
                         icon = PGICON_GROUP;
-                        name = wxT("group ") + name.Mid(6);
+                        name = wxT("group ") + qtStrip(name.Mid(6));
                     }
                     else if (name.IsEmpty())
                     {
                         icon = PGICON_PUBLIC;
                         name=wxT("public");
                     }
+                    else
+                        name = qtStrip(name);
 
                     securityPage->lbPrivileges->AppendItem(icon, name, value);
                     currentAcl.Add(name + wxT("=") + value);

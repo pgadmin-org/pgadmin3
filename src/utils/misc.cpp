@@ -288,6 +288,15 @@ wxString qtIdent(const wxString& value)
 }
 
 
+wxString qtStrip(const wxString &str)
+{
+    if (str.Left(2) == wxT("\\\""))
+        return str.Mid(2, str.Length()-4);
+    else
+        return str;
+}
+
+
 void FillArray(wxArrayString &array, const wxString &list)
 {
     const wxChar *cp=list.c_str();
