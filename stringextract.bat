@@ -10,6 +10,7 @@ REM # and create gettext template file
 REM #
 REM #######################################################################
 
+copy pgadmin3-release.pot pgadmin3.pot
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/*.cpp
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/include/*.h
 xgettext -k_ -k__ -j -s -o pgadmin3.pot src/db/*.cpp
