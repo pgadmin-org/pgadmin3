@@ -113,7 +113,8 @@ include/images/trigger.xpm include/images/type.xpm \
 include/images/unique.xpm include/images/unknown.xpm \
 include/images/user.xpm include/images/vacuum.xpm \
 include/images/viewdata.xpm include/images/view.xpm \
-ui/de_DE/pgadmin3.po ui/fr_FR/pgadmin3.po
+ui/de_DE/pgadmin3.po ui/de_DE/pgadmin.mo \
+ui/fr_FR/pgadmin3.po ui/fr_FR/pgadmin.mo
 
 nobase_dist_pkgdata_DATA = tips.txt ui/common/*.xrc
 
