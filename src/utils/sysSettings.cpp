@@ -32,11 +32,6 @@ extern wxString docPath;
 
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
-	// Keith 2003.03.05
-	// Can't do this because the logger is set up *after* syssettings
-	// so nothing will be logged, and it causes a memory leak
-    // wxLogInfo(wxT("Creating sSettings object and loading settings"));
-
     // Tip Of The Day
     Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, TRUE); 
     Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
@@ -181,7 +176,7 @@ wxSize sysSettings::Read(const wxString& key, const wxSize &defaultVal) const
 void sysSettings::SetShowTipOfTheDay(const bool newval)
 {
     showTipOfTheDay = newval;
-    Write(wxT("NextTipOfTheDay"), nextTipOfTheDay);
+    Write(wxT("NextTipOfTheDay"), showTipOfTheDay);
 }
 
 void sysSettings::SetNextTipOfTheDay(const int newval)
