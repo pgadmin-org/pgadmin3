@@ -512,7 +512,15 @@ void frmQuery::showMessage(const wxString& msg, const wxString &msgShort)
 void frmQuery::execQuery(const wxString &query, const bool singleResult, const int queryOffset)
 {
     setTools(true);
+
+    bool wasChanged = changed;
     sqlQuery->MarkerDeleteAll(0);
+    if (!wasChanged)
+    {
+        changed=false;
+        setExtendedTitle();
+    }
+
     aborted=false;
     
     if (sqlResult->Execute(query) >= 0)
@@ -568,7 +576,13 @@ void frmQuery::execQuery(const wxString &query, const bool singleResult, const i
                         line++;
                     if (line < maxLine)
                     {
+                        wasChanged=changed;
                         sqlQuery->MarkerAdd(line, 0);
+                        if (!wasChanged)
+                        {
+                            changed=false;
+                            setExtendedTitle();
+                        }
                         sqlQuery->EnsureVisible(line);
                     }
                 }
