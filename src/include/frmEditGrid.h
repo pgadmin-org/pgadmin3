@@ -59,7 +59,7 @@ public:
     wxString Quote(const wxString &value);
     OID type;
     long typlen, typmod;
-    wxString name, typeName;
+    wxString name, typeName, typeNspName;
     bool numeric, isPrimaryKey, needResize;
 };
 

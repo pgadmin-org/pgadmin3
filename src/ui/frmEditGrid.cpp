@@ -1153,11 +1153,13 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
 
     pgSet *colSet=connection->ExecuteSet(
-        wxT("SELECT nspname, relname, t.typname, attname, COALESCE(b.oid, t.oid) AS basetype, atthasdef, adsrc,\n")
+        wxT("SELECT n.nspname AS nspname, relname, t.typname, nt.nspname AS typnspname, ")
+               wxT("attname, COALESCE(b.oid, t.oid) AS basetype, atthasdef, adsrc,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.atttypmod else t.typtypmod END AS typmod,\n")
         wxT("       CASE WHEN t.typbasetype::oid=0 THEN att.attlen else t.typlen END AS typlen\n")
         wxT("  FROM pg_attribute att\n")
         wxT("  JOIN pg_type t ON t.oid=att.atttypid\n")
+        wxT("  JOIN pg_namespace nt ON nt.oid=t.typnamespace\n")
         wxT("  JOIN pg_class c ON c.oid=attrelid\n")
         wxT("  JOIN pg_namespace n ON n.oid=relnamespace\n")
         wxT("  LEFT OUTER JOIN pg_type b ON b.oid=t.typbasetype\n")
@@ -1184,6 +1186,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
             columns[i].name = colSet->GetVal(wxT("attname"));
             columns[i].typeName = colSet->GetVal(wxT("typname"));
+            columns[i].typeNspName = colSet->GetVal(wxT("typnspname"));
 
             columns[i].type = (Oid)colSet->GetOid(wxT("basetype"));
             if ((columns[i].type == PGOID_TYPE_INT4 || columns[i].type == PGOID_TYPE_INT8)
@@ -1288,6 +1291,9 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
     }
     else
     {
+        // um, we never should reach here because this would mean 
+        // that datatypes are unreadable.
+        // *if* we reach here, namespace info is missing.
         for (i=0 ; i < nCols ; i++)
         {
             columns[i].typeName = thread->DataSet()->ColType(i);
@@ -1464,7 +1470,8 @@ wxString sqlTable::MakeKey(cacheLine *line)
             if (!where.IsEmpty())
                 where += wxT(" AND ");
             where += qtIdent(columns[cn-1].name) + wxT(" = ") 
-                  + qtString(colval) + wxT("::") + qtIdent(columns[cn-1].typeName);
+                  + qtString(colval) + wxT("::") + qtIdent(columns[cn-1].typeNspName)
+                                     + wxT(".") + qtIdent(columns[cn-1].typeName);
         }
     }
     return where;
@@ -1846,7 +1853,7 @@ wxString sqlCellAttr::Quote(const wxString& value)
     else
         str=qtString(value);
 
-    return str + wxT("::") + typeName;
+    return str + wxT("::") + qtIdent(typeNspName) + wxT(".") + qtIdent(typeName);
 }
 
 
