@@ -40,12 +40,12 @@ static void pgNoticeProcessor(void *arg, const char *message)
 
 
 pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode)
-: conv(wxConvLibc)
 {
     wxLogInfo(wxT("Creating pgConn object"));
     wxString msg, hostip;
 
-    conv = wxConvLibc;
+    conv = &wxConvLibc;
+    needColQuoting = false;
 
     // Check the hostname/ipaddress
     struct hostent *host;
@@ -142,25 +142,23 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
             wxT("  FROM pg_database WHERE datname=") + qtString(database));
         if (set)
         {
+            if (set->ColNumber(wxT("\"datlastsysoid\"")) >= 0)
+                needColQuoting = true;
+
             lastSystemOID = set->GetLong(wxT("datlastsysoid"));
+            wxString encoding = set->GetVal(wxT("encoding"));
 
 #if wxUSE_UNICODE
-
-            if (set->GetVal(wxT("encoding")) != wxT("SQL_ASCII"))
+            if (encoding != wxT("SQL_ASCII"))
             {
-                wxLogInfo(wxT("Setting client_encoding to 'UNICODE'"));
-                if (PQsetClientEncoding(conn, "UNICODE"))
-                    wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), conv).c_str());
-                else
-                    conv = wxConvUTF8;
+                encoding = wxT("UNICODE");
+                conv = &wxConvUTF8;
             }
-#else
-
-            wxLogInfo(wxT("Setting client_encoding to 'SQL_ASCII'"));
-            if (PQsetClientEncoding(conn, "SQL_ASCII"))
-                wxLogError(wxT("%s"), PQerrorMessage(conn));
-
 #endif
+
+            wxLogInfo(wxT("Setting client_encoding to '%s'"), encoding.c_str());
+            if (PQsetClientEncoding(conn, encoding.ToAscii()))
+                wxLogError(wxT("%s"), PQerrorMessage(conn));
             
             delete set;
         }
@@ -199,7 +197,7 @@ void pgConn::RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg)
 
 void pgConn::Notice(const char *msg)
 {
-    wxString str(msg, conv);
+    wxString str(msg, *conv);
     wxLogNotice(wxT("%s"), str.c_str());
 
     if (noticeArg && noticeProc)
@@ -217,14 +215,14 @@ bool pgConn::ExecuteVoid(const wxString& sql)
     PGresult *qryRes;
 
     wxLogSql(wxT("Void query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.mb_str(conv));
+    qryRes = PQexec(conn, sql.mb_str(*conv));
     int res = PQresultStatus(qryRes);
 
     // Check for errors
     if (res != PGRES_TUPLES_OK &&
         res != PGRES_COMMAND_OK)
     {
-        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), conv).c_str());
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
     }
 
     // Cleanup & exit
@@ -249,12 +247,12 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxLogSql(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.mb_str(conv));
+    qryRes = PQexec(conn, sql.mb_str(*conv));
         
     // Check for errors
     if (PQresultStatus(qryRes) != PGRES_TUPLES_OK)
     {
-        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), conv).c_str());
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
         PQclear(qryRes);
         return wxEmptyString;
     }
@@ -269,7 +267,7 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
 	
 	// Retrieve the query result and return it.
     wxString result;
-    result=wxString(PQgetvalue(qryRes, 0, 0), conv);
+    result=wxString(PQgetvalue(qryRes, 0, 0), *conv);
 
     wxLogSql(wxT("Query result: %s"), result.c_str());
 
@@ -283,13 +281,13 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
     // Execute the query and get the status.
     PGresult *qryRes;
     wxLogSql(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.mb_str(conv));
+    qryRes = PQexec(conn, sql.mb_str(*conv));
 
     int status= PQresultStatus(qryRes);
 
     if (status == PGRES_TUPLES_OK || status == PGRES_COMMAND_OK)
     {
-        pgSet *set = new pgSet(qryRes, conn);
+        pgSet *set = new pgSet(qryRes, conn, *conv, needColQuoting);
         if (!set)
         {
             wxLogError(__("Couldn't create a pgSet object!"));
@@ -299,7 +297,7 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
     }
     else
     {
-        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), conv).c_str());
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
         PQclear(qryRes);
     }
 

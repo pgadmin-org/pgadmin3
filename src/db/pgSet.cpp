@@ -22,8 +22,11 @@
 #include "sysLogger.h"
 #include "pgDefs.h"
 
-pgSet::pgSet(PGresult *newRes, PGconn *newConn)
+pgSet::pgSet(PGresult *newRes, PGconn *newConn, wxMBConv &cnv, bool needColQt)
+: conv(cnv)
 {
+    needColQuoting = needColQt;
+
     wxLogInfo(wxT("Creating pgSet object"));
     conn = newConn;
     res = newRes;
@@ -119,7 +122,13 @@ wxString pgSet::ColName(int col) const
 
 int pgSet::ColNumber(const wxString &colname) const
 {
-    int col = PQfnumber(res, qtIdent(colname).ToAscii());
+    int col;
+    
+    if (needColQuoting)
+        col = PQfnumber(res, qtIdent(colname).mb_str(conv));
+    else
+        col = PQfnumber(res, colname.mb_str(conv));
+
     if (col < 0)
         wxLogError(__("Column not found in pgSet: ") + colname);
     return col;
@@ -173,6 +182,21 @@ bool pgSet::GetBool(const int col) const
 bool pgSet::GetBool(const wxString &col) const
 {
     return GetBool(ColNumber(col));
+}
+
+
+wxDateTime pgSet::GetDateTime(const int col) const
+{
+    wxDateTime dt;
+    wxString str=GetVal(col);
+    dt.ParseDateTime(str);
+    return dt;
+}
+
+
+wxDateTime pgSet::GetDateTime(const wxString &col) const
+{
+    return GetDateTime(ColNumber(col));
 }
 
 
@@ -250,7 +274,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
 }
 
 
-pgQueryThread::pgQueryThread(PGconn *_conn, const wxString &qry, int _resultToRetrieve) 
+pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &qry, int _resultToRetrieve) 
 : wxThread(wxTHREAD_JOINABLE)
 {
     query = qry;
@@ -259,8 +283,8 @@ pgQueryThread::pgQueryThread(PGconn *_conn, const wxString &qry, int _resultToRe
     result=0;
     resultToRetrieve=_resultToRetrieve;
     rc=-1;
-    PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
-    PQsetnonblocking(conn, 1);
+    PQsetNoticeProcessor(conn->conn, pgNoticeProcessor, this);
+    PQsetnonblocking(conn->conn, 1);
 }
 
 
@@ -299,7 +323,7 @@ int pgQueryThread::execute()
     wxLogSql(wxT("Thread Query %s"), query.c_str());
 
 
-    if (!PQsendQuery(conn, query.mb_str(wxConvUTF8)))
+    if (!PQsendQuery(conn->conn, query.mb_str(wxConvUTF8)))
         return(0);
 
     int resultsRetrieved=0;
@@ -310,15 +334,15 @@ int pgQueryThread::execute()
         {
             if (rc != -3)
             {
-                if (!PQrequestCancel(conn)) // could not abort; abort failed.
+                if (!PQrequestCancel(conn->conn)) // could not abort; abort failed.
                     return(-1);
 
                 rc = -3;
             }
         }
-        if (!PQconsumeInput(conn))
+        if (!PQconsumeInput(conn->conn))
             return(0);
-        if (PQisBusy(conn))
+        if (PQisBusy(conn->conn))
         {
             Yield();
             wxUsleep(10);
@@ -328,7 +352,7 @@ int pgQueryThread::execute()
         // If resultToRetrieve is given, the nth result will be returned, 
         // otherwise the last result set will be returned.
         // all others are discarded
-        PGresult *res=PQgetResult(conn);
+        PGresult *res=PQgetResult(conn->conn);
 
         startTime = wxGetLocalTimeMillis();
         if (!res)
@@ -357,7 +381,7 @@ int pgQueryThread::execute()
 
     if (rc == PGRES_TUPLES_OK)
     {
-        dataSet = new pgSet(result, conn);
+        dataSet = new pgSet(result, conn->conn, *conn->conv, conn->needColQuoting);
         dataSet->MoveFirst();
         dataSet->GetVal(0);
     }
