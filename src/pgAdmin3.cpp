@@ -68,18 +68,10 @@ bool pgAdmin3::OnInit()
 #endif
 
     // Setup the XML resources
-    wxString szXRC;
     wxXmlResource::Get()->InitAllHandlers();
-
-    // frmConnect
-    wxLogInfo(wxT("Loading frmConnect.xrc"));
-    szXRC.Printf("%s/frmConnect.xrc", XRC_PATH);
-    wxXmlResource::Get()->Load(szXRC);
-
-    // frmOptions
-    wxLogInfo(wxT("Loading frmOptions.xrc"));
-    szXRC.Printf("%s/frmOptions.xrc", XRC_PATH);
-    wxXmlResource::Get()->Load(szXRC);
+    LoadXrc(wxString("frmConnect.xrc"));
+    LoadXrc(wxString("frmOptions.xrc"));
+    LoadXrc(wxString("frmPassword.xrc"));
 
     // Set some defaults
 #ifdef __WXMSW__
@@ -149,4 +141,13 @@ void EndMsg()
 int wxCALLBACK ListSort(long itm1, long itm2, long sortData)
 {
     return itm1 < itm2;
+}
+
+void pgAdmin3::LoadXrc(const wxString szFile)
+{
+    wxString szMsg, szXRC;
+    szMsg.Printf(wxT("Loading %s"), szFile);
+    wxLogInfo(szMsg);
+    szXRC.Printf("%s/%s", XRC_PATH, szFile);
+    wxXmlResource::Get()->Load(szXRC);
 }

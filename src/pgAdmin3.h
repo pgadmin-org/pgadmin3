@@ -35,6 +35,9 @@ class pgAdmin3 : public wxApp
 public:
     virtual bool OnInit();
     virtual int OnExit();
+
+private:
+    void LoadXrc(const wxString szFile);
 };
 
 // Global Stuff

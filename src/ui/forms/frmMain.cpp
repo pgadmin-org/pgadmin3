@@ -28,6 +28,7 @@
 #include "frmAbout.h"
 #include "frmConnect.h"
 #include "frmOptions.h"
+#include "frmPassword.h"
 #include "frmUpgradeWizard.h"
 #include "../controls/ctlSQLBox.h"
 #include "../../db/pg/pgConn.h"
@@ -86,6 +87,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_ADDSERVER, frmMain::OnAddServer)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
     EVT_MENU(MNU_OPTIONS, frmMain::OnOptions)
+    EVT_MENU(MNU_PASSWORD, frmMain::OnPassword)
     EVT_MENU(MNU_TIPOFTHEDAY, frmMain::OnTipOfTheDay)
     EVT_MENU(MNU_UPGRADEWIZARD, frmMain::OnUpgradeWizard)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER, frmMain::OnSelChanged)
@@ -296,6 +298,12 @@ void frmMain::OnOptions(wxCommandEvent& event)
 {
     frmOptions *winOptions = new frmOptions(this);
     winOptions->Show(TRUE);
+}
+
+void frmMain::OnPassword(wxCommandEvent& event)
+{
+    frmPassword *winPassword = new frmPassword(this);
+    winPassword->Show(TRUE);
 }
 
 void frmMain::OnAddServer()
