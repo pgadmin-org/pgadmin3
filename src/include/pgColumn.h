@@ -76,6 +76,7 @@ public:
     wxString GetSql(wxTreeCtrl *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("sql-createtable.html"); }
 
+    virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop(); }
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:

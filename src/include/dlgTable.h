@@ -34,6 +34,10 @@ private:
     pgColumn *column;
     void OnChange(wxNotifyEvent &ev);
 
+    void OnAddTable(wxNotifyEvent &ev);
+    void OnRemoveTable(wxNotifyEvent &ev);
+    void OnSelChangeTable(wxListEvent &ev);
+
     void OnAddCol(wxNotifyEvent &ev);
     void OnRemoveCol(wxNotifyEvent &ev);
     void OnSelChangeCol(wxListEvent &ev);
@@ -47,6 +51,7 @@ private:
     bool hasPK;
 
     wxArrayString previousColumns, previousConstraints;
+    wxArrayString tableOids, inheritedTableOids;
     wxTreeItemId columnsItem, constraintsItem;
 
     DECLARE_EVENT_TABLE();

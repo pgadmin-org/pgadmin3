@@ -36,6 +36,10 @@
 #define cbOwner         CTRL("cbOwner",         wxComboBox)
 #define stHasOids       CTRL("stHasOids",       wxStaticText)
 #define chkHasOids      CTRL("chkHasOids",      wxCheckBox)
+#define lbTables        CTRL("lbTables",        wxListBox)
+#define btnAddTable     CTRL("btnAddTable",     wxButton)
+#define btnRemoveTable  CTRL("btnRemoveTable",  wxButton)
+#define cbTables        CTRL("cbTables",        wxComboBox)
 
 #define btnAddCol       CTRL("btnAddCol"        wxButton)
 #define btnChangeCol    CTRL("btnChangeCol",     wxButton)
@@ -51,6 +55,9 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgTable::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgTable::OnChange)
     EVT_COMBOBOX(XRCID("cbOwner"),                  dlgTable::OnChange)
+    EVT_BUTTON(XRCID("btnAddTable"),                dlgTable::OnAddTable)
+    EVT_BUTTON(XRCID("btnRemoveTable"),             dlgTable::OnRemoveTable)
+    EVT_LISTBOX(XRCID("lbTables"),                  dlgTable::OnSelChangeTable)
 
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgTable::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgTable::OnRemoveCol)
@@ -70,10 +77,12 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
     column=0;
 
     txtOID->Disable();
+    btnRemoveTable->Disable();
 
     CreateListColumns(lstColumns, _("Column name"), _("Definition"), 150);
-    CreateListColumns(lstConstraints, _("Constraint name"), _("Definition"), 150);
+    lstColumns->InsertColumn(2, wxT("Inherited from table"), wxLIST_FORMAT_LEFT, 0);
 
+    CreateListColumns(lstConstraints, _("Constraint name"), _("Definition"), 150);
 }
 
 
@@ -100,6 +109,15 @@ int dlgTable::Go(bool modal)
         chkHasOids->SetValue(table->GetHasOids());
 
         cbOwner->SetValue(table->GetOwner());
+
+        wxArrayString qitl=table->GetQuotedInheritedTablesList();
+        size_t i;
+        for (i=0 ; i < qitl.GetCount() ; i++)
+            lbTables->Append(qitl.Item(i));
+
+        btnAddTable->Disable();
+        lbTables->Disable();
+        cbTables->Disable();
 
         txtOID->Disable();
         stHasOids->Disable();
@@ -142,9 +160,13 @@ int dlgTable::Go(bool modal)
 
                     if (column->GetColNumber() > 0)
                     {
-                        AppendListItem(lstColumns, column->GetName(), column->GetDefinition(), column->GetIcon());
+                        bool inherited = (column->GetInheritedCount() != 0);
+                        int pos=AppendListItem(lstColumns, column->GetName(), column->GetDefinition(), 
+                            (inherited ? PGICON_TABLE : column->GetIcon()));
                         previousColumns.Add(column->GetQuotedIdentifier() 
                             + wxT(" ") + column->GetDefinition());
+                        if (inherited)
+                            lstColumns->SetItem(pos, 2, _("Inherited"));
                     }
                 }
                 
@@ -204,6 +226,32 @@ int dlgTable::Go(bool modal)
     else
     {
         // create mode
+
+        wxString systemRestriction;
+        if (!settings->GetShowSystemObjects())
+        systemRestriction = 
+            wxT("   AND n.oid >= 100\n")
+            wxT("   AND n.nspname NOT LIKE 'pg\\_temp\\_%'\n");
+
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT c.oid, c.relname , nspname\n")
+            wxT("  FROM pg_class c\n")
+            wxT("  JOIN pg_namespace n ON n.oid=c.relnamespace\n")
+            wxT(" WHERE relkind='r'\n")
+            + systemRestriction +
+            wxT(" ORDER BY relnamespace, c.relname"));
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                cbTables->Append(qtIdent(set->GetVal(wxT("nspname")))
+                        +wxT(".")+qtIdent(set->GetVal(wxT("relname"))));
+
+                tableOids.Add(set->GetVal(wxT("oid")));
+                set->MoveNext();
+            }
+            delete set;
+        }
     }
 
     FillConstraint();
@@ -323,15 +371,24 @@ wxString dlgTable::GetSql()
             + wxT("\n(");
 
         int pos;
+        bool hadComma=false;
         for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
         {
-            if (pos)
-                sql += wxT(",");
-            wxString name=lstColumns->GetItemText(pos);
-            wxString definition = GetListText(lstColumns, pos, 1);
+            if (GetListText(lstColumns, pos, 2).IsEmpty())
+            {
+                // standard definition, not inherited
+                if (!hadComma)
+                {
+                    sql += wxT(", ");
+                    hadComma=true;
+                }
 
-            sql += wxT("\n   ") + qtIdent(name)
-                + wxT(" ") + definition;
+                wxString name=lstColumns->GetItemText(pos);
+                wxString definition = GetListText(lstColumns, pos, 1);
+
+                sql += wxT("\n   ") + qtIdent(name)
+                    + wxT(" ") + definition;
+            }
         }
 
         for (pos=0 ; pos < lstConstraints->GetItemCount() ; pos++)
@@ -339,15 +396,31 @@ wxString dlgTable::GetSql()
             wxString name=lstConstraints->GetItemText(pos);
             wxString definition = GetListText(lstConstraints, pos, 1);
 
-            sql += wxT(",\n   ");
+            if (!hadComma)
+            {
+                sql += wxT(",\n   ");
+                hadComma=true;
+            }
             AppendIfFilled(sql, wxT("CONSTRAINT "), qtIdent(name));
 
             sql += wxT(" ") + GetItemConstraintType(lstConstraints, pos) + wxT(" ") + definition;
         }
+        sql += wxT("\n) ");
 
+        if (lbTables->GetCount() > 0)
+        {
+            sql += wxT("\nINHERITS (");
 
-        sql += wxString(wxT("\n) ")) + (chkHasOids->GetValue() ? wxT("WITH") : wxT("WITHOUT"))
-            +  wxT(" OIDS;\n");
+            int i;
+            for (i=0 ; i < lbTables->GetCount() ; i++)
+            {
+                if (i)
+                    sql += wxT(", ");
+                sql += lbTables->GetString(i);
+            }
+            sql += wxT(")\n");
+        }
+        sql += (chkHasOids->GetValue() ? wxT("WITH OIDS;\n") : wxT("WITHOUT OIDS;\n"));
     }
     sql +=  GetGrant(wxT("arwdRxt"), wxT("TABLE ") + tabname);
 
@@ -400,9 +473,72 @@ void dlgTable::OnChange(wxNotifyEvent &ev)
         wxString name=GetName();
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
+        CheckValid(enable, lstColumns->GetItemCount() > 0, 
+            _("Please specify columns."));
         EnableOK(enable);
     }
+}
+
+
+void dlgTable::OnAddTable(wxNotifyEvent &ev)
+{
+    int sel=cbTables->GetSelection();
+    if (sel >= 0)
+    {
+        wxString tabname=cbTables->GetValue();
+        wxString taboid=tableOids.Item(sel);
+        inheritedTableOids.Add(taboid);
+        tableOids.RemoveAt(sel);
+
+        lbTables->Append(tabname);
+        cbTables->Delete(sel);
+
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT attname FROM pg_attribute WHERE NOT attisdropped AND attnum>0 AND attrelid=") + taboid);
+        if (set)
+        {
+            int row;
+            while (!set->Eof())
+            {
+                row=AppendListItem(lstColumns, set->GetVal(wxT("attname")), 
+                    wxString::Format(_("Inherited from table %s"), tabname.c_str()), PGICON_TABLE);
+                lstColumns->SetItem(row, 2, tabname);
+                set->MoveNext();
+            }
+            delete set;
+        }        
+        OnChange(ev);
+    }
+}
+
+
+void dlgTable::OnRemoveTable(wxNotifyEvent &ev)
+{
+    int sel=lbTables->GetSelection();
+    if (sel >= 0)
+    {
+        wxString tabname=lbTables->GetStringSelection();
+        tableOids.Add(inheritedTableOids.Item(sel));
+        inheritedTableOids.RemoveAt(sel);
+
+        lbTables->Delete(sel);
+        cbTables->Append(tabname);
+
+        size_t row=lstColumns->GetItemCount();
+        while (row--)
+        {
+            if (tabname == GetListText(lstColumns, row, 2))
+                lstColumns->DeleteItem(row);
+        }
+        OnChange(ev);
+    }
+    btnRemoveTable->Disable();
+}
+
+
+void dlgTable::OnSelChangeTable(wxListEvent &ev)
+{
+    btnRemoveTable->Enable();
 }
 
 
@@ -431,7 +567,9 @@ void dlgTable::OnRemoveCol(wxNotifyEvent &ev)
 
 void dlgTable::OnSelChangeCol(wxListEvent &ev)
 {
-    btnRemoveCol->Enable();
+    wxString inheritedFromTable=GetListText(lstColumns, GetListSelected(lstColumns), 2);
+    btnRemoveCol->Enable(inheritedFromTable.IsEmpty());
+    btnChangeCol->Enable(table != 0 && inheritedFromTable.IsEmpty());
 }
 
 

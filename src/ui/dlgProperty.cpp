@@ -608,12 +608,13 @@ void dlgProperty::CreateListColumns(wxListCtrl *list, const wxString &left, cons
 }
 
 
-void dlgProperty::AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon)
+int dlgProperty::AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon)
 {
     int pos=list->GetItemCount();
     list->InsertItem(pos, str1, icon);
     if (str2 != wxT(""))
         list->SetItem(pos, 1, str2);
+    return pos;
 }
 
 
@@ -782,7 +783,11 @@ int dlgCollistProperty::Go(bool modal)
         int pos;
         // iterate cols
         for (pos=0 ; pos < columns->GetItemCount() ; pos++)
-            cbColumns->Append(columns->GetItemText(pos));
+        {
+            wxString col=columns->GetItemText(pos);
+            if (cbColumns->FindString(col) < 0)
+                cbColumns->Append(col);
+        }
     }
     if (table)
     {

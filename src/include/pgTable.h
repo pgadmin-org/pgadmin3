@@ -48,6 +48,7 @@ public:
     long GetInheritedTableCount() { if (inheritedTableCount < 0) UpdateInheritance(); return inheritedTableCount; }
     wxString GetInheritedTables() { GetInheritedTableCount(); return inheritedTables; }
     wxString GetQuotedInheritedTables() { GetInheritedTableCount(); return quotedInheritedTables; }
+    wxArrayString GetQuotedInheritedTablesList() { GetInheritedTableCount(); return quotedInheritedTablesList; }
     bool GetHasSubclass() const { return hasSubclass; }
     void iSetHasSubclass(bool b) { hasSubclass = b; }
     void UpdateRows();
@@ -66,7 +67,8 @@ private:
     long rows, estimatedRows;
     bool hasOids, hasSubclass;
     long inheritedTableCount;
-    wxString inheritedTables, quotedInheritedTables, primaryKey, primaryKeyName, primaryKeyColNumbers;
+    wxString quotedInheritedTables, inheritedTables, primaryKey, primaryKeyName, primaryKeyColNumbers;
+    wxArrayString quotedInheritedTablesList;
 };
 
 #endif

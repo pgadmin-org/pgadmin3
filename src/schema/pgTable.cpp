@@ -233,11 +233,13 @@ void pgTable::UpdateInheritance()
         inheritedTables=wxT("");
         while (!props->Eof())
         {
-            if (inheritedTables != wxT(""))
+            if (inheritedTableCount)
                 inheritedTables += wxT(", ");
             inheritedTables += props->GetVal(wxT("relname"));
             quotedInheritedTables += qtIdent(props->GetVal(wxT("nspname")))
                     +wxT(".")+qtIdent(props->GetVal(wxT("relname")));
+            quotedInheritedTablesList.Add(qtIdent(props->GetVal(wxT("nspname")))
+                    +wxT(".")+qtIdent(props->GetVal(wxT("relname"))));
             props->MoveNext();
             inheritedTableCount++;
         }
@@ -335,7 +337,8 @@ void pgTable::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
 
         InsertListItem(properties, pos++, _("Inherits Tables"), GetHasSubclass());
         InsertListItem(properties, pos++, _("Inherited Tables Count"), GetInheritedTableCount());
-        InsertListItem(properties, pos++, _("Inherited Tables"), GetInheritedTables());
+        if (GetInheritedTableCount())
+            InsertListItem(properties, pos++, _("Inherited Tables"), GetInheritedTables());
         InsertListItem(properties, pos++, _("Has OIDs?"), GetHasOids());
         InsertListItem(properties, pos++, _("System Table?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());

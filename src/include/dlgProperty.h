@@ -53,7 +53,7 @@ protected:
     void EnableOK(bool enable);
 
     void CreateListColumns(wxListCtrl *list, const wxString &left, const wxString &right, int leftSize=100);
-    void AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon);
+    int AppendListItem(wxListCtrl *list, const wxString& str1, const wxString& str2, int icon);
 
     void CheckValid(bool &enable, const bool condition, const wxString &msg);
     static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type=-1);
