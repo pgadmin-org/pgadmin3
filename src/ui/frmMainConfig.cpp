@@ -481,7 +481,7 @@ void frmMainConfig::DisplayFile(const wxString &str)
     FillList(wxT("add_missing_from"));          // Version and Platform Compatibility / Previous PostgreSQL Version
     FillList(wxT("transform_null_equals"));     // Version and Platform Compatibility / Other Platforms and Clients
     FillList(wxT("trace_notify"));              // Developer Options
-    FillList(wxT("hba_conf"));                  // Ungrouped
+    FillList(wxT("hba_file"));                  // Ungrouped
 
 
     // for all we didn't get 
@@ -498,7 +498,7 @@ void frmMainConfig::DisplayFile(const wxString &str)
 void frmMainConfig::FillList(const wxString &categoryMember)
 {
     pgSettingItem *categoryItem = options[categoryMember];
-    wxASSERT(categoryItem);
+    wxASSERT_MSG(categoryItem, categoryMember.c_str());
 
     if (categoryItem)
     {
