@@ -83,7 +83,12 @@ off_t wxUtfFile::Read(wxString &str, off_t nCount)
             if (decr)
                 Seek(-decr, wxFromCurrent);
 
-            m_conversion->MB2WC((wchar_t*)(wxChar*)wxStringBuffer(str, nLen), (const char*)buffer, (size_t)(nLen+1));
+#if wxUSE_UNICODE
+            size_t buf_len = nLen;
+#else
+            size_t buf_len = nLen * sizeof(wchar_t);
+#endif
+            m_conversion->MB2WC((wchar_t*)(wxChar*)wxStringBuffer(str, buf_len), (const char*)buffer, (size_t)(nLen+1));
         }
         else
             str = (wxChar*)buffer;
