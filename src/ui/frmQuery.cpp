@@ -749,7 +749,7 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
             changed=false;
             setExtendedTitle();
             UpdateRecentFiles();
-            fileMenu->Enable(MNU_RECENT, ((recentFileMenu->GetMenuItemCount() > 0) ? true : false));
+            fileMenu->Enable(MNU_RECENT, (recentFileMenu->GetMenuItemCount() > 0));
         }
     }
     delete dlg;
@@ -839,7 +839,7 @@ void frmQuery::setTools(const bool running)
     queryMenu->Enable(MNU_EXPLAIN, !running);
     queryMenu->Enable(MNU_CANCEL, running);
     fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
-    fileMenu->Enable(MNU_RECENT, ((recentFileMenu->GetMenuItemCount() > 0) ? true : false));
+    fileMenu->Enable(MNU_RECENT, (recentFileMenu->GetMenuItemCount() > 0));
 }
 
 
