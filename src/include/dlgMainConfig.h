@@ -18,7 +18,7 @@
 // App headers
 #include "pgAdmin3.h"
 
-#include "pgConfig.h"
+#include "pgconfig.h"
 
 // Class declarations
 class dlgMainConfig : public DialogWithHelp

@@ -52,7 +52,7 @@ ui/dlgCheck.cpp ui/frmStatus.cpp utils/misc.cpp \
 ui/dlgHbaConfig.cpp ui/dlgMainConfig.cpp ui/frmUpdate.cpp \
 ui/frmConfig.cpp ui/frmHbaConfig.cpp ui/frmMainConfig.cpp \
 utils/sysLogger.cpp utils/sysSettings.cpp \
-utils/utffile.cpp \
+utils/utffile.cpp utils/pgconfig.cpp utils/update.cpp \
 ui/common/xrcDialogs.cpp
 
 noinst_HEADERS = include/copyright.h include/version.h include/ctlSQLBox.h \

@@ -15,7 +15,6 @@
 #include "pgAdmin3.h"
 
 #include "dlgHbaConfig.h"
-#include "pgConfig.h"
 #include "pgConn.h"
 #include "pgSet.h"
 

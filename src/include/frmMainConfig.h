@@ -12,7 +12,7 @@
 #ifndef FRMMAINCONFIG_H
 #define FRMMAINCONFIG_H
 
-#include "pgConfig.h"
+#include "pgconfig.h"
 #include "frmConfig.h"
 
 class ctlListView;

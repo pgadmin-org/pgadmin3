@@ -15,7 +15,6 @@
 #include "pgAdmin3.h"
 
 #include "dlgMainConfig.h"
-#include "pgConfig.h"
 
 
 // Icons

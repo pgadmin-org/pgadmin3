@@ -27,7 +27,6 @@
 #include "pgSet.h"
 #include "menu.h"
 #include "pgfeatures.h"
-#include "pgConfig.h"
 
 #define CTL_CFGVIEW 345
 
@@ -62,7 +61,7 @@ frmHbaConfig::frmHbaConfig(frmMain *parent, pgServer *server)
 
         wxString txt;
         txt.Printf(_(" - %s on %s (%s:%d)"),
-                serverFileName, server->GetDescription().c_str(), 
+                serverFileName.c_str(), server->GetDescription().c_str(), 
                 server->GetName().c_str(), server->GetPort());
         SetTitle(BACE_TITLE + txt);
 

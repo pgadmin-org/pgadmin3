@@ -163,6 +163,7 @@ class pgSettingReader
 public:
     virtual bool IsValid() = 0;
     virtual pgSettingItem *GetNextItem() = 0;
+    virtual ~pgSettingReader() {}
 };
 
 
