@@ -36,9 +36,9 @@ public:
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
     static void ShowStatistics(pgCollection *collection, ctlListView *statistics);
     
-    pgSet *ExecuteSet(const wxString& sql) { return conn->ExecuteSet(sql); }
-    wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
-    bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
+    pgSet *ExecuteSet(const wxString& sql);
+    wxString ExecuteScalar(const wxString& sql);
+    bool ExecuteVoid(const wxString& sql);
 
     wxString GetPrettyOption() const { return prettyOption; }
 
@@ -55,7 +55,7 @@ public:
     wxString GetSearchPath() const { return searchPath; }
     wxString GetSchemaPrefix(const wxString &schemaname) const;
     wxString GetQuotedSchemaPrefix(const wxString &schemaname) const;
-    bool GetConnected() const { return connected; }
+    bool GetConnected() const { return conn != 0; }
     bool GetSystemObject() const;
     long GetMissingFKs() const { return missingFKs; }
     
@@ -64,6 +64,7 @@ public:
     bool RequireDropConfirm() { return true; }
     pgConn *connection() { return conn; }
     int Connect();
+    void Disconnect();
     void AppendSchemaChange(const wxString &sql);
     wxString GetSchemaChanges() { return schemaChanges; }
     void ClearSchemaChanges() { schemaChanges=wxEmptyString; }
@@ -76,7 +77,7 @@ private:
     pgConn *conn;
     wxString searchPath, path, encoding, variables;
     wxString prettyOption;
-    bool allowConnections, connected, createPrivilege;
+    bool allowConnections, createPrivilege;
     long missingFKs;
 
     wxString schemaChanges;

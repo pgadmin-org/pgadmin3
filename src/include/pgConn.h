@@ -69,6 +69,9 @@ public:
     bool BackendMinimumVersion(int major, int minor);
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
     wxString SystemNamespaceRestriction(const wxString &nsp);
+
+    void LogError();
+
 #ifdef SSL
     bool IsSSLconnected();
 #endif

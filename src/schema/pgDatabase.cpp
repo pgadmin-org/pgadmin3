@@ -28,16 +28,15 @@ pgDatabase::pgDatabase(const wxString& newName)
     wxLogInfo(wxT("Creating a pgDatabase object"));
 
     allowConnections = TRUE;
-    connected = FALSE;
-	conn = NULL;
+    conn = NULL;
 }
 
 
 pgDatabase::~pgDatabase()
 {
     wxLogInfo(wxT("Destroying a pgDatabase object"));
-	if (conn)
-		delete conn;
+    if (conn)
+        delete conn;
 }
 
 
@@ -60,7 +59,7 @@ int pgDatabase::Connect()
     if (!allowConnections)
         return PGCONN_REFUSED;
 
-    if (connected)
+    if (conn)
         return conn->GetStatus();
     else
     {
@@ -68,7 +67,6 @@ int pgDatabase::Connect()
 		if (conn->GetStatus() == PGCONN_OK)
         {
             // Now we're connected.
-            connected = TRUE;
             iSetComment(conn->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
 
             // check for extended ruleutils with pretty-print option
@@ -82,10 +80,61 @@ int pgDatabase::Connect()
         }
         else
         {
+            delete conn;
+            conn=0;
 			wxLogError(wxT("%s"), conn->GetLastError().c_str());
             return PGCONN_BAD;
         }
     }
+}
+
+
+void pgDatabase::Disconnect()
+{
+#if 0
+    if (conn)
+        delete conn;
+    conn=0;
+#endif
+}
+
+
+pgSet *pgDatabase::ExecuteSet(const wxString& sql)
+{
+    pgSet *set=0;
+    if (conn)
+    {
+        set=conn->ExecuteSet(sql);
+        if (!set && conn->GetStatus() == PGCONN_BAD)
+            Disconnect();
+    }
+    return set;
+}
+
+
+wxString pgDatabase::ExecuteScalar(const wxString& sql)
+{
+    wxString str;
+    if (conn)
+    {
+        str = conn->ExecuteScalar(sql);
+        if (str.IsEmpty() && conn->GetStatus() == PGCONN_BAD)
+            Disconnect();
+    }
+    return str;
+}
+
+
+bool pgDatabase::ExecuteVoid(const wxString& sql)
+{
+    bool rc;
+    if (conn)
+    {
+        rc = conn->ExecuteVoid(sql);
+        if (!rc && conn->GetStatus() == PGCONN_BAD)
+            Disconnect();
+    }
+    return rc;
 }
 
 
@@ -144,12 +193,8 @@ void pgDatabase::AppendSchemaChange(const wxString &sql)
 
 bool pgDatabase::DropObject(wxFrame *frame, wxTreeCtrl *browser)
 {
-    if (conn)
-    {
-        delete conn;
-        conn=0;
-        connected = FALSE;
-    }
+    Disconnect();
+
     bool done=server->ExecuteVoid(wxT("DROP DATABASE ") + GetQuotedIdentifier() + wxT(";"));
     if (!done)
         Connect();

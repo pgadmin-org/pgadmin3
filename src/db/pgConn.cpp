@@ -191,7 +191,7 @@ extern void *PQgetssl(PGconn *conn);
 
 bool pgConn::IsSSLconnected()
 {
-    return (PQstatus(conn) == CONNECTION_OK && PQgetssl(conn) != NULL);
+    return (conn && PQstatus(conn) == CONNECTION_OK && PQgetssl(conn) != NULL);
 }
 #endif
 
@@ -225,6 +225,9 @@ void pgConn::Notice(const char *msg)
 
 bool pgConn::ExecuteVoid(const wxString& sql)
 {
+    if (GetStatus() != PGCONN_OK)
+        return false;
+
     // Execute the query and get the status.
     PGresult *qryRes;
 
@@ -236,7 +239,7 @@ bool pgConn::ExecuteVoid(const wxString& sql)
     if (res != PGRES_TUPLES_OK &&
         res != PGRES_COMMAND_OK)
     {
-        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
+        LogError();
     }
 
     // Cleanup & exit
@@ -258,63 +261,70 @@ bool pgConn::HasPrivilege(const wxString &objTyp, const wxString &objName, const
 
 wxString pgConn::ExecuteScalar(const wxString& sql)
 {
-    // Execute the query and get the status.
-    PGresult *qryRes;
-    wxLogSql(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.mb_str(*conv));
-        
-    // Check for errors
-    if (PQresultStatus(qryRes) != PGRES_TUPLES_OK)
+    wxString result;
+
+    if (GetStatus() == PGCONN_OK)
     {
-        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
+        // Execute the query and get the status.
+        PGresult *qryRes;
+        wxLogSql(wxT("Scalar query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
+        qryRes = PQexec(conn, sql.mb_str(*conv));
+        
+        // Check for errors
+        if (PQresultStatus(qryRes) != PGRES_TUPLES_OK)
+        {
+            LogError();
+            PQclear(qryRes);
+            return wxEmptyString;
+        }
+
+	    // Check for a returned row
+        if (PQntuples(qryRes) < 1)
+        {
+		    wxLogInfo(wxT("Query returned no tuples"));
+            PQclear(qryRes);
+            return wxEmptyString;
+	    }
+	    
+	    // Retrieve the query result and return it.
+        result=wxString(PQgetvalue(qryRes, 0, 0), *conv);
+
+        wxLogSql(wxT("Query result: %s"), result.c_str());
+
+        // Cleanup & exit
         PQclear(qryRes);
-        return wxEmptyString;
     }
 
-	// Check for a returned row
-    if (PQntuples(qryRes) < 1)
-    {
-		wxLogInfo(wxT("Query returned no tuples"));
-        PQclear(qryRes);
-        return wxEmptyString;
-	}
-	
-	// Retrieve the query result and return it.
-    wxString result;
-    result=wxString(PQgetvalue(qryRes, 0, 0), *conv);
-
-    wxLogSql(wxT("Query result: %s"), result.c_str());
-
-    // Cleanup & exit
-    PQclear(qryRes);
     return result;
 }
 
 pgSet *pgConn::ExecuteSet(const wxString& sql)
 {
     // Execute the query and get the status.
-    PGresult *qryRes;
-    wxLogSql(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
-    qryRes = PQexec(conn, sql.mb_str(*conv));
-
-    int status= PQresultStatus(qryRes);
-
-    if (status == PGRES_TUPLES_OK || status == PGRES_COMMAND_OK)
+    if (GetStatus() == PGCONN_OK)
     {
-        pgSet *set = new pgSet(qryRes, conn, *conv, needColQuoting);
-        if (!set)
+        PGresult *qryRes;
+        wxLogSql(wxT("Set query (%s:%d): %s"), this->GetHost().c_str(), this->GetPort(), sql.c_str());
+        qryRes = PQexec(conn, sql.mb_str(*conv));
+
+        int status= PQresultStatus(qryRes);
+
+        if (status == PGRES_TUPLES_OK || status == PGRES_COMMAND_OK)
         {
-            wxLogError(__("Couldn't create a pgSet object!"));
+            pgSet *set = new pgSet(qryRes, this, *conv, needColQuoting);
+            if (!set)
+            {
+                wxLogError(__("Couldn't create a pgSet object!"));
+                PQclear(qryRes);
+            }
+    	    return set;
+        }
+        else
+        {
+            LogError();
             PQclear(qryRes);
         }
-    	return set;
     }
-    else
-    {
-        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
-        PQclear(qryRes);
-    }
-
     return 0;
 }
 
@@ -322,13 +332,32 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
 // Info
 //////////////////////////////////////////////////////////////////////////
 
+
+void pgConn::LogError()
+{
+    if (conn)
+    {
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
+
+        ConnStatusType status = PQstatus(conn);
+        if (status == CONNECTION_BAD)
+        {
+            PQfinish(conn);
+            conn=0;
+        }
+    }
+}
+
+
 int pgConn::GetStatus() const
 {
-    if(resolvedIP) {
-	    return PQstatus(conn);
-    } else {
+    if(!resolvedIP)
         return PGCONN_DNSERR;
-    }
+    
+    if (!conn)
+        return PGCONN_BAD;
+    else
+        return PQstatus(conn);
 }
 
 
