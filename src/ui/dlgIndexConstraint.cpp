@@ -24,6 +24,7 @@
 
 
 
+#define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 #define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
 #define chkDeferred     CTRL_CHECKBOX("chkDeferred")
 #define stDeferred      CTRL_STATIC("stDeferred")
@@ -51,7 +52,7 @@ dlgIndexConstraint::dlgIndexConstraint(frmMain *frame, const wxString &resName, 
 int dlgIndexConstraint::Go(bool modal)
 {
     wxNotifyEvent event;
-    OnCheckDeferrable(event);
+    PrepareTablespace(cbTablespace);
 
     if (index)
     {
@@ -61,11 +62,16 @@ int dlgIndexConstraint::Go(bool modal)
         chkDeferred->SetValue(idc->GetDeferred());
         chkDeferrable->Disable();
         chkDeferred->Disable();
+        if (!idc->GetTablespace().IsEmpty())
+            cbTablespace->SetValue(idc->GetTablespace());
+        cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
     }
     else
     {
         txtComment->Disable();
     }
+
+    OnCheckDeferrable(event);
 
     return dlgIndexBase::Go(modal);
 }
@@ -76,7 +82,15 @@ wxString dlgIndexConstraint::GetDefinition()
     wxString sql;
 
     sql = wxT("(") + GetColumns() + wxT(")");
-
+    AppendIfFilled(sql, wxT(" USING INDEX TABLESPACE "),qtIdent(cbTablespace->GetValue()));
+    if (chkDeferrable->GetValue())
+    {
+        sql += wxT(" DEFERRABLE INITIALLY ");
+        if (chkDeferred->Enable())
+            sql += wxT("DEFERRED");
+        else
+            sql += wxT("IMMEDIATE");
+    }
     return sql;
 }
 

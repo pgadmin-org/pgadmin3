@@ -41,7 +41,7 @@ ui/frmOptions.cpp ui/frmPassword.cpp ui/frmQuery.cpp \
 ui/frmHelp.cpp ui/frmSplash.cpp ui/frmMaintenance.cpp \
 ui/frmBackup.cpp ui/frmRestore.cpp ui/frmGrantWizard.cpp \
 ui/frmEditGrid.cpp ui/dlgProperty.cpp ui/dlgUser.cpp \
-ui/dlgGroup.cpp ui/dlgDatabase.cpp ui/dlgLanguage.cpp \
+ui/dlgServer.cpp ui/dlgGroup.cpp ui/dlgDatabase.cpp ui/dlgLanguage.cpp \
 ui/dlgSchema.cpp ui/dlgDomain.cpp ui/dlgTable.cpp ui/dlgTablespace.cpp \
 ui/dlgColumn.cpp ui/dlgIndex.cpp ui/dlgFunction.cpp \
 ui/dlgView.cpp ui/dlgRule.cpp ui/dlgOperator.cpp \
@@ -58,7 +58,7 @@ include/ctlSQLResult.h include/ctlListView.h \
 include/parser/parse.h include/parser/keywords.h include/nodes/parsenodes.h \
 include/postgres.h include/pgDefs.h include/pgDatatype.h \
 include/ctlSecurityPanel.h include/dlgClasses.h include/frmGrantWizard.h \
-include/dlgCheck.h include/dlgColumn.h \
+include/dlgCheck.h include/dlgColumn.h include/dlgServer.h \
 include/dlgDatabase.h include/dlgDomain.h include/frmExport.h \
 include/dlgForeignKey.h include/dlgFunction.h include/dlgGroup.h \
 include/dlgIndexConstraint.h include/dlgIndex.h \

@@ -49,6 +49,7 @@ public:
     wxString GetUsername() const { return username; }
     wxString GetPassword() const { return password; }
     bool GetTrusted() const { return trusted; }
+    bool GetNeedPwd() const { return !trusted; }
     wxString GetLastError() const;
 
     bool GetDiscovered() const { return discovered; }
@@ -77,12 +78,14 @@ public:
     int GetSSL() const { return ssl; }
     bool GetConnected() const { return connected; }
     void iSetDatabase(const wxString& newVal) { database = newVal; }
+    void iSetPort(int newval) { port=newval; }
+    void iSetSSL(int newval) { ssl=newval; }
     void iSetUsername(const wxString& newVal) { username = newVal; }
     void iSetPassword(const wxString& newVal) { password = newVal; }
     void iSetTrusted(const bool b) { trusted=b; }
+    void iSetNeedPwd(const bool b) { trusted=!b; }
     bool SetPassword(const wxString& newVal);
 
-    void iSetPort(int newVal) { port = newVal; }
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv) { return conn->HasPrivilege(objTyp, objName, priv); }
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
@@ -94,6 +97,7 @@ public:
     wxMenu *GetNewMenu();
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser) { return true; }
+    bool CanEdit() { return true; }
     bool CanDrop() { return true; }
     bool CanRestore() { return connected; }
 

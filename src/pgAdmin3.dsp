@@ -338,6 +338,10 @@ SOURCE=.\ui\dlgSequence.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\dlgServer.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\dlgTable.cpp
 # End Source File
 # Begin Source File
@@ -914,6 +918,10 @@ SOURCE=.\include\dlgSchema.h
 # Begin Source File
 
 SOURCE=.\include\dlgSequence.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\dlgServer.h
 # End Source File
 # Begin Source File
 

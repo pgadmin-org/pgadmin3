@@ -35,6 +35,9 @@ wxString pgIndexConstraint::GetDefinition()
 
     sql = wxT("(") + GetQuotedColumns() + wxT(")");
 
+    if (!GetTablespace().IsEmpty())
+        sql += wxT(" USING INDEX TABLESPACE ") + qtIdent(GetTablespace());
+
     if (GetDeferrable())
     {
         sql += wxT(" DEFERRABLE INITIALLY ");

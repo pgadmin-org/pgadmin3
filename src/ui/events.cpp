@@ -1005,7 +1005,7 @@ void frmMain::doPopup(wxPoint point, pgObject *object)
     appendIfEnabled(MNU_VIEWDATA);
     appendIfEnabled(MNU_VIEWFILTEREDDATA);
     appendIfEnabled(MNU_MAINTENANCE);
-    appendIfEnabled(MNU_INDEXCHECK);
+//    appendIfEnabled(MNU_INDEXCHECK);
     appendIfEnabled(MNU_GRANTWIZARD);
     appendIfEnabled(MNU_STARTSERVICE);
     appendIfEnabled(MNU_STOPSERVICE);

@@ -31,6 +31,7 @@
 
 // Property dialogs
 #include "dlgProperty.h"
+#include "dlgServer.h"
 #include "dlgUser.h"
 #include "dlgGroup.h"
 #include "dlgDatabase.h"
@@ -595,8 +596,6 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
 dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, int type)
 {
     pgConn *conn=node->GetConnection();
-    if (!conn)
-        return 0;
 
     if (type < 0)
     {
@@ -618,7 +617,7 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
                                 frame->GetBrowser()->GetItemParent(
                                     node->GetId()));
 
-    if (parentNode && parentNode->IsCollection())
+    if (parentNode && parentNode->IsCollection() && parentNode->GetType() != PG_SERVERS)
         parentNode = (pgObject*)frame->GetBrowser()->GetItemData(
                                 frame->GetBrowser()->GetItemParent(
                                     parentNode->GetId()));
@@ -627,6 +626,10 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 
     switch (type)
     {
+        case PG_SERVER:
+        case PG_SERVERS:
+            dlg = new dlgServer(frame, (pgServer*)currentNode);
+            break;
         case PG_USER:
         case PG_USERS:
             dlg=new dlgUser(frame, (pgUser*)currentNode);
@@ -774,10 +777,12 @@ dlgProperty *dlgProperty::CreateDlg(frmMain *frame, pgObject *node, bool asNew, 
 
 bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 {
-    pgConn *conn=node->GetConnection();
-    if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
-        return false;
-
+    if (node->GetType() != PG_SERVER && node->GetType() != PG_SERVERS)
+    {
+        pgConn *conn=node->GetConnection();
+        if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
+            return false;
+    }
     dlgProperty *dlg=CreateDlg(frame, node, true, type);
 
     if (dlg)
@@ -796,10 +801,12 @@ bool dlgProperty::CreateObjectDialog(frmMain *frame, pgObject *node, int type)
 
 bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *node)
 {
-    pgConn *conn=node->GetConnection();
-    if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
-        return false;
-
+    if (node->GetType() != PG_SERVER)
+    {
+        pgConn *conn=node->GetConnection();
+        if (!conn || conn->GetStatus() != PGCONN_OK || !conn->IsAlive())
+            return false;
+    }
     dlgProperty *dlg=CreateDlg(frame, node, false);
 
     if (dlg)

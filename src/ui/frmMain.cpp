@@ -184,7 +184,7 @@ frmMain::frmMain(const wxString& title)
     toolsMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),         _("Maintain the current database or table."));
     toolsMenu->Append(MNU_BACKUP, _("&Backup"),                   _("Creates a backup of the current database to a local file"));
     toolsMenu->Append(MNU_RESTORE, _("&Restore"),                 _("Restores a backup from a local file"));
-    toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
+//    toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
     toolsMenu->Append(MNU_GRANTWIZARD, _("&Grant Wizard"),        _("Grants rights to multiple objects"));
     toolsMenu->Append(MNU_STATUS, _("&Server Status"),            _("Displays the current database status."));
     menuBar->Append(toolsMenu, _("&Tools"));
@@ -759,90 +759,48 @@ void frmMain::StoreServers()
 			// Cast the object, and check if it was autodiscovered before saving.
 			server = (pgServer *)data;
 
-			if (!server->GetDiscovered()) {
-			
-				// We have an 'added' server, so save it
-				++numServers;
+			// We have an 'added' server, so save it
+			++numServers;
 
-				// Hostname
-			    key.Printf(wxT("Servers/Server%d"), numServers);
-		        settings->Write(key, server->GetName());
-	
-				// Comment
-		        key.Printf(wxT("Servers/Description%d"), numServers);
-	            settings->Write(key, server->GetDescription());
+			// Hostname
+			key.Printf(wxT("Servers/Server%d"), numServers);
+		    settings->Write(key, server->GetName());
 
-				// Service ID
-		        key.Printf(wxT("Servers/ServiceID%d"), numServers);
-	            settings->Write(key, server->GetServiceID());
+			// Comment
+		    key.Printf(wxT("Servers/Description%d"), numServers);
+	        settings->Write(key, server->GetDescription());
 
-				// Port
-				key.Printf(wxT("Servers/Port%d"), numServers);
-		        settings->Write(key, server->GetPort());
-	
-				// Trusted
-				key.Printf(wxT("Servers/Trusted%d"), numServers);
-	            settings->Write(key, BoolToStr(server->GetTrusted()));
+			// Service ID
+		    key.Printf(wxT("Servers/ServiceID%d"), numServers);
+	        settings->Write(key, server->GetServiceID());
 
-				// Database
-				key.Printf(wxT("Servers/Database%d"), numServers);
-	            settings->Write(key, server->GetDatabaseName());
+			// Port
+			key.Printf(wxT("Servers/Port%d"), numServers);
+		    settings->Write(key, server->GetPort());
 
-				// Username
-				key.Printf(wxT("Servers/Username%d"), numServers);
-	            settings->Write(key, server->GetUsername());
+			// Trusted
+			key.Printf(wxT("Servers/Trusted%d"), numServers);
+	        settings->Write(key, BoolToStr(server->GetTrusted()));
 
-				// last Database
-				key.Printf(wxT("Servers/LastDatabase%d"), numServers);
-				settings->Write(key, server->GetLastDatabase());
-	
-				// last Schema
-				key.Printf(wxT("Servers/LastSchema%d"), numServers);
-				settings->Write(key, server->GetLastSchema());
-	            
-				// SSL
-				key.Printf(wxT("Servers/SSL%d"), numServers);
-	            settings->Write(key, server->GetSSL());
+			// Database
+			key.Printf(wxT("Servers/Database%d"), numServers);
+	        settings->Write(key, server->GetDatabaseName());
 
-			} else {
+			// Username
+			key.Printf(wxT("Servers/Username%d"), numServers);
+	        settings->Write(key, server->GetUsername());
 
-				// This is a discovered server...
-				// Hostname
-				key.Printf(wxT("Servers/Server-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
-		        settings->Write(key, server->GetName());
+			// last Database
+			key.Printf(wxT("Servers/LastDatabase%d"), numServers);
+			settings->Write(key, server->GetLastDatabase());
 
-				// Comment
-				key.Printf(wxT("Servers/Description-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
-		        settings->Write(key, server->GetDescription());
+			// last Schema
+			key.Printf(wxT("Servers/LastSchema%d"), numServers);
+			settings->Write(key, server->GetLastSchema());
+	        
+			// SSL
+			key.Printf(wxT("Servers/SSL%d"), numServers);
 
-				// Port
-				key.Printf(wxT("Servers/Port-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
-		        settings->Write(key, server->GetPort());
-
-				// Trusted
-				key.Printf(wxT("Servers/Trusted-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
-		        settings->Write(key, BoolToStr(server->GetTrusted()));
-
-				// Database
-				key.Printf(wxT("Servers/Database-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
-		        settings->Write(key, server->GetDatabaseName());
-
-				// Username
-				key.Printf(wxT("Servers/Username-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
-		        settings->Write(key, server->GetUsername());
-
-				// SSL
-				key.Printf(wxT("Servers/SSL-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
-		        settings->Write(key, server->GetSSL());
-
-				// Last Database
-				key.Printf(wxT("Servers/LastDatabase-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
-				settings->Write(key, server->GetLastDatabase());
-	
-				// Last Schema
-				key.Printf(wxT("Servers/LastSchema-%s-%s"), hostname.c_str(), server->GetServiceID().c_str());
-				settings->Write(key, server->GetLastSchema());
-			}
 		}
 
         // Get the next item
@@ -853,6 +811,7 @@ void frmMain::StoreServers()
     settings->Write(wxT("Servers/Count"), numServers);
     wxLogInfo(wxT("Stored %d servers."), numServers);
 }
+
 
 void frmMain::RetrieveServers()
 {
@@ -960,50 +919,14 @@ void frmMain::RetrieveServers()
 			    key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
 			    wxRegKey *svcKey = new wxRegKey(key);
 
-			    // Server
-			    key.Printf(wxT("Servers/Server-%s-%s"), hostname, svcName);
-			    settings->Read(key, &servername, wxT("127.0.0.1"));
-
-			    // Comment
-			    svcKey->QueryValue(wxT("Display Name"), temp);
-			    key.Printf(wxT("Servers/Description-%s-%s"), hostname, svcName);
-			    settings->Read(key, &description, temp);
-
-			    // Database
-			    key.Printf(wxT("Servers/Database-%s-%s"), hostname, svcName);
-			    settings->Read(key, &database, wxT("template1"));
-
-			    // Username
-			    svcKey->QueryValue(wxT("Database Superuser"), temp);
-			    key.Printf(wxT("Servers/Username-%s-%s"), hostname, svcName);
-			    settings->Read(key, &username, temp);
-
-			    // Port
-			    key.Printf(wxT("Servers/Port-%s-%s"), hostname, svcName);
-			    settings->Read(key, &port, 5432);
-
-			    // Trusted
-			    key.Printf(wxT("Servers/Trusted-%s-%s"), hostname, svcName);
-			    settings->Read(key, &trusted, wxT("false"));
-
-    #ifdef SSL
-			    // SSL
-			    key.Printf(wxT("Servers/SSL-%s-%s"), hostname, svcName);
-			    settings->Read(key, &ssl, 0);
-    #endif //SSL
-
-			    // last Database
-			    key.Printf(wxT("Servers/LastDatabase-%s-%s"), hostname, svcName);
-			    settings->Read(key, &lastDatabase, wxT(""));
-
-			    // last Schema
-			    key.Printf(wxT("Servers/LastSchema-%s-%s"), hostname, svcName);
-			    settings->Read(key, &lastSchema, wxT(""));
+                servername = wxT("localhost");
+                database = wxT("template1");
+			    svcKey->QueryValue(wxT("Display Name"), description);
+			    svcKey->QueryValue(wxT("Database Superuser"), username);
+                port = 5432;    // we'd like this from svcKey too...
 
 			    // Add the Server node
-			    server = new pgServer(servername, description, database, username, port, StrToBool(trusted), ssl);
-			    server->iSetLastDatabase(lastDatabase);
-			    server->iSetLastSchema(lastSchema);
+			    server = new pgServer(servername, description, database, username, port, false, 0);
 			    server->iSetDiscovered(true);
 			    server->iSetServiceID(svcName);
 			    browser->AppendItem(servers, server->GetFullName(), PGICON_SERVERBAD, -1, server);
@@ -1012,8 +935,6 @@ void frmMain::RetrieveServers()
 			flag = pgKey->GetNextKey(svcName, cookie);
 		}
 	}
-
-
 #endif //WIN32
 
     // Reset the Servers node text
@@ -1087,7 +1008,7 @@ void frmMain::SetButtons(pgObject *obj)
 	toolsMenu->Enable(MNU_MAINTENANCE, maintenance);
 	toolsMenu->Enable(MNU_BACKUP, backup && !backupExecutable.IsNull());
 	toolsMenu->Enable(MNU_RESTORE, restore && !restoreExecutable.IsNull());
-    toolsMenu->Enable(MNU_INDEXCHECK, false);
+//    toolsMenu->Enable(MNU_INDEXCHECK, false);
     toolsMenu->Enable(MNU_GRANTWIZARD, false);
 	toolsMenu->Enable(MNU_STATUS, status);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);

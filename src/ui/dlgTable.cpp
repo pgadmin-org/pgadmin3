@@ -101,6 +101,7 @@ int dlgTable::Go(bool modal)
         cbOwner->Append(wxT(""));
     AddGroups();
     AddUsers(cbOwner);
+    PrepareTablespace(cbTablespace);
 
     hasPK=false;
 
@@ -109,7 +110,6 @@ int dlgTable::Go(bool modal)
         // edit mode
         chkHasOids->SetValue(table->GetHasOids());
 
-        PrepareTablespace(cbTablespace);
         if (!table->GetTablespace().IsEmpty())
             cbTablespace->SetValue(table->GetTablespace());
 
@@ -229,7 +229,6 @@ int dlgTable::Go(bool modal)
     {
         // create mode
         btnChangeCol->Hide();
-        PrepareTablespace(cbTablespace);
 
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())

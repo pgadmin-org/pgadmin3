@@ -476,7 +476,7 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
 #endif
         properties->AppendItem(_("Initial database"), GetDatabaseName());
         properties->AppendItem(_("Username"), GetUsername());
-        properties->AppendItem(_("Trusted?"), GetTrusted());
+        properties->AppendItem(_("Need password?"), GetNeedPwd());
         if (GetConnected())
         {
             properties->AppendItem(_("Version string"), GetVersionString());
