@@ -56,8 +56,10 @@ private:
     void addLogFile(const wxString &filename, const wxDateTime timestamp, int pid, long len, long &read, bool skipFirst);
     void addLogLine(const wxString &str, bool formatted=true);
 
+	void checkConnection();
     
     frmMain *mainForm;
+	wxStatusBar *statusBar;
     wxString logFormat;
     bool logHasTimestamp, logFormatKnown;
     int logFmtPos;

@@ -81,6 +81,8 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     RestorePosition(-1, -1, 400, 240, 200, 150);
     SetTitle(_title);
     SetIcon(wxIcon(pgAdmin3_xpm));
+	statusBar = new  wxStatusBar(this, -1);
+	wxXmlResource::Get()->AttachUnknownControl(wxT("unkStatusBar"), statusBar);
 
     mainForm=form;
     timer=0;
@@ -229,6 +231,11 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 	// To avoid hammering the lock manager (and the network for that matter),
 	// only query for the required tab.
 
+	wxLogNull nolog;
+
+	if (!connection)
+	    return;
+
 	if (nbStatus->GetSelection() == 0)
     {
         // Status
@@ -237,6 +244,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 		if (dataSet1)
 		{
             statusList->Freeze();
+			statusBar->SetStatusText(_("Refreshing."));
 			while (!dataSet1->Eof())
 			{
 				pid=dataSet1->GetLong(wxT("procpid"));
@@ -285,9 +293,10 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				statusList->DeleteItem(row);
 
             statusList->Thaw();
+			statusBar->SetStatusText(_("Done."));
 		}
         else
-            connection->IsAlive();
+		    checkConnection();
 
         row=0;
 		while (row < statusList->GetItemCount())
@@ -326,6 +335,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 		pgSet *dataSet2=connection->ExecuteSet(sql);
 		if (dataSet2)
 		{
+			statusBar->SetStatusText(_("Refreshing."));
             lockList->Freeze();
 
 			while (!dataSet2->Eof())
@@ -385,9 +395,10 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 				lockList->DeleteItem(row);
 
             lockList->Thaw();
+			statusBar->SetStatusText(_("Done."));
 		}
         else
-            connection->IsAlive();
+            checkConnection();
 
         row=0;
 		while (row < lockList->GetItemCount())
@@ -401,7 +412,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 	}
     else
     {
-        long newlen;
+        long newlen=0;
 
         if (logDirectory.IsEmpty())
         {
@@ -430,11 +441,22 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
         if (isCurrent)
         {
             // check if the current logfile changed
-            newlen = StrToLong(connection->ExecuteScalar(wxT("SELECT pg_file_length(") + qtString(logfileName) + wxT(")")));
-
+		    pgSet *set = connection->ExecuteSet(wxT("SELECT pg_file_length(") + qtString(logfileName) + wxT(") AS len"));
+		    if (set)
+			{
+				newlen = set->GetLong(wxT("len"));
+				delete set;
+		    }
+			else
+			{
+		        checkConnection();
+				return;
+			}
             if (newlen > logfileLength)
             {
+			    statusBar->SetStatusText(_("Refreshing."));
                 addLogFile(logfileName, logfileTimestamp, logfilePid, newlen, logfileLength, false);
+				statusBar->SetStatusText(_("Done."));
 
                 // as long as there was new data, the logfile is probably the current
                 // one so we don't need to check for rotation
@@ -479,17 +501,27 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 }
 
 
+void frmStatus::checkConnection()
+{
+    if (!connection->IsAlive())
+	{
+	    delete connection;
+		connection=0;
+		statusBar->SetStatusText(_("Connection broken."));
+	}
+}
+
 
 void frmStatus::addLogFile(wxDateTime *dt, bool skipFirst)
 {
     pgSet *set=connection->ExecuteSet(
-        wxT("SELECT ts, pid, fn, pg_file_length(fn) AS len\n")
-        wxT("  FROM pg_logfiles_ls() AS (ts timestamp, pid int4, fn text)\n")
-        wxT(" WHERE ts = '") + DateToAnsiStr(*dt) + wxT("'::timestamp"));
+        wxT("SELECT filetime, pid, filename, pg_file_length(filename) AS len\n")
+        wxT("  FROM pg_logdir_ls\n")
+        wxT(" WHERE filetime = '") + DateToAnsiStr(*dt) + wxT("'::timestamp"));
     if (set)
     {
-        logfileName = set->GetVal(wxT("fn"));
-        logfileTimestamp = set->GetDateTime(wxT("ts"));
+        logfileName = set->GetVal(wxT("filename"));
+        logfileTimestamp = set->GetDateTime(wxT("filetime"));
         logfilePid = set->GetLong(wxT("pid"));
         long len=set->GetLong(wxT("len"));
 
@@ -622,7 +654,6 @@ void frmStatus::addLogLine(const wxString &str, bool formatted)
 }
 
 
-
 void frmStatus::emptyLogfileCombo()
 {
     while (cbLogfiles->GetCount())
@@ -736,6 +767,7 @@ void frmStatus::OnCancelBtn(wxCommandEvent &event)
 	OnRefresh(*(wxCommandEvent*)&event);
 }
 
+
 void frmStatus::OnTerminateBtn(wxCommandEvent &event)
 {
     ctlListView *lv;
@@ -771,6 +803,7 @@ void frmStatus::OnTerminateBtn(wxCommandEvent &event)
 	wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
 	OnRefresh(*(wxCommandEvent*)&event);
 }
+
 
 void frmStatus::OnSelStatusItem(wxListEvent &event)
 {
