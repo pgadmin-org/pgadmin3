@@ -32,6 +32,8 @@ public:
     bool GetSystemObject() const { return userId < 100; }
     long GetUserId() const { return userId; }
     void iSetUserId(const long l) { userId=l; }
+    wxString GetConfigList() const { return configList; }
+    void iSetConfigList(const wxString& s) { configList=s; }
     wxString GetAccountExpires() const { return accountExpires; }
     void iSetAccountExpires(const wxString& s) { accountExpires=s; }
     wxString GetPassword() const { return password; }
@@ -42,6 +44,7 @@ public:
     void iSetSuperuser(const bool b) { superuser=b; }
     bool GetUpdateCatalog() const { return updateCatalog; }
     void iSetUpdateCatalog(const bool b) { updateCatalog=b; }
+
 
     // Tree object creation
     int GetIcon() { return PGICON_USER; }
@@ -58,7 +61,7 @@ public:
     static pgObject *ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction=wxT(""));
 
 private:
-    wxString accountExpires, password;
+    wxString accountExpires, password, configList;
     bool createDatabase, superuser, updateCatalog;
     long userId;
 };

@@ -54,6 +54,15 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
         else                        sql += wxT(" NOCREATEUSER");
         AppendIfFilled(sql, wxT(" VALID UNTIL "), GetAccountExpires());
         sql +=wxT(";\n");
+        if (!configList.IsEmpty())
+        {
+            wxStringTokenizer cfgTokens(configList.Mid(1, configList.Length()-2), ',');
+            while (cfgTokens.HasMoreTokens())
+            {
+                sql += wxT("ALTER USER ") + GetQuotedIdentifier()
+                    + wxT(" SET ") + cfgTokens.GetNextToken() + wxT(";\n");
+            }
+        }
     }
     return sql;
 }
@@ -74,9 +83,18 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, wxT("Superuser?"), BoolToYesNo(GetSuperuser()));
         InsertListItem(properties, pos++, wxT("Create Databases?"), BoolToYesNo(GetCreateDatabase()));
         InsertListItem(properties, pos++, wxT("Update Catalogs?"), BoolToYesNo(GetUpdateCatalog()));
-        /*
-        session default vars here?
-        */
+
+        expandedKids=true;
+        if (!configList.IsEmpty())
+        {
+            wxStringTokenizer cfgTokens(configList.Mid(1, configList.Length()-2), ',');
+            while (cfgTokens.HasMoreTokens())
+            {
+                wxString token=cfgTokens.GetNextToken();
+                wxString varName=token.BeforeFirst('=');
+                InsertListItem(properties, pos++, varName, token.Mid(varName.Length()+1));
+            }
+        }
     }
 }
 
@@ -117,6 +135,7 @@ pgObject *pgUser::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
             user->iSetUpdateCatalog(users->GetBool(wxT("usecatupd")));
             user->iSetAccountExpires(users->GetVal(wxT("valuntil")));
             user->iSetPassword(users->GetVal(wxT("passwd")));
+            user->iSetConfigList(users->GetVal(wxT("useconfig")));
 
             if (browser)
             {
