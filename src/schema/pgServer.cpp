@@ -104,29 +104,40 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
         if (conn) delete conn;
         conn = new pgConn(GetName(), database, username, password, port);   
         EndMsg();
-        if (!conn) {
+        if (!conn)
+        {
             wxLogError(wxT("Couldn't create a connection object!"));
             return PGCONN_BAD;
         }
     }
     int status = conn->GetStatus();
-    if (status == PGCONN_OK) {
-
+    if (status == PGCONN_OK)
+    {
         // Check the server version
-        if (conn->GetVersionNumber() >= SERVER_MIN_VERSION) {
+        if (conn->GetVersionNumber() >= SERVER_MIN_VERSION)
+        {
             connected = TRUE;
-        } else {
+        }
+        else
+        {
             error.Printf(wxT("The PostgreSQL server must be at least version %1.1f!"), SERVER_MIN_VERSION);
             connected = FALSE;
+            delete conn;
+            conn=0;
             return PGCONN_BAD;
         }
 
-    } else {
+    }
+    else
+    {
+        delete conn;
+        conn=0;
         connected = FALSE;
     }
 
     return status;
 }
+
 
 wxString pgServer::GetIdentifier() const
 {

@@ -39,6 +39,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     // Check the hostname/ipaddress
     struct hostent *host;
     unsigned long addr;
+    conn=0;
     
 #ifdef __WXMSW__
     struct in_addr ipaddr;
@@ -102,7 +103,8 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 pgConn::~pgConn()
 {
     wxLogInfo(wxT("Destroying pgConn object"));
-    PQfinish(conn);
+    if (conn)
+        PQfinish(conn);
 }
 
 //////////////////////////////////////////////////////////////////////////
