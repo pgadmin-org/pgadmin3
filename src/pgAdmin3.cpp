@@ -47,7 +47,7 @@ wxLocale locale;
 wxString loadPath;      // Where the program is loaded from
 wxString docPath;       // Where docs are stored
 wxString uiPath;        // Where ui data is stored
-
+double libpqVersion=0.0;
 
 #define DOC_DIR     wxT("/docs")
 #define UI_DIR      wxT("/ui")
@@ -57,14 +57,6 @@ wxString uiPath;        // Where ui data is stored
 
 
 IMPLEMENT_APP(pgAdmin3)
-
-
-// This is for an unresolved external from libpq 7.4
-extern "C"
-int is_absolute_path()
-{ 
-    return 0;
-}
 
 
 
@@ -250,6 +242,25 @@ bool pgAdmin3::OnInit()
     // Setup the XML resources
     wxXmlResource::Get()->InitAllHandlers();
 
+
+    // examine libpq version
+    libpqVersion=7.3;
+    PQconninfoOption *cio=PQconndefaults();
+
+    if (cio)
+    {
+        PQconninfoOption *co=cio;
+        while (co->keyword)
+        {
+            if (!strcmp(co->keyword, "sslmode"))
+            {
+                libpqVersion=7.4;
+                break;
+            }
+            co++;
+        }
+        PQconninfoFree(cio);
+    }
 
 
 #ifdef EMBED_XRC

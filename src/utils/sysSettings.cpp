@@ -44,6 +44,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("LastDatabase"), &lastDatabase, wxT("template1")); 
     Read(wxT("LastUsername"), &lastUsername, wxT("postgres")); 
     Read(wxT("LastPort"), &lastPort, 5432);
+    Read(wxT("LastSSL"), &lastSSL, 0);
 
     // Show System Objects
     Read(wxT("ShowSystemObjects"), &showSystemObjects, FALSE); 
@@ -147,25 +148,37 @@ void sysSettings::SetLogLevel(const int newval)
 void sysSettings::SetLastServer(const wxString& newval)
 {
     lastServer = newval;
-    this->Write(wxT("LastServer"), lastServer);
+    Write(wxT("LastServer"), lastServer);
+}
+
+void sysSettings::SetLastDescription(const wxString& newval)
+{
+    lastDescription = newval;
+    Write(wxT("LastDescription"), lastDatabase);
 }
 
 void sysSettings::SetLastDatabase(const wxString& newval)
 {
     lastDatabase = newval;
-    this->Write(wxT("LastDatabase"), lastDatabase);
+    Write(wxT("LastDatabase"), lastDatabase);
 }
 
 void sysSettings::SetLastUsername(const wxString& newval)
 {
     lastUsername = newval;
-    this->Write(wxT("LastUsername"), lastUsername);
+    Write(wxT("LastUsername"), lastUsername);
 }
 
 void sysSettings::SetLastPort(const int newval)
 {
     lastPort = newval;
-    this->Write(wxT("LastPort"), lastPort);
+    Write(wxT("LastPort"), lastPort);
+}
+
+void sysSettings::SetLastSSL(const int newval)
+{
+    lastSSL = newval;
+    Write(wxT("LastSSL"), lastSSL);
 }
 
 //////////////////////////////////////////////////////////////////////////

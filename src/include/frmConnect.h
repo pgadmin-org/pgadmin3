@@ -25,7 +25,7 @@ class frmConnect : public wxDialog
 {
 public:
     frmConnect(wxFrame *form, const wxString& server = wxT(""), const wxString& description=wxT(""),
-        const wxString& database = wxT(""), const wxString& username = wxT(""), int port = 5432, bool trusted=false);
+        const wxString& database = wxT(""), const wxString& username = wxT(""), int port = 5432, bool trusted=false, long ssl=0);
     ~frmConnect();
 
 
@@ -36,6 +36,7 @@ public:
     wxString GetPassword();
     bool GetTrusted();
     long GetPort();
+    long GetSSL();
     void LockFields();
     int Go();
     

@@ -44,6 +44,8 @@ public:
     void SetLogLevel(const int newval);
 
     // Last connection
+    wxString GetLastDescription() const { return lastDescription; }
+    void SetLastDescription(const wxString& newval);
     wxString GetLastServer() const { return lastServer; }
     void SetLastServer(const wxString& newval);
     wxString GetLastDatabase() const { return lastDatabase; }
@@ -52,6 +54,8 @@ public:
     void SetLastUsername(const wxString& newval);
     int GetLastPort() const { return lastPort; }
     void SetLastPort(const int newval);
+    int GetLastSSL() const { return lastSSL; }
+    void SetLastSSL(const int newval);
     long GetMaxRows() const { return maxRows; }
     void SetMaxRows(const long l) { maxRows=l; }
     long GetMaxColSize() const { return maxColSize; }
@@ -107,10 +111,11 @@ private:
     int logLevel;
 
     // Last connection
+    wxString lastDescription;
     wxString lastServer;
     wxString lastDatabase;
     wxString lastUsername;
-    int lastPort;
+    int lastPort, lastSSL;
 
     // Show System Objects
     bool showSystemObjects;

@@ -86,7 +86,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
         }
         if (!trusted)
         {
-            frmConnect winConnect(form, GetName(), description, database, username, port, trusted);
+            frmConnect winConnect(form, GetName(), description, database, username, port, trusted, ssl);
 
             if (lockFields) 
 		        winConnect.LockFields();
@@ -110,6 +110,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
                 iSetUsername(winConnect.GetUsername());
                 iSetPort(winConnect.GetPort());
                 trusted=winConnect.GetTrusted();
+                ssl=winConnect.GetSSL();
             }
             if (!trusted)
                 iSetPassword(winConnect.GetPassword());
@@ -119,7 +120,7 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
         else
             StartMsg(wxT("Connecting to database"));
         if (conn) delete conn;
-        conn = new pgConn(GetName(), database, username, password, port);   
+        conn = new pgConn(GetName(), database, username, password, port, ssl);   
         EndMsg();
         if (!conn)
         {

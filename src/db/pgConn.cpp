@@ -31,13 +31,15 @@
 #include "sysLogger.h"
 
 
+extern double libpqVersion;
+
 static void pgNoticeProcessor(void *arg, const char *message)
 {
     ((pgConn*)arg)->Notice(message);
 }
 
 
-pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port)
+pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode)
 {
     wxLogInfo(wxT("Creating pgConn object"));
     wxString msg, hostip;
@@ -98,6 +100,25 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     if (port > 0) {
       connstr.Append(wxT(" port="));
       connstr.Append(NumToStr((long)port));
+    }
+
+    if (libpqVersion > 7.3)
+    {
+        switch (sslmode)
+        {
+            case 1: connstr.Append(wxT(" sslmode=require"));   break;
+            case 2: connstr.Append(wxT(" sslmode=prefer"));    break;
+            case 3: connstr.Append(wxT(" sslmode=allow"));     break;
+            case 4: connstr.Append(wxT(" sslmode=disable"));   break;
+        }
+    }
+    else
+    {
+        switch (sslmode)
+        {
+            case 1: connstr.Append(wxT(" requiressl=1"));   break;
+            case 2: connstr.Append(wxT(" requiressl=0"));   break;
+        }
     }
     connstr.Trim(FALSE);
 

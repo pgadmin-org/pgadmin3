@@ -25,6 +25,8 @@
 #include "images/pgAdmin3.xpm"
 
 
+extern double libpqVersion;
+
 
 BEGIN_EVENT_TABLE(frmConnect, wxDialog)
     EVT_BUTTON (XRCID("btnHelp"),     frmConnect::OnHelp)
@@ -34,10 +36,20 @@ BEGIN_EVENT_TABLE(frmConnect, wxDialog)
 END_EVENT_TABLE()
 
 
+#define txtDescription  CTRL("txtDescription", wxTextCtrl)
+#define txtServer       CTRL("txtServer", wxTextCtrl)
+#define txtDatabase     CTRL("txtDatabase", wxTextCtrl)
+#define txtUsername     CTRL("txtUsername", wxTextCtrl)
+#define chkTrusted      CTRL("chkTrusted", wxCheckBox)
+#define txtPort         CTRL("txtPort", wxTextCtrl)
+#define lblSSL          CTRL("lblSSL", wxStaticText)
+#define cbSSL           CTRL("cbSSL", wxComboBox)
+#define txtPassword     CTRL("txtPassword", wxTextCtrl)
+
 
 
 frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& description,
-                       const wxString& database, const wxString& username, int port, bool trusted)
+                       const wxString& database, const wxString& username, int port, bool trusted, long ssl)
 {
     wxLogInfo(wxT("Creating a connect dialogue"));
 
@@ -48,13 +60,31 @@ frmConnect::frmConnect(wxFrame *form, const wxString& server, const wxString& de
     CenterOnParent();
 
     // Setup the default values
-    XRCCTRL(*this, "txtDescription", wxTextCtrl)->SetValue(description);
-    XRCCTRL(*this, "txtServer", wxTextCtrl)->SetValue(server);
-    XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetValue(database);
-    XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetValue(username);
-    XRCCTRL(*this, "chkTrusted", wxCheckBox)->SetValue(trusted);
-    XRCCTRL(*this, "txtPort", wxTextCtrl)->SetValue(NumToStr((long)port));
-    XRCCTRL(*this, "txtPassword", wxTextCtrl)->Enable(!trusted);
+    txtDescription->SetValue(description);
+    txtServer->SetValue(server);
+    txtDatabase->SetValue(database);
+    txtUsername->SetValue(username);
+    chkTrusted->SetValue(trusted);
+    txtPort->SetValue(NumToStr((long)port));
+    txtPassword->Enable(!trusted);
+
+    cbSSL->Append(wxEmptyString);
+
+#ifdef USE_SSL
+    cbSSL->Append(_("require"));
+    cbSSL->Append(_("prefer"));
+
+    if (libpqVersion > 7.3)
+    {
+        cbSSL->Append(_("allow"));
+        cbSSL->Append(_("disable"));
+    }
+#else
+    cbSSL->Disable();
+#endif
+    if (ssl > cbSSL->GetCount() || ssl < 0)
+        ssl = 0;
+    cbSSL->SetSelection(ssl);
 }
 
 frmConnect::~frmConnect()
@@ -71,8 +101,7 @@ void frmConnect::OnHelp(wxCommandEvent &ev)
 
 void frmConnect::OnTrustChange(wxNotifyEvent& ev)
 {
-    XRCCTRL(*this, "txtPassword", wxTextCtrl)->Enable(
-        ! XRCCTRL(*this, "chkTrusted", wxCheckBox)->GetValue());
+    txtPassword->Enable(chkTrusted->GetValue());
 }
 
 
@@ -93,7 +122,7 @@ void frmConnect::OnCancel(wxCommandEvent& ev)
 int frmConnect::Go()
 {
     // Set focus on the Password textbox and show modal
-    XRCCTRL(*this, "txtPassword", wxTextCtrl)->SetFocus();
+    txtPassword->SetFocus();
     return ShowModal();
 }
 
@@ -101,63 +130,72 @@ bool frmConnect::TransferDataFromWindow()
 {
     // Store the connection settings
     extern sysSettings *settings;
-    settings->SetLastServer(XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue());
-    settings->SetLastDatabase(XRCCTRL(*this, "txtDatabase", wxTextCtrl)->GetValue());
-    settings->SetLastUsername(XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue());
-    settings->SetLastPort(StrToLong(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue()));
+    settings->SetLastDescription(txtDescription->GetValue());
+    settings->SetLastServer(txtServer->GetValue());
+    settings->SetLastDatabase(txtDatabase->GetValue());
+    settings->SetLastUsername(txtUsername->GetValue());
+    settings->SetLastPort(StrToLong(txtPort->GetValue()));
+    settings->SetLastSSL(cbSSL->GetSelection());
     return true;
 }
 
 wxString frmConnect::GetDescription()
 {
-    return XRCCTRL(*this, "txtDescription", wxTextCtrl)->GetValue();
+    return txtDescription->GetValue();
 }
 
 wxString frmConnect::GetServer()
 {
-    return XRCCTRL(*this, "txtServer", wxTextCtrl)->GetValue();
+    return txtServer->GetValue();
 }
 
 wxString frmConnect::GetDatabase()
 {
-    return XRCCTRL(*this, "txtDatabase", wxTextCtrl)->GetValue();
+    return txtDatabase->GetValue();
 }
 
 wxString frmConnect::GetUsername()
 {
-    return XRCCTRL(*this, "txtUsername", wxTextCtrl)->GetValue();
+    return txtUsername->GetValue();
 }
 
 wxString frmConnect::GetPassword()
 {
-    return XRCCTRL(*this, "txtPassword", wxTextCtrl)->GetValue();
+    return txtPassword->GetValue();
 }
 
 bool frmConnect::GetTrusted()
 {
-    return XRCCTRL(*this, "chkTrusted", wxCheckBox)->GetValue();
+    return chkTrusted->GetValue();
 }
 
 long frmConnect::GetPort()
 {
-    return StrToLong(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue());
+    return StrToLong(txtPort->GetValue());
 }
+
+long frmConnect::GetSSL()
+{
+    return cbSSL->GetSelection();
+}
+
 
 void frmConnect::LockFields()
 {
     wxColour colBack;
     colBack = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
 
-    XRCCTRL(*this, "txtDescription", wxTextCtrl)->SetEditable(FALSE);
-    XRCCTRL(*this, "txtDescription", wxTextCtrl)->SetBackgroundColour(colBack);
-    XRCCTRL(*this, "txtServer", wxTextCtrl)->SetEditable(FALSE);
-    XRCCTRL(*this, "txtServer", wxTextCtrl)->SetBackgroundColour(colBack);
-    XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetEditable(FALSE);
-    XRCCTRL(*this, "txtDatabase", wxTextCtrl)->SetBackgroundColour(colBack);
-    XRCCTRL(*this, "txtPort", wxTextCtrl)->SetEditable(FALSE);
-    XRCCTRL(*this, "txtPort", wxTextCtrl)->SetBackgroundColour(colBack);
-    XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetEditable(FALSE);
-    XRCCTRL(*this, "txtUsername", wxTextCtrl)->SetBackgroundColour(colBack);
-    XRCCTRL(*this, "chkTrusted", wxCheckBox)->Disable();
+    txtDescription->SetEditable(FALSE);
+    txtDescription->SetBackgroundColour(colBack);
+    txtServer->SetEditable(FALSE);
+    txtServer->SetBackgroundColour(colBack);
+    txtDatabase->SetEditable(FALSE);
+    txtDatabase->SetBackgroundColour(colBack);
+    txtPort->SetEditable(FALSE);
+    txtPort->SetBackgroundColour(colBack);
+    txtUsername->SetEditable(FALSE);
+    txtUsername->SetBackgroundColour(colBack);
+    chkTrusted->Disable();
+    cbSSL->Disable();
     this->Refresh();
 }

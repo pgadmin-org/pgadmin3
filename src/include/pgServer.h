@@ -82,7 +82,7 @@ private:
     bool connected;
     wxString database, username, password, ver, error;
     wxString lastDatabase, lastSchema, description;
-    int port;
+    int port, ssl;
     bool trusted, createPrivilege, superUser;
     OID lastSystemOID;
     wxString versionNum;
