@@ -63,6 +63,9 @@ void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, _("OID"), GetOid());
         InsertListItem(properties, pos++, _("Source type"), GetSourceType());
         InsertListItem(properties, pos++, _("Target type"), GetTargetType());
+        if (GetCastFunction().IsNull())
+            InsertListItem(properties, pos++, _("Function"), _("(binary compatible)"));
+        else
         InsertListItem(properties, pos++, _("Function"), GetCastFunction() + wxT("(") + GetSourceType() + wxT(")"));
         InsertListItem(properties, pos++, _("Context"), GetCastContext());
         InsertListItem(properties, pos++, _("System cast?"), GetSystemObject());
@@ -98,8 +101,8 @@ pgObject *pgCast::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, con
         wxT("  FROM pg_cast ca\n")
         wxT("  JOIN pg_type st ON st.oid=castsource\n")
         wxT("  JOIN pg_type tt ON tt.oid=casttarget\n")
-        wxT("  JOIN pg_proc pr ON pr.oid=castfunc\n")
-        wxT("  JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
+        wxT("  LEFT JOIN pg_proc pr ON pr.oid=castfunc\n")
+        wxT("  LEFT JOIN pg_namespace na ON na.oid=pr.pronamespace\n")
         + restriction + systemRestriction +
         wxT(" ORDER BY st.typname, tt.typname"));
 
