@@ -72,6 +72,7 @@ int dlgAggregate::Go(bool modal)
         txtOwner->SetValue(aggregate->GetOwner());
         cbBaseType->Append(aggregate->GetInputType());
         cbBaseType->SetSelection(0);
+        AddType(wxT(" "), 0, aggregate->GetInputType());
         cbStateType->Append(aggregate->GetStateType());
         cbStateType->SetSelection(0);
 
@@ -229,7 +230,10 @@ wxString dlgAggregate::GetSql()
         
         sql += wxT(");\n");
     }
-    AppendComment(sql, wxT("AGGREGATE"), schema, aggregate);
+    AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedFullIdentifier() 
+                  + wxT(".") + qtIdent(name)
+                  + wxT("(") + GetQuotedTypename(cbBaseType->GetSelection())
+                  +wxT(")"), aggregate);
 
     return sql;
 }
