@@ -47,7 +47,6 @@ private:
     void OnVarSelChange(wxListEvent &ev);
 
     void OnVarnameSelChange(wxCommandEvent &ev);
-    void OnChangePasswd(wxCommandEvent &ev);
 
     wxArrayString groupsIn;
 

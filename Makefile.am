@@ -27,4 +27,45 @@ nobase_dist_pkgdata_DATA = \
 		$(top_srcdir)/docs/en_US/*.css $(top_srcdir)/docs/en_US/pgadmin3.hh* \
 		$(top_srcdir)/docs/en_US/tips.txt
 
-
+PgAdminIII.app: 
+		@echo "Building Bundle PgAdminIII.app"
+		@test -d PgAdminIII.app || $(mkinstalldirs) PgAdminIII.app
+		@test -d PgAdminIII.app/Contents/MacOS || $(mkinstalldirs) PgAdminIII.app/Contents/MacOS
+		@test -d PgAdminIII.app/Contents/Resources || $(mkinstalldirs) PgAdminIII.app/Contents/Resources
+		@test -d PgAdminIII.app/Contents/SharedSupport || $(mkinstalldirs) PgAdminIII.app/Contents/SharedSupport
+		@test -d PgAdminIII.app/Contents/Frameworks || $(mkinstalldirs) PgAdminIII.app/Contents/Frameworks
+		@cp pkg/mac/PkgInfo PgAdminIII.app
+		@cp pkg/mac/Info.plist PgAdminIII.app/Contents
+		@cp pkg/mac/PgAdminIII.icns PgAdminIII.app/Contents/Resources
+		@$$(@WX_CONFIG@ --rezflags | sed 's/-t[[:space:]]*APPL//') \
+			PgAdminIII.app/Contents/Resources/PgAdminIII.rsrc \
+			-useDF
+		@cp -r $(pkgdatadir)/* PgAdminIII.app/Contents/SharedSupport
+		@cp -r $(bindir)/pgadmin3 PgAdminIII.app/Contents/MacOS/PgAdminIII
+		@echo "Adding all non-standard shared libraries to PgAdminIII.app" ; \
+		cd PgAdminIII.app/Contents ; \
+		todo=MacOS/PgAdminIII ; \
+		while test "$$todo" != ""; do \
+			todo_old=$$todo ; \
+			todo="" ; \
+			for todo_obj in $$todo_old; do \
+				for lib in $$( \
+					otool -L $$todo_obj | \
+					sed -n 's|^.*[[:space:]]\([^[:space:]]*\.dylib\).*$$|\1|p' | \
+					egrep -v '^(/usr/lib)|(/System)' \
+				); do \
+					lib_bn="$$(basename "$$lib")" ;\
+					if ! test -f "Frameworks/$$lib_bn"; then \
+						cp "$$lib" "Frameworks/$$lib_bn" ; \
+						install_name_tool \
+							-id "@executable_path/../Frameworks/$$lib_bn" \
+							"Frameworks/$$lib_bn" ; \
+						todo="$$todo Frameworks/$$lib_bn" ; \
+					fi ; \
+					install_name_tool -change \
+						"$$lib" \
+						"@executable_path/../Frameworks/$$lib_bn" \
+						"$$todo_obj" ; \
+				done ; \
+			done ; \
+		done ;

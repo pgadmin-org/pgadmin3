@@ -30,6 +30,7 @@ AC_FUNC_STRTOD
 AC_CHECK_FUNCS([gethostbyname inet_ntoa memmove memset strchr])
 
 # Custom checks
+ENABLE_APPBUNDLE
 CHECK_WX_CONFIG_BINARY
 CHECK_PGSQL_INCLUDE
 ENABLE_DEBUG

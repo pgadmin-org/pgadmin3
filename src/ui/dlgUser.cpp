@@ -26,7 +26,6 @@
 // pointer to controls
 #define txtID           CTRL_TEXT("txtID")
 #define txtPasswd       CTRL_TEXT("txtPasswd")
-#define txtRePasswd     CTRL_TEXT("txtRePasswd")
 #define datValidUntil   CTRL_CALENDAR("datValidUntil")
 #define timValidUntil   CTRL_TIME("timValidUntil")
 #define chkCreateDB     CTRL_CHECKBOX("chkCreateDB")
@@ -51,8 +50,7 @@ BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsNotIn"),      dlgUser::OnGroupAdd)
     EVT_LISTBOX_DCLICK(XRCID("lbGroupsIn"),         dlgUser::OnGroupRemove)
-    EVT_TEXT(XRCID("txtPasswd"),                    dlgUser::OnChangePasswd)
-    EVT_TEXT(XRCID("txtRePasswd"),                  dlgUser::OnChangePasswd)
+    EVT_TEXT(XRCID("txtPasswd"),                    dlgUser::OnChange)
     EVT_CHECKBOX(XRCID("chkCreateDB"),              dlgUser::OnChange)
     EVT_CHECKBOX(XRCID("chkCreateUser"),            dlgUser::OnChangeSuperuser)
 
@@ -133,7 +131,6 @@ int dlgUser::Go(bool modal)
             datValidUntil->Disable();
             timValidUntil->Disable();
             txtPasswd->Disable();
-            txtRePasswd->Disable();
             btnAddGroup->Disable();
             btnDelGroup->Disable();
             cbVarname->Disable();
@@ -212,17 +209,6 @@ void dlgUser::OnChangeSuperuser(wxCommandEvent &ev)
     CheckChange();
 }
 
-void dlgUser::OnChangePasswd(wxCommandEvent &ev)
-{
-	wxString passwd=txtPasswd->GetValue();
-	wxString repasswd=txtRePasswd->GetValue();
-	if ((!repasswd.IsEmpty())||(!repasswd.IsEmpty()))
-	{
-           bool enable=true;
-           CheckValid(enable, !passwd.compare(repasswd), _("The passwords entered do not match!"));
-           EnableOK(enable);
-	}
-}
 
 void dlgUser::CheckChange()
 {

@@ -64,6 +64,18 @@ AC_DEFUN([ENABLE_STATIC],
 [pg_static_build=no])
 ])
 
+############################
+# Static build of pgAdmin3 #
+############################
+AC_DEFUN([ENABLE_APPBUNDLE],
+[AC_ARG_ENABLE(appbundle,
+[ --enable-appbundle   Build PgAdminIII.app],
+[pg_appbundle=yes
+prefix=$(pwd)/tmp
+],
+[pg_appbundle=no])
+])
+
 ########################################
 # Check for PostgreSQL library (libpq) #
 ########################################
@@ -486,3 +498,5 @@ then
     fi
 fi
 ])
+AC_SUBST(WX_CONFIG)
+
