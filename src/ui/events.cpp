@@ -1197,7 +1197,7 @@ void frmMain::OnDrop(wxCommandEvent &ev)
 
                 if (properties->GetSelectedItemCount() == 1)
                 {
-                    dropSingleObject(data, false);
+                    dropSingleObject(data, true);
                 }
                 else
                 {
