@@ -18,7 +18,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 # Only with latest environments. Not needed. Will be deleted later.
 #Requires: gtk2 >= 2.2, glibc >= 2.3.2, libjpeg >= 6, libpng >= 1.2.2, pango >= 1.2.1, libstdc++ >= 3.2.2, openssl >= 0.9.6, libtiff >= 3.5.7, zlib >= 1.1.4, glib2 >= 2.2.1, postgresql-libs >= 7.3.2, atk >= 1.2, freetype >= 2.1, fontconfig >= 2.1
 
-Requires: gtk2 >= 2.0, glibc >= 2.2, libjpeg >= 6, libpng >= 1.2.2, pango >= 1.1, libstdc++ >= 3.2, openssl >= 0.9.6, libtiff >= 3.5.7, zlib >= 1.1.4, glib2 >= 2, postgresql-libs >= 7.3.2, atk >= 1, freetype >= 2.1, fontconfig >= 2
+Requires: gtk2 >= 2.0, glibc >= 2.3.2, libjpeg >= 6, libpng >= 1.2.2, pango >= 1.1, libstdc++ >= 3.2, openssl >= 0.9.7, libtiff >= 3.5.7, zlib >= 1.1.4, glib2 >= 2, postgresql-libs >= 7.3.2, atk >= 1, freetype >= 2.1, fontconfig >= 2
 
   
 # Suse: freetype2
