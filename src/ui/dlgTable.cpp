@@ -60,6 +60,7 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_LISTBOX(XRCID("lbTables"),                  dlgTable::OnSelChangeTable)
 
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgTable::OnAddCol)
+    EVT_BUTTON(XRCID("btnChangeCol"),               dlgTable::OnChangeCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgTable::OnRemoveCol)
     EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"),     dlgTable::OnSelChangeCol)
 
@@ -78,6 +79,7 @@ dlgTable::dlgTable(frmMain *frame, pgTable *node, pgSchema *sch)
 
     txtOID->Disable();
     btnRemoveTable->Disable();
+    btnChangeCol->Hide();
 
     CreateListColumns(lstColumns, _("Column name"), _("Definition"), 150);
     lstColumns->InsertColumn(2, wxT("Inherited from table"), wxLIST_FORMAT_LEFT, 0);
@@ -107,6 +109,7 @@ int dlgTable::Go(bool modal)
         txtName->SetValue(table->GetName());
         txtOID->SetValue(NumToStr(table->GetOid()));
         chkHasOids->SetValue(table->GetHasOids());
+        txtComment->SetValue(table->GetComment());
 
         cbOwner->SetValue(table->GetOwner());
 
@@ -318,7 +321,7 @@ wxString dlgTable::GetSql()
 
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
-            definition=lstColumns->GetItemText(pos) + wxT(" ") + GetListText(lstColumns, pos, 1);
+            definition=qtIdent(lstColumns->GetItemText(pos)) + wxT(" ") + GetListText(lstColumns, pos, 1);
             index=tmpDef.Index(definition);
             if (index >= 0)
                 tmpDef.RemoveAt(index);
@@ -343,7 +346,7 @@ wxString dlgTable::GetSql()
 
         for (pos=0; pos < lstConstraints->GetItemCount() ; pos++)
         {
-            definition=lstConstraints->GetItemText(pos) 
+            definition=qtIdent(lstConstraints->GetItemText(pos)) 
                         + wxT(" ") + GetItemConstraintType(lstConstraints, pos) 
                         + wxT(" ") + GetListText(lstConstraints, pos, 1);
             index=tmpDef.Index(definition);
@@ -542,6 +545,12 @@ void dlgTable::OnSelChangeTable(wxListEvent &ev)
 }
 
 
+void dlgTable::OnChangeCol(wxNotifyEvent &ev)
+{
+    // not supported
+}
+
+
 void dlgTable::OnAddCol(wxNotifyEvent &ev)
 {
     dlgColumn col(mainForm, NULL, table);
@@ -567,9 +576,11 @@ void dlgTable::OnRemoveCol(wxNotifyEvent &ev)
 
 void dlgTable::OnSelChangeCol(wxListEvent &ev)
 {
-    wxString inheritedFromTable=GetListText(lstColumns, GetListSelected(lstColumns), 2);
+    long pos=GetListSelected(lstColumns);
+    wxString inheritedFromTable=GetListText(lstColumns, pos, 2);
+    
     btnRemoveCol->Enable(inheritedFromTable.IsEmpty());
-    btnChangeCol->Enable(table != 0 && inheritedFromTable.IsEmpty());
+//    btnChangeCol->Enable(column != 0 && table != 0);
 }
 
 

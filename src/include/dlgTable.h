@@ -39,6 +39,7 @@ private:
     void OnSelChangeTable(wxListEvent &ev);
 
     void OnAddCol(wxNotifyEvent &ev);
+    void OnChangeCol(wxNotifyEvent &ev);
     void OnRemoveCol(wxNotifyEvent &ev);
     void OnSelChangeCol(wxListEvent &ev);
 
