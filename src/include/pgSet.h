@@ -47,17 +47,17 @@ public:
     int ColScale(int col) const;
     int ColNumber(const wxString &colName) const;
 
-    wxString GetVal(int col) const;
+    wxString GetVal(const int col) const;
     wxString GetVal(const wxString& col) const;
-    long GetLong(int col) const;
+    long GetLong(const int col) const;
     long GetLong(const wxString &col);
-    bool GetBool(int col) const;
+    bool GetBool(const int col) const;
     bool GetBool(const wxString &col) const;
-    double GetDouble(int col) const;
+    double GetDouble(const int col) const;
     double GetDouble(const wxString &col) const;
-    wxULongLong GetLongLong(int col) const;
+    wxULongLong GetLongLong(const int col) const;
     wxULongLong GetLongLong(const wxString &col) const;
-    OID GetOid(int col) const;
+    OID GetOid(const int col) const;
     OID GetOid(const wxString &col) const;
 
 

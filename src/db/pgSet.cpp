@@ -96,7 +96,7 @@ int pgSet::ColNumber(const wxString &colname) const
 }
 
 
-wxString pgSet::GetVal(int col) const
+wxString pgSet::GetVal(const int col) const
 {
     return wxString(PQgetvalue(res, pos -1, col), wxConvUTF8);
 }
@@ -108,7 +108,7 @@ wxString pgSet::GetVal(const wxString& colname) const
 }
 
 
-long pgSet::GetLong(int col) const
+long pgSet::GetLong(const int col) const
 {
     char *c=PQgetvalue(res, pos-1, col);
     if (c)
@@ -120,11 +120,11 @@ long pgSet::GetLong(int col) const
 
 long pgSet::GetLong(const wxString &col)
 {
-    return GetLong((long)ColNumber(col));
+    return GetLong(ColNumber(col));
 }
 
 
-bool pgSet::GetBool(int col) const
+bool pgSet::GetBool(const int col) const
 {
     char *c=PQgetvalue(res, pos-1, col);
     if (c)
@@ -142,7 +142,7 @@ bool pgSet::GetBool(const wxString &col) const
 }
 
 
-double pgSet::GetDouble(int col) const
+double pgSet::GetDouble(const int col) const
 {
     char *c=PQgetvalue(res, pos-1, col);
     if (c)
@@ -158,7 +158,7 @@ double pgSet::GetDouble(const wxString &col) const
 }
 
 
-wxULongLong pgSet::GetLongLong(int col) const
+wxULongLong pgSet::GetLongLong(const int col) const
 {
     char *c=PQgetvalue(res, pos-1, col);
     if (c)
@@ -173,7 +173,7 @@ wxULongLong pgSet::GetLongLong(const wxString &col) const
 }
 
 
-OID pgSet::GetOid(int col) const
+OID pgSet::GetOid(const int col) const
 {
     return (OID)GetLong(col);
 }
