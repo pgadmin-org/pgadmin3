@@ -37,8 +37,8 @@ rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 strip --strip-debug %{buildroot}/%{_bindir}/%{name}
 
-cp ./src/include/images/elephant48.xpm %{buildroot}/%{_datadir}/%{name}.xpm
-cp ./pkg/slackware/%{name}.desktop %{buildroot}/%{_datadir}/%{name}.desktop
+cp ./src/include/images/elephant48.xpm %{buildroot}/%{_datadir}/%{name}/%{name}.xpm
+cp ./pkg/redhat/%{name}.desktop        %{buildroot}/%{_datadir}/%{name}/%{name}.desktop
 
 mkdir -p %{buildroot}/%{_datadir}/applications
 
@@ -56,7 +56,7 @@ rm -rf %{buildroot}
 %defattr(-, root, root)
 %{_bindir}/%{name}
 %{_datadir}/%{name}
-%{_datadir}/applications/%{name}.desktop
+%{_datadir}/applications
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <pgadmin-hackers@postgresql.org>
