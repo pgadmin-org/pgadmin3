@@ -84,6 +84,7 @@ int dlgTrigger::Go(bool modal)
         txtArguments->Disable();
         cbFunction->Disable();
         rdbFires->Disable();
+        txtComment->SetValue(trigger->GetComment());
         chkInsert->Disable();
         chkUpdate->Disable();
         chkDelete->Disable();
