@@ -484,8 +484,10 @@ void frmQueryBuilder::OnAddTableView(wxCommandEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnSize(wxSizeEvent& event)
 {
+    if (this->GetClientWindow() != NULL) {
 	wxLayoutAlgorithm layout;
 	layout.LayoutMDIFrame(this);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
