@@ -56,7 +56,7 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 %setup -q
 
 %build
-%configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
+./configure --prefix=%{buildroot}/usr --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
 make 
 
 pushd contrib/src/xrc
@@ -72,23 +72,23 @@ popd
 
 %install
 rm -rf %{buildroot}
-%makeinstall
+make install
 
 pushd contrib/src/xrc
-%makeinstall
+make install
 popd
 pushd contrib/utils/wxrc
-cp -r wxrc %{_bindir}/
+cp -r wxrc %{buildroot}%{_bindir}/
 popd
 
 pushd contrib/src/stc
-%makeinstall
+make install
 popd
 
-# Mandrake and RedHat do it by default. Needed for SuSE.
-#strip --strip-debug %{_libdir}/libwx_gtk2ud-%{version}.a
-#strip --strip-debug %{_libdir}/libwx_gtk2ud_xrc-%{version}.a
-#strip --strip-debug %{_libdir}/libwx_gtk2ud_stc-%{version}.a
+# RedHat does it by default. Needed for SuSE and Mandrake.
+strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud-%{version}.a
+strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_xrc-%{version}.a
+strip --strip-debug %{buildroot}%{_libdir}/libwx_gtk2ud_stc-%{version}.a
 
 %clean
 rm -rf %{buildroot}
