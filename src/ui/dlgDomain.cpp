@@ -29,7 +29,7 @@
 #define txtOwner            CTRL("txtOwner", wxTextCtrl)
 #define chkNotNull          CTRL("chkNotNull", wxCheckBox)
 #define txtDefault          CTRL("txtDefault", wxTextCtrl)
-
+#define txtCheck            CTRL("txtCheck", wxTextCtrl)
 
 BEGIN_EVENT_TABLE(dlgDomain, dlgTypeProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgDomain::OnChange)
@@ -79,14 +79,20 @@ int dlgDomain::Go(bool modal)
                 txtPrecision->SetValue(NumToStr(domain->GetPrecision()));
         }
         chkNotNull->SetValue(domain->GetNotNull());
+        txtDefault->SetValue(domain->GetDefault());
+        txtCheck->SetValue(domain->GetCheck());
 
         txtName->Disable();
         cbDatatype->Disable();
         txtDefault->Disable();
+        txtCheck->Disable();
+        chkNotNull->Disable();
     }
     else
     {
         // create mode
+        if (!connection->BackendMinimumVersion(7, 4))
+            txtCheck->Disable();
         FillDatatype(cbDatatype, false);
     }
 
@@ -165,6 +171,8 @@ wxString dlgDomain::GetSql()
         AppendIfFilled(sql, wxT("\n   DEFAULT "), txtDefault->GetValue());
         if (chkNotNull->GetValue())
             sql += wxT("\n   NOT NULL");
+        if (!txtCheck->GetValue().IsEmpty())
+            sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
         sql += wxT(";\n");
 
     }

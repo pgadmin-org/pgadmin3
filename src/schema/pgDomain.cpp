@@ -46,7 +46,7 @@ wxString pgDomain::GetSql(wxTreeCtrl *browser)
         // CONSTRAINT Name Dont know where it's stored, may be omitted anyway
         if (notNull)
             sql += wxT("\n  NOT NULL");
-
+        AppendIfFilled(sql, wxT("\n   CHECK "), GetCheck());
 
         sql += wxT(";\n")
             + GetCommentSql();
@@ -76,6 +76,7 @@ void pgDomain::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         if (GetDimensions())
             InsertListItem(properties, pos++, _("Dimensions"), GetDimensions());
         InsertListItem(properties, pos++, _("Default"), GetDefault());
+        InsertListItem(properties, pos++, _("Check"), GetCheck());
         InsertListItem(properties, pos++, _("Not NULL?"), GetNotNull());
         InsertListItem(properties, pos++, _("System domain?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
@@ -102,11 +103,20 @@ pgObject *pgDomain::Refresh(wxTreeCtrl *browser, const wxTreeItemId item)
 pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, const wxString &restriction)
 {
     pgDomain *domain=0;
+    wxString checkQuery, checkColumn;
+
+    if (collection->GetConnection()->BackendMinimumVersion(7, 4))
+    {
+        checkQuery = wxT("   LEFT OUTER JOIN pg_constraint cs ON cs.contypid=d.oid\n");
+        checkColumn = wxT("consrc, ");
+    }
+
     pgSet *domains= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT d.oid, d.typname as domname, d.typbasetype, b.typname as basetype, pg_get_userbyid(d.typowner) as domainowner, \n")
         wxT("       d.typlen, d.typtypmod, d.typnotnull, d.typdefault, d.typndims, d.typdelim,\n")
-        wxT("       description\n")
+        wxT("       ") + checkColumn + wxT("description\n")
         wxT("  FROM pg_type d\n")
+        + checkQuery +
         wxT("  JOIN pg_type b ON b.oid = CASE WHEN d.typndims>0 then d.typelem ELSE d.typbasetype END\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=d.oid\n")
         wxT(" WHERE d.typtype = 'd' AND d.typnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
@@ -138,6 +148,8 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
             domain->iSetNotNull(domains->GetBool(wxT("typnotnull")));
             domain->iSetDimensions(domains->GetLong(wxT("typndims")));
             domain->iSetDelimiter(domains->GetVal(wxT("typdelim")));
+            if (collection->GetConnection()->BackendMinimumVersion(7, 4))
+                domain->iSetCheck(domains->GetVal(wxT("consrc")));
 
             if (browser)
             {

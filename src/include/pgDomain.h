@@ -40,6 +40,8 @@ public:
     void iSetLength(long l) { length=l; }
     long GetPrecision() const { return precision; }
     void iSetPrecision(long l) { precision = l; }
+    wxString GetCheck() const { return check; }
+    void iSetCheck(const wxString &s) { check=s; }
     wxString GetDefault() const { return defaultVal; }
     void iSetDefault(const wxString& s) { defaultVal = s; }
     bool GetNotNull() const { return notNull; }
@@ -60,7 +62,7 @@ public:
     pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item);
 
 private:
-    wxString basetype, quotedBasetype, defaultVal, delimiter;
+    wxString basetype, quotedBasetype, defaultVal, delimiter, check;
     long length, precision, dimensions;
     long typlen, typmod;
     bool notNull;
