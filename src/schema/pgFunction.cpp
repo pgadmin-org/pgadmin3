@@ -56,7 +56,7 @@ wxString pgFunction::GetSql(wxTreeCtrl *browser)
             + wxT(")\n  RETURNS ");
         if (GetReturnAsSet())
             sql += wxT("SETOF ");
-        sql +=GetReturnType() 
+        sql +=GetQuotedReturnType() 
             + wxT(" AS\n");
         
         if (GetLanguage().IsSameAs(wxT("C"), false))
@@ -158,6 +158,7 @@ pgFunction *pgFunction::AppendFunctions(pgObject *obj, pgSchema *schema, wxTreeC
             function->iSetAcl(functions->GetVal(wxT("proacl")));
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
             function->iSetReturnType(obj->GetDatabase()->GetSchemaPrefix(functions->GetVal(wxT("typnsp"))) + functions->GetVal(wxT("typname")));
+			function->iSetQuotedReturnType(obj->GetDatabase()->GetQuotedSchemaPrefix(functions->GetVal(wxT("typnsp"))) + qtIdent(functions->GetVal(wxT("typname"))));
             function->iSetComment(functions->GetVal(wxT("description")));
             wxString oids=functions->GetVal(wxT("proargtypes"));
             wxString argNames;

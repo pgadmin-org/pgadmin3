@@ -49,7 +49,9 @@ public:
     void iAddArgName(const wxString &s) { argNames.Add(s); }
     void iSetArgTypeOids(const wxString& s) { argTypeOids = s; }
     wxString GetReturnType() const { return returnType; }
+	wxString GetQuotedReturnType() const { return quotedReturnType; }
     void iSetReturnType(const wxString& s) { returnType = s; }
+	void iSetQuotedReturnType(const wxString& s) { quotedReturnType = s; }
     wxString GetLanguage() const { return language; }
     void iSetLanguage(const wxString& s) { language = s; }
     wxString GetVolatility() const { return volatility; }
@@ -79,7 +81,7 @@ protected:
 private:
     wxString argTypeOids, argTypes, quotedArgTypes,
         argTypeNames, quotedArgTypeNames,
-        returnType, language, volatility, source, bin;
+        returnType, quotedReturnType, language, volatility, source, bin;
     wxArrayString argNames;
     bool returnAsSet, secureDefiner, isStrict;
     long argCount;
