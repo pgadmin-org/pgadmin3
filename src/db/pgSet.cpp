@@ -166,7 +166,7 @@ int pgQueryThread::execute()
         // only the last result set will be returned
         // all others are discarded
         PGresult *res=PQgetResult(conn);
-        wxLongLong elapsed=wxGetLocalTimeMillis() - startTime;
+
         startTime = wxGetLocalTimeMillis();
         if (!res)
             break;
