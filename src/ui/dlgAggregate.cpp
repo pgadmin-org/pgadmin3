@@ -37,7 +37,10 @@
 
 BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
     EVT_TEXT(XRCID("cbBaseType"),                   dlgAggregate::OnChangeTypeBase)
+    EVT_COMBOBOX(XRCID("cbBaseType"),               dlgAggregate::OnChangeTypeBase)
     EVT_TEXT(XRCID("cbStateType"),                  dlgAggregate::OnChangeTypeState)
+    EVT_COMBOBOX(XRCID("cbStateType"),              dlgAggregate::OnChangeTypeState)
+    EVT_COMBOBOX(XRCID("cbStateFunc"),              dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbStateFunc"),                  dlgProperty::OnChange)
 END_EVENT_TABLE();
 

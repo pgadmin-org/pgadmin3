@@ -70,6 +70,7 @@ BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
 
     EVT_TEXT(XRCID("txtName"),                      dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbOwner"),                      dlgProperty::OnChangeOwner)
+    EVT_COMBOBOX(XRCID("cbOwner"),                  dlgProperty::OnChangeOwner)
     EVT_TEXT(XRCID("txtComment"),                   dlgProperty::OnChange)
     
     EVT_BUTTON(wxID_HELP,                           dlgProperty::OnHelp)

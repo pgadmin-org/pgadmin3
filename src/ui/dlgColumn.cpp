@@ -41,6 +41,7 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
     EVT_TEXT(XRCID("txtDefault"),                   dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkNotNull"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtAttstattarget"),             dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbDatatype"),               dlgColumn::OnSelChangeTyp)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
 END_EVENT_TABLE();
 
@@ -400,6 +401,7 @@ void dlgColumn::CheckChange()
         bool enable=true;
         EnableOK(enable);   // to get rid of old messages
 
+        CheckValid(enable, cbDatatype->GetGuessedSelection() >= 0, _("Please select a datatype."));
         if (!connection->BackendMinimumVersion(7, 5))
         {
             CheckValid(enable, !isVarLen || !txtLength->GetValue().IsEmpty() || varlen >= column->GetLength(), 
@@ -414,13 +416,14 @@ void dlgColumn::CheckChange()
         
         if (enable)
             enable = GetName() != column->GetName()
-                    || txtDefault->GetValue() != column->GetDefault()
-                    || txtComment->GetValue() != column->GetComment()
-                    || chkNotNull->GetValue() != column->GetNotNull()
-                    || (cbDatatype->GetCount() > 1 && cbDatatype->GetValue() != column->GetRawTypename())
-                    || (isVarLen && varlen != column->GetLength())
-                    || (isVarPrec && varprec != column->GetPrecision())
-                    || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget());
+//                    || txtDefault->GetValue() != column->GetDefault()
+//                    || txtComment->GetValue() != column->GetComment()
+//                    || chkNotNull->GetValue() != column->GetNotNull()
+                    || (cbDatatype->GetCount() > 1 && cbDatatype->GetGuessedStringSelection() != column->GetRawTypename())
+//                    || (isVarLen && varlen != column->GetLength())
+//                    || (isVarPrec && varprec != column->GetPrecision())
+//                    || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget());
+;
         EnableOK(enable);
     }
     else

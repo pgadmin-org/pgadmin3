@@ -41,11 +41,14 @@
 BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtPath"),                      dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbEncoding"),                   dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbEncoding"),               dlgProperty::OnChange)
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgDatabase::OnVarSelChange)
     EVT_BUTTON(wxID_ADD,                            dlgDatabase::OnVarAdd)
     EVT_BUTTON(wxID_REMOVE,                         dlgDatabase::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgDatabase::OnVarnameSelChange)
+    EVT_COMBOBOX(XRCID("cbVarname"),                dlgDatabase::OnVarnameSelChange)
 END_EVENT_TABLE();
 
 

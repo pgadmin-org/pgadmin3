@@ -27,6 +27,7 @@
 
 BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 

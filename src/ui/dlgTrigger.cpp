@@ -41,6 +41,7 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
     EVT_CHECKBOX(XRCID("chkUpdate"),                dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChangeFunc)
+    EVT_COMBOBOX(XRCID("cbFunction"),               dlgTrigger::OnChangeFunc)
     EVT_TEXT(XRCID("txtArguments"),                 dlgProperty::OnChange)
 END_EVENT_TABLE();
 

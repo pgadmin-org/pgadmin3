@@ -38,6 +38,7 @@
 
 BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexBase::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexBase::OnRemoveCol)
 END_EVENT_TABLE();

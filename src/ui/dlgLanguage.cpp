@@ -32,6 +32,7 @@
 
 BEGIN_EVENT_TABLE(dlgLanguage, dlgSecurityProperty)
     EVT_TEXT(XRCID("cbHandler"),                    dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbHandler"),                dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 

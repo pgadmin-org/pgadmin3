@@ -44,12 +44,19 @@
 
 BEGIN_EVENT_TABLE(dlgOperator, dlgTypeProperty)
     EVT_TEXT(XRCID("cbLeftType"),               dlgOperator::OnChangeTypeLeft)
+    EVT_COMBOBOX(XRCID("cbLeftType"),           dlgOperator::OnChangeTypeLeft)
     EVT_TEXT(XRCID("cbRightType"),              dlgOperator::OnChangeTypeRight)
+    EVT_COMBOBOX(XRCID("cbRightType"),          dlgOperator::OnChangeTypeRight)
     EVT_TEXT(XRCID("cbProcedure"),              dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbProcedure"),          dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbLeftSort") ,              dlgOperator::OnChangeJoin)
+    EVT_COMBOBOX(XRCID("cbLeftSort") ,          dlgOperator::OnChangeJoin)
     EVT_TEXT(XRCID("cbRightSort") ,             dlgOperator::OnChangeJoin)
+    EVT_COMBOBOX(XRCID("cbRightSort") ,         dlgOperator::OnChangeJoin)
     EVT_TEXT(XRCID("cbLess") ,                  dlgOperator::OnChangeJoin)
+    EVT_COMBOBOX(XRCID("cbLess") ,              dlgOperator::OnChangeJoin)
     EVT_TEXT(XRCID("cbGreater") ,               dlgOperator::OnChangeJoin)
+    EVT_COMBOBOX(XRCID("cbGreater") ,           dlgOperator::OnChangeJoin)
 END_EVENT_TABLE();
 
 

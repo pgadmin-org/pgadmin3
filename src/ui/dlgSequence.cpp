@@ -38,6 +38,7 @@
 
 BEGIN_EVENT_TABLE(dlgSequence, dlgSecurityProperty)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtStart"),                     dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtMin"),                       dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtMax"),                       dlgProperty::OnChange)

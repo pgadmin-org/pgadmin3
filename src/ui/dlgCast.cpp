@@ -37,7 +37,9 @@
 
 BEGIN_EVENT_TABLE(dlgCast, dlgTypeProperty)
     EVT_TEXT(XRCID("cbSourceType"),                 dlgCast::OnChangeTypeSrc)
+    EVT_COMBOBOX(XRCID("cbSourceType"),             dlgCast::OnChangeTypeSrc)
     EVT_TEXT(XRCID("cbTargetType"),                 dlgCast::OnChangeTypeTrg)
+    EVT_COMBOBOX(XRCID("cbTargetType"),             dlgCast::OnChangeTypeTrg)
 END_EVENT_TABLE();
 
 

@@ -61,6 +61,7 @@ BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_BUTTON(wxID_ADD,                            dlgUser::OnVarAdd)
     EVT_BUTTON(wxID_REMOVE,                         dlgUser::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgUser::OnVarnameSelChange)
+    EVT_COMBOBOX(XRCID("cbVarname"),                dlgUser::OnVarnameSelChange)
 END_EVENT_TABLE();
 
 

@@ -35,8 +35,11 @@
 
 BEGIN_EVENT_TABLE(dlgConversion, dlgProperty)
     EVT_TEXT(XRCID("cbSourceEncoding"),     dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbSourceEncoding"), dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTargetEncoding"),     dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbTargetEncoding"), dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbFunction"),           dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbFunction"),       dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 

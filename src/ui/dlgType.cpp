@@ -53,7 +53,9 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
     EVT_RADIOBOX(XRCID("rdbType"),                  dlgType::OnTypeChange)
 
     EVT_TEXT(XRCID("cbInput"),                      dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbInput"),                  dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbOutput"),                     dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbOutput"),                 dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtIntLength"),                 dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkVariable"),              dlgProperty::OnChange)
     
@@ -61,6 +63,7 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
     EVT_BUTTON(wxID_REMOVE,                         dlgType::OnVarRemove)
     EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgType::OnVarSelChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgType::OnSelChangeTyp)
+    EVT_COMBOBOX(XRCID("cbDatatype"),               dlgType::OnSelChangeTyp)
     EVT_TEXT(XRCID("txtMembername"),                dlgType::OnChangeMember)
     EVT_TEXT(XRCID("txtLength"),                    dlgType::OnSelChangeTypOrLen)
 END_EVENT_TABLE();

@@ -46,8 +46,11 @@ BEGIN_EVENT_TABLE(dlgForeignKey, dlgProperty)
 
     EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"), dlgForeignKey::OnSelChangeCol)
     EVT_TEXT(XRCID("cbReferences"),             dlgForeignKey::OnSelChangeRef)
+    EVT_COMBOBOX(XRCID("cbReferences"),         dlgForeignKey::OnSelChangeRef)
     EVT_TEXT(XRCID("cbColumns"),                dlgForeignKey::OnSelChangeRefCol)
+    EVT_COMBOBOX(XRCID("cbColumns"),            dlgForeignKey::OnSelChangeRefCol)
     EVT_TEXT(XRCID("cbRefColumns"),             dlgForeignKey::OnSelChangeRefCol)
+    EVT_COMBOBOX(XRCID("cbRefColumns"),         dlgForeignKey::OnSelChangeRefCol)
     EVT_BUTTON(XRCID("btnAddRef"),              dlgForeignKey::OnAddRef)
     EVT_BUTTON(XRCID("btnRemoveRef"),           dlgForeignKey::OnRemoveRef)
 END_EVENT_TABLE();
