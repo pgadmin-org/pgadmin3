@@ -342,9 +342,10 @@ wxString queryTokenizer::GetNextToken()
 }
 
 
-wxString FileRead(const wxString &filename)
+wxString FileRead(const wxString &filename, wxWindow *errParent, int format)
 {
     wxString str;
+
     wxFile file(filename);
     if (file.IsOpened())
     {
@@ -353,18 +354,43 @@ wxString FileRead(const wxString &filename)
         memset(buf, 0, len+1);
         file.Read(buf, len);
         file.Close();
-        if (settings->GetUnicodeFile())
-            str=wxString(buf, wxConvUTF8);
+
+        if (format < 0)
+            format = (settings->GetUnicodeFile() ? 1 : 0);
+
+        wxMBConv conv;
+        switch (format)
+        {
+            case 1:
+                conv=wxConvUTF8;
+                break;
+            default:
+                conv=wxConvLibc;
+                break;
+        }
+
+        int nLen = conv.MB2WC(0, buf, 0);
+        if (nLen == (size_t) -1)
+        {
+            // Format error
+            if (errParent)
+                wxMessageDialog (errParent, _("File cannot be opened with this format.\nPlease chose another format."), 
+                _("FATAL"), wxOK|wxCENTRE|wxICON_ERROR).ShowModal();
+        }
         else
-            str=wxString(buf, wxConvLibc);
+        {
+            str=wxString(' ', nLen);
+            conv.MB2WC((wxChar*)str.c_str(), buf, nLen);
+
+            str.Replace(wxT("\r"), wxT(""));
+        }
         delete[] buf;
-        str.Replace(wxT("\r"), wxT(""));
     }
     return str;
 }
 
 
-bool FileWrite(const wxString &filename, const wxString &data)
+bool FileWrite(const wxString &filename, const wxString &data, int format)
 {
     wxFile file(filename, wxFile::write);
     if (file.IsOpened())
@@ -373,7 +399,10 @@ bool FileWrite(const wxString &filename, const wxString &data)
 #ifdef __WIN32__
         buf.Replace(wxT("\n"), wxT("\r\n"));
 #endif
-        if (settings->GetUnicodeFile())
+        if (format < 0)
+            format = settings->GetUnicodeFile() ? 1 : 0;
+
+        if (format == 1)
             file.Write(buf, wxConvUTF8);
         else
             file.Write(buf, wxConvLibc);

@@ -198,6 +198,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
         setExtendedTitle();
     updateMenu();
     setTools(false);
+    lastFileFormat = settings->GetUnicodeFile();
 }
 
 
@@ -545,7 +546,7 @@ void frmQuery::OnChange(wxNotifyEvent& event)
 
 void frmQuery::openLastFile()
 {
-    wxString str=FileRead(lastPath);
+    wxString str=FileRead(lastPath, this, lastFileFormat ? 1 : 0);
     if (!str.IsEmpty())
     {
         sqlQuery->SetText(str);
@@ -559,13 +560,24 @@ void frmQuery::openLastFile()
 void frmQuery::OnOpen(wxCommandEvent& event)
 {
     wxFileDialog dlg(this, _("Open query file"), lastDir, wxT(""), 
-        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
+        _("Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
     if (dlg.ShowModal() == wxID_OK)
     {
         lastFilename=dlg.GetFilename();
         lastDir = dlg.GetDirectory();
         lastPath = dlg.GetPath();
-
+        switch (dlg.GetFilterIndex())
+        {
+            case 0: 
+                lastFileFormat = false;
+                break;
+            case 1:
+                lastFileFormat = true;
+                break;
+            default:
+                lastFileFormat = settings->GetUnicodeFile();
+                break;
+        }
         openLastFile();
     }
 }
@@ -578,7 +590,7 @@ void frmQuery::OnSave(wxCommandEvent& event)
         return;
     }
 
-    if (FileWrite(lastPath, sqlQuery->GetText()))
+    if (FileWrite(lastPath, sqlQuery->GetText(), lastFileFormat ? 1 : 0))
     {
         changed=false;
         setExtendedTitle();
@@ -589,12 +601,24 @@ void frmQuery::OnSave(wxCommandEvent& event)
 void frmQuery::OnSaveAs(wxCommandEvent& event)
 {
     wxFileDialog *dlg=new wxFileDialog(this, _("Save query file as"), lastDir, lastFilename, 
-        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
+        _("Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
     if (dlg->ShowModal() == wxID_OK)
     {
         lastFilename=dlg->GetFilename();
         lastDir = dlg->GetDirectory();
         lastPath = dlg->GetPath();
+        switch (dlg->GetFilterIndex())
+        {
+            case 0: 
+                lastFileFormat = false;
+                break;
+            case 1:
+                lastFileFormat = true;
+                break;
+            default:
+                lastFileFormat = settings->GetUnicodeFile();
+                break;
+        }
 
         OnSave(event);
     }
