@@ -51,7 +51,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
 pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid)
 {
     wxLogInfo(wxT("Creating pgConn object"));
-    wxString msg, hostip;
+    wxString msg, hostip, hostname;
 
     conv = &wxConvLibc;
     needColQuoting = false;
@@ -85,7 +85,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 
         memcpy(&(ipaddr),host->h_addr,host->h_length); 
 	    hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
-
+		hostname = server;
     }
     else
         hostip = server;
@@ -94,6 +94,10 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 
     // Create the connection string
     wxString connstr;
+    if (!hostname.IsEmpty()) {
+      connstr.Append(wxT(" host="));
+      connstr.Append(qtString(hostname));
+    }
     if (!server.IsEmpty()) {
       connstr.Append(wxT(" hostaddr="));
       connstr.Append(qtString(hostip));
