@@ -130,8 +130,7 @@ void frmVacuum::OnOK(wxCommandEvent& ev)
         }
 
         if (object->GetType() != PG_DATABASE)
-            sql += object->GetTypeName() + wxT(" ")
-                +  object->GetQuotedFullIdentifier();
+            sql += object->GetQuotedFullIdentifier();
 
         thread=new pgQueryThread(object->GetConnection()->connection(), sql);
         if (thread->Create() != wxTHREAD_NO_ERROR)
