@@ -98,13 +98,19 @@ void pgUser::ShowReferencedBy(frmMain *form, ctlListView *referencedBy, const wx
 
     wxArrayString dblist;
 
-    pgSet *set=GetConnection()->ExecuteSet(
+    pgSet *set;
+    if (GetConnection()->BackendMinimumVersion(7, 5))
+        set=GetConnection()->ExecuteSet(
         wxT("SELECT 'd' as type, datname, datallowconn, datdba\n")
         wxT("  FROM pg_database db\n")
         wxT("UNION\n")
         wxT("SELECT 'M', spcname, null, null\n")
         wxT("  FROM pg_tablespace where spcowner=") + uid + wxT("\n")
         wxT(" ORDER BY 1, 2"));
+    else
+        set=GetConnection()->ExecuteSet(
+        wxT("SELECT 'd' as type, datname, datallowconn, datdba\n")
+        wxT("  FROM pg_database db"));
 
     if (set)
     {
