@@ -145,8 +145,14 @@ int dlgFunction::Go(bool modal)
     }
     else
     {
+		wxString restrict;
         // create mode
-        DatatypeReader tr(connection, wxString(wxT("(typtype IN ('b', 'd') OR typname IN ('void', 'cstring'))")));
+		if (settings->GetShowSystemObjects()) 
+			restrict = wxT("(typtype IN ('b', 'c', 'd') OR typname IN ('void', 'cstring'))");
+		else
+			restrict = wxT("(typtype IN ('b', 'c', 'd') OR typname IN ('void', 'cstring')) AND nspname NOT LIKE 'pg_toast%' AND nspname NOT LIKE 'pg_temp%'");
+
+		DatatypeReader tr(connection, restrict);
         while (tr.HasMore())
         {
             pgDatatype dt=tr.GetDatatype();
