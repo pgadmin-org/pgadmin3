@@ -257,6 +257,8 @@ void wxUtfFile::DetermineConversion(wxFontEncoding encoding)
             case wxFONTENCODING_UTF32LE:
                 m_conversion = &wxConvUTF32LE;
                 break;
+			default:
+				break;
         }
     }
 }

@@ -102,7 +102,7 @@ pgObject *pgaSchedule::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxStr
             schedule->iSetSchedule(schedules->GetDateTime(wxT("jscsched")));
             schedule->iSetIntervalList(schedules->GetVal(wxT("jsclist")));
 
-            wxChar kindc=schedules->GetVal(wxT("jsckind"))[0];
+            wxChar kindc = *schedules->GetVal(wxT("jsckind")).c_str();
             wxString kinds;
             switch (kindc)
             {

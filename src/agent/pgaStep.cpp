@@ -97,7 +97,7 @@ pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString 
             step->iSetDbname(steps->GetVal(wxT("datname")));
             step->iSetCode(steps->GetVal(wxT("jstcode")));
 
-            wxChar kindc=steps->GetVal(wxT("jstkind"))[0];
+            wxChar kindc = *steps->GetVal(wxT("jstkind")).c_str();
             wxString kinds;
             switch (kindc)
             {
@@ -107,7 +107,7 @@ pgObject *pgaStep::ReadObjects(pgaJob *job, wxTreeCtrl *browser, const wxString 
             step->iSetKindChar(kindc);
             step->iSetKind(kinds);
 
-            wxChar onerrc=steps->GetVal(wxT("jstonerror"))[0];
+            wxChar onerrc = *steps->GetVal(wxT("jstonerror")).c_str();
             wxString onerrs;
             switch (onerrc)
             {
