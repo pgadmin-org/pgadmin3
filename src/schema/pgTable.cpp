@@ -426,12 +426,16 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
              wxT(", tidx_blks_hit AS ") + qtIdent(_("Toast Index Blocks Hit"));
     
     if (GetConnection()->HasFeature(FEATURE_SIZE))
-        sql += wxT(", pg_size_pretty(pg_relation_size(stat.relid)) AS ") + qtIdent(_("Table Size"));
-
+    {
+        sql += wxT(", pg_size_pretty(pg_relation_size(stat.relid)) AS ") + qtIdent(_("Table Size"))
+            +  wxT(", CASE WHEN cl.reltoastrelid = 0 THEN ") + qtString(_("none")) + wxT(" ELSE pg_size_pretty(pg_relation_size(cl.reltoastrelid)) END AS ") + qtIdent(_("Toast Table Size"))
+            +  wxT(", pg_size_pretty(COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=stat.relid)::int8, 0)) AS ") + qtIdent(_("Indexes Size"));
+    }
     sql +=  wxT("\n")
-        wxT("  FROM pg_stat_all_tables stat, pg_statio_all_tables statio\n")
-        wxT(" WHERE stat.relid = statio.relid\n")
-        wxT("   AND stat.relid = ") + GetOidStr();
+        wxT("  FROM pg_stat_all_tables stat\n")
+        wxT("  JOIN pg_statio_all_tables statio ON stat.relid = statio.relid\n")
+        wxT("  JOIN pg_class cl ON cl.oid=stat.relid\n")
+        wxT(" WHERE stat.relid = ") + GetOidStr();
 
     DisplayStatistics(statistics, sql);
 }
@@ -467,7 +471,7 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
             wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid AND des.objsubid=0\n")
             wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
-            wxT(" WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+            wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
             + restriction + 
             wxT(" ORDER BY relname"));
     }
@@ -479,7 +483,7 @@ pgObject *pgTable::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             wxT("  FROM pg_class rel\n")
             wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rel.oid AND des.objsubid=0\n")
             wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
-            wxT(" WHERE ((relkind = 'r') OR (relkind = 's')) AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+            wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
             + restriction + 
             wxT(" ORDER BY relname"));
     }
@@ -533,12 +537,15 @@ void pgTable::ShowStatistics(pgCollection *collection, ctlListView *statistics)
     if (hasSize)
         statistics->AddColumn(_("Size"), 60);
 
-    wxString sql=wxT("SELECT relname, n_tup_ins, n_tup_upd, n_tup_del");
+    wxString sql=wxT("SELECT st.relname, n_tup_ins, n_tup_upd, n_tup_del");
     if (hasSize)
-        sql += wxT(", pg_size_pretty(pg_relation_size(relid)) AS size");
+        sql += wxT(", pg_size_pretty(pg_relation_size(st.relid)")
+               wxT(" + CASE WHEN cl.reltoastrelid = 0 THEN 0 ELSE pg_relation_size(cl.reltoastrelid) END")
+               wxT(" + COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=st.relid)::int8, 0)) AS size");
     
-    sql += wxT("\n  FROM pg_stat_all_tables")
-	  wxT("\n WHERE schemaname = ") + qtString(collection->GetSchema()->GetName())
+    sql += wxT("\n  FROM pg_stat_all_tables st")
+           wxT("  JOIN pg_class cl on cl.oid=st.relid\n")
+	       wxT(" WHERE schemaname = ") + qtString(collection->GetSchema()->GetName())
 	    +  wxT("\n ORDER BY relname");
 
     pgSet *stats = collection->GetDatabase()->ExecuteSet(sql);
