@@ -528,8 +528,8 @@ void frmStatus::checkConnection()
 void frmStatus::addLogFile(wxDateTime *dt, bool skipFirst)
 {
     pgSet *set=connection->ExecuteSet(
-        wxT("SELECT filetime, filename, pg_file_length(filename) AS len\n")
-        wxT("  FROM pg_logdir_ls\n")
+        wxT("SELECT filetime, filename, pg_file_length(filename) AS len ")
+        wxT("  FROM pg_logdir_ls ")
         wxT(" WHERE filetime = '") + DateToAnsiStr(*dt) + wxT("'::timestamp"));
     if (set)
     {
@@ -692,7 +692,7 @@ int frmStatus::fillLogfileCombo()
         count--;
 
     pgSet *set=connection->ExecuteSet(
-        wxT("SELECT filename, filetime FROM pg_logdir_ls\n")
+        wxT("SELECT filename, filetime FROM pg_logdir_ls ")
         wxT(" ORDER BY filetime ASC"));
     if (set)
     {
