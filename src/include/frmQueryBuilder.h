@@ -95,7 +95,6 @@ private:
     void setTools(const bool running);
 	void UpdateGridColumns(frmChildTableViewFrame *frame, int item,
 		bool _FORCE = FALSE, int _FORCEROW = 0);
-	void BuildQuery();
 	void RunQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0);
 	void VerifyExpression(int row);
 	wxString RebuildCondition(wxString condition, int row, bool &errout);
@@ -103,6 +102,7 @@ private:
 	bool IsTableLeftOnly(wxString tablename);
 	virtual wxMDIClientWindow* OnCreateClient();
 	wxString BuildTableJoin(int table, int indent);
+    void BuildQuery();
 
 	// Events
     void OnClose(wxCloseEvent& event);

@@ -11,6 +11,7 @@
 // App headers
 #include "frmQueryBuilder.h"
 #include "frmQBJoin.h"
+#include "menu.h"
 
 // Icons
 #ifndef __WIN32__
@@ -33,6 +34,7 @@ BEGIN_EVENT_TABLE(frmChildTableViewFrame, wxMDIChildFrame)
     EVT_MENU(MNU_ADDCOLUMN, frmChildTableViewFrame::OnAddColumn)
     EVT_MENU(MNU_CLOSE, frmChildTableViewFrame::OnClose)
     EVT_MENU_RANGE(MNU_JOINTO, MNU_JOINTO_N, frmChildTableViewFrame::OnJoinTo)
+    EVT_MENU_RANGE(MNU_REMOVEJOIN, MNU_REMOVEJOIN_N, frmChildTableViewFrame::OnRemoveJoin)
 
     EVT_CLOSE(frmChildTableViewFrame::OnCloseWindow)  
 
@@ -226,6 +228,16 @@ void frmChildTableViewFrame::ExecRightClick(wxPoint &point)
 		}
    	}
 
+    // Remove Join menu
+    wxMenu *joinmenu = new wxMenu();
+
+    int joins = tmpparent->m_joins.GetCount();
+
+    for (int ti = 0; ti < joins; ti++) {
+        JoinStruct *js = (JoinStruct *)tmpparent->m_joins[ti];
+        joinmenu->Append(MNU_REMOVEJOIN + ti, js->left + wxT(" -> ") + js->right);
+    }
+
 	// Context Menu
     wxString text;
    	wxMenu contextmenu;
@@ -239,6 +251,11 @@ void frmChildTableViewFrame::ExecRightClick(wxPoint &point)
 		contextmenu.AppendSeparator();
 		contextmenu.Append(MNU_JOINTO, _("&Join To..."), tablemenu);
 	}
+    if (joins)
+    {
+		contextmenu.AppendSeparator();
+		contextmenu.Append(MNU_REMOVEJOIN, _("&Remove Join..."), joinmenu);
+    }
 
     contextmenu.AppendSeparator();
     contextmenu.Append(MNU_CLOSE, _("&Close Table/View"), 
@@ -456,7 +473,6 @@ bool DnDJoin::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 		tmpjoin->joinop = dlgJoin.GetJoinOperator();
 
 		tmpparent->m_joins.Add(tmpjoin);
-
 		tmpparent->GetClientWindow()->Refresh();
 	}
 
@@ -534,6 +550,26 @@ void frmChildTableViewFrame::OnJoinTo(wxCommandEvent& event)
 
 	DnDJoin	tmpjoin(tmpframe);
 	tmpjoin.OnDropText(0, 0, tmpleftname + wxT(".") + tmpcolumn);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void frmChildTableViewFrame::OnRemoveJoin(wxCommandEvent& event)
+{
+	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
+
+	int n = event.GetId() - MNU_REMOVEJOIN;
+    JoinStruct *js = (JoinStruct *)tmpparent->m_joins[n];
+
+    wxMessageDialog msg(this, wxString::Format(_("Are you sure you wish to remove the join %s ?"),
+        js->left + wxT(" -> ") + js->right),
+        wxString::Format(_("Remove join?")), wxYES_NO | wxICON_QUESTION);
+
+    if (msg.ShowModal() != wxID_YES) 
+        return;
+
+    tmpparent->m_joins.RemoveAt(n);
+    tmpparent->GetClientWindow()->Refresh();
 }
 
 void frmChildTableViewFrame::OnPaint(wxPaintEvent &event)

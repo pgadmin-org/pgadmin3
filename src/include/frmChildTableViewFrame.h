@@ -104,6 +104,7 @@ private:
 	void OnCloseWindow(wxCloseEvent& event);
 	void OnAddColumn(wxCommandEvent& event);
 	void OnJoinTo(wxCommandEvent& event);
+	void OnRemoveJoin(wxCommandEvent& event);
     void OnLeftDown(wxMouseEvent& event);
 	void OnMotion(wxMouseEvent& event);
     void OnLeftUp(wxMouseEvent& event);
@@ -125,19 +126,13 @@ private:
 		ID_TABLEVIEWLISTBOX = 1000
 	};
 
-	// Menu options
-	enum
-	{
-		MNU_ADDCOLUMN = 2000,
-		MNU_CLOSE,
-		MNU_MIN
-	};
-
 	// "Reserve" these IDs for dynamic menus
 	enum
 	{
 		MNU_JOINTO = 3000,
-		MNU_JOINTO_N = 3999
+		MNU_JOINTO_N = 3999,
+        MNU_REMOVEJOIN = 4000,
+        MNU_REMOVEJOIN_N = 4999
 	};
 
 	// Macros

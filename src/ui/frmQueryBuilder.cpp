@@ -755,7 +755,10 @@ void frmQueryBuilder::UpdateGridColumns(frmChildTableViewFrame *frame,
 		tablename = frame->GetTitle();
 		
 		// We need the name of the column that was selected
-		columnname = frame->m_columnlist->GetString(item);
+		if (item != -1)
+            columnname = frame->m_columnlist->GetString(item);
+        else
+            columnname = wxT("*");
 
 		// Column Choices
 		colcount = frame->m_columnlist->GetCount();
@@ -1137,6 +1140,7 @@ void frmQueryBuilder::BuildQuery()
 		{
 			wxLogError(__("Error: No table or no column"));
             sql->SetText(wxT(""));
+            notebook->SetSelection(0);
 			return;
 		}
 
@@ -1172,6 +1176,7 @@ void frmQueryBuilder::BuildQuery()
 	{
 		wxLogError(__("You must add at least on column."));
         sql->SetText(wxT(""));
+        notebook->SetSelection(0);
 		return;
 	}
 
