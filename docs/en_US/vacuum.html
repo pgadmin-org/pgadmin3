@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>Reorganize the database</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20030715;23265839">
+	<META NAME="CHANGEDBY" CONTENT="Andreas Pflug">
+	<META NAME="CHANGED" CONTENT="20030715;23355932">
+	<STYLE>
+	<!--
+		P { color: #000000; font-family: "verdana", "helvetica", sans-serif; font-size: 9pt; font-style: normal }
+		H3 { color: #000000; font-style: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" BGCOLOR="#cdddeb" DIR="LTR" STYLE="border: none; padding: 0cm">
+<H3>Reorganize the database</H3>
+<P>This tool allows to reorganize the database in total, or only a
+selected table.</P>
+<P>Reorganization comes in two flavors:</P>
+<H3>VACUUM</H3>
+<P>VACUUM will scan the database or table for rows, that are not in
+use any more. If a row is updated or deleted, the previous content
+isn't replaced, but rather marked invalid. The new data is inserted
+freshly into the database. You need to perform a garbage collection
+regularly, to insure that your database doesn't contain too much
+unused data, wasting disk space and ultimatively degrading
+performance.</P>
+<P>Please press the Help button to see the PostgreSQL help about the
+VACUUM command to learn more about the options.</P>
+<P>The output of the database server is displayed in the messages
+page as they arrive. If Verbose is selected, the server will send
+very detailed info about what it did.</P>
+<P>While this tools is very handy for ad-hoc maintenance purposes,
+you are encouraged to install an automatic job, that performs a
+VACUUM job regularly to keep your database in a neat state.</P>
+<H3>ANALYZE</H3>
+<P>ANALYZE investigates statistical values about the selected
+database or table. This enables the query optimizer to select the
+fastest query plan, to give optimal performance. Every time your data
+is changing radically, you should perform this task. It can be
+included in a VACUUM run, using the appropriate option.</P>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>
