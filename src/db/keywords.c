@@ -3,12 +3,12 @@
  * keywords.c
  *	  lexical token lookup for reserved words in PostgreSQL
  *
- * Portions Copyright (c) 1996-2003, PostgreSQL Global Development Group
+ * Portions Copyright (c) 1996-2004, PostgreSQL Global Development Group
  * Portions Copyright (c) 1994, Regents of the University of California
  *
  *
  * IDENTIFICATION
- *	  $Header$
+ *	  $PostgreSQL: pgsql-server/src/backend/parser/keywords.c,v 1.153 2004/08/29 04:12:40 momjian Exp $
  *
  *-------------------------------------------------------------------------
  */
@@ -38,6 +38,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"after", AFTER},
 	{"aggregate", AGGREGATE},
 	{"all", ALL},
+	{"also", ALSO},
 	{"alter", ALTER},
 	{"analyse", ANALYSE},		/* British spelling */
 	{"analyze", ANALYZE},
@@ -89,6 +90,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"createdb", CREATEDB},
 	{"createuser", CREATEUSER},
 	{"cross", CROSS},
+	{"csv", CSV},
 	{"current_date", CURRENT_DATE},
 	{"current_time", CURRENT_TIME},
 	{"current_timestamp", CURRENT_TIMESTAMP},
@@ -177,6 +179,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"key", KEY},
 	{"lancompiler", LANCOMPILER},
 	{"language", LANGUAGE},
+	{"large", LARGE_P},
 	{"last", LAST_P},
 	{"leading", LEADING},
 	{"left", LEFT},
@@ -211,9 +214,11 @@ static const ScanKeyword ScanKeywords[] = {
 	{"nothing", NOTHING},
 	{"notify", NOTIFY},
 	{"notnull", NOTNULL},
+	{"nowait", NOWAIT},
 	{"null", NULL_P},
 	{"nullif", NULLIF},
 	{"numeric", NUMERIC},
+	{"object", OBJECT_P},
 	{"of", OF},
 	{"off", OFF},
 	{"offset", OFFSET},
@@ -232,8 +237,6 @@ static const ScanKeyword ScanKeywords[] = {
 	{"owner", OWNER},
 	{"partial", PARTIAL},
 	{"password", PASSWORD},
-	{"path", PATH_P},
-	{"pendant", PENDANT},
 	{"placing", PLACING},
 	{"position", POSITION},
 	{"precision", PRECISION},
@@ -244,13 +247,16 @@ static const ScanKeyword ScanKeywords[] = {
 	{"privileges", PRIVILEGES},
 	{"procedural", PROCEDURAL},
 	{"procedure", PROCEDURE},
+	{"quote", QUOTE},
 	{"read", READ},
 	{"real", REAL},
 	{"recheck", RECHECK},
 	{"references", REFERENCES},
 	{"reindex", REINDEX},
 	{"relative", RELATIVE_P},
+	{"release", RELEASE},
 	{"rename", RENAME},
+	{"repeatable", REPEATABLE},
 	{"replace", REPLACE},
 	{"reset", RESET},
 	{"restart", RESTART},
@@ -262,6 +268,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"row", ROW},
 	{"rows", ROWS},
 	{"rule", RULE},
+	{"savepoint", SAVEPOINT},
 	{"schema", SCHEMA},
 	{"scroll", SCROLL},
 	{"second", SECOND_P},
@@ -290,6 +297,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"substring", SUBSTRING},
 	{"sysid", SYSID},
 	{"table", TABLE},
+	{"tablespace", TABLESPACE},
 	{"temp", TEMP},
 	{"template", TEMPLATE},
 	{"temporary", TEMPORARY},
@@ -307,6 +315,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"truncate", TRUNCATE},
 	{"trusted", TRUSTED},
 	{"type", TYPE_P},
+	{"uncommitted", UNCOMMITTED},
 	{"unencrypted", UNENCRYPTED},
 	{"union", UNION},
 	{"unique", UNIQUE},
@@ -324,7 +333,6 @@ static const ScanKeyword ScanKeywords[] = {
 	{"varchar", VARCHAR},
 	{"varying", VARYING},
 	{"verbose", VERBOSE},
-	{"version", VERSION},
 	{"view", VIEW},
 	{"volatile", VOLATILE},
 	{"when", WHEN},
@@ -365,17 +373,13 @@ ScanKeywordLookup(const char *text)
 
 	/*
 	 * Apply an ASCII-only downcasing.	We must not use tolower() since it
-	 * may produce the wrong translation in some locales (eg, Turkish),
-	 * and we don't trust isupper() very much either.  In an ASCII-based
-	 * encoding the tests against A and Z are sufficient, but we also
-	 * check isupper() so that we will work correctly under EBCDIC.  The
-	 * actual case conversion step should work for either ASCII or EBCDIC.
+	 * may produce the wrong translation in some locales (eg, Turkish).
 	 */
 	for (i = 0; i < len; i++)
 	{
 		char		ch = text[i];
 
-		if (ch >= 'A' && ch <= 'Z' && isupper((unsigned char) ch))
+		if (ch >= 'A' && ch <= 'Z')
 			ch += 'a' - 'A';
 		word[i] = ch;
 	}

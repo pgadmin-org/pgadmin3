@@ -249,42 +249,41 @@ wxString qtStringDollar(const wxString &value)
 wxString qtIdent(const wxString& value)
 {
     wxString result = value;
-    
+    bool needQuoting=false;
+
     if (result.Length() == 0)
         return result;
 
     int pos = 0;
 
-#if 0
-    if (ScanKeywordLookup(value.ToAscii()))
-    {
-        result.Append(wxT("\""));
-        result.Prepend(wxT("\""));
-        return result;
-    }
-#endif
     // Replace Double Quotes
     result.Replace(wxT("\""), wxT("\"\""));
 	
     // Is it a number?
-    if (result.IsNumber()) {
-        result.Append(wxT("\""));
-        result.Prepend(wxT("\""));
-        return result;
-    } else {
-        while (pos < (int)result.length()) {
+    if (result.IsNumber()) 
+        needQuoting = true;
+    else
+    {
+        while (pos < (int)result.length())
+        {
             if (!((result.GetChar(pos) >= '0') && (result.GetChar(pos) <= '9')) && 
                 !((result.GetChar(pos)  >= 'a') && (result.GetChar(pos)  <= 'z')) && 
-                !(result.GetChar(pos)  == '_')){
-            
-                result.Append(wxT("\""));
-                result.Prepend(wxT("\""));
-                return result;	
+                !(result.GetChar(pos)  == '_'))
+            {
+                needQuoting = true;
+                break;
             }
             pos++;
         }
     }	
-    return result;
+
+    if (!needQuoting && ScanKeywordLookup(value.ToAscii()))
+        needQuoting = true;
+
+    if (needQuoting)
+        return wxT("\"") + result + wxT("\"");
+    else
+        return result;
 }
 
 
