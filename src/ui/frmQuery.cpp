@@ -45,6 +45,7 @@
 
 BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_CLOSE(                      frmQuery::OnClose)
+	EVT_SET_FOCUS(                  frmQuery::OnSetFocus)
     EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
     EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
     EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
@@ -488,6 +489,13 @@ void frmQuery::OnSaveHistory(wxCommandEvent& event)
     delete dlg;
 
 }
+
+
+void frmQuery::OnSetFocus(wxFocusEvent& event)
+{
+	sqlQuery->SetFocus();
+}
+
 
 void frmQuery::OnClearHistory(wxCommandEvent& event)
 {
