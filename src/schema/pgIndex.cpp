@@ -238,7 +238,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     }
     pgSet *indexes= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
-        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, description,\n")
+        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, CASE contype WHEN 'p' THEN desp.description ELSE des.description END AS description,\n")
         wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n")
         wxT("  FROM pg_index idx\n")
         wxT("  JOIN pg_class cls ON cls.oid=indexrelid\n")
@@ -246,8 +246,10 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
         + projoin + 
         wxT("  JOIN pg_namespace n ON n.oid=tab.relnamespace\n")
         wxT("  JOIN pg_am am ON am.oid=cls.relam\n")
+        wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0')\n")
+        wxT("  LEFT OUTER JOIN pg_constraint con ON (con.tableoid = dep.refclassid AND con.oid = dep.refobjid)\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n")
-        wxT("  LEFT OUTER JOIN pg_constraint con ON con.conrelid=indrelid AND conname=cls.relname\n")
+        wxT("  LEFT OUTER JOIN pg_description desp ON (desp.objoid=con.oid AND desp.objsubid = 0)\n")
         wxT(" WHERE indrelid = ") + collection->GetOidStr()
         + restriction + wxT("\n")
         wxT(" ORDER BY cls.relname"));
