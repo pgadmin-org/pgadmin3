@@ -3,9 +3,9 @@
 # This software is released under the Artistic Licence
 #
 # Makefile - Makefile for *nix systems
-bin_PROGRAMS = pgAdmin3
+bin_PROGRAMS = pgadmin3
 
-pgAdmin3_SOURCES = pgAdmin3.cpp db/pgConn.cpp db/pgSet.cpp \
+pgadmin3_SOURCES = pgAdmin3.cpp db/pgConn.cpp db/pgSet.cpp \
 schema/pgAggregate.cpp schema/pgCast.cpp \
 schema/pgCheck.cpp schema/pgCollection.cpp \
 schema/pgColumn.cpp schema/pgConstraints.cpp \
