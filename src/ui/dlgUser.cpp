@@ -30,10 +30,12 @@ dlgUser::dlgUser(wxFrame *frame, pgUser *node)
     if (user)
     {
         // Edit Mode
-        CTRL("txtUser", wxTextCtrl)->Disable();
-        CTRL("txtID", wxTextCtrl)->Disable();
+        CTRL("txtUser", wxTextCtrl)->SetValue(user->GetIdentifier());
+        CTRL("txtID", wxTextCtrl)->SetValue(NumToStr(user->GetUserId()));
         CTRL("chkCreateDB", wxCheckBox)->SetValue(user->GetCreateDatabase());
         CTRL("chkCreateUser", wxCheckBox)->SetValue(user->GetSuperuser());
+        CTRL("txtUser", wxTextCtrl)->Disable();
+        CTRL("txtID", wxTextCtrl)->Disable();
     }
     else
     {
@@ -41,7 +43,6 @@ dlgUser::dlgUser(wxFrame *frame, pgUser *node)
         CTRL("txtID", wxTextCtrl)->SetValidator(numval);
         CTRL("btnOK", wxButton)->Disable();
     }
-    CTRL("txtConfirm", wxTextCtrl)->Disable();
 
     Show();
 }
