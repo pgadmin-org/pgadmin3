@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="ECPG - Embedded SQL in C"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -122,7 +122,7 @@ CLASS="PROGRAMLISTING"
 const char *stmt = "CREATE TABLE test1 (...);";
 EXEC SQL END DECLARE SECTION;
 
-EXECUTE IMMEDIATE :stmt;</PRE
+EXEC SQL EXECUTE IMMEDIATE :stmt;</PRE
 ><P>
    You may not execute statements that retrieve data (e.g.,
    <TT
@@ -144,9 +144,9 @@ CLASS="PROGRAMLISTING"
 const char *stmt = "INSERT INTO test1 VALUES(?, ?);";
 EXEC SQL END DECLARE SECTION;
 
-PREPARE mystmt FROM :stmt;
+EXEC SQL PREPARE mystmt FROM :stmt;
  ...
-EXECUTE mystmt USING 42, 'foobar';</PRE
+EXEC SQL EXECUTE mystmt USING 42, 'foobar';</PRE
 ><P>
    If the statement you are executing returns values, then add an
    <VAR
@@ -161,9 +161,9 @@ int v1, v2;
 VARCHAR v3;
 EXEC SQL END DECLARE SECTION;
 
-PREPARE mystmt FROM :stmt;
+EXEC SQL PREPARE mystmt FROM :stmt;
  ...
-EXECUTE mystmt INTO v1, v2, v3 USING 37;</PRE
+EXEC SQL EXECUTE mystmt INTO v1, v2, v3 USING 37;</PRE
 ><P>
    An <TT
 CLASS="COMMAND"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,7 +95,7 @@ NAME="SQL-ALTERSEQUENCE"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN35290"
+NAME="AEN35107"
 ></A
 ><H2
 >Name</H2
@@ -103,12 +103,12 @@ NAME="AEN35290"
   &nbsp;--&nbsp;   alter the definition of a sequence generator
   </DIV
 ><A
-NAME="AEN35293"
+NAME="AEN35110"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN35295"
+NAME="AEN35112"
 ></A
 ><H2
 >Synopsis</H2
@@ -140,7 +140,7 @@ CLASS="REPLACEABLE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35303"
+NAME="AEN35120"
 ></A
 ><H2
 >Description</H2
@@ -159,7 +159,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35308"
+NAME="AEN35125"
 ></A
 ><H2
 >Parameters</H2
@@ -176,7 +176,7 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The name (optionally schema-qualified) of a sequence to be altered.
+>        The name (optionally schema-qualified) of a sequence to be altered.
        </P
 ></DD
 ><DT
@@ -186,66 +186,74 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The
-	<VAR
-CLASS="OPTION"
+>        The clause <VAR
+CLASS="LITERAL"
 >INCREMENT BY <VAR
 CLASS="REPLACEABLE"
 >increment</VAR
 ></VAR
->
-	clause is optional. A positive value will make an
-	ascending sequence, a negative one a descending sequence.
-	If unspecified, the old increment value will be maintained.
+> is
+        optional. A positive value will make an ascending sequence, a
+        negative one a descending sequence.  If unspecified, the old
+        increment value will be maintained.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="REPLACEABLE"
 >minvalue</VAR
-><BR>NO MINVALUE</DT
-><DD
-><P
->	The optional clause <VAR
-CLASS="OPTION"
->MINVALUE
-	 <VAR
-CLASS="REPLACEABLE"
->minvalue</VAR
-></VAR
->
-	determines the minimum value
-	a sequence can generate. If <VAR
-CLASS="OPTION"
+><BR><VAR
+CLASS="LITERAL"
 >NO MINVALUE</VAR
-> is specified,
-    the defaults of 1 and -2^63-1 for ascending and descending sequences, respectively, will be used.  If neither option is specified, the current minimum
-    value will be maintained.
+></DT
+><DD
+><P
+>        The optional clause <VAR
+CLASS="LITERAL"
+>MINVALUE <VAR
+CLASS="REPLACEABLE"
+>minvalue</VAR
+></VAR
+> determines
+        the minimum value a sequence can generate. If <VAR
+CLASS="LITERAL"
+>NO
+        MINVALUE</VAR
+> is specified, the defaults of 1 and
+        -2<SUP
+>63</SUP
+>-1 for ascending and descending sequences,
+        respectively, will be used.  If neither option is specified,
+        the current minimum value will be maintained.
        </P
 ></DD
 ><DT
 ><VAR
 CLASS="REPLACEABLE"
 >maxvalue</VAR
-><BR>NO MAXVALUE</DT
+><BR><VAR
+CLASS="LITERAL"
+>NO MAXVALUE</VAR
+></DT
 ><DD
 ><P
->	The optional clause <VAR
-CLASS="OPTION"
->MAXVALUE
-	 <VAR
+>        The optional clause <VAR
+CLASS="LITERAL"
+>MAXVALUE <VAR
 CLASS="REPLACEABLE"
 >maxvalue</VAR
 ></VAR
->
-	determines the maximum value for the sequence. If 
-    <VAR
-CLASS="OPTION"
->NO MAXVALUE</VAR
-> is specified, the defaults are 2^63-1 and -1 for
-	ascending and descending sequences, respectively, will be used.  If
-    neither option is specified, the current maximum value will be
-    maintained.
+> determines
+        the maximum value for the sequence. If <VAR
+CLASS="LITERAL"
+>NO
+        MAXVALUE</VAR
+> is specified, the defaults are
+        2<SUP
+>63</SUP
+>-1 and -1 for ascending and descending
+        sequences, respectively, will be used.  If neither option is
+        specified, the current maximum value will be maintained.
        </P
 ></DD
 ><DT
@@ -255,15 +263,14 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The optional <VAR
-CLASS="OPTION"
->RESTART WITH
-	 <VAR
+>        The optional clause <VAR
+CLASS="LITERAL"
+>RESTART WITH <VAR
 CLASS="REPLACEABLE"
 >start</VAR
 ></VAR
->
-	 clause changes the current value of the sequence.
+> changes the
+        current value of the sequence.
        </P
 ></DD
 ><DT
@@ -273,72 +280,73 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->	The <VAR
-CLASS="OPTION"
+>        The clause <VAR
+CLASS="LITERAL"
 >CACHE <VAR
 CLASS="REPLACEABLE"
 >cache</VAR
 ></VAR
-> option
-	enables sequence numbers to be preallocated
-	and stored in memory for faster access. The  minimum
-	value is 1 (only one value can be generated at a time, i.e., no cache).
-	If unspecified, the old cache value will be maintained.
+> enables
+        sequence numbers to be preallocated and stored in memory for
+        faster access. The minimum value is 1 (only one value can be
+        generated at a time, i.e., no cache).  If unspecified, the old
+        cache value will be maintained.
        </P
 ></DD
 ><DT
 >CYCLE</DT
 ><DD
 ><P
->	The optional <VAR
-CLASS="OPTION"
+>        The optional <VAR
+CLASS="LITERAL"
 >CYCLE</VAR
-> keyword may be used to enable
-	the sequence to wrap around when the
-	<VAR
+> key word may be used to enable
+        the sequence to wrap around when the
+        <VAR
 CLASS="REPLACEABLE"
 >maxvalue</VAR
 > or
-	<VAR
+        <VAR
 CLASS="REPLACEABLE"
 >minvalue</VAR
 > has been
-	reached by
-	an ascending or descending sequence respectively. If the limit is
-	reached, the next number generated will be the
-	<VAR
+        reached by
+        an ascending or descending sequence respectively. If the limit is
+        reached, the next number generated will be the
+        <VAR
 CLASS="REPLACEABLE"
 >minvalue</VAR
 > or
-	<VAR
+        <VAR
 CLASS="REPLACEABLE"
 >maxvalue</VAR
 >,
-	respectively.
+        respectively.
        </P
 ></DD
 ><DT
 >NO CYCLE</DT
 ><DD
 ><P
->	If the optional <VAR
-CLASS="OPTION"
+>        If the optional <VAR
+CLASS="LITERAL"
 >NO CYCLE</VAR
-> keyword is specified, any
-	calls to <CODE
+> key word is
+        specified, any calls to <CODE
 CLASS="FUNCTION"
 >nextval</CODE
-> after the sequence has reached
-	its maximum value will return an error.  If neither
-	<VAR
-CLASS="OPTION"
+> after the
+        sequence has reached its maximum value will return an error.
+        If neither <VAR
+CLASS="LITERAL"
 >CYCLE</VAR
 > or <VAR
-CLASS="OPTION"
->NO CYCLE</VAR
-> are specified,
-	the old cycle behaviour will be maintained.
-	   </P
+CLASS="LITERAL"
+>NO
+        CYCLE</VAR
+> are specified, the old cycle behaviour will be
+        maintained.
+       </P
 ></DD
 ></DL
 ></DIV
@@ -348,7 +356,7 @@ CLASS="OPTION"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35373"
+NAME="AEN35194"
 ></A
 ><H2
 >Examples</H2
@@ -357,16 +365,16 @@ NAME="AEN35373"
 CLASS="LITERAL"
 >serial</VAR
 >, at 105:
-  </P
-><PRE
+</P><PRE
 CLASS="PROGRAMLISTING"
->ALTER SEQUENCE serial RESTART WITH 105;
-  </PRE
+>ALTER SEQUENCE serial RESTART WITH 105;</PRE
+><P>
+  </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35378"
+NAME="AEN35199"
 ></A
 ><H2
 >Notes</H2
@@ -395,7 +403,7 @@ CLASS="LITERAL"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN35385"
+NAME="AEN35206"
 ></A
 ><H2
 >   Compatibility
@@ -403,7 +411,7 @@ NAME="AEN35385"
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN35387"
+NAME="AEN35208"
 ></A
 ><H3
 >    SQL99

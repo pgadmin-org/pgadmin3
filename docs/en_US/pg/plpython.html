@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="reference.html"
+HREF="spi.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="PLPYTHON"
 ></A
->Chapter 42. PL/Python - Python Procedural Language</H1
+>Chapter 40. PL/Python - Python Procedural Language</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,27 +102,27 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->42.1. <A
+>40.1. <A
 HREF="plpython.html#PLPYTHON-FUNCS"
 >PL/Python Functions</A
 ></DT
 ><DT
->42.2. <A
+>40.2. <A
 HREF="plpython-trigger.html"
 >Trigger Functions</A
 ></DT
 ><DT
->42.3. <A
+>40.3. <A
 HREF="plpython-database.html"
 >Database Access</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN34554"
+NAME="AEN32995"
 ></A
 ><A
-NAME="AEN34556"
+NAME="AEN32997"
 ></A
 ><P
 >  The <SPAN
@@ -150,35 +150,6 @@ CLASS="REPLACEABLE"
 >.
  </P
 ><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
->   As of <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> 7.4,
-   PL/Python is only available as an <SPAN
-CLASS="QUOTE"
->"untrusted"</SPAN
-> language
-   (meaning it does not offer any way of restricting what users
-   can do in it).  It has therefore been renamed to <VAR
-CLASS="LITERAL"
->plpythonu</VAR
->.
-   The trusted variant <VAR
-CLASS="LITERAL"
->plpython</VAR
-> may become available again in
-   future, if a new secure execution mechanism is developed by the Python
-   community.
-  </P
-></BLOCKQUOTE
-></DIV
-><DIV
 CLASS="TIP"
 ><BLOCKQUOTE
 CLASS="TIP"
@@ -193,6 +164,26 @@ CLASS="LITERAL"
    </P
 ></BLOCKQUOTE
 ></DIV
+><P
+>  As of <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 7.4, PL/Python is only
+  available as an <SPAN
+CLASS="QUOTE"
+>"untrusted"</SPAN
+> language (meaning it does not
+  offer any way of restricting what users can do in it).  It has
+  therefore been renamed to <VAR
+CLASS="LITERAL"
+>plpythonu</VAR
+>.  The trusted
+  variant <VAR
+CLASS="LITERAL"
+>plpython</VAR
+> may become available again in future,
+  if a new secure execution mechanism is developed in Python.
+ </P
 ><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
@@ -213,7 +204,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPYTHON-FUNCS"
->42.1. PL/Python Functions</A
+>40.1. PL/Python Functions</A
 ></H1
 ><P
 >   The Python code you write gets transformed into a Python function.  E.g.,
@@ -245,7 +236,7 @@ CLASS="SYMBOL"
 >None</TT
 > into the SQL null
    value.<A
-NAME="AEN34584"
+NAME="AEN33024"
 ></A
 >
   </P
@@ -297,7 +288,7 @@ CLASS="VARNAME"
 > is public data,
    available to all Python functions within a session.  Use with
    care.<A
-NAME="AEN34600"
+NAME="AEN33040"
 ></A
 >
   </P

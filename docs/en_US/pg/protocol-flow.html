@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Frontend/Backend Protocol"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="protocol.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 45. Frontend/Backend Protocol</TD
+>Chapter 44. Frontend/Backend Protocol</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,14 +93,14 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PROTOCOL-FLOW"
->45.2. Message Flow</A
+>44.2. Message Flow</A
 ></H1
 ><P
 >   This section describes the message flow and the semantics of each
    message type.  (Details of the exact representation of each message
    appear in <A
 HREF="protocol-message-formats.html"
->Section 45.4</A
+>Section 44.4</A
 >.)
    There are several different sub-protocols
    depending on the state of the connection: start-up,
@@ -114,8 +114,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN51977"
->45.2.1. Start-Up</A
+NAME="AEN52527"
+>44.2.1. Start-Up</A
 ></H2
 ><P
 >    To begin a session, a frontend opens a connection to the server and sends
@@ -294,7 +294,7 @@ CLASS="VARNAME"
 	or record the settings for its future use; see
 	<A
 HREF="protocol-flow.html#PROTOCOL-ASYNC"
->Section 45.2.6</A
+>Section 44.2.6</A
 > for more detail.
         The frontend should not respond to this message, but should
         continue listening for a ReadyForQuery message.
@@ -341,8 +341,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52046"
->45.2.2. Simple Query</A
+NAME="AEN52596"
+>44.2.2. Simple Query</A
 ></H2
 ><P
 >    A simple query cycle is initiated by the frontend sending a Query message
@@ -379,7 +379,7 @@ CLASS="VARIABLELIST"
 >        The backend is ready to copy data from the frontend to a
         table; see <A
 HREF="protocol-flow.html#PROTOCOL-COPY"
->Section 45.2.5</A
+>Section 44.2.5</A
 >.
        </P
 ></DD
@@ -390,7 +390,7 @@ HREF="protocol-flow.html#PROTOCOL-COPY"
 >        The backend is ready to copy data from a table to the
         frontend; see <A
 HREF="protocol-flow.html#PROTOCOL-COPY"
->Section 45.2.5</A
+>Section 44.2.5</A
 >.
        </P
 ></DD
@@ -469,7 +469,7 @@ CLASS="COMMAND"
 CLASS="COMMAND"
 >SELECT</TT
 > query (or other queries that
-    return rowsets, such as <TT
+    return row sets, such as <TT
 CLASS="COMMAND"
 >EXPLAIN</TT
 > or <TT
@@ -484,7 +484,7 @@ CLASS="COMMAND"
 > to or from the frontend invokes special protocol
     as described in <A
 HREF="protocol-flow.html#PROTOCOL-COPY"
->Section 45.2.5</A
+>Section 44.2.5</A
 >.
     All other query types normally produce only
     a CommandComplete message.
@@ -525,7 +525,7 @@ CLASS="LITERAL"
     NoticeResponse messages whenever it is expecting any other type of
     message.  See also <A
 HREF="protocol-flow.html#PROTOCOL-ASYNC"
->Section 45.2.6</A
+>Section 44.2.6</A
 > concerning messages
     that the backend may generate due to outside events.
    </P
@@ -540,8 +540,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52108"
->45.2.3. Extended Query</A
+NAME="AEN52658"
+>44.2.3. Extended Query</A
 ></H2
 ><P
 >    The extended query protocol breaks down the above-described simple
@@ -554,12 +554,12 @@ NAME="AEN52108"
 ><P
 >    In the extended protocol, the frontend first sends a Parse message,
     which contains a textual query string, optionally some information
-    about datatypes of parameter placeholders, and the
+    about data types of parameter placeholders, and the
     name of a destination prepared-statement object (an empty string
     selects the unnamed prepared statement).  The response is
-    either ParseComplete or ErrorResponse.  Parameter datatypes may be
+    either ParseComplete or ErrorResponse.  Parameter data types may be
     specified by OID; if not given, the parser attempts to infer the
-    datatypes in the same way as it would do for untyped literal string
+    data types in the same way as it would do for untyped literal string
     constants.
    </P
 ><DIV
@@ -650,7 +650,7 @@ CLASS="QUOTE"
 >"fetch all rows"</SPAN
 >).
     The result-row count is only meaningful for portals
-    containing commands that return rowsets; in other cases the command is
+    containing commands that return row sets; in other cases the command is
     always executed to completion, and the row count is ignored.
     The possible
     responses to Execute are the same as those described above for queries
@@ -792,8 +792,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52144"
->45.2.4. Function Call</A
+NAME="AEN52694"
+>44.2.4. Function Call</A
 ></H2
 ><P
 >    The Function Call sub-protocol allows the client to request a direct
@@ -883,7 +883,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PROTOCOL-COPY"
->45.2.5. COPY Operations</A
+>44.2.5. COPY Operations</A
 ></H2
 ><P
 >    The <TT
@@ -987,7 +987,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PROTOCOL-ASYNC"
->45.2.6. Asynchronous Operations</A
+>44.2.6. Asynchronous Operations</A
 ></H2
 ><P
 >    There are several cases in which the backend will send messages that
@@ -1018,7 +1018,10 @@ CLASS="COMMAND"
 > SQL command executed by the frontend, and this case
     is effectively synchronous --- but it is also possible for parameter
     status changes to occur because the administrator changed a configuration
-    file and then SIGHUP'd the postmaster.  Also, if a SET command is
+    file and then sent the <SPAN
+CLASS="SYSTEMITEM"
+>SIGHUP</SPAN
+> signal to the postmaster.  Also, if a SET command is
     rolled back, an appropriate ParameterStatus message will be generated
     to report the current effective value.
    </P
@@ -1085,8 +1088,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52207"
->45.2.7. Cancelling Requests in Progress</A
+NAME="AEN52758"
+>44.2.7. Cancelling Requests in Progress</A
 ></H2
 ><P
 >    During the processing of a query, the frontend may request
@@ -1148,8 +1151,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52215"
->45.2.8. Termination</A
+NAME="AEN52766"
+>44.2.8. Termination</A
 ></H2
 ><P
 >    The normal, graceful termination procedure is that the frontend
@@ -1195,8 +1198,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN52223"
->45.2.9. SSL Session Encryption</A
+NAME="AEN52774"
+>44.2.9. SSL Session Encryption</A
 ></H2
 ><P
 >    If <SPAN

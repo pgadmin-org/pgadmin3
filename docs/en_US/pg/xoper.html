@@ -2,14 +2,14 @@
 <HTML
 ><HEAD
 ><TITLE
->User-defined Operators</TITLE
+>User-Defined Operators</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,10 +96,10 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XOPER"
->33.12. User-defined Operators</A
+>33.11. User-Defined Operators</A
 ></H1
 ><A
-NAME="AEN29948"
+NAME="AEN29824"
 ></A
 ><P
 >   Every operator is <SPAN
@@ -127,7 +127,7 @@ CLASS="PRODUCTNAME"
 > supports left unary, right
    unary, and binary operators.  Operators can be
    overloaded;<A
-NAME="AEN29956"
+NAME="AEN29832"
 ></A
 >
    that is, the same operator name can be used for different operators
@@ -143,7 +143,7 @@ CLASS="TYPE"
 >complex</TT
 > (see <A
 HREF="xtypes.html"
->Section 33.11</A
+>Section 33.10</A
 >).  First we need a
    function that does the work, then we can define the operator:
 
@@ -155,7 +155,7 @@ CLASS="PROGRAMLISTING"
 CLASS="REPLACEABLE"
 >filename</VAR
 >', 'complex_add'
-    LANGUAGE C;
+    LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR + (
     leftarg = complex,

@@ -9,14 +9,14 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Internals"
 HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="Example"
-HREF="bki-example.html"><LINK
+TITLE="Summary of Changes since Protocol 2.0"
+HREF="protocol-changes.html"><LINK
 REL="NEXT"
 TITLE="Reporting Errors Within the Server"
 HREF="error-message-reporting.html"><LINK
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="bki-example.html"
+HREF="protocol-changes.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="bki.html"
+HREF="protocol.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="compiler.html"
+HREF="nls.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="SOURCE"
 ></A
->Chapter 50. PostgreSQL Coding Conventions</H1
+>Chapter 45. PostgreSQL Coding Conventions</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,100 +102,100 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->50.1. <A
+>45.1. <A
 HREF="source.html#SOURCE-FORMAT"
 >Formatting</A
 ></DT
 ><DT
->50.2. <A
+>45.2. <A
 HREF="error-message-reporting.html"
 >Reporting Errors Within the Server</A
 ></DT
 ><DT
->50.3. <A
+>45.3. <A
 HREF="error-style-guide.html"
 >Error Message Style Guide</A
 ></DT
 ><DD
 ><DL
 ><DT
->50.3.1. <A
-HREF="error-style-guide.html#AEN53921"
+>45.3.1. <A
+HREF="error-style-guide.html#AEN54008"
 >What goes where</A
 ></DT
 ><DT
->50.3.2. <A
-HREF="error-style-guide.html#AEN53930"
+>45.3.2. <A
+HREF="error-style-guide.html#AEN54017"
 >Formatting</A
 ></DT
 ><DT
->50.3.3. <A
-HREF="error-style-guide.html#AEN53934"
+>45.3.3. <A
+HREF="error-style-guide.html#AEN54021"
 >Quotation marks</A
 ></DT
 ><DT
->50.3.4. <A
-HREF="error-style-guide.html#AEN53938"
+>45.3.4. <A
+HREF="error-style-guide.html#AEN54025"
 >Use of quotes</A
 ></DT
 ><DT
->50.3.5. <A
-HREF="error-style-guide.html#AEN53944"
+>45.3.5. <A
+HREF="error-style-guide.html#AEN54031"
 >Grammar and punctuation</A
 ></DT
 ><DT
->50.3.6. <A
-HREF="error-style-guide.html#AEN53950"
+>45.3.6. <A
+HREF="error-style-guide.html#AEN54037"
 >Upper case vs. lower case</A
 ></DT
 ><DT
->50.3.7. <A
-HREF="error-style-guide.html#AEN53954"
+>45.3.7. <A
+HREF="error-style-guide.html#AEN54041"
 >Avoid passive voice</A
 ></DT
 ><DT
->50.3.8. <A
-HREF="error-style-guide.html#AEN53960"
+>45.3.8. <A
+HREF="error-style-guide.html#AEN54047"
 >Present vs past tense</A
 ></DT
 ><DT
->50.3.9. <A
-HREF="error-style-guide.html#AEN53970"
+>45.3.9. <A
+HREF="error-style-guide.html#AEN54057"
 >Type of the object</A
 ></DT
 ><DT
->50.3.10. <A
-HREF="error-style-guide.html#AEN53975"
+>45.3.10. <A
+HREF="error-style-guide.html#AEN54062"
 >Brackets</A
 ></DT
 ><DT
->50.3.11. <A
-HREF="error-style-guide.html#AEN53979"
+>45.3.11. <A
+HREF="error-style-guide.html#AEN54066"
 >Assembling error messages</A
 ></DT
 ><DT
->50.3.12. <A
-HREF="error-style-guide.html#AEN53984"
+>45.3.12. <A
+HREF="error-style-guide.html#AEN54071"
 >Reasons for errors</A
 ></DT
 ><DT
->50.3.13. <A
-HREF="error-style-guide.html#AEN53988"
+>45.3.13. <A
+HREF="error-style-guide.html#AEN54075"
 >Function names</A
 ></DT
 ><DT
->50.3.14. <A
-HREF="error-style-guide.html#AEN53995"
+>45.3.14. <A
+HREF="error-style-guide.html#AEN54082"
 >Tricky words to avoid</A
 ></DT
 ><DT
->50.3.15. <A
-HREF="error-style-guide.html#AEN54027"
+>45.3.15. <A
+HREF="error-style-guide.html#AEN54114"
 >Proper spelling</A
 ></DT
 ><DT
->50.3.16. <A
-HREF="error-style-guide.html#AEN54042"
+>45.3.16. <A
+HREF="error-style-guide.html#AEN54129"
 >Localization</A
 ></DT
 ></DL
@@ -208,7 +208,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SOURCE-FORMAT"
->50.1. Formatting</A
+>45.1. Formatting</A
 ></H1
 ><P
 >    Source code formatting uses 4 column tab spacing, with 
@@ -310,7 +310,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="bki-example.html"
+HREF="protocol-changes.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -338,7 +338,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Example</TD
+>Summary of Changes since Protocol 2.0</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

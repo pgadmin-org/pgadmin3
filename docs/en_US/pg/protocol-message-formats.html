@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Frontend/Backend Protocol"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="protocol.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 45. Frontend/Backend Protocol</TD
+>Chapter 44. Frontend/Backend Protocol</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PROTOCOL-MESSAGE-FORMATS"
->45.4. Message Formats</A
+>44.4. Message Formats</A
 ></H1
 ><P
 >This section describes the detailed format of each message.  Each is marked to
@@ -227,7 +227,7 @@ CLASS="VARIABLELIST"
 >Int32(3)</DT
 ><DD
 ><P
->                Specifies that a cleartext password is required.</P
+>                Specifies that a clear-text password is required.</P
 ></DD
 ></DL
 ></DIV
@@ -821,9 +821,12 @@ CLASS="REPLACEABLE"
 ></DT
 ><DD
 ><P
->                Data that forms part of a COPY datastream.  Messages sent
+>                Data that forms part of a <TT
+CLASS="COMMAND"
+>COPY</TT
+> data stream.  Messages sent
 		from the backend will always correspond to single data rows,
-		but messages sent by frontends may divide the datastream
+		but messages sent by frontends may divide the data stream
 		arbitrarily.</P
 ></DD
 ></DL
@@ -1191,7 +1194,7 @@ CLASS="VARIABLELIST"
 		The presently defined field types are listed in
 		<A
 HREF="protocol-error-fields.html"
->Section 45.5</A
+>Section 44.5</A
 >.
 		Since more field types may be added in future,
 		frontends should silently ignore fields of unrecognized
@@ -1500,7 +1503,7 @@ CLASS="VARIABLELIST"
 		The presently defined field types are listed in
 		<A
 HREF="protocol-error-fields.html"
->Section 45.5</A
+>Section 44.5</A
 >.
 		Since more field types may be added in future,
 		frontends should silently ignore fields of unrecognized
@@ -1602,7 +1605,7 @@ CLASS="VARIABLELIST"
 >Int32</DT
 ><DD
 ><P
->                Specifies the object ID of the parameter datatype.</P
+>                Specifies the object ID of the parameter data type.</P
 ></DD
 ></DL
 ></DIV
@@ -1683,7 +1686,7 @@ CLASS="VARIABLELIST"
 >Int16</DT
 ><DD
 ><P
->                The number of parameter datatypes specified
+>                The number of parameter data types specified
 		(may be zero).  Note that this is not an indication of
 		the number of parameters that might appear in the
 		query string, only the number that the frontend wants to
@@ -1702,7 +1705,7 @@ CLASS="VARIABLELIST"
 >Int32</DT
 ><DD
 ><P
->                Specifies the object ID of the parameter datatype.
+>                Specifies the object ID of the parameter data type.
 		Placing a zero here is equivalent to leaving the type
 		unspecified.</P
 ></DD
@@ -1929,13 +1932,13 @@ CLASS="VARIABLELIST"
 >Int32</DT
 ><DD
 ><P
->                The object ID of the field's datatype.</P
+>                The object ID of the field's data type.</P
 ></DD
 ><DT
 >Int16</DT
 ><DD
 ><P
->                The datatype size (see <VAR
+>                The data type size (see <VAR
 CLASS="VARNAME"
 >pg_type.typlen</VAR
 >).

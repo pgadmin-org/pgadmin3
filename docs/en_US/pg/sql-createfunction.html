@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-CREATEFUNCTION"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN37121"
+NAME="AEN36947"
 ></A
 ><H2
 >Name</H2
 >CREATE FUNCTION&nbsp;--&nbsp;define a new function</DIV
 ><A
-NAME="AEN37124"
+NAME="AEN36950"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN37126"
+NAME="AEN36952"
 ></A
 ><H2
 >Synopsis</H2
@@ -208,7 +208,7 @@ CLASS="COMMAND"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN37149"
+NAME="AEN36975"
 ></A
 ><H2
 >Parameters</H2
@@ -236,7 +236,7 @@ CLASS="REPLACEABLE"
 ><P
 >       The data type(s) of the function's arguments (optionally 
        schema-qualified), if any. The argument types may be base, complex, or 
-       domain types, or copy the type of an existing column.
+       domains, or copy the type of an existing column.
       </P
 ><P
 >       The type of a column is referenced by writing
@@ -274,8 +274,8 @@ CLASS="REPLACEABLE"
 ><DD
 ><P
 >       The return data type (optionally schema-qualified). The return type 
-       may be specified as a base, complex, or domain type,
-       or may copy the type of an existing column. See the description
+       may be a base type, complex type, or a domain,
+       or may be specified to copy the type of an existing column. See the description
        under <VAR
 CLASS="LITERAL"
 >argtype</VAR
@@ -650,12 +650,16 @@ CLASS="COMMAND"
     to remove user-defined functions.
    </P
 ><P
->   To be able to define a function, the user must have the
-   <VAR
+>   Any single quotes or backslashes in the function definition must be
+   escaped by doubling them.
+  </P
+><P
+>    To be able to define a function, the user must have the
+    <VAR
 CLASS="LITERAL"
 >USAGE</VAR
 > privilege on the language.
-  </P
+   </P
 ></DIV
 ><DIV
 CLASS="REFSECT1"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="release.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix D. Release Notes</TD
+>Appendix E. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-6-3"
->D.29. Release 6.3</A
+>E.29. Release 6.3</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -148,7 +148,7 @@ CLASS="OPTION"
 ></LI
 ><LI
 ><P
->       Better password authorization mechanisms. Default table permissions have changed.
+>       Better password authorization mechanisms. Default table privileges have changed.
       </P
 ></LI
 ><LI
@@ -251,9 +251,9 @@ CLASS="SYSTEMITEM"
     application without changes.
    </P
 ><P
->    User-created tables now no longer have SELECT permission to PUBLIC by
+>    User-created tables now no longer have SELECT privilege to PUBLIC by
     default.  This was done because the ANSI standard requires it.  You can
-    of course GRANT any permissions you want after the table is created. 
+    of course GRANT any privileges you want after the table is created. 
     System tables continue to be SELECT-able by PUBLIC.
    </P
 ><P
@@ -276,7 +276,7 @@ CLASS="FILENAME"
 >pgsql/contrib/spi/README</TT
 >).  Please check out the new
     \d command for types, operators, etc.  Also, views have their own
-    permissions now, not based on the underlying tables, so permissions on
+    privileges now, not based on the underlying tables, so privileges on
     them have to be set separately.  Check <TT
 CLASS="FILENAME"
 >/pgsql/interfaces</TT
@@ -297,8 +297,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62332"
->D.29.1. Migration to version 6.3</A
+NAME="AEN65046"
+>E.29.1. Migration to version 6.3</A
 ></H2
 ><P
 >     A dump/restore using <SPAN
@@ -321,8 +321,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62338"
->D.29.2. Changes</A
+NAME="AEN65052"
+>E.29.2. Changes</A
 ></H2
 ><P
 >     </P><PRE
@@ -346,31 +346,31 @@ Fix for count(*), aggs with views and multiple tables and sum(3)(Bruce)
 Fix cluster(Bruce)
 Fix for PQtrace start/stop several times(Bruce)
 Fix a variety of locking problems like newer lock waiters getting
-	lock before older waiters, and having readlock people not share
-	locks if a writer is waiting for a lock, and waiting writers not
-	getting priority over waiting readers(Bruce)
+        lock before older waiters, and having readlock people not share
+        locks if a writer is waiting for a lock, and waiting writers not
+        getting priority over waiting readers(Bruce)
 Fix crashes in psql when executing queries from external files(James)
 Fix problem with multiple order by columns, with the first one having
-	NULL values(Jeroen)
+        NULL values(Jeroen)
 Use correct hash table support functions for float8 and int4(Thomas)
 Re-enable JOIN= option in CREATE OPERATOR statement (Thomas)
 Change precedence for boolean operators to match expected behavior(Thomas)
 Generate elog(ERROR) on over-large integer(Bruce)
 Allow multiple-argument functions in constraint clauses(Thomas)
 Check boolean input literals for 'true','false','yes','no','1','0'
-	and throw elog(ERROR) if unrecognized(Thomas)
+        and throw elog(ERROR) if unrecognized(Thomas)
 Major large objects fix
 Fix for GROUP BY showing duplicates(Vadim)
 Fix for index scans in MergeJion(Vadim)
 
 Enhancements
 ------------
-Subselects with EXISTS, IN, ALL, ANY keywords (Vadim, Bruce, Thomas)
+Subselects with EXISTS, IN, ALL, ANY key words (Vadim, Bruce, Thomas)
 New User Manual(Thomas, others)
 Speedup by inlining some frequently-called functions
 Real deadlock detection, no more timeouts(Bruce)
 Add SQL92 "constants" CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP, 
-	CURRENT_USER(Thomas)
+        CURRENT_USER(Thomas)
 Modify constraint syntax to be SQL92-compliant(Thomas)
 Implement SQL92 PRIMARY KEY and UNIQUE clauses using indexes(Thomas)
 Recognize SQL92 syntax for FOREIGN KEY. Throw elog notice(Thomas)
@@ -382,11 +382,11 @@ Allow shorter strings for boolean literals (e.g. "t", "tr", "tru")(Thomas)
 Allow SQL92 delimited identifiers(Thomas)
 Implement SQL92 binary and hexadecimal string decoding (b'10' and x'1F')(Thomas)
 Support SQL92 syntax for type coercion of literal strings
-	(e.g. "DATETIME 'now'")(Thomas)
+        (e.g. "DATETIME 'now'")(Thomas)
 Add conversions for int2, int4, and OID types to and from text(Thomas)
 Use shared lock when building indexes(Vadim)
 Free memory allocated for an user query inside transaction block after
-	this query is done, was turned off in &#60;= 6.2.1(Vadim)
+        this query is done, was turned off in &lt;= 6.2.1(Vadim)
 New SQL statement CREATE PROCEDURAL LANGUAGE(Jan)
 New <SPAN
 CLASS="PRODUCTNAME"
@@ -410,10 +410,10 @@ Implement SET keyword = DEFAULT and SET TIME ZONE DEFAULT(Thomas)
 Enable SET TIME ZONE using TZ environment variable(Thomas)
 Add PGDATESTYLE environment variable to frontend and backend initialization(Thomas)
 Add PGTZ, PGCOSTHEAP, PGCOSTINDEX, PGRPLANS, PGGEQO
-	frontend library initialization environment variables(Thomas)
+        frontend library initialization environment variables(Thomas)
 Regression tests time zone automatically set with "setenv PGTZ PST8PDT"(Thomas)
 Add pg_description table for info on tables, columns, operators, types, and
-	aggregates(Bruce)
+        aggregates(Bruce)
 Increase 16 char limit on system table/index names to 32 characters(Bruce)
 Rename system indexes(Bruce)
 Add 'GERMAN' option to SET DATESTYLE(Thomas)
@@ -424,8 +424,8 @@ Implement day of year as possible input to date_part()(Thomas)
 Define timespan_finite() and text_timespan() functions(Thomas)
 Remove archive stuff(Bruce)
 Allow for a pg_password authentication database that is separate from
-	the system password file(Todd)
-Dump ACLs, GRANT, REVOKE permissions(Matt)
+        the system password file(Todd)
+Dump ACLs, GRANT, REVOKE privileges(Matt)
 Define text, varchar, and bpchar string length functions(Thomas)
 Fix Query handling for inheritance, and cost computations(Bruce)
 Implement CREATE TABLE/AS SELECT (alternative to SELECT/INTO)(Thomas)
@@ -455,10 +455,10 @@ Reduce system column overhead(Vadmin)
 Remove pg_time table(Vadim)
 Add pg_type attribute to identify types that need length (bpchar, varchar)
 Add report of offending line when COPY command fails
-Allow VIEW permissions to be set separately from the underlying tables. 
-	For security, use GRANT/REVOKE on views as appropriate(Jan)
+Allow VIEW privileges to be set separately from the underlying tables. 
+        For security, use GRANT/REVOKE on views as appropriate(Jan)
 Tables now have no default GRANT SELECT TO PUBLIC.  You must
-	explicitly grant such permissions.
+        explicitly grant such privileges.
 Clean up tutorial examples(Darren)
 
 Source Tree Changes
@@ -471,7 +471,7 @@ Make configure more automated(Brook)
 Add script to check regression test results
 Break parser functions into smaller files, group together(Bruce)
 Rename heap_create to heap_create_and_catalog, rename heap_creatr
-	to heap_create()(Bruce)
+        to heap_create()(Bruce)
 Sparc/Linux patch for locking(TomS)
 Remove PORTNAME and reorganize port-specific stuff(Marc)
 Add optimizer README file(Bruce)
@@ -480,7 +480,7 @@ Fix for NetBSD locking(Henry)
 Fix for libptcl make(Tatsuo)
 AIX patch(Darren)
 Change IS TRUE, IS FALSE, ... to expressions using "=" rather than
-	function calls to istrue() or isfalse() to allow optimization(Thomas)
+        function calls to istrue() or isfalse() to allow optimization(Thomas)
 Various fixes NetBSD/Sparc related(TomH)
 Alpha linux locking(Travis,Ryan)
 Change elog(WARN) to elog(ERROR)(Bruce)
@@ -489,7 +489,7 @@ Bring in the PostODBC source tree as part of our standard distribution(Marc)
 A minor patch for HP/UX 10 vs 9(Stan)
 New pg_attribute.atttypmod for type-specific info like varchar length(Bruce)
 UnixWare patches(Billy)
-New i386 'lock' for spin lock asm(Billy)
+New i386 'lock' for spinlock asm(Billy)
 Support for multiplexed backends is removed
 Start an OpenBSD port
 Start an AUX port

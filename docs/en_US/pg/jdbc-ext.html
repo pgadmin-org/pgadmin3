@@ -10,7 +10,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="JDBC Interface"
@@ -25,7 +25,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -41,7 +41,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -114,7 +114,7 @@ CLASS="ACRONYM"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > is an extensible database
-   system.  You can add your own functions to the backend, which can
+   system.  You can add your own functions to the server, which can
    then be called from queries, or even add your own data types.  As
    these are facilities unique to <SPAN
 CLASS="PRODUCTNAME"
@@ -133,7 +133,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN24609"
+NAME="AEN24510"
 >31.8.1. Accessing the Extensions</A
 ></H2
 ><P
@@ -160,7 +160,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN24615"
+NAME="AEN24516"
 >31.8.1.1. Class <CODE
 CLASS="CLASSNAME"
 >org.postgresql.PGConnection</CODE
@@ -181,7 +181,7 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN24621"
+NAME="AEN24522"
 >31.8.1.1.1. Methods</A
 ></H4
 ><P
@@ -192,7 +192,7 @@ NAME="AEN24621"
 CLASS="SYNOPSIS"
 >public Fastpath getFastpathAPI() throws SQLException</PRE
 ><P
->        This returns the Fastpath <ACRONYM
+>        This returns the fast-path <ACRONYM
 CLASS="ACRONYM"
 >API</ACRONYM
 > for the
@@ -226,11 +226,14 @@ CLASS="FORMALPARA"
 ><P
 ><B
 >Returns: </B
->         Fastpath object allowing access to functions on the
+>         <CODE
+CLASS="CLASSNAME"
+>Fastpath</CODE
+> object allowing access to functions on the
          <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> backend.
+> server.
         </P
 ></DIV
 ><DIV
@@ -241,7 +244,10 @@ CLASS="FORMALPARA"
 >         <CODE
 CLASS="CLASSNAME"
 >SQLException</CODE
-> by Fastpath when initializing for first time
+> by <CODE
+CLASS="CLASSNAME"
+>Fastpath</CODE
+> when initializing for first time
         </P
 ></DIV
 ></LI
@@ -365,7 +371,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN24674"
+NAME="AEN24577"
 >31.8.1.2. Class <CODE
 CLASS="CLASSNAME"
 >org.postgresql.Fastpath</CODE
@@ -390,7 +396,7 @@ CLASS="ACRONYM"
 CLASS="APPLICATION"
 >libpq</SPAN
 > C interface, and allows a client machine
-     to execute a function on the database backend.  Most client code
+     to execute a function on the database server.  Most client code
      will not need to use this method, but it is provided because the
      Large Object <ACRONYM
 CLASS="ACRONYM"
@@ -442,7 +448,7 @@ CLASS="CLASSNAME"
      <CODE
 CLASS="FUNCTION"
 >fastpath()</CODE
-> methods to execute a backend
+> methods to execute a server
      function.
     </P
 ><DIV
@@ -464,7 +470,7 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN24699"
+NAME="AEN24602"
 >31.8.1.2.1. Methods</A
 ></H4
 ><P
@@ -480,7 +486,7 @@ CLASS="SYNOPSIS"
 >        Send a function call to the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> backend.
+> server.
        </P
 ><DIV
 CLASS="FORMALPARA"
@@ -503,7 +509,7 @@ CLASS="PARAMETER"
 > - <CODE
 CLASS="CLASSNAME"
 >FastpathArguments</CODE
-> to pass to fastpath
+> to pass to fast-path call
         </P
 ></DIV
 ><DIV
@@ -526,7 +532,7 @@ CLASS="SYNOPSIS"
 >        Send a function call to the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> backend by name.
+> server by name.
        </P
 ><DIV
 CLASS="NOTE"
@@ -541,7 +547,7 @@ CLASS="FUNCTION"
 >addfunction()</CODE
 >. This is
          the preferred method to call, as function id's can/may change
-         between versions of the backend. For an example of how this
+         between versions of the server. For an example of how this
          works, refer to org.postgresql.LargeObject
         </P
 ></BLOCKQUOTE
@@ -567,7 +573,7 @@ CLASS="PARAMETER"
 > - <CODE
 CLASS="CLASSNAME"
 >FastpathArguments</CODE
-> to pass to fastpath
+> to pass to fast-path call
         </P
 ></DIV
 ><DIV
@@ -816,7 +822,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN24802"
+NAME="AEN24705"
 >31.8.1.3. Class <CODE
 CLASS="CLASSNAME"
 >org.postgresql.fastpath.FastpathArg</CODE
@@ -830,7 +836,7 @@ java.lang.Object
    |
    +----org.postgresql.fastpath.FastpathArg</PRE
 ><P
->     Each fastpath call requires an array of arguments, the number and
+>     Each fast-path call requires an array of arguments, the number and
      type dependent on the function being called.  This class
      implements methods needed to provide this capability.
     </P
@@ -863,7 +869,7 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN24815"
+NAME="AEN24718"
 >31.8.1.3.1. Constructors</A
 ></H4
 ><P
@@ -970,7 +976,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN24855"
+NAME="AEN24758"
 >31.8.2. Geometric Data Types</A
 ></H2
 ><P
@@ -1205,7 +1211,7 @@ java.lang.Object
 Cloneable
 
    This implements a line consisting of two points. Currently line is 
-not yet implemented in the backend, but this class ensures that when 
+not yet implemented in the server, but this class ensures that when 
 it's done were ready for it.
 
 Variables
@@ -1760,7 +1766,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN24884"
+NAME="AEN24787"
 >31.8.3. Large Objects</A
 ></H2
 ><P
@@ -1802,7 +1808,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN24895"
+NAME="AEN24798"
 >31.8.3.1. Class <CODE
 CLASS="CLASSNAME"
 >org.postgresql.largeobject.LargeObject</CODE
@@ -1867,7 +1873,7 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN24913"
+NAME="AEN24816"
 >31.8.3.1.1. Variables</A
 ></H4
 ><P
@@ -1901,7 +1907,7 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN24928"
+NAME="AEN24831"
 >31.8.3.1.2. Methods</A
 ></H4
 ><P
@@ -2055,7 +2061,7 @@ CLASS="SECT3"
 ><H3
 CLASS="SECT3"
 ><A
-NAME="AEN24988"
+NAME="AEN24891"
 >31.8.3.2. Class <CODE
 CLASS="CLASSNAME"
 >org.postgresql.largeobject.LargeObjectManager</CODE
@@ -2116,7 +2122,7 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN25001"
+NAME="AEN24904"
 >31.8.3.2.1. Variables</A
 ></H4
 ><P
@@ -2159,7 +2165,7 @@ CLASS="SECT4"
 ><H4
 CLASS="SECT4"
 ><A
-NAME="AEN25019"
+NAME="AEN24922"
 >31.8.3.2.2. Methods</A
 ></H4
 ><P

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -100,22 +100,23 @@ NAME="INDEXES-TYPES"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > provides several index types:
-   B-tree, R-tree, GiST, and Hash.  Each index type is more appropriate for
-   a particular query type because of the algorithm it uses.
+   B-tree, R-tree, GiST, and Hash.  Each index type uses a different
+   algorithm that is best suited to different types of queries.
    <A
-NAME="AEN13041"
+NAME="AEN13114"
 ></A
 >
    <A
-NAME="AEN13044"
+NAME="AEN13117"
 ></A
 >
-   By
-   default, the <TT
+   By default, the <TT
 CLASS="COMMAND"
 >CREATE INDEX</TT
 > command will create a
-   B-tree index, which fits the most common situations.  In
+   B-tree index, which fits the most common situations.  B-trees can
+   handle equality and range queries on data that can be sorted into
+   some ordering.  In
    particular, the <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -184,14 +185,14 @@ HREF="indexes-opclass.html"
   </P
 ><P
 >   <A
-NAME="AEN13071"
+NAME="AEN13144"
 ></A
 >
    <A
-NAME="AEN13074"
+NAME="AEN13147"
 ></A
 >
-   R-tree indexes are especially suited for spatial data.  To create
+   R-tree indexes are suited for queries on spatial data.  To create
    an R-tree index, use a command of the form
 </P><PRE
 CLASS="SYNOPSIS"
@@ -243,13 +244,14 @@ HREF="functions-geometry.html"
   </P
 ><P
 >   <A
-NAME="AEN13099"
+NAME="AEN13172"
 ></A
 >
    <A
-NAME="AEN13102"
+NAME="AEN13175"
 ></A
 >
+   Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the
    <VAR
@@ -281,9 +283,8 @@ CLASS="NOTE"
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >'s hash
-     indexes to be similar or slower than B-tree indexes, and the
-     index size and build time for hash indexes is much worse. Hash
-     indexes also suffer poor performance under high concurrency. For
+     indexes to perform no better than B-tree indexes, and the
+     index size and build time for hash indexes is much worse. For
      these reasons, hash index use is presently discouraged.
     </P
 ></BLOCKQUOTE
@@ -291,10 +292,10 @@ CLASS="PRODUCTNAME"
 ><P>  
   </P
 ><P
->   The B-tree index is an implementation of Lehman-Yao
+>   The B-tree index method is an implementation of Lehman-Yao
    high-concurrency B-trees.  The R-tree index method implements
    standard R-trees using Guttman's quadratic split algorithm.  The
-   hash index is an implementation of Litwin's linear hashing.  We
+   hash index method is an implementation of Litwin's linear hashing.  We
    mention the algorithms used solely to indicate that all of these
    index methods are fully dynamic and do not have to be optimized
    periodically (as is the case with, for example, static hash methods).

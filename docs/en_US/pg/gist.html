@@ -9,22 +9,22 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Internals"
 HREF="internals.html"><LINK
 REL="PREVIOUS"
-TITLE="Further Readings"
-HREF="geqo-biblio.html"><LINK
+TITLE="Index Cost Estimation Functions"
+HREF="indexcost.html"><LINK
 REL="NEXT"
-TITLE="BKI Backend Interface"
-HREF="bki.html"><LINK
+TITLE="Extensibility"
+HREF="extensibility.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="geqo-biblio.html"
+HREF="indexcost.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -57,7 +57,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="geqo.html"
+HREF="indexcost.html"
 >Fast Backward</A
 ></TD
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="bki.html"
+HREF="page.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="bki.html"
+HREF="extensibility.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,133 +93,98 @@ CLASS="CHAPTER"
 ><A
 NAME="GIST"
 ></A
->Chapter 48. GiST Indexes</H1
+>Chapter 50. GiST Indexes</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>50.1. <A
+HREF="gist.html#INTRO"
+>Introduction</A
+></DT
+><DT
+>50.2. <A
+HREF="extensibility.html"
+>Extensibility</A
+></DT
+><DT
+>50.3. <A
+HREF="implementation.html"
+>Implementation</A
+></DT
+><DT
+>50.4. <A
+HREF="limitations.html"
+>Limitations</A
+></DT
+><DT
+>50.5. <A
+HREF="examples.html"
+>Examples</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INTRO"
+>50.1. Introduction</A
+></H1
 ><P
->The information about GIST is at
- <A
-HREF="http://GiST.CS.Berkeley.EDU:8000/gist/"
-TARGET="_top"
->http://GiST.CS.Berkeley.EDU:8000/gist/</A
->
-
-with more on different indexing and sorting schemes at
-<A
-HREF="http://s2k-ftp.CS.Berkeley.EDU:8000/personal/jmh/"
-TARGET="_top"
->http://s2k-ftp.CS.Berkeley.EDU:8000/personal/jmh/</A
+>   <ACRONYM
+CLASS="ACRONYM"
+>GiST</ACRONYM
+> stands for Generalized Search Tree.  It is a
+   balanced, tree-structured access method, that acts as a base template in
+   which to implement arbitrary indexing schemes. B+-trees, R-trees and many
+   other indexing schemes can be implemented in <ACRONYM
+CLASS="ACRONYM"
+>GiST</ACRONYM
 >.
-
-And there is more interesting reading at
-<A
-HREF="http://epoch.cs.berkeley.edu:8000/"
+ </P
+><P
+>  One advantage of <ACRONYM
+CLASS="ACRONYM"
+>GiST</ACRONYM
+> is that it allows the development
+  of custom data types with the appropriate access methods, by
+  an expert in the domain of the data type, rather than a database expert.
+ </P
+><P
+>    Some of the information here is derived from <A
+HREF="http://gist.cs.berkeley.edu/"
 TARGET="_top"
->http://epoch.cs.berkeley.edu:8000/</A
-> and
-<A
+>the University of California at
+    Berkeley's GiST Indexing Project web site</A
+> and Marcel Kornacker's
+    thesis, 
+    <A
+HREF="http://citeseer.nj.nec.com/448594.html"
+TARGET="_top"
+>Access Methods for
+    Next-Generation Database Systems</A
+>.   The <ACRONYM
+CLASS="ACRONYM"
+>GiST</ACRONYM
+>
+    implementation in <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> is primarily
+    maintained by Teodor Sigaev and Oleg Bartunov, and there is more
+    information on their website: <A
 HREF="http://www.sai.msu.su/~megera/postgres/gist/"
 TARGET="_top"
 >http://www.sai.msu.su/~megera/postgres/gist/</A
->.</P
-><P
-></P><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Author: </B
->This extraction from an email sent by 
-Eugene Selkov, Jr. (<CODE
-CLASS="EMAIL"
->&#60;<A
-HREF="mailto:selkovjr@mcs.anl.gov"
->selkovjr@mcs.anl.gov</A
->&#62;</CODE
->)
-contains good information
-on GiST. Hopefully we will learn more in the future and update this information.
-- thomas 1998-03-01</P
-></BLOCKQUOTE
+>.
+  </P
 ></DIV
-><P></P
-><P
->Well, I can't say I quite understand what's going on, but at least
-I (almost) succeeded in porting GiST examples to linux. The GiST access
-method is already in the postgres tree (<TT
-CLASS="FILENAME"
->src/backend/access/gist</TT
->).</P
-><P
-><A
-HREF="ftp://s2k-ftp.cs.berkeley.edu/pub/gist/pggist/pggist.tgz"
-TARGET="_top"
->Examples at Berkeley</A
->
-come with an overview of the methods and demonstrate spatial index 
-mechanisms for 2D boxes, polygons, integer intervals and text
-(see also <A
-HREF="http://gist.cs.berkeley.edu:8000/gist/"
-TARGET="_top"
->GiST at Berkeley</A
->).
-In the box example, we
-are supposed to see a performance gain when using the GiST index; it did
-work for me but I do not have a reasonably large collection of boxes
-to check that. Other examples also worked, except polygons: I got an 
-error doing
-
-</P><PRE
-CLASS="PROGRAMLISTING"
->test=&#62; CREATE INDEX pix ON polytmp
-test-&#62; USING GIST (p:box gist_poly_ops) WITH (ISLOSSY);
-ERROR:  cannot open pix
-
-(PostgreSQL 6.3               Sun Feb  1 14:57:30 EST 1998)</PRE
-><P></P
-><P
->I could not get sense of this error message; it appears to be something
-we'd rather ask the developers about (see also Note 4 below). What I
-would suggest here is that someone of you linux guys (linux==gcc?) fetch the 
-original sources quoted above and apply my patch (see attachment) and 
-tell us what you feel about it. Looks cool to me, but I would not like 
-to hold it up while there are so many competent people around.</P
-><P
->A few notes on the sources:</P
-><P
->1. I failed to make use of the original (HP-UX) Makefile and rearranged
-   the Makefile from the ancient postgres95 tutorial to do the job. I tried
-   to keep it generic, but I am a very poor makefile writer -- just did
-   some monkey work. Sorry about that, but I guess it is now a little
-   more portable that the original makefile.</P
-><P
->2. I built the example sources right under pgsql/src (just extracted the
-   tar file there). The aforementioned Makefile assumes it is one level
-   below pgsql/src (in our case, in pgsql/src/pggist).</P
-><P
->3. The changes I made to the *.c files were all about #include's,
-   function prototypes and typecasting. Other than that, I just threw 
-   away a bunch of unused vars and added a couple parentheses to please
-   gcc. I hope I did not screw up too much :)</P
-><P
->4. There is a comment in polyproc.sql:
-
-</P><PRE
-CLASS="PROGRAMLISTING"
->-- -- there's a memory leak in rtree poly_ops!!
--- -- CREATE INDEX pix2 ON polytmp USING RTREE (p poly_ops);</PRE
-><P>
-
-   Roger that!! I thought it could be related to a number of
-   <SPAN
-CLASS="PRODUCTNAME"
->PostgreSQL</SPAN
-> versions
-   back and tried the query. My system went nuts and I had to shoot down
-   the postmaster in about ten minutes.</P
-><P
->I will continue to look into GiST for a while, but I would also
-appreciate
-more examples of R-tree usage.</P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -237,7 +202,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="geqo-biblio.html"
+HREF="indexcost.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -255,7 +220,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="bki.html"
+HREF="extensibility.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -265,7 +230,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Further Readings</TD
+>Index Cost Estimation Functions</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -279,10 +244,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
-><ACRONYM
-CLASS="ACRONYM"
->BKI</ACRONYM
-> Backend Interface</TD
+>Extensibility</TD
 ></TR
 ></TABLE
 ></DIV

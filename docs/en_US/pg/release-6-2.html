@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Release Notes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="release.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Appendix D. Release Notes</TD
+>Appendix E. Release Notes</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="RELEASE-6-2"
->D.31. Release 6.2</A
+>E.31. Release 6.2</A
 ></H1
 ><DIV
 CLASS="NOTE"
@@ -116,8 +116,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62377"
->D.31.1. Migration from version 6.1 to version 6.2</A
+NAME="AEN65091"
+>E.31.1. Migration from version 6.1 to version 6.2</A
 ></H2
 ><P
 >This migration requires a complete dump of the 6.1 database and a
@@ -137,8 +137,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62383"
->D.31.2. Migration from version 1.<VAR
+NAME="AEN65097"
+>E.31.2. Migration from version 1.<VAR
 CLASS="REPLACEABLE"
 >x</VAR
 > to version 6.2</A
@@ -152,8 +152,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN62387"
->D.31.3. Changes</A
+NAME="AEN65101"
+>E.31.3. Changes</A
 ></H2
 ><P
 >     </P><PRE
@@ -162,24 +162,24 @@ CLASS="PROGRAMLISTING"
 ---------
 Fix problems with pg_dump for inheritance, sequences, archive tables(Bruce)
 Fix compile errors on overflow due to shifts, unsigned, and bad prototypes
-	 from Solaris(Diab Jerius)
+         from Solaris(Diab Jerius)
 Fix bugs in geometric line arithmetic (bad intersection calculations)(Thomas)
 Check for geometric intersections at endpoints to avoid rounding ugliness(Thomas)
 Catch non-functional delete attempts(Vadim)
 Change time function names to be more consistent(Michael Reifenberg)
 Check for zero divides(Michael Reifenberg)
-Fix very old bug which made tuples changed/inserted by a commnd
-	visible to the command itself (so we had multiple update of 
-	updated tuples, etc)(Vadim)
+Fix very old bug which made rows changed/inserted by a command
+        visible to the command itself (so we had multiple update of 
+        updated rows, etc.)(Vadim)
 Fix for SELECT null, 'fail' FROM pg_am (Patrick)
 SELECT NULL as EMPTY_FIELD now allowed(Patrick)
 Remove un-needed signal stuff from contrib/pginterface
-Fix OR (where x != 1 or x isnull didn't return tuples with x NULL) (Vadim)
+Fix OR (where x != 1 or x isnull didn't return rows with x NULL) (Vadim)
 Fix time_cmp function (Vadim)
 Fix handling of functions with non-attribute first argument in 
-	WHERE clauses (Vadim)
+        WHERE clauses (Vadim)
 Fix GROUP BY when order of entries is different from order
-	in target list (Vadim)
+        in target list (Vadim)
 Fix pg_dump for aggregates without sfunc1 (Vadim)
 
 Enhancements
@@ -188,10 +188,10 @@ Default genetic optimizer GEQO parameter is now 8(Bruce)
 Allow use parameters in target list having aggregates in functions(Vadim)
 Added JDBC driver as an interface(Adrian &#38; Peter)
 pg_password utility
-Return number of tuples inserted/affected by INSERT/UPDATE/DELETE etc.(Vadim)
+Return number of rows inserted/affected by INSERT/UPDATE/DELETE etc.(Vadim)
 Triggers implemented with CREATE TRIGGER (SQL3)(Vadim)
 SPI (Server Programming Interface) allows execution of queries inside 
-	C-functions (Vadim)
+        C-functions (Vadim)
 NOT NULL implemented (SQL92)(Robson Paniago de Miranda)
 Include reserved words for string handling, outer joins, and unions(Thomas)
 Implement extended comments ("/* ... */") using exclusive states(Thomas)
@@ -202,7 +202,7 @@ Add text concatenation operator and function (SQL92)(Thomas)
 Support WITH TIME ZONE syntax (SQL92)(Thomas)
 Support INTERVAL unit TO unit syntax (SQL92)(Thomas)
 Define types DOUBLE PRECISION, INTERVAL, CHARACTER,
-	and CHARACTER VARYING (SQL92)(Thomas)
+        and CHARACTER VARYING (SQL92)(Thomas)
 Define type FLOAT(p) and rudimentary DECIMAL(p,s), NUMERIC(p,s) (SQL92)(Thomas)
 Define EXTRACT(), POSITION(), SUBSTRING(), and TRIM() (SQL92)(Thomas)
 Define CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP (SQL92)(Thomas)
@@ -212,11 +212,11 @@ Allow hh:mm:ss time entry for timespan/reltime types(Thomas)
 Add center() routines for lseg, path, polygon(Thomas)
 Add distance() routines for circle-polygon, polygon-polygon(Thomas)
 Check explicitly for points and polygons contained within polygons
-	using an axis-crossing algorithm(Thomas)
+        using an axis-crossing algorithm(Thomas)
 Add routine to convert circle-box(Thomas)
 Merge conflicting operators for different geometric data types(Thomas)
 Replace distance operator "&#60;===&#62;" with "&#60;-&#62;"(Thomas)
-Replace "above" operator "!^" with "&#62;^" and "below" operator "!|" with "&#60;^"(Thomas)
+Replace "above" operator "!^" with "&gt;^" and "below" operator "!|" with "&lt;^"(Thomas)
 Add routines for text trimming on both ends, substring, and string position(Thomas)
 Added conversion routines circle(box) and poly(circle)(Thomas)
 Allow internal sorts to be stored in memory rather than in files(Bruce &#38; Vadim)

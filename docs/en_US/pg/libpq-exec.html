@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -121,7 +121,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQexec</CODE
 ><A
-NAME="AEN20581"
+NAME="AEN20439"
 ></A
 ></DT
 ><DD
@@ -160,7 +160,13 @@ CLASS="FUNCTION"
 >PQexec</CODE
 >
 call are processed in a single transaction, unless there are explicit
-BEGIN/COMMIT commands included in the query string to divide it into multiple
+<TT
+CLASS="COMMAND"
+>BEGIN</TT
+>/<TT
+CLASS="COMMAND"
+>COMMIT</TT
+> commands included in the query string to divide it into multiple
 transactions.  Note however that the returned <TT
 CLASS="STRUCTNAME"
 >PGresult</TT
@@ -183,7 +189,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQexecParams</CODE
 ><A
-NAME="AEN20598"
+NAME="AEN20458"
 ></A
 ></DT
 ><DD
@@ -244,41 +250,47 @@ CLASS="PARAMETER"
 CLASS="PARAMETER"
 >paramFormats[]</VAR
 >.  (The
-array pointers may be NULL when <VAR
+array pointers may be <TT
+CLASS="SYMBOL"
+>NULL</TT
+> when <VAR
 CLASS="PARAMETER"
 >nParams</VAR
 > is zero.)
 <VAR
 CLASS="PARAMETER"
 >paramTypes[]</VAR
-> specifies, by OID, the datatypes to be assigned to
+> specifies, by OID, the data types to be assigned to
 the parameter symbols.  If <VAR
 CLASS="PARAMETER"
 >paramTypes</VAR
-> is NULL, or any particular
-element in the array is zero, the backend assigns a datatype to the parameter
+> is <TT
+CLASS="SYMBOL"
+>NULL</TT
+>, or any particular
+element in the array is zero, the server assigns a data type to the parameter
 symbol in the same way it would do for an untyped literal string.
 <VAR
 CLASS="PARAMETER"
 >paramValues[]</VAR
 > specifies the actual values of the parameters.
-A NULL pointer in this array means the corresponding parameter is NULL;
+A null pointer in this array means the corresponding parameter is null;
 otherwise the pointer points to a zero-terminated text string (for text
-format) or binary data in the format expected by the backend (for binary
+format) or binary data in the format expected by the server (for binary
 format).
 <VAR
 CLASS="PARAMETER"
 >paramLengths[]</VAR
 > specifies the actual data lengths of
-binary-format parameters.  It is ignored for NULL parameters and text-format
-parameters.  The array pointer may be NULL when there are no binary
+binary-format parameters.  It is ignored for null parameters and text-format
+parameters.  The array pointer may be null when there are no binary
 parameters.
 <VAR
 CLASS="PARAMETER"
 >paramFormats[]</VAR
 > specifies whether parameters are text (put a zero
 in the array) or binary (put a one in the array).  If the array pointer is
-NULL then all parameters are presumed to be text.
+null then all parameters are presumed to be text.
 <VAR
 CLASS="PARAMETER"
 >resultFormat</VAR
@@ -322,7 +334,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQexecPrepared</CODE
 ><A
-NAME="AEN20631"
+NAME="AEN20493"
 ></A
 ></DT
 ><DD
@@ -396,7 +408,7 @@ future release.</P
 CLASS="STRUCTNAME"
 >PGresult</TT
 ><A
-NAME="AEN20649"
+NAME="AEN20511"
 ></A
 >
 structure encapsulates the result returned by the server.
@@ -429,7 +441,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQresultStatus</CODE
 ><A
-NAME="AEN20659"
+NAME="AEN20521"
 ></A
 ></DT
 ><DD
@@ -582,7 +594,7 @@ HREF="libpq-notice-processing.html"
 CLASS="FUNCTION"
 >PQresStatus</CODE
 ><A
-NAME="AEN20723"
+NAME="AEN20585"
 ></A
 ></DT
 ><DD
@@ -602,7 +614,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQresultErrorMessage</CODE
 ><A
-NAME="AEN20732"
+NAME="AEN20594"
 ></A
 ></DT
 ><DD
@@ -653,7 +665,7 @@ when you want to know the status from the latest operation on the connection.</P
 CLASS="FUNCTION"
 >PQresultErrorField</CODE
 ><A
-NAME="AEN20749"
+NAME="AEN20611"
 ></A
 ></DT
 ><DD
@@ -728,8 +740,11 @@ CLASS="SYMBOL"
 ></DT
 ><DD
 ><P
->The SQLSTATE code for the error (a 5-character string following SQL
-spec conventions).  Not localizable.  Always present.</P
+>The SQLSTATE code for the error (see <A
+HREF="errcodes-appendix.html"
+>Appendix A</A
+>).
+Not localizable.  Always present.</P
 ></DD
 ><DT
 ><TT
@@ -850,7 +865,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQclear</CODE
 ><A
-NAME="AEN20827"
+NAME="AEN20690"
 ></A
 ></DT
 ><DD
@@ -886,7 +901,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQmakeEmptyPGresult</CODE
 ><A
-NAME="AEN20840"
+NAME="AEN20703"
 ></A
 ></DT
 ><DD
@@ -966,7 +981,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQntuples</CODE
 ><A
-NAME="AEN20864"
+NAME="AEN20727"
 ></A
 ></DT
 ><DD
@@ -983,7 +998,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQnfields</CODE
 ><A
-NAME="AEN20872"
+NAME="AEN20735"
 ></A
 ></DT
 ><DD
@@ -1000,7 +1015,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQfname</CODE
 ><A
-NAME="AEN20880"
+NAME="AEN20743"
 ></A
 ></DT
 ><DD
@@ -1013,20 +1028,22 @@ CLASS="SYNOPSIS"
               int column_number);</PRE
 ><P></P
 ><P
->NULL is returned if the column number is out of range.</P
+><TT
+CLASS="SYMBOL"
+>NULL</TT
+> is returned if the column number is out of range.</P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQfnumber</CODE
 ><A
-NAME="AEN20889"
+NAME="AEN20753"
 ></A
 ></DT
 ><DD
 ><P
->            Returns  the  column number
-          associated with the given column name.
+>          Returns the column number associated with the given column name.
 </P><PRE
 CLASS="SYNOPSIS"
 >int PQfnumber(const PGresult *res,
@@ -1034,13 +1051,49 @@ CLASS="SYNOPSIS"
 ><P></P
 ><P
 >        -1 is returned if the given name does not match any column.</P
+><P
+>        The given name is treated like an identifier in an SQL command,
+	that is, it is downcased unless double-quoted.  For example,
+	given a query result generated from the SQL command
+</P><PRE
+CLASS="PROGRAMLISTING"
+>select 1 as FOO, 2 as "BAR";</PRE
+><P>
+        we would have the results:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>PQfname(res, 0)              <I
+CLASS="LINEANNOTATION"
+>foo</I
+>
+PQfname(res, 1)              <I
+CLASS="LINEANNOTATION"
+>BAR</I
+>
+PQfnumber(res, "FOO")        <I
+CLASS="LINEANNOTATION"
+>0</I
+>
+PQfnumber(res, "foo")        <I
+CLASS="LINEANNOTATION"
+>0</I
+>
+PQfnumber(res, "BAR")        <I
+CLASS="LINEANNOTATION"
+>-1</I
+>
+PQfnumber(res, "\"BAR\"")    <I
+CLASS="LINEANNOTATION"
+>1</I
+></PRE
+><P></P
 ></DD
 ><DT
 ><CODE
 CLASS="FUNCTION"
 >PQftable</CODE
 ><A
-NAME="AEN20898"
+NAME="AEN20771"
 ></A
 ></DT
 ><DD
@@ -1084,7 +1137,7 @@ CLASS="APPLICATION"
 CLASS="FUNCTION"
 >PQftablecol</CODE
 ><A
-NAME="AEN20913"
+NAME="AEN20786"
 ></A
 ></DT
 ><DD
@@ -1107,7 +1160,7 @@ or when using pre-3.0 protocol.</P
 CLASS="FUNCTION"
 >PQfformat</CODE
 ><A
-NAME="AEN20922"
+NAME="AEN20795"
 ></A
 ></DT
 ><DD
@@ -1129,7 +1182,7 @@ for future definition.)</P
 CLASS="FUNCTION"
 >PQftype</CODE
 ><A
-NAME="AEN20931"
+NAME="AEN20804"
 ></A
 ></DT
 ><DD
@@ -1163,7 +1216,7 @@ in the source tree.</P
 CLASS="FUNCTION"
 >PQfmod</CODE
 ><A
-NAME="AEN20943"
+NAME="AEN20816"
 ></A
 ></DT
 ><DD
@@ -1190,7 +1243,7 @@ in which case the value is always -1.</P
 CLASS="FUNCTION"
 >PQfsize</CODE
 ><A
-NAME="AEN20953"
+NAME="AEN20826"
 ></A
 ></DT
 ><DD
@@ -1217,7 +1270,7 @@ A negative value indicates the data type is variable-length.</P
 CLASS="FUNCTION"
 >PQbinaryTuples</CODE
 ><A
-NAME="AEN20963"
+NAME="AEN20836"
 ></A
 ></DT
 ><DD
@@ -1244,7 +1297,7 @@ CLASS="STRUCTNAME"
 to contain text data in some columns and binary data in others.
 <CODE
 CLASS="FUNCTION"
->PQfformat()</CODE
+>PQfformat</CODE
 > is preferred.  <CODE
 CLASS="FUNCTION"
 >PQbinaryTuples</CODE
@@ -1256,7 +1309,7 @@ returns 1 only if all columns of the result are binary (format 1).</P
 CLASS="FUNCTION"
 >PQgetvalue</CODE
 ><A
-NAME="AEN20977"
+NAME="AEN20850"
 ></A
 ></DT
 ><DD
@@ -1280,7 +1333,7 @@ CLASS="FUNCTION"
 >
 is a null-terminated character string  representation
 of the field value.  For data in binary format, the value is in the binary
-representation determined by the datatype's <CODE
+representation determined by the data type's <CODE
 CLASS="FUNCTION"
 >typsend</CODE
 > and
@@ -1291,11 +1344,11 @@ CLASS="FUNCTION"
 a zero byte in this case too, but that is not ordinarily useful, since
 the value is likely to contain embedded nulls.)</P
 ><P
->An empty string is returned if the field value is NULL.  See
+>An empty string is returned if the field value is null.  See
 <CODE
 CLASS="FUNCTION"
 >PQgetisnull</CODE
-> to distinguish NULLs from empty-string values.</P
+> to distinguish null values from empty-string values.</P
 ><P
 >The pointer
 returned  by  <CODE
@@ -1318,7 +1371,7 @@ CLASS="STRUCTNAME"
 CLASS="FUNCTION"
 >PQgetisnull</CODE
 ><A
-NAME="AEN20996"
+NAME="AEN20869"
 ></A
 ></DT
 ><DD
@@ -1344,7 +1397,7 @@ will return an empty string, not a null pointer, for a null field.)</P
 CLASS="FUNCTION"
 >PQgetlength</CODE
 ><A
-NAME="AEN21009"
+NAME="AEN20882"
 ></A
 ></DT
 ><DD
@@ -1384,7 +1437,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQprint</CODE
 ><A
-NAME="AEN21022"
+NAME="AEN20895"
 ></A
 ></DT
 ><DD
@@ -1449,7 +1502,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQcmdStatus</CODE
 ><A
-NAME="AEN21038"
+NAME="AEN20911"
 ></A
 ></DT
 ><DD
@@ -1472,7 +1525,7 @@ data such as the number of rows processed.</P
 CLASS="FUNCTION"
 >PQcmdTuples</CODE
 ><A
-NAME="AEN21048"
+NAME="AEN20921"
 ></A
 ></DT
 ><DD
@@ -1516,13 +1569,13 @@ CLASS="COMMAND"
 CLASS="FUNCTION"
 >PQoidValue</CODE
 ><A
-NAME="AEN21064"
+NAME="AEN20937"
 ></A
 ></DT
 ><DD
 ><P
 >          Returns the OID<A
-NAME="AEN21068"
+NAME="AEN20941"
 ></A
 > of the inserted row, if the
           <ACRONYM
@@ -1548,7 +1601,7 @@ CLASS="SYNOPSIS"
 CLASS="FUNCTION"
 >PQoidStatus</CODE
 ><A
-NAME="AEN21078"
+NAME="AEN20951"
 ></A
 ></DT
 ><DD
@@ -1598,10 +1651,10 @@ NAME="LIBPQ-EXEC-ESCAPE-STRING"
 >27.3.4. Escaping Strings for Inclusion in SQL Commands</A
 ></H2
 ><A
-NAME="AEN21092"
+NAME="AEN20965"
 ></A
 ><A
-NAME="AEN21094"
+NAME="AEN20967"
 ></A
 ><P
 ><CODE
@@ -1648,13 +1701,28 @@ CLASS="SYNOPSIS"
 CLASS="PARAMETER"
 >from</VAR
 > points to the first character of the string
-that 
-is to be escaped, and the <VAR
+that is to be escaped, and the <VAR
 CLASS="PARAMETER"
 >length</VAR
 > parameter gives the
-number of characters in this string.  (A terminating zero byte is
-neither necessary nor counted.)  <VAR
+number of characters in this string.  A terminating zero byte is not
+required, and should not be counted in <VAR
+CLASS="PARAMETER"
+>length</VAR
+>.  (If
+a terminating zero byte is found before <VAR
+CLASS="PARAMETER"
+>length</VAR
+> bytes are
+processed, <CODE
+CLASS="FUNCTION"
+>PQescapeString</CODE
+> stops at the zero; the behavior
+is thus rather like <CODE
+CLASS="FUNCTION"
+>strncpy</CODE
+>.)
+<VAR
 CLASS="PARAMETER"
 >to</VAR
 > shall point to a
@@ -1710,7 +1778,7 @@ NAME="LIBPQ-EXEC-ESCAPE-BYTEA"
 >27.3.5. Escaping Binary Strings for Inclusion in SQL Commands</A
 ></H2
 ><A
-NAME="AEN21122"
+NAME="AEN20999"
 ></A
 ><P
 ></P
@@ -1722,7 +1790,7 @@ CLASS="VARIABLELIST"
 CLASS="FUNCTION"
 >PQescapeBytea</CODE
 ><A
-NAME="AEN21129"
+NAME="AEN21006"
 ></A
 ></DT
 ><DD
@@ -1818,7 +1886,7 @@ CLASS="FUNCTION"
 >.  This memory must be freed
    using <CODE
 CLASS="FUNCTION"
->PQfreemem()</CODE
+>PQfreemem</CODE
 > when the result is no longer needed.
    The return string has all special characters replaced so that they
    can be properly processed by the
@@ -1843,7 +1911,7 @@ CLASS="PRODUCTNAME"
 CLASS="FUNCTION"
 >PQunescapeBytea</CODE
 ><A
-NAME="AEN21160"
+NAME="AEN21037"
 ></A
 ></DT
 ><DD
@@ -1891,7 +1959,7 @@ CLASS="PARAMETER"
 >. The result must be
    freed using <CODE
 CLASS="FUNCTION"
->PQfreemem()</CODE
+>PQfreemem</CODE
 > when it is no longer needed.
   </P
 ></DD
@@ -1900,7 +1968,7 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQfreemem</CODE
 ><A
-NAME="AEN21178"
+NAME="AEN21055"
 ></A
 ></DT
 ><DD
@@ -1930,9 +1998,12 @@ CLASS="FUNCTION"
 CLASS="FUNCTION"
 >PQnotifies</CODE
 >.
-   It is needed by Win32, which can not free memory across
-   DLL's, unless multithreaded DLL's (/MD in VC6) are used.
-   On other platforms it is the same as <CODE
+   It is needed by Microsoft Windows, which cannot free memory across
+   DLLs, unless multithreaded DLLs (<VAR
+CLASS="OPTION"
+>/MD</VAR
+> in VC6) are used.
+   On other platforms, this function is the same as the standard library function <CODE
 CLASS="FUNCTION"
 >free()</CODE
 >.

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="SQL Commands"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="REFENTRY"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -95,18 +95,18 @@ NAME="SQL-GRANT"
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN40908"
+NAME="AEN40735"
 ></A
 ><H2
 >Name</H2
 >GRANT&nbsp;--&nbsp;define access privileges</DIV
 ><A
-NAME="AEN40911"
+NAME="AEN40738"
 ></A
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN40913"
+NAME="AEN40740"
 ></A
 ><H2
 >Synopsis</H2
@@ -218,24 +218,26 @@ CLASS="LITERAL"
 >.
   </P
 ><P
->   There is no need to grant privileges to the owner of an object (usually the user that created it),
-   as the owner has all privileges by default.  (The owner could,
-   however, choose to revoke some of his own privileges for safety.)
-   The right to drop an object, or to alter it in any way is
-   not described by a grantable right; it is inherent in the owner,
-   and cannot be granted or revoked.
-  </P
-><P
 >   If <VAR
 CLASS="LITERAL"
 >WITH GRANT OPTION</VAR
 > is specified, the recipient
    of the privilege may in turn grant it to others.  By default this
-   is not possible.  Grant options can only be granted to individual
-   users, not groups or <VAR
+   is not allowed.  Grant options can only be granted to individual
+   users, not to groups or <VAR
 CLASS="LITERAL"
 >PUBLIC</VAR
 >.
+  </P
+><P
+>   There is no need to grant privileges to the owner of an object
+   (usually the user that created it),
+   as the owner has all privileges by default.  (The owner could,
+   however, choose to revoke some of his own privileges for safety.)
+   The right to drop an object, or to alter its definition in any way is
+   not described by a grantable privilege; it is inherent in the owner,
+   and cannot be granted or revoked.  It is not possible for the owner's
+   grant options to be revoked, either.
   </P
 ><P
 >   Depending on the type of object, the initial default privileges may
@@ -496,6 +498,18 @@ CLASS="LITERAL"
     except when absolutely necessary.
    </P
 ><P
+>    If a superuser chooses to issue a <TT
+CLASS="COMMAND"
+>GRANT</TT
+> or <TT
+CLASS="COMMAND"
+>REVOKE</TT
+>
+    command, the command is performed as though it were issued by the
+    owner of the affected object.  In particular, privileges granted via
+    such a command will appear to have been granted by the object owner.
+   </P
+><P
 >    Currently, to grant privileges in <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
@@ -692,7 +706,7 @@ CLASS="PRODUCTNAME"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN41068"
+NAME="AEN40898"
 ></A
 ><H2
 >See Also</H2

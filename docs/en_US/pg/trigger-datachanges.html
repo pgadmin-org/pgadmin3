@@ -9,22 +9,22 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Triggers"
 HREF="triggers.html"><LINK
 REL="PREVIOUS"
-TITLE="Interaction with the Trigger Manager"
-HREF="trigger-manager.html"><LINK
+TITLE="Triggers"
+HREF="triggers.html"><LINK
 REL="NEXT"
-TITLE="A Complete Example"
-HREF="trigger-example.html"><LINK
+TITLE="Writing Trigger Functions in C"
+HREF="trigger-interface.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -48,7 +48,7 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="trigger-manager.html"
+HREF="triggers.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -64,7 +64,7 @@ HREF="triggers.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 36. Triggers</TD
+>Chapter 35. Triggers</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="trigger-example.html"
+HREF="trigger-interface.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,28 +93,22 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TRIGGER-DATACHANGES"
->36.3. Visibility of Data Changes</A
+>35.2. Visibility of Data Changes</A
 ></H1
 ><P
->    If you are using the SPI interface to execute SQL commands in your
-    trigger functions written in C (or you are using a different
-    language and execute SQL commands in some way, which internally
-    goes through SPI as well), be sure to read <A
-HREF="spi-visibility.html"
->Section 37.4</A
-> so that you know which data is visible
-    at which point during the execution of a trigger.  For triggers,
-    the most important consequences of the data visibility rules are:
+>    If you execute SQL commands in your trigger function, and these
+    commands access the table that the trigger is for, then
+    you need to be aware of the data visibility rules, because they determine
+    whether these SQL commands will see the data change that the trigger
+    is fired for.  Briefly:
 
     <P
 ></P
 ></P><UL
 ><LI
 ><P
->       The row being inserted (<TT
-CLASS="STRUCTFIELD"
->tg_trigtuple</TT
->) is
+>       The data change (insertion, update, or deletion) causing the trigger
+       to fire is naturally
        <SPAN
 CLASS="emphasis"
 ><I
@@ -122,37 +116,43 @@ CLASS="EMPHASIS"
 >not</I
 ></SPAN
 > visible to SQL commands executed in a
-       before trigger.
+       before trigger, because it hasn't happened yet.
       </P
 ></LI
 ><LI
 ><P
->       The row being inserted (<TT
-CLASS="STRUCTFIELD"
->tg_trigtuple</TT
->)
+>       However, SQL commands executed in a before trigger
        <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
->is</I
+>will</I
 ></SPAN
-> visible to SQL commands executed in an
-       after trigger (because it was just inserted).
+> see the effects of data changes
+       for rows previously processed in the same outer command.  This
+       requires caution, since the ordering of these change events
+       is not in general predictable; a SQL command that affects
+       multiple rows may visit the rows in any order.
       </P
 ></LI
 ><LI
 ><P
->       A just-inserted row is visible to all SQL commands executed
-       within any trigger that is fired later in the execution of the
-       outer command (e.g., for the next row).
+>       When an after trigger is fired, all data changes made by the outer
+       command are already complete, and are visible to executed SQL commands.
       </P
 ></LI
 ></UL
 ><P>
    </P
 ><P
->    The next section contains a demonstration of these rules applied.
+>    Further information about data visibility rules can be found in
+    <A
+HREF="spi-visibility.html"
+>Section 41.4</A
+>.  The example in <A
+HREF="trigger-example.html"
+>Section 35.4</A
+> contains a demonstration of these rules.
    </P
 ></DIV
 ><DIV
@@ -171,7 +171,7 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="trigger-manager.html"
+HREF="triggers.html"
 ACCESSKEY="P"
 >Prev</A
 ></TD
@@ -189,7 +189,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="trigger-example.html"
+HREF="trigger-interface.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -199,7 +199,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Interaction with the Trigger Manager</TD
+>Triggers</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -213,7 +213,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->A Complete Example</TD
+>Writing Trigger Functions in C</TD
 ></TR
 ></TABLE
 ></DIV

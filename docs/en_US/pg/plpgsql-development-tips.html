@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="PL/pgSQL - SQL Procedural Language"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="plpgsql.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 39. <SPAN
+>Chapter 37. <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 > - <ACRONYM
@@ -99,7 +99,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLPGSQL-DEVELOPMENT-TIPS"
->39.2. Tips for Developing in <SPAN
+>37.2. Tips for Developing in <SPAN
 CLASS="APPLICATION"
 >PL/pgSQL</SPAN
 ></A
@@ -125,7 +125,7 @@ CLASS="COMMAND"
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS '
-	  ....
+          ....
 end;
 ' LANGUAGE plpgsql;</PRE
 ><P>
@@ -162,7 +162,7 @@ CLASS="SECT2"
 CLASS="SECT2"
 ><A
 NAME="PLPGSQL-QUOTE-TIPS"
->39.2.1. Handling of Quote Marks</A
+>37.2.1. Handling of Quotation Marks</A
 ></H2
 ><P
 >   Since the code of a <SPAN
@@ -178,9 +178,9 @@ CLASS="COMMAND"
    rather complicated code at times, especially if you are writing a
    function that generates other functions, as in the example in <A
 HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN"
->Section 39.6.4</A
+>Section 37.6.4</A
 >.  This chart may be useful
-   as a summary of the needed numbers of quote marks in
+   as a summary of the needed numbers of quotation marks in
    various situations.
   </P
 ><P
@@ -189,7 +189,7 @@ HREF="plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN"
 CLASS="VARIABLELIST"
 ><DL
 ><DT
->1 quote mark</DT
+>1 quotation mark</DT
 ><DD
 ><P
 >      To begin and end the function body, for example:
@@ -198,7 +198,7 @@ CLASS="PROGRAMLISTING"
 >CREATE FUNCTION foo() RETURNS integer AS '...'
     LANGUAGE plpgsql;</PRE
 ><P>
-      Anywhere within the function body, quote marks <SPAN
+      Anywhere within the function body, quotation marks <SPAN
 CLASS="emphasis"
 ><I
 CLASS="EMPHASIS"
@@ -209,7 +209,7 @@ CLASS="EMPHASIS"
      </P
 ></DD
 ><DT
->2 quote marks</DT
+>2 quotation marks</DT
 ><DD
 ><P
 >      For string literals inside the function body, for example:
@@ -229,10 +229,10 @@ CLASS="PROGRAMLISTING"
      </P
 ></DD
 ><DT
->4 quote marks</DT
+>4 quotation marks</DT
 ><DD
 ><P
->      When you need a single quote in a string constant inside the function
+>      When you need a single quotation mark in a string constant inside the function
       body, for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -249,10 +249,10 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
->6 quote marks</DT
+>6 quotation marks</DT
 ><DD
 ><P
->      When a single quote in a string inside the function body is
+>      When a single quotation mark in a string inside the function body is
       adjacent to the end of that string constant, for example:
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -269,11 +269,11 @@ CLASS="LITERAL"
      </P
 ></DD
 ><DT
->10 quote marks</DT
+>10 quotation marks</DT
 ><DD
 ><P
->      When you want two single quotes in a string constant (which
-      accounts for 8 quotes) and this is adjacent to the end of that
+>      When you want two single quotation marks in a string constant (which
+      accounts for 8 quotation marks) and this is adjacent to the end of that
       string constant (2 more).  You will probably only need that if
       you are writing a function that generates other functions.  For
       example:
@@ -298,7 +298,7 @@ CLASS="PROGRAMLISTING"
 ></DL
 ></DIV
 ><P
->    A different approach is to escape quote marks in the function body
+>    A different approach is to escape quotation marks in the function body
     with a backslash rather than by doubling them.  With this method
     you'll find yourself writing things like <VAR
 CLASS="LITERAL"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Definition"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -108,7 +108,7 @@ CLASS="FIRSTTERM"
    columns, just know they exist.
   </P
 ><A
-NAME="AEN1793"
+NAME="AEN1798"
 ></A
 ><P
 ></P
@@ -123,7 +123,7 @@ CLASS="STRUCTFIELD"
 ><DD
 ><P
 >      <A
-NAME="AEN1802"
+NAME="AEN1807"
 ></A
 >
       The object identifier (object ID) of a row.  This is a serial
@@ -153,7 +153,7 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><A
-NAME="AEN1813"
+NAME="AEN1818"
 ></A
 ><P
 >      The OID of the table containing this row.  This column is
@@ -181,13 +181,13 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><A
-NAME="AEN1823"
+NAME="AEN1828"
 ></A
 ><P
 >      The identity (transaction ID) of the inserting transaction for
-      this tuple.  (Note: In this context, a tuple is an individual
-      state of a row; each update of a row creates a new tuple for the
-      same logical row.)
+      this row version.  (A row version is an individual state of a
+      row; each update of a row creates a new row version for the same
+      logical row.)
      </P
 ></DD
 ><DT
@@ -197,7 +197,7 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><A
-NAME="AEN1830"
+NAME="AEN1835"
 ></A
 ><P
 >      The command identifier (starting at zero) within the inserting
@@ -211,12 +211,12 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><A
-NAME="AEN1837"
+NAME="AEN1842"
 ></A
 ><P
 >      The identity (transaction ID) of the deleting transaction, or
-      zero for an undeleted tuple.  It is possible for this column to
-      be nonzero in a visible tuple: That usually indicates that the
+      zero for an undeleted row version.  It is possible for this column to
+      be nonzero in a visible row version: That usually indicates that the
       deleting transaction hasn't committed yet, or that an attempted
       deletion was rolled back.
      </P
@@ -228,7 +228,7 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><A
-NAME="AEN1844"
+NAME="AEN1849"
 ></A
 ><P
 >      The command identifier within the deleting transaction, or zero.
@@ -241,15 +241,15 @@ CLASS="STRUCTFIELD"
 ></DT
 ><DD
 ><A
-NAME="AEN1851"
+NAME="AEN1856"
 ></A
 ><P
->      The physical location of the tuple within its table.  Note that
+>      The physical location of the row version within its table.  Note that
       although the <TT
 CLASS="STRUCTFIELD"
 >ctid</TT
 > can be used to
-      locate the tuple very quickly, a row's
+      locate the row version very quickly, a row's
       <TT
 CLASS="STRUCTFIELD"
 >ctid</TT
@@ -298,15 +298,15 @@ CLASS="EMPHASIS"
 > be included to arrive at a globally unique identifier.)
    </P
 ><P
->    Transaction identifiers are also 32-bit quantities.  In a long-lived
-    database it is possible for transaction IDs to wrap around.  This
-    is not a fatal problem given appropriate maintenance procedures;
-    see <A
+>    Transaction identifiers are also 32-bit quantities.  In a
+    long-lived database it is possible for transaction IDs to wrap
+    around.  This is not a fatal problem given appropriate maintenance
+    procedures; see <A
 HREF="maintenance.html"
 >Chapter 21</A
-> for details.  However, it is
-    unwise to depend on uniqueness of transaction IDs over the long term
-    (more than one billion transactions).
+> for details.  It is
+    unwise, however, to depend on the uniqueness of transaction IDs
+    over the long term (more than one billion transactions).
    </P
 ><P
 >    Command
@@ -322,7 +322,7 @@ CLASS="ACRONYM"
     <ACRONYM
 CLASS="ACRONYM"
 >SQL</ACRONYM
-> commands, not number of tuples processed.
+> commands, not number of rows processed.
    </P
 ></DIV
 ><DIV

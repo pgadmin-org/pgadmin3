@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Extending SQL"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="User-Defined Aggregates"
 HREF="xaggr.html"><LINK
 REL="NEXT"
-TITLE="User-defined Operators"
+TITLE="User-Defined Operators"
 HREF="xoper.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,18 +96,27 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="XTYPES"
->33.11. User-Defined Types</A
+>33.10. User-Defined Types</A
 ></H1
 ><A
-NAME="AEN29894"
+NAME="AEN29759"
 ></A
 ><P
->   As described above, there are two kinds of data types in
+>   As described in <A
+HREF="extend-type-system.html"
+>Section 33.2</A
+>,
    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
->: base types and composite
-   types. This section describes how to define new base types.
+> can be extended to support new
+   data types.  This section describes how to define new base types,
+   which are data types defined below the level of the <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>
+   language.  Creating a new base type requires implementing functions
+   to operate on the type in a low-level language, usually C.
   </P
 ><P
 >   The examples in this section can be found in
@@ -118,23 +127,31 @@ CLASS="FILENAME"
 CLASS="FILENAME"
 >complex.c</TT
 >
-   in the tutorial directory.
+   in the <TT
+CLASS="FILENAME"
+>src/tutorial</TT
+> directory of the source distribution.
+   See the <TT
+CLASS="FILENAME"
+>README</TT
+> file in that directory for instructions
+   about running the examples.
   </P
 ><P
 >  <A
-NAME="AEN29904"
+NAME="AEN29772"
 ></A
 >
   <A
-NAME="AEN29906"
+NAME="AEN29774"
 ></A
 >
   A user-defined type must always have input and output
   functions.<A
-NAME="AEN29908"
+NAME="AEN29776"
 ></A
 ><A
-NAME="AEN29911"
+NAME="AEN29779"
 ></A
 >
   These functions determine how the type appears in strings (for input
@@ -143,14 +160,16 @@ NAME="AEN29911"
   as its argument and returns the internal (in memory) representation
   of the type.  The output function takes the internal representation
   of the type as argument and returns a null-terminated character
-  string.
+  string.  If we want to do anything more with the type than merely
+  store it, we must provide additional functions to implement whatever
+  operations we'd like to have for the type.
  </P
 ><P
 >  Suppose we want to define a type <TT
 CLASS="TYPE"
 >complex</TT
 > that represents
-  complex numbers. A natural way to to represent a complex number in
+  complex numbers. A natural way to represent a complex number in
   memory would be the following C structure:
 
 </P><PRE
@@ -161,7 +180,14 @@ CLASS="PROGRAMLISTING"
 } Complex;</PRE
 ><P>
 
-  As the external string representation of the type, we choose a
+  We will need to make this a pass-by-reference type, since it's too
+  large to fit into a single <TT
+CLASS="TYPE"
+>Datum</TT
+> value.
+ </P
+><P
+>  As the external string representation of the type, we choose a
   string of the form <VAR
 CLASS="LITERAL"
 >(x,y)</VAR
@@ -176,9 +202,12 @@ CLASS="LITERAL"
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->Complex *
-complex_in(char *str)
+>PG_FUNCTION_INFO_V1(complex_in);
+
+Datum
+complex_in(PG_FUNCTION_ARGS)
 {
+    char       *str = PG_GETARG_CSTRING(0);
     double      x,
                 y;
     Complex    *result;
@@ -186,12 +215,13 @@ complex_in(char *str)
     if (sscanf(str, " ( %lf , %lf )", &amp;x, &amp;y) != 2)
         ereport(ERROR,
                 (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
-                 errmsg("invalid input syntax for complex: \"%s\"", str)));
+                 errmsg("invalid input syntax for complex: \"%s\"",
+                        str)));
 
     result = (Complex *) palloc(sizeof(Complex));
     result-&gt;x = x;
     result-&gt;y = y;
-    return result;
+    PG_RETURN_POINTER(result);
 }</PRE
 ><P>
 
@@ -199,39 +229,79 @@ complex_in(char *str)
 
 </P><PRE
 CLASS="PROGRAMLISTING"
->char *
-complex_out(Complex *complex)
-{
-    char *result;
+>PG_FUNCTION_INFO_V1(complex_out);
 
-    if (complex == NULL)
-        return(NULL);
-    result = (char *) palloc(60);
-    sprintf(result, "(%g,%g)", complex-&gt;x, complex-&gt;y);
-    return result;
+Datum
+complex_out(PG_FUNCTION_ARGS)
+{
+    Complex    *complex = (Complex *) PG_GETARG_POINTER(0);
+    char       *result;
+
+    result = (char *) palloc(100);
+    snprintf(result, 100, "(%g,%g)", complex-&gt;x, complex-&gt;y);
+    PG_RETURN_CSTRING(result);
 }</PRE
 ><P>
  </P
 ><P
->  You should try to make the input and output functions inverses of
+>  You should be careful to make the input and output functions inverses of
   each other.  If you do not, you will have severe problems when you
   need to dump your data into a file and then read it back in.  This
   is a particularly common problem when floating-point numbers are
   involved.
  </P
 ><P
+>  Optionally, a user-defined type can provide binary input and output
+  routines.  Binary I/O is normally faster but less portable than textual
+  I/O.  As with textual I/O, it is up to you to define exactly what the
+  external binary representation is.  Most of the built-in data types
+  try to provide a machine-independent binary representation.  For
+  <TT
+CLASS="TYPE"
+>complex</TT
+>, we will piggy-back on the binary I/O converters
+  for type <TT
+CLASS="TYPE"
+>float8</TT
+>:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>PG_FUNCTION_INFO_V1(complex_recv);
+
+Datum
+complex_recv(PG_FUNCTION_ARGS)
+{
+    StringInfo  buf = (StringInfo) PG_GETARG_POINTER(0);
+    Complex    *result;
+
+    result = (Complex *) palloc(sizeof(Complex));
+    result-&gt;x = pq_getmsgfloat8(buf);
+    result-&gt;y = pq_getmsgfloat8(buf);
+    PG_RETURN_POINTER(result);
+}
+
+PG_FUNCTION_INFO_V1(complex_send);
+
+Datum
+complex_send(PG_FUNCTION_ARGS)
+{
+    Complex    *complex = (Complex *) PG_GETARG_POINTER(0);
+    StringInfoData buf;
+
+    pq_begintypsend(&amp;buf);
+    pq_sendfloat8(&amp;buf, complex-&gt;x);
+    pq_sendfloat8(&amp;buf, complex-&gt;y);
+    PG_RETURN_BYTEA_P(pq_endtypsend(&amp;buf));
+}</PRE
+><P>
+ </P
+><P
 >  To define the <TT
 CLASS="TYPE"
 >complex</TT
-> type, we need to create the two
-  user-defined functions <CODE
-CLASS="FUNCTION"
->complex_in</CODE
-> and
-  <CODE
-CLASS="FUNCTION"
->complex_out</CODE
-> before creating the type:
+> type, we need to create the
+  user-defined I/O functions before creating the type:
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -241,7 +311,7 @@ CLASS="PROGRAMLISTING"
 CLASS="REPLACEABLE"
 >filename</VAR
 >'
-    LANGUAGE C;
+    LANGUAGE C IMMUTABLE STRICT;
 
 CREATE FUNCTION complex_out(complex)
     RETURNS cstring
@@ -249,21 +319,41 @@ CREATE FUNCTION complex_out(complex)
 CLASS="REPLACEABLE"
 >filename</VAR
 >'
-    LANGUAGE C;</PRE
+    LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION complex_recv(internal)
+   RETURNS complex
+   AS '<VAR
+CLASS="REPLACEABLE"
+>filename</VAR
+>'
+   LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION complex_send(complex)
+   RETURNS bytea
+   AS '<VAR
+CLASS="REPLACEABLE"
+>filename</VAR
+>'
+   LANGUAGE C IMMUTABLE STRICT;</PRE
 ><P>
 
   Notice that the declarations of the input and output functions must
   reference the not-yet-defined type.  This is allowed, but will draw
-  warning messages that may be ignored.
+  warning messages that may be ignored.  The input function must
+  appear first.
  </P
 ><P
 >  Finally, we can declare the data type:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >CREATE TYPE complex (
-    internallength = 16,
-    input = complex_in,
-    output = complex_out
+   internallength = 16, 
+   input = complex_in,
+   output = complex_out,
+   receive = complex_recv,
+   send = complex_send,
+   alignment = double
 );</PRE
 ><P>
  </P
@@ -275,7 +365,7 @@ CLASS="PRODUCTNAME"
 > automatically provides support
   for arrays of that
   type.<A
-NAME="AEN29933"
+NAME="AEN29807"
 ></A
 > For historical reasons, the array type
   has the same name as the base type with the underscore character
@@ -285,10 +375,17 @@ CLASS="LITERAL"
 >) prepended.
  </P
 ><P
+>  Once the data type exists, we can declare additional functions to
+  provide useful operations on the data type.  Operators can then be
+  defined atop the functions, and if needed, operator classes can be
+  created to support indexing of the data type.  These additional
+  layers are discussed in following sections.
+ </P
+><P
 >  If the values of your data type might exceed a few hundred bytes in
-  size (in internal form), you should mark them
+  size (in internal form), you should make the data type
   TOAST-able.<A
-NAME="AEN29938"
+NAME="AEN29813"
 ></A
 > To do this, the internal
   representation must follow the standard layout for variable-length
@@ -296,7 +393,13 @@ NAME="AEN29938"
 CLASS="TYPE"
 >int32</TT
 > containing
-  the total length in bytes of the datum (including itself).  Also,
+  the total length in bytes of the datum (including itself).  The C
+  functions operating on the data type must be careful to unpack any
+  toasted values they are handed (this detail can normally be hidden in the
+  <CODE
+CLASS="FUNCTION"
+>GETARG</CODE
+> macros).  Then,
   when running the <TT
 CLASS="COMMAND"
 >CREATE TYPE</TT
@@ -375,7 +478,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->User-defined Operators</TD
+>User-Defined Operators</TD
 ></TR
 ></TABLE
 ></DIV

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Server Programming"
@@ -18,13 +18,13 @@ REL="PREVIOUS"
 TITLE="Rules versus Triggers"
 HREF="rules-triggers.html"><LINK
 REL="NEXT"
-TITLE="Interaction with the Trigger Manager"
-HREF="trigger-manager.html"><LINK
+TITLE="Visibility of Data Changes"
+HREF="trigger-datachanges.html"><LINK
 REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="CHAPTER"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -70,7 +70,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="spi.html"
+HREF="xplang.html"
 >Fast Forward</A
 ></TD
 ><TD
@@ -78,7 +78,7 @@ WIDTH="10%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="trigger-manager.html"
+HREF="trigger-datachanges.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -93,7 +93,7 @@ CLASS="CHAPTER"
 ><A
 NAME="TRIGGERS"
 ></A
->Chapter 36. Triggers</H1
+>Chapter 35. Triggers</H1
 ><DIV
 CLASS="TOC"
 ><DL
@@ -102,53 +102,35 @@ CLASS="TOC"
 >Table of Contents</B
 ></DT
 ><DT
->36.1. <A
+>35.1. <A
 HREF="triggers.html#TRIGGER-DEFINITION"
->Trigger Definition</A
+>Overview of Trigger Behavior</A
 ></DT
 ><DT
->36.2. <A
-HREF="trigger-manager.html"
->Interaction with the Trigger Manager</A
-></DT
-><DT
->36.3. <A
+>35.2. <A
 HREF="trigger-datachanges.html"
 >Visibility of Data Changes</A
 ></DT
 ><DT
->36.4. <A
+>35.3. <A
+HREF="trigger-interface.html"
+>Writing Trigger Functions in C</A
+></DT
+><DT
+>35.4. <A
 HREF="trigger-example.html"
 >A Complete Example</A
 ></DT
 ></DL
 ></DIV
 ><A
-NAME="AEN31196"
+NAME="AEN31000"
 ></A
 ><P
->   This chapter describes how to write trigger functions.  In
-   particular, it describes the C-language interface for trigger
-   functions.  The trigger interfaces in most procedural languages
-   work analogously.  (Trigger functions cannot be written in SQL.)
-  </P
-><P
->   A trigger function can execute before or after a
-   <TT
-CLASS="COMMAND"
->INSERT</TT
->, <TT
-CLASS="COMMAND"
->UPDATE</TT
->, or
-   <TT
-CLASS="COMMAND"
->DELETE</TT
->, either once per modified row, or once
-   per <ACRONYM
-CLASS="ACRONYM"
->SQL</ACRONYM
-> statement.
+>   This chapter describes how to write trigger functions.  Trigger
+   functions can be written in C or in some of the available procedural
+   languages.  It is not currently possible to write a SQL-language
+   trigger function.
   </P
 ><DIV
 CLASS="SECT1"
@@ -156,16 +138,27 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="TRIGGER-DEFINITION"
->36.1. Trigger Definition</A
+>35.1. Overview of Trigger Behavior</A
 ></H1
 ><P
->    If a trigger event occurs, the trigger manager is called by the
-    executor.  It sets up an information structure of type
+>    A trigger can be defined to execute before or after an
     <TT
-CLASS="STRUCTNAME"
->TriggerData</TT
-> (described below) and calls the trigger
-    function to handle the event.
+CLASS="COMMAND"
+>INSERT</TT
+>, <TT
+CLASS="COMMAND"
+>UPDATE</TT
+>, or
+    <TT
+CLASS="COMMAND"
+>DELETE</TT
+> operation, either once per modified row,
+    or once per <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+> statement.
+    If a trigger event occurs, the trigger's function is called
+    at the appropriate time to handle the event.
    </P
 ><P
 >    The trigger function must be defined before the trigger itself can be
@@ -174,34 +167,31 @@ CLASS="STRUCTNAME"
 CLASS="LITERAL"
 >trigger</VAR
 >.
-    (The trigger function receives its input through a <TT
+    (The trigger function receives its input through a specially-passed
+    <TT
 CLASS="STRUCTNAME"
 >TriggerData</TT
->
-    structure, not in the form of ordinary function arguments.)
-    If the function is written in C, it must use the <SPAN
-CLASS="QUOTE"
->"version 1"</SPAN
->
-    function manager interface.
+> structure, not in the form of ordinary function
+    arguments.)
    </P
 ><P
->    The syntax for creating triggers is described in
+>    Once a suitable trigger function has been created, the trigger is
+    established with
     <A
 HREF="sql-createtrigger.html"
 ><I
 >CREATE TRIGGER</I
 ></A
 >.
+    The same trigger function can be used for multiple triggers.
    </P
 ><P
->    Trigger functions return a value of type <TT
+>    Trigger functions return a table row (a value of type
+    <TT
 CLASS="STRUCTNAME"
 >HeapTuple</TT
->,
-    which represents a table row, to the calling executor.  The return
-    value is ignored for triggers fired after an operation, but a
-    triggers fired before an operation has the following choices:
+>) to the calling executor.
+    A trigger fired before an operation has the following choices:
 
     <P
 ></P
@@ -235,12 +225,31 @@ CLASS="COMMAND"
 ><P>
 
     A before trigger that does not intend to cause either of these
-    behaviors must be careful to return the same row that was passed
-    in as the new row (see below).
+    behaviors must be careful to return as its result the same row that was
+    passed in (that is, the NEW row for <TT
+CLASS="COMMAND"
+>INSERT</TT
+> and
+    <TT
+CLASS="COMMAND"
+>UPDATE</TT
+> triggers, the OLD row for
+    <TT
+CLASS="COMMAND"
+>DELETE</TT
+> triggers).
+   </P
+><P
+>    The return
+    value is ignored for triggers fired after an operation, and so
+    they may as well return <TT
+CLASS="SYMBOL"
+>NULL</TT
+>.
    </P
 ><P
 >    If more than one trigger is defined for the same event on the same
-    relation, the triggers will be fired in alphabetical order by
+    relation, the triggers will be fired in alphabetical order by trigger
     name.  In the case of before triggers, the possibly-modified row
     returned by each trigger becomes the input to the next trigger.
     If any before trigger returns a <TT
@@ -250,7 +259,7 @@ CLASS="SYMBOL"
     operation is abandoned and subsequent triggers are not fired.
    </P
 ><P
->    If a trigger function executes SQL commands (using SPI) then these
+>    If a trigger function executes SQL commands then these
     commands may fire triggers again. This is known as cascading
     triggers.  There is no direct limitation on the number of cascade
     levels.  It is possible for cascades to cause a recursive invocation
@@ -269,7 +278,7 @@ CLASS="COMMAND"
 ><P
 >    When a trigger is being defined, arguments can be specified for
     it.<A
-NAME="AEN31230"
+NAME="AEN31036"
 ></A
 > The purpose of including arguments in the
     trigger definition is to allow different triggers with similar
@@ -327,7 +336,7 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="trigger-manager.html"
+HREF="trigger-datachanges.html"
 ACCESSKEY="N"
 >Next</A
 ></TD
@@ -351,7 +360,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Interaction with the Trigger Manager</TD
+>Visibility of Data Changes</TD
 ></TR
 ></TABLE
 ></DIV

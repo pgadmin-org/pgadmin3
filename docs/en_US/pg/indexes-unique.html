@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="INDEXES-UNIQUE"
 >11.4. Unique Indexes</A
 ></H1
 ><A
-NAME="AEN13153"
+NAME="AEN13226"
 ></A
 ><P
 >   Indexes may also be used to enforce uniqueness of a column's value,
@@ -122,18 +122,18 @@ CLASS="OPTIONAL"
 ><P
 >   When an index is declared unique, multiple table rows with equal
    indexed values will not be allowed.  Null values are not considered
-   equal.
+   equal.  A multicolumn unique index will only reject cases where all
+   of the indexed columns are equal in two rows.
   </P
 ><P
 >   <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> automatically creates unique
-   indexes when a table is declared with a unique constraint or a
-   primary key, on the columns that make up the primary key or unique
-   columns (a multicolumn index, if appropriate), to enforce that
-   constraint.  A unique index can be added to a table at any later
-   time, to add a unique constraint.
+> automatically creates a unique
+   index when a unique constraint or a primary key is defined for a table.
+   The index covers the columns that make up the primary key or unique 
+   columns (a multicolumn index, if appropriate), and is the mechanism
+   that enforces the constraint.
   </P
 ><DIV
 CLASS="NOTE"
@@ -149,6 +149,9 @@ CLASS="LITERAL"
 >.  The use of
     indexes to enforce unique constraints could be considered an
     implementation detail that should not be accessed directly.
+    One should, however, be aware that there's no need to manually
+    create indexes on unique columns; doing so would just duplicate
+    the automatically-created index.
    </P
 ></BLOCKQUOTE
 ></DIV

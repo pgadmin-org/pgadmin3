@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Data Types"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="ARRAYS"
 >8.10. Arrays</A
 ></H1
 ><A
-NAME="AEN5056"
+NAME="AEN5113"
 ></A
 ><P
 >  <SPAN
@@ -111,7 +111,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN5060"
+NAME="AEN5117"
 >8.10.1. Declaration of Array Types</A
 ></H2
 ><P
@@ -211,19 +211,78 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN5081"
+NAME="AEN5138"
 >8.10.2. Array Value Input</A
 ></H2
+><A
+NAME="AEN5140"
+></A
 ><P
->  Now we can show some <TT
+>   To write an array value as a literal constant, enclose the element
+   values within curly braces and separate them by commas.  (If you
+   know C, this is not unlike the C syntax for initializing
+   structures.)  You may put double quotes around any element value,
+   and must do so if it contains commas or curly braces.  (More
+   details appear below.)  Thus, the general format of an array
+   constant is the following:
+</P><PRE
+CLASS="SYNOPSIS"
+>'{ <VAR
+CLASS="REPLACEABLE"
+>val1</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>delim</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>val2</VAR
+> <VAR
+CLASS="REPLACEABLE"
+>delim</VAR
+> ... }'</PRE
+><P>
+   where <VAR
+CLASS="REPLACEABLE"
+>delim</VAR
+> is the delimiter character
+   for the type, as recorded in its <VAR
+CLASS="LITERAL"
+>pg_type</VAR
+> entry.
+   (For all built-in types, this is the comma character
+   <SPAN
+CLASS="QUOTE"
+>"<VAR
+CLASS="LITERAL"
+>,</VAR
+>"</SPAN
+>.)  Each
+   <VAR
+CLASS="REPLACEABLE"
+>val</VAR
+> is either a constant of the array
+   element type, or a subarray.  An example of an array constant is
+</P><PRE
+CLASS="PROGRAMLISTING"
+>'{{1,2,3},{4,5,6},{7,8,9}}'</PRE
+><P>
+   This constant is a two-dimensional, 3-by-3 array consisting of
+   three subarrays of integers.
+  </P
+><P
+>   (These kinds of array constants are actually only a special case of
+   the generic type constants discussed in <A
+HREF="sql-syntax.html#SQL-SYNTAX-CONSTANTS-GENERIC"
+>Section 4.1.2.4</A
+>.  The constant is initially
+   treated as a string and passed to the array input conversion
+   routine.  An explicit type specification might be necessary.)
+  </P
+><P
+>   Now we can show some <TT
 CLASS="COMMAND"
 >INSERT</TT
-> statements.  To write an array
-  value as a literal constant, we enclose the element values within curly
-  braces and separate them by commas.  (If you know C, this is not unlike the
-  C syntax for initializing structures.)  We may put double quotes around any
-  element value, and must do so if it contains commas or curly braces.
-  (More details appear below.)
+> statements.
 
 </P><PRE
 CLASS="PROGRAMLISTING"
@@ -237,13 +296,13 @@ INSERT INTO sal_emp
     '{20000, 25000, 25000, 25000}',
     '{{"talk", "consult"}, {"meeting"}}');</PRE
 ><P>
- </P
+  </P
 ><P
->  A limitation of the present array implementation is that individual
-  elements of an array cannot be SQL null values.  The entire array can be set
-  to null, but you can't have an array with some elements null and some
-  not.
- </P
+>   A limitation of the present array implementation is that individual
+   elements of an array cannot be SQL null values.  The entire array
+   can be set to null, but you can't have an array with some elements
+   null and some not.
+  </P
 ><P
 >  This can lead to surprising results. For example, the result of the
   previous two inserts looks like this:
@@ -327,7 +386,7 @@ CLASS="LITERAL"
 >
   expression syntax is discussed in more detail in <A
 HREF="sql-expressions.html#SQL-SYNTAX-ARRAY-CONSTRUCTORS"
->Section 4.2.8</A
+>Section 4.2.10</A
 >.
  </P
 ></DIV
@@ -336,7 +395,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN5101"
+NAME="AEN5175"
 >8.10.3. Accessing Arrays</A
 ></H2
 ><P
@@ -498,7 +557,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN5130"
+NAME="AEN5204"
 >8.10.4. Modifying Arrays</A
 ></H2
 ><P
@@ -600,9 +659,9 @@ CLASS="REPLACEABLE"
 ><P
 >  When a single element is pushed on to the beginning of a one-dimensional
   array, the result is an array with a lower bound subscript equal to
-  the righthand operand's lower bound subscript, minus one. When a single
+  the right-hand operand's lower bound subscript, minus one. When a single
   element is pushed on to the end of a one-dimensional array, the result is
-  an array retaining the lower bound of the lefthand operand. For example:
+  an array retaining the lower bound of the left-hand operand. For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT array_dims(1 || ARRAY[2,3]);
@@ -620,9 +679,9 @@ SELECT array_dims(ARRAY[1,2] || 3);
  </P
 ><P
 >  When two arrays with an equal number of dimensions are concatenated, the
-  result retains the lower bound subscript of the lefthand operand's outer
-  dimension. The result is an array comprising every element of the lefthand
-  operand followed by every element of the righthand operand. For example:
+  result retains the lower bound subscript of the left-hand operand's outer
+  dimension. The result is an array comprising every element of the left-hand
+  operand followed by every element of the right-hand operand. For example:
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT array_dims(ARRAY[1,2] || ARRAY[3,4,5]);
@@ -726,7 +785,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN5166"
+NAME="AEN5240"
 >8.10.5. Searching in Arrays</A
 ></H2
 ><P
@@ -785,7 +844,7 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN5175"
+NAME="AEN5249"
 >8.10.6. Array Input and Output Syntax</A
 ></H2
 ><P

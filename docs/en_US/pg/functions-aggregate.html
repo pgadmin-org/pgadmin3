@@ -9,13 +9,13 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Functions and Operators"
 HREF="functions.html"><LINK
 REL="PREVIOUS"
-TITLE="Array Functions"
+TITLE="Array Functions and Operators"
 HREF="functions-array.html"><LINK
 REL="NEXT"
 TITLE="Subquery Expressions"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="FUNCTIONS-AGGREGATE"
 >9.15. Aggregate Functions</A
 ></H1
 ><A
-NAME="AEN12218"
+NAME="AEN12292"
 ></A
 ><P
 >   <I
@@ -110,7 +110,7 @@ HREF="functions-aggregate.html#FUNCTIONS-AGGREGATE-TABLE"
    functions.  The special syntax considerations for aggregate
    functions are explained in <A
 HREF="sql-expressions.html#SYNTAX-AGGREGATES"
->Section 4.2.5</A
+>Section 4.2.7</A
 >.
    Consult <A
 HREF="tutorial-agg.html"
@@ -146,7 +146,7 @@ CLASS="CALSTABLE"
 ><TR
 ><TD
 >       <A
-NAME="AEN12238"
+NAME="AEN12312"
 ></A
 >
        <CODE
@@ -281,7 +281,7 @@ CLASS="REPLACEABLE"
 ><TR
 ><TD
 >       <A
-NAME="AEN12288"
+NAME="AEN12362"
 ></A
 >
        <CODE
@@ -398,7 +398,7 @@ CLASS="REPLACEABLE"
 ><TR
 ><TD
 >       <A
-NAME="AEN12326"
+NAME="AEN12400"
 ></A
 >
        <CODE
@@ -471,38 +471,39 @@ CLASS="NOTE"
 ><P
 ><B
 >Note: </B
->    Users accustomed to working with other RDBMS products may be
-    surprised by the performance characteristics of certain aggregate
-    functions in <SPAN
+>    Users accustomed to working with other SQL database management
+    systems may be surprised by the performance characteristics of
+    certain aggregate functions in
+    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
-> when the
-    aggregate is applied to the entire table (in other words, no
+> when the aggregate is
+    applied to the entire table (in other words, no
     <VAR
 CLASS="LITERAL"
 >WHERE</VAR
-> clause is specified). In particular,
-    a query like
+> clause is specified). In particular, a
+    query like
 </P><PRE
 CLASS="PROGRAMLISTING"
 >SELECT min(col) FROM sometable;</PRE
 ><P>
-   will be executed by <SPAN
+    will be executed by <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 > using a
-   sequential scan of the entire table. Other database systems may
-   optimize queries of this form to use an index on the column, if one
-   is available. Similarly, the aggregate functions
-   <CODE
+    sequential scan of the entire table. Other database systems may
+    optimize queries of this form to use an index on the column, if
+    one is available. Similarly, the aggregate functions
+    <CODE
 CLASS="FUNCTION"
 >max()</CODE
 > and <CODE
 CLASS="FUNCTION"
 >count()</CODE
 > always
-   require a sequential scan if applied to the entire table in
-   <SPAN
+    require a sequential scan if applied to the entire table in
+    <SPAN
 CLASS="PRODUCTNAME"
 >PostgreSQL</SPAN
 >.
@@ -525,11 +526,8 @@ CLASS="FUNCTION"
 >count()</CODE
 > are
     defined using a generic API for aggregate functions, there is no
-    provision for <SPAN
-CLASS="QUOTE"
->"special-casing"</SPAN
-> the execution of these
-    functions under certain circumstances.
+    provision for special-casing the execution of these functions
+    under certain circumstances.
    </P
 ><P
 >    Fortunately, there is a simple workaround for
@@ -615,7 +613,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Array Functions</TD
+>Array Functions and Operators</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

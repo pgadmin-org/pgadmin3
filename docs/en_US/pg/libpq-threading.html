@@ -2,14 +2,14 @@
 <HTML
 ><HEAD
 ><TITLE
->Threading Behavior</TITLE
+>Behavior in Threaded Programs</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,26 +96,29 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="LIBPQ-THREADING"
->27.12. Threading Behavior</A
+>27.12. Behavior in Threaded Programs</A
 ></H1
 ><A
-NAME="AEN21993"
+NAME="AEN21890"
 ></A
 ><P
 ><SPAN
 CLASS="APPLICATION"
 >libpq</SPAN
-> is thread-safe if the library is
-compiled using <TT
+> is reentrant and thread-safe if the
+<TT
 CLASS="FILENAME"
 >configure</TT
->'s 
+> command-line option
 <VAR
 CLASS="LITERAL"
 >--enable-thread-safety</VAR
-> command-line option.  
-(In addition, you might need to use other threading command-line 
-options to compile your client code.)</P
+> has been used when the PostgreSQL
+distribution was built.
+In addition, you might need to use additional compiler command-line 
+options when you compile your application code.  Refer to your system's
+documentation for information about how to build thread-enabled
+applications.</P
 ><P
 >One restriction is that no two threads attempt to manipulate the same
 <TT
@@ -166,7 +169,7 @@ CLASS="LITERAL"
 >crypt()</VAR
 > operating system function, which is often
 not thread-safe.<A
-NAME="AEN22014"
+NAME="AEN21911"
 ></A
 > It is better to use the <VAR
 CLASS="LITERAL"

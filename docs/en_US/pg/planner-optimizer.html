@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Overview of PostgreSQL Internals"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -64,7 +64,7 @@ HREF="overview.html"
 WIDTH="60%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 43. Overview of PostgreSQL Internals</TD
+>Chapter 42. Overview of PostgreSQL Internals</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
@@ -93,7 +93,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="PLANNER-OPTIMIZER"
->43.5. Planner/Optimizer</A
+>42.5. Planner/Optimizer</A
 ></H1
 ><P
 >    The task of the <I
@@ -144,8 +144,8 @@ CLASS="SECT2"
 ><H2
 CLASS="SECT2"
 ><A
-NAME="AEN48735"
->43.5.1. Generating Possible Plans</A
+NAME="AEN48612"
+>42.5.1. Generating Possible Plans</A
 ></H2
 ><P
 >     The planner/optimizer decides which plans should be generated
@@ -202,11 +202,11 @@ CLASS="LITERAL"
 CLASS="FIRSTTERM"
 >nested loop join</I
 >: The right relation is scanned
-	once for every tuple found in the left relation. This strategy
+	once for every row found in the left relation. This strategy
 	is easy to implement but can be very time consuming.  (However,
-	if the right relation can be scanned with an indexscan, this can
+	if the right relation can be scanned with an index scan, this can
 	be a good strategy.  It is possible to use values from the current
-	row of the left relation as keys for the indexscan of the right.)
+	row of the left relation as keys for the index scan of the right.)
        </P
 ></LI
 ><LI
@@ -229,8 +229,8 @@ CLASS="FIRSTTERM"
 >: the right relation is first scanned
 	and loaded into a hash table, using its join attributes as hash keys.
 	Next the left relation is scanned and the
-	appropriate values of every tuple found are used as hash keys to
-	locate the matching tuples in the table.
+	appropriate values of every row found are used as hash keys to
+	locate the matching rows in the table.
        </P
 ></LI
 ></UL
@@ -238,7 +238,7 @@ CLASS="FIRSTTERM"
     </P
 ><P
 >     The finished plan tree consists of sequential or index scans of
-     the base relations, plus nestloop, merge, or hash join nodes as
+     the base relations, plus nested-loop, merge, or hash join nodes as
      needed, plus any auxiliary steps needed, such as sort nodes or
      aggregate-function calculation nodes.  Most of these plan node
      types have the additional ability to do <I

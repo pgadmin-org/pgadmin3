@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="libpq - C Library"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -99,7 +99,7 @@ NAME="LIBPQ-NOTIFY"
 >27.6. Asynchronous Notification</A
 ></H1
 ><A
-NAME="AEN21429"
+NAME="AEN21308"
 ></A
 ><P
 ><SPAN
@@ -151,7 +151,7 @@ messages can subsequently be detected by calling
 CLASS="FUNCTION"
 >PQnotifies</CODE
 >.<A
-NAME="AEN21445"
+NAME="AEN21324"
 ></A
 ></P
 ><P
@@ -200,21 +200,12 @@ CLASS="STRUCTFIELD"
 CLASS="STRUCTFIELD"
 >extra</TT
 > fields
-do not represent separate allocations.</P
-><DIV
-CLASS="NOTE"
-><BLOCKQUOTE
-CLASS="NOTE"
-><P
-><B
->Note: </B
-> At present the <TT
+do not represent separate allocations.
+(At present, the <TT
 CLASS="STRUCTFIELD"
 >extra</TT
 > field is unused and will
- always point to an empty string.</P
-></BLOCKQUOTE
-></DIV
+always point to an empty string.)</P
 ><DIV
 CLASS="NOTE"
 ><BLOCKQUOTE
@@ -229,11 +220,11 @@ CLASS="PRODUCTNAME"
  the <TT
 CLASS="STRUCTFIELD"
 >be_pid</TT
-> is that of the notifying backend process,
+> is that of the notifying server process,
  whereas in earlier versions it was always the <ACRONYM
 CLASS="ACRONYM"
 >PID</ACRONYM
-> of your own backend process.</P
+> of your own server process.</P
 ></BLOCKQUOTE
 ></DIV
 ><P
@@ -245,7 +236,7 @@ of asynchronous notification.</P
 ><P
 ><CODE
 CLASS="FUNCTION"
->PQnotifies()</CODE
+>PQnotifies</CODE
 > does not actually read data from the server; it just
 returns messages previously absorbed by another <SPAN
 CLASS="APPLICATION"
@@ -261,11 +252,11 @@ CLASS="COMMAND"
 > messages was to constantly submit commands,
 even empty ones, and then check <CODE
 CLASS="FUNCTION"
->PQnotifies()</CODE
+>PQnotifies</CODE
 > after each
 <CODE
 CLASS="FUNCTION"
->PQexec()</CODE
+>PQexec</CODE
 >.  While this still works, it is
 deprecated as a waste of processing power.</P
 ><P
@@ -276,11 +267,11 @@ CLASS="COMMAND"
 messages when you have no useful commands to execute is to call
 <CODE
 CLASS="FUNCTION"
->PQconsumeInput()</CODE
+>PQconsumeInput</CODE
 >, then check
 <CODE
 CLASS="FUNCTION"
->PQnotifies()</CODE
+>PQnotifies</CODE
 >.
 You can use <CODE
 CLASS="FUNCTION"
@@ -292,7 +283,7 @@ CLASS="ACRONYM"
 > power unless there is something
 to do.  (See <CODE
 CLASS="FUNCTION"
->PQsocket()</CODE
+>PQsocket</CODE
 > to obtain the file descriptor
 number to use with <CODE
 CLASS="FUNCTION"
@@ -312,7 +303,7 @@ CLASS="FUNCTION"
 >.  You should, however, remember to
 check <CODE
 CLASS="FUNCTION"
->PQnotifies()</CODE
+>PQnotifies</CODE
 > after each
 <CODE
 CLASS="FUNCTION"

@@ -9,7 +9,7 @@ CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
 REV="MADE"
 HREF="mailto:pgsql-docs@postgresql.org"><LINK
 REL="HOME"
-TITLE="PostgreSQL 7.4beta4 Documentation"
+TITLE="PostgreSQL 7.4 Documentation"
 HREF="index.html"><LINK
 REL="UP"
 TITLE="Indexes"
@@ -24,7 +24,7 @@ REL="STYLESHEET"
 TYPE="text/css"
 HREF="stylesheet.css"><META
 NAME="creation"
-CONTENT="2003-10-03T03:19:47"></HEAD
+CONTENT="2003-11-16T21:52:34"></HEAD
 ><BODY
 CLASS="SECT1"
 ><DIV
@@ -40,7 +40,7 @@ CELLSPACING="0"
 COLSPAN="5"
 ALIGN="center"
 VALIGN="bottom"
->PostgreSQL 7.4beta4 Documentation</TH
+>PostgreSQL 7.4 Documentation</TH
 ></TR
 ><TR
 ><TD
@@ -96,7 +96,7 @@ NAME="INDEXES-EXPRESSIONAL"
 >11.5. Indexes on Expressions</A
 ></H1
 ><A
-NAME="AEN13170"
+NAME="AEN13243"
 ></A
 ><P
 >   An index column need not be just a column of the underlying table,
@@ -124,6 +124,22 @@ CLASS="LITERAL"
 CLASS="PROGRAMLISTING"
 >CREATE INDEX test1_lower_col1_idx ON test1 (lower(col1));</PRE
 ><P>
+  </P
+><P
+>   If we were to declare this index <VAR
+CLASS="LITERAL"
+>UNIQUE</VAR
+>, it would prevent
+   creation of rows whose <VAR
+CLASS="LITERAL"
+>col1</VAR
+> values differ only in case,
+   as well as rows whose <VAR
+CLASS="LITERAL"
+>col1</VAR
+> values are actually identical.
+   Thus, indexes on expressions can be used to enforce constraints that
+   are not definable as simple unique constraints.
   </P
 ><P
 >   As another example, if one often does queries like this:
