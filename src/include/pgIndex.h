@@ -42,8 +42,6 @@ public:
 
     wxString GetColumnNumbers() const { return columnNumbers; }
     void iSetColumnNumbers(const wxString& s) { columnNumbers=s; }
-    wxString GetExpression() const { return expression; }
-    void iSetExpression(const wxString& s) { expression=s; }
     wxString GetConstraint() const { return constraint; }
     void iSetConstraint(const wxString& s) { constraint=s; }
     wxString GetIndexType() const { return indexType; }
@@ -87,7 +85,6 @@ protected:
 private:
     wxString columnNumbers, columns, quotedColumns, indexType, idxTable, idxSchema, constraint;
     wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
-    wxString expression;
     long columnCount;
     bool isUnique, isPrimary, isClustered;
     bool deferrable, deferred;

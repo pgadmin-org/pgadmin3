@@ -85,27 +85,47 @@ void pgIndex::ReadColumnDetails()
     {
         expandedKids = true;
 
-        // We cannot use SELECT IN (colNumbers) here because we couldn't be sure
-        // about the read order
-        wxStringTokenizer collist(GetColumnNumbers());
-        wxStringTokenizer args(procArgTypeList);
-        wxString cn, ct;
-        long i;
-
-        for (i=0 ; i < columnCount ; i++)
+        if (GetConnection()->BackendMinimumVersion(7, 4))
         {
-            cn=collist.GetNextToken();
-            ct=args.GetNextToken();
+            long i;
 
-            if (StrToLong(cn) > 0)
+            for (i=1 ; i <= columnCount ; i++)
             {
+                if (i > 1)
+                {
+                    columns += wxT(", ");
+                    quotedColumns += wxT(", ");
+                }
+                wxString str=ExecuteScalar(
+                    wxT("SELECT pg_get_indexdef(") + GetOidStr() + wxT(", ")
+                    + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")"));
+                columns += str;
+                quotedColumns += str;
+            }
+        }
+        else
+        {
+            // its a 7.3 db
+
+            // We cannot use SELECT IN (colNumbers) here because we couldn't be sure
+            // about the read order
+            wxStringTokenizer collist(GetColumnNumbers());
+            wxStringTokenizer args(procArgTypeList);
+            wxString cn, ct;
+            columnCount=0;
+
+            while (collist.HasMoreTokens())
+            {
+                cn=collist.GetNextToken();
+                ct=args.GetNextToken();
+
                 pgSet *colSet=ExecuteSet(
                     wxT("SELECT attname as conattname\n")
                     wxT("  FROM pg_attribute\n")
                     wxT(" WHERE attrelid=") + GetTableOidStr() + wxT(" AND attnum=") + cn);
                 if (colSet)
                 {
-                    if (i)
+                    if (columnCount)
                     {
                         columns += wxT(", ");
                         quotedColumns += wxT(", ");
@@ -135,10 +155,7 @@ void pgIndex::ReadColumnDetails()
                     }
                     delete colSet;
                 }
-            }
-            else
-            {
-                // expression
+                columnCount++;
             }
         }
         wxStringTokenizer ops(operatorClassList);
@@ -210,9 +227,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     wxString proname, projoin;
     if (collection->GetConnection()->BackendMinimumVersion(7, 4))
     {
-        proname = wxT("indexprs, ");
-//        proname=wxT("pg_get_expr(indexprs, indrelid") 
-//            + collection->GetDatabase()->GetPrettyOption() + wxT(") AS idxexpr, ");
+        proname = wxT("indnatts, ");
     }
     else
     {
@@ -222,7 +237,7 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
     }
     pgSet *indexes= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
-        wxT("       ") + proname + wxT("tab.relname as tabname, indnatts, indclass, description,\n")
+        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, description,\n")
         wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n")
         wxT("  FROM pg_index idx\n")
         wxT("  JOIN pg_class cls ON cls.oid=indexrelid\n")
@@ -265,13 +280,13 @@ pgObject *pgIndex::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             index->iSetComment(indexes->GetVal(wxT("description")));
             index->iSetIdxTable(indexes->GetVal(wxT("tabname")));
             index->iSetRelTableOid(indexes->GetOid(wxT("indrelid")));
-            index->iSetColumnCount(indexes->GetLong(wxT("indnatts")));
             if (collection->GetConnection()->BackendMinimumVersion(7, 4))
             {
-                index->iSetExpression(indexes->GetVal(wxT("indexprs")));
+                index->iSetColumnCount(indexes->GetLong(wxT("indnatts")));
             }
             else
             {
+                index->iSetColumnCount(0L);
                 index->iSetProcNamespace(indexes->GetVal(wxT("pronspname")));
                 index->iSetProcName(indexes->GetVal(wxT("proname")));
                 index->iSetProcArgTypeList(indexes->GetVal(wxT("proargtypes")));
