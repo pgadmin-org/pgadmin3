@@ -29,6 +29,7 @@
 // pointer to controls
 #define txtDefault      CTRL("txtDefault", wxTextCtrl)
 #define chkNotNull      CTRL("chkNotNull", wxCheckBox)
+#define txtAttstattarget      CTRL("txtAttstattarget",      wxTextCtrl)
 
 
 
@@ -38,6 +39,7 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
     EVT_TEXT(XRCID("txtPrecision"),                 dlgColumn::OnChange)
     EVT_TEXT(XRCID("txtDefault"),                   dlgColumn::OnChange)
     EVT_CHECKBOX(XRCID("chkNotNull"),               dlgColumn::OnChange)
+    EVT_TEXT(XRCID("txtAttstattarget"),             dlgColumn::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgColumn::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
 END_EVENT_TABLE();
@@ -73,6 +75,7 @@ int dlgColumn::Go(bool modal)
             txtPrecision->SetValue(NumToStr(column->GetPrecision()));
         txtDefault->SetValue(column->GetDefault());
         chkNotNull->SetValue(column->GetNotNull());
+        txtAttstattarget->SetValue(NumToStr(column->GetAttstattarget()));
         txtComment->SetValue(column->GetComment());
 
 
@@ -110,6 +113,7 @@ int dlgColumn::Go(bool modal)
             chkNotNull->Disable();
             txtLength->Disable();
             cbDatatype->Disable();
+            txtAttstattarget->Disable();
         }
     }
     else
@@ -182,6 +186,16 @@ wxString dlgColumn::GetSql()
 
                 sql += wxT(" NOT NULL;\n");
             }
+            if (txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget()))
+            {
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT("\n   ALTER COLUMN ") + qtIdent(column->GetName());
+                if (txtAttstattarget->GetValue().IsEmpty())
+                    sql += wxT(" SET STATISTICS -1");
+                else
+                    sql += wxT(" SET STATISTICS ") + txtAttstattarget->GetValue();
+                sql += wxT(";\n");
+            }
         }
         else
         {
@@ -200,6 +214,13 @@ wxString dlgColumn::GetSql()
                     + wxT("\n   ALTER COLUMN ") + qtIdent(GetName())
                     + wxT(" SET DEFAULT ") + txtDefault->GetValue() 
                     + wxT(";\n");
+            if (!txtAttstattarget->GetValue().IsEmpty())
+            {
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    + wxT("\n   ALTER COLUMN ") + qtIdent(GetName())
+                    + wxT(" SET STATISTICS ") + txtAttstattarget->GetValue()
+                    + wxT(";\n");
+            }
         }
 
 
@@ -276,7 +297,8 @@ void dlgColumn::OnChange(wxNotifyEvent &ev)
                     || chkNotNull->GetValue() != column->GetNotNull()
                     || (cbDatatype->GetCount() > 1 && cbDatatype->GetValue() != column->GetRawTypename())
                     || (isVarLen && varlen != column->GetLength())
-                    || (isVarPrec && varprec != column->GetPrecision());
+                    || (isVarPrec && varprec != column->GetPrecision())
+                    || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget());
         EnableOK(enable);
     }
     else

@@ -70,6 +70,10 @@ wxString pgColumn::GetSql(wxTreeCtrl *browser)
                 sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                     + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                     + wxT(" SET DEFAULT ") + GetDefault() + wxT(";\n");
+            if (GetAttstattarget() >= 0)
+                sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
+                    + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                    + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
             if (!GetComment().IsEmpty())
                 sql += wxT("COMMENT ON COLUMN ") + GetQuotedFullTable() + wxT(".") + GetQuotedIdentifier()
                     +  wxT(" IS ") + qtString(GetComment()) + wxT(";\n");
@@ -181,6 +185,8 @@ void pgColumn::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pr
         InsertListItem(properties, pos++, _("Foreign key?"), GetIsFK());
         InsertListItem(properties, pos++, _("Storage"), GetStorage());
         InsertListItem(properties, pos++, _("Inherited"), GetInheritedCount() != 0);
+        InsertListItem(properties, pos++, _("Statistics"), GetAttstattarget());
+
 
         InsertListItem(properties, pos++, _("System column?"), GetSystemObject());
         InsertListItem(properties, pos++, _("Comment"), GetComment());
@@ -227,7 +233,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
         systemRestriction = wxT("\n   AND attnum > 0");
         
     pgSet *columns= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, CASE WHEN ty.typname = 'bpchar' THEN 'char' WHEN ty.typname = '_bpchar' THEN '_char' ELSE ty.typname END AS typname, tn.nspname as typnspname, et.typname as elemtypname, relname, na.nspname, description\n")
+        wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, CASE WHEN ty.typname = 'bpchar' THEN 'char' WHEN ty.typname = '_bpchar' THEN '_char' ELSE ty.typname END AS typname, tn.nspname as typnspname, et.typname as elemtypname, relname, na.nspname, att.attstattarget, description\n")
         wxT("  FROM pg_attribute att\n")
         wxT("  JOIN pg_type ty ON ty.oid=atttypid\n")
         wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
@@ -291,6 +297,7 @@ pgObject *pgColumn::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
                 + qtIdent(columns->GetVal(wxT("relname"))));
             column->iSetTableName(columns->GetVal(wxT("relname")));
             column->iSetInheritedCount(columns->GetLong(wxT("attinhcount")));
+            column->iSetAttstattarget(columns->GetLong(wxT("attstattarget")));
 
             if (browser)
             {

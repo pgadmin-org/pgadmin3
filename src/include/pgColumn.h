@@ -70,6 +70,8 @@ public:
     void iSetInheritedCount(const long l) { inheritedCount=l; }
     OID  GetAttTypId() const { return attTypId; }
     void iSetAttTypId(const OID o) { attTypId =o; }
+    long GetAttstattarget() const { return attstattarget; }
+    void iSetAttstattarget(const long l) { attstattarget=l; }
 
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     bool GetSystemObject() const { return colNumber < 0; }
@@ -81,7 +83,7 @@ public:
 
 private:
     wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, storage, rawTypename;
-    long colNumber, length, precision, statistics;
+    long colNumber, length, precision, statistics, attstattarget;
     long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray;
     OID attTypId;
