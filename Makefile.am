@@ -8,7 +8,7 @@ EXTRA_DIST = 	README.txt BUGS.txt LICENCE.txt \
 		pkg/debian/rules pkg/debian/README.Debian \
 		pkg/debian/docs pkg/debian/dirs \
 		pkg/debian/copyright pkg/debian/control \
-		pkg/debian/changelog \
+		pkg/debian/changelog pkg/debian/make-deb \
 		pkg/redhat/pgadmin3.spec \
 		pkg/slackware/build-package pkg/slackware/slack-desc \
 		pkg/src/build-tarball
