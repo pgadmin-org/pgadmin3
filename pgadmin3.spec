@@ -60,7 +60,6 @@ rm -rf %{buildroot}
 %defattr(-, root, root)
 %{with_pgsql}/bin
 %{with_pgsql}/share/pgadmin3/tips.txt
-%{with_pgsql}/share/pgadmin3/ui/
 %{with_pgsql}/share/pgadmin3/docs
 %{with_pgsql}/share/pgadmin3/ui/common
 
