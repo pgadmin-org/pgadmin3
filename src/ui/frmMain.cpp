@@ -362,7 +362,7 @@ void frmMain::Refresh(pgObject *data)
 
     wxTreeItemId currentItem=data->GetId();
 
-    data->RemoveSubitems(browser);
+    browser->DeleteChildren(data->GetId());
 
 	// refresh information about the object
 
@@ -409,7 +409,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
     if (lastDatabase.IsNull())
         return item;
 
-   long cookie;
+    long cookie;
     pgObject *data;
     item = browser->GetFirstChild(server->GetId(), cookie);
     while (item)

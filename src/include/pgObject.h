@@ -124,7 +124,6 @@ public:
     virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0)
         =0;
     virtual pgObject *Refresh(wxTreeCtrl *browser, const wxTreeItemId item) {return this; }
-    void RemoveSubitems(wxTreeCtrl *browser);
     virtual bool DropObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
     virtual bool EditObject(wxFrame *frame, wxTreeCtrl *browser) {return false; }
     virtual int GetIcon()=0;

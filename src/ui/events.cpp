@@ -597,7 +597,7 @@ void frmMain::OnTreeSelChanged(wxTreeEvent& event)
     if (!data) return;
 
     int type = data->GetType();
-    pgServer *server;
+    pgServer *server=0;
 
     properties->Freeze();
     statistics->Freeze();
@@ -747,6 +747,21 @@ void frmMain::OnConnect(wxCommandEvent &ev)
     pgServer *server = (pgServer *)browser->GetItemData(item);
     if (server->GetType() == PG_SERVER && !server->GetConnected())
         ReconnectServer(server);
+}
+
+
+void frmMain::OnDisconnect(wxCommandEvent &ev)
+{
+    wxTreeItemId item = browser->GetSelection();
+    pgServer *server = (pgServer *)browser->GetItemData(item);
+    if (server&& server->GetType() == PG_SERVER && server->Disconnect())
+    {
+        browser->SetItemImage(item, PGICON_SERVERBAD, wxTreeItemIcon_Normal);
+        browser->SetItemImage(item, PGICON_SERVERBAD, wxTreeItemIcon_Selected);
+        browser->DeleteChildren(item);
+        wxTreeEvent tev;
+        OnTreeSelChanged(tev);
+    }
 }
 
 
@@ -909,17 +924,6 @@ void frmMain::OnRefresh(wxCommandEvent &ev)
 
     Refresh(data);
 }
-
-
-
-
-
-void frmMain::OnDisconnect(wxCommandEvent &ev)
-{
-    // Disconnect -- does nothing yet
-	wxMessageBox(_("This is not yet implemented"));
-}
-
 
 
 void frmMain::OnCreate(wxCommandEvent &ev)

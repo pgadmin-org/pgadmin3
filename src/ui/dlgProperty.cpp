@@ -288,7 +288,7 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
             }
             if (newData)
             {
-                newData->RemoveSubitems(mainForm->GetBrowser());
+                mainForm->GetBrowser()->DeleteChildren(newData->GetId());
 
                 newData->ShowTree(mainForm, mainForm->GetBrowser(), properties, statistics, 0);
                 mainForm->GetSqlPane()->SetText(newData->GetSql(mainForm->GetBrowser()));

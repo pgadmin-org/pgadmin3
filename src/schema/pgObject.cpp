@@ -171,21 +171,6 @@ void pgObject::InsertListItem(wxListCtrl *list, const int pos, const wxString& s
 }
 
 
-void pgObject::RemoveSubitems(wxTreeCtrl *browser)
-{
-    wxTreeItemId item;
-    long cookie;
-    while ((item=browser->GetFirstChild(GetId(), cookie)) != 0)
-    {
-        pgObject *tmpData = (pgObject *)browser->GetItemData(item);
-        wxLogInfo(wxT("Deleting Node ") + tmpData->GetTypeName() + wxT(" ") 
-            + tmpData->GetQuotedFullIdentifier() + wxT(" for Refresh"));
-        // delete data will be performed by browser->Delete
-        browser->Delete(item);
-    }
-}
-
-
 wxString pgObject::GetCommentSql()
 {
     wxString cmt;
@@ -589,14 +574,18 @@ tokenAction secondOnToken=
     { wxT("ON"),     wxT("ON"),       -5, 0,      SQLTK_ON,       true};
 
 
-////////////////////////////////
-
-        // ok, this code looks weird. It's necessary, because somebody (NOT the running code)
-        // will screw up that entry. It's broken in pgAdmin3::OnInit() already.
-        // maybe your compiler does better (VC6SP5, but an older c2xx to avoid other bugs)
 
 wxString pgRuleObject::GetFormattedDefinition()
 {
+    // pgsql 7.4 does formatting itself
+    if (GetConnection()->BackendMinimumVersion(7, 4))
+        return GetDefinition();
+
+    ////////////////////////////////
+    // ok, this code looks weird. It's necessary, because somebody (NOT the running code)
+    // will screw up that entry. It's broken in pgAdmin3::OnInit() already.
+    // maybe your compiler does better (VC6SP5, but an older c2xx to avoid other bugs)
+
     sqlTokens[0].replaceKeyword=wxT("  WHERE");
     sqlTokens[0].actionBefore = -8;
     sqlTokens[0].actionAfter = 8;

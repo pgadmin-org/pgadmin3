@@ -60,6 +60,18 @@ wxString pgServer::GetFullName() const
 }
 
 
+bool pgServer::Disconnect()
+{
+    if (conn)
+    {
+        delete conn;
+        conn=0;
+        connected=false;
+        expandedKids=false;
+    }
+    return true;
+}
+
 
 int pgServer::Connect(wxFrame *form, bool lockFields) 
 {
