@@ -156,7 +156,7 @@ void frmGrantWizard::Go()
             break;
         case PG_FUNCTIONS:
         case PG_TRIGGERFUNCTIONS:
-            privList = wxT(",EXECUTE");
+            privList = wxT("EXECUTE");
             privChar = "X";
             break;
         default:
