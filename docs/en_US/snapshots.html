@@ -1,286 +1,295 @@
-<html>
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
-  <title>pgAdmin3 CVS snapshots</title>
-</head>
-
-<body>
-
-  <h3>pgAdmin3 CVS snapshots in binary formats</h3>
-
-  <p>
-  pgAdmin3 CVS snapshots are available for several platforms, including GNU/Linux, FreeBSD and Microsoft Windows 2000/XP. Several ports are in preparation, including MacOsX. We are doing our best to update these snapshots almost nightly.
-	</p>
-
-  <p>
-  Please report bugs, problems and suggestions to the pgadmin mailing list: <a href="mailto:pgadmin-support@postgresql.org">pgadmin-support@postgresql.org</a> or <a href="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers@postgresql.org</a>. A registration on the mailing-list is needed before posting a message.
-	</p>
-
-  <h3>Important note:</h3>
-  <p>
-    There is no guarantee that these packages work in any way: it is beta developer software intended for testing and development.
-	</p>
-
-  <p>
-  Presently, daily snapshots are compiled for the following platforms:
-    <ul>
-      <li><a href="#deb">GNU/Linux Debian</a>
-      <li><a href="#rpm">GNU/Linux RedHat 9, SuSE 8.2, Mandrake 9.1</a>
-      <li><a href="#slackware">GNU/Linux Slackware 9.0</a>
-      <li><a href="#freebsd">FreeBSD 5.1</a>
-      <li><a href="#win">Microsoft Windows 2000 & XP</a>
-      </li>
-		</ul>
-	</p>
-
-  <a name="#deb">
-  <h3>GNU/Linux Debian</h3>
-  Packager: Raphaël Enrici<br>
-
-  The packages are available from pgAdmin apt repository.
-  If you want to install pgAdmin3 on a Debian subsystem
-  please follow these instructions :
-
-    <ul>
-      <li>APT Configuration<br>
-      Edit /etc/apt/sources.list and add the following line:
-      <br>
-      <ul>
-        <li>For Debian WOODY:<br>
-        # deb http://www.pgadmin.org/snapshots/linux/debian woody pgadmin
-        <br>
-
-        <li>For Debian TESTING:<br>
-        # deb http://www.pgadmin.org/snapshots/linux/debian testing pgadmin
-        <br>
-
-        <li>For Debian UNSTABLE:<br>
-        deb http://www.pgadmin.org/snapshots/linux/debian unstable pgadmin
-      </ul>
-      <br>
-
-      <li>Installation<br>
-      After you configured you sources.list as mentioned above,
-      simply do this as root:
-      <br>
-      # apt-get update<br>
-      # apt-get install pgadmin3<br>
-      Launch the software by typing "pgadmin3" and have fun!
-      Please, feel free to report any problem to
-      <a href="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers list</a>.
-      Thanks!
-      <br><br>
-
-      <li>DEVELOPERS' CORNER<br>
-      If you want to get the source packages simply modify your /etc/apt/sources.list:
-      <ul>
-        <li>For Debian WOODY:<br>
-        # deb-src http://www.pgadmin.org/snapshots/linux/debian woody pgadmin
-        <br>
-
-        <li>For Debian TESTING:<br>
-        # deb-src http://www.pgadmin.org/snapshots/linux/debian testing pgadmin
-        <br>
-
-        <li>For Debian UNSTABLE:<br>
-        # deb-src http://www.pgadmin.org/snapshots/linux/debian unstable pgadmin
-        <br>
-      </ul>
-      <br>
-
-        You may also want to check wxWindows 2.5 cvs version static packages
-        which were used to build pgadmin3 packages:
-        <br>
-        (PLEASE REMEMBER, THESE PACKAGES ARE REALLY EXPERIMENTAL,
-        THEY CAN BREAK YOUR SYSTEM!!  YOU HAVE BEEN WARNED!)
-        <br>
-
-        Binaries and sources are available for woody, testing and unstable:<br>
-
-        <ul>
-          <li>For Debian WOODY:<br>
-          # deb http://www.pgadmin.org/snapshots/linux/debian experimental/woody wxwindows-pgadmin3<br>
-          # deb-src http://www.pgadmin.org/snapshots/linux/debian experimental/woody wxwindows-pgadmin3<br>
-
-          <li>For Debian TESTING:<br>
-          # deb http://www.pgadmin.org/snapshots/linux/debian experimental/testing wxwindows-pgadmin3<br>
-          # deb-src http://www.pgadmin.org/snapshots/linux/debian experimental/testing wxwindows-pgadmin3<br>
-
-          <li>For Debian UNSTABLE:<br>
-          # deb http://www.pgadmin.org/snapshots/linux/debian experimental/unstable wxwindows-pgadmin3<br>
-        deb-src http://www.pgadmin.org/snapshots/linux/debian experimental/unstable wxwindows-pgadmin3<br>
-        </ul>
-        <br>
-
-        It contains the three following packages which were
-        used to build pgadmin3:<br>
-          <ul>
-            <li>pgadmin3-libwxgtk2ud2.5
-            <li>pgadmin3-libwxgtk2ud2.5-contrib
-            <li>pgadmin3-libwxgtk2ud2.5-dev
-          </ul>
-        <br>
-        And if you want sources of the three precedent packages:<br>
-        # deb-src http://www.pgadmin.org/snapshots/linux/debian experimental/woody wxwindows-pgadmin3<br>
-        <br>
-
-
-        <li>To compile and rebuild the pgadmin3 package:<br>
-        <ol>
-          <li>First, as root<br>
-          # apt-get update<br>
-          # apt-get build-dep pgadmin3 <br>
-          This should install pgadmin3-wxwindows* packages.<br>
-
-          <li>Then as a normal user<br>
-          Fetch the source
-          # apt-get source pgadmin3<br>
-          # cd pgadmin3-0.1.1<br>
-          Compile and build the package
-          # dpkg-buildpackage -rfakeroot<br>
-          # cd .. ; ls *.deb<br>
-
-          <li>Or as root (not recommended)<br>
-          Fetch,compile & build the package<br>
-          # apt-get --compile source pgadmin3<br>
-        </ol>
-  Any comments are welcome.<br>
-  </ul>
-  <br>
-
-<a name="#rpm">
-	<h3>GNU/Linux Mandrake 9.1, RedHat 9, SuSE 8.2</h3>
-  Packager: Jean-Michel POURE
-  <p>
-  	<ul>
-      <li>Binary RPM packages
-      	<p>
-        	pgAdmin3 binary RPM packages are compiled statically against <a href="http://wxwindows.sourceforge.net/snapshots/">wxGTK 2.5</a>. Therefore there is not need to install <a href="http://wxwindows.sourceforge.net/snapshots">wxGTK 2.5</a> libraries. pgAdmin3 binaries are compiled with Unicode and debugging mode and linked against GTK2. The binaries are localised in several languages and include the latest PostgreSQL documentation. The required steps for installation are:
-        </p>
-      	<ol>
-      		<li>Download the latest pgAdmin3 RPM package from:<br>
-          <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/RPMS">http://www.pgadmin.org/snapshots/linux/mandrake91/RPMS</a><br>
-          <a href="http://www.pgadmin.org/snapshots/linux/redhat9/RPMS">http://www.pgadmin.org/snapshots/linux/redhat9/RPMS</a>.<br>
-          <a href="http://www.pgadmin.org/snapshots/linux/suse82/RPMS">http://www.pgadmin.org/snapshots/linux/suse82/RPMS</a>.<br>
-          <li>Install the downloaded RPM using the following command:
-            <br>
-            # rpm -Uvh pgadmin3*.rpm
-            <br>
-           <li>pgAdmin3 RPM will check for the needed dependencies and warn you if some packages are not installed. All needed dependencies are included in the stock RedHat 9 distribution.
-         </ol>
-      <br>
-      <li>wxGTK 2.5 libraries
-      	<p>
-        If you want to contribute pgAdmin3 projects or simply compile from source, you need a recent GNU/Linux distribution with <a href="http://wxwindows.sourceforge.net">wxGTK 2.5</a> libraries, header files and contributed libraries. For your convenience and to avoid long compilation times (sometimes hours), we provide <a href="http://wxwindows.sourceforge.net/snapshots">wxGTK 2.5 CVS snapshots</a> in RPM format.
-				</p>
-        	<ol>
-            <li>Download the four latest wxGTK 2.5 RPM packages from:<br>
-            <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2</a><br>
-            <a href="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2</a><br>
-            <a href="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2</a><br>
-            <br>
-            The packages are numbered:
-            <br>
-              &nbsp; - wxGTK2ud-$version-.i386.rpm<br>
-              &nbsp; - wxGTK2ud-devel-$version.i386.rpm<br>
-              &nbsp; - wxGTK2ud-xtc-$version.i386.rpm<br>
-              &nbsp; - wxGTK2ud-stc-$version.i386.rpm<br>
-            <li>Install the downloaded RPM using the following command:
-            <br>
-            # rpm -Uvh wxGTK2ud*.rpm
-            <br>
-            <li>wxGTK2ud RPMs will check for the needed dependencies and warn you if some packages are not installed.
-            </li>
-				</ol>
-      </li>
-    </ul>
-	</p><br>
-
-  <a name="#slackware">
-  <h3>GNU/Slackware 9.0</h3>
-  Packager: Dave Page
-  <p>
-  	<ul>
-      <li>Binary packages
-      <p>
-      pgAdmin3 binary packages are compiled statically against wxGTK 2.5. Therefore there is not need to install wxGTK 2.5 libraries. pgAdmin3 binaries are compiled with Unicode and debugging mode and linked against GTK2. The binaries are localised in several languages and include the latest PostgreSQL documentation. The required steps for installation are:
-      </p>
-
-      <ol>
-      	<li>Download the latest packages from <a href="http://www.pgadmin.org/snapshots/linux/slackware90">http://www.pgadmin.org/snapshots/linux/slackware90</a>.
-        <li>Install the downloaded packages using Slackwares pkgtool or
-        installpkg.
-      </ol>
-
-      <br>
-      <li>wxGTK 2.5 libraries
-      	<p>
-        Sorry, we do not provide development packages in GNU/Slackware 9.0. If you want to contribute pgAdmin3 projects or simply compile from source, you need a recent GNU/Linux distribution with wxGTK 2.5 CVS libraries, header files and contributed libraries compiled from source.
-        <span style="COLOR: black">This is actually very straightforward on 
-        Slackware 9 as all dependencies should already be installed. You should
-        find that the <a href="unix_compilation.html">compilation instructions</a>
-        detail the exact steps required.</span></p>
-       </li>
-    </ol>
-  </p><br>
-
-  <a name="#freebsd">
-  <h3>FreeBSD 5.1</h3>
-  Packager: Hiroshi Saito
-  <p>
-    pgAdmin3 binary packages are compiled statically against wxGTK 2.5. Therefore there is not need to install wxGTK 2.5 libraries. pgAdmin3 binaries are compiled with Unicode and debugging mode and linked against GTK2. The binaries are localised in several languages and include the latest PostgreSQL documentation.
-
-    <ul>
-    <li>Installation<br>
-      <p>
-      # pkg_add pgadmin3-yyyymmdd.tgz
-      </p>
-
-    <li>Create a symlink to pgadmin3 binary<br>
-      <p>
-      # ln -sf /usr/local/pgadmin3/bin/pgadmin3 /usr/local/bin/pgadmin3
-      </p>
-
-    <li>Check that pgadmin3 is in the path<br>
-      <p>
-      # which pgadmin3
-      # /usr/local/bin/pgadmin3
-      </p>
-
-    <li>UnInstall<br>
-      <p>
-      # pkg_delete pgadmin3-0.1.1
-      </p>
-     </ul>
-  </p>
-
-  <a name="#win">
-  <h3>Microsoft Windows 2000 & XP</h3>
-  Packager: Andreas Pflug
-	<p>
-  	<ul>
-      <li>Binary packages
-      <p>
-      pgAdmin3 binary packages are compiled statically against wxGTK 2.5. Therefore there is no need to install wxGTK 2.5 libraries. pgAdmin3 binaries are compiled with Unicode and debugging mode. The binaries are localised in several languages and include the latest PostgreSQL documentation. The required steps for installation are:
-      </p>
-
-      <ol>
-      	<li>Download the latest packages from <a href="http://www.pgadmin.org/snapshots/win32">http://www.pgadmin.org/snapshots/win32</a>.
-        <li>Unzip and copy all files in the directory of your choice.
-        <li>Double-click on pgAdmin3.exe.
-        </li>
-      </ol>
-
-      <br>
-      <li>wxGTK 2.5 libraries
-      	<p>
-        Presently, we do not provide wxGTK 2.5 packages for compiling pgAdmin3 under Windows. You will need to install wxGTK 2.5 cvs version from source. We would love to hear your experience if you could compile pgAdmin3 successfully under Mingw. Stay tuned...
-        </p>
-      </li>
-    </ul>
-  </p><br>
-
-</body>
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>pgAdmin3 CVS snapshots</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20030716;11392547">
+	<META NAME="CHANGEDBY" CONTENT="Andreas Pflug">
+	<META NAME="CHANGED" CONTENT="20030716;11393124">
+	<STYLE>
+	<!--
+		P { color: #000000; font-family: "verdana", "helvetica", sans-serif; font-size: 9pt; font-style: normal }
+		H3 { color: #000000; font-style: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" BGCOLOR="#cdddeb" DIR="LTR" STYLE="border: none; padding: 0cm">
+<H3>pgAdmin3 CVS snapshots in binary formats</H3>
+<P>pgAdmin3 CVS snapshots are available for several platforms,
+including GNU/Linux, FreeBSD and Microsoft Windows 2000/XP. Several
+ports are in preparation, including MacOsX. We are doing our best to
+update these snapshots almost nightly. 
+</P>
+<P>Please report bugs, problems and suggestions to the pgadmin
+mailing list: <A HREF="mailto:pgadmin-support@postgresql.org">pgadmin-support@postgresql.org</A>
+or <A HREF="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers@postgresql.org</A>.
+A registration on the mailing-list is needed before posting a
+message. 
+</P>
+<H3>Important note:</H3>
+<P>There is no guarantee that these packages work in any way: it is
+beta developer software intended for testing and development. 
+</P>
+<P>Presently, daily snapshots are compiled for the following
+platforms: 
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#deb">GNU/Linux Debian</A>
+		</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#rpm">GNU/Linux RedHat 9,
+	SuSE 8.2, Mandrake 9.1</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#slackware">GNU/Linux
+	Slackware 9.0</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#freebsd">FreeBSD 5.1</A>
+		</P>
+	<LI><P><A HREF="#win">Microsoft Windows 2000 &amp; XP</A> 
+	</P>
+</UL>
+<H3><A NAME="#deb"></A>GNU/Linux Debian</H3>
+<P>Packager: Rapha&euml;l Enrici<BR>The packages are available from
+pgAdmin apt repository. If you want to install pgAdmin3 on a Debian
+subsystem please follow these instructions : 
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">APT Configuration<BR>Edit
+	/etc/apt/sources.list and add the following line: 
+	</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0cm">For Debian WOODY:<BR># deb
+		http://www.pgadmin.org/snapshots/linux/debian woody pgadmin 
+		</P>
+		<LI><P STYLE="margin-bottom: 0cm">For Debian TESTING:<BR># deb
+		http://www.pgadmin.org/snapshots/linux/debian testing pgadmin 
+		</P>
+		<LI><P STYLE="margin-bottom: 0cm">For Debian UNSTABLE:<BR>deb
+		http://www.pgadmin.org/snapshots/linux/debian unstable pgadmin 
+		</P>
+	</UL>
+	<P STYLE="margin-bottom: 0cm"></P>
+	<LI><P>Installation<BR>After you configured you sources.list as
+	mentioned above, simply do this as root: <BR># apt-get update<BR>#
+	apt-get install pgadmin3<BR>Launch the software by typing &quot;pgadmin3&quot;
+	and have fun! Please, feel free to report any problem to
+	<A HREF="mailto:pgadmin-hackers@postgresql.org">pgadmin-hackers
+	list</A>. Thanks! 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">DEVELOPERS' CORNER<BR>If you want
+	to get the source packages simply modify your /etc/apt/sources.list:
+		</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0cm">For Debian WOODY:<BR># deb-src
+		http://www.pgadmin.org/snapshots/linux/debian woody pgadmin 
+		</P>
+		<LI><P STYLE="margin-bottom: 0cm">For Debian TESTING:<BR># deb-src
+		http://www.pgadmin.org/snapshots/linux/debian testing pgadmin 
+		</P>
+		<LI><P STYLE="margin-bottom: 0cm">For Debian UNSTABLE:<BR># deb-src
+		http://www.pgadmin.org/snapshots/linux/debian unstable pgadmin 
+		</P>
+	</UL>
+	<P STYLE="margin-bottom: 0cm"><BR>You may also want to check
+	wxWindows 2.5 cvs version static packages which were used to build
+	pgadmin3 packages: <BR>(PLEASE REMEMBER, THESE PACKAGES ARE REALLY
+	EXPERIMENTAL, THEY CAN BREAK YOUR SYSTEM!! YOU HAVE BEEN WARNED!)
+	<BR>Binaries and sources are available for woody, testing and
+	unstable:</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0cm">For Debian WOODY:<BR># deb
+		http://www.pgadmin.org/snapshots/linux/debian experimental/woody
+		wxwindows-pgadmin3<BR># deb-src
+		http://www.pgadmin.org/snapshots/linux/debian experimental/woody
+		wxwindows-pgadmin3</P>
+		<LI><P STYLE="margin-bottom: 0cm">For Debian TESTING:<BR># deb
+		http://www.pgadmin.org/snapshots/linux/debian experimental/testing
+		wxwindows-pgadmin3<BR># deb-src
+		http://www.pgadmin.org/snapshots/linux/debian experimental/testing
+		wxwindows-pgadmin3</P>
+		<LI><P STYLE="margin-bottom: 0cm">For Debian UNSTABLE:<BR># deb
+		http://www.pgadmin.org/snapshots/linux/debian experimental/unstable
+		wxwindows-pgadmin3<BR>deb-src
+		http://www.pgadmin.org/snapshots/linux/debian experimental/unstable
+		wxwindows-pgadmin3</P>
+	</UL>
+	<P STYLE="margin-bottom: 0cm"><BR>It contains the three following
+	packages which were used to build pgadmin3:</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0cm">pgadmin3-libwxgtk2ud2.5 
+		</P>
+		<LI><P STYLE="margin-bottom: 0cm">pgadmin3-libwxgtk2ud2.5-contrib 
+		</P>
+		<LI><P STYLE="margin-bottom: 0cm">pgadmin3-libwxgtk2ud2.5-dev 
+		</P>
+	</UL>
+	<P><BR>And if you want sources of the three precedent packages:<BR>#
+	deb-src http://www.pgadmin.org/snapshots/linux/debian
+	experimental/woody wxwindows-pgadmin3</P>
+	<LI><P STYLE="margin-bottom: 0cm">To compile and rebuild the
+	pgadmin3 package:</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0cm">First, as root<BR># apt-get
+		update<BR># apt-get build-dep pgadmin3 <BR>This should install
+		pgadmin3-wxwindows* packages.</P>
+		<LI><P STYLE="margin-bottom: 0cm">Then as a normal user<BR>Fetch
+		the source # apt-get source pgadmin3<BR># cd pgadmin3-0.1.1<BR>Compile
+		and build the package # dpkg-buildpackage -rfakeroot<BR># cd .. ;
+		ls *.deb</P>
+		<LI><P STYLE="margin-bottom: 0cm">Or as root (not
+		recommended)<BR>Fetch,compile &amp; build the package<BR># apt-get
+		--compile source pgadmin3</P>
+	</UL>
+	<P>Any comments are welcome.</P>
+</UL>
+<P><A NAME="#rpm"></A><BR><BR>
+</P>
+<H3>GNU/Linux Mandrake 9.1, RedHat 9, SuSE 8.2</H3>
+<P>Packager: Jean-Michel POURE 
+</P>
+<UL>
+	<LI><P>Binary RPM packages 
+	</P>
+	<P>pgAdmin3 binary RPM packages are compiled statically against
+	<A HREF="http://wxwindows.sourceforge.net/snapshots/">wxGTK 2.5</A>.
+	Therefore there is not need to install <A HREF="http://wxwindows.sourceforge.net/snapshots">wxGTK
+	2.5</A> libraries. pgAdmin3 binaries are compiled with Unicode and
+	debugging mode and linked against GTK2. The binaries are localised
+	in several languages and include the latest PostgreSQL
+	documentation. The required steps for installation are: 
+	</P>
+	<OL>
+		<LI><P STYLE="margin-bottom: 0cm">Download the latest pgAdmin3 RPM
+		package
+		from:<BR><A HREF="http://www.pgadmin.org/snapshots/linux/mandrake91/RPMS">http://www.pgadmin.org/snapshots/linux/mandrake91/RPMS</A><BR><A HREF="http://www.pgadmin.org/snapshots/linux/redhat9/RPMS">http://www.pgadmin.org/snapshots/linux/redhat9/RPMS</A>.<BR><A HREF="http://www.pgadmin.org/snapshots/linux/suse82/RPMS">http://www.pgadmin.org/snapshots/linux/suse82/RPMS</A>.</P>
+		<LI><P STYLE="margin-bottom: 0cm">Install the downloaded RPM using
+		the following command: <BR># rpm -Uvh pgadmin3*.rpm 
+		</P>
+		<LI><P STYLE="margin-bottom: 0cm">pgAdmin3 RPM will check for the
+		needed dependencies and warn you if some packages are not
+		installed. All needed dependencies are included in the stock RedHat
+		9 distribution. 
+		</P>
+	</OL>
+	<P STYLE="margin-bottom: 0cm"></P>
+	<LI><P>wxGTK 2.5 libraries 
+	</P>
+	<P>If you want to contribute pgAdmin3 projects or simply compile
+	from source, you need a recent GNU/Linux distribution with <A HREF="http://wxwindows.sourceforge.net/">wxGTK
+	2.5</A> libraries, header files and contributed libraries. For your
+	convenience and to avoid long compilation times (sometimes hours),
+	we provide <A HREF="http://wxwindows.sourceforge.net/snapshots">wxGTK
+	2.5 CVS snapshots</A> in RPM format. 
+	</P>
+	<OL>
+		<LI><P STYLE="margin-bottom: 0cm">Download the four latest wxGTK
+		2.5 RPM packages
+		from:<BR><A HREF="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2</A><BR><A HREF="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2</A><BR><A HREF="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2</A><BR><BR>The
+		packages are numbered: <BR>&nbsp; - wxGTK2ud-$version-.i386.rpm<BR>&nbsp;
+		- wxGTK2ud-devel-$version.i386.rpm<BR>&nbsp; -
+		wxGTK2ud-xtc-$version.i386.rpm<BR>&nbsp; -
+		wxGTK2ud-stc-$version.i386.rpm</P>
+		<LI><P STYLE="margin-bottom: 0cm">Install the downloaded RPM using
+		the following command: <BR># rpm -Uvh wxGTK2ud*.rpm 
+		</P>
+		<LI><P>wxGTK2ud RPMs will check for the needed dependencies and
+		warn you if some packages are not installed. 
+		</P>
+	</OL>
+</UL>
+<P><A NAME="#slackware"></A><BR><BR>
+</P>
+<H3>GNU/Slackware 9.0</H3>
+<P>Packager: Dave Page 
+</P>
+<UL>
+	<LI><P>Binary packages 
+	</P>
+	<P>pgAdmin3 binary packages are compiled statically against wxGTK
+	2.5. Therefore there is not need to install wxGTK 2.5 libraries.
+	pgAdmin3 binaries are compiled with Unicode and debugging mode and
+	linked against GTK2. The binaries are localised in several languages
+	and include the latest PostgreSQL documentation. The required steps
+	for installation are: 
+	</P>
+	<OL>
+		<LI><P STYLE="margin-bottom: 0cm">Download the latest packages from
+		<A HREF="http://www.pgadmin.org/snapshots/linux/slackware90">http://www.pgadmin.org/snapshots/linux/slackware90</A>.
+				</P>
+		<LI><P STYLE="margin-bottom: 0cm">Install the downloaded packages
+		using Slackwares pkgtool or installpkg. 
+		</P>
+	</OL>
+	<P STYLE="margin-bottom: 0cm"></P>
+	<LI><P>wxGTK 2.5 libraries 
+	</P>
+	<P>Sorry, we do not provide development packages in GNU/Slackware
+	9.0. If you want to contribute pgAdmin3 projects or simply compile
+	from source, you need a recent GNU/Linux distribution with wxGTK 2.5
+	CVS libraries, header files and contributed libraries compiled from
+	source. <FONT COLOR="#000000">This is actually very straightforward
+	on Slackware 9 as all dependencies should already be installed. You
+	should find that the <A HREF="unix_compilation.html">compilation
+	instructions</A> detail the exact steps required.</FONT></P>
+	<P><A NAME="#freebsd"></A></P>
+	<H3>FreeBSD 5.1</H3>
+	<P>Packager: Hiroshi Saito 
+	</P>
+	<P STYLE="margin-bottom: 0cm">pgAdmin3 binary packages are compiled
+	statically against wxGTK 2.5. Therefore there is not need to install
+	wxGTK 2.5 libraries. pgAdmin3 binaries are compiled with Unicode and
+	debugging mode and linked against GTK2. The binaries are localised
+	in several languages and include the latest PostgreSQL
+	documentation. 
+	</P>
+	<OL>
+		<LI><P>Installation</P>
+		<P># pkg_add pgadmin3-yyyymmdd.tgz 
+		</P>
+		<LI><P>Create a symlink to pgadmin3 binary</P>
+		<P># ln -sf /usr/local/pgadmin3/bin/pgadmin3
+		/usr/local/bin/pgadmin3 
+		</P>
+		<LI><P>Check that pgadmin3 is in the path</P>
+		<P># which pgadmin3 # /usr/local/bin/pgadmin3 
+		</P>
+		<LI><P>UnInstall</P>
+		<P># pkg_delete pgadmin3-0.1.1 
+		</P>
+	</OL>
+	<H3><A NAME="#win"></A>Microsoft Windows 2000 &amp; XP</H3>
+	<P>Packager: Andreas Pflug 
+	</P>
+	<OL>
+		<LI><P>Binary packages 
+		</P>
+		<P>pgAdmin3 binary packages are compiled statically against wxGTK
+		2.5. Therefore there is no need to install wxGTK 2.5 libraries.
+		pgAdmin3 binaries are compiled with Unicode. The binaries are
+		localised in several languages. The required steps for installation
+		are: 
+		</P>
+		<OL>
+			<LI><P STYLE="margin-bottom: 0cm">Download the latest packages
+			from <A HREF="http://www.pgadmin.org/snapshots/win32">http://www.pgadmin.org/snapshots/win32</A>.
+						</P>
+			<LI><P STYLE="margin-bottom: 0cm">Unzip and copy all files in the
+			directory of your choice. 
+			</P>
+			<LI><P STYLE="margin-bottom: 0cm">Double-click on pgAdmin3.exe. 
+			</P>
+		</OL>
+		<P STYLE="margin-bottom: 0cm"></P>
+		<LI><P>wxGTK 2.5 libraries 
+		</P>
+		<P>Presently, we do not provide wxGTK 2.5 packages for compiling
+		pgAdmin3 under Windows. You will need to install wxGTK 2.5 cvs
+		version from source. We would love to hear your experience if you
+		could compile pgAdmin3 successfully under Mingw. Stay tuned... 
+		</P>
+	</OL>
+</UL>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>

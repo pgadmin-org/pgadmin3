@@ -1,64 +1,75 @@
-<html>
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
-<title>Compilation on unix platforms</title>
-</head>
-
-<body>
-
-<h3>Compilation on unix platforms</h3>
-
-<p>
-If you plan to contribute code, pgAdmin3 requires wxWindows from CVS version &gt;
-20030607. Use a recent GNU/Linux distro because recent versions of GTK2.2, automake and autoconf
-are needed. You will also need a copy of PostgreSQL on your development system.
-
-<ol>
-<li>We provide a set of four wxGTK2 binaries (wxGTK2ud, wxGTK2ud-devel, wxGTK2ud-xrc and wxGTK2ud-stc) suited for pgAdmin3 development, compiled with Unicode and logging and linked against GTK 2.2, as described in the <a href="snapshots.html">binary snapshots</a> instructions. These binaries are only available for <a href="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">RedHat 9</a>, <a href="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">Mandrake 9.1</a> and <a href="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">SuSE 8.2</a>. If you install our wxGTK2 RPMs, please skip to step 6. Otherwise, if you wish to install wxGTK 2.5 from source, continue with step 2.
-<br></li>
-
-<li>Download the <a href="http://wxwindows.sourceforge.net/snapshots/">latest wxWindows source tarball</a> from wxWindows web site. Alternatively, you can install our wxGTK2 RPMs which provide all needed libraries and headers files, as described in the <a href="snapshots.html">binary snapshots</a> instructions.
-<br><blockquote><pre>
-# wx_version=$(date +%Y%m%d)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>Compilation on unix platforms</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20030716;11270579">
+	<META NAME="CHANGEDBY" CONTENT="Andreas Pflug">
+	<META NAME="CHANGED" CONTENT="20030716;11275935">
+	<STYLE>
+	<!--
+		P { color: #000000; font-family: "verdana", "helvetica", sans-serif; font-size: 9pt; font-style: normal }
+		H3 { color: #000000; font-style: normal }
+		PRE { color: #000000; font-style: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" BGCOLOR="#cdddeb" DIR="LTR" STYLE="border: none; padding: 0cm">
+<H3>Compilation on unix platforms</H3>
+<P>If you plan to contribute code, pgAdmin3 requires wxWindows from
+CVS version &gt; 20030607. Use a recent GNU/Linux distro because
+recent versions of GTK2.2, automake and autoconf are needed. You will
+also need a copy of PostgreSQL on your development system. 
+</P>
+<OL>
+	<LI><P STYLE="margin-bottom: 0cm">We provide a set of four wxGTK2
+	binaries (wxGTK2ud, wxGTK2ud-devel, wxGTK2ud-xrc and wxGTK2ud-stc)
+	suited for pgAdmin3 development, compiled with Unicode and logging
+	and linked against GTK 2.2, as described in the <A HREF="snapshots.html">binary
+	snapshots</A> instructions. These binaries are only available for
+	<A HREF="http://www.pgadmin.org/snapshots/linux/redhat9/wxGTK2">RedHat
+	9</A>, <A HREF="http://www.pgadmin.org/snapshots/linux/mandrake91/wxGTK2">Mandrake
+	9.1</A> and <A HREF="http://www.pgadmin.org/snapshots/linux/suse82/wxGTK2">SuSE
+	8.2</A>. If you install our wxGTK2 RPMs, please skip to step 6.
+	Otherwise, if you wish to install wxGTK 2.5 from source, continue
+	with step 2. 
+	</P>
+	<LI><P>Download the <A HREF="http://wxwindows.sourceforge.net/snapshots/">latest
+	wxWindows source tarball</A> from wxWindows web site. Alternatively,
+	you can install our wxGTK2 RPMs which provide all needed libraries
+	and headers files, as described in the <A HREF="snapshots.html">binary
+	snapshots</A> instructions. 
+	</P>
+	<PRE STYLE="margin-right: 1cm"># wx_version=$(date +%Y%m%d)
 # wget http://wxwindows.sourceforge.net/snapshots/wx-cvs-$wx_version.tar.bz2
-# tar -zjf wx-cvs-$wx_version.tar.bz2
-</pre></blockquote>&nbsp;</li>
-
-<li>Install wxWindows from source as follows:
-<br><blockquote><pre>
-# cd wx-cvs-$wx_version;
+# tar -zjf wx-cvs-$wx_version.tar.bz2</PRE>
+	<LI><P>Install wxWindows from source as follows: 
+	</P>
+	<PRE STYLE="margin-right: 1cm"># cd wx-cvs-$wx_version;
 # ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug
 # make
 # make install
-# ldconfig
-</pre></blockquote>&nbsp;</li>
-
-<li>Install the wxWindows Styled Text Control as follows:
-<br><blockquote><pre>
-# cd contrib/src/stc
+# ldconfig</PRE>
+	<LI><P>Install the wxWindows Styled Text Control as follows: 
+	</P>
+	<PRE STYLE="margin-right: 1cm"># cd contrib/src/stc
 # make
 # make install
-# ldconfig
-</pre></blockquote>&nbsp;</li>
-
-<li>Install the wxWindows XML Recources as follows:# cd ../xrc
-<br><blockquote><pre>
-# make
+# ldconfig</PRE>
+	<LI><P>Install the wxWindows XML Recources as follows:# cd ../xrc 
+	</P>
+	<PRE STYLE="margin-right: 1cm"># make
 # make install
-# ldconfig
-</pre></blockquote>&nbsp;</li>
-
-<li>Until pgAdmin3 configuration script is able to detect wxgtk2ud-2.5-config,
-you need to create a symlink /usr/bin/wx-config -> wxgtk2ud-2.5-config entering this command:
-<br><blockquote><pre>
-# ln -s /usr/bin/wxgtk2ud-2.5-config /usr/bin/wx-config
-</pre></blockquote>&nbsp;</li>
-
-<li>Download and unpack the pgAdmin source code.
-<br><blockquote><pre>
-If you wish to use CVS code:
+# ldconfig</PRE>
+	<LI><P>Until pgAdmin3 configuration script is able to detect
+	wxgtk2ud-2.5-config, you need to create a symlink /usr/bin/wx-config
+	-&gt; wxgtk2ud-2.5-config entering this command: 
+	</P>
+	<PRE STYLE="margin-right: 1cm; margin-bottom: 0.5cm"># ln -s /usr/bin/wxgtk2ud-2.5-config /usr/bin/wx-config</PRE>
+	<LI><P>Download and unpack the pgAdmin source code. 
+	</P>
+	<PRE STYLE="margin-right: 1cm">If you wish to use CVS code:
 # CVSROOT=:pserver:anonymous@cvs.pgadmin.org:/disk1/cvsroot export CVSROOT
 # cvs login
 # cvs -z9 checkout pgadmin3
@@ -75,14 +86,11 @@ Now the source is downloaded:
 
 # ./configure --enable-static --enable-debug
 # make all
-# make install
-</pre></blockquote>&nbsp;</li>
-</ol>
-
-</p>
-
-<p>If you are compiling on FreeBSD, please see these additional <a href="freebsd_notes.html">notes</a>.</p>
-
-</body>
-
-</html>
+# make install</PRE>
+</OL>
+<P>If you are compiling on FreeBSD, please see these additional
+<A HREF="freebsd_notes.html">notes</A>.</P>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>
