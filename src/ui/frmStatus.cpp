@@ -457,49 +457,49 @@ void frmStatus::addLog(const wxString &str)
 
 void frmStatus::OnCancelBtn(wxCommandEvent &event)
 {
-	wxString spid = statusList->GetItemText(statusList->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
-	long lpid = StrToLong(spid);
-
-	if(backend_pid == lpid)
-	{
-		wxMessageBox(_("You cannot cancel a query running on your own server process."), _("Cancel query"), wxOK | wxICON_EXCLAMATION);
+	if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxICON_QUESTION) == wxNO)
 		return;
+
+	long item = -1;
+	wxString pid;
+
+    for ( ;; )
+    {
+        item = statusList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+        if ( item == -1 )
+            break;
+
+		pid = statusList->GetItemText(item);
+		wxString sql = wxT("SELECT pg_cancel_backend(") + pid + wxT(");");
+		connection->ExecuteScalar(sql);
 	}
 
-	if (wxMessageBox(_("Are you sure you wish to cancel the selected query?"), 
-					 _("Cancel query?"), 
-					 wxYES_NO | wxICON_QUESTION) == wxNO)
-		return;
-
-	wxString sql = wxT("SELECT pg_cancel_backend(") + spid + wxT(");");
-
-	connection->ExecuteScalar(sql);
-
 	OnRefresh(*(wxCommandEvent*)&event);
-	wxMessageBox(_("A cancel signal was sent to the selected server process."), _("Cancel query"), wxOK | wxICON_INFORMATION);
+	wxMessageBox(_("A cancel signal was sent to the selected server process(es)."), _("Cancel query"), wxOK | wxICON_INFORMATION);
 }
 
 void frmStatus::OnTerminateBtn(wxCommandEvent &event)
 {
-	wxString spid = statusList->GetItemText(statusList->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
-	long lpid = StrToLong(spid);
-
-	if(backend_pid == lpid)
-	{
-		wxMessageBox(_("You cannot terminate your own server process."), _("Terminate query"), wxOK | wxICON_EXCLAMATION);
+	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxICON_QUESTION) == wxNO)
 		return;
+
+	long item = -1;
+	wxString pid;
+
+    for ( ;; )
+    {
+        item = statusList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+        if ( item == -1 )
+            break;
+
+		pid = statusList->GetItemText(item);
+		wxString sql = wxT("SELECT pg_terminate_backend(") + pid + wxT(");");
+		connection->ExecuteScalar(sql);
+
 	}
 
-	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process?"), 
-					 _("Terminate query?"), wxYES_NO | wxICON_QUESTION) == wxNO)
-		return;
-
-	wxString sql = wxT("SELECT pg_terminate_backend(") + spid +	wxT(");");
-
-	connection->ExecuteScalar(sql);
-
 	OnRefresh(*(wxCommandEvent*)&event);
-	wxMessageBox(_("A terminate signal was sent to the selected server process."), _("Terminate query"), wxOK | wxICON_INFORMATION);
+	wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
 }
 
 void frmStatus::OnSelStatusItem(wxCommandEvent &event)
