@@ -824,7 +824,7 @@ void frmMain::RetrieveServers()
 
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
-    int loop, port, ssl=0;
+    long loop, port, ssl=0;
     wxString key, servername, description, database, username, lastDatabase, lastSchema, trusted, serviceID;
     pgServer *server;
 
@@ -912,6 +912,7 @@ void frmMain::RetrieveServers()
 
 		wxString svcName, temp;
 		long cookie = 0;
+		long *tmpport = 0;
 		bool flag = false;
 
 		flag = pgKey->GetFirstKey(svcName, cookie);
@@ -927,7 +928,7 @@ void frmMain::RetrieveServers()
                 database = wxT("template1");
 			    svcKey->QueryValue(wxT("Display Name"), description);
 			    svcKey->QueryValue(wxT("Database Superuser"), username);
-                port = 5432;    // we'd like this from svcKey too...
+                svcKey->QueryValue(wxT("Port"), &port);
 
 			    // Add the Server node
 			    server = new pgServer(servername, description, database, username, port, false, 0);
