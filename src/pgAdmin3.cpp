@@ -26,9 +26,12 @@
   #include <winsock.h>
 #endif
 
+#if wxCHECK_VERSION(2,5,1)
 #ifdef __WXGTK__
   #include <wx/renderer.h>
 #endif
+#endif 
+
 
 // App headers
 #include "pgAdmin3.h"
