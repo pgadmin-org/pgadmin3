@@ -36,11 +36,12 @@ wxString pgLanguage::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE ");
+        sql = wxT("-- Language: \"") + GetName() + wxT("\"\n")
+            + wxT("CREATE ");
         if (GetTrusted())
             sql += wxT("TRUSTED ");
         sql += wxT("PROCEDURAL LANGUAGE '") + GetName() 
-            +  wxT("' HANDLER ") + GetHandlerProc() + wxT(";\n")
+            +  wxT("'\n  HANDLER ") + GetHandlerProc() + wxT(";\n")
             +  GetGrant(GetTypeName(), true);
 
     }

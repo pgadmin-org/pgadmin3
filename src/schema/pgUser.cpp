@@ -37,9 +37,11 @@ wxString pgUser::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE User ") + GetQuotedIdentifier()
-            + wxT(" WITH SYSID ") + NumToStr(userId);
-        AppendIfFilled(sql, wxT(" PASSWORD ENCRYPTED "), GetPassword());
+        sql = wxT("-- User: \"") + GetName() + wxT("\"\n")
+            + wxT("CREATE User ") + GetQuotedIdentifier()
+            + wxT("\n  WITH SYSID ") + NumToStr(userId);
+        AppendIfFilled(sql, wxT("\n  PASSWORD ENCRYPTED "), GetPassword());
+        sql += wxT("\n ");
         if (GetCreateDatabase())    sql += wxT(" CREATEDB");
         else                        sql += wxT(" NOCREATEDB");
         if (GetUpdateCatalog())     sql += wxT(" CREATEUSER");
@@ -65,10 +67,11 @@ void pgUser::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
+        InsertListItem(properties, pos++, wxT("User ID"), GetUserId());
         InsertListItem(properties, pos++, wxT("Account Expires"), GetAccountExpires());
         InsertListItem(properties, pos++, wxT("Superuser?"), BoolToYesNo(GetSuperuser()));
-        InsertListItem(properties, pos++, wxT("Create Database?"), BoolToYesNo(GetCreateDatabase()));
-        InsertListItem(properties, pos++, wxT("Update Catalog?"), BoolToYesNo(GetUpdateCatalog()));
+        InsertListItem(properties, pos++, wxT("Create Databases?"), BoolToYesNo(GetCreateDatabase()));
+        InsertListItem(properties, pos++, wxT("Update Catalogs?"), BoolToYesNo(GetUpdateCatalog()));
         /*
         session default vars here?
         */

@@ -37,8 +37,9 @@ wxString pgGroup::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE Group ") + GetQuotedIdentifier()
-            + wxT(" WITH SYSID ") + NumToStr(groupId)
+        sql = wxT("-- Group: \"") + GetName() + wxT("\"\n")
+            + wxT("CREATE Group ") + GetQuotedIdentifier()
+            + wxT("\n  WITH SYSID ") + NumToStr(groupId)
             + wxT("\n  USER ") + quotedMembers
             +wxT(";\n");
     }
@@ -86,7 +87,7 @@ void pgGroup::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         int pos=0;
 
         InsertListItem(properties, pos++, wxT("Name"), GetName());
-        InsertListItem(properties, pos++, wxT("Group Id"), GetGroupId());
+        InsertListItem(properties, pos++, wxT("Group ID"), GetGroupId());
         InsertListItem(properties, pos++, wxT("Member Count"), GetMemberCount());
         InsertListItem(properties, pos++, wxT("Members"), GetMembers());
     }

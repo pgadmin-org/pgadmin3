@@ -90,11 +90,12 @@ bool pgDatabase::GetSystemObject() const
 wxString pgDatabase::GetSql(wxTreeCtrl *browser)
 {
     wxString sql;
-    sql.Printf(wxT("CREATE DATABASE %s WITH ENCODING = %s;"),
-                 this->GetQuotedIdentifier().c_str(), qtString(this->GetEncoding()).c_str());
+    sql = wxT("-- Database: \"") + GetName() + wxT("\"\n")
+        + wxT("CREATE DATABASE ") + GetQuotedIdentifier()
+        + wxT("\n  WITH ENCODING = ") + qtString(this->GetEncoding()) + wxT(";\n");
 
     if (!this->GetComment().IsEmpty())
-        sql.Printf(wxT("%s\nCOMMENT ON DATABASE %s IS %s;"),
+        sql.Printf(wxT("%sCOMMENT ON DATABASE %s IS %s;"),
                      sql.c_str(), this->GetQuotedIdentifier().c_str(), qtString(this->GetComment()).c_str());
 
     return sql;

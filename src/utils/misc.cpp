@@ -229,7 +229,7 @@ bool IsValidIdentifier(wxString ident)
 	if (strchr(first, (wxChar)ident[0U]) == NULL)
 		return FALSE;
 
-	unsigned int si;
+	int si;
 	for ( si = 1; si < len; si++)
 	{
 	if (strchr(second, (wxChar)ident[si]) == NULL)

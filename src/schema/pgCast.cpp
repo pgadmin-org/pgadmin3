@@ -29,20 +29,20 @@ pgCast::~pgCast()
 }
 
 
-
-
 wxString pgCast::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("CREATE CAST (") + GetSourceType()
+        sql = wxT("-- Cast: \"") + GetName() + wxT("\"\n")
+            + wxT("CREATE CAST (") + GetSourceType()
             + wxT(" AS ") + GetTargetType();
         if (GetCastFunction().IsNull())
-            sql += wxT(")\n    WITHOUT ");
+            sql += wxT(")\n  WITHOUT FUNCTION");
         else
-            sql += wxT(")\n    WITH ") + qtIdent(GetCastNamespace()) + wxT(".") + qtIdent(GetCastFunction());
-        sql += wxT(" AS ") + GetCastContext()
-            + wxT(";\n");
+            sql += wxT(")\n  WITH FUNCTION ") + qtIdent(GetCastNamespace()) + wxT(".") + qtIdent(GetCastFunction()) + wxT("(") + GetSourceType() + wxT(")");
+        if (GetCastContext() != wxT("Explicit"))
+          sql += wxT("\n  AS ") + GetCastContext();
+        sql += wxT(";\n");
     }
 
     return sql;
@@ -67,7 +67,7 @@ void pgCast::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *prop
         InsertListItem(properties, pos++, wxT("Target Type"), GetTargetType());
         InsertListItem(properties, pos++, wxT("Function"), GetCastFunction() + wxT("(") + GetSourceType() + wxT(")"));
         InsertListItem(properties, pos++, wxT("Context"), GetCastContext());
-        InsertListItem(properties, pos++, wxT("Comment"), GetComment());
+        InsertListItem(properties, pos++, wxT("System object?"), GetSystemObject());
     }
 }
 
@@ -104,8 +104,8 @@ void pgCast::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
                 cast->iSetCastNamespace(casts->GetVal(wxT("nspname")));
                 wxString ct=casts->GetVal(wxT("castcontext"));
                 cast->iSetCastContext(
-                    ct == wxT("i") ? wxT("IMMEDIATE") :
-                    ct == wxT("a") ? wxT("ASSIGNMENT") : wxT("unknown"));
+                    ct == wxT("i") ? wxT("IMPLICIT") :
+                    ct == wxT("a") ? wxT("ASSIGNMENT") : wxT("EXPLICIT"));
 
                 browser->AppendItem(collection->GetId(), cast->GetIdentifier(), PGICON_CAST, -1, cast);
 	    
