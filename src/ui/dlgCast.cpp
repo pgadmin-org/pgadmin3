@@ -144,6 +144,7 @@ void dlgCast::OnChangeTypeTrg(wxCommandEvent &ev)
 void dlgCast::OnChangeType(wxCommandEvent &ev)
 {
     functions.Clear();
+    cbFunction->Clear();
 
     if (cbSourceType->GetGuessedSelection() > 0 && cbTargetType->GetGuessedSelection() > 0)
     {
