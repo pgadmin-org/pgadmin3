@@ -28,10 +28,8 @@
 BEGIN_EVENT_TABLE(frmStatus, pgDialog)
     EVT_BUTTON(wxID_REFRESH,	     				frmStatus::OnRefresh)
     EVT_BUTTON(wxID_CLOSE,	  				        frmStatus::OnCloseBtn)
-    EVT_BUTTON(XRCID("btnCancelSt"),				frmStatus::OnCancelBtn)
-    EVT_BUTTON(XRCID("btnTerminateSt"),				frmStatus::OnTerminateBtn)
-    EVT_BUTTON(XRCID("btnCancelLk"),				frmStatus::OnCancelBtn)
-    EVT_BUTTON(XRCID("btnTerminateLk"),				frmStatus::OnTerminateBtn)
+    EVT_BUTTON(wxID_CANCEL,          				frmStatus::OnCancelBtn)
+    EVT_BUTTON(wxID_STOP,            				frmStatus::OnTerminateBtn)
     EVT_CLOSE(										frmStatus::OnClose)
     EVT_SPINCTRL(XRCID("spnRefreshRate"),			frmStatus::OnRateChangeSpin)
     EVT_TEXT(XRCID("spnRefreshRate"),				frmStatus::OnRateChange)
@@ -51,10 +49,6 @@ END_EVENT_TABLE();
 #define logList         CTRL_LISTVIEW("lstLog")
 #define spnRefreshRate  CTRL_SPIN("spnRefreshRate")
 #define nbStatus		CTRL_NOTEBOOK("nbStatus")
-#define btnCancelSt		CTRL_BUTTON("btnCancelSt")
-#define btnTerminateSt	CTRL_BUTTON("btnTerminateSt")
-#define btnCancelLk		CTRL_BUTTON("btnCancelLk")
-#define btnTerminateLk	CTRL_BUTTON("btnTerminateLk")
 #define cbLogfiles      CTRL_COMBOBOX("cbLogfiles")
 #define btnRotateLog    CTRL_BUTTON("btnRotateLog")
 
@@ -68,6 +62,14 @@ void frmStatus::OnClose(wxCloseEvent &event)
 {
     Destroy();
 }
+
+
+void ChangeButtonId(wxButton *btn, int id, const wxChar *txt)
+{
+    btn->SetId(id);
+    btn->SetLabel(txt);
+}
+
 
 frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 {
@@ -89,6 +91,14 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     connection=conn;
     logHasTimestamp = false;
     logFormatKnown = false;
+    btnCancelSt = CTRL_BUTTON("btnCancelSt");
+    btnCancelLk = CTRL_BUTTON("btnCancelLk");
+    btnTerminateSt = CTRL_BUTTON("btnTerminateSt");
+    btnTerminateLk = CTRL_BUTTON("btnTerminateLk");
+    ChangeButtonId(btnCancelSt, wxID_CANCEL, _("Cancel"));
+    ChangeButtonId(btnCancelLk, wxID_CANCEL, _("Cancel"));
+    ChangeButtonId(btnTerminateSt, wxID_STOP, _("Terminate"));
+    ChangeButtonId(btnTerminateLk, wxID_STOP, _("Terminate"));
 
     logfileLength = 0;
     backend_pid=conn->GetBackendPID();

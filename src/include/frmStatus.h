@@ -60,6 +60,8 @@ private:
     
     frmMain *mainForm;
 	wxStatusBar *statusBar;
+    wxButton *btnCancelSt, *btnTerminateSt,*btnCancelLk, *btnTerminateLk;
+
     wxString logFormat;
     bool logHasTimestamp, logFormatKnown;
     int logFmtPos;

@@ -348,6 +348,7 @@ bool pgAdmin3::OnInit()
         chkXRC(wxID_HELP) &&
         chkXRC(wxID_APPLY) &&
         chkXRC(wxID_ADD) &&
+        chkXRC(wxID_STOP) &&
         chkXRC(wxID_REMOVE)&&
         chkXRC(wxID_REFRESH) &&
         chkXRC(wxID_CLOSE), 
