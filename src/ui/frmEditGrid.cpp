@@ -36,6 +36,7 @@
 #include "images/readdata.xpm"
 #include "images/delete.xpm"
 #include "images/edit_undo.xpm"
+#include "images/help.xpm"
 
 
 
@@ -78,25 +79,20 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, c
 #endif
     sqlGrid->SetLabelFont(fntLabel);
 
-    CreateToolBar();
-
-    // Return objects
-    toolBar = GetToolBar();
+   
+    toolBar = CreateToolBar();
 
     // Set up toolbar
-    wxBitmap barBitmaps[4];
     toolBar->SetToolBitmapSize(wxSize(16, 16));
-    barBitmaps[0] = wxBitmap(storedata_xpm);
-    barBitmaps[1] = wxBitmap(readdata_xpm);
-    barBitmaps[2] = wxBitmap(edit_undo_xpm);
-    barBitmaps[3] = wxBitmap(delete_xpm);
 
-    toolBar->AddTool(MNU_SAVE, _("Save"), barBitmaps[0], _("Saved the changed row."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(storedata_xpm), _("Saved the changed row."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_REFRESH, _("Refresh"), barBitmaps[1], _("Refresh"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_UNDO, _("Undo"), barBitmaps[2], _("Undo change of data."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(readdata_xpm), _("Refresh"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo change of data."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_DELETE, _("Delete"), barBitmaps[3], _("Delete selected lines."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete selected lines."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."));
 
     toolBar->Realize();
     toolBar->EnableTool(MNU_SAVE, false);
@@ -166,7 +162,7 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
 
 void frmEditGrid::OnHelp(wxCommandEvent &ev)
 {
-    mainForm->DisplayHelp(wxT("frmEditGrid"));
+    DisplayHelp(this, wxT("editgrid"));
 }
 
 

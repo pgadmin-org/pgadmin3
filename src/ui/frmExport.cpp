@@ -45,6 +45,7 @@ BEGIN_EVENT_TABLE(frmExport, wxDialog)
     EVT_RADIOBUTTON(XRCID("rbQuoteStrings"),frmExport::OnChange)
     EVT_RADIOBUTTON(XRCID("rbQuoteAll"),    frmExport::OnChange)
     EVT_BUTTON(XRCID("btnFilename"),        frmExport::OnBrowseFile)
+    EVT_BUTTON(XRCID("btnHelp"),            frmExport::OnHelp)
     EVT_BUTTON(XRCID("btnOK"),              frmExport::OnOK)
     EVT_BUTTON(XRCID("btnCancel"),          frmExport::OnCancel)
 END_EVENT_TABLE()
@@ -102,6 +103,12 @@ frmExport::frmExport(ctlSQLResult *parent)
 frmExport::~frmExport()
 {
     wxLogInfo(wxT("Destroying the export dialogue"));
+}
+
+
+void frmExport::OnHelp(wxCommandEvent &ev)
+{
+    DisplayHelp(this, wxT("export"));
 }
 
 

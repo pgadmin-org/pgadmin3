@@ -46,7 +46,6 @@ public:
 
     void Refresh(pgObject *data);
     void RemoveFrame(wxWindow *frame);
-    void DisplayHelp(const wxString &helpTopic);
 
     wxImageList *GetImageList() { return images; }
     wxTreeCtrl *GetBrowser() { return browser; }

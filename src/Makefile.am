@@ -73,6 +73,7 @@ include/sysSettings.h include/wxgridsel.h include/menu.h
   
 EXTRA_DIST = include/images/aggregate.xpm \
 include/images/back.xpm \
+include/images/help.xpm include/images/help2.xpm \
 include/images/baddatabase.xpm include/images/cast.xpm \
 include/images/check.xpm include/images/clip_copy.xpm \
 include/images/clip_cut.xpm include/images/clip_paste.xpm \

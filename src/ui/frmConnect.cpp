@@ -27,6 +27,7 @@
 
 
 BEGIN_EVENT_TABLE(frmConnect, wxDialog)
+    EVT_BUTTON (XRCID("btnHelp"),     frmConnect::OnHelp)
     EVT_BUTTON (XRCID("btnOK"),       frmConnect::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),   frmConnect::OnCancel)
     EVT_CHECKBOX(XRCID("chkTrusted"), frmConnect::OnTrustChange)
@@ -61,6 +62,11 @@ frmConnect::~frmConnect()
     wxLogInfo(wxT("Destroying a connect dialogue"));
 }
 
+
+void frmConnect::OnHelp(wxCommandEvent &ev)
+{
+    DisplayHelp(this, wxT("connect"));
+}
 
 
 void frmConnect::OnTrustChange(wxNotifyEvent& ev)

@@ -97,6 +97,9 @@ private:
 wxString FileRead(const wxString &filename, wxWindow *errParent=0, int format=-1);
 bool FileWrite(const wxString &filename, const wxString &data, int format=-1);
 
+void DisplayHelp(wxWindow *wnd, const wxString &helpTopic);
+
+
 class frmMain;
 class DialogWithHelp : public wxDialog
 {

@@ -41,6 +41,7 @@ public:
     
 private:
     bool TransferDataFromWindow();
+    void OnHelp(wxCommandEvent& ev);
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
     void OnTrustChange(wxNotifyEvent& ev);

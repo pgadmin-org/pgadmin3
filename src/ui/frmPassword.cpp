@@ -22,13 +22,14 @@
 #include "images/pgAdmin3.xpm"
 
 BEGIN_EVENT_TABLE(frmPassword, wxDialog)
+    EVT_BUTTON (XRCID("btnHelp"),     frmPassword::OnHelp)
     EVT_BUTTON (XRCID("btnOK"),       frmPassword::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),   frmPassword::OnCancel)
 END_EVENT_TABLE()
 
+
 frmPassword::frmPassword(wxFrame *parent)
 {
-
     wxLogInfo(wxT("Creating a change password dialogue"));
 
     wxXmlResource::Get()->LoadDialog(this, parent, wxT("frmPassword")); 
@@ -42,6 +43,13 @@ frmPassword::~frmPassword()
 {
     wxLogInfo(wxT("Destroying a change password dialogue"));
 }
+
+
+void frmPassword::OnHelp(wxCommandEvent &ev)
+{
+    DisplayHelp(this, wxT("password"));
+}
+
 
 void frmPassword::OnOK(wxCommandEvent& event)
 {

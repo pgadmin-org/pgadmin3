@@ -20,7 +20,7 @@ class frmMain;
 class frmHelp : public wxFrame
 {
 public:
-    frmHelp(frmMain *fr);
+    frmHelp(wxWindow *fr);
     ~frmHelp();
     bool Load(const wxString &page);
     void OnLinkClicked(const wxHtmlLinkInfo& link);

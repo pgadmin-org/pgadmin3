@@ -38,22 +38,18 @@ END_EVENT_TABLE();
 
 
 
-frmHelp::frmHelp(frmMain *fr) 
+frmHelp::frmHelp(wxWindow *fr) 
 : wxFrame(fr, -1, wxT(""))
 {
-    mainForm=fr;
     SetIcon(wxIcon(pgAdmin3_xpm));
 
-    CreateToolBar();
-    wxToolBar *toolBar=GetToolBar();
-    wxBitmap barBitmaps[3];
+    ;
+    wxToolBar *toolBar=CreateToolBar();
     toolBar->SetToolBitmapSize(wxSize(24, 24));
-    barBitmaps[0] = wxBitmap(back_xpm);
-    barBitmaps[1] = wxBitmap(forward_xpm);
-    barBitmaps[2] = wxBitmap(reload_xpm);
-    toolBar->AddTool(MNU_BACK, _("Back"), barBitmaps[0], _("Back to previous page."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_FORWARD, _("Forward"), barBitmaps[1], _("Forward to next page."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_REFRESH, _("Reload"), barBitmaps[2], _("Reload current page."), wxITEM_NORMAL);
+
+    toolBar->AddTool(MNU_BACK, _("Back"), wxBitmap(back_xpm), _("Back to previous page."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_FORWARD, _("Forward"), wxBitmap(forward_xpm), _("Forward to next page."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REFRESH, _("Reload"), wxBitmap(reload_xpm), _("Reload current page."), wxITEM_NORMAL);
     toolBar->Realize();
 
     wxAcceleratorEntry entries[2];
@@ -81,7 +77,6 @@ frmHelp::frmHelp(frmMain *fr)
 
 frmHelp::~frmHelp()
 {
-    mainForm->RemoveFrame(this);
     settings->Write(wxT("frmHelp/Width"), GetSize().x);
     settings->Write(wxT("frmHelp/Height"), GetSize().y);
     settings->Write(wxT("frmHelp/Left"), GetPosition().x);

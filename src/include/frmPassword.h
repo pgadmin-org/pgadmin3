@@ -28,6 +28,7 @@ public:
     
 private:
     pgServer *server;
+    void OnHelp(wxCommandEvent& ev);
     void OnOK(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
     DECLARE_EVENT_TABLE()

@@ -1012,6 +1012,14 @@ SOURCE=.\include\images\group.xpm
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\images\help.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\help2.xpm
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\images\index.xpm
 # End Source File
 # Begin Source File

@@ -14,6 +14,7 @@
 #include <wx/timer.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/file.h>
+#include <wx/dir.h>
 
 // Standard headers
 #include <stdlib.h>
@@ -418,8 +419,48 @@ bool FileWrite(const wxString &filename, const wxString &data, int format)
 
 
 
+void DisplayHelp(wxWindow *wnd, const wxString &helpTopic)
+{
+    while (wnd->GetParent())
+        wnd=wnd->GetParent();
+
+    extern wxString docPath;
+#if 0
+    // testing only
+    static wxHtmlHelpController *helpCtl=0;
+    if (!helpCtl)
+    {
+        helpCtl=new wxHtmlHelpController();
+#ifdef __WXMSW__
+        helpCtl->Initialize(wxT("e:\\pg\\pgadmin2\\help\\pgadmin2"));
+#else
+        helpCtl->Initialize(wxT("/tmp/help/pgadmin2"));
+#endif
+    }
+    helpCtl->DisplayContents();
+    
+    return;
+#endif
+
+    wxString cn=settings->GetCanonicalLanguage();
+    if (cn.IsEmpty())
+        cn=wxT("en_US");
+
+    wxString helpSite=docPath + wxT("/");
+
+    if (!wxDir::Exists(helpSite + cn))
+        cn=wxT("en_US");
+
+    frmHelp *h=new frmHelp(wnd);
+    h->Show(true);
+    if (!h->Load(helpSite + cn + wxT("/") + helpTopic + wxT(".html")))
+        h->Destroy();
+}
+
+
 BEGIN_EVENT_TABLE(DialogWithHelp, wxDialog)
-    EVT_MENU(MNU_HELP,                              DialogWithHelp::OnHelp)
+    EVT_MENU(MNU_HELP,                  DialogWithHelp::OnHelp)
+    EVT_BUTTON(XRCID("btnHelp"),        DialogWithHelp::OnHelp)
 END_EVENT_TABLE();
 
 

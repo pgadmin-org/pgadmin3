@@ -39,6 +39,7 @@ private:
     wxLongLong elapsedQuery, elapsedRetrieve;
 
     void OnClose(wxCloseEvent& event);
+    void OnContents(wxCommandEvent& event);
     void OnHelp(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
     void OnExecute(wxCommandEvent& event);

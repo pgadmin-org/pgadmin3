@@ -34,6 +34,7 @@
 #include "images/query_execute.xpm"
 #include "images/query_explain.xpm"
 #include "images/query_cancel.xpm"
+#include "images/help.xpm"
 
 
 
@@ -63,6 +64,7 @@ BEGIN_EVENT_TABLE(frmQuery, wxFrame)
     EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
     EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
     EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
+    EVT_MENU(MNU_CONTENTS,          frmQuery::OnContents)
     EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
 #ifdef __wxGTK__
     EVT_KEY_DOWN(                   frmQuery::OnKeyDown)
@@ -120,6 +122,13 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     queryMenu->AppendSeparator();
     queryMenu->Append(MNU_CANCEL, _("&Cancel"), _("Cancel query"));
     menuBar->Append(queryMenu, _("&Query"));
+
+    wxMenu *helpMenu=new wxMenu();
+    helpMenu->Append(MNU_CONTENTS, _("&Help..."),                 _("Open the pgAdmin III helpfile."));
+    helpMenu->Append(MNU_HELP, _("SQL Help"),                     _("Display help on SQL commands."));
+    menuBar->Append(helpMenu, _("&Help"));
+
+
     SetMenuBar(menuBar);
 
     queryMenu->Check(MNU_VERBOSE, settings->GetExplainVerbose());
@@ -143,13 +152,11 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     queryMenu->Enable(MNU_CANCEL, false);
 
     int iWidths[4] = {0, -1, 110, 110};
-    CreateStatusBar(4);
+    statusBar=CreateStatusBar(4);
     SetStatusWidths(4, iWidths);
     SetStatusText(_("ready"), STATUSPOS_MSGS);
 
-    CreateToolBar();
-    statusBar = GetStatusBar();
-    toolBar = GetToolBar();
+    toolBar = CreateToolBar();
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
@@ -169,7 +176,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
-
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."), wxITEM_NORMAL);
     toolBar->Realize();
 
     horizontal = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN);
@@ -376,6 +384,12 @@ SqlTokenHelp sqlTokenHelp[] =
 
 
 
+void frmQuery::OnContents(wxCommandEvent& event)
+{
+    DisplayHelp(this, wxT("query"));
+}
+
+
 void frmQuery::OnHelp(wxCommandEvent& event)
 {
     wxString helpSite=settings->GetSqlHelpSite();
@@ -383,46 +397,49 @@ void frmQuery::OnHelp(wxCommandEvent& event)
     wxString query=sqlQuery->GetSelectedText();
     if (query.IsNull())
         query = sqlQuery->GetText();
+
+    query.Trim(false);
+
     if (!query.IsEmpty())
     {
-	wxStringTokenizer tokens(query);
-	query=tokens.GetNextToken();
+	    wxStringTokenizer tokens(query);
+	    query=tokens.GetNextToken();
 
-	SqlTokenHelp *sth=sqlTokenHelp;
-	while (sth->token)
-	{
-	    if (sth->type < 10 && query.IsSameAs(sth->token, false))
+	    SqlTokenHelp *sth=sqlTokenHelp;
+	    while (sth->token)
 	    {
-		if (sth->page)
-		    page = sth->page;
-		else
-		    page = wxT("sql-") + query.Lower();
-		if (sth->type)
-		{
-		    int type=sth->type+10;
-
-		    query=tokens.GetNextToken();
-		    sth=sqlTokenHelp;
-		    while (sth->token)
+	        if (sth->type < 10 && query.IsSameAs(sth->token, false))
+	        {
+		    if (sth->page)
+		        page = sth->page;
+		    else
+		        page = wxT("sql-") + query.Lower();
+		    if (sth->type)
 		    {
-			if (sth->type >= type && query.IsSameAs(sth->token, false))
-			{
-			    if (sth->page)
-				page += sth->page;
-			    else
-				page += query.Lower();
-			    break;
-			}
-			sth++;
+		        int type=sth->type+10;
+
+		        query=tokens.GetNextToken();
+		        sth=sqlTokenHelp;
+		        while (sth->token)
+		        {
+			    if (sth->type >= type && query.IsSameAs(sth->token, false))
+			    {
+			        if (sth->page)
+				    page += sth->page;
+			        else
+				    page += query.Lower();
+			        break;
+			    }
+			    sth++;
+		        }
+		        if (!sth->token)
+			    page=wxT("sql-commands");
 		    }
-		    if (!sth->token)
-			page=wxT("sql-commands");
-		}
-		page += wxT(".html");
-		break;
+		    page += wxT(".html");
+		    break;
+	        }
+	        sth++;
 	    }
-	    sth++;
-	}
     }
 
     if (page.IsEmpty())

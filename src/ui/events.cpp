@@ -211,7 +211,7 @@ void frmMain::OnReload(wxCommandEvent& WXUNUSED(event))
 
 void frmMain::OnContents(wxCommandEvent& event)
 {
-    DisplayHelp(wxT("index"));
+    DisplayHelp(this, wxT("index"));
 }
 
 

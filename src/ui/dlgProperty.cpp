@@ -72,6 +72,7 @@ enum
 
 BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgProperty::OnPageSelect)  
+    EVT_BUTTON (XRCID("btnHelp"),                   dlgProperty::OnHelp)
     EVT_BUTTON (XRCID("btnOK"),                     dlgProperty::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),                 dlgProperty::OnCancel)
     EVT_CLOSE(                                      dlgProperty::OnClose)

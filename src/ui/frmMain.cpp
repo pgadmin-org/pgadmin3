@@ -22,7 +22,6 @@
 #include <wx/toolbar.h>
 #include <wx/tbarsmpl.h>
 #include <wx/imaglist.h>
-#include <wx/dir.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -88,6 +87,7 @@ WX_DEFINE_LIST(windowList);
 #include "images/constraints.xpm"
 #include "images/primarykey.xpm"
 #include "images/unique.xpm"
+#include "images/help2.xpm"
 
 
 
@@ -193,7 +193,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
 
     // Status bar
-    CreateStatusBar(3);
+    statusBar = CreateStatusBar(3);
     int iWidths[3] = {0, -1, 100};
     SetStatusWidths(3, iWidths);
     SetStatusText(wxT(""), 0);
@@ -208,36 +208,21 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 
     SetAcceleratorTable(accel);
 
-
-    // Toolbar bar
-    CreateToolBar();
-
-    // Return objects
-    statusBar = GetStatusBar();
-    toolBar = GetToolBar();
-
-    // Set up toolbar
-    wxBitmap barBitmaps[10];
+    toolBar=CreateToolBar();
     toolBar->SetToolBitmapSize(wxSize(32, 32));
-    barBitmaps[0] = wxBitmap(connect_xpm);
-    barBitmaps[1] = wxBitmap(refresh_xpm);
-    barBitmaps[2] = wxBitmap(create_xpm);
-    barBitmaps[3] = wxBitmap(drop_xpm);
-    barBitmaps[4] = wxBitmap(properties_xpm);
-    barBitmaps[5] = wxBitmap(sql_xpm);
-    barBitmaps[6] = wxBitmap(viewdata_xpm);
-    barBitmaps[7] = wxBitmap(vacuum_xpm);
 
-    toolBar->AddTool(MNU_ADDSERVER, _("Add Server"), barBitmaps[0], _("Add a connection to a server."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_REFRESH, _("Refresh"), barBitmaps[1], _("Refresh the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_ADDSERVER, _("Add Server"), wxBitmap(connect_xpm), _("Add a connection to a server."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(refresh_xpm), _("Refresh the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_CREATE, _("Create"), barBitmaps[2], _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_DROP, _("Drop"), barBitmaps[3], _("Drop the currently selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_PROPERTIES, _("Properties"), barBitmaps[4], _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_CREATE, _("Create"), wxBitmap(create_xpm), _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_DROP, _("Drop"), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_PROPERTIES, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(MNU_SQL, _("SQL"), barBitmaps[5], _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_VIEWDATA, _("View Data"), barBitmaps[6], _("View the data in the selected object."), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_VACUUM, _("Vacuum"), barBitmaps[7], _("Vacuum the current database or table."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_SQL, _("SQL"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_VIEWDATA, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_VACUUM, _("Vacuum"), wxBitmap(vacuum_xpm), _("Vacuum the current database or table."), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
 
     // Display the bar and configure buttons. 
     toolBar->Realize();
@@ -354,42 +339,6 @@ frmMain::~frmMain()
 
     delete treeContextMenu;
 	delete images;
-}
-
-
-void frmMain::DisplayHelp(const wxString &helpTopic)
-{
-    extern wxString docPath;
-#if 0
-    // testing only
-    static wxHtmlHelpController *helpCtl=0;
-    if (!helpCtl)
-    {
-        helpCtl=new wxHtmlHelpController();
-#ifdef __WXMSW__
-        helpCtl->Initialize(wxT("e:\\pg\\pgadmin2\\help\\pgadmin2"));
-#else
-        helpCtl->Initialize(wxT("/tmp/help/pgadmin2"));
-#endif
-    }
-    helpCtl->DisplayContents();
-    
-    return;
-#endif
-
-    wxString cn=settings->GetCanonicalLanguage();
-    if (cn.IsEmpty())
-        cn=wxT("en_US");
-
-    wxString helpSite=docPath + wxT("/");
-
-    if (!wxDir::Exists(helpSite + cn))
-        cn=wxT("en_US");
-
-    frmHelp *h=new frmHelp(this);
-    h->Show(true);
-    if (!h->Load(helpSite + cn + wxT("/") + helpTopic + wxT(".html")))
-        h->Destroy();
 }
 
 

@@ -47,6 +47,7 @@ extern wxArrayInt existingLangs;
 BEGIN_EVENT_TABLE(frmOptions, wxDialog)
     EVT_MENU(MNU_HELP,                        frmOptions::OnHelp)
     EVT_BUTTON (XRCID("btnOK"),               frmOptions::OnOK)
+    EVT_BUTTON (XRCID("btnHelp"),             frmOptions::OnHelp)
     EVT_BUTTON (XRCID("btnCancel"),           frmOptions::OnCancel)
     EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
 END_EVENT_TABLE()
@@ -121,7 +122,7 @@ frmOptions::~frmOptions()
 void frmOptions::OnHelp(wxCommandEvent &ev)
 {
     long page=nbOptions->GetSelection();
-    mainForm->DisplayHelp(wxT("options-tab") + NumToStr(page+1L));
+    DisplayHelp(this, wxT("options-tab") + NumToStr(page+1L));
 }
 
 
