@@ -54,6 +54,7 @@ public:
 	wxArrayString m_aliases;
 	pgDatabase *m_database;
 	pgServer *m_server;
+    wxLongLong elapsedQuery, elapsedRetrieve;
 
 	// Methods
 	wxString GetTableViewAlias(wxString firstname, 
@@ -61,6 +62,7 @@ public:
 	void AddColumn(frmChildTableViewFrame *frame,int item);
 	void UpdateGridTables(frmChildTableViewFrame *frame);
 	void DeleteChild(wxString talias);
+    void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
 	frmChildTableViewFrame *GetFrameFromAlias(wxString alias);
 
 private:
@@ -97,7 +99,7 @@ private:
 	void UpdateGridColumns(frmChildTableViewFrame *frame, int item,
 		bool _FORCE = FALSE, int _FORCEROW = 0);
 	void BuildQuery();
-	void RunQuery();
+	void RunQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0);
 	void VerifyExpression(int row);
 	wxString RebuildCondition(wxString condition, int row, bool &errout);
 	int FindLeftmostTable();
@@ -110,6 +112,7 @@ private:
     void OnCancel(wxCommandEvent& event);
     void OnExecute(wxCommandEvent& event);
     void OnExplain(wxCommandEvent& event);
+    void OnExport(wxCommandEvent& event);
     void OnOpen(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
@@ -153,6 +156,7 @@ private:
 		MNU_SAVE,
 		MNU_SAVEAS,
 		MNU_CANCEL,
+        MNU_EXPORT,
 		MNU_EXECUTE,
 		MNU_EXPLAIN,
 		MNU_QUERYBUILDER,
