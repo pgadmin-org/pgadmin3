@@ -536,6 +536,10 @@ SOURCE=.\ui\common\dlgDomain.xrc
 # End Source File
 # Begin Source File
 
+SOURCE=.\ui\common\dlgEditGridOptions.xrc
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\common\dlgForeignKey.xrc
 # End Source File
 # Begin Source File
@@ -1400,6 +1404,10 @@ SOURCE=.\include\images\view.xpm
 # Begin Source File
 
 SOURCE=.\include\images\viewdata.xpm
+# End Source File
+# Begin Source File
+
+SOURCE=.\include\images\viewfiltereddata.xpm
 # End Source File
 # End Group
 # Begin Group "dummy includes"

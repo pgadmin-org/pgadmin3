@@ -518,17 +518,28 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
     event.Skip();
 }
 
-
-void frmEditGrid::Go()
+void frmEditGrid::ShowForm(bool filter)
 {
     if (relkind == 'r' || relkind == 'v')
+	{
+		if (filter) 
+		{
+			dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, connection, tableName, sqlGrid);
+			winOptions->ShowModal();
+		}
         Show(true);
+		Go();
+	}
     else
     {
         wxLogError(_("No Table or view."));
         Close();
         Destroy();
     }
+}
+
+void frmEditGrid::Go()
+{
     SetStatusText(_("Refreshing data, please wait."), 0);
 
     wxString qry=wxT("SELECT ");

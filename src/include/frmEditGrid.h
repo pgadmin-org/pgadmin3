@@ -151,7 +151,8 @@ public:
     frmEditGrid(frmMain *form, const wxString& _title, pgConn *conn, const wxPoint& pos, const wxSize& size, pgSchemaObject *obj);
     ~frmEditGrid();
 
-    void Go();
+	void ShowForm(bool filter = false);
+	void Go();
 	wxString GetSortCols() const { return orderBy; } ;
 	void SetSortCols(const wxString &cols);
 	wxString GetFilter() const { return rowFilter; } ;

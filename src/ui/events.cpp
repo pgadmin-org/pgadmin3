@@ -73,6 +73,7 @@ BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(MNU_EXIT,                      frmMain::OnExit)
     EVT_MENU(MNU_STATUS,                    frmMain::OnStatus)
     EVT_MENU(MNU_VIEWDATA,                  frmMain::OnViewData)
+    EVT_MENU(MNU_VIEWFILTEREDDATA,          frmMain::OnViewFilteredData)
     EVT_MENU(MNU_OPTIONS,                   frmMain::OnOptions)
     EVT_MENU(MNU_PASSWORD,                  frmMain::OnPassword)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
@@ -421,6 +422,16 @@ void frmMain::OnSql(wxCommandEvent &ev)
 
 void frmMain::OnViewData(wxCommandEvent& event)
 {
+	ViewData(false);
+}
+
+void frmMain::OnViewFilteredData(wxCommandEvent& event)
+{
+	ViewData(true);
+}
+
+void frmMain::ViewData(bool filter)
+{
     pgSchemaObject *data = (pgSchemaObject *)GetSelectedObject();
     if (!data)
         return;
@@ -452,7 +463,7 @@ void frmMain::OnViewData(wxCommandEvent& event)
 
         frmEditGrid *eg= new frmEditGrid(this, txt, conn, pos, size, data);
         frames.Append(eg);
-        eg->Go();
+        eg->ShowForm(filter);
     }
     else
     {

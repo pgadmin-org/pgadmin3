@@ -85,6 +85,7 @@ WX_DEFINE_LIST(windowList);
 #include "images/vacuum.xpm"
 #include "images/view.xpm"
 #include "images/viewdata.xpm"
+#include "images/viewfiltereddata.xpm"
 #include "images/triggerfunction.xpm"
 #include "images/constraints.xpm"
 #include "images/primarykey.xpm"
@@ -167,6 +168,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolsMenu->Append(MNU_SQL, _("&Query tool"),                  _("Execute arbitrary SQL queries."));
     toolsMenu->Append(MNU_QUERYBUILDER, _("Query &builder"),      _("Start the query builder."));
 	toolsMenu->Append(MNU_VIEWDATA, _("View &Data"),              _("View the data in the selected object."));
+	toolsMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"), _("Apply a filter and view the data in the selected object."));
     toolsMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),         _("Maintain the current database or table."));
     toolsMenu->Append(MNU_INDEXCHECK, _("&FK Index check"),       _("Checks existence of foreign key indexes"));
     toolsMenu->Append(MNU_RELOAD, _("Re&load module"),            _("Reload library module which implements this function."));
@@ -198,11 +200,12 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     treeContextMenu = new wxMenu();
     // Tree Context Menu
     newContextMenu = new wxMenu();
-    treeContextMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),       _("Refresh the selected object."));
-    treeContextMenu->Append(MNU_RELOAD, _("Re&load module"),      _("Reload library module which implements this function."));
+    treeContextMenu->Append(MNU_REFRESH, _("Re&fresh\tF5"),		  _("Refresh the selected object."));
+    treeContextMenu->Append(MNU_RELOAD, _("Re&load module"),	  _("Reload library module which implements this function."));
     treeContextMenu->Append(MNU_NEWOBJECT, _("New &Object"), newContextMenu, _("Create a new object."));
     treeContextMenu->AppendSeparator();
 	treeContextMenu->Append(MNU_VIEWDATA, _("View &Data"),        _("View the data in the selected object."));
+	treeContextMenu->Append(MNU_VIEWFILTEREDDATA, _("View F&iltered Data"),  _("Apply a filter and view the data in the selected object."));
     treeContextMenu->Append(MNU_MAINTENANCE, _("&Maintenance"),   _("Maintain the current database or table."));
     treeContextMenu->Append(MNU_INDEXCHECK, _("&FK Index check"), _("Checks existence of foreign key indexes"));
     treeContextMenu->Append(MNU_CONNECT, _("&Connect..."),        _("Connect to the selected server."));
@@ -251,6 +254,7 @@ frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
     toolBar->AddTool(MNU_SQL, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_QUERYBUILDER, _("Query builder"), wxBitmap(querybuilder_xpm), _("Visually build SQL queries."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_VIEWDATA, _("View Data"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_VIEWFILTEREDDATA, _("View Filtered Data"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_MAINTENANCE, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_HELP, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
@@ -761,6 +765,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
     toolBar->EnableTool(MNU_SQL, sql);
     toolBar->EnableTool(MNU_QUERYBUILDER, sql);
     toolBar->EnableTool(MNU_VIEWDATA, viewData);
+    toolBar->EnableTool(MNU_VIEWFILTEREDDATA, viewData);
     toolBar->EnableTool(MNU_MAINTENANCE, maintenance);
 
 	// Handle the menus associated with the buttons
@@ -775,6 +780,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
     toolsMenu->Enable(MNU_INDEXCHECK, false);
 	toolsMenu->Enable(MNU_STATUS, sql);
 	toolsMenu->Enable(MNU_VIEWDATA, viewData);
+	toolsMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
 	viewMenu->Enable(MNU_REFRESH, refresh);
     toolsMenu->Enable(MNU_RELOAD, false);
 
@@ -787,6 +793,7 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
 	treeContextMenu->Enable(MNU_MAINTENANCE, maintenance);
 	treeContextMenu->Enable(MNU_INDEXCHECK, false);
 	treeContextMenu->Enable(MNU_VIEWDATA, viewData);
+	treeContextMenu->Enable(MNU_VIEWFILTEREDDATA, viewData);
     treeContextMenu->Enable(MNU_RELOAD, false);
 }
 

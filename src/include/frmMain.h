@@ -82,6 +82,8 @@ private:
     void OnAddServer(wxCommandEvent &ev);
     void OnExit(wxCommandEvent& event);
     void OnViewData(wxCommandEvent& event);
+    void OnViewFilteredData(wxCommandEvent& event);
+	void ViewData(bool filter = false);
     void OnOptions(wxCommandEvent& event);
     void OnPassword(wxCommandEvent& event);
     void OnSaveDefinition(wxCommandEvent& event);

@@ -45,6 +45,8 @@
 #define btnCancel					CTRL("btnCancel", wxTextCtrl)
 #define cboColumns                  CTRL("cboColumns", wxComboBox)
 #define lstSortCols                 CTRL("lstSortCols", wxListCtrl)
+#define pnlSort                     CTRL("pnlSort", wxPanel)
+#define pnlFilter                   CTRL("pnlFilter", wxPanel)
 
 BEGIN_EVENT_TABLE(dlgEditGridOptions, wxDialog)
     EVT_BUTTON               (XRCID("btnOK"),       dlgEditGridOptions::OnOK)
@@ -110,24 +112,23 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 	for (pos = 0; pos < len; pos++) {
 		if (inColumn) {
             if (sortCols.GetChar(pos) == '"') inQuote = !inQuote;
-			if (!inQuote && sortCols.GetChar(pos) == ' ')
+			if (!inQuote && (sortCols.GetChar(pos) == ' ' || sortCols.GetChar(pos) == ','))
 			    inColumn = false;
 			else
 				if (sortCols.GetChar(pos) != '"') col += sortCols.GetChar(pos);
 		} else {
-			if (sortCols.GetChar(pos) == ',') {
+			if (sortCols.GetChar(pos - 1) == ',') {
 			    inColumn = true;
 			    lstSortCols->InsertItem(itm, col);
-				if (dir.GetChar(0) == 'A') {
-	                lstSortCols->SetItem(itm, 1, _("Ascending"));
+				if (dir.GetChar(0) == 'D') {
+	                lstSortCols->SetItem(itm, 1, _("Descending"));
 	                lstSortCols->SetItemData(itm, 0); 
 				} else {
-	                lstSortCols->SetItem(itm, 1, _("Descending"));
+	                lstSortCols->SetItem(itm, 1, _("Ascending"));
 	                lstSortCols->SetItemData(itm, 1); 
 				}
 				col = wxT("");
 				dir = wxT("");
-				++pos;
 				++itm;
             } else {
 				dir += sortCols.GetChar(pos);
@@ -138,11 +139,11 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 	// Insert the last column
 	if (col.Length() > 0) {
 		lstSortCols->InsertItem(itm, col);
-		if (dir.GetChar(0) == 'A') {
-		    lstSortCols->SetItem(itm, 1, _("Ascending"));
+		if (dir.GetChar(0) == 'D') {
+		    lstSortCols->SetItem(itm, 1, _("Descending"));
 			lstSortCols->SetItemData(itm, 0); 
 		} else {
-		    lstSortCols->SetItem(itm, 1, _("Descending"));
+		    lstSortCols->SetItem(itm, 1, _("Ascending"));
 			lstSortCols->SetItemData(itm, 1); 
 		}
 	}
@@ -152,6 +153,10 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 
     for (x = 0; x < count; x++)
         cboColumns->Delete(cboColumns->FindString(lstSortCols->GetItemText(x)));
+
+	// Display the appropriate tab. If the EditGrid is not shown, we must be 
+	// doing a View Filtered Data.
+	if (!parent->IsShown()) nbOptions->DeletePage(0);
 }
 
 void dlgEditGridOptions::OnRemove(wxCommandEvent &ev)
@@ -167,7 +172,7 @@ void dlgEditGridOptions::OnAsc(wxCommandEvent &ev)
 	long itm = lstSortCols->GetItemCount();
 	lstSortCols->InsertItem(itm, cboColumns->GetValue());
 	lstSortCols->SetItem(itm, 1, _("Ascending"));
-	lstSortCols->SetItemData(itm, 0);
+	lstSortCols->SetItemData(itm, 1);
 	cboColumns->Delete(cboColumns->GetSelection());
 
 	// Setup the buttons
@@ -181,7 +186,7 @@ void dlgEditGridOptions::OnDesc(wxCommandEvent &ev)
 	long itm = lstSortCols->GetItemCount();
 	lstSortCols->InsertItem(itm, cboColumns->GetValue());
 	lstSortCols->SetItem(itm, 1, _("Descending"));
-	lstSortCols->SetItemData(itm, 1);
+	lstSortCols->SetItemData(itm, 0);
 	cboColumns->Delete(cboColumns->GetSelection());
 
 	// Setup the buttons
@@ -227,24 +232,27 @@ void dlgEditGridOptions::OnOK(wxCommandEvent &ev)
 	// Check the filter syntax
     if (!Validate()) return;
 
-	wxString sortCols;
-	long x, count = lstSortCols->GetItemCount();
+	if (nbOptions->GetPageCount() > 1) {
+		wxString sortCols;
+		long x, count = lstSortCols->GetItemCount();
 
-    for (x = 0; x < count; x++) {
-		sortCols += qtIdent(lstSortCols->GetItemText(x));
-		if (lstSortCols->GetItemData(x) == 0)
-		    sortCols += wxT(" ASC");
-		else
-			sortCols += wxT(" DESC");
-		sortCols += wxT(", ");
+	    for (x = 0; x < count; x++) {
+			sortCols += qtIdent(lstSortCols->GetItemText(x));
+			if (lstSortCols->GetItemData(x) == 0)
+			    sortCols += wxT(" DESC");
+			else
+				sortCols += wxT(" ASC");
+			sortCols += wxT(", ");
+		}
+	
+		if (sortCols.Length() > 2) {
+			sortCols.RemoveLast();
+			sortCols.RemoveLast();
+		}
+
+		parent->SetSortCols(sortCols);
 	}
 
-	if (sortCols.Length() > 2) {
-		sortCols.RemoveLast();
-		sortCols.RemoveLast();
-	}
-
-	parent->SetSortCols(sortCols);
 	parent->SetFilter(filter->GetText().Trim());
     Destroy();
 }
