@@ -91,7 +91,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     mainForm=form;
     title = _title;
     conn=_conn;
-	loaded = false;
 
     SetIcon(wxIcon(sql_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -220,8 +219,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     horizontal->SplitHorizontally(sqlQuery, output, splitpos);
 
     sqlQuery->SetText(query);
-	changed = false;
-
+    changed = !query.IsNull() && settings->GetStickySql();
+    if (changed)
+        setExtendedTitle();
     updateMenu();
     queryMenu->Enable(MNU_SAVEHISTORY, false);
     queryMenu->Enable(MNU_CLEARHISTORY, false);
@@ -333,7 +333,6 @@ void frmQuery::Go()
 {
     Show(TRUE);
     sqlQuery->SetFocus();
-	loaded = true;
 }
 
 
@@ -546,7 +545,6 @@ void frmQuery::OnRedo(wxCommandEvent& ev)
 void frmQuery::setExtendedTitle()
 {
     wxString chgStr;
-
     if (changed)
         chgStr = wxT(" *");
 
@@ -623,9 +621,6 @@ void frmQuery::OnClose(wxCloseEvent& event)
 
 void frmQuery::OnChangeStc(wxStyledTextEvent& event)
 {
-	if (!loaded)
-		return;
-
     if (!changed)
     {
         changed=true;
