@@ -8,143 +8,97 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+// wxWindows headers
+#include <wx/notebook.h>
+#include <wx/xrc/xmlres.h>
+
 // App headers
-#include "frmQueryBuilder.h"
+#include "dlgAddTableView.h"
+
+// Icons
+#include "images/pgAdmin3.xpm"
 
 ////////////////////////////////////////////////////////////////////////////////
+// Event Table
 ////////////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(dlgAddTableView, wxDialog)
 
-    EVT_KEY_DOWN(dlgAddTableView::OnKeyDown)
-    EVT_KEY_UP(dlgAddTableView::OnChar)
-    EVT_CHAR(dlgAddTableView::OnChar) 
-    EVT_BUTTON(dlgAddTableView::BTN_CLOSE,  dlgAddTableView::OnClose)
-    EVT_BUTTON(dlgAddTableView::BTN_OK,     dlgAddTableView::OnOK)
     EVT_LISTBOX_DCLICK(-1,dlgAddTableView::OnOK)
+
+    EVT_BUTTON(XRCID("btnOK"), wxDialog::OnOK)
+    EVT_BUTTON(XRCID("btnClose"), wxDialog::OnCancel)
+    EVT_BUTTON(XRCID("btnAll"), dlgAddTableView::OnAll)
+    EVT_BUTTON(XRCID("btnNone"), dlgAddTableView::OnNone)
 
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
+// Constructor
 ////////////////////////////////////////////////////////////////////////////////
-dlgAddTableView::dlgAddTableView(wxWindow *parent, pgDatabase *database)
+dlgAddTableView::dlgAddTableView(wxWindow *frame, pgDatabase *database)
 {
+	// Indicate we built this dialog in the log
+    wxLogInfo(wxT("Creating the Query Builder Add Table/View dialogue"));
+
+	// Load the XML resource for this dialog
+    wxXmlResource::Get()->LoadDialog(this, frame, "frmAddTableView"); 
+
+    // Set the Icon
+    SetIcon(wxIcon(pgAdmin3_xpm));
+
+	// Store the database for later use
 	this->m_database = database;
 
-	this->Create(parent, -1, wxT("Add Tables/Views"),
-		wxDefaultPosition, wxSize(198, 314));
+	// Store the lists for later use
+	m_tablelist = XRCCTRL(*this, "listTables", wxListBox);
+	m_viewlist = XRCCTRL(*this, "listViews", wxListBox);
 
-	// Setup the m_notebook
-    m_notebook = new wxNotebook(this, -1, wxPoint(6,6), 
-		wxSize(180,240), wxCLIP_CHILDREN );
-
-	// Setup the table list and the view list
-	m_tablelist = new wxListBox(m_notebook, -1, wxDefaultPosition,
-		wxDefaultSize, 0, NULL, wxLB_MULTIPLE  | wxLB_NEEDED_SB );
-	m_viewlist = new wxListBox(m_notebook, -1, wxDefaultPosition,
-		wxDefaultSize, 0, NULL, wxLB_MULTIPLE  | wxLB_NEEDED_SB );
-
-	// Add table/view to the m_notebook
-	m_notebook->AddPage(m_tablelist, wxT("Tables"));
-	m_notebook->AddPage(m_viewlist, wxT("Views"));
-
-	// Add buttons
-	m_OK = new wxButton(this, dlgAddTableView::BTN_OK, 
-		"&Add", wxPoint(12, 252), wxSize(80, 20));
-	m_Close = new wxButton(this, dlgAddTableView::BTN_CLOSE, 
-		"&Close", wxPoint(102, 252), wxSize(80, 20));
+	// Store the notebook for later use
+	m_notebook = XRCCTRL(*this, "notebookMain", wxNotebook);
+	
+	// Set the accelerator table
+    wxAcceleratorEntry entries[2];
+    entries[0].Set(wxACCEL_CTRL, (int)'A', XRCID("btnAll"));
+    entries[1].Set(wxACCEL_CTRL, (int)'D', XRCID("btnNone"));
+    wxAcceleratorTable accel(2, entries);
+    SetAcceleratorTable(accel);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 dlgAddTableView::~dlgAddTableView()
 {
-	
+	// Indicate we're done with this dialog
+    wxLogInfo(wxT("Destroying a Query Builder Add Table/View dialogue"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void dlgAddTableView::OnChar(wxKeyEvent& event)
+void dlgAddTableView::OnAll(wxCommandEvent& event, bool selectall = TRUE)
 {
-    long keycode = event.KeyCode();
-    switch ( keycode )
-    {
-		case 1: 
-				wxMessageBox( "got ctrl-a" );
-
-        default:
-				wxMessageBox( "gothere" );
-    }
-
-	wxMessageBox( "gothere2" );
-}
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-void dlgAddTableView::OnOK(wxCommandEvent& event)
-{
-	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
-
-	// Grab the selected items
-	wxArrayInt tableselections, viewselections;
-	m_tablelist->GetSelections( tableselections );
-	m_viewlist->GetSelections( viewselections );
-
-	// Find out how many tables there are to add
-	int tblcount = tableselections.GetCount();
-	int viewcount = viewselections.GetCount();
+	wxListBox *tmplistbox = NULL;
 	int si;
 
-	// Add the tables to the MDI Client Window
-	for ( si = 0; si < tblcount; si++ )
-	{
-		// Grab the item number and the name of the table
-		int itemno = tableselections.Item( si );
-		wxString tmpname = m_tablelist->GetString( itemno );
+	// Page 0 = tablelist, Page 1 = viewlist
+	if (m_notebook->GetSelection() == 0)
+		tmplistbox = m_tablelist;
+	else
+		tmplistbox = m_viewlist;
 
-		// Check to see if that table already exists, and if it does
-		// then we need to get the correct alias for it
-		wxString tmpalias = tmpparent->GetTableViewAlias(tmpname);
+	// How many columns are in the list?
+	int count = tmplistbox->GetCount();
 
-		// Create the child frames
-		frmChildTableViewFrame *tmpframe = 
-			new frmChildTableViewFrame(tmpparent, tmpname, 
-			tmpalias, m_database);
-		tmpparent->m_children.Add(tmpframe);
-		tmpparent->m_names.Add(tmpname);
-		tmpparent->m_aliases.Add(tmpalias);
-		tmpparent->UpdateGridTables(NULL);
-	}
-
-	// Add the views to the MDI Client Window
-	for ( si = 0; si < viewcount; si++ )
-	{
-		// Grab the item number and the name of the view
-		int itemno = viewselections.Item( si );
-		wxString tmpname = m_viewlist->GetString( itemno );
-
-		// Check to see if that view already exists, and if it does
-		// then we need to get the correct alias for it
-		wxString tmpalias = tmpparent->GetTableViewAlias(tmpname);
-
-		// Create the child frames
-		frmChildTableViewFrame *tmpframe = 
-			new frmChildTableViewFrame(tmpparent, tmpname, 
-			tmpalias, m_database);
-		tmpparent->m_children.Add(tmpframe);
-		tmpparent->m_names.Add(tmpname);
-		tmpparent->m_aliases.Add(tmpalias);
-		tmpparent->UpdateGridTables(NULL);
-	}
-
-	// Hide the add/view window 
-	this->Hide();
+	// Iterate through all the columns and select them
+	for (si = 0; si < count; si++)
+		tmplistbox->SetSelection(si, selectall);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void dlgAddTableView::OnClose(wxCommandEvent& event)
+void dlgAddTableView::OnNone(wxCommandEvent& event)
 {
-	this->Hide();
+	wxCommandEvent nullevent;
+	OnAll(nullevent, FALSE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -203,9 +157,3 @@ void dlgAddTableView::InitLists()
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-void dlgAddTableView::OnKeyDown(wxKeyEvent& event)
-{
-	wxMessageBox("gothere");
-}

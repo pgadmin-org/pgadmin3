@@ -14,17 +14,48 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Class Definition
 ////////////////////////////////////////////////////////////////////////////////
-class myList : public wxListBox
+class myList : public wxListCtrl
 {
 
 public:
 
 	// Constructor
 	myList(wxWindow* parent, wxWindowID id) :
-	wxListBox(parent, id, wxDefaultPosition, 
-		wxDefaultSize, 0, NULL, wxLB_NEEDED_SB)
+	wxListCtrl(parent, id, wxPoint(0,16), wxSize(100,100),
+		wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxNO_BORDER|wxLC_HRULES)
 	{
 		//
+	}
+
+	// Methods
+	int GetSelection()
+	{
+		return GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	}
+
+	void Select(int item)
+	{
+		SetItemState(item, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+	}
+
+	wxString GetString(int item)
+	{
+		return GetItemText(item);
+	}
+
+	wxString GetStringSelection()
+	{
+		int item = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		
+		if (item == 0)
+			return wxT("");
+		
+		return GetItemText(item);
+	}
+
+	int GetCount()
+	{
+		return GetItemCount();
 	}
 
 private:
@@ -42,7 +73,9 @@ private:
 class frmChildTableViewFrame : public wxMDIChildFrame
 {
 public:
-	frmChildTableViewFrame(wxMDIParentFrame* parent, 
+
+	// Construction
+	frmChildTableViewFrame(wxMDIParentFrame* frame, 
 		wxString table, wxString alias, pgDatabase *database);
 	~frmChildTableViewFrame();
 
@@ -55,8 +88,13 @@ public:
 
 private:
 
+	// Data
+	wxPoint m_oldpos;
+	long m_titlewidth;
+	long m_minheight;
+
 	// Controls
-	wxBoxSizer *m_sizer;
+	wxBitmapButton *m_close;
 
 	// Events
 	void OnMove(wxMoveEvent& event);
@@ -66,6 +104,10 @@ private:
 	void OnCloseWindow(wxCloseEvent& event);
 	void OnAddColumn();
 	void OnJoinTo(wxCommandEvent& event);
+    void OnLeftDown(wxMouseEvent& event);
+	void OnMotion(wxMouseEvent& event);
+    void OnLeftUp(wxMouseEvent& event);
+	void OnPaint(wxPaintEvent& event);
 
 #ifdef __WXMSW__
     void OnContextMenu(wxContextMenuEvent& event)
@@ -87,7 +129,8 @@ private:
 	enum
 	{
 		MNU_ADDCOLUMN = 2000,
-		MNU_CLOSE
+		MNU_CLOSE,
+		MNU_MIN
 	};
 
 	// "Reserve" these IDs for dynamic menus

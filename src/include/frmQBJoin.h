@@ -14,15 +14,12 @@
 // wxWindows headers
 #include <wx/wx.h>
 
-// App headers
-#include "pgAdmin3.h"
-#include "pgConn.h"
-#include "pgServer.h"
-
 // Class declarations
 class frmQBJoin : public wxDialog
 {
 public:
+
+	// Construction/Deconstruction
     frmQBJoin(wxFrame *frame, wxString txt);
     ~frmQBJoin();
 
@@ -33,21 +30,20 @@ public:
 	int GetRightColumn();
 	wxString GetJoinType();
 	int GetConditions(wxArrayString& cond);
+	wxString GetJoinOperator();
 	void PopulateData(wxFrame *leftframe, wxFrame *rightframe);
     
 private:
 
-	// Methods
-    bool TransferDataFromWindow();
-
 	// Events
-	void OnAdd();
-	void OnDelete();
+	void OnAdd(wxCommandEvent &event);
+	void OnDelete(wxCommandEvent &event);
 
 	// Data
 	wxString m_leftname;
 	wxString m_rightname;
 
+	// Event Table
     DECLARE_EVENT_TABLE()
 };
 

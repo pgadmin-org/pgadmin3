@@ -8,15 +8,20 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+// App headers
 #include "frmQueryBuilder.h"
 #include "frmQBJoin.h"
 
+// Icons
 #ifndef __WIN32__
 #include "wx/dnd.h"
 #include "images/dnd_copy.xpm"
 #include "images/dnd_move.xpm"
 #include "images/dnd_none.xpm"
 #endif
+
+#include "images/closeup.xpm"
+#include "images/closedown.xpm"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Event Table
@@ -40,53 +45,82 @@ BEGIN_EVENT_TABLE(frmChildTableViewFrame, wxMDIChildFrame)
     EVT_MOVE(frmChildTableViewFrame::OnMove)
     EVT_SIZE(frmChildTableViewFrame::OnSize)
 
+    EVT_LEFT_DOWN(frmChildTableViewFrame::OnLeftDown)
+    EVT_MOTION(frmChildTableViewFrame::OnMotion)
+    EVT_LEFT_UP(frmChildTableViewFrame::OnLeftUp)
+
+	EVT_BUTTON(MNU_CLOSE, frmChildTableViewFrame::OnClose)
+
+    EVT_PAINT(frmChildTableViewFrame::OnPaint)
+
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
 // Event Table
 ////////////////////////////////////////////////////////////////////////////////
-BEGIN_EVENT_TABLE(myList, wxListBox)
+BEGIN_EVENT_TABLE(myList, wxListCtrl)
+
     EVT_MOTION(myList::OnMotion)
+
 END_EVENT_TABLE()
+
+// We need system settings
+extern sysSettings *settings;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constructor
 ////////////////////////////////////////////////////////////////////////////////
-frmChildTableViewFrame::frmChildTableViewFrame(wxMDIParentFrame *parent, 
-											   wxString table,
-											   wxString alias,
-											   pgDatabase *database)
+frmChildTableViewFrame::frmChildTableViewFrame(wxMDIParentFrame* frame, 
+		wxString table, wxString alias, pgDatabase *database)
 {
 	int rowct = 0;
+	m_columnlist = NULL;
+	m_close = NULL;
+	m_oldpos.x = -1;
+	m_oldpos.y = -1;
+
+	// Indicate we built this dialog in the log
+    wxLogInfo(wxT("Creating a Query Builder Child Table/View Frame"));
 
 	// Set the database
 	m_database = database;
 
 	// Set the alias
 	m_title = alias;
+	int textwidth, textheight;
+	int maxtextwidth = 0;
+	m_titlewidth = 24;
+	frame->GetTextExtent(m_title, &textwidth, &textheight);
+	m_titlewidth += textwidth;
+	int descent;
+	int leading;
 
 	// Create the frame
-	this->Create(parent, -1, alias, wxDefaultPosition, wxSize(100, 200),
-		wxCAPTION | wxRESIZE_BORDER );
+	this->Create(frame, -1, alias, wxDefaultPosition, 
+		wxSize(200, 200), wxRESIZE_BORDER|wxSIMPLE_BORDER );
 
-	// Create a boxsizer for the frame to control layout
-	m_sizer = new wxBoxSizer(wxVERTICAL);
+	// Create the table name
+//	wxStaticText *tmpstatic = new wxStaticText(this, -1, 
+//		m_title, wxPoint(2,1), wxSize(m_titlewidth, 15), wxNO_BORDER,
+//		m_title);
+
+	// Create the close icon bitmaps
+    wxBitmap closeup = wxBitmap(closeup_xpm);
+    wxBitmap closedown = wxBitmap(closedown_xpm);
+
+	// Create the bitmap button
+	m_close = new wxBitmapButton(this, MNU_CLOSE, closeup, wxPoint(87,3),
+		wxSize(11,10));
+
+	// Set the bitmaps options
+	m_close->SetBitmapLabel(closeup);
+	m_close->SetBitmapDisabled(closeup);
+	m_close->SetBitmapFocus(closeup);
+	m_close->SetBitmapSelected(closedown);
 
 	// Create a column list
 	m_columnlist = new myList(this, ID_TABLEVIEWLISTBOX);
 		
-	// Add the column list to the sizer
-	m_sizer->Add(m_columnlist, 1, wxEXPAND, 0 );
-
-	// Size hints (because the window is sizable)
-	m_sizer->SetSizeHints( this );
-
-	// Set the sizer for the frame
-	SetSizer( m_sizer );
-
-	// We need system settings
-    extern sysSettings *settings;
-
 	// We need to know if we're going to show system objects
 	wxString sysobjstr;
 	if (!settings->GetShowSystemObjects())
@@ -111,23 +145,31 @@ frmChildTableViewFrame::frmChildTableViewFrame(wxMDIParentFrame *parent,
 				"ORDER BY attnum"));
 
 		// Add the star column
-		m_columnlist->Append(wxT("*"));
+		int item = m_columnlist->InsertItem(0, wxT("*"));
+		m_columnlist->InsertColumn(0,wxT(""));
+		m_columnlist->SetItem(item, 0, "*");
 
 		// Get the column count
 		rowct = columns->NumRows();
 
 		for (int si = 0; si < rowct; si++ )
 		{
-			m_columnlist->Append(columns->GetVal(wxT("attname")));
+			wxString tmpcolname = columns->GetVal(wxT("attname"));
+			item = m_columnlist->InsertItem(si + 1, tmpcolname);
+			m_columnlist->SetItem(item, 0, tmpcolname);
 			columns->MoveNext();
+			GetTextExtent(tmpcolname, &textwidth, &textheight,
+				&descent, &leading);
+			if (textwidth > maxtextwidth)
+				maxtextwidth = textwidth;
 		}
 
 		delete columns;
 	}
 
-	// GetFont
-	this->SetClientSize( GetClientSize().GetWidth(), 
-		m_columnlist->GetCharHeight() * rowct + 4);
+	// ClientSize
+	m_minheight = (textheight-descent+leading+1) * (rowct + 1) + 18;
+	this->SetClientSize(maxtextwidth, m_minheight);
 
 	// Set the drop target
 	m_columnlist->SetDropTarget(new DnDJoin(this));
@@ -138,7 +180,8 @@ frmChildTableViewFrame::frmChildTableViewFrame(wxMDIParentFrame *parent,
 ////////////////////////////////////////////////////////////////////////////////
 frmChildTableViewFrame::~frmChildTableViewFrame()
 {
-	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
+	// Indicate we're done with this frame
+    wxLogInfo(wxT("Destroying a Query Builder Child Table/View frame"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -211,6 +254,10 @@ void frmChildTableViewFrame::OnCloseWindow(wxCloseEvent& event)
 {
 	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
 
+	// Make sure the display updates
+	tmpparent->GetClientWindow()->Refresh();
+
+	// Delete itself from the child list
 	tmpparent->DeleteChild(m_title);
 
     Destroy();
@@ -240,8 +287,80 @@ void frmChildTableViewFrame::OnAddColumn()
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+void frmChildTableViewFrame::OnLeftDown(wxMouseEvent &event)
+{
+	wxPoint clientmouse = event.GetPosition();
+	wxPoint screenmouse = ClientToScreen(clientmouse);
+	wxPoint clientpos = GetPosition();
+
+	if (clientmouse.y <= 16)
+	{
+		if (m_oldpos.x == -1 || m_oldpos.y == -1)
+		{
+			m_oldpos = screenmouse;
+			CaptureMouse();
+			SetCursor(wxCursor(wxCURSOR_SIZING));
+		}
+	}
+	else
+	{
+		event.Skip();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void frmChildTableViewFrame::OnMotion(wxMouseEvent &event)
+{
+	wxPoint clientmouse = event.GetPosition();
+	wxPoint screenmouse = ClientToScreen(clientmouse);
+	wxPoint clientpos = GetPosition();
+	wxSize clientsize = GetSize();
+
+	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
+
+	wxSize parentsize = tmpparent->GetSize();
+	wxSize parentclientsize = tmpparent->GetClientSize();
+	wxPoint parentoffset = tmpparent->GetClientAreaOrigin();
+
+	if (m_oldpos.x != -1 && m_oldpos.y != -1)
+	{
+		wxPoint newpos;
+		newpos.x = (screenmouse.x - m_oldpos.x);
+		newpos.y = (screenmouse.y - m_oldpos.y);
+
+		if (newpos.x || newpos.y)
+		{
+			m_oldpos = screenmouse;
+			Move(clientpos.x + newpos.x - parentoffset.x, 
+				clientpos.y + newpos.y - parentoffset.y);
+		}
+	}
+	else
+	{
+		event.Skip();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void frmChildTableViewFrame::OnLeftUp(wxMouseEvent &event)
+{
+	if (m_oldpos.x != -1 && m_oldpos.y != -1)
+	{
+		ReleaseMouse();
+		SetCursor(wxNullCursor);
+	}
+
+	m_oldpos.x = -1;
+	m_oldpos.y = -1;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void myList::OnMotion(wxMouseEvent &event)
 {
+
 	if (event.m_leftDown)
 	{
 
@@ -274,7 +393,7 @@ void myList::OnMotion(wxMouseEvent &event)
 			default:            pc = _T("Huh?");      break;
 		}
 
-			return;
+		return;
 
 	}
 	else
@@ -288,6 +407,18 @@ void myList::OnMotion(wxMouseEvent &event)
 ////////////////////////////////////////////////////////////////////////////////
 bool DnDJoin::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 {
+	wxPoint hit(x,y);
+	frmChildTableViewFrame *tmprightframe = 
+		(frmChildTableViewFrame*)m_frame;
+
+	int flags;
+	int item = 
+		tmprightframe->m_columnlist->HitTest(hit, flags);
+	if (item == -1)
+		return FALSE;
+
+	tmprightframe->m_columnlist->Select(item);
+
 	// Construct the Join dialog
 	frmQBJoin dlgJoin(m_frame, text);
 
@@ -309,8 +440,6 @@ bool DnDJoin::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 	// Populate the Join dialog
 	dlgJoin.PopulateData(tmpparent->GetFrameFromAlias(lefttable), m_frame);
 
-	// Have to intialize prior to case statement
-	
 	// Show the Join dialog
 	if (dlgJoin.ShowModal() == wxID_OK)
     {
@@ -323,6 +452,7 @@ bool DnDJoin::OnDropText(wxCoord x, wxCoord y, const wxString& text)
 		tmpjoin->jointype = dlgJoin.GetJoinType();
 		tmpjoin->conditionct = 
 			dlgJoin.GetConditions(tmpjoin->conditions);
+		tmpjoin->joinop = dlgJoin.GetJoinOperator();
 
 		tmpparent->m_joins.Add(tmpjoin);
 
@@ -350,6 +480,31 @@ void frmChildTableViewFrame::OnSize(wxSizeEvent& event)
 	// Get the parent Query Builder
 	frmQueryBuilder *tmpparent = (frmQueryBuilder*)this->GetParent();
 	tmpparent->GetClientWindow()->Refresh();
+
+	wxSize clientsize = this->GetClientSize();
+
+	if (clientsize.y < m_minheight)
+	{
+		SetClientSize(clientsize.x, m_minheight);
+		event.Skip();
+		return;
+	}
+
+	if (clientsize.x < m_titlewidth)
+	{
+		SetClientSize(m_titlewidth, clientsize.y);
+		event.Skip();
+		return;
+	}
+
+	if (m_columnlist)
+		m_columnlist->SetSize(clientsize.x, clientsize.y - 16);
+
+	if (m_close)
+		m_close->SetSize(clientsize.x-13, 3, 11, 10);
+
+	if (m_columnlist)
+		m_columnlist->SetColumnWidth(0, clientsize.x);
 
 	event.Skip();
 }
@@ -380,3 +535,10 @@ void frmChildTableViewFrame::OnJoinTo(wxCommandEvent& event)
 	tmpjoin.OnDropText(0, 0, tmpleftname + wxT(".") + tmpcolumn);
 }
 
+void frmChildTableViewFrame::OnPaint(wxPaintEvent &event)
+{
+	wxPaintDC dc(this);
+
+	dc.SetFont(*wxNORMAL_FONT);
+	dc.DrawText(m_title, 1, 1);
+}

@@ -18,7 +18,6 @@
 
 // App headers
 #include "frmMain.h"
-#include "dlgAddTableView.h"
 #include "frmChildTableViewFrame.h"
 
 struct JoinStruct
@@ -30,6 +29,7 @@ struct JoinStruct
 		wxString jointype;
 		wxArrayString conditions;
 		int conditionct;
+		wxString joinop;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -85,9 +85,6 @@ private:
 	wxGrid *design, *data;
 	ctlSQLBox *sql;
 
-	// Dialogs
-	dlgAddTableView *addtableview;
-
 	// Methods
     void setTools(const bool running);
 	void UpdateGridColumns(frmChildTableViewFrame *frame, int item,
@@ -97,8 +94,10 @@ private:
 	void VerifyExpression(int row);
 	wxString RebuildCondition(wxString condition, 
 		bool &errout);
-
+	int FindLeftmostTable();
+	bool IsTableLeftOnly(wxString tablename);
 	virtual wxMDIClientWindow* OnCreateClient();
+	wxString BuildTableJoin(int table, int indent);
 
 	// Events
     void OnClose(wxCloseEvent& event);
@@ -219,6 +218,27 @@ private:
 	// Macros
     DECLARE_EVENT_TABLE()
 };
+
+////////////////////////////////////////////////////////////////////////////////
+// Class Definition
+////////////////////////////////////////////////////////////////////////////////
+class DnDDesign : public wxTextDropTarget
+{
+
+public:
+
+	DnDDesign(wxFrame *frame) 
+	{ 
+		m_frame = frame; 
+	}
+
+    virtual bool OnDropText(wxCoord x, wxCoord y, const wxString& text);
+	
+private:
+
+    wxFrame *m_frame;
+};
+
 
 #endif
 

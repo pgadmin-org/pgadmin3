@@ -12,12 +12,7 @@
 #define dlgAddTableView_h
 
 // App headers
-#include "pgConn.h"
 #include "pgDatabase.h"
-#include "pgSet.h"
-#include "pgServer.h"
-#include "pgObject.h"
-#include "pgCollection.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class declaration
@@ -27,7 +22,7 @@ class dlgAddTableView : public wxDialog
 public:
 
 	// Construction
-	dlgAddTableView(wxWindow *parent, pgDatabase *database);
+	dlgAddTableView(wxWindow *frame, pgDatabase *database);
 	dlgAddTableView::~dlgAddTableView();
 
 	// Data
@@ -36,32 +31,15 @@ public:
 	// Methods
 	void InitLists();
 
-private:
-
-	// Events 
-	void OnClose(wxCommandEvent& event);
-	void OnOK(wxCommandEvent& event);
-	void OnKeyDown(wxKeyEvent& event);
-	void OnChar(wxKeyEvent& event);
-
 	// Controls
 	wxListBox *m_tablelist, *m_viewlist;
 	wxNotebook *m_notebook;
-	wxButton *m_OK, *m_Close;
 
-	// Buttons
-	enum
-	{
-		BTN_CLOSE = 1000,
-		BTN_OK = 1001
-	};
+private:
 
-	// Control Enumeration
-	enum
-	{
-		ID_TABLELISTBOX = 2000,
-		ID_VIEWLISTBOX = 2001
-	};
+	// Events 
+	void OnAll(wxCommandEvent& event, bool selectall);
+	void OnNone(wxCommandEvent& event);
 
 	// Macros
 	DECLARE_EVENT_TABLE()

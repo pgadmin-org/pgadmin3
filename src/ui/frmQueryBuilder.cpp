@@ -14,6 +14,7 @@
 
 // App headers
 #include "frmQueryBuilder.h"
+#include "dlgAddTableView.h"
 
 // Icons
 #include "images/sql.xpm"
@@ -189,9 +190,6 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
 	m_sashwindow->SetBackgroundColour(wxColour(255, 0, 0));
 	m_sashwindow->SetSashVisible(wxSASH_TOP, TRUE);
 
-	// Setup the add table/view dialog
-	addtableview = new dlgAddTableView(this, m_database);
-
     // Setup the notebook
     notebook = new wxNotebook(m_sashwindow, ID_NOTEBOOK, 
 		wxDefaultPosition, wxDefaultSize, wxCLIP_CHILDREN | wxNB_BOTTOM );
@@ -251,7 +249,9 @@ frmQueryBuilder::frmQueryBuilder(frmMain* form, pgDatabase *database)
     notebook->AddPage(sql, wxT("SQL"));
 	notebook->AddPage(data, wxT("Data"));
 
-	//DrawTablesAndViews();
+	// Set the drop target
+	design->SetDropTarget(new DnDDesign(this));
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -320,15 +320,12 @@ void myClientWindow::OnPaint(wxPaintEvent& event)
 	dc.SetClippingRegion(0, 0, w, h);
 
 	dc.SetPen(*wxBLACK_PEN);
-	wxFont font(10, wxSWISS, wxNORMAL, wxBOLD);
-	dc.SetFont(font);
 
 	int count = tmpparent->m_joins.GetCount();
 
 	for (int si = 0; si < count; si++ )
 	{
 		JoinStruct *tmpjoin = NULL;
-
 		tmpjoin = (JoinStruct *)tmpparent->m_joins[si];
 
 		frmChildTableViewFrame *tmpleft = 
@@ -339,13 +336,20 @@ void myClientWindow::OnPaint(wxPaintEvent& event)
 		wxSize tleftsize = tmpleft->GetSize();
 		wxSize trightsize = tmpright->GetSize();
 		wxSize tleftcsize = tmpleft->GetClientSize();
-		int offsety = tleftsize.y - tleftcsize.y;
+		
+		int offsety = tleftsize.y - tleftcsize.y + 16;
 
-		int leftyoffset = tmpleft->m_columnlist->
-			GetCharHeight() * (tmpjoin->leftcolumn) + offsety;
+		int tw, th, des, lead;
+		dc.GetTextExtent(tmpright->m_columnlist->
+			GetString(tmpjoin->rightcolumn), &tw, &th, &des, &lead);
 
-		int rightyoffset = tmpleft->m_columnlist->
-			GetCharHeight() * (tmpjoin->rightcolumn) + offsety;
+		int cheight = th - des + lead + 1;
+
+		int leftyoffset = cheight * (tmpjoin->leftcolumn) +
+			(cheight / 2) + offsety;
+
+		int rightyoffset = cheight * (tmpjoin->rightcolumn) + 
+			(cheight / 2) + offsety;
 
 		if (leftyoffset > tleftsize.y)
 			leftyoffset = tleftsize.y;
@@ -389,28 +393,9 @@ void myClientWindow::OnPaint(wxPaintEvent& event)
 		dc.DrawLine(start, finish);
 	
 		// Win32: Hit Testing Lines and Curves
-		dc.DrawRotatedText(tmpleft->m_columnlist->
-			GetString(tmpjoin->leftcolumn), start, angle);
-
-		int tw, th;
-		dc.GetTextExtent(tmpright->m_columnlist->
-			GetString(tmpjoin->rightcolumn), &tw, &th);
-
-		float xPlot = (tw * -1.0 * cos(atan(slope)));
-		float  yPlot = (tw * -1.0 * sin(atan(slope)));
-
-		wxString tmp = wxString::Format( "%0.2f, %0.2f", xPlot, yPlot );
-		tmpparent->SetStatusText(tmp, frmQueryBuilder::STATUSPOS_MSGS);
-
-		dc.DrawRotatedText(tmpright->m_columnlist->
-				   GetString(tmpjoin->rightcolumn), (wxCoord)xPlot + finish.x, 
-				   (wxCoord)yPlot + finish.y, angle);
-
 	}
 
 	dc.SetPen(wxNullPen);
-	dc.SetFont(wxNullFont);
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -425,8 +410,74 @@ void frmQueryBuilder::OnExit(wxCommandEvent& WXUNUSED(event))
 ////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnAddTableView()
 {
-	this->addtableview->InitLists();
-	addtableview->Show();  
+	// Setup the add table/view dialog
+	dlgAddTableView addtableview(this, m_database);
+
+	// Initialize the data
+	addtableview.InitLists();
+
+	// Show the dialog
+	int result = addtableview.ShowModal();  
+
+	// Process the result
+	if (result == wxID_OK)
+	{
+
+		// Grab the selected items
+		wxArrayInt tableselections, viewselections;
+		addtableview.m_tablelist->GetSelections( tableselections );
+		addtableview.m_viewlist->GetSelections( viewselections );
+
+		// Find out how many tables there are to add
+		int tblcount = tableselections.GetCount();
+		int viewcount = viewselections.GetCount();
+
+		int si;
+
+		// Add the tables to the MDI Client Window
+		for ( si = 0; si < tblcount; si++ )
+		{
+			// Grab the item number and the name of the table
+			int itemno = tableselections.Item( si );
+			wxString tmpname = addtableview.m_tablelist->GetString( itemno );
+
+			// Check to see if that table already exists, and if it does
+			// then we need to get the correct alias for it
+			wxString tmpalias = GetTableViewAlias(tmpname);
+
+			// Create the child frames
+			frmChildTableViewFrame *tmpframe = 
+				new frmChildTableViewFrame(this, tmpname, 
+				tmpalias, m_database);
+
+			m_children.Add(tmpframe);
+			m_names.Add(tmpname);
+			m_aliases.Add(tmpalias);
+			UpdateGridTables(NULL);
+		}
+
+		// Add the views to the MDI Client Window
+		for ( si = 0; si < viewcount; si++ )
+		{
+			// Grab the item number and the name of the view
+			int itemno = viewselections.Item( si );
+			wxString tmpname = addtableview.m_viewlist->GetString( itemno );
+
+			// Check to see if that view already exists, and if it does
+			// then we need to get the correct alias for it
+			wxString tmpalias = GetTableViewAlias(tmpname);
+
+			// Create the child frames
+			frmChildTableViewFrame *tmpframe = 
+				new frmChildTableViewFrame(this, tmpname, 
+				tmpalias, m_database);
+
+			m_children.Add(tmpframe);
+			m_names.Add(tmpname);
+			m_aliases.Add(tmpalias);
+			UpdateGridTables(NULL);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -441,6 +492,14 @@ void frmQueryBuilder::OnSize(wxSizeEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::OnRightClick(wxPoint& point)
 {
+	// Get mouse point data
+	wxPoint origin = GetClientAreaOrigin();
+
+	// Because this Tree is inside a vertical splitter, we
+	// must compensate for the size of the other elements
+	point.x += origin.x;
+	point.y += origin.y;	
+
     // This handler will display a popup menu for the item
 	PopupMenu(datagramContextMenu, point);
 }
@@ -787,6 +846,151 @@ void frmQueryBuilder::OnNotebookPageChanged(wxNotebookEvent& event)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+int frmQueryBuilder::FindLeftmostTable()
+{
+	int tablecount = m_aliases.GetCount();
+	int joincount = m_joins.GetCount();
+	int si, sj;
+
+	wxArrayInt count;
+
+	for ( si = 0; si < tablecount; si++ )
+		count[si] = 0;
+
+	for ( si = 0; si < joincount; si++ )
+	{
+		JoinStruct *tmpjoin = NULL;
+		tmpjoin = (JoinStruct *)m_joins[si];
+		wxString tmpleft = tmpjoin->left;
+		wxString tmpright = tmpjoin->right;
+
+		for (sj = 0; sj < tablecount; sj++)
+		{
+			if (tmpleft == m_names[sj])
+				count[sj]++;
+			if (tmpright == m_names[sj])
+				count[sj] = -1;
+		}
+	}
+
+	int leftmost = -1;
+	int leftmostcount = 0;
+	for ( si = 0; si < tablecount; si++ )
+	{
+		if (count[si] > leftmostcount)
+		{
+			leftmostcount = count[si];
+			leftmost = si;
+		}
+	}
+
+	return leftmost;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+bool frmQueryBuilder::IsTableLeftOnly(wxString tablename)
+{
+	int joincount = m_joins.GetCount();
+	int si;
+
+	int count = 0;
+
+	for ( si = 0; si < joincount; si++ )
+	{
+		JoinStruct *tmpjoin = NULL;
+		tmpjoin = (JoinStruct *)m_joins[si];
+		wxString tmpleft = tmpjoin->left;
+		wxString tmpright = tmpjoin->right;
+
+		if (tmpleft == tablename)
+			count++;
+		if (tmpright == tablename)
+		{
+			count = -1;
+			break;
+		}
+	}
+
+	if (count == -1)
+		return FALSE;
+
+	return TRUE;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// RECURSIVE!
+////////////////////////////////////////////////////////////////////////////////
+wxString frmQueryBuilder::BuildTableJoin(int table, int indent = 0)
+{
+	wxString tablename = m_names[table];
+	wxString tablealias = m_aliases[table];
+
+	wxString joinclause = tablename;
+	if (tablename!=tablealias)
+		joinclause += wxT(" ") + tablealias;
+
+	int joincount = m_joins.GetCount();
+	int tablecount = m_aliases.GetCount();
+
+	int si;
+
+	wxString indentstr = wxT("");
+	for ( si = 0; si < indent; si++ )
+	{
+		indentstr += wxT("\t");
+	}
+
+	wxString nested = wxT("");
+
+	for ( si = 0; si < joincount; si++ )
+	{
+		JoinStruct *tmpjoin = NULL;
+		tmpjoin = (JoinStruct *)m_joins[si];
+
+		if (tmpjoin->left == tablealias)
+		{
+			int sj;
+
+			for (sj = 0; sj < tablecount; sj++)
+			{
+				wxString tmptable1 = m_aliases[sj];
+
+				if (tmptable1 == tmpjoin->right && sj != table)
+				{
+					nested = BuildTableJoin(sj, ++indent);
+					break;
+				}
+			}
+
+			joinclause += wxT(" ") + tmpjoin->jointype +
+				wxT(" ") + nested +
+				wxT(" ") + wxT("ON\n\t") + 
+				indentstr +	wxT("(");
+
+			for (sj = 0; sj < tmpjoin->conditionct; sj++)
+			{
+				if (sj == 0) 
+					joinclause += wxT("\n\t\t") + indentstr + 
+						tmpjoin->conditions[sj];
+				else
+					joinclause += tmpjoin->joinop + wxT("\n\t\t") + 
+						indentstr + tmpjoin->conditions[sj];
+			}
+			
+			joinclause += wxT("\n\t") + indentstr + wxT(")");
+		}
+	}
+
+	if (!nested.IsEmpty())
+		joinclause = wxT("\n") + indentstr + wxT("(\n\t") + indentstr
+			+ joinclause + wxT("\n") + indentstr + wxT(")");
+
+	return joinclause;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::BuildQuery()
 {
 	// Make the query blank
@@ -796,60 +1000,89 @@ void frmQueryBuilder::BuildQuery()
 	wxString querystr = wxT("SELECT");
 	wxString tablestr = wxT("");
 	wxString columnstr = wxT("");
+	wxString joinstr = wxT("");
 	wxString conditionstr = wxT("");
 
 	// Get the number of rows
 	int rows = design->GetNumberRows();
+	int joincount = m_joins.GetCount();
 
-	wxString *tables = new wxString[rows];
-	wxString *tablealiases = new wxString[rows];
+	wxArrayString tables;
+
 	wxString tmptable1, tmptable2;
 	int tblcount = 0;
 	int si;
 
-	// Grab all the tables and cull the duplicates
-	for ( si = 0; si < rows; si++ )
-	{
-		tmptable1 = design->GetCellValue(si, 1);
-	
-		int found = 0;
-		for ( int sj = 0; sj < tblcount; sj++ )
-		{
-			tmptable2 = tables[sj];
+	wxArrayString righttables;
 
-			if ( tmptable1 == tmptable2 )
+	// Make sure there are no double right joins
+	for ( si = 0; si < joincount; si++ )
+	{
+		JoinStruct *tmpjoin = NULL;
+		tmpjoin = (JoinStruct *)m_joins[si];
+
+		wxString tmptable1 = tmpjoin->right;
+
+		int sj;
+		int rightcount = righttables.GetCount();
+		int found = 0;
+		for ( sj = 0; sj < rightcount; sj++ )
+		{
+			wxString tmptable2 = righttables[sj];
+
+			if (tmptable1==tmptable2)
 			{
 				found = 1;
 				break;
 			}
 		}
 
-		if ( found == 0 )
+		if (found)
 		{
-			int aliascount = this->m_aliases.GetCount();
+			wxLogError(wxT("Double right-handed joins are not allowed.\n"
+				"You must redraw your joins so that \"") + tmptable1 +  
+				wxT("\"\ndoes not appear on the righthand side \n"
+				"more than once. \n\n"
+				"Try switching it to the lefthand side in one\n"
+				"or more relationships."));
+			return;
+		}
+		else
+			righttables.Add(tmptable1);
+	}
 
-			// Locate the table alias
-			for ( int sj = 0; sj < aliascount; sj++ )
-			{
-				if ( tmptable1 == m_aliases[sj] &&
-					m_aliases[sj] != m_names[sj] )
-				{
-					tablealiases[tblcount] = m_names[sj] + " ";
-					break;
-				}
-			}
+	int tablecount = m_aliases.GetCount();
 
-			tables[tblcount++] = tmptable1;
+	// Grab all the tables and cull the duplicates
+	for ( si = 0; si < tablecount; si++ )
+	{
+		tmptable1 = m_aliases[si];
+
+		if (IsTableLeftOnly(tmptable1))
+		{
+			tables.Add(tmptable1);
+			tblcount++;
 		}
 	}
 
 	// Iterate through the rows to build the table list
 	for ( si = 0; si < tblcount; si++ )
 	{
-		if ( si==0 ) 
-			tablestr += wxT("\n\t") + tablealiases[si] + tables[si];
+		int tablecount = m_aliases.GetCount();
+
+		wxString joinclause;
+		int sj;
+		for (sj = 0; sj < tablecount; sj++)
+		{
+			wxString tmptable1 = m_aliases[sj];
+			if (tmptable1 == tables[si])		
+				joinclause = this->BuildTableJoin(sj);
+		}
+
+		if (si == 0) 
+			tablestr += joinclause;
 		else
-			tablestr += wxT(", \n\t") + tablealiases[si] + tables[si];
+			tablestr += wxT(", ") + joinclause;
 	}
 
 	// Iterate through the rows to build the column list
@@ -879,7 +1112,7 @@ void frmQueryBuilder::BuildQuery()
 
 		if (!expression.length() && !(table.length() || column.length()))
 		{
-			wxMessageBox("Error: No table or no column");
+			wxLogError("Error: No table or no column");
 			return;
 		}
 
@@ -911,19 +1144,23 @@ void frmQueryBuilder::BuildQuery()
 			columnstr += wxT(", \n\t") + expression;
 	}
 
+	if (columnstr.IsEmpty())
+	{
+		wxLogError(wxT("You must add at least on column."));
+		return;
+	}
+
 	if (conditionstr.length())
 		conditionstr = wxT("\nWHERE \n(\n") + conditionstr + wxT("\n)");
 
 	querystr += columnstr + 
-		wxT("\nFROM") + 
+		wxT("\nFROM ") + 
 		tablestr +
+		joinstr +
 		conditionstr;
 
 	this->sql->SetText(querystr);
 
-	// Cleanup
-	delete[] tables;
-	delete[] tablealiases;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1366,21 +1603,27 @@ void frmQueryBuilder::OnExecute(wxCommandEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 void frmQueryBuilder::DeleteChild(wxString talias)
 {
+	int si;
+
 	// Get the count of children
 	int count = m_children.GetCount();
 
+	wxArrayPtrVoid new_children;
+	wxArrayString new_names;
+	wxArrayString new_aliases;
+
 	// Iterate through the children
-	for (int si = 0; si < count; si++)
+	for (si = 0; si < count; si++)
 	{
 		void *tmpchild = m_children[si];
 
 		// If the child is not null
-		if (tmpchild!=NULL)
+		if (tmpchild != NULL)
 		{
 			wxString tmpalias = m_aliases[si];
 
 			// If the aliases match 
-			if (tmpalias==talias)
+			if (tmpalias == talias)
 			{
 				// Make the child null and clear its strings
 				m_children[si] = NULL;
@@ -1404,4 +1647,65 @@ void frmQueryBuilder::DeleteChild(wxString talias)
 			}
 		} 
 	} 
+
+	for (si = 0; si < count; si++)
+	{
+		void *tmpchild = m_children[si];
+
+		if (tmpchild != NULL)
+		{
+			new_children.Add(tmpchild);
+			new_names.Add(m_names[si]);
+			new_aliases.Add(m_aliases[si]);
+		}
+	}
+
+	// Replace the lists with the new, packed lists
+	m_children = new_children;
+	m_names = new_names;
+	m_aliases = new_aliases;
+
+	wxArrayPtrVoid new_joins;
+
+	// How many joins are there?
+	int joincount = m_joins.GetCount();
+
+	// Delete all the joins associated with this 
+	for (si = 0; si < joincount; si++)
+	{
+		JoinStruct *tmpjoin = NULL;
+		tmpjoin = (JoinStruct *)m_joins[si];
+
+		if (tmpjoin->left != talias && tmpjoin->right != talias)
+		{
+			new_joins.Add(tmpjoin);
+		}
+	}
+
+	// Replace the join list with the new, packed list
+	m_joins = new_joins;
+
 } 
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+bool DnDDesign::OnDropText(wxCoord x, wxCoord y, const wxString& text)
+{
+	frmQueryBuilder *tmpparent = 
+		(frmQueryBuilder*)m_frame;
+
+	// Extract the left table name/column name
+	wxStringTokenizer tmptok(text, ".");
+	wxString lefttable = tmptok.GetNextToken();
+	wxString column = tmptok.GetNextToken();
+
+	frmChildTableViewFrame *tmpframe =
+		tmpparent->GetFrameFromAlias(lefttable);
+
+	int item = tmpframe->m_columnlist->FindItem(-1, column);
+
+	tmpparent->AddColumn(tmpframe, item);
+
+	return TRUE;
+}
