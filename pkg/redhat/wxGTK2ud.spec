@@ -63,7 +63,7 @@ popd
 
 %install
 rm -rf %{buildroot}
-makeinstall
+make install
 
 pushd contrib/src/
         %makeinstall -C xrc
