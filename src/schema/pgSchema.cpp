@@ -39,7 +39,7 @@ wxString pgSchema::GetSql(wxTreeCtrl *browser)
         sql = wxT("-- Schema: \"") + GetName() + wxT("\"\n")
             + wxT("CREATE SCHEMA ") + qtIdent(GetName()) 
             + wxT("\n  AUTHORIZATION ") + qtIdent(GetOwner()) + wxT(";\n")
-            + GetGrant(GetTypeName(), true)
+            + GetGrant(wxT("UC"), GetTypeName(), true)
             + GetCommentSql();
     }
     return sql;

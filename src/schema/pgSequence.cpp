@@ -70,7 +70,7 @@ wxString pgSequence::GetSql(wxTreeCtrl *browser)
         if (GetCycled())
             sql += wxT("\n  CYCLE");
         sql += wxT(";\n")
-            + GetGrant()
+            + GetGrant(wxT("arwdRxt"), wxT("TABLE"))
             + GetCommentSql();
     }
 

@@ -99,7 +99,7 @@ public:
     virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
 
     virtual wxString GetSql(wxTreeCtrl *browser) { return wxT(""); }
-    wxString GetGrant(const wxString& grantFor=wxT(""), bool noOwner=false);
+    wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""), bool noOwner=false);
     wxString GetCommentSql();
     pgDatabase *GetDatabase();
     pgConn *GetConnection();
@@ -137,7 +137,7 @@ protected:
     virtual void ShowTreeDetail(wxTreeCtrl *browser, frmMain *form=0, wxListCtrl *properties=0, wxListCtrl *statistics=0, ctlSQLBox *sqlPane=0)
         =0;
 
-    wxString GetPrivileges(const wxString&acl, const wxString& grantFor, const wxString& user, bool noOwner);
+    wxString GetPrivileges(const wxString& allPattern, const wxString& acl, const wxString& grantFor, const wxString& user, bool noOwner);
     bool expandedKids, needReread;
     wxString sql;
     

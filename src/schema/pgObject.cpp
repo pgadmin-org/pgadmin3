@@ -131,11 +131,11 @@ wxString pgObject::GetCommentSql()
 
 
 
-wxString pgObject::GetPrivileges(const wxString& str, const wxString& grantOnType, const wxString& user, bool noOwner)
+wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str, const wxString& grantOnType, const wxString& user, bool noOwner)
 {
     wxString rights;
 
-    if (str == wxT("arwdRxt"))
+    if (str == allPattern)
         rights = wxT("ALL");
     else
     {
@@ -213,7 +213,7 @@ wxString pgObject::GetPrivileges(const wxString& str, const wxString& grantOnTyp
 }
 
 
-wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
+wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantOnType, bool noOwner)
 {
     wxString grant, str, user, grantOnType;
     if (_grantOnType.IsNull())
@@ -261,9 +261,9 @@ wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
             }
 
             if (!aclWithoutGrant.IsEmpty() || aclWithGrant.IsEmpty())
-                grant += GetPrivileges(aclWithoutGrant, grantOnType, user, noOwner) + wxT(";\n");
+                grant += GetPrivileges(allPattern, aclWithoutGrant, grantOnType, user, noOwner) + wxT(";\n");
             if (!aclWithGrant.IsEmpty())
-                grant += GetPrivileges(aclWithGrant, grantOnType, user, noOwner) + wxT(" WITH GRANT OPTION;\n");
+                grant += GetPrivileges(allPattern, aclWithGrant, grantOnType, user, noOwner) + wxT(" WITH GRANT OPTION;\n");
         }
     }
     return grant;

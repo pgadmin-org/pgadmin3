@@ -42,7 +42,7 @@ wxString pgLanguage::GetSql(wxTreeCtrl *browser)
             sql += wxT("TRUSTED ");
         sql += wxT("PROCEDURAL LANGUAGE '") + GetName() 
             +  wxT("'\n  HANDLER ") + GetHandlerProc() + wxT(";\n")
-            +  GetGrant(GetTypeName(), true);
+            +  GetGrant(wxT("-"), GetTypeName(), true);
 
     }
     return sql;

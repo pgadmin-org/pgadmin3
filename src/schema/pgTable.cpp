@@ -79,8 +79,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
                         sql += wxT("  ") + column->GetQuotedIdentifier() + wxString(" ")
                             + column->GetFullType();
 
-                        if (column->GetDefault() != wxT(" "))
-                            sql += wxT(" DEFAULT ") + column->GetDefault();
+                        AppendIfFilled(sql,  wxT(" DEFAULT "), column->GetDefault());
 
                         if (column->GetNotNull())
                             sql += wxT(" NOT NULL");
@@ -203,7 +202,7 @@ wxString pgTable::GetSql(wxTreeCtrl *browser)
             sql += wxT("WITH OIDS;\n");
         else
             sql += wxT("WITHOUT OIDS;\n")
-                + GetGrant() 
+                + GetGrant(wxT("arwdRxt")) 
                 + GetCommentSql()
                 + wxT("\n\n");
 

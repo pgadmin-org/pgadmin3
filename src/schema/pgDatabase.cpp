@@ -88,7 +88,8 @@ wxString pgDatabase::GetSql(wxTreeCtrl *browser)
         while (vars.HasMoreTokens())
             sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
                 +  wxT(" SET ") + vars.GetNextToken() + wxT(";\n");
-        sql += GetCommentSql();
+        sql += GetGrant(wxT("CT"))
+            +  GetCommentSql();
     }
     return sql;
 }
