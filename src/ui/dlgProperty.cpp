@@ -1070,6 +1070,7 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                     wxString name=str.BeforeLast('=');
                     wxString value;
 
+					connection = obj->GetConnection();
                     if (connection->BackendMinimumVersion(7, 4))
                         value=str.Mid(name.Length()+1).BeforeLast('/');
                     else
