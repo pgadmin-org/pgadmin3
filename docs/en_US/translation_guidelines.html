@@ -1,0 +1,81 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pg/stylesheet.css">
+<title>Translation guidelines</title>
+</head>
+
+<!--
+div.Section1
+	{page:Section1;}
+ li.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	margin-left:0cm; margin-right:0cm; margin-top:0cm}
+-->
+
+<body>
+
+<h3>Translation guidelines</h3>
+
+<p>
+	Traditionaly, it is hard to translate strings dealing with database technologies. We will first try to outline the difficulties of translation, before proposing writer and translator guidelines.
+</p>
+
+<h3>Translation problems</h3>
+<p>
+	Simple Query Language (SQL) is based on the English language. SQL queries cannot be translated into another language. For example, "SELECT * FROM table_foo WHERE clause;" will not be translated.
+</p>
+
+<p>
+	Sometimes, the border between the SQL language and the English language is not obvious, because SQL was designed to be close as possible to natural language. For example, there are three possible translations for "Create View" into French, depending on the context: "Créer vue" or "Create View" or "Créer Vue".
+</p>
+
+<p>The difficulty for the user is to keep in mind the correspondance between English and translated words. In our example "View" is translated into "Vue", which is an easy correspondance (called "translation pair" afterwards). But with dozens of translation pairs like "Trigger/Déclancheur", "Row/Ligne", "Column/Colonne", you need to keep in mind many informations and turn yourself into a translator, which was not the aim of the translation.
+</p>
+
+<p>
+  In some languages, translations for SQL keywords or objects do not exist yet, because the community of users is not large enought to define a language consensus. In such cases, translators try to innovate, creating translated words which enrich vocabulary but do not clarify the software interface. The problem is that other translators may not be aware of the new vocabulary, trying to impose their own translation pair choices.
+</p>
+
+<p>
+  As a result, translations lack consistency, users have difficulties to find the corresponding SQL keywords to write their queries and finally ... turn to the English version of the software.
+</p>
+
+<p>
+	Also, we should keep in mind that English has very few grammar rules compared to other European languages, which have complex cases (feminin/neutral/masculin). Non-european languages sometimes do not have verbs, adjectives and others aggregate nouns. This causes many translations problems when programmers try to build sentences like "Create new %s" to handle cases like "Create a new View", "Create a new Table", etc... Let's study this example in more details:
+</p>
+
+<ul>
+	<li>"Create a new %s" is translated into French by "Créer nouveau/nouvelle %s" to handle feminin/masculin cases, which is not very obvious. In German, "%s" will not be replaced safely by a noun, because it must be derivated in accusative case. In several European languages, the replacement of "%s" by a noun may fail.
+  <li>Some aggregative languages will not express the two words "new %s" separately but will join them, either writing "%snew" or "new%s" in a single noun, with derivation and cases. Hungarian is an example where "%s" constructions will sometimes fail.
+ <li>Also, in non-European languages, adjectives like "new" or verbs like "create" may not exist and be expressed by a suffix or a prefix. In such cases, translating "Create a new %s" is simply impossible.
+ </li>
+</ul>
+
+<p>
+	When you start translating pgAdmin3, PhpPgAdmin3 or PostgreSQL into your mother language, you will soon notice this kind of problem. The only solution is to define arbitrary writing and translation guidelines and to stick to them.
+</p>
+
+<h3>Writing guidelines</h3>
+
+<p>
+	We are proposing a very simple solution based on the idea that a writer should always try to make a clear difference between SQL keywords and natural language. If possible, SQL keywords and database objects should be banned from natural language or written in capital letters. For example, "Create a new view" should be written "Create a new VIEW".
+</p>
+
+<p>
+	Avoid the use of "%s" unless the replaced sting is unvariable: a product name,a username, a password, etc... As such, "Successfully connected on host: %s" "User %s was disconnected" are valid strings.
+</p>
+
+<h3>Translator guidelines</h3>
+
+<p>
+  To be written ...
+</p>
+
+</body>
+
+</html>
