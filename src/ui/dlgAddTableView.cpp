@@ -117,11 +117,9 @@ void dlgAddTableView::InitLists()
 	// We need to know if we're going to show system objects
 	wxString sysobjstr;
 	if (!settings->GetShowSystemObjects())
-		sysobjstr = wxT("JOIN (SELECT oid,nspname FROM pg_namespace ")
-				wxT("WHERE nspname <> 'pg_catalog' AND ")
-				wxT("nspname <> 'pg_toast' AND ")
-				wxT("nspname NOT LIKE 'pg_temp_%' ) b ")
-				wxT("ON a.relnamespace = b.oid ");
+		sysobjstr = wxT("AND nspname <> 'pg_catalog' ")
+				wxT("AND nspname <> 'pg_toast' ")
+				wxT("AND nspname NOT LIKE 'pg_temp_%' ");
 
 	// Clear the lists
 	m_tablelist->Clear();
@@ -130,32 +128,32 @@ void dlgAddTableView::InitLists()
     if (m_database->Connect() == PGCONN_OK) {
 
 		wxString querystr = 
-			wxT("SELECT a.relname FROM pg_class a ") +
-				sysobjstr + 
-				wxT("WHERE a.relkind='r' ")
+			wxT("SELECT quote_ident(nspname) || '.' || quote_ident(a.relname) AS tablename FROM pg_class a, pg_namespace b ")
+				wxT("WHERE a.relnamespace = b.oid AND a.relkind='r' ") +
+                sysobjstr +
 				wxT("ORDER BY lower(a.relname)");
 
 		// tables
 		pgSet *tables = m_database->ExecuteSet(querystr);
 
 		while (!tables->Eof()) {
-			m_tablelist->Append(tables->GetVal(wxT("relname")));
+			m_tablelist->Append(tables->GetVal(wxT("tablename")));
 			tables->MoveNext();
 		}
 
 		delete tables;
 
 		querystr = 
-			wxT("SELECT a.relname FROM pg_class a ") +
-				sysobjstr + 
-				wxT("WHERE a.relkind='v' ") 
+			wxT("SELECT quote_ident(nspname) || '.' || quote_ident(a.relname) AS viewname FROM pg_class a, pg_namespace b ")
+				wxT("WHERE a.relnamespace = b.oid AND a.relkind='v' ") +
+                sysobjstr + 
 				wxT("ORDER BY lower(a.relname)");
 
 		// views
 		pgSet *views = m_database->ExecuteSet(querystr);
 
 		while (!views->Eof()) {
-			m_viewlist->Append(views->GetVal(wxT("relname")));
+			m_viewlist->Append(views->GetVal(wxT("viewname")));
 			views->MoveNext();
 		}
 
