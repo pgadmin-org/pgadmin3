@@ -1,4 +1,4 @@
-%define minor_version 20030831
+%define minor_version 20031001
 %define major_version 2.5
 
 Summary: The GTK+ 2 port of the wxWindows library
