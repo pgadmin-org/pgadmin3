@@ -29,10 +29,8 @@ public:
     wxString GetUsername();
     wxString GetPassword();
     long GetPort();
-    bool GetCancelled();
     
 private:
-    bool bCancelled;
     void OK();
     void Cancel();
     DECLARE_EVENT_TABLE()

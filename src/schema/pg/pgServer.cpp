@@ -44,11 +44,9 @@ int pgServer::Connect() {
 
     wxLogInfo(wxT("Getting connection details..."));
     frmConnect *winConnect = new frmConnect(winParent);
-    winConnect->Show(TRUE);
+    ;
 
-	wxLogInfo("If you can see this in the log, but no button has been pressed, then the dialogue wasn't modal!");
-	
-    if (winConnect->GetCancelled()) {
+    if (winConnect->ShowModal() == 1) {
         delete winConnect;
         return PGCONN_ABORTED;
     }

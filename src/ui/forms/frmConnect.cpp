@@ -47,16 +47,12 @@ frmConnect::~frmConnect()
 
 void frmConnect::OK()
 {
-	wxLogInfo("User clicked OK...");
-    bCancelled = FALSE;
-    this->Show(FALSE);
+    this->EndModal(0);
 }
 
 void frmConnect::Cancel()
 {
-	wxLogInfo("User clicked Cancel...");
-    bCancelled = TRUE;
-    this->Show(FALSE);
+    this->EndModal(1);
 }
 
 wxString frmConnect::GetServer()
@@ -82,9 +78,4 @@ wxString frmConnect::GetPassword()
 long frmConnect::GetPort()
 {
     return atoi(XRCCTRL(*this, "txtPort", wxTextCtrl)->GetValue());
-}
-
-bool frmConnect::GetCancelled()
-{
-    return bCancelled;
 }
