@@ -94,6 +94,10 @@ LINK32=link.exe
 # PROP Default_Filter "c,cpp"
 # Begin Source File
 
+SOURCE=.\ui\controls\ctlSQLBox.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\forms\frmAbout.cpp
 # End Source File
 # Begin Source File
@@ -121,6 +125,10 @@ SOURCE=.\pgAdmin3.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h"
+# Begin Source File
+
+SOURCE=.\ui\controls\ctlSQLBox.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\ui\forms\frmAbout.h

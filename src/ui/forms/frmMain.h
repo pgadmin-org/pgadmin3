@@ -8,10 +8,15 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+// wxWindows headers
+#include <wx/wx.h>
 #include <wx/treectrl.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
-#include <wx/stc/stc.h>
+#include <wx/splitter.h>
+
+// App headers
+#include "../controls/ctlSQLBox.h"
 
 // Class declarations
 class frmMain : public wxFrame
@@ -29,7 +34,7 @@ private:
   wxListCtrl* lvProperties;
   wxListCtrl* lvStatistics;
   wxNotebook* nbListViews;
-  wxStyledTextCtrl* txtSQLPane;
+  ctlSQLBox* txtSQLPane;
   DECLARE_EVENT_TABLE()
 };
 

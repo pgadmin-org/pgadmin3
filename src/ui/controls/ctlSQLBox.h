@@ -4,15 +4,11 @@
 // Copyright (C) 2002, The pgAdmin Development Team
 // This software is released under the pgAdmin Public Licence
 //
-// pgAdmin3.h - The main application header
+// ctlSQLBox.h - SQL syntax highlighting textbox
 //
 //////////////////////////////////////////////////////////////////////////
 
-// wxWindows headers
-#include <wx/wx.h>
-
-// Application Version
-#define VERSION "1.0.0 Devel"
+#include <wx/stc/stc.h>
 
 #define SQL_KEYWORDS "ALTER COMMENT CREATE DELETE DROP EXPLAIN GRANT INSERT REVOKE \
                       SELECT UPDATE VACUUM AGGREGATE CONSTRAINT DATABASE FUNCTION GROUP INDEX \
@@ -23,12 +19,9 @@
                       ON OR ORDER THEN USING WHEN WHERE"
 
 // Class declarations
-class pgAdmin3 : public wxApp
+class ctlSQLBox : public wxStyledTextCtrl
 {
 public:
-  virtual bool OnInit();
+  ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
 };
-
-
-
 
