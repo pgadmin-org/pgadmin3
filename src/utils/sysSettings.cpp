@@ -56,7 +56,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
         if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
             sqlHelpSite += wxT("/");
     }
-    Read(wxT("Proxy"), &proxy, wxT(""));
+    Read(wxT("Proxy"), &proxy, wxGetenv(wxT("HTTP_PROXY")));
     SetProxy(proxy);
 
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
