@@ -30,40 +30,6 @@ BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2
 %description
 pgAdmin3 is the graphical administration interface of PostgreSQL.
 
-#
-# German localisation
-#
-%package i18n-German
-Summary: pgAdmin3 German localisation files.
-Group: Applications/Databases
-Requires: %{name} = %{version}-%{release}
-
-%description i18n-German
-pgAdmin3 German translation by Andreas Pflug <andreas.pflug@web.de>.
-
-#
-# French localisation
-#
-%package i18n-French
-Summary: pgAdmin3 French localisation files.
-Group: Applications/Databases
-Requires: %{name} = %{version}-%{release}
-
-%description i18n-French
-pgAdmin3 French translation by Jean-Michel POURE <jm.poure@freesurf.fr>.
-
-#
-# Japanese localisation
-#
-%package i18n-Japanese
-Summary: pgAdmin3 French localisation files.
-Group: Applications/Databases
-Requires: %{name} = %{version}-%{release}
-
-%description i18n-Japanese
-pgAdmin3 japanese translation by Hiroshi Saito <saito@inetrt.skcapi.co.jp>.
-
-
 %prep
 %setup -q
 
@@ -81,21 +47,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root)
 %{withpgsql}/bin
-%{withpgsql}/share/pgadmin3/tips.txt
-%{withpgsql}/share/pgadmin3/docs
-%{withpgsql}/share/pgadmin3/ui/common
-
-%files i18n-German
-%defattr(-, root, root)
-%{withpgsql}/share/pgadmin3/ui/de_DE
-
-%files i18n-French
-%defattr(-, root, root)
-%{withpgsql}/share/pgadmin3/ui/fr_FR
-
-%files i18n-Japanese
-%defattr(-, root, root)
-%{withpgsql}/share/pgadmin3/ui/ja_JP
+%{withpgsql}/share
 
 %changelog
 * Mon Jun 10 2003 Jean-Michel POURE <jm.poure@freesurf.fr>
