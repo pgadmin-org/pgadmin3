@@ -211,7 +211,7 @@ float pgConn::GetVersionNumber()
 
 	if (sscanf(GetVersionString(), "%*s %d.%d", &major, &minor) >= 2)
 	{
-		version.Printf("%d%s%d", major, decsep, minor);
+		version.Printf("%d%s%d", major, decsep.c_str(), minor);
 	}
 	return (float) atof(version.c_str());
 }
