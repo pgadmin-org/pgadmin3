@@ -373,8 +373,10 @@ void frmMain::Refresh(pgObject *data)
         else
         {
             wxLogInfo(wxT("No object to replace: vanished after refresh."));
-            browser->SelectItem(browser->GetItemParent(currentItem));
-            browser->Delete(currentItem);
+            wxTreeItemId delItem=currentItem;
+            currentItem=browser->GetItemParent(currentItem);
+            browser->SelectItem(currentItem);
+            browser->Delete(delItem);
         }
     }
 	execSelChange(currentItem);
