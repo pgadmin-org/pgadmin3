@@ -149,8 +149,8 @@ pgObject *pgDomain::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, c
 
             domain->iSetOid(domains->GetOid(wxT("oid")));
             domain->iSetOwner(domains->GetVal(wxT("domainowner")));
-            domain->iSetBasetype(domains->GetOid(wxT("basetype")));
-            domain->iSetBasetypeOid(domains->GetBool(wxT("typbasetype")));
+            domain->iSetBasetype(domains->GetVal(wxT("basetype")));
+            domain->iSetBasetypeOid(domains->GetOid(wxT("typbasetype")));
             domain->iSetComment(domains->GetVal(wxT("description")));
             long typmod=domains->GetLong(wxT("typtypmod"));
 
