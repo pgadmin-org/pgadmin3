@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Release 7.3.5</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 7.3.6"
+HREF="release-7-3-6.html"><LINK
+REL="NEXT"
+TITLE="Release 7.3.4"
+HREF="release-7-3-4.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-08-13T19:30:48"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-3-6.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-4.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-3-5"
+>E.7. Release 7.3.5</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2003-12-03</P
+></BLOCKQUOTE
+></DIV
+><P
+>    This has a variety of fixes from 7.3.4.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN65297"
+>E.7.1. Migration to version 7.3.5</A
+></H2
+><P
+>     A dump/restore is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>not</I
+></SPAN
+> required for those
+     running 7.3.*.
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN65301"
+>E.7.2. Changes</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+>Force zero_damaged_pages to be on during recovery from WAL</P
+></LI
+><LI
+><P
+>Prevent some obscure cases of <SPAN
+CLASS="QUOTE"
+>"variable not in subplan target lists"</SPAN
+></P
+></LI
+><LI
+><P
+>Force stats processes to detach from shared memory, ensuring cleaner shutdown</P
+></LI
+><LI
+><P
+>Make PQescapeBytea and byteaout consistent with each other (Joe)</P
+></LI
+><LI
+><P
+>Added missing SPI_finish() calls to dblink's get_tuple_of_interest() (Joe)</P
+></LI
+><LI
+><P
+>Fix for possible foreign key violation when rule rewrites INSERT (Jan)</P
+></LI
+><LI
+><P
+>Support qualified type names in PL/Tcl's spi_prepare command (Jan)</P
+></LI
+><LI
+><P
+>Make pg_dump handle a procedural language handler located in pg_catalog</P
+></LI
+><LI
+><P
+>Make pg_dump handle cases where a custom opclass is in another schema</P
+></LI
+><LI
+><P
+>Make pg_dump dump binary-compatible casts correctly (Jan)</P
+></LI
+><LI
+><P
+>Fix insertion of expressions containing subqueries into rule bodies</P
+></LI
+><LI
+><P
+>Fix incorrect argument processing in clusterdb script (Anand Ranganathan)</P
+></LI
+><LI
+><P
+>Fix problems with dropped columns in plpython triggers</P
+></LI
+><LI
+><P
+>Repair problems with to_char() reading past end of its input string (Karel)</P
+></LI
+><LI
+><P
+>Fix GB18030 mapping errors (Tatsuo)</P
+></LI
+><LI
+><P
+>Fix several problems with SSL error handling and asynchronous SSL I/O</P
+></LI
+><LI
+><P
+>Remove ability to bind a list of values to a single parameter in JDBC
+(prevents possible SQL-injection attacks)</P
+></LI
+><LI
+><P
+>Fix some errors in HAVE_INT64_TIMESTAMP code paths</P
+></LI
+><LI
+><P
+>Fix corner case for btree search in parallel with first root page split</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-3-6.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-3-4.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 7.3.6</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.3.4</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

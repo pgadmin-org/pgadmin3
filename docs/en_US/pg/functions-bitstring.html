@@ -1,0 +1,461 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Bit String Functions and Operators</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Functions and Operators"
+HREF="functions.html"><LINK
+REL="PREVIOUS"
+TITLE="Binary String Functions and Operators"
+HREF="functions-binarystring.html"><LINK
+REL="NEXT"
+TITLE="Pattern Matching"
+HREF="functions-matching.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-08-13T19:30:48"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-binarystring.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Functions and Operators</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-matching.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FUNCTIONS-BITSTRING"
+>9.6. Bit String Functions and Operators</A
+></H1
+><A
+NAME="AEN8228"
+></A
+><P
+>    This section describes functions and operators for examining and
+    manipulating bit strings, that is values of the types
+    <TT
+CLASS="TYPE"
+>bit</TT
+> and <TT
+CLASS="TYPE"
+>bit varying</TT
+>.  Aside from the
+    usual comparison operators, the operators
+    shown in <A
+HREF="functions-bitstring.html#FUNCTIONS-BIT-STRING-OP-TABLE"
+>Table 9-10</A
+> can be used.
+    Bit string operands of <TT
+CLASS="LITERAL"
+>&amp;</TT
+>, <TT
+CLASS="LITERAL"
+>|</TT
+>,
+    and <TT
+CLASS="LITERAL"
+>#</TT
+> must be of equal length.  When bit
+    shifting, the original length of the string is preserved, as shown
+    in the examples.
+   </P
+><DIV
+CLASS="TABLE"
+><A
+NAME="FUNCTIONS-BIT-STRING-OP-TABLE"
+></A
+><P
+><B
+>Table 9-10. Bit String Operators</B
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Operator</TH
+><TH
+>Description</TH
+><TH
+>Example</TH
+><TH
+>Result</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>||</TT
+> </TD
+><TD
+>concatenation</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' || B'011'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>10001011</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&amp;</TT
+> </TD
+><TD
+>bitwise AND</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' &amp; B'01101'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>00001</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>|</TT
+> </TD
+><TD
+>bitwise OR</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' | B'01101'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>11101</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>#</TT
+> </TD
+><TD
+>bitwise XOR</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' # B'01101'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>11100</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>~</TT
+> </TD
+><TD
+>bitwise NOT</TD
+><TD
+><TT
+CLASS="LITERAL"
+>~ B'10001'</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>01110</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&lt;&lt;</TT
+> </TD
+><TD
+>bitwise shift left</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' &lt;&lt; 3</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>01000</TT
+></TD
+></TR
+><TR
+><TD
+> <TT
+CLASS="LITERAL"
+>&gt;&gt;</TT
+> </TD
+><TD
+>bitwise shift right</TD
+><TD
+><TT
+CLASS="LITERAL"
+>B'10001' &gt;&gt; 2</TT
+></TD
+><TD
+><TT
+CLASS="LITERAL"
+>00100</TT
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>    The following <ACRONYM
+CLASS="ACRONYM"
+>SQL</ACRONYM
+>-standard functions work on bit
+    strings as well as character strings:
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>length</CODE
+></TT
+>,
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>bit_length</CODE
+></TT
+>,
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>octet_length</CODE
+></TT
+>,
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>position</CODE
+></TT
+>,
+    <TT
+CLASS="LITERAL"
+><CODE
+CLASS="FUNCTION"
+>substring</CODE
+></TT
+>.
+   </P
+><P
+>    In addition, it is possible to cast integral values to and from type
+    <TT
+CLASS="TYPE"
+>bit</TT
+>.
+    Some examples:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>44::bit(10)                    <I
+CLASS="LINEANNOTATION"
+>0000101100</I
+>
+44::bit(3)                     <I
+CLASS="LINEANNOTATION"
+>100</I
+>
+cast(-44 as bit(12))           <I
+CLASS="LINEANNOTATION"
+>111111010100</I
+>
+'1110'::bit(4)::integer        <I
+CLASS="LINEANNOTATION"
+>14</I
+></PRE
+><P>
+    Note that casting to just <SPAN
+CLASS="QUOTE"
+>"bit"</SPAN
+> means casting to
+    <TT
+CLASS="LITERAL"
+>bit(1)</TT
+>, and so it will deliver only the least significant
+    bit of the integer.
+   </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>      Prior to <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> 8.0, casting an
+      integer to <TT
+CLASS="TYPE"
+>bit(n)</TT
+> would copy the leftmost <TT
+CLASS="LITERAL"
+>n</TT
+>
+      bits of the integer, whereas now it copies the rightmost <TT
+CLASS="LITERAL"
+>n</TT
+>
+      bits.  Also, casting an integer to a bit string width wider than
+      the integer itself will sign-extend on the left.
+     </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functions-binarystring.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="functions-matching.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Binary String Functions and Operators</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functions.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Pattern Matching</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

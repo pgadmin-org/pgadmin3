@@ -1,0 +1,336 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>RELEASE SAVEPOINT</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="REINDEX"
+HREF="sql-reindex.html"><LINK
+REL="NEXT"
+TITLE="RESET"
+HREF="sql-reset.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-08-13T19:30:48"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-reindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-reindex.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-reset.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-reset.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-RELEASE-SAVEPOINT"
+></A
+>RELEASE SAVEPOINT</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN41833"
+></A
+><H2
+>Name</H2
+>RELEASE SAVEPOINT&nbsp;--&nbsp;destroy a previously defined savepoint</DIV
+><A
+NAME="AEN41836"
+></A
+><A
+NAME="AEN41838"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN41841"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>RELEASE [ SAVEPOINT ] <VAR
+CLASS="REPLACEABLE"
+>savepoint_name</VAR
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41844"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>RELEASE SAVEPOINT</TT
+> destroys a savepoint previously defined
+   in the current transaction.
+  </P
+><P
+>   Destroying a savepoint makes it unavailable as a rollback point,
+   but it has no other user visible behavior.  It does not undo the
+   effects of commands executed after the savepoint was established.
+   (To do that, see <A
+HREF="sql-rollback-to.html"
+><I
+>ROLLBACK TO SAVEPOINT</I
+></A
+>.)  Destroying a savepoint when
+   it is no longer needed may allow the system to reclaim some resources
+   earlier than transaction end.
+  </P
+><P
+>   <TT
+CLASS="COMMAND"
+>RELEASE SAVEPOINT</TT
+> also destroys all savepoints that were
+   established after the named savepoint was established.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41852"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>savepoint_name</VAR
+></DT
+><DD
+><P
+>      The name of the savepoint to destroy.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41860"
+></A
+><H2
+>Notes</H2
+><P
+>   Specifying a savepoint name that was not previously defined is an error.
+  </P
+><P
+>   It is not possible to release a savepoint when the transaction is in
+   aborted state.
+  </P
+><P
+>   If multiple savepoints have the same name, only the one that was most
+   recently defined is released.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41865"
+></A
+><H2
+>Examples</H2
+><P
+>   To establish and later destroy a savepoint:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>BEGIN;
+    INSERT INTO table VALUES (3);
+    SAVEPOINT my_savepoint;
+    INSERT INTO table VALUES (4);
+    RELEASE SAVEPOINT my_savepoint;
+COMMIT;</PRE
+><P>
+   The above transaction will insert both 3 and 4.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41869"
+></A
+><H2
+>Compatibility</H2
+><P
+>   The SQL2003 standard specifies that the keyword SAVEPOINT is mandatory.
+   <SPAN
+CLASS="PRODUCTNAME"
+>PostgreSQL</SPAN
+> allows the SAVEPOINT keyword to be
+   omitted. Otherwise, this command is fully conforming.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN41873"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-begin.html"
+><I
+>BEGIN</I
+></A
+>, <A
+HREF="sql-commit.html"
+><I
+>COMMIT</I
+></A
+>, <A
+HREF="sql-rollback.html"
+><I
+>ROLLBACK</I
+></A
+>, <A
+HREF="sql-rollback-to.html"
+><I
+>ROLLBACK TO SAVEPOINT</I
+></A
+>, <A
+HREF="sql-savepoint.html"
+><I
+>SAVEPOINT</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-reindex.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-reset.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>REINDEX</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>RESET</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

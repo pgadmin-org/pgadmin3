@@ -1,0 +1,461 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Release 7.4.2</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Release Notes"
+HREF="release.html"><LINK
+REL="PREVIOUS"
+TITLE="Release 7.4.3"
+HREF="release-7-4-3.html"><LINK
+REL="NEXT"
+TITLE="Release 7.4.1"
+HREF="release-7-4-1.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-08-13T19:30:48"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-4-3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+>Appendix E. Release Notes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-4-1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RELEASE-7-4-2"
+>E.3. Release 7.4.2</A
+></H1
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Release date: </B
+>2004-03-08</P
+></BLOCKQUOTE
+></DIV
+><P
+>    This release contains a variety of fixes from 7.4.1.
+   </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN63988"
+>E.3.1. Migration to version 7.4.2</A
+></H2
+><P
+>     A dump/restore is not required for those running 7.4.X.  However,
+     it may be advisable as the easiest method of incorporating fixes for
+     two errors that have been found in the initial contents of 7.4.X system
+     catalogs.  A dump/initdb/reload sequence using 7.4.2's initdb will
+     automatically correct these problems.
+    </P
+><P
+>     The more severe of the two errors is that data type <TT
+CLASS="TYPE"
+>anyarray</TT
+>
+     has the wrong alignment label; this is a problem because the
+     <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+> system catalog uses <TT
+CLASS="TYPE"
+>anyarray</TT
+>
+     columns.  The mislabeling can cause planner misestimations and even
+     crashes when planning queries that involve <TT
+CLASS="LITERAL"
+>WHERE</TT
+> clauses on
+     double-aligned columns (such as <TT
+CLASS="TYPE"
+>float8</TT
+> and <TT
+CLASS="TYPE"
+>timestamp</TT
+>).
+     It is strongly recommended that all installations repair this error,
+     either by initdb or by following the manual repair procedure given
+     below.
+    </P
+><P
+>     The lesser error is that the system view <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+>
+     ought to be marked as having public update access, to allow
+     <TT
+CLASS="LITERAL"
+>UPDATE pg_settings</TT
+> to be used as a substitute for
+     <TT
+CLASS="COMMAND"
+>SET</TT
+>.  This can also be fixed either by initdb or manually,
+     but it is not necessary to fix unless you want to use <TT
+CLASS="LITERAL"
+>UPDATE
+     pg_settings</TT
+>.
+    </P
+><P
+>     If you wish not to do an initdb, the following procedure will work
+     for fixing <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+>.  As the database superuser,
+     do:
+
+</P><PRE
+CLASS="PROGRAMLISTING"
+>-- clear out old data in pg_statistic:
+DELETE FROM pg_statistic;
+VACUUM pg_statistic;
+-- this should update 1 row:
+UPDATE pg_type SET typalign = 'd' WHERE oid = 2277;
+-- this should update 6 rows:
+UPDATE pg_attribute SET attalign = 'd' WHERE atttypid = 2277;
+--     
+-- At this point you MUST start a fresh backend to avoid a crash!
+--
+-- repopulate pg_statistic:
+ANALYZE;</PRE
+><P>
+
+     This can be done in a live database, but beware that all backends
+     running in the altered database must be restarted before it is safe to
+     repopulate <TT
+CLASS="STRUCTNAME"
+>pg_statistic</TT
+>.
+    </P
+><P
+>     To repair the <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+> error, simply do:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>GRANT SELECT, UPDATE ON pg_settings TO PUBLIC;</PRE
+><P>
+    </P
+><P
+>     The above procedures must be carried out in <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>each</I
+></SPAN
+> database
+     of an installation, including <TT
+CLASS="LITERAL"
+>template1</TT
+>, and ideally
+     including <TT
+CLASS="LITERAL"
+>template0</TT
+> as well.  If you do not fix the
+     template databases then any subsequently created databases will contain
+     the same errors.  <TT
+CLASS="LITERAL"
+>template1</TT
+> can be fixed in the same way
+     as any other database, but fixing <TT
+CLASS="LITERAL"
+>template0</TT
+> requires
+     additional steps.  First, from any database issue
+</P><PRE
+CLASS="PROGRAMLISTING"
+>UPDATE pg_database SET datallowconn = true WHERE datname = 'template0';</PRE
+><P>
+      Next connect to <TT
+CLASS="LITERAL"
+>template0</TT
+> and perform the above repair
+      procedures.  Finally, do
+</P><PRE
+CLASS="PROGRAMLISTING"
+>-- re-freeze template0:
+VACUUM FREEZE;
+-- and protect it against future alterations:
+UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</PRE
+><P>
+    </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN64019"
+>E.3.2. Changes</A
+></H2
+><P
+>    Release 7.4.2 incorporates all the fixes included in release 7.3.6,
+    plus the following fixes:</P
+><P
+></P
+><UL
+><LI
+><P
+>Fix <TT
+CLASS="STRUCTNAME"
+>pg_statistics</TT
+> alignment bug that could crash optimizer</P
+><P
+>See above for details about this problem.</P
+></LI
+><LI
+><P
+>Allow non-super users to update <TT
+CLASS="STRUCTNAME"
+>pg_settings</TT
+></P
+></LI
+><LI
+><P
+>Fix several optimizer bugs, most of which led to
+<SPAN
+CLASS="QUOTE"
+>"variable not found in subplan target lists"</SPAN
+> errors</P
+></LI
+><LI
+><P
+>Avoid out-of-memory failure during startup of large multiple
+index scan</P
+></LI
+><LI
+><P
+>Fix multibyte problem that could lead to <SPAN
+CLASS="QUOTE"
+>"out of
+memory"</SPAN
+> error during <TT
+CLASS="COMMAND"
+>COPY IN</TT
+></P
+></LI
+><LI
+><P
+>Fix problems with <TT
+CLASS="COMMAND"
+>SELECT INTO</TT
+> / <TT
+CLASS="COMMAND"
+>CREATE
+TABLE AS</TT
+> from tables without OIDs</P
+></LI
+><LI
+><P
+>Fix problems with <TT
+CLASS="FILENAME"
+>alter_table</TT
+> regression test
+during parallel testing</P
+></LI
+><LI
+><P
+>Fix problems with hitting open file limit, especially on OS X (Tom)</P
+></LI
+><LI
+><P
+>Partial fix for Turkish-locale issues</P
+><P
+>initdb will succeed now in Turkish locale, but there are still some
+inconveniences associated with the <TT
+CLASS="LITERAL"
+>i/I</TT
+> problem.</P
+></LI
+><LI
+><P
+>Make pg_dump set client encoding on restore</P
+></LI
+><LI
+><P
+>Other minor pg_dump fixes</P
+></LI
+><LI
+><P
+>Allow ecpg to again use C keywords as column names (Michael)</P
+></LI
+><LI
+><P
+>Added ecpg <TT
+CLASS="LITERAL"
+>WHENEVER NOT_FOUND</TT
+> to
+<TT
+CLASS="LITERAL"
+>SELECT/INSERT/UPDATE/DELETE</TT
+> (Michael)</P
+></LI
+><LI
+><P
+>Fix ecpg crash for queries calling set-returning functions (Michael)</P
+></LI
+><LI
+><P
+>Various other ecpg fixes (Michael)</P
+></LI
+><LI
+><P
+>Fixes for Borland compiler</P
+></LI
+><LI
+><P
+>Thread build improvements (Bruce)</P
+></LI
+><LI
+><P
+>Various other build fixes</P
+></LI
+><LI
+><P
+>Various JDBC fixes</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="release-7-4-3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="release-7-4-1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Release 7.4.3</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="release.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Release 7.4.1</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

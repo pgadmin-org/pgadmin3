@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>ALTER TABLESPACE</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REV="MADE"
+HREF="mailto:pgsql-docs@postgresql.org"><LINK
+REL="HOME"
+TITLE="PostgreSQL 8.0.0beta1 Documentation"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="SQL Commands"
+HREF="sql-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ALTER TABLE"
+HREF="sql-altertable.html"><LINK
+REL="NEXT"
+TITLE="ALTER TRIGGER"
+HREF="sql-altertrigger.html"><LINK
+REL="STYLESHEET"
+TYPE="text/css"
+HREF="stylesheet.css"><META
+NAME="creation"
+CONTENT="2004-08-13T19:30:48"></HEAD
+><BODY
+CLASS="REFENTRY"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="5"
+ALIGN="center"
+VALIGN="bottom"
+>PostgreSQL 8.0.0beta1 Documentation</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+>Fast Backward</A
+></TD
+><TD
+WIDTH="60%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertrigger.html"
+>Fast Forward</A
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SQL-ALTERTABLESPACE"
+></A
+>ALTER TABLESPACE</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN35259"
+></A
+><H2
+>Name</H2
+>ALTER TABLESPACE&nbsp;--&nbsp;change the definition of a tablespace</DIV
+><A
+NAME="AEN35262"
+></A
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN35264"
+></A
+><H2
+>Synopsis</H2
+><PRE
+CLASS="SYNOPSIS"
+>ALTER TABLESPACE <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> RENAME TO <VAR
+CLASS="REPLACEABLE"
+>newname</VAR
+>
+ALTER TABLESPACE <VAR
+CLASS="REPLACEABLE"
+>name</VAR
+> OWNER TO <VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
+></PRE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35270"
+></A
+><H2
+>Description</H2
+><P
+>   <TT
+CLASS="COMMAND"
+>ALTER TABLESPACE</TT
+> changes the definition of
+   a tablespace.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35274"
+></A
+><H2
+>Parameters</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>name</VAR
+></DT
+><DD
+><P
+>      The name of an existing tablespace.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>newname</VAR
+></DT
+><DD
+><P
+>      The new name of the tablespace.  The new name cannot
+      begin with <TT
+CLASS="LITERAL"
+>pg_</TT
+>, as such names
+      are reserved for system tablespaces.
+     </P
+></DD
+><DT
+><VAR
+CLASS="REPLACEABLE"
+>newowner</VAR
+></DT
+><DD
+><P
+>      The new owner of the tablespace.
+      You must be a superuser to change the owner of a tablespace.
+     </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35293"
+></A
+><H2
+>Examples</H2
+><P
+>   Rename tablespace <TT
+CLASS="LITERAL"
+>index_space</TT
+> to <TT
+CLASS="LITERAL"
+>fast_raid</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLESPACE index_space RENAME TO fast_raid;</PRE
+><P>
+  </P
+><P
+>   Change the owner of tablespace <TT
+CLASS="LITERAL"
+>index_space</TT
+>:
+</P><PRE
+CLASS="PROGRAMLISTING"
+>ALTER TABLESPACE index_space OWNER TO mary;</PRE
+><P>
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35302"
+></A
+><H2
+>Compatibility</H2
+><P
+>   There is no <TT
+CLASS="COMMAND"
+>ALTER TABLESPACE</TT
+> statement in
+   the SQL standard.
+  </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN35306"
+></A
+><H2
+>See Also</H2
+><A
+HREF="sql-createtablespace.html"
+><I
+>CREATE TABLESPACE</I
+></A
+>, <A
+HREF="sql-droptablespace.html"
+><I
+>DROP TABLESPACE</I
+></A
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sql-altertable.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sql-altertrigger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ALTER TABLE</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="sql-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ALTER TRIGGER</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
