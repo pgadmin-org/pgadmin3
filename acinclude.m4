@@ -84,6 +84,7 @@ fi], [
         else
             WX_CONFIG="${WX_HOME}/bin/wx-config"
         fi
+        LDFLAGS="$LDFLAGS -L${WX_HOME}/lib"
         WX_OLD_LDFLAGS=$LDFLAGS
         WX_OLD_CPPFLAGS=$CPPFLAGS
         WX_NEW_LDFLAGS=`${WX_CONFIG} --libs --static`
