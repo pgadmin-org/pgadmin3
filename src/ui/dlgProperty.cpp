@@ -956,7 +956,12 @@ dlgSecurityProperty::dlgSecurityProperty(frmMain *frame, pgObject *obj, const wx
                         str = str.Mid(1, str.Length()-2);
 
                     wxString name=str.BeforeLast('=');
-                    wxString value=str.Mid(name.Length()+1);
+                    wxString value=;
+
+                    if (connection->BackendMinimumVersion(7, 4))
+                        value=str.Mid(name.Length()+1).BeforeLast('/');
+                    else
+                        value=str.Mid(name.Length()+1);
 
                     int icon=PGICON_USER;
 

@@ -158,7 +158,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 
             wxLogInfo(wxT("Setting client_encoding to '%s'"), encoding.c_str());
             if (PQsetClientEncoding(conn, encoding.ToAscii()))
-                wxLogError(wxT("%s"), PQerrorMessage(conn));
+                wxLogError(wxT("%s"), wxString(PQerrorMessage(conn), *conv).c_str());
             
             delete set;
         }
