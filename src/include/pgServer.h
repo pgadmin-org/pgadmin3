@@ -83,6 +83,8 @@ public:
     void iSetTrusted(const bool b) { trusted=b; }
     void iSetNeedPwd(const bool b) { trusted=!b; }
     bool SetPassword(const wxString& newVal);
+    wxDateTime GetUpSince() { return upSince; }
+    void iSetUpSince(const wxDateTime &d) { upSince = d; }
 
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv) { return conn->HasPrivilege(objTyp, objName, priv); }
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
@@ -105,6 +107,7 @@ private:
     bool connected;
     wxString database, username, password, ver, error;
     wxString lastDatabase, lastSchema, description, serviceId;
+    wxDateTime upSince;
     int port, ssl;
     bool trusted, discovered, createPrivilege, superUser;
     OID lastSystemOID;

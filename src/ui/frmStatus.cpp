@@ -821,7 +821,8 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
 		if(statusList->GetSelectedItemCount() >= 0) 
 		{
 			btnCancelSt->Enable(true);
-			btnTerminateSt->Enable(true);
+            if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
+			    btnTerminateSt->Enable(true);
 		} 
 		else 
 		{
@@ -838,7 +839,8 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
 		if(lockList->GetSelectedItemCount() >= 0) 
 		{
 			btnCancelLk->Enable(true);
-			btnTerminateLk->Enable(true);
+            if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
+    			btnTerminateLk->Enable(true);
 		} 
 		else 
 		{

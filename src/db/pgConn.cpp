@@ -456,6 +456,18 @@ bool pgConn::HasFeature(int featureNo)
                     wxT(" WHERE proname = 'pg_rotate_log'")
                     wxT(  " AND pronargs = 0"))
                     .IsEmpty();
+        features[FEATURE_POSTMASTER_STARTTIME] =
+            !ExecuteScalar(
+                    wxT("SELECT proname FROM pg_proc\n")
+                    wxT(" WHERE proname = 'pg_postmaster_starttime'")
+                    wxT(  " AND pronargs = 0"))
+                    .IsEmpty();
+        features[FEATURE_TERMINATE_BACKEND] =
+            !ExecuteScalar(
+                    wxT("SELECT proname FROM pg_proc\n")
+                    wxT(" WHERE proname = 'pg_terminate_backend'")
+                    wxT(  " AND pronargs = 1"))
+                    .IsEmpty();
     }
 
     if (featureNo < 1 ||featureNo >= FEATURE_LAST)

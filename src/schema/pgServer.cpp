@@ -20,6 +20,7 @@
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
+#include "pgfeatures.h"
 
 
 pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _trusted, int _ssl)
@@ -292,11 +293,18 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd)
         if (conn->BackendMinimumVersion(7, 3))
         {
             connected = true;
-            pgSet *set=ExecuteSet(wxT("SELECT usecreatedb, usesuper from pg_user where usename=current_user"));
+
+            wxString sql = wxT("SELECT usecreatedb, usesuper");
+            if (conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
+                sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_starttime() ELSE NULL END as upsince");
+
+            pgSet *set=ExecuteSet(sql + wxT("\n  FROM pg_user WHERE usename=current_user"));
             if (set)
             {
                 iSetCreatePrivilege(set->GetBool(wxT("usecreatedb")));
                 iSetSuperUser(set->GetBool(wxT("usesuper")));
+                if (conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
+                    iSetUpSince(set->GetDateTime(wxT("upsince")));
                 delete set;
             }
         }
@@ -485,6 +493,8 @@ void pgServer::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, ctlListView *p
             properties->AppendItem(_("Last system OID"), GetLastSystemOID());
         }
         properties->AppendItem(_("Connected?"), GetConnected());
+        if (GetUpSince().IsValid())
+            properties->AppendItem(_("Up since"), GetUpSince());
         if (GetServerControllable())
             properties->AppendItem(_("Running?"), GetServerRunning());
     }
