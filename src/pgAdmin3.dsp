@@ -1325,6 +1325,10 @@ SOURCE=..\BUGS.txt
 # End Source File
 # Begin Source File
 
+SOURCE=..\CHANGELOG.txt
+# End Source File
+# Begin Source File
+
 SOURCE=.\ui\pgadmin3.lng
 # End Source File
 # Begin Source File
