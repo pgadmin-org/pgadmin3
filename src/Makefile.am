@@ -32,7 +32,7 @@ agent/pgaAgent.cpp agent/pgaJob.cpp \
 agent/pgaStep.cpp agent/pgaSchedule.cpp \
 agent/dlgJob.cpp agent/dlgSchedule.cpp agent/dlgStep.cpp \
 ui/xh_sqlbox.cpp ui/xh_calb.cpp ui/xh_timespin.cpp \
-ui/ctlSecurityPanel.cpp ui/dlgClasses.cpp \
+ui/ctlSecurityPanel.cpp ui/dlgClasses.cpp ui/ctlComboBox.cpp \
 ui/frmGrantWizard.cpp \
 ui/calbox.cpp ui/timespin.cpp ui/ctlListView.cpp \
 ui/ctlSQLBox.cpp ui/ctlSQLResult.cpp ui/frmExport.cpp \
@@ -89,7 +89,7 @@ include/pgRule.h include/pgSchema.h include/pgSequence.h \
 include/pgServer.h include/pgSet.h include/pgTable.h \
 include/pgTrigger.h include/pgType.h include/pgUser.h \
 include/pgView.h include/sysLogger.h include/utffile.h \
-include/calbox.h include/timespin.h \
+include/calbox.h include/timespin.h include/ctlComboBox.h \
 include/xh_timespin.h include/xh_calb.h include/xh_sqlbox.h \
 include/sysSettings.h include/wxgridsel.h include/menu.h\
 agent/include/pgaAgent.h agent/include/pgaJob.h \
