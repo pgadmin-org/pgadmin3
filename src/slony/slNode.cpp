@@ -60,7 +60,7 @@ wxString slNode::GetSql(wxTreeCtrl *browser)
         sql = wxT("-- Create replication node ") + GetName() + wxT(".\n\n")
               wxT("SELECT ") + GetCluster()->GetSchemaPrefix() + wxT("storenode(") 
                     + NumToStr(GetSlId()) + wxT(", ")
-                    + qtString(GetName()) + wxT(");\n");
+                    + qtString(GetComment()) + wxT(");\n");
     }
     return sql;
 }
