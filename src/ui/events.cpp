@@ -179,7 +179,7 @@ void frmMain::OnSql(wxCommandEvent &ev)
     pgConn *conn= new pgConn(server->GetName(), db->GetName(), server->GetUsername(), server->GetPassword(), server->GetPort());
     if (conn->GetStatus() == PGCONN_OK)
     {
-        wxString txt = "pgAdmin III Query - " + server->GetName() + ":" + NumToStr((long)server->GetPort()) + " - " + db->GetName();
+        wxString txt = "pgAdmin III Query - " + server->GetDescription() + wxT(" (") + server->GetName() + ":" + NumToStr((long)server->GetPort()) + ") - " + db->GetName();
 
         wxPoint pos(settings->Read(wxT("frmQuery/Left"), 100), settings->Read(wxT("frmQuery/Top"), 100));
         wxSize size(settings->Read(wxT("frmQuery/Width"), 600), settings->Read(wxT("frmQuery/Height"), 500));
