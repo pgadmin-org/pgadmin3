@@ -40,9 +40,14 @@ public:
     void iSetFkSchema(const wxString& s) { fkSchema=s; }
     wxString GetDefinition() const { return definition; }
     void iSetDefinition(const wxString& s) { definition=s; }
+    bool GetDeferrable() const { return deferrable; }
+    void iSetDeferrable(const bool b) { deferrable=b; }
+    bool GetDeferred() const { return deferred; }
+    void iSetDeferred(const bool b) { deferred=b; }
 
     bool CanDrop() { return true; }
     bool CanCreate() { return true; }
+    bool CanEdit() { return true; }
     bool DropObject(wxFrame *frame, wxTreeCtrl *browser);
     wxString GetConstraint();
     wxString GetSql(wxTreeCtrl *browser);
@@ -50,6 +55,7 @@ public:
 
 private:
     wxString definition, fkTable, fkSchema;
+    bool deferrable, deferred;
 };
 
 #endif

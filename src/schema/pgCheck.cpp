@@ -69,6 +69,9 @@ void pgCheck::ShowTreeDetail(wxTreeCtrl *browser, frmMain *form, wxListCtrl *pro
         InsertListItem(properties, pos++, wxT("Name"), GetName());
         InsertListItem(properties, pos++, wxT("OID"), GetOid());
         InsertListItem(properties, pos++, wxT("Definition"), GetDefinition());
+        InsertListItem(properties, pos++, wxT("Deferrable?"), BoolToYesNo(GetDeferrable()));
+        InsertListItem(properties, pos++, wxT("Initially?"), 
+            GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
         InsertListItem(properties, pos++, wxT("Comment"), GetComment());
     }
 }
@@ -93,7 +96,7 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
 {
     pgCheck *check=0;
     pgSet *checks= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT c.oid, conname, consrc, relname, nspname\n"
+        "SELECT c.oid, conname, consrc, condeferrable, condeferred, relname, nspname\n"
         "  FROM pg_constraint c\n"
         "  JOIN pg_class cl ON cl.oid=conrelid\n"
         "  JOIN pg_namespace nl ON nl.oid=relnamespace\n"
@@ -112,6 +115,8 @@ pgObject *pgCheck::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, co
             check->iSetDefinition(checks->GetVal(wxT("consrc")));
             check->iSetFkTable(checks->GetVal(wxT("relname")));
             check->iSetFkSchema(checks->GetVal(wxT("nspname")));
+            check->iSetDeferrable(checks->GetBool(wxT("condeferrable")));
+            check->iSetDeferred(checks->GetBool(wxT("condeferred")));
 
             if (browser)
             {
