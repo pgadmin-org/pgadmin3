@@ -439,8 +439,6 @@ void frmEditGrid::OnEditorShown(wxGridEvent& event)
     toolBar->EnableTool(MNU_SAVE, true);
     toolBar->EnableTool(MNU_UNDO, true);
 
-//    sqlGrid->ResizeEditor(event.GetRow(), event.GetCol());
-
     event.Skip();
 }
 
@@ -602,8 +600,8 @@ void ctlSQLGrid::ResizeEditor(int row, int col)
             wxSize size = renderer->GetBestSize(*this, *attr, dc, row, col);
             renderer->DecRef();
 
-            int w=size.GetWidth()+20;
-            int h=size.GetHeight()+20;
+            int w=wxMax(size.GetWidth(), 15)+20;
+            int h=wxMax(size.GetHeight(), 15)+20;
 
 
             wxGridCellEditor *editor=attr->GetEditor(this, row, col);
@@ -722,6 +720,7 @@ public:
     virtual wxGridCellEditor *Clone() const { return new sqlGridTextEditor(isMultiLine, textlen); }
     void Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler);
     void BeginEdit(int row, int col, wxGrid* grid);
+    bool EndEdit(int row, int col, wxGrid* grid);
 
 
 protected:
@@ -736,8 +735,7 @@ void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* ev
 {
     int flags=0;
     if (isMultiLine)
-//        flags = wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_RICH;
-        flags = wxTE_PROCESS_TAB | wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_AUTO_SCROLL;
+        flags = wxTE_RICH|wxTE_MULTILINE|wxTE_DONTWRAP;
 
     m_control = new wxTextCtrl(parent, id, wxEmptyString,
                                wxDefaultPosition, wxDefaultSize, flags
@@ -750,7 +748,6 @@ void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* ev
 }
 
 
-
 void sqlGridTextEditor::BeginEdit(int row, int col, wxGrid *grid)
 {
     wxGridCellTextEditor::BeginEdit(row, col, grid);
@@ -758,6 +755,33 @@ void sqlGridTextEditor::BeginEdit(int row, int col, wxGrid *grid)
 }
 
 
+bool sqlGridTextEditor::EndEdit(int row, int col, wxGrid *grid)
+{
+    bool changed = FALSE;
+    wxString value = Text()->GetValue();
+    changed = TRUE;
+
+    if (changed)
+        grid->GetTable()->SetValue(row, col, value);
+
+//    Text()->SetValue(wxEmptyString);
+
+    return changed;
+
+#if 0
+    bool rc=wxGridCellTextEditor::EndEdit(row, col, grid);
+#ifdef __WXMSW__
+    if (Text()->IsRich())
+    {
+        m_control->wxWindowBase::Show(true);
+        m_control->Show(false);
+    }
+#endif
+    return rc;
+#endif
+}
+
+    
 class sqlGridNumericEditor : public wxGridCellTextEditor
 {
 public:
@@ -931,13 +955,7 @@ void sqlGridNumericEditor::SetParameters(const wxString& params)
 
 void sqlGridNumericEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler)
 {
-    m_control = new wxTextCtrl(parent, id, wxEmptyString,
-                               wxDefaultPosition, wxDefaultSize
-#if defined(__WXMSW__)
-                               , wxTE_NO_VSCROLL| wxTE_DONTWRAP |
-                                 wxTE_AUTO_SCROLL
-#endif
-                              );
+    m_control = new wxTextCtrl(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize);
 
     wxGridCellEditor::Create(parent, id, evtHandler);
     Text()->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
@@ -1030,12 +1048,14 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     editor = new wxGridCellBoolEditor();
                     break;
                 case PGOID_TYPE_INT8:
+                case PGOID_TYPE_SERIAL8:
                     SetNumberEditor(i, 20);
                     break;
                 case PGOID_TYPE_INT2:
                     SetNumberEditor(i, 5);
                     break;
                 case PGOID_TYPE_INT4:
+                case PGOID_TYPE_SERIAL:
                     SetNumberEditor(i, 10);
                     break;
                 case PGOID_TYPE_OID:
@@ -1336,48 +1356,51 @@ void sqlTable::StoreLine()
                     valList += columns[i].Quote(line->cols[i]);
                 }
             }
-            
-            pgSet *set=connection->ExecuteSet(
-                wxT("INSERT INTO ") + tableName
-                + wxT("(") + colList 
-                + wxT(") VALUES (") + valList
-                + wxT(")"));
-            if (set)
+
+            if (!valList.IsEmpty())
             {
-                if (hasOids)
-                    line->cols[0] = NumToStr((long)set->GetInsertedOid());
-                delete set;
-
-                done=true;
-                rowsStored++;
-                ((wxFrame*)GetView()->GetParent())->SetStatusText(wxString::Format(wxT("%d rows."), GetNumberStoredRows()));
-                if (rowsAdded == rowsStored)
-                    GetView()->AppendRows();
-
-                // Read back what we inserted to get default vals
-                wxString key=MakeKey(line);
-
-                if (key.IsEmpty())
+                pgSet *set=connection->ExecuteSet(
+                    wxT("INSERT INTO ") + tableName
+                    + wxT("(") + colList 
+                    + wxT(") VALUES (") + valList
+                    + wxT(")"));
+                if (set)
                 {
-                    // That's a problem: obviously, the key generated isn't present
-                    // because it's serial or default or otherwise generated in the backend
-                    // we don't get.
-                    // That's why the whole line is declared readonly.
+                    if (hasOids)
+                        line->cols[0] = NumToStr((long)set->GetInsertedOid());
+                    delete set;
 
-                    line->readOnly=true;
-                }
-                else
-                {
-                    set=connection->ExecuteSet(
-                        wxT("SELECT * FROM ") + tableName + 
-                        wxT(" WHERE ") + key);
-                    if (set)
+                    done=true;
+                    rowsStored++;
+                    ((wxFrame*)GetView()->GetParent())->SetStatusText(wxString::Format(wxT("%d rows."), GetNumberStoredRows()));
+                    if (rowsAdded == rowsStored)
+                        GetView()->AppendRows();
+
+                    // Read back what we inserted to get default vals
+                    wxString key=MakeKey(line);
+
+                    if (key.IsEmpty())
                     {
-                        for (i=(hasOids?1:0) ; i < nCols ; i++)
+                        // That's a problem: obviously, the key generated isn't present
+                        // because it's serial or default or otherwise generated in the backend
+                        // we don't get.
+                        // That's why the whole line is declared readonly.
+
+                        line->readOnly=true;
+                    }
+                    else
+                    {
+                        set=connection->ExecuteSet(
+                            wxT("SELECT * FROM ") + tableName + 
+                            wxT(" WHERE ") + key);
+                        if (set)
                         {
-                            line->cols[i] = set->GetVal(columns[i].name);
+                            for (i=(hasOids?1:0) ; i < nCols ; i++)
+                            {
+                                line->cols[i] = set->GetVal(columns[i].name);
+                            }
+                            delete set;
                         }
-                        delete set;
                     }
                 }
             }
