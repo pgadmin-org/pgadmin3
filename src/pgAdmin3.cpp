@@ -97,8 +97,8 @@ bool pgAdmin3::OnInit()
                 (wxDir::Exists(loadPath + MO_PATH + wxT("/") + langInfo->CanonicalName) ||
                  wxDir::Exists(loadPath + wxT("/..") MO_PATH + wxT("/") + langInfo->CanonicalName)))
 #else
-                (wxDir::Exists(DATADIR + MO_PATH + wxT("/") + langInfo->CanonicalName) ||
-                 wxDir::Exists(loadPath +  MO_PATH + wxT("/") + langInfo->CanonicalName)))
+                (wxDir::Exists(DATA_DIR MO_PATH wxT("/") + langInfo->CanonicalName) ||
+                 wxDir::Exists(loadPath +  MO_PATH wxT("/") + langInfo->CanonicalName)))
 #endif
             {
                 existingLangs.Add(langNo);
@@ -115,7 +115,7 @@ bool pgAdmin3::OnInit()
             for (langNo = 0; langNo < langCount ; langNo++)
             {
                 langInfo = wxLocale::GetLanguageInfo(existingLangs.Item(langNo));
-                langNames[langNo+1] = wxGetTranslation(langInfo->Description) + wxT(" (")
+                langNames[langNo+1] = wxString(wxGetTranslation(langInfo->Description)) + wxT(" (")
                     + langInfo->CanonicalName + wxT(")");
             }
 
@@ -141,7 +141,7 @@ bool pgAdmin3::OnInit()
         locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
         locale.AddCatalogLookupPathPrefix(loadPath + wxT("/..") MO_PATH);
 #else
-        locale.AddCatalogLookupPathPrefix(DATADIR MO_PATH);
+        locale.AddCatalogLookupPathPrefix(DATA_DIR MO_PATH);
         locale.AddCatalogLookupPathPrefix(loadPath + MO_PATH);
 #endif
 
