@@ -233,7 +233,7 @@ int dlgTable::Go(bool modal)
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
         systemRestriction = 
-            wxT("   AND n.oid >= 100\n")
+            wxT("   AND (n.oid = 2200 OR n.oid >= ") + NumToStr(connection->GetLastSystemOID()) + wxT(")\n")
             wxT("   AND n.nspname NOT LIKE 'pg\\_temp\\_%'\n");
 
         pgSet *set=connection->ExecuteSet(
@@ -403,6 +403,7 @@ wxString dlgTable::GetSql()
             else
                 needComma=true;
 
+            sql += wxT("\n   ");
             AppendIfFilled(sql, wxT("CONSTRAINT "), qtIdent(name));
 
             sql += wxT(" ") + GetItemConstraintType(lstConstraints, pos) + wxT(" ") + definition;
@@ -598,7 +599,11 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
             pk.CenterOnParent();
             pk.SetConnection(connection);
             if (pk.Go(true) >= 0)
+            {
                 AppendListItem(lstConstraints, pk.GetName(), pk.GetDefinition(), PGICON_PRIMARYKEY);
+                hasPK=true;
+                FillConstraint();
+            }
             break;
         }
         case 1: // Foreign Key
@@ -607,7 +612,11 @@ void dlgTable::OnAddConstr(wxNotifyEvent &ev)
             fk.CenterOnParent();
             fk.SetConnection(connection);
             if (fk.Go(true) >= 0)
-                AppendListItem(lstConstraints, fk.GetName(), fk.GetDefinition(), PGICON_FOREIGNKEY);
+            {
+                wxString str=fk.GetDefinition();
+                str.Replace(wxT("\n"), wxT(" "));
+                AppendListItem(lstConstraints, fk.GetName(), str, PGICON_FOREIGNKEY);
+            }
             break;
         }
         case 2: // Unique
