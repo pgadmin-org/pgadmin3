@@ -29,15 +29,109 @@ pgView::~pgView()
 }
 
 
+
+typedef struct __tokenaction
+{
+    char *keyword, *replaceKeyword;
+    int actionBefore, actionAfter;
+    bool doBreak;
+} tokenAction;
+
+
+tokenAction sqlTokens[] =
+{
+    { "WHERE",  "  WHERE"   -8, 8, true},
+    { "SELECT", " SELECT",   0, 8, true},
+    { "FROM",   "   FROM",  -8, 8, true},
+    { "ORDER",  "  ORDER",  -8, 8, true},
+    { "GROUP",  "  GROUP",  -8, 8, true},
+    { "HAVING", " HAVING",  -8, 8, true},
+    { "LIMIT",  "  LIMIT",  -8, 8, true},
+    { "UNION",  "UNION  ",  -88888, 8, true},
+    { "CASE",   "CASE",      0, 4, true},
+    { "WHEN",   "WHEN",      0, 0, true},
+    { "ELSE",   "ELSE",      0, 0, true},
+    { "END",    "END ",     -4, 0, true},
+    {0, 0, 0, 0}
+};
+
+
+
 wxString pgView::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull())
     {
-        wxString str=GetDefinition();
-        sql = wxT("CREATE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n");
+        // ok, this code looks weird. It's necessary, because somebody (NOT the running code)
+        // will screw up that entry. It's broken in pgAdmin3::OnInit() already.
+        // maybe your compiler does better (VC6SP5, but an older c2xx to avoid other bugs)
+        sqlTokens[0].replaceKeyword="  WHERE";
+        sqlTokens[0].actionBefore = -8;
+        sqlTokens[0].actionAfter = 8;
+        sqlTokens[0].doBreak = true;
 
-        sql += str; // Some line splitting here: SELECT FROM WHERE ORDER GROUP HAVING LIMIT CASE ELSE END
-        sql += wxT(";\n\n") 
+        wxString fc, token;
+        queryTokenizer tokenizer(GetDefinition());
+        int indent=0;
+        int position=0;  // col position. updated, but not used at the moment.
+
+        while (tokenizer.HasMoreTokens())
+        {
+            token=tokenizer.GetNextToken();
+
+            // token may contain brackets
+            int bracketPos=token.Find('(', true);
+            if (bracketPos >= 0)
+            {
+                fc += token.Left(bracketPos+1);
+                token = token.Mid(bracketPos+1);
+            }
+
+            bracketPos=token.Find(')', true);
+            if (bracketPos >= 0)
+            {
+                fc += token.Left(bracketPos+1);
+                token = token.Mid(bracketPos+1);
+            }
+            // identify token
+            tokenAction *tp=sqlTokens;
+            while (tp->keyword)
+            {
+                if (!token.CmpNoCase(tp->keyword))
+                    break;
+                tp++;
+            }
+            
+            if (tp->keyword)
+            {
+                // we found a keyword.
+                indent += tp->actionBefore;
+                if (indent<0)   indent=0;
+                if (tp->doBreak)
+                {
+                    fc += "\n" + wxString(' ', indent);
+                    position = indent;
+                }
+                else
+                {
+                    fc += wxT(" ");
+                    position += 1;
+                }
+                fc += tp->replaceKeyword;
+                position += strlen(tp->replaceKeyword);
+
+                indent += tp->actionAfter;
+                if (indent<0)   indent=0;
+            }
+            else
+            {
+                fc += wxT(" ") + token;
+                position += token.Length()+1;
+            }
+        }
+
+        sql = wxT("CREATE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n")
+            + fc
+            + wxT(";\n\n") 
             + GetGrant()
             + GetCommentSql();
     }
@@ -81,9 +175,6 @@ void pgView::ShowTreeCollection(pgCollection *collection, frmMain *form, wxTreeC
         msg.Printf(wxT("Adding Views to schema %s"), collection->GetSchema()->GetIdentifier().c_str());
         wxLogInfo(msg);
 
-        // Add View node
-//        pgObject *addViewObj = new pgObject(PG_ADD_VIEW, wxString("Add View"));
-//        browser->AppendItem(collection->GetId(), wxT("Add View..."), 4, -1, addViewObj);
 
         // Get the Views
         pgSet *views= collection->GetDatabase()->ExecuteSet(wxT(
