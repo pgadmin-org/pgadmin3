@@ -56,33 +56,33 @@ Styled text control based on the Scintillia project http://www.scintilla.org/.
 %setup -q
 
 %build
-%configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
-make %{?_smp_mflags}
+./configure --with-gtk --enable-gtk2 --enable-unicode --enable-debug --disable-shared
+make 
 
 pushd contrib/src/xrc
-  make %{?_smp_mflags}
+  make
 popd
 pushd contrib/utils/wxrc
-  make %{?_smp_mflags}
+  make
 popd
 
 pushd contrib/src/stc
-  make %{?_smp_mflags}
+  make
 popd
 
 %install
 rm -rf %{buildroot}
-%makeinstall
+make install
 
 pushd contrib/src/xrc
-%makeinstall
+make install
 popd
 pushd contrib/utils/wxrc
 cp -r wxrc %{buildroot}/%{_bindir}/
 popd
 
 pushd contrib/src/stc
-%makeinstall
+make install
 popd
 
 # Mandrake and RedHat do it by default. Needed for SuSE.
