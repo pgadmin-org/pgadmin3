@@ -36,6 +36,7 @@
 frmMain *winMain;
 wxLog *logger;
 sysSettings *settings;
+wxString loadPath;
 
 IMPLEMENT_APP(pgAdmin3)
 
@@ -95,7 +96,7 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->InitAllHandlers();
 
 
-    wxString loadPath=wxPathOnly(argv[0]);
+    loadPath=wxPathOnly(argv[0]);
 
 #ifdef __WIN32__
     bool done;
