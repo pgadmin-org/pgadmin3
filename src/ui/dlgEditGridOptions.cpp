@@ -268,10 +268,11 @@ void dlgEditGridOptions::OnOK(wxCommandEvent &ev)
 
 bool dlgEditGridOptions::Validate()
 {
-    StartMsg(_("Validating filter string"));
+    extern frmMain *winMain;
+    winMain->StartMsg(_("Validating filter string"));
     filter->MarkerDeleteAll(0);
     if (!filter->GetText().Trim().Length()) {
-        EndMsg();
+        winMain->EndMsg();
         return true;
     }
 
@@ -288,7 +289,7 @@ bool dlgEditGridOptions::Validate()
         res == PGRES_COMMAND_OK)
     {
         // No errors, all OK!
-        EndMsg();
+        winMain->EndMsg();
         return true;
     }
 
@@ -323,6 +324,6 @@ bool dlgEditGridOptions::Validate()
 
     // Cleanup
     PQclear(qryRes);
-    EndMsg();
+    winMain->EndMsg();
     return false;
 }

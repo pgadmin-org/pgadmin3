@@ -105,6 +105,8 @@ WX_DEFINE_LIST(windowList);
 frmMain::frmMain(const wxString& title, const wxPoint& pos, const wxSize& size)
 : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
+    msgLevel=0;
+
     wxWindowBase::SetFont(settings->GetSystemFont());
 
     {
@@ -799,3 +801,38 @@ void frmMain::SetButtons(bool refresh, bool create, bool drop, bool properties, 
     treeContextMenu->Enable(MNU_RELOAD, false);
 }
 
+
+
+
+void frmMain::StartMsg(const wxString& msg)
+{
+   if (msgLevel++)
+        return;
+
+    timermsg.Printf(wxT("%s..."), msg.c_str());
+    wxBeginBusyCursor();
+    stopwatch.Start(0);
+    wxLogStatus(timermsg);
+    statusBar->SetStatusText(timermsg, 1);
+    statusBar->SetStatusText(wxT(""), 2);
+}
+
+
+void frmMain::EndMsg()
+{
+    msgLevel--;
+
+    if (!msgLevel)
+    {
+        // Get the execution time & display it
+        float timeval = stopwatch.Time();
+        wxString time;
+        time.Printf(_("%.2f secs"), (timeval/1000));
+        statusBar->SetStatusText(time, 2);
+
+        // Display the 'Done' message
+        statusBar->SetStatusText(timermsg + _(" Done."), 1);
+        wxLogStatus(wxT("%s (%s)"), timermsg.c_str(), time.c_str());
+        wxEndBusyCursor();
+    }
+}

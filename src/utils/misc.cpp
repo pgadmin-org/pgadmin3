@@ -58,47 +58,6 @@ extern "C"
 
 
 
-// Global Vars - yuch!
-wxStopWatch stopwatch;
-wxString timermsg;
-long msgLevel=0;
-
-void StartMsg(const wxString& msg)
-{
-    extern frmMain *winMain;
-
-    if (msgLevel++)
-        return;
-
-    timermsg.Printf(wxT("%s..."), msg.c_str());
-    wxBeginBusyCursor();
-    stopwatch.Start(0);
-    wxLogStatus(timermsg);
-    winMain->statusBar->SetStatusText(timermsg, 1);
-    winMain->statusBar->SetStatusText(wxT(""), 2);
-}
-
-void EndMsg()
-{
-    extern frmMain *winMain;
-
-    msgLevel--;
-
-    if (!msgLevel)
-    {
-        // Get the execution time & display it
-        float timeval = stopwatch.Time();
-        wxString time;
-        time.Printf(_("%.2f secs"), (timeval/1000));
-        winMain->statusBar->SetStatusText(time, 2);
-
-        // Display the 'Done' message
-        winMain->statusBar->SetStatusText(timermsg + _(" Done."), 1);
-        wxLogStatus(wxT("%s (%s)"), timermsg.c_str(), time.c_str());
-        wxEndBusyCursor();
-    }
-}
-
 // Conversions
 
 

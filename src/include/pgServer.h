@@ -29,7 +29,7 @@ public:
     ~pgServer();
     int GetType() const { return PG_SERVER; }
     wxString GetTypeName() const { return wxT("Server"); }
-    int Connect(wxFrame *form, bool lockFields = FALSE);
+    int Connect(frmMain *form, bool lockFields = FALSE);
     bool Disconnect();
 
     wxString GetIdentifier() const;

@@ -201,6 +201,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     horizontal->SetMinimumPaneSize(50);
 
     sqlQuery = new ctlSQLBox(horizontal, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
+    sqlQuery->SetMarginWidth(1, 16);
 
     output = new wxNotebook(horizontal, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
     sqlResult = new ctlSQLResult(output, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
@@ -672,7 +673,8 @@ void frmQuery::OnOpen(wxCommandEvent& event)
     }
 
     wxFileDialog dlg(this, _("Open query file"), lastDir, wxT(""), 
-        _("Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
+        _("Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"), wxOPEN);
+//        _("Query files (*.sql)|*.sql|UTF-8 query files (*.usql)|*.usql|All files (*.*)|*.*"), wxOPEN|wxHIDE_READONLY);
     if (dlg.ShowModal() == wxID_OK)
     {
         lastFilename=dlg.GetFilename();

@@ -40,7 +40,9 @@ public:
     frmMain(const wxString& title, const wxPoint& pos, const wxSize& size);
     ~frmMain();
     void OnTipOfTheDay(wxCommandEvent& event);
-    wxStatusBar *statusBar;
+
+    void StartMsg(const wxString& msg);
+    void EndMsg();
 
     void SetButtons(bool refresh, bool create, bool drop, bool properties, bool sql, bool viewData, bool maintenance);
     void SetDatabase(pgDatabase *newDatabase) { m_database = newDatabase; }
@@ -71,6 +73,11 @@ private:
     wxTreeItemId servers;
 	wxImageList *images;
     wxSplitterWindow *horizontal, *vertical;
+
+    wxStatusBar *statusBar;
+    wxStopWatch stopwatch;
+    wxString timermsg;
+    long msgLevel;
 
     void OnKeyDown(wxKeyEvent& event);
     void OnAbout(wxCommandEvent& event);

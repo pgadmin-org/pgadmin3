@@ -40,10 +40,6 @@ typedef unsigned long OID;
 #define wxCookieType long
 #endif
 
-// Global Stuff
-void StartMsg(const wxString& msg);
-void EndMsg();
-
 class sysSettings;
 extern sysSettings *settings;
 

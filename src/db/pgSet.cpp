@@ -23,7 +23,7 @@
 #include "sysLogger.h"
 #include "pgDefs.h"
 
-pgSet::pgSet(PGresult *newRes, PGconn *newConn, wxMBConv &cnv, bool needColQt)
+pgSet::pgSet(PGresult *newRes, pgConn *newConn, wxMBConv &cnv, bool needColQt)
 : conv(cnv)
 {
     needColQuoting = needColQt;
@@ -254,24 +254,9 @@ OID pgSet::GetOid(const wxString &col) const
 
 wxString pgSet::ExecuteScalar(const wxString& sql) const
 {
-    // Execute the query and get the status.
-    PGresult *qryRes;
-
-    wxLogSql(wxT("Set sub-query: %s"), sql.c_str());
-
-    qryRes = PQexec(conn, sql.mb_str(conv));
-    if (PQresultStatus(qryRes) != PGRES_TUPLES_OK) {
-        return wxEmptyString;
-    }
-
-    // Retrieve the query result and return it.
-    wxString result=wxString(PQgetvalue(qryRes, 0, 0), conv);
-    wxLogInfo(wxT("Query result: %s"), result.c_str());
-
-    // Cleanup & exit
-    PQclear(qryRes);
-    return result;
+    return conn->ExecuteScalar(sql);
 }
+
 
 
 static void pgNoticeProcessor(void *arg, const char *message)
@@ -400,7 +385,7 @@ int pgQueryThread::execute()
 
     if (rc == PGRES_TUPLES_OK)
     {
-        dataSet = new pgSet(result, conn->conn, *conn->conv, conn->needColQuoting);
+        dataSet = new pgSet(result, conn, *conn->conv, conn->needColQuoting);
         dataSet->MoveFirst();
         dataSet->GetVal(0);
     }

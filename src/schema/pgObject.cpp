@@ -377,9 +377,9 @@ void pgObject::ShowTree(frmMain *form, wxTreeCtrl *browser, ctlListView *propert
     }
 
     wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
-    StartMsg(wxString::Format(_("Retrieving %s details"), wxGetTranslation(GetTypeName())));
+    form->StartMsg(wxString::Format(_("Retrieving %s details"), wxGetTranslation(GetTypeName())));
     ShowTreeDetail(browser, form, properties, sqlPane);
-    EndMsg();
+    form->EndMsg();
 }
 
 

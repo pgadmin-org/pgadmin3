@@ -39,7 +39,7 @@ class pgConn;
 class pgSet
 {
 public:
-    pgSet(PGresult *newRes, PGconn *newConn, wxMBConv &cnv, bool needColQt);
+    pgSet(PGresult *newRes, pgConn *newConn, wxMBConv &cnv, bool needColQt);
     ~pgSet();
     long NumRows() const { return nRows; }
     long NumCols() const { return PQnfields(res); }
@@ -82,7 +82,7 @@ public:
 
 
 private:
-    PGconn *conn;
+    pgConn *conn;
     PGresult *res;
     long pos, nRows;
     wxString ExecuteScalar(const wxString& sql) const;

@@ -15,6 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "misc.h"
+#include "frmMain.h"
 #include "frmConnect.h"
 #include "pgServer.h"
 #include "pgObject.h"
@@ -74,7 +75,7 @@ bool pgServer::Disconnect()
 }
 
 
-int pgServer::Connect(wxFrame *form, bool lockFields) 
+int pgServer::Connect(frmMain *form, bool lockFields) 
 {
     wxLogInfo(wxT("Attempting to create a connection object..."));
 
@@ -117,12 +118,12 @@ int pgServer::Connect(wxFrame *form, bool lockFields)
                 iSetPassword(winConnect.GetPassword());
         }
         if (password.IsNull())
-            StartMsg(_("Connecting to database without password"));
+            form->StartMsg(_("Connecting to database without password"));
         else
-            StartMsg(_("Connecting to database"));
+            form->StartMsg(_("Connecting to database"));
         if (conn) delete conn;
         conn = new pgConn(GetName(), database, username, password, port, ssl);   
-        EndMsg();
+        form->EndMsg();
         if (!conn)
         {
             wxLogError(__("Couldn't create a connection object!"));
