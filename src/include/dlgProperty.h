@@ -32,6 +32,8 @@ public:
     virtual pgObject *CreateObject(pgCollection *collection) =0;
     virtual pgObject *GetObject() =0;
 
+    virtual void Go() { Show(); }
+
 protected:
     static dlgProperty *CreateDlg(wxFrame *frame, pgObject *node, bool asNew);
     dlgProperty(wxFrame *frame, const wxString &resName);

@@ -23,12 +23,19 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject() { return user; }
 
+    void Go();
+
 private:
     pgUser *user;
     void OnChange(wxNotifyEvent &ev);
-    void OnAdd(wxNotifyEvent &ev);
-    void OnRemove(wxNotifyEvent &ev);
-    void OnSelChange(wxListEvent &ev);
+    void OnGroupAdd(wxNotifyEvent &ev);
+    void OnGroupRemove(wxNotifyEvent &ev);
+
+    void OnVarAdd(wxNotifyEvent &ev);
+    void OnVarRemove(wxNotifyEvent &ev);
+    void OnVarSelChange(wxListEvent &ev);
+
+    wxArrayString groupsIn;
 
     DECLARE_EVENT_TABLE();
 };

@@ -165,7 +165,7 @@ void dlgProperty::CreateObjectDialog(frmMain *frame, wxTreeCtrl *browser, wxList
 
         dlg->SetTitle(wxString("pgAdmin III - Creating new ") + typeNameList[dlg->objectType]);
 
-        dlg->Show();
+        dlg->Go();
     }
     else
         wxMessageBox("Not implemented");
@@ -191,7 +191,7 @@ void dlgProperty::EditObjectDialog(frmMain *frame, wxTreeCtrl *browser, wxListCt
             dlg->objectType++;
 
         dlg->SetTitle(wxString("pgAdmin III - Properties of ") + typeNameList[dlg->objectType] + wxT(" ") + node->GetFullIdentifier());
-        dlg->Show();
+        dlg->Go();
     }
     else
         wxMessageBox("Not implemented");

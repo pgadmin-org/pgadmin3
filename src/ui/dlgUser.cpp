@@ -19,22 +19,35 @@
 
 
 // pointer to controls
-#define lstVariables    CTRL("lstVariables", wxListCtrl)
 #define txtUser         CTRL("txtUser", wxTextCtrl)
 #define txtID           CTRL("txtID", wxTextCtrl)
 #define txtPasswd       CTRL("txtPasswd", wxTextCtrl)
-#define txtName         CTRL("txtName", wxTextCtrl)
-#define txtValue        CTRL("txtValue", wxTextCtrl)
 #define chkCreateDB     CTRL("chkCreateDB", wxCheckBox)
 #define chkCreateUser   CTRL("chkCreateUser", wxCheckBox)
+
+#define lbGroupsNotIn   CTRL("lbGroupsNotIn", wxListBox)
+#define lbGroupsIn      CTRL("lbGroupsIn", wxListBox)
+#define btnAddGroup     CTRL("btnAddGroup", wxButton)
+#define btnDelGroup     CTRL("btnDelGroup", wxButton)
+
+#define lstVariables    CTRL("lstVariables", wxListCtrl)
+#define txtName         CTRL("txtName", wxTextCtrl)
+#define txtValue        CTRL("txtValue", wxTextCtrl)
+
 #define btnOK           CTRL("btnOK", wxButton)
 
 
 BEGIN_EVENT_TABLE(dlgUser, dlgProperty)
     EVT_TEXT(XRCID("txtUser"),                      dlgUser::OnChange)
-    EVT_BUTTON(XRCID("btnAdd"),                     dlgUser::OnAdd)
-    EVT_BUTTON(XRCID("btnRemove"),                  dlgUser::OnRemove)
-    EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgUser::OnSelChange)
+    
+    EVT_LISTBOX_DCLICK(XRCID("lbGroupsNotIn"),      dlgUser::OnGroupAdd)
+    EVT_LISTBOX_DCLICK(XRCID("lbGroupsIn"),         dlgUser::OnGroupRemove)
+    EVT_BUTTON(XRCID("btnAddGroup"),                dlgUser::OnGroupAdd)
+    EVT_BUTTON(XRCID("btnDelGroup"),                dlgUser::OnGroupRemove)
+
+    EVT_BUTTON(XRCID("btnAdd"),                     dlgUser::OnVarAdd)
+    EVT_BUTTON(XRCID("btnRemove"),                  dlgUser::OnVarRemove)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgUser::OnVarSelChange)
 END_EVENT_TABLE();
 
 
@@ -73,11 +86,46 @@ dlgUser::dlgUser(wxFrame *frame, pgUser *node)
         txtID->SetValidator(numval);
         btnOK->Disable();
     }
-
-    Show();
 }
 
 
+void dlgUser::Go()
+{
+    pgSet *set=connection->ExecuteSet(wxT("SELECT groname, grolist FROM pg_group"));
+    if (set)
+    {
+        while (!set->Eof())
+        {
+            bool isMember=false;
+            wxString groupName=set->GetVal(wxT("groname"));
+            if (user)
+            {
+                wxString str=set->GetVal(wxT("grolist"));
+                if (!str.IsNull())
+                {
+                    wxStringTokenizer ids(str.Mid(1, str.Length()-2), ',');
+                    while (ids.HasMoreTokens())
+                    {
+                        if (atoi(ids.GetNextToken()) == user->GetUserId())
+                        {
+                            isMember=true;
+                            groupsIn.Add(groupName);
+                            break;
+                        }
+                    }
+                }
+            }
+            if (isMember)
+                lbGroupsIn->Append(groupName);
+            else
+                lbGroupsNotIn->Append(groupName);
+
+            set->MoveNext();
+        }
+        delete set;
+    }
+    Show();
+}
 
 void dlgUser::OnChange(wxNotifyEvent &ev)
 {
@@ -90,8 +138,29 @@ void dlgUser::OnChange(wxNotifyEvent &ev)
 }
 
 
+void dlgUser::OnGroupAdd(wxNotifyEvent &ev)
+{
+    int pos=lbGroupsNotIn->GetSelection();
+    if (pos >= 0)
+    {
+        lbGroupsIn->Append(lbGroupsNotIn->GetString(pos));
+        lbGroupsNotIn->Delete(pos);
+    }
+}
 
-void dlgUser::OnSelChange(wxListEvent &ev)
+
+void dlgUser::OnGroupRemove(wxNotifyEvent &ev)
+{
+    int pos=lbGroupsIn->GetSelection();
+    if (pos >= 0)
+    {
+        lbGroupsNotIn->Append(lbGroupsIn->GetString(pos));
+        lbGroupsIn->Delete(pos);
+    }
+}
+
+
+void dlgUser::OnVarSelChange(wxListEvent &ev)
 {
     long pos=lstVariables->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     if (pos >= 0)
@@ -107,7 +176,7 @@ void dlgUser::OnSelChange(wxListEvent &ev)
 }
 
 
-void dlgUser::OnAdd(wxNotifyEvent &ev)
+void dlgUser::OnVarAdd(wxNotifyEvent &ev)
 {
     wxString name=txtName->GetValue().Strip(wxString::both);
     wxString value=txtValue->GetValue().Strip(wxString::both);
@@ -127,7 +196,7 @@ void dlgUser::OnAdd(wxNotifyEvent &ev)
 }
 
 
-void dlgUser::OnRemove(wxNotifyEvent &ev)
+void dlgUser::OnVarRemove(wxNotifyEvent &ev)
 {
     lstVariables->DeleteItem(lstVariables->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
 }
@@ -228,6 +297,40 @@ wxString dlgUser::GetSql()
                 +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
                 + wxT(";\n");
         }
+
+    
+        cnt=lbGroupsIn->GetCount();
+        wxArrayString tmpGroups=groupsIn;
+
+        // check for added groups
+        for (pos=0 ; pos < cnt ; pos++)
+        {
+            wxString groupName=lbGroupsIn->GetString(pos);
+
+            bool groupFound=false;
+
+            int index;
+            for (index=0 ; index < (int)tmpGroups.GetCount() ; index++)
+            {
+                wxString str=tmpGroups.Item(index);
+                if (str.IsSameAs(groupName))
+                {
+                    groupFound=true;
+                    tmpGroups.RemoveAt(index);
+                    break;
+                }
+            }
+            if (!groupFound)
+                sql += wxT("ALTER GROUP ") + qtIdent(groupName)
+                    +  wxT(" ADD USER ") + user->GetQuotedFullIdentifier() + wxT(";\n");
+        }
+        
+        // check for removed groups
+        for (pos=0 ; pos < (int)tmpGroups.GetCount() ; pos++)
+        {
+            sql += wxT("ALTER GROUP ") + qtIdent(tmpGroups.Item(pos))
+                +  wxT(" DROP USER ") + user->GetQuotedFullIdentifier() + wxT(";\n");
+        }
     }
     else
     {
@@ -267,6 +370,11 @@ wxString dlgUser::GetSql()
                     +  wxT("=") + item.GetText()
                     +  wxT(";\n");
             }
+
+            cnt = lbGroupsIn->GetCount();
+            for (pos=0 ; pos < cnt ; pos++)
+                sql += wxT("ALTER GROUP ") + qtIdent(lbGroupsIn->GetString(pos))
+                    +  wxT(" ADD USER ") + qtIdent(name) + wxT(";\n");
         }
     }
     return sql;
