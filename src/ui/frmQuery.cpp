@@ -6,7 +6,7 @@
 //
 // frmQuery.cpp - SQL Query Box
 //
-// NOTE: Much of the code in this file is the same as in frmQuery.cpp
+// NOTE: Much of the code in this file is the same as in frmQueryBuilder.cpp
 //       If any changes are made, please check there as well.
 //
 //////////////////////////////////////////////////////////////////////////

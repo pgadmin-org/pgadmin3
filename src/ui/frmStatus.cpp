@@ -33,6 +33,7 @@ END_EVENT_TABLE();
 
 
 #define statusList      CTRL("lstStatus", wxListCtrl)
+#define lockList        CTRL("lstLocks", wxListCtrl)
 #define spnRefreshRate  CTRL("spnRefreshRate", wxSpinCtrl)
 
 void frmStatus::OnClose(wxCommandEvent &event)
@@ -56,10 +57,26 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn, const 
     statusList->InsertColumn(0, _("PID"), wxLIST_FORMAT_LEFT, 55);
     statusList->InsertColumn(1, _("Database"), wxLIST_FORMAT_LEFT, 100);
     statusList->InsertColumn(2, _("User"), wxLIST_FORMAT_LEFT, 100);
-    statusList->InsertColumn(3, _("Query"), wxLIST_FORMAT_LEFT, 850);
-    if (connection->BackendMinimumVersion(7, 4))
+    if (connection->BackendMinimumVersion(7, 4)) {
         statusList->InsertColumn(4, _("Start"), wxLIST_FORMAT_LEFT, 70);
+        statusList->InsertColumn(5, _("Query"), wxLIST_FORMAT_LEFT, 850);
+    } else {
+        statusList->InsertColumn(4, _("Query"), wxLIST_FORMAT_LEFT, 850);
+    }
 
+    lockList->InsertColumn(0, _("PID"), wxLIST_FORMAT_LEFT, 50);
+    lockList->InsertColumn(1, _("Database"), wxLIST_FORMAT_LEFT, 75);
+    lockList->InsertColumn(2, _("Relation"), wxLIST_FORMAT_LEFT, 75);
+    lockList->InsertColumn(3, _("User"), wxLIST_FORMAT_LEFT, 75);
+    lockList->InsertColumn(4, _("TX"), wxLIST_FORMAT_LEFT, 75);
+    lockList->InsertColumn(5, _("Mode"), wxLIST_FORMAT_LEFT, 75);
+    lockList->InsertColumn(6, _("Granted"), wxLIST_FORMAT_LEFT, 75);
+    if (connection->BackendMinimumVersion(7, 4)) {
+        lockList->InsertColumn(7, _("Start"), wxLIST_FORMAT_LEFT, 75);
+        lockList->InsertColumn(8, _("Query"), wxLIST_FORMAT_LEFT, 850);
+    } else {
+        lockList->InsertColumn(7, _("Query"), wxLIST_FORMAT_LEFT, 850);
+    }
 
     long rate;
     settings->Read(wxT("frmStatus/Refreshrate"), &rate, 1);
@@ -116,13 +133,15 @@ void frmStatus::OnRateChange(wxCommandEvent &event)
 
 void frmStatus::OnRefresh(wxCommandEvent &event)
 {
-    pgSet *dataSet=connection->ExecuteSet(wxT("SELECT * FROM pg_stat_activity ORDER BY procpid"));
-    if (dataSet)
+
+    // Status
+    pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT * FROM pg_stat_activity ORDER BY procpid"));
+    if (dataSet1)
     {
         long row=0;
-        while (!dataSet->Eof())
+        while (!dataSet1->Eof())
         {
-            long pid=dataSet->GetLong(wxT("procpid"));
+            long pid=dataSet1->GetLong(wxT("procpid"));
 
             if (pid != backend_pid)
             {
@@ -141,22 +160,103 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                 {
                     statusList->InsertItem(row, NumToStr(pid), 0);
                 }
-                statusList->SetItem(row, 1, dataSet->GetVal(wxT("datname")));
-                statusList->SetItem(row, 2, dataSet->GetVal(wxT("usename")));
-                wxString qry=dataSet->GetVal(wxT("current_query"));
-                statusList->SetItem(row, 3, qry.Left(250));
+                statusList->SetItem(row, 1, dataSet1->GetVal(wxT("datname")));
+                statusList->SetItem(row, 2, dataSet1->GetVal(wxT("usename")));
+                wxString qry=dataSet1->GetVal(wxT("current_query"));
 
                 if (connection->BackendMinimumVersion(7, 4))
                 {
-                    if (qry.IsEmpty())
+                    if (qry.IsEmpty()) {
+                        statusList->SetItem(row, 3, wxT(""));
                         statusList->SetItem(row, 4, wxT(""));
-                    else
-                        statusList->SetItem(row, 4, dataSet->GetVal(wxT("query_start")));
+                    } else {
+                        statusList->SetItem(row, 3, dataSet1->GetVal(wxT("query_start")));
+                        statusList->SetItem(row, 4, qry.Left(250));
+                    } 
+                } else {
+                    statusList->SetItem(row, 3, qry.Left(250));
                 }
 
                 row++;
             }
-            dataSet->MoveNext();
+            dataSet1->MoveNext();
+        }
+    }
+
+    // Locks
+    wxString sql;
+    if (connection->BackendMinimumVersion(7, 4)) {
+        sql = wxT("SELECT ")
+              wxT("(SELECT datname FROM pg_database WHERE oid = database) AS dbname, ")
+              wxT("relation::regclass AS class, ")
+              wxT("pg_get_userbyid(pg_stat_get_backend_userid(pid)::int4) as user, ")
+              wxT("transaction, pid, mode, granted, ")
+              wxT("pg_stat_get_backend_activity(pid) AS current_query, ")
+              wxT("pg_stat_get_backend_activity_start(pid) AS query_start ")
+              wxT("FROM pg_locks");
+    } else {
+        sql = wxT("SELECT ")
+              wxT("(SELECT datname FROM pg_database WHERE oid = database) AS dbname, ")
+              wxT("relation::regclass AS class, ")
+              wxT("pg_get_userbyid(pg_stat_get_backend_userid(pid)::int4) as user, ")
+              wxT("transaction, pid, mode, granted, ")
+              wxT("pg_stat_get_backend_activity(pid) AS current_query ")
+              wxT("FROM pg_locks ");
+    }
+
+    pgSet *dataSet2=connection->ExecuteSet(sql);
+    if (dataSet2)
+    {
+        long row=0;
+        while (!dataSet2->Eof())
+        {
+            long pid=dataSet2->GetLong(wxT("pid"));
+
+            if (pid != backend_pid)
+            {
+                long itempid=0;
+
+                while (row < lockList->GetItemCount())
+                {
+                    itempid=StrToLong(lockList->GetItemText(row));
+                    if (itempid && itempid < pid)
+                        lockList->DeleteItem(row);
+                    else
+                        break;
+                }
+
+                if (!itempid || itempid > pid)
+                {
+                    lockList->InsertItem(row, NumToStr(pid), 0);
+                }
+                lockList->SetItem(row, 1, dataSet2->GetVal(wxT("dbname")));
+                lockList->SetItem(row, 2, dataSet2->GetVal(wxT("class")));
+                lockList->SetItem(row, 3, dataSet2->GetVal(wxT("user")));
+                lockList->SetItem(row, 4, dataSet2->GetVal(wxT("transaction")));
+                lockList->SetItem(row, 5, dataSet2->GetVal(wxT("mode")));
+                if (dataSet2->GetVal(wxT("granted")) == wxT("t")) {
+                    lockList->SetItem(row, 6, __("Yes"));
+                } else {
+                    lockList->SetItem(row, 6, __("No"));
+                }
+                wxString qry=dataSet2->GetVal(wxT("current_query"));
+
+                if (connection->BackendMinimumVersion(7, 4))
+                {
+                    if (qry.IsEmpty()) {
+                        lockList->SetItem(row, 7, wxT(""));
+                        lockList->SetItem(row, 8, wxT(""));
+                    } else {
+                        lockList->SetItem(row, 7, dataSet2->GetVal(wxT("query_start")));
+                        lockList->SetItem(row, 8, qry.Left(250));
+                    }
+                } else {
+                    lockList->SetItem(row, 7, qry.Left(250));
+                }
+
+                row++;
+            }
+            dataSet2->MoveNext();
         }
     }
 }
