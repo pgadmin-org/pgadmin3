@@ -534,11 +534,9 @@ void frmQuery::openLastFile()
         memset(buf, 0, len+1);
         file.Read(buf, len);
         file.Close();
-#if wxUSE_UNICODE
-        sqlQuery->SetText(wxString(buf, FILE_ENCODING));
-#else
-        sqlQuery->SetText(buf);
-#endif
+        wxString str(buf, FILE_ENCODING);
+        str.Replace(wxT("\r"), wxT(""));
+        sqlQuery->SetText(str);
         delete[] buf;
         wxYield();  // needed to process sqlQuery modify event
         changed = false;
@@ -575,6 +573,9 @@ void frmQuery::OnSave(wxCommandEvent& event)
         setExtendedTitle();
 
         wxString buf=sqlQuery->GetText();
+#ifdef __WIN32__
+        buf.Replace(wxT("\n"), wxT("\r\n"));
+#endif
         file.Write(buf, FILE_ENCODING);
         file.Close();
         changed=false;
