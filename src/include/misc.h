@@ -94,17 +94,12 @@ wxString DateToStr(const wxDateTime &datetime);
 // Quoting
 wxString qtString(const wxString& value);   // add ' and escape if necessary
 wxString qtIdent(const wxString& value);    // add " if necessary
+wxString qtTypeIdent(const wxString& value);    // add " if necessary
 wxString qtStringDollar(const wxString &value);
 wxString qtStrip(const wxString& value);    // remove \"
 
 // check if size/pos have reasonable values
 void CheckOnScreen(wxPoint &pos, wxSize &size, const int w0=100, const int h0=70);
-
-// Keith 2003.03.11
-// We need an identifier validation function
-
-// Validation
-bool IsValidIdentifier(wxString ident);
 
 // string build helper
 void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &what);

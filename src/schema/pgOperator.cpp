@@ -34,12 +34,12 @@ bool pgOperator::DropObject(wxFrame *frame, wxTreeCtrl *browser)
     wxString sql = wxT("DROP OPERATOR ") + GetFullIdentifier();
     
     if (GetLeftType().Length() > 0)
-        sql += wxT(" (") + qtIdent(GetLeftType());
+        sql += wxT(" (") + qtTypeIdent(GetLeftType());
     else
         sql += wxT(") (NONE");
 
     if (GetRightType().Length() > 0)
-        sql += wxT(", ") + qtIdent(GetLeftType()) + wxT(")");
+        sql += wxT(", ") + qtTypeIdent(GetLeftType()) + wxT(")");
     else
         sql += wxT(", NONE)");
 
@@ -56,8 +56,8 @@ wxString pgOperator::GetSql(wxTreeCtrl *browser)
 	    + wxT("(") + GetOperands() + wxT(");\n\n")
               wxT("CREATE OPERATOR ") + GetFullIdentifier()
             + wxT("(\n  PROCEDURE = ") + qtIdent(GetOperatorFunction());
-        AppendIfFilled(sql, wxT(",\n  LEFTARG = "), qtIdent(GetLeftType()));
-        AppendIfFilled(sql, wxT(",\n  RIGHTARG = "), qtIdent(GetRightType()));
+        AppendIfFilled(sql, wxT(",\n  LEFTARG = "), qtTypeIdent(GetLeftType()));
+        AppendIfFilled(sql, wxT(",\n  RIGHTARG = "), qtTypeIdent(GetRightType()));
         AppendIfFilled(sql, wxT(",\n  COMMUTATOR = "), GetCommutator());
         AppendIfFilled(sql, wxT(",\n  RESTRICT = "), qtIdent(GetRestrictFunction()));
         AppendIfFilled(sql, wxT(",\n  JOIN = "), qtIdent(GetJoinFunction()));

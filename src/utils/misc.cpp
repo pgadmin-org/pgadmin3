@@ -39,7 +39,10 @@
 
 extern "C"
 {
+#define YYSTYPE
+#define DECIMAL DECIMAL_P
 #include "parser/keywords.h"
+#include "parser/parse.h"
 }
 
 // we dont have an appropriate wxLongLong method
@@ -246,41 +249,94 @@ wxString qtStringDollar(const wxString &value)
 }
 
 
-wxString qtIdent(const wxString& value)
+
+static bool needsQuoting(wxString& value, bool forTypes)
 {
-    wxString result = value;
-    bool needQuoting=false;
-
-    if (result.Length() == 0)
-        return result;
-
-    int pos = 0;
-
     // Replace Double Quotes
-    result.Replace(wxT("\""), wxT("\"\""));
-	
+    if (value.Replace(wxT("\""), wxT("\"\"")) > 0)
+        return true;
+
     // Is it a number?
-    if (result.IsNumber()) 
-        needQuoting = true;
+    if (value.IsNumber()) 
+        return true;
     else
     {
-        while (pos < (int)result.length())
+        int pos = 0;
+        while (pos < (int)value.length())
         {
-            if (!((result.GetChar(pos) >= '0') && (result.GetChar(pos) <= '9')) && 
-                !((result.GetChar(pos)  >= 'a') && (result.GetChar(pos)  <= 'z')) && 
-                !(result.GetChar(pos)  == '_'))
+            wxChar c=value.GetChar(pos);
+            if (!(c >= '0' && c <= '9') && 
+                !(c >= 'a' && c  <= 'z') && 
+                !(c == '_'))
             {
-                needQuoting = true;
-                break;
+                return true;
             }
             pos++;
         }
-    }	
+    }
 
-    if (!needQuoting && ScanKeywordLookup(value.ToAscii()))
-        needQuoting = true;
+    // is it a keyword?
+    const ScanKeyword *sk=ScanKeywordLookup(value.ToAscii());
+    if (sk)
+    {
+        if (forTypes)
+        {
+            switch (sk->value)
+            {
+                case ANY:
+                case BIGINT:
+                case BIT:
+                case BOOLEAN_P:
+                case CHAR_P:
+                case CHARACTER:
+                case DECIMAL:
+                case DOUBLE_P:
+                case FLOAT_P:
+                case INT_P:
+                case INTEGER:
+                case INTERVAL:
+                case NUMERIC:
+                case SET:
+                case SMALLINT:
+                case TIME:
+                case TIMESTAMP:
+                case TRIGGER:
+                case VARCHAR:
+                    break;
+                default:
+                    return true;
+            }
+        }
+        else
+            return true;
+    }
 
-    if (needQuoting)
+    return false;
+}
+
+
+wxString qtTypeIdent(const wxString& value)
+{
+    if (value.Length() == 0)
+        return value;
+
+    wxString result = value;
+
+    if (needsQuoting(result, true))
+        return wxT("\"") + result + wxT("\"");
+    else
+        return result;
+}
+
+
+wxString qtIdent(const wxString& value)
+{
+    if (value.Length() == 0)
+        return value;
+
+    wxString result = value;
+
+    if (needsQuoting(result, false))
         return wxT("\"") + result + wxT("\"");
     else
         return result;
@@ -341,34 +397,6 @@ void FillArray(wxArrayString &array, const wxString &list)
     }
     if (!str.IsEmpty())
         array.Add(str);
-}
-
-
-// Keith 2003.03.11
-// We need an identifier validation function
-bool IsValidIdentifier(wxString ident)
-{
-    // compiler complains if not unsigned
-	unsigned int len = ident.length();
-	if (!len)
-		return false;
-
-	wxString first = 
-		wxT("_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	wxString second = 
-		wxT("_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-
-	if (!first.Contains(ident.Left(1)))
-		return false;
-
-	unsigned int si;
-	for ( si = 1; si < len; si++)
-	{
-	    if (!second.Contains(ident.Mid(si, 1)))
-		    return false;
-	}
-
-	return true;
 }
 
 
