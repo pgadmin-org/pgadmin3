@@ -61,6 +61,10 @@ int dlgIndexConstraint::Go(bool modal)
         chkDeferrable->Disable();
         chkDeferred->Disable();
     }
+    else
+    {
+        txtComment->Disable();
+    }
 
     return dlgIndexBase::Go(modal);
 }

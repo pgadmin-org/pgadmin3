@@ -155,28 +155,28 @@ void dlgProperty::OnOK(wxNotifyEvent &ev)
         }
         else
         {
-            int collectionType=objectType -1;
-
             pgCollection *collection=0;
 
-            while (item)
+            wxTreeItemId collectionItem=mainForm->GetBrowser()->GetItemParent(item);
+
+            while (collectionItem)
             {
-                collection = (pgCollection*)mainForm->GetBrowser()->GetItemData(item);
-                if (collection && collection->GetType() == collectionType)
+                collection = (pgCollection*)mainForm->GetBrowser()->GetItemData(collectionItem);
+                if (collection && collection->IsCollectionForType(objectType))
                 {
                     data = CreateObject(collection);
                     if (data)
                     {
-                        mainForm->GetBrowser()->AppendItem(item, data->GetFullIdentifier(), data->GetIcon(), -1, data);
+                        mainForm->GetBrowser()->AppendItem(collectionItem, data->GetFullIdentifier(), data->GetIcon(), -1, data);
 
-                        if (mainForm->GetBrowser()->GetSelection() == item)
+                        if (mainForm->GetBrowser()->GetSelection() == collectionItem)
                             collection->ShowTreeDetail(mainForm->GetBrowser(), 0, properties);
                         else
                             collection->UpdateChildCount(mainForm->GetBrowser());
                     }
                     break;
                 }
-                item=mainForm->GetBrowser()->GetItemParent(item);
+                collectionItem=mainForm->GetBrowser()->GetItemParent(collectionItem);
             }
         }
     }

@@ -49,6 +49,7 @@
 
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtName"),                      dlgTable::OnChange)
+    EVT_TEXT(XRCID("txtComment"),                   dlgTable::OnChange)
 
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgTable::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgTable::OnRemoveCol)
@@ -250,33 +251,58 @@ wxString dlgTable::GetSql()
 
     if (table)
     {
-        if (columnsItem)
+        int pos;
+        unsigned index;
+
+        wxString coldef;
+        wxArrayString tmpCols=previousColumns;
+
+        for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
-            wxArrayString tmpCols=previousColumns;
+            coldef=lstColumns->GetItemText(pos) + wxT(" ") + GetListText(lstConstraints, pos, 1);
+            index=tmpCols.Index(coldef);
+            if (index >= 0)
+                tmpCols.RemoveAt(index);
+            else
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT(" ADD COLUMN ") + coldef + wxT(";\n");
+        }
 
-            long cookie;
-            pgColumn *column;
-            wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(columnsItem, cookie);
+        for (index=0 ; index < tmpCols.GetCount() ; index++)
+        {
+            coldef = tmpCols.Item(index);
+            if (coldef[0U] == '"')
+                coldef = coldef.Mid(1).BeforeFirst('"');
+            else
+                coldef = coldef.BeforeFirst(' ');
+            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                +  wxT(" DROP COLUMN ") + coldef + wxT(";\n");
+        }
 
-            // check columns
-            while (item)
-            {
-                column=(pgColumn*)mainForm->GetBrowser()->GetItemData(item);
-                if (column->GetType() == PG_COLUMN)
-                {
-                    // make sure column details are read
-                    column->ShowTreeDetail(mainForm->GetBrowser());
 
-                    if (column->GetColNumber() > 0)
-                    {
-                        AppendListItem(lstColumns, column->GetName(), column->GetDefinition(), column->GetIcon());
-                        previousColumns.Add(column->GetQuotedIdentifier() 
-                            + wxT(" ") + column->GetDefinition());
-                    }
-                }
-                
-                item=mainForm->GetBrowser()->GetNextChild(columnsItem, cookie);
-            }
+        wxString condef;
+        wxArrayString tmpCons=previousConstraints;
+
+        for (pos=0; pos < lstConstraints->GetItemCount() ; pos++)
+        {
+            condef=lstConstraints->GetItemText(pos) + wxT(" ") + GetListText(lstConstraints, pos, 1);
+            index=tmpCons.Index(coldef);
+            if (index >= 0)
+                tmpCons.RemoveAt(index);
+            else
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT(" ADD CONSTRAINT ") + coldef + wxT(";\n");
+        }
+
+        for (index=0 ; index < tmpCons.GetCount() ; index++)
+        {
+            condef = tmpCons.Item(index);
+            if (condef[0U] == '"')
+                condef = condef.Mid(1).BeforeFirst('"');
+            else
+                condef = condef.BeforeFirst(' ');
+            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                +  wxT(" DROP CONSTRAINT ") + qtIdent(condef) + wxT(";\n");
         }
 
         
@@ -365,9 +391,9 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
         schema = wxT("public");
 
     pgObject *obj=pgTable::ReadObjects(collection, 0, wxT(
-        "\n   AND cls.relname") + qtString(name) + wxT(
-        "\n   AND cls.relnamespace=(SELECT oid FROM pg_namespace WHERE nspname=") + 
-        qtIdent(schema) + wxT(")"));
+        "\n   AND rel.relname=") + qtString(name) + wxT(
+        "\n   AND rek.relnamespace=(SELECT oid FROM pg_namespace WHERE nspname=") + 
+        qtString(schema) + wxT(")"));
 
     return obj;
 }
@@ -376,7 +402,20 @@ pgObject *dlgTable::CreateObject(pgCollection *collection)
 
 void dlgTable::OnChange(wxNotifyEvent &ev)
 {
-    btnOK->Enable(!txtName->GetValue().IsEmpty() && lstColumns->GetItemCount() > 0);
+    if (table)
+    {
+        bool changed=false;
+        if (txtName->GetValue() != table->GetName() ||
+            txtComment->GetValue() != table->GetComment() ||
+            cbOwner->GetValue() != table->GetOwner())
+            changed=true;
+        else
+            changed = !GetSql().IsEmpty();
+
+        btnOK->Enable(changed);
+    }
+    else
+        btnOK->Enable(!txtName->GetValue().IsEmpty() && lstColumns->GetItemCount() > 0);
 }
 
 

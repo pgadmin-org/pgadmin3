@@ -94,6 +94,9 @@ int dlgCheck::Go(bool modal)
         txtName->SetValue(check->GetName());
         txtName->Disable();
 
+        txtWhere->SetValue(check->GetConstraint());
+        txtWhere->Disable();
+
         chkDeferrable->SetValue(check->GetDeferrable());
         chkDeferred->SetValue(check->GetDeferred());
         chkDeferrable->Disable();
