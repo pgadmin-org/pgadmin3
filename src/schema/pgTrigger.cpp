@@ -64,14 +64,15 @@ wxString pgTrigger::GetSql(wxTreeCtrl *browser)
 {
     if (sql.IsNull() && this->triggerFunction)
     {
-        sql = wxT("-- DROP TRIGGER ") + GetName()
+        sql = wxT("-- Trigger: ") + GetName() + wxT(" on ") + GetQuotedFullTable() + wxT("\n")
+            + wxT("-- DROP TRIGGER ") + GetName()
             + wxT(" ON ") + GetQuotedFullTable() +wxT(";\n"
                   "CREATE TRIGGER ") + GetName()
-            + wxT(" ") + GetFireWhen() 
+            + wxT("\n  ") + GetFireWhen() 
             + wxT(" ") + GetEvent()
-            + wxT("\n    ON ") + GetQuotedFullTable()
-            + wxT(" FOR EACH ") + GetForEach()
-            + wxT("\n    EXECUTE PROCEDURE ") + triggerFunction->GetFullName()
+            + wxT("\n  ON ") + GetQuotedFullTable()
+            + wxT("\n  FOR EACH ") + GetForEach()
+            + wxT("\n  EXECUTE PROCEDURE ") + triggerFunction->GetFullName()
             + wxT(";\n");
 
         if (!GetComment().IsEmpty())
@@ -176,7 +177,7 @@ pgObject *pgTrigger::ReadObjects(pgCollection *collection, wxTreeCtrl *browser, 
     pgTrigger *trigger=0;
 
         pgSet *triggers= collection->GetDatabase()->ExecuteSet(wxT(
-        "SELECT t.oid, t.*, relname, nspname\n"
+        "SELECT t.oid, t.*, relname, nspname, des.description\n"
         "  FROM pg_trigger t\n"
         "  JOIN pg_class cl ON cl.oid=tgrelid\n"
         "  JOIN pg_namespace na ON na.oid=relnamespace\n"

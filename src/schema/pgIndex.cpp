@@ -44,8 +44,9 @@ wxString pgIndex::GetCreate()
         str += wxT("UNIQUE ");
     str += wxT("INDEX ");
     str += qtIdent(GetName()) 
-        + wxT("\n    ON ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())+wxT("(");
-//        + wxT(" USING ") + ????
+        + wxT("\n  ON ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
+        + wxT("\n  USING ") + GetIndexType()
+        + wxT("\n  (");
     if (GetProcName().IsNull())
         str += GetQuotedColumns();
     else
@@ -56,7 +57,7 @@ wxString pgIndex::GetCreate()
     }
 
     str += wxT(")");
-    AppendIfFilled(str, wxT("\n    WHERE "), GetConstraint());
+    AppendIfFilled(str, wxT("\n  WHERE "), GetConstraint());
 
     str += wxT(";\n");
     
