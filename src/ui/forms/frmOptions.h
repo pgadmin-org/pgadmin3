@@ -28,9 +28,9 @@ public:
     ~frmOptions();
     
 private:
-    OK();
-    Cancel();
-    BrowseLogFile();
+    void OK();
+    void Cancel();
+    void BrowseLogFile();
     wxTextCtrl *txtLogFile;
     wxRadioBox *radLogLevel;
     DECLARE_EVENT_TABLE()

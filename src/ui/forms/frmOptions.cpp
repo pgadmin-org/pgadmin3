@@ -74,16 +74,19 @@ frmOptions::~frmOptions()
     wxLogDebug(wxT("Destroying an options dialogue"));
 }
 
+void 
 frmOptions::OK()
 {
     extern sysSettings *objSettings;
-    
+
     // Logfile
-    wxLogInfo(wxT("Setting logfile to: %s"), txtLogFile->GetValue());
-    objSettings->SetLogFile(txtLogFile->GetValue());
+    wxString szLogFile = txtLogFile->GetValue();
+    wxLogInfo(wxT("Setting logfile to: %s"), szLogFile.c_str());
+    objSettings->SetLogFile(szLogFile);
 
     // Loglevel
-    wxLogInfo(wxT("Setting loglevel to: %s"), radLogLevel->GetStringSelection());
+    wxString szLogInfo = radLogLevel->GetStringSelection();
+    wxLogInfo(wxT("Setting loglevel to: %s"),szLogInfo.c_str());
     int iSel = radLogLevel->GetSelection();
 
     switch(iSel) {
@@ -106,11 +109,13 @@ frmOptions::OK()
     this->Destroy();
 }
 
+void 
 frmOptions::Cancel()
 {
     this->Destroy();
 }
 
+void 
 frmOptions::BrowseLogFile()
 {
     wxFileDialog dlgLogFile(this, wxT("Select log file"), wxT(""), wxT(""), wxT("Log files (*.log)|*.log|All files (*.*)|*.*"));
