@@ -24,7 +24,7 @@
 #include "pgForeignKey.h"
 #include "pgCheck.h"
 #include "sysSettings.h"
-#include "features.h"
+#include "pgfeatures.h"
 
 pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, PG_TABLE, newName)

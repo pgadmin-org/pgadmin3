@@ -1397,6 +1397,10 @@ SOURCE=.\include\pgDefs.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\include\pgfeatures.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\include\sysLogger.h
 # End Source File
 # Begin Source File

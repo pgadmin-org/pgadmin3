@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2004, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// features.h PostgreSQL features constants
+// pgfeatures.h PostgreSQL features constants
 //
 //////////////////////////////////////////////////////////////////////////
 

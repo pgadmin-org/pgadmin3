@@ -19,7 +19,7 @@
 
 // App headers
 #include "frmStatus.h"
-#include "features.h"
+#include "pgfeatures.h"
 // Icons
 #include "images/pgAdmin3.xpm"
 

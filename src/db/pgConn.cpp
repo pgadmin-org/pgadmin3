@@ -16,7 +16,7 @@
 
 // PostgreSQL headers
 #include <libpq-fe.h>
-#include "features.h"
+#include "pgfeatures.h"
 
 // Network  headers
 #ifdef __WXMSW__
