@@ -80,6 +80,7 @@
 // Event table
 BEGIN_EVENT_TABLE(frmMain, wxFrame)
     EVT_MENU(BTN_ADDSERVER, frmMain::OnAddServer)
+    EVT_MENU(BTN_DROP, frmMain::OnDrop)
     EVT_MENU(MNU_ABOUT, frmMain::OnAbout)
     EVT_MENU(MNU_ADDSERVER, frmMain::OnAddServer)
     EVT_MENU(MNU_EXIT, frmMain::OnExit)
@@ -593,4 +594,36 @@ void frmMain::svServer(pgServer *objServer)
     }
 
 
+}
+
+void frmMain::OnDrop()
+{
+    // This handler will primarily deal with dropping items
+
+    // Get the item data, and feed it to the relevant handler,
+    // cast as required.
+    wxTreeItemId itmX = tvBrowser->GetSelection();
+    pgObject *itmData = (pgObject *)tvBrowser->GetItemData(itmX);
+    int iType(itmData->GetType());
+    wxString szMsg, szLabel;
+
+    switch (iType) {
+        case PG_SERVER:
+            szMsg.Printf(wxT("Are you sure you wish to remove the server: %s?"), itmData->GetIdentifier());
+            if (wxMessageBox(szMsg, wxT("Remove Server?"), wxYES_NO | wxICON_QUESTION) == wxYES) {
+
+                szMsg.Printf(wxT("Removing server: %s"), itmData->GetIdentifier());
+                wxLogInfo(szMsg);
+                tvBrowser->Delete(itmX);
+
+                // Reset the Servers node text
+                szLabel.Printf(wxT("Servers (%d)"), tvBrowser->GetChildrenCount(itmServers, FALSE) - 1);
+                tvBrowser->SetItemText(itmServers, szLabel);
+                StoreServers();
+            }
+            break;
+
+        default:
+            break;
+    }
 }

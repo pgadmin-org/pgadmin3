@@ -47,6 +47,7 @@ private:
     void OnOptions(wxCommandEvent& event);
     void OnSelChanged();
     void OnSelActivated();
+    void OnDrop();
 
     // Treeview  handlers
     void tvServer(pgServer *objServer);
