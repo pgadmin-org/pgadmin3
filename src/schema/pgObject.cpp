@@ -131,6 +131,88 @@ wxString pgObject::GetCommentSql()
 
 
 
+wxString pgObject::GetPrivileges(const wxString& str, const wxString& grantOnType, const wxString& user, bool noOwner)
+{
+    wxString rights;
+
+    if (str == wxT("arwdRxt"))
+        rights = wxT("ALL");
+    else
+    {
+        if (str.Find('r') >= 0) 
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("SELECT"));
+        }
+        if (str.Find('w') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("UPDATE"));
+        }
+        if (str.Find('a') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("INSERT"));
+        }
+        if (str.Find('d') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("DELETE"));
+        }
+        if (str.Find('R') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("RULE"));
+        }
+        if (str.Find('x') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("REFERENCE"));
+        }
+        if (str.Find('t') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("TRIGGER"));
+        }
+        if (str.Find('X') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("EXECUTE"));
+        }
+        if (str.Find('U') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("USAGE"));
+        }
+        if (str.Find('C') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("CREATE"));
+        }
+        if (str.Find('T') >= 0)
+        {
+            if (!rights.IsNull()) rights.Append(wxT(", "));
+            rights.Append(wxT("TEMPORARY"));
+        }
+    }
+    wxString grant;
+    if (rights.IsNull())    grant += wxT("REVOKE ALL");
+    else                    grant += wxT("GRANT ") + rights;
+    
+    grant += wxT(" ON ") + grantOnType + wxT(" ");
+
+    if (noOwner)            grant += GetQuotedIdentifier();
+    else                    grant += GetQuotedFullIdentifier();
+
+    if (rights.IsNull())    grant += wxT(" FROM ");
+    else                    grant += wxT(" TO "); 
+              
+    grant += user;
+
+    return grant;
+}
+
+
 wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
 {
     wxString grant, str, user, grantOnType;
@@ -161,79 +243,27 @@ wxString pgObject::GetGrant(const wxString& _grantOnType, bool noOwner)
                 else
                     user = qtIdent(user);
             }
-            wxString rights;
-            if (str == wxT("arwdRxt"))
-                rights = wxT("ALL");
-            else
+            wxString aclWithGrant, aclWithoutGrant;
+
+            const char *p=str.c_str();
+            while (*p)
             {
-                if (str.Find('r') >= 0) 
+                if (p[1] == '*')
                 {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("SELECT"));
+                    aclWithGrant += *p;
+                    p += 2;
                 }
-                if (str.Find('w') >= 0)
+                else
                 {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("UPDATE"));
-                }
-                if (str.Find('a') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("INSERT"));
-                }
-                if (str.Find('d') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("DELETE"));
-                }
-                if (str.Find('R') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("RULE"));
-                }
-                if (str.Find('x') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("REFERENCE"));
-                }
-                if (str.Find('t') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("TRIGGER"));
-                }
-                if (str.Find('X') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("EXECUTE"));
-                }
-                if (str.Find('U') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("USAGE"));
-                }
-                if (str.Find('C') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("CREATE"));
-                }
-                if (str.Find('T') >= 0)
-                {
-                    if (!rights.IsNull()) rights.Append(wxT(", "));
-                    rights.Append(wxT("TEMPORARY"));
+                    aclWithoutGrant += *p;
+                    p++;
                 }
             }
-            if (rights.IsNull())    grant += wxT("REVOKE ALL");
-            else                    grant += wxT("GRANT ") + rights;
-            
-            grant += wxT(" ON ") + grantOnType + wxT(" ");
 
-            if (noOwner)            grant += GetQuotedIdentifier();
-            else                    grant += GetQuotedFullIdentifier();
-
-            if (rights.IsNull())    grant += wxT(" FROM ");
-            else                    grant += wxT(" TO "); 
-                      
-            grant += user + wxT(";\n");
+            if (!aclWithoutGrant.IsEmpty() || aclWithGrant.IsEmpty())
+                grant += GetPrivileges(aclWithoutGrant, grantOnType, user, noOwner) + wxT(";\n");
+            if (!aclWithGrant.IsEmpty())
+                grant += GetPrivileges(aclWithGrant, grantOnType, user, noOwner) + wxT(" WITH GRANT OPTION;\n");
         }
     }
     return grant;
