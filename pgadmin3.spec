@@ -10,14 +10,21 @@ Group: Applications/Databases
 Source: pgadmin3-%{pgadmin_version}.tar.gz
 URL: http://www.pgadmin.org/
 BuildRoot: %{_tmppath}/%{name}-root
-# all packages providing an implementation of wxWindows library (regardless of
-# the toolkit used) should provide the (virtual) wxwin package, this makes it
-# possible to require wxwin instead of requiring "wxgtk or wxmotif or wxqt..."
+
 Requires: gtk2 >= 2.2
-BuildRequires: autoconf >= 2.57, automake >= 1.7.5, gtk2-devel >= 2.2, postgresql >= 7.3.2
+
+#
+# Warning: wxWindows 2.5 CVS version > 20030607
+# needs to be installed from source with the following options:
+# ./configure --with-gtk --enable-gtk2 --enable-unicode --disable-shared --enable-debug
+#
+# Also, you need to compile the following contributions in wxWindows contrib/src
+# stc (Styled Text Control) xrc
+#
+BuildRequires: autoconf >= 2.57, automake >= 1.7.5, gtk2-devel >= 2.2, postgresql >= 7.3.2, openssl-devel >= 0.9.7
 
 %description
-pgAdmin3 the graphical administration interface of PostgreSQL.
+pgAdmin3 is the graphical administration interface of PostgreSQL.
 
 %prep
 %setup -q
