@@ -66,7 +66,7 @@ frmChildTableViewFrame::frmChildTableViewFrame(wxMDIParentFrame *parent,
 	// We need to know if we're going to show system objects
 	wxString sysobjstr;
 	if (!settings->GetShowSystemObjects())
-		sysobjstr = " WHERE attnum >= 0 ";
+		sysobjstr = " WHERE attnum > 0 ";
 
 	// Only do this if we have a database connection
 	if (m_database->Connect() == PGCONN_OK) 

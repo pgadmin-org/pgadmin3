@@ -110,9 +110,10 @@ void dlgAddTableView::OnOK(wxCommandEvent& event)
 		frmChildTableViewFrame *tmpframe = 
 			new frmChildTableViewFrame(tmpparent, tmpname, 
 			tmpalias, m_database);
-		tmpparent->m_children.Append(tmpframe);
+		tmpparent->m_children.Add(tmpframe);
 		tmpparent->m_names.Add(tmpname);
 		tmpparent->m_aliases.Add(tmpalias);
+		tmpparent->UpdateGridTables(NULL);
 	}
 
 	// Add the views to the MDI Client Window
@@ -130,9 +131,10 @@ void dlgAddTableView::OnOK(wxCommandEvent& event)
 		frmChildTableViewFrame *tmpframe = 
 			new frmChildTableViewFrame(tmpparent, tmpname, 
 			tmpalias, m_database);
-		tmpparent->m_children.Append(tmpframe);
+		tmpparent->m_children.Add(tmpframe);
 		tmpparent->m_names.Add(tmpname);
 		tmpparent->m_aliases.Add(tmpalias);
+		tmpparent->UpdateGridTables(NULL);
 	}
 
 	// Hide the add/view window 
@@ -150,13 +152,17 @@ void dlgAddTableView::OnClose(wxCommandEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 void dlgAddTableView::InitLists()
 {
-		// We need system settings
+	// We need system settings
     extern sysSettings *settings;
 
 	// We need to know if we're going to show system objects
 	wxString sysobjstr;
 	if (!settings->GetShowSystemObjects())
-		sysobjstr = " AND relowner > 1 ";
+		sysobjstr = "JOIN (SELECT oid,nspname FROM pg_namespace "
+				"WHERE nspname <> 'pg_catalog' AND "
+				"nspname <> 'pg_toast' AND "
+				"nspname NOT LIKE 'pg_temp_%' ) b "
+				"ON (a.relnamespace = b.oid) ";
 
 	// Clear the lists
 	m_tablelist->Clear();
@@ -164,28 +170,30 @@ void dlgAddTableView::InitLists()
 
     if (m_database->Connect() == PGCONN_OK) {
 
-		int x = m_database->GetOid();
+		wxString querystr = 
+			wxT("SELECT a.relname FROM pg_class a " +
+				sysobjstr + 
+				"WHERE a.relkind='r' " 
+				"ORDER BY lower(a.relname)");
 
 		// tables
-		pgSet *tables = m_database->ExecuteSet(
-			wxT("SELECT oid,relname FROM pg_class "
-				"WHERE relkind='r' " + sysobjstr +
-				"ORDER BY lower(relname)"));
+		pgSet *tables = m_database->ExecuteSet(querystr);
 
-        wxString tName;
 		while (!tables->Eof()) {
-            tName = tables->GetVal(wxT("relname"));
-			m_tablelist->Append(tName);
+			m_tablelist->Append(tables->GetVal(wxT("relname")));
 			tables->MoveNext();
 		}
 
 		delete tables;
 
+		querystr = 
+			wxT("SELECT a.relname FROM pg_class a " +
+				sysobjstr + 
+				"WHERE a.relkind='v' " 
+				"ORDER BY lower(a.relname)");
+
 		// views
-		pgSet *views = m_database->ExecuteSet(
-		   wxT("SELECT relname FROM pg_class "
-				"WHERE relkind='v' " + sysobjstr +
-				"ORDER BY lower(relname)"));
+		pgSet *views = m_database->ExecuteSet(querystr);
 
 		while (!views->Eof()) {
 			m_viewlist->Append(views->GetVal(wxT("relname")));
