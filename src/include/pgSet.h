@@ -93,7 +93,7 @@ public:
     bool DataValid() const { return dataSet != NULL; }
     pgSet *DataSet() { return dataSet; }
     int ReturnCode() const { return rc; }
-    wxString GetMessages() const { return messages; }
+    wxString GetMessagesAndClear();
     bool IsRunning() const;
 
 private:
@@ -105,8 +105,11 @@ private:
     PGresult *result;
     wxString messages;
     pgSet *dataSet;
+    wxCriticalSection criticalSection;
 
+    void appendMessage(const wxString &str);
     int execute();
+    friend void pgNoticeProcessor(void *arg, const char *message);
 };
 
 #endif

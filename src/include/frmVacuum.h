@@ -30,6 +30,7 @@ public:
     
 private:
     wxString GetHelpPage() const;
+    void OnAction(wxCommandEvent& ev);
     void OnOK(wxCommandEvent& ev);
     void OnCancel(wxCommandEvent& ev);
     void OnClose(wxCloseEvent& event);

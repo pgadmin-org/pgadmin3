@@ -207,6 +207,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     updateMenu();
     setTools(false);
     lastFileFormat = settings->GetUnicodeFile();
+
+    msgResult->SetMaxLength(0L);
 }
 
 
@@ -756,10 +758,11 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
             SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
             wxYield();
             wxUsleep(10);
+            msgResult->AppendText(sqlResult->GetMessagesAndClear());
             wxYield();
         }
 
-        msgResult->AppendText(sqlResult->GetMessages());
+        msgResult->AppendText(sqlResult->GetMessagesAndClear());
 
         elapsedQuery=wxGetLocalTimeMillis() - startTimeQuery;
         SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);

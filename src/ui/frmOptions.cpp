@@ -151,9 +151,12 @@ void frmOptions::OnOK(wxCommandEvent &ev)
           settings->SetLogLevel(LOG_ERRORS);
           break;
         case(2):
-          settings->SetLogLevel(LOG_SQL);
+          settings->SetLogLevel(LOG_NOTICE);
           break;
         case(3):
+          settings->SetLogLevel(LOG_SQL);
+          break;
+        case(4):
           settings->SetLogLevel(LOG_DEBUG);
           break;
         default:

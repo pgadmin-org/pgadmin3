@@ -30,6 +30,13 @@
 #include "pgSet.h"
 #include "sysLogger.h"
 
+
+static void pgNoticeProcessor(void *arg, const char *message)
+{
+    ((pgConn*)arg)->Notice(message);
+}
+
+
 pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port)
 {
     wxLogInfo(wxT("Creating pgConn object"));
@@ -40,6 +47,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     unsigned long addr;
     conn=0;
     majorVersion=0;
+    noticeArg=0;
     
 #ifdef __WXMSW__
     struct in_addr ipaddr;
@@ -103,6 +111,8 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     if (PQstatus(conn) == CONNECTION_OK)
     {
 
+        PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
+
 #if wxUSE_UNICODE
 
        wxLogInfo(wxT("Setting client_encoding to 'UNICODE'"));
@@ -118,8 +128,8 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 #endif
 
     }
-
 }
+
 
 pgConn::~pgConn()
 {
@@ -127,6 +137,24 @@ pgConn::~pgConn()
     if (conn)
         PQfinish(conn);
 }
+
+
+void pgConn::RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg)
+{
+    noticeArg=arg;
+    noticeProc=proc;
+}
+
+
+void pgConn::Notice(const char *msg)
+{
+    wxString str(msg, wxConvUTF8);
+    wxLogNotice(wxT("%s"), str.c_str());
+
+    if (noticeArg && noticeProc)
+        (*noticeProc)(noticeArg, msg);
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Execute SQL

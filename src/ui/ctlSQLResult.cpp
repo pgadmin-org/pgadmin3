@@ -164,11 +164,11 @@ int ctlSQLResult::Retrieve(long chunk)
 }
 
 
-wxString ctlSQLResult::GetMessages()
+wxString ctlSQLResult::GetMessagesAndClear()
 {
     if (thread)
-        return thread->GetMessages();
-    return wxString();
+        return thread->GetMessagesAndClear();
+    return wxEmptyString;
 }
 
 

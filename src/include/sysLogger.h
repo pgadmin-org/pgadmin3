@@ -21,8 +21,9 @@ enum LOG_LEVEL
 {
     LOG_NONE = 0,
     LOG_ERRORS = 1,
-    LOG_SQL = 2,
-    LOG_DEBUG = 3
+    LOG_NOTICE = 2,
+    LOG_SQL = 3,
+    LOG_DEBUG = 4
 };
 
 // Class declarations
@@ -35,8 +36,10 @@ private:
     void WriteLog(const wxString& msg);
 };
 
-#define wxLOG_Sql (wxLOG_User+1)
+#define wxLOG_Notice (wxLOG_User+1)
+#define wxLOG_Sql (wxLOG_User+2)
 
+DECLARE_LOG_FUNCTION(Notice);
 DECLARE_LOG_FUNCTION(Sql);
 
 

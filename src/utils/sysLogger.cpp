@@ -42,6 +42,27 @@ void wxLogSql(const wxChar *szFormat, ...)
 }
 
 
+
+void wxVLogNotice(const wxChar *szFormat, va_list argptr)
+{
+    static wxChar s_szBuf[1024];
+
+    if (settings->GetLogLevel() >= LOG_NOTICE)
+    {
+        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
+        wxLog::OnLog(wxLOG_Sql, s_szBuf, time(NULL));
+
+    }
+}
+
+void wxLogNotice(const wxChar *szFormat, ...)
+{
+    va_list argptr;
+    va_start(argptr, szFormat);
+    wxVLogNotice(szFormat, argptr);
+    va_end(argptr);
+}
+
 void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 {
     wxString msgtype, preamble;
@@ -78,6 +99,10 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 
         case wxLOG_Status:
             msgtype = wxT("STATUS ");
+            break;
+
+        case wxLOG_Notice:
+            msgtype = wxT("NOTICE ");
             break;
 
         case wxLOG_Sql:
@@ -121,11 +146,19 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
                 WriteLog(fullmsg);
             break;
 
+        case LOG_NOTICE:
+            if (level == wxLOG_FatalError || 
+                level == wxLOG_Error ||
+                level == wxLOG_Notice)
+                WriteLog(fullmsg);
+            break;
+
         case LOG_SQL:
             if (level == wxLOG_FatalError ||
                 level == wxLOG_Error ||
                 level == wxLOG_Message ||
                 level == wxLOG_Status ||
+                level == wxLOG_Notice ||
                 level == wxLOG_Sql)
                 WriteLog(fullmsg);
             break;
@@ -139,6 +172,7 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     if (icon != 0) wxMessageBox(preamble + wxGetTranslation(msg), APPNAME_L, 
 		wxOK | wxCENTRE | icon);
 }
+
 
 void sysLogger::WriteLog(const wxString& msg)
 {

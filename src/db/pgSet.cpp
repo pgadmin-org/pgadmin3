@@ -15,16 +15,6 @@
 #include <libpq-fe.h>
 
 
-
-#if 0
-#ifdef __WXMSW__
-    #include <winsock.h>
-#else
-    #include <arpa/inet.h>
-    #include <netdb.h>
-#endif
-#endif
-
 // App headers
 #include "pgSet.h"
 #include "pgConn.h"
@@ -249,6 +239,13 @@ wxString pgSet::ExecuteScalar(const wxString& sql) const
 }
 
 
+static void pgNoticeProcessor(void *arg, const char *message)
+{
+    wxString str(message, wxConvUTF8);
+    
+    wxLogNotice(wxT("%s"), str);
+    ((pgQueryThread*)arg)->appendMessage(str);
+}
 
 
 pgQueryThread::pgQueryThread(PGconn *_conn, const wxString &qry, int _resultToRetrieve) 
@@ -260,6 +257,7 @@ pgQueryThread::pgQueryThread(PGconn *_conn, const wxString &qry, int _resultToRe
     result=0;
     resultToRetrieve=_resultToRetrieve;
     rc=-1;
+    PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
     PQsetnonblocking(conn, 1);
 }
 
@@ -271,11 +269,33 @@ pgQueryThread::~pgQueryThread()
 }
 
 
+wxString pgQueryThread::GetMessagesAndClear()
+{
+    wxString msg;
+
+    {
+        wxCriticalSectionLocker cs(criticalSection);
+        msg=messages;
+        messages.Empty();
+    }
+
+    return msg;
+}
+
+
+void pgQueryThread::appendMessage(const wxString &str)
+{
+    wxCriticalSectionLocker cs(criticalSection);
+    messages += str;
+}
+
+
 int pgQueryThread::execute()
 {
     wxLongLong startTime=wxGetLocalTimeMillis();
 
     wxLogSql(wxT("Thread Query %s"), query.c_str());
+
 
     if (!PQsendQuery(conn, query.mb_str(wxConvUTF8)))
         return(0);
@@ -316,12 +336,12 @@ int pgQueryThread::execute()
         if (resultsRetrieved == resultToRetrieve)
         {
             result=res;
-            messages.Printf(_("Query result with %d rows will be returned.\n"), PQntuples(result));
+            appendMessage(wxString::Format(_("Query result with %d rows will be returned.\n"), PQntuples(result)));
             continue;
         }
         if (lastResult)
         {
-            messages.Printf(_("Query result with %d rows discarded.\n"), PQntuples(lastResult));
+            appendMessage(wxString::Format(_("Query result with %d rows discarded.\n"), PQntuples(lastResult)));
             PQclear(lastResult);
         }
         lastResult=res;
@@ -330,7 +350,7 @@ int pgQueryThread::execute()
     if (!result)
         result = lastResult;
 
-    messages += wxT("\n");
+    appendMessage(wxT("\n"));
     rc=PQresultStatus(result);
 
     if (rc == PGRES_TUPLES_OK)

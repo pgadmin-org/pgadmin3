@@ -24,16 +24,23 @@
 
 
 BEGIN_EVENT_TABLE(frmVacuum, DialogWithHelp)
+    EVT_RADIOBOX(XRCID("rbxAction"),    frmVacuum::OnAction)
     EVT_BUTTON (XRCID("btnOK"),         frmVacuum::OnOK)
     EVT_BUTTON (XRCID("btnCancel"),     frmVacuum::OnCancel)
     EVT_CLOSE(                          frmVacuum::OnClose)
 END_EVENT_TABLE()
 
-#define chkFull         CTRL("chkFull", wxCheckBox)
-#define chkFreeze       CTRL("chkFreeze", wxCheckBox)
+#define rbxAction       CTRL("rbxAction",  wxRadioBox)
+#define sbxOptions      CTRL("sbxOptions", wxStaticBox)
+#define chkFull         CTRL("chkFull",    wxCheckBox)
+#define chkFreeze       CTRL("chkFreeze",  wxCheckBox)
 #define chkAnalyze      CTRL("chkAnalyze", wxCheckBox)
-#define chkAnalyzeOnly  CTRL("chkAnalyzeOnly", wxCheckBox)
+#define chkVerbose      CTRL("chkVerbose", wxCheckBox)
+#define txtMessages     CTRL("txtMessages",wxTextCtrl)
+
+
 #define stBitmap        CTRL("stBitmap", wxStaticBitmap)
+
 #define btnOK           CTRL("btnOK", wxButton)
 #define btnCancel       CTRL("btnCancel", wxButton)
 
@@ -46,13 +53,14 @@ frmVacuum::frmVacuum(frmMain *form, pgObject *obj) : DialogWithHelp(form)
     wxLogInfo(wxT("Creating a vacuum dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxXmlResource::Get()->LoadDialog(this, form, wxT("frmVacuum"));
-    SetTitle(_("Vacuum ") + object->GetTypeName() + wxT(" ") + object->GetFullIdentifier());
+    SetTitle(_("Reorganize ") + object->GetTypeName() + wxT(" ") + object->GetFullIdentifier());
 
     // Icon
     SetIcon(wxIcon(vacuum_xpm));
 
     // Bitmap
     stBitmap->SetBitmap(wxBitmap(vacuum_xpm));
+    txtMessages->SetMaxLength(0L);
 
     CenterOnParent();
 }
@@ -81,6 +89,16 @@ void frmVacuum::Abort()
 }
 
 
+void frmVacuum::OnAction(wxCommandEvent& ev)
+{
+    bool isVacuum=rbxAction->GetSelection() == 0;
+    sbxOptions->Enable(isVacuum);
+    chkFull->Enable(isVacuum);
+    chkFreeze->Enable(isVacuum);
+    chkAnalyze->Enable(isVacuum);
+}
+
+
 void frmVacuum::OnOK(wxCommandEvent& ev)
 {
     if (!thread)
@@ -88,8 +106,15 @@ void frmVacuum::OnOK(wxCommandEvent& ev)
         btnOK->Disable();
 
         wxString sql;
-        if (chkAnalyzeOnly->GetValue())
+
+        txtMessages->Clear();
+
+        if (rbxAction->GetSelection() > 0)
+        {
             sql = wxT("ANALYZE ");
+            if (chkVerbose->GetValue())
+                sql += wxT("VERBOSE ");
+        }
         else
         {
             sql=wxT("VACUUM ");
@@ -98,6 +123,8 @@ void frmVacuum::OnOK(wxCommandEvent& ev)
                 sql += wxT("FULL ");
             if (chkFreeze->GetValue())
                 sql += wxT("FREEZE ");
+            if (chkVerbose->GetValue())
+                sql += wxT("VERBOSE ");
             if (chkAnalyze->GetValue())
                 sql += wxT("ANALYZE ");
         }
@@ -113,21 +140,33 @@ void frmVacuum::OnOK(wxCommandEvent& ev)
             return;
         }
 
+        wxLongLong startTime=wxGetLocalTimeMillis();
         thread->Run();
 
         while (thread && thread->IsRunning())
         {
-            wxYield();
             wxUsleep(10);
             // here could be the animation
+            txtMessages->AppendText(thread->GetMessagesAndClear());
+            wxYield();
         }
 
-        if (thread->DataSet() != NULL)
-            wxLogDebug(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()));
         if (thread)
         {
-            btnOK->SetLabel(_("Done"));
+            txtMessages->AppendText(thread->GetMessagesAndClear());
+
+            if (thread->DataSet() != NULL)
+                wxLogDebug(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()));
+
+            txtMessages->AppendText(_("Total query runtime: ") 
+                + (wxGetLocalTimeMillis()-startTime).ToString() + wxT(" ms."));
+
+                btnOK->SetLabel(_("Done"));
+            btnCancel->Disable();
         }
+        else
+            txtMessages->AppendText(_("\nCancelled.\n"));
+
         btnOK->Enable();
     }
     else
@@ -159,6 +198,7 @@ void frmVacuum::OnCancel(wxCommandEvent& ev)
         Destroy();
     }
 }
+
 
 void frmVacuum::Go()
 {

@@ -1,52 +1,84 @@
 <?xml version="1.0" ?>
 <resource>
   <object class="wxDialog" name="frmVacuum">
-    <title>VACUUM an object</title>
-    <size>300, 210</size>
+    <title>Reorganize an object</title>
+    <size>300, 250</size>
     <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU</style>
-    <object class="wxStaticBox" name="stbBox">
-      <label>VACUUM options</label>
-      <pos>10,10</pos>
-      <size>280,105</size>
-    </object>
-    <object class="wxCheckBox" name="chkFull">
-      <label>Full</label>
-      <pos>35, 30</pos>
-    </object>
-    <object class="wxCheckBox" name="chkFreeze">
-      <label>Freeze</label>
-      <pos>35, 50</pos>
-    </object>
-    <object class="wxCheckBox" name="chkAnalyze">
-      <label>Analyze</label>
-      <checked>1</checked>
-      <pos>35, 70</pos>
-    </object>
-    <object class="wxCheckBox" name="chkAnalyzeOnly">
-      <label>Analyze only (don't vacuum)</label>
-      <pos>35, 90</pos>
-    </object>
-    <object class="wxStaticBitmap" name="stBitmap">
-      <bitmap stock_id="wxART_MISSING_IMAGE"></bitmap>
-      <pos>100,115</pos>
-      <size>64,64</size>
+    <object class="wxNotebook" name="nbNotebook">
+      <object class="notebookpage">
+        <label>Options</label>
+        <object class="wxPanel" name="pnlOptions">
+          <object class="wxRadioBox" name="rbxAction">
+            <label>Reorganization</label>
+            <content>
+              <item>VACUUM</item>
+              <item>ANALYZE</item>
+            </content>
+            <selection>0</selection>
+            <pos>10,10</pos>
+            <size>160,45</size>
+            <style>wxRA_SPECIFY_ROWS</style>
+          </object>
+          <object class="wxStaticBox" name="sbxOptions">
+            <label>VACUUM options</label>
+            <pos>10, 65</pos>
+            <size>160, 80</size>
+          </object>
+          <object class="wxCheckBox" name="chkFull">
+            <label>FULL</label>
+            <pos>35, 85</pos>
+          </object>
+          <object class="wxCheckBox" name="chkFreeze">
+            <label>FREEZE</label>
+            <pos>35, 105</pos>
+          </object>
+          <object class="wxCheckBox" name="chkAnalyze">
+            <label>ANALYZE</label>
+            <checked>1</checked>
+            <pos>35, 125</pos>
+          </object>
+          <object class="wxCheckBox" name="chkVerbose">
+            <label>Verbose messages</label>
+            <checked>1</checked>
+            <pos>15,155</pos>
+          </object>
+          <object class="wxStaticBitmap" name="stBitmap">
+            <bitmap stock_id="wxART_MISSING_IMAGE"></bitmap>
+            <pos>200,30</pos>
+            <size>64,64</size>
+          </object>
+        </object>
+        <selected>1</selected>
+      </object>
+      <pos>5,5</pos>
+      <size>290,205</size>
+      <style>wxNB_BOTTOM</style>
+      <object class="notebookpage">
+        <label>Messages</label>
+        <object class="wxPanel" name="pnlMessages">
+          <object class="wxTextCtrl" name="txtMessages">
+            <pos>5,5</pos>
+            <size>270,170</size>
+            <style>wxTE_MULTILINE|wxTE_READONLY|wxHSCROLL</style>
+          </object>
+        </object>
+      </object>
     </object>
     <object class="wxButton" name="btnHelp">
       <label>&amp;Help</label>
-      <pos>10, 180</pos>
-      <size>80, 25</size>
+      <pos>10,220</pos>
+      <size>75, 25</size>
     </object>
     <object class="wxButton" name="btnOK">
       <label>&amp;OK</label>
       <default>1</default>
-      <pos>130, 180</pos>
-      <size>80, 25</size>
+      <pos>140, 220</pos>
+      <size>75, 25</size>
     </object>
     <object class="wxButton" name="btnCancel">
       <label>&amp;Cancel</label>
-      <default>0</default>
-      <pos>215, 180</pos>
-      <size>80, 25</size>
+      <pos>220, 220</pos>
+      <size>75, 25</size>
     </object>
   </object>
 </resource>

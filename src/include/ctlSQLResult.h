@@ -41,7 +41,7 @@ public:
     bool CanExport() { return rowsRetrieved>0 && colNames.GetCount() > 0; }
 
     int RunStatus();
-    wxString GetMessages();
+    wxString GetMessagesAndClear();
     wxString GetErrorMessage();
 
     wxArrayString colNames;
